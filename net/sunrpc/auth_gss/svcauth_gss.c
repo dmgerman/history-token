@@ -3268,6 +3268,8 @@ op_star
 id|reject_stat
 op_assign
 id|resv-&gt;iov_base
+op_plus
+id|resv-&gt;iov_len
 suffix:semicolon
 r_int
 id|ret
