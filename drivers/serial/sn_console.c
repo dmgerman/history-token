@@ -45,6 +45,31 @@ DECL|macro|DEVICE_MAJOR
 mdefine_line|#define DEVICE_MAJOR 204
 DECL|macro|DEVICE_MINOR
 mdefine_line|#define DEVICE_MINOR 40
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+DECL|variable|sysrq_serial_str
+r_static
+r_char
+id|sysrq_serial_str
+(braket
+)braket
+op_assign
+l_string|&quot;&bslash;eSYS&quot;
+suffix:semicolon
+DECL|variable|sysrq_serial_ptr
+r_static
+r_char
+op_star
+id|sysrq_serial_ptr
+op_assign
+id|sysrq_serial_str
+suffix:semicolon
+DECL|variable|sysrq_requested
+r_static
+r_int
+r_int
+id|sysrq_requested
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 multiline_comment|/*&n; * Port definition - this kinda drives it all&n; */
 DECL|struct|sn_cons_port
 r_struct
@@ -1191,7 +1216,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/*&n; * Interrupt handling routines.&n; */
-multiline_comment|/**&n; * sn_receive_chars - Grab characters, pass them to tty layer&n; * @port: Port to operate on&n; * @regs: Saved registers (needed by uart_handle_sysrq_char)&n; *&n; * Note: If we&squot;re not registered with the serial core infrastructure yet,&n; * we don&squot;t try to send characters to it...&n; *&n; */
+multiline_comment|/**&n; * sn_receive_chars - Grab characters, pass them to tty layer&n; * @port: Port to operate on&n; * @regs: Saved registers (needed by uart_handle_sysrq_char)&n; * @flags: irq flags&n; *&n; * Note: If we&squot;re not registered with the serial core infrastructure yet,&n; * we don&squot;t try to send characters to it...&n; *&n; */
 r_static
 r_void
 DECL|function|sn_receive_chars
@@ -1207,6 +1232,10 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_int
@@ -1312,24 +1341,113 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SERIAL_SGI_L1_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 r_if
 c_cond
 (paren
-id|uart_handle_sysrq_char
+id|sysrq_requested
+)paren
+(brace
+r_int
+r_int
+id|sysrq_timeout
+op_assign
+id|sysrq_requested
+op_plus
+id|HZ
+op_star
+l_int|5
+suffix:semicolon
+id|sysrq_requested
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ch
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|sysrq_timeout
+)paren
+)paren
+(brace
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|port-&gt;sc_port
+id|port-&gt;sc_port.lock
 comma
+id|flags
+)paren
+suffix:semicolon
+id|handle_sysrq
+c_func
+(paren
 id|ch
 comma
 id|regs
+comma
+l_int|NULL
 )paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|port-&gt;sc_port.lock
+comma
+id|flags
 )paren
+suffix:semicolon
+multiline_comment|/* ignore actual sysrq command char */
 r_continue
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_SERIAL_SGI_L1_CONSOLE &amp;&amp; CONFIG_MAGIC_SYSRQ */
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|ch
+op_eq
+op_star
+id|sysrq_serial_ptr
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+op_increment
+id|sysrq_serial_ptr
+)paren
+)paren
+(brace
+id|sysrq_requested
+op_assign
+id|jiffies
+suffix:semicolon
+id|sysrq_serial_ptr
+op_assign
+id|sysrq_serial_str
+suffix:semicolon
+)brace
+r_continue
+suffix:semicolon
+multiline_comment|/* ignore the whole sysrq string */
+)brace
+r_else
+id|sysrq_serial_ptr
+op_assign
+id|sysrq_serial_str
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 multiline_comment|/* record the character to pass up to the tty layer */
 r_if
 c_cond
@@ -1751,6 +1869,8 @@ c_func
 id|port
 comma
 id|regs
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1892,6 +2012,8 @@ c_func
 id|port
 comma
 l_int|NULL
+comma
+id|flags
 )paren
 suffix:semicolon
 id|sn_transmit_chars
@@ -2150,7 +2272,6 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Kernel console definitions&n; */
-macro_line|#ifdef CONFIG_SERIAL_SGI_L1_CONSOLE
 r_static
 r_void
 id|sn_sal_console_write
@@ -2245,10 +2366,6 @@ comma
 suffix:semicolon
 DECL|macro|SAL_CONSOLE
 mdefine_line|#define SAL_CONSOLE&t;&amp;sal_console
-macro_line|#else
-DECL|macro|SAL_CONSOLE
-mdefine_line|#define SAL_CONSOLE&t;0
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_SERIAL_SGI_L1_CONSOLE */
 DECL|variable|sal_console_uart
 r_static
 r_struct
@@ -2575,7 +2692,6 @@ c_func
 id|sn_sal_module_exit
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_SGI_L1_CONSOLE
 multiline_comment|/**&n; * puts_raw_fixed - sn_sal_console_write helper for adding &bslash;r&squot;s as required&n; * @puts_raw : puts function to do the writing&n; * @s: input string&n; * @count: length&n; *&n; * We need a &bslash;r ahead of every &bslash;n for direct writes through&n; * ia64_sn_console_putb (what sal_puts_raw below actually does).&n; *&n; */
 DECL|function|puts_raw_fixed
 r_static
@@ -3172,5 +3288,4 @@ c_func
 id|sn_sal_serial_console_init
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_SERIAL_SGI_L1_CONSOLE */
 eof
