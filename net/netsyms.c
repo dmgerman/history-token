@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;net/route.h&gt;
 macro_line|#ifdef CONFIG_HIPPI
 macro_line|#include &lt;linux/hippidevice.h&gt;
 macro_line|#endif
@@ -27,7 +26,6 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
-macro_line|#include &lt;linux/igmp.h&gt;
 macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
 macro_line|#include &lt;net/ah.h&gt;
 macro_line|#endif
@@ -174,27 +172,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|in_aton
-)paren
-suffix:semicolon
-DECL|variable|ip_mc_inc_group
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_mc_inc_group
-)paren
-suffix:semicolon
-DECL|variable|ip_mc_dec_group
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_mc_dec_group
-)paren
-suffix:semicolon
-DECL|variable|ip_mc_join_group
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_mc_join_group
 )paren
 suffix:semicolon
 DECL|variable|inet_addr_type
