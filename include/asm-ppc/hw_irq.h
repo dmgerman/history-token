@@ -5,17 +5,7 @@ macro_line|#ifndef _PPC_HW_IRQ_H
 DECL|macro|_PPC_HW_IRQ_H
 mdefine_line|#define _PPC_HW_IRQ_H
 r_extern
-r_int
-r_int
-id|timer_interrupt_intercept
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|do_IRQ_intercept
-suffix:semicolon
-r_extern
-r_int
+r_void
 id|timer_interrupt
 c_func
 (paren
@@ -40,15 +30,13 @@ id|irq
 suffix:semicolon
 DECL|macro|INLINE_IRQS
 mdefine_line|#define INLINE_IRQS
-macro_line|#ifdef INLINE_IRQS
 DECL|macro|mfmsr
 mdefine_line|#define mfmsr()&t;&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfmsr %0&quot; : &quot;=r&quot; (rval)); rval;})
 DECL|macro|mtmsr
 mdefine_line|#define mtmsr(v)&t;asm volatile(&quot;mtmsr %0&quot; : : &quot;r&quot; (v))
-DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(flags)&t;((flags) = mfmsr())
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;mtmsr(flags)
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;((mfmsr() &amp; MSR_EE) == 0)
+macro_line|#ifdef INLINE_IRQS
 DECL|function|local_irq_disable
 r_static
 r_inline
@@ -132,11 +120,11 @@ id|MSR_EE
 )paren
 suffix:semicolon
 )brace
-DECL|function|__do_save_and_cli
+DECL|function|local_irq_save_ptr
 r_static
 r_inline
 r_void
-id|__do_save_and_cli
+id|local_irq_save_ptr
 c_func
 (paren
 r_int
@@ -182,8 +170,12 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags)&t;&t;((flags) = mfmsr())
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)          __do_save_and_cli(&amp;flags)
+mdefine_line|#define local_irq_save(flags)&t;&t;local_irq_save_ptr(&amp;flags)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(flags)&t;mtmsr(flags)
 macro_line|#else
 r_extern
 r_void
@@ -220,19 +212,8 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|local_irq_enable_end
-comma
-id|local_irq_disable_end
-comma
-id|local_irq_restore_end
-comma
-id|local_save_flags_ptr_end
-suffix:semicolon
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(flags) local_save_flags_ptr((unsigned long *)&amp;flags)
+mdefine_line|#define local_save_flags(flags) local_save_flags_ptr(&amp;flags)
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags) ({local_save_flags(flags);local_irq_disable();})
 macro_line|#endif

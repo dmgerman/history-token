@@ -10,14 +10,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|bat_mapin_ram
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|map_page
 c_func
@@ -128,6 +120,8 @@ DECL|macro|flush_HPTE
 mdefine_line|#define flush_HPTE(X, va, pg)&t;_tlbie(va)
 DECL|macro|MMU_init_hw
 mdefine_line|#define MMU_init_hw()&t;&t;do { } while(0)
+DECL|macro|mmu_mapin_ram
+mdefine_line|#define mmu_mapin_ram()&t;&t;(0UL)
 macro_line|#elif defined(CONFIG_4xx)
 DECL|macro|flush_HPTE
 mdefine_line|#define flush_HPTE(X, va, pg)&t;_tlbie(va)
@@ -139,11 +133,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|mmu_mapin_ram
+mdefine_line|#define mmu_mapin_ram()&t;&t;(0UL)
 macro_line|#else
 multiline_comment|/* anything except 4xx or 8xx */
 r_extern
 r_void
 id|MMU_init_hw
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|mmu_mapin_ram
 c_func
 (paren
 r_void

@@ -15,16 +15,6 @@ r_int
 id|__softirq_pending
 suffix:semicolon
 multiline_comment|/* set_bit is used on this */
-DECL|member|__local_irq_count
-r_int
-r_int
-id|__local_irq_count
-suffix:semicolon
-DECL|member|__local_bh_count
-r_int
-r_int
-id|__local_bh_count
-suffix:semicolon
 DECL|member|__syscall_count
 r_int
 r_int
@@ -49,273 +39,91 @@ suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
 DECL|macro|last_jiffy_stamp
 mdefine_line|#define last_jiffy_stamp(cpu) __IRQ_STAT((cpu), __last_jiffy_stamp)
-multiline_comment|/*&n; * Are we in an interrupt context? Either doing bottom half&n; * or hardware interrupt processing?&n; */
-DECL|macro|in_interrupt
-mdefine_line|#define in_interrupt() ({ int __cpu = smp_processor_id(); &bslash;&n;&t;(local_irq_count(__cpu) + local_bh_count(__cpu) != 0); })
+multiline_comment|/*&n; * We put the hardirq and softirq counter into the preemption&n; * counter. The bitmask has the following meaning:&n; *&n; * - bits 0-7 are the preemption count (max preemption depth: 256)&n; * - bits 8-15 are the softirq count (max # of softirqs: 256)&n; * - bits 16-23 are the hardirq count (max # of hardirqs: 256)&n; *&n; * - ( bit 26 is the PREEMPT_ACTIVE flag. )&n; *&n; * PREEMPT_MASK: 0x000000ff&n; * HARDIRQ_MASK: 0x0000ff00&n; * SOFTIRQ_MASK: 0x00ff0000&n; */
+DECL|macro|PREEMPT_BITS
+mdefine_line|#define PREEMPT_BITS&t;8
+DECL|macro|SOFTIRQ_BITS
+mdefine_line|#define SOFTIRQ_BITS&t;8
+DECL|macro|HARDIRQ_BITS
+mdefine_line|#define HARDIRQ_BITS&t;8
+DECL|macro|PREEMPT_SHIFT
+mdefine_line|#define PREEMPT_SHIFT&t;0
+DECL|macro|SOFTIRQ_SHIFT
+mdefine_line|#define SOFTIRQ_SHIFT&t;(PREEMPT_SHIFT + PREEMPT_BITS)
+DECL|macro|HARDIRQ_SHIFT
+mdefine_line|#define HARDIRQ_SHIFT&t;(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
+DECL|macro|__MASK
+mdefine_line|#define __MASK(x)&t;((1UL &lt;&lt; (x))-1)
+DECL|macro|PREEMPT_MASK
+mdefine_line|#define PREEMPT_MASK&t;(__MASK(PREEMPT_BITS) &lt;&lt; PREEMPT_SHIFT)
+DECL|macro|HARDIRQ_MASK
+mdefine_line|#define HARDIRQ_MASK&t;(__MASK(HARDIRQ_BITS) &lt;&lt; HARDIRQ_SHIFT)
+DECL|macro|SOFTIRQ_MASK
+mdefine_line|#define SOFTIRQ_MASK&t;(__MASK(SOFTIRQ_BITS) &lt;&lt; SOFTIRQ_SHIFT)
+DECL|macro|hardirq_count
+mdefine_line|#define hardirq_count()&t;(preempt_count() &amp; HARDIRQ_MASK)
+DECL|macro|softirq_count
+mdefine_line|#define softirq_count()&t;(preempt_count() &amp; SOFTIRQ_MASK)
+DECL|macro|irq_count
+mdefine_line|#define irq_count()&t;(preempt_count() &amp; (HARDIRQ_MASK | SOFTIRQ_MASK))
+DECL|macro|PREEMPT_OFFSET
+mdefine_line|#define PREEMPT_OFFSET&t;(1UL &lt;&lt; PREEMPT_SHIFT)
+DECL|macro|SOFTIRQ_OFFSET
+mdefine_line|#define SOFTIRQ_OFFSET&t;(1UL &lt;&lt; SOFTIRQ_SHIFT)
+DECL|macro|HARDIRQ_OFFSET
+mdefine_line|#define HARDIRQ_OFFSET&t;(1UL &lt;&lt; HARDIRQ_SHIFT)
+multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * space for potentially all IRQ sources in the system&n; * nesting on a single CPU:&n; */
+macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
+macro_line|# error HARDIRQ_BITS is too low!
+macro_line|#endif
+multiline_comment|/*&n; * Are we doing bottom half or hardware interrupt processing?&n; * Are we in a softirq context? Interrupt context?&n; */
 DECL|macro|in_irq
-mdefine_line|#define in_irq() (local_irq_count(smp_processor_id()) != 0)
-macro_line|#ifndef CONFIG_SMP
+mdefine_line|#define in_irq()&t;&t;(hardirq_count())
+DECL|macro|in_softirq
+mdefine_line|#define in_softirq()&t;&t;(softirq_count())
+DECL|macro|in_interrupt
+mdefine_line|#define in_interrupt()&t;&t;(irq_count())
 DECL|macro|hardirq_trylock
-mdefine_line|#define hardirq_trylock(cpu)&t;(local_irq_count(cpu) == 0)
+mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
 DECL|macro|hardirq_endlock
-mdefine_line|#define hardirq_endlock(cpu)&t;do { } while (0)
-DECL|macro|hardirq_enter
-mdefine_line|#define hardirq_enter(cpu)&t;do { preempt_disable(); local_irq_count(cpu)++; } while (0)
-DECL|macro|hardirq_exit
-mdefine_line|#define hardirq_exit(cpu)&t;do { local_irq_count(cpu)--; preempt_enable(); } while (0)
+mdefine_line|#define hardirq_endlock()&t;do { } while (0)
+DECL|macro|irq_enter
+mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
+macro_line|#if CONFIG_PREEMPT
+DECL|macro|IRQ_EXIT_OFFSET
+macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
+macro_line|#else
+DECL|macro|IRQ_EXIT_OFFSET
+macro_line|# define IRQ_EXIT_OFFSET HARDIRQ_OFFSET
+macro_line|#endif
+DECL|macro|irq_exit
+mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;&bslash;&n;&t;&t;do_softirq();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_enable_no_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#ifndef CONFIG_SMP
 DECL|macro|synchronize_irq
-mdefine_line|#define synchronize_irq()&t;do { } while (0)
-DECL|macro|release_irqlock
-mdefine_line|#define release_irqlock(cpu)    do { } while (0)
-macro_line|#else /* CONFIG_SMP */
-macro_line|#include &lt;asm/atomic.h&gt;
-r_extern
-r_int
-r_char
-id|global_irq_holder
-suffix:semicolon
-r_extern
-r_int
-r_volatile
-r_int
-id|global_irq_lock
-suffix:semicolon
-DECL|function|irqs_running
-r_static
-r_inline
-r_int
-id|irqs_running
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|local_irq_count
-c_func
-(paren
-id|i
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|release_irqlock
-r_static
-r_inline
-r_void
-id|release_irqlock
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-multiline_comment|/* if we didn&squot;t own the irq lock, just ignore.. */
-r_if
-c_cond
-(paren
-id|global_irq_holder
-op_eq
-(paren
-r_int
-r_char
-)paren
-id|cpu
-)paren
-(brace
-id|global_irq_holder
-op_assign
-id|NO_PROC_ID
-suffix:semicolon
-id|clear_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|global_irq_lock
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|function|hardirq_enter
-r_static
-r_inline
-r_void
-id|hardirq_enter
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_int
-r_int
-id|loops
-op_assign
-l_int|10000000
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-op_increment
-id|local_irq_count
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|test_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|global_irq_lock
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu
-op_eq
-id|global_irq_holder
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;uh oh, interrupt while we hold global irq lock! (CPU %d)&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-id|xmon
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|loops
-op_decrement
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;do_IRQ waiting for irq lock (holder=%d)&bslash;n&quot;
-comma
-id|global_irq_holder
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-id|xmon
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-)brace
-)brace
-DECL|function|hardirq_exit
-r_static
-r_inline
-r_void
-id|hardirq_exit
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-op_decrement
-id|local_irq_count
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|hardirq_trylock
-r_static
-r_inline
-r_int
-id|hardirq_trylock
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_return
-op_logical_neg
-id|test_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|global_irq_lock
-)paren
-suffix:semicolon
-)brace
-DECL|macro|hardirq_endlock
-mdefine_line|#define hardirq_endlock(cpu)&t;do { } while (0)
+macro_line|# define synchronize_irq(irq)&t;barrier()
+macro_line|#else
 r_extern
 r_void
 id|synchronize_irq
 c_func
 (paren
-r_void
+r_int
+r_int
+id|irq
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
+r_extern
+r_void
+id|show_stack
+c_func
+(paren
+r_int
+r_int
+op_star
+id|sp
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_HARDIRQ_H */
 macro_line|#endif /* __KERNEL__ */
 eof
