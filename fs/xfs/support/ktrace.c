@@ -451,6 +451,10 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|index
 suffix:semicolon
 id|ktrace_entry_t
@@ -466,11 +470,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Grab an entry by pushing the index up to the next one.&n;&t; */
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|wrap_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|index
@@ -489,11 +495,13 @@ id|ktp-&gt;kt_index
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|wrap_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if

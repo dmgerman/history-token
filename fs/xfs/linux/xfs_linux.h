@@ -35,10 +35,6 @@ macro_line|#include &lt;linux/xfs_globals.h&gt;
 macro_line|#include &lt;linux/xfs_fs_subr.h&gt;
 macro_line|#include &lt;linux/xfs_lrw.h&gt;
 macro_line|#include &lt;pagebuf/page_buf.h&gt;
-macro_line|#ifndef STATIC
-DECL|macro|STATIC
-mdefine_line|#define STATIC static
-macro_line|#endif
 multiline_comment|/*&n; * State flag for unwritten extent buffers.&n; *&n; * We need to be able to distinguish between these and delayed&n; * allocate buffers within XFS.  The generic IO path code does&n; * not need to distinguish - we use the BH_Delay flag for both&n; * delalloc and these ondisk-uninitialised buffers.&n; */
 id|BUFFER_FNS
 c_func

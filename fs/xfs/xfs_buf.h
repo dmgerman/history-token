@@ -387,16 +387,8 @@ DECL|macro|xfs_bpin
 mdefine_line|#define xfs_bpin(bp)&t;&t;pagebuf_pin(bp)
 DECL|macro|xfs_bunpin
 mdefine_line|#define xfs_bunpin(bp)&t;&t;pagebuf_unpin(bp)
-macro_line|#ifdef PAGEBUF_TRACE
-DECL|macro|PB_DEFINE_TRACES
-macro_line|# define PB_DEFINE_TRACES
-macro_line|# include &lt;pagebuf/page_buf_trace.h&gt;
 DECL|macro|xfs_buftrace
-macro_line|# define xfs_buftrace(id, bp)&t;PB_TRACE(bp, PB_TRACE_REC(external), (void *)id)
-macro_line|#else
-DECL|macro|xfs_buftrace
-macro_line|# define xfs_buftrace(id, bp)&t;do { } while (0)
-macro_line|#endif
+mdefine_line|#define xfs_buftrace(id, bp)&t;&bslash;&n;&t;    pagebuf_trace(bp, id, NULL, (void *)__builtin_return_address(0))
 DECL|macro|xfs_biodone
 mdefine_line|#define xfs_biodone(pb)&t;&t;    &bslash;&n;&t;    pagebuf_iodone(pb, (pb-&gt;pb_flags &amp; PBF_FS_DATAIOD), 0)
 DECL|macro|xfs_incore

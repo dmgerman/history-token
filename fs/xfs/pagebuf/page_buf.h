@@ -1047,5 +1047,37 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef PAGEBUF_TRACE
+r_extern
+id|ktrace_t
+op_star
+id|pagebuf_trace_buf
+suffix:semicolon
+r_extern
+r_void
+id|pagebuf_trace
+c_func
+(paren
+id|page_buf_t
+op_star
+comma
+multiline_comment|/* buffer being traced&t;&t;*/
+r_char
+op_star
+comma
+multiline_comment|/* description of operation&t;*/
+r_void
+op_star
+comma
+multiline_comment|/* arbitrary diagnostic value&t;*/
+r_void
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* return address&t;&t;*/
+macro_line|#else
+DECL|macro|pagebuf_trace
+macro_line|# define pagebuf_trace(pb, id, ptr, ra)&t;do { } while (0)
+macro_line|#endif
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof
