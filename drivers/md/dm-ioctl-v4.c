@@ -1569,12 +1569,16 @@ id|hc-&gt;md
 suffix:semicolon
 id|nl-&gt;dev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
 id|disk-&gt;major
 comma
 id|disk-&gt;first_minor
+)paren
 )paren
 suffix:semicolon
 id|nl-&gt;next
@@ -1755,12 +1759,16 @@ id|ENXIO
 suffix:semicolon
 id|param-&gt;dev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|MKDEV
 c_func
 (paren
 id|disk-&gt;major
 comma
 id|disk-&gt;first_minor
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Yes, this will be out of date by the time it gets back&n;&t; * to userland, but it is still very useful ofr&n;&t; * debugging.&n;&t; */
@@ -1887,7 +1895,11 @@ c_func
 id|MINOR
 c_func
 (paren
+id|old_decode_dev
+c_func
+(paren
 id|param-&gt;dev
+)paren
 )paren
 comma
 op_amp
@@ -3951,7 +3963,11 @@ id|count
 op_increment
 )braket
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|dd-&gt;bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 )brace
 id|param-&gt;data_size
