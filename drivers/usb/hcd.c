@@ -4232,6 +4232,8 @@ op_assign
 l_int|1024
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return
