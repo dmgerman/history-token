@@ -5826,6 +5826,17 @@ id|this_rq-&gt;nr_running
 op_star
 id|SCHED_LOAD_SCALE
 suffix:semicolon
+multiline_comment|/*&n;&t; * Round up the averaging division if load is increasing. This&n;&t; * prevents us from getting stuck on 9 if the load is 10, for&n;&t; * example.&n;&t; */
+r_if
+c_cond
+(paren
+id|this_load
+OG
+id|old_load
+)paren
+id|old_load
+op_increment
+suffix:semicolon
 id|this_rq-&gt;cpu_load
 op_assign
 (paren
