@@ -2192,7 +2192,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Setup L2/L3 */
 r_if
 c_cond
 (paren
@@ -2200,6 +2199,39 @@ id|cpu_nr
 op_eq
 l_int|0
 )paren
+(brace
+macro_line|#ifdef CONFIG_POWER4
+r_extern
+r_void
+id|g5_phy_disable_cpu1
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* If we didn&squot;t start the second CPU, we must take&n;&t;&t; * it off the bus&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;MacRISC4&quot;
+)paren
+op_logical_and
+id|num_online_cpus
+c_func
+(paren
+)paren
+OL
+l_int|2
+)paren
+id|g5_phy_disable_cpu1
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_POWER4 */
 r_if
 c_cond
 (paren
@@ -2215,6 +2247,7 @@ comma
 l_int|0x349
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|smp_core99_take_timebase
 r_void

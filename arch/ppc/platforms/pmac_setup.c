@@ -1418,6 +1418,12 @@ c_func
 (paren
 l_string|&quot;uni-n&quot;
 )paren
+op_logical_or
+id|find_devices
+c_func
+(paren
+l_string|&quot;u3&quot;
+)paren
 )paren
 id|ppc_md.smp_ops
 op_assign
