@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  arch/um/kernel/elf_aux.c&n; *&n; *  Scan the Elf auxi
 macro_line|#include &lt;elf.h&gt;
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &quot;init.h&quot;
+macro_line|#include &quot;elf_user.h&quot;
 macro_line|#if ELF_CLASS == ELFCLASS32
 DECL|typedef|elf_auxv_t
 r_typedef
