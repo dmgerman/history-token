@@ -1591,7 +1591,7 @@ comma
 r_int
 id|val
 comma
-id|unsinged
+r_int
 r_int
 id|timeout
 )paren
@@ -1768,6 +1768,7 @@ op_assign
 id|timespec_to_jiffies
 c_func
 (paren
+op_amp
 id|t
 )paren
 op_plus
