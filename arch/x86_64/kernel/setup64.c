@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
+macro_line|#include &lt;asm/numa.h&gt;
 DECL|variable|__initdata
 r_char
 id|x86_boot_params
@@ -1382,5 +1383,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+id|numa_add_cpu
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

@@ -233,7 +233,7 @@ id|end
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|numa_initmem_init
 c_func
 (paren

@@ -19,7 +19,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|for_all_nodes
-mdefine_line|#define for_all_nodes(x) for ((x) = 0; (x) &lt; numnodes; (x)++) &bslash;&n;&t;&t;&t;&t;if ((1UL &lt;&lt; (x)) &amp; nodes_present)
+mdefine_line|#define for_all_nodes(x) for ((x) = 0; (x) &lt; numnodes; (x)++) &bslash;&n;&t;&t;&t;&t;if (node_online(x))
 r_extern
 r_int
 id|compute_hash_shift
@@ -31,12 +31,24 @@ op_star
 id|nodes
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|nodes_present
-suffix:semicolon
 DECL|macro|ZONE_ALIGN
 mdefine_line|#define ZONE_ALIGN (1UL &lt;&lt; (MAX_ORDER+PAGE_SHIFT))
+r_extern
+r_void
+id|numa_add_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|numa_init_array
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

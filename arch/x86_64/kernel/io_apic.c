@@ -799,6 +799,7 @@ id|vendor
 r_case
 id|PCI_VENDOR_ID_VIA
 suffix:colon
+macro_line|#ifdef CONFIG_GART_IOMMU
 r_if
 c_cond
 (paren
@@ -826,6 +827,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* FALL THROUGH */
 r_case
 id|PCI_VENDOR_ID_NVIDIA

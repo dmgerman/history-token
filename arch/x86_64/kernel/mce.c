@@ -323,7 +323,7 @@ c_func
 (paren
 l_string|&quot;MISC %Lx &quot;
 comma
-id|m-&gt;addr
+id|m-&gt;misc
 )paren
 suffix:semicolon
 id|printk
@@ -734,7 +734,7 @@ id|MCI_STATUS_ADDRV
 id|rdmsrl
 c_func
 (paren
-id|MSR_IA32_MC0_MISC
+id|MSR_IA32_MC0_ADDR
 op_plus
 id|i
 op_star
