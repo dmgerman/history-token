@@ -3267,23 +3267,6 @@ id|rec_is_dirty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Attempting to write outside the initialized size is a bug. */
-id|BUG_ON
-c_func
-(paren
-(paren
-(paren
-id|block
-op_plus
-l_int|1
-)paren
-op_lshift
-id|bh_size_bits
-)paren
-OG
-id|ni-&gt;initialized_size
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3405,7 +3388,7 @@ suffix:semicolon
 multiline_comment|/* Apply the mst protection fixups. */
 id|kaddr
 op_assign
-id|page_address
+id|kmap
 c_func
 (paren
 id|page
@@ -3735,6 +3718,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3851,6 +3840,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|cleanup_out
 suffix:colon
 multiline_comment|/* Clean the buffers. */
