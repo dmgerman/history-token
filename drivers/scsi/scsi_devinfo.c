@@ -874,6 +874,16 @@ comma
 (brace
 l_string|&quot;Generic&quot;
 comma
+l_string|&quot;USB SD Reader&quot;
+comma
+l_string|&quot;1.00&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
+l_string|&quot;Generic&quot;
+comma
 l_string|&quot;USB Storage-SMC&quot;
 comma
 l_string|&quot;0180&quot;
@@ -1225,6 +1235,16 @@ comma
 id|BLIST_MAX5LUN
 op_or
 id|BLIST_SINGLELUN
+)brace
+comma
+(brace
+l_string|&quot;SanDisk&quot;
+comma
+l_string|&quot;ImageMate CF-SD1&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_FORCELUN
 )brace
 comma
 (brace
