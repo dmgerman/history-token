@@ -2405,10 +2405,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive
-op_eq
-l_int|NULL
-op_logical_or
 (paren
 id|rq
 op_assign
