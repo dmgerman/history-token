@@ -89,9 +89,8 @@ id|resume_file
 l_int|256
 )braket
 op_assign
-l_string|&quot;&quot;
+id|CONFIG_PM_STD_PARTITION
 suffix:semicolon
-multiline_comment|/* For resume= kernel option */
 DECL|variable|resume_device
 r_static
 id|dev_t
