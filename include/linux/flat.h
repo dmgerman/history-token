@@ -1,10 +1,19 @@
-multiline_comment|/* Copyright (C) 1998  Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *                     The Silver Hammer Group, Ltd.&n; * Copyright (C) 2002  David McCullough &lt;davidm@snapgear.com&gt;&n; *&n; * This file provides the definitions and structures needed to&n; * support uClinux flat-format executables.&n; */
+multiline_comment|/*&n; * Copyright (C) 2002-2003  David McCullough &lt;davidm@snapgear.com&gt;&n; * Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *                          The Silver Hammer Group, Ltd.&n; *&n; * This file provides the definitions and structures needed to&n; * support uClinux flat-format executables.&n; */
 macro_line|#ifndef _LINUX_FLAT_H
 DECL|macro|_LINUX_FLAT_H
 mdefine_line|#define _LINUX_FLAT_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/flat.h&gt;
+macro_line|#endif
 DECL|macro|FLAT_VERSION
 mdefine_line|#define&t;FLAT_VERSION&t;&t;&t;0x00000004L
+macro_line|#ifdef CONFIG_BINFMT_SHARED_FLAT
+DECL|macro|MAX_SHARED_LIBS
+mdefine_line|#define&t;MAX_SHARED_LIBS&t;&t;&t;(4)
+macro_line|#else
+DECL|macro|MAX_SHARED_LIBS
+mdefine_line|#define&t;MAX_SHARED_LIBS&t;&t;&t;(1)
+macro_line|#endif
 multiline_comment|/*&n; * To make everything easier to port and manage cross platform&n; * development,  all fields are in network byte order.&n; */
 DECL|struct|flat_hdr
 r_struct
@@ -96,6 +105,9 @@ DECL|macro|FLAT_FLAG_GZIP
 mdefine_line|#define FLAT_FLAG_GZIP   0x0004 /* all but the header is compressed */
 DECL|macro|FLAT_FLAG_GZDATA
 mdefine_line|#define FLAT_FLAG_GZDATA 0x0008 /* only data/relocs are compressed (for XIP) */
+DECL|macro|FLAT_FLAG_KTRACE
+mdefine_line|#define FLAT_FLAG_KTRACE 0x0010 /* output useful kernel trace for debugging */
+macro_line|#ifdef __KERNEL__ /* so systems without linux headers can compile the apps */
 multiline_comment|/*&n; * While it would be nice to keep this header clean,  users of older&n; * tools still need this support in the kernel.  So this section is&n; * purely for compatibility with old tool chains.&n; *&n; * DO NOT make changes or enhancements to the old format please,  just work&n; *        with the format above,  except to fix bugs with old format support.&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|OLD_FLAT_VERSION
@@ -172,5 +184,6 @@ DECL|typedef|flat_v2_reloc_t
 )brace
 id|flat_v2_reloc_t
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_FLAT_H */
 eof
