@@ -55,7 +55,7 @@ DECL|macro|DR_GLOBAL_ENABLE_MASK
 mdefine_line|#define DR_GLOBAL_ENABLE_MASK (0xAA) /* Set global bits for all 4 regs */
 multiline_comment|/* The second byte to the control register has a few special things.&n;   We can slow the instruction pipeline for instructions coming via the&n;   gdt or the ldt if we want to.  I am not sure why this is an advantage */
 DECL|macro|DR_CONTROL_RESERVED
-mdefine_line|#define DR_CONTROL_RESERVED (0xFFFFFFFFFC00) /* Reserved by Intel */
+mdefine_line|#define DR_CONTROL_RESERVED (0xFFFFFFFF0000FC00UL) /* Reserved */
 DECL|macro|DR_LOCAL_SLOWDOWN
 mdefine_line|#define DR_LOCAL_SLOWDOWN (0x100)   /* Local slow the pipeline */
 DECL|macro|DR_GLOBAL_SLOWDOWN

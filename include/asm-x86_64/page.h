@@ -143,10 +143,29 @@ DECL|macro|__pmd
 mdefine_line|#define __pmd(x) ((pmd_t) { (x) } )
 DECL|macro|__pgd
 mdefine_line|#define __pgd(x) ((pgd_t) { (x) } )
-DECL|macro|__level4
-mdefine_line|#define __level4(x) ((level4_t) { (x) } )
+DECL|macro|__pml4
+mdefine_line|#define __pml4(x) ((pml4_t) { (x) } )
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;((pgprot_t) { (x) } )
+r_extern
+r_int
+r_int
+id|vm_stack_flags
+comma
+id|vm_stack_flags32
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|vm_data_default_flags
+comma
+id|vm_data_default_flags32
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|vm_force_exec32
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
@@ -248,8 +267,14 @@ DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_to_kaddr
 mdefine_line|#define pfn_to_kaddr(pfn)      __va((pfn) &lt;&lt; PAGE_SHIFT)
+DECL|macro|__VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define __VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+DECL|macro|__VM_STACK_FLAGS
+mdefine_line|#define __VM_STACK_FLAGS &t;(VM_GROWSDOWN | VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;                                VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
-mdefine_line|#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;                                VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_data_default_flags32 : &bslash;&n;&t;  vm_data_default_flags) 
+DECL|macro|VM_STACK_DEFAULT_FLAGS
+mdefine_line|#define VM_STACK_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_stack_flags32 : vm_stack_flags) 
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _X86_64_PAGE_H */
 eof

@@ -22,6 +22,7 @@ macro_line|#include &lt;asm/user32.h&gt;
 macro_line|#include &lt;asm/sigcontext32.h&gt;
 macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/vsyscall32.h&gt;
 DECL|macro|ptr_to_u32
 mdefine_line|#define ptr_to_u32(x) ((u32)(u64)(x))&t;/* avoid gcc warning */ 
 DECL|macro|DEBUG_SIG
@@ -2170,9 +2171,7 @@ r_void
 op_star
 id|restorer
 op_assign
-id|syscall32_page
-op_plus
-l_int|32
+id|VSYSCALL32_SIGRETURN
 suffix:semicolon
 r_if
 c_cond
@@ -2646,9 +2645,7 @@ r_void
 op_star
 id|restorer
 op_assign
-id|syscall32_page
-op_plus
-l_int|32
+id|VSYSCALL32_RTSIGRETURN
 suffix:semicolon
 r_if
 c_cond

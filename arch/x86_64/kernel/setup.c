@@ -774,6 +774,30 @@ op_amp
 id|from
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;numa=&quot;
+comma
+l_int|5
+)paren
+)paren
+id|numa_setup
+c_func
+(paren
+id|from
+op_plus
+l_int|5
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_GART_IOMMU 
 r_if
 c_cond
@@ -952,9 +976,6 @@ op_star
 id|cmdline_p
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|Dprintk
 c_func
 (paren
@@ -1376,6 +1397,10 @@ op_amp
 id|vram_resource
 )paren
 suffix:semicolon
+(brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* request I/O space for devices used on all i[345]86 PCs */
 r_for
 c_loop
@@ -1402,6 +1427,7 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+)brace
 id|pci_mem_start
 op_assign
 id|IOMAP_START

@@ -4667,7 +4667,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;Setting %d in the phys_id_present_map&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Using IO-APIC %d&bslash;n&quot;
 comma
 id|mp_ioapics
 (braket
