@@ -135,7 +135,7 @@ DECL|variable|saved_command_line
 r_char
 id|saved_command_line
 (braket
-l_int|256
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 DECL|variable|aux_device_present
@@ -2036,7 +2036,7 @@ id|rec-&gt;tag
 r_case
 id|BI_CMD_LINE
 suffix:colon
-id|memcpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
@@ -2047,7 +2047,10 @@ op_star
 )paren
 id|data
 comma
-id|rec-&gt;size
+r_sizeof
+(paren
+id|cmd_line
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -2202,12 +2205,17 @@ id|r7
 )paren
 (brace
 macro_line|#ifdef CONFIG_CMDLINE
-id|strcpy
+id|strlcpy
 c_func
 (paren
 id|cmd_line
 comma
 id|CONFIG_CMDLINE
+comma
+r_sizeof
+(paren
+id|cmd_line
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
@@ -2768,12 +2776,17 @@ r_int
 id|klimit
 suffix:semicolon
 multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
-id|strcpy
+id|strlcpy
 c_func
 (paren
 id|saved_command_line
 comma
 id|cmd_line
+comma
+r_sizeof
+(paren
+id|saved_command_line
+)paren
 )paren
 suffix:semicolon
 op_star
