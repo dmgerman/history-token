@@ -488,7 +488,27 @@ DECL|macro|__NR_ia32_sched_setaffinity
 mdefine_line|#define __NR_ia32_sched_setaffinity&t;241
 DECL|macro|__NR_ia32_sched_getaffinity
 mdefine_line|#define __NR_ia32_sched_getaffinity&t;242
+DECL|macro|__NR_ia32_set_thread_area
+mdefine_line|#define __NR_ia32_set_thread_area   243
+DECL|macro|__NR_ia32_get_thread_area
+mdefine_line|#define __NR_ia32_get_thread_area&t;244
+DECL|macro|__NR_ia32_io_setup
+mdefine_line|#define __NR_ia32_io_setup&t;&t;245
+DECL|macro|__NR_ia32_io_destroy
+mdefine_line|#define __NR_ia32_io_destroy&t;&t;246
+DECL|macro|__NR_ia32_io_getevents
+mdefine_line|#define __NR_ia32_io_getevents&t;247
+DECL|macro|__NR_ia32_io_submit
+mdefine_line|#define __NR_ia32_io_submit&t;&t;248
+DECL|macro|__NR_ia32_io_cancel
+mdefine_line|#define __NR_ia32_io_cancel&t;&t;249
+DECL|macro|__NR_ia32_alloc_hugepages
+mdefine_line|#define __NR_ia32_alloc_hugepages&t;&t;250
+DECL|macro|__NR_ia32_free_hugepages
+mdefine_line|#define __NR_ia32_free_hugepages&t;&t;251
+DECL|macro|__NR_ia32_exit_group
+mdefine_line|#define __NR_ia32_exit_group&t;&t;252
 DECL|macro|IA32_NR_syscalls
-mdefine_line|#define IA32_NR_syscalls 243&t;/* must be &gt; than biggest syscall! */&t;
+mdefine_line|#define IA32_NR_syscalls 260&t;/* must be &gt; than biggest syscall! */&t;
 macro_line|#endif /* _ASM_X86_64_IA32_UNISTD_H_ */
 eof
