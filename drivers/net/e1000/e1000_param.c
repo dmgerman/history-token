@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
 multiline_comment|/* This is the only thing that needs to be changed to adjust the&n; * maximum number of ports that the driver can manage.&n; */
 DECL|macro|E1000_MAX_NIC
@@ -15,7 +15,7 @@ mdefine_line|#define E1000_PARAM_INIT { [0 ... E1000_MAX_NIC] = OPTION_UNSET }
 multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|E1000_PARAM
 mdefine_line|#define E1000_PARAM(X, S) &bslash;&n;static const int __devinitdata X[E1000_MAX_NIC + 1] = E1000_PARAM_INIT; &bslash;&n;MODULE_PARM(X, &quot;1-&quot; __MODULE_STRING(E1000_MAX_NIC) &quot;i&quot;); &bslash;&n;MODULE_PARM_DESC(X, S);
-multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544&n; *&n; * Default Value: 256&n; */
+multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544 and newer&n; *&n; * Default Value: 256&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -24,7 +24,7 @@ comma
 l_string|&quot;Number of transmit descriptors&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544&n; *&n; * Default Value: 256&n; */
+multiline_comment|/* Receive Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544 and newer&n; *&n; * Default Value: 256&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -489,7 +489,7 @@ op_star
 id|adapter
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * e1000_check_options - Range Checking for Command Line Parameters&n; * @adapter: board private structure&n; *&n; * This routine checks all command line paramters for valid user&n; * input.  If an invalid value is given, or if no user specified&n; * value exists, a default value is used.  The final value is stored&n; * in a variable in the adapter structure.&n; **/
+multiline_comment|/**&n; * e1000_check_options - Range Checking for Command Line Parameters&n; * @adapter: board private structure&n; *&n; * This routine checks all command line parameters for valid user&n; * input.  If an invalid value is given, or if no user specified&n; * value exists, a default value is used.  The final value is stored&n; * in a variable in the adapter structure.&n; **/
 r_void
 id|__devinit
 DECL|function|e1000_check_options
