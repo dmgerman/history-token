@@ -7,6 +7,17 @@ DECL|struct|msdos_inode_info
 r_struct
 id|msdos_inode_info
 (brace
+multiline_comment|/* cache of lastest accessed cluster */
+DECL|member|file_cluster
+r_int
+id|file_cluster
+suffix:semicolon
+multiline_comment|/* cluster number in the file. */
+DECL|member|disk_cluster
+r_int
+id|disk_cluster
+suffix:semicolon
+multiline_comment|/* cluster number on disk. */
 DECL|member|mmu_private
 id|loff_t
 id|mmu_private
