@@ -11,6 +11,20 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
 multiline_comment|/* HCI Core */
+DECL|variable|hci_alloc_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_alloc_dev
+)paren
+suffix:semicolon
+DECL|variable|hci_free_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_free_dev
+)paren
+suffix:semicolon
 DECL|variable|hci_register_dev
 id|EXPORT_SYMBOL
 c_func

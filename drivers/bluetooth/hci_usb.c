@@ -572,7 +572,7 @@ c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 id|size
@@ -705,7 +705,7 @@ c_func
 (paren
 l_string|&quot;%s intr rx submit failed urb %p err %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -878,7 +878,7 @@ c_func
 (paren
 l_string|&quot;%s urb %p&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 )paren
@@ -904,7 +904,7 @@ c_func
 (paren
 l_string|&quot;%s bulk rx submit failed urb %p err %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -1098,7 +1098,7 @@ c_func
 (paren
 l_string|&quot;%s urb %p&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 )paren
@@ -1124,7 +1124,7 @@ c_func
 (paren
 l_string|&quot;%s isoc rx submit failed urb %p err %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -1393,7 +1393,7 @@ c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_for
@@ -1450,7 +1450,7 @@ c_func
 (paren
 l_string|&quot;%s unlinking _urb %p type %d urb %p&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|_urb
 comma
@@ -1509,7 +1509,7 @@ c_func
 (paren
 l_string|&quot;%s freeing _urb %p type %d urb %p&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|_urb
 comma
@@ -1697,7 +1697,7 @@ c_func
 (paren
 l_string|&quot;%s urb %p type %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -1739,7 +1739,7 @@ c_func
 (paren
 l_string|&quot;%s tx submit failed urb %p type %d err %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|urb
 comma
@@ -1964,7 +1964,7 @@ c_func
 (paren
 l_string|&quot;%s skb %p len %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|skb
 comma
@@ -2098,7 +2098,7 @@ c_func
 (paren
 l_string|&quot;%s skb %p len %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|skb
 comma
@@ -2193,7 +2193,7 @@ c_func
 (paren
 l_string|&quot;%s skb %p len %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|skb
 comma
@@ -2291,7 +2291,7 @@ c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_do
@@ -2761,7 +2761,7 @@ c_func
 (paren
 l_string|&quot;%s type %d data %p count %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|type
 comma
@@ -2770,7 +2770,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|husb-&gt;hdev.stat.byte_rx
+id|husb-&gt;hdev-&gt;stat.byte_rx
 op_add_assign
 id|count
 suffix:semicolon
@@ -2954,7 +2954,7 @@ c_func
 (paren
 l_string|&quot;%s no memory for the packet&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -2968,7 +2968,6 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
 id|husb-&gt;hdev
 suffix:semicolon
 id|skb-&gt;pkt_type
@@ -3131,7 +3130,6 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|husb-&gt;hdev
 suffix:semicolon
 r_int
@@ -3317,7 +3315,7 @@ c_func
 (paren
 l_string|&quot;%s corrupted packet: type %d count %d&quot;
 comma
-id|husb-&gt;hdev.name
+id|husb-&gt;hdev-&gt;name
 comma
 id|_urb-&gt;type
 comma
@@ -3416,7 +3414,6 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|husb-&gt;hdev
 suffix:semicolon
 id|BT_DBG
@@ -4282,8 +4279,31 @@ suffix:semicolon
 multiline_comment|/* Initialize and register HCI device */
 id|hdev
 op_assign
-op_amp
+id|hci_alloc_dev
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+(brace
+id|BT_ERR
+c_func
+(paren
+l_string|&quot;Can&squot;t allocate HCI device&quot;
+)paren
+suffix:semicolon
+r_goto
+id|probe_error
+suffix:semicolon
+)brace
 id|husb-&gt;hdev
+op_assign
+id|hdev
 suffix:semicolon
 id|hdev-&gt;type
 op_assign
@@ -4344,6 +4364,12 @@ c_func
 l_string|&quot;Can&squot;t register HCI device&quot;
 )paren
 suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
 r_goto
 id|probe_error
 suffix:semicolon
@@ -4402,7 +4428,6 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|husb-&gt;hdev
 suffix:semicolon
 r_if
@@ -4466,6 +4491,12 @@ c_func
 l_string|&quot;Can&squot;t unregister HCI device %s&quot;
 comma
 id|hdev-&gt;name
+)paren
+suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
 )paren
 suffix:semicolon
 )brace
