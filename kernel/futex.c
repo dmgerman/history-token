@@ -3,14 +3,14 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/hash.h&gt;
+macro_line|#include &lt;linux/jhash.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|macro|FUTEX_HASHBITS
 mdefine_line|#define FUTEX_HASHBITS 8
-multiline_comment|/*&n; * Futexes are matched on equal values of this key.&n; * The key type depends on whether it&squot;s a shared or private mapping.&n; */
+multiline_comment|/*&n; * Futexes are matched on equal values of this key.&n; * The key type depends on whether it&squot;s a shared or private mapping.&n; * Don&squot;t rearrange members without looking at hash_futex().&n; */
 DECL|union|futex_key
 r_union
 id|futex_key
@@ -128,7 +128,6 @@ id|chain
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* The key for the hash is the address + index + offset within page */
 DECL|variable|futex_queues
 r_static
 r_struct
@@ -151,7 +150,6 @@ suffix:semicolon
 multiline_comment|/*&n; * We hash on the keys returned from get_futex_key (see below).&n; */
 DECL|function|hash_futex
 r_static
-r_inline
 r_struct
 id|futex_hash_bucket
 op_star
@@ -164,24 +162,50 @@ op_star
 id|key
 )paren
 (brace
+id|u32
+id|hash
+op_assign
+id|jhash2
+c_func
+(paren
+(paren
+id|u32
+op_star
+)paren
+op_amp
+id|key-&gt;both.word
+comma
+(paren
+r_sizeof
+(paren
+id|key-&gt;both.word
+)paren
+op_plus
+r_sizeof
+(paren
+id|key-&gt;both.ptr
+)paren
+)paren
+op_div
+l_int|4
+comma
+id|key-&gt;both.offset
+)paren
+suffix:semicolon
 r_return
 op_amp
 id|futex_queues
 (braket
-id|hash_long
-c_func
+id|hash
+op_amp
 (paren
-id|key-&gt;both.word
-op_plus
 (paren
-r_int
-r_int
-)paren
-id|key-&gt;both.ptr
-op_plus
-id|key-&gt;both.offset
-comma
+l_int|1
+op_lshift
 id|FUTEX_HASHBITS
+)paren
+op_minus
+l_int|1
 )paren
 )braket
 suffix:semicolon
@@ -1304,8 +1328,6 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|try_again
-suffix:colon
 id|init_waitqueue_head
 c_func
 (paren
@@ -1413,7 +1435,7 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * There might have been scheduling since the queue_me(), as we&n;&t; * cannot hold a spinlock across the get_user() in case it&n;&t; * faults.  So we cannot just set TASK_INTERRUPTIBLE state when&n;&t; * queueing ourselves into the futex hash.  This code thus has to&n;&t; * rely on the futex_wake() code doing a wakeup after removing&n;&t; * the waiter from the list.&n;&t; */
+multiline_comment|/*&n;&t; * There might have been scheduling since the queue_me(), as we&n;&t; * cannot hold a spinlock across the get_user() in case it&n;&t; * faults, and we cannot just set TASK_INTERRUPTIBLE state when&n;&t; * queueing ourselves into the futex hash.  This code thus has to&n;&t; * rely on the futex_wake() code removing us from hash when it&n;&t; * wakes us up.&n;&t; */
 id|add_wait_queue
 c_func
 (paren
@@ -1501,22 +1523,17 @@ id|TASK_RUNNING
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE: we don&squot;t remove ourselves from the waitqueue because&n;&t; * we are the only user of it.&n;&t; */
-multiline_comment|/*&n;&t; * Were we woken or interrupted for a valid reason?&n;&t; */
-id|ret
-op_assign
+multiline_comment|/* If we were woken (and unqueued), we succeeded, whatever. */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|unqueue_me
 c_func
 (paren
 op_amp
 id|q
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-l_int|0
 )paren
 r_return
 l_int|0
@@ -1532,26 +1549,25 @@ r_return
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* A spurious wakeup should never happen. */
+id|WARN_ON
+c_func
 (paren
+op_logical_neg
 id|signal_pending
 c_func
 (paren
 id|current
 )paren
 )paren
+suffix:semicolon
 r_return
 op_minus
 id|EINTR
 suffix:semicolon
-multiline_comment|/*&n;&t; * No, it was a spurious wakeup.  Try again.  Should never happen. :)&n;&t; */
-r_goto
-id|try_again
-suffix:semicolon
 id|out_unqueue
 suffix:colon
-multiline_comment|/*&n;&t; * Were we unqueued anyway?&n;&t; */
+multiline_comment|/* If we were woken (and unqueued), we succeeded, whatever. */
 r_if
 c_cond
 (paren
