@@ -11595,7 +11595,7 @@ id|console_refcount
 suffix:semicolon
 DECL|function|con_init
 r_static
-r_void
+r_int
 id|__init
 id|con_init
 c_func
@@ -11642,6 +11642,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|init_timer
@@ -11861,6 +11862,9 @@ id|vt_console_driver
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|con_init
 id|console_initcall
