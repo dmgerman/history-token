@@ -6341,6 +6341,12 @@ op_assign
 id|ntfs_writepage
 comma
 multiline_comment|/* Write dirty page to disk. */
+dot
+id|set_page_dirty
+op_assign
+id|__set_page_dirty_nobuffers
+comma
+multiline_comment|/* Set the page dirty&n;&t;&t;&t;&t;&t;&t;   without touching the buffers&n;&t;&t;&t;&t;&t;&t;   belonging to the page. */
 macro_line|#endif /* NTFS_RW */
 )brace
 suffix:semicolon
