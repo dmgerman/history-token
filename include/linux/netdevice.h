@@ -3561,6 +3561,20 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_char
+op_star
+id|net_sysctl_strdup
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_DEV_H */
 eof
