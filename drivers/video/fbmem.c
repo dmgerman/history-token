@@ -197,7 +197,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|clgenfb_init
+id|cirrusfb_init
 c_func
 (paren
 r_void
@@ -205,7 +205,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|clgenfb_setup
+id|cirrusfb_setup
 c_func
 (paren
 r_char
@@ -1148,13 +1148,13 @@ id|pm3fb_setup
 )brace
 comma
 macro_line|#endif           
-macro_line|#ifdef CONFIG_FB_CLGEN
+macro_line|#ifdef CONFIG_FB_CIRRUS
 (brace
-l_string|&quot;clgenfb&quot;
+l_string|&quot;cirrusfb&quot;
 comma
-id|clgenfb_init
+id|cirrusfb_init
 comma
-id|clgenfb_setup
+id|cirrusfb_setup
 )brace
 comma
 macro_line|#endif
