@@ -79,9 +79,6 @@ comma
 id|xlog_in_core_t
 op_star
 id|iclog
-comma
-id|uint
-id|flags
 )paren
 suffix:semicolon
 id|STATIC
@@ -4939,9 +4936,6 @@ comma
 id|xlog_in_core_t
 op_star
 id|iclog
-comma
-id|uint
-id|flags
 )paren
 (brace
 id|xfs_caddr_t
@@ -4985,27 +4979,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|flags
-op_ne
-l_int|0
-op_logical_and
-(paren
-id|flags
-op_amp
-id|XFS_LOG_SYNC
-)paren
-)paren
-id|xlog_panic
-c_func
-(paren
-l_string|&quot;xlog_sync: illegal flag&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Round out the log write size */
 r_if
 c_cond
@@ -5310,29 +5283,6 @@ id|iclog
 )paren
 suffix:semicolon
 multiline_comment|/* save for later */
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|XFS_LOG_SYNC
-)paren
-(brace
-id|XFS_BUF_BUSY
-c_func
-(paren
-id|bp
-)paren
-suffix:semicolon
-id|XFS_BUF_HOLD
-c_func
-(paren
-id|bp
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|XFS_BUF_BUSY
 c_func
 (paren
@@ -5345,7 +5295,6 @@ c_func
 id|bp
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Do a disk write cache flush for the log block.&n;&t; * This is a bit of a sledgehammer, it would be better&n;&t; * to use a tag barrier here that just prevents reordering.&n;&t; * It may not be needed to flush the first split block in the log wrap&n;&t; * case, but do it anyways to be safe -AK&n;&t; */
 r_if
 c_cond
@@ -6900,7 +6849,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* don&squot;t need to free */
-multiline_comment|/*&n;&t;&t;&t; * If the number of ops in this iclog indicate it just&n;&t;&t;&t; * contains the dummy transaction, we can&n;&t;&t;&t; * change state into IDLE (the second time around).&n;&t;&t;&t; * Otherwise we should change the state into NEED a dummy.&n;&t;&t;&t; * We don&squot;t need to cover the dummy.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If the number of ops in this iclog indicate it just&n;&t;&t;&t; * contains the dummy transaction, we can&n;&t;&t;&t; * change state into IDLE (the second time around).&n;&t;&t;&t; * Otherwise we should change the state into&n;&t;&t;&t; * NEED a dummy.&n;&t;&t;&t; * We don&squot;t need to cover the dummy.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6927,8 +6876,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* we have two dirty iclogs so start over */
-multiline_comment|/* This could also be num of ops indicates&n;&t;&t;&t;&t;&t;&t;this is not the dummy going out. */
+multiline_comment|/*&n;&t;&t;&t;&t; * We have two dirty iclogs so start over&n;&t;&t;&t;&t; * This could also be num of ops indicates&n;&t;&t;&t;&t; * this is not the dummy going out.&n;&t;&t;&t;&t; */
 id|changed
 op_assign
 l_int|2
@@ -7994,17 +7942,6 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-id|xlog_state_do_callback
-c_func
-(paren
-id|log
-comma
-l_int|0
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* also cleans log */
 id|restart
 suffix:colon
 id|s
@@ -9915,8 +9852,6 @@ c_func
 id|log
 comma
 id|iclog
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -10097,8 +10032,6 @@ c_func
 id|log
 comma
 id|iclog
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_case
