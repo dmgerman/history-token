@@ -2,13 +2,10 @@ multiline_comment|/**&n; * &bslash;file drm_drawable.h &n; * IOCTLs for drawable
 multiline_comment|/*&n; * Created: Tue Feb  2 08:37:54 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 multiline_comment|/** No-op. */
-DECL|function|adddraw
+DECL|function|drm_adddraw
 r_int
-id|DRM
+id|drm_adddraw
 c_func
-(paren
-id|adddraw
-)paren
 (paren
 r_struct
 id|inode
@@ -76,13 +73,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/** No-op. */
-DECL|function|rmdraw
+DECL|function|drm_rmdraw
 r_int
-id|DRM
+id|drm_rmdraw
 c_func
-(paren
-id|rmdraw
-)paren
 (paren
 r_struct
 id|inode

@@ -6,13 +6,10 @@ multiline_comment|/*************************************************************
 multiline_comment|/** &bslash;name Context bitmap support */
 multiline_comment|/*@{*/
 multiline_comment|/**&n; * Free a handle from the context bitmap.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param ctx_handle context handle.&n; *&n; * Clears the bit specified by &bslash;p ctx_handle in drm_device::ctx_bitmap and the entry&n; * in drm_device::context_sareas, while holding the drm_device::struct_sem&n; * lock.&n; */
-DECL|function|ctxbitmap_free
+DECL|function|drm_ctxbitmap_free
 r_void
-id|DRM
+id|drm_ctxbitmap_free
 c_func
-(paren
-id|ctxbitmap_free
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -95,13 +92,10 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/** &n; * Context bitmap allocation.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;return (non-negative) context handle on success or a negative number on failure.&n; *&n; * Find the first zero bit in drm_device::ctx_bitmap and (re)allocates&n; * drm_device::context_sareas to accommodate the new entry while holding the&n; * drm_device::struct_sem lock.&n; */
-DECL|function|ctxbitmap_next
+DECL|function|drm_ctxbitmap_next
 r_int
-id|DRM
+id|drm_ctxbitmap_next
 c_func
-(paren
-id|ctxbitmap_next
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -197,11 +191,8 @@ id|ctx_sareas
 suffix:semicolon
 id|ctx_sareas
 op_assign
-id|DRM
+id|drm_realloc
 c_func
-(paren
-id|realloc
-)paren
 (paren
 id|dev-&gt;context_sareas
 comma
@@ -272,11 +263,8 @@ r_else
 multiline_comment|/* max_context == 1 at this point */
 id|dev-&gt;context_sareas
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 id|dev-&gt;max_context
 op_star
@@ -349,13 +337,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Context bitmap initialization.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Allocates and initialize drm_device::ctx_bitmap and drm_device::context_sareas, while holding&n; * the drm_device::struct_sem lock.&n; */
-DECL|function|ctxbitmap_init
+DECL|function|drm_ctxbitmap_init
 r_int
-id|DRM
+id|drm_ctxbitmap_init
 c_func
-(paren
-id|ctxbitmap_init
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -382,11 +367,8 @@ r_int
 r_int
 op_star
 )paren
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 id|PAGE_SIZE
 comma
@@ -460,11 +442,8 @@ op_increment
 (brace
 id|temp
 op_assign
-id|DRM
+id|drm_ctxbitmap_next
 c_func
-(paren
-id|ctxbitmap_next
-)paren
 (paren
 id|dev
 )paren
@@ -483,13 +462,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Context bitmap cleanup.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Frees drm_device::ctx_bitmap and drm_device::context_sareas, while holding&n; * the drm_device::struct_sem lock.&n; */
-DECL|function|ctxbitmap_cleanup
+DECL|function|drm_ctxbitmap_cleanup
 r_void
-id|DRM
+id|drm_ctxbitmap_cleanup
 c_func
-(paren
-id|ctxbitmap_cleanup
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -509,11 +485,8 @@ c_cond
 id|dev-&gt;context_sareas
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dev-&gt;context_sareas
 comma
@@ -529,11 +502,8 @@ id|DRM_MEM_MAPS
 )paren
 suffix:semicolon
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 (paren
 r_void
@@ -559,13 +529,10 @@ multiline_comment|/*************************************************************
 multiline_comment|/** &bslash;name Per Context SAREA Support */
 multiline_comment|/*@{*/
 multiline_comment|/**&n; * Get per-context SAREA.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx_priv_map structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Gets the map from drm_device::context_sareas with the handle specified and&n; * returns its handle.&n; */
-DECL|function|getsareactx
+DECL|function|drm_getsareactx
 r_int
-id|DRM
+id|drm_getsareactx
 c_func
-(paren
-id|getsareactx
-)paren
 (paren
 r_struct
 id|inode
@@ -716,13 +683,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Set per-context SAREA.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx_priv_map structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Searches the mapping specified in &bslash;p arg and update the entry in&n; * drm_device::context_sareas with it.&n; */
-DECL|function|setsareactx
+DECL|function|drm_setsareactx
 r_int
-id|DRM
+id|drm_setsareactx
 c_func
-(paren
-id|setsareactx
-)paren
 (paren
 r_struct
 id|inode
@@ -918,13 +882,10 @@ multiline_comment|/*************************************************************
 multiline_comment|/** &bslash;name The actual DRM context handling routines */
 multiline_comment|/*@{*/
 multiline_comment|/**&n; * Switch context.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param old old context handle.&n; * &bslash;param new new context handle.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Attempt to set drm_device::context_flag.&n; */
-DECL|function|context_switch
+DECL|function|drm_context_switch
 r_int
-id|DRM
+id|drm_context_switch
 c_func
-(paren
-id|context_switch
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -997,13 +958,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Complete context switch.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param new new context handle.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Updates drm_device::last_context and drm_device::last_switch. Verifies the&n; * hardware lock is held, clears the drm_device::context_flag and wakes up&n; * drm_device::context_wait.&n; */
-DECL|function|context_switch_complete
+DECL|function|drm_context_switch_complete
 r_int
-id|DRM
+id|drm_context_switch_complete
 c_func
-(paren
-id|context_switch_complete
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -1062,13 +1020,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Reserve contexts.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx_res structure.&n; * &bslash;return zero on success or a negative number on failure.&n; */
-DECL|function|resctx
+DECL|function|drm_resctx
 r_int
-id|DRM
+id|drm_resctx
 c_func
-(paren
-id|resctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1229,13 +1184,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Add context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Get a new handle for the context and copy to userspace.&n; */
-DECL|function|addctx
+DECL|function|drm_addctx
 r_int
-id|DRM
+id|drm_addctx
 c_func
-(paren
-id|addctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1310,11 +1262,8 @@ id|EFAULT
 suffix:semicolon
 id|ctx.handle
 op_assign
-id|DRM
+id|drm_ctxbitmap_next
 c_func
-(paren
-id|ctxbitmap_next
-)paren
 (paren
 id|dev
 )paren
@@ -1330,11 +1279,8 @@ id|DRM_KERNEL_CONTEXT
 multiline_comment|/* Skip kernel&squot;s context and get a new one. */
 id|ctx.handle
 op_assign
-id|DRM
+id|drm_ctxbitmap_next
 c_func
-(paren
-id|ctxbitmap_next
-)paren
 (paren
 id|dev
 )paren
@@ -1380,10 +1326,10 @@ id|DRM_KERNEL_CONTEXT
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl.context_ctor
+id|dev-&gt;driver-&gt;context_ctor
 )paren
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|context_ctor
 c_func
 (paren
@@ -1395,11 +1341,8 @@ suffix:semicolon
 )brace
 id|ctx_entry
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -1495,13 +1438,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|modctx
+DECL|function|drm_modctx
 r_int
-id|DRM
+id|drm_modctx
 c_func
-(paren
-id|modctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1528,13 +1468,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Get context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; */
-DECL|function|getctx
+DECL|function|drm_getctx
 r_int
-id|DRM
+id|drm_getctx
 c_func
-(paren
-id|getctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1622,13 +1559,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Switch context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls context_switch().&n; */
-DECL|function|switchctx
+DECL|function|drm_switchctx
 r_int
-id|DRM
+id|drm_switchctx
 c_func
-(paren
-id|switchctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1699,11 +1633,8 @@ id|ctx.handle
 )paren
 suffix:semicolon
 r_return
-id|DRM
+id|drm_context_switch
 c_func
-(paren
-id|context_switch
-)paren
 (paren
 id|dev
 comma
@@ -1714,13 +1645,10 @@ id|ctx.handle
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * New context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls context_switch_complete().&n; */
-DECL|function|newctx
+DECL|function|drm_newctx
 r_int
-id|DRM
+id|drm_newctx
 c_func
-(paren
-id|newctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1790,11 +1718,8 @@ comma
 id|ctx.handle
 )paren
 suffix:semicolon
-id|DRM
+id|drm_context_switch_complete
 c_func
-(paren
-id|context_switch_complete
-)paren
 (paren
 id|dev
 comma
@@ -1806,13 +1731,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Remove context.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument pointing to a drm_ctx structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * If not the special kernel context, calls ctxbitmap_free() to free the specified context.&n; */
-DECL|function|rmctx
+DECL|function|drm_rmctx
 r_int
-id|DRM
+id|drm_rmctx
 c_func
-(paren
-id|rmctx
-)paren
 (paren
 r_struct
 id|inode
@@ -1908,10 +1830,10 @@ id|DRM_KERNEL_CONTEXT
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl.context_dtor
+id|dev-&gt;driver-&gt;context_dtor
 )paren
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|context_dtor
 c_func
 (paren
@@ -1920,11 +1842,8 @@ comma
 id|ctx.handle
 )paren
 suffix:semicolon
-id|DRM
+id|drm_ctxbitmap_free
 c_func
-(paren
-id|ctxbitmap_free
-)paren
 (paren
 id|dev
 comma
@@ -1986,11 +1905,8 @@ op_amp
 id|pos-&gt;head
 )paren
 suffix:semicolon
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|pos
 comma

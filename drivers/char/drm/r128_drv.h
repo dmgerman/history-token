@@ -1,7 +1,22 @@
-multiline_comment|/* r128_drv.h -- Private header for r128 driver -*- linux-c -*-&n; * Created: Mon Dec 13 09:51:11 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Michel D&#xfffd;nzer &lt;daenzerm@student.ethz.ch&gt;&n; */
+multiline_comment|/* r128_drv.h -- Private header for r128 driver -*- linux-c -*-&n; * Created: Mon Dec 13 09:51:11 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Michel D&#xfffd;zer &lt;daenzerm@student.ethz.ch&gt;&n; */
 macro_line|#ifndef __R128_DRV_H__
 DECL|macro|__R128_DRV_H__
 mdefine_line|#define __R128_DRV_H__
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Gareth Hughes, VA Linux Systems Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;r128&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;ATI Rage 128&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20030725&quot;
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;2
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;5
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|GET_RING_HEAD
 mdefine_line|#define GET_RING_HEAD(dev_priv)&t;&t;R128_READ( R128_PM4_BUFFER_DL_RPTR )
 DECL|struct|drm_r128_freelist
@@ -535,6 +550,29 @@ c_func
 id|drm_device_t
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|r128_driver_pretakedown
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|r128_driver_prerelease
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+id|DRMFILE
+id|filp
 )paren
 suffix:semicolon
 multiline_comment|/* Register definitions, register access macros and drmAddMap constants&n; * for Rage 128 kernel driver.&n; */

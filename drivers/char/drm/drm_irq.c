@@ -3,13 +3,10 @@ multiline_comment|/*&n; * Created: Fri Mar 19 14:30:16 1999 by faith@valinux.com
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 multiline_comment|/**&n; * Get interrupt from bus id.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_irq_busid structure.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * Finds the PCI device with the specified bus id and gets its IRQ number.&n; * This IOCTL is deprecated, and will now return EINVAL for any busid not equal&n; * to that of the device that this DRM instance attached to.&n; */
-DECL|function|irq_by_busid
+DECL|function|drm_irq_by_busid
 r_int
-id|DRM
+id|drm_irq_by_busid
 c_func
-(paren
-id|irq_by_busid
-)paren
 (paren
 r_struct
 id|inode
@@ -168,14 +165,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Install IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param irq IRQ number.&n; *&n; * Initializes the IRQ related data, and setups drm_device::vbl_queue. Installs the handler, calling the driver&n; * &bslash;c DRM(driver_irq_preinstall)() and &bslash;c DRM(driver_irq_postinstall)() functions&n; * before and after the installation.&n; */
-DECL|function|irq_install
+multiline_comment|/**&n; * Install IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param irq IRQ number.&n; *&n; * Initializes the IRQ related data, and setups drm_device::vbl_queue. Installs the handler, calling the driver&n; * &bslash;c drm_driver_irq_preinstall() and &bslash;c drm_driver_irq_postinstall() functions&n; * before and after the installation.&n; */
+DECL|function|drm_irq_install
 r_int
-id|DRM
+id|drm_irq_install
 c_func
-(paren
-id|irq_install
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -323,8 +317,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Before installing handler */
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|irq_preinstall
 c_func
 (paren
@@ -354,7 +348,7 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-id|dev-&gt;fn_tbl.irq_handler
+id|dev-&gt;driver-&gt;irq_handler
 comma
 id|sh_flags
 comma
@@ -394,8 +388,8 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* After installing handler */
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|irq_postinstall
 c_func
 (paren
@@ -406,14 +400,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Uninstall the IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Calls the driver&squot;s &bslash;c DRM(driver_irq_uninstall)() function, and stops the irq.&n; */
-DECL|function|irq_uninstall
+multiline_comment|/**&n; * Uninstall the IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Calls the driver&squot;s &bslash;c drm_driver_irq_uninstall() function, and stops the irq.&n; */
+DECL|function|drm_irq_uninstall
 r_int
-id|DRM
+id|drm_irq_uninstall
 c_func
-(paren
-id|irq_uninstall
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -481,8 +472,8 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|irq_uninstall
 c_func
 (paren
@@ -501,14 +492,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * IRQ control ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_control structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls irq_install() or irq_uninstall() according to &bslash;p arg.&n; */
-DECL|function|control
-r_int
-id|DRM
+DECL|variable|drm_irq_uninstall
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|control
+id|drm_irq_uninstall
 )paren
+suffix:semicolon
+multiline_comment|/**&n; * IRQ control ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_control structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls irq_install() or irq_uninstall() according to &bslash;p arg.&n; */
+DECL|function|drm_control
+r_int
+id|drm_control
+c_func
 (paren
 r_struct
 id|inode
@@ -617,11 +612,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|DRM
+id|drm_irq_install
 c_func
-(paren
-id|irq_install
-)paren
 (paren
 id|dev
 )paren
@@ -645,11 +637,8 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|DRM
+id|drm_irq_uninstall
 c_func
-(paren
-id|irq_uninstall
-)paren
 (paren
 id|dev
 )paren
@@ -663,13 +652,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * Wait for VBLANK.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param data user argument, pointing to a drm_wait_vblank structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the IRQ is installed. &n; *&n; * If a signal is requested checks if this task has already scheduled the same signal&n; * for the same vblank sequence number - nothing to be done in&n; * that case. If the number of tasks waiting for the interrupt exceeds 100 the&n; * function fails. Otherwise adds a new entry to drm_device::vbl_sigs for this&n; * task.&n; *&n; * If a signal is not requested, then calls vblank_wait().&n; */
-DECL|function|wait_vblank
+DECL|function|drm_wait_vblank
 r_int
-id|DRM
+id|drm_wait_vblank
 c_func
-(paren
-id|wait_vblank
-)paren
 (paren
 id|DRM_IOCTL_ARGS
 )paren
@@ -914,13 +900,15 @@ op_logical_neg
 (paren
 id|vbl_sig
 op_assign
-id|DRM_MALLOC
+id|drm_alloc
 c_func
 (paren
 r_sizeof
 (paren
 id|drm_vbl_sig_t
 )paren
+comma
+id|DRM_MEM_DRIVER
 )paren
 )paren
 )paren
@@ -998,12 +986,12 @@ r_else
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl.vblank_wait
+id|dev-&gt;driver-&gt;vblank_wait
 )paren
 id|ret
 op_assign
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|vblank_wait
 c_func
 (paren
@@ -1049,13 +1037,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Send the VBLANK signals.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Sends a signal for each task in drm_device::vbl_sigs and empties the list.&n; *&n; * If a signal is not requested, then calls vblank_wait().&n; */
-DECL|function|vbl_send_signals
+DECL|function|drm_vbl_send_signals
 r_void
-id|DRM
+id|drm_vbl_send_signals
 c_func
-(paren
-id|vbl_send_signals
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -1158,7 +1143,7 @@ c_func
 id|list
 )paren
 suffix:semicolon
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 id|vbl_sig
@@ -1168,6 +1153,8 @@ r_sizeof
 op_star
 id|vbl_sig
 )paren
+comma
+id|DRM_MEM_DRIVER
 )paren
 suffix:semicolon
 id|dev-&gt;vbl_pending
@@ -1185,4 +1172,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|drm_vbl_send_signals
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drm_vbl_send_signals
+)paren
+suffix:semicolon
 eof

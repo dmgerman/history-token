@@ -1,6 +1,5 @@
 multiline_comment|/* i915_mem.c -- Simple agp/fb memory manager for i915 -*- linux-c -*-&n; */
 multiline_comment|/**************************************************************************&n; * &n; * Copyright 2003 Tungsten Graphics, Inc., Cedar Park, Texas.&n; * All Rights Reserved.&n; * &n; **************************************************************************/
-macro_line|#include &quot;i915.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;i915_drm.h&quot;
@@ -262,7 +261,7 @@ id|mem_block
 op_star
 id|newblock
 op_assign
-id|DRM_MALLOC
+id|drm_alloc
 c_func
 (paren
 r_sizeof
@@ -270,6 +269,8 @@ r_sizeof
 op_star
 id|newblock
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 r_if
@@ -338,7 +339,7 @@ id|mem_block
 op_star
 id|newblock
 op_assign
-id|DRM_MALLOC
+id|drm_alloc
 c_func
 (paren
 r_sizeof
@@ -346,6 +347,8 @@ r_sizeof
 op_star
 id|newblock
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 r_if
@@ -600,7 +603,7 @@ id|p-&gt;next-&gt;prev
 op_assign
 id|p
 suffix:semicolon
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 id|q
@@ -610,6 +613,8 @@ r_sizeof
 op_star
 id|q
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 )brace
@@ -640,7 +645,7 @@ id|q-&gt;next-&gt;prev
 op_assign
 id|q
 suffix:semicolon
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 id|p
@@ -650,6 +655,8 @@ r_sizeof
 op_star
 id|q
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 )brace
@@ -679,7 +686,7 @@ id|mem_block
 op_star
 id|blocks
 op_assign
-id|DRM_MALLOC
+id|drm_alloc
 c_func
 (paren
 r_sizeof
@@ -687,6 +694,8 @@ r_sizeof
 op_star
 id|blocks
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 r_if
@@ -702,7 +711,7 @@ suffix:semicolon
 op_star
 id|heap
 op_assign
-id|DRM_MALLOC
+id|drm_alloc
 c_func
 (paren
 r_sizeof
@@ -711,6 +720,8 @@ op_star
 op_star
 id|heap
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 r_if
@@ -721,7 +732,7 @@ op_star
 id|heap
 )paren
 (brace
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 id|blocks
@@ -731,6 +742,8 @@ r_sizeof
 op_star
 id|blocks
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 r_return
@@ -929,7 +942,7 @@ id|p-&gt;next-&gt;prev
 op_assign
 id|p
 suffix:semicolon
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 id|q
@@ -939,6 +952,8 @@ r_sizeof
 op_star
 id|q
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 )brace
@@ -1001,7 +1016,7 @@ id|p
 op_assign
 id|p-&gt;next
 suffix:semicolon
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 id|q
@@ -1011,10 +1026,12 @@ r_sizeof
 op_star
 id|q
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 )brace
-id|DRM_FREE
+id|drm_free
 c_func
 (paren
 op_star
@@ -1026,6 +1043,8 @@ op_star
 op_star
 id|heap
 )paren
+comma
+id|DRM_MEM_BUFLISTS
 )paren
 suffix:semicolon
 op_star

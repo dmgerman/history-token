@@ -1,15 +1,13 @@
 multiline_comment|/**&n; * &bslash;file drm_ioctl.h &n; * IOCTL processing for DRM&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 multiline_comment|/*&n; * Created: Fri Jan  8 09:01:26 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm_core.h&quot;
 macro_line|#include &quot;linux/pci.h&quot;
 multiline_comment|/**&n; * Get the bus id.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_unique structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Copies the bus id from drm_device::unique into user space.&n; */
-DECL|function|getunique
+DECL|function|drm_getunique
 r_int
-id|DRM
+id|drm_getunique
 c_func
-(paren
-id|getunique
-)paren
 (paren
 r_struct
 id|inode
@@ -134,13 +132,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Set the bus id.&n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_unique structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Copies the bus id from userspace into drm_device::unique, and verifies that&n; * it matches the device this DRM is attached to (EINVAL otherwise).  Deprecated&n; * in interface version 1.1 and will return EBUSY when setversion has requested&n; * version 1.1 or greater.&n; */
-DECL|function|setunique
+DECL|function|drm_setunique
 r_int
-id|DRM
+id|drm_setunique
 c_func
-(paren
-id|setunique
-)paren
 (paren
 r_struct
 id|inode
@@ -244,11 +239,8 @@ id|u.unique_len
 suffix:semicolon
 id|dev-&gt;unique
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 id|u.unique_len
 op_plus
@@ -295,16 +287,13 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|dev-&gt;devname
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 id|strlen
 c_func
 (paren
-id|dev-&gt;name
+id|dev-&gt;driver-&gt;pci_driver.name
 )paren
 op_plus
 id|strlen
@@ -335,7 +324,7 @@ id|dev-&gt;devname
 comma
 l_string|&quot;%s@%s&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;driver-&gt;pci_driver.name
 comma
 id|dev-&gt;unique
 )paren
@@ -421,12 +410,9 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|set_busid
-id|DRM
+DECL|function|drm_set_busid
+id|drm_set_busid
 c_func
-(paren
-id|set_busid
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -449,11 +435,8 @@ l_int|20
 suffix:semicolon
 id|dev-&gt;unique
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 id|dev-&gt;unique_len
 op_plus
@@ -492,16 +475,13 @@ id|dev-&gt;pci_func
 suffix:semicolon
 id|dev-&gt;devname
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 id|strlen
 c_func
 (paren
-id|dev-&gt;name
+id|dev-&gt;driver-&gt;pci_driver.name
 )paren
 op_plus
 id|dev-&gt;unique_len
@@ -528,7 +508,7 @@ id|dev-&gt;devname
 comma
 l_string|&quot;%s@%s&quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;driver-&gt;pci_driver.name
 comma
 id|dev-&gt;unique
 )paren
@@ -538,13 +518,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Get a mapping information.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_map structure.&n; * &n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Searches for the mapping with the specified offset and copies its information&n; * into userspace&n; */
-DECL|function|getmap
+DECL|function|drm_getmap
 r_int
-id|DRM
+id|drm_getmap
 c_func
-(paren
-id|getmap
-)paren
 (paren
 r_struct
 id|inode
@@ -780,13 +757,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Get client information.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_client structure.&n; * &n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Searches for the client with the specified index and copies its information&n; * into userspace&n; */
-DECL|function|getclient
+DECL|function|drm_getclient
 r_int
-id|DRM
+id|drm_getclient
 c_func
-(paren
-id|getclient
-)paren
 (paren
 r_struct
 id|inode
@@ -978,13 +952,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/** &n; * Get statistics information. &n; * &n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_stats structure.&n; * &n; * &bslash;return zero on success or a negative number on failure.&n; */
-DECL|function|getstats
+DECL|function|drm_getstats
 r_int
-id|DRM
+id|drm_getstats
 c_func
-(paren
-id|getstats
-)paren
 (paren
 r_struct
 id|inode
@@ -1157,17 +1128,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|DRM_IF_MAJOR
-mdefine_line|#define DRM_IF_MAJOR&t;1
-DECL|macro|DRM_IF_MINOR
-mdefine_line|#define DRM_IF_MINOR&t;2
-DECL|function|setversion
+DECL|function|drm_setversion
 r_int
-id|DRM
+id|drm_setversion
 c_func
-(paren
-id|setversion
-)paren
 (paren
 id|DRM_IOCTL_ARGS
 )paren
@@ -1289,11 +1253,8 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Version 1.1 includes tying of DRM to specific device&n;&t;&t;&t; */
-id|DRM
+id|drm_set_busid
 c_func
-(paren
-id|set_busid
-)paren
 (paren
 id|dev
 )paren
@@ -1326,10 +1287,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;fn_tbl.set_version
+id|dev-&gt;driver-&gt;set_version
 )paren
-id|dev-&gt;fn_tbl
-dot
+id|dev-&gt;driver
+op_member_access_from_pointer
 id|set_version
 c_func
 (paren
@@ -1340,6 +1301,41 @@ id|sv
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/** No-op ioctl. */
+DECL|function|drm_noop
+r_int
+id|drm_noop
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+id|DRM_DEBUG
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

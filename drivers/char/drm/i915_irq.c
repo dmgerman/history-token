@@ -1,6 +1,5 @@
 multiline_comment|/* i915_dma.c -- DMA support for the I915 -*- linux-c -*-&n; */
 multiline_comment|/**************************************************************************&n; * &n; * Copyright 2003 Tungsten Graphics, Inc., Cedar Park, Texas.&n; * All Rights Reserved.&n; * &n; **************************************************************************/
-macro_line|#include &quot;i915.h&quot;
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;i915_drm.h&quot;
@@ -308,31 +307,14 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|_DRM_LOCK_IS_HELD
+id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
-id|dev-&gt;lock.hw_lock-&gt;lock
-)paren
-)paren
-(brace
-id|DRM_ERROR
-c_func
-(paren
-l_string|&quot;i915_irq_emit called without lock held&bslash;n&quot;
+id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
-r_return
-id|DRM_ERR
-c_func
-(paren
-id|EINVAL
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -2,6 +2,22 @@ multiline_comment|/* i810_drv.h -- Private header for the Matrox g200/g400 drive
 macro_line|#ifndef _I810_DRV_H_
 DECL|macro|_I810_DRV_H_
 mdefine_line|#define _I810_DRV_H_
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;VA Linux Systems Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;i810&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel i810&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20030605&quot;
+multiline_comment|/* Interface history&n; *&n; * 1.1   - XFree86 4.1&n; * 1.2   - XvMC interfaces&n; *       - XFree86 4.2&n; * 1.2.1 - Disable copying code (leave stub ioctls for backwards compatibility)&n; *       - Remove requirement for interrupt (leave stubs again)&n; * 1.3   - Add page flipping.&n; * 1.4   - fix DRM interface&n; */
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;4
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|struct|drm_i810_buf_priv
 r_typedef
 r_struct
@@ -530,6 +546,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|i810_dma_vertex
 c_func
@@ -553,6 +570,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|i810_swap_bufs
 c_func
@@ -576,6 +594,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|i810_clear_bufs
 c_func
@@ -599,6 +618,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|i810_flip_bufs
 c_func
@@ -620,6 +640,41 @@ comma
 r_int
 r_int
 id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|i810_driver_dma_quiescent
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i810_driver_release
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_struct
+id|file
+op_star
+id|filp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|i810_driver_pretakedown
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 DECL|macro|I810_BASE

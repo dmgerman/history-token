@@ -2,13 +2,10 @@ multiline_comment|/**&n; * &bslash;file drm_dma.h &n; * DMA IOCTL and function s
 multiline_comment|/*&n; * Created: Fri Mar 19 14:30:16 1999 by faith@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 multiline_comment|/**&n; * Initialize the DMA data.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;return zero on success or a negative value on failure.&n; *&n; * Allocate and initialize a drm_device_dma structure.&n; */
-DECL|function|dma_setup
+DECL|function|drm_dma_setup
 r_int
-id|DRM
+id|drm_dma_setup
 c_func
-(paren
-id|dma_setup
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -20,11 +17,8 @@ id|i
 suffix:semicolon
 id|dev-&gt;dma
 op_assign
-id|DRM
+id|drm_alloc
 c_func
-(paren
-id|alloc
-)paren
 (paren
 r_sizeof
 (paren
@@ -98,13 +92,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Cleanup the DMA resources.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Free all pages associated with DMA buffers, the buffers and pages lists, and&n; * finally the the drm_device::dma structure itself.&n; */
-DECL|function|dma_takedown
+DECL|function|drm_dma_takedown
 r_void
-id|DRM
+id|drm_dma_takedown
 c_func
-(paren
-id|dma_takedown
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -214,11 +205,8 @@ id|j
 )braket
 )paren
 (brace
-id|DRM
+id|drm_free_pages
 c_func
-(paren
-id|free_pages
-)paren
 (paren
 id|dma-&gt;bufs
 (braket
@@ -242,11 +230,8 @@ id|DRM_MEM_DMA
 suffix:semicolon
 )brace
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dma-&gt;bufs
 (braket
@@ -324,11 +309,8 @@ dot
 id|dev_private
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dma-&gt;bufs
 (braket
@@ -359,11 +341,8 @@ id|DRM_MEM_BUFS
 suffix:semicolon
 )brace
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dma-&gt;bufs
 (braket
@@ -401,11 +380,8 @@ c_cond
 id|dma-&gt;buflist
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dma-&gt;buflist
 comma
@@ -427,11 +403,8 @@ c_cond
 id|dma-&gt;pagelist
 )paren
 (brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dma-&gt;pagelist
 comma
@@ -447,11 +420,8 @@ id|DRM_MEM_PAGES
 )paren
 suffix:semicolon
 )brace
-id|DRM
+id|drm_free
 c_func
-(paren
-id|free
-)paren
 (paren
 id|dev-&gt;dma
 comma
@@ -470,13 +440,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Free a buffer.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param buf buffer to free.&n; * &n; * Resets the fields of &bslash;p buf.&n; */
-DECL|function|free_buffer
+DECL|function|drm_free_buffer
 r_void
-id|DRM
+id|drm_free_buffer
 c_func
-(paren
-id|free_buffer
-)paren
 (paren
 id|drm_device_t
 op_star
@@ -540,13 +507,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * Reclaim the buffers.&n; *&n; * &bslash;param filp file pointer.&n; *&n; * Frees each buffer associated with &bslash;p filp not already on the hardware.&n; */
-DECL|function|core_reclaim_buffers
+DECL|function|drm_core_reclaim_buffers
 r_void
-id|DRM
+id|drm_core_reclaim_buffers
 c_func
-(paren
-id|core_reclaim_buffers
-)paren
 (paren
 r_struct
 id|file
@@ -625,11 +589,8 @@ id|list
 r_case
 id|DRM_LIST_NONE
 suffix:colon
-id|DRM
+id|drm_free_buffer
 c_func
-(paren
-id|free_buffer
-)paren
 (paren
 id|dev
 comma
@@ -664,4 +625,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|drm_core_reclaim_buffers
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|drm_core_reclaim_buffers
+)paren
+suffix:semicolon
 eof

@@ -2,6 +2,21 @@ multiline_comment|/* mga_drv.h -- Private header for the Matrox G200/G400 driver
 macro_line|#ifndef __MGA_DRV_H__
 DECL|macro|__MGA_DRV_H__
 mdefine_line|#define __MGA_DRV_H__
+multiline_comment|/* General customization:&n; */
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Gareth Hughes, VA Linux Systems Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;mga&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;Matrox G200/G400&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20021029&quot;
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;3
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;1
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|struct|drm_mga_primary_buffer
 r_typedef
 r_struct
@@ -279,6 +294,26 @@ id|mga_dma_buffers
 c_func
 (paren
 id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mga_driver_pretakedown
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mga_driver_dma_quiescent
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_extern

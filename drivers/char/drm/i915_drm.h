@@ -189,30 +189,54 @@ mdefine_line|#define I915_BOX_TEXTURE_LOAD  0x8
 DECL|macro|I915_BOX_LOST_CONTEXT
 mdefine_line|#define I915_BOX_LOST_CONTEXT  0x10
 multiline_comment|/* I915 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_I915_INIT
+mdefine_line|#define DRM_I915_INIT&t;&t;0x00
+DECL|macro|DRM_I915_FLUSH
+mdefine_line|#define DRM_I915_FLUSH&t;&t;0x01
+DECL|macro|DRM_I915_FLIP
+mdefine_line|#define DRM_I915_FLIP&t;&t;0x02
+DECL|macro|DRM_I915_BATCHBUFFER
+mdefine_line|#define DRM_I915_BATCHBUFFER&t;0x03
+DECL|macro|DRM_I915_IRQ_EMIT
+mdefine_line|#define DRM_I915_IRQ_EMIT&t;0x04
+DECL|macro|DRM_I915_IRQ_WAIT
+mdefine_line|#define DRM_I915_IRQ_WAIT&t;0x05
+DECL|macro|DRM_I915_GETPARAM
+mdefine_line|#define DRM_I915_GETPARAM&t;0x06
+DECL|macro|DRM_I915_SETPARAM
+mdefine_line|#define DRM_I915_SETPARAM&t;0x07
+DECL|macro|DRM_I915_ALLOC
+mdefine_line|#define DRM_I915_ALLOC&t;&t;0x08
+DECL|macro|DRM_I915_FREE
+mdefine_line|#define DRM_I915_FREE&t;&t;0x09
+DECL|macro|DRM_I915_INIT_HEAP
+mdefine_line|#define DRM_I915_INIT_HEAP&t;0x0a
+DECL|macro|DRM_I915_CMDBUFFER
+mdefine_line|#define DRM_I915_CMDBUFFER&t;0x0b
 DECL|macro|DRM_IOCTL_I915_INIT
-mdefine_line|#define DRM_IOCTL_I915_INIT&t;&t;DRM_IOW( 0x40, drm_i915_init_t)
+mdefine_line|#define DRM_IOCTL_I915_INIT&t;&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I915_INIT, drm_i915_init_t)
 DECL|macro|DRM_IOCTL_I915_FLUSH
-mdefine_line|#define DRM_IOCTL_I915_FLUSH&t;&t;DRM_IO ( 0x41)
+mdefine_line|#define DRM_IOCTL_I915_FLUSH&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_I915_FLUSH)
 DECL|macro|DRM_IOCTL_I915_FLIP
-mdefine_line|#define DRM_IOCTL_I915_FLIP&t;&t;DRM_IO ( 0x42)
+mdefine_line|#define DRM_IOCTL_I915_FLIP&t;&t;DRM_IO ( DRM_COMMAND_BASE + DRM_I915_FLIP)
 DECL|macro|DRM_IOCTL_I915_BATCHBUFFER
-mdefine_line|#define DRM_IOCTL_I915_BATCHBUFFER&t;DRM_IOW( 0x43, drm_i915_batchbuffer_t)
+mdefine_line|#define DRM_IOCTL_I915_BATCHBUFFER&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I915_BATCHBUFFER, drm_i915_batchbuffer_t)
 DECL|macro|DRM_IOCTL_I915_IRQ_EMIT
-mdefine_line|#define DRM_IOCTL_I915_IRQ_EMIT         DRM_IOWR(0x44, drm_i915_irq_emit_t)
+mdefine_line|#define DRM_IOCTL_I915_IRQ_EMIT         DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_IRQ_EMIT, drm_i915_irq_emit_t)
 DECL|macro|DRM_IOCTL_I915_IRQ_WAIT
-mdefine_line|#define DRM_IOCTL_I915_IRQ_WAIT         DRM_IOW( 0x45, drm_i915_irq_wait_t)
+mdefine_line|#define DRM_IOCTL_I915_IRQ_WAIT         DRM_IOW( DRM_COMMAND_BASE + DRM_I915_IRQ_WAIT, drm_i915_irq_wait_t)
 DECL|macro|DRM_IOCTL_I915_GETPARAM
-mdefine_line|#define DRM_IOCTL_I915_GETPARAM         DRM_IOWR(0x46, drm_i915_getparam_t)
+mdefine_line|#define DRM_IOCTL_I915_GETPARAM         DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GETPARAM, drm_i915_getparam_t)
 DECL|macro|DRM_IOCTL_I915_SETPARAM
-mdefine_line|#define DRM_IOCTL_I915_SETPARAM         DRM_IOW( 0x47, drm_i915_setparam_t)
+mdefine_line|#define DRM_IOCTL_I915_SETPARAM         DRM_IOW( DRM_COMMAND_BASE + DRM_I915_SETPARAM, drm_i915_setparam_t)
 DECL|macro|DRM_IOCTL_I915_ALLOC
-mdefine_line|#define DRM_IOCTL_I915_ALLOC            DRM_IOWR(0x48, drm_i915_mem_alloc_t)
+mdefine_line|#define DRM_IOCTL_I915_ALLOC            DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_ALLOC, drm_i915_mem_alloc_t)
 DECL|macro|DRM_IOCTL_I915_FREE
-mdefine_line|#define DRM_IOCTL_I915_FREE             DRM_IOW( 0x49, drm_i915_mem_free_t)
+mdefine_line|#define DRM_IOCTL_I915_FREE             DRM_IOW( DRM_COMMAND_BASE + DRM_I915_FREE, drm_i915_mem_free_t)
 DECL|macro|DRM_IOCTL_I915_INIT_HEAP
-mdefine_line|#define DRM_IOCTL_I915_INIT_HEAP        DRM_IOW( 0x4a, drm_i915_mem_init_heap_t)
+mdefine_line|#define DRM_IOCTL_I915_INIT_HEAP        DRM_IOW( DRM_COMMAND_BASE + DRM_I915_INIT_HEAP, drm_i915_mem_init_heap_t)
 DECL|macro|DRM_IOCTL_I915_CMDBUFFER
-mdefine_line|#define DRM_IOCTL_I915_CMDBUFFER&t;DRM_IOW( 0x4b, drm_i915_cmdbuffer_t)
+mdefine_line|#define DRM_IOCTL_I915_CMDBUFFER&t;DRM_IOW( DRM_COMMAND_BASE + DRM_I915_CMDBUFFER, drm_i915_cmdbuffer_t)
 multiline_comment|/* Allow drivers to submit batchbuffers directly to hardware, relying&n; * on the security mechanisms provided by hardware.&n; */
 DECL|struct|_drm_i915_batchbuffer
 r_typedef
