@@ -56,6 +56,7 @@ op_star
 id|bus_addr
 comma
 r_uint8
+id|__iomem
 op_star
 op_star
 id|maddr
@@ -1352,6 +1353,7 @@ op_star
 id|bus_addr
 comma
 r_uint8
+id|__iomem
 op_star
 op_star
 id|maddr
@@ -1544,6 +1546,7 @@ id|u_long
 id|base
 suffix:semicolon
 r_uint8
+id|__iomem
 op_star
 id|maddr
 suffix:semicolon
