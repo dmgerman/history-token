@@ -2381,9 +2381,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Lock is now held by client, or has been rejected.&n;&t;&t;&t; * In both cases, the block should be removed. */
-id|file-&gt;f_count
-op_increment
-suffix:semicolon
 id|up
 c_func
 (paren
