@@ -244,6 +244,12 @@ id|PCI_NO_ACPI_ROUTING
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|acpi_prts.count
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -265,6 +271,15 @@ suffix:semicolon
 id|pci_lookup_irq
 op_assign
 id|acpi_lookup_irq
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: Invalid ACPI-PCI IRQ routing table&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 r_return
