@@ -56,11 +56,6 @@ id|hiddev_list
 op_star
 id|list
 suffix:semicolon
-DECL|member|intf
-r_struct
-id|usb_interface
-id|intf
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|hiddev_list
@@ -837,8 +832,7 @@ id|hiddev
 id|usb_deregister_dev
 c_func
 (paren
-op_amp
-id|hiddev-&gt;intf
+id|hiddev-&gt;hid-&gt;intf
 comma
 op_amp
 id|hiddev_class
@@ -3603,8 +3597,7 @@ op_assign
 id|usb_register_dev
 c_func
 (paren
-op_amp
-id|hiddev-&gt;intf
+id|hid-&gt;intf
 comma
 op_amp
 id|hiddev_class
@@ -3642,11 +3635,11 @@ id|hiddev-&gt;wait
 suffix:semicolon
 id|hiddev-&gt;minor
 op_assign
-id|hiddev-&gt;intf.minor
+id|hid-&gt;intf-&gt;minor
 suffix:semicolon
 id|hiddev_table
 (braket
-id|hiddev-&gt;intf.minor
+id|hid-&gt;intf-&gt;minor
 op_minus
 id|HIDDEV_MINOR_BASE
 )braket
@@ -3663,7 +3656,7 @@ l_int|1
 suffix:semicolon
 id|hid-&gt;minor
 op_assign
-id|hiddev-&gt;intf.minor
+id|hid-&gt;intf-&gt;minor
 suffix:semicolon
 id|hid-&gt;hiddev
 op_assign
