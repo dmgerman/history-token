@@ -595,14 +595,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If there are blocks left over at the end, set up the command&n;&t; * to queue the remainder of them.&n;&t; */
 r_if
 c_cond
@@ -618,14 +610,6 @@ id|sectors
 )paren
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -658,6 +642,14 @@ id|req-&gt;rq_dev
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -667,7 +659,6 @@ c_func
 id|req
 )paren
 )paren
-(brace
 id|blk_queue_end_tag
 c_func
 (paren
@@ -676,7 +667,6 @@ comma
 id|req
 )paren
 suffix:semicolon
-)brace
 id|end_that_request_last
 c_func
 (paren
