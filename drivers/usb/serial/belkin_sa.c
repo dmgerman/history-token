@@ -468,6 +468,8 @@ id|i
 suffix:semicolon
 id|dbg
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -535,8 +537,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -658,8 +661,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; port %d&quot;
 comma
 id|port-&gt;number
 )paren

@@ -432,8 +432,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -476,8 +477,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s - Out of memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - Out of memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -756,8 +758,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -824,8 +827,9 @@ suffix:semicolon
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed doing control urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed doing control urb, error %d&quot;
 comma
 id|result
 )paren
@@ -843,8 +847,9 @@ suffix:semicolon
 id|err
 c_func
 (paren
+l_string|&quot;%s - Out of memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - Out of memory&quot;
 )paren
 suffix:semicolon
 id|error
@@ -914,8 +919,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1041,8 +1047,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1057,8 +1064,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1073,8 +1081,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1203,8 +1212,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1255,8 +1265,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1391,8 +1402,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - we&squot;re stuffed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - we&squot;re stuffed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1466,8 +1478,9 @@ l_int|NULL
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - we&squot;re stuffed&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - we&squot;re stuffed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1601,8 +1614,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1693,8 +1707,9 @@ multiline_comment|/* Should never happen */
 id|err
 c_func
 (paren
+l_string|&quot;%s - flushing while urb is active !&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - flushing while urb is active !&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1912,8 +1927,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1927,8 +1943,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1989,8 +2006,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -2061,8 +2079,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - freelen %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - freelen %d&quot;
 comma
 id|priv-&gt;free_len
 )paren
@@ -2100,8 +2119,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - queuelen %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - queuelen %d&quot;
 comma
 id|priv-&gt;queue_len
 )paren
@@ -2252,6 +2272,8 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2280,7 +2302,10 @@ id|serial
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon

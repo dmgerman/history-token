@@ -425,8 +425,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -490,8 +491,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -536,8 +538,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -639,8 +642,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -734,9 +738,11 @@ l_int|NULL
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s - no more free urbs&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - no more free urbs&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -771,8 +777,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s no more kernel memory...&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; no more kernel memory...&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -873,8 +880,9 @@ id|status
 id|err
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(write bulk) failed with status = %d&quot;
 comma
 id|status
 )paren
@@ -935,8 +943,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -996,8 +1005,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - returns %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returns %d&quot;
 comma
 id|room
 )paren
@@ -1034,8 +1044,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1093,9 +1104,11 @@ id|flags
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
+l_string|&quot;%s - returns %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returns %d&quot;
 comma
 id|chars
 )paren
@@ -1144,8 +1157,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1159,8 +1173,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1255,8 +1270,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1271,8 +1287,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1287,8 +1304,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1417,8 +1435,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1440,8 +1459,9 @@ id|port
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1469,8 +1489,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1497,8 +1518,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1520,14 +1542,17 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - Set config to 1&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - Set config to 1&quot;
 )paren
 suffix:semicolon
 id|usb_set_configuration
@@ -1555,6 +1580,8 @@ id|serial
 (brace
 id|dbg
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1586,8 +1613,9 @@ id|arg
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d, cmd 0x%.4x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d, cmd 0x%.4x&quot;
 comma
 id|port-&gt;number
 comma
@@ -1618,8 +1646,9 @@ id|old_termios
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1641,8 +1670,9 @@ id|port-&gt;tty-&gt;termios
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - no tty structures&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - no tty structures&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1847,9 +1877,11 @@ id|urb-&gt;transfer_buffer
 )paren
 (brace
 id|err
+c_func
 (paren
+l_string|&quot;%s - out of memory for urb buffers.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - out of memory for urb buffers.&quot;
 )paren
 suffix:semicolon
 r_continue

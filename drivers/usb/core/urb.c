@@ -534,6 +534,10 @@ op_assign
 id|USB_ASYNC_UNLINK
 suffix:semicolon
 singleline_comment|// affects later unlinks
+id|allowed
+op_or_assign
+id|URB_NO_DMA_MAP
+suffix:semicolon
 r_switch
 c_cond
 (paren

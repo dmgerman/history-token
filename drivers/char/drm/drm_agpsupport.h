@@ -1465,7 +1465,7 @@ l_string|&quot;Intel i815&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020415
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x02040f /* KERNEL_VERSION(2,4,15) */
 r_case
 id|INTEL_I820
 suffix:colon
@@ -1485,7 +1485,7 @@ l_string|&quot;Intel i840&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020415
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x02040f /* KERNEL_VERSION(2,4,15) */
 r_case
 id|INTEL_I845
 suffix:colon

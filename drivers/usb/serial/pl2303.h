@@ -21,4 +21,8 @@ DECL|macro|ITEGNO_VENDOR_ID
 mdefine_line|#define ITEGNO_VENDOR_ID&t;0x0eba
 DECL|macro|ITEGNO_PRODUCT_ID
 mdefine_line|#define ITEGNO_PRODUCT_ID&t;0x1080
+DECL|macro|MA620_VENDOR_ID
+mdefine_line|#define MA620_VENDOR_ID&t;&t;0x0df7
+DECL|macro|MA620_PRODUCT_ID
+mdefine_line|#define MA620_PRODUCT_ID&t;0x0620
 eof
