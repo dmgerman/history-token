@@ -377,7 +377,7 @@ op_eq
 id|SNDRV_PCM_STREAM_PLAYBACK
 )paren
 r_return
-id|rate_preg_tables
+id|rate_reg_tables
 (braket
 id|dbl
 )braket
