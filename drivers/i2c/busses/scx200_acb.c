@@ -1724,6 +1724,12 @@ op_assign
 op_amp
 id|scx200_acb_algorithm
 suffix:semicolon
+id|adapter
+op_member_access_from_pointer
+r_class
+op_assign
+id|I2C_CLASS_HWMON
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
