@@ -319,6 +319,7 @@ id|THIS_MODULE
 suffix:semicolon
 )brace
 DECL|function|snd_remove_proc_entry
+r_static
 r_void
 id|snd_remove_proc_entry
 c_func
@@ -2252,6 +2253,7 @@ comma
 suffix:semicolon
 multiline_comment|/**&n; * snd_create_proc_entry - create a procfs entry&n; * @name: the name of the proc file&n; * @mode: the file permission bits, S_Ixxx&n; * @parent: the parent proc-directory entry&n; *&n; * Creates a new proc file entry with the given name and permission&n; * on the given directory.&n; *&n; * Returns the pointer of new instance or NULL on failure.&n; */
 DECL|function|snd_create_proc_entry
+r_static
 r_struct
 id|proc_dir_entry
 op_star

@@ -1966,6 +1966,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
 DECL|function|snd_mixer_oss_ioctl
+r_static
 r_int
 id|snd_mixer_oss_ioctl
 c_func

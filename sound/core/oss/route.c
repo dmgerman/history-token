@@ -1305,6 +1305,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|route_src_channels_mask
+r_static
 r_int
 id|route_src_channels_mask
 c_func
@@ -1446,6 +1447,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|route_dst_channels_mask
+r_static
 r_int
 id|route_dst_channels_mask
 c_func

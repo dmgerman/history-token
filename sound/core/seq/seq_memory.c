@@ -778,6 +778,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * allocate an event cell.&n; */
 DECL|function|snd_seq_cell_alloc
+r_static
 r_int
 id|snd_seq_cell_alloc
 c_func

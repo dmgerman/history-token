@@ -32,6 +32,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|output_buffer_size
+r_static
 r_int
 id|output_buffer_size
 op_assign
@@ -56,6 +57,7 @@ l_string|&quot;Output buffer size in bytes.&quot;
 )paren
 suffix:semicolon
 DECL|variable|input_buffer_size
+r_static
 r_int
 id|input_buffer_size
 op_assign
@@ -1306,6 +1308,7 @@ id|cinfo
 suffix:semicolon
 )brace
 multiline_comment|/* register new midi synth port */
+r_static
 r_int
 DECL|function|snd_seq_midisynth_register_port
 id|snd_seq_midisynth_register_port
@@ -2172,6 +2175,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* release midi synth port */
+r_static
 r_int
 DECL|function|snd_seq_midisynth_unregister_port
 id|snd_seq_midisynth_unregister_port

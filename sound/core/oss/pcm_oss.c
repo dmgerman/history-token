@@ -265,6 +265,7 @@ id|fs
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_oss_plugin_clear
+r_static
 r_int
 id|snd_pcm_oss_plugin_clear
 c_func
@@ -323,6 +324,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_plugin_insert
+r_static
 r_int
 id|snd_pcm_plugin_insert
 c_func

@@ -271,6 +271,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|__snd_kmalloc
+r_static
 r_void
 op_star
 id|__snd_kmalloc

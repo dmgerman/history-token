@@ -506,6 +506,7 @@ mdefine_line|#define FORMAT(v) [SNDRV_PCM_FORMAT_##v] = #v
 DECL|macro|SUBFORMAT
 mdefine_line|#define SUBFORMAT(v) [SNDRV_PCM_SUBFORMAT_##v] = #v 
 DECL|variable|snd_pcm_stream_names
+r_static
 r_char
 op_star
 id|snd_pcm_stream_names
@@ -528,6 +529,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_pcm_state_names
+r_static
 r_char
 op_star
 id|snd_pcm_state_names
@@ -586,6 +588,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_pcm_access_names
+r_static
 r_char
 op_star
 id|snd_pcm_access_names
@@ -626,6 +629,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_pcm_format_names
+r_static
 r_char
 op_star
 id|snd_pcm_format_names
@@ -864,6 +868,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_pcm_subformat_names
+r_static
 r_char
 op_star
 id|snd_pcm_subformat_names
@@ -880,6 +885,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_pcm_tstamp_mode_names
+r_static
 r_char
 op_star
 id|snd_pcm_tstamp_mode_names
@@ -902,6 +908,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|snd_pcm_stream_name
+r_static
 r_const
 r_char
 op_star
@@ -931,6 +938,7 @@ id|stream
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_access_name
+r_static
 r_const
 r_char
 op_star
@@ -989,6 +997,7 @@ id|format
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_subformat_name
+r_static
 r_const
 r_char
 op_star
@@ -1018,6 +1027,7 @@ id|subformat
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_tstamp_mode_name
+r_static
 r_const
 r_char
 op_star
@@ -1047,6 +1057,7 @@ id|mode
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_state_name
+r_static
 r_const
 r_char
 op_star
@@ -1078,6 +1089,7 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 macro_line|#include &lt;linux/soundcard.h&gt;
 DECL|function|snd_pcm_oss_format_name
+r_static
 r_const
 r_char
 op_star
@@ -5468,13 +5480,6 @@ c_func
 id|snd_pcm_format_name
 )paren
 suffix:semicolon
-DECL|variable|snd_pcm_subformat_name
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_pcm_subformat_name
-)paren
-suffix:semicolon
 multiline_comment|/* pcm_native.c */
 DECL|variable|snd_pcm_link_rwlock
 id|EXPORT_SYMBOL
@@ -5525,34 +5530,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_pcm_kernel_ioctl
-)paren
-suffix:semicolon
-DECL|variable|snd_pcm_open
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_pcm_open
-)paren
-suffix:semicolon
-DECL|variable|snd_pcm_release
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_pcm_release
-)paren
-suffix:semicolon
-DECL|variable|snd_pcm_playback_poll
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_pcm_playback_poll
-)paren
-suffix:semicolon
-DECL|variable|snd_pcm_capture_poll
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_pcm_capture_poll
 )paren
 suffix:semicolon
 DECL|variable|snd_pcm_mmap_data
@@ -5619,13 +5596,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_pcm_format_physical_width
-)paren
-suffix:semicolon
-DECL|variable|snd_pcm_format_size
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_pcm_format_size
 )paren
 suffix:semicolon
 DECL|variable|snd_pcm_format_silence_64
