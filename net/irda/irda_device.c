@@ -113,10 +113,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|IRDA_WARNING
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;IrDA: Can&squot;t allocate dongles hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -148,10 +147,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|IRDA_WARNING
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;IrDA: Can&squot;t allocate tasks hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -192,10 +190,9 @@ id|reg
 op_assign
 id|arg
 suffix:semicolon
-id|printk
+id|IRDA_WARNING
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;IrDA: Dongle type %x not unregistered&bslash;n&quot;
 comma
 id|reg-&gt;type
@@ -287,7 +284,7 @@ op_star
 )paren
 id|dev-&gt;atalk_ptr
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -298,7 +295,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -409,7 +406,7 @@ op_logical_neg
 id|dev-&gt;do_ioctl
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: do_ioctl not impl. by device driver&bslash;n&quot;
@@ -598,7 +595,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|task
@@ -611,7 +608,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|task-&gt;magic
@@ -646,7 +643,7 @@ OG
 l_int|100
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: error in task handler!&bslash;n&quot;
@@ -689,7 +686,7 @@ OL
 l_int|0
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: Error executing task!&bslash;n&quot;
@@ -1214,7 +1211,7 @@ id|reg-&gt;owner
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;IrDA: Unable to find requested dongle type %x&bslash;n&quot;
@@ -1302,7 +1299,7 @@ op_star
 id|dongle
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dongle
@@ -1382,7 +1379,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;%s: Dongle type %x already registered&bslash;n&quot;
@@ -1477,7 +1474,7 @@ c_cond
 op_logical_neg
 id|node
 )paren
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: dongle not found!&bslash;n&quot;

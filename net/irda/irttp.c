@@ -406,7 +406,7 @@ op_logical_neg
 id|irttp-&gt;tsaps
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: can&squot;t allocate IrTTP hashbin!&bslash;n&quot;
@@ -434,7 +434,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* Check for main structure */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irttp
@@ -445,7 +445,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irttp-&gt;magic
@@ -689,7 +689,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -700,7 +700,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -810,7 +810,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Fragment index */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -822,7 +822,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -940,7 +940,7 @@ id|self-&gt;rx_max_sdu_size
 )paren
 suffix:semicolon
 multiline_comment|/* Note : irttp_run_rx_queue() calculate self-&gt;rx_sdu_size&n;&t; * by summing the size of all fragments, so we should always&n;&t; * have n == self-&gt;rx_sdu_size, except in cases where we&n;&t; * droped the last fragment (when self-&gt;rx_sdu_size exceed&n;&t; * self-&gt;rx_max_sdu_size), where n &lt; self-&gt;rx_sdu_size.&n;&t; * Jean II */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|n
@@ -1008,7 +1008,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1019,7 +1019,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1030,7 +1030,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -1215,7 +1215,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1228,7 +1228,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1306,7 +1306,7 @@ suffix:semicolon
 id|notify_t
 id|ttp_notify
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irttp
@@ -1318,7 +1318,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irttp-&gt;magic
@@ -1557,7 +1557,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: unable to allocate LSAP!!&bslash;n&quot;
@@ -1655,7 +1655,7 @@ id|self
 )paren
 (brace
 multiline_comment|/* First make sure we&squot;re connected. */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1666,7 +1666,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1745,7 +1745,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1758,7 +1758,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1793,7 +1793,7 @@ id|self-&gt;disconnect_pend
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: TSAP still connected!&bslash;n&quot;
@@ -1846,7 +1846,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|tsap
@@ -1911,7 +1911,7 @@ op_star
 id|skb
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1924,7 +1924,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1937,7 +1937,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -2070,7 +2070,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2083,7 +2083,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2096,7 +2096,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -2142,7 +2142,7 @@ id|self-&gt;connected
 )paren
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: No data, or not connected&bslash;n&quot;
@@ -2176,7 +2176,7 @@ id|self-&gt;max_seg_size
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: SAR disabled, and data is to large for IrLAP!&bslash;n&quot;
@@ -2216,7 +2216,7 @@ id|self-&gt;tx_max_sdu_size
 )paren
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s: SAR enabled, but data is larger than TxMaxSduSize!&bslash;n&quot;
@@ -2282,7 +2282,7 @@ id|self-&gt;max_seg_size
 )paren
 (brace
 multiline_comment|/* Queue frame */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -2684,7 +2684,7 @@ suffix:semicolon
 r_int
 id|n
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2695,7 +2695,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2881,7 +2881,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2894,7 +2894,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2907,7 +2907,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -3156,7 +3156,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3167,7 +3167,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3251,7 +3251,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3262,7 +3262,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3336,7 +3336,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3347,7 +3347,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3488,7 +3488,7 @@ comma
 id|max_sdu_size
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3501,7 +3501,7 @@ id|EBADR
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3582,7 +3582,7 @@ op_assign
 id|userdata
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Check that the client has reserved enough space for&n;&t;&t; *  headers&n;&t;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -3678,7 +3678,7 @@ OG
 l_int|0
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -3895,7 +3895,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3906,7 +3906,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -3917,7 +3917,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4010,7 +4010,7 @@ l_int|0
 op_amp
 l_int|0x80
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb-&gt;len
@@ -4076,7 +4076,7 @@ OL
 l_int|0
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: error extracting parameters&bslash;n&quot;
@@ -4235,7 +4235,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4246,7 +4246,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4257,7 +4257,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -4332,7 +4332,7 @@ l_int|0
 op_amp
 l_int|0x80
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb-&gt;len
@@ -4398,7 +4398,7 @@ OL
 l_int|0
 )paren
 (brace
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;%s: error extracting parameters&bslash;n&quot;
@@ -4502,7 +4502,7 @@ suffix:semicolon
 id|__u8
 id|n
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4515,7 +4515,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -4584,7 +4584,7 @@ op_assign
 id|userdata
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Check that the client has reserved enough space for&n;&t;&t; *  headers&n;&t;&t; */
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -4671,7 +4671,7 @@ OG
 l_int|0
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb_headroom
@@ -5114,7 +5114,7 @@ id|priority
 r_int
 id|ret
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5127,7 +5127,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -5437,7 +5437,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5448,7 +5448,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -6430,7 +6430,7 @@ id|irttp_iter_state
 op_star
 id|s
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|irttp

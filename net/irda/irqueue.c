@@ -503,7 +503,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -516,7 +516,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -709,7 +709,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -720,7 +720,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -1041,7 +1041,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -1053,7 +1053,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -1311,7 +1311,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -1323,7 +1323,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -1335,7 +1335,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|entry
@@ -1519,7 +1519,7 @@ comma
 l_string|&quot;hashbin_find()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -1531,7 +1531,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -1858,7 +1858,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -1870,7 +1870,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -1963,7 +1963,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin
@@ -1975,7 +1975,7 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;magic
@@ -1995,7 +1995,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|hashbin-&gt;hb_current

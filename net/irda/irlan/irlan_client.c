@@ -158,7 +158,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -169,7 +169,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -286,7 +286,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -297,7 +297,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -441,7 +441,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|discovery
@@ -491,7 +491,7 @@ c_cond
 id|self
 )paren
 (brace
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -576,7 +576,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -589,7 +589,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -602,7 +602,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -719,7 +719,7 @@ op_star
 )paren
 id|sap
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -730,7 +730,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -741,7 +741,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|tsap
@@ -752,7 +752,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|tsap-&gt;magic
@@ -763,7 +763,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|tsap
@@ -845,7 +845,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -856,7 +856,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1006,7 +1006,7 @@ op_star
 )paren
 id|instance
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1017,7 +1017,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1080,7 +1080,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Insufficient resources&bslash;n&quot;
@@ -1091,7 +1091,7 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Invalid command format&bslash;n&quot;
@@ -1102,7 +1102,7 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Command not supported&bslash;n&quot;
@@ -1113,7 +1113,7 @@ suffix:semicolon
 r_case
 l_int|4
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Parameter not supported&bslash;n&quot;
@@ -1124,7 +1124,7 @@ suffix:semicolon
 r_case
 l_int|5
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Value not supported&bslash;n&quot;
@@ -1135,7 +1135,7 @@ suffix:semicolon
 r_case
 l_int|6
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Not open&bslash;n&quot;
@@ -1146,7 +1146,7 @@ suffix:semicolon
 r_case
 l_int|7
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Authentication required&bslash;n&quot;
@@ -1157,7 +1157,7 @@ suffix:semicolon
 r_case
 l_int|8
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Invalid password&bslash;n&quot;
@@ -1168,7 +1168,7 @@ suffix:semicolon
 r_case
 l_int|9
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Protocol error&bslash;n&quot;
@@ -1179,7 +1179,7 @@ suffix:semicolon
 r_case
 l_int|255
 suffix:colon
-id|WARNING
+id|IRDA_WARNING
 c_func
 (paren
 l_string|&quot;IrLAN: Asynchronous status&bslash;n&quot;
@@ -1234,7 +1234,7 @@ r_char
 op_star
 id|value
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|skb
@@ -1260,7 +1260,7 @@ r_int
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1271,7 +1271,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -1289,7 +1289,7 @@ op_logical_neg
 id|skb
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), Got NULL skb!&bslash;n&quot;
@@ -1526,7 +1526,7 @@ comma
 id|param
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -1537,7 +1537,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic
@@ -2176,7 +2176,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|priv
@@ -2196,7 +2196,7 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self-&gt;magic

@@ -883,7 +883,7 @@ c_cond
 id|err
 )paren
 (brace
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), register_netdevice() failed!&bslash;n&quot;
@@ -895,7 +895,7 @@ r_goto
 id|err_out3
 suffix:semicolon
 )brace
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;IrDA: Registered device %s&bslash;n&quot;
@@ -1531,7 +1531,7 @@ op_plus
 l_int|7
 )paren
 suffix:semicolon
-id|MESSAGE
+id|IRDA_MESSAGE
 c_func
 (paren
 l_string|&quot;W83977AF (IR) driver loaded. &quot;
@@ -2783,7 +2783,7 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -2950,7 +2950,7 @@ id|__u8
 id|hcr
 suffix:semicolon
 macro_line|#endif
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -3758,7 +3758,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4501,7 +4501,7 @@ suffix:semicolon
 id|__u8
 id|set
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4632,7 +4632,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -4654,7 +4654,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -4860,7 +4860,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -4882,7 +4882,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self
@@ -5033,7 +5033,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|dev
@@ -5050,7 +5050,7 @@ id|self
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|ASSERT
+id|IRDA_ASSERT
 c_func
 (paren
 id|self

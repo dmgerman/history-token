@@ -156,7 +156,7 @@ c_func
 (paren
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren

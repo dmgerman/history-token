@@ -1111,10 +1111,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;membase
 )paren
 suffix:semicolon
@@ -4356,10 +4352,6 @@ l_int|4
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|card-&gt;membase
 )paren
 suffix:semicolon

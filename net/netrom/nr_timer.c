@@ -77,7 +77,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -193,7 +194,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -226,7 +228,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -259,7 +262,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -292,7 +296,8 @@ op_star
 id|sk
 )paren
 (brace
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -514,7 +519,8 @@ op_star
 )paren
 id|param
 suffix:semicolon
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -686,7 +692,8 @@ op_star
 )paren
 id|param
 suffix:semicolon
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -799,7 +806,8 @@ op_star
 )paren
 id|param
 suffix:semicolon
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign
@@ -927,7 +935,8 @@ op_star
 )paren
 id|param
 suffix:semicolon
-id|nr_cb
+r_struct
+id|nr_sock
 op_star
 id|nr
 op_assign

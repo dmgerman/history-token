@@ -1054,6 +1054,40 @@ op_star
 id|timer
 )paren
 suffix:semicolon
+multiline_comment|/* br.c */
+r_extern
+r_struct
+id|net_bridge_fdb_entry
+op_star
+(paren
+op_star
+id|br_fdb_get_hook
+)paren
+(paren
+r_struct
+id|net_bridge
+op_star
+id|br
+comma
+r_int
+r_char
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|br_fdb_put_hook
+)paren
+(paren
+r_struct
+id|net_bridge_fdb_entry
+op_star
+id|ent
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SYSFS
 multiline_comment|/* br_sysfs_if.c */
 r_extern

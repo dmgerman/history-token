@@ -456,7 +456,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), undefine state %d&bslash;n&quot;
@@ -608,7 +608,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ERROR
+id|IRDA_ERROR
 c_func
 (paren
 l_string|&quot;%s(), undefined state %d&bslash;n&quot;
