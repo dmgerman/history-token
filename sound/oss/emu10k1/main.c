@@ -379,7 +379,6 @@ suffix:semicolon
 DECL|function|emu10k1_audio_cleanup
 r_static
 r_void
-id|__devinit
 id|emu10k1_audio_cleanup
 c_func
 (paren
@@ -750,7 +749,6 @@ suffix:semicolon
 DECL|function|emu10k1_mixer_cleanup
 r_static
 r_void
-id|__devinit
 id|emu10k1_mixer_cleanup
 c_func
 (paren
@@ -1236,7 +1234,6 @@ suffix:semicolon
 DECL|function|emu10k1_midi_cleanup
 r_static
 r_void
-id|__devinit
 id|emu10k1_midi_cleanup
 c_func
 (paren
@@ -1444,7 +1441,6 @@ suffix:semicolon
 DECL|function|fx_cleanup
 r_static
 r_void
-id|__devinit
 id|fx_cleanup
 c_func
 (paren
@@ -4205,7 +4201,6 @@ suffix:semicolon
 DECL|function|emu10k1_cleanup
 r_static
 r_void
-id|__devinit
 id|emu10k1_cleanup
 c_func
 (paren
