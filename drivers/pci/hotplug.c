@@ -887,59 +887,6 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_HOTPLUG */
-multiline_comment|/**&n; * pci_insert_device - insert a pci device&n; * @dev: the device to insert&n; * @bus: where to insert it&n; *&n; * Link the device to both the global PCI device chain and the &n; * per-bus list of devices, add the /proc entry.&n; */
-r_void
-DECL|function|pci_insert_device
-id|pci_insert_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_struct
-id|pci_bus
-op_star
-id|bus
-)paren
-(brace
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|dev-&gt;bus_list
-comma
-op_amp
-id|bus-&gt;devices
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|dev-&gt;global_list
-comma
-op_amp
-id|pci_devices
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|pci_proc_attach_device
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* add sysfs device files */
-id|pci_create_sysfs_dev_files
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 r_static
 r_void
 DECL|function|pci_free_resources
@@ -1084,7 +1031,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-id|kfree
+id|pci_put_dev
 c_func
 (paren
 id|dev
@@ -1149,13 +1096,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG
-DECL|variable|pci_insert_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_insert_device
-)paren
-suffix:semicolon
 DECL|variable|pci_remove_bus_device
 id|EXPORT_SYMBOL
 c_func

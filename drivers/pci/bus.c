@@ -225,7 +225,7 @@ id|dev-&gt;global_list
 )paren
 r_continue
 suffix:semicolon
-id|device_register
+id|device_add
 c_func
 (paren
 op_amp

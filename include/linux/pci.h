@@ -976,6 +976,31 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|pci_dynids
+r_struct
+id|pci_dynids
+(brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* protects list, index */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* for IDs added at runtime */
+DECL|member|use_driver_data
+r_int
+r_int
+id|use_driver_data
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* pci_driver-&gt;driver_data is used */
+)brace
+suffix:semicolon
 DECL|struct|pci_driver
 r_struct
 id|pci_driver
@@ -997,7 +1022,7 @@ id|pci_device_id
 op_star
 id|id_table
 suffix:semicolon
-multiline_comment|/* NULL if wants all devices */
+multiline_comment|/* must be non-NULL for probe to be called */
 DECL|member|probe
 r_int
 (paren
@@ -1104,6 +1129,11 @@ DECL|member|driver
 r_struct
 id|device_driver
 id|driver
+suffix:semicolon
+DECL|member|dynids
+r_struct
+id|pci_dynids
+id|dynids
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1445,6 +1475,30 @@ id|pci_dev
 op_star
 op_star
 id|bridge
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|pci_dev
+op_star
+id|pci_get_dev
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_put_dev
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Generic PCI functions exported to card drivers */
@@ -2289,19 +2343,6 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|pci_insert_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-r_struct
-id|pci_bus
-op_star
-)paren
-suffix:semicolon
-r_void
 id|pci_remove_bus_device
 c_func
 (paren
@@ -2632,6 +2673,27 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|pci_dynids_set_use_driver_data
+id|pci_dynids_set_use_driver_data
+c_func
+(paren
+r_struct
+id|pci_driver
+op_star
+id|pdrv
+comma
+r_int
+id|val
+)paren
+(brace
+id|pdrv-&gt;dynids.use_driver_data
+op_assign
+id|val
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
@@ -2997,6 +3059,23 @@ id|dev
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
+DECL|function|pci_dynids_set_use_driver_data
+r_static
+r_inline
+r_void
+id|pci_dynids_set_use_driver_data
+c_func
+(paren
+r_struct
+id|pci_driver
+op_star
+id|pdrv
+comma
+r_int
+id|val
+)paren
+(brace
 )brace
 multiline_comment|/* Power management related routines */
 DECL|function|pci_save_state
