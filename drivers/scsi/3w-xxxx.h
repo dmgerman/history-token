@@ -1048,10 +1048,6 @@ id|is_unit_present
 id|TW_MAX_UNITS
 )braket
 suffix:semicolon
-DECL|member|num_units
-r_int
-id|num_units
-suffix:semicolon
 DECL|member|command_packet_virtual_address
 r_int
 r_int
