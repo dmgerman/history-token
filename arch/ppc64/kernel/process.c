@@ -350,7 +350,6 @@ r_int
 id|sp
 )paren
 suffix:semicolon
-r_static
 r_char
 op_star
 id|ppc_find_proc_name
@@ -1832,7 +1831,6 @@ id|__init_end
 )braket
 suffix:semicolon
 DECL|function|ppc_find_proc_name
-r_static
 r_char
 op_star
 id|ppc_find_proc_name
