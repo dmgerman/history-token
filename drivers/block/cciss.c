@@ -23,9 +23,9 @@ macro_line|#include &lt;linux/genhd.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.4.5)&quot;
+mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.5.0)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,4,5)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,5,0)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
@@ -36,7 +36,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq Smart Array Controller 5300&quot;
+l_string|&quot;Driver for Compaq Smart Array Controller 5xxx v. 2.5.0&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
