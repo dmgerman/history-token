@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
+macro_line|#include &quot;power/power.h&quot;
 DECL|macro|to_dev
 mdefine_line|#define to_dev(node) container_of(node,struct device,bus_list)
 DECL|macro|to_drv
@@ -1222,6 +1223,12 @@ c_func
 (paren
 op_amp
 id|dev-&gt;driver_list
+)paren
+suffix:semicolon
+id|device_detach_shutdown
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_if

@@ -1842,12 +1842,6 @@ id|ROOT_DEV
 op_eq
 id|FLOPPY_MAJOR
 suffix:semicolon
-multiline_comment|/* This has to be before mounting root, because even readonly mount of reiserfs would replay&n;&t;   log corrupting stuff */
-id|software_resume
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
