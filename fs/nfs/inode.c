@@ -26,9 +26,9 @@ DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_VFS
 DECL|macro|NFS_PARANOIA
 mdefine_line|#define NFS_PARANOIA 1
-multiline_comment|/* Maximum number of readahead requests&n; * FIXME: this should really be a sysctl so that users may tune it to suit&n; *        their needs. People that do NFS over a slow network, might for&n; *        instance want to reduce it to something closer to 1 for improved&n; *        interactive response.&n; *&n; *        For the moment, though, we instead set it to RPC_MAXREQS, which&n; *        is the maximum number of simultaneous RPC requests on the wire.&n; */
+multiline_comment|/* Maximum number of readahead requests&n; * FIXME: this should really be a sysctl so that users may tune it to suit&n; *        their needs. People that do NFS over a slow network, might for&n; *        instance want to reduce it to something closer to 1 for improved&n; *        interactive response.&n; */
 DECL|macro|NFS_MAX_READAHEAD
-mdefine_line|#define NFS_MAX_READAHEAD&t;RPC_MAXREQS
+mdefine_line|#define NFS_MAX_READAHEAD&t;(RPC_DEF_SLOT_TABLE - 1)
 r_static
 r_void
 id|nfs_invalidate_inode

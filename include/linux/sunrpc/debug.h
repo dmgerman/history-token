@@ -123,6 +123,12 @@ comma
 DECL|enumerator|CTL_NLMDEBUG
 id|CTL_NLMDEBUG
 comma
+DECL|enumerator|CTL_SLOTTABLE_UDP
+id|CTL_SLOTTABLE_UDP
+comma
+DECL|enumerator|CTL_SLOTTABLE_TCP
+id|CTL_SLOTTABLE_TCP
+comma
 )brace
 suffix:semicolon
 macro_line|#endif /* _LINUX_SUNRPC_DEBUG_H_ */

@@ -7,17 +7,31 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
-multiline_comment|/*&n; * The transport code maintains an estimate on the maximum number of out-&n; * standing RPC requests, using a smoothed version of the congestion&n; * avoidance implemented in 44BSD. This is basically the Van Jacobson&n; * congestion algorithm: If a retransmit occurs, the congestion window is&n; * halved; otherwise, it is incremented by 1/cwnd when&n; *&n; *&t;-&t;a reply is received and&n; *&t;-&t;a full number of requests are outstanding and&n; *&t;-&t;the congestion window hasn&squot;t been updated recently.&n; *&n; * Upper procedures may check whether a request would block waiting for&n; * a free RPC slot by using the RPC_CONGESTED() macro.&n; *&n; * Note: on machines with low memory we should probably use a smaller&n; * MAXREQS value: At 32 outstanding reqs with 8 megs of RAM, fragment&n; * reassembly will frequently run out of memory.&n; */
-DECL|macro|RPC_MAXCONG
-mdefine_line|#define RPC_MAXCONG&t;&t;(16)
-DECL|macro|RPC_MAXREQS
-mdefine_line|#define RPC_MAXREQS&t;&t;RPC_MAXCONG
+multiline_comment|/*&n; * The transport code maintains an estimate on the maximum number of out-&n; * standing RPC requests, using a smoothed version of the congestion&n; * avoidance implemented in 44BSD. This is basically the Van Jacobson&n; * congestion algorithm: If a retransmit occurs, the congestion window is&n; * halved; otherwise, it is incremented by 1/cwnd when&n; *&n; *&t;-&t;a reply is received and&n; *&t;-&t;a full number of requests are outstanding and&n; *&t;-&t;the congestion window hasn&squot;t been updated recently.&n; *&n; * Upper procedures may check whether a request would block waiting for&n; * a free RPC slot by using the RPC_CONGESTED() macro.&n; */
+r_extern
+r_int
+r_int
+id|xprt_udp_slot_table_entries
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|xprt_tcp_slot_table_entries
+suffix:semicolon
+DECL|macro|RPC_MIN_SLOT_TABLE
+mdefine_line|#define RPC_MIN_SLOT_TABLE&t;(2U)
+DECL|macro|RPC_DEF_SLOT_TABLE
+mdefine_line|#define RPC_DEF_SLOT_TABLE&t;(16U)
+DECL|macro|RPC_MAX_SLOT_TABLE
+mdefine_line|#define RPC_MAX_SLOT_TABLE&t;(128U)
+DECL|macro|RPC_CWNDSHIFT
+mdefine_line|#define RPC_CWNDSHIFT&t;&t;(8U)
 DECL|macro|RPC_CWNDSCALE
-mdefine_line|#define RPC_CWNDSCALE&t;&t;(256)
-DECL|macro|RPC_MAXCWND
-mdefine_line|#define RPC_MAXCWND&t;&t;(RPC_MAXCONG * RPC_CWNDSCALE)
+mdefine_line|#define RPC_CWNDSCALE&t;&t;(1U &lt;&lt; RPC_CWNDSHIFT)
 DECL|macro|RPC_INITCWND
 mdefine_line|#define RPC_INITCWND&t;&t;RPC_CWNDSCALE
+DECL|macro|RPC_MAXCWND
+mdefine_line|#define RPC_MAXCWND(xprt)&t;((xprt)-&gt;max_reqs &lt;&lt; RPC_CWNDSHIFT)
 DECL|macro|RPCXPRT_CONGESTED
 mdefine_line|#define RPCXPRT_CONGESTED(xprt) ((xprt)-&gt;cong &gt;= (xprt)-&gt;cwnd)
 multiline_comment|/* Default timeout values */
@@ -116,13 +130,6 @@ id|__u32
 id|rq_xid
 suffix:semicolon
 multiline_comment|/* request XID */
-DECL|member|rq_next
-r_struct
-id|rpc_rqst
-op_star
-id|rq_next
-suffix:semicolon
-multiline_comment|/* free list */
 DECL|member|rq_cong
 r_int
 id|rq_cong
@@ -278,19 +285,23 @@ suffix:semicolon
 multiline_comment|/* waiting for slot */
 DECL|member|free
 r_struct
-id|rpc_rqst
-op_star
+id|list_head
 id|free
 suffix:semicolon
 multiline_comment|/* free slots */
 DECL|member|slot
 r_struct
 id|rpc_rqst
+op_star
 id|slot
-(braket
-id|RPC_MAXREQS
-)braket
 suffix:semicolon
+multiline_comment|/* slot table storage */
+DECL|member|max_reqs
+r_int
+r_int
+id|max_reqs
+suffix:semicolon
+multiline_comment|/* total slots */
 DECL|member|sockstate
 r_int
 r_int
