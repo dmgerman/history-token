@@ -47,6 +47,10 @@ id|xloops
 r_int
 id|d0
 suffix:semicolon
+id|xloops
+op_mul_assign
+l_int|4
+suffix:semicolon
 id|__asm__
 c_func
 (paren
@@ -70,6 +74,12 @@ comma
 l_string|&quot;0&quot;
 (paren
 id|current_cpu_data.loops_per_jiffy
+op_star
+(paren
+id|HZ
+op_div
+l_int|4
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -77,8 +87,6 @@ id|__delay
 c_func
 (paren
 id|xloops
-op_star
-id|HZ
 )paren
 suffix:semicolon
 )brace
