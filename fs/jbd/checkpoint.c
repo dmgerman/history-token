@@ -1728,7 +1728,7 @@ comma
 l_string|&quot;transaction has no more buffers&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * There is one special case to worry about: if we have just pulled the&n;&t; * buffer off a committing transaction&squot;s forget list, then even if the&n;&t; * checkpoint list is empty, the transaction obviously cannot be&n;&t; * dropped!&n;&t; *&n;&t; * AKPM2: locking here around j_committing_transaction is a bit flakey.&n;&t; */
+multiline_comment|/*&n;&t; * There is one special case to worry about: if we have just pulled the&n;&t; * buffer off a committing transaction&squot;s forget list, then even if the&n;&t; * checkpoint list is empty, the transaction obviously cannot be&n;&t; * dropped!&n;&t; *&n;&t; * The locking here around j_committing_transaction is a bit sleazy.&n;&t; * See the comment at the end of journal_commit_transaction().&n;&t; */
 r_if
 c_cond
 (paren
@@ -1941,6 +1941,14 @@ suffix:semicolon
 id|J_ASSERT
 c_func
 (paren
+id|transaction-&gt;t_state
+op_eq
+id|T_FINISHED
+)paren
+suffix:semicolon
+id|J_ASSERT
+c_func
+(paren
 id|transaction-&gt;t_buffers
 op_eq
 l_int|NULL
@@ -2017,6 +2025,14 @@ id|J_ASSERT
 c_func
 (paren
 id|journal-&gt;j_committing_transaction
+op_ne
+id|transaction
+)paren
+suffix:semicolon
+id|J_ASSERT
+c_func
+(paren
+id|journal-&gt;j_running_transaction
 op_ne
 id|transaction
 )paren

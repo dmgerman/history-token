@@ -2446,11 +2446,19 @@ op_eq
 id|T_COMMIT
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This is a bit sleazy.  We borrow j_list_lock to protect&n;&t; * journal-&gt;j_committing_transaction in __journal_remove_checkpoint.&n;&t; * Really, __jornal_remove_checkpoint should be using j_state_lock but&n;&t; * it&squot;s a bit hassle to hold that across __journal_remove_checkpoint&n;&t; */
 id|spin_lock
 c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 id|commit_transaction-&gt;t_state
@@ -2478,13 +2486,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 r_if
