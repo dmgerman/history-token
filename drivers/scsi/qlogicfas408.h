@@ -1,12 +1,9 @@
 multiline_comment|/* to be used by qlogicfas and qlogic_cs */
-macro_line|#ifndef __QLOGICFAS_H
-DECL|macro|__QLOGICFAS_H
-mdefine_line|#define __QLOGICFAS_H
+macro_line|#ifndef __QLOGICFAS408_H
+DECL|macro|__QLOGICFAS408_H
+mdefine_line|#define __QLOGICFAS408_H
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* Configuration */
-multiline_comment|/* Set the following to 2 to use normal interrupt (active high/totempole-&n;   tristate), otherwise use 0 (REQUIRED FOR PCMCIA) for active low, open&n;   drain */
-DECL|macro|QL_INT_ACTIVE_HIGH
-mdefine_line|#define QL_INT_ACTIVE_HIGH 2
 multiline_comment|/* Set the following to max out the speed of the PIO PseudoDMA transfers,&n;   again, 0 tends to be slower, but more stable.  */
 DECL|macro|QL_TURBO_PDMA
 mdefine_line|#define QL_TURBO_PDMA 1
@@ -48,25 +45,9 @@ DECL|macro|SYNCOFFST
 mdefine_line|#define SYNCOFFST 0
 multiline_comment|/* for the curious, bits 7&amp;6 control the deassertion delay in 1/2 cycles&n;&t;of the 40Mhz clock. If FASTCLK is 1, specifying 01 (1/2) will&n;&t;cause the deassertion to be early by 1/2 clock.  Bits 5&amp;4 control&n;&t;the assertion delay, also in 1/2 clocks (FASTCLK is ignored here). */
 multiline_comment|/*----------------------------------------------------------------*/
-macro_line|#ifdef PCMCIA
-DECL|macro|QL_INT_ACTIVE_HIGH
-macro_line|#undef QL_INT_ACTIVE_HIGH
-DECL|macro|QL_INT_ACTIVE_HIGH
-mdefine_line|#define QL_INT_ACTIVE_HIGH 0
-macro_line|#endif
+DECL|struct|qlogicfas408_priv
 r_struct
-id|qlogicfas_priv
-suffix:semicolon
-DECL|typedef|qlogicfas_priv_t
-r_typedef
-r_struct
-id|qlogicfas_priv
-op_star
-id|qlogicfas_priv_t
-suffix:semicolon
-DECL|struct|qlogicfas_priv
-r_struct
-id|qlogicfas_priv
+id|qlogicfas408_priv
 (brace
 DECL|member|qbase
 r_int
@@ -88,6 +69,11 @@ r_int
 id|qlirq
 suffix:semicolon
 multiline_comment|/* IRQ being used */
+DECL|member|int_type
+r_int
+id|int_type
+suffix:semicolon
+multiline_comment|/* type of irq, 2 for ISA board, 0 for PCMCIA */
 DECL|member|qinfo
 r_char
 id|qinfo
@@ -110,51 +96,181 @@ id|shost
 suffix:semicolon
 multiline_comment|/* pointer back to host */
 DECL|member|next
-id|qlogicfas_priv_t
+r_struct
+id|qlogicfas408_priv
+op_star
 id|next
 suffix:semicolon
 multiline_comment|/* next private struct */
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|qlcfg5
-suffix:semicolon
-r_extern
-r_int
-id|qlcfg6
-suffix:semicolon
-r_extern
-r_int
-id|qlcfg7
-suffix:semicolon
-r_extern
-r_int
-id|qlcfg8
-suffix:semicolon
-r_extern
-r_int
-id|qlcfg9
-suffix:semicolon
-r_extern
-r_int
-id|qlcfgc
-suffix:semicolon
 multiline_comment|/* The qlogic card uses two register maps - These macros select which one */
 DECL|macro|REG0
 mdefine_line|#define REG0 ( outb( inb( qbase + 0xd ) &amp; 0x7f , qbase + 0xd ), outb( 4 , qbase + 0xd ))
 DECL|macro|REG1
-mdefine_line|#define REG1 ( outb( inb( qbase + 0xd ) | 0x80 , qbase + 0xd ), outb( 0xb4 | QL_INT_ACTIVE_HIGH , qbase + 0xd ))
+mdefine_line|#define REG1 ( outb( inb( qbase + 0xd ) | 0x80 , qbase + 0xd ), outb( 0xb4 | int_type, qbase + 0xd ))
 multiline_comment|/* following is watchdog timeout in microseconds */
 DECL|macro|WATCHDOG
 mdefine_line|#define WATCHDOG 5000000
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* the following will set the monitor border color (useful to find&n;   where something crashed or gets stuck at and as a simple profiler) */
-macro_line|#if 0
-mdefine_line|#define rtrc(i) {inb(0x3da);outb(0x31,0x3c0);outb((i),0x3c0);}
-macro_line|#else
 DECL|macro|rtrc
 mdefine_line|#define rtrc(i) {}
-macro_line|#endif
-macro_line|#endif&t;/* __QLOGICFAS_H */
+DECL|macro|get_priv_by_cmd
+mdefine_line|#define get_priv_by_cmd(x) (struct qlogicfas408_priv *)&amp;((x)-&gt;device-&gt;host-&gt;hostdata[0])
+DECL|macro|get_priv_by_host
+mdefine_line|#define get_priv_by_host(x) (struct qlogicfas408_priv *)&amp;((x)-&gt;hostdata[0])
+id|irqreturn_t
+id|qlogicfas408_ihandl
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_queuecommand
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+comma
+r_void
+(paren
+op_star
+id|done
+)paren
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_biosparam
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|disk
+comma
+r_struct
+id|block_device
+op_star
+id|dev
+comma
+id|sector_t
+id|capacity
+comma
+r_int
+id|ip
+(braket
+)braket
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_char
+op_star
+id|qlogicfas408_info
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_get_chip_type
+c_func
+(paren
+r_int
+id|qbase
+comma
+r_int
+id|int_type
+)paren
+suffix:semicolon
+r_void
+id|qlogicfas408_setup
+c_func
+(paren
+r_int
+id|qbase
+comma
+r_int
+id|id
+comma
+r_int
+id|int_type
+)paren
+suffix:semicolon
+r_int
+id|qlogicfas408_detect
+c_func
+(paren
+r_int
+id|qbase
+comma
+r_int
+id|int_type
+)paren
+suffix:semicolon
+r_void
+id|qlogicfas408_disable_ints
+c_func
+(paren
+r_struct
+id|qlogicfas408_priv
+op_star
+id|priv
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* __QLOGICFAS408_H */
 eof
