@@ -3,8 +3,8 @@ macro_line|#ifndef _ASM_IRQ_H
 DECL|macro|_ASM_IRQ_H
 mdefine_line|#define _ASM_IRQ_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Maximum number of interrupt sources that we can handle.&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;512
@@ -89,6 +89,17 @@ id|virt_irq
 )braket
 suffix:semicolon
 )brace
+r_extern
+r_int
+r_int
+id|real_irq_to_virt_slowpath
+c_func
+(paren
+r_int
+r_int
+id|real_irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Because many systems have two overlapping names spaces for&n; * interrupts (ISA and XICS for example), and the ISA interrupts&n; * have historically not been easy to renumber, we allow ISA&n; * interrupts to take values 0 - 15, and shift up the remaining&n; * interrupts by 0x10.&n; */
 DECL|macro|NUM_ISA_INTERRUPTS
 mdefine_line|#define NUM_ISA_INTERRUPTS&t;0x10

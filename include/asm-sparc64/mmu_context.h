@@ -247,18 +247,6 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|__flush_tlb_mm
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/* Activate a new MM instance for the current task. */

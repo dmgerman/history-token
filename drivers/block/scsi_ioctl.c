@@ -285,9 +285,11 @@ op_lshift
 l_int|9
 )paren
 )paren
-r_return
-op_minus
-id|EINVAL
+id|size
+op_assign
+id|q-&gt;max_sectors
+op_lshift
+l_int|9
 suffix:semicolon
 id|q-&gt;sg_reserved_size
 op_assign

@@ -137,6 +137,11 @@ id|pgt_cache_water
 l_int|1
 )braket
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -203,6 +208,11 @@ id|low
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|update_mmu_cache

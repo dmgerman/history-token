@@ -1020,6 +1020,14 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|filp
+)paren
+suffix:semicolon
 id|SCSI_LOG_TIMEOUT
 c_func
 (paren
@@ -1592,16 +1600,6 @@ id|count
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|filp-&gt;f_pos
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: Hmm.  Seek to the right place, or fail?  */
 r_if
 c_cond
 (paren
@@ -2477,16 +2475,6 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|filp-&gt;f_pos
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: Hmm.  Seek to the right place, or fail?  */
 r_if
 c_cond
 (paren

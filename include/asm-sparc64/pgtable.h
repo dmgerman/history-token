@@ -47,17 +47,25 @@ DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/sched.h&gt;
-multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
-DECL|macro|set_pte
-mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
 multiline_comment|/* Entries per page directory level. */
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;&t;(1UL &lt;&lt; (PAGE_SHIFT-3))
 multiline_comment|/* We the first one in this file, what we export to the kernel&n; * is different so we can optimize correctly for 32-bit tasks.&n; */
 DECL|macro|REAL_PTRS_PER_PMD
 mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
+multiline_comment|/* This is gross, but unless we do this gcc retests the&n; * thread flag every interation in pmd traversal loops.&n; */
+r_extern
+r_int
+r_int
+id|__ptrs_per_pmd
+c_func
+(paren
+r_void
+)paren
+id|__attribute_const__
+suffix:semicolon
 DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : &bslash;&n;&t;&t;&t;&t; (REAL_PTRS_PER_PMD)))
+mdefine_line|#define PTRS_PER_PMD&t;&t;__ptrs_per_pmd()
 multiline_comment|/*&n; * We cannot use the top address range because VPTE table lives there. This&n; * formula finds the total legal virtual space in the processor, subtracts the&n; * vpte size, then aligns it to the number of bytes mapped by one pgde, and&n; * thus calculates the number of pgdes needed.&n; */
 DECL|macro|PTRS_PER_PGD
 mdefine_line|#define PTRS_PER_PGD (((1UL &lt;&lt; VA_BITS) - VPTE_SIZE + (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;      (PAGE_SHIFT-3) + PMD_BITS)) - 1) / (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;      (PAGE_SHIFT-3) + PMD_BITS)))
@@ -334,8 +342,6 @@ DECL|macro|pte_none
 mdefine_line|#define pte_none(pte) &t;&t;&t;(!pte_val(pte))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;&t;(pte_val(pte) &amp; _PAGE_PRESENT)
-DECL|macro|pte_clear
-mdefine_line|#define pte_clear(pte)&t;&t;&t;(pte_val(*(pte)) = 0UL)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
@@ -356,7 +362,7 @@ multiline_comment|/* The following only work if pte_present() is true.&n; * Unde
 DECL|macro|pte_read
 mdefine_line|#define pte_read(pte)&t;&t;(pte_val(pte) &amp; _PAGE_READ)
 DECL|macro|pte_exec
-mdefine_line|#define pte_exec(pte)&t;&t;pte_read(pte)
+mdefine_line|#define pte_exec(pte)&t;&t;(pte_val(pte) &amp; _PAGE_EXEC)
 DECL|macro|pte_write
 mdefine_line|#define pte_write(pte)&t;&t;(pte_val(pte) &amp; _PAGE_WRITE)
 DECL|macro|pte_dirty
@@ -405,6 +411,66 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
+multiline_comment|/* Actual page table PTE updates.  */
+r_extern
+r_void
+id|tlb_batch_add
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte_t
+id|orig
+)paren
+suffix:semicolon
+DECL|function|set_pte
+r_static
+r_inline
+r_void
+id|set_pte
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte_t
+id|pte
+)paren
+(brace
+id|pte_t
+id|orig
+op_assign
+op_star
+id|ptep
+suffix:semicolon
+op_star
+id|ptep
+op_assign
+id|pte
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pte_present
+c_func
+(paren
+id|orig
+)paren
+)paren
+id|tlb_batch_add
+c_func
+(paren
+id|ptep
+comma
+id|orig
+)paren
+suffix:semicolon
+)brace
+DECL|macro|pte_clear
+mdefine_line|#define pte_clear(ptep)&t;&t;set_pte((ptep), __pte(0UL))
 r_extern
 id|pgd_t
 id|swapper_pg_dir

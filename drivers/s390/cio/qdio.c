@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.83 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.84 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -154,7 +154,7 @@ id|debug_info_t
 op_star
 id|qdio_dbf_sense
 suffix:semicolon
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|variable|qdio_dbf_slsb_out
 r_static
 id|debug_info_t
@@ -167,7 +167,7 @@ id|debug_info_t
 op_star
 id|qdio_dbf_slsb_in
 suffix:semicolon
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 multiline_comment|/* iQDIO stuff: */
 DECL|variable|tiq_list
 r_static
@@ -1917,12 +1917,14 @@ id|q
 r_int
 id|no_used
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#endif
 id|no_used
 op_assign
 id|atomic_read
@@ -1932,6 +1934,7 @@ op_amp
 id|q-&gt;number_of_buffers_used
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_if
 c_cond
 (paren
@@ -1989,6 +1992,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_return
 (paren
 id|no_used
@@ -2130,6 +2134,7 @@ id|q
 r_int
 id|result
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
@@ -2163,6 +2168,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -2190,6 +2196,7 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* went smooth this time, reset timestamp */
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|QDIO_DBF_TEXT3
 c_func
 (paren
@@ -2233,6 +2240,7 @@ id|q-&gt;timing.busy_start
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_break
 suffix:semicolon
 r_case
@@ -2291,6 +2299,7 @@ comma
 l_string|&quot;cc2REPRT&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|sprintf
 c_func
 (paren
@@ -2320,6 +2329,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 multiline_comment|/* else fallthrough and report error */
 r_default
 suffix:colon
@@ -2367,12 +2377,14 @@ id|real_end
 comma
 id|count
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#endif
 id|start
 op_assign
 id|q-&gt;first_element_to_kick
@@ -2420,6 +2432,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -2469,6 +2482,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -2781,12 +2795,14 @@ suffix:semicolon
 r_int
 id|first_not_to_check
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 macro_line|#ifdef QDIO_USE_PROCESSING_STATE
 r_int
 id|last_position
@@ -3029,6 +3045,7 @@ multiline_comment|/* P_ERROR means frontier is reached, break and report error *
 r_case
 id|SLSB_P_INPUT_ERROR
 suffix:colon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|sprintf
 c_func
 (paren
@@ -3049,6 +3066,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 id|QDIO_DBF_HEX2
 c_func
 (paren
@@ -3369,12 +3387,14 @@ id|q
 r_int
 id|no_used
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#endif
 id|no_used
 op_assign
 id|atomic_read
@@ -3387,6 +3407,7 @@ suffix:semicolon
 multiline_comment|/* propagate the change from 82 to 80 through VM */
 id|SYNC_MEMORY
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_if
 c_cond
 (paren
@@ -3444,6 +3465,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -3513,12 +3535,14 @@ id|q
 r_int
 id|no_used
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#endif
 id|no_used
 op_assign
 id|atomic_read
@@ -3654,6 +3678,7 @@ op_plus
 id|q-&gt;timing.threshold
 )paren
 (brace
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -3703,12 +3728,14 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_return
 l_int|1
 suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -3758,6 +3785,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_return
 l_int|0
 suffix:semicolon
@@ -3787,12 +3815,14 @@ id|real_end
 comma
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#endif
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -3885,6 +3915,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|sprintf
 c_func
 (paren
@@ -3907,6 +3938,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -6638,6 +6670,7 @@ id|state
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
@@ -6676,6 +6709,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 id|irq_ptr-&gt;state
 op_assign
 id|state
@@ -7520,6 +7554,7 @@ id|dbf_text
 l_int|15
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|QDIO_DBF_TEXT4
 c_func
 (paren
@@ -7550,6 +7585,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -7701,6 +7737,7 @@ comma
 id|irb
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|sprintf
 c_func
 (paren
@@ -7721,6 +7758,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 id|cstat
 op_assign
 id|irb-&gt;scsw.cstat
@@ -7873,6 +7911,11 @@ id|qdio_irq
 op_star
 id|irq_ptr
 suffix:semicolon
+r_void
+op_star
+id|ptr
+suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
@@ -7881,10 +7924,7 @@ l_int|15
 op_assign
 l_string|&quot;SyncXXXX&quot;
 suffix:semicolon
-r_void
-op_star
-id|ptr
-suffix:semicolon
+macro_line|#endif
 id|irq_ptr
 op_assign
 id|cdev
@@ -7903,6 +7943,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 op_star
 (paren
 (paren
@@ -7978,6 +8019,7 @@ comma
 id|QDIO_DBF_TRACE_LEN
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -13842,6 +13884,7 @@ id|qdio_irq
 op_star
 id|irq_ptr
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_char
 id|dbf_text
 (braket
@@ -13872,6 +13915,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -13925,6 +13969,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_if
 c_cond
 (paren
@@ -14015,6 +14060,7 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_if
 c_cond
 (paren
@@ -14646,7 +14692,7 @@ c_func
 id|qdio_dbf_trace
 )paren
 suffix:semicolon
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 r_if
 c_cond
 (paren
@@ -14669,7 +14715,7 @@ c_func
 id|qdio_dbf_slsb_in
 )paren
 suffix:semicolon
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 )brace
 r_static
 r_int
@@ -14840,7 +14886,7 @@ comma
 id|QDIO_DBF_TRACE_LEVEL
 )paren
 suffix:semicolon
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 id|qdio_dbf_slsb_out
 op_assign
 id|debug_register
@@ -14921,7 +14967,7 @@ comma
 id|QDIO_DBF_SLSB_IN_LEVEL
 )paren
 suffix:semicolon
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_return
 l_int|0
 suffix:semicolon

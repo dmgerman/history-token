@@ -31,7 +31,7 @@ DECL|macro|D2PRINTK
 mdefine_line|#define D2PRINTK(format,args...)
 macro_line|#endif
 DECL|macro|PRIV
-mdefine_line|#define PRIV(sch) ((struct ingress_qdisc_data *) (sch)-&gt;data)
+mdefine_line|#define PRIV(sch) qdisc_priv(sch)
 multiline_comment|/* Thanks to Doron Oz for this hack&n;*/
 macro_line|#ifndef CONFIG_NET_CLS_ACT
 macro_line|#ifdef CONFIG_NETFILTER

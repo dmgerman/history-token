@@ -66,8 +66,9 @@ DECL|macro|UART0_IO_BASE
 mdefine_line|#define UART0_IO_BASE&t;(u8 *) 0xE0000200
 DECL|macro|UART1_IO_BASE
 mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xE0000300
+multiline_comment|/* external Epson SG-615P */
 DECL|macro|BASE_BAUD
-mdefine_line|#define BASE_BAUD&t;33000000/3/16
+mdefine_line|#define BASE_BAUD&t;691200
 DECL|macro|STD_UART_OP
 mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: UART##num##_IO_BASE,&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 DECL|macro|SERIAL_PORT_DFNS

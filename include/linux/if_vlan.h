@@ -22,6 +22,9 @@ suffix:semicolon
 r_struct
 id|vlan_dev_info
 suffix:semicolon
+r_struct
+id|hlist_node
+suffix:semicolon
 macro_line|#include &lt;linux/proc_fs.h&gt; /* for proc_dir_entry */
 macro_line|#include &lt;linux/netdevice.h&gt;
 DECL|macro|VLAN_HLEN
@@ -131,6 +134,12 @@ r_int
 id|real_dev_ifindex
 suffix:semicolon
 multiline_comment|/* The ifindex of the ethernet(like) device the vlan is attached to. */
+DECL|member|hlist
+r_struct
+id|hlist_node
+id|hlist
+suffix:semicolon
+multiline_comment|/* linked list */
 DECL|member|vlan_devices
 r_struct
 id|net_device
@@ -140,13 +149,11 @@ id|vlan_devices
 id|VLAN_GROUP_ARRAY_LEN
 )braket
 suffix:semicolon
-DECL|member|next
+DECL|member|rcu
 r_struct
-id|vlan_group
-op_star
-id|next
+id|rcu_head
+id|rcu
 suffix:semicolon
-multiline_comment|/* the next in the list */
 )brace
 suffix:semicolon
 DECL|struct|vlan_priority_tci_mapping

@@ -8862,6 +8862,24 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If sendmsg cached page exists, toss it.&n;&t; */
+r_if
+c_cond
+(paren
+id|sk-&gt;sk_sndmsg_page
+)paren
+(brace
+id|__free_page
+c_func
+(paren
+id|sk-&gt;sk_sndmsg_page
+)paren
+suffix:semicolon
+id|sk-&gt;sk_sndmsg_page
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|atomic_dec
 c_func
 (paren

@@ -12877,21 +12877,6 @@ l_int|0
 comma
 id|rc
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-(brace
-multiline_comment|/* &quot;A request was outside the capabilities of the device.&quot; */
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 macro_line|#if IDETAPE_DEBUG_LOG
 r_if
 c_cond
@@ -13252,21 +13237,6 @@ id|actually_written
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-(brace
-multiline_comment|/* &quot;A request was outside the capabilities of the device.&quot; */
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 multiline_comment|/* The drive is write protected. */
 r_if
 c_cond
@@ -14769,6 +14739,14 @@ id|pc
 suffix:semicolon
 r_int
 id|retval
+suffix:semicolon
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|filp
+)paren
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG
 id|printk

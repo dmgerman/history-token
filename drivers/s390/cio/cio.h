@@ -687,6 +687,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Use with care. */
+macro_line|#ifdef CONFIG_CCW_CONSOLE
 r_extern
 r_struct
 id|subchannel
@@ -724,6 +725,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|cio_is_console
+mdefine_line|#define cio_is_console(irq) 0
+DECL|macro|cio_get_console_subchannel
+mdefine_line|#define cio_get_console_subchannel() NULL
+macro_line|#endif
 r_extern
 r_int
 id|cio_show_msg

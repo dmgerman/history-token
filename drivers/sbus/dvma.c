@@ -469,11 +469,6 @@ op_star
 id|dma
 suffix:semicolon
 r_struct
-id|sbus_dma
-op_star
-id|dchain
-suffix:semicolon
-r_struct
 id|resource
 id|r
 suffix:semicolon

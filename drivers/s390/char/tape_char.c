@@ -493,30 +493,6 @@ op_star
 )paren
 id|filp-&gt;private_data
 suffix:semicolon
-multiline_comment|/* Check position. */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|filp-&gt;f_pos
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * &quot;A request was outside the capabilities of the device.&quot;&n;&t;&t; * This check uses internal knowledge about how pread and&n;&t;&t; * read work...&n;&t;&t; */
-id|DBF_EVENT
-c_func
-(paren
-l_int|6
-comma
-l_string|&quot;TCHAR:ppos wrong&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOVERFLOW
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If the tape isn&squot;t terminated yet, do it now. And since we then&n;&t; * are at the end of the tape there wouldn&squot;t be anything to read&n;&t; * anyways. So we return immediatly.&n;&t; */
 r_if
 c_cond
@@ -776,30 +752,6 @@ op_star
 )paren
 id|filp-&gt;private_data
 suffix:semicolon
-multiline_comment|/* Check position */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|filp-&gt;f_pos
-)paren
-(brace
-multiline_comment|/* &quot;A request was outside the capabilities of the device.&quot; */
-id|DBF_EVENT
-c_func
-(paren
-l_int|6
-comma
-l_string|&quot;TCHAR:ppos wrong&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOVERFLOW
-suffix:semicolon
-)brace
 multiline_comment|/* Find out block size and number of blocks */
 r_if
 c_cond
@@ -1215,7 +1167,13 @@ op_assign
 id|device
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|filp
+)paren
 suffix:semicolon
 )brace
 id|tape_put_device

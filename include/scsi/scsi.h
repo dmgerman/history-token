@@ -331,58 +331,58 @@ r_struct
 id|ccs_modesel_head
 (brace
 DECL|member|_r1
-id|u8
+id|__u8
 id|_r1
 suffix:semicolon
 multiline_comment|/* reserved */
 DECL|member|medium
-id|u8
+id|__u8
 id|medium
 suffix:semicolon
 multiline_comment|/* device-specific medium type */
 DECL|member|_r2
-id|u8
+id|__u8
 id|_r2
 suffix:semicolon
 multiline_comment|/* reserved */
 DECL|member|block_desc_length
-id|u8
+id|__u8
 id|block_desc_length
 suffix:semicolon
 multiline_comment|/* block descriptor length */
 DECL|member|density
-id|u8
+id|__u8
 id|density
 suffix:semicolon
 multiline_comment|/* device-specific density code */
 DECL|member|number_blocks_hi
-id|u8
+id|__u8
 id|number_blocks_hi
 suffix:semicolon
 multiline_comment|/* number of blocks in this block desc */
 DECL|member|number_blocks_med
-id|u8
+id|__u8
 id|number_blocks_med
 suffix:semicolon
 DECL|member|number_blocks_lo
-id|u8
+id|__u8
 id|number_blocks_lo
 suffix:semicolon
 DECL|member|_r3
-id|u8
+id|__u8
 id|_r3
 suffix:semicolon
 DECL|member|block_length_hi
-id|u8
+id|__u8
 id|block_length_hi
 suffix:semicolon
 multiline_comment|/* block length for blocks in this desc */
 DECL|member|block_length_med
-id|u8
+id|__u8
 id|block_length_med
 suffix:semicolon
 DECL|member|block_length_lo
-id|u8
+id|__u8
 id|block_length_lo
 suffix:semicolon
 )brace
@@ -393,7 +393,7 @@ r_struct
 id|scsi_lun
 (brace
 DECL|member|scsi_lun
-id|u8
+id|__u8
 id|scsi_lun
 (braket
 l_int|8

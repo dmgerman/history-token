@@ -16,6 +16,8 @@ macro_line|#include &quot;islpci_eth.h&quot;
 macro_line|#include &quot;oid_mgt.h&quot;
 DECL|macro|ISL3877_IMAGE_FILE
 mdefine_line|#define ISL3877_IMAGE_FILE&t;&quot;isl3877&quot;
+DECL|macro|ISL3886_IMAGE_FILE
+mdefine_line|#define ISL3886_IMAGE_FILE&t;&quot;isl3886&quot;
 DECL|macro|ISL3890_IMAGE_FILE
 mdefine_line|#define ISL3890_IMAGE_FILE&t;&quot;isl3890&quot;
 r_static
@@ -557,6 +559,14 @@ id|powerstate
 op_assign
 id|ISL38XX_PSM_POWERSAVE_STATE
 suffix:semicolon
+multiline_comment|/* lock the interrupt handler */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|priv-&gt;slock
+)paren
+suffix:semicolon
 multiline_comment|/* received an interrupt request on a shared IRQ line&n;&t; * first check whether the device is in sleep mode */
 id|reg
 op_assign
@@ -587,33 +597,17 @@ l_string|&quot;Assuming someone else called the IRQ&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|IRQ_NONE
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|islpci_get_state
-c_func
-(paren
-id|priv
-)paren
-op_ne
-id|PRV_STATE_SLEEP
-)paren
-id|powerstate
-op_assign
-id|ISL38XX_PSM_ACTIVE_STATE
-suffix:semicolon
-multiline_comment|/* lock the interrupt handler */
-id|spin_lock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|priv-&gt;slock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 multiline_comment|/* check whether there is any source of interrupt on the device */
 id|reg
 op_assign
@@ -648,6 +642,21 @@ op_ne
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|islpci_get_state
+c_func
+(paren
+id|priv
+)paren
+op_ne
+id|PRV_STATE_SLEEP
+)paren
+id|powerstate
+op_assign
+id|ISL38XX_PSM_ACTIVE_STATE
+suffix:semicolon
 multiline_comment|/* reset the request bits in the Identification register */
 id|isl38xx_w32_flush
 c_func
@@ -1060,6 +1069,29 @@ id|priv-&gt;device_base
 )paren
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+macro_line|#if VERBOSE &gt; SHOW_ERROR_MESSAGES
+id|DEBUG
+c_func
+(paren
+id|SHOW_TRACING
+comma
+l_string|&quot;Assuming someone else called the IRQ&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|priv-&gt;slock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/* sleep -&gt; ready */
 r_if
@@ -2961,23 +2993,7 @@ id|pdev-&gt;device
 )paren
 (brace
 r_case
-id|PCIDEVICE_ISL3890
-suffix:colon
-r_case
-id|PCIDEVICE_3COM6001
-suffix:colon
-id|strcpy
-c_func
-(paren
-id|priv-&gt;firmware
-comma
-id|ISL3890_IMAGE_FILE
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PCIDEVICE_ISL3877
+l_int|0x3877
 suffix:colon
 id|strcpy
 c_func
@@ -2985,6 +3001,19 @@ c_func
 id|priv-&gt;firmware
 comma
 id|ISL3877_IMAGE_FILE
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x3886
+suffix:colon
+id|strcpy
+c_func
+(paren
+id|priv-&gt;firmware
+comma
+id|ISL3886_IMAGE_FILE
 )paren
 suffix:semicolon
 r_break

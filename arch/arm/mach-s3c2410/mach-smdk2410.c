@@ -220,7 +220,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2401_init_time
+id|s3c2410_init_time
 c_func
 (paren
 )paren

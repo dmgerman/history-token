@@ -147,6 +147,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_char
@@ -178,7 +182,8 @@ r_if
 c_cond
 (paren
 (paren
-id|file-&gt;f_pos
+op_star
+id|ppos
 op_logical_and
 op_logical_neg
 id|write
@@ -521,7 +526,8 @@ id|lenp
 op_sub_assign
 id|left
 suffix:semicolon
-id|file-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 op_star
 id|lenp
