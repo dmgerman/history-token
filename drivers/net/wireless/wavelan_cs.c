@@ -15989,11 +15989,7 @@ suffix:semicolon
 id|link-&gt;state
 op_and_assign
 op_complement
-(paren
 id|DEV_CONFIG
-op_or
-id|DEV_STALE_CONFIG
-)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
@@ -16006,96 +16002,19 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
-multiline_comment|/* wv_pcmcia_release */
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Sometimes, wavelan_detach can&squot;t be performed following a call from&n; * cardmgr (device still open, pcmcia_release not done) and the device&n; * is put in a STALE_LINK state and remains in memory.&n; *&n; * This function run through our current list of device and attempt&n; * another time to remove them. We hope that since last time the&n; * device has properly been closed.&n; *&n; * (called by wavelan_attach() &amp; cleanup_module())&n; */
-r_static
-r_void
-DECL|function|wv_flush_stale_links
-id|wv_flush_stale_links
-c_func
-(paren
-r_void
-)paren
-(brace
-id|dev_link_t
-op_star
-id|link
-suffix:semicolon
-multiline_comment|/* Current node in linked list */
-id|dev_link_t
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Next node in linked list */
-macro_line|#ifdef DEBUG_CONFIG_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;-&gt; wv_flush_stale_links(0x%p)&bslash;n&quot;
-comma
-id|dev_list
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Go through the list */
-r_for
-c_loop
-(paren
-id|link
-op_assign
-id|dev_list
-suffix:semicolon
-id|link
-suffix:semicolon
-id|link
-op_assign
-id|next
-)paren
-(brace
-id|next
-op_assign
-id|link-&gt;next
-suffix:semicolon
-multiline_comment|/* Check if in need of being removed */
 r_if
 c_cond
 (paren
-(paren
 id|link-&gt;state
 op_amp
-id|DEV_STALE_LINK
+id|DEV_STALE_CONFIG
 )paren
-op_logical_or
-(paren
-op_logical_neg
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_PRESENT
-)paren
-)paren
-)paren
-(brace
 id|wavelan_detach
 c_func
 (paren
 id|link
 )paren
 suffix:semicolon
-)brace
-)brace
-macro_line|#ifdef DEBUG_CONFIG_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;&lt;- wv_flush_stale_links()&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/************************ INTERRUPT HANDLING ************************/
 multiline_comment|/*&n; * This function is the interrupt handler for the WaveLAN card. This&n; * routine will be called whenever: &n; *&t;1. A packet is received.&n; *&t;2. A packet has successfully been transferred and the unit is&n; *&t;   ready to transmit another packet.&n; *&t;3. A command has completed execution.&n; */
@@ -17546,12 +17465,6 @@ l_string|&quot;-&gt; wavelan_attach()&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Perform some cleanup */
-id|wv_flush_stale_links
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize the dev_link_t structure */
 id|link
 op_assign
@@ -18079,10 +17992,6 @@ id|link-&gt;dev-&gt;dev_name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_LINK
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -18706,12 +18615,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Do some cleanup of the device list */
-id|wv_flush_stale_links
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pcmcia_unregister_driver
 c_func
 (paren

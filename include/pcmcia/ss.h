@@ -98,8 +98,6 @@ DECL|macro|SS_SPKR_ENA
 mdefine_line|#define SS_SPKR_ENA&t;0x0100
 DECL|macro|SS_OUTPUT_ENA
 mdefine_line|#define SS_OUTPUT_ENA&t;0x0200
-DECL|macro|SS_DEBOUNCED
-mdefine_line|#define SS_DEBOUNCED&t;0x0400&t;/* Tell driver that the debounce delay has ended */
 multiline_comment|/* Flags for I/O port and memory windows */
 DECL|macro|MAP_ACTIVE
 mdefine_line|#define MAP_ACTIVE&t;0x01
@@ -508,10 +506,6 @@ DECL|member|clients
 id|client_handle_t
 id|clients
 suffix:semicolon
-DECL|member|real_clients
-id|u_int
-id|real_clients
-suffix:semicolon
 DECL|member|cis_mem
 id|pccard_mem_map
 id|cis_mem
@@ -782,9 +776,6 @@ id|dev
 comma
 id|u32
 id|state
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 r_extern
@@ -796,9 +787,6 @@ r_struct
 id|device
 op_star
 id|dev
-comma
-id|u32
-id|level
 )paren
 suffix:semicolon
 macro_line|#endif /* _LINUX_SS_H */
