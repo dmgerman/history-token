@@ -3059,6 +3059,10 @@ r_if
 c_cond
 (paren
 id|err
+op_logical_or
+id|nlh-&gt;nlmsg_flags
+op_amp
+id|NLM_F_ACK
 )paren
 id|netlink_ack
 c_func
