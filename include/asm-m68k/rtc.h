@@ -6,20 +6,6 @@ mdefine_line|#define _ASM_RTC_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* a few implementation details for the emulation : */
-r_extern
-r_int
-id|gen_rtc_irq_flags
-suffix:semicolon
-multiline_comment|/* which sort(s) of interrupts caused int */
-r_extern
-r_int
-id|gen_rtc_irq_ctrl
-suffix:semicolon
-multiline_comment|/*                             are enabled */
-r_extern
-r_int
-id|q40rtc_oldsecs
-suffix:semicolon
 DECL|macro|RTC_PIE
 mdefine_line|#define RTC_PIE 0x40&t;&t;/* periodic interrupt enable */
 DECL|macro|RTC_AIE
