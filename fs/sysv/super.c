@@ -2284,7 +2284,7 @@ c_func
 (paren
 id|sb
 comma
-id|BLOCK_SIZE
+l_int|512
 )paren
 suffix:semicolon
 r_if
