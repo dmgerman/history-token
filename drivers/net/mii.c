@@ -591,7 +591,7 @@ id|ecmd-&gt;speed
 op_eq
 id|SPEED_100
 )paren
-id|bmcr
+id|tmp
 op_or_assign
 id|BMCR_SPEED100
 suffix:semicolon
@@ -603,7 +603,7 @@ op_eq
 id|DUPLEX_FULL
 )paren
 (brace
-id|bmcr
+id|tmp
 op_or_assign
 id|BMCR_FULLDPLX
 suffix:semicolon
@@ -635,7 +635,7 @@ id|mii-&gt;phy_id
 comma
 id|MII_BMCR
 comma
-id|bmcr
+id|tmp
 )paren
 suffix:semicolon
 id|mii-&gt;duplex_lock
