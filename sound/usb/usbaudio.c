@@ -14482,6 +14482,12 @@ comma
 id|iface
 )paren
 suffix:semicolon
+r_case
+id|QUIRK_IGNORE_INTERFACE
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
 r_default
 suffix:colon
 id|snd_printd

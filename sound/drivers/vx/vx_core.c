@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -2573,6 +2574,40 @@ comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|chip-&gt;card-&gt;longname
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Xilinx Firmware: %s&bslash;n&quot;
+comma
+id|chip-&gt;chip_status
+op_amp
+id|VX_STAT_XILINX_LOADED
+ques
+c_cond
+l_string|&quot;Loaded&quot;
+suffix:colon
+l_string|&quot;No&quot;
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Device Initialized: %s&bslash;n&quot;
+comma
+id|chip-&gt;chip_status
+op_amp
+id|VX_STAT_DEVICE_INIT
+ques
+c_cond
+l_string|&quot;Yes&quot;
+suffix:colon
+l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 id|snd_iprintf
