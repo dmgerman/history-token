@@ -1,0 +1,22 @@
+multiline_comment|/*&n; *  fs/partitions/amiga.h&n; */
+r_int
+id|amiga_partition
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|hd
+comma
+id|kdev_t
+id|dev
+comma
+r_int
+r_int
+id|first_sector
+comma
+r_int
+id|first_part_minor
+)paren
+suffix:semicolon
+eof

@@ -1,0 +1,390 @@
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+macro_line|#ifndef _ASM_SN_DRIVER_H
+DECL|macro|_ASM_SN_DRIVER_H
+mdefine_line|#define _ASM_SN_DRIVER_H
+multiline_comment|/*&n;** Interface for device driver handle management.&n;**&n;** These functions are mostly for use by the loadable driver code, and&n;** for use by I/O bus infrastructure code.&n;*/
+DECL|typedef|device_driver_t
+r_typedef
+r_struct
+id|device_driver_s
+op_star
+id|device_driver_t
+suffix:semicolon
+DECL|macro|DEVICE_DRIVER_NONE
+mdefine_line|#define DEVICE_DRIVER_NONE (device_driver_t)NULL
+multiline_comment|/* == Driver thread priority support == */
+DECL|typedef|ilvl_t
+r_typedef
+r_int
+id|ilvl_t
+suffix:semicolon
+multiline_comment|/* default driver thread priority level */
+DECL|macro|DRIVER_THREAD_PRI_DEFAULT
+mdefine_line|#define DRIVER_THREAD_PRI_DEFAULT&t;(ilvl_t)230
+multiline_comment|/* invalid driver thread priority level */
+DECL|macro|DRIVER_THREAD_PRI_INVALID
+mdefine_line|#define DRIVER_THREAD_PRI_INVALID&t;(ilvl_t)-1
+multiline_comment|/* Associate a thread priority with a driver */
+r_extern
+r_int
+id|device_driver_thread_pri_set
+c_func
+(paren
+id|device_driver_t
+id|driver
+comma
+id|ilvl_t
+id|pri
+)paren
+suffix:semicolon
+multiline_comment|/* Get the thread priority associated with the driver */
+r_extern
+id|ilvl_t
+id|device_driver_thread_pri_get
+c_func
+(paren
+id|device_driver_t
+id|driver
+)paren
+suffix:semicolon
+multiline_comment|/* Get the thread priority for a driver from the sysgen paramters */
+r_extern
+id|ilvl_t
+id|device_driver_sysgen_thread_pri_get
+c_func
+(paren
+r_char
+op_star
+id|driver_prefix
+)paren
+suffix:semicolon
+multiline_comment|/* Initialize device driver functions. */
+r_extern
+r_void
+id|device_driver_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Allocate a driver handle */
+r_extern
+id|device_driver_t
+id|device_driver_alloc
+c_func
+(paren
+r_char
+op_star
+id|prefix
+)paren
+suffix:semicolon
+multiline_comment|/* Free a driver handle */
+r_extern
+r_void
+id|device_driver_free
+c_func
+(paren
+id|device_driver_t
+id|driver
+)paren
+suffix:semicolon
+multiline_comment|/* Given a device driver prefix, return a handle to the driver. */
+r_extern
+id|device_driver_t
+id|device_driver_get
+c_func
+(paren
+r_char
+op_star
+id|prefix
+)paren
+suffix:semicolon
+multiline_comment|/* Given a device, return a handle to the driver. */
+r_extern
+id|device_driver_t
+id|device_driver_getbydev
+c_func
+(paren
+id|devfs_handle_t
+id|device
+)paren
+suffix:semicolon
+r_struct
+id|cdevsw
+suffix:semicolon
+r_struct
+id|bdevsw
+suffix:semicolon
+multiline_comment|/* Associate a driver with bdevsw/cdevsw pointers. */
+r_extern
+r_int
+id|device_driver_devsw_put
+c_func
+(paren
+id|device_driver_t
+id|driver
+comma
+r_struct
+id|bdevsw
+op_star
+id|my_bdevsw
+comma
+r_struct
+id|cdevsw
+op_star
+id|my_cdevsw
+)paren
+suffix:semicolon
+multiline_comment|/* Given a driver, return the corresponding bdevsw and cdevsw pointers. */
+r_extern
+r_void
+id|device_driver_devsw_get
+c_func
+(paren
+id|device_driver_t
+id|driver
+comma
+r_struct
+id|bdevsw
+op_star
+op_star
+id|bdevswp
+comma
+r_struct
+id|cdevsw
+op_star
+op_star
+id|cdevswp
+)paren
+suffix:semicolon
+multiline_comment|/* Given a driver, return its name (prefix). */
+r_extern
+r_void
+id|device_driver_name_get
+c_func
+(paren
+id|device_driver_t
+id|driver
+comma
+r_char
+op_star
+id|buffer
+comma
+r_int
+id|length
+)paren
+suffix:semicolon
+multiline_comment|/* &n; * A descriptor for every static device driver in the system.&n; * lboot creates a table of these and places in in master.c.&n; * device_driver_init runs through this table during initialization&n; * in order to &quot;register&quot; every static device driver.&n; */
+DECL|struct|static_device_driver_desc_s
+r_typedef
+r_struct
+id|static_device_driver_desc_s
+(brace
+DECL|member|sdd_prefix
+r_char
+op_star
+id|sdd_prefix
+suffix:semicolon
+DECL|member|sdd_bdevsw
+r_struct
+id|bdevsw
+op_star
+id|sdd_bdevsw
+suffix:semicolon
+DECL|member|sdd_cdevsw
+r_struct
+id|cdevsw
+op_star
+id|sdd_cdevsw
+suffix:semicolon
+DECL|typedef|static_device_driver_desc_t
+)brace
+op_star
+id|static_device_driver_desc_t
+suffix:semicolon
+r_extern
+r_struct
+id|static_device_driver_desc_s
+id|static_device_driver_table
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+id|static_devsw_count
+suffix:semicolon
+multiline_comment|/*====== administration support ========== */
+multiline_comment|/* structure of each entry in the table created by lboot for&n; * device / driver administration&n;*/
+DECL|struct|dev_admin_info_s
+r_typedef
+r_struct
+id|dev_admin_info_s
+(brace
+DECL|member|dai_name
+r_char
+op_star
+id|dai_name
+suffix:semicolon
+multiline_comment|/* name of the device or driver&n;&t;&t;&t;&t;&t; * prefix &n;&t;&t;&t;&t;&t; */
+DECL|member|dai_param_name
+r_char
+op_star
+id|dai_param_name
+suffix:semicolon
+multiline_comment|/* device or driver parameter name */
+DECL|member|dai_param_val
+r_char
+op_star
+id|dai_param_val
+suffix:semicolon
+multiline_comment|/* value of the parameter */
+DECL|typedef|dev_admin_info_t
+)brace
+id|dev_admin_info_t
+suffix:semicolon
+multiline_comment|/* Update all the administrative hints associated with the device */
+r_extern
+r_void
+id|device_admin_info_update
+c_func
+(paren
+id|devfs_handle_t
+id|dev_vhdl
+)paren
+suffix:semicolon
+multiline_comment|/* Update all the administrative hints associated with the device driver */
+r_extern
+r_void
+id|device_driver_admin_info_update
+c_func
+(paren
+id|device_driver_t
+id|driver
+)paren
+suffix:semicolon
+multiline_comment|/* Get a particular administrative hint associated with a device */
+r_extern
+r_char
+op_star
+id|device_admin_info_get
+c_func
+(paren
+id|devfs_handle_t
+id|dev_vhdl
+comma
+r_char
+op_star
+id|info_lbl
+)paren
+suffix:semicolon
+multiline_comment|/* Associate a particular administrative hint for a device */
+r_extern
+r_int
+id|device_admin_info_set
+c_func
+(paren
+id|devfs_handle_t
+id|dev_vhdl
+comma
+r_char
+op_star
+id|info_lbl
+comma
+r_char
+op_star
+id|info_val
+)paren
+suffix:semicolon
+multiline_comment|/* Get a particular administrative hint associated with a device driver*/
+r_extern
+r_char
+op_star
+id|device_driver_admin_info_get
+c_func
+(paren
+r_char
+op_star
+id|driver_prefix
+comma
+r_char
+op_star
+id|info_name
+)paren
+suffix:semicolon
+multiline_comment|/* Associate a particular administrative hint for a device driver*/
+r_extern
+r_int
+id|device_driver_admin_info_set
+c_func
+(paren
+r_char
+op_star
+id|driver_prefix
+comma
+r_char
+op_star
+id|driver_info_lbl
+comma
+r_char
+op_star
+id|driver_info_val
+)paren
+suffix:semicolon
+multiline_comment|/* Initialize the extended device administrative hint table */
+r_extern
+r_void
+id|device_admin_table_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Add a hint corresponding to a device to the extended device administrative&n; * hint table.&n; */
+r_extern
+r_void
+id|device_admin_table_update
+c_func
+(paren
+r_char
+op_star
+id|dev_name
+comma
+r_char
+op_star
+id|param_name
+comma
+r_char
+op_star
+id|param_val
+)paren
+suffix:semicolon
+multiline_comment|/* Initialize the extended device driver administrative hint table */
+r_extern
+r_void
+id|device_driver_admin_table_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Add a hint corresponding to a device to the extended device driver &n; * administrative hint table.&n; */
+r_extern
+r_void
+id|device_driver_admin_table_update
+c_func
+(paren
+r_char
+op_star
+id|drv_prefix
+comma
+r_char
+op_star
+id|param_name
+comma
+r_char
+op_star
+id|param_val
+)paren
+suffix:semicolon
+macro_line|#endif /* _ASM_SN_DRIVER_H */
+eof

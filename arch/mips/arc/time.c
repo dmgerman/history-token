@@ -1,0 +1,43 @@
+multiline_comment|/*&n; * time.c: Extracting time information from ARCS prom.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * $Id: time.c,v 1.1 1998/10/18 13:32:10 tsbogend Exp $&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/sgialib.h&gt;
+DECL|function|prom_gettinfo
+r_struct
+id|linux_tinfo
+op_star
+id|__init
+id|prom_gettinfo
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|romvec
+op_member_access_from_pointer
+id|get_tinfo
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|prom_getrtime
+r_int
+r_int
+id|__init
+id|prom_getrtime
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|romvec
+op_member_access_from_pointer
+id|get_rtime
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+eof

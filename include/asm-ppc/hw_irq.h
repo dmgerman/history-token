@@ -1,0 +1,167 @@
+multiline_comment|/*&n; * $Id: irq_control.h,v 1.8 1999/09/15 23:58:48 cort Exp $&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; */
+macro_line|#ifdef __KERNEL__
+macro_line|#ifndef _PPC_HW_IRQ_H
+DECL|macro|_PPC_HW_IRQ_H
+mdefine_line|#define _PPC_HW_IRQ_H
+DECL|struct|int_control_struct
+r_struct
+id|int_control_struct
+(brace
+DECL|member|int_cli
+r_void
+(paren
+op_star
+id|int_cli
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|int_sti
+r_void
+(paren
+op_star
+id|int_sti
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|int_restore_flags
+r_void
+(paren
+op_star
+id|int_restore_flags
+)paren
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|int_save_flags
+r_void
+(paren
+op_star
+id|int_save_flags
+)paren
+(paren
+r_int
+r_int
+op_star
+)paren
+suffix:semicolon
+DECL|member|int_set_lost
+r_void
+(paren
+op_star
+id|int_set_lost
+)paren
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|int_control_struct
+id|int_control
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|timer_interrupt_intercept
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|do_IRQ_intercept
+suffix:semicolon
+r_int
+id|timer_interrupt
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__no_use_sti
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__no_use_cli
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__no_use_restore_flags
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__no_use_save_flags
+c_func
+(paren
+r_int
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__no_use_set_lost
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|macro|__cli
+mdefine_line|#define __cli() int_control.int_cli()
+DECL|macro|__sti
+mdefine_line|#define __sti() int_control.int_sti()
+DECL|macro|__save_flags
+mdefine_line|#define __save_flags(flags) int_control.int_save_flags(&amp;flags)
+DECL|macro|__restore_flags
+mdefine_line|#define __restore_flags(flags) int_control.int_restore_flags(flags)
+DECL|macro|__save_and_cli
+mdefine_line|#define __save_and_cli(flags) ({__save_flags(flags);__cli();})
+DECL|macro|__set_lost
+mdefine_line|#define __set_lost(irq) ({ if ((ulong)int_control.int_set_lost) int_control.int_set_lost(irq); })
+r_extern
+r_void
+id|do_lost_interrupts
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+id|atomic_t
+id|ppc_n_lost_interrupts
+suffix:semicolon
+DECL|macro|mask_irq
+mdefine_line|#define mask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;disable) irq_desc[irq].handler-&gt;disable(irq);})
+DECL|macro|unmask_irq
+mdefine_line|#define unmask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;enable) irq_desc[irq].handler-&gt;enable(irq);})
+DECL|macro|mask_and_ack_irq
+mdefine_line|#define mask_and_ack_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;ack) irq_desc[irq].handler-&gt;ack(irq);})
+macro_line|#endif /* _PPC_HW_IRQ_H */
+macro_line|#endif /* __KERNEL__ */
+eof

@@ -1,0 +1,756 @@
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Global definitions for the ANSI FDDI interface.&n; *&n; * Version:&t;@(#)if_fddi.h&t;1.0.1&t;09/16/96&n; *&n; * Author:&t;Lawrence V. Stefani, &lt;stefani@lkg.dec.com&gt;&n; *&n; *&t;&t;if_fddi.h is based on previous if_ether.h and if_tr.h work by&n; *&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&t;&t;&t;Steve Whitehouse, &lt;gw7rrm@eeshack3.swan.ac.uk&gt;&n; *&t;&t;&t;Peter De Schrijver, &lt;stud11@cc4.kuleuven.ac.be&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+macro_line|#ifndef _LINUX_IF_FDDI_H
+DECL|macro|_LINUX_IF_FDDI_H
+mdefine_line|#define _LINUX_IF_FDDI_H
+multiline_comment|/*&n; *  Define max and min legal sizes.  The frame sizes do not include&n; *  4 byte FCS/CRC (frame check sequence).&n; */
+DECL|macro|FDDI_K_ALEN
+mdefine_line|#define FDDI_K_ALEN&t;&t;&t;6&t;&t;/* Octets in one FDDI address */
+DECL|macro|FDDI_K_8022_HLEN
+mdefine_line|#define FDDI_K_8022_HLEN&t;16&t;&t;/* Total octets in 802.2 header */
+DECL|macro|FDDI_K_SNAP_HLEN
+mdefine_line|#define FDDI_K_SNAP_HLEN&t;21&t;&t;/* Total octets in 802.2 SNAP header */
+DECL|macro|FDDI_K_8022_ZLEN
+mdefine_line|#define FDDI_K_8022_ZLEN&t;16&t;&t;/* Min octets in 802.2 frame sans FCS */
+DECL|macro|FDDI_K_SNAP_ZLEN
+mdefine_line|#define FDDI_K_SNAP_ZLEN&t;21&t;&t;/* Min octets in 802.2 SNAP frame sans FCS */
+DECL|macro|FDDI_K_8022_DLEN
+mdefine_line|#define FDDI_K_8022_DLEN&t;4475&t;/* Max octets in 802.2 payload */
+DECL|macro|FDDI_K_SNAP_DLEN
+mdefine_line|#define FDDI_K_SNAP_DLEN&t;4470&t;/* Max octets in 802.2 SNAP payload */
+DECL|macro|FDDI_K_LLC_ZLEN
+mdefine_line|#define FDDI_K_LLC_ZLEN&t;&t;13&t;&t;/* Min octets in LLC frame sans FCS */
+DECL|macro|FDDI_K_LLC_LEN
+mdefine_line|#define FDDI_K_LLC_LEN&t;&t;4491&t;/* Max octets in LLC frame sans FCS */
+multiline_comment|/* Define FDDI Frame Control (FC) Byte values */
+DECL|macro|FDDI_FC_K_VOID
+mdefine_line|#define FDDI_FC_K_VOID&t;&t;&t;&t;&t;0x00&t;
+DECL|macro|FDDI_FC_K_NON_RESTRICTED_TOKEN
+mdefine_line|#define FDDI_FC_K_NON_RESTRICTED_TOKEN&t;0x80&t;
+DECL|macro|FDDI_FC_K_RESTRICTED_TOKEN
+mdefine_line|#define FDDI_FC_K_RESTRICTED_TOKEN&t;&t;0xC0&t;
+DECL|macro|FDDI_FC_K_SMT_MIN
+mdefine_line|#define FDDI_FC_K_SMT_MIN&t;&t;&t;&t;0x41
+DECL|macro|FDDI_FC_K_SMT_MAX
+mdefine_line|#define FDDI_FC_K_SMT_MAX&t;&t;   &t;&t;0x4F
+DECL|macro|FDDI_FC_K_MAC_MIN
+mdefine_line|#define FDDI_FC_K_MAC_MIN&t;&t;&t;&t;0xC1
+DECL|macro|FDDI_FC_K_MAC_MAX
+mdefine_line|#define FDDI_FC_K_MAC_MAX&t;&t;  &t;&t;0xCF&t;
+DECL|macro|FDDI_FC_K_ASYNC_LLC_MIN
+mdefine_line|#define FDDI_FC_K_ASYNC_LLC_MIN&t;&t;&t;0x50
+DECL|macro|FDDI_FC_K_ASYNC_LLC_DEF
+mdefine_line|#define FDDI_FC_K_ASYNC_LLC_DEF&t;&t;&t;0x54
+DECL|macro|FDDI_FC_K_ASYNC_LLC_MAX
+mdefine_line|#define FDDI_FC_K_ASYNC_LLC_MAX&t;&t;&t;0x5F
+DECL|macro|FDDI_FC_K_SYNC_LLC_MIN
+mdefine_line|#define FDDI_FC_K_SYNC_LLC_MIN&t;&t;&t;0xD0
+DECL|macro|FDDI_FC_K_SYNC_LLC_MAX
+mdefine_line|#define FDDI_FC_K_SYNC_LLC_MAX&t;&t;&t;0xD7
+DECL|macro|FDDI_FC_K_IMPLEMENTOR_MIN
+mdefine_line|#define FDDI_FC_K_IMPLEMENTOR_MIN&t;&t;0x60
+DECL|macro|FDDI_FC_K_IMPLEMENTOR_MAX
+mdefine_line|#define FDDI_FC_K_IMPLEMENTOR_MAX  &t;&t;0x6F
+DECL|macro|FDDI_FC_K_RESERVED_MIN
+mdefine_line|#define FDDI_FC_K_RESERVED_MIN&t;&t;&t;0x70
+DECL|macro|FDDI_FC_K_RESERVED_MAX
+mdefine_line|#define FDDI_FC_K_RESERVED_MAX&t;&t;&t;0x7F
+multiline_comment|/* Define LLC and SNAP constants */
+DECL|macro|FDDI_EXTENDED_SAP
+mdefine_line|#define FDDI_EXTENDED_SAP&t;0xAA
+DECL|macro|FDDI_UI_CMD
+mdefine_line|#define FDDI_UI_CMD&t;&t;&t;0x03
+multiline_comment|/* Define 802.2 Type 1 header */
+DECL|struct|fddi_8022_1_hdr
+r_struct
+id|fddi_8022_1_hdr
+(brace
+DECL|member|dsap
+id|__u8
+id|dsap
+suffix:semicolon
+multiline_comment|/* destination service access point */
+DECL|member|ssap
+id|__u8
+id|ssap
+suffix:semicolon
+multiline_comment|/* source service access point */
+DECL|member|ctrl
+id|__u8
+id|ctrl
+suffix:semicolon
+multiline_comment|/* control byte #1 */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Define 802.2 Type 2 header */
+DECL|struct|fddi_8022_2_hdr
+r_struct
+id|fddi_8022_2_hdr
+(brace
+DECL|member|dsap
+id|__u8
+id|dsap
+suffix:semicolon
+multiline_comment|/* destination service access point */
+DECL|member|ssap
+id|__u8
+id|ssap
+suffix:semicolon
+multiline_comment|/* source service access point */
+DECL|member|ctrl_1
+id|__u8
+id|ctrl_1
+suffix:semicolon
+multiline_comment|/* control byte #1 */
+DECL|member|ctrl_2
+id|__u8
+id|ctrl_2
+suffix:semicolon
+multiline_comment|/* control byte #2 */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Define 802.2 SNAP header */
+DECL|macro|FDDI_K_OUI_LEN
+mdefine_line|#define FDDI_K_OUI_LEN&t;3
+DECL|struct|fddi_snap_hdr
+r_struct
+id|fddi_snap_hdr
+(brace
+DECL|member|dsap
+id|__u8
+id|dsap
+suffix:semicolon
+multiline_comment|/* always 0xAA */
+DECL|member|ssap
+id|__u8
+id|ssap
+suffix:semicolon
+multiline_comment|/* always 0xAA */
+DECL|member|ctrl
+id|__u8
+id|ctrl
+suffix:semicolon
+multiline_comment|/* always 0x03 */
+DECL|member|oui
+id|__u8
+id|oui
+(braket
+id|FDDI_K_OUI_LEN
+)braket
+suffix:semicolon
+multiline_comment|/* organizational universal id */
+DECL|member|ethertype
+id|__u16
+id|ethertype
+suffix:semicolon
+multiline_comment|/* packet type ID field */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Define FDDI LLC frame header */
+DECL|struct|fddihdr
+r_struct
+id|fddihdr
+(brace
+DECL|member|fc
+id|__u8
+id|fc
+suffix:semicolon
+multiline_comment|/* frame control */
+DECL|member|daddr
+id|__u8
+id|daddr
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+multiline_comment|/* destination address */
+DECL|member|saddr
+id|__u8
+id|saddr
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+multiline_comment|/* source address */
+r_union
+(brace
+DECL|member|llc_8022_1
+r_struct
+id|fddi_8022_1_hdr
+id|llc_8022_1
+suffix:semicolon
+DECL|member|llc_8022_2
+r_struct
+id|fddi_8022_2_hdr
+id|llc_8022_2
+suffix:semicolon
+DECL|member|llc_snap
+r_struct
+id|fddi_snap_hdr
+id|llc_snap
+suffix:semicolon
+DECL|member|hdr
+)brace
+id|hdr
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Define FDDI statistics structure */
+DECL|struct|fddi_statistics
+r_struct
+id|fddi_statistics
+(brace
+DECL|member|rx_packets
+id|__u32
+id|rx_packets
+suffix:semicolon
+multiline_comment|/* total packets received */
+DECL|member|tx_packets
+id|__u32
+id|tx_packets
+suffix:semicolon
+multiline_comment|/* total packets transmitted */
+DECL|member|rx_bytes
+id|__u32
+id|rx_bytes
+suffix:semicolon
+multiline_comment|/* total bytes received&t;*/
+DECL|member|tx_bytes
+id|__u32
+id|tx_bytes
+suffix:semicolon
+multiline_comment|/* total bytes transmitted */
+DECL|member|rx_errors
+id|__u32
+id|rx_errors
+suffix:semicolon
+multiline_comment|/* bad packets received&t;*/
+DECL|member|tx_errors
+id|__u32
+id|tx_errors
+suffix:semicolon
+multiline_comment|/* packet transmit problems&t;*/
+DECL|member|rx_dropped
+id|__u32
+id|rx_dropped
+suffix:semicolon
+multiline_comment|/* no space in linux buffers */
+DECL|member|tx_dropped
+id|__u32
+id|tx_dropped
+suffix:semicolon
+multiline_comment|/* no space available in linux */
+DECL|member|multicast
+id|__u32
+id|multicast
+suffix:semicolon
+multiline_comment|/* multicast packets received */
+DECL|member|transmit_collision
+id|__u32
+id|transmit_collision
+suffix:semicolon
+multiline_comment|/* always 0 for FDDI */
+multiline_comment|/* detailed rx_errors */
+DECL|member|rx_length_errors
+id|__u32
+id|rx_length_errors
+suffix:semicolon
+DECL|member|rx_over_errors
+id|__u32
+id|rx_over_errors
+suffix:semicolon
+multiline_comment|/* receiver ring buff overflow&t;*/
+DECL|member|rx_crc_errors
+id|__u32
+id|rx_crc_errors
+suffix:semicolon
+multiline_comment|/* recved pkt with crc error&t;*/
+DECL|member|rx_frame_errors
+id|__u32
+id|rx_frame_errors
+suffix:semicolon
+multiline_comment|/* recv&squot;d frame alignment error */
+DECL|member|rx_fifo_errors
+id|__u32
+id|rx_fifo_errors
+suffix:semicolon
+multiline_comment|/* recv&squot;r fifo overrun&t;&t;*/
+DECL|member|rx_missed_errors
+id|__u32
+id|rx_missed_errors
+suffix:semicolon
+multiline_comment|/* receiver missed packet&t;*/
+multiline_comment|/* detailed tx_errors */
+DECL|member|tx_aborted_errors
+id|__u32
+id|tx_aborted_errors
+suffix:semicolon
+DECL|member|tx_carrier_errors
+id|__u32
+id|tx_carrier_errors
+suffix:semicolon
+DECL|member|tx_fifo_errors
+id|__u32
+id|tx_fifo_errors
+suffix:semicolon
+DECL|member|tx_heartbeat_errors
+id|__u32
+id|tx_heartbeat_errors
+suffix:semicolon
+DECL|member|tx_window_errors
+id|__u32
+id|tx_window_errors
+suffix:semicolon
+multiline_comment|/* for cslip etc */
+DECL|member|rx_compressed
+id|__u32
+id|rx_compressed
+suffix:semicolon
+DECL|member|tx_compressed
+id|__u32
+id|tx_compressed
+suffix:semicolon
+multiline_comment|/* Detailed FDDI statistics.  Adopted from RFC 1512 */
+DECL|member|smt_station_id
+id|__u8
+id|smt_station_id
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|smt_op_version_id
+id|__u32
+id|smt_op_version_id
+suffix:semicolon
+DECL|member|smt_hi_version_id
+id|__u32
+id|smt_hi_version_id
+suffix:semicolon
+DECL|member|smt_lo_version_id
+id|__u32
+id|smt_lo_version_id
+suffix:semicolon
+DECL|member|smt_user_data
+id|__u8
+id|smt_user_data
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|smt_mib_version_id
+id|__u32
+id|smt_mib_version_id
+suffix:semicolon
+DECL|member|smt_mac_cts
+id|__u32
+id|smt_mac_cts
+suffix:semicolon
+DECL|member|smt_non_master_cts
+id|__u32
+id|smt_non_master_cts
+suffix:semicolon
+DECL|member|smt_master_cts
+id|__u32
+id|smt_master_cts
+suffix:semicolon
+DECL|member|smt_available_paths
+id|__u32
+id|smt_available_paths
+suffix:semicolon
+DECL|member|smt_config_capabilities
+id|__u32
+id|smt_config_capabilities
+suffix:semicolon
+DECL|member|smt_config_policy
+id|__u32
+id|smt_config_policy
+suffix:semicolon
+DECL|member|smt_connection_policy
+id|__u32
+id|smt_connection_policy
+suffix:semicolon
+DECL|member|smt_t_notify
+id|__u32
+id|smt_t_notify
+suffix:semicolon
+DECL|member|smt_stat_rpt_policy
+id|__u32
+id|smt_stat_rpt_policy
+suffix:semicolon
+DECL|member|smt_trace_max_expiration
+id|__u32
+id|smt_trace_max_expiration
+suffix:semicolon
+DECL|member|smt_bypass_present
+id|__u32
+id|smt_bypass_present
+suffix:semicolon
+DECL|member|smt_ecm_state
+id|__u32
+id|smt_ecm_state
+suffix:semicolon
+DECL|member|smt_cf_state
+id|__u32
+id|smt_cf_state
+suffix:semicolon
+DECL|member|smt_remote_disconnect_flag
+id|__u32
+id|smt_remote_disconnect_flag
+suffix:semicolon
+DECL|member|smt_station_status
+id|__u32
+id|smt_station_status
+suffix:semicolon
+DECL|member|smt_peer_wrap_flag
+id|__u32
+id|smt_peer_wrap_flag
+suffix:semicolon
+DECL|member|smt_time_stamp
+id|__u32
+id|smt_time_stamp
+suffix:semicolon
+DECL|member|smt_transition_time_stamp
+id|__u32
+id|smt_transition_time_stamp
+suffix:semicolon
+DECL|member|mac_frame_status_functions
+id|__u32
+id|mac_frame_status_functions
+suffix:semicolon
+DECL|member|mac_t_max_capability
+id|__u32
+id|mac_t_max_capability
+suffix:semicolon
+DECL|member|mac_tvx_capability
+id|__u32
+id|mac_tvx_capability
+suffix:semicolon
+DECL|member|mac_available_paths
+id|__u32
+id|mac_available_paths
+suffix:semicolon
+DECL|member|mac_current_path
+id|__u32
+id|mac_current_path
+suffix:semicolon
+DECL|member|mac_upstream_nbr
+id|__u8
+id|mac_upstream_nbr
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+DECL|member|mac_downstream_nbr
+id|__u8
+id|mac_downstream_nbr
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+DECL|member|mac_old_upstream_nbr
+id|__u8
+id|mac_old_upstream_nbr
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+DECL|member|mac_old_downstream_nbr
+id|__u8
+id|mac_old_downstream_nbr
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+DECL|member|mac_dup_address_test
+id|__u32
+id|mac_dup_address_test
+suffix:semicolon
+DECL|member|mac_requested_paths
+id|__u32
+id|mac_requested_paths
+suffix:semicolon
+DECL|member|mac_downstream_port_type
+id|__u32
+id|mac_downstream_port_type
+suffix:semicolon
+DECL|member|mac_smt_address
+id|__u8
+id|mac_smt_address
+(braket
+id|FDDI_K_ALEN
+)braket
+suffix:semicolon
+DECL|member|mac_t_req
+id|__u32
+id|mac_t_req
+suffix:semicolon
+DECL|member|mac_t_neg
+id|__u32
+id|mac_t_neg
+suffix:semicolon
+DECL|member|mac_t_max
+id|__u32
+id|mac_t_max
+suffix:semicolon
+DECL|member|mac_tvx_value
+id|__u32
+id|mac_tvx_value
+suffix:semicolon
+DECL|member|mac_frame_cts
+id|__u32
+id|mac_frame_cts
+suffix:semicolon
+DECL|member|mac_copied_cts
+id|__u32
+id|mac_copied_cts
+suffix:semicolon
+DECL|member|mac_transmit_cts
+id|__u32
+id|mac_transmit_cts
+suffix:semicolon
+DECL|member|mac_error_cts
+id|__u32
+id|mac_error_cts
+suffix:semicolon
+DECL|member|mac_lost_cts
+id|__u32
+id|mac_lost_cts
+suffix:semicolon
+DECL|member|mac_frame_error_threshold
+id|__u32
+id|mac_frame_error_threshold
+suffix:semicolon
+DECL|member|mac_frame_error_ratio
+id|__u32
+id|mac_frame_error_ratio
+suffix:semicolon
+DECL|member|mac_rmt_state
+id|__u32
+id|mac_rmt_state
+suffix:semicolon
+DECL|member|mac_da_flag
+id|__u32
+id|mac_da_flag
+suffix:semicolon
+DECL|member|mac_una_da_flag
+id|__u32
+id|mac_una_da_flag
+suffix:semicolon
+DECL|member|mac_frame_error_flag
+id|__u32
+id|mac_frame_error_flag
+suffix:semicolon
+DECL|member|mac_ma_unitdata_available
+id|__u32
+id|mac_ma_unitdata_available
+suffix:semicolon
+DECL|member|mac_hardware_present
+id|__u32
+id|mac_hardware_present
+suffix:semicolon
+DECL|member|mac_ma_unitdata_enable
+id|__u32
+id|mac_ma_unitdata_enable
+suffix:semicolon
+DECL|member|path_tvx_lower_bound
+id|__u32
+id|path_tvx_lower_bound
+suffix:semicolon
+DECL|member|path_t_max_lower_bound
+id|__u32
+id|path_t_max_lower_bound
+suffix:semicolon
+DECL|member|path_max_t_req
+id|__u32
+id|path_max_t_req
+suffix:semicolon
+DECL|member|path_configuration
+id|__u32
+id|path_configuration
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|port_my_type
+id|__u32
+id|port_my_type
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_neighbor_type
+id|__u32
+id|port_neighbor_type
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_connection_policies
+id|__u32
+id|port_connection_policies
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_mac_indicated
+id|__u32
+id|port_mac_indicated
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_current_path
+id|__u32
+id|port_current_path
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_requested_paths
+id|__u8
+id|port_requested_paths
+(braket
+l_int|3
+op_star
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_mac_placement
+id|__u32
+id|port_mac_placement
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_available_paths
+id|__u32
+id|port_available_paths
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_pmd_class
+id|__u32
+id|port_pmd_class
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_connection_capabilities
+id|__u32
+id|port_connection_capabilities
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_bs_flag
+id|__u32
+id|port_bs_flag
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_lct_fail_cts
+id|__u32
+id|port_lct_fail_cts
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_ler_estimate
+id|__u32
+id|port_ler_estimate
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_lem_reject_cts
+id|__u32
+id|port_lem_reject_cts
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_lem_cts
+id|__u32
+id|port_lem_cts
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_ler_cutoff
+id|__u32
+id|port_ler_cutoff
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_ler_alarm
+id|__u32
+id|port_ler_alarm
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_connect_state
+id|__u32
+id|port_connect_state
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_pcm_state
+id|__u32
+id|port_pcm_state
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_pc_withhold
+id|__u32
+id|port_pc_withhold
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_ler_flag
+id|__u32
+id|port_ler_flag
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|port_hardware_present
+id|__u32
+id|port_hardware_present
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif&t;/* _LINUX_IF_FDDI_H */
+eof

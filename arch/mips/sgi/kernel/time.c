@@ -1,0 +1,64 @@
+multiline_comment|/*&n; * time.c: Generic SGI handler for (spurious) 8254 interrupts&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;asm/sgialib.h&gt;
+DECL|function|indy_8254timer_irq
+r_void
+id|indy_8254timer_irq
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+id|irq
+op_assign
+l_int|4
+suffix:semicolon
+id|irq_enter
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+id|kstat.irqs
+(braket
+l_int|0
+)braket
+(braket
+id|irq
+)braket
+op_increment
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;indy_8254timer_irq: Whoops, should not have gotten this IRQ&bslash;n&quot;
+)paren
+suffix:semicolon
+id|prom_getchar
+c_func
+(paren
+)paren
+suffix:semicolon
+id|prom_imode
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+)brace
+eof

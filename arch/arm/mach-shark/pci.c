@@ -1,0 +1,72 @@
+multiline_comment|/*&n; *  linux/arch/arm/mach-shark/pci.c&n; *&n; *  PCI bios-type initialisation for PCI machines&n; *&n; *  Bits taken from various places.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/mach/pci.h&gt;
+DECL|function|shark_map_irq
+r_static
+r_int
+id|__init
+id|shark_map_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u8
+id|slot
+comma
+id|u8
+id|pin
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;number
+op_eq
+l_int|0
+)paren
+r_if
+c_cond
+(paren
+id|dev-&gt;devfn
+op_eq
+l_int|0
+)paren
+r_return
+l_int|255
+suffix:semicolon
+r_else
+r_return
+l_int|11
+suffix:semicolon
+r_else
+r_return
+l_int|6
+suffix:semicolon
+)brace
+DECL|variable|__initdata
+r_struct
+id|hw_pci
+id|shark_pci
+id|__initdata
+op_assign
+(brace
+id|init
+suffix:colon
+id|via82c505_init
+comma
+id|swizzle
+suffix:colon
+id|no_swizzle
+comma
+id|map_irq
+suffix:colon
+id|shark_map_irq
+)brace
+suffix:semicolon
+eof

@@ -1,0 +1,127 @@
+multiline_comment|/* dvma support routines */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/sun3mmu.h&gt;
+macro_line|#include &lt;asm/dvma.h&gt;
+DECL|variable|dvma_next_free
+r_int
+r_int
+id|dvma_next_free
+op_assign
+id|DVMA_START
+suffix:semicolon
+DECL|variable|dvma_region_end
+r_int
+r_int
+id|dvma_region_end
+op_assign
+id|DVMA_START
+op_plus
+(paren
+id|DVMA_RESERVED_PMEGS
+op_star
+id|SUN3_PMEG_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* reserve such dma memory as we see fit */
+DECL|function|sun3_dvma_init
+r_void
+id|sun3_dvma_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|dvma_phys_start
+suffix:semicolon
+id|dvma_phys_start
+op_assign
+(paren
+id|sun3_get_pte
+c_func
+(paren
+id|DVMA_START
+)paren
+op_amp
+id|SUN3_PAGE_PGNUM_MASK
+)paren
+suffix:semicolon
+id|dvma_phys_start
+op_lshift_assign
+id|PAGE_SHIFT
+suffix:semicolon
+id|reserve_bootmem
+c_func
+(paren
+id|dvma_phys_start
+comma
+(paren
+id|DVMA_RESERVED_PMEGS
+op_star
+id|SUN3_PMEG_SIZE
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* get needed number of free dma pages, or panic if not enough */
+DECL|function|sun3_dvma_malloc
+r_void
+op_star
+id|sun3_dvma_malloc
+c_func
+(paren
+r_int
+id|len
+)paren
+(brace
+r_int
+r_int
+id|vaddr
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|dvma_next_free
+op_plus
+id|len
+)paren
+OG
+id|dvma_region_end
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;sun3_dvma_malloc: out of dvma pages&quot;
+)paren
+suffix:semicolon
+)brace
+id|vaddr
+op_assign
+id|dvma_next_free
+suffix:semicolon
+id|dvma_next_free
+op_assign
+id|DVMA_ALIGN
+c_func
+(paren
+id|dvma_next_free
+op_plus
+id|len
+)paren
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+id|vaddr
+suffix:semicolon
+)brace
+eof

@@ -1,0 +1,80 @@
+multiline_comment|/* $Id: segment.c,v 1.7 2000/08/26 02:38:03 anton Exp $&n; * segment.c:  Prom routine to map segments in other contexts before&n; *             a standalone is completely mapped.  This is for sun4 and&n; *             sun4c architectures only.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/openprom.h&gt;
+macro_line|#include &lt;asm/oplib.h&gt;
+r_extern
+r_void
+id|restore_current
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Set physical segment &squot;segment&squot; at virtual address &squot;vaddr&squot; in&n; * context &squot;ctx&squot;.&n; */
+r_void
+DECL|function|prom_putsegment
+id|prom_putsegment
+c_func
+(paren
+r_int
+id|ctx
+comma
+r_int
+r_int
+id|vaddr
+comma
+r_int
+id|segment
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|prom_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+(paren
+op_star
+(paren
+id|romvec-&gt;pv_setctxt
+)paren
+)paren
+(paren
+id|ctx
+comma
+(paren
+r_char
+op_star
+)paren
+id|vaddr
+comma
+id|segment
+)paren
+suffix:semicolon
+id|restore_current
+c_func
+(paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|prom_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+eof

@@ -1,0 +1,81 @@
+multiline_comment|/*&n;mac_esp.h&n;&n;copyright 1997 David Weis, weisd3458@uni.edu&n;*/
+macro_line|#include &quot;NCR53C9x.h&quot;
+macro_line|#ifndef MAC_ESP_H
+DECL|macro|MAC_ESP_H
+mdefine_line|#define MAC_ESP_H
+multiline_comment|/* #define DEBUG_MAC_ESP */
+r_extern
+r_int
+id|mac_esp_detect
+c_func
+(paren
+r_struct
+id|SHT
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|esp_info
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|esp_queue
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+comma
+r_void
+(paren
+op_star
+id|done
+)paren
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|esp_command
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|esp_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|esp_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|macro|SCSI_MAC_ESP
+mdefine_line|#define SCSI_MAC_ESP      { proc_name:&t;&t;&quot;esp&quot;, &bslash;&n;&t;&t;&t;    name:&t;&t;&quot;Mac 53C9x SCSI&quot;, &bslash;&n;&t;&t;&t;    detect:&t;&t;mac_esp_detect, &bslash;&n;&t;&t;&t;    release:&t;&t;NULL, &bslash;&n;&t;&t;&t;    info:&t;&t;esp_info, &bslash;&n;&t;&t;&t;    /* command:&t;&t;esp_command, */ &bslash;&n;&t;&t;&t;    queuecommand:&t;esp_queue, &bslash;&n;&t;&t;&t;    abort:&t;&t;esp_abort, &bslash;&n;&t;&t;&t;    reset:&t;&t;esp_reset, &bslash;&n;&t;&t;&t;    can_queue:          7, &bslash;&n;&t;&t;&t;    this_id:&t;&t;7, &bslash;&n;&t;&t;&t;    sg_tablesize:&t;SG_ALL, &bslash;&n;&t;&t;&t;    cmd_per_lun:&t;1, &bslash;&n;&t;&t;&t;    use_clustering:&t;DISABLE_CLUSTERING, &bslash;&n;&t;&t;&t;    use_new_eh_code:&t;0 }
+macro_line|#endif /* MAC_ESP_H */
+eof

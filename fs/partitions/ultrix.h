@@ -1,0 +1,22 @@
+multiline_comment|/*&n; *  fs/partitions/ultrix.h&n; */
+r_int
+id|ultrix_partition
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|hd
+comma
+id|kdev_t
+id|dev
+comma
+r_int
+r_int
+id|first_sector
+comma
+r_int
+id|first_part_minor
+)paren
+suffix:semicolon
+eof

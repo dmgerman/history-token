@@ -1,0 +1,4 @@
+multiline_comment|/*---------------------------------------------------------------------------+&n; |  version.h                                                                |&n; |                                                                           |&n; |                                                                           |&n; | Copyright (C) 1992,1993,1994,1996,1997,1999                               |&n; |                  W. Metzenthen, 22 Parker St, Ormond, Vic 3163, Australia |&n; |                  E-mail   billm@melbpc.org.au                             |&n; |                                                                           |&n; |                                                                           |&n; +---------------------------------------------------------------------------*/
+DECL|macro|FPU_VERSION
+mdefine_line|#define FPU_VERSION &quot;wm-FPU-emu version 2.01&quot;
+eof

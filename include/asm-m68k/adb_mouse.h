@@ -1,0 +1,42 @@
+macro_line|#ifndef _ASM_ADB_MOUSE_H
+DECL|macro|_ASM_ADB_MOUSE_H
+mdefine_line|#define _ASM_ADB_MOUSE_H
+multiline_comment|/*&n; * linux/include/asm-m68k/adb_mouse.h&n; * header file for Macintosh ADB mouse driver&n; * 27-10-97 Michael Schmitz&n; * copied from:&n; * header file for Atari Mouse driver&n; * by Robert de Vries (robert@and.nl) on 19Jul93&n; */
+DECL|struct|mouse_status
+r_struct
+id|mouse_status
+(brace
+DECL|member|buttons
+r_char
+id|buttons
+suffix:semicolon
+DECL|member|dx
+r_int
+id|dx
+suffix:semicolon
+DECL|member|dy
+r_int
+id|dy
+suffix:semicolon
+DECL|member|ready
+r_int
+id|ready
+suffix:semicolon
+DECL|member|active
+r_int
+id|active
+suffix:semicolon
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
+DECL|member|fasyncptr
+r_struct
+id|fasync_struct
+op_star
+id|fasyncptr
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
+eof

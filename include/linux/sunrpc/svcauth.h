@@ -1,0 +1,125 @@
+multiline_comment|/*&n; * linux/include/linux/sunrpc/svcauth.h&n; *&n; * RPC server-side authentication stuff.&n; *&n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+macro_line|#ifndef _LINUX_SUNRPC_SVCAUTH_H_
+DECL|macro|_LINUX_SUNRPC_SVCAUTH_H_
+mdefine_line|#define _LINUX_SUNRPC_SVCAUTH_H_
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/sunrpc/msg_prot.h&gt;
+DECL|struct|svc_cred
+r_struct
+id|svc_cred
+(brace
+DECL|member|cr_flavor
+id|u32
+id|cr_flavor
+suffix:semicolon
+DECL|member|cr_uid
+id|uid_t
+id|cr_uid
+suffix:semicolon
+DECL|member|cr_gid
+id|gid_t
+id|cr_gid
+suffix:semicolon
+DECL|member|cr_groups
+id|gid_t
+id|cr_groups
+(braket
+id|NGROUPS
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|svc_rqst
+suffix:semicolon
+multiline_comment|/* forward decl */
+r_void
+id|svc_authenticate
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+id|u32
+op_star
+id|statp
+comma
+id|u32
+op_star
+id|authp
+)paren
+suffix:semicolon
+r_int
+id|svc_auth_register
+c_func
+(paren
+id|u32
+id|flavor
+comma
+r_void
+(paren
+op_star
+)paren
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+id|u32
+op_star
+comma
+id|u32
+op_star
+)paren
+)paren
+suffix:semicolon
+r_void
+id|svc_auth_unregister
+c_func
+(paren
+id|u32
+id|flavor
+)paren
+suffix:semicolon
+macro_line|#if 0
+multiline_comment|/*&n; * Decoded AUTH_UNIX data. This is different from what&squot;s in the RPC lib.&n; */
+mdefine_line|#define NGRPS&t;&t;16
+r_struct
+id|authunix_parms
+(brace
+id|u32
+id|aup_stamp
+suffix:semicolon
+id|u32
+id|aup_uid
+suffix:semicolon
+id|u32
+id|aup_gid
+suffix:semicolon
+id|u32
+id|aup_len
+suffix:semicolon
+id|u32
+id|aup_gids
+(braket
+id|NGRPS
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|svc_authops
+op_star
+id|auth_getops
+c_func
+(paren
+id|u32
+id|flavor
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* _LINUX_SUNRPC_SVCAUTH_H_ */
+eof

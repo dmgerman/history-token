@@ -1,0 +1,496 @@
+multiline_comment|/* $Id: ip22-setup.c,v 1.4 1999/10/08 21:07:51 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI IP22 specific setup.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silcon Graphics, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kbd_ll.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/pc_keyb.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/bcache.h&gt;
+macro_line|#include &lt;asm/keyboard.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/sgialib.h&gt;
+macro_line|#include &lt;asm/sgi/sgi.h&gt;
+macro_line|#include &lt;asm/sgi/sgimc.h&gt;
+macro_line|#include &lt;asm/sgi/sgihpc.h&gt;
+macro_line|#include &lt;asm/sgi/sgint23.h&gt;
+r_extern
+r_struct
+id|rtc_ops
+id|indy_rtc_ops
+suffix:semicolon
+r_extern
+r_void
+id|ip22_reboot_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ip22_volume_set
+c_func
+(paren
+r_int
+r_char
+)paren
+suffix:semicolon
+DECL|macro|sgi_kh
+mdefine_line|#define sgi_kh ((struct hpc_keyb *) (KSEG1 + 0x1fbd9800 + 64))
+DECL|macro|KBD_STAT_IBF
+mdefine_line|#define KBD_STAT_IBF&t;&t;0x02&t;/* Keyboard input buffer full */
+DECL|function|ip22_request_region
+r_static
+r_void
+id|ip22_request_region
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* No I/O ports are being used on the Indy.  */
+)brace
+DECL|function|ip22_request_irq
+r_static
+r_int
+id|ip22_request_irq
+c_func
+(paren
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+)paren
+(brace
+multiline_comment|/* Dirty hack, this get&squot;s called as a callback from the keyboard&n;&t;   driver.  We piggyback the initialization of the front panel&n;&t;   button handling on it even though they&squot;re technically not&n;&t;   related with the keyboard driver in any way.  Doing it from&n;&t;   indy_setup wouldn&squot;t work since kmalloc isn&squot;t initialized yet.  */
+id|ip22_reboot_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|request_irq
+c_func
+(paren
+id|SGI_KEYBOARD_IRQ
+comma
+id|handler
+comma
+l_int|0
+comma
+l_string|&quot;keyboard&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|function|ip22_aux_request_irq
+r_static
+r_int
+id|ip22_aux_request_irq
+c_func
+(paren
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+)paren
+(brace
+multiline_comment|/* Nothing to do, interrupt is shared with the keyboard hw  */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ip22_aux_free_irq
+r_static
+r_void
+id|ip22_aux_free_irq
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Nothing to do, interrupt is shared with the keyboard hw  */
+)brace
+DECL|function|ip22_read_input
+r_static
+r_int
+r_char
+id|ip22_read_input
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|sgi_kh-&gt;data
+suffix:semicolon
+)brace
+DECL|function|ip22_write_output
+r_static
+r_void
+id|ip22_write_output
+c_func
+(paren
+r_int
+r_char
+id|val
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+r_do
+(brace
+id|status
+op_assign
+id|sgi_kh-&gt;command
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|status
+op_amp
+id|KBD_STAT_IBF
+)paren
+suffix:semicolon
+id|sgi_kh-&gt;data
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|ip22_write_command
+r_static
+r_void
+id|ip22_write_command
+c_func
+(paren
+r_int
+r_char
+id|val
+)paren
+(brace
+r_int
+id|status
+suffix:semicolon
+r_do
+(brace
+id|status
+op_assign
+id|sgi_kh-&gt;command
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|status
+op_amp
+id|KBD_STAT_IBF
+)paren
+suffix:semicolon
+id|sgi_kh-&gt;command
+op_assign
+id|val
+suffix:semicolon
+)brace
+DECL|function|ip22_read_status
+r_static
+r_int
+r_char
+id|ip22_read_status
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|sgi_kh-&gt;command
+suffix:semicolon
+)brace
+DECL|variable|sgi_kbd_ops
+r_struct
+id|kbd_ops
+id|sgi_kbd_ops
+op_assign
+(brace
+id|ip22_request_region
+comma
+id|ip22_request_irq
+comma
+id|ip22_aux_request_irq
+comma
+id|ip22_aux_free_irq
+comma
+id|ip22_read_input
+comma
+id|ip22_write_output
+comma
+id|ip22_write_command
+comma
+id|ip22_read_status
+)brace
+suffix:semicolon
+DECL|function|page_is_ram
+r_int
+id|__init
+id|page_is_ram
+c_func
+(paren
+r_int
+r_int
+id|pagenr
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|pagenr
+op_lshift
+id|PAGE_SHIFT
+)paren
+OL
+l_int|0x2000UL
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pagenr
+op_lshift
+id|PAGE_SHIFT
+)paren
+OG
+l_int|0x08002000
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ip22_setup
+r_void
+id|__init
+id|ip22_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+r_char
+op_star
+id|ctype
+suffix:semicolon
+macro_line|#endif
+id|TLBMISS_HANDLER_SETUP
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Init the INDY HPC I/O controller.  Need to call this before&n;&t; * fucking with the memory controller because it needs to know the&n;&t; * boardID and whether this is a Guiness or a FullHouse machine.&n;&t; */
+id|sgihpc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Init INDY memory controller. */
+id|sgimc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Now enable boardcaches, if any. */
+id|indy_sc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+multiline_comment|/* ARCS console environment variable is set to &quot;g?&quot; for&n;&t; * graphics console, it is set to &quot;d&quot; for the first serial&n;&t; * line and &quot;d2&quot; for the second serial line.&n;&t; */
+id|ctype
+op_assign
+id|ArcArcGetEnvironmentVariable
+c_func
+(paren
+l_string|&quot;console&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|ctype
+op_eq
+l_char|&squot;d&squot;
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_star
+(paren
+id|ctype
+op_plus
+l_int|1
+)paren
+op_eq
+l_char|&squot;2&squot;
+)paren
+(brace
+id|console_setup
+(paren
+l_string|&quot;ttyS1&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+id|console_setup
+(paren
+l_string|&quot;ttyS0&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARC_CONSOLE
+id|console_setup
+c_func
+(paren
+l_string|&quot;ttyS0&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ip22_volume_set
+c_func
+(paren
+id|simple_strtoul
+c_func
+(paren
+id|ArcGetEnvironmentVariable
+c_func
+(paren
+l_string|&quot;volume&quot;
+)paren
+comma
+l_int|NULL
+comma
+l_int|10
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_VT
+macro_line|#ifdef CONFIG_SGI_NEWPORT_CONSOLE
+id|conswitchp
+op_assign
+op_amp
+id|newport_con
+suffix:semicolon
+id|screen_info
+op_assign
+(paren
+r_struct
+id|screen_info
+)paren
+(brace
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* orig-x, orig-y */
+l_int|0
+comma
+multiline_comment|/* unused */
+l_int|0
+comma
+multiline_comment|/* orig_video_page */
+l_int|0
+comma
+multiline_comment|/* orig_video_mode */
+l_int|160
+comma
+multiline_comment|/* orig_video_cols */
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* unused, ega_bx, unused */
+l_int|64
+comma
+multiline_comment|/* orig_video_lines */
+l_int|0
+comma
+multiline_comment|/* orig_video_isVGA */
+l_int|16
+multiline_comment|/* orig_video_points */
+)brace
+suffix:semicolon
+macro_line|#else
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+id|rtc_ops
+op_assign
+op_amp
+id|indy_rtc_ops
+suffix:semicolon
+id|kbd_ops
+op_assign
+op_amp
+id|sgi_kbd_ops
+suffix:semicolon
+macro_line|#ifdef CONFIG_PSMOUSE
+id|aux_device_present
+op_assign
+l_int|0xaa
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_VIDEO_VINO
+id|init_vino
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+eof

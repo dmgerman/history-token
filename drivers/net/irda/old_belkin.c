@@ -1,0 +1,305 @@
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      old_belkin.c&n; * Version:       1.1&n; * Description:   Driver for the Belkin (old) SmartBeam dongle&n; * Status:        Experimental...&n; * Author:        Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; * Created at:    22/11/99&n; * Modified at:   Fri Dec 17 09:13:32 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Jean Tourrilhes, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irda.h&gt;
+macro_line|#include &lt;net/irda/irda.h&gt;
+macro_line|#include &lt;net/irda/irmod.h&gt;
+macro_line|#include &lt;net/irda/irda_device.h&gt;
+multiline_comment|/*&n; * Belkin is selling a dongle called the SmartBeam.&n; * In fact, there is two hardware version of this dongle, of course with&n; * the same name and looking the exactly same (grrr...).&n; * I guess that I&squot;ve got the old one, because inside I don&squot;t have&n; * a jumper for IrDA/ASK...&n; *&n; * As far as I can make it from info on their web site, the old dongle &n; * support only 9600 b/s, which make our life much simpler as far as&n; * the driver is concerned, but you might not like it very much ;-)&n; * The new SmartBeam does 115 kb/s, and I&squot;ve not tested it...&n; *&n; * Belkin claim that the correct driver for the old dongle (in Windows)&n; * is the generic Parallax 9500a driver, but the Linux LiteLink driver&n; * fails for me (probably because Linux-IrDA doesn&squot;t rate fallback),&n; * so I created this really dumb driver...&n; *&n; * In fact, this driver doesn&squot;t do much. The only thing it does is to&n; * prevent Linux-IrDA to use any other speed than 9600 b/s ;-) This&n; * driver is called &quot;old_belkin&quot; so that when the new SmartBeam is supported&n; * its driver can be called &quot;belkin&quot; instead of &quot;new_belkin&quot;.&n; *&n; * Note : this driver was written without any info/help from Belkin,&n; * so a lot of info here might be totally wrong. Blame me ;-)&n; */
+multiline_comment|/* Let&squot;s guess */
+DECL|macro|MIN_DELAY
+mdefine_line|#define MIN_DELAY 25      /* 15 us, but wait a little more to be sure */
+r_static
+r_void
+id|old_belkin_open
+c_func
+(paren
+id|dongle_t
+op_star
+id|self
+comma
+r_struct
+id|qos_info
+op_star
+id|qos
+)paren
+suffix:semicolon
+r_static
+r_void
+id|old_belkin_close
+c_func
+(paren
+id|dongle_t
+op_star
+id|self
+)paren
+suffix:semicolon
+r_static
+r_int
+id|old_belkin_change_speed
+c_func
+(paren
+r_struct
+id|irda_task
+op_star
+id|task
+)paren
+suffix:semicolon
+r_static
+r_int
+id|old_belkin_reset
+c_func
+(paren
+r_struct
+id|irda_task
+op_star
+id|task
+)paren
+suffix:semicolon
+multiline_comment|/* These are the baudrates supported */
+multiline_comment|/* static __u32 baud_rates[] = { 9600 }; */
+DECL|variable|dongle
+r_static
+r_struct
+id|dongle_reg
+id|dongle
+op_assign
+(brace
+id|Q_NULL
+comma
+id|IRDA_OLD_BELKIN_DONGLE
+comma
+id|old_belkin_open
+comma
+id|old_belkin_close
+comma
+id|old_belkin_reset
+comma
+id|old_belkin_change_speed
+comma
+)brace
+suffix:semicolon
+DECL|function|old_belkin_init
+r_int
+id|__init
+id|old_belkin_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|irda_device_register_dongle
+c_func
+(paren
+op_amp
+id|dongle
+)paren
+suffix:semicolon
+)brace
+DECL|function|old_belkin_cleanup
+r_void
+id|old_belkin_cleanup
+c_func
+(paren
+r_void
+)paren
+(brace
+id|irda_device_unregister_dongle
+c_func
+(paren
+op_amp
+id|dongle
+)paren
+suffix:semicolon
+)brace
+DECL|function|old_belkin_open
+r_static
+r_void
+id|old_belkin_open
+c_func
+(paren
+id|dongle_t
+op_star
+id|self
+comma
+r_struct
+id|qos_info
+op_star
+id|qos
+)paren
+(brace
+multiline_comment|/* Not too fast, please... */
+id|qos-&gt;baud_rate.bits
+op_and_assign
+id|IR_9600
+suffix:semicolon
+multiline_comment|/* Needs at least 10 ms (totally wild guess, can do probably better) */
+id|qos-&gt;min_turn_time.bits
+op_assign
+l_int|0x01
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
+DECL|function|old_belkin_close
+r_static
+r_void
+id|old_belkin_close
+c_func
+(paren
+id|dongle_t
+op_star
+id|self
+)paren
+(brace
+multiline_comment|/* Power off dongle */
+id|self
+op_member_access_from_pointer
+id|set_dtr_rts
+c_func
+(paren
+id|self-&gt;dev
+comma
+id|FALSE
+comma
+id|FALSE
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function old_belkin_change_speed (task)&n; *&n; *    With only one speed available, not much to do...&n; */
+DECL|function|old_belkin_change_speed
+r_static
+r_int
+id|old_belkin_change_speed
+c_func
+(paren
+r_struct
+id|irda_task
+op_star
+id|task
+)paren
+(brace
+id|irda_task_next_state
+c_func
+(paren
+id|task
+comma
+id|IRDA_TASK_DONE
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function old_belkin_reset (task)&n; *&n; *      Reset the Old-Belkin type dongle.&n; *&n; */
+DECL|function|old_belkin_reset
+r_static
+r_int
+id|old_belkin_reset
+c_func
+(paren
+r_struct
+id|irda_task
+op_star
+id|task
+)paren
+(brace
+id|dongle_t
+op_star
+id|self
+op_assign
+(paren
+id|dongle_t
+op_star
+)paren
+id|task-&gt;instance
+suffix:semicolon
+multiline_comment|/* Power on dongle */
+id|self
+op_member_access_from_pointer
+id|set_dtr_rts
+c_func
+(paren
+id|self-&gt;dev
+comma
+id|TRUE
+comma
+id|TRUE
+)paren
+suffix:semicolon
+multiline_comment|/* Sleep a minimum of 15 us */
+id|udelay
+c_func
+(paren
+id|MIN_DELAY
+)paren
+suffix:semicolon
+multiline_comment|/* This dongles speed &quot;defaults&quot; to 9600 bps ;-) */
+id|self-&gt;speed
+op_assign
+l_int|9600
+suffix:semicolon
+id|irda_task_next_state
+c_func
+(paren
+id|task
+comma
+id|IRDA_TASK_DONE
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#ifdef MODULE
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Belkin (old) SmartBeam dongle driver&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Old-Belkin module&n; *&n; */
+DECL|function|init_module
+r_int
+id|init_module
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|old_belkin_init
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Cleanup Old-Belkin module&n; *&n; */
+DECL|function|cleanup_module
+r_void
+id|cleanup_module
+c_func
+(paren
+r_void
+)paren
+(brace
+id|old_belkin_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* MODULE */
+eof

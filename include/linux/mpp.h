@@ -1,0 +1,57 @@
+macro_line|#ifndef _LINUX_MPP_H
+DECL|macro|_LINUX_MPP_H
+mdefine_line|#define _LINUX_MPP_H
+multiline_comment|/*&n; * Definitions related to Massively Parallel Processing support.&n; */
+multiline_comment|/* All mpp implementations must supply these functions */
+r_extern
+r_void
+id|mpp_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mpp_hw_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mpp_procfs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mpp_num_cells
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mpp_cid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|get_mppinfo
+c_func
+(paren
+r_char
+op_star
+id|buffer
+)paren
+suffix:semicolon
+macro_line|#endif
+eof

@@ -1,0 +1,310 @@
+macro_line|#ifndef _LINUX_PAGEMAP_H
+DECL|macro|_LINUX_PAGEMAP_H
+mdefine_line|#define _LINUX_PAGEMAP_H
+multiline_comment|/*&n; * Page-mapping primitive inline functions&n; *&n; * Copyright 1995 Linus Torvalds&n; */
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
+multiline_comment|/*&n; * The page cache can done in larger chunks than&n; * one page, because it allows for more efficient&n; * throughput (it can then be mapped into user&n; * space in smaller chunks for same flexibility).&n; *&n; * Or rather, it _will_ be done in larger chunks.&n; */
+DECL|macro|PAGE_CACHE_SHIFT
+mdefine_line|#define PAGE_CACHE_SHIFT&t;PAGE_SHIFT
+DECL|macro|PAGE_CACHE_SIZE
+mdefine_line|#define PAGE_CACHE_SIZE&t;&t;PAGE_SIZE
+DECL|macro|PAGE_CACHE_MASK
+mdefine_line|#define PAGE_CACHE_MASK&t;&t;PAGE_MASK
+DECL|macro|PAGE_CACHE_ALIGN
+mdefine_line|#define PAGE_CACHE_ALIGN(addr)&t;(((addr)+PAGE_CACHE_SIZE-1)&amp;PAGE_CACHE_MASK)
+DECL|macro|page_cache_get
+mdefine_line|#define page_cache_get(x)&t;get_page(x)
+DECL|macro|page_cache_alloc
+mdefine_line|#define page_cache_alloc()&t;alloc_pages(GFP_HIGHUSER, 0)
+DECL|macro|page_cache_free
+mdefine_line|#define page_cache_free(x)&t;__free_page(x)
+DECL|macro|page_cache_release
+mdefine_line|#define page_cache_release(x)&t;__free_page(x)
+multiline_comment|/*&n; * From a kernel address, get the &quot;struct page *&quot;&n; */
+DECL|macro|page_cache_entry
+mdefine_line|#define page_cache_entry(x)&t;virt_to_page(x)
+r_extern
+r_int
+r_int
+id|page_hash_bits
+suffix:semicolon
+DECL|macro|PAGE_HASH_BITS
+mdefine_line|#define PAGE_HASH_BITS (page_hash_bits)
+DECL|macro|PAGE_HASH_SIZE
+mdefine_line|#define PAGE_HASH_SIZE (1 &lt;&lt; PAGE_HASH_BITS)
+r_extern
+id|atomic_t
+id|page_cache_size
+suffix:semicolon
+multiline_comment|/* # of pages currently in the hash table */
+r_extern
+r_struct
+id|page
+op_star
+op_star
+id|page_hash_table
+suffix:semicolon
+r_extern
+r_void
+id|page_cache_init
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * We use a power-of-two hash table to avoid a modulus,&n; * and get a reasonable hash by knowing roughly how the&n; * inode pointer and indexes are distributed (ie, we&n; * roughly know which bits are &quot;significant&quot;)&n; *&n; * For the time being it will work for struct address_space too (most of&n; * them sitting inside the inodes). We might want to change it later.&n; */
+DECL|function|_page_hashfn
+r_extern
+r_inline
+r_int
+r_int
+id|_page_hashfn
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+r_int
+id|index
+)paren
+(brace
+DECL|macro|i
+mdefine_line|#define i (((unsigned long) mapping)/(sizeof(struct inode) &amp; ~ (sizeof(struct inode) - 1)))
+DECL|macro|s
+mdefine_line|#define s(x) ((x)+((x)&gt;&gt;PAGE_HASH_BITS))
+r_return
+id|s
+c_func
+(paren
+id|i
+op_plus
+id|index
+)paren
+op_amp
+(paren
+id|PAGE_HASH_SIZE
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+DECL|macro|i
+macro_line|#undef i
+DECL|macro|s
+macro_line|#undef s
+)brace
+DECL|macro|page_hash
+mdefine_line|#define page_hash(mapping,index) (page_hash_table+_page_hashfn(mapping,index))
+r_extern
+r_struct
+id|page
+op_star
+id|__find_get_page
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+r_int
+id|offset
+comma
+r_struct
+id|page
+op_star
+op_star
+id|hash
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|__find_lock_page
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+r_int
+id|index
+comma
+r_struct
+id|page
+op_star
+op_star
+id|hash
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|lock_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+DECL|macro|find_lock_page
+mdefine_line|#define find_lock_page(mapping, index) &bslash;&n;&t;&t;__find_lock_page(mapping, index, page_hash(mapping, index))
+r_extern
+r_void
+id|__add_page_to_hash_queue
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|page
+op_star
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|add_to_page_cache
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+r_int
+id|index
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|add_to_page_cache_locked
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+r_int
+r_int
+id|index
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|___wait_on_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+DECL|function|wait_on_page
+r_extern
+r_inline
+r_void
+id|wait_on_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|PageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+id|___wait_on_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_struct
+id|page
+op_star
+id|grab_cache_page
+(paren
+r_struct
+id|address_space
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|filler_t
+r_typedef
+r_int
+id|filler_t
+c_func
+(paren
+r_void
+op_star
+comma
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|read_cache_page
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+comma
+r_int
+r_int
+comma
+id|filler_t
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
+eof

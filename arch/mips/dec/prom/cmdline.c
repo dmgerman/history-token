@@ -1,0 +1,137 @@
+multiline_comment|/*&n; * cmdline.c: read the command line passed to us by the PROM.&n; *&n; * Copyright (C) 1998 Harald Koerfgen&n; *&n; * $Id: cmdline.c,v 1.2 1999/10/09 00:00:57 ralf Exp $&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &quot;prom.h&quot;
+DECL|macro|PROM_DEBUG
+macro_line|#undef PROM_DEBUG
+macro_line|#ifdef PROM_DEBUG
+r_extern
+r_int
+(paren
+op_star
+id|prom_printf
+)paren
+(paren
+r_char
+op_star
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+macro_line|#endif
+DECL|variable|arcs_cmdline
+r_char
+id|arcs_cmdline
+(braket
+id|CL_SIZE
+)braket
+suffix:semicolon
+DECL|function|prom_init_cmdline
+r_void
+id|__init
+id|prom_init_cmdline
+c_func
+(paren
+r_int
+id|argc
+comma
+r_char
+op_star
+op_star
+id|argv
+comma
+r_int
+r_int
+id|magic
+)paren
+(brace
+r_int
+id|start_arg
+comma
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t; * collect args and prepare cmd_line&n;&t; */
+r_if
+c_cond
+(paren
+id|magic
+op_ne
+id|REX_PROM_MAGIC
+)paren
+id|start_arg
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|start_arg
+op_assign
+l_int|2
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|start_arg
+suffix:semicolon
+id|i
+OL
+id|argc
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|strcat
+c_func
+(paren
+id|arcs_cmdline
+comma
+id|argv
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OL
+(paren
+id|argc
+op_minus
+l_int|1
+)paren
+)paren
+id|strcat
+c_func
+(paren
+id|arcs_cmdline
+comma
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef PROM_DEBUG
+id|prom_printf
+c_func
+(paren
+l_string|&quot;arcs_cmdline: %s&bslash;n&quot;
+comma
+op_amp
+(paren
+id|arcs_cmdline
+(braket
+l_int|0
+)braket
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+eof

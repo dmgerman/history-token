@@ -1,0 +1,205 @@
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; *  Copyright (C) 2000 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &quot;acpi.h&quot;
+macro_line|#include &quot;acinterp.h&quot;
+macro_line|#include &quot;acdispat.h&quot;
+DECL|macro|_COMPONENT
+mdefine_line|#define _COMPONENT          NAMESPACE
+id|MODULE_NAME
+(paren
+l_string|&quot;dswscope&quot;
+)paren
+DECL|macro|STACK_POP
+mdefine_line|#define STACK_POP(head) head
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_scope_stack_clear&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Pop (and free) everything on the scope stack except the&n; *              root scope object (which remains at the stack top.)&n; *&n; ***************************************************************************/
+r_void
+DECL|function|acpi_ds_scope_stack_clear
+id|acpi_ds_scope_stack_clear
+(paren
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
+)paren
+(brace
+id|ACPI_GENERIC_STATE
+op_star
+id|scope_info
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|walk_state-&gt;scope_info
+)paren
+(brace
+multiline_comment|/* Pop a scope off the stack */
+id|scope_info
+op_assign
+id|walk_state-&gt;scope_info
+suffix:semicolon
+id|walk_state-&gt;scope_info
+op_assign
+id|scope_info-&gt;scope.next
+suffix:semicolon
+id|acpi_cm_delete_generic_state
+(paren
+id|scope_info
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_scope_stack_push&n; *&n; * PARAMETERS:  *Node,              - Name to be made current&n; *              Type,               - Type of frame being pushed&n; *&n; * DESCRIPTION: Push the current scope on the scope stack, and make the&n; *              passed Node current.&n; *&n; ***************************************************************************/
+id|ACPI_STATUS
+DECL|function|acpi_ds_scope_stack_push
+id|acpi_ds_scope_stack_push
+(paren
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
+comma
+id|OBJECT_TYPE_INTERNAL
+id|type
+comma
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
+)paren
+(brace
+id|ACPI_GENERIC_STATE
+op_star
+id|scope_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node
+)paren
+(brace
+multiline_comment|/*  invalid scope   */
+id|REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Ds_scope_stack_push: null scope passed&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Make sure object type is valid */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_aml_validate_object_type
+(paren
+id|type
+)paren
+)paren
+(brace
+id|REPORT_WARNING
+(paren
+(paren
+l_string|&quot;Ds_scope_stack_push: type code out of range&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Allocate a new scope object */
+id|scope_info
+op_assign
+id|acpi_cm_create_generic_state
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scope_info
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Init new scope object */
+id|scope_info-&gt;scope.node
+op_assign
+id|node
+suffix:semicolon
+id|scope_info-&gt;common.value
+op_assign
+(paren
+id|u16
+)paren
+id|type
+suffix:semicolon
+multiline_comment|/* Push new scope object onto stack */
+id|acpi_cm_push_generic_state
+(paren
+op_amp
+id|walk_state-&gt;scope_info
+comma
+id|scope_info
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_scope_stack_pop&n; *&n; * PARAMETERS:  Type                - The type of frame to be found&n; *&n; * DESCRIPTION: Pop the scope stack until a frame of the requested type&n; *              is found.&n; *&n; * RETURN:      Count of frames popped.  If no frame of the requested type&n; *              was found, the count is returned as a negative number and&n; *              the scope stack is emptied (which sets the current scope&n; *              to the root).  If the scope stack was empty at entry, the&n; *              function is a no-op and returns 0.&n; *&n; ***************************************************************************/
+id|ACPI_STATUS
+DECL|function|acpi_ds_scope_stack_pop
+id|acpi_ds_scope_stack_pop
+(paren
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
+)paren
+(brace
+id|ACPI_GENERIC_STATE
+op_star
+id|scope_info
+suffix:semicolon
+multiline_comment|/*&n;&t; * Pop scope info object off the stack.&n;&t; */
+id|scope_info
+op_assign
+id|acpi_cm_pop_generic_state
+(paren
+op_amp
+id|walk_state-&gt;scope_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scope_info
+)paren
+(brace
+r_return
+(paren
+id|AE_STACK_UNDERFLOW
+)paren
+suffix:semicolon
+)brace
+id|acpi_cm_delete_generic_state
+(paren
+id|scope_info
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+eof

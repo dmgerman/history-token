@@ -1,0 +1,16 @@
+DECL|variable|orion_initrd_start
+r_int
+r_int
+op_star
+id|orion_initrd_start
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|orion_initrd_size
+r_int
+r_int
+id|orion_initrd_size
+op_assign
+l_int|0
+suffix:semicolon
+eof

@@ -1,0 +1,176 @@
+multiline_comment|/*&n; **********************************************************************&n; *     sblive_voice.h -- EMU Voice Resource Manager header file&n; *     Copyright 1999, 2000 Creative Labs, Inc.&n; *&n; **********************************************************************&n; *&n; *     Date                 Author          Summary of changes&n; *     ----                 ------          ------------------&n; *     October 20, 1999     Bertrand Lee    base code release&n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; **********************************************************************&n; */
+macro_line|#ifndef _VOICEMGR_H
+DECL|macro|_VOICEMGR_H
+mdefine_line|#define _VOICEMGR_H
+macro_line|#include &quot;hwaccess.h&quot;
+multiline_comment|/* struct emu_voice.usage flags */
+DECL|macro|VOICE_USAGE_FREE
+mdefine_line|#define VOICE_USAGE_FREE&t;&t;0x01
+DECL|macro|VOICE_USAGE_MIDI
+mdefine_line|#define VOICE_USAGE_MIDI&t;&t;0x02
+DECL|macro|VOICE_USAGE_PLAYBACK
+mdefine_line|#define VOICE_USAGE_PLAYBACK&t;&t;0x04
+multiline_comment|/* struct emu_voice.flags flags */
+DECL|macro|VOICE_FLAGS_STEREO
+mdefine_line|#define VOICE_FLAGS_STEREO&t;&t;0x02
+DECL|macro|VOICE_FLAGS_16BIT
+mdefine_line|#define VOICE_FLAGS_16BIT&t;&t;0x04
+DECL|struct|voice_param
+r_struct
+id|voice_param
+(brace
+multiline_comment|/* FX bus amount send */
+DECL|member|send_routing
+id|u32
+id|send_routing
+suffix:semicolon
+DECL|member|send_a
+id|u32
+id|send_a
+suffix:semicolon
+DECL|member|send_b
+id|u32
+id|send_b
+suffix:semicolon
+DECL|member|send_c
+id|u32
+id|send_c
+suffix:semicolon
+DECL|member|send_d
+id|u32
+id|send_d
+suffix:semicolon
+DECL|member|initial_fc
+id|u32
+id|initial_fc
+suffix:semicolon
+DECL|member|fc_target
+id|u32
+id|fc_target
+suffix:semicolon
+DECL|member|initial_attn
+id|u32
+id|initial_attn
+suffix:semicolon
+DECL|member|volume_target
+id|u32
+id|volume_target
+suffix:semicolon
+DECL|member|byampl_env_sustain
+id|u32
+id|byampl_env_sustain
+suffix:semicolon
+DECL|member|byampl_env_decay
+id|u32
+id|byampl_env_decay
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|emu_voice
+r_struct
+id|emu_voice
+(brace
+DECL|member|card
+r_struct
+id|emu10k1_card
+op_star
+id|card
+suffix:semicolon
+DECL|member|usage
+id|u8
+id|usage
+suffix:semicolon
+multiline_comment|/* Free, MIDI, playback */
+DECL|member|num
+id|u8
+id|num
+suffix:semicolon
+multiline_comment|/* Voice ID */
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
+multiline_comment|/* Stereo/mono, 8/16 bit */
+DECL|member|startloop
+id|u32
+id|startloop
+suffix:semicolon
+DECL|member|endloop
+id|u32
+id|endloop
+suffix:semicolon
+DECL|member|start
+id|u32
+id|start
+suffix:semicolon
+DECL|member|initial_pitch
+id|u32
+id|initial_pitch
+suffix:semicolon
+DECL|member|pitch_target
+id|u32
+id|pitch_target
+suffix:semicolon
+DECL|member|params
+r_struct
+id|voice_param
+id|params
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|emu10k1_voice_alloc
+c_func
+(paren
+r_struct
+id|emu10k1_card
+op_star
+comma
+r_struct
+id|emu_voice
+op_star
+)paren
+suffix:semicolon
+r_void
+id|emu10k1_voice_free
+c_func
+(paren
+r_struct
+id|emu_voice
+op_star
+)paren
+suffix:semicolon
+r_void
+id|emu10k1_voice_playback_setup
+c_func
+(paren
+r_struct
+id|emu_voice
+op_star
+)paren
+suffix:semicolon
+r_void
+id|emu10k1_voice_start
+c_func
+(paren
+r_struct
+id|emu_voice
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_void
+id|emu10k1_voice_stop
+c_func
+(paren
+r_struct
+id|emu_voice
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* _VOICEMGR_H */
+eof

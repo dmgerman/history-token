@@ -1,0 +1,54 @@
+multiline_comment|/*&n; * $Id: b1pcmcia.h,v 1.1 1999/07/01 15:26:56 calle Exp $&n; *&n; * Exported functions of module b1pcmcia to be called by&n; * avm_cs card services module.&n; *&n; * Copyright 1999 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; * $Log: b1pcmcia.h,v $&n; * Revision 1.1  1999/07/01 15:26:56  calle&n; * complete new version (I love it):&n; * + new hardware independed &quot;capi_driver&quot; interface that will make it easy to:&n; *   - support other controllers with CAPI-2.0 (i.e. USB Controller)&n; *   - write a CAPI-2.0 for the passive cards&n; *   - support serial link CAPI-2.0 boxes.&n; * + wrote &quot;capi_driver&quot; for all supported cards.&n; * + &quot;capi_driver&quot; (supported cards) now have to be configured with&n; *   make menuconfig, in the past all supported cards where included&n; *   at once.&n; * + new and better informations in /proc/capi/&n; * + new ioctl to switch trace of capi messages per controller&n; *   using &quot;avmcapictrl trace [contr] on|off|....&quot;&n; * + complete testcircle with all supported cards and also the&n; *   PCMCIA cards (now patch for pcmcia-cs-3.0.13 needed) done.&n; *&n; */
+macro_line|#ifndef _B1PCMCIA_H_
+DECL|macro|_B1PCMCIA_H_
+mdefine_line|#define _B1PCMCIA_H_
+r_int
+id|b1pcmcia_addcard_b1
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_int
+id|b1pcmcia_addcard_m1
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_int
+id|b1pcmcia_addcard_m2
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_int
+id|b1pcmcia_delcard
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* _B1PCMCIA_H_ */
+eof

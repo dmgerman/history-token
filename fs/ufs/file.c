@@ -1,0 +1,159 @@
+multiline_comment|/*&n; *  linux/fs/ufs/file.c&n; *&n; * Copyright (C) 1998&n; * Daniel Pirkl &lt;daniel.pirkl@email.cz&gt;&n; * Charles University, Faculty of Mathematics and Physics&n; *&n; *  from&n; *&n; *  linux/fs/ext2/file.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/file.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  ext2 fs regular file handling primitives&n; */
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/ufs_fs.h&gt;
+macro_line|#include &lt;linux/fcntl.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+multiline_comment|/*&n; * Make sure the offset never goes beyond the 32-bit mark..&n; */
+DECL|function|ufs_file_lseek
+r_static
+r_int
+r_int
+id|ufs_file_lseek
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|origin
+)paren
+(brace
+r_int
+r_int
+id|retval
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|origin
+)paren
+(brace
+r_case
+l_int|2
+suffix:colon
+id|offset
+op_add_assign
+id|inode-&gt;i_size
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|offset
+op_add_assign
+id|file-&gt;f_pos
+suffix:semicolon
+)brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* make sure the offset fits in 32 bits */
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|offset
+op_rshift
+l_int|32
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|offset
+op_ne
+id|file-&gt;f_pos
+)paren
+(brace
+id|file-&gt;f_pos
+op_assign
+id|offset
+suffix:semicolon
+id|file-&gt;f_reada
+op_assign
+l_int|0
+suffix:semicolon
+id|file-&gt;f_version
+op_assign
+op_increment
+id|event
+suffix:semicolon
+)brace
+id|retval
+op_assign
+id|offset
+suffix:semicolon
+)brace
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * We have mostly NULL&squot;s here: the current defaults are ok for&n; * the ufs filesystem.&n; */
+DECL|variable|ufs_file_operations
+r_struct
+id|file_operations
+id|ufs_file_operations
+op_assign
+(brace
+id|llseek
+suffix:colon
+id|ufs_file_lseek
+comma
+id|read
+suffix:colon
+id|generic_file_read
+comma
+id|write
+suffix:colon
+id|generic_file_write
+comma
+id|mmap
+suffix:colon
+id|generic_file_mmap
+comma
+)brace
+suffix:semicolon
+DECL|variable|ufs_file_inode_operations
+r_struct
+id|inode_operations
+id|ufs_file_inode_operations
+op_assign
+(brace
+id|truncate
+suffix:colon
+id|ufs_truncate
+comma
+)brace
+suffix:semicolon
+eof

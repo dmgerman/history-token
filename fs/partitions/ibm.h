@@ -1,0 +1,13 @@
+r_void
+id|ibm_partition
+(paren
+r_struct
+id|gendisk
+op_star
+id|hd
+comma
+id|kdev_t
+id|dev
+)paren
+suffix:semicolon
+eof

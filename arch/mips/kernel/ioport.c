@@ -1,0 +1,95 @@
+multiline_comment|/*&n; * linux/arch/mips/kernel/ioport.c&n; */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+multiline_comment|/*&n; * This changes the io permissions bitmap in the current task.&n; */
+DECL|function|sys_ioperm
+id|asmlinkage
+r_int
+id|sys_ioperm
+c_func
+(paren
+r_int
+r_int
+id|from
+comma
+r_int
+r_int
+id|num
+comma
+r_int
+id|turn_on
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * sys_iopl has to be used when you want to access the IO ports&n; * beyond the 0x3ff range: to get the full 65536 ports bitmapped&n; * you&squot;d need 8kB of bitmaps/process, which is a bit excessive.&n; *&n; * Here we just change the eflags value on the stack: we allow&n; * only the super-user to do it. This depends on the stack-layout&n; * on system-call entry - see also fork() and the signal handling&n; * code.&n; */
+DECL|function|sys_iopl
+id|asmlinkage
+r_int
+id|sys_iopl
+c_func
+(paren
+r_int
+id|ebx
+comma
+r_int
+id|ecx
+comma
+r_int
+id|edx
+comma
+r_int
+id|esi
+comma
+r_int
+id|edi
+comma
+r_int
+id|ebp
+comma
+r_int
+id|eax
+comma
+r_int
+id|ds
+comma
+r_int
+id|es
+comma
+r_int
+id|fs
+comma
+r_int
+id|gs
+comma
+r_int
+id|orig_eax
+comma
+r_int
+id|eip
+comma
+r_int
+id|cs
+comma
+r_int
+id|eflags
+comma
+r_int
+id|esp
+comma
+r_int
+id|ss
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+eof

@@ -1,0 +1,89 @@
+multiline_comment|/*&n; * $Id:$&n; */
+macro_line|#ifndef __ASM_MIPS_INVENTORY_H
+DECL|macro|__ASM_MIPS_INVENTORY_H
+mdefine_line|#define __ASM_MIPS_INVENTORY_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_BINFMT_IRIX
+DECL|struct|inventory_s
+r_typedef
+r_struct
+id|inventory_s
+(brace
+DECL|member|inv_next
+r_struct
+id|inventory_s
+op_star
+id|inv_next
+suffix:semicolon
+DECL|member|inv_class
+r_int
+id|inv_class
+suffix:semicolon
+DECL|member|inv_type
+r_int
+id|inv_type
+suffix:semicolon
+DECL|member|inv_controller
+r_int
+id|inv_controller
+suffix:semicolon
+DECL|member|inv_unit
+r_int
+id|inv_unit
+suffix:semicolon
+DECL|member|inv_state
+r_int
+id|inv_state
+suffix:semicolon
+DECL|typedef|inventory_t
+)brace
+id|inventory_t
+suffix:semicolon
+r_extern
+r_int
+id|inventory_items
+suffix:semicolon
+r_void
+id|add_to_inventory
+(paren
+r_int
+r_class
+comma
+r_int
+id|type
+comma
+r_int
+id|controller
+comma
+r_int
+id|unit
+comma
+r_int
+id|state
+)paren
+suffix:semicolon
+r_int
+id|dump_inventory_to_user
+(paren
+r_void
+op_star
+id|userbuf
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
+r_void
+id|init_inventory
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|add_to_inventory
+mdefine_line|#define add_to_inventory(c,t,o,u,s)
+DECL|macro|init_inventory
+mdefine_line|#define init_inventory()
+macro_line|#endif
+macro_line|#endif /* defined(CONFIG_BINFMT_IRIX) */
+eof
