@@ -14,6 +14,7 @@ macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
+macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
 macro_line|#ifdef DEBUG
 r_extern

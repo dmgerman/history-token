@@ -473,10 +473,6 @@ DECL|member|lock_count
 id|u_short
 id|lock_count
 suffix:semicolon
-DECL|member|clients
-id|client_handle_t
-id|clients
-suffix:semicolon
 DECL|member|cis_mem
 id|pccard_mem_map
 id|cis_mem

@@ -28,6 +28,7 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
+macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|PCI_OPT
@@ -586,12 +587,6 @@ id|class_get_devdata
 c_func
 (paren
 id|class_dev
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|socket-&gt;clients
 )paren
 suffix:semicolon
 id|complete
@@ -1251,12 +1246,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|BUG_ON
-c_func
-(paren
-id|s-&gt;clients
-)paren
-suffix:semicolon
 id|free_regions
 c_func
 (paren
