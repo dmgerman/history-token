@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PCI
@@ -2857,6 +2858,13 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
+DECL|variable|stallion_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|stallion_class
+suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; *&t;Loadable module initialization stuff.&n; */
 DECL|function|stallion_module_init
@@ -3025,6 +3033,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|devfs_remove
 c_func
 (paren
@@ -3033,6 +3042,19 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|STL_SIOMEMMAJOR
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+)brace
 id|devfs_remove
 c_func
 (paren
@@ -3062,6 +3084,12 @@ l_string|&quot;errno=%d&bslash;n&quot;
 comma
 op_minus
 id|i
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|stallion_class
 )paren
 suffix:semicolon
 r_if
@@ -13871,6 +13899,16 @@ c_func
 l_string|&quot;staliomem&quot;
 )paren
 suffix:semicolon
+id|stallion_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;staliomem&quot;
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -13904,6 +13942,26 @@ op_or
 id|S_IWUSR
 comma
 l_string|&quot;staliomem/%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|class_simple_device_add
+c_func
+(paren
+id|stallion_class
+comma
+id|MKDEV
+c_func
+(paren
+id|STL_SIOMEMMAJOR
+comma
+id|i
+)paren
+comma
+l_int|NULL
+comma
+l_string|&quot;staliomem%d&quot;
 comma
 id|i
 )paren
