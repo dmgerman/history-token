@@ -1599,7 +1599,7 @@ id|need_auto_sense
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re running the CB transport, which is incapable&n;&t; * of determining status on its own, we need to auto-sense&n;&t; * unless the operation involved a data-in transfer.  Devices&n;&t; * can signal data-in errors by stalling the bulk-in pipe.&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re running the CB transport, which is incapable&n;&t; * of determining status on its own, we will auto-sense&n;&t; * unless the operation involved a data-in transfer.  Devices&n;&t; * can signal most data-in errors by stalling the bulk-in pipe.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2074,16 +2074,32 @@ id|result
 op_eq
 id|USB_STOR_TRANSPORT_GOOD
 op_logical_and
+multiline_comment|/* Filemark 0, ignore EOM, ILI 0, no sense */
 (paren
 id|srb-&gt;sense_buffer
 (braket
 l_int|2
 )braket
 op_amp
-l_int|0xf
+l_int|0xaf
 )paren
 op_eq
-l_int|0x0
+l_int|0
+op_logical_and
+multiline_comment|/* No ASC or ASCQ */
+id|srb-&gt;sense_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0
+op_logical_and
+id|srb-&gt;sense_buffer
+(braket
+l_int|13
+)braket
+op_eq
+l_int|0
 )paren
 (brace
 id|srb-&gt;result
