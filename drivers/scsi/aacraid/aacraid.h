@@ -1640,61 +1640,188 @@ suffix:semicolon
 singleline_comment|// this holds fibs and their attachd hw_fibs
 )brace
 suffix:semicolon
-DECL|struct|fsa_scsi_hba
+DECL|struct|sense_data
 r_struct
-id|fsa_scsi_hba
+id|sense_data
 (brace
-DECL|member|size
-id|u32
-id|size
+DECL|member|error_code
+id|u8
+id|error_code
+suffix:semicolon
+multiline_comment|/* 70h (current errors), 71h(deferred errors) */
+DECL|member|valid
+id|u8
+id|valid
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* A valid bit of one indicates that the information  */
+multiline_comment|/* field contains valid information as defined in the&n;&t;&t;&t;&t; * SCSI-2 Standard.&n;&t;&t;&t;&t; */
+DECL|member|segment_number
+id|u8
+id|segment_number
+suffix:semicolon
+multiline_comment|/* Only used for COPY, COMPARE, or COPY AND VERIFY Commands */
+DECL|member|sense_key
+id|u8
+id|sense_key
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* Sense Key */
+DECL|member|reserved
+id|u8
+id|reserved
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|ILI
+id|u8
+id|ILI
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Incorrect Length Indicator */
+DECL|member|EOM
+id|u8
+id|EOM
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* End Of Medium - reserved for random access devices */
+DECL|member|filemark
+id|u8
+id|filemark
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Filemark - reserved for random access devices */
+DECL|member|information
+id|u8
+id|information
 (braket
-id|MAXIMUM_NUM_CONTAINERS
+l_int|4
 )braket
+suffix:semicolon
+multiline_comment|/* for direct-access devices, contains the unsigned &n;&t;&t;&t;&t; * logical block address or residue associated with &n;&t;&t;&t;&t; * the sense key &n;&t;&t;&t;&t; */
+DECL|member|add_sense_len
+id|u8
+id|add_sense_len
+suffix:semicolon
+multiline_comment|/* number of additional sense bytes to follow this field */
+DECL|member|cmnd_info
+id|u8
+id|cmnd_info
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* not used */
+DECL|member|ASC
+id|u8
+id|ASC
+suffix:semicolon
+multiline_comment|/* Additional Sense Code */
+DECL|member|ASCQ
+id|u8
+id|ASCQ
+suffix:semicolon
+multiline_comment|/* Additional Sense Code Qualifier */
+DECL|member|FRUC
+id|u8
+id|FRUC
+suffix:semicolon
+multiline_comment|/* Field Replaceable Unit Code - not used */
+DECL|member|bit_ptr
+id|u8
+id|bit_ptr
+suffix:colon
+l_int|3
+suffix:semicolon
+multiline_comment|/* indicates which byte of the CDB or parameter data&n;&t;&t;&t;&t; * was in error&n;&t;&t;&t;&t; */
+DECL|member|BPV
+id|u8
+id|BPV
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* bit pointer valid (BPV): 1- indicates that &n;&t;&t;&t;&t; * the bit_ptr field has valid value&n;&t;&t;&t;&t; */
+DECL|member|reserved2
+id|u8
+id|reserved2
+suffix:colon
+l_int|2
+suffix:semicolon
+DECL|member|CD
+id|u8
+id|CD
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* command data bit: 1- illegal parameter in CDB.&n;&t;&t;&t;&t; * 0- illegal parameter in data.&n;&t;&t;&t;&t; */
+DECL|member|SKSV
+id|u8
+id|SKSV
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|field_ptr
+id|u8
+id|field_ptr
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* byte of the CDB or parameter data in error */
+)brace
+suffix:semicolon
+DECL|struct|fsa_dev_info
+r_struct
+id|fsa_dev_info
+(brace
+DECL|member|last
+id|u64
+id|last
+suffix:semicolon
+DECL|member|size
+id|u64
+id|size
 suffix:semicolon
 DECL|member|type
 id|u32
 id|type
-(braket
-id|MAXIMUM_NUM_CONTAINERS
-)braket
+suffix:semicolon
+DECL|member|queue_depth
+id|u16
+id|queue_depth
 suffix:semicolon
 DECL|member|valid
 id|u8
 id|valid
-(braket
-id|MAXIMUM_NUM_CONTAINERS
-)braket
 suffix:semicolon
 DECL|member|ro
 id|u8
 id|ro
-(braket
-id|MAXIMUM_NUM_CONTAINERS
-)braket
 suffix:semicolon
 DECL|member|locked
 id|u8
 id|locked
-(braket
-id|MAXIMUM_NUM_CONTAINERS
-)braket
 suffix:semicolon
 DECL|member|deleted
 id|u8
 id|deleted
-(braket
-id|MAXIMUM_NUM_CONTAINERS
-)braket
 suffix:semicolon
 DECL|member|devname
 r_char
 id|devname
 (braket
-id|MAXIMUM_NUM_CONTAINERS
-)braket
-(braket
 l_int|8
 )braket
+suffix:semicolon
+DECL|member|sense_data
+r_struct
+id|sense_data
+id|sense_data
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2054,9 +2181,14 @@ id|Scsi_Host
 op_star
 id|scsi_host_ptr
 suffix:semicolon
+DECL|member|maximum_num_containers
+r_int
+id|maximum_num_containers
+suffix:semicolon
 DECL|member|fsa_dev
 r_struct
-id|fsa_scsi_hba
+id|fsa_dev_info
+op_star
 id|fsa_dev
 suffix:semicolon
 DECL|member|thread_pid
@@ -2896,6 +3028,52 @@ id|u32
 id|type
 suffix:semicolon
 multiline_comment|/* CT_COMMIT_CONFIG */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *&t;Query for Container Configuration Count&n; */
+DECL|macro|CT_GET_CONTAINER_COUNT
+mdefine_line|#define CT_GET_CONTAINER_COUNT 4
+DECL|struct|aac_get_container_count
+r_struct
+id|aac_get_container_count
+(brace
+DECL|member|command
+id|u32
+id|command
+suffix:semicolon
+multiline_comment|/* VM_ContainerConfig */
+DECL|member|type
+id|u32
+id|type
+suffix:semicolon
+multiline_comment|/* CT_GET_CONTAINER_COUNT */
+)brace
+suffix:semicolon
+DECL|struct|aac_get_container_count_resp
+r_struct
+id|aac_get_container_count_resp
+(brace
+DECL|member|response
+id|u32
+id|response
+suffix:semicolon
+multiline_comment|/* ST_OK */
+DECL|member|dummy0
+id|u32
+id|dummy0
+suffix:semicolon
+DECL|member|MaxContainers
+id|u32
+id|MaxContainers
+suffix:semicolon
+DECL|member|ContainerSwitchEntries
+id|u32
+id|ContainerSwitchEntries
+suffix:semicolon
+DECL|member|MaxPartitions
+id|u32
+id|MaxPartitions
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Query for &quot;mountable&quot; objects, ie, objects that are typically&n; *&t;associated with a drive letter on the client (host) side.&n; */
