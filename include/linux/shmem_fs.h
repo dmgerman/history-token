@@ -47,11 +47,11 @@ r_int
 r_int
 id|swapped
 suffix:semicolon
-DECL|member|locked
+DECL|member|flags
 r_int
-id|locked
+r_int
+id|flags
 suffix:semicolon
-multiline_comment|/* into memory */
 DECL|member|list
 r_struct
 id|list_head

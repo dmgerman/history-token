@@ -692,6 +692,8 @@ c_func
 id|name
 comma
 id|size
+comma
+id|VM_ACCOUNT
 )paren
 suffix:semicolon
 id|error

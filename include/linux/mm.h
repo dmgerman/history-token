@@ -504,6 +504,10 @@ id|name
 comma
 id|loff_t
 id|size
+comma
+r_int
+r_int
+id|flags
 )paren
 suffix:semicolon
 r_extern
