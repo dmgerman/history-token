@@ -142,8 +142,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -222,8 +223,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_start_timer
@@ -267,8 +269,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -315,8 +318,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), already awake!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already awake!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -344,8 +348,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), still stopped by user&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), still stopped by user&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -419,8 +424,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -501,8 +507,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), Found instance (%08x)!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Found instance (%08x)!&bslash;n&quot;
 comma
 id|daddr
 )paren
@@ -550,8 +557,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -618,8 +626,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), clearing tx_busy&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), clearing tx_busy&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;client.tx_busy
@@ -680,8 +689,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), reason=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reason=%d&bslash;n&quot;
 comma
 id|reason
 )paren
@@ -822,8 +832,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -915,8 +926,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Got no tsap!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Got no tsap!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -969,8 +981,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -1050,8 +1063,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1209,8 +1223,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s() skb-&gt;len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() skb-&gt;len=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1341,8 +1356,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), got %d parameters&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got %d parameters&bslash;n&quot;
 comma
 id|count
 )paren
@@ -1397,8 +1413,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrLAN, Error!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrLAN, Error!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1475,8 +1492,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), parm=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), parm=%s&bslash;n&quot;
 comma
 id|param
 )paren
@@ -1757,8 +1775,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown access type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown access type!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1903,8 +1922,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), receive arb val=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), receive arb val=%d&bslash;n&quot;
 comma
 id|self-&gt;client.recv_arb_val
 )paren
@@ -1953,8 +1973,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), max frame=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max frame=%d&bslash;n&quot;
 comma
 id|self-&gt;client.max_frame
 )paren
@@ -2123,8 +2144,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2183,8 +2205,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), got NULL value!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), got NULL value!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlan_do_client_event
@@ -2250,8 +2273,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

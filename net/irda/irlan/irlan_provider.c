@@ -85,8 +85,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -250,8 +251,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Got RECONNECT_DATA_CHAN command&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Got RECONNECT_DATA_CHAN command&bslash;n&quot;
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
@@ -259,8 +261,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), NOT IMPLEMENTED&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), NOT IMPLEMENTED&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -281,8 +284,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), NOT IMPLEMENTED&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), NOT IMPLEMENTED&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -294,8 +298,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown command!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown command!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -357,8 +362,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -574,8 +580,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), reason=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), reason=%d&bslash;n&quot;
 comma
 id|reason
 )paren
@@ -775,8 +782,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), skb-&gt;len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), skb-&gt;len=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -940,8 +948,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrLAN, Error!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrLAN, Error!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1011,8 +1020,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1138,8 +1148,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), unknown media type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown media type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1264,8 +1275,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown access type&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown access type&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1372,8 +1384,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Unknown command!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown command!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1413,8 +1426,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1512,8 +1526,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Got no tsap!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Got no tsap!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

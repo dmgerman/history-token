@@ -403,8 +403,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s(), invalid connection address!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid connection address!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -441,8 +442,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), not addressed to us!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not addressed to us!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -513,8 +515,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() &lt;%ld&gt;&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() &lt;%ld&gt;&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -787,8 +790,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -917,8 +921,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), s=%d, S=%d, command=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), s=%d, S=%d, command=%d&bslash;n&quot;
 comma
 id|s
 comma
@@ -1308,8 +1313,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1381,8 +1387,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), frame is not addressed to us!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), frame is not addressed to us!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1450,8 +1457,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), daddr=%08x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), daddr=%08x&bslash;n&quot;
 comma
 id|discovery-&gt;daddr
 )paren
@@ -1691,8 +1699,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), frame is not addressed to us!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), frame is not addressed to us!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2352,8 +2361,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), vr=%d, %ld&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), vr=%d, %ld&bslash;n&quot;
 comma
 id|self-&gt;vr
 comma
@@ -2409,8 +2419,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), nr=%d, %ld&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), nr=%d, %ld&bslash;n&quot;
 comma
 id|info-&gt;nr
 comma
@@ -2478,8 +2489,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|info-&gt;nr
@@ -2553,8 +2565,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|info-&gt;nr
@@ -2628,8 +2641,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check if this is a command or a response frame */
@@ -2820,8 +2834,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), sending unreliable frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sending unreliable frame&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlap_send_ui_frame
@@ -2978,8 +2993,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), sending unreliable frame&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sending unreliable frame&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3553,8 +3569,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to copy&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to copy&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3659,8 +3676,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), sending additional frames!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), sending additional frames!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3858,8 +3876,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to copy&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to copy&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3933,8 +3952,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4183,8 +4203,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|info-&gt;pf
@@ -4251,8 +4272,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4660,8 +4682,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|frame
@@ -4699,8 +4722,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() test frame to short!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() test frame to short!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4937,8 +4961,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), wrong connection address!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), wrong connection address!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

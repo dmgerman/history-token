@@ -143,8 +143,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|qos-&gt;baud_rate.bits
@@ -189,8 +190,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Power off dongle */
@@ -275,8 +277,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -307,8 +310,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -623,8 +627,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -655,8 +660,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
