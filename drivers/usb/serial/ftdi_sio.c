@@ -7502,6 +7502,11 @@ id|count
 op_assign
 id|status
 suffix:semicolon
+id|kfree
+(paren
+id|buffer
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* we are done with this urb, so let the host driver&n;&t; * really free it when it is finished with it */
 id|usb_free_urb

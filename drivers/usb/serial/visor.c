@@ -2101,6 +2101,11 @@ id|count
 op_assign
 id|status
 suffix:semicolon
+id|kfree
+(paren
+id|buffer
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
