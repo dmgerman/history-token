@@ -1683,6 +1683,48 @@ id|range-&gt;txpower_capa
 op_assign
 id|IW_TXPOW_DBM
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 16
+multiline_comment|/* Event capability (kernel + driver) */
+id|range-&gt;event_capa
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|IW_EVENT_CAPA_K_0
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|SIOCGIWTHRSPY
+)paren
+op_or
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|SIOCGIWAP
+)paren
+)paren
+suffix:semicolon
+id|range-&gt;event_capa
+(braket
+l_int|1
+)braket
+op_assign
+id|IW_EVENT_CAPA_K_1
+suffix:semicolon
+id|range-&gt;event_capa
+(braket
+l_int|4
+)braket
+op_assign
+id|IW_EVENT_CAPA_MASK
+c_func
+(paren
+id|IWEVCUSTOM
+)paren
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 16 */
 r_if
 c_cond
 (paren
@@ -2636,7 +2678,7 @@ id|noise
 op_assign
 id|r.u
 suffix:semicolon
-multiline_comment|/* Ask the device for a list of known bss. We can report at most&n;&t; * IW_MAX_AP=64 to the range struct. But the device won&squot;t repport anything&n;&t; * if you change the value of IWMAX_BSS=24.&n;&t; */
+multiline_comment|/* Ask the device for a list of known bss.&n;&t;* The old API, using SIOCGIWAPLIST, had a hard limit of IW_MAX_AP=64.&n;&t;* The new API, using SIOCGIWSCAN, is only limited by the buffer size.&n;&t;* WE-14-&gt;WE-16, the buffer is limited to IW_SCAN_MAX_DATA bytes.&n;&t;* Starting with WE-17, the buffer can be as big as needed.&n;&t;* But the device won&squot;t repport anything if you change the value&n;&t;* of IWMAX_BSS=24. */
 id|rvalue
 op_or_assign
 id|mgt_get_request
@@ -2668,20 +2710,15 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|min
-c_func
-(paren
-id|IW_MAX_AP
-comma
 (paren
 r_int
 )paren
 id|bsslist-&gt;nr
-)paren
 suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|current_ev
 op_assign
 id|prism54_translate_bss
@@ -2693,7 +2730,7 @@ id|current_ev
 comma
 id|extra
 op_plus
-id|IW_SCAN_MAX_DATA
+id|dwrq-&gt;length
 comma
 op_amp
 (paren
@@ -2706,6 +2743,33 @@ comma
 id|noise
 )paren
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 16
+multiline_comment|/* Check if there is space for one more entry */
+r_if
+c_cond
+(paren
+(paren
+id|extra
+op_plus
+id|dwrq-&gt;length
+op_minus
+id|current_ev
+)paren
+op_le
+id|IW_EV_ADDR_LEN
+)paren
+(brace
+multiline_comment|/* Ask user space to try again with a bigger buffer */
+id|rvalue
+op_assign
+op_minus
+id|E2BIG
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif /* WIRELESS_EXT &gt; 16 */
+)brace
 id|kfree
 c_func
 (paren
@@ -10372,6 +10436,7 @@ op_star
 )paren
 id|prism54_private_args
 comma
+macro_line|#if WIRELESS_EXT == 16
 dot
 id|spy_offset
 op_assign
@@ -10382,6 +10447,7 @@ comma
 id|spy_data
 )paren
 comma
+macro_line|#endif /* WIRELESS_EXT == 16 */
 )brace
 suffix:semicolon
 multiline_comment|/* For ioctls that don&squot;t work with the new API */

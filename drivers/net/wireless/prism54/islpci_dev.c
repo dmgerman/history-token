@@ -2866,6 +2866,19 @@ id|priv-&gt;monitor_type
 suffix:colon
 id|ARPHRD_ETHER
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 16
+multiline_comment|/* Add pointers to enable iwspy support. */
+id|priv-&gt;wireless_data.spy_data
+op_assign
+op_amp
+id|priv-&gt;spy_data
+suffix:semicolon
+id|ndev-&gt;wireless_data
+op_assign
+op_amp
+id|priv-&gt;wireless_data
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 16 */
 multiline_comment|/* save the start and end address of the PCI memory area */
 id|ndev-&gt;mem_start
 op_assign
