@@ -185,6 +185,16 @@ id|ALCATEL_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|SAMSUNG_VENDOR_ID
+comma
+id|SAMSUNG_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
