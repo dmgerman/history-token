@@ -477,6 +477,10 @@ DECL|macro|SERIO_TWIDJOY
 mdefine_line|#define SERIO_TWIDJOY&t;0x24
 DECL|macro|SERIO_HIL
 mdefine_line|#define SERIO_HIL&t;0x25
+DECL|macro|SERIO_SNES232
+mdefine_line|#define SERIO_SNES232&t;0x26
+DECL|macro|SERIO_SEMTECH
+mdefine_line|#define SERIO_SEMTECH&t;0x27
 DECL|macro|SERIO_ID
 mdefine_line|#define SERIO_ID&t;0xff00UL
 DECL|macro|SERIO_EXTRA
