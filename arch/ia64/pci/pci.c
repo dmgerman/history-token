@@ -30,16 +30,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif
-macro_line|#ifdef CONFIG_IA64_MCA
-r_extern
-r_void
-id|ia64_mca_check_errors
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|pcibios_fixups
 r_struct
 id|pci_fixup
