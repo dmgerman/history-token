@@ -1666,9 +1666,17 @@ c_cond
 (paren
 id|result
 )paren
+(brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
+)brace
 multiline_comment|/* save the correct value, and switch to other */
 r_if
 c_cond
