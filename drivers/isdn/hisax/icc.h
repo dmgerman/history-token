@@ -94,6 +94,7 @@ DECL|macro|ICC_IND_DC
 mdefine_line|#define ICC_IND_DC     0xF
 r_extern
 r_void
+id|__init
 id|ICCVersion
 c_func
 (paren
