@@ -3326,7 +3326,7 @@ l_string|&quot;out of memory&quot;
 )paren
 suffix:semicolon
 r_goto
-m_abort
+id|abort_minor
 suffix:semicolon
 )brace
 id|usblp-&gt;readurb
@@ -3353,7 +3353,7 @@ l_string|&quot;out of memory&quot;
 )paren
 suffix:semicolon
 r_goto
-m_abort
+id|abort_minor
 suffix:semicolon
 )brace
 multiline_comment|/* Malloc device ID string buffer to the largest expected length,&n;&t; * since we can re-query it on an ioctl and a dynamic string&n;&t; * could change in length. */
@@ -3381,7 +3381,7 @@ l_string|&quot;out of memory for device_id_string&quot;
 )paren
 suffix:semicolon
 r_goto
-m_abort
+id|abort_minor
 suffix:semicolon
 )brace
 multiline_comment|/* Malloc write/read buffers in one chunk.  We somewhat wastefully&n;&t; * malloc both regardless of bidirectionality, because the&n;&t; * alternate setting can be changed later via an ioctl. */
@@ -3411,7 +3411,7 @@ l_string|&quot;out of memory for buf&quot;
 )paren
 suffix:semicolon
 r_goto
-m_abort
+id|abort_minor
 suffix:semicolon
 )brace
 multiline_comment|/* Lookup quirks for this printer. */
@@ -3453,7 +3453,7 @@ id|dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
 r_goto
-m_abort
+id|abort_minor
 suffix:semicolon
 )brace
 multiline_comment|/* Setup the selected alternate setting and endpoints. */
@@ -3471,7 +3471,7 @@ OL
 l_int|0
 )paren
 r_goto
-m_abort
+id|abort_minor
 suffix:semicolon
 multiline_comment|/* Retrieve and store the device ID string. */
 id|usblp_cache_device_id_string
@@ -3577,6 +3577,18 @@ id|usblp-&gt;dev-&gt;descriptor.idProduct
 suffix:semicolon
 r_return
 id|usblp
+suffix:semicolon
+id|abort_minor
+suffix:colon
+id|usb_deregister_dev
+(paren
+op_amp
+id|usblp_driver
+comma
+l_int|1
+comma
+id|usblp-&gt;minor
+)paren
 suffix:semicolon
 m_abort
 suffix:colon
