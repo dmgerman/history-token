@@ -1,4 +1,4 @@
-multiline_comment|/*&n; &t;Hardware driver for the Intel/AMD/Via Random Number Generators (RNG)&n;&t;(c) Copyright 2003 Red Hat Inc &lt;jgarzik@redhat.com&gt;&n; &n; &t;derived from&n; &n;        Hardware driver for the AMD 768 Random Number Generator (RNG)&n;        (c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n;&n; &t;derived from&n; &n;&t;Hardware driver for Intel i810 Random Number Generator (RNG)&n;&t;Copyright 2000,2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001 Philipp Rumpf &lt;prumpf@mandrakesoft.com&gt;&n;&n;&t;Please read Documentation/hw_random.txt for details on use.&n;&n;&t;----------------------------------------------------------&n;&t;This software may be used and distributed according to the terms&n;        of the GNU General Public License, incorporated herein by reference.&n;&n; */
+multiline_comment|/*&n; &t;Hardware driver for the Intel/AMD/VIA Random Number Generators (RNG)&n;&t;(c) Copyright 2003 Red Hat Inc &lt;jgarzik@redhat.com&gt;&n; &n; &t;derived from&n; &n;        Hardware driver for the AMD 768 Random Number Generator (RNG)&n;        (c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n;&n; &t;derived from&n; &n;&t;Hardware driver for Intel i810 Random Number Generator (RNG)&n;&t;Copyright 2000,2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001 Philipp Rumpf &lt;prumpf@mandrakesoft.com&gt;&n;&n;&t;Please read Documentation/hw_random.txt for details on use.&n;&n;&t;----------------------------------------------------------&n;&t;This software may be used and distributed according to the terms&n;        of the GNU General Public License, incorporated herein by reference.&n;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -64,21 +64,6 @@ id|filp
 )paren
 suffix:semicolon
 r_static
-r_int
-id|rng_dev_release
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|rng_dev_read
 (paren
@@ -112,7 +97,6 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|__exit
 id|intel_cleanup
 c_func
 (paren
@@ -147,7 +131,6 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|__exit
 id|amd_cleanup
 c_func
 (paren
@@ -183,7 +166,6 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|__exit
 id|via_cleanup
 c_func
 (paren
@@ -268,13 +250,6 @@ id|rng_operations
 op_star
 id|rng_ops
 suffix:semicolon
-DECL|variable|rng_open_sem
-r_static
-r_struct
-id|semaphore
-id|rng_open_sem
-suffix:semicolon
-multiline_comment|/* Semaphore for serializing rng_open/release */
 DECL|variable|rng_chrdev_ops
 r_static
 r_struct
@@ -291,11 +266,6 @@ dot
 id|open
 op_assign
 id|rng_dev_open
-comma
-dot
-id|release
-op_assign
-id|rng_dev_release
 comma
 dot
 id|read
@@ -831,7 +801,6 @@ suffix:semicolon
 DECL|function|intel_cleanup
 r_static
 r_void
-id|__exit
 id|intel_cleanup
 c_func
 (paren
@@ -1095,7 +1064,6 @@ suffix:semicolon
 DECL|function|amd_cleanup
 r_static
 r_void
-id|__exit
 id|amd_cleanup
 c_func
 (paren
@@ -1138,7 +1106,7 @@ id|rnen
 suffix:semicolon
 multiline_comment|/* FIXME: twiddle pmio, also? */
 )brace
-multiline_comment|/***********************************************************************&n; *&n; * Via RNG operations&n; *&n; */
+multiline_comment|/***********************************************************************&n; *&n; * VIA RNG operations&n; *&n; */
 r_enum
 (brace
 DECL|enumerator|VIA_STRFILT_CNT_SHIFT
@@ -1450,7 +1418,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;cannot enable Via C3 RNG, aborting&bslash;n&quot;
+l_string|&quot;cannot enable VIA C3 RNG, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1465,7 +1433,6 @@ suffix:semicolon
 DECL|function|via_cleanup
 r_static
 r_void
-id|__exit
 id|via_cleanup
 c_func
 (paren
@@ -1520,6 +1487,7 @@ op_star
 id|filp
 )paren
 (brace
+multiline_comment|/* enforce read-only access to this chrdev */
 r_if
 c_cond
 (paren
@@ -1545,72 +1513,6 @@ id|FMODE_WRITE
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-multiline_comment|/* wait for device to become free */
-r_if
-c_cond
-(paren
-id|filp-&gt;f_flags
-op_amp
-id|O_NONBLOCK
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|down_trylock
-(paren
-op_amp
-id|rng_open_sem
-)paren
-)paren
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|down_interruptible
-(paren
-op_amp
-id|rng_open_sem
-)paren
-)paren
-r_return
-op_minus
-id|ERESTARTSYS
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|rng_dev_release
-r_static
-r_int
-id|rng_dev_release
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|rng_open_sem
-)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1968,12 +1870,6 @@ id|DPRINTK
 l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
-id|init_MUTEX
-(paren
-op_amp
-id|rng_open_sem
-)paren
-suffix:semicolon
 multiline_comment|/* Probe for Intel, AMD RNGs */
 id|pci_for_each_dev
 c_func
@@ -2010,7 +1906,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef __i386__
-multiline_comment|/* Probe for Via RNG */
+multiline_comment|/* Probe for VIA RNG */
 r_if
 c_cond
 (paren
