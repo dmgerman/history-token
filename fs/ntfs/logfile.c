@@ -2301,7 +2301,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_empty_logfile - empty the contents of the $LogFile journal&n; * @log_vi:&t;struct inode of loaded journal $LogFile to empty&n; *&n; * Empty the contents of the $LogFile journal @log_vi and return TRUE on&n; * success FALSE on error.&n; *&n; * This function assumes that the $LogFile journal has already been consistency&n; * checked by a call to ntfs_check_logfile() and that ntfs_is_logfile_clean()&n; * has been used to ensure that the $LogFile is clean.&n; */
+multiline_comment|/**&n; * ntfs_empty_logfile - empty the contents of the $LogFile journal&n; * @log_vi:&t;struct inode of loaded journal $LogFile to empty&n; *&n; * Empty the contents of the $LogFile journal @log_vi and return TRUE on&n; * success and FALSE on error.&n; *&n; * This function assumes that the $LogFile journal has already been consistency&n; * checked by a call to ntfs_check_logfile() and that ntfs_is_logfile_clean()&n; * has been used to ensure that the $LogFile is clean.&n; */
 DECL|function|ntfs_empty_logfile
 id|BOOL
 id|ntfs_empty_logfile

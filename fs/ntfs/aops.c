@@ -788,6 +788,10 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
+id|u8
+op_star
+id|kaddr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1107,14 +1111,20 @@ id|bh
 suffix:semicolon
 id|handle_zblock
 suffix:colon
-id|memset
-c_func
-(paren
-id|kmap
+id|kaddr
+op_assign
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
 op_plus
 id|i
 op_star
@@ -1131,10 +1141,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|set_buffer_uptodate
@@ -1351,9 +1363,9 @@ comma
 op_star
 id|base_ni
 suffix:semicolon
-r_char
+id|u8
 op_star
-id|addr
+id|kaddr
 suffix:semicolon
 id|attr_search_context
 op_star
@@ -1411,6 +1423,7 @@ c_func
 id|page-&gt;mapping-&gt;host
 )paren
 suffix:semicolon
+multiline_comment|/* NInoNonResident() == NInoIndexAllocPresent() */
 r_if
 c_cond
 (paren
@@ -1619,12 +1632,14 @@ c_func
 id|ctx-&gt;attr-&gt;data.resident.value_length
 )paren
 suffix:semicolon
-id|addr
+id|kaddr
 op_assign
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 multiline_comment|/* Copy over in bounds data, zeroing the remainder of the page. */
@@ -1665,7 +1680,7 @@ id|PAGE_CACHE_SIZE
 id|memset
 c_func
 (paren
-id|addr
+id|kaddr
 op_plus
 id|bytes
 comma
@@ -1680,7 +1695,7 @@ multiline_comment|/* Copy the data to the page. */
 id|memcpy
 c_func
 (paren
-id|addr
+id|kaddr
 comma
 id|attr_pos
 op_plus
@@ -1704,7 +1719,7 @@ r_else
 id|memset
 c_func
 (paren
-id|addr
+id|kaddr
 comma
 l_int|0
 comma
@@ -1717,10 +1732,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|SetPageUptodate
@@ -2938,6 +2955,7 @@ c_func
 id|vi
 )paren
 suffix:semicolon
+multiline_comment|/* NInoNonResident() == NInoIndexAllocPresent() */
 r_if
 c_cond
 (paren
@@ -6159,7 +6177,7 @@ op_assign
 id|ntfs_commit_write
 comma
 multiline_comment|/* Commit received data. */
-macro_line|#endif
+macro_line|#endif /* NTFS_RW */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * ntfs_mst_aops - general address space operations for mst protecteed inodes&n; *&t;&t;   and attributes&n; */
