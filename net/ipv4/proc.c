@@ -1,19 +1,9 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;This file implements the various access functions for the&n; *&t;&t;PROC file system.  It is mainly used for debugging and&n; *&t;&t;statistics.&n; *&n; * Version:&t;$Id: proc.c,v 1.45 2001/05/16 16:45:35 davem Exp $&n; *&n; * Authors:&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Gerald J. Heim, &lt;heim@peanuts.informatik.uni-tuebingen.de&gt;&n; *&t;&t;Fred Baumgarten, &lt;dc6iq@insu1.etec.uni-karlsruhe.de&gt;&n; *&t;&t;Erik Schoenfelder, &lt;schoenfr@ibr.cs.tu-bs.de&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;UDP sockets show the rxqueue/txqueue&n; *&t;&t;&t;&t;&t;using hint flag for the netinfo.&n; *&t;Pauline Middelink&t;:&t;identd support&n; *&t;&t;Alan Cox&t;:&t;Make /proc safer.&n; *&t;Erik Schoenfelder&t;:&t;/proc/net/snmp&n; *&t;&t;Alan Cox&t;:&t;Handle dead sockets properly.&n; *&t;Gerhard Koerting&t;:&t;Show both timers&n; *&t;&t;Alan Cox&t;:&t;Allow inode to be NULL (kernel socket)&n; *&t;Andi Kleen&t;&t;:&t;Add support for open_requests and &n; *&t;&t;&t;&t;&t;split functions for more readibility.&n; *&t;Andi Kleen&t;&t;:&t;Add support for /proc/net/netstat&n; *&t;Arnaldo C. Melo&t;&t;:&t;Convert to seq_file&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/un.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;This file implements the various access functions for the&n; *&t;&t;PROC file system.  It is mainly used for debugging and&n; *&t;&t;statistics.&n; *&n; * Version:&t;$Id: proc.c,v 1.45 2001/05/16 16:45:35 davem Exp $&n; *&n; * Authors:&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Gerald J. Heim, &lt;heim@peanuts.informatik.uni-tuebingen.de&gt;&n; *&t;&t;Fred Baumgarten, &lt;dc6iq@insu1.etec.uni-karlsruhe.de&gt;&n; *&t;&t;Erik Schoenfelder, &lt;schoenfr@ibr.cs.tu-bs.de&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;UDP sockets show the rxqueue/txqueue&n; *&t;&t;&t;&t;&t;using hint flag for the netinfo.&n; *&t;Pauline Middelink&t;:&t;identd support&n; *&t;&t;Alan Cox&t;:&t;Make /proc safer.&n; *&t;Erik Schoenfelder&t;:&t;/proc/net/snmp&n; *&t;&t;Alan Cox&t;:&t;Handle dead sockets properly.&n; *&t;Gerhard Koerting&t;:&t;Show both timers&n; *&t;&t;Alan Cox&t;:&t;Allow inode to be NULL (kernel socket)&n; *&t;Andi Kleen&t;&t;:&t;Add support for open_requests and&n; *&t;&t;&t;&t;&t;split functions for more readibility.&n; *&t;Andi Kleen&t;&t;:&t;Add support for /proc/net/netstat&n; *&t;Arnaldo C. Melo&t;&t;:&t;Convert to seq_file&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -66,68 +56,44 @@ id|res
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Report socket allocation statistics [mea@utu.fi]&n; */
-DECL|function|afinet_get_info
+DECL|function|sockstat_seq_show
+r_static
 r_int
-id|afinet_get_info
+id|sockstat_seq_show
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|seq
 comma
-r_char
+r_void
 op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
+id|v
 )paren
 (brace
-multiline_comment|/* From  net/socket.c  */
+multiline_comment|/* From net/socket.c */
 r_extern
-r_int
-id|socket_get_info
+r_void
+id|socket_seq_show
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
+id|seq
 )paren
 suffix:semicolon
-r_int
-id|len
-op_assign
-id|socket_get_info
+id|socket_seq_show
 c_func
 (paren
-id|buffer
-comma
-id|start
-comma
-id|offset
-comma
-id|length
+id|seq
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;TCP: inuse %d orphan %d tw %d alloc %d mem %d&bslash;n&quot;
 comma
@@ -162,14 +128,10 @@ id|tcp_memory_allocated
 )paren
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;UDP: inuse %d&bslash;n&quot;
 comma
@@ -181,14 +143,10 @@ id|udp_prot
 )paren
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;RAW: inuse %d&bslash;n&quot;
 comma
@@ -200,14 +158,10 @@ id|raw_prot
 )paren
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|seq
 comma
 l_string|&quot;FRAG: inuse %d memory %d&bslash;n&quot;
 comma
@@ -221,60 +175,68 @@ id|ip_frag_mem
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|sockstat_seq_open
+r_static
+r_int
+id|sockstat_seq_open
+c_func
 (paren
-id|offset
-op_ge
-id|len
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
 )paren
 (brace
-op_star
-id|start
-op_assign
-id|buffer
-suffix:semicolon
 r_return
-l_int|0
+id|single_open
+c_func
+(paren
+id|file
+comma
+id|sockstat_seq_show
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
-op_star
-id|start
+DECL|variable|sockstat_seq_fops
+r_static
+r_struct
+id|file_operations
+id|sockstat_seq_fops
 op_assign
-id|buffer
-op_plus
-id|offset
-suffix:semicolon
-id|len
-op_sub_assign
-id|offset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|length
-)paren
-id|len
+(brace
+dot
+id|open
 op_assign
-id|length
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OL
-l_int|0
-)paren
-id|len
+id|sockstat_seq_open
+comma
+dot
+id|read
 op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
+id|seq_read
+comma
+dot
+id|llseek
+op_assign
+id|seq_lseek
+comma
+dot
+id|release
+op_assign
+id|single_release
+comma
 )brace
+suffix:semicolon
 DECL|function|fold_field
 r_static
 r_int
@@ -361,7 +323,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* &n; *&t;Called from the PROCfs module. This outputs /proc/net/snmp.&n; */
+multiline_comment|/*&n; *&t;Called from the PROCfs module. This outputs /proc/net/snmp.&n; */
 DECL|function|snmp_seq_show
 r_static
 r_int
@@ -721,7 +683,7 @@ id|single_release
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* &n; *&t;Output /proc/net/netstat&n; */
+multiline_comment|/*&n; *&t;Output /proc/net/netstat&n; */
 DECL|function|netstat_seq_show
 r_static
 r_int
@@ -970,22 +932,31 @@ op_assign
 op_amp
 id|snmp_seq_fops
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|proc_net_create
+id|p
+op_assign
+id|create_proc_entry
 c_func
 (paren
 l_string|&quot;sockstat&quot;
 comma
-l_int|0
+id|S_IRUGO
 comma
-id|afinet_get_info
+id|proc_net
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p
 )paren
 r_goto
 id|out_sockstat
+suffix:semicolon
+id|p-&gt;proc_fops
+op_assign
+op_amp
+id|sockstat_seq_fops
 suffix:semicolon
 id|out
 suffix:colon
