@@ -5,7 +5,6 @@ mdefine_line|#define __SPARC_PCIC_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
