@@ -10937,7 +10937,7 @@ l_int|100
 suffix:semicolon
 macro_line|#endif
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
