@@ -2641,11 +2641,13 @@ id|arg
 (brace
 r_struct
 id|ifreq
+id|__user
 op_star
 id|ifr
 suffix:semicolon
 r_struct
 id|ifreq32
+id|__user
 op_star
 id|ifr32
 suffix:semicolon
@@ -2653,6 +2655,7 @@ id|u32
 id|data
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|datap
 suffix:semicolon
