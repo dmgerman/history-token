@@ -92,6 +92,16 @@ id|INQUIRY
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* oddly short buffer -- bail out */
+r_if
+c_cond
+(paren
+id|srb-&gt;request_bufflen
+OL
+l_int|3
+)paren
+r_return
+suffix:semicolon
 id|data_ptr
 op_assign
 id|find_data_location
