@@ -2,8 +2,7 @@ multiline_comment|/*&n; * include/asm-v850/as85ep1.h -- AS85EP1 evaluation CPU c
 macro_line|#ifndef __V850_AS85EP1_H__
 DECL|macro|__V850_AS85EP1_H__
 mdefine_line|#define __V850_AS85EP1_H__
-DECL|macro|CPU_ARCH
-mdefine_line|#define CPU_ARCH &t;&quot;v850e&quot;
+macro_line|#include &lt;asm/v850e.h&gt;
 DECL|macro|CPU_MODEL
 mdefine_line|#define CPU_MODEL&t;&quot;as85ep1&quot;
 DECL|macro|CPU_MODEL_LONG
@@ -101,8 +100,6 @@ DECL|macro|AS85EP1_PORT_PMC_ADDR
 mdefine_line|#define AS85EP1_PORT_PMC_ADDR(n) (0xFFFFF440 + (n) * 2)
 DECL|macro|AS85EP1_PORT_PMC
 mdefine_line|#define AS85EP1_PORT_PMC(n)&t;(*(volatile u8 *)AS85EP1_PORT_PMC_ADDR(n))
-multiline_comment|/* NB85E-style interrupt system.  */
-macro_line|#include &lt;asm/nb85e_intc.h&gt;
 multiline_comment|/* Hardware-specific interrupt numbers (in the kernel IRQ namespace).  */
 DECL|macro|IRQ_INTCCC
 mdefine_line|#define IRQ_INTCCC(n)&t;(0x0C + (n))

@@ -335,15 +335,6 @@ id|mach_tick
 op_assign
 id|as85ep1_led_tick
 suffix:semicolon
-id|ROOT_DEV
-op_assign
-id|MKDEV
-(paren
-id|BLKMEM_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
 )brace
 DECL|function|mach_get_physical_ram
 r_void
@@ -458,7 +449,7 @@ r_void
 id|mach_gettimeofday
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren
@@ -467,7 +458,7 @@ id|tv-&gt;tv_sec
 op_assign
 l_int|0
 suffix:semicolon
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
