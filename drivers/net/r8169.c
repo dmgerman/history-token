@@ -1,4 +1,4 @@
-multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;        2004&t;- Massive updates. See kernel SCM system for details.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;&n;VERSION 1.6LK&t;&lt;2004/04/14&gt;&n;&n;&t;- Merge of Realtek&squot;s version 1.6&n;&t;- Conversion to DMA API&n;&t;- Suspend/resume&n;&t;- Endianness&n;&t;- Misc Rx/Tx bugs&n;*/
+multiline_comment|/*&n;=========================================================================&n; r8169.c: A RealTek RTL-8169 Gigabit Ethernet driver for Linux kernel 2.4.x.&n; --------------------------------------------------------------------&n;&n; History:&n; Feb  4 2002&t;- created initially by ShuChen &lt;shuchen@realtek.com.tw&gt;.&n; May 20 2002&t;- Add link status force-mode and TBI mode support.&n;        2004&t;- Massive updates. See kernel SCM system for details.&n;=========================================================================&n;  1. [DEPRECATED: use ethtool instead] The media can be forced in 5 modes.&n;&t; Command: &squot;insmod r8169 media = SET_MEDIA&squot;&n;&t; Ex:&t;  &squot;insmod r8169 media = 0x04&squot; will force PHY to operate in 100Mpbs Half-duplex.&n;&t;&n;&t; SET_MEDIA can be:&n; &t;&t;_10_Half&t;= 0x01&n; &t;&t;_10_Full&t;= 0x02&n; &t;&t;_100_Half&t;= 0x04&n; &t;&t;_100_Full&t;= 0x08&n; &t;&t;_1000_Full&t;= 0x10&n;  &n;  2. Support TBI mode.&n;=========================================================================&n;VERSION 1.1&t;&lt;2002/10/4&gt;&n;&n;&t;The bit4:0 of MII register 4 is called &quot;selector field&quot;, and have to be&n;&t;00001b to indicate support of IEEE std 802.3 during NWay process of&n;&t;exchanging Link Code Word (FLP). &n;&n;VERSION 1.2&t;&lt;2002/11/30&gt;&n;&n;&t;- Large style cleanup&n;&t;- Use ether_crc in stock kernel (linux/crc32.h)&n;&t;- Copy mc_filter setup code from 8139cp&n;&t;  (includes an optimization, and avoids set_bit use)&n;&n;VERSION 1.6LK&t;&lt;2004/04/14&gt;&n;&n;&t;- Merge of Realtek&squot;s version 1.6&n;&t;- Conversion to DMA API&n;&t;- Suspend/resume&n;&t;- Endianness&n;&t;- Misc Rx/Tx bugs&n;&n;VERSION 2.2LK&t;&lt;2005/01/25&gt;&n;&n;&t;- RX csum, TX csum/SG, TSO&n;&t;- VLAN&n;&t;- baby (&lt; 7200) Jumbo frames support&n;&t;- Merge of Realtek&squot;s version 2.2 (new phy)&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|RTL8169_VERSION
-mdefine_line|#define RTL8169_VERSION &quot;1.6LK&quot;
+mdefine_line|#define RTL8169_VERSION &quot;2.2LK&quot;
 DECL|macro|MODULENAME
 mdefine_line|#define MODULENAME &quot;r8169&quot;
 DECL|macro|PFX
@@ -221,6 +221,12 @@ op_assign
 l_int|0x07
 comma
 multiline_comment|/* PHY Reg 0x03 bit0-3 == 0x0002 */
+DECL|enumerator|RTL_GIGA_PHY_VER_H
+id|RTL_GIGA_PHY_VER_H
+op_assign
+l_int|0x08
+comma
+multiline_comment|/* PHY Reg 0x03 bit0-3 == 0x0003 */
 )brace
 suffix:semicolon
 DECL|macro|_R
@@ -280,6 +286,17 @@ id|RTL_GIGA_MAC_VER_E
 comma
 l_int|0xff7e1880
 )paren
+comma
+id|_R
+c_func
+(paren
+l_string|&quot;RTL8169s/8110s&quot;
+comma
+id|RTL_GIGA_MAC_VER_X
+comma
+l_int|0xff7e1880
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|macro|_R
@@ -507,6 +524,11 @@ DECL|enumerator|CPlusCmd
 id|CPlusCmd
 op_assign
 l_int|0xE0
+comma
+DECL|enumerator|IntrMitigate
+id|IntrMitigate
+op_assign
+l_int|0xE2
 comma
 DECL|enumerator|RxDescAddrLow
 id|RxDescAddrLow
@@ -1391,7 +1413,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Realtek&quot;
+l_string|&quot;Realtek and the Linux r8169 crew &lt;netdev@oss.sgi.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -4510,7 +4532,7 @@ c_cond
 (paren
 id|tp-&gt;phy_version
 op_ge
-id|RTL_GIGA_PHY_VER_F
+id|RTL_GIGA_PHY_VER_H
 )paren
 r_return
 suffix:semicolon
@@ -4527,6 +4549,87 @@ l_string|&quot;Do final_reg2.cfg&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Shazam ! */
+r_if
+c_cond
+(paren
+id|tp-&gt;mac_version
+op_eq
+id|RTL_GIGA_MAC_VER_X
+)paren
+(brace
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x0001
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|9
+comma
+l_int|0x273a
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|14
+comma
+l_int|0x7bfb
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|27
+comma
+l_int|0x841e
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x0002
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|1
+comma
+l_int|0x90d0
+)paren
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+l_int|31
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 singleline_comment|// phy config for RTL8169s mac_version C chip
 id|mdio_write
 c_func
@@ -4766,7 +4869,7 @@ m_assert
 (paren
 id|tp-&gt;phy_version
 OL
-id|RTL_GIGA_PHY_VER_G
+id|RTL_GIGA_PHY_VER_H
 )paren
 suffix:semicolon
 r_if
@@ -4909,7 +5012,7 @@ op_logical_or
 (paren
 id|tp-&gt;phy_version
 op_ge
-id|RTL_GIGA_PHY_VER_G
+id|RTL_GIGA_PHY_VER_H
 )paren
 )paren
 r_return
@@ -4965,7 +5068,7 @@ op_logical_or
 (paren
 id|tp-&gt;phy_version
 op_ge
-id|RTL_GIGA_PHY_VER_G
+id|RTL_GIGA_PHY_VER_H
 )paren
 )paren
 r_return
@@ -7073,9 +7176,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|tp-&gt;mac_version
 op_eq
 id|RTL_GIGA_MAC_VER_D
+)paren
+op_logical_or
+(paren
+id|tp-&gt;mac_version
+op_eq
+id|RTL_GIGA_MAC_VER_E
+)paren
 )paren
 (brace
 id|dprintk
@@ -7106,6 +7217,15 @@ id|tp-&gt;cp_cmd
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Undocumented corner. Supposedly:&n;&t; * (TxTimer &lt;&lt; 12) | (TxPackets &lt;&lt; 8) | (RxTimer &lt;&lt; 4) | RxPackets&n;&t; */
+id|RTL_W16
+c_func
+(paren
+id|IntrMitigate
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
 id|RTL_W32
 c_func
 (paren
