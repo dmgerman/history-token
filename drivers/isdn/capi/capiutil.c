@@ -8,24 +8,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;CAPI4Linux: CAPI message conversion support&quot;
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Carsten Paeth&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* from CAPI2.0 DDK AVM Berlin GmbH */
 macro_line|#ifndef CONFIG_ISDN_DRV_AVMB1_VERBOSE_REASON
 DECL|function|capi_info2str
@@ -34,7 +16,7 @@ op_star
 id|capi_info2str
 c_func
 (paren
-id|__u16
+id|u16
 id|reason
 )paren
 (brace
@@ -49,7 +31,7 @@ op_star
 id|capi_info2str
 c_func
 (paren
-id|__u16
+id|u16
 id|reason
 )paren
 (brace
@@ -1817,9 +1799,9 @@ comma
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------*/
 DECL|macro|byteTLcpy
-mdefine_line|#define byteTLcpy(x,y)        *(__u8 *)(x)=*(__u8 *)(y);
+mdefine_line|#define byteTLcpy(x,y)        *(u8 *)(x)=*(u8 *)(y);
 DECL|macro|wordTLcpy
-mdefine_line|#define wordTLcpy(x,y)        *(__u16 *)(x)=*(__u16 *)(y);
+mdefine_line|#define wordTLcpy(x,y)        *(u16 *)(x)=*(u16 *)(y);
 DECL|macro|dwordTLcpy
 mdefine_line|#define dwordTLcpy(x,y)       memcpy(x,y,4);
 DECL|macro|structTLcpy
@@ -1827,9 +1809,9 @@ mdefine_line|#define structTLcpy(x,y,l)    memcpy (x,y,l)
 DECL|macro|structTLcpyovl
 mdefine_line|#define structTLcpyovl(x,y,l) memmove (x,y,l)
 DECL|macro|byteTRcpy
-mdefine_line|#define byteTRcpy(x,y)        *(__u8 *)(y)=*(__u8 *)(x);
+mdefine_line|#define byteTRcpy(x,y)        *(u8 *)(y)=*(u8 *)(x);
 DECL|macro|wordTRcpy
-mdefine_line|#define wordTRcpy(x,y)        *(__u16 *)(y)=*(__u16 *)(x);
+mdefine_line|#define wordTRcpy(x,y)        *(u16 *)(y)=*(u16 *)(x);
 DECL|macro|dwordTRcpy
 mdefine_line|#define dwordTRcpy(x,y)       memcpy(y,x,4);
 DECL|macro|structTRcpy
@@ -1922,7 +1904,7 @@ multiline_comment|/*-------------------------------------------------------*/
 DECL|macro|TYP
 mdefine_line|#define TYP (cdef[cmsg-&gt;par[cmsg-&gt;p]].typ)
 DECL|macro|OFF
-mdefine_line|#define OFF (((__u8 *)cmsg)+cdef[cmsg-&gt;par[cmsg-&gt;p]].off)
+mdefine_line|#define OFF (((u8 *)cmsg)+cdef[cmsg-&gt;par[cmsg-&gt;p]].off)
 DECL|function|jumpcstruct
 r_static
 r_void
@@ -2074,7 +2056,7 @@ c_cond
 (paren
 op_star
 (paren
-id|__u8
+id|u8
 op_star
 op_star
 )paren
@@ -2174,7 +2156,7 @@ l_int|3
 op_plus
 op_star
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 (paren
@@ -2190,7 +2172,7 @@ l_int|3
 op_plus
 op_star
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 (paren
@@ -2286,7 +2268,7 @@ l_int|0
 )braket
 op_assign
 (paren
-id|__u8
+id|u8
 )paren
 id|_ls
 suffix:semicolon
@@ -2351,7 +2333,7 @@ id|_cmsg
 op_star
 id|cmsg
 comma
-id|__u8
+id|u8
 op_star
 id|msg
 )paren
@@ -2537,7 +2519,7 @@ id|_CSTRUCT
 suffix:colon
 op_star
 (paren
-id|__u8
+id|u8
 op_star
 op_star
 )paren
@@ -2573,7 +2555,7 @@ l_int|3
 op_plus
 op_star
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 (paren
@@ -2683,7 +2665,7 @@ id|_cmsg
 op_star
 id|cmsg
 comma
-id|__u8
+id|u8
 op_star
 id|msg
 )paren
@@ -2801,19 +2783,19 @@ id|_cmsg
 op_star
 id|cmsg
 comma
-id|__u16
+id|u16
 id|_ApplId
 comma
-id|__u8
+id|u8
 id|_Command
 comma
-id|__u8
+id|u8
 id|_Subcommand
 comma
-id|__u16
+id|u16
 id|_Messagenumber
 comma
-id|__u32
+id|u32
 id|_Controller
 )paren
 (brace
@@ -3029,10 +3011,10 @@ op_star
 id|capi_cmd2str
 c_func
 (paren
-id|__u8
+id|u8
 id|cmd
 comma
-id|__u8
+id|u8
 id|subcmd
 )paren
 (brace
@@ -3280,7 +3262,7 @@ r_void
 id|printstructlen
 c_func
 (paren
-id|__u8
+id|u8
 op_star
 id|m
 comma
@@ -3396,7 +3378,7 @@ r_void
 id|printstruct
 c_func
 (paren
-id|__u8
+id|u8
 op_star
 id|m
 )paren
@@ -3433,7 +3415,7 @@ id|len
 op_assign
 (paren
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 (paren
@@ -3549,7 +3531,7 @@ id|NAME
 comma
 op_star
 (paren
-id|__u8
+id|u8
 op_star
 )paren
 (paren
@@ -3578,7 +3560,7 @@ id|NAME
 comma
 op_star
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 (paren
@@ -3608,7 +3590,7 @@ id|NAME
 comma
 op_star
 (paren
-id|__u32
+id|u32
 op_star
 )paren
 (paren
@@ -3694,7 +3676,7 @@ l_int|3
 op_plus
 op_star
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 (paren
@@ -3813,7 +3795,7 @@ op_star
 id|capi_message2str
 c_func
 (paren
-id|__u8
+id|u8
 op_star
 id|msg
 )paren
@@ -3993,7 +3975,7 @@ id|cmsg-&gt;Subcommand
 comma
 (paren
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 id|cmsg-&gt;m
@@ -4004,7 +3986,7 @@ l_int|1
 comma
 (paren
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 id|cmsg-&gt;m
@@ -4015,7 +3997,7 @@ l_int|3
 comma
 (paren
 (paren
-id|__u16
+id|u16
 op_star
 )paren
 id|cmsg-&gt;m
@@ -4084,45 +4066,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|capi_info2str
-)paren
-suffix:semicolon
-DECL|function|capiutil_init
-r_static
-r_int
-id|__init
-id|capiutil_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|capiutil_exit
-r_static
-r_void
-id|__exit
-id|capiutil_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|variable|capiutil_init
-id|module_init
-c_func
-(paren
-id|capiutil_init
-)paren
-suffix:semicolon
-DECL|variable|capiutil_exit
-id|module_exit
-c_func
-(paren
-id|capiutil_exit
 )paren
 suffix:semicolon
 eof
