@@ -1288,7 +1288,7 @@ id|TCP_CA_Recovery
 r_if
 c_cond
 (paren
-id|tp-&gt;sack_ok
+id|tp-&gt;rx_opt.sack_ok
 )paren
 (brace
 r_if
