@@ -30,29 +30,29 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
 macro_line|#endif
 multiline_comment|/*&n; * Driver data &n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 op_star
 id|mode
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * The XFree GLINT driver will (I think to implement hardware cursor&n; * support on TVP4010 and similar where there is no RAMDAC - see&n; * comment in set_video) always request +ve sync regardless of what&n; * the mode requires. This screws me because I have a Sun&n; * fixed-frequency monitor which absolutely has to have -ve sync. So&n; * these flags allow the user to specify that requests for +ve sync&n; * should be silently turned in -ve sync.&n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_int
 id|lowhsync
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_int
 id|lowvsync
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
@@ -115,12 +115,12 @@ multiline_comment|/* BootAddress reg at probe */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Here we define the default structs fb_fix_screeninfo and fb_var_screeninfo&n; * if we don&squot;t use modedb.&n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_fix_screeninfo
 id|pm2fb_fix
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 dot
@@ -161,12 +161,12 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Default video mode. In case the modedb doesn&squot;t work.&n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|fb_var_screeninfo
 id|pm2fb_var
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* &quot;640x480, 8 bpp @ 60 Hz */
