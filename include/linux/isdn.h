@@ -569,7 +569,7 @@ DECL|member|exclusive
 r_int
 id|exclusive
 suffix:semicolon
-multiline_comment|/* If non-zero idx to reserved chan.*/
+multiline_comment|/* -1 if non excl./idx to excl chan */
 DECL|member|flags
 r_int
 id|flags

@@ -7262,7 +7262,8 @@ l_int|1
 suffix:semicolon
 id|netdev-&gt;local.exclusive
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 id|netdev-&gt;local.ppp_slot
 op_assign
@@ -7963,7 +7964,11 @@ c_cond
 (paren
 id|cfg-&gt;exclusive
 op_eq
+(paren
 id|lp-&gt;exclusive
+op_ge
+l_int|0
+)paren
 op_logical_and
 id|drvidx
 op_eq
@@ -7987,6 +7992,8 @@ r_if
 c_cond
 (paren
 id|lp-&gt;exclusive
+op_ge
+l_int|0
 )paren
 (brace
 id|isdn_unexclusive_channel
@@ -8009,7 +8016,8 @@ id|ISDN_USAGE_NET
 suffix:semicolon
 id|lp-&gt;exclusive
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -8019,7 +8027,7 @@ id|cfg-&gt;exclusive
 )paren
 (brace
 multiline_comment|/* If binding is exclusive, try to grab the channel */
-id|i
+id|lp-&gt;exclusive
 op_assign
 id|isdn_get_free_slot
 c_func
@@ -8037,18 +8045,10 @@ comma
 id|cfg-&gt;eaz
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;i %d&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|i
+id|lp-&gt;exclusive
 OL
 l_int|0
 )paren
@@ -8067,14 +8067,10 @@ multiline_comment|/* All went ok, so update isdninfo */
 id|isdn_slot_set_usage
 c_func
 (paren
-id|i
+id|lp-&gt;exclusive
 comma
 id|ISDN_USAGE_EXCLUSIVE
 )paren
-suffix:semicolon
-id|lp-&gt;exclusive
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 id|lp-&gt;pre_device
@@ -8587,6 +8583,8 @@ suffix:semicolon
 id|cfg-&gt;exclusive
 op_assign
 id|lp-&gt;exclusive
+op_ge
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -9686,6 +9684,8 @@ r_if
 c_cond
 (paren
 id|p-&gt;local.exclusive
+op_ge
+l_int|0
 )paren
 id|isdn_unexclusive_channel
 c_func
