@@ -2815,7 +2815,7 @@ id|conp-&gt;vc_origin
 comma
 id|conp-&gt;vc_video_erase_char
 comma
-id|conp-&gt;vc_size_row
+id|old_cols
 op_star
 id|logo_lines
 )paren
