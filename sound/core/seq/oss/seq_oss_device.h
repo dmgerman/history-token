@@ -294,6 +294,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -311,6 +312,7 @@ id|dp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
