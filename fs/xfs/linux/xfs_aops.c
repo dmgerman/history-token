@@ -4092,7 +4092,6 @@ id|iblock
 op_lshift
 id|inode-&gt;i_blkbits
 suffix:semicolon
-multiline_comment|/* If we are doing writes at the end of the file,&n;&t; * allocate in chunks&n;&t; */
 r_if
 c_cond
 (paren
@@ -4103,28 +4102,6 @@ op_assign
 id|blocks
 op_lshift
 id|inode-&gt;i_blkbits
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|create
-op_logical_and
-(paren
-id|offset
-op_ge
-id|i_size_read
-c_func
-(paren
-id|inode
-)paren
-)paren
-)paren
-id|size
-op_assign
-l_int|1
-op_lshift
-id|XFS_WRITE_IO_LOG
 suffix:semicolon
 r_else
 id|size
