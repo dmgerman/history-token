@@ -635,12 +635,6 @@ id|use_clustering
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|highmem_io
-r_int
-id|highmem_io
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|use_blk_tcq
 r_int
 id|use_blk_tcq
