@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
-macro_line|#include &lt;linux/nfs_flushd.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|NFSDBG_FACILITY

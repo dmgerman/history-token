@@ -246,8 +246,6 @@ DECL|macro|NFS_CLIENT
 mdefine_line|#define NFS_CLIENT(inode)&t;&t;(NFS_SERVER(inode)-&gt;client)
 DECL|macro|NFS_PROTO
 mdefine_line|#define NFS_PROTO(inode)&t;&t;(NFS_SERVER(inode)-&gt;rpc_ops)
-DECL|macro|NFS_REQUESTLIST
-mdefine_line|#define NFS_REQUESTLIST(inode)&t;&t;(NFS_SERVER(inode)-&gt;rw_requests)
 DECL|macro|NFS_ADDR
 mdefine_line|#define NFS_ADDR(inode)&t;&t;&t;(RPC_PEERADDR(NFS_CLIENT(inode)))
 DECL|macro|NFS_COOKIEVERF
@@ -843,34 +841,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_dirty
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_dirty_timeout
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_extern
 r_int
@@ -904,34 +874,6 @@ id|list_head
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_commit
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_commit_timeout
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
 )paren
 suffix:semicolon
 macro_line|#else
