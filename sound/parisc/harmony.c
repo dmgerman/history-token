@@ -1877,7 +1877,7 @@ op_assign
 id|snd_harmony_set_data_format
 c_func
 (paren
-id|haromny
+id|harmony
 comma
 id|runtime-&gt;format
 )paren
@@ -2001,7 +2001,7 @@ op_assign
 id|snd_harmony_set_data_format
 c_func
 (paren
-id|haromny
+id|harmony
 comma
 id|runtime-&gt;format
 )paren
