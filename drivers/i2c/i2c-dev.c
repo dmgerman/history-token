@@ -2420,11 +2420,6 @@ op_assign
 l_string|&quot;I2C /dev entry&quot;
 comma
 dot
-id|id
-op_assign
-l_int|1
-comma
-dot
 id|addr
 op_assign
 op_minus
