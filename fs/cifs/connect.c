@@ -4554,7 +4554,7 @@ c_cond
 (paren
 id|vol-&gt;UNCip
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|vol-&gt;UNCip
@@ -7860,7 +7860,7 @@ c_cond
 (paren
 id|existingCifsSes
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_if
@@ -8193,7 +8193,7 @@ c_cond
 (paren
 id|smb_buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_return
@@ -9647,7 +9647,7 @@ c_cond
 (paren
 id|smb_buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_return
@@ -11094,7 +11094,7 @@ c_cond
 (paren
 id|smb_buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_return
@@ -12739,7 +12739,7 @@ c_cond
 (paren
 id|smb_buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_return
@@ -14516,7 +14516,7 @@ c_cond
 (paren
 id|smb_buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_return

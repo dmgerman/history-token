@@ -487,7 +487,7 @@ c_cond
 op_star
 id|request_buf
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* BB should we add a retry in here if not a writepage? */
@@ -859,7 +859,7 @@ c_cond
 op_star
 id|request_buf
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* BB should we add a retry in here if not a writepage? */
@@ -1773,13 +1773,13 @@ c_cond
 (paren
 id|tcon-&gt;ses
 op_eq
-l_int|0
+l_int|NULL
 )paren
 op_logical_or
 (paren
 id|tcon-&gt;ses-&gt;server
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
