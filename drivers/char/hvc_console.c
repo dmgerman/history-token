@@ -186,13 +186,7 @@ id|filp
 r_int
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_struct
 id|hvc_struct
@@ -1059,7 +1053,7 @@ l_string|&quot;hvc&quot;
 suffix:semicolon
 id|hvc_driver.name
 op_assign
-l_string|&quot;hvc/%d&quot;
+l_string|&quot;hvc/&quot;
 suffix:semicolon
 id|hvc_driver.major
 op_assign
@@ -1181,8 +1175,6 @@ c_func
 op_amp
 id|hvc_driver
 comma
-id|hvc_driver.minor_start
-op_plus
 id|i
 )paren
 suffix:semicolon

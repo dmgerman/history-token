@@ -81,7 +81,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -274,7 +274,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address16.granularity
@@ -287,7 +287,7 @@ id|buffer
 op_add_assign
 l_int|2
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address16.min_address_range
@@ -300,7 +300,7 @@ id|buffer
 op_add_assign
 l_int|2
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address16.max_address_range
@@ -313,7 +313,7 @@ id|buffer
 op_add_assign
 l_int|2
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address16.address_translation_offset
@@ -326,7 +326,7 @@ id|buffer
 op_add_assign
 l_int|2
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address16.address_length
@@ -707,7 +707,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address space granularity&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -720,7 +720,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address range minimum&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -733,7 +733,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address range maximum&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -746,7 +746,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address translation offset&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -759,7 +759,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address length&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -816,6 +816,9 @@ multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the stin
 id|buffer
 op_add_assign
 (paren
+id|acpi_size
+)paren
+(paren
 id|ACPI_STRLEN
 (paren
 id|linked_list-&gt;data.address16.resource_source.string_ptr
@@ -846,7 +849,7 @@ id|actual_bytes
 op_sub_assign
 l_int|3
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_SIZE_TO_16
 (paren
 id|length_field
 comma
@@ -937,7 +940,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -1130,7 +1133,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address32.granularity
@@ -1143,7 +1146,7 @@ id|buffer
 op_add_assign
 l_int|4
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address32.min_address_range
@@ -1156,7 +1159,7 @@ id|buffer
 op_add_assign
 l_int|4
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address32.max_address_range
@@ -1169,7 +1172,7 @@ id|buffer
 op_add_assign
 l_int|4
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address32.address_translation_offset
@@ -1182,7 +1185,7 @@ id|buffer
 op_add_assign
 l_int|4
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.address32.address_length
@@ -1565,7 +1568,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address space granularity&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -1578,7 +1581,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address range minimum&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -1591,7 +1594,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address range maximum&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -1604,7 +1607,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address translation offset&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -1617,7 +1620,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address length&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -1673,6 +1676,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; *  terminating null&n;&t;&t; */
 id|buffer
 op_add_assign
+(paren
+id|acpi_size
+)paren
 (paren
 id|ACPI_STRLEN
 (paren
@@ -1792,7 +1798,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -1985,7 +1991,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 id|output_struct-&gt;data.address64.granularity
@@ -1998,7 +2004,7 @@ id|buffer
 op_add_assign
 l_int|8
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 id|output_struct-&gt;data.address64.min_address_range
@@ -2011,7 +2017,7 @@ id|buffer
 op_add_assign
 l_int|8
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 id|output_struct-&gt;data.address64.max_address_range
@@ -2024,7 +2030,7 @@ id|buffer
 op_add_assign
 l_int|8
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 id|output_struct-&gt;data.address64.address_translation_offset
@@ -2037,7 +2043,7 @@ id|buffer
 op_add_assign
 l_int|8
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 id|output_struct-&gt;data.address64.address_length
@@ -2420,7 +2426,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address space granularity&n;&t; */
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 id|buffer
 comma
@@ -2433,7 +2439,7 @@ op_add_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address range minimum&n;&t; */
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 id|buffer
 comma
@@ -2446,7 +2452,7 @@ op_add_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address range maximum&n;&t; */
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 id|buffer
 comma
@@ -2459,7 +2465,7 @@ op_add_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address translation offset&n;&t; */
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 id|buffer
 comma
@@ -2472,7 +2478,7 @@ op_add_assign
 l_int|8
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the address length&n;&t; */
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 id|buffer
 comma
@@ -2528,6 +2534,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; *  terminating null&n;&t;&t; */
 id|buffer
 op_add_assign
+(paren
+id|acpi_size
+)paren
 (paren
 id|ACPI_STRLEN
 (paren

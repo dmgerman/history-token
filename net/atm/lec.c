@@ -2583,38 +2583,23 @@ id|atm_dev
 id|lecatm_dev
 op_assign
 (brace
+dot
+id|ops
+op_assign
 op_amp
 id|lecdev_ops
 comma
-l_int|NULL
-comma
-multiline_comment|/*PHY*/
+dot
+id|type
+op_assign
 l_string|&quot;lec&quot;
 comma
-multiline_comment|/*type*/
+dot
+id|number
+op_assign
 l_int|999
 comma
-multiline_comment|/*dummy device number*/
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/*no VCCs*/
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/*no data*/
-l_int|0
-comma
-multiline_comment|/*no flags*/
-l_int|NULL
-comma
-multiline_comment|/* no local address*/
-(brace
-l_int|0
-)brace
-multiline_comment|/*no ESI or rest of the atm_dev struct things*/
+multiline_comment|/* dummy device number */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * LANE2: new argument struct sk_buff *data contains&n; * the LE_ARP based TLVs introduced in the LANE2 spec&n; */

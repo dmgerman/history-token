@@ -2426,10 +2426,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -3265,13 +3265,7 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -3331,11 +3325,9 @@ macro_line|#ifdef SIMSERIAL_DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;rs_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;rs_open %s, count = %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;state-&gt;count
 )paren
@@ -3499,7 +3491,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren

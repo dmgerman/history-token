@@ -651,7 +651,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_OPREGION
 comma
-l_string|&quot;Addrhandler %p (%p), Address %8.8X%8.8X&bslash;n&quot;
+l_string|&quot;Handler %p (@%p) Address %8.8X%8.8X [%s]&bslash;n&quot;
 comma
 op_amp
 id|region_obj-&gt;region.addr_handler-&gt;addr_handler
@@ -666,6 +666,11 @@ comma
 id|ACPI_LODWORD
 (paren
 id|address
+)paren
+comma
+id|acpi_ut_get_region_name
+(paren
+id|region_obj-&gt;region.space_id
 )paren
 )paren
 )paren

@@ -3573,8 +3573,8 @@ r_static
 r_int
 r_int
 id|__prep
-DECL|function|prep_irq_cannonicalize
-id|prep_irq_cannonicalize
+DECL|function|prep_irq_canonicalize
+id|prep_irq_canonicalize
 c_func
 (paren
 id|u_int
@@ -4233,9 +4233,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* set in prep_setup_arch() */
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|prep_irq_cannonicalize
+id|prep_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

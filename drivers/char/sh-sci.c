@@ -3570,13 +3570,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|SCI_MINOR_START
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -3733,7 +3727,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -4650,7 +4644,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|sci_driver.name
 op_assign
-l_string|&quot;ttsc/%d&quot;
+l_string|&quot;ttsc/&quot;
 suffix:semicolon
 macro_line|#else
 id|sci_driver.name
@@ -4790,7 +4784,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|sci_callout_driver.name
 op_assign
-l_string|&quot;cusc/%d&quot;
+l_string|&quot;cusc/&quot;
 suffix:semicolon
 macro_line|#else
 id|sci_callout_driver.name

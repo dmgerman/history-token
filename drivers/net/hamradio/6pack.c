@@ -1196,7 +1196,7 @@ op_assign
 l_int|0x70
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1217,7 +1217,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1247,7 +1247,7 @@ op_assign
 l_int|0x60
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1385,7 +1385,7 @@ l_int|1
 id|actual
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1535,7 +1535,7 @@ op_assign
 l_int|0x70
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1556,7 +1556,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1582,7 +1582,7 @@ op_assign
 l_int|0x60
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -2217,10 +2217,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -3790,7 +3790,7 @@ op_assign
 l_int|0xe8
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -3964,7 +3964,7 @@ op_assign
 l_int|0x70
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -3985,7 +3985,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -4018,7 +4018,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* needed to trigger the TNC watchdog */
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -4150,7 +4150,7 @@ op_assign
 l_int|0x60
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -4165,7 +4165,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -4296,7 +4296,7 @@ op_assign
 l_int|0x68
 suffix:semicolon
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -4320,7 +4320,7 @@ l_int|0x60
 suffix:semicolon
 multiline_comment|/* fill trailing bytes with zeroes */
 id|sp-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren

@@ -2529,18 +2529,11 @@ r_if
 c_cond
 (paren
 id|tty
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|tub_major
-c_func
-(paren
-id|tty-&gt;device
-)paren
+op_logical_and
+id|tty-&gt;driver
 op_eq
-id|IBM_TTY3270_MAJOR
+op_amp
+id|tty3270_driver
 )paren
 id|tubp
 op_assign
@@ -2549,31 +2542,9 @@ op_star
 id|tubminors
 )paren
 (braket
-id|tub_minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_TN3270_CONSOLE
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
-r_if
-c_cond
-(paren
-id|CONSOLE_IS_3270
-op_logical_and
-id|tty-&gt;device
-op_eq
-id|S390_CONSOLE_DEV
-)paren
-id|tubp
-op_assign
-id|tub3270_con_tubp
-suffix:semicolon
-macro_line|#endif /* LINUX_VERSION_CODE */
-macro_line|#endif /* CONFIG_TN3270_CONSOLE */
-)brace
 r_if
 c_cond
 (paren

@@ -26,7 +26,7 @@ DECL|macro|SERIAL_INLINE
 mdefine_line|#define SERIAL_INLINE
 macro_line|#if defined(MODULE) &amp;&amp; defined(SERIAL_DEBUG_MCOUNT)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) baget_printk(&quot;(%s):[%x] refc=%d, serc=%d, ttyc=%d-&gt; %s&bslash;n&quot;, &bslash;&n;  cdevname(tty-&gt;device),(info-&gt;flags),serial_refcount,info-&gt;count,tty-&gt;count,s)
+mdefine_line|#define DBG_CNT(s) baget_printk(&quot;(%s):[%x] refc=%d, serc=%d, ttyc=%d-&gt; %s&bslash;n&quot;, &bslash;&n;  tty-&gt;name,(info-&gt;flags),serial_refcount,info-&gt;count,tty-&gt;count,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -324,8 +324,9 @@ id|async_struct
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -362,11 +363,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -388,11 +385,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -781,7 +774,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_stop&quot;
 )paren
@@ -866,7 +859,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_start&quot;
 )paren
@@ -3505,7 +3498,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_put_char&quot;
 )paren
@@ -3613,7 +3606,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_chars&quot;
 )paren
@@ -3723,7 +3716,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write&quot;
 )paren
@@ -4098,7 +4091,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write_room&quot;
 )paren
@@ -4161,7 +4154,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_chars_in_buffer&quot;
 )paren
@@ -4209,7 +4202,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_buffer&quot;
 )paren
@@ -4307,7 +4300,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_send_char&quot;
 )paren
@@ -4404,7 +4397,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_throttle&quot;
 )paren
@@ -4495,7 +4488,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_unthrottle&quot;
 )paren
@@ -5563,7 +5556,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_break&quot;
 )paren
@@ -5709,7 +5702,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_ioctl&quot;
 )paren
@@ -6503,7 +6496,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_close&quot;
 )paren
@@ -6745,10 +6738,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -6883,7 +6876,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_wait_until_sent&quot;
 )paren
@@ -7108,7 +7101,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_hangup&quot;
 )paren
@@ -7273,7 +7266,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -7867,13 +7860,7 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -7937,7 +7924,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_open&quot;
 )paren
@@ -7953,11 +7940,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|baget_printk
 c_func
 (paren
-l_string|&quot;rs_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;rs_open %s, count = %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;state-&gt;count
 )paren
@@ -8155,7 +8140,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -8216,9 +8201,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|baget_printk
 c_func
 (paren
-l_string|&quot;rs_open ttys%d successful...&quot;
+l_string|&quot;rs_open %s successful...&quot;
 comma
-id|info-&gt;line
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif

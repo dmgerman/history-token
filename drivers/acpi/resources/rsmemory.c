@@ -78,7 +78,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -121,7 +121,7 @@ op_amp
 l_int|0x01
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get min_base_address (Bytes 4-5)&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -138,7 +138,7 @@ op_assign
 id|temp16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get max_base_address (Bytes 6-7)&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -155,7 +155,7 @@ op_assign
 id|temp16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Alignment (Bytes 8-9)&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -172,7 +172,7 @@ op_assign
 id|temp16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get range_length (Bytes 10-11)&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -261,7 +261,7 @@ id|temp16
 op_assign
 l_int|0x09
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma
@@ -295,7 +295,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range minimum base address&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -308,7 +308,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range maximum base address&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -321,7 +321,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the base alignment&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -334,7 +334,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the range length&n;&t; */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_32_TO_16
 (paren
 id|buffer
 comma
@@ -434,7 +434,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -478,7 +478,7 @@ op_amp
 l_int|0x01
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get min_base_address (Bytes 4-7)&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.min_base_address
@@ -491,7 +491,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get max_base_address (Bytes 8-11)&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.max_base_address
@@ -504,7 +504,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get Alignment (Bytes 12-15)&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.alignment
@@ -517,7 +517,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get range_length (Bytes 16-19)&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.memory32.range_length
@@ -615,7 +615,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -658,7 +658,7 @@ op_amp
 l_int|0x01
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get range_base_address (Bytes 4-7)&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.fixed_memory32.range_base_address
@@ -671,7 +671,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get range_length (Bytes 8-11)&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.fixed_memory32.range_length
@@ -756,7 +756,7 @@ id|temp16
 op_assign
 l_int|0x11
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma
@@ -790,7 +790,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range minimum base address&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -803,7 +803,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range maximum base address&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -816,7 +816,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the base alignment&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -829,7 +829,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the range length&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -916,7 +916,7 @@ id|temp16
 op_assign
 l_int|0x09
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma
@@ -950,7 +950,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the Range base address&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -963,7 +963,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the range length&n;&t; */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma

@@ -311,7 +311,11 @@ l_string|&quot;r&quot;
 (paren
 id|sp
 op_minus
-id|REGWIN_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window
+)paren
 )paren
 comma
 l_string|&quot;r&quot;

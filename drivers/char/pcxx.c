@@ -1822,13 +1822,7 @@ id|retval
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -2174,7 +2168,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -2333,7 +2327,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -2724,11 +2718,11 @@ multiline_comment|/* 30 seconds timeout */
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 (brace
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -9974,13 +9968,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;overrun! DigiBoard device minor=%d&bslash;n&quot;
+l_string|&quot;overrun! DigiBoard device %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 )paren
 suffix:semicolon
 )brace

@@ -809,7 +809,7 @@ id|nr
 )paren
 r_continue
 suffix:semicolon
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|virt_to_page
@@ -1069,7 +1069,7 @@ id|nr
 op_assign
 id|p
 suffix:semicolon
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|virt_to_page

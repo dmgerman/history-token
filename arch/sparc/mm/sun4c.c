@@ -676,8 +676,10 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
 id|_unused
 op_assign
-op_star
-id|AUXREG
+id|get_auxio
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace

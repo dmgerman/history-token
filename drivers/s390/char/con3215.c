@@ -3953,13 +3953,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -4703,10 +4697,6 @@ suffix:semicolon
 id|tty3215_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
-suffix:semicolon
-id|tty3215_driver.name_base
-op_assign
-l_int|0
 suffix:semicolon
 id|tty3215_driver.major
 op_assign

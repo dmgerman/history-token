@@ -3333,7 +3333,7 @@ DECL|macro|bogon
 macro_line|#undef bogon
 DECL|macro|NUM_SYSIO_OFFSETS
 mdefine_line|#define NUM_SYSIO_OFFSETS (sizeof(sysio_irq_offsets) / sizeof(sysio_irq_offsets[0]))
-multiline_comment|/* Convert Interrupt Mapping register pointer to assosciated&n; * Interrupt Clear register pointer, SYSIO specific version.&n; */
+multiline_comment|/* Convert Interrupt Mapping register pointer to associated&n; * Interrupt Clear register pointer, SYSIO specific version.&n; */
 DECL|macro|SYSIO_ICLR_UNUSED0
 mdefine_line|#define SYSIO_ICLR_UNUSED0&t;0x3400UL
 DECL|macro|SYSIO_ICLR_SLOT0
@@ -4948,7 +4948,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Align on E$ line boundry. */
+multiline_comment|/* Align on E$ line boundary. */
 id|iommu
 op_assign
 (paren

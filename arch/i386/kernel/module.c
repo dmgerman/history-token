@@ -390,6 +390,7 @@ op_star
 id|me
 )paren
 (brace
+r_const
 id|Elf_Shdr
 op_star
 id|s

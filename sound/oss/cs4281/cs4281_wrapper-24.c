@@ -33,10 +33,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|cs4x_mem_map_reserve
-mdefine_line|#define cs4x_mem_map_reserve(page) mem_map_reserve(page)
-DECL|macro|cs4x_mem_map_unreserve
-mdefine_line|#define cs4x_mem_map_unreserve(page) mem_map_unreserve(page)
 DECL|macro|free_dmabuf
 mdefine_line|#define free_dmabuf(state, dmabuf) &bslash;&n;&t;pci_free_consistent(state-&gt;pcidev, &bslash;&n;&t;&t;&t;    PAGE_SIZE &lt;&lt; (dmabuf)-&gt;buforder, &bslash;&n;&t;&t;&t;    (dmabuf)-&gt;rawbuf, (dmabuf)-&gt;dmaaddr);
 DECL|macro|free_dmabuf2

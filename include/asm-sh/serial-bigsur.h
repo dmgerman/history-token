@@ -15,7 +15,7 @@ mdefine_line|#define STD_SERIAL_PORT_DEFNS                   &bslash;&n;        
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS STD_SERIAL_PORT_DEFNS
 multiline_comment|/* XXX: This should be moved ino irq.h */
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(x) (x)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(x) (x)
 macro_line|#endif /* _ASM_SERIAL_BIGSUR_H */
 eof

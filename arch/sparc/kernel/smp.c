@@ -283,17 +283,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Only broken Intel needs this, thus it should not even be referenced&n; * globally...&n; */
-DECL|function|initialize_secondary
-r_void
-id|__init
-id|initialize_secondary
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 r_extern
 r_int
 id|cpu_idle

@@ -210,5 +210,16 @@ DECL|macro|PCI_DEVICE_ID_MICRO_MEMORY_5415CN
 mdefine_line|#define PCI_DEVICE_ID_MICRO_MEMORY_5415CN&t;0x5415
 DECL|macro|PCI_DEVICE_ID_MICRO_MEMORY_5425CN
 mdefine_line|#define PCI_DEVICE_ID_MICRO_MEMORY_5425CN&t;0x5425
+DECL|macro|PCI_DEVICE_ID_MICRO_MEMORY_6155
+mdefine_line|#define PCI_DEVICE_ID_MICRO_MEMORY_6155&t;&t;0x6155
+multiline_comment|/* bits for card-&gt;flags */
+DECL|macro|UM_FLAG_DMA_IN_REGS
+mdefine_line|#define UM_FLAG_DMA_IN_REGS&t;&t;1
+DECL|macro|UM_FLAG_NO_BYTE_STATUS
+mdefine_line|#define UM_FLAG_NO_BYTE_STATUS&t;&t;2
+DECL|macro|UM_FLAG_NO_BATTREG
+mdefine_line|#define UM_FLAG_NO_BATTREG&t;&t;4
+DECL|macro|UM_FLAG_NO_BATT
+mdefine_line|#define&t;UM_FLAG_NO_BATT&t;&t;&t;8
 macro_line|#endif
 eof

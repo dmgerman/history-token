@@ -13751,7 +13751,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.ioctl
+id|tty-&gt;driver-&gt;ioctl
 op_ne
 id|vt_ioctl
 )paren
@@ -19046,7 +19046,7 @@ id|drm32_dma_t
 suffix:semicolon
 DECL|macro|DRM32_IOCTL_DMA
 mdefine_line|#define DRM32_IOCTL_DMA&t;     DRM_IOWR(0x29, drm32_dma_t)
-multiline_comment|/* RED PEN&t;The DRM layer blindly dereferences the send/request&n; * &t;&t;indice/size arrays even though they are userland&n; * &t;&t;pointers.  -DaveM&n; */
+multiline_comment|/* RED PEN&t;The DRM layer blindly dereferences the send/request&n; * &t;&t;index/size arrays even though they are userland&n; * &t;&t;pointers.  -DaveM&n; */
 DECL|function|drm32_dma
 r_static
 r_int
@@ -24304,6 +24304,16 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|LOOP_CLR_FD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|LOOP_SET_STATUS64
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|LOOP_GET_STATUS64
 )paren
 multiline_comment|/* Big A */
 id|COMPATIBLE_IOCTL

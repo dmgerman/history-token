@@ -276,10 +276,10 @@ op_amp
 id|tty-&gt;flags
 )paren
 op_logical_and
-id|tty-&gt;driver.unthrottle
+id|tty-&gt;driver-&gt;unthrottle
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|unthrottle
 c_func
 (paren
@@ -512,7 +512,7 @@ suffix:semicolon
 id|space
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write_room
 c_func
 (paren
@@ -583,7 +583,7 @@ op_minus
 l_int|1
 suffix:semicolon
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|put_char
 c_func
 (paren
@@ -703,7 +703,7 @@ op_add_assign
 id|spaces
 suffix:semicolon
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -780,7 +780,7 @@ suffix:semicolon
 )brace
 )brace
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|put_char
 c_func
 (paren
@@ -835,7 +835,7 @@ suffix:semicolon
 id|space
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write_room
 c_func
 (paren
@@ -1086,10 +1086,10 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_chars
+id|tty-&gt;driver-&gt;flush_chars
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_chars
 c_func
 (paren
@@ -1099,7 +1099,7 @@ suffix:semicolon
 id|i
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1134,7 +1134,7 @@ id|tty
 )paren
 (brace
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|put_char
 c_func
 (paren
@@ -1993,10 +1993,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -3728,10 +3728,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_chars
+id|tty-&gt;driver-&gt;flush_chars
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_chars
 c_func
 (paren
@@ -3808,10 +3808,10 @@ op_amp
 id|tty-&gt;flags
 )paren
 op_logical_and
-id|tty-&gt;driver.throttle
+id|tty-&gt;driver-&gt;throttle
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|throttle
 c_func
 (paren
@@ -4325,7 +4325,7 @@ id|tty
 )paren
 op_logical_and
 (paren
-id|tty-&gt;driver.flags
+id|tty-&gt;driver-&gt;flags
 op_amp
 id|TTY_DRIVER_REAL_RAW
 )paren
@@ -5895,10 +5895,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_chars
+id|tty-&gt;driver-&gt;flush_chars
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_chars
 c_func
 (paren
@@ -5911,7 +5911,7 @@ r_else
 id|c
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -6186,7 +6186,7 @@ r_if
 c_cond
 (paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren

@@ -2231,7 +2231,7 @@ comma
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyCL%d&quot;
+l_string|&quot;ttyCL&quot;
 comma
 dot
 id|major
