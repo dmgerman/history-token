@@ -959,11 +959,11 @@ id|__u32
 id|duplicate
 suffix:semicolon
 multiline_comment|/* random packet dup  (0=none ~0=100%) */
-DECL|member|rate
+DECL|member|jitter
 id|__u32
-id|rate
+id|jitter
 suffix:semicolon
-multiline_comment|/* maximum transmit rate (bytes/sec) */
+multiline_comment|/* random jitter in latency (us) */
 )brace
 suffix:semicolon
 macro_line|#endif
