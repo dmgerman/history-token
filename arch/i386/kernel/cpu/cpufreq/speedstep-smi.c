@@ -581,7 +581,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: change to %u MHz succeded&bslash;n&quot;
+l_string|&quot;cpufreq: change to %u MHz succeeded&bslash;n&quot;
 comma
 (paren
 id|freqs
