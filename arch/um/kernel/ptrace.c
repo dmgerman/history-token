@@ -5,7 +5,9 @@ macro_line|#include &quot;linux/errno.h&quot;
 macro_line|#include &quot;linux/smp_lock.h&quot;
 macro_line|#include &quot;linux/security.h&quot;
 macro_line|#include &quot;linux/ptrace.h&quot;
+macro_line|#ifdef CONFIG_PROC_MM
 macro_line|#include &quot;linux/proc_mm.h&quot;
+macro_line|#endif
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
