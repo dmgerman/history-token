@@ -1076,6 +1076,12 @@ c_func
 id|class_dev
 )paren
 suffix:semicolon
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -1442,6 +1448,13 @@ id|retval
 )paren
 r_goto
 id|out
+suffix:semicolon
+multiline_comment|/* Need to pin this module until class device is destroyed */
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|fw_priv
 op_assign
