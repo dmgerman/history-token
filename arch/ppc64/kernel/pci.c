@@ -2012,6 +2012,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|range
+op_eq
+l_int|NULL
+op_logical_or
+(paren
 id|rlen
 OL
 r_sizeof
@@ -2020,14 +2025,30 @@ r_struct
 id|isa_range
 )paren
 )paren
+)paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;unexpected isa range size: %s&bslash;n&quot;
+l_string|&quot;no ISA ranges or unexpected isa range size,&quot;
+l_string|&quot;mapping 64k&bslash;n&quot;
+)paren
+suffix:semicolon
+id|__ioremap_explicit
+c_func
+(paren
+id|phb_io_base_phys
 comma
-id|__FUNCTION__
+(paren
+r_int
+r_int
+)paren
+id|phb_io_base_virt
+comma
+l_int|0x10000
+comma
+id|_PAGE_NO_CACHE
 )paren
 suffix:semicolon
 r_return
@@ -2298,12 +2319,16 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+(paren
 id|ranges
 (braket
 l_int|0
 )braket
 op_rshift
 l_int|24
+)paren
+op_amp
+l_int|0x3
 )paren
 (brace
 r_case
@@ -3213,6 +3238,16 @@ op_assign
 id|bus-&gt;sysdata
 suffix:semicolon
 multiline_comment|/* must be a phb */
+r_if
+c_cond
+(paren
+id|busdn
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;        * Check to see if there is any of the 8 functions are in the&n;        * device tree.  If they are then we need to scan all the&n;        * functions of this slot.&n;        */
 r_for
 c_loop
