@@ -2403,7 +2403,7 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * File types&n; */
+multiline_comment|/*&n; * File types&n; *&n; * NOTE! These match bits 12..15 of stat.st_mode&n; * (ie &quot;(i_mode &gt;&gt; 12) &amp; 15&quot;).&n; */
 DECL|macro|DT_UNKNOWN
 mdefine_line|#define DT_UNKNOWN&t;0
 DECL|macro|DT_FIFO

@@ -457,6 +457,25 @@ DECL|typedef|drm_mga_sarea_t
 id|drm_mga_sarea_t
 suffix:semicolon
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmMga.h)&n; */
+multiline_comment|/* MGA specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_IOCTL_MGA_INIT
+mdefine_line|#define DRM_IOCTL_MGA_INIT&t;&t;DRM_IOW( 0x40, drm_mga_init_t)
+DECL|macro|DRM_IOCTL_MGA_FLUSH
+mdefine_line|#define DRM_IOCTL_MGA_FLUSH&t;&t;DRM_IOW( 0x41, drm_lock_t)
+DECL|macro|DRM_IOCTL_MGA_RESET
+mdefine_line|#define DRM_IOCTL_MGA_RESET&t;&t;DRM_IO(  0x42)
+DECL|macro|DRM_IOCTL_MGA_SWAP
+mdefine_line|#define DRM_IOCTL_MGA_SWAP&t;&t;DRM_IO(  0x43)
+DECL|macro|DRM_IOCTL_MGA_CLEAR
+mdefine_line|#define DRM_IOCTL_MGA_CLEAR&t;&t;DRM_IOW( 0x44, drm_mga_clear_t)
+DECL|macro|DRM_IOCTL_MGA_VERTEX
+mdefine_line|#define DRM_IOCTL_MGA_VERTEX&t;&t;DRM_IOW( 0x45, drm_mga_vertex_t)
+DECL|macro|DRM_IOCTL_MGA_INDICES
+mdefine_line|#define DRM_IOCTL_MGA_INDICES&t;&t;DRM_IOW( 0x46, drm_mga_indices_t)
+DECL|macro|DRM_IOCTL_MGA_ILOAD
+mdefine_line|#define DRM_IOCTL_MGA_ILOAD&t;&t;DRM_IOW( 0x47, drm_mga_iload_t)
+DECL|macro|DRM_IOCTL_MGA_BLIT
+mdefine_line|#define DRM_IOCTL_MGA_BLIT&t;&t;DRM_IOW( 0x48, drm_mga_blit_t)
 DECL|struct|_drm_mga_warp_index
 r_typedef
 r_struct

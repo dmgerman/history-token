@@ -7791,7 +7791,7 @@ comma
 id|kdevname
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 )paren
 suffix:semicolon
@@ -7843,7 +7843,7 @@ comma
 id|kdevname
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 )paren
 suffix:semicolon

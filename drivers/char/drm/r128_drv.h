@@ -3,9 +3,9 @@ macro_line|#ifndef __R128_DRV_H__
 DECL|macro|__R128_DRV_H__
 mdefine_line|#define __R128_DRV_H__
 DECL|macro|GET_RING_HEAD
-mdefine_line|#define GET_RING_HEAD( ring )&t;&t;le32_to_cpu( *(ring)-&gt;head )
+mdefine_line|#define GET_RING_HEAD(ring)&t;&t;readl( (volatile u32 *) (ring)-&gt;head )
 DECL|macro|SET_RING_HEAD
-mdefine_line|#define SET_RING_HEAD( ring, val )&t;*(ring)-&gt;head = cpu_to_le32( val )
+mdefine_line|#define SET_RING_HEAD(ring,val)&t;&t;writel( (val), (volatile u32 *) (ring)-&gt;head )
 DECL|struct|drm_r128_freelist
 r_typedef
 r_struct
@@ -1127,86 +1127,14 @@ DECL|macro|R128_BASE
 mdefine_line|#define R128_BASE(reg)&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|R128_ADDR
 mdefine_line|#define R128_ADDR(reg)&t;&t;(R128_BASE( reg ) + reg)
-DECL|macro|R128_DEREF
-mdefine_line|#define R128_DEREF(reg)&t;&t;*(volatile u32 *)R128_ADDR( reg )
-macro_line|#ifdef __alpha__
 DECL|macro|R128_READ
-mdefine_line|#define R128_READ(reg)&t;&t;(_R128_READ((u32 *)R128_ADDR(reg)))
-DECL|function|_R128_READ
-r_static
-r_inline
-id|u32
-id|_R128_READ
-c_func
-(paren
-id|u32
-op_star
-id|addr
-)paren
-(brace
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-id|addr
-suffix:semicolon
-)brace
+mdefine_line|#define R128_READ(reg)&t;&t;readl( (volatile u32 *) R128_ADDR(reg) )
 DECL|macro|R128_WRITE
-mdefine_line|#define R128_WRITE(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wmb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_DEREF(reg) = val;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|R128_READ
-mdefine_line|#define R128_READ(reg)&t;&t;le32_to_cpu( R128_DEREF( reg ) )
-DECL|macro|R128_WRITE
-mdefine_line|#define R128_WRITE(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_DEREF( reg ) = cpu_to_le32( val );&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#endif
-DECL|macro|R128_DEREF8
-mdefine_line|#define R128_DEREF8(reg)&t;*(volatile u8 *)R128_ADDR( reg )
-macro_line|#ifdef __alpha__
+mdefine_line|#define R128_WRITE(reg,val)&t;writel( (val), (volatile u32 *) R128_ADDR(reg) )
 DECL|macro|R128_READ8
-mdefine_line|#define R128_READ8(reg)&t;&t;_R128_READ8((u8 *)R128_ADDR(reg))
-DECL|function|_R128_READ8
-r_static
-r_inline
-id|u8
-id|_R128_READ8
-c_func
-(paren
-id|u8
-op_star
-id|addr
-)paren
-(brace
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_star
-(paren
-r_volatile
-id|u8
-op_star
-)paren
-id|addr
-suffix:semicolon
-)brace
+mdefine_line|#define R128_READ8(reg)&t;&t;readb( (volatile u8 *) R128_ADDR(reg) )
 DECL|macro|R128_WRITE8
-mdefine_line|#define R128_WRITE8(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wmb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_DEREF8(reg) = val;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|R128_READ8
-mdefine_line|#define R128_READ8(reg)&t;&t;R128_DEREF8( reg )
-DECL|macro|R128_WRITE8
-mdefine_line|#define R128_WRITE8(reg,val)&t;do { R128_DEREF8( reg ) = val; } while (0)
-macro_line|#endif
+mdefine_line|#define R128_WRITE8(reg,val)&t;writeb( (val), (volatile u8 *) R128_ADDR(reg) )
 DECL|macro|R128_WRITE_PLL
 mdefine_line|#define R128_WRITE_PLL(addr,val)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE8(R128_CLOCK_CNTL_INDEX,&t;&t;&t;&t;&bslash;&n;&t;&t;    ((addr) &amp; 0x1f) | R128_PLL_WR_EN);&t;&t;&t;&bslash;&n;&t;R128_WRITE(R128_CLOCK_CNTL_DATA, (val));&t;&t;&t;&bslash;&n;} while (0)
 r_extern
@@ -1240,8 +1168,13 @@ mdefine_line|#define VB_AGE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;d
 DECL|macro|R128_WAIT_UNTIL_PAGE_FLIPPED
 mdefine_line|#define R128_WAIT_UNTIL_PAGE_FLIPPED() do {&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CCE_PACKET0( R128_WAIT_UNTIL, 0 ) );&t;&t;&t;&bslash;&n;&t;OUT_RING( R128_EVENT_CRTC_OFFSET );&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* ================================================================&n; * Ring control&n; */
+macro_line|#if defined(__powerpc__)
+DECL|macro|r128_flush_write_combine
+mdefine_line|#define r128_flush_write_combine()&t;(void) GET_RING_HEAD( &amp;dev_priv-&gt;ring )
+macro_line|#else
 DECL|macro|r128_flush_write_combine
 mdefine_line|#define r128_flush_write_combine()&t;mb()
+macro_line|#endif
 DECL|macro|R128_VERBOSE
 mdefine_line|#define R128_VERBOSE&t;0
 DECL|macro|RING_LOCALS
