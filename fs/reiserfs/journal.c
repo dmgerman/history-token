@@ -10053,28 +10053,16 @@ c_func
 l_string|&quot;journal_begin&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p_s_sb-&gt;s_flags
 op_amp
 id|MS_RDONLY
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;clm-2078: calling journal_begin on readonly FS&bslash;n&quot;
+comma
+l_string|&quot;clm-2078: calling journal_begin on readonly FS&quot;
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -13474,9 +13462,8 @@ c_cond
 id|wait
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|buffer_locked
 c_func
@@ -13487,21 +13474,10 @@ op_logical_and
 id|cur_tb
 op_ne
 l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;reiserfs_prepare_for_journal, waiting while do_balance was running&bslash;n&quot;
+comma
+l_string|&quot;waiting while do_balance was running&bslash;n&quot;
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|wait_on_buffer
 c_func
 (paren

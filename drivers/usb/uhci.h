@@ -80,9 +80,9 @@ DECL|macro|USBPORTSC_SUSP
 mdefine_line|#define   USBPORTSC_SUSP&t;0x1000&t;/* Suspend */
 multiline_comment|/* Legacy support register */
 DECL|macro|USBLEGSUP
-mdefine_line|#define USBLEGSUP 0xc0
+mdefine_line|#define USBLEGSUP&t;&t;0xc0
 DECL|macro|USBLEGSUP_DEFAULT
-mdefine_line|#define USBLEGSUP_DEFAULT&t;0x2000&t;/* only PIRQ enable set */
+mdefine_line|#define   USBLEGSUP_DEFAULT&t;0x2000&t;/* only PIRQ enable set */
 DECL|macro|UHCI_NULL_DATA_SIZE
 mdefine_line|#define UHCI_NULL_DATA_SIZE&t;0x7FF&t;/* for UHCI controller TD */
 DECL|macro|UHCI_PTR_BITS

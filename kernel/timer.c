@@ -2896,6 +2896,20 @@ id|current-&gt;egid
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Thread ID - the internal kernel &quot;pid&quot; */
+DECL|function|sys_gettid
+id|asmlinkage
+r_int
+id|sys_gettid
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|current-&gt;pid
+suffix:semicolon
+)brace
 DECL|function|sys_nanosleep
 id|asmlinkage
 r_int

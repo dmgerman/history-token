@@ -1,4 +1,3 @@
-multiline_comment|/* $Id: system.h,v 1.4 2001/03/20 19:46:00 bjornw Exp $ */
 macro_line|#ifndef __ASM_CRIS_SYSTEM_H
 DECL|macro|__ASM_CRIS_SYSTEM_H
 mdefine_line|#define __ASM_CRIS_SYSTEM_H
@@ -29,9 +28,40 @@ DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()     do { } while(0)
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last) last = resume(prev,next, &bslash;&n;&t;&t;&t;&t;&t; (int)&amp;((struct task_struct *)0)-&gt;thread)
+multiline_comment|/* read the CPU version register */
+DECL|function|rdvr
+r_static
+r_inline
+r_int
+r_int
+id|rdvr
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|vr
+suffix:semicolon
+id|__asm__
+r_volatile
+(paren
+l_string|&quot;move $vr,%0&quot;
+suffix:colon
+l_string|&quot;=rm&quot;
+(paren
+id|vr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|vr
+suffix:semicolon
+)brace
 multiline_comment|/* read/write the user-mode stackpointer */
 DECL|function|rdusp
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -49,7 +79,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;move usp,%0&quot;
+l_string|&quot;move $usp,%0&quot;
 suffix:colon
 l_string|&quot;=rm&quot;
 (paren
@@ -62,10 +92,10 @@ id|usp
 suffix:semicolon
 )brace
 DECL|macro|wrusp
-mdefine_line|#define wrusp(usp) &bslash;&n;&t;__asm__ __volatile__(&quot;move %0,usp&quot; : /* no outputs */ : &quot;rm&quot; (usp))
+mdefine_line|#define wrusp(usp) &bslash;&n;&t;__asm__ __volatile__(&quot;move %0,$usp&quot; : /* no outputs */ : &quot;rm&quot; (usp))
 multiline_comment|/* read the current stackpointer */
 DECL|function|rdsp
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -83,7 +113,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;move.d sp,%0&quot;
+l_string|&quot;move.d $sp,%0&quot;
 suffix:colon
 l_string|&quot;=rm&quot;
 (paren
@@ -137,22 +167,22 @@ mdefine_line|#define __xg(x) ((struct __xchg_dummy *)(x))
 macro_line|#if 0
 multiline_comment|/* use these and an oscilloscope to see the fraction of time we&squot;re running with IRQ&squot;s disabled */
 multiline_comment|/* it assumes the LED&squot;s are on port 0x90000000 of course. */
-mdefine_line|#define sti() __asm__ __volatile__ ( &quot;ei&bslash;n&bslash;tpush r0&bslash;n&bslash;tmoveq 0,r0&bslash;n&bslash;tmove.d r0,[0x90000000]&bslash;n&bslash;tpop r0&quot; );
-mdefine_line|#define cli() __asm__ __volatile__ ( &quot;di&bslash;n&bslash;tpush r0&bslash;n&bslash;tmove.d 0x40000,r0&bslash;n&bslash;tmove.d r0,[0x90000000]&bslash;n&bslash;tpop r0&quot;);
-mdefine_line|#define save_flags(x) __asm__ __volatile__ (&quot;move ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
-mdefine_line|#define restore_flags(x) __asm__ __volatile__ (&quot;move %0,ccr&bslash;n&bslash;tbtstq 5,%0&bslash;n&bslash;tbpl 1f&bslash;n&bslash;tnop&bslash;n&bslash;tpush r0&bslash;n&bslash;tmoveq 0,r0&bslash;n&bslash;tmove.d r0,[0x90000000]&bslash;n&bslash;tpop r0&bslash;n1:&bslash;n&quot; : : &quot;r&quot; (x) : &quot;memory&quot;);
+mdefine_line|#define sti() __asm__ __volatile__ ( &quot;ei&bslash;n&bslash;tpush $r0&bslash;n&bslash;tmoveq 0,$r0&bslash;n&bslash;tmove.d $r0,[0x90000000]&bslash;n&bslash;tpop $r0&quot; );
+mdefine_line|#define cli() __asm__ __volatile__ ( &quot;di&bslash;n&bslash;tpush $r0&bslash;n&bslash;tmove.d 0x40000,$r0&bslash;n&bslash;tmove.d $r0,[0x90000000]&bslash;n&bslash;tpop $r0&quot;);
+mdefine_line|#define save_flags(x) __asm__ __volatile__ (&quot;move $ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
+mdefine_line|#define restore_flags(x) __asm__ __volatile__ (&quot;move %0,$ccr&bslash;n&bslash;tbtstq 5,%0&bslash;n&bslash;tbpl 1f&bslash;n&bslash;tnop&bslash;n&bslash;tpush $r0&bslash;n&bslash;tmoveq 0,$r0&bslash;n&bslash;tmove.d $r0,[0x90000000]&bslash;n&bslash;tpop $r0&bslash;n1:&bslash;n&quot; : : &quot;r&quot; (x) : &quot;memory&quot;);
 macro_line|#else
 DECL|macro|__cli
 mdefine_line|#define __cli() __asm__ __volatile__ ( &quot;di&quot;);
 DECL|macro|__sti
 mdefine_line|#define __sti() __asm__ __volatile__ ( &quot;ei&quot; );
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) __asm__ __volatile__ (&quot;move ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
+mdefine_line|#define __save_flags(x) __asm__ __volatile__ (&quot;move $ccr,%0&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;);
 DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) __asm__ __volatile__ (&quot;move %0,ccr&quot; : : &quot;rm&quot; (x) : &quot;memory&quot;);
+mdefine_line|#define __restore_flags(x) __asm__ __volatile__ (&quot;move %0,$ccr&quot; : : &quot;rm&quot; (x) : &quot;memory&quot;);
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(x) __asm__ __volatile__ (&quot;move ccr,%0&bslash;n&bslash;tdi&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;); 
+mdefine_line|#define local_irq_save(x) __asm__ __volatile__ (&quot;move $ccr,%0&bslash;n&bslash;tdi&quot; : &quot;=rm&quot; (x) : : &quot;memory&quot;); 
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x) restore_flags(x)
 DECL|macro|local_irq_disable

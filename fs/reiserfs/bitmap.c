@@ -273,74 +273,6 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_REISERFS_CHECK */
-macro_line|#if 0
-multiline_comment|/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
-r_int
-id|is_used
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_int
-r_int
-id|block
-)paren
-(brace
-r_int
-id|i
-comma
-id|j
-suffix:semicolon
-id|i
-op_assign
-id|block
-op_div
-(paren
-id|s-&gt;s_blocksize
-op_lshift
-l_int|3
-)paren
-suffix:semicolon
-id|j
-op_assign
-id|block
-op_mod
-(paren
-id|s-&gt;s_blocksize
-op_lshift
-l_int|3
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reiserfs_test_le_bit
-c_func
-(paren
-id|j
-comma
-id|SB_AP_BITMAP
-(paren
-id|s
-)paren
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|b_data
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
-macro_line|#endif
 multiline_comment|/* get address of corresponding bit (bitmap block number and offset in it) */
 DECL|function|get_bit_address
 r_static
@@ -437,22 +369,17 @@ id|nr
 comma
 id|offset
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|s
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-4060: reiserfs_free_block: trying to free block on nonexistent device&quot;
+l_string|&quot;vs-4060: trying to free block on nonexistent device&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|is_reusable
 (paren
@@ -464,15 +391,10 @@ l_int|1
 )paren
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-4070: reiserfs_free_block: can not free such block&quot;
+l_string|&quot;vs-4070: can not free such block&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rs
 op_assign
 id|SB_DISK_SUPER_BLOCK
@@ -1119,54 +1041,40 @@ multiline_comment|/* we can answer NO_DISK_SPACE being asked for new block with&
 r_return
 id|NO_DISK_SPACE
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|s
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-4090: reiserfs_new_blocknrs: trying to get new block from nonexistent device&quot;
+l_string|&quot;vs-4090: trying to get new block from nonexistent device&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|search_start
 op_eq
 id|MAX_B_NUM
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-4100: reiserfs_new_blocknrs: we are optimizing location based on &quot;
+l_string|&quot;vs-4100: we are optimizing location based on &quot;
 l_string|&quot;the bogus location of a temp buffer (%lu).&quot;
 comma
 id|search_start
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|amount_needed
 template_param
 l_int|2
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-4110: reiserfs_new_blocknrs: amount_needed parameter incorrect (%d)&quot;
+l_string|&quot;vs-4110: amount_needed parameter incorrect (%d)&quot;
 comma
 id|amount_needed
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* We continue the while loop if another process snatches our found&n;   * free block from us after we find it but before we successfully&n;   * mark it as in use, or if we need to use sync to free up some&n;   * blocks on the preserve list.  */
 r_while
 c_loop
@@ -1187,9 +1095,8 @@ op_ne
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|is_reusable
 (paren
@@ -1202,16 +1109,10 @@ l_int|1
 )paren
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|s
 comma
-l_string|&quot;vs-4120: reiserfs_new_blocknrs: bad blocknr on free_blocknrs list&quot;
+l_string|&quot;vs-4120: bad blocknr on free_blocknrs list&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|free_blocknrs
 op_increment
 suffix:semicolon
@@ -1403,9 +1304,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|buffer_locked
 (paren
@@ -1428,15 +1328,10 @@ l_int|0
 )paren
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-4140: reiserfs_new_blocknrs: bitmap block is locked or bad block number found&quot;
+l_string|&quot;vs-4140: bitmap block is locked or bad block number found&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* if this bit was already set, we&squot;ve scheduled, and someone else&n;    ** has allocated it.  loop around and try again&n;    */
 r_if
 c_cond

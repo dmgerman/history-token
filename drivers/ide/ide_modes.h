@@ -769,7 +769,7 @@ id|drive-&gt;id-&gt;major_rev_num
 op_amp
 l_int|0x0004
 )paren
-id|printf
+id|printk
 c_func
 (paren
 l_string|&quot;ATA-2 &quot;

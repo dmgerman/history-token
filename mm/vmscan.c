@@ -333,11 +333,6 @@ id|entry
 suffix:semicolon
 )brace
 multiline_comment|/* No swap space left */
-id|swap_list_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|set_pte
 c_func
 (paren

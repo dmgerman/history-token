@@ -159,9 +159,8 @@ id|item_head
 op_star
 id|ih
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;FR
 (braket
@@ -179,12 +178,8 @@ op_ne
 id|DISK_LEAF_NODE_LEVEL
 op_plus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs- 12000: balance_leaf_when_delete:level: wrong FR %z&bslash;n&quot;
+l_string|&quot;vs- 12000: level: wrong FR %z&bslash;n&quot;
 comma
 id|tb-&gt;FR
 (braket
@@ -192,8 +187,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;blknum
 (braket
@@ -201,13 +196,8 @@ l_int|0
 )braket
 OG
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12005: balance_leaf_when_delete: &quot;
-l_string|&quot;tb-&gt;blknum == %d, can not be &gt; 1&quot;
+l_string|&quot;PAP-12005: tb-&gt;blknum == %d, can not be &gt; 1&quot;
 comma
 id|tb-&gt;blknum
 (braket
@@ -215,8 +205,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;blknum
@@ -232,15 +222,10 @@ id|tb-&gt;tb_path
 comma
 l_int|0
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12010: balance_leaf_when_delete: tree can not be empty&quot;
+l_string|&quot;PAP-12010: tree can not be empty&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ih
 op_assign
 id|B_N_PITEM_HEAD
@@ -261,9 +246,8 @@ r_case
 id|M_DELETE
 suffix:colon
 multiline_comment|/* delete item in S[0] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -277,13 +261,8 @@ id|tb-&gt;insert_size
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-12013: balance_leaf_when_delete: &quot;
-l_string|&quot;mode Delete, insert size %d, ih to be deleted %h&quot;
+l_string|&quot;vs-12013: mode Delete, insert size %d, ih to be deleted %h&quot;
 comma
 id|ih
 )paren
@@ -386,7 +365,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif
 id|bi.tb
 op_assign
@@ -577,31 +555,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-macro_line|#if 0
-r_if
-c_cond
-(paren
-op_logical_neg
-id|item_pos
-op_logical_and
-(paren
-op_logical_neg
-id|tb-&gt;CFL
-(braket
-l_int|0
-)braket
-op_logical_or
-op_logical_neg
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-)paren
-)paren
-macro_line|#endif
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|item_pos
@@ -611,12 +566,8 @@ id|tb-&gt;CFL
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12020: balance_leaf_when_delete: tb-&gt;CFL[0]==%p, tb-&gt;L[0]==%p&quot;
+l_string|&quot;PAP-12020: tb-&gt;CFL[0]==%p, tb-&gt;L[0]==%p&quot;
 comma
 id|tb-&gt;CFL
 (braket
@@ -629,7 +580,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -748,9 +698,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|item_pos
@@ -763,12 +712,8 @@ id|tb-&gt;CFL
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12030: balance_leaf_when_delete: can not change delimiting key. CFL[0]=%p&quot;
+l_string|&quot;PAP-12030: can not change delimiting key. CFL[0]=%p&quot;
 comma
 id|tb-&gt;CFL
 (braket
@@ -776,7 +721,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -865,21 +809,15 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|ih-&gt;ih_item_len
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12035: balance_leaf_when_delete: cut must leave non-zero dynamic length of item&quot;
+l_string|&quot;PAP-12035: cut must leave non-zero dynamic length of item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 )brace
 r_break
 suffix:semicolon
@@ -1255,9 +1193,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;rnum
 (braket
@@ -1265,13 +1202,8 @@ l_int|0
 )braket
 op_ne
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12045: balance_leaf_when_delete: &quot;
-l_string|&quot;rnum must be 0 (%d)&quot;
+l_string|&quot;PAP-12045: rnum must be 0 (%d)&quot;
 comma
 id|tb-&gt;rnum
 (braket
@@ -1279,7 +1211,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* all contents of L[0] and S[0] will be in L[0] */
 id|leaf_shift_left
 c_func
@@ -1320,9 +1251,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* a part of contents of S[0] will be in L[0] and the rest part of S[0] will be in R[0] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 (paren
 id|tb-&gt;lnum
@@ -1353,13 +1283,8 @@ id|n
 op_plus
 l_int|1
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12050: balance_leaf_when_delete: &quot;
-l_string|&quot;rnum(%d) and lnum(%d) and item number in S[0] are not consistent&quot;
+l_string|&quot;PAP-12050: rnum(%d) and lnum(%d) and item number(%d) in S[0] are not consistent&quot;
 comma
 id|tb-&gt;rnum
 (braket
@@ -1374,8 +1299,8 @@ comma
 id|n
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 (paren
 id|tb-&gt;lnum
@@ -1402,21 +1327,16 @@ op_ne
 op_minus
 l_int|1
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12055: balance_leaf_when_delete: &quot;
-l_string|&quot;bad rbytes (%d)/lbytes (%d) parameters when items are not split&quot;
+l_string|&quot;PAP-12055: bad rbytes (%d)/lbytes (%d) parameters when items are not split&quot;
 comma
 id|tb-&gt;rbytes
 comma
 id|tb-&gt;lbytes
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 (paren
 id|tb-&gt;lnum
@@ -1444,20 +1364,14 @@ op_ne
 op_minus
 l_int|1
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12060: balance_leaf_when_delete: &quot;
-l_string|&quot;bad rbytes (%d)/lbytes (%d) parameters when items are split&quot;
+l_string|&quot;PAP-12060: bad rbytes (%d)/lbytes (%d) parameters when items are split&quot;
 comma
 id|tb-&gt;rbytes
 comma
 id|tb-&gt;lbytes
 )paren
 suffix:semicolon
-macro_line|#endif
 id|leaf_shift_left
 (paren
 id|tb
@@ -1568,21 +1482,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;rnum
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12065: balance_leaf_when_delete: &quot;
-l_string|&quot;bad rnum parameter must be 0 (%d)&quot;
+l_string|&quot;PAP-12065: bad rnum parameter must be 0 (%d)&quot;
 comma
 id|tb-&gt;rnum
 (braket
@@ -1590,7 +1498,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1882,27 +1789,20 @@ suffix:semicolon
 r_int
 id|version
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direct_le_ih
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12075: balance_leaf: &quot;
-l_string|&quot;only direct inserted item can be broken. %h&quot;
+l_string|&quot;PAP-12075: only direct inserted item can be broken. %h&quot;
 comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ret_val
 op_assign
 id|leaf_shift_left
@@ -1982,9 +1882,8 @@ id|ih-&gt;ih_item_len
 op_sub_assign
 id|new_item_len
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 (paren
 r_int
@@ -1994,14 +1893,8 @@ id|ih-&gt;ih_item_len
 )paren
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12080: balance_leaf: &quot;
-l_string|&quot;there is nothing to insert into L[0]: ih_item_len=%d&quot;
+l_string|&quot;PAP-12080: there is nothing to insert into L[0]: ih_item_len=%d&quot;
 comma
 (paren
 r_int
@@ -2009,7 +1902,6 @@ r_int
 id|ih-&gt;ih_item_len
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Insert new item into L[0] */
 id|bi.tb
 op_assign
@@ -2132,9 +2024,8 @@ id|zeros_num
 op_sub_assign
 id|tb-&gt;lbytes
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 (paren
 r_int
@@ -2144,14 +2035,8 @@ id|ih-&gt;ih_item_len
 )paren
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12085: balance_leaf: &quot;
-l_string|&quot;there is nothing to insert into S[0]: ih_item_len=%d&quot;
+l_string|&quot;PAP-12085: there is nothing to insert into S[0]: ih_item_len=%d&quot;
 comma
 (paren
 r_int
@@ -2159,7 +2044,6 @@ r_int
 id|ih-&gt;ih_item_len
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -2341,21 +2225,14 @@ id|item_pos
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-id|zeros_num
-)paren
-id|reiserfs_panic
+id|RFALSE
 c_func
 (paren
-id|tb-&gt;tb_sb
+id|zeros_num
 comma
-l_string|&quot;PAP-12090: balance_leaf: illegal parameter in case of a directory&quot;
+l_string|&quot;PAP-12090: illegal parameter in case of a directory&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* directory item */
 r_if
 c_cond
@@ -2623,27 +2500,20 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* regular object */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;lbytes
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12095: balance_leaf: &quot;
-l_string|&quot;there is nothing to shift to L[0]. lbytes=%d&quot;
+l_string|&quot;PAP-12095: there is nothing to shift to L[0]. lbytes=%d&quot;
 comma
 id|tb-&gt;lbytes
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 op_ne
@@ -2656,14 +2526,8 @@ id|item_pos
 )paren
 op_member_access_from_pointer
 id|ih_item_len
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12100: balance_leaf: &quot;
-l_string|&quot;incorrect position to paste: item_len=%d, pos_in_item=%d&quot;
+l_string|&quot;PAP-12100: incorrect position to paste: item_len=%d, pos_in_item=%d&quot;
 comma
 id|B_N_PITEM_HEAD
 c_func
@@ -2678,7 +2542,6 @@ comma
 id|pos_in_item
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2706,9 +2569,8 @@ l_int|0
 op_sub_assign
 id|l_n
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;insert_size
 (braket
@@ -2716,14 +2578,8 @@ l_int|0
 )braket
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12105: balance_leaf: &quot;
-l_string|&quot;there is nothing to paste into L[0]. insert_size=%d&quot;
+l_string|&quot;PAP-12105: there is nothing to paste into L[0]. insert_size=%d&quot;
 comma
 id|tb-&gt;insert_size
 (braket
@@ -2731,7 +2587,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ret_val
 op_assign
 id|leaf_shift_left
@@ -2858,9 +2713,8 @@ suffix:colon
 id|zeros_num
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|l_n
 op_logical_and
@@ -2868,7 +2722,6 @@ id|is_indirect_le_ih
 c_func
 (paren
 id|B_N_PITEM_HEAD
-c_func
 (paren
 id|tb-&gt;L
 (braket
@@ -2882,17 +2735,10 @@ op_minus
 id|ret_val
 )paren
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12110: balance_leaf: &quot;
-l_string|&quot;pasting more than 1 unformatted node pointer into indirect item&quot;
+l_string|&quot;PAP-12110: pasting more than 1 unformatted node pointer into indirect item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* 0-th item in S0 can be only of DIRECT type when l_n != 0*/
 (brace
 r_int
@@ -2979,72 +2825,7 @@ id|l_n
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-id|set_le_key_k_offset
-(paren
-id|B_PRIGHT_DELIM_KEY
-c_func
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|le_key_k_offset
-(paren
-id|B_PRIGHT_DELIM_KEY
-c_func
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-)paren
-)paren
-op_plus
-id|l_n
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*    k_offset (B_N_PKEY (tbS0, 0)) += l_n;&n;&t;&t;&t;&t;  k_offset (B_N_PDELIM_KEY(tb-&gt;CFL[0],tb-&gt;lkey[0])) += l_n;&n;&t;&t;&t;&t;  k_offset (B_PRIGHT_DELIM_KEY(tb-&gt;L[0])) += l_n;*/
-macro_line|#ifdef NO_CONFIG_REISERFS_CHECK /* journal victim */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_dirty
-(paren
-id|tbS0
-)paren
-op_logical_or
-op_logical_neg
-id|buffer_dirty
-(paren
-id|tb-&gt;CFL
-(braket
-l_int|0
-)braket
-)paren
-op_logical_or
-op_logical_neg
-id|buffer_dirty
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-)paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;PAP-12115: balance_leaf: L, CLF and S must be dirty already&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Calculate new body, position in item and insert_size[0] */
 r_if
 c_cond
@@ -3076,9 +2857,8 @@ id|pos_in_item
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK&t;
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|comp_short_le_keys
 (paren
@@ -3126,7 +2906,6 @@ id|tbS0-&gt;b_size
 op_logical_or
 op_logical_neg
 id|op_is_left_mergeable
-c_func
 (paren
 id|B_N_PDELIM_KEY
 c_func
@@ -3144,16 +2923,10 @@ l_int|0
 comma
 id|tbS0-&gt;b_size
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12120: balance_leaf: &quot;
-l_string|&quot;item must be merge-able with left neighboring item&quot;
+l_string|&quot;PAP-12120: item must be merge-able with left neighboring item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 multiline_comment|/* only part of the appended item will be in L[0] */
@@ -3163,26 +2936,18 @@ id|pos_in_item
 op_sub_assign
 id|tb-&gt;lbytes
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12125: balance_leaf: &quot;
-l_string|&quot;no place for paste. pos_in_item=%d&quot;
+l_string|&quot;PAP-12125: no place for paste. pos_in_item=%d&quot;
 comma
 id|pos_in_item
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Shift lnum[0] - 1 items in whole. Shift lbytes - 1 byte from item number lnum[0] */
 id|leaf_shift_left
 c_func
@@ -3688,28 +3453,20 @@ suffix:semicolon
 id|loff_t
 id|offset
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direct_le_ih
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12135: balance_leaf: &quot;
-l_string|&quot;only direct item can be split. (%h)&quot;
+l_string|&quot;PAP-12135: only direct item can be split. (%h)&quot;
 comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#endif
 id|leaf_shift_right
 c_func
 (paren
@@ -4296,21 +4053,14 @@ multiline_comment|/* we append to directory item */
 r_int
 id|entry_count
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-id|zeros_num
-)paren
-id|reiserfs_panic
+id|RFALSE
 c_func
 (paren
-id|tb-&gt;tb_sb
+id|zeros_num
 comma
-l_string|&quot;PAP-12145: balance_leaf: illegal parametr in case of a directory&quot;
+l_string|&quot;PAP-12145: illegal parametr in case of a directory&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|entry_count
 op_assign
 id|I_ENTRY_COUNT
@@ -4339,9 +4089,8 @@ multiline_comment|/* new directory entry falls into R[0] */
 r_int
 id|paste_entry_position
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;rbytes
 op_minus
@@ -4354,21 +4103,14 @@ id|tb-&gt;insert_size
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12150: balance_leaf: &quot;
-l_string|&quot;no enough of entries to shift to R[0]: rbytes=%d, entry_count=%d&quot;
+l_string|&quot;PAP-12150: no enough of entries to shift to R[0]: rbytes=%d, entry_count=%d&quot;
 comma
 id|tb-&gt;rbytes
 comma
 id|entry_count
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Shift rnum[0]-1 items in whole. Shift rbytes-1 directory entries from directory item number rnum[0] */
 id|leaf_shift_right
 c_func
@@ -4679,9 +4421,8 @@ id|n_shift
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 op_ne
@@ -4693,13 +4434,8 @@ id|item_pos
 )paren
 op_member_access_from_pointer
 id|ih_item_len
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12155: balance_leaf: invalid position to paste. ih_item_len=%d, pos_in_item=%d&quot;
+l_string|&quot;PAP-12155: invalid position to paste. ih_item_len=%d, pos_in_item=%d&quot;
 comma
 id|pos_in_item
 comma
@@ -4714,7 +4450,6 @@ op_member_access_from_pointer
 id|ih_item_len
 )paren
 suffix:semicolon
-macro_line|#endif
 id|leaf_shift_right
 c_func
 (paren
@@ -5039,21 +4774,14 @@ l_int|0
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-id|n_rem
-)paren
-id|reiserfs_panic
+id|RFALSE
 c_func
 (paren
-id|tb-&gt;tb_sb
+id|n_rem
 comma
-l_string|&quot;PAP-12160: balance_leaf: paste more than one unformatted node pointer&quot;
+l_string|&quot;PAP-12160: paste more than one unformatted node pointer&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_ih_free_space
 (paren
 id|B_N_PITEM_HEAD
@@ -5292,9 +5020,8 @@ op_logical_neg
 id|pos_in_item
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|item_pos
 op_minus
@@ -5304,16 +5031,10 @@ id|tb-&gt;rnum
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12165: balance_leaf: &quot;
-l_string|&quot;directory item must be first item of node when pasting is in 0th position&quot;
+l_string|&quot;PAP-12165: directory item must be first item of node when pasting is in 0th position&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* update delimiting keys */
 id|replace_key
 c_func
@@ -5493,9 +5214,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* tb-&gt;rnum[0] &gt; 0 */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;blknum
 (braket
@@ -5503,12 +5223,8 @@ l_int|0
 )braket
 OG
 l_int|3
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12180: balance_leaf: blknum can not be %d. It must be &lt;= 3&quot;
+l_string|&quot;PAP-12180: blknum can not be %d. It must be &lt;= 3&quot;
 comma
 id|tb-&gt;blknum
 (braket
@@ -5516,8 +5232,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;blknum
 (braket
@@ -5525,12 +5241,8 @@ l_int|0
 )braket
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12185: balance_leaf: blknum can not be %d. It must be &gt;= 0&quot;
+l_string|&quot;PAP-12185: blknum can not be %d. It must be &gt;= 0&quot;
 comma
 id|tb-&gt;blknum
 (braket
@@ -5538,7 +5250,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* if while adding to a node we discover that it is possible to split&n;       it in two, and merge the left part into the left neighbor and the&n;       right part into the right neighbor, eliminating the node */
 r_if
 c_cond
@@ -5552,9 +5263,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* node S[0] is empty now */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;lnum
@@ -5567,132 +5277,10 @@ id|tb-&gt;rnum
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12190: balance_leaf: lnum and rnum must not be zero&quot;
+l_string|&quot;PAP-12190: lnum and rnum must not be zero&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|COMP_KEYS
-(paren
-id|B_N_PKEY
-c_func
-(paren
-id|tb-&gt;R
-(braket
-l_int|0
-)braket
-comma
-l_int|0
-)paren
-comma
-id|B_PRIGHT_DELIM_KEY
-c_func
-(paren
-id|tbS0
-)paren
-)paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;vs-12192: balance_leaf: S[0] is being removed from the tree, it has incorrect right delimiting key&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-macro_line|#if 0
-multiline_comment|/* if insertion was done before 0-th position in R[0], right&n;&t;   delimiting key of the tb-&gt;L[0]&squot;s and left delimiting key are&n;&t;   not set correctly */
-r_if
-c_cond
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-)paren
-(brace
-id|copy_key
-c_func
-(paren
-id|B_PRIGHT_DELIM_KEY
-c_func
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|B_PRIGHT_DELIM_KEY
-c_func
-(paren
-id|tbS0
-)paren
-)paren
-suffix:semicolon
-id|reiserfs_mark_buffer_dirty
-(paren
-id|tb-&gt;L
-(braket
-l_int|0
-)braket
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|tb-&gt;CFL
-(braket
-l_int|0
-)braket
-)paren
-(brace
-id|copy_key
-(paren
-id|B_N_PDELIM_KEY
-(paren
-id|tb-&gt;CFL
-(braket
-l_int|0
-)braket
-comma
-id|tb-&gt;lkey
-(braket
-l_int|0
-)braket
-)paren
-comma
-id|B_PRIGHT_DELIM_KEY
-c_func
-(paren
-id|tbS0
-)paren
-)paren
-suffix:semicolon
-id|reiserfs_mark_buffer_dirty
-(paren
-id|tb-&gt;CFL
-(braket
-l_int|0
-)braket
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* if insertion was done before 0-th position in R[0], right&n;&t;   delimiting key of the tb-&gt;L[0]&squot;s and left delimiting key are&n;&t;   not set correctly */
 r_if
 c_cond
@@ -5823,22 +5411,16 @@ id|i
 op_decrement
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|snum
 (braket
 id|i
 )braket
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12200: balance_leaf: snum[%d] == %d. Must be &gt; 0&quot;
+l_string|&quot;PAP-12200: snum[%d] == %d. Must be &gt; 0&quot;
 comma
 id|i
 comma
@@ -5848,7 +5430,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* here we shift from S to S_new nodes */
 id|S_new
 (braket
@@ -5949,9 +5530,8 @@ suffix:semicolon
 r_int
 id|version
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direct_le_ih
@@ -5959,18 +5539,11 @@ c_func
 (paren
 id|ih
 )paren
-)paren
-multiline_comment|/* The items which can be inserted are:&n;&t;&t;&t;   Stat_data item, direct item, indirect item and directory item which consist of only two entries &quot;.&quot; and &quot;..&quot;.&n;&t;&t;&t;   These items must not be broken except for a direct one. */
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12205: balance_leaf: &quot;
-l_string|&quot;non-direct item can not be broken when inserting&quot;
+multiline_comment|/* The items which can be inserted are:&n;&t;&t;&t;   Stat_data item, direct item, indirect item and directory item which consist of only two entries &quot;.&quot; and &quot;..&quot;.&n;&t;&t;&t;   These items must not be broken except for a direct one. */
+l_string|&quot;PAP-12205: non-direct item can not be broken when inserting&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Move snum[i]-1 items from S[0] to S_new[i] */
 id|leaf_move_items
 (paren
@@ -6452,20 +6025,14 @@ id|item_head
 op_star
 id|aux_ih
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|ih
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12210: balance_leaf: ih must be 0&quot;
+l_string|&quot;PAP-12210: ih must be 0&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -6512,25 +6079,20 @@ id|entry_count
 )paren
 (brace
 multiline_comment|/* new directory entry falls into S_new[i] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;insert_size
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12215: balance_leaif: insert_size is already 0&quot;
+l_string|&quot;PAP-12215: insert_size is already 0&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|sbytes
 (braket
@@ -6540,13 +6102,8 @@ op_minus
 l_int|1
 op_ge
 id|entry_count
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12220: balance_leaf: &quot;
-l_string|&quot;there are no so much entries (%d), only %d&quot;
+l_string|&quot;PAP-12220: there are no so much entries (%d), only %d&quot;
 comma
 id|sbytes
 (braket
@@ -6558,7 +6115,6 @@ comma
 id|entry_count
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Shift snum[i]-1 items in whole. Shift sbytes[i] directory entries from directory item number snum[i] */
 id|leaf_move_items
 (paren
@@ -6774,9 +6330,8 @@ r_char
 op_star
 id|r_body
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 op_ne
@@ -6796,15 +6351,10 @@ l_int|0
 )braket
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12225: balance_leaf: item too short or insert_size &lt;= 0&quot;
+l_string|&quot;PAP-12225: item too short or insert_size &lt;= 0&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Calculate number of bytes which must be shifted from appended item */
 id|n_shift
 op_assign
@@ -7165,23 +6715,16 @@ id|tb-&gt;tb_path
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|ret_val
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12240: balance_leaf: &quot;
-l_string|&quot;unexpected value returned by leaf_move_items (%d)&quot;
+l_string|&quot;PAP-12240: unexpected value returned by leaf_move_items (%d)&quot;
 comma
 id|ret_val
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* paste into item */
 id|bi.tb
 op_assign
@@ -7454,9 +6997,9 @@ id|S_new
 id|i
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
+(paren
 (paren
 id|atomic_read
 (paren
@@ -7473,9 +7016,7 @@ id|b_count
 op_ne
 l_int|1
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|atomic_read
 c_func
@@ -7514,12 +7055,8 @@ id|i
 )paren
 )paren
 )paren
-(brace
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12247: balance_leaf: S_new[%d] : (%b)&bslash;n&quot;
+l_string|&quot;PAP-12247: S_new[%d] : (%b)&bslash;n&quot;
 comma
 id|i
 comma
@@ -7529,9 +7066,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 macro_line|#if 0
 multiline_comment|/* update right_delimiting_key fields */
 id|copy_key
@@ -7866,24 +7400,18 @@ id|pasted-&gt;u.ih_entry_count
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;insert_size
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12260: balance_leaf: insert_size is 0 already&quot;
+l_string|&quot;PAP-12260: insert_size is 0 already&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* prepare space */
 id|bi.tb
 op_assign
@@ -8019,9 +7547,8 @@ op_logical_neg
 id|pos_in_item
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;CFL
@@ -8034,15 +7561,10 @@ id|tb-&gt;L
 (braket
 l_int|0
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12270: balance_leaf: CFL[0]/L[0] must be specified&quot;
+l_string|&quot;PAP-12270: CFL[0]/L[0] must be specified&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -8127,9 +7649,8 @@ op_eq
 id|pasted-&gt;ih_item_len
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;insert_size
 (braket
@@ -8137,12 +7658,8 @@ l_int|0
 )braket
 op_le
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12275: balance_leaf: insert size must not be %d&quot;
+l_string|&quot;PAP-12275: insert size must not be %d&quot;
 comma
 id|tb-&gt;insert_size
 (braket
@@ -8150,7 +7667,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|bi.tb
 op_assign
 id|tb
@@ -8205,9 +7721,8 @@ id|pasted
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;insert_size
 (braket
@@ -8215,12 +7730,8 @@ l_int|0
 )braket
 op_ne
 id|UNFM_P_SIZE
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12280: balance_leaf: insert_size for indirect item must be %d, not %d&quot;
+l_string|&quot;PAP-12280: insert_size for indirect item must be %d, not %d&quot;
 comma
 id|UNFM_P_SIZE
 comma
@@ -8230,7 +7741,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|set_ih_free_space
 (paren
 id|pasted
@@ -8347,22 +7857,16 @@ id|block_head
 op_star
 id|blkh
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|bi-&gt;bi_bh
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;PAP-12295: make_empty_node: pointer to the buffer is NULL&quot;
+l_string|&quot;PAP-12295: pointer to the buffer is NULL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 (paren
 id|blkh
 op_assign
@@ -8801,9 +8305,8 @@ r_int
 id|n_src
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|dest
 op_eq
@@ -8812,38 +8315,30 @@ op_logical_or
 id|src
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-12305: replace_key: sourse or destination buffer is 0 (src=%p, dest=%p)&quot;
+l_string|&quot;vs-12305: source or destination buffer is 0 (src=%p, dest=%p)&quot;
 comma
 id|src
 comma
 id|dest
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|B_IS_KEYS_LEVEL
 (paren
 id|dest
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-12310: replace_key: invalid level (%z) for destination buffer. dest must be leaf&quot;
+l_string|&quot;vs-12310: invalid level (%z) for destination buffer. dest must be leaf&quot;
 comma
 id|dest
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_dest
 OL
@@ -8852,20 +8347,16 @@ op_logical_or
 id|n_src
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-12315: replace_key: src(%d) or dest(%d) key number less than 0&quot;
+l_string|&quot;vs-12315: src(%d) or dest(%d) key number &lt; 0&quot;
 comma
 id|n_src
 comma
 id|n_dest
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_dest
 op_ge
@@ -8882,12 +8373,8 @@ c_func
 (paren
 id|src
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-12320: replace_key: src(%d(%d)) or dest(%d(%d)) key number is too big&quot;
+l_string|&quot;vs-12320: src(%d(%d)) or dest(%d(%d)) key number is too big&quot;
 comma
 id|n_src
 comma
@@ -8906,7 +8393,6 @@ id|dest
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -8994,9 +8480,8 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|PATH_H_PPARENT
 (paren
@@ -9013,12 +8498,8 @@ id|h
 )braket
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-12325: get_left_neighbor_position: FL[%d](%p) or F[%d](%p) does not exist&quot;
+l_string|&quot;vs-12325: FL[%d](%p) or F[%d](%p) does not exist&quot;
 comma
 id|h
 comma
@@ -9037,7 +8518,6 @@ id|h
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9086,9 +8566,8 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|PATH_H_PPARENT
 (paren
@@ -9105,12 +8584,8 @@ id|h
 )braket
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-12330: get_right_neighbor_position: F[%d](%p) or FR[%d](%p) does not exist&quot;
+l_string|&quot;vs-12330: F[%d](%p) or FR[%d](%p) does not exist&quot;
 comma
 id|h
 comma
@@ -9129,7 +8604,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9200,17 +8674,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|bh
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;PAP-12336: check_internal_node: bh == 0&quot;
+l_string|&quot;PAP-12336: bh == 0&quot;
 )paren
 suffix:semicolon
 r_if
@@ -9227,8 +8697,8 @@ id|bh
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|buffer_dirty
@@ -9250,18 +8720,12 @@ c_func
 id|bh
 )paren
 )paren
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;PAP-12337: check_internal_node: buffer (%b) must be dirty&quot;
+l_string|&quot;PAP-12337: buffer (%b) must be dirty&quot;
 comma
 id|bh
 )paren
 suffix:semicolon
-)brace
 id|dc
 op_assign
 id|B_N_CHILD
@@ -9877,29 +9341,25 @@ id|tb
 (brace
 multiline_comment|/* use print_cur_tb() to see initial state of struct&n;       tree_balance */
 multiline_comment|/* store_print_tb (tb); */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* do not delete, just comment it out */
 multiline_comment|/*    print_tb(flag, PATH_LAST_POSITION(tb-&gt;tb_path), tb-&gt;tb_path-&gt;pos_in_item, tb, &n;&t;     &quot;check&quot;);*/
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|check_before_balancing
 (paren
 id|tb
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-12340: do_balance: locked buffers in TB&quot;
+l_string|&quot;PAP-12340: locked buffers in TB&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|cur_tb
 op_assign
 id|tb
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
+macro_line|#endif
 )brace
 DECL|function|do_balance_completed
 r_static

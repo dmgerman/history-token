@@ -1,14 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.walnut.h 1.7 05/17/01 18:14:26 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.walnut.h 1.10 09/14/01 17:37:56 trini&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Copyright 2000 MontaVista Software Inc.&n; *&t;PPC405 modifications&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;frank_rowand@mvista.com or source@mvista.com&n; * &t;   &t;debbie_chu@mvista.com&n; *&n; *    Module name: ppc405.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      based boards.&n; *&n; *      This includes:&n; *&n; *         405GP &quot;Walnut&quot; evaluation board&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef&t;__WALNUT_H__
 DECL|macro|__WALNUT_H__
 mdefine_line|#define&t;__WALNUT_H__
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Walnut&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
 DECL|struct|board_info
 r_typedef
@@ -79,17 +75,12 @@ DECL|typedef|bd_t
 )brace
 id|bd_t
 suffix:semicolon
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* Memory map for the IBM &quot;Walnut&quot; 405GP evaluation board.&n; * Generic 4xx plus RTC.&n; */
 DECL|macro|WALNUT_RTC_ADDR
 mdefine_line|#define WALNUT_RTC_ADDR&t;&t;((uint)0xf0001000)
 DECL|macro|WALNUT_RTC_SIZE
 mdefine_line|#define WALNUT_RTC_SIZE&t;&t;((uint)4*1024)
-macro_line|#ifdef __cplusplus
-)brace
-macro_line|#endif
-multiline_comment|/* Generic 4xx type&n;*/
-DECL|macro|_MACH_4xx
-mdefine_line|#define _MACH_4xx (_MACH_walnut)
 macro_line|#endif /* __WALNUT_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -282,9 +282,8 @@ id|pp_s_new_bh
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|buffer_dirty
 c_func
@@ -301,21 +300,13 @@ op_member_access_from_pointer
 id|b_dev
 op_eq
 id|NODEV
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-14080: get_new_buffer: invalid uptodate buffer %b for the new block&quot;
+l_string|&quot;PAP-14080: invalid uptodate buffer %b for the new block&quot;
 comma
 op_star
 id|pp_s_new_bh
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Free path buffers to prevent deadlock. */
 multiline_comment|/* It is possible that this process has the buffer, which this function is getting, already in&n;       its path, and is responsible for double incrementing the value of b_count.  If we recalculate&n;       the path after schedule we can avoid risking an endless loop.  This problematic situation is&n;       possible in a multiple processing environment.  Suppose process 1 has acquired a path P; then&n;       process 2 balanced and remove block A from the tree.  Process 1 continues and runs&n;       get_new_buffer, that returns buffer with block A. If node A was on the path P, then it will&n;       have b_count == 2. If we now will simply wait in while ( (*pp_s_new_bh)-&gt;b_count &gt; 1 ) we get&n;       into an endless loop, as nobody will release this buffer and the current process holds buffer&n;       twice. That is why we do decrement_counters_in_path(p_s_path) before waiting until b_count&n;       becomes 1. (it there were other processes holding node A, then eventually we will get a&n;       moment, when all of them released a buffer). */
 r_if
@@ -455,9 +446,8 @@ macro_line|#endif
 r_else
 (brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|atomic_read
 (paren
@@ -473,21 +463,13 @@ id|b_count
 )paren
 op_ne
 l_int|1
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-14100: get_new_buffer: not uptodate buffer %b for the new block has b_count more than one&quot;
+l_string|&quot;PAP-14100: not uptodate buffer %b for the new block has b_count more than one&quot;
 comma
 op_star
 id|pp_s_new_bh
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_return
 (paren
@@ -1016,9 +998,8 @@ op_or_assign
 id|SCHEDULE_OCCURRED
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|atomic_read
 (paren
@@ -1040,21 +1021,13 @@ id|buffer_dirty
 op_star
 id|pp_s_new_bh
 )paren
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-14100: get_new_buffer: not free or dirty buffer %b for the new block&quot;
+l_string|&quot;PAP-14100: not free or dirty buffer %b for the new block&quot;
 comma
 op_star
 id|pp_s_new_bh
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|n_repeat
 suffix:semicolon

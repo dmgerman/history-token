@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.residual.c 1.11 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.residual.c 1.13 09/11/01 16:54:34 trini&n; */
 multiline_comment|/*&n; * Code to deal with the PReP residual data.&n; *&n; * Written by: Cort Dougan (cort@cs.nmt.edu)&n; * Improved _greatly_ and rewritten by Gabriel Paubert (paubert@iram.es)&n; *&n; *  This file is based on the following documentation:&n; *&n; *&t;IBM Power Personal Systems Architecture&n; *&t;Residual Data&n; * &t;Document Number: PPS-AR-FW0001&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
@@ -437,7 +437,6 @@ r_char
 id|SubType
 )paren
 (brace
-r_const
 r_int
 r_char
 op_star
@@ -519,7 +518,6 @@ r_char
 id|Interface
 )paren
 (brace
-r_const
 r_int
 r_char
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.27 08/28/01 22:01:21 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.process.c 1.31 10/02/01 09:51:41 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -765,6 +765,7 @@ id|prev
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */&t;
+macro_line|#endif /* CONFIG_SMP */
 id|current_set
 (braket
 id|smp_processor_id
@@ -775,7 +776,6 @@ c_func
 op_assign
 r_new
 suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_altivec -- Cort&n;&t; */
 r_if
 c_cond

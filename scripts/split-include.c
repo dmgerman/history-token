@@ -695,7 +695,7 @@ op_assign
 id|popen
 c_func
 (paren
-l_string|&quot;find * -type f -print&quot;
+l_string|&quot;find * -type f -name &bslash;&quot;*.h&bslash;&quot; -print&quot;
 comma
 l_string|&quot;r&quot;
 )paren

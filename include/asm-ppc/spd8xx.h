@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.spd8xx.h 1.5 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.spd8xx.h 1.6 09/14/01 17:37:56 trini&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * Speech Design SPD8xxTS boards.&n; *&n; * Copyright (c) 2000 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_SPD8xx_DEFS
 DECL|macro|__MACH_SPD8xx_DEFS
@@ -294,8 +294,5 @@ mdefine_line|#define IDE1_IRQ_REG_OFFSET&t;&t;0x000A&t;/* not used&t;&t;&t;*/
 multiline_comment|/* We don&squot;t use the 8259.&n;*/
 DECL|macro|NR_8259_INTS
 mdefine_line|#define NR_8259_INTS&t;0
-multiline_comment|/* Generic 8xx type&n;*/
-DECL|macro|_MACH_8xx
-mdefine_line|#define _MACH_8xx (_MACH_spd8xx)
 macro_line|#endif&t;/* __MACH_SPD8xx_DEFS */
 eof

@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_tty.c 1.8 05/18/01 07:54:04 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_tty.c 1.10 09/14/01 19:30:13 trini&n; */
 multiline_comment|/* Minimal serial functions needed to send messages out the serial&n; * port on the MBX console.&n; *&n; * The MBX uxes SMC1 for the serial port.  We reset the port and use&n; * only the first BD that EPPC-Bug set up as a character FIFO.&n; *&n; * Later versions (at least 1.4, maybe earlier) of the MBX EPPC-Bug&n; * use COM1 instead of SMC1 as the console port.  This kinda sucks&n; * for the rest of the kernel, so here we force the use of SMC1 again.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &quot;../../8xx_io/commproc.h&quot;
+macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#ifdef CONFIG_MBX
 DECL|macro|MBX_CSR1
 mdefine_line|#define MBX_CSR1&t;((volatile u_char *)0xfa100000)

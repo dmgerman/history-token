@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; *  include/linux/reiser_fs.h&n; *&n; *  Reiser File System constants and structures&n; *&n; */
 multiline_comment|/* in reading the #defines, it may help to understand that they employ&n;   the following abbreviations:&n;&n;   B = Buffer&n;   I = Item header&n;   H = Height within the tree (should be changed to LEV)&n;   N = Number of the item in the node&n;   STAT = stat data&n;   DEH = Directory Entry Header&n;   EC = Entry Count&n;   E = Entry number&n;   UL = Unsigned Long&n;   BLKH = BLocK Header&n;   UNFM = UNForMatted node&n;   DC = Disk Child&n;   P = Path&n;&n;   These #defines are named by concatenating these abbreviations,&n;   where first comes the arguments, and last comes the return value,&n;   of the macro.&n;&n;*/
@@ -47,6 +48,17 @@ mdefine_line|#define ROUND_UP(x) _ROUND_UP(x,8LL)
 multiline_comment|/* debug levels.  Right now, CONFIG_REISERFS_CHECK means print all debug&n;** messages.&n;*/
 DECL|macro|REISERFS_DEBUG_CODE
 mdefine_line|#define REISERFS_DEBUG_CODE 5 /* extra messages to help find/debug errors */ 
+multiline_comment|/* assertions handling */
+multiline_comment|/** always check a condition and panic if it&squot;s false. */
+DECL|macro|RASSERT
+mdefine_line|#define RASSERT( cond, format, args... )&t;&t;&t;&t;&t;&bslash;&n;if( !( cond ) ) &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  reiserfs_panic( 0, &quot;reiserfs[%i]: assertion &quot; #cond &quot; failed at &quot;&t;&t;&bslash;&n;&t;&t;  __FILE__ &quot;:%i:&quot; __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;  in_interrupt() ? -1 : current -&gt; pid, __LINE__ , ##args )
+macro_line|#if defined( CONFIG_REISERFS_CHECK )
+DECL|macro|RFALSE
+mdefine_line|#define RFALSE( cond, format, args... ) RASSERT( !( cond ), format, ##args )
+macro_line|#else
+DECL|macro|RFALSE
+mdefine_line|#define RFALSE( cond, format, args... ) do {;} while( 0 )
+macro_line|#endif
 multiline_comment|/*&n; * Disk Data Structures&n; */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                             SUPER BLOCK                                 */

@@ -1732,6 +1732,20 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Atomic allocations - we can&squot;t balance anything */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|gfp_mask
+op_amp
+id|__GFP_WAIT
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|page
 op_assign
 id|balance_classzone
@@ -1818,6 +1832,15 @@ id|page
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Don&squot;t let big-order allocations loop */
+r_if
+c_cond
+(paren
+id|order
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Yield for kswapd, and try again */
 id|current-&gt;policy
 op_or_assign

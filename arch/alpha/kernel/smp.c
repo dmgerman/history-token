@@ -483,25 +483,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Setup the scheduler for this processor.  */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ??? This should be in init_idle.  */
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|init_mm.mm_count
-)paren
-suffix:semicolon
-id|current-&gt;active_mm
-op_assign
-op_amp
-id|init_mm
-suffix:semicolon
 multiline_comment|/* Get our local ticker going. */
 id|smp_setup_percpu_timer
 c_func
@@ -571,6 +552,25 @@ comma
 id|current
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Setup the scheduler for this processor.  */
+id|init_idle
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* ??? This should be in init_idle.  */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|init_mm.mm_count
+)paren
+suffix:semicolon
+id|current-&gt;active_mm
+op_assign
+op_amp
+id|init_mm
 suffix:semicolon
 multiline_comment|/* Do nothing.  */
 id|cpu_idle

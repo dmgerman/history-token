@@ -267,12 +267,10 @@ op_minus
 id|EEXIST
 suffix:semicolon
 )brace
-id|page-&gt;flags
-op_or_assign
+id|SetPageUptodate
+c_func
 (paren
-l_int|1
-op_lshift
-id|PG_uptodate
+id|page
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: parport.c,v 1.7 2001/06/25 16:17:30 jonashg Exp $&n; * &n; * Elinux parallel port driver&n; * NOTE!&n; *   Since par0 shares DMA with ser2 and par 1 shares DMA with ser3&n; *   this should be handled if both are enabled at the same time.&n; *   THIS IS NOT HANDLED YET!&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Fredrik Hugosson&n; *&n; */
+multiline_comment|/* $Id: parport.c,v 1.8 2001/09/26 11:51:52 bjornw Exp $&n; * &n; * Elinux parallel port driver&n; * NOTE!&n; *   Since par0 shares DMA with ser2 and par 1 shares DMA with ser3&n; *   this should be handled if both are enabled at the same time.&n; *   THIS IS NOT HANDLED YET!&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; * &n; * Author: Fredrik Hugosson&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;

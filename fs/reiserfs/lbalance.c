@@ -73,25 +73,18 @@ comma
 id|item_num
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direntry_le_ih
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10000: leaf_copy_dir_entries: item must be directory item&quot;
+l_string|&quot;vs-10000: item must be directory item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* length of all record to be copied and first byte of the last of them */
 id|deh
 op_assign
@@ -610,21 +603,15 @@ multiline_comment|/* there is nothing to merge */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|ih-&gt;ih_item_len
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10010: leaf_copy_boundary_item: item can not have empty dynamic length&quot;
+l_string|&quot;vs-10010: item can not have empty length&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -757,26 +744,19 @@ id|dih
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|get_ih_free_space
 (paren
 id|dih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10030: leaf_copy_boundary_item: &quot;
-l_string|&quot;merge to left: last unformatted node of non-last indirect item %h must have zerto free space&quot;
+l_string|&quot;vs-10030: merge to left: last unformatted node of non-last indirect item %h must have zero free space&quot;
 comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -903,9 +883,8 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* copy part of the body of the last item of SOURCE to the begin of the body of the first item of the DEST;&n;     part defined by &squot;bytes_or_entries&squot;; if byte_or_entriess == -1 copy whole body; change first item key of the DEST;&n;     don&squot;t create new item header&n;     */
-macro_line|#ifdef CONFIG_REISERFS_CHECK  
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|is_indirect_le_ih
 c_func
@@ -917,18 +896,12 @@ id|get_ih_free_space
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10040: leaf_copy_boundary_item: &quot;
-l_string|&quot;merge to right: last unformatted node of non-last indirect item must be filled entirely (%h)&quot;
+l_string|&quot;vs-10040: merge to right: last unformatted node of non-last indirect item must be filled entirely (%h)&quot;
 comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -943,9 +916,8 @@ id|bytes_or_entries
 op_assign
 id|ih-&gt;ih_item_len
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le_ih_k_offset
 (paren
@@ -963,19 +935,14 @@ id|ih
 comma
 id|src-&gt;b_size
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10050: leaf_copy_boundary_item: items %h and %h do not match&quot;
+l_string|&quot;vs-10050: items %h and %h do not match&quot;
 comma
 id|ih
 comma
 id|dih
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* change first item key of the DEST */
 id|set_le_ih_k_offset
 (paren
@@ -1003,9 +970,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* merge to right only part of item */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -1013,19 +979,14 @@ id|ih-&gt;ih_item_len
 )paren
 op_le
 id|bytes_or_entries
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10060: leaf_copy_boundary_item: no so much bytes %lu (needed %lu)&quot;
+l_string|&quot;vs-10060: no so much bytes %lu (needed %lu)&quot;
 comma
 id|ih-&gt;ih_item_len
 comma
 id|bytes_or_entries
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* change first item key of the DEST */
 r_if
 c_cond
@@ -1036,9 +997,8 @@ id|dih
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le_ih_k_offset
 (paren
@@ -1050,19 +1010,14 @@ r_int
 r_int
 )paren
 id|bytes_or_entries
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10070: leaf_copy_boundary_item: dih %h, bytes_or_entries(%d)&quot;
+l_string|&quot;vs-10070: dih %h, bytes_or_entries(%d)&quot;
 comma
 id|dih
 comma
 id|bytes_or_entries
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_le_ih_k_offset
 (paren
 id|dih
@@ -1078,9 +1033,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le_ih_k_offset
 (paren
@@ -1094,12 +1048,8 @@ id|UNFM_P_SIZE
 )paren
 op_star
 id|dest-&gt;b_size
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10080: leaf_copy_boundary_item: dih %h, bytes_or_entries(%d)&quot;
+l_string|&quot;vs-10080: dih %h, bytes_or_entries(%d)&quot;
 comma
 id|dih
 comma
@@ -1112,7 +1062,6 @@ op_star
 id|dest-&gt;b_size
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_le_ih_k_offset
 (paren
 id|dih
@@ -1223,9 +1172,8 @@ id|item_head
 op_star
 id|ih
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|last_first
 op_ne
@@ -1234,18 +1182,14 @@ op_logical_and
 id|last_first
 op_ne
 id|FIRST_TO_LAST
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10090: leaf_copy_items_entirely: bad last_first parameter %d&quot;
+l_string|&quot;vs-10090: bad last_first parameter %d&quot;
 comma
 id|last_first
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_NR_ITEMS
 (paren
@@ -1255,12 +1199,8 @@ op_minus
 id|first
 OL
 id|cpy_num
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10100: leaf_copy_items_entirely: too few items in source %d, required %d from %d&quot;
+l_string|&quot;vs-10100: too few items in source %d, required %d from %d&quot;
 comma
 id|B_NR_ITEMS
 c_func
@@ -1273,53 +1213,38 @@ comma
 id|first
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cpy_num
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10110: leaf_copy_items_entirely: can not copy negative amount of items&quot;
+l_string|&quot;vs-10110: can not copy negative amount of items&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|dest_bi
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10120: leaf_copy_items_entirely: can not copy negative amount of items&quot;
+l_string|&quot;vs-10120: can not copy negative amount of items&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dest
 op_assign
 id|dest_bi-&gt;bi_bh
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|dest
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10130: leaf_copy_items_entirely: can not copy negative amount of items&quot;
+l_string|&quot;vs-10130: can not copy negative amount of items&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1370,9 +1295,8 @@ comma
 id|dest_before
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -1382,14 +1306,8 @@ OL
 id|cpy_num
 op_star
 id|IH_SIZE
-)paren
-(brace
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10140: leaf_copy_items_entirely: &quot;
-l_string|&quot;not enough free space for headers %d (needed %d)&quot;
+l_string|&quot;vs-10140: not enough free space for headers %d (needed %d)&quot;
 comma
 id|B_FREE_SPACE
 (paren
@@ -1401,8 +1319,6 @@ op_star
 id|IH_SIZE
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* prepare space for headers */
 id|memmove
 (paren
@@ -1540,9 +1456,8 @@ dot
 id|ih_item_location
 suffix:semicolon
 multiline_comment|/* check free space */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -1552,13 +1467,8 @@ OL
 id|j
 op_minus
 id|last_inserted_loc
-)paren
-(brace
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10150: leaf_copy_items_entirely: not enough free space for items %d (needed %d)&quot;
+l_string|&quot;vs-10150: not enough free space for items %d (needed %d)&quot;
 comma
 id|le16_to_cpu
 (paren
@@ -1570,8 +1480,6 @@ op_minus
 id|last_inserted_loc
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 id|memmove
 (paren
 id|dest-&gt;b_data
@@ -1661,9 +1569,8 @@ c_cond
 id|dest_bi-&gt;bi_parent
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_N_CHILD
 (paren
@@ -1675,14 +1582,8 @@ op_member_access_from_pointer
 id|dc_block_number
 op_ne
 id|dest-&gt;b_blocknr
-)paren
-(brace
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10160: leaf_copy_items_entirely: &quot;
-l_string|&quot;block number in bh does not match to field in disk_child structure %lu and %lu&quot;
+l_string|&quot;vs-10160: block number in bh does not match to field in disk_child structure %lu and %lu&quot;
 comma
 id|dest-&gt;b_blocknr
 comma
@@ -1696,8 +1597,6 @@ op_member_access_from_pointer
 id|dc_block_number
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 id|B_N_CHILD
 (paren
 id|dest_bi-&gt;bi_parent
@@ -1764,23 +1663,17 @@ id|item_head
 op_star
 id|ih
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK  
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cpy_bytes
 op_eq
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10170: leaf_item_bottle: bytes == - 1 means: do not split item&quot;
+l_string|&quot;vs-10170: bytes == - 1 means: do not split item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1854,9 +1747,8 @@ id|ih
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cpy_bytes
 op_eq
@@ -1869,13 +1761,8 @@ id|get_ih_free_space
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10180: leaf_item_bottle: &quot;
-l_string|&quot;when whole indirect item is bottle to left neighbor, it must have free_space==0 (not %lu)&quot;
+l_string|&quot;vs-10180: when whole indirect item is bottle to left neighbor, it must have free_space==0 (not %lu)&quot;
 comma
 id|get_ih_free_space
 (paren
@@ -1883,7 +1770,6 @@ id|ih
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_ih_free_space
 (paren
 op_amp
@@ -1893,9 +1779,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|op_is_left_mergeable
 (paren
@@ -1906,17 +1791,12 @@ id|ih-&gt;ih_key
 comma
 id|src-&gt;b_size
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10190: leaf_item_bottle: bad mergeability of item %h&quot;
+l_string|&quot;vs-10190: bad mergeability of item %h&quot;
 comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#endif
 id|n_ih.ih_version
 op_assign
 id|ih-&gt;ih_version
@@ -2061,9 +1941,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* indirect item */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|cpy_bytes
@@ -2072,15 +1951,10 @@ id|get_ih_free_space
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10200: leaf_item_bottle: ih-&gt;ih_free_space must be 0 when indirect item will be appended&quot;
+l_string|&quot;vs-10200: ih-&gt;ih_free_space must be 0 when indirect item will be appended&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_le_ih_k_offset
 (paren
 op_amp
@@ -2217,25 +2091,20 @@ id|dest
 op_assign
 id|dest_bi-&gt;bi_bh
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|dest
 op_logical_or
 op_logical_neg
 id|src
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10210: leaf_copy_items: !dest || !src&quot;
+l_string|&quot;vs-10210: !dest || !src&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|last_first
 op_ne
@@ -2244,16 +2113,12 @@ op_logical_and
 id|last_first
 op_ne
 id|LAST_TO_FIRST
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10220: leaf_copy_items: last_first != FIRST_TO_LAST &amp;&amp; last_first != LAST_TO_FIRST&quot;
+l_string|&quot;vs-10220:last_first != FIRST_TO_LAST &amp;&amp; last_first != LAST_TO_FIRST&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_NR_ITEMS
 c_func
@@ -2262,12 +2127,8 @@ id|src
 )paren
 OL
 id|cpy_num
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10230: leaf_copy_items: No enough items: %d, required %d&quot;
+l_string|&quot;vs-10230: No enough items: %d, req. %d&quot;
 comma
 id|B_NR_ITEMS
 c_func
@@ -2278,23 +2139,18 @@ comma
 id|cpy_num
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cpy_num
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10240: leaf_copy_items: cpy_num &lt; 0 (%d)&quot;
+l_string|&quot;vs-10240: cpy_num &lt; 0 (%d)&quot;
 comma
 id|cpy_num
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2588,7 +2444,6 @@ op_star
 id|Snew
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|memset
 (paren
 id|dest_bi
@@ -2615,7 +2470,6 @@ id|buffer_info
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* define dest, src, dest parent, dest position */
 r_switch
 c_cond
@@ -2955,9 +2809,8 @@ id|shift_mode
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|src_bi-&gt;bi_bh
 op_eq
@@ -2966,13 +2819,8 @@ op_logical_or
 id|dest_bi-&gt;bi_bh
 op_eq
 l_int|0
-)paren
-(brace
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10260: leaf_define_dest_src_etc: mode==%d, source (%p) or dest (%p) buffer is initialized incorrectly&quot;
+l_string|&quot;vs-10260: mode==%d, source (%p) or dest (%p) buffer is initialized incorrectly&quot;
 comma
 id|shift_mode
 comma
@@ -2981,8 +2829,6 @@ comma
 id|dest_bi-&gt;bi_bh
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/* copy mov_num items and mov_bytes of the (mov_num-1)th item to&n;   neighbor. Delete them from source */
 DECL|function|leaf_move_items
@@ -3154,24 +3000,20 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* number of items in S[0] == 0 */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|shift_bytes
 op_ne
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-10270: leaf_shift_left: S0 is empty now, but shift_bytes != -1 (%d)&quot;
+l_string|&quot;vs-10270: S0 is empty now, but shift_bytes != -1 (%d)&quot;
 comma
 id|shift_bytes
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_if
 c_cond
 (paren
@@ -3301,9 +3143,9 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
+(paren
 (paren
 id|shift_bytes
 op_ne
@@ -3334,9 +3176,7 @@ l_int|0
 )paren
 )paren
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 op_logical_neg
 id|op_is_left_mergeable
@@ -3351,17 +3191,10 @@ comma
 id|S0-&gt;b_size
 )paren
 )paren
-(brace
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-10280: leaf_shift_left: item must be mergeable&quot;
+l_string|&quot;vs-10280: item must be mergeable&quot;
 )paren
 suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 )brace
 )brace
 r_return
@@ -3517,48 +3350,35 @@ op_assign
 id|cur_bi-&gt;bi_bh
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|bh
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_delete_items: 10155: bh is not defined&quot;
+l_string|&quot;10155: bh is not defined&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|del_num
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_delete_items: 10160: del_num can not be &lt; 0. del_num==%d&quot;
+l_string|&quot;10160: del_num can not be &lt; 0. del_num==%d&quot;
 comma
 id|del_num
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|first
 template_param
 id|item_amount
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_delete_items: 10165: invalid number of first item to be deleted (%d) or &quot;
+l_string|&quot;10165: invalid number of first item to be deleted (%d) or &quot;
 l_string|&quot;no so much items (%d) to delete (only %d)&quot;
 comma
 id|first
@@ -3570,7 +3390,6 @@ comma
 id|item_amount
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3829,10 +3648,9 @@ op_member_access_from_pointer
 id|blk_nr_item
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* check free space */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -3845,12 +3663,7 @@ id|inserted_item_ih-&gt;ih_item_len
 )paren
 op_plus
 id|IH_SIZE
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_insert_into_buf: 10170: &quot;
 l_string|&quot;not enough free space in block %z, new item %h&quot;
 comma
 id|bh
@@ -3858,26 +3671,20 @@ comma
 id|inserted_item_ih
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|zeros_number
 OG
 id|inserted_item_ih-&gt;ih_item_len
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-10172: leaf_insert_into_buf: &quot;
-l_string|&quot;zero number == %d, item length == %d&quot;
+l_string|&quot;vs-10172: zero number == %d, item length == %d&quot;
 comma
 id|zeros_number
 comma
 id|inserted_item_ih-&gt;ih_item_len
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* get item new item must be inserted before */
 id|ih
 op_assign
@@ -4199,10 +4006,9 @@ op_member_access_from_pointer
 id|blk_nr_item
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* check free space */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -4210,12 +4016,8 @@ id|blkh-&gt;blk_free_space
 )paren
 OL
 id|paste_size
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_paste_in_buffer: 10175: not enough free space: needed %d, available %d&quot;
+l_string|&quot;10175: not enough free space: needed %d, available %d&quot;
 comma
 id|paste_size
 comma
@@ -4225,6 +4027,7 @@ id|blkh-&gt;blk_free_space
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_if
 c_cond
 (paren
@@ -4553,26 +4356,21 @@ multiline_comment|/* length of all removed records */
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* make sure, that item is directory and there are enough entries to&n;     remove */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direntry_le_ih
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_cut_entries: 10180: item is not directory item&quot;
+l_string|&quot;10180: item is not directory item&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|I_ENTRY_COUNT
 c_func
@@ -4583,12 +4381,8 @@ OL
 id|from
 op_plus
 id|del_count
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_cut_entries: 10185: item contains not enough entries: entry_cout = %d, from = %d, to delete = %d&quot;
+l_string|&quot;10185: item contains not enough entries: entry_cout = %d, from = %d, to delete = %d&quot;
 comma
 id|I_ENTRY_COUNT
 c_func
@@ -4601,7 +4395,6 @@ comma
 id|del_count
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4913,23 +4706,16 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* change key */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cut_item_num
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_cut_from_buffer: 10190: &quot;
 l_string|&quot;when 0-th enrty of item is cut, that item must be first in the node, not %d-th&quot;
 comma
 id|cut_item_num
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* change item key by key of first entry in the item */
 id|set_le_ih_k_offset
 (paren
@@ -4954,24 +4740,19 @@ multiline_comment|/*memcpy (&amp;ih-&gt;ih_key.k_offset, &amp;(B_I_DEH (bh, ih)-
 r_else
 (brace
 multiline_comment|/* item is direct or indirect */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|is_statdata_le_ih
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_cut_from_buffer: 10195: item is stat data&quot;
+l_string|&quot;10195: item is stat data&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 op_logical_and
@@ -4983,12 +4764,8 @@ id|le16_to_cpu
 (paren
 id|ih-&gt;ih_item_len
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;cut_from_buf: 10200: invalid offset (%lu) or trunc_size (%lu) or ih_item_len (%lu)&quot;
+l_string|&quot;invalid offset (%lu) or trunc_size (%lu) or ih_item_len (%lu)&quot;
 comma
 id|pos_in_item
 comma
@@ -5000,7 +4777,6 @@ id|ih-&gt;ih_item_len
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* shift item body to left if cut is from the head of item */
 r_if
 c_cond
@@ -5077,9 +4853,8 @@ op_star
 id|bh-&gt;b_size
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -5092,17 +4867,12 @@ id|get_ih_free_space
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_cut_from_buf: 10205: invalid ih_free_space (%h)&quot;
+l_string|&quot;10205: invalid ih_free_space (%h)&quot;
 comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 )brace
@@ -5338,38 +5108,28 @@ id|item_head
 op_star
 id|ih
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|bh
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_delete_items_entirely: 10210: buffer is 0&quot;
+l_string|&quot;10210: buffer is 0&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|del_num
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_delete_items_entirely: 10215: del_num less than 0 (%d)&quot;
+l_string|&quot;10215: del_num less than 0 (%d)&quot;
 comma
 id|del_num
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -5396,19 +5156,14 @@ op_member_access_from_pointer
 id|blk_nr_item
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|first
 template_param
 id|nr
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_delete_items_entirely: 10220: first=%d, number=%d, there is %d items&quot;
+l_string|&quot;10220: first=%d, number=%d, there is %d items&quot;
 comma
 id|first
 comma
@@ -5417,7 +5172,6 @@ comma
 id|nr
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -5722,26 +5476,21 @@ comma
 id|item_num
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* make sure, that item is directory, and there are enough records in it */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direntry_le_ih
 (paren
 id|ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_paste_entries: 10225: item is not directory item&quot;
+l_string|&quot;10225: item is not directory item&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|I_ENTRY_COUNT
 (paren
@@ -5749,12 +5498,8 @@ id|ih
 )paren
 OL
 id|before
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;leaf_paste_entries: 10230: there are no entry we paste entries before. entry_count = %d, before = %d&quot;
+l_string|&quot;10230: there are no entry we paste entries before. entry_count = %d, before = %d&quot;
 comma
 id|I_ENTRY_COUNT
 (paren
@@ -5764,7 +5509,6 @@ comma
 id|before
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* first byte of dest item */
 id|item
 op_assign
@@ -6022,9 +5766,6 @@ op_logical_neg
 id|before
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-multiline_comment|/*&n;      if ( old_entry_num &amp;&amp; COMP_SHORT_KEYS ((unsigned long *)&amp;ih-&gt;ih_key.k_offset,&n;&t;&t;&t;&t;&t;     &amp;(new_dehs-&gt;deh_offset)) &lt;= 0)&n;&t;reiserfs_panic (0, &quot;leaf_paste_entries: 10235: new key must be less, that old key&quot;);&n;*/
-macro_line|#endif
 id|set_le_ih_k_offset
 (paren
 id|ih

@@ -53,6 +53,24 @@ l_int|0
 suffix:semicolon
 singleline_comment|// FIXME: add something else here
 )brace
+macro_line|#else
+DECL|function|check_objectid_map
+r_static
+r_void
+id|check_objectid_map
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+id|__u32
+op_star
+id|map
+)paren
+(brace
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/* When we allocate objectids we allocate the first unused objectid.&n;   Each sequence of objectids in use (the odd sequences) is followed&n;   by a sequence of objectids not in use (the even sequences).  We&n;   only need to record the last objectid in each of these sequences&n;   (both the odd and even sequences) in order to fully define the&n;   boundaries of the sequences.  A consequence of allocating the first&n;   objectid not in use is that under most conditions this scheme is&n;   extremely compact.  The exception is immediately after a sequence&n;   of operations which deletes a large number of objects of&n;   non-sequential objectids, and even then it will become compact&n;   again as soon as more objects are created.  Note that many&n;   interesting optimizations of layout could result from complicating&n;   objectid assignment, but we have deferred making them for now. */
 multiline_comment|/* get unique object identifier */
@@ -97,7 +115,6 @@ suffix:semicolon
 id|__u32
 id|unused_objectid
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|check_objectid_map
 (paren
 id|s
@@ -105,7 +122,6 @@ comma
 id|map
 )paren
 suffix:semicolon
-macro_line|#endif
 id|reiserfs_prepare_for_journal
 c_func
 (paren
@@ -303,7 +319,6 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|//return;
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|check_objectid_map
 (paren
 id|s
@@ -311,7 +326,6 @@ comma
 id|map
 )paren
 suffix:semicolon
-macro_line|#endif
 id|reiserfs_prepare_for_journal
 c_func
 (paren
@@ -449,9 +463,8 @@ op_minus
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le16_to_cpu
 (paren
@@ -462,13 +475,8 @@ id|le16_to_cpu
 (paren
 id|rs-&gt;s_oid_maxsize
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|s
 comma
-l_string|&quot;vs-15005: reiserfs_release_objectid: &quot;
-l_string|&quot;objectid map corrupted cur_size == %d (max == %d)&quot;
+l_string|&quot;vs-15005: objectid map corrupted cur_size == %d (max == %d)&quot;
 comma
 id|le16_to_cpu
 (paren
@@ -481,7 +489,6 @@ id|rs-&gt;s_oid_maxsize
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 suffix:semicolon

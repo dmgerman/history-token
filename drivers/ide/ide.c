@@ -4648,6 +4648,11 @@ id|args
 (braket
 l_int|6
 )braket
+comma
+id|args
+(braket
+l_int|7
+)braket
 )paren
 suffix:semicolon
 macro_line|#endif

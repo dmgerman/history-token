@@ -120,7 +120,17 @@ id|u8
 id|iseteop
 suffix:semicolon
 multiline_comment|/* bit number for R_SET_EOP for the input dma */
+DECL|member|enabled
+r_int
+id|enabled
+suffix:semicolon
+multiline_comment|/* Set to 1 if the port is enabled in HW config */
 multiline_comment|/* end of fields defined in rs_table[] in .c-file */
+DECL|member|uses_dma
+r_int
+id|uses_dma
+suffix:semicolon
+multiline_comment|/* Set to 1 if DMA should be used */
 DECL|member|fifo_didmagic
 r_int
 r_char

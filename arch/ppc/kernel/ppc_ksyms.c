@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.51 08/24/01 17:05:47 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.55 10/02/01 12:33:42 trini&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -48,7 +48,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#ifdef  CONFIG_8xx
-macro_line|#include &quot;../8xx_io/commproc.h&quot;
+macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#endif
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
@@ -191,6 +191,13 @@ c_func
 (paren
 r_int
 )paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|__res
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_int
@@ -1632,6 +1639,13 @@ id|debugger_fault_handler
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef  CONFIG_8xx
+DECL|variable|__res
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__res
+)paren
+suffix:semicolon
 DECL|variable|request_8xxirq
 id|EXPORT_SYMBOL
 c_func

@@ -49,46 +49,34 @@ op_eq
 id|M_INSERT
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|new_num
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8005: old_item_num: for INSERT mode and item number of inserted item&quot;
+l_string|&quot;vs-8005: for INSERT mode and item number of inserted item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|new_num
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|mode
 op_ne
 id|M_DELETE
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
 l_string|&quot;vs-8010: old_item_num: mode must be M_DELETE (mode = &bslash;&squot;%c&bslash;&squot;&quot;
 comma
 id|mode
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* delete mode */
 r_return
 id|new_num
@@ -488,22 +476,16 @@ id|vn-&gt;vn_vi
 op_plus
 id|vn-&gt;vn_affected_item_num
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|vn-&gt;vn_ins_ih
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8040: create_virtual_node: item header of inserted item is not specified&quot;
+l_string|&quot;vs-8040: item header of inserted item is not specified&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|vi-&gt;vi_item_len
 op_assign
 id|tb-&gt;insert_size
@@ -538,79 +520,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_switch
-c_cond
-(paren
-id|type
-multiline_comment|/*le_key_k_type (ih_version (vn-&gt;vn_ins_ih), &amp;(vn-&gt;vn_ins_ih-&gt;ih_key))*/
-)paren
-(brace
-r_case
-id|TYPE_STAT_DATA
-suffix:colon
-id|vn-&gt;vn_vi
-(braket
-id|vn-&gt;vn_affected_item_num
-)braket
-dot
-id|vi_type
-op_or_assign
-id|VI_TYPE_STAT_DATA
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|TYPE_DIRECT
-suffix:colon
-id|vn-&gt;vn_vi
-(braket
-id|vn-&gt;vn_affected_item_num
-)braket
-dot
-id|vi_type
-op_or_assign
-id|VI_TYPE_DIRECT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|TYPE_INDIRECT
-suffix:colon
-id|vn-&gt;vn_vi
-(braket
-id|vn-&gt;vn_affected_item_num
-)braket
-dot
-id|vi_type
-op_or_assign
-id|VI_TYPE_INDIRECT
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* inseted item is directory (it must be item with &quot;.&quot; and &quot;..&quot;) */
-id|vn-&gt;vn_vi
-(braket
-id|vn-&gt;vn_affected_item_num
-)braket
-dot
-id|vi_type
-op_or_assign
-(paren
-id|VI_TYPE_DIRECTORY
-op_or
-id|VI_TYPE_FIRST_DIRECTORY_ITEM
-op_or
-id|VI_TYPE_INSERTED_DIRECTORY_ITEM
-)paren
-suffix:semicolon
-multiline_comment|/* this directory item can not be split, so do not set sizes of entries */
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/* set right merge flag we take right delimiting key and check whether it is a mergeable item */
 r_if
@@ -818,24 +727,18 @@ id|d_size
 comma
 id|ih_size
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cur_free
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8050: check_left: cur_free (%d) &lt; 0&quot;
+l_string|&quot;vs-8050: cur_free (%d) &lt; 0&quot;
 comma
 id|cur_free
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* internal level */
 r_if
 c_cond
@@ -888,9 +791,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|PATH_H_PPARENT
@@ -899,15 +801,10 @@ id|tb-&gt;tb_path
 comma
 l_int|0
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8055: check_left: parent does not exist or invalid&quot;
+l_string|&quot;vs-8055: parent does not exist or invalid&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|vi
 op_assign
 id|vn-&gt;vn_vi
@@ -940,9 +837,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* all contents of S[0] fits into L[0] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|vn-&gt;vn_mode
 op_eq
@@ -951,15 +847,10 @@ op_logical_or
 id|vn-&gt;vn_mode
 op_eq
 id|M_PASTE
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8055: check_left: invalid mode or balance condition failed&quot;
+l_string|&quot;vs-8055: invalid mode or balance condition failed&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tb-&gt;lnum
 (braket
 l_int|0
@@ -1159,22 +1050,16 @@ id|d_size
 comma
 id|ih_size
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cur_free
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8070: check_right: cur_free &lt; 0&quot;
+l_string|&quot;vs-8070: cur_free &lt; 0&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* internal level */
 r_if
 c_cond
@@ -1227,9 +1112,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|PATH_H_PPARENT
@@ -1238,15 +1122,10 @@ id|tb-&gt;tb_path
 comma
 l_int|0
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8075: check_right: parent does not exist or invalid&quot;
+l_string|&quot;vs-8075: parent does not exist or invalid&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|vi
 op_assign
 id|vn-&gt;vn_vi
@@ -1283,9 +1162,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* all contents of S[0] fits into R[0] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|vn-&gt;vn_mode
 op_eq
@@ -1294,15 +1172,10 @@ op_logical_or
 id|vn-&gt;vn_mode
 op_eq
 id|M_PASTE
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8080: check_right: invalid mode or balance condition failed&quot;
+l_string|&quot;vs-8080: invalid mode or balance condition failed&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tb-&gt;rnum
 (braket
 id|h
@@ -1562,10 +1435,9 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* We only create additional nodes if we are in insert or paste mode&n;       or we are in replace mode at the internal level. If h is 0 and&n;       the mode is M_REPLACE then in fix_nodes we change the mode to&n;       paste or insert before we get here in the code.  */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;insert_size
 (braket
@@ -1583,15 +1455,10 @@ id|mode
 op_ne
 id|M_PASTE
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8100: get_num_ver: insert_size &lt; 0 in overflow&quot;
+l_string|&quot;vs-8100: insert_size &lt; 0 in overflow&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|max_node_size
 op_assign
 id|MAX_CHILD_SIZE
@@ -1770,24 +1637,16 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|needed_nodes
 OG
 l_int|3
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8105: get_num_ver: too many nodes are needed&quot;
+l_string|&quot;vs-8105: too many nodes are needed&quot;
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* get size of current item */
 id|current_item_size
 op_assign
@@ -1858,20 +1717,15 @@ id|max_node_size
 )paren
 (brace
 multiline_comment|/* virtual item length is longer, than max size of item in&n;               a node. It is impossible for direct item */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|is_direct_le_ih
 (paren
 id|vi-&gt;vi_ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8110: get_num_ver: &quot;
+l_string|&quot;vs-8110: &quot;
 l_string|&quot;direct item length is %d. It can not be longer than %d&quot;
 comma
 id|current_item_size
@@ -1879,7 +1733,6 @@ comma
 id|max_node_size
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* we will try to split it */
 id|flow
 op_assign
@@ -2710,9 +2563,8 @@ id|item_head
 op_star
 id|ih
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_NR_ITEMS
 (paren
@@ -2720,12 +2572,8 @@ id|S0
 )paren
 op_ne
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8125: are_leaves_removable: item number must be 1: it is %d&quot;
+l_string|&quot;vs-8125: item number must be 1: it is %d&quot;
 comma
 id|B_NR_ITEMS
 c_func
@@ -2734,7 +2582,6 @@ id|S0
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ih
 op_assign
 id|B_N_PITEM_HEAD
@@ -2788,10 +2635,9 @@ id|ih_size
 op_assign
 id|IH_SIZE
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* we might check that left neighbor exists and is of the&n;&t;       same directory */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|le_key_k_offset
 (paren
@@ -2807,16 +2653,10 @@ id|ih-&gt;ih_key
 )paren
 op_eq
 id|DOT_OFFSET
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8130: are_leaves_removable: &quot;
-l_string|&quot;first directory item can not be removed until directory is not empty&quot;
+l_string|&quot;vs-8130: first directory item can not be removed until directory is not empty&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_if
@@ -3198,23 +3038,16 @@ id|n_counter
 op_increment
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 op_star
 id|p_n_blocknr
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-8135: get_empty_nodes: reiserfs_new_blocknrs failed when got new blocks&quot;
+l_string|&quot;PAP-8135: reiserfs_new_blocknrs failed when got new blocks&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|p_s_new_bh
 op_assign
 id|reiserfs_getblk
@@ -3291,9 +3124,9 @@ id|p_s_new_bh
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
+(paren
 (paren
 id|atomic_read
 (paren
@@ -3310,9 +3143,7 @@ id|buffer_dirty
 id|p_s_new_bh
 )paren
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|atomic_read
 c_func
@@ -3340,20 +3171,12 @@ id|p_s_new_bh
 )paren
 )paren
 )paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-8140: get_empty_nodes: not free or dirty buffer %b for the new block&quot;
+l_string|&quot;PAP-8140: not free or dirty buffer %b for the new block&quot;
 comma
 id|p_s_new_bh
 )paren
 suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 multiline_comment|/* Put empty buffers into the array. */
 r_if
 c_cond
@@ -3683,9 +3506,8 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|p_s_father
@@ -3719,13 +3541,8 @@ id|p_s_tb-&gt;FL
 id|n_h
 )braket
 )paren
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|p_s_sb
 comma
-l_string|&quot;vs-8165: is_left_neighbor_in_cache: F[h] (%b) or FL[h] (%b) is invalid&quot;
+l_string|&quot;vs-8165: F[h] (%b) or FL[h] (%b) is invalid&quot;
 comma
 id|p_s_father
 comma
@@ -3735,8 +3552,6 @@ id|n_h
 )braket
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Get position of the pointer to the left neighbor into the left father. */
 id|n_left_neighbor_position
 op_assign
@@ -3796,9 +3611,8 @@ id|p_s_sb-&gt;s_blocksize
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|buffer_uptodate
 (paren
@@ -3811,22 +3625,14 @@ c_func
 (paren
 id|left
 )paren
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;vs-8170: is_left_neighbor_in_cache: left neighbor (%b %z) is not in the tree&quot;
+l_string|&quot;vs-8170: left neighbor (%b %z) is not in the tree&quot;
 comma
 id|left
 comma
 id|left
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 id|put_bh
 c_func
 (paren
@@ -3870,79 +3676,6 @@ id|decrement_key
 id|p_s_key
 )paren
 suffix:semicolon
-macro_line|#if 0 /* this works wrong when key is key of second part of tail: it&n;         sets key to be of indirect type. It looks like it makes no&n;         harm but it is unclear */
-r_int
-r_int
-op_star
-id|p_n_key_field
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|p_s_key
-op_plus
-id|REISERFS_FULL_KEY_LEN
-op_minus
-l_int|1
-suffix:semicolon
-r_int
-id|n_counter
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|n_counter
-op_assign
-l_int|0
-suffix:semicolon
-id|n_counter
-OL
-id|REISERFS_FULL_KEY_LEN
-suffix:semicolon
-id|n_counter
-op_increment
-comma
-id|p_n_key_field
-op_decrement
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_star
-id|p_n_key_field
-)paren
-(brace
-(paren
-op_star
-id|p_n_key_field
-)paren
-op_decrement
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
-(paren
-id|n_counter
-op_eq
-id|REISERFS_FULL_KEY_LEN
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;PAP-8175: decrement_key: zero key&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /*0*/
 )brace
 multiline_comment|/* Calculate far left/right parent of the left/right neighbor of the current node, that&n; * is calculate the left/right (FL[h]/FR[h]) neighbor of the parent F[h].&n; * Calculate left/right common parent of the current node and L[h]/R[h].&n; * Calculate left/right delimiting key position.&n; * Returns:&t;PATH_INCORRECT   - path in the tree is not correct;&n; &t;&t;SCHEDULE_OCCURRED - schedule occurred while the function worked;&n; *&t;        CARRY_ON         - schedule didn&squot;t occur while the function worked;&n; */
 DECL|function|get_far_parent
@@ -4021,23 +3754,16 @@ id|n_counter
 op_assign
 id|n_path_offset
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_counter
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8180: get_far_parent: invalid path length&quot;
+l_string|&quot;PAP-8180: invalid path length&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -4211,9 +3937,8 @@ r_return
 id|REPEAT_SEARCH
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_LEVEL
 (paren
@@ -4222,14 +3947,8 @@ id|pp_s_com_father
 )paren
 op_le
 id|DISK_LEAF_NODE_LEVEL
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8185: get_far_parent: (%b %z) level too small&quot;
+l_string|&quot;PAP-8185: (%b %z) level too small&quot;
 comma
 op_star
 id|pp_s_com_father
@@ -4238,8 +3957,6 @@ op_star
 id|pp_s_com_father
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Check whether the common parent is locked. */
 r_if
 c_cond
@@ -4401,9 +4118,8 @@ op_amp
 id|s_path_to_neighbor_father
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_LEVEL
 (paren
@@ -4414,14 +4130,8 @@ op_ne
 id|n_h
 op_plus
 l_int|1
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8190: get_far_parent: (%b %z) level too small&quot;
+l_string|&quot;PAP-8190: (%b %z) level too small&quot;
 comma
 op_star
 id|pp_s_father
@@ -4430,23 +4140,16 @@ op_star
 id|pp_s_father
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|s_path_to_neighbor_father.path_length
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|0
 comma
-l_string|&quot;PAP-8192: get_far_parent: path length is too small&quot;
+l_string|&quot;PAP-8192: path length is too small&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|s_path_to_neighbor_father.path_length
 op_decrement
 suffix:semicolon
@@ -4703,9 +4406,8 @@ op_assign
 id|p_s_curcf
 suffix:semicolon
 multiline_comment|/* New initialization of CFL[n_h]. */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 (paren
 id|p_s_curf
@@ -4726,21 +4428,14 @@ id|B_IS_IN_TREE
 id|p_s_curcf
 )paren
 )paren
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8195: get_parents: FL (%b) or CFL (%b) is invalid&quot;
+l_string|&quot;PAP-8195: FL (%b) or CFL (%b) is invalid&quot;
 comma
 id|p_s_curf
 comma
 id|p_s_curcf
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Get parent FR[n_h] of R[n_h]. */
 multiline_comment|/* Current node is the last child of F[n_h]. FR[n_h] != F[n_h]. */
 r_if
@@ -4941,8 +4636,9 @@ id|n_h
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
+macro_line|#endif
+id|RFALSE
+c_func
 (paren
 (paren
 id|p_s_curf
@@ -4963,21 +4659,14 @@ id|B_IS_IN_TREE
 id|p_s_curcf
 )paren
 )paren
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8205: get_parents: FR (%b) or CFR (%b) is invalid&quot;
+l_string|&quot;PAP-8205: FR (%b) or CFR (%b) is invalid&quot;
 comma
 id|p_s_curf
 comma
 id|p_s_curcf
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|CARRY_ON
 suffix:semicolon
@@ -5582,10 +5271,9 @@ r_return
 id|CARRY_ON
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* this checks balance condition, that any two neighboring nodes can not fit in one node */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|h
 op_logical_and
@@ -5608,16 +5296,12 @@ id|vn-&gt;vn_nr_item
 op_plus
 l_int|1
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8220: ip_check_balance: tree is not balanced on internal level&quot;
+l_string|&quot;vs-8220: tree is not balanced on internal level&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|h
@@ -5655,16 +5339,10 @@ l_int|1
 )paren
 )paren
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8225: ip_check_balance: tree is not balanced on leaf level&quot;
+l_string|&quot;vs-8225: tree is not balanced on leaf level&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* all contents of S[0] can be moved into its neighbors&n;       S[0] will be removed after balancing. */
 r_if
 c_cond
@@ -6277,9 +5955,8 @@ OL
 id|rnver
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|h
 op_logical_and
@@ -6314,15 +5991,10 @@ id|h
 op_ne
 l_int|1
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8230: check_balance: bad h&quot;
+l_string|&quot;vs-8230: bad h&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7392,9 +7064,8 @@ id|CARRY_ON
 suffix:semicolon
 )brace
 multiline_comment|/* For internal nodes try to borrow item from a neighbor */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;FL
@@ -7407,15 +7078,10 @@ id|tb-&gt;FR
 (braket
 id|h
 )braket
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8235: dc_check_balance_internal: trying to borrow for root&quot;
+l_string|&quot;vs-8235: trying to borrow for root&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Borrow one or two items from caching neighbor */
 r_if
 c_cond
@@ -7634,9 +7300,8 @@ id|F0
 )paren
 (brace
 multiline_comment|/* S[0] is the root now. */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_minus
 id|levbytes
@@ -7647,15 +7312,10 @@ id|B_FREE_SPACE
 (paren
 id|S0
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8240: dc_check_balance_leaf: attempt to create empty buffer tree&quot;
+l_string|&quot;vs-8240: attempt to create empty buffer tree&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|set_parameters
 (paren
 id|tb
@@ -7821,24 +7481,18 @@ id|h
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tb-&gt;FL
 (braket
 id|h
 )braket
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
 l_string|&quot;vs-8245: dc_check_balance_leaf: FL[h] must exist&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* set parameter to merge S[0] with its left neighbor */
 id|set_parameters
 (paren
@@ -7966,9 +7620,8 @@ r_int
 id|h
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 (paren
@@ -7979,16 +7632,10 @@ comma
 id|h
 )paren
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;vs-8250: dc_check_balance: S is not initialized&quot;
+l_string|&quot;vs-8250: S is not initialized&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8096,9 +7743,8 @@ id|vn-&gt;vn_data
 op_assign
 id|data
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|mode
 op_eq
@@ -8106,15 +7752,10 @@ id|M_INSERT
 op_logical_and
 op_logical_neg
 id|vn-&gt;vn_ins_ih
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-8255: check_balance: ins_ih can not be 0 in insert mode&quot;
+l_string|&quot;vs-8255: ins_ih can not be 0 in insert mode&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8194,25 +7835,18 @@ op_le
 id|FIRST_PATH_ELEMENT_OFFSET
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_path_offset
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8260: get_direct_parent: illegal offset in the path&quot;
+l_string|&quot;PAP-8260: illegal offset in the path&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8441,9 +8075,8 @@ comma
 id|n_path_offset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p_s_bh
 op_eq
@@ -8460,15 +8093,10 @@ id|p_s_tb-&gt;tb_path
 comma
 id|n_path_offset
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8270: get_neighbors: invalid position in the parent&quot;
+l_string|&quot;PAP-8270: invalid position in the parent&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|n_child_position
 op_assign
 (paren
@@ -8547,9 +8175,8 @@ r_return
 id|REPEAT_SEARCH
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|B_IS_IN_TREE
@@ -8584,16 +8211,12 @@ id|n_child_position
 )paren
 op_ne
 id|p_s_bh-&gt;b_blocknr
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8275: get_neighbors: invalid parent&quot;
+l_string|&quot;PAP-8275: invalid parent&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|B_IS_IN_TREE
@@ -8601,16 +8224,12 @@ c_func
 (paren
 id|p_s_bh
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8280: get_neighbors: invalid child&quot;
+l_string|&quot;PAP-8280: invalid child&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|n_h
@@ -8636,15 +8255,10 @@ id|n_child_position
 )paren
 op_member_access_from_pointer
 id|dc_size
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8290: get_neighbors: invalid child size of left neighbor&quot;
+l_string|&quot;PAP-8290: invalid child size of left neighbor&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|decrement_bcount
 c_func
 (paren
@@ -8682,9 +8296,8 @@ comma
 id|n_path_offset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p_s_bh
 op_eq
@@ -8706,15 +8319,10 @@ c_func
 (paren
 id|p_s_bh
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8295: get_neighbors: invalid position in the parent&quot;
+l_string|&quot;PAP-8295: invalid position in the parent&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|n_child_position
 op_assign
 (paren
@@ -8805,9 +8413,8 @@ id|n_h
 op_assign
 id|p_s_bh
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|n_h
@@ -8833,13 +8440,8 @@ id|n_child_position
 )paren
 op_member_access_from_pointer
 id|dc_size
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8300: get_neighbors: invalid child size of right neighbor (%d != %d - %d)&quot;
+l_string|&quot;PAP-8300: invalid child size of right neighbor (%d != %d - %d)&quot;
 comma
 id|B_FREE_SPACE
 (paren
@@ -8864,8 +8466,6 @@ op_member_access_from_pointer
 id|dc_size
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_return
 id|CARRY_ON
@@ -9412,6 +9012,33 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#else
+DECL|function|tb_buffer_sanity_check
+r_static
+r_void
+id|tb_buffer_sanity_check
+(paren
+r_struct
+id|super_block
+op_star
+id|p_s_sb
+comma
+r_struct
+id|buffer_head
+op_star
+id|p_s_bh
+comma
+r_const
+r_char
+op_star
+id|descr
+comma
+r_int
+id|level
+)paren
+(brace
+suffix:semicolon
+)brace
 macro_line|#endif
 DECL|function|clear_all_dirty_bits
 r_static
@@ -9620,7 +9247,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|tb_buffer_sanity_check
 (paren
 id|p_s_tb-&gt;tb_sb
@@ -9635,7 +9261,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 id|clear_all_dirty_bits
 c_func
 (paren
@@ -9678,7 +9303,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|tb_buffer_sanity_check
 (paren
 id|p_s_tb-&gt;tb_sb
@@ -9693,7 +9317,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 id|clear_all_dirty_bits
 c_func
 (paren
@@ -9736,7 +9359,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|tb_buffer_sanity_check
 (paren
 id|p_s_tb-&gt;tb_sb
@@ -9751,7 +9373,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 id|clear_all_dirty_bits
 c_func
 (paren
@@ -9806,7 +9427,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|tb_buffer_sanity_check
 (paren
 id|p_s_tb-&gt;tb_sb
@@ -9821,7 +9441,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 id|clear_all_dirty_bits
 c_func
 (paren
@@ -9864,7 +9483,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|tb_buffer_sanity_check
 (paren
 id|p_s_tb-&gt;tb_sb
@@ -9879,7 +9497,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 id|clear_all_dirty_bits
 c_func
 (paren
@@ -9922,7 +9539,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|tb_buffer_sanity_check
 (paren
 id|p_s_tb-&gt;tb_sb
@@ -9937,7 +9553,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 id|clear_all_dirty_bits
 c_func
 (paren
@@ -10636,9 +10251,8 @@ id|n_h
 )paren
 (brace
 multiline_comment|/* We have a positive insert size but no nodes exist on this&n;&t;       level, this means that we are creating a new root. */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p_s_tb-&gt;blknum
 (braket
@@ -10646,16 +10260,10 @@ id|n_h
 )braket
 op_ne
 l_int|1
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8350: fix_nodes: creating new empty root&quot;
+l_string|&quot;PAP-8350: creating new empty root&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -10703,25 +10311,18 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* The tree needs to be grown, so this node S[n_h]&n;&t;&t;       which is the root node is split into two nodes,&n;&t;&t;       and a new node (S[n_h+1]) will be created to&n;&t;&t;       become the root node.  */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_h
 op_eq
 id|MAX_HEIGHT
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_tb-&gt;tb_sb
 comma
-l_string|&quot;PAP-8355: fix_nodes: attempt to create too high of a tree&quot;
+l_string|&quot;PAP-8355: attempt to create too high of a tree&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|p_s_tb-&gt;insert_size
 (braket
 id|n_h

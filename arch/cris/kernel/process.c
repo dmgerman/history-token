@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.16 2001/06/21 02:00:40 hp Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.20 2001/10/03 08:21:39 jonashg Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; *  $Log: process.c,v $&n; *  Revision 1.20  2001/10/03 08:21:39  jonashg&n; *  cause_of_death does not exist if CONFIG_SVINTO_SIM is defined.&n; *&n; *  Revision 1.19  2001/09/26 11:52:54  bjornw&n; *  INIT_MMAP is gone in 2.4.10&n; *&n; *  Revision 1.18  2001/08/21 21:43:51  hp&n; *  Move last watchdog fix inside #ifdef CONFIG_ETRAX_WATCHDOG&n; *&n; *  Revision 1.17  2001/08/21 13:48:01  jonashg&n; *  Added fix by HP to avoid oops when doing a hard_reset_now.&n; *&n; *  Revision 1.16  2001/06/21 02:00:40  hp&n; *  &t;* entry.S: Include asm/unistd.h.&n; *  &t;(_sys_call_table): Use section .rodata, not .data.&n; *  &t;(_kernel_thread): Move from...&n; *  &t;* process.c: ... here.&n; *  &t;* entryoffsets.c (VAL): Break out from...&n; *  &t;(OF): Use VAL.&n; *  &t;(LCLONE_VM): New asmified value from CLONE_VM.&n; *&n; *  Revision 1.15  2001/06/20 16:31:57  hp&n; *  Add comments to describe empty functions according to review.&n; *&n; *  Revision 1.14  2001/05/29 11:27:59  markusl&n; *  Fixed so that hard_reset_now will do reset even if watchdog wasn&squot;t enabled&n; *&n; *  Revision 1.13  2001/03/20 19:44:06  bjornw&n; *  Use the 7th syscall argument for regs instead of current_regs&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -151,6 +151,11 @@ id|hard_reset_now
 r_void
 )paren
 (brace
+multiline_comment|/*&n;&t; * Don&squot;t declare this variable elsewhere.  We don&squot;t want any other&n;&t; * code to know about it than the watchdog handler in entry.S and&n;&t; * this code, implementing hard reset through the watchdog.&n;&t; */
+r_extern
+r_int
+id|cause_of_death
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -162,7 +167,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_ETRAX_WATCHDOG
+macro_line|#if defined(CONFIG_ETRAX_WATCHDOG) &amp;&amp; !defined(CONFIG_SVINTO_SIM)
+id|cause_of_death
+op_assign
+l_int|0xbedead
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* Since we dont plan to keep on reseting the watchdog,&n;&t;   the key can be arbitrary hence three */
 op_star
 id|R_WATCHDOG

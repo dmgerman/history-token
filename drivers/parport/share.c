@@ -49,6 +49,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|parportlist_lock
+r_static
 id|spinlock_t
 id|parportlist_lock
 op_assign
@@ -64,6 +65,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|driverlist_lock
+r_static
 id|spinlock_t
 id|driverlist_lock
 op_assign

@@ -161,6 +161,17 @@ id|__SI_FAULT
 op_rshift
 l_int|16
 suffix:colon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+id|from-&gt;si_addr
+comma
+op_amp
+id|to-&gt;si_addr
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1324,6 +1335,11 @@ id|pt_regs
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Set the frametype to CRIS_FRAME_NORMAL for the execution of&n;           the signal handler. The frametype will be restored to its previous&n;           value in restore_sigcontext. */
+id|regs-&gt;frametype
+op_assign
+id|CRIS_FRAME_NORMAL
+suffix:semicolon
 multiline_comment|/* then some other stuff */
 id|err
 op_or_assign
@@ -1923,7 +1939,7 @@ r_int
 op_amp
 id|frame-&gt;retcode
 suffix:semicolon
-multiline_comment|/* This is movu.w __NR_sigreturn, r9; break 13; */
+multiline_comment|/* This is movu.w __NR_rt_sigreturn, r9; break 13; */
 id|err
 op_or_assign
 id|__put_user
@@ -1947,7 +1963,7 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|__NR_sigreturn
+id|__NR_rt_sigreturn
 comma
 (paren
 r_int
@@ -2008,6 +2024,21 @@ op_assign
 id|sig
 suffix:semicolon
 multiline_comment|/* first argument is signo */
+id|regs-&gt;r11
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|frame-&gt;info
+suffix:semicolon
+multiline_comment|/* second argument is (siginfo_t *) */
+id|regs-&gt;r12
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* third argument is unused */
 multiline_comment|/* actually move the usp to reflect the stacked frame */
 id|wrusp
 c_func

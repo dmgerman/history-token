@@ -85,12 +85,12 @@ multiline_comment|/* Ugh.  This is fragile at best.  Check with newer GCC releas
 id|__asm__
 c_func
 (paren
-l_string|&quot;movu.b %0,r13&bslash;n&bslash;t&quot;
-l_string|&quot;lslq 8,r13&bslash;n&bslash;t&quot;
-l_string|&quot;move.b %0,r13&bslash;n&bslash;t&quot;
-l_string|&quot;move.d r13,%0&bslash;n&bslash;t&quot;
-l_string|&quot;lslq 16,r13&bslash;n&bslash;t&quot;
-l_string|&quot;or.d r13,%0&quot;
+l_string|&quot;movu.b %0,$r13&bslash;n&bslash;t&quot;
+l_string|&quot;lslq 8,$r13&bslash;n&bslash;t&quot;
+l_string|&quot;move.b %0,$r13&bslash;n&bslash;t&quot;
+l_string|&quot;move.d $r13,%0&bslash;n&bslash;t&quot;
+l_string|&quot;lslq 16,$r13&bslash;n&bslash;t&quot;
+l_string|&quot;or.d $r13,%0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -300,56 +300,81 @@ l_int|11
 op_star
 l_int|4
 comma
+"$"
 id|sp
 id|movem
+"$"
 id|r10
 comma
 (braket
+"$"
 id|sp
 )braket
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r0
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r1
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r2
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r3
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r4
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r5
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r6
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r7
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r8
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r9
 id|move.d
+"$"
 id|r11
 comma
+"$"
 id|r10
 suffix:semicolon
 suffix:semicolon
@@ -383,6 +408,7 @@ l_int|12
 op_star
 l_int|4
 comma
+"$"
 id|r12
 l_int|0
 suffix:colon
@@ -391,14 +417,17 @@ l_int|12
 op_star
 l_int|4
 comma
+"$"
 id|r12
 id|bge
 l_int|0
 id|b
 id|movem
+"$"
 id|r11
 comma
 (braket
+"$"
 id|r13
 op_plus
 )braket
@@ -407,6 +436,7 @@ l_int|12
 op_star
 l_int|4
 comma
+"$"
 id|r12
 suffix:semicolon
 suffix:semicolon
@@ -424,10 +454,12 @@ id|from
 id|stack
 id|movem
 (braket
+"$"
 id|sp
 op_plus
 )braket
 comma
+"$"
 id|r10
 "&quot;"
 multiline_comment|/* Outputs */

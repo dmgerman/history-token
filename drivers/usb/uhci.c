@@ -10597,7 +10597,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;suspend_hc&quot;
+l_string|&quot;%x: suspend_hc&quot;
+comma
+id|io_addr
 )paren
 suffix:semicolon
 id|outw
@@ -10640,7 +10642,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;wakeup_hc&quot;
+l_string|&quot;%x: wakeup_hc&quot;
+comma
+id|io_addr
 )paren
 suffix:semicolon
 id|outw
@@ -11171,9 +11175,6 @@ op_star
 id|dev
 comma
 r_int
-id|irq
-comma
-r_int
 r_int
 id|io_addr
 comma
@@ -11343,7 +11344,7 @@ id|buf
 comma
 l_string|&quot;%d&quot;
 comma
-id|irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#else
@@ -11352,7 +11353,7 @@ op_assign
 id|__irq_itoa
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12327,7 +12328,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 comma
 id|uhci_interrupt
 comma
@@ -12343,7 +12344,7 @@ id|err_request_irq
 suffix:semicolon
 id|uhci-&gt;irq
 op_assign
-id|irq
+id|dev-&gt;irq
 suffix:semicolon
 multiline_comment|/* disable legacy emulation */
 id|pci_write_config_word
@@ -12353,7 +12354,7 @@ id|uhci-&gt;dev
 comma
 id|USBLEGSUP
 comma
-l_int|0
+id|USBLEGSUP_DEFAULT
 )paren
 suffix:semicolon
 id|usb_connect
@@ -12701,8 +12702,6 @@ c_func
 (paren
 id|dev
 comma
-id|dev-&gt;irq
-comma
 id|io_addr
 comma
 id|io_size
@@ -12808,7 +12807,7 @@ id|u32
 id|state
 )paren
 (brace
-id|reset_hc
+id|suspend_hc
 c_func
 (paren
 (paren

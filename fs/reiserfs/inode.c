@@ -2984,9 +2984,8 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 op_ne
@@ -2996,16 +2995,10 @@ id|ih-&gt;ih_item_len
 )paren
 op_div
 id|UNFM_P_SIZE
-)paren
-id|reiserfs_panic
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;vs-: reiserfs_get_block: &quot;
-l_string|&quot;invalid position for append&quot;
+l_string|&quot;vs-804: invalid position for append&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* indirect item has to be appended, set up key of that position */
 id|make_cpu_key
 (paren

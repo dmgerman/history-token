@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/cris/mm/extable.c&n; */
+multiline_comment|/*&n; * linux/arch/cris/mm/extable.c&n; *&n; * $Log: extable.c,v $&n; * Revision 1.3  2001/09/27 13:52:40  bjornw&n; * Harmonize underscore-ness with other parts&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -6,7 +6,7 @@ r_extern
 r_const
 r_struct
 id|exception_table_entry
-id|_start___ex_table
+id|__start___ex_table
 (braket
 )braket
 suffix:semicolon
@@ -14,7 +14,7 @@ r_extern
 r_const
 r_struct
 id|exception_table_entry
-id|_stop___ex_table
+id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
@@ -135,9 +135,9 @@ r_return
 id|search_one_table
 c_func
 (paren
-id|_start___ex_table
+id|__start___ex_table
 comma
-id|_stop___ex_table
+id|__stop___ex_table
 op_minus
 l_int|1
 comma

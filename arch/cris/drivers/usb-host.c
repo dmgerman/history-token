@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * usb-host.c: ETRAX 100LX USB Host Controller Driver (HCD)&n; *&n; * Copyright (c) 2001 Axis Communications AB.&n; *&n; * $Id: usb-host.c,v 1.9 2001/05/09 12:54:12 johana Exp $&n; *&n; */
+multiline_comment|/*&n; * usb-host.c: ETRAX 100LX USB Host Controller Driver (HCD)&n; *&n; * Copyright (c) 2001 Axis Communications AB.&n; *&n; * $Id: usb-host.c,v 1.11 2001/09/26 11:52:16 bjornw Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -32,7 +32,7 @@ r_char
 op_star
 id|usb_hcd_version
 op_assign
-l_string|&quot;$Revision: 1.9 $&quot;
+l_string|&quot;$Revision: 1.11 $&quot;
 suffix:semicolon
 DECL|macro|KERN_DEBUG
 macro_line|#undef KERN_DEBUG
@@ -3587,6 +3587,12 @@ id|ep_usage_bitmask
 )paren
 )paren
 (brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|warn
 c_func
 (paren
@@ -4004,6 +4010,12 @@ id|maxp
 )paren
 )paren
 (brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|dbg_ep
 c_func
 (paren

@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/lockd/lockd.h&gt;
 macro_line|#include &lt;linux/lockd/sm_inter.h&gt;
 DECL|macro|NLMDBG_FACILITY
 mdefine_line|#define NLMDBG_FACILITY&t;&t;NLMDBG_CLIENT
+DECL|macro|NLMCLNT_GRACE_WAIT
+mdefine_line|#define NLMCLNT_GRACE_WAIT&t;(5*HZ)
 r_static
 r_int
 id|nlmclnt_test
@@ -2236,6 +2238,26 @@ id|task-&gt;tk_status
 )paren
 suffix:semicolon
 r_goto
+id|retry_rebind
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|NLM_LCK_DENIED_GRACE_PERIOD
+)paren
+(brace
+id|rpc_delay
+c_func
+(paren
+id|task
+comma
+id|NLMCLNT_GRACE_WAIT
+)paren
+suffix:semicolon
+r_goto
 id|retry_unlock
 suffix:semicolon
 )brace
@@ -2245,21 +2267,16 @@ c_cond
 id|status
 op_ne
 id|NLM_LCK_GRANTED
-op_logical_and
-id|status
-op_ne
-id|NLM_LCK_DENIED_GRACE_PERIOD
 )paren
-(brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;lockd: unexpected unlock status: %d&bslash;n&quot;
 comma
 id|status
 )paren
 suffix:semicolon
-)brace
 id|die
 suffix:colon
 id|nlm_release_host
@@ -2276,7 +2293,7 @@ id|req
 suffix:semicolon
 r_return
 suffix:semicolon
-id|retry_unlock
+id|retry_rebind
 suffix:colon
 id|nlm_rebind_host
 c_func
@@ -2284,6 +2301,8 @@ c_func
 id|req-&gt;a_host
 )paren
 suffix:semicolon
+id|retry_unlock
+suffix:colon
 id|rpc_restart_call
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ide.h 1.13 08/20/01 15:25:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ide.h 1.16 09/28/01 07:54:24 trini&n; */
 multiline_comment|/*&n; *  linux/include/asm-ppc/ide.h&n; *&n; *  Copyright (C) 1994-1996 Linus Torvalds &amp; authors */
 multiline_comment|/*&n; *  This file contains the ppc architecture specific IDE code.&n; */
 macro_line|#ifndef __ASMPPC_IDE_H
@@ -7,6 +7,7 @@ mdefine_line|#define __ASMPPC_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;8
@@ -504,8 +505,8 @@ macro_line|#if !defined(ide_free_irq)
 DECL|macro|ide_free_irq
 mdefine_line|#define ide_free_irq(irq,dev_id)&t;&t;free_irq((irq), (dev_id))
 macro_line|#endif
-multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; */
-macro_line|#ifdef CONFIG_APUS
+multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; * unless direct IDE on 8xx&n; */
+macro_line|#if (defined CONFIG_APUS || defined CONFIG_BLK_DEV_MPC8xx_IDE )
 DECL|macro|ide_ack_intr
 mdefine_line|#define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
 macro_line|#else

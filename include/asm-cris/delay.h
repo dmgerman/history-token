@@ -1,4 +1,3 @@
-multiline_comment|/* $Id: delay.h,v 1.5 2001/06/28 04:59:25 hp Exp $ */
 macro_line|#ifndef _CRIS_DELAY_H
 DECL|macro|_CRIS_DELAY_H
 mdefine_line|#define _CRIS_DELAY_H
@@ -31,12 +30,12 @@ id|loops
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;move.d %0,r9&bslash;n&bslash;t&quot;
+l_string|&quot;move.d %0,$r9&bslash;n&bslash;t&quot;
 l_string|&quot;beq 2f&bslash;n&bslash;t&quot;
-l_string|&quot;subq 1,r9&bslash;n&bslash;t&quot;
+l_string|&quot;subq 1,$r9&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;bne 1b&bslash;n&bslash;t&quot;
-l_string|&quot;subq 1,r9&bslash;n&quot;
+l_string|&quot;subq 1,$r9&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
 suffix:colon

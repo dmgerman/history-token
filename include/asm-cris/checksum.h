@@ -1,4 +1,3 @@
-multiline_comment|/* $Id: checksum.h,v 1.4 2001/06/28 03:58:36 hp Exp $ */
 multiline_comment|/* TODO: csum_tcpudp_magic could be speeded up, and csum_fold as well */
 macro_line|#ifndef _CRIS_CHECKSUM_H
 DECL|macro|_CRIS_CHECKSUM_H

@@ -1,15 +1,10 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.oak.h 1.7 05/17/01 18:14:25 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.oak.h 1.10 09/14/01 17:37:56 trini&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak.h&n; *&n; *    Description:&n; *&t;Macros, definitions, and data structures specific to the IBM PowerPC&n; *      403G{A,B,C,CX} &quot;Oak&quot; evaluation board. Anything specific to the pro-&n; *      cessor itself is defined elsewhere.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef&t;__OAK_H__
 DECL|macro|__OAK_H__
 mdefine_line|#define&t;__OAK_H__
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE&t;0
 DECL|macro|_ISA_MEM_BASE
@@ -42,6 +37,7 @@ DECL|macro|OAKNET_INT
 mdefine_line|#define&t;OAKNET_INT&t;&t;AIC_INT27
 DECL|macro|OAKSERIAL_INT
 mdefine_line|#define&t;OAKSERIAL_INT&t;&t;AIC_INT28
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Oak&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
 DECL|struct|board_info
 r_typedef
@@ -97,12 +93,7 @@ DECL|typedef|bd_t
 )brace
 id|bd_t
 suffix:semicolon
-macro_line|#ifdef __cplusplus
-)brace
-macro_line|#endif
-multiline_comment|/* Generic 4xx type&n;*/
-DECL|macro|_MACH_4xx
-mdefine_line|#define _MACH_4xx (_MACH_oak)
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __OAK_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

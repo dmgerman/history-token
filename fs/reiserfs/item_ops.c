@@ -1872,9 +1872,8 @@ id|virtual_entry_num
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK  
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|mode
 op_ne
@@ -1883,17 +1882,12 @@ op_logical_or
 id|virtual_entry_num
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
 l_string|&quot;vs-8015: old_entry_num: mode must be M_PASTE (mode = &bslash;&squot;%c&bslash;&squot;&quot;
 comma
 id|mode
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|virtual_entry_num
 op_minus

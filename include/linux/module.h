@@ -591,15 +591,6 @@ DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error config_must_be_included_before_module
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error config_must_be_included_before_module
-macro_line|#elif !defined(EXPORT_SYMTAB)
-DECL|macro|__EXPORT_SYMBOL
-mdefine_line|#define __EXPORT_SYMBOL(sym,str)   error this_object_must_be_defined_as_export_objs_in_the_Makefile
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)&t;   error this_object_must_be_defined_as_export_objs_in_the_Makefile
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
 macro_line|#elif !defined(CONFIG_MODULES)
 DECL|macro|__EXPORT_SYMBOL
 mdefine_line|#define __EXPORT_SYMBOL(sym,str)
@@ -609,6 +600,15 @@ DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(var)
+macro_line|#elif !defined(EXPORT_SYMTAB)
+DECL|macro|__EXPORT_SYMBOL
+mdefine_line|#define __EXPORT_SYMBOL(sym,str)   error this_object_must_be_defined_as_export_objs_in_the_Makefile
+DECL|macro|EXPORT_SYMBOL
+mdefine_line|#define EXPORT_SYMBOL(var)&t;   error this_object_must_be_defined_as_export_objs_in_the_Makefile
+DECL|macro|EXPORT_SYMBOL_NOVERS
+mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
 macro_line|#else
 DECL|macro|__EXPORT_SYMBOL
 mdefine_line|#define __EXPORT_SYMBOL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = str;&t;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym &t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }

@@ -32,6 +32,7 @@ id|MAX_PROTOS
 )braket
 suffix:semicolon
 DECL|variable|pi_spinlock
+r_static
 id|spinlock_t
 id|pi_spinlock
 op_assign

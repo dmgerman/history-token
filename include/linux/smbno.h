@@ -68,18 +68,6 @@ DECL|macro|ERRlock
 mdefine_line|#define ERRlock 33              /* Lock request conflicts with existing lock */
 DECL|macro|ERRfilexists
 mdefine_line|#define ERRfilexists 80         /* File in operation already exists */
-DECL|macro|ERRinvalidparam
-mdefine_line|#define ERRinvalidparam 87      /* ERROR_INVALID_PARAMETER */
-DECL|macro|ERRdiskfull
-mdefine_line|#define ERRdiskfull 112         /* ERROR_DISK_FULL */
-DECL|macro|ERRinvalidname
-mdefine_line|#define ERRinvalidname 123      /* ERROR_INVALID_NAME */
-DECL|macro|ERRdirnotempty
-mdefine_line|#define ERRdirnotempty 145      /* ERROR_DIR_NOT_EMPTY */
-DECL|macro|ERRnotlocked
-mdefine_line|#define ERRnotlocked 158        /* ERROR_NOT_LOCKED */
-DECL|macro|ERRexists
-mdefine_line|#define ERRexists 183           /* ERROR_ALREADY_EXISTS, see also 80 */
 DECL|macro|ERRbadpipe
 mdefine_line|#define ERRbadpipe 230          /* Named pipe invalid */
 DECL|macro|ERRpipebusy
@@ -90,10 +78,22 @@ DECL|macro|ERRnotconnected
 mdefine_line|#define ERRnotconnected 233     /* No process on other end of named pipe */
 DECL|macro|ERRmoredata
 mdefine_line|#define ERRmoredata 234         /* More data to be returned */
+DECL|macro|ERROR_INVALID_PARAMETER
+mdefine_line|#define ERROR_INVALID_PARAMETER&t; 87
+DECL|macro|ERROR_DISK_FULL
+mdefine_line|#define ERROR_DISK_FULL&t;&t;112
+DECL|macro|ERROR_INVALID_NAME
+mdefine_line|#define ERROR_INVALID_NAME&t;123
+DECL|macro|ERROR_DIR_NOT_EMPTY
+mdefine_line|#define ERROR_DIR_NOT_EMPTY&t;145
+DECL|macro|ERROR_NOT_LOCKED
+mdefine_line|#define ERROR_NOT_LOCKED&t;158
+DECL|macro|ERROR_ALREADY_EXISTS
+mdefine_line|#define ERROR_ALREADY_EXISTS&t;183  /* see also 80 ? */
 DECL|macro|ERROR_EAS_DIDNT_FIT
-mdefine_line|#define ERROR_EAS_DIDNT_FIT 275 /* Extended attributes didn&squot;t fit */
+mdefine_line|#define ERROR_EAS_DIDNT_FIT&t;275 /* Extended attributes didn&squot;t fit */
 DECL|macro|ERROR_EAS_NOT_SUPPORTED
-mdefine_line|#define ERROR_EAS_NOT_SUPPORTED 282 /* Extended attributes not supported */
+mdefine_line|#define ERROR_EAS_NOT_SUPPORTED&t;282 /* Extended attributes not supported */
 multiline_comment|/* Error codes for the ERRSRV class */
 DECL|macro|ERRerror
 mdefine_line|#define ERRerror 1              /* Non specific error code */

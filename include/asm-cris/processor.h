@@ -4,10 +4,11 @@ DECL|macro|__ASM_CRIS_PROCESSOR_H
 mdefine_line|#define __ASM_CRIS_PROCESSOR_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
-mdefine_line|#define current_text_addr() ({void *pc; __asm__ (&quot;move.d pc,%0&quot; : &quot;=rm&quot; (pc)); pc; })
+mdefine_line|#define current_text_addr() ({void *pc; __asm__ (&quot;move.d $pc,%0&quot; : &quot;=rm&quot; (pc)); pc; })
 multiline_comment|/* CRIS has no problems with write protection */
 DECL|macro|wp_works_ok
 mdefine_line|#define wp_works_ok 1

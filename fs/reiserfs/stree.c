@@ -20,9 +20,8 @@ op_star
 id|p_s_bh
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_LEVEL
 (paren
@@ -30,22 +29,14 @@ id|p_s_bh
 )paren
 OG
 id|MAX_HEIGHT
-)paren
-(brace
-id|reiserfs_panic
-c_func
-(paren
-l_int|0
 comma
-l_string|&quot;PAP-1010: B_IS_IN_TREE: block (%b) has too big level (%z)&quot;
+l_string|&quot;PAP-1010: block (%b) has too big level (%z)&quot;
 comma
 id|p_s_bh
 comma
 id|p_s_bh
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 (paren
 id|B_LEVEL
@@ -1034,23 +1025,16 @@ id|buffer_head
 op_star
 id|p_s_parent
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_path_offset
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5010: get_lkey: illegal offset in the path&quot;
+l_string|&quot;PAP-5010: illegal offset in the path&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* While not higher in path than first element. */
 r_while
 c_loop
@@ -1061,9 +1045,8 @@ OG
 id|FIRST_PATH_ELEMENT_OFFSET
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|buffer_uptodate
@@ -1077,16 +1060,10 @@ comma
 id|n_path_offset
 )paren
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5020: get_lkey: parent is not uptodate&quot;
+l_string|&quot;PAP-5020: parent is not uptodate&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Parent at the path is not in the tree now. */
 r_if
 c_cond
@@ -1241,23 +1218,16 @@ id|buffer_head
 op_star
 id|p_s_parent
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_path_offset
 OL
 id|FIRST_PATH_ELEMENT_OFFSET
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5030: get_rkey: illegal offset in the path&quot;
+l_string|&quot;PAP-5030: illegal offset in the path&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1267,9 +1237,8 @@ OG
 id|FIRST_PATH_ELEMENT_OFFSET
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|buffer_uptodate
@@ -1283,16 +1252,10 @@ comma
 id|n_path_offset
 )paren
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5040: get_rkey: parent is not uptodate&quot;
+l_string|&quot;PAP-5040: parent is not uptodate&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Parent at the path is not in the tree now. */
 r_if
 c_cond
@@ -1447,9 +1410,8 @@ id|p_s_sb
 multiline_comment|/* Super block pointer.           */
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|p_s_key
@@ -1457,21 +1419,16 @@ op_logical_or
 id|p_s_chk_path-&gt;path_length
 template_param
 id|MAX_HEIGHT
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5050: key_in_buffer:  pointer to the key(%p) is NULL or illegal path length(%d)&quot;
+l_string|&quot;PAP-5050: pointer to the key(%p) is NULL or illegal path length(%d)&quot;
 comma
 id|p_s_key
 comma
 id|p_s_chk_path-&gt;path_length
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|PATH_PLAST_BUFFER
 c_func
@@ -1482,16 +1439,10 @@ op_member_access_from_pointer
 id|b_dev
 op_eq
 id|NODEV
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5060: key_in_buffer: device must not be NODEV&quot;
+l_string|&quot;PAP-5060: device must not be NODEV&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1610,27 +1561,20 @@ id|n_path_offset
 op_assign
 id|p_s_search_path-&gt;path_length
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_path_offset
 template_param
 id|EXTENDED_MAX_HEIGHT
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|NULL
 comma
-l_string|&quot;PAP-5080: decrement_counters_in_path: illegal path offset of %d&quot;
+l_string|&quot;PAP-5080: illegal path offset of %d&quot;
 comma
 id|n_path_offset
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1677,28 +1621,16 @@ op_star
 id|p
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK 
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p-&gt;path_length
 op_ne
 id|ILLEGAL_PATH_ELEMENT_OFFSET
-)paren
-(brace
-id|reiserfs_warning
-c_func
-(paren
-l_string|&quot;check_path, path not properly relsed&bslash;n&quot;
+comma
+l_string|&quot;path not properly relsed&quot;
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1724,23 +1656,16 @@ id|n_path_offset
 op_assign
 id|p_s_search_path-&gt;path_length
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_path_offset
 OL
 id|ILLEGAL_PATH_ELEMENT_OFFSET
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|NULL
 comma
-l_string|&quot;clm-4000: pathrelse: illegal path offset&quot;
+l_string|&quot;clm-4000: illegal path offset&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1798,23 +1723,16 @@ id|n_path_offset
 op_assign
 id|p_s_search_path-&gt;path_length
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_path_offset
 OL
 id|ILLEGAL_PATH_ELEMENT_OFFSET
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|NULL
 comma
-l_string|&quot;PAP-5090: pathrelse: illegal path offset&quot;
+l_string|&quot;PAP-5090: illegal path offset&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -2682,9 +2600,8 @@ multiline_comment|/* repeat search from the root */
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|key_in_buffer
@@ -2696,15 +2613,11 @@ id|p_s_key
 comma
 id|p_s_sb
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5130: search_by_key: key is not in the buffer&quot;
+l_string|&quot;PAP-5130: key is not in the buffer&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_if
 c_cond
 (paren
@@ -2765,26 +2678,20 @@ id|B_LEVEL
 id|p_s_bh
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_node_level
 OL
 id|n_stop_level
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_sb
 comma
-l_string|&quot;vs-5152: search_by_key: tree level is less than stop level (%d)&quot;
+l_string|&quot;vs-5152: tree level is less than stop level (%d)&quot;
 comma
 id|n_node_level
 comma
 id|n_stop_level
 )paren
 suffix:semicolon
-macro_line|#endif
 id|n_retval
 op_assign
 id|bin_search
@@ -2990,13 +2897,11 @@ op_eq
 id|ITEM_FOUND
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|B_N_PITEM_HEAD
-c_func
 (paren
 id|PATH_PLAST_BUFFER
 c_func
@@ -3012,16 +2917,10 @@ id|p_s_search_path
 )paren
 op_member_access_from_pointer
 id|ih_item_len
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5165: search_for_position_by_key: item length equals zero&quot;
+l_string|&quot;PAP-5165: item length equals zero&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pos_in_item
 c_func
 (paren
@@ -3034,9 +2933,8 @@ r_return
 id|POSITION_FOUND
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|PATH_LAST_POSITION
@@ -3044,16 +2942,10 @@ c_func
 (paren
 id|p_s_search_path
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5170: search_for_position_by_key: position equals zero&quot;
+l_string|&quot;PAP-5170: position equals zero&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Item is not found. Set path to the previous item. */
 id|p_le_ih
 op_assign
@@ -3096,93 +2988,6 @@ r_return
 id|FILE_NOT_FOUND
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/*#ifdef CONFIG_REISERFS_CHECK*/
-multiline_comment|/* we expect to find stat data or item of the same type */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|is_statdata_le_ih
-c_func
-(paren
-id|p_le_ih
-)paren
-op_logical_and
-(paren
-(paren
-id|is_indirect_cpu_key
-c_func
-(paren
-id|p_cpu_key
-)paren
-op_logical_and
-op_logical_neg
-id|is_indirect_le_ih
-c_func
-(paren
-id|p_le_ih
-)paren
-)paren
-op_logical_or
-(paren
-id|is_direct_cpu_key
-c_func
-(paren
-id|p_cpu_key
-)paren
-op_logical_and
-op_logical_neg
-id|is_direct_le_ih
-c_func
-(paren
-id|p_le_ih
-)paren
-)paren
-)paren
-)paren
-(brace
-id|print_block
-(paren
-id|PATH_PLAST_BUFFER
-c_func
-(paren
-id|p_s_search_path
-)paren
-comma
-id|PRINT_LEAF_ITEMS
-comma
-id|PATH_LAST_POSITION
-(paren
-id|p_s_search_path
-)paren
-op_minus
-l_int|2
-comma
-id|PATH_LAST_POSITION
-(paren
-id|p_s_search_path
-)paren
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
-comma
-l_string|&quot;PAP-5190: search_for_position_by_key: &quot;
-l_string|&quot;found item %h type does not match to the expected one %k&quot;
-comma
-id|p_le_ih
-comma
-id|p_cpu_key
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*#endif*/
-macro_line|#endif
 singleline_comment|// FIXME: quite ugly this far
 id|item_offset
 op_assign
@@ -3700,9 +3505,8 @@ id|inode
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|ih_entry_count
 (paren
@@ -3710,19 +3514,12 @@ id|le_ih
 )paren
 op_ne
 l_int|2
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;PAP-5220: prepare_for_delete_or_cut: &quot;
-l_string|&quot;incorrect empty directory item (%h)&quot;
+l_string|&quot;PAP-5220: incorrect empty directory item (%h)&quot;
 comma
 id|le_ih
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|cut_size
 op_assign
@@ -3887,9 +3684,8 @@ id|p_le_ih
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_new_file_length
 op_ne
@@ -3897,16 +3693,10 @@ id|max_reiserfs_offset
 (paren
 id|inode
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5210: prepare_for_delete_or_cut: mode must be M_DELETE&quot;
+l_string|&quot;PAP-5210: mode must be M_DELETE&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 op_star
 id|p_n_cut_size
 op_assign
@@ -4051,9 +3841,8 @@ op_amp
 id|s_ih
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_indirect_le_ih
@@ -4074,12 +3863,12 @@ op_plus
 l_int|1
 op_ne
 id|n_unfm_number
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;n_unfm_number = %d *p_n_pos_in_item = %d&bslash;n&quot;
+comma
+l_string|&quot;PAP-5240: illegal item %h &quot;
+l_string|&quot;n_unfm_number = %d *p_n_pos_in_item = %d&quot;
+comma
+op_amp
+id|s_ih
 comma
 id|n_unfm_number
 comma
@@ -4089,19 +3878,6 @@ id|p_s_path
 )paren
 )paren
 suffix:semicolon
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
-comma
-l_string|&quot;PAP-5240: prepare_for_delete_or_cut: illegal item %h&quot;
-comma
-op_amp
-id|s_ih
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Calculate balance mode and position in the item to remove unformatted nodes. */
 r_if
 c_cond
@@ -4203,9 +3979,8 @@ id|s_ih
 op_rshift
 id|p_s_sb-&gt;s_blocksize_bits
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|pos_in_item
 (paren
@@ -4213,16 +3988,10 @@ id|p_s_path
 )paren
 OG
 id|n_unfm_number
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5250: prepare_for_delete_or_cut: illegal position in the item&quot;
+l_string|&quot;PAP-5250: illegal position in the item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Either convert last unformatted node of indirect item to direct item or increase&n;&t;&t;       its free space.  */
 r_if
 c_cond
@@ -4269,9 +4038,8 @@ suffix:semicolon
 multiline_comment|/* Cut from this indirect item. */
 )brace
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_unfm_number
 op_le
@@ -4279,16 +4047,10 @@ id|pos_in_item
 (paren
 id|p_s_path
 )paren
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5260: prepare_for_delete_or_cut: illegal position in the indirect item&quot;
+l_string|&quot;PAP-5260: illegal position in the indirect item&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* pointers to be cut */
 id|n_unfm_number
 op_sub_assign
@@ -4380,9 +4142,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p_n_unfm_pointer
 template_param
@@ -4407,15 +4168,10 @@ id|s_ih
 )paren
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_sb
 comma
-l_string|&quot;vs-5265: prepare_for_delete_or_cut: pointer out of range&quot;
+l_string|&quot;vs-5265: pointer out of range&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4609,9 +4365,8 @@ id|p_n_removed
 )paren
 op_increment
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|p_s_un_bh
 op_logical_and
@@ -4621,19 +4376,13 @@ id|p_n_unfm_pointer
 op_ne
 id|p_s_un_bh-&gt;b_blocknr
 )paren
-)paren
+comma
 singleline_comment|// note: minix_truncate allows that. As truncate is
 singleline_comment|// protected by down (inode-&gt;i_sem), two truncates can not
 singleline_comment|// co-exist
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
-comma
-l_string|&quot;PAP-5280: prepare_for_delete_or_cut: blocks numbers are different&quot;
+l_string|&quot;PAP-5280: blocks numbers are different&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tmp
 op_assign
 op_star
@@ -4708,23 +4457,18 @@ id|n_retry
 )paren
 (brace
 multiline_comment|/* There is block in use. Wait, they should release it soon */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_star
 id|p_n_removed
 op_ge
 id|n_unfm_number
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5290: prepare_for_delete_or_cut: illegal case&quot;
+l_string|&quot;PAP-5290: illegal case&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_if
 c_cond
 (paren
@@ -4846,25 +4590,19 @@ op_eq
 id|POSITION_FOUND
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_star
 id|p_n_removed
 OL
 id|n_unfm_number
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5310: prepare_for_delete_or_cut: indirect item is not found&quot;
+l_string|&quot;PAP-5310: indirect item is not found&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|item_moved
 (paren
@@ -4873,20 +4611,10 @@ id|s_ih
 comma
 id|p_s_path
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;prepare_for_delete_or_cut: after while, comp failed, retry&bslash;n&quot;
+comma
+l_string|&quot;after while, comp failed, retry&quot;
 )paren
 suffix:semicolon
-id|BUG
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5263,23 +4991,16 @@ id|p_s_inode
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|c_mode
 op_ne
 id|M_DELETE
-)paren
-id|reiserfs_panic
-c_func
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5320: reiserfs_delete_item: mode must be M_DELETE&quot;
+l_string|&quot;PAP-5320: mode must be M_DELETE&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|copy_item_head
 c_func
 (paren
@@ -6066,9 +5787,8 @@ comma
 l_string|&quot;vs-5615: indirect_to_direct_roll_back: found invalid item&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|path-&gt;pos_in_item
 op_ne
@@ -6080,15 +5800,10 @@ op_member_access_from_pointer
 id|ih_item_len
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;vs-5616: indirect_to_direct_roll_back: appended bytes found&quot;
+l_string|&quot;vs-5616: appended bytes found&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|PATH_LAST_POSITION
 (paren
 id|path
@@ -6112,9 +5827,8 @@ l_int|0
 multiline_comment|/*unbh not needed*/
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|removed
 op_le
@@ -6123,20 +5837,14 @@ op_logical_or
 id|removed
 OG
 id|tail_len
-)paren
-id|reiserfs_panic
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;vs-5617: indirect_to_direct_roll_back: &quot;
-l_string|&quot;there was tail %d bytes, removed item length %d bytes&quot;
+l_string|&quot;vs-5617: there was tail %d bytes, removed item length %d bytes&quot;
 comma
 id|tail_len
 comma
 id|removed
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tail_len
 op_sub_assign
 id|removed
@@ -6297,22 +6005,16 @@ id|M_CONVERT
 )paren
 (brace
 multiline_comment|/* convert last unformatted node to direct item or leave&n;               tail in the unformatted node */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_ret_value
 op_ne
 id|CARRY_ON
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5570: reiserfs_cut_from_item: can not convert twice&quot;
+l_string|&quot;PAP-5570: can not convert twice&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|n_ret_value
 op_assign
 id|maybe_indirect_to_direct
@@ -6590,9 +6292,8 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* go ahead and perform balancing */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|c_mode
 op_eq
@@ -6601,15 +6302,10 @@ op_logical_or
 id|c_mode
 op_eq
 id|M_INSERT
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_sb
 comma
-l_string|&quot;PAP-5640: reiserfs_cut_from_item: illegal mode&quot;
+l_string|&quot;illegal mode&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Calculate number of bytes that need to be cut from the item. */
 r_if
 c_cond
@@ -7228,21 +6924,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_deleted
 OG
 id|n_file_size
-)paren
-(brace
-id|reiserfs_panic
-(paren
-id|p_s_inode-&gt;i_sb
 comma
-l_string|&quot;PAP-5670: reiserfs_truncate_file: &quot;
-l_string|&quot;reiserfs_truncate_file returns too big number: deleted %d, file_size %lu, item_key %k&quot;
+l_string|&quot;PAP-5670: reiserfs_truncate_file returns too big number: deleted %d, file_size %lu, item_key %k&quot;
 comma
 id|n_deleted
 comma
@@ -7252,8 +6941,6 @@ op_amp
 id|s_item_key
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Change key to search the last file item. */
 id|n_file_size
 op_sub_assign
@@ -7362,9 +7049,8 @@ op_eq
 id|POSITION_FOUND
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n_file_size
 OG
@@ -7372,13 +7058,8 @@ id|ROUND_UP
 (paren
 id|n_new_file_size
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|p_s_inode-&gt;i_sb
 comma
-l_string|&quot;PAP-5680: reiserfs_truncate_file: &quot;
-l_string|&quot;truncate did not finish: new_file_size %Ld, current %Ld, oid %d&bslash;n&quot;
+l_string|&quot;PAP-5680: truncate did not finish: new_file_size %Ld, current %Ld, oid %d&bslash;n&quot;
 comma
 id|n_new_file_size
 comma
@@ -7387,7 +7068,6 @@ comma
 id|s_item_key.on_disk_key.k_objectid
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -24,7 +24,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-l_string|&quot;and.d sp,%0; &quot;
+l_string|&quot;and.d $sp,%0; &quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

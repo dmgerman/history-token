@@ -2092,6 +2092,14 @@ comma
 l_string|&quot;    skel_term_td does not link to self&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t show it twice */
+r_if
+c_cond
+(paren
+id|debug
+op_le
+l_int|1
+)paren
 id|out
 op_add_assign
 id|uhci_show_td

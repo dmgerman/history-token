@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.18 2001/06/28 04:47:16 hp Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
+multiline_comment|/* $Id: setup.c,v 1.21 2001/10/01 14:45:35 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -328,15 +328,57 @@ id|cmdline_p
 op_assign
 id|command_line
 suffix:semicolon
-id|strcpy
+r_if
+c_cond
+(paren
+id|romfs_in_flash
+)paren
+(brace
+id|strncpy
 c_func
 (paren
 id|command_line
 comma
-l_string|&quot;root=/dev/rom&quot;
+l_string|&quot;root=&quot;
+comma
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
-multiline_comment|/* use the appended romdisk as root */
+id|strncpy
+c_func
+(paren
+id|command_line
+op_plus
+l_int|5
+comma
+id|CONFIG_ETRAX_ROOT_DEVICE
+comma
+id|COMMAND_LINE_SIZE
+op_minus
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/* Save command line copy for /proc/cmdline */
+id|memcpy
+c_func
+(paren
+id|saved_command_line
+comma
+id|command_line
+comma
+id|COMMAND_LINE_SIZE
+)paren
+suffix:semicolon
+id|saved_command_line
+(braket
+id|COMMAND_LINE_SIZE
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+)brace
 multiline_comment|/* give credit for the CRIS port */
 id|printk
 c_func
@@ -546,33 +588,14 @@ id|buffer
 r_int
 id|revision
 suffix:semicolon
-macro_line|#ifndef CONFIG_SVINTO_SIM
-r_int
-r_char
-id|tmp
-suffix:semicolon
-id|__asm__
-r_volatile
-(paren
-l_string|&quot;move vr,%0&quot;
-suffix:colon
-l_string|&quot;=rm&quot;
-(paren
-id|tmp
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* read the version register in the CPU and print some stuff */
 id|revision
 op_assign
-id|tmp
+id|rdvr
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* Fake a revision for the simulator */
-id|revision
-op_assign
-l_int|7
-suffix:semicolon
-macro_line|#endif
 r_return
 id|sprintf
 c_func

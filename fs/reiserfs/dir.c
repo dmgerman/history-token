@@ -403,10 +403,9 @@ comma
 id|ih
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 multiline_comment|/* we must have found item, that is item of this directory, */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|COMP_SHORT_KEYS
 (paren
@@ -418,13 +417,8 @@ comma
 op_amp
 id|pos_key
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;vs-9000: reiserfs_readdir: &quot;
-l_string|&quot;found item %h does not match to dir we readdir %k&quot;
+l_string|&quot;vs-9000: found item %h does not match to dir we readdir %k&quot;
 comma
 id|ih
 comma
@@ -432,8 +426,8 @@ op_amp
 id|pos_key
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|item_num
 OG
@@ -443,13 +437,8 @@ id|bh
 )paren
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;vs-9005: reiserfs_readdir: &quot;
-l_string|&quot;item_num == %d, item amount == %d&quot;
+l_string|&quot;vs-9005 item_num == %d, item amount == %d&quot;
 comma
 id|item_num
 comma
@@ -460,8 +449,8 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* and entry must be not more than number of entries in the item */
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|I_ENTRY_COUNT
 (paren
@@ -469,13 +458,8 @@ id|ih
 )paren
 OL
 id|entry_num
-)paren
-id|reiserfs_panic
-(paren
-id|inode-&gt;i_sb
 comma
-l_string|&quot;vs-9010: reiserfs_readdir: &quot;
-l_string|&quot;entry number is too big %d (%d)&quot;
+l_string|&quot;vs-9010: entry number is too big %d (%d)&quot;
 comma
 id|entry_num
 comma
@@ -485,7 +469,6 @@ id|ih
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren

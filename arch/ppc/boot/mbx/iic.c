@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.iic.c 1.8 05/18/01 07:54:04 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.iic.c 1.10 09/14/01 19:30:13 trini&n; */
 multiline_comment|/* Minimal support functions to read configuration from IIC EEPROMS&n; * on MPC8xx boards.  Originally written for RPGC RPX-Lite.&n; * Dan Malek (dmalek@jlc.net).&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &quot;../../8xx_io/commproc.h&quot;
+macro_line|#include &lt;asm/commproc.h&gt;
 multiline_comment|/* IIC functions.&n; * These are just the basic master read/write operations so we can&n; * examine serial EEPROM.&n; */
 r_void
 id|iic_read

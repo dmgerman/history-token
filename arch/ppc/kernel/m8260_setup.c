@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.24 08/20/01 15:25:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.26 09/22/01 11:33:22 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -762,24 +762,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
-id|ppc_ide_md.default_irq
-op_assign
-id|m8xx_ide_default_irq
-suffix:semicolon
-id|ppc_ide_md.default_io_base
-op_assign
-id|m8xx_ide_default_io_base
-suffix:semicolon
-id|ppc_ide_md.ide_init_hwif
-op_assign
-id|m8xx_ide_init_hwif_ports
-suffix:semicolon
-id|ppc_ide_md.ide_request_irq
-op_assign
-id|m8xx_ide_request_irq
-suffix:semicolon
-macro_line|#endif&t;&t;
 )brace
 multiline_comment|/* Mainly for ksyms.&n;*/
 r_int

@@ -90,6 +90,11 @@ id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|verbose_probing
+r_static
+r_int
+id|verbose_probing
+suffix:semicolon
 DECL|variable|registered_parport
 r_static
 r_int
@@ -4969,6 +4974,8 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+r_static
+r_const
 r_char
 op_star
 id|modes
@@ -5109,6 +5116,12 @@ comma
 id|io
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
+(brace
 id|printk
 (paren
 id|KERN_INFO
@@ -5128,7 +5141,7 @@ comma
 id|cr27
 )paren
 suffix:semicolon
-multiline_comment|/* The documentation calls DMA and IRQ-Lines by letters, so&n;&t;   the board maker can/will wire them&n;&t;   appropriately/randomly...  G=reserved H=IDE-irq, */
+multiline_comment|/* The documentation calls DMA and IRQ-Lines by letters, so&n;&t;&t;   the board maker can/will wire them&n;&t;&t;   appropriately/randomly...  G=reserved H=IDE-irq, */
 id|printk
 (paren
 id|KERN_INFO
@@ -5247,6 +5260,7 @@ suffix:colon
 l_string|&quot;1.9&quot;
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Heuristics !  BIOS setup for this mainboard device limits&n;&t;   the choices to standard settings, i.e. io-address and IRQ&n;&t;   are related, however DMA can be 1 or 3, assume DMA_A=DMA1,&n;&t;   DMA_C=DMA3 (this is true e.g. for TYAN 1564D Tomcat IV) */
 r_if
 c_cond
@@ -5459,21 +5473,46 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+r_static
+r_const
 r_char
 op_star
 id|modes
 (braket
 )braket
 op_assign
-initialization_block
+(brace
+l_string|&quot;Standard (SPP) and Bidirectional(PS/2)&quot;
+comma
+multiline_comment|/* 0 */
+l_string|&quot;EPP-1.9 and SPP&quot;
+comma
+l_string|&quot;ECP&quot;
+comma
+l_string|&quot;ECP and EPP-1.9&quot;
+comma
+l_string|&quot;Standard (SPP)&quot;
+comma
+l_string|&quot;EPP-1.7 and SPP&quot;
+comma
+multiline_comment|/* 5 */
+l_string|&quot;undefined!&quot;
+comma
+l_string|&quot;ECP and EPP-1.7&quot;
+)brace
 suffix:semicolon
+r_static
 r_char
 op_star
 id|irqtypes
 (braket
 )braket
 op_assign
-initialization_block
+(brace
+l_string|&quot;pulsed low, high-Z&quot;
+comma
+l_string|&quot;follows nACK&quot;
+)brace
 suffix:semicolon
 multiline_comment|/* The registers are called compatible-PnP because the&n;           register layout is modelled after ISA-PnP, the access&n;           method is just another ... */
 id|outb
@@ -5628,6 +5667,12 @@ comma
 id|io
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5738,6 +5783,7 @@ l_int|0x07
 )braket
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5870,11 +5916,12 @@ r_int
 id|oldid
 )paren
 (brace
+r_const
 r_char
 op_star
 id|type
 op_assign
-l_int|NULL
+l_string|&quot;unknown&quot;
 suffix:semicolon
 r_int
 id|id
@@ -5892,24 +5939,6 @@ id|devrev
 )paren
 multiline_comment|/* simple heuristics, we happened to read some&n;                   non-winbond register */
 r_return
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Winbond chip at EFER=0x%x key=0x%02x devid=%02x devrev=%02x &quot;
-l_string|&quot;oldid=%02x&bslash;n&quot;
-comma
-id|efer
-comma
-id|key
-comma
-id|devid
-comma
-id|devrev
-comma
-id|oldid
-)paren
 suffix:semicolon
 id|id
 op_assign
@@ -6121,25 +6150,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|type
-op_eq
-l_int|NULL
+id|verbose_probing
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Winbond unknown chip type&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Winbond chip type %s&bslash;n&quot;
+l_string|&quot;Winbond chip at EFER=0x%x key=0x%02x &quot;
+l_string|&quot;devid=%02x devrev=%02x oldid=%02x type=%s&bslash;n&quot;
+comma
+id|efer
+comma
+id|key
+comma
+id|devid
+comma
+id|devrev
+comma
+id|oldid
 comma
 id|type
 )paren
@@ -6151,7 +6179,6 @@ id|progif
 op_eq
 l_int|2
 )paren
-(brace
 id|show_parconfig_winbond
 c_func
 (paren
@@ -6159,9 +6186,6 @@ id|efer
 comma
 id|key
 )paren
-suffix:semicolon
-)brace
-r_return
 suffix:semicolon
 )brace
 DECL|function|decode_smsc
@@ -6184,11 +6208,12 @@ r_int
 id|devrev
 )paren
 (brace
+r_const
 r_char
 op_star
 id|type
 op_assign
-l_int|NULL
+l_string|&quot;unknown&quot;
 suffix:semicolon
 r_void
 (paren
@@ -6219,21 +6244,6 @@ suffix:semicolon
 id|func
 op_assign
 l_int|NULL
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;SMSC chip at EFER=0x%x key=0x%02x devid=%02x devrev=%02x&bslash;n&quot;
-comma
-id|efer
-comma
-id|key
-comma
-id|devid
-comma
-id|devrev
-)paren
 suffix:semicolon
 id|id
 op_assign
@@ -6301,25 +6311,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|type
-op_eq
-l_int|NULL
+id|verbose_probing
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;SMSC unknown chip type&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;SMSC chip type %s&bslash;n&quot;
+l_string|&quot;SMSC chip at EFER=0x%x &quot;
+l_string|&quot;key=0x%02x devid=%02x devrev=%02x type=%s&bslash;n&quot;
+comma
+id|efer
+comma
+id|key
+comma
+id|devid
+comma
+id|devrev
 comma
 id|type
 )paren
@@ -6329,18 +6336,13 @@ c_cond
 (paren
 id|func
 )paren
-(brace
-(paren
 id|func
-)paren
+c_func
 (paren
 id|efer
 comma
 id|key
 )paren
-suffix:semicolon
-)brace
-r_return
 suffix:semicolon
 )brace
 DECL|function|winbond_check
@@ -7009,6 +7011,11 @@ id|detect_and_report_winbond
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
 id|printk
 c_func
 (paren
@@ -7082,6 +7089,11 @@ id|detect_and_report_smsc
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
 id|printk
 c_func
 (paren
@@ -7368,7 +7380,7 @@ id|user_specified
 multiline_comment|/* That didn&squot;t work, but the user thinks there&squot;s a&n;&t;&t; * port here. */
 id|printk
 (paren
-id|KERN_DEBUG
+id|KERN_INFO
 l_string|&quot;parport 0x%lx (WARNING): CTR: &quot;
 l_string|&quot;wrote 0x%02x, read 0x%02x&bslash;n&quot;
 comma
@@ -7444,7 +7456,7 @@ id|user_specified
 multiline_comment|/* Didn&squot;t work, but the user is convinced this is the&n;&t;&t; * place. */
 id|printk
 (paren
-id|KERN_DEBUG
+id|KERN_INFO
 l_string|&quot;parport 0x%lx (WARNING): DATA: &quot;
 l_string|&quot;wrote 0x%02x, read 0x%02x&bslash;n&quot;
 comma
@@ -7457,7 +7469,7 @@ id|r
 suffix:semicolon
 id|printk
 (paren
-id|KERN_DEBUG
+id|KERN_INFO
 l_string|&quot;parport 0x%lx: You gave this address, &quot;
 l_string|&quot;but there is probably no parallel port there!&bslash;n&quot;
 comma
@@ -7820,14 +7832,32 @@ id|priv
 op_assign
 id|pb-&gt;private_data
 suffix:semicolon
+multiline_comment|/* Translate ECP intrLine to ISA irq value */
+r_static
+r_const
 r_int
 id|intrline
 (braket
 )braket
 op_assign
-initialization_block
+(brace
+l_int|0
+comma
+l_int|7
+comma
+l_int|9
+comma
+l_int|10
+comma
+l_int|11
+comma
+l_int|14
+comma
+l_int|15
+comma
+l_int|5
+)brace
 suffix:semicolon
-multiline_comment|/* Translate ECP&n;                                                 intrLine to ISA irq&n;                                                 value */
 multiline_comment|/* If there is no ECR, we have no hope of supporting ECP. */
 r_if
 c_cond
@@ -7931,9 +7961,14 @@ id|priv-&gt;fifo_depth
 op_assign
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;0x%lx: FIFO is %d bytes&bslash;n&quot;
 comma
 id|pb-&gt;base
@@ -8021,9 +8056,15 @@ id|i
 op_le
 id|priv-&gt;fifo_depth
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;0x%lx: writeIntrThreshold is %d&bslash;n&quot;
 comma
 id|pb-&gt;base
@@ -8031,6 +8072,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 r_else
 multiline_comment|/* Number of bytes we know we can write if we get an&n;                   interrupt. */
 id|i
@@ -8148,6 +8190,12 @@ id|i
 op_le
 id|priv-&gt;fifo_depth
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
 id|printk
 (paren
 id|KERN_INFO
@@ -8158,6 +8206,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 r_else
 multiline_comment|/* Number of bytes we can read if we get an interrupt. */
 id|i
@@ -8275,6 +8324,12 @@ id|priv-&gt;pword
 op_assign
 id|pword
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|verbose_probing
+)paren
+(brace
 id|printk
 (paren
 id|KERN_DEBUG
@@ -8404,6 +8459,7 @@ op_amp
 l_int|0x07
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Go back to mode 000 */
 id|frob_econtrol
 (paren
@@ -8415,12 +8471,6 @@ id|ECR_SPP
 op_lshift
 l_int|5
 )paren
-suffix:semicolon
-id|pb-&gt;modes
-op_or_assign
-id|PARPORT_MODE_ECP
-op_or
-id|PARPORT_MODE_COMPAT
 suffix:semicolon
 r_return
 l_int|1
@@ -9780,20 +9830,12 @@ comma
 l_int|3
 )paren
 )paren
-(brace
 id|parport_ECR_present
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
-id|parport_ECP_supported
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9849,6 +9891,11 @@ multiline_comment|/* No port. */
 id|kfree
 (paren
 id|priv
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|ops
 )paren
 suffix:semicolon
 r_return
@@ -10069,6 +10116,12 @@ macro_line|#ifdef CONFIG_PARPORT_PC_FIFO
 r_if
 c_cond
 (paren
+id|parport_ECP_supported
+c_func
+(paren
+id|p
+)paren
+op_logical_and
 id|p-&gt;dma
 op_ne
 id|PARPORT_DMA_NOFIFO
@@ -10082,6 +10135,12 @@ op_ne
 id|PARPORT_IRQ_NONE
 )paren
 (brace
+id|p-&gt;modes
+op_or_assign
+id|PARPORT_MODE_ECP
+op_or
+id|PARPORT_MODE_COMPAT
+suffix:semicolon
 id|p-&gt;ops-&gt;compat_write_data
 op_assign
 id|parport_pc_compat_write_block_pio
@@ -13866,6 +13925,22 @@ c_func
 id|PARPORT_PC_MAX_PORTS
 )paren
 l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|verbose_probing
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|verbose_probing
+comma
+l_string|&quot;Log chit-chat during initialisation&quot;
 )paren
 suffix:semicolon
 DECL|function|init_module

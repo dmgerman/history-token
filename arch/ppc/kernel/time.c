@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.time.c 1.21 08/20/01 22:08:08 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.time.c 1.26 10/05/01 08:29:42 trini&n; */
 multiline_comment|/*&n; * Common time routines among all ppc machines.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; * MPC8xx/MBX changes by Dan Malek (dmalek@jlc.net).&n; *&n; * First round of bugfixes by Gabriel Paubert (paubert@iram.es)&n; * to make clock more stable (2.4.0-test5). The only thing&n; * that this code assumes is that the timebases have been synchronized&n; * by firmware on SMP and are never stopped (never do sleep&n; * on SMP then, nap and doze are OK).&n; *&n; * TODO (not necessarily in this file):&n; * - improve precision and reproducibility of timebase frequency&n; * measurement at boot time.&n; * - get rid of xtime_lock for gettimeofday (generic kernel problem&n; * to be implemented on all architectures for SMP scalability and&n; * eventually implementing gettimeofday without entering the kernel).&n; * - put all time/clock related variables in a single structure&n; * to minimize number of cache lines touched by gettimeofday()&n; * - for astronomical applications: add a new function to get&n; * non ambiguous timestamps even around leap seconds. This needs&n; * a new timestamp format and a good name.&n; *&n; *&n; * The following comment is partially obsolete (at least the long wait&n; * is no more a valid reason):&n; * Since the MPC8xx has a programmable interrupt timer, I decided to&n; * use that rather than the decrementer.  Two reasons: 1.) the clock&n; * frequency is low, causing 2.) a long wait in the timer interrupt&n; *&t;&t;while ((d = get_dec()) == dval)&n; * loop.  The MPC8xx can be driven from a variety of input clocks,&n; * so a number of assumptions have been made here because the kernel&n; * parameter HZ is a constant.  We assume (correctly, today :-) that&n; * the MPC8xx on the MBX board is driven from a 32.768 kHz crystal.&n; * This is then divided by 4, providing a 8192 Hz clock into the PIT.&n; * Since it is not possible to get a nice 100 Hz clock out of this, without&n; * creating a software PLL, I have set HZ to 128.  -- Dan&n; *&n; * 1997-09-10  Updated NTP code according to technical memorandum Jan &squot;96&n; *             &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -659,7 +659,7 @@ r_while
 c_loop
 (paren
 id|usec
-OG
+op_ge
 l_int|1000000
 )paren
 (brace

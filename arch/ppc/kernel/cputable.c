@@ -540,7 +540,7 @@ id|__setup_cpu_7450
 comma
 (brace
 multiline_comment|/* 82xx (8240, 8245, 8260 are all 603e cores) */
-l_int|0xffff0000
+l_int|0x7fff0000
 comma
 l_int|0x00810000
 comma
@@ -736,9 +736,8 @@ l_int|16
 comma
 l_int|16
 comma
-l_int|0
-comma
 id|__setup_cpu_8xx
+multiline_comment|/* Empty */
 )brace
 comma
 macro_line|#endif /* CONFIG_8xx */

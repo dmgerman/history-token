@@ -881,9 +881,8 @@ id|i
 op_decrement
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|de-&gt;de_deh
 op_ne
@@ -893,15 +892,10 @@ id|de-&gt;de_bh
 comma
 id|de-&gt;de_ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-7010: linear_search_in_dir_item: array of entry headers not found&quot;
+l_string|&quot;vs-7010: array of entry headers not found&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|deh
 op_add_assign
 id|i
@@ -1032,21 +1026,14 @@ singleline_comment|// so, this is a bug
 r_return
 id|NAME_NOT_FOUND
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|de-&gt;de_item_num
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;vs-7015: linear_search_in_dir_item: &quot;
-l_string|&quot;two diritems of the same directory in one node?&quot;
+l_string|&quot;vs-7015: two diritems of the same directory in one node?&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_return
 id|GOTO_PREVIOUS_ITEM
 suffix:semicolon
@@ -4766,9 +4753,8 @@ macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|S_ISDIR
 c_func
@@ -4797,15 +4783,10 @@ c_func
 id|dot_dot_de.de_bh
 )paren
 )paren
-)paren
-(brace
-singleline_comment|// this should be not changed
-id|BUG
-(paren
+comma
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif&t;
 r_break
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.14 06/27/01 14:49:55 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.uart.c 1.16 09/14/01 18:01:17 trini&n; */
 multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &quot;commproc.h&quot;
+macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#endif

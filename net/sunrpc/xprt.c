@@ -5516,26 +5516,6 @@ comma
 id|req
 )paren
 suffix:semicolon
-multiline_comment|/* remove slot from queue of pending */
-r_if
-c_cond
-(paren
-id|task-&gt;tk_rpcwait
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;RPC: task of released request still queued!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|rpc_remove_wait_queue
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
-)brace
 id|spin_lock_bh
 c_func
 (paren

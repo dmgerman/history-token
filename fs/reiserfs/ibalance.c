@@ -78,7 +78,6 @@ op_star
 id|cf
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
 id|memset
 (paren
 id|dest_bi
@@ -105,7 +104,6 @@ id|buffer_info
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* define dest, src, dest parent, dest position */
 r_switch
 c_cond
@@ -647,27 +645,20 @@ op_member_access_from_pointer
 id|blk_nr_item
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|count
 OG
 l_int|2
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_insert_childs&quot;
 comma
 l_string|&quot;too many children (%d) are to be inserted&quot;
 comma
 id|count
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_FREE_SPACE
 (paren
@@ -681,12 +672,6 @@ id|KEY_SIZE
 op_plus
 id|DC_SIZE
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_insert_childs&quot;
 comma
 l_string|&quot;no enough free space (%d), needed %d bytes&quot;
 comma
@@ -704,7 +689,6 @@ id|DC_SIZE
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* prepare space for count disk_child */
 id|dc
 op_assign
@@ -1027,41 +1011,30 @@ id|disk_child
 op_star
 id|dc
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cur
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;internal_delete_pointers_items1: buffer is 0&quot;
+l_string|&quot;buffer is 0&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|del_num
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_delete_pointers_items2&quot;
 comma
 l_string|&quot;negative number of items (%d) can not be deleted&quot;
 comma
 id|del_num
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|first_p
 template_param
@@ -1075,12 +1048,6 @@ op_logical_or
 id|first_i
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_delete_pointers_items3&quot;
 comma
 l_string|&quot;first pointer order (%d) &lt; 0 or &quot;
 l_string|&quot;no so many pointers (%d), only (%d) or &quot;
@@ -1102,7 +1069,6 @@ comma
 id|first_i
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -1143,26 +1109,18 @@ op_plus
 l_int|1
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|first_i
 op_ne
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;internal_delete_pointers_items5&quot;
-comma
-l_string|&quot;first deleted key must have order 0, not %d&quot;
+l_string|&quot;1st deleted key must have order 0, not %d&quot;
 comma
 id|first_i
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|make_empty_node
 (paren
 id|cur_bi
@@ -1171,9 +1129,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|first_i
 op_plus
@@ -1183,24 +1140,13 @@ id|B_NR_ITEMS
 (paren
 id|cur
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;first_i = %d del_num = %d&bslash;n&quot;
+comma
+l_string|&quot;first_i = %d del_num = %d &quot;
+l_string|&quot;no so many keys (%d) in the node (%b)(%z)&quot;
 comma
 id|first_i
 comma
 id|del_num
-)paren
-suffix:semicolon
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_delete_pointers_items4: :&quot;
-l_string|&quot;no so many keys (%d) in the node (%b)(%z)&quot;
 comma
 id|first_i
 op_plus
@@ -1211,8 +1157,6 @@ comma
 id|cur
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* deleting */
 id|dc
 op_assign
@@ -1482,9 +1426,8 @@ id|B_NR_ITEMS
 id|src
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|dest
 op_eq
@@ -1493,12 +1436,6 @@ op_logical_or
 id|src
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_copy_pointers_items&quot;
 comma
 l_string|&quot;src (%p) or dest (%p) buffer is 0&quot;
 comma
@@ -1507,8 +1444,8 @@ comma
 id|dest
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|last_first
 op_ne
@@ -1517,32 +1454,20 @@ op_logical_and
 id|last_first
 op_ne
 id|LAST_TO_FIRST
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_copy_pointers_items&quot;
 comma
 l_string|&quot;invalid last_first parameter (%d)&quot;
 comma
 id|last_first
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|nr_src
 OL
 id|cpy_num
 op_minus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_copy_pointers_items&quot;
 comma
 l_string|&quot;no so many items (%d) in src (%d)&quot;
 comma
@@ -1551,26 +1476,20 @@ comma
 id|nr_src
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cpy_num
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_copy_pointers_items&quot;
 comma
 l_string|&quot;cpy_num less than 0 (%d)&quot;
 comma
 id|cpy_num
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|cpy_num
 op_minus
@@ -1590,14 +1509,8 @@ c_func
 (paren
 id|dest
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;internal_copy_pointers_items&quot;
-comma
-l_string|&quot;cpy_num (%d) + item number in dest (%d) can not be more than MAX_NR_KEY(%d)&quot;
+l_string|&quot;cpy_num (%d) + item number in dest (%d) can not be &gt; MAX_NR_KEY(%d)&quot;
 comma
 id|cpy_num
 comma
@@ -1614,7 +1527,6 @@ id|dest
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2058,9 +1970,8 @@ id|key
 op_star
 id|key
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|dest
 op_eq
@@ -2069,22 +1980,16 @@ op_logical_or
 id|src
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
 comma
-l_string|&quot;internal_insert_key&quot;
-comma
-l_string|&quot;sourse(%p) or dest(%p) buffer is 0&quot;
+l_string|&quot;source(%p) or dest(%p) buffer is 0&quot;
 comma
 id|src
 comma
 id|dest
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|dest_position_before
 OL
@@ -2093,12 +1998,6 @@ op_logical_or
 id|src_position
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_insert_key&quot;
 comma
 l_string|&quot;source(%d) or dest(%d) key number less than 0&quot;
 comma
@@ -2107,8 +2006,8 @@ comma
 id|dest_position_before
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|dest_position_before
 OG
@@ -2124,12 +2023,6 @@ c_func
 (paren
 id|src
 )paren
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_insert_key&quot;
 comma
 l_string|&quot;invalid position in dest (%d (key number %d)) or in src (%d (key number %d))&quot;
 comma
@@ -2149,8 +2042,8 @@ id|src
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_FREE_SPACE
 (paren
@@ -2158,12 +2051,6 @@ id|dest
 )paren
 OL
 id|KEY_SIZE
-)paren
-id|reiserfs_panic
-(paren
-l_int|0
-comma
-l_string|&quot;internal_insert_key&quot;
 comma
 l_string|&quot;no enough free space (%d) in dest buffer&quot;
 comma
@@ -2173,7 +2060,6 @@ id|dest
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|nr
 op_assign
 id|le16_to_cpu
@@ -2653,9 +2539,8 @@ op_minus
 l_int|1
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|src_bi.bi_bh
 op_ne
@@ -2673,12 +2558,6 @@ id|tb-&gt;R
 (braket
 id|h
 )braket
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;internal_shift_right&quot;
 comma
 l_string|&quot;src (%p) must be == tb-&gt;S[h](%p) when it disappears&quot;
 comma
@@ -2692,7 +2571,6 @@ id|h
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* when S[h] disappers replace left delemiting key as well */
 r_if
 c_cond
@@ -2947,9 +2825,8 @@ op_minus
 id|insert_num
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;blknum
 (braket
@@ -2957,12 +2834,6 @@ id|h
 )braket
 OG
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;tb-&gt;blknum[%d]=%d when insert_size &lt; 0&quot;
 comma
@@ -2974,7 +2845,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|n
 op_assign
 id|B_NR_ITEMS
@@ -3018,9 +2888,8 @@ id|buffer_head
 op_star
 id|new_root
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|n
 op_logical_or
@@ -3036,35 +2905,22 @@ id|tbSh
 )paren
 op_minus
 id|DC_SIZE
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;buffer must have only 0 keys (%d)&quot;
 comma
 id|n
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|bi.bi_parent
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;root has parent (%p)&quot;
 comma
 id|bi.bi_parent
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* choose a new root */
 r_if
 c_cond
@@ -3199,9 +3055,8 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* join S[h] with L[h] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;rnum
 (braket
@@ -3209,12 +3064,6 @@ id|h
 )braket
 op_ne
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;invalid tb-&gt;rnum[%d]==%d when joining S[h] with L[h]&quot;
 comma
@@ -3226,7 +3075,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|internal_shift_left
 (paren
 id|INTERNAL_SHIFT_FROM_S_TO_L
@@ -3278,9 +3126,8 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* join S[h] with R[h] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;lnum
 (braket
@@ -3288,12 +3135,6 @@ id|h
 )braket
 op_ne
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;invalid tb-&gt;lnum[%d]==%d when joining S[h] with R[h]&quot;
 comma
@@ -3305,7 +3146,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|internal_shift_right
 (paren
 id|INTERNAL_SHIFT_FROM_S_TO_R
@@ -3342,9 +3182,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* borrow from left neighbor L[h] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;rnum
 (braket
@@ -3352,14 +3191,8 @@ id|h
 )braket
 op_ne
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;balance_internal_when_delete&quot;
-comma
-l_string|&quot;invalid tb-&gt;rnum[%d]==%d when borrow from L[h]&quot;
+l_string|&quot;wrong tb-&gt;rnum[%d]==%d when borrow from L[h]&quot;
 comma
 id|h
 comma
@@ -3369,7 +3202,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/*internal_shift_right (tb, h, tb-&gt;L[h], tb-&gt;CFL[h], tb-&gt;lkey[h], tb-&gt;S[h], -tb-&gt;lnum[h]);*/
 id|internal_shift_right
 (paren
@@ -3401,9 +3233,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* borrow from right neighbor R[h] */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;lnum
 (braket
@@ -3411,12 +3242,6 @@ id|h
 )braket
 op_ne
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;invalid tb-&gt;lnum[%d]==%d when borrow from R[h]&quot;
 comma
@@ -3428,7 +3253,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|internal_shift_left
 (paren
 id|INTERNAL_SHIFT_FROM_R_TO_S
@@ -3460,9 +3284,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* split S[h] into two parts and put them into neighbors */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;rnum
 (braket
@@ -3484,12 +3307,6 @@ op_ne
 id|n
 op_plus
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal_when_delete&quot;
 comma
 l_string|&quot;invalid tb-&gt;lnum[%d]==%d or tb-&gt;rnum[%d]==%d when S[h](item number == %d) is split between them&quot;
 comma
@@ -3510,7 +3327,6 @@ comma
 id|n
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|internal_shift_left
 (paren
 id|INTERNAL_SHIFT_FROM_S_TO_L
@@ -3593,9 +3409,8 @@ op_star
 id|key
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;L
 (braket
@@ -3610,12 +3425,7 @@ id|h
 )braket
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;replace_lkey: 12255: &quot;
 l_string|&quot;L[h](%p) and CFL[h](%p) must exist in replace_lkey&quot;
 comma
 id|tb-&gt;L
@@ -3629,7 +3439,6 @@ id|h
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3702,9 +3511,8 @@ op_star
 id|key
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;R
 (braket
@@ -3719,12 +3527,7 @@ id|h
 )braket
 op_eq
 l_int|NULL
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;replace_rkey: 12260: &quot;
 l_string|&quot;R[h](%p) and CFR[h](%p) must exist in replace_rkey&quot;
 comma
 id|tb-&gt;R
@@ -3738,8 +3541,8 @@ id|h
 )braket
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|B_NR_ITEMS
 c_func
@@ -3751,12 +3554,7 @@ id|h
 )paren
 op_eq
 l_int|0
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;replace_rkey: 12265: &quot;
 l_string|&quot;R[h] can not be empty if it exists (item number=%d)&quot;
 comma
 id|B_NR_ITEMS
@@ -3769,7 +3567,6 @@ id|h
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|memcpy
 (paren
 id|B_N_PDELIM_KEY
@@ -3886,26 +3683,18 @@ id|new_insert_key_addr
 op_assign
 id|insert_key
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|h
 OL
 l_int|1
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal&quot;
 comma
 l_string|&quot;h (%d) can not be &lt; 1 on internal level&quot;
 comma
 id|h
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 id|order
 op_assign
 (paren
@@ -3945,27 +3734,20 @@ id|DC_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Check whether insert_num is proper **/
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|insert_num
 template_param
 l_int|2
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal&quot;
 comma
 l_string|&quot;incorrect number of items inserted to the internal node (%d)&quot;
 comma
 id|insert_num
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|h
 OG
@@ -3981,12 +3763,6 @@ OL
 op_minus
 l_int|1
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
-comma
-l_string|&quot;balance_internal&quot;
 comma
 l_string|&quot;incorrect number of items (%d) inserted to the internal node on a level (h=%d) higher than last internal level&quot;
 comma
@@ -3995,7 +3771,6 @@ comma
 id|h
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* Make balance in case insert_num &lt; 0 */
 r_if
 c_cond
@@ -4653,9 +4428,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/** Fill new node that appears instead of S[h] **/
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;blknum
 (braket
@@ -4663,19 +4437,12 @@ id|h
 )braket
 OG
 l_int|2
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;balance_internal&quot;
 comma
 l_string|&quot;blknum can not be &gt; 2 for internal level&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 id|tb-&gt;blknum
 (braket
@@ -4683,18 +4450,10 @@ id|h
 )braket
 OL
 l_int|0
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;balance_internal&quot;
 comma
 l_string|&quot;blknum can not be &lt; 0&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 r_if
 c_cond
 (paren
@@ -4706,24 +4465,15 @@ id|h
 )paren
 (brace
 multiline_comment|/* node S[h] is empty now */
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|tbSh
-)paren
-id|reiserfs_panic
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;balance_internal&quot;
 comma
 l_string|&quot;S[h] is equal NULL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 multiline_comment|/* do what is needed for buffer thrown from tree */
 id|reiserfs_invalidate_buffer
 c_func
@@ -5326,9 +5076,9 @@ id|new_insert_ptr
 op_assign
 id|S_new
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
+(paren
 (paren
 id|buffer_locked
 c_func
@@ -5346,8 +5096,7 @@ id|S_new-&gt;b_count
 op_ne
 l_int|1
 )paren
-r_if
-c_cond
+op_logical_and
 (paren
 id|buffer_locked
 c_func
@@ -5381,18 +5130,12 @@ id|S_new
 )paren
 )paren
 )paren
-(brace
-id|reiserfs_panic
-(paren
-id|tb-&gt;tb_sb
 comma
-l_string|&quot;cm-00001: balance_internal: bad S_new (%b)&quot;
+l_string|&quot;cm-00001: bad S_new (%b)&quot;
 comma
 id|S_new
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_REISERFS_CHECK */
 singleline_comment|// S_new is released in unfix_nodes
 )brace
 id|n

@@ -329,22 +329,16 @@ id|PATH_PITEM_HEAD
 id|path
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-r_if
-c_cond
+id|RFALSE
+c_func
 (paren
 op_logical_neg
 id|is_direct_le_ih
 (paren
 id|p_le_ih
 )paren
-)paren
-id|reiserfs_panic
-(paren
-id|sb
 comma
-l_string|&quot;vs-14055: direct2indirect: &quot;
-l_string|&quot;direct item expected(%k), found %h&quot;
+l_string|&quot;vs-14055: direct item expected(%k), found %h&quot;
 comma
 op_amp
 id|end_key
@@ -352,7 +346,6 @@ comma
 id|p_le_ih
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tail_size
 op_assign
 (paren
