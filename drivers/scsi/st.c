@@ -4724,7 +4724,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|scsi_device_get
 c_func
 (paren
@@ -4732,6 +4731,13 @@ id|STp-&gt;device
 )paren
 )paren
 (brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|st_dev_arr_lock
+)paren
+suffix:semicolon
 r_return
 (paren
 op_minus
