@@ -763,7 +763,7 @@ id|bdev
 suffix:semicolon
 r_extern
 r_void
-id|blkdev_release_request
+id|blk_put_request
 c_func
 (paren
 r_struct
@@ -832,6 +832,24 @@ c_func
 (paren
 r_struct
 id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_insert_request
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_int
+comma
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -1008,7 +1026,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 r_int
 r_int
@@ -1021,7 +1038,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 r_int
 r_int
@@ -1034,7 +1050,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 r_int
 r_int
@@ -1047,7 +1062,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 r_int
 r_int
@@ -1060,7 +1074,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 r_int
 r_int
@@ -1073,7 +1086,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 r_int
 r_int
@@ -1086,7 +1098,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 id|spinlock_t
 op_star
@@ -1099,7 +1110,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 comma
 id|prep_rq_fn
 op_star
@@ -1267,7 +1277,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|function|blk_clear
-r_extern
+r_static
 r_inline
 r_void
 id|blk_clear
@@ -1284,18 +1294,9 @@ id|major
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if 0
-id|blk_size_in_bytes
-(braket
-id|major
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|queue_hardsect_size
-r_extern
+r_static
 r_inline
 r_int
 id|queue_hardsect_size
@@ -1327,7 +1328,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|bdev_hardsect_size
-r_extern
+r_static
 r_inline
 r_int
 id|bdev_hardsect_size
@@ -1357,7 +1358,7 @@ DECL|macro|blk_started_io
 mdefine_line|#define blk_started_io(nsects)&t;do { } while (0)
 multiline_comment|/* assumes size &gt; 256 */
 DECL|function|blksize_bits
-r_extern
+r_static
 r_inline
 r_int
 r_int
