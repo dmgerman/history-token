@@ -2944,19 +2944,6 @@ op_star
 )paren
 id|port
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|up-&gt;ier
 op_or_assign
 id|UART_IER_MSI
@@ -2969,15 +2956,6 @@ comma
 id|UART_IER
 comma
 id|up-&gt;ier
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5660,6 +5638,16 @@ id|up-&gt;port.ignore_status_mask
 op_or_assign
 id|UART_LSR_DR
 suffix:semicolon
+multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|up-&gt;port.lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * CTS flow control flag and modem status interrupts&n;&t; */
 id|up-&gt;ier
 op_and_assign
@@ -5681,16 +5669,6 @@ id|cflag
 id|up-&gt;ier
 op_or_assign
 id|UART_IER_MSI
-suffix:semicolon
-multiline_comment|/*&n;&t; * Ok, we&squot;re now changing the port state.  Do it with&n;&t; * interrupts disabled.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|up-&gt;port.lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|serial_out
 c_func

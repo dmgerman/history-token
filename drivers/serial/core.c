@@ -3498,13 +3498,6 @@ id|uart_icount
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Force modem status interrupts on&n;&t; */
 id|port-&gt;ops
 op_member_access_from_pointer
@@ -3512,6 +3505,13 @@ id|enable_ms
 c_func
 (paren
 id|port
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|port-&gt;lock
 )paren
 suffix:semicolon
 id|add_wait_queue
