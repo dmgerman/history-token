@@ -1439,8 +1439,6 @@ c_func
 id|port
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_if
 c_cond
