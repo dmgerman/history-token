@@ -9228,6 +9228,13 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef  MODULE
+DECL|variable|probe
+r_static
+r_int
+id|probe
+op_assign
+id|probeUNKNOWN
+suffix:semicolon
 DECL|function|arlan_find_devices
 r_static
 r_int
