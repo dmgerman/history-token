@@ -46,7 +46,7 @@ mdefine_line|#define ACPI_THERMAL_PATH_POWEROFF&t;&quot;/sbin/poweroff&quot;
 DECL|macro|ACPI_THERMAL_MAX_ACTIVE
 mdefine_line|#define ACPI_THERMAL_MAX_ACTIVE&t;10
 DECL|macro|KELVIN_TO_CELSIUS
-mdefine_line|#define KELVIN_TO_CELSIUS(t)&t;((t-2732+5)/10)
+mdefine_line|#define KELVIN_TO_CELSIUS(t)    (long)(((long)t-2732&gt;=0) ? ((long)t-2732+5)/10 : ((long)t-2732-5)/10)
 DECL|macro|CELSIUS_TO_KELVIN
 mdefine_line|#define CELSIUS_TO_KELVIN(t)&t;((t+273)*10)
 DECL|macro|_COMPONENT
@@ -3098,7 +3098,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;temperature:             %lu C&bslash;n&quot;
+l_string|&quot;temperature:             %ld C&bslash;n&quot;
 comma
 id|KELVIN_TO_CELSIUS
 c_func
@@ -3266,7 +3266,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;critical (S5):           %lu C&bslash;n&quot;
+l_string|&quot;critical (S5):           %ld C&bslash;n&quot;
 comma
 id|KELVIN_TO_CELSIUS
 c_func
@@ -3287,7 +3287,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;hot (S4):                %lu C&bslash;n&quot;
+l_string|&quot;hot (S4):                %ld C&bslash;n&quot;
 comma
 id|KELVIN_TO_CELSIUS
 c_func
@@ -3309,7 +3309,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;passive:                 %lu C: tc1=%lu tc2=%lu tsp=%lu devices=&quot;
+l_string|&quot;passive:                 %ld C: tc1=%lu tc2=%lu tsp=%lu devices=&quot;
 comma
 id|KELVIN_TO_CELSIUS
 c_func
@@ -3403,7 +3403,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;active[%d]:               %lu C: devices=&quot;
+l_string|&quot;active[%d]:               %ld C: devices=&quot;
 comma
 id|i
 comma
@@ -5408,7 +5408,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;%s [%s] (%lu C)&bslash;n&quot;
+l_string|&quot;%s [%s] (%ld C)&bslash;n&quot;
 comma
 id|acpi_device_name
 c_func
