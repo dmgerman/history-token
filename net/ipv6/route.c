@@ -2516,9 +2516,17 @@ op_eq
 l_int|NULL
 )paren
 )paren
+(brace
+id|in6_dev_put
+c_func
+(paren
+id|idev
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|dev_hold
 c_func
 (paren
