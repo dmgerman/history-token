@@ -13259,9 +13259,16 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Don&squot;t disable the transmitter. */
 )brace
+r_extern
+r_struct
+id|tty_driver
+id|serial_driver
+suffix:semicolon
 DECL|function|serial_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|serial_console_device
 c_func
 (paren
@@ -13269,18 +13276,20 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|serial_driver
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Setup initial baud/bits/parity. We do two things here:&n; *&t;- construct a cflag setting for the first rs_open()&n; *&t;- initialize the serial port&n; *&t;Return non-zero if we didn&squot;t find a serial port.&n; */

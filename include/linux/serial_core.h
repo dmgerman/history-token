@@ -969,7 +969,9 @@ r_int
 id|flow
 )paren
 suffix:semicolon
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|uart_console_device
 c_func
 (paren
@@ -977,6 +979,10 @@ r_struct
 id|console
 op_star
 id|co
+comma
+r_int
+op_star
+id|index
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Port/driver registration/removal&n; */
