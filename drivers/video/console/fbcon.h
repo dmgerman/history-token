@@ -539,6 +539,10 @@ id|fbcon_redraw_bmove
 c_func
 (paren
 r_struct
+id|vc_data
+op_star
+comma
+r_struct
 id|display
 op_star
 comma
