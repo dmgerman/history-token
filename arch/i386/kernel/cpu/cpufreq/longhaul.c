@@ -884,7 +884,9 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Lowestspeed=%dMHz Highestspeed=%dMHz&bslash;n&quot;
+l_string|&quot;FSB: %dMHz Lowestspeed=%dMHz Highestspeed=%dMHz&bslash;n&quot;
+comma
+id|fsb
 comma
 id|lowest_speed
 comma
