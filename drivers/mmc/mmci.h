@@ -175,12 +175,11 @@ DECL|macro|MMCIFIFOCNT
 mdefine_line|#define MMCIFIFOCNT&t;&t;0x048
 DECL|macro|MMCIFIFO
 mdefine_line|#define MMCIFIFO&t;&t;0x080 /* to 0x0bc */
-DECL|macro|MCI_IRQMASK
-mdefine_line|#define MCI_IRQMASK&t;&bslash;&n;&t;(MCI_CMDCRCFAIL|MCI_DATACRCFAIL|MCI_CMDTIMEOUT|MCI_DATATIMEOUT|&t;&bslash;&n;&t;MCI_TXUNDERRUN|MCI_RXOVERRUN|MCI_CMDRESPEND|MCI_CMDSENT|&t;&bslash;&n;&t;MCI_DATAEND|MCI_DATABLOCKEND)
 DECL|macro|MCI_IRQENABLE
-mdefine_line|#define MCI_IRQENABLE&t;&bslash;&n;&t;(MCI_CMDCRCFAILMASK|MCI_DATACRCFAILMASK|MCI_CMDTIMEOUTMASK|&t;&bslash;&n;&t;MCI_DATATIMEOUTMASK|MCI_TXUNDERRUNMASK|MCI_RXOVERRUNMASK|&t;&bslash;&n;&t;MCI_CMDRESPENDMASK|MCI_CMDSENTMASK|MCI_DATAENDMASK|&t;&t;&bslash;&n;&t;MCI_DATABLOCKENDMASK)
+mdefine_line|#define MCI_IRQENABLE&t;&bslash;&n;&t;(MCI_CMDCRCFAILMASK|MCI_DATACRCFAILMASK|MCI_CMDTIMEOUTMASK|&t;&bslash;&n;&t;MCI_DATATIMEOUTMASK|MCI_TXUNDERRUNMASK|MCI_RXOVERRUNMASK|&t;&bslash;&n;&t;MCI_CMDRESPENDMASK|MCI_CMDSENTMASK|MCI_DATABLOCKENDMASK)
+multiline_comment|/*&n; * The size of the FIFO in bytes.&n; */
 DECL|macro|MCI_FIFOSIZE
-mdefine_line|#define MCI_FIFOSIZE&t;16
+mdefine_line|#define MCI_FIFOSIZE&t;(16*4)
 DECL|macro|MCI_FIFOHALFSIZE
 mdefine_line|#define MCI_FIFOHALFSIZE (MCI_FIFOSIZE / 2)
 r_struct
@@ -265,10 +264,10 @@ r_int
 id|oldstat
 suffix:semicolon
 multiline_comment|/* pio stuff */
-DECL|member|buffer
-r_void
-op_star
-id|buffer
+DECL|member|offset
+r_int
+r_int
+id|offset
 suffix:semicolon
 DECL|member|size
 r_int
@@ -277,6 +276,4 @@ id|size
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|to_mmci_host
-mdefine_line|#define to_mmci_host(mmc)&t;container_of(mmc, struct mmci_host, mmc)
 eof
