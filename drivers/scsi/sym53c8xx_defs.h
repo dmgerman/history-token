@@ -3,12 +3,7 @@ macro_line|#ifndef SYM53C8XX_DEFS_H
 DECL|macro|SYM53C8XX_DEFS_H
 mdefine_line|#define SYM53C8XX_DEFS_H
 multiline_comment|/*&n;**&t;Check supported Linux versions&n;*/
-macro_line|#if !defined(LINUX_VERSION_CODE)
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
 multiline_comment|/*&n; * NCR PQS/PDS special device support.&n; */
 macro_line|#ifdef CONFIG_SCSI_NCR53C8XX_PQS_PDS
 DECL|macro|SCSI_NCR_PQS_PDS_SUPPORT
@@ -88,13 +83,6 @@ mdefine_line|#define&t;SCSI_NCR_IOMAPPED
 macro_line|#elif defined(__alpha__)
 DECL|macro|SCSI_NCR_IOMAPPED
 mdefine_line|#define&t;SCSI_NCR_IOMAPPED
-macro_line|#elif defined(__powerpc__)
-macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,4,3)
-DECL|macro|SCSI_NCR_IOMAPPED
-mdefine_line|#define&t;SCSI_NCR_IOMAPPED
-DECL|macro|SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-mdefine_line|#define SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Immediate arbitration&n; */
 macro_line|#if defined(CONFIG_SCSI_NCR53C8XX_IARB)
@@ -231,9 +219,6 @@ DECL|macro|ktime_sub
 mdefine_line|#define ktime_sub(a, o)&t;&t;((a) - (u_long)(o))
 multiline_comment|/*&n; *  IO functions definition for big/little endian CPU support.&n; *  For now, the NCR is only supported in little endian addressing mode, &n; */
 macro_line|#ifdef&t;__BIG_ENDIAN
-macro_line|#if&t;LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,0)
-macro_line|#error&t;&quot;BIG ENDIAN byte ordering needs kernel version &gt;= 2.1.0&quot;
-macro_line|#endif
 DECL|macro|inw_l2b
 mdefine_line|#define&t;inw_l2b&t;&t;inw
 DECL|macro|inl_l2b
@@ -323,20 +308,9 @@ macro_line|#ifdef&t;SCSI_NCR_BIG_ENDIAN
 macro_line|#error&t;&quot;The NCR in BIG ENDIAN addressing mode is not (yet) supported&quot;
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*&n; *  IA32 architecture does not reorder STORES and prevents&n; *  LOADS from passing STORES. It is called `program order&squot; &n; *  by Intel and allows device drivers to deal with memory &n; *  ordering by only ensuring that the code is not reordered  &n; *  by the compiler when ordering is required.&n; *  Other architectures implement a weaker ordering that &n; *  requires memory barriers (and also IO barriers when they &n; *  make sense) to be used.&n; *  We want to be paranoid for ppc and ia64. :)&n; */
-macro_line|#if&t;defined(__i386__) || defined(__x86_64__)
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;do { ; } while(0)
-macro_line|#elif&t;defined&t;__powerpc__
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;__asm__ volatile(&quot;eieio; sync&quot; : : : &quot;memory&quot;)
-macro_line|#elif&t;defined&t;__ia64__
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;__asm__ volatile(&quot;mf.a; mf&quot; : : : &quot;memory&quot;)
-macro_line|#else
+multiline_comment|/*&n; *  IA32 architecture does not reorder STORES and prevents&n; *  LOADS from passing STORES. It is called `program order&squot; &n; *  by Intel and allows device drivers to deal with memory &n; *  ordering by only ensuring that the code is not reordered  &n; *  by the compiler when ordering is required.&n; *  Other architectures implement a weaker ordering that &n; *  requires memory barriers (and also IO barriers when they &n; *  make sense) to be used.&n; */
 DECL|macro|MEMORY_BARRIER
 mdefine_line|#define MEMORY_BARRIER()&t;mb()
-macro_line|#endif
 multiline_comment|/*&n; *  If the NCR uses big endian addressing mode over the &n; *  PCI, actual io register addresses for byte and word &n; *  accesses must be changed according to lane routing.&n; *  Btw, ncr_offb() and ncr_offw() macros only apply to &n; *  constants and so donnot generate bloated code.&n; */
 macro_line|#if&t;defined(SCSI_NCR_BIG_ENDIAN)
 DECL|macro|ncr_offb

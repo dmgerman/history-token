@@ -6,57 +6,29 @@ mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3b-20010512&quot
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#endif
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/dma-mapping.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#endif
-macro_line|#ifndef&t;__init
-DECL|macro|__init
-mdefine_line|#define&t;__init
-macro_line|#endif
-macro_line|#ifndef&t;__initdata
-DECL|macro|__initdata
-mdefine_line|#define&t;__initdata
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
-macro_line|#include &lt;linux/bios32.h&gt;
-macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n;**&t;Define BITS_PER_LONG for earlier linux versions.&n;*/
-macro_line|#ifndef&t;BITS_PER_LONG
-macro_line|#if (~0UL) == 0xffffffffUL
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define&t;BITS_PER_LONG&t;32
-macro_line|#else
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define&t;BITS_PER_LONG&t;64
-macro_line|#endif
-macro_line|#endif
 macro_line|#include &quot;ncr53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
 multiline_comment|/* #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
@@ -1212,13 +1184,11 @@ id|done_list
 suffix:semicolon
 multiline_comment|/* Commands waiting for done()  */
 multiline_comment|/* callback to be invoked.      */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|smp_lock
 id|spinlock_t
 id|smp_lock
 suffix:semicolon
 multiline_comment|/* Lock for SMP threading       */
-macro_line|#endif
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Chip and controller indentification.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|unit
 r_int
@@ -9599,14 +9569,15 @@ suffix:semicolon
 r_else
 id|np-&gt;vaddr
 op_assign
-id|remap_pci_mem
+(paren
+r_int
+r_int
+)paren
+id|ioremap
 c_func
 (paren
 id|device-&gt;slot.base_c
 comma
-(paren
-id|u_long
-)paren
 l_int|128
 )paren
 suffix:semicolon
@@ -9809,7 +9780,6 @@ op_assign
 id|SCSI_NCR_MAX_LUN
 suffix:semicolon
 macro_line|#ifndef SCSI_NCR_IOMAPPED
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
 id|instance-&gt;base
 op_assign
 (paren
@@ -9818,16 +9788,6 @@ r_int
 )paren
 id|np-&gt;reg
 suffix:semicolon
-macro_line|#else
-id|instance-&gt;base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|np-&gt;reg
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|instance-&gt;irq
 op_assign
@@ -28760,31 +28720,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*=========================================================================&n;**&t;End of proc file system stuff&n;**=========================================================================&n;*/
 macro_line|#endif
-multiline_comment|/*==========================================================&n;**&n;**&t;/proc directory entry.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
-DECL|variable|proc_scsi_ncr53c8xx
-r_static
-r_struct
-id|proc_dir_entry
-id|proc_scsi_ncr53c8xx
-op_assign
-(brace
-id|PROC_SCSI_NCR53C8XX
-comma
-l_int|9
-comma
-id|NAME53C8XX
-comma
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-l_int|2
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Boot command line.&n;**&n;**==========================================================&n;*/
 macro_line|#ifdef&t;MODULE
 DECL|variable|ncr53c8xx
@@ -28795,7 +28730,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
-macro_line|# if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 id|MODULE_PARM
 c_func
 (paren
@@ -28804,7 +28738,6 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-macro_line|# endif
 macro_line|#endif
 DECL|function|ncr53c8xx_setup
 r_int
@@ -28825,7 +28758,6 @@ id|str
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -28835,7 +28767,6 @@ comma
 id|ncr53c8xx_setup
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*===================================================================&n;**&n;**   SYM53C8XX supported device list&n;**&n;**===================================================================&n;*/
 DECL|variable|__initdata

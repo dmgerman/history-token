@@ -5,10 +5,8 @@ mdefine_line|#define MIN(a,b)        (((a) &lt; (b)) ? (a) : (b))
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b)        (((a) &gt; (b)) ? (a) : (b))
 multiline_comment|/*==========================================================&n;**&n;**&t;Hmmm... What complex some PCI-HOST bridges actually &n;**&t;are, despite the fact that the PCI specifications &n;**&t;are looking so smart and simple! ;-)&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,47)
 DECL|macro|SCSI_NCR_DYNAMIC_DMA_MAPPING
 mdefine_line|#define SCSI_NCR_DYNAMIC_DMA_MAPPING
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Miscallaneous defines.&n;**&n;**==========================================================&n;*/
 DECL|macro|u_char
 mdefine_line|#define u_char&t;&t;unsigned char
@@ -361,7 +359,6 @@ id|elem
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&t;Simple Wrapper to kernel PCI bus interface.&n;**&n;**&t;This wrapper allows to get rid of old kernel PCI &n;**&t;interface and still allows to preserve linux-2.0 &n;**&t;compatibilty. In fact, it is mostly an incomplete &n;**&t;emulation of the new PCI code for pre-2.2 kernels.&n;**&t;When kernel-2.0 support will be dropped, we will &n;**&t;just have to remove most of this code.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0)
 DECL|typedef|pcidev_t
 r_typedef
 r_struct
@@ -406,9 +403,6 @@ id|index
 (brace
 id|u_long
 id|base
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; LinuxVersionCode(2,3,12)
-id|base
 op_assign
 id|pdev-&gt;resource
 (braket
@@ -417,46 +411,6 @@ id|index
 dot
 id|start
 suffix:semicolon
-macro_line|#else
-id|base
-op_assign
-id|pdev-&gt;base_address
-(braket
-id|index
-)braket
-suffix:semicolon
-macro_line|#if BITS_PER_LONG &gt; 32
-r_if
-c_cond
-(paren
-(paren
-id|base
-op_amp
-l_int|0x7
-)paren
-op_eq
-l_int|0x4
-)paren
-op_star
-id|base
-op_or_assign
-(paren
-(paren
-(paren
-id|u_long
-)paren
-id|pdev-&gt;base_address
-(braket
-op_increment
-id|index
-)braket
-)paren
-op_lshift
-l_int|32
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 r_return
 (paren
 id|base
@@ -567,354 +521,7 @@ suffix:semicolon
 DECL|macro|PCI_BAR_OFFSET
 macro_line|#undef PCI_BAR_OFFSET
 )brace
-macro_line|#else&t;/* Incomplete emulation of current PCI code for pre-2.2 kernels */
-DECL|typedef|pcidev_t
-r_typedef
-r_int
-r_int
-id|pcidev_t
-suffix:semicolon
-DECL|typedef|device_t
-r_typedef
-id|unsinged
-r_int
-id|device_t
-suffix:semicolon
-DECL|macro|PCIDEV_NULL
-mdefine_line|#define PCIDEV_NULL&t;&t;(~0u)
-DECL|macro|PciBusNumber
-mdefine_line|#define PciBusNumber(d)&t;&t;((d)&gt;&gt;8)
-DECL|macro|PciDeviceFn
-mdefine_line|#define PciDeviceFn(d)&t;&t;((d)&amp;0xff)
-DECL|macro|__PciDev
-mdefine_line|#define __PciDev(busn, devfn)&t;(((busn)&lt;&lt;8)+(devfn))
-DECL|macro|pci_read_config_byte
-mdefine_line|#define pci_read_config_byte(d, w, v) &bslash;&n;&t;pcibios_read_config_byte(PciBusNumber(d), PciDeviceFn(d), w, v)
-DECL|macro|pci_read_config_word
-mdefine_line|#define pci_read_config_word(d, w, v) &bslash;&n;&t;pcibios_read_config_word(PciBusNumber(d), PciDeviceFn(d), w, v)
-DECL|macro|pci_read_config_dword
-mdefine_line|#define pci_read_config_dword(d, w, v) &bslash;&n;&t;pcibios_read_config_dword(PciBusNumber(d), PciDeviceFn(d), w, v)
-DECL|macro|pci_write_config_byte
-mdefine_line|#define pci_write_config_byte(d, w, v) &bslash;&n;&t;pcibios_write_config_byte(PciBusNumber(d), PciDeviceFn(d), w, v)
-DECL|macro|pci_write_config_word
-mdefine_line|#define pci_write_config_word(d, w, v) &bslash;&n;&t;pcibios_write_config_word(PciBusNumber(d), PciDeviceFn(d), w, v)
-DECL|macro|pci_write_config_dword
-mdefine_line|#define pci_write_config_dword(d, w, v) &bslash;&n;&t;pcibios_write_config_dword(PciBusNumber(d), PciDeviceFn(d), w, v)
-r_static
-id|pcidev_t
-id|__init
-DECL|function|pci_find_device
-id|pci_find_device
-c_func
-(paren
-r_int
-r_int
-id|vendor
-comma
-r_int
-r_int
-id|device
-comma
-id|pcidev_t
-id|prev
-)paren
-(brace
-r_static
-r_int
-r_int
-id|pci_index
-suffix:semicolon
-r_int
-id|retv
-suffix:semicolon
-r_int
-r_char
-id|bus_number
-comma
-id|device_fn
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|prev
-op_eq
-id|PCIDEV_NULL
-)paren
-id|pci_index
-op_assign
-l_int|0
-suffix:semicolon
-r_else
-op_increment
-id|pci_index
-suffix:semicolon
-id|retv
-op_assign
-id|pcibios_find_device
-(paren
-id|vendor
-comma
-id|device
-comma
-id|pci_index
-comma
-op_amp
-id|bus_number
-comma
-op_amp
-id|device_fn
-)paren
-suffix:semicolon
-r_return
-id|retv
-ques
-c_cond
-id|PCIDEV_NULL
-suffix:colon
-id|__PciDev
-c_func
-(paren
-id|bus_number
-comma
-id|device_fn
-)paren
-suffix:semicolon
-)brace
-DECL|function|PciVendorId
-r_static
-id|u_short
-id|__init
-id|PciVendorId
-c_func
-(paren
-id|pcidev_t
-id|dev
-)paren
-(brace
-id|u_short
-id|vendor_id
-suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_VENDOR_ID
-comma
-op_amp
-id|vendor_id
-)paren
-suffix:semicolon
-r_return
-id|vendor_id
-suffix:semicolon
-)brace
-DECL|function|PciDeviceId
-r_static
-id|u_short
-id|__init
-id|PciDeviceId
-c_func
-(paren
-id|pcidev_t
-id|dev
-)paren
-(brace
-id|u_short
-id|device_id
-suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_DEVICE_ID
-comma
-op_amp
-id|device_id
-)paren
-suffix:semicolon
-r_return
-id|device_id
-suffix:semicolon
-)brace
-DECL|function|PciIrqLine
-r_static
-id|u_int
-id|__init
-id|PciIrqLine
-c_func
-(paren
-id|pcidev_t
-id|dev
-)paren
-(brace
-id|u_char
-id|irq
-suffix:semicolon
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_INTERRUPT_LINE
-comma
-op_amp
-id|irq
-)paren
-suffix:semicolon
-r_return
-id|irq
-suffix:semicolon
-)brace
-r_static
-r_int
-id|__init
-DECL|function|pci_get_base_address
-id|pci_get_base_address
-c_func
-(paren
-id|pcidev_t
-id|dev
-comma
-r_int
-id|offset
-comma
-id|u_long
-op_star
-id|base
-)paren
-(brace
-id|u_int32
-id|tmp
-suffix:semicolon
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-id|PCI_BASE_ADDRESS_0
-op_plus
-id|offset
-comma
-op_amp
-id|tmp
-)paren
-suffix:semicolon
-op_star
-id|base
-op_assign
-id|tmp
-suffix:semicolon
-id|offset
-op_add_assign
-r_sizeof
-(paren
-id|u_int32
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tmp
-op_amp
-l_int|0x7
-)paren
-op_eq
-l_int|0x4
-)paren
-(brace
-macro_line|#if BITS_PER_LONG &gt; 32
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-id|PCI_BASE_ADDRESS_0
-op_plus
-id|offset
-comma
-op_amp
-id|tmp
-)paren
-suffix:semicolon
-op_star
-id|base
-op_or_assign
-(paren
-(paren
-(paren
-id|u_long
-)paren
-id|tmp
-)paren
-op_lshift
-l_int|32
-)paren
-suffix:semicolon
-macro_line|#endif
-id|offset
-op_add_assign
-r_sizeof
-(paren
-id|u_int32
-)paren
-suffix:semicolon
-)brace
-r_return
-id|offset
-suffix:semicolon
-)brace
-r_static
-id|u_long
-id|__init
-DECL|function|pci_get_base_cookie
-id|pci_get_base_cookie
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_int
-id|offset
-)paren
-(brace
-id|u_long
-id|base
-suffix:semicolon
-(paren
-r_void
-)paren
-id|pci_get_base_address
-c_func
-(paren
-id|dev
-comma
-id|offset
-comma
-op_amp
-id|base
-)paren
-suffix:semicolon
-r_return
-id|base
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,2,0) */
-multiline_comment|/* Does not make sense in earlier kernels */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
-DECL|macro|pci_enable_device
-mdefine_line|#define pci_enable_device(pdev)&t;&t;(0)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,4)
-DECL|macro|scsi_set_pci_device
-mdefine_line|#define&t;scsi_set_pci_device(inst, pdev)&t;(0)
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;SMP threading.&n;**&n;**&t;Assuming that SMP systems are generally high end &n;**&t;systems and may use several SCSI adapters, we are &n;**&t;using one lock per controller instead of some global &n;**&t;one. For the moment (linux-2.1.95), driver&squot;s entry &n;**&t;points are called with the &squot;io_request_lock&squot; lock &n;**&t;held, so:&n;**&t;- We are uselessly loosing a couple of micro-seconds &n;**&t;  to lock the controller data structure.&n;**&t;- But the driver is not broken by design for SMP and &n;**&t;  so can be more resistant to bugs or bad changes in &n;**&t;  the IO sub-system code.&n;**&t;- A small advantage could be that the interrupt code &n;**&t;  is grained as wished (e.g.: by controller).&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
 DECL|variable|DRIVER_SMP_LOCK
 id|spinlock_t
 id|DRIVER_SMP_LOCK
@@ -935,199 +542,20 @@ DECL|macro|NCR_LOCK_SCSI_DONE
 mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_lock_irqsave((host)-&gt;host_lock, flags)
 DECL|macro|NCR_UNLOCK_SCSI_DONE
 mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags) &bslash;&n;&t;&t;spin_unlock_irqrestore(((host)-&gt;host_lock), flags)
-macro_line|#else
-DECL|macro|NCR_LOCK_DRIVER
-mdefine_line|#define&t;NCR_LOCK_DRIVER(flags)     do { save_flags(flags); cli(); } while (0)
-DECL|macro|NCR_UNLOCK_DRIVER
-mdefine_line|#define&t;NCR_UNLOCK_DRIVER(flags)   do { restore_flags(flags); } while (0)
-DECL|macro|NCR_INIT_LOCK_NCB
-mdefine_line|#define&t;NCR_INIT_LOCK_NCB(np)      do { } while (0)
-DECL|macro|NCR_LOCK_NCB
-mdefine_line|#define&t;NCR_LOCK_NCB(np, flags)    do { save_flags(flags); cli(); } while (0)
-DECL|macro|NCR_UNLOCK_NCB
-mdefine_line|#define&t;NCR_UNLOCK_NCB(np, flags)  do { restore_flags(flags); } while (0)
-DECL|macro|NCR_LOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_LOCK_SCSI_DONE(host, flags)    do {;} while (0)
-DECL|macro|NCR_UNLOCK_SCSI_DONE
-mdefine_line|#define&t;NCR_UNLOCK_SCSI_DONE(host, flags)  do {;} while (0)
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Memory mapped IO&n;**&n;**&t;Since linux-2.1, we must use ioremap() to map the io &n;**&t;memory space and iounmap() to unmap it. This allows &n;**&t;portability. Linux 1.3.X and 2.0.X allow to remap &n;**&t;physical pages addresses greater than the highest &n;**&t;physical memory address to kernel virtual pages with &n;**&t;vremap() / vfree(). That was not portable but worked &n;**&t;with i386 architecture.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,0)
-DECL|macro|ioremap
-mdefine_line|#define ioremap vremap
-DECL|macro|iounmap
-mdefine_line|#define iounmap vfree
-macro_line|#endif
 macro_line|#ifdef __sparc__
-macro_line|#  include &lt;asm/irq.h&gt;
-DECL|macro|memcpy_to_pci
-macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
-macro_line|#elif defined(__alpha__)
-DECL|macro|memcpy_to_pci
-macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
-macro_line|#else&t;/* others */
-DECL|macro|memcpy_to_pci
-macro_line|#  define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#endif
-macro_line|#ifndef SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-DECL|function|remap_pci_mem
-r_static
-id|u_long
-id|__init
-id|remap_pci_mem
-c_func
-(paren
-id|u_long
-id|base
-comma
-id|u_long
-id|size
-)paren
-(brace
-id|u_long
-id|page_base
-op_assign
-(paren
-(paren
-id|u_long
-)paren
-id|base
-)paren
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-id|u_long
-id|page_offs
-op_assign
-(paren
-(paren
-id|u_long
-)paren
-id|base
-)paren
-op_minus
-id|page_base
-suffix:semicolon
-id|u_long
-id|page_remapped
-op_assign
-(paren
-id|u_long
-)paren
-id|ioremap
-c_func
-(paren
-id|page_base
-comma
-id|page_offs
-op_plus
-id|size
-)paren
-suffix:semicolon
-r_return
-id|page_remapped
-ques
-c_cond
-(paren
-id|page_remapped
-op_plus
-id|page_offs
-)paren
-suffix:colon
-l_int|0UL
-suffix:semicolon
-)brace
-DECL|function|unmap_pci_mem
-r_static
-r_void
-id|__init
-id|unmap_pci_mem
-c_func
-(paren
-id|u_long
-id|vaddr
-comma
-id|u_long
-id|size
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|vaddr
-)paren
-id|iounmap
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-id|vaddr
-op_amp
-id|PAGE_MASK
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* not def SCSI_NCR_PCI_MEM_NOT_SUPPORTED */
+DECL|macro|memcpy_to_pci
+mdefine_line|#define memcpy_to_pci(a, b, c)&t;memcpy_toio((a), (b), (c))
 multiline_comment|/*==========================================================&n;**&n;**&t;Insert a delay in micro-seconds and milli-seconds.&n;**&n;**&t;Under Linux, udelay() is restricted to delay &lt; &n;**&t;1 milli-second. In fact, it generally works for up &n;**&t;to 1 second delay. Since 2.1.105, the mdelay() function &n;**&t;is provided for delays in milli-seconds.&n;**&t;Under 2.0 kernels, udelay() is an inline function &n;**&t;that is very inaccurate on Pentium processors.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,105)
 DECL|macro|UDELAY
 mdefine_line|#define UDELAY udelay
 DECL|macro|MDELAY
 mdefine_line|#define MDELAY mdelay
-macro_line|#else
-DECL|function|UDELAY
-r_static
-r_void
-id|UDELAY
-c_func
-(paren
-r_int
-id|us
-)paren
-(brace
-id|udelay
-c_func
-(paren
-id|us
-)paren
-suffix:semicolon
-)brace
-DECL|function|MDELAY
-r_static
-r_void
-id|MDELAY
-c_func
-(paren
-r_int
-id|ms
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|ms
-op_decrement
-)paren
-id|UDELAY
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Simple power of two buddy-like allocator.&n;**&n;**&t;This simple code is not intended to be fast, but to &n;**&t;provide power of 2 aligned memory allocations.&n;**&t;Since the SCRIPTS processor only supplies 8 bit &n;**&t;arithmetic, this allocator allows simple and fast &n;**&t;address calculations  from the SCRIPTS code.&n;**&t;In addition, cache line alignment is guaranteed for &n;**&t;power of 2 cache line size.&n;**&t;Enhanced in linux-2.3.44 to provide a memory pool &n;**&t;per pcidev to support dynamic dma mapping. (I would &n;**&t;have preferred a real bus astraction, btw).&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,0)
 DECL|macro|__GetFreePages
 mdefine_line|#define __GetFreePages(flags, order) __get_free_pages(flags, order)
-macro_line|#else
-DECL|macro|__GetFreePages
-mdefine_line|#define __GetFreePages(flags, order) __get_free_pages(flags, order, 0)
-macro_line|#endif
 DECL|macro|MEMO_SHIFT
 mdefine_line|#define MEMO_SHIFT&t;4&t;/* 16 bytes minimum memory chunk */
 macro_line|#if PAGE_SIZE &gt;= 8192
@@ -7862,123 +7290,6 @@ id|command
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,2,0)
-r_if
-c_cond
-(paren
-id|is_prep
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|io_port
-op_ge
-l_int|0x10000000
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|NAME53C8XX
-l_string|&quot;: reallocating io_port (Wacky IBM)&quot;
-)paren
-suffix:semicolon
-id|io_port
-op_assign
-(paren
-id|io_port
-op_amp
-l_int|0x00FFFFFF
-)paren
-op_or
-l_int|0x01000000
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|pdev
-comma
-id|PCI_BASE_ADDRESS_0
-comma
-id|io_port
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|base
-op_ge
-l_int|0x10000000
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|NAME53C8XX
-l_string|&quot;: reallocating base (Wacky IBM)&quot;
-)paren
-suffix:semicolon
-id|base
-op_assign
-(paren
-id|base
-op_amp
-l_int|0x00FFFFFF
-)paren
-op_or
-l_int|0x01000000
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|pdev
-comma
-id|PCI_BASE_ADDRESS_1
-comma
-id|base
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|base_2
-op_ge
-l_int|0x10000000
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|NAME53C8XX
-l_string|&quot;: reallocating base2 (Wacky IBM)&quot;
-)paren
-suffix:semicolon
-id|base_2
-op_assign
-(paren
-id|base_2
-op_amp
-l_int|0x00FFFFFF
-)paren
-op_or
-l_int|0x01000000
-suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|pdev
-comma
-id|PCI_BASE_ADDRESS_2
-comma
-id|base_2
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 macro_line|#endif&t;/* __powerpc__ */
 macro_line|#if defined(__i386__) &amp;&amp; !defined(MODULE)
 r_if
@@ -7988,25 +7299,12 @@ op_logical_neg
 id|cache_line_size
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,75)
-r_extern
-r_char
-id|x86
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|x86
-)paren
-(brace
-macro_line|#else
 r_switch
 c_cond
 (paren
 id|boot_cpu_data.x86
 )paren
 (brace
-macro_line|#endif
 r_case
 l_int|4
 suffix:colon

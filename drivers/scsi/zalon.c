@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -18,7 +19,6 @@ macro_line|#include &quot;../parisc/gsc.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ncr53c8xx.h&quot;
-macro_line|#include &quot;zalon.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -37,6 +37,34 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|GSC_SCSI_ZALON_OFFSET
+mdefine_line|#define GSC_SCSI_ZALON_OFFSET 0x800
+DECL|macro|IO_MODULE_EIM
+mdefine_line|#define IO_MODULE_EIM&t;&t;(1*4)
+DECL|macro|IO_MODULE_DC_ADATA
+mdefine_line|#define IO_MODULE_DC_ADATA&t;(2*4)
+DECL|macro|IO_MODULE_II_CDATA
+mdefine_line|#define IO_MODULE_II_CDATA&t;(3*4)
+DECL|macro|IO_MODULE_IO_COMMAND
+mdefine_line|#define IO_MODULE_IO_COMMAND&t;(12*4)
+DECL|macro|IO_MODULE_IO_STATUS
+mdefine_line|#define IO_MODULE_IO_STATUS&t;(13*4)
+DECL|macro|IOSTATUS_RY
+mdefine_line|#define IOSTATUS_RY             0x40
+DECL|macro|IOSTATUS_FE
+mdefine_line|#define IOSTATUS_FE             0x80
+DECL|macro|IOIIDATA_SMINT5L
+mdefine_line|#define IOIIDATA_SMINT5L        0x40000000
+DECL|macro|IOIIDATA_MINT5EN
+mdefine_line|#define IOIIDATA_MINT5EN        0x20000000
+DECL|macro|IOIIDATA_PACKEN
+mdefine_line|#define IOIIDATA_PACKEN         0x10000000
+DECL|macro|IOIIDATA_PREFETCHEN
+mdefine_line|#define IOIIDATA_PREFETCHEN     0x08000000
+DECL|macro|IOIIDATA_IOII
+mdefine_line|#define IOIIDATA_IOII           0x00000020
+DECL|macro|CMD_RESET
+mdefine_line|#define CMD_RESET&t;&t;5
 DECL|variable|__initdata
 r_static
 id|ncr_chip
