@@ -3,7 +3,7 @@ macro_line|#ifndef __ACPI_BUS_H__
 DECL|macro|__ACPI_BUS_H__
 mdefine_line|#define __ACPI_BUS_H__
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/driverfs_fs.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &quot;include/acpi.h&quot;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
@@ -882,10 +882,10 @@ r_void
 op_star
 id|driver_data
 suffix:semicolon
-DECL|member|driverfs_dir
+DECL|member|kobj
 r_struct
-id|driver_dir_entry
-id|driverfs_dir
+id|kobject
+id|kobj
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -918,6 +918,11 @@ id|u32
 id|data
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|subsystem
+id|acpi_subsys
 suffix:semicolon
 multiline_comment|/*&n; * External Functions&n; */
 r_int

@@ -201,13 +201,11 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* primary (master) devfs entry  */
-DECL|member|hd_driverfs_dev
+DECL|member|kobj
 r_struct
-id|device
-op_star
-id|hd_driverfs_dev
+id|kobject
+id|kobj
 suffix:semicolon
-multiline_comment|/* support driverfs hiearchy     */
 DECL|member|reads
 DECL|member|read_sectors
 DECL|member|writes
@@ -330,10 +328,10 @@ id|device
 op_star
 id|driverfs_dev
 suffix:semicolon
-DECL|member|disk_dev
+DECL|member|kobj
 r_struct
-id|device
-id|disk_dev
+id|kobject
+id|kobj
 suffix:semicolon
 DECL|member|random
 r_struct
@@ -516,11 +514,6 @@ op_assign
 id|size
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|device_class
-id|disk_devclass
-suffix:semicolon
 macro_line|#endif  /*  __KERNEL__  */
 macro_line|#ifdef CONFIG_SOLARIS_X86_PARTITION
 DECL|macro|SOLARIS_X86_NUMSLICE
