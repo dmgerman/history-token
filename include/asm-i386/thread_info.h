@@ -79,7 +79,7 @@ macro_line|#else /* !__ASSEMBLY__ */
 macro_line|#include &lt;asm/asm_offsets.h&gt;
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x10000000
 macro_line|#ifdef CONFIG_4KSTACKS
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE            (4096)
