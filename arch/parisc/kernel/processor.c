@@ -6,11 +6,13 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stuff */
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;&t;&t;/* for struct irq_region */
 macro_line|#include &lt;asm/parisc-device.h&gt;
 DECL|variable|boot_cpu_data
@@ -364,6 +366,30 @@ id|cpuid
 )braket
 op_assign
 id|actions
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* &n;&t; * Bring this CPU up now! (ignore bootstrap cpuid == 0)&n;&t; */
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|cpuid
+)paren
+(brace
+id|cpu_set
+c_func
+(paren
+id|cpuid
+comma
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_up
+c_func
+(paren
+id|cpuid
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -12,6 +12,29 @@ DECL|macro|BLOCK_BRACE
 mdefine_line|#define BLOCK_BRACE             2
 DECL|macro|BLOCK_COMMA_LIST
 mdefine_line|#define BLOCK_COMMA_LIST        4
+DECL|struct|acpi_external_list
+r_struct
+id|acpi_external_list
+(brace
+DECL|member|path
+r_char
+op_star
+id|path
+suffix:semicolon
+DECL|member|next
+r_struct
+id|acpi_external_list
+op_star
+id|next
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|acpi_external_list
+op_star
+id|acpi_gbl_external_list
+suffix:semicolon
 r_extern
 r_const
 r_char
@@ -900,6 +923,15 @@ id|length
 comma
 id|u32
 id|level
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * dmutils&n; */
+r_void
+id|acpi_dm_add_to_external_list
+(paren
+r_char
+op_star
+id|path
 )paren
 suffix:semicolon
 macro_line|#endif  /* __ACDISASM_H__ */

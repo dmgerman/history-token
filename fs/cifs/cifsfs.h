@@ -441,20 +441,16 @@ id|filldir
 suffix:semicolon
 r_extern
 r_int
-id|cifs_fcntl
+id|cifs_dir_notify
 c_func
 (paren
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
 r_struct
 id|file
 op_star
+comma
+r_int
+r_int
+id|arg
 )paren
 suffix:semicolon
 multiline_comment|/* Functions related to dir entries */

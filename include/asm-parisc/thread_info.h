@@ -23,30 +23,31 @@ id|exec_domain
 suffix:semicolon
 multiline_comment|/* execution domain */
 DECL|member|flags
-id|__u32
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* thread_info flags (see TIF_*) */
-DECL|member|cpu
-id|__u32
-id|cpu
-suffix:semicolon
-multiline_comment|/* current CPU */
 DECL|member|addr_limit
 id|mm_segment_t
 id|addr_limit
 suffix:semicolon
 multiline_comment|/* user-level address space limit */
-DECL|member|restart_block
-r_struct
-id|restart_block
-id|restart_block
+DECL|member|cpu
+id|__u32
+id|cpu
 suffix:semicolon
+multiline_comment|/* current CPU */
 DECL|member|preempt_count
 id|__s32
 id|preempt_count
 suffix:semicolon
 multiline_comment|/* 0=premptable, &lt;0=BUG; will also serve as bh-counter */
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_INFO

@@ -11,10 +11,11 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* irqaction */
 macro_line|#include &lt;linux/irq.h&gt;&t;&t;/* irq_region support */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* get in-line asm for swab */
 macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;&t;&t;/* gsc_read/write functions */
+macro_line|#include &lt;asm/io.h&gt;&t;&t;/* read/write functions */
 macro_line|#ifdef CONFIG_SUPERIO
 macro_line|#include &lt;asm/superio.h&gt;
 macro_line|#endif
@@ -103,28 +104,8 @@ macro_line|#else
 DECL|macro|DBG_IRT
 mdefine_line|#define DBG_IRT(x...)
 macro_line|#endif
-DECL|macro|READ_U8
-mdefine_line|#define READ_U8(addr)  gsc_readb(addr)
-DECL|macro|READ_U16
-mdefine_line|#define READ_U16(addr) le16_to_cpu(gsc_readw((u16 *) (addr)))
-DECL|macro|READ_U32
-mdefine_line|#define READ_U32(addr) le32_to_cpu(gsc_readl((u32 *) (addr)))
-DECL|macro|READ_REG16
-mdefine_line|#define READ_REG16(addr) gsc_readw((u16 *) (addr))
-DECL|macro|READ_REG32
-mdefine_line|#define READ_REG32(addr) gsc_readl((u32 *) (addr))
-DECL|macro|WRITE_U8
-mdefine_line|#define WRITE_U8(value, addr) gsc_writeb(value, addr)
-DECL|macro|WRITE_U16
-mdefine_line|#define WRITE_U16(value, addr) gsc_writew(cpu_to_le16(value), (u16 *) (addr))
-DECL|macro|WRITE_U32
-mdefine_line|#define WRITE_U32(value, addr) gsc_writel(cpu_to_le32(value), (u32 *) (addr))
-DECL|macro|WRITE_REG16
-mdefine_line|#define WRITE_REG16(value, addr) gsc_writew(value, (u16 *) (addr))
-DECL|macro|WRITE_REG32
-mdefine_line|#define WRITE_REG32(value, addr) gsc_writel(value, (u32 *) (addr))
 DECL|macro|IOSAPIC_REG_SELECT
-mdefine_line|#define IOSAPIC_REG_SELECT              0
+mdefine_line|#define IOSAPIC_REG_SELECT              0x00
 DECL|macro|IOSAPIC_REG_WINDOW
 mdefine_line|#define IOSAPIC_REG_WINDOW              0x10
 DECL|macro|IOSAPIC_REG_EOI
@@ -135,7 +116,84 @@ DECL|macro|IOSAPIC_IRDT_ENTRY
 mdefine_line|#define IOSAPIC_IRDT_ENTRY(idx)&t;&t;(0x10+(idx)*2)
 DECL|macro|IOSAPIC_IRDT_ENTRY_HI
 mdefine_line|#define IOSAPIC_IRDT_ENTRY_HI(idx)&t;(0x11+(idx)*2)
-multiline_comment|/*&n;** FIXME: revisit which GFP flags we should really be using.&n;**     GFP_KERNEL includes __GFP_WAIT flag and that may not&n;**     be acceptable. Since this is boot time, we shouldn&squot;t have&n;**     to wait ever and this code should (will?) never get called&n;**     from the interrrupt context.&n;*/
+DECL|function|iosapic_read
+r_static
+r_inline
+r_int
+r_int
+id|iosapic_read
+c_func
+(paren
+r_int
+r_int
+id|iosapic
+comma
+r_int
+r_int
+id|reg
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|reg
+comma
+id|iosapic
+op_plus
+id|IOSAPIC_REG_SELECT
+)paren
+suffix:semicolon
+r_return
+id|readl
+c_func
+(paren
+id|iosapic
+op_plus
+id|IOSAPIC_REG_WINDOW
+)paren
+suffix:semicolon
+)brace
+DECL|function|iosapic_write
+r_static
+r_inline
+r_void
+id|iosapic_write
+c_func
+(paren
+r_int
+r_int
+id|iosapic
+comma
+r_int
+r_int
+id|reg
+comma
+id|u32
+id|val
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|reg
+comma
+id|iosapic
+op_plus
+id|IOSAPIC_REG_SELECT
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|val
+comma
+id|iosapic
+op_plus
+id|IOSAPIC_REG_WINDOW
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;**     GFP_KERNEL includes __GFP_WAIT flag and that may not&n;**     be acceptable. Since this is boot time, we shouldn&squot;t have&n;**     to wait ever and this code should (will?) never get called&n;**     from the interrrupt context.&n;*/
 DECL|macro|IOSAPIC_KALLOC
 mdefine_line|#define&t;IOSAPIC_KALLOC(a_type, cnt) &bslash;&n;&t;&t;&t;(a_type *) kmalloc(sizeof(a_type)*(cnt), GFP_KERNEL)
 DECL|macro|IOSAPIC_FREE
@@ -145,17 +203,15 @@ mdefine_line|#define&t;IOSAPIC_LOCK(lck)&t;spin_lock_irqsave(lck, irqflags)
 DECL|macro|IOSAPIC_UNLOCK
 mdefine_line|#define&t;IOSAPIC_UNLOCK(lck)&t;spin_unlock_irqrestore(lck, irqflags)
 DECL|macro|IOSAPIC_VERSION_MASK
-mdefine_line|#define IOSAPIC_VERSION_MASK            0x000000ff
-DECL|macro|IOSAPIC_VERSION_SHIFT
-mdefine_line|#define IOSAPIC_VERSION_SHIFT           0x0
+mdefine_line|#define IOSAPIC_VERSION_MASK&t;0x000000ff
 DECL|macro|IOSAPIC_VERSION
-mdefine_line|#define&t;IOSAPIC_VERSION(ver)&t;&t;&t;&t;&bslash;&n;&t;&t;(int) ((ver &amp; IOSAPIC_VERSION_MASK) &gt;&gt; IOSAPIC_VERSION_SHIFT)
+mdefine_line|#define&t;IOSAPIC_VERSION(ver)&t;((int) (ver &amp; IOSAPIC_VERSION_MASK))
 DECL|macro|IOSAPIC_MAX_ENTRY_MASK
 mdefine_line|#define IOSAPIC_MAX_ENTRY_MASK          0x00ff0000
 DECL|macro|IOSAPIC_MAX_ENTRY_SHIFT
 mdefine_line|#define IOSAPIC_MAX_ENTRY_SHIFT         0x10
 DECL|macro|IOSAPIC_IRDT_MAX_ENTRY
-mdefine_line|#define&t;IOSAPIC_IRDT_MAX_ENTRY(ver)&t;&t;&t;&bslash;&n;&t;&t;(int) ((ver&amp;IOSAPIC_MAX_ENTRY_MASK) &gt;&gt; IOSAPIC_MAX_ENTRY_SHIFT)
+mdefine_line|#define&t;IOSAPIC_IRDT_MAX_ENTRY(ver)&t;&bslash;&n;&t;(int) (((ver) &amp; IOSAPIC_MAX_ENTRY_MASK) &gt;&gt; IOSAPIC_MAX_ENTRY_SHIFT)
 multiline_comment|/* bits in the &quot;low&quot; I/O Sapic IRdT entry */
 DECL|macro|IOSAPIC_IRDT_ENABLE
 mdefine_line|#define IOSAPIC_IRDT_ENABLE       0x10000
@@ -168,8 +224,6 @@ mdefine_line|#define IOSAPIC_IRDT_MODE_LPRI    0x00100
 multiline_comment|/* bits in the &quot;high&quot; I/O Sapic IRdT entry */
 DECL|macro|IOSAPIC_IRDT_ID_EID_SHIFT
 mdefine_line|#define IOSAPIC_IRDT_ID_EID_SHIFT              0x10
-DECL|macro|IOSAPIC_EOI
-mdefine_line|#define&t;IOSAPIC_EOI(eoi_addr, eoi_data) gsc_writel(eoi_data, eoi_addr)
 DECL|variable|iosapic_list
 r_static
 r_struct
@@ -486,7 +540,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot; Interrupt Routing Table (cell %ld)&bslash;n&quot;
 comma
@@ -496,7 +549,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot; start = 0x%p num_entries %ld entry_size %d&bslash;n&quot;
 comma
@@ -535,7 +587,6 @@ op_increment
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 id|MODULE_NAME
 l_string|&quot; %02x %02x %02x %02x %02x %02x %02x %02x %08x%08x&bslash;n&quot;
 comma
@@ -1136,16 +1187,18 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;iosapic_interrupt(): irq %d line %d eoi %p&bslash;n&quot;
+l_string|&quot;iosapic_interrupt(): irq %d line %d eoi 0x%p 0x%x&bslash;n&quot;
 comma
 id|irq
 comma
 id|vi-&gt;irqline
 comma
 id|vi-&gt;eoi_addr
+comma
+id|vi-&gt;eoi_data
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Need to mask/unmask? processor IRQ is already masked... */
+multiline_comment|/* Do NOT need to mask/unmask IRQ. processor is already masked. */
 id|do_irq
 c_func
 (paren
@@ -1160,13 +1213,13 @@ comma
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;** PCI only supports level triggered in order to share IRQ lines.&n;&t;** I/O SAPIC must always issue EOI.&n;&t;*/
-id|IOSAPIC_EOI
+multiline_comment|/*&n;&t;** PARISC only supports PCI devices below I/O SAPIC.&n;&t;** PCI only supports level triggered in order to share IRQ lines.&n;&t;** ergo I/O SAPIC must always issue EOI on parisc.&n;&t;**&n;&t;** i386/ia64 support ISA devices and have to deal with&n;&t;** edge-triggered interrupts too.&n;&t;*/
+id|__raw_writel
 c_func
 (paren
-id|vi-&gt;eoi_addr
-comma
 id|vi-&gt;eoi_data
+comma
+id|vi-&gt;eoi_addr
 )paren
 suffix:semicolon
 r_return
@@ -1491,7 +1544,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|vi-&gt;irqline
+id|vi-&gt;txn_data
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1564,56 +1617,34 @@ id|idx
 op_assign
 id|vi-&gt;irqline
 suffix:semicolon
-multiline_comment|/* point the window register to the lower word */
-id|WRITE_U32
+op_star
+id|dp0
+op_assign
+id|iosapic_read
 c_func
 (paren
+id|isp-&gt;isi_hpa
+comma
 id|IOSAPIC_IRDT_ENTRY
 c_func
 (paren
 id|idx
 )paren
-comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_SELECT
-)paren
-suffix:semicolon
-op_star
-id|dp0
-op_assign
-id|READ_U32
-c_func
-(paren
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
-)paren
-suffix:semicolon
-multiline_comment|/* point the window register to the higher word */
-id|WRITE_U32
-c_func
-(paren
-id|IOSAPIC_IRDT_ENTRY_HI
-c_func
-(paren
-id|idx
-)paren
-comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_SELECT
 )paren
 suffix:semicolon
 op_star
 id|dp1
 op_assign
-id|READ_U32
+id|iosapic_read
 c_func
 (paren
 id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
+comma
+id|IOSAPIC_IRDT_ENTRY_HI
+c_func
+(paren
+id|idx
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1661,50 +1692,35 @@ suffix:semicolon
 id|DBG_IRT
 c_func
 (paren
-l_string|&quot;iosapic_wr_irt_entry(): irq %d hpa %p WINDOW %p  0x%x 0x%x&bslash;n&quot;
+l_string|&quot;iosapic_wr_irt_entry(): irq %d hpa %p 0x%x 0x%x&bslash;n&quot;
 comma
 id|vi-&gt;irqline
 comma
 id|isp-&gt;isi_hpa
-comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
 comma
 id|dp0
 comma
 id|dp1
 )paren
 suffix:semicolon
-multiline_comment|/* point the window register to the lower word */
-id|WRITE_U32
+id|iosapic_write
 c_func
 (paren
+id|isp-&gt;isi_hpa
+comma
 id|IOSAPIC_IRDT_ENTRY
 c_func
 (paren
 id|vi-&gt;irqline
 )paren
 comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_SELECT
-)paren
-suffix:semicolon
-id|WRITE_U32
-c_func
-(paren
 id|dp0
-comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
 )paren
 suffix:semicolon
 multiline_comment|/* Read the window register to flush the writes down to HW  */
 id|dp0
 op_assign
-id|READ_U32
+id|readl
 c_func
 (paren
 id|isp-&gt;isi_hpa
@@ -1712,35 +1728,24 @@ op_plus
 id|IOSAPIC_REG_WINDOW
 )paren
 suffix:semicolon
-multiline_comment|/* point the window register to the higher word */
-id|WRITE_U32
+id|iosapic_write
 c_func
 (paren
+id|isp-&gt;isi_hpa
+comma
 id|IOSAPIC_IRDT_ENTRY_HI
 c_func
 (paren
 id|vi-&gt;irqline
 )paren
 comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_SELECT
-)paren
-suffix:semicolon
-id|WRITE_U32
-c_func
-(paren
 id|dp1
-comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
 )paren
 suffix:semicolon
 multiline_comment|/* Read the window register to flush the writes down to HW  */
 id|dp1
 op_assign
-id|READ_U32
+id|readl
 c_func
 (paren
 id|isp-&gt;isi_hpa
@@ -2132,23 +2137,26 @@ comma
 id|vi-&gt;eoi_addr
 )paren
 suffix:semicolon
-r_while
+r_for
 c_loop
 (paren
+suffix:semicolon
 id|t
 OL
 id|vi-&gt;eoi_addr
+suffix:semicolon
+id|t
+op_increment
 )paren
 id|printk
 c_func
 (paren
 l_string|&quot; %x&quot;
 comma
-id|READ_U32
+id|readl
 c_func
 (paren
 id|t
-op_increment
 )paren
 )paren
 suffix:semicolon
@@ -2188,26 +2196,14 @@ id|d0
 op_increment
 )paren
 (brace
-multiline_comment|/* point the window register to the lower word */
-id|WRITE_U32
-c_func
-(paren
-id|d0
-comma
-id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_SELECT
-)paren
-suffix:semicolon
-multiline_comment|/* read the word */
 id|d1
 op_assign
-id|READ_U32
+id|iosapic_read
 c_func
 (paren
 id|isp-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
+comma
+id|d0
 )paren
 suffix:semicolon
 id|printk
@@ -2227,13 +2223,13 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;** KLUGE: IRQ should not be asserted when Drivers enabling their IRQ.&n;&t;**        PCI supports level triggered in order to share IRQ lines.&n;&t;**&n;&t;** Issueing I/O SAPIC an EOI causes an interrupt iff IRQ line is&n;&t;** asserted.&n;&t;*/
-id|IOSAPIC_EOI
+multiline_comment|/*&n;&t;** Issueing I/O SAPIC an EOI causes an interrupt IFF IRQ line is&n;&t;** asserted.  IRQ generally should not be asserted when a driver&n;&t;** enables their IRQ. It can lead to &quot;interesting&quot; race conditions&n;&t;** in the driver initialization sequence.&n;&t;*/
+id|__raw_writel
 c_func
 (paren
-id|vi-&gt;eoi_addr
-comma
 id|vi-&gt;eoi_data
+comma
+id|vi-&gt;eoi_addr
 )paren
 suffix:semicolon
 )brace
@@ -2331,27 +2327,13 @@ c_func
 id|isi-&gt;isi_hpa
 )paren
 suffix:semicolon
-multiline_comment|/* point window to the version register */
-id|WRITE_U32
-c_func
-(paren
-id|IOSAPIC_REG_VERSION
-comma
-id|isi-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_SELECT
-)paren
-suffix:semicolon
-multiline_comment|/* now read the version register */
 r_return
-(paren
-id|READ_U32
+id|iosapic_read
 c_func
 (paren
 id|isi-&gt;isi_hpa
-op_plus
-id|IOSAPIC_REG_WINDOW
-)paren
+comma
+id|IOSAPIC_REG_VERSION
 )paren
 suffix:semicolon
 )brace

@@ -606,7 +606,7 @@ op_eq
 id|ACPI_TYPE_DEVICE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Get extra info for ACPI Devices objects only:&n;&t;&t; * Run the Device _HID, _UID, _CID, _STA, and _ADR methods.&n;&t;&t; *&n;&t;&t; * Note: none of these methods are required, so they may or may&n;&t;&t; * not be present for this device.  The Info.Valid bitfield is used&n;&t;&t; * to indicate which methods were found and ran successfully.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Get extra info for ACPI Devices objects only:&n;&t;&t; * Run the Device _HID, _UID, _CID, _STA, _ADR and _sx_d methods.&n;&t;&t; *&n;&t;&t; * Note: none of these methods are required, so they may or may&n;&t;&t; * not be present for this device.  The Info.Valid bitfield is used&n;&t;&t; * to indicate which methods were found and ran successfully.&n;&t;&t; */
 multiline_comment|/* Execute the Device._HID method */
 id|status
 op_assign
@@ -772,7 +772,7 @@ id|status
 (brace
 id|info.valid
 op_or_assign
-id|ACPI_VALID_STA
+id|ACPI_VALID_SXDS
 suffix:semicolon
 )brace
 id|status

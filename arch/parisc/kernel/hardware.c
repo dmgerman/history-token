@@ -2703,6 +2703,138 @@ l_string|&quot;NEC Aska Processor&quot;
 )brace
 comma
 (brace
+id|HPHW_NPROC
+comma
+l_int|0x880
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Orca Mako&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x881
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Everest Mako&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x882
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Rainier/Medel Mako Slow&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x883
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Rainier/Medel Mako Fast&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x884
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Mt. Hamilton&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x885
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Mt. Hamilton DC-&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x886
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Storm Peak Slow DC-&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x887
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Storm Peak Slow&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x888
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Storm Peak Fast DC-&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x889
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Storm Peak Fast&quot;
+)brace
+comma
+(brace
+id|HPHW_NPROC
+comma
+l_int|0x88A
+comma
+l_int|0x4
+comma
+l_int|0x91
+comma
+l_string|&quot;Crestone Peak&quot;
+)brace
+comma
+(brace
 id|HPHW_A_DIRECT
 comma
 l_int|0x004
@@ -5975,7 +6107,7 @@ l_int|0x0000C
 comma
 l_int|0x10
 comma
-l_string|&quot;IKE I/O Bus Converter Merced Port&quot;
+l_string|&quot;IKE I/O BC Merced Port&quot;
 )brace
 comma
 (brace
@@ -5987,7 +6119,7 @@ l_int|0x0000C
 comma
 l_int|0x00
 comma
-l_string|&quot;IKE I/O Bus Converter Ropes Port&quot;
+l_string|&quot;IKE I/O BC Ropes Port&quot;
 )brace
 comma
 (brace
@@ -5999,7 +6131,7 @@ l_int|0x0000C
 comma
 l_int|0x10
 comma
-l_string|&quot;REO I/O Bus Converter Merced Port&quot;
+l_string|&quot;REO I/O BC Merced Port&quot;
 )brace
 comma
 (brace
@@ -6011,7 +6143,19 @@ l_int|0x0000C
 comma
 l_int|0x00
 comma
-l_string|&quot;REO I/O Bus Converter Ropes Port&quot;
+l_string|&quot;REO I/O BC Ropes Port&quot;
+)brace
+comma
+(brace
+id|HPHW_BCPORT
+comma
+l_int|0x784
+comma
+l_int|0x0000C
+comma
+l_int|0x00
+comma
+l_string|&quot;Pluto I/O BC Ropes Port&quot;
 )brace
 comma
 (brace
@@ -6060,6 +6204,30 @@ comma
 l_int|0x00
 comma
 l_string|&quot;Saga PCI Bridge&quot;
+)brace
+comma
+(brace
+id|HPHW_BRIDGE
+comma
+l_int|0x783
+comma
+l_int|0x0000A
+comma
+l_int|0x00
+comma
+l_string|&quot;Mercury PCI Bridge&quot;
+)brace
+comma
+(brace
+id|HPHW_BRIDGE
+comma
+l_int|0x784
+comma
+l_int|0x0000A
+comma
+l_int|0x00
+comma
+l_string|&quot;Quicksilver AGP Bridge&quot;
 )brace
 comma
 (brace
@@ -13719,6 +13887,18 @@ l_string|&quot;NEC-IOS BC System Bus Port&quot;
 )brace
 comma
 (brace
+id|HPHW_IOA
+comma
+l_int|0x880
+comma
+l_int|0x0000C
+comma
+l_int|0x10
+comma
+l_string|&quot;Pluto BC McKinley Port&quot;
+)brace
+comma
+(brace
 id|HPHW_MEMORY
 comma
 l_int|0x002
@@ -13779,6 +13959,18 @@ l_string|&quot;715/160 L2 Upgrade&quot;
 )brace
 comma
 (brace
+id|HPHW_MEMORY
+comma
+l_int|0x0AF
+comma
+l_int|0x00009
+comma
+l_int|0x00
+comma
+l_string|&quot;Everest Mako Memory&quot;
+)brace
+comma
+(brace
 id|HPHW_OTHER
 comma
 l_int|0x004
@@ -13824,6 +14016,18 @@ comma
 l_int|0x00
 comma
 l_string|&quot;LGB Control&quot;
+)brace
+comma
+(brace
+id|HPHW_MC
+comma
+l_int|0x004
+comma
+l_int|0x000C0
+comma
+l_int|0x00
+comma
+l_string|&quot;BMC IPMI Mgmt Ctlr&quot;
 )brace
 comma
 (brace
@@ -14662,7 +14866,7 @@ comma
 id|mako
 )braket
 (brace
-l_string|&quot;PA8800 (MAKO)&quot;
+l_string|&quot;PA8800 (Mako)&quot;
 comma
 l_string|&quot;2.0&quot;
 )brace

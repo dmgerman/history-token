@@ -8802,6 +8802,8 @@ r_return
 id|generic_ide_ioctl
 c_func
 (paren
+id|file
+comma
 id|bdev
 comma
 id|cmd

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
@@ -43,6 +44,13 @@ id|x86_cpu_to_apicid
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|x86_cpu_to_apicid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|x86_cpu_to_apicid
+)paren
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static

@@ -40,21 +40,9 @@ id|acpi_status
 id|acpi_psx_execute
 (paren
 r_struct
-id|acpi_namespace_node
+id|acpi_parameter_info
 op_star
-id|method_node
-comma
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|params
-comma
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|return_obj_desc
+id|info
 )paren
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Parser interfaces&n; *&n; *****************************************************************************/

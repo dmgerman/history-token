@@ -6,14 +6,6 @@ macro_line|#include &lt;asm/scatterlist.h&gt;
 multiline_comment|/*&n;** HP PCI platforms generally support multiple bus adapters.&n;**    (workstations 1-~4, servers 2-~32)&n;**&n;** Newer platforms number the busses across PCI bus adapters *sparsely*.&n;** E.g. 0, 8, 16, ...&n;**&n;** Under a PCI bus, most HP platforms support PPBs up to two or three&n;** levels deep. See &quot;Bit3&quot; product line. &n;*/
 DECL|macro|PCI_MAX_BUSSES
 mdefine_line|#define PCI_MAX_BUSSES&t;256
-multiline_comment|/* [soapbox on]&n;** Who the hell can develop stuff without ASSERT or VASSERT?&n;** No one understands all the modules across all platforms.&n;** For linux add another dimension - processor architectures.&n;**&n;** This should be a standard/global macro used liberally&n;** in all code. Every respectable engineer I know in HP&n;** would support this argument. - grant&n;** [soapbox off]&n;*/
-macro_line|#ifdef PCI_DEBUG
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk(&quot;&bslash;n%s:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;, &bslash;&n;&t;&t;       __FILE__, __LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
-macro_line|#else
-DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr)
-macro_line|#endif
 multiline_comment|/*&n;** pci_hba_data (aka H2P_OBJECT in HP/UX)&n;**&n;** This is the &quot;common&quot; or &quot;base&quot; data structure which HBA drivers&n;** (eg Dino or LBA) are required to place at the top of their own&n;** platform_data structure.  I&squot;ve heard this called &quot;C inheritance&quot; too.&n;**&n;** Data needed by pcibios layer belongs here.&n;*/
 DECL|struct|pci_hba_data
 r_struct

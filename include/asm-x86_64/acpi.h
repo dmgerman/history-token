@@ -406,6 +406,12 @@ r_extern
 r_int
 id|acpi_pci_disabled
 suffix:semicolon
+r_extern
+id|u8
+id|x86_acpiid_to_apicid
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*_ASM_ACPI_H*/
 eof

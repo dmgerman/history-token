@@ -215,12 +215,17 @@ macro_line|#else
 DECL|macro|pte_flags
 mdefine_line|#define pte_flags(x)&t;((x).flags)
 macro_line|#endif
+multiline_comment|/* These do not work lvalues, so make sure we don&squot;t use them as such. */
 DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)&t;((x).pmd)
+mdefine_line|#define pmd_val(x)&t;((x).pmd + 0)
 DECL|macro|pgd_val
-mdefine_line|#define pgd_val(x)&t;((x).pgd)
+mdefine_line|#define pgd_val(x)&t;((x).pgd + 0)
 DECL|macro|pgprot_val
 mdefine_line|#define pgprot_val(x)&t;((x).pgprot)
+DECL|macro|__pmd_val_set
+mdefine_line|#define __pmd_val_set(x,n) (x).pmd = (n)
+DECL|macro|__pgd_val_set
+mdefine_line|#define __pgd_val_set(x,n) (x).pgd = (n)
 DECL|macro|__pte
 mdefine_line|#define __pte(x)&t;((pte_t) { (x) } )
 DECL|macro|__pmd
@@ -284,13 +289,6 @@ r_return
 id|order
 suffix:semicolon
 )brace
-macro_line|#ifdef __LP64__
-DECL|macro|MAX_PHYSMEM_RANGES
-mdefine_line|#define MAX_PHYSMEM_RANGES 8 /* Fix the size for now (current known max is 3) */
-macro_line|#else
-DECL|macro|MAX_PHYSMEM_RANGES
-mdefine_line|#define MAX_PHYSMEM_RANGES 1 /* First range is only range that fits in 32 bits */
-macro_line|#endif
 DECL|struct|__physmem_range
 r_typedef
 r_struct
@@ -371,20 +369,20 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x)-PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long)(x)+PAGE_OFFSET))
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+macro_line|#endif /* CONFIG_DISCONTIGMEM */
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
-macro_line|#ifndef CONFIG_DISCONTIGMEM
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)     (mem_map + (__pa(kaddr) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
-macro_line|#endif  /* !CONFIG_DISCONTIGMEM */
+mdefine_line|#define virt_to_page(kaddr)     pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */

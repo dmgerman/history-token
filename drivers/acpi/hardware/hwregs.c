@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwregs&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  Flags           - Lock the hardware or not&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  Flags           - Lock the hardware or not&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_acpi_status
 id|acpi_hw_clear_acpi_status
@@ -136,6 +136,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_clear_gpe_block
+comma
+id|ACPI_ISR
 )paren
 suffix:semicolon
 id|unlock_and_exit
@@ -185,10 +187,9 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-r_union
-id|acpi_operand_object
-op_star
-id|obj_desc
+r_struct
+id|acpi_parameter_info
+id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -219,6 +220,10 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Evaluate the namespace object containing the values for this state&n;&t; */
+id|info.parameters
+op_assign
+l_int|NULL
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ns_evaluate_by_name
@@ -232,10 +237,8 @@ id|acpi_gbl_sleep_state_names
 id|sleep_state
 )braket
 comma
-l_int|NULL
-comma
 op_amp
-id|obj_desc
+id|info
 )paren
 suffix:semicolon
 r_if
@@ -277,7 +280,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|obj_desc
+id|info.return_object
 )paren
 (brace
 id|ACPI_REPORT_ERROR
@@ -299,7 +302,7 @@ c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc
+id|info.return_object
 )paren
 op_ne
 id|ACPI_TYPE_PACKAGE
@@ -322,7 +325,7 @@ r_else
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;package.count
+id|info.return_object-&gt;package.count
 OL
 l_int|2
 )paren
@@ -347,7 +350,7 @@ c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc-&gt;package.elements
+id|info.return_object-&gt;package.elements
 (braket
 l_int|0
 )braket
@@ -359,7 +362,7 @@ op_logical_or
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-id|obj_desc-&gt;package.elements
+id|info.return_object-&gt;package.elements
 (braket
 l_int|1
 )braket
@@ -376,7 +379,7 @@ l_string|&quot;Sleep State package elements are not both Integers (%s, %s)&bslas
 comma
 id|acpi_ut_get_object_type_name
 (paren
-id|obj_desc-&gt;package.elements
+id|info.return_object-&gt;package.elements
 (braket
 l_int|0
 )braket
@@ -384,7 +387,7 @@ l_int|0
 comma
 id|acpi_ut_get_object_type_name
 (paren
-id|obj_desc-&gt;package.elements
+id|info.return_object-&gt;package.elements
 (braket
 l_int|1
 )braket
@@ -407,7 +410,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|obj_desc-&gt;package.elements
+id|info.return_object-&gt;package.elements
 (braket
 l_int|0
 )braket
@@ -422,7 +425,7 @@ op_assign
 id|u8
 )paren
 (paren
-id|obj_desc-&gt;package.elements
+id|info.return_object-&gt;package.elements
 (braket
 l_int|1
 )braket
@@ -452,11 +455,11 @@ id|acpi_gbl_sleep_state_names
 id|sleep_state
 )braket
 comma
-id|obj_desc
+id|info.return_object
 comma
 id|acpi_ut_get_object_type_name
 (paren
-id|obj_desc
+id|info.return_object
 )paren
 )paren
 )paren
@@ -464,7 +467,7 @@ suffix:semicolon
 )brace
 id|acpi_ut_remove_reference
 (paren
-id|obj_desc
+id|info.return_object
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

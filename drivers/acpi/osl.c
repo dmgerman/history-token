@@ -28,7 +28,7 @@ r_struct
 id|acpi_os_dpc
 (brace
 DECL|member|function
-id|OSD_EXECUTION_CALLBACK
+id|acpi_osd_exec_callback
 id|function
 suffix:semicolon
 DECL|member|context
@@ -61,7 +61,7 @@ id|acpi_irq_irq
 suffix:semicolon
 DECL|variable|acpi_irq_handler
 r_static
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|acpi_irq_handler
 suffix:semicolon
 DECL|variable|acpi_irq_context
@@ -80,6 +80,18 @@ suffix:semicolon
 id|acpi_status
 DECL|function|acpi_os_initialize
 id|acpi_os_initialize
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|AE_OK
+suffix:semicolon
+)brace
+id|acpi_status
+DECL|function|acpi_os_initialize1
+id|acpi_os_initialize1
 c_func
 (paren
 r_void
@@ -748,7 +760,7 @@ c_func
 id|u32
 id|gsi
 comma
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|handler
 comma
 r_void
@@ -850,7 +862,7 @@ c_func
 id|u32
 id|irq
 comma
-id|OSD_HANDLER
+id|acpi_osd_handler
 id|handler
 )paren
 (brace
@@ -1546,6 +1558,13 @@ r_return
 id|AE_ERROR
 suffix:semicolon
 )brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|raw_pci_ops
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|raw_pci_ops
@@ -1646,6 +1665,13 @@ r_return
 id|AE_ERROR
 suffix:semicolon
 )brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|raw_pci_ops
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|raw_pci_ops
@@ -2176,7 +2202,7 @@ c_func
 id|u32
 id|priority
 comma
-id|OSD_EXECUTION_CALLBACK
+id|acpi_osd_exec_callback
 id|function
 comma
 r_void
@@ -3536,11 +3562,10 @@ id|acpi_serialize_setup
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wake and Run-Time GPES are expected to be separate.&n; * We disable wake-GPEs at run-time to prevent spurious&n; * interrupts.&n; *&n; * However, if a system exists that shares Wake and&n; * Run-time events on the same GPE this flag is available&n; * to tell Linux to keep the wake-time GPEs enabled at run-time.&n; */
-r_static
 r_int
 id|__init
-DECL|function|acpi_leave_gpes_disabled_setup
-id|acpi_leave_gpes_disabled_setup
+DECL|function|acpi_wake_gpes_always_on_setup
+id|acpi_wake_gpes_always_on_setup
 c_func
 (paren
 r_char
@@ -3553,12 +3578,12 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;leave wake GPEs disabled&bslash;n&quot;
+l_string|&quot;wake GPEs not disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_gbl_leave_wake_gpes_disabled
 op_assign
-id|TRUE
+id|FALSE
 suffix:semicolon
 r_return
 l_int|1
@@ -3567,9 +3592,9 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;acpi_leave_gpes_disabled&quot;
+l_string|&quot;acpi_wake_gpes_always_on&quot;
 comma
-id|acpi_leave_gpes_disabled_setup
+id|acpi_wake_gpes_always_on_setup
 )paren
 suffix:semicolon
 eof

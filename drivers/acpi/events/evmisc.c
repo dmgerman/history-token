@@ -168,7 +168,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;notify value: 0x%2.2x **Device Specific**&bslash;n&quot;
+l_string|&quot;Notify value: 0x%2.2X **Device Specific**&bslash;n&quot;
 comma
 id|notify_value
 )paren
@@ -345,12 +345,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;No notify handler for [%4.4s] node %p&bslash;n&quot;
+l_string|&quot;No notify handler for Notify(%4.4s, %X) node %p&bslash;n&quot;
 comma
 id|acpi_ut_get_node_name
 (paren
 id|node
 )paren
+comma
+id|notify_value
 comma
 id|node
 )paren
@@ -986,6 +988,8 @@ op_assign
 id|acpi_ev_walk_gpe_list
 (paren
 id|acpi_hw_disable_gpe_block
+comma
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Remove SCI handler */
@@ -1016,6 +1020,16 @@ l_string|&quot;Could not remove SCI handler&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Deallocate all handler objects installed within GPE info structs */
+id|status
+op_assign
+id|acpi_ev_walk_gpe_list
+(paren
+id|acpi_ev_delete_gpe_handlers
+comma
+id|ACPI_NOT_ISR
+)paren
+suffix:semicolon
 multiline_comment|/* Return to original mode if necessary */
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *    interfaces to log Chassis Codes via PDC (firmware)&n; *&n; *    Copyright (C) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; *    Copyright (C) 2002-2003 Thibaut Varene &lt;varenet@esiee.fr&gt;&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; *    interfaces to log Chassis Codes via PDC (firmware)&n; *&n; *    Copyright (C) 2002 Laurent Canet &lt;canetl@esiee.fr&gt;&n; *    Copyright (C) 2002-2004 Thibaut VARENE &lt;varenet@esiee.fr&gt;&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|PDC_CHASSIS_DEBUG
 macro_line|#undef PDC_CHASSIS_DEBUG
 macro_line|#ifdef PDC_CHASSIS_DEBUG
@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#ifdef CONFIG_PDC_CHASSIS
 DECL|variable|pdc_chassis_old
 r_static
@@ -21,6 +23,50 @@ r_int
 id|pdc_chassis_old
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|pdc_chassis_enabled
+r_static
+r_int
+r_int
+id|pdc_chassis_enabled
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/**&n; * pdc_chassis_setup() - Enable/disable pdc_chassis code at boot time.&n; * @str configuration param: 0 to disable chassis log&n; * @return 1&n; */
+DECL|function|pdc_chassis_setup
+r_static
+r_int
+id|__init
+id|pdc_chassis_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+multiline_comment|/*panic_timeout = simple_strtoul(str, NULL, 0);*/
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|pdc_chassis_enabled
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;pdcchassis=&quot;
+comma
+id|pdc_chassis_setup
+)paren
 suffix:semicolon
 multiline_comment|/** &n; * pdc_chassis_checkold() - Checks for old PDC_CHASSIS compatibility&n; * @pdc_chassis_old: 1 if old pdc chassis style&n; * &n; * Currently, only E class and A180 are known to work with this.&n; * Inspired by Christoph Plattner&n; */
 DECL|function|pdc_chassis_checkold
@@ -199,6 +245,12 @@ id|handle
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdc_chassis_enabled
+)paren
+(brace
 id|DPRINTK
 c_func
 (paren
@@ -224,7 +276,6 @@ c_func
 )paren
 )paren
 (brace
-macro_line|#ifdef __LP64__&t;/* see pdc_chassis_send_status() */
 id|printk
 c_func
 (paren
@@ -236,7 +287,6 @@ id|handle
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* __LP64__ */
 )brace
 r_else
 r_if
@@ -283,6 +333,7 @@ id|pdc_chassis_reboot_block
 )paren
 suffix:semicolon
 )brace
+)brace
 macro_line|#endif /* CONFIG_PDC_CHASSIS */
 )brace
 multiline_comment|/** &n; * pdc_chassis_send_status() - Sends a predefined message to the chassis,&n; * and changes the front panel LEDs according to the new system state&n; * @retval: PDC call return value.&n; *&n; * Only machines with 64 bits PDC PAT and those reported in&n; * pdc_chassis_checkold() are supported atm.&n; * &n; * returns 0 if no error, -1 if no supported PDC is present or invalid message,&n; * else returns the appropriate PDC error code.&n; * &n; * For a list of predefined messages, see asm-parisc/pdc_chassis.h&n; */
@@ -302,6 +353,12 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PDC_CHASSIS
+r_if
+c_cond
+(paren
+id|pdc_chassis_enabled
+)paren
+(brace
 id|DPRINTK
 c_func
 (paren
@@ -313,7 +370,7 @@ comma
 id|message
 )paren
 suffix:semicolon
-macro_line|#ifdef __LP64__&t;/* pdc_pat_chassis_send_log is defined only when #ifdef __LP64__ */
+macro_line|#ifdef CONFIG_PARISC64
 r_if
 c_cond
 (paren
@@ -536,7 +593,9 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif /* __LP64__ */
+macro_line|#endif /* CONFIG_PARISC64 */
+)brace
+multiline_comment|/* if (pdc_chassis_enabled) */
 macro_line|#endif /* CONFIG_PDC_CHASSIS */
 r_return
 id|retval
