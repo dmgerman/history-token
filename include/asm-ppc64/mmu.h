@@ -10,6 +10,13 @@ r_int
 r_int
 id|mm_context_t
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|CONTEXT_LOW_HPAGES
+mdefine_line|#define CONTEXT_LOW_HPAGES&t;(1UL&lt;&lt;63)
+macro_line|#else
+DECL|macro|CONTEXT_LOW_HPAGES
+mdefine_line|#define CONTEXT_LOW_HPAGES&t;0
+macro_line|#endif
 multiline_comment|/*&n; * Define the size of the cache used for segment table entries.  The first&n; * entry is used as a cache pointer, therefore the actual number of entries&n; * stored is one less than defined here.  Do not change this value without&n; * considering the impact it will have on the layout of the paca in paca.h.&n; */
 DECL|macro|STAB_CACHE_SIZE
 mdefine_line|#define STAB_CACHE_SIZE 16

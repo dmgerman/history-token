@@ -17,6 +17,37 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 DECL|macro|PAGE_OFFSET_MASK
 mdefine_line|#define PAGE_OFFSET_MASK (PAGE_SIZE-1)
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|HPAGE_SHIFT
+mdefine_line|#define HPAGE_SHIFT&t;24
+DECL|macro|HPAGE_SIZE
+mdefine_line|#define HPAGE_SIZE&t;((1UL) &lt;&lt; HPAGE_SHIFT)
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+DECL|macro|HUGETLB_PAGE_ORDER
+mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
+multiline_comment|/* For 64-bit processes the hugepage range is 1T-1.5T */
+DECL|macro|TASK_HPAGE_BASE
+mdefine_line|#define TASK_HPAGE_BASE &t;(0x0000010000000000UL)
+DECL|macro|TASK_HPAGE_END
+mdefine_line|#define TASK_HPAGE_END &t;(0x0000018000000000UL)
+multiline_comment|/* For 32-bit processes the hugepage range is 2-3G */
+DECL|macro|TASK_HPAGE_BASE_32
+mdefine_line|#define TASK_HPAGE_BASE_32&t;(0x80000000UL)
+DECL|macro|TASK_HPAGE_END_32
+mdefine_line|#define TASK_HPAGE_END_32&t;(0xc0000000UL)
+DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
+mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
+DECL|macro|is_hugepage_only_range
+mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;( ((addr &gt; (TASK_HPAGE_BASE-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  ((current-&gt;mm-&gt;context &amp; CONTEXT_LOW_HPAGES) &amp;&amp; &bslash;&n;&t;   (addr &gt; (TASK_HPAGE_BASE_32-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END_32)) )
+DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+DECL|macro|in_hugepage_area
+mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;((cur_cpu_spec-&gt;cpu_features &amp; CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ((((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  (((context) &amp; CONTEXT_LOW_HPAGES) &amp;&amp; &bslash;&n;&t;   (((addr) &gt;= TASK_HPAGE_BASE_32) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32)))))
+macro_line|#else /* !CONFIG_HUGETLB_PAGE */
+DECL|macro|in_hugepage_area
+mdefine_line|#define in_hugepage_area(mm, addr)&t;0
+macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 DECL|macro|SID_SHIFT
 mdefine_line|#define SID_SHIFT       28
 DECL|macro|SID_MASK
