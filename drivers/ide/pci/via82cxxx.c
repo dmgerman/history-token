@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Version 3.36&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; * Documentation:&n; *&t;Obsolete device documentation publically available from via.com.tw&n; *&t;Current device documentation available under NDA only&n; */
+multiline_comment|/*&n; *&n; * Version 3.37&n; *&n; * VIA IDE driver for Linux. Supported southbridges:&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233, vt8233c, vt8233a,&n; *   vt8235, vt8237&n; *&n; * Copyright (c) 2000-2002 Vojtech Pavlik&n; *&n; * Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; * Documentation:&n; *&t;Obsolete device documentation publically available from via.com.tw&n; *&t;Current device documentation available under NDA only&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -89,7 +89,6 @@ id|via_isa_bridges
 )braket
 op_assign
 (brace
-macro_line|#ifdef FUTURE_BRIDGES
 (brace
 l_string|&quot;vt8237&quot;
 comma
@@ -100,9 +99,10 @@ comma
 l_int|0x2f
 comma
 id|VIA_UDMA_133
+op_or
+id|VIA_BAD_AST
 )brace
 comma
-macro_line|#endif
 (brace
 l_string|&quot;vt8235&quot;
 comma
@@ -560,7 +560,7 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     3.36&quot;
+l_string|&quot;Driver Version:                     3.37&quot;
 )paren
 suffix:semicolon
 id|via_print
