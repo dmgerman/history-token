@@ -2181,9 +2181,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|pcibios_set_mwi
+DECL|function|pcibios_prep_mwi
 r_int
-id|pcibios_set_mwi
+id|pcibios_prep_mwi
 c_func
 (paren
 r_struct
