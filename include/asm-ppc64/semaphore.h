@@ -183,6 +183,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Try to get the semaphore, take the slow path if we fail.&n;&t; */
 r_if
 c_cond
@@ -234,6 +239,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
