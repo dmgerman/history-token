@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
+multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9072,6 +9072,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The serial driver boot-time initialization code!&n; */
 DECL|function|rs_8xx_init
+r_static
 r_int
 id|__init
 id|rs_8xx_init
@@ -10254,6 +10255,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|rs_8xx_init
+id|module_init
+c_func
+(paren
+id|rs_8xx_init
+)paren
+suffix:semicolon
 multiline_comment|/* This must always be called before the rs_8xx_init() function, otherwise&n; * it blows away the port control information.&n;*/
 DECL|function|serial_console_setup
 r_static
