@@ -341,7 +341,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 suffix:colon
 id|crypto_exit_compress_ops
 c_func
