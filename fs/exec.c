@@ -1620,7 +1620,7 @@ op_assign
 id|arch_align_stack
 c_func
 (paren
-id|STACK_TOP
+id|stack_top
 op_minus
 id|MAX_ARG_PAGES
 op_star

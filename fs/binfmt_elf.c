@@ -27,6 +27,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -2015,6 +2016,68 @@ DECL|macro|INTERPRETER_AOUT
 mdefine_line|#define INTERPRETER_AOUT 1
 DECL|macro|INTERPRETER_ELF
 mdefine_line|#define INTERPRETER_ELF 2
+DECL|function|randomize_stack_top
+r_static
+r_int
+r_int
+id|randomize_stack_top
+c_func
+(paren
+r_int
+r_int
+id|stack_top
+)paren
+(brace
+r_int
+r_int
+id|random_variable
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_RANDOMIZE
+)paren
+id|random_variable
+op_assign
+id|get_random_int
+c_func
+(paren
+)paren
+op_mod
+(paren
+l_int|8
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_STACK_GROWSUP
+r_return
+id|PAGE_ALIGN
+c_func
+(paren
+id|stack_top
+op_plus
+id|random_variable
+)paren
+suffix:semicolon
+macro_line|#else
+r_return
+id|PAGE_ALIGN
+c_func
+(paren
+id|stack_top
+op_minus
+id|random_variable
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 DECL|function|load_elf_binary
 r_static
 r_int
@@ -3147,7 +3210,11 @@ c_func
 (paren
 id|bprm
 comma
+id|randomize_stack_top
+c_func
+(paren
 id|STACK_TOP
+)paren
 comma
 id|executable_stack
 )paren
