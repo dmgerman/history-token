@@ -489,26 +489,14 @@ DECL|macro|SPRN_SRR0
 mdefine_line|#define&t;SPRN_SRR0&t;0x01A&t;/* Save/Restore Register 0 */
 DECL|macro|SPRN_SRR1
 mdefine_line|#define&t;SPRN_SRR1&t;0x01B&t;/* Save/Restore Register 1 */
-DECL|macro|SPRN_SRR2
-mdefine_line|#define&t;SPRN_SRR2&t;0x3DE&t;/* Save/Restore Register 2 */
-DECL|macro|SPRN_SRR3
-mdefine_line|#define&t;SPRN_SRR3 &t;0x3DF&t;/* Save/Restore Register 3 */
-DECL|macro|SPRN_TBHI
-mdefine_line|#define&t;SPRN_TBHI&t;0x3DC&t;/* Time Base High */
-DECL|macro|SPRN_TBHU
-mdefine_line|#define&t;SPRN_TBHU&t;0x3CC&t;/* Time Base High User-mode */
-DECL|macro|SPRN_TBLO
-mdefine_line|#define&t;SPRN_TBLO&t;0x3DD&t;/* Time Base Low */
-DECL|macro|SPRN_TBLU
-mdefine_line|#define&t;SPRN_TBLU&t;0x3CD&t;/* Time Base Low User-mode */
 DECL|macro|SPRN_TBRL
-mdefine_line|#define&t;SPRN_TBRL&t;0x10D&t;/* Time Base Read Lower Register */
+mdefine_line|#define&t;SPRN_TBRL&t;0x10C&t;/* Time Base Read Lower Register (user, R/O) */
 DECL|macro|SPRN_TBRU
-mdefine_line|#define&t;SPRN_TBRU&t;0x10C&t;/* Time Base Read Upper Register */
+mdefine_line|#define&t;SPRN_TBRU&t;0x10D&t;/* Time Base Read Upper Register (user, R/O) */
 DECL|macro|SPRN_TBWL
-mdefine_line|#define&t;SPRN_TBWL&t;0x11D&t;/* Time Base Write Lower Register */
+mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, W/O) */
 DECL|macro|SPRN_TBWU
-mdefine_line|#define&t;SPRN_TBWU&t;0x11C&t;/* Time Base Write Upper Register */
+mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Write Upper Register (super, W/O) */
 DECL|macro|SPRN_TCR
 mdefine_line|#define&t;SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
 DECL|macro|TCR_WP
@@ -970,6 +958,10 @@ DECL|macro|mtspr
 mdefine_line|#define mtspr(rn, v)&t;asm volatile(&quot;mtspr &quot; __stringify(rn) &quot;,%0&quot; : : &quot;r&quot; (v))
 DECL|macro|mftb
 mdefine_line|#define mftb()&t;&t;({unsigned long rval;&t;&bslash;&n;&t;&t;&t;asm volatile(&quot;mftb %0&quot; : &quot;=r&quot; (rval)); rval;})
+DECL|macro|mttbl
+mdefine_line|#define mttbl(v)&t;asm volatile(&quot;mttbl %0&quot;:: &quot;r&quot;(v))
+DECL|macro|mttbu
+mdefine_line|#define mttbu(v)&t;asm volatile(&quot;mttbu %0&quot;:: &quot;r&quot;(v))
 multiline_comment|/* iSeries CTRL register (for runlatch) */
 DECL|macro|CTRLT
 mdefine_line|#define CTRLT&t;&t;0x098

@@ -2170,7 +2170,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|do_openpic_setup_cpu
 r_void
-id|__init
+id|__devinit
 id|do_openpic_setup_cpu
 c_func
 (paren

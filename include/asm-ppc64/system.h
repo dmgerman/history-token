@@ -331,14 +331,6 @@ op_star
 suffix:semicolon
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev, next, last) __switch_to((prev), (next))
-DECL|macro|prepare_arch_schedule
-mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|finish_arch_schedule
-mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|prepare_arch_switch
-mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
-DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 r_struct
 id|thread_struct
 suffix:semicolon
@@ -371,18 +363,8 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|cli
-mdefine_line|#define cli()&t;local_irq_disable()
-DECL|macro|sti
-mdefine_line|#define sti()&t;local_irq_enable()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(flags)&t;local_save_flags(flags)
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(flags)&t;local_irq_restore(flags)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;local_irq_save(flags)
-macro_line|#endif /* !CONFIG_SMP */
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;!(flags &amp; MSR_EE);&t;&t;&t;&bslash;&n;})
 DECL|function|__is_processor
 r_static
 id|__inline__
