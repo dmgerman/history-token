@@ -514,6 +514,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;vxfs: unable to read inode %ld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon

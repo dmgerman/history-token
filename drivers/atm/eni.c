@@ -13458,7 +13458,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;eni_detect: skb-&gt;cb is too small (%d &lt; %d)&bslash;n&quot;
+l_string|&quot;eni_detect: skb-&gt;cb is too small (%Zd &lt; %Zd)&bslash;n&quot;
 comma
 r_sizeof
 (paren
