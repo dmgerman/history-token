@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: write.c,v 1.85 2004/07/13 08:58:25 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: write.c,v 1.86 2004/11/13 10:44:26 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -1174,6 +1174,13 @@ id|raw
 )paren
 suffix:semicolon
 multiline_comment|/* Link into per-inode list */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
 id|raw-&gt;next_in_ino
 op_assign
 id|f-&gt;inocache-&gt;nodes
@@ -1181,6 +1188,13 @@ suffix:semicolon
 id|f-&gt;inocache-&gt;nodes
 op_assign
 id|raw
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
 suffix:semicolon
 id|D1
 c_func
@@ -1943,6 +1957,13 @@ comma
 id|raw
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
 id|raw-&gt;next_in_ino
 op_assign
 id|f-&gt;inocache-&gt;nodes
@@ -1950,6 +1971,13 @@ suffix:semicolon
 id|f-&gt;inocache-&gt;nodes
 op_assign
 id|raw
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
 suffix:semicolon
 r_if
 c_cond
