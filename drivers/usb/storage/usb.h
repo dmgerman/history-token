@@ -71,8 +71,6 @@ DECL|macro|US_FL_FIX_INQUIRY
 mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing   */
 DECL|macro|US_FL_FIX_CAPACITY
 mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
-DECL|macro|US_FL_DEV_ATTACHED
-mdefine_line|#define US_FL_DEV_ATTACHED    0x00010000 /* is the device attached?&t;    */
 DECL|macro|US_FLIDX_CAN_CANCEL
 mdefine_line|#define US_FLIDX_CAN_CANCEL  18  /* 0x00040000  okay to cancel current_urb? */
 DECL|macro|US_FLIDX_CANCEL_SG
@@ -151,7 +149,7 @@ DECL|struct|us_data
 r_struct
 id|us_data
 (brace
-multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; *    (o) DEV_ATTACHED in flags should change whenever pusb_dev does&n;&t; */
+multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; */
 DECL|member|dev_semaphore
 r_struct
 id|semaphore

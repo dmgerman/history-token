@@ -521,22 +521,7 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* if the device was removed, then we&squot;re already reset */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|us-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-)paren
-)paren
-id|result
-op_assign
-id|SUCCESS
-suffix:semicolon
-r_else
+multiline_comment|/* do the reset */
 id|result
 op_assign
 id|us
@@ -547,6 +532,7 @@ c_func
 id|us
 )paren
 suffix:semicolon
+multiline_comment|/* unlock */
 id|up
 c_func
 (paren
@@ -578,6 +564,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This resets the device port, and simulates the device&n; * disconnect/reconnect for all drivers which have claimed&n; * interfaces, including ourself. */
 multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
+multiline_comment|/* FIXME: This needs to be re-examined in the face of the new&n; * hotplug system -- this will implicitly cause a detach/reattach of&n; * usb-storage, which is not what we want now.&n; *&n; * Can we just skip over usb-storage in the while loop?&n; */
 DECL|function|usb_storage_bus_reset
 r_static
 r_int
@@ -593,6 +580,21 @@ r_struct
 id|us_data
 op_star
 id|us
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
+multiline_comment|/* we use the usb_reset_device() function to handle this for us */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;bus_reset() called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|us
 op_assign
 (paren
 r_struct
@@ -604,81 +606,10 @@ id|srb-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_int
-id|result
-suffix:semicolon
-r_struct
-id|usb_device
-op_star
-id|pusb_dev_save
-suffix:semicolon
-multiline_comment|/* we use the usb_reset_device() function to handle this for us */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;bus_reset() called&bslash;n&quot;
-)paren
-suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
 id|srb-&gt;host
-)paren
-suffix:semicolon
-multiline_comment|/* if the device has been removed, this worked */
-id|down
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|us-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- device removed already&bslash;n&quot;
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|srb-&gt;host
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
-suffix:semicolon
-)brace
-id|pusb_dev_save
-op_assign
-id|us-&gt;pusb_dev
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 multiline_comment|/* attempt to reset the port */
@@ -687,7 +618,7 @@ op_assign
 id|usb_reset_device
 c_func
 (paren
-id|pusb_dev_save
+id|us-&gt;pusb_dev
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -727,7 +658,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|pusb_dev_save-&gt;actconfig-&gt;desc.bNumInterfaces
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -739,7 +670,7 @@ op_star
 id|intf
 op_assign
 op_amp
-id|pusb_dev_save-&gt;actconfig-&gt;interface
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;interface
 (braket
 id|i
 )braket
@@ -959,24 +890,6 @@ c_func
 l_string|&quot;    Transport: %s&bslash;n&quot;
 comma
 id|us-&gt;transport_name
-)paren
-suffix:semicolon
-multiline_comment|/* show attached status of the device */
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;     Attached: %s&bslash;n&quot;
-comma
-(paren
-id|us-&gt;flags
-op_amp
-id|US_FL_DEV_ATTACHED
-ques
-c_cond
-l_string|&quot;Yes&quot;
-suffix:colon
-l_string|&quot;No&quot;
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate start of next buffer, and return value.&n;&t; */
