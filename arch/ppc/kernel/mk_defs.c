@@ -1092,6 +1092,14 @@ suffix:semicolon
 id|DEFINE
 c_func
 (paren
+id|CLONE_UNTRACED
+comma
+id|CLONE_UNTRACED
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
 id|MM_PGD
 comma
 m_offsetof

@@ -1394,6 +1394,14 @@ comma
 id|CLONE_VM
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CLONE_UNTRACED
+comma
+id|CLONE_UNTRACED
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
