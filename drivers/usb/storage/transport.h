@@ -21,6 +21,10 @@ macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
 DECL|macro|US_PR_EUSB_SDDR09
 mdefine_line|#define US_PR_EUSB_SDDR09&t;0x81&t;/* SCM-SCSI bridge for&n;&t;&t;&t;&t;&t;&t;SDDR-09 */
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
+DECL|macro|US_PR_SDDR55
+mdefine_line|#define US_PR_SDDR55&t;0x82&t;&t;/* SDDR-55 (made up) */
+macro_line|#endif
 DECL|macro|US_PR_DPCM_USB
 mdefine_line|#define US_PR_DPCM_USB  0xf0&t;&t;/* Combination CB/SDDR09 */
 macro_line|#ifdef CONFIG_USB_STORAGE_FREECOM

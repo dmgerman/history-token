@@ -12,6 +12,9 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
 macro_line|#include &quot;sddr09.h&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
+macro_line|#include &quot;sddr55.h&quot;
+macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_DPCM
 macro_line|#include &quot;dpcm.h&quot;
 macro_line|#endif
@@ -3256,6 +3259,29 @@ suffix:semicolon
 id|ss-&gt;transport_reset
 op_assign
 id|usb_stor_CB_reset
+suffix:semicolon
+id|ss-&gt;max_lun
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
+r_case
+id|US_PR_SDDR55
+suffix:colon
+id|ss-&gt;transport_name
+op_assign
+l_string|&quot;SDDR55&quot;
+suffix:semicolon
+id|ss-&gt;transport
+op_assign
+id|sddr55_transport
+suffix:semicolon
+id|ss-&gt;transport_reset
+op_assign
+id|sddr55_reset
 suffix:semicolon
 id|ss-&gt;max_lun
 op_assign

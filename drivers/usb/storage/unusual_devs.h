@@ -1783,4 +1783,30 @@ op_or
 id|US_FL_START_STOP
 )paren
 comma
+macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x55aa
+comma
+l_int|0xa103
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Sandisk&quot;
+comma
+l_string|&quot;ImageMate SDDR55&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SDDR55
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+macro_line|#endif
 eof
