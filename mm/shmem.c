@@ -28,6 +28,9 @@ DECL|macro|SHMEM_MAX_BYTES
 mdefine_line|#define SHMEM_MAX_BYTES  ((unsigned long long)SHMEM_MAX_INDEX &lt;&lt; PAGE_CACHE_SHIFT)
 DECL|macro|VM_ACCT
 mdefine_line|#define VM_ACCT(size)    (((size) + PAGE_CACHE_SIZE - 1) &gt;&gt; PAGE_SHIFT)
+multiline_comment|/* Pretend that each entry is of this size in directory&squot;s i_size */
+DECL|macro|BOGO_DIRENT_SIZE
+mdefine_line|#define BOGO_DIRENT_SIZE 20
 DECL|function|SHMEM_SB
 r_static
 r_inline
@@ -3307,6 +3310,13 @@ suffix:colon
 id|inode-&gt;i_nlink
 op_increment
 suffix:semicolon
+multiline_comment|/* Some things misbehave if size == 0 on a directory */
+id|inode-&gt;i_size
+op_assign
+l_int|2
+op_star
+id|BOGO_DIRENT_SIZE
+suffix:semicolon
 id|inode-&gt;i_op
 op_assign
 op_amp
@@ -4549,6 +4559,10 @@ c_cond
 id|inode
 )paren
 (brace
+id|dir-&gt;i_size
+op_add_assign
+id|BOGO_DIRENT_SIZE
+suffix:semicolon
 id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
@@ -4698,6 +4712,10 @@ op_star
 id|inode
 op_assign
 id|old_dentry-&gt;d_inode
+suffix:semicolon
+id|dir-&gt;i_size
+op_add_assign
+id|BOGO_DIRENT_SIZE
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
@@ -4876,6 +4894,10 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
+id|dir-&gt;i_size
+op_sub_assign
+id|BOGO_DIRENT_SIZE
+suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
 id|dir-&gt;i_ctime
@@ -5040,6 +5062,14 @@ id|new_dir-&gt;i_nlink
 op_increment
 suffix:semicolon
 )brace
+id|old_dir-&gt;i_size
+op_sub_assign
+id|BOGO_DIRENT_SIZE
+suffix:semicolon
+id|new_dir-&gt;i_size
+op_add_assign
+id|BOGO_DIRENT_SIZE
+suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
@@ -5359,6 +5389,10 @@ id|info-&gt;sem
 )paren
 suffix:semicolon
 )brace
+id|dir-&gt;i_size
+op_add_assign
+id|BOGO_DIRENT_SIZE
+suffix:semicolon
 id|dir-&gt;i_ctime
 op_assign
 id|dir-&gt;i_mtime
