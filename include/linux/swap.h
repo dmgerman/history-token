@@ -627,15 +627,15 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n; * List add/del helper macros. These must be called&n; * with the pagemap_lru_lock held!&n; */
 DECL|macro|DEBUG_LRU_PAGE
-mdefine_line|#define DEBUG_LRU_PAGE(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (PageActive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (PageInactive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (page_count(page) == 0)&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DEBUG_LRU_PAGE(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!PageLRU(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (PageActive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (page_count(page) == 0)&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|add_page_to_active_list
 mdefine_line|#define add_page_to_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;SetPageActive(page);&t;&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list);&t;&bslash;&n;&t;nr_active_pages++;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|add_page_to_inactive_list
-mdefine_line|#define add_page_to_inactive_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;SetPageInactive(page);&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_list);&t;&bslash;&n;&t;nr_inactive_pages++;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define add_page_to_inactive_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_list);&t;&bslash;&n;&t;nr_inactive_pages++;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|del_page_from_active_list
 mdefine_line|#define del_page_from_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;ClearPageActive(page);&t;&t;&t;&bslash;&n;&t;nr_active_pages--;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|del_page_from_inactive_list
-mdefine_line|#define del_page_from_inactive_list(page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;ClearPageInactive(page);&t;&t;&bslash;&n;&t;nr_inactive_pages--;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define del_page_from_inactive_list(page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;nr_inactive_pages--;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Ugly ugly ugly HACK to make sure the inactive lists&n; * don&squot;t fill up with unfreeable ramdisk pages. We really&n; * want to fix the ramdisk driver to mark its pages as&n; * unfreeable instead of using dirty buffer magic, but the&n; * next code-change time is when 2.5 is forked...&n; */
 macro_line|#ifndef _LINUX_KDEV_T_H
 macro_line|#include &lt;linux/kdev_t.h&gt;

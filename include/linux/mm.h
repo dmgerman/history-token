@@ -366,10 +366,10 @@ DECL|macro|PG_dirty
 mdefine_line|#define PG_dirty&t;&t; 4
 DECL|macro|PG_unused
 mdefine_line|#define PG_unused&t;&t; 5
+DECL|macro|PG_lru
+mdefine_line|#define PG_lru&t;&t;&t; 6
 DECL|macro|PG_active
-mdefine_line|#define PG_active&t;&t; 6
-DECL|macro|PG_inactive
-mdefine_line|#define PG_inactive&t;&t; 7
+mdefine_line|#define PG_active&t;&t; 7
 DECL|macro|PG_slab
 mdefine_line|#define PG_slab&t;&t;&t; 8
 DECL|macro|PG_skip
@@ -456,20 +456,12 @@ DECL|macro|SetPageActive
 mdefine_line|#define SetPageActive(page)&t;set_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageActive
 mdefine_line|#define ClearPageActive(page)&t;clear_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|TestandSetPageActive
-mdefine_line|#define TestandSetPageActive(page)&t;test_and_set_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|TestandClearPageActive
-mdefine_line|#define TestandClearPageActive(page)&t;test_and_clear_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|PageInactive
-mdefine_line|#define PageInactive(page)&t;test_bit(PG_inactive, &amp;(page)-&gt;flags)
-DECL|macro|SetPageInactive
-mdefine_line|#define SetPageInactive(page)&t;set_bit(PG_inactive, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageInactive
-mdefine_line|#define ClearPageInactive(page)&t;clear_bit(PG_inactive, &amp;(page)-&gt;flags)
-DECL|macro|TestandSetPageInactive
-mdefine_line|#define TestandSetPageInactive(page)&t;test_and_set_bit(PG_inactive, &amp;(page)-&gt;flags)
-DECL|macro|TestandClearPageInactive
-mdefine_line|#define TestandClearPageInactive(page)&t;test_and_clear_bit(PG_inactive, &amp;(page)-&gt;flags)
+DECL|macro|PageLRU
+mdefine_line|#define PageLRU(page)&t;&t;test_bit(PG_lru, &amp;(page)-&gt;flags)
+DECL|macro|TestSetPageLRU
+mdefine_line|#define TestSetPageLRU(page)&t;test_and_set_bit(PG_lru, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageLRU
+mdefine_line|#define TestClearPageLRU(page)&t;test_and_clear_bit(PG_lru, &amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|macro|PageHighMem
 mdefine_line|#define PageHighMem(page)&t;&t;test_bit(PG_highmem, &amp;(page)-&gt;flags)

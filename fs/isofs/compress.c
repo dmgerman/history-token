@@ -24,10 +24,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;zisofs.h&quot;
-DECL|macro|min
-mdefine_line|#define min(a,b)&t;((a)&lt;(b)?(a):(b))
-DECL|macro|max
-mdefine_line|#define max(a,b)&t;((a)&gt;(b)?(a):(b))
 multiline_comment|/* This should probably be global. */
 DECL|variable|zisofs_sink_page
 r_static

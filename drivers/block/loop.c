@@ -720,12 +720,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|deactivate_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|page_cache_release
 c_func
 (paren
@@ -762,12 +756,6 @@ suffix:semicolon
 id|unlock
 suffix:colon
 id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|deactivate_page
 c_func
 (paren
 id|page

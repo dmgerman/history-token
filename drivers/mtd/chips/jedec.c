@@ -4642,6 +4642,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|jedec_probe_init
+r_static
 r_int
 id|__init
 id|jedec_probe_init

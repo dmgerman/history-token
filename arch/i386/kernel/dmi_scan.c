@@ -7,8 +7,13 @@ macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+DECL|variable|dmi_broken
+r_int
+r_int
+id|dmi_broken
+suffix:semicolon
 DECL|variable|is_sony_vaio_laptop
 r_int
 id|is_sony_vaio_laptop
@@ -280,6 +285,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dmi_iterate
+r_static
 r_int
 id|__init
 id|dmi_iterate
@@ -316,6 +322,8 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SIMNOW
 multiline_comment|/*&n; &t; *&t;Skip on x86/64 with simnow. Will eventually go away&n; &t; *&t;If you see this ifdef in 2.6pre mail me !&n; &t; */
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 macro_line|#endif
 r_while
@@ -1066,8 +1074,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SONYPI) || defined(CONFIG_SONYPI_MODULE)
-multiline_comment|/*&n; * Check for a Sony Vaio system in order to enable the use of&n; * the sonypi driver (we don&squot;t want this driver to be used on&n; * other systems, even if they have the good PCI IDs).&n; *&n; * This one isn&squot;t a bug detect for those who asked, we simply want to&n; * activate Sony specific goodies like the camera and jogdial..&n; */
+multiline_comment|/*&n; * Check for a Sony Vaio system&n; *&n; * On a Sony system we want to enable the use of the sonypi&n; * driver for Sony-specific goodies like the camera and jogdial.&n; * We also want to avoid using certain functions of the PnP BIOS.&n; */
 DECL|function|sony_vaio_laptop
 r_static
 id|__init
@@ -1107,7 +1114,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n; * This bios swaps the APM minute reporting bytes over (Many sony laptops&n; * have this problem).&n; */
 DECL|function|swab_apm_power_in_minutes
 r_static
@@ -1176,7 +1182,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; *** contact your vendor and ask about updates.&bslash;n&quot;
+l_string|&quot; *** contact your hardware vendor and ask about updates.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -1185,6 +1191,89 @@ c_func
 id|KERN_INFO
 l_string|&quot; *** Building an SMP kernel may evade the bug some of the time.&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ASUS K7V-RM has broken ACPI table defining sleep modes&n; */
+DECL|function|broken_acpi_Sx
+r_static
+id|__init
+r_int
+id|broken_acpi_Sx
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Detected ASUS mainboard with broken ACPI sleep table&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dmi_broken
+op_or_assign
+id|BROKEN_ACPI_Sx
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Toshiba keyboard likes to repeat keys when they are not repeated.&n; */
+DECL|function|broken_toshiba_keyboard
+r_static
+id|__init
+r_int
+id|broken_toshiba_keyboard
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Toshiba with broken keyboard detected. If your keyboard sometimes generates 3 keypresses instead of one, contact pavel@ucw.cz&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Toshiba fails to preserve interrupts over S1&n; */
+DECL|function|init_ints_after_s1
+r_static
+id|__init
+r_int
+id|init_ints_after_s1
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Toshiba with broken S1 detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dmi_broken
+op_or_assign
+id|BROKEN_INIT_AFTER_S1
 suffix:semicolon
 r_return
 l_int|0
@@ -1242,7 +1331,33 @@ id|d-&gt;ident
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Simple &quot;print if true&quot; callback&n; */
+DECL|function|print_if_true
+r_static
+id|__init
+r_int
+id|print_if_true
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -5658,7 +5658,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_CONFIG_I2C_PHILIPSPAR
+macro_line|#ifdef CONFIG_I2C_PHILIPSPAR
 r_extern
 r_int
 id|i2c_bitlp_init

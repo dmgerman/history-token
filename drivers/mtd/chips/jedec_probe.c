@@ -1904,6 +1904,7 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|function|jedec_probe_init
+r_static
 r_int
 id|__init
 id|jedec_probe_init

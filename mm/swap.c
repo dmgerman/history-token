@@ -47,7 +47,14 @@ id|page
 r_if
 c_cond
 (paren
-id|PageInactive
+id|PageLRU
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+op_logical_neg
+id|PageActive
 c_func
 (paren
 id|page
@@ -116,14 +123,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|PageActive
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-op_logical_neg
-id|PageInactive
+id|TestSetPageLRU
 c_func
 (paren
 id|page
@@ -167,6 +167,16 @@ id|page
 r_if
 c_cond
 (paren
+id|TestClearPageLRU
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|PageActive
 c_func
 (paren
@@ -182,15 +192,6 @@ id|page
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|PageInactive
-c_func
-(paren
-id|page
-)paren
-)paren
 (brace
 id|del_page_from_inactive_list
 c_func
@@ -199,9 +200,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-singleline_comment|//&t;&t;printk(&quot;VM: __lru_cache_del, found unknown page ?!&bslash;n&quot;);
 )brace
 )brace
 multiline_comment|/**&n; * lru_cache_del: remove a page from the page lists&n; * @page: the page to remove&n; */

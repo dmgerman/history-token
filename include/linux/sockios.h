@@ -135,6 +135,19 @@ DECL|macro|SIOCGIFVLAN
 mdefine_line|#define SIOCGIFVLAN&t;0x8982&t;&t;/* 802.1Q VLAN support&t;&t;*/
 DECL|macro|SIOCSIFVLAN
 mdefine_line|#define SIOCSIFVLAN&t;0x8983&t;&t;/* Set 802.1Q VLAN options &t;*/
+multiline_comment|/* bonding calls */
+DECL|macro|SIOCBONDENSLAVE
+mdefine_line|#define SIOCBONDENSLAVE&t;0x8990&t;&t;/* enslave a device to the bond */
+DECL|macro|SIOCBONDRELEASE
+mdefine_line|#define SIOCBONDRELEASE 0x8991&t;&t;/* release a slave from the bond*/
+DECL|macro|SIOCBONDSETHWADDR
+mdefine_line|#define SIOCBONDSETHWADDR      0x8992&t;/* set the hw addr of the bond  */
+DECL|macro|SIOCBONDSLAVEINFOQUERY
+mdefine_line|#define SIOCBONDSLAVEINFOQUERY 0x8993   /* rtn info about slave state   */
+DECL|macro|SIOCBONDINFOQUERY
+mdefine_line|#define SIOCBONDINFOQUERY      0x8994&t;/* rtn info about bond state    */
+DECL|macro|SIOCBONDCHANGEACTIVE
+mdefine_line|#define SIOCBONDCHANGEACTIVE   0x8995   /* update to a new active slave */
 multiline_comment|/* Device private ioctl calls */
 multiline_comment|/*&n; *&t;These 16 ioctls are available to devices via the do_ioctl() device&n; *&t;vector. Each device should include this file and redefine these names&n; *&t;as their own. Because these are device dependent it is a good idea&n; *&t;_NOT_ to issue them to random objects and hope.&n; *&n; *&t;THESE IOCTLS ARE _DEPRECATED_ AND WILL DISAPPEAR IN 2.5.X -DaveM&n; */
 DECL|macro|SIOCDEVPRIVATE

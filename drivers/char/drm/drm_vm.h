@@ -1775,9 +1775,7 @@ id|vm_dma_ops
 suffix:semicolon
 id|vma-&gt;vm_flags
 op_or_assign
-id|VM_LOCKED
-op_or
-id|VM_SHM
+id|VM_RESERVED
 suffix:semicolon
 multiline_comment|/* Don&squot;t swap */
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020203 /* KERNEL_VERSION(2,2,3) */
@@ -2309,7 +2307,7 @@ macro_line|#endif
 multiline_comment|/* Don&squot;t let this area swap.  Change when&n;&t;&t;&t;&t;   DRM_KERNEL advisory is supported. */
 id|vma-&gt;vm_flags
 op_or_assign
-id|VM_LOCKED
+id|VM_RESERVED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2346,7 +2344,7 @@ suffix:semicolon
 macro_line|#endif
 id|vma-&gt;vm_flags
 op_or_assign
-id|VM_LOCKED
+id|VM_RESERVED
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2360,9 +2358,7 @@ multiline_comment|/* This should never happen. */
 )brace
 id|vma-&gt;vm_flags
 op_or_assign
-id|VM_LOCKED
-op_or
-id|VM_SHM
+id|VM_RESERVED
 suffix:semicolon
 multiline_comment|/* Don&squot;t swap */
 macro_line|#if LINUX_VERSION_CODE &lt; 0x020203 /* KERNEL_VERSION(2,2,3) */
