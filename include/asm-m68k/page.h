@@ -430,7 +430,7 @@ r_if
 c_cond
 (paren
 id|x
-OG
+op_ge
 id|PAGE_OFFSET
 )paren
 (brace
