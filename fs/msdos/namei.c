@@ -3307,6 +3307,11 @@ id|res
 r_if
 c_cond
 (paren
+id|res
+op_eq
+op_minus
+id|EINVAL
+op_logical_and
 op_logical_neg
 id|silent
 )paren
