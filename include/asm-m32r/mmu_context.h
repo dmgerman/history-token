@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_M32R_MMU_CONTEXT_H
 DECL|macro|_ASM_M32R_MMU_CONTEXT_H
 mdefine_line|#define _ASM_M32R_MMU_CONTEXT_H
-multiline_comment|/* $Id */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 DECL|macro|MMU_CONTEXT_ASID_MASK
@@ -43,7 +43,7 @@ DECL|macro|mm_context
 mdefine_line|#define mm_context(mm)&t;&t;mm-&gt;context[smp_processor_id()]
 macro_line|#endif /* not CONFIG_SMP */
 DECL|macro|set_tlb_tag
-mdefine_line|#define set_tlb_tag(entry, tag)&t;(*entry = (tag &amp; PAGE_MASK)|get_asid())
+mdefine_line|#define set_tlb_tag(entry, tag)&t;&t;(*entry = (tag &amp; PAGE_MASK)|get_asid())
 DECL|macro|set_tlb_data
 mdefine_line|#define set_tlb_data(entry, data)&t;(*entry = (data | _PAGE_PRESENT))
 macro_line|#ifdef CONFIG_MMU
@@ -51,7 +51,7 @@ DECL|macro|enter_lazy_tlb
 mdefine_line|#define enter_lazy_tlb(mm, tsk)&t;do { } while (0)
 DECL|function|get_new_mmu_context
 r_static
-id|__inline__
+r_inline
 r_void
 id|get_new_mmu_context
 c_func
@@ -112,7 +112,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Get MMU context if needed.&n; */
 DECL|function|get_mmu_context
 r_static
-id|__inline__
+r_inline
 r_void
 id|get_mmu_context
 c_func
@@ -162,7 +162,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Initialize the context related info for a new mm_struct&n; * instance.&n; */
 DECL|function|init_new_context
 r_static
-id|__inline__
+r_inline
 r_int
 id|init_new_context
 c_func
@@ -226,7 +226,7 @@ DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;do { } while (0)
 DECL|function|set_asid
 r_static
-id|__inline__
+r_inline
 r_void
 id|set_asid
 c_func
@@ -254,7 +254,7 @@ suffix:semicolon
 )brace
 DECL|function|get_asid
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|get_asid
@@ -288,7 +288,7 @@ suffix:semicolon
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
 DECL|function|activate_context
 r_static
-id|__inline__
+r_inline
 r_void
 id|activate_context
 c_func
@@ -320,7 +320,7 @@ suffix:semicolon
 )brace
 DECL|function|switch_mm
 r_static
-id|__inline__
+r_inline
 r_void
 id|switch_mm
 c_func
@@ -441,5 +441,6 @@ DECL|macro|enter_lazy_tlb
 mdefine_line|#define enter_lazy_tlb(mm,tsk)          do { } while (0)
 macro_line|#endif /* CONFIG_MMU */
 macro_line|#endif /* not __ASSEMBLY__ */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_M32R_MMU_CONTEXT_H */
 eof
