@@ -1609,9 +1609,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* unfortunately, there&squot;s no tty_ldisc-&gt;owner field&n;&t; * so there is some window for SMP race with rmmod&n;&t; */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
+multiline_comment|/* Module stuff handled via irda_ldisc.owner - Jean II */
 multiline_comment|/* First make sure we&squot;re not already connected. */
 r_if
 c_cond
@@ -1814,8 +1812,6 @@ id|dev
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -1901,8 +1897,6 @@ c_func
 id|priv
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------- */
 DECL|variable|irda_ldisc
@@ -1971,6 +1965,11 @@ dot
 id|write_wakeup
 op_assign
 id|irtty_write_wakeup
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
