@@ -476,7 +476,7 @@ mdefine_line|#define ARGI_SHIFT_RIGHT_OP             ARGI_LIST3 (ARGI_INTEGER,  
 DECL|macro|ARGI_SIGNAL_OP
 mdefine_line|#define ARGI_SIGNAL_OP                  ARGI_LIST1 (ARGI_EVENT)
 DECL|macro|ARGI_SIZE_OF_OP
-mdefine_line|#define ARGI_SIZE_OF_OP                 ARGI_LIST1 (ARGI_DATAOBJECT)
+mdefine_line|#define ARGI_SIZE_OF_OP                 ARGI_LIST1 (ARGI_REFERENCE) /* Force delay of operand resolution */
 DECL|macro|ARGI_SLEEP_OP
 mdefine_line|#define ARGI_SLEEP_OP                   ARGI_LIST1 (ARGI_INTEGER)
 DECL|macro|ARGI_STALL_OP
@@ -506,7 +506,7 @@ mdefine_line|#define ARGI_TO_INTEGER_OP              ARGI_LIST2 (ARGI_COMPUTEDAT
 DECL|macro|ARGI_TO_STRING_OP
 mdefine_line|#define ARGI_TO_STRING_OP               ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_FIXED_TARGET)
 DECL|macro|ARGI_TYPE_OP
-mdefine_line|#define ARGI_TYPE_OP                    ARGI_LIST1 (ARGI_ANYTYPE)
+mdefine_line|#define ARGI_TYPE_OP                    ARGI_LIST1 (ARGI_REFERENCE) /* Force delay of operand resolution */
 DECL|macro|ARGI_UNLOAD_OP
 mdefine_line|#define ARGI_UNLOAD_OP                  ARGI_LIST1 (ARGI_DDBHANDLE)
 DECL|macro|ARGI_VAR_PACKAGE_OP
