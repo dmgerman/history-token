@@ -9634,7 +9634,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_read()+ %d&bslash;n&quot;
+l_string|&quot;cs46xx: cs_read()+ %zd&bslash;n&quot;
 comma
 id|count
 )paren
@@ -9974,7 +9974,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;_read() copy_to cnt=%d count=%d &quot;
+l_string|&quot;_read() copy_to cnt=%d count=%zd &quot;
 comma
 id|cnt
 comma
@@ -9993,7 +9993,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; .dmasize=%d .count=%d buffer=%p ret=%d&bslash;n&quot;
+l_string|&quot; .dmasize=%d .count=%d buffer=%p ret=%zd&bslash;n&quot;
 comma
 id|dmabuf-&gt;dmasize
 comma
@@ -10139,7 +10139,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_read()- %d&bslash;n&quot;
+l_string|&quot;cs46xx: cs_read()- %zd&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -10230,7 +10230,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_write called, count = %d&bslash;n&quot;
+l_string|&quot;cs46xx: cs_write called, count = %zd&bslash;n&quot;
 comma
 id|count
 )paren
@@ -10765,7 +10765,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_write()- ret=0x%x&bslash;n&quot;
+l_string|&quot;cs46xx: cs_write()- ret=%zd&bslash;n&quot;
 comma
 id|ret
 )paren

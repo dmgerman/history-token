@@ -5316,7 +5316,7 @@ l_int|60
 id|printk
 c_func
 (paren
-l_string|&quot;%s: firmware size too small for DSP code (%u &lt; 60).&bslash;n&quot;
+l_string|&quot;%s: firmware size too small for DSP code (%zu &lt; 60).&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

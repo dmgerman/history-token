@@ -1,6 +1,7 @@
 macro_line|#ifndef _ALPHA_PAGE_H
 DECL|macro|_ALPHA_PAGE_H
 mdefine_line|#define _ALPHA_PAGE_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT

@@ -133,7 +133,7 @@ id|sctp_timeouts
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 multiline_comment|/* SCTP_CONNTRACK_NONE  */
 op_amp

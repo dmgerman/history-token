@@ -20,8 +20,6 @@ macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
-DECL|macro|ANY2SCSI_INLINE
-mdefine_line|#define ANY2SCSI_INLINE&t;&t;/* undef this to use old macros */
 DECL|macro|WD7000_DEBUG
 macro_line|#undef  WD7000_DEBUG&t;&t;/* general debug                */
 macro_line|#ifdef WD7000_DEBUG
@@ -2026,31 +2024,6 @@ comma
 id|wd7000_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef ANY2SCSI_INLINE
-multiline_comment|/*&n; * Since they&squot;re used a lot, I&squot;ve redone the following from the macros&n; * formerly in wd7000.h, hopefully to speed them up by getting rid of&n; * all the shifting (it may not matter; GCC might have done as well anyway).&n; *&n; * xany2scsi and xscsi2int were not being used, and are no longer defined.&n; * (They were simply 4-byte versions of these routines).&n; */
-r_typedef
-r_union
-(brace
-multiline_comment|/* let&squot;s cheat... */
-DECL|member|i
-r_int
-id|i
-suffix:semicolon
-DECL|member|u
-id|unchar
-id|u
-(braket
-r_sizeof
-(paren
-r_int
-)paren
-)braket
-suffix:semicolon
-multiline_comment|/* the sizeof(int) makes it more portable */
-DECL|typedef|i_u
-)brace
-id|i_u
-suffix:semicolon
 DECL|function|any2scsi
 r_static
 r_inline
@@ -2071,48 +2044,28 @@ id|scsi
 op_increment
 op_assign
 (paren
-(paren
-id|i_u
+r_int
 )paren
 id|any
-)paren
-dot
-id|u
-(braket
-l_int|2
-)braket
+op_rshift
+l_int|16
 suffix:semicolon
 op_star
 id|scsi
 op_increment
 op_assign
 (paren
-(paren
-id|i_u
+r_int
 )paren
 id|any
-)paren
-dot
-id|u
-(braket
-l_int|1
-)braket
+op_rshift
+l_int|8
 suffix:semicolon
 op_star
 id|scsi
 op_increment
 op_assign
-(paren
-(paren
-id|i_u
-)paren
 id|any
-)paren
-dot
-id|u
-(braket
-l_int|0
-)braket
 suffix:semicolon
 )brace
 DECL|function|scsi2int
@@ -2127,58 +2080,31 @@ op_star
 id|scsi
 )paren
 (brace
-id|i_u
-id|result
-suffix:semicolon
-id|result.i
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* clears unused bytes */
-id|result.u
-(braket
-l_int|2
-)braket
-op_assign
-op_star
+r_return
+(paren
 id|scsi
-op_increment
-suffix:semicolon
-id|result.u
+(braket
+l_int|0
+)braket
+op_lshift
+l_int|16
+)paren
+op_or
+(paren
+id|scsi
 (braket
 l_int|1
 )braket
-op_assign
-op_star
-id|scsi
-op_increment
-suffix:semicolon
-id|result.u
-(braket
-l_int|0
-)braket
-op_assign
-op_star
-id|scsi
-op_increment
-suffix:semicolon
-r_return
-(paren
-id|result.i
+op_lshift
+l_int|8
 )paren
+op_or
+id|scsi
+(braket
+l_int|2
+)braket
 suffix:semicolon
 )brace
-macro_line|#else
-multiline_comment|/*&n; * These are the old ones - I&squot;ve just moved them here...&n; */
-DECL|macro|any2scsi
-macro_line|#undef any2scsi
-DECL|macro|any2scsi
-mdefine_line|#define any2scsi(up, p)   (up)[0] = (((unsigned long) (p)) &gt;&gt; 16);&t;&bslash;&n;&t;&t;&t;  (up)[1] = ((unsigned long) (p)) &gt;&gt; 8;&t;&t;&bslash;&n;&t;&t;&t;  (up)[2] = ((unsigned long) (p));
-DECL|macro|scsi2int
-macro_line|#undef scsi2int
-DECL|macro|scsi2int
-mdefine_line|#define scsi2int(up)   ( (((unsigned long) *(up)) &lt;&lt; 16) +&t;&bslash;&n;&t;&t;&t; (((unsigned long) (up)[1]) &lt;&lt; 8) +&t;&bslash;&n;&t;&t;&t; ((unsigned long) (up)[2]) )
-macro_line|#endif
 DECL|function|wd7000_enable_intr
 r_static
 r_inline
