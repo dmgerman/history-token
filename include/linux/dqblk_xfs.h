@@ -168,11 +168,6 @@ DECL|macro|FS_DQ_RTBTIMER
 mdefine_line|#define FS_DQ_RTBTIMER &t;(1&lt;&lt;8)
 DECL|macro|FS_DQ_TIMER_MASK
 mdefine_line|#define FS_DQ_TIMER_MASK&t;(FS_DQ_BTIMER | FS_DQ_ITIMER | FS_DQ_RTBTIMER)
-multiline_comment|/*&n; * The following constants define the default amount of time given a user&n; * before the soft limits are treated as hard limits (usually resulting&n; * in an allocation failure).  These may be modified by the quotactl(2)&n; * system call with the Q_XSETQLIM command.&n; */
-DECL|macro|DQ_FTIMELIMIT
-mdefine_line|#define&t;DQ_FTIMELIMIT&t;(7 * 24*60*60)&t;&t;/* 1 week */
-DECL|macro|DQ_BTIMELIMIT
-mdefine_line|#define&t;DQ_BTIMELIMIT&t;(7 * 24*60*60)&t;&t;/* 1 week */
 multiline_comment|/*&n; * Various flags related to quotactl(2).  Only relevant to XFS filesystems.&n; */
 DECL|macro|XFS_QUOTA_UDQ_ACCT
 mdefine_line|#define XFS_QUOTA_UDQ_ACCT&t;(1&lt;&lt;0)  /* user quota accounting */
