@@ -1922,7 +1922,7 @@ comma
 op_amp
 id|hl_irqs
 comma
-id|hl_list
+id|irq_list
 )paren
 (brace
 r_if
