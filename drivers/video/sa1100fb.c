@@ -5790,17 +5790,17 @@ id|PAGE_SIZE
 suffix:semicolon
 id|fbi-&gt;map_cpu
 op_assign
-id|consistent_alloc
+id|dma_alloc_writecombine
 c_func
 (paren
-id|GFP_KERNEL
+id|fbi-&gt;dev
 comma
 id|fbi-&gt;map_size
 comma
 op_amp
 id|fbi-&gt;map_dma
 comma
-id|PTE_BUFFERABLE
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -5821,6 +5821,7 @@ id|fbi-&gt;map_dma
 op_plus
 id|PAGE_SIZE
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * FIXME: this is actually the wrong thing to place in&n;&t;&t; * smem_start.  But fbdev suffers from the problem that&n;&t;&t; * it needs an API which doesn&squot;t exist (in this case,&n;&t;&t; * dma_writecombine_mmap)&n;&t;&t; */
 id|fbi-&gt;fb.fix.smem_start
 op_assign
 id|fbi-&gt;screen_dma
@@ -5866,7 +5867,10 @@ id|__init
 id|sa1100fb_init_fbinfo
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_struct
@@ -5922,6 +5926,10 @@ r_struct
 id|sa1100fb_info
 )paren
 )paren
+suffix:semicolon
+id|fbi-&gt;dev
+op_assign
+id|dev
 suffix:semicolon
 id|strcpy
 c_func
@@ -6235,6 +6243,7 @@ op_assign
 id|sa1100fb_init_fbinfo
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 id|ret
