@@ -209,7 +209,7 @@ multiline_comment|/* Outgoing datagram label&t;*/
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETH1394_DRIVER_NAME
-mdefine_line|#define ETH1394_DRIVER_NAME &quot;IP/1394&quot;
+mdefine_line|#define ETH1394_DRIVER_NAME &quot;ip1394&quot;
 DECL|variable|driver_name
 r_static
 r_const
@@ -2950,17 +2950,15 @@ suffix:semicolon
 macro_line|#endif&t;
 r_default
 suffix:colon
-id|printk
+id|ETH1394_PRINT
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: unable to resolve type %X addresses.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-(paren
-r_int
-)paren
+l_string|&quot;unable to resolve type %04x addresses.&bslash;n&quot;
+comma
 id|eth-&gt;h_proto
 )paren
 suffix:semicolon
@@ -3509,7 +3507,40 @@ id|arp1394-&gt;max_rec
 )paren
 )paren
 suffix:semicolon
+r_int
+id|sspd
+op_assign
+id|arp1394-&gt;sspd
+suffix:semicolon
 id|u16
+id|maxpayload
+suffix:semicolon
+r_struct
+id|eth1394_node_ref
+op_star
+id|node
+suffix:semicolon
+r_struct
+id|eth1394_node_info
+op_star
+id|node_info
+suffix:semicolon
+multiline_comment|/* Sanity check. MacOSX seems to be sending us 131 in this&n;&t;&t; * field (atleast on my Panther G5). Not sure why. */
+r_if
+c_cond
+(paren
+id|sspd
+OG
+l_int|5
+op_logical_or
+id|sspd
+OL
+l_int|0
+)paren
+id|sspd
+op_assign
+l_int|0
+suffix:semicolon
 id|maxpayload
 op_assign
 id|min
@@ -3517,7 +3548,7 @@ c_func
 (paren
 id|eth1394_speedto_maxpayload
 (braket
-id|arp1394-&gt;sspd
+id|sspd
 )braket
 comma
 (paren
@@ -3533,16 +3564,6 @@ l_int|1
 )paren
 )paren
 )paren
-suffix:semicolon
-r_struct
-id|eth1394_node_ref
-op_star
-id|node
-suffix:semicolon
-r_struct
-id|eth1394_node_info
-op_star
-id|node_info
 suffix:semicolon
 id|node
 op_assign
@@ -3586,7 +3607,7 @@ id|maxpayload
 suffix:semicolon
 id|node_info-&gt;sspd
 op_assign
-id|arp1394-&gt;sspd
+id|sspd
 suffix:semicolon
 id|node_info-&gt;fifo
 op_assign
@@ -5632,9 +5653,13 @@ op_assign
 op_amp
 id|iso-&gt;infos
 (braket
+(paren
 id|iso-&gt;first_packet
 op_plus
 id|i
+)paren
+op_mod
+id|iso-&gt;buf_packets
 )braket
 suffix:semicolon
 id|data
@@ -7126,6 +7151,8 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+multiline_comment|/* XXX Ignore this for now. Noticed that when MacOSX is the IRM,&n;&t; * it does not set our validity bit. We need to compensate for&n;&t; * that somewhere else, but not in eth1394. */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -7147,6 +7174,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7257,6 +7285,8 @@ suffix:semicolon
 id|max_payload
 op_assign
 id|priv-&gt;bc_maxpayload
+op_minus
+id|ETHER1394_GASP_OVERHEAD
 suffix:semicolon
 id|BUG_ON
 c_func
