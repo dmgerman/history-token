@@ -165,8 +165,6 @@ c_func
 r_struct
 id|net_device
 op_star
-comma
-r_bool
 )paren
 suffix:semicolon
 DECL|function|com20020_copy_from_card
@@ -340,7 +338,6 @@ suffix:semicolon
 multiline_comment|/* Reset the card and check some basic stuff during the detection stage. */
 DECL|function|com20020_check
 r_int
-id|__devinit
 id|com20020_check
 c_func
 (paren
@@ -645,7 +642,6 @@ suffix:semicolon
 multiline_comment|/* Set up the struct net_device associated with this card.  Called after&n; * probing succeeds.&n; */
 DECL|function|com20020_found
 r_int
-id|__devinit
 id|com20020_found
 c_func
 (paren
@@ -744,6 +740,25 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: do this some other way! */
+multiline_comment|/* reserve the I/O region */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|ioaddr
+comma
+id|ARCNET_TOTAL_SIZE
+comma
+l_string|&quot;arcnet (COM20020)&quot;
+)paren
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 id|SET_SUBADR
 c_func
 (paren
@@ -858,38 +873,17 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-multiline_comment|/* reserve the I/O region */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
+id|release_region
 c_func
 (paren
 id|ioaddr
 comma
 id|ARCNET_TOTAL_SIZE
-comma
-l_string|&quot;arcnet (COM20020)&quot;
-)paren
-)paren
-(brace
-id|free_irq
-c_func
-(paren
-id|dev-&gt;irq
-comma
-id|dev
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|EBUSY
+id|ENODEV
 suffix:semicolon
 )brace
 id|dev-&gt;base_addr
@@ -995,20 +989,20 @@ id|dev
 )paren
 )paren
 (brace
-id|free_irq
-c_func
-(paren
-id|dev-&gt;irq
-comma
-id|dev
-)paren
-suffix:semicolon
 id|release_region
 c_func
 (paren
 id|ioaddr
 comma
 id|ARCNET_TOTAL_SIZE
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -1258,9 +1252,6 @@ r_struct
 id|net_device
 op_star
 id|dev
-comma
-r_bool
-id|open
 )paren
 (brace
 r_struct
@@ -1280,13 +1271,6 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|open
-)paren
-(brace
 multiline_comment|/* disable transmitter */
 id|lp-&gt;config
 op_and_assign
@@ -1295,7 +1279,6 @@ id|TXENcfg
 suffix:semicolon
 id|SETCONF
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Set or clear the multicast filter for this adaptor.&n; * num_addrs == -1    Promiscuous mode, receive all packets&n; * num_addrs == 0       Normal mode, clear multicast list&n; * num_addrs &gt; 0        Multicast mode, receive normal and MC packets, and do&n; *                      best-effort filtering.&n; *      FIXME - do multicast stuff, not just promiscuous.&n; */
 DECL|function|com20020_set_mc_list
@@ -1419,7 +1402,6 @@ suffix:semicolon
 )brace
 DECL|function|com20020_remove
 r_void
-id|__devexit
 id|com20020_remove
 c_func
 (paren
