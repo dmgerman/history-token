@@ -400,7 +400,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|out
+id|out_free
 suffix:semicolon
 )brace
 id|memcpy
@@ -437,7 +437,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|out
+id|out_free
 suffix:semicolon
 )brace
 id|scsi_wait_req
@@ -766,6 +766,8 @@ id|cgc-&gt;sense
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up a process waiting for device */
+id|out_free
+suffix:colon
 id|scsi_release_request
 c_func
 (paren
