@@ -3509,18 +3509,18 @@ id|qh
 )paren
 suffix:semicolon
 singleline_comment|// refcount from reclaim 
-id|ehci-&gt;reclaim
-op_assign
-l_int|0
-suffix:semicolon
-id|ehci-&gt;reclaim_ready
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* other unlink(s) may be pending (in QH_STATE_UNLINK_WAIT) */
 id|next
 op_assign
 id|qh-&gt;reclaim
+suffix:semicolon
+id|ehci-&gt;reclaim
+op_assign
+id|next
+suffix:semicolon
+id|ehci-&gt;reclaim_ready
+op_assign
+l_int|0
 suffix:semicolon
 id|qh-&gt;reclaim
 op_assign
@@ -3593,6 +3593,11 @@ c_cond
 (paren
 id|next
 )paren
+(brace
+id|ehci-&gt;reclaim
+op_assign
+l_int|0
+suffix:semicolon
 id|start_unlink_async
 (paren
 id|ehci
@@ -3600,6 +3605,7 @@ comma
 id|next
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* makes sure the async qh will become idle */
 multiline_comment|/* caller must own ehci-&gt;lock */
@@ -3963,6 +3969,10 @@ c_cond
 (paren
 op_logical_neg
 id|ehci-&gt;reclaim
+op_logical_and
+id|qh-&gt;qh_state
+op_eq
+id|QH_STATE_LINKED
 )paren
 id|start_unlink_async
 (paren
