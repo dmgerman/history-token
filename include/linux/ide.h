@@ -89,8 +89,6 @@ mdefine_line|#define ERROR_RESET&t;3&t;/* Reset controller every 4th retry */
 DECL|macro|ERROR_RECAL
 mdefine_line|#define ERROR_RECAL&t;1&t;/* Recalibrate every 2nd retry */
 multiline_comment|/*&n; * Tune flags&n; */
-DECL|macro|IDE_TUNE_BIOS
-mdefine_line|#define IDE_TUNE_BIOS&t;&t;3
 DECL|macro|IDE_TUNE_NOAUTO
 mdefine_line|#define IDE_TUNE_NOAUTO&t;&t;2
 DECL|macro|IDE_TUNE_AUTO
@@ -1677,9 +1675,9 @@ DECL|member|autotune
 r_int
 id|autotune
 suffix:colon
-l_int|3
+l_int|2
 suffix:semicolon
-multiline_comment|/* 1=autotune, 2=noautotune, &n;&t;&t;&t;&t;&t;   3=biostimings, 0=default */
+multiline_comment|/* 0=default, 1=autotune, 2=noautotune */
 DECL|member|remap_0_to_1
 r_int
 id|remap_0_to_1
