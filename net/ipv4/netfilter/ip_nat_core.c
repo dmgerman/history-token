@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
