@@ -437,7 +437,7 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|b-&gt;adapter.dev.name
+id|b-&gt;adapter.name
 comma
 id|DEVICE_NAME_SIZE
 comma

@@ -26,6 +26,16 @@ r_int
 r_int
 id|system
 suffix:semicolon
+DECL|member|softirq
+r_int
+r_int
+id|softirq
+suffix:semicolon
+DECL|member|irq
+r_int
+r_int
+id|irq
+suffix:semicolon
 DECL|member|idle
 r_int
 r_int

@@ -26,28 +26,8 @@ macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &quot;8390.h&quot;
-DECL|macro|NE_BASE
-mdefine_line|#define NE_BASE&t;&t;(dev-&gt;base_addr)
-DECL|macro|NE_CMD
-mdefine_line|#define NE_CMD&t;&t;(0x00*2)
-DECL|macro|NE_EN0_ISR
-mdefine_line|#define NE_EN0_ISR      (0x07*2)
 DECL|macro|NE_EN0_DCFG
 mdefine_line|#define NE_EN0_DCFG     (0x0e*2)
-DECL|macro|NE_EN0_RSARLO
-mdefine_line|#define NE_EN0_RSARLO   (0x08*2)
-DECL|macro|NE_EN0_RSARHI
-mdefine_line|#define NE_EN0_RSARHI   (0x09*2)
-DECL|macro|NE_EN0_RCNTLO
-mdefine_line|#define NE_EN0_RCNTLO   (0x0a*2)
-DECL|macro|NE_EN0_RXCR
-mdefine_line|#define NE_EN0_RXCR     (0x0c*2)
-DECL|macro|NE_EN0_TXCR
-mdefine_line|#define NE_EN0_TXCR     (0x0d*2)
-DECL|macro|NE_EN0_RCNTHI
-mdefine_line|#define NE_EN0_RCNTHI   (0x0b*2)
-DECL|macro|NE_EN0_IMR
-mdefine_line|#define NE_EN0_IMR      (0x0f*2)
 DECL|macro|NESM_START_PG
 mdefine_line|#define NESM_START_PG   0x0    /* First page of TX buffer */
 DECL|macro|NESM_STOP_PG
@@ -60,7 +40,6 @@ DECL|macro|HYDRA_VERSION
 mdefine_line|#define HYDRA_VERSION &quot;v3.0alpha&quot;
 DECL|macro|WORDSWAP
 mdefine_line|#define WORDSWAP(a)     ((((a)&gt;&gt;8)&amp;0xff) | ((a)&lt;&lt;8))
-macro_line|#ifdef MODULE
 DECL|variable|root_hydra_dev
 r_static
 r_struct
@@ -68,7 +47,6 @@ id|net_device
 op_star
 id|root_hydra_dev
 suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|__init
@@ -80,6 +58,7 @@ r_void
 suffix:semicolon
 r_static
 r_int
+id|__init
 id|hydra_init
 c_func
 (paren
@@ -311,6 +290,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hydra_init
+r_static
 r_int
 id|__init
 id|hydra_init
@@ -336,10 +316,11 @@ id|HYDRA_NIC_BASE
 suffix:semicolon
 r_const
 r_char
-op_star
 id|name
+(braket
+)braket
 op_assign
-l_int|NULL
+l_string|&quot;NE2000&quot;
 suffix:semicolon
 r_int
 id|start_page
@@ -526,10 +507,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|name
-op_assign
-l_string|&quot;NE2000&quot;
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1084,7 +1061,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef MODULE
 r_struct
 id|net_device
 op_star
@@ -1153,7 +1129,6 @@ op_assign
 id|next
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|variable|hydra_probe
 id|module_init
