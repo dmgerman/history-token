@@ -4226,11 +4226,6 @@ r_goto
 id|cleanup_nothing
 suffix:semicolon
 )brace
-id|ip_vs_sltimer_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ip_vs_protocol_init
 c_func
 (paren
@@ -4451,11 +4446,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ip_vs_sltimer_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ip_vs_control_cleanup
 c_func
 (paren
@@ -4516,11 +4506,6 @@ c_func
 )paren
 suffix:semicolon
 id|ip_vs_protocol_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ip_vs_sltimer_cleanup
 c_func
 (paren
 )paren

@@ -1000,7 +1000,7 @@ id|cp
 )paren
 (brace
 multiline_comment|/* reset it expire in its timeout */
-id|mod_sltimer
+id|mod_timer
 c_func
 (paren
 op_amp
@@ -1783,17 +1783,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* make sure that there is no timer on it now */
-r_if
-c_cond
-(paren
-id|sltimer_pending
-c_func
-(paren
-op_amp
-id|cp-&gt;timer
-)paren
-)paren
-id|del_sltimer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -1923,7 +1913,7 @@ id|cp-&gt;timeout
 op_assign
 l_int|0
 suffix:semicolon
-id|mod_sltimer
+id|mod_timer
 c_func
 (paren
 op_amp
@@ -2042,7 +2032,7 @@ op_amp
 id|cp-&gt;c_list
 )paren
 suffix:semicolon
-id|init_sltimer
+id|init_timer
 c_func
 (paren
 op_amp
