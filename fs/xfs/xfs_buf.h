@@ -4,15 +4,15 @@ DECL|macro|__XFS_BUF_H__
 mdefine_line|#define __XFS_BUF_H__
 multiline_comment|/* These are just for xfs_syncsub... it sets an internal variable&n; * then passes it to VOP_FLUSH_PAGES or adds the flags to a newly gotten buf_t&n; */
 DECL|macro|XFS_B_ASYNC
-mdefine_line|#define XFS_B_ASYNC  PBF_ASYNC
+mdefine_line|#define XFS_B_ASYNC&t;&t;PBF_ASYNC
 DECL|macro|XFS_B_DELWRI
-mdefine_line|#define XFS_B_DELWRI PBF_DELWRI
+mdefine_line|#define XFS_B_DELWRI&t;&t;PBF_DELWRI
 DECL|macro|XFS_B_READ
-mdefine_line|#define XFS_B_READ   PBF_READ
+mdefine_line|#define XFS_B_READ&t;&t;PBF_READ
 DECL|macro|XFS_B_WRITE
-mdefine_line|#define XFS_B_WRITE  PBF_WRITE
+mdefine_line|#define XFS_B_WRITE&t;&t;PBF_WRITE
 DECL|macro|XFS_B_STALE
-mdefine_line|#define XFS_B_STALE  PBF_STALE
+mdefine_line|#define XFS_B_STALE&t;&t;PBF_STALE
 DECL|macro|XFS_BUF_TRYLOCK
 mdefine_line|#define XFS_BUF_TRYLOCK&t;&t;PBF_TRYLOCK
 DECL|macro|XFS_INCORE_TRYLOCK
@@ -22,19 +22,23 @@ mdefine_line|#define XFS_BUF_LOCK&t;&t;PBF_LOCK
 DECL|macro|XFS_BUF_MAPPED
 mdefine_line|#define XFS_BUF_MAPPED&t;&t;PBF_MAPPED
 DECL|macro|BUF_BUSY
-mdefine_line|#define BUF_BUSY&t;PBF_DONT_BLOCK
+mdefine_line|#define BUF_BUSY&t;&t;PBF_DONT_BLOCK
 DECL|macro|XFS_BUF_BFLAGS
-mdefine_line|#define XFS_BUF_BFLAGS(x)&t; ((x)-&gt;pb_flags)  /* debugging routines might need this */
+mdefine_line|#define XFS_BUF_BFLAGS(x)&t;((x)-&gt;pb_flags)
 DECL|macro|XFS_BUF_ZEROFLAGS
 mdefine_line|#define XFS_BUF_ZEROFLAGS(x)&t;&bslash;&n;&t;((x)-&gt;pb_flags &amp;= ~(PBF_READ|PBF_WRITE|PBF_ASYNC|PBF_SYNC|PBF_DELWRI))
 DECL|macro|XFS_BUF_STALE
-mdefine_line|#define XFS_BUF_STALE(x)&t;     ((x)-&gt;pb_flags |= XFS_B_STALE)
+mdefine_line|#define XFS_BUF_STALE(x)&t;((x)-&gt;pb_flags |= XFS_B_STALE)
 DECL|macro|XFS_BUF_UNSTALE
-mdefine_line|#define XFS_BUF_UNSTALE(x)&t;     ((x)-&gt;pb_flags &amp;= ~XFS_B_STALE)
+mdefine_line|#define XFS_BUF_UNSTALE(x)&t;((x)-&gt;pb_flags &amp;= ~XFS_B_STALE)
 DECL|macro|XFS_BUF_ISSTALE
-mdefine_line|#define XFS_BUF_ISSTALE(x)&t;     ((x)-&gt;pb_flags &amp; XFS_B_STALE)
+mdefine_line|#define XFS_BUF_ISSTALE(x)&t;((x)-&gt;pb_flags &amp; XFS_B_STALE)
 DECL|macro|XFS_BUF_SUPER_STALE
-mdefine_line|#define XFS_BUF_SUPER_STALE(x)&t; (x)-&gt;pb_flags |= XFS_B_STALE;&bslash;&n;&t;&t;&t;&t; xfs_buf_undelay(x);&bslash;&n;&t;&t;&t;&t; (x)-&gt;pb_flags &amp;= ~(PBF_PARTIAL|PBF_NONE)
+mdefine_line|#define XFS_BUF_SUPER_STALE(x)&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;XFS_BUF_STALE(x);&t;&bslash;&n;&t;&t;&t;&t;&t;xfs_buf_undelay(x);&t;&bslash;&n;&t;&t;&t;&t;&t;XFS_BUF_DONE(x);&t;&bslash;&n;&t;&t;&t;&t;} while (0)
+DECL|macro|XFS_BUF_MANAGE
+mdefine_line|#define XFS_BUF_MANAGE&t;&t;PBF_FS_MANAGED
+DECL|macro|XFS_BUF_UNMANAGE
+mdefine_line|#define XFS_BUF_UNMANAGE(x)&t;((x)-&gt;pb_flags &amp;= ~PBF_FS_MANAGED)
 DECL|function|xfs_buf_undelay
 r_static
 r_inline
