@@ -1380,6 +1380,7 @@ DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE
 r_extern
 r_void
+id|__deprecated
 id|inter_module_register
 c_func
 (paren
@@ -1398,6 +1399,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|__deprecated
 id|inter_module_unregister
 c_func
 (paren
@@ -1410,6 +1412,7 @@ r_extern
 r_const
 r_void
 op_star
+id|__deprecated
 id|inter_module_get
 c_func
 (paren
@@ -1422,6 +1425,7 @@ r_extern
 r_const
 r_void
 op_star
+id|__deprecated
 id|inter_module_get_request
 c_func
 (paren
@@ -1436,6 +1440,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|__deprecated
 id|inter_module_put
 c_func
 (paren
