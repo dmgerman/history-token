@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/acorn/scsi/eesox.c&n; *&n; *  Copyright (C) 1997-2003 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This driver is based on experimentation.  Hence, it may have made&n; *  assumptions about the particular card that I have available, and&n; *  may not be reliable!&n; *&n; *  Changelog:&n; *   01-10-1997&t;RMK&t;&t;Created, READONLY version&n; *   15-02-1998&t;RMK&t;&t;READ/WRITE version&n; *&t;&t;&t;&t;added DMA support and hardware definitions&n; *   14-03-1998&t;RMK&t;&t;Updated DMA support&n; *&t;&t;&t;&t;Added terminator control&n; *   15-04-1998&t;RMK&t;&t;Only do PIO if FAS216 will allow it.&n; *   27-06-1998&t;RMK&t;&t;Changed asm/delay.h to linux/delay.h&n; *   02-04-2000&t;RMK&t;0.0.3&t;Fixed NO_IRQ/NO_DMA problem, updated for new&n; *&t;&t;&t;&t;error handling code.&n; */
+multiline_comment|/*&n; *  linux/drivers/acorn/scsi/eesox.c&n; *&n; *  Copyright (C) 1997-2005 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This driver is based on experimentation.  Hence, it may have made&n; *  assumptions about the particular card that I have available, and&n; *  may not be reliable!&n; *&n; *  Changelog:&n; *   01-10-1997&t;RMK&t;&t;Created, READONLY version&n; *   15-02-1998&t;RMK&t;&t;READ/WRITE version&n; *&t;&t;&t;&t;added DMA support and hardware definitions&n; *   14-03-1998&t;RMK&t;&t;Updated DMA support&n; *&t;&t;&t;&t;Added terminator control&n; *   15-04-1998&t;RMK&t;&t;Only do PIO if FAS216 will allow it.&n; *   27-06-1998&t;RMK&t;&t;Changed asm/delay.h to linux/delay.h&n; *   02-04-2000&t;RMK&t;0.0.3&t;Fixed NO_IRQ/NO_DMA problem, updated for new&n; *&t;&t;&t;&t;error handling code.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -85,8 +85,15 @@ id|expansion_card
 op_star
 id|ec
 suffix:semicolon
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 DECL|member|ctl_port
 r_void
+id|__iomem
 op_star
 id|ctl_port
 suffix:semicolon
@@ -501,12 +508,14 @@ r_int
 id|length
 comma
 r_void
+id|__iomem
 op_star
 id|base
 )paren
 (brace
 r_const
 r_void
+id|__iomem
 op_star
 id|reg_fas
 op_assign
@@ -516,6 +525,7 @@ id|EESOX_FAS216_OFFSET
 suffix:semicolon
 r_const
 r_void
+id|__iomem
 op_star
 id|reg_dmastat
 op_assign
@@ -525,6 +535,7 @@ id|EESOX_DMASTAT
 suffix:semicolon
 r_const
 r_void
+id|__iomem
 op_star
 id|reg_dmadata
 op_assign
@@ -865,12 +876,14 @@ r_int
 id|length
 comma
 r_void
+id|__iomem
 op_star
 id|base
 )paren
 (brace
 r_const
 r_void
+id|__iomem
 op_star
 id|reg_fas
 op_assign
@@ -880,6 +893,7 @@ id|EESOX_FAS216_OFFSET
 suffix:semicolon
 r_const
 r_void
+id|__iomem
 op_star
 id|reg_dmastat
 op_assign
@@ -889,6 +903,7 @@ id|EESOX_DMASTAT
 suffix:semicolon
 r_const
 r_void
+id|__iomem
 op_star
 id|reg_dmadata
 op_assign
@@ -1238,15 +1253,17 @@ r_int
 id|transfer_size
 )paren
 (brace
-r_void
+r_struct
+id|eesoxscsi_info
 op_star
-id|base
+id|info
 op_assign
 (paren
-r_void
+r_struct
+id|eesoxscsi_info
 op_star
 )paren
-id|host-&gt;base
+id|host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -1263,7 +1280,7 @@ id|SCp-&gt;ptr
 comma
 id|SCp-&gt;this_residual
 comma
-id|base
+id|info-&gt;base
 )paren
 suffix:semicolon
 )brace
@@ -1276,7 +1293,7 @@ id|SCp-&gt;ptr
 comma
 id|SCp-&gt;this_residual
 comma
-id|base
+id|info-&gt;base
 )paren
 suffix:semicolon
 )brace
@@ -1994,8 +2011,8 @@ id|resbase
 comma
 id|reslen
 suffix:semicolon
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -2132,6 +2149,10 @@ id|info-&gt;ec
 op_assign
 id|ec
 suffix:semicolon
+id|info-&gt;base
+op_assign
+id|base
+suffix:semicolon
 id|info-&gt;ctl_port
 op_assign
 id|base
@@ -2157,25 +2178,6 @@ id|info-&gt;control
 comma
 id|info-&gt;ctl_port
 )paren
-suffix:semicolon
-id|ec-&gt;irqaddr
-op_assign
-id|base
-op_plus
-id|EESOX_DMASTAT
-suffix:semicolon
-id|ec-&gt;irqmask
-op_assign
-id|EESOX_STAT_INTR
-suffix:semicolon
-id|ec-&gt;irq_data
-op_assign
-id|info
-suffix:semicolon
-id|ec-&gt;ops
-op_assign
-op_amp
-id|eesoxscsi_ops
 suffix:semicolon
 id|info-&gt;info.scsi.io_base
 op_assign
@@ -2238,6 +2240,25 @@ suffix:semicolon
 id|info-&gt;info.dma.stop
 op_assign
 id|eesoxscsi_dma_stop
+suffix:semicolon
+id|ec-&gt;irqaddr
+op_assign
+id|base
+op_plus
+id|EESOX_DMASTAT
+suffix:semicolon
+id|ec-&gt;irqmask
+op_assign
+id|EESOX_STAT_INTR
+suffix:semicolon
+id|ec-&gt;irq_data
+op_assign
+id|info
+suffix:semicolon
+id|ec-&gt;ops
+op_assign
+op_amp
+id|eesoxscsi_ops
 suffix:semicolon
 id|device_create_file
 c_func
@@ -2532,11 +2553,7 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|host-&gt;base
+id|info-&gt;base
 )paren
 suffix:semicolon
 id|fas216_release
