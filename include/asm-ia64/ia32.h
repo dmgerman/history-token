@@ -340,14 +340,15 @@ DECL|member|fos
 r_int
 id|fos
 suffix:semicolon
+multiline_comment|/* 8*10 bytes for each FP-reg = 80 bytes */
 DECL|member|st_space
-r_int
+r_struct
+id|_fpreg_ia32
 id|st_space
 (braket
-l_int|20
+l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* 8*10 bytes for each FP-reg = 80 bytes */
 )brace
 suffix:semicolon
 DECL|struct|ia32_user_fxsr_struct
