@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Phase5 CybervisionPPC (TVP4020) definitions for the Permedia2 framebuffer&n; * driver.&n; *&n; * Copyright (c) 1998-1999 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * --------------------------------------------------------------------------&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file README.legal in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef APUS_PCI_H
 DECL|macro|APUS_PCI_H

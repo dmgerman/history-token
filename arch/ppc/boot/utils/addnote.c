@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.addnote.c 1.7 05/18/01 15:17:23 cort&n; */
 multiline_comment|/*&n; * Program to hack in a PT_NOTE program header entry in an ELF file.&n; * This is needed for OF on RS/6000s to load an image correctly.&n; * Note that OF needs a program header entry for the note, not an&n; * ELF section.&n; *&n; * Copyright 2000 Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Usage: addnote zImage&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;fcntl.h&gt;

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.iso_font.h 1.6 05/18/01 15:16:42 cort&n; */
 DECL|variable|font
 r_static
 r_const

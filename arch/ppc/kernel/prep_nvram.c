@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * arch/ppc/kernel/prep_nvram.c&n; *&n; * Copyright (C) 1998  Corey Minyard&n; *&n; * This reads the NvRAM on PReP compliant machines (generally from IBM or&n; * Motorola).  Motorola kept the format of NvRAM in their ROM, PPCBUG, the&n; * same, long after they had stopped producing PReP compliant machines.  So&n; * this code is useful in those cases as well.&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; *&n; *    Copyright 2001 MontaVista Software Inc.&n; *        &lt;mlocke@mvista.com&gt;&n; *&n; * &t;Not much needed for the Embedded Planet 405gp board&n; *&n; *  &t;History: 11/09/2001 - armin&n; *      added board_init to add in additional instuctions needed during platfrom_init&n; *&t;cleaned up map_irq.&n; *&t; &n; *&t;1/22/2002 - Armin&n; *      converted pci to ocp&n; *&n;&n; *&n; */
+multiline_comment|/*&n; *    Copyright 2001 MontaVista Software Inc.&n; *        &lt;mlocke@mvista.com&gt;&n; *&n; * &t;Not much is needed for the Embedded Planet 405gp board&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

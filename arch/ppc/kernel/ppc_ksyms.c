@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;

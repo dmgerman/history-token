@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * keylargo.h: definitions for using the &quot;KeyLargo&quot; I/O controller chip.&n; *&n; */
 multiline_comment|/* &quot;Pangea&quot; chipset has keylargo device-id 0x25 while core99&n; * has device-id 0x22. The rev. of the pangea one is 0, so we&n; * fake an artificial rev. in keylargo_rev by oring 0x100&n; */
 DECL|macro|KL_PANGEA_REV

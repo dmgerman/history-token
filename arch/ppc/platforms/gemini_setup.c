@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
-multiline_comment|/*&n; *  arch/ppc/platforms/setup.c&n; *&n; *  Copyright (C) 1995 Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Synergy Microsystems board support by Dan Cox (dan@synergymicro.com)&n; *&n; */
+multiline_comment|/*&n; *  arch/ppc/platforms/gemini_setup.c&n; *&n; *  Copyright (C) 1995 Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Synergy Microsystems board support by Dan Cox (dan@synergymicro.com)&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

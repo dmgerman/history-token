@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.rs6000.h 1.7 05/18/01 15:17:23 cort&n; */
 multiline_comment|/* IBM RS/6000 &quot;XCOFF&quot; file definitions for BFD.&n;   Copyright (C) 1990, 1991 Free Software Foundation, Inc.&n;   FIXME: Can someone provide a transliteration of this name into ASCII?&n;   Using the following chars caused a compiler warning on HIUX (so I replaced&n;   them with octal escapes), and isn&squot;t useful without an understanding of what&n;   character set it is.&n;   Written by Mimi Ph&bslash;373&bslash;364ng-Th&bslash;345o V&bslash;365 of IBM&n;   and John Gilmore of Cygnus Support.  */
 multiline_comment|/********************** FILE HEADER **********************/
 DECL|struct|external_filehdr

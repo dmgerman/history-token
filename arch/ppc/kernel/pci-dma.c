@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) 2000   Ani Joshi &lt;ajoshi@unixbox.com&gt;&n; *&n; *&n; * Dynamic DMA mapping support.&n; *&n; * swiped from i386&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.mtfsb1.c 1.6 05/17/01 18:14:23 cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

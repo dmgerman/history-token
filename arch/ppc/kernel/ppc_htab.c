@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_htab.c 1.19 10/16/01 15:58:42 trini&n; */
 multiline_comment|/*&n; * PowerPC hash table management proc entry.  Will show information&n; * about the current hash table and will allow changes to it.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -362,19 +361,12 @@ l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_STD_MMU
 r_int
-id|valid
-suffix:semicolon
-r_int
 r_int
 id|kptes
 op_assign
 l_int|0
 comma
 id|uptes
-op_assign
-l_int|0
-comma
-id|zombie_ptes
 op_assign
 l_int|0
 suffix:semicolon
@@ -620,48 +612,6 @@ l_int|801921
 op_amp
 l_int|0xfffff
 suffix:semicolon
-id|valid
-op_assign
-l_int|0
-suffix:semicolon
-id|for_each_task
-c_func
-(paren
-id|p
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|p-&gt;mm
-op_ne
-l_int|NULL
-op_logical_and
-id|ctx
-op_eq
-id|p-&gt;mm-&gt;context
-)paren
-(brace
-id|valid
-op_assign
-l_int|1
-suffix:semicolon
-id|uptes
-op_increment
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|valid
-)paren
-id|zombie_ptes
-op_increment
-suffix:semicolon
 )brace
 id|n
 op_add_assign
@@ -679,7 +629,6 @@ l_string|&quot;Address&bslash;t&bslash;t: %08lx&bslash;n&quot;
 l_string|&quot;Entries&bslash;t&bslash;t: %lu&bslash;n&quot;
 l_string|&quot;User ptes&bslash;t: %u&bslash;n&quot;
 l_string|&quot;Kernel ptes&bslash;t: %u&bslash;n&quot;
-l_string|&quot;Zombies&bslash;t&bslash;t: %u&bslash;n&quot;
 l_string|&quot;Percent full&bslash;t: %lu%%&bslash;n&quot;
 comma
 (paren
@@ -721,8 +670,6 @@ comma
 id|uptes
 comma
 id|kptes
-comma
-id|zombie_ptes
 comma
 (paren
 (paren

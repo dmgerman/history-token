@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
