@@ -239,6 +239,16 @@ id|vector
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|setup_ioapic_dest
+c_func
+(paren
+r_int
+r_int
+id|mask
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|io_apic_irqs

@@ -1526,6 +1526,10 @@ comma
 id|err
 )brace
 suffix:semicolon
+r_static
+r_int
+id|die_counter
+suffix:semicolon
 id|console_verbose
 c_func
 (paren
@@ -1558,13 +1562,16 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %04lx&bslash;n&quot;
+l_string|&quot;%s: %04lx [#%d]&bslash;n&quot;
 comma
 id|str
 comma
 id|err
 op_amp
 l_int|0xffff
+comma
+op_increment
+id|die_counter
 )paren
 suffix:semicolon
 id|cpu
