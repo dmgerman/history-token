@@ -340,6 +340,13 @@ c_func
 id|svc_makesock
 )paren
 suffix:semicolon
+DECL|variable|svc_reserve
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svc_reserve
+)paren
+suffix:semicolon
 multiline_comment|/* RPC statistics */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|rpc_proc_register

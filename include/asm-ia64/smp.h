@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_SMP_H
 DECL|macro|_ASM_IA64_SMP_H
 mdefine_line|#define _ASM_IA64_SMP_H
@@ -18,7 +18,7 @@ mdefine_line|#define SMP_IRQ_REDIRECTION&t;(1 &lt;&lt; 0)
 DECL|macro|SMP_IPI_REDIRECTION
 mdefine_line|#define SMP_IPI_REDIRECTION&t;(1 &lt;&lt; 1)
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id()&t;(current-&gt;processor)
+mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
 DECL|struct|smp_boot_data
 r_extern
 r_struct
@@ -280,9 +280,6 @@ suffix:semicolon
 )brace
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xffffffff&t;/* no processor magic marker */
-multiline_comment|/*&n; * Extra overhead to move a task from one cpu to another (due to TLB and cache misses).&n; * Expressed in &quot;negative nice value&quot; units (larger number means higher priority/penalty).&n; */
-DECL|macro|PROC_CHANGE_PENALTY
-mdefine_line|#define PROC_CHANGE_PENALTY&t;20
 r_extern
 r_void
 id|__init
@@ -328,6 +325,21 @@ id|retry
 comma
 r_int
 id|wait
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_send_reschedule
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_send_reschedule_all
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */

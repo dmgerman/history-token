@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBIO_NEXT_H
-DECL|macro|_ASM_SN_SN1_HUBIO_NEXT_H
-mdefine_line|#define _ASM_SN_SN1_HUBIO_NEXT_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBIO_NEXT_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBIO_NEXT_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBIO_NEXT_H
 multiline_comment|/*&n; * Slightly friendlier names for some common registers.&n; */
 DECL|macro|IIO_WIDGET
 mdefine_line|#define IIO_WIDGET              IIO_WID      /* Widget identification */
@@ -96,7 +96,7 @@ mdefine_line|#define IIO_BTE_INT_0           IIO_IBIA_0   /* Also BTE interrupt 
 DECL|macro|IIO_BTE_OFF_0
 mdefine_line|#define IIO_BTE_OFF_0           0            /* Base offset from BTE 0 regs. */
 DECL|macro|IIO_BTE_OFF_1
-mdefine_line|#define IIO_BTE_OFF_1   IIO_IBLS_1 - IIO_IBLS_0 /* Offset from base to BTE 1 */
+mdefine_line|#define IIO_BTE_OFF_1  (IIO_IBLS_1 - IIO_IBLS_0) /* Offset from base to BTE 1 */
 multiline_comment|/* BTE register offsets from base */
 DECL|macro|BTEOFF_STAT
 mdefine_line|#define BTEOFF_STAT             0
@@ -115,11 +115,9 @@ DECL|macro|IIO_BASE_BTE0
 mdefine_line|#define IIO_BASE_BTE0   IIO_IBLS_0&t;&t;
 DECL|macro|IIO_BASE_BTE1
 mdefine_line|#define IIO_BASE_BTE1   IIO_IBLS_1&t;&t;
-macro_line|#if 0
-mdefine_line|#define IIO_BASE        IIO_WID
-mdefine_line|#define IIO_BASE_PERF   IIO_IPCR   /* IO Performance Control */
-mdefine_line|#define IIO_PERF_CNT    IIO_IPPR   /* IO Performance Profiling */
-macro_line|#endif
+multiline_comment|/*&n; * Macro which takes the widget number, and returns the &n; * IO PRB address of that widget.&n; * value _x is expected to be a widget number in the range &n; * 0, 8 - 0xF&n; */
+DECL|macro|IIO_IOPRB
+mdefine_line|#define&t;IIO_IOPRB(_x)&t;(IIO_IOPRB_0 + ( ( (_x) &lt; HUB_WIDGET_ID_MIN ? &bslash;&n;&t;&t;&t;(_x) : &bslash;&n;&t;&t;&t;(_x) - (HUB_WIDGET_ID_MIN-1)) &lt;&lt; 3) )
 multiline_comment|/* GFX Flow Control Node/Widget Register */
 DECL|macro|IIO_IGFX_W_NUM_BITS
 mdefine_line|#define IIO_IGFX_W_NUM_BITS&t;4&t;/* size of widget num field */
@@ -193,7 +191,7 @@ DECL|macro|IIO_IMEM_B1ESD
 mdefine_line|#define IIO_IMEM_B1ESD  (1 &lt;&lt; 8)        /* BTE 1 Shut down due to error */
 multiline_comment|/*&n; * As a permanent workaround for a bug in the PI side of the hub, we&squot;ve&n; * redefined big window 7 as small window 0.&n; XXX does this still apply for SN1??&n; */
 DECL|macro|HUB_NUM_BIG_WINDOW
-mdefine_line|#define HUB_NUM_BIG_WINDOW      IIO_NUM_ITTES - 1
+mdefine_line|#define HUB_NUM_BIG_WINDOW      (IIO_NUM_ITTES - 1)
 multiline_comment|/*&n; * Use the top big window as a surrogate for the first small window&n; */
 DECL|macro|SWIN0_BIGWIN
 mdefine_line|#define SWIN0_BIGWIN            HUB_NUM_BIG_WINDOW
@@ -387,7 +385,7 @@ mdefine_line|#define&t;IIO_ICCR_CMD_EJECT&t;(0x400)&t;/* Contents of entry writt
 DECL|macro|IIO_ICCR_CMD_FLUSH
 mdefine_line|#define&t;IIO_ICCR_CMD_FLUSH&t;(0x800)
 multiline_comment|/*&n; *&n; * CRB Register description.&n; *&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING * WARNING&n; *&n; * Many of the fields in CRB are status bits used by hardware&n; * for implementation of the protocol. It&squot;s very dangerous to&n; * mess around with the CRB registers.&n; *&n; * It&squot;s OK to read the CRB registers and try to make sense out of the&n; * fields in CRB.&n; *&n; * Updating CRB requires all activities in Hub IIO to be quiesced.&n; * otherwise, a write to CRB could corrupt other CRB entries.&n; * CRBs are here only as a back door peek to hub IIO&squot;s status.&n; * Quiescing implies  no dmas no PIOs&n; * either directly from the cpu or from sn0net.&n; * this is not something that can be done easily. So, AVOID updating&n; * CRBs.&n; */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Easy access macros for CRBs, all 4 registers (A-D)&n; */
 DECL|typedef|icrba_t
 r_typedef
@@ -476,7 +474,7 @@ DECL|macro|icrbd_context
 mdefine_line|#define icrbd_context   ii_icrb0_d_fld_s.id_context
 DECL|macro|d_regvalue
 mdefine_line|#define d_regvalue&t;ii_icrb0_d_regval
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Number of widgets supported by hub */
 DECL|macro|HUB_NUM_WIDGET
 mdefine_line|#define HUB_NUM_WIDGET          9
@@ -488,7 +486,7 @@ DECL|macro|HUB_WIDGET_PART_NUM
 mdefine_line|#define HUB_WIDGET_PART_NUM     0xc110
 DECL|macro|MAX_HUBS_PER_XBOW
 mdefine_line|#define MAX_HUBS_PER_XBOW       2
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* A few more #defines for backwards compatibility */
 DECL|macro|iprb_t
 mdefine_line|#define iprb_t          ii_iprb0_u_t
@@ -533,11 +531,11 @@ multiline_comment|/* Number of II perf. counters we can multiplex at once */
 DECL|macro|IO_PERF_SETS
 mdefine_line|#define IO_PERF_SETS&t;32
 macro_line|#if __KERNEL__
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* XXX moved over from SN/SN0/hubio.h -- each should be checked for SN1 */
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 multiline_comment|/* Bit for the widget in inbound access register */
 DECL|macro|IIO_IIWA_WIDGET
@@ -1349,15 +1347,6 @@ id|hub_intr_t
 id|intr_hdl
 comma
 multiline_comment|/* xtalk intr resource hndl */
-id|intr_func_t
-id|intr_func
-comma
-multiline_comment|/* xtalk intr handler */
-r_void
-op_star
-id|intr_arg
-comma
-multiline_comment|/* arg to intr handler */
 id|xtalk_intr_setfunc_t
 id|setfunc
 comma
@@ -1365,14 +1354,9 @@ multiline_comment|/* func to set intr hw */
 r_void
 op_star
 id|setfunc_arg
-comma
-multiline_comment|/* arg to setfunc */
-r_void
-op_star
-id|thread
 )paren
 suffix:semicolon
-multiline_comment|/* intr thread to use */
+multiline_comment|/* arg to setfunc */
 r_extern
 r_void
 id|hub_intr_disconnect
@@ -1538,7 +1522,7 @@ c_func
 id|devfs_handle_t
 )paren
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _KERNEL */
-macro_line|#endif  /* _ASM_SN_SN1_HUBIO_NEXT_H */
+macro_line|#endif  /* _ASM_IA64_SN_SN1_HUBIO_NEXT_H */
 eof

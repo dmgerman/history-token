@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IA32 helper functions&n; *&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2000 Asit K. Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 thread context&n; * 02/19/01&t;D. Mosberger&t;dropped tssd; it&squot;s not needed&n; * 09/14/01&t;D. Mosberger&t;fixed memory management for gdt/tss page&n; * 09/29/01&t;D. Mosberger&t;added ia32_load_segment_descriptors()&n; */
+multiline_comment|/*&n; * IA32 helper functions&n; *&n; * Copyright (C) 1999 Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 2000 Asit K. Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 thread context&n; * 02/19/01&t;D. Mosberger&t;dropped tssd; it&squot;s not needed&n; * 09/14/01&t;D. Mosberger&t;fixed memory management for gdt/tss page&n; * 09/29/01&t;D. Mosberger&t;added ia32_load_segment_descriptors()&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -766,6 +766,8 @@ c_func
 (paren
 id|nr
 )paren
+op_rshift
+id|IA32_SEGSEL_INDEX_SHIFT
 )braket
 op_assign
 id|IA32_SEG_DESCRIPTOR
@@ -797,6 +799,8 @@ c_func
 (paren
 id|nr
 )paren
+op_rshift
+id|IA32_SEGSEL_INDEX_SHIFT
 )braket
 op_assign
 id|IA32_SEG_DESCRIPTOR
@@ -862,6 +866,22 @@ op_assign
 id|int_num
 suffix:semicolon
 multiline_comment|/* XXX is it OK to abuse si_errno like this? */
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
+suffix:semicolon
 id|siginfo.si_code
 op_assign
 id|TRAP_BRKPT

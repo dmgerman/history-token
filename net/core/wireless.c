@@ -1,11 +1,12 @@
-multiline_comment|/*&n; * This file implement the Wireless Extensions APIs.&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2001 Jean Tourrilhes, All Rights Reserved.&n; *&n; * (As all part of the Linux kernel, this file is GPL)&n; */
+multiline_comment|/*&n; * This file implement the Wireless Extensions APIs.&n; *&n; * Authors :&t;Jean Tourrilhes - HPL - &lt;jt@hpl.hp.com&gt;&n; * Copyright (c) 1997-2002 Jean Tourrilhes, All Rights Reserved.&n; *&n; * (As all part of the Linux kernel, this file is GPL)&n; */
 multiline_comment|/************************** DOCUMENTATION **************************/
-multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; */
+multiline_comment|/*&n; * API definition :&n; * --------------&n; * See &lt;linux/wireless.h&gt; for details of the APIs and the rest.&n; *&n; * History :&n; * -------&n; *&n; * v1 - 5.12.01 - Jean II&n; *&t;o Created this file.&n; *&n; * v2 - 13.12.01 - Jean II&n; *&t;o Move /proc/net/wireless stuff from net/core/dev.c to here&n; *&t;o Make Wireless Extension IOCTLs go through here&n; *&t;o Added iw_handler handling ;-)&n; *&t;o Added standard ioctl description&n; *&t;o Initial dumb commit strategy based on orinoco.c&n; *&n; * v3 - 19.12.01 - Jean II&n; *&t;o Make sure we don&squot;t go out of standard_ioctl[] in ioctl_standard_call&n; *&t;o Fix /proc/net/wireless to handle __u8 to __s8 change in iwqual&n; *&t;o Add event dispatcher function&n; *&t;o Add event description&n; *&t;o Propagate events as rtnetlink IFLA_WIRELESS option&n; *&t;o Generate event on selected SET requests&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* copy_to_user() */
 macro_line|#include &lt;linux/config.h&gt;&t;&t;/* Not needed ??? */
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* off_t */
 macro_line|#include &lt;linux/netdevice.h&gt;&t;&t;/* struct ifreq, dev_get_by_name() */
+macro_line|#include &lt;linux/rtnetlink.h&gt;&t;&t;/* rtnetlink stuff */
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Pretty obvious */
 macro_line|#include &lt;net/iw_handler.h&gt;&t;&t;/* New driver API */
 multiline_comment|/**************************** CONSTANTS ****************************/
@@ -15,8 +16,16 @@ macro_line|#undef WE_STRICT_WRITE&t;&t;/* Check write buffer size */
 multiline_comment|/* Debuging stuff */
 DECL|macro|WE_IOCTL_DEBUG
 macro_line|#undef WE_IOCTL_DEBUG&t;&t;/* Debug IOCTL API */
+DECL|macro|WE_EVENT_DEBUG
+macro_line|#undef WE_EVENT_DEBUG&t;&t;/* Debug Event dispatcher */
+multiline_comment|/* Options */
+DECL|macro|WE_EVENT_NETLINK
+mdefine_line|#define WE_EVENT_NETLINK&t;/* Propagate events using rtnetlink */
+DECL|macro|WE_SET_EVENT
+mdefine_line|#define WE_SET_EVENT&t;&t;/* Generate an event on some set commands */
 multiline_comment|/************************* GLOBAL VARIABLES *************************/
 multiline_comment|/*&n; * You should not use global variables, because or re-entrancy.&n; * On our case, it&squot;s only const, so it&squot;s OK...&n; */
+multiline_comment|/*&n; * Meta-data about all the standard Wireless Extension request we&n; * know about.&n; */
 DECL|variable|standard_ioctl
 r_static
 r_const
@@ -27,7 +36,7 @@ id|standard_ioctl
 )braket
 op_assign
 (brace
-multiline_comment|/* SIOCSIWCOMMIT (internal) */
+multiline_comment|/* SIOCSIWCOMMIT */
 (brace
 id|IW_HEADER_TYPE_NULL
 comma
@@ -419,9 +428,9 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* -- hole -- */
+multiline_comment|/* SIOCSIWSCAN */
 (brace
-id|IW_HEADER_TYPE_NULL
+id|IW_HEADER_TYPE_PARAM
 comma
 l_int|0
 comma
@@ -434,17 +443,17 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* -- hole -- */
+multiline_comment|/* SIOCGIWSCAN */
 (brace
-id|IW_HEADER_TYPE_NULL
+id|IW_HEADER_TYPE_POINT
 comma
 l_int|0
 comma
-l_int|0
+l_int|1
 comma
 l_int|0
 comma
-l_int|0
+id|IW_SCAN_MAX_DATA
 comma
 l_int|0
 )brace
@@ -693,7 +702,7 @@ multiline_comment|/* SIOCSIWENCODE */
 (brace
 id|IW_HEADER_TYPE_POINT
 comma
-l_int|4
+l_int|0
 comma
 l_int|1
 comma
@@ -755,8 +764,91 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|variable|standard_ioctl_num
+r_static
+r_const
+r_int
+id|standard_ioctl_num
+op_assign
+(paren
+r_sizeof
+(paren
+id|standard_ioctl
+)paren
+op_div
+r_sizeof
+(paren
+r_struct
+id|iw_ioctl_description
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Meta-data about all the additional standard Wireless Extension events&n; * we know about.&n; */
+DECL|variable|standard_event
+r_static
+r_const
+r_struct
+id|iw_ioctl_description
+id|standard_event
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* IWEVTXDROP */
+(brace
+id|IW_HEADER_TYPE_ADDR
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IWEVQUAL */
+(brace
+id|IW_HEADER_TYPE_QUAL
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|standard_event_num
+r_static
+r_const
+r_int
+id|standard_event_num
+op_assign
+(paren
+r_sizeof
+(paren
+id|standard_event
+)paren
+op_div
+r_sizeof
+(paren
+r_struct
+id|iw_ioctl_description
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Size (in bytes) of the various private data types */
 DECL|variable|priv_type_size
+r_static
+r_const
 r_char
 id|priv_type_size
 (braket
@@ -780,6 +872,39 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+multiline_comment|/* Size (in bytes) of various events */
+DECL|variable|event_type_size
+r_static
+r_const
+r_int
+id|event_type_size
+(braket
+)braket
+op_assign
+(brace
+id|IW_EV_LCP_LEN
+comma
+l_int|0
+comma
+id|IW_EV_CHAR_LEN
+comma
+l_int|0
+comma
+id|IW_EV_UINT_LEN
+comma
+id|IW_EV_FREQ_LEN
+comma
+id|IW_EV_POINT_LEN
+comma
+multiline_comment|/* Without variable payload */
+id|IW_EV_PARAM_LEN
+comma
+id|IW_EV_ADDR_LEN
+comma
+id|IW_EV_QUAL_LEN
+comma
+)brace
+suffix:semicolon
 multiline_comment|/************************ COMMON SUBROUTINES ************************/
 multiline_comment|/*&n; * Stuff that may be used in various place or doesn&squot;t fit in one&n; * of the section below.&n; */
 multiline_comment|/* ---------------------------------------------------------------- */
@@ -801,11 +926,12 @@ r_int
 id|cmd
 )paren
 (brace
+multiline_comment|/* Don&squot;t &quot;optimise&quot; the following variable, it will crash */
 r_int
 r_int
 id|index
 suffix:semicolon
-multiline_comment|/* MUST be unsigned */
+multiline_comment|/* *MUST* be unsigned */
 multiline_comment|/* Check if we have some wireless handlers defined */
 r_if
 c_cond
@@ -1085,7 +1211,12 @@ l_char|&squot;.&squot;
 suffix:colon
 l_char|&squot; &squot;
 comma
+(paren
+(paren
+id|__u8
+)paren
 id|stats-&gt;qual.level
+)paren
 comma
 id|stats-&gt;qual.updated
 op_amp
@@ -1096,7 +1227,12 @@ l_char|&squot;.&squot;
 suffix:colon
 l_char|&squot; &squot;
 comma
+(paren
+(paren
+id|__u8
+)paren
 id|stats-&gt;qual.noise
+)paren
 comma
 id|stats-&gt;qual.updated
 op_amp
@@ -1617,6 +1753,23 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Get the description of the IOCTL */
+r_if
+c_cond
+(paren
+(paren
+id|cmd
+op_minus
+id|SIOCIWFIRST
+)paren
+op_ge
+id|standard_ioctl_num
+)paren
+(brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 id|descr
 op_assign
 op_amp
@@ -1634,7 +1787,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s : Found standard handler for 0x%04X&bslash;n&quot;
+l_string|&quot;%s (WE) : Found standard handler for 0x%04X&bslash;n&quot;
 comma
 id|ifr-&gt;ifr_name
 comma
@@ -1645,7 +1798,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Header type : %d, token type : %d, token_size : %d, max_token : %d&bslash;n&quot;
+l_string|&quot;%s (WE) : Header type : %d, Token type : %d, size : %d, token : %d&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|descr-&gt;header_type
 comma
@@ -1694,6 +1849,50 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef WE_SET_EVENT
+multiline_comment|/* Generate an event to notify listeners of the change */
+r_if
+c_cond
+(paren
+(paren
+id|descr-&gt;flags
+op_amp
+id|IW_DESCR_FLAG_EVENT
+)paren
+op_logical_and
+(paren
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|ret
+op_eq
+op_minus
+id|EIWCOMMIT
+)paren
+)paren
+)paren
+(brace
+id|wireless_send_event
+c_func
+(paren
+id|dev
+comma
+id|cmd
+comma
+op_amp
+(paren
+id|iwr-&gt;u
+)paren
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* WE_SET_EVENT */
 )brace
 r_else
 (brace
@@ -1803,7 +2002,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Malloc %d bytes&bslash;n&quot;
+l_string|&quot;%s (WE) : Malloc %d bytes&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|descr-&gt;max_tokens
 op_star
@@ -1890,7 +2091,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Got %d bytes&bslash;n&quot;
+l_string|&quot;%s (WE) : Got %d bytes&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|iwr-&gt;u.data.length
 op_star
@@ -1961,7 +2164,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Wrote %d bytes&bslash;n&quot;
+l_string|&quot;%s (WE) : Wrote %d bytes&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|iwr-&gt;u.data.length
 op_star
@@ -1970,6 +2175,76 @@ id|descr-&gt;token_size
 suffix:semicolon
 macro_line|#endif&t;/* WE_IOCTL_DEBUG */
 )brace
+macro_line|#ifdef WE_SET_EVENT
+multiline_comment|/* Generate an event to notify listeners of the change */
+r_if
+c_cond
+(paren
+(paren
+id|descr-&gt;flags
+op_amp
+id|IW_DESCR_FLAG_EVENT
+)paren
+op_logical_and
+(paren
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|ret
+op_eq
+op_minus
+id|EIWCOMMIT
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|descr-&gt;flags
+op_amp
+id|IW_DESCR_FLAG_RESTRICT
+)paren
+(brace
+multiline_comment|/* If the event is restricted, don&squot;t&n;&t;&t;&t;&t; * export the payload */
+id|wireless_send_event
+c_func
+(paren
+id|dev
+comma
+id|cmd
+comma
+op_amp
+(paren
+id|iwr-&gt;u
+)paren
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+r_else
+id|wireless_send_event
+c_func
+(paren
+id|dev
+comma
+id|cmd
+comma
+op_amp
+(paren
+id|iwr-&gt;u
+)paren
+comma
+id|extra
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* WE_SET_EVENT */
 multiline_comment|/* Cleanup - I told you it wasn&squot;t that long ;-) */
 id|kfree
 c_func
@@ -2112,7 +2387,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s : Found private handler for 0x%04X&bslash;n&quot;
+l_string|&quot;%s (WE) : Found private handler for 0x%04X&bslash;n&quot;
 comma
 id|ifr-&gt;ifr_name
 comma
@@ -2129,7 +2404,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Name %s, set %X, get %X&bslash;n&quot;
+l_string|&quot;%s (WE) : Name %s, set %X, get %X&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|descr-&gt;name
 comma
@@ -2354,7 +2631,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Malloc %d bytes&bslash;n&quot;
+l_string|&quot;%s (WE) : Malloc %d bytes&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|extra_size
 )paren
@@ -2435,7 +2714,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Got %d elem&bslash;n&quot;
+l_string|&quot;%s (WE) : Got %d elem&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|iwr-&gt;u.data.length
 )paren
@@ -2502,7 +2783,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Wrote %d elem&bslash;n&quot;
+l_string|&quot;%s (WE) : Wrote %d elem&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|iwr-&gt;u.data.length
 )paren
@@ -2738,5 +3021,644 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
+multiline_comment|/************************* EVENT PROCESSING *************************/
+multiline_comment|/*&n; * Process events generated by the wireless layer or the driver.&n; * Most often, the event will be propagated through rtnetlink&n; */
+macro_line|#ifdef WE_EVENT_NETLINK
+multiline_comment|/* &quot;rtnl&quot; is defined in net/core/rtnetlink.c, but we need it here.&n; * It is declared in &lt;linux/rtnetlink.h&gt; */
+multiline_comment|/* ---------------------------------------------------------------- */
+multiline_comment|/*&n; * Fill a rtnetlink message with our event data.&n; * Note that we propage only the specified event and don&squot;t dump the&n; * current wireless config. Dumping the wireless config is far too&n; * expensive (for each parameter, the driver need to query the hardware).&n; */
+DECL|function|rtnetlink_fill_iwinfo
+r_static
+r_inline
+r_int
+id|rtnetlink_fill_iwinfo
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|type
+comma
+r_char
+op_star
+id|event
+comma
+r_int
+id|event_len
+)paren
+(brace
+r_struct
+id|ifinfomsg
+op_star
+id|r
+suffix:semicolon
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
+suffix:semicolon
+r_int
+r_char
+op_star
+id|b
+op_assign
+id|skb-&gt;tail
+suffix:semicolon
+id|nlh
+op_assign
+id|NLMSG_PUT
+c_func
+(paren
+id|skb
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|type
+comma
+r_sizeof
+(paren
+op_star
+id|r
+)paren
+)paren
+suffix:semicolon
+id|r
+op_assign
+id|NLMSG_DATA
+c_func
+(paren
+id|nlh
+)paren
+suffix:semicolon
+id|r-&gt;ifi_family
+op_assign
+id|AF_UNSPEC
+suffix:semicolon
+id|r-&gt;ifi_type
+op_assign
+id|dev-&gt;type
+suffix:semicolon
+id|r-&gt;ifi_index
+op_assign
+id|dev-&gt;ifindex
+suffix:semicolon
+id|r-&gt;ifi_flags
+op_assign
+id|dev-&gt;flags
+suffix:semicolon
+id|r-&gt;ifi_change
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Wireless changes don&squot;t affect those flags */
+multiline_comment|/* Add the wireless events in the netlink packet */
+id|RTA_PUT
+c_func
+(paren
+id|skb
+comma
+id|IFLA_WIRELESS
+comma
+id|event_len
+comma
+id|event
+)paren
+suffix:semicolon
+id|nlh-&gt;nlmsg_len
+op_assign
+id|skb-&gt;tail
+op_minus
+id|b
+suffix:semicolon
+r_return
+id|skb-&gt;len
+suffix:semicolon
+id|nlmsg_failure
+suffix:colon
+id|rtattr_failure
+suffix:colon
+id|skb_trim
+c_func
+(paren
+id|skb
+comma
+id|b
+op_minus
+id|skb-&gt;data
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* ---------------------------------------------------------------- */
+multiline_comment|/*&n; * Create and broadcast and send it on the standard rtnetlink socket&n; * This is a pure clone rtmsg_ifinfo() in net/core/rtnetlink.c&n; * Andrzej Krzysztofowicz mandated that I used a IFLA_XXX field&n; * within a RTM_NEWLINK event.&n; */
+DECL|function|rtmsg_iwinfo
+r_static
+r_inline
+r_void
+id|rtmsg_iwinfo
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|event
+comma
+r_int
+id|event_len
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_int
+id|size
+op_assign
+id|NLMSG_GOODSIZE
+suffix:semicolon
+id|skb
+op_assign
+id|alloc_skb
+c_func
+(paren
+id|size
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtnetlink_fill_iwinfo
+c_func
+(paren
+id|skb
+comma
+id|dev
+comma
+id|RTM_NEWLINK
+comma
+id|event
+comma
+id|event_len
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|NETLINK_CB
+c_func
+(paren
+id|skb
+)paren
+dot
+id|dst_groups
+op_assign
+id|RTMGRP_LINK
+suffix:semicolon
+id|netlink_broadcast
+c_func
+(paren
+id|rtnl
+comma
+id|skb
+comma
+l_int|0
+comma
+id|RTMGRP_LINK
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* WE_EVENT_NETLINK */
+multiline_comment|/* ---------------------------------------------------------------- */
+multiline_comment|/*&n; * Main event dispatcher. Called from other parts and drivers.&n; * Send the event on the apropriate channels.&n; * May be called from interrupt context.&n; */
+DECL|function|wireless_send_event
+r_void
+id|wireless_send_event
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|cmd
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+(brace
+r_const
+r_struct
+id|iw_ioctl_description
+op_star
+id|descr
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|extra_len
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|iw_event
+op_star
+id|event
+suffix:semicolon
+multiline_comment|/* Mallocated whole event */
+r_int
+id|event_len
+suffix:semicolon
+multiline_comment|/* Its size */
+r_int
+id|hdr_len
+suffix:semicolon
+multiline_comment|/* Size of the event header */
+multiline_comment|/* Don&squot;t &quot;optimise&quot; the following variable, it will crash */
+r_int
+id|cmd_index
+suffix:semicolon
+multiline_comment|/* *MUST* be unsigned */
+multiline_comment|/* Get the description of the IOCTL */
+r_if
+c_cond
+(paren
+id|cmd
+op_le
+id|SIOCIWLAST
+)paren
+(brace
+id|cmd_index
+op_assign
+id|cmd
+op_minus
+id|SIOCIWFIRST
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd_index
+OL
+id|standard_ioctl_num
+)paren
+(brace
+id|descr
+op_assign
+op_amp
+(paren
+id|standard_ioctl
+(braket
+id|cmd_index
+)braket
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|cmd_index
+op_assign
+id|cmd
+op_minus
+id|IWEVFIRST
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd_index
+OL
+id|standard_event_num
+)paren
+(brace
+id|descr
+op_assign
+op_amp
+(paren
+id|standard_event
+(braket
+id|cmd_index
+)braket
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* Don&squot;t accept unknown events */
+r_if
+c_cond
+(paren
+id|descr
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* Note : we don&squot;t return an error to the driver, because&n;&t;&t; * the driver would not know what to do about it. It can&squot;t&n;&t;&t; * return an error to the user, because the event is not&n;&t;&t; * initiated by a user request.&n;&t;&t; * The best the driver could do is to log an error message.&n;&t;&t; * We will do it ourselves instead...&n;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s (WE) : Invalid Wireless Event (0x%04X)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|cmd
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#ifdef WE_EVENT_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s (WE) : Got event 0x%04X&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|cmd
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s (WE) : Header type : %d, Token type : %d, size : %d, token : %d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|descr-&gt;header_type
+comma
+id|descr-&gt;token_type
+comma
+id|descr-&gt;token_size
+comma
+id|descr-&gt;max_tokens
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* WE_EVENT_DEBUG */
+multiline_comment|/* Check extra parameters and set extra_len */
+r_if
+c_cond
+(paren
+id|descr-&gt;header_type
+op_eq
+id|IW_HEADER_TYPE_POINT
+)paren
+(brace
+multiline_comment|/* Check if number of token fits within bounds */
+r_if
+c_cond
+(paren
+id|wrqu-&gt;data.length
+OG
+id|descr-&gt;max_tokens
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s (WE) : Wireless Event too big (%d)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|wrqu-&gt;data.length
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|wrqu-&gt;data.length
+OL
+id|descr-&gt;min_tokens
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s (WE) : Wireless Event too small (%d)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|wrqu-&gt;data.length
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Calculate extra_len - extra is NULL for restricted events */
+r_if
+c_cond
+(paren
+id|extra
+op_ne
+l_int|NULL
+)paren
+(brace
+id|extra_len
+op_assign
+id|wrqu-&gt;data.length
+op_star
+id|descr-&gt;token_size
+suffix:semicolon
+)brace
+macro_line|#ifdef WE_EVENT_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s (WE) : Event 0x%04X, tokens %d, extra_len %d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|cmd
+comma
+id|wrqu-&gt;data.length
+comma
+id|extra_len
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* WE_EVENT_DEBUG */
+)brace
+multiline_comment|/* Total length of the event */
+id|hdr_len
+op_assign
+id|event_type_size
+(braket
+id|descr-&gt;header_type
+)braket
+suffix:semicolon
+id|event_len
+op_assign
+id|hdr_len
+op_plus
+id|extra_len
+suffix:semicolon
+macro_line|#ifdef WE_EVENT_DEBUG
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s (WE) : Event 0x%04X, hdr_len %d, event_len %d&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|cmd
+comma
+id|hdr_len
+comma
+id|event_len
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* WE_EVENT_DEBUG */
+multiline_comment|/* Create temporary buffer to hold the event */
+id|event
+op_assign
+id|kmalloc
+c_func
+(paren
+id|event_len
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|event
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Fill event */
+id|event-&gt;len
+op_assign
+id|event_len
+suffix:semicolon
+id|event-&gt;cmd
+op_assign
+id|cmd
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|event-&gt;u
+comma
+id|wrqu
+comma
+id|hdr_len
+op_minus
+id|IW_EV_LCP_LEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|extra
+op_ne
+l_int|NULL
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+(paren
+(paren
+r_char
+op_star
+)paren
+id|event
+)paren
+op_plus
+id|hdr_len
+comma
+id|extra
+comma
+id|extra_len
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef WE_EVENT_NETLINK
+multiline_comment|/* rtnetlink event channel */
+id|rtmsg_iwinfo
+c_func
+(paren
+id|dev
+comma
+(paren
+r_char
+op_star
+)paren
+id|event
+comma
+id|event_len
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* WE_EVENT_NETLINK */
+multiline_comment|/* Cleanup */
+id|kfree
+c_func
+(paren
+id|event
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+multiline_comment|/* Always success, I guess ;-) */
 )brace
 eof

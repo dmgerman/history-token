@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MMU fault handling support.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * MMU fault handling support.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -310,7 +310,13 @@ id|vma
 comma
 id|address
 comma
+(paren
 id|mask
+op_amp
+id|VM_WRITE
+)paren
+op_ne
+l_int|0
 )paren
 )paren
 (brace
@@ -544,6 +550,14 @@ op_star
 )paren
 id|address
 suffix:semicolon
+id|si.si_isr
+op_assign
+id|isr
+suffix:semicolon
+id|si.si_flags
+op_assign
+id|__ISR_VALID
+suffix:semicolon
 id|force_sig_info
 c_func
 (paren
@@ -699,20 +713,9 @@ op_eq
 l_int|1
 )paren
 (brace
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
-)paren
-suffix:semicolon
-id|down_read
-c_func
-(paren
-op_amp
-id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 r_goto

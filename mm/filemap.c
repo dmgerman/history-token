@@ -2125,7 +2125,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|mapping-&gt;dirty_pages.next
+id|mapping-&gt;dirty_pages.prev
 comma
 r_struct
 id|page

@@ -91,6 +91,11 @@ DECL|variable|cpucount
 r_int
 id|cpucount
 suffix:semicolon
+DECL|variable|task_for_booting_cpu
+id|task_t
+op_star
+id|task_for_booting_cpu
+suffix:semicolon
 multiline_comment|/* Setup configured maximum number of CPUs to activate */
 DECL|variable|max_cpus
 r_static
@@ -1122,6 +1127,10 @@ op_amp
 id|smp_commenced
 )paren
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|Dprintk
 c_func
@@ -1230,9 +1239,13 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|idle-&gt;processor
-op_assign
+id|init_idle
+c_func
+(paren
+id|idle
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|ia64_cpu_to_sapicid
 (braket
@@ -1241,29 +1254,13 @@ id|cpu
 op_assign
 id|sapicid
 suffix:semicolon
-id|idle-&gt;cpus_runnable
-op_assign
-l_int|1
-op_lshift
-id|cpu
-suffix:semicolon
-multiline_comment|/* we schedule the first task manually */
-id|del_from_runqueue
-c_func
-(paren
-id|idle
-)paren
-suffix:semicolon
 id|unhash_process
 c_func
 (paren
 id|idle
 )paren
 suffix:semicolon
-id|init_tasks
-(braket
-id|cpu
-)braket
+id|task_for_booting_cpu
 op_assign
 id|idle
 suffix:semicolon
@@ -1397,6 +1394,42 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
+DECL|variable|cache_decay_ticks
+r_int
+r_int
+id|cache_decay_ticks
+suffix:semicolon
+multiline_comment|/* # of ticks an idle task is considered cache-hot */
+r_static
+r_void
+DECL|function|smp_tune_scheduling
+id|smp_tune_scheduling
+(paren
+r_void
+)paren
+(brace
+id|cache_decay_ticks
+op_assign
+l_int|10
+suffix:semicolon
+multiline_comment|/* XXX base this on PAL info and cache-bandwidth estimate */
+id|printk
+c_func
+(paren
+l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
+comma
+(paren
+id|cache_decay_ticks
+op_plus
+l_int|1
+)paren
+op_star
+l_int|1000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Cycle through the APs sending Wakeup IPIs to boot each.&n; */
 r_void
 id|__init
@@ -1447,7 +1480,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;* We have the boot CPU online for sure.&n;&t;*/
+multiline_comment|/*&n;&t; * We have the boot CPU online for sure.&n;&t; */
 id|set_bit
 c_func
 (paren
@@ -1489,13 +1522,18 @@ id|boot_cpu_id
 suffix:semicolon
 id|global_irq_holder
 op_assign
-l_int|0
+id|NO_PROC_ID
 suffix:semicolon
-id|current-&gt;processor
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|cpu
 op_assign
 l_int|0
 suffix:semicolon
-id|init_idle
+id|smp_tune_scheduling
 c_func
 (paren
 )paren

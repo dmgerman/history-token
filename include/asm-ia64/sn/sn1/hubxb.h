@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBXB_H
-DECL|macro|_ASM_SN_SN1_HUBXB_H
-mdefine_line|#define _ASM_SN_SN1_HUBXB_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBXB_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBXB_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBXB_H
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *      WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!      *&n; *                                                                      *&n; * This file is created by an automated script. Any (minimal) changes   *&n; * made manually to this  file should be made with care.                *&n; *                                                                      *&n; *               MAKE ALL ADDITIONS TO THE END OF THIS FILE             *&n; *                                                                      *&n; ************************************************************************/
 DECL|macro|XB_PARMS
 mdefine_line|#define    XB_PARMS                  0x00700000    /*&n;                                                    * Controls&n;                                                    * crossbar-wide&n;                                                    * parameters.&n;                                                    */
@@ -75,7 +75,7 @@ DECL|macro|XB_LIQ_ERROR_CLEAR
 mdefine_line|#define    XB_LIQ_ERROR_CLEAR        0x00700188    /*&n;                                                    * Clears XB_LIQ_ERROR&n;                                                    * register.&n;                                                    */
 DECL|macro|XB_FIRST_ERROR_CLEAR
 mdefine_line|#define    XB_FIRST_ERROR_CLEAR      0x00700190    /*&n;                                                    * Clears&n;                                                    * XB_FIRST_ERROR&n;                                                    * register&n;                                                    */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *  Access to parameters which control various aspects of the           *&n; * crossbar&squot;s operation.                                                *&n; *                                                                      *&n; ************************************************************************/
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|xb_parms_u
@@ -2608,8 +2608,8 @@ DECL|typedef|xb_first_error_clear_u_t
 id|xb_first_error_clear_u_t
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/************************************************************************&n; *                                                                      *&n; * The following defines were not formed into structures                *&n; *                                                                      *&n; * This could be because the document did not contain details of the    *&n; * register, or because the automated script did not recognize the      *&n; * register details in the documentation. If these register need        *&n; * structure definition, please create them manually                    *&n; *                                                                      *&n; *           XB_POQ1_ERROR            0x700030                          *&n; *           XB_PIQ1_ERROR            0x700038                          *&n; *           XB_MP1_ERROR             0x700048                          *&n; *           XB_MMQ_ERROR             0x700050                          *&n; *           XB_NIQ_ERROR             0x700068                          *&n; *           XB_IOQ_ERROR             0x700070                          *&n; *           XB_IIQ_ERROR             0x700078                          *&n; *           XB_POQ1_ERROR_CLEAR      0x700130                          *&n; *           XB_PIQ1_ERROR_CLEAR      0x700138                          *&n; *           XB_MP1_ERROR_CLEAR       0x700148                          *&n; *           XB_MMQ_ERROR_CLEAR       0x700150                          *&n; *           XB_NIQ_ERROR_CLEAR       0x700168                          *&n; *           XB_IOQ_ERROR_CLEAR       0x700170                          *&n; *           XB_IIQ_ERROR_CLEAR       0x700178                          *&n; *                                                                      *&n; ************************************************************************/
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *               MAKE ALL ADDITIONS AFTER THIS LINE                     *&n; *                                                                      *&n; ************************************************************************/
-macro_line|#endif /* _ASM_SN_SN1_HUBXB_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBXB_H */
 eof

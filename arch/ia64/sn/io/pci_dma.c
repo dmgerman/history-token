@@ -1,43 +1,35 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Leo Dagum&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000,2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#ifndef LANGUAGE_C 
-DECL|macro|LANGUAGE_C
-mdefine_line|#define LANGUAGE_C 99
-macro_line|#endif
-macro_line|#ifndef _LANGUAGE_C
-DECL|macro|_LANGUAGE_C
-mdefine_line|#define _LANGUAGE_C 99
-macro_line|#endif
+macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
-multiline_comment|/*&n; * this is REALLY ugly, blame it on gcc&squot;s lame inlining that we&n; * have to put procedures in header files&n; */
-macro_line|#if LANGUAGE_C == 99
-DECL|macro|LANGUAGE_C
-macro_line|#undef LANGUAGE_C
-macro_line|#endif
-macro_line|#if CONFIG_IA64_SGI_IO == 99
-DECL|macro|CONFIG_IA64_SGI_IO
-macro_line|#undef CONFIG_IA64_SGI_IO
-macro_line|#endif
+macro_line|#include &lt;asm/sn/nag.h&gt;
 id|pciio_dmamap_t
 id|get_free_pciio_dmamap
 c_func
 (paren
 id|devfs_handle_t
+)paren
+suffix:semicolon
+r_void
+id|free_pciio_dmamap
+c_func
+(paren
+id|pcibr_dmamap_t
 )paren
 suffix:semicolon
 r_struct
@@ -101,7 +93,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|512
+id|MAX_PCI_XWIDGET
 suffix:semicolon
 id|i
 op_increment
@@ -137,7 +129,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|512
+id|MAX_ATE_MAPS
 suffix:semicolon
 id|i
 op_increment
@@ -166,15 +158,101 @@ id|sn1_dma_map
 suffix:semicolon
 )brace
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;get_pciio_dmamap: Unable to find a free dmamap&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * Free pciio_dmamap_t entry.&n; */
+r_void
+DECL|function|free_pciio_dmamap
+id|free_pciio_dmamap
+c_func
+(paren
+id|pcibr_dmamap_t
+id|dma_map
+)paren
+(brace
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|sn1_dma_map
+suffix:semicolon
+id|sn1_dma_map
+op_assign
+(paren
+r_struct
+id|sn1_dma_maps_s
+op_star
+)paren
+id|dma_map
+suffix:semicolon
+id|sn1_dma_map-&gt;dma_addr
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * sn_dma_sync: This routine flushes all DMA buffers for the device into the II.&n; *&t;This does not mean that the data is in the &quot;Coherence Domain&quot;.  But it &n; *&t;is very close.&n; */
+r_void
+DECL|function|sn_dma_sync
+id|sn_dma_sync
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+)paren
+(brace
+r_struct
+id|sn1_device_sysdata
+op_star
+id|device_sysdata
+suffix:semicolon
+r_volatile
+r_int
+r_int
+id|dummy
+suffix:semicolon
+multiline_comment|/*&n;&t; * It is expected that on IA64 platform, a DMA sync ensures that all &n;&t; * the DMA (dma_handle) are complete and coherent.&n;&t; *&t;1. Flush Write Buffers from Bridge.&n;&t; *&t;2. Flush Xbow Port.&n;&t; */
+id|device_sysdata
+op_assign
+(paren
+r_struct
+id|sn1_device_sysdata
+op_star
+)paren
+id|hwdev-&gt;sysdata
+suffix:semicolon
+id|dummy
+op_assign
+(paren
+r_volatile
+r_int
+r_int
+)paren
+op_star
+id|device_sysdata-&gt;dma_buf_sync
+suffix:semicolon
+multiline_comment|/*&n;&t; * For the Xbow Port flush, we maybe denied the request because &n;&t; * someone else may be flushing the Port .. try again.&n;&t; */
+r_while
+c_loop
+(paren
+(paren
+r_volatile
+r_int
+r_int
+)paren
+op_star
+id|device_sysdata-&gt;xbow_buf_sync
+)paren
+(brace
+id|udelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+)brace
 )brace
 r_struct
 id|sn1_dma_maps_s
@@ -217,7 +295,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|512
+id|MAX_ATE_MAPS
 suffix:semicolon
 id|i
 op_increment
@@ -373,6 +451,7 @@ id|hwdev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This device supports 64bits DMA addresses.&n;&t;&t; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 op_star
 id|dma_handle
 op_assign
@@ -396,6 +475,29 @@ op_or
 id|PCIIO_DMA_A64
 )paren
 suffix:semicolon
+macro_line|#else /* SN2 */
+op_star
+id|dma_handle
+op_assign
+id|pciio_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|temp_ptr
+comma
+id|size
+comma
+id|PCIBR_BARRIER
+op_or
+id|PCIIO_DMA_CMD
+op_or
+id|PCIIO_DMA_A64
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 id|ret
@@ -413,6 +515,7 @@ id|hwdev
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 op_star
 id|dma_handle
 op_assign
@@ -434,6 +537,27 @@ op_or
 id|PCIIO_DMA_CMD
 )paren
 suffix:semicolon
+macro_line|#else /* SN2 */
+op_star
+id|dma_handle
+op_assign
+id|pciio_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|temp_ptr
+comma
+id|size
+comma
+id|PCIBR_BARRIER
+op_or
+id|PCIIO_DMA_CMD
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -521,7 +645,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * On sn1 we use the orig_address entry of the scatterlist to store&n; * the physical address corresponding to the given virtual address&n; */
+multiline_comment|/*&n; * On sn1 we use the page entry of the scatterlist to store&n; * the physical address corresponding to the given virtual address&n; */
 r_int
 DECL|function|sn1_pci_map_sg
 id|sn1_pci_map_sg
@@ -607,18 +731,60 @@ id|sg
 op_increment
 )paren
 (brace
-id|sg-&gt;orig_address
-op_assign
+multiline_comment|/* this catches incorrectly written drivers that&n;                   attempt to map scatterlists that they have&n;                   previously mapped.  we print a warning and&n;                   continue, but the driver should be fixed */
+r_switch
+c_cond
 (paren
-r_char
+(paren
+(paren
+id|u64
+)paren
+id|sg-&gt;address
+)paren
+op_rshift
+l_int|60
+)paren
+(brace
+r_case
+l_int|0xa
+suffix:colon
+r_case
+l_int|0xb
+suffix:colon
+macro_line|#ifdef DEBUG
+multiline_comment|/* This needs to be cleaned up at some point. */
+id|NAG
+c_func
+(paren
+l_string|&quot;A PCI driver (for device at%8s) has attempted to &quot;
+l_string|&quot;map a scatterlist that was previously mapped at &quot;
+l_string|&quot;%p - this is currently being worked around.&bslash;n&quot;
+comma
+id|hwdev-&gt;slot_name
+comma
+(paren
+r_void
 op_star
 )paren
-l_int|NULL
+id|sg-&gt;address
+)paren
 suffix:semicolon
-id|dma_addr
+macro_line|#endif
+id|temp_ptr
 op_assign
-l_int|0
+(paren
+id|u64
+)paren
+id|sg-&gt;address
+op_amp
+id|TO_PHYS_MASK
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xe
+suffix:colon
+multiline_comment|/* a good address, we now map it. */
 id|temp_ptr
 op_assign
 (paren
@@ -629,6 +795,41 @@ c_func
 (paren
 id|sg-&gt;address
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Very bad address (%p) passed to sn1_pci_map_sg&bslash;n&quot;
+comma
+(paren
+r_void
+op_star
+)paren
+id|sg-&gt;address
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|sg-&gt;page
+op_assign
+(paren
+r_char
+op_star
+)paren
+l_int|NULL
+suffix:semicolon
+id|dma_addr
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Handle the most common case 64Bit cards.&n;&t;&t; */
 r_if
@@ -641,6 +842,7 @@ id|hwdev
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|dma_addr
 op_assign
 (paren
@@ -657,15 +859,36 @@ id|temp_ptr
 comma
 id|sg-&gt;length
 comma
-id|PCIBR_BARRIER
-op_or
 id|PCIIO_BYTE_STREAM
 op_or
-id|PCIIO_DMA_CMD
+id|PCIIO_DMA_DATA
 op_or
 id|PCIIO_DMA_A64
 )paren
 suffix:semicolon
+macro_line|#else
+id|dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+id|pciio_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|temp_ptr
+comma
+id|sg-&gt;length
+comma
+id|PCIIO_DMA_DATA
+op_or
+id|PCIIO_DMA_A64
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sg-&gt;address
 op_assign
 (paren
@@ -688,6 +911,7 @@ id|hwdev
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|dma_addr
 op_assign
 (paren
@@ -704,13 +928,32 @@ id|temp_ptr
 comma
 id|sg-&gt;length
 comma
-id|PCIBR_BARRIER
-op_or
 id|PCIIO_BYTE_STREAM
 op_or
-id|PCIIO_DMA_CMD
+id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
+macro_line|#else
+id|dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+id|pciio_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|temp_ptr
+comma
+id|sg-&gt;length
+comma
+id|PCIIO_DMA_DATA
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -734,6 +977,7 @@ id|dma_map
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|dma_map
 op_assign
 id|pciio_dmamap_alloc
@@ -745,13 +989,27 @@ l_int|NULL
 comma
 id|sg-&gt;length
 comma
-id|PCIBR_BARRIER
-op_or
 id|PCIIO_BYTE_STREAM
 op_or
-id|PCIIO_DMA_CMD
+id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
+macro_line|#else
+id|dma_map
+op_assign
+id|pciio_dmamap_alloc
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|sg-&gt;length
+comma
+id|PCIIO_DMA_DATA
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -795,7 +1053,7 @@ op_star
 )paren
 id|dma_addr
 suffix:semicolon
-id|sg-&gt;orig_address
+id|sg-&gt;page
 op_assign
 (paren
 r_char
@@ -870,12 +1128,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|sg-&gt;orig_address
+id|sg-&gt;page
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We maintain the DMA Map pointer in sg-&gt;orig_address if &n;&t;&t;&t; * it is ever allocated.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We maintain the DMA Map pointer in sg-&gt;page if &n;&t;&t;&t; * it is ever allocated.&n;&t;&t;&t; */
 multiline_comment|/* phys_to_virt((dma_addr_t)sg-&gt;address | ~0x80000000); */
-multiline_comment|/* sg-&gt;address = sg-&gt;orig_address; */
+multiline_comment|/* sg-&gt;address = sg-&gt;page; */
 id|sg-&gt;address
 op_assign
 (paren
@@ -892,7 +1150,7 @@ r_struct
 id|sn1_dma_maps_s
 op_star
 )paren
-id|sg-&gt;orig_address
+id|sg-&gt;page
 suffix:semicolon
 id|pciio_dmamap_done
 c_func
@@ -916,7 +1174,7 @@ id|sn1_dma_map-&gt;dma_addr
 op_assign
 l_int|0
 suffix:semicolon
-id|sg-&gt;orig_address
+id|sg-&gt;page
 op_assign
 l_int|0
 suffix:semicolon
@@ -1020,6 +1278,7 @@ id|hwdev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This device supports 64bits DMA addresses.&n;&t;&t; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|dma_addr
 op_assign
 (paren
@@ -1036,15 +1295,36 @@ id|temp_ptr
 comma
 id|size
 comma
-id|PCIBR_BARRIER
-op_or
 id|PCIIO_BYTE_STREAM
 op_or
-id|PCIIO_DMA_CMD
+id|PCIIO_DMA_DATA
 op_or
 id|PCIIO_DMA_A64
 )paren
 suffix:semicolon
+macro_line|#else
+id|dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+id|pciio_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|temp_ptr
+comma
+id|size
+comma
+id|PCIIO_DMA_DATA
+op_or
+id|PCIIO_DMA_A64
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 id|dma_addr
@@ -1062,6 +1342,7 @@ id|hwdev
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|dma_addr
 op_assign
 (paren
@@ -1078,13 +1359,32 @@ id|temp_ptr
 comma
 id|size
 comma
-id|PCIBR_BARRIER
-op_or
 id|PCIIO_BYTE_STREAM
 op_or
-id|PCIIO_DMA_CMD
+id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
+macro_line|#else
+id|dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+id|pciio_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|temp_ptr
+comma
+id|size
+comma
+id|PCIIO_DMA_DATA
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1123,6 +1423,7 @@ id|dma_map
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 id|dma_map
 op_assign
 id|pciio_dmamap_alloc
@@ -1134,13 +1435,27 @@ l_int|NULL
 comma
 id|size
 comma
-id|PCIBR_BARRIER
-op_or
 id|PCIIO_BYTE_STREAM
 op_or
-id|PCIIO_DMA_CMD
+id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
+macro_line|#else
+id|dma_map
+op_assign
+id|pciio_dmamap_alloc
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|size
+comma
+id|PCIIO_DMA_DATA
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1175,7 +1490,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;pci_map_single: dma_map 0x%p Phys Addr 0x%p dma_addr 0x%p&bslash;n&quot;, dma_map, &n;&t;&t;temp_ptr, dma_addr); */
+multiline_comment|/* printk(&quot;pci_map_single: dma_map 0x%p Phys Addr 0x%p dma_addr 0x%p&bslash;n&quot;, dma_map,&n;&t;&t;temp_ptr, dma_addr); */
 id|sn1_dma_map
 op_assign
 (paren
@@ -1320,7 +1635,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+id|sn_dma_sync
+c_func
+(paren
+id|hwdev
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|sn1_pci_dma_sync_sg
@@ -1355,7 +1675,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+id|sn_dma_sync
+c_func
+(paren
+id|hwdev
+)paren
+suffix:semicolon
 )brace
 r_int
 r_int

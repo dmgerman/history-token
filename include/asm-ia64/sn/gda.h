@@ -1,8 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/gda.h&gt;.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; *&n; * gda.h -- Contains the data structure for the global data area,&n; * &t;The GDA contains information communicated between the&n; *&t;PROM, SYMMON, and the kernel. &n; */
-macro_line|#ifndef _ASM_SN_GDA_H
-DECL|macro|_ASM_SN_GDA_H
-mdefine_line|#define _ASM_SN_GDA_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Derived from IRIX &lt;sys/SN/gda.h&gt;.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; *&n; * gda.h -- Contains the data structure for the global data area,&n; * &t;The GDA contains information communicated between the&n; *&t;PROM, SYMMON, and the kernel. &n; */
+macro_line|#ifndef _ASM_IA64_SN_GDA_H
+DECL|macro|_ASM_IA64_SN_GDA_H
+mdefine_line|#define _ASM_IA64_SN_GDA_H
 macro_line|#include &lt;asm/sn/addrs.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 DECL|macro|GDA_MAGIC
 mdefine_line|#define GDA_MAGIC&t;0x58464552
 multiline_comment|/*&n; * GDA Version History&n; *&n; * Version #&t;| Change&n; * -------------+-------------------------------------------------------&n; * &t;1&t;| Initial IP27 version &n; * &t;2&t;| Prom sets g_partid field to the partition number. 0 IS&n; *&t;&t;| a valid partition #. &n; */
@@ -28,7 +29,7 @@ DECL|macro|G_PARTIDOFF
 mdefine_line|#define G_PARTIDOFF&t;40
 DECL|macro|G_TABLEOFF
 mdefine_line|#define G_TABLEOFF&t;128
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|struct|gda
 r_typedef
 r_struct
@@ -132,7 +133,7 @@ id|gda_t
 suffix:semicolon
 DECL|macro|GDA
 mdefine_line|#define GDA ((gda_t*) GDA_ADDR(get_nasid()))
-macro_line|#endif /* __LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Define:&t;PART_GDA_VERSION&n; * Purpose:&t;Define the minimum version of the GDA required, lower &n; *&t;&t;revisions assume GDA is NOT set up, and read partition&n; *&t;&t;information from the board info.&n; */
 DECL|macro|PART_GDA_VERSION
 mdefine_line|#define&t;PART_GDA_VERSION&t;2
@@ -173,5 +174,5 @@ DECL|macro|PROMOP_BIST1
 mdefine_line|#define PROMOP_BIST1&t;&t;0x0800&t;&t;/* keep track of which BIST ran */
 DECL|macro|PROMOP_BIST2
 mdefine_line|#define PROMOP_BIST2&t;&t;0x1000&t;&t;/* keep track of which BIST ran */
-macro_line|#endif /* _ASM_SN_GDA_H */
+macro_line|#endif /* _ASM_IA64_SN_GDA_H */
 eof

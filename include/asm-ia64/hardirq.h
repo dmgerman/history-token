@@ -23,10 +23,10 @@ DECL|macro|local_softirq_pending
 mdefine_line|#define local_softirq_pending()&t;&t;(local_cpu_data-&gt;softirq_pending)
 DECL|macro|local_ksoftirqd_task
 mdefine_line|#define local_ksoftirqd_task()&t;&t;(local_cpu_data-&gt;ksoftirqd)
-DECL|macro|local_irq_count
-mdefine_line|#define local_irq_count()&t;&t;(local_cpu_data-&gt;irq_stat.f.irq_count)
-DECL|macro|local_bh_count
-mdefine_line|#define local_bh_count()&t;&t;(local_cpu_data-&gt;irq_stat.f.bh_count)
+DECL|macro|really_local_irq_count
+mdefine_line|#define really_local_irq_count()&t;(local_cpu_data-&gt;irq_stat.f.irq_count)&t;/* XXX fix me */
+DECL|macro|really_local_bh_count
+mdefine_line|#define really_local_bh_count()&t;&t;(local_cpu_data-&gt;irq_stat.f.bh_count)&t;/* XXX fix me */
 DECL|macro|local_syscall_count
 mdefine_line|#define local_syscall_count()&t;&t;/* unused on IA-64 */
 DECL|macro|local_nmi_count
@@ -38,13 +38,13 @@ DECL|macro|in_irq
 mdefine_line|#define in_irq()&t;&t;&t;(local_cpu_data-&gt;irq_stat.f.irq_count != 0)
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|local_hardirq_trylock
-macro_line|# define local_hardirq_trylock()&t;(local_irq_count() == 0)
+macro_line|# define local_hardirq_trylock()&t;(really_local_irq_count() == 0)
 DECL|macro|local_hardirq_endlock
 macro_line|# define local_hardirq_endlock()&t;do { } while (0)
 DECL|macro|local_irq_enter
-macro_line|# define local_irq_enter(irq)&t;&t;(local_irq_count()++)
+macro_line|# define local_irq_enter(irq)&t;&t;(really_local_irq_count()++)
 DECL|macro|local_irq_exit
-macro_line|# define local_irq_exit(irq)&t;&t;(local_irq_count()--)
+macro_line|# define local_irq_exit(irq)&t;&t;(really_local_irq_count()--)
 DECL|macro|synchronize_irq
 macro_line|# define synchronize_irq()&t;&t;barrier()
 macro_line|#else
@@ -126,6 +126,12 @@ id|global_irq_holder
 op_assign
 id|NO_PROC_ID
 suffix:semicolon
+id|smp_mb__before_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* need barrier before releasing lock... */
 id|clear_bit
 c_func
 (paren
@@ -147,7 +153,7 @@ r_int
 id|irq
 )paren
 (brace
-id|local_irq_count
+id|really_local_irq_count
 c_func
 (paren
 )paren
@@ -180,7 +186,7 @@ r_int
 id|irq
 )paren
 (brace
-id|local_irq_count
+id|really_local_irq_count
 c_func
 (paren
 )paren
@@ -198,7 +204,7 @@ r_void
 (brace
 r_return
 op_logical_neg
-id|local_irq_count
+id|really_local_irq_count
 c_func
 (paren
 )paren

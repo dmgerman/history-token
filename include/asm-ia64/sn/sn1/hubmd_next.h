@@ -1,8 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBMD_NEXT_H
-DECL|macro|_ASM_SN_SN1_HUBMD_NEXT_H
-mdefine_line|#define _ASM_SN_SN1_HUBMD_NEXT_H
-macro_line|#ifdef BRINGUP
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBMD_NEXT_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBMD_NEXT_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBMD_NEXT_H
 multiline_comment|/* XXX moved over from SN/SN0/hubmd.h -- each should be checked for SN1 */
 multiline_comment|/* In fact, most of this stuff is wrong. Some is correct, such as&n; * MD_PAGE_SIZE and MD_PAGE_NUM_SHFT.&n; */
 DECL|macro|MD_PERF_COUNTERS
@@ -127,7 +126,7 @@ mdefine_line|#define MD_PPROT_REFCNT_GET(value) ( &bslash;&n;        ((value) &a
 multiline_comment|/* for Standard SIMM */
 DECL|macro|MD_SPROT_REFCNT_GET
 mdefine_line|#define MD_SPROT_REFCNT_GET(value) ( &bslash;&n;        ((value) &amp; MD_SPROT_REFCNT_MASK) &gt;&gt; MD_SPROT_REFCNT_SHFT)
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|md_perf_sel
 r_typedef
@@ -201,8 +200,7 @@ DECL|typedef|md_perf_sel_t
 id|md_perf_sel_t
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* _LANGUAGE_C */
-macro_line|#endif /* BRINGUP */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Like SN0, SN1 supports a mostly-flat address space with 8&n;   CPU-visible, evenly spaced, contiguous regions, or &quot;software&n;   banks&quot;.  On SN1, software bank n begins at addresses n * 1GB, &n;   0 &lt;= n &lt; 8.&n;&n;   Physically (and very unlike SN0), each SN1 node board contains 8&n;   dimm sockets, arranged as 4 &quot;DIMM banks&quot; of 2 dimms each.  DIMM&n;   size and width (x4/x8) is assigned per dimm bank.  Each DIMM bank&n;   consists of 2 &quot;physical banks&quot;, one on the front sides of the 2&n;   DIMMs and the other on the back sides.  Therefore a node has a&n;   total of 8 ( = 4 * 2) physical banks.  They are collectively&n;   referred to as &quot;locational banks&quot;, since the locational bank number&n;   depends on the physical location of the DIMMs on the board.&n;&n;&t;      Dimm bank 0, Phys bank 0a (locational bank 0a)&n;     Slot D0  ----------------------------------------------&n;&t;      Dimm bank 0, Phys bank 1a (locational bank 1a)&n;&n;&t;      Dimm bank 1, Phys bank 0a (locational bank 2a)&n;     Slot D1  ----------------------------------------------&n;&t;      Dimm bank 1, Phys bank 1a (locational bank 3a)&n;&n;&t;      Dimm bank 2, Phys bank 0a (locational bank 4a)&n;     Slot D2  ----------------------------------------------&n;&t;      Dimm bank 2, Phys bank 1a (locational bank 5a)&n;&n;&t;      Dimm bank 3, Phys bank 0a (locational bank 6a)&n;     Slot D3  ----------------------------------------------&n;&t;      Dimm bank 3, Phys bank 1a (locational bank 7a)&n;&n;&t;      Dimm bank 0, Phys bank 0b (locational bank 0b)&n;     Slot D4  ----------------------------------------------&n;&t;      Dimm bank 0, Phys bank 1b (locational bank 1b)&n;&n;&t;      Dimm bank 1, Phys bank 0b (locational bank 2b)&n;     Slot D5  ----------------------------------------------&n;&t;      Dimm bank 1, Phys bank 1b (locational bank 3b)&n;&n;&t;      Dimm bank 2, Phys bank 0b (locational bank 4b)&n;     Slot D6  ----------------------------------------------&n;&t;      Dimm bank 2, Phys bank 1b (locational bank 5b)&n;&n;&t;      Dimm bank 3, Phys bank 0b (locational bank 6b)&n;     Slot D7  ----------------------------------------------&n;&t;      Dimm bank 3, Phys bank 1b (locational bank 7b)&n;&n;   Since bank size is assigned per DIMM bank, each pair of locational&n;   banks must have the same size.  However, they may be&n;   enabled/disabled individually.&n;&n;   The locational banks map to the software banks via the dimm0_sel&n;   field in MD_MEMORY_CONFIG.  When the field is 0 (the usual case),&n;   the mapping is direct:  eg. locational bank 1 (dimm bank 0,&n;   physical bank 1, which is the back side of the first DIMM pair)&n;   corresponds to software bank 1, at node offset 1GB.  More&n;   generally, locational bank = software bank XOR dimm0_sel.&n;&n;   All the PROM&squot;s data structures (promlog variables, klconfig, etc.)&n;   track memory by the locational bank number.  The kernel usually&n;   tracks memory by the software bank number.&n;   memsupport.c:slot_psize_compute() performs the mapping.&n;&n;   (Note:  the terms &quot;locational bank&quot; and &quot;software bank&quot; are not&n;   offical in any way, but I&squot;ve tried to make the PROM use them&n;   consistently -- bjj.)&n; */
 DECL|macro|MD_MEM_BANKS
 mdefine_line|#define MD_MEM_BANKS &t;&t;8
@@ -257,7 +255,7 @@ mdefine_line|#define MD_PROT_RO              (UINT64_CAST 0x0f)
 DECL|macro|MD_PROT_NO
 mdefine_line|#define MD_PROT_NO              (UINT64_CAST 0x00)
 multiline_comment|/**********************************************************************&n;&n; Directory format structures&n;&n;***********************************************************************/
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Standard Directory Entries */
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|struct|md_sdir_pointer_fmt
@@ -1248,7 +1246,7 @@ DECL|typedef|md_pdir_t
 )brace
 id|md_pdir_t
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/**********************************************************************&n;&n; The defines for backdoor directory and backdoor ECC.&n;&n;***********************************************************************/
 multiline_comment|/* Directory formats, for each format&squot;s &quot;format&quot; field */
 DECL|macro|MD_FORMAT_UNOWNED
@@ -1275,13 +1273,13 @@ DECL|macro|MD_DIR_WAIT
 mdefine_line|#define MD_DIR_WAIT&t;&t;(UINT64_CAST 0x6)&t;/* ptr format, hw-defined */
 DECL|macro|MD_DIR_POISONED
 mdefine_line|#define MD_DIR_POISONED&t;&t;(UINT64_CAST 0x7)&t;/* ptr format, hw-defined */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Convert format and state fields into a single &quot;cacheline state&quot; value, defined above */
 DECL|macro|MD_FMT_ST_TO_STATE
 mdefine_line|#define MD_FMT_ST_TO_STATE(fmt, state) &bslash;&n;  ((fmt) == MD_FORMAT_POINTER ? (state) : &bslash;&n;   (fmt) == MD_FORMAT_UNOWNED ? MD_DIR_UNOWNED : &bslash;&n;   MD_DIR_SHARED)
 DECL|macro|MD_DIR_STATE
 mdefine_line|#define MD_DIR_STATE(x) MD_FMT_ST_TO_STATE(MD_DIR_FORMAT(x), MD_DIR_STVAL(x))
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Directory field shifts and masks */
 multiline_comment|/* Standard */
 DECL|macro|MD_SDIR_FORMAT_SHFT
@@ -1568,5 +1566,5 @@ mdefine_line|#define MEM_ERROR_VALID_CE      1
 multiline_comment|/* MD_FANDOP_CAC_STAT0, MD_FANDOP_CAC_STAT1 addr field shift */
 DECL|macro|MFC_ADDR_SHFT
 mdefine_line|#define MFC_ADDR_SHFT&t;&t;6
-macro_line|#endif  /* _ASM_SN_SN1_HUBMD_NEXT_H */
+macro_line|#endif  /* _ASM_IA64_SN_SN1_HUBMD_NEXT_H */
 eof

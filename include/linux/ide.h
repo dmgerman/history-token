@@ -335,22 +335,6 @@ DECL|typedef|hw_regs_t
 )brace
 id|hw_regs_t
 suffix:semicolon
-multiline_comment|/*&n; * Register new hardware with ide&n; */
-r_int
-id|ide_register_hw
-c_func
-(paren
-id|hw_regs_t
-op_star
-id|hw
-comma
-r_struct
-id|hwif_s
-op_star
-op_star
-id|hwifp
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Set up hw_regs_t structure before calling ide_register_hw (optional)&n; */
 r_void
 id|ide_setup_ports
@@ -687,6 +671,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
+DECL|member|blocked
+r_int
+id|blocked
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=powermanagment told us not to do anything, so sleep nicely */
 DECL|member|addressing
 r_int
 id|addressing
@@ -1467,6 +1458,33 @@ multiline_comment|/* global device tree handle */
 DECL|typedef|ide_hwif_t
 )brace
 id|ide_hwif_t
+suffix:semicolon
+multiline_comment|/*&n; * Register new hardware with ide&n; */
+r_extern
+r_int
+id|ide_register_hw
+c_func
+(paren
+id|hw_regs_t
+op_star
+id|hw
+comma
+r_struct
+id|hwif_s
+op_star
+op_star
+id|hwifp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ide_unregister
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Status returned from various ide_ functions&n; */
 r_typedef

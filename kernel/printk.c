@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_MULTIQUAD
+macro_line|#if defined(CONFIG_MULTIQUAD) || defined(CONFIG_IA64)
 DECL|macro|LOG_BUF_LEN
 mdefine_line|#define LOG_BUF_LEN&t;(65536)
 macro_line|#elif defined(CONFIG_SMP)

@@ -1342,9 +1342,9 @@ id|get_sb
 suffix:colon
 id|ramfs_get_sb
 comma
-id|fs_flags
+id|kill_sb
 suffix:colon
-id|FS_LITTER
+id|kill_litter_super
 comma
 )brace
 suffix:semicolon
@@ -1363,11 +1363,13 @@ id|get_sb
 suffix:colon
 id|ramfs_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_litter_super
+comma
 id|fs_flags
 suffix:colon
 id|FS_NOMOUNT
-op_or
-id|FS_LITTER
 comma
 )brace
 suffix:semicolon

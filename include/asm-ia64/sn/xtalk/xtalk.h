@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_XTALK_XTALK_H
 DECL|macro|_ASM_SN_XTALK_XTALK_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_H
@@ -11,7 +11,7 @@ id|xwidgetnum_t
 suffix:semicolon
 multiline_comment|/* xtalk widget number  (0..15) */
 DECL|macro|XWIDGET_NONE
-mdefine_line|#define XWIDGET_NONE&t;&t;-1
+mdefine_line|#define XWIDGET_NONE&t;&t;(-1)
 DECL|typedef|xwidget_part_num_t
 r_typedef
 r_int
@@ -19,7 +19,7 @@ id|xwidget_part_num_t
 suffix:semicolon
 multiline_comment|/* xtalk widget part number */
 DECL|macro|XWIDGET_PART_NUM_NONE
-mdefine_line|#define XWIDGET_PART_NUM_NONE&t;-1
+mdefine_line|#define XWIDGET_PART_NUM_NONE&t;(-1)
 DECL|typedef|xwidget_rev_num_t
 r_typedef
 r_int
@@ -27,7 +27,7 @@ id|xwidget_rev_num_t
 suffix:semicolon
 multiline_comment|/* xtalk widget revision number */
 DECL|macro|XWIDGET_REV_NUM_NONE
-mdefine_line|#define XWIDGET_REV_NUM_NONE&t;-1
+mdefine_line|#define XWIDGET_REV_NUM_NONE&t;(-1)
 DECL|typedef|xwidget_mfg_num_t
 r_typedef
 r_int
@@ -35,7 +35,7 @@ id|xwidget_mfg_num_t
 suffix:semicolon
 multiline_comment|/* xtalk widget manufacturing ID */
 DECL|macro|XWIDGET_MFG_NUM_NONE
-mdefine_line|#define XWIDGET_MFG_NUM_NONE&t;-1
+mdefine_line|#define XWIDGET_MFG_NUM_NONE&t;(-1)
 DECL|typedef|xtalk_piomap_t
 r_typedef
 r_struct
@@ -66,7 +66,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
-macro_line|#include &lt;asm/sn/iobus.h&gt;
+macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 r_struct
 id|xwidget_hwid_s
@@ -427,15 +427,6 @@ id|xtalk_intr_t
 id|intr_hdl
 comma
 multiline_comment|/* xtalk intr resource handle */
-id|intr_func_t
-id|intr_func
-comma
-multiline_comment|/* xtalk intr handler */
-r_void
-op_star
-id|intr_arg
-comma
-multiline_comment|/* arg to intr handler */
 id|xtalk_intr_setfunc_f
 op_star
 id|setfunc
@@ -444,17 +435,9 @@ multiline_comment|/* func to set intr hw */
 r_void
 op_star
 id|setfunc_arg
-comma
-multiline_comment|/* arg to setfunc. This must be */
-multiline_comment|/* sufficient to determine which */
-multiline_comment|/* interrupt on which board needs */
-multiline_comment|/* to be set. */
-r_void
-op_star
-id|thread
 )paren
 suffix:semicolon
-multiline_comment|/* which intr thread to use */
+multiline_comment|/* arg to setfunc */
 r_typedef
 r_void
 DECL|typedef|xtalk_intr_disconnect_f
@@ -1130,16 +1113,6 @@ suffix:semicolon
 r_extern
 r_int
 id|xtalk_device_shutdown
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xtalk_device_inquiry
 c_func
 (paren
 id|devfs_handle_t

@@ -1,8 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *      WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!      *&n; *                                                                      *&n; * This file is created by an automated script. Any (minimal) changes   *&n; * made manually to this  file should be made with care.                *&n; *                                                                      *&n; *               MAKE ALL ADDITIONS TO THE END OF THIS FILE             *&n; *                                                                      *&n; ************************************************************************/
-macro_line|#ifndef _ASM_SN_SN1_HUBIO_H
-DECL|macro|_ASM_SN_SN1_HUBIO_H
-mdefine_line|#define _ASM_SN_SN1_HUBIO_H
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBIO_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBIO_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBIO_H
 DECL|macro|IIO_WID
 mdefine_line|#define    IIO_WID                   0x00400000    /*&n;                                                    * Crosstalk Widget&n;                                                    * Identification This&n;                                                    * register is also&n;                                                    * accessible from&n;                                                    * Crosstalk at&n;                                                    * address 0x0.&n;                                                    */
 DECL|macro|IIO_WSTAT
@@ -273,7 +273,7 @@ DECL|macro|IIO_IPCR
 mdefine_line|#define    IIO_IPCR                  0x00430000    /*&n;                                                    * IO Performance&n;                                                    * Control&n;                                                    */
 DECL|macro|IIO_IPPR
 mdefine_line|#define    IIO_IPPR                  0x00430008    /*&n;                                                    * IO Performance&n;                                                    * Profiling&n;                                                    */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/************************************************************************&n; *                                                                      *&n; * Description:  This register echoes some information from the         *&n; * LB_REV_ID register. It is available through Crosstalk as described   *&n; * above. The REV_NUM and MFG_NUM fields receive their values from      *&n; * the REVISION and MANUFACTURER fields in the LB_REV_ID register.      *&n; * The PART_NUM field&squot;s value is the Crosstalk device ID number that    *&n; * Steve Miller assigned to the Bedrock chip.                           *&n; *                                                                      *&n; ************************************************************************/
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|ii_wid_u
@@ -5411,45 +5411,9 @@ id|ii_ilct_regval
 suffix:semicolon
 r_struct
 (brace
-DECL|member|i_rsvd
+DECL|member|i_test_seed
 id|bdrkreg_t
-id|i_rsvd
-suffix:colon
-l_int|9
-suffix:semicolon
-DECL|member|i_test_err_capture
-id|bdrkreg_t
-id|i_test_err_capture
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|i_test_clear
-id|bdrkreg_t
-id|i_test_clear
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|i_test_flit
-id|bdrkreg_t
-id|i_test_flit
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|i_test_cberr
-id|bdrkreg_t
-id|i_test_cberr
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|i_test_valid
-id|bdrkreg_t
-id|i_test_valid
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|i_test_data
-id|bdrkreg_t
-id|i_test_data
+id|i_test_seed
 suffix:colon
 l_int|20
 suffix:semicolon
@@ -5459,11 +5423,47 @@ id|i_test_mask
 suffix:colon
 l_int|8
 suffix:semicolon
-DECL|member|i_test_seed
+DECL|member|i_test_data
 id|bdrkreg_t
-id|i_test_seed
+id|i_test_data
 suffix:colon
 l_int|20
+suffix:semicolon
+DECL|member|i_test_valid
+id|bdrkreg_t
+id|i_test_valid
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|i_test_cberr
+id|bdrkreg_t
+id|i_test_cberr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|i_test_flit
+id|bdrkreg_t
+id|i_test_flit
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|i_test_clear
+id|bdrkreg_t
+id|i_test_clear
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|i_test_err_capture
+id|bdrkreg_t
+id|i_test_err_capture
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|i_rsvd
+id|bdrkreg_t
+id|i_rsvd
+suffix:colon
+l_int|9
 suffix:semicolon
 DECL|member|ii_ilct_fld_s
 )brace
@@ -10540,8 +10540,8 @@ DECL|typedef|ii_ippr_u_t
 id|ii_ippr_u_t
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/************************************************************************&n; *                                                                      *&n; * The following defines which were not formed into structures are      *&n; * probably indentical to another register, and the name of the         *&n; * register is provided against each of these registers. This           *&n; * information needs to be checked carefully                            *&n; *                                                                      *&n; *           IIO_ICRB1_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB1_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB1_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB1_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB2_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB2_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB2_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB2_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB3_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB3_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB3_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB3_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB4_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB4_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB4_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB4_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB5_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB5_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB5_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB5_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB6_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB6_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB6_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB6_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB7_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB7_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB7_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB7_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB8_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB8_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB8_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB8_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB9_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB9_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB9_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB9_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBA_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBA_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBA_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBA_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBB_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBB_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBB_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBB_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBC_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBC_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBC_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBC_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBD_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBD_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBD_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBD_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBE_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBE_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBE_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBE_D                IIO_ICRB0_D                       *&n; *                                                                      *&n; ************************************************************************/
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *               MAKE ALL ADDITIONS AFTER THIS LINE                     *&n; *                                                                      *&n; ************************************************************************/
-macro_line|#endif /* _ASM_SN_SN1_HUBIO_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBIO_H */
 eof

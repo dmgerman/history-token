@@ -1,9 +1,11 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
 multiline_comment|/*&n; * hubspc.c - Hub Memory Space Management Driver&n; * This driver implements the managers for the following&n; * memory resources:&n; * 1) reference counters&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;linux/devfs_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -11,15 +13,12 @@ macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/mem_refcnt.h&gt;
-macro_line|#include &lt;asm/sn/agent.h&gt;
+macro_line|#include &lt;asm/sn/sn1/mem_refcnt.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
-macro_line|#include &lt;asm/sn/sn1/ip27config.h&gt;
-macro_line|#include &lt;asm/sn/sn1/hubdev.h&gt;
+macro_line|#include &lt;asm/sn/snconfig.h&gt;
+macro_line|#include &lt;asm/sn/sn1/hubspc.h&gt;
 macro_line|#include &lt;asm/sn/ksys/elsc.h&gt;
-macro_line|#endif
-macro_line|#include &lt;asm/sn/hubspc.h&gt;
+macro_line|#include &lt;asm/sn/simulator.h&gt;
 multiline_comment|/* Uncomment the following line for tracing */
 multiline_comment|/* #define HUBSPC_DEBUG 1 */
 DECL|variable|hubspc_devflag
@@ -27,29 +26,6 @@ r_int
 id|hubspc_devflag
 op_assign
 id|D_MP
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|device_info_get
-c_func
-(paren
-id|devfs_handle_t
-id|device
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|device_info_set
-c_func
-(paren
-id|devfs_handle_t
-id|device
-comma
-r_void
-op_star
-id|info
-)paren
 suffix:semicolon
 multiline_comment|/***********************************************************************/
 multiline_comment|/* CPU Prom Space &t;&t;&t;&t;&t;&t;       */
@@ -84,7 +60,6 @@ op_star
 id|cpuprom_head
 suffix:semicolon
 DECL|variable|cpuprom_spinlock
-r_static
 id|spinlock_t
 id|cpuprom_spinlock
 suffix:semicolon
@@ -315,10 +290,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 DECL|macro|SN_PROMVERSION
 mdefine_line|#define&t;SN_PROMVERSION&t;&t;INV_IP35PROM
-macro_line|#endif
 multiline_comment|/* Add &quot;detailed&quot; labelled inventory information to the&n; * prom vertex &n; */
 r_void
 DECL|function|cpuprom_detailed_inventory_info_add
@@ -434,104 +408,6 @@ id|invent_miscinfo_t
 )paren
 suffix:semicolon
 )brace
-r_int
-DECL|function|cpuprom_attach
-id|cpuprom_attach
-c_func
-(paren
-id|devfs_handle_t
-id|node
-)paren
-(brace
-id|devfs_handle_t
-id|prom_dev
-suffix:semicolon
-id|hwgraph_char_device_add
-c_func
-(paren
-id|node
-comma
-id|EDGE_LBL_PROM
-comma
-l_string|&quot;hubspc_&quot;
-comma
-op_amp
-id|prom_dev
-)paren
-suffix:semicolon
-macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
-c_func
-(paren
-l_string|&quot;hubspc: prom_attach hub: 0x%x prom: 0x%x&bslash;n&quot;
-comma
-id|node
-comma
-id|prom_dev
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* HUBSPC_DEBUG */
-id|device_inventory_add
-c_func
-(paren
-id|prom_dev
-comma
-id|INV_PROM
-comma
-id|SN_PROMVERSION
-comma
-(paren
-id|major_t
-)paren
-l_int|0
-comma
-(paren
-id|minor_t
-)paren
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Add additional inventory info about the cpu prom like&n;&t; * revision &amp; version numbers etc.&n;&t; */
-id|cpuprom_detailed_inventory_info_add
-c_func
-(paren
-id|prom_dev
-comma
-id|node
-)paren
-suffix:semicolon
-id|device_info_set
-c_func
-(paren
-id|prom_dev
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
-id|ulong
-)paren
-id|HUBSPC_PROM
-)paren
-suffix:semicolon
-id|prominfo_add
-c_func
-(paren
-id|node
-comma
-id|prom_dev
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 DECL|macro|FPROM_CONFIG_ADDR
 mdefine_line|#define FPROM_CONFIG_ADDR&t;MD_JUNK_BUS_TIMING
 DECL|macro|FPROM_ENABLE_MASK
@@ -542,7 +418,6 @@ DECL|macro|FPROM_SETUP_MASK
 mdefine_line|#define FPROM_SETUP_MASK&t;MJT_FPROM_SETUP_MASK
 DECL|macro|FPROM_SETUP_SHFT
 mdefine_line|#define FPROM_SETUP_SHFT&t;MJT_FPROM_SETUP_SHFT
-macro_line|#endif
 multiline_comment|/*ARGSUSED*/
 r_int
 DECL|function|cpuprom_map
@@ -565,6 +440,8 @@ id|len
 (brace
 r_int
 id|errcode
+op_assign
+l_int|0
 suffix:semicolon
 id|caddr_t
 id|kvaddr
@@ -609,7 +486,7 @@ id|node
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
+id|printk
 c_func
 (paren
 l_string|&quot;cpuprom_map: hubnode %d kvaddr 0x%x&bslash;n&quot;
@@ -738,6 +615,7 @@ id|errcode
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/*ARGSUSED*/
 r_int
 DECL|function|cpuprom_unmap
@@ -759,7 +637,6 @@ suffix:semicolon
 multiline_comment|/***********************************************************************/
 multiline_comment|/* Base Hub Space Driver                                               */
 multiline_comment|/***********************************************************************/
-singleline_comment|// extern int l1_attach( devfs_handle_t );
 multiline_comment|/*&n; * hubspc_init&n; * Registration of the hubspc devices with the hub manager&n; */
 r_void
 DECL|function|hubspc_init
@@ -771,19 +648,14 @@ r_void
 (brace
 multiline_comment|/*&n;         * Register with the hub manager&n;         */
 multiline_comment|/* The reference counters */
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 id|hubdev_register
 c_func
 (paren
 id|mem_refcnt_attach
 )paren
 suffix:semicolon
-multiline_comment|/* Prom space */
-id|hubdev_register
-c_func
-(paren
-id|cpuprom_attach
-)paren
-suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_SERIAL_SGI_L1_PROTOCOL)
 multiline_comment|/* L1 system controller link */
 r_if
@@ -797,40 +669,23 @@ c_func
 )paren
 (brace
 multiline_comment|/* initialize the L1 link */
+r_extern
 r_void
-id|l1_cons_init
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-id|elsc_t
-op_star
-id|get_elsc
+id|l1_init
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-id|l1_cons_init
+id|l1_init
 c_func
 (paren
-(paren
-id|l1sc_t
-op_star
-)paren
-id|get_elsc
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
+id|printk
 c_func
 (paren
 l_string|&quot;hubspc_init: Completed&bslash;n&quot;
@@ -867,83 +722,9 @@ op_star
 id|crp
 )paren
 (brace
-r_int
-id|errcode
-op_assign
-l_int|0
-suffix:semicolon
-r_switch
-c_cond
-(paren
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-op_star
-id|devp
-)paren
-)paren
-(brace
-r_case
-id|HUBSPC_REFCOUNTERS
-suffix:colon
-id|errcode
-op_assign
-id|mem_refcnt_open
-c_func
-(paren
-id|devp
-comma
-id|oflag
-comma
-id|otyp
-comma
-id|crp
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|HUBSPC_PROM
-suffix:colon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|errcode
-op_assign
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
-c_func
-(paren
-l_string|&quot;hubspc_open: Completed open for type %d&bslash;n&quot;
-comma
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-op_star
-id|devp
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* HUBSPC_DEBUG */
 r_return
 (paren
-id|errcode
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -967,81 +748,9 @@ op_star
 id|crp
 )paren
 (brace
-r_int
-id|errcode
-op_assign
-l_int|0
-suffix:semicolon
-r_switch
-c_cond
-(paren
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-r_case
-id|HUBSPC_REFCOUNTERS
-suffix:colon
-id|errcode
-op_assign
-id|mem_refcnt_close
-c_func
-(paren
-id|dev
-comma
-id|oflag
-comma
-id|otyp
-comma
-id|crp
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|HUBSPC_PROM
-suffix:colon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|errcode
-op_assign
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
-c_func
-(paren
-l_string|&quot;hubspc_close: Completed close for type %d&bslash;n&quot;
-comma
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* HUBSPC_DEBUG */
 r_return
 (paren
-id|errcode
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1069,9 +778,6 @@ id|prot
 )paren
 (brace
 multiline_comment|/*REFERENCED*/
-id|hubspc_subdevice_t
-id|subdevice
-suffix:semicolon
 r_int
 id|errcode
 op_assign
@@ -1090,131 +796,6 @@ r_return
 id|ENXIO
 suffix:semicolon
 )brace
-id|subdevice
-op_assign
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
-c_func
-(paren
-l_string|&quot;hubspc_map: subdevice: %d vaddr: 0x%x phyaddr: 0x%x len: 0x%x&bslash;n&quot;
-comma
-id|subdevice
-comma
-id|v_getaddr
-c_func
-(paren
-id|vt
-)paren
-comma
-id|off
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif /* HUBSPC_DEBUG */
-r_switch
-c_cond
-(paren
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-r_case
-id|HUBSPC_REFCOUNTERS
-suffix:colon
-id|errcode
-op_assign
-id|mem_refcnt_mmap
-c_func
-(paren
-id|dev
-comma
-id|vt
-comma
-id|off
-comma
-id|len
-comma
-id|prot
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|HUBSPC_PROM
-suffix:colon
-id|errcode
-op_assign
-id|cpuprom_map
-c_func
-(paren
-id|dev
-comma
-id|vt
-comma
-id|off
-comma
-id|len
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|errcode
-op_assign
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#ifdef&t;HUBSPC_DEBUG
-id|printf
-c_func
-(paren
-l_string|&quot;hubspc_map finished: spctype: %d vaddr: 0x%x len: 0x%x&bslash;n&quot;
-comma
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-comma
-id|v_getaddr
-c_func
-(paren
-id|vt
-)paren
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif /* HUBSPC_DEBUG */
 r_return
 id|errcode
 suffix:semicolon
@@ -1233,66 +814,10 @@ op_star
 id|vt
 )paren
 (brace
-r_int
-id|errcode
-op_assign
-l_int|0
-suffix:semicolon
-r_switch
-c_cond
-(paren
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-r_case
-id|HUBSPC_REFCOUNTERS
-suffix:colon
-id|errcode
-op_assign
-id|mem_refcnt_unmap
-c_func
-(paren
-id|dev
-comma
-id|vt
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|HUBSPC_PROM
-suffix:colon
-id|errcode
-op_assign
-id|cpuprom_unmap
-c_func
-(paren
-id|dev
-comma
-id|vt
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|errcode
-op_assign
-id|ENODEV
-suffix:semicolon
-)brace
 r_return
-id|errcode
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* ARGSUSED */
@@ -1323,64 +848,10 @@ op_star
 id|rvalp
 )paren
 (brace
-r_int
-id|errcode
-op_assign
-l_int|0
-suffix:semicolon
-r_switch
-c_cond
-(paren
-(paren
-id|hubspc_subdevice_t
-)paren
-(paren
-id|ulong
-)paren
-id|device_info_get
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-r_case
-id|HUBSPC_REFCOUNTERS
-suffix:colon
-id|errcode
-op_assign
-id|mem_refcnt_ioctl
-c_func
-(paren
-id|dev
-comma
-id|cmd
-comma
-id|arg
-comma
-id|mode
-comma
-id|cred_p
-comma
-id|rvalp
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|HUBSPC_PROM
-suffix:colon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|errcode
-op_assign
-id|ENODEV
-suffix:semicolon
-)brace
 r_return
-id|errcode
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 eof

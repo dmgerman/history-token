@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBDEV_H
-DECL|macro|_ASM_SN_SN1_HUBDEV_H
-mdefine_line|#define _ASM_SN_SN1_HUBDEV_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBDEV_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBDEV_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBDEV_H
 r_extern
 r_void
 id|hubdev_init
@@ -67,5 +67,5 @@ id|devfs_handle_t
 id|hub
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_SN_SN1_HUBDEV_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBDEV_H */
 eof

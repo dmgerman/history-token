@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Advanced Configuration and Power Interface&n; *&n; * Based on &squot;ACPI Specification 1.0b&squot; February 2, 1999 and&n; * &squot;IA-64 Extensions to ACPI Specification&squot; Revision 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Hewlett-Packard Co.&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *      ACPI based kernel configuration manager.&n; *      ACPI 2.0 &amp; IA64 ext 0.71&n; */
+multiline_comment|/*&n; * Advanced Configuration and Power Interface&n; *&n; * Based on &squot;ACPI Specification 1.0b&squot; February 2, 1999 and&n; * &squot;IA-64 Extensions to ACPI Specification&squot; Revision 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999, 2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000, 2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *      ACPI based kernel configuration manager.&n; *      ACPI 2.0 &amp; IA64 ext 0.71&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -37,6 +37,11 @@ DECL|variable|total_cpus
 r_int
 id|__initdata
 id|total_cpus
+suffix:semicolon
+DECL|variable|pcat_compat
+r_int
+id|__initdata
+id|pcat_compat
 suffix:semicolon
 DECL|variable|pm_idle
 r_void
@@ -965,6 +970,23 @@ comma
 id|ipi_base_addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The PCAT_COMPAT flag indicates that the system has a dual-8259 compatible&n;&t; * setup.&n;&t; */
+macro_line|#ifdef CONFIG_ITANIUM
+id|pcat_compat
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* fw on some Itanium systems is broken... */
+macro_line|#else
+id|pcat_compat
+op_assign
+(paren
+id|madt-&gt;flags
+op_amp
+id|MADT_PCAT_COMPAT
+)paren
+suffix:semicolon
+macro_line|#endif
 id|p
 op_assign
 (paren
@@ -1087,7 +1109,6 @@ c_cond
 (paren
 id|iosapic_init
 )paren
-multiline_comment|/*&n;&t;&t;&t;&t; * The PCAT_COMPAT flag indicates that the system has a&n;&t;&t;&t;&t; * dual-8259 compatible setup.&n;&t;&t;&t;&t; */
 id|iosapic_init
 c_func
 (paren
@@ -1095,16 +1116,7 @@ id|iosapic-&gt;address
 comma
 id|iosapic-&gt;irq_base
 comma
-macro_line|#ifdef CONFIG_ITANIUM
-l_int|1
-multiline_comment|/* fw on some Itanium systems is broken... */
-macro_line|#else
-(paren
-id|madt-&gt;flags
-op_amp
-id|MADT_PCAT_COMPAT
-)paren
-macro_line|#endif
+id|pcat_compat
 )paren
 suffix:semicolon
 r_break
@@ -1393,6 +1405,8 @@ suffix:semicolon
 id|acpi_madt_t
 op_star
 id|madt
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|tables

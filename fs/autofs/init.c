@@ -60,6 +60,10 @@ id|get_sb
 suffix:colon
 id|autofs_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|function|init_autofs_fs

@@ -1,7 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIIO_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIIO_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_PRIVATE_H
+macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 multiline_comment|/*&n; * pciio_private.h -- private definitions for pciio&n; * PCI drivers should NOT include this file.&n; */
 macro_line|#ident &quot;sys/PCI/pciio_private: $Revision: 1.13 $&quot;
 multiline_comment|/*&n; * All PCI providers set up PIO using this information.&n; */
@@ -93,23 +94,6 @@ id|pciio_intr_line_t
 id|pi_lines
 suffix:semicolon
 multiline_comment|/* which interrupt line(s) */
-DECL|member|pi_func
-id|intr_func_t
-id|pi_func
-suffix:semicolon
-multiline_comment|/* handler function (when connected) */
-DECL|member|pi_arg
-id|intr_arg_t
-id|pi_arg
-suffix:semicolon
-multiline_comment|/* handler parameter (when connected) */
-macro_line|#ifdef LATER
-DECL|member|pi_tinfo
-id|thd_int_t
-id|pi_tinfo
-suffix:semicolon
-multiline_comment|/* Thread info (when connected) */
-macro_line|#endif
 DECL|member|pi_mustruncpu
 id|cpuid_t
 id|pi_mustruncpu
@@ -214,6 +198,11 @@ DECL|member|w_size
 r_int
 id|w_size
 suffix:semicolon
+DECL|member|w_devio_index
+r_int
+id|w_devio_index
+suffix:semicolon
+multiline_comment|/* DevIO[] register used to&n;                                                   access this window */
 DECL|member|c_window
 )brace
 id|c_window

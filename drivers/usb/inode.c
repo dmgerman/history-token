@@ -2119,6 +2119,10 @@ id|get_sb
 suffix:colon
 id|usb_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|variable|usb_fs_type
@@ -2139,6 +2143,10 @@ comma
 id|get_sb
 suffix:colon
 id|usb_get_sb
+comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
 comma
 )brace
 suffix:semicolon

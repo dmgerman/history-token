@@ -1,7 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_DRIVER_H
-DECL|macro|_ASM_SN_DRIVER_H
-mdefine_line|#define _ASM_SN_DRIVER_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_DRIVER_H
+DECL|macro|_ASM_IA64_SN_DRIVER_H
+mdefine_line|#define _ASM_IA64_SN_DRIVER_H
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n;** Interface for device driver handle management.&n;**&n;** These functions are mostly for use by the loadable driver code, and&n;** for use by I/O bus infrastructure code.&n;*/
 DECL|typedef|device_driver_t
 r_typedef
@@ -10,381 +12,120 @@ id|device_driver_s
 op_star
 id|device_driver_t
 suffix:semicolon
-DECL|macro|DEVICE_DRIVER_NONE
-mdefine_line|#define DEVICE_DRIVER_NONE (device_driver_t)NULL
 multiline_comment|/* == Driver thread priority support == */
 DECL|typedef|ilvl_t
 r_typedef
 r_int
 id|ilvl_t
 suffix:semicolon
-multiline_comment|/* default driver thread priority level */
-DECL|macro|DRIVER_THREAD_PRI_DEFAULT
-mdefine_line|#define DRIVER_THREAD_PRI_DEFAULT&t;(ilvl_t)230
-multiline_comment|/* invalid driver thread priority level */
-DECL|macro|DRIVER_THREAD_PRI_INVALID
-mdefine_line|#define DRIVER_THREAD_PRI_INVALID&t;(ilvl_t)-1
-multiline_comment|/* Associate a thread priority with a driver */
+macro_line|#ifdef __cplusplus
 r_extern
-r_int
-id|device_driver_thread_pri_set
-c_func
-(paren
-id|device_driver_t
-id|driver
-comma
-id|ilvl_t
-id|pri
-)paren
+l_string|&quot;C&quot;
+(brace
+macro_line|#endif
+r_struct
+id|eframe_s
 suffix:semicolon
-multiline_comment|/* Get the thread priority associated with the driver */
-r_extern
-id|ilvl_t
-id|device_driver_thread_pri_get
-c_func
-(paren
-id|device_driver_t
-id|driver
-)paren
+r_struct
+id|piomap
 suffix:semicolon
-multiline_comment|/* Get the thread priority for a driver from the sysgen paramters */
-r_extern
-id|ilvl_t
-id|device_driver_sysgen_thread_pri_get
-c_func
-(paren
-r_char
-op_star
-id|driver_prefix
-)paren
+r_struct
+id|dmamap
 suffix:semicolon
-multiline_comment|/* Initialize device driver functions. */
-r_extern
+DECL|typedef|iobush_t
+r_typedef
+id|__psunsigned_t
+id|iobush_t
+suffix:semicolon
+multiline_comment|/* interrupt function */
+DECL|typedef|intr_arg_t
+r_typedef
 r_void
-id|device_driver_init
-c_func
-(paren
+op_star
+id|intr_arg_t
+suffix:semicolon
+DECL|typedef|intr_func_f
+r_typedef
 r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Allocate a driver handle */
-r_extern
-id|device_driver_t
-id|device_driver_alloc
+id|intr_func_f
 c_func
 (paren
-r_char
-op_star
-id|prefix
+id|intr_arg_t
 )paren
 suffix:semicolon
-multiline_comment|/* Free a driver handle */
-r_extern
-r_void
-id|device_driver_free
-c_func
-(paren
-id|device_driver_t
-id|driver
-)paren
-suffix:semicolon
-multiline_comment|/* Given a device driver prefix, return a handle to the driver. */
-r_extern
-id|device_driver_t
-id|device_driver_get
-c_func
-(paren
-r_char
+DECL|typedef|intr_func_t
+r_typedef
+id|intr_func_f
 op_star
-id|prefix
-)paren
+id|intr_func_t
 suffix:semicolon
-multiline_comment|/* Given a device, return a handle to the driver. */
-r_extern
-id|device_driver_t
-id|device_driver_getbydev
-c_func
-(paren
-id|devfs_handle_t
-id|device
-)paren
-suffix:semicolon
-r_struct
-id|cdevsw
-suffix:semicolon
-r_struct
-id|bdevsw
-suffix:semicolon
-multiline_comment|/* Associate a driver with bdevsw/cdevsw pointers. */
-r_extern
-r_int
-id|device_driver_devsw_put
-c_func
-(paren
-id|device_driver_t
-id|driver
-comma
-r_struct
-id|bdevsw
-op_star
-id|my_bdevsw
-comma
-r_struct
-id|cdevsw
-op_star
-id|my_cdevsw
-)paren
-suffix:semicolon
-multiline_comment|/* Given a driver, return the corresponding bdevsw and cdevsw pointers. */
-r_extern
-r_void
-id|device_driver_devsw_get
-c_func
-(paren
-id|device_driver_t
-id|driver
-comma
-r_struct
-id|bdevsw
-op_star
-op_star
-id|bdevswp
-comma
-r_struct
-id|cdevsw
-op_star
-op_star
-id|cdevswp
-)paren
-suffix:semicolon
-multiline_comment|/* Given a driver, return its name (prefix). */
-r_extern
-r_void
-id|device_driver_name_get
-c_func
-(paren
-id|device_driver_t
-id|driver
-comma
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|length
-)paren
-suffix:semicolon
-multiline_comment|/* &n; * A descriptor for every static device driver in the system.&n; * lboot creates a table of these and places in in master.c.&n; * device_driver_init runs through this table during initialization&n; * in order to &quot;register&quot; every static device driver.&n; */
-DECL|struct|static_device_driver_desc_s
+DECL|macro|INTR_ARG
+mdefine_line|#define&t;INTR_ARG(n)&t;((intr_arg_t)(__psunsigned_t)(n))
+multiline_comment|/* system interrupt resource handle -- returned from intr_alloc */
+DECL|typedef|intr_t
 r_typedef
 r_struct
-id|static_device_driver_desc_s
-(brace
-DECL|member|sdd_prefix
-r_char
+id|intr_s
 op_star
-id|sdd_prefix
+id|intr_t
 suffix:semicolon
-DECL|member|sdd_bdevsw
-r_struct
-id|bdevsw
+DECL|macro|INTR_HANDLE_NONE
+mdefine_line|#define INTR_HANDLE_NONE ((intr_t)0)
+multiline_comment|/*&n; * restore interrupt level value, returned from intr_block_level&n; * for use with intr_unblock_level.&n; */
+DECL|typedef|rlvl_t
+r_typedef
+r_void
 op_star
-id|sdd_bdevsw
+id|rlvl_t
 suffix:semicolon
-DECL|member|sdd_cdevsw
-r_struct
-id|cdevsw
-op_star
-id|sdd_cdevsw
-suffix:semicolon
-DECL|typedef|static_device_driver_desc_t
-)brace
-op_star
-id|static_device_driver_desc_t
-suffix:semicolon
-r_extern
-r_struct
-id|static_device_driver_desc_s
-id|static_device_driver_table
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|static_devsw_count
-suffix:semicolon
-multiline_comment|/*====== administration support ========== */
-multiline_comment|/* structure of each entry in the table created by lboot for&n; * device / driver administration&n;*/
-DECL|struct|dev_admin_info_s
+multiline_comment|/* &n; * A basic, platform-independent description of I/O requirements for&n; * a device. This structure is usually formed by lboot based on information &n; * in configuration files.  It contains information about PIO, DMA, and&n; * interrupt requirements for a specific instance of a device.&n; *&n; * The pio description is currently unused.&n; *&n; * The dma description describes bandwidth characteristics and bandwidth&n; * allocation requirements. (TBD)&n; *&n; * The Interrupt information describes the priority of interrupt, desired &n; * destination, policy (TBD), whether this is an error interrupt, etc.  &n; * For now, interrupts are targeted to specific CPUs.&n; */
+DECL|struct|device_desc_s
 r_typedef
 r_struct
-id|dev_admin_info_s
+id|device_desc_s
 (brace
-DECL|member|dai_name
+multiline_comment|/* pio description (currently none) */
+multiline_comment|/* dma description */
+multiline_comment|/* TBD: allocated badwidth requirements */
+multiline_comment|/* interrupt description */
+DECL|member|intr_target
+id|devfs_handle_t
+id|intr_target
+suffix:semicolon
+multiline_comment|/* Hardware locator string */
+DECL|member|intr_policy
+r_int
+id|intr_policy
+suffix:semicolon
+multiline_comment|/* TBD */
+DECL|member|intr_swlevel
+id|ilvl_t
+id|intr_swlevel
+suffix:semicolon
+multiline_comment|/* software level for blocking intr */
+DECL|member|intr_name
 r_char
 op_star
-id|dai_name
+id|intr_name
 suffix:semicolon
-multiline_comment|/* name of the device or driver&n;&t;&t;&t;&t;&t; * prefix &n;&t;&t;&t;&t;&t; */
-DECL|member|dai_param_name
-r_char
-op_star
-id|dai_param_name
+multiline_comment|/* name of interrupt, if any */
+DECL|member|flags
+r_int
+id|flags
 suffix:semicolon
-multiline_comment|/* device or driver parameter name */
-DECL|member|dai_param_val
-r_char
-op_star
-id|dai_param_val
-suffix:semicolon
-multiline_comment|/* value of the parameter */
-DECL|typedef|dev_admin_info_t
+DECL|typedef|device_desc_t
 )brace
-id|dev_admin_info_t
+op_star
+id|device_desc_t
 suffix:semicolon
-multiline_comment|/* Update all the administrative hints associated with the device */
-r_extern
-r_void
-id|device_admin_info_update
-c_func
-(paren
-id|devfs_handle_t
-id|dev_vhdl
-)paren
-suffix:semicolon
-multiline_comment|/* Update all the administrative hints associated with the device driver */
-r_extern
-r_void
-id|device_driver_admin_info_update
-c_func
-(paren
-id|device_driver_t
-id|driver
-)paren
-suffix:semicolon
-multiline_comment|/* Get a particular administrative hint associated with a device */
-r_extern
-r_char
-op_star
-id|device_admin_info_get
-c_func
-(paren
-id|devfs_handle_t
-id|dev_vhdl
-comma
-r_char
-op_star
-id|info_lbl
-)paren
-suffix:semicolon
-multiline_comment|/* Associate a particular administrative hint for a device */
-r_extern
-r_int
-id|device_admin_info_set
-c_func
-(paren
-id|devfs_handle_t
-id|dev_vhdl
-comma
-r_char
-op_star
-id|info_lbl
-comma
-r_char
-op_star
-id|info_val
-)paren
-suffix:semicolon
-multiline_comment|/* Get a particular administrative hint associated with a device driver*/
-r_extern
-r_char
-op_star
-id|device_driver_admin_info_get
-c_func
-(paren
-r_char
-op_star
-id|driver_prefix
-comma
-r_char
-op_star
-id|info_name
-)paren
-suffix:semicolon
-multiline_comment|/* Associate a particular administrative hint for a device driver*/
-r_extern
-r_int
-id|device_driver_admin_info_set
-c_func
-(paren
-r_char
-op_star
-id|driver_prefix
-comma
-r_char
-op_star
-id|driver_info_lbl
-comma
-r_char
-op_star
-id|driver_info_val
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize the extended device administrative hint table */
-r_extern
-r_void
-id|device_admin_table_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Add a hint corresponding to a device to the extended device administrative&n; * hint table.&n; */
-r_extern
-r_void
-id|device_admin_table_update
-c_func
-(paren
-r_char
-op_star
-id|dev_name
-comma
-r_char
-op_star
-id|param_name
-comma
-r_char
-op_star
-id|param_val
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize the extended device driver administrative hint table */
-r_extern
-r_void
-id|device_driver_admin_table_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Add a hint corresponding to a device to the extended device driver &n; * administrative hint table.&n; */
-r_extern
-r_void
-id|device_driver_admin_table_update
-c_func
-(paren
-r_char
-op_star
-id|drv_prefix
-comma
-r_char
-op_star
-id|param_name
-comma
-r_char
-op_star
-id|param_val
-)paren
-suffix:semicolon
-macro_line|#endif /* _ASM_SN_DRIVER_H */
+multiline_comment|/* flag values */
+DECL|macro|D_INTR_ISERR
+mdefine_line|#define&t;D_INTR_ISERR&t;0x1&t;&t;/* interrupt is for error handling */
+DECL|macro|D_IS_ASSOC
+mdefine_line|#define D_IS_ASSOC&t;0x2&t;&t;/* descriptor is associated with a dev */
+DECL|macro|D_INTR_NOTHREAD
+mdefine_line|#define D_INTR_NOTHREAD&t;0x4&t;&t;/* Interrupt handler isn&squot;t threaded. */
+DECL|macro|INTR_SWLEVEL_NOTHREAD_DEFAULT
+mdefine_line|#define INTR_SWLEVEL_NOTHREAD_DEFAULT &t;0&t;/* Default&n;&t;&t;&t;&t;&t;&t; * Interrupt level in case of&n;&t;&t;&t;&t;&t;&t; * non-threaded interrupt &n;&t;&t;&t;&t;&t;&t; * handlers&n;&t;&t;&t;&t;&t;&t; */
+macro_line|#endif /* _ASM_IA64_SN_DRIVER_H */
 eof

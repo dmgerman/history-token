@@ -1,10 +1,11 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_KSYS_L1_H
 DECL|macro|_ASM_SN_KSYS_L1_H
 mdefine_line|#define _ASM_SN_KSYS_L1_H
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/sn1/bedrock.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/sn/sv.h&gt;
 DECL|macro|BRL1_QSIZE
 mdefine_line|#define BRL1_QSIZE&t;128&t;/* power of 2 is more efficient */
 DECL|macro|BRL1_BUFSZ
@@ -40,8 +41,8 @@ DECL|typedef|sc_cq_t
 id|sc_cq_t
 suffix:semicolon
 multiline_comment|/* An l1sc_t struct can be associated with the local (C-brick) L1 or an L1&n; * on an R-brick.  In the R-brick case, the l1sc_t records a vector path&n; * to the R-brick&squot;s junk bus UART.  In the C-brick case, we just use the&n; * following flag to denote the local uart.&n; *&n; * This value can&squot;t be confused with a network vector because the least-&n; * significant nibble of a network vector cannot be greater than 8.&n; */
-DECL|macro|BRL1_LOCALUART
-mdefine_line|#define BRL1_LOCALUART&t;((net_vec_t)0xf)
+DECL|macro|BRL1_LOCALHUB_UART
+mdefine_line|#define BRL1_LOCALHUB_UART&t;((net_vec_t)0xf)
 multiline_comment|/* L1&lt;-&gt;Bedrock reserved subchannels */
 multiline_comment|/* console channels */
 DECL|macro|SC_CONS_CPU0
@@ -83,6 +84,34 @@ mdefine_line|#define RBRICK_L1&t;(__psint_t)3
 r_struct
 id|l1sc_s
 suffix:semicolon
+multiline_comment|/* Saved off interrupt frame */
+DECL|struct|brl1_intr_frame
+r_typedef
+r_struct
+id|brl1_intr_frame
+(brace
+DECL|member|bf_irq
+r_int
+id|bf_irq
+suffix:semicolon
+multiline_comment|/* irq received */
+DECL|member|bf_dev_id
+r_void
+op_star
+id|bf_dev_id
+suffix:semicolon
+multiline_comment|/* device information */
+DECL|member|bf_regs
+r_struct
+id|pt_regs
+op_star
+id|bf_regs
+suffix:semicolon
+multiline_comment|/* register frame */
+DECL|typedef|brl1_intr_frame_t
+)brace
+id|brl1_intr_frame_t
+suffix:semicolon
 DECL|typedef|brl1_notif_t
 r_typedef
 r_void
@@ -91,6 +120,15 @@ op_star
 id|brl1_notif_t
 )paren
 (paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+comma
 r_struct
 id|l1sc_s
 op_star
@@ -158,6 +196,11 @@ id|brl1_notif_t
 id|rx_notify
 suffix:semicolon
 multiline_comment|/* notify higher layer that a packet has been&n;&t;&t;&t;&t; * received */
+DECL|member|irq_frame
+id|brl1_intr_frame_t
+id|irq_frame
+suffix:semicolon
+multiline_comment|/* saved off irq information */
 DECL|typedef|brl1_sch_t
 )brace
 id|brl1_sch_t
@@ -175,7 +218,7 @@ DECL|macro|BRL1_ESC
 mdefine_line|#define BRL1_ESC&t;4
 DECL|macro|BRL1_RESET
 mdefine_line|#define BRL1_RESET&t;7
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * l1sc_t structure-- tracks protocol state, open subchannels, etc.&n; */
 DECL|struct|l1sc_s
 r_typedef
@@ -222,6 +265,16 @@ id|brl1_uartf_t
 id|getc_f
 suffix:semicolon
 multiline_comment|/* pointer to UART getc function */
+DECL|member|send_lock
+id|spinlock_t
+id|send_lock
+suffix:semicolon
+multiline_comment|/* arbitrates send synchronization */
+DECL|member|recv_lock
+id|spinlock_t
+id|recv_lock
+suffix:semicolon
+multiline_comment|/* arbitrates uart receive access */
 DECL|member|subch_lock
 id|spinlock_t
 id|subch_lock
@@ -706,81 +759,6 @@ id|sc
 )paren
 suffix:semicolon
 r_int
-id|_elscuart_putc
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-comma
-r_int
-id|c
-)paren
-suffix:semicolon
-r_int
-id|_elscuart_getc
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
-id|_elscuart_poll
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
-id|_elscuart_readc
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
-id|_elscuart_flush
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
-id|_elscuart_probe
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_void
-id|_elscuart_init
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_void
-id|elscuart_syscon_listen
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
 id|elsc_rack_bay_get
 c_func
 (paren
@@ -955,6 +933,6 @@ op_star
 id|result
 )paren
 suffix:semicolon
-macro_line|#endif /* !_LANGUAGE_ASSEMBLY */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_SN_KSYS_L1_H */
 eof

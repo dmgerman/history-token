@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PAGE_H
 DECL|macro|_ASM_IA64_PAGE_H
 mdefine_line|#define _ASM_IA64_PAGE_H
-multiline_comment|/*&n; * Pagetable related stuff.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Pagetable related stuff.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n; * PAGE_SHIFT determines the actual kernel page size.&n; */
@@ -57,6 +57,11 @@ op_star
 id|from
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * clear_user_page() and copy_user_page() can&squot;t be inline functions because&n; * flush_dcache_page() can&squot;t be defined until later...&n; */
+DECL|macro|clear_user_page
+mdefine_line|#define clear_user_page(addr, vaddr, page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_page(addr);&t;&t;&t;&bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;} while (0)
+DECL|macro|copy_user_page
+mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;copy_page((to), (from));&t;&t;&bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Note: the MAP_NR_*() macro can&squot;t use __pa() because MAP_NR_*(X) MUST&n; * map to something &gt;= max_mapnr if X is outside the identity mapped&n; * kernel space.&n; */
 multiline_comment|/*&n; * The dense variant can be used as long as the size of memory holes isn&squot;t&n; * very big.&n; */
 DECL|macro|MAP_NR_DENSE

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Emulation of the &quot;brl&quot; instruction for IA64 processors that&n; *  don&squot;t support it in hardware.&n; *  Author: Stephan Zeisset, Intel Corp. &lt;Stephan.Zeisset@intel.com&gt;&n; */
+multiline_comment|/*&n; *  Emulation of the &quot;brl&quot; instruction for IA64 processors that&n; *  don&squot;t support it in hardware.&n; *  Author: Stephan Zeisset, Intel Corp. &lt;Stephan.Zeisset@intel.com&gt;&n; *&n; *    02/22/02&t;D. Mosberger&t;Clear si_flgs, si_isr, and si_imm to avoid&n; *&t;&t;&t;&t;leaking kernel bits.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -603,6 +603,18 @@ id|siginfo.si_errno
 op_assign
 l_int|0
 suffix:semicolon
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
+suffix:semicolon
 id|siginfo.si_code
 op_assign
 id|ILL_BADIADDR
@@ -645,6 +657,22 @@ id|siginfo.si_code
 op_assign
 id|TRAP_BRANCH
 suffix:semicolon
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
+suffix:semicolon
 id|force_sig_info
 c_func
 (paren
@@ -682,6 +710,22 @@ suffix:semicolon
 id|siginfo.si_code
 op_assign
 id|TRAP_TRACE
+suffix:semicolon
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
 suffix:semicolon
 id|force_sig_info
 c_func

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  Copyright (c) 1998-2000  Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
-multiline_comment|/*&n; *  This module provides support for automatic detection and&n; *  configuration of all PCI IDE interfaces present in a system.&n; */
-multiline_comment|/*&n; * Chipsets that are on the IDE_IGNORE list because of problems of not being&n; * set at compile time.&n; *&n; * CONFIG_BLK_DEV_PDC202XX&n; */
+multiline_comment|/*&n; *  This module provides support for automatic detection and configuration of&n; *  all PCI ATA host chip chanells interfaces present in a system.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -17,8 +16,9 @@ DECL|macro|PCI_VENDOR_ID_HINT
 mdefine_line|#define PCI_VENDOR_ID_HINT 0x3388
 DECL|macro|PCI_DEVICE_ID_HINT
 mdefine_line|#define PCI_DEVICE_ID_HINT 0x8013
-DECL|macro|IDE_IGNORE
-mdefine_line|#define&t;IDE_IGNORE&t;((void *)-1)
+multiline_comment|/*&n; * Some combi chips, which can be used on the PCI bus or the VL bus can be in&n; * some systems acessed either through the PCI config space or through the&n; * hosts IO bus.  If the corresponding initialization driver is using the host&n; * IO space to deal with them please define the following.&n; */
+DECL|macro|ATA_PCI_IGNORE
+mdefine_line|#define&t;ATA_PCI_IGNORE&t;((void *)-1)
 DECL|macro|IDE_NO_DRIVER
 mdefine_line|#define IDE_NO_DRIVER&t;((void *)-2)
 macro_line|#ifdef CONFIG_BLK_DEV_AEC62XX
@@ -2735,11 +2735,11 @@ id|PCI_VENDOR_ID_AMD
 comma
 id|PCI_DEVICE_ID_AMD_COBRA_7401
 comma
-l_int|NULL
+id|pci_init_amd74xx
 comma
-l_int|NULL
+id|ata66_amd74xx
 comma
-l_int|NULL
+id|ide_init_amd74xx
 comma
 id|ide_dmacapable_amd74xx
 comma
@@ -2847,7 +2847,45 @@ comma
 (brace
 id|PCI_VENDOR_ID_AMD
 comma
-id|PCI_DEVICE_ID_AMD_VIPER_7441
+id|PCI_DEVICE_ID_AMD_OPUS_7441
+comma
+id|pci_init_amd74xx
+comma
+id|ata66_amd74xx
+comma
+id|ide_init_amd74xx
+comma
+id|ide_dmacapable_amd74xx
+comma
+(brace
+(brace
+l_int|0x40
+comma
+l_int|0x01
+comma
+l_int|0x01
+)brace
+comma
+(brace
+l_int|0x40
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+)brace
+comma
+id|ON_BOARD
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_AMD
+comma
+id|PCI_DEVICE_ID_AMD_8111_IDE
 comma
 id|pci_init_amd74xx
 comma
@@ -3129,7 +3167,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-id|IDE_IGNORE
+id|ATA_PCI_IGNORE
 comma
 l_int|NULL
 comma
@@ -6122,11 +6160,11 @@ id|d2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This finds all PCI IDE controllers and calls appropriate initialization&n; * functions for them.&n; */
-DECL|function|ide_scan_pcidev
+DECL|function|scan_pcidev
 r_static
 r_void
 id|__init
-id|ide_scan_pcidev
+id|scan_pcidev
 c_func
 (paren
 r_struct
@@ -6184,7 +6222,7 @@ c_cond
 (paren
 id|d-&gt;init_hwif
 op_eq
-id|IDE_IGNORE
+id|ATA_PCI_IGNORE
 )paren
 id|printk
 c_func
@@ -6447,6 +6485,7 @@ DECL|function|ide_scan_pcibus
 r_void
 id|__init
 id|ide_scan_pcibus
+c_func
 (paren
 r_int
 id|scan_direction
@@ -6470,7 +6509,7 @@ c_func
 id|dev
 )paren
 (brace
-id|ide_scan_pcidev
+id|scan_pcidev
 c_func
 (paren
 id|dev
@@ -6486,7 +6525,7 @@ c_func
 id|dev
 )paren
 (brace
-id|ide_scan_pcidev
+id|scan_pcidev
 c_func
 (paren
 id|dev

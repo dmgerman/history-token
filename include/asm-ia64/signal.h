@@ -124,6 +124,8 @@ DECL|macro|SA_SAMPLE_RANDOM
 mdefine_line|#define SA_SAMPLE_RANDOM&t;SA_RESTART
 DECL|macro|SA_SHIRQ
 mdefine_line|#define SA_SHIRQ&t;&t;0x04000000
+DECL|macro|SA_PERCPU_IRQ
+mdefine_line|#define SA_PERCPU_IRQ&t;&t;0x02000000
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|SIG_BLOCK
 mdefine_line|#define SIG_BLOCK          0&t;/* for blocking signals */

@@ -820,12 +820,8 @@ DECL|macro|HDIO_SET_DMA
 mdefine_line|#define HDIO_SET_DMA&t;&t;0x0326&t;/* change use-dma flag */
 DECL|macro|HDIO_SET_PIO_MODE
 mdefine_line|#define HDIO_SET_PIO_MODE&t;0x0327&t;/* reconfig interface to new speed */
-DECL|macro|HDIO_SCAN_HWIF
-mdefine_line|#define HDIO_SCAN_HWIF&t;&t;0x0328&t;/* register and (re)scan interface */
 DECL|macro|HDIO_SET_NICE
 mdefine_line|#define HDIO_SET_NICE&t;&t;0x0329&t;/* set nice flags */
-DECL|macro|HDIO_UNREGISTER_HWIF
-mdefine_line|#define HDIO_UNREGISTER_HWIF&t;0x032a  /* unregister interface */
 DECL|macro|HDIO_SET_WCACHE
 mdefine_line|#define HDIO_SET_WCACHE&t;&t;0x032b&t;/* change write cache enable-disable */
 DECL|macro|HDIO_SET_ACOUSTIC
@@ -1384,33 +1380,5 @@ DECL|macro|IDE_NICE_1
 mdefine_line|#define IDE_NICE_1&t;&t;(3)&t;/* when probably won&squot;t affect us much */
 DECL|macro|IDE_NICE_2
 mdefine_line|#define IDE_NICE_2&t;&t;(4)&t;/* when we know it&squot;s on our expense */
-macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * These routines are used for kernel command line parameters from main.c:&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
-r_int
-id|ide_register
-c_func
-(paren
-r_int
-id|io_port
-comma
-r_int
-id|ctl_port
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_void
-id|ide_unregister
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDE || CONFIG_BLK_DEV_IDE_MODULE */
-macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_HDREG_H */
 eof

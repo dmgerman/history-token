@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBXB_NEXT_H
-DECL|macro|_ASM_SN_SN1_HUBXB_NEXT_H
-mdefine_line|#define _ASM_SN_SN1_HUBXB_NEXT_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBXB_NEXT_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBXB_NEXT_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBXB_NEXT_H
 multiline_comment|/* XB_FIRST_ERROR fe_source field encoding */
 DECL|macro|XVE_SOURCE_POQ0
 mdefine_line|#define XVE_SOURCE_POQ0 0xf&t;/* 1111 */
@@ -36,5 +36,5 @@ DECL|macro|XBP_RESET_DEFAULTS
 mdefine_line|#define XBP_RESET_DEFAULTS&t;0x0008000080000021LL
 DECL|macro|XBP_ACTIVE_DEFAULTS
 mdefine_line|#define XBP_ACTIVE_DEFAULTS&t;0x00080000fffff021LL
-macro_line|#endif&t;/* _ASM_SN_SN1_HUBXB_NEXT_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBXB_NEXT_H */
 eof
