@@ -1,31 +1,12 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_KSYS_ELSC_H
 DECL|macro|_ASM_SN_KSYS_ELSC_H
 mdefine_line|#define _ASM_SN_KSYS_ELSC_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
-macro_line|#endif
-singleline_comment|// #include &lt;asm/sn/ksys/i2c.h&gt;
-DECL|macro|ELSC_I2C_ADDR
-mdefine_line|#define ELSC_I2C_ADDR&t;&t;0x08
-DECL|macro|ELSC_I2C_HUB0
-mdefine_line|#define ELSC_I2C_HUB0&t;&t;0x09
-DECL|macro|ELSC_I2C_HUB1
-mdefine_line|#define ELSC_I2C_HUB1&t;&t;0x0a
-DECL|macro|ELSC_I2C_HUB2
-mdefine_line|#define ELSC_I2C_HUB2&t;&t;0x0b
-DECL|macro|ELSC_I2C_HUB3
-mdefine_line|#define ELSC_I2C_HUB3&t;&t;0x0c
-DECL|macro|ELSC_PACKET_MAX
-mdefine_line|#define ELSC_PACKET_MAX&t;&t;96
 DECL|macro|ELSC_ACP_MAX
 mdefine_line|#define ELSC_ACP_MAX&t;&t;86&t;&t;/* 84+cr+lf */
 DECL|macro|ELSC_LINE_MAX
 mdefine_line|#define ELSC_LINE_MAX&t;&t;(ELSC_ACP_MAX - 2)
-multiline_comment|/*&n; * ELSC character queue type for I/O&n; */
-DECL|macro|ELSC_QSIZE
-mdefine_line|#define ELSC_QSIZE&t;128&t;&t;/* Power of 2 is more efficient */
 DECL|typedef|elsc_cq_t
 r_typedef
 id|sc_cq_t
@@ -102,7 +83,6 @@ op_star
 id|callback_data
 )paren
 suffix:semicolon
-macro_line|#ifdef LATER
 r_char
 op_star
 id|elsc_errmsg
@@ -159,7 +139,6 @@ op_star
 id|e
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|elsc_command
 c_func
@@ -232,7 +211,6 @@ op_star
 id|result
 )paren
 suffix:semicolon
-macro_line|#ifdef LATER
 r_int
 id|elsc_debug_set
 c_func
@@ -265,7 +243,6 @@ op_star
 id|byte2
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|elsc_module_set
 c_func
@@ -452,7 +429,6 @@ r_int
 id|l_case
 )paren
 suffix:semicolon
-macro_line|#ifdef LATER
 r_int
 id|elsc_display_mesg
 c_func
@@ -571,7 +547,6 @@ r_int
 id|verbose
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|_elsc_hbt
 c_func
@@ -593,81 +568,9 @@ DECL|macro|elsc_hbt_disable
 mdefine_line|#define&t;elsc_hbt_disable(e)&t;&t;_elsc_hbt(e, 0, 0)
 DECL|macro|elsc_hbt_send
 mdefine_line|#define&t;elsc_hbt_send(e)&t;&t;_elsc_hbt(e, 0, 1)
-multiline_comment|/*&n; * Routines for using the ELSC as a UART.  There&squot;s a version of each&n; * routine that takes a pointer to an elsc_t, and another version that&n; * gets the pointer by calling a user-supplied global routine &quot;get_elsc&quot;.&n; * The latter version is useful when the elsc is employed for stdio.&n; */
-DECL|macro|ELSCUART_FLASH
-mdefine_line|#define ELSCUART_FLASH&t;&t;0x3c&t;&t;&t;/* LED pattern */
 id|elsc_t
 op_star
 id|get_elsc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|elscuart_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|elscuart_init
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-r_int
-id|elscuart_poll
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|elscuart_readc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|elscuart_getc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|elscuart_putc
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_int
-id|elscuart_puts
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_char
-op_star
-id|elscuart_gets
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-id|elscuart_flush
 c_func
 (paren
 r_void
@@ -677,36 +580,36 @@ multiline_comment|/*&n; * Error codes&n; *&n; *   The possible ELSC error codes 
 DECL|macro|ELSC_ERROR_NONE
 mdefine_line|#define ELSC_ERROR_NONE&t;&t;&t;0
 DECL|macro|ELSC_ERROR_CMD_SEND
-mdefine_line|#define ELSC_ERROR_CMD_SEND&t;       -100&t;/* Error sending command    */
+mdefine_line|#define ELSC_ERROR_CMD_SEND&t;       (-100)&t;/* Error sending command    */
 DECL|macro|ELSC_ERROR_CMD_CHECKSUM
-mdefine_line|#define ELSC_ERROR_CMD_CHECKSUM&t;       -101&t;/* Command checksum bad     */
+mdefine_line|#define ELSC_ERROR_CMD_CHECKSUM&t;       (-101)&t;/* Command checksum bad     */
 DECL|macro|ELSC_ERROR_CMD_UNKNOWN
-mdefine_line|#define ELSC_ERROR_CMD_UNKNOWN&t;       -102&t;/* Unknown command          */
+mdefine_line|#define ELSC_ERROR_CMD_UNKNOWN&t;       (-102)&t;/* Unknown command          */
 DECL|macro|ELSC_ERROR_CMD_ARGS
-mdefine_line|#define ELSC_ERROR_CMD_ARGS&t;       -103&t;/* Invalid argument(s)      */
+mdefine_line|#define ELSC_ERROR_CMD_ARGS&t;       (-103)&t;/* Invalid argument(s)      */
 DECL|macro|ELSC_ERROR_CMD_PERM
-mdefine_line|#define ELSC_ERROR_CMD_PERM&t;       -104&t;/* Permission denied&t;    */
+mdefine_line|#define ELSC_ERROR_CMD_PERM&t;       (-104)&t;/* Permission denied&t;    */
 DECL|macro|ELSC_ERROR_CMD_STATE
-mdefine_line|#define ELSC_ERROR_CMD_STATE&t;       -105&t;/* not allowed in this state*/
+mdefine_line|#define ELSC_ERROR_CMD_STATE&t;       (-105)&t;/* not allowed in this state*/
 DECL|macro|ELSC_ERROR_RESP_TIMEOUT
-mdefine_line|#define ELSC_ERROR_RESP_TIMEOUT&t;       -110&t;/* ELSC response timeout    */
+mdefine_line|#define ELSC_ERROR_RESP_TIMEOUT&t;       (-110)&t;/* ELSC response timeout    */
 DECL|macro|ELSC_ERROR_RESP_CHECKSUM
-mdefine_line|#define ELSC_ERROR_RESP_CHECKSUM       -111&t;/* Response checksum bad    */
+mdefine_line|#define ELSC_ERROR_RESP_CHECKSUM       (-111)&t;/* Response checksum bad    */
 DECL|macro|ELSC_ERROR_RESP_FORMAT
-mdefine_line|#define ELSC_ERROR_RESP_FORMAT&t;       -112&t;/* Response format error    */
+mdefine_line|#define ELSC_ERROR_RESP_FORMAT&t;       (-112)&t;/* Response format error    */
 DECL|macro|ELSC_ERROR_RESP_DIR
-mdefine_line|#define ELSC_ERROR_RESP_DIR&t;       -113&t;/* Response direction error */
+mdefine_line|#define ELSC_ERROR_RESP_DIR&t;       (-113)&t;/* Response direction error */
 DECL|macro|ELSC_ERROR_MSG_LOST
-mdefine_line|#define ELSC_ERROR_MSG_LOST&t;       -120&t;/* Queue full; msg. lost    */
+mdefine_line|#define ELSC_ERROR_MSG_LOST&t;       (-120)&t;/* Queue full; msg. lost    */
 DECL|macro|ELSC_ERROR_LOCK_TIMEOUT
-mdefine_line|#define ELSC_ERROR_LOCK_TIMEOUT&t;       -121&t;/* ELSC response timeout    */
+mdefine_line|#define ELSC_ERROR_LOCK_TIMEOUT&t;       (-121)&t;/* ELSC response timeout    */
 DECL|macro|ELSC_ERROR_DATA_SEND
-mdefine_line|#define ELSC_ERROR_DATA_SEND&t;       -122&t;/* Error sending data       */
+mdefine_line|#define ELSC_ERROR_DATA_SEND&t;       (-122)&t;/* Error sending data       */
 DECL|macro|ELSC_ERROR_NIC
-mdefine_line|#define ELSC_ERROR_NIC&t;&t;       -123&t;/* NIC processing error     */
+mdefine_line|#define ELSC_ERROR_NIC&t;&t;       (-123)&t;/* NIC processing error     */
 DECL|macro|ELSC_ERROR_NVMAGIC
-mdefine_line|#define ELSC_ERROR_NVMAGIC&t;       -124&t;/* Bad magic no. in NVRAM   */
+mdefine_line|#define ELSC_ERROR_NVMAGIC&t;       (-124)&t;/* Bad magic no. in NVRAM   */
 DECL|macro|ELSC_ERROR_MODULE
-mdefine_line|#define ELSC_ERROR_MODULE&t;       -125&t;/* Moduleid processing err  */
+mdefine_line|#define ELSC_ERROR_MODULE&t;       (-125)&t;/* Moduleid processing err  */
 macro_line|#endif /* _ASM_SN_KSYS_ELSC_H */
 eof

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_HUBPI_H
-DECL|macro|_ASM_SN_SN1_HUBPI_H
-mdefine_line|#define _ASM_SN_SN1_HUBPI_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBPI_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBPI_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBPI_H
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *      WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!      *&n; *                                                                      *&n; * This file is created by an automated script. Any (minimal) changes   *&n; * made manually to this  file should be made with care.                *&n; *                                                                      *&n; *               MAKE ALL ADDITIONS TO THE END OF THIS FILE             *&n; *                                                                      *&n; ************************************************************************/
 DECL|macro|PI_CPU_PROTECT
 mdefine_line|#define    PI_CPU_PROTECT            0x00000000    /* CPU Protection         */
@@ -179,7 +179,7 @@ DECL|macro|PI_SPURIOUS_HDR_1
 mdefine_line|#define    PI_SPURIOUS_HDR_1         0x000004D0    /* Spurious Error 1       */
 DECL|macro|PI_ERR_INJECT
 mdefine_line|#define    PI_ERR_INJECT             0x000004D8    /*&n;                                                    * SysAD bus error&n;                                                    * injection&n;                                                    */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/************************************************************************&n; *                                                                      *&n; * Description:  This read/write register determines on a               *&n; * bit-per-region basis whether incoming CPU-initiated PIO Read and     *&n; * Write to local PI registers are allowed. If access is allowed, the   *&n; * PI&squot;s response to a partial read is a PRPLY message, and the          *&n; * response to a partial write is a PACK message. If access is not      *&n; * allowed, the PI&squot;s response to a partial read is a PRERR message,     *&n; * and the response to a partial write is a PWERR message.              *&n; * This register is not reset by a soft reset.                          *&n; *                                                                      *&n; ************************************************************************/
 DECL|union|pi_cpu_protect_u
 r_typedef
@@ -8540,11 +8540,11 @@ DECL|typedef|pi_perf_cntr1_b_u_t
 id|pi_perf_cntr1_b_u_t
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *               MAKE ALL ADDITIONS AFTER THIS LINE                     *&n; *                                                                      *&n; ************************************************************************/
 DECL|macro|PI_GFX_OFFSET
 mdefine_line|#define PI_GFX_OFFSET&t;&t;(PI_GFX_PAGE_B - PI_GFX_PAGE_A)
 DECL|macro|PI_GFX_PAGE_ENABLE
 mdefine_line|#define PI_GFX_PAGE_ENABLE&t;0x0000010000000000LL
-macro_line|#endif /* _ASM_SN_SN1_HUBPI_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBPI_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &quot;asm/sn/ioerror_handling.h&quot;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#ifdef BRINGUP
 multiline_comment|/* these get called directly in cdl_add_connpt in fops bypass hack */
 r_extern
 r_int
@@ -25,7 +24,6 @@ c_func
 id|devfs_handle_t
 )paren
 suffix:semicolon
-macro_line|#endif /* BRINGUP */
 multiline_comment|/*&n; *    cdl: Connection and Driver List&n; *&n; *&t;We are not porting this to Linux.  Devices are registered via &n; *&t;the normal Linux PCI layer.  This is a very simplified version &n; *&t;of cdl that will allow us to register and call our very own &n; *&t;IO Infrastructure Drivers e.g. pcibr.&n; */
 DECL|struct|cdl
 r_struct
@@ -52,13 +50,6 @@ suffix:semicolon
 DECL|variable|dummy_reg
 )brace
 id|dummy_reg
-suffix:semicolon
-DECL|typedef|cdl_p
-r_typedef
-r_struct
-id|cdl
-op_star
-id|cdl_p
 suffix:semicolon
 DECL|macro|MAX_SGI_IO_INFRA_DRVR
 mdefine_line|#define MAX_SGI_IO_INFRA_DRVR 4

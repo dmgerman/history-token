@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_RTC_VERSION
-mdefine_line|#define EFI_RTC_VERSION&t;&t;&quot;0.2&quot;
+mdefine_line|#define EFI_RTC_VERSION&t;&t;&quot;0.3&quot;
 DECL|macro|EFI_ISDST
 mdefine_line|#define EFI_ISDST (EFI_TIME_ADJUST_DAYLIGHT|EFI_TIME_IN_DAYLIGHT)
 multiline_comment|/*&n; * EFI Epoch is 1/1/1998&n; */
@@ -1113,21 +1113,9 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Time      :&bslash;n&quot;
-l_string|&quot;Year      : %u&bslash;n&quot;
-l_string|&quot;Month     : %u&bslash;n&quot;
-l_string|&quot;Day       : %u&bslash;n&quot;
-l_string|&quot;Hour      : %u&bslash;n&quot;
-l_string|&quot;Minute    : %u&bslash;n&quot;
-l_string|&quot;Second    : %u&bslash;n&quot;
-l_string|&quot;Nanosecond: %u&bslash;n&quot;
-l_string|&quot;Daylight  : %u&bslash;n&quot;
-comma
-id|eft.year
-comma
-id|eft.month
-comma
-id|eft.day
+l_string|&quot;Time          : %u:%u:%u.%09u&bslash;n&quot;
+l_string|&quot;Date          : %u-%u-%u&bslash;n&quot;
+l_string|&quot;Daylight      : %u&bslash;n&quot;
 comma
 id|eft.hour
 comma
@@ -1136,6 +1124,12 @@ comma
 id|eft.second
 comma
 id|eft.nanosecond
+comma
+id|eft.year
+comma
+id|eft.month
+comma
+id|eft.day
 comma
 id|eft.daylight
 )paren
@@ -1154,7 +1148,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Timezone  : unspecified&bslash;n&quot;
+l_string|&quot;Timezone       : unspecified&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -1166,7 +1160,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Timezone  : %u&bslash;n&quot;
+l_string|&quot;Timezone       : %u&bslash;n&quot;
 comma
 id|eft.timezone
 )paren
@@ -1178,41 +1172,11 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;nWakeup Alm:&bslash;n&quot;
-l_string|&quot;Enabled   : %s&bslash;n&quot;
-l_string|&quot;Pending   : %s&bslash;n&quot;
-l_string|&quot;Year      : %u&bslash;n&quot;
-l_string|&quot;Month     : %u&bslash;n&quot;
-l_string|&quot;Day       : %u&bslash;n&quot;
-l_string|&quot;Hour      : %u&bslash;n&quot;
-l_string|&quot;Minute    : %u&bslash;n&quot;
-l_string|&quot;Second    : %u&bslash;n&quot;
-l_string|&quot;Nanosecond: %u&bslash;n&quot;
-l_string|&quot;Daylight  : %u&bslash;n&quot;
-comma
-id|enabled
-op_eq
-l_int|1
-ques
-c_cond
-l_string|&quot;Yes&quot;
-suffix:colon
-l_string|&quot;No&quot;
-comma
-id|pending
-op_eq
-l_int|1
-ques
-c_cond
-l_string|&quot;Yes&quot;
-suffix:colon
-l_string|&quot;No&quot;
-comma
-id|alm.year
-comma
-id|alm.month
-comma
-id|alm.day
+l_string|&quot;Alarm Time     : %u:%u:%u.%09u&bslash;n&quot;
+l_string|&quot;Alarm Date     : %u-%u-%u&bslash;n&quot;
+l_string|&quot;Alarm Daylight : %u&bslash;n&quot;
+l_string|&quot;Enabled        : %s&bslash;n&quot;
+l_string|&quot;Pending        : %s&bslash;n&quot;
 comma
 id|alm.hour
 comma
@@ -1222,7 +1186,31 @@ id|alm.second
 comma
 id|alm.nanosecond
 comma
+id|alm.year
+comma
+id|alm.month
+comma
+id|alm.day
+comma
 id|alm.daylight
+comma
+id|enabled
+op_eq
+l_int|1
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+comma
+id|pending
+op_eq
+l_int|1
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1239,7 +1227,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Timezone  : unspecified&bslash;n&quot;
+l_string|&quot;Timezone       : unspecified&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -1251,9 +1239,9 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Timezone  : %u&bslash;n&quot;
+l_string|&quot;Timezone       : %u&bslash;n&quot;
 comma
-id|eft.timezone
+id|alm.timezone
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * now prints the capabilities&n;&t; */
@@ -1264,10 +1252,9 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;nClock Cap :&bslash;n&quot;
-l_string|&quot;Resolution: %u&bslash;n&quot;
-l_string|&quot;Accuracy  : %u&bslash;n&quot;
-l_string|&quot;SetstoZero: %u&bslash;n&quot;
+l_string|&quot;Resolution     : %u&bslash;n&quot;
+l_string|&quot;Accuracy       : %u&bslash;n&quot;
+l_string|&quot;SetstoZero     : %u&bslash;n&quot;
 comma
 id|cap.resolution
 comma
@@ -1400,7 +1387,7 @@ id|efi_rtc_dev
 suffix:semicolon
 id|create_proc_read_entry
 (paren
-l_string|&quot;efirtc&quot;
+l_string|&quot;driver/efirtc&quot;
 comma
 l_int|0
 comma

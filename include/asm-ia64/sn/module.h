@@ -1,24 +1,19 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_MODULE_H
-DECL|macro|_ASM_SN_MODULE_H
-mdefine_line|#define _ASM_SN_MODULE_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_MODULE_H
+DECL|macro|_ASM_IA64_SN_MODULE_H
+mdefine_line|#define _ASM_IA64_SN_MODULE_H
 macro_line|#ifdef&t;__cplusplus
 r_extern
 l_string|&quot;C&quot;
 (brace
 macro_line|#endif
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/systeminfo.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/ksys/elsc.h&gt;
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
-macro_line|#ifdef BRINGUP /* max. number of modules?  Should be about 300.*/
 DECL|macro|MODULE_MAX
-mdefine_line|#define MODULE_MAX&t;&t;&t;56
-macro_line|#endif /* BRINGUP */
+mdefine_line|#define MODULE_MAX&t;&t;&t;128
 DECL|macro|MODULE_MAX_NODES
 mdefine_line|#define MODULE_MAX_NODES&t;&t;1
-macro_line|#endif /* CONFIG_SGI_IP35 */
 DECL|macro|MODULE_HIST_CNT
 mdefine_line|#define MODULE_HIST_CNT&t;&t;&t;16
 DECL|macro|MAX_MODULE_LEN
@@ -34,7 +29,6 @@ DECL|macro|MODULE_FORMAT_BRIEF
 mdefine_line|#define MODULE_FORMAT_BRIEF&t;1
 DECL|macro|MODULE_FORMAT_LONG
 mdefine_line|#define MODULE_FORMAT_LONG&t;2
-macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 multiline_comment|/*&n; *&t;Module id format&n; *&n; *&t;  15-12 Brick type (enumerated)&n; *&t;   11-6&t;Rack ID&t;(encoded class, group, number)&n; *&t;    5-0 Brick position in rack (0-63)&n; */
 multiline_comment|/*&n; * Macros for getting the brick type&n; */
 DECL|macro|MODULE_BTYPE_MASK
@@ -122,15 +116,6 @@ DECL|macro|MODULE_CMP
 mdefine_line|#define MODULE_CMP(_m1, _m2)&t;(((_m1)&amp;(MODULE_RACK_MASK|MODULE_BPOS_MASK)) -&bslash;&n;&t;&t;&t;&t; ((_m2)&amp;(MODULE_RACK_MASK|MODULE_BPOS_MASK)))
 DECL|macro|MODULE_MATCH
 mdefine_line|#define MODULE_MATCH(_m1, _m2)&t;(MODULE_CMP((_m1),(_m2)) == 0)
-macro_line|#else
-multiline_comment|/*&n; * Some code that uses this macro will not be conditionally compiled.&n; */
-DECL|macro|MODULE_GET_BTCHAR
-mdefine_line|#define MODULE_GET_BTCHAR(_m)&t;(&squot;?&squot;)
-DECL|macro|MODULE_CMP
-mdefine_line|#define MODULE_CMP(_m1, _m2)&t;((_m1) - (_m2))
-DECL|macro|MODULE_MATCH
-mdefine_line|#define MODULE_MATCH(_m1, _m2)&t;(MODULE_CMP((_m1),(_m2)) == 0)
-macro_line|#endif /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
 DECL|typedef|module_t
 r_typedef
 r_struct
@@ -344,5 +329,5 @@ suffix:semicolon
 macro_line|#ifdef&t;__cplusplus
 )brace
 macro_line|#endif
-macro_line|#endif /* _ASM_SN_MODULE_H */
+macro_line|#endif /* _ASM_IA64_SN_MODULE_H */
 eof

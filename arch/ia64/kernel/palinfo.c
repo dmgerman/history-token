@@ -2853,8 +2853,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot; pal call failed on tr[%d:%d]=%ld&bslash;n&quot;
+l_string|&quot;palinfo: pal call failed on tr[%d:%d]=%ld&bslash;n&quot;
 comma
 id|i
 comma
@@ -3141,7 +3140,6 @@ op_star
 )paren
 id|info
 suffix:semicolon
-multiline_comment|/* printk(__FUNCTION__&quot; called on CPU %d&bslash;n&quot;, smp_processor_id());*/
 r_if
 c_cond
 (paren
@@ -3153,9 +3151,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
+l_string|&quot;%s palinfo: data pointer is NULL&bslash;n&quot;
+comma
 id|KERN_ERR
-id|__FUNCTION__
-l_string|&quot; data pointer is NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|data-&gt;ret
@@ -3218,7 +3216,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* just in case */
-multiline_comment|/*printk(__FUNCTION__&quot; calling CPU %d from CPU %d for function %d&bslash;n&quot;, f-&gt;req_cpu,smp_processor_id(), f-&gt;func_id);*/
 multiline_comment|/* will send IPI to other CPU and wait for completion of remote call */
 r_if
 c_cond
@@ -3246,8 +3243,7 @@ l_int|1
 id|printk
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot; remote CPU call from %d to %d on function %d: error %d&bslash;n&quot;
+l_string|&quot;palinfo: remote CPU call from %d to %d on function %d: error %d&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -3288,8 +3284,7 @@ id|page
 id|printk
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot; should not be called with non SMP kernel&bslash;n&quot;
+l_string|&quot;palinfo: should not be called with non SMP kernel&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

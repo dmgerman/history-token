@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
+multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
 multiline_comment|/*&n; * fp_emulate() needs to be able to access and update all floating point registers.  Those&n; * saved in pt_regs can be accessed through that structure, but those not saved, will be&n; * accessed directly.  To make this work, we need to ensure that the compiler does not end&n; * up using a preserved floating point register on its own.  The following achieves this&n; * by declaring preserved registers that are not marked as &quot;fixed&quot; as global register&n; * variables.&n; */
 r_register
 r_float
@@ -164,6 +164,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
@@ -515,6 +516,15 @@ suffix:semicolon
 id|siginfo.si_imm
 op_assign
 id|break_num
+suffix:semicolon
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* clear __ISR_VALID */
+id|siginfo.si_isr
+op_assign
+l_int|0
 suffix:semicolon
 r_switch
 c_cond
@@ -1509,6 +1519,14 @@ id|siginfo.si_isr
 op_assign
 id|isr
 suffix:semicolon
+id|siginfo.si_flags
+op_assign
+id|__ISR_VALID
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
+suffix:semicolon
 id|force_sig_info
 c_func
 (paren
@@ -1629,6 +1647,14 @@ suffix:semicolon
 id|siginfo.si_isr
 op_assign
 id|isr
+suffix:semicolon
+id|siginfo.si_flags
+op_assign
+id|__ISR_VALID
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
 suffix:semicolon
 id|force_sig_info
 c_func
@@ -2249,6 +2275,14 @@ id|siginfo.si_imm
 op_assign
 id|vector
 suffix:semicolon
+id|siginfo.si_flags
+op_assign
+id|__ISR_VALID
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+id|isr
+suffix:semicolon
 id|force_sig_info
 c_func
 (paren
@@ -2364,6 +2398,22 @@ id|siginfo.si_errno
 op_assign
 l_int|0
 suffix:semicolon
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
+suffix:semicolon
 id|force_sig_info
 c_func
 (paren
@@ -2452,6 +2502,18 @@ op_member_access_from_pointer
 id|ri
 )paren
 suffix:semicolon
+id|siginfo.si_flags
+op_assign
+id|__ISR_VALID
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+id|isr
+suffix:semicolon
+id|siginfo.si_imm
+op_assign
+l_int|0
+suffix:semicolon
 id|force_sig_info
 c_func
 (paren
@@ -2489,6 +2551,18 @@ op_assign
 id|ILL_BADIADDR
 suffix:semicolon
 id|siginfo.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_isr
+op_assign
+l_int|0
+suffix:semicolon
+id|siginfo.si_imm
 op_assign
 l_int|0
 suffix:semicolon

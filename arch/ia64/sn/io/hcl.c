@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  hcl - SGI&squot;s Hardware Graph compatibility layer.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; *  hcl - SGI&squot;s Hardware Graph compatibility layer.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -70,10 +70,6 @@ id|OPTION_NONE
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Some Global definitions.&n; */
-DECL|variable|hcl_spinlock
-id|spinlock_t
-id|hcl_spinlock
-suffix:semicolon
 DECL|variable|hcl_handle
 id|devfs_handle_t
 id|hcl_handle
@@ -322,6 +318,14 @@ r_struct
 id|string_table
 id|label_string_table
 suffix:semicolon
+r_extern
+r_int
+id|init_ifconfig_net
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|rv
 op_assign
@@ -360,13 +364,6 @@ id|boot_options
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|hcl_spinlock
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Create the hwgraph_root on devfs.&n;&t; */
 id|rv
 op_assign
@@ -487,6 +484,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Initialize the ifconfgi_net driver that does network devices &n;&t; * Persistent Naming.&n;&t; */
+id|init_ifconfig_net
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -603,6 +606,10 @@ c_func
 (paren
 l_string|&quot;HCL: hwgraph_fastinfo_set handle 0x%p fastinfo %ld&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|de
 comma
 id|fastinfo
@@ -1208,6 +1215,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;HCL: Unable to set the connect point to it&squot;s parent 0x%p&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|new_devfs_handle
 )paren
 suffix:semicolon
@@ -2899,75 +2910,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* traverse symlinks */
 )brace
-multiline_comment|/*&n; * hwgraph_cdevsw_get - returns the fops of the given devfs entry.&n; */
-r_struct
-id|file_operations
-op_star
-DECL|function|hwgraph_cdevsw_get
-id|hwgraph_cdevsw_get
-c_func
-(paren
-id|devfs_handle_t
-id|de
-)paren
-(brace
-r_struct
-id|file_operations
-op_star
-id|fops
-op_assign
-id|devfs_get_ops
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-id|devfs_put_ops
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/*  FIXME: this may need to be moved to callers  */
-r_return
-id|fops
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * hwgraph_bdevsw_get - returns the fops of the given devfs entry.&n;*/
-r_struct
-id|file_operations
-op_star
-multiline_comment|/*  FIXME: shouldn&squot;t this be a blkdev?  */
-DECL|function|hwgraph_bdevsw_get
-id|hwgraph_bdevsw_get
-c_func
-(paren
-id|devfs_handle_t
-id|de
-)paren
-(brace
-r_struct
-id|file_operations
-op_star
-id|fops
-op_assign
-id|devfs_get_ops
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-id|devfs_put_ops
-c_func
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/*  FIXME: this may need to be moved to callers  */
-r_return
-id|fops
-suffix:semicolon
-)brace
 multiline_comment|/*&n;** Inventory is now associated with a vertex in the graph.  For items that&n;** belong in the inventory but have no vertex &n;** (e.g. old non-graph-aware drivers), we create a bogus vertex under the &n;** INFO_LBL_INVENT name.&n;**&n;** For historical reasons, we prevent exact duplicate entries from being added&n;** to a single vertex.&n;*/
 multiline_comment|/*&n; * hwgraph_inventory_add - Adds an inventory entry into de.&n; */
 r_int
@@ -4588,20 +4530,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hwgraph_char_device_get
-)paren
-suffix:semicolon
-DECL|variable|hwgraph_cdevsw_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwgraph_cdevsw_get
-)paren
-suffix:semicolon
-DECL|variable|hwgraph_bdevsw_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwgraph_bdevsw_get
 )paren
 suffix:semicolon
 DECL|variable|hwgraph_vertex_name_get

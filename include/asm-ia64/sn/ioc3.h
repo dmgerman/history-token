@@ -1,7 +1,9 @@
+multiline_comment|/*&n; * Copyright (c) 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; * &n; * This program is free software; you can redistribute it and/or modify it &n; * under the terms of version 2 of the GNU General Public License &n; * as published by the Free Software Foundation.&n; * &n; * This program is distributed in the hope that it would be useful, but &n; * WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &n; * &n; * Further, this software is distributed without any warranty that it is &n; * free of the rightful claim of any third person regarding infringement &n; * or the like.  Any license provided herein, whether implied or &n; * otherwise, applies only to this software file.  Patent licenses, if &n; * any, provided herein do not apply to combinations of this program with &n; * other software, or any other product whatsoever.&n; * &n; * You should have received a copy of the GNU General Public &n; * License along with this program; if not, write the Free Software &n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; * &n; * Contact information:  Silicon Graphics, Inc., 1600 Amphitheatre Pkwy, &n; * Mountain View, CA  94043, or:&n; * &n; * http://www.sgi.com &n; * &n; * For further information regarding this notice, see: &n; * &n; * http://oss.sgi.com/projects/GenInfo/NoticeExplan&n; */
 multiline_comment|/* $Id: ioc3.h,v 1.2 2000/11/16 19:49:17 pfg Exp $&n; *&n; * Copyright (C) 1999 Ralf Baechle&n; * This file is part of the Linux driver for the SGI IOC3.&n; */
-macro_line|#ifndef IOC3_H
-DECL|macro|IOC3_H
-mdefine_line|#define IOC3_H
+macro_line|#ifndef _ASM_IA64_SN_IOC3_H
+DECL|macro|_ASM_IA64_SN_IOC3_H
+mdefine_line|#define _ASM_IA64_SN_IOC3_H
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/* SUPERIO uart register map */
 DECL|struct|ioc3_uartregs
 r_typedef
@@ -1591,5 +1593,5 @@ DECL|macro|IOC3_VENDOR_ID_NUM
 mdefine_line|#define IOC3_VENDOR_ID_NUM&t;0x10A9
 DECL|macro|IOC3_DEVICE_ID_NUM
 mdefine_line|#define IOC3_DEVICE_ID_NUM&t;0x0003
-macro_line|#endif /* IOC3_H */
+macro_line|#endif /* _ASM_IA64_SN_IOC3_H */
 eof

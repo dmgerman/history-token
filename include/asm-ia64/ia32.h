@@ -3,7 +3,7 @@ DECL|macro|_ASM_IA64_IA32_H
 mdefine_line|#define _ASM_IA64_IA32_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_IA32_SUPPORT
-macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
 multiline_comment|/* 32bit compatibility types */
 DECL|typedef|__kernel_size_t32
@@ -1290,6 +1290,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|linux_binprm
 suffix:semicolon
 r_extern
 r_void

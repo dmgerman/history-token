@@ -1,8 +1,13 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 DECL|macro|USRPCI
 mdefine_line|#define&t;USRPCI&t;0
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/pci_ids.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* Must be before iograph.h to get MAX_PORT_NUM */
@@ -16,14 +21,17 @@ macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio_private.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
+macro_line|#include &lt;asm/sn/simulator.h&gt;
 DECL|macro|DEBUG_PCIIO
 mdefine_line|#define DEBUG_PCIIO
 DECL|macro|DEBUG_PCIIO
 macro_line|#undef DEBUG_PCIIO&t;/* turn this on for yet more console output */
-DECL|macro|NEW
-mdefine_line|#define NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
-DECL|macro|DEL
-mdefine_line|#define DEL(ptr)&t;(kfree(ptr))
+DECL|macro|GET_NEW
+mdefine_line|#define GET_NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
+DECL|macro|DO_DEL
+mdefine_line|#define DO_DEL(ptr)&t;(kfree(ptr))
 DECL|variable|pciio_info_fingerprint
 r_char
 id|pciio_info_fingerprint
@@ -157,6 +165,44 @@ r_extern
 id|nasid_t
 id|console_nasid
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|console_nasid
+OL
+l_int|0
+)paren
+(brace
+id|console_nasid
+op_assign
+id|ia64_sn_get_console_nasid
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|console_nasid
+OL
+l_int|0
+)paren
+(brace
+singleline_comment|// ZZZ What do we do if we don&squot;t get a console nasid on the hardware????
+r_if
+c_cond
+(paren
+id|IS_RUNNING_ON_SIMULATOR
+c_func
+(paren
+)paren
+)paren
+id|console_nasid
+op_assign
+id|master_nasid
+suffix:semicolon
+)brace
+)brace
 r_return
 id|console_nasid
 suffix:semicolon
@@ -217,7 +263,7 @@ id|ioerror
 multiline_comment|/******&n; ****** end hack defines ......&n; ******/
 multiline_comment|/* =====================================================================&n; *    PCI Generic Bus Provider&n; * Implement PCI provider operations.  The pciio* layer provides a&n; * platform-independent interface for PCI devices.  This layer&n; * switches among the possible implementations of a PCI adapter.&n; */
 multiline_comment|/* =====================================================================&n; *    Provider Function Location SHORTCUT&n; *&n; * On platforms with only one possible PCI provider, macros can be&n; * set up at the top that cause the table lookups and indirections to&n; * completely disappear.&n; */
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 multiline_comment|/*&n; *    For the moment, we will assume that IP27&n; *      only use Bridge ASICs to provide PCI support.&n; */
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 DECL|macro|DEV_FUNC
@@ -228,7 +274,7 @@ DECL|macro|CAST_DMAMAP
 mdefine_line|#define CAST_DMAMAP(x)&t;&t;((pcibr_dmamap_t)(x))
 DECL|macro|CAST_INTR
 mdefine_line|#define CAST_INTR(x)&t;&t;((pcibr_intr_t)(x))
-macro_line|#endif /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
 multiline_comment|/* =====================================================================&n; *    Function Table of Contents&n; */
 macro_line|#if !defined(DEV_FUNC)
 r_static
@@ -498,14 +544,6 @@ id|pciio_intr_connect
 c_func
 (paren
 id|pciio_intr_t
-comma
-id|intr_func_t
-comma
-id|intr_arg_t
-comma
-r_void
-op_star
-id|thread
 )paren
 suffix:semicolon
 r_void
@@ -532,39 +570,6 @@ comma
 id|pciio_slot_t
 comma
 id|pciio_function_t
-)paren
-suffix:semicolon
-r_static
-id|pciio_info_t
-id|pciio_cardinfo_get
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|pciio_slot_t
-)paren
-suffix:semicolon
-r_int
-id|pciio_error_handler
-c_func
-(paren
-id|devfs_handle_t
-comma
-r_int
-comma
-id|ioerror_mode_t
-comma
-id|ioerror_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|pciio_error_devenable
-c_func
-(paren
-id|devfs_handle_t
-comma
-r_int
 )paren
 suffix:semicolon
 r_void
@@ -1065,8 +1070,12 @@ macro_line|#else
 id|PRINT_PANIC
 c_func
 (paren
-l_string|&quot;0x%x: provider_fns == NULL&quot;
+l_string|&quot;0x%p: provider_fns == NULL&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|dev
 )paren
 suffix:semicolon
@@ -2176,22 +2185,9 @@ c_func
 (paren
 id|pciio_intr_t
 id|intr_hdl
-comma
-multiline_comment|/* pciio intr resource handle */
-id|intr_func_t
-id|intr_func
-comma
-multiline_comment|/* pciio intr handler */
-id|intr_arg_t
-id|intr_arg
-comma
-multiline_comment|/* arg to intr handler */
-r_void
-op_star
-id|thread
 )paren
+multiline_comment|/* pciio intr resource handle */
 (brace
-multiline_comment|/* intr thread to use */
 r_return
 id|INTR_FUNC
 c_func
@@ -2206,12 +2202,6 @@ c_func
 (paren
 id|intr_hdl
 )paren
-comma
-id|intr_func
-comma
-id|intr_arg
-comma
-id|thread
 )paren
 suffix:semicolon
 )brace
@@ -2268,7 +2258,6 @@ id|intr_hdl
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* =====================================================================&n; *          ERROR MANAGEMENT&n; */
 r_void
 DECL|function|pciio_slot_func_to_name
 id|pciio_slot_func_to_name
@@ -2334,522 +2323,6 @@ op_plus
 id|func
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * pciio_cardinfo_get&n; *&n; * Get the pciio info structure corresponding to the&n; * specified PCI &quot;slot&quot; (we like it when the same index&n; * number is used for the PCI IDSEL, the REQ/GNT pair,&n; * and the interrupt line being used for INTA. We like&n; * it so much we call it the slot number).&n; */
-r_static
-id|pciio_info_t
-DECL|function|pciio_cardinfo_get
-id|pciio_cardinfo_get
-c_func
-(paren
-id|devfs_handle_t
-id|pciio_vhdl
-comma
-id|pciio_slot_t
-id|pci_slot
-)paren
-(brace
-r_char
-id|namebuf
-(braket
-l_int|16
-)braket
-suffix:semicolon
-id|pciio_info_t
-id|info
-op_assign
-l_int|0
-suffix:semicolon
-id|devfs_handle_t
-id|conn
-suffix:semicolon
-id|pciio_slot_func_to_name
-c_func
-(paren
-id|namebuf
-comma
-id|pci_slot
-comma
-id|PCIIO_FUNC_NONE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|GRAPH_SUCCESS
-op_eq
-id|hwgraph_traverse
-c_func
-(paren
-id|pciio_vhdl
-comma
-id|namebuf
-comma
-op_amp
-id|conn
-)paren
-)paren
-(brace
-id|info
-op_assign
-id|pciio_info_chk
-c_func
-(paren
-id|conn
-)paren
-suffix:semicolon
-id|hwgraph_vertex_unref
-c_func
-(paren
-id|conn
-)paren
-suffix:semicolon
-)brace
-r_return
-id|info
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * pciio_error_handler:&n; * dispatch an error to the appropriate&n; * pciio connection point, or process&n; * it as a generic pci error.&n; * Yes, the first parameter is the&n; * provider vertex at the middle of&n; * the bus; we get to the pciio connect&n; * point using the ioerror widgetdev field.&n; *&n; * This function is called by the&n; * specific PCI provider, after it has figured&n; * out where on the PCI bus (including which slot,&n; * if it can tell) the error came from.&n; */
-multiline_comment|/*ARGSUSED */
-r_int
-DECL|function|pciio_error_handler
-id|pciio_error_handler
-c_func
-(paren
-id|devfs_handle_t
-id|pciio_vhdl
-comma
-r_int
-id|error_code
-comma
-id|ioerror_mode_t
-id|mode
-comma
-id|ioerror_t
-op_star
-id|ioerror
-)paren
-(brace
-id|pciio_info_t
-id|pciio_info
-suffix:semicolon
-id|devfs_handle_t
-id|pconn_vhdl
-suffix:semicolon
-macro_line|#if USRPCI
-id|devfs_handle_t
-id|usrpci_v
-suffix:semicolon
-macro_line|#endif
-id|pciio_slot_t
-id|slot
-suffix:semicolon
-r_int
-id|retval
-suffix:semicolon
-macro_line|#if defined(CONFIG_SGI_IO_ERROR_HANDLING)
-id|error_state_t
-id|e_state
-suffix:semicolon
-macro_line|#endif
-macro_line|#if DEBUG &amp;&amp; ERROR_DEBUG
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|printk
-c_func
-(paren
-l_string|&quot;%v: pciio_error_handler&bslash;n&quot;
-comma
-id|pciio_vhdl
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;0x%x: pciio_error_handler&bslash;n&quot;
-comma
-id|pciio_vhdl
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|IOERR_PRINTF
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;%v: PCI Bus Error: Error code: %d Error mode: %d&bslash;n&quot;
-comma
-id|pciio_vhdl
-comma
-id|error_code
-comma
-id|mode
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|IOERR_PRINTF
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;0x%x: PCI Bus Error: Error code: %d Error mode: %d&bslash;n&quot;
-comma
-id|pciio_vhdl
-comma
-id|error_code
-comma
-id|mode
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* If there is an error handler sitting on&n;     * the &quot;no-slot&quot; connection point, give it&n;     * first crack at the error. NOTE: it is&n;     * quite possible that this function may&n;     * do further refining of the ioerror.&n;     */
-id|pciio_info
-op_assign
-id|pciio_cardinfo_get
-c_func
-(paren
-id|pciio_vhdl
-comma
-id|PCIIO_SLOT_NONE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pciio_info
-op_logical_and
-id|pciio_info-&gt;c_efunc
-)paren
-(brace
-id|pconn_vhdl
-op_assign
-id|pciio_info_dev_get
-c_func
-(paren
-id|pciio_info
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_SGI_IO_ERROR_HANDLING)
-id|e_state
-op_assign
-id|error_state_get
-c_func
-(paren
-id|pciio_vhdl
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|e_state
-op_eq
-id|ERROR_STATE_ACTION
-)paren
-(paren
-r_void
-)paren
-id|error_state_set
-c_func
-(paren
-id|pciio_vhdl
-comma
-id|ERROR_STATE_NONE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error_state_set
-c_func
-(paren
-id|pconn_vhdl
-comma
-id|e_state
-)paren
-op_eq
-id|ERROR_RETURN_CODE_CANNOT_SET_STATE
-)paren
-r_return
-id|IOERROR_UNHANDLED
-suffix:semicolon
-macro_line|#endif
-id|retval
-op_assign
-id|pciio_info-&gt;c_efunc
-(paren
-id|pciio_info-&gt;c_einfo
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-id|IOERROR_UNHANDLED
-)paren
-r_return
-id|retval
-suffix:semicolon
-)brace
-multiline_comment|/* Is the error associated with a particular slot?&n;     */
-r_if
-c_cond
-(paren
-id|IOERROR_FIELDVALID
-c_func
-(paren
-id|ioerror
-comma
-id|widgetdev
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t; * NOTE : &n;&t; * widgetdev is a 4byte value encoded as slot in the higher order&n;&t; * 2 bytes and function in the lower order 2 bytes.&n;&t; */
-macro_line|#ifdef LATER
-id|slot
-op_assign
-id|pciio_widgetdev_slot_get
-c_func
-(paren
-id|IOERROR_GETVALUE
-c_func
-(paren
-id|ioerror
-comma
-id|widgetdev
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|slot
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* If this slot has an error handler,&n;&t; * deliver the error to it.&n;&t; */
-id|pciio_info
-op_assign
-id|pciio_cardinfo_get
-c_func
-(paren
-id|pciio_vhdl
-comma
-id|slot
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pciio_info
-op_ne
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pciio_info-&gt;c_efunc
-op_ne
-l_int|NULL
-)paren
-(brace
-id|pconn_vhdl
-op_assign
-id|pciio_info_dev_get
-c_func
-(paren
-id|pciio_info
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_SGI_IO_ERROR_HANDLING)
-id|e_state
-op_assign
-id|error_state_get
-c_func
-(paren
-id|pciio_vhdl
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|e_state
-op_eq
-id|ERROR_STATE_ACTION
-)paren
-(paren
-r_void
-)paren
-id|error_state_set
-c_func
-(paren
-id|pciio_vhdl
-comma
-id|ERROR_STATE_NONE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error_state_set
-c_func
-(paren
-id|pconn_vhdl
-comma
-id|e_state
-)paren
-op_eq
-id|ERROR_RETURN_CODE_CANNOT_SET_STATE
-)paren
-r_return
-id|IOERROR_UNHANDLED
-suffix:semicolon
-macro_line|#endif
-id|retval
-op_assign
-id|pciio_info-&gt;c_efunc
-(paren
-id|pciio_info-&gt;c_einfo
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-id|IOERROR_UNHANDLED
-)paren
-r_return
-id|retval
-suffix:semicolon
-)brace
-macro_line|#if USRPCI
-multiline_comment|/* If the USRPCI driver is available and&n;&t;     * knows about this connection point,&n;&t;     * deliver the error to it.&n;&t;     *&n;&t;     * OK to use pconn_vhdl here, even though we&n;&t;     * have already UNREF&squot;d it, since we know that&n;&t;     * it is not going away.&n;&t;     */
-id|pconn_vhdl
-op_assign
-id|pciio_info_dev_get
-c_func
-(paren
-id|pciio_info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|GRAPH_SUCCESS
-op_eq
-id|hwgraph_traverse
-c_func
-(paren
-id|pconn_vhdl
-comma
-id|EDGE_LBL_USRPCI
-comma
-op_amp
-id|usrpci_v
-)paren
-)paren
-(brace
-id|retval
-op_assign
-id|usrpci_error_handler
-(paren
-id|usrpci_v
-comma
-id|error_code
-comma
-id|IOERROR_GETVALUE
-c_func
-(paren
-id|ioerror
-comma
-id|busaddr
-)paren
-)paren
-suffix:semicolon
-id|hwgraph_vertex_unref
-c_func
-(paren
-id|usrpci_v
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-id|IOERROR_UNHANDLED
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;     * This unref is not needed.  If this code is called often enough,&n;&t;&t;     * the system will crash, due to vertex reference count reaching 0,&n;&t;&t;     * causing vertex to be unallocated.  -jeremy&n;&t;&t;     * hwgraph_vertex_unref(pconn_vhdl);&n;&t;&t;     */
-r_return
-id|retval
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-)brace
-)brace
-r_return
-(paren
-id|mode
-op_eq
-id|MODE_DEVPROBE
-)paren
-ques
-c_cond
-id|IOERROR_HANDLED
-multiline_comment|/* probes are OK */
-suffix:colon
-id|IOERROR_UNHANDLED
-suffix:semicolon
-multiline_comment|/* otherwise, foo! */
-)brace
-r_int
-DECL|function|pciio_error_devenable
-id|pciio_error_devenable
-c_func
-(paren
-id|devfs_handle_t
-id|pconn_vhdl
-comma
-r_int
-id|error_code
-)paren
-(brace
-r_return
-id|DEV_FUNC
-c_func
-(paren
-id|pconn_vhdl
-comma
-id|error_devenable
-)paren
-(paren
-id|pconn_vhdl
-comma
-id|error_code
-)paren
-suffix:semicolon
-multiline_comment|/* no cleanup specific to this layer. */
 )brace
 multiline_comment|/* =====================================================================&n; *          CONFIGURATION MANAGEMENT&n; */
 multiline_comment|/*&n; * Startup a crosstalk provider&n; */
@@ -2946,9 +2419,10 @@ id|PCIDMA_ENDIAN_LITTLE
 suffix:semicolon
 macro_line|#if DEBUG
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|PRINT_ALERT
+id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot;%v: pciio_endian_set is going away.&bslash;n&quot;
 l_string|&quot;&bslash;tplease use PCIIO_BYTE_STREAM or PCIIO_WORD_VALUES in your&bslash;n&quot;
 l_string|&quot;&bslash;tpciio_dmamap_alloc and pciio_dmatrans calls instead.&bslash;n&quot;
@@ -2957,9 +2431,10 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#else
-id|PRINT_ALERT
+id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot;0x%x: pciio_endian_set is going away.&bslash;n&quot;
 l_string|&quot;&bslash;tplease use PCIIO_BYTE_STREAM or PCIIO_WORD_VALUES in your&bslash;n&quot;
 l_string|&quot;&bslash;tpciio_dmamap_alloc and pciio_dmatrans calls instead.&bslash;n&quot;
@@ -3209,48 +2684,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* =====================================================================&n; *          GENERIC PCI SUPPORT FUNCTIONS&n; */
-id|pciio_slot_t
-DECL|function|pciio_error_extract
-id|pciio_error_extract
-c_func
-(paren
-id|devfs_handle_t
-id|dev
-comma
-id|pciio_space_t
-op_star
-id|space
-comma
-id|iopaddr_t
-op_star
-id|offset
-)paren
-(brace
-id|ASSERT
-c_func
-(paren
-id|dev
-op_ne
-id|NODEV
-)paren
-suffix:semicolon
-r_return
-id|DEV_FUNC
-c_func
-(paren
-id|dev
-comma
-id|error_extract
-)paren
-(paren
-id|dev
-comma
-id|space
-comma
-id|offset
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Issue a hardware reset to a card.&n; */
 r_int
 DECL|function|pciio_reset
@@ -3529,7 +2962,6 @@ id|pos
 suffix:semicolon
 )brace
 macro_line|#endif /* DEBUG_PCIIO */
-macro_line|#ifdef BRINGUP
 r_if
 c_cond
 (paren
@@ -3552,24 +2984,6 @@ l_int|NULL
 )paren
 )paren
 (brace
-macro_line|#else
-r_if
-c_cond
-(paren
-(paren
-id|pciio_info
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-id|pciio_info-&gt;c_fingerprint
-op_ne
-id|pciio_info_fingerprint
-)paren
-)paren
-(brace
-macro_line|#endif /* BRINGUP */
 r_return
 (paren
 id|pciio_info_t
@@ -4381,7 +3795,7 @@ c_cond
 op_logical_neg
 id|pciio_info
 )paren
-id|NEW
+id|GET_NEW
 c_func
 (paren
 id|pciio_info
@@ -4492,6 +3906,15 @@ suffix:semicolon
 id|devfs_handle_t
 id|pconn
 suffix:semicolon
+r_int
+id|device_master_set
+c_func
+(paren
+id|devfs_handle_t
+comma
+id|devfs_handle_t
+)paren
+suffix:semicolon
 id|pciio_slot_func_to_name
 c_func
 (paren
@@ -4533,7 +3956,7 @@ comma
 id|pciio_info
 )paren
 suffix:semicolon
-macro_line|#ifdef BRINGUP
+macro_line|#ifdef DEBUG_PCIIO
 (brace
 r_int
 id|pos
@@ -4556,7 +3979,6 @@ comma
 l_int|256
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_PCIIO
 id|printk
 c_func
 (paren
@@ -4571,9 +3993,8 @@ id|pos
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#endif /* BRINGUP */
+macro_line|#endif /* DEBUG_PCIIO */
 multiline_comment|/*&n;     * create link to our pci provider&n;     */
 id|device_master_set
 c_func
@@ -4814,13 +4235,6 @@ suffix:semicolon
 id|pciio_device_id_t
 id|device_id
 suffix:semicolon
-r_int
-id|pciba_attach
-c_func
-(paren
-id|devfs_handle_t
-)paren
-suffix:semicolon
 id|pciio_device_inventory_add
 c_func
 (paren
@@ -4850,13 +4264,6 @@ c_func
 id|pciio_registry
 op_ne
 l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/*&n;     * Since pciba is not called from cdl routines .. call it here.&n;     */
-id|pciba_attach
-c_func
-(paren
-id|pconn
 )paren
 suffix:semicolon
 r_return
@@ -5055,6 +4462,368 @@ id|dma_enabled
 )paren
 (paren
 id|pconn_vhdl
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * These are complementary Linux interfaces that takes in a pci_dev * as the &n; * first arguement instead of devfs_handle_t.&n; */
+id|iopaddr_t
+id|snia_pciio_dmatrans_addr
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|device_desc_t
+comma
+id|paddr_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+id|pciio_dmamap_t
+id|snia_pciio_dmamap_alloc
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+id|device_desc_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_void
+id|snia_pciio_dmamap_free
+c_func
+(paren
+id|pciio_dmamap_t
+)paren
+suffix:semicolon
+id|iopaddr_t
+id|snia_pciio_dmamap_addr
+c_func
+(paren
+id|pciio_dmamap_t
+comma
+id|paddr_t
+comma
+r_int
+)paren
+suffix:semicolon
+r_void
+id|snia_pciio_dmamap_done
+c_func
+(paren
+id|pciio_dmamap_t
+)paren
+suffix:semicolon
+id|pciio_endian_t
+id|snia_pciio_endian_set
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+id|pciio_endian_t
+id|device_end
+comma
+id|pciio_endian_t
+id|desired_end
+)paren
+suffix:semicolon
+macro_line|#include &lt;linux/module.h&gt;
+DECL|variable|snia_pciio_dmatrans_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snia_pciio_dmatrans_addr
+)paren
+suffix:semicolon
+DECL|variable|snia_pciio_dmamap_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snia_pciio_dmamap_alloc
+)paren
+suffix:semicolon
+DECL|variable|snia_pciio_dmamap_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snia_pciio_dmamap_free
+)paren
+suffix:semicolon
+DECL|variable|snia_pciio_dmamap_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snia_pciio_dmamap_addr
+)paren
+suffix:semicolon
+DECL|variable|snia_pciio_dmamap_done
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snia_pciio_dmamap_done
+)paren
+suffix:semicolon
+DECL|variable|snia_pciio_endian_set
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snia_pciio_endian_set
+)paren
+suffix:semicolon
+id|pciio_endian_t
+DECL|function|snia_pciio_endian_set
+id|snia_pciio_endian_set
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+id|pciio_endian_t
+id|device_end
+comma
+id|pciio_endian_t
+id|desired_end
+)paren
+(brace
+id|devfs_handle_t
+id|dev
+op_assign
+id|PCIDEV_VERTEX
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
+r_return
+id|DEV_FUNC
+c_func
+(paren
+id|dev
+comma
+id|endian_set
+)paren
+(paren
+id|dev
+comma
+id|device_end
+comma
+id|desired_end
+)paren
+suffix:semicolon
+)brace
+id|iopaddr_t
+DECL|function|snia_pciio_dmatrans_addr
+id|snia_pciio_dmatrans_addr
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+multiline_comment|/* translate for this device */
+id|device_desc_t
+id|dev_desc
+comma
+multiline_comment|/* device descriptor */
+id|paddr_t
+id|paddr
+comma
+multiline_comment|/* system physical address */
+r_int
+id|byte_count
+comma
+multiline_comment|/* length */
+r_int
+id|flags
+)paren
+(brace
+multiline_comment|/* defined in dma.h */
+id|devfs_handle_t
+id|dev
+op_assign
+id|PCIDEV_VERTEX
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
+r_return
+id|DEV_FUNC
+c_func
+(paren
+id|dev
+comma
+id|dmatrans_addr
+)paren
+(paren
+id|dev
+comma
+id|dev_desc
+comma
+id|paddr
+comma
+id|byte_count
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+id|pciio_dmamap_t
+DECL|function|snia_pciio_dmamap_alloc
+id|snia_pciio_dmamap_alloc
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+multiline_comment|/* set up mappings for this device */
+id|device_desc_t
+id|dev_desc
+comma
+multiline_comment|/* device descriptor */
+r_int
+id|byte_count_max
+comma
+multiline_comment|/* max size of a mapping */
+r_int
+id|flags
+)paren
+(brace
+multiline_comment|/* defined in dma.h */
+id|devfs_handle_t
+id|dev
+op_assign
+id|PCIDEV_VERTEX
+c_func
+(paren
+id|pci_dev
+)paren
+suffix:semicolon
+r_return
+(paren
+id|pciio_dmamap_t
+)paren
+id|DEV_FUNC
+c_func
+(paren
+id|dev
+comma
+id|dmamap_alloc
+)paren
+(paren
+id|dev
+comma
+id|dev_desc
+comma
+id|byte_count_max
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|snia_pciio_dmamap_free
+id|snia_pciio_dmamap_free
+c_func
+(paren
+id|pciio_dmamap_t
+id|pciio_dmamap
+)paren
+(brace
+id|DMAMAP_FUNC
+c_func
+(paren
+id|pciio_dmamap
+comma
+id|dmamap_free
+)paren
+(paren
+id|CAST_DMAMAP
+c_func
+(paren
+id|pciio_dmamap
+)paren
+)paren
+suffix:semicolon
+)brace
+id|iopaddr_t
+DECL|function|snia_pciio_dmamap_addr
+id|snia_pciio_dmamap_addr
+c_func
+(paren
+id|pciio_dmamap_t
+id|pciio_dmamap
+comma
+multiline_comment|/* use these mapping resources */
+id|paddr_t
+id|paddr
+comma
+multiline_comment|/* map for this address */
+r_int
+id|byte_count
+)paren
+(brace
+multiline_comment|/* map this many bytes */
+r_return
+id|DMAMAP_FUNC
+c_func
+(paren
+id|pciio_dmamap
+comma
+id|dmamap_addr
+)paren
+(paren
+id|CAST_DMAMAP
+c_func
+(paren
+id|pciio_dmamap
+)paren
+comma
+id|paddr
+comma
+id|byte_count
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|snia_pciio_dmamap_done
+id|snia_pciio_dmamap_done
+c_func
+(paren
+id|pciio_dmamap_t
+id|pciio_dmamap
+)paren
+(brace
+id|DMAMAP_FUNC
+c_func
+(paren
+id|pciio_dmamap
+comma
+id|dmamap_done
+)paren
+(paren
+id|CAST_DMAMAP
+c_func
+(paren
+id|pciio_dmamap
+)paren
 )paren
 suffix:semicolon
 )brace

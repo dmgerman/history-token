@@ -1,55 +1,25 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/agent.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/nic.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/synergy.h&gt;
 DECL|variable|master_procid
 id|cpuid_t
 id|master_procid
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|maxnodes
-r_int
-id|maxnodes
-suffix:semicolon
 DECL|variable|arg_maxnodes
 r_char
 id|arg_maxnodes
 (braket
 l_int|4
-)braket
-suffix:semicolon
-DECL|variable|Nodepdaindr
-id|nodepda_t
-op_star
-id|Nodepdaindr
-(braket
-id|MAX_COMPACT_NODES
-)braket
-suffix:semicolon
-DECL|variable|nodepda
-id|nodepda_t
-op_star
-id|nodepda
-suffix:semicolon
-DECL|variable|subnodepda
-id|subnode_pda_t
-op_star
-id|subnodepda
-suffix:semicolon
-DECL|variable|Synergy_da_indr
-id|synergy_da_t
-op_star
-id|Synergy_da_indr
-(braket
-id|MAX_COMPACT_NODES
-op_star
-l_int|2
 )braket
 suffix:semicolon
 r_extern
@@ -60,6 +30,18 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
+DECL|variable|Synergy_da_indr
+id|synergy_da_t
+op_star
+id|Synergy_da_indr
+(braket
+id|MAX_COMPACT_NODES
+op_star
+l_int|2
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Return non-zero if the given variable was specified&n; */
 r_int
 DECL|function|is_specified
@@ -171,6 +153,12 @@ suffix:semicolon
 DECL|variable|console_nasid
 id|nasid_t
 id|console_nasid
+op_assign
+(paren
+id|nasid_t
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|console_wid
 r_static
@@ -190,16 +178,6 @@ c_func
 r_void
 )paren
 (brace
-id|console_nasid
-op_assign
-id|KL_CONFIG_CH_CONS_INFO
-c_func
-(paren
-id|master_nasid
-)paren
-op_member_access_from_pointer
-id|nasid
-suffix:semicolon
 id|console_wid
 op_assign
 id|WIDGETID_GET
@@ -237,12 +215,7 @@ comma
 id|console_wid
 )paren
 suffix:semicolon
-id|FIXME
-c_func
-(paren
-l_string|&quot;WARNING: set_master_bridge_base: NON NASID 0 DOES NOT WORK&bslash;n&quot;
-)paren
-suffix:semicolon
+singleline_comment|// FIXME(&quot;WARNING: set_master_bridge_base: NON NASID 0 DOES NOT WORK&bslash;n&quot;);
 )brace
 r_int
 DECL|function|check_nasid_equiv

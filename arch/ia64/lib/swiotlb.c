@@ -12,10 +12,15 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 DECL|macro|ALIGN
 mdefine_line|#define ALIGN(val, align) ((unsigned long)&t;&bslash;&n;&t;(((unsigned long) (val) + ((align) - 1)) &amp; ~((align) - 1)))
+DECL|macro|OFFSET
+mdefine_line|#define OFFSET(val,align) ((unsigned long)&t;&bslash;&n;&t;                   ( (val) &amp; ( (align) - 1)))
 DECL|macro|SG_ENT_VIRT_ADDRESS
-mdefine_line|#define SG_ENT_VIRT_ADDRESS(sg)&t;((sg)-&gt;address ? (sg)-&gt;address&t;&t;&t;&bslash;&n;&t;&t;&t;&t; : page_address((sg)-&gt;page) + (sg)-&gt;offset)
+mdefine_line|#define SG_ENT_VIRT_ADDRESS(sg)&t;(page_address((sg)-&gt;page) + (sg)-&gt;offset)
 DECL|macro|SG_ENT_PHYS_ADDRESS
 mdefine_line|#define SG_ENT_PHYS_ADDRESS(SG)&t;virt_to_phys(SG_ENT_VIRT_ADDRESS(SG))
+multiline_comment|/*&n; * Maximum allowable number of contiguous slabs to map,&n; * must be a power of 2.  What is the appropriate value ?&n; * The complexity of {map,unmap}_single is linearly dependent on this value.&n; */
+DECL|macro|IO_TLB_SEGSIZE
+mdefine_line|#define IO_TLB_SEGSIZE&t;128
 multiline_comment|/*&n; * log of the size of each IO TLB slab.  The number of slabs is command line controllable.&n; */
 DECL|macro|IO_TLB_SHIFT
 mdefine_line|#define IO_TLB_SHIFT 11
@@ -99,6 +104,17 @@ op_minus
 id|IO_TLB_SHIFT
 )paren
 suffix:semicolon
+multiline_comment|/* avoid tail segment of size &lt; IO_TLB_SEGSIZE */
+id|io_tlb_nslabs
+op_assign
+id|ALIGN
+c_func
+(paren
+id|io_tlb_nslabs
+comma
+id|IO_TLB_SEGSIZE
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -160,7 +176,7 @@ op_lshift
 id|IO_TLB_SHIFT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allocate and initialize the free list array.  This array is used&n;&t; * to find contiguous free memory regions of size 2^IO_TLB_SHIFT between&n;&t; * io_tlb_start and io_tlb_end.&n;&t; */
+multiline_comment|/*&n;&t; * Allocate and initialize the free list array.  This array is used&n;&t; * to find contiguous free memory regions of size up to IO_TLB_SEGSIZE&n;&t; * between io_tlb_start and io_tlb_end.&n;&t; */
 id|io_tlb_list
 op_assign
 id|alloc_bootmem
@@ -193,9 +209,15 @@ id|io_tlb_list
 id|i
 )braket
 op_assign
-id|io_tlb_nslabs
+id|IO_TLB_SEGSIZE
 op_minus
+id|OFFSET
+c_func
+(paren
 id|i
+comma
+id|IO_TLB_SEGSIZE
+)paren
 suffix:semicolon
 id|io_tlb_index
 op_assign
@@ -319,7 +341,7 @@ suffix:semicolon
 r_else
 id|stride
 op_assign
-id|nslots
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -420,9 +442,17 @@ op_minus
 l_int|1
 suffix:semicolon
 (paren
+id|OFFSET
+c_func
+(paren
 id|i
-op_ge
-l_int|0
+comma
+id|IO_TLB_SEGSIZE
+)paren
+op_ne
+id|IO_TLB_SEGSIZE
+op_minus
+l_int|1
 )paren
 op_logical_and
 id|io_tlb_list
@@ -666,7 +696,15 @@ op_plus
 id|nslots
 )paren
 OL
-id|io_tlb_nslabs
+id|ALIGN
+c_func
+(paren
+id|index
+op_plus
+l_int|1
+comma
+id|IO_TLB_SEGSIZE
+)paren
 ques
 c_cond
 id|io_tlb_list
@@ -717,9 +755,17 @@ op_minus
 l_int|1
 suffix:semicolon
 (paren
+id|OFFSET
+c_func
+(paren
 id|i
-op_ge
-l_int|0
+comma
+id|IO_TLB_SEGSIZE
+)paren
+op_ne
+id|IO_TLB_SEGSIZE
+op_minus
+l_int|1
 )paren
 op_logical_and
 id|io_tlb_list
@@ -1425,23 +1471,13 @@ c_func
 (paren
 id|hwdev
 comma
-id|sg-&gt;address
+id|sg-&gt;orig_address
 comma
 id|sg-&gt;length
 comma
 id|direction
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sg-&gt;address
-)paren
-id|sg-&gt;address
-op_assign
-id|addr
-suffix:semicolon
-r_else
 id|sg-&gt;page
 op_assign
 id|virt_to_page
@@ -1449,6 +1485,16 @@ c_func
 (paren
 id|addr
 )paren
+suffix:semicolon
+id|sg-&gt;offset
+op_assign
+(paren
+id|u64
+)paren
+id|addr
+op_amp
+op_complement
+id|PAGE_MASK
 suffix:semicolon
 )brace
 )brace
@@ -1538,16 +1584,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sg-&gt;address
-)paren
-id|sg-&gt;address
-op_assign
-id|sg-&gt;orig_address
-suffix:semicolon
-r_else
 id|sg-&gt;page
 op_assign
 id|virt_to_page
@@ -1555,6 +1591,16 @@ c_func
 (paren
 id|sg-&gt;orig_address
 )paren
+suffix:semicolon
+id|sg-&gt;offset
+op_assign
+(paren
+id|u64
+)paren
+id|sg-&gt;orig_address
+op_amp
+op_complement
+id|PAGE_MASK
 suffix:semicolon
 )brace
 r_else
@@ -1568,7 +1614,11 @@ id|PCI_DMA_FROMDEVICE
 id|mark_clean
 c_func
 (paren
-id|sg-&gt;address
+id|SG_ENT_VIRT_ADDRESS
+c_func
+(paren
+id|sg
+)paren
 comma
 id|sg-&gt;length
 )paren
