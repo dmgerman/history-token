@@ -85,6 +85,11 @@ DECL|macro|outw
 mdefine_line|#define outw(data,addr)&t;&t;writew(data,((unsigned long)(addr)))  
 DECL|macro|outl
 mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
+multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
+DECL|macro|insw_ns
+mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
+DECL|macro|insl_ns
+mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#else
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(addr)       (*(volatile unsigned char *)(addr))
@@ -138,17 +143,21 @@ DECL|macro|outl
 mdefine_line|#define outl(val, port)&t;&t;eeh_outl(val, (unsigned long)port)
 multiline_comment|/*&n; * The insw/outsw/insl/outsl macros don&squot;t do byte-swapping.&n; * They are only used in practice for transferring buffers which&n; * are arrays of bytes, and byte-swapping is not appropriate in&n; * that case.  - paulus */
 DECL|macro|insb
-mdefine_line|#define insb(port, buf, ns)&t;_insb((u8 *)((port)+pci_io_base), (buf), (ns))
-DECL|macro|outsb
-mdefine_line|#define outsb(port, buf, ns)&t;_outsb((u8 *)((port)+pci_io_base), (buf), (ns))
+mdefine_line|#define insb(port, buf, ns)&t;eeh_insb((port), (buf), (ns))
 DECL|macro|insw
-mdefine_line|#define insw(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
-DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, ns)&t;_outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
+mdefine_line|#define insw(port, buf, ns)&t;eeh_insw_ns((port), (buf), (ns))
 DECL|macro|insl
-mdefine_line|#define insl(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
+mdefine_line|#define insl(port, buf, nl)&t;eeh_insl_ns((port), (buf), (nl))
+DECL|macro|insw_ns
+mdefine_line|#define insw_ns(port, buf, ns)&t;eeh_insw_ns((port), (buf), (ns))
+DECL|macro|insl_ns
+mdefine_line|#define insl_ns(port, buf, nl)&t;eeh_insl_ns((port), (buf), (nl))
+DECL|macro|outsb
+mdefine_line|#define outsb(port, buf, ns)  _outsb((u8 *)((port)+pci_io_base), (buf), (ns))
+DECL|macro|outsw
+mdefine_line|#define outsw(port, buf, ns)  _outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsl
-mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
+mdefine_line|#define outsl(port, buf, nl)  _outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#endif
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(addr) readb(addr)
@@ -357,12 +366,8 @@ mdefine_line|#define inl_p(port)             inl(port)
 DECL|macro|outl_p
 mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val), (port)))
 multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
-DECL|macro|insw_ns
-mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsw_ns
 mdefine_line|#define outsw_ns(port, buf, ns)&t;_outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
-DECL|macro|insl_ns
-mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|outsl_ns
 mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|IO_SPACE_LIMIT
@@ -589,7 +594,7 @@ DECL|macro|iobarrier_r
 mdefine_line|#define iobarrier_r()  eieio()
 DECL|macro|iobarrier_w
 mdefine_line|#define iobarrier_w()  eieio()
-multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; */
+multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; * These routines do not perform EEH-related I/O address translation,&n; * and should not be used directly by device drivers.  Use inb/readb&n; * instead.&n; */
 DECL|function|in_8
 r_static
 r_inline

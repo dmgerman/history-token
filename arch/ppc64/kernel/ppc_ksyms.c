@@ -606,22 +606,6 @@ id|iSeries_Write_Long
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
-macro_line|#ifndef CONFIG_PPC_ISERIES
-DECL|variable|eeh_check_failure
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|eeh_check_failure
-)paren
-suffix:semicolon
-DECL|variable|eeh_total_mmio_ffs
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|eeh_total_mmio_ffs
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#endif /* CONFIG_PCI */
 DECL|variable|start_thread
 id|EXPORT_SYMBOL

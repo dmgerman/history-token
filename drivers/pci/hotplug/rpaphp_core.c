@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/eeh.h&gt;       /* for eeh_add_device() */
 macro_line|#include &lt;asm/rtas.h&gt;&t;&t;/* rtas_call */
 macro_line|#include &lt;asm/pci-bridge.h&gt;&t;/* for pci_controller */
 macro_line|#include &quot;../pci.h&quot;&t;&t;/* for pci_add_new_bus*/
