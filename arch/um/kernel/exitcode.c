@@ -217,6 +217,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|make_proc_exitcode
+r_static
 r_int
 id|make_proc_exitcode
 c_func

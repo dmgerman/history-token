@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;dec_esp.h&quot;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/jazzdma.h&gt;
@@ -21,6 +20,14 @@ macro_line|#include &lt;asm/dec/interrupts.h&gt;
 macro_line|#include &lt;asm/dec/ioasic_addrs.h&gt;
 macro_line|#include &lt;asm/dec/ioasic_ints.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
+DECL|macro|DEC_SCSI_SREG
+mdefine_line|#define DEC_SCSI_SREG 0
+DECL|macro|DEC_SCSI_DMAREG
+mdefine_line|#define DEC_SCSI_DMAREG 0x40000
+DECL|macro|DEC_SCSI_SRAM
+mdefine_line|#define DEC_SCSI_SRAM 0x80000
+DECL|macro|DEC_SCSI_DIAG
+mdefine_line|#define DEC_SCSI_DIAG 0xC0000
 multiline_comment|/*&n; * Once upon a time the pmaz code used to be working but&n; * it hasn&squot;t been maintained for quite some time.&n; * It isn&squot;t working anymore but I&squot;ll leave here as a&n; * starting point. #define this an be prepared for tons&n; * of warnings and errors :)&n; */
 r_static
 r_int
@@ -409,12 +416,93 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+r_int
+id|dec_esp_detect
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+id|tpnt
+)paren
+suffix:semicolon
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|SCSI_DEC_ESP
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp&quot;
+comma
+dot
+id|proc_info
+op_assign
+op_amp
+id|esp_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;NCR53C94&quot;
+comma
+dot
+id|detect
+op_assign
+id|dec_esp_detect
+comma
+dot
+id|info
+op_assign
+id|esp_info
+comma
+dot
+id|command
+op_assign
+id|esp_command
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+comma
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/***************************************************************** Detection */

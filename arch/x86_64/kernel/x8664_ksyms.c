@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/mmx.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 r_extern
@@ -452,6 +453,22 @@ id|smp_call_function
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_PM)
+DECL|variable|set_nmi_pm_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_nmi_pm_callback
+)paren
+suffix:semicolon
+DECL|variable|unset_nmi_pm_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unset_nmi_pm_callback
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 DECL|variable|screen_info
 id|EXPORT_SYMBOL
@@ -473,6 +490,34 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rtc_lock
+)paren
+suffix:semicolon
+DECL|variable|register_profile_notifier
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|register_profile_notifier
+)paren
+suffix:semicolon
+DECL|variable|unregister_profile_notifier
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unregister_profile_notifier
+)paren
+suffix:semicolon
+DECL|variable|set_nmi_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_nmi_callback
+)paren
+suffix:semicolon
+DECL|variable|unset_nmi_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unset_nmi_callback
 )paren
 suffix:semicolon
 multiline_comment|/* Export string functions. We normally rely on gcc builtin for most of these,&n;   but gcc sometimes decides not to inline them. */

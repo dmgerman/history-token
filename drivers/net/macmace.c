@@ -1043,15 +1043,10 @@ suffix:semicolon
 id|u8
 id|maccc
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|maccc
@@ -1109,7 +1104,7 @@ id|mb-&gt;maccc
 op_assign
 id|maccc
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -41,6 +41,15 @@ DECL|macro|GDT_ENTRIES
 mdefine_line|#define GDT_ENTRIES 28
 DECL|macro|GDT_SIZE
 mdefine_line|#define GDT_SIZE (GDT_ENTRIES * 8)
+multiline_comment|/* Simple and small GDT entries for booting only */
+DECL|macro|GDT_ENTRY_BOOT_CS
+mdefine_line|#define GDT_ENTRY_BOOT_CS&t;&t;2
+DECL|macro|__BOOT_CS
+mdefine_line|#define __BOOT_CS&t;(GDT_ENTRY_BOOT_CS * 8)
+DECL|macro|GDT_ENTRY_BOOT_DS
+mdefine_line|#define GDT_ENTRY_BOOT_DS&t;&t;(GDT_ENTRY_BOOT_CS + 1)
+DECL|macro|__BOOT_DS
+mdefine_line|#define __BOOT_DS&t;(GDT_ENTRY_BOOT_DS * 8)
 multiline_comment|/*&n; * The interrupt descriptor table has room for 256 idt&squot;s,&n; * the global descriptor table is dependent on the number&n; * of tasks we can have..&n; */
 DECL|macro|IDT_ENTRIES
 mdefine_line|#define IDT_ENTRIES 256

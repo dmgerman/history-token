@@ -14,11 +14,19 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;mca_53c9x.h&quot;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mca_dma.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+multiline_comment|/*&n; * From ibmmca.c (IBM scsi controller card driver) -- used for turning PS2 disk&n; *  activity LED on and off&n; */
+DECL|macro|PS2_SYS_CTR
+mdefine_line|#define PS2_SYS_CTR&t;0x92
+multiline_comment|/* Ports the ncr&squot;s 53c94 can be put at; indexed by pos register value */
+DECL|macro|MCA_53C9X_IO_PORTS
+mdefine_line|#define MCA_53C9X_IO_PORTS {                             &bslash;&n;                         0x0000, 0x0240, 0x0340, 0x0400, &bslash;&n;&t;                 0x0420, 0x3240, 0x8240, 0xA240, &bslash;&n;&t;                }
+multiline_comment|/*&n; * Supposedly there were some cards put together with the &squot;c9x and 86c01.  If&n; *   they have different ID&squot;s from the ones on the 3500 series machines, &n; *   you can add them here and hopefully things will work out.&n; */
+DECL|macro|MCA_53C9X_IDS
+mdefine_line|#define MCA_53C9X_IDS {          &bslash;&n;                         0x7F4C, &bslash;&n;&t;&t;&t; 0x0000, &bslash;&n;                        }
 r_static
 r_int
 id|dma_bytes_sent
@@ -1330,7 +1338,67 @@ r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|MCA_53C9X
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp&quot;
+comma
+dot
+id|name
+op_assign
+l_string|&quot;NCR 53c9x SCSI&quot;
+comma
+dot
+id|detect
+op_assign
+id|mca_esp_detect
+comma
+dot
+id|release
+op_assign
+id|mca_esp_release
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|unchecked_isa_dma
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 multiline_comment|/*&n; * OK, here&squot;s the goods I promised.  The NCR 86C01 is an MCA interface chip &n; *  that handles enabling/diabling IRQ, dma interfacing, IO port selection&n; *  and other fun stuff.  It takes up 16 addresses, and the chip it is&n; *  connnected to gets the following 16.  Registers are as follows:&n; *&n; * Offsets 0-1 : Card ID&n; *&n; * Offset    2 : Mode enable register --&n; *                Bit    7 : Data Word width (1 = 16, 0 = 8)&n; *&t;&t;  Bit    6 : IRQ enable (1 = enabled)&n; *                Bits 5,4 : IRQ select&n; *                              0  0 : IRQ 3&n; *&t;&t;&t;        0  1 : IRQ 5&n; * &t;&t;&t;&t;1  0 : IRQ 7&n; *  &t;&t;&t;&t;1  1 : IRQ 9&n; *                Bits 3-1 : Base Address&n; *                           0  0  0 : &lt;disabled&gt;&n; * &t;&t;&t;     0  0  1 : 0x0240&n; *    &t;&t;&t;     0  1  0 : 0x0340&n; *     &t;&t;&t;     0  1  1 : 0x0400&n; * &t;&t;&t;     1  0  0 : 0x0420&n; * &t;&t;&t;     1  0  1 : 0x3240&n; * &t;&t;&t;     1  1  0 : 0x8240&n; * &t;&t;&t;     1  1  1 : 0xA240&n; *&t;&t;  Bit    0 : Card enable (1 = enabled)&n; *&n; * Offset    3 : DMA control register --&n; *                Bit    7 : DMA enable (1 = enabled)&n; *                Bits 6,5 : Preemt Count Select (transfers to complete after&n; *                            &squot;C01 has been preempted on MCA bus)&n; *                              0  0 : 0&n; *                              0  1 : 1&n; *                              1  0 : 3&n; *                              1  1 : 7&n; *  (all these wacky numbers; I&squot;m sure there&squot;s a reason somewhere)&n; *                Bit    4 : Fairness enable (1 = fair bus priority)&n; *                Bits 3-0 : Arbitration level (0-15 consecutive)&n; * &n; * Offset    4 : General purpose register&n; *                Bits 7-3 : User definable (here, 7,6 are SCSI ID)&n; *                Bits 2-0 : reserved&n; *&n; * Offset   10 : DMA decode register (used for IO based DMA; also can do&n; *                PIO through this port)&n; *&n; * Offset   12 : Status&n; *                Bits 7-2 : reserved&n; *                Bit    1 : DMA pending (1 = pending)&n; *                Bit    0 : IRQ pending (0 = pending)&n; *&n; * Exciting, huh?  &n; *&n; */

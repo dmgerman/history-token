@@ -597,6 +597,7 @@ r_int
 id|nr
 comma
 r_volatile
+r_const
 r_void
 op_star
 id|addr

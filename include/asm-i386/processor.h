@@ -13,6 +13,11 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+multiline_comment|/* flag for disabling the tsc */
+r_extern
+r_int
+id|tsc_disable
+suffix:semicolon
 DECL|struct|desc_struct
 r_struct
 id|desc_struct
@@ -1459,7 +1464,7 @@ suffix:semicolon
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;rep_nop()
 multiline_comment|/* Prefetch instructions for Pentium III and AMD Athlon */
-macro_line|#ifdef &t;CONFIG_MPENTIUMIII
+macro_line|#ifdef &t;CONFIG_X86_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|function|prefetch

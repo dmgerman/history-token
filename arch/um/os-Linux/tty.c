@@ -112,7 +112,7 @@ id|info.fd
 op_assign
 id|fd
 suffix:semicolon
-id|tracing_cb
+id|initial_thread_cb
 c_func
 (paren
 id|grantpt_cb

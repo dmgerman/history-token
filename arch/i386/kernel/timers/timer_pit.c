@@ -5,7 +5,9 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 r_extern
 id|spinlock_t
 id|i8259A_lock

@@ -30,6 +30,9 @@ macro_line|#include &quot;umid.h&quot;
 macro_line|#include &quot;initrd.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;choose-mode.h&quot;
+macro_line|#include &quot;mode_kern.h&quot;
+macro_line|#include &quot;mode.h&quot;
 DECL|macro|DEFAULT_COMMAND_LINE
 mdefine_line|#define DEFAULT_COMMAND_LINE &quot;root=6200&quot;
 DECL|variable|boot_cpu_data
@@ -71,7 +74,15 @@ r_return
 id|os_process_pc
 c_func
 (paren
-id|task-&gt;thread.extern_pid
+id|CHOOSE_MODE_PROC
+c_func
+(paren
+id|thread_pid_tt
+comma
+id|thread_pid_skas
+comma
+id|task
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -293,106 +304,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|start_kernel
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|debug
-suffix:semicolon
-r_extern
-r_int
-id|debug_stop
-suffix:semicolon
-DECL|function|start_kernel_proc
-r_static
-r_int
-id|start_kernel_proc
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
-(brace
-r_int
-id|pid
-suffix:semicolon
-id|block_signals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|pid
-op_assign
-id|os_getpid
-c_func
-(paren
-)paren
-suffix:semicolon
-id|cpu_tasks
-(braket
-l_int|0
-)braket
-dot
-id|pid
-op_assign
-id|pid
-suffix:semicolon
-id|cpu_tasks
-(braket
-l_int|0
-)braket
-dot
-id|task
-op_assign
-id|current
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|cpu_online_map
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|debug
-)paren
-(brace
-id|os_stop_process
-c_func
-(paren
-id|pid
-)paren
-suffix:semicolon
-)brace
-id|start_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_HOST_2G_2G
-DECL|macro|TOP
-mdefine_line|#define TOP 0x80000000
-macro_line|#else
-DECL|macro|TOP
-mdefine_line|#define TOP 0xc0000000
-macro_line|#endif
-DECL|macro|SIZE
-mdefine_line|#define SIZE ((CONFIG_NEST_LEVEL + CONFIG_KERNEL_HALF_GIGS) * 0x20000000)
-DECL|macro|START
-mdefine_line|#define START (TOP - SIZE)
-multiline_comment|/* Set in main */
+multiline_comment|/* Set in linux_main */
 DECL|variable|host_task_size
 r_int
 r_int
@@ -403,34 +315,11 @@ r_int
 r_int
 id|task_size
 suffix:semicolon
-DECL|function|set_task_sizes
-r_void
-id|set_task_sizes
-c_func
-(paren
-r_int
-id|arg
-)paren
-(brace
-multiline_comment|/* Round up to the nearest 4M */
-id|host_task_size
-op_assign
-id|ROUND_4M
-c_func
-(paren
-(paren
+DECL|variable|uml_start
 r_int
 r_int
-)paren
-op_amp
-id|arg
-)paren
+id|uml_start
 suffix:semicolon
-id|task_size
-op_assign
-id|START
-suffix:semicolon
-)brace
 multiline_comment|/* Set in early boot */
 DECL|variable|uml_physmem
 r_int
@@ -514,7 +403,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|CHOOSE_MODE
+c_func
+(paren
 id|honeypot
+comma
+l_int|0
+)paren
 )paren
 (brace
 r_return
@@ -770,11 +665,75 @@ comma
 id|uml_ncpus_setup
 comma
 l_string|&quot;ncpus=&lt;# of desired CPUs&gt;&bslash;n&quot;
-l_string|&quot;    This tells an SMP kernel how many virtual processors to start.&bslash;n&quot;
-l_string|&quot;    Currently, this has no effect because SMP isn&squot;t enabled.&bslash;n&bslash;n&quot;
+l_string|&quot;    This tells an SMP kernel how many virtual processors to start.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|force_tt
+r_int
+id|force_tt
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if defined(CONFIG_MODE_TT) &amp;&amp; defined(CONFIG_MODE_SKAS)
+DECL|macro|DEFAULT_TT
+mdefine_line|#define DEFAULT_TT 0
+DECL|function|mode_tt_setup
+r_static
+r_int
+id|__init
+id|mode_tt_setup
+c_func
+(paren
+r_char
+op_star
+id|line
+comma
+r_int
+op_star
+id|add
+)paren
+(brace
+id|force_tt
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__uml_setup
+c_func
+(paren
+l_string|&quot;mode=tt&quot;
+comma
+id|mode_tt_setup
+comma
+l_string|&quot;mode=tt&bslash;n&quot;
+l_string|&quot;    When both CONFIG_MODE_TT and CONFIG_MODE_SKAS are enabled, this option&bslash;n&quot;
+l_string|&quot;    forces UML to run in tt (tracing thread) mode.  It is not the default&bslash;n&quot;
+l_string|&quot;    because it&squot;s slower and less secure than skas mode.&bslash;n&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|macro|DEFAULT_TT
+mdefine_line|#define DEFAULT_TT 0
+macro_line|#else
+macro_line|#ifdef CONFIG_MODE_TT
+DECL|macro|DEFAULT_TT
+mdefine_line|#define DEFAULT_TT 1
+macro_line|#else
+macro_line|#error Either CONFIG_MODE_TT or CONFIG_MODE_SKAS must be enabled
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
+DECL|variable|mode_tt
+r_int
+id|mode_tt
+op_assign
+id|DEFAULT_TT
+suffix:semicolon
 DECL|function|Usage
 r_static
 r_int
@@ -979,10 +938,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|debug_trace
-suffix:semicolon
 multiline_comment|/* Set during early boot */
 DECL|variable|brk_start
 r_int
@@ -1028,10 +983,6 @@ comma
 id|add
 comma
 id|err
-suffix:semicolon
-r_void
-op_star
-id|sp
 suffix:semicolon
 r_for
 c_loop
@@ -1125,54 +1076,35 @@ id|DEFAULT_COMMAND_LINE
 )paren
 suffix:semicolon
 )brace
-r_if
+id|mode_tt
+op_assign
+id|force_tt
+ques
 c_cond
-(paren
-op_logical_neg
-id|jail
-op_logical_or
-id|debug
-)paren
-(brace
-id|remap_data
-c_func
-(paren
-id|ROUND_DOWN
-c_func
-(paren
-op_amp
-id|_stext
-)paren
-comma
-id|ROUND_UP
-c_func
-(paren
-op_amp
-id|_etext
-)paren
-comma
 l_int|1
+suffix:colon
+op_logical_neg
+id|can_do_skas
+c_func
+(paren
 )paren
 suffix:semicolon
-)brace
-id|remap_data
+id|uml_start
+op_assign
+id|CHOOSE_MODE_PROC
 c_func
 (paren
-id|ROUND_DOWN
-c_func
-(paren
-op_amp
-id|_sdata
-)paren
+id|set_task_sizes_tt
 comma
-id|ROUND_UP
-c_func
-(paren
-op_amp
-id|_edata
-)paren
+id|set_task_sizes_skas
 comma
-l_int|1
+l_int|0
+comma
+op_amp
+id|host_task_size
+comma
+op_amp
+id|task_size
 )paren
 suffix:semicolon
 id|brk_start
@@ -1187,28 +1119,19 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|remap_data
+id|CHOOSE_MODE_PROC
 c_func
 (paren
-id|ROUND_DOWN
-c_func
-(paren
-op_amp
-id|__bss_start
-)paren
+id|before_mem_tt
 comma
-id|ROUND_UP
-c_func
-(paren
+id|before_mem_skas
+comma
 id|brk_start
-)paren
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|uml_physmem
 op_assign
-id|START
+id|uml_start
 suffix:semicolon
 multiline_comment|/* Reserve up to 4M after the current brk */
 id|uml_reserved
@@ -1397,10 +1320,15 @@ c_cond
 id|err
 )paren
 (brace
-id|tracer_panic
+id|printf
 c_func
 (paren
 l_string|&quot;Failed to reserve VM area for kernel VM&bslash;n&quot;
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1433,31 +1361,19 @@ op_amp
 id|init_thread_info
 )paren
 suffix:semicolon
-id|sp
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|init_task.thread.kernel_stack
-op_plus
-l_int|2
-op_star
-id|PAGE_SIZE
-op_minus
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 r_return
-id|signals
+id|CHOOSE_MODE
 c_func
 (paren
-id|start_kernel_proc
+id|start_uml_tt
+c_func
+(paren
+)paren
 comma
-id|sp
+id|start_uml_skas
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -45,6 +45,14 @@ id|last
 suffix:semicolon
 r_extern
 r_int
+id|get_signals
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|set_signals
 c_func
 (paren
