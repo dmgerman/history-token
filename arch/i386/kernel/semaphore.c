@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to acquire the semaphore, while the &quot;sleeping&quot;&n; * variable is a count of such acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is protected&n; * by the spinlock in the semaphore&squot;s waitqueue head.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 multiline_comment|/*&n; * Logic:&n; *  - only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - when we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleeper&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
 DECL|function|__up
+id|asmlinkage
 r_void
 id|__up
 c_func
@@ -25,6 +26,7 @@ id|sem-&gt;wait
 suffix:semicolon
 )brace
 DECL|function|__down
+id|asmlinkage
 r_void
 id|__down
 c_func
@@ -181,6 +183,7 @@ id|TASK_RUNNING
 suffix:semicolon
 )brace
 DECL|function|__down_interruptible
+id|asmlinkage
 r_int
 id|__down_interruptible
 c_func
@@ -378,6 +381,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Trylock failed - make sure we correct for&n; * having decremented the count.&n; *&n; * We could have done the trylock with a&n; * single &quot;cmpxchg&quot; without failure cases,&n; * but then it wouldn&squot;t work on a 386.&n; */
 DECL|function|__down_trylock
+id|asmlinkage
 r_int
 id|__down_trylock
 c_func
