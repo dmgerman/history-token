@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2001 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hardware queue manipulation&n; *&n; * Control, bulk, and interrupt traffic all use &quot;qh&quot; lists.  They list &quot;qtd&quot;&n; * entries describing USB transactions, max 16-20kB/entry (with 4kB-aligned&n; * buffers needed for the larger number).  We use one QH per endpoint, queue&n; * multiple (bulk or control) urbs per endpoint.  URBs may need several qtds.&n; * A scheduled interrupt qh always has one qtd, one urb.&n; *&n; * ISO traffic uses &quot;ISO TD&quot; (itd, and sitd) records, and (along with&n; * interrupts) needs careful scheduling.  Performance improvements can be&n; * an ongoing challenge.&n; * &n; * USB 1.1 devices are handled (a) by &quot;companion&quot; OHCI or UHCI root hubs,&n; * or otherwise through transaction translators (TTs) in USB 2.0 hubs using&n; * (b) special fields in qh entries or (c) split iso entries.  TTs will&n; * buffer low/full speed data so the host collects it at high speed.&n; */
@@ -2407,6 +2407,14 @@ op_lshift
 l_int|14
 suffix:semicolon
 multiline_comment|/* toggle from qtd */
+id|info2
+op_or_assign
+(paren
+id|EHCI_TUNE_MULT_HS
+op_lshift
+l_int|30
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -2435,8 +2443,12 @@ l_int|30
 suffix:semicolon
 )brace
 r_else
-id|info1
-op_or_assign
+(brace
+id|u32
+id|temp
+suffix:semicolon
+id|temp
+op_assign
 id|usb_maxpacket
 (paren
 id|urb-&gt;dev
@@ -2448,9 +2460,41 @@ id|usb_pipeout
 id|urb-&gt;pipe
 )paren
 )paren
+suffix:semicolon
+id|info1
+op_or_assign
+(paren
+id|temp
+op_amp
+l_int|0x3ff
+)paren
 op_lshift
 l_int|16
 suffix:semicolon
+multiline_comment|/* maxpacket */
+multiline_comment|/* HS intr can be &quot;high bandwidth&quot; */
+id|temp
+op_assign
+l_int|1
+op_plus
+(paren
+(paren
+id|temp
+op_rshift
+l_int|11
+)paren
+op_amp
+l_int|0x03
+)paren
+suffix:semicolon
+id|info2
+op_or_assign
+id|temp
+op_lshift
+l_int|30
+suffix:semicolon
+multiline_comment|/* mult */
+)brace
 r_break
 suffix:semicolon
 r_default

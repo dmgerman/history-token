@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 1999,2000 Petko Manolov - Petkan (pmanolov@lnxw.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * Copyright (c) 1999-2002 Petko Manolov - Petkan (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef&t;PEGASUS_DEV
 DECL|macro|PEGASUS_II
 mdefine_line|#define&t;PEGASUS_II&t;&t;0x80000000
@@ -18,22 +18,6 @@ DECL|macro|EPROM_WR_ENABLE
 mdefine_line|#define&t;EPROM_WR_ENABLE&t;&t;0x10
 DECL|macro|EPROM_LOAD
 mdefine_line|#define&t;EPROM_LOAD&t;&t;0x20
-DECL|macro|MII_BMCR
-mdefine_line|#define&t;MII_BMCR&t;&t;0x00
-DECL|macro|MII_BMSR
-mdefine_line|#define&t;MII_BMSR&t;&t;0x01
-DECL|macro|BMSR_MEDIA
-mdefine_line|#define&t;BMSR_MEDIA&t;&t;0x7808
-DECL|macro|MII_ANLPA
-mdefine_line|#define&t;MII_ANLPA&t;&t;0x05
-DECL|macro|ANLPA_100TX_FD
-mdefine_line|#define&t;ANLPA_100TX_FD&t;&t;0x0100
-DECL|macro|ANLPA_100TX_HD
-mdefine_line|#define&t;ANLPA_100TX_HD&t;&t;0x0080
-DECL|macro|ANLPA_10T_FD
-mdefine_line|#define&t;ANLPA_10T_FD&t;&t;0x0040
-DECL|macro|ANLPA_10T_HD
-mdefine_line|#define&t;ANLPA_10T_HD&t;&t;0x0020
 DECL|macro|PHY_DONE
 mdefine_line|#define&t;PHY_DONE&t;&t;0x80
 DECL|macro|PHY_READ
@@ -580,6 +564,19 @@ id|HAS_HOME_PNA
 id|PEGASUS_DEV
 c_func
 (paren
+l_string|&quot;AN986A USB MAC&quot;
+comma
+id|VENDOR_ADMTEK
+comma
+l_int|1986
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
 l_string|&quot;Allied Telesyn Int. AT-USB100&quot;
 comma
 id|VENDOR_ALLIEDTEL
@@ -997,6 +994,19 @@ comma
 l_int|0x0200
 comma
 id|DEFAULT_GPIO_RESET
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;SMC 2206 USB Ethernet&quot;
+comma
+id|VENDOR_SMC
+comma
+l_int|0x0201
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
 )paren
 id|PEGASUS_DEV
 c_func

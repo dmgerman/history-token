@@ -28,6 +28,13 @@ r_char
 op_star
 id|bus_name
 suffix:semicolon
+DECL|member|product_desc
+r_const
+r_char
+op_star
+id|product_desc
+suffix:semicolon
+multiline_comment|/* product/vendor string */
 DECL|member|description
 r_const
 r_char

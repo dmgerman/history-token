@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&t;Copyright (C) 2002 Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Jan_14  gb&n; *&t;Added module parameter to force specific number of XBOFs.&n; *&t;Added ir_xbof_change().&n; *&t;Reorganized read_bulk_callback error handling.&n; *&t;Switched from FILL_BULK_URB() to usb_fill_bulk_urb().&n; *&n; * 2001_Nov_08  greg kh&n; *&t;Changed the irda_usb_find_class_desc() function based on comments and&n; *&t;code from Martin Diehl.&n; *&n; * 2001_Nov_01&t;greg kh&n; *&t;Added support for more IrDA USB devices.&n; *&t;Added support for zero packet.  Added buffer override paramater, so&n; *&t;users can transfer larger packets at once if they wish.  Both patches&n; *&t;came from Dag Brattli &lt;dag@obexcode.com&gt;.&n; *&n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
+multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001-2002&t;Greg Kroah-Hartman (greg@kroah.com)&n; *&t;Copyright (C) 2002&t;Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_07&t;greg kh&n; *&t;moved some needed structures and #define values from the&n; *&t;net/irda/irda-usb.h file into our file, as we don&squot;t want to depend on&n; *&t;that codebase compiling correctly :)&n; *&n; * 2002_Jan_14  gb&n; *&t;Added module parameter to force specific number of XBOFs.&n; *&t;Added ir_xbof_change().&n; *&t;Reorganized read_bulk_callback error handling.&n; *&t;Switched from FILL_BULK_URB() to usb_fill_bulk_urb().&n; *&n; * 2001_Nov_08  greg kh&n; *&t;Changed the irda_usb_find_class_desc() function based on comments and&n; *&t;code from Martin Diehl.&n; *&n; * 2001_Nov_01&t;greg kh&n; *&t;Added support for more IrDA USB devices.&n; *&t;Added support for zero packet.  Added buffer override paramater, so&n; *&t;users can transfer larger packets at once if they wish.  Both patches&n; *&t;came from Dag Brattli &lt;dag@obexcode.com&gt;.&n; *&n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;net/irda/irda-usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug
 r_static
@@ -38,6 +37,83 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB IR Dongle driver&quot;
+multiline_comment|/* USB IrDA class spec information */
+DECL|macro|USB_CLASS_IRDA
+mdefine_line|#define USB_CLASS_IRDA&t;&t;0x02
+DECL|macro|USB_DT_IRDA
+mdefine_line|#define USB_DT_IRDA&t;&t;0x21
+DECL|macro|IU_REQ_GET_CLASS_DESC
+mdefine_line|#define IU_REQ_GET_CLASS_DESC&t;0x06
+DECL|macro|SPEED_2400
+mdefine_line|#define SPEED_2400&t;&t;0x01
+DECL|macro|SPEED_9600
+mdefine_line|#define SPEED_9600&t;&t;0x02
+DECL|macro|SPEED_19200
+mdefine_line|#define SPEED_19200&t;&t;0x03
+DECL|macro|SPEED_38400
+mdefine_line|#define SPEED_38400&t;&t;0x04
+DECL|macro|SPEED_57600
+mdefine_line|#define SPEED_57600&t;&t;0x05
+DECL|macro|SPEED_115200
+mdefine_line|#define SPEED_115200&t;&t;0x06
+DECL|macro|SPEED_576000
+mdefine_line|#define SPEED_576000&t;&t;0x07
+DECL|macro|SPEED_1152000
+mdefine_line|#define SPEED_1152000&t;&t;0x08
+DECL|macro|SPEED_4000000
+mdefine_line|#define SPEED_4000000&t;&t;0x09
+DECL|struct|irda_class_desc
+r_struct
+id|irda_class_desc
+(brace
+DECL|member|bLength
+id|u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bcdSpecRevision
+id|u16
+id|bcdSpecRevision
+suffix:semicolon
+DECL|member|bmDataSize
+id|u8
+id|bmDataSize
+suffix:semicolon
+DECL|member|bmWindowSize
+id|u8
+id|bmWindowSize
+suffix:semicolon
+DECL|member|bmMinTurnaroundTime
+id|u8
+id|bmMinTurnaroundTime
+suffix:semicolon
+DECL|member|wBaudRate
+id|u16
+id|wBaudRate
+suffix:semicolon
+DECL|member|bmAdditionalBOFs
+id|u8
+id|bmAdditionalBOFs
+suffix:semicolon
+DECL|member|bIrdaRateSniff
+id|u8
+id|bIrdaRateSniff
+suffix:semicolon
+DECL|member|bMaxUnicastList
+id|u8
+id|bMaxUnicastList
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* if overridden by the user, then use their value for the size of the read and&n; * write urbs */
 DECL|variable|buffer_size
 r_static
@@ -498,11 +574,7 @@ op_star
 id|desc
 )paren
 comma
-id|MSECS_TO_JIFFIES
-c_func
-(paren
-l_int|500
-)paren
+id|HZ
 )paren
 suffix:semicolon
 id|dbg
