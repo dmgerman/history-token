@@ -588,6 +588,22 @@ op_star
 )paren
 )paren
 suffix:semicolon
+DECL|macro|NL_NONROOT_RECV
+mdefine_line|#define NL_NONROOT_RECV 0x1
+DECL|macro|NL_NONROOT_SEND
+mdefine_line|#define NL_NONROOT_SEND 0x2
+r_extern
+r_void
+id|netlink_set_nonroot
+c_func
+(paren
+r_int
+id|protocol
+comma
+r_int
+id|flag
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_NETLINK_H */
 eof

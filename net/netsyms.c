@@ -1915,6 +1915,13 @@ c_func
 id|netlink_ack
 )paren
 suffix:semicolon
+DECL|variable|netlink_set_nonroot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|netlink_set_nonroot
+)paren
+suffix:semicolon
 DECL|variable|netlink_register_notifier
 id|EXPORT_SYMBOL
 c_func

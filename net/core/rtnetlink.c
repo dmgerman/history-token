@@ -2517,6 +2517,14 @@ c_func
 l_string|&quot;rtnetlink_init: cannot initialize rtnetlink&bslash;n&quot;
 )paren
 suffix:semicolon
+id|netlink_set_nonroot
+c_func
+(paren
+id|NETLINK_ROUTE
+comma
+id|NL_NONROOT_RECV
+)paren
+suffix:semicolon
 id|register_netdevice_notifier
 c_func
 (paren
