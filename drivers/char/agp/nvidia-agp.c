@@ -584,11 +584,12 @@ id|previous_size-&gt;size_value
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
+multiline_comment|/*&n; * Note we can&squot;t use the generic routines, even though they are 99% the same.&n; * Aperture sizes &lt;64M still requires a full 64k GART directory, but&n; * only use the portion of the TLB entries that correspond to the apertures&n; * alignment inside the surrounding 64M block.&n; */
 r_extern
 r_int
 id|agp_memory_reserved
 suffix:semicolon
+DECL|function|nvidia_insert_memory
 r_static
 r_int
 id|nvidia_insert_memory
@@ -742,7 +743,7 @@ id|mem-&gt;memory
 id|i
 )braket
 suffix:semicolon
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
 c_func
@@ -754,6 +755,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|nvidia_remove_memory
 r_static
 r_int
 id|nvidia_remove_memory
@@ -825,7 +827,7 @@ r_int
 id|agp_bridge-&gt;scratch_page
 suffix:semicolon
 )brace
-id|agp_bridge
+id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
 c_func
@@ -837,7 +839,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|nvidia_tlbflush
 r_static
 r_void
@@ -1176,12 +1177,12 @@ comma
 dot
 id|insert_memory
 op_assign
-id|agp_generic_insert_memory
+id|nvidia_insert_memory
 comma
 dot
 id|remove_memory
 op_assign
-id|agp_generic_remove_memory
+id|nvidia_remove_memory
 comma
 dot
 id|alloc_by_type
