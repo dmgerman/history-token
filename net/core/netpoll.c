@@ -2961,7 +2961,7 @@ id|atmost
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|4
 op_star
 id|HZ
 suffix:semicolon
@@ -3023,7 +3023,7 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;%s: carrier detect appears flaky,&quot;
-l_string|&quot; waiting 10 seconds&bslash;n&quot;
+l_string|&quot; waiting 4 seconds&bslash;n&quot;
 comma
 id|np-&gt;name
 )paren
