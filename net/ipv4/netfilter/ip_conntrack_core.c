@@ -5714,6 +5714,7 @@ r_int
 id|optval
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
