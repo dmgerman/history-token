@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_EXT3_FS_H
 DECL|macro|_LINUX_EXT3_FS_H
 mdefine_line|#define _LINUX_EXT3_FS_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 multiline_comment|/*&n; * The second extended filesystem constants/structures&n; */
 multiline_comment|/*&n; * Define EXT3FS_DEBUG to produce debug messages&n; */
 DECL|macro|EXT3FS_DEBUG
