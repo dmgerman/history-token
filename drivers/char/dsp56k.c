@@ -43,7 +43,7 @@ mdefine_line|#define max(a,b) ((a) &gt; (b) ? (a) : (b))
 DECL|macro|min
 mdefine_line|#define min(a,b) ((a) &lt; (b) ? (a) : (b))
 DECL|macro|wait_some
-mdefine_line|#define wait_some(n) &bslash;&n;{ &bslash;&n;&t;current-&gt;state = TASK_INTERRUPTIBLE; &bslash;&n;&t;schedule_timeout(n); &bslash;&n;}
+mdefine_line|#define wait_some(n) &bslash;&n;{ &bslash;&n;&t;set_current_state(TASK_INTERRUPTIBLE); &bslash;&n;&t;schedule_timeout(n); &bslash;&n;}
 DECL|macro|handshake
 mdefine_line|#define handshake(count, maxio, timeout, ENABLE, f) &bslash;&n;{ &bslash;&n;&t;long i, t, m; &bslash;&n;&t;while (count &gt; 0) { &bslash;&n;&t;&t;m = min(count, maxio); &bslash;&n;&t;&t;for (i = 0; i &lt; m; i++) { &bslash;&n;&t;&t;&t;for (t = 0; t &lt; timeout &amp;&amp; !ENABLE; t++) &bslash;&n;&t;&t;&t;&t;wait_some(HZ/50); &bslash;&n;&t;&t;&t;if(!ENABLE) &bslash;&n;&t;&t;&t;&t;return -EIO; &bslash;&n;&t;&t;&t;f; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;count -= m; &bslash;&n;&t;&t;if (m == maxio) wait_some(HZ/50); &bslash;&n;&t;} &bslash;&n;}
 DECL|macro|tx_wait
@@ -2263,15 +2263,18 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|dsp56k.in_use
+)paren
 )paren
 r_return
 op_minus
 id|EBUSY
-suffix:semicolon
-id|dsp56k.in_use
-op_assign
-l_int|1
 suffix:semicolon
 id|dsp56k.timeout
 op_assign
@@ -2306,18 +2309,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;DSP56k driver: Unknown minor device: %d&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
 r_return
 op_minus
-id|ENXIO
+id|ENODEV
 suffix:semicolon
 )brace
 r_return
@@ -2361,18 +2355,13 @@ id|dev
 r_case
 id|DSP56K_DEV_56001
 suffix:colon
-id|lock_kernel
+id|clear_bit
 c_func
 (paren
-)paren
-suffix:semicolon
-id|dsp56k.in_use
-op_assign
 l_int|0
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
+comma
+op_amp
+id|dsp56k.in_use
 )paren
 suffix:semicolon
 r_break

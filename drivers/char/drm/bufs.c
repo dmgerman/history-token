@@ -909,6 +909,26 @@ id|ENOMEM
 suffix:semicolon
 multiline_comment|/* May only call once for each order */
 )brace
+r_if
+c_cond
+(paren
+id|count
+template_param
+l_int|4096
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|dev-&gt;struct_sem
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|entry-&gt;buflist
 op_assign
 id|drm_alloc

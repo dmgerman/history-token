@@ -606,6 +606,12 @@ op_amp
 id|pmac_ide_dmaproc
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC_AUTO
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|ide_hwifs
 (braket
 id|ix
@@ -3098,6 +3104,12 @@ op_amp
 id|pmac_ide_dmaproc
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC_AUTO
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|ide_hwifs
 (braket
 id|ix

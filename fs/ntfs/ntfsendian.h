@@ -1,4 +1,4 @@
-multiline_comment|/*  ntfsendian.h&n; *&n; *  Copyright (C) 1998, 1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1998 Joseph Malicki&n; *  Copyright (C) 1999 Werner Seiler&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
+multiline_comment|/*&n; * ntfsendian.h&n; *&n; * Copyright (C) 1998, 1999 Martin von L&#xfffd;wis&n; * Copyright (C) 1998 Joseph Malicki&n; * Copyright (C) 1999 Werner Seiler&n; * Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|CPU_TO_LE16
 mdefine_line|#define CPU_TO_LE16(a) __cpu_to_le16(a)
@@ -64,4 +64,6 @@ DECL|macro|NTFS_PUTS24
 mdefine_line|#define NTFS_PUTS24(p,v)     NTFS_PUTU24(p,v)
 DECL|macro|NTFS_PUTS32
 mdefine_line|#define NTFS_PUTS32(p,v)     NTFS_PUTU32(p,v)
+DECL|macro|NTFS_PUTS64
+mdefine_line|#define NTFS_PUTS64(p,v)     NTFS_PUTU64(p,v)
 eof

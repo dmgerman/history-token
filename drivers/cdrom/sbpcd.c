@@ -24317,7 +24317,7 @@ r_if
 c_cond
 (paren
 id|read_audio.nframes
-OG
+template_param
 id|D_S
 (braket
 id|d

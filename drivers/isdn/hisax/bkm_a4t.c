@@ -1436,7 +1436,7 @@ suffix:semicolon
 id|cs-&gt;hw.ax.base
 op_assign
 (paren
-id|u_int
+r_int
 )paren
 id|ioremap
 c_func
@@ -1473,7 +1473,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: %s address %x-%x suspecious&bslash;n&quot;
+l_string|&quot;HiSax: %s address %lx-%lx suspecious&bslash;n&quot;
 comma
 id|CardType
 (braket
@@ -1562,7 +1562,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HiSax: %s: Card configured at 0x%X IRQ %d&bslash;n&quot;
+l_string|&quot;HiSax: %s: Card configured at 0x%lX IRQ %d&bslash;n&quot;
 comma
 id|CardType
 (braket

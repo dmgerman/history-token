@@ -25,7 +25,7 @@ macro_line|#else
 DECL|macro|ext2_debug
 macro_line|#&t;define ext2_debug(f, a...)&t;/**/
 macro_line|#endif
-multiline_comment|/*&n; * Special inodes numbers&n; */
+multiline_comment|/*&n; * Special inode numbers&n; */
 DECL|macro|EXT2_BAD_INO
 mdefine_line|#define&t;EXT2_BAD_INO&t;&t; 1&t;/* Bad blocks inode */
 DECL|macro|EXT2_ROOT_INO
@@ -863,22 +863,46 @@ DECL|macro|EXT2_CLEAR_INCOMPAT_FEATURE
 mdefine_line|#define EXT2_CLEAR_INCOMPAT_FEATURE(sb,mask)&t;&t;&t;&bslash;&n;&t;EXT2_SB(sb)-&gt;s_es-&gt;s_feature_incompat &amp;= ~cpu_to_le32(mask)
 DECL|macro|EXT2_FEATURE_COMPAT_DIR_PREALLOC
 mdefine_line|#define EXT2_FEATURE_COMPAT_DIR_PREALLOC&t;0x0001
+DECL|macro|EXT2_FEATURE_COMPAT_IMAGIC_INODES
+mdefine_line|#define EXT2_FEATURE_COMPAT_IMAGIC_INODES&t;0x0002
+DECL|macro|EXT3_FEATURE_COMPAT_HAS_JOURNAL
+mdefine_line|#define EXT3_FEATURE_COMPAT_HAS_JOURNAL&t;&t;0x0004
+DECL|macro|EXT2_FEATURE_COMPAT_EXT_ATTR
+mdefine_line|#define EXT2_FEATURE_COMPAT_EXT_ATTR&t;&t;0x0008
+DECL|macro|EXT2_FEATURE_COMPAT_RESIZE_INO
+mdefine_line|#define EXT2_FEATURE_COMPAT_RESIZE_INO&t;&t;0x0010
+DECL|macro|EXT2_FEATURE_COMPAT_DIR_INDEX
+mdefine_line|#define EXT2_FEATURE_COMPAT_DIR_INDEX&t;&t;0x0020
+DECL|macro|EXT2_FEATURE_COMPAT_ANY
+mdefine_line|#define EXT2_FEATURE_COMPAT_ANY&t;&t;&t;0xffffffff
 DECL|macro|EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER
 mdefine_line|#define EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER&t;0x0001
 DECL|macro|EXT2_FEATURE_RO_COMPAT_LARGE_FILE
 mdefine_line|#define EXT2_FEATURE_RO_COMPAT_LARGE_FILE&t;0x0002
 DECL|macro|EXT2_FEATURE_RO_COMPAT_BTREE_DIR
 mdefine_line|#define EXT2_FEATURE_RO_COMPAT_BTREE_DIR&t;0x0004
+DECL|macro|EXT2_FEATURE_RO_COMPAT_ANY
+mdefine_line|#define EXT2_FEATURE_RO_COMPAT_ANY&t;&t;0xffffffff
 DECL|macro|EXT2_FEATURE_INCOMPAT_COMPRESSION
 mdefine_line|#define EXT2_FEATURE_INCOMPAT_COMPRESSION&t;0x0001
 DECL|macro|EXT2_FEATURE_INCOMPAT_FILETYPE
 mdefine_line|#define EXT2_FEATURE_INCOMPAT_FILETYPE&t;&t;0x0002
+DECL|macro|EXT3_FEATURE_INCOMPAT_RECOVER
+mdefine_line|#define EXT3_FEATURE_INCOMPAT_RECOVER&t;&t;0x0004
+DECL|macro|EXT3_FEATURE_INCOMPAT_JOURNAL_DEV
+mdefine_line|#define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV&t;0x0008
+DECL|macro|EXT2_FEATURE_INCOMPAT_ANY
+mdefine_line|#define EXT2_FEATURE_INCOMPAT_ANY&t;&t;0xffffffff
 DECL|macro|EXT2_FEATURE_COMPAT_SUPP
 mdefine_line|#define EXT2_FEATURE_COMPAT_SUPP&t;0
 DECL|macro|EXT2_FEATURE_INCOMPAT_SUPP
 mdefine_line|#define EXT2_FEATURE_INCOMPAT_SUPP&t;EXT2_FEATURE_INCOMPAT_FILETYPE
 DECL|macro|EXT2_FEATURE_RO_COMPAT_SUPP
 mdefine_line|#define EXT2_FEATURE_RO_COMPAT_SUPP&t;(EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER| &bslash;&n;&t;&t;&t;&t;&t; EXT2_FEATURE_RO_COMPAT_LARGE_FILE| &bslash;&n;&t;&t;&t;&t;&t; EXT2_FEATURE_RO_COMPAT_BTREE_DIR)
+DECL|macro|EXT2_FEATURE_RO_COMPAT_UNSUPPORTED
+mdefine_line|#define EXT2_FEATURE_RO_COMPAT_UNSUPPORTED&t;~EXT2_FEATURE_RO_COMPAT_SUPP
+DECL|macro|EXT2_FEATURE_INCOMPAT_UNSUPPORTED
+mdefine_line|#define EXT2_FEATURE_INCOMPAT_UNSUPPORTED&t;~EXT2_FEATURE_INCOMPAT_SUPP
 multiline_comment|/*&n; * Default values for user and/or group using reserved blocks&n; */
 DECL|macro|EXT2_DEF_RESUID
 mdefine_line|#define&t;EXT2_DEF_RESUID&t;&t;0

@@ -108,5 +108,5 @@ l_int|32
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif IDE_PROMISE_H
+macro_line|#endif /* IDE_PROMISE_H */
 eof

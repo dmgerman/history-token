@@ -3600,9 +3600,6 @@ suffix:semicolon
 id|mode
 op_and_assign
 id|S_IALLUGO
-op_amp
-op_complement
-id|current-&gt;fs-&gt;umask
 suffix:semicolon
 id|mode
 op_or_assign
@@ -3945,6 +3942,9 @@ comma
 id|dentry
 comma
 id|mode
+op_amp
+op_complement
+id|current-&gt;fs-&gt;umask
 )paren
 suffix:semicolon
 id|up
@@ -4747,11 +4747,6 @@ op_assign
 op_minus
 id|EPERM
 suffix:semicolon
-id|mode
-op_and_assign
-op_complement
-id|current-&gt;fs-&gt;umask
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -5005,6 +5000,11 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|mode
+op_and_assign
+op_complement
+id|current-&gt;fs-&gt;umask
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5200,9 +5200,6 @@ id|S_IRWXUGO
 op_or
 id|S_ISVTX
 )paren
-op_amp
-op_complement
-id|current-&gt;fs-&gt;umask
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -5388,6 +5385,9 @@ comma
 id|dentry
 comma
 id|mode
+op_amp
+op_complement
+id|current-&gt;fs-&gt;umask
 )paren
 suffix:semicolon
 id|dput

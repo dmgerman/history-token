@@ -1,4 +1,4 @@
-multiline_comment|/*  util.h - Header file for util.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2001 Anton Altaparmakov&n; */
+multiline_comment|/*&n; * util.h - Header file for util.c&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
 multiline_comment|/* Which character set is used for file names. */
 multiline_comment|/*  Translate everything to UTF-8. */
 DECL|macro|nct_utf8
@@ -15,7 +15,7 @@ mdefine_line|#define nct_uni_xlate_vfat   8
 multiline_comment|/*  Use a mapping table to determine printables. */
 DECL|macro|nct_map
 mdefine_line|#define nct_map              16
-multiline_comment|/* The first 16 inodes correspond to NTFS special files */
+multiline_comment|/* The first 16 inodes correspond to NTFS special files. */
 r_typedef
 r_enum
 (brace

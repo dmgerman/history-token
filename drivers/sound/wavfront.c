@@ -103,8 +103,6 @@ multiline_comment|/*** Module-accessible parameters ****************************
 DECL|variable|wf_raw
 r_int
 id|wf_raw
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* we normally check for &quot;raw state&quot; to firmware&n;&t;&t;   loading. if set, then during driver loading, the&n;&t;&t;   state of the board is ignored, and we reset the&n;&t;&t;   board and load the firmware anyway.&n;&t;&t;*/
 DECL|variable|fx_raw
@@ -117,8 +115,6 @@ multiline_comment|/* if this is zero, we&squot;ll leave the FX processor in&n;&t
 DECL|variable|debug_default
 r_int
 id|debug_default
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* you can set this to control debugging&n;&t;&t;&t;      during driver loading. it takes any combination&n;&t;&t;&t;      of the WF_DEBUG_* flags defined in&n;&t;&t;&t;      wavefront.h&n;&t;&t;&t;   */
 multiline_comment|/* XXX this needs to be made firmware and hardware version dependent */

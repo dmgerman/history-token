@@ -1,4 +1,4 @@
-multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@cesdis.gsfc.nasa.gov, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;*/
+multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@scyld.com, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;*/
 multiline_comment|/* Driver author info must always be in the binary.  Version too.. */
 DECL|variable|tc574_version
 r_static
@@ -7,7 +7,7 @@ r_char
 op_star
 id|tc574_version
 op_assign
-l_string|&quot;3c574_cs.c v1.08 9/24/98 Donald Becker/David Hinds, becker@cesdis.gsfc.nasa.gov.&bslash;n&quot;
+l_string|&quot;3c574_cs.c v1.08 9/24/98 Donald Becker/David Hinds, becker@scyld.com.&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the 3Com 3c574 PC card Fast Ethernet&n;Adapter.&n;&n;II. Board-specific settings&n;&n;None -- PC cards are autoconfigured.&n;&n;III. Driver operation&n;&n;The 3c574 uses a Boomerang-style interface, without the bus-master capability.&n;See the Boomerang driver and documentation for most details.&n;&n;IV. Notes and chip documentation.&n;&n;Two added registers are used to enhance PIO performance, RunnerRdCtrl and&n;RunnerWrCtrl.  These are 11 bit down-counters that are preloaded with the&n;count of word (16 bits) reads or writes the driver is about to do to the Rx&n;or Tx FIFO.  The chip is then able to hide the internal-PCI-bus to PC-card&n;translation latency by buffering the I/O operations with an 8 word FIFO.&n;Note: No other chip accesses are permitted when this buffer is used.&n;&n;A second enhancement is that both attribute and common memory space&n;0x0800-0x0fff can translated to the PIO FIFO.  Thus memory operations (faster&n;with *some* PCcard bridges) may be used instead of I/O operations.&n;This is enabled by setting the 0x10 bit in the PCMCIA LAN COR.&n;&n;Some slow PC card bridges work better if they never see a WAIT signal.&n;This is configured by setting the 0x20 bit in the PCMCIA LAN COR.&n;Only do this after testing that it is reliable and improves performance.&n;&n;The upper five bits of RunnerRdCtrl are used to window into PCcard&n;configuration space registers.  Window 0 is the regular Boomerang/Odie&n;register set, 1-5 are various PC card control registers, and 16-31 are&n;the (reversed!) CIS table.&n;&n;A final note: writing the InternalConfig register in window 3 with an&n;invalid ramWidth is Very Bad.&n;&n;V. References&n;&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;http://www.national.com/pf/DP/DP83840.html&n;&n;Thanks to Terry Murphy of 3Com for providing development information for&n;earlier 3Com products.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
@@ -690,7 +690,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;3c574_cs.c 1.000 1998/1/8 Donald Becker, becker@cesdis.gsfc.nasa.gov.&bslash;n&quot;
+l_string|&quot;3c574_cs.c 1.000 1998/1/8 Donald Becker, becker@scyld.com.&bslash;n&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG

@@ -1039,6 +1039,13 @@ c_func
 id|ip_finish_output
 )paren
 suffix:semicolon
+DECL|variable|inet_stream_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_stream_ops
+)paren
+suffix:semicolon
 DECL|variable|inet_dgram_ops
 id|EXPORT_SYMBOL
 c_func
@@ -1173,13 +1180,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_KHTTPD) || defined (CONFIG_KHTTPD_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
-DECL|variable|inet_stream_ops
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_stream_ops
-)paren
-suffix:semicolon
 DECL|variable|inet_release
 id|EXPORT_SYMBOL
 c_func

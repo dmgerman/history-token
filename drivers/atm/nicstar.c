@@ -145,6 +145,7 @@ id|count
 suffix:semicolon
 r_static
 r_int
+id|__init
 id|ns_init_card
 c_func
 (paren
@@ -159,6 +160,7 @@ id|pcidev
 suffix:semicolon
 r_static
 r_void
+id|__init
 id|ns_init_card_error
 c_func
 (paren
@@ -705,6 +707,7 @@ multiline_comment|/* Functions**************************************************
 macro_line|#ifdef MODULE
 DECL|function|init_module
 r_int
+id|__init
 id|init_module
 c_func
 (paren
@@ -1811,6 +1814,7 @@ suffix:semicolon
 DECL|function|ns_init_card
 r_static
 r_int
+id|__init
 id|ns_init_card
 c_func
 (paren
@@ -4423,6 +4427,7 @@ suffix:semicolon
 DECL|function|ns_init_card_error
 r_static
 r_void
+id|__init
 id|ns_init_card_error
 c_func
 (paren

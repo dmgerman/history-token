@@ -1,4 +1,4 @@
-multiline_comment|/*  support.h - Header file for specific support.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*&n; * support.h - Header file for specific support.c&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (c) 2001 Anton Altaparmakov (AIA)&n; */
 multiline_comment|/* Debug levels */
 DECL|macro|DEBUG_OTHER
 mdefine_line|#define DEBUG_OTHER&t;1
@@ -42,10 +42,15 @@ dot
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 DECL|macro|ntfs_malloc
 mdefine_line|#define ntfs_malloc(size)  kmalloc(size, GFP_KERNEL)
 DECL|macro|ntfs_free
 mdefine_line|#define ntfs_free(ptr)     kfree(ptr)
+DECL|macro|ntfs_vmalloc
+mdefine_line|#define ntfs_vmalloc(size)&t;vmalloc_32(size)
+DECL|macro|ntfs_vfree
+mdefine_line|#define ntfs_vfree(ptr)&t;&t;vfree(ptr)
 r_void
 id|ntfs_bzero
 c_func

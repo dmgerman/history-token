@@ -1,4 +1,4 @@
-multiline_comment|/*  struct.h - Structure definitions&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2000-2001 Anton Altaparmakov (AIA)&n; */
+multiline_comment|/*&n; * struct.h - Structure definitions&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2000-2001 Anton Altaparmakov (AIA)&n; */
 multiline_comment|/* Necessary forward definition. */
 r_struct
 id|ntfs_inode
@@ -59,7 +59,7 @@ DECL|member|size
 DECL|member|allocated
 DECL|member|initialized
 DECL|member|compsize
-r_int
+id|__s64
 id|size
 comma
 id|allocated
@@ -99,6 +99,7 @@ id|runlist
 suffix:semicolon
 DECL|member|len
 r_int
+r_int
 id|len
 suffix:semicolon
 DECL|member|r
@@ -113,13 +114,13 @@ DECL|typedef|ntfs_attribute
 )brace
 id|ntfs_attribute
 suffix:semicolon
-multiline_comment|/* Structure to define IO to user buffer. do_read means that the destination&n; * has to be written using fn_put, do_write means that the destination has to&n; * read using fn_get. So, do_read is from a user&squot;s point of view, while put and&n; * get are from the driver&squot;s point of view. The first argument is always the&n; * destination of the IO. */
 DECL|typedef|ntfs_inode
 r_typedef
 r_struct
 id|ntfs_inode_info
 id|ntfs_inode
 suffix:semicolon
+multiline_comment|/* Structure to define IO to user buffer. do_read means that the destination&n; * has to be written using fn_put, do_write means that the destination has to&n; * read using fn_get. So, do_read is from a user&squot;s point of view, while put and&n; * get are from the driver&squot;s point of view. The first argument is always the&n; * destination of the IO. */
 DECL|struct|ntfs_io
 r_typedef
 r_struct
@@ -174,6 +175,7 @@ op_star
 id|param
 suffix:semicolon
 DECL|member|size
+r_int
 r_int
 id|size
 suffix:semicolon

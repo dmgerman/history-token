@@ -3651,14 +3651,7 @@ op_assign
 op_amp
 id|ali15x3_tune_chipset
 suffix:semicolon
-macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;autodma
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3679,17 +3672,26 @@ op_assign
 op_amp
 id|ali15x3_dmaproc
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|noautodma
-)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|noautodma
+)paren
+id|hwif-&gt;autodma
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+id|hwif-&gt;autodma
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|ide_dmacapable_ali15x3
 r_void

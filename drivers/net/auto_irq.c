@@ -1,5 +1,5 @@
 multiline_comment|/* auto_irq.c: Auto-configure IRQ lines for linux. */
-multiline_comment|/*&n;    Written 1994 by Donald Becker.&n;&n;    The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;    Center of Excellence in Space Data and Information Sciences&n;      Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;    This code is a general-purpose IRQ line detector for devices with&n;    jumpered IRQ lines.  If you can make the device raise an IRQ (and&n;    that IRQ line isn&squot;t already being used), these routines will tell&n;    you what IRQ line it&squot;s using -- perfect for those oh-so-cool boot-time&n;    device probes!&n;&n;    To use this, first call autoirq_setup(timeout). TIMEOUT is how many&n;    &squot;jiffies&squot; (1/100 sec.) to detect other devices that have active IRQ lines,&n;    and can usually be zero at boot.  &squot;autoirq_setup()&squot; returns the bit&n;    vector of nominally-available IRQ lines (lines may be physically in-use,&n;    but not yet registered to a device).&n;    Next, set up your device to trigger an interrupt.&n;    Finally call autoirq_report(TIMEOUT) to find out which IRQ line was&n;    most recently active.  The TIMEOUT should usually be zero, but may&n;    be set to the number of jiffies to wait for a slow device to raise an IRQ.&n;&n;    The idea of using the setup timeout to filter out bogus IRQs came from&n;    the serial driver.&n;*/
+multiline_comment|/*&n;    Written 1994 by Donald Becker.&n;&n;    The author may be reached as becker@scyld.com&n;&n;    This code is a general-purpose IRQ line detector for devices with&n;    jumpered IRQ lines.  If you can make the device raise an IRQ (and&n;    that IRQ line isn&squot;t already being used), these routines will tell&n;    you what IRQ line it&squot;s using -- perfect for those oh-so-cool boot-time&n;    device probes!&n;&n;    To use this, first call autoirq_setup(timeout). TIMEOUT is how many&n;    &squot;jiffies&squot; (1/100 sec.) to detect other devices that have active IRQ lines,&n;    and can usually be zero at boot.  &squot;autoirq_setup()&squot; returns the bit&n;    vector of nominally-available IRQ lines (lines may be physically in-use,&n;    but not yet registered to a device).&n;    Next, set up your device to trigger an interrupt.&n;    Finally call autoirq_report(TIMEOUT) to find out which IRQ line was&n;    most recently active.  The TIMEOUT should usually be zero, but may&n;    be set to the number of jiffies to wait for a slow device to raise an IRQ.&n;&n;    The idea of using the setup timeout to filter out bogus IRQs came from&n;    the serial driver.&n;*/
 macro_line|#ifdef version
 DECL|variable|version
 r_static
@@ -8,7 +8,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;auto_irq.c:v1.11 Donald Becker (becker@cesdis.gsfc.nasa.gov)&quot;
+l_string|&quot;auto_irq.c:v1.11 Donald Becker (becker@scyld.com)&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;

@@ -196,7 +196,7 @@ mdefine_line|#define&t;LVM_SNAPSHOT_MAX_CHUNK&t;1024&t;/* 1024 KB */
 DECL|macro|LVM_SNAPSHOT_DEF_CHUNK
 mdefine_line|#define&t;LVM_SNAPSHOT_DEF_CHUNK&t;64&t;/* 64  KB */
 DECL|macro|LVM_SNAPSHOT_MIN_CHUNK
-mdefine_line|#define&t;LVM_SNAPSHOT_MIN_CHUNK&t;1&t;/* 1   KB */
+mdefine_line|#define&t;LVM_SNAPSHOT_MIN_CHUNK&t;(PAGE_SIZE/1024)&t;/* 4 or 8 KB */
 DECL|macro|UNDEF
 mdefine_line|#define&t;UNDEF&t;-1
 DECL|macro|FALSE
@@ -922,7 +922,7 @@ r_struct
 id|lv_bmap
 (brace
 DECL|member|lv_block
-id|ulong
+r_uint32
 id|lv_block
 suffix:semicolon
 DECL|member|lv_dev

@@ -1,14 +1,17 @@
-multiline_comment|/*  support.c -  Specific support functions&n; *&n; *  Copyright (C) 1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
+multiline_comment|/*&n; * support.c -  Specific support functions&n; *&n; * Copyright (C) 1997 Martin von L&#xfffd;wis&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;support.h&quot;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
-macro_line|#include &lt;linux/nls.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;util.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;macros.h&quot;
+macro_line|#ifndef NLS_MAX_CHARSET_SIZE
+macro_line|#include &lt;linux/nls.h&gt;
+macro_line|#endif
 DECL|variable|print_buf
 r_static
 r_char
@@ -399,7 +402,7 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;read_mft_record %x&bslash;n&quot;
+l_string|&quot;read_mft_record 0x%x&bslash;n&quot;
 comma
 id|mftno
 )paren
@@ -421,7 +424,7 @@ id|buf
 comma
 id|vol-&gt;mft
 comma
-id|vol-&gt;mft_recordsize
+id|vol-&gt;mft_record_size
 )paren
 suffix:semicolon
 r_return
@@ -462,7 +465,28 @@ id|buf
 suffix:semicolon
 id|io.size
 op_assign
-id|vol-&gt;mft_recordsize
+id|vol-&gt;mft_record_size
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+id|DEBUG_OTHER
+comma
+l_string|&quot;read_mft_record: calling ntfs_read_attr with: &quot;
+l_string|&quot;mftno = 0x%x, vol-&gt;mft_record_size_bits = 0x%x, &quot;
+l_string|&quot;mftno &lt;&lt; vol-&gt;mft_record_size_bits = 0x%Lx&bslash;n&quot;
+comma
+id|mftno
+comma
+id|vol-&gt;mft_record_size_bits
+comma
+(paren
+id|__s64
+)paren
+id|mftno
+op_lshift
+id|vol-&gt;mft_record_size_bits
+)paren
 suffix:semicolon
 id|error
 op_assign
@@ -475,9 +499,12 @@ id|vol-&gt;at_data
 comma
 l_int|NULL
 comma
+(paren
+id|__s64
+)paren
 id|mftno
-op_star
-id|vol-&gt;mft_recordsize
+op_lshift
+id|vol-&gt;mft_record_size_bits
 comma
 op_amp
 id|io
@@ -491,7 +518,7 @@ op_logical_or
 (paren
 id|io.size
 op_ne
-id|vol-&gt;mft_recordsize
+id|vol-&gt;mft_record_size
 )paren
 )paren
 (brace
@@ -500,7 +527,7 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;read_mft_record: read %x failed &quot;
+l_string|&quot;read_mft_record: read 0x%x failed &quot;
 l_string|&quot;(%d,%d,%d)&bslash;n&quot;
 comma
 id|mftno
@@ -509,7 +536,7 @@ id|error
 comma
 id|io.size
 comma
-id|vol-&gt;mft_recordsize
+id|vol-&gt;mft_record_size
 )paren
 suffix:semicolon
 r_return
@@ -527,7 +554,7 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;read_mft_record: finished read %x&bslash;n&quot;
+l_string|&quot;read_mft_record: finished read 0x%x&bslash;n&quot;
 comma
 id|mftno
 )paren
@@ -550,7 +577,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NTFS: Invalid MFT record for %x&bslash;n&quot;
+l_string|&quot;NTFS: Invalid MFT record for 0x%x&bslash;n&quot;
 comma
 id|mftno
 )paren
@@ -565,7 +592,7 @@ c_func
 (paren
 id|DEBUG_OTHER
 comma
-l_string|&quot;read_mft_record: Done %x&bslash;n&quot;
+l_string|&quot;read_mft_record: Done 0x%x&bslash;n&quot;
 comma
 id|mftno
 )paren
@@ -610,13 +637,18 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|ntfs_size_t
-id|to_copy
-suffix:semicolon
 r_int
 id|length
 op_assign
 id|buf-&gt;size
+suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+id|ntfs_size_t
+id|to_copy
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -659,7 +691,7 @@ id|sb-&gt;s_dev
 comma
 id|cluster
 comma
-id|vol-&gt;clustersize
+id|vol-&gt;cluster_size
 )paren
 )paren
 )paren
@@ -679,9 +711,13 @@ suffix:colon
 l_string|&quot;Writing&quot;
 )paren
 suffix:semicolon
-r_return
+id|error
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|error_ret
 suffix:semicolon
 )brace
 id|to_copy
@@ -689,7 +725,7 @@ op_assign
 id|min
 c_func
 (paren
-id|vol-&gt;clustersize
+id|vol-&gt;cluster_size
 op_minus
 id|start_offs
 comma
@@ -707,6 +743,7 @@ c_cond
 (paren
 id|buf-&gt;do_read
 )paren
+(brace
 id|buf
 op_member_access_from_pointer
 id|fn_put
@@ -721,6 +758,13 @@ comma
 id|to_copy
 )paren
 suffix:semicolon
+id|unlock_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 id|buf
@@ -743,13 +787,88 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-)brace
 id|unlock_buffer
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Note: We treat synchronous IO on a per volume basis&n;&t;&t;&t; * disregarding flags of individual inodes. This can&n;&t;&t;&t; * lead to some strange write ordering effects upon a&n;&t;&t;&t; * remount with a change in the sync flag but it should&n;&t;&t;&t; * not break anything. [Except if the system crashes&n;&t;&t;&t; * at that point in time but there would be more thigs&n;&t;&t;&t; * to worry about than that in that case...]. (AIA)&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+(brace
+id|ll_rw_block
+c_func
+(paren
+id|WRITE
+comma
+l_int|1
+comma
+op_amp
+id|bh
+)paren
+suffix:semicolon
+id|wait_on_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|buffer_req
+c_func
+(paren
+id|bh
+)paren
+op_logical_and
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IO error syncing NTFS &quot;
+l_string|&quot;cluster [%s:%i]&bslash;n&quot;
+comma
+id|bdevname
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
+comma
+id|cluster
+)paren
+suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|error_ret
+suffix:semicolon
+)brace
+)brace
+)brace
 id|length
 op_sub_assign
 id|to_copy
@@ -768,8 +887,10 @@ id|bh
 )paren
 suffix:semicolon
 )brace
+id|error_ret
+suffix:colon
 r_return
-l_int|0
+id|error
 suffix:semicolon
 )brace
 DECL|function|ntfs_now
@@ -1118,6 +1239,24 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buf
+)paren
+(brace
+id|ntfs_free
+c_func
+(paren
+id|result
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren

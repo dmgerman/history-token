@@ -20,8 +20,6 @@ DECL|macro|IS_MAGIC
 mdefine_line|#define IS_MAGIC(a,b)&t;&t;(*(int*)(a) == *(int*)(b))
 DECL|macro|IS_MFT_RECORD
 mdefine_line|#define IS_MFT_RECORD(a)&t;IS_MAGIC((a),&quot;FILE&quot;)
-DECL|macro|IS_NTFS_VOLUME
-mdefine_line|#define IS_NTFS_VOLUME(a)&t;IS_MAGIC((a) + 3,&quot;NTFS&quot;)
 DECL|macro|IS_INDEX_RECORD
 mdefine_line|#define IS_INDEX_RECORD(a)&t;IS_MAGIC((a),&quot;INDX&quot;)
 multiline_comment|/* &squot;NTFS&squot; in little endian */

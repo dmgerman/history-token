@@ -3081,6 +3081,10 @@ id|readdir
 suffix:colon
 id|ext2_readdir
 comma
+id|ioctl
+suffix:colon
+id|ext2_ioctl
+comma
 id|fsync
 suffix:colon
 id|ext2_sync_file

@@ -3087,7 +3087,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s detected modem at 0x%x&bslash;n&quot;
+l_string|&quot;Elsa: %s detected modem at 0x%lx&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -3123,7 +3123,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: %s config port %x-%x already in use&bslash;n&quot;
+l_string|&quot;HiSax: %s config port %lx-%lx already in use&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -3169,7 +3169,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s detected modem at 0x%x&bslash;n&quot;
+l_string|&quot;Elsa: %s detected modem at 0x%lx&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -3205,7 +3205,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: %s config port %x-%x already in use&bslash;n&quot;
+l_string|&quot;HiSax: %s config port %lx-%lx already in use&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -3239,7 +3239,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s detected modem at 0x%x&bslash;n&quot;
+l_string|&quot;Elsa: %s detected modem at 0x%lx&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket

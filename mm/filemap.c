@@ -3097,6 +3097,12 @@ r_if
 c_cond
 (paren
 id|page-&gt;mapping
+op_eq
+id|mapping
+op_logical_and
+id|page-&gt;index
+op_eq
+id|offset
 )paren
 r_return
 id|page

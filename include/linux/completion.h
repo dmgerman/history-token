@@ -1,0 +1,81 @@
+macro_line|#ifndef __LINUX_COMPLETION_H
+DECL|macro|__LINUX_COMPLETION_H
+mdefine_line|#define __LINUX_COMPLETION_H
+multiline_comment|/*&n; * (C) Copyright 2001 Linus Torvalds&n; *&n; * Atomic wait-for-completion handler data structures.&n; * See kernel/sched.c for details.&n; */
+macro_line|#include &lt;linux/wait.h&gt;
+DECL|struct|completion
+r_struct
+id|completion
+(brace
+DECL|member|done
+r_int
+r_int
+id|done
+suffix:semicolon
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|COMPLETION_INITIALIZER
+mdefine_line|#define COMPLETION_INITIALIZER(work) &bslash;&n;&t;{ 0, __WAIT_QUEUE_HEAD_INITIALIZER((work).wait) }
+DECL|macro|DECLARE_COMPLETION
+mdefine_line|#define DECLARE_COMPLETION(work) &bslash;&n;&t;struct completion work = COMPLETION_INITIALIZER(work)
+DECL|function|init_completion
+r_static
+r_inline
+r_void
+id|init_completion
+c_func
+(paren
+r_struct
+id|completion
+op_star
+id|x
+)paren
+(brace
+id|x-&gt;done
+op_assign
+l_int|0
+suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|x-&gt;wait
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|wait_for_completion
+c_func
+(paren
+r_struct
+id|completion
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|complete
+c_func
+(paren
+r_struct
+id|completion
+op_star
+)paren
+)paren
+suffix:semicolon
+DECL|macro|INIT_COMPLETION
+mdefine_line|#define INIT_COMPLETION(x)&t;((x).done = 0)
+macro_line|#endif
+eof

@@ -6463,6 +6463,18 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+multiline_comment|/* Stopping end users copying their data to the entire kernel&n;&t;   is good.. */
+r_if
+c_cond
+(paren
+id|d.used
+template_param
+id|buf-&gt;total
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren

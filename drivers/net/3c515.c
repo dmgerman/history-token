@@ -1,5 +1,5 @@
 multiline_comment|/* 3c515.c: A 3Com ISA EtherLink XL &quot;Corkscrew&quot; ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1997-1998 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com ISA EtherLink XL &quot;Corkscrew&quot; 3c515 ethercard.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;&n;&t;2/2/00- Added support for kernel-level ISAPnP &n;&t;&t;by Stephen Frost &lt;sfrost@snowman.net&gt; and Alessandro Zummo&n;&t;Cleaned up for 2.3.x/softnet by Jeff Garzik and Alan Cox.&n;*/
+multiline_comment|/*&n;&t;Written 1997-1998 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com ISA EtherLink XL &quot;Corkscrew&quot; 3c515 ethercard.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;2/2/00- Added support for kernel-level ISAPnP &n;&t;&t;by Stephen Frost &lt;sfrost@snowman.net&gt; and Alessandro Zummo&n;&t;Cleaned up for 2.3.x/softnet by Jeff Garzik and Alan Cox.&n;*/
 DECL|variable|version
 r_static
 r_char
@@ -84,7 +84,7 @@ mdefine_line|#define IRQ(irq, dev_id, pt_regs) (irq, dev_id, pt_regs)
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Donald Becker &lt;becker@cesdis.gsfc.nasa.gov&gt;&quot;
+l_string|&quot;Donald Becker &lt;becker@scyld.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

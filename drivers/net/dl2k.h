@@ -27,10 +27,10 @@ DECL|macro|TX_QUEUE_LEN
 mdefine_line|#define TX_QUEUE_LEN&t;10&t;/* Limit ring entries actually used.  */
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;16
-DECL|macro|virt_to_le64desc
-mdefine_line|#define virt_to_le64desc(addr)  cpu_to_le64(virt_to_bus(addr))
-DECL|macro|le64desc_to_virt
-mdefine_line|#define le64desc_to_virt(addr)  bus_to_virt(le64_to_cpu(addr))
+DECL|macro|TX_TOTAL_SIZE
+mdefine_line|#define TX_TOTAL_SIZE&t;TX_RING_SIZE*sizeof(struct netdev_desc)
+DECL|macro|RX_TOTAL_SIZE
+mdefine_line|#define RX_TOTAL_SIZE&t;RX_RING_SIZE*sizeof(struct netdev_desc)
 multiline_comment|/* This driver was written to use PCI memory space, however x86-oriented&n;   hardware often uses I/O space accesses. */
 macro_line|#ifdef USE_IO_OPS
 DECL|macro|readb
@@ -2444,20 +2444,15 @@ multiline_comment|/* Descriptor rings first for alignment. */
 DECL|member|rx_ring
 r_struct
 id|netdev_desc
+op_star
 id|rx_ring
-(braket
-id|RX_RING_SIZE
-)braket
 suffix:semicolon
 DECL|member|tx_ring
 r_struct
 id|netdev_desc
+op_star
 id|tx_ring
-(braket
-id|TX_RING_SIZE
-)braket
 suffix:semicolon
-multiline_comment|/* The addresses of receive-in-place skbuffs. */
 DECL|member|rx_skbuff
 r_struct
 id|sk_buff
@@ -2467,7 +2462,6 @@ id|rx_skbuff
 id|RX_RING_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* The saved address of a sent-in-place packet/buffer, for later free(). */
 DECL|member|tx_skbuff
 r_struct
 id|sk_buff
@@ -2477,20 +2471,28 @@ id|tx_skbuff
 id|TX_RING_SIZE
 )braket
 suffix:semicolon
-DECL|member|stats
+DECL|member|tx_ring_dma
+id|dma_addr_t
+id|tx_ring_dma
+suffix:semicolon
+DECL|member|rx_ring_dma
+id|dma_addr_t
+id|rx_ring_dma
+suffix:semicolon
+DECL|member|pdev
 r_struct
-id|net_device_stats
-id|stats
+id|pci_dev
+op_star
+id|pdev
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|rx_head_desc
+DECL|member|stats
 r_struct
-id|netdev_desc
-op_star
-id|rx_head_desc
+id|net_device_stats
+id|stats
 suffix:semicolon
 DECL|member|rx_buf_sz
 r_int
@@ -2552,7 +2554,8 @@ suffix:semicolon
 multiline_comment|/* Last Tx descriptor used. */
 DECL|member|cur_rx
 DECL|member|old_rx
-id|u64
+r_int
+r_int
 id|cur_rx
 comma
 id|old_rx
@@ -2560,7 +2563,8 @@ suffix:semicolon
 multiline_comment|/* Producer/consumer ring indices */
 DECL|member|cur_tx
 DECL|member|old_tx
-id|u64
+r_int
+r_int
 id|cur_tx
 comma
 id|old_tx
@@ -2810,8 +2814,13 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|np-&gt;tx_ring_dma
+op_plus
+id|i
+op_star
+r_sizeof
 (paren
+op_star
 id|desc
 )paren
 comma
@@ -2921,8 +2930,13 @@ comma
 (paren
 id|u32
 )paren
-id|virt_to_bus
+id|np-&gt;rx_ring_dma
+op_plus
+id|i
+op_star
+r_sizeof
 (paren
+op_star
 id|desc
 )paren
 comma
@@ -3099,14 +3113,30 @@ id|pkt_len
 )paren
 (brace
 r_int
-id|i
+id|entry
+op_assign
+id|np-&gt;cur_rx
+op_mod
+id|RX_RING_SIZE
 suffix:semicolon
 r_struct
 id|netdev_desc
 op_star
 id|desc
 op_assign
-id|np-&gt;rx_head_desc
+op_amp
+id|np-&gt;rx_ring
+(braket
+id|entry
+)braket
+suffix:semicolon
+id|u64
+id|frame_status
+op_assign
+id|le64_to_cpu
+(paren
+id|desc-&gt;status
+)paren
 suffix:semicolon
 r_int
 r_char
@@ -3118,13 +3148,8 @@ r_char
 op_star
 id|phead
 suffix:semicolon
-id|u64
-id|frame_status
-op_assign
-id|le64_to_cpu
-(paren
-id|desc-&gt;status
-)paren
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -3164,8 +3189,11 @@ l_int|7
 (brace
 id|phead
 op_assign
-id|le64desc_to_virt
+id|bus_to_virt
+c_func
 (paren
+id|le64_to_cpu
+c_func
 (paren
 id|desc-&gt;fraginfo
 op_amp

@@ -49,7 +49,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_FS
-mdefine_line|#define INIT_FS { &bslash;&n;&t;ATOMIC_INIT(1), &bslash;&n;&t;RW_LOCK_UNLOCKED, &bslash;&n;&t;0000, &bslash;&n;&t;NULL, NULL, NULL, NULL, NULL, NULL &bslash;&n;}
+mdefine_line|#define INIT_FS { &bslash;&n;&t;ATOMIC_INIT(1), &bslash;&n;&t;RW_LOCK_UNLOCKED, &bslash;&n;&t;0022, &bslash;&n;&t;NULL, NULL, NULL, NULL, NULL, NULL &bslash;&n;}
 r_extern
 r_void
 id|exit_fs

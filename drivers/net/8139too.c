@@ -441,6 +441,22 @@ id|RTL8139
 )brace
 comma
 (brace
+id|PCI_ANY_ID
+comma
+l_int|0x8139
+comma
+l_int|0x1186
+comma
+l_int|0x1300
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DFE538TX
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -4095,6 +4111,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_8139TOO_8129
 multiline_comment|/* Syncronize the MII management interface by shifting 32 one bits out. */
 DECL|function|mdio_sync
 r_static
@@ -4162,6 +4179,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|mdio_read
 r_static
 r_int
@@ -4186,6 +4204,12 @@ id|tp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_8139TOO_8129
 r_void
 op_star
 id|mdio_addr
@@ -4212,13 +4236,9 @@ op_or
 id|location
 suffix:semicolon
 r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 id|DPRINTK
 (paren
 l_string|&quot;ENTER&bslash;n&quot;
@@ -4449,6 +4469,7 @@ id|tp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+macro_line|#ifdef CONFIG_8139TOO_8129
 r_void
 op_star
 id|mdio_addr
@@ -4483,6 +4504,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 id|DPRINTK
 (paren
 l_string|&quot;ENTER&bslash;n&quot;
@@ -6707,13 +6729,6 @@ id|ETH_ZLEN
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|tp-&gt;lock
-)paren
-suffix:semicolon
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
@@ -6740,6 +6755,13 @@ id|tp-&gt;dirty_tx
 id|netif_stop_queue
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
 )paren
 suffix:semicolon
 id|DPRINTK

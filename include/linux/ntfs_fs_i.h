@@ -104,8 +104,7 @@ DECL|macro|NTFS_WCHAR_T
 mdefine_line|#define NTFS_WCHAR_T
 DECL|typedef|ntfs_wchar_t
 r_typedef
-r_int
-r_int
+id|u16
 id|ntfs_wchar_t
 suffix:semicolon
 macro_line|#endif
@@ -115,9 +114,7 @@ DECL|macro|NTFS_OFFSET_T
 mdefine_line|#define NTFS_OFFSET_T
 DECL|typedef|ntfs_offset_t
 r_typedef
-r_int
-r_int
-r_int
+id|s64
 id|ntfs_offset_t
 suffix:semicolon
 macro_line|#endif
@@ -127,20 +124,17 @@ DECL|macro|NTFS_TIME64_T
 mdefine_line|#define NTFS_TIME64_T
 DECL|typedef|ntfs_time64_t
 r_typedef
-r_int
-r_int
-r_int
+id|u64
 id|ntfs_time64_t
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* This is really unsigned long long. So we support only volumes up to 2 TB */
+multiline_comment|/*&n; * This is really signed long long. So we support only volumes up to 2Tb. This&n; * is ok as Win2k also only uses 32-bits to store clusters.&n; * Whatever you do keep this a SIGNED value or a lot of NTFS users with&n; * corrupted filesystems will lynch you! It causes massive fs corruption when&n; * unsigned due to the nature of many checks relying on being performed on&n; * signed quantities. (AIA)&n; */
 macro_line|#ifndef NTFS_CLUSTER_T
 DECL|macro|NTFS_CLUSTER_T
 mdefine_line|#define NTFS_CLUSTER_T
 DECL|typedef|ntfs_cluster_t
 r_typedef
-r_int
-r_int
+id|s32
 id|ntfs_cluster_t
 suffix:semicolon
 macro_line|#endif
@@ -161,6 +155,7 @@ op_star
 id|vol
 suffix:semicolon
 DECL|member|i_number
+r_int
 r_int
 id|i_number
 suffix:semicolon

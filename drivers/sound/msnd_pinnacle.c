@@ -7821,13 +7821,6 @@ l_string|&quot;i&quot;
 suffix:semicolon
 id|MODULE_PARM
 (paren
-id|major
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-(paren
 id|fifosize
 comma
 l_string|&quot;i&quot;

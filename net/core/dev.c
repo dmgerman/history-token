@@ -8654,13 +8654,6 @@ id|dev_boot_phase
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_SCHED
-id|pktsched_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 id|dv_init
 c_func
@@ -9053,6 +9046,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_SCHED
+id|pktsched_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *&t;Initialise network devices&n;&t; */
 id|net_device_init
 c_func

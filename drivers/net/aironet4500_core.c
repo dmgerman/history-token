@@ -1620,7 +1620,7 @@ c_cond
 (paren
 id|bap_setup_spinlock
 )paren
-id|my_spin_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2192,7 +2192,7 @@ c_cond
 (paren
 id|bap_setup_spinlock
 )paren
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2218,7 +2218,7 @@ c_cond
 (paren
 id|bap_setup_spinlock
 )paren
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2243,7 +2243,7 @@ c_cond
 (paren
 id|bap_setup_spinlock
 )paren
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5449,7 +5449,7 @@ c_func
 l_string|&quot; entry awc_tx_fid_lookup &quot;
 )paren
 suffix:semicolon
-id|my_spin_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -5491,7 +5491,7 @@ comma
 id|fid
 )paren
 suffix:semicolon
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5521,7 +5521,7 @@ l_int|200
 )paren
 (brace
 singleline_comment|//&t;&t;printk(&quot;bbb in awc_fid_queue&bslash;n&quot;);
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5570,7 +5570,7 @@ comma
 id|fid
 )paren
 suffix:semicolon
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5600,7 +5600,7 @@ l_int|200
 )paren
 (brace
 singleline_comment|//&t;&t;printk(&quot;bbb in awc_fid_queue&bslash;n&quot;);
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5649,7 +5649,7 @@ comma
 id|fid
 )paren
 suffix:semicolon
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5679,7 +5679,7 @@ l_int|200
 )paren
 (brace
 singleline_comment|//&t;&t;printk(&quot;bbb in awc_fid_queue&bslash;n&quot;);
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5728,7 +5728,7 @@ comma
 id|fid
 )paren
 suffix:semicolon
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5758,7 +5758,7 @@ l_int|200
 )paren
 (brace
 singleline_comment|//&t;&t;printk(&quot;bbb in awc_fid_queue&bslash;n&quot;);
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -5776,7 +5776,7 @@ suffix:semicolon
 suffix:semicolon
 )brace
 suffix:semicolon
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -12720,7 +12720,7 @@ id|priv-&gt;SSIDs
 )paren
 )paren
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -13048,7 +13048,7 @@ id|awc_private
 )paren
 )paren
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -13081,7 +13081,7 @@ id|priv-&gt;bap0.status
 op_assign
 l_int|0
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -13121,7 +13121,7 @@ id|priv-&gt;bap1.status
 op_assign
 l_int|0
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -13140,28 +13140,28 @@ op_assign
 l_int|1
 suffix:semicolon
 singleline_comment|//spinlock now&t;init_MUTEX(&amp;priv-&gt;command_semaphore);
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
 id|priv-&gt;command_issuing_spinlock
 )paren
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
 id|priv-&gt;both_bap_spinlock
 )paren
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
 id|priv-&gt;bap_setup_spinlock
 )paren
 suffix:semicolon
-id|my_spin_lock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -14012,11 +14012,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|dev_id
 suffix:semicolon
 r_struct
@@ -14048,7 +14043,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|my_spin_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -14063,7 +14058,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|my_spin_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp

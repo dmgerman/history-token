@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_int
@@ -839,11 +840,11 @@ DECL|struct|subprocess_info
 r_struct
 id|subprocess_info
 (brace
-DECL|member|sem
+DECL|member|complete
 r_struct
-id|semaphore
+id|completion
 op_star
-id|sem
+id|complete
 suffix:semicolon
 DECL|member|path
 r_char
@@ -975,10 +976,10 @@ id|sub_info-&gt;retval
 op_assign
 id|pid
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
-id|sub_info-&gt;sem
+id|sub_info-&gt;complete
 )paren
 suffix:semicolon
 )brace
@@ -1003,10 +1004,10 @@ op_star
 id|envp
 )paren
 (brace
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|work
 )paren
 suffix:semicolon
 r_struct
@@ -1014,10 +1015,10 @@ id|subprocess_info
 id|sub_info
 op_assign
 (brace
-id|sem
+id|complete
 suffix:colon
 op_amp
-id|sem
+id|work
 comma
 id|path
 suffix:colon
@@ -1093,14 +1094,13 @@ op_amp
 id|tqs
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|work
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until keventd has started the subprocess */
 )brace
 id|out
 suffix:colon

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &quot;hysdn_defs.h&quot;
 macro_line|#include &quot;boardergo.h&quot;
 DECL|macro|byteout

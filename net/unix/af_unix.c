@@ -2525,6 +2525,10 @@ l_int|0
 )braket
 )paren
 (brace
+r_int
+r_int
+id|mode
+suffix:semicolon
 id|err
 op_assign
 l_int|0
@@ -2640,6 +2644,17 @@ r_goto
 id|out_mknod_dput
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * All right, let&squot;s create it.&n;&t;&t; */
+id|mode
+op_assign
+id|S_IFSOCK
+op_or
+(paren
+id|sock-&gt;inode-&gt;i_mode
+op_amp
+op_complement
+id|current-&gt;fs-&gt;umask
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|vfs_mknod
@@ -2649,9 +2664,7 @@ id|nd.dentry-&gt;d_inode
 comma
 id|dentry
 comma
-id|S_IFSOCK
-op_or
-id|sock-&gt;inode-&gt;i_mode
+id|mode
 comma
 l_int|0
 )paren

@@ -26,6 +26,8 @@ mdefine_line|#define USB_CLASS_APP_SPEC&t;&t;0xfe
 DECL|macro|USB_CLASS_VENDOR_SPEC
 mdefine_line|#define USB_CLASS_VENDOR_SPEC&t;&t;0xff
 multiline_comment|/*&n; * USB types&n; */
+DECL|macro|USB_TYPE_MASK
+mdefine_line|#define USB_TYPE_MASK&t;&t;&t;(0x03 &lt;&lt; 5)
 DECL|macro|USB_TYPE_STANDARD
 mdefine_line|#define USB_TYPE_STANDARD&t;&t;(0x00 &lt;&lt; 5)
 DECL|macro|USB_TYPE_CLASS
@@ -1535,6 +1537,11 @@ id|atomic_t
 id|refcnt
 suffix:semicolon
 multiline_comment|/* Reference count */
+DECL|member|serialize
+r_struct
+id|semaphore
+id|serialize
+suffix:semicolon
 DECL|member|toggle
 r_int
 r_int

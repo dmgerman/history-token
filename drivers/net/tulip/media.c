@@ -1387,7 +1387,7 @@ l_int|1
 suffix:semicolon
 id|csr14val
 op_assign
-l_int|0x0003FFFF
+l_int|0
 suffix:semicolon
 id|csr15dir
 op_assign

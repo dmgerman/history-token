@@ -2134,7 +2134,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HiSax: %s (%s) configured at 0x%.4X, 0x%.4X, 0x%.4X and IRQ %d&bslash;n&quot;
+l_string|&quot;HiSax: %s (%s) configured at 0x%.4lX, 0x%.4lX, 0x%.4lX and IRQ %d&bslash;n&quot;
 comma
 id|CardType
 (braket

@@ -335,6 +335,10 @@ c_cond
 (paren
 op_logical_neg
 id|u.unique_len
+op_logical_or
+id|u.unique_len
+OG
+l_int|1024
 )paren
 r_return
 op_minus

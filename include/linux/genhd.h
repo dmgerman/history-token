@@ -120,6 +120,11 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* primary (master) devfs entry  */
+DECL|member|number
+r_int
+id|number
+suffix:semicolon
+multiline_comment|/* stupid old code wastes space  */
 )brace
 suffix:semicolon
 DECL|macro|GENHD_FL_REMOVABLE

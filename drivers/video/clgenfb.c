@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_ZORRO
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#endif
@@ -554,6 +553,11 @@ id|id
 comma
 id|id2
 suffix:semicolon
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
 DECL|variable|__initdata
 )brace
 id|clgen_zorro_probe_list
@@ -568,6 +572,8 @@ comma
 id|ZORRO_PROD_HELFRICH_SD64_RAM
 comma
 id|ZORRO_PROD_HELFRICH_SD64_REG
+comma
+l_int|0x400000
 )brace
 comma
 (brace
@@ -576,6 +582,8 @@ comma
 id|ZORRO_PROD_HELFRICH_PICCOLO_RAM
 comma
 id|ZORRO_PROD_HELFRICH_PICCOLO_REG
+comma
+l_int|0x200000
 )brace
 comma
 (brace
@@ -584,6 +592,8 @@ comma
 id|ZORRO_PROD_VILLAGE_TRONIC_PICASSO_II_II_PLUS_RAM
 comma
 id|ZORRO_PROD_VILLAGE_TRONIC_PICASSO_II_II_PLUS_REG
+comma
+l_int|0x200000
 )brace
 comma
 (brace
@@ -592,6 +602,8 @@ comma
 id|ZORRO_PROD_GVP_EGS_28_24_SPECTRUM_RAM
 comma
 id|ZORRO_PROD_GVP_EGS_28_24_SPECTRUM_REG
+comma
+l_int|0x200000
 )brace
 comma
 (brace
@@ -600,6 +612,8 @@ comma
 id|ZORRO_PROD_VILLAGE_TRONIC_PICASSO_IV_Z3
 comma
 l_int|0
+comma
+l_int|0x400000
 )brace
 comma
 )brace
@@ -1010,7 +1024,7 @@ id|FB_VMODE_NONINTERLACED
 )brace
 )brace
 comma
-multiline_comment|/* &n;&t;   Modeline from XF86Config:&n;&t;   Mode &quot;1024x768&quot; 80  1024 1136 1340 1432  768 770 774 805&n;&t; */
+multiline_comment|/*&n;&t;   Modeline from XF86Config:&n;&t;   Mode &quot;1024x768&quot; 80  1024 1136 1340 1432  768 770 774 805&n;&t; */
 (brace
 l_string|&quot;1024x768&quot;
 comma
@@ -2426,7 +2440,7 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Calculate MCLK, in case VCLK is high enough to require &gt; 50MHz.&n;&t; * Assume a 64-bit data path for now.  The formula is: &n;&t; * ((B * PCLK * 2)/W) * 1.2&n;&t; * B = bytes per pixel, PCLK = pixclock, W = data width in bytes */
+multiline_comment|/* Calculate MCLK, in case VCLK is high enough to require &gt; 50MHz.&n;&t; * Assume a 64-bit data path for now.  The formula is:&n;&t; * ((B * PCLK * 2)/W) * 1.2&n;&t; * B = bytes per pixel, PCLK = pixclock, W = data width in bytes */
 id|mclk
 op_assign
 (paren
@@ -4762,7 +4776,7 @@ l_int|0xc7
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* mode control: VGA_CRTC_START_HI enable, ROTATE(?), 16bit &n;&t;&t; * address wrap, no compat. */
+multiline_comment|/* mode control: VGA_CRTC_START_HI enable, ROTATE(?), 16bit&n;&t;&t; * address wrap, no compat. */
 id|vga_wcrt
 (paren
 id|fb_info-&gt;regs
@@ -5823,7 +5837,8 @@ l_int|0xc0
 )paren
 suffix:semicolon
 multiline_comment|/* Copy Xbh */
-macro_line|#elif CONFIG_ZORRO
+macro_line|#elif defined(CONFIG_ZORRO)
+multiline_comment|/* FIXME: CONFIG_PCI and CONFIG_ZORRO may be defined both */
 id|WHDR
 (paren
 id|fb_info
@@ -7679,29 +7694,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef CLGEN_USE_HARDCODED_RAM_SETTINGS
-multiline_comment|/* &quot;pre-set&quot; a RAMsize; if the test succeeds, double it */
-r_if
-c_cond
-(paren
-id|fb_info-&gt;btype
-op_eq
-id|BT_SD64
-op_logical_or
-id|fb_info-&gt;btype
-op_eq
-id|BT_PICASSO4
-)paren
-id|fb_info-&gt;size
-op_assign
-l_int|0x400000
-suffix:semicolon
-r_else
-id|fb_info-&gt;size
-op_assign
-l_int|0x200000
-suffix:semicolon
-macro_line|#else
 m_assert
 (paren
 id|fb_info-&gt;size
@@ -7710,7 +7702,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* make sure RAM size set by this point */
-macro_line|#endif
 multiline_comment|/* assume it&squot;s a &quot;large memory&quot; board (2/4 MB) */
 id|fb_info-&gt;smallboard
 op_assign
@@ -10397,8 +10388,6 @@ op_assign
 id|clgen_pci_probe_list
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 dot
 id|btype
@@ -10947,6 +10936,11 @@ comma
 id|clgen_board_t
 op_star
 id|btype
+comma
+r_int
+r_int
+op_star
+id|size
 )paren
 (brace
 r_struct
@@ -11062,11 +11056,19 @@ op_assign
 id|clgen_zorro_probe_list
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 dot
 id|btype
+suffix:semicolon
+op_star
+id|size
+op_assign
+id|clgen_zorro_probe_list
+(braket
+id|i
+)braket
+dot
+id|size
 suffix:semicolon
 id|printk
 (paren
@@ -11185,6 +11187,8 @@ r_int
 id|board_addr
 comma
 id|board_size
+comma
+id|size
 suffix:semicolon
 m_assert
 (paren
@@ -11212,6 +11216,9 @@ op_amp
 id|z2
 comma
 id|btype
+comma
+op_amp
+id|size
 )paren
 )paren
 r_return
@@ -11255,6 +11262,10 @@ op_minus
 id|z-&gt;resource.start
 op_plus
 l_int|1
+suffix:semicolon
+id|info-&gt;size
+op_assign
+id|size
 suffix:semicolon
 r_if
 c_cond
@@ -11515,7 +11526,8 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-macro_line|#elif CONFIG_ZORRO
+macro_line|#elif defined(CONFIG_ZORRO)
+multiline_comment|/* FIXME: CONFIG_PCI and CONFIG_ZORRO may be defined both */
 r_if
 c_cond
 (paren
@@ -12333,7 +12345,7 @@ l_string|&quot;EXIT&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*** WHDR() - write into the Hidden DAC register ***/
-multiline_comment|/* as the HDR is the only extension register that requires special treatment &n; * (the other extension registers are accessible just like the &quot;ordinary&quot;&n; * registers of their functional group) here is a specialized routine for &n; * accessing the HDR&n; */
+multiline_comment|/* as the HDR is the only extension register that requires special treatment&n; * (the other extension registers are accessible just like the &quot;ordinary&quot;&n; * registers of their functional group) here is a specialized routine for&n; * accessing the HDR&n; */
 DECL|function|WHDR
 r_static
 r_void
@@ -12534,7 +12546,7 @@ id|fb_info-&gt;SFR
 op_assign
 id|val
 suffix:semicolon
-id|writeb
+id|z_writeb
 (paren
 id|val
 comma
@@ -12575,7 +12587,7 @@ id|fb_info-&gt;SFR
 op_assign
 id|val
 suffix:semicolon
-id|writeb
+id|z_writeb
 (paren
 id|val
 comma

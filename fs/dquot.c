@@ -6617,13 +6617,11 @@ c_cond
 op_logical_neg
 id|f-&gt;f_op
 op_logical_or
-(paren
 op_logical_neg
 id|f-&gt;f_op-&gt;read
-op_logical_and
+op_logical_or
 op_logical_neg
 id|f-&gt;f_op-&gt;write
-)paren
 )paren
 r_goto
 id|out_f

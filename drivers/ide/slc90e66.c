@@ -2010,10 +2010,11 @@ op_assign
 id|hwif-&gt;channel
 ques
 c_cond
-l_int|0x02
-suffix:colon
 l_int|0x01
+suffix:colon
+l_int|0x02
 suffix:semicolon
+multiline_comment|/* bit0:Primary */
 id|pci_read_config_byte
 c_func
 (paren
@@ -2034,10 +2035,11 @@ id|mask
 )paren
 ques
 c_cond
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+l_int|1
 suffix:semicolon
+multiline_comment|/* bit[0(1)]: 0:80, 1:40 */
 macro_line|#else
 id|byte
 id|ata66

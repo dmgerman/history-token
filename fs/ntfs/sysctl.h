@@ -1,4 +1,4 @@
-multiline_comment|/*  sysctl.h - Header file for sysctl.c&n; *&n; *  Copyright (C) 1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *&n; */
+multiline_comment|/*&n; * sysctl.h - Header file for sysctl.c&n; *&n; * Copyright (C) 1997 Martin von L&#xfffd;wis&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
 macro_line|#ifdef DEBUG
 r_extern
 r_int

@@ -8687,28 +8687,6 @@ c_cond
 (paren
 id|rc
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
 id|get_user
 c_func
 (paren
@@ -8721,7 +8699,10 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
+)paren
+op_eq
+l_int|0
+)paren
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
 (paren
@@ -8740,7 +8721,6 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -8839,28 +8819,6 @@ c_cond
 (paren
 id|rc
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
 id|get_user
 c_func
 (paren
@@ -8873,7 +8831,11 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|stli_mkasysigs
 c_func
 (paren
@@ -8943,28 +8905,6 @@ c_cond
 (paren
 id|rc
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
 id|get_user
 c_func
 (paren
@@ -8977,7 +8917,11 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|stli_mkasysigs
 c_func
 (paren
@@ -9047,28 +8991,6 @@ c_cond
 (paren
 id|rc
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
 id|get_user
 c_func
 (paren
@@ -9081,7 +9003,11 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|stli_mkasysigs
 c_func
 (paren
@@ -9235,33 +9161,8 @@ suffix:semicolon
 r_case
 id|STL_GETPFLAG
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
 id|rc
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|put_user
 c_func
 (paren
@@ -9286,28 +9187,6 @@ c_cond
 (paren
 id|rc
 op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
 id|get_user
 c_func
 (paren
@@ -9320,14 +9199,16 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
+)paren
+op_eq
+l_int|0
+)paren
 id|stli_setport
 c_func
 (paren
 id|portp
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -10180,6 +10061,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_dohangup(portp=%x)&bslash;n&quot;
 comma
 (paren
@@ -10264,6 +10146,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_hangup(tty=%x)&bslash;n&quot;
 comma
 (paren
@@ -10561,6 +10444,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_flushbuffer(tty=%x)&bslash;n&quot;
 comma
 (paren
@@ -10821,6 +10705,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_breakctl(tty=%x,state=%d)&bslash;n&quot;
 comma
 (paren
@@ -10965,6 +10850,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_waituntilsent(tty=%x,timeout=%x)&bslash;n&quot;
 comma
 (paren
@@ -11100,6 +10986,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_sendxchar(tty=%x,ch=%x)&bslash;n&quot;
 comma
 (paren
@@ -11684,6 +11571,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_readproc(page=%x,start=%x,off=%x,count=%d,eof=%x,&quot;
 l_string|&quot;data=%x&bslash;n&quot;
 comma
@@ -12016,6 +11904,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_sendcmd(brdp=%x,portp=%x,cmd=%x,arg=%x,size=%d,&quot;
 l_string|&quot;copyback=%d)&bslash;n&quot;
 comma
@@ -12072,6 +11961,7 @@ id|portp-&gt;state
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;STALLION: command already busy, cmd=%x!&bslash;n&quot;
 comma
 (paren
@@ -12276,6 +12166,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_read(brdp=%x,portp=%d)&bslash;n&quot;
 comma
 (paren
@@ -12930,6 +12821,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_hostcmd(brdp=%x,channr=%d)&bslash;n&quot;
 comma
 (paren
@@ -14112,6 +14004,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_mkasyport(portp=%x,pp=%x,tiosp=%d)&bslash;n&quot;
 comma
 (paren
@@ -14614,6 +14507,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_mkasysigs(sp=%x,dtr=%d,rts=%d)&bslash;n&quot;
 comma
 (paren
@@ -14717,6 +14611,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_mktiocm(sigvalue=%x)&bslash;n&quot;
 comma
 (paren
@@ -14853,6 +14748,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_initports(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -15058,6 +14954,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpinit(brdp=%d)&bslash;n&quot;
 comma
 (paren
@@ -15142,6 +15039,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpenable(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -15180,6 +15078,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpdisable(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -15234,6 +15133,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpgetmemptr(brdp=%x,offset=%x)&bslash;n&quot;
 comma
 (paren
@@ -15259,8 +15159,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -15340,6 +15241,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpreset(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -15402,6 +15304,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpintr(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -15441,6 +15344,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpeiinit(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -15625,6 +15529,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecpeigetmemptr(brdp=%x,offset=%x,line=%d)&bslash;n&quot;
 comma
 (paren
@@ -15652,8 +15557,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -15862,8 +15768,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -15997,6 +15904,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecppciinit(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16075,6 +15983,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_ecppcigetmemptr(brdp=%x,offset=%x,line=%d)&bslash;n&quot;
 comma
 (paren
@@ -16102,8 +16011,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), board=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), board=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -16235,6 +16145,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbinit(brdp=%d)&bslash;n&quot;
 comma
 (paren
@@ -16333,6 +16244,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbenable(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16375,6 +16287,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbdisable(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16429,6 +16342,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbgetmemptr(brdp=%x,offset=%x)&bslash;n&quot;
 comma
 (paren
@@ -16454,8 +16368,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -16507,6 +16422,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbreset(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16574,6 +16490,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbeinit(brdp=%d)&bslash;n&quot;
 comma
 (paren
@@ -16706,6 +16623,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbeenable(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16744,6 +16662,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbedisable(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16798,6 +16717,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_onbegetmemptr(brdp=%x,offset=%x,line=%d)&bslash;n&quot;
 comma
 (paren
@@ -16825,8 +16745,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -16912,6 +16833,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;stli_onbereset(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -16975,6 +16897,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;stli_bbyinit(brdp=%d)&bslash;n&quot;
 comma
 (paren
@@ -17067,6 +16990,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;stli_bbygetmemptr(brdp=%x,offset=%x)&bslash;n&quot;
 comma
 (paren
@@ -17092,8 +17016,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -17173,6 +17098,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_bbyreset(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -17236,6 +17162,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_stalinit(brdp=%d)&bslash;n&quot;
 comma
 (paren
@@ -17288,6 +17215,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_stalgetmemptr(brdp=%x,offset=%x)&bslash;n&quot;
 comma
 (paren
@@ -17313,8 +17241,9 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: shared memory pointer=%x out of range at &quot;
-l_string|&quot;line=%d(%d), brd=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: shared memory pointer=%x out of &quot;
+l_string|&quot;range at line=%d(%d), brd=%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -17372,6 +17301,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_stalreset(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -17455,6 +17385,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_initecp(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -17502,8 +17433,9 @@ id|brdp-&gt;iosize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: Warning, board %d I/O address %x conflicts &quot;
-l_string|&quot;with another device&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: Warning, board %d I/O address %x &quot;
+l_string|&quot;conflicts with another device&bslash;n&quot;
 comma
 id|brdp-&gt;brdnr
 comma
@@ -18052,6 +17984,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_initonb(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -18099,8 +18032,9 @@ id|brdp-&gt;iosize
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: Warning, board %d I/O address %x conflicts &quot;
-l_string|&quot;with another device&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: Warning, board %d I/O address %x &quot;
+l_string|&quot;conflicts with another device&bslash;n&quot;
 comma
 id|brdp-&gt;brdnr
 comma
@@ -18631,6 +18565,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_startbrd(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -18731,8 +18666,9 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: slave failed to allocate memory for all &quot;
-l_string|&quot;devices, devices=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: slave failed to allocate memory for &quot;
+l_string|&quot;all devices, devices=%d&bslash;n&quot;
 comma
 id|nrdevs
 )paren
@@ -18796,6 +18732,7 @@ id|brdp-&gt;memsize
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;STALLION: corrupted shared memory region?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -18838,6 +18775,7 @@ id|TYP_ASYNCTRL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;STALLION: no slave control device found&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -19133,6 +19071,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_brdinit(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -19228,7 +19167,9 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: %s board type not supported in this driver&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: %s board type not supported in &quot;
+l_string|&quot;this driver&bslash;n&quot;
 comma
 id|stli_brdnames
 (braket
@@ -19244,7 +19185,9 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: board=%d is unknown board type=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: board=%d is unknown board &quot;
+l_string|&quot;type=%d&bslash;n&quot;
 comma
 id|brdp-&gt;brdnr
 comma
@@ -19270,7 +19213,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: %s board not found, board=%d io=%x mem=%x&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: %s board not found, board=%d &quot;
+l_string|&quot;io=%x mem=%x&bslash;n&quot;
 comma
 id|stli_brdnames
 (braket
@@ -19300,6 +19245,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;STALLION: %s found, board=%d io=%x mem=%x &quot;
 l_string|&quot;nrpanels=%d nrports=%d&bslash;n&quot;
 comma
@@ -19361,6 +19307,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_eisamemprobe(brdp=%x)&bslash;n&quot;
 comma
 (paren
@@ -19750,8 +19697,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: failed to probe shared memory region for &quot;
-l_string|&quot;%s in EISA slot=%d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: failed to probe shared memory &quot;
+l_string|&quot;region for %s in EISA slot=%d&bslash;n&quot;
 comma
 id|stli_brdnames
 (braket
@@ -19802,6 +19750,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_findeisabrds()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -20171,6 +20120,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_initpcibrd(brdtype=%d,busnr=%x,devnr=%x)&bslash;n&quot;
 comma
 id|brdtype
@@ -20234,6 +20184,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;STALLION: too many boards found, &quot;
 l_string|&quot;maximum supported %d&bslash;n&quot;
 comma
@@ -20252,6 +20203,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s(%d): BAR[]=%lx,%lx,%lx,%lx&bslash;n&quot;
 comma
 id|__FILE__
@@ -20451,7 +20403,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: failed to allocate memory (size=%d)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: failed to allocate memory &quot;
+l_string|&quot;(size=%d)&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -20519,6 +20473,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_initbrds()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -20534,8 +20489,9 @@ id|STL_MAXBRDS
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: too many boards in configuration table, &quot;
-l_string|&quot;truncating to %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;STALLION: too many boards in configuration &quot;
+l_string|&quot;table, truncating to %d&bslash;n&quot;
 comma
 id|STL_MAXBRDS
 )paren
@@ -20896,6 +20852,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_memread(fp=%x,buf=%x,count=%x,offp=%x)&bslash;n&quot;
 comma
 (paren
@@ -21148,6 +21105,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_memwrite(fp=%x,buf=%x,count=%x,offp=%x)&bslash;n&quot;
 comma
 (paren
@@ -21375,6 +21333,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -21388,6 +21349,10 @@ r_sizeof
 id|combrd_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -21519,6 +21484,9 @@ id|i
 )braket
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -21532,6 +21500,10 @@ r_sizeof
 id|combrd_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -22019,6 +21991,9 @@ op_star
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -22032,6 +22007,10 @@ r_sizeof
 id|comstats_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|portp
 op_assign
@@ -22101,6 +22080,7 @@ l_int|0
 r_return
 id|rc
 suffix:semicolon
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -22114,8 +22094,11 @@ r_sizeof
 id|comstats_t
 )paren
 )paren
-suffix:semicolon
-r_return
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -22155,6 +22138,9 @@ op_star
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -22168,6 +22154,10 @@ r_sizeof
 id|comstats_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|portp
 op_assign
@@ -22282,6 +22272,9 @@ id|stli_comstats.port
 op_assign
 id|portp-&gt;portnr
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -22295,6 +22288,10 @@ r_sizeof
 id|comstats_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -22317,6 +22314,9 @@ id|stliport_t
 op_star
 id|portp
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -22334,6 +22334,10 @@ r_sizeof
 id|stliport_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|portp
 op_assign
@@ -22362,6 +22366,9 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -22378,6 +22385,10 @@ r_sizeof
 id|stliport_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -22400,6 +22411,9 @@ id|stlibrd_t
 op_star
 id|brdp
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -22417,6 +22431,10 @@ r_sizeof
 id|stlibrd_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -22459,6 +22477,9 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -22475,6 +22496,10 @@ r_sizeof
 id|stlibrd_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -22522,6 +22547,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;stli_memioctl(ip=%x,fp=%x,cmd=%x,arg=%x)&bslash;n&quot;
 comma
 (paren
@@ -22561,32 +22587,6 @@ id|cmd
 r_case
 id|COM_GETPORTSTATS
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|comstats_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_getportstats
@@ -22613,32 +22613,6 @@ suffix:semicolon
 r_case
 id|COM_CLRPORTSTATS
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|comstats_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_clrportstats
@@ -22665,32 +22639,6 @@ suffix:semicolon
 r_case
 id|COM_GETBRDSTATS
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|combrd_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_getbrdstats
@@ -22711,32 +22659,6 @@ suffix:semicolon
 r_case
 id|COM_READPORT
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|stliport_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_getportstruct
@@ -22753,32 +22675,6 @@ suffix:semicolon
 r_case
 id|COM_READBOARD
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|stlibrd_t
-)paren
-)paren
-)paren
-op_eq
-l_int|0
-)paren
 id|rc
 op_assign
 id|stli_getbrdstruct
@@ -22790,10 +22686,6 @@ suffix:semicolon
 id|done
 op_increment
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -23005,17 +22897,15 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: failed to allocate memory (size=%d)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: failed to allocate memory &quot;
+l_string|&quot;(size=%d)&bslash;n&quot;
 comma
 id|STLI_TXBUFSIZE
 )paren
 suffix:semicolon
 id|stli_txcookbuf
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|stli_memalloc
 c_func
 (paren
@@ -23036,7 +22926,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: failed to allocate memory (size=%d)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: failed to allocate memory &quot;
+l_string|&quot;(size=%d)&bslash;n&quot;
 comma
 id|STLI_TXBUFSIZE
 )paren
@@ -23059,7 +22951,9 @@ id|stli_fsiomem
 id|printk
 c_func
 (paren
-l_string|&quot;STALLION: failed to register serial memory device&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;STALLION: failed to register serial memory &quot;
+l_string|&quot;device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|devfs_handle
@@ -23283,6 +23177,7 @@ id|stli_serial
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;STALLION: failed to register serial driver&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -23299,6 +23194,7 @@ id|stli_callout
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;STALLION: failed to register callout driver&bslash;n&quot;
 )paren
 suffix:semicolon

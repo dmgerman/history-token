@@ -1,4 +1,4 @@
-multiline_comment|/*  util.c -  Miscellaneous support&n; *&n; *  Copyright (C) 1997,1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; *&n; *  The utf8 routines are copied from Python wstrop module.&n; */
+multiline_comment|/*&n; * util.c -  Miscellaneous support&n; *&n; * Copyright (C) 1997,1999 Martin von L&#xfffd;wis&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 2001 Anton Altaparmakov (AIA)&n; *&n; * The utf8 routines are copied from Python wstrop module.&n; */
 macro_line|#include &quot;ntfstypes.h&quot;
 macro_line|#include &quot;struct.h&quot;
 macro_line|#include &quot;util.h&quot;
@@ -1468,8 +1468,7 @@ id|i
 op_eq
 l_int|0
 )paren
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_return

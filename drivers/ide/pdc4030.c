@@ -1346,7 +1346,7 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_return
 id|ide_started
 suffix:semicolon
@@ -1701,7 +1701,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;%s: promise_write: sectors(%ld-%ld), &quot;
-l_string|&quot;buffer=0x%08x&bslash;n&quot;
+l_string|&quot;buffer=%p&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -1713,10 +1713,6 @@ id|rq-&gt;nr_sectors
 op_minus
 l_int|1
 comma
-(paren
-r_int
-r_int
-)paren
 id|rq-&gt;buffer
 )paren
 suffix:semicolon

@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -4679,6 +4680,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;VFS: brelse: Trying to free free buffer&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9347,6 +9349,7 @@ id|PAGE_SIZE
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;VFS: grow_buffers: size = %d&bslash;n&quot;
 comma
 id|size
@@ -11013,7 +11016,7 @@ c_func
 (paren
 r_void
 op_star
-id|sem
+id|startup
 )paren
 (brace
 r_struct
@@ -11077,15 +11080,15 @@ op_amp
 id|tsk-&gt;sigmask_lock
 )paren
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
 (paren
 r_struct
-id|semaphore
+id|completion
 op_star
 )paren
-id|sem
+id|startup
 )paren
 suffix:semicolon
 r_for
@@ -11145,7 +11148,7 @@ c_func
 (paren
 r_void
 op_star
-id|sem
+id|startup
 )paren
 (brace
 r_struct
@@ -11221,15 +11224,15 @@ op_amp
 id|tsk-&gt;sigmask_lock
 )paren
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
 (paren
 r_struct
-id|semaphore
+id|completion
 op_star
 )paren
-id|sem
+id|startup
 )paren
 suffix:semicolon
 r_for
@@ -11352,6 +11355,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;kupdate() activated...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11373,10 +11377,11 @@ c_func
 r_void
 )paren
 (brace
-id|DECLARE_MUTEX_LOCKED
+r_static
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|sem
+id|startup
 )paren
 suffix:semicolon
 id|kernel_thread
@@ -11385,7 +11390,7 @@ c_func
 id|bdflush
 comma
 op_amp
-id|sem
+id|startup
 comma
 id|CLONE_FS
 op_or
@@ -11394,11 +11399,11 @@ op_or
 id|CLONE_SIGNAL
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|startup
 )paren
 suffix:semicolon
 id|kernel_thread
@@ -11407,7 +11412,7 @@ c_func
 id|kupdate
 comma
 op_amp
-id|sem
+id|startup
 comma
 id|CLONE_FS
 op_or
@@ -11416,11 +11421,11 @@ op_or
 id|CLONE_SIGNAL
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|sem
+id|startup
 )paren
 suffix:semicolon
 r_return

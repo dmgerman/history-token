@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  sysctl.c&n; *  System control stuff&n; *&n; *  Copyright (C) 1997 Martin von L&#xfffd;wis&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *&n; */
+multiline_comment|/*&n; * sysctl.c - System control stuff&n; *&n; * Copyright (C) 1997 Martin von L&#xfffd;wis&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#ifdef DEBUG
 macro_line|#include &lt;linux/locks.h&gt;
@@ -92,5 +92,4 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* DEBUG */
-multiline_comment|/*&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

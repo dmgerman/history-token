@@ -479,7 +479,7 @@ r_int
 id|osize
 )paren
 suffix:semicolon
-multiline_comment|/* These are in ppp.c */
+multiline_comment|/* These are in ppp_generic.c */
 r_extern
 r_int
 id|ppp_register_compressor
@@ -3471,6 +3471,7 @@ suffix:semicolon
 multiline_comment|/*************************************************************&n; * Module support routines&n; *************************************************************/
 DECL|function|bsdcomp_init
 r_int
+id|__init
 id|bsdcomp_init
 c_func
 (paren
@@ -3507,6 +3508,7 @@ suffix:semicolon
 )brace
 DECL|function|bsdcomp_cleanup
 r_void
+id|__exit
 id|bsdcomp_cleanup
 c_func
 (paren

@@ -2112,6 +2112,7 @@ id|devblocks
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(CONFIG_PPC_ISERIES)
 r_char
 id|rotator
 (braket
@@ -2128,6 +2129,7 @@ comma
 l_char|&squot;&bslash;&bslash;&squot;
 )brace
 suffix:semicolon
+macro_line|#endif
 id|ram_device
 op_assign
 id|MKDEV
@@ -2735,7 +2737,7 @@ op_amp
 id|outfile.f_pos
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390)
+macro_line|#if !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(CONFIG_PPC_ISERIES)
 r_if
 c_cond
 (paren

@@ -553,6 +553,23 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|b
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;do_io_probe: unable to kmalloc 256 bytes&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren

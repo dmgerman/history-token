@@ -349,6 +349,34 @@ id|ENOMEM
 suffix:semicolon
 multiline_comment|/* May only call once for each order */
 )brace
+multiline_comment|/* Might be too low a limit. XFree folks need to fix this properly */
+r_if
+c_cond
+(paren
+id|count
+template_param
+l_int|4096
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|dev-&gt;struct_sem
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|dev-&gt;buf_alloc
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|entry-&gt;buflist
 op_assign
 id|drm_alloc

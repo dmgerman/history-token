@@ -1,4 +1,4 @@
-multiline_comment|/*  inode.h -  Header file for inode.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; *  Copyright (C) 1998 Martin von L&#xfffd;wis&n; */
+multiline_comment|/*&n; * inode.h -  Header file for inode.c&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (C) 1998 Martin von L&#xfffd;wis&n; * Copyright (c) 2001 Anton Altparmakov (AIA)&n; */
 id|ntfs_attribute
 op_star
 id|ntfs_find_attr
@@ -31,7 +31,7 @@ r_char
 op_star
 id|name
 comma
-r_int
+id|__s64
 id|offset
 comma
 id|ntfs_io
@@ -54,7 +54,7 @@ r_char
 op_star
 id|name
 comma
-r_int
+id|__s64
 id|offset
 comma
 id|ntfs_io
@@ -176,7 +176,7 @@ id|ntfs_attribute
 op_star
 id|attr
 comma
-r_int
+id|__s64
 id|offset
 comma
 id|ntfs_io
@@ -254,6 +254,22 @@ id|blocksize
 comma
 r_int
 id|sequence_number
+)paren
+suffix:semicolon
+r_extern
+id|__inline__
+r_int
+id|ntfs_test_and_set_bit
+c_func
+(paren
+r_int
+r_char
+op_star
+id|byte
+comma
+r_const
+r_int
+id|bit
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,35 @@
-multiline_comment|/*  attr.h -  Header file for attr.c&n; *&n; *  Copyright (C) 1997 R&#xfffd;gis Duchesne&n; */
+multiline_comment|/*&n; * attr.h -  Header file for attr.c&n; *&n; * Copyright (C) 1997 R&#xfffd;gis Duchesne&n; * Copyright (c) 2001 Anton Altaparmakov (AIA)&n; */
+macro_line|#include &lt;linux/nls.h&gt;
+id|ntfs_u8
+op_star
+id|ntfs_find_attr_in_mft_rec
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+comma
+id|ntfs_u8
+op_star
+id|m
+comma
+id|__u32
+id|type
+comma
+m_wchar_t
+op_star
+id|name
+comma
+id|__u32
+id|name_len
+comma
+r_int
+id|ic
+comma
+id|__u16
+id|instance
+)paren
+suffix:semicolon
 r_int
 id|ntfs_extend_attr
 c_func
@@ -11,7 +42,7 @@ id|ntfs_attribute
 op_star
 id|attr
 comma
-r_int
+id|__s64
 op_star
 id|len
 comma
@@ -31,7 +62,7 @@ id|ntfs_attribute
 op_star
 id|attr
 comma
-r_int
+id|__s64
 id|newsize
 )paren
 suffix:semicolon
@@ -61,7 +92,7 @@ id|ntfs_attribute
 op_star
 id|attr
 comma
-r_int
+id|__s64
 id|offset
 comma
 id|ntfs_io
@@ -81,7 +112,7 @@ id|ntfs_attribute
 op_star
 id|attr
 comma
-r_int
+id|__s64
 id|offset
 comma
 id|ntfs_io
@@ -169,6 +200,13 @@ comma
 r_int
 id|namelen
 comma
+r_void
+op_star
+id|value
+comma
+r_int
+id|value_len
+comma
 r_int
 op_star
 id|pos
@@ -176,12 +214,9 @@ comma
 r_int
 op_star
 id|found
-comma
-r_int
-id|do_search
 )paren
 suffix:semicolon
-r_void
+r_int
 id|ntfs_insert_run
 c_func
 (paren

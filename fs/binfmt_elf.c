@@ -3857,6 +3857,7 @@ op_star
 id|vma
 )paren
 (brace
+multiline_comment|/*&n;&t; * If we may not read the contents, don&squot;t allow us to dump&n;&t; * them either. &quot;dump_write()&quot; can&squot;t handle it anyway.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3864,13 +3865,7 @@ op_logical_neg
 (paren
 id|vma-&gt;vm_flags
 op_amp
-(paren
 id|VM_READ
-op_or
-id|VM_WRITE
-op_or
-id|VM_EXEC
-)paren
 )paren
 )paren
 r_return
@@ -3884,11 +3879,9 @@ id|vma-&gt;vm_flags
 op_amp
 id|VM_IO
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 macro_line|#if 1
 r_if
 c_cond
@@ -5446,6 +5439,19 @@ comma
 id|addr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pgd_none
+c_func
+(paren
+op_star
+id|pgd
+)paren
+)paren
+r_goto
+id|nextpage_coredump
+suffix:semicolon
 id|pmd
 op_assign
 id|pmd_offset
@@ -5459,8 +5465,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|pmd_none
+c_func
+(paren
+op_star
 id|pmd
+)paren
 )paren
 r_goto
 id|nextpage_coredump
@@ -5474,15 +5484,6 @@ id|pmd
 comma
 id|addr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pte
-)paren
-r_goto
-id|nextpage_coredump
 suffix:semicolon
 r_if
 c_cond

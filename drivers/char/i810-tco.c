@@ -727,17 +727,19 @@ comma
 id|dev
 )paren
 )paren
+(brace
+id|i810tco_pci
+op_assign
+id|dev
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
 (paren
-(paren
 id|i810tco_pci
-op_assign
-id|dev
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *      Find the ACPI base I/O address which is the base&n;&t;&t; *      for the TCO registers (TCOBASE=ACPIBASE + 0x60)&n;&t;&t; *      ACPIBASE is bits [15:7] from 0x40-0x43&n;&t;&t; */

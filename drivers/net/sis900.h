@@ -1249,6 +1249,11 @@ DECL|macro|NUM_TX_DESC
 mdefine_line|#define NUM_TX_DESC     16      &t;/* Number of Tx descriptor registers. */
 DECL|macro|NUM_RX_DESC
 mdefine_line|#define NUM_RX_DESC     16       &t;/* Number of Rx descriptor registers. */
+DECL|macro|TX_TOTAL_SIZE
+mdefine_line|#define TX_TOTAL_SIZE&t;NUM_TX_DESC*sizeof(BufferDesc)
+DECL|macro|RX_TOTAL_SIZE
+mdefine_line|#define RX_TOTAL_SIZE&t;NUM_RX_DESC*sizeof(BufferDesc)
+multiline_comment|/* PCI stuff, should be move to pci.h */
 DECL|macro|SIS630_VENDOR_ID
 mdefine_line|#define SIS630_VENDOR_ID        0x1039
 DECL|macro|SIS630_DEVICE_ID

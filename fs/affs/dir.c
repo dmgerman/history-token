@@ -287,11 +287,10 @@ id|stored
 op_increment
 suffix:semicolon
 )brace
-id|down
+id|affs_lock_dir
 c_func
 (paren
-op_amp
-id|AFFS_INODE-&gt;i_hash_lock
+id|inode
 )paren
 suffix:semicolon
 id|chain_pos
@@ -749,11 +748,10 @@ c_func
 id|fh_bh
 )paren
 suffix:semicolon
-id|up
+id|affs_unlock_dir
 c_func
 (paren
-op_amp
-id|AFFS_INODE-&gt;i_hash_lock
+id|inode
 )paren
 suffix:semicolon
 id|pr_debug

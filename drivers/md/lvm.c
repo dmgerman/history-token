@@ -3395,6 +3395,18 @@ r_case
 id|LV_BMAP
 suffix:colon
 multiline_comment|/* turn logical block into (dev_t, block). non privileged. */
+multiline_comment|/* don&squot;t bmap a snapshot, since the mapping can change */
+r_if
+c_cond
+(paren
+id|lv_ptr-&gt;lv_access
+op_amp
+id|LV_SNAPSHOT
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 r_return
 id|lvm_user_bmap
 c_func
@@ -3750,7 +3762,7 @@ r_sizeof
 id|bh
 )paren
 suffix:semicolon
-id|bh.b_rsector
+id|bh.b_blocknr
 op_assign
 id|block
 suffix:semicolon
@@ -3758,7 +3770,7 @@ id|bh.b_dev
 op_assign
 id|bh.b_rdev
 op_assign
-id|inode-&gt;i_dev
+id|inode-&gt;i_rdev
 suffix:semicolon
 id|bh.b_size
 op_assign
@@ -3818,6 +3830,12 @@ id|put_user
 c_func
 (paren
 id|bh.b_rsector
+op_div
+(paren
+id|bh.b_size
+op_rshift
+l_int|9
+)paren
 comma
 op_amp
 id|user_result-&gt;lv_block

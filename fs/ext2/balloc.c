@@ -845,9 +845,15 @@ suffix:semicolon
 )brace
 id|ext2_debug
 (paren
-l_string|&quot;freeing block %lu&bslash;n&quot;
+l_string|&quot;freeing block(s) %lu-%lu&bslash;n&quot;
 comma
 id|block
+comma
+id|block
+op_plus
+id|count
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 id|do_more
@@ -1081,6 +1087,8 @@ comma
 l_string|&quot;bit already cleared for block %lu&quot;
 comma
 id|block
+op_plus
+id|i
 )paren
 suffix:semicolon
 r_else
@@ -1529,16 +1537,15 @@ id|bh-&gt;b_data
 )paren
 )paren
 (brace
-macro_line|#ifdef EXT2FS_DEBUG
-id|goal_hits
-op_increment
-suffix:semicolon
 id|ext2_debug
+c_func
 (paren
-l_string|&quot;goal bit allocated.&bslash;n&quot;
+l_string|&quot;goal bit allocated, %d hits&bslash;n&quot;
+comma
+op_increment
+id|goal_hits
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|got_block
 suffix:semicolon
@@ -1763,17 +1770,9 @@ c_cond
 op_logical_neg
 id|gdp
 )paren
-(brace
-op_star
-id|err
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_goto
-id|out
+id|io_error
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3147,7 +3146,7 @@ id|sb
 comma
 l_string|&quot;ext2_check_blocks_bitmap&quot;
 comma
-l_string|&quot;Block #%d of the inode table in &quot;
+l_string|&quot;Block #%ld of the inode table in &quot;
 l_string|&quot;group %d is marked free&quot;
 comma
 id|j

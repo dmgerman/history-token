@@ -23,6 +23,16 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_FUSION_BOOT
+r_extern
+r_int
+id|fusion_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|net_dev_init
@@ -107,6 +117,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_DAC960
 id|DAC960_Initialize
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_FUSION_BOOT
+id|fusion_init
 c_func
 (paren
 )paren

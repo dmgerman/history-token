@@ -591,17 +591,21 @@ macro_line|#ifdef TTY_PARANOIA_CHECK
 r_static
 r_const
 r_char
-op_star
 id|badmagic
+(braket
+)braket
 op_assign
+id|KERN_WARNING
 l_string|&quot;Warning: bad magic number for tty struct (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
 r_char
-op_star
 id|badtty
+(braket
+)braket
 op_assign
+id|KERN_WARNING
 l_string|&quot;Warning: null TTY for (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_if
@@ -768,7 +772,9 @@ id|count
 id|printk
 c_func
 (paren
-l_string|&quot;Warning: dev (%s) tty-&gt;count(%d) != #fd&squot;s(%d) in %s&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Warning: dev (%s) tty-&gt;count(%d) &quot;
+l_string|&quot;!= #fd&squot;s(%d) in %s&bslash;n&quot;
 comma
 id|kdevname
 c_func
@@ -1280,6 +1286,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;tty_check_change: tty-&gt;pgrp &lt;= 0!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1921,7 +1928,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;do_tty_hangup: N_TTY open: error %d&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;do_tty_hangup: N_TTY open: &quot;
+l_string|&quot;error %d&bslash;n&quot;
 comma
 op_minus
 id|i
@@ -2105,6 +2114,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s hangup...&bslash;n&quot;
 comma
 id|tty_name
@@ -2146,6 +2156,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s vhangup...&bslash;n&quot;
 comma
 id|tty_name
@@ -4086,7 +4097,9 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;init_dev: ldisc open failed, clearing slot %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;init_dev: ldisc open failed, &quot;
+l_string|&quot;clearing slot %d&bslash;n&quot;
 comma
 id|idx
 )paren
@@ -4187,6 +4200,13 @@ id|o_tty-&gt;driver.refcount
 )paren
 op_decrement
 suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|o_tty-&gt;tty_files
+)paren
+suffix:semicolon
 id|free_tty_struct
 c_func
 (paren
@@ -4239,6 +4259,13 @@ op_star
 id|tty-&gt;driver.refcount
 )paren
 op_decrement
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|tty-&gt;tty_files
+)paren
 suffix:semicolon
 id|free_tty_struct
 c_func
@@ -4371,7 +4398,9 @@ id|tty-&gt;driver.num
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: bad idx when trying to free (%s)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;release_dev: bad idx when trying to &quot;
+l_string|&quot;free (%s)&bslash;n&quot;
 comma
 id|kdevname
 c_func
@@ -4397,7 +4426,9 @@ id|idx
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: driver.table[%d] not tty for (%s)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;release_dev: driver.table[%d] not tty &quot;
+l_string|&quot;for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
@@ -4425,6 +4456,7 @@ id|idx
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;release_dev: driver.termios[%d] not termios &quot;
 l_string|&quot;for (%s)&bslash;n&quot;
 comma
@@ -4454,6 +4486,7 @@ id|idx
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;release_dev: driver.termios_locked[%d] not &quot;
 l_string|&quot;termios_locked for (%s)&bslash;n&quot;
 comma
@@ -4474,6 +4507,7 @@ macro_line|#ifdef TTY_DEBUG_HANGUP
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;release_dev of %s (tty count=%d)...&quot;
 comma
 id|tty_name
@@ -4509,8 +4543,9 @@ id|idx
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: other-&gt;table[%d] not o_tty for (&quot;
-l_string|&quot;%s)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;release_dev: other-&gt;table[%d] &quot;
+l_string|&quot;not o_tty for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
@@ -4538,8 +4573,9 @@ id|idx
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: other-&gt;termios[%d] not o_termios &quot;
-l_string|&quot;for (%s)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;release_dev: other-&gt;termios[%d] &quot;
+l_string|&quot;not o_termios for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
@@ -4567,8 +4603,9 @@ id|idx
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: other-&gt;termios_locked[%d] not &quot;
-l_string|&quot;o_termios_locked for (%s)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;release_dev: other-&gt;termios_locked[&quot;
+l_string|&quot;%d] not o_termios_locked for (%s)&bslash;n&quot;
 comma
 id|idx
 comma
@@ -4593,6 +4630,7 @@ id|tty
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;release_dev: bad pty pointers&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4763,7 +4801,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: %s: read/write wait queue active!&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;release_dev: %s: read/write wait queue &quot;
+l_string|&quot;active!&bslash;n&quot;
 comma
 id|tty_name
 c_func
@@ -4799,7 +4839,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;release_dev: bad pty slave count (%d) for %s&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;release_dev: bad pty slave count &quot;
+l_string|&quot;(%d) for %s&bslash;n&quot;
 comma
 id|o_tty-&gt;count
 comma
@@ -4830,6 +4872,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;release_dev: bad tty-&gt;count (%d) for %s&bslash;n&quot;
 comma
 id|tty-&gt;count
@@ -4848,7 +4891,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We&squot;ve decremented tty-&gt;count, so we should zero out&n;&t; * filp-&gt;private_data, to break the link between the tty and&n;&t; * the file descriptor.  Otherwise if filp_close() blocks before&n;&t; * the the file descriptor is removed from the inuse_filp&n;&t; * list, check_tty_count() could observe a discrepancy and&n;&t; * printk a warning message to the user.&n;&t; */
+multiline_comment|/*&n;&t; * We&squot;ve decremented tty-&gt;count, so we should zero out&n;&t; * filp-&gt;private_data, to break the link between the tty and&n;&t; * the file descriptor.  Otherwise if filp_close() blocks before&n;&t; * the file descriptor is removed from the inuse_filp&n;&t; * list, check_tty_count() could observe a discrepancy and&n;&t; * printk a warning message to the user.&n;&t; */
 id|filp-&gt;private_data
 op_assign
 l_int|0
@@ -4980,6 +5023,7 @@ macro_line|#ifdef TTY_DEBUG_HANGUP
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;freeing tty structure...&quot;
 )paren
 suffix:semicolon
@@ -5465,6 +5509,7 @@ macro_line|#ifdef TTY_DEBUG_HANGUP
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;opening %s...&quot;
 comma
 id|tty_name
@@ -5540,6 +5585,7 @@ macro_line|#ifdef TTY_DEBUG_HANGUP
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;error %d in opening %s...&quot;
 comma
 id|retval
@@ -6603,6 +6649,9 @@ r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -6614,6 +6663,10 @@ op_star
 )paren
 id|arg
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -6766,12 +6819,11 @@ id|arg
 )paren
 (brace
 r_int
-id|retval
-comma
 id|ldisc
 suffix:semicolon
-id|retval
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -6779,14 +6831,10 @@ id|ldisc
 comma
 id|arg
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
 )paren
 r_return
-id|retval
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|tty_set_ldisc
@@ -8200,7 +8248,9 @@ id|tty-&gt;warned
 id|printk
 c_func
 (paren
-l_string|&quot;Use of setserial/setrocket to set SPD_* flags is deprecated&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Use of setserial/setrocket to &quot;
+l_string|&quot;set SPD_* flags is deprecated&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tty-&gt;warned
@@ -9687,6 +9737,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HWC
 id|hwc_tty_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_A2232
+id|a2232board_init
 c_func
 (paren
 )paren

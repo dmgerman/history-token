@@ -1,6 +1,11 @@
 macro_line|#ifndef _LINUX_NTFS_FS_SB_H
 DECL|macro|_LINUX_NTFS_FS_SB_H
 mdefine_line|#define _LINUX_NTFS_FS_SB_H
+DECL|typedef|LCN
+r_typedef
+id|__s64
+id|LCN
+suffix:semicolon
 DECL|struct|ntfs_sb_info
 r_struct
 id|ntfs_sb_info
@@ -90,37 +95,45 @@ id|at_symlink
 suffix:semicolon
 multiline_comment|/* aka SYMBOLIC_LINK or REPARSE_POINT */
 multiline_comment|/* Data read / calculated from the boot file. */
-DECL|member|blocksize
+DECL|member|sector_size
 r_int
-id|blocksize
+id|sector_size
 suffix:semicolon
-DECL|member|clusterfactorbits
+DECL|member|cluster_size
 r_int
-id|clusterfactorbits
+id|cluster_size
 suffix:semicolon
-DECL|member|clustersize
+DECL|member|cluster_size_bits
 r_int
-id|clustersize
-suffix:semicolon
-DECL|member|mft_recordsize
-r_int
-id|mft_recordsize
+id|cluster_size_bits
 suffix:semicolon
 DECL|member|mft_clusters_per_record
 r_int
 id|mft_clusters_per_record
 suffix:semicolon
-DECL|member|index_recordsize
+DECL|member|mft_record_size
 r_int
-id|index_recordsize
+id|mft_record_size
+suffix:semicolon
+DECL|member|mft_record_size_bits
+r_int
+id|mft_record_size_bits
 suffix:semicolon
 DECL|member|index_clusters_per_record
 r_int
 id|index_clusters_per_record
 suffix:semicolon
-DECL|member|mft_cluster
+DECL|member|index_record_size
 r_int
-id|mft_cluster
+id|index_record_size
+suffix:semicolon
+DECL|member|index_record_size_bits
+r_int
+id|index_record_size_bits
+suffix:semicolon
+DECL|member|mft_lcn
+id|LCN
+id|mft_lcn
 suffix:semicolon
 multiline_comment|/* Data read from special files. */
 DECL|member|mft
@@ -164,6 +177,11 @@ r_struct
 id|super_block
 op_star
 id|sb
+suffix:semicolon
+DECL|member|ino_flags
+r_int
+r_char
+id|ino_flags
 suffix:semicolon
 )brace
 suffix:semicolon

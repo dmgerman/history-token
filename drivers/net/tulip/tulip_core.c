@@ -4400,10 +4400,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tulip_release_unconsumed_tx_buffers
+DECL|function|tulip_clean_tx_ring
 r_static
 r_void
-id|tulip_release_unconsumed_tx_buffers
+id|tulip_clean_tx_ring
 c_func
 (paren
 r_struct
@@ -4458,13 +4458,25 @@ r_if
 c_cond
 (paren
 id|status
-OG
+OL
 l_int|0
 )paren
-r_break
+(brace
+id|tp-&gt;stats.tx_errors
+op_increment
 suffix:semicolon
-multiline_comment|/* It has been Txed */
-multiline_comment|/* Check for Rx filter setup frames. */
+multiline_comment|/* It wasn&squot;t Txed */
+id|tp-&gt;tx_ring
+(braket
+id|entry
+)braket
+dot
+id|status
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Check for Tx filter setup frames. */
 r_if
 c_cond
 (paren
@@ -4512,9 +4524,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|tp-&gt;stats.tx_errors
-op_increment
-suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
@@ -4640,7 +4649,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* release any unconsumed transmit buffers */
-id|tulip_release_unconsumed_tx_buffers
+id|tulip_clean_tx_ring
 c_func
 (paren
 id|tp
@@ -7980,7 +7989,7 @@ id|irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-multiline_comment|/* init_etherdev ensures aligned and zeroed private structures */
+multiline_comment|/* alloc_etherdev ensures aligned and zeroed private structures */
 id|dev
 op_assign
 id|alloc_etherdev
@@ -8121,7 +8130,7 @@ op_amp
 id|chip_rev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * initialize private data structure &squot;tp&squot;&n;&t; * it is zeroed and aligned in init_etherdev&n;&t; */
+multiline_comment|/*&n;&t; * initialize private data structure &squot;tp&squot;&n;&t; * it is zeroed and aligned in alloc_etherdev&n;&t; */
 id|tp
 op_assign
 id|dev-&gt;priv

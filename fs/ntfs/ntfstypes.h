@@ -1,6 +1,5 @@
-multiline_comment|/*  ntfstypes.h - This file defines four things:&n; *   - Generic platform independent fixed-size types (e.g. ntfs_u32).&n; *   - Specific fixed-size types (e.g. ntfs_offset_t).&n; *   - Macros that read and write those types from and to byte arrays.&n; *   - Types derived from OS specific ones.&n; *&n; *  Copyright (C) 1996, 1998, 1999 Martin von L&#xfffd;wis&n; *  Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
+multiline_comment|/*&n; * ntfstypes.h - This file defines four things:&n; * - Generic platform independent fixed-size types (e.g. ntfs_u32).&n; * - Specific fixed-size types (e.g. ntfs_offset_t).&n; * - Macros that read and write those types from and to byte arrays.&n; * - Types derived from OS specific ones.&n; *&n; * Copyright (C) 1996, 1998, 1999 Martin von L&#xfffd;wis&n; * Copyright (C) 2001 Anton Altaparmakov (AIA)&n; */
 macro_line|#include &lt;linux/fs.h&gt;
-multiline_comment|/* We don&squot;t need to define __LITTLE_ENDIAN, as we use&n;   &lt;asm/byteorder&gt;. */
 macro_line|#include &quot;ntfsendian.h&quot;
 macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/* Integral types */
@@ -64,7 +63,7 @@ DECL|macro|NTFS_OFFSET_T
 mdefine_line|#define NTFS_OFFSET_T
 DECL|typedef|ntfs_offset_t
 r_typedef
-id|u64
+id|s64
 id|ntfs_offset_t
 suffix:semicolon
 macro_line|#endif
@@ -78,19 +77,15 @@ id|u64
 id|ntfs_time64_t
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* This is really unsigned long long. So we support only volumes up to 2Tb. */
+multiline_comment|/*&n; * This is really signed long long. So we support only volumes up to 2Tb. This&n; * is ok as Win2k also only uses 32-bits to store clusters.&n; * Whatever you do keep this a SIGNED value or a lot of NTFS users with&n; * corrupted filesystems will lynch you! It causes massive fs corruption when&n; * unsigned due to the nature of many checks relying on being performed on&n; * signed quantities. (AIA)&n; */
 macro_line|#ifndef NTFS_CLUSTER_T
 DECL|macro|NTFS_CLUSTER_T
 mdefine_line|#define NTFS_CLUSTER_T
 DECL|typedef|ntfs_cluster_t
 r_typedef
-id|u32
+id|s32
 id|ntfs_cluster_t
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef MAX_CLUSTER_T
-DECL|macro|MAX_CLUSTER_T
-mdefine_line|#define MAX_CLUSTER_T (~((ntfs_cluster_t)0))
 macro_line|#endif
 multiline_comment|/* Architecture independent macros. */
 multiline_comment|/* PUTU32 would not clear all bytes. */

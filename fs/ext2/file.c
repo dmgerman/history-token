@@ -207,7 +207,7 @@ r_return
 id|offset
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called when an inode is released. Note that this is different&n; * from ext2_file_open: open gets called at every open, but release&n; * gets called only when /all/ the files are closed.&n; */
+multiline_comment|/*&n; * Called when an inode is released. Note that this is different&n; * from ext2_open_file: open gets called at every open, but release&n; * gets called only when /all/ the files are closed.&n; */
 DECL|function|ext2_release_file
 r_static
 r_int

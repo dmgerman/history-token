@@ -1513,7 +1513,12 @@ DECL|member|de
 id|devfs_handle_t
 id|de
 suffix:semicolon
-multiline_comment|/* real driver creates this  */
+multiline_comment|/* real driver should create this  */
+DECL|member|number
+r_int
+id|number
+suffix:semicolon
+multiline_comment|/* generic driver updates this  */
 multiline_comment|/* specifications */
 DECL|member|dev
 id|kdev_t

@@ -294,24 +294,18 @@ DECL|variable|basePort
 r_static
 r_int
 id|basePort
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* base port address */
 DECL|variable|regPort
 r_static
 r_int
 id|regPort
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* port for register number */
 DECL|variable|dataPort
 r_static
 r_int
 id|dataPort
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* port for register data */
 DECL|variable|regOn

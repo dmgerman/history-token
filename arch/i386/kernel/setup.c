@@ -8301,6 +8301,15 @@ op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+multiline_comment|/* Disabling the serial number may affect the cpuid level */
+id|c-&gt;cpuid_level
+op_assign
+id|cpuid_eax
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|x86_serial_nr_setup

@@ -1973,7 +1973,7 @@ l_char|&squot;M&squot;
 r_int
 id|dir
 op_assign
-id|_IOC_DIR
+id|_SIOC_DIR
 (paren
 id|cmd
 )paren
@@ -2007,7 +2007,7 @@ c_cond
 (paren
 id|dir
 op_amp
-id|_IOC_WRITE
+id|_SIOC_WRITE
 )paren
 (brace
 r_int
@@ -2057,7 +2057,7 @@ op_logical_and
 (paren
 id|dir
 op_amp
-id|_IOC_READ
+id|_SIOC_READ
 )paren
 )paren
 (brace

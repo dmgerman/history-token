@@ -119,8 +119,6 @@ DECL|variable|buddha_board
 r_static
 id|u_long
 id|buddha_board
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|buddha_num_hwifs
 r_static

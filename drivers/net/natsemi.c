@@ -154,6 +154,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2900,7 +2901,7 @@ id|SiliconRev
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* On page 78 of the spec, they recommend some settings for &quot;optimum&n;&t;   performance&quot; to be done in sequence.  These settings optimize some&n;&t;   of the 100Mbit autodetection circuitry.  Also, we only want to do&n;&t;   this for rev C of the chip.&n;&n;&t;   There seems to be a typo on page 78: the fixup should be performed&n;&t;   for &quot;DP83815CVNG (SRR = 203h)&quot;, but the description of the&n;&t;   SiliconRev regsiters says &quot;DP83815CVNG: 00000302h&quot;&n;&t;*/
+multiline_comment|/* On page 78 of the spec, they recommend some settings for &quot;optimum&n;&t;   performance&quot; to be done in sequence.  These settings optimize some&n;&t;   of the 100Mbit autodetection circuitry.  Also, we only want to do&n;&t;   this for rev C of the chip.&n;&n;&t;   There seems to be a typo on page 78, but there isn&squot;t.  The fixup &n;&t;   should be performed for &quot;DP83815CVNG (SRR = 203h)&quot;, which is a &n;&t;   pretty old rev.  This is not to be confused with 302h, which is &n;&t;   current.  Confirmed with engineers at NSC.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -2912,7 +2913,7 @@ op_plus
 id|SiliconRev
 )paren
 op_eq
-l_int|0x302
+l_int|0x203
 )paren
 (brace
 id|writew
@@ -4522,13 +4523,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|np-&gt;lock
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|intr_handler
@@ -4555,11 +4549,6 @@ id|net_device
 op_star
 id|dev
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 id|dev_instance
 suffix:semicolon
 r_struct
@@ -6110,13 +6099,6 @@ id|np-&gt;cur_rx_mode
 op_assign
 id|rx_mode
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|np-&gt;lock
-)paren
-suffix:semicolon
 )brace
 DECL|function|set_rx_mode
 r_static
@@ -6305,12 +6287,14 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 id|data
 op_assign
 (paren
-id|u16
+r_struct
+id|mii_ioctl_data
 op_star
 )paren
 op_amp
@@ -6339,44 +6323,40 @@ id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
 r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
 id|SIOCDEVPRIVATE
 suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
-id|data
-(braket
-l_int|0
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;phy_id
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Fall Through */
 r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|1
 suffix:colon
-multiline_comment|/* Read the specified MII register. */
-id|data
-(braket
-l_int|3
-)braket
+multiline_comment|/* for binary compat, remove in 2.5 */
+id|data-&gt;val_out
 op_assign
 id|mdio_read
 c_func
 (paren
 id|dev
 comma
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_amp
 l_int|0x1f
 comma
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 )paren
@@ -6385,11 +6365,15 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_case
 id|SIOCDEVPRIVATE
 op_plus
 l_int|2
 suffix:colon
-multiline_comment|/* Write the specified MII register */
+multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
@@ -6407,10 +6391,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|data
-(braket
-l_int|0
-)braket
+id|data-&gt;phy_id
 op_eq
 l_int|1
 )paren
@@ -6418,20 +6399,14 @@ l_int|1
 id|u16
 id|miireg
 op_assign
-id|data
-(braket
-l_int|1
-)braket
+id|data-&gt;reg_num
 op_amp
 l_int|0x1f
 suffix:semicolon
 id|u16
 id|value
 op_assign
-id|data
-(braket
-l_int|2
-)braket
+id|data-&gt;val_in
 suffix:semicolon
 id|writew
 c_func

@@ -34,18 +34,6 @@ macro_line|#include &lt;asm/pci/bridge.h&gt;
 multiline_comment|/*&n; * 64 RX buffers.  This is tunable in the range of 16 &lt;= x &lt; 512.  The&n; * value must be a power of two.&n; */
 DECL|macro|RX_BUFFS
 mdefine_line|#define RX_BUFFS 64
-multiline_comment|/*&n; * Private ioctls that de facto are well known and used for example&n; * by mii-tool.  These are deprecated and will go away in 2.5.0.&n; */
-DECL|macro|SIOCGMIIPHY
-mdefine_line|#define SIOCGMIIPHY (SIOCDEVPRIVATE)&t;/* Read from current PHY */
-DECL|macro|SIOCGMIIREG
-mdefine_line|#define SIOCGMIIREG (SIOCDEVPRIVATE+1)&t;/* Read any PHY register */
-DECL|macro|SIOCSMIIREG
-mdefine_line|#define SIOCSMIIREG (SIOCDEVPRIVATE+2)&t;/* Write any PHY register */
-multiline_comment|/* These exist in other drivers; we don&squot;t use them at this time.  */
-DECL|macro|SIOCGPARAMS
-mdefine_line|#define SIOCGPARAMS (SIOCDEVPRIVATE+3)&t;/* Read operational parameters */
-DECL|macro|SIOCSPARAMS
-mdefine_line|#define SIOCSPARAMS (SIOCDEVPRIVATE+4)&t;/* Set operational parameters */
 multiline_comment|/* Timer state engine. */
 DECL|enum|ioc3_timer_state
 r_enum
@@ -6024,7 +6012,12 @@ c_func
 id|ioc3
 )paren
 suffix:semicolon
-multiline_comment|/* pci_release_regions(pdev);  Will be used in 2.4.3 */
+id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren

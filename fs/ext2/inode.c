@@ -261,7 +261,6 @@ id|inode-&gt;u.ext2_i.i_prealloc_count
 op_decrement
 suffix:semicolon
 multiline_comment|/* Writer: end */
-macro_line|#ifdef EXT2FS_DEBUG
 id|ext2_debug
 (paren
 l_string|&quot;preallocation hit (%lu/%lu).&bslash;n&quot;
@@ -273,7 +272,6 @@ op_increment
 id|alloc_attempts
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -282,7 +280,6 @@ id|ext2_discard_prealloc
 id|inode
 )paren
 suffix:semicolon
-macro_line|#ifdef EXT2FS_DEBUG
 id|ext2_debug
 (paren
 l_string|&quot;preallocation miss (%lu/%lu).&bslash;n&quot;
@@ -293,7 +290,6 @@ op_increment
 id|alloc_attempts
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1113,7 +1109,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ext2_alloc_branch - allocate and set up a chain of blocks.&n; *&t;@inode: owner&n; *&t;@num: depth of the chain (number of blocks to allocate)&n; *&t;@offsets: offsets (in the blocks) to store the pointers to next.&n; *&t;@branch: place to store the chain in.&n; *&n; *&t;This function allocates @num blocks, zeroes out all but the last one,&n; *&t;links them into chain and (if we are synchronous) writes them to disk.&n; *&t;In other words, it prepares a branch that can be spliced onto the&n; *&t;inode. It stores the information about that chain in the branch[], in&n; *&t;the same format as ext2_get_branch() would do. We are calling it after&n; *&t;we had read the existing part of chain and partial points to the last&n; *&t;triple of that (one with zero -&gt;key). Upon the exit we have the same&n; *&t;picture as after the successful ext2_get_block(), excpet that in one&n; *&t;place chain is disconnected - *branch-&gt;p is still zero (we did not&n; *&t;set the last link), but branch-&gt;key contains the number that should&n; *&t;be placed into *branch-&gt;p to fill that gap.&n; *&n; *&t;If allocation fails we free all blocks we&squot;ve allocated (and forget&n; *&t;ther buffer_heads) and return the error value the from failed&n; *&t;ext2_alloc_block() (normally -ENOSPC). Otherwise we set the chain&n; *&t;as described above and return 0.&n; */
+multiline_comment|/**&n; *&t;ext2_alloc_branch - allocate and set up a chain of blocks.&n; *&t;@inode: owner&n; *&t;@num: depth of the chain (number of blocks to allocate)&n; *&t;@offsets: offsets (in the blocks) to store the pointers to next.&n; *&t;@branch: place to store the chain in.&n; *&n; *&t;This function allocates @num blocks, zeroes out all but the last one,&n; *&t;links them into chain and (if we are synchronous) writes them to disk.&n; *&t;In other words, it prepares a branch that can be spliced onto the&n; *&t;inode. It stores the information about that chain in the branch[], in&n; *&t;the same format as ext2_get_branch() would do. We are calling it after&n; *&t;we had read the existing part of chain and partial points to the last&n; *&t;triple of that (one with zero -&gt;key). Upon the exit we have the same&n; *&t;picture as after the successful ext2_get_block(), excpet that in one&n; *&t;place chain is disconnected - *branch-&gt;p is still zero (we did not&n; *&t;set the last link), but branch-&gt;key contains the number that should&n; *&t;be placed into *branch-&gt;p to fill that gap.&n; *&n; *&t;If allocation fails we free all blocks we&squot;ve allocated (and forget&n; *&t;their buffer_heads) and return the error value the from failed&n; *&t;ext2_alloc_block() (normally -ENOSPC). Otherwise we set the chain&n; *&t;as described above and return 0.&n; */
 DECL|function|ext2_alloc_branch
 r_static
 r_int
@@ -3751,30 +3747,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|S_ISDIR
+id|S_ISREG
 c_func
 (paren
 id|inode-&gt;i_mode
 )paren
 )paren
-id|inode-&gt;u.ext2_i.i_dir_acl
-op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|raw_inode-&gt;i_dir_acl
-)paren
-suffix:semicolon
-r_else
-(brace
-id|inode-&gt;u.ext2_i.i_high_size
-op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|raw_inode-&gt;i_size_high
-)paren
-suffix:semicolon
 id|inode-&gt;i_size
 op_or_assign
 (paren
@@ -3790,7 +3768,15 @@ id|raw_inode-&gt;i_size_high
 op_lshift
 l_int|32
 suffix:semicolon
-)brace
+r_else
+id|inode-&gt;u.ext2_i.i_dir_acl
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|raw_inode-&gt;i_dir_acl
+)paren
+suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
 id|le32_to_cpu
@@ -4590,7 +4576,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|raw_inode-&gt;i_size_high
+id|inode-&gt;i_size
+OG
+l_int|0x7fffffffULL
 )paren
 (brace
 r_struct

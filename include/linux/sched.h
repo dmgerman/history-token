@@ -140,6 +140,9 @@ id|sched_priority
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|completion
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/spinlock.h&gt;
 multiline_comment|/*&n; * This serializes &quot;schedule()&quot; and also protects&n; * the run-queue from deletions/modifications (but&n; * _adding_ to the beginning of the run-queue has&n; * a separate lock).&n; */
@@ -784,11 +787,11 @@ id|wait_queue_head_t
 id|wait_chldexit
 suffix:semicolon
 multiline_comment|/* for wait4() */
-DECL|member|vfork_sem
+DECL|member|vfork_done
 r_struct
-id|semaphore
+id|completion
 op_star
-id|vfork_sem
+id|vfork_done
 suffix:semicolon
 multiline_comment|/* for vfork() */
 DECL|member|rt_priority
@@ -1091,8 +1094,6 @@ DECL|macro|PF_SIGNALED
 mdefine_line|#define PF_SIGNALED&t;0x00000400&t;/* killed by a signal */
 DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
-DECL|macro|PF_VFORK
-mdefine_line|#define PF_VFORK&t;0x00001000&t;/* Wake up parent in mm_release */
 DECL|macro|PF_USEDFPU
 mdefine_line|#define PF_USEDFPU&t;0x00100000&t;/* task used FPU this quantum (SMP) */
 multiline_comment|/*&n; * Ptrace flags&n; */
