@@ -135,7 +135,7 @@ mdefine_line|#define CNVT_TOHW(val,width) ((((val)&lt;&lt;(width))+0x7FFF-(val))
 multiline_comment|/* G-series and Mystique have (almost) same DAC */
 DECL|macro|NEED_DAC1064
 macro_line|#undef NEED_DAC1064
-macro_line|#if defined(CONFIG_FB_MATROX_MYSTIQUE) || defined(CONFIG_FB_MATROX_G100)
+macro_line|#if defined(CONFIG_FB_MATROX_MYSTIQUE) || defined(CONFIG_FB_MATROX_G)
 DECL|macro|NEED_DAC1064
 mdefine_line|#define NEED_DAC1064 1
 macro_line|#endif
