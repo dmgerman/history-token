@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/tx3912.h&gt;
@@ -15,10 +16,6 @@ r_volatile
 r_int
 r_int
 id|wall_jiffies
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
 suffix:semicolon
 DECL|variable|xbase
 r_static
@@ -117,11 +114,19 @@ id|flags
 suffix:semicolon
 r_int
 r_int
+id|seq
+suffix:semicolon
+r_int
+r_int
 id|high
 comma
 id|low
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -185,7 +190,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * xtime is atomically updated in timer_bh. lost_ticks is&n;     * nonzero if the timer bottom half hasnt executed yet.&n;     */
+multiline_comment|/*&n;&t;     * xtime is atomically updated in timer_bh. lost_ticks is&n;&t;     * nonzero if the timer bottom half hasnt executed yet.&n;&t;     */
 r_if
 c_cond
 (paren
@@ -197,13 +202,20 @@ id|tv-&gt;tv_usec
 op_add_assign
 id|USECS_PER_JIFFY
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -234,7 +246,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -304,7 +316,7 @@ id|time_esterror
 op_assign
 id|MAXPHASE
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp

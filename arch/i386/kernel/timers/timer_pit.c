@@ -91,6 +91,10 @@ r_void
 r_int
 id|count
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_static
 r_int
 id|count_p
@@ -110,12 +114,13 @@ r_int
 r_int
 id|jiffies_t
 suffix:semicolon
-multiline_comment|/* gets recalled with irq locally disabled */
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|i8253_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* timer count may underflow right here */
@@ -196,11 +201,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|i8253_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * avoiding timer inconsistencies (they are rare, but they happen)...&n;&t; * there are two kinds of problems that must be avoided here:&n;&t; *  1. the timer counter underflows&n;&t; *  2. hardware problem with the timer, not giving us continuous time,&n;&t; *     the counter does small &quot;jumps&quot; upwards on some Pentium systems,&n;&t; *     (see c&squot;t 95/10 page 335 for Neptun bug.)&n;&t; */

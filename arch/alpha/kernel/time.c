@@ -16,16 +16,13 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
 suffix:semicolon
 r_extern
 r_int
@@ -164,7 +161,7 @@ id|regs-&gt;pc
 )paren
 suffix:semicolon
 macro_line|#endif
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -303,7 +300,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -1444,13 +1441,17 @@ id|tv
 (brace
 r_int
 r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
 id|sec
 comma
 id|usec
 comma
 id|lost
 comma
-id|flags
+id|seq
 suffix:semicolon
 r_int
 r_int
@@ -1460,7 +1461,11 @@ id|delta_usec
 comma
 id|partial_tick
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -1500,13 +1505,20 @@ id|jiffies
 op_minus
 id|wall_jiffies
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -1620,7 +1632,7 @@ id|sec
 comma
 id|usec
 suffix:semicolon
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -1762,7 +1774,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp

@@ -47,10 +47,6 @@ id|cpu_khz
 suffix:semicolon
 multiline_comment|/* Detected as we calibrate the TSC */
 r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|wall_jiffies
@@ -102,7 +98,7 @@ id|tv
 (brace
 r_int
 r_int
-id|flags
+id|seq
 suffix:semicolon
 r_int
 r_int
@@ -110,13 +106,15 @@ id|usec
 comma
 id|sec
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
 id|xtime_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|usec
@@ -165,13 +163,18 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
-id|flags
+id|seq
+)paren
 )paren
 suffix:semicolon
 r_while
@@ -210,7 +213,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -286,7 +289,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp
@@ -862,7 +865,7 @@ id|regs
 )paren
 (brace
 multiline_comment|/*&n;&t; * Here we are in the timer irq handler. We just have irqs locally&n;&t; * disabled but we don&squot;t know if the timer_bh is running on the other&n;&t; * CPU. We need to avoid to SMP race with it. NOTE: we don&squot; t need&n;&t; * the irq version of write_lock because as just said we have irq&n;&t; * locally disabled. -arca&n;&t; */
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -891,7 +894,7 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/resource.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -11667,12 +11668,16 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
+r_int
+r_int
+id|seq
 suffix:semicolon
 multiline_comment|/* We don&squot;t need a memset here because we copy the&n;&t; * struct to userspace once element at a time.&n;&t; */
-id|read_lock_irq
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
@@ -11737,11 +11742,18 @@ id|val.procs
 op_assign
 id|nr_threads
 suffix:semicolon
-id|read_unlock_irq
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|seq
+)paren
 )paren
 suffix:semicolon
 id|si_meminfo

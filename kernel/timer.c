@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
@@ -2680,11 +2681,11 @@ id|wall_jiffies
 suffix:semicolon
 multiline_comment|/*&n; * This read-write spinlock protects us from races in SMP while&n; * playing with xtime and avenrun.&n; */
 DECL|variable|__cacheline_aligned_in_smp
-id|rwlock_t
+id|seqlock_t
 id|xtime_lock
 id|__cacheline_aligned_in_smp
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SEQLOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|last_time_offset
 r_int
@@ -2806,7 +2807,7 @@ id|ticks
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The 64-bit jiffies value is not atomic - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * jiffies is defined in the linker script...&n; */
+multiline_comment|/*&n; * The 64-bit jiffies value is not atomic - you MUST NOT read it&n; * without sampling the sequence number in xtime_lock.&n; * jiffies is defined in the linker script...&n; */
 DECL|function|do_timer
 r_void
 id|do_timer
@@ -3596,6 +3597,10 @@ id|mem_unit
 comma
 id|bitcount
 suffix:semicolon
+r_int
+r_int
+id|seq
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -3615,7 +3620,11 @@ id|sysinfo
 )paren
 )paren
 suffix:semicolon
-id|read_lock_irq
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
@@ -3694,11 +3703,18 @@ id|val.procs
 op_assign
 id|nr_threads
 suffix:semicolon
-id|read_unlock_irq
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|seq
+)paren
 )paren
 suffix:semicolon
 id|si_meminfo
