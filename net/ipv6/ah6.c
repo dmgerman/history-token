@@ -1836,6 +1836,15 @@ id|xfrm_algo_desc
 op_star
 id|aalg_desc
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|x-&gt;aalg
+)paren
+r_goto
+id|error
+suffix:semicolon
 multiline_comment|/* null auth can use a zero length key */
 r_if
 c_cond
