@@ -2144,7 +2144,7 @@ l_int|0
 dot
 id|desc
 suffix:semicolon
-multiline_comment|/* Output endpoint? Curiousier and curiousier.. */
+multiline_comment|/* Output endpoint? Curiouser and curiouser.. */
 r_if
 c_cond
 (paren
@@ -3926,7 +3926,7 @@ id|i
 comma
 id|ret
 suffix:semicolon
-multiline_comment|/*&n;&t; *  We restart the list everytime to avoid a deadlock with&n;&t; * deleting hubs downstream from this one. This should be&n;&t; * safe since we delete the hub from the event list.&n;&t; * Not the most efficient, but avoids deadlocks.&n;&t; */
+multiline_comment|/*&n;&t; *  We restart the list every time to avoid a deadlock with&n;&t; * deleting hubs downstream from this one. This should be&n;&t; * safe since we delete the hub from the event list.&n;&t; * Not the most efficient, but avoids deadlocks.&n;&t; */
 r_while
 c_loop
 (paren

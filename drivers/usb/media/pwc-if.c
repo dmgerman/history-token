@@ -925,7 +925,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 macro_line|#endif&t;
-multiline_comment|/* Allocate Isochronuous pipe buffers */
+multiline_comment|/* Allocate Isochronous pipe buffers */
 r_for
 c_loop
 (paren
@@ -3149,7 +3149,7 @@ r_return
 op_minus
 id|ENFILE
 suffix:semicolon
-multiline_comment|/* Odd error, that should be noticable */
+multiline_comment|/* Odd error, that should be noticeable */
 )brace
 multiline_comment|/* Set alternate interface */
 id|ret
@@ -8617,7 +8617,7 @@ id|leds
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Big device node whoopla. Basicly, it allows you to assign a &n;&t;   device node (/dev/videoX) to a camera, based on its type &n;&t;   &amp; serial number. The format is [type[.serialnumber]:]node.&n;&n;           Any camera that isn&squot;t matched by these rules gets the next &n;           available free device node.&n;&t; */
+multiline_comment|/* Big device node whoopla. Basically, it allows you to assign a &n;&t;   device node (/dev/videoX) to a camera, based on its type &n;&t;   &amp; serial number. The format is [type[.serialnumber]:]node.&n;&n;           Any camera that isn&squot;t matched by these rules gets the next &n;           available free device node.&n;&t; */
 r_for
 c_loop
 (paren

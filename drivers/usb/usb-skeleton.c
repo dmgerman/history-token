@@ -37,7 +37,7 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Skeleton Driver&quot;
-multiline_comment|/* Module paramaters */
+multiline_comment|/* Module parameters */
 id|MODULE_PARM
 c_func
 (paren
