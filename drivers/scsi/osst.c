@@ -37,6 +37,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -46,9 +47,6 @@ mdefine_line|#define DEBUG 0
 multiline_comment|/* The message level for the debug messages is currently set to KERN_NOTICE&n;   so that people can easily see the messages. Later when the debugging messages&n;   in the drivers are more widely classified, this may be changed to KERN_DEBUG. */
 DECL|macro|OSST_DEB_MSG
 mdefine_line|#define OSST_DEB_MSG  KERN_NOTICE
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR OSST_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
@@ -30132,7 +30130,7 @@ r_int
 id|__mkdev
 c_func
 (paren
-id|MAJOR_NR
+id|OSST_MAJOR
 comma
 id|dev_num
 op_plus
@@ -30192,7 +30190,7 @@ id|name
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR_NR
+id|OSST_MAJOR
 comma
 id|dev_num
 op_plus
@@ -30297,7 +30295,7 @@ r_int
 id|__mkdev
 c_func
 (paren
-id|MAJOR_NR
+id|OSST_MAJOR
 comma
 id|dev_num
 op_plus
@@ -30359,7 +30357,7 @@ id|name
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR_NR
+id|OSST_MAJOR
 comma
 id|dev_num
 op_plus
@@ -30760,7 +30758,7 @@ c_cond
 id|register_chrdev
 c_func
 (paren
-id|MAJOR_NR
+id|OSST_MAJOR
 comma
 l_string|&quot;osst&quot;
 comma
@@ -30785,7 +30783,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;osst :E: Unable to register major %d for OnStream tapes&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|OSST_MAJOR
 )paren
 suffix:semicolon
 r_return
@@ -30822,7 +30820,7 @@ suffix:semicolon
 id|unregister_chrdev
 c_func
 (paren
-id|MAJOR_NR
+id|OSST_MAJOR
 comma
 l_string|&quot;osst&quot;
 )paren
