@@ -1081,14 +1081,14 @@ id|dir
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_index
+mdefine_line|#define pte_index(address) (((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  __pte_offset(address))
+mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  pte_index(address))
 DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;        ((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + __pte_offset(address))
+mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;        ((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + pte_index(address))
 DECL|macro|pte_offset_map_nested
-mdefine_line|#define pte_offset_map_nested(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + __pte_offset(address))
+mdefine_line|#define pte_offset_map_nested(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + pte_index(address))
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap_atomic((pte), KM_PTE0)
 DECL|macro|pte_unmap_nested
