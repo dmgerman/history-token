@@ -18,18 +18,6 @@ op_assign
 id|I2C_CLIENT_END
 )brace
 suffix:semicolon
-DECL|variable|normal_i2c_range
-r_static
-r_int
-r_int
-id|normal_i2c_range
-(braket
-)braket
-op_assign
-(brace
-id|I2C_CLIENT_END
-)brace
-suffix:semicolon
 multiline_comment|/* Address is autodetected, there is no default value */
 DECL|variable|normal_isa
 r_static
@@ -81,11 +69,6 @@ dot
 id|normal_i2c
 op_assign
 id|normal_i2c
-comma
-dot
-id|normal_i2c_range
-op_assign
-id|normal_i2c_range
 comma
 dot
 id|normal_isa
