@@ -1,4 +1,4 @@
-multiline_comment|/*&n; **********************************************************************&n; *     main.c - Creative EMU10K1 audio driver&n; *     Copyright 1999, 2000 Creative Labs, Inc.&n; *&n; **********************************************************************&n; *&n; *     Date                 Author          Summary of changes&n; *     ----                 ------          ------------------&n; *     October 20, 1999     Bertrand Lee    base code release&n; *     November 2, 1999     Alan Cox        cleaned up stuff&n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; **********************************************************************&n; *&n; *      Supported devices:&n; *      /dev/dsp:        Standard /dev/dsp device, OSS-compatible&n; *      /dev/dsp1:       Routes to rear speakers only&t; &n; *      /dev/mixer:      Standard /dev/mixer device, OSS-compatible&n; *      /dev/midi:       Raw MIDI UART device, mostly OSS-compatible&n; *&t;/dev/sequencer:  Sequencer Interface (requires sound.o)&n; *&n; *      Revision history:&n; *      0.1 beta Initial release&n; *      0.2 Lowered initial mixer vol. Improved on stuttering wave playback. Added MIDI UART support.&n; *      0.3 Fixed mixer routing bug, added APS, joystick support.&n; *      0.4 Added rear-channel, SPDIF support.&n; *&t;0.5 Source cleanup, SMP fixes, multiopen support, 64 bit arch fixes,&n; *&t;    moved bh&squot;s to tasklets, moved to the new PCI driver initialization style.&n; *&t;0.6 Make use of pci_alloc_consistent, improve compatibility layer for 2.2 kernels,&n; *&t;    code reorganization and cleanup.&n; *&t;0.7 Support for the Emu-APS. Bug fixes for voice cache setup, mmaped sound + poll().&n; *          Support for setting external TRAM size.&n; *      0.8 Make use of the kernel ac97 interface. Support for a dsp patch manager.&n; *      0.9 Re-enables rear speakers volume controls&n; *     0.10 Initializes rear speaker volume.&n; *&t;    Dynamic patch storage allocation.&n; *&t;    New private ioctls to change control gpr values.&n; *&t;    Enable volume control interrupts.&n; *&t;    By default enable dsp routes to digital out. &n; *     0.11 Fixed fx / 4 problem.&n; *     0.12 Implemented mmaped for recording.&n; *&t;    Fixed bug: not unreserving mmaped buffer pages.&n; *&t;    IRQ handler cleanup.&n; *     0.13 Fixed problem with dsp1&n; *          Simplified dsp patch writing (inside the driver)&n; *&t;    Fixed several bugs found by the Stanford tools&n; *     0.14 New control gpr to oss mixer mapping feature (Chris Purnell)&n; *          Added AC3 Passthrough Support (Juha Yrjola)&n; *          Added Support for 5.1 cards (digital out and the third analog out)&n; *     0.15 Added Sequencer Support (Daniel Mack)&n; *          Support for multichannel pcm playback (Eduard Hasenleithner)&n; *     0.16 Mixer improvements, added old treble/bass support (Daniel Bertrand)&n; *          Small code format cleanup.&n; *          Deadlock bug fix for emu10k1_volxxx_irqhandler().&n; *     0.17 Fix for mixer SOUND_MIXER_INFO ioctl.&n; *&t;    Fix for HIGHMEM machines (emu10k1 can only do 31 bit bus master) &n; *&t;    midi poll initial implementation.&n; *&t;    Small mixer fixes/cleanups.&n; *&t;    Improved support for 5.1 cards.&n; *     0.18 Fix for possible leak in pci_alloc_consistent()&n; *          Cleaned up poll() functions (audio and midi). Don&squot;t start input.&n; *&t;    Restrict DMA pages used to 512Mib range.&n; *&t;    New AC97_BOOST mixer ioctl.&n; *    0.19a Added Support for Audigy Cards&n; *&t;    Real fix for kernel with highmem support (cast dma_handle to u32).&n; *&t;    Fix recording buffering parameters calculation.&n; *&t;    Use unsigned long for variables in bit ops.&n; *    0.20a Fixed recording startup&n; *&t;    Fixed timer rate setting (it&squot;s a 16-bit register)&n; *********************************************************************/
+multiline_comment|/*&n; **********************************************************************&n; *     main.c - Creative EMU10K1 audio driver&n; *     Copyright 1999, 2000 Creative Labs, Inc.&n; *&n; **********************************************************************&n; *&n; *     Date                 Author          Summary of changes&n; *     ----                 ------          ------------------&n; *     October 20, 1999     Bertrand Lee    base code release&n; *     November 2, 1999     Alan Cox        cleaned up stuff&n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; **********************************************************************&n; *&n; *      Supported devices:&n; *      /dev/dsp:        Standard /dev/dsp device, OSS-compatible&n; *      /dev/dsp1:       Routes to rear speakers only&t; &n; *      /dev/mixer:      Standard /dev/mixer device, OSS-compatible&n; *      /dev/midi:       Raw MIDI UART device, mostly OSS-compatible&n; *&t;/dev/sequencer:  Sequencer Interface (requires sound.o)&n; *&n; *      Revision history:&n; *      0.1 beta Initial release&n; *      0.2 Lowered initial mixer vol. Improved on stuttering wave playback. Added MIDI UART support.&n; *      0.3 Fixed mixer routing bug, added APS, joystick support.&n; *      0.4 Added rear-channel, SPDIF support.&n; *&t;0.5 Source cleanup, SMP fixes, multiopen support, 64 bit arch fixes,&n; *&t;    moved bh&squot;s to tasklets, moved to the new PCI driver initialization style.&n; *&t;0.6 Make use of pci_alloc_consistent, improve compatibility layer for 2.2 kernels,&n; *&t;    code reorganization and cleanup.&n; *&t;0.7 Support for the Emu-APS. Bug fixes for voice cache setup, mmaped sound + poll().&n; *          Support for setting external TRAM size.&n; *      0.8 Make use of the kernel ac97 interface. Support for a dsp patch manager.&n; *      0.9 Re-enables rear speakers volume controls&n; *     0.10 Initializes rear speaker volume.&n; *&t;    Dynamic patch storage allocation.&n; *&t;    New private ioctls to change control gpr values.&n; *&t;    Enable volume control interrupts.&n; *&t;    By default enable dsp routes to digital out. &n; *     0.11 Fixed fx / 4 problem.&n; *     0.12 Implemented mmaped for recording.&n; *&t;    Fixed bug: not unreserving mmaped buffer pages.&n; *&t;    IRQ handler cleanup.&n; *     0.13 Fixed problem with dsp1&n; *          Simplified dsp patch writing (inside the driver)&n; *&t;    Fixed several bugs found by the Stanford tools&n; *     0.14 New control gpr to oss mixer mapping feature (Chris Purnell)&n; *          Added AC3 Passthrough Support (Juha Yrjola)&n; *          Added Support for 5.1 cards (digital out and the third analog out)&n; *     0.15 Added Sequencer Support (Daniel Mack)&n; *          Support for multichannel pcm playback (Eduard Hasenleithner)&n; *     0.16 Mixer improvements, added old treble/bass support (Daniel Bertrand)&n; *          Small code format cleanup.&n; *          Deadlock bug fix for emu10k1_volxxx_irqhandler().&n; *     0.17 Fix for mixer SOUND_MIXER_INFO ioctl.&n; *&t;    Fix for HIGHMEM machines (emu10k1 can only do 31 bit bus master) &n; *&t;    midi poll initial implementation.&n; *&t;    Small mixer fixes/cleanups.&n; *&t;    Improved support for 5.1 cards.&n; *     0.18 Fix for possible leak in pci_alloc_consistent()&n; *          Cleaned up poll() functions (audio and midi). Don&squot;t start input.&n; *&t;    Restrict DMA pages used to 512Mib range.&n; *&t;    New AC97_BOOST mixer ioctl.&n; *    0.19a Added Support for Audigy Cards&n; *&t;    Real fix for kernel with highmem support (cast dma_handle to u32).&n; *&t;    Fix recording buffering parameters calculation.&n; *&t;    Use unsigned long for variables in bit ops.&n; *    0.20a Fixed recording startup&n; *&t;    Fixed timer rate setting (it&squot;s a 16-bit register)&n; *&t;0.21 Converted code to use pci_name() instead of accessing slot_name&n; *&t;    directly (Eugene Teo)&n; *********************************************************************/
 multiline_comment|/* These are only included once per module */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1049,7 +1049,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1084,7 +1088,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s/info&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1132,7 +1140,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s/ac97&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1179,7 +1191,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s/info&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1199,7 +1215,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1259,7 +1279,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s/ac97&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1278,7 +1302,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s/info&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -1296,7 +1324,11 @@ id|s
 comma
 l_string|&quot;driver/emu10k1/%s&quot;
 comma
-id|card-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|card-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|remove_proc_entry
