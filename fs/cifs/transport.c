@@ -909,6 +909,26 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|ses-&gt;server-&gt;tcpStatus
+op_eq
+id|CifsExiting
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+)brace
 multiline_comment|/* can not count locking commands against total since&n;&t;&t;&t;   they are allowed to block on server */
 r_if
 c_cond
