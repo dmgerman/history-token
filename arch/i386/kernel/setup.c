@@ -2761,14 +2761,20 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * &quot;mem=nopentium&quot; disables the 4MB page tables.&n;&t;&t; * &quot;mem=XXX[kKmM]&quot; defines a memory region from HIGH_MEM&n;&t;&t; * to &lt;mem&gt;, overriding the bios size.&n;&t;&t; * &quot;memmap=XXX[KkmM]@XXX[KkmM]&quot; defines a memory region from&n;&t;&t; * &lt;start&gt; to &lt;start&gt;+&lt;mem&gt;, overriding the bios size.&n;&t;&t; *&n;&t;&t; * HPA tells me bootloaders need to parse mem=, so no new&n;&t;&t; * option should be mem=  [also see Documentation/i386/boot.txt]&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|c
-op_eq
+op_ne
 l_char|&squot; &squot;
-op_logical_and
+)paren
+r_goto
+id|next_char
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * &quot;mem=nopentium&quot; disables the 4MB page tables.&n;&t;&t; * &quot;mem=XXX[kKmM]&quot; defines a memory region from HIGH_MEM&n;&t;&t; * to &lt;mem&gt;, overriding the bios size.&n;&t;&t; * &quot;memmap=XXX[KkmM]@XXX[KkmM]&quot; defines a memory region from&n;&t;&t; * &lt;start&gt; to &lt;start&gt;+&lt;mem&gt;, overriding the bios size.&n;&t;&t; *&n;&t;&t; * HPA tells me bootloaders need to parse mem=, so no new&n;&t;&t; * option should be mem=  [also see Documentation/i386/boot.txt]&n;&t;&t; */
+r_if
+c_cond
+(paren
 op_logical_neg
 id|memcmp
 c_func
@@ -2860,13 +2866,10 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_else
 r_if
 c_cond
 (paren
-id|c
-op_eq
-l_char|&squot; &squot;
-op_logical_and
 op_logical_neg
 id|memcmp
 c_func
@@ -3376,13 +3379,10 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_X86_LOCAL_APIC */
 macro_line|#endif /* CONFIG_ACPI_BOOT */
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
+r_else
 r_if
 c_cond
 (paren
-id|c
-op_eq
-l_char|&squot; &squot;
-op_logical_and
 op_logical_neg
 id|memcmp
 c_func
@@ -3410,13 +3410,10 @@ op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * vmalloc=size forces the vmalloc area to be exactly &squot;size&squot;&n;&t;&t; * bytes. This can be used to increase (or decrease) the&n;&t;&t; * vmalloc area - the default is 128m.&n;&t;&t; */
+r_else
 r_if
 c_cond
 (paren
-id|c
-op_eq
-l_char|&squot; &squot;
-op_logical_and
 op_logical_neg
 id|memcmp
 c_func
@@ -3441,6 +3438,8 @@ op_amp
 id|from
 )paren
 suffix:semicolon
+id|next_char
+suffix:colon
 id|c
 op_assign
 op_star
