@@ -6859,6 +6859,15 @@ id|cl-&gt;q
 op_assign
 r_new
 suffix:semicolon
+id|sch-&gt;q.qlen
+op_sub_assign
+(paren
+op_star
+id|old
+)paren
+op_member_access_from_pointer
+id|q.qlen
+suffix:semicolon
 id|qdisc_reset
 c_func
 (paren

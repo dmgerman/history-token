@@ -1744,6 +1744,14 @@ op_star
 id|old
 )paren
 suffix:semicolon
+id|sch-&gt;q.qlen
+op_assign
+l_int|0
+suffix:semicolon
+id|sch-&gt;stats.backlog
+op_assign
+l_int|0
+suffix:semicolon
 id|sch_tree_unlock
 c_func
 (paren
