@@ -102,6 +102,7 @@ macro_line|#ifdef DEBUGPCI
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_resetbus()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -222,6 +223,7 @@ macro_line|#ifdef DEBUGPCI
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcibios_assign_resource_slot(slot=%x)&bslash;n&quot;
 comma
 id|slot
@@ -310,6 +312,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;-----------------------------------&quot;
 l_string|&quot;-------------------------------------&bslash;n&quot;
 )paren
@@ -317,6 +320,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;BAR[%d]: read=%08x &quot;
 comma
 id|bar
@@ -377,6 +381,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;write=%08x &quot;
 comma
 id|val
@@ -395,6 +400,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -443,6 +449,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;size=%08x(%d)&bslash;n&quot;
 comma
 (paren
@@ -485,6 +492,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;BAR[%d]: IO size=%08x iobase=%08x&bslash;n&quot;
 comma
 id|bar
@@ -514,6 +522,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;BAR[%d]: too big for IO??&bslash;n&quot;
 comma
 id|bar
@@ -572,6 +581,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;BAR[%d]: MEMORY size=%08x membase=%08x&bslash;n&quot;
 comma
 id|bar
@@ -642,6 +652,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;BAR[%d]: assigned bar=%08x&bslash;n&quot;
 comma
 id|bar
@@ -655,6 +666,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;-----------------------------------&quot;
 l_string|&quot;-------------------------------------&bslash;n&quot;
 )paren
@@ -751,6 +763,7 @@ macro_line|#ifdef DEBUGRES
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;IRQ LINE=25&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -796,6 +809,7 @@ macro_line|#ifdef DEBUGPCI
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pcibios_enbale_slot(slot=%x)&bslash;n&quot;
 comma
 id|slot
@@ -1050,6 +1064,7 @@ l_int|0xffff0000
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: slot=%d id=%08x&bslash;n&quot;
 comma
 id|slot
@@ -1109,6 +1124,7 @@ macro_line|#ifdef DEBUGPCI
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pcibios_init()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1151,6 +1167,7 @@ l_int|0x50
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: no PCI bus present&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1241,6 +1258,7 @@ l_int|0xffff0000
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: no PCI bus bridge present&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1251,6 +1269,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: bridge device at slot=%d id=%08x&bslash;n&quot;
 comma
 id|slot
@@ -1310,6 +1329,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: failed to acquire interrupt %d&bslash;n&quot;
 comma
 id|COMEM_IRQ
@@ -1485,6 +1505,7 @@ id|resource
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s(%d): no support for changing PCI resources...&bslash;n&quot;
 comma
 id|__FILE__
@@ -1527,6 +1548,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_outb(val=%02x,addr=%x)&bslash;n&quot;
 comma
 id|val
@@ -1635,6 +1657,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_outw(val=%04x,addr=%x)&quot;
 comma
 id|val
@@ -1772,6 +1795,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_outl(val=%08x,addr=%x)&bslash;n&quot;
 comma
 id|val
@@ -1927,6 +1951,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_inb(addr=%x)&quot;
 comma
 id|addr
@@ -2071,6 +2096,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_inw(addr=%x)&quot;
 comma
 id|addr
@@ -2191,6 +2217,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;=%04x&bslash;n&quot;
 comma
 id|val
@@ -2233,6 +2260,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_inl(addr=%x)&quot;
 comma
 id|addr
@@ -2336,6 +2364,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;=%08x&bslash;n&quot;
 comma
 id|val
@@ -2402,6 +2431,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_outsb(addr=%x,buf=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -2553,6 +2583,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_outsw(addr=%x,buf=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -2737,6 +2768,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_outsl(addr=%x,buf=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -2915,6 +2947,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_insb(addr=%x,buf=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -3066,6 +3099,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_insw(addr=%x,buf=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -3250,6 +3284,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_insl(addr=%x,buf=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -3462,6 +3497,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_request_irq(irq=%d,handler=%x,flags=%x,device=%s,&quot;
 l_string|&quot;dev_id=%x)&bslash;n&quot;
 comma
@@ -3610,6 +3646,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_free_irq(irq=%d,dev_id=%x)&bslash;n&quot;
 comma
 id|irq
@@ -3723,6 +3760,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_interrupt(irq=%d,id=%x,fp=%x)&bslash;n&quot;
 comma
 id|irq
@@ -3824,6 +3862,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_bmalloc(size=%d)&bslash;n&quot;
 comma
 id|size
@@ -3995,6 +4034,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_bmfree(mp=%x,size=%d)&bslash;n&quot;
 comma
 (paren
@@ -4081,6 +4121,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_virt_to_bus(address=%x)&quot;
 comma
 (paren
@@ -4106,6 +4147,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;=%x&bslash;n&quot;
 comma
 (paren
@@ -4145,6 +4187,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_bus_to_virt(address=%x)&quot;
 comma
 (paren
@@ -4164,6 +4207,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;=%x&bslash;n&quot;
 comma
 (paren
@@ -4234,6 +4278,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_bmcpyto(dst=%x,src=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -4278,6 +4323,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;DATA:&quot;
 )paren
 suffix:semicolon
@@ -4321,6 +4367,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n%04x: &quot;
 comma
 id|i
@@ -4329,6 +4376,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%02x &quot;
 comma
 op_star
@@ -4340,6 +4388,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4514,6 +4563,7 @@ macro_line|#ifdef DEBUGIO
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;pci_bmcpyfrom(dst=%x,src=%x,len=%d)&bslash;n&quot;
 comma
 (paren
@@ -4678,6 +4728,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;DATA:&quot;
 )paren
 suffix:semicolon
@@ -4721,6 +4772,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n%04x: &quot;
 comma
 id|i
@@ -4729,6 +4781,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%02x &quot;
 comma
 op_star
@@ -4740,6 +4793,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
