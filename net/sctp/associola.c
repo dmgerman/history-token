@@ -931,7 +931,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 comma
@@ -1126,7 +1127,7 @@ id|sctp_data_chunk_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* The asoc-&gt;peer.port might not be meaningful as of now, but&n;&t; * initialize the packet structure anyway.&n;&t; */
+multiline_comment|/* The asoc-&gt;peer.port might not be meaningful yet, but&n;&t; * initialize the packet structure anyway.&n;&t; */
 (paren
 id|asoc-&gt;outqueue.init_output
 )paren
@@ -1234,7 +1235,8 @@ id|peer-&gt;ipaddr
 comma
 r_sizeof
 (paren
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 )paren
 )paren
 suffix:semicolon
@@ -1275,7 +1277,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|address
 )paren
@@ -1717,12 +1720,14 @@ id|sctp_cmp_addr
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss1
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss2
 )paren
@@ -1902,12 +1907,14 @@ id|sctp_cmp_addr_exact
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss1
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss2
 )paren
@@ -2293,12 +2300,14 @@ op_star
 id|asoc
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|laddr
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|paddr
 )paren

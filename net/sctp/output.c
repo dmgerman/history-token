@@ -977,27 +977,13 @@ c_func
 id|crc32
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME:  Delete the rest of this switch statement once phase 2&n;&t; * of address selection (ipv6 support) drops in.&n;&t; */
 r_switch
 c_cond
 (paren
 id|transport-&gt;ipaddr.sa.sa_family
 )paren
 (brace
-r_case
-id|AF_INET
-suffix:colon
-id|inet_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|daddr
-op_assign
-id|transport-&gt;ipaddr.v4.sin_addr.s_addr
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|AF_INET6
 suffix:colon
@@ -1015,11 +1001,6 @@ op_assign
 id|transport-&gt;ipaddr.v6.sin6_addr
 suffix:semicolon
 )paren
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* This is bogus address type, just bail. */
 r_break
 suffix:semicolon
 )brace

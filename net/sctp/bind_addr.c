@@ -16,7 +16,8 @@ c_func
 id|sctp_bind_addr_t
 op_star
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 comma
 id|sctp_scope_t
@@ -358,7 +359,8 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 r_new
 comma
@@ -446,7 +448,8 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|del_addr
 )paren
@@ -723,7 +726,8 @@ id|sctp_paramhdr_t
 op_star
 id|param
 suffix:semicolon
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|addr
 suffix:semicolon
 r_int
@@ -869,7 +873,8 @@ op_star
 id|bp
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 )paren
@@ -937,7 +942,8 @@ id|sctp_bind_addr_t
 op_star
 id|dest
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 comma
@@ -1071,7 +1077,8 @@ id|sctp_is_any
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 )paren
@@ -1145,7 +1152,8 @@ id|sctp_in_scope
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 comma
@@ -1231,7 +1239,8 @@ id|sctp_scope
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 )paren
@@ -1421,7 +1430,8 @@ id|sctp_addr_is_valid
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 )paren

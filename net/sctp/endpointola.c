@@ -581,7 +581,8 @@ op_star
 id|ep
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|laddr
 )paren
@@ -657,7 +658,8 @@ op_star
 id|endpoint
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|paddr
 comma
@@ -770,7 +772,8 @@ op_star
 id|ep
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|paddr
 comma

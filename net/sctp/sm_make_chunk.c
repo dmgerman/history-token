@@ -2791,7 +2791,8 @@ op_star
 id|chunk
 )paren
 (brace
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|source
 comma
@@ -2940,7 +2941,8 @@ suffix:semicolon
 multiline_comment|/* Extract the source address from a chunk.  */
 DECL|function|sctp_source
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|sctp_source
 c_func
@@ -4966,7 +4968,8 @@ id|sctp_cid_t
 id|cid
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|peer_addr
 comma
@@ -5278,7 +5281,8 @@ id|sctp_params
 id|param
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|peer_addr
 comma
@@ -5286,7 +5290,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|addr
 suffix:semicolon
 r_int
@@ -5645,13 +5650,14 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 4th Level Abstractions&n; ********************************************************************/
-multiline_comment|/* Convert from an SCTP IP parameter to a sockaddr_storage_t.  */
+multiline_comment|/* Convert from an SCTP IP parameter to a union sctp_addr.  */
 DECL|function|sctp_param2sockaddr
 r_void
 id|sctp_param2sockaddr
 c_func
 (paren
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 comma
@@ -5743,7 +5749,8 @@ r_union
 id|sctp_params
 id|p
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|sa
 )paren
@@ -5809,57 +5816,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Convert from an IP version number to an Address Family symbol.  */
-DECL|function|ipver2af
-r_int
-id|ipver2af
-c_func
-(paren
-id|__u8
-id|ipver
-)paren
-(brace
-r_int
-id|family
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ipver
-)paren
-(brace
-r_case
-l_int|4
-suffix:colon
-id|family
-op_assign
-id|AF_INET
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|6
-suffix:colon
-id|family
-op_assign
-id|AF_INET6
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|family
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-suffix:semicolon
-r_return
-id|family
-suffix:semicolon
-)brace
 multiline_comment|/* Convert a sockaddr_in to an IP address in an SCTP param.&n; * Returns len if a valid conversion was possible.&n; */
 DECL|function|sockaddr2sctp_addr
 r_int
@@ -5867,7 +5823,8 @@ id|sockaddr2sctp_addr
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|sa
 comma
