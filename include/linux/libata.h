@@ -1225,11 +1225,11 @@ op_star
 id|qc
 )paren
 suffix:semicolon
-DECL|member|fill_sg
+DECL|member|qc_prep
 r_void
 (paren
 op_star
-id|fill_sg
+id|qc_prep
 )paren
 (paren
 r_struct
@@ -1762,7 +1762,7 @@ id|regs
 suffix:semicolon
 r_extern
 r_void
-id|ata_fill_sg
+id|ata_qc_prep
 c_func
 (paren
 r_struct
