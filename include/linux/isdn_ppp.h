@@ -41,23 +41,23 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PPPIOCGCALLINFO
-mdefine_line|#define PPPIOCGCALLINFO    _IOWR(&squot;t&squot;,128,struct pppcallinfo)
+mdefine_line|#define PPPIOCGCALLINFO _IOWR(&squot;t&squot;,128,struct pppcallinfo)
 DECL|macro|PPPIOCBUNDLE
-mdefine_line|#define PPPIOCBUNDLE       _IOW(&squot;t&squot;,129,int)
+mdefine_line|#define PPPIOCBUNDLE   _IOW(&squot;t&squot;,129,int)
 DECL|macro|PPPIOCGMPFLAGS
-mdefine_line|#define PPPIOCGMPFLAGS     _IOR(&squot;t&squot;,130,int)
+mdefine_line|#define PPPIOCGMPFLAGS _IOR(&squot;t&squot;,130,int)
 DECL|macro|PPPIOCSMPFLAGS
-mdefine_line|#define PPPIOCSMPFLAGS     _IOW(&squot;t&squot;,131,int)
+mdefine_line|#define PPPIOCSMPFLAGS _IOW(&squot;t&squot;,131,int)
 DECL|macro|PPPIOCSMPMTU
-mdefine_line|#define PPPIOCSMPMTU       _IOW(&squot;t&squot;,132,int)
+mdefine_line|#define PPPIOCSMPMTU   _IOW(&squot;t&squot;,132,int)
 DECL|macro|PPPIOCSMPMRU
-mdefine_line|#define PPPIOCSMPMRU       _IOW(&squot;t&squot;,133,int)
+mdefine_line|#define PPPIOCSMPMRU   _IOW(&squot;t&squot;,133,int)
 DECL|macro|PPPIOCGCOMPRESSORS
-mdefine_line|#define PPPIOCGCOMPRESSORS _IOR(&squot;t&squot;,134,unsigned long[8])
+mdefine_line|#define PPPIOCGCOMPRESSORS _IOR(&squot;t&squot;,134,unsigned long [8])
 DECL|macro|PPPIOCSCOMPRESSOR
-mdefine_line|#define PPPIOCSCOMPRESSOR  _IOW(&squot;t&squot;,135,int)
+mdefine_line|#define PPPIOCSCOMPRESSOR _IOW(&squot;t&squot;,135,int)
 DECL|macro|PPPIOCGIFNAME
-mdefine_line|#define PPPIOCGIFNAME      _IOR(&squot;t&squot;,136,char[IFNAMSIZ])
+mdefine_line|#define PPPIOCGIFNAME      _IOR(&squot;t&squot;,136, char [IFNAMSIZ] )
 DECL|macro|SC_MP_PROT
 mdefine_line|#define SC_MP_PROT       0x00000200
 DECL|macro|SC_REJ_MP_PROT
@@ -66,6 +66,22 @@ DECL|macro|SC_OUT_SHORT_SEQ
 mdefine_line|#define SC_OUT_SHORT_SEQ 0x00000800
 DECL|macro|SC_IN_SHORT_SEQ
 mdefine_line|#define SC_IN_SHORT_SEQ  0x00004000
+DECL|macro|SC_DECOMP_ON
+mdefine_line|#define SC_DECOMP_ON&t;&t;0x01
+DECL|macro|SC_COMP_ON
+mdefine_line|#define SC_COMP_ON&t;&t;0x02
+DECL|macro|SC_DECOMP_DISCARD
+mdefine_line|#define SC_DECOMP_DISCARD&t;0x04
+DECL|macro|SC_COMP_DISCARD
+mdefine_line|#define SC_COMP_DISCARD&t;&t;0x08
+DECL|macro|SC_LINK_DECOMP_ON
+mdefine_line|#define SC_LINK_DECOMP_ON&t;0x10
+DECL|macro|SC_LINK_COMP_ON
+mdefine_line|#define SC_LINK_COMP_ON&t;&t;0x20
+DECL|macro|SC_LINK_DECOMP_DISCARD
+mdefine_line|#define SC_LINK_DECOMP_DISCARD&t;0x40
+DECL|macro|SC_LINK_COMP_DISCARD
+mdefine_line|#define SC_LINK_COMP_DISCARD&t;0x80
 DECL|macro|ISDN_PPP_COMP_MAX_OPTIONS
 mdefine_line|#define ISDN_PPP_COMP_MAX_OPTIONS 16
 DECL|macro|IPPP_COMP_FLAG_XMIT
@@ -99,10 +115,18 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/ppp_defs.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_IPPP_FILTER
+macro_line|#include &lt;linux/filter.h&gt;
+macro_line|#endif
 DECL|macro|DECOMP_ERR_NOMEM
 mdefine_line|#define DECOMP_ERR_NOMEM&t;(-10)
+DECL|macro|MP_END_FRAG
+mdefine_line|#define MP_END_FRAG    0x40
+DECL|macro|MP_BEGIN_FRAG
+mdefine_line|#define MP_BEGIN_FRAG  0x80
+DECL|macro|MP_MAX_QUEUE_LEN
+mdefine_line|#define MP_MAX_QUEUE_LEN&t;16
 multiline_comment|/*&n; * We need a way for the decompressor to influence the generation of CCP&n; * Reset-Requests in a variety of ways. The decompressor is already returning&n; * a lot of information (generated skb length, error conditions) so we use&n; * another parameter. This parameter is a pointer to a structure which is&n; * to be marked valid by the decompressor and only in this case is ever used.&n; * Furthermore, the only case where this data is used is when the decom-&n; * pressor returns DECOMP_ERROR.&n; *&n; * We use this same struct for the reset entry of the compressor to commu-&n; * nicate to its caller how to deal with sending of a Reset Ack. In this&n; * case, expra is not used, but other options still apply (suppressing&n; * sending with rsend, appending arbitrary data, etc).&n; */
 DECL|macro|IPPP_RESET_MAXDATABYTES
 mdefine_line|#define IPPP_RESET_MAXDATABYTES&t;32
@@ -182,16 +206,21 @@ DECL|struct|isdn_ppp_compressor
 r_struct
 id|isdn_ppp_compressor
 (brace
+DECL|member|next
+DECL|member|prev
+r_struct
+id|isdn_ppp_compressor
+op_star
+id|next
+comma
+op_star
+id|prev
+suffix:semicolon
 DECL|member|owner
 r_struct
 id|module
 op_star
 id|owner
-suffix:semicolon
-DECL|member|list
-r_struct
-id|list_head
-id|list
 suffix:semicolon
 DECL|member|num
 r_int
@@ -245,7 +274,7 @@ r_int
 id|debug
 )paren
 suffix:semicolon
-multiline_comment|/* The reset entry needs to get more exact information about the&n;&t;   ResetReq or ResetAck it was called with. The parameters are&n;&t;   obvious. If reset is called without a Req or Ack frame which&n;&t;   could be handed into it, code MUST be set to 0. Using rsparm,&n;&t;   the reset entry can control if and how a ResetAck is returned. */
+multiline_comment|/* The reset entry needs to get more exact information about the&n;     ResetReq or ResetAck it was called with. The parameters are&n;     obvious. If reset is called without a Req or Ack frame which&n;     could be handed into it, code MUST be set to 0. Using rsparm,&n;     the reset entry can control if and how a ResetAck is returned. */
 DECL|member|reset
 r_void
 (paren
@@ -389,6 +418,417 @@ r_struct
 id|isdn_ppp_compressor
 op_star
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|isdn_ppp_dial_slave
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|isdn_ppp_hangup_slave
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|seqerrs
+r_int
+r_int
+id|seqerrs
+suffix:semicolon
+DECL|member|frame_drops
+r_int
+r_int
+id|frame_drops
+suffix:semicolon
+DECL|member|overflows
+r_int
+r_int
+id|overflows
+suffix:semicolon
+DECL|member|max_queue_len
+r_int
+r_int
+id|max_queue_len
+suffix:semicolon
+DECL|typedef|isdn_mppp_stats
+)brace
+id|isdn_mppp_stats
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|mp_mrru
+r_int
+id|mp_mrru
+suffix:semicolon
+multiline_comment|/* unused                             */
+DECL|member|frags
+r_struct
+id|sk_buff
+op_star
+id|frags
+suffix:semicolon
+multiline_comment|/* fragments sl list -- use skb-&gt;next */
+DECL|member|frames
+r_int
+id|frames
+suffix:semicolon
+multiline_comment|/* number of frames in the frame list */
+DECL|member|seq
+r_int
+r_int
+id|seq
+suffix:semicolon
+multiline_comment|/* last processed packet seq #: any packets&n;  &t;&t;&t;&t; * with smaller seq # will be dropped&n;&t;&t;&t;&t; * unconditionally */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|ref_ct
+r_int
+id|ref_ct
+suffix:semicolon
+multiline_comment|/* statistics */
+DECL|member|stats
+id|isdn_mppp_stats
+id|stats
+suffix:semicolon
+DECL|typedef|ippp_bundle
+)brace
+id|ippp_bundle
+suffix:semicolon
+DECL|macro|NUM_RCV_BUFFS
+mdefine_line|#define NUM_RCV_BUFFS     64
+DECL|struct|ippp_buf_queue
+r_struct
+id|ippp_buf_queue
+(brace
+DECL|member|next
+r_struct
+id|ippp_buf_queue
+op_star
+id|next
+suffix:semicolon
+DECL|member|last
+r_struct
+id|ippp_buf_queue
+op_star
+id|last
+suffix:semicolon
+DECL|member|buf
+r_char
+op_star
+id|buf
+suffix:semicolon
+multiline_comment|/* NULL here indicates end of queue */
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* The data structure for one CCP reset transaction */
+DECL|enum|ippp_ccp_reset_states
+r_enum
+id|ippp_ccp_reset_states
+(brace
+DECL|enumerator|CCPResetIdle
+id|CCPResetIdle
+comma
+DECL|enumerator|CCPResetSentReq
+id|CCPResetSentReq
+comma
+DECL|enumerator|CCPResetRcvdReq
+id|CCPResetRcvdReq
+comma
+DECL|enumerator|CCPResetSentAck
+id|CCPResetSentAck
+comma
+DECL|enumerator|CCPResetRcvdAck
+id|CCPResetRcvdAck
+)brace
+suffix:semicolon
+DECL|struct|ippp_ccp_reset_state
+r_struct
+id|ippp_ccp_reset_state
+(brace
+DECL|member|state
+r_enum
+id|ippp_ccp_reset_states
+id|state
+suffix:semicolon
+multiline_comment|/* State of this transaction */
+DECL|member|is
+r_struct
+id|ippp_struct
+op_star
+id|is
+suffix:semicolon
+multiline_comment|/* Backlink to device stuff */
+DECL|member|id
+r_int
+r_char
+id|id
+suffix:semicolon
+multiline_comment|/* Backlink id index */
+DECL|member|ta
+r_int
+r_char
+id|ta
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* The timer is active (flag) */
+DECL|member|expra
+r_int
+r_char
+id|expra
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* We expect a ResetAck at all */
+DECL|member|dlen
+r_int
+id|dlen
+suffix:semicolon
+multiline_comment|/* Databytes stored in data */
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+multiline_comment|/* For timeouts/retries */
+multiline_comment|/* This is a hack but seems sufficient for the moment. We do not want&n;     to have this be yet another allocation for some bytes, it is more&n;     memory management overhead than the whole mess is worth. */
+DECL|member|data
+r_int
+r_char
+id|data
+(braket
+id|IPPP_RESET_MAXDATABYTES
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* The data structure keeping track of the currently outstanding CCP Reset&n;   transactions. */
+DECL|struct|ippp_ccp_reset
+r_struct
+id|ippp_ccp_reset
+(brace
+DECL|member|rs
+r_struct
+id|ippp_ccp_reset_state
+op_star
+id|rs
+(braket
+l_int|256
+)braket
+suffix:semicolon
+multiline_comment|/* One per possible id */
+DECL|member|lastid
+r_int
+r_char
+id|lastid
+suffix:semicolon
+multiline_comment|/* Last id allocated by the engine */
+)brace
+suffix:semicolon
+DECL|struct|ippp_struct
+r_struct
+id|ippp_struct
+(brace
+DECL|member|next_link
+r_struct
+id|ippp_struct
+op_star
+id|next_link
+suffix:semicolon
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
+DECL|member|buflock
+id|spinlock_t
+id|buflock
+suffix:semicolon
+DECL|member|rq
+r_struct
+id|ippp_buf_queue
+id|rq
+(braket
+id|NUM_RCV_BUFFS
+)braket
+suffix:semicolon
+multiline_comment|/* packet queue for isdn_ppp_read() */
+DECL|member|first
+r_struct
+id|ippp_buf_queue
+op_star
+id|first
+suffix:semicolon
+multiline_comment|/* pointer to (current) first packet */
+DECL|member|last
+r_struct
+id|ippp_buf_queue
+op_star
+id|last
+suffix:semicolon
+multiline_comment|/* pointer to (current) last used packet in queue */
+DECL|member|wq
+id|wait_queue_head_t
+id|wq
+suffix:semicolon
+DECL|member|tk
+r_struct
+id|task_struct
+op_star
+id|tk
+suffix:semicolon
+DECL|member|mpppcfg
+r_int
+r_int
+id|mpppcfg
+suffix:semicolon
+DECL|member|pppcfg
+r_int
+r_int
+id|pppcfg
+suffix:semicolon
+DECL|member|mru
+r_int
+r_int
+id|mru
+suffix:semicolon
+DECL|member|mpmru
+r_int
+r_int
+id|mpmru
+suffix:semicolon
+DECL|member|mpmtu
+r_int
+r_int
+id|mpmtu
+suffix:semicolon
+DECL|member|maxcid
+r_int
+r_int
+id|maxcid
+suffix:semicolon
+DECL|member|lp
+r_struct
+id|isdn_net_local_s
+op_star
+id|lp
+suffix:semicolon
+DECL|member|unit
+r_int
+id|unit
+suffix:semicolon
+DECL|member|minor
+r_int
+id|minor
+suffix:semicolon
+DECL|member|last_link_seqno
+r_int
+r_int
+id|last_link_seqno
+suffix:semicolon
+DECL|member|mp_seqno
+r_int
+id|mp_seqno
+suffix:semicolon
+macro_line|#ifdef CONFIG_ISDN_PPP_VJ
+DECL|member|cbuf
+r_int
+r_char
+op_star
+id|cbuf
+suffix:semicolon
+DECL|member|slcomp
+r_struct
+id|slcompress
+op_star
+id|slcomp
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IPPP_FILTER
+DECL|member|pass_filter
+r_struct
+id|sock_fprog
+id|pass_filter
+suffix:semicolon
+multiline_comment|/* filter for packets to pass */
+DECL|member|active_filter
+r_struct
+id|sock_fprog
+id|active_filter
+suffix:semicolon
+multiline_comment|/* filter for pkts to reset idle */
+macro_line|#endif
+DECL|member|debug
+r_int
+r_int
+id|debug
+suffix:semicolon
+DECL|member|compressor
+DECL|member|decompressor
+r_struct
+id|isdn_ppp_compressor
+op_star
+id|compressor
+comma
+op_star
+id|decompressor
+suffix:semicolon
+DECL|member|link_compressor
+DECL|member|link_decompressor
+r_struct
+id|isdn_ppp_compressor
+op_star
+id|link_compressor
+comma
+op_star
+id|link_decompressor
+suffix:semicolon
+DECL|member|decomp_stat
+DECL|member|comp_stat
+DECL|member|link_decomp_stat
+DECL|member|link_comp_stat
+r_void
+op_star
+id|decomp_stat
+comma
+op_star
+id|comp_stat
+comma
+op_star
+id|link_decomp_stat
+comma
+op_star
+id|link_comp_stat
+suffix:semicolon
+DECL|member|reset
+r_struct
+id|ippp_ccp_reset
+op_star
+id|reset
+suffix:semicolon
+multiline_comment|/* Allocated on demand, may never be needed */
+DECL|member|compflags
+r_int
+r_int
+id|compflags
+suffix:semicolon
+)brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_ISDN_PPP_H */

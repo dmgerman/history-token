@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Driver for ST5481 USB ISDN modem&n; *&n; * Author       Frode Isaksen&n; * Copyright    2001 by Frode Isaksen      &lt;fisaksen@bewan.com&gt;&n; *              2001 by Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-multiline_comment|/* &n; * TODO:&n; *&n; * b layer1 delay?&n; * hdlc as module&n; * hotplug / unregister issues&n; * mod_inc/dec_use_count&n; * unify parts of d/b channel usb handling&n; * file header&n; * avoid copy to isoc buffer?&n; * improve usb delay?&n; * merge l1 state machines?&n; * clean up debug&n; */
+multiline_comment|/* &n; * TODO:&n; *&n; * b layer1 delay?&n; * hotplug / unregister issues&n; * mod_inc/dec_use_count&n; * unify parts of d/b channel usb handling&n; * file header&n; * avoid copy to isoc buffer?&n; * improve usb delay?&n; * merge l1 state machines?&n; * clean up debug&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -90,6 +90,7 @@ multiline_comment|/*&n; * This function will be called when the adapter is plugg
 DECL|function|probe_st5481
 r_static
 r_int
+id|__devinit
 id|probe_st5481
 c_func
 (paren
@@ -827,7 +828,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;hisax_st5481: ST5481 USB ISDN driver v0.1.0&bslash;n&quot;
+l_string|&quot;hisax_st5481: ST5481 USB ISDN driver $Revision: 2.4.2.3 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval

@@ -86,7 +86,7 @@ suffix:semicolon
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -131,7 +131,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCRESET: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -139,7 +139,7 @@ op_member_access_from_pointer
 id|devicename
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -179,7 +179,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOLOAD: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -190,7 +190,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -203,7 +203,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCLOAD: command failed, LoadProc while engine running.&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -282,7 +282,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCLOAD: command failed, status = %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -304,7 +304,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCLOAD: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -326,7 +326,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOSTART: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -337,7 +337,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -350,7 +350,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSTART: command failed, engine already running.&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -363,7 +363,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -400,7 +400,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOSETSWITCH: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -439,7 +439,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSWITCH: setting switch type to %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -495,7 +495,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSWITCH: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -514,7 +514,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSWITCH: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -547,7 +547,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOGETSWITCH: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -598,7 +598,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETSWITCH: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -614,7 +614,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETSWITCH: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -686,7 +686,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOGETSPID: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -734,7 +734,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETSPID: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -750,7 +750,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETSPID: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -822,7 +822,7 @@ c_func
 (paren
 l_string|&quot;%s: DCBIOSETSPID: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -860,7 +860,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSPID: setting channel %d spid to %s&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -918,7 +918,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSPID: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -937,7 +937,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSPID: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -973,7 +973,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOGETDN: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1021,7 +1021,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETDN: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1037,7 +1037,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETDN: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1109,7 +1109,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOSETDN: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1147,7 +1147,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETDN: setting channel %d dn to %s&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1205,7 +1205,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETDN: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1224,7 +1224,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETDN: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1247,7 +1247,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOTRACE: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1255,7 +1255,7 @@ op_member_access_from_pointer
 id|devicename
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;adapter[card]-&gt;trace = !adapter[card]-&gt;trace; &n;&t;&t;pr_debug(&quot;%s: SCIOCTRACE: tracing turned %s&bslash;n&quot;, adapter[card]-&gt;devicename,&n;&t;&t;&t;adapter[card]-&gt;trace ? &quot;ON&quot; : &quot;OFF&quot;); */
+multiline_comment|/*&t;&t;sc_adapter[card]-&gt;trace = !sc_adapter[card]-&gt;trace;&n;&t;&t;pr_debug(&quot;%s: SCIOCTRACE: tracing turned %s&bslash;n&quot;,&n;&t;&t;&t;&t;sc_adapter[card]-&gt;devicename,&n;&t;&t;&t;sc_adapter[card]-&gt;trace ? &quot;ON&quot; : &quot;OFF&quot;); */
 r_break
 suffix:semicolon
 r_case
@@ -1270,7 +1270,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOSTAT: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1334,7 +1334,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOGETSPEED: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1385,7 +1385,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETSPEED: command successful&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1401,7 +1401,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCGETSPEED: command failed (status = %d)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1460,7 +1460,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCSETSPEED: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1478,7 +1478,7 @@ c_func
 (paren
 l_string|&quot;%s: SCIOCLOOPTST: ioctl received&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1523,7 +1523,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in some of the basic info about the board&n;&t; */
 id|bi-&gt;modelid
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1535,7 +1535,7 @@ c_func
 (paren
 id|bi-&gt;serial_no
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1548,7 +1548,7 @@ c_func
 (paren
 id|bi-&gt;part_no
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1558,7 +1558,7 @@ id|hwconfig.part_no
 suffix:semicolon
 id|bi-&gt;iobase
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1567,7 +1567,7 @@ id|iobase
 suffix:semicolon
 id|bi-&gt;rambase
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1576,7 +1576,7 @@ id|rambase
 suffix:semicolon
 id|bi-&gt;irq
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1585,7 +1585,7 @@ id|interrupt
 suffix:semicolon
 id|bi-&gt;ramsize
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1594,7 +1594,7 @@ id|hwconfig.ram_size
 suffix:semicolon
 id|bi-&gt;interface
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1606,7 +1606,7 @@ c_func
 (paren
 id|bi-&gt;load_ver
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1619,7 +1619,7 @@ c_func
 (paren
 id|bi-&gt;proc_ver
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1665,7 +1665,7 @@ id|status
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1769,7 +1769,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1817,7 +1817,7 @@ id|status
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1861,7 +1861,7 @@ multiline_comment|/*&n;&t; * If PRI, get the call states and service states for 
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

@@ -114,7 +114,7 @@ suffix:semicolon
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -357,7 +357,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -428,7 +428,7 @@ c_func
 (paren
 l_string|&quot;%s: Received %s command from Link Layer&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -501,7 +501,7 @@ c_func
 (paren
 l_string|&quot;%s: Failed to verify user space 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -691,7 +691,7 @@ c_func
 (paren
 l_string|&quot;%s: Sending loopback message&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -752,7 +752,7 @@ c_func
 (paren
 l_string|&quot;%s: Loopback message successfully sent&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -777,7 +777,7 @@ c_func
 (paren
 l_string|&quot;%s: Loopback return != sent&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -801,7 +801,7 @@ c_func
 (paren
 l_string|&quot;%s: Send loopback message failed&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -880,7 +880,7 @@ c_func
 (paren
 l_string|&quot;%s: Sent startProc&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1012,7 +1012,7 @@ c_func
 (paren
 l_string|&quot;%s: Dialing %s on channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1116,7 +1116,7 @@ c_func
 (paren
 l_string|&quot;%s: Answered incoming call on channel %s&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1206,7 +1206,7 @@ c_func
 (paren
 l_string|&quot;%s: Sent HANGUP message to channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1282,7 +1282,7 @@ id|arg
 op_amp
 l_int|0xff
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1301,7 +1301,7 @@ c_func
 (paren
 l_string|&quot;%s: Level 2 protocol for channel %d set to %s from %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1314,7 +1314,7 @@ l_int|1
 comma
 id|l2protos
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1336,7 +1336,7 @@ c_func
 (paren
 l_string|&quot;%s: Sending GetFrameFormat for channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1440,7 +1440,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1459,7 +1459,7 @@ c_func
 (paren
 l_string|&quot;%s: Level 3 protocol for channel %d set to %s&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1553,7 +1553,7 @@ c_func
 (paren
 l_string|&quot;%s: B-Channel connection accepted on channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1621,7 +1621,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1636,7 +1636,7 @@ comma
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1655,7 +1655,7 @@ c_func
 (paren
 l_string|&quot;%s: EAZ List cleared for channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1715,7 +1715,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1730,7 +1730,7 @@ comma
 id|num
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1749,7 +1749,7 @@ c_func
 (paren
 l_string|&quot;%s: EAZ list for channel %d set to: %s&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1760,7 +1760,7 @@ id|arg
 op_plus
 l_int|1
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1829,7 +1829,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1841,7 +1841,7 @@ id|del_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1850,7 +1850,7 @@ id|stat_timer
 )paren
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1863,7 +1863,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1877,7 +1877,7 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1885,7 +1885,7 @@ op_member_access_from_pointer
 id|reset_timer
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1894,7 +1894,7 @@ id|reset_timer.function
 op_assign
 id|check_reset
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1903,7 +1903,7 @@ id|reset_timer.data
 op_assign
 id|card
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1918,7 +1918,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1930,7 +1930,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1945,7 +1945,7 @@ c_func
 (paren
 l_int|0x1
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1961,7 +1961,7 @@ c_func
 (paren
 l_string|&quot;%s: Adapter Reset&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1987,7 +1987,7 @@ c_loop
 id|inb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -2004,7 +2004,7 @@ id|RF_HAS_DATA
 id|inb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnl3.c,v 2.17.6.5 2001/09/23 22:24:49 kai Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: isdnl3.c,v 2.22.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl3.h&quot;
@@ -9,7 +9,7 @@ r_char
 op_star
 id|l3_revision
 op_assign
-l_string|&quot;$Revision: 2.17.6.5 $&quot;
+l_string|&quot;$Revision: 2.22.2.3 $&quot;
 suffix:semicolon
 DECL|variable|l3fsm
 r_static
@@ -168,20 +168,20 @@ id|args
 )paren
 suffix:semicolon
 )brace
-id|u8
+id|u_char
 op_star
 DECL|function|findie
 id|findie
 c_func
 (paren
-id|u8
+id|u_char
 op_star
 id|p
 comma
 r_int
 id|size
 comma
-id|u8
+id|u_char
 id|ie
 comma
 r_int
@@ -195,7 +195,7 @@ id|codeset
 comma
 id|maincodeset
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|pend
 op_assign
@@ -395,7 +395,7 @@ DECL|function|getcallref
 id|getcallref
 c_func
 (paren
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -546,7 +546,7 @@ op_star
 id|t
 )paren
 (brace
-id|t-&gt;pc-&gt;st-&gt;l3
+id|t-&gt;pc-&gt;st-&gt;lli
 dot
 id|l4l3
 c_func
@@ -1427,7 +1427,7 @@ comma
 l_string|&quot;L3DC &quot;
 )paren
 suffix:semicolon
-id|st-&gt;l3.l4l3_proto
+id|st-&gt;lli.l4l3_proto
 op_assign
 id|no_l3_proto_spec
 suffix:semicolon
@@ -1493,11 +1493,11 @@ op_eq
 id|ISDN_PTYPE_LEASED
 )paren
 (brace
-id|st-&gt;l3.l4l3
+id|st-&gt;lli.l4l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
-id|st-&gt;l3.l2l3
+id|st-&gt;l2.l2l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
@@ -1515,11 +1515,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|st-&gt;l3.l4l3
+id|st-&gt;lli.l4l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
-id|st-&gt;l3.l2l3
+id|st-&gt;l2.l2l3
 op_assign
 id|no_l3_proto
 suffix:semicolon
@@ -1598,7 +1598,9 @@ op_star
 id|arg
 )paren
 (brace
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -1735,7 +1737,7 @@ comma
 l_string|&quot;L3BC &quot;
 )paren
 suffix:semicolon
-id|st-&gt;l3.l4l3
+id|st-&gt;lli.l4l3
 op_assign
 id|isdnl3_trans
 suffix:semicolon
@@ -1776,7 +1778,9 @@ comma
 id|ST_L3_LC_ESTAB_WAIT
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -1850,7 +1854,9 @@ id|st-&gt;l3.squeue
 )paren
 )paren
 (brace
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -1984,7 +1990,9 @@ id|st-&gt;l3.squeue
 )paren
 )paren
 (brace
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -2236,7 +2244,9 @@ comma
 id|ST_L3_LC_REL_WAIT
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -2522,7 +2532,9 @@ op_eq
 id|ST_L3_LC_ESTAB
 )paren
 (brace
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st

@@ -6,7 +6,7 @@ macro_line|#include &quot;card.h&quot;
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -107,7 +107,7 @@ c_func
 (paren
 l_string|&quot;%s: Entered receivemessage&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -122,7 +122,7 @@ c_cond
 id|inb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -141,7 +141,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -155,7 +155,7 @@ id|outb
 c_func
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -167,14 +167,14 @@ l_int|14
 op_or
 l_int|0x80
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|ioport
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -189,7 +189,7 @@ op_assign
 id|DualPortMemory
 op_star
 )paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -225,7 +225,7 @@ suffix:semicolon
 id|inb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -240,7 +240,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -258,7 +258,7 @@ l_string|&quot;%s: Received Message seq:%d pid:%d time:%d cmd:%d &quot;
 l_string|&quot;cnt:%d (type,class,code):(%d,%d,%d) &quot;
 l_string|&quot;link:%d stat:0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -375,7 +375,7 @@ multiline_comment|/*&n;&t; * Make sure we only send CEPID messages when the engi
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -392,7 +392,7 @@ c_func
 (paren
 l_string|&quot;%s: Attempt to send CM message with engine up&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -409,7 +409,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -426,7 +426,7 @@ c_func
 (paren
 l_string|&quot;%s: Attempt to send CE message with engine down&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -517,7 +517,7 @@ id|procid
 suffix:semicolon
 id|sndmsg.sequence_no
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -536,7 +536,7 @@ op_logical_neg
 id|inb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -561,7 +561,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -575,7 +575,7 @@ id|outb
 c_func
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -587,14 +587,14 @@ l_int|14
 op_or
 l_int|0x80
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|ioport
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -609,7 +609,7 @@ op_assign
 id|DualPortMemory
 op_star
 )paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -649,7 +649,7 @@ c_func
 (paren
 id|sndmsg.sequence_no
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -664,7 +664,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -681,7 +681,7 @@ l_string|&quot;%s: Sent Message seq:%d pid:%d time:%d &quot;
 l_string|&quot;cnt:%d (type,class,code):(%d,%d,%d) &quot;
 l_string|&quot;link:%d&bslash;n &quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -786,7 +786,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -833,7 +833,7 @@ c_func
 (paren
 l_string|&quot;%s: SendMessage failed in SAR&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -841,7 +841,7 @@ op_member_access_from_pointer
 id|devicename
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -891,7 +891,7 @@ r_if
 c_cond
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -902,7 +902,7 @@ id|type
 )paren
 op_logical_and
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -915,7 +915,7 @@ r_class
 )paren
 op_logical_and
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -926,7 +926,7 @@ id|code
 )paren
 op_logical_and
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -943,7 +943,7 @@ c_func
 (paren
 l_string|&quot;%s: Got ASYNC message&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -958,7 +958,7 @@ id|mesgdata
 comma
 op_amp
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -972,7 +972,7 @@ id|RspMessage
 )paren
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -994,7 +994,7 @@ c_func
 (paren
 l_string|&quot;%s: SAR message timeout&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1002,7 +1002,7 @@ op_member_access_from_pointer
 id|devicename
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

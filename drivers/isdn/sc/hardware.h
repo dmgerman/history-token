@@ -140,6 +140,6 @@ DECL|macro|milliseconds
 mdefine_line|#define milliseconds(x)&t;(x/(1000/HZ))
 multiline_comment|/* Determine if a channel number is valid for the adapter */
 DECL|macro|IS_VALID_CHANNEL
-mdefine_line|#define IS_VALID_CHANNEL(y,x)&t;((x&gt;0) &amp;&amp; (x &lt;= adapter[y]-&gt;channels))
+mdefine_line|#define IS_VALID_CHANNEL(y,x)&t;((x&gt;0) &amp;&amp; (x &lt;= sc_adapter[y]-&gt;channels))
 macro_line|#endif
 eof

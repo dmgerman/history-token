@@ -6,7 +6,7 @@ multiline_comment|/*&n; * Main adapter array&n; */
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -100,7 +100,7 @@ c_func
 (paren
 l_string|&quot;%s: loaded page %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -115,7 +115,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -130,7 +130,7 @@ c_func
 (paren
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -147,14 +147,14 @@ l_int|14
 op_or
 l_int|0x80
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|ioport
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -168,7 +168,7 @@ op_assign
 id|memcpy_toio
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -194,7 +194,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -209,7 +209,7 @@ c_func
 (paren
 l_string|&quot;%s: set page to %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -218,7 +218,7 @@ id|devicename
 comma
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -241,7 +241,7 @@ c_func
 (paren
 l_string|&quot;%s: copying %d bytes from %#x to %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -256,7 +256,7 @@ r_int
 )paren
 id|src
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -364,7 +364,7 @@ c_func
 (paren
 l_string|&quot;%s: loaded page %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -379,7 +379,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -394,7 +394,7 @@ c_func
 (paren
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -411,14 +411,14 @@ l_int|14
 op_or
 l_int|0x80
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|ioport
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -439,7 +439,7 @@ r_void
 op_star
 )paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -464,7 +464,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -479,7 +479,7 @@ c_func
 (paren
 l_string|&quot;%s: set page to %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -488,7 +488,7 @@ id|devicename
 comma
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -506,7 +506,7 @@ op_or
 l_int|0x80
 )paren
 suffix:semicolon
-multiline_comment|/*&t;pr_debug(&quot;%s: copying %d bytes from %#x to %#x&bslash;n&quot;,&n;&t;&t;adapter[card]-&gt;devicename, n,&n;&t;&t;adapter[card]-&gt;rambase + ((unsigned long) src %0x4000), (unsigned long) dest); */
+multiline_comment|/*&t;pr_debug(&quot;%s: copying %d bytes from %#x to %#x&bslash;n&quot;,&n;&t;&t;sc_adapter[card]-&gt;devicename, n,&n;&t;&t;sc_adapter[card]-&gt;rambase + ((unsigned long) src %0x4000), (unsigned long) dest); */
 r_return
 id|ret
 suffix:semicolon
@@ -594,7 +594,7 @@ c_func
 (paren
 l_string|&quot;%s: loaded page %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -609,7 +609,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -624,7 +624,7 @@ c_func
 (paren
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -641,14 +641,14 @@ l_int|14
 op_or
 l_int|0x80
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|ioport
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -662,7 +662,7 @@ op_assign
 id|memset_io
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -689,7 +689,7 @@ c_func
 (paren
 l_string|&quot;%s: set page to %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -698,7 +698,7 @@ id|devicename
 comma
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -720,7 +720,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

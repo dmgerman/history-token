@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_2bs0.h,v 1.3.6.2 2001/09/23 22:24:47 kai Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BS0&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: hfc_2bs0.h,v 1.5.2.2 2004/01/12 22:52:26 keil Exp $&n; *&n; * specific defines for CCD&squot;s HFC 2BS0&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|HFC_CTMT
 mdefine_line|#define HFC_CTMT&t;0xe0
 DECL|macro|HFC_CIRM
@@ -107,22 +107,6 @@ r_struct
 id|IsdnCardState
 op_star
 id|cs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|hfc_setup
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-r_struct
-id|bc_hw_ops
-op_star
-id|hfc_ops
 )paren
 suffix:semicolon
 eof

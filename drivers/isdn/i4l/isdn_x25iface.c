@@ -1,5 +1,5 @@
-multiline_comment|/* * Linux ISDN subsystem, X.25 related functions&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
-multiline_comment|/*&n; * stuff needed to support the Linux X.25 PLP code on top of devices that&n; * can provide a lab_b service using the concap_proto mechanism.&n; * This module supports a network interface wich provides lapb_sematics&n; * -- as defined in ../../Documentation/networking/x25-iface.txt -- to&n; * the upper layer and assumes that the lower layer provides a reliable&n; * data link service by means of the concap_device_ops callbacks.&n; *&n; * Only protocol specific stuff goes here. Device specific stuff&n; * goes to another -- device related -- concap_proto support source file.&n; *&n; */
+multiline_comment|/* $Id: isdn_x25iface.c,v 1.1.2.2 2004/01/12 22:37:19 keil Exp $&n; *&n; * Linux ISDN subsystem, X.25 related functions&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * stuff needed to support the Linux X.25 PLP code on top of devices that&n; * can provide a lab_b service using the concap_proto mechanism.&n; * This module supports a network interface wich provides lapb_sematics&n; * -- as defined in ../../Documentation/networking/x25-iface.txt -- to&n; * the upper layer and assumes that the lower layer provides a reliable&n; * data link service by means of the concap_device_ops callbacks.&n; *&n; * Only protocol specific stuff goes here. Device specific stuff&n; * goes to another -- device related -- concap_proto support source file.&n; *&n; */
+multiline_comment|/* #include &lt;linux/isdn.h&gt; */
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/concap.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
@@ -162,7 +162,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_x25iface: firstbyte %x invalid in&quot;
+l_string|&quot;isdn_x25iface: firstbyte %x illegal in&quot;
 l_string|&quot;current state %d&bslash;n&quot;
 comma
 id|firstbyte
@@ -204,7 +204,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_x25iface_xxx: invalid pointer to proto data&bslash;n&quot;
+l_string|&quot;isdn_x25iface_xxx: illegal pointer to proto data&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -262,6 +262,13 @@ op_assign
 id|WAN_UNCONFIGURED
 suffix:semicolon
 multiline_comment|/* private data space used to hold the concap_proto data.&n;&t;&t;   Only to be accessed via the returned pointer */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|tmp-&gt;priv.lock
+)paren
+suffix:semicolon
 id|tmp
 op_member_access_from_pointer
 id|priv.dops
@@ -366,18 +373,15 @@ id|net_dev
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|cprot-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* avoid races with incoming events calling pops methods while&n;&t;&t; cprot members are inconsistent */
 id|cprot
 op_member_access_from_pointer
 id|dops
@@ -421,9 +425,12 @@ op_assign
 id|WAN_UNCONFIGURED
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|cprot-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -635,18 +642,15 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|cprot-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* avoid races with incoming events calling pops methods while&n;&t;&t; cprot members are inconsistent */
 id|cprot
 op_member_access_from_pointer
 id|net_dev
@@ -672,9 +676,12 @@ id|state
 op_assign
 id|WAN_DISCONNECTED
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|cprot-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -892,17 +899,6 @@ c_func
 (paren
 id|cprot-&gt;net_dev
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_return
@@ -1479,7 +1475,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_x25iface_xmit: frame with invalid&quot;
+l_string|&quot;isdn_x25iface_xmit: frame with illegal&quot;
 l_string|&quot; first byte %x ignored:&bslash;n&quot;
 comma
 id|firstbyte

@@ -73,10 +73,10 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|variable|adapter
+DECL|variable|sc_adapter
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 id|MAX_CARDS
 )braket
@@ -1402,7 +1402,7 @@ op_plus
 id|cinst
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Allocate the board structure&n;&t;&t; */
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1421,7 +1421,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1442,7 +1442,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1459,7 +1459,7 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1488,7 +1488,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1497,7 +1497,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1506,7 +1506,7 @@ id|card
 op_assign
 id|interface
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1518,7 +1518,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1528,7 +1528,7 @@ comma
 id|interface-&gt;id
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1537,7 +1537,7 @@ id|nChannels
 op_assign
 id|channels
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1546,7 +1546,7 @@ id|ramsize
 op_assign
 id|memsize
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1555,7 +1555,7 @@ id|shmem_magic
 op_assign
 id|magic
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1564,7 +1564,7 @@ id|shmem_pgport
 op_assign
 id|pgport
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1574,7 +1574,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Allocate channels status structures&n;&t;&t; */
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1597,7 +1597,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1630,7 +1630,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1642,7 +1642,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1660,7 +1660,7 @@ id|channels
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Lock down the hardware resources&n;&t;&t; */
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1678,7 +1678,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1698,7 +1698,7 @@ l_int|NULL
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1728,7 +1728,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1737,7 +1737,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1766,7 +1766,7 @@ id|i
 op_increment
 )paren
 (brace
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1788,7 +1788,7 @@ suffix:semicolon
 id|request_region
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1808,7 +1808,7 @@ c_func
 (paren
 l_string|&quot;Requesting I/O Port %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1820,7 +1820,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1840,7 +1840,7 @@ suffix:semicolon
 id|request_region
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1860,7 +1860,7 @@ c_func
 (paren
 l_string|&quot;Requesting I/O Port %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1871,7 +1871,7 @@ id|IRQ_SELECT
 )braket
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1886,7 +1886,7 @@ suffix:semicolon
 id|request_region
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -1903,14 +1903,14 @@ c_func
 (paren
 l_string|&quot;  %s (%d) - %s %d channels IRQ %d, I/O Base 0x%x, RAM Base 0x%lx&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
 op_member_access_from_pointer
 id|devicename
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|cinst
 )braket
@@ -2014,7 +2014,7 @@ c_func
 (paren
 op_amp
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2028,7 +2028,7 @@ c_func
 (paren
 op_amp
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2066,7 +2066,7 @@ multiline_comment|/*&n;&t;&t; * Release shared RAM&n;&t;&t; */
 id|release_region
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2080,7 +2080,7 @@ multiline_comment|/*&n;&t;&t; * Release the IRQ&n;&t;&t; */
 id|FREE_IRQ
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2096,7 +2096,7 @@ c_func
 (paren
 l_int|0xFF
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2128,7 +2128,7 @@ op_increment
 id|release_region
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2146,7 +2146,7 @@ c_func
 (paren
 l_string|&quot;Releasing I/O Port %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2161,7 +2161,7 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2179,7 +2179,7 @@ c_func
 (paren
 l_string|&quot;Releasing I/O Port %#x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2194,7 +2194,7 @@ multiline_comment|/*&n;&t;&t; * Release any memory we alloced&n;&t;&t; */
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2205,7 +2205,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -2216,7 +2216,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket

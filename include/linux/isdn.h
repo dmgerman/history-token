@@ -1,9 +1,8 @@
-multiline_comment|/* Linux ISDN subsystem, main header&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * Copyright 2000-2002  by Kai Germaschewski (kai@germaschewski.name)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdn.h,v 1.125.2.3 2004/02/10 01:07:14 keil Exp $&n; *&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __ISDN_H__
 DECL|macro|__ISDN_H__
 mdefine_line|#define __ISDN_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/isdn/fsm.h&gt;
 macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
 multiline_comment|/* Save memory */
 DECL|macro|ISDN_MAX_DRIVERS
@@ -101,8 +100,8 @@ DECL|macro|ISDN_NET_ENCAP_CISCOHDLCK
 mdefine_line|#define ISDN_NET_ENCAP_CISCOHDLCK 6 /* With SLARP and keepalive    */
 DECL|macro|ISDN_NET_ENCAP_X25IFACE
 mdefine_line|#define ISDN_NET_ENCAP_X25IFACE   7 /* Documentation/networking/x25-iface.txt*/
-DECL|macro|ISDN_NET_ENCAP_NR
-mdefine_line|#define ISDN_NET_ENCAP_NR         8
+DECL|macro|ISDN_NET_ENCAP_MAX_ENCAP
+mdefine_line|#define ISDN_NET_ENCAP_MAX_ENCAP  ISDN_NET_ENCAP_X25IFACE
 multiline_comment|/* Facility which currently uses an ISDN-channel */
 DECL|macro|ISDN_USAGE_NONE
 mdefine_line|#define ISDN_USAGE_NONE       0
@@ -133,11 +132,11 @@ mdefine_line|#define ISDN_CMSGLEN&t;     50&t; /* Length of CONNECT-Message to a
 DECL|macro|ISDN_MSNLEN
 mdefine_line|#define ISDN_MSNLEN          32
 DECL|macro|NET_DV
-mdefine_line|#define NET_DV&t;0x06  /* Data version for isdn_net_ioctl_cfg   */
+mdefine_line|#define NET_DV 0x06  /* Data version for isdn_net_ioctl_cfg   */
 DECL|macro|TTY_DV
-mdefine_line|#define TTY_DV&t;0x06  /* Data version for iprofd etc.          */
+mdefine_line|#define TTY_DV 0x06  /* Data version for iprofd etc.          */
 DECL|macro|INF_DV
-mdefine_line|#define INF_DV&t;0x01  /* Data version for /dev/isdninfo        */
+mdefine_line|#define INF_DV 0x01  /* Data version for /dev/isdninfo        */
 r_typedef
 r_struct
 (brace
@@ -344,6 +343,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -369,6 +369,10 @@ mdefine_line|#define ISDN_TTYAUX_MAJOR 44
 DECL|macro|ISDN_MAJOR
 mdefine_line|#define ISDN_MAJOR        45
 multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
+DECL|macro|ISDN_MINOR_B
+mdefine_line|#define ISDN_MINOR_B        0
+DECL|macro|ISDN_MINOR_BMAX
+mdefine_line|#define ISDN_MINOR_BMAX     (ISDN_MAX_CHANNELS-1)
 DECL|macro|ISDN_MINOR_CTRL
 mdefine_line|#define ISDN_MINOR_CTRL     64
 DECL|macro|ISDN_MINOR_CTRLMAX
@@ -437,9 +441,535 @@ DECL|macro|USG_OUTGOING
 mdefine_line|#define USG_OUTGOING(x)     ((x &amp; ISDN_USAGE_OUTGOING)==ISDN_USAGE_OUTGOING)
 DECL|macro|USG_MODEMORVOICE
 mdefine_line|#define USG_MODEMORVOICE(x) (((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE_MODEM) || &bslash;&n;                             ((x &amp; ISDN_USAGE_MASK)==ISDN_USAGE_VOICE)     )
+multiline_comment|/* Timer-delays and scheduling-flags */
+DECL|macro|ISDN_TIMER_RES
+mdefine_line|#define ISDN_TIMER_RES         4                         /* Main Timer-Resolution   */
+DECL|macro|ISDN_TIMER_02SEC
+mdefine_line|#define ISDN_TIMER_02SEC       (HZ/ISDN_TIMER_RES/5)     /* Slow-Timer1 .2 sec      */
+DECL|macro|ISDN_TIMER_1SEC
+mdefine_line|#define ISDN_TIMER_1SEC        (HZ/ISDN_TIMER_RES)       /* Slow-Timer2 1 sec       */
+DECL|macro|ISDN_TIMER_RINGING
+mdefine_line|#define ISDN_TIMER_RINGING     5 /* tty RINGs = ISDN_TIMER_1SEC * this factor       */
+DECL|macro|ISDN_TIMER_KEEPINT
+mdefine_line|#define ISDN_TIMER_KEEPINT    10 /* Cisco-Keepalive = ISDN_TIMER_1SEC * this factor */
+DECL|macro|ISDN_TIMER_MODEMREAD
+mdefine_line|#define ISDN_TIMER_MODEMREAD   1
+DECL|macro|ISDN_TIMER_MODEMPLUS
+mdefine_line|#define ISDN_TIMER_MODEMPLUS   2
+DECL|macro|ISDN_TIMER_MODEMRING
+mdefine_line|#define ISDN_TIMER_MODEMRING   4
+DECL|macro|ISDN_TIMER_MODEMXMIT
+mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
+DECL|macro|ISDN_TIMER_NETDIAL
+mdefine_line|#define ISDN_TIMER_NETDIAL    16 
+DECL|macro|ISDN_TIMER_NETHANGUP
+mdefine_line|#define ISDN_TIMER_NETHANGUP  32
+DECL|macro|ISDN_TIMER_CARRIER
+mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
+DECL|macro|ISDN_TIMER_FAST
+mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMPLUS | &bslash;&n;                              ISDN_TIMER_MODEMXMIT)
+DECL|macro|ISDN_TIMER_SLOW
+mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_NETDIAL | ISDN_TIMER_CARRIER)
+multiline_comment|/* Timeout-Values for isdn_net_dial() */
+DECL|macro|ISDN_TIMER_DTIMEOUT10
+mdefine_line|#define ISDN_TIMER_DTIMEOUT10 (10*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
+DECL|macro|ISDN_TIMER_DTIMEOUT15
+mdefine_line|#define ISDN_TIMER_DTIMEOUT15 (15*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
+DECL|macro|ISDN_TIMER_DTIMEOUT60
+mdefine_line|#define ISDN_TIMER_DTIMEOUT60 (60*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
+multiline_comment|/*=================== Start of ip-over-ISDN stuff =========================*/
+multiline_comment|/* Feature- and status-flags for a net-interface */
+DECL|macro|ISDN_NET_CONNECTED
+mdefine_line|#define ISDN_NET_CONNECTED  0x01       /* Bound to ISDN-Channel             */
+DECL|macro|ISDN_NET_SECURE
+mdefine_line|#define ISDN_NET_SECURE     0x02       /* Accept calls from phonelist only  */
+DECL|macro|ISDN_NET_CALLBACK
+mdefine_line|#define ISDN_NET_CALLBACK   0x04       /* activate callback                 */
+DECL|macro|ISDN_NET_CBHUP
+mdefine_line|#define ISDN_NET_CBHUP      0x08       /* hangup before callback            */
+DECL|macro|ISDN_NET_CBOUT
+mdefine_line|#define ISDN_NET_CBOUT      0x10       /* remote machine does callback      */
+DECL|macro|ISDN_NET_MAGIC
+mdefine_line|#define ISDN_NET_MAGIC      0x49344C02 /* for paranoia-checking             */
+multiline_comment|/* Phone-list-element */
+r_typedef
+r_struct
+(brace
+DECL|member|next
+r_void
+op_star
+id|next
+suffix:semicolon
+DECL|member|num
+r_char
+id|num
+(braket
+id|ISDN_MSNLEN
+)braket
+suffix:semicolon
+DECL|typedef|isdn_net_phone
+)brace
+id|isdn_net_phone
+suffix:semicolon
+multiline_comment|/*&n;   Principles when extending structures for generic encapsulation protocol&n;   (&quot;concap&quot;) support:&n;   - Stuff which is hardware specific (here i4l-specific) goes in &n;     the netdev -&gt; local structure (here: isdn_net_local)&n;   - Stuff which is encapsulation protocol specific goes in the structure&n;     which holds the linux device structure (here: isdn_net_device)&n;*/
+multiline_comment|/* Local interface-data */
+DECL|struct|isdn_net_local_s
+r_typedef
+r_struct
+id|isdn_net_local_s
+(brace
+DECL|member|magic
+id|ulong
+id|magic
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|10
+)braket
+suffix:semicolon
+multiline_comment|/* Name of device                   */
+DECL|member|stats
+r_struct
+id|net_device_stats
+id|stats
+suffix:semicolon
+multiline_comment|/* Ethernet Statistics              */
+DECL|member|isdn_device
+r_int
+id|isdn_device
+suffix:semicolon
+multiline_comment|/* Index to isdn-device             */
+DECL|member|isdn_channel
+r_int
+id|isdn_channel
+suffix:semicolon
+multiline_comment|/* Index to isdn-channel            */
+DECL|member|ppp_slot
+r_int
+id|ppp_slot
+suffix:semicolon
+multiline_comment|/* PPPD device slot number          */
+DECL|member|pre_device
+r_int
+id|pre_device
+suffix:semicolon
+multiline_comment|/* Preselected isdn-device          */
+DECL|member|pre_channel
+r_int
+id|pre_channel
+suffix:semicolon
+multiline_comment|/* Preselected isdn-channel         */
+DECL|member|exclusive
+r_int
+id|exclusive
+suffix:semicolon
+multiline_comment|/* If non-zero idx to reserved chan.*/
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Connection-flags                 */
+DECL|member|dialretry
+r_int
+id|dialretry
+suffix:semicolon
+multiline_comment|/* Counter for Dialout-retries      */
+DECL|member|dialmax
+r_int
+id|dialmax
+suffix:semicolon
+multiline_comment|/* Max. Number of Dial-retries      */
+DECL|member|cbdelay
+r_int
+id|cbdelay
+suffix:semicolon
+multiline_comment|/* Delay before Callback starts     */
+DECL|member|dtimer
+r_int
+id|dtimer
+suffix:semicolon
+multiline_comment|/* Timeout-counter for dialing      */
+DECL|member|msn
+r_char
+id|msn
+(braket
+id|ISDN_MSNLEN
+)braket
+suffix:semicolon
+multiline_comment|/* MSNs/EAZs for this interface */
+DECL|member|cbhup
+id|u_char
+id|cbhup
+suffix:semicolon
+multiline_comment|/* Flag: Reject Call before Callback*/
+DECL|member|dialstate
+id|u_char
+id|dialstate
+suffix:semicolon
+multiline_comment|/* State for dialing                */
+DECL|member|p_encap
+id|u_char
+id|p_encap
+suffix:semicolon
+multiline_comment|/* Packet encapsulation             */
+multiline_comment|/*   0 = Ethernet over ISDN         */
+multiline_comment|/*   1 = RAW-IP                     */
+multiline_comment|/*   2 = IP with type field         */
+DECL|member|l2_proto
+id|u_char
+id|l2_proto
+suffix:semicolon
+multiline_comment|/* Layer-2-protocol                 */
+multiline_comment|/* See ISDN_PROTO_L2..-constants in */
+multiline_comment|/* isdnif.h                         */
+multiline_comment|/*   0 = X75/LAPB with I-Frames     */
+multiline_comment|/*   1 = X75/LAPB with UI-Frames    */
+multiline_comment|/*   2 = X75/LAPB with BUI-Frames   */
+multiline_comment|/*   3 = HDLC                       */
+DECL|member|l3_proto
+id|u_char
+id|l3_proto
+suffix:semicolon
+multiline_comment|/* Layer-3-protocol                 */
+multiline_comment|/* See ISDN_PROTO_L3..-constants in */
+multiline_comment|/* isdnif.h                         */
+multiline_comment|/*   0 = Transparent                */
+DECL|member|huptimer
+r_int
+id|huptimer
+suffix:semicolon
+multiline_comment|/* Timeout-counter for auto-hangup  */
+DECL|member|charge
+r_int
+id|charge
+suffix:semicolon
+multiline_comment|/* Counter for charging units       */
+DECL|member|chargetime
+id|ulong
+id|chargetime
+suffix:semicolon
+multiline_comment|/* Timer for Charging info          */
+DECL|member|hupflags
+r_int
+id|hupflags
+suffix:semicolon
+multiline_comment|/* Flags for charge-unit-hangup:    */
+multiline_comment|/* bit0: chargeint is invalid       */
+multiline_comment|/* bit1: Getting charge-interval    */
+multiline_comment|/* bit2: Do charge-unit-hangup      */
+multiline_comment|/* bit3: Do hangup even on incoming */
+DECL|member|outgoing
+r_int
+id|outgoing
+suffix:semicolon
+multiline_comment|/* Flag: outgoing call              */
+DECL|member|onhtime
+r_int
+id|onhtime
+suffix:semicolon
+multiline_comment|/* Time to keep link up             */
+DECL|member|chargeint
+r_int
+id|chargeint
+suffix:semicolon
+multiline_comment|/* Interval between charge-infos    */
+DECL|member|onum
+r_int
+id|onum
+suffix:semicolon
+multiline_comment|/* Flag: at least 1 outgoing number */
+DECL|member|cps
+r_int
+id|cps
+suffix:semicolon
+multiline_comment|/* current speed of this interface  */
+DECL|member|transcount
+r_int
+id|transcount
+suffix:semicolon
+multiline_comment|/* byte-counter for cps-calculation */
+DECL|member|sqfull
+r_int
+id|sqfull
+suffix:semicolon
+multiline_comment|/* Flag: netdev-queue overloaded    */
+DECL|member|sqfull_stamp
+id|ulong
+id|sqfull_stamp
+suffix:semicolon
+multiline_comment|/* Start-Time of overload           */
+DECL|member|slavedelay
+id|ulong
+id|slavedelay
+suffix:semicolon
+multiline_comment|/* Dynamic bundling delaytime       */
+DECL|member|triggercps
+r_int
+id|triggercps
+suffix:semicolon
+multiline_comment|/* BogoCPS needed for trigger slave */
+DECL|member|phone
+id|isdn_net_phone
+op_star
+id|phone
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* List of remote-phonenumbers      */
+multiline_comment|/* phone[0] = Incoming Numbers      */
+multiline_comment|/* phone[1] = Outgoing Numbers      */
+DECL|member|dial
+id|isdn_net_phone
+op_star
+id|dial
+suffix:semicolon
+multiline_comment|/* Pointer to dialed number         */
+DECL|member|master
+r_struct
+id|net_device
+op_star
+id|master
+suffix:semicolon
+multiline_comment|/* Ptr to Master device for slaves  */
+DECL|member|slave
+r_struct
+id|net_device
+op_star
+id|slave
+suffix:semicolon
+multiline_comment|/* Ptr to Slave device for masters  */
+DECL|member|next
+r_struct
+id|isdn_net_local_s
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Ptr to next link in bundle       */
+DECL|member|last
+r_struct
+id|isdn_net_local_s
+op_star
+id|last
+suffix:semicolon
+multiline_comment|/* Ptr to last link in bundle       */
+DECL|member|netdev
+r_struct
+id|isdn_net_dev_s
+op_star
+id|netdev
+suffix:semicolon
+multiline_comment|/* Ptr to netdev                    */
+DECL|member|super_tx_queue
+r_struct
+id|sk_buff_head
+id|super_tx_queue
+suffix:semicolon
+multiline_comment|/* List of supervisory frames to  */
+multiline_comment|/* be transmitted asap              */
+DECL|member|frame_cnt
+id|atomic_t
+id|frame_cnt
+suffix:semicolon
+multiline_comment|/* number of frames currently       */
+multiline_comment|/* queued in HL driver              */
+multiline_comment|/* Ptr to orig. hard_header_cache   */
+DECL|member|xmit_lock
+id|spinlock_t
+id|xmit_lock
+suffix:semicolon
+multiline_comment|/* used to protect the xmit path of */
+multiline_comment|/* a particular channel (including  */
+multiline_comment|/* the frame_cnt                    */
+DECL|member|org_hhc
+r_int
+(paren
+op_star
+id|org_hhc
+)paren
+(paren
+r_struct
+id|neighbour
+op_star
+id|neigh
+comma
+r_struct
+id|hh_cache
+op_star
+id|hh
+)paren
+suffix:semicolon
+multiline_comment|/* Ptr to orig. header_cache_update */
+DECL|member|org_hcu
+r_void
+(paren
+op_star
+id|org_hcu
+)paren
+(paren
+r_struct
+id|hh_cache
+op_star
+comma
+r_struct
+id|net_device
+op_star
+comma
+r_int
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|pppbind
+r_int
+id|pppbind
+suffix:semicolon
+multiline_comment|/* ippp device for bindings         */
+DECL|member|dialtimeout
+r_int
+id|dialtimeout
+suffix:semicolon
+multiline_comment|/* How long shall we try on dialing? (jiffies) */
+DECL|member|dialwait
+r_int
+id|dialwait
+suffix:semicolon
+multiline_comment|/* How long shall we wait after failed attempt? (jiffies) */
+DECL|member|dialstarted
+id|ulong
+id|dialstarted
+suffix:semicolon
+multiline_comment|/* jiffies of first dialing-attempt */
+DECL|member|dialwait_timer
+id|ulong
+id|dialwait_timer
+suffix:semicolon
+multiline_comment|/* jiffies of earliest next dialing-attempt */
+DECL|member|huptimeout
+r_int
+id|huptimeout
+suffix:semicolon
+multiline_comment|/* How long will the connection be up? (seconds) */
+macro_line|#ifdef CONFIG_ISDN_X25
+DECL|member|dops
+r_struct
+id|concap_device_ops
+op_star
+id|dops
+suffix:semicolon
+multiline_comment|/* callbacks used by encapsulator   */
+macro_line|#endif
+multiline_comment|/* use an own struct for that in later versions */
+DECL|member|cisco_myseq
+id|ulong
+id|cisco_myseq
+suffix:semicolon
+multiline_comment|/* Local keepalive seq. for Cisco   */
+DECL|member|cisco_mineseen
+id|ulong
+id|cisco_mineseen
+suffix:semicolon
+multiline_comment|/* returned keepalive seq. from remote */
+DECL|member|cisco_yourseq
+id|ulong
+id|cisco_yourseq
+suffix:semicolon
+multiline_comment|/* Remote keepalive seq. for Cisco  */
+DECL|member|cisco_keepalive_period
+r_int
+id|cisco_keepalive_period
+suffix:semicolon
+multiline_comment|/* keepalive period */
+DECL|member|cisco_last_slarp_in
+id|ulong
+id|cisco_last_slarp_in
+suffix:semicolon
+multiline_comment|/* jiffie of last keepalive packet we received */
+DECL|member|cisco_line_state
+r_char
+id|cisco_line_state
+suffix:semicolon
+multiline_comment|/* state of line according to keepalive packets */
+DECL|member|cisco_debserint
+r_char
+id|cisco_debserint
+suffix:semicolon
+multiline_comment|/* debugging flag of cisco hdlc with slarp */
+DECL|member|cisco_timer
+r_struct
+id|timer_list
+id|cisco_timer
+suffix:semicolon
+DECL|member|tqueue
+r_struct
+id|work_struct
+id|tqueue
+suffix:semicolon
+DECL|typedef|isdn_net_local
+)brace
+id|isdn_net_local
+suffix:semicolon
+multiline_comment|/* the interface itself */
+DECL|struct|isdn_net_dev_s
+r_typedef
+r_struct
+id|isdn_net_dev_s
+(brace
+DECL|member|local
+id|isdn_net_local
+op_star
+id|local
+suffix:semicolon
+DECL|member|queue
+id|isdn_net_local
+op_star
+id|queue
+suffix:semicolon
+multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
+DECL|member|queue_lock
+id|spinlock_t
+id|queue_lock
+suffix:semicolon
+multiline_comment|/* lock to protect queue            */
+DECL|member|next
+r_void
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Pointer to next isdn-interface   */
+DECL|member|dev
+r_struct
+id|net_device
+id|dev
+suffix:semicolon
+multiline_comment|/* interface to upper levels        */
+macro_line|#ifdef CONFIG_ISDN_PPP
+DECL|member|pb
+id|ippp_bundle
+op_star
+id|pb
+suffix:semicolon
+multiline_comment|/* pointer to the common bundle structure&n;   &t;&t;&t;         * with the per-bundle data */
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISDN_X25
+DECL|member|cprot
+r_struct
+id|concap_proto
+op_star
+id|cprot
+suffix:semicolon
+multiline_comment|/* connection oriented encapsulation protocol */
+macro_line|#endif
+DECL|typedef|isdn_net_dev
+)brace
+id|isdn_net_dev
+suffix:semicolon
+multiline_comment|/*===================== End of ip-over-ISDN stuff ===========================*/
 multiline_comment|/*======================= Start of ISDN-tty stuff ===========================*/
 DECL|macro|ISDN_ASYNC_MAGIC
 mdefine_line|#define ISDN_ASYNC_MAGIC          0x49344C01 /* for paranoia-checking        */
@@ -469,12 +999,16 @@ DECL|macro|ISDN_SERIAL_XMIT_SIZE
 mdefine_line|#define ISDN_SERIAL_XMIT_SIZE           1024 /* Default bufsize for write    */
 DECL|macro|ISDN_SERIAL_XMIT_MAX
 mdefine_line|#define ISDN_SERIAL_XMIT_MAX            4000 /* Maximum bufsize for write    */
+DECL|macro|ISDN_SERIAL_TYPE_NORMAL
+mdefine_line|#define ISDN_SERIAL_TYPE_NORMAL            1
+DECL|macro|ISDN_SERIAL_TYPE_CALLOUT
+mdefine_line|#define ISDN_SERIAL_TYPE_CALLOUT           2
 macro_line|#ifdef CONFIG_ISDN_AUDIO
-multiline_comment|/* For using sk_buffs with audio we need some private variables&n; * within each sk_buff. For this purpose, we declare a struct here,&n; * and put it always at skb-&gt;head. A few macros help accessing the&n; * variables. Of course, we need to check skb_headroom prior to&n; * any access.&n; */
-DECL|struct|_isdnaudio_header
+multiline_comment|/* For using sk_buffs with audio we need some private variables&n; * within each sk_buff. For this purpose, we declare a struct here,&n; * and put it always at the private skb-&gt;cb data array. A few macros help&n; * accessing the variables.&n; */
+DECL|struct|_isdn_audio_data
 r_typedef
 r_struct
-id|_isdnaudio_header
+id|_isdn_audio_data
 (brace
 DECL|member|dle_count
 r_int
@@ -486,14 +1020,14 @@ r_int
 r_char
 id|lock
 suffix:semicolon
-DECL|typedef|isdnaudio_header
+DECL|typedef|isdn_audio_data_t
 )brace
-id|isdnaudio_header
+id|isdn_audio_data_t
 suffix:semicolon
 DECL|macro|ISDN_AUDIO_SKB_DLECOUNT
-mdefine_line|#define ISDN_AUDIO_SKB_DLECOUNT(skb) (((isdnaudio_header*)skb-&gt;head)-&gt;dle_count)
+mdefine_line|#define ISDN_AUDIO_SKB_DLECOUNT(skb)&t;(((isdn_audio_data_t *)&amp;skb-&gt;cb[0])-&gt;dle_count)
 DECL|macro|ISDN_AUDIO_SKB_LOCK
-mdefine_line|#define ISDN_AUDIO_SKB_LOCK(skb) (((isdnaudio_header*)skb-&gt;head)-&gt;lock)
+mdefine_line|#define ISDN_AUDIO_SKB_LOCK(skb)&t;(((isdn_audio_data_t *)&amp;skb-&gt;cb[0])-&gt;lock)
 macro_line|#endif
 multiline_comment|/* Private data of AT-command-interpreter */
 DECL|struct|atemu
@@ -591,11 +1125,15 @@ id|pluscount
 suffix:semicolon
 multiline_comment|/* Counter for +++ sequence           */
 DECL|member|lastplus
-r_int
-r_int
+id|u_long
 id|lastplus
 suffix:semicolon
 multiline_comment|/* Timestamp of last +                */
+DECL|member|carrierwait
+r_int
+id|carrierwait
+suffix:semicolon
+multiline_comment|/* Seconds of carrier waiting         */
 DECL|member|mdmcmd
 r_char
 id|mdmcmd
@@ -669,6 +1207,16 @@ r_int
 id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens             */
+DECL|member|session
+r_int
+id|session
+suffix:semicolon
+multiline_comment|/* Session of opening process     */
+DECL|member|pgrp
+r_int
+id|pgrp
+suffix:semicolon
+multiline_comment|/* pgrp of opening process        */
 DECL|member|online
 r_int
 id|online
@@ -685,24 +1233,21 @@ r_int
 id|rcvsched
 suffix:semicolon
 multiline_comment|/* Receive needs schedule         */
-DECL|member|isdn_slot
-r_struct
-id|isdn_slot
-op_star
-id|isdn_slot
-suffix:semicolon
-multiline_comment|/* Ptr to isdn-driver/channel     */
-DECL|member|rpqueue
-r_struct
-id|sk_buff_head
-id|rpqueue
-suffix:semicolon
-multiline_comment|/* Queue of recv&squot;d packets        */
-DECL|member|rcvcount
+DECL|member|isdn_driver
 r_int
-id|rcvcount
+id|isdn_driver
 suffix:semicolon
-multiline_comment|/* Byte-counters for B rx         */
+multiline_comment|/* Index to isdn-driver           */
+DECL|member|isdn_channel
+r_int
+id|isdn_channel
+suffix:semicolon
+multiline_comment|/* Index to isdn-channel          */
+DECL|member|drv_index
+r_int
+id|drv_index
+suffix:semicolon
+multiline_comment|/* Index to dev-&gt;usage            */
 DECL|member|ncarrier
 r_int
 id|ncarrier
@@ -790,12 +1335,6 @@ id|xmit_lock
 suffix:semicolon
 multiline_comment|/* Semaphore for isdn_tty_write   */
 macro_line|#ifdef CONFIG_ISDN_AUDIO
-DECL|member|DLEflag
-r_int
-r_int
-id|DLEflag
-suffix:semicolon
-multiline_comment|/* Insert DLE at next read     */
 DECL|member|vonline
 r_int
 id|vonline
@@ -861,30 +1400,17 @@ id|atemu
 id|emu
 suffix:semicolon
 multiline_comment|/* AT-emulator data               */
-DECL|member|escape_timer
+DECL|member|normal_termios
 r_struct
-id|timer_list
-id|escape_timer
+id|termios
+id|normal_termios
 suffix:semicolon
-multiline_comment|/* to recognize +++ escape        */
-DECL|member|ring_timer
+multiline_comment|/* For saving termios structs     */
+DECL|member|callout_termios
 r_struct
-id|timer_list
-id|ring_timer
+id|termios
+id|callout_termios
 suffix:semicolon
-multiline_comment|/* for writing &squot;RING&squot; responses   */
-DECL|member|connect_timer
-r_struct
-id|timer_list
-id|connect_timer
-suffix:semicolon
-multiline_comment|/* waiting for CONNECT            */
-DECL|member|read_timer
-r_struct
-id|timer_list
-id|read_timer
-suffix:semicolon
-multiline_comment|/* read incoming data             */
 DECL|member|open_wait
 DECL|member|close_wait
 id|wait_queue_head_t
@@ -897,12 +1423,74 @@ r_struct
 id|semaphore
 id|write_sem
 suffix:semicolon
+DECL|member|readlock
+id|spinlock_t
+id|readlock
+suffix:semicolon
 DECL|typedef|modem_info
 )brace
 id|modem_info
 suffix:semicolon
 DECL|macro|ISDN_MODEM_WINSIZE
 mdefine_line|#define ISDN_MODEM_WINSIZE 8
+multiline_comment|/* Description of one ISDN-tty */
+DECL|struct|_isdn_modem
+r_typedef
+r_struct
+id|_isdn_modem
+(brace
+DECL|member|refcount
+r_int
+id|refcount
+suffix:semicolon
+multiline_comment|/* Number of opens        */
+DECL|member|tty_modem
+r_struct
+id|tty_driver
+op_star
+id|tty_modem
+suffix:semicolon
+multiline_comment|/* tty-device             */
+DECL|member|modem_table
+r_struct
+id|tty_struct
+op_star
+id|modem_table
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* ?? copied from Orig    */
+DECL|member|modem_termios
+r_struct
+id|termios
+op_star
+id|modem_termios
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+DECL|member|modem_termios_locked
+r_struct
+id|termios
+op_star
+id|modem_termios_locked
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+DECL|member|info
+id|modem_info
+id|info
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Private data           */
+DECL|typedef|isdn_modem_t
+)brace
+id|isdn_modem_t
+suffix:semicolon
 multiline_comment|/*======================= End of ISDN-tty stuff ============================*/
 multiline_comment|/*======================== Start of V.110 stuff ============================*/
 DECL|macro|V110_BUFSIZE
@@ -1028,18 +1616,146 @@ DECL|typedef|infostruct
 )brace
 id|infostruct
 suffix:semicolon
-multiline_comment|/* Main driver-data */
-DECL|struct|_isdn_dev_t
+DECL|macro|DRV_FLAG_RUNNING
+mdefine_line|#define DRV_FLAG_RUNNING 1
+DECL|macro|DRV_FLAG_REJBUS
+mdefine_line|#define DRV_FLAG_REJBUS  2
+DECL|macro|DRV_FLAG_LOADED
+mdefine_line|#define DRV_FLAG_LOADED  4
+multiline_comment|/* Description of hardware-level-driver */
+DECL|struct|_isdn_driver
 r_typedef
 r_struct
-id|_isdn_dev_t
+id|_isdn_driver
 (brace
+DECL|member|online
+id|ulong
+id|online
+suffix:semicolon
+multiline_comment|/* Channel-Online flags             */
+DECL|member|flags
+id|ulong
+id|flags
+suffix:semicolon
+multiline_comment|/* Misc driver Flags                */
+DECL|member|locks
+r_int
+id|locks
+suffix:semicolon
+multiline_comment|/* Number of locks for this driver  */
+DECL|member|channels
+r_int
+id|channels
+suffix:semicolon
+multiline_comment|/* Number of channels               */
+DECL|member|st_waitq
+id|wait_queue_head_t
+id|st_waitq
+suffix:semicolon
+multiline_comment|/* Wait-Queue for status-read&squot;s     */
+DECL|member|maxbufsize
+r_int
+id|maxbufsize
+suffix:semicolon
+multiline_comment|/* Maximum Buffersize supported     */
+DECL|member|pktcount
+r_int
+r_int
+id|pktcount
+suffix:semicolon
+multiline_comment|/* Until now: unused                */
+DECL|member|stavail
+r_int
+id|stavail
+suffix:semicolon
+multiline_comment|/* Chars avail on Status-device     */
+DECL|member|interface
+id|isdn_if
+op_star
+id|interface
+suffix:semicolon
+multiline_comment|/* Interface to driver              */
+DECL|member|rcverr
+r_int
+op_star
+id|rcverr
+suffix:semicolon
+multiline_comment|/* Error-counters for B-Ch.-receive */
+DECL|member|rcvcount
+r_int
+op_star
+id|rcvcount
+suffix:semicolon
+multiline_comment|/* Byte-counters for B-Ch.-receive  */
+macro_line|#ifdef CONFIG_ISDN_AUDIO
+DECL|member|DLEflag
+r_int
+r_int
+id|DLEflag
+suffix:semicolon
+multiline_comment|/* Flags: Insert DLE at next read   */
+macro_line|#endif
+DECL|member|rpqueue
+r_struct
+id|sk_buff_head
+op_star
+id|rpqueue
+suffix:semicolon
+multiline_comment|/* Pointers to start of Rcv-Queue   */
+DECL|member|rcv_waitq
+id|wait_queue_head_t
+op_star
+id|rcv_waitq
+suffix:semicolon
+multiline_comment|/* Wait-Queues for B-Channel-Reads  */
+DECL|member|snd_waitq
+id|wait_queue_head_t
+op_star
+id|snd_waitq
+suffix:semicolon
+multiline_comment|/* Wait-Queue for B-Channel-Send&squot;s  */
+DECL|member|msn2eaz
+r_char
+id|msn2eaz
+(braket
+l_int|10
+)braket
+(braket
+id|ISDN_MSNLEN
+)braket
+suffix:semicolon
+multiline_comment|/* Mapping-Table MSN-&gt;EAZ   */
+DECL|typedef|isdn_driver_t
+)brace
+id|isdn_driver_t
+suffix:semicolon
+multiline_comment|/* Main driver-data */
+DECL|struct|isdn_devt
+r_typedef
+r_struct
+id|isdn_devt
+(brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Bitmapped Flags:           */
+DECL|member|drivers
+r_int
+id|drivers
+suffix:semicolon
+multiline_comment|/* Current number of drivers  */
 DECL|member|channels
 r_int
 id|channels
@@ -1055,6 +1771,10 @@ r_int
 id|modempoll
 suffix:semicolon
 multiline_comment|/* Flag: tty-read active      */
+DECL|member|timerlock
+id|spinlock_t
+id|timerlock
+suffix:semicolon
 DECL|member|tflags
 r_int
 id|tflags
@@ -1076,6 +1796,81 @@ id|wait_queue_head_t
 id|info_waitq
 suffix:semicolon
 multiline_comment|/* Wait-Queue for isdninfo    */
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+multiline_comment|/* Misc.-function Timer       */
+DECL|member|chanmap
+r_int
+id|chanmap
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Map minor-&gt;device-channel  */
+DECL|member|drvmap
+r_int
+id|drvmap
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Map minor-&gt;driver-index    */
+DECL|member|usage
+r_int
+id|usage
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Used by tty/ip/voice       */
+DECL|member|num
+r_char
+id|num
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+(braket
+id|ISDN_MSNLEN
+)braket
+suffix:semicolon
+multiline_comment|/* Remote number of active ch.*/
+DECL|member|m_idx
+r_int
+id|m_idx
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Index for mdm....          */
+DECL|member|drv
+id|isdn_driver_t
+op_star
+id|drv
+(braket
+id|ISDN_MAX_DRIVERS
+)braket
+suffix:semicolon
+multiline_comment|/* Array of drivers           */
+DECL|member|netdev
+id|isdn_net_dev
+op_star
+id|netdev
+suffix:semicolon
+multiline_comment|/* Linked list of net-if&squot;s    */
+DECL|member|drvid
+r_char
+id|drvid
+(braket
+id|ISDN_MAX_DRIVERS
+)braket
+(braket
+l_int|20
+)braket
+suffix:semicolon
+multiline_comment|/* Driver-ID                 */
 DECL|member|profd
 r_struct
 id|task_struct
@@ -1083,6 +1878,70 @@ op_star
 id|profd
 suffix:semicolon
 multiline_comment|/* For iprofd                 */
+DECL|member|mdm
+id|isdn_modem_t
+id|mdm
+suffix:semicolon
+multiline_comment|/* tty-driver-data            */
+DECL|member|rx_netdev
+id|isdn_net_dev
+op_star
+id|rx_netdev
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* rx netdev-pointers     */
+DECL|member|st_netdev
+id|isdn_net_dev
+op_star
+id|st_netdev
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* stat netdev-pointers   */
+DECL|member|ibytes
+id|ulong
+id|ibytes
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Statistics incoming bytes  */
+DECL|member|obytes
+id|ulong
+id|obytes
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Statistics outgoing bytes  */
+DECL|member|v110emu
+r_int
+id|v110emu
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* V.110 emulator-mode 0=none */
+DECL|member|v110use
+id|atomic_t
+id|v110use
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* Usage-Semaphore for stream */
+DECL|member|v110
+id|isdn_v110_stream
+op_star
+id|v110
+(braket
+id|ISDN_MAX_CHANNELS
+)braket
+suffix:semicolon
+multiline_comment|/* V.110 private data         */
 DECL|member|sem
 r_struct
 id|semaphore
@@ -1094,18 +1953,14 @@ r_int
 r_int
 id|global_features
 suffix:semicolon
-DECL|typedef|isdn_dev_t
+DECL|typedef|isdn_dev
 )brace
-id|isdn_dev_t
+id|isdn_dev
 suffix:semicolon
 r_extern
-id|isdn_dev_t
+id|isdn_dev
 op_star
-id|get_isdn_dev
-c_func
-(paren
-r_void
-)paren
+id|dev
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ISDN_H__ */

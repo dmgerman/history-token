@@ -1,70 +1,10 @@
-multiline_comment|/* $Id: arcofi.c,v 1.12.6.2 2001/09/23 22:24:46 kai Exp $&n; *&n; * Ansteuerung ARCOFI 2165&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: arcofi.c,v 1.14.2.3 2004/01/13 14:31:24 keil Exp $&n; *&n; * Ansteuerung ARCOFI 2165&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;
 macro_line|#include &quot;isac.h&quot;
 macro_line|#include &quot;arcofi.h&quot;
 DECL|macro|ARCOFI_TIMER_VALUE
 mdefine_line|#define ARCOFI_TIMER_VALUE&t;20
-r_static
-r_inline
-id|u8
-DECL|function|isac_read
-id|isac_read
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-id|u8
-id|addr
-)paren
-(brace
-r_return
-id|cs-&gt;dc_hw_ops
-op_member_access_from_pointer
-id|read_reg
-c_func
-(paren
-id|cs
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|isac_write
-id|isac_write
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-id|u8
-id|addr
-comma
-id|u8
-id|val
-)paren
-(brace
-id|cs-&gt;dc_hw_ops
-op_member_access_from_pointer
-id|write_reg
-c_func
-(paren
-id|cs
-comma
-id|addr
-comma
-id|val
-)paren
-suffix:semicolon
-)brace
 r_static
 r_void
 DECL|function|add_arcofi_timer
@@ -139,7 +79,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u8
+id|u_char
 id|val
 suffix:semicolon
 id|add_arcofi_timer
@@ -202,7 +142,9 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0xa0
 suffix:semicolon
-id|isac_write
+id|cs
+op_member_access_from_pointer
+id|writeisac
 c_func
 (paren
 id|cs
@@ -214,7 +156,9 @@ id|cs-&gt;dc.isac.mocr
 suffix:semicolon
 id|val
 op_assign
-id|isac_read
+id|cs
+op_member_access_from_pointer
+id|readisac
 c_func
 (paren
 id|cs
@@ -222,7 +166,9 @@ comma
 id|ISAC_MOSR
 )paren
 suffix:semicolon
-id|isac_write
+id|cs
+op_member_access_from_pointer
+id|writeisac
 c_func
 (paren
 id|cs
@@ -240,7 +186,9 @@ id|cs-&gt;dc.isac.mocr
 op_or_assign
 l_int|0x10
 suffix:semicolon
-id|isac_write
+id|cs
+op_member_access_from_pointer
+id|writeisac
 c_func
 (paren
 id|cs

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: netjet.h,v 2.5.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * NETjet common header file&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Matt Henderson,&n; *                 Traverse Technologies P/L www.traverse.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: netjet.h,v 2.8.2.2 2004/01/12 22:52:28 keil Exp $&n; *&n; * NETjet common header file&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; *              by Matt Henderson,&n; *                 Traverse Technologies P/L www.traverse.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 r_extern
 r_const
 r_char
@@ -81,12 +81,7 @@ DECL|macro|HDLC_FULL
 mdefine_line|#define HDLC_FULL 6
 DECL|macro|HDLC_FLAG_VALUE
 mdefine_line|#define HDLC_FLAG_VALUE&t;0x7e
-r_extern
-r_struct
-id|dc_hw_ops
-id|netjet_dc_ops
-suffix:semicolon
-id|u8
+id|u_char
 id|NETjet_ReadIC
 c_func
 (paren
@@ -95,7 +90,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u8
+id|u_char
 id|offset
 )paren
 suffix:semicolon
@@ -108,10 +103,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u8
+id|u_char
 id|offset
 comma
-id|u8
+id|u_char
 id|value
 )paren
 suffix:semicolon
@@ -124,7 +119,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u8
+id|u_char
 op_star
 id|data
 comma
@@ -141,7 +136,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u8
+id|u_char
 op_star
 id|data
 comma
@@ -207,7 +202,7 @@ id|cs
 )paren
 suffix:semicolon
 r_void
-id|netjet_release
+id|release_io_netjet
 c_func
 (paren
 r_struct

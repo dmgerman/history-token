@@ -3,8 +3,13 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
+macro_line|#ifdef KCAPI_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(format, arg...) do { &bslash;&n;printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg); &bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(format, arg...) /* */
+macro_line|#endif
 r_enum
 (brace
 DECL|enumerator|CARD_DETECTED
@@ -30,8 +35,8 @@ id|list_head
 id|capi_drivers
 suffix:semicolon
 r_extern
-id|spinlock_t
-id|capi_drivers_lock
+id|rwlock_t
+id|capi_drivers_list_lock
 suffix:semicolon
 r_extern
 r_struct
