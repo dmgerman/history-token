@@ -100,6 +100,12 @@ id|device_attribute
 op_star
 id|dev_attrs
 suffix:semicolon
+DECL|member|drv_attrs
+r_struct
+id|driver_attribute
+op_star
+id|drv_attrs
+suffix:semicolon
 DECL|member|match
 r_int
 (paren
