@@ -151,7 +151,7 @@ id|mxcsr
 )paren
 suffix:semicolon
 DECL|macro|load_mxcsr
-mdefine_line|#define load_mxcsr( val ) do { &bslash;&n;&t;if ( cpu_has_xmm ) { &bslash;&n;&t;&t;unsigned long __mxcsr = ((unsigned long)(val) &amp; 0xffff); &bslash;&n;&t;&t;asm volatile( &quot;ldmxcsr %0&quot; : : &quot;m&quot; (__mxcsr) ); &bslash;&n;&t;} &bslash;&n;} while (0)
+mdefine_line|#define load_mxcsr( val ) do { &bslash;&n;&t;unsigned long __mxcsr = ((unsigned long)(val) &amp; 0xffbf); &bslash;&n;&t;asm volatile( &quot;ldmxcsr %0&quot; : : &quot;m&quot; (__mxcsr) ); &bslash;&n;} while (0)
 multiline_comment|/*&n; * Signal frame handlers...&n; */
 r_extern
 r_int

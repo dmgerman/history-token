@@ -5286,12 +5286,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5299,6 +5293,12 @@ id|KERN_ERR
 l_string|&quot;isdn_ppp: skipped unsupported protocol: %#x.&bslash;n&quot;
 comma
 id|skb-&gt;protocol
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_return

@@ -2556,7 +2556,7 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|skb_queue_head
+id|skb_queue_tail
 c_func
 (paren
 op_amp

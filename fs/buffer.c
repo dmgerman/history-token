@@ -4521,6 +4521,12 @@ c_func
 (paren
 id|buf
 )paren
+op_logical_or
+id|buffer_protected
+c_func
+(paren
+id|buf
+)paren
 )paren
 r_goto
 id|in_use

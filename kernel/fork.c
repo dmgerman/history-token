@@ -760,6 +760,10 @@ id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|mmlist_nr
+r_int
+id|mmlist_nr
+suffix:semicolon
 DECL|macro|allocate_mm
 mdefine_line|#define allocate_mm()&t;(kmem_cache_alloc(mm_cachep, SLAB_KERNEL))
 DECL|macro|free_mm
@@ -964,6 +968,9 @@ c_func
 op_amp
 id|mm-&gt;mmlist
 )paren
+suffix:semicolon
+id|mmlist_nr
+op_decrement
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -1202,6 +1209,9 @@ comma
 op_amp
 id|oldmm-&gt;mmlist
 )paren
+suffix:semicolon
+id|mmlist_nr
+op_increment
 suffix:semicolon
 id|spin_unlock
 c_func

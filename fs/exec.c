@@ -1762,6 +1762,9 @@ op_amp
 id|init_mm.mmlist
 )paren
 suffix:semicolon
+id|mmlist_nr
+op_increment
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren

@@ -8,16 +8,6 @@ macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if defined(CONFIG_X86_FXSR)
-DECL|macro|HAVE_FXSR
-mdefine_line|#define HAVE_FXSR 1
-macro_line|#elif defined(CONFIG_X86_RUNTIME_FXSR)
-DECL|macro|HAVE_FXSR
-mdefine_line|#define HAVE_FXSR (cpu_has_fxsr)
-macro_line|#else
-DECL|macro|HAVE_FXSR
-mdefine_line|#define HAVE_FXSR 0
-macro_line|#endif
 macro_line|#ifdef CONFIG_MATH_EMULATION
 DECL|macro|HAVE_HWFP
 mdefine_line|#define HAVE_HWFP (boot_cpu_data.hard_math)
@@ -25,7 +15,7 @@ macro_line|#else
 DECL|macro|HAVE_HWFP
 mdefine_line|#define HAVE_HWFP 1
 macro_line|#endif
-multiline_comment|/*&n; * The _current_ task is using the FPU for the first time&n; * so initialize it and set the mxcsr to its default&n; * value at reset if we support FXSR and then&n; * remeber the current task has used the FPU.&n; */
+multiline_comment|/*&n; * The _current_ task is using the FPU for the first time&n; * so initialize it and set the mxcsr to its default&n; * value at reset if we support XMM instructions and then&n; * remeber the current task has used the FPU.&n; */
 DECL|function|init_fpu
 r_void
 id|init_fpu
@@ -43,7 +33,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HAVE_FXSR
+id|HAVE_XMM
 )paren
 id|load_mxcsr
 c_func
@@ -734,7 +724,7 @@ id|mxcsr
 r_if
 c_cond
 (paren
-id|HAVE_FXSR
+id|HAVE_XMM
 )paren
 (brace
 id|tsk-&gt;thread.i387.fxsave.mxcsr
@@ -1882,6 +1872,9 @@ c_cond
 id|HAVE_FXSR
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -1900,6 +1893,10 @@ r_struct
 id|user_fxsr_struct
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0

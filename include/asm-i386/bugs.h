@@ -126,6 +126,10 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_int
+id|disable_x86_fxsr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -160,7 +164,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Enable FXSR and company _before_ testing for FP problems. */
-macro_line|#if defined(CONFIG_X86_FXSR) || defined(CONFIG_X86_RUNTIME_FXSR)
 multiline_comment|/*&n;&t; * Verify that the FXSAVE/FXRSTOR data will be 16-byte aligned.&n;&t; */
 r_if
 c_cond
@@ -175,12 +178,28 @@ id|thread.i387.fxsave
 op_amp
 l_int|15
 )paren
-id|panic
+(brace
+r_extern
+r_void
+id|__buggy_fxsr_alignment
 c_func
 (paren
-l_string|&quot;Kernel compiled for PII/PIII+ with FXSR, data not 16-byte aligned!&quot;
+r_void
 )paren
 suffix:semicolon
+id|__buggy_fxsr_alignment
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disable_x86_fxsr
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -207,8 +226,6 @@ l_string|&quot;done.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_X86_XMM
 r_if
 c_cond
 (paren
@@ -235,7 +252,15 @@ l_string|&quot;done.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Disabling fast FPU save and restore.&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Test for the divl bug.. */
 id|__asm__
 c_func
@@ -502,21 +527,6 @@ id|panic
 c_func
 (paren
 l_string|&quot;Kernel compiled for PMMX+, assumes a local APIC without the read-before-write bug!&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * If we configured ourselves for FXSR, we&squot;d better have it.&n; */
-macro_line|#ifdef CONFIG_X86_FXSR
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_has_fxsr
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Kernel compiled for PII/PIII+, requires FXSR feature!&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

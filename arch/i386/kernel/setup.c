@@ -203,6 +203,13 @@ id|__initdata
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|disable_x86_fxsr
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n; * This is set up by the setup-routine at boot-time&n; */
 DECL|macro|PARAM
 mdefine_line|#define PARAM&t;((unsigned char *)empty_zero_page)
@@ -1566,13 +1573,9 @@ c_func
 (paren
 id|HIGH_MEMORY
 comma
-(paren
 id|mem_size
 op_lshift
 l_int|10
-)paren
-op_minus
-id|HIGH_MEMORY
 comma
 id|E820_RAM
 )paren
@@ -7468,6 +7471,33 @@ c_func
 l_string|&quot;serialnumber&quot;
 comma
 id|x86_serial_nr_setup
+)paren
+suffix:semicolon
+DECL|function|x86_fxsr_setup
+r_int
+id|__init
+id|x86_fxsr_setup
+c_func
+(paren
+r_char
+op_star
+id|s
+)paren
+(brace
+id|disable_x86_fxsr
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;nofxsr&quot;
+comma
+id|x86_fxsr_setup
 )paren
 suffix:semicolon
 multiline_comment|/* Standard macro to see if a specific flag is changeable */

@@ -9192,6 +9192,12 @@ id|KERN_WARNING
 l_string|&quot;isdn_net: Could not allocate device locals&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|netdev
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

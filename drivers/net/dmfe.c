@@ -6879,7 +6879,7 @@ suffix:semicolon
 )brace
 id|rc
 op_assign
-id|pci_register_driver
+id|pci_module_init
 c_func
 (paren
 op_amp
@@ -6900,7 +6900,7 @@ r_if
 c_cond
 (paren
 id|rc
-OG
+op_ge
 l_int|0
 )paren
 (brace

@@ -669,14 +669,9 @@ mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxch
 macro_line|#else
 multiline_comment|/* Compiling for a 386 proper.&t;Is it worth implementing via cli/sti?  */
 macro_line|#endif
-multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; *&n; * For now, &quot;wmb()&quot; doesn&squot;t actually do anything, as all&n; * Intel CPU&squot;s follow what Intel calls a *Processor Order*,&n; * in which all writes are seen in the program order even&n; * outside the CPU.&n; *&n; * I expect future Intel CPU&squot;s to have a weaker ordering,&n; * but I&squot;d also expect them to finally get their act together&n; * and add some real memory barriers if so.&n; *&n; * The Pentium III does add a real memory barrier with the&n; * sfence instruction, so we use that where appropriate.&n; */
-macro_line|#ifndef CONFIG_X86_XMM
+multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; *&n; * For now, &quot;wmb()&quot; doesn&squot;t actually do anything, as all&n; * Intel CPU&squot;s follow what Intel calls a *Processor Order*,&n; * in which all writes are seen in the program order even&n; * outside the CPU.&n; *&n; * I expect future Intel CPU&squot;s to have a weaker ordering,&n; * but I&squot;d also expect them to finally get their act together&n; * and add some real memory barriers if so.&n; */
 DECL|macro|mb
 mdefine_line|#define mb() &t;__asm__ __volatile__ (&quot;lock; addl $0,0(%%esp)&quot;: : :&quot;memory&quot;)
-macro_line|#else
-DECL|macro|mb
-mdefine_line|#define mb()&t;__asm__ __volatile__ (&quot;sfence&quot;: : :&quot;memory&quot;)
-macro_line|#endif
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;mb()
 DECL|macro|wmb
