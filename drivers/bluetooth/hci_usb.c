@@ -4257,6 +4257,10 @@ id|hdev-&gt;destruct
 op_assign
 id|hci_usb_destruct
 suffix:semicolon
+id|hdev-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4407,11 +4411,6 @@ id|usb_driver
 id|hci_usb_driver
 op_assign
 (brace
-dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
 dot
 id|name
 op_assign
