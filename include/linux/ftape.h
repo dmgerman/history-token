@@ -246,8 +246,6 @@ macro_line|#  define CONFIG_FT_FDC_DMA 2
 macro_line|# endif
 macro_line|#endif                         /* standard FDC */
 multiline_comment|/*      some useful macro&squot;s&n; */
-DECL|macro|ABS
-mdefine_line|#define ABS(a)          ((a) &lt; 0 ? -(a) : (a))
 DECL|macro|NR_ITEMS
 mdefine_line|#define NR_ITEMS(x)     (int)(sizeof(x)/ sizeof(*x))
 macro_line|#endif  /* __KERNEL__ */
