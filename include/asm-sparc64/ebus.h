@@ -200,79 +200,166 @@ id|ebus_intmask
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|linux_ebus_dma
+DECL|struct|ebus_dma_info
 r_struct
-id|linux_ebus_dma
+id|ebus_dma_info
 (brace
-DECL|member|dcsr
-r_int
-r_int
-id|dcsr
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
-DECL|member|dacr
+DECL|member|regs
 r_int
 r_int
-id|dacr
+id|regs
 suffix:semicolon
-DECL|member|dbcr
+DECL|member|flags
 r_int
 r_int
-id|dbcr
+id|flags
+suffix:semicolon
+DECL|macro|EBUS_DMA_FLAG_USE_EBDMA_HANDLER
+mdefine_line|#define EBUS_DMA_FLAG_USE_EBDMA_HANDLER&t;&t;0x00000001
+multiline_comment|/* These are only valid is EBUS_DMA_FLAG_USE_EBDMA_HANDLER is&n;&t; * set.&n;&t; */
+DECL|member|callback
+r_void
+(paren
+op_star
+id|callback
+)paren
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+comma
+r_int
+id|event
+comma
+r_void
+op_star
+id|cookie
+)paren
+suffix:semicolon
+DECL|member|client_cookie
+r_void
+op_star
+id|client_cookie
+suffix:semicolon
+DECL|member|irq
+r_int
+r_int
+id|irq
+suffix:semicolon
+DECL|macro|EBUS_DMA_EVENT_ERROR
+mdefine_line|#define EBUS_DMA_EVENT_ERROR&t;1
+DECL|macro|EBUS_DMA_EVENT_DMA
+mdefine_line|#define EBUS_DMA_EVENT_DMA&t;2
+DECL|macro|EBUS_DMA_EVENT_DEVICE
+mdefine_line|#define EBUS_DMA_EVENT_DEVICE&t;4
+DECL|member|name
+r_int
+r_char
+id|name
+(braket
+l_int|64
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|EBUS_DCSR_INT_PEND
-mdefine_line|#define EBUS_DCSR_INT_PEND&t;0x00000001
-DECL|macro|EBUS_DCSR_ERR_PEND
-mdefine_line|#define EBUS_DCSR_ERR_PEND&t;0x00000002
-DECL|macro|EBUS_DCSR_DRAIN
-mdefine_line|#define EBUS_DCSR_DRAIN&t;&t;0x00000004
-DECL|macro|EBUS_DCSR_INT_EN
-mdefine_line|#define EBUS_DCSR_INT_EN&t;0x00000010
-DECL|macro|EBUS_DCSR_RESET
-mdefine_line|#define EBUS_DCSR_RESET&t;&t;0x00000080
-DECL|macro|EBUS_DCSR_WRITE
-mdefine_line|#define EBUS_DCSR_WRITE&t;&t;0x00000100
-DECL|macro|EBUS_DCSR_EN_DMA
-mdefine_line|#define EBUS_DCSR_EN_DMA&t;0x00000200
-DECL|macro|EBUS_DCSR_CYC_PEND
-mdefine_line|#define EBUS_DCSR_CYC_PEND&t;0x00000400
-DECL|macro|EBUS_DCSR_DIAG_RD_DONE
-mdefine_line|#define EBUS_DCSR_DIAG_RD_DONE&t;0x00000800
-DECL|macro|EBUS_DCSR_DIAG_WR_DONE
-mdefine_line|#define EBUS_DCSR_DIAG_WR_DONE&t;0x00001000
-DECL|macro|EBUS_DCSR_EN_CNT
-mdefine_line|#define EBUS_DCSR_EN_CNT&t;0x00002000
-DECL|macro|EBUS_DCSR_TC
-mdefine_line|#define EBUS_DCSR_TC&t;&t;0x00004000
-DECL|macro|EBUS_DCSR_DIS_CSR_DRN
-mdefine_line|#define EBUS_DCSR_DIS_CSR_DRN&t;0x00010000
-DECL|macro|EBUS_DCSR_BURST_SZ_MASK
-mdefine_line|#define EBUS_DCSR_BURST_SZ_MASK&t;0x000c0000
-DECL|macro|EBUS_DCSR_BURST_SZ_1
-mdefine_line|#define EBUS_DCSR_BURST_SZ_1&t;0x00080000
-DECL|macro|EBUS_DCSR_BURST_SZ_4
-mdefine_line|#define EBUS_DCSR_BURST_SZ_4&t;0x00000000
-DECL|macro|EBUS_DCSR_BURST_SZ_8
-mdefine_line|#define EBUS_DCSR_BURST_SZ_8&t;0x00040000
-DECL|macro|EBUS_DCSR_BURST_SZ_16
-mdefine_line|#define EBUS_DCSR_BURST_SZ_16&t;0x000c0000
-DECL|macro|EBUS_DCSR_DIAG_EN
-mdefine_line|#define EBUS_DCSR_DIAG_EN&t;0x00100000
-DECL|macro|EBUS_DCSR_DIS_ERR_PEND
-mdefine_line|#define EBUS_DCSR_DIS_ERR_PEND&t;0x00400000
-DECL|macro|EBUS_DCSR_TCI_DIS
-mdefine_line|#define EBUS_DCSR_TCI_DIS&t;0x00800000
-DECL|macro|EBUS_DCSR_EN_NEXT
-mdefine_line|#define EBUS_DCSR_EN_NEXT&t;0x01000000
-DECL|macro|EBUS_DCSR_DMA_ON
-mdefine_line|#define EBUS_DCSR_DMA_ON&t;0x02000000
-DECL|macro|EBUS_DCSR_A_LOADED
-mdefine_line|#define EBUS_DCSR_A_LOADED&t;0x04000000
-DECL|macro|EBUS_DCSR_NA_LOADED
-mdefine_line|#define EBUS_DCSR_NA_LOADED&t;0x08000000
-DECL|macro|EBUS_DCSR_DEV_ID_MASK
-mdefine_line|#define EBUS_DCSR_DEV_ID_MASK&t;0xf0000000
+r_extern
+r_int
+id|ebus_dma_register
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ebus_dma_irq_enable
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+comma
+r_int
+id|on
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ebus_dma_unregister
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ebus_dma_request
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+comma
+id|dma_addr_t
+id|bus_addr
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ebus_dma_prepare
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+comma
+r_int
+id|write
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ebus_dma_residue
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ebus_dma_enable
+c_func
+(paren
+r_struct
+id|ebus_dma_info
+op_star
+id|p
+comma
+r_int
+id|on
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|linux_ebus

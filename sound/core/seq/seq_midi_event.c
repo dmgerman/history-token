@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  MIDI byte &lt;-&gt; sequencer event coder&n; *&n; *  
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/seq_kernel.h&gt;
 macro_line|#include &lt;sound/seq_midi_event.h&gt;
