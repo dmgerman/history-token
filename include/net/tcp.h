@@ -271,6 +271,26 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|tcp_bind_hash
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|tcp_bind_bucket
+op_star
+id|tb
+comma
+r_int
+r_int
+id|snum
+)paren
+suffix:semicolon
 multiline_comment|/* This is a TIME_WAIT bucket.  It works around the memory consumption&n; * problems of sockets in such a state on heavily loaded servers, but&n; * without violating the protocol specification.&n; */
 DECL|struct|tcp_tw_bucket
 r_struct

@@ -54,6 +54,7 @@ op_assign
 id|AARP_RESOLVE_TIME
 suffix:semicolon
 multiline_comment|/* Lists of aarp entries */
+multiline_comment|/**&n; *&t;struct aarp_entry - AARP entry&n; *&t;@last_sent - Last time we xmitted the aarp request &n; *&t;@packet_queue - Queue of frames wait for resolution&n; *&t;@status - Used for proxy AARP&n; *&t;expires_at - Entry expiry time&n; *&t;target_addr - DDP Address&n; *&t;dev - Device to use&n; *&t;hwaddr - Physical i/f address of target/router&n; *&t;xmit_count - When this hits 10 we give up&n; *&t;next - Next entry in chain&n; */
 DECL|struct|aarp_entry
 r_struct
 id|aarp_entry
@@ -64,37 +65,31 @@ r_int
 r_int
 id|last_sent
 suffix:semicolon
-multiline_comment|/* Last time we xmitted the aarp request */
 DECL|member|packet_queue
 r_struct
 id|sk_buff_head
 id|packet_queue
 suffix:semicolon
-multiline_comment|/* Queue of frames wait for resolution */
 DECL|member|status
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/* Used for proxy AARP */
 DECL|member|expires_at
 r_int
 r_int
 id|expires_at
 suffix:semicolon
-multiline_comment|/* Entry expiry time */
 DECL|member|target_addr
 r_struct
 id|at_addr
 id|target_addr
 suffix:semicolon
-multiline_comment|/* DDP Address */
 DECL|member|dev
 r_struct
 id|net_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* Device to use */
 DECL|member|hwaddr
 r_char
 id|hwaddr
@@ -102,20 +97,17 @@ id|hwaddr
 l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* Physical i/f address of target/router */
 DECL|member|xmit_count
 r_int
 r_int
 id|xmit_count
 suffix:semicolon
-multiline_comment|/* When this hits 10 we give up */
 DECL|member|next
 r_struct
 id|aarp_entry
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* Next entry in chain */
 )brace
 suffix:semicolon
 multiline_comment|/* Hashed list of resolved, unresolved and proxy entries */
@@ -1389,8 +1381,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|aarp_entry
+op_star
+id|a
 )paren
 comma
 id|GFP_ATOMIC
@@ -1816,7 +1808,8 @@ id|hash
 comma
 id|retval
 op_assign
-l_int|1
+op_minus
+id|EPROTONOSUPPORT
 suffix:semicolon
 r_struct
 id|aarp_entry
@@ -1834,21 +1827,13 @@ c_cond
 id|atif-&gt;dev-&gt;type
 op_eq
 id|ARPHRD_LOCALTLK
-)paren
-r_return
-op_minus
-id|EPROTONOSUPPORT
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|atif-&gt;dev-&gt;type
 op_eq
 id|ARPHRD_PPP
 )paren
-r_return
-op_minus
-id|EPROTONOSUPPORT
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* &n;&t; * create a new AARP entry with the flags set to be published -- &n;&t; * we need this one to hang around even if it&squot;s in use&n;&t; */
 id|entry
@@ -1858,15 +1843,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|entry
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|out
 suffix:semicolon
 id|entry-&gt;expires_at
 op_assign
@@ -2003,12 +1992,18 @@ suffix:semicolon
 multiline_comment|/* return network full */
 )brace
 r_else
+(brace
 multiline_comment|/* clear the probing flag */
 id|entry-&gt;status
 op_and_assign
 op_complement
 id|ATIF_PROBE
 suffix:semicolon
+id|retval
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|spin_unlock_bh
 c_func
 (paren
@@ -2016,6 +2011,8 @@ op_amp
 id|aarp_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|retval
 suffix:semicolon
@@ -2390,15 +2387,8 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|spin_unlock_bh
-c_func
-(paren
-op_amp
-id|aarp_lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate a new entry */
@@ -2502,6 +2492,8 @@ id|sysctl_aarp_tick_time
 )paren
 suffix:semicolon
 multiline_comment|/* Now finally, it is safe to drop the lock. */
+id|out_unlock
+suffix:colon
 id|spin_unlock_bh
 c_func
 (paren
@@ -3195,8 +3187,9 @@ id|notifier_block
 id|aarp_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|aarp_device_event
 comma
 )brace
@@ -3400,10 +3393,8 @@ op_star
 id|entry
 suffix:semicolon
 r_int
-id|len
-comma
 id|ct
-suffix:semicolon
+comma
 id|len
 op_assign
 id|sprintf
@@ -3411,7 +3402,8 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%-10.10s  %-10.10s%-18.18s%12.12s%12.12s xmit_count  status&bslash;n&quot;
+l_string|&quot;%-10.10s  %-10.10s%-18.18s%12.12s%12.12s &quot;
+l_string|&quot;xmit_count  status&bslash;n&quot;
 comma
 l_string|&quot;address&quot;
 comma

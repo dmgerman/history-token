@@ -2842,8 +2842,9 @@ id|notifier_block
 id|fib_inetaddr_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|fib_inetaddr_event
 comma
 )brace
@@ -2854,8 +2855,9 @@ id|notifier_block
 id|fib_netdev_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|fib_netdev_event
 comma
 )brace
