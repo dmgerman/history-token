@@ -33837,6 +33837,8 @@ op_amp
 id|TG3_FLAG_ENABLE_ASF
 )paren
 (brace
+id|hw_phy_id
+op_assign
 id|hw_phy_id_masked
 op_assign
 id|PHY_ID_INVALID
