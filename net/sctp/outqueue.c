@@ -752,7 +752,7 @@ op_amp
 id|q-&gt;sacked
 )paren
 (brace
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|lchunk
@@ -798,7 +798,7 @@ op_amp
 id|q-&gt;retransmit
 )paren
 (brace
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|lchunk
@@ -1398,7 +1398,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Move the chunk to the retransmit queue. The chunks&n;&t;&t;&t; * on the retransmit queue is always kept in order.&n;&t;&t;&t; */
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|lchunk
@@ -3169,6 +3169,9 @@ id|transport_list
 comma
 op_star
 id|pos
+comma
+op_star
+id|temp
 suffix:semicolon
 id|sctp_sack_variable_t
 op_star
@@ -3526,10 +3529,12 @@ id|ctsn
 )paren
 suffix:semicolon
 multiline_comment|/* Throw away stuff rotting on the sack queue.  */
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|lchunk
+comma
+id|temp
 comma
 op_amp
 id|q-&gt;sacked
@@ -3567,18 +3572,12 @@ comma
 id|ctsn
 )paren
 )paren
-(brace
-id|lchunk
-op_assign
-id|lchunk-&gt;prev
-suffix:semicolon
 id|sctp_chunk_free
 c_func
 (paren
 id|tchunk
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* ii) Set rwnd equal to the newly received a_rwnd minus the&n;&t; *     number of bytes still outstanding after processing the&n;&t; *     Cumulative TSN Ack and the Gap Ack Blocks.&n;&t; */
 id|sack_a_rwnd

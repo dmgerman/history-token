@@ -10195,6 +10195,8 @@ id|sctp_make_shutdown
 c_func
 (paren
 id|asoc
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -11006,6 +11008,8 @@ id|sctp_make_shutdown
 c_func
 (paren
 id|asoc
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
