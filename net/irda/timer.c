@@ -89,20 +89,6 @@ id|TIMER_CALLBACK
 id|callback
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-id|ptimer
-)paren
-suffix:semicolon
-id|ptimer-&gt;data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|data
-suffix:semicolon
 multiline_comment|/* &n;&t; * For most architectures void * is the same as unsigned long, but&n;&t; * at least we try to use void * as long as possible. Since the &n;&t; * timer functions use unsigned long, we cast the function here&n;&t; */
 id|ptimer-&gt;function
 op_assign
@@ -118,16 +104,23 @@ r_int
 )paren
 id|callback
 suffix:semicolon
-id|ptimer-&gt;expires
+id|ptimer-&gt;data
 op_assign
-id|jiffies
-op_plus
-id|timeout
+(paren
+r_int
+r_int
+)paren
+id|data
 suffix:semicolon
-id|add_timer
+multiline_comment|/* Set new value for timer (update or add timer).&n;&t; * We use mod_timer() because it&squot;s more efficient and also&n;&t; * safer with respect to race conditions - Jean II */
+id|mod_timer
 c_func
 (paren
 id|ptimer
+comma
+id|jiffies
+op_plus
+id|timeout
 )paren
 suffix:semicolon
 )brace
@@ -471,17 +464,6 @@ id|self
 )paren
 (brace
 multiline_comment|/* If timer is activated, kill it! */
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|self-&gt;idle_timer
-)paren
-)paren
-(brace
 id|del_timer
 c_func
 (paren
@@ -489,7 +471,6 @@ op_amp
 id|self-&gt;idle_timer
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Function irlap_slot_timer_expired (data)&n; *&n; *    IrLAP slot timer has expired&n; *&n; */
 DECL|function|irlap_slot_timer_expired
