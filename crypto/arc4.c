@@ -222,6 +222,10 @@ id|ctx-&gt;y
 suffix:semicolon
 id|u8
 id|a
+comma
+id|b
+suffix:semicolon
+id|a
 op_assign
 id|S
 (braket
@@ -238,7 +242,6 @@ id|a
 op_amp
 l_int|0xff
 suffix:semicolon
-id|u8
 id|b
 op_assign
 id|S
