@@ -16,7 +16,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/lockd/debug.h&gt;
 multiline_comment|/*&n; * Version string&n; */
 DECL|macro|LOCKD_VERSION
-mdefine_line|#define LOCKD_VERSION&t;&t;&quot;0.4&quot;
+mdefine_line|#define LOCKD_VERSION&t;&t;&quot;0.5&quot;
 multiline_comment|/*&n; * Default timeout for RPC calls (seconds)&n; */
 DECL|macro|LOCKD_DFLT_TIMEO
 mdefine_line|#define LOCKD_DFLT_TIMEO&t;10
