@@ -3708,6 +3708,11 @@ id|device
 op_star
 id|host_dev
 suffix:semicolon
+id|u64
+id|bounce_limit
+op_assign
+l_int|0xffffffff
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3715,6 +3720,16 @@ id|shost-&gt;unchecked_isa_dma
 )paren
 r_return
 id|BLK_BOUNCE_ISA
+suffix:semicolon
+multiline_comment|/*&n;&t; * Platforms with virtual-DMA translation&n;&t; * hardware have no practical limit.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PCI_DMA_BUS_IS_PHYS
+)paren
+r_return
+id|BLK_BOUNCE_ANY
 suffix:semicolon
 id|host_dev
 op_assign
@@ -3727,19 +3742,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PCI_DMA_BUS_IS_PHYS
-op_logical_and
 id|host_dev
 op_logical_and
 id|host_dev-&gt;dma_mask
 )paren
-r_return
+id|bounce_limit
+op_assign
 op_star
 id|host_dev-&gt;dma_mask
 suffix:semicolon
-multiline_comment|/*&n;&t; * Platforms with virtual-DMA translation&n;&t; * hardware have no practical limit.&n;&t; */
 r_return
-id|BLK_BOUNCE_ANY
+id|bounce_limit
 suffix:semicolon
 )brace
 DECL|function|scsi_alloc_queue
