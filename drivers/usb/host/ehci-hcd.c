@@ -299,7 +299,7 @@ id|CMD_RESET
 comma
 l_int|0
 comma
-l_int|050
+l_int|250
 )paren
 suffix:semicolon
 )brace
@@ -981,7 +981,7 @@ op_amp
 id|ehci-&gt;regs-&gt;frame_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  layered drivers can&squot;t yet tell when we enable that,&n;&t; * so they can&squot;t pass this info along (like NETIF_F_HIGHDMA)&n;&t; */
+multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  layered drivers can&squot;t yet tell when we enable that,&n;&t; * so they can&squot;t pass this info along (like NETIF_F_HIGHDMA)&n;&t; * (or like Scsi_Host.highmem_io) ... usb_bus.flags?&n;&t; */
 r_if
 c_cond
 (paren
@@ -1835,6 +1835,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+singleline_comment|// FIXME don&squot;t pass flags; on sparc they aren&squot;t really flags.
+singleline_comment|// qh_completions can just leave irqs blocked,
+singleline_comment|// then have scan_async() allow IRQs if it&squot;s very busy 
 id|spin_lock_irqsave
 (paren
 op_amp

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hardware queue manipulation ... the core.  QH/QTD manipulation.&n; *&n; * Control, bulk, and interrupt traffic all use &quot;qh&quot; lists.  They list &quot;qtd&quot;&n; * entries describing USB transactions, max 16-20kB/entry (with 4kB-aligned&n; * buffers needed for the larger number).  We use one QH per endpoint, queue&n; * multiple (bulk or control) urbs per endpoint.  URBs may need several qtds.&n; * A scheduled interrupt qh always (for now) has one qtd, one urb.&n; *&n; * ISO traffic uses &quot;ISO TD&quot; (itd, and sitd) records, and (along with&n; * interrupts) needs careful scheduling.  Performance improvements can be&n; * an ongoing challenge.  That&squot;s in &quot;ehci-sched.c&quot;.&n; * &n; * USB 1.1 devices are handled (a) by &quot;companion&quot; OHCI or UHCI root hubs,&n; * or otherwise through transaction translators (TTs) in USB 2.0 hubs using&n; * (b) special fields in qh entries or (c) split iso entries.  TTs will&n; * buffer low/full speed data so the host collects it at high speed.&n; */
+multiline_comment|/*&n; * EHCI hardware queue manipulation ... the core.  QH/QTD manipulation.&n; *&n; * Control, bulk, and interrupt traffic all use &quot;qh&quot; lists.  They list &quot;qtd&quot;&n; * entries describing USB transactions, max 16-20kB/entry (with 4kB-aligned&n; * buffers needed for the larger number).  We use one QH per endpoint, queue&n; * multiple urbs (all three types) per endpoint.  URBs may need several qtds.&n; *&n; * ISO traffic uses &quot;ISO TD&quot; (itd, and sitd) records, and (along with&n; * interrupts) needs careful scheduling.  Performance improvements can be&n; * an ongoing challenge.  That&squot;s in &quot;ehci-sched.c&quot;.&n; * &n; * USB 1.1 devices are handled (a) by &quot;companion&quot; OHCI or UHCI root hubs,&n; * or otherwise through transaction translators (TTs) in USB 2.0 hubs using&n; * (b) special fields in qh entries or (c) split iso entries.  TTs will&n; * buffer low/full speed data so the host collects it at high speed.&n; */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* fill a qtd, returning how much of the buffer we were able to queue up */
 r_static
@@ -1074,7 +1074,12 @@ id|QH_STATE_IDLE
 )paren
 suffix:semicolon
 singleline_comment|// FIXME Remove the automagic unlink mode.
-singleline_comment|// Drivers can now clean up safely; its&squot; their job.
+singleline_comment|// Drivers can now clean up safely; it&squot;s their job.
+singleline_comment|//
+singleline_comment|// FIXME Removing it should fix the short read scenarios
+singleline_comment|// with &quot;huge&quot; urb data (more than one 16+KByte td) with
+singleline_comment|// the short read someplace other than the last data TD.
+singleline_comment|// Except the control case: &squot;retrigger&squot; status ACKs.
 multiline_comment|/* fault: unlink the rest, since this qtd saw an error? */
 r_if
 c_cond
@@ -1476,6 +1481,10 @@ id|maxpacket
 suffix:semicolon
 r_int
 id|is_input
+comma
+id|status_patch
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|token
@@ -1611,6 +1620,20 @@ id|qtd-&gt;qtd_list
 comma
 id|head
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|URB_SHORT_NOT_OK
+)paren
+)paren
+id|status_patch
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * data transfer stage:  buffer setup&n;&t; */
@@ -1925,6 +1948,38 @@ id|token
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* if we&squot;re permitting a short control read, we want the hardware to&n;&t; * just continue after short data and send the status ack.  it can do&n;&t; * that on the last data packet (typically the only one).  for other&n;&t; * packets, software fixup is needed (in qh_completions).&n;&t; */
+r_if
+c_cond
+(paren
+id|status_patch
+)paren
+(brace
+r_struct
+id|ehci_qtd
+op_star
+id|prev
+suffix:semicolon
+id|prev
+op_assign
+id|list_entry
+(paren
+id|qtd-&gt;qtd_list.prev
+comma
+r_struct
+id|ehci_qtd
+comma
+id|qtd_list
+)paren
+suffix:semicolon
+id|prev-&gt;hw_alt_next
+op_assign
+id|QTD_NEXT
+(paren
+id|qtd-&gt;qtd_dma
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* by default, enable interrupt on urb completion */
 r_if
@@ -2492,12 +2547,18 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef DEBUG
-id|BUG
+id|dbg
 (paren
+l_string|&quot;bogus dev %p speed %d&quot;
+comma
+id|urb-&gt;dev
+comma
+id|urb-&gt;dev-&gt;speed
 )paren
 suffix:semicolon
-macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* NOTE:  if (PIPE_INTERRUPT) { scheduler sets s-mask } */
 id|qh-&gt;qh_state
@@ -3199,6 +3260,12 @@ id|usb_pipein
 (paren
 id|urb-&gt;pipe
 )paren
+op_logical_and
+op_logical_neg
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
 )paren
 id|epnum
 op_or_assign
@@ -3558,6 +3625,7 @@ id|cmd
 op_amp
 id|CMD_PSE
 )paren
+(brace
 id|writel
 (paren
 id|cmd
@@ -3569,6 +3637,22 @@ op_amp
 id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
+id|handshake
+(paren
+op_amp
+id|ehci-&gt;regs-&gt;status
+comma
+id|STS_ASS
+comma
+l_int|0
+comma
+l_int|150
+)paren
+suffix:semicolon
+)brace
 r_else
 id|ehci_ready
 (paren
@@ -3638,19 +3722,6 @@ id|prev
 op_assign
 id|prev-&gt;qh_next.qh
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|prev-&gt;qh_next.qh
-op_ne
-id|qh
-)paren
-id|BUG
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
