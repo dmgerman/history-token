@@ -48,7 +48,7 @@ r_while
 c_loop
 (paren
 (paren
-id|READJADE
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -151,7 +151,7 @@ comma
 id|reg
 )paren
 suffix:semicolon
-id|WRITEJADE
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -277,12 +277,10 @@ id|bcs-&gt;hw.hscx.rcvidx
 op_add_assign
 id|count
 suffix:semicolon
-id|READJADEFIFO
+id|jade_read_fifo
 c_func
 (paren
-id|cs
-comma
-id|bcs-&gt;hw.hscx.hscx
+id|bcs
 comma
 id|ptr
 comma
@@ -354,7 +352,6 @@ id|bcs-&gt;blog
 suffix:semicolon
 )brace
 )brace
-r_static
 r_void
 DECL|function|jade_fill_fifo
 id|jade_fill_fifo
@@ -425,12 +422,10 @@ comma
 id|hscx
 )paren
 suffix:semicolon
-id|WRITEJADEFIFO
+id|jade_write_fifo
 c_func
 (paren
-id|cs
-comma
-id|hscx
+id|bcs
 comma
 id|p
 comma
@@ -538,7 +533,7 @@ l_int|0x80
 multiline_comment|/* RME */
 id|r
 op_assign
-id|READJADE
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -672,7 +667,7 @@ r_else
 (brace
 id|count
 op_assign
-id|READJADE
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -938,8 +933,6 @@ id|jadeXCMD_XRES
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
 r_void
 DECL|function|jade_int_main
 id|jade_int_main
