@@ -1,40 +1,9 @@
 multiline_comment|/*&n; *  linux/arch/i386/kernel/reboot.c&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;stdarg.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/user.h&gt;
-macro_line|#include &lt;linux/a.out.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/ldt.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/i387.h&gt;
-macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#ifdef CONFIG_MATH_EMULATION
-macro_line|#include &lt;asm/math_emu.h&gt;
-macro_line|#endif
-macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/err.h&gt;
 multiline_comment|/*&n; * Power off function, if any&n; */
 DECL|variable|pm_power_off
 r_void
@@ -428,9 +397,9 @@ comma
 multiline_comment|/*    jz    f                */
 l_int|0x0f
 comma
-l_int|0x08
+l_int|0x09
 comma
-multiline_comment|/*    invd                   */
+multiline_comment|/*    wbinvd                 */
 l_int|0x24
 comma
 l_int|0x10
