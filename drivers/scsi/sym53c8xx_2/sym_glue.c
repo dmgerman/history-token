@@ -6407,7 +6407,7 @@ id|out_err32
 suffix:semicolon
 macro_line|#else
 macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 1
-mdefine_line|#define&t;PciDmaMask&t;0xffffffffff
+mdefine_line|#define&t;PciDmaMask&t;0xffffffffffULL
 macro_line|#elif SYM_CONF_DMA_ADDRESSING_MODE == 2
 mdefine_line|#define&t;PciDmaMask&t;0xffffffffffffffffULL
 macro_line|#endif
@@ -8762,6 +8762,10 @@ l_int|0x0009
 comma
 )brace
 comma
+(brace
+l_int|0
+comma
+)brace
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
@@ -9298,6 +9302,10 @@ comma
 l_int|0UL
 )brace
 comma
+(brace
+l_int|0
+comma
+)brace
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
