@@ -716,6 +716,23 @@ comma
 l_string|&quot;major minor  #blocks  name&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t show non-partitionable devices or empty devices */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sgp-&gt;minor_shift
+op_logical_or
+op_logical_neg
+id|get_capacity
+c_func
+(paren
+id|sgp
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* show the full disk and all non-0 size partitions of it */
 id|seq_printf
 c_func
