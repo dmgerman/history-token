@@ -3525,11 +3525,18 @@ c_func
 id|cpu_policy
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cpufreq: resume failed in -&gt;resume step on CPU %u&bslash;n&quot;
+l_string|&quot;cpufreq: resume failed in -&gt;resume &quot;
+l_string|&quot;step on CPU %u&bslash;n&quot;
 comma
 id|cpu_policy-&gt;cpu
 )paren
@@ -3541,10 +3548,9 @@ id|cpu_policy
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
