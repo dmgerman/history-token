@@ -107,9 +107,6 @@ DECL|macro|pci_dac_dma_to_offset
 mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;&t;((dma_addr) &amp; ~PAGE_MASK)
 DECL|macro|pci_dac_dma_sync_single
 mdefine_line|#define pci_dac_dma_sync_single(dev,dma_addr,len,dir)&t;do { mb(); } while (0)
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-DECL|macro|pci_controller_num
-mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
 DECL|macro|sg_dma_address
@@ -186,8 +183,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|PCI_CONTROLLER
 mdefine_line|#define PCI_CONTROLLER(busdev) ((struct pci_controller *) busdev-&gt;sysdata)
-DECL|macro|PCI_SEGMENT
-mdefine_line|#define PCI_SEGMENT(busdev)    (PCI_CONTROLLER(busdev)-&gt;segment)
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(busdev)    (PCI_CONTROLLER(busdev)-&gt;segment)
 multiline_comment|/* generic pci stuff */
 macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* _ASM_IA64_PCI_H */

@@ -971,10 +971,10 @@ id|PCIIOC_CONTROLLER
 suffix:colon
 id|ret
 op_assign
-id|pci_controller_num
+id|pci_domain_nr
 c_func
 (paren
-id|dev
+id|dev-&gt;bus
 )paren
 suffix:semicolon
 r_break

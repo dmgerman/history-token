@@ -273,7 +273,7 @@ r_return
 id|__pci_sal_read
 c_func
 (paren
-id|PCI_SEGMENT
+id|pci_domain_nr
 c_func
 (paren
 id|bus
@@ -329,7 +329,7 @@ r_return
 id|__pci_sal_write
 c_func
 (paren
-id|PCI_SEGMENT
+id|pci_domain_nr
 c_func
 (paren
 id|bus

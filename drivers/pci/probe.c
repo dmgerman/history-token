@@ -2427,10 +2427,18 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* now put in global tree */
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|dev-&gt;dev.bus_id
+comma
+l_string|&quot;%04x:%s&quot;
+comma
+id|pci_domain_nr
+c_func
+(paren
+id|bus
+)paren
 comma
 id|dev-&gt;slot_name
 )paren

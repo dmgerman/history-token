@@ -404,13 +404,13 @@ multiline_comment|/* DAC cycle addressing does not make use of the&n;&t; * PCI c
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 r_extern
 r_int
-id|pci_controller_num
+id|pci_domain_nr
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|pdev
+id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* Platform support for /proc/bus/pci/X/Y mmap()s. */

@@ -841,24 +841,6 @@ DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
-multiline_comment|/* Return the index of the PCI controller for device. */
-DECL|function|pci_controller_num
-r_static
-r_inline
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP
 r_extern

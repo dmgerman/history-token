@@ -563,24 +563,6 @@ suffix:semicolon
 multiline_comment|/*&n; * We don&squot;t support DAC DMA cycles.&n; */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(0)
-multiline_comment|/*&n; * Return the index of the PCI controller for device PDEV.&n; */
-DECL|function|pci_controller_num
-r_static
-r_inline
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#if defined(CONFIG_SA1111) &amp;&amp; !defined(CONFIG_PCI)
 multiline_comment|/*&n; * SA-1111 needs these prototypes even when !defined(CONFIG_PCI)&n; *&n; * kmem_cache style wrapper around pci_alloc_consistent()&n; */
 r_struct

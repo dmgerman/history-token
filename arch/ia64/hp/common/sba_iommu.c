@@ -6442,9 +6442,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;No IOC for PCI Bus %02x:%02x in ACPI&bslash;n&quot;
+l_string|&quot;No IOC for PCI Bus %04x:%02x in ACPI&bslash;n&quot;
 comma
-id|PCI_SEGMENT
+id|pci_domain_nr
 c_func
 (paren
 id|bus

@@ -6991,34 +6991,6 @@ r_return
 id|res-&gt;start
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the index of the PCI controller for device pdev.&n; */
-DECL|function|pci_controller_num
-r_int
-id|pci_controller_num
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|pci_controller
-op_star
-id|hose
-op_assign
-(paren
-r_struct
-id|pci_controller
-op_star
-)paren
-id|dev-&gt;sysdata
-suffix:semicolon
-r_return
-id|hose-&gt;index
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Platform support for /proc/bus/pci/X/Y mmap()s,&n; * modelled on the sparc64 implementation by Dave Miller.&n; *  -- paulus.&n; */
 multiline_comment|/*&n; * Adjust vm_pgoff of VMA such that it is the physical page offset&n; * corresponding to the 32-bit pci bus offset for DEV requested by the user.&n; *&n; * Basically, the user finds the base address for his device which he wishes&n; * to mmap.  They read the 32-bit value from the config space base register,&n; * add whatever PAGE_SIZE multiple offset they wish, and feed this into the&n; * offset parameter of mmap on /proc/bus/pci/XXX for that device.&n; *&n; * Returns negative error code on failure, zero on success.&n; */
 r_static

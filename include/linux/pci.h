@@ -2974,6 +2974,11 @@ DECL|macro|PCIPCI_VSFX
 mdefine_line|#define PCIPCI_VSFX&t;&t;16
 DECL|macro|PCIPCI_ALIMAGIK
 mdefine_line|#define PCIPCI_ALIMAGIK&t;&t;32
+multiline_comment|/*&n; * PCI domain support.  Sometimes called PCI segment (eg by ACPI),&n; * a PCI domain is defined to be a set of PCI busses which share&n; * configuration space.&n; */
+macro_line|#ifndef CONFIG_PCI_DOMAINS
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(bus)&t;0
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_PCI_H */
 eof

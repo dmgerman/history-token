@@ -137,7 +137,7 @@ DECL|member|index
 r_int
 id|index
 suffix:semicolon
-multiline_comment|/* used for pci_controller_num */
+multiline_comment|/* PCI domain number */
 DECL|member|next
 r_struct
 id|pci_controller

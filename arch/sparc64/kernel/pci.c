@@ -3323,16 +3323,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-DECL|function|pci_controller_num
+multiline_comment|/* Return the domain nuber for this pci bus */
+DECL|function|pci_domain_nr
 r_int
-id|pci_controller_num
+id|pci_domain_nr
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|pdev
+id|bus
 )paren
 (brace
 r_struct
@@ -3340,7 +3340,7 @@ id|pcidev_cookie
 op_star
 id|cookie
 op_assign
-id|pdev-&gt;sysdata
+id|bus-&gt;sysdata
 suffix:semicolon
 r_int
 id|ret
