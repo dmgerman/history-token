@@ -11883,25 +11883,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_case
-id|SCTP_CID_COOKIE_ECHO
-suffix:colon
-(brace
-id|sctp_signed_cookie_t
-op_star
-id|cookie
-suffix:semicolon
-id|cookie
-op_assign
-id|chunk-&gt;subh.cookie_hdr
-suffix:semicolon
-id|vtag
-op_assign
-id|cookie-&gt;c.peer_vtag
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_default
 suffix:colon
 id|vtag
@@ -12116,6 +12097,19 @@ c_cond
 id|packet
 )paren
 (brace
+id|sctp_signed_cookie_t
+op_star
+id|cookie
+suffix:semicolon
+multiline_comment|/* Override the OOTB vtag from the cookie. */
+id|cookie
+op_assign
+id|chunk-&gt;subh.cookie_hdr
+suffix:semicolon
+id|packet-&gt;vtag
+op_assign
+id|cookie-&gt;c.peer_vtag
+suffix:semicolon
 multiline_comment|/* Set the skb to the belonging sock for accounting. */
 id|err_chunk-&gt;skb-&gt;sk
 op_assign
