@@ -1474,5 +1474,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Signals sent while we were stopped might set TIF_SIGPENDING.&n;&t; */
+id|recalc_sigpending
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof
