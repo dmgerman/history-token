@@ -39,7 +39,7 @@ id|pg_data_t
 op_star
 id|pgdat_list
 suffix:semicolon
-multiline_comment|/* Used to look up the address of the struct zone encoded in page-&gt;zone */
+multiline_comment|/*&n; * Used by page_zone() to look up the address of the struct zone whose&n; * id is encoded in the upper bits of page-&gt;flags&n; */
 DECL|variable|zone_table
 id|zone_t
 op_star
