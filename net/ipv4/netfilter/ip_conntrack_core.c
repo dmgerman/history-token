@@ -2298,11 +2298,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_static
-r_int
-r_int
-id|drop_next
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2347,32 +2342,10 @@ op_ge
 id|ip_conntrack_max
 )paren
 (brace
-multiline_comment|/* Try dropping from random chain, or else from the&n;                   chain about to put into (in case they&squot;re trying to&n;                   bomb one hash chain). */
-r_int
-r_int
-id|next
-op_assign
-(paren
-id|drop_next
-op_increment
-)paren
-op_mod
-id|ip_conntrack_htable_size
-suffix:semicolon
+multiline_comment|/* Try dropping from this hash chain. */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|early_drop
-c_func
-(paren
-op_amp
-id|ip_conntrack_hash
-(braket
-id|next
-)braket
-)paren
-op_logical_and
 op_logical_neg
 id|early_drop
 c_func
