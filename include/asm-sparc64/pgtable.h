@@ -396,6 +396,9 @@ mdefine_line|#define pgd_offset(mm, address)&t;((mm)-&gt;pgd + pgd_index(address
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+multiline_comment|/* extract the pgd cache used for optimizing the tlb miss&n; * slow path when executing 32-bit compat processes&n; */
+DECL|macro|get_pgd_cache
+mdefine_line|#define get_pgd_cache(pgd)&t;((unsigned long) pgd_val(*pgd) &lt;&lt; 11)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(pudp, address)&t;&bslash;&n;&t;((pmd_t *) pud_page(*(pudp)) + &bslash;&n;&t; (((address) &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))

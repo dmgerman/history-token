@@ -3605,19 +3605,13 @@ r_void
 r_int
 id|result
 op_assign
-id|__atomic_add
+id|atomic_add_ret
 c_func
 (paren
 l_int|1
 comma
 op_amp
 id|smp_capture_depth
-)paren
-suffix:semicolon
-id|membar
-c_func
-(paren
-l_string|&quot;#StoreStore | #LoadStore&quot;
 )paren
 suffix:semicolon
 r_if
