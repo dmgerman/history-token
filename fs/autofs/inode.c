@@ -245,7 +245,7 @@ c_cond
 (paren
 op_logical_neg
 op_star
-id|value
+id|this_char
 )paren
 r_continue
 suffix:semicolon
