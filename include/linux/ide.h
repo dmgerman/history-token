@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2004,6 +2005,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
+DECL|member|blocked
+r_int
+id|blocked
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=powermanagment told us not to do anything, so sleep nicely */
 DECL|member|addressing
 r_int
 id|addressing

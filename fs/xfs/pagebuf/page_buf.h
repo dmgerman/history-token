@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|enum|xfs_buffer_state
 DECL|enumerator|BH_Delay
 r_enum
@@ -625,10 +625,10 @@ op_star
 id|pb_addr
 suffix:semicolon
 multiline_comment|/* virtual address of buffer */
-DECL|member|pb_iodone_sched
+DECL|member|pb_iodone_work
 r_struct
-id|tq_struct
-id|pb_iodone_sched
+id|work_struct
+id|pb_iodone_work
 suffix:semicolon
 DECL|member|pb_iodone
 id|page_buf_iodone_t
@@ -1214,5 +1214,11 @@ id|pb
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|workqueue_struct
+op_star
+id|pagebuf_workqueue
+suffix:semicolon
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof

@@ -1,7 +1,5 @@
 multiline_comment|/* Copyright (C) by Paul Barton-Davis 1998-1999&n; *&n; * Some portions of this file are taken from work that is&n; * copyright (C) by Hannu Savolainen 1993-1996&n; *&n; * This program is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.  &n; */
 multiline_comment|/*  &n; * An ALSA lowlevel driver for Turtle Beach ICS2115 wavetable synth&n; *                                             (Maui, Tropez, Tropez Plus)&n; *&n; * This driver supports the onboard wavetable synthesizer (an ICS2115),&n; * including patch, sample and program loading and unloading, conversion&n; * of GUS patches during loading, and full user-level access to all&n; * WaveFront commands. It tries to provide semi-intelligent patch and&n; * sample management as well.&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

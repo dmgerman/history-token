@@ -1233,7 +1233,13 @@ id|extra
 suffix:semicolon
 DECL|member|running
 r_int
+r_int
 id|running
+suffix:semicolon
+DECL|member|first_ptr
+r_int
+r_int
+id|first_ptr
 suffix:semicolon
 DECL|member|memblk
 id|snd_util_memblk_t
@@ -3098,10 +3104,18 @@ DECL|macro|A_EXTIN_SPDIF_CD_L
 mdefine_line|#define A_EXTIN_SPDIF_CD_L&t;0x02&t;/* digital CD left */
 DECL|macro|A_EXTIN_SPDIF_CD_R
 mdefine_line|#define A_EXTIN_SPDIF_CD_R&t;0x03&t;/* digital CD left */
+DECL|macro|A_EXTIN_OPT_SPDIF_L
+mdefine_line|#define A_EXTIN_OPT_SPDIF_L     0x04    /* audigy drive Optical SPDIF - left */
+DECL|macro|A_EXTIN_OPT_SPDIF_R
+mdefine_line|#define A_EXTIN_OPT_SPDIF_R     0x05    /*                              right */ 
 DECL|macro|A_EXTIN_LINE2_L
 mdefine_line|#define A_EXTIN_LINE2_L&t;&t;0x08&t;/* audigy drive line2/mic2 - left */
 DECL|macro|A_EXTIN_LINE2_R
 mdefine_line|#define A_EXTIN_LINE2_R&t;&t;0x09&t;/*                           right */
+DECL|macro|A_EXTIN_RCA_SPDIF_L
+mdefine_line|#define A_EXTIN_RCA_SPDIF_L     0x0a    /* audigy drive RCA SPDIF - left */
+DECL|macro|A_EXTIN_RCA_SPDIF_R
+mdefine_line|#define A_EXTIN_RCA_SPDIF_R     0x0b    /*                          right */
 DECL|macro|A_EXTIN_AUX2_L
 mdefine_line|#define A_EXTIN_AUX2_L&t;&t;0x0c&t;/* audigy drive aux2 - left */
 DECL|macro|A_EXTIN_AUX2_R
@@ -3418,6 +3432,24 @@ op_star
 id|gpr_del_controls
 suffix:semicolon
 multiline_comment|/* IDs of GPR controls to remove */
+DECL|member|gpr_list_control_count
+r_int
+r_int
+id|gpr_list_control_count
+suffix:semicolon
+multiline_comment|/* count of GPR controls to list */
+DECL|member|gpr_list_control_total
+r_int
+r_int
+id|gpr_list_control_total
+suffix:semicolon
+multiline_comment|/* total count of GPR controls */
+DECL|member|gpr_list_controls
+id|emu10k1_fx8010_control_gpr_t
+op_star
+id|gpr_list_controls
+suffix:semicolon
+multiline_comment|/* listed GPR controls */
 DECL|member|tram_valid
 r_int
 r_int

@@ -1,11 +1,10 @@
 multiline_comment|/*&n; * PMac DACA lowlevel functions&n; *&n; * Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 DECL|macro|chip_t
@@ -791,8 +790,9 @@ id|get
 op_assign
 id|daca_get_deemphasis
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|daca_put_deemphasis
 )brace
 comma
@@ -817,8 +817,9 @@ id|get
 op_assign
 id|daca_get_volume
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|daca_put_volume
 )brace
 comma
@@ -843,8 +844,9 @@ id|get
 op_assign
 id|daca_get_amp
 comma
+dot
 id|put
-suffix:colon
+op_assign
 id|daca_put_amp
 )brace
 comma

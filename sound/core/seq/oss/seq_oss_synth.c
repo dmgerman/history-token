@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * OSS compatible sequencer driver&n; *&n; * synth device handlers&n; *&n; * Copyright (C) 1998,99 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;seq_oss_synth.h&quot;
 macro_line|#include &quot;seq_oss_midi.h&quot;
 macro_line|#include &quot;../seq_lock.h&quot;
@@ -445,6 +443,23 @@ id|dev-&gt;driver_data
 op_assign
 id|rec
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OL
+id|SNDRV_CARDS
+)paren
+id|snd_oss_info_register
+c_func
+(paren
+id|SNDRV_OSS_INFO_DEV_SYNTH
+comma
+id|i
+comma
+id|rec-&gt;name
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -594,6 +609,21 @@ op_amp
 id|register_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rec-&gt;seq_device
+OL
+id|SNDRV_CARDS
+)paren
+id|snd_oss_info_unregister
+c_func
+(paren
+id|SNDRV_OSS_INFO_DEV_SYNTH
+comma
+id|rec-&gt;seq_device
 )paren
 suffix:semicolon
 id|snd_use_lock_sync

@@ -1771,7 +1771,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|OPL3SA2_SINGLE
-mdefine_line|#define OPL3SA2_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_opl3sa2_info_single, &bslash;&n;  get: snd_opl3sa2_get_single, put: snd_opl3sa2_put_single, &bslash;&n;  private_value: reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
+mdefine_line|#define OPL3SA2_SINGLE(xname, xindex, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_opl3sa2_info_single, &bslash;&n;  .get = snd_opl3sa2_get_single, .put = snd_opl3sa2_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 8) | (mask &lt;&lt; 16) | (invert &lt;&lt; 24) }
 DECL|function|snd_opl3sa2_info_single
 r_static
 r_int
@@ -2112,7 +2112,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|macro|OPL3SA2_DOUBLE
-mdefine_line|#define OPL3SA2_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ iface: SNDRV_CTL_ELEM_IFACE_MIXER, name: xname, index: xindex, &bslash;&n;  info: snd_opl3sa2_info_double, &bslash;&n;  get: snd_opl3sa2_get_double, put: snd_opl3sa2_put_double, &bslash;&n;  private_value: left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
+mdefine_line|#define OPL3SA2_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_opl3sa2_info_double, &bslash;&n;  .get = snd_opl3sa2_get_double, .put = snd_opl3sa2_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 DECL|function|snd_opl3sa2_info_double
 r_int
 id|snd_opl3sa2_info_double
@@ -4256,8 +4256,9 @@ id|snd_device_ops_t
 id|ops
 op_assign
 (brace
+dot
 id|dev_free
-suffix:colon
+op_assign
 id|snd_opl3sa2_dev_free
 comma
 )brace

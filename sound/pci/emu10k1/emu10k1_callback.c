@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  synth callback routines for Emu10k1&n; *&n; *  Copyright (C) 2000 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;emu10k1_synth_local.h&quot;
 macro_line|#include &lt;sound/asoundef.h&gt;
 multiline_comment|/* voice status */
@@ -197,44 +195,54 @@ id|snd_emux_operators_t
 id|emu10k1_ops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|get_voice
-suffix:colon
+op_assign
 id|get_voice
 comma
+dot
 id|prepare
-suffix:colon
+op_assign
 id|start_voice
 comma
+dot
 id|trigger
-suffix:colon
+op_assign
 id|trigger_voice
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|release_voice
 comma
+dot
 id|update
-suffix:colon
+op_assign
 id|update_voice
 comma
+dot
 id|terminate
-suffix:colon
+op_assign
 id|terminate_voice
 comma
+dot
 id|free_voice
-suffix:colon
+op_assign
 id|free_voice
 comma
+dot
 id|sample_new
-suffix:colon
+op_assign
 id|snd_emu10k1_sample_new
 comma
+dot
 id|sample_free
-suffix:colon
+op_assign
 id|snd_emu10k1_sample_free
 comma
 )brace

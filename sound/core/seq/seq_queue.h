@@ -8,6 +8,7 @@ macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_lock.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 DECL|macro|SEQ_QUEUE_NO_OWNER
 mdefine_line|#define SEQ_QUEUE_NO_OWNER (-1)
 DECL|struct|_snd_seq_queue
@@ -95,7 +96,7 @@ id|spinlock_t
 id|check_lock
 suffix:semicolon
 multiline_comment|/* clients which uses this queue (bitmap) */
-id|bitmap_member
+id|DECLARE_BITMAP
 c_func
 (paren
 id|clients_bitmap

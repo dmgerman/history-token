@@ -1292,6 +1292,12 @@ suffix:semicolon
 r_int
 id|cpu
 suffix:semicolon
+id|flush_workqueue
+c_func
+(paren
+id|wq
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

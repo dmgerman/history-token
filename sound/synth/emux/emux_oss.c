@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Interface for OSS sequencer emulation&n; *&n; *  Copyright (C) 1999 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; * Changes&n; * 19990227   Steve Ratcliffe   Made separate file and merged in latest&n; * &t;&t;&t;&t;midi emulation.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -211,28 +209,34 @@ id|snd_seq_oss_callback_t
 id|oss_callback
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|snd_emux_open_seq_oss
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|snd_emux_close_seq_oss
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|snd_emux_ioctl_seq_oss
 comma
+dot
 id|load_patch
-suffix:colon
+op_assign
 id|snd_emux_load_patch_seq_oss
 comma
+dot
 id|reset
-suffix:colon
+op_assign
 id|snd_emux_reset_seq_oss
 comma
 )brace
