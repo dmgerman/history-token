@@ -3094,7 +3094,7 @@ l_int|NULL
 comma
 id|count
 comma
-id|MAX_NON_LFS
+l_int|0
 )paren
 suffix:semicolon
 )brace
