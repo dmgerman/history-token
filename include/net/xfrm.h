@@ -27,6 +27,7 @@ DECL|struct|xfrm_state
 r_struct
 id|xfrm_state
 (brace
+multiline_comment|/* Note: bydst is re-used during gc */
 DECL|member|bydst
 r_struct
 id|list_head
