@@ -2576,8 +2576,9 @@ op_star
 )paren
 id|ptr
 suffix:semicolon
+r_struct
 id|evt_si_device
-id|sd
+id|ev
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -2590,11 +2591,11 @@ id|event
 )paren
 suffix:semicolon
 multiline_comment|/* Send event to sockets */
-id|sd.event
+id|ev.event
 op_assign
 id|event
 suffix:semicolon
-id|sd.dev_id
+id|ev.dev_id
 op_assign
 id|hdev-&gt;id
 suffix:semicolon
@@ -2605,10 +2606,13 @@ l_int|NULL
 comma
 id|EVT_SI_DEVICE
 comma
-id|EVT_SI_DEVICE_SIZE
+r_sizeof
+(paren
+id|ev
+)paren
 comma
 op_amp
-id|sd
+id|ev
 )paren
 suffix:semicolon
 r_if

@@ -27,6 +27,7 @@ id|__u32
 id|timestamp
 suffix:semicolon
 DECL|member|info
+r_struct
 id|inquiry_info
 id|info
 suffix:semicolon
@@ -577,6 +578,7 @@ id|hci_dev
 op_star
 id|hdev
 comma
+r_struct
 id|inquiry_info
 op_star
 id|info

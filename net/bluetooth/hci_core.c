@@ -725,9 +725,6 @@ r_int
 id|opt
 )paren
 (brace
-id|set_event_flt_cp
-id|ef
-suffix:semicolon
 id|__u16
 id|param
 suffix:semicolon
@@ -775,10 +772,11 @@ suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* Host buffer size */
 (brace
+r_struct
 id|host_buffer_size_cp
-id|bs
+id|cp
 suffix:semicolon
-id|bs.acl_mtu
+id|cp.acl_mtu
 op_assign
 id|__cpu_to_le16
 c_func
@@ -786,11 +784,11 @@ c_func
 id|HCI_MAX_ACL_SIZE
 )paren
 suffix:semicolon
-id|bs.sco_mtu
+id|cp.sco_mtu
 op_assign
 id|HCI_MAX_SCO_SIZE
 suffix:semicolon
-id|bs.acl_max_pkt
+id|cp.acl_max_pkt
 op_assign
 id|__cpu_to_le16
 c_func
@@ -798,7 +796,7 @@ c_func
 l_int|0xffff
 )paren
 suffix:semicolon
-id|bs.sco_max_pkt
+id|cp.sco_max_pkt
 op_assign
 id|__cpu_to_le16
 c_func
@@ -815,10 +813,13 @@ id|OGF_HOST_CTL
 comma
 id|OCF_HOST_BUFFER_SIZE
 comma
-id|HOST_BUFFER_SIZE_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|bs
+id|cp
 )paren
 suffix:semicolon
 )brace
@@ -840,7 +841,12 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Optional initialization */
 multiline_comment|/* Clear Event Filters */
-id|ef.flt_type
+(brace
+r_struct
+id|set_event_flt_cp
+id|cp
+suffix:semicolon
+id|cp.flt_type
 op_assign
 id|FLT_CLEAR_ALL
 suffix:semicolon
@@ -853,12 +859,16 @@ id|OGF_HOST_CTL
 comma
 id|OCF_SET_EVENT_FLT
 comma
-l_int|1
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|ef
+id|cp
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Page timeout ~20 secs */
 id|param
 op_assign
@@ -1307,6 +1317,7 @@ id|hci_dev
 op_star
 id|hdev
 comma
+r_struct
 id|inquiry_info
 op_star
 id|info
@@ -1414,7 +1425,8 @@ id|info
 comma
 r_sizeof
 (paren
-id|inquiry_info
+op_star
+id|info
 )paren
 )paren
 suffix:semicolon
@@ -1453,11 +1465,13 @@ op_assign
 op_amp
 id|hdev-&gt;inq_cache
 suffix:semicolon
+r_struct
 id|inquiry_info
 op_star
 id|info
 op_assign
 (paren
+r_struct
 id|inquiry_info
 op_star
 )paren
@@ -1504,7 +1518,8 @@ id|e-&gt;info
 comma
 r_sizeof
 (paren
-id|inquiry_info
+op_star
+id|info
 )paren
 )paren
 suffix:semicolon
@@ -1550,8 +1565,9 @@ op_star
 )paren
 id|opt
 suffix:semicolon
+r_struct
 id|inquiry_cp
-id|ic
+id|cp
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -1580,7 +1596,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|ic.lap
+id|cp.lap
 comma
 op_amp
 id|ir-&gt;lap
@@ -1588,11 +1604,11 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|ic.length
+id|cp.length
 op_assign
 id|ir-&gt;length
 suffix:semicolon
-id|ic.num_rsp
+id|cp.num_rsp
 op_assign
 id|ir-&gt;num_rsp
 suffix:semicolon
@@ -1605,10 +1621,13 @@ id|OGF_LINK_CTL
 comma
 id|OCF_INQUIRY
 comma
-id|INQUIRY_CP_SIZE
+r_sizeof
+(paren
+id|cp
+)paren
 comma
 op_amp
-id|ic
+id|cp
 )paren
 suffix:semicolon
 )brace
@@ -1788,6 +1807,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|inquiry_info
 )paren
 op_star
@@ -1858,6 +1878,7 @@ op_plus
 (paren
 r_sizeof
 (paren
+r_struct
 id|inquiry_info
 )paren
 op_star
@@ -1896,6 +1917,7 @@ id|buf
 comma
 r_sizeof
 (paren
+r_struct
 id|inquiry_info
 )paren
 op_star
@@ -4455,9 +4477,10 @@ id|HCI_COMMAND_HDR_SIZE
 op_plus
 id|plen
 suffix:semicolon
+r_struct
 id|hci_command_hdr
 op_star
-id|hc
+id|hdr
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -4478,11 +4501,6 @@ comma
 id|plen
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|skb
 op_assign
 id|bt_skb_alloc
@@ -4492,7 +4510,12 @@ id|len
 comma
 id|GFP_ATOMIC
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
 )paren
 (brace
 id|BT_ERR
@@ -4508,9 +4531,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|hc
+id|hdr
 op_assign
 (paren
+r_struct
 id|hci_command_hdr
 op_star
 )paren
@@ -4522,7 +4546,7 @@ comma
 id|HCI_COMMAND_HDR_SIZE
 )paren
 suffix:semicolon
-id|hc-&gt;opcode
+id|hdr-&gt;opcode
 op_assign
 id|__cpu_to_le16
 c_func
@@ -4536,7 +4560,7 @@ id|ocf
 )paren
 )paren
 suffix:semicolon
-id|hc-&gt;plen
+id|hdr-&gt;plen
 op_assign
 id|plen
 suffix:semicolon
@@ -4619,9 +4643,10 @@ id|__u16
 id|ocf
 )paren
 (brace
+r_struct
 id|hci_command_hdr
 op_star
-id|hc
+id|hdr
 suffix:semicolon
 r_if
 c_cond
@@ -4632,7 +4657,7 @@ id|hdev-&gt;sent_cmd
 r_return
 l_int|NULL
 suffix:semicolon
-id|hc
+id|hdr
 op_assign
 (paren
 r_void
@@ -4643,7 +4668,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hc-&gt;opcode
+id|hdr-&gt;opcode
 op_ne
 id|__cpu_to_le16
 c_func
@@ -4697,18 +4722,20 @@ id|__u16
 id|flags
 )paren
 (brace
+r_struct
+id|hci_acl_hdr
+op_star
+id|hdr
+suffix:semicolon
 r_int
 id|len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-id|hci_acl_hdr
-op_star
-id|ah
-suffix:semicolon
-id|ah
+id|hdr
 op_assign
 (paren
+r_struct
 id|hci_acl_hdr
 op_star
 )paren
@@ -4720,7 +4747,7 @@ comma
 id|HCI_ACL_HDR_SIZE
 )paren
 suffix:semicolon
-id|ah-&gt;handle
+id|hdr-&gt;handle
 op_assign
 id|__cpu_to_le16
 c_func
@@ -4734,7 +4761,7 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-id|ah-&gt;dlen
+id|hdr-&gt;dlen
 op_assign
 id|__cpu_to_le16
 c_func
@@ -4748,7 +4775,7 @@ op_assign
 r_void
 op_star
 )paren
-id|ah
+id|hdr
 suffix:semicolon
 )brace
 DECL|function|hci_send_acl
@@ -5004,8 +5031,9 @@ id|hdev
 op_assign
 id|conn-&gt;hdev
 suffix:semicolon
+r_struct
 id|hci_sco_hdr
-id|hs
+id|hdr
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -5036,7 +5064,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|hs.handle
+id|hdr.handle
 op_assign
 id|__cpu_to_le16
 c_func
@@ -5044,7 +5072,7 @@ c_func
 id|conn-&gt;handle
 )paren
 suffix:semicolon
-id|hs.dlen
+id|hdr.dlen
 op_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -5064,7 +5092,7 @@ c_func
 id|skb-&gt;h.raw
 comma
 op_amp
-id|hs
+id|hdr
 comma
 id|HCI_SCO_HDR_SIZE
 )paren
@@ -5724,9 +5752,10 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
 id|hci_acl_hdr
 op_star
-id|ah
+id|hdr
 op_assign
 (paren
 r_void
@@ -5757,7 +5786,7 @@ op_assign
 id|__le16_to_cpu
 c_func
 (paren
-id|ah-&gt;handle
+id|hdr-&gt;handle
 )paren
 suffix:semicolon
 id|flags
@@ -5898,9 +5927,10 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
 id|hci_sco_hdr
 op_star
-id|sh
+id|hdr
 op_assign
 (paren
 r_void
@@ -5929,7 +5959,7 @@ op_assign
 id|__le16_to_cpu
 c_func
 (paren
-id|sh-&gt;handle
+id|hdr-&gt;handle
 )paren
 suffix:semicolon
 id|BT_DBG

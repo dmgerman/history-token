@@ -217,15 +217,16 @@ DECL|macro|HCI_LM_ENCRYPT
 mdefine_line|#define HCI_LM_ENCRYPT&t;0x0004
 DECL|macro|HCI_LM_TRUSTED
 mdefine_line|#define HCI_LM_TRUSTED&t;0x0008
-multiline_comment|/* -----  HCI Commands ----- */
+multiline_comment|/* -----  HCI Commands ---- */
 multiline_comment|/* OGF &amp; OCF values */
 multiline_comment|/* Informational Parameters */
 DECL|macro|OGF_INFO_PARAM
 mdefine_line|#define OGF_INFO_PARAM&t;0x04
 DECL|macro|OCF_READ_LOCAL_VERSION
 mdefine_line|#define OCF_READ_LOCAL_VERSION&t;0x0001
-r_typedef
+DECL|struct|read_local_version_rp
 r_struct
+id|read_local_version_rp
 (brace
 DECL|member|status
 id|__u8
@@ -251,7 +252,6 @@ DECL|member|lmp_subver
 id|__u16
 id|lmp_subver
 suffix:semicolon
-DECL|typedef|read_local_version_rp
 )brace
 id|__attribute__
 (paren
@@ -259,14 +259,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_local_version_rp
 suffix:semicolon
-DECL|macro|READ_LOCAL_VERSION_RP_SIZE
-mdefine_line|#define READ_LOCAL_VERSION_RP_SIZE 9
 DECL|macro|OCF_READ_LOCAL_FEATURES
 mdefine_line|#define OCF_READ_LOCAL_FEATURES&t;0x0003
-r_typedef
+DECL|struct|read_local_features_rp
 r_struct
+id|read_local_features_rp
 (brace
 DECL|member|status
 id|__u8
@@ -279,7 +277,6 @@ id|features
 l_int|8
 )braket
 suffix:semicolon
-DECL|typedef|read_local_features_rp
 )brace
 id|__attribute__
 (paren
@@ -287,12 +284,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_local_features_rp
 suffix:semicolon
 DECL|macro|OCF_READ_BUFFER_SIZE
 mdefine_line|#define OCF_READ_BUFFER_SIZE&t;0x0005
-r_typedef
+DECL|struct|read_buffer_size_rp
 r_struct
+id|read_buffer_size_rp
 (brace
 DECL|member|status
 id|__u8
@@ -314,7 +311,6 @@ DECL|member|sco_max_pkt
 id|__u16
 id|sco_max_pkt
 suffix:semicolon
-DECL|typedef|read_buffer_size_rp
 )brace
 id|__attribute__
 (paren
@@ -322,12 +318,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_buffer_size_rp
 suffix:semicolon
 DECL|macro|OCF_READ_BD_ADDR
 mdefine_line|#define OCF_READ_BD_ADDR&t;0x0009
-r_typedef
+DECL|struct|read_bd_addr_rp
 r_struct
+id|read_bd_addr_rp
 (brace
 DECL|member|status
 id|__u8
@@ -337,7 +333,6 @@ DECL|member|bdaddr
 id|bdaddr_t
 id|bdaddr
 suffix:semicolon
-DECL|typedef|read_bd_addr_rp
 )brace
 id|__attribute__
 (paren
@@ -345,7 +340,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_bd_addr_rp
 suffix:semicolon
 multiline_comment|/* Host Controller and Baseband */
 DECL|macro|OGF_HOST_CTL
@@ -384,8 +378,9 @@ DECL|macro|SCAN_PAGE
 mdefine_line|#define SCAN_PAGE&t;&t;0x02
 DECL|macro|OCF_SET_EVENT_FLT
 mdefine_line|#define OCF_SET_EVENT_FLT&t;0x0005
-r_typedef
+DECL|struct|set_event_flt_cp
 r_struct
+id|set_event_flt_cp
 (brace
 DECL|member|flt_type
 id|__u8
@@ -402,7 +397,6 @@ id|condition
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|set_event_flt_cp
 )brace
 id|__attribute__
 (paren
@@ -410,10 +404,7 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|set_event_flt_cp
 suffix:semicolon
-DECL|macro|SET_EVENT_FLT_CP_SIZE
-mdefine_line|#define SET_EVENT_FLT_CP_SIZE 2
 multiline_comment|/* Filter types */
 DECL|macro|FLT_CLEAR_ALL
 mdefine_line|#define FLT_CLEAR_ALL&t;0x00
@@ -433,62 +424,11 @@ DECL|macro|CONN_SETUP_AUTO_OFF
 mdefine_line|#define CONN_SETUP_AUTO_OFF&t;0x01
 DECL|macro|CONN_SETUP_AUTO_ON
 mdefine_line|#define CONN_SETUP_AUTO_ON&t;0x02
-DECL|macro|OCF_CHANGE_LOCAL_NAME
-mdefine_line|#define OCF_CHANGE_LOCAL_NAME&t;0x0013
-r_typedef
-r_struct
-(brace
-DECL|member|name
-id|__u8
-id|name
-(braket
-l_int|248
-)braket
-suffix:semicolon
-DECL|typedef|change_local_name_cp
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|change_local_name_cp
-suffix:semicolon
-DECL|macro|CHANGE_LOCAL_NAME_CP_SIZE
-mdefine_line|#define CHANGE_LOCAL_NAME_CP_SIZE 248 
-DECL|macro|OCF_READ_LOCAL_NAME
-mdefine_line|#define OCF_READ_LOCAL_NAME&t;0x0014
-r_typedef
-r_struct
-(brace
-DECL|member|status
-id|__u8
-id|status
-suffix:semicolon
-DECL|member|name
-id|__u8
-id|name
-(braket
-l_int|248
-)braket
-suffix:semicolon
-DECL|typedef|read_local_name_rp
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|read_local_name_rp
-suffix:semicolon
-DECL|macro|READ_LOCAL_NAME_RP_SIZE
-mdefine_line|#define READ_LOCAL_NAME_RP_SIZE 249 
 DECL|macro|OCF_READ_CLASS_OF_DEV
 mdefine_line|#define OCF_READ_CLASS_OF_DEV&t;0x0023
-r_typedef
+DECL|struct|read_class_of_dev_rp
 r_struct
+id|read_class_of_dev_rp
 (brace
 DECL|member|status
 id|__u8
@@ -501,7 +441,6 @@ id|dev_class
 l_int|3
 )braket
 suffix:semicolon
-DECL|typedef|read_class_of_dev_rp
 )brace
 id|__attribute__
 (paren
@@ -509,14 +448,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_class_of_dev_rp
 suffix:semicolon
-DECL|macro|READ_CLASS_OF_DEV_RP_SIZE
-mdefine_line|#define READ_CLASS_OF_DEV_RP_SIZE 4 
 DECL|macro|OCF_WRITE_CLASS_OF_DEV
 mdefine_line|#define OCF_WRITE_CLASS_OF_DEV&t;0x0024
-r_typedef
+DECL|struct|write_class_of_dev_cp
 r_struct
+id|write_class_of_dev_cp
 (brace
 DECL|member|dev_class
 id|__u8
@@ -525,7 +462,6 @@ id|dev_class
 l_int|3
 )braket
 suffix:semicolon
-DECL|typedef|write_class_of_dev_cp
 )brace
 id|__attribute__
 (paren
@@ -533,14 +469,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|write_class_of_dev_cp
 suffix:semicolon
-DECL|macro|WRITE_CLASS_OF_DEV_CP_SIZE
-mdefine_line|#define WRITE_CLASS_OF_DEV_CP_SIZE 3
 DECL|macro|OCF_HOST_BUFFER_SIZE
 mdefine_line|#define OCF_HOST_BUFFER_SIZE&t;0x0033
-r_typedef
+DECL|struct|host_buffer_size_cp
 r_struct
+id|host_buffer_size_cp
 (brace
 DECL|member|acl_mtu
 id|__u16
@@ -558,7 +492,6 @@ DECL|member|sco_max_pkt
 id|__u16
 id|sco_max_pkt
 suffix:semicolon
-DECL|typedef|host_buffer_size_cp
 )brace
 id|__attribute__
 (paren
@@ -566,17 +499,15 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|host_buffer_size_cp
 suffix:semicolon
-DECL|macro|HOST_BUFFER_SIZE_CP_SIZE
-mdefine_line|#define HOST_BUFFER_SIZE_CP_SIZE 7
 multiline_comment|/* Link Control */
 DECL|macro|OGF_LINK_CTL
 mdefine_line|#define OGF_LINK_CTL&t;0x01 
 DECL|macro|OCF_CREATE_CONN
 mdefine_line|#define OCF_CREATE_CONN&t;&t;0x0005
-r_typedef
+DECL|struct|create_conn_cp
 r_struct
+id|create_conn_cp
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -602,7 +533,6 @@ DECL|member|role_switch
 id|__u8
 id|role_switch
 suffix:semicolon
-DECL|typedef|create_conn_cp
 )brace
 id|__attribute__
 (paren
@@ -610,14 +540,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|create_conn_cp
 suffix:semicolon
-DECL|macro|CREATE_CONN_CP_SIZE
-mdefine_line|#define CREATE_CONN_CP_SIZE 13
 DECL|macro|OCF_ACCEPT_CONN_REQ
 mdefine_line|#define OCF_ACCEPT_CONN_REQ&t;0x0009
-r_typedef
+DECL|struct|accept_conn_req_cp
 r_struct
+id|accept_conn_req_cp
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -627,7 +555,6 @@ DECL|member|role
 id|__u8
 id|role
 suffix:semicolon
-DECL|typedef|accept_conn_req_cp
 )brace
 id|__attribute__
 (paren
@@ -635,14 +562,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|accept_conn_req_cp
 suffix:semicolon
-DECL|macro|ACCEPT_CONN_REQ_CP_SIZE
-mdefine_line|#define ACCEPT_CONN_REQ_CP_SIZE&t;7
 DECL|macro|OCF_REJECT_CONN_REQ
 mdefine_line|#define OCF_REJECT_CONN_REQ&t;0x000a
-r_typedef
+DECL|struct|reject_conn_req_cp
 r_struct
+id|reject_conn_req_cp
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -652,7 +577,6 @@ DECL|member|reason
 id|__u8
 id|reason
 suffix:semicolon
-DECL|typedef|reject_conn_req_cp
 )brace
 id|__attribute__
 (paren
@@ -660,14 +584,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|reject_conn_req_cp
 suffix:semicolon
-DECL|macro|REJECT_CONN_REQ_CP_SIZE
-mdefine_line|#define REJECT_CONN_REQ_CP_SIZE&t;7
 DECL|macro|OCF_DISCONNECT
 mdefine_line|#define OCF_DISCONNECT&t;0x0006
-r_typedef
+DECL|struct|disconnect_cp
 r_struct
+id|disconnect_cp
 (brace
 DECL|member|handle
 id|__u16
@@ -677,7 +599,6 @@ DECL|member|reason
 id|__u8
 id|reason
 suffix:semicolon
-DECL|typedef|disconnect_cp
 )brace
 id|__attribute__
 (paren
@@ -685,14 +606,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|disconnect_cp
 suffix:semicolon
-DECL|macro|DISCONNECT_CP_SIZE
-mdefine_line|#define DISCONNECT_CP_SIZE 3
 DECL|macro|OCF_ADD_SCO
 mdefine_line|#define OCF_ADD_SCO&t;0x0007
-r_typedef
+DECL|struct|add_sco_cp
 r_struct
+id|add_sco_cp
 (brace
 DECL|member|handle
 id|__u16
@@ -702,7 +621,6 @@ DECL|member|pkt_type
 id|__u16
 id|pkt_type
 suffix:semicolon
-DECL|typedef|add_sco_cp
 )brace
 id|__attribute__
 (paren
@@ -710,14 +628,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|add_sco_cp
 suffix:semicolon
-DECL|macro|ADD_SCO_CP_SIZE
-mdefine_line|#define ADD_SCO_CP_SIZE 4
 DECL|macro|OCF_INQUIRY
 mdefine_line|#define OCF_INQUIRY&t;&t;0x0001
-r_typedef
+DECL|struct|inquiry_cp
 r_struct
+id|inquiry_cp
 (brace
 DECL|member|lap
 id|__u8
@@ -734,7 +650,6 @@ DECL|member|num_rsp
 id|__u8
 id|num_rsp
 suffix:semicolon
-DECL|typedef|inquiry_cp
 )brace
 id|__attribute__
 (paren
@@ -742,39 +657,14 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|inquiry_cp
 suffix:semicolon
-DECL|macro|INQUIRY_CP_SIZE
-mdefine_line|#define INQUIRY_CP_SIZE 5
-r_typedef
-r_struct
-(brace
-DECL|member|status
-id|__u8
-id|status
-suffix:semicolon
-DECL|member|bdaddr
-id|bdaddr_t
-id|bdaddr
-suffix:semicolon
-DECL|typedef|status_bdaddr_rp
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|status_bdaddr_rp
-suffix:semicolon
-DECL|macro|STATUS_BDADDR_RP_SIZE
-mdefine_line|#define STATUS_BDADDR_RP_SIZE 7
 DECL|macro|OCF_LINK_KEY_REPLY
 mdefine_line|#define OCF_LINK_KEY_REPLY&t;0x000B
 DECL|macro|OCF_LINK_KEY_NEG_REPLY
 mdefine_line|#define OCF_LINK_KEY_NEG_REPLY&t;0x000C
-r_typedef
+DECL|struct|link_key_reply_cp
 r_struct
+id|link_key_reply_cp
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -787,7 +677,6 @@ id|link_key
 l_int|16
 )braket
 suffix:semicolon
-DECL|typedef|link_key_reply_cp
 )brace
 id|__attribute__
 (paren
@@ -795,16 +684,14 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|link_key_reply_cp
 suffix:semicolon
-DECL|macro|LINK_KEY_REPLY_CP_SIZE
-mdefine_line|#define LINK_KEY_REPLY_CP_SIZE 22
 DECL|macro|OCF_PIN_CODE_REPLY
 mdefine_line|#define OCF_PIN_CODE_REPLY&t;0x000D
 DECL|macro|OCF_PIN_CODE_NEG_REPLY
 mdefine_line|#define OCF_PIN_CODE_NEG_REPLY&t;0x000E
-r_typedef
+DECL|struct|pin_code_reply_cp
 r_struct
+id|pin_code_reply_cp
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -821,7 +708,6 @@ id|pin_code
 l_int|16
 )braket
 suffix:semicolon
-DECL|typedef|pin_code_reply_cp
 )brace
 id|__attribute__
 (paren
@@ -829,14 +715,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|pin_code_reply_cp
 suffix:semicolon
-DECL|macro|PIN_CODE_REPLY_CP_SIZE
-mdefine_line|#define PIN_CODE_REPLY_CP_SIZE 23
 DECL|macro|OCF_CHANGE_CONN_PTYPE
 mdefine_line|#define OCF_CHANGE_CONN_PTYPE&t;0x000F
-r_typedef
+DECL|struct|change_conn_ptype_cp
 r_struct
+id|change_conn_ptype_cp
 (brace
 DECL|member|handle
 id|__u16
@@ -846,7 +730,6 @@ DECL|member|pkt_type
 id|__u16
 id|pkt_type
 suffix:semicolon
-DECL|typedef|change_conn_ptype_cp
 )brace
 id|__attribute__
 (paren
@@ -854,20 +737,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|change_conn_ptype_cp
 suffix:semicolon
-DECL|macro|CHANGE_CONN_PTYPE_CP_SIZE
-mdefine_line|#define CHANGE_CONN_PTYPE_CP_SIZE 4
 DECL|macro|OCF_AUTH_REQUESTED
 mdefine_line|#define OCF_AUTH_REQUESTED&t;0x0011
-r_typedef
+DECL|struct|auth_requested_cp
 r_struct
+id|auth_requested_cp
 (brace
 DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|auth_requested_cp
 )brace
 id|__attribute__
 (paren
@@ -875,14 +755,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|auth_requested_cp
 suffix:semicolon
-DECL|macro|AUTH_REQUESTED_CP_SIZE
-mdefine_line|#define AUTH_REQUESTED_CP_SIZE 2
 DECL|macro|OCF_SET_CONN_ENCRYPT
 mdefine_line|#define OCF_SET_CONN_ENCRYPT&t;0x0013
-r_typedef
+DECL|struct|set_conn_encrypt_cp
 r_struct
+id|set_conn_encrypt_cp
 (brace
 DECL|member|handle
 id|__u16
@@ -892,7 +770,6 @@ DECL|member|encrypt
 id|__u8
 id|encrypt
 suffix:semicolon
-DECL|typedef|set_conn_encrypt_cp
 )brace
 id|__attribute__
 (paren
@@ -900,53 +777,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|set_conn_encrypt_cp
 suffix:semicolon
-DECL|macro|SET_CONN_ENCRYPT_CP_SIZE
-mdefine_line|#define SET_CONN_ENCRYPT_CP_SIZE 3
-DECL|macro|OCF_REMOTE_NAME_REQ
-mdefine_line|#define OCF_REMOTE_NAME_REQ&t;0x0019
-r_typedef
-r_struct
-(brace
-DECL|member|bdaddr
-id|bdaddr_t
-id|bdaddr
-suffix:semicolon
-DECL|member|pscan_rep_mode
-id|__u8
-id|pscan_rep_mode
-suffix:semicolon
-DECL|member|pscan_mode
-id|__u8
-id|pscan_mode
-suffix:semicolon
-DECL|member|clock_offset
-id|__u16
-id|clock_offset
-suffix:semicolon
-DECL|typedef|remote_name_req_cp
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|remote_name_req_cp
-suffix:semicolon
-DECL|macro|REMOTE_NAME_REQ_CP_SIZE
-mdefine_line|#define REMOTE_NAME_REQ_CP_SIZE 10
 DECL|macro|OCF_READ_REMOTE_FEATURES
 mdefine_line|#define OCF_READ_REMOTE_FEATURES 0x001B
-r_typedef
+DECL|struct|read_remote_features_cp
 r_struct
+id|read_remote_features_cp
 (brace
 DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|read_remote_features_cp
 )brace
 id|__attribute__
 (paren
@@ -954,20 +795,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_remote_features_cp
 suffix:semicolon
-DECL|macro|READ_REMOTE_FEATURES_CP_SIZE
-mdefine_line|#define READ_REMOTE_FEATURES_CP_SIZE 2
 DECL|macro|OCF_READ_REMOTE_VERSION
 mdefine_line|#define OCF_READ_REMOTE_VERSION 0x001D
-r_typedef
+DECL|struct|read_remote_version_cp
 r_struct
+id|read_remote_version_cp
 (brace
 DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|read_remote_version_cp
 )brace
 id|__attribute__
 (paren
@@ -975,23 +813,20 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_remote_version_cp
 suffix:semicolon
-DECL|macro|READ_REMOTE_VERSION_CP_SIZE
-mdefine_line|#define READ_REMOTE_VERSION_CP_SIZE 2
 multiline_comment|/* Link Policy */
 DECL|macro|OGF_LINK_POLICY
 mdefine_line|#define OGF_LINK_POLICY&t; 0x02   
 DECL|macro|OCF_ROLE_DISCOVERY
 mdefine_line|#define OCF_ROLE_DISCOVERY&t;0x0009
-r_typedef
+DECL|struct|role_discovery_cp
 r_struct
+id|role_discovery_cp
 (brace
 DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|role_discovery_cp
 )brace
 id|__attribute__
 (paren
@@ -999,12 +834,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|role_discovery_cp
 suffix:semicolon
-DECL|macro|ROLE_DISCOVERY_CP_SIZE
-mdefine_line|#define ROLE_DISCOVERY_CP_SIZE 2
-r_typedef
+DECL|struct|role_discovery_rp
 r_struct
+id|role_discovery_rp
 (brace
 DECL|member|status
 id|__u8
@@ -1018,7 +851,6 @@ DECL|member|role
 id|__u8
 id|role
 suffix:semicolon
-DECL|typedef|role_discovery_rp
 )brace
 id|__attribute__
 (paren
@@ -1026,20 +858,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|role_discovery_rp
 suffix:semicolon
-DECL|macro|ROLE_DISCOVERY_RP_SIZE
-mdefine_line|#define ROLE_DISCOVERY_RP_SIZE 4
 DECL|macro|OCF_READ_LINK_POLICY
 mdefine_line|#define OCF_READ_LINK_POLICY&t;0x000C
-r_typedef
+DECL|struct|read_link_policy_cp
 r_struct
+id|read_link_policy_cp
 (brace
 DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|read_link_policy_cp
 )brace
 id|__attribute__
 (paren
@@ -1047,12 +876,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_link_policy_cp
 suffix:semicolon
-DECL|macro|READ_LINK_POLICY_CP_SIZE
-mdefine_line|#define READ_LINK_POLICY_CP_SIZE 2
-r_typedef
+DECL|struct|read_link_policy_rp
 r_struct
+id|read_link_policy_rp
 (brace
 DECL|member|status
 id|__u8
@@ -1066,7 +893,6 @@ DECL|member|policy
 id|__u16
 id|policy
 suffix:semicolon
-DECL|typedef|read_link_policy_rp
 )brace
 id|__attribute__
 (paren
@@ -1074,14 +900,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|read_link_policy_rp
 suffix:semicolon
-DECL|macro|READ_LINK_POLICY_RP_SIZE
-mdefine_line|#define READ_LINK_POLICY_RP_SIZE 5
 DECL|macro|OCF_SWITCH_ROLE
 mdefine_line|#define OCF_SWITCH_ROLE&t;0x000B
-r_typedef
+DECL|struct|switch_role_cp
 r_struct
+id|switch_role_cp
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1091,7 +915,6 @@ DECL|member|role
 id|__u8
 id|role
 suffix:semicolon
-DECL|typedef|switch_role_cp
 )brace
 id|__attribute__
 (paren
@@ -1099,14 +922,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|switch_role_cp
 suffix:semicolon
-DECL|macro|SWITCH_ROLE_CP_SIZE
-mdefine_line|#define SWITCH_ROLE_CP_SIZE 7
 DECL|macro|OCF_WRITE_LINK_POLICY
 mdefine_line|#define OCF_WRITE_LINK_POLICY&t;0x000D
-r_typedef
+DECL|struct|write_link_policy_cp
 r_struct
+id|write_link_policy_cp
 (brace
 DECL|member|handle
 id|__u16
@@ -1116,7 +937,6 @@ DECL|member|policy
 id|__u16
 id|policy
 suffix:semicolon
-DECL|typedef|write_link_policy_cp
 )brace
 id|__attribute__
 (paren
@@ -1124,12 +944,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|write_link_policy_cp
 suffix:semicolon
-DECL|macro|WRITE_LINK_POLICY_CP_SIZE
-mdefine_line|#define WRITE_LINK_POLICY_CP_SIZE 4
-r_typedef
+DECL|struct|write_link_policy_rp
 r_struct
+id|write_link_policy_rp
 (brace
 DECL|member|status
 id|__u8
@@ -1139,7 +957,6 @@ DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|write_link_policy_rp
 )brace
 id|__attribute__
 (paren
@@ -1147,10 +964,7 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|write_link_policy_rp
 suffix:semicolon
-DECL|macro|WRITE_LINK_POLICY_RP_SIZE
-mdefine_line|#define WRITE_LINK_POLICY_RP_SIZE 3
 multiline_comment|/* Status params */
 DECL|macro|OGF_STATUS_PARAM
 mdefine_line|#define OGF_STATUS_PARAM &t;0x05
@@ -1159,8 +973,9 @@ DECL|macro|EVT_INQUIRY_COMPLETE
 mdefine_line|#define EVT_INQUIRY_COMPLETE &t;0x01
 DECL|macro|EVT_INQUIRY_RESULT
 mdefine_line|#define EVT_INQUIRY_RESULT &t;0x02
-r_typedef
+DECL|struct|inquiry_info
 r_struct
+id|inquiry_info
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1189,7 +1004,6 @@ DECL|member|clock_offset
 id|__u16
 id|clock_offset
 suffix:semicolon
-DECL|typedef|inquiry_info
 )brace
 id|__attribute__
 (paren
@@ -1197,14 +1011,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|inquiry_info
 suffix:semicolon
-DECL|macro|INQUIRY_INFO_SIZE
-mdefine_line|#define INQUIRY_INFO_SIZE 14
 DECL|macro|EVT_CONN_COMPLETE
 mdefine_line|#define EVT_CONN_COMPLETE &t;0x03
-r_typedef
+DECL|struct|evt_conn_complete
 r_struct
+id|evt_conn_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1226,7 +1038,6 @@ DECL|member|encr_mode
 id|__u8
 id|encr_mode
 suffix:semicolon
-DECL|typedef|evt_conn_complete
 )brace
 id|__attribute__
 (paren
@@ -1234,14 +1045,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_conn_complete
 suffix:semicolon
-DECL|macro|EVT_CONN_COMPLETE_SIZE
-mdefine_line|#define EVT_CONN_COMPLETE_SIZE 13
 DECL|macro|EVT_CONN_REQUEST
 mdefine_line|#define EVT_CONN_REQUEST&t;0x04
-r_typedef
+DECL|struct|evt_conn_request
 r_struct
+id|evt_conn_request
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1258,7 +1067,6 @@ DECL|member|link_type
 id|__u8
 id|link_type
 suffix:semicolon
-DECL|typedef|evt_conn_request
 )brace
 id|__attribute__
 (paren
@@ -1266,14 +1074,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_conn_request
 suffix:semicolon
-DECL|macro|EVT_CONN_REQUEST_SIZE
-mdefine_line|#define EVT_CONN_REQUEST_SIZE 10
 DECL|macro|EVT_DISCONN_COMPLETE
 mdefine_line|#define EVT_DISCONN_COMPLETE&t;0x05
-r_typedef
+DECL|struct|evt_disconn_complete
 r_struct
+id|evt_disconn_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1287,7 +1093,6 @@ DECL|member|reason
 id|__u8
 id|reason
 suffix:semicolon
-DECL|typedef|evt_disconn_complete
 )brace
 id|__attribute__
 (paren
@@ -1295,14 +1100,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_disconn_complete
 suffix:semicolon
-DECL|macro|EVT_DISCONN_COMPLETE_SIZE
-mdefine_line|#define EVT_DISCONN_COMPLETE_SIZE 4
 DECL|macro|EVT_AUTH_COMPLETE
 mdefine_line|#define EVT_AUTH_COMPLETE&t;0x06
-r_typedef
+DECL|struct|evt_auth_complete
 r_struct
+id|evt_auth_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1312,7 +1115,6 @@ DECL|member|handle
 id|__u16
 id|handle
 suffix:semicolon
-DECL|typedef|evt_auth_complete
 )brace
 id|__attribute__
 (paren
@@ -1320,46 +1122,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_auth_complete
 suffix:semicolon
-DECL|macro|EVT_AUTH_COMPLETE_SIZE
-mdefine_line|#define EVT_AUTH_COMPLETE_SIZE 3
-DECL|macro|EVT_REMOTE_NAME_REQ_COMPLETE
-mdefine_line|#define EVT_REMOTE_NAME_REQ_COMPLETE&t;0x07
-r_typedef
-r_struct
-(brace
-DECL|member|status
-id|__u8
-id|status
-suffix:semicolon
-DECL|member|bdaddr
-id|bdaddr_t
-id|bdaddr
-suffix:semicolon
-DECL|member|name
-id|__u8
-id|name
-(braket
-l_int|248
-)braket
-suffix:semicolon
-DECL|typedef|evt_remote_name_req_complete
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|evt_remote_name_req_complete
-suffix:semicolon
-DECL|macro|EVT_REMOTE_NAME_REQ_COMPLETE_SIZE
-mdefine_line|#define EVT_REMOTE_NAME_REQ_COMPLETE_SIZE 255
 DECL|macro|EVT_ENCRYPT_CHANGE
 mdefine_line|#define EVT_ENCRYPT_CHANGE&t;0x08
-r_typedef
+DECL|struct|evt_encrypt_change
 r_struct
+id|evt_encrypt_change
 (brace
 DECL|member|status
 id|__u8
@@ -1373,7 +1141,6 @@ DECL|member|encrypt
 id|__u8
 id|encrypt
 suffix:semicolon
-DECL|typedef|evt_encrypt_change
 )brace
 id|__attribute__
 (paren
@@ -1381,14 +1148,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_encrypt_change
 suffix:semicolon
-DECL|macro|EVT_ENCRYPT_CHANGE_SIZE
-mdefine_line|#define EVT_ENCRYPT_CHANGE_SIZE 5
 DECL|macro|EVT_QOS_SETUP_COMPLETE
-mdefine_line|#define EVT_QOS_SETUP_COMPLETE 0x0D
-r_typedef
+mdefine_line|#define EVT_QOS_SETUP_COMPLETE&t;0x0D
+DECL|struct|hci_qos
 r_struct
+id|hci_qos
 (brace
 DECL|member|service_type
 id|__u8
@@ -1410,7 +1175,6 @@ DECL|member|delay_variation
 id|__u32
 id|delay_variation
 suffix:semicolon
-DECL|typedef|hci_qos
 )brace
 id|__attribute__
 (paren
@@ -1418,10 +1182,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|hci_qos
 suffix:semicolon
-r_typedef
+DECL|struct|evt_qos_setup_complete
 r_struct
+id|evt_qos_setup_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1432,10 +1196,10 @@ id|__u16
 id|handle
 suffix:semicolon
 DECL|member|qos
+r_struct
 id|hci_qos
 id|qos
 suffix:semicolon
-DECL|typedef|evt_qos_setup_complete
 )brace
 id|__attribute__
 (paren
@@ -1443,14 +1207,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_qos_setup_complete
 suffix:semicolon
-DECL|macro|EVT_QOS_SETUP_COMPLETE_SIZE
-mdefine_line|#define EVT_QOS_SETUP_COMPLETE_SIZE 20
 DECL|macro|EVT_CMD_COMPLETE
 mdefine_line|#define EVT_CMD_COMPLETE &t;0x0e
-r_typedef
+DECL|struct|evt_cmd_complete
 r_struct
+id|evt_cmd_complete
 (brace
 DECL|member|ncmd
 id|__u8
@@ -1460,7 +1222,6 @@ DECL|member|opcode
 id|__u16
 id|opcode
 suffix:semicolon
-DECL|typedef|evt_cmd_complete
 )brace
 id|__attribute__
 (paren
@@ -1468,14 +1229,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_cmd_complete
 suffix:semicolon
-DECL|macro|EVT_CMD_COMPLETE_SIZE
-mdefine_line|#define EVT_CMD_COMPLETE_SIZE 3
 DECL|macro|EVT_CMD_STATUS
 mdefine_line|#define EVT_CMD_STATUS &t;&t;0x0f
-r_typedef
+DECL|struct|evt_cmd_status
 r_struct
+id|evt_cmd_status
 (brace
 DECL|member|status
 id|__u8
@@ -1489,7 +1248,6 @@ DECL|member|opcode
 id|__u16
 id|opcode
 suffix:semicolon
-DECL|typedef|evt_cmd_status
 )brace
 id|__attribute__
 (paren
@@ -1497,21 +1255,18 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_cmd_status
 suffix:semicolon
-DECL|macro|EVT_CMD_STATUS_SIZE
-mdefine_line|#define EVT_CMD_STATUS_SIZE 4
 DECL|macro|EVT_NUM_COMP_PKTS
 mdefine_line|#define EVT_NUM_COMP_PKTS&t;0x13
-r_typedef
+DECL|struct|evt_num_comp_pkts
 r_struct
+id|evt_num_comp_pkts
 (brace
 DECL|member|num_hndl
 id|__u8
 id|num_hndl
 suffix:semicolon
 multiline_comment|/* variable length part */
-DECL|typedef|evt_num_comp_pkts
 )brace
 id|__attribute__
 (paren
@@ -1519,14 +1274,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_num_comp_pkts
 suffix:semicolon
-DECL|macro|EVT_NUM_COMP_PKTS_SIZE
-mdefine_line|#define EVT_NUM_COMP_PKTS_SIZE 1
 DECL|macro|EVT_ROLE_CHANGE
 mdefine_line|#define EVT_ROLE_CHANGE&t;&t;0x12
-r_typedef
+DECL|struct|evt_role_change
 r_struct
+id|evt_role_change
 (brace
 DECL|member|status
 id|__u8
@@ -1540,7 +1293,6 @@ DECL|member|role
 id|__u8
 id|role
 suffix:semicolon
-DECL|typedef|evt_role_change
 )brace
 id|__attribute__
 (paren
@@ -1548,20 +1300,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_role_change
 suffix:semicolon
-DECL|macro|EVT_ROLE_CHANGE_SIZE
-mdefine_line|#define EVT_ROLE_CHANGE_SIZE 8
 DECL|macro|EVT_PIN_CODE_REQ
 mdefine_line|#define EVT_PIN_CODE_REQ        0x16
-r_typedef
+DECL|struct|evt_pin_code_req
 r_struct
+id|evt_pin_code_req
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
 id|bdaddr
 suffix:semicolon
-DECL|typedef|evt_pin_code_req
 )brace
 id|__attribute__
 (paren
@@ -1569,20 +1318,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_pin_code_req
 suffix:semicolon
-DECL|macro|EVT_PIN_CODE_REQ_SIZE
-mdefine_line|#define EVT_PIN_CODE_REQ_SIZE 6
 DECL|macro|EVT_LINK_KEY_REQ
 mdefine_line|#define EVT_LINK_KEY_REQ        0x17
-r_typedef
+DECL|struct|evt_link_key_req
 r_struct
+id|evt_link_key_req
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
 id|bdaddr
 suffix:semicolon
-DECL|typedef|evt_link_key_req
 )brace
 id|__attribute__
 (paren
@@ -1590,14 +1336,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_link_key_req
 suffix:semicolon
-DECL|macro|EVT_LINK_KEY_REQ_SIZE
-mdefine_line|#define EVT_LINK_KEY_REQ_SIZE 6
 DECL|macro|EVT_LINK_KEY_NOTIFY
 mdefine_line|#define EVT_LINK_KEY_NOTIFY&t;0x18
-r_typedef
+DECL|struct|evt_link_key_notify
 r_struct
+id|evt_link_key_notify
 (brace
 DECL|member|bdaddr
 id|bdaddr_t
@@ -1614,7 +1358,6 @@ DECL|member|key_type
 id|__u8
 id|key_type
 suffix:semicolon
-DECL|typedef|evt_link_key_notify
 )brace
 id|__attribute__
 (paren
@@ -1622,14 +1365,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_link_key_notify
 suffix:semicolon
-DECL|macro|EVT_LINK_KEY_NOTIFY_SIZE
-mdefine_line|#define EVT_LINK_KEY_NOTIFY_SIZE 23
 DECL|macro|EVT_READ_REMOTE_FEATURES_COMPLETE
 mdefine_line|#define EVT_READ_REMOTE_FEATURES_COMPLETE 0x0B
-r_typedef
+DECL|struct|evt_read_remote_features_complete
 r_struct
+id|evt_read_remote_features_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1646,7 +1387,6 @@ id|features
 l_int|8
 )braket
 suffix:semicolon
-DECL|typedef|evt_read_remote_features_complete
 )brace
 id|__attribute__
 (paren
@@ -1654,14 +1394,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_read_remote_features_complete
 suffix:semicolon
-DECL|macro|EVT_READ_REMOTE_FEATURES_COMPLETE_SIZE
-mdefine_line|#define EVT_READ_REMOTE_FEATURES_COMPLETE_SIZE 11
 DECL|macro|EVT_READ_REMOTE_VERSION_COMPLETE
 mdefine_line|#define EVT_READ_REMOTE_VERSION_COMPLETE 0x0C
-r_typedef
+DECL|struct|evt_read_remote_version_complete
 r_struct
+id|evt_read_remote_version_complete
 (brace
 DECL|member|status
 id|__u8
@@ -1683,7 +1421,6 @@ DECL|member|lmp_subver
 id|__u16
 id|lmp_subver
 suffix:semicolon
-DECL|typedef|evt_read_remote_version_complete
 )brace
 id|__attribute__
 (paren
@@ -1691,15 +1428,13 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_read_remote_version_complete
 suffix:semicolon
-DECL|macro|EVT_READ_REMOTE_VERSION_COMPLETE_SIZE
-mdefine_line|#define EVT_READ_REMOTE_VERSION_COMPLETE_SIZE 8
 multiline_comment|/* Internal events generated by Bluetooth stack */
 DECL|macro|EVT_STACK_INTERNAL
 mdefine_line|#define EVT_STACK_INTERNAL&t;0xfd
-r_typedef
+DECL|struct|evt_stack_internal
 r_struct
+id|evt_stack_internal
 (brace
 DECL|member|type
 id|__u16
@@ -1712,7 +1447,6 @@ id|data
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|evt_stack_internal
 )brace
 id|__attribute__
 (paren
@@ -1720,14 +1454,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_stack_internal
 suffix:semicolon
-DECL|macro|EVT_STACK_INTERNAL_SIZE
-mdefine_line|#define EVT_STACK_INTERNAL_SIZE 2
 DECL|macro|EVT_SI_DEVICE
 mdefine_line|#define EVT_SI_DEVICE  &t;0x01
-r_typedef
+DECL|struct|evt_si_device
 r_struct
+id|evt_si_device
 (brace
 DECL|member|event
 id|__u16
@@ -1737,7 +1469,6 @@ DECL|member|dev_id
 id|__u16
 id|dev_id
 suffix:semicolon
-DECL|typedef|evt_si_device
 )brace
 id|__attribute__
 (paren
@@ -1745,14 +1476,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_si_device
 suffix:semicolon
-DECL|macro|EVT_SI_DEVICE_SIZE
-mdefine_line|#define EVT_SI_DEVICE_SIZE 4
 DECL|macro|EVT_SI_SECURITY
 mdefine_line|#define EVT_SI_SECURITY&t;0x02
-r_typedef
+DECL|struct|evt_si_security
 r_struct
+id|evt_si_security
 (brace
 DECL|member|event
 id|__u16
@@ -1766,11 +1495,10 @@ DECL|member|subproto
 id|__u16
 id|subproto
 suffix:semicolon
-DECL|member|incomming
+DECL|member|incoming
 id|__u8
-id|incomming
+id|incoming
 suffix:semicolon
-DECL|typedef|evt_si_security
 )brace
 id|__attribute__
 (paren
@@ -1778,13 +1506,19 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|evt_si_security
 suffix:semicolon
-multiline_comment|/* --------  HCI Packet structures  -------- */
-DECL|macro|HCI_TYPE_LEN
-mdefine_line|#define HCI_TYPE_LEN&t;1
-r_typedef
+multiline_comment|/* ---- HCI Packet structures ---- */
+DECL|macro|HCI_COMMAND_HDR_SIZE
+mdefine_line|#define HCI_COMMAND_HDR_SIZE 3
+DECL|macro|HCI_EVENT_HDR_SIZE
+mdefine_line|#define HCI_EVENT_HDR_SIZE   2
+DECL|macro|HCI_ACL_HDR_SIZE
+mdefine_line|#define HCI_ACL_HDR_SIZE     4
+DECL|macro|HCI_SCO_HDR_SIZE
+mdefine_line|#define HCI_SCO_HDR_SIZE     3
+DECL|struct|hci_command_hdr
 r_struct
+id|hci_command_hdr
 (brace
 DECL|member|opcode
 id|__u16
@@ -1795,7 +1529,6 @@ DECL|member|plen
 id|__u8
 id|plen
 suffix:semicolon
-DECL|typedef|hci_command_hdr
 )brace
 id|__attribute__
 (paren
@@ -1803,12 +1536,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|hci_command_hdr
 suffix:semicolon
-DECL|macro|HCI_COMMAND_HDR_SIZE
-mdefine_line|#define HCI_COMMAND_HDR_SIZE &t;3
-r_typedef
+DECL|struct|hci_event_hdr
 r_struct
+id|hci_event_hdr
 (brace
 DECL|member|evt
 id|__u8
@@ -1818,7 +1549,6 @@ DECL|member|plen
 id|__u8
 id|plen
 suffix:semicolon
-DECL|typedef|hci_event_hdr
 )brace
 id|__attribute__
 (paren
@@ -1826,12 +1556,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|hci_event_hdr
 suffix:semicolon
-DECL|macro|HCI_EVENT_HDR_SIZE
-mdefine_line|#define HCI_EVENT_HDR_SIZE &t;2
-r_typedef
+DECL|struct|hci_acl_hdr
 r_struct
+id|hci_acl_hdr
 (brace
 DECL|member|handle
 id|__u16
@@ -1842,7 +1570,6 @@ DECL|member|dlen
 id|__u16
 id|dlen
 suffix:semicolon
-DECL|typedef|hci_acl_hdr
 )brace
 id|__attribute__
 (paren
@@ -1850,12 +1577,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|hci_acl_hdr
 suffix:semicolon
-DECL|macro|HCI_ACL_HDR_SIZE
-mdefine_line|#define HCI_ACL_HDR_SIZE &t;4
-r_typedef
+DECL|struct|hci_sco_hdr
 r_struct
+id|hci_sco_hdr
 (brace
 DECL|member|handle
 id|__u16
@@ -1865,7 +1590,6 @@ DECL|member|dlen
 id|__u8
 id|dlen
 suffix:semicolon
-DECL|typedef|hci_sco_hdr
 )brace
 id|__attribute__
 (paren
@@ -1873,10 +1597,7 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|hci_sco_hdr
 suffix:semicolon
-DECL|macro|HCI_SCO_HDR_SIZE
-mdefine_line|#define HCI_SCO_HDR_SIZE &t;3
 multiline_comment|/* Command opcode pack/unpack */
 DECL|macro|cmd_opcode_pack
 mdefine_line|#define cmd_opcode_pack(ogf, ocf)&t;(__u16)((ocf &amp; 0x03ff)|(ogf &lt;&lt; 10))
@@ -1891,14 +1612,15 @@ DECL|macro|acl_handle
 mdefine_line|#define acl_handle(h)&t;&t;(h &amp; 0x0fff)
 DECL|macro|acl_flags
 mdefine_line|#define acl_flags(h)&t;&t;(h &gt;&gt; 12)
-multiline_comment|/* HCI Socket options */
+multiline_comment|/* ---- HCI Sockets ---- */
+multiline_comment|/* Socket options */
 DECL|macro|HCI_DATA_DIR
 mdefine_line|#define HCI_DATA_DIR&t;1
 DECL|macro|HCI_FILTER
 mdefine_line|#define HCI_FILTER&t;2
 DECL|macro|HCI_TIME_STAMP
 mdefine_line|#define HCI_TIME_STAMP&t;3
-multiline_comment|/* HCI CMSG flags */
+multiline_comment|/* CMSG flags */
 DECL|macro|HCI_CMSG_DIR
 mdefine_line|#define HCI_CMSG_DIR&t;0x0001
 DECL|macro|HCI_CMSG_TSTAMP
@@ -1972,7 +1694,7 @@ DECL|macro|HCI_FLT_OGF_BITS
 mdefine_line|#define HCI_FLT_OGF_BITS&t;63
 DECL|macro|HCI_FLT_OCF_BITS
 mdefine_line|#define HCI_FLT_OCF_BITS&t;127
-multiline_comment|/* Ioctl requests structures */
+multiline_comment|/* ---- HCI Ioctl requests structures ---- */
 DECL|struct|hci_dev_stats
 r_struct
 id|hci_dev_stats
@@ -2226,30 +1948,5 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|IREQ_CACHE_FLUSH
 mdefine_line|#define IREQ_CACHE_FLUSH 0x0001
-DECL|struct|hci_remotename_req
-r_struct
-id|hci_remotename_req
-(brace
-DECL|member|dev_id
-id|__u16
-id|dev_id
-suffix:semicolon
-DECL|member|flags
-id|__u16
-id|flags
-suffix:semicolon
-DECL|member|bdaddr
-id|bdaddr_t
-id|bdaddr
-suffix:semicolon
-DECL|member|name
-id|__u8
-id|name
-(braket
-l_int|248
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif /* __HCI_H */
 eof

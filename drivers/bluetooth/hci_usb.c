@@ -1853,6 +1853,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
+r_struct
 id|hci_event_hdr
 op_star
 id|eh
@@ -1960,6 +1961,7 @@ suffix:semicolon
 id|eh
 op_assign
 (paren
+r_struct
 id|hci_event_hdr
 op_star
 )paren
@@ -2367,6 +2369,7 @@ id|count
 op_assign
 id|urb-&gt;actual_length
 suffix:semicolon
+r_struct
 id|hci_acl_hdr
 op_star
 id|ah
@@ -2432,6 +2435,7 @@ suffix:semicolon
 id|ah
 op_assign
 (paren
+r_struct
 id|hci_acl_hdr
 op_star
 )paren
