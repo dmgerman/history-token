@@ -7412,7 +7412,7 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
 id|snd_dma_pci_data
 c_func
