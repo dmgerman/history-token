@@ -37,6 +37,8 @@ DECL|macro|esr_disable
 mdefine_line|#define esr_disable (0)
 macro_line|#endif /* CONFIG_CLUSTERED_APIC */
 macro_line|#endif 
+DECL|macro|BAD_APICID
+mdefine_line|#define BAD_APICID 0xFFu
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Private routines/data&n; */
@@ -150,8 +152,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; */
 DECL|macro|MAX_APICID
 mdefine_line|#define MAX_APICID 256
-DECL|macro|BAD_APICID
-mdefine_line|#define BAD_APICID 0xFFu
 r_extern
 r_volatile
 r_int
