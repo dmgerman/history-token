@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 DECL|macro|DEBUGNOISE
 mdefine_line|#define DEBUGNOISE(x)
@@ -96,6 +97,10 @@ DECL|member|osp
 r_int
 op_star
 id|osp
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|typedef|ad1816_info
 )brace
@@ -230,16 +235,16 @@ id|result
 suffix:semicolon
 id|CHECK_FOR_POWER
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* make register access atomic */
-id|cli
-(paren
-)paren
-suffix:semicolon
 id|outb
 (paren
 (paren
@@ -279,8 +284,12 @@ l_int|3
 op_lshift
 l_int|8
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -312,16 +321,16 @@ id|flags
 suffix:semicolon
 id|CHECK_FOR_POWER
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* make register access atomic */
-id|cli
-(paren
-)paren
-suffix:semicolon
 id|outb
 (paren
 (paren
@@ -377,8 +386,12 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -426,13 +439,13 @@ l_string|&quot;ad1816: halt_input called&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -522,8 +535,12 @@ op_and_assign
 op_complement
 id|PCM_ENABLE_INPUT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -569,13 +586,13 @@ l_string|&quot;ad1816: halt_output called!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Mute pcm output */
@@ -688,8 +705,12 @@ op_and_assign
 op_complement
 id|PCM_ENABLE_OUTPUT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -760,13 +781,13 @@ l_int|4
 op_minus
 l_int|1
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* set transfer count */
@@ -785,8 +806,12 @@ id|devc-&gt;audio_mode
 op_or_assign
 id|PCM_ENABLE_OUTPUT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -857,14 +882,13 @@ l_int|4
 op_minus
 l_int|1
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* make register access atomic */
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* set transfer count */
@@ -883,8 +907,12 @@ id|devc-&gt;audio_mode
 op_or_assign
 id|PCM_ENABLE_INPUT
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -943,13 +971,13 @@ id|bcount
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|fmt_bits
@@ -1080,8 +1108,12 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1149,14 +1181,13 @@ id|bcount
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* make register access atomic */
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|fmt_bits
@@ -1286,8 +1317,12 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1346,14 +1381,13 @@ id|devc-&gt;base
 )paren
 suffix:semicolon
 multiline_comment|/* mode may have changed */
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* make register access atomic */
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* mask out modes not specified on open call */
@@ -1503,8 +1537,12 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1921,13 +1959,13 @@ op_member_access_from_pointer
 id|devc
 suffix:semicolon
 multiline_comment|/* make check if device already open atomic */
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1936,8 +1974,12 @@ c_cond
 id|devc-&gt;opened
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1976,8 +2018,12 @@ id|devc-&gt;dev_no
 )paren
 suffix:semicolon
 multiline_comment|/* halt all pending output */
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2014,13 +2060,13 @@ id|dev
 op_member_access_from_pointer
 id|devc
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* halt all pending output */
@@ -2050,8 +2096,12 @@ id|devc-&gt;format_bits
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2154,10 +2204,6 @@ suffix:semicolon
 r_int
 id|dev
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2225,15 +2271,11 @@ id|dev
 op_member_access_from_pointer
 id|devc
 suffix:semicolon
-id|save_flags
+id|spin_lock
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|devc-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* read interrupt register */
@@ -2334,10 +2376,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|devc-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -4528,6 +4571,13 @@ suffix:semicolon
 id|devc-&gt;osp
 op_assign
 id|osp
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|devc-&gt;lock
+)paren
 suffix:semicolon
 multiline_comment|/* base+0: bit 1 must be set but not 255 */
 id|tmp
