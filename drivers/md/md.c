@@ -12109,16 +12109,12 @@ c_func
 (paren
 l_string|&quot;md_error dev:(%d:%d), rdev:(%d:%d), (caller: %p,%p,%p,%p).&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|dev
-)paren
+id|MD_MAJOR
 comma
-id|minor
+id|mdidx
 c_func
 (paren
-id|dev
+id|mddev
 )paren
 comma
 id|major

@@ -4080,6 +4080,18 @@ op_amp
 id|sh-&gt;lock
 )paren
 suffix:semicolon
+id|PRINTK
+c_func
+(paren
+l_string|&quot;added bi b#%lu to stripe s#%lu, disk %d.&bslash;n&quot;
+comma
+id|bi-&gt;bi_sector
+comma
+id|sh-&gt;sector
+comma
+id|dd_idx
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4184,18 +4196,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|PRINTK
-c_func
-(paren
-l_string|&quot;added bi b#%lu to stripe s#%lu, disk %d.&bslash;n&quot;
-comma
-id|bi-&gt;bi_sector
-comma
-id|sh-&gt;sector
-comma
-id|dd_idx
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * handle_stripe - do things to a stripe.&n; *&n; * We lock the stripe and then examine the state of various bits&n; * to see what needs to be done.&n; * Possible results:&n; *    return some read request which now have data&n; *    return some write requests which are safely on disc&n; *    schedule a read on some buffers&n; *    schedule a write of some buffers&n; *    return confirmation of parity correctness&n; *&n; * Parity calculations are done inside the stripe lock&n; * buffers are taken off read_list or write_list, and bh_cache buffers&n; * get BH_Lock set before the stripe lock is released.&n; *&n; */
 DECL|function|handle_stripe
@@ -8358,7 +8358,7 @@ op_star
 r_sizeof
 (paren
 r_struct
-id|buffer_head
+id|bio
 )paren
 op_plus
 id|PAGE_SIZE
