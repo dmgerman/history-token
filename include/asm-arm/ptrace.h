@@ -9,11 +9,8 @@ DECL|macro|PTRACE_GETFPREGS
 mdefine_line|#define PTRACE_GETFPREGS&t;14
 DECL|macro|PTRACE_SETFPREGS
 mdefine_line|#define PTRACE_SETFPREGS&t;15
-DECL|macro|PTRACE_SETOPTIONS
-mdefine_line|#define PTRACE_SETOPTIONS&t;21
-multiline_comment|/* options set using PTRACE_SETOPTIONS */
-DECL|macro|PTRACE_O_TRACESYSGOOD
-mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
+DECL|macro|PTRACE_OLDSETOPTIONS
+mdefine_line|#define PTRACE_OLDSETOPTIONS&t;21
 macro_line|#include &lt;asm/proc/ptrace.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|pc_pointer
