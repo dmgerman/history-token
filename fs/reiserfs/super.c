@@ -3056,7 +3056,7 @@ op_amp
 id|MS_RDONLY
 )paren
 (brace
-multiline_comment|/* remount rean-only */
+multiline_comment|/* remount read-only */
 r_if
 c_cond
 (paren
@@ -3156,6 +3156,21 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* remount read-write */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|s-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* We are read-write already */
 id|REISERFS_SB
 c_func
 (paren
