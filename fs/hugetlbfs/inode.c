@@ -117,6 +117,8 @@ id|inode-&gt;i_sb
 suffix:semicolon
 id|loff_t
 id|len
+comma
+id|vma_len
 suffix:semicolon
 r_int
 id|ret
@@ -158,7 +160,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|len
+id|vma_len
 op_assign
 (paren
 id|loff_t
@@ -189,7 +191,7 @@ r_if
 c_cond
 (paren
 (paren
-id|len
+id|vma_len
 op_rshift
 id|HPAGE_SHIFT
 )paren
@@ -200,7 +202,7 @@ id|sbinfo-&gt;free_blocks
 id|sbinfo-&gt;free_blocks
 op_sub_assign
 (paren
-id|len
+id|vma_len
 op_rshift
 id|HPAGE_SHIFT
 )paren
@@ -264,14 +266,7 @@ id|vma
 suffix:semicolon
 id|len
 op_assign
-(paren
-id|loff_t
-)paren
-(paren
-id|vma-&gt;vm_end
-op_minus
-id|vma-&gt;vm_start
-)paren
+id|vma_len
 op_plus
 (paren
 (paren
@@ -331,7 +326,7 @@ suffix:semicolon
 id|sbinfo-&gt;free_blocks
 op_add_assign
 (paren
-id|len
+id|vma_len
 op_rshift
 id|HPAGE_SHIFT
 )paren
