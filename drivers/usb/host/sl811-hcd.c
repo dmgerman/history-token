@@ -4408,7 +4408,7 @@ id|ep
 suffix:semicolon
 id|hep-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_static

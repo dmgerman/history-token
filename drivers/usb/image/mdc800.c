@@ -1200,7 +1200,7 @@ c_cond
 (paren
 id|mdc800-&gt;dev
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|warn
@@ -3265,7 +3265,7 @@ c_cond
 (paren
 id|mdc800
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|err

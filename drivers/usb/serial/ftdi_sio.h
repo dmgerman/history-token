@@ -281,6 +281,9 @@ DECL|macro|FTDI_RM_VID
 mdefine_line|#define FTDI_RM_VID&t;&t;0x0403&t;/* Vendor  Id */
 DECL|macro|FTDI_RMCANVIEW_PID
 mdefine_line|#define FTDI_RMCANVIEW_PID&t;0xfd60&t;/* Product Id */
+multiline_comment|/*&n; * EVER Eco Pro UPS (http://www.ever.com.pl/)&n; */
+DECL|macro|EVER_ECO_PRO_CDS
+mdefine_line|#define&t;EVER_ECO_PRO_CDS&t;0xe520&t;/* RS-232 converter */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */

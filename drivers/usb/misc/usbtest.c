@@ -4864,7 +4864,7 @@ c_cond
 (paren
 id|urb
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_return
 op_minus
@@ -7766,7 +7766,7 @@ id|SLAB_KERNEL
 )paren
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|kfree

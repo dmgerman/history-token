@@ -24,12 +24,12 @@ id|usb_minors
 id|MAX_USB_MINORS
 )braket
 suffix:semicolon
-DECL|variable|minor_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|minor_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|usb_open
 r_static

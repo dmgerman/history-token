@@ -672,7 +672,7 @@ c_cond
 (paren
 id|io-&gt;dev-&gt;dev.dma_mask
 op_ne
-l_int|0
+l_int|NULL
 )paren
 id|usb_buffer_unmap_sg
 (paren
@@ -1045,7 +1045,7 @@ op_assign
 (paren
 id|dev-&gt;dev.dma_mask
 op_ne
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
