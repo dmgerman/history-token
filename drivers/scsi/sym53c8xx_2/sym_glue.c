@@ -6890,7 +6890,6 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_set_dma_mask
 c_func
 (paren
