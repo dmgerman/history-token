@@ -16,7 +16,7 @@ macro_line|#undef DIRECT_HDMA
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_promise&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.85&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.86&quot;
 r_enum
 (brace
 DECL|enumerator|PDC_PRD_TBL
@@ -3190,6 +3190,13 @@ comma
 id|sgt_len
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|dimm_mmio
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 id|VPRINTK
 c_func
 (paren
@@ -3649,6 +3656,21 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_20621_SEQCTL
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 r_if
 c_cond
 (paren
@@ -3681,6 +3703,15 @@ op_plus
 id|PDC_HDMA_PKT_SUBMIT
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_HDMA_PKT_SUBMIT
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 macro_line|#endif
 id|VPRINTK
 c_func
@@ -3708,6 +3739,18 @@ id|port_ofs
 op_plus
 id|PDC_DIMM_ATA_PKT
 comma
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.cmd_addr
+op_plus
+id|PDC_PKT_SUBMIT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 (paren
 r_void
 op_star
@@ -3908,6 +3951,20 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_20621_SEQCTL
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef DIRECT_HDMA
 id|pdc20621_push_hdma
 c_func
@@ -3923,6 +3980,14 @@ id|port_ofs
 op_plus
 id|PDC_DIMM_HOST_PKT
 comma
+id|mmio
+op_plus
+id|PDC_HDMA_PKT_SUBMIT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 id|mmio
 op_plus
 id|PDC_HDMA_PKT_SUBMIT
@@ -3999,6 +4064,20 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_20621_SEQCTL
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -4006,6 +4085,18 @@ id|port_ofs
 op_plus
 id|PDC_DIMM_ATA_PKT
 comma
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.cmd_addr
+op_plus
+id|PDC_PKT_SUBMIT
+)paren
+suffix:semicolon
+id|readl
+c_func
+(paren
 (paren
 r_void
 op_star
@@ -5202,6 +5293,19 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|ap-&gt;host_set-&gt;mmio_base
+op_plus
+(paren
+id|seq
+op_star
+l_int|4
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 id|pp-&gt;pkt
 (braket
 l_int|2
@@ -5229,6 +5333,19 @@ op_plus
 id|PDC_PKT_SUBMIT
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ap-&gt;ioaddr.cmd_addr
+op_plus
+id|PDC_PKT_SUBMIT
+)paren
+suffix:semicolon
+multiline_comment|/* flush */
 )brace
 DECL|function|pdc_tf_load_mmio
 r_static
