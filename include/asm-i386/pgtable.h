@@ -762,12 +762,12 @@ DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  __pte_offset(address))
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + __pte_offset(address))
-DECL|macro|pte_offset_map2
-mdefine_line|#define pte_offset_map2(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + __pte_offset(address))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + __pte_offset(address))
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) kunmap_atomic(pte, KM_PTE0)
-DECL|macro|pte_unmap2
-mdefine_line|#define pte_unmap2(pte) kunmap_atomic(pte, KM_PTE1)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) kunmap_atomic(pte, KM_PTE1)
 multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)

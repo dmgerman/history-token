@@ -970,7 +970,7 @@ id|src-&gt;page_table_lock
 suffix:semicolon
 id|src_pte
 op_assign
-id|pte_offset_map2
+id|pte_offset_map_nested
 c_func
 (paren
 id|src_pmd
@@ -1134,7 +1134,7 @@ op_ge
 id|end
 )paren
 (brace
-id|pte_unmap2
+id|pte_unmap_nested
 c_func
 (paren
 id|src_pte
@@ -1169,7 +1169,7 @@ op_amp
 id|PTE_TABLE_MASK
 )paren
 suffix:semicolon
-id|pte_unmap2
+id|pte_unmap_nested
 c_func
 (paren
 id|src_pte
@@ -6405,10 +6405,6 @@ op_star
 id|vmalloc_to_page
 c_func
 (paren
-id|pgd_t
-op_star
-id|pgd
-comma
 r_int
 r_int
 id|addr
@@ -6420,6 +6416,16 @@ op_star
 id|page
 op_assign
 l_int|NULL
+suffix:semicolon
+id|pgd_t
+op_star
+id|pgd
+op_assign
+id|pgd_offset_k
+c_func
+(paren
+id|addr
+)paren
 suffix:semicolon
 id|pmd_t
 op_star

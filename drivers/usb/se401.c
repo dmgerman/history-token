@@ -213,12 +213,6 @@ c_func
 id|vmalloc_to_page
 c_func
 (paren
-id|pgd_offset_k
-c_func
-(paren
-id|va
-)paren
-comma
 id|va
 )paren
 )paren
