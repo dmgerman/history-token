@@ -568,7 +568,8 @@ r_int
 id|dword_count
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|dst
 op_assign
 id|chip-&gt;region.idx

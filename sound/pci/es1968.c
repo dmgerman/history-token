@@ -5482,7 +5482,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* *************************&n;   * DMA memory management *&n;   *************************/
-multiline_comment|/* Because the Maestro can only take adresses relative to the PCM base adress&n;   register :( */
+multiline_comment|/* Because the Maestro can only take addresses relative to the PCM base adress&n;   register :( */
 DECL|function|calc_available_memory_size
 r_static
 r_int
@@ -11822,7 +11822,6 @@ id|val
 op_ne
 id|oval
 )paren
-suffix:semicolon
 (brace
 id|pci_write_config_word
 c_func
@@ -11915,8 +11914,10 @@ op_star
 id|chip
 suffix:semicolon
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 r_if

@@ -70,6 +70,10 @@ op_eq
 l_int|NULL
 ques
 c_cond
+(paren
+r_int
+r_int
+)paren
 op_minus
 l_int|1
 suffix:colon

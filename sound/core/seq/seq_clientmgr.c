@@ -4147,9 +4147,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
+(paren
 id|extlen
 op_plus
 id|len
+)paren
 OG
 id|count
 )paren

@@ -3853,7 +3853,7 @@ c_cond
 (paren
 id|ep-&gt;bEndpointAddress
 op_amp
-id|USB_ENDPOINT_NUMBER_MASK
+id|USB_ENDPOINT_DIR_MASK
 )paren
 op_eq
 id|USB_DIR_OUT

@@ -617,6 +617,7 @@ op_star
 id|ifree
 comma
 r_int
+r_int
 id|client
 )paren
 (brace
@@ -870,6 +871,10 @@ id|instr
 comma
 id|ifree
 comma
+(paren
+r_int
+r_int
+)paren
 id|client
 )paren
 )paren

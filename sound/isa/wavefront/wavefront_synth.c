@@ -3328,6 +3328,7 @@ id|i
 suffix:semicolon
 r_const
 r_int
+r_int
 id|max_blksize
 op_assign
 l_int|4096
@@ -3504,6 +3505,9 @@ c_cond
 (paren
 id|dev-&gt;freemem
 OL
+(paren
+r_int
+)paren
 id|header-&gt;size
 )paren
 (brace

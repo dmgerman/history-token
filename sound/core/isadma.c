@@ -139,16 +139,20 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_dma_residue - return the residue count of the given DMA&n; * @dma: the dma number&n; *&n; * Returns the residue count of the given DMA transfer.&n; */
-DECL|function|snd_dma_residue
+multiline_comment|/**&n; * snd_dma_pointer - return the current pointer to DMA transfer buffer in bytes&n; * @dma: the dma number&n; * @size: the dma transfer size&n; *&n; * Returns the current pointer in DMA tranfer buffer in bytes&n; */
+DECL|function|snd_dma_pointer
 r_int
 r_int
-id|snd_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 r_int
 r_int
 id|dma
+comma
+r_int
+r_int
+id|size
 )paren
 (brace
 r_int
@@ -210,7 +214,36 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_DEBUG
+r_if
+c_cond
+(paren
+id|result
+OG
+id|size
+)paren
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;pointer (0x%x) for DMA #%ld is greater than transfer size (0x%x)&bslash;n&quot;
+comma
+id|result
+comma
+id|dma
+comma
+id|size
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
+id|result
+op_ge
+id|size
+ques
+c_cond
+l_int|0
+suffix:colon
 id|result
 suffix:semicolon
 )brace

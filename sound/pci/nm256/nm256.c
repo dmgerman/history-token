@@ -1512,6 +1512,7 @@ multiline_comment|/* The actual rates supported by the card. */
 DECL|variable|samplerates
 r_static
 r_int
+r_int
 id|samplerates
 (braket
 l_int|8
@@ -1569,9 +1570,11 @@ id|snd_nm256_fixed_rate
 c_func
 (paren
 r_int
+r_int
 id|rate
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -6197,9 +6200,9 @@ c_func
 (paren
 id|chip
 )paren
+)paren
 OL
 l_int|0
-)paren
 )paren
 r_goto
 id|__error

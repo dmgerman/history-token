@@ -743,6 +743,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|size
 op_le
 id|size1
@@ -884,6 +887,9 @@ c_cond
 (paren
 id|size
 op_ne
+(paren
+r_int
+)paren
 id|nblock-&gt;size
 )paren
 (brace
