@@ -356,6 +356,10 @@ r_goto
 id|activate_locked
 suffix:semicolon
 )brace
+id|mapping
+op_assign
+id|page-&gt;mapping
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Anonymous process memory without backing store. Try to&n;&t;&t; * allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
 r_if
 c_cond
@@ -363,7 +367,7 @@ c_cond
 id|page-&gt;pte.chain
 op_logical_and
 op_logical_neg
-id|page-&gt;mapping
+id|mapping
 op_logical_and
 op_logical_neg
 id|PagePrivate
@@ -404,6 +408,8 @@ r_if
 c_cond
 (paren
 id|page-&gt;pte.chain
+op_logical_and
+id|mapping
 )paren
 (brace
 r_switch
@@ -455,10 +461,6 @@ c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-id|mapping
-op_assign
-id|page-&gt;mapping
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * FIXME: this is CPU-inefficient for shared mappings.&n;&t;&t; * try_to_unmap() will set the page dirty and -&gt;vm_writeback&n;&t;&t; * will write it.  So we&squot;re back to page-at-a-time writepage&n;&t;&t; * in LRU order.&n;&t;&t; */
 r_if
@@ -1427,32 +1429,12 @@ c_cond
 id|page-&gt;pte.chain
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|test_and_set_bit
+id|pte_chain_lock
 c_func
 (paren
-id|PG_chainlock
-comma
-op_amp
-id|page-&gt;flags
-)paren
-)paren
-(brace
-id|list_add
-c_func
-(paren
-op_amp
-id|page-&gt;lru
-comma
-op_amp
-id|l_active
+id|page
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -655,7 +655,11 @@ id|ips_insert_device
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ips_remove_device
+)paren
 comma
 )brace
 suffix:semicolon
@@ -679,7 +683,11 @@ id|ips_insert_device
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ips_remove_device
+)paren
 comma
 )brace
 suffix:semicolon
@@ -703,7 +711,11 @@ id|ips_insert_device
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ips_remove_device
+)paren
 comma
 )brace
 suffix:semicolon

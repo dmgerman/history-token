@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Hardware accelerated Matrox PCI cards - G450/G550 PLL control.&n; *&n; * (c) 2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.62 2001/11/29&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; */
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox PCI cards - G450/G550 PLL control.&n; *&n; * (c) 2001-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Portions Copyright (c) 2001 Matrox Graphics Inc.&n; *&n; * Version: 1.64 2002/06/10&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; */
 macro_line|#include &quot;g450_pll.h&quot;
 macro_line|#include &quot;matroxfb_DAC1064.h&quot;
 DECL|function|g450_vco2f
@@ -150,6 +150,33 @@ op_div
 id|m
 suffix:semicolon
 )brace
+DECL|function|g450_mnp2f
+r_int
+r_int
+id|g450_mnp2f
+c_func
+(paren
+id|CPMINFO
+r_int
+r_int
+id|mnp
+)paren
+(brace
+r_return
+id|g450_vco2f
+c_func
+(paren
+id|mnp
+comma
+id|g450_mnp2vco
+c_func
+(paren
+id|PMINFO
+id|mnp
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|pll_freq_delta
 r_static
 r_inline
@@ -254,6 +281,8 @@ id|mnp
 op_amp
 l_int|0xFF
 suffix:semicolon
+r_do
+(brace
 r_if
 c_cond
 (paren
@@ -339,7 +368,7 @@ OL
 l_int|550000
 )paren
 (brace
-multiline_comment|/*&t;&t;&t;p |= 0x00; */
+multiline_comment|/*&t;&t;&t;&t;p |= 0x00; */
 )brace
 r_else
 r_if
@@ -436,6 +465,15 @@ l_int|2
 )paren
 op_minus
 l_int|2
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|n
+template_param
+l_int|0x7A
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -1219,11 +1257,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|g450_setpll_cond
-r_static
-r_inline
+DECL|function|matroxfb_g450_setpll_cond
 r_void
-id|g450_setpll_cond
+id|matroxfb_g450_setpll_cond
 c_func
 (paren
 id|WPMINFO
@@ -2177,21 +2213,6 @@ r_int
 r_int
 id|delta
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|mnp
-op_amp
-l_int|0xFF00
-)paren
-template_param
-l_int|0x7A00
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
 id|vco
 op_assign
 id|g450_mnp2vco
@@ -2201,6 +2222,7 @@ id|PMINFO
 id|mnp
 )paren
 suffix:semicolon
+macro_line|#if 0&t;&t;&t;
 r_if
 c_cond
 (paren
@@ -2268,6 +2290,7 @@ r_continue
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif&t;&t;&t;
 id|delta
 op_assign
 id|pll_freq_delta
@@ -2372,7 +2395,8 @@ id|mnpcount
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 (brace
@@ -2412,7 +2436,7 @@ op_ne
 id|NO_MORE_MNP
 )paren
 (brace
-id|g450_setpll_cond
+id|matroxfb_g450_setpll_cond
 c_func
 (paren
 id|PMINFO
@@ -2472,10 +2496,10 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-)brace
 r_return
-l_int|0
+id|mnp
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* It must be greater than number of possible PLL values.&n; * Currently there is 5(p) * 10(m) = 50 possible values. */
 DECL|macro|MNP_TABLE_SIZE
@@ -2566,10 +2590,24 @@ c_func
 id|matroxfb_g450_setclk
 )paren
 suffix:semicolon
+DECL|variable|g450_mnp2f
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|g450_mnp2f
+)paren
+suffix:semicolon
+DECL|variable|matroxfb_g450_setpll_cond
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|matroxfb_g450_setpll_cond
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c) 2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+l_string|&quot;(c) 2001-2002 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

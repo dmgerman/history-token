@@ -5,7 +5,6 @@ multiline_comment|/*&n; * We need the APIC definitions automatically as part of 
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#ifndef __ASSEMBLY__
