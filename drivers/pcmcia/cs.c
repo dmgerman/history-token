@@ -5854,10 +5854,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read_tuple
+id|pccard_read_tuple
 c_func
 (paren
-id|client
+id|s
+comma
+id|client-&gt;Function
 comma
 id|CISTPL_LONGLINK_MFC
 comma
