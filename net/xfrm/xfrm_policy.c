@@ -897,6 +897,13 @@ r_return
 suffix:semicolon
 id|expired
 suffix:colon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|xp-&gt;lock
+)paren
+suffix:semicolon
 id|km_policy_expired
 c_func
 (paren
