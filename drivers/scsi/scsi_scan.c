@@ -4733,7 +4733,8 @@ suffix:semicolon
 id|scsi_remove_target
 c_func
 (paren
-id|starget
+op_amp
+id|starget-&gt;dev
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
