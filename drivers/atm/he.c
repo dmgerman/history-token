@@ -10307,7 +10307,7 @@ macro_line|#endif
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,69)
 r_static
-id|irq_return_t
+id|irqreturn_t
 macro_line|#else
 r_static
 r_void
