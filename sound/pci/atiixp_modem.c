@@ -5013,7 +5013,7 @@ c_cond
 (paren
 id|chip-&gt;remap_addr
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk

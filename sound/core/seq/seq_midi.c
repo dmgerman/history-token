@@ -1279,21 +1279,17 @@ id|rmidi-&gt;name
 suffix:colon
 l_string|&quot;External MIDI&quot;
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|cinfo.name
+comma
+id|name
 comma
 r_sizeof
 (paren
 id|cinfo.name
 )paren
-comma
-l_string|&quot;%s - Rawmidi %d&quot;
-comma
-id|name
-comma
-id|card-&gt;number
 )paren
 suffix:semicolon
 r_return
@@ -2402,6 +2398,11 @@ id|synths
 )paren
 )paren
 suffix:semicolon
+id|snd_seq_autoload_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|snd_seq_device_register_driver
 c_func
 (paren
@@ -2411,6 +2412,11 @@ op_amp
 id|ops
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|snd_seq_autoload_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -111,7 +111,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_0_DAREAR
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|activate
 )paren
@@ -121,7 +121,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|0
 )braket
@@ -160,7 +160,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_3_MUTE
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|activate
 )paren
@@ -170,7 +170,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|3
 )braket
@@ -209,7 +209,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_3_INSEL
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|activate
 )paren
@@ -219,7 +219,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|3
 )braket
@@ -265,7 +265,7 @@ multiline_comment|/* select box */
 id|ICE1712_STDSP24_0_BOX
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|box
 )paren
@@ -275,7 +275,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|0
 )braket
@@ -292,7 +292,7 @@ l_int|3
 id|ICE1712_STDSP24_2_CHN4
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -300,7 +300,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDI1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|activate
 )paren
@@ -310,7 +310,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -321,7 +321,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|3
 )braket
@@ -330,7 +330,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -338,7 +338,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN2
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -346,7 +346,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN3
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -354,7 +354,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_CHN4
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -364,7 +364,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|1
 )braket
@@ -375,7 +375,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -398,7 +398,7 @@ l_int|3
 id|ICE1712_STDSP24_2_CHN4
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -408,7 +408,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -429,7 +429,7 @@ suffix:colon
 id|ICE1712_STDSP24_1_CHN1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -442,7 +442,7 @@ suffix:colon
 id|ICE1712_STDSP24_1_CHN2
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -455,7 +455,7 @@ suffix:colon
 id|ICE1712_STDSP24_1_CHN3
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -468,7 +468,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|1
 )braket
@@ -484,7 +484,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -492,7 +492,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN2
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -500,7 +500,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN3
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -508,7 +508,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_CHN4
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -518,7 +518,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|1
 )braket
@@ -529,7 +529,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -544,7 +544,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDI1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -554,7 +554,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -597,7 +597,7 @@ multiline_comment|/* select box */
 id|ICE1712_STDSP24_0_BOX
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|box
 )paren
@@ -607,7 +607,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|0
 )braket
@@ -616,7 +616,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDIIN
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -624,7 +624,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDI1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|master
 )paren
@@ -634,7 +634,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -645,7 +645,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|3
 )braket
@@ -660,7 +660,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDIIN
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -670,7 +670,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -685,7 +685,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDIIN
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -695,7 +695,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
@@ -734,7 +734,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_3_MIDI2
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 id|activate
 )paren
@@ -744,7 +744,7 @@ c_func
 (paren
 id|ice
 comma
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|3
 )braket
@@ -783,22 +783,22 @@ id|ice-&gt;num_total_adcs
 op_assign
 l_int|8
 suffix:semicolon
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|0
 )braket
 op_assign
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|1
 )braket
 op_assign
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|2
 )braket
 op_assign
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 (braket
 l_int|3
 )braket
@@ -809,7 +809,7 @@ multiline_comment|/* should be already */
 id|ICE1712_STDSP24_SET_ADDR
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -817,7 +817,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_CLOCK
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 comma
@@ -827,7 +827,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_0_BOX
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -835,7 +835,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_0_DAREAR
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -843,7 +843,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_SET_ADDR
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -851,7 +851,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_CLOCK
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 comma
@@ -861,7 +861,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -869,7 +869,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN2
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -877,7 +877,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_1_CHN3
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -885,7 +885,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_SET_ADDR
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|2
 )paren
@@ -893,7 +893,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_CLOCK
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|2
 comma
@@ -903,7 +903,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_CHN4
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -911,7 +911,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDIIN
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -919,7 +919,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_2_MIDI1
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -927,7 +927,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_SET_ADDR
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|3
 )paren
@@ -935,7 +935,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_CLOCK
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|3
 comma
@@ -945,7 +945,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_3_MIDI2
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
@@ -953,7 +953,7 @@ suffix:semicolon
 id|ICE1712_STDSP24_3_MUTE
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|1
 )paren
@@ -961,18 +961,18 @@ suffix:semicolon
 id|ICE1712_STDSP24_3_INSEL
 c_func
 (paren
-id|ice-&gt;hoontech_boxbits
+id|ice-&gt;spec.hoontech.boxbits
 comma
 l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* let&squot;s go - activate only functions in first box */
-id|ice-&gt;hoontech_config
+id|ice-&gt;spec.hoontech.config
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* ICE1712_STDSP24_MUTE |&n;&t;&t;&t;       ICE1712_STDSP24_INSEL |&n;&t;&t;&t;       ICE1712_STDSP24_DAREAR; */
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 l_int|0
 )braket
@@ -989,17 +989,17 @@ id|ICE1712_STDSP24_BOX_MIDI1
 op_or
 id|ICE1712_STDSP24_BOX_MIDI2
 suffix:semicolon
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 l_int|1
 )braket
 op_assign
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 l_int|2
 )braket
 op_assign
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 l_int|3
 )braket
@@ -1012,7 +1012,7 @@ c_func
 id|ice
 comma
 (paren
-id|ice-&gt;hoontech_config
+id|ice-&gt;spec.hoontech.config
 op_amp
 id|ICE1712_STDSP24_DAREAR
 )paren
@@ -1029,7 +1029,7 @@ c_func
 id|ice
 comma
 (paren
-id|ice-&gt;hoontech_config
+id|ice-&gt;spec.hoontech.config
 op_amp
 id|ICE1712_STDSP24_MUTE
 )paren
@@ -1046,7 +1046,7 @@ c_func
 id|ice
 comma
 (paren
-id|ice-&gt;hoontech_config
+id|ice-&gt;spec.hoontech.config
 op_amp
 id|ICE1712_STDSP24_INSEL
 )paren
@@ -1096,7 +1096,7 @@ comma
 id|chn
 comma
 (paren
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 id|box
 )braket
@@ -1122,7 +1122,7 @@ comma
 id|box
 comma
 (paren
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 id|box
 )braket
@@ -1139,7 +1139,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ice-&gt;hoontech_boxconfig
+id|ice-&gt;spec.hoontech.boxconfig
 (braket
 id|box
 )braket

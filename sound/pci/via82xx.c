@@ -2171,19 +2171,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* FIXME: does it work on via823x? */
-r_if
-c_cond
-(paren
-id|chip-&gt;chip_type
-op_ne
-id|TYPE_VIA686
-)paren
-r_goto
-id|_skip_sgd
-suffix:semicolon
-macro_line|#endif
 id|status
 op_assign
 id|inl
@@ -2230,7 +2217,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-singleline_comment|// _skip_sgd:
 multiline_comment|/* check status for each stream */
 id|spin_lock
 c_func
@@ -6975,6 +6961,34 @@ id|ac97_quirks
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
+l_int|0x4161
+comma
+dot
+id|codec_id
+op_assign
+l_int|0x56494161
+comma
+multiline_comment|/* VT1612A */
+dot
+id|name
+op_assign
+l_string|&quot;Soltek SL-75DRV5&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_NONE
+)brace
+comma
+(brace
 multiline_comment|/* FIXME: which codec? */
 dot
 id|vendor
@@ -7214,6 +7228,10 @@ suffix:semicolon
 id|chip-&gt;ac97_bus-&gt;clock
 op_assign
 id|chip-&gt;ac97_clock
+suffix:semicolon
+id|chip-&gt;ac97_bus-&gt;shared_type
+op_assign
+id|AC97_SHARED_TYPE_VIA
 suffix:semicolon
 id|memset
 c_func
@@ -9892,6 +9910,24 @@ comma
 dot
 id|device
 op_assign
+l_int|0x4552
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* QDI Kudoz 7X/600-6AL */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1106
+comma
+dot
+id|device
+op_assign
 l_int|0xaa01
 comma
 dot
@@ -9951,10 +9987,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_NO_VRA
+id|VIA_DXS_ENABLE
 )brace
 comma
-multiline_comment|/* Gigabyte GA-7VAXP (FIXME: or DXS_ENABLE?) */
+multiline_comment|/* Gigabyte GA-7VAXP */
 (brace
 dot
 id|vendor
@@ -10859,14 +10895,25 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %d&quot;
+r_sizeof
+(paren
+id|card-&gt;longname
+)paren
+comma
+l_string|&quot;%s with %s at %#lx, irq %d&quot;
 comma
 id|card-&gt;shortname
+comma
+id|snd_ac97_get_short_name
+c_func
+(paren
+id|chip-&gt;ac97
+)paren
 comma
 id|chip-&gt;port
 comma

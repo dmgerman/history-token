@@ -69,4 +69,10 @@ DECL|macro|AC97_ID_CM9738
 mdefine_line|#define AC97_ID_CM9738&t;&t;0x434d4941
 DECL|macro|AC97_ID_CM9739
 mdefine_line|#define AC97_ID_CM9739&t;&t;0x434d4961
+DECL|macro|AC97_ID_CM9761_78
+mdefine_line|#define AC97_ID_CM9761_78&t;0x434d4978
+DECL|macro|AC97_ID_CM9761_82
+mdefine_line|#define AC97_ID_CM9761_82&t;0x434d4982
+DECL|macro|AC97_ID_CM9761_83
+mdefine_line|#define AC97_ID_CM9761_83&t;0x434d4983
 eof

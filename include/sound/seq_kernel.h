@@ -661,5 +661,26 @@ r_int
 id|port
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KMOD
+r_void
+id|snd_seq_autoload_lock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|snd_seq_autoload_unlock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|snd_seq_autoload_lock
+mdefine_line|#define snd_seq_autoload_lock()
+DECL|macro|snd_seq_autoload_unlock
+mdefine_line|#define snd_seq_autoload_unlock()
+macro_line|#endif
 macro_line|#endif /* __SOUND_SEQ_KERNEL_H */
 eof

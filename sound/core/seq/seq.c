@@ -265,6 +265,11 @@ r_void
 r_int
 id|err
 suffix:semicolon
+id|snd_seq_autoload_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -279,8 +284,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* init memory, room for selected events */
 r_if
@@ -297,8 +302,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* init event queues */
 r_if
@@ -315,8 +320,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* register sequencer device */
 r_if
@@ -333,8 +338,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* register proc interface */
 r_if
@@ -351,8 +356,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* register our internal client */
 r_if
@@ -369,11 +374,18 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
+suffix:semicolon
+id|error
+suffix:colon
+id|snd_seq_autoload_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|alsa_seq_exit

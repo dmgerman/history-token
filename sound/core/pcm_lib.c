@@ -785,12 +785,10 @@ id|substream-&gt;runtime-&gt;status-&gt;state
 op_eq
 id|SNDRV_PCM_STATE_DRAINING
 )paren
-id|snd_pcm_stop
+id|snd_pcm_drain_done
 c_func
 (paren
 id|substream
-comma
-id|SNDRV_PCM_STATE_SETUP
 )paren
 suffix:semicolon
 r_else

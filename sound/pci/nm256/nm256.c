@@ -224,6 +224,14 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* disabled */
+DECL|variable|reset_workaround
+r_static
+r_int
+id|reset_workaround
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
 DECL|variable|boot_devs
 r_static
 r_int
@@ -421,6 +429,26 @@ comma
 l_string|&quot;Enable workaround for Sony VAIO notebooks.&quot;
 )paren
 suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|reset_workaround
+comma
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|reset_workaround
+comma
+l_string|&quot;Enable AC97 RESET workaround for some laptops.&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * hw definitions&n; */
 multiline_comment|/* The BIOS signature. */
 DECL|macro|NM_SIGNATURE
@@ -583,8 +611,9 @@ id|bufsize
 suffix:semicolon
 multiline_comment|/* buffer size in bytes */
 DECL|member|bufptr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bufptr
 suffix:semicolon
 multiline_comment|/* mapped pointer */
@@ -631,8 +660,9 @@ op_star
 id|card
 suffix:semicolon
 DECL|member|cport
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cport
 suffix:semicolon
 multiline_comment|/* control port */
@@ -650,8 +680,9 @@ id|cport_addr
 suffix:semicolon
 multiline_comment|/* physical address */
 DECL|member|buffer
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|buffer
 suffix:semicolon
 multiline_comment|/* buffer */
@@ -712,14 +743,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* use one big coef. table */
-DECL|member|latitude_workaround
+DECL|member|reset_workaround
 r_int
 r_int
-id|latitude_workaround
+id|reset_workaround
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Dell Latitude LS workaround needed */
+multiline_comment|/* Workaround for some laptops to avoid freeze */
 DECL|member|mixer_base
 r_int
 id|mixer_base
@@ -1100,10 +1131,6 @@ macro_line|#endif
 id|memcpy_toio
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;buffer
 op_plus
 id|offset
@@ -3476,17 +3503,21 @@ id|s-&gt;bufptr
 op_assign
 id|chip-&gt;buffer
 op_plus
+(paren
 id|s-&gt;buf
 op_minus
 id|chip-&gt;buffer_start
+)paren
 suffix:semicolon
 id|s-&gt;bufptr_addr
 op_assign
 id|chip-&gt;buffer_addr
 op_plus
+(paren
 id|s-&gt;buf
 op_minus
 id|chip-&gt;buffer_start
+)paren
 suffix:semicolon
 )brace
 id|err
@@ -4464,13 +4495,6 @@ id|chip
 op_assign
 id|ac97-&gt;private_data
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
 multiline_comment|/* Reset the mixer.  &squot;Tis magic!  */
 id|snd_nm256_writeb
 c_func
@@ -4485,7 +4509,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip-&gt;latitude_workaround
+op_logical_neg
+id|chip-&gt;reset_workaround
 )paren
 (brace
 multiline_comment|/* Dell latitude LS will lock up by this */
@@ -4518,13 +4543,6 @@ comma
 l_int|0x6cc
 comma
 l_int|0x0
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 )brace
@@ -4773,8 +4791,9 @@ id|chip
 )paren
 (brace
 multiline_comment|/* The signature is located 1K below the end of video RAM.  */
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|temp
 suffix:semicolon
 multiline_comment|/* Default buffer end is 5120 bytes below the top of RAM.  */
@@ -4791,10 +4810,6 @@ id|sig
 suffix:semicolon
 id|temp
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -4812,7 +4827,7 @@ c_cond
 (paren
 id|temp
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -4881,10 +4896,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|temp
 )paren
 suffix:semicolon
@@ -4913,10 +4924,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|temp
 )paren
 suffix:semicolon
@@ -5097,10 +5104,6 @@ id|chip-&gt;cport
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;cport
 )paren
 suffix:semicolon
@@ -5112,10 +5115,6 @@ id|chip-&gt;buffer
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|chip-&gt;buffer
 )paren
 suffix:semicolon
@@ -5272,11 +5271,6 @@ suffix:semicolon
 id|u32
 id|addr
 suffix:semicolon
-id|u16
-id|subsystem_vendor
-comma
-id|subsystem_device
-suffix:semicolon
 op_star
 id|chip_ret
 op_assign
@@ -5415,10 +5409,6 @@ suffix:semicolon
 )brace
 id|chip-&gt;cport
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -5432,7 +5422,7 @@ c_cond
 (paren
 id|chip-&gt;cport
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|snd_printk
@@ -5727,10 +5717,6 @@ suffix:semicolon
 )brace
 id|chip-&gt;buffer
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -5744,7 +5730,7 @@ c_cond
 (paren
 id|chip-&gt;buffer
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|err
@@ -5892,69 +5878,6 @@ id|chip-&gt;coeffs_current
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* check workarounds */
-id|chip-&gt;latitude_workaround
-op_assign
-l_int|1
-suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|pci
-comma
-id|PCI_SUBSYSTEM_VENDOR_ID
-comma
-op_amp
-id|subsystem_vendor
-)paren
-suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|pci
-comma
-id|PCI_SUBSYSTEM_ID
-comma
-op_amp
-id|subsystem_device
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|subsystem_vendor
-op_eq
-l_int|0x104d
-op_logical_and
-id|subsystem_device
-op_eq
-l_int|0x8041
-)paren
-(brace
-multiline_comment|/* this workaround will cause lock-up after suspend/resume on Sony PCG-F305 */
-id|chip-&gt;latitude_workaround
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|subsystem_vendor
-op_eq
-l_int|0x1028
-op_logical_and
-id|subsystem_device
-op_eq
-l_int|0x0080
-)paren
-(brace
-multiline_comment|/* this workaround will cause lock-up after suspend/resume on a Dell laptop */
-id|chip-&gt;latitude_workaround
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|snd_nm256_init_chip
 c_func
 (paren
@@ -6086,8 +6009,15 @@ id|type
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|NM_BLACKLISTED
-mdefine_line|#define NM_BLACKLISTED&t;1
+DECL|enumerator|NM_BLACKLISTED
+DECL|enumerator|NM_RESET_WORKAROUND
+r_enum
+(brace
+id|NM_BLACKLISTED
+comma
+id|NM_RESET_WORKAROUND
+)brace
+suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -6114,6 +6044,42 @@ dot
 id|type
 op_assign
 id|NM_BLACKLISTED
+)brace
+comma
+multiline_comment|/* Sony PCG-F305 */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x104d
+comma
+dot
+id|device
+op_assign
+l_int|0x8041
+comma
+dot
+id|type
+op_assign
+id|NM_RESET_WORKAROUND
+)brace
+comma
+multiline_comment|/* Dell Latitude LS */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
+l_int|0x0080
+comma
+dot
+id|type
+op_assign
+id|NM_RESET_WORKAROUND
 )brace
 comma
 (brace
@@ -6263,14 +6229,15 @@ op_eq
 id|subsystem_device
 )paren
 (brace
-r_if
+r_switch
 c_cond
 (paren
 id|q-&gt;type
-op_eq
-id|NM_BLACKLISTED
 )paren
 (brace
+r_case
+id|NM_BLACKLISTED
+suffix:colon
 id|printk
 c_func
 (paren
@@ -6281,6 +6248,18 @@ suffix:semicolon
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+r_case
+id|NM_RESET_WORKAROUND
+suffix:colon
+id|reset_workaround
+(braket
+id|dev
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -6528,6 +6507,27 @@ id|card
 suffix:semicolon
 r_return
 id|err
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|reset_workaround
+(braket
+id|dev
+)braket
+)paren
+(brace
+id|snd_printdd
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;nm256: reset_workaround activated&bslash;n&quot;
+)paren
+suffix:semicolon
+id|chip-&gt;reset_workaround
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 id|sprintf
