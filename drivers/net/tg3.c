@@ -30930,6 +30930,13 @@ comma
 l_int|0x4c
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;tg3_flags
+op_amp
+id|TG3_FLAG_NVRAM
+)paren
 id|GET_REG32_LOOP
 c_func
 (paren
