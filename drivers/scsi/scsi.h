@@ -1377,24 +1377,16 @@ r_int
 id|device_busy
 suffix:semicolon
 multiline_comment|/* commands actually active on low-level */
-DECL|member|free_cmnds
+DECL|member|list_lock
+id|spinlock_t
+id|list_lock
+suffix:semicolon
+DECL|member|cmd_list
 r_struct
 id|list_head
-id|free_cmnds
+id|cmd_list
 suffix:semicolon
-multiline_comment|/* list of available Scsi_Cmnd structs */
-DECL|member|busy_cmnds
-r_struct
-id|list_head
-id|busy_cmnds
-suffix:semicolon
-multiline_comment|/* list of Scsi_Cmnd structs in use */
-DECL|member|device_queue
-id|Scsi_Cmnd
-op_star
-id|device_queue
-suffix:semicolon
-multiline_comment|/* queue of SCSI Command structures */
+multiline_comment|/* queue of in use SCSI Command structures */
 DECL|member|current_cmnd
 id|Scsi_Cmnd
 op_star
@@ -1922,12 +1914,6 @@ DECL|member|sc_request
 id|Scsi_Request
 op_star
 id|sc_request
-suffix:semicolon
-DECL|member|next
-r_struct
-id|scsi_cmnd
-op_star
-id|next
 suffix:semicolon
 DECL|member|reset_chain
 r_struct
