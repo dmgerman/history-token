@@ -1096,7 +1096,7 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|init_runlist
+id|ntfs_init_runlist
 c_func
 (paren
 op_amp
@@ -1126,7 +1126,7 @@ id|ni-&gt;attr_list
 op_assign
 l_int|NULL
 suffix:semicolon
-id|init_runlist
+id|ntfs_init_runlist
 c_func
 (paren
 op_amp
@@ -2151,7 +2151,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Setup the runlist. No need for locking as we have&n;&t;&t;&t; * exclusive access to the inode at this time.&n;&t;&t;&t; */
 id|ni-&gt;attr_list_rl.rl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|vol
@@ -5734,7 +5734,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. cannot&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we do not know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet.  Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using ntfs_attr_lookup($DATA) over all extents.  As each&n; * extent is found, we decompress_mapping_pairs() including the implied&n; * ntfs_merge_runlists().  Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
+multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. cannot&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we do not know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet.  Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using ntfs_attr_lookup($DATA) over all extents.  As each&n; * extent is found, we ntfs_mapping_pairs_decompress() including the implied&n; * ntfs_merge_runlists().  Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
 DECL|function|ntfs_read_inode_mount
 r_int
 id|ntfs_read_inode_mount
@@ -6295,7 +6295,7 @@ suffix:semicolon
 multiline_comment|/* Setup the runlist. */
 id|ni-&gt;attr_list_rl.rl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|vol
@@ -6795,7 +6795,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Decompress the mapping pairs array of this extent and merge&n;&t;&t; * the result into the existing runlist. No need for locking&n;&t;&t; * as we have exclusive access to the inode at this time and we&n;&t;&t; * are a mount in progress task, too.&n;&t;&t; */
 id|nrl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|vol
@@ -6820,8 +6820,9 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;decompress_mapping_pairs() failed with &quot;
-l_string|&quot;error code %ld. $MFT is corrupt.&quot;
+l_string|&quot;ntfs_mapping_pairs_decompress() &quot;
+l_string|&quot;failed with error code %ld.  $MFT is &quot;
+l_string|&quot;corrupt.&quot;
 comma
 id|PTR_ERR
 c_func

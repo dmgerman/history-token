@@ -5,11 +5,11 @@ mdefine_line|#define _LINUX_NTFS_RUNLIST_H
 macro_line|#include &quot;types.h&quot;
 macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;volume.h&quot;
-DECL|function|init_runlist
+DECL|function|ntfs_init_runlist
 r_static
 r_inline
 r_void
-id|init_runlist
+id|ntfs_init_runlist
 c_func
 (paren
 id|runlist
@@ -58,7 +58,7 @@ suffix:semicolon
 r_extern
 id|runlist_element
 op_star
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 r_const
@@ -78,7 +78,7 @@ id|old_rl
 suffix:semicolon
 r_extern
 id|LCN
-id|ntfs_vcn_to_lcn
+id|ntfs_rl_vcn_to_lcn
 c_func
 (paren
 r_const

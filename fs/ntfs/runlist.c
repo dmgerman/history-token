@@ -2815,11 +2815,11 @@ l_string|&quot;NTFS: Cannot continue.&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * decompress_mapping_pairs - convert mapping pairs array to runlist&n; * @vol:&t;ntfs volume on which the attribute resides&n; * @attr:&t;attribute record whose mapping pairs array to decompress&n; * @old_rl:&t;optional runlist in which to insert @attr&squot;s runlist&n; *&n; * It is up to the caller to serialize access to the runlist @old_rl.&n; *&n; * Decompress the attribute @attr&squot;s mapping pairs array into a runlist. On&n; * success, return the decompressed runlist.&n; *&n; * If @old_rl is not NULL, decompressed runlist is inserted into the&n; * appropriate place in @old_rl and the resultant, combined runlist is&n; * returned. The original @old_rl is deallocated.&n; *&n; * On error, return -errno. @old_rl is left unmodified in that case.&n; *&n; * The following error codes are defined:&n; *&t;-ENOMEM&t;- Not enough memory to allocate runlist array.&n; *&t;-EIO&t;- Corrupt runlist.&n; *&t;-EINVAL&t;- Invalid parameters were passed in.&n; *&t;-ERANGE&t;- The two runlists overlap.&n; *&n; * FIXME: For now we take the conceptionally simplest approach of creating the&n; * new runlist disregarding the already existing one and then splicing the&n; * two into one, if that is possible (we check for overlap and discard the new&n; * runlist if overlap present before returning ERR_PTR(-ERANGE)).&n; */
-DECL|function|decompress_mapping_pairs
+multiline_comment|/**&n; * ntfs_mapping_pairs_decompress - convert mapping pairs array to runlist&n; * @vol:&t;ntfs volume on which the attribute resides&n; * @attr:&t;attribute record whose mapping pairs array to decompress&n; * @old_rl:&t;optional runlist in which to insert @attr&squot;s runlist&n; *&n; * It is up to the caller to serialize access to the runlist @old_rl.&n; *&n; * Decompress the attribute @attr&squot;s mapping pairs array into a runlist. On&n; * success, return the decompressed runlist.&n; *&n; * If @old_rl is not NULL, decompressed runlist is inserted into the&n; * appropriate place in @old_rl and the resultant, combined runlist is&n; * returned. The original @old_rl is deallocated.&n; *&n; * On error, return -errno. @old_rl is left unmodified in that case.&n; *&n; * The following error codes are defined:&n; *&t;-ENOMEM&t;- Not enough memory to allocate runlist array.&n; *&t;-EIO&t;- Corrupt runlist.&n; *&t;-EINVAL&t;- Invalid parameters were passed in.&n; *&t;-ERANGE&t;- The two runlists overlap.&n; *&n; * FIXME: For now we take the conceptionally simplest approach of creating the&n; * new runlist disregarding the already existing one and then splicing the&n; * two into one, if that is possible (we check for overlap and discard the new&n; * runlist if overlap present before returning ERR_PTR(-ERANGE)).&n; */
+DECL|function|ntfs_mapping_pairs_decompress
 id|runlist_element
 op_star
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 r_const
@@ -3849,10 +3849,10 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_vcn_to_lcn - convert a vcn into a lcn given a runlist&n; * @rl:&t;&t;runlist to use for conversion&n; * @vcn:&t;vcn to convert&n; *&n; * Convert the virtual cluster number @vcn of an attribute into a logical&n; * cluster number (lcn) of a device using the runlist @rl to map vcns to their&n; * corresponding lcns.&n; *&n; * It is up to the caller to serialize access to the runlist @rl.&n; *&n; * Since lcns must be &gt;= 0, we use negative return values with special meaning:&n; *&n; * Return value&t;&t;&t;Meaning / Description&n; * ==================================================&n; *  -1 = LCN_HOLE&t;&t;Hole / not allocated on disk.&n; *  -2 = LCN_RL_NOT_MAPPED&t;This is part of the runlist which has not been&n; *&t;&t;&t;&t;inserted into the runlist yet.&n; *  -3 = LCN_ENOENT&t;&t;There is no such vcn in the attribute.&n; *&n; * Locking: - The caller must have locked the runlist (for reading or writing).&n; *&t;    - This function does not touch the lock.&n; */
-DECL|function|ntfs_vcn_to_lcn
+multiline_comment|/**&n; * ntfs_rl_vcn_to_lcn - convert a vcn into a lcn given a runlist&n; * @rl:&t;&t;runlist to use for conversion&n; * @vcn:&t;vcn to convert&n; *&n; * Convert the virtual cluster number @vcn of an attribute into a logical&n; * cluster number (lcn) of a device using the runlist @rl to map vcns to their&n; * corresponding lcns.&n; *&n; * It is up to the caller to serialize access to the runlist @rl.&n; *&n; * Since lcns must be &gt;= 0, we use negative return values with special meaning:&n; *&n; * Return value&t;&t;&t;Meaning / Description&n; * ==================================================&n; *  -1 = LCN_HOLE&t;&t;Hole / not allocated on disk.&n; *  -2 = LCN_RL_NOT_MAPPED&t;This is part of the runlist which has not been&n; *&t;&t;&t;&t;inserted into the runlist yet.&n; *  -3 = LCN_ENOENT&t;&t;There is no such vcn in the attribute.&n; *&n; * Locking: - The caller must have locked the runlist (for reading or writing).&n; *&t;    - This function does not touch the lock.&n; */
+DECL|function|ntfs_rl_vcn_to_lcn
 id|LCN
-id|ntfs_vcn_to_lcn
+id|ntfs_rl_vcn_to_lcn
 c_func
 (paren
 r_const

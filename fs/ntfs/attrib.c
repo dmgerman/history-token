@@ -1,7 +1,6 @@
 multiline_comment|/**&n; * attrib.c - NTFS attribute operations.  Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
-singleline_comment|//#include &quot;dir.h&quot;
 multiline_comment|/**&n; * ntfs_map_runlist - map (a part of) a runlist of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a runlist&n; * @vcn:&t;map runlist part containing this vcn&n; *&n; * Map the part of a runlist containing the @vcn of the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Locking: - The runlist must be unlocked on entry and is unlocked on return.&n; *&t;    - This function takes the lock for writing and modifies the runlist.&n; */
 DECL|function|ntfs_map_runlist
 r_int
@@ -167,7 +166,7 @@ c_cond
 id|likely
 c_func
 (paren
-id|ntfs_vcn_to_lcn
+id|ntfs_rl_vcn_to_lcn
 c_func
 (paren
 id|ni-&gt;runlist.rl
@@ -185,7 +184,7 @@ id|rl
 suffix:semicolon
 id|rl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|ni-&gt;vol
@@ -1279,7 +1278,7 @@ id|rl-&gt;length
 (brace
 id|lcn
 op_assign
-id|ntfs_vcn_to_lcn
+id|ntfs_rl_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -1321,8 +1320,8 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;ntfs_vcn_to_lcn() failed. Cannot read &quot;
-l_string|&quot;attribute list.&quot;
+l_string|&quot;ntfs_rl_vcn_to_lcn() failed.  Cannot &quot;
+l_string|&quot;read attribute list.&quot;
 )paren
 suffix:semicolon
 r_goto
