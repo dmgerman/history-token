@@ -71,7 +71,6 @@ DECL|macro|sig_avoid_stop_race
 mdefine_line|#define sig_avoid_stop_race() &bslash;&n;&t;(sigtestsetmask(&amp;current-&gt;pending.signal, M(SIGCONT) | M(SIGKILL)) || &bslash;&n;&t; sigtestsetmask(&amp;current-&gt;signal-&gt;shared_pending.signal, &bslash;&n;&t;&t;&t;&t;&t;&t;  M(SIGCONT) | M(SIGKILL)))
 DECL|function|sig_ignored
 r_static
-r_inline
 r_int
 id|sig_ignored
 c_func
