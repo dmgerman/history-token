@@ -481,7 +481,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; */
+multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; *&n; * Don&squot;t call this function unless you are bound to one of the interfaces&n; * on this device or you own the dev-&gt;serialize semaphore!&n; */
 DECL|function|usb_ifnum_to_if
 r_struct
 id|usb_interface
@@ -558,7 +558,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_altnum_to_altsetting - get the altsetting structure with a given&n; *&t;alternate setting number.&n; * @intf: the interface containing the altsetting in question&n; * @altnum: the desired alternate setting number&n; *&n; * This searches the altsetting array of the specified interface for&n; * an entry with the correct bAlternateSetting value and returns a pointer&n; * to that entry, or null.&n; *&n; * Note that altsettings need not be stored sequentially by number, so&n; * it would be incorrect to assume that the first altsetting entry in&n; * the array corresponds to altsetting zero.  This routine helps device&n; * drivers avoid such mistakes.&n; */
+multiline_comment|/**&n; * usb_altnum_to_altsetting - get the altsetting structure with a given&n; *&t;alternate setting number.&n; * @intf: the interface containing the altsetting in question&n; * @altnum: the desired alternate setting number&n; *&n; * This searches the altsetting array of the specified interface for&n; * an entry with the correct bAlternateSetting value and returns a pointer&n; * to that entry, or null.&n; *&n; * Note that altsettings need not be stored sequentially by number, so&n; * it would be incorrect to assume that the first altsetting entry in&n; * the array corresponds to altsetting zero.  This routine helps device&n; * drivers avoid such mistakes.&n; *&n; * Don&squot;t call this function unless you are bound to the intf interface&n; * or you own the device&squot;s -&gt;serialize semaphore!&n; */
 DECL|function|usb_altnum_to_altsetting
 r_struct
 id|usb_host_interface
