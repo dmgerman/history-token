@@ -2756,7 +2756,7 @@ suffix:semicolon
 id|namesp
 op_assign
 (paren
-id|sfe-&gt;flags
+id|sbp-&gt;flags
 op_amp
 id|XFS_ATTR_SECURE
 )paren
@@ -2767,7 +2767,7 @@ id|attr_secure
 suffix:colon
 (paren
 (paren
-id|sfe-&gt;flags
+id|sbp-&gt;flags
 op_amp
 id|XFS_ATTR_ROOT
 )paren
