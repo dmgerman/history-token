@@ -89,13 +89,18 @@ DECL|member|id
 id|u32
 id|id
 suffix:semicolon
-DECL|member|users
+multiline_comment|/* in theory, &squot;users&squot; can vanish now,&n;&t;   but I don&squot;t want to change too much now... */
+DECL|member|readers
 r_int
-id|users
+id|readers
 suffix:semicolon
 DECL|member|writers
 r_int
 id|writers
+suffix:semicolon
+DECL|member|users
+r_int
+id|users
 suffix:semicolon
 multiline_comment|/* don&squot;t really need those !? -- FIXME: use video_usercopy  */
 DECL|member|kernel_ioctl
