@@ -1647,12 +1647,6 @@ op_star
 id|gt_pathconf
 suffix:semicolon
 multiline_comment|/* response */
-DECL|member|gt_bmres
-id|u32
-op_star
-id|gt_bmres
-suffix:semicolon
-multiline_comment|/* response */
 )brace
 suffix:semicolon
 DECL|struct|nfs4_getfh
