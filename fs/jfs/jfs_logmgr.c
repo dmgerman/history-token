@@ -4598,6 +4598,12 @@ c_func
 id|log
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -4671,6 +4677,12 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|log
 )paren
 suffix:semicolon
 id|out
