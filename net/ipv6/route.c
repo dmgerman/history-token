@@ -1148,7 +1148,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* No rt6_lock! If COW faild, the function returns dead route entry&n;   with dst-&gt;error set to errno value.&n; */
+multiline_comment|/* No rt6_lock! If COW failed, the function returns dead route entry&n;   with dst-&gt;error set to errno value.&n; */
 DECL|function|rt6_cow
 r_static
 r_struct

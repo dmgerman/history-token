@@ -1128,7 +1128,7 @@ op_ne
 id|IPV6_ADDR_ANY
 )paren
 (brace
-multiline_comment|/* ipv4 addr of the socket is invalid.  Only the&n;&t;&t;&t; * unpecified and mapped address have a v4 equivalent.&n;&t;&t;&t; */
+multiline_comment|/* ipv4 addr of the socket is invalid.  Only the&n;&t;&t;&t; * unspecified and mapped address have a v4 equivalent.&n;&t;&t;&t; */
 id|v4addr
 op_assign
 id|LOOPBACK4_IPV6

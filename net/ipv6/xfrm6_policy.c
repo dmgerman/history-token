@@ -715,7 +715,7 @@ op_assign
 op_amp
 id|rt-&gt;u.dst
 suffix:semicolon
-multiline_comment|/* Copy neighbout for reachability confirmation */
+multiline_comment|/* Copy neighbour for reachability confirmation */
 id|dst_prev-&gt;neighbour
 op_assign
 id|neigh_clone
