@@ -12,8 +12,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;kcopyd.h&quot;
-multiline_comment|/* FIXME: this is only needed for the DMERR macros */
-macro_line|#include &quot;dm.h&quot;
 DECL|variable|_kcopyd_wq
 r_static
 r_struct
