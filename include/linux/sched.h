@@ -1429,6 +1429,8 @@ DECL|macro|PF_STARTING
 mdefine_line|#define PF_STARTING&t;0x00000002&t;/* being created */
 DECL|macro|PF_EXITING
 mdefine_line|#define PF_EXITING&t;0x00000004&t;/* getting shut down */
+DECL|macro|PF_DEAD
+mdefine_line|#define PF_DEAD&t;&t;0x00000008&t;/* Dead */
 DECL|macro|PF_FORKNOEXEC
 mdefine_line|#define PF_FORKNOEXEC&t;0x00000040&t;/* forked but didn&squot;t exec */
 DECL|macro|PF_SUPERPRIV
