@@ -46,9 +46,6 @@ mdefine_line|#define NFSEXP_FSID&t;&t;0x2000
 DECL|macro|NFSEXP_ALLFLAGS
 mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x3FFF
 macro_line|#ifdef __KERNEL__
-multiline_comment|/* The following are hashtable sizes and must be powers of 2 */
-DECL|macro|NFSCLNT_EXPMAX
-mdefine_line|#define NFSCLNT_EXPMAX&t;&t;16
 DECL|struct|svc_client
 r_struct
 id|svc_client
@@ -64,14 +61,6 @@ r_char
 id|cl_ident
 (braket
 id|NFSCLNT_IDMAX
-)braket
-suffix:semicolon
-DECL|member|cl_export
-r_struct
-id|list_head
-id|cl_export
-(braket
-id|NFSCLNT_EXPMAX
 )braket
 suffix:semicolon
 DECL|member|cl_list
