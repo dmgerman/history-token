@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: ipconfig.c,v 1.46 2002/02/01 22:01:04 davem Exp $&n; *&n; *  Automatic Configuration of IP -- use DHCP, BOOTP, RARP, or&n; *  user-supplied information to configure own IP address and routes.&n; *&n; *  Copyright (C) 1996-1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  Derived from network configuration code in fs/nfs/nfsroot.c,&n; *  originally Copyright (C) 1995, 1996 Gero Kuhlmann and me.&n; *&n; *  BOOTP rewritten to construct and analyse packets itself instead&n; *  of misusing the IP layer. num_bugs_causing_wrong_arp_replies--;&n; *&t;&t;&t;&t;&t;     -- MJ, December 1998&n; *  &n; *  Fixed ip_auto_config_setup calling at startup in the new &quot;Linker Magic&quot;&n; *  initialization scheme.&n; *&t;- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 08/11/1999&n; *&n; *  DHCP support added.  To users this looks like a whole separate&n; *  protocol, but we know it&squot;s just a bag on the side of BOOTP.&n; *&t;&t;-- Chip Salzenberg &lt;chip@valinux.com&gt;, May 2000&n; *&n; *  Ported DHCP support from 2.2.16 to 2.4.0-test4&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 30 Aug 2000&n; *&n; *  Merged changes from 2.2.19 into 2.4.3&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 22 April Aug 2001&n; */
+multiline_comment|/*&n; *  $Id: ipconfig.c,v 1.46 2002/02/01 22:01:04 davem Exp $&n; *&n; *  Automatic Configuration of IP -- use DHCP, BOOTP, RARP, or&n; *  user-supplied information to configure own IP address and routes.&n; *&n; *  Copyright (C) 1996-1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  Derived from network configuration code in fs/nfs/nfsroot.c,&n; *  originally Copyright (C) 1995, 1996 Gero Kuhlmann and me.&n; *&n; *  BOOTP rewritten to construct and analyse packets itself instead&n; *  of misusing the IP layer. num_bugs_causing_wrong_arp_replies--;&n; *&t;&t;&t;&t;&t;     -- MJ, December 1998&n; *  &n; *  Fixed ip_auto_config_setup calling at startup in the new &quot;Linker Magic&quot;&n; *  initialization scheme.&n; *&t;- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 08/11/1999&n; *&n; *  DHCP support added.  To users this looks like a whole separate&n; *  protocol, but we know it&squot;s just a bag on the side of BOOTP.&n; *&t;&t;-- Chip Salzenberg &lt;chip@valinux.com&gt;, May 2000&n; *&n; *  Ported DHCP support from 2.2.16 to 2.4.0-test4&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 30 Aug 2000&n; *&n; *  Merged changes from 2.2.19 into 2.4.3&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 22 April Aug 2001&n; *&n; *  Multipe Nameservers in /proc/net/pnp&n; *              --  Josef Siemes &lt;jsiemes@web.de&gt;, Aug 2002&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -72,6 +72,8 @@ DECL|macro|CONF_TIMEOUT_MULT
 mdefine_line|#define CONF_TIMEOUT_MULT&t;*7/4&t;/* Rate of timeout growth */
 DECL|macro|CONF_TIMEOUT_MAX
 mdefine_line|#define CONF_TIMEOUT_MAX&t;(HZ*30)&t;/* Maximum allowed timeout */
+DECL|macro|CONF_NAMESERVERS_MAX
+mdefine_line|#define CONF_NAMESERVERS_MAX   3       /* Maximum number of nameservers  &n;                                           - &squot;3&squot; from resolv.h */
 multiline_comment|/*&n; * Public IP configuration&n; */
 multiline_comment|/* This is used by platforms which might be able to set the ipconfig&n; * variables using firmware environment vars.  If this is set, it will&n; * ignore such firmware variables.&n; */
 DECL|variable|__initdata
@@ -178,13 +180,14 @@ r_int
 id|ic_proto_used
 suffix:semicolon
 multiline_comment|/* Protocol used, if any */
-DECL|variable|ic_nameserver
+DECL|variable|ic_nameservers
 id|u32
-id|ic_nameserver
-op_assign
-id|INADDR_NONE
+id|ic_nameservers
+(braket
+id|CONF_NAMESERVERS_MAX
+)braket
 suffix:semicolon
-multiline_comment|/* DNS Server IP address */
+multiline_comment|/* DNS Server IP addresses */
 DECL|variable|ic_domain
 id|u8
 id|ic_domain
@@ -2376,6 +2379,30 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|CONF_NAMESERVERS_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|ic_nameservers
+(braket
+id|i
+)braket
+op_assign
+id|INADDR_NONE
+suffix:semicolon
 id|dev_add_pack
 c_func
 (paren
@@ -2869,6 +2896,12 @@ op_star
 id|ext
 )paren
 (brace
+id|u8
+id|servers
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 macro_line|#ifdef IPCONFIG_DEBUG
 id|u8
 op_star
@@ -2988,10 +3021,46 @@ r_case
 l_int|6
 suffix:colon
 multiline_comment|/* DNS server */
+id|servers
+op_assign
+op_star
+id|ext
+op_div
+l_int|4
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ic_nameserver
+id|servers
+OG
+id|CONF_NAMESERVERS_MAX
+)paren
+id|servers
+op_assign
+id|CONF_NAMESERVERS_MAX
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|servers
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ic_nameservers
+(braket
+id|i
+)braket
 op_eq
 id|INADDR_NONE
 )paren
@@ -2999,15 +3068,23 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|ic_nameserver
+id|ic_nameservers
+(braket
+id|i
+)braket
 comma
 id|ext
 op_plus
 l_int|1
+op_plus
+l_int|4
+op_star
+id|i
 comma
 l_int|4
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -3749,11 +3826,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ic_nameserver
+id|ic_nameservers
+(braket
+l_int|0
+)braket
 op_eq
 id|INADDR_NONE
 )paren
-id|ic_nameserver
+id|ic_nameservers
+(braket
+l_int|0
+)braket
 op_assign
 id|ic_servaddr
 suffix:semicolon
@@ -4307,6 +4390,9 @@ id|length
 r_int
 id|len
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4381,10 +4467,28 @@ comma
 id|ic_domain
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|CONF_NAMESERVERS_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|ic_nameserver
+id|ic_nameservers
+(braket
+id|i
+)braket
 op_ne
 id|INADDR_NONE
 )paren
@@ -4402,10 +4506,14 @@ comma
 id|NIPQUAD
 c_func
 (paren
-id|ic_nameserver
+id|ic_nameservers
+(braket
+id|i
+)braket
 )paren
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
