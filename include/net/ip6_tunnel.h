@@ -96,26 +96,5 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_IPV6_TUNNEL
-r_extern
-r_int
-id|__init
-id|ip6_tunnel_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ip6_tunnel_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 macro_line|#endif
 eof

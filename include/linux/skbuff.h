@@ -524,10 +524,6 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SK_WMEM_MAX
-mdefine_line|#define SK_WMEM_MAX&t;65535
-DECL|macro|SK_RMEM_MAX
-mdefine_line|#define SK_RMEM_MAX&t;65535
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; *&t;Handling routines are only of interest to the kernel&n; */
 macro_line|#include &lt;linux/slab.h&gt;
