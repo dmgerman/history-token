@@ -979,6 +979,20 @@ comma
 id|SCTP_LOWER_CWND_T3_RTX
 )paren
 suffix:semicolon
+multiline_comment|/* Update the retran path if the T3-rtx timer has expired for&n;&t;&t; * the current retran path.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|transport
+op_eq
+id|transport-&gt;asoc-&gt;peer.retran_path
+)paren
+id|sctp_assoc_update_retran_path
+c_func
+(paren
+id|transport-&gt;asoc
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

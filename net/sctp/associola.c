@@ -2428,12 +2428,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Choose the transport for sending a shutdown packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */
-DECL|function|sctp_assoc_choose_shutdown_transport
-r_struct
-id|sctp_transport
-op_star
-id|sctp_assoc_choose_shutdown_transport
+multiline_comment|/* Update the retran path for sending a retransmitted packet.&n; * Round-robin through the active transports, else round-robin&n; * through the inactive transports as this is the next best thing&n; * we can try.&n; */
+DECL|function|sctp_assoc_update_retran_path
+r_void
+id|sctp_assoc_update_retran_path
 c_func
 (paren
 id|sctp_association_t
@@ -2462,20 +2460,10 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-multiline_comment|/* If this is the first time SHUTDOWN is sent, use the active&n;&t; * path.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|asoc-&gt;shutdown_last_sent_to
-)paren
-r_return
-id|asoc-&gt;peer.active_path
-suffix:semicolon
-multiline_comment|/* Otherwise, find the next transport in a round-robin fashion. */
+multiline_comment|/* Find the next transport in a round-robin fashion. */
 id|t
 op_assign
-id|asoc-&gt;shutdown_last_sent_to
+id|asoc-&gt;peer.retran_path
 suffix:semicolon
 id|pos
 op_assign
@@ -2552,7 +2540,7 @@ c_cond
 (paren
 id|t
 op_eq
-id|asoc-&gt;shutdown_last_sent_to
+id|asoc-&gt;peer.retran_path
 )paren
 (brace
 id|t
@@ -2563,9 +2551,53 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_return
+id|asoc-&gt;peer.retran_path
+op_assign
 id|t
 suffix:semicolon
+)brace
+multiline_comment|/* Choose the transport for sending a SHUTDOWN packet.  */
+DECL|function|sctp_assoc_choose_shutdown_transport
+r_struct
+id|sctp_transport
+op_star
+id|sctp_assoc_choose_shutdown_transport
+c_func
+(paren
+id|sctp_association_t
+op_star
+id|asoc
+)paren
+(brace
+multiline_comment|/* If this is the first time SHUTDOWN is sent, use the active path,&n;&t; * else use the retran path. If the last SHUTDOWN was sent over the&n;&t; * retran path, update the retran path and use it. &n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;shutdown_last_sent_to
+)paren
+r_return
+id|asoc-&gt;peer.active_path
+suffix:semicolon
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|asoc-&gt;shutdown_last_sent_to
+op_eq
+id|asoc-&gt;peer.retran_path
+)paren
+id|sctp_assoc_update_retran_path
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+r_return
+id|asoc-&gt;peer.retran_path
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Update the association&squot;s pmtu and frag_point by going through all the&n; * transports. This routine is called when a transport&squot;s PMTU has changed.&n; */
 DECL|function|sctp_assoc_sync_pmtu

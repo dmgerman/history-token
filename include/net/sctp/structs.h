@@ -3635,6 +3635,14 @@ id|sctp_association_t
 op_star
 )paren
 suffix:semicolon
+r_void
+id|sctp_assoc_update_retran_path
+c_func
+(paren
+id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
 r_struct
 id|sctp_transport
 op_star
