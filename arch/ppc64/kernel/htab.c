@@ -415,7 +415,7 @@ op_minus
 l_int|11
 suffix:semicolon
 multiline_comment|/* Initialize the HPT with no entries */
-id|cacheable_memzero
+id|memset
 c_func
 (paren
 (paren
@@ -423,6 +423,8 @@ r_void
 op_star
 )paren
 id|table
+comma
+l_int|0
 comma
 id|htab_size_bytes
 )paren
