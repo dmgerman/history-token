@@ -429,9 +429,6 @@ r_case
 id|ACSI_MAJOR
 suffix:colon
 r_case
-id|PS2ESDI_MAJOR
-suffix:colon
-r_case
 id|XT_DISK_MAJOR
 suffix:colon
 r_case
