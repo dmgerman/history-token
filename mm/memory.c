@@ -5787,8 +5787,7 @@ id|pte_chain
 (brace
 id|ret
 op_assign
-op_minus
-id|ENOMEM
+id|VM_FAULT_OOM
 suffix:semicolon
 r_goto
 id|out
