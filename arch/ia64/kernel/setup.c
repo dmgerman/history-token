@@ -1120,12 +1120,6 @@ id|efi.hcdp
 suffix:semicolon
 )brace
 macro_line|#endif
-(brace
-r_extern
-r_int
-r_char
-id|acpi_legacy_devices
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1137,7 +1131,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
