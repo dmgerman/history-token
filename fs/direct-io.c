@@ -2112,7 +2112,7 @@ op_assign
 id|ZERO_PAGE
 c_func
 (paren
-id|dio-&gt;cur_user_address
+id|dio-&gt;curr_user_address
 )paren
 suffix:semicolon
 r_if
