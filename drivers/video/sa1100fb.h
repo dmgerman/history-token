@@ -277,14 +277,6 @@ r_struct
 id|work_struct
 id|task
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|pm
-r_struct
-id|pm_dev
-op_star
-id|pm
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ
 DECL|member|freq_transition
 r_struct
@@ -320,6 +312,8 @@ DECL|macro|C_DISABLE_PM
 mdefine_line|#define C_DISABLE_PM&t;&t;(5)
 DECL|macro|C_ENABLE_PM
 mdefine_line|#define C_ENABLE_PM&t;&t;(6)
+DECL|macro|C_STARTUP
+mdefine_line|#define C_STARTUP&t;&t;(7)
 DECL|macro|SA1100_NAME
 mdefine_line|#define SA1100_NAME&t;&quot;SA1100&quot;
 multiline_comment|/*&n; *  Debug macros &n; */
