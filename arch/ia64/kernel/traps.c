@@ -1465,6 +1465,21 @@ c_cond
 (paren
 id|isr
 op_amp
+l_int|0x22
+)paren
+(brace
+multiline_comment|/* denormal operand gets the same si_code as underflow &n;&t;&t;&t;&t;* see arch/i386/kernel/traps.c:math_error()  */
+id|siginfo.si_code
+op_assign
+id|FPE_FLTUND
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|isr
+op_amp
 l_int|0x44
 )paren
 (brace
