@@ -1760,9 +1760,6 @@ r_int
 id|length
 suffix:semicolon
 r_int
-id|ret
-suffix:semicolon
-r_int
 id|l
 suffix:semicolon
 r_int
@@ -1824,12 +1821,10 @@ id|cblock
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|length
 op_assign
 id|cblock.length
@@ -1841,10 +1836,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1854,9 +1847,9 @@ comma
 id|length
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 id|buf
 op_assign

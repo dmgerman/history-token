@@ -1698,9 +1698,6 @@ id|tty
 )paren
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
-r_int
 id|ret
 suffix:semicolon
 r_struct
@@ -1737,9 +1734,12 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* verify user access to buffer */
-id|error
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
+c_func
 (paren
 id|VERIFY_WRITE
 comma
@@ -1747,13 +1747,6 @@ id|buf
 comma
 id|nr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_ne
-l_int|0
 )paren
 (brace
 id|printk
@@ -1769,9 +1762,8 @@ id|__LINE__
 )paren
 suffix:semicolon
 r_return
-(paren
-id|error
-)paren
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_for

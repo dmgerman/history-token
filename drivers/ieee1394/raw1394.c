@@ -12354,7 +12354,8 @@ multiline_comment|/* ensure user-supplied buffer is accessible and big enough */
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -12501,7 +12502,8 @@ multiline_comment|/* ensure user-supplied buffer is accessible and big enough */
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ

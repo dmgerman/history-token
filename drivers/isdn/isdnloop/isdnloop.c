@@ -5140,10 +5140,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
-id|i
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -5160,9 +5158,9 @@ id|isdnloop_sdef
 )paren
 )paren
 )paren
-)paren
 r_return
-id|i
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 (paren

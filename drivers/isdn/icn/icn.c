@@ -4211,9 +4211,6 @@ r_int
 id|timer
 suffix:semicolon
 r_int
-id|ret
-suffix:semicolon
-r_int
 r_int
 id|flags
 suffix:semicolon
@@ -4229,10 +4226,8 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -4242,9 +4237,9 @@ comma
 id|ICN_CODE_STAGE2
 )paren
 )paren
-)paren
 r_return
-id|ret
+op_minus
+id|EFAULT
 suffix:semicolon
 id|timer
 op_assign

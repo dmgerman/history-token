@@ -2936,7 +2936,7 @@ c_cond
 (paren
 id|s
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -2948,6 +2948,12 @@ r_sizeof
 id|sjcd_msf
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 op_eq
 l_int|0
@@ -3161,7 +3167,7 @@ c_cond
 (paren
 id|s
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3173,6 +3179,12 @@ r_sizeof
 id|toc_entry
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 op_eq
 l_int|0
@@ -3386,7 +3398,7 @@ c_cond
 (paren
 id|s
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3398,6 +3410,12 @@ r_sizeof
 id|subchnl
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 op_eq
 l_int|0
@@ -3629,7 +3647,7 @@ c_cond
 (paren
 id|s
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -3641,6 +3659,12 @@ r_sizeof
 id|vol_ctrl
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 )paren
 op_eq
 l_int|0
