@@ -5366,7 +5366,7 @@ c_func
 id|__bread
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * invalidate_bh_lrus() is called rarely - at unmount.  Because it is only for&n; * unmount it only needs to ensure that all buffers from the target device are&n; * invalidated on return and it doesn&squot;t need to worry about new buffers from&n; * that device being added - the unmount code has to prevent that.&n; */
+multiline_comment|/*&n; * invalidate_bh_lrus() is called rarely - but not only at unmount.&n; * This doesn&squot;t race because it runs in each cpu either in irq&n; * or with preempt disabled.&n; */
 DECL|function|invalidate_bh_lru
 r_static
 r_void
@@ -6061,7 +6061,7 @@ id|unmap_underlying_metadata
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * NOTE! All mapped/uptodate combinations are valid:&n; *&n; *&t;Mapped&t;Uptodate&t;Meaning&n; *&n; *&t;No&t;No&t;&t;&quot;unknown&quot; - must do get_block()&n; *&t;No&t;Yes&t;&t;&quot;hole&quot; - zero-filled&n; *&t;Yes&t;No&t;&t;&quot;allocated&quot; - allocated on disk, not read in&n; *&t;Yes&t;Yes&t;&t;&quot;valid&quot; - allocated and up-to-date in memory.&n; *&n; * &quot;Dirty&quot; is valid only with the last case (mapped+uptodate).&n; */
-multiline_comment|/*&n; * While block_write_full_page is writing back the dirty buffers under&n; * the page lock, whoever dirtied the buffers may decide to clean them&n; * again at any time.  We handle that by only looking at the buffer&n; * state inside lock_buffer().&n; *&n; * If block_write_full_page() is called for regular writeback&n; * (called_for_sync() is false) then it will redirty a page which has a locked&n; * buffer.   This only can happen if someone has written the buffer directly,&n; * with submit_bh().  At the address_space level PageWriteback prevents this&n; * contention from occurring.&n; */
+multiline_comment|/*&n; * While block_write_full_page is writing back the dirty buffers under&n; * the page lock, whoever dirtied the buffers may decide to clean them&n; * again at any time.  We handle that by only looking at the buffer&n; * state inside lock_buffer().&n; *&n; * If block_write_full_page() is called for regular writeback&n; * (wbc-&gt;sync_mode == WB_SYNC_NONE) then it will redirty a page which has a&n; * locked buffer.   This only can happen if someone has written the buffer&n; * directly, with submit_bh().  At the address_space level PageWriteback&n; * prevents this contention from occurring.&n; */
 DECL|function|__block_write_full_page
 r_static
 r_int
@@ -6401,6 +6401,7 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The page and its buffers are protected by PageWriteback(), so we can&n;&t; * drop the bh refcounts early.&n;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -6417,14 +6418,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* Keeps try_to_free_buffers() away */
 id|unlock_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The page may come unlocked any time after the *first* submit_bh()&n;&t; * call.  Be careful with its buffers.&n;&t; */
 r_do
 (brace
 r_struct
@@ -6545,6 +6544,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The page and buffer_heads can be released at any time from&n;&t;&t; * here on.&n;&t;&t; */
 id|wbc-&gt;pages_skipped
 op_increment
 suffix:semicolon
@@ -10328,7 +10328,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* don&squot;t care */
 )brace
-multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invocation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
+multiline_comment|/*&n;&t; * The page straddles i_size.  It must be zeroed out on each and every&n;&t; * writepage invokation because it may be mmapped.  &quot;A file is mapped&n;&t; * in multiples of the page size.  For a file that is not a multiple of&n;&t; * the  page size, the remaining memory is zeroed when mapped, and&n;&t; * writes to that region are not written out to the file.&quot;&n;&t; */
 id|kaddr
 op_assign
 id|kmap_atomic
