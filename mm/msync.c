@@ -914,13 +914,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|mapping-&gt;host-&gt;i_sem
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|filemap_fdatawrite
@@ -937,6 +930,7 @@ op_logical_and
 id|file-&gt;f_op-&gt;fsync
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We don&squot;t take i_sem here because mmap_sem&n;&t;&t;&t;&t; * is already held.&n;&t;&t;&t;&t; */
 id|err
 op_assign
 id|file-&gt;f_op
@@ -981,13 +975,6 @@ id|ret
 id|ret
 op_assign
 id|err
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|mapping-&gt;host-&gt;i_sem
-)paren
 suffix:semicolon
 )brace
 )brace
