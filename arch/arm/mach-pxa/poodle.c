@@ -70,7 +70,6 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|poodle_scoop_device
-r_static
 r_struct
 id|platform_device
 id|poodle_scoop_device

@@ -56,6 +56,8 @@ r_void
 id|reset_scoop
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
 )paren
 suffix:semicolon
 id|keep_vs
@@ -223,6 +225,9 @@ multiline_comment|/* Enable interrupt */
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_IMR
 comma
 l_int|0x00C0
@@ -231,6 +236,9 @@ suffix:semicolon
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_MCR
 comma
 l_int|0x0101
@@ -309,12 +317,18 @@ op_assign
 id|read_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CPR
 )paren
 suffix:semicolon
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_IRM
 comma
 l_int|0x00FF
@@ -323,6 +337,9 @@ suffix:semicolon
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_ISR
 comma
 l_int|0x0000
@@ -331,6 +348,9 @@ suffix:semicolon
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_IRM
 comma
 l_int|0x0000
@@ -341,6 +361,9 @@ op_assign
 id|read_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CSR
 )paren
 suffix:semicolon
@@ -356,6 +379,9 @@ multiline_comment|/* card eject */
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CDR
 comma
 l_int|0x0000
@@ -382,6 +408,9 @@ multiline_comment|/* keep vs1,vs2 */
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CDR
 comma
 l_int|0x0000
@@ -405,6 +434,9 @@ multiline_comment|/* power on */
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CDR
 comma
 l_int|0x0000
@@ -425,6 +457,9 @@ multiline_comment|/* card detect */
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CDR
 comma
 l_int|0x0002
@@ -673,6 +708,9 @@ op_assign
 id|read_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_MCR
 )paren
 )paren
@@ -688,6 +726,9 @@ op_assign
 id|read_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CPR
 )paren
 )paren
@@ -703,6 +744,9 @@ op_assign
 id|read_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CCR
 )paren
 )paren
@@ -718,6 +762,9 @@ op_assign
 id|read_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_IMR
 )paren
 )paren
@@ -917,6 +964,9 @@ id|nmcr
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_MCR
 comma
 id|nmcr
@@ -932,6 +982,9 @@ id|ncpr
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CPR
 comma
 id|ncpr
@@ -947,6 +1000,9 @@ id|nccr
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_CCR
 comma
 id|nccr
@@ -962,6 +1018,9 @@ id|nimr
 id|write_scoop_reg
 c_func
 (paren
+op_amp
+id|corgiscoop_device.dev
+comma
 id|SCOOP_IMR
 comma
 id|nimr
