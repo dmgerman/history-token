@@ -21194,6 +21194,12 @@ comma
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|TCSBRKP
+)paren
+comma
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|TCXONC
 )paren
 comma
