@@ -2645,6 +2645,15 @@ id|skb
 op_assign
 id|skb2
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 singleline_comment|// attach the packet count to the header
 id|packet_count
