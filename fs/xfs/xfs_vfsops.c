@@ -2658,8 +2658,7 @@ id|bhv_desc_t
 op_star
 id|bdp
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 id|statp
 comma

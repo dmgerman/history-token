@@ -24,6 +24,12 @@ suffix:semicolon
 r_struct
 id|xfs_mount_args
 suffix:semicolon
+DECL|typedef|xfs_statfs_t
+r_typedef
+r_struct
+id|kstatfs
+id|xfs_statfs_t
+suffix:semicolon
 DECL|struct|vfs
 r_typedef
 r_struct
@@ -273,8 +279,7 @@ id|vfs_statvfs_t
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 comma
 r_struct
@@ -629,8 +634,7 @@ c_func
 id|bhv_desc_t
 op_star
 comma
-r_struct
-id|kstatfs
+id|xfs_statfs_t
 op_star
 comma
 r_struct
