@@ -1,9 +1,7 @@
-multiline_comment|/*&n; * $Id:$&n; */
-macro_line|#ifndef __ASM_MIPS_INVENTORY_H
-DECL|macro|__ASM_MIPS_INVENTORY_H
-mdefine_line|#define __ASM_MIPS_INVENTORY_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_BINFMT_IRIX
+multiline_comment|/*&n; * Miguel de Icaza&n; */
+macro_line|#ifndef __ASM_INVENTORY_H
+DECL|macro|__ASM_INVENTORY_H
+mdefine_line|#define __ASM_INVENTORY_H
 DECL|struct|inventory_s
 r_typedef
 r_struct
@@ -73,17 +71,5 @@ r_int
 id|size
 )paren
 suffix:semicolon
-r_void
-id|init_inventory
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|add_to_inventory
-mdefine_line|#define add_to_inventory(c,t,o,u,s)
-DECL|macro|init_inventory
-mdefine_line|#define init_inventory()
-macro_line|#endif
-macro_line|#endif /* defined(CONFIG_BINFMT_IRIX) */
+macro_line|#endif /* __ASM_INVENTORY_H */
 eof

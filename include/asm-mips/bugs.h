@@ -1,112 +1,14 @@
-multiline_comment|/*&n; * Copyright (C) 1995  Waldorf Electronics&n; * Copyright (C) 1997, 1999  Ralf Baechle&n; */
-macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/cpu.h&gt;
 multiline_comment|/*&n; * This is included by init/main.c to check for architecture-dependent bugs.&n; *&n; * Needs:&n; *&t;void check_bugs(void);&n; */
-DECL|function|check_wait
-r_static
-r_inline
+macro_line|#ifndef __ASM_BUGS_H
+DECL|macro|__ASM_BUGS_H
+mdefine_line|#define __ASM_BUGS_H
+r_extern
 r_void
-id|check_wait
-c_func
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Checking for &squot;wait&squot; instruction... &quot;
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|mips_cpu.cputype
-)paren
-(brace
-r_case
-id|CPU_R3081
-suffix:colon
-r_case
-id|CPU_R3081E
-suffix:colon
-id|cpu_wait
-op_assign
-id|r3081_wait
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; available.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|CPU_R4200
-suffix:colon
-r_case
-id|CPU_R4300
-suffix:colon
-r_case
-id|CPU_R4600
-suffix:colon
-r_case
-id|CPU_R4640
-suffix:colon
-r_case
-id|CPU_R4650
-suffix:colon
-r_case
-id|CPU_R4700
-suffix:colon
-r_case
-id|CPU_R5000
-suffix:colon
-r_case
-id|CPU_NEVADA
-suffix:colon
-r_case
-id|CPU_RM7000
-suffix:colon
-id|cpu_wait
-op_assign
-id|r4k_wait
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; available.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot; unavailable.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_static
-r_void
-id|__init
-DECL|function|check_bugs
 id|check_bugs
 c_func
 (paren
 r_void
 )paren
-(brace
-id|check_wait
-c_func
-(paren
-)paren
 suffix:semicolon
-)brace
+macro_line|#endif /* __ASM_BUGS_H */
 eof

@@ -1,8 +1,26 @@
-multiline_comment|/* $Id: paccess.h,v 1.1 2000/04/07 12:55:57 raiko Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; *&n; * Protected memory access.  Used for everything that might take revenge&n; * by sending a DBE error like accessing possibly non-existant memory or&n; * devices.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 1999, 2000 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; *&n; * Protected memory access.  Used for everything that might take revenge&n; * by sending a DBE error like accessing possibly non-existant memory or&n; * devices.&n; */
 macro_line|#ifndef _ASM_PACCESS_H
 DECL|macro|_ASM_PACCESS_H
 mdefine_line|#define _ASM_PACCESS_H
 macro_line|#include &lt;linux/errno.h&gt;
+r_extern
+id|asmlinkage
+r_void
+id|handle_ibe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|handle_dbe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|put_dbe
 mdefine_line|#define put_dbe(x,ptr) __put_dbe((x),(ptr),sizeof(*(ptr)))
 DECL|macro|get_dbe
@@ -45,6 +63,17 @@ id|__put_dbe_unknown
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|search_dbe_table
+c_func
+(paren
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_PACCESS_H */

@@ -1,6 +1,5 @@
-multiline_comment|/* some debug functions&n;*/
-multiline_comment|/*&n; * MIPS floating point support&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; */
-multiline_comment|/**************************************************************************&n; *  Nov 7, 2000&n; *  Modified to build and operate in Linux kernel environment. &n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc. All rights reserved.&n; *************************************************************************/
+multiline_comment|/*&n; * Some debug functions&n; *&n; * MIPS floating point support&n; *&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; *  Nov 7, 2000&n; *  Modified to build and operate in Linux kernel environment.&n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc. All rights reserved.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &quot;ieee754.h&quot;
 DECL|macro|DP_EBIAS
 mdefine_line|#define DP_EBIAS&t;1023
@@ -19,13 +18,13 @@ mdefine_line|#define SP_EMAX&t;&t;127
 DECL|macro|SP_FBITS
 mdefine_line|#define SP_FBITS&t;23
 DECL|macro|DP_MBIT
-mdefine_line|#define DP_MBIT(x)&t;((unsigned long long)1 &lt;&lt; (x))
+mdefine_line|#define DP_MBIT(x)&t;((u64)1 &lt;&lt; (x))
 DECL|macro|DP_HIDDEN_BIT
 mdefine_line|#define DP_HIDDEN_BIT&t;DP_MBIT(DP_FBITS)
 DECL|macro|DP_SIGN_BIT
 mdefine_line|#define DP_SIGN_BIT&t;DP_MBIT(63)
 DECL|macro|SP_MBIT
-mdefine_line|#define SP_MBIT(x)&t;((unsigned long)1 &lt;&lt; (x))
+mdefine_line|#define SP_MBIT(x)&t;((u32)1 &lt;&lt; (x))
 DECL|macro|SP_HIDDEN_BIT
 mdefine_line|#define SP_HIDDEN_BIT&t;SP_MBIT(SP_FBITS)
 DECL|macro|SP_SIGN_BIT

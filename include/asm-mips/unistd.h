@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 96, 97, 98, 99, 2000 by Ralf Baechle&n; *&n; * Changed system calls macros _syscall5 - _syscall7 to push args 5 to 7 onto&n; * the stack. Robin Farine for ACN S.A, Copyright (C) 1996 by ACN S.A&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 96, 97, 98, 99, 2000 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_UNISTD_H
 DECL|macro|_ASM_UNISTD_H
 mdefine_line|#define _ASM_UNISTD_H
@@ -40,8 +40,8 @@ DECL|macro|__NR_lchown
 mdefine_line|#define __NR_lchown&t;&t;&t;(__NR_Linux +  16)
 DECL|macro|__NR_break
 mdefine_line|#define __NR_break&t;&t;&t;(__NR_Linux +  17)
-DECL|macro|__NR_oldstat
-mdefine_line|#define __NR_oldstat&t;&t;&t;(__NR_Linux +  18)
+DECL|macro|__NR_unused18
+mdefine_line|#define __NR_unused18&t;&t;&t;(__NR_Linux +  18)
 DECL|macro|__NR_lseek
 mdefine_line|#define __NR_lseek&t;&t;&t;(__NR_Linux +  19)
 DECL|macro|__NR_getpid
@@ -60,8 +60,8 @@ DECL|macro|__NR_ptrace
 mdefine_line|#define __NR_ptrace&t;&t;&t;(__NR_Linux +  26)
 DECL|macro|__NR_alarm
 mdefine_line|#define __NR_alarm&t;&t;&t;(__NR_Linux +  27)
-DECL|macro|__NR_oldfstat
-mdefine_line|#define __NR_oldfstat&t;&t;&t;(__NR_Linux +  28)
+DECL|macro|__NR_unused28
+mdefine_line|#define __NR_unused28&t;&t;&t;(__NR_Linux +  28)
 DECL|macro|__NR_pause
 mdefine_line|#define __NR_pause&t;&t;&t;(__NR_Linux +  29)
 DECL|macro|__NR_utime
@@ -172,8 +172,8 @@ DECL|macro|__NR_reserved82
 mdefine_line|#define __NR_reserved82&t;&t;&t;(__NR_Linux +  82)
 DECL|macro|__NR_symlink
 mdefine_line|#define __NR_symlink&t;&t;&t;(__NR_Linux +  83)
-DECL|macro|__NR_oldlstat
-mdefine_line|#define __NR_oldlstat&t;&t;&t;(__NR_Linux +  84)
+DECL|macro|__NR_unused84
+mdefine_line|#define __NR_unused84&t;&t;&t;(__NR_Linux +  84)
 DECL|macro|__NR_readlink
 mdefine_line|#define __NR_readlink&t;&t;&t;(__NR_Linux +  85)
 DECL|macro|__NR_uselib
@@ -446,32 +446,101 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;&t;(__NR_Linux + 219)
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;&t;(__NR_Linux + 220)
+DECL|macro|__NR_reserved221
+mdefine_line|#define __NR_reserved221&t;&t;(__NR_Linux + 221)
 DECL|macro|__NR_gettid
-mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_Linux + 221)
+mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_Linux + 222)
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;&t;(__NR_Linux + 223)
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;&t;(__NR_Linux + 224)
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;&t;(__NR_Linux + 225)
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;&t;(__NR_Linux + 226)
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;&t;(__NR_Linux + 227)
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;&t;(__NR_Linux + 228)
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;&t;(__NR_Linux + 229)
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;&t;(__NR_Linux + 230)
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;&t;(__NR_Linux + 231)
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;&t;(__NR_Linux + 232)
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;&t;(__NR_Linux + 233)
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;&t;(__NR_Linux + 234)
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;&t;(__NR_Linux + 235)
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_Linux + 222)
+mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_Linux + 236)
+DECL|macro|__NR_sendfile64
+mdefine_line|#define __NR_sendfile64&t;&t;&t;(__NR_Linux + 237)
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;&t;(__NR_Linux + 238)
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;&t;(__NR_Linux + 239)
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;&t;(__NR_Linux + 240)
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;&t;(__NR_Linux + 241)
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;&t;(__NR_Linux + 242)
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;&t;(__NR_Linux + 243)
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;&t;(__NR_Linux + 244)
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;&t;(__NR_Linux + 245)
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;&t;(__NR_Linux + 246)
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie&t;&t;(__NR_Linux + 247)
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;&t;(__NR_Linux + 248)
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;&t;(__NR_Linux + 249)
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;&t;(__NR_Linux + 250)
+DECL|macro|__NR_remap_file_pages
+mdefine_line|#define __NR_remap_file_pages&t;&t;(__NR_Linux + 251)
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;&t;(__NR_Linux + 252)
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall&t;&t;(__NR_Linux + 253)
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;&t;(__NR_Linux + 254)
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;&t;(__NR_Linux + 255)
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;&t;(__NR_Linux + 256)
 multiline_comment|/*&n; * Offset of the last Linux flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls&t;&t;220
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+mdefine_line|#define __NR_Linux_syscalls&t;&t;256
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0
-mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name) &bslash;&n;                  : &quot;$2&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;, &bslash;&n;&t;&t;    &quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;); &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %2&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;=r&quot; (__a3) &bslash;&n;&t;: &quot;i&quot; (__NR_##name) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 multiline_comment|/*&n; * DANGER: This macro isn&squot;t usable for the pipe(2) call&n; * which has a unusual return convention.&n; */
 DECL|macro|_syscall1
-mdefine_line|#define _syscall1(type,name,atype,a) &bslash;&n;type name(atype a) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&quot; &bslash;&n;&t;&t;  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;&t;&t;  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)) &bslash;&n;&t;&t;  : &quot;$2&quot;,&quot;$4&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall1(type,name,atype,a) &bslash;&n;type name(atype a) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;); &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %3&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;=r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;i&quot; (__NR_##name) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 DECL|macro|_syscall2
-mdefine_line|#define _syscall2(type,name,atype,a,btype,b) &bslash;&n;type name(atype a,btype b) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$5,%4&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)), &bslash;&n;                                      &quot;r&quot; ((long)(b)) &bslash;&n;                  : &quot;$2&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&quot;$12&quot;,&quot;$13&quot;, &bslash;&n;&t;&t;    &quot;$14&quot;,&quot;$15&quot;, &quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall2(type,name,atype,a,btype,b) &bslash;&n;type name(atype a, btype b) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;); &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %4&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;=r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;i&quot; (__NR_##name) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 DECL|macro|_syscall3
-mdefine_line|#define _syscall3(type,name,atype,a,btype,b,ctype,c) &bslash;&n;type name (atype a, btype b, ctype c) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$5,%4&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$6,%5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)), &bslash;&n;                                      &quot;r&quot; ((long)(b)), &bslash;&n;                                      &quot;r&quot; ((long)(c)) &bslash;&n;                  : &quot;$2&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&quot;$12&quot;, &bslash;&n;&t;&t;    &quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall3(type,name,atype,a,btype,b,ctype,c) &bslash;&n;type name(atype a, btype b, ctype c) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a2 asm(&quot;$6&quot;) = (unsigned long) c; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;); &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %5&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;=r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;i&quot; (__NR_##name) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 DECL|macro|_syscall4
-mdefine_line|#define _syscall4(type,name,atype,a,btype,b,ctype,c,dtype,d) &bslash;&n;type name (atype a, btype b, ctype c, dtype d) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$5,%4&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$6,%5&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$7,%6&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)), &bslash;&n;                                      &quot;r&quot; ((long)(b)), &bslash;&n;                                      &quot;r&quot; ((long)(c)), &bslash;&n;                                      &quot;r&quot; ((long)(d)) &bslash;&n;                  : &quot;$2&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&quot;$12&quot;, &bslash;&n;&t;&t;    &quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall4(type,name,atype,a,btype,b,ctype,c,dtype,d) &bslash;&n;type name(atype a, btype b, ctype c, dtype d) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a2 asm(&quot;$6&quot;) = (unsigned long) c; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;) = (unsigned long) d; &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %5&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;+r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;i&quot; (__NR_##name) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
+multiline_comment|/*&n; * Using those means your brain needs more than an oil change ;-)&n; */
 DECL|macro|_syscall5
-mdefine_line|#define _syscall5(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e) &bslash;&n;type name (atype a,btype b,ctype c,dtype d,etype e) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$5,%4&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$6,%5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;lw&bslash;t$2,%7&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$7,%6&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;subu&bslash;t$29,24&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;sw&bslash;t$2,16($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;addiu&bslash;t$29,24&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)), &bslash;&n;                                      &quot;r&quot; ((long)(b)), &bslash;&n;                                      &quot;r&quot; ((long)(c)), &bslash;&n;                                      &quot;r&quot; ((long)(d)), &bslash;&n;                                      &quot;m&quot; ((long)(e)) &bslash;&n;                  : &quot;$2&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&quot;$12&quot;, &bslash;&n;                    &quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall5(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e) &bslash;&n;type name(atype a, btype b, ctype c, dtype d, etype e) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a2 asm(&quot;$6&quot;) = (unsigned long) c; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;) = (unsigned long) d; &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;lw&bslash;t$2, %6&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;subu&bslash;t$29, 32&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sw&bslash;t$2, 16($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %5&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;addiu&bslash;t$29, 32&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;+r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;i&quot; (__NR_##name), &bslash;&n;&t;  &quot;m&quot; ((unsigned long)e) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 DECL|macro|_syscall6
-mdefine_line|#define _syscall6(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e,ftype,f) &bslash;&n;type name (atype a,btype b,ctype c,dtype d,etype e,ftype f) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$5,%4&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$6,%5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;lw&bslash;t$2,%7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;lw&bslash;t$3,%8&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$7,%6&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;subu&bslash;t$29,24&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;sw&bslash;t$2,16($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;sw&bslash;t$3,20($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;addiu&bslash;t$29,24&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)), &bslash;&n;                                      &quot;r&quot; ((long)(b)), &bslash;&n;                                      &quot;r&quot; ((long)(c)), &bslash;&n;                                      &quot;r&quot; ((long)(d)), &bslash;&n;                                      &quot;m&quot; ((long)(e)), &bslash;&n;                                      &quot;m&quot; ((long)(f)) &bslash;&n;                  : &quot;$2&quot;,&quot;$3&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;, &bslash;&n;                    &quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall6(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e,ftype,f) &bslash;&n;type name(atype a, btype b, ctype c, dtype d, etype e, ftype f) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a2 asm(&quot;$6&quot;) = (unsigned long) c; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;) = (unsigned long) d; &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;lw&bslash;t$2, %6&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;lw&bslash;t$8, %7&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;subu&bslash;t$29, 32&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sw&bslash;t$2, 16($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sw&bslash;t$8, 20($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %5&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;addiu&bslash;t$29, 32&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;+r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;i&quot; (__NR_##name), &bslash;&n;&t;  &quot;m&quot; ((unsigned long)e), &quot;m&quot; ((unsigned long)f) &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 DECL|macro|_syscall7
-mdefine_line|#define _syscall7(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e,ftype,f,gtype,g) &bslash;&n;type name (atype a,btype b,ctype c,dtype d,etype e,ftype f,gtype g) &bslash;&n;{ &bslash;&n;long __res, __err; &bslash;&n;__asm__ volatile (&quot;move&bslash;t$4,%3&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$5,%4&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$6,%5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;lw&bslash;t$2,%7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;lw&bslash;t$3,%8&bslash;n&bslash;t&quot; &bslash;&n;                  &quot;move&bslash;t$7,%6&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;subu&bslash;t$29,32&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;sw&bslash;t$2,16($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;lw&bslash;t$2,%9&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;sw&bslash;t$3,20($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;sw&bslash;t$2,24($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;li&bslash;t$2,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%0, $2&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;move&bslash;t%1, $7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;  &quot;addiu&bslash;t$29,32&quot; &bslash;&n;                  : &quot;=r&quot; (__res), &quot;=r&quot; (__err) &bslash;&n;                  : &quot;i&quot; (__NR_##name),&quot;r&quot; ((long)(a)), &bslash;&n;                                      &quot;r&quot; ((long)(b)), &bslash;&n;                                      &quot;r&quot; ((long)(c)), &bslash;&n;                                      &quot;r&quot; ((long)(d)), &bslash;&n;                                      &quot;m&quot; ((long)(e)), &bslash;&n;                                      &quot;m&quot; ((long)(f)), &bslash;&n;                                      &quot;m&quot; ((long)(g)) &bslash;&n;                  : &quot;$2&quot;,&quot;$3&quot;,&quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;,&quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;, &bslash;&n;                    &quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$24&quot;); &bslash;&n;if (__err == 0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = __res; &bslash;&n;return -1; &bslash;&n;}
+mdefine_line|#define _syscall7(type,name,atype,a,btype,b,ctype,c,dtype,d,etype,e,ftype,f,gtype,g) &bslash;&n;type name(atype a, btype b, ctype c, dtype d, etype e, ftype f, gtype g) &bslash;&n;{ &bslash;&n;&t;register unsigned long __v0 asm(&quot;$2&quot;) = __NR_##name; &bslash;&n;&t;register unsigned long __a0 asm(&quot;$4&quot;) = (unsigned long) a; &bslash;&n;&t;register unsigned long __a1 asm(&quot;$5&quot;) = (unsigned long) b; &bslash;&n;&t;register unsigned long __a2 asm(&quot;$6&quot;) = (unsigned long) c; &bslash;&n;&t;register unsigned long __a3 asm(&quot;$7&quot;) = (unsigned long) d; &bslash;&n;&t;&bslash;&n;&t;__asm__ volatile ( &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;lw&bslash;t$2, %6&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;lw&bslash;t$8, %7&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;lw&bslash;t$9, %8&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;subu&bslash;t$29, 32&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sw&bslash;t$2, 16($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sw&bslash;t$8, 20($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;sw&bslash;t$9, 24($29)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;li&bslash;t$2, %5&bslash;t&bslash;t&bslash;t# &quot; #name &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;syscall&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;addiu&bslash;t$29, 32&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.set&bslash;treorder&quot; &bslash;&n;&t;: &quot;=&amp;r&quot; (__v0), &quot;+r&quot; (__a3) &bslash;&n;&t;: &quot;r&quot; (__a0), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;i&quot; (__NR_##name), &bslash;&n;&t;  &quot;m&quot; ((unsigned long)e), &quot;m&quot; ((unsigned long)f), &bslash;&n;&t;  &quot;m&quot; ((unsigned long)g), &bslash;&n;&t;: &quot;$8&quot;, &quot;$9&quot;, &quot;$10&quot;, &quot;$11&quot;, &quot;$12&quot;, &quot;$13&quot;, &quot;$14&quot;, &quot;$15&quot;, &quot;$24&quot;); &bslash;&n;&t;&bslash;&n;&t;if (__a3 == 0) &bslash;&n;&t;&t;return (type) __v0; &bslash;&n;&t;errno = __v0; &bslash;&n;&t;return -1; &bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit
@@ -662,10 +731,10 @@ r_int
 comma
 id|options
 )paren
-macro_line|#endif /* !defined (__KERNEL_SYSCALLS__) */
-macro_line|#endif /* !defined (_LANGUAGE_ASSEMBLY) */
+macro_line|#endif /* __KERNEL_SYSCALLS__ */
+macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
+mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&quot; #x &quot;&bslash;t=&bslash;tsys_ni_syscall&quot;);
 macro_line|#endif /* _ASM_UNISTD_H */
 eof

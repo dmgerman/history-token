@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Please note that the comments on this file may be out of date&n; * and that they represent what I have figured about the shmiq device&n; * so far in IRIX.&n; *&n; * This also contains some streams and idev bits.&n; *&n; * They may contain errors, please, refer to the source code of the Linux  &n; * kernel for a definitive answer on what we have implemented&n; *&n; * Miguel.&n; */
+multiline_comment|/*&n; * Please note that the comments on this file may be out of date&n; * and that they represent what I have figured about the shmiq device&n; * so far in IRIX.&n; *&n; * This also contains some streams and idev bits.&n; *&n; * They may contain errors, please, refer to the source code of the Linux&n; * kernel for a definitive answer on what we have implemented&n; *&n; * Miguel.&n; */
 multiline_comment|/* STREAMs ioctls */
 DECL|macro|STRIOC
 mdefine_line|#define STRIOC    (&squot;S&squot; &lt;&lt; 8)
@@ -153,7 +153,7 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * sharedMemoryInputQueue: this describes the shared memory input queue.&n; *&n; * head   is the user index into the events, user can modify this one.&n; * tail   is managed by the kernel.&n; * flags  is one of SHMIQ_OVERFLOW or SHMIQ_CORRUPTED&n; *        if OVERFLOW is set it seems ioctl QUIOCSERVICED should be called &n; *        to notify the kernel.&n; * events where the kernel sticks the events.&n; */
+multiline_comment|/*&n; * sharedMemoryInputQueue: this describes the shared memory input queue.&n; *&n; * head   is the user index into the events, user can modify this one.&n; * tail   is managed by the kernel.&n; * flags  is one of SHMIQ_OVERFLOW or SHMIQ_CORRUPTED&n; *        if OVERFLOW is set it seems ioctl QUIOCSERVICED should be called&n; *        to notify the kernel.&n; * events where the kernel sticks the events.&n; */
 DECL|struct|sharedMemoryInputQueue
 r_struct
 id|sharedMemoryInputQueue

@@ -37,7 +37,7 @@ id|last_devfn
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * each board defines an array of pci_channels, that ends with all NULL entry&n; */
+multiline_comment|/*&n; * each board defines an array of pci_channels, that ends with all NULL entry&n; */
 r_extern
 r_struct
 id|pci_channel
@@ -54,7 +54,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * board supplied pci fixup routines&n; */
+multiline_comment|/*&n; * board supplied pci fixup routines&n; */
 r_extern
 r_void
 id|pcibios_fixup_resources

@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_DELAY_H
 DECL|macro|_ASM_DELAY_H
 mdefine_line|#define _ASM_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/param.h&gt;
 r_extern
 r_int
 r_int
@@ -40,7 +41,7 @@ id|loops
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * division by multiplication: you don&squot;t have to worry about&n; * loss of precision.&n; *&n; * Use only for very small delays ( &lt; 1 msec).  Should probably use a&n; * lookup table, really, as the multiplications take much too long with&n; * short delays.  This is a &quot;reasonable&quot; implementation, though (and the&n; * first constant multiplications gets optimized away if the delay is&n; * a constant)&n; */
+multiline_comment|/*&n; * Division by multiplication: you don&squot;t have to worry about&n; * loss of precision.&n; *&n; * Use only for very small delays ( &lt; 1 msec).  Should probably use a&n; * lookup table, really, as the multiplications take much too long with&n; * short delays.  This is a &quot;reasonable&quot; implementation, though (and the&n; * first constant multiplications gets optimized away if the delay is&n; * a constant)&n; */
 DECL|function|__udelay
 r_extern
 id|__inline__
@@ -61,11 +62,31 @@ r_int
 r_int
 id|lo
 suffix:semicolon
+multiline_comment|/*&n;&t; * Excessive precission?  Probably ...&n;&t; */
 id|usecs
 op_mul_assign
-l_int|0x00068db8
+(paren
+r_int
+r_int
+)paren
+(paren
+(paren
+(paren
+l_int|0x8000000000000000ULL
+op_div
+(paren
+l_int|500000
+op_div
+id|HZ
+)paren
+)paren
+op_plus
+l_int|0x80000000ULL
+)paren
+op_rshift
+l_int|32
+)paren
 suffix:semicolon
-multiline_comment|/* 2**32 / (1000000 / HZ) */
 id|__asm__
 c_func
 (paren

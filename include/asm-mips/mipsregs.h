@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Modified for further R[236]000 support by Paul M. Antoine, 1996.&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995, 1996, 1997, 2000, 2001 by Ralf Baechle&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Modified for further R[236]000 support by Paul M. Antoine, 1996.&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; * Copyright (C) 2003  Maciej W. Rozycki&n; */
 macro_line|#ifndef _ASM_MIPSREGS_H
 DECL|macro|_ASM_MIPSREGS_H
 mdefine_line|#define _ASM_MIPSREGS_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/*&n; * The following macros are especially useful for __asm__&n; * inline assembler.&n; */
 macro_line|#ifndef __STR
@@ -11,6 +12,14 @@ macro_line|#endif
 macro_line|#ifndef STR
 DECL|macro|STR
 mdefine_line|#define STR(x) __STR(x)
+macro_line|#endif
+multiline_comment|/*&n; *  Configure language&n; */
+macro_line|#ifdef __ASSEMBLY__
+DECL|macro|_ULCAST_
+mdefine_line|#define _ULCAST_
+macro_line|#else
+DECL|macro|_ULCAST_
+mdefine_line|#define _ULCAST_ (unsigned long)
 macro_line|#endif
 multiline_comment|/*&n; * Coprocessor 0 register names&n; */
 DECL|macro|CP0_INDEX
@@ -61,6 +70,10 @@ DECL|macro|CP0_FRAMEMASK
 mdefine_line|#define CP0_FRAMEMASK $21
 DECL|macro|CP0_DIAGNOSTIC
 mdefine_line|#define CP0_DIAGNOSTIC $22
+DECL|macro|CP0_DEBUG
+mdefine_line|#define CP0_DEBUG $23
+DECL|macro|CP0_DEPC
+mdefine_line|#define CP0_DEPC $24
 DECL|macro|CP0_PERFORMANCE
 mdefine_line|#define CP0_PERFORMANCE $25
 DECL|macro|CP0_ECC
@@ -73,6 +86,8 @@ DECL|macro|CP0_TAGHI
 mdefine_line|#define CP0_TAGHI $29
 DECL|macro|CP0_ERROREPC
 mdefine_line|#define CP0_ERROREPC $30
+DECL|macro|CP0_DESAVE
+mdefine_line|#define CP0_DESAVE $31
 multiline_comment|/*&n; * R4640/R4650 cp0 register names.  These registers are listed&n; * here only for completeness; without MMU these CPUs are not useable&n; * by Linux.  A future ELKS port might take make Linux run on them&n; * though ...&n; */
 DECL|macro|CP0_IBASE
 mdefine_line|#define CP0_IBASE $0
@@ -88,13 +103,16 @@ DECL|macro|CP0_IWATCH
 mdefine_line|#define CP0_IWATCH $18
 DECL|macro|CP0_DWATCH
 mdefine_line|#define CP0_DWATCH $19
-multiline_comment|/* &n; * Coprocessor 0 Set 1 register names&n; */
+multiline_comment|/*&n; * Coprocessor 0 Set 1 register names&n; */
 DECL|macro|CP0_S1_DERRADDR0
 mdefine_line|#define CP0_S1_DERRADDR0  $26
 DECL|macro|CP0_S1_DERRADDR1
 mdefine_line|#define CP0_S1_DERRADDR1  $27
 DECL|macro|CP0_S1_INTCONTROL
 mdefine_line|#define CP0_S1_INTCONTROL $20
+multiline_comment|/*&n; *  TX39 Series&n; */
+DECL|macro|CP0_TX39_CACHE
+mdefine_line|#define CP0_TX39_CACHE&t;$7
 multiline_comment|/*&n; * Coprocessor 1 (FPU) register names&n; */
 DECL|macro|CP1_REVISION
 mdefine_line|#define CP1_REVISION   $0
@@ -124,7 +142,7 @@ DECL|macro|FPU_CSR_COND7
 mdefine_line|#define FPU_CSR_COND7   0x80000000      /* $fcc7 */
 multiline_comment|/*&n; * X the exception cause indicator&n; * E the exception enable&n; * S the sticky/flag bit&n;*/
 DECL|macro|FPU_CSR_ALL_X
-mdefine_line|#define FPU_CSR_ALL_X 0x0003f000
+mdefine_line|#define FPU_CSR_ALL_X   0x0003f000
 DECL|macro|FPU_CSR_UNI_X
 mdefine_line|#define FPU_CSR_UNI_X   0x00020000
 DECL|macro|FPU_CSR_INV_X
@@ -171,126 +189,91 @@ mdefine_line|#define FPU_CSR_RU      0x2     /* towards +Infinity */
 DECL|macro|FPU_CSR_RD
 mdefine_line|#define FPU_CSR_RD      0x3     /* towards -Infinity */
 multiline_comment|/*&n; * Values for PageMask register&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_CPU_VR41XX
+multiline_comment|/* Why doesn&squot;t stupidity hurt ... */
 DECL|macro|PM_1K
-mdefine_line|#define PM_1K   0x00000000
+mdefine_line|#define PM_1K&t;&t;0x00000000
 DECL|macro|PM_4K
-mdefine_line|#define PM_4K   0x00001800
+mdefine_line|#define PM_4K&t;&t;0x00001800
 DECL|macro|PM_16K
-mdefine_line|#define PM_16K  0x00007800
+mdefine_line|#define PM_16K&t;&t;0x00007800
 DECL|macro|PM_64K
-mdefine_line|#define PM_64K  0x0001f800
+mdefine_line|#define PM_64K&t;&t;0x0001f800
 DECL|macro|PM_256K
-mdefine_line|#define PM_256K 0x0007f800
+mdefine_line|#define PM_256K&t;&t;0x0007f800
 macro_line|#else
 DECL|macro|PM_4K
-mdefine_line|#define PM_4K   0x00000000
+mdefine_line|#define PM_4K&t;&t;0x00000000
 DECL|macro|PM_16K
-mdefine_line|#define PM_16K  0x00006000
+mdefine_line|#define PM_16K&t;&t;0x00006000
 DECL|macro|PM_64K
-mdefine_line|#define PM_64K  0x0001e000
+mdefine_line|#define PM_64K&t;&t;0x0001e000
 DECL|macro|PM_256K
-mdefine_line|#define PM_256K 0x0007e000
+mdefine_line|#define PM_256K&t;&t;0x0007e000
 DECL|macro|PM_1M
-mdefine_line|#define PM_1M   0x001fe000
+mdefine_line|#define PM_1M&t;&t;0x001fe000
 DECL|macro|PM_4M
-mdefine_line|#define PM_4M   0x007fe000
+mdefine_line|#define PM_4M&t;&t;0x007fe000
 DECL|macro|PM_16M
-mdefine_line|#define PM_16M  0x01ffe000
+mdefine_line|#define PM_16M&t;&t;0x01ffe000
+DECL|macro|PM_64M
+mdefine_line|#define PM_64M&t;&t;0x07ffe000
+DECL|macro|PM_256M
+mdefine_line|#define PM_256M&t;&t;0x1fffe000
 macro_line|#endif
 multiline_comment|/*&n; * Values used for computation of new tlb entries&n; */
 DECL|macro|PL_4K
-mdefine_line|#define PL_4K   12
+mdefine_line|#define PL_4K&t;&t;12
 DECL|macro|PL_16K
-mdefine_line|#define PL_16K  14
+mdefine_line|#define PL_16K&t;&t;14
 DECL|macro|PL_64K
-mdefine_line|#define PL_64K  16
+mdefine_line|#define PL_64K&t;&t;16
 DECL|macro|PL_256K
-mdefine_line|#define PL_256K 18
+mdefine_line|#define PL_256K&t;&t;18
 DECL|macro|PL_1M
-mdefine_line|#define PL_1M   20
+mdefine_line|#define PL_1M&t;&t;20
 DECL|macro|PL_4M
-mdefine_line|#define PL_4M   22
+mdefine_line|#define PL_4M&t;&t;22
 DECL|macro|PL_16M
-mdefine_line|#define PL_16M  24
-multiline_comment|/*&n; * Macros to access the system control coprocessor&n; */
-DECL|macro|read_32bit_cp0_register
-mdefine_line|#define read_32bit_cp0_register(source)                         &bslash;&n;({ int __res;                                                   &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;        &quot;mfc0&bslash;t%0,&quot;STR(source)&quot;&bslash;n&bslash;t&quot;                            &bslash;&n;&t;&quot;.set&bslash;tpop&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
-DECL|macro|read_32bit_cp0_set1_register
-mdefine_line|#define read_32bit_cp0_set1_register(source)                    &bslash;&n;({ int __res;                                                   &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;        &quot;cfc0&bslash;t%0,&quot;STR(source)&quot;&bslash;n&bslash;t&quot;                            &bslash;&n;&t;&quot;.set&bslash;tpop&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
-multiline_comment|/*&n; * For now use this only with interrupts disabled!&n; */
-DECL|macro|read_64bit_cp0_register
-mdefine_line|#define read_64bit_cp0_register(source)                         &bslash;&n;({ int __res;                                                   &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;                                       &bslash;&n;        &quot;dmfc0&bslash;t%0,&quot;STR(source)&quot;&bslash;n&bslash;t&quot;                           &bslash;&n;        &quot;.set&bslash;tmips0&quot;                                           &bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
-DECL|macro|write_32bit_cp0_register
-mdefine_line|#define write_32bit_cp0_register(register,value)                &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mtc0&bslash;t%0,&quot;STR(register)&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : : &quot;r&quot; (value));
-DECL|macro|write_32bit_cp0_set1_register
-mdefine_line|#define write_32bit_cp0_set1_register(register,value)           &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;ctc0&bslash;t%0,&quot;STR(register)&quot;&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : : &quot;r&quot; (value));
-DECL|macro|write_64bit_cp0_register
-mdefine_line|#define write_64bit_cp0_register(register,value)                &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;                                       &bslash;&n;        &quot;dmtc0&bslash;t%0,&quot;STR(register)&quot;&bslash;n&bslash;t&quot;                         &bslash;&n;        &quot;.set&bslash;tmips0&quot;                                           &bslash;&n;        : : &quot;r&quot; (value))
-multiline_comment|/* &n; * This should be changed when we get a compiler that support the MIPS32 ISA. &n; */
-DECL|macro|read_mips32_cp0_config1
-mdefine_line|#define read_mips32_cp0_config1()                               &bslash;&n;({ int __res;                                                   &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;                                   &bslash;&n;&t;&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;                                        &bslash;&n;     &t;&quot;.word&bslash;t0x40018001&bslash;n&bslash;t&quot;                                 &bslash;&n;&t;&quot;move&bslash;t%0,$1&bslash;n&bslash;t&quot;                                       &bslash;&n;&t;&quot;.set&bslash;tat&bslash;n&bslash;t&quot;                                          &bslash;&n;&t;&quot;.set&bslash;treorder&quot;                                         &bslash;&n;&t;:&quot;=r&quot; (__res));                                         &bslash;&n;        __res;})
+mdefine_line|#define PL_16M&t;&t;24
+DECL|macro|PL_64M
+mdefine_line|#define PL_64M&t;&t;26
+DECL|macro|PL_256M
+mdefine_line|#define PL_256M&t;&t;28
 multiline_comment|/*&n; * R4x00 interrupt enable / cause bits&n; */
 DECL|macro|IE_SW0
-mdefine_line|#define IE_SW0          (1&lt;&lt; 8)
+mdefine_line|#define IE_SW0          (_ULCAST_(1) &lt;&lt;  8)
 DECL|macro|IE_SW1
-mdefine_line|#define IE_SW1          (1&lt;&lt; 9)
+mdefine_line|#define IE_SW1          (_ULCAST_(1) &lt;&lt;  9)
 DECL|macro|IE_IRQ0
-mdefine_line|#define IE_IRQ0         (1&lt;&lt;10)
+mdefine_line|#define IE_IRQ0         (_ULCAST_(1) &lt;&lt; 10)
 DECL|macro|IE_IRQ1
-mdefine_line|#define IE_IRQ1         (1&lt;&lt;11)
+mdefine_line|#define IE_IRQ1         (_ULCAST_(1) &lt;&lt; 11)
 DECL|macro|IE_IRQ2
-mdefine_line|#define IE_IRQ2         (1&lt;&lt;12)
+mdefine_line|#define IE_IRQ2         (_ULCAST_(1) &lt;&lt; 12)
 DECL|macro|IE_IRQ3
-mdefine_line|#define IE_IRQ3         (1&lt;&lt;13)
+mdefine_line|#define IE_IRQ3         (_ULCAST_(1) &lt;&lt; 13)
 DECL|macro|IE_IRQ4
-mdefine_line|#define IE_IRQ4         (1&lt;&lt;14)
+mdefine_line|#define IE_IRQ4         (_ULCAST_(1) &lt;&lt; 14)
 DECL|macro|IE_IRQ5
-mdefine_line|#define IE_IRQ5         (1&lt;&lt;15)
+mdefine_line|#define IE_IRQ5         (_ULCAST_(1) &lt;&lt; 15)
 multiline_comment|/*&n; * R4x00 interrupt cause bits&n; */
 DECL|macro|C_SW0
-mdefine_line|#define C_SW0           (1&lt;&lt; 8)
+mdefine_line|#define C_SW0           (_ULCAST_(1) &lt;&lt;  8)
 DECL|macro|C_SW1
-mdefine_line|#define C_SW1           (1&lt;&lt; 9)
+mdefine_line|#define C_SW1           (_ULCAST_(1) &lt;&lt;  9)
 DECL|macro|C_IRQ0
-mdefine_line|#define C_IRQ0          (1&lt;&lt;10)
+mdefine_line|#define C_IRQ0          (_ULCAST_(1) &lt;&lt; 10)
 DECL|macro|C_IRQ1
-mdefine_line|#define C_IRQ1          (1&lt;&lt;11)
+mdefine_line|#define C_IRQ1          (_ULCAST_(1) &lt;&lt; 11)
 DECL|macro|C_IRQ2
-mdefine_line|#define C_IRQ2          (1&lt;&lt;12)
+mdefine_line|#define C_IRQ2          (_ULCAST_(1) &lt;&lt; 12)
 DECL|macro|C_IRQ3
-mdefine_line|#define C_IRQ3          (1&lt;&lt;13)
+mdefine_line|#define C_IRQ3          (_ULCAST_(1) &lt;&lt; 13)
 DECL|macro|C_IRQ4
-mdefine_line|#define C_IRQ4          (1&lt;&lt;14)
+mdefine_line|#define C_IRQ4          (_ULCAST_(1) &lt;&lt; 14)
 DECL|macro|C_IRQ5
-mdefine_line|#define C_IRQ5          (1&lt;&lt;15)
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
-multiline_comment|/*&n; * Manipulate the status register.&n; * Mostly used to access the interrupt bits.&n; */
-DECL|macro|__BUILD_SET_CP0
-mdefine_line|#define __BUILD_SET_CP0(name,register)                          &bslash;&n;extern __inline__ unsigned int                                  &bslash;&n;set_cp0_##name(unsigned int set)&t;&t;&t;&t;&bslash;&n;{                                                               &bslash;&n;&t;unsigned int res;                                       &bslash;&n;                                                                &bslash;&n;&t;res = read_32bit_cp0_register(register);                &bslash;&n;&t;res |= set;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_32bit_cp0_register(register, res);        &t;&bslash;&n;                                                                &bslash;&n;&t;return res;                                             &bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned int                                  &bslash;&n;clear_cp0_##name(unsigned int clear)&t;&t;&t;&t;&bslash;&n;{                                                               &bslash;&n;&t;unsigned int res;                                       &bslash;&n;                                                                &bslash;&n;&t;res = read_32bit_cp0_register(register);                &bslash;&n;&t;res &amp;= ~clear;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_32bit_cp0_register(register, res);&t;&t;&bslash;&n;                                                                &bslash;&n;&t;return res;                                             &bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned int                                  &bslash;&n;change_cp0_##name(unsigned int change, unsigned int new)&t;&bslash;&n;{                                                               &bslash;&n;&t;unsigned int res;                                       &bslash;&n;                                                                &bslash;&n;&t;res = read_32bit_cp0_register(register);                &bslash;&n;&t;res &amp;= ~change;                                         &bslash;&n;&t;res |= (new &amp; change);                                  &bslash;&n;&t;if(change)                                              &bslash;&n;&t;&t;write_32bit_cp0_register(register, res);        &bslash;&n;                                                                &bslash;&n;&t;return res;                                             &bslash;&n;}
-id|__BUILD_SET_CP0
-c_func
-(paren
-id|status
-comma
-id|CP0_STATUS
-)paren
-id|__BUILD_SET_CP0
-c_func
-(paren
-id|cause
-comma
-id|CP0_CAUSE
-)paren
-id|__BUILD_SET_CP0
-c_func
-(paren
-id|config
-comma
-id|CP0_CONFIG
-)paren
-macro_line|#endif /* defined (_LANGUAGE_ASSEMBLY) */
+mdefine_line|#define C_IRQ5          (_ULCAST_(1) &lt;&lt; 15)
 multiline_comment|/*&n; * Bitfields in the R4xx0 cp0 status register&n; */
 DECL|macro|ST0_IE
 mdefine_line|#define ST0_IE&t;&t;&t;0x00000001
@@ -338,11 +321,11 @@ DECL|macro|ST0_CM
 mdefine_line|#define ST0_CM&t;&t;&t;0x00080000
 multiline_comment|/*&n; * Bits specific to the R4640/R4650&n; */
 DECL|macro|ST0_UM
-mdefine_line|#define ST0_UM                 (1   &lt;&lt;  4)
+mdefine_line|#define ST0_UM&t;&t;&t;(_ULCAST_(1) &lt;&lt;  4)
 DECL|macro|ST0_IL
-mdefine_line|#define ST0_IL                 (1   &lt;&lt; 23)
+mdefine_line|#define ST0_IL&t;&t;&t;(_ULCAST_(1) &lt;&lt; 23)
 DECL|macro|ST0_DL
-mdefine_line|#define ST0_DL                 (1   &lt;&lt; 24)
+mdefine_line|#define ST0_DL&t;&t;&t;(_ULCAST_(1) &lt;&lt; 24)
 multiline_comment|/*&n; * Bitfields in the TX39 family CP0 Configuration Register 3&n; */
 DECL|macro|TX39_CONF_ICS_SHIFT
 mdefine_line|#define TX39_CONF_ICS_SHIFT&t;19
@@ -404,71 +387,73 @@ mdefine_line|#define ST0_IM&t;&t;&t;0x0000ff00
 DECL|macro|STATUSB_IP0
 mdefine_line|#define  STATUSB_IP0&t;&t;8
 DECL|macro|STATUSF_IP0
-mdefine_line|#define  STATUSF_IP0&t;&t;(1   &lt;&lt;  8)
+mdefine_line|#define  STATUSF_IP0&t;&t;(_ULCAST_(1) &lt;&lt;  8)
 DECL|macro|STATUSB_IP1
 mdefine_line|#define  STATUSB_IP1&t;&t;9
 DECL|macro|STATUSF_IP1
-mdefine_line|#define  STATUSF_IP1&t;&t;(1   &lt;&lt;  9)
+mdefine_line|#define  STATUSF_IP1&t;&t;(_ULCAST_(1) &lt;&lt;  9)
 DECL|macro|STATUSB_IP2
 mdefine_line|#define  STATUSB_IP2&t;&t;10
 DECL|macro|STATUSF_IP2
-mdefine_line|#define  STATUSF_IP2&t;&t;(1   &lt;&lt; 10)
+mdefine_line|#define  STATUSF_IP2&t;&t;(_ULCAST_(1) &lt;&lt; 10)
 DECL|macro|STATUSB_IP3
 mdefine_line|#define  STATUSB_IP3&t;&t;11
 DECL|macro|STATUSF_IP3
-mdefine_line|#define  STATUSF_IP3&t;&t;(1   &lt;&lt; 11)
+mdefine_line|#define  STATUSF_IP3&t;&t;(_ULCAST_(1) &lt;&lt; 11)
 DECL|macro|STATUSB_IP4
 mdefine_line|#define  STATUSB_IP4&t;&t;12
 DECL|macro|STATUSF_IP4
-mdefine_line|#define  STATUSF_IP4&t;&t;(1   &lt;&lt; 12)
+mdefine_line|#define  STATUSF_IP4&t;&t;(_ULCAST_(1) &lt;&lt; 12)
 DECL|macro|STATUSB_IP5
 mdefine_line|#define  STATUSB_IP5&t;&t;13
 DECL|macro|STATUSF_IP5
-mdefine_line|#define  STATUSF_IP5&t;&t;(1   &lt;&lt; 13)
+mdefine_line|#define  STATUSF_IP5&t;&t;(_ULCAST_(1) &lt;&lt; 13)
 DECL|macro|STATUSB_IP6
 mdefine_line|#define  STATUSB_IP6&t;&t;14
 DECL|macro|STATUSF_IP6
-mdefine_line|#define  STATUSF_IP6&t;&t;(1   &lt;&lt; 14)
+mdefine_line|#define  STATUSF_IP6&t;&t;(_ULCAST_(1) &lt;&lt; 14)
 DECL|macro|STATUSB_IP7
 mdefine_line|#define  STATUSB_IP7&t;&t;15
 DECL|macro|STATUSF_IP7
-mdefine_line|#define  STATUSF_IP7&t;&t;(1   &lt;&lt; 15)
+mdefine_line|#define  STATUSF_IP7&t;&t;(_ULCAST_(1) &lt;&lt; 15)
 DECL|macro|STATUSB_IP8
 mdefine_line|#define  STATUSB_IP8&t;&t;0
 DECL|macro|STATUSF_IP8
-mdefine_line|#define  STATUSF_IP8&t;&t;(1   &lt;&lt; 0)
+mdefine_line|#define  STATUSF_IP8&t;&t;(_ULCAST_(1) &lt;&lt;  0)
 DECL|macro|STATUSB_IP9
 mdefine_line|#define  STATUSB_IP9&t;&t;1
 DECL|macro|STATUSF_IP9
-mdefine_line|#define  STATUSF_IP9&t;&t;(1   &lt;&lt; 1)
+mdefine_line|#define  STATUSF_IP9&t;&t;(_ULCAST_(1) &lt;&lt;  1)
 DECL|macro|STATUSB_IP10
 mdefine_line|#define  STATUSB_IP10&t;&t;2
 DECL|macro|STATUSF_IP10
-mdefine_line|#define  STATUSF_IP10&t;&t;(1   &lt;&lt; 2)
+mdefine_line|#define  STATUSF_IP10&t;&t;(_ULCAST_(1) &lt;&lt;  2)
 DECL|macro|STATUSB_IP11
 mdefine_line|#define  STATUSB_IP11&t;&t;3
 DECL|macro|STATUSF_IP11
-mdefine_line|#define  STATUSF_IP11&t;&t;(1   &lt;&lt; 3)
+mdefine_line|#define  STATUSF_IP11&t;&t;(_ULCAST_(1) &lt;&lt;  3)
 DECL|macro|STATUSB_IP12
 mdefine_line|#define  STATUSB_IP12&t;&t;4
 DECL|macro|STATUSF_IP12
-mdefine_line|#define  STATUSF_IP12&t;&t;(1   &lt;&lt; 4)
+mdefine_line|#define  STATUSF_IP12&t;&t;(_ULCAST_(1) &lt;&lt;  4)
 DECL|macro|STATUSB_IP13
 mdefine_line|#define  STATUSB_IP13&t;&t;5
 DECL|macro|STATUSF_IP13
-mdefine_line|#define  STATUSF_IP13&t;&t;(1   &lt;&lt; 5)
+mdefine_line|#define  STATUSF_IP13&t;&t;(_ULCAST_(1) &lt;&lt;  5)
 DECL|macro|STATUSB_IP14
 mdefine_line|#define  STATUSB_IP14&t;&t;6
 DECL|macro|STATUSF_IP14
-mdefine_line|#define  STATUSF_IP14&t;&t;(1   &lt;&lt; 6)
+mdefine_line|#define  STATUSF_IP14&t;&t;(_ULCAST_(1) &lt;&lt;  6)
 DECL|macro|STATUSB_IP15
 mdefine_line|#define  STATUSB_IP15&t;&t;7
 DECL|macro|STATUSF_IP15
-mdefine_line|#define  STATUSF_IP15&t;&t;(1   &lt;&lt; 7)
+mdefine_line|#define  STATUSF_IP15&t;&t;(_ULCAST_(1) &lt;&lt;  7)
 DECL|macro|ST0_CH
 mdefine_line|#define ST0_CH&t;&t;&t;0x00040000
 DECL|macro|ST0_SR
 mdefine_line|#define ST0_SR&t;&t;&t;0x00100000
+DECL|macro|ST0_TS
+mdefine_line|#define ST0_TS&t;&t;&t;0x00200000
 DECL|macro|ST0_BEV
 mdefine_line|#define ST0_BEV&t;&t;&t;0x00400000
 DECL|macro|ST0_RE
@@ -491,56 +476,57 @@ multiline_comment|/*&n; * Bitfields and bit numbers in the coprocessor 0 cause r
 DECL|macro|CAUSEB_EXCCODE
 mdefine_line|#define  CAUSEB_EXCCODE&t;&t;2
 DECL|macro|CAUSEF_EXCCODE
-mdefine_line|#define  CAUSEF_EXCCODE&t;&t;(31  &lt;&lt;  2)
+mdefine_line|#define  CAUSEF_EXCCODE&t;&t;(_ULCAST_(31)  &lt;&lt;  2)
 DECL|macro|CAUSEB_IP
 mdefine_line|#define  CAUSEB_IP&t;&t;8
 DECL|macro|CAUSEF_IP
-mdefine_line|#define  CAUSEF_IP&t;&t;(255 &lt;&lt;  8)
+mdefine_line|#define  CAUSEF_IP&t;&t;(_ULCAST_(255) &lt;&lt;  8)
 DECL|macro|CAUSEB_IP0
 mdefine_line|#define  CAUSEB_IP0&t;&t;8
 DECL|macro|CAUSEF_IP0
-mdefine_line|#define  CAUSEF_IP0&t;&t;(1   &lt;&lt;  8)
+mdefine_line|#define  CAUSEF_IP0&t;&t;(_ULCAST_(1)   &lt;&lt;  8)
 DECL|macro|CAUSEB_IP1
 mdefine_line|#define  CAUSEB_IP1&t;&t;9
 DECL|macro|CAUSEF_IP1
-mdefine_line|#define  CAUSEF_IP1&t;&t;(1   &lt;&lt;  9)
+mdefine_line|#define  CAUSEF_IP1&t;&t;(_ULCAST_(1)   &lt;&lt;  9)
 DECL|macro|CAUSEB_IP2
 mdefine_line|#define  CAUSEB_IP2&t;&t;10
 DECL|macro|CAUSEF_IP2
-mdefine_line|#define  CAUSEF_IP2&t;&t;(1   &lt;&lt; 10)
+mdefine_line|#define  CAUSEF_IP2&t;&t;(_ULCAST_(1)   &lt;&lt; 10)
 DECL|macro|CAUSEB_IP3
 mdefine_line|#define  CAUSEB_IP3&t;&t;11
 DECL|macro|CAUSEF_IP3
-mdefine_line|#define  CAUSEF_IP3&t;&t;(1   &lt;&lt; 11)
+mdefine_line|#define  CAUSEF_IP3&t;&t;(_ULCAST_(1)   &lt;&lt; 11)
 DECL|macro|CAUSEB_IP4
 mdefine_line|#define  CAUSEB_IP4&t;&t;12
 DECL|macro|CAUSEF_IP4
-mdefine_line|#define  CAUSEF_IP4&t;&t;(1   &lt;&lt; 12)
+mdefine_line|#define  CAUSEF_IP4&t;&t;(_ULCAST_(1)   &lt;&lt; 12)
 DECL|macro|CAUSEB_IP5
 mdefine_line|#define  CAUSEB_IP5&t;&t;13
 DECL|macro|CAUSEF_IP5
-mdefine_line|#define  CAUSEF_IP5&t;&t;(1   &lt;&lt; 13)
+mdefine_line|#define  CAUSEF_IP5&t;&t;(_ULCAST_(1)   &lt;&lt; 13)
 DECL|macro|CAUSEB_IP6
 mdefine_line|#define  CAUSEB_IP6&t;&t;14
 DECL|macro|CAUSEF_IP6
-mdefine_line|#define  CAUSEF_IP6&t;&t;(1   &lt;&lt; 14)
+mdefine_line|#define  CAUSEF_IP6&t;&t;(_ULCAST_(1)   &lt;&lt; 14)
 DECL|macro|CAUSEB_IP7
 mdefine_line|#define  CAUSEB_IP7&t;&t;15
 DECL|macro|CAUSEF_IP7
-mdefine_line|#define  CAUSEF_IP7&t;&t;(1   &lt;&lt; 15)
+mdefine_line|#define  CAUSEF_IP7&t;&t;(_ULCAST_(1)   &lt;&lt; 15)
 DECL|macro|CAUSEB_IV
 mdefine_line|#define  CAUSEB_IV&t;&t;23
 DECL|macro|CAUSEF_IV
-mdefine_line|#define  CAUSEF_IV&t;&t;(1   &lt;&lt; 23)
+mdefine_line|#define  CAUSEF_IV&t;&t;(_ULCAST_(1)   &lt;&lt; 23)
 DECL|macro|CAUSEB_CE
 mdefine_line|#define  CAUSEB_CE&t;&t;28
 DECL|macro|CAUSEF_CE
-mdefine_line|#define  CAUSEF_CE&t;&t;(3   &lt;&lt; 28)
+mdefine_line|#define  CAUSEF_CE&t;&t;(_ULCAST_(3)   &lt;&lt; 28)
 DECL|macro|CAUSEB_BD
 mdefine_line|#define  CAUSEB_BD&t;&t;31
 DECL|macro|CAUSEF_BD
-mdefine_line|#define  CAUSEF_BD&t;&t;(1   &lt;&lt; 31)
-multiline_comment|/*&n; * Bits in the coprozessor 0 config register.&n; */
+mdefine_line|#define  CAUSEF_BD&t;&t;(_ULCAST_(1)   &lt;&lt; 31)
+multiline_comment|/*&n; * Bits in the coprocessor 0 config register.&n; */
+multiline_comment|/* Generic bits.  */
 DECL|macro|CONF_CM_CACHABLE_NO_WA
 mdefine_line|#define CONF_CM_CACHABLE_NO_WA&t;&t;0
 DECL|macro|CONF_CM_CACHABLE_WA
@@ -559,16 +545,114 @@ DECL|macro|CONF_CM_CACHABLE_ACCELERATED
 mdefine_line|#define CONF_CM_CACHABLE_ACCELERATED&t;7
 DECL|macro|CONF_CM_CMASK
 mdefine_line|#define CONF_CM_CMASK&t;&t;&t;7
+DECL|macro|CONF_BE
+mdefine_line|#define CONF_BE&t;&t;&t;(_ULCAST_(1) &lt;&lt; 15)
+multiline_comment|/* Bits common to various processors.  */
+DECL|macro|CONF_CU
+mdefine_line|#define CONF_CU&t;&t;&t;(_ULCAST_(1) &lt;&lt;  3)
 DECL|macro|CONF_DB
-mdefine_line|#define CONF_DB&t;&t;&t;&t;(1 &lt;&lt;  4)
+mdefine_line|#define CONF_DB&t;&t;&t;(_ULCAST_(1) &lt;&lt;  4)
 DECL|macro|CONF_IB
-mdefine_line|#define CONF_IB&t;&t;&t;&t;(1 &lt;&lt;  5)
+mdefine_line|#define CONF_IB&t;&t;&t;(_ULCAST_(1) &lt;&lt;  5)
+DECL|macro|CONF_DC
+mdefine_line|#define CONF_DC&t;&t;&t;(_ULCAST_(7) &lt;&lt;  6)
+DECL|macro|CONF_IC
+mdefine_line|#define CONF_IC&t;&t;&t;(_ULCAST_(7) &lt;&lt;  9)
+DECL|macro|CONF_EB
+mdefine_line|#define CONF_EB&t;&t;&t;(_ULCAST_(1) &lt;&lt; 13)
+DECL|macro|CONF_EM
+mdefine_line|#define CONF_EM&t;&t;&t;(_ULCAST_(1) &lt;&lt; 14)
+DECL|macro|CONF_SM
+mdefine_line|#define CONF_SM&t;&t;&t;(_ULCAST_(1) &lt;&lt; 16)
 DECL|macro|CONF_SC
-mdefine_line|#define CONF_SC&t;&t;&t;&t;(1 &lt;&lt; 17)
-DECL|macro|CONF_AC
-mdefine_line|#define CONF_AC                         (1 &lt;&lt; 23)
-DECL|macro|CONF_HALT
-mdefine_line|#define CONF_HALT                       (1 &lt;&lt; 25)
+mdefine_line|#define CONF_SC&t;&t;&t;(_ULCAST_(1) &lt;&lt; 17)
+DECL|macro|CONF_EW
+mdefine_line|#define CONF_EW&t;&t;&t;(_ULCAST_(3) &lt;&lt; 18)
+DECL|macro|CONF_EP
+mdefine_line|#define CONF_EP&t;&t;&t;(_ULCAST_(15)&lt;&lt; 24)
+DECL|macro|CONF_EC
+mdefine_line|#define CONF_EC&t;&t;&t;(_ULCAST_(7) &lt;&lt; 28)
+DECL|macro|CONF_CM
+mdefine_line|#define CONF_CM&t;&t;&t;(_ULCAST_(1) &lt;&lt; 31)
+multiline_comment|/* Bits specific to the R4xx0.  */
+DECL|macro|R4K_CONF_SW
+mdefine_line|#define R4K_CONF_SW&t;&t;(_ULCAST_(1) &lt;&lt; 20)
+DECL|macro|R4K_CONF_SS
+mdefine_line|#define R4K_CONF_SS&t;&t;(_ULCAST_(1) &lt;&lt; 21)
+DECL|macro|R4K_CONF_SB
+mdefine_line|#define R4K_CONF_SB&t;&t;(_ULCAST_(3) &lt;&lt; 22)
+multiline_comment|/* Bits specific to the R5000.  */
+DECL|macro|R5K_CONF_SE
+mdefine_line|#define R5K_CONF_SE&t;&t;(_ULCAST_(1) &lt;&lt; 12)
+DECL|macro|R5K_CONF_SS
+mdefine_line|#define R5K_CONF_SS&t;&t;(_ULCAST_(3) &lt;&lt; 20)
+multiline_comment|/* Bits specific to the R10000.  */
+DECL|macro|R10K_CONF_DN
+mdefine_line|#define R10K_CONF_DN&t;&t;(_ULCAST_(3) &lt;&lt;  3)
+DECL|macro|R10K_CONF_CT
+mdefine_line|#define R10K_CONF_CT&t;&t;(_ULCAST_(1) &lt;&lt;  5)
+DECL|macro|R10K_CONF_PE
+mdefine_line|#define R10K_CONF_PE&t;&t;(_ULCAST_(1) &lt;&lt;  6)
+DECL|macro|R10K_CONF_PM
+mdefine_line|#define R10K_CONF_PM&t;&t;(_ULCAST_(3) &lt;&lt;  7)
+DECL|macro|R10K_CONF_EC
+mdefine_line|#define R10K_CONF_EC&t;&t;(_ULCAST_(15)&lt;&lt;  9)
+DECL|macro|R10K_CONF_SB
+mdefine_line|#define R10K_CONF_SB&t;&t;(_ULCAST_(1) &lt;&lt; 13)
+DECL|macro|R10K_CONF_SK
+mdefine_line|#define R10K_CONF_SK&t;&t;(_ULCAST_(1) &lt;&lt; 14)
+DECL|macro|R10K_CONF_SS
+mdefine_line|#define R10K_CONF_SS&t;&t;(_ULCAST_(7) &lt;&lt; 16)
+DECL|macro|R10K_CONF_SC
+mdefine_line|#define R10K_CONF_SC&t;&t;(_ULCAST_(7) &lt;&lt; 19)
+DECL|macro|R10K_CONF_DC
+mdefine_line|#define R10K_CONF_DC&t;&t;(_ULCAST_(7) &lt;&lt; 26)
+DECL|macro|R10K_CONF_IC
+mdefine_line|#define R10K_CONF_IC&t;&t;(_ULCAST_(7) &lt;&lt; 29)
+multiline_comment|/* Bits specific to the VR41xx.  */
+DECL|macro|VR41_CONF_CS
+mdefine_line|#define VR41_CONF_CS&t;&t;(_ULCAST_(1) &lt;&lt; 12)
+DECL|macro|VR41_CONF_M16
+mdefine_line|#define VR41_CONF_M16&t;&t;(_ULCAST_(1) &lt;&lt; 20)
+DECL|macro|VR41_CONF_AD
+mdefine_line|#define VR41_CONF_AD&t;&t;(_ULCAST_(1) &lt;&lt; 23)
+multiline_comment|/* Bits specific to the R30xx.  */
+DECL|macro|R30XX_CONF_FDM
+mdefine_line|#define R30XX_CONF_FDM&t;&t;(_ULCAST_(1) &lt;&lt; 19)
+DECL|macro|R30XX_CONF_REV
+mdefine_line|#define R30XX_CONF_REV&t;&t;(_ULCAST_(1) &lt;&lt; 22)
+DECL|macro|R30XX_CONF_AC
+mdefine_line|#define R30XX_CONF_AC&t;&t;(_ULCAST_(1) &lt;&lt; 23)
+DECL|macro|R30XX_CONF_RF
+mdefine_line|#define R30XX_CONF_RF&t;&t;(_ULCAST_(1) &lt;&lt; 24)
+DECL|macro|R30XX_CONF_HALT
+mdefine_line|#define R30XX_CONF_HALT&t;&t;(_ULCAST_(1) &lt;&lt; 25)
+DECL|macro|R30XX_CONF_FPINT
+mdefine_line|#define R30XX_CONF_FPINT&t;(_ULCAST_(7) &lt;&lt; 26)
+DECL|macro|R30XX_CONF_DBR
+mdefine_line|#define R30XX_CONF_DBR&t;&t;(_ULCAST_(1) &lt;&lt; 29)
+DECL|macro|R30XX_CONF_SB
+mdefine_line|#define R30XX_CONF_SB&t;&t;(_ULCAST_(1) &lt;&lt; 30)
+DECL|macro|R30XX_CONF_LOCK
+mdefine_line|#define R30XX_CONF_LOCK&t;&t;(_ULCAST_(1) &lt;&lt; 31)
+multiline_comment|/* Bits specific to the TX49.  */
+DECL|macro|TX49_CONF_DC
+mdefine_line|#define TX49_CONF_DC&t;&t;(_ULCAST_(1) &lt;&lt; 16)
+DECL|macro|TX49_CONF_IC
+mdefine_line|#define TX49_CONF_IC&t;&t;(_ULCAST_(1) &lt;&lt; 17)  /* conflict with CONF_SC */
+DECL|macro|TX49_CONF_HALT
+mdefine_line|#define TX49_CONF_HALT&t;&t;(_ULCAST_(1) &lt;&lt; 18)
+DECL|macro|TX49_CONF_CWFON
+mdefine_line|#define TX49_CONF_CWFON&t;&t;(_ULCAST_(1) &lt;&lt; 27)
+multiline_comment|/* Bits specific to the MIPS32/64 PRA.  */
+DECL|macro|MIPS_CONF_MT
+mdefine_line|#define MIPS_CONF_MT&t;&t;(_ULCAST_(7) &lt;&lt;  7)
+DECL|macro|MIPS_CONF_AR
+mdefine_line|#define MIPS_CONF_AR&t;&t;(_ULCAST_(7) &lt;&lt; 10)
+DECL|macro|MIPS_CONF_AT
+mdefine_line|#define MIPS_CONF_AT&t;&t;(_ULCAST_(3) &lt;&lt; 13)
+DECL|macro|MIPS_CONF_M
+mdefine_line|#define MIPS_CONF_M&t;&t;(_ULCAST_(1) &lt;&lt; 31)
 multiline_comment|/*&n; * R10000 performance counter definitions.&n; *&n; * FIXME: The R10000 performance counter opens a nice way to implement CPU&n; *        time accounting with a precission of one cycle.  I don&squot;t have&n; *        R10000 silicon but just a manual, so ...&n; */
 multiline_comment|/*&n; * Events counted by counter #0&n; */
 DECL|macro|CE0_CYCLES
@@ -645,5 +729,326 @@ DECL|macro|CEB_KERNEL
 mdefine_line|#define CEB_KERNEL&t;2&t;/* Count events in kernel mode EXL = ERL = 0 */
 DECL|macro|CEB_EXL
 mdefine_line|#define CEB_EXL&t;&t;1&t;/* Count events with EXL = 1, ERL = 0 */
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * Functions to access the r10k performance counter and control registers&n; */
+DECL|macro|read_r10k_perf_cntr
+mdefine_line|#define read_r10k_perf_cntr(counter)                            &bslash;&n;({ unsigned int __res;                                          &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mfpc&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
+DECL|macro|write_r10k_perf_cntr
+mdefine_line|#define write_r10k_perf_cntr(counter,val)                       &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mtpc&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : : &quot;r&quot; (val));
+DECL|macro|read_r10k_perf_cntl
+mdefine_line|#define read_r10k_perf_cntl(counter)                            &bslash;&n;({ unsigned int __res;                                          &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mfps&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
+DECL|macro|write_r10k_perf_cntl
+mdefine_line|#define write_r10k_perf_cntl(counter,val)                       &bslash;&n;        __asm__ __volatile__(                                   &bslash;&n;        &quot;mtps&bslash;t%0, &quot;STR(counter)                                &bslash;&n;        : : &quot;r&quot; (val));
+multiline_comment|/*&n; * Macros to access the system control coprocessor&n; */
+DECL|macro|__read_32bit_c0_register
+mdefine_line|#define __read_32bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n;({ int __res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mfc0&bslash;t%0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__read_64bit_c0_register
+mdefine_line|#define __read_64bit_c0_register(source, sel)&t;&t;&t;&t;&bslash;&n;({ unsigned long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (__res));&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__write_32bit_c0_register
+mdefine_line|#define __write_32bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|__write_64bit_c0_register
+mdefine_line|#define __write_64bit_c0_register(register, sel, value)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%z0, &quot; #register &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;Jr&quot; (value));&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|__read_ulong_c0_register
+mdefine_line|#define __read_ulong_c0_register(reg, sel)&t;&t;&t;&t;&bslash;&n;&t;((sizeof(unsigned long) == 4) ?&t;&t;&t;&t;&t;&bslash;&n;&t;__read_32bit_c0_register(reg, sel) :&t;&t;&t;&t;&bslash;&n;&t;__read_64bit_c0_register(reg, sel))
+DECL|macro|__write_ulong_c0_register
+mdefine_line|#define __write_ulong_c0_register(reg, sel, val)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(unsigned long) == 4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_32bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__write_64bit_c0_register(reg, sel, val);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * These versions are only needed for systems with more than 38 bits of&n; * physical address space running the 32-bit kernel.  That&squot;s none atm :-)&n; */
+DECL|macro|__read_64bit_c0_split
+mdefine_line|#define __read_64bit_c0_split(source, sel)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long long val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%M0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%L0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%M0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (val));&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmfc0&bslash;t%M0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%L0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%M0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (val));&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__write_64bit_c0_split
+mdefine_line|#define __write_64bit_c0_split(source, sel, val)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sel == 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%M0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;or&bslash;t%L0, %L0, %M0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%L0, &quot; #source &quot;&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;r&quot; (val));&t;&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips64&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsrl&bslash;t%L0, %L0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dsll&bslash;t%M0, %M0, 32&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;or&bslash;t%L0, %L0, %M0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;dmtc0&bslash;t%L0, &quot; #source &quot;, &quot; #sel &quot;&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;.set&bslash;tmips0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: : &quot;r&quot; (val));&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_restore(flags);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|read_c0_index
+mdefine_line|#define read_c0_index()&t;&t;__read_32bit_c0_register($0, 0)
+DECL|macro|write_c0_index
+mdefine_line|#define write_c0_index(val)&t;__write_32bit_c0_register($0, 0, val)
+DECL|macro|read_c0_entrylo0
+mdefine_line|#define read_c0_entrylo0()&t;__read_ulong_c0_register($2, 0)
+DECL|macro|write_c0_entrylo0
+mdefine_line|#define write_c0_entrylo0(val)&t;__write_ulong_c0_register($2, 0, val)
+DECL|macro|read_c0_entrylo1
+mdefine_line|#define read_c0_entrylo1()&t;__read_ulong_c0_register($3, 0)
+DECL|macro|write_c0_entrylo1
+mdefine_line|#define write_c0_entrylo1(val)&t;__write_ulong_c0_register($3, 0, val)
+DECL|macro|read_c0_conf
+mdefine_line|#define read_c0_conf()&t;&t;__read_32bit_c0_register($3, 0)
+DECL|macro|write_c0_conf
+mdefine_line|#define write_c0_conf(val)&t;__write_32bit_c0_register($3, 0, val)
+DECL|macro|read_c0_context
+mdefine_line|#define read_c0_context()&t;__read_ulong_c0_register($4, 0)
+DECL|macro|write_c0_context
+mdefine_line|#define write_c0_context(val)&t;__write_ulong_c0_register($4, 0, val)
+DECL|macro|read_c0_pagemask
+mdefine_line|#define read_c0_pagemask()&t;__read_32bit_c0_register($5, 0)
+DECL|macro|write_c0_pagemask
+mdefine_line|#define write_c0_pagemask(val)&t;__write_32bit_c0_register($5, 0, val)
+DECL|macro|read_c0_wired
+mdefine_line|#define read_c0_wired()&t;&t;__read_32bit_c0_register($6, 0)
+DECL|macro|write_c0_wired
+mdefine_line|#define write_c0_wired(val)&t;__write_32bit_c0_register($6, 0, val)
+DECL|macro|read_c0_info
+mdefine_line|#define read_c0_info()&t;&t;__read_32bit_c0_register($7, 0)
+DECL|macro|read_c0_cache
+mdefine_line|#define read_c0_cache()&t;&t;__read_32bit_c0_register($7, 0)&t;/* TX39xx */
+DECL|macro|write_c0_cache
+mdefine_line|#define write_c0_cache(val)&t;__write_32bit_c0_register($7, 0, val)
+DECL|macro|read_c0_count
+mdefine_line|#define read_c0_count()&t;&t;__read_32bit_c0_register($9, 0)
+DECL|macro|write_c0_count
+mdefine_line|#define write_c0_count(val)&t;__write_32bit_c0_register($9, 0, val)
+DECL|macro|read_c0_entryhi
+mdefine_line|#define read_c0_entryhi()&t;__read_ulong_c0_register($10, 0)
+DECL|macro|write_c0_entryhi
+mdefine_line|#define write_c0_entryhi(val)&t;__write_ulong_c0_register($10, 0, val)
+DECL|macro|read_c0_compare
+mdefine_line|#define read_c0_compare()&t;__read_32bit_c0_register($11, 0)
+DECL|macro|write_c0_compare
+mdefine_line|#define write_c0_compare(val)&t;__write_32bit_c0_register($11, 0, val)
+DECL|macro|read_c0_status
+mdefine_line|#define read_c0_status()&t;__read_32bit_c0_register($12, 0)
+DECL|macro|write_c0_status
+mdefine_line|#define write_c0_status(val)&t;__write_32bit_c0_register($12, 0, val)
+DECL|macro|read_c0_cause
+mdefine_line|#define read_c0_cause()&t;&t;__read_32bit_c0_register($13, 0)
+DECL|macro|write_c0_cause
+mdefine_line|#define write_c0_cause(val)&t;__write_32bit_c0_register($13, 0, val)
+DECL|macro|read_c0_prid
+mdefine_line|#define read_c0_prid()&t;&t;__read_32bit_c0_register($15, 0)
+DECL|macro|read_c0_config
+mdefine_line|#define read_c0_config()&t;__read_32bit_c0_register($16, 0)
+DECL|macro|read_c0_config1
+mdefine_line|#define read_c0_config1()&t;__read_32bit_c0_register($16, 1)
+DECL|macro|read_c0_config2
+mdefine_line|#define read_c0_config2()&t;__read_32bit_c0_register($16, 2)
+DECL|macro|read_c0_config3
+mdefine_line|#define read_c0_config3()&t;__read_32bit_c0_register($16, 3)
+DECL|macro|write_c0_config
+mdefine_line|#define write_c0_config(val)&t;__write_32bit_c0_register($16, 0, val)
+DECL|macro|write_c0_config1
+mdefine_line|#define write_c0_config1(val)&t;__write_32bit_c0_register($16, 1, val)
+DECL|macro|write_c0_config2
+mdefine_line|#define write_c0_config2(val)&t;__write_32bit_c0_register($16, 2, val)
+DECL|macro|write_c0_config3
+mdefine_line|#define write_c0_config3(val)&t;__write_32bit_c0_register($16, 3, val)
+multiline_comment|/*&n; * The WatchLo register.  There may be upto 8 of them.&n; */
+DECL|macro|read_c0_watchlo0
+mdefine_line|#define read_c0_watchlo0()&t;__read_ulong_c0_register($18, 0)
+DECL|macro|read_c0_watchlo1
+mdefine_line|#define read_c0_watchlo1()&t;__read_ulong_c0_register($18, 1)
+DECL|macro|read_c0_watchlo2
+mdefine_line|#define read_c0_watchlo2()&t;__read_ulong_c0_register($18, 2)
+DECL|macro|read_c0_watchlo3
+mdefine_line|#define read_c0_watchlo3()&t;__read_ulong_c0_register($18, 3)
+DECL|macro|read_c0_watchlo4
+mdefine_line|#define read_c0_watchlo4()&t;__read_ulong_c0_register($18, 4)
+DECL|macro|read_c0_watchlo5
+mdefine_line|#define read_c0_watchlo5()&t;__read_ulong_c0_register($18, 5)
+DECL|macro|read_c0_watchlo6
+mdefine_line|#define read_c0_watchlo6()&t;__read_ulong_c0_register($18, 6)
+DECL|macro|read_c0_watchlo7
+mdefine_line|#define read_c0_watchlo7()&t;__read_ulong_c0_register($18, 7)
+DECL|macro|write_c0_watchlo0
+mdefine_line|#define write_c0_watchlo0(val)&t;__write_ulong_c0_register($18, 0, val)
+DECL|macro|write_c0_watchlo1
+mdefine_line|#define write_c0_watchlo1(val)&t;__write_ulong_c0_register($18, 1, val)
+DECL|macro|write_c0_watchlo2
+mdefine_line|#define write_c0_watchlo2(val)&t;__write_ulong_c0_register($18, 2, val)
+DECL|macro|write_c0_watchlo3
+mdefine_line|#define write_c0_watchlo3(val)&t;__write_ulong_c0_register($18, 3, val)
+DECL|macro|write_c0_watchlo4
+mdefine_line|#define write_c0_watchlo4(val)&t;__write_ulong_c0_register($18, 4, val)
+DECL|macro|write_c0_watchlo5
+mdefine_line|#define write_c0_watchlo5(val)&t;__write_ulong_c0_register($18, 5, val)
+DECL|macro|write_c0_watchlo6
+mdefine_line|#define write_c0_watchlo6(val)&t;__write_ulong_c0_register($18, 6, val)
+DECL|macro|write_c0_watchlo7
+mdefine_line|#define write_c0_watchlo7(val)&t;__write_ulong_c0_register($18, 7, val)
+multiline_comment|/*&n; * The WatchHi register.  There may be upto 8 of them.&n; */
+DECL|macro|read_c0_watchhi0
+mdefine_line|#define read_c0_watchhi0()&t;__read_32bit_c0_register($19, 0)
+DECL|macro|read_c0_watchhi1
+mdefine_line|#define read_c0_watchhi1()&t;__read_32bit_c0_register($19, 1)
+DECL|macro|read_c0_watchhi2
+mdefine_line|#define read_c0_watchhi2()&t;__read_32bit_c0_register($19, 2)
+DECL|macro|read_c0_watchhi3
+mdefine_line|#define read_c0_watchhi3()&t;__read_32bit_c0_register($19, 3)
+DECL|macro|read_c0_watchhi4
+mdefine_line|#define read_c0_watchhi4()&t;__read_32bit_c0_register($19, 4)
+DECL|macro|read_c0_watchhi5
+mdefine_line|#define read_c0_watchhi5()&t;__read_32bit_c0_register($19, 5)
+DECL|macro|read_c0_watchhi6
+mdefine_line|#define read_c0_watchhi6()&t;__read_32bit_c0_register($19, 6)
+DECL|macro|read_c0_watchhi7
+mdefine_line|#define read_c0_watchhi7()&t;__read_32bit_c0_register($19, 7)
+DECL|macro|write_c0_watchhi0
+mdefine_line|#define write_c0_watchhi0(val)&t;__write_32bit_c0_register($19, 0, val)
+DECL|macro|write_c0_watchhi1
+mdefine_line|#define write_c0_watchhi1(val)&t;__write_32bit_c0_register($19, 1, val)
+DECL|macro|write_c0_watchhi2
+mdefine_line|#define write_c0_watchhi2(val)&t;__write_32bit_c0_register($19, 2, val)
+DECL|macro|write_c0_watchhi3
+mdefine_line|#define write_c0_watchhi3(val)&t;__write_32bit_c0_register($19, 3, val)
+DECL|macro|write_c0_watchhi4
+mdefine_line|#define write_c0_watchhi4(val)&t;__write_32bit_c0_register($19, 4, val)
+DECL|macro|write_c0_watchhi5
+mdefine_line|#define write_c0_watchhi5(val)&t;__write_32bit_c0_register($19, 5, val)
+DECL|macro|write_c0_watchhi6
+mdefine_line|#define write_c0_watchhi6(val)&t;__write_32bit_c0_register($19, 6, val)
+DECL|macro|write_c0_watchhi7
+mdefine_line|#define write_c0_watchhi7(val)&t;__write_32bit_c0_register($19, 7, val)
+DECL|macro|read_c0_xcontext
+mdefine_line|#define read_c0_xcontext()&t;__read_ulong_c0_register($20, 0)
+DECL|macro|write_c0_xcontext
+mdefine_line|#define write_c0_xcontext(val)&t;__write_ulong_c0_register($20, 0, val)
+DECL|macro|read_c0_intcontrol
+mdefine_line|#define read_c0_intcontrol()&t;__read_32bit_c0_register($20, 1)
+DECL|macro|write_c0_intcontrol
+mdefine_line|#define write_c0_intcontrol(val) __write_32bit_c0_register($20, 1, val)
+DECL|macro|read_c0_framemask
+mdefine_line|#define read_c0_framemask()&t;__read_32bit_c0_register($21, 0)
+DECL|macro|write_c0_framemask
+mdefine_line|#define write_c0_framemask(val)&t;__write_32bit_c0_register($21, 0, val)
+DECL|macro|read_c0_debug
+mdefine_line|#define read_c0_debug()&t;&t;__read_32bit_c0_register($23, 0)
+DECL|macro|write_c0_debug
+mdefine_line|#define write_c0_debug(val)&t;__write_32bit_c0_register($23, 0, val)
+DECL|macro|read_c0_depc
+mdefine_line|#define read_c0_depc()&t;&t;__read_ulong_c0_register($24, 0)
+DECL|macro|write_c0_depc
+mdefine_line|#define write_c0_depc(val)&t;__write_ulong_c0_register($24, 0, val)
+DECL|macro|read_c0_ecc
+mdefine_line|#define read_c0_ecc()&t;&t;__read_32bit_c0_register($26, 0)
+DECL|macro|write_c0_ecc
+mdefine_line|#define write_c0_ecc(val)&t;__write_32bit_c0_register($26, 0, val)
+DECL|macro|read_c0_derraddr0
+mdefine_line|#define read_c0_derraddr0()&t;__read_ulong_c0_register($26, 1)
+DECL|macro|write_c0_derraddr0
+mdefine_line|#define write_c0_derraddr0(val)&t;__write_ulong_c0_register($26, 1, val)
+DECL|macro|read_c0_cacheerr
+mdefine_line|#define read_c0_cacheerr()&t;__read_32bit_c0_register($27, 0)
+DECL|macro|read_c0_derraddr1
+mdefine_line|#define read_c0_derraddr1()&t;__read_ulong_c0_register($27, 1)
+DECL|macro|write_c0_derraddr1
+mdefine_line|#define write_c0_derraddr1(val)&t;__write_ulong_c0_register($27, 1, val)
+DECL|macro|read_c0_taglo
+mdefine_line|#define read_c0_taglo()&t;&t;__read_32bit_c0_register($28, 0)
+DECL|macro|write_c0_taglo
+mdefine_line|#define write_c0_taglo(val)&t;__write_32bit_c0_register($28, 0, val)
+DECL|macro|read_c0_taghi
+mdefine_line|#define read_c0_taghi()&t;&t;__read_32bit_c0_register($29, 0)
+DECL|macro|write_c0_taghi
+mdefine_line|#define write_c0_taghi(val)&t;__write_32bit_c0_register($29, 0, val)
+DECL|macro|read_c0_errorepc
+mdefine_line|#define read_c0_errorepc()&t;__read_ulong_c0_register($30, 0)
+DECL|macro|write_c0_errorepc
+mdefine_line|#define write_c0_errorepc(val)&t;__write_ulong_c0_register($30, 0, val)
+multiline_comment|/*&n; * Macros to access the floating point coprocessor control registers&n; */
+DECL|macro|read_32bit_cp1_register
+mdefine_line|#define read_32bit_cp1_register(source)                         &bslash;&n;({ int __res;                                                   &bslash;&n;&t;__asm__ __volatile__(                                   &bslash;&n;&t;&quot;.set&bslash;tpush&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;        &quot;cfc1&bslash;t%0,&quot;STR(source)&quot;&bslash;n&bslash;t&quot;                            &bslash;&n;&t;&quot;.set&bslash;tpop&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=r&quot; (__res));                                        &bslash;&n;        __res;})
+multiline_comment|/* TLB operations. */
+DECL|function|tlb_probe
+r_static
+r_inline
+r_void
+id|tlb_probe
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;tlbp&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|tlb_read
+r_static
+r_inline
+r_void
+id|tlb_read
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;tlbr&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|tlb_write_indexed
+r_static
+r_inline
+r_void
+id|tlb_write_indexed
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;tlbwi&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|tlb_write_random
+r_static
+r_inline
+r_void
+id|tlb_write_random
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set noreorder&bslash;n&bslash;t&quot;
+l_string|&quot;tlbwr&bslash;n&bslash;t&quot;
+l_string|&quot;.set reorder&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Manipulate bits in a c0 register.&n; */
+DECL|macro|__BUILD_SET_C0
+mdefine_line|#define __BUILD_SET_C0(name,register)&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;set_c0_##name(unsigned int set)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res |= set;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;clear_c0_##name(unsigned int clear)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res &amp;= ~clear;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned int&t;&t;&t;&t;&t;&bslash;&n;change_c0_##name(unsigned int change, unsigned int new)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int res;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res = read_c0_##name();&t;&t;&t;&t;&t;&bslash;&n;&t;res &amp;= ~change;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;res |= (new &amp; change);&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_##name(res);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return res;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+id|__BUILD_SET_C0
+c_func
+(paren
+id|status
+comma
+id|CP0_STATUS
+)paren
+id|__BUILD_SET_C0
+c_func
+(paren
+id|cause
+comma
+id|CP0_CAUSE
+)paren
+id|__BUILD_SET_C0
+c_func
+(paren
+id|config
+comma
+id|CP0_CONFIG
+)paren
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_MIPSREGS_H */
 eof

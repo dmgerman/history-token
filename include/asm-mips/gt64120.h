@@ -64,7 +64,7 @@ mdefine_line|#define GT_PCI1M0REMAP_OFS&t;0x110
 DECL|macro|GT_PCI1M1REMAP_OFS
 mdefine_line|#define GT_PCI1M1REMAP_OFS&t;0x118
 DECL|macro|GT_SCS0LD_OFS
-mdefine_line|#define GT_SCS0LD_OFS&t;&t;0x400&t;
+mdefine_line|#define GT_SCS0LD_OFS&t;&t;0x400
 DECL|macro|GT_SCS0HD_OFS
 mdefine_line|#define GT_SCS0HD_OFS&t;&t;0x404
 DECL|macro|GT_SCS1LD_OFS

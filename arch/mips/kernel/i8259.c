@@ -2,10 +2,11 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_void
 id|enable_8259A_irq
@@ -27,6 +28,7 @@ id|irq
 suffix:semicolon
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
+r_static
 id|spinlock_t
 id|i8259A_lock
 op_assign
@@ -60,6 +62,13 @@ op_or
 id|IRQ_INPROGRESS
 )paren
 )paren
+op_logical_and
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|action
 )paren
 id|enable_8259A_irq
 c_func
@@ -135,12 +144,10 @@ id|cached_irq_mask
 op_assign
 l_int|0xffff
 suffix:semicolon
-DECL|macro|__byte
-mdefine_line|#define __byte(x,y) &t;(((unsigned char *)&amp;(y))[x])
 DECL|macro|cached_21
-mdefine_line|#define cached_21&t;(__byte(0,cached_irq_mask))
+mdefine_line|#define cached_21&t;(cached_irq_mask)
 DECL|macro|cached_A1
-mdefine_line|#define cached_A1&t;(__byte(1,cached_irq_mask))
+mdefine_line|#define cached_A1&t;(cached_irq_mask &gt;&gt; 8)
 DECL|function|disable_8259A_irq
 r_void
 id|disable_8259A_irq
@@ -678,8 +685,12 @@ op_or_assign
 id|irqmask
 suffix:semicolon
 )brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|irq_err_count
-op_increment
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Theoretically we do not have to handle this IRQ,&n;&t;&t; * but in Linux this does not cause problems and is&n;&t;&t; * simpler for us.&n;&t;&t; */
 r_goto
@@ -687,6 +698,114 @@ id|handle_real_irq
 suffix:semicolon
 )brace
 )brace
+DECL|function|i8259A_resume
+r_static
+r_int
+id|i8259A_resume
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|dev
+)paren
+(brace
+id|init_8259A
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|i8259_sysdev_class
+r_static
+r_struct
+id|sysdev_class
+id|i8259_sysdev_class
+op_assign
+(brace
+id|set_kset_name
+c_func
+(paren
+l_string|&quot;i8259&quot;
+)paren
+comma
+dot
+id|resume
+op_assign
+id|i8259A_resume
+comma
+)brace
+suffix:semicolon
+DECL|variable|device_i8259A
+r_static
+r_struct
+id|sys_device
+id|device_i8259A
+op_assign
+(brace
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|cls
+op_assign
+op_amp
+id|i8259_sysdev_class
+comma
+)brace
+suffix:semicolon
+DECL|function|i8259A_init_sysfs
+r_static
+r_int
+id|__init
+id|i8259A_init_sysfs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|error
+op_assign
+id|sysdev_class_register
+c_func
+(paren
+op_amp
+id|i8259_sysdev_class
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|error
+op_assign
+id|sys_device_register
+c_func
+(paren
+op_amp
+id|device_i8259A
+)paren
+suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
+DECL|variable|i8259A_init_sysfs
+id|device_initcall
+c_func
+(paren
+id|i8259A_init_sysfs
+)paren
+suffix:semicolon
 DECL|function|init_8259A
 r_void
 id|__init
@@ -741,14 +860,12 @@ multiline_comment|/* ICW1: select 8259A-1 init */
 id|outb_p
 c_func
 (paren
-l_int|0x20
-op_plus
-l_int|0
+l_int|0x00
 comma
 l_int|0x21
 )paren
 suffix:semicolon
-multiline_comment|/* ICW2: 8259A-1 IR0-7 mapped to 0x20-0x27 */
+multiline_comment|/* ICW2: 8259A-1 IR0-7 mapped to 0x00-0x07 */
 id|outb_p
 c_func
 (paren
@@ -794,14 +911,12 @@ multiline_comment|/* ICW1: select 8259A-2 init */
 id|outb_p
 c_func
 (paren
-l_int|0x20
-op_plus
-l_int|8
+l_int|0x08
 comma
 l_int|0xA1
 )paren
 suffix:semicolon
-multiline_comment|/* ICW2: 8259A-2 IR0-7 mapped to 0x28-0x2f */
+multiline_comment|/* ICW2: 8259A-2 IR0-7 mapped to 0x08-0x0f */
 id|outb_p
 c_func
 (paren

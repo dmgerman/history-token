@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * Copyright (C) 1999, 2000  Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&n; * This file should only be included by drivers/parport/parport_pc.c.&n; */
+multiline_comment|/*&n; * Copyright (C) 1999, 2000  Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&n; * This file should only be included by drivers/parport/parport_pc.c.&n; */
 macro_line|#ifndef _ASM_PARPORT_H
 DECL|macro|_ASM_PARPORT_H
 mdefine_line|#define _ASM_PARPORT_H

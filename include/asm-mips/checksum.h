@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_CHECKSUM_H
 DECL|macro|_ASM_CHECKSUM_H
 mdefine_line|#define _ASM_CHECKSUM_H
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 r_int
 r_int
@@ -54,7 +55,7 @@ multiline_comment|/*&n; * Copy and checksum to user&n; */
 DECL|macro|HAVE_CSUM_COPY_USER
 mdefine_line|#define HAVE_CSUM_COPY_USER
 DECL|function|csum_and_copy_to_user
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -180,8 +181,6 @@ l_string|&quot;0&quot;
 (paren
 id|sum
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return
@@ -277,8 +276,6 @@ l_string|&quot;2&quot;
 (paren
 id|ihl
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return
@@ -386,8 +383,6 @@ l_string|&quot;r&quot;
 (paren
 id|sum
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return
@@ -515,7 +510,8 @@ id|sum
 id|__asm__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# csum_ipv6_magic&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t# csum_ipv6_magic&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %5&bslash;t&bslash;t&bslash;t# proto (long in network byte order)&bslash;n&bslash;t&quot;
 l_string|&quot;sltu&bslash;t$1, %0, %5&bslash;n&bslash;t&quot;
@@ -525,37 +521,37 @@ l_string|&quot;sltu&bslash;t$1, %0, %6&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 0(%2)&bslash;t&bslash;t&bslash;t# four words source address&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 4(%2)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 8(%2)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 12(%2)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 0(%3)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 4(%3)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 8(%3)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%1, 12(%3)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %1&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, $1&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoreorder&quot;
+l_string|&quot;sltu&bslash;t$1, %0, %1&bslash;n&bslash;t&quot;
+l_string|&quot;addu&bslash;t%0, $1&bslash;t&bslash;t&bslash;t# Add final carry&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -599,8 +595,6 @@ l_string|&quot;r&quot;
 (paren
 id|sum
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return

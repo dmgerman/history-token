@@ -1,43 +1,6 @@
 multiline_comment|/* IEEE754 floating point arithmetic&n; * double precision square root&n; */
 multiline_comment|/*&n; * MIPS floating point support&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; */
 macro_line|#include &quot;ieee754dp.h&quot;
-DECL|variable|knan
-r_static
-r_const
-r_struct
-id|ieee754dp_konst
-id|knan
-op_assign
-(brace
-macro_line|#if (defined(BYTE_ORDER) &amp;&amp; BYTE_ORDER == LITTLE_ENDIAN) || defined(__MIPSEL__)
-l_int|0
-comma
-l_int|0
-comma
-id|DP_EBIAS
-op_plus
-id|DP_EMAX
-op_plus
-l_int|1
-comma
-l_int|0
-macro_line|#else
-l_int|0
-comma
-id|DP_EBIAS
-op_plus
-id|DP_EMAX
-op_plus
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-macro_line|#endif
-)brace
-suffix:semicolon
-DECL|macro|nan
-mdefine_line|#define nan&t;((ieee754dp)knan)
 DECL|variable|table
 r_static
 r_const
@@ -141,6 +104,10 @@ id|COMPXDP
 suffix:semicolon
 id|EXPLODEXDP
 suffix:semicolon
+id|CLEARCX
+suffix:semicolon
+id|FLUSHXDP
+suffix:semicolon
 multiline_comment|/* x == INF or NAN? */
 r_switch
 c_cond
@@ -151,15 +118,33 @@ id|xc
 r_case
 id|IEEE754_CLASS_QNAN
 suffix:colon
-r_case
-id|IEEE754_CLASS_SNAN
-suffix:colon
 multiline_comment|/* sqrt(Nan) = Nan */
 r_return
 id|ieee754dp_nanxcpt
 c_func
 (paren
 id|x
+comma
+l_string|&quot;sqrt&quot;
+)paren
+suffix:semicolon
+r_case
+id|IEEE754_CLASS_SNAN
+suffix:colon
+id|SETCX
+c_func
+(paren
+id|IEEE754_INVALID_OPERATION
+)paren
+suffix:semicolon
+r_return
+id|ieee754dp_nanxcpt
+c_func
+(paren
+id|ieee754dp_indef
+c_func
+(paren
+)paren
 comma
 l_string|&quot;sqrt&quot;
 )paren
@@ -179,16 +164,27 @@ c_cond
 (paren
 id|xs
 )paren
+(brace
 multiline_comment|/* sqrt(-Inf) = Nan */
+id|SETCX
+c_func
+(paren
+id|IEEE754_INVALID_OPERATION
+)paren
+suffix:semicolon
 r_return
 id|ieee754dp_nanxcpt
 c_func
 (paren
-id|nan
+id|ieee754dp_indef
+c_func
+(paren
+)paren
 comma
 l_string|&quot;sqrt&quot;
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* sqrt(+Inf) = Inf */
 r_return
 id|x
@@ -207,16 +203,27 @@ c_cond
 (paren
 id|xs
 )paren
+(brace
 multiline_comment|/* sqrt(-x) = Nan */
+id|SETCX
+c_func
+(paren
+id|IEEE754_INVALID_OPERATION
+)paren
+suffix:semicolon
 r_return
 id|ieee754dp_nanxcpt
 c_func
 (paren
-id|nan
+id|ieee754dp_indef
+c_func
+(paren
+)paren
 comma
 l_string|&quot;sqrt&quot;
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -339,9 +346,7 @@ id|y.bits
 op_assign
 (paren
 (paren
-r_int
-r_int
-r_int
+id|u64
 )paren
 id|yh
 op_lshift

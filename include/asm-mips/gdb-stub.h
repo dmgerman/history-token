@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: gdb-stub.h,v 1.3 1998/07/20 17:52:19 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 Andreas Busse&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 Andreas Busse&n; */
 macro_line|#ifndef __ASM_MIPS_GDB_STUB_H
 DECL|macro|__ASM_MIPS_GDB_STUB_H
 mdefine_line|#define __ASM_MIPS_GDB_STUB_H
@@ -197,7 +197,7 @@ DECL|macro|GDB_FR_CP0_PRID
 mdefine_line|#define GDB_FR_CP0_PRID&t;&t;((GDB_FR_CP0_REG14) + 4)&t;/* 89 */
 DECL|macro|GDB_FR_SIZE
 mdefine_line|#define GDB_FR_SIZE&t;&t;((((GDB_FR_CP0_PRID) + 4) + (PTRSIZE-1)) &amp; ~(PTRSIZE-1))
-macro_line|#ifndef _LANGUAGE_ASSEMBLY
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * This is the same as above, but for the high-level&n; * part of the GDB stub.&n; */
 DECL|struct|gdb_regs
 r_struct
@@ -532,6 +532,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* _LANGUAGE_ASSEMBLY */
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __ASM_MIPS_GDB_STUB_H */
 eof

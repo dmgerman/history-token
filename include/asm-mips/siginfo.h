@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: siginfo.h,v 1.5 1999/08/18 23:37:49 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
 macro_line|#ifndef _ASM_SIGINFO_H
 DECL|macro|_ASM_SIGINFO_H
 mdefine_line|#define _ASM_SIGINFO_H
@@ -8,8 +8,12 @@ DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
 DECL|macro|HAVE_ARCH_SIGEVENT_T
 mdefine_line|#define HAVE_ARCH_SIGEVENT_T
+multiline_comment|/*&n; * We duplicate the generic versions - &lt;asm-generic/siginfo.h&gt; is just borked&n; * by design ...&n; */
 DECL|macro|HAVE_ARCH_COPY_SIGINFO
 mdefine_line|#define HAVE_ARCH_COPY_SIGINFO
+r_struct
+id|siginfo
+suffix:semicolon
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 multiline_comment|/* The sigval union matches IRIX 32/n32 ABIs for binary compatibility. */
 multiline_comment|/* This structure matches IRIX 32/n32 ABIs for binary compatibility but&n;   has Linux extensions.  */
@@ -143,16 +147,41 @@ suffix:semicolon
 multiline_comment|/* POSIX.1b timers */
 r_struct
 (brace
-DECL|member|_timer1
-r_int
-r_int
-id|_timer1
+DECL|member|_tid
+id|timer_t
+id|_tid
 suffix:semicolon
-DECL|member|_timer2
+multiline_comment|/* timer id */
+DECL|member|_overrun
 r_int
-r_int
-id|_timer2
+id|_overrun
 suffix:semicolon
+multiline_comment|/* overrun count */
+DECL|member|_pad
+r_char
+id|_pad
+(braket
+r_sizeof
+(paren
+id|__ARCH_SI_UID_T
+)paren
+op_minus
+r_sizeof
+(paren
+r_int
+)paren
+)braket
+suffix:semicolon
+DECL|member|_sigval
+id|sigval_t
+id|_sigval
+suffix:semicolon
+multiline_comment|/* same as below */
+DECL|member|_sys_private
+r_int
+id|_sys_private
+suffix:semicolon
+multiline_comment|/* not to be passed to user */
 DECL|member|_timer
 )brace
 id|_timer
@@ -199,7 +228,7 @@ DECL|macro|SI_TIMER
 mdefine_line|#define SI_TIMER __SI_CODE(__SI_TIMER,-3) /* sent by timer expiration */
 DECL|macro|SI_MESGQ
 mdefine_line|#define SI_MESGQ&t;-4&t;/* sent by real time mesq state change */
-multiline_comment|/*&n; * sigevent definitions&n; * &n; * It seems likely that SIGEV_THREAD will have to be handled from &n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
+multiline_comment|/*&n; * sigevent definitions&n; *&n; * It seems likely that SIGEV_THREAD will have to be handled from&n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
 DECL|macro|SIGEV_NONE
 macro_line|#undef SIGEV_NONE
 DECL|macro|SIGEV_SIGNAL
@@ -241,6 +270,10 @@ id|_pad
 id|SIGEV_PAD_SIZE
 )braket
 suffix:semicolon
+DECL|member|_tid
+r_int
+id|_tid
+suffix:semicolon
 r_struct
 (brace
 DECL|member|_function
@@ -272,6 +305,7 @@ DECL|typedef|sigevent_t
 id|sigevent_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * Duplicated here because of &lt;asm-generic/siginfo.h&gt; braindamage ...&n; */
 macro_line|#include &lt;linux/string.h&gt;
 DECL|function|copy_siginfo
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * IEEE754 floating point&n; * double precision internal header file&n; */
+multiline_comment|/*&n; * IEEE754 floating point&n; * double precision internal header file&n; */
 multiline_comment|/*&n; * MIPS floating point support&n; * Copyright (C) 1994-2000 Algorithmics Ltd.  All rights reserved.&n; * http://www.algor.co.uk&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; */
 macro_line|#include &quot;ieee754int.h&quot;
 DECL|macro|assert
@@ -30,9 +30,7 @@ comma
 r_int
 id|bx
 comma
-r_int
-r_int
-r_int
+id|u64
 id|m
 )paren
 (brace
@@ -139,13 +137,11 @@ dot
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|s64
 id|ieee754di_xcpt
 c_func
 (paren
-r_int
-r_int
+id|s64
 comma
 r_const
 r_char
@@ -207,9 +203,7 @@ r_int
 comma
 r_int
 comma
-r_int
-r_int
-r_int
+id|u64
 )paren
 suffix:semicolon
 DECL|macro|DPNORMRET2

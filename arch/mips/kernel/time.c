@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * Common time service routines for MIPS machines. See &n; * Documentation/mips/time.README. &n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * Common time service routines for MIPS machines. See&n; * Documents/mips/README.txt.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
@@ -19,7 +20,9 @@ multiline_comment|/* This is for machines which generate the exact clock. */
 DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 DECL|macro|USECS_PER_JIFFY_FRAC
-mdefine_line|#define USECS_PER_JIFFY_FRAC ((1000000ULL &lt;&lt; 32) / HZ &amp; 0xffffffff)
+mdefine_line|#define USECS_PER_JIFFY_FRAC ((u32)((1000000ULL &lt;&lt; 32) / HZ))
+DECL|macro|TICK_SIZE
+mdefine_line|#define TICK_SIZE&t;(tick_nsec / 1000)
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -32,6 +35,17 @@ r_volatile
 r_int
 r_int
 id|wall_jiffies
+suffix:semicolon
+DECL|variable|rtc_lock
+id|spinlock_t
+id|rtc_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/*&n; * whether we emulate local_timer_interrupts for SMP machines.&n; */
+DECL|variable|emulate_local_timer_interrupt
+r_int
+id|emulate_local_timer_interrupt
 suffix:semicolon
 multiline_comment|/*&n; * By default we provide the null RTC ops&n; */
 DECL|function|null_rtc_get_time
@@ -103,7 +117,7 @@ r_int
 op_assign
 id|null_rtc_set_time
 suffix:semicolon
-multiline_comment|/*&n; * timeofday services, for syscalls.&n; */
+multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution and better than&n; * microsecond precision on fast machines with cycle counter.&n; */
 DECL|function|do_gettimeofday
 r_void
 id|do_gettimeofday
@@ -117,127 +131,184 @@ id|tv
 (brace
 r_int
 r_int
-id|flags
+id|seq
 suffix:semicolon
 r_int
 r_int
-id|seq
+id|usec
+comma
+id|sec
 suffix:semicolon
 r_do
 (brace
 id|seq
 op_assign
-id|read_seqbegin_irqsave
+id|read_seqbegin
 c_func
 (paren
 op_amp
 id|xtime_lock
-comma
-id|flags
 )paren
 suffix:semicolon
-op_star
-id|tv
+id|usec
 op_assign
-id|xtime
-suffix:semicolon
-id|tv-&gt;tv_usec
-op_add_assign
 id|do_gettimeoffset
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * xtime is atomically updated in timer_bh. &n;&t;&t; * jiffies - wall_jiffies&n;&t;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t;&t; */
-r_if
-c_cond
-(paren
+(brace
+r_int
+r_int
+id|lost
+op_assign
 id|jiffies
 op_minus
 id|wall_jiffies
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lost
 )paren
-id|tv-&gt;tv_usec
+id|usec
 op_add_assign
-id|USECS_PER_JIFFY
+id|lost
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
+id|sec
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
+id|usec
+op_add_assign
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
-id|read_seqretry_irqrestore
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
 id|seq
-comma
-id|flags
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
 (paren
-id|tv-&gt;tv_usec
+id|usec
 op_ge
 l_int|1000000
 )paren
 (brace
-id|tv-&gt;tv_usec
+id|usec
 op_sub_assign
 l_int|1000000
 suffix:semicolon
-id|tv-&gt;tv_sec
+id|sec
 op_increment
 suffix:semicolon
 )brace
+id|tv-&gt;tv_sec
+op_assign
+id|sec
+suffix:semicolon
+id|tv-&gt;tv_usec
+op_assign
+id|usec
+suffix:semicolon
 )brace
 DECL|function|do_settimeofday
-r_void
+r_int
 id|do_settimeofday
 c_func
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|tv-&gt;tv_nsec
+op_ge
+id|NSEC_PER_SEC
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|write_seqlock_irq
+c_func
 (paren
 op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
-id|tv-&gt;tv_usec
+multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
+id|tv-&gt;tv_nsec
 op_sub_assign
 id|do_gettimeoffset
 c_func
 (paren
 )paren
+op_star
+id|NSEC_PER_USEC
 suffix:semicolon
-r_if
-c_cond
+id|tv-&gt;tv_nsec
+op_sub_assign
 (paren
-id|tv-&gt;tv_usec
+id|jiffies
+op_minus
+id|wall_jiffies
+)paren
+op_star
+id|TICK_NSEC
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|tv-&gt;tv_nsec
 OL
 l_int|0
 )paren
 (brace
-id|tv-&gt;tv_usec
+id|tv-&gt;tv_nsec
 op_add_assign
-l_int|1000000
+id|NSEC_PER_SEC
 suffix:semicolon
 id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
-op_star
-id|tv
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+id|tv-&gt;tv_nsec
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -257,10 +328,14 @@ op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
 id|write_sequnlock_irq
+c_func
 (paren
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Gettimeoffset routines.  These routines returns the time duration&n; * since last timer interrupt in usecs.&n; *&n; * If the exact CPU counter frequency is known, use fixed_rate_gettimeoffset.&n; * Otherwise use calibrate_gettimeoffset()&n; *&n; * If the CPU does not have counter register all, you can either supply&n; * your own gettimeoffset() routine, or use null_gettimeoffset() routines,&n; * which gives the same resolution as HZ.&n; */
@@ -294,6 +369,13 @@ r_int
 id|timerhi
 comma
 id|timerlo
+suffix:semicolon
+multiline_comment|/* expirelo is the count value for next CPU timer interrupt */
+DECL|variable|expirelo
+r_static
+r_int
+r_int
+id|expirelo
 suffix:semicolon
 multiline_comment|/* last time when xtime and rtc are sync&squot;ed up */
 DECL|variable|last_rtc_update
@@ -347,10 +429,9 @@ suffix:semicolon
 multiline_comment|/* Get last timer tick in absolute kernel time */
 id|count
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_count
 c_func
 (paren
-id|CP0_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/* .. relative to previous jiffy (32 bits is enough) */
@@ -502,10 +583,9 @@ suffix:semicolon
 multiline_comment|/* Get last timer tick in absolute kernel time */
 id|count
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_count
 c_func
 (paren
-id|CP0_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/* .. relative to previous jiffy (32 bits is enough) */
@@ -644,8 +724,6 @@ l_string|&quot;r&quot;
 (paren
 id|USECS_PER_JIFFY
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 id|cached_quotient
@@ -656,10 +734,9 @@ suffix:semicolon
 multiline_comment|/* Get last timer tick in absolute kernel time */
 id|count
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_count
 c_func
 (paren
-id|CP0_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/* .. relative to previous jiffy (32 bits is enough) */
@@ -707,10 +784,10 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * high-level timer interrupt service routines.  This function&n; * is set as irqaction-&gt;handler and is invoked through do_IRQ.&n; */
-DECL|function|timer_interrupt
+multiline_comment|/*&n; * local_timer_interrupt() does profiling and process accounting&n; * on a per-CPU basis.&n; *&n; * In UP mode, it is invoked from the (global) timer_interrupt.&n; *&n; * In SMP mode, it might invoked by per-CPU timer interrupt, or&n; * a broadcasted inter-processor interrupt which itself is triggered&n; * by the global timer interrupt.&n; */
+DECL|function|local_timer_interrupt
 r_void
-id|timer_interrupt
+id|local_timer_interrupt
 c_func
 (paren
 r_int
@@ -726,55 +803,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|seq
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_COUNTER
-)paren
-(brace
-r_int
-r_int
-id|count
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The cycle counter is only 32 bit which is good for about&n;&t;&t; * a minute at current count rates of upto 150MHz or so.&n;&t;&t; */
-id|count
-op_assign
-id|read_32bit_cp0_register
-c_func
-(paren
-id|CP0_COUNT
-)paren
-suffix:semicolon
-id|timerhi
-op_add_assign
-(paren
-id|count
-OL
-id|timerlo
-)paren
-suffix:semicolon
-multiline_comment|/* Wrap around */
-id|timerlo
-op_assign
-id|count
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * set up for next timer interrupt - no harm if the machine&n;&t;&t; * is using another timer interrupt source.&n;&t;&t; * Note that writing to COMPARE register clears the interrupt&n;&t;&t; */
-id|write_32bit_cp0_register
-(paren
-id|CP0_COMPARE
-comma
-id|count
-op_plus
-id|cycles_per_jiffy
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -849,6 +877,107 @@ id|pc
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* in UP mode, update_process_times() is invoked by do_timer() */
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+multiline_comment|/*&n; * high-level timer interrupt service routines.  This function&n; * is set as irqaction-&gt;handler and is invoked through do_IRQ.&n; */
+DECL|function|timer_interrupt
+id|irqreturn_t
+id|timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_has_counter
+)paren
+(brace
+r_int
+r_int
+id|count
+suffix:semicolon
+multiline_comment|/* ack timer interrupt, and try to set next interrupt */
+id|expirelo
+op_add_assign
+id|cycles_per_jiffy
+suffix:semicolon
+id|write_c0_compare
+c_func
+(paren
+id|expirelo
+)paren
+suffix:semicolon
+id|count
+op_assign
+id|read_c0_count
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* check to see if we have missed any timer interrupts */
+r_if
+c_cond
+(paren
+(paren
+id|count
+op_minus
+id|expirelo
+)paren
+OL
+l_int|0x7fffffff
+)paren
+(brace
+multiline_comment|/* missed_timer_count ++; */
+id|expirelo
+op_assign
+id|count
+op_plus
+id|cycles_per_jiffy
+suffix:semicolon
+id|write_c0_compare
+c_func
+(paren
+id|expirelo
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Update timerhi/timerlo for intra-jiffy calibration. */
+id|timerhi
+op_add_assign
+id|count
+OL
+id|timerlo
+suffix:semicolon
+multiline_comment|/* Wrap around */
+id|timerlo
+op_assign
+id|count
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * call the generic timer interrupt handling&n;&t; */
 id|do_timer
 c_func
@@ -857,11 +986,7 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. rtc_set_time() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
-r_do
-(brace
-id|seq
-op_assign
-id|read_seqbegin
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -885,7 +1010,11 @@ id|last_rtc_update
 op_plus
 l_int|660
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_ge
 l_int|500000
 op_minus
@@ -893,12 +1022,16 @@ op_minus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_le
 l_int|500000
 op_plus
@@ -906,7 +1039,7 @@ op_plus
 (paren
 r_int
 )paren
-id|tick
+id|TICK_SIZE
 )paren
 op_div
 l_int|2
@@ -940,18 +1073,11 @@ suffix:semicolon
 multiline_comment|/* do it again in 60 s */
 )brace
 )brace
-)brace
-r_while
-c_loop
-(paren
-id|read_seqretry
+id|write_sequnlock
 c_func
 (paren
 op_amp
 id|xtime_lock
-comma
-id|seq
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If jiffies has overflowed in this timer_interrupt we must&n;&t; * update the timer[hi]/[lo] to make fast gettimeoffset funcs&n;&t; * quotient calc still valid. -arca&n;&t; */
@@ -969,6 +1095,37 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if !defined(CONFIG_SMP)
+multiline_comment|/*&n;&t; * In UP mode, we call local_timer_interrupt() to do profiling&n;&t; * and process accouting.&n;&t; *&n;&t; * In SMP mode, local_timer_interrupt() is invoked by appropriate&n;&t; * low-level local timer interrupt handler.&n;&t; */
+id|local_timer_interrupt
+c_func
+(paren
+l_int|0
+comma
+l_int|NULL
+comma
+id|regs
+)paren
+suffix:semicolon
+macro_line|#else&t;/* CONFIG_SMP */
+r_if
+c_cond
+(paren
+id|emulate_local_timer_interrupt
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * this is the place where we send out inter-process&n;&t;&t; * interrupts and let each CPU do its own profiling&n;&t;&t; * and process accouting.&n;&t;&t; *&n;&t;&t; * Obviously we need to call local_timer_interrupt() for&n;&t;&t; * the current CPU too.&n;&t;&t; */
+id|panic
+c_func
+(paren
+l_string|&quot;Not implemented yet!!!&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* CONFIG_SMP */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ll_timer_interrupt
 id|asmlinkage
@@ -996,9 +1153,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 id|kstat_cpu
@@ -1027,9 +1181,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-id|irq
 )paren
 suffix:semicolon
 r_if
@@ -1047,7 +1198,78 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * time_init() - it does the following things.&n; *&n; * 1) board_time_init() - &n; * &t;a) (optional) set up RTC routines, &n; *      b) (optional) calibrate and set the mips_counter_frequency&n; *&t;    (only needed if you intended to use fixed_rate_gettimeoffset&n; *&t;     or use cpu counter as timer interrupt source)&n; * 2) setup xtime based on rtc_get_time().&n; * 3) choose a appropriate gettimeoffset routine.&n; * 4) calculate a couple of cached variables for later usage&n; * 5) board_timer_setup() - &n; *&t;a) (optional) over-write any choices made above by time_init().&n; *&t;b) machine specific code should setup the timer irqaction.&n; *&t;c) enable the timer interrupt&n; */
+DECL|function|ll_local_timer_interrupt
+id|asmlinkage
+r_void
+id|ll_local_timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
+id|kstat_cpu
+c_func
+(paren
+id|cpu
+)paren
+dot
+id|irqs
+(braket
+id|irq
+)braket
+op_increment
+suffix:semicolon
+multiline_comment|/* we keep interrupt disabled all the time */
+id|local_timer_interrupt
+c_func
+(paren
+id|irq
+comma
+l_int|NULL
+comma
+id|regs
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|softirq_pending
+c_func
+(paren
+id|cpu
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * time_init() - it does the following things.&n; *&n; * 1) board_time_init() -&n; * &t;a) (optional) set up RTC routines,&n; *      b) (optional) calibrate and set the mips_counter_frequency&n; *&t;    (only needed if you intended to use fixed_rate_gettimeoffset&n; *&t;     or use cpu counter as timer interrupt source)&n; * 2) setup xtime based on rtc_get_time().&n; * 3) choose a appropriate gettimeoffset routine.&n; * 4) calculate a couple of cached variables for later usage&n; * 5) board_timer_setup() -&n; *&t;a) (optional) over-write any choices made above by time_init().&n; *&t;b) machine specific code should setup the timer irqaction.&n; *&t;c) enable the timer interrupt&n; */
 DECL|variable|board_time_init
 r_void
 (paren
@@ -1128,7 +1350,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -1137,11 +1359,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_COUNTER
-)paren
+id|cpu_has_counter
 )paren
 (brace
 multiline_comment|/* no cpu counter - sorry */
@@ -1170,19 +1388,19 @@ r_if
 c_cond
 (paren
 (paren
-id|mips_cpu.isa_level
+id|current_cpu_data.isa_level
 op_eq
 id|MIPS_CPU_ISA_M32
 )paren
 op_logical_or
 (paren
-id|mips_cpu.isa_level
+id|current_cpu_data.isa_level
 op_eq
 id|MIPS_CPU_ISA_I
 )paren
 op_logical_or
 (paren
-id|mips_cpu.isa_level
+id|current_cpu_data.isa_level
 op_eq
 id|MIPS_CPU_ISA_II
 )paren
@@ -1233,8 +1451,25 @@ id|sll32_usecs_per_cycle
 op_mul_assign
 l_int|10
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * For those using cpu counter as timer,  this sets up the&n;&t;&t; * first interrupt&n;&t;&t; */
+id|write_c0_compare
+c_func
+(paren
+id|cycles_per_jiffy
+)paren
+suffix:semicolon
+id|write_c0_count
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|expirelo
+op_assign
+id|cycles_per_jiffy
+suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Call board specific timer interrupt setup.&n;&t; *&n;&t; * this pointer must be setup in machine setup routine. &n;&t; *&n;&t; * Even if the machine choose to use low-level timer interrupt,&n;&t; * it still needs to setup the timer_irqaction.&n;&t; * In that case, it might be better to set timer_irqaction.handler &n;&t; * to be NULL function so that we are sure the high-level code&n;&t; * is not invoked accidentally.&n;&t; */
+multiline_comment|/*&n;&t; * Call board specific timer interrupt setup.&n;&t; *&n;&t; * this pointer must be setup in machine setup routine.&n;&t; *&n;&t; * Even if the machine choose to use low-level timer interrupt,&n;&t; * it still needs to setup the timer_irqaction.&n;&t; * In that case, it might be better to set timer_irqaction.handler&n;&t; * to be NULL function so that we are sure the high-level code&n;&t; * is not invoked accidentally.&n;&t; */
 id|board_timer_setup
 c_func
 (paren
@@ -1310,10 +1545,14 @@ r_int
 id|hms
 comma
 id|day
+comma
+id|gday
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|gday
+op_assign
 id|day
 op_assign
 id|tim
@@ -1439,7 +1678,10 @@ suffix:semicolon
 id|tm-&gt;tm_mon
 op_assign
 id|i
+op_minus
+l_int|1
 suffix:semicolon
+multiline_comment|/* tm_mon starts from 0 to 11 */
 multiline_comment|/* Days are what is left over (+1) from all that. */
 id|tm-&gt;tm_mday
 op_assign
@@ -1451,12 +1693,20 @@ multiline_comment|/*&n;&t; * Determine the day of week&n;&t; */
 id|tm-&gt;tm_wday
 op_assign
 (paren
-id|day
+id|gday
 op_plus
-l_int|3
+l_int|4
 )paren
 op_mod
 l_int|7
 suffix:semicolon
+multiline_comment|/* 1970/1/1 was Thursday */
 )brace
+DECL|variable|rtc_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtc_lock
+)paren
+suffix:semicolon
 eof

@@ -20,10 +20,6 @@ l_int|2
 )brace
 suffix:semicolon
 r_extern
-r_char
-id|watch_available
-suffix:semicolon
-r_extern
 id|asmlinkage
 r_void
 id|__watch_set
@@ -57,10 +53,10 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|watch_set
-mdefine_line|#define watch_set(addr, ref)&t;&t;&t;&t;&t;&bslash;&n;&t;if (watch_available)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_set(addr, ref)
+mdefine_line|#define watch_set(addr, ref)&t;&t;&t;&t;&t;&bslash;&n;&t;if (cpu_has_watch)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_set(addr, ref)
 DECL|macro|watch_clear
-mdefine_line|#define watch_clear()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (watch_available)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_clear()
+mdefine_line|#define watch_clear()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (cpu_has_watch)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_clear()
 DECL|macro|watch_reenable
-mdefine_line|#define watch_reenable()&t;&t;&t;&t;&t;&bslash;&n;&t;if (watch_available)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_reenable()
+mdefine_line|#define watch_reenable()&t;&t;&t;&t;&t;&bslash;&n;&t;if (cpu_has_watch)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__watch_reenable()
 macro_line|#endif /* __ASM_WATCH_H */
 eof

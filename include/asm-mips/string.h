@@ -63,8 +63,6 @@ l_string|&quot;1&quot;
 id|__src
 )paren
 suffix:colon
-l_string|&quot;$1&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
@@ -158,13 +156,11 @@ l_string|&quot;2&quot;
 id|__n
 )paren
 suffix:colon
-l_string|&quot;$1&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
-id|__dest
+id|__xdest
 suffix:semicolon
 )brace
 DECL|macro|__HAVE_ARCH_STRCMP
@@ -235,8 +231,6 @@ l_string|&quot;1&quot;
 (paren
 id|__ct
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return
@@ -286,7 +280,7 @@ l_string|&quot;addiu&bslash;t%1,1&bslash;n&quot;
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 macro_line|#if defined(CONFIG_CPU_R3000)
 l_string|&quot;nop&bslash;n&bslash;t&quot;
-macro_line|#endif&t;
+macro_line|#endif
 l_string|&quot;move&bslash;t%3,$1&bslash;n&quot;
 l_string|&quot;3:&bslash;tsubu&bslash;t%3,$1&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
@@ -326,8 +320,6 @@ l_string|&quot;2&quot;
 (paren
 id|__count
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return
@@ -431,6 +423,16 @@ id|__addr
 op_plus
 id|__size
 suffix:semicolon
+r_int
+r_char
+id|__uc
+op_assign
+(paren
+r_int
+r_char
+)paren
+id|__c
+suffix:semicolon
 id|__asm__
 c_func
 (paren
@@ -439,7 +441,7 @@ l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;tbeq&bslash;t%0,%1,2f&bslash;n&bslash;t&quot;
 l_string|&quot;addiu&bslash;t%0,1&bslash;n&bslash;t&quot;
-l_string|&quot;lb&bslash;t$1,-1(%0)&bslash;n&bslash;t&quot;
+l_string|&quot;lbu&bslash;t$1,-1(%0)&bslash;n&bslash;t&quot;
 l_string|&quot;bne&bslash;t$1,%z4,1b&bslash;n&quot;
 l_string|&quot;2:&bslash;t.set&bslash;tpop&quot;
 suffix:colon
@@ -465,10 +467,8 @@ id|__end
 comma
 l_string|&quot;Jr&quot;
 (paren
-id|__c
+id|__uc
 )paren
-suffix:colon
-l_string|&quot;$1&quot;
 )paren
 suffix:semicolon
 r_return

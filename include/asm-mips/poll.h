@@ -1,6 +1,6 @@
-macro_line|#ifndef __ASM_MIPS_POLL_H
-DECL|macro|__ASM_MIPS_POLL_H
-mdefine_line|#define __ASM_MIPS_POLL_H
+macro_line|#ifndef __ASM_POLL_H
+DECL|macro|__ASM_POLL_H
+mdefine_line|#define __ASM_POLL_H
 DECL|macro|POLLIN
 mdefine_line|#define POLLIN&t;&t;0x0001
 DECL|macro|POLLPRI
@@ -21,9 +21,11 @@ DECL|macro|POLLWRNORM
 mdefine_line|#define POLLWRNORM&t;POLLOUT
 DECL|macro|POLLWRBAND
 mdefine_line|#define POLLWRBAND&t;0x0100
-multiline_comment|/* XXX This one seems to be more-or-less nonstandard.  */
+multiline_comment|/* These seem to be more or less nonstandard ...  */
 DECL|macro|POLLMSG
 mdefine_line|#define POLLMSG&t;&t;0x0400
+DECL|macro|POLLREMOVE
+mdefine_line|#define POLLREMOVE&t;0x1000
 DECL|struct|pollfd
 r_struct
 id|pollfd
@@ -42,5 +44,5 @@ id|revents
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* __ASM_MIPS_POLL_H */
+macro_line|#endif /* __ASM_POLL_H */
 eof

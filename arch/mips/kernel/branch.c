@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Compute the return address and do emulate branch simulation, if required.&n; */
 DECL|function|__compute_return_epc
@@ -562,20 +561,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|mips_cpu.options
-op_amp
-id|MIPS_CPU_FPU
+id|cpu_has_fpu
 )paren
-)paren
-(brace
 id|fcr31
 op_assign
 id|current-&gt;thread.fpu.soft.sr
 suffix:semicolon
-)brace
 r_else
 id|asm
+r_volatile
 (paren
 l_string|&quot;cfc1&bslash;t%0,$31&quot;
 suffix:colon

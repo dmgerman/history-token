@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1997, 1999, 2000 by Ralf Baechle&n; * Copyright (c) 2000 by Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1997, 1999 by Ralf Baechle&n; * Copyright (c) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_BCACHE_H
 DECL|macro|_ASM_BCACHE_H
 mdefine_line|#define _ASM_BCACHE_H
@@ -86,7 +86,7 @@ op_star
 id|bcops
 suffix:semicolon
 DECL|function|bc_enable
-r_extern
+r_static
 r_inline
 r_void
 id|bc_enable
@@ -104,7 +104,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|bc_disable
-r_extern
+r_static
 r_inline
 r_void
 id|bc_disable
@@ -122,7 +122,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|bc_wback_inv
-r_extern
+r_static
 r_inline
 r_void
 id|bc_wback_inv
@@ -149,7 +149,7 @@ id|size
 suffix:semicolon
 )brace
 DECL|function|bc_inv
-r_extern
+r_static
 r_inline
 r_void
 id|bc_inv

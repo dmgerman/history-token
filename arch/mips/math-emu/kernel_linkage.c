@@ -1,5 +1,4 @@
-multiline_comment|/**************************************************************************&n; *&n; *  arch/mips/math_emu/kernel_linkage.c&n; *&n; *  Kevin D. Kissell, kevink@mips and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; *************************************************************************/
-multiline_comment|/*&n; * Routines corresponding to Linux kernel FP context&n; * manipulation primitives for the Algorithmics MIPS&n; * FPU Emulator&n; */
+multiline_comment|/**************************************************************************&n; *&n; *  arch/mips/math_emu/kernel_linkage.c&n; *&n; *  Kevin D. Kissell, kevink@mips and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Routines corresponding to Linux kernel FP context&n; * manipulation primitives for the Algorithmics MIPS&n; * FPU Emulator&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
@@ -42,7 +41,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Algorithmics/MIPS FPU Emulator v1.4&bslash;n&quot;
+l_string|&quot;Algorithmics/MIPS FPU Emulator v1.5&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

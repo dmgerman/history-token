@@ -1,7 +1,8 @@
-multiline_comment|/* $Id: signal.h,v 1.6 1999/08/18 23:37:49 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SIGNAL_H
 DECL|macro|_ASM_SIGNAL_H
 mdefine_line|#define _ASM_SIGNAL_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;128
@@ -127,7 +128,7 @@ DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x20000000&t;/* dummy -- ignored */
 DECL|macro|SA_RESTORER
 mdefine_line|#define SA_RESTORER&t;0x04000000
-multiline_comment|/* &n; * sigaltstack controls&n; */
+multiline_comment|/*&n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK     1
 DECL|macro|SS_DISABLE
@@ -189,24 +190,6 @@ DECL|member|sa_mask
 id|sigset_t
 id|sa_mask
 suffix:semicolon
-DECL|member|sa_restorer
-r_void
-(paren
-op_star
-id|sa_restorer
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|sa_resv
-r_int
-id|sa_resv
-(braket
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* reserved */
 )brace
 suffix:semicolon
 DECL|struct|k_sigaction
@@ -218,6 +201,18 @@ r_struct
 id|sigaction
 id|sa
 suffix:semicolon
+macro_line|#ifdef CONFIG_BINFMT_IRIX
+DECL|member|sa_restorer
+r_void
+(paren
+op_star
+id|sa_restorer
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* IRIX compatible stack_t  */
@@ -272,8 +267,10 @@ DECL|macro|_BRK_THREADBP
 mdefine_line|#define _BRK_THREADBP&t;11&t;/* For threads, user bp (used by debuggers) */
 DECL|macro|BRK_MULOVF
 mdefine_line|#define BRK_MULOVF&t;1023&t;/* Multiply overflow */
+DECL|macro|BRK_BUG
+mdefine_line|#define BRK_BUG&t;&t;512&t;/* Used by BUG() */
 DECL|macro|ptrace_signal_deliver
 mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
-macro_line|#endif /* defined (__KERNEL__) */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_SIGNAL_H */
 eof

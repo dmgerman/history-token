@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * Definitiona for the Algorithmics FPU Emulator port into MIPS Linux&n; */
-multiline_comment|/**************************************************************************&n; *&n; *  include/asm-mips/fpu_emulator.h&n; *&n; *  Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; *  Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; *************************************************************************/
-multiline_comment|/* &n; * Further private data for which no space exists in mips_fpu_soft_struct.&n; * This should be subsumed into the mips_fpu_soft_struct structure as&n; * defined in processor.h as soon as the absurd wired absolute assembler&n; * offsets become dynamic at compile time.&n; */
+multiline_comment|/*&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Further private data for which no space exists in mips_fpu_soft_struct.&n; * This should be subsumed into the mips_fpu_soft_struct structure as&n; * defined in processor.h as soon as the absurd wired absolute assembler&n; * offsets become dynamic at compile time.&n; *&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
+macro_line|#ifndef _ASM_FPU_EMULATOR_H
+DECL|macro|_ASM_FPU_EMULATOR_H
+mdefine_line|#define _ASM_FPU_EMULATOR_H
 DECL|struct|mips_fpu_emulator_private
 r_struct
 id|mips_fpu_emulator_private
@@ -48,4 +49,5 @@ id|stats
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif /* _ASM_FPU_EMULATOR_H */
 eof

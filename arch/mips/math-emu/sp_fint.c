@@ -141,7 +141,7 @@ l_int|3
 )paren
 )paren
 (brace
-multiline_comment|/* shunt out overflow bits &n;&t;&t; */
+multiline_comment|/* shunt out overflow bits&n;&t;&t; */
 r_while
 c_loop
 (paren
@@ -165,7 +165,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* normalize in grs extended single precision &n;&t;&t; */
+multiline_comment|/* normalize in grs extended single precision&n;&t;&t; */
 r_while
 c_loop
 (paren

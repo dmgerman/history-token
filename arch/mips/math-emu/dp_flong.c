@@ -6,8 +6,7 @@ id|ieee754dp
 id|ieee754dp_flong
 c_func
 (paren
-r_int
-r_int
+id|s64
 id|x
 )paren
 (brace
@@ -210,9 +209,7 @@ id|ieee754dp
 id|ieee754dp_fulong
 c_func
 (paren
-r_int
-r_int
-r_int
+id|u64
 id|u
 )paren
 (brace
@@ -220,8 +217,7 @@ r_if
 c_cond
 (paren
 (paren
-r_int
-r_int
+id|s64
 )paren
 id|u
 OL
