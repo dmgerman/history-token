@@ -59,7 +59,7 @@ id|atkbd_set
 op_assign
 l_int|2
 suffix:semicolon
-macro_line|#if defined(__i386__) || defined (__x86_64__)
+macro_line|#if defined(__i386__) || defined(__x86_64__) || defined(__hppa__)
 DECL|variable|atkbd_reset
 r_static
 r_int
@@ -80,6 +80,9 @@ r_int
 id|atkbd_softrepeat
 suffix:semicolon
 multiline_comment|/*&n; * Scancode to keycode tables. These are just the default setting, and&n; * are loadable via an userland utility.&n; */
+macro_line|#if defined(__hppa__)
+macro_line|#include &quot;hpps2atkbd.h&quot;
+macro_line|#else
 DECL|variable|atkbd_set2_keycode
 r_static
 r_int
@@ -614,6 +617,7 @@ l_int|99
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|atkbd_set3_keycode
 r_static
 r_int
@@ -2240,6 +2244,43 @@ multiline_comment|/* 2 sec */
 r_if
 c_cond
 (paren
+id|receive
+op_logical_and
+id|param
+)paren
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|receive
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|atkbd-&gt;cmdbuf
+(braket
+(paren
+id|receive
+op_minus
+l_int|1
+)paren
+op_minus
+id|i
+)braket
+op_assign
+id|param
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|command
 op_amp
 l_int|0xff
@@ -2563,6 +2604,7 @@ comma
 l_int|1000
 )brace
 suffix:semicolon
+r_int
 r_char
 id|param
 (braket
@@ -2593,8 +2635,10 @@ id|type
 r_case
 id|EV_LED
 suffix:colon
-op_star
 id|param
+(braket
+l_int|0
+)braket
 op_assign
 (paren
 id|test_bit
@@ -2918,6 +2962,19 @@ id|atkbd-&gt;serio-&gt;phys
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Then we check the keyboard ID. We should get 0xab83 under normal conditions.&n; * Some keyboards report different values, but the first byte is always 0xab or&n; * 0xac. Some old AT keyboards don&squot;t report anything. If a mouse is connected, this&n; * should make sure we don&squot;t try to set the LEDs on it.&n; */
+id|param
+(braket
+l_int|0
+)braket
+op_assign
+id|param
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0xa5
+suffix:semicolon
+multiline_comment|/* initialize with invalid values */
 r_if
 c_cond
 (paren
@@ -3752,6 +3809,12 @@ c_func
 (paren
 id|serio
 )paren
+suffix:semicolon
+id|serio
+op_member_access_from_pointer
+r_private
+op_assign
+l_int|NULL
 suffix:semicolon
 id|kfree
 c_func
