@@ -3928,6 +3928,7 @@ id|EXT3_FEATURE_INCOMPAT_RECOVER
 )paren
 suffix:semicolon
 id|ext3_commit_super
+c_func
 (paren
 id|sb
 comma
@@ -3940,6 +3941,7 @@ r_if
 c_cond
 (paren
 id|test_opt
+c_func
 (paren
 id|sb
 comma
@@ -3947,14 +3949,11 @@ id|DEBUG
 )paren
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;[EXT3 FS %s, %s, bs=%lu, gc=%lu, &quot;
+l_string|&quot;[EXT3 FS bs=%lu, gc=%lu, &quot;
 l_string|&quot;bpg=%lu, ipg=%lu, mo=%04lx]&bslash;n&quot;
-comma
-id|EXT3FS_VERSION
-comma
-id|EXT3FS_DATE
 comma
 id|sb-&gt;s_blocksize
 comma
@@ -3979,11 +3978,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;EXT3 FS &quot;
-id|EXT3FS_VERSION
-l_string|&quot;, &quot;
-id|EXT3FS_DATE
-l_string|&quot; on %s, &quot;
+l_string|&quot;EXT3 FS on %s, &quot;
 comma
 id|sb-&gt;s_id
 )paren
