@@ -23,29 +23,29 @@ mdefine_line|#define CRYPTO_MODE_MASK        0x0ff00000
 DECL|macro|CRYPTO_ALG_MASK
 mdefine_line|#define CRYPTO_ALG_MASK&t;&t;0x000fffff
 DECL|macro|CRYPTO_TYPE_CIPHER
-mdefine_line|#define CRYPTO_TYPE_CIPHER&t;0x00000000
+mdefine_line|#define CRYPTO_TYPE_CIPHER&t;0x10000000
 DECL|macro|CRYPTO_TYPE_DIGEST
-mdefine_line|#define CRYPTO_TYPE_DIGEST&t;0x10000000
+mdefine_line|#define CRYPTO_TYPE_DIGEST&t;0x20000000
 DECL|macro|CRYPTO_TYPE_COMP
-mdefine_line|#define CRYPTO_TYPE_COMP&t;0x20000000
+mdefine_line|#define CRYPTO_TYPE_COMP&t;0x40000000
 DECL|macro|CRYPTO_MODE_ECB
-mdefine_line|#define CRYPTO_MODE_ECB&t;&t;0x00000000
+mdefine_line|#define CRYPTO_MODE_ECB&t;&t;0x00100000
 DECL|macro|CRYPTO_MODE_CBC
-mdefine_line|#define CRYPTO_MODE_CBC&t;&t;0x00100000
+mdefine_line|#define CRYPTO_MODE_CBC&t;&t;0x00200000
 DECL|macro|CRYPTO_MODE_CFB
-mdefine_line|#define CRYPTO_MODE_CFB&t;&t;0x00200000
+mdefine_line|#define CRYPTO_MODE_CFB&t;&t;0x00400000
 DECL|macro|CRYPTO_MODE_CTR
-mdefine_line|#define CRYPTO_MODE_CTR&t;&t;0x00400000
+mdefine_line|#define CRYPTO_MODE_CTR&t;&t;0x00800000
 DECL|macro|CRYPTO_ALG_NULL
-mdefine_line|#define CRYPTO_ALG_NULL&t;&t;0x00000000
+mdefine_line|#define CRYPTO_ALG_NULL&t;&t;0x00000001
 DECL|macro|CRYPTO_ALG_DES
-mdefine_line|#define CRYPTO_ALG_DES&t;&t;(0x00000001|CRYPTO_TYPE_CIPHER)
+mdefine_line|#define CRYPTO_ALG_DES&t;&t;(0x00000002|CRYPTO_TYPE_CIPHER)
 DECL|macro|CRYPTO_ALG_DES_ECB
 mdefine_line|#define CRYPTO_ALG_DES_ECB&t;(CRYPTO_ALG_DES|CRYPTO_MODE_ECB)
 DECL|macro|CRYPTO_ALG_DES_CBC
 mdefine_line|#define CRYPTO_ALG_DES_CBC&t;(CRYPTO_ALG_DES|CRYPTO_MODE_CBC)
 DECL|macro|CRYPTO_ALG_DES3_EDE
-mdefine_line|#define CRYPTO_ALG_DES3_EDE&t;(0x00000002|CRYPTO_TYPE_CIPHER)
+mdefine_line|#define CRYPTO_ALG_DES3_EDE&t;(0x00000003|CRYPTO_TYPE_CIPHER)
 DECL|macro|CRYPTO_ALG_DES3_EDE_ECB
 mdefine_line|#define CRYPTO_ALG_DES3_EDE_ECB&t;(CRYPTO_ALG_DES3_EDE|CRYPTO_MODE_ECB)
 DECL|macro|CRYPTO_ALG_DES3_EDE_CBC
@@ -54,6 +54,8 @@ DECL|macro|CRYPTO_ALG_MD5
 mdefine_line|#define CRYPTO_ALG_MD5&t;&t;(0x00000f00|CRYPTO_TYPE_DIGEST)
 DECL|macro|CRYPTO_ALG_SHA1
 mdefine_line|#define CRYPTO_ALG_SHA1&t;&t;(0x00000f01|CRYPTO_TYPE_DIGEST)
+DECL|macro|CRYPTO_UNSPEC
+mdefine_line|#define CRYPTO_UNSPEC&t;&t;0
 DECL|macro|CRYPTO_MAX_ALG_NAME
 mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;64
 DECL|macro|CRYPTO_MAX_BLOCK_SIZE

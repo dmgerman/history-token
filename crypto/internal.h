@@ -142,6 +142,16 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_KMOD
+r_void
+id|crypto_alg_autoload
+c_func
+(paren
+id|u32
+id|algid
+)paren
+suffix:semicolon
+macro_line|#endif
 r_void
 id|crypto_init_digest_ops
 c_func
