@@ -1294,10 +1294,14 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
-multiline_comment|/* Have the SEND_FAILED notifications been done. */
-DECL|member|notify_done
-id|__u8
-id|notify_done
+multiline_comment|/* Did the messenge fail to send? */
+DECL|member|send_error
+r_int
+id|send_error
+suffix:semicolon
+DECL|member|send_failed
+r_char
+id|send_failed
 suffix:semicolon
 )brace
 suffix:semicolon
