@@ -3528,6 +3528,17 @@ id|handler
 suffix:semicolon
 r_extern
 r_int
+id|xfrm4_tunnel_check_size
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|xfrm6_rcv
 c_func
 (paren
