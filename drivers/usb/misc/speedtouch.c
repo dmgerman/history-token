@@ -680,6 +680,23 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|instance
+)paren
+(brace
+id|PDEBUG
+(paren
+l_string|&quot;NULL instance!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|left
 op_decrement
 )paren
@@ -870,11 +887,21 @@ c_cond
 (paren
 op_logical_neg
 id|dev_data
+op_logical_or
+op_logical_neg
+id|instance
 )paren
+(brace
+id|PDEBUG
+(paren
+l_string|&quot;NULL data!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -1306,6 +1333,23 @@ id|PDEBUG
 l_string|&quot;udsl_atm_open called&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|instance
+)paren
+(brace
+id|PDEBUG
+(paren
+l_string|&quot;NULL instance!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 multiline_comment|/* at the moment only AAL5 support */
 r_if
 c_cond
@@ -1470,6 +1514,24 @@ id|PDEBUG
 l_string|&quot;udsl_atm_close called&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev_data
+op_logical_or
+op_logical_neg
+id|instance
+)paren
+(brace
+id|PDEBUG
+(paren
+l_string|&quot;NULL data!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* freeing resources */
 multiline_comment|/* cancel all sends on this vcc */
 id|udsl_usb_cancelsends
@@ -3137,10 +3199,6 @@ r_goto
 id|fail_atm
 suffix:semicolon
 )brace
-id|instance-&gt;atm_dev-&gt;dev_data
-op_assign
-id|instance
-suffix:semicolon
 id|instance-&gt;atm_dev-&gt;ci_range.vpi_bits
 op_assign
 id|ATM_CI_MAX
@@ -3264,6 +3322,14 @@ id|mac
 comma
 l_int|6
 )paren
+suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
+id|instance-&gt;atm_dev-&gt;dev_data
+op_assign
+id|instance
 suffix:semicolon
 id|usb_set_intfdata
 (paren
