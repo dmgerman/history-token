@@ -184,8 +184,8 @@ multiline_comment|/* Hard Disk */
 id|lblock
 op_assign
 id|bdev-&gt;bd_inode-&gt;i_size
-op_div
-id|sb-&gt;s_blocksize
+op_rshift
+id|sb-&gt;s_blocksize_bits
 suffix:semicolon
 )brace
 r_if
