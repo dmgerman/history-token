@@ -29,6 +29,10 @@ comma
 op_star
 id|name
 suffix:semicolon
+DECL|member|rx_flags
+r_int
+id|rx_flags
+suffix:semicolon
 DECL|member|rx_hook
 r_void
 (paren
@@ -75,11 +79,6 @@ id|remote_mac
 (braket
 l_int|6
 )braket
-suffix:semicolon
-DECL|member|rx_list
-r_struct
-id|list_head
-id|rx_list
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -185,7 +184,9 @@ id|skb
 )paren
 (brace
 r_return
-id|skb-&gt;dev-&gt;netpoll_rx
+id|skb-&gt;dev-&gt;np
+op_logical_and
+id|skb-&gt;dev-&gt;np-&gt;rx_flags
 op_logical_and
 id|__netpoll_rx
 c_func
