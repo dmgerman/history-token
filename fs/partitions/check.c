@@ -1819,7 +1819,7 @@ suffix:semicolon
 id|devfs_mk_symlink
 c_func
 (paren
-id|devfs_handle
+id|cdroms
 comma
 id|vname
 comma

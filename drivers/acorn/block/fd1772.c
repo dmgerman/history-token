@@ -5359,7 +5359,7 @@ l_int|2
 OG
 id|NUM_DISK_TYPES
 op_logical_or
-id|minor
+id|drive
 op_ge
 id|FD_MAX_UNITS
 )paren

@@ -2225,8 +2225,22 @@ id|in_sector_offset
 suffix:semicolon
 multiline_comment|/* offset within physical sector,&n;&t;&t;&t;&t;&t; * expressed in units of 512 bytes */
 macro_line|#ifndef fd_eject
-DECL|macro|fd_eject
-mdefine_line|#define fd_eject(x) -EINVAL
+DECL|function|fd_eject
+r_static
+r_inline
+r_int
+id|fd_eject
+c_func
+(paren
+r_int
+id|drive
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#ifdef DEBUGT
 DECL|variable|debugtimer
@@ -20184,7 +20198,7 @@ r_void
 )paren
 (brace
 r_int
-id|i
+id|drive
 suffix:semicolon
 id|unregister_sys_device
 c_func
