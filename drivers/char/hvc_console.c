@@ -569,6 +569,15 @@ c_func
 id|kobjp
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;hvc_open: request_irq failed with rc %d.&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Force wakeup of the polling thread */
 id|hvc_kick
@@ -627,7 +636,7 @@ id|filp
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * No driver_data means that this close was issued after a failed&n;&t; * hvcs_open by the tty layer&squot;s release_dev() function and we can just&n;&t; * exit cleanly because the kobject reference wasn&squot;t made.&n;&t; */
+multiline_comment|/*&n;&t; * No driver_data means that this close was issued after a failed&n;&t; * hvc_open by the tty layer&squot;s release_dev() function and we can just&n;&t; * exit cleanly because the kobject reference wasn&squot;t made.&n;&t; */
 r_if
 c_cond
 (paren
@@ -698,11 +707,6 @@ id|tty
 comma
 id|HVC_CLOSE_WAIT
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Since the line disc doesn&squot;t block writes during tty close&n;&t;&t; * operations we&squot;ll set driver_data to NULL and then make sure&n;&t;&t; * to check tty-&gt;driver_data for NULL in hvc_write().&n;&t;&t; */
-id|tty-&gt;driver_data
-op_assign
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -793,6 +797,14 @@ id|kobject
 op_star
 id|kobjp
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hp
+)paren
+r_return
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -802,6 +814,27 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The N_TTY line discipline has problems such that in a close vs&n;&t; * open-&gt;hangup case this can be called after the final close so prevent&n;&t; * that from happening for now.&n;&t; */
+r_if
+c_cond
+(paren
+id|hp-&gt;count
+op_le
+l_int|0
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|hp-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|kobjp
 op_assign
 op_amp
@@ -1408,6 +1441,17 @@ id|hp
 r_return
 op_minus
 id|EPIPE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hp-&gt;count
+op_le
+l_int|0
+)paren
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 r_if
 c_cond
