@@ -205,10 +205,12 @@ DECL|enumerator|RTN_XRESOLVE
 id|RTN_XRESOLVE
 comma
 multiline_comment|/* Use external resolver&t;*/
+DECL|enumerator|__RTN_MAX
+id|__RTN_MAX
 )brace
 suffix:semicolon
 DECL|macro|RTN_MAX
-mdefine_line|#define RTN_MAX RTN_XRESOLVE
+mdefine_line|#define RTN_MAX (__RTN_MAX - 1)
 multiline_comment|/* rtm_protocol */
 DECL|macro|RTPROT_UNSPEC
 mdefine_line|#define RTPROT_UNSPEC&t;0
@@ -301,10 +303,13 @@ DECL|enumerator|RT_TABLE_LOCAL
 id|RT_TABLE_LOCAL
 op_assign
 l_int|255
+comma
+DECL|enumerator|__RT_TABLE_MAX
+id|__RT_TABLE_MAX
 )brace
 suffix:semicolon
 DECL|macro|RT_TABLE_MAX
-mdefine_line|#define RT_TABLE_MAX RT_TABLE_LOCAL
+mdefine_line|#define RT_TABLE_MAX (__RT_TABLE_MAX - 1)
 multiline_comment|/* Routing message attributes */
 DECL|enum|rtattr_type_t
 r_enum
@@ -352,10 +357,12 @@ comma
 DECL|enumerator|RTA_SESSION
 id|RTA_SESSION
 comma
+DECL|enumerator|__RTA_MAX
+id|__RTA_MAX
 )brace
 suffix:semicolon
 DECL|macro|RTA_MAX
-mdefine_line|#define RTA_MAX RTA_SESSION
+mdefine_line|#define RTA_MAX (__RTA_MAX - 1)
 DECL|macro|RTM_RTA
 mdefine_line|#define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
 DECL|macro|RTM_PAYLOAD
@@ -517,10 +524,12 @@ id|RTAX_FEATURES
 comma
 DECL|macro|RTAX_FEATURES
 mdefine_line|#define RTAX_FEATURES RTAX_FEATURES
+DECL|enumerator|__RTAX_MAX
+id|__RTAX_MAX
 )brace
 suffix:semicolon
 DECL|macro|RTAX_MAX
-mdefine_line|#define RTAX_MAX RTAX_FEATURES
+mdefine_line|#define RTAX_MAX (__RTAX_MAX - 1)
 DECL|macro|RTAX_FEATURE_ECN
 mdefine_line|#define RTAX_FEATURE_ECN&t;0x00000001
 DECL|macro|RTAX_FEATURE_SACK
@@ -639,10 +648,13 @@ id|IFA_CACHEINFO
 comma
 DECL|enumerator|IFA_MULTICAST
 id|IFA_MULTICAST
+comma
+DECL|enumerator|__IFA_MAX
+id|__IFA_MAX
 )brace
 suffix:semicolon
 DECL|macro|IFA_MAX
-mdefine_line|#define IFA_MAX IFA_MULTICAST
+mdefine_line|#define IFA_MAX (__IFA_MAX - 1)
 multiline_comment|/* ifa_flags */
 DECL|macro|IFA_F_SECONDARY
 mdefine_line|#define IFA_F_SECONDARY&t;&t;0x01
@@ -735,10 +747,13 @@ id|NDA_LLADDR
 comma
 DECL|enumerator|NDA_CACHEINFO
 id|NDA_CACHEINFO
+comma
+DECL|enumerator|__NDA_MAX
+id|__NDA_MAX
 )brace
 suffix:semicolon
 DECL|macro|NDA_MAX
-mdefine_line|#define NDA_MAX NDA_CACHEINFO
+mdefine_line|#define NDA_MAX (__NDA_MAX - 1)
 DECL|macro|NDA_RTA
 mdefine_line|#define NDA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct ndmsg))))
 DECL|macro|NDA_PAYLOAD
@@ -883,10 +898,12 @@ comma
 DECL|enumerator|PREFIX_CACHEINFO
 id|PREFIX_CACHEINFO
 comma
+DECL|enumerator|__PREFIX_MAX
+id|__PREFIX_MAX
 )brace
 suffix:semicolon
 DECL|macro|PREFIX_MAX
-mdefine_line|#define PREFIX_MAX&t;PREFIX_CACHEINFO
+mdefine_line|#define PREFIX_MAX&t;(__PREFIX_MAX - 1)
 DECL|struct|prefix_cacheinfo
 r_struct
 id|prefix_cacheinfo
@@ -1070,10 +1087,12 @@ comma
 multiline_comment|/* Protocol specific information for a link */
 DECL|macro|IFLA_PROTINFO
 mdefine_line|#define IFLA_PROTINFO IFLA_PROTINFO
+DECL|enumerator|__IFLA_MAX
+id|__IFLA_MAX
 )brace
 suffix:semicolon
 DECL|macro|IFLA_MAX
-mdefine_line|#define IFLA_MAX IFLA_PROTINFO
+mdefine_line|#define IFLA_MAX (__IFLA_MAX - 1)
 DECL|macro|IFLA_RTA
 mdefine_line|#define IFLA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct ifinfomsg))))
 DECL|macro|IFLA_PAYLOAD
@@ -1106,8 +1125,12 @@ DECL|enumerator|IFLA_INET6_CACHEINFO
 id|IFLA_INET6_CACHEINFO
 comma
 multiline_comment|/* time values and max reasm size */
+DECL|enumerator|__IFLA_INET6_MAX
+id|__IFLA_INET6_MAX
 )brace
 suffix:semicolon
+DECL|macro|IFLA_INET6_MAX
+mdefine_line|#define IFLA_INET6_MAX&t;(__IFLA_INET6_MAX - 1)
 DECL|struct|ifla_cacheinfo
 r_struct
 id|ifla_cacheinfo
@@ -1131,8 +1154,6 @@ id|retrans_time
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|IFLA_INET6_MAX
-mdefine_line|#define IFLA_INET6_MAX&t;IFLA_INET6_CACHEINFO
 multiline_comment|/*****************************************************************&n; *&t;&t;Traffic control messages.&n; ****/
 DECL|struct|tcmsg
 r_struct
@@ -1191,10 +1212,12 @@ comma
 DECL|enumerator|TCA_RATE
 id|TCA_RATE
 comma
+DECL|enumerator|__TCA_MAX
+id|__TCA_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_MAX
-mdefine_line|#define TCA_MAX TCA_RATE
+mdefine_line|#define TCA_MAX (__TCA_MAX - 1)
 DECL|macro|TCA_RTA
 mdefine_line|#define TCA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct tcmsg))))
 DECL|macro|TCA_PAYLOAD
