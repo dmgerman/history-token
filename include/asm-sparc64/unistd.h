@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: unistd.h,v 1.48 2001/10/09 10:54:39 davem Exp $ */
+multiline_comment|/* $Id: unistd.h,v 1.49 2001/10/18 08:27:05 davem Exp $ */
 macro_line|#ifndef _SPARC64_UNISTD_H
 DECL|macro|_SPARC64_UNISTD_H
 mdefine_line|#define _SPARC64_UNISTD_H
@@ -361,7 +361,8 @@ DECL|macro|__NR_uselib
 mdefine_line|#define __NR_uselib             203 /* Linux Specific                              */
 DECL|macro|__NR_readdir
 mdefine_line|#define __NR_readdir            204 /* Linux Specific                              */
-multiline_comment|/* #define __NR_ioperm          205    Linux Specific - i386 specific, unused      */
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead          205 /* Linux Specific                              */
 DECL|macro|__NR_socketcall
 mdefine_line|#define __NR_socketcall         206 /* Linux Specific                              */
 DECL|macro|__NR_syslog

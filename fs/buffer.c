@@ -5249,8 +5249,7 @@ op_amp
 id|old_bh-&gt;b_state
 )paren
 suffix:semicolon
-multiline_comment|/* Here we could run brelse or bforget. We use&n;&t;&t;   bforget because it will try to put the buffer&n;&t;&t;   in the freelist. */
-id|__bforget
+id|__brelse
 c_func
 (paren
 id|old_bh

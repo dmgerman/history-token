@@ -6681,7 +6681,7 @@ id|iop-&gt;mem_resource
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|iop-&gt;bus.pci.pdev-&gt;bus-&gt;name
+id|iop-&gt;pdev-&gt;bus-&gt;name
 suffix:semicolon
 id|res-&gt;flags
 op_assign
@@ -6708,7 +6708,7 @@ op_assign
 id|pci_find_parent_resource
 c_func
 (paren
-id|iop-&gt;bus.pci.pdev
+id|iop-&gt;pdev
 comma
 id|res
 )paren
@@ -6812,7 +6812,7 @@ id|iop-&gt;io_resource
 suffix:semicolon
 id|res-&gt;name
 op_assign
-id|iop-&gt;bus.pci.pdev-&gt;bus-&gt;name
+id|iop-&gt;pdev-&gt;bus-&gt;name
 suffix:semicolon
 id|res-&gt;flags
 op_assign
@@ -6839,7 +6839,7 @@ op_assign
 id|pci_find_parent_resource
 c_func
 (paren
-id|iop-&gt;bus.pci.pdev
+id|iop-&gt;pdev
 comma
 id|res
 )paren

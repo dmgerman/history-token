@@ -512,7 +512,7 @@ id|c-&gt;bus.pci.short_req
 op_assign
 l_int|0
 suffix:semicolon
-id|c-&gt;bus.pci.pdev
+id|c-&gt;pdev
 op_assign
 id|dev
 suffix:semicolon

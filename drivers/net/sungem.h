@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.h,v 1.7 2001/04/04 14:49:40 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.h,v 1.8 2001/10/17 05:55:39 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNGEM_H
 DECL|macro|_SUNGEM_H
 mdefine_line|#define _SUNGEM_H
@@ -727,10 +727,16 @@ DECL|macro|PHY_CTRL
 mdefine_line|#define PHY_CTRL&t;0x00
 DECL|macro|PHY_STAT
 mdefine_line|#define PHY_STAT&t;0x01
+DECL|macro|PHY_ID0
+mdefine_line|#define PHY_ID0&t;&t;0x02
+DECL|macro|PHY_ID1
+mdefine_line|#define PHY_ID1&t;&t;0x03
 DECL|macro|PHY_ADV
 mdefine_line|#define PHY_ADV&t;&t;0x04
 DECL|macro|PHY_LPA
 mdefine_line|#define PHY_LPA&t;&t;0x05
+DECL|macro|PHY_CTRL_SPD2
+mdefine_line|#define PHY_CTRL_SPD2&t;0x0040&t;&t;/* Gigabit enable? (bcm5411)&t;*/
 DECL|macro|PHY_CTRL_FDPLX
 mdefine_line|#define PHY_CTRL_FDPLX&t;0x0100&t;&t;/* Full duplex&t;&t;&t;*/
 DECL|macro|PHY_CTRL_ISO
@@ -763,8 +769,44 @@ DECL|macro|PHY_LPA_100HALF
 mdefine_line|#define PHY_LPA_100HALF&t;0x0080
 DECL|macro|PHY_LPA_100FULL
 mdefine_line|#define PHY_LPA_100FULL&t;0x0100
+DECL|macro|PHY_LPA_PAUSE
+mdefine_line|#define PHY_LPA_PAUSE&t;0x0400
 DECL|macro|PHY_LPA_FAULT
 mdefine_line|#define PHY_LPA_FAULT&t;0x2000
+multiline_comment|/* More PHY registers (specific to Broadcom models) */
+multiline_comment|/* MII BCM5201 MULTIPHY interrupt register */
+DECL|macro|PHY_BCM5201_INTERRUPT
+mdefine_line|#define PHY_BCM5201_INTERRUPT&t;&t;&t;0x1A
+DECL|macro|PHY_BCM5201_INTERRUPT_INTENABLE
+mdefine_line|#define PHY_BCM5201_INTERRUPT_INTENABLE&t;&t;0x4000
+DECL|macro|PHY_BCM5201_AUXMODE2
+mdefine_line|#define PHY_BCM5201_AUXMODE2&t;&t;&t;0x1B
+DECL|macro|PHY_BCM5201_AUXMODE2_LOWPOWER
+mdefine_line|#define PHY_BCM5201_AUXMODE2_LOWPOWER&t;&t;0x0008
+DECL|macro|PHY_BCM5201_MULTIPHY
+mdefine_line|#define PHY_BCM5201_MULTIPHY                    0x1E
+multiline_comment|/* MII BCM5201 MULTIPHY register bits */
+DECL|macro|PHY_BCM5201_MULTIPHY_SERIALMODE
+mdefine_line|#define PHY_BCM5201_MULTIPHY_SERIALMODE         0x0002
+DECL|macro|PHY_BCM5201_MULTIPHY_SUPERISOLATE
+mdefine_line|#define PHY_BCM5201_MULTIPHY_SUPERISOLATE       0x0008
+multiline_comment|/* MII BCM5400 1000-BASET Control register */
+DECL|macro|PHY_BCM5400_GB_CONTROL
+mdefine_line|#define PHY_BCM5400_GB_CONTROL&t;&t;&t;0x09
+DECL|macro|PHY_BCM5400_GB_CONTROL_FULLDUPLEXCAP
+mdefine_line|#define PHY_BCM5400_GB_CONTROL_FULLDUPLEXCAP&t;0x0200
+multiline_comment|/* MII BCM5400 AUXCONTROL register */
+DECL|macro|PHY_BCM5400_AUXCONTROL
+mdefine_line|#define PHY_BCM5400_AUXCONTROL                  0x18
+DECL|macro|PHY_BCM5400_AUXCONTROL_PWR10BASET
+mdefine_line|#define PHY_BCM5400_AUXCONTROL_PWR10BASET       0x0004
+multiline_comment|/* MII BCM5400 AUXSTATUS register */
+DECL|macro|PHY_BCM5400_AUXSTATUS
+mdefine_line|#define PHY_BCM5400_AUXSTATUS                   0x19
+DECL|macro|PHY_BCM5400_AUXSTATUS_LINKMODE_MASK
+mdefine_line|#define PHY_BCM5400_AUXSTATUS_LINKMODE_MASK     0x0700
+DECL|macro|PHY_BCM5400_AUXSTATUS_LINKMODE_SHIFT
+mdefine_line|#define PHY_BCM5400_AUXSTATUS_LINKMODE_SHIFT    8  
 multiline_comment|/* When it can, GEM internally caches 4 aligned TX descriptors&n; * at a time, so that it can use full cacheline DMA reads.&n; *&n; * Note that unlike HME, there is no ownership bit in the descriptor&n; * control word.  The same functionality is obtained via the TX-Kick&n; * and TX-Complete registers.  As a result, GEM need not write back&n; * updated values to the TX descriptor ring, it only performs reads.&n; *&n; * Since TX descriptors are never modified by GEM, the driver can&n; * use the buffer DMA address as a place to keep track of allocated&n; * DMA mappings for a transmitted packet.&n; */
 DECL|struct|gem_txd
 r_struct
@@ -943,6 +985,30 @@ id|phy_serdes
 comma
 )brace
 suffix:semicolon
+DECL|enum|gem_phy_model
+r_enum
+id|gem_phy_model
+(brace
+DECL|enumerator|phymod_generic
+id|phymod_generic
+comma
+DECL|enumerator|phymod_bcm5201
+id|phymod_bcm5201
+comma
+DECL|enumerator|phymod_bcm5221
+id|phymod_bcm5221
+comma
+DECL|enumerator|phymod_bcm5400
+id|phymod_bcm5400
+comma
+DECL|enumerator|phymod_bcm5401
+id|phymod_bcm5401
+comma
+DECL|enumerator|phymod_bcm5411
+id|phymod_bcm5411
+comma
+)brace
+suffix:semicolon
 DECL|enum|link_state
 r_enum
 id|link_state
@@ -952,6 +1018,9 @@ id|aneg_wait
 comma
 DECL|enumerator|force_wait
 id|force_wait
+comma
+DECL|enumerator|aneg_up
+id|aneg_up
 comma
 )brace
 suffix:semicolon
@@ -981,6 +1050,11 @@ r_int
 id|tx_new
 comma
 id|tx_old
+suffix:semicolon
+multiline_comment|/* Set when chip is actually in operational state&n;&t; * (ie. not power managed)&n;&t; */
+DECL|member|hw_running
+r_int
+id|hw_running
 suffix:semicolon
 DECL|member|init_block
 r_struct
@@ -1015,6 +1089,11 @@ DECL|member|phy_type
 r_enum
 id|gem_phy_type
 id|phy_type
+suffix:semicolon
+DECL|member|phy_mod
+r_enum
+id|gem_phy_model
+id|phy_mod
 suffix:semicolon
 DECL|member|tx_fifo_sz
 r_int
@@ -1075,6 +1154,14 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALL_PPC
+DECL|member|of_node
+r_struct
+id|device_node
+op_star
+id|of_node
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|ALIGNED_RX_SKB_ADDR

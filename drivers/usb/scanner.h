@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.4.0)&n; *&n; * Copyright (C) 1999, 2000 David E. Nelson&n; *&n; * David E. Nelson (dnelson@jump.net)&n; *&n; * 08/16/2001 added devfs support Yves Duret &lt;yduret@mandrakesoft.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.4.12)&n; *&n; * Copyright (C) 1999, 2000, 2001 David E. Nelson&n; *&n; * David E. Nelson (dnelson@jump.net)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -11,6 +11,12 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 singleline_comment|// #define DEBUG
+multiline_comment|/* Enable this to support the older ioctl interfaces scanners that&n; * a PV8630 Scanner-On-Chip.  The prefered method is the&n; * SCANNER_IOCTL_CTRLMSG ioctl.&n; */
+singleline_comment|// #define PV8630 
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;0.4.6&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|variable|vendor
 DECL|variable|product
@@ -40,7 +46,9 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;USB Scanner Driver&quot;
+id|DRIVER_DESC
+l_string|&quot; &quot;
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -97,10 +105,6 @@ comma
 l_string|&quot;User specified read timeout in seconds&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Enable to activate the ioctl interface.  This is mainly meant for */
-multiline_comment|/* development purposes until an ioctl number is officially registered */
-DECL|macro|SCN_IOCTL
-mdefine_line|#define SCN_IOCTL
 multiline_comment|/* WARNING: These DATA_DUMP&squot;s can produce a lot of data. Caveat Emptor. */
 singleline_comment|// #define RD_DATA_DUMP /* Enable to dump data - limited to 24 bytes */
 singleline_comment|// #define WR_DATA_DUMP /* DEBUG does not have to be defined. */
@@ -158,6 +162,94 @@ l_int|0x2022
 )brace
 comma
 multiline_comment|/* Vuego Scan Brisa 340U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x1a20
+)paren
+)brace
+comma
+multiline_comment|/* Unknown - Oliver Schwartz */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x1a2a
+)paren
+)brace
+comma
+multiline_comment|/* Unknown - Oliver Schwartz */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x207e
+)paren
+)brace
+comma
+multiline_comment|/* Prisa 640BU */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x20be
+)paren
+)brace
+comma
+multiline_comment|/* Unknown - Oliver Schwartz */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x20c0
+)paren
+)brace
+comma
+multiline_comment|/* Unknown - Oliver Schwartz */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x20de
+)paren
+)brace
+comma
+multiline_comment|/* S2W 3300U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x20b0
+)paren
+)brace
+comma
+multiline_comment|/* Unknown - Oliver Schwartz */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x20fe
+)paren
+)brace
+comma
+multiline_comment|/* Unknown - Oliver Schwartz */
 multiline_comment|/* Agfa */
 (brace
 id|USB_DEVICE
@@ -203,6 +295,39 @@ l_int|0x0100
 )brace
 comma
 multiline_comment|/* SnapScan Touch */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x2091
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e20 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x2097
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e26 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x208d
+)paren
+)brace
+comma
+multiline_comment|/* Snapscan e40 */
 multiline_comment|/* Colorado -- See Primax/Colorado below */
 multiline_comment|/* Epson -- See Seiko/Epson below */
 multiline_comment|/* Genius */
@@ -235,6 +360,17 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x0405
+)paren
+)brace
+comma
+multiline_comment|/* 3400C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x0101
 )paren
 )brace
@@ -251,6 +387,17 @@ l_int|0x0105
 )brace
 comma
 multiline_comment|/* 4200C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x0305
+)paren
+)brace
+comma
+multiline_comment|/* 4300C */
 (brace
 id|USB_DEVICE
 c_func
@@ -296,6 +443,17 @@ l_int|0x0601
 )brace
 comma
 multiline_comment|/* 6300C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x605
+)paren
+)brace
+comma
+multiline_comment|/* 2200C */
 multiline_comment|/* iVina */
 (brace
 id|USB_DEVICE
@@ -308,6 +466,18 @@ l_int|0x0268
 )brace
 comma
 multiline_comment|/* 1200U */
+multiline_comment|/* Lifetec */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05d8
+comma
+l_int|0x4002
+)paren
+)brace
+comma
+multiline_comment|/* Lifetec LT9385 */
 multiline_comment|/* Microtek -- No longer supported - Enable SCSI and USB Microtek in kernel config */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0099) },&t;/* ScanMaker X6 - X6U */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x0094) },&t;/* Phantom 336CX - C3 */
@@ -316,6 +486,8 @@ singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x009a) },&t;/* Phantom C6 */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x00a3) },&t;/* ScanMaker V6USL */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x80a3) },&t;/* ScanMaker V6USL #2 */
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x80ac) },&t;/* ScanMaker V6UL - SpicyU */
+multiline_comment|/* Minolta */
+singleline_comment|//&t;{ USB_DEVICE(0x0638,0x026a) }, /* Minolta Dimage Scan Dual II */
 multiline_comment|/* Mustek */
 (brace
 id|USB_DEVICE
@@ -350,6 +522,17 @@ l_int|0x0002
 )brace
 comma
 multiline_comment|/* 600 CU */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x0873
+)paren
+)brace
+comma
+multiline_comment|/* 600 USB */
 (brace
 id|USB_DEVICE
 c_func
@@ -505,17 +688,7 @@ l_int|0x0340
 )brace
 comma
 multiline_comment|/* Colorado USB 9600 */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x0461
-comma
-l_int|0x0360
-)paren
-)brace
-comma
-multiline_comment|/* Colorado USB 19200 */
+singleline_comment|// { USB_DEVICE(0x0461, 0x0360) },&t;/* Colorado USB 19200 - undetected endpoint */
 (brace
 id|USB_DEVICE
 c_func
@@ -538,6 +711,8 @@ l_int|0x0361
 )brace
 comma
 multiline_comment|/* Colorado 1200u */
+multiline_comment|/* Relisis */
+singleline_comment|// { USB_DEVICE(0x0475, 0x0103) },&t;/* Episode - undetected endpoint */
 multiline_comment|/* Seiko/Epson Corp. */
 (brace
 id|USB_DEVICE
@@ -638,6 +813,28 @@ l_int|0x010e
 )brace
 comma
 multiline_comment|/* Expression 1680 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x0110
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 1650 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x0112
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 2450 - GT-9700 for the Japanese mkt */
 multiline_comment|/* Umax */
 (brace
 id|USB_DEVICE
@@ -661,6 +858,17 @@ l_int|0x0030
 )brace
 comma
 multiline_comment|/* Astra 2000U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1606
+comma
+l_int|0x0130
+)paren
+)brace
+comma
+multiline_comment|/* Astra 2100U */
 (brace
 id|USB_DEVICE
 c_func
@@ -778,19 +986,31 @@ mdefine_line|#define RD_NAK_TIMEOUT (10*HZ)&t;/* Default number of X seconds to 
 DECL|macro|RD_EXPIRE
 mdefine_line|#define RD_EXPIRE 12&t;&t;/* Number of attempts to wait X seconds */
 multiline_comment|/* FIXME: These are NOT registered ioctls()&squot;s */
+macro_line|#ifdef PV8630
 DECL|macro|PV8630_IOCTL_INREQUEST
 mdefine_line|#define PV8630_IOCTL_INREQUEST 69
 DECL|macro|PV8630_IOCTL_OUTREQUEST
 mdefine_line|#define PV8630_IOCTL_OUTREQUEST 70
-multiline_comment|/* read vendor and product IDs */
-DECL|macro|IOCTL_SCANNER_VENDOR
-mdefine_line|#define IOCTL_SCANNER_VENDOR _IOR(&squot;u&squot;, 0xa0, int)
-DECL|macro|IOCTL_SCANNER_PRODUCT
-mdefine_line|#define IOCTL_SCANNER_PRODUCT _IOR(&squot;u&squot;, 0xa1, int)
+macro_line|#endif /* PV8630 */
+multiline_comment|/* read vendor and product IDs from the scanner */
+DECL|macro|SCANNER_IOCTL_VENDOR
+mdefine_line|#define SCANNER_IOCTL_VENDOR _IOR(&squot;U&squot;, 0x20, int)
+DECL|macro|SCANNER_IOCTL_PRODUCT
+mdefine_line|#define SCANNER_IOCTL_PRODUCT _IOR(&squot;U&squot;, 0x21, int)
+multiline_comment|/* send/recv a control message to the scanner */
+DECL|macro|SCANNER_IOCTL_CTRLMSG
+mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, devrequest )
 DECL|macro|SCN_MAX_MNR
 mdefine_line|#define SCN_MAX_MNR 16&t;&t;/* We&squot;re allocated 16 minors */
 DECL|macro|SCN_BASE_MNR
 mdefine_line|#define SCN_BASE_MNR 48&t;&t;/* USB Scanners start at minor 48 */
+r_static
+id|DECLARE_MUTEX
+(paren
+id|scn_mutex
+)paren
+suffix:semicolon
+multiline_comment|/* Initializes to unlocked */
 DECL|struct|scn_usb_data
 r_struct
 id|scn_usb_data
@@ -864,10 +1084,10 @@ id|wait_queue_head_t
 id|rd_wait_q
 suffix:semicolon
 multiline_comment|/* read timeouts */
-DECL|member|gen_lock
+DECL|member|sem
 r_struct
 id|semaphore
-id|gen_lock
+id|sem
 suffix:semicolon
 multiline_comment|/* lock to prevent concurrent reads or writes */
 DECL|member|rd_nak_timeout
@@ -877,6 +1097,10 @@ id|rd_nak_timeout
 suffix:semicolon
 multiline_comment|/* Seconds to wait before read() timeout. */
 )brace
+suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|usb_devfs_handle
 suffix:semicolon
 DECL|variable|p_scn_table
 r_static
@@ -900,9 +1124,4 @@ r_struct
 id|usb_driver
 id|scanner_driver
 suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
-multiline_comment|/* /dev/usb dir. */
 eof

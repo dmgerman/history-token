@@ -2603,7 +2603,7 @@ id|CIA_IOC_HAE_IO
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* For PYXIS, we always use BWX bus and i/o accesses.  To that end,&n;&t;   make sure they&squot;re enabled on the controller.  */
+multiline_comment|/* For PYXIS, we always use BWX bus and i/o accesses.  To that end,&n;&t;   make sure they&squot;re enabled on the controller.  At the same time,&n;&t;   enable the monster window.  */
 r_if
 c_cond
 (paren
@@ -2621,6 +2621,8 @@ suffix:semicolon
 id|temp
 op_or_assign
 id|CIA_CNFG_IOA_BWEN
+op_or
+id|CIA_CNFG_PCI_MWEN
 suffix:semicolon
 op_star
 (paren

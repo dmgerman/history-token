@@ -2037,7 +2037,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 multiline_comment|/* enumerate busses */
-id|read_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -2117,7 +2117,7 @@ op_add_assign
 id|ret
 suffix:semicolon
 )brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock

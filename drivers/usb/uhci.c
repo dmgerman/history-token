@@ -7300,6 +7300,7 @@ op_amp
 id|TD_CTRL_ACTIVE
 )paren
 op_logical_and
+(paren
 id|uhci_actual_length
 c_func
 (paren
@@ -7315,6 +7316,7 @@ op_logical_or
 id|tmp
 op_eq
 id|head
+)paren
 )paren
 (brace
 id|usb_settoggle

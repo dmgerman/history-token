@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.68 2001/10/13 00:14:34 kanoj Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.69 2001/10/18 09:40:00 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -197,6 +197,10 @@ r_char
 op_star
 id|cmd
 suffix:semicolon
+r_extern
+id|spinlock_t
+id|prom_entry_lock
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -244,6 +248,13 @@ id|save_and_cli
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|prom_entry_lock
 )paren
 suffix:semicolon
 id|cons
@@ -1168,6 +1179,13 @@ id|cons
 )paren
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|prom_entry_lock
+)paren
+suffix:semicolon
 id|restore_flags
 c_func
 (paren

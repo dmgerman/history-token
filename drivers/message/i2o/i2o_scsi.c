@@ -16,9 +16,9 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
-macro_line|#include &quot;../scsi/scsi.h&quot;
-macro_line|#include &quot;../scsi/hosts.h&quot;
-macro_line|#include &quot;../scsi/sd.h&quot;
+macro_line|#include &quot;../../scsi/scsi.h&quot;
+macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;i2o_scsi.h&quot;
 DECL|macro|VERSION_STRING
 mdefine_line|#define VERSION_STRING        &quot;Version 0.0.1&quot;
@@ -3584,5 +3584,5 @@ id|driver_template
 op_assign
 id|I2OSCSI
 suffix:semicolon
-macro_line|#include &quot;../scsi/scsi_module.c&quot;
+macro_line|#include &quot;../../scsi/scsi_module.c&quot;
 eof

@@ -96,10 +96,9 @@ id|usb_bus_list
 )paren
 suffix:semicolon
 DECL|variable|usb_bus_list_lock
-id|rwlock_t
+r_struct
+id|semaphore
 id|usb_bus_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|usb_devfs_handle
 id|devfs_handle_t
@@ -225,7 +224,7 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-id|read_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -271,7 +270,7 @@ id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 )brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -489,7 +488,7 @@ op_amp
 id|driver-&gt;driver_list
 )paren
 suffix:semicolon
-id|read_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -537,7 +536,7 @@ id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 )brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -1399,7 +1398,7 @@ id|bus
 r_int
 id|busnum
 suffix:semicolon
-id|write_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -1462,7 +1461,7 @@ op_amp
 id|usb_bus_list
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -1504,7 +1503,7 @@ id|bus-&gt;busnum
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * NOTE: make sure that all the devices are removed by the&n;&t; * controller code, as well as having it call this when cleaning&n;&t; * itself up&n;&t; */
-id|write_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -1517,7 +1516,7 @@ op_amp
 id|bus-&gt;bus_list
 )paren
 suffix:semicolon
-id|write_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -9149,6 +9148,13 @@ c_func
 r_void
 )paren
 (brace
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|usb_major_init
 c_func
 (paren

@@ -1524,7 +1524,7 @@ l_int|2
 dot
 id|csr
 op_assign
-l_int|0x80000000
+l_int|0
 suffix:semicolon
 id|pchip-&gt;wsba
 (braket

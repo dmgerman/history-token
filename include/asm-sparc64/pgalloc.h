@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.23 2001/09/25 20:21:48 kanoj Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.26 2001/10/18 09:06:37 davem Exp $ */
 macro_line|#ifndef _SPARC64_PGALLOC_H
 DECL|macro|_SPARC64_PGALLOC_H
 mdefine_line|#define _SPARC64_PGALLOC_H
@@ -56,13 +56,44 @@ r_int
 r_int
 )paren
 suffix:semicolon
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;/* is there D$ aliasing problem */
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page) &bslash;&n;do {&t;if ((page)-&gt;mapping &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap) &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap_shared)) &bslash;&n;&t;&t;set_bit(PG_dcache_dirty, &amp;(page)-&gt;flags); &bslash;&n;&t;else &bslash;&n;&t;&t;__flush_dcache_page((page)-&gt;virtual, &bslash;&n;&t;&t;&t;&t;    ((tlb_type == spitfire) &amp;&amp; &bslash;&n;&t;&t;&t;&t;     (page)-&gt;mapping != NULL)); &bslash;&n;} while(0)
-macro_line|#else /* L1DCACHE_SIZE &gt; PAGE_SIZE */
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page) &bslash;&n;do {&t;if ((page)-&gt;mapping &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap) &amp;&amp; &bslash;&n;&t;    !((page)-&gt;mapping-&gt;i_mmap_shared)) &bslash;&n;&t;&t;set_bit(PG_dcache_dirty, &amp;(page)-&gt;flags); &bslash;&n;&t;else &bslash;&n;&t;&t;if ((tlb_type == spitfire) &amp;&amp; &bslash;&n;&t;&t;    (page)-&gt;mapping != NULL) &bslash;&n;&t;&t;&t;__flush_icache_page(__get_phys((unsigned long)((page)-&gt;virtual))); &bslash;&n;} while(0)
-macro_line|#endif /* L1DCACHE_SIZE &gt; PAGE_SIZE */
+r_extern
+r_void
+id|flush_dcache_page_impl
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|smp_flush_dcache_page_impl
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|smp_flush_dcache_page_impl
+mdefine_line|#define smp_flush_dcache_page_impl flush_dcache_page_impl
+macro_line|#endif
+r_extern
+r_void
+id|flush_dcache_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|__flush_dcache_range

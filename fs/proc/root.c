@@ -147,6 +147,24 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_BINFMT_MISC) || defined(CONFIG_BINFMT_MISC_MODULE)
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;sys/fs&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;sys/fs/binfmt_misc&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 id|proc_root_fs
 op_assign
 id|proc_mkdir

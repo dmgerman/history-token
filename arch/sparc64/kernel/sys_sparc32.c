@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc32.c,v 1.179 2001/09/25 00:48:09 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/* $Id: sys_sparc32.c,v 1.182 2001/10/18 09:06:36 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -22031,6 +22031,70 @@ c_func
 (paren
 id|poslo
 )paren
+)paren
+suffix:semicolon
+)brace
+r_extern
+id|asmlinkage
+id|ssize_t
+id|sys_readahead
+c_func
+(paren
+r_int
+id|fd
+comma
+id|loff_t
+id|offset
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+DECL|function|sys32_readahead
+id|asmlinkage
+id|ssize_t32
+id|sys32_readahead
+c_func
+(paren
+r_int
+id|fd
+comma
+id|u32
+id|offhi
+comma
+id|u32
+id|offlo
+comma
+id|s32
+id|count
+)paren
+(brace
+r_return
+id|sys_readahead
+c_func
+(paren
+id|fd
+comma
+(paren
+(paren
+id|loff_t
+)paren
+id|AA
+c_func
+(paren
+id|offhi
+)paren
+op_lshift
+l_int|32
+)paren
+op_or
+id|AA
+c_func
+(paren
+id|offlo
+)paren
+comma
+id|count
 )paren
 suffix:semicolon
 )brace

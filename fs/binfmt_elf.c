@@ -1149,6 +1149,22 @@ id|elf_phdr
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|interp_elf_ex-&gt;e_phnum
+OG
+l_int|65536U
+op_div
+r_sizeof
+(paren
+r_struct
+id|elf_phdr
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/* Now read in all of the header information */
 id|size
 op_assign
@@ -3346,8 +3362,8 @@ r_if
 c_cond
 (paren
 id|current-&gt;personality
-op_eq
-id|PER_SVR4
+op_amp
+id|MMAP_PAGE_ZERO
 )paren
 (brace
 multiline_comment|/* Why this, you ask???  Well SVr4 maps page 0 as read-only,&n;&t;&t;   and some applications &quot;depend&quot; upon this behavior.&n;&t;&t;   Since we do not have the power to recompile these, we&n;&t;&t;   emulate the SVr4 behavior.  Sigh.  */

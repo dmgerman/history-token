@@ -1276,7 +1276,7 @@ id|usb_bus
 op_star
 id|bus
 suffix:semicolon
-id|read_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -1320,7 +1320,7 @@ op_eq
 id|busnr
 )paren
 (brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -1331,7 +1331,7 @@ id|bus
 suffix:semicolon
 )brace
 )brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -2166,7 +2166,7 @@ l_int|2
 op_plus
 id|NRSPECIAL
 suffix:semicolon
-id|read_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -2263,7 +2263,7 @@ id|filp-&gt;f_pos
 op_increment
 suffix:semicolon
 )brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -3348,7 +3348,7 @@ id|inodes
 )paren
 suffix:semicolon
 )brace
-id|read_lock_irq
+id|down
 (paren
 op_amp
 id|usb_bus_list_lock
@@ -3401,7 +3401,7 @@ id|s
 )paren
 suffix:semicolon
 )brace
-id|read_unlock_irq
+id|up
 (paren
 op_amp
 id|usb_bus_list_lock

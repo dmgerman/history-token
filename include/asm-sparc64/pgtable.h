@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.146 2001/09/11 02:20:23 kanoj Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.147 2001/10/17 18:26:58 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -30,6 +30,12 @@ mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PG_dcache_dirty
 mdefine_line|#define PG_dcache_dirty&t;&t;PG_arch_1
+DECL|macro|dcache_dirty_cpu
+mdefine_line|#define dcache_dirty_cpu(page) &bslash;&n;&t;(((page)-&gt;flags &gt;&gt; 24) &amp; (NR_CPUS - 1UL))
+DECL|macro|set_dcache_dirty
+mdefine_line|#define set_dcache_dirty(PAGE) &bslash;&n;do {&t;unsigned long mask = smp_processor_id(); &bslash;&n;&t;unsigned long non_cpu_bits = (1UL &lt;&lt; 24UL) - 1UL; &bslash;&n;&t;mask = (mask &lt;&lt; 24) | (1UL &lt;&lt; PG_dcache_dirty); &bslash;&n;&t;__asm__ __volatile__(&quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;ldx&t;[%2], %%g7&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;and&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;or&t;%%g5, %0, %%g5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;&t;     &quot; nop&quot; &bslash;&n;&t;&t;&t;     : /* no outputs */ &bslash;&n;&t;&t;&t;     : &quot;r&quot; (mask), &quot;r&quot; (non_cpu_bits), &quot;r&quot; (&amp;(PAGE)-&gt;flags) &bslash;&n;&t;&t;&t;     : &quot;g5&quot;, &quot;g7&quot;); &bslash;&n;} while (0)
+DECL|macro|clear_dcache_dirty
+mdefine_line|#define clear_dcache_dirty(PAGE) &bslash;&n;&t;clear_bit(PG_dcache_dirty, &amp;(PAGE)-&gt;flags)
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))

@@ -698,7 +698,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: CREATE   %s %*.s&bslash;n&quot;
+l_string|&quot;nfsd: CREATE   %s %.*s&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func

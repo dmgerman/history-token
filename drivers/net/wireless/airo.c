@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    Aironet driver for 4500 and 4800 series cards&n;&n;    This code is released under both the GPL version 2 and BSD licenses.&n;    Either license may be used.  The respective licenses are found at&n;    the end of this file.&n;&n;    This code was developed by Benjamin Reed &lt;breed@users.sourceforge.net&gt;&n;    including portions of which come from the Aironet PC4500&n;    Developer&squot;s Reference Manual and used with permission.  Copyright&n;    (C) 1999 Benjamin Reed.  All Rights Reserved.  Permission to use&n;    code in the Developer&squot;s manual was granted for this driver by&n;    Aironet.  Major code contributions were received from Javier Achirica&n;    and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;.  Code was also integrated from&n;    the Cisco Aironet driver for Linux.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    Aironet driver for 4500 and 4800 series cards&n;&n;    This code is released under both the GPL version 2 and BSD licenses.&n;    Either license may be used.  The respective licenses are found at&n;    the end of this file.&n;&n;    This code was developed by Benjamin Reed &lt;breed@users.sourceforge.net&gt;&n;    including portions of which come from the Aironet PC4500&n;    Developer&squot;s Reference Manual and used with permission.  Copyright&n;    (C) 1999 Benjamin Reed.  All Rights Reserved.  Permission to use&n;    code in the Developer&squot;s manual was granted for this driver by&n;    Aironet.  Major code contributions were received from Javier Achirica&n;    and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;.  Code was also integrated from&n;    the Cisco Aironet driver for Linux.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
@@ -848,6 +848,12 @@ mdefine_line|#define IGNORE_INTS ( EV_CMD | EV_UNKNOWN)
 multiline_comment|/* The RIDs */
 DECL|macro|RID_CAPABILITIES
 mdefine_line|#define RID_CAPABILITIES 0xFF00
+DECL|macro|RID_APINFO
+mdefine_line|#define RID_APINFO     0xFF01
+DECL|macro|RID_RADIOINFO
+mdefine_line|#define RID_RADIOINFO  0xFF02
+DECL|macro|RID_UNKNOWN3
+mdefine_line|#define RID_UNKNOWN3   0xFF03
 DECL|macro|RID_RSSI
 mdefine_line|#define RID_RSSI       0xFF04
 DECL|macro|RID_CONFIG
@@ -866,20 +872,44 @@ DECL|macro|RID_WEP_PERM
 mdefine_line|#define RID_WEP_PERM   0xFF16
 DECL|macro|RID_MODULATION
 mdefine_line|#define RID_MODULATION 0xFF17
+DECL|macro|RID_OPTIONS
+mdefine_line|#define RID_OPTIONS    0xFF18
 DECL|macro|RID_ACTUALCONFIG
 mdefine_line|#define RID_ACTUALCONFIG 0xFF20 /*readonly*/
+DECL|macro|RID_FACTORYCONFIG
+mdefine_line|#define RID_FACTORYCONFIG 0xFF21
+DECL|macro|RID_UNKNOWN22
+mdefine_line|#define RID_UNKNOWN22  0xFF22
 DECL|macro|RID_LEAPUSERNAME
 mdefine_line|#define RID_LEAPUSERNAME 0xFF23
 DECL|macro|RID_LEAPPASSWORD
 mdefine_line|#define RID_LEAPPASSWORD 0xFF24
 DECL|macro|RID_STATUS
 mdefine_line|#define RID_STATUS     0xFF50
+DECL|macro|RID_UNKNOWN52
+mdefine_line|#define RID_UNKNOWN52  0xFF52
+DECL|macro|RID_UNKNOWN54
+mdefine_line|#define RID_UNKNOWN54  0xFF54
+DECL|macro|RID_UNKNOWN55
+mdefine_line|#define RID_UNKNOWN55  0xFF55
+DECL|macro|RID_UNKNOWN56
+mdefine_line|#define RID_UNKNOWN56  0xFF56
+DECL|macro|RID_STATS16
+mdefine_line|#define RID_STATS16    0xFF60
+DECL|macro|RID_STATS16DELTA
+mdefine_line|#define RID_STATS16DELTA 0xFF61
+DECL|macro|RID_STATS16DELTACLEAR
+mdefine_line|#define RID_STATS16DELTACLEAR 0xFF62
 DECL|macro|RID_STATS
 mdefine_line|#define RID_STATS      0xFF68
 DECL|macro|RID_STATSDELTA
 mdefine_line|#define RID_STATSDELTA 0xFF69
 DECL|macro|RID_STATSDELTACLEAR
 mdefine_line|#define RID_STATSDELTACLEAR 0xFF6A
+DECL|macro|RID_UNKNOWN70
+mdefine_line|#define RID_UNKNOWN70  0xFF70
+DECL|macro|RID_UNKNOWN71
+mdefine_line|#define RID_UNKNOWN71  0xFF71
 DECL|macro|RID_BSSLISTFIRST
 mdefine_line|#define RID_BSSLISTFIRST 0xFF72
 DECL|macro|RID_BSSLISTNEXT
@@ -1882,8 +1912,20 @@ mdefine_line|#define BUSY_FID 0x10000
 macro_line|#ifdef CISCO_EXT
 DECL|macro|AIROMAGIC
 mdefine_line|#define AIROMAGIC&t;0xa55a
+multiline_comment|/* Warning : SIOCDEVPRIVATE may disapear during 2.5.X - Jean II */
+macro_line|#ifdef SIOCIWFIRSTPRIV
+macro_line|#ifdef SIOCDEVPRIVATE
+DECL|macro|AIROOLDIOCTL
+mdefine_line|#define AIROOLDIOCTL&t;SIOCDEVPRIVATE
+DECL|macro|AIROOLDIDIFC
+mdefine_line|#define AIROOLDIDIFC &t;AIROOLDIOCTL + 1
+macro_line|#endif /* SIOCDEVPRIVATE */
+macro_line|#else /* SIOCIWFIRSTPRIV */
+DECL|macro|SIOCIWFIRSTPRIV
+mdefine_line|#define SIOCIWFIRSTPRIV SIOCDEVPRIVATE
+macro_line|#endif /* SIOCIWFIRSTPRIV */
 DECL|macro|AIROIOCTL
-mdefine_line|#define AIROIOCTL&t;SIOCDEVPRIVATE
+mdefine_line|#define AIROIOCTL&t;SIOCIWFIRSTPRIV
 DECL|macro|AIROIDIFC
 mdefine_line|#define AIROIDIFC &t;AIROIOCTL + 1
 multiline_comment|/* Ioctl constants to be used in airo_ioctl.command */
@@ -1892,10 +1934,10 @@ mdefine_line|#define&t;AIROGCAP  &t;&t;0&t;
 singleline_comment|// Capability rid
 DECL|macro|AIROGCFG
 mdefine_line|#define AIROGCFG&t;&t;1       
-singleline_comment|// USED A LOT 
+singleline_comment|// USED A LOT
 DECL|macro|AIROGSLIST
 mdefine_line|#define AIROGSLIST&t;&t;2&t;
-singleline_comment|// System ID list 
+singleline_comment|// System ID list
 DECL|macro|AIROGVLIST
 mdefine_line|#define AIROGVLIST&t;&t;3       
 singleline_comment|// List of specified AP&squot;s
@@ -2149,6 +2191,24 @@ c_func
 r_struct
 id|airo_info
 op_star
+)paren
+suffix:semicolon
+r_static
+id|u16
+id|lock_issuecommand
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+comma
+id|Cmd
+op_star
+id|pCmd
+comma
+id|Resp
+op_star
+id|pRsp
 )paren
 suffix:semicolon
 r_static
@@ -2497,7 +2557,7 @@ DECL|member|authtype
 id|u16
 id|authtype
 suffix:semicolon
-singleline_comment|// Used with auto_wep 
+singleline_comment|// Used with auto_wep
 DECL|member|keyindex
 r_char
 id|keyindex
@@ -2525,21 +2585,13 @@ id|airo_info
 op_star
 id|next
 suffix:semicolon
-DECL|member|bap0_lock
-id|spinlock_t
-id|bap0_lock
-suffix:semicolon
-DECL|member|bap1_lock
-id|spinlock_t
-id|bap1_lock
-suffix:semicolon
 DECL|member|aux_lock
 id|spinlock_t
 id|aux_lock
 suffix:semicolon
-DECL|member|cmd_lock
+DECL|member|main_lock
 id|spinlock_t
-id|cmd_lock
+id|main_lock
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -2762,7 +2814,7 @@ id|cmd.cmd
 op_assign
 id|CMD_LISTBSS
 suffix:semicolon
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -4026,20 +4078,11 @@ id|dev
 id|s16
 id|len
 suffix:semicolon
-id|s16
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
 id|u16
 id|status
 suffix:semicolon
 id|u32
 id|flags
-suffix:semicolon
-id|s8
-op_star
-id|buffer
 suffix:semicolon
 r_int
 id|i
@@ -4088,7 +4131,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|priv-&gt;bap1_lock
+id|priv-&gt;main_lock
 comma
 id|flags
 )paren
@@ -4166,10 +4209,8 @@ op_minus
 l_int|1
 )paren
 (brace
-id|retval
-op_assign
-op_minus
-id|EBUSY
+id|priv-&gt;stats.tx_fifo_errors
+op_increment
 suffix:semicolon
 r_goto
 id|tx_done
@@ -4187,10 +4228,6 @@ suffix:colon
 id|ETH_ZLEN
 suffix:semicolon
 multiline_comment|/* check min length*/
-id|buffer
-op_assign
-id|skb-&gt;data
-suffix:semicolon
 id|status
 op_assign
 id|transmit_802_3_packet
@@ -4235,7 +4272,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|priv-&gt;stats.tx_errors
+id|priv-&gt;stats.tx_window_errors
 op_increment
 suffix:semicolon
 )brace
@@ -4245,7 +4282,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|priv-&gt;bap1_lock
+id|priv-&gt;main_lock
 comma
 id|flags
 )paren
@@ -4261,7 +4298,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|airo_get_stats
-r_static
 r_struct
 id|net_device_stats
 op_star
@@ -4274,19 +4310,165 @@ op_star
 id|dev
 )paren
 (brace
-r_return
-op_amp
-(paren
-(paren
+r_struct
+id|airo_info
+op_star
+id|local
+op_assign
 (paren
 r_struct
 id|airo_info
 op_star
 )paren
 id|dev-&gt;priv
+suffix:semicolon
+id|StatsRid
+id|stats_rid
+suffix:semicolon
+id|u32
+op_star
+id|vals
+op_assign
+id|stats_rid.vals
+suffix:semicolon
+multiline_comment|/* Get stats out of the card */
+id|readStatsRid
+c_func
+(paren
+id|local
+comma
+op_amp
+id|stats_rid
+comma
+id|RID_STATS
 )paren
-op_member_access_from_pointer
-id|stats
+suffix:semicolon
+id|local-&gt;stats.rx_packets
+op_assign
+id|vals
+(braket
+l_int|43
+)braket
+op_plus
+id|vals
+(braket
+l_int|44
+)braket
+op_plus
+id|vals
+(braket
+l_int|45
+)braket
+suffix:semicolon
+id|local-&gt;stats.tx_packets
+op_assign
+id|vals
+(braket
+l_int|39
+)braket
+op_plus
+id|vals
+(braket
+l_int|40
+)braket
+op_plus
+id|vals
+(braket
+l_int|41
+)braket
+suffix:semicolon
+id|local-&gt;stats.rx_bytes
+op_assign
+id|vals
+(braket
+l_int|92
+)braket
+suffix:semicolon
+id|local-&gt;stats.tx_bytes
+op_assign
+id|vals
+(braket
+l_int|91
+)braket
+suffix:semicolon
+id|local-&gt;stats.rx_errors
+op_assign
+id|vals
+(braket
+l_int|0
+)braket
+op_plus
+id|vals
+(braket
+l_int|2
+)braket
+op_plus
+id|vals
+(braket
+l_int|3
+)braket
+op_plus
+id|vals
+(braket
+l_int|4
+)braket
+suffix:semicolon
+id|local-&gt;stats.tx_errors
+op_assign
+id|vals
+(braket
+l_int|42
+)braket
+op_plus
+id|local-&gt;stats.tx_fifo_errors
+suffix:semicolon
+id|local-&gt;stats.multicast
+op_assign
+id|vals
+(braket
+l_int|43
+)braket
+suffix:semicolon
+id|local-&gt;stats.collisions
+op_assign
+id|vals
+(braket
+l_int|89
+)braket
+suffix:semicolon
+multiline_comment|/* detailed rx_errors: */
+id|local-&gt;stats.rx_length_errors
+op_assign
+id|vals
+(braket
+l_int|3
+)braket
+suffix:semicolon
+id|local-&gt;stats.rx_crc_errors
+op_assign
+id|vals
+(braket
+l_int|4
+)braket
+suffix:semicolon
+id|local-&gt;stats.rx_frame_errors
+op_assign
+id|vals
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|local-&gt;stats.rx_fifo_errors
+op_assign
+id|vals
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_return
+(paren
+op_amp
+id|local-&gt;stats
 )paren
 suffix:semicolon
 )brace
@@ -4390,7 +4572,7 @@ id|PROMISC
 suffix:colon
 id|NOPROMISC
 suffix:semicolon
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -4796,31 +4978,48 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dev_alloc_name
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;name
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;airo:  Couldn&squot;t get name!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_out_free
+suffix:semicolon
+)brace
 id|ai
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
 id|ai-&gt;registered
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|ai-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|ai-&gt;bap0_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-id|ai-&gt;bap1_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 id|ai-&gt;aux_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|ai-&gt;cmd_lock
+id|ai-&gt;main_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -4901,22 +5100,6 @@ id|port
 suffix:semicolon
 id|rc
 op_assign
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-r_goto
-id|err_out_unlink
-suffix:semicolon
-id|rc
-op_assign
 id|request_irq
 c_func
 (paren
@@ -4925,8 +5108,6 @@ comma
 id|airo_interrupt
 comma
 id|SA_SHIRQ
-op_or
-id|SA_INTERRUPT
 comma
 id|dev-&gt;name
 comma
@@ -4951,7 +5132,7 @@ id|rc
 )paren
 suffix:semicolon
 r_goto
-id|err_out_unregister
+id|err_out_unlink
 suffix:semicolon
 )brace
 r_if
@@ -5019,6 +5200,26 @@ r_goto
 id|err_out_res
 suffix:semicolon
 )brace
+id|rc
+op_assign
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|err_out_res
+suffix:semicolon
+id|ai-&gt;registered
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -5135,14 +5336,6 @@ c_func
 (paren
 id|dev-&gt;irq
 comma
-id|dev
-)paren
-suffix:semicolon
-id|err_out_unregister
-suffix:colon
-id|unregister_netdev
-c_func
-(paren
 id|dev
 )paren
 suffix:semicolon
@@ -5511,6 +5704,8 @@ id|dev-&gt;priv
 suffix:semicolon
 id|u16
 id|savedInterrupts
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5524,6 +5719,13 @@ id|dev
 )paren
 r_return
 suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
 id|status
 op_assign
 id|IN4500
@@ -5544,7 +5746,7 @@ id|status
 op_eq
 l_int|0xffff
 )paren
-r_return
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -5575,6 +5777,13 @@ id|EV_AWAKE
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|savedInterrupts
+)paren
+(brace
 id|savedInterrupts
 op_assign
 id|IN4500
@@ -5595,6 +5804,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5603,7 +5813,7 @@ op_amp
 id|EV_LINK
 )paren
 (brace
-multiline_comment|/* The link status has changed, if you want to put a&n;&t;&t;   monitor hook in, do it here.  (Remember that&n;&t;&t;   interrupts are still disabled!)&n;&t;&t;*/
+multiline_comment|/* The link status has changed, if you want to put a&n;&t;&t;&t;   monitor hook in, do it here.  (Remember that&n;&t;&t;&t;   interrupts are still disabled!)&n;&t;&t;&t;*/
 id|u16
 id|newStatus
 op_assign
@@ -5613,6 +5823,16 @@ c_func
 id|apriv
 comma
 id|LINKSTAT
+)paren
+suffix:semicolon
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|EV_LINK
 )paren
 suffix:semicolon
 multiline_comment|/* Here is what newStatus means: */
@@ -5714,9 +5934,6 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|flags
-suffix:semicolon
 id|u16
 id|fc
 comma
@@ -5753,15 +5970,6 @@ id|RXFID
 )paren
 suffix:semicolon
 multiline_comment|/* Get the packet length */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|apriv-&gt;bap0_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5809,21 +6017,13 @@ c_func
 (paren
 id|hdr.status
 )paren
-op_eq
+op_amp
 l_int|2
 )paren
-(brace
-id|apriv-&gt;stats.rx_crc_errors
-op_increment
-suffix:semicolon
-id|apriv-&gt;stats.rx_errors
-op_increment
-suffix:semicolon
 id|hdr.len
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -5871,12 +6071,6 @@ OG
 l_int|2312
 )paren
 (brace
-id|apriv-&gt;stats.rx_length_errors
-op_increment
-suffix:semicolon
-id|apriv-&gt;stats.rx_errors
-op_increment
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6160,6 +6354,16 @@ id|BAP0
 )paren
 suffix:semicolon
 )brace
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|EV_RX
+)paren
+suffix:semicolon
 macro_line|#ifdef WIRELESS_SPY
 r_if
 c_cond
@@ -6307,15 +6511,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* WIRELESS_SPY  */
-id|apriv-&gt;stats.rx_packets
-op_increment
-suffix:semicolon
-id|apriv-&gt;stats.rx_bytes
-op_add_assign
-id|len
-op_plus
-id|hdrlen
-suffix:semicolon
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -6378,13 +6573,15 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+r_else
+id|OUT4500
 c_func
 (paren
-op_amp
-id|apriv-&gt;bap0_lock
+id|apriv
 comma
-id|flags
+id|EVACK
+comma
+id|EV_RX
 )paren
 suffix:semicolon
 )brace
@@ -6408,11 +6605,6 @@ r_int
 id|len
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-id|full
-op_assign
-l_int|1
 suffix:semicolon
 r_int
 id|index
@@ -6445,23 +6637,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|apriv-&gt;fids
-(braket
-id|i
-)braket
-op_amp
-l_int|0xffff0000
-)paren
-)paren
-id|full
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6503,7 +6678,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|full
+id|index
+op_ne
+op_minus
+l_int|1
 )paren
 id|netif_wake_queue
 c_func
@@ -6514,50 +6692,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|index
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;airo: Unallocated FID was used to xmit&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
 (paren
 id|status
 op_amp
-id|EV_TX
+id|EV_TXEXC
 )paren
-(brace
-id|apriv-&gt;stats.tx_packets
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|index
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|apriv-&gt;stats.tx_bytes
-op_add_assign
-id|len
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|bap_setup
 c_func
@@ -6566,12 +6706,13 @@ id|apriv
 comma
 id|fid
 comma
-l_int|0x0004
+l_int|4
 comma
 id|BAP1
 )paren
 op_eq
 id|SUCCESS
+)paren
 )paren
 (brace
 id|u16
@@ -6633,11 +6774,61 @@ id|apriv-&gt;stats.tx_carrier_errors
 op_increment
 suffix:semicolon
 )brace
-id|apriv-&gt;stats.tx_errors
-op_increment
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|status
+op_amp
+(paren
+id|EV_TX
+op_or
+id|EV_TXEXC
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;airo: Unallocated FID was used to xmit&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|status
+op_amp
+op_complement
+id|STATUS_INTS
+)paren
+id|OUT4500
+c_func
+(paren
+id|apriv
+comma
+id|EVACK
+comma
+id|status
+op_amp
+op_complement
+id|STATUS_INTS
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6664,18 +6855,12 @@ op_complement
 id|IGNORE_INTS
 )paren
 suffix:semicolon
-id|OUT4500
-c_func
+)brace
+r_if
+c_cond
 (paren
-id|apriv
-comma
-id|EVACK
-comma
-id|status
-op_amp
-id|STATUS_INTS
+id|savedInterrupts
 )paren
-suffix:semicolon
 id|OUT4500
 c_func
 (paren
@@ -6875,7 +7060,7 @@ op_assign
 id|MAC_ENABLE
 suffix:semicolon
 r_return
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -6924,7 +7109,7 @@ op_assign
 id|MAC_DISABLE
 suffix:semicolon
 singleline_comment|// disable in case already enabled
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -7100,7 +7285,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -7141,7 +7326,7 @@ singleline_comment|// disable in case already enabled
 r_if
 c_cond
 (paren
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -7168,7 +7353,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -7390,7 +7575,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;airo: unknown received signal level&bslash;n&quot;
+l_string|&quot;airo: unknown received signal level scale&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7430,7 +7615,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* Check to see if there are any insmod configured &n;&t;&t;   rates to add */
+multiline_comment|/* Check to see if there are any insmod configured&n;&t;&t;   rates to add */
 r_if
 c_cond
 (paren
@@ -7816,6 +8001,66 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
+DECL|function|lock_issuecommand
+r_static
+id|u16
+id|lock_issuecommand
+c_func
+(paren
+r_struct
+id|airo_info
+op_star
+id|ai
+comma
+id|Cmd
+op_star
+id|pCmd
+comma
+id|Resp
+op_star
+id|pRsp
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ai-&gt;main_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|issuecommand
+c_func
+(paren
+id|ai
+comma
+id|pCmd
+comma
+id|pRsp
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ai-&gt;main_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 DECL|function|issuecommand
 r_static
 id|u16
@@ -7841,23 +8086,6 @@ r_int
 id|max_tries
 op_assign
 l_int|600000
-suffix:semicolon
-r_int
-id|rc
-op_assign
-id|SUCCESS
-suffix:semicolon
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ai-&gt;cmd_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|OUT4500
 c_func
@@ -7946,35 +8174,6 @@ id|pCmd-&gt;cmd
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|max_tries
-op_amp
-l_int|255
-)paren
-op_logical_and
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -7992,12 +8191,8 @@ id|KERN_ERR
 l_string|&quot;airo: Max tries exceeded when issueing command&bslash;n&quot;
 )paren
 suffix:semicolon
-id|rc
-op_assign
+r_return
 id|ERROR
-suffix:semicolon
-r_goto
-id|done
 suffix:semicolon
 )brace
 singleline_comment|// command completed
@@ -8078,19 +8273,8 @@ comma
 id|EV_CMD
 )paren
 suffix:semicolon
-id|done
-suffix:colon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ai-&gt;cmd_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|rc
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* Sets up the bap to start exchange data.  whichbap should&n; * be one of the BAP0 or BAP1 defines.  Locks should be held before&n; * calling! */
@@ -8897,7 +9081,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -8972,14 +9156,14 @@ suffix:semicolon
 singleline_comment|// length for remaining part of rid
 id|len
 op_assign
-id|min_t
+id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|len
 comma
+(paren
+r_int
+)paren
 id|le16_to_cpu
 c_func
 (paren
@@ -9028,32 +9212,6 @@ id|done
 suffix:semicolon
 )brace
 singleline_comment|// read remainder of the rid
-r_if
-c_cond
-(paren
-id|bap_setup
-c_func
-(paren
-id|ai
-comma
-id|rid
-comma
-l_int|2
-comma
-id|BAP1
-)paren
-op_ne
-id|SUCCESS
-)paren
-(brace
-id|rc
-op_assign
-id|ERROR
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
-)brace
 id|rc
 op_assign
 id|bap_read
@@ -9082,7 +9240,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -9130,7 +9288,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -9224,7 +9382,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -9275,7 +9433,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -9368,7 +9526,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -9395,7 +9553,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -9424,7 +9582,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ai-&gt;bap1_lock
+id|ai-&gt;main_lock
 comma
 id|flags
 )paren
@@ -12049,7 +12207,7 @@ id|k
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* i is index into line, &n;&t;&t;&t;&t;&t;&t;k is index to rates */
+multiline_comment|/* i is index into line,&n;&t;&t;&t;&t;&t;&t;k is index to rates */
 id|line
 op_add_assign
 l_int|11
@@ -15993,7 +16151,7 @@ id|cmd.cmd
 op_assign
 id|CMD_LISTBSS
 suffix:semicolon
-id|issuecommand
+id|lock_issuecommand
 c_func
 (paren
 id|ai
@@ -17022,6 +17180,16 @@ op_logical_and
 id|cmd
 op_ne
 id|AIROIDIFC
+macro_line|#ifdef AIROOLDIOCTL
+op_logical_and
+id|cmd
+op_ne
+id|AIROOLDIOCTL
+op_logical_and
+id|cmd
+op_ne
+id|AIROOLDIDIFC
+macro_line|#endif
 )paren
 macro_line|#endif /* CISCO_EXT */
 (brace
@@ -19451,8 +19619,11 @@ l_int|10
 suffix:semicolon
 id|range.max_qual.level
 op_assign
-l_int|0
+l_int|0x100
+op_minus
+l_int|120
 suffix:semicolon
+multiline_comment|/* -120 dBm */
 id|range.max_qual.noise
 op_assign
 l_int|0
@@ -19707,7 +19878,7 @@ macro_line|#endif /* WIRELESS_EXT &gt; 9 */
 macro_line|#if WIRELESS_EXT &gt; 10
 id|range.we_version_source
 op_assign
-l_int|11
+l_int|12
 suffix:semicolon
 id|range.we_version_compiled
 op_assign
@@ -19746,6 +19917,34 @@ op_star
 l_int|1024
 suffix:semicolon
 macro_line|#endif /* WIRELESS_EXT &gt; 10 */
+macro_line|#if WIRELESS_EXT &gt; 11
+multiline_comment|/* Experimental measurements - boundary 11/5.5 Mb/s */
+multiline_comment|/* Note : with or without the (local-&gt;rssi), results&n;&t;&t;&t; * are somewhat different. - Jean II */
+id|range.avg_qual.qual
+op_assign
+l_int|6
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|local-&gt;rssi
+)paren
+id|range.avg_qual.level
+op_assign
+l_int|186
+suffix:semicolon
+multiline_comment|/* -70 dBm */
+r_else
+id|range.avg_qual.level
+op_assign
+l_int|176
+suffix:semicolon
+multiline_comment|/* -80 dBm */
+id|range.avg_qual.noise
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 11 */
 r_if
 c_cond
 (paren
@@ -20943,6 +21142,11 @@ macro_line|#ifdef CISCO_EXT
 r_case
 id|AIROIDIFC
 suffix:colon
+macro_line|#ifdef AIROOLDIDIFC
+r_case
+id|AIROOLDIDIFC
+suffix:colon
+macro_line|#endif
 (brace
 r_int
 id|val
@@ -21007,7 +21211,12 @@ suffix:semicolon
 r_case
 id|AIROIOCTL
 suffix:colon
-multiline_comment|/* Get the command struct and hand it off for evaluation by &n;&t;&t; * the proper subfunction&n;&t;&t; */
+macro_line|#ifdef AIROOLDIOCTL
+r_case
+id|AIROOLDIOCTL
+suffix:colon
+macro_line|#endif
+multiline_comment|/* Get the command struct and hand it off for evaluation by&n;&t;&t; * the proper subfunction&n;&t;&t; */
 (brace
 id|aironet_ioctl
 id|com
@@ -21182,7 +21391,7 @@ id|rc
 suffix:semicolon
 )brace
 macro_line|#ifdef WIRELESS_EXT
-multiline_comment|/*&n; * Get the Wireless stats out of the driver&n; * Note : irq and spinlock protection will occur in the subroutines&n; *&n; * TODO :&n; *&t;o Check if work in Ad-Hoc mode (otherwise, use SPY, as in wvlan_cs)&n; *&t;o Find the noise level&n; *&t;o Convert values to dBm&n; *&t;o Fill out discard.misc with something interesting&n; *&n; * Jean&n; */
+multiline_comment|/*&n; * Get the Wireless stats out of the driver&n; * Note : irq and spinlock protection will occur in the subroutines&n; *&n; * TODO :&n; *&t;o Check if work in Ad-Hoc mode (otherwise, use SPY, as in wvlan_cs)&n; *&t;o Find the noise level&n; *&n; * Jean&n; */
 DECL|function|airo_get_wireless_stats
 r_struct
 id|iw_statistics
@@ -21214,7 +21423,7 @@ suffix:semicolon
 id|StatsRid
 id|stats_rid
 suffix:semicolon
-r_int
+id|u32
 op_star
 id|vals
 op_assign
@@ -21313,6 +21522,21 @@ l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/* RxWepErr */
+macro_line|#if WIRELESS_EXT &gt; 11
+id|local-&gt;wstats.discard.fragment
+op_assign
+id|vals
+(braket
+l_int|30
+)braket
+suffix:semicolon
+id|local-&gt;wstats.discard.retries
+op_assign
+id|vals
+(braket
+l_int|10
+)braket
+suffix:semicolon
 id|local-&gt;wstats.discard.misc
 op_assign
 id|vals
@@ -21322,17 +21546,22 @@ l_int|1
 op_plus
 id|vals
 (braket
-l_int|2
+l_int|32
 )braket
-op_plus
+suffix:semicolon
+id|local-&gt;wstats.miss.beacon
+op_assign
 id|vals
 (braket
-l_int|3
+l_int|34
 )braket
-op_plus
+suffix:semicolon
+macro_line|#else /* WIRELESS_EXT &gt; 11 */
+id|local-&gt;wstats.discard.misc
+op_assign
 id|vals
 (braket
-l_int|4
+l_int|1
 )braket
 op_plus
 id|vals
@@ -21345,6 +21574,7 @@ id|vals
 l_int|32
 )braket
 suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 11 */
 r_return
 (paren
 op_amp
@@ -21354,7 +21584,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* WIRELESS_EXT */
 macro_line|#ifdef CISCO_EXT
-multiline_comment|/*&n; * This just translates from driver IOCTL codes to the command codes to &n; * feed to the radio&squot;s host interface. Things can be added/deleted &n; * as needed.  This represents the READ side of control I/O to &n; * the card&n; */
+multiline_comment|/*&n; * This just translates from driver IOCTL codes to the command codes to&n; * feed to the radio&squot;s host interface. Things can be added/deleted&n; * as needed.  This represents the READ side of control I/O to&n; * the card&n; */
 DECL|function|readrids
 r_static
 r_int
@@ -21546,7 +21776,7 @@ id|iobuf
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* get the count of bytes in the rid  docs say 1st 2 bytes is it.&n;&t; * then return it to the user &n;&t; * 9/22/2000 Honor user given length&n;&t; */
+multiline_comment|/* get the count of bytes in the rid  docs say 1st 2 bytes is it.&n;&t; * then return it to the user&n;&t; * 9/22/2000 Honor user given length&n;&t; */
 r_if
 c_cond
 (paren
@@ -21557,14 +21787,17 @@ id|comp-&gt;data
 comma
 id|iobuf
 comma
-id|min_t
+id|min
 c_func
 (paren
+(paren
 r_int
-r_int
-comma
+)paren
 id|comp-&gt;len
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|iobuf
@@ -21736,7 +21969,7 @@ id|PC4500_writerid
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* this is not really a rid but a command given to the card &n;&t;&t; * same with MAC off&n;&t;&t; */
+multiline_comment|/* this is not really a rid but a command given to the card&n;&t;&t; * same with MAC off&n;&t;&t; */
 r_case
 id|AIROPMACON
 suffix:colon
@@ -21761,7 +21994,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Evidently this code in the airo driver does not get a symbol&n;&t;&t; * as disable_MAC. it&squot;s probably so short the compiler does not gen one.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Evidently this code in the airo driver does not get a symbol&n;&t;&t; * as disable_MAC. it&squot;s probably so short the compiler does not gen one.&n;&t;&t; */
 r_case
 id|AIROPMACOFF
 suffix:colon
@@ -21807,14 +22040,17 @@ id|comp-&gt;data
 comma
 id|iobuf
 comma
-id|min_t
+id|min
 c_func
 (paren
+(paren
 r_int
-r_int
-comma
+)paren
 id|comp-&gt;len
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|iobuf
@@ -21903,7 +22139,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * Ancillary flash / mod functions much black magic lurkes here              *&n; *****************************************************************************&n; */
-multiline_comment|/* &n; * Flash command switch table&n; */
+multiline_comment|/*&n; * Flash command switch table&n; */
 DECL|function|flashcard
 r_int
 id|flashcard
@@ -22302,7 +22538,7 @@ suffix:semicolon
 )brace
 DECL|macro|FLASH_COMMAND
 mdefine_line|#define FLASH_COMMAND  0x7e7e
-multiline_comment|/* &n; * STEP 1)&n; * Disable MAC and do soft reset on &n; * card. &n; */
+multiline_comment|/*&n; * STEP 1)&n; * Disable MAC and do soft reset on&n; * card.&n; */
 DECL|function|cmdreset
 r_int
 id|cmdreset
@@ -22389,7 +22625,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* STEP 2)&n; * Put the card in legendary flash &n; * mode&n; */
+multiline_comment|/* STEP 2)&n; * Put the card in legendary flash&n; * mode&n; */
 DECL|function|setflashmode
 r_int
 id|setflashmode
@@ -22480,7 +22716,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Put character to SWS0 wait for dwelltime &n; * x 50us for  echo . &n; */
+multiline_comment|/* Put character to SWS0 wait for dwelltime&n; * x 50us for  echo .&n; */
 DECL|function|flashpchar
 r_int
 id|flashpchar
@@ -22802,7 +23038,7 @@ id|EIO
 suffix:semicolon
 )brace
 )def_block
-multiline_comment|/* &n; * Transfer 32k of firmware data from user buffer to our buffer and &n; * send to the card &n; */
+multiline_comment|/*&n; * Transfer 32k of firmware data from user buffer to our buffer and&n; * send to the card&n; */
 DECL|function|flashputbuf
 r_int
 (def_block
@@ -22989,7 +23225,7 @@ suffix:semicolon
 )brace
 )def_block
 macro_line|#endif /* CISCO_EXT */
-multiline_comment|/*&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    In addition:&n;&n;    Redistribution and use in source and binary forms, with or without&n;    modification, are permitted provided that the following conditions&n;    are met:&n;&n;    1. Redistributions of source code must retain the above copyright&n;       notice, this list of conditions and the following disclaimer.&n;    2. Redistributions in binary form must reproduce the above copyright&n;       notice, this list of conditions and the following disclaimer in the&n;       documentation and/or other materials provided with the distribution.&n;    3. The name of the author may not be used to endorse or promote&n;       products derived from this software without specific prior written&n;       permission.&n;&n;    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n;    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED&n;    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;    ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n;    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n;    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n;    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n;    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n;    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n;    POSSIBILITY OF SUCH DAMAGE.    &n;*/
+multiline_comment|/*&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    In addition:&n;&n;    Redistribution and use in source and binary forms, with or without&n;    modification, are permitted provided that the following conditions&n;    are met:&n;&n;    1. Redistributions of source code must retain the above copyright&n;       notice, this list of conditions and the following disclaimer.&n;    2. Redistributions in binary form must reproduce the above copyright&n;       notice, this list of conditions and the following disclaimer in the&n;       documentation and/or other materials provided with the distribution.&n;    3. The name of the author may not be used to endorse or promote&n;       products derived from this software without specific prior written&n;       permission.&n;&n;    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n;    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED&n;    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;    ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n;    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n;    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n;    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n;    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n;    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n;    POSSIBILITY OF SUCH DAMAGE.&n;*/
 DECL|variable|airo_init_module
 id|module_init
 c_func

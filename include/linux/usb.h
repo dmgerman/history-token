@@ -2635,7 +2635,8 @@ id|list_head
 id|usb_bus_list
 suffix:semicolon
 r_extern
-id|rwlock_t
+r_struct
+id|semaphore
 id|usb_bus_list_lock
 suffix:semicolon
 multiline_comment|/*&n; * USB device fs stuff&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ffb_drv.c,v 1.15 2001/08/09 17:47:51 davem Exp $&n; * ffb_drv.c: Creator/Creator3D direct rendering driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ffb_drv.c,v 1.16 2001/10/18 16:00:24 davem Exp $&n; * ffb_drv.c: Creator/Creator3D direct rendering driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ffb.h&quot;
 macro_line|#include &quot;drmP.h&quot;
@@ -28,15 +28,15 @@ DECL|macro|DRIVER_COUNT_CARDS
 mdefine_line|#define DRIVER_COUNT_CARDS()&t;ffb_count_card_instances()
 multiline_comment|/* Allocate private structure and fill it */
 DECL|macro|DRIVER_PRESETUP
-mdefine_line|#define DRIVER_PRESETUP()&t;do {&t;&t;&bslash;&n;&t;int _ret;&t;&t;&t;&t;&bslash;&n;&t;_ret = ffb_presetup(dev);&t;&t;&bslash;&n;&t;if(_ret != 0) return _ret;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define DRIVER_PRESETUP()&t;do {&t;&t;&bslash;&n;&t;int _ret;&t;&t;&t;&t;&bslash;&n;&t;_ret = ffb_presetup(dev);&t;&t;&bslash;&n;&t;if (_ret != 0) return _ret;&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* Free private structure */
 DECL|macro|DRIVER_PRETAKEDOWN
-mdefine_line|#define DRIVER_PRETAKEDOWN()&t;do {&t;&t;&t;&t;&bslash;&n;&t;if(dev-&gt;dev_private) kfree(dev-&gt;dev_private);&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define DRIVER_PRETAKEDOWN()&t;do {&t;&t;&t;&t;&bslash;&n;&t;if (dev-&gt;dev_private) kfree(dev-&gt;dev_private);&t;&t;&bslash;&n;} while(0)
 DECL|macro|DRIVER_POSTCLEANUP
-mdefine_line|#define DRIVER_POSTCLEANUP()&t;do {&t;&t;&t;&t;&bslash;&n;&t;if(ffb_position != NULL) kfree(ffb_position);&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define DRIVER_POSTCLEANUP()&t;do {&t;&t;&t;&t;&bslash;&n;&t;if (ffb_position != NULL) kfree(ffb_position);&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* We have to free up the rogue hw context state holding error or &n; * else we will leak it.&n; */
 DECL|macro|DRIVER_RELEASE
-mdefine_line|#define DRIVER_RELEASE()&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;ffb_dev_priv_t *fpriv = (ffb_dev_priv_t *) dev-&gt;dev_private;&t;&bslash;&n;&t;int context = _DRM_LOCKING_CONTEXT(dev-&gt;lock.hw_lock-&gt;lock);&t;&bslash;&n;&t;int idx;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;idx = context - 1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (fpriv &amp;&amp; fpriv-&gt;hw_state[idx] != NULL) {&t;&t;&t;&bslash;&n;&t;&t;kfree(fpriv-&gt;hw_state[idx]);&t;&t;&t;&t;&bslash;&n;&t;&t;fpriv-&gt;hw_state[idx] = NULL;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define DRIVER_RELEASE()&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;ffb_dev_priv_t *fpriv = (ffb_dev_priv_t *) dev-&gt;dev_private;&t;&bslash;&n;&t;int context = _DRM_LOCKING_CONTEXT(dev-&gt;lock.hw_lock-&gt;lock);&t;&bslash;&n;&t;int idx;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;idx = context - 1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (fpriv &amp;&amp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;    context != DRM_KERNEL_CONTEXT &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;    fpriv-&gt;hw_state[idx] != NULL) {&t;&t;&t;&t;&bslash;&n;&t;&t;kfree(fpriv-&gt;hw_state[idx]);&t;&t;&t;&t;&bslash;&n;&t;&t;fpriv-&gt;hw_state[idx] = NULL;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 multiline_comment|/* For mmap customization */
 DECL|macro|DRIVER_GET_MAP_OFS
 mdefine_line|#define DRIVER_GET_MAP_OFS()&t;(map-&gt;offset &amp; 0xffffffff)

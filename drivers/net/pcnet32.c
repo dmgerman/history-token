@@ -93,6 +93,8 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* this id is never reached as the match above occurs first.&n; * However it clearly has significance, so let&squot;s not remove it&n; * until we know what that significance is.  -jgarzik&n; */
+macro_line|#if 0
 (brace
 id|PCI_VENDOR_ID_AMD
 comma
@@ -109,6 +111,7 @@ comma
 l_int|0
 )brace
 comma
+macro_line|#endif
 (brace
 l_int|0
 comma

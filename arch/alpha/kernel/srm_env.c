@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * srm_env.c - Access to SRC environment variables through&n; *             the linux procfs&n; *&n; * (C)2001, Jan-Benedict Glaw &lt;jbgaw@lug-owl.de&gt;&n; *&n; * This driver is at all a modified version of Erik Mouw&squot;s&n; * ./linux/Documentation/DocBook/procfs_example.c, so: thanky&n; * you, erik! He can be reached via email at&n; * &lt;J.A.K.Mouw@its.tudelft.nl&gt;. It is based on an idea&n; * provided by DEC^WCompaq&squot;s &quot;Jumpstart&quot; CD. They included&n; * a patch like this as well. Thanks for idea!&n; *&n; *&n; * This software has been developed while working on the LART&n; * computing board (http://www.lart.tudelft.nl/). The&n; * development has been sponsored by the Mobile Multi-media&n; * Communications (http://www.mmc.tudelft.nl/) and Ubiquitous&n; * Communications (http://www.ubicom.tudelft.nl/) projects.&n; *&n; * This program is free software; you can redistribute&n; * it and/or modify it under the terms of the GNU General&n; * Public License as published by the Free Software&n; * Foundation version 2.&n; *&n; * This program is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR&n; * PURPOSE.  See the GNU General Public License for more&n; * details.&n; * &n; * You should have received a copy of the GNU General Public&n; * License along with this program; if not, write to the&n; * Free Software Foundation, Inc., 59 Temple Place,&n; * Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; * srm_env.c - Access to SRC environment variables through&n; *             the linux procfs&n; *&n; * (C)2001, Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; *&n; * This driver is at all a modified version of Erik Mouw&squot;s&n; * ./linux/Documentation/DocBook/procfs_example.c, so: thanky&n; * you, Erik! He can be reached via email at&n; * &lt;J.A.K.Mouw@its.tudelft.nl&gt;. It is based on an idea&n; * provided by DEC^WCompaq&squot;s &quot;Jumpstart&quot; CD. They included&n; * a patch like this as well. Thanks for idea!&n; *&n; *&n; * This software has been developed while working on the LART&n; * computing board (http://www.lart.tudelft.nl/). The&n; * development has been sponsored by the Mobile Multi-media&n; * Communications (http://www.mmc.tudelft.nl/) and Ubiquitous&n; * Communications (http://www.ubicom.tudelft.nl/) projects.&n; *&n; * This program is free software; you can redistribute&n; * it and/or modify it under the terms of the GNU General&n; * Public License as published by the Free Software&n; * Foundation version 2.&n; *&n; * This program is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR&n; * PURPOSE.  See the GNU General Public License for more&n; * details.&n; * &n; * You should have received a copy of the GNU General Public&n; * License along with this program; if not, write to the&n; * Free Software Foundation, Inc., 59 Temple Place,&n; * Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DIRNAME
 mdefine_line|#define DIRNAME&t;&t;&quot;srm_environment&quot;&t;/* Subdir in /proc/&t;*/
 DECL|macro|VERSION
-mdefine_line|#define VERSION&t;&t;&quot;0.0.1&quot;&t;&t;&t;/* Module version&t;*/
+mdefine_line|#define VERSION&t;&t;&quot;0.0.2&quot;&t;&t;&t;/* Module version&t;*/
 DECL|macro|NAME
 mdefine_line|#define NAME&t;&t;&quot;srm_env&quot;&t;&t;/* Module name&t;&t;*/
 DECL|macro|DEBUG
@@ -24,6 +24,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Accessing Alpha SRM environment through procfs interface&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS
