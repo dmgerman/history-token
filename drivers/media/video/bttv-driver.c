@@ -16043,7 +16043,11 @@ id|bttv_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|bttv_remove
+)paren
 comma
 )brace
 suffix:semicolon
