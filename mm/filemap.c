@@ -23,8 +23,8 @@ macro_line|#include &lt;linux/buffer_head.h&gt; /* for generic_osync_inode */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_shared_sem&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;page_lock&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_shared_sem&t;&t;(truncate-&gt;invalidate_mmap_range)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_shared_sem&t;&t;(various places)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;lock_page&t;&t;(access_process_vm)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_sem&t;&t;&t;(msync)&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_alloc_sem             (various)&n; *&n; *  -&gt;inode_lock&n; *    -&gt;sb_lock&t;&t;&t;(fs/fs-writeback.c)&n; *    -&gt;mapping-&gt;page_lock&t;(__sync_single_inode)&n; *&n; *  -&gt;page_table_lock&n; *    -&gt;swap_device_lock&t;(try_to_unmap_one)&n; *    -&gt;private_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;page_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;zone.lru_lock&t;&t;(follow_page-&gt;mark_page_accessed)&n; *&n; *  -&gt;task-&gt;proc_lock&n; *    -&gt;dcache_lock&t;&t;(proc_pid_lookup)&n; */
-multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s page_lock.&n; */
+multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_shared_sem&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;tree_lock&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_shared_sem&t;&t;(truncate-&gt;invalidate_mmap_range)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_shared_sem&t;&t;(various places)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;lock_page&t;&t;(access_process_vm)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_sem&t;&t;&t;(msync)&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_alloc_sem             (various)&n; *&n; *  -&gt;inode_lock&n; *    -&gt;sb_lock&t;&t;&t;(fs/fs-writeback.c)&n; *    -&gt;mapping-&gt;tree_lock&t;(__sync_single_inode)&n; *&n; *  -&gt;page_table_lock&n; *    -&gt;swap_device_lock&t;(try_to_unmap_one)&n; *    -&gt;private_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;tree_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;zone.lru_lock&t;&t;(follow_page-&gt;mark_page_accessed)&n; *&n; *  -&gt;task-&gt;proc_lock&n; *    -&gt;dcache_lock&t;&t;(proc_pid_lookup)&n; */
+multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s tree_lock.&n; */
 DECL|function|__remove_from_page_cache
 r_void
 id|__remove_from_page_cache
@@ -112,11 +112,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|__remove_from_page_cache
@@ -125,11 +125,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 )brace
@@ -221,11 +221,11 @@ id|mapping-&gt;backing_dev_info-&gt;memory_backed
 r_return
 l_int|0
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|list_splice_init
@@ -238,11 +238,11 @@ op_amp
 id|mapping-&gt;io_pages
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|ret
@@ -343,11 +343,11 @@ id|progress
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_while
@@ -446,11 +446,11 @@ c_func
 )paren
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|__cond_resched
@@ -476,11 +476,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|wait_on_page_writeback
@@ -509,19 +509,19 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Check for outstanding write errors */
@@ -669,11 +669,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|error
@@ -722,11 +722,11 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|radix_tree_preload_end
@@ -1220,11 +1220,11 @@ op_star
 id|page
 suffix:semicolon
 multiline_comment|/*&n;&t; * We scan the hash list read-only. Addition to and removal from&n;&t; * the hash-list needs a held write-lock.&n;&t; */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|page
@@ -1249,11 +1249,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_return
@@ -1290,11 +1290,11 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|page
@@ -1323,11 +1323,11 @@ id|page
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_return
@@ -1364,11 +1364,11 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|repeat
@@ -1406,11 +1406,11 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|lock_page
@@ -1419,11 +1419,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Has the page been truncated while we slept? */
@@ -1457,11 +1457,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_return
@@ -1653,11 +1653,11 @@ r_int
 r_int
 id|ret
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|ret
@@ -1703,11 +1703,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_return

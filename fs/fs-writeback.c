@@ -314,11 +314,11 @@ op_complement
 id|I_DIRTY
 suffix:semicolon
 multiline_comment|/*&n;&t; * smp_rmb(); note: if you remove write_lock below, you must add this.&n;&t; * mark_inode_dirty doesn&squot;t take spinlock, make sure that inode is not&n;&t; * read speculatively by this cpu before &amp;= ~I_DIRTY  -- mikulas&n;&t; */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_if
@@ -346,11 +346,11 @@ op_amp
 id|mapping-&gt;io_pages
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|spin_unlock

@@ -2431,11 +2431,11 @@ id|writepage
 op_assign
 id|mapping-&gt;a_ops-&gt;writepage
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_while
@@ -2566,14 +2566,14 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * At this point we hold neither mapping-&gt;page_lock nor&n;&t;&t; * lock on the page itself: the page may be truncated or&n;&t;&t; * invalidated (changing page-&gt;mapping to NULL), or even&n;&t;&t; * swizzled back from swapper_space to tmpfs file mapping.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * At this point we hold neither mapping-&gt;tree_lock nor&n;&t;&t; * lock on the page itself: the page may be truncated or&n;&t;&t; * invalidated (changing page-&gt;mapping to NULL), or even&n;&t;&t; * swizzled back from swapper_space to tmpfs file mapping.&n;&t;&t; */
 id|lock_page
 c_func
 (paren
@@ -2745,20 +2745,20 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Leave any remaining dirty pages on -&gt;io_pages&n;&t; */
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_if

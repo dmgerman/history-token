@@ -1391,7 +1391,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Various filesystems appear to want __find_get_block to be non-blocking.&n; * But it&squot;s the page lock which protects the buffers.  To get around this,&n; * we get exclusion from try_to_free_buffers with the blockdev mapping&squot;s&n; * private_lock.&n; *&n; * Hack idea: for the blockdev mapping, i_bufferlist_lock contention&n; * may be quite high.  This code could TryLock the page, and if that&n; * succeeds, there is no need to take private_lock. (But if&n; * private_lock is contended then so is mapping-&gt;page_lock).&n; */
+multiline_comment|/*&n; * Various filesystems appear to want __find_get_block to be non-blocking.&n; * But it&squot;s the page lock which protects the buffers.  To get around this,&n; * we get exclusion from try_to_free_buffers with the blockdev mapping&squot;s&n; * private_lock.&n; *&n; * Hack idea: for the blockdev mapping, i_bufferlist_lock contention&n; * may be quite high.  This code could TryLock the page, and if that&n; * succeeds, there is no need to take private_lock. (But if&n; * private_lock is contended then so is mapping-&gt;tree_lock).&n; */
 r_static
 r_struct
 id|buffer_head
@@ -2764,11 +2764,11 @@ id|page
 )paren
 )paren
 (brace
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_if
@@ -2808,11 +2808,11 @@ id|mapping-&gt;dirty_pages
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|__mark_inode_dirty
@@ -4062,7 +4062,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * The relationship between dirty buffers and dirty pages:&n; *&n; * Whenever a page has any dirty buffers, the page&squot;s dirty bit is set, and&n; * the page appears on its address_space.dirty_pages list.&n; *&n; * At all times, the dirtiness of the buffers represents the dirtiness of&n; * subsections of the page.  If the page has buffers, the page dirty bit is&n; * merely a hint about the true dirty state.&n; *&n; * When a page is set dirty in its entirety, all its buffers are marked dirty&n; * (if the page has buffers).&n; *&n; * When a buffer is marked dirty, its page is dirtied, but the page&squot;s other&n; * buffers are not.&n; *&n; * Also.  When blockdev buffers are explicitly read with bread(), they&n; * individually become uptodate.  But their backing page remains not&n; * uptodate - even if all of its buffers are uptodate.  A subsequent&n; * block_read_full_page() against that page will discover all the uptodate&n; * buffers, will set the page uptodate and will perform no I/O.&n; */
-multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer,&n; * then set its backing page dirty, then attach the page to its&n; * address_space&squot;s dirty_pages list and then attach the address_space&squot;s&n; * inode to its superblock&squot;s dirty inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;page_lock and the global inode_lock.&n; */
+multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer,&n; * then set its backing page dirty, then attach the page to its&n; * address_space&squot;s dirty_pages list and then attach the address_space&squot;s&n; * inode to its superblock&squot;s dirty inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;tree_lock and the global inode_lock.&n; */
 DECL|function|mark_buffer_dirty
 r_void
 id|fastcall

@@ -603,11 +603,11 @@ id|PAGE_CACHE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Preallocate as many pages as we will need.&n;&t; */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_for
@@ -660,11 +660,11 @@ id|page
 )paren
 r_continue
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|page
@@ -675,11 +675,11 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_if
@@ -708,11 +708,11 @@ id|ret
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now start the IO.  We ignore I/O errors - if the page is not&n;&t; * uptodate then the caller will launch readpage again, and&n;&t; * will then handle the error.&n;&t; */

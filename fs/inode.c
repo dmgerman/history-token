@@ -531,7 +531,7 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.page_lock
+id|inode-&gt;i_data.tree_lock
 )paren
 suffix:semicolon
 id|init_MUTEX

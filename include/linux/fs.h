@@ -755,9 +755,9 @@ id|radix_tree_root
 id|page_tree
 suffix:semicolon
 multiline_comment|/* radix tree of all pages */
-DECL|member|page_lock
+DECL|member|tree_lock
 id|spinlock_t
-id|page_lock
+id|tree_lock
 suffix:semicolon
 multiline_comment|/* and spinlock protecting it */
 DECL|member|clean_pages
