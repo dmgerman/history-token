@@ -5046,8 +5046,8 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_void
+r_int
+r_int
 id|invalidate_mapping_pages
 c_func
 (paren
@@ -5063,8 +5063,8 @@ id|pgoff_t
 id|end
 )paren
 suffix:semicolon
-r_extern
-r_void
+r_int
+r_int
 id|invalidate_inode_pages
 c_func
 (paren

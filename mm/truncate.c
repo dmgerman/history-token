@@ -185,7 +185,7 @@ multiline_comment|/* pagecache ref */
 )brace
 multiline_comment|/*&n; * This is for invalidate_inode_pages().  That function can be called at&n; * any time, and is not supposed to throw away dirty pages.  But pages can&n; * be marked dirty at any time too.  So we re-check the dirtiness inside&n; * -&gt;page_lock.  That provides exclusion against the __set_page_dirty&n; * functions.&n; */
 r_static
-r_void
+r_int
 DECL|function|invalidate_complete_page
 id|invalidate_complete_page
 c_func
@@ -209,6 +209,7 @@ op_ne
 id|mapping
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -229,6 +230,7 @@ l_int|0
 )paren
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|write_lock
 c_func
@@ -254,9 +256,10 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-r_else
-(brace
 id|__remove_from_page_cache
 c_func
 (paren
@@ -283,7 +286,9 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/* pagecache ref */
-)brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * truncate_inode_pages - truncate *all* the pages from an offset&n; * @mapping: mapping to truncate&n; * @lstart: offset from which to truncate&n; *&n; * Truncate the page cache at a set offset, removing the pages that are beyond&n; * that offset (and zeroing out partial pages).&n; *&n; * Truncate takes two passes - the first pass is nonblocking.  It will not&n; * block on page locks and it will not block on writeback.  The second pass&n; * will wait.  This is to prevent as much IO as possible in the affected region.&n; * The first pass will remove most pages, so the search cost of the second pass&n; * is low.&n; *&n; * When looking at page-&gt;index outside the page lock we need to be careful to&n; * copy it into a local to avoid races (it could change at any time).&n; *&n; * We pass down the cache-hot hint to the page freeing code.  Even if the&n; * mapping is large, it is probably the case that the final pages are the most&n; * recently touched, and freeing happens in ascending file offset order.&n; *&n; * Called under (and serialised by) inode-&gt;i_sem.&n; */
 DECL|function|truncate_inode_pages
@@ -681,7 +686,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * invalidate_mapping_pages - Invalidate all the unlocked pages of one inode&n; * @inode: the address_space which holds the pages to invalidate&n; * @end: the index of the last page to invalidate (inclusive)&n; * @nr_pages: defines the pagecache span.  Invalidate up to @start + @nr_pages&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; *&n; * invalidate_mapping_pages() will not block on IO activity. It will not&n; * invalidate pages which are dirty, locked, under writeback or mapped into&n; * pagetables.&n; */
 DECL|function|invalidate_mapping_pages
-r_void
+r_int
+r_int
 id|invalidate_mapping_pages
 c_func
 (paren
@@ -705,6 +711,12 @@ id|pgoff_t
 id|next
 op_assign
 id|start
+suffix:semicolon
+r_int
+r_int
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -829,6 +841,8 @@ id|page
 r_goto
 id|unlock
 suffix:semicolon
+id|ret
+op_add_assign
 id|invalidate_complete_page
 c_func
 (paren
@@ -859,9 +873,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|invalidate_inode_pages
-r_void
+r_int
+r_int
 id|invalidate_inode_pages
 c_func
 (paren
@@ -871,6 +889,7 @@ op_star
 id|mapping
 )paren
 (brace
+r_return
 id|invalidate_mapping_pages
 c_func
 (paren
