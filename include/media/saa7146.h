@@ -400,10 +400,6 @@ id|i2c_adapter
 op_star
 id|i2c_adapter
 comma
-r_int
-r_int
-r_class
-comma
 id|u32
 id|bitrate
 )paren
