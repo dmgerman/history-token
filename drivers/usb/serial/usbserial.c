@@ -1222,8 +1222,9 @@ id|port-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - port not opened&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port not opened&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1833,8 +1834,9 @@ id|port-&gt;open_count
 (brace
 id|dbg
 (paren
+l_string|&quot;%s - port not open&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port not open&quot;
 )paren
 suffix:semicolon
 r_goto

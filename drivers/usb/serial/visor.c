@@ -1224,8 +1224,9 @@ id|status
 id|err
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(write bulk) failed with status = %d&quot;
 comma
 id|status
 )paren
@@ -2739,8 +2740,9 @@ r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - RTS/CTS is disabled&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - RTS/CTS is disabled&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* determine software flow control */
@@ -2756,8 +2758,9 @@ id|port-&gt;tty
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - XON/XOFF is enabled, XON = %2x, XOFF = %2x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - XON/XOFF is enabled, XON = %2x, XOFF = %2x&quot;
 comma
 id|START_CHAR
 c_func
@@ -2776,16 +2779,18 @@ r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - XON/XOFF is disabled&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - XON/XOFF is disabled&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* get the baud rate wanted */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - baud rate = %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - baud rate = %d&quot;
 comma
 id|tty_get_baud_rate
 c_func

@@ -1618,6 +1618,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2371,8 +2373,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - FTDI_SIO does not support the baudrate (%d) requested&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; FTDI_SIO does not support the baudrate (%d) requested&quot;
 comma
 (paren
 id|cflag
@@ -2602,8 +2605,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - The baudrate (%d) requested is not implemented&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; The baudrate (%d) requested is not implemented&quot;
 comma
 (paren
 id|cflag
@@ -2727,8 +2731,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - FAILED to enable/disable break state (state was %d)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; FAILED to enable/disable break state (state was %d)&quot;
 comma
 id|break_state
 )paren
@@ -2737,8 +2742,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - break state is %d - urb is %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; break state is %d - urb is %d&quot;
 comma
 id|break_state
 comma
@@ -3164,8 +3170,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s urb failed to set baurdrate&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; urb failed to set baurdrate&quot;
 )paren
 suffix:semicolon
 )brace
