@@ -162,10 +162,10 @@ OL
 l_int|0
 )paren
 (brace
-id|tracer_panic
+id|printk
 c_func
 (paren
-l_string|&quot;POKEUSER CS failed&quot;
+l_string|&quot;POKEUSR CS failed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -188,10 +188,10 @@ OL
 l_int|0
 )paren
 (brace
-id|tracer_panic
+id|printk
 c_func
 (paren
-l_string|&quot;POKEUSER DS failed&quot;
+l_string|&quot;POKEUSR DS failed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -213,13 +213,12 @@ OL
 l_int|0
 )paren
 (brace
-id|tracer_panic
+id|printk
 c_func
 (paren
-l_string|&quot;POKEUSER ES failed&quot;
+l_string|&quot;POKEUSR ES failed&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
