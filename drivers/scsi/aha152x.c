@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;aha152x.h&quot;
 multiline_comment|/* DEFINES */
 multiline_comment|/* For PCMCIA cards, always use AUTOCONF */

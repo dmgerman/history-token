@@ -28,7 +28,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * prom_init() is called very early on, before the kernel text&n; * and data have been mapped to KERNELBASE.  At this point the code&n; * is running at whatever address it has been loaded at, so&n; * references to extern and static variables must be relocated&n; * explicitly.  The procedure reloc_offset() returns the address&n; * we&squot;re currently running at minus the address we were linked at.&n; * (Note that strings count as static variables.)&n; *&n; * Because OF may have mapped I/O devices into the area starting at&n; * KERNELBASE, particularly on CHRP machines, we can&squot;t safely call&n; * OF once the kernel has been mapped to KERNELBASE.  Therefore all&n; * OF calls should be done within prom_init(), and prom_init()&n; * and all routines called within it must be careful to relocate&n; * references as necessary.&n; *&n; * Note that the bss is cleared *after* prom_init runs, so we have&n; * to make sure that any static or extern variables it accesses&n; * are put in the data segment.&n; */
 DECL|variable|rtas
 r_struct
 id|rtas_t
@@ -47,15 +46,6 @@ id|rtas_err_buf
 (braket
 id|RTAS_ERROR_LOG_MAX
 )braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|reloc_offset
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|variable|rtas_data_buf_lock
 id|spinlock_t

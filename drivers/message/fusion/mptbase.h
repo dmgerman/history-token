@@ -31,9 +31,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.07&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.09&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.07&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.09&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -1309,32 +1309,6 @@ DECL|typedef|ScsiCfgData
 )brace
 id|ScsiCfgData
 suffix:semicolon
-DECL|struct|_fw_image
-r_typedef
-r_struct
-id|_fw_image
-(brace
-DECL|member|fw
-r_char
-op_star
-id|fw
-suffix:semicolon
-DECL|member|fw_dma
-id|dma_addr_t
-id|fw_dma
-suffix:semicolon
-DECL|member|size
-id|u32
-id|size
-suffix:semicolon
-DECL|member|rsvd
-id|u32
-id|rsvd
-suffix:semicolon
-DECL|typedef|fw_image_t
-)brace
-id|fw_image_t
-suffix:semicolon
 multiline_comment|/*&n; *  Adapter Structure - pci_dev specific. Maximum: MPT_MAX_ADAPTERS&n; */
 DECL|struct|_MPT_ADAPTER
 r_typedef
@@ -1645,22 +1619,20 @@ id|events
 suffix:semicolon
 multiline_comment|/* pointer to event log */
 DECL|member|cached_fw
-id|fw_image_t
-op_star
+id|u8
 op_star
 id|cached_fw
 suffix:semicolon
-multiline_comment|/* Pointer to FW SG List */
+multiline_comment|/* Pointer to FW */
+DECL|member|cached_fw_dma
+id|dma_addr_t
+id|cached_fw_dma
+suffix:semicolon
 DECL|member|configQ
 id|Q_TRACKER
 id|configQ
 suffix:semicolon
 multiline_comment|/* linked list of config. requests */
-DECL|member|num_fw_frags
-r_int
-id|num_fw_frags
-suffix:semicolon
-multiline_comment|/* Number of SGE in FW SG List */
 DECL|member|hs_reply_idx
 r_int
 id|hs_reply_idx
@@ -1756,6 +1728,11 @@ id|pad1
 (braket
 l_int|5
 )braket
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 DECL|typedef|MPT_ADAPTER
 )brace
@@ -1903,6 +1880,31 @@ mdefine_line|#define dprintk(x)  printk x
 macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x)
+macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_INIT
+DECL|macro|dinitprintk
+mdefine_line|#define dinitprintk(x)  printk x
+DECL|macro|DBG_DUMP_FW_REQUEST_FRAME
+mdefine_line|#define DBG_DUMP_FW_REQUEST_FRAME(mfp) &bslash;&n;&t;{&t;int  i, n = 10;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;u32 *m = (u32 *)(mfp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_INFO &quot; &quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;for (i=0; i&lt;n; i++)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot; %08x&quot;, le32_to_cpu(m[i]));&t;&t;&bslash;&n;&t;&t;printk(&quot;&bslash;n&quot;);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
+macro_line|#else
+DECL|macro|dinitprintk
+mdefine_line|#define dinitprintk(x)
+DECL|macro|DBG_DUMP_FW_REQUEST_FRAME
+mdefine_line|#define DBG_DUMP_FW_REQUEST_FRAME(mfp)
+macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_EXIT
+DECL|macro|dexitprintk
+mdefine_line|#define dexitprintk(x)  printk x
+macro_line|#else
+DECL|macro|dexitprintk
+mdefine_line|#define dexitprintk(x)
+macro_line|#endif
+macro_line|#ifdef MPT_DEBUG_RESET
+DECL|macro|drsprintk
+mdefine_line|#define drsprintk(x)  printk x
+macro_line|#else
+DECL|macro|drsprintk
+mdefine_line|#define drsprintk(x)
 macro_line|#endif
 macro_line|#ifdef MPT_DEBUG_HANDSHAKE
 DECL|macro|dhsprintk
@@ -2303,50 +2305,6 @@ DECL|typedef|MPT_SCSI_HOST
 )brace
 id|MPT_SCSI_HOST
 suffix:semicolon
-multiline_comment|/*&n; *&t;Structure for overlaying onto scsi_cmnd-&gt;SCp area&n; *&t;NOTE: SCp area is 36 bytes min, 44 bytes max?&n; */
-DECL|struct|_scPrivate
-r_typedef
-r_struct
-id|_scPrivate
-(brace
-DECL|member|forw
-r_struct
-id|scsi_cmnd
-op_star
-id|forw
-suffix:semicolon
-DECL|member|back
-r_struct
-id|scsi_cmnd
-op_star
-id|back
-suffix:semicolon
-DECL|member|p1
-r_void
-op_star
-id|p1
-suffix:semicolon
-DECL|member|p2
-r_void
-op_star
-id|p2
-suffix:semicolon
-DECL|member|io_path_id
-id|u8
-id|io_path_id
-suffix:semicolon
-multiline_comment|/* DMP */
-DECL|member|pad
-id|u8
-id|pad
-(braket
-l_int|7
-)braket
-suffix:semicolon
-DECL|typedef|scPrivate
-)brace
-id|scPrivate
-suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;More Dynamic Multi-Pathing stuff...&n; */
 multiline_comment|/* Forward decl, a strange C thing, to prevent gcc compiler warnings */
@@ -2647,8 +2605,9 @@ c_func
 r_int
 id|handle
 comma
-r_int
-id|iocid
+id|MPT_ADAPTER
+op_star
+id|ioc
 )paren
 suffix:semicolon
 r_extern
@@ -2659,8 +2618,9 @@ c_func
 r_int
 id|handle
 comma
-r_int
-id|iocid
+id|MPT_ADAPTER
+op_star
+id|ioc
 comma
 id|MPT_FRAME_HDR
 op_star
@@ -2675,8 +2635,9 @@ c_func
 r_int
 id|handle
 comma
-r_int
-id|iocid
+id|MPT_ADAPTER
+op_star
+id|ioc
 comma
 id|MPT_FRAME_HDR
 op_star
@@ -2726,8 +2687,9 @@ c_func
 r_int
 id|handle
 comma
-r_int
-id|iocid
+id|MPT_ADAPTER
+op_star
+id|ioc
 comma
 r_int
 id|reqBytes
@@ -2782,26 +2744,6 @@ id|MPT_ADAPTER
 op_star
 op_star
 id|iocpp
-)paren
-suffix:semicolon
-r_extern
-id|MPT_ADAPTER
-op_star
-id|mpt_adapter_find_first
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|MPT_ADAPTER
-op_star
-id|mpt_adapter_find_next
-c_func
-(paren
-id|MPT_ADAPTER
-op_star
-id|prev
 )paren
 suffix:semicolon
 r_extern
@@ -2884,7 +2826,6 @@ id|cfg
 suffix:semicolon
 r_extern
 r_void
-op_star
 id|mpt_alloc_fw_memory
 c_func
 (paren
@@ -2894,14 +2835,6 @@ id|ioc
 comma
 r_int
 id|size
-comma
-r_int
-op_star
-id|frags
-comma
-r_int
-op_star
-id|alloc_sz
 )paren
 suffix:semicolon
 r_extern
@@ -2912,11 +2845,6 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
-comma
-id|fw_image_t
-op_star
-op_star
-id|alt_img
 )paren
 suffix:semicolon
 r_extern
@@ -2941,12 +2869,9 @@ id|ioc
 suffix:semicolon
 multiline_comment|/*&n; *  Public data decl&squot;s...&n; */
 r_extern
-id|MPT_ADAPTER
-op_star
-id|mpt_adapters
-(braket
-id|MPT_MAX_ADAPTERS
-)braket
+r_struct
+id|list_head
+id|ioc_list
 suffix:semicolon
 r_extern
 r_struct

@@ -1,4 +1,11 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/time.h&n; *&n; * Copyright (C) 1998 Deborah Wallach.&n; * Twiddles  (C) 1999 &t;Hugo Fiennes &lt;hugo@empeg.com&gt;&n; * &n; * 2000/03/29 (C) Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Rewritten: big cleanup, much simpler, better HZ accuracy.&n; *&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/time.c&n; *&n; * Copyright (C) 1998 Deborah Wallach.&n; * Twiddles  (C) 1999 &t;Hugo Fiennes &lt;hugo@empeg.com&gt;&n; * &n; * 2000/03/29 (C) Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Rewritten: big cleanup, much simpler, better HZ accuracy.&n; *&n; */
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
 DECL|macro|RTC_DEF_DIVIDER
 mdefine_line|#define RTC_DEF_DIVIDER&t;&t;(32768 - 1)
 DECL|macro|RTC_DEF_TRIM

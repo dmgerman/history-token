@@ -44,14 +44,12 @@ multiline_comment|/* BIO layer definitions. */
 r_extern
 r_int
 r_int
-id|phys_base
-comma
 id|kern_base
 comma
 id|kern_size
 suffix:semicolon
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((((page) - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base)
+mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|macro|BIO_VMERGE_BOUNDARY
 mdefine_line|#define BIO_VMERGE_BOUNDARY&t;8192
 multiline_comment|/* Different PCI controllers we support have their PCI MEM space&n; * mapped to an either 2GB (Psycho) or 4GB (Sabre) aligned area,&n; * so need to chop off the top 33 or 32 bits.&n; */

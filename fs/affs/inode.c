@@ -1313,6 +1313,8 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|error
+op_assign
 id|inode_setattr
 c_func
 (paren

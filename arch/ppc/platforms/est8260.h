@@ -2,8 +2,8 @@ multiline_comment|/* Board information for the EST8260, which should be generic 
 macro_line|#ifndef __EST8260_PLATFORM
 DECL|macro|__EST8260_PLATFORM
 mdefine_line|#define __EST8260_PLATFORM
-DECL|macro|IMAP_ADDR
-mdefine_line|#define IMAP_ADDR&t;&t;((uint)0xf0000000)
+DECL|macro|CPM_MAP_ADDR
+mdefine_line|#define CPM_MAP_ADDR&t;&t;((uint)0xf0000000)
 DECL|macro|BOOTROM_RESTART_ADDR
 mdefine_line|#define BOOTROM_RESTART_ADDR&t;((uint)0xff000104)
 multiline_comment|/* A Board Information structure that is given to a program when&n; * prom starts it up.&n; */

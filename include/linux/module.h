@@ -593,11 +593,22 @@ op_ne
 id|MODULE_STATE_GOING
 suffix:semicolon
 )brace
-multiline_comment|/* Is this address in a module? */
+multiline_comment|/* Is this address in a module? (second is with no locks, for oops) */
 r_struct
 id|module
 op_star
 id|module_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_struct
+id|module
+op_star
+id|__module_text_address
 c_func
 (paren
 r_int
@@ -1077,6 +1088,25 @@ r_struct
 id|module
 op_star
 id|module_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Is this address in a module? (don&squot;t take a lock, we&squot;re oopsing) */
+DECL|function|__module_text_address
+r_static
+r_inline
+r_struct
+id|module
+op_star
+id|__module_text_address
 c_func
 (paren
 r_int

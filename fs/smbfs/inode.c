@@ -2105,6 +2105,13 @@ id|server-&gt;sock_file
 op_assign
 l_int|NULL
 suffix:semicolon
+id|init_waitqueue_head
+c_func
+(paren
+op_amp
+id|server-&gt;conn_wq
+)paren
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 DECL|variable|sbcmtd
 r_static
 r_struct
@@ -181,12 +181,12 @@ r_void
 )paren
 (brace
 r_volatile
-id|memctl8260_t
+id|memctl_cpm2_t
 op_star
 id|mc
 op_assign
 op_amp
-id|immr-&gt;im_memctl
+id|cpm2_immr-&gt;im_memctl
 suffix:semicolon
 r_int
 id|bigflash

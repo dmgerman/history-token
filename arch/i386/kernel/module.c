@@ -33,7 +33,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 r_return
-id|vmalloc
+id|vmalloc_exec
 c_func
 (paren
 id|size

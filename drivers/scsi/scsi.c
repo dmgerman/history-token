@@ -17,8 +17,14 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Definitions and constants.&n; */
@@ -1127,10 +1133,10 @@ c_func
 l_string|&quot;                 &quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|cmd-&gt;cmnd
+id|cmd
 )paren
 suffix:semicolon
 r_if
@@ -1345,10 +1351,10 @@ comma
 id|cmd-&gt;result
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|cmd-&gt;cmnd
+id|cmd
 )paren
 suffix:semicolon
 r_if
@@ -1364,7 +1370,7 @@ id|CHECK_CONDITION
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * XXX The print_sense formatting/prefix&n;&t;&t;&t;&t; * doesn&squot;t match this function.&n;&t;&t;&t;&t; */
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;&quot;
@@ -1986,10 +1992,6 @@ op_star
 id|cmd
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t have to worry about this one timing out any more.&n;&t; * If we are unable to remove the timer, then the command&n;&t; * has already timed out.  In which case, we have no choice but to&n;&t; * let the timeout function run, as we have no idea where in fact&n;&t; * that function could really be.  It might be on another processor,&n;&t; * etc, etc.&n;&t; */
 r_if
 c_cond
@@ -2002,6 +2004,29 @@ id|cmd
 )paren
 )paren
 r_return
+suffix:semicolon
+id|__scsi_done
+c_func
+(paren
+id|cmd
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Private entry to scsi_done() to complete a command when the timer&n; * isn&squot;t running --- used by scsi_times_out */
+DECL|function|__scsi_done
+r_void
+id|__scsi_done
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_int
+r_int
+id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the serial numbers back to zero&n;&t; */
 id|cmd-&gt;serial_number

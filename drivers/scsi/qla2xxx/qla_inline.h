@@ -400,7 +400,7 @@ r_uint8
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * qla2x00_is_wwn_zero - Check for zero node name&n; *&n; * Input:&n; *      wwn = Pointer to WW name to check&n; *&n; * Returns:&n; *      TRUE if name is 0 else FALSE&n; *&n; * Context:&n; *      Kernel context.&n; */
+multiline_comment|/*&n; * qla2x00_is_wwn_zero - Check for zero node name&n; *&n; * Input:&n; *      wwn = Pointer to WW name to check&n; *&n; * Returns:&n; *      1 if name is 0x00 else 0&n; *&n; * Context:&n; *      Kernel context.&n; */
 r_static
 id|__inline__
 r_int
@@ -445,7 +445,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* if zero return TRUE */
+multiline_comment|/* if zero return 1 */
 r_if
 c_cond
 (paren

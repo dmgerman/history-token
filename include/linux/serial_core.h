@@ -82,6 +82,9 @@ mdefine_line|#define PORT_IP22ZILOG&t;56
 multiline_comment|/* Sharp LH7a40x -- an ARM9 SoC series */
 DECL|macro|PORT_LH7A40X
 mdefine_line|#define PORT_LH7A40X&t;57
+multiline_comment|/* PPC CPM type number */
+DECL|macro|PORT_CPM
+mdefine_line|#define PORT_CPM        58
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

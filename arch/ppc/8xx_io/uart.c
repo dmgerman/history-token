@@ -9074,6 +9074,8 @@ id|mem_addr
 comma
 id|dp_addr
 comma
+id|dp_mem
+comma
 id|iobits
 suffix:semicolon
 r_int
@@ -9543,7 +9545,7 @@ op_star
 id|info
 suffix:semicolon
 multiline_comment|/* We need to allocate a transmit and receive buffer&n;&t;&t;&t; * descriptors from dual port ram, and a character&n;&t;&t;&t; * buffer area from host mem.&n;&t;&t;&t; */
-id|dp_addr
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -9554,6 +9556,14 @@ id|cbd_t
 )paren
 op_star
 id|RX_NUM_FIFO
+)paren
+suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate space for FIFOs in the host memory.&n;&t;&t;&t;*/
@@ -9694,7 +9704,7 @@ id|state-&gt;port
 suffix:semicolon
 id|sup-&gt;scc_genscc.scc_rbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 )brace
 r_else
@@ -9721,10 +9731,10 @@ id|state-&gt;port
 suffix:semicolon
 id|up-&gt;smc_rbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 )brace
-id|dp_addr
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -9735,6 +9745,14 @@ id|cbd_t
 )paren
 op_star
 id|TX_NUM_FIFO
+)paren
+suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate space for FIFOs in the host memory.&n;&t;&t;&t;*/
@@ -9845,7 +9863,7 @@ id|NUM_IS_SCC
 (brace
 id|sup-&gt;scc_genscc.scc_tbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 multiline_comment|/* Set up the uart parameters in the&n;&t;&t;&t;&t; * parameter ram.&n;&t;&t;&t;&t; */
 id|sup-&gt;scc_genscc.scc_rfcr
@@ -10120,7 +10138,7 @@ l_int|12
 suffix:semicolon
 id|up-&gt;smc_tbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 multiline_comment|/* Set up the uart parameters in the&n;&t;&t;&t;&t; * parameter ram.&n;&t;&t;&t;&t; */
 id|up-&gt;smc_rfcr
@@ -10272,6 +10290,8 @@ id|uint
 id|mem_addr
 comma
 id|dp_addr
+comma
+id|dp_mem
 comma
 id|bidx
 comma
@@ -10468,12 +10488,20 @@ suffix:semicolon
 )brace
 multiline_comment|/* When we get here, the CPM has been reset, so we need&n;&t; * to configure the port.&n;&t; * We need to allocate a transmit and receive buffer descriptor&n;&t; * from dual port ram, and a character buffer area from host mem.&n;&t; */
 multiline_comment|/* Allocate space for two FIFOs.  We can&squot;t allocate from host&n;&t; * memory yet because vm allocator isn&squot;t initialized&n;&t; * during this early console init.&n;&t; */
-id|dp_addr
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
 (paren
 l_int|8
+)paren
+suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
 )paren
 suffix:semicolon
 id|mem_addr
@@ -10490,7 +10518,7 @@ id|dp_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate space for two buffer descriptors in the DP ram.&n;&t;*/
-id|dp_addr
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -10501,6 +10529,14 @@ id|cbd_t
 )paren
 op_star
 l_int|2
+)paren
+suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
 )paren
 suffix:semicolon
 multiline_comment|/* Set the physical address of the host memory buffers in&n;&t; * the buffer descriptors.&n;&t; */
@@ -10588,11 +10624,11 @@ id|NUM_IS_SCC
 (brace
 id|sup-&gt;scc_genscc.scc_rbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 id|sup-&gt;scc_genscc.scc_tbase
 op_assign
-id|dp_addr
+id|dp_mem
 op_plus
 r_sizeof
 (paren
@@ -10758,12 +10794,12 @@ r_else
 (brace
 id|up-&gt;smc_rbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 multiline_comment|/* Base of receive buffer desc. */
 id|up-&gt;smc_tbase
 op_assign
-id|dp_addr
+id|dp_mem
 op_plus
 r_sizeof
 (paren

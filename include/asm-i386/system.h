@@ -777,10 +777,6 @@ id|dmi_broken
 suffix:semicolon
 r_extern
 r_int
-id|is_sony_vaio_laptop
-suffix:semicolon
-r_extern
-r_int
 id|es7000_plat
 suffix:semicolon
 DECL|macro|BROKEN_ACPI_Sx

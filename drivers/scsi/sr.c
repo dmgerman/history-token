@@ -12,10 +12,14 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;&t;/* For the door lock/unlock commands */
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;sr.h&quot;
 id|MODULE_PARM
@@ -843,7 +847,7 @@ r_case
 id|RECOVERED_ERROR
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * An error occured, but it recovered.  Inform the&n;&t;&t;&t; * user, but make sure that it&squot;s not treated as a&n;&t;&t;&t; * hard error.&n;&t;&t;&t; */
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;sr&quot;
@@ -1050,7 +1054,7 @@ id|rq-&gt;data_len
 )paren
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_else
 r_if
@@ -1066,12 +1070,12 @@ id|WRITE
 )paren
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 r_else
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|this_count
 op_assign
@@ -1213,7 +1217,7 @@ id|WRITE_10
 suffix:semicolon
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 )brace
 r_else
@@ -1238,7 +1242,7 @@ id|READ_10
 suffix:semicolon
 id|SCpnt-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 )brace
 r_else
@@ -2552,7 +2556,7 @@ suffix:semicolon
 multiline_comment|/* Do the command and wait.. */
 id|SRpnt-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|scsi_wait_req
 c_func

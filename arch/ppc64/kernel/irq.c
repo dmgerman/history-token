@@ -3054,10 +3054,12 @@ id|i
 dot
 id|prof_buffer
 op_logical_and
+id|cpu_isset
+c_func
 (paren
-id|new_value
-op_amp
 l_int|1
+comma
+id|new_value
 )paren
 )paren
 id|paca
@@ -3078,10 +3080,6 @@ dot
 id|prof_enabled
 op_assign
 l_int|0
-suffix:semicolon
-id|new_value
-op_rshift_assign
-l_int|1
 suffix:semicolon
 )brace
 )brace

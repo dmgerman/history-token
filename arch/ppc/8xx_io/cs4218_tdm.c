@@ -12389,6 +12389,8 @@ id|has_sound
 suffix:semicolon
 id|uint
 id|dp_addr
+comma
+id|dp_mem
 suffix:semicolon
 r_volatile
 id|uint
@@ -12533,7 +12535,7 @@ id|PROFF_SMC2
 )braket
 suffix:semicolon
 multiline_comment|/* We need to allocate a transmit and receive buffer&n;&t; * descriptors from dual port ram.&n;&t; */
-id|dp_addr
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -12544,6 +12546,14 @@ id|cbd_t
 )paren
 op_star
 id|numReadBufs
+)paren
+suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
 )paren
 suffix:semicolon
 multiline_comment|/* Set the physical address of the host memory&n;&t; * buffers in the buffer descriptors, and the&n;&t; * virtual address for us to work with.&n;&t; */
@@ -12561,7 +12571,7 @@ id|dp_addr
 suffix:semicolon
 id|up-&gt;smc_rbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 id|rx_cur
 op_assign
@@ -12627,7 +12637,7 @@ op_or
 id|BD_SC_INTRPT
 suffix:semicolon
 multiline_comment|/* Now, do the same for the transmit buffers.&n;&t;*/
-id|dp_addr
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -12638,6 +12648,14 @@ id|cbd_t
 )paren
 op_star
 id|numBufs
+)paren
+suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
 )paren
 suffix:semicolon
 id|bdp
@@ -12654,7 +12672,7 @@ id|dp_addr
 suffix:semicolon
 id|up-&gt;smc_tbase
 op_assign
-id|dp_addr
+id|dp_mem
 suffix:semicolon
 id|tx_cur
 op_assign

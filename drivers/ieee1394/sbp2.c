@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;../scsi/scsi.h&quot;
-macro_line|#include &quot;../scsi/hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;csr1212.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;

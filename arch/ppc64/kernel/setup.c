@@ -33,6 +33,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 r_extern
 r_int
@@ -2431,10 +2432,7 @@ id|saved_command_line
 comma
 id|cmd_line
 comma
-r_sizeof
-(paren
-id|saved_command_line
-)paren
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 op_star

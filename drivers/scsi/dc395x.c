@@ -4,16 +4,18 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;dc395x.h&quot;
-macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* needed for scsicam_bios_param */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* needed for scsicam_bios_param */
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;dc395x.h&quot;
 DECL|macro|DC395X_NAME
 mdefine_line|#define DC395X_NAME&t;&quot;dc395x&quot;
 DECL|macro|DC395X_BANNER
@@ -283,7 +285,8 @@ op_star
 id|dcb
 suffix:semicolon
 DECL|member|cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -1016,7 +1019,8 @@ r_void
 id|build_srb
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -1044,7 +1048,8 @@ comma
 id|u8
 id|did_code
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -2320,7 +2325,8 @@ op_star
 id|find_cmd
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -3406,7 +3412,8 @@ r_void
 id|build_srb
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -3421,14 +3428,11 @@ op_star
 id|srb
 )paren
 (brace
-r_int
+r_enum
+id|dma_data_direction
 id|dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 suffix:semicolon
 id|dprintkdbg
 c_func
@@ -3849,7 +3853,8 @@ r_int
 id|dc395x_queue_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -3859,7 +3864,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -4862,7 +4868,8 @@ r_int
 id|dc395x_eh_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5059,7 +5066,8 @@ r_int
 id|dc395x_eh_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -7693,7 +7701,8 @@ id|scatterlist
 op_star
 id|sg
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -13372,20 +13381,18 @@ op_star
 id|srb
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
 id|srb-&gt;cmd
 suffix:semicolon
-r_int
+r_enum
+id|dma_data_direction
 id|dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -13634,7 +13641,8 @@ id|tempcnt
 comma
 id|status
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -13645,16 +13653,11 @@ id|ScsiInqData
 op_star
 id|ptr
 suffix:semicolon
-r_int
-id|dir
-suffix:semicolon
+r_enum
+id|dma_data_direction
 id|dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -14657,7 +14660,8 @@ comma
 id|u8
 id|did_flag
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -14699,7 +14703,8 @@ id|ScsiReqBlk
 op_star
 id|tmp
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|p
 suffix:semicolon
@@ -14716,11 +14721,12 @@ comma
 id|list
 )paren
 (brace
-r_int
-id|result
+r_enum
+id|dma_data_direction
+id|dir
 suffix:semicolon
 r_int
-id|dir
+id|result
 suffix:semicolon
 id|p
 op_assign
@@ -14728,11 +14734,7 @@ id|srb-&gt;cmd
 suffix:semicolon
 id|dir
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|p-&gt;sc_data_direction
-)paren
 suffix:semicolon
 id|result
 op_assign
@@ -15423,7 +15425,8 @@ op_star
 id|srb
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -19815,7 +19818,8 @@ suffix:semicolon
 )brace
 DECL|variable|dc395x_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|dc395x_driver_template
 op_assign
 (brace

@@ -582,10 +582,6 @@ id|area
 comma
 r_int
 r_int
-id|mask
-comma
-r_int
-r_int
 id|order
 )paren
 (brace
@@ -594,6 +590,8 @@ r_int
 id|page_idx
 comma
 id|index
+comma
+id|mask
 suffix:semicolon
 r_if
 c_cond
@@ -607,6 +605,15 @@ id|page
 comma
 id|order
 )paren
+suffix:semicolon
+id|mask
+op_assign
+(paren
+op_complement
+l_int|0UL
+)paren
+op_lshift
+id|order
 suffix:semicolon
 id|page_idx
 op_assign
@@ -638,23 +645,19 @@ id|order
 )paren
 suffix:semicolon
 id|zone-&gt;free_pages
-op_sub_assign
-id|mask
+op_add_assign
+l_int|1
+op_lshift
+id|order
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|mask
-op_plus
-(paren
-l_int|1
-op_lshift
-(paren
+id|order
+OL
 id|MAX_ORDER
 op_minus
 l_int|1
-)paren
-)paren
 )paren
 (brace
 r_struct
@@ -690,7 +693,7 @@ id|area-&gt;map
 multiline_comment|/*&n;&t;&t;&t; * the buddy page is still allocated.&n;&t;&t;&t; */
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Move the buddy up one level.&n;&t;&t; * This code is taking advantage of the identity:&n;&t;&t; * &t;-mask = 1+~mask&n;&t;&t; */
+multiline_comment|/* Move the buddy up one level. */
 id|buddy1
 op_assign
 id|base
@@ -698,8 +701,11 @@ op_plus
 (paren
 id|page_idx
 op_xor
-op_minus
-id|mask
+(paren
+l_int|1
+op_lshift
+id|order
+)paren
 )paren
 suffix:semicolon
 id|buddy2
@@ -742,6 +748,9 @@ suffix:semicolon
 id|mask
 op_lshift_assign
 l_int|1
+suffix:semicolon
+id|order
+op_increment
 suffix:semicolon
 id|area
 op_increment
@@ -908,8 +917,6 @@ id|order
 (brace
 r_int
 r_int
-id|mask
-comma
 id|flags
 suffix:semicolon
 r_struct
@@ -931,15 +938,6 @@ r_int
 id|ret
 op_assign
 l_int|0
-suffix:semicolon
-id|mask
-op_assign
-(paren
-op_complement
-l_int|0UL
-)paren
-op_lshift
-id|order
 suffix:semicolon
 id|base
 op_assign
@@ -1013,8 +1011,6 @@ comma
 id|zone
 comma
 id|area
-comma
-id|mask
 comma
 id|order
 )paren
@@ -5226,7 +5222,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment
@@ -5342,7 +5338,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment
@@ -5463,7 +5459,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment
@@ -7701,7 +7697,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment

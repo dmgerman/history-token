@@ -365,6 +365,15 @@ DECL|macro|MSR_K7_FID_VID_CTL
 mdefine_line|#define MSR_K7_FID_VID_CTL&t;&t;0xC0010041
 DECL|macro|MSR_K7_FID_VID_STATUS
 mdefine_line|#define MSR_K7_FID_VID_STATUS&t;&t;0xC0010042
+multiline_comment|/* extended feature register */
+DECL|macro|MSR_EFER
+mdefine_line|#define MSR_EFER &t;&t;&t;0xc0000080
+multiline_comment|/* EFER bits: */
+multiline_comment|/* Execute Disable enable */
+DECL|macro|_EFER_NX
+mdefine_line|#define _EFER_NX&t;&t;&t;11
+DECL|macro|EFER_NX
+mdefine_line|#define EFER_NX&t;&t;&t;&t;(1&lt;&lt;_EFER_NX)
 multiline_comment|/* Centaur-Hauls/IDT defined MSRs. */
 DECL|macro|MSR_IDT_FCR1
 mdefine_line|#define MSR_IDT_FCR1&t;&t;&t;0x107

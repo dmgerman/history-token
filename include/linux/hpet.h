@@ -249,6 +249,8 @@ id|ht_opaque
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|HD_STATE
+mdefine_line|#define&t;HD_STATE(HD, TIMER)&t;(HD)-&gt;hd_state |= (1 &lt;&lt; TIMER)
 DECL|struct|hpet_data
 r_struct
 id|hpet_data

@@ -953,7 +953,7 @@ id|page
 comma
 id|prot
 comma
-id|PAGE_KERNEL_EXECUTABLE
+id|PAGE_KERNEL_EXEC
 )paren
 suffix:semicolon
 )brace

@@ -2628,7 +2628,7 @@ id|newsk
 )paren
 )paren
 (brace
-id|inet_sock_release
+id|sk_common_release
 c_func
 (paren
 id|newsk
@@ -3608,12 +3608,12 @@ comma
 dot
 id|setsockopt
 op_assign
-id|inet_setsockopt
+id|sock_common_setsockopt
 comma
 dot
 id|getsockopt
 op_assign
-id|inet_getsockopt
+id|sock_common_getsockopt
 comma
 dot
 id|sendmsg
@@ -3623,7 +3623,7 @@ comma
 dot
 id|recvmsg
 op_assign
-id|inet_recvmsg
+id|sock_common_recvmsg
 comma
 dot
 id|mmap

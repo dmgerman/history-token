@@ -237,6 +237,8 @@ DECL|macro|CPU_FTR_COHERENT_ICACHE
 mdefine_line|#define CPU_FTR_COHERENT_ICACHE  &t;0x0000020000000000
 DECL|macro|CPU_FTR_LOCKLESS_TLBIE
 mdefine_line|#define CPU_FTR_LOCKLESS_TLBIE&t;&t;0x0000040000000000
+DECL|macro|CPU_FTR_MMCRA_SIHV
+mdefine_line|#define CPU_FTR_MMCRA_SIHV&t;&t;0x0000080000000000
 multiline_comment|/* Platform firmware features */
 DECL|macro|FW_FTR_
 mdefine_line|#define FW_FTR_                         0x0000000000000001

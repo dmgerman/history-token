@@ -53,6 +53,7 @@ r_int
 r_int
 id|num_physpages
 suffix:semicolon
+multiline_comment|/*&n; * A number of key systems in x86 including ioremap() rely on the assumption&n; * that high_memory defines the upper bound on direct map memory, then end&n; * of ZONE_NORMAL.  Under CONFIG_DISCONTIG this means that max_low_pfn and&n; * highstart_pfn must be the same; there must be no gap between ZONE_NORMAL&n; * and ZONE_HIGHMEM.&n; */
 DECL|variable|high_memory
 r_void
 op_star
@@ -63,6 +64,11 @@ r_struct
 id|page
 op_star
 id|highmem_start_page
+suffix:semicolon
+DECL|variable|vmalloc_earlyreserve
+r_int
+r_int
+id|vmalloc_earlyreserve
 suffix:semicolon
 DECL|variable|num_physpages
 id|EXPORT_SYMBOL
@@ -83,6 +89,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|high_memory
+)paren
+suffix:semicolon
+DECL|variable|vmalloc_earlyreserve
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_earlyreserve
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * We special-case the C-O-W ZERO_PAGE, because it&squot;s such&n; * a common occurrence (no need to read the page to know&n; * that it&squot;s zero - better for the cache and memory subsystem).&n; */
@@ -5535,6 +5548,19 @@ id|offset
 r_goto
 id|do_expand
 suffix:semicolon
+multiline_comment|/*&n;&t; * truncation of in-use swapfiles is disallowed - it would cause&n;&t; * subsequent swapout to scribble on the now-freed blocks.&n;&t; */
+r_if
+c_cond
+(paren
+id|IS_SWAPFILE
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_goto
+id|out_busy
+suffix:semicolon
 id|i_size_write
 c_func
 (paren
@@ -5603,7 +5629,7 @@ OG
 id|inode-&gt;i_sb-&gt;s_maxbytes
 )paren
 r_goto
-id|out
+id|out_big
 suffix:semicolon
 id|i_size_write
 c_func
@@ -5645,11 +5671,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|out
+id|out_big
 suffix:colon
 r_return
 op_minus
 id|EFBIG
+suffix:semicolon
+id|out_busy
+suffix:colon
+r_return
+op_minus
+id|ETXTBSY
 suffix:semicolon
 )brace
 DECL|variable|vmtruncate

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon

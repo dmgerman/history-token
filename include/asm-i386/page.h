@@ -34,6 +34,12 @@ DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 macro_line|#ifdef CONFIG_X86_PAE
+r_extern
+r_int
+r_int
+r_int
+id|__supported_pte_mask
+suffix:semicolon
 DECL|member|pte_low
 DECL|member|pte_high
 DECL|typedef|pte_t
@@ -74,6 +80,19 @@ id|pgd
 suffix:semicolon
 )brace
 id|pgd_t
+suffix:semicolon
+DECL|member|pgprot
+DECL|typedef|pgprot_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+r_int
+id|pgprot
+suffix:semicolon
+)brace
+id|pgprot_t
 suffix:semicolon
 DECL|macro|pte_val
 mdefine_line|#define pte_val(x)&t;((x).pte_low | ((unsigned long long)(x).pte_high &lt;&lt; 32))
@@ -116,6 +135,18 @@ suffix:semicolon
 )brace
 id|pgd_t
 suffix:semicolon
+DECL|member|pgprot
+DECL|typedef|pgprot_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pgprot
+suffix:semicolon
+)brace
+id|pgprot_t
+suffix:semicolon
 DECL|macro|boot_pte_t
 mdefine_line|#define boot_pte_t pte_t /* or would you rather have a typedef */
 DECL|macro|pte_val
@@ -133,18 +164,6 @@ mdefine_line|#define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
 DECL|macro|HUGETLB_PAGE_ORDER
 mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 macro_line|#endif
-DECL|member|pgprot
-DECL|typedef|pgprot_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pgprot
-suffix:semicolon
-)brace
-id|pgprot_t
-suffix:semicolon
 DECL|macro|pmd_val
 mdefine_line|#define pmd_val(x)&t;((x).pmd)
 DECL|macro|pgd_val
@@ -256,7 +275,7 @@ mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
-mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _I386_PAGE_H */
 eof

@@ -1883,6 +1883,20 @@ c_func
 id|sparc64_valid_addr_bitmap
 )paren
 suffix:semicolon
+DECL|variable|page_to_pfn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|page_to_pfn
+)paren
+suffix:semicolon
+DECL|variable|pfn_to_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfn_to_page
+)paren
+suffix:semicolon
 multiline_comment|/* No version information on this, heavily used in inline asm,&n; * and will always be &squot;void __ret_efault(void)&squot;.&n; */
 DECL|variable|__ret_efault
 id|EXPORT_SYMBOL_NOVERS

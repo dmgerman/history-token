@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
@@ -3414,4 +3416,95 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|sysrq_handle_gdb
+r_static
+r_void
+id|sysrq_handle_gdb
+c_func
+(paren
+r_int
+id|key
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt_regs
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Entering GDB stub&bslash;n&quot;
+)paren
+suffix:semicolon
+id|breakpoint
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|sysrq_gdb_op
+r_static
+r_struct
+id|sysrq_key_op
+id|sysrq_gdb_op
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|sysrq_handle_gdb
+comma
+dot
+id|help_msg
+op_assign
+l_string|&quot;Gdb&quot;
+comma
+dot
+id|action_msg
+op_assign
+l_string|&quot;GDB&quot;
+comma
+)brace
+suffix:semicolon
+DECL|function|gdb_register_sysrq
+r_static
+r_int
+id|gdb_register_sysrq
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Registering GDB sysrq handler&bslash;n&quot;
+)paren
+suffix:semicolon
+id|register_sysrq_key
+c_func
+(paren
+l_char|&squot;g&squot;
+comma
+op_amp
+id|sysrq_gdb_op
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|gdb_register_sysrq
+id|module_init
+c_func
+(paren
+id|gdb_register_sysrq
+)paren
+suffix:semicolon
 eof

@@ -2,6 +2,22 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef __QLA_DEF_H
 DECL|macro|__QLA_DEF_H
 mdefine_line|#define __QLA_DEF_H
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 multiline_comment|/* XXX(hch): move to pci_ids.h */
 macro_line|#ifndef PCI_DEVICE_ID_QLOGIC_ISP2300
 DECL|macro|PCI_DEVICE_ID_QLOGIC_ISP2300
@@ -384,16 +400,6 @@ DECL|macro|SRB_ERR_DEVICE
 mdefine_line|#define SRB_ERR_DEVICE&t;3&t;&t;/* Request failed -- &quot;device error&quot; */
 DECL|macro|SRB_ERR_OTHER
 mdefine_line|#define SRB_ERR_OTHER&t;4
-multiline_comment|/* Segment/entries counts */
-DECL|member|req_cnt
-r_uint16
-id|req_cnt
-suffix:semicolon
-multiline_comment|/* !0 indicates counts determined */
-DECL|member|tot_dsds
-r_uint16
-id|tot_dsds
-suffix:semicolon
 multiline_comment|/* SRB magic number */
 DECL|member|magic
 r_uint16
@@ -2856,10 +2862,8 @@ DECL|macro|SS_RESIDUAL_OVER
 mdefine_line|#define SS_RESIDUAL_OVER&t;&t;BIT_10
 DECL|macro|SS_SENSE_LEN_VALID
 mdefine_line|#define SS_SENSE_LEN_VALID&t;&t;BIT_9
-DECL|macro|SS_RESIDUAL_LEN_VALID
-mdefine_line|#define SS_RESIDUAL_LEN_VALID&t;&t;BIT_8&t;/* ISP2100 only */
 DECL|macro|SS_RESPONSE_INFO_LEN_VALID
-mdefine_line|#define SS_RESPONSE_INFO_LEN_VALID&t;BIT_8&t;/* ISP2200 and 23xx */
+mdefine_line|#define SS_RESPONSE_INFO_LEN_VALID&t;BIT_8
 DECL|macro|SS_RESERVE_CONFLICT
 mdefine_line|#define SS_RESERVE_CONFLICT&t;&t;(BIT_4 | BIT_3)
 DECL|macro|SS_BUSY_CONDITION
@@ -5617,7 +5621,9 @@ suffix:semicolon
 DECL|macro|MBX_INTERRUPT
 mdefine_line|#define MBX_INTERRUPT&t;1
 DECL|macro|MBX_INTR_WAIT
-mdefine_line|#define MBX_INTR_WAIT   2
+mdefine_line|#define MBX_INTR_WAIT&t;2
+DECL|macro|MBX_UPDATE_FLASH_ACTIVE
+mdefine_line|#define MBX_UPDATE_FLASH_ACTIVE&t;3
 DECL|member|mbx_reg_lock
 id|spinlock_t
 id|mbx_reg_lock
@@ -5709,6 +5715,10 @@ suffix:semicolon
 DECL|member|fw_attributes
 r_uint16
 id|fw_attributes
+suffix:semicolon
+DECL|member|fw_memory_size
+r_uint32
+id|fw_memory_size
 suffix:semicolon
 DECL|member|fw_transfer_size
 r_uint32
@@ -5945,5 +5955,22 @@ macro_line|#include &quot;qla_gbl.h&quot;
 macro_line|#include &quot;qla_dbg.h&quot;
 macro_line|#include &quot;qla_inline.h&quot;
 macro_line|#include &quot;qla_listops.h&quot;
+multiline_comment|/*&n;* String arrays&n;*/
+DECL|macro|LINESIZE
+mdefine_line|#define LINESIZE    256
+DECL|macro|MAXARGS
+mdefine_line|#define MAXARGS      26
+DECL|macro|CMD_SP
+mdefine_line|#define CMD_SP(Cmnd)&t;&t;((Cmnd)-&gt;SCp.ptr)
+DECL|macro|CMD_COMPL_STATUS
+mdefine_line|#define CMD_COMPL_STATUS(Cmnd)  ((Cmnd)-&gt;SCp.this_residual)
+DECL|macro|CMD_RESID_LEN
+mdefine_line|#define CMD_RESID_LEN(Cmnd)&t;((Cmnd)-&gt;SCp.buffers_residual)
+DECL|macro|CMD_SCSI_STATUS
+mdefine_line|#define CMD_SCSI_STATUS(Cmnd)&t;((Cmnd)-&gt;SCp.Status)
+DECL|macro|CMD_ACTUAL_SNSLEN
+mdefine_line|#define CMD_ACTUAL_SNSLEN(Cmnd)&t;((Cmnd)-&gt;SCp.Message)
+DECL|macro|CMD_ENTRY_STATUS
+mdefine_line|#define CMD_ENTRY_STATUS(Cmnd)&t;((Cmnd)-&gt;SCp.have_data_in)
 macro_line|#endif
 eof

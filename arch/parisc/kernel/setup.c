@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/led.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;&t;/* for pa7300lc_init() proto */
 macro_line|#include &lt;asm/pdc_chassis.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 DECL|variable|command_line
 r_char
 id|command_line

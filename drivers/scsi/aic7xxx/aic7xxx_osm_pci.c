@@ -668,15 +668,19 @@ r_void
 )paren
 (brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+multiline_comment|/* Translate error or zero return into zero or one */
 r_return
-(paren
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|aic7xxx_pci_driver
 )paren
-)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|1
 suffix:semicolon
 macro_line|#else
 r_struct

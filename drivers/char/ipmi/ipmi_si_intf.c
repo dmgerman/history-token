@@ -4309,7 +4309,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* For GPE-type interrupts. */
 DECL|function|ipmi_acpi_gpe
-r_void
+id|u32
 id|ipmi_acpi_gpe
 c_func
 (paren
@@ -4410,6 +4410,9 @@ id|smi_info-&gt;si_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|acpi_gpe_irq_setup

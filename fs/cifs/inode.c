@@ -4325,6 +4325,14 @@ id|cifs_sb-&gt;local_nls
 suffix:semicolon
 )brace
 multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+id|rc
+op_assign
 id|inode_setattr
 c_func
 (paren

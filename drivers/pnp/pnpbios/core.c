@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2037,6 +2038,133 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|exploding_pnp_bios
+r_static
+r_int
+id|__init
+id|exploding_pnp_bios
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s detected. Disabling PnPBIOS&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|pnpbios_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|pnpbios_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+multiline_comment|/* PnPBIOS GPF on boot */
+dot
+id|callback
+op_assign
+id|exploding_pnp_bios
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;Higraded P14H&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VENDOR
+comma
+l_string|&quot;American Megatrends Inc.&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;07.00T&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Higraded&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_NAME
+comma
+l_string|&quot;P14H&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+multiline_comment|/* PnPBIOS GPF on boot */
+dot
+id|callback
+op_assign
+id|exploding_pnp_bios
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;ASUS P4P800&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BOARD_VENDOR
+comma
+l_string|&quot;ASUSTeK Computer Inc.&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BOARD_NAME
+comma
+l_string|&quot;P4P800&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
 DECL|function|pnpbios_init
 r_int
 id|__init
@@ -2054,10 +2182,10 @@ c_cond
 (paren
 id|pnpbios_disabled
 op_logical_or
+id|dmi_check_system
+c_func
 (paren
-id|dmi_broken
-op_amp
-id|BROKEN_PNP_BIOS
+id|pnpbios_dmi_table
 )paren
 )paren
 (brace

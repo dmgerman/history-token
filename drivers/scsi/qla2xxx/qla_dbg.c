@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
-macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
+macro_line|#include &lt;linux/delay.h&gt;
 r_static
 r_int
 id|qla_uprintf
@@ -68,11 +68,18 @@ id|qla2300_fw_dump
 op_star
 id|fw
 suffix:semicolon
+r_uint32
+id|dump_size
+comma
+id|data_ram_cnt
+suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
 id|risc_address
+op_assign
+id|data_ram_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -127,16 +134,33 @@ id|qla2300_fw_dump_failed
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate (large) dump buffer. */
-id|ha-&gt;fw_dump_order
+id|dump_size
 op_assign
-id|get_order
-c_func
-(paren
 r_sizeof
 (paren
 r_struct
 id|qla2300_fw_dump
 )paren
+suffix:semicolon
+id|dump_size
+op_add_assign
+(paren
+id|ha-&gt;fw_memory_size
+op_minus
+l_int|0x11000
+)paren
+op_star
+r_sizeof
+(paren
+r_uint16
+)paren
+suffix:semicolon
+id|ha-&gt;fw_dump_order
+op_assign
+id|get_order
+c_func
+(paren
+id|dump_size
 )paren
 suffix:semicolon
 id|ha-&gt;fw_dump
@@ -169,15 +193,11 @@ id|KERN_WARNING
 comma
 id|ha
 comma
-l_string|&quot;Unable to allocated memory for firmware dump (%d/%Zd).&bslash;n&quot;
+l_string|&quot;Unable to allocated memory for firmware dump (%d/%d).&bslash;n&quot;
 comma
 id|ha-&gt;fw_dump_order
 comma
-r_sizeof
-(paren
-r_struct
-id|qla2300_fw_dump
-)paren
+id|dump_size
 )paren
 suffix:semicolon
 r_goto
@@ -1940,6 +1960,14 @@ id|risc_address
 op_assign
 l_int|0x11000
 suffix:semicolon
+id|data_ram_cnt
+op_assign
+id|ha-&gt;fw_memory_size
+op_minus
+id|risc_address
+op_plus
+l_int|1
+suffix:semicolon
 id|WRT_MAILBOX_REG
 c_func
 (paren
@@ -1971,12 +1999,7 @@ l_int|0
 suffix:semicolon
 id|cnt
 OL
-r_sizeof
-(paren
-id|fw-&gt;data_ram
-)paren
-op_div
-l_int|2
+id|data_ram_cnt
 op_logical_and
 id|rval
 op_eq
@@ -2343,6 +2366,9 @@ r_struct
 id|qla2300_fw_dump
 op_star
 id|fw
+suffix:semicolon
+r_uint32
+id|data_ram_cnt
 suffix:semicolon
 id|uiter
 op_assign
@@ -3624,6 +3650,14 @@ comma
 l_string|&quot;&bslash;n&bslash;nData RAM Dump:&quot;
 )paren
 suffix:semicolon
+id|data_ram_cnt
+op_assign
+id|ha-&gt;fw_memory_size
+op_minus
+l_int|0x11000
+op_plus
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3633,12 +3667,7 @@ l_int|0
 suffix:semicolon
 id|cnt
 OL
-r_sizeof
-(paren
-id|fw-&gt;data_ram
-)paren
-op_div
-l_int|2
+id|data_ram_cnt
 suffix:semicolon
 id|cnt
 op_increment

@@ -1627,6 +1627,14 @@ id|k
 comma
 id|err
 suffix:semicolon
+r_void
+op_star
+id|dp_mem
+suffix:semicolon
+r_int
+r_int
+id|dp_addr
+suffix:semicolon
 r_int
 r_char
 op_star
@@ -1912,7 +1920,7 @@ id|SICR_ENET_CLKRT
 suffix:semicolon
 multiline_comment|/* Manual says set SDDR, but I can&squot;t find anything with that&n;&t; * name.  I think it is a misprint, and should be SDCR.  This&n;&t; * has already been set by the communication processor initialization.&n;&t; */
 multiline_comment|/* Allocate space for the buffer descriptors in the DP ram.&n;&t; * These are relative offsets in the DP ram address space.&n;&t; * Initialize base addresses for the buffer descriptors.&n;&t; */
-id|i
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -1925,9 +1933,17 @@ op_star
 id|RX_RING_SIZE
 )paren
 suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
+)paren
+suffix:semicolon
 id|ep-&gt;sen_genscc.scc_rbase
 op_assign
-id|i
+id|dp_mem
 suffix:semicolon
 id|cep-&gt;rx_bd_base
 op_assign
@@ -1938,10 +1954,10 @@ op_star
 op_amp
 id|cp-&gt;cp_dpmem
 (braket
-id|i
+id|dp_addr
 )braket
 suffix:semicolon
-id|i
+id|dp_mem
 op_assign
 id|m8xx_cpm_dpalloc
 c_func
@@ -1954,9 +1970,17 @@ op_star
 id|TX_RING_SIZE
 )paren
 suffix:semicolon
+id|dp_addr
+op_assign
+id|m8xx_cpm_dpram_offset
+c_func
+(paren
+id|dp_mem
+)paren
+suffix:semicolon
 id|ep-&gt;sen_genscc.scc_tbase
 op_assign
-id|i
+id|dp_mem
 suffix:semicolon
 id|cep-&gt;tx_bd_base
 op_assign
@@ -1967,7 +1991,7 @@ op_star
 op_amp
 id|cp-&gt;cp_dpmem
 (braket
-id|i
+id|dp_addr
 )braket
 suffix:semicolon
 id|cep-&gt;dirty_tx

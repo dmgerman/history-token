@@ -40,6 +40,7 @@ macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/machines.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 DECL|variable|screen_info
 r_struct
 id|screen_info

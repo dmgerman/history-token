@@ -26,11 +26,11 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ide.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &quot;ppc8260_pic.h&quot;
+macro_line|#include &quot;cpm2_pic.h&quot;
 r_static
 r_int
 id|m8260_set_rtc_time
@@ -71,7 +71,23 @@ id|bd_t
 suffix:semicolon
 r_extern
 r_void
-id|m8260_cpm_reset
+id|cpm2_reset
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|m8260_find_bridges
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|idma_pci9_init
 c_func
 (paren
 r_void
@@ -88,11 +104,26 @@ r_void
 )paren
 (brace
 multiline_comment|/* Reset the Communication Processor Module.&n;&t;*/
-id|m8260_cpm_reset
+id|cpm2_reset
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_8260_PCI9
+multiline_comment|/* Initialise IDMA for PCI erratum workaround */
+id|idma_pci9_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PCI_8260
+id|m8260_find_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* The decrementer counts at the system (internal) clock frequency&n; * divided by four.&n; */
 r_static
@@ -354,9 +385,9 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;core clock&bslash;t: %d MHz&bslash;n&quot;
-l_string|&quot;CPM  clock&bslash;t: %d MHz&bslash;n&quot;
-l_string|&quot;bus  clock&bslash;t: %d MHz&bslash;n&quot;
+l_string|&quot;core clock&bslash;t: %ld MHz&bslash;n&quot;
+l_string|&quot;CPM  clock&bslash;t: %ld MHz&bslash;n&quot;
+l_string|&quot;bus  clock&bslash;t: %ld MHz&bslash;n&quot;
 comma
 id|bp-&gt;bi_intfreq
 op_div
@@ -418,22 +449,22 @@ dot
 id|handler
 op_assign
 op_amp
-id|ppc8260_pic
+id|cpm2_pic
 suffix:semicolon
 multiline_comment|/* Initialize the default interrupt mapping priorities,&n;&t; * in case the boot rom changed something on us.&n;&t; */
-id|immr-&gt;im_intctl.ic_sicr
+id|cpm2_immr-&gt;im_intctl.ic_sicr
 op_assign
 l_int|0
 suffix:semicolon
-id|immr-&gt;im_intctl.ic_siprr
+id|cpm2_immr-&gt;im_intctl.ic_siprr
 op_assign
 l_int|0x05309770
 suffix:semicolon
-id|immr-&gt;im_intctl.ic_scprrh
+id|cpm2_immr-&gt;im_intctl.ic_scprrh
 op_assign
 l_int|0x05309770
 suffix:semicolon
-id|immr-&gt;im_intctl.ic_scprrl
+id|cpm2_immr-&gt;im_intctl.ic_scprrl
 op_assign
 l_int|0x05309770
 suffix:semicolon
@@ -491,7 +522,7 @@ multiline_comment|/* Map IMMR region to a 256MB BAT */
 id|addr
 op_assign
 (paren
-id|immr
+id|cpm2_immr
 op_ne
 l_int|NULL
 )paren
@@ -500,9 +531,9 @@ c_cond
 (paren
 id|uint
 )paren
-id|immr
+id|cpm2_immr
 suffix:colon
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 id|io_block_mapping
 c_func
@@ -674,7 +705,7 @@ id|m8260_init_IRQ
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
-id|m8260_get_irq
+id|cpm2_get_irq
 suffix:semicolon
 id|ppc_md.init
 op_assign
