@@ -27,7 +27,8 @@ macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#endif
-macro_line|#if 0 /* defer interrupt work to a tasklet */
+macro_line|#if defined(CONFIG_ATM_FORE200E_USE_TASKLET) /* defer interrupt work to a tasklet */
+DECL|macro|FORE200E_USE_TASKLET
 mdefine_line|#define FORE200E_USE_TASKLET
 macro_line|#endif
 macro_line|#if 0 /* enable the debugging code of the buffer supply queues */
@@ -5263,6 +5264,7 @@ id|fore200e
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifndef FORE200E_USE_TASKLET
 r_static
 r_void
 DECL|function|fore200e_irq
@@ -5328,6 +5330,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 id|irqreturn_t
 DECL|function|fore200e_interrupt
