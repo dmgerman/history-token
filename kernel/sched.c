@@ -1135,9 +1135,7 @@ r_void
 id|schedule_tail
 c_func
 (paren
-id|task_t
-op_star
-id|prev
+r_void
 )paren
 (brace
 id|spin_unlock_irq
