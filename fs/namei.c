@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|ACC_MODE
@@ -227,7 +228,7 @@ OL
 l_int|0
 )paren
 (brace
-id|putname
+id|__putname
 c_func
 (paren
 id|tmp
@@ -243,6 +244,30 @@ id|retval
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;audit_context
+)paren
+op_logical_and
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|result
+)paren
+op_logical_and
+id|result
+)paren
+id|audit_getname
+c_func
+(paren
+id|result
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -3290,6 +3315,9 @@ op_star
 id|nd
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 id|nd-&gt;last_type
 op_assign
 id|LAST_ROOT
@@ -3420,7 +3448,8 @@ id|current-&gt;total_link_count
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|retval
+op_assign
 id|link_path_walk
 c_func
 (paren
@@ -3428,6 +3457,34 @@ id|name
 comma
 id|nd
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;audit_context
+op_logical_and
+id|nd
+op_logical_and
+id|nd-&gt;dentry
+op_logical_and
+id|nd-&gt;dentry-&gt;d_inode
+)paren
+)paren
+id|audit_inode
+c_func
+(paren
+id|name
+comma
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_ino
+comma
+id|nd-&gt;dentry-&gt;d_inode-&gt;i_rdev
+)paren
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Restricted form of lookup. Doesn&squot;t follow links, single-component only,&n; * needs parent already locked. Doesn&squot;t follow mounts.&n; * SMP-safe.&n; */

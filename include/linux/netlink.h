@@ -21,6 +21,8 @@ DECL|macro|NETLINK_SELINUX
 mdefine_line|#define NETLINK_SELINUX&t;&t;7&t;/* SELinux event notifications */
 DECL|macro|NETLINK_ARPD
 mdefine_line|#define NETLINK_ARPD&t;&t;8
+DECL|macro|NETLINK_AUDIT
+mdefine_line|#define NETLINK_AUDIT&t;&t;9&t;/* auditing */
 DECL|macro|NETLINK_ROUTE6
 mdefine_line|#define NETLINK_ROUTE6&t;&t;11&t;/* af_inet6 route comm channel */
 DECL|macro|NETLINK_IP6_FW

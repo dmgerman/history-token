@@ -919,6 +919,10 @@ suffix:semicolon
 multiline_comment|/* access the groups &quot;array&quot; with this macro */
 DECL|macro|GROUP_AT
 mdefine_line|#define GROUP_AT(gi, i) &bslash;&n;    ((gi)-&gt;blocks[(i)/NGROUPS_PER_BLOCK][(i)%NGROUPS_PER_BLOCK])
+r_struct
+id|audit_context
+suffix:semicolon
+multiline_comment|/* See audit.c */
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -1404,6 +1408,12 @@ DECL|member|security
 r_void
 op_star
 id|security
+suffix:semicolon
+DECL|member|audit_context
+r_struct
+id|audit_context
+op_star
+id|audit_context
 suffix:semicolon
 multiline_comment|/* Thread group tracking */
 DECL|member|parent_exec_id

@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -183,6 +184,21 @@ c_func
 id|tsk
 op_eq
 id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|tsk-&gt;audit_context
+)paren
+)paren
+id|audit_free
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|security_task_free
@@ -3695,6 +3711,10 @@ id|p-&gt;io_context
 op_assign
 l_int|NULL
 suffix:semicolon
+id|p-&gt;audit_context
+op_assign
+l_int|NULL
+suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -3716,6 +3736,22 @@ id|p
 r_goto
 id|bad_fork_cleanup
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|retval
+op_assign
+id|audit_alloc
+c_func
+(paren
+id|p
+)paren
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup_security
+suffix:semicolon
 multiline_comment|/* copy all the process information */
 r_if
 c_cond
@@ -3733,7 +3769,7 @@ id|p
 )paren
 )paren
 r_goto
-id|bad_fork_cleanup_security
+id|bad_fork_cleanup_audit
 suffix:semicolon
 r_if
 c_cond
@@ -4295,6 +4331,14 @@ multiline_comment|/* blocking */
 id|bad_fork_cleanup_semundo
 suffix:colon
 id|exit_sem
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|bad_fork_cleanup_audit
+suffix:colon
+id|audit_free
 c_func
 (paren
 id|p

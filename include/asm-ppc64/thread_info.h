@@ -132,6 +132,8 @@ DECL|macro|TIF_RUN_LIGHT
 mdefine_line|#define TIF_RUN_LIGHT&t;&t;6&t;/* iSeries run light */
 DECL|macro|TIF_ABI_PENDING
 mdefine_line|#define TIF_ABI_PENDING&t;&t;7&t;/* 32/64 bit switch needed */
+DECL|macro|TIF_SYSCALL_AUDIT
+mdefine_line|#define TIF_SYSCALL_AUDIT&t;8&t;/* syscall auditing active */
 multiline_comment|/* as above, but as bit values */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
@@ -149,6 +151,10 @@ DECL|macro|_TIF_RUN_LIGHT
 mdefine_line|#define _TIF_RUN_LIGHT&t;&t;(1&lt;&lt;TIF_RUN_LIGHT)
 DECL|macro|_TIF_ABI_PENDING
 mdefine_line|#define _TIF_ABI_PENDING&t;(1&lt;&lt;TIF_ABI_PENDING)
+DECL|macro|_TIF_SYSCALL_AUDIT
+mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
+DECL|macro|_TIF_SYSCALL_T_OR_A
+mdefine_line|#define _TIF_SYSCALL_T_OR_A&t;(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_USER_WORK_MASK
 mdefine_line|#define _TIF_USER_WORK_MASK&t;(_TIF_NOTIFY_RESUME | _TIF_SIGPENDING | &bslash;&n;&t;&t;&t;&t; _TIF_NEED_RESCHED)
 macro_line|#endif /* __KERNEL__ */

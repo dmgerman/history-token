@@ -1430,7 +1430,7 @@ c_func
 op_star
 id|scontext_len
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|strcpy

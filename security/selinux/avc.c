@@ -11,11 +11,14 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/un.h&gt;
 macro_line|#include &lt;net/af_unix.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;avc_ss.h&quot;
+macro_line|#ifdef CONFIG_AUDIT
 macro_line|#include &quot;class_to_string.h&quot;
+macro_line|#endif
 macro_line|#include &quot;common_perm_to_string.h&quot;
 macro_line|#include &quot;av_inherit.h&quot;
 macro_line|#include &quot;av_perm_to_string.h&quot;
@@ -164,13 +167,6 @@ id|avc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|avc_log_lock
-r_static
-id|spinlock_t
-id|avc_log_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|avc_node_freelist
 r_static
 r_struct
@@ -185,14 +181,6 @@ r_static
 r_struct
 id|avc_cache
 id|avc_cache
-suffix:semicolon
-DECL|variable|avc_audit_buffer
-r_static
-r_char
-op_star
-id|avc_audit_buffer
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|avc_cache_stats
 r_static
@@ -210,25 +198,6 @@ op_star
 id|avc_callbacks
 op_assign
 l_int|NULL
-suffix:semicolon
-DECL|variable|avc_log_level
-r_static
-r_int
-r_int
-id|avc_log_level
-op_assign
-l_int|4
-suffix:semicolon
-multiline_comment|/* default:  KERN_WARNING */
-DECL|variable|avc_level_string
-r_static
-r_char
-id|avc_level_string
-(braket
-l_int|4
-)braket
-op_assign
-l_string|&quot;&lt; &gt;&quot;
 suffix:semicolon
 DECL|function|avc_hash
 r_static
@@ -277,6 +246,11 @@ r_void
 id|avc_dump_av
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u16
 id|tclass
 comma
@@ -311,9 +285,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; null&quot;
 )paren
 suffix:semicolon
@@ -374,9 +350,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; {&quot;
 )paren
 suffix:semicolon
@@ -403,9 +381,11 @@ id|perm
 op_amp
 id|av
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; %s&quot;
 comma
 id|common_pts
@@ -501,9 +481,11 @@ c_func
 id|av_perm_to_string
 )paren
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; %s&quot;
 comma
 id|av_perm_to_string
@@ -523,9 +505,11 @@ op_lshift_assign
 l_int|1
 suffix:semicolon
 )brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; }&quot;
 )paren
 suffix:semicolon
@@ -536,6 +520,11 @@ r_void
 id|avc_dump_query
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u32
 id|ssid
 comma
@@ -575,9 +564,11 @@ c_cond
 (paren
 id|rc
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot;ssid=%d&quot;
 comma
 id|ssid
@@ -585,9 +576,11 @@ id|ssid
 suffix:semicolon
 r_else
 (brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot;scontext=%s&quot;
 comma
 id|scontext
@@ -619,9 +612,11 @@ c_cond
 (paren
 id|rc
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; tsid=%d&quot;
 comma
 id|tsid
@@ -629,9 +624,11 @@ id|tsid
 suffix:semicolon
 r_else
 (brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; tcontext=%s&quot;
 comma
 id|scontext
@@ -644,9 +641,11 @@ id|scontext
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; tclass=%s&quot;
 comma
 id|class_to_string
@@ -802,38 +801,13 @@ op_assign
 r_new
 suffix:semicolon
 )brace
-id|avc_audit_buffer
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|__get_free_page
+id|audit_log
 c_func
 (paren
-id|GFP_ATOMIC
+id|current-&gt;audit_context
+comma
+l_string|&quot;AVC INITIALIZED&bslash;n&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|avc_audit_buffer
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;AVC:  unable to allocate audit buffer&bslash;n&quot;
-)paren
-suffix:semicolon
-id|avc_level_string
-(braket
-l_int|1
-)braket
-op_assign
-l_char|&squot;0&squot;
-op_plus
-id|avc_log_level
 suffix:semicolon
 )brace
 macro_line|#if 0
@@ -1691,6 +1665,11 @@ r_void
 id|avc_print_ipv4_addr
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u32
 id|addr
 comma
@@ -1711,9 +1690,11 @@ c_cond
 (paren
 id|addr
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; %s=%d.%d.%d.%d&quot;
 comma
 id|name1
@@ -1730,9 +1711,11 @@ c_cond
 (paren
 id|port
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; %s=%d&quot;
 comma
 id|name2
@@ -1975,18 +1958,15 @@ id|inode
 op_assign
 l_int|NULL
 suffix:semicolon
-r_char
-op_star
-id|p
-suffix:semicolon
 id|u32
 id|denied
 comma
 id|audited
 suffix:semicolon
-r_int
-r_int
-id|flags
+r_struct
+id|audit_buffer
+op_star
+id|ab
 suffix:semicolon
 id|denied
 op_assign
@@ -2062,30 +2042,29 @@ c_func
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* prevent overlapping printks */
-id|spin_lock_irqsave
+id|ab
+op_assign
+id|audit_log_start
 c_func
 (paren
-op_amp
-id|avc_log_lock
-comma
-id|flags
+id|current-&gt;audit_context
 )paren
 suffix:semicolon
-id|printk
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|avc_level_string
+op_logical_neg
+id|ab
 )paren
+r_return
 suffix:semicolon
-id|printk
+multiline_comment|/* audit_panic has been called */
+id|audit_log_format
 c_func
 (paren
-l_string|&quot;%savc:  %s &quot;
+id|ab
 comma
-id|avc_level_string
+l_string|&quot;avc:  %s &quot;
 comma
 id|denied
 ques
@@ -2098,14 +2077,18 @@ suffix:semicolon
 id|avc_dump_av
 c_func
 (paren
+id|ab
+comma
 id|tclass
 comma
 id|audited
 )paren
 suffix:semicolon
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; for &quot;
 )paren
 suffix:semicolon
@@ -2138,9 +2121,11 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; pid=%d&quot;
 comma
 id|tsk-&gt;pid
@@ -2205,26 +2190,16 @@ op_logical_and
 id|vma-&gt;vm_file
 )paren
 (brace
-id|p
-op_assign
-id|d_path
+id|audit_log_d_path
 c_func
 (paren
+id|ab
+comma
+l_string|&quot;exe=&quot;
+comma
 id|vma-&gt;vm_file-&gt;f_dentry
 comma
 id|vma-&gt;vm_file-&gt;f_vfsmnt
-comma
-id|avc_audit_buffer
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; exe=%s&quot;
-comma
-id|p
 )paren
 suffix:semicolon
 r_break
@@ -2259,9 +2234,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; comm=%s&quot;
 comma
 id|tsk-&gt;comm
@@ -2284,9 +2261,11 @@ id|a-&gt;type
 r_case
 id|AVC_AUDIT_DATA_IPC
 suffix:colon
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; key=%d&quot;
 comma
 id|a-&gt;u.ipc_id
@@ -2297,9 +2276,11 @@ suffix:semicolon
 r_case
 id|AVC_AUDIT_DATA_CAP
 suffix:colon
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; capability=%d&quot;
 comma
 id|a-&gt;u.cap
@@ -2329,39 +2310,26 @@ c_cond
 id|a-&gt;u.fs.mnt
 )paren
 (brace
-id|p
-op_assign
-id|d_path
+id|audit_log_d_path
 c_func
 (paren
+id|ab
+comma
+l_string|&quot;path=&quot;
+comma
 id|dentry
 comma
 id|a-&gt;u.fs.mnt
-comma
-id|avc_audit_buffer
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; path=%s&quot;
-comma
-id|p
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; name=%s&quot;
 comma
 id|dentry-&gt;d_name.name
@@ -2403,9 +2371,11 @@ c_cond
 id|dentry
 )paren
 (brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; name=%s&quot;
 comma
 id|dentry-&gt;d_name.name
@@ -2424,9 +2394,11 @@ c_cond
 (paren
 id|inode
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; dev=%s ino=%ld&quot;
 comma
 id|inode-&gt;i_sb-&gt;s_id
@@ -2457,6 +2429,17 @@ id|unix_sock
 op_star
 id|u
 suffix:semicolon
+r_int
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+r_char
+op_star
+id|p
+op_assign
+l_int|NULL
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2481,6 +2464,8 @@ suffix:semicolon
 id|avc_print_ipv4_addr
 c_func
 (paren
+id|ab
+comma
 id|inet-&gt;rcv_saddr
 comma
 id|inet-&gt;sport
@@ -2493,6 +2478,8 @@ suffix:semicolon
 id|avc_print_ipv4_addr
 c_func
 (paren
+id|ab
+comma
 id|inet-&gt;daddr
 comma
 id|inet-&gt;dport
@@ -2577,93 +2564,87 @@ c_cond
 id|u-&gt;dentry
 )paren
 (brace
-id|p
-op_assign
-id|d_path
+id|audit_log_d_path
 c_func
 (paren
+id|ab
+comma
+l_string|&quot;path=&quot;
+comma
 id|u-&gt;dentry
 comma
 id|u-&gt;mnt
-comma
-id|avc_audit_buffer
-comma
-id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; path=%s&quot;
-comma
-id|p
-)paren
+r_break
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
+op_logical_neg
 id|u-&gt;addr
 )paren
-(brace
-id|p
-op_assign
-id|avc_audit_buffer
+r_break
 suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|p
-comma
-id|u-&gt;addr-&gt;name-&gt;sun_path
-comma
+id|len
+op_assign
 id|u-&gt;addr-&gt;len
 op_minus
 r_sizeof
 (paren
 r_int
 )paren
-)paren
+suffix:semicolon
+id|p
+op_assign
+op_amp
+id|u-&gt;addr-&gt;name-&gt;sun_path
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_star
 id|p
-op_eq
-l_int|0
 )paren
-(brace
-op_star
-id|p
-op_assign
-l_char|&squot;@&squot;
-suffix:semicolon
-id|p
-op_add_assign
-id|u-&gt;addr-&gt;len
-op_minus
-r_sizeof
-(paren
-r_int
-)paren
-suffix:semicolon
-op_star
-id|p
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|printk
+id|audit_log_format
 c_func
 (paren
-l_string|&quot; path=%s&quot;
+id|ab
 comma
-id|avc_audit_buffer
+l_string|&quot;path=%*.*s&quot;
+comma
+id|len
+comma
+id|len
+comma
+id|p
 )paren
 suffix:semicolon
-)brace
+r_else
+id|audit_log_format
+c_func
+(paren
+id|ab
+comma
+l_string|&quot;path=@%*.*s&quot;
+comma
+id|len
+op_minus
+l_int|1
+comma
+id|len
+op_minus
+l_int|1
+comma
+id|p
+op_plus
+l_int|1
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2680,6 +2661,8 @@ suffix:colon
 id|avc_print_ipv4_addr
 c_func
 (paren
+id|ab
+comma
 id|a-&gt;u.net.v4info.saddr
 comma
 id|a-&gt;u.net.sport
@@ -2692,6 +2675,8 @@ suffix:semicolon
 id|avc_print_ipv4_addr
 c_func
 (paren
+id|ab
+comma
 id|a-&gt;u.net.v4info.daddr
 comma
 id|a-&gt;u.net.dport
@@ -2740,9 +2725,11 @@ c_cond
 (paren
 id|a-&gt;u.net.netif
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; netif=%s&quot;
 comma
 id|a-&gt;u.net.netif
@@ -2752,15 +2739,19 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; &quot;
 )paren
 suffix:semicolon
 id|avc_dump_query
 c_func
 (paren
+id|ab
+comma
 id|ssid
 comma
 id|tsid
@@ -2768,19 +2759,10 @@ comma
 id|tclass
 )paren
 suffix:semicolon
-id|printk
+id|audit_log_end
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|avc_log_lock
-comma
-id|flags
+id|ab
 )paren
 suffix:semicolon
 )brace
@@ -4400,51 +4382,4 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|avc_log_level_setup
-r_static
-r_int
-id|__init
-id|avc_log_level_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|avc_log_level
-op_assign
-id|simple_strtol
-c_func
-(paren
-id|str
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|avc_log_level
-OG
-l_int|7
-)paren
-id|avc_log_level
-op_assign
-l_int|7
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;avc_log_level=&quot;
-comma
-id|avc_log_level_setup
-)paren
-suffix:semicolon
 eof

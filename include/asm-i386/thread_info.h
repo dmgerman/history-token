@@ -223,6 +223,8 @@ DECL|macro|TIF_SINGLESTEP
 mdefine_line|#define TIF_SINGLESTEP&t;&t;4&t;/* restore singlestep on return to user mode */
 DECL|macro|TIF_IRET
 mdefine_line|#define TIF_IRET&t;&t;5&t;/* return with iret */
+DECL|macro|TIF_SYSCALL_AUDIT
+mdefine_line|#define TIF_SYSCALL_AUDIT&t;7&t;/* syscall auditing active */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|_TIF_SYSCALL_TRACE
@@ -237,10 +239,13 @@ DECL|macro|_TIF_SINGLESTEP
 mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
 DECL|macro|_TIF_IRET
 mdefine_line|#define _TIF_IRET&t;&t;(1&lt;&lt;TIF_IRET)
+DECL|macro|_TIF_SYSCALL_AUDIT
+mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
+multiline_comment|/* work to do on interrupt/exception return */
 DECL|macro|_TIF_WORK_MASK
-mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000FFFE&t;/* work to do on interrupt/exception return */
+mdefine_line|#define _TIF_WORK_MASK &bslash;&n;  (0x0000FFFF &amp; ~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT))
 DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK&t;0x0000FFFF&t;/* work to do on any return to u-space */
 multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different from the flags in that nobody else&n; * ever touches our thread-synchronous status, so we don&squot;t&n; * have to worry about atomic accesses.&n; */

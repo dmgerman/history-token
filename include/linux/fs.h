@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 r_struct
 id|iovec
 suffix:semicolon
@@ -4993,8 +4994,15 @@ r_int
 suffix:semicolon
 DECL|macro|__getname
 mdefine_line|#define __getname()&t;kmem_cache_alloc(names_cachep, SLAB_KERNEL)
+DECL|macro|__putname
+mdefine_line|#define __putname(name) kmem_cache_free(names_cachep, (void *)(name))
+macro_line|#ifndef CONFIG_AUDITSYSCALL
 DECL|macro|putname
-mdefine_line|#define putname(name)&t;kmem_cache_free(names_cachep, (void *)(name))
+mdefine_line|#define putname(name)   __putname(name)
+macro_line|#else
+DECL|macro|putname
+mdefine_line|#define putname(name)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (unlikely(current-&gt;audit_context))&t;&t;&t;&bslash;&n;&t;&t;&t;audit_putname(name);&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__putname(name);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+macro_line|#endif
 r_extern
 r_int
 id|register_blkdev

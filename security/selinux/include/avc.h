@@ -308,10 +308,18 @@ id|val
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * AVC display support&n; */
+r_struct
+id|audit_buffer
+suffix:semicolon
 r_void
 id|avc_dump_av
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u16
 id|tclass
 comma
@@ -323,6 +331,11 @@ r_void
 id|avc_dump_query
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u32
 id|ssid
 comma
@@ -337,6 +350,11 @@ r_void
 id|avc_dump_cache
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 r_char
 op_star
 id|tag
