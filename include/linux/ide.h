@@ -2419,21 +2419,24 @@ suffix:semicolon
 multiline_comment|/* name of interface, eg. &quot;ide0&quot; */
 multiline_comment|/* task file registers for pata and sata */
 DECL|member|io_ports
-id|ide_ioreg_t
+r_int
+r_int
 id|io_ports
 (braket
 id|IDE_NR_PORTS
 )braket
 suffix:semicolon
 DECL|member|sata_scr
-id|sata_ioreg_t
+r_int
+r_int
 id|sata_scr
 (braket
 id|SATA_NR_PORTS
 )braket
 suffix:semicolon
 DECL|member|sata_misc
-id|sata_ioreg_t
+r_int
+r_int
 id|sata_misc
 (braket
 id|SATA_NR_PORTS
@@ -2742,12 +2745,6 @@ id|u32
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if 0
-id|ide_dma_ops_t
-op_star
-id|dmaops
-suffix:semicolon
-macro_line|#else
 DECL|member|ide_dma_read
 r_int
 (paren
@@ -3025,13 +3022,6 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if 0
-id|ide_io_ops_t
-op_star
-id|iops
-suffix:semicolon
-macro_line|#else
 DECL|member|OUTB
 r_void
 (paren
@@ -3042,7 +3032,23 @@ id|OUTB
 id|u8
 id|addr
 comma
-id|ide_ioreg_t
+r_int
+r_int
+id|port
+)paren
+suffix:semicolon
+DECL|member|OUTBSYNC
+r_void
+(paren
+op_star
+id|OUTBSYNC
+)paren
+(paren
+id|u8
+id|addr
+comma
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -3056,7 +3062,8 @@ id|OUTW
 id|u16
 id|addr
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -3070,7 +3077,8 @@ id|OUTL
 id|u32
 id|addr
 comma
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -3081,7 +3089,8 @@ op_star
 id|OUTSW
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 comma
 r_void
@@ -3099,7 +3108,8 @@ op_star
 id|OUTSL
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 comma
 r_void
@@ -3117,7 +3127,8 @@ op_star
 id|INB
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -3128,7 +3139,8 @@ op_star
 id|INW
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -3139,7 +3151,8 @@ op_star
 id|INL
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -3150,7 +3163,8 @@ op_star
 id|INSW
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 comma
 r_void
@@ -3168,7 +3182,8 @@ op_star
 id|INSL
 )paren
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 id|port
 comma
 r_void
@@ -3179,7 +3194,6 @@ id|u32
 id|count
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* dma physical region descriptor table (cpu view) */
 DECL|member|dmatable_cpu
 r_int
