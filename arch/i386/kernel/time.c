@@ -1670,10 +1670,12 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86_TSC
 r_extern
 r_int
 id|x86_udelay_tsc
 suffix:semicolon
+macro_line|#endif
 id|xtime.tv_sec
 op_assign
 id|get_cmos_time

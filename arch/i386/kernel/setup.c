@@ -2388,6 +2388,7 @@ id|apm_info.bios
 op_assign
 id|APM_BIOS_INFO
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_SLEEP
 id|saved_videomode
 op_assign
