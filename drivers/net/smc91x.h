@@ -253,8 +253,9 @@ mdefine_line|#define RPC_LSB_DEFAULT&t;&t;RPC_LED_TX_RX
 macro_line|#endif
 macro_line|#ifdef SMC_USE_PXA_DMA
 multiline_comment|/*&n; * Let&squot;s use the DMA engine on the XScale PXA2xx for RX packets. This is&n; * always happening in irq context so no need to worry about races.  TX is&n; * different and probably not worth it for that reason, and not as critical&n; * as RX which can overrun memory and lose packets.&n; */
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#ifdef SMC_insl
 DECL|macro|SMC_insl
 macro_line|#undef SMC_insl
@@ -371,7 +372,7 @@ id|buf
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|DCSR
@@ -682,7 +683,7 @@ id|dmabuf
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 )brace
