@@ -4829,6 +4829,7 @@ id|S_IFREG
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_REG_FILE
 comma
 (braket
@@ -4836,6 +4837,7 @@ id|S_IFDIR
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_DIR
 comma
 (braket
@@ -4843,6 +4845,7 @@ id|S_IFCHR
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_CHRDEV
 comma
 (braket
@@ -4850,6 +4853,7 @@ id|S_IFBLK
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_BLKDEV
 comma
 (braket
@@ -4857,6 +4861,7 @@ id|S_IFIFO
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_FIFO
 comma
 (braket
@@ -4864,6 +4869,7 @@ id|S_IFSOCK
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_SOCK
 comma
 (braket
@@ -4871,6 +4877,7 @@ id|S_IFLNK
 op_rshift
 id|S_SHIFT
 )braket
+op_assign
 id|EXT3_FT_SYMLINK
 comma
 )brace
