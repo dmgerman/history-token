@@ -357,11 +357,11 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|fs3270_devfs_dir
+l_int|NULL
 comma
-l_string|&quot;tub&quot;
+l_string|&quot;3270/tub&quot;
 comma
-id|DEVFS_FL_DEFAULT
+l_int|0
 comma
 id|IBM_FS3270_MAJOR
 comma
