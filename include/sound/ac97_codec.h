@@ -1709,7 +1709,9 @@ id|ac97_quirk
 op_star
 id|quirk
 comma
-r_int
+r_const
+r_char
+op_star
 id|override
 )paren
 suffix:semicolon
