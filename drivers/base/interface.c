@@ -44,7 +44,7 @@ suffix:semicolon
 DECL|variable|device_name_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|device_name_entry
 op_assign
 (brace
@@ -452,7 +452,7 @@ suffix:semicolon
 DECL|variable|device_power_entry
 r_static
 r_struct
-id|driver_file_entry
+id|device_attribute
 id|device_power_entry
 op_assign
 (brace
@@ -478,7 +478,7 @@ comma
 suffix:semicolon
 DECL|variable|device_default_files
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|device_default_files
 (braket

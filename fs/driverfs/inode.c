@@ -1097,7 +1097,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * driverfs_read_file - &quot;read&quot; data from a file.&n; * @file:&t;file pointer&n; * @buf:&t;buffer to fill&n; * @count:&t;number of bytes to read&n; * @ppos:&t;starting offset in file&n; *&n; * Userspace wants data from a file. It is up to the creator of the file to&n; * provide that data.&n; * There is a struct driver_file_entry embedded in file-&gt;private_data. We&n; * obtain that and check if the read callback is implemented. If so, we call&n; * it, passing the data field of the file entry.&n; * Said callback is responsible for filling the buffer and returning the number&n; * of bytes it put in it. We update @ppos correctly.&n; */
+multiline_comment|/**&n; * driverfs_read_file - &quot;read&quot; data from a file.&n; * @file:&t;file pointer&n; * @buf:&t;buffer to fill&n; * @count:&t;number of bytes to read&n; * @ppos:&t;starting offset in file&n; *&n; * Userspace wants data from a file. It is up to the creator of the file to&n; * provide that data.&n; * There is a struct device_attribute embedded in file-&gt;private_data. We&n; * obtain that and check if the read callback is implemented. If so, we call&n; * it, passing the data field of the file entry.&n; * Said callback is responsible for filling the buffer and returning the number&n; * of bytes it put in it. We update @ppos correctly.&n; */
 r_static
 id|ssize_t
 DECL|function|driverfs_read_file
@@ -1122,7 +1122,7 @@ id|ppos
 )paren
 (brace
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 suffix:semicolon
@@ -1154,7 +1154,7 @@ id|entry
 op_assign
 (paren
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 )paren
 id|file-&gt;f_dentry-&gt;d_fsdata
@@ -1372,7 +1372,7 @@ id|ppos
 )paren
 (brace
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 suffix:semicolon
@@ -1403,7 +1403,7 @@ id|entry
 op_assign
 (paren
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 )paren
 id|file-&gt;f_dentry-&gt;d_fsdata
@@ -2558,7 +2558,7 @@ id|driverfs_create_file
 c_func
 (paren
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 comma

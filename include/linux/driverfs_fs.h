@@ -26,9 +26,9 @@ suffix:semicolon
 r_struct
 id|device
 suffix:semicolon
-DECL|struct|driver_file_entry
+DECL|struct|device_attribute
 r_struct
-id|driver_file_entry
+id|device_attribute
 (brace
 DECL|member|name
 r_char
@@ -119,7 +119,7 @@ id|driverfs_create_file
 c_func
 (paren
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 comma

@@ -652,7 +652,7 @@ op_star
 id|device
 comma
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 )paren

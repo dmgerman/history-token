@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 r_extern
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|device_default_files
 (braket
@@ -28,7 +28,7 @@ op_star
 id|dev
 comma
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 )paren
@@ -475,7 +475,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|driver_file_entry
+id|device_attribute
 op_star
 id|entry
 suffix:semicolon
