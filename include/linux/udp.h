@@ -57,27 +57,7 @@ id|__u16
 id|encap_type
 suffix:semicolon
 multiline_comment|/* Is this an Encapsulation socket? */
-multiline_comment|/*&n;&t; * Following members retains the infomation to create a UDP header&n;&t; * when the socket is uncorked.&n;&t; */
-DECL|member|saddr
-id|u32
-id|saddr
-suffix:semicolon
-multiline_comment|/* source address */
-DECL|member|daddr
-id|u32
-id|daddr
-suffix:semicolon
-multiline_comment|/* destination address */
-DECL|member|sport
-id|__u16
-id|sport
-suffix:semicolon
-multiline_comment|/* source port */
-DECL|member|dport
-id|__u16
-id|dport
-suffix:semicolon
-multiline_comment|/* destination port */
+multiline_comment|/*&n;&t; * Following member retains the infomation to create a UDP header&n;&t; * when the socket is uncorked.&n;&t; */
 DECL|member|len
 id|__u16
 id|len

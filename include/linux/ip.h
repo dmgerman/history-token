@@ -107,6 +107,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/igmp.h&gt;
+macro_line|#include &lt;net/flow.h&gt;
 DECL|struct|ip_options
 r_struct
 id|ip_options
@@ -365,6 +366,11 @@ multiline_comment|/* Total length of all frames */
 DECL|member|addr
 id|u32
 id|addr
+suffix:semicolon
+DECL|member|fl
+r_struct
+id|flowi
+id|fl
 suffix:semicolon
 DECL|member|cork
 )brace

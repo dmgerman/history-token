@@ -3408,11 +3408,11 @@ op_star
 id|uh
 suffix:semicolon
 r_struct
-id|ipv6_pinfo
+id|inet_opt
 op_star
-id|np
+id|inet
 op_assign
-id|inet6_sk
+id|inet_sk
 c_func
 (paren
 id|sk
@@ -3424,7 +3424,7 @@ op_star
 id|fl
 op_assign
 op_amp
-id|np-&gt;cork.fl
+id|inet-&gt;cork.fl
 suffix:semicolon
 r_int
 id|err
@@ -3749,7 +3749,7 @@ op_star
 id|fl
 op_assign
 op_amp
-id|np-&gt;cork.fl
+id|inet-&gt;cork.fl
 suffix:semicolon
 r_struct
 id|dst_entry
@@ -3941,7 +3941,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|up-&gt;dport
+id|fl-&gt;fl_ip_dport
 op_assign
 id|sin6-&gt;sin6_port
 suffix:semicolon
@@ -4060,7 +4060,7 @@ r_return
 op_minus
 id|EDESTADDRREQ
 suffix:semicolon
-id|up-&gt;dport
+id|fl-&gt;fl_ip_dport
 op_assign
 id|inet-&gt;dport
 suffix:semicolon
@@ -4120,7 +4120,7 @@ l_int|3
 suffix:semicolon
 id|sin.sin_port
 op_assign
-id|up-&gt;dport
+id|inet-&gt;cork.fl.fl_ip_dport
 suffix:semicolon
 id|msg-&gt;msg_name
 op_assign
@@ -4348,10 +4348,6 @@ comma
 op_amp
 id|np-&gt;saddr
 )paren
-suffix:semicolon
-id|fl-&gt;fl_ip_dport
-op_assign
-id|up-&gt;dport
 suffix:semicolon
 id|fl-&gt;fl_ip_sport
 op_assign

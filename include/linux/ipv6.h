@@ -394,7 +394,6 @@ macro_line|#include &lt;linux/icmpv6.h&gt;
 macro_line|#include &lt;net/if_inet6.h&gt;       /* struct ipv6_mc_socklist */
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
-macro_line|#include &lt;net/flow.h&gt;
 multiline_comment|/* &n;   This structure contains results of exthdrs parsing&n;   as offsets from skb-&gt;nh.&n; */
 DECL|struct|inet6_skb_parm
 r_struct
@@ -602,11 +601,6 @@ r_struct
 id|rt6_info
 op_star
 id|rt
-suffix:semicolon
-DECL|member|fl
-r_struct
-id|flowi
-id|fl
 suffix:semicolon
 DECL|member|hop_limit
 r_int
