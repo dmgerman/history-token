@@ -107,6 +107,7 @@ c_func
 (paren
 r_volatile
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 comma
@@ -831,6 +832,7 @@ c_func
 (paren
 r_volatile
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 comma

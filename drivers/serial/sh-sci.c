@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifdef CONFIG_CPU_FREQ
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
@@ -30,7 +31,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 macro_line|#include &lt;asm/sh_bios.h&gt;

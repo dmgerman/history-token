@@ -2107,12 +2107,6 @@ comma
 id|appl
 )paren
 suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 id|CAPI_ILLAPPNR
 suffix:semicolon

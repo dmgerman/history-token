@@ -2815,7 +2815,7 @@ c_func
 (paren
 id|create_mem_map_page_table
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|printk

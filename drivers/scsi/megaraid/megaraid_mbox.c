@@ -2331,10 +2331,6 @@ suffix:semicolon
 )brace
 id|raid_dev-&gt;baseaddr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -2667,9 +2663,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|raid_dev-&gt;baseaddr
 )paren
 suffix:semicolon
@@ -2747,9 +2740,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-id|caddr_t
-)paren
 id|raid_dev-&gt;baseaddr
 )paren
 suffix:semicolon

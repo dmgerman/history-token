@@ -462,7 +462,7 @@ suffix:semicolon
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 multiline_comment|/*&n; * remap a physical address `phys&squot; of size `size&squot; with page protection `prot&squot;&n; * into virtual address `from&squot;&n; */
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range(vma,from,phys,size,prot) &bslash;&n;&t;&t;remap_page_range(vma,from,phys,size,prot)
+mdefine_line|#define io_remap_page_range(vma,from,phys,size,prot) &bslash;&n;&t;&t;remap_pfn_range(vma, from, (phys) &gt;&gt; PAGE_SHIFT, size, prot)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASMARM_PGTABLE_H */
 eof

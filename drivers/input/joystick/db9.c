@@ -58,6 +58,7 @@ id|db9
 comma
 r_int
 comma
+op_amp
 id|db9_nargs
 comma
 l_int|0
@@ -103,6 +104,7 @@ id|db9_2
 comma
 r_int
 comma
+op_amp
 id|db9_nargs_2
 comma
 l_int|0
@@ -148,6 +150,7 @@ id|db9_3
 comma
 r_int
 comma
+op_amp
 id|db9_nargs_3
 comma
 l_int|0

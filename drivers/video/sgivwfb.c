@@ -3326,13 +3326,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
+c_func
 (paren
 id|vma
 comma
 id|vma-&gt;vm_start
 comma
 id|offset
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma

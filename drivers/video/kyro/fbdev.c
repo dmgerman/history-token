@@ -201,6 +201,7 @@ r_struct
 (brace
 DECL|member|pSTGReg
 id|STG4000REG
+id|__iomem
 op_star
 id|pSTGReg
 suffix:semicolon

@@ -278,6 +278,24 @@ id|multiinfo
 op_assign
 id|matchinfo
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|matchsize
+op_ne
+id|IP6T_ALIGN
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|ip6t_multiport
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* Must specify proto == TCP/UDP, no unknown flags or bad count */
 r_return
 (paren
@@ -292,7 +310,7 @@ id|IPPROTO_UDP
 op_logical_and
 op_logical_neg
 (paren
-id|ip-&gt;flags
+id|ip-&gt;invflags
 op_amp
 id|IP6T_INV_PROTO
 )paren

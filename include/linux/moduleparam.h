@@ -524,11 +524,11 @@ id|kp
 suffix:semicolon
 DECL|macro|param_check_invbool
 mdefine_line|#define param_check_invbool(name, p) __param_check(name, p, int)
-multiline_comment|/* Comma-separated array: num is set to number they actually specified. */
+multiline_comment|/* Comma-separated array: *nump is set to number they actually specified. */
 DECL|macro|module_param_array_named
-mdefine_line|#define module_param_array_named(name, array, type, num, perm)&t;&t;&bslash;&n;&t;static struct kparam_array __param_arr_##name&t;&t;&t;&bslash;&n;&t;= { ARRAY_SIZE(array), &amp;num, param_set_##type, param_get_##type,&bslash;&n;&t;    sizeof(array[0]), array };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_array_set, param_array_get, &t;&bslash;&n;&t;&t;&t;  &amp;__param_arr_##name, perm)
+mdefine_line|#define module_param_array_named(name, array, type, nump, perm)&t;&t;&bslash;&n;&t;static struct kparam_array __param_arr_##name&t;&t;&t;&bslash;&n;&t;= { ARRAY_SIZE(array), nump, param_set_##type, param_get_##type,&bslash;&n;&t;    sizeof(array[0]), array };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_array_set, param_array_get, &t;&bslash;&n;&t;&t;&t;  &amp;__param_arr_##name, perm)
 DECL|macro|module_param_array
-mdefine_line|#define module_param_array(name, type, num, perm)&t;&t;&bslash;&n;&t;module_param_array_named(name, name, type, num, perm)
+mdefine_line|#define module_param_array(name, type, nump, perm)&t;&t;&bslash;&n;&t;module_param_array_named(name, name, type, nump, perm)
 r_extern
 r_int
 id|param_array_set

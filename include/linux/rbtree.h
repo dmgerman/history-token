@@ -51,7 +51,7 @@ suffix:semicolon
 DECL|macro|RB_ROOT
 mdefine_line|#define RB_ROOT&t;(struct rb_root) { NULL, }
 DECL|macro|rb_entry
-mdefine_line|#define&t;rb_entry(ptr, type, member)&t;&t;&t;&t;&t;&bslash;&n;&t;((type *)((char *)(ptr)-(unsigned long)(&amp;((type *)0)-&gt;member)))
+mdefine_line|#define&t;rb_entry(ptr, type, member) container_of(ptr, type, member)
 r_extern
 r_void
 id|rb_insert_color

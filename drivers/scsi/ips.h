@@ -3477,12 +3477,14 @@ suffix:semicolon
 multiline_comment|/* Size of memory address     */
 DECL|member|mem_ptr
 r_char
+id|__iomem
 op_star
 id|mem_ptr
 suffix:semicolon
 multiline_comment|/* Memory mapped Ptr          */
 DECL|member|ioremap_ptr
 r_char
+id|__iomem
 op_star
 id|ioremap_ptr
 suffix:semicolon

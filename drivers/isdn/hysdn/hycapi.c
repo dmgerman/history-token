@@ -1187,7 +1187,6 @@ id|capi_register_params
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*        MOD_INC_USE_COUNT; */
 )brace
 multiline_comment|/*********************************************************************&n;&n;hycapi_release_internal&n;&n;Send down a CAPI_RELEASE to the controller.&n;*********************************************************************/
 DECL|function|hycapi_release_internal
@@ -1560,7 +1559,6 @@ id|appl
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*        MOD_DEC_USE_COUNT;  */
 )brace
 multiline_comment|/**************************************************************&n;Kill a single controller.&n;**************************************************************/
 DECL|function|hycapi_capi_release

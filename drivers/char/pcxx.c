@@ -18,13 +18,13 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#ifndef MODULE
 macro_line|#include &lt;linux/ctype.h&gt; /* We only need it for parsing the &quot;digi=&quot;-line */
 macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|macro|VERSION
 mdefine_line|#define VERSION &t;&quot;1.6.3&quot;

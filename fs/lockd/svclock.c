@@ -372,7 +372,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: check f=%p pd=%d %Ld-%Ld ty=%d cookie=%x&bslash;n&quot;
+l_string|&quot;lockd: check f=%p pd=%d %Ld-%Ld ty=%d cookie=%s&bslash;n&quot;
 comma
 id|block-&gt;b_file
 comma
@@ -392,14 +392,11 @@ id|fl-&gt;fl_end
 comma
 id|fl-&gt;fl_type
 comma
-op_star
+id|nlmdbg_cookie2a
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|block-&gt;b_call.a_args.cookie.data
+op_amp
+id|block-&gt;b_call.a_args.cookie
 )paren
 )paren
 suffix:semicolon
@@ -2130,19 +2127,16 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;callback: looking for cookie %x, host (%08x)&bslash;n&quot;
+l_string|&quot;callback: looking for cookie %s, host (%u.%u.%u.%u)&bslash;n&quot;
 comma
-op_star
+id|nlmdbg_cookie2a
+c_func
 (paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|call-&gt;a_args.cookie.data
+op_amp
+id|call-&gt;a_args.cookie
 )paren
 comma
-id|ntohl
+id|NIPQUAD
 c_func
 (paren
 id|peer_addr-&gt;sin_addr.s_addr
@@ -2170,18 +2164,16 @@ id|peer_addr
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: no block for cookie %x, host (%08x)&bslash;n&quot;
+l_string|&quot;lockd: no block for cookie %s, host (%u.%u.%u.%u)&bslash;n&quot;
 comma
-op_star
+id|nlmdbg_cookie2a
+c_func
 (paren
-id|u32
-op_star
-)paren
-(paren
-id|call-&gt;a_args.cookie.data
+op_amp
+id|call-&gt;a_args.cookie
 )paren
 comma
-id|ntohl
+id|NIPQUAD
 c_func
 (paren
 id|peer_addr-&gt;sin_addr.s_addr

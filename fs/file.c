@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 multiline_comment|/*&n; * Allocate an fd array, using kmalloc or vmalloc.&n; * Note: the array isn&squot;t cleared at allocation time.&n; */
 DECL|function|alloc_fd_array
 r_struct

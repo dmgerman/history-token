@@ -65,6 +65,8 @@ DECL|macro|atomic_inc_and_test
 mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(v) == 0)
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v) (atomic_dec_return(v) == 0)
+DECL|macro|atomic_sub_and_test
+mdefine_line|#define atomic_sub_and_test(i, v) (atomic_sub_return(i, v) == 0)
 multiline_comment|/* This is the old 24-bit implementation.  It&squot;s still used internally&n; * by some sparc-specific code, notably the semaphore implementation.&n; */
 DECL|member|counter
 DECL|typedef|atomic24_t

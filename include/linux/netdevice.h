@@ -2498,6 +2498,11 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2511,6 +2516,11 @@ c_func
 )paren
 )paren
 id|do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren

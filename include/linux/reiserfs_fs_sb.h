@@ -1335,6 +1335,9 @@ comma
 DECL|enumerator|REISERFS_TEST4
 id|REISERFS_TEST4
 comma
+DECL|enumerator|REISERFS_UNSUPPORTED_OPT
+id|REISERFS_UNSUPPORTED_OPT
+comma
 )brace
 suffix:semicolon
 DECL|macro|reiserfs_r5_hash

@@ -215,10 +215,12 @@ op_minus
 id|ENXIO
 suffix:semicolon
 id|addr
-op_add_assign
-(paren
+op_assign
 id|vma-&gt;vm_pgoff
-op_lshift
+op_plus
+(paren
+id|addr
+op_rshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
@@ -283,7 +285,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma

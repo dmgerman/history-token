@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * device driver for philips saa7134 based TV cards&n; * tv audio decoder (fm stereo, nicam, ...)&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-tvaudio.c,v 1.13 2004/09/22 11:47:11 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * tv audio decoder (fm stereo, nicam, ...)&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -102,12 +102,13 @@ DECL|macro|d2printk
 mdefine_line|#define d2printk(fmt, arg...)&t;if (audio_debug &gt; 1) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/audio: &quot; fmt, dev-&gt;name, ## arg)
 DECL|macro|print_regb
 mdefine_line|#define print_regb(reg) printk(&quot;%s:   reg 0x%03x [%-16s]: 0x%02x&bslash;n&quot;, &bslash;&n;&t;&t;dev-&gt;name,(SAA7134_##reg),(#reg),saa_readb((SAA7134_##reg)))
+multiline_comment|/* msecs */
 DECL|macro|SCAN_INITIAL_DELAY
-mdefine_line|#define SCAN_INITIAL_DELAY     (HZ)
+mdefine_line|#define SCAN_INITIAL_DELAY     1000
 DECL|macro|SCAN_SAMPLE_DELAY
-mdefine_line|#define SCAN_SAMPLE_DELAY      (HZ/5)
+mdefine_line|#define SCAN_SAMPLE_DELAY       200
 DECL|macro|SCAN_SUBCARRIER_DELAY
-mdefine_line|#define SCAN_SUBCARRIER_DELAY  (HZ*2)
+mdefine_line|#define SCAN_SUBCARRIER_DELAY  2000
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* saa7134 code                                                       */
 DECL|struct|mainscan
@@ -1479,12 +1480,6 @@ op_logical_neg
 id|dev-&gt;thread.shutdown
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1492,13 +1487,21 @@ id|timeout
 OL
 l_int|0
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_else
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|timeout
@@ -3069,9 +3072,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|5
-op_star
-id|HZ
+l_int|5000
 )paren
 )paren
 r_goto
@@ -3731,6 +3732,9 @@ id|reg
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|mask
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3784,6 +3788,64 @@ comma
 id|reg
 )paren
 suffix:semicolon
+multiline_comment|/* switch gpio-connected external audio mux */
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+id|card
+c_func
+(paren
+id|dev
+)paren
+dot
+id|gpiomask
+)paren
+(brace
+id|mask
+op_assign
+id|card
+c_func
+(paren
+id|dev
+)paren
+dot
+id|gpiomask
+suffix:semicolon
+id|saa_andorl
+c_func
+(paren
+id|SAA7134_GPIO_GPMODE0
+op_rshift
+l_int|2
+comma
+id|mask
+comma
+id|mask
+)paren
+suffix:semicolon
+id|saa_andorl
+c_func
+(paren
+id|SAA7134_GPIO_GPSTATUS0
+op_rshift
+l_int|2
+comma
+id|mask
+comma
+id|dev-&gt;input-&gt;gpio
+)paren
+suffix:semicolon
+id|saa7134_track_gpio
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;input-&gt;name
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3959,6 +4021,39 @@ id|stdres
 id|audio_ddep
 )braket
 )paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_amp
+id|card
+c_func
+(paren
+id|dev
+)paren
+dot
+id|radio
+op_eq
+id|dev-&gt;input
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;FM Radio&bslash;n&quot;
+)paren
+suffix:semicolon
+id|norms
+op_assign
+(paren
+l_int|0x0f
+op_lshift
+l_int|2
+)paren
+op_or
+l_int|0x01
 suffix:semicolon
 )brace
 r_else
@@ -4162,9 +4257,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|3
-op_star
-id|HZ
+l_int|3000
 )paren
 )paren
 r_goto

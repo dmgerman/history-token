@@ -6341,7 +6341,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -6353,6 +6353,8 @@ c_func
 (paren
 id|db-&gt;rawbuf
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma

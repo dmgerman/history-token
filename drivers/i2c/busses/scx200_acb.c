@@ -46,11 +46,6 @@ comma
 l_int|0x840
 )brace
 suffix:semicolon
-DECL|variable|num_base
-r_static
-r_int
-id|num_base
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -58,7 +53,7 @@ id|base
 comma
 r_int
 comma
-id|num_base
+l_int|NULL
 comma
 l_int|0
 )paren

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * budget.c: driver for the SAA7146 based Budget DVB cards &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * 26feb2004 Support for FS Activy Card (Grundig tuner) by&n; *           Michael Dreher &lt;michael@5dot1.de&gt;,&n; *           Oliver Endriss &lt;o.endriss@gmx.de&gt; and&n; *           Andreas &squot;randy&squot; Weinberger&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 DECL|function|Set22K
 r_static
 r_void
@@ -346,7 +345,7 @@ id|SAA7146_GPIO_OUTLO
 )paren
 suffix:semicolon
 )brace
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|20
@@ -714,6 +713,10 @@ id|budget
 )paren
 )paren
 suffix:semicolon
+id|dev-&gt;ext_priv
+op_assign
+id|budget
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -775,10 +778,6 @@ l_int|NULL
 comma
 id|budget
 )paren
-suffix:semicolon
-id|dev-&gt;ext_priv
-op_assign
-id|budget
 suffix:semicolon
 r_return
 l_int|0

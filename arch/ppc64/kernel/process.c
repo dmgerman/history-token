@@ -1039,12 +1039,6 @@ id|p-&gt;thread_info
 op_plus
 id|THREAD_SIZE
 suffix:semicolon
-id|p-&gt;set_child_tid
-op_assign
-id|p-&gt;clear_child_tid
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Copy registers */
 id|sp
 op_sub_assign

@@ -3,6 +3,7 @@ macro_line|#ifndef _NFSD4_STATE_H
 DECL|macro|_NFSD4_STATE_H
 mdefine_line|#define _NFSD4_STATE_H
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 DECL|macro|NFS4_OPAQUE_LIMIT
 mdefine_line|#define NFS4_OPAQUE_LIMIT 1024
@@ -305,6 +306,11 @@ DECL|struct|nfs4_stateowner
 r_struct
 id|nfs4_stateowner
 (brace
+DECL|member|so_ref
+r_struct
+id|kref
+id|so_ref
+suffix:semicolon
 DECL|member|so_idhash
 r_struct
 id|list_head
@@ -582,5 +588,60 @@ op_star
 id|clid
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|nfs4_free_stateowner
+c_func
+(paren
+r_struct
+id|kref
+op_star
+id|kref
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|nfs4_put_stateowner
+id|nfs4_put_stateowner
+c_func
+(paren
+r_struct
+id|nfs4_stateowner
+op_star
+id|so
+)paren
+(brace
+id|kref_put
+c_func
+(paren
+op_amp
+id|so-&gt;so_ref
+comma
+id|nfs4_free_stateowner
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|nfs4_get_stateowner
+id|nfs4_get_stateowner
+c_func
+(paren
+r_struct
+id|nfs4_stateowner
+op_star
+id|so
+)paren
+(brace
+id|kref_get
+c_func
+(paren
+op_amp
+id|so-&gt;so_ref
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif   /* NFSD4_STATE_H */
 eof

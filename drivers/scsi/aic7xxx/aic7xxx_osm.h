@@ -148,6 +148,7 @@ suffix:semicolon
 DECL|member|maddr
 r_volatile
 r_uint8
+id|__iomem
 op_star
 id|maddr
 suffix:semicolon

@@ -57,8 +57,9 @@ DECL|function|readisac
 id|readisac
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 id|u_char
@@ -118,8 +119,9 @@ DECL|function|writeisac
 id|writeisac
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 id|u_char
@@ -174,8 +176,9 @@ DECL|function|readhscx
 id|readhscx
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 r_int
@@ -251,8 +254,9 @@ DECL|function|writehscx
 id|writehscx
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 r_int
@@ -321,8 +325,9 @@ DECL|function|read_fifo_isac
 id|read_fifo_isac
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 id|u_char
@@ -409,8 +414,9 @@ DECL|function|write_fifo_isac
 id|write_fifo_isac
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 id|u_char
@@ -489,8 +495,9 @@ DECL|function|read_fifo_hscx
 id|read_fifo_hscx
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 r_int
@@ -588,8 +595,9 @@ DECL|function|write_fifo_hscx
 id|write_fifo_hscx
 c_func
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|adr
 comma
 r_int
@@ -1091,10 +1099,6 @@ id|cs
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|cs-&gt;hw.teles0.membase
 )paren
 suffix:semicolon
@@ -1313,9 +1317,6 @@ suffix:semicolon
 )brace
 id|cs-&gt;hw.teles0.membase
 op_assign
-(paren
-id|u_long
-)paren
 id|ioremap
 c_func
 (paren
@@ -1448,7 +1449,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HiSax: %s config irq:%d mem:%lx&bslash;n&quot;
+l_string|&quot;HiSax: %s config irq:%d mem:%p&bslash;n&quot;
 comma
 id|CardType
 (braket

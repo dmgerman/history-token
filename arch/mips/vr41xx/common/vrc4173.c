@@ -67,6 +67,12 @@ DECL|macro|VRC4173_SYSINT1REG
 mdefine_line|#define VRC4173_SYSINT1REG&t;0x060
 DECL|macro|VRC4173_MSYSINT1REG
 mdefine_line|#define VRC4173_MSYSINT1REG&t;0x06c
+DECL|macro|VRC4173_MPIUINTREG
+mdefine_line|#define VRC4173_MPIUINTREG&t;0x06e
+DECL|macro|VRC4173_MAIUINTREG
+mdefine_line|#define VRC4173_MAIUINTREG&t;0x070
+DECL|macro|VRC4173_MKIUINTREG
+mdefine_line|#define VRC4173_MKIUINTREG&t;0x072
 DECL|macro|VRC4173_SELECTREG
 mdefine_line|#define VRC4173_SELECTREG&t;0x09e
 DECL|macro|SEL3
@@ -1033,11 +1039,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|vrc4173_eanble_piuint
+DECL|variable|vrc4173_enable_piuint
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|vrc4173_eanble_piuint
+id|vrc4173_enable_piuint
 )paren
 suffix:semicolon
 DECL|function|vrc4173_disable_piuint

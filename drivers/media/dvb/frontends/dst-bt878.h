@@ -96,11 +96,11 @@ suffix:semicolon
 r_struct
 id|bt878
 op_star
-id|bt878_find_by_dvb_adap
+id|bt878_find_by_i2c_adap
 c_func
 (paren
 r_struct
-id|dvb_adapter
+id|i2c_adapter
 op_star
 id|adap
 )paren

@@ -57,10 +57,10 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#ifdef SERIAL_INLINE
@@ -1942,7 +1942,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info-&gt;flags
@@ -2064,7 +2064,7 @@ id|info-&gt;xmit.buf
 suffix:semicolon
 id|info-&gt;xmit.buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|info-&gt;IER
@@ -4372,7 +4372,7 @@ c_func
 (paren
 id|info
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5889,7 +5889,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -6259,7 +6259,7 @@ id|ASYNC_NORMAL_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -7259,7 +7259,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|local_irq_save

@@ -186,6 +186,14 @@ id|console_cmdline
 id|MAX_CMDLINECONSOLES
 )braket
 suffix:semicolon
+DECL|variable|selected_console
+r_static
+r_int
+id|selected_console
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|variable|preferred_console
 r_static
 r_int
@@ -524,7 +532,7 @@ op_eq
 id|idx
 )paren
 (brace
-id|preferred_console
+id|selected_console
 op_assign
 id|i
 suffix:semicolon
@@ -543,7 +551,7 @@ r_return
 op_minus
 id|E2BIG
 suffix:semicolon
-id|preferred_console
+id|selected_console
 op_assign
 id|i
 suffix:semicolon
@@ -2782,6 +2790,17 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|preferred_console
+OL
+l_int|0
+)paren
+id|preferred_console
+op_assign
+id|selected_console
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;See if we want to use this console driver. If we&n;&t; *&t;didn&squot;t select a console we take the first one&n;&t; *&t;that registers here.&n;&t; */
 r_if
 c_cond
@@ -3163,8 +3182,7 @@ l_int|NULL
 )paren
 id|preferred_console
 op_assign
-op_minus
-l_int|1
+id|selected_console
 suffix:semicolon
 id|release_console_sem
 c_func

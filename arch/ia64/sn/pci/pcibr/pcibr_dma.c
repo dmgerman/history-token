@@ -428,6 +428,27 @@ id|pci_addr
 op_or_assign
 id|TIOCP_PCI64_CMDTYPE_MEM
 suffix:semicolon
+multiline_comment|/* If PCI mode, func zero uses VCHAN0, every other func uses VCHAN1 */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_PCIX
+c_func
+(paren
+id|pcibus_info
+)paren
+op_logical_and
+id|PCI_FUNC
+c_func
+(paren
+id|info-&gt;pdi_linux_pcidev-&gt;devfn
+)paren
+)paren
+id|pci_addr
+op_or_assign
+id|PCI64_ATTR_VIRTUAL
+suffix:semicolon
 r_return
 id|pci_addr
 suffix:semicolon

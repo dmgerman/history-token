@@ -785,8 +785,8 @@ r_return
 id|c
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &quot;cciss_scsi.c&quot;&t;&t;/* For SCSI tape support */
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; * Report information about this controller.&n; */
 DECL|macro|ENG_GIG
 mdefine_line|#define ENG_GIG 1000000000

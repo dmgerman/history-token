@@ -41,7 +41,7 @@ l_int|1024
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 (paren
@@ -94,7 +94,7 @@ l_int|0x3f7
 id|io_base
 op_assign
 (paren
-l_int|0xc000000fcc000000
+l_int|0xc000000fcc000000UL
 op_or
 (paren
 (paren
@@ -188,9 +188,7 @@ r_int
 )paren
 (paren
 op_star
-id|pda
-op_member_access_from_pointer
-id|pio_write_status_addr
+id|pda-&gt;pio_write_status_addr
 )paren
 )paren
 op_amp
@@ -199,10 +197,9 @@ id|SH_PIO_WRITE_STATUS_0_PENDING_WRITE_COUNT_MASK
 op_ne
 id|SH_PIO_WRITE_STATUS_0_PENDING_WRITE_COUNT_MASK
 )paren
-id|udelay
+id|cpu_relax
 c_func
 (paren
-l_int|1
 )paren
 suffix:semicolon
 )brace

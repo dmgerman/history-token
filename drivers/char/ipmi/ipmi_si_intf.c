@@ -3375,6 +3375,7 @@ id|addrs
 comma
 r_int
 comma
+op_amp
 id|num_addrs
 comma
 l_int|0
@@ -3398,6 +3399,7 @@ id|ports
 comma
 r_int
 comma
+op_amp
 id|num_ports
 comma
 l_int|0
@@ -3421,6 +3423,7 @@ id|irqs
 comma
 r_int
 comma
+op_amp
 id|num_irqs
 comma
 l_int|0
@@ -3444,6 +3447,7 @@ id|regspacings
 comma
 r_int
 comma
+op_amp
 id|num_regspacings
 comma
 l_int|0
@@ -3468,6 +3472,7 @@ id|regsizes
 comma
 r_int
 comma
+op_amp
 id|num_regsizes
 comma
 l_int|0
@@ -3492,6 +3497,7 @@ id|regshifts
 comma
 r_int
 comma
+op_amp
 id|num_regshifts
 comma
 l_int|0

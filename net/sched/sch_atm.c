@@ -2301,7 +2301,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_if
@@ -2316,11 +2316,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 id|flow-&gt;stats.bytes
@@ -2741,7 +2741,7 @@ op_increment
 suffix:semicolon
 r_else
 (brace
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|p-&gt;link.stats.drops

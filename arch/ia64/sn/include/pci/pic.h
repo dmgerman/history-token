@@ -6,7 +6,7 @@ multiline_comment|/*&n; * PIC AS DEVICE ZERO&n; * ------------------&n; *&n; * P
 DECL|macro|PIC_ATE_TARGETID_SHFT
 mdefine_line|#define PIC_ATE_TARGETID_SHFT           8
 DECL|macro|PIC_HOST_INTR_ADDR
-mdefine_line|#define PIC_HOST_INTR_ADDR              0x0000FFFFFFFFFFFF
+mdefine_line|#define PIC_HOST_INTR_ADDR              0x0000FFFFFFFFFFFFUL
 DECL|macro|PIC_PCI64_ATTR_TARG_SHFT
 mdefine_line|#define PIC_PCI64_ATTR_TARG_SHFT        60
 multiline_comment|/*****************************************************************************&n; *********************** PIC MMR structure mapping ***************************&n; *****************************************************************************/

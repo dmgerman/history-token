@@ -70,16 +70,6 @@ c_func
 id|entry
 )paren
 )paren
-op_amp
-(paren
-(paren
-l_int|1
-op_lshift
-id|MAX_SWAPFILES_SHIFT
-)paren
-op_minus
-l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Extract the `offset&squot; field from a swp_entry_t.  The swp_entry_t is in&n; * arch-independent format&n; */

@@ -6826,7 +6826,7 @@ op_eq
 id|READ
 )paren
 (brace
-id|disk_stat_add
+id|__disk_stat_add
 c_func
 (paren
 id|rq-&gt;rq_disk
@@ -6842,7 +6842,7 @@ c_cond
 op_logical_neg
 id|new_io
 )paren
-id|disk_stat_inc
+id|__disk_stat_inc
 c_func
 (paren
 id|rq-&gt;rq_disk
@@ -6860,7 +6860,7 @@ op_eq
 id|WRITE
 )paren
 (brace
-id|disk_stat_add
+id|__disk_stat_add
 c_func
 (paren
 id|rq-&gt;rq_disk
@@ -6876,7 +6876,7 @@ c_cond
 op_logical_neg
 id|new_io
 )paren
-id|disk_stat_inc
+id|__disk_stat_inc
 c_func
 (paren
 id|rq-&gt;rq_disk
@@ -6981,7 +6981,7 @@ id|now
 op_assign
 id|jiffies
 suffix:semicolon
-id|disk_stat_add
+id|__disk_stat_add
 c_func
 (paren
 id|disk
@@ -7006,7 +7006,7 @@ c_cond
 (paren
 id|disk-&gt;in_flight
 )paren
-id|disk_stat_add
+id|__disk_stat_add
 c_func
 (paren
 id|disk
@@ -10017,7 +10017,7 @@ id|req
 r_case
 id|WRITE
 suffix:colon
-id|disk_stat_inc
+id|__disk_stat_inc
 c_func
 (paren
 id|disk
@@ -10025,7 +10025,7 @@ comma
 id|writes
 )paren
 suffix:semicolon
-id|disk_stat_add
+id|__disk_stat_add
 c_func
 (paren
 id|disk
@@ -10040,7 +10040,7 @@ suffix:semicolon
 r_case
 id|READ
 suffix:colon
-id|disk_stat_inc
+id|__disk_stat_inc
 c_func
 (paren
 id|disk
@@ -10048,7 +10048,7 @@ comma
 id|reads
 )paren
 suffix:semicolon
-id|disk_stat_add
+id|__disk_stat_add
 c_func
 (paren
 id|disk

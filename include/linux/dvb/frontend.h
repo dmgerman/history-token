@@ -16,6 +16,9 @@ id|FE_QAM
 comma
 DECL|enumerator|FE_OFDM
 id|FE_OFDM
+comma
+DECL|enumerator|FE_ATSC
+id|FE_ATSC
 DECL|typedef|fe_type_t
 )brace
 id|fe_type_t
@@ -134,6 +137,16 @@ DECL|enumerator|FE_CAN_HIERARCHY_AUTO
 id|FE_CAN_HIERARCHY_AUTO
 op_assign
 l_int|0x100000
+comma
+DECL|enumerator|FE_CAN_8VSB
+id|FE_CAN_8VSB
+op_assign
+l_int|0x200000
+comma
+DECL|enumerator|FE_CAN_16VSB
+id|FE_CAN_16VSB
+op_assign
+l_int|0x400000
 comma
 DECL|enumerator|FE_NEEDS_BENDING
 id|FE_NEEDS_BENDING

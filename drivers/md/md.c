@@ -14376,7 +14376,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: using %dk window, over a total of %Lu blocks.&bslash;n&quot;
+l_string|&quot;md: using %dk window, over a total of %llu blocks.&bslash;n&quot;
 comma
 id|window
 op_div

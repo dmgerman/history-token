@@ -2,12 +2,12 @@ multiline_comment|/*&n; * Procedures for interfacing to Open Firmware.&n; *&n; *
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 DECL|variable|lmb
 r_struct
 id|lmb

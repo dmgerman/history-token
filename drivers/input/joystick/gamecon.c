@@ -65,6 +65,7 @@ id|gc
 comma
 r_int
 comma
+op_amp
 id|gc_nargs
 comma
 l_int|0
@@ -118,6 +119,7 @@ id|gc_2
 comma
 r_int
 comma
+op_amp
 id|gc_nargs_2
 comma
 l_int|0
@@ -171,6 +173,7 @@ id|gc_3
 comma
 r_int
 comma
+op_amp
 id|gc_nargs_3
 comma
 l_int|0

@@ -3,19 +3,36 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &quot;dvb_ca_en50221.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#include &quot;dvb_ringbuffer.h&quot;
 DECL|variable|dvb_ca_en50221_debug
 r_static
 r_int
 id|dvb_ca_en50221_debug
-op_assign
-l_int|0
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|cam_debug
+comma
+id|dvb_ca_en50221_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|cam_debug
+comma
+l_string|&quot;enable verbose debug messages&quot;
+)paren
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk if (dvb_ca_en50221_debug) printk
@@ -122,7 +139,7 @@ suffix:semicolon
 multiline_comment|/* semaphore for syncing access to slot structure */
 DECL|member|sem
 r_struct
-id|semaphore
+id|rw_semaphore
 id|sem
 suffix:semicolon
 multiline_comment|/* buffer for incoming packets */
@@ -379,9 +396,6 @@ r_int
 id|slot_status
 suffix:semicolon
 r_int
-id|status
-suffix:semicolon
-r_int
 id|cam_present_now
 suffix:semicolon
 r_int
@@ -415,30 +429,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* poll mode */
-r_if
-c_cond
-(paren
-(paren
-id|status
-op_assign
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|sem
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|status
-suffix:semicolon
 id|slot_status
 op_assign
 id|ca-&gt;pub
@@ -449,18 +439,6 @@ c_func
 id|ca-&gt;pub
 comma
 id|slot
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|sem
 )paren
 suffix:semicolon
 id|cam_present_now
@@ -731,7 +709,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* wait for a bit */
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -800,59 +778,6 @@ dot
 id|da_irq_supported
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* reset the link interface. Note CAM IRQs are disabled */
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|ca-&gt;pub
-op_member_access_from_pointer
-id|write_cam_control
-c_func
-(paren
-id|ca-&gt;pub
-comma
-id|slot
-comma
-id|CTRLIF_COMMAND
-comma
-id|CMDREG_RS
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|ret
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|dvb_ca_en50221_wait_if_status
-c_func
-(paren
-id|ca
-comma
-id|slot
-comma
-id|STATUSREG_FR
-comma
-id|HZ
-op_div
-l_int|10
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|ret
 suffix:semicolon
 multiline_comment|/* set the host link buffer size temporarily. it will be overwritten with the&n;         * real negotiated size later. */
 id|ca-&gt;slot_info
@@ -1216,6 +1141,41 @@ l_int|0
 r_return
 id|_tupleType
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|_tupleType
+op_eq
+l_int|0xff
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;END OF CHAIN TUPLE type:0x%x&bslash;n&quot;
+comma
+id|_tupleType
+)paren
+suffix:semicolon
+op_star
+id|address
+op_add_assign
+l_int|2
+suffix:semicolon
+op_star
+id|tupleType
+op_assign
+id|_tupleType
+suffix:semicolon
+op_star
+id|tupleLength
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1847,7 +1807,9 @@ l_int|4
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: Unsupported DVB CAM module version %c%c%c%c&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: Unsupported DVB CAM module version %c%c%c%c&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 comma
 id|dvb_str
 (braket
@@ -2232,14 +2194,19 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* acquire the slot */
+multiline_comment|/* check if we have space for a link buf in the rx_buffer */
 r_if
 c_cond
 (paren
-(paren
-id|status
-op_assign
-id|down_interruptible
+id|ebuf
+op_eq
+l_int|NULL
+)paren
+(brace
+r_int
+id|buf_free
+suffix:semicolon
+id|down_read
 c_func
 (paren
 op_amp
@@ -2250,25 +2217,9 @@ id|slot
 dot
 id|sem
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|status
 suffix:semicolon
-multiline_comment|/* check if we have space for a link buf in the rx_buffer */
-r_if
-c_cond
-(paren
-id|ebuf
-op_eq
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
+id|buf_free
+op_assign
 id|dvb_ringbuffer_free
 c_func
 (paren
@@ -2280,6 +2231,23 @@ id|slot
 dot
 id|rx_buffer
 )paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|buf_free
 OL
 (paren
 id|ca-&gt;slot_info
@@ -2303,7 +2271,7 @@ m_exit
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* reset the interface if there&squot;s been a tx error */
+multiline_comment|/* check if there is data available */
 r_if
 c_cond
 (paren
@@ -2328,32 +2296,6 @@ l_int|0
 r_goto
 m_exit
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|STATUSREG_TXERR
-)paren
-(brace
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|slot_state
-op_assign
-id|DVB_CA_SLOTSTATE_LINKINIT
-suffix:semicolon
-id|status
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-r_goto
-m_exit
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2458,7 +2400,9 @@ id|link_buf_size
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: CAM tried to send a buffer larger than the link buffer size!&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: CAM tried to send a buffer larger than the link buffer size!&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -2490,7 +2434,9 @@ l_int|2
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: CAM sent a buffer that was less than 2 bytes!&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: CAM sent a buffer that was less than 2 bytes!&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -2525,7 +2471,9 @@ id|ecount
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: CAM tried to send a buffer larger than the ecount size!&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: CAM tried to send a buffer larger than the ecount size!&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|status
@@ -2588,7 +2536,7 @@ op_assign
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* check for read error (RE should now go to 0) */
+multiline_comment|/* check for read error (RE should now be 0) */
 r_if
 c_cond
 (paren
@@ -2621,6 +2569,15 @@ op_amp
 id|STATUSREG_RE
 )paren
 (brace
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|slot_state
+op_assign
+id|DVB_CA_SLOTSTATE_LINKINIT
+suffix:semicolon
 id|status
 op_assign
 op_minus
@@ -2639,6 +2596,18 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|down_read
+c_func
+(paren
+op_amp
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|sem
+)paren
+suffix:semicolon
 id|dvb_ringbuffer_pkt_write
 c_func
 (paren
@@ -2655,6 +2624,18 @@ comma
 id|bytes_read
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|sem
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2669,6 +2650,32 @@ id|bytes_read
 )paren
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;Received CA packet for slot %i connection id 0x%x last_frag:%i size:0x%x&bslash;n&quot;
+comma
+id|slot
+comma
+id|buf
+(braket
+l_int|0
+)braket
+comma
+(paren
+id|buf
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x80
+)paren
+op_eq
+l_int|0
+comma
+id|bytes_read
+)paren
+suffix:semicolon
 multiline_comment|/* wake up readers when a last_fragment is received */
 r_if
 c_cond
@@ -2699,18 +2706,6 @@ id|bytes_read
 suffix:semicolon
 m_exit
 suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|sem
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -2768,32 +2763,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* acquire the slot */
-r_if
-c_cond
-(paren
-(paren
-id|status
-op_assign
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|sem
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|status
-suffix:semicolon
-multiline_comment|/* reset the interface if there&squot;s been a tx error */
+multiline_comment|/* check if interface is actually waiting for us to read from it, or if a read is in progress */
 r_if
 c_cond
 (paren
@@ -2823,34 +2793,11 @@ c_cond
 (paren
 id|status
 op_amp
-id|STATUSREG_TXERR
-)paren
-(brace
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|slot_state
-op_assign
-id|DVB_CA_SLOTSTATE_LINKINIT
-suffix:semicolon
-id|status
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-r_goto
-id|exitnowrite
-suffix:semicolon
-)brace
-multiline_comment|/* check if interface is actually waiting for us to read from it */
-r_if
-c_cond
 (paren
-id|status
-op_amp
 id|STATUSREG_DA
+op_or
+id|STATUSREG_RE
+)paren
 )paren
 (brace
 id|status
@@ -3073,6 +3020,15 @@ op_amp
 id|STATUSREG_WE
 )paren
 (brace
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|slot_state
+op_assign
+id|DVB_CA_SLOTSTATE_LINKINIT
+suffix:semicolon
 id|status
 op_assign
 op_minus
@@ -3085,6 +3041,32 @@ suffix:semicolon
 id|status
 op_assign
 id|bytes_write
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;Wrote CA packet for slot %i, connection id 0x%x last_frag:%i size:0x%x&bslash;n&quot;
+comma
+id|slot
+comma
+id|buf
+(braket
+l_int|0
+)braket
+comma
+(paren
+id|buf
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x80
+)paren
+op_eq
+l_int|0
+comma
+id|bytes_write
+)paren
 suffix:semicolon
 m_exit
 suffix:colon
@@ -3104,18 +3086,6 @@ id|IRQEN
 suffix:semicolon
 id|exitnowrite
 suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|ca-&gt;slot_info
-(braket
-id|slot
-)braket
-dot
-id|sem
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -3138,9 +3108,6 @@ r_int
 id|slot
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 id|dprintk
 (paren
 l_string|&quot;%s&bslash;n&quot;
@@ -3148,13 +3115,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|status
-op_assign
-id|down_interruptible
+id|down_write
 c_func
 (paren
 op_amp
@@ -3165,12 +3126,6 @@ id|slot
 dot
 id|sem
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|status
 suffix:semicolon
 id|ca-&gt;pub
 op_member_access_from_pointer
@@ -3221,7 +3176,7 @@ id|rx_buffer.data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|up
+id|up_write
 c_func
 (paren
 op_amp
@@ -3507,35 +3462,23 @@ suffix:semicolon
 r_case
 id|DVB_CA_SLOTSTATE_RUNNING
 suffix:colon
-id|flags
-op_assign
-id|ca-&gt;pub
-op_member_access_from_pointer
-id|read_cam_control
-c_func
-(paren
-id|pubca
-comma
-id|slot
-comma
-id|CTRLIF_STATUS
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|flags
-op_amp
-id|STATUSREG_DA
+id|ca-&gt;open
 )paren
-(brace
-id|dvb_ca_en50221_thread_wakeup
+id|dvb_ca_en50221_read_data
 c_func
 (paren
 id|ca
+comma
+id|slot
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -3879,10 +3822,23 @@ comma
 id|ca-&gt;dvbdev-&gt;id
 )paren
 suffix:semicolon
-id|dvb_kernel_thread_setup
-c_func
+id|lock_kernel
+(paren
+)paren
+suffix:semicolon
+id|daemonize
 (paren
 id|name
+)paren
+suffix:semicolon
+id|sigfillset
+(paren
+op_amp
+id|current-&gt;blocked
+)paren
+suffix:semicolon
+id|unlock_kernel
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* choose the correct initial delay */
@@ -4127,7 +4083,9 @@ id|timeout
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: PC card did not respond :(&bslash;n&quot;
+l_string|&quot;dvb_ca adaptor %d: PC card did not respond :(&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -4171,7 +4129,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: Invalid PC card inserted :(&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: Invalid PC card inserted :(&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -4209,7 +4169,55 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: Unable to initialise CAM :(&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: Unable to initialise CAM :(&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
+)paren
+suffix:semicolon
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|slot_state
+op_assign
+id|DVB_CA_SLOTSTATE_INVALID
+suffix:semicolon
+id|dvb_ca_en50221_thread_update_delay
+c_func
+(paren
+id|ca
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ca-&gt;pub
+op_member_access_from_pointer
+id|write_cam_control
+c_func
+(paren
+id|ca-&gt;pub
+comma
+id|slot
+comma
+id|CTRLIF_COMMAND
+comma
+id|CMDREG_RS
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb_ca adapter %d: Unable to reset CAM IF&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -4289,7 +4297,9 @@ id|timeout
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: DVB CAM did not respond :(&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: DVB CAM did not respond :(&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -4368,7 +4378,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: DVB CAM link initialisation failed :(&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: DVB CAM link initialisation failed :(&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -4408,7 +4420,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: Unable to allocate CAM rx buffer :(&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: Unable to allocate CAM rx buffer :(&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ca-&gt;slot_info
@@ -4473,7 +4487,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: DVB CAM detected and initialised successfully&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: DVB CAM detected and initialised successfully&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 r_break
@@ -4489,6 +4505,20 @@ id|ca-&gt;open
 )paren
 r_break
 suffix:semicolon
+singleline_comment|// no need to poll if the CAM supports IRQs
+r_if
+c_cond
+(paren
+id|ca-&gt;slot_info
+(braket
+id|slot
+)braket
+dot
+id|da_irq_supported
+)paren
+r_break
+suffix:semicolon
+singleline_comment|// poll mode
 id|pktcount
 op_assign
 l_int|0
@@ -5236,7 +5266,7 @@ id|EAGAIN
 r_goto
 m_exit
 suffix:semicolon
-id|dvb_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -5362,14 +5392,7 @@ id|DVB_CA_SLOTSTATE_RUNNING
 r_goto
 id|nextslot
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-op_star
-id|result
-op_assign
-id|down_interruptible
+id|down_read
 c_func
 (paren
 op_amp
@@ -5380,12 +5403,6 @@ id|slot
 dot
 id|sem
 )paren
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-l_int|1
 suffix:semicolon
 id|idx
 op_assign
@@ -5517,7 +5534,7 @@ c_cond
 op_logical_neg
 id|found
 )paren
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -5788,7 +5805,9 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca: BUG: read packet ended before last_fragment encountered&bslash;n&quot;
+l_string|&quot;dvb_ca adapter %d: BUG: read packet ended before last_fragment encountered&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|status
@@ -6046,7 +6065,7 @@ id|pktlen
 suffix:semicolon
 m_exit
 suffix:colon
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -6165,6 +6184,18 @@ op_eq
 id|DVB_CA_SLOTSTATE_RUNNING
 )paren
 (brace
+id|down_write
+c_func
+(paren
+op_amp
+id|ca-&gt;slot_info
+(braket
+id|i
+)braket
+dot
+id|sem
+)paren
+suffix:semicolon
 id|dvb_ringbuffer_flush
 c_func
 (paren
@@ -6175,6 +6206,18 @@ id|i
 )braket
 dot
 id|rx_buffer
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|ca-&gt;slot_info
+(braket
+id|i
+)braket
+dot
+id|sem
 )paren
 suffix:semicolon
 )brace
@@ -6367,7 +6410,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -6423,7 +6466,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|up
+id|up_read
 c_func
 (paren
 op_amp
@@ -6821,7 +6864,7 @@ id|camchange_type
 op_assign
 id|DVB_CA_EN50221_CAMCHANGE_REMOVED
 suffix:semicolon
-id|init_MUTEX
+id|init_rwsem
 c_func
 (paren
 op_amp
@@ -7013,7 +7056,9 @@ id|ESRCH
 id|printk
 c_func
 (paren
-l_string|&quot;dvb_ca_release: thread PID %d already died&bslash;n&quot;
+l_string|&quot;dvb_ca_release adapter %d: thread PID %d already died&bslash;n&quot;
+comma
+id|ca-&gt;dvbdev-&gt;adapter-&gt;num
 comma
 id|ca-&gt;thread_pid
 )paren
@@ -7099,20 +7144,4 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|MODULE_PARM
-c_func
-(paren
-id|dvb_ca_en50221_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dvb_ca_en50221_debug
-comma
-l_string|&quot;enable verbose debug messages&quot;
-)paren
-suffix:semicolon
 eof

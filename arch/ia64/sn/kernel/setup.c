@@ -180,6 +180,8 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the address of the RRegs in the HSpace of the global&n; * master.  It is used by a hack in serial.c (serial_[in|out],&n; * printk.c (early_printk), and kdb_io.c to put console output on that&n; * node&squot;s Bedrock UART.  It is initialized here to 0, so that&n; * early_printk won&squot;t try to access the UART before&n; * master_node_bedrock_address is properly calculated.&n; */
 DECL|variable|master_node_bedrock_address
 id|u64
+id|__iomem
+op_star
 id|master_node_bedrock_address
 suffix:semicolon
 r_static
@@ -555,6 +557,8 @@ id|master_node_bedrock_address
 op_assign
 (paren
 id|u64
+id|__iomem
+op_star
 )paren
 id|REMOTE_HUB
 c_func
@@ -571,7 +575,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;early_sn_setup: setting master_node_bedrock_address to 0x%lx&bslash;n&quot;
+l_string|&quot;early_sn_setup: setting &quot;
+l_string|&quot;master_node_bedrock_address to 0x%p&bslash;n&quot;
 comma
 id|master_node_bedrock_address
 )paren
@@ -981,6 +986,8 @@ id|master_node_bedrock_address
 op_assign
 (paren
 id|u64
+id|__iomem
+op_star
 )paren
 id|REMOTE_HUB
 c_func
@@ -997,7 +1004,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;sn_setup: setting master_node_bedrock_address to 0x%lx&bslash;n&quot;
+l_string|&quot;sn_setup: setting &quot;
+l_string|&quot;master_node_bedrock_address to 0x%p&bslash;n&quot;
 comma
 id|master_node_bedrock_address
 )paren

@@ -8,6 +8,7 @@ id|kyrofb_info
 (brace
 DECL|member|regbase
 r_void
+id|__iomem
 op_star
 id|regbase
 suffix:semicolon

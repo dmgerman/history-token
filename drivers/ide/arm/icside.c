@@ -591,10 +591,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_ICS
 multiline_comment|/*&n; * SG-DMA support.&n; *&n; * Similar to the BM-DMA, but we use the RiscPCs IOMD DMA controllers.&n; * There is only one DMA controller per card, which means that only&n; * one drive can be accessed at one time.  NOTE! We do not enforce that&n; * here, but we rely on the main IDE driver spotting that both&n; * interfaces use the same IRQ, which should guarantee this.&n; */
-DECL|macro|NR_ENTRIES
-mdefine_line|#define NR_ENTRIES 256
-DECL|macro|TABLE_SIZE
-mdefine_line|#define TABLE_SIZE (NR_ENTRIES * 8)
 DECL|function|icside_build_sglist
 r_static
 r_void
@@ -1690,7 +1686,7 @@ suffix:semicolon
 )brace
 DECL|function|icside_dma_init
 r_static
-r_int
+r_void
 id|icside_dma_init
 c_func
 (paren
@@ -1717,31 +1713,6 @@ l_string|&quot;    %s: SG-DMA&quot;
 comma
 id|hwif-&gt;name
 )paren
-suffix:semicolon
-id|hwif-&gt;sg_table
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|scatterlist
-)paren
-op_star
-id|NR_ENTRIES
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;sg_table
-)paren
-r_goto
-id|failed
 suffix:semicolon
 id|hwif-&gt;atapi_dma
 op_assign
@@ -1856,55 +1827,10 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-id|failed
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot; disabled, unable to allocate DMA table&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|icside_dma_exit
-r_static
-r_void
-id|icside_dma_exit
-c_func
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|hwif-&gt;sg_table
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|hwif-&gt;sg_table
-)paren
-suffix:semicolon
-id|hwif-&gt;sg_table
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 macro_line|#else
 DECL|macro|icside_dma_init
 mdefine_line|#define icside_dma_init(hwif)&t;(0)
-DECL|macro|icside_dma_exit
-mdefine_line|#define icside_dma_exit(hwif)&t;do { } while (0)
 macro_line|#endif
 DECL|function|icside_find_hwif
 r_static
@@ -2893,24 +2819,6 @@ r_case
 id|ICS_TYPE_V6
 suffix:colon
 multiline_comment|/* FIXME: tell IDE to stop using the interface */
-id|icside_dma_exit
-c_func
-(paren
-id|state-&gt;hwif
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-id|icside_dma_exit
-c_func
-(paren
-id|state-&gt;hwif
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
