@@ -4500,9 +4500,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Alter reply tuple (maybe alter helper).  If it&squot;s already taken,&n;   return 0 and don&squot;t do alteration. */
+multiline_comment|/* Alter reply tuple (maybe alter helper).  This is for NAT, and is&n;   implicitly racy: see __ip_conntrack_confirm */
 DECL|function|ip_conntrack_alter_reply
-r_int
+r_void
 id|ip_conntrack_alter_reply
 c_func
 (paren
@@ -4525,29 +4525,6 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|__ip_conntrack_find
-c_func
-(paren
-id|newreply
-comma
-id|conntrack
-)paren
-)paren
-(brace
-id|WRITE_UNLOCK
-c_func
-(paren
-op_amp
-id|ip_conntrack_lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Should be unconfirmed, so not in hash table yet */
 id|IP_NF_ASSERT
 c_func
@@ -4611,9 +4588,6 @@ c_func
 op_amp
 id|ip_conntrack_lock
 )paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|function|ip_conntrack_helper_register

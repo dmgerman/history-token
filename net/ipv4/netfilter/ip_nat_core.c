@@ -1886,8 +1886,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-r_do
-(brace
 r_if
 c_cond
 (paren
@@ -1921,59 +1919,8 @@ r_return
 id|NF_DROP
 suffix:semicolon
 )brace
-macro_line|#if 0
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;Hook %u (%s) %p&bslash;n&quot;
-comma
-id|hooknum
-comma
-id|HOOK2MANIP
-c_func
-(paren
-id|hooknum
-)paren
-op_eq
-id|IP_NAT_MANIP_SRC
-ques
-c_cond
-l_string|&quot;SRC&quot;
-suffix:colon
-l_string|&quot;DST&quot;
-comma
-id|conntrack
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;Original: &quot;
-)paren
-suffix:semicolon
-id|DUMP_TUPLE
-c_func
-(paren
-op_amp
-id|orig_tp
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;New: &quot;
-)paren
-suffix:semicolon
-id|DUMP_TUPLE
-c_func
-(paren
-op_amp
-id|new_tuple
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* We now have two tuples (SRCIP/SRCPT/DSTIP/DSTPT):&n;&t;&t;   the original (A/B/C/D&squot;) and the mangled one (E/F/G/H&squot;).&n;&n;&t;&t;   We&squot;re only allowed to work with the SRC per-proto&n;&t;&t;   part, so we create inverses of both to start, then&n;&t;&t;   derive the other fields we need.  */
-multiline_comment|/* Reply connection: simply invert the new tuple&n;                   (G/H/E/F&squot;) */
+multiline_comment|/* We now have two tuples (SRCIP/SRCPT/DSTIP/DSTPT):&n;&t;   the original (A/B/C/D&squot;) and the mangled one (E/F/G/H&squot;).&n;&n;&t;   We&squot;re only allowed to work with the SRC per-proto&n;&t;   part, so we create inverses of both to start, then&n;&t;   derive the other fields we need.  */
+multiline_comment|/* Reply connection: simply invert the new tuple&n;&t;   (G/H/E/F&squot;) */
 id|invert_tuplepr
 c_func
 (paren
@@ -1984,12 +1931,7 @@ op_amp
 id|new_tuple
 )paren
 suffix:semicolon
-multiline_comment|/* Alter conntrack table so it recognizes replies.&n;                   If fail this race (reply tuple now used), repeat. */
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
+multiline_comment|/* Alter conntrack table so will recognize replies. */
 id|ip_conntrack_alter_reply
 c_func
 (paren
@@ -1997,7 +1939,6 @@ id|conntrack
 comma
 op_amp
 id|reply
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: We can simply used existing conntrack reply tuple&n;           here --RR */
