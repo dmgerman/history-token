@@ -88,12 +88,12 @@ r_struct
 id|proto_ops
 id|pppoe_ops
 suffix:semicolon
-DECL|variable|pppoe_hash_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|pppoe_hash_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|pppoe_chan_ops
 r_static

@@ -14,12 +14,12 @@ singleline_comment|// Locking: Should we share a lock with the client ? The clie
 singleline_comment|// a lock pointer (optionally) in the commac structure... I don&squot;t think this is
 singleline_comment|// really necessary though
 multiline_comment|/* This lock protects the commac list. On today UP implementations, it&squot;s&n; * really only used as IRQ protection in mal_{register,unregister}_commac()&n; */
-DECL|variable|mal_list_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|mal_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|mal_register_commac
 r_int

@@ -361,12 +361,12 @@ op_star
 id|board
 suffix:semicolon
 multiline_comment|/* pointer to our memory mapped board components */
-DECL|variable|SK_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|SK_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Macros */
 "&f;"
