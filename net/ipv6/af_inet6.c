@@ -2217,7 +2217,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
-macro_line|#endif
 macro_line|#if defined(MODULE) &amp;&amp; defined(CONFIG_SYSCTL)
 r_extern
 r_void
