@@ -523,7 +523,6 @@ l_int|0x1ef0U
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * udf_crc&n; *&n; * PURPOSE&n; *&t;Calculate a 16-bit CRC checksum using ITU-T V.41 polynomial.&n; *&n; * DESCRIPTION&n; *&t;The OSTA-UDF(tm) 1.50 standard states that using CRCs is mandatory.&n; *&t;The polynomial used is:&t;x^16 + x^12 + x^15 + 1&n; *&n; * PRE-CONDITIONS&n; *&t;data&t;&t;Pointer to the data block.&n; *&t;size&t;&t;Size of the data block.&n; *&n; * POST-CONDITIONS&n; *&t;&lt;return&gt;&t;CRC of the data block.&n; *&n; * HISTORY&n; *&t;July 21, 1997 - Andrew E. Mileski&n; *&t;Adapted from OSTA-UDF(tm) 1.50 standard.&n; */
-r_extern
 r_uint16
 DECL|function|udf_crc
 id|udf_crc

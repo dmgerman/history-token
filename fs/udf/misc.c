@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
-r_extern
 r_struct
 id|buffer_head
 op_star
@@ -58,7 +57,6 @@ id|block
 )paren
 suffix:semicolon
 )brace
-r_extern
 r_struct
 id|buffer_head
 op_star
@@ -110,7 +108,6 @@ id|block
 )paren
 suffix:semicolon
 )brace
-r_extern
 r_struct
 id|genericFormat
 op_star
@@ -755,7 +752,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_extern
 r_struct
 id|genericFormat
 op_star
@@ -951,7 +947,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * udf_read_tagged&n; *&n; * PURPOSE&n; *&t;Read the first block of a tagged descriptor.&n; *&n; * HISTORY&n; *&t;July 1, 1997 - Andrew E. Mileski&n; *&t;Written, tested, and released.&n; */
-r_extern
 r_struct
 id|buffer_head
 op_star
@@ -1307,7 +1302,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_extern
 r_struct
 id|buffer_head
 op_star
