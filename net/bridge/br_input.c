@@ -278,7 +278,7 @@ suffix:semicolon
 )brace
 id|dst
 op_assign
-id|br_fdb_get
+id|__br_fdb_get
 c_func
 (paren
 id|br
@@ -317,12 +317,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|br_fdb_put
-c_func
-(paren
-id|dst
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
@@ -341,12 +335,6 @@ c_func
 id|dst-&gt;dst
 comma
 id|skb
-)paren
-suffix:semicolon
-id|br_fdb_put
-c_func
-(paren
-id|dst
 )paren
 suffix:semicolon
 r_goto

@@ -503,7 +503,7 @@ id|br-&gt;port_list
 suffix:semicolon
 id|br-&gt;hash_lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|br-&gt;bridge_id.prio
 (braket

@@ -123,7 +123,7 @@ c_cond
 (paren
 id|dst
 op_assign
-id|br_fdb_get
+id|__br_fdb_get
 c_func
 (paren
 id|br
@@ -134,7 +134,6 @@ id|dest
 op_ne
 l_int|NULL
 )paren
-(brace
 id|br_deliver
 c_func
 (paren
@@ -143,13 +142,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|br_fdb_put
-c_func
-(paren
-id|dst
-)paren
-suffix:semicolon
-)brace
 r_else
 id|br_flood_deliver
 c_func
