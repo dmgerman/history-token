@@ -1806,6 +1806,7 @@ l_string|&quot;%s - LSR = 0x%X&quot;
 comma
 id|__FUNCTION__
 comma
+op_star
 id|lsr
 )paren
 suffix:semicolon
@@ -1829,6 +1830,7 @@ r_if
 c_cond
 (paren
 (paren
+op_star
 id|lsr
 op_amp
 id|UMP_UART_LSR_TX_MASK
