@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/kbd_diacr.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 r_static
 r_void
@@ -36,6 +35,19 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Exported functions/variables&n; */
+macro_line|#ifndef KBD_DEFMODE
+DECL|macro|KBD_DEFMODE
+mdefine_line|#define KBD_DEFMODE ((1 &lt;&lt; VC_REPEAT) | (1 &lt;&lt; VC_META))
+macro_line|#endif
+macro_line|#ifndef KBD_DEFLEDS
+multiline_comment|/*&n; * Some laptops take the 789uiojklm,. keys as number pad when NumLock is on.&n; * This seems a good reason to start with NumLock off.&n; */
+DECL|macro|KBD_DEFLEDS
+mdefine_line|#define KBD_DEFLEDS 0
+macro_line|#endif
+macro_line|#ifndef KBD_DEFLOCK
+DECL|macro|KBD_DEFLOCK
+mdefine_line|#define KBD_DEFLOCK 0
+macro_line|#endif
 DECL|variable|kbd_pt_regs
 r_struct
 id|pt_regs
@@ -213,6 +225,12 @@ id|kbd
 op_assign
 id|kbd_table
 suffix:semicolon
+DECL|variable|kbd0
+r_static
+r_struct
+id|kbd_struct
+id|kbd0
+suffix:semicolon
 DECL|variable|spawnpid
 DECL|variable|spawnsig
 r_int
@@ -326,6 +344,42 @@ id|ledptrs
 (braket
 l_int|3
 )braket
+suffix:semicolon
+multiline_comment|/* Simple translation table for the SysRq keys */
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+DECL|variable|kbd_sysrq_xlate
+r_int
+r_char
+id|kbd_sysrq_xlate
+(braket
+l_int|128
+)braket
+op_assign
+l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
+multiline_comment|/* 0x00 - 0x0f */
+l_string|&quot;qwertyuiop[]&bslash;r&bslash;000as&quot;
+multiline_comment|/* 0x10 - 0x1f */
+l_string|&quot;dfghjkl;&squot;`&bslash;000&bslash;&bslash;zxcv&quot;
+multiline_comment|/* 0x20 - 0x2f */
+l_string|&quot;bnm,./&bslash;000*&bslash;000 &bslash;000&bslash;201&bslash;202&bslash;203&bslash;204&bslash;205&quot;
+multiline_comment|/* 0x30 - 0x3f */
+l_string|&quot;&bslash;206&bslash;207&bslash;210&bslash;211&bslash;212&bslash;000&bslash;000789-456+1&quot;
+multiline_comment|/* 0x40 - 0x4f */
+l_string|&quot;230&bslash;177&bslash;000&bslash;000&bslash;213&bslash;214&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
+multiline_comment|/* 0x50 - 0x5f */
+l_string|&quot;&bslash;r&bslash;000/&quot;
+suffix:semicolon
+multiline_comment|/* 0x60 - 0x6f */
+DECL|variable|sysrq_down
+r_static
+r_int
+id|sysrq_down
+suffix:semicolon
+macro_line|#endif
+DECL|variable|sysrq_alt
+r_static
+r_int
+id|sysrq_alt
 suffix:semicolon
 multiline_comment|/*&n; * Translation of scancodes to keycodes. We set them on only the first attached&n; * keyboard - for per-keyboard setting, /dev/input/event is more useful.&n; */
 DECL|function|getkeycode
@@ -3797,13 +3851,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) || defined(CONFIG_MIPS) || defined(CONFIG_PPC)
-DECL|variable|x86_sysrq_alt
-r_static
-r_int
-id|x86_sysrq_alt
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|x86_keycodes
 r_static
 r_int
@@ -4412,7 +4459,7 @@ id|keycode
 op_eq
 id|KEY_SYSRQ
 op_logical_and
-id|x86_sysrq_alt
+id|sysrq_alt
 )paren
 (brace
 id|put_queue
@@ -4491,22 +4538,6 @@ id|up_flag
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|keycode
-op_eq
-id|KEY_LEFTALT
-op_logical_or
-id|keycode
-op_eq
-id|KEY_RIGHTALT
-)paren
-id|x86_sysrq_alt
-op_assign
-op_logical_neg
-id|up_flag
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4654,6 +4685,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|keycode
+op_eq
+id|KEY_LEFTALT
+op_logical_or
+id|keycode
+op_eq
+id|KEY_RIGHTALT
+)paren
+id|sysrq_alt
+op_assign
+id|down
+suffix:semicolon
+id|rep
+op_assign
+(paren
+id|down
+op_eq
+l_int|2
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|raw_mode
 op_assign
@@ -4689,6 +4743,55 @@ comma
 id|keycode
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ&t;       /* Handle the SysRq Hack */
+r_if
+c_cond
+(paren
+id|keycode
+op_eq
+id|KEY_SYSRQ
+op_logical_and
+op_logical_neg
+id|rep
+)paren
+(brace
+id|sysrq_down
+op_assign
+id|sysrq_alt
+op_logical_and
+id|down
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sysrq_down
+op_logical_and
+id|down
+op_logical_and
+op_logical_neg
+id|rep
+)paren
+(brace
+id|handle_sysrq
+c_func
+(paren
+id|kbd_sysrq_xlate
+(braket
+id|keycode
+)braket
+comma
+id|kbd_pt_regs
+comma
+id|tty
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4765,12 +4868,26 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|rep
-op_assign
+r_if
+c_cond
 (paren
 id|down
-op_eq
-l_int|2
+)paren
+id|set_bit
+c_func
+(paren
+id|keycode
+comma
+id|key_down
+)paren
+suffix:semicolon
+r_else
+id|clear_bit
+c_func
+(paren
+id|keycode
+comma
+id|key_down
 )paren
 suffix:semicolon
 r_if
@@ -5038,6 +5155,15 @@ c_func
 (paren
 op_amp
 id|keyboard_tasklet
+)paren
+suffix:semicolon
+id|do_poke_blanked_console
+op_assign
+l_int|1
+suffix:semicolon
+id|schedule_console_callback
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -5310,6 +5436,56 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+id|kbd0.ledflagstate
+op_assign
+id|kbd0.default_ledflagstate
+op_assign
+id|KBD_DEFLEDS
+suffix:semicolon
+id|kbd0.ledmode
+op_assign
+id|LED_SHOW_FLAGS
+suffix:semicolon
+id|kbd0.lockstate
+op_assign
+id|KBD_DEFLOCK
+suffix:semicolon
+id|kbd0.slockstate
+op_assign
+l_int|0
+suffix:semicolon
+id|kbd0.modeflags
+op_assign
+id|KBD_DEFMODE
+suffix:semicolon
+id|kbd0.kbdmode
+op_assign
+id|VC_XLATE
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_NR_CONSOLES
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|kbd_table
+(braket
+id|i
+)braket
+op_assign
+id|kbd0
+suffix:semicolon
 id|tasklet_enable
 c_func
 (paren
