@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ti_pcilynx.c - Texas Instruments PCILynx driver&n; * Copyright (C) 1999,2000 Andreas Bombe &lt;andreas.bombe@munich.netsurf.de&gt;,&n; *                         Stephan Linz &lt;linz@mazet.de&gt;&n; *                         Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
+multiline_comment|/*&n; * pcilynx.c - Texas Instruments PCILynx driver&n; * Copyright (C) 1999,2000 Andreas Bombe &lt;andreas.bombe@munich.netsurf.de&gt;,&n; *                         Stephan Linz &lt;linz@mazet.de&gt;&n; *                         Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 multiline_comment|/*&n; * Contributions:&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *        reading bus info block (containing GUID) from serial&n; *            eeprom via i2c and storing it in config ROM&n; *        Reworked code for initiating bus resets&n; *            (long, short, with or without hold-off)&n; *        Enhancements in async and iso send code&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9431,7 +9431,7 @@ suffix:semicolon
 macro_line|#endif
 id|ret
 op_assign
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
