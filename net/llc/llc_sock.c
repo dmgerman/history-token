@@ -22,8 +22,6 @@ macro_line|#include &lt;linux/llc.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-DECL|macro|dprintk
-mdefine_line|#define dprintk(format, a...) printk(KERN_INFO __FUNCTION__ &quot;: &quot; format, ##a)
 multiline_comment|/* remember: uninitialized global data is zeroed because its in .bss */
 DECL|variable|llc_ui_sap_last_autoport
 r_static
@@ -1787,26 +1785,6 @@ id|llc_sap_close
 c_func
 (paren
 id|llc_ui-&gt;sap
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;rxq=%d, txq=%d&bslash;n&quot;
-comma
-id|skb_queue_len
-c_func
-(paren
-op_amp
-id|sk-&gt;receive_queue
-)paren
-comma
-id|skb_queue_len
-c_func
-(paren
-op_amp
-id|sk-&gt;write_queue
-)paren
 )paren
 suffix:semicolon
 id|sock_orphan
@@ -5650,17 +5628,9 @@ c_cond
 op_logical_neg
 id|sk
 )paren
-(brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;llc_ui_find_sk_by_addr failed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5923,20 +5893,12 @@ comma
 id|skb
 )paren
 )paren
-(brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;sock_queue_rcv_skb failed!&bslash;n&quot;
-)paren
-suffix:semicolon
 id|kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-)brace
 id|out_put
 suffix:colon
 id|sock_put
@@ -6222,17 +6184,9 @@ c_cond
 op_logical_neg
 id|sk
 )paren
-(brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;llc_core-&gt;handler == NULL!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|sock_hold
 c_func
 (paren
@@ -6275,14 +6229,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dprintk
-c_func
-(paren
-l_string|&quot;prim-&gt;data-&gt;conn.status = %d&bslash;n&quot;
-comma
-id|prim-&gt;data-&gt;conn.status
-)paren
-suffix:semicolon
 id|sk-&gt;socket-&gt;state
 op_assign
 id|SS_UNCONNECTED
@@ -6526,8 +6472,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: unknown prim %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unknown prim %d&bslash;n&quot;
 comma
 id|prim-&gt;prim
 )paren

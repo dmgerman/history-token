@@ -257,8 +257,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+l_string|&quot;%s: rc == 2&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rc == 2&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
