@@ -5,7 +5,7 @@ macro_line|#include &quot;pdaudiocf.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; *&n; */
 DECL|function|pdacf_interrupt
-r_void
+id|irqreturn_t
 id|pdacf_interrupt
 c_func
 (paren
@@ -58,7 +58,9 @@ op_ne
 id|PDAUDIOCF_STAT_IS_CONFIGURED
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
+multiline_comment|/* IRQ_NONE here? */
 id|stat
 op_assign
 id|inw
@@ -138,6 +140,9 @@ id|chip-&gt;ak4117
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|pdacf_transfer_mono16
