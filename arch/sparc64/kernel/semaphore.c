@@ -125,27 +125,22 @@ c_func
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;! up sem(%0)&bslash;n&quot;
 l_string|&quot;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
-l_string|&quot;1:&t;lduw&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;add&t;%%g5, 1, %%g7&bslash;n&quot;
-l_string|&quot;&t;cas&t;[%0], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;1:&t;lduw&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;add&t;%%g1, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cas&t;[%0], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cmp&t;%%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
 l_string|&quot;&t; addcc&t;%%g7, 1, %%g0&bslash;n&quot;
 l_string|&quot;&t;ble,pn&t;%%icc, 3f&bslash;n&quot;
 l_string|&quot;&t; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 l_string|&quot;&t;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&t;mov&t;%0, %%g5&bslash;n&quot;
+l_string|&quot;3:&t;mov&t;%0, %%g1&bslash;n&quot;
 l_string|&quot;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g1, %%l1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g2, %%l2&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g3, %%l3&bslash;n&quot;
 l_string|&quot;&t;call&t;%1&bslash;n&quot;
-l_string|&quot;&t; mov&t;%%g5, %%o0&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l1, %%g1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l2, %%g2&bslash;n&quot;
+l_string|&quot;&t; mov&t;%%g1, %%o0&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
-l_string|&quot;&t; restore %%l3, %%g0, %%g3&bslash;n&quot;
+l_string|&quot;&t; restore&bslash;n&quot;
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 suffix:colon
@@ -159,7 +154,11 @@ l_string|&quot;i&quot;
 id|__up
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -282,27 +281,22 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;! down sem(%0)&bslash;n&quot;
-l_string|&quot;1:&t;lduw&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
-l_string|&quot;&t;cas&t;[%0], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;1:&t;lduw&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g1, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cas&t;[%0], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cmp&t;%%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
 l_string|&quot;&t; cmp&t;%%g7, 1&bslash;n&quot;
 l_string|&quot;&t;bl,pn&t;%%icc, 3f&bslash;n&quot;
 l_string|&quot;&t; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 l_string|&quot;&t;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&t;mov&t;%0, %%g5&bslash;n&quot;
+l_string|&quot;3:&t;mov&t;%0, %%g1&bslash;n&quot;
 l_string|&quot;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g1, %%l1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g2, %%l2&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g3, %%l3&bslash;n&quot;
 l_string|&quot;&t;call&t;%1&bslash;n&quot;
-l_string|&quot;&t; mov&t;%%g5, %%o0&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l1, %%g1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l2, %%g2&bslash;n&quot;
+l_string|&quot;&t; mov&t;%%g1, %%o0&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
-l_string|&quot;&t; restore %%l3, %%g0, %%g3&bslash;n&quot;
+l_string|&quot;&t; restore&bslash;n&quot;
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 suffix:colon
@@ -316,7 +310,11 @@ l_string|&quot;i&quot;
 id|__down
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -347,13 +345,13 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;! down_trylock sem(%1) ret(%0)&bslash;n&quot;
-l_string|&quot;1:&t;lduw&t;[%1], %%g5&bslash;n&quot;
-l_string|&quot;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
-l_string|&quot;&t;cmp&t;%%g5, 1&bslash;n&quot;
+l_string|&quot;1:&t;lduw&t;[%1], %%g1&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g1, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cmp&t;%%g1, 1&bslash;n&quot;
 l_string|&quot;&t;bl,pn&t;%%icc, 2f&bslash;n&quot;
 l_string|&quot;&t; mov&t;1, %0&bslash;n&quot;
-l_string|&quot;&t;cas&t;[%1], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;cas&t;[%1], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cmp&t;%%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
 l_string|&quot;&t; mov&t;0, %0&bslash;n&quot;
 l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
@@ -369,7 +367,7 @@ l_string|&quot;r&quot;
 id|sem
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -534,28 +532,22 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 l_string|&quot;&t;! down_interruptible sem(%2) ret(%0)&bslash;n&quot;
-l_string|&quot;1:&t;lduw&t;[%2], %%g5&bslash;n&quot;
-l_string|&quot;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
-l_string|&quot;&t;cas&t;[%2], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;1:&t;lduw&t;[%2], %%g1&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g1, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cas&t;[%2], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;cmp&t;%%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;bne,pn&t;%%icc, 1b&bslash;n&quot;
 l_string|&quot;&t; cmp&t;%%g7, 1&bslash;n&quot;
 l_string|&quot;&t;bl,pn&t;%%icc, 3f&bslash;n&quot;
 l_string|&quot;&t; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 l_string|&quot;&t;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&t;mov&t;%2, %%g5&bslash;n&quot;
+l_string|&quot;3:&t;mov&t;%2, %%g1&bslash;n&quot;
 l_string|&quot;&t;save&t;%%sp, -160, %%sp&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g1, %%l1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g2, %%l2&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%g3, %%l3&bslash;n&quot;
 l_string|&quot;&t;call&t;%3&bslash;n&quot;
-l_string|&quot;&t; mov&t;%%g5, %%o0&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l1, %%g1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l2, %%g2&bslash;n&quot;
-l_string|&quot;&t;mov&t;%%l3, %%g3&bslash;n&quot;
+l_string|&quot;&t; mov&t;%%g1, %%o0&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 2b&bslash;n&quot;
-l_string|&quot;&t; restore %%o0, %%g0, %0&bslash;n&quot;
+l_string|&quot;&t; restore&bslash;n&quot;
 l_string|&quot;&t;.previous&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -578,7 +570,11 @@ l_string|&quot;i&quot;
 id|__down_interruptible
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
 comma
 l_string|&quot;g7&quot;
 comma

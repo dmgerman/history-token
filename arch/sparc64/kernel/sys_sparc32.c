@@ -1143,7 +1143,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|third
+id|fifth
 )paren
 multiline_comment|/* sign extend semid */
 r_return
