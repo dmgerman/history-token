@@ -10040,6 +10040,24 @@ multiline_comment|/* Gericom/Targa/Vobis/Uniwill laptop */
 dot
 id|vendor
 op_assign
+l_int|0x1584
+comma
+dot
+id|device
+op_assign
+l_int|0x8123
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* Uniwill (Targa Visionary XP-210) */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x161f
 comma
 dot
