@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -44,6 +44,7 @@ id|rgn_desc
 op_assign
 id|obj_desc-&gt;common_field.region_obj
 suffix:semicolon
+multiline_comment|/* We must have a valid region */
 r_if
 c_cond
 (paren
@@ -114,6 +115,21 @@ id|status
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|rgn_desc-&gt;region.space_id
+op_eq
+id|ACPI_ADR_SPACE_SMBUS
+)paren
+(brace
+multiline_comment|/* SMBus has a non-linear address space */
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Validate the request.  The entire request from the byte offset for a&n;&t; * length of one field datum (access width) must fit within the region.&n;&t; * (Region length is specified in bytes)&n;&t; */
 r_if
@@ -191,7 +207,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_region&n; *&n; * PARAMETERS:  *Obj_desc               - Field to be read&n; *              Field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *              *Value                  - Where to store value (must be 32 bits)&n; *              Read_write              - Read or Write flag&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or Write a single field datum to an Operation Region.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_region&n; *&n; * PARAMETERS:  *Obj_desc               - Field to be read&n; *              Field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *              *Value                  - Where to store value (must at least&n; *                                        the size of acpi_integer)&n; *              Function                - Read or Write flag plus other region-&n; *                                        dependent flags&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or Write a single field datum to an Operation Region.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_access_region
 id|acpi_ex_access_region
@@ -208,7 +224,7 @@ op_star
 id|value
 comma
 id|u32
-id|read_write
+id|function
 )paren
 (brace
 id|acpi_status
@@ -226,6 +242,31 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Ex_access_region&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Ensure that the region operands are fully evaluated and verify&n;&t; * the validity of the request&n;&t; */
+id|status
+op_assign
+id|acpi_ex_setup_region
+(paren
+id|obj_desc
+comma
+id|field_datum_byte_offset
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * The physical address of this field datum is:&n;&t; *&n;&t; * 1) The base of the region, plus&n;&t; * 2) The base offset of the field, plus&n;&t; * 3) The current offset into the field&n;&t; */
 id|rgn_desc
 op_assign
@@ -242,7 +283,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read_write
+(paren
+id|function
+op_amp
+id|ACPI_IO_MASK
+)paren
 op_eq
 id|ACPI_READ
 )paren
@@ -308,7 +353,7 @@ id|acpi_ev_address_space_dispatch
 (paren
 id|rgn_desc
 comma
-id|read_write
+id|function
 comma
 id|address
 comma
@@ -673,30 +718,6 @@ r_case
 id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 multiline_comment|/*&n;&t;&t; * For simple Region_fields, we just directly access the owning&n;&t;&t; * Operation Region.&n;&t;&t; */
-id|status
-op_assign
-id|acpi_ex_setup_region
-(paren
-id|obj_desc
-comma
-id|field_datum_byte_offset
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_ex_access_region

@@ -3656,7 +3656,7 @@ op_star
 id|__bdevname
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|dev
 )paren
 (brace
@@ -3674,7 +3674,7 @@ id|name
 op_assign
 id|blkdevs
 (braket
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
@@ -3700,13 +3700,13 @@ l_string|&quot;%s(%d,%d)&quot;
 comma
 id|name
 comma
-id|major
+id|MAJOR
 c_func
 (paren
 id|dev
 )paren
 comma
-id|minor
+id|MINOR
 c_func
 (paren
 id|dev

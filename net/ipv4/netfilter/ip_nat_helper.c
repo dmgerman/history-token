@@ -1609,8 +1609,6 @@ id|helper-&gt;mask
 )paren
 suffix:semicolon
 )brace
-DECL|macro|MODULE_MAX_NAMELEN
-mdefine_line|#define MODULE_MAX_NAMELEN&t;&t;32
 DECL|function|ip_nat_helper_register
 r_int
 id|ip_nat_helper_register
@@ -1675,7 +1673,7 @@ multiline_comment|/* We are a NAT helper for protocol X.  If we need&n;&t;&t;&t;
 r_char
 id|name
 (braket
-id|MODULE_MAX_NAMELEN
+id|MODULE_NAME_LEN
 )braket
 suffix:semicolon
 r_const
@@ -1683,7 +1681,11 @@ r_char
 op_star
 id|tmp
 op_assign
-id|me-&gt;me-&gt;name
+id|module_name
+c_func
+(paren
+id|me-&gt;me
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1696,7 +1698,7 @@ id|tmp
 op_plus
 l_int|6
 OG
-id|MODULE_MAX_NAMELEN
+id|MODULE_NAME_LEN
 )paren
 (brace
 id|printk
@@ -2034,6 +2036,7 @@ id|ct_helper-&gt;me
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MODULES
 r_else
 id|printk
 c_func
@@ -2046,6 +2049,7 @@ comma
 id|me-&gt;me-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 eof

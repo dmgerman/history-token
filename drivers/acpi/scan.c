@@ -917,6 +917,10 @@ id|result
 )paren
 suffix:semicolon
 )brace
+id|device-&gt;driver
+op_assign
+id|driver
+suffix:semicolon
 multiline_comment|/*&n;&t; * TBD - Configuration Management: Assign resources to device based&n;&t; * upon possible configuration and currently allocated resources.&n;&t; */
 r_if
 c_cond

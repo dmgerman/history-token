@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dsp_tst.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: dsp_tst.h,v 1.1.2.2 2001/02/08 12:25:43 armin Exp $ */
 macro_line|#ifndef __DIVA_PRI_HOST_TEST_DSPS_H__
 DECL|macro|__DIVA_PRI_HOST_TEST_DSPS_H__
 mdefine_line|#define __DIVA_PRI_HOST_TEST_DSPS_H__
@@ -28,7 +28,7 @@ mdefine_line|#define DSP11_PORT      (0x848)
 DECL|macro|DSP12_PORT
 mdefine_line|#define DSP12_PORT      (0x850)
 DECL|macro|DSP13_PORT
-mdefine_line|#define DSP13_PORT      (0x858)        
+mdefine_line|#define DSP13_PORT      (0x858)
 DECL|macro|DSP14_PORT
 mdefine_line|#define DSP14_PORT      (0x860)
 DECL|macro|DSP15_PORT

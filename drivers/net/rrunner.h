@@ -699,7 +699,7 @@ multiline_comment|/*&n; * Event definitions&n; */
 DECL|macro|EVT_RING_ENTRIES
 mdefine_line|#define EVT_RING_ENTRIES&t;64
 DECL|macro|EVT_RING_SIZE
-mdefine_line|#define EVT_RING_SIZE&t;(EVT_RING_ENTRIES * sizeof(struct event))
+mdefine_line|#define EVT_RING_SIZE&t;&t;(EVT_RING_ENTRIES * sizeof(struct event))
 DECL|struct|event
 r_struct
 id|event
@@ -925,9 +925,7 @@ id|rraddr
 op_star
 id|ra
 comma
-r_volatile
-r_void
-op_star
+id|dma_addr_t
 id|addr
 )paren
 (brace
@@ -935,15 +933,7 @@ r_int
 r_int
 id|baddr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
 id|addr
-)paren
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG == 64)
 id|ra-&gt;addrlo
@@ -976,8 +966,7 @@ op_star
 id|regs
 comma
 r_volatile
-r_void
-op_star
+id|dma_addr_t
 id|addr
 )paren
 (brace
@@ -985,15 +974,7 @@ r_int
 r_int
 id|baddr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
 id|addr
-)paren
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG == 64) &amp;&amp; defined(__LITTLE_ENDIAN)
 id|writel
@@ -1080,8 +1061,7 @@ op_star
 id|regs
 comma
 r_volatile
-r_void
-op_star
+id|dma_addr_t
 id|addr
 )paren
 (brace
@@ -1089,15 +1069,7 @@ r_int
 r_int
 id|baddr
 op_assign
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
 id|addr
-)paren
 suffix:semicolon
 macro_line|#if (BITS_PER_LONG == 64) &amp;&amp; defined(__LITTLE_ENDIAN)
 id|writel
@@ -1179,8 +1151,8 @@ macro_line|#else
 DECL|macro|TX_RING_ENTRIES
 mdefine_line|#define TX_RING_ENTRIES&t;16
 macro_line|#endif
-DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;(TX_RING_ENTRIES * sizeof(struct tx_desc))
+DECL|macro|TX_TOTAL_SIZE
+mdefine_line|#define TX_TOTAL_SIZE&t;(TX_RING_ENTRIES * sizeof(struct tx_desc))
 DECL|struct|tx_desc
 r_struct
 id|tx_desc
@@ -1229,8 +1201,8 @@ macro_line|#else
 DECL|macro|RX_RING_ENTRIES
 mdefine_line|#define RX_RING_ENTRIES 16
 macro_line|#endif
-DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE&t;(RX_RING_ENTRIES * sizeof(struct rx_desc))
+DECL|macro|RX_TOTAL_SIZE
+mdefine_line|#define RX_TOTAL_SIZE&t;(RX_RING_ENTRIES * sizeof(struct rx_desc))
 DECL|struct|rx_desc
 r_struct
 id|rx_desc
@@ -1999,27 +1971,34 @@ id|rr_private
 DECL|member|rx_ring
 r_struct
 id|rx_desc
+op_star
 id|rx_ring
-(braket
-id|RX_RING_ENTRIES
-)braket
 suffix:semicolon
 DECL|member|tx_ring
 r_struct
 id|tx_desc
+op_star
 id|tx_ring
-(braket
-id|TX_RING_ENTRIES
-)braket
 suffix:semicolon
 DECL|member|evt_ring
 r_struct
 id|event
+op_star
 id|evt_ring
-(braket
-id|EVT_RING_ENTRIES
-)braket
 suffix:semicolon
+DECL|member|tx_ring_dma
+id|dma_addr_t
+id|tx_ring_dma
+suffix:semicolon
+DECL|member|rx_ring_dma
+id|dma_addr_t
+id|rx_ring_dma
+suffix:semicolon
+DECL|member|evt_ring_dma
+id|dma_addr_t
+id|evt_ring_dma
+suffix:semicolon
+multiline_comment|/* Alignment ok ? */
 DECL|member|rx_skbuff
 r_struct
 id|sk_buff
@@ -2059,11 +2038,13 @@ op_star
 id|info
 suffix:semicolon
 multiline_comment|/* Shared info page */
-DECL|member|next
-r_struct
-id|net_device
-op_star
-id|next
+DECL|member|rx_ctrl_dma
+id|dma_addr_t
+id|rx_ctrl_dma
+suffix:semicolon
+DECL|member|info_dma
+id|dma_addr_t
+id|info_dma
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -2100,6 +2081,7 @@ id|u32
 id|fw_rev
 suffix:semicolon
 DECL|member|fw_running
+r_volatile
 r_int
 id|fw_running
 suffix:semicolon
@@ -2115,6 +2097,12 @@ DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
+suffix:semicolon
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2278,6 +2266,36 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|rr_raz_tx
+c_func
+(paren
+r_struct
+id|rr_private
+op_star
+comma
+r_struct
+id|net_device
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|rr_raz_rx
+c_func
+(paren
+r_struct
+id|rr_private
+op_star
+comma
+r_struct
+id|net_device
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* _RRUNNER_H_ */

@@ -2199,7 +2199,7 @@ comma
 id|u32
 id|units
 comma
-id|u32
+id|u16
 id|timeout
 )paren
 (brace
@@ -2315,7 +2315,7 @@ r_break
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Wait Indefinitely:&n;&t;&t; * ------------------&n;&t;&t; */
 r_case
-id|WAIT_FOREVER
+id|ACPI_WAIT_FOREVER
 suffix:colon
 id|ret
 op_assign

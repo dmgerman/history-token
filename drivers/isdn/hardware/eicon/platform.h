@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.1.2.2 2002/10/02 14:38:38 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2002  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.1.2.6 2001/05/01 15:48:05 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2002  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__

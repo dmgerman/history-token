@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: xdi_adapter.h,v 1.1.2.2 2002/10/02 14:38:38 armin Exp $ */
+multiline_comment|/* $Id: xdi_adapter.h,v 1.1.2.3 2001/02/16 08:40:36 armin Exp $ */
 macro_line|#ifndef __DIVA_OS_XDI_ADAPTER_H__
 DECL|macro|__DIVA_OS_XDI_ADAPTER_H__
 mdefine_line|#define __DIVA_OS_XDI_ADAPTER_H__

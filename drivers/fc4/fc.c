@@ -3791,6 +3791,13 @@ op_amp
 id|l.sem
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|l.timer
+)paren
+suffix:semicolon
 id|l.timer.function
 op_assign
 id|fcp_login_timeout
@@ -5346,6 +5353,13 @@ suffix:semicolon
 id|fc-&gt;rst_pkt-&gt;eh_state
 op_assign
 id|SCSI_STATE_QUEUED
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|fc-&gt;rst_pkt-&gt;eh_timeout
+)paren
 suffix:semicolon
 id|fc-&gt;rst_pkt-&gt;eh_timeout.data
 op_assign

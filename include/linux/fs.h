@@ -5018,7 +5018,7 @@ op_star
 id|__bdevname
 c_func
 (paren
-id|kdev_t
+id|dev_t
 )paren
 suffix:semicolon
 DECL|function|bdevname
@@ -5040,11 +5040,7 @@ r_return
 id|__bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
 id|bdev-&gt;bd_dev
-)paren
 )paren
 suffix:semicolon
 )brace

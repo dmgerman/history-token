@@ -339,6 +339,7 @@ id|ed
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|dbg
 (paren
 l_string|&quot;%s: link %sed %p branch %d [%dus.], interval %d&quot;
@@ -365,6 +366,7 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -881,6 +883,7 @@ id|ed-&gt;load
 op_div
 id|ed-&gt;interval
 suffix:semicolon
+macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|dbg
 (paren
 l_string|&quot;%s: unlink %sed %p branch %d [%dus.], interval %d&quot;
@@ -907,6 +910,7 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* unlink an ed from one of the HC chains. &n; * just the link to the ed is unlinked.&n; * the link from the ed still points to another operational ed or 0&n; * so the HC can eventually finish the processing of the unlinked ed&n; */
 DECL|function|ed_deschedule
@@ -962,6 +966,24 @@ id|writel
 (paren
 id|ohci-&gt;hc_control
 comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+id|writel
+(paren
+l_int|0
+comma
+op_amp
+id|ohci-&gt;regs-&gt;ed_controlcurrent
+)paren
+suffix:semicolon
+singleline_comment|// post those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
@@ -1058,6 +1080,24 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
+id|writel
+(paren
+l_int|0
+comma
+op_amp
+id|ohci-&gt;regs-&gt;ed_bulkcurrent
+)paren
+suffix:semicolon
+singleline_comment|// post those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 )brace
 id|writel
 (paren
@@ -1141,10 +1181,30 @@ id|ed-&gt;state
 op_eq
 id|ED_OPER
 )paren
+(brace
 id|ed-&gt;state
 op_assign
 id|ED_IDLE
 suffix:semicolon
+id|ed-&gt;hwINFO
+op_and_assign
+op_complement
+(paren
+id|ED_SKIP
+op_or
+id|ED_DEQUEUE
+)paren
+suffix:semicolon
+id|ed-&gt;hwHeadP
+op_and_assign
+op_complement
+id|ED_H
+suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* get and maybe (re)init an endpoint. init _should_ be done only as part&n; * of usb_set_configuration() or usb_set_interface() ... but the USB stack&n; * isn&squot;t very stateful, so we re-init whenever the HC isn&squot;t looking.&n; */
@@ -2784,6 +2844,20 @@ id|rev
 op_assign
 id|next
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ed-&gt;hwTailP
+op_eq
+id|cpu_to_le32
+(paren
+id|next-&gt;td_dma
+)paren
+)paren
+id|ed-&gt;hwTailP
+op_assign
+id|next-&gt;hwNextTD
+suffix:semicolon
 id|ed-&gt;hwHeadP
 op_assign
 id|next-&gt;hwNextTD
@@ -3178,12 +3252,27 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* patch pointer hc uses */
+multiline_comment|/* patch pointers hc uses ... tail, if we&squot;re removing&n;&t;&t;&t; * an otherwise active td, and whatever td pointer&n;&t;&t;&t; * points to this td&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ed-&gt;hwTailP
+op_eq
+id|cpu_to_le32
+(paren
+id|td-&gt;td_dma
+)paren
+)paren
+id|ed-&gt;hwTailP
+op_assign
+id|td-&gt;hwNextTD
+suffix:semicolon
 id|savebits
 op_assign
 op_star
 id|prev
 op_amp
+op_complement
 id|cpu_to_le32
 (paren
 id|TD_MASK

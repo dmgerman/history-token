@@ -6478,6 +6478,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|cd-&gt;timer
+)paren
+suffix:semicolon
 id|cd-&gt;timer.function
 op_assign
 id|cm206_timeout

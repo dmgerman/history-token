@@ -1398,21 +1398,5 @@ id|res-&gt;r
 suffix:semicolon
 macro_line|#endif
 )brace
-r_extern
-r_int
-id|fib_proc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|fib_proc_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif  /* _NET_FIB_H */
 eof

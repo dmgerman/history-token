@@ -341,6 +341,13 @@ op_eq
 l_int|0
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|mpu-&gt;timer
+)paren
+suffix:semicolon
 id|mpu-&gt;timer.data
 op_assign
 (paren

@@ -2462,6 +2462,13 @@ c_func
 r_void
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|rif_timer
+)paren
+suffix:semicolon
 id|rif_timer.expires
 op_assign
 id|RIF_TIMEOUT
@@ -2473,13 +2480,6 @@ suffix:semicolon
 id|rif_timer.function
 op_assign
 id|rif_check_expire
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|rif_timer
-)paren
 suffix:semicolon
 id|add_timer
 c_func

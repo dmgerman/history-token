@@ -16,6 +16,7 @@ suffix:semicolon
 r_extern
 r_void
 id|DIVA_DIDD_Read
+c_func
 (paren
 r_void
 op_star
@@ -26,6 +27,7 @@ suffix:semicolon
 r_extern
 r_int
 id|diva_user_mode_idi_create_adapter
+c_func
 (paren
 r_const
 id|DESCRIPTOR
@@ -37,6 +39,7 @@ suffix:semicolon
 r_extern
 r_void
 id|diva_user_mode_idi_remove_adapter
+c_func
 (paren
 r_int
 )paren
@@ -62,6 +65,7 @@ DECL|function|no_printf
 r_static
 r_void
 id|no_printf
+c_func
 (paren
 r_int
 r_char
@@ -166,6 +170,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -185,6 +190,7 @@ op_assign
 id|c
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -217,6 +223,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -246,6 +253,7 @@ id|d-&gt;request
 )paren
 (brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -257,7 +265,9 @@ l_string|&quot;find card&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|card
+)paren
 suffix:semicolon
 )brace
 id|card
@@ -266,6 +276,7 @@ id|card-&gt;next
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -278,10 +289,12 @@ l_string|&quot;find card&quot;
 suffix:semicolon
 r_return
 (paren
+(paren
 id|udiva_card
 op_star
 )paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * remove card from list&n; */
@@ -309,6 +322,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -374,6 +388,7 @@ id|list-&gt;next
 suffix:semicolon
 )brace
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -618,6 +633,7 @@ id|diva_os_spin_lock_magic_t
 id|old_irql
 suffix:semicolon
 id|diva_os_enter_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -637,6 +653,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|diva_os_leave_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -714,7 +731,9 @@ l_string|&quot;Notification about IDI_DADAPTER change ! Oops.&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -815,7 +834,9 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * connect DIDD&n; */
@@ -953,7 +974,9 @@ c_func
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|notify_handle
@@ -1066,7 +1089,9 @@ c_func
 suffix:semicolon
 )brace
 r_return
+(paren
 id|dadapter
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Disconnect from DIDD&n; */
@@ -1125,6 +1150,7 @@ r_void
 )paren
 (brace
 id|diva_os_initialize_spin_lock
+c_func
 (paren
 op_amp
 id|ll_lock
@@ -1136,6 +1162,7 @@ r_if
 c_cond
 (paren
 id|diva_user_mode_idi_init
+c_func
 (paren
 )paren
 )paren
@@ -1149,7 +1176,9 @@ l_string|&quot;init: init failed.&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1163,6 +1192,7 @@ c_func
 )paren
 (brace
 id|diva_user_mode_idi_finit
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1175,11 +1205,15 @@ l_string|&quot;init: failed to connect to DIDD.&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * finit&n; */
@@ -1193,6 +1227,7 @@ r_void
 )paren
 (brace
 id|diva_user_mode_idi_finit
+c_func
 (paren
 )paren
 suffix:semicolon

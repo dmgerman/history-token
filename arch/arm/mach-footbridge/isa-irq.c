@@ -423,12 +423,14 @@ id|irqaction
 id|irq_cascade
 op_assign
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|no_action
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;cascade&quot;
 comma
 )brace

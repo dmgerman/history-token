@@ -1,20 +1,47 @@
-multiline_comment|/*&n; * Dynamic loading of modules into the kernel.&n; *&n; * Rewritten by Richard Henderson &lt;rth@tamu.edu&gt; Dec 1996&n; */
 macro_line|#ifndef _LINUX_MODULE_H
 DECL|macro|_LINUX_MODULE_H
 mdefine_line|#define _LINUX_MODULE_H
+multiline_comment|/*&n; * Dynamic loading of modules into the kernel.&n; *&n; * Rewritten by Richard Henderson &lt;rth@tamu.edu&gt; Dec 1996&n; * Rewritten again by Rusty Russell, 2002&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
-multiline_comment|/* Don&squot;t need to bring in all of uaccess.h just for this decl.  */
+macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;asm/module.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
+multiline_comment|/* Indirect stringification */
+DECL|macro|__MODULE_STRING_1
+mdefine_line|#define __MODULE_STRING_1(x)&t;#x
+DECL|macro|__MODULE_STRING
+mdefine_line|#define __MODULE_STRING(x)&t;__MODULE_STRING_1(x)
+multiline_comment|/* Not Yet Implemented */
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(name)
+DECL|macro|MODULE_AUTHOR
+mdefine_line|#define MODULE_AUTHOR(name)
+DECL|macro|MODULE_DESCRIPTION
+mdefine_line|#define MODULE_DESCRIPTION(desc)
+DECL|macro|MODULE_SUPPORTED_DEVICE
+mdefine_line|#define MODULE_SUPPORTED_DEVICE(name)
+DECL|macro|MODULE_GENERIC_TABLE
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
+DECL|macro|MODULE_DEVICE_TABLE
+mdefine_line|#define MODULE_DEVICE_TABLE(type,name)
+DECL|macro|MODULE_PARM_DESC
+mdefine_line|#define MODULE_PARM_DESC(var,desc)
+DECL|macro|print_symbol
+mdefine_line|#define print_symbol(format, addr)
+DECL|macro|print_modules
+mdefine_line|#define print_modules()
+DECL|macro|MODULE_NAME_LEN
+mdefine_line|#define MODULE_NAME_LEN (64 - sizeof(unsigned long))
+DECL|struct|kernel_symbol
 r_struct
-id|exception_table_entry
-suffix:semicolon
-multiline_comment|/* Used by get_kernel_syms, which is obsolete.  */
-DECL|struct|kernel_sym
-r_struct
-id|kernel_sym
+id|kernel_symbol
 (brace
 DECL|member|value
 r_int
@@ -25,26 +52,108 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|60
+id|MODULE_NAME_LEN
 )braket
 suffix:semicolon
-multiline_comment|/* should have been 64-sizeof(long); oh well */
 )brace
 suffix:semicolon
-DECL|struct|module_symbol
+macro_line|#ifdef MODULE
+multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
+r_extern
 r_struct
-id|module_symbol
-(brace
-DECL|member|value
-r_int
-r_int
-id|value
+id|module
+id|__this_module
 suffix:semicolon
-DECL|member|name
+DECL|macro|THIS_MODULE
+mdefine_line|#define THIS_MODULE (&amp;__this_module)
+macro_line|#else
+DECL|macro|THIS_MODULE
+mdefine_line|#define THIS_MODULE ((struct module *)0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
+r_void
+op_star
+id|__symbol_get
+c_func
+(paren
 r_const
 r_char
 op_star
-id|name
+id|symbol
+)paren
+suffix:semicolon
+r_void
+op_star
+id|__symbol_get_gpl
+c_func
+(paren
+r_const
+r_char
+op_star
+id|symbol
+)paren
+suffix:semicolon
+DECL|macro|symbol_get
+mdefine_line|#define symbol_get(x) ((typeof(&amp;x))(__symbol_get(#x)))
+multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
+DECL|macro|EXPORT_SYMBOL
+mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&bslash;&n;&t;const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, #sym }
+DECL|macro|EXPORT_SYMBOL_NOVERS
+mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym) EXPORT_SYMBOL(sym)
+DECL|struct|kernel_symbol_group
+r_struct
+id|kernel_symbol_group
+(brace
+multiline_comment|/* Links us into the global symbol list */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* Module which owns it (if any) */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|num_syms
+r_int
+r_int
+id|num_syms
+suffix:semicolon
+DECL|member|syms
+r_const
+r_struct
+id|kernel_symbol
+op_star
+id|syms
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|exception_table
+r_struct
+id|exception_table
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|num_entries
+r_int
+r_int
+id|num_entries
+suffix:semicolon
+DECL|member|entry
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|entry
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -52,106 +161,50 @@ DECL|struct|module_ref
 r_struct
 id|module_ref
 (brace
-DECL|member|dep
-r_struct
-id|module
-op_star
-id|dep
+DECL|member|count
+id|atomic_t
+id|count
 suffix:semicolon
-multiline_comment|/* &quot;parent&quot; pointer */
-DECL|member|ref
-r_struct
-id|module
-op_star
-id|ref
-suffix:semicolon
-multiline_comment|/* &quot;child&quot; pointer */
-DECL|member|next_ref
-r_struct
-id|module_ref
-op_star
-id|next_ref
-suffix:semicolon
+DECL|variable|____cacheline_aligned
 )brace
-suffix:semicolon
-multiline_comment|/* TBD */
-r_struct
-id|module_persist
+id|____cacheline_aligned
 suffix:semicolon
 DECL|struct|module
 r_struct
 id|module
 (brace
-DECL|member|size_of_struct
+multiline_comment|/* Am I live (yet)? */
+DECL|member|live
 r_int
-r_int
-id|size_of_struct
+id|live
 suffix:semicolon
-multiline_comment|/* == sizeof(module) */
-DECL|member|next
+multiline_comment|/* Member of list of modules */
+DECL|member|list
 r_struct
-id|module
-op_star
-id|next
+id|list_head
+id|list
 suffix:semicolon
+multiline_comment|/* Unique handle for this module */
 DECL|member|name
-r_const
 r_char
-op_star
 id|name
+(braket
+id|MODULE_NAME_LEN
+)braket
 suffix:semicolon
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-r_union
-(brace
-DECL|member|usecount
-id|atomic_t
-id|usecount
-suffix:semicolon
-DECL|member|pad
-r_int
-id|pad
-suffix:semicolon
-DECL|member|uc
-)brace
-id|uc
-suffix:semicolon
-multiline_comment|/* Needs to keep its size - so says rth */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* AUTOCLEAN et al */
-DECL|member|nsyms
-r_int
-id|nsyms
-suffix:semicolon
-DECL|member|ndeps
-r_int
-id|ndeps
-suffix:semicolon
-DECL|member|syms
+multiline_comment|/* Exported symbols */
+DECL|member|symbols
 r_struct
-id|module_symbol
-op_star
-id|syms
+id|kernel_symbol_group
+id|symbols
 suffix:semicolon
-DECL|member|deps
+multiline_comment|/* Exception tables */
+DECL|member|extable
 r_struct
-id|module_ref
-op_star
-id|deps
+id|exception_table
+id|extable
 suffix:semicolon
-DECL|member|refs
-r_struct
-id|module_ref
-op_star
-id|refs
-suffix:semicolon
+multiline_comment|/* Startup function. */
 DECL|member|init
 r_int
 (paren
@@ -162,184 +215,552 @@ id|init
 r_void
 )paren
 suffix:semicolon
-DECL|member|cleanup
+multiline_comment|/* If this is non-NULL, vfree after init() returns */
+DECL|member|module_init
+r_void
+op_star
+id|module_init
+suffix:semicolon
+multiline_comment|/* Here is the actual code + data, vfree&squot;d on unload. */
+DECL|member|module_core
+r_void
+op_star
+id|module_core
+suffix:semicolon
+multiline_comment|/* Here are the sizes of the init and core sections */
+DECL|member|init_size
+DECL|member|core_size
+r_int
+r_int
+id|init_size
+comma
+id|core_size
+suffix:semicolon
+multiline_comment|/* Arch-specific module values */
+DECL|member|arch
+r_struct
+id|mod_arch_specific
+id|arch
+suffix:semicolon
+multiline_comment|/* Am I unsafe to unload? */
+DECL|member|unsafe
+r_int
+id|unsafe
+suffix:semicolon
+macro_line|#ifdef CONFIG_MODULE_UNLOAD
+multiline_comment|/* Reference counts */
+DECL|member|ref
+r_struct
+id|module_ref
+id|ref
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+multiline_comment|/* What modules depend on me? */
+DECL|member|modules_which_use_me
+r_struct
+id|list_head
+id|modules_which_use_me
+suffix:semicolon
+multiline_comment|/* Who is waiting for us to be unloaded */
+DECL|member|waiter
+r_struct
+id|task_struct
+op_star
+id|waiter
+suffix:semicolon
+multiline_comment|/* Destruction function. */
+DECL|member|exit
 r_void
 (paren
 op_star
-id|cleanup
+m_exit
 )paren
 (paren
 r_void
 )paren
-suffix:semicolon
-DECL|member|ex_table_start
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|ex_table_start
-suffix:semicolon
-DECL|member|ex_table_end
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|ex_table_end
-suffix:semicolon
-macro_line|#ifdef __alpha__
-DECL|member|gp
-r_int
-r_int
-id|gp
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Members past this point are extensions to the basic&n;&t;   module support and are optional.  Use mod_member_present()&n;&t;   to examine them.  */
-DECL|member|persist_start
-r_const
-r_struct
-id|module_persist
-op_star
-id|persist_start
+multiline_comment|/* The command line arguments (may be mangled).  People like&n;&t;   keeping pointers to this stuff */
+DECL|member|args
+r_char
+id|args
+(braket
+l_int|0
+)braket
 suffix:semicolon
-DECL|member|persist_end
-r_const
-r_struct
-id|module_persist
-op_star
-id|persist_end
+)brace
 suffix:semicolon
-DECL|member|can_unload
+multiline_comment|/* Helper function for arch-specific module loaders */
 r_int
+r_int
+id|find_symbol_internal
+c_func
 (paren
+id|Elf_Shdr
 op_star
-id|can_unload
+id|sechdrs
+comma
+r_int
+r_int
+id|symindex
+comma
+r_const
+r_char
+op_star
+id|strtab
+comma
+r_const
+r_char
+op_star
+id|name
+comma
+r_struct
+id|module
+op_star
+id|mod
+comma
+r_struct
+id|kernel_symbol_group
+op_star
+op_star
+id|group
 )paren
+suffix:semicolon
+multiline_comment|/* These must be implemented by the specific architecture */
+multiline_comment|/* vmalloc AND zero for the non-releasable code; return ERR_PTR() on error. */
+r_void
+op_star
+id|module_core_alloc
+c_func
+(paren
+r_const
+id|Elf_Ehdr
+op_star
+id|hdr
+comma
+r_const
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_const
+r_char
+op_star
+id|secstrings
+comma
+r_struct
+id|module
+op_star
+id|mod
+)paren
+suffix:semicolon
+multiline_comment|/* vmalloc and zero (if any) for sections to be freed after init.&n;   Return ERR_PTR() on error. */
+r_void
+op_star
+id|module_init_alloc
+c_func
+(paren
+r_const
+id|Elf_Ehdr
+op_star
+id|hdr
+comma
+r_const
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_const
+r_char
+op_star
+id|secstrings
+comma
+r_struct
+id|module
+op_star
+id|mod
+)paren
+suffix:semicolon
+multiline_comment|/* Apply the given relocation to the (simplified) ELF.  Return -error&n;   or 0. */
+r_int
+id|apply_relocate
+c_func
+(paren
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_const
+r_char
+op_star
+id|strtab
+comma
+r_int
+r_int
+id|symindex
+comma
+r_int
+r_int
+id|relsec
+comma
+r_struct
+id|module
+op_star
+id|mod
+)paren
+suffix:semicolon
+multiline_comment|/* Apply the given add relocation to the (simplified) ELF.  Return&n;   -error or 0 */
+r_int
+id|apply_relocate_add
+c_func
+(paren
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_const
+r_char
+op_star
+id|strtab
+comma
+r_int
+r_int
+id|symindex
+comma
+r_int
+r_int
+id|relsec
+comma
+r_struct
+id|module
+op_star
+id|mod
+)paren
+suffix:semicolon
+multiline_comment|/* Any final processing of module before access.  Return -error or 0. */
+r_int
+id|module_finalize
+c_func
+(paren
+r_const
+id|Elf_Ehdr
+op_star
+id|hdr
+comma
+r_const
+id|Elf_Shdr
+op_star
+id|sechdrs
+comma
+r_struct
+id|module
+op_star
+id|mod
+)paren
+suffix:semicolon
+multiline_comment|/* Free memory returned from module_core_alloc/module_init_alloc */
+r_void
+id|module_free
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+comma
+r_void
+op_star
+id|module_region
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MODULE_UNLOAD
+r_void
+id|__symbol_put
+c_func
+(paren
+r_const
+r_char
+op_star
+id|symbol
+)paren
+suffix:semicolon
+DECL|macro|symbol_put
+mdefine_line|#define symbol_put(x) __symbol_put(#x)
+r_void
+id|symbol_put_addr
+c_func
 (paren
 r_void
+op_star
+id|addr
 )paren
 suffix:semicolon
-DECL|member|runsize
+multiline_comment|/* We only need protection against local interrupts. */
+macro_line|#ifndef __HAVE_ARCH_LOCAL_INC
+DECL|macro|local_inc
+mdefine_line|#define local_inc(x) atomic_inc(x)
+DECL|macro|local_dec
+mdefine_line|#define local_dec(x) atomic_dec(x)
+macro_line|#endif
+DECL|function|try_module_get
+r_static
+r_inline
 r_int
-id|runsize
-suffix:semicolon
-multiline_comment|/* In modutils, not currently used */
-DECL|member|kallsyms_start
-r_const
-r_char
-op_star
-id|kallsyms_start
-suffix:semicolon
-multiline_comment|/* All symbols for kernel debugging */
-DECL|member|kallsyms_end
-r_const
-r_char
-op_star
-id|kallsyms_end
-suffix:semicolon
-DECL|member|archdata_start
-r_const
-r_char
-op_star
-id|archdata_start
-suffix:semicolon
-multiline_comment|/* arch specific data for module */
-DECL|member|archdata_end
-r_const
-r_char
-op_star
-id|archdata_end
-suffix:semicolon
-DECL|member|kernel_data
-r_const
-r_char
-op_star
-id|kernel_data
-suffix:semicolon
-multiline_comment|/* Reserved for kernel internal use */
-)brace
-suffix:semicolon
-DECL|struct|module_info
+id|try_module_get
+c_func
+(paren
 r_struct
-id|module_info
+id|module
+op_star
+id|module
+)paren
 (brace
-DECL|member|addr
 r_int
-r_int
-id|addr
+id|ret
+op_assign
+l_int|1
 suffix:semicolon
-DECL|member|size
+r_if
+c_cond
+(paren
+id|module
+)paren
+(brace
 r_int
 r_int
-id|size
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
 suffix:semicolon
-DECL|member|flags
-r_int
-r_int
-id|flags
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|module-&gt;live
+)paren
+)paren
+id|local_inc
+c_func
+(paren
+op_amp
+id|module-&gt;ref
+(braket
+id|cpu
+)braket
+dot
+id|count
+)paren
 suffix:semicolon
-DECL|member|usecount
-r_int
-id|usecount
+r_else
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
+r_return
+id|ret
 suffix:semicolon
-multiline_comment|/* Bits of module.flags.  */
-DECL|macro|MOD_UNINITIALIZED
-mdefine_line|#define MOD_UNINITIALIZED&t;0
-DECL|macro|MOD_RUNNING
-mdefine_line|#define MOD_RUNNING&t;&t;1
-DECL|macro|MOD_DELETED
-mdefine_line|#define MOD_DELETED&t;&t;2
-DECL|macro|MOD_AUTOCLEAN
-mdefine_line|#define MOD_AUTOCLEAN&t;&t;4
-DECL|macro|MOD_VISITED
-mdefine_line|#define MOD_VISITED  &t;&t;8
-DECL|macro|MOD_USED_ONCE
-mdefine_line|#define MOD_USED_ONCE&t;&t;16
-DECL|macro|MOD_JUST_FREED
-mdefine_line|#define MOD_JUST_FREED&t;&t;32
-DECL|macro|MOD_INITIALIZING
-mdefine_line|#define MOD_INITIALIZING&t;64
-multiline_comment|/* Values for query_module&squot;s which.  */
-DECL|macro|QM_MODULES
-mdefine_line|#define QM_MODULES&t;1
-DECL|macro|QM_DEPS
-mdefine_line|#define QM_DEPS&t;&t;2
-DECL|macro|QM_REFS
-mdefine_line|#define QM_REFS&t;&t;3
-DECL|macro|QM_SYMBOLS
-mdefine_line|#define QM_SYMBOLS&t;4
-DECL|macro|QM_INFO
-mdefine_line|#define QM_INFO&t;&t;5
-multiline_comment|/* Can the module be queried? */
-DECL|macro|MOD_CAN_QUERY
-mdefine_line|#define MOD_CAN_QUERY(mod) (((mod)-&gt;flags &amp; (MOD_RUNNING | MOD_INITIALIZING)) &amp;&amp; !((mod)-&gt;flags &amp; MOD_DELETED))
-multiline_comment|/* When struct module is extended, we must test whether the new member&n;   is present in the header received from insmod before we can use it.  &n;   This function returns true if the member is present.  */
-DECL|macro|mod_member_present
-mdefine_line|#define mod_member_present(mod,member) &t;&t;&t;&t;&t;&bslash;&n;&t;((unsigned long)(&amp;((struct module *)0L)-&gt;member + 1)&t;&t;&bslash;&n;&t; &lt;= (mod)-&gt;size_of_struct)
-multiline_comment|/*&n; * Ditto for archdata.  Assumes mod-&gt;archdata_start and mod-&gt;archdata_end&n; * are validated elsewhere.&n; */
-DECL|macro|mod_archdata_member_present
-mdefine_line|#define mod_archdata_member_present(mod, type, member)&t;&t;&t;&bslash;&n;&t;(((unsigned long)(&amp;((type *)0L)-&gt;member) +&t;&t;&t;&bslash;&n;&t;  sizeof(((type *)0L)-&gt;member)) &lt;=&t;&t;&t;&t;&bslash;&n;&t; ((mod)-&gt;archdata_end - (mod)-&gt;archdata_start))
-multiline_comment|/* Check if an address p with number of entries n is within the body of module m */
-DECL|macro|mod_bound
-mdefine_line|#define mod_bound(p, n, m) ((unsigned long)(p) &gt;= ((unsigned long)(m) + ((m)-&gt;size_of_struct)) &amp;&amp; &bslash;&n;&t;         (unsigned long)((p)+(n)) &lt;= (unsigned long)(m) + (m)-&gt;size)
-multiline_comment|/* Backwards compatibility definition.  */
-DECL|macro|GET_USE_COUNT
-mdefine_line|#define GET_USE_COUNT(module)&t;(atomic_read(&amp;(module)-&gt;uc.usecount))
-multiline_comment|/* Poke the use count of a module.  */
+)brace
+DECL|function|module_put
+r_static
+r_inline
+r_void
+id|module_put
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|module
+)paren
+(brace
+r_int
+r_int
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_dec
+c_func
+(paren
+op_amp
+id|module-&gt;ref
+(braket
+id|cpu
+)braket
+dot
+id|count
+)paren
+suffix:semicolon
+multiline_comment|/* Maybe they&squot;re waiting for us to drop reference? */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|module-&gt;live
+)paren
+)paren
+id|wake_up_process
+c_func
+(paren
+id|module-&gt;waiter
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#else /*!CONFIG_MODULE_UNLOAD*/
+DECL|function|try_module_get
+r_static
+r_inline
+r_int
+id|try_module_get
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+r_return
+op_logical_neg
+id|module
+op_logical_or
+id|module-&gt;live
+suffix:semicolon
+)brace
+DECL|function|module_put
+r_static
+r_inline
+r_void
+id|module_put
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+)brace
+DECL|macro|symbol_put
+mdefine_line|#define symbol_put(x) do { } while(0)
+DECL|macro|symbol_put_addr
+mdefine_line|#define symbol_put_addr(p) do { } while(0)
+macro_line|#endif /* CONFIG_MODULE_UNLOAD */
+multiline_comment|/* This is a #define so the string doesn&squot;t get put in every .o file */
+DECL|macro|module_name
+mdefine_line|#define module_name(mod)&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct module *__mod = (mod);&t;&t;&bslash;&n;&t;__mod ? __mod-&gt;name : &quot;kernel&quot;;&t;&t;&bslash;&n;})
+DECL|macro|__unsafe
+mdefine_line|#define __unsafe(mod)&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;&t;if (mod &amp;&amp; !(mod)-&gt;unsafe) {&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;printk(KERN_WARNING&t;&t;&t;&t;&t;     &bslash;&n;&t;&t;       &quot;Module %s cannot be unloaded due to unsafe usage in&quot; &bslash;&n;&t;&t;       &quot; %s:%u&bslash;n&quot;, (mod)-&gt;name, __FILE__, __LINE__);&t;     &bslash;&n;&t;&t;(mod)-&gt;unsafe = 1;&t;&t;&t;&t;&t;     &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;} while(0)
+macro_line|#else /* !CONFIG_MODULES... */
+DECL|macro|EXPORT_SYMBOL
+mdefine_line|#define EXPORT_SYMBOL(sym)
+DECL|macro|EXPORT_SYMBOL_GPL
+mdefine_line|#define EXPORT_SYMBOL_GPL(sym)
+DECL|macro|EXPORT_SYMBOL_NOVERS
+mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym)
+multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
+DECL|macro|symbol_get
+mdefine_line|#define symbol_get(x) (&amp;(x))
+DECL|macro|symbol_put
+mdefine_line|#define symbol_put(x) do { } while(0)
+DECL|macro|symbol_put_addr
+mdefine_line|#define symbol_put_addr(x) do { } while(0)
+DECL|macro|try_module_get
+mdefine_line|#define try_module_get(module) 1
+DECL|macro|module_put
+mdefine_line|#define module_put(module) do { } while(0)
+DECL|macro|module_name
+mdefine_line|#define module_name(mod) &quot;kernel&quot;
+DECL|macro|__unsafe
+mdefine_line|#define __unsafe(mod)
+macro_line|#endif /* CONFIG_MODULES */
+multiline_comment|/* For archs to search exception tables */
+r_extern
+r_struct
+id|list_head
+id|extables
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
+DECL|macro|symbol_request
+mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
+multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
 DECL|macro|__MOD_INC_USE_COUNT
-mdefine_line|#define __MOD_INC_USE_COUNT(mod)&t;&t;&t;&t;&t;&bslash;&n;&t;(atomic_inc(&amp;(mod)-&gt;uc.usecount), (mod)-&gt;flags |= MOD_VISITED|MOD_USED_ONCE)
+mdefine_line|#define __MOD_INC_USE_COUNT(mod) &bslash;&n;&t;do { __unsafe(mod); (void)try_module_get(mod); } while(0)
 DECL|macro|__MOD_DEC_USE_COUNT
-mdefine_line|#define __MOD_DEC_USE_COUNT(mod)&t;&t;&t;&t;&t;&bslash;&n;&t;(atomic_dec(&amp;(mod)-&gt;uc.usecount), (mod)-&gt;flags |= MOD_VISITED)
-DECL|macro|__MOD_IN_USE
-mdefine_line|#define __MOD_IN_USE(mod)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(mod_member_present((mod), can_unload) &amp;&amp; (mod)-&gt;can_unload&t;&bslash;&n;&t; ? (mod)-&gt;can_unload() : atomic_read(&amp;(mod)-&gt;uc.usecount))
-multiline_comment|/* Indirect stringification.  */
-DECL|macro|__MODULE_STRING_1
-mdefine_line|#define __MODULE_STRING_1(x)&t;#x
-DECL|macro|__MODULE_STRING
-mdefine_line|#define __MODULE_STRING(x)&t;__MODULE_STRING_1(x)
-multiline_comment|/* Generic inter module communication.&n; *&n; * NOTE: This interface is intended for small amounts of data that are&n; *       passed between two objects and either or both of the objects&n; *       might be compiled as modules.  Do not over use this interface.&n; *&n; *       If more than two objects need to communicate then you probably&n; *       need a specific interface instead of abusing this generic&n; *       interface.  If both objects are *always* built into the kernel&n; *       then a global extern variable is good enough, you do not need&n; *       this interface.&n; *&n; * Keith Owens &lt;kaos@ocs.com.au&gt; 28 Oct 2000.&n; */
-macro_line|#ifdef __KERNEL__
+mdefine_line|#define __MOD_DEC_USE_COUNT(mod) module_put(mod)
+DECL|macro|SET_MODULE_OWNER
+mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
+multiline_comment|/* People do this inside their init routines, when the module isn&squot;t&n;   &quot;live&quot; yet.  They should no longer be doing that, but&n;   meanwhile... */
+macro_line|#if defined(CONFIG_MODULE_UNLOAD) &amp;&amp; defined(MODULE)
+DECL|macro|MOD_INC_USE_COUNT
+mdefine_line|#define MOD_INC_USE_COUNT&t;&bslash;&n;&t;do { __unsafe(THIS_MODULE); local_inc(&amp;THIS_MODULE-&gt;ref[get_cpu()].count); put_cpu(); } while (0)
+macro_line|#else
+DECL|macro|MOD_INC_USE_COUNT
+mdefine_line|#define MOD_INC_USE_COUNT &bslash;&n;&t;do { __unsafe(THIS_MODULE); (void)try_module_get(THIS_MODULE); } while (0)
+macro_line|#endif
+DECL|macro|MOD_DEC_USE_COUNT
+mdefine_line|#define MOD_DEC_USE_COUNT module_put(THIS_MODULE)
+DECL|macro|try_inc_mod_count
+mdefine_line|#define try_inc_mod_count(mod) try_module_get(mod)
+DECL|macro|MODULE_PARM
+mdefine_line|#define MODULE_PARM(parm,string)
+DECL|macro|EXPORT_NO_SYMBOLS
+mdefine_line|#define EXPORT_NO_SYMBOLS
+r_extern
+r_int
+id|module_dummy_usage
+suffix:semicolon
+DECL|macro|GET_USE_COUNT
+mdefine_line|#define GET_USE_COUNT(module) (module_dummy_usage)
+DECL|macro|MOD_IN_USE
+mdefine_line|#define MOD_IN_USE 0
+DECL|macro|__mod_between
+mdefine_line|#define __mod_between(a_start, a_len, b_start, b_len)&t;&t;&bslash;&n;(((a_start) &gt;= (b_start) &amp;&amp; (a_start) &lt;= (b_start)+(b_len))&t;&bslash;&n; || ((a_start)+(a_len) &gt;= (b_start)&t;&t;&t;&t;&bslash;&n;     &amp;&amp; (a_start)+(a_len) &lt;= (b_start)+(b_len)))
+DECL|macro|mod_bound
+mdefine_line|#define mod_bound(p, n, m)&t;&t;&t;&t;&t;&bslash;&n;(((m)-&gt;module_init&t;&t;&t;&t;&t;&t;&bslash;&n;  &amp;&amp; __mod_between((p),(n),(m)-&gt;module_init,(m)-&gt;init_size))&t;&bslash;&n; || __mod_between((p),(n),(m)-&gt;module_core,(m)-&gt;core_size))
+multiline_comment|/* Old-style &quot;I&squot;ll just call it init_module and it&squot;ll be run at&n;   insert&quot;.  Use module_init(myroutine) instead. */
+macro_line|#ifdef MODULE
+multiline_comment|/* Used as &quot;int init_module(void) { ... }&quot;.  Get funky to insert modname. */
+DECL|macro|init_module
+mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initfn(void);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;char __module_name[] __attribute__((section(&quot;.modulename&quot;))) =&t;&bslash;&n;&t;__stringify(KBUILD_MODNAME);&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void)
+DECL|macro|cleanup_module
+mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
+macro_line|#endif
+multiline_comment|/* Use symbol_get and symbol_put instead.  You&squot;ll thank me. */
 DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE
 r_extern
@@ -408,278 +829,5 @@ r_char
 op_star
 )paren
 suffix:semicolon
-DECL|struct|inter_module_entry
-r_struct
-id|inter_module_entry
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|im_name
-r_const
-r_char
-op_star
-id|im_name
-suffix:semicolon
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
-DECL|member|userdata
-r_const
-r_void
-op_star
-id|userdata
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_int
-id|try_inc_mod_count
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|mod
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
-macro_line|#if defined(MODULE) &amp;&amp; !defined(__GENKSYMS__)
-multiline_comment|/* Embedded module documentation macros.  */
-multiline_comment|/* For documentation purposes only.  */
-DECL|macro|MODULE_AUTHOR
-mdefine_line|#define MODULE_AUTHOR(name)&t;&t;&t;&t;&t;&t;   &bslash;&n;const char __module_author[] __attribute__((section(&quot;.modinfo&quot;))) = &t;   &bslash;&n;&quot;author=&quot; name
-DECL|macro|MODULE_DESCRIPTION
-mdefine_line|#define MODULE_DESCRIPTION(desc)&t;&t;&t;&t;&t;   &bslash;&n;const char __module_description[] __attribute__((section(&quot;.modinfo&quot;))) =   &bslash;&n;&quot;description=&quot; desc
-multiline_comment|/* Could potentially be used by kmod...  */
-DECL|macro|MODULE_SUPPORTED_DEVICE
-mdefine_line|#define MODULE_SUPPORTED_DEVICE(dev)&t;&t;&t;&t;&t;   &bslash;&n;const char __module_device[] __attribute__((section(&quot;.modinfo&quot;))) = &t;   &bslash;&n;&quot;device=&quot; dev
-multiline_comment|/* Used to verify parameters given to the module.  The TYPE arg should&n;   be a string in the following format:&n;   &t;[min[-max]]{b,h,i,l,s}&n;   The MIN and MAX specifiers delimit the length of the array.  If MAX&n;   is omitted, it defaults to MIN; if both are omitted, the default is 1.&n;   The final character is a type specifier:&n;&t;b&t;byte&n;&t;h&t;short&n;&t;i&t;int&n;&t;l&t;long&n;&t;s&t;string&n;*/
-DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&bslash;&n;const char __module_parm_##var[]&t;&t;&bslash;&n;__attribute__((section(&quot;.modinfo&quot;))) =&t;&t;&bslash;&n;&quot;parm_&quot; __MODULE_STRING(var) &quot;=&quot; type
-DECL|macro|MODULE_PARM_DESC
-mdefine_line|#define MODULE_PARM_DESC(var,desc)&t;&t;&bslash;&n;const char __module_parm_desc_##var[]&t;&t;&bslash;&n;__attribute__((section(&quot;.modinfo&quot;))) =&t;&t;&bslash;&n;&quot;parm_desc_&quot; __MODULE_STRING(var) &quot;=&quot; desc
-multiline_comment|/*&n; * MODULE_DEVICE_TABLE exports information about devices&n; * currently supported by this module.  A device type, such as PCI,&n; * is a C-like identifier passed as the first arg to this macro.&n; * The second macro arg is the variable containing the device&n; * information being made public.&n; *&n; * The following is a list of known device types (arg 1),&n; * and the C types which are to be passed as arg 2.&n; * pci - struct pci_device_id - List of PCI ids supported by this module&n; * isapnp - struct isapnp_device_id - List of ISA PnP ids supported by this module&n; * usb - struct usb_device_id - List of USB ids supported by this module&n; */
-DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
-multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2 or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2 or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(license) &t;&bslash;&n;static const char __module_license[]&t;&bslash;&n;  __attribute__((section(&quot;.modinfo&quot;), unused)) = &quot;license=&quot; license
-multiline_comment|/* Define the module variable, and usage macros.  */
-r_extern
-r_struct
-id|module
-id|__this_module
-suffix:semicolon
-DECL|macro|THIS_MODULE
-mdefine_line|#define THIS_MODULE&t;&t;(&amp;__this_module)
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;__MOD_INC_USE_COUNT(THIS_MODULE)
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT&t;__MOD_DEC_USE_COUNT(THIS_MODULE)
-DECL|macro|MOD_IN_USE
-mdefine_line|#define MOD_IN_USE&t;&t;__MOD_IN_USE(THIS_MODULE)
-macro_line|#include &lt;linux/version.h&gt;
-DECL|variable|__module_kernel_version
-r_static
-r_const
-r_char
-id|__module_kernel_version
-(braket
-)braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;.modinfo&quot;
-)paren
-comma
-id|unused
-)paren
-)paren
-op_assign
-l_string|&quot;kernel_version=&quot;
-id|UTS_RELEASE
-suffix:semicolon
-macro_line|#ifdef CONFIG_MODVERSIONS
-DECL|variable|__module_using_checksums
-r_static
-r_const
-r_char
-id|__module_using_checksums
-(braket
-)braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;.modinfo&quot;
-)paren
-comma
-id|unused
-)paren
-)paren
-op_assign
-l_string|&quot;using_checksums=1&quot;
-suffix:semicolon
-macro_line|#endif
-macro_line|#else /* MODULE */
-DECL|macro|MODULE_AUTHOR
-mdefine_line|#define MODULE_AUTHOR(name)
-DECL|macro|MODULE_LICENSE
-mdefine_line|#define MODULE_LICENSE(license)
-DECL|macro|MODULE_DESCRIPTION
-mdefine_line|#define MODULE_DESCRIPTION(desc)
-DECL|macro|MODULE_SUPPORTED_DEVICE
-mdefine_line|#define MODULE_SUPPORTED_DEVICE(name)
-DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type)
-DECL|macro|MODULE_PARM_DESC
-mdefine_line|#define MODULE_PARM_DESC(var,desc)
-multiline_comment|/* Create a dummy reference to the table to suppress gcc unused warnings.  Put&n; * the reference in the .data.exit section which is discarded when code is built&n; * in, so the reference does not bloat the running kernel.  Note: cannot be&n; * const, other exit data may be writable.&n; */
-DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name) &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused, __section__(&quot;.exit.data&quot;))) = name
-macro_line|#ifndef __GENKSYMS__
-DECL|macro|THIS_MODULE
-mdefine_line|#define THIS_MODULE&t;&t;NULL
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;do { } while (0)
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
-DECL|macro|MOD_IN_USE
-mdefine_line|#define MOD_IN_USE&t;&t;1
-macro_line|#endif /* !__GENKSYMS__ */
-macro_line|#endif /* MODULE */
-DECL|macro|MODULE_DEVICE_TABLE
-mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
-multiline_comment|/* Export a symbol either from the kernel or a module.&n;&n;   In the kernel, the symbol is added to the kernel&squot;s global symbol table.&n;&n;   In a module, it controls which variables are exported.  If no&n;   variables are explicitly exported, the action is controled by the&n;   insmod -[xX] flags.  Otherwise, only the variables listed are exported.&n;   This obviates the need for the old register_symtab() function.  */
-multiline_comment|/* So how does the CONFIG_MODVERSIONS magic work? &n; *&n; * A module can only be loaded if it&squot;s undefined symbols can be resolved&n; * using symbols the kernel exports for that purpose. The idea behind&n; * CONFIG_MODVERSIONS is to mangle those symbols depending on their&n; * definition (see man genksyms) - a change in the definition will thus&n; * caused the mangled name to change, and the module will refuse to&n; * load due to unresolved symbols.&n; *&n; * Let&squot;s start with taking a look how things work when we don&squot;t use&n; * CONFIG_MODVERSIONS. In this case, the only thing which is worth&n; * mentioning is the EXPORT_SYMBOL() macro. Using EXPORT_SYMBOL(foo)&n; * will expand into __EXPORT_SYMBOL(foo, &quot;foo&quot;), which then uses&n; * some ELF section magic to generate a list of pairs &n; * (address, symbol_name), which is used to resolve undefined &n; * symbols into addresses when loading a module.&n; * &n; * That&squot;s easy. Let&squot;s get back to CONFIG_MODVERSIONS=y.&n; *&n; * The first step is to generate the checksums. This is done at&n; * &quot;make dep&quot; time, code which exports symbols (using EXPORT_SYMTAB)&n; * is preprocessed with the additional macro __GENKSYMS__ set and fed&n; * into genksyms.&n; * At this stage, for each file that exports symbols an corresponding&n; * file in include/linux/module is generated, which for each exported&n; * symbol contains&n; *&n; *         #define __ver_schedule_task     2d6c3d04&n; *         #define schedule_task   _set_ver(schedule_task)&n; *&n; * In addition, include/linux/modversions.h is generated, which&n; * looks like&n; *&n; *         #include &lt;linux/modsetver.h&gt;&n; *         #include &lt;linux/modules/kernel__context.ver&gt;&n; *        &lt;&lt;&lt;lists all of the files just described&gt;&gt;&gt;&n; *&n; * Let&squot;s see what happens for different cases during compilation.&n; *&n; * o compile a file into the kernel which does not export symbols:&n; *&n; *   Since the file is known to not export symbols (it&squot;s not listed&n; *   in the export-objs variable in the corresponding Makefile), the&n; *   kernel build system does compile it with no extra flags set.&n; *   The macro EXPORT_SYMTAB is unset, and you can see below that&n; *   files which still try to use EXPORT_SYMBOL() will be trapped.&n; *   Other than that, just regular compilation.&n; *&n; * o compile a file into the kernel which does export symbols:&n; *&n; *   In this case, the file will compiled with the macro &n; *   EXPORT_SYMTAB defined.&n; *   As MODULE is not set, we hit this case from below:&n; *&n; *         #define _set_ver(sym) sym&n; *         #include &lt;linux/modversions.h&gt;&n; *         &n; *         #define EXPORT_SYMBOL(var) &bslash;&n; *          __EXPORT_SYMBOL(var, __MODULE_STRING(__VERSIONED_SYMBOL(var)))&n; *&n; *   The first two lines will in essence include&n; *&n; *         #define __ver_schedule_task     2d6c3d04&n; *         #define schedule_task   schedule_task&n; *&n; *   for each symbol. The second line really doesn&squot;t do much, but the&n; *   first one gives us the checksums we generated before.&n; *   &n; *   So EXPORT_SYMBOL(schedule_task) will expand into&n; *   __EXPORT_SYMBOL(schedule_task, &quot;schedule_task_R2d6c3d04&quot;),&n; *   hence exporting the symbol for schedule_task under the name of&n; *   schedule_task_R2d6c3d04.&n; *&n; * o compile a file into a module&n; *   &n; *   In this case, the kernel build system will add &n; *   &quot;-include include/linux/modversions.h&quot; to the command line. So&n; *   modversions.h is prepended to the actual source, turning into&n; *&n; *         #define __ver_schedule_task     2d6c3d04&n; *         #define schedule_task   schedule_task_R2d6c3d04&n; *&n; *   Though the source code says &quot;schedule_task&quot;, the compiler will&n; *   see the mangled symbol everywhere. So the module will end up with&n; *   an undefined symbol &quot;schedule_task_R2d6c3d04&quot; - which is exactly&n; *   the symbols which occurs in the kernel&squot;s list of symbols, with&n; *   a value of &amp;schedule_task - it all comes together nicely.&n; *&n; *   One question remains: What happens if a module itself exports&n; *   a symbol - the answer is simple: It&squot;s actually handled as the&n; *   CONFIG_MODVERSIONS=n case described first, only that the compiler&n; *   sees the mangled symbol everywhere. So &amp;foo_R12345678 is exported&n; *   with the name &quot;foo_R12345678&quot;. Think about it. It all makes sense.&n; */
-macro_line|#if defined(__GENKSYMS__)
-multiline_comment|/* We want the EXPORT_SYMBOL tag left intact for recognition.  */
-macro_line|#elif !defined(CONFIG_MODULES)
-DECL|macro|__EXPORT_SYMBOL
-mdefine_line|#define __EXPORT_SYMBOL(sym,str)
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)
-macro_line|#elif !defined(EXPORT_SYMTAB)
-DECL|macro|__EXPORT_SYMBOL
-mdefine_line|#define __EXPORT_SYMBOL(sym,str)   error this_object_must_be_defined_as_export_objs_in_the_Makefile
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)&t;   error this_object_must_be_defined_as_export_objs_in_the_Makefile
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
-macro_line|#else
-DECL|macro|__EXPORT_SYMBOL
-mdefine_line|#define __EXPORT_SYMBOL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = str;&t;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym &t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }
-DECL|macro|__EXPORT_SYMBOL_GPL
-mdefine_line|#define __EXPORT_SYMBOL_GPL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = &quot;GPLONLY_&quot; str;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym&t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }
-macro_line|#if defined(CONFIG_MODVERSIONS) &amp;&amp; !defined(MODULE)
-DECL|macro|_set_ver
-mdefine_line|#define _set_ver(sym) sym
-macro_line|#include &lt;linux/modversions.h&gt;
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(__VERSIONED_SYMBOL(var)))
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(__VERSIONED_SYMBOL(var)))
-macro_line|#else /* !defined (CONFIG_MODVERSIONS) || defined(MODULE) */
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(var))
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)  __EXPORT_SYMBOL_GPL(var, __MODULE_STRING(var))
-macro_line|#endif /* defined(CONFIG_MODVERSIONS) &amp;&amp; !defined(MODULE) */
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(var))
-macro_line|#endif /* __GENKSYMS__ */
-multiline_comment|/* &n; * Force a module to export no symbols.&n; * EXPORT_NO_SYMBOLS is default now, leave the define around for sources&n; * which still have it&n; */
-DECL|macro|EXPORT_NO_SYMBOLS
-mdefine_line|#define EXPORT_NO_SYMBOLS
-macro_line|#ifdef CONFIG_MODULES
-multiline_comment|/* &n; * Always allocate a section &quot;__ksymtab&quot;. If we encounter EXPORT_SYMBOL,&n; * the exported symbol will be added to it.&n; * If it remains empty, that tells modutils that we do not want to&n; * export any symbols (as opposed to it not being present, which means&n; * &quot;export all symbols&quot; to modutils)&n; */
-id|__asm__
-c_func
-(paren
-l_string|&quot;.section __ksymtab,&bslash;&quot;a&bslash;&quot;&bslash;n.previous&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MODULES
-DECL|macro|SET_MODULE_OWNER
-mdefine_line|#define SET_MODULE_OWNER(some_struct) do { (some_struct)-&gt;owner = THIS_MODULE; } while (0)
-macro_line|#else
-DECL|macro|SET_MODULE_OWNER
-mdefine_line|#define SET_MODULE_OWNER(some_struct) do { } while (0)
-macro_line|#endif
-r_extern
-r_void
-id|print_modules
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_MODULES) || defined(CONFIG_KALLSYMS)
-r_extern
-r_struct
-id|module
-op_star
-id|module_list
-suffix:semicolon
-multiline_comment|/*&n; * print_symbols takes a format string containing one %s.&n; * If support for resolving symbols is compiled in, the %s will&n; * be replaced by the closest symbol to the address and the entire&n; * string is printk()ed. Otherwise, nothing is printed.&n; */
-r_extern
-r_void
-id|print_symbol
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-r_int
-r_int
-id|address
-)paren
-suffix:semicolon
-macro_line|#else
-r_static
-r_inline
-r_int
-DECL|function|print_symbol
-id|print_symbol
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_return
-op_minus
-id|ESRCH
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#endif /* _LINUX_MODULE_H */
 eof

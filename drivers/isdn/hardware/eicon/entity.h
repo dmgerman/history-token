@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: entity.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: entity.h,v 1.1.2.1 2001/02/08 12:25:43 armin Exp $ */
 macro_line|#ifndef __DIVAS_USER_MODE_IDI_ENTITY__
 DECL|macro|__DIVAS_USER_MODE_IDI_ENTITY__
 mdefine_line|#define __DIVAS_USER_MODE_IDI_ENTITY__

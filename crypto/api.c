@@ -1058,12 +1058,11 @@ id|m
 comma
 l_string|&quot;module       : %s&bslash;n&quot;
 comma
+id|module_name
+c_func
+(paren
 id|alg-&gt;cra_module
-ques
-c_cond
-id|alg-&gt;cra_module-&gt;name
-suffix:colon
-l_string|&quot;[static]&quot;
+)paren
 )paren
 suffix:semicolon
 id|seq_printf

@@ -52,8 +52,9 @@ id|notifier_block
 id|adbhid_adb_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|adb_message_handler
 comma
 )brace

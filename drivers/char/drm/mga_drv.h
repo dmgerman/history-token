@@ -429,6 +429,14 @@ c_func
 id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|mga_getparam
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
 multiline_comment|/* mga_warp.c */
 r_extern
 r_int
@@ -463,6 +471,8 @@ mdefine_line|#define MGA_DEREF8( reg )&t;*(volatile u8 *)MGA_ADDR( reg )
 macro_line|#ifdef __alpha__
 DECL|macro|MGA_READ
 mdefine_line|#define MGA_READ( reg )&t;&t;(_MGA_READ((u32 *)MGA_ADDR(reg)))
+DECL|macro|MGA_READ8
+mdefine_line|#define MGA_READ8( reg )&t;(_MGA_READ((u8 *)MGA_ADDR(reg)))
 DECL|macro|MGA_WRITE
 mdefine_line|#define MGA_WRITE( reg, val )&t;do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF( reg ) = val; } while (0)
 DECL|macro|MGA_WRITE8
@@ -497,6 +507,8 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|MGA_READ
 mdefine_line|#define MGA_READ( reg )&t;&t;MGA_DEREF( reg )
+DECL|macro|MGA_READ8
+mdefine_line|#define MGA_READ8( reg )&t;MGA_DEREF8( reg )
 DECL|macro|MGA_WRITE
 mdefine_line|#define MGA_WRITE( reg, val )&t;do { MGA_DEREF( reg ) = val; } while (0)
 DECL|macro|MGA_WRITE8
@@ -563,6 +575,13 @@ mdefine_line|#define MGA_DMA_DEBUG&t;&t;&t;0
 multiline_comment|/* A reduced set of the mga registers.&n; */
 DECL|macro|MGA_CRTC_INDEX
 mdefine_line|#define MGA_CRTC_INDEX&t;&t;&t;0x1fd4
+DECL|macro|MGA_CRTC_DATA
+mdefine_line|#define MGA_CRTC_DATA&t;&t;&t;0x1fd5
+multiline_comment|/* CRTC11 */
+DECL|macro|MGA_VINTCLR
+mdefine_line|#define MGA_VINTCLR&t;&t;&t;(1 &lt;&lt; 4)
+DECL|macro|MGA_VINTEN
+mdefine_line|#define MGA_VINTEN&t;&t;&t;(1 &lt;&lt; 5)
 DECL|macro|MGA_ALPHACTRL
 mdefine_line|#define MGA_ALPHACTRL &t;&t;&t;0x2c7c
 DECL|macro|MGA_AR0
@@ -695,10 +714,14 @@ DECL|macro|MGA_ICLEAR
 mdefine_line|#define MGA_ICLEAR &t;&t;&t;0x1e18
 DECL|macro|MGA_SOFTRAPICLR
 macro_line|#&t;define MGA_SOFTRAPICLR&t;&t;&t;(1 &lt;&lt; 0)
+DECL|macro|MGA_VLINEICLR
+macro_line|#&t;define MGA_VLINEICLR&t;&t;&t;(1 &lt;&lt; 5)
 DECL|macro|MGA_IEN
 mdefine_line|#define MGA_IEN &t;&t;&t;0x1e1c
 DECL|macro|MGA_SOFTRAPIEN
 macro_line|#&t;define MGA_SOFTRAPIEN&t;&t;&t;(1 &lt;&lt; 0)
+DECL|macro|MGA_VLINEIEN
+macro_line|#&t;define MGA_VLINEIEN&t;&t;&t;(1 &lt;&lt; 5)
 DECL|macro|MGA_LEN
 mdefine_line|#define MGA_LEN &t;&t;&t;0x1c5c
 DECL|macro|MGA_MACCESS
@@ -765,6 +788,10 @@ DECL|macro|MGA_STATUS
 mdefine_line|#define MGA_STATUS &t;&t;&t;0x1e14
 DECL|macro|MGA_SOFTRAPEN
 macro_line|#&t;define MGA_SOFTRAPEN&t;&t;&t;(1 &lt;&lt; 0)
+DECL|macro|MGA_VSYNCPEN
+macro_line|#&t;define MGA_VSYNCPEN&t;&t;&t;(1 &lt;&lt; 4)
+DECL|macro|MGA_VLINEPEN
+macro_line|#&t;define MGA_VLINEPEN&t;&t;&t;(1 &lt;&lt; 5)
 DECL|macro|MGA_DWGENGSTS
 macro_line|#&t;define MGA_DWGENGSTS&t;&t;&t;(1 &lt;&lt; 16)
 DECL|macro|MGA_ENDPRDMASTS

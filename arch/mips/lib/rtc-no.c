@@ -44,8 +44,9 @@ id|rtc_ops
 id|no_rtc_ops
 op_assign
 (brace
+dot
 id|rtc_read_data
-suffix:colon
+op_assign
 (paren
 r_void
 op_star
@@ -53,8 +54,9 @@ op_star
 op_amp
 id|shouldnt_happen
 comma
+dot
 id|rtc_write_data
-suffix:colon
+op_assign
 (paren
 r_void
 op_star
@@ -62,8 +64,9 @@ op_star
 op_amp
 id|shouldnt_happen
 comma
+dot
 id|rtc_bcd_mode
-suffix:colon
+op_assign
 (paren
 r_void
 op_star

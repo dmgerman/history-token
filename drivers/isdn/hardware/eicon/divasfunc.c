@@ -14,6 +14,7 @@ mdefine_line|#define DBG_DEFAULT  (DBG_MINIMUM + DL_XLOG + DL_REG)
 r_extern
 r_void
 id|DIVA_DIDD_Read
+c_func
 (paren
 r_void
 op_star
@@ -33,6 +34,7 @@ mdefine_line|#define MAX_DESCRIPTORS  32
 r_extern
 r_void
 id|diva_run_trap_script
+c_func
 (paren
 id|PISDN_ADAPTER
 id|IoAdapter
@@ -66,6 +68,7 @@ DECL|function|no_printf
 r_static
 r_void
 id|no_printf
+c_func
 (paren
 r_int
 r_char
@@ -87,8 +90,8 @@ id|no_printf
 suffix:semicolon
 macro_line|#include &quot;debuglib.c&quot;
 multiline_comment|/*&n; * get the adapters serial number&n; */
-r_void
 DECL|function|diva_get_vserial_number
+r_void
 id|diva_get_vserial_number
 c_func
 (paren
@@ -158,6 +161,7 @@ multiline_comment|/*&n; * register a new adapter&n; */
 DECL|function|diva_xdi_didd_register_adapter
 r_void
 id|diva_xdi_didd_register_adapter
+c_func
 (paren
 r_int
 id|card
@@ -280,7 +284,6 @@ c_func
 l_int|30
 comma
 id|strlen
-c_func
 (paren
 id|IoAdapters
 (braket
@@ -289,7 +292,9 @@ op_minus
 l_int|1
 )braket
 op_member_access_from_pointer
-id|Properties.Name
+id|Properties
+dot
+id|Name
 )paren
 )paren
 )paren
@@ -362,6 +367,7 @@ multiline_comment|/*&n; * remove an adapter&n; */
 DECL|function|diva_xdi_didd_remove_adapter
 r_void
 id|diva_xdi_didd_remove_adapter
+c_func
 (paren
 r_int
 id|card
@@ -558,7 +564,9 @@ l_string|&quot;Notification about IDI_DADAPTER change ! Oops.&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -612,7 +620,9 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * connect to didd&n; */
@@ -750,7 +760,9 @@ c_func
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|notify_handle
@@ -819,7 +831,9 @@ c_func
 suffix:semicolon
 )brace
 r_return
+(paren
 id|dadapter
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * disconnect from didd&n; */
@@ -895,15 +909,20 @@ l_string|&quot;divasfunc: failed to connect to DIDD.&quot;
 )paren
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|divasa_xdi_driver_entry
+c_func
 (paren
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * exit&n; */
@@ -917,10 +936,12 @@ r_void
 )paren
 (brace
 id|divasa_xdi_driver_unload
+c_func
 (paren
 )paren
 suffix:semicolon
 id|disconnect_didd
+c_func
 (paren
 )paren
 suffix:semicolon

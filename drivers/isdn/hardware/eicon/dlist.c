@@ -1,10 +1,11 @@
-multiline_comment|/* $Id: dlist.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: dlist.c,v 1.1.2.2 2001/02/11 14:40:41 armin Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;dlist.h&quot;
 multiline_comment|/*&n;**  Initialize linked list&n;*/
-r_void
 DECL|function|diva_q_init
+r_void
 id|diva_q_init
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -12,6 +13,7 @@ id|q
 )paren
 (brace
 id|memset
+c_func
 (paren
 id|q
 comma
@@ -26,9 +28,10 @@ id|q
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Remove element from linked list&n;*/
-r_void
 DECL|function|diva_q_remove
+r_void
 id|diva_q_remove
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -105,9 +108,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**  Add element to the tail of linked list&n;*/
-r_void
 DECL|function|diva_q_add_tail
+r_void
 id|diva_q_add_tail
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -156,10 +160,11 @@ id|what
 suffix:semicolon
 )brace
 )brace
+DECL|function|diva_q_find
 id|diva_entity_link_t
 op_star
-DECL|function|diva_q_find
 id|diva_q_find
+c_func
 (paren
 r_const
 id|diva_entity_queue_t
@@ -216,10 +221,11 @@ id|diva_current
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_q_get_head
 id|diva_entity_link_t
 op_star
-DECL|function|diva_q_get_head
 id|diva_q_get_head
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -232,10 +238,11 @@ id|q-&gt;head
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_q_get_tail
 id|diva_entity_link_t
 op_star
-DECL|function|diva_q_get_tail
 id|diva_q_get_tail
+c_func
 (paren
 id|diva_entity_queue_t
 op_star
@@ -248,10 +255,11 @@ id|q-&gt;tail
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_q_get_next
 id|diva_entity_link_t
 op_star
-DECL|function|diva_q_get_next
 id|diva_q_get_next
+c_func
 (paren
 id|diva_entity_link_t
 op_star
@@ -271,10 +279,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_q_get_prev
 id|diva_entity_link_t
 op_star
-DECL|function|diva_q_get_prev
 id|diva_q_get_prev
+c_func
 (paren
 id|diva_entity_link_t
 op_star
@@ -294,9 +303,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|diva_q_get_nr_of_entries
+r_int
 id|diva_q_get_nr_of_entries
+c_func
 (paren
 r_const
 id|diva_entity_queue_t

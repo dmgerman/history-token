@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva_didd.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * DIDD Interface module for Eicon active cards.&n; * &n; * Functions are in dadapter.c &n; * &n; * Copyright 2002 by Armin Schindler (mac@melware.de) &n; * Copyright 2002 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: diva_didd.c,v 1.1.2.6 2001/05/01 15:48:05 armin Exp $&n; *&n; * DIDD Interface module for Eicon active cards.&n; * &n; * Functions are in dadapter.c &n; * &n; * Copyright 2002 by Armin Schindler (mac@melware.de) &n; * Copyright 2002 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,7 +15,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.2 $&quot;
+l_string|&quot;$Revision: 1.1.2.6 $&quot;
 suffix:semicolon
 DECL|variable|DRIVERNAME
 r_static
@@ -105,6 +105,7 @@ suffix:semicolon
 r_extern
 r_void
 id|DIVA_DIDD_Read
+c_func
 (paren
 r_void
 op_star
@@ -148,10 +149,10 @@ c_func
 id|proc_net_isdn_eicon
 )paren
 suffix:semicolon
+DECL|function|getrev
 r_static
 r_char
 op_star
-DECL|function|getrev
 id|getrev
 c_func
 (paren
@@ -375,6 +376,7 @@ id|off
 suffix:semicolon
 r_return
 (paren
+(paren
 id|count
 OL
 id|len
@@ -388,6 +390,7 @@ suffix:colon
 id|len
 op_minus
 id|off
+)paren
 suffix:semicolon
 )brace
 DECL|function|create_proc
@@ -506,11 +509,15 @@ id|proc_read
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|remove_proc
@@ -562,10 +569,10 @@ id|proc_net
 suffix:semicolon
 )brace
 )brace
+DECL|function|divadidd_init
 r_static
 r_int
 id|DIVA_INIT_FUNCTION
-DECL|function|divadidd_init
 id|divadidd_init
 c_func
 (paren
@@ -700,9 +707,9 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+DECL|function|divadidd_exit
 r_void
 id|DIVA_EXIT_FUNCTION
-DECL|function|divadidd_exit
 id|divadidd_exit
 c_func
 (paren

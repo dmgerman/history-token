@@ -752,6 +752,10 @@ op_star
 id|gdp
 suffix:semicolon
 )brace
+id|gdp-&gt;private_data
+op_assign
+id|device
+suffix:semicolon
 id|device-&gt;gdp
 op_assign
 id|gdp
@@ -8526,10 +8530,10 @@ suffix:semicolon
 )brace
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-id|inp-&gt;i_rdev
+id|inp-&gt;i_bdev
 )paren
 suffix:semicolon
 id|device
@@ -8721,10 +8725,10 @@ id|device
 suffix:semicolon
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-id|inp-&gt;i_rdev
+id|inp-&gt;i_bdev
 )paren
 suffix:semicolon
 id|device

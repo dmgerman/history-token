@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 144 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 145 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -916,7 +916,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Normally, we would remove a reference on the Operand[0] parameter;&n;&t;&t; * But since it is being used as the internal return object&n;&t;&t; * (meaning we would normally increment it), the two cancel out,&n;&t;&t; * and we simply don&squot;t do anything.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state-&gt;result_obj
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Normally, we would remove a reference on the Operand[0] parameter;&n;&t;&t;&t; * But since it is being used as the internal return object&n;&t;&t;&t; * (meaning we would normally increment it), the two cancel out,&n;&t;&t;&t; * and we simply don&squot;t do anything.&n;&t;&t;&t; */
 id|walk_state-&gt;result_obj
 op_assign
 id|operand
@@ -932,6 +939,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Prevent deletion */
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -1118,10 +1126,18 @@ id|walk_state
 suffix:semicolon
 id|cleanup
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state-&gt;result_obj
+)paren
+(brace
 id|walk_state-&gt;result_obj
 op_assign
 id|return_desc
 suffix:semicolon
+)brace
 multiline_comment|/* Delete return object on error */
 r_if
 c_cond
