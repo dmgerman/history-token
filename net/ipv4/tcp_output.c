@@ -3788,7 +3788,7 @@ r_if
 c_cond
 (paren
 id|skb-&gt;len
-op_ne
+OG
 (paren
 id|data_end_seq
 op_minus
@@ -3796,6 +3796,17 @@ id|data_seq
 )paren
 )paren
 (brace
+id|u32
+id|to_trim
+op_assign
+id|skb-&gt;len
+op_minus
+(paren
+id|data_end_seq
+op_minus
+id|data_seq
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3806,9 +3817,7 @@ id|sk
 comma
 id|skb
 comma
-id|data_end_seq
-op_minus
-id|data_seq
+id|to_trim
 )paren
 )paren
 r_return
