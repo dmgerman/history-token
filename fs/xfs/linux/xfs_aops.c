@@ -1518,6 +1518,9 @@ op_star
 id|iomapp
 comma
 r_int
+id|startio
+comma
+r_int
 id|all_bh
 )paren
 (brace
@@ -1872,7 +1875,7 @@ id|iomapp
 comma
 id|pb
 comma
-l_int|1
+id|startio
 comma
 id|all_bh
 )paren
@@ -1955,7 +1958,7 @@ id|iomapp
 comma
 id|pb
 comma
-l_int|1
+id|startio
 comma
 id|all_bh
 )paren
@@ -2494,6 +2497,8 @@ comma
 id|bbits
 comma
 id|tmp
+comma
+id|startio
 comma
 id|all_bh
 )paren
@@ -3096,6 +3101,8 @@ comma
 id|inode-&gt;i_blkbits
 comma
 id|iomp
+comma
+id|startio
 comma
 id|unmapped
 )paren
