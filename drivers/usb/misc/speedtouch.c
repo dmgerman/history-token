@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;atmsar.h&quot;
 multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
 macro_line|#ifdef DEBUG
@@ -631,10 +632,16 @@ r_int
 id|zero_padding
 suffix:semicolon
 r_int
-id|i
+r_char
+id|zero
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|crc
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|ctrl-&gt;atm_data.vcc
 op_assign
@@ -779,7 +786,7 @@ id|skb-&gt;len
 suffix:semicolon
 id|crc
 op_assign
-id|crc32
+id|crc32_be
 (paren
 op_complement
 l_int|0
@@ -805,16 +812,19 @@ op_increment
 )paren
 id|crc
 op_assign
-id|CRC32
+id|crc32_be
 (paren
-l_int|0
-comma
 id|crc
+comma
+op_amp
+id|zero
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|crc
 op_assign
-id|crc32
+id|crc32_be
 (paren
 id|crc
 comma

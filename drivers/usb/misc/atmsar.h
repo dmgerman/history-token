@@ -37,18 +37,6 @@ DECL|macro|ATMSAR_DEF_MTU_AAL34
 mdefine_line|#define ATMSAR_DEF_MTU_AAL34         0&t;/* not supported */
 DECL|macro|ATMSAR_DEF_MTU_AAL5
 mdefine_line|#define ATMSAR_DEF_MTU_AAL5      65535&t;/* max mtu ..    */
-DECL|macro|CRC32
-mdefine_line|#define CRC32(c,crc) (crc32tab[((size_t)(crc&gt;&gt;24) ^ (c)) &amp; 0xff] ^ (((crc) &lt;&lt; 8)))
-DECL|macro|crc32
-mdefine_line|#define crc32( crc, mem, len) calc_crc(mem, len, crc);
-r_extern
-r_int
-r_int
-id|crc32tab
-(braket
-l_int|256
-)braket
-suffix:semicolon
 DECL|struct|atmsar_vcc_data
 r_struct
 id|atmsar_vcc_data
@@ -215,21 +203,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-)paren
-suffix:semicolon
-r_int
-r_int
-id|calc_crc
-(paren
-r_char
-op_star
-id|mem
-comma
-r_int
-id|len
-comma
-r_int
-id|initial
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _ATMSAR_H_ */
