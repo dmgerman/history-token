@@ -1376,8 +1376,6 @@ l_int|0x00
 comma
 op_amp
 id|this_register-&gt;enable_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1403,8 +1401,6 @@ l_int|0xFF
 comma
 op_amp
 id|this_register-&gt;status_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
