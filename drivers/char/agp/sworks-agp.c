@@ -1244,6 +1244,14 @@ op_plus
 id|SVWRKS_COMMAND
 )paren
 suffix:semicolon
+id|readw
+c_func
+(paren
+id|serverworks_private.registers
+op_plus
+id|SVWRKS_COMMAND
+)paren
+suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
