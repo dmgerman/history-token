@@ -105,6 +105,7 @@ suffix:semicolon
 DECL|variable|tt_exp
 r_static
 r_int
+r_int
 id|tt_exp
 suffix:semicolon
 r_static
