@@ -2457,6 +2457,12 @@ c_func
 r_void
 )paren
 (brace
+id|sys_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Syncing needs pdflushd, so do it before stopping processes */
 r_if
 c_cond
 (paren
@@ -2482,11 +2488,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|sys_sync
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3862,7 +3863,7 @@ id|pagedir_order
 id|printk
 c_func
 (paren
-l_string|&quot;not neccessary&bslash;n&quot;
+l_string|&quot;not necessary&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

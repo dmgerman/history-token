@@ -661,7 +661,7 @@ l_int|3
 op_rshift
 l_int|2
 suffix:semicolon
-multiline_comment|/* Note: we don&squot;t use real uid if it involves raising priviledge */
+multiline_comment|/* Note: we don&squot;t use real uid if it involves raising privilege */
 r_if
 c_cond
 (paren

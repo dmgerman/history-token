@@ -676,7 +676,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Cache sizes */
 macro_line|#ifdef CONFIG_X86_F00F_BUG
-multiline_comment|/*&n;&t; * All current models of Pentium and Pentium with MMX technology CPUs&n;&t; * have the F0 0F bug, which lets nonpriviledged users lock up the system.&n;&t; * Note that the workaround only should be initialized once...&n;&t; */
+multiline_comment|/*&n;&t; * All current models of Pentium and Pentium with MMX technology CPUs&n;&t; * have the F0 0F bug, which lets nonprivileged users lock up the system.&n;&t; * Note that the workaround only should be initialized once...&n;&t; */
 id|c-&gt;f00f_bug
 op_assign
 l_int|0

@@ -471,7 +471,7 @@ suffix:semicolon
 id|ulong
 id|x
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;If Space.c says not to use DMA, or if its not a PLX based&n;&t; *&t;PCI board, or if the expansion ROM space is not PCI&n;&t; *&t;configured, then return false.&n;&t; */
+multiline_comment|/*&n;&t; *&t;If Space.c says not to use DMA, or if it&squot;s not a PLX based&n;&t; *&t;PCI board, or if the expansion ROM space is not PCI&n;&t; *&t;configured, then return false.&n;&t; */
 r_if
 c_cond
 (paren
@@ -583,7 +583,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Initiate DMA using PLX part on PCI board.  Spin the&n; *&t;processor until completed.  All addresses are physical!&n; *&n; *&t;If pciaddr is NULL, then its a chaining DMA, and lcladdr is&n; *&t;the address of the first DMA descriptor in the chain.&n; *&n; *&t;If pciaddr is not NULL, then its a single DMA.&n; *&n; *&t;In either case, &quot;lcladdr&quot; must have been fixed up to make&n; *&t;sure the MSB isn&squot;t set using the S2DMA macro before passing&n; *&t;the address to this routine.&n; */
+multiline_comment|/*&n; *&t;Initiate DMA using PLX part on PCI board.  Spin the&n; *&t;processor until completed.  All addresses are physical!&n; *&n; *&t;If pciaddr is NULL, then it&squot;s a chaining DMA, and lcladdr is&n; *&t;the address of the first DMA descriptor in the chain.&n; *&n; *&t;If pciaddr is not NULL, then it&squot;s a single DMA.&n; *&n; *&t;In either case, &quot;lcladdr&quot; must have been fixed up to make&n; *&t;sure the MSB isn&squot;t set using the S2DMA macro before passing&n; *&t;the address to this routine.&n; */
 r_static
 r_int
 DECL|function|do_plx_dma
@@ -1032,7 +1032,7 @@ OG
 l_int|64
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;If we can use DMA and its a long frame, copy it using&n;&t;&t; *&t;DMA chaining.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;If we can use DMA and it&squot;s a long frame, copy it using&n;&t;&t; *&t;DMA chaining.&n;&t;&t; */
 id|DMACHAIN
 op_star
 id|ddp_h
@@ -1290,7 +1290,7 @@ c_cond
 id|priv0-&gt;use_dma
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;If we can use DMA and its a shorter frame, copy it&n;&t;&t; *&t;using single DMA transfers.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;If we can use DMA and it&squot;s a shorter frame, copy it&n;&t;&t; *&t;using single DMA transfers.&n;&t;&t; */
 id|uchar
 op_star
 id|phys_p

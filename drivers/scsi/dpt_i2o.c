@@ -98,6 +98,10 @@ op_minus
 l_int|1
 )paren
 comma
+(paren
+op_minus
+l_int|1
+)paren
 macro_line|#endif
 id|FT_HBADRVR
 comma
@@ -4801,13 +4805,11 @@ op_assign
 id|wait_data
 suffix:semicolon
 id|adpt_post_wait_id
-op_assign
-(paren
 op_increment
+suffix:semicolon
 id|adpt_post_wait_id
-op_amp
+op_and_assign
 l_int|0x7fff
-)paren
 suffix:semicolon
 id|wait_data-&gt;id
 op_assign
@@ -5319,7 +5321,7 @@ op_amp
 id|adpt_post_wait_lock
 )paren
 suffix:semicolon
-singleline_comment|// If this happens we loose commands that probably really completed
+singleline_comment|// If this happens we lose commands that probably really completed
 id|printk
 c_func
 (paren

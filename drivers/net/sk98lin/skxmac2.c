@@ -1069,7 +1069,7 @@ id|SK_PRT_STOP
 suffix:semicolon
 )brace
 multiline_comment|/* SkXmSoftRst*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmHardRst() - Do a XMAC hardware reset&n; *&n; * Description:&n; *&t;The XMAC of the specified &squot;Port&squot; and all connected devices&n; *&t;(PHY and SERDES) will receive a reset signal on its *Reset&n; *&t;pins.&n; *&t;External PHYs must be reset be clearing a bit in the GPIO&n; *&t;register (Timing requirements: Broadcom: 400ns, Level One:&n; *&t;none, National: 80ns).&n; *&n; * ATTENTION:&n; * &t;It is absolutely neccessary to reset the SW_RST Bit first&n; *&t;before calling this function.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmHardRst() - Do a XMAC hardware reset&n; *&n; * Description:&n; *&t;The XMAC of the specified &squot;Port&squot; and all connected devices&n; *&t;(PHY and SERDES) will receive a reset signal on its *Reset&n; *&t;pins.&n; *&t;External PHYs must be reset be clearing a bit in the GPIO&n; *&t;register (Timing requirements: Broadcom: 400ns, Level One:&n; *&t;none, National: 80ns).&n; *&n; * ATTENTION:&n; * &t;It is absolutely necessary to reset the SW_RST Bit first&n; *&t;before calling this function.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmHardRst
 r_void
 id|SkXmHardRst

@@ -5248,7 +5248,7 @@ id|card-&gt;tx_emitted
 op_le
 l_int|0
 )paren
-multiline_comment|/* If this is the first tx buffer emit it immediatly. */
+multiline_comment|/* If this is the first tx buffer emit it immediately. */
 id|__lcs_emit_txbuffer
 c_func
 (paren

@@ -2446,7 +2446,7 @@ id|p-&gt;par.pitch
 suffix:semicolon
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
-multiline_comment|/*&n; * Called from fbmem.c for probing &amp; intializing&n; */
+multiline_comment|/*&n; * Called from fbmem.c for probing &amp; initializing&n; */
 DECL|function|control_init
 r_int
 id|__init

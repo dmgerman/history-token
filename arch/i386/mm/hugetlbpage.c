@@ -43,6 +43,16 @@ id|htlbpage_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_void
+id|free_huge_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 DECL|function|alloc_hugetlb_page
 r_static
 r_struct
@@ -135,7 +145,7 @@ op_assign
 r_void
 op_star
 )paren
-id|huge_page_release
+id|free_huge_page
 suffix:semicolon
 r_for
 c_loop

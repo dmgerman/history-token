@@ -1775,7 +1775,7 @@ suffix:colon
 multiline_comment|/* ISA_250MG */
 id|base
 op_assign
-id|readb
+id|isa_readb
 c_func
 (paren
 id|bios_base
@@ -1784,7 +1784,7 @@ l_int|0x1fa2
 )paren
 op_plus
 (paren
-id|readb
+id|isa_readb
 c_func
 (paren
 id|bios_base
@@ -1803,7 +1803,7 @@ suffix:colon
 multiline_comment|/* ISA_200S (another one) */
 id|base
 op_assign
-id|readb
+id|isa_readb
 c_func
 (paren
 id|bios_base
@@ -1812,7 +1812,7 @@ l_int|0x1fa3
 )paren
 op_plus
 (paren
-id|readb
+id|isa_readb
 c_func
 (paren
 id|bios_base
@@ -1829,7 +1829,7 @@ r_default
 suffix:colon
 id|base
 op_assign
-id|readb
+id|isa_readb
 c_func
 (paren
 id|bios_base
@@ -1838,7 +1838,7 @@ l_int|0x1fcc
 )paren
 op_plus
 (paren
-id|readb
+id|isa_readb
 c_func
 (paren
 id|bios_base
@@ -6332,7 +6332,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|memcpy_fromio
+id|isa_memcpy_fromio
 c_func
 (paren
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: blkmtd.c,v 1.7 2001/11/10 17:06:30 spse Exp $&n; *&n; * blkmtd.c - use a block device as a fake MTD&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2001 Simon Evans&n; * &n; * Licence: GPL&n; *&n; * How it works:&n; *       The driver uses raw/io to read/write the device and the page&n; *       cache to cache access. Writes update the page cache with the&n; *       new data but make a copy of the new page(s) and then a kernel&n; *       thread writes pages out to the device in the background. This&n; *       ensures that writes are order even if a page is updated twice.&n; *       Also, since pages in the page cache are never marked as dirty,&n; *       we dont have to worry about writepage() being called on some &n; *       random page which may not be in the write order.&n; * &n; *       Erases are handled like writes, so the callback is called after&n; *       the page cache has been updated. Sync()ing will wait until it is &n; *       all done.&n; *&n; *       It can be loaded Read-Only to prevent erases and writes to the &n; *       medium.&n; *&n; * Todo:&n; *       Make the write queue size dynamic so this it is not too big on&n; *       small memory systems and too small on large memory systems.&n; * &n; *       Page cache usage may still be a bit wrong. Check we are doing&n; *       everything properly.&n; * &n; *       Somehow allow writes to dirty the page cache so we dont use too&n; *       much memory making copies of outgoing pages. Need to handle case&n; *       where page x is written to, then page y, then page x again before&n; *       any of them have been committed to disk.&n; * &n; *       Reading should read multiple pages at once rather than using &n; *       readpage() for each one. This is easy and will be fixed asap.&n; */
+multiline_comment|/* &n; * $Id: blkmtd.c,v 1.7 2001/11/10 17:06:30 spse Exp $&n; *&n; * blkmtd.c - use a block device as a fake MTD&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2001 Simon Evans&n; * &n; * Licence: GPL&n; *&n; * How it works:&n; *       The driver uses raw/io to read/write the device and the page&n; *       cache to cache access. Writes update the page cache with the&n; *       new data but make a copy of the new page(s) and then a kernel&n; *       thread writes pages out to the device in the background. This&n; *       ensures that writes are order even if a page is updated twice.&n; *       Also, since pages in the page cache are never marked as dirty,&n; *       we don&squot;t have to worry about writepage() being called on some &n; *       random page which may not be in the write order.&n; * &n; *       Erases are handled like writes, so the callback is called after&n; *       the page cache has been updated. Sync()ing will wait until it is &n; *       all done.&n; *&n; *       It can be loaded Read-Only to prevent erases and writes to the &n; *       medium.&n; *&n; * Todo:&n; *       Make the write queue size dynamic so this it is not too big on&n; *       small memory systems and too small on large memory systems.&n; * &n; *       Page cache usage may still be a bit wrong. Check we are doing&n; *       everything properly.&n; * &n; *       Somehow allow writes to dirty the page cache so we don&squot;t use too&n; *       much memory making copies of outgoing pages. Need to handle case&n; *       where page x is written to, then page y, then page x again before&n; *       any of them have been committed to disk.&n; * &n; *       Reading should read multiple pages at once rather than using &n; *       readpage() for each one. This is easy and will be fixed asap.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -700,7 +700,7 @@ id|err
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: cant allocate kiobuf&bslash;n&quot;
+l_string|&quot;blkmtd: can&squot;t allocate kiobuf&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SetPageError
@@ -740,7 +740,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: cant allocate iobuf blocks&bslash;n&quot;
+l_string|&quot;blkmtd: can&squot;t allocate iobuf blocks&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_kiovec
@@ -1164,7 +1164,7 @@ id|iobuf
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: write_queue_task cant allocate kiobuf&bslash;n&quot;
+l_string|&quot;blkmtd: write_queue_task can&squot;t allocate kiobuf&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1198,7 +1198,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: write_queue_task cant allocate iobuf blocks&bslash;n&quot;
+l_string|&quot;blkmtd: write_queue_task can&squot;t allocate iobuf blocks&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_kiovec
@@ -1379,7 +1379,7 @@ op_minus
 l_int|9
 )paren
 suffix:semicolon
-multiline_comment|/* If we are writing to the last page on the device and it doesn&squot;t end&n;       * on a page boundary, subtract the number of sectors that dont exist.&n;       */
+multiline_comment|/* If we are writing to the last page on the device and it doesn&squot;t end&n;       * on a page boundary, subtract the number of sectors that don&squot;t exist.&n;       */
 r_if
 c_cond
 (paren
@@ -1625,7 +1625,7 @@ id|item-&gt;rawdevice-&gt;sector_bits
 )paren
 )paren
 (brace
-multiline_comment|/* if an error occured - set this to exit the loop */
+multiline_comment|/* if an error occurred - set this to exit the loop */
 id|sectorcnt
 op_assign
 l_int|0
@@ -3585,7 +3585,7 @@ id|page
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: write: cant grab cache page %d&bslash;n&quot;
+l_string|&quot;blkmtd: write: can&squot;t grab cache page %d&bslash;n&quot;
 comma
 id|pagenr
 )paren
@@ -4920,7 +4920,7 @@ id|file
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: error, cant open device %s&bslash;n&quot;
+l_string|&quot;blkmtd: error, can&squot;t open device %s&bslash;n&quot;
 comma
 id|device
 )paren
@@ -5188,7 +5188,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: cant determine size&bslash;n&quot;
+l_string|&quot;blkmtd: can&squot;t determine size&bslash;n&quot;
 )paren
 suffix:semicolon
 id|blkdev_put

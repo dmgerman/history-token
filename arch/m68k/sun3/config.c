@@ -405,7 +405,7 @@ r_int
 r_int
 id|start_page
 suffix:semicolon
-multiline_comment|/* align start/end to page boundries */
+multiline_comment|/* align start/end to page boundaries */
 id|memory_start
 op_assign
 (paren

@@ -159,7 +159,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Load the FPU with signalling NANS.  This bit pattern we&squot;re using&n; * has the property that no matter wether considered as single or as&n; * double precission represents signaling NANS.  &n; */
+multiline_comment|/*&n; * Load the FPU with signalling NANS.  This bit pattern we&squot;re using&n; * has the property that no matter whether considered as single or as&n; * double precission represents signaling NANS.  &n; */
 r_static
 r_void
 DECL|function|fpu_init

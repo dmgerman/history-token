@@ -2570,7 +2570,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: DMA timeout occured: &quot;
+l_string|&quot;%s: DMA timeout occurred: &quot;
 comma
 id|drive-&gt;name
 )paren

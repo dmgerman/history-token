@@ -786,7 +786,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Called when module is loaded or when kernel is intialized.&n; * If MODULES is defined when this file is compiled, then this function will&n; * resolve to init_module (the function called when insmod is invoked for a&n; * module).  Otherwise, this function is called early in the boot, when the&n; * kernel is intialized.  Check out /include/init.h to see how this works.&n; */
+multiline_comment|/* Called when module is loaded or when kernel is initialized.&n; * If MODULES is defined when this file is compiled, then this function will&n; * resolve to init_module (the function called when insmod is invoked for a&n; * module).  Otherwise, this function is called early in the boot, when the&n; * kernel is intialized.  Check out /include/init.h to see how this works.&n; */
 DECL|variable|iic_ite_init
 id|module_init
 c_func

@@ -1110,7 +1110,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear the relevent break bits */
+multiline_comment|/* Clear the relevant break bits */
 r_if
 c_cond
 (paren
@@ -1588,6 +1588,8 @@ id|utcr0
 comma
 id|old_utcr3
 comma
+id|baud
+comma
 id|quot
 suffix:semicolon
 r_int
@@ -1697,9 +1699,9 @@ id|UTCR0_OES
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Ask the core to calculate the divisor for us.&n;&t; */
-id|quot
+id|baud
 op_assign
-id|uart_get_divisor
+id|uart_get_baud_rate
 c_func
 (paren
 id|port
@@ -1707,6 +1709,22 @@ comma
 id|termios
 comma
 id|old
+comma
+l_int|0
+comma
+id|port-&gt;uartclk
+op_div
+l_int|16
+)paren
+suffix:semicolon
+id|quot
+op_assign
+id|uart_get_divisor
+c_func
+(paren
+id|port
+comma
+id|baud
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1844,7 +1862,7 @@ id|port
 comma
 id|termios-&gt;c_cflag
 comma
-id|quot
+id|baud
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * disable interrupts and drain transmitter&n;&t; */

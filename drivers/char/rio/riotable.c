@@ -1007,7 +1007,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t;** wow! if we get here then its a goody!&n;&t;*/
+multiline_comment|/*&n;&t;** wow! if we get here then it&squot;s a goody!&n;&t;*/
 multiline_comment|/*&n;&t;** Zero the (old) entries for each host...&n;&t;*/
 r_for
 c_loop

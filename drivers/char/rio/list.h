@@ -45,7 +45,7 @@ macro_line|#else
 DECL|macro|add_transmit
 macro_line|#   define add_transmit(PortP)  &bslash;&n;&t;*PortP-&gt;TxAdd |= PKT_IN_USE;&bslash;&n;&t;if (PortP-&gt;TxAdd == PortP-&gt;TxEnd)&bslash;&n;&t;    PortP-&gt;TxAdd = PortP-&gt;TxStart;&bslash;&n;&t;else&bslash;&n;&t;    PortP-&gt;TxAdd++;&bslash;&n;&t;PortP-&gt;PhbP-&gt;tx_add = RIO_OFF(CaD,PortP-&gt;TxAdd);
 macro_line|#endif
-multiline_comment|/*&n;** can_remove_receive( PacketP, PortP ) returns non-zero if PKT_IN_USE is set&n;** for the next packet on the queue. It will also set PacketP to point to the&n;** relevent packet, [having cleared the PKT_IN_USE bit]. If PKT_IN_USE is clear,&n;** then can_remove_receive() returns 0.&n;*/
+multiline_comment|/*&n;** can_remove_receive( PacketP, PortP ) returns non-zero if PKT_IN_USE is set&n;** for the next packet on the queue. It will also set PacketP to point to the&n;** relevant packet, [having cleared the PKT_IN_USE bit]. If PKT_IN_USE is clear,&n;** then can_remove_receive() returns 0.&n;*/
 macro_line|#if defined(MIPS) || defined(nx6000) || defined(drs6000) || defined(UWsparc)
 DECL|macro|can_remove_receive
 macro_line|#   define can_remove_receive(PacketP,PortP) &bslash;&n;&t;((RINDW(PortP-&gt;RxRemove) &amp; PKT_IN_USE) ? &bslash;&n;&t;(PacketP=(struct PKT *)RIO_PTR(CaD,(RINDW(PortP-&gt;RxRemove) &amp; ~PKT_IN_USE))):0)

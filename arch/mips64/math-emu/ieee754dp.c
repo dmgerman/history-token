@@ -314,7 +314,7 @@ r_return
 id|y
 suffix:semicolon
 )brace
-multiline_comment|/* generate a normal/denormal number with over,under handeling&n; * sn is sign&n; * xe is an unbiased exponent&n; * xm is 3bit extended precision value.&n; */
+multiline_comment|/* generate a normal/denormal number with over,under handling&n; * sn is sign&n; * xe is an unbiased exponent&n; * xm is 3bit extended precision value.&n; */
 DECL|function|ieee754dp_format
 id|ieee754dp
 id|ieee754dp_format
@@ -337,7 +337,7 @@ m_assert
 id|xm
 )paren
 suffix:semicolon
-multiline_comment|/* we dont gen exact zeros (probably should) */
+multiline_comment|/* we don&squot;t gen exact zeros (probably should) */
 m_assert
 (paren
 (paren

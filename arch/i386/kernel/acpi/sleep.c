@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sleep.c - x86-specific ACPI sleep support.&n; *&n; *  Copyright (C) 2001-2003 Patrick Mochel&n; */
+multiline_comment|/*&n; * sleep.c - x86-specific ACPI sleep support.&n; *&n; *  Copyright (C) 2001-2003 Patrick Mochel&n; *  Copyright (C) 2001-2003 Pavel Machek &lt;pavel@suse.cz&gt;&n; */
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -101,17 +101,15 @@ id|acpi_save_state_mem
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_X86_PAE
-id|panic
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;S3 and PAE do not like each other for now.&quot;
+op_logical_neg
+id|acpi_wakeup_address
 )paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|init_low_mapping
 c_func
 (paren
@@ -175,7 +173,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpi_reserve_bootmem - do _very_ early ACPI initialisation&n; *&n; * We allocate a page in low memory for the wakeup&n; * routine for when we come back from a sleep state. The&n; * runtime allocator allows specification of &lt;16M pages, but not&n; * &lt;1M pages.&n; */
+multiline_comment|/**&n; * acpi_reserve_bootmem - do _very_ early ACPI initialisation&n; *&n; * We allocate a page from the first 1MB of memory for the wakeup&n; * routine for when we come back from a sleep state. The&n; * runtime allocator allows specification of &lt;16MB pages, but not&n; * &lt;1MB pages.&n; */
 DECL|function|acpi_reserve_bootmem
 r_void
 id|__init
@@ -185,6 +183,41 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+op_amp
+id|wakeup_end
+op_minus
+op_amp
+id|wakeup_start
+)paren
+OG
+id|PAGE_SIZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ACPI: Wakeup code way too big, S3 disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#if CONFIG_X86_PAE
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ACPI: S3 and PAE do not like each other for now, S3 disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+macro_line|#endif
 id|acpi_wakeup_address
 op_assign
 (paren
@@ -200,30 +233,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-op_amp
-id|wakeup_end
-op_minus
-op_amp
-id|wakeup_start
-)paren
-OG
-id|PAGE_SIZE
-)paren
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;ACPI: Wakeup code way too big, will crash on attempt to suspend&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ACPI: have wakeup address 0x%8.8lx&bslash;n&quot;
-comma
+op_logical_neg
 id|acpi_wakeup_address
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ACPI: Cannot allocate lowmem, S3 disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -868,7 +868,7 @@ id|bit_reg_info-&gt;parent_register
 r_case
 id|ACPI_REGISTER_PM1_STATUS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Status Registers are different from the rest.  Clear by&n;&t;&t; * writing 1, writing 0 has no effect.  So, the only relevent&n;&t;&t; * information is the single bit we&squot;re interested in, all others should&n;&t;&t; * be written as 0 so they will be left unchanged&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Status Registers are different from the rest.  Clear by&n;&t;&t; * writing 1, writing 0 has no effect.  So, the only relevant&n;&t;&t; * information is the single bit we&squot;re interested in, all others should&n;&t;&t; * be written as 0 so they will be left unchanged&n;&t;&t; */
 id|value
 op_assign
 id|ACPI_REGISTER_PREPARE_BITS

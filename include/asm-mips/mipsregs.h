@@ -636,7 +636,7 @@ DECL|macro|CE1_SP_HINT_TO_CEXCL_SC_BLOCKS
 mdefine_line|#define CE1_SP_HINT_TO_CEXCL_SC_BLOCKS&t;14
 DECL|macro|CE1_SP_HINT_TO_SHARED_SC_BLOCKS
 mdefine_line|#define CE1_SP_HINT_TO_SHARED_SC_BLOCKS&t;15
-multiline_comment|/*&n; * These flags define in which priviledge mode the counters count events&n; */
+multiline_comment|/*&n; * These flags define in which privilege mode the counters count events&n; */
 DECL|macro|CEB_USER
 mdefine_line|#define CEB_USER&t;8&t;/* Count events in user mode, EXL = ERL = 0 */
 DECL|macro|CEB_SUPERVISOR

@@ -2010,7 +2010,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Decrement a devices use count and remove it if neccessary.&n; */
+multiline_comment|/*&n; * Decrement a devices use count and remove it if necessary.&n; */
 DECL|function|dm_put_device
 r_void
 id|dm_put_device

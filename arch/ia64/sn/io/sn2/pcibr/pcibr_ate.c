@@ -1222,7 +1222,7 @@ id|ext_ates
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Bridge Hardware Bug WAR #484930:&n;     * Bridge can&squot;t handle updating External ATEs&n;     * while DMA is occuring that uses External ATEs,&n;     * even if the particular ATEs involved are disjoint.&n;     */
+multiline_comment|/* Bridge Hardware Bug WAR #484930:&n;     * Bridge can&squot;t handle updating External ATEs&n;     * while DMA is occurring that uses External ATEs,&n;     * even if the particular ATEs involved are disjoint.&n;     */
 multiline_comment|/* need to prevent anyone else from&n;     * unfreezing the grant while we&n;     * are working; also need to prevent&n;     * this thread from being interrupted&n;     * to keep PCI grant freeze time&n;     * at an absolute minimum.&n;     */
 id|s
 op_assign

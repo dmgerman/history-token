@@ -12903,7 +12903,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;raw1394: during addr_list-release &quot;
-l_string|&quot;error(s) occured &bslash;n&quot;
+l_string|&quot;error(s) occurred &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

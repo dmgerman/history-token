@@ -3679,7 +3679,7 @@ comma
 l_string|&quot;debug level - 0 off; 1 normal; 2,3 more verbose; 9 iic-protocol&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* This function resolves to init_module (the function invoked when a module&n; * is loaded via insmod) when this file is compiled with MODULES defined.&n; * Otherwise (i.e. if you want this driver statically linked to the kernel),&n; * a pointer to this function is stored in a table and called&n; * during the intialization of the kernel (in do_basic_setup in /init/main.c) &n; *&n; * All this functionality is complements of the macros defined in linux/init.h&n; */
+multiline_comment|/* This function resolves to init_module (the function invoked when a module&n; * is loaded via insmod) when this file is compiled with MODULES defined.&n; * Otherwise (i.e. if you want this driver statically linked to the kernel),&n; * a pointer to this function is stored in a table and called&n; * during the initialization of the kernel (in do_basic_setup in /init/main.c) &n; *&n; * All this functionality is complements of the macros defined in linux/init.h&n; */
 DECL|variable|i2c_algo_iic_init
 id|module_init
 c_func

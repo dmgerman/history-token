@@ -12169,9 +12169,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|currTar_Info-&gt;TarEEValue
 op_amp
 id|EE_WIDE_SCSI
+)paren
 )paren
 (brace
 r_return
@@ -26776,7 +26778,7 @@ id|SMNO_OP
 suffix:semicolon
 )brace
 macro_line|#ident &quot;$Id: phase.c 1.11 1997/01/31 02:08:49 mohan Exp $&quot;
-multiline_comment|/*----------------------------------------------------------------------&n; *&n; *&n; *   Copyright 1995-1996 by Mylex Corporation.  All Rights Reserved&n; *&n; *   This file is available under both the GNU General Public License&n; *   and a BSD-style copyright; see LICENSE.FlashPoint for details.&n; *&n; *   $Workfile:   phase.c  $&n; *&n; *   Description:  Functions to intially handle the SCSI bus phase when&n; *                 the target asserts request (and the automation is not&n; *                 enabled to handle the situation).&n; *&n; *   $Date: 1997/01/31 02:08:49 $&n; *&n; *   $Revision: 1.11 $&n; *&n; *----------------------------------------------------------------------*/
+multiline_comment|/*----------------------------------------------------------------------&n; *&n; *&n; *   Copyright 1995-1996 by Mylex Corporation.  All Rights Reserved&n; *&n; *   This file is available under both the GNU General Public License&n; *   and a BSD-style copyright; see LICENSE.FlashPoint for details.&n; *&n; *   $Workfile:   phase.c  $&n; *&n; *   Description:  Functions to initially handle the SCSI bus phase when&n; *                 the target asserts request (and the automation is not&n; *                 enabled to handle the situation).&n; *&n; *   $Date: 1997/01/31 02:08:49 $&n; *&n; *   $Revision: 1.11 $&n; *&n; *----------------------------------------------------------------------*/
 multiline_comment|/*#include &lt;globals.h&gt;*/
 macro_line|#if (FW_TYPE==_UCB_MGR_)
 multiline_comment|/*#include &lt;budi.h&gt;*/
@@ -40193,7 +40195,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*---------------------------------------------------------------------&n; *&n; * Function: DiagEEPROM&n; *&n; * Description: Verfiy checksum and &squot;Key&squot; and initialize the EEPROM if&n; *              neccessary.&n; *&n; *---------------------------------------------------------------------*/
+multiline_comment|/*---------------------------------------------------------------------&n; *&n; * Function: DiagEEPROM&n; *&n; * Description: Verfiy checksum and &squot;Key&squot; and initialize the EEPROM if&n; *              necessary.&n; *&n; *---------------------------------------------------------------------*/
 macro_line|#if defined(DOS)
 DECL|function|DiagEEPROM
 r_void

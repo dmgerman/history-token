@@ -3348,7 +3348,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Decide wether we have an iso, a request, or a response packet */
+multiline_comment|/* Decide whether we have an iso, a request, or a response packet */
 r_if
 c_cond
 (paren
@@ -9382,7 +9382,7 @@ op_amp
 id|OHCI1394_cycleInconsistent
 )paren
 (brace
-multiline_comment|/* We subscribe to the cycleInconsistent event only to&n;&t;&t; * clear the corresponding event bit... otherwise,&n;&t;&t; * isochronous cycleMatch DMA wont work. */
+multiline_comment|/* We subscribe to the cycleInconsistent event only to&n;&t;&t; * clear the corresponding event bit... otherwise,&n;&t;&t; * isochronous cycleMatch DMA won&squot;t work. */
 id|DBGMSG
 c_func
 (paren
@@ -9949,7 +9949,7 @@ comma
 id|ohci-&gt;id
 comma
 l_string|&quot;SelfID received, but NodeID invalid &quot;
-l_string|&quot;(probably new bus reset occured): %08X&quot;
+l_string|&quot;(probably new bus reset occurred): %08X&quot;
 comma
 id|node_id
 )paren
@@ -15783,7 +15783,7 @@ id|tasklet-&gt;type
 op_assign
 id|type
 suffix:semicolon
-multiline_comment|/* We init the tasklet-&gt;link field, so we can list_del() it&n;&t; * without worrying wether it was added to the list or not. */
+multiline_comment|/* We init the tasklet-&gt;link field, so we can list_del() it&n;&t; * without worrying whether it was added to the list or not. */
 id|INIT_LIST_HEAD
 c_func
 (paren

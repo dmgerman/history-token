@@ -23,6 +23,8 @@ macro_line|#include &quot;irq_impl.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 r_extern
 r_int

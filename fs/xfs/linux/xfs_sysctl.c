@@ -2,12 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All Ri
 macro_line|#include &lt;xfs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-multiline_comment|/*&n; * Tunable XFS parameters&n; */
-r_extern
-r_struct
-id|xfsstats
-id|xfsstats
-suffix:semicolon
 DECL|variable|xfs_min
 id|STATIC
 id|ulong
@@ -46,22 +40,6 @@ comma
 l_int|1
 comma
 l_int|127
-)brace
-suffix:semicolon
-DECL|variable|xfs_params
-id|xfs_param_t
-id|xfs_params
-op_assign
-(brace
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|variable|xfs_table_header

@@ -44,7 +44,7 @@ DECL|member|transceiver
 id|u8
 id|transceiver
 suffix:semicolon
-multiline_comment|/* Which tranceiver to use */
+multiline_comment|/* Which transceiver to use */
 DECL|member|autoneg
 id|u8
 id|autoneg
@@ -699,7 +699,7 @@ DECL|macro|PORT_FIBRE
 mdefine_line|#define PORT_FIBRE&t;&t;0x03
 DECL|macro|PORT_BNC
 mdefine_line|#define PORT_BNC&t;&t;0x04
-multiline_comment|/* Which tranceiver to use. */
+multiline_comment|/* Which transceiver to use. */
 DECL|macro|XCVR_INTERNAL
 mdefine_line|#define XCVR_INTERNAL&t;&t;0x00
 DECL|macro|XCVR_EXTERNAL

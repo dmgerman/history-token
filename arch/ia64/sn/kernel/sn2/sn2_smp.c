@@ -1303,7 +1303,7 @@ id|mycnode
 op_assign
 id|local_nodeid
 suffix:semicolon
-multiline_comment|/* &n;&t; * For now, we dont want to spin uninterruptibly waiting&n;&t; * for the lock. Makes hangs hard to debug.&n;&t; */
+multiline_comment|/* &n;&t; * For now, we don&squot;t want to spin uninterruptibly waiting&n;&t; * for the lock. Makes hangs hard to debug.&n;&t; */
 id|local_irq_save
 c_func
 (paren
@@ -1793,7 +1793,7 @@ id|val
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SHUB_1_0_SPECIFIC
-multiline_comment|/* doesnt work on shub 1.0 */
+multiline_comment|/* doesn&squot;t work on shub 1.0 */
 id|wait_piowc
 c_func
 (paren

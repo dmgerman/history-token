@@ -4367,8 +4367,6 @@ id|pnp_activate_dev
 c_func
 (paren
 id|dev
-comma
-l_int|NULL
 )paren
 OL
 l_int|0
@@ -11928,7 +11926,7 @@ id|the_time
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|100
 op_star
 id|HZ
 suffix:semicolon
@@ -12019,7 +12017,7 @@ id|the_time
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|100
 op_star
 id|HZ
 suffix:semicolon
@@ -12867,7 +12865,7 @@ id|the_time
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|100
 op_star
 id|HZ
 suffix:semicolon

@@ -6376,7 +6376,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* dont know how yet */
+multiline_comment|/* don&squot;t know how yet */
 r_case
 id|AWACS_BURGUNDY
 suffix:colon
@@ -13716,7 +13716,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* dont know how yet */
+multiline_comment|/* don&squot;t know how yet */
 r_case
 id|AWACS_BURGUNDY
 suffix:colon

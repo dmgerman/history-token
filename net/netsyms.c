@@ -3172,7 +3172,7 @@ c_func
 id|softnet_data
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_NET_RADIO) || defined(CONFIG_NET_PCMCIA_RADIO)
+macro_line|#ifdef CONFIG_NET_RADIO
 multiline_comment|/* Don&squot;t include the whole header mess for a single function */
 r_union
 id|iwreq_data
@@ -3208,7 +3208,7 @@ c_func
 id|wireless_send_event
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_NET_RADIO || CONFIG_NET_PCMCIA_RADIO */
+macro_line|#endif&t;/* CONFIG_NET_RADIO */
 DECL|variable|linkwatch_fire_event
 id|EXPORT_SYMBOL
 c_func

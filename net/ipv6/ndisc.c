@@ -819,7 +819,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Unknown options must be silently ignored,&n;&t;&t;&t; * to accomodate future extension to the protocol.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Unknown options must be silently ignored,&n;&t;&t;&t; * to accommodate future extension to the protocol.&n;&t;&t;&t; */
 id|ND_PRINTK2
 c_func
 (paren

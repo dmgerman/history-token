@@ -5111,7 +5111,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================================&n; * Setup so that a frame can be transmitted on the occurence of a transmit&n; * interrupt.&n; *===========================================================================*/
+multiline_comment|/*============================================================================&n; * Setup so that a frame can be transmitted on the occurrence of a transmit&n; * interrupt.&n; *===========================================================================*/
 DECL|function|setup_for_delayed_transmit
 r_static
 r_void
@@ -10339,7 +10339,7 @@ r_case
 id|X25RES_PROTO_VIOLATION
 suffix:colon
 multiline_comment|/* X.25 protocol violation indication */
-multiline_comment|/* Bug Fix: Mar 14 2000&n;                 * The Protocol violation error conditions were  &n;                 * not handeled previously */
+multiline_comment|/* Bug Fix: Mar 14 2000&n;                 * The Protocol violation error conditions were  &n;                 * not handled previously */
 r_switch
 c_cond
 (paren
@@ -10657,7 +10657,7 @@ id|retry
 suffix:semicolon
 )brace
 multiline_comment|/*==================================================================== &n; *&t;X.25 Asynchronous Event Handlers&n; * &t;These functions are called by the x25_error() and should return 0, if&n; * &t;the command resulting in the asynchronous event must be aborted.&n; *====================================================================*/
-multiline_comment|/*====================================================================&n; *Handle X.25 incoming call request.&n; *&t;RFC 1356 establishes the following rules:&n; *&t;1. The first octet in the Call User Data (CUD) field of the call&n; *     &t;   request packet contains NLPID identifying protocol encapsulation&n; * &t;2. Calls MUST NOT be accepted unless router supports requested&n; *   &t;   protocol encapsulation.&n; *&t;3. A diagnostic code 249 defined by ISO/IEC 8208 may be used &n; *&t;   when clearing a call because protocol encapsulation is not &n; *&t;   supported.&n; *&t;4. If an incoming call is received while a call request is &n; *&t;   pending (i.e. call collision has occured), the incoming call &n; *&t;   shall be rejected and call request shall be retried.&n; *====================================================================*/
+multiline_comment|/*====================================================================&n; *Handle X.25 incoming call request.&n; *&t;RFC 1356 establishes the following rules:&n; *&t;1. The first octet in the Call User Data (CUD) field of the call&n; *     &t;   request packet contains NLPID identifying protocol encapsulation&n; * &t;2. Calls MUST NOT be accepted unless router supports requested&n; *   &t;   protocol encapsulation.&n; *&t;3. A diagnostic code 249 defined by ISO/IEC 8208 may be used &n; *&t;   when clearing a call because protocol encapsulation is not &n; *&t;   supported.&n; *&t;4. If an incoming call is received while a call request is &n; *&t;   pending (i.e. call collision has occurred), the incoming call &n; *&t;   shall be rejected and call request shall be retried.&n; *====================================================================*/
 DECL|function|incoming_call
 r_static
 r_int
@@ -14299,7 +14299,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*If we get here its an IPX-data packet, so it&squot;ll get passed up the stack.&n;&t;&t; */
+multiline_comment|/*If we get here it&squot;s an IPX-data packet, so it&squot;ll get passed up the stack.&n;&t;&t; */
 multiline_comment|/* switch the network numbers */
 id|switch_net_numbers
 c_func

@@ -207,7 +207,7 @@ c_func
 (paren
 id|xcvr
 comma
-l_string|&quot;ATP tranceiver(s) (0=internal, 1=external)&quot;
+l_string|&quot;ATP transceiver(s) (0=internal, 1=external)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The number of low I/O ports used by the ethercard. */

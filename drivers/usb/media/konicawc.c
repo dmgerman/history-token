@@ -1230,7 +1230,7 @@ op_complement
 l_int|0x40
 suffix:semicolon
 )brace
-multiline_comment|/* work out the button status, but dont do&n;&t;&t;   anything with it for now */
+multiline_comment|/* work out the button status, but don&squot;t do&n;&t;&t;   anything with it for now */
 r_if
 c_cond
 (paren
@@ -3122,7 +3122,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;couldnt find size %d,%d&quot;
+l_string|&quot;couldn&squot;t find size %d,%d&quot;
 comma
 id|x
 comma
@@ -4287,7 +4287,7 @@ suffix:semicolon
 id|err
 c_func
 (paren
-l_string|&quot;cant allocate urbs&quot;
+l_string|&quot;can&squot;t allocate urbs&quot;
 )paren
 suffix:semicolon
 r_return

@@ -7201,7 +7201,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; *&t;Looks for early PCI chipsets where people report hangs&n;&t; *&t;without the workarounds being on.&n;&t; */
-multiline_comment|/* Intel Saturn. Switch to 8 long words burst, 8 long word cache aligned&n;&t;   Aries might need this too. The Saturn errata are not pretty reading but&n;&t;   thankfully its an old 486 chipset.&n;&t;*/
+multiline_comment|/* Intel Saturn. Switch to 8 long words burst, 8 long word cache aligned&n;&t;   Aries might need this too. The Saturn errata are not pretty reading but&n;&t;   thankfully it&squot;s an old 486 chipset.&n;&t;*/
 r_if
 c_cond
 (paren

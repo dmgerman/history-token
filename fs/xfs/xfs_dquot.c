@@ -3274,7 +3274,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Given the file system, inode OR id, and type (UDQUOT/GDQUOT), return a&n; * a locked dquot, doing an allocation (if requested) as needed.&n; * When both an inode and an id are given, the inode&squot;s id takes precedence.&n; * That is, if the id changes while we dont hold the ilock inside this&n; * function, the new dquot is returned, not necessarily the one requested&n; * in the id argument.&n; */
+multiline_comment|/*&n; * Given the file system, inode OR id, and type (UDQUOT/GDQUOT), return a&n; * a locked dquot, doing an allocation (if requested) as needed.&n; * When both an inode and an id are given, the inode&squot;s id takes precedence.&n; * That is, if the id changes while we don&squot;t hold the ilock inside this&n; * function, the new dquot is returned, not necessarily the one requested&n; * in the id argument.&n; */
 r_int
 DECL|function|xfs_qm_dqget
 id|xfs_qm_dqget
@@ -5097,7 +5097,7 @@ l_string|&quot;DQPURGE -&gt;DQFLUSH: DQDIRTY&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* dqflush unlocks dqflock */
-multiline_comment|/*&n;&t;&t; * Given that dqpurge is a very rare occurence, it is OK&n;&t;&t; * that we&squot;re holding the hashlist and mplist locks&n;&t;&t; * across the disk write. But, ... XXXsup&n;&t;&t; *&n;&t;&t; * We don&squot;t care about getting disk errors here. We need&n;&t;&t; * to purge this dquot anyway, so we go ahead regardless.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Given that dqpurge is a very rare occurrence, it is OK&n;&t;&t; * that we&squot;re holding the hashlist and mplist locks&n;&t;&t; * across the disk write. But, ... XXXsup&n;&t;&t; *&n;&t;&t; * We don&squot;t care about getting disk errors here. We need&n;&t;&t; * to purge this dquot anyway, so we go ahead regardless.&n;&t;&t; */
 (paren
 r_void
 )paren

@@ -26,7 +26,7 @@ DECL|macro|ATTR_KERNAMELS
 mdefine_line|#define ATTR_KERNAMELS&t;0x4000&t;/* [kernel] list attr names (simple list) */
 DECL|macro|ATTR_KERNFULLS
 mdefine_line|#define ATTR_KERNFULLS&t;0x8000&t;/* [kernel] full attr list, ie. root+user */
-multiline_comment|/*&n; * The maximum size (into the kernel or returned from the kernel) of an&n; * attribute value or the buffer used for an attr_list() call.&t;Larger&n; * sizes will result in an E2BIG return code.&n; */
+multiline_comment|/*&n; * The maximum size (into the kernel or returned from the kernel) of an&n; * attribute value or the buffer used for an attr_list() call.&t;Larger&n; * sizes will result in an ERANGE return code.&n; */
 DECL|macro|ATTR_MAX_VALUELEN
 mdefine_line|#define ATTR_MAX_VALUELEN&t;(64*1024)&t;/* max length of a value */
 multiline_comment|/*&n; * Define how lists of attribute names are returned to the user from&n; * the attr_list() call.  A large, 32bit aligned, buffer is passed in&n; * along with its size.&t; We put an array of offsets at the top that each&n; * reference an attrlist_ent_t and pack the attrlist_ent_t&squot;s at the bottom.&n; */

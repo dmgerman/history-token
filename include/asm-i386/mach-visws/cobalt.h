@@ -66,7 +66,7 @@ mdefine_line|#define&t;CO_APIC_PCIA_BASE0&t;0 /* and 1 */&t;/* slot 0, line 0 */
 DECL|macro|CO_APIC_PCIA_BASE123
 mdefine_line|#define&t;CO_APIC_PCIA_BASE123&t;5 /* and 6 */&t;/* slot 0, line 1 */
 DECL|macro|CO_APIC_PIIX4_USB
-mdefine_line|#define&t;CO_APIC_PIIX4_USB&t;7&t;&t;/* this one is wierd */
+mdefine_line|#define&t;CO_APIC_PIIX4_USB&t;7&t;&t;/* this one is weird */
 multiline_comment|/* Lithium PCI Bridge B -- &quot;the one with PIIX4&quot; */
 DECL|macro|CO_APIC_PCIB_BASE0
 mdefine_line|#define&t;CO_APIC_PCIB_BASE0&t;8 /* and 9-12 *//* slot 0, line 0 */

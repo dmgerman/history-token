@@ -1407,7 +1407,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot; *** If you see IRQ problems, in paticular SCSI resets and hangs at boot&bslash;n&quot;
+l_string|&quot; *** If you see IRQ problems, in particular SCSI resets and hangs at boot&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -1452,7 +1452,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Toshiba with broken keyboard detected. If your keyboard sometimes generates 3 keypresses instead of one, contact pavel@ucw.cz&bslash;n&quot;
+l_string|&quot;Toshiba with broken keyboard detected. If your keyboard sometimes generates 3 keypresses instead of one, see http://davyd.ucc.asn.au/projects/toshiba/README&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1488,6 +1488,59 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ACPI_SLEEP
+DECL|function|reset_videomode_after_s3
+r_static
+id|__init
+r_int
+id|reset_videomode_after_s3
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+multiline_comment|/* See acpi_wakeup.S */
+r_extern
+r_int
+id|acpi_video_flags
+suffix:semicolon
+id|acpi_video_flags
+op_or_assign
+l_int|2
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|reset_videobios_after_s3
+r_static
+id|__init
+r_int
+id|reset_videobios_after_s3
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+r_extern
+r_int
+id|acpi_video_flags
+suffix:semicolon
+id|acpi_video_flags
+op_or_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Some Bioses enable the PS/2 mouse (touchpad) at resume, even if it was&n; * disabled before the suspend. Linux used to get terribly confused by that.&n; */
 DECL|function|broken_ps2_resume
 r_static

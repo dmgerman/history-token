@@ -82,7 +82,7 @@ mdefine_line|#define PWQ_MEM_FREE(p) kmem_cache_free(pwq_cache, p)
 multiline_comment|/* Fast test to see if the file is an evenpoll file */
 DECL|macro|IS_FILE_EPOLL
 mdefine_line|#define IS_FILE_EPOLL(f) ((f)-&gt;f_op == &amp;eventpoll_fops)
-multiline_comment|/*&n; * Remove the item from the list and perform its initialization.&n; * This is usefull for us because we can test if the item is linked&n; * using &quot;EP_IS_LINKED(p)&quot;.&n; */
+multiline_comment|/*&n; * Remove the item from the list and perform its initialization.&n; * This is useful for us because we can test if the item is linked&n; * using &quot;EP_IS_LINKED(p)&quot;.&n; */
 DECL|macro|EP_LIST_DEL
 mdefine_line|#define EP_LIST_DEL(p) do { list_del(p); INIT_LIST_HEAD(p); } while (0)
 multiline_comment|/* Tells us if the item is currently linked */
@@ -3234,7 +3234,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We have to signal that an error occured */
+multiline_comment|/* We have to signal that an error occurred */
 id|epi-&gt;nwait
 op_assign
 op_minus

@@ -7590,7 +7590,7 @@ id|Intr_test_counter
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* The critical flag is unset because during intialization (if_open) &n;&t; * we want the interrupts to be enabled so that when the wpc_isr is&n;&t; * called it does not exit due to critical flag set.&n;&t; */
+multiline_comment|/* The critical flag is unset because during initialization (if_open) &n;&t; * we want the interrupts to be enabled so that when the wpc_isr is&n;&t; * called it does not exit due to critical flag set.&n;&t; */
 id|err
 op_assign
 id|chdlc_set_intr_mode

@@ -53,7 +53,7 @@ suffix:semicolon
 multiline_comment|/* saved flag register */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * At user-&gt;kernel entry, the pt_regs struct is stacked on the top of the kernel-stack.&n; * This macro allows us to find those regs for a task.&n; * Notice that subsequent pt_regs stackings, like recursive interrupts occuring while&n; * we&squot;re in the kernel, won&squot;t affect this - only the first user-&gt;kernel transition&n; * registers are reached by this.&n; */
+multiline_comment|/*&n; * At user-&gt;kernel entry, the pt_regs struct is stacked on the top of the kernel-stack.&n; * This macro allows us to find those regs for a task.&n; * Notice that subsequent pt_regs stackings, like recursive interrupts occurring while&n; * we&squot;re in the kernel, won&squot;t affect this - only the first user-&gt;kernel transition&n; * registers are reached by this.&n; */
 DECL|macro|user_regs
 mdefine_line|#define user_regs(task) (((struct pt_regs *)((unsigned long)(task) + THREAD_SIZE)) - 1)
 multiline_comment|/*&n; * Dito but for the currently running task&n; */

@@ -561,7 +561,7 @@ l_string|&quot;-0.5&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * this was computed as peak_value[i] = pow((63-i)*1.42,1.013)&n; *&n; * UDA1341 datasheet on page 21: Peak value (dB) = (Peak level - 63.5)*5*log2&n; * There is an tabel with these values [level]=value: [3]=-90.31, [7]=-84.29&n; * [61]=-2.78, [62] = -1.48, [63] = 0.0&n; * I tried to compute it, but using but even using logarithm with base either 10 or 2&n; * i was&squot;n able to get values in the table from the formula. So I constructed another&n; * formula (see above) to interpolate the values as good as possible. If there is some&n; * mistake, please contact me on tomas.kasparek@seznam.cz. Thanks.&n; * UDA1341TS datasheet is available at:&n; *   http://www-us9.semiconductors.com/acrobat/datasheets/UDA1341TS_3.pdf &n; */
+multiline_comment|/*&n; * this was computed as peak_value[i] = pow((63-i)*1.42,1.013)&n; *&n; * UDA1341 datasheet on page 21: Peak value (dB) = (Peak level - 63.5)*5*log2&n; * There is an table with these values [level]=value: [3]=-90.31, [7]=-84.29&n; * [61]=-2.78, [62] = -1.48, [63] = 0.0&n; * I tried to compute it, but using but even using logarithm with base either 10 or 2&n; * i was&squot;n able to get values in the table from the formula. So I constructed another&n; * formula (see above) to interpolate the values as good as possible. If there is some&n; * mistake, please contact me on tomas.kasparek@seznam.cz. Thanks.&n; * UDA1341TS datasheet is available at:&n; *   http://www-us9.semiconductors.com/acrobat/datasheets/UDA1341TS_3.pdf &n; */
 DECL|variable|peak_value
 r_const
 r_char

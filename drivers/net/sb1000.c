@@ -794,8 +794,6 @@ id|pnp_activate_dev
 c_func
 (paren
 id|idev
-comma
-l_int|NULL
 )paren
 OL
 l_int|0

@@ -34,7 +34,7 @@ r_static
 r_int
 id|backoff
 suffix:semicolon
-multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   The default is autonegotation for speed and duplex.&n;     This should rarely be overridden.&n;   Use option values 0x10/0x20 for 10Mbps, 0x100,0x200 for 100Mbps.&n;   Use option values 0x10 and 0x100 for forcing half duplex fixed speed.&n;   Use option values 0x20 and 0x200 for forcing full duplex operation.&n;*/
+multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   The default is autonegotiation for speed and duplex.&n;     This should rarely be overridden.&n;   Use option values 0x10/0x20 for 10Mbps, 0x100,0x200 for 100Mbps.&n;   Use option values 0x10 and 0x100 for forcing half duplex fixed speed.&n;   Use option values 0x20 and 0x200 for forcing full duplex operation.&n;*/
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8&t;&t;/* More are supported, limit only on options */
 DECL|variable|options

@@ -3025,7 +3025,7 @@ comma
 multiline_comment|/*-------------------------&lt; SELECT2 &gt;----------------------*/
 comma
 (brace
-multiline_comment|/*&n;&t;**&t;Now there are 4 possibilities:&n;&t;**&n;&t;**&t;(1) The ncr looses arbitration.&n;&t;**&t;This is ok, because it will try again,&n;&t;**&t;when the bus becomes idle.&n;&t;**&t;(But beware of the timeout function!)&n;&t;**&n;&t;**&t;(2) The ncr is reselected.&n;&t;**&t;Then the script processor takes the jump&n;&t;**&t;to the RESELECT label.&n;&t;**&n;&t;**&t;(3) The ncr wins arbitration.&n;&t;**&t;Then it will execute SCRIPTS instruction until &n;&t;**&t;the next instruction that checks SCSI phase.&n;&t;**&t;Then will stop and wait for selection to be &n;&t;**&t;complete or selection time-out to occur.&n;&t;**&t;As a result the SCRIPTS instructions until &n;&t;**&t;LOADPOS + 2 should be executed in parallel with &n;&t;**&t;the SCSI core performing selection.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Now there are 4 possibilities:&n;&t;**&n;&t;**&t;(1) The ncr loses arbitration.&n;&t;**&t;This is ok, because it will try again,&n;&t;**&t;when the bus becomes idle.&n;&t;**&t;(But beware of the timeout function!)&n;&t;**&n;&t;**&t;(2) The ncr is reselected.&n;&t;**&t;Then the script processor takes the jump&n;&t;**&t;to the RESELECT label.&n;&t;**&n;&t;**&t;(3) The ncr wins arbitration.&n;&t;**&t;Then it will execute SCRIPTS instruction until &n;&t;**&t;the next instruction that checks SCSI phase.&n;&t;**&t;Then will stop and wait for selection to be &n;&t;**&t;complete or selection time-out to occur.&n;&t;**&t;As a result the SCRIPTS instructions until &n;&t;**&t;LOADPOS + 2 should be executed in parallel with &n;&t;**&t;the SCSI core performing selection.&n;&t;*/
 multiline_comment|/*&n;&t;**&t;The M_REJECT problem seems to be due to a selection &n;&t;**&t;timing problem.&n;&t;**&t;Wait immediately for the selection to complete. &n;&t;**&t;(2.5x behaves so)&n;&t;*/
 id|SCR_JUMPR
 op_xor
@@ -7181,7 +7181,7 @@ suffix:semicolon
 r_case
 l_int|0x8
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;**&t;JUMP / CALL&n;&t;&t;&t;**&t;dont&squot;t relocate if relative :-)&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;**&t;JUMP / CALL&n;&t;&t;&t;**&t;don&squot;t relocate if relative :-)&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -16679,7 +16679,7 @@ id|div
 op_div
 id|clk
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Why not to try the immediate lower divisor and to choose &n;&t;**&t;the one that allows the fastest output speed ?&n;&t;**&t;We dont want input speed too much greater than output speed.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Why not to try the immediate lower divisor and to choose &n;&t;**&t;the one that allows the fastest output speed ?&n;&t;**&t;We don&squot;t want input speed too much greater than output speed.&n;&t;*/
 r_if
 c_cond
 (paren

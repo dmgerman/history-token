@@ -405,6 +405,8 @@ id|get_jiffies_64
 c_func
 (paren
 )paren
+op_minus
+id|INITIAL_JIFFIES
 suffix:semicolon
 id|uptime_remainder
 op_assign
@@ -1471,6 +1473,8 @@ id|get_jiffies_64
 c_func
 (paren
 )paren
+op_minus
+id|INITIAL_JIFFIES
 suffix:semicolon
 r_int
 r_int

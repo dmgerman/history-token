@@ -2664,7 +2664,7 @@ op_ne
 id|intrfc-&gt;if_netnum
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Unshare the buffer before modifying the count in&n;&t;&t; * case its a flood or tcpdump&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Unshare the buffer before modifying the count in&n;&t;&t; * case it&squot;s a flood or tcpdump&n;&t;&t; */
 id|skb
 op_assign
 id|skb_unshare

@@ -4519,6 +4519,11 @@ c_func
 r_void
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smp_call_function
 (paren
 id|flush_tlb_all_function
@@ -4531,6 +4536,11 @@ l_int|1
 )paren
 suffix:semicolon
 id|do_flush_tlb_all_local
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren
@@ -5185,7 +5195,7 @@ id|vic_irq_type
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* send a CPI at level cpi to a set of cpus in cpuset (set 1 bit per&n; * processor to recieve CPI */
+multiline_comment|/* send a CPI at level cpi to a set of cpus in cpuset (set 1 bit per&n; * processor to receive CPI */
 r_static
 r_void
 DECL|function|send_CPI

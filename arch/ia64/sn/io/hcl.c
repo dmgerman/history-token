@@ -1215,7 +1215,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HCL: Unable to set the connect point to it&squot;s parent 0x%p&bslash;n&quot;
+l_string|&quot;HCL: Unable to set the connect point to its parent 0x%p&bslash;n&quot;
 comma
 (paren
 r_void

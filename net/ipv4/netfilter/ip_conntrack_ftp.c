@@ -1781,7 +1781,7 @@ op_minus
 l_int|1
 )paren
 (brace
-multiline_comment|/* We don&squot;t usually drop packets.  After all, this is&n;&t;&t;   connection tracking, not packet filtering.&n;&t;&t;   However, it is neccessary for accurate tracking in&n;&t;&t;   this case. */
+multiline_comment|/* We don&squot;t usually drop packets.  After all, this is&n;&t;&t;   connection tracking, not packet filtering.&n;&t;&t;   However, it is necessary for accurate tracking in&n;&t;&t;   this case. */
 r_if
 c_cond
 (paren

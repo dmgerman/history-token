@@ -5612,7 +5612,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* TLan_HandleDummy */
-multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleTxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurances by&n;&t; *&t;reading the CSTAT member of the list structure.  Tx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;functionality, so process EOC events if this is the&n;&t; *&t;case.&n;&t; *&n;&t; **************************************************************/
+multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleTxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurrences by&n;&t; *&t;reading the CSTAT member of the list structure.  Tx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;functionality, so process EOC events if this is the&n;&t; *&t;case.&n;&t; *&n;&t; **************************************************************/
 DECL|function|TLan_HandleTxEOC
 id|u32
 id|TLan_HandleTxEOC
@@ -6038,7 +6038,7 @@ id|ack
 suffix:semicolon
 )brace
 multiline_comment|/* TLan_HandleStatusCheck */
-multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleRxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurances by&n;&t; *&t;reading the CSTAT member of the list structure.  Rx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;CSTAT member or a INTDIS register, so if this chip is&n;&t; *&t;pre-3.0, process EOC interrupts normally.&n;&t; *&n;&t; **************************************************************/
+multiline_comment|/***************************************************************&n;&t; *&t;TLan_HandleRxEOC&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;1&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;&t;Device assigned the IRQ that was&n;&t; *&t;&t;&t;&t;raised.&n;&t; *&t;&t;host_int&t;The contents of the HOST_INT&n;&t; *&t;&t;&t;&t;port.&n;&t; *&n;&t; *&t;This driver is structured to determine EOC occurrences by&n;&t; *&t;reading the CSTAT member of the list structure.  Rx EOC&n;&t; *&t;interrupts are disabled via the DIO INTDIS register.&n;&t; *&t;However, TLAN chips before revision 3.0 didn&squot;t have this&n;&t; *&t;CSTAT member or a INTDIS register, so if this chip is&n;&t; *&t;pre-3.0, process EOC interrupts normally.&n;&t; *&n;&t; **************************************************************/
 DECL|function|TLan_HandleRxEOC
 id|u32
 id|TLan_HandleRxEOC
@@ -8564,7 +8564,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* TLan_SetMac */
 multiline_comment|/*****************************************************************************&n;******************************************************************************&n;&n;&t;ThunderLAN Driver PHY Layer Routines&n;&n;******************************************************************************&n;*****************************************************************************/
-multiline_comment|/*********************************************************************&n;&t; *&t;TLan_PhyPrint&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;Nothing&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;A pointer to the device structure of the&n;&t; *&t;&t;&t;TLAN device having the PHYs to be detailed.&n;&t; *&t;&t;&t;&t;&n;&t; *&t;This function prints the registers a PHY (aka tranceiver).&n;&t; *&n;&t; ********************************************************************/
+multiline_comment|/*********************************************************************&n;&t; *&t;TLan_PhyPrint&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;Nothing&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;A pointer to the device structure of the&n;&t; *&t;&t;&t;TLAN device having the PHYs to be detailed.&n;&t; *&t;&t;&t;&t;&n;&t; *&t;This function prints the registers a PHY (aka transceiver).&n;&t; *&n;&t; ********************************************************************/
 DECL|function|TLan_PhyPrint
 r_void
 id|TLan_PhyPrint
@@ -9138,7 +9138,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Wait for 50 ms and powerup&n;&t; * This is abitrary.  It is intended to make sure the&n;&t; * tranceiver settles.&n;&t; */
+multiline_comment|/* Wait for 50 ms and powerup&n;&t; * This is abitrary.  It is intended to make sure the&n;&t; * transceiver settles.&n;&t; */
 id|TLan_SetTimer
 c_func
 (paren
@@ -9216,7 +9216,7 @@ c_func
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for 500 ms and reset the&n;&t; * tranceiver.  The TLAN docs say both 50 ms and&n;&t; * 500 ms, so do the longer, just in case.&n;&t; */
+multiline_comment|/* Wait for 500 ms and reset the&n;&t; * transceiver.  The TLAN docs say both 50 ms and&n;&t; * 500 ms, so do the longer, just in case.&n;&t; */
 id|TLan_SetTimer
 c_func
 (paren
@@ -9788,7 +9788,7 @@ id|tctl
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Wait for 2 sec to give the tranceiver time&n;&t; * to establish link.&n;&t; */
+multiline_comment|/* Wait for 2 sec to give the transceiver time&n;&t; * to establish link.&n;&t; */
 id|TLan_SetTimer
 c_func
 (paren

@@ -6163,7 +6163,7 @@ id|item
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* change item key if neccessary (when we paste before 0-th entry */
+multiline_comment|/* change item key if necessary (when we paste before 0-th entry */
 r_if
 c_cond
 (paren

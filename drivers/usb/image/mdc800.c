@@ -359,7 +359,7 @@ id|b-&gt;wMaxPacketSize
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Checks wether the camera responds busy&n; */
+multiline_comment|/*&n; * Checks whether the camera responds busy&n; */
 DECL|function|mdc800_isBusy
 r_static
 r_int
@@ -407,7 +407,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Checks wether the Camera is ready&n; */
+multiline_comment|/*&n; * Checks whether the Camera is ready&n; */
 DECL|function|mdc800_isReady
 r_static
 r_int

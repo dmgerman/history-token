@@ -2320,7 +2320,7 @@ op_star
 id|tp
 )paren
 (brace
-multiline_comment|/*&n;&t;** We cant handle tm.c_mstate != 0 on SCO&n;&t;** We cant handle mapping&n;&t;** We cant handle non-ttwrite line disc.&n;&t;** We cant handle lflag XCASE&n;&t;** We can handle oflag OPOST &amp; (OCRNL, ONLCR, TAB3)&n;&t;*/
+multiline_comment|/*&n;&t;** We can&squot;t handle tm.c_mstate != 0 on SCO&n;&t;** We can&squot;t handle mapping&n;&t;** We can&squot;t handle non-ttwrite line disc.&n;&t;** We can&squot;t handle lflag XCASE&n;&t;** We can handle oflag OPOST &amp; (OCRNL, ONLCR, TAB3)&n;&t;*/
 macro_line|#ifdef CHECK
 id|CheckTtyP
 c_func

@@ -944,11 +944,11 @@ mdefine_line|#define EVT_UNDERRUN&t;&t;0x4&t;/* Underrun on corresponding FIFO, 
 DECL|macro|EVT_OVERRUN
 mdefine_line|#define EVT_OVERRUN&t;&t;0x5&t;/* A recv FIFO overflowed on reception of ISO&n;&t;&t;&t;&t;&t;   packet */
 DECL|macro|EVT_DESCRIPTOR_READ
-mdefine_line|#define EVT_DESCRIPTOR_READ&t;0x6&t;/* An unrecoverable error occured while host was&n;&t;&t;&t;&t;&t;   reading a descriptor block */
+mdefine_line|#define EVT_DESCRIPTOR_READ&t;0x6&t;/* An unrecoverable error occurred while host was&n;&t;&t;&t;&t;&t;   reading a descriptor block */
 DECL|macro|EVT_DATA_READ
-mdefine_line|#define EVT_DATA_READ&t;&t;0x7&t;/* An error occured while host controller was&n;&t;&t;&t;&t;&t;   attempting to read from host memory in the data&n;&t;&t;&t;&t;&t;   stage of descriptor processing */
+mdefine_line|#define EVT_DATA_READ&t;&t;0x7&t;/* An error occurred while host controller was&n;&t;&t;&t;&t;&t;   attempting to read from host memory in the data&n;&t;&t;&t;&t;&t;   stage of descriptor processing */
 DECL|macro|EVT_DATA_WRITE
-mdefine_line|#define EVT_DATA_WRITE&t;&t;0x8&t;/* An error occured while host controller was&n;&t;&t;&t;&t;&t;   attempting to write either during the data stage&n;&t;&t;&t;&t;&t;   of descriptor processing, or when processing a single&n;&t;&t;&t;&t;&t;   16-bit host memory write */
+mdefine_line|#define EVT_DATA_WRITE&t;&t;0x8&t;/* An error occurred while host controller was&n;&t;&t;&t;&t;&t;   attempting to write either during the data stage&n;&t;&t;&t;&t;&t;   of descriptor processing, or when processing a single&n;&t;&t;&t;&t;&t;   16-bit host memory write */
 DECL|macro|EVT_BUS_RESET
 mdefine_line|#define EVT_BUS_RESET&t;&t;0x9&t;/* Identifies a PHY packet in the recv buffer as&n;&t;&t;&t;&t;&t;   being a synthesized bus reset packet */
 DECL|macro|EVT_TIMEOUT

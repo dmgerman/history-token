@@ -2547,7 +2547,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* A restart is occuring, check to make sure no new addresses&n; * are being added as we may be under a takeover attack.&n; */
+multiline_comment|/* A restart is occurring, check to make sure no new addresses&n; * are being added as we may be under a takeover attack.&n; */
 DECL|function|sctp_sf_check_restart_addrs
 r_static
 r_int
@@ -3765,7 +3765,7 @@ id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;B&squot;)&n; *&n; * Section 5.2.4&n; *   B) In this case, both sides may be attempting to start an association&n; *      at about the same time but the peer endpoint started its INIT&n; *      after responding to the local endpoint&squot;s INIT&n; */
-multiline_comment|/* This case represents an intialization collision.  */
+multiline_comment|/* This case represents an initialization collision.  */
 DECL|function|sctp_sf_do_dupcook_b
 r_static
 id|sctp_disposition_t
@@ -9432,7 +9432,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Process the REQUESTHEARTBEAT primitive&n; *&n; * 10.1 ULP-to-SCTP&n; * J) Request Heartbeat&n; *&n; * Format: REQUESTHEARTBEAT(association id, destination transport address)&n; *&n; * -&gt; result&n; *&n; * Instructs the local endpoint to perform a HeartBeat on the specified&n; * destination transport address of the given association. The returned&n; * result should indicate whether the transmission of the HEARTBEAT&n; * chunk to the destination address is successful.&n; *&n; * Mandatory attributes:&n; *&n; * o association id - local handle to the SCTP association&n; *&n; * o destination transport address - the transport address of the&n; *   asociation on which a heartbeat should be issued.&n; */
+multiline_comment|/*&n; * Process the REQUESTHEARTBEAT primitive&n; *&n; * 10.1 ULP-to-SCTP&n; * J) Request Heartbeat&n; *&n; * Format: REQUESTHEARTBEAT(association id, destination transport address)&n; *&n; * -&gt; result&n; *&n; * Instructs the local endpoint to perform a HeartBeat on the specified&n; * destination transport address of the given association. The returned&n; * result should indicate whether the transmission of the HEARTBEAT&n; * chunk to the destination address is successful.&n; *&n; * Mandatory attributes:&n; *&n; * o association id - local handle to the SCTP association&n; *&n; * o destination transport address - the transport address of the&n; *   association on which a heartbeat should be issued.&n; */
 DECL|function|sctp_sf_do_prm_requestheartbeat
 id|sctp_disposition_t
 id|sctp_sf_do_prm_requestheartbeat

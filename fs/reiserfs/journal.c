@@ -8124,7 +8124,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** read and replay the log&n;** on a clean unmount, the journal header&squot;s next unflushed pointer will be to an invalid&n;** transaction.  This tests that before finding all the transactions in the log, whic makes normal mount times fast.&n;**&n;** After a crash, this starts with the next unflushed transaction, and replays until it finds one too old, or invalid.&n;**&n;** On exit, it sets things up so the first transaction will work correctly.&n;*/
+multiline_comment|/*&n;** read and replay the log&n;** on a clean unmount, the journal header&squot;s next unflushed pointer will be to an invalid&n;** transaction.  This tests that before finding all the transactions in the log, which makes normal mount times fast.&n;**&n;** After a crash, this starts with the next unflushed transaction, and replays until it finds one too old, or invalid.&n;**&n;** On exit, it sets things up so the first transaction will work correctly.&n;*/
 DECL|function|journal_read
 r_static
 r_int
@@ -9648,14 +9648,10 @@ c_func
 (paren
 l_string|&quot;sh-458: journal_init_dev: cannot init journal device&bslash;n &squot;%s&squot;: %i&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|jdev
-)paren
+id|journal-&gt;j_dev_bd
 )paren
 comma
 id|result
@@ -9775,7 +9771,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;journal_init_dev: bdev unintialized for &squot;%s&squot;&quot;
+l_string|&quot;journal_init_dev: bdev uninitialized for &squot;%s&squot;&quot;
 comma
 id|jdev_name
 )paren
@@ -9858,14 +9854,10 @@ c_func
 (paren
 l_string|&quot;journal_init_dev: journal device: %s&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|jdev
-)paren
+id|journal-&gt;j_dev_bd
 )paren
 )paren
 suffix:semicolon
@@ -13211,7 +13203,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** used to get memory back from async commits that are floating around&n;** and to reclaim any blocks deleted but unusable because their commits&n;** haven&squot;t hit disk yet.  called from bitmap.c&n;**&n;** if it starts flushing things, it ors SCHEDULE_OCCURRED into repeat.&n;** note, this is just if schedule has a chance of occuring.  I need to &n;** change flush_commit_lists to have a repeat parameter too.&n;**&n;*/
+multiline_comment|/*&n;** used to get memory back from async commits that are floating around&n;** and to reclaim any blocks deleted but unusable because their commits&n;** haven&squot;t hit disk yet.  called from bitmap.c&n;**&n;** if it starts flushing things, it ors SCHEDULE_OCCURRED into repeat.&n;** note, this is just if schedule has a chance of occurring.  I need to &n;** change flush_commit_lists to have a repeat parameter too.&n;**&n;*/
 DECL|function|flush_async_commits
 r_void
 id|flush_async_commits

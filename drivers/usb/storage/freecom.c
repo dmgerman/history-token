@@ -754,7 +754,7 @@ id|FCM_STATUS_BUSY
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;20 second USB/ATAPI bridge TIMEOUT occured!&bslash;n&quot;
+l_string|&quot;20 second USB/ATAPI bridge TIMEOUT occurred!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|US_DEBUGP

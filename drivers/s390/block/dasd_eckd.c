@@ -6825,7 +6825,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). For 64 bit one dasd_mchunkt_t structure has&n; * 24 bytes, the dasd_ccw_req_t has 136 bytes and each block can use&n; * up to 16 bytes (8 for the ccw and 8 for the idal pointer). In&n; * addition we have one define extent ccw + 16 bytes of data and one&n; * locate record ccw + 16 bytes of data. That makes:&n; * (8192 - 24 - 136 - 8 - 16 - 8 - 16) / 16 = 499 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediatly&n; * start the next request if one finishes off. That makes 249.5 blocks&n; * for one request. Give a little safety and the result is 240.&n; */
+multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). For 64 bit one dasd_mchunkt_t structure has&n; * 24 bytes, the dasd_ccw_req_t has 136 bytes and each block can use&n; * up to 16 bytes (8 for the ccw and 8 for the idal pointer). In&n; * addition we have one define extent ccw + 16 bytes of data and one&n; * locate record ccw + 16 bytes of data. That makes:&n; * (8192 - 24 - 136 - 8 - 16 - 8 - 16) / 16 = 499 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediately&n; * start the next request if one finishes off. That makes 249.5 blocks&n; * for one request. Give a little safety and the result is 240.&n; */
 DECL|variable|dasd_eckd_discipline
 r_static
 id|dasd_discipline_t

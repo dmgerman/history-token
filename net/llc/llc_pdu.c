@@ -649,7 +649,7 @@ id|rx_window
 op_lshift
 l_int|1
 suffix:semicolon
-multiline_comment|/* size of recieve window */
+multiline_comment|/* size of receive window */
 id|skb_put
 c_func
 (paren

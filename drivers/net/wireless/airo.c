@@ -3246,7 +3246,7 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* Note, we can have MAX_FIDS outstanding.  FIDs are 16-bits, so we&n;&t;   use the high bit to mark wether it is in use. */
+multiline_comment|/* Note, we can have MAX_FIDS outstanding.  FIDs are 16-bits, so we&n;&t;   use the high bit to mark whether it is in use. */
 DECL|macro|MAX_FIDS
 mdefine_line|#define MAX_FIDS 6
 DECL|member|fids
@@ -9992,7 +9992,7 @@ comma
 id|STATUS_INTS
 )paren
 suffix:semicolon
-multiline_comment|/* Note there is a race condition between the last two lines that&n;&t;   I dont know how to get rid of right now... */
+multiline_comment|/* Note there is a race condition between the last two lines that&n;&t;   I don&squot;t know how to get rid of right now... */
 )brace
 DECL|function|disable_interrupts
 r_static
@@ -25249,7 +25249,7 @@ suffix:semicolon
 id|Resp
 id|rsp
 suffix:semicolon
-multiline_comment|/* Note : you may have realised that, as this is a SET operation,&n;&t; * this is priviledged and therefore a normal user can&squot;t&n;&t; * perform scanning.&n;&t; * This is not an error, while the device perform scanning,&n;&t; * traffic doesn&squot;t flow, so it&squot;s a perfect DoS...&n;&t; * Jean II */
+multiline_comment|/* Note : you may have realised that, as this is a SET operation,&n;&t; * this is privileged and therefore a normal user can&squot;t&n;&t; * perform scanning.&n;&t; * This is not an error, while the device perform scanning,&n;&t; * traffic doesn&squot;t flow, so it&squot;s a perfect DoS...&n;&t; * Jean II */
 multiline_comment|/* Initiate a scan command */
 id|memset
 c_func

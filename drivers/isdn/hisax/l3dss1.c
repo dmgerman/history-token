@@ -7867,7 +7867,7 @@ id|p
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/* only the first occurence &squot;ll be detected ! */
+multiline_comment|/* only the first occurrence &squot;ll be detected ! */
 r_if
 c_cond
 (paren

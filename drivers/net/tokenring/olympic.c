@@ -1601,7 +1601,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;tokenring card intialization failed. errorcode : %x&bslash;n&quot;
+l_string|&quot;tokenring card initialization failed. errorcode : %x&bslash;n&quot;
 comma
 id|readw
 c_func

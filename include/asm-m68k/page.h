@@ -511,7 +511,7 @@ l_int|0x2000000
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_SUN3 */
-multiline_comment|/*&n; * NOTE: virtual isn&squot;t really correct, actually it should be the offset into the&n; * memory node, but we have no highmem, so that works for now.&n; * TODO: implement (fast) pfn&lt;-&gt;pgdat_idx conversion functions, this makes lots&n; * of the shifts unneccessary.&n; */
+multiline_comment|/*&n; * NOTE: virtual isn&squot;t really correct, actually it should be the offset into the&n; * memory node, but we have no highmem, so that works for now.&n; * TODO: implement (fast) pfn&lt;-&gt;pgdat_idx conversion functions, this makes lots&n; * of the shifts unnecessary.&n; */
 DECL|macro|virt_to_pfn
 mdefine_line|#define virt_to_pfn(kaddr)&t;(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_to_virt

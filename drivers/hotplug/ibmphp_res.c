@@ -2900,7 +2900,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* this is the case where it is 1st occurence of the range */
+multiline_comment|/* this is the case where it is 1st occurrence of the range */
 r_if
 c_cond
 (paren

@@ -637,7 +637,7 @@ op_sub_assign
 l_int|1000
 suffix:semicolon
 )brace
-multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks cant&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
+multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks can&squot;t&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
 r_if
 c_cond
 (paren
@@ -651,7 +651,7 @@ id|numbytes
 op_sub_assign
 id|NODE0_HOLE_SIZE
 suffix:semicolon
-multiline_comment|/*&n;                                 * UGLY hack - we must skip overr the kernel and&n;                                 * PROM runtime services but we dont exactly where it is.&n;                                 * So lets just reserve:&n;&t;&t;&t;&t; *&t;node 0&n;&t;&t;&t;&t; *&t;&t;0-1MB for PAL&n;&t;&t;&t;&t; *&t;&t;1-4MB for SAL&n;&t;&t;&t;&t; *&t;node 1-N&n;&t;&t;&t;&t; *&t;&t;0-1 for SAL&n;                                 */
+multiline_comment|/*&n;                                 * UGLY hack - we must skip overr the kernel and&n;                                 * PROM runtime services but we don&squot;t exactly where it is.&n;                                 * So lets just reserve:&n;&t;&t;&t;&t; *&t;node 0&n;&t;&t;&t;&t; *&t;&t;0-1MB for PAL&n;&t;&t;&t;&t; *&t;&t;1-4MB for SAL&n;&t;&t;&t;&t; *&t;node 1-N&n;&t;&t;&t;&t; *&t;&t;0-1 for SAL&n;                                 */
 r_if
 c_cond
 (paren

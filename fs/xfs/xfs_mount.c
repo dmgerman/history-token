@@ -4305,7 +4305,7 @@ id|mp
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If the xfs quota code isn&squot;t installed,&n;&t;&t;&t; * we have to reset the quotachk&squot;d bit.&n;&t;&t;&t; * If an error occured, qm_mount_quotas code&n;&t;&t;&t; * has already disabled quotas. So, just finish&n;&t;&t;&t; * mounting, and get on with the boring life&n;&t;&t;&t; * without disk quotas.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If the xfs quota code isn&squot;t installed,&n;&t;&t;&t; * we have to reset the quotachk&squot;d bit.&n;&t;&t;&t; * If an error occurred, qm_mount_quotas code&n;&t;&t;&t; * has already disabled quotas. So, just finish&n;&t;&t;&t; * mounting, and get on with the boring life&n;&t;&t;&t; * without disk quotas.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren

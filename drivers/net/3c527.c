@@ -541,7 +541,7 @@ r_int
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * mc32_probe &t;-&t;Search for supported boards&n; * @dev: device to probe&n; *&n; * Because MCA bus is a real bus and we can scan for cards we could do a&n; * single scan for all boards here. Right now we use the passed in device&n; * structure and scan for only one board. This needs fixing for modules&n; * in paticular.&n; */
+multiline_comment|/**&n; * mc32_probe &t;-&t;Search for supported boards&n; * @dev: device to probe&n; *&n; * Because MCA bus is a real bus and we can scan for cards we could do a&n; * single scan for all boards here. Right now we use the passed in device&n; * structure and scan for only one board. This needs fixing for modules&n; * in particular.&n; */
 DECL|function|mc32_probe
 r_int
 id|__init
@@ -3544,7 +3544,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_rx_ring&t;-&t;process the receive ring&n; *&t;@dev: 3c527 that needs its receive ring processing&n; *&n; *&n; *&t;We have received one or more indications from the card that a&n; *&t;receive has completed. The buffer ring thus contains dirty&n; *&t;entries. We walk the ring by iterating over the circular rx_ring&n; *&t;array, starting at the next dirty buffer (which happens to be the&n; *&t;one we finished up at last time around).&n; *&n; *&t;For each completed packet, we will either copy it and pass it up&n; * &t;the stack or, if the packet is near MTU sized, we allocate&n; *&t;another buffer and flip the old one up the stack.&n; * &n; *&t;We must succeed in keeping a buffer on the ring. If neccessary we&n; *&t;will toss a received packet rather than lose a ring entry. Once&n; *&t;the first uncompleted descriptor is found, we move the&n; *&t;End-Of-List bit to include the buffers just processed.&n; *&n; */
+multiline_comment|/**&n; *&t;mc32_rx_ring&t;-&t;process the receive ring&n; *&t;@dev: 3c527 that needs its receive ring processing&n; *&n; *&n; *&t;We have received one or more indications from the card that a&n; *&t;receive has completed. The buffer ring thus contains dirty&n; *&t;entries. We walk the ring by iterating over the circular rx_ring&n; *&t;array, starting at the next dirty buffer (which happens to be the&n; *&t;one we finished up at last time around).&n; *&n; *&t;For each completed packet, we will either copy it and pass it up&n; * &t;the stack or, if the packet is near MTU sized, we allocate&n; *&t;another buffer and flip the old one up the stack.&n; * &n; *&t;We must succeed in keeping a buffer on the ring. If necessary we&n; *&t;will toss a received packet rather than lose a ring entry. Once&n; *&t;the first uncompleted descriptor is found, we move the&n; *&t;End-Of-List bit to include the buffers just processed.&n; *&n; */
 DECL|function|mc32_rx_ring
 r_static
 r_void

@@ -453,7 +453,7 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs)&t;(((regs)-&gt;cp0_status &amp; ST0_KSU) == KSU_USER)
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs, pc, sp) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __status;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* New thread looses kernel privileges. */&t;&t;&t;&bslash;&n;&t;__status = regs-&gt;cp0_status &amp; ~(ST0_CU0|ST0_FR|ST0_KSU);&t;&bslash;&n;&t;__status |= KSU_USER;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__status |= (current-&gt;thread.mflags &amp; MF_32BIT) ? 0 : ST0_FR;&t;&bslash;&n;&t;regs-&gt;cp0_status = __status;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cp0_epc = pc;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[29] = sp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;thread.current_ds = USER_DS;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define start_thread(regs, pc, sp) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __status;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* New thread loses kernel privileges. */&t;&t;&t;&bslash;&n;&t;__status = regs-&gt;cp0_status &amp; ~(ST0_CU0|ST0_FR|ST0_KSU);&t;&bslash;&n;&t;__status |= KSU_USER;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__status |= (current-&gt;thread.mflags &amp; MF_32BIT) ? 0 : ST0_FR;&t;&bslash;&n;&t;regs-&gt;cp0_status = __status;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cp0_epc = pc;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[29] = sp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;thread.current_ds = USER_DS;&t;&t;&t;&t;&bslash;&n;} while(0)
 r_int
 r_int
 id|get_wchan

@@ -12,7 +12,7 @@ DECL|macro|PLATFORM
 mdefine_line|#define PLATFORM&t;&t;&quot;gdb/v850e&quot;
 DECL|macro|PLATFORM_LONG
 mdefine_line|#define PLATFORM_LONG&t;&t;&quot;GDB V850E simulator&quot;
-multiline_comment|/* We use a wierd value for RAM, not just 0, for testing purposes.&n;   These must match the values used in the linker script.  */
+multiline_comment|/* We use a weird value for RAM, not just 0, for testing purposes.&n;   These must match the values used in the linker script.  */
 DECL|macro|RAM_ADDR
 mdefine_line|#define RAM_ADDR&t;&t;0x8F000000
 DECL|macro|RAM_SIZE

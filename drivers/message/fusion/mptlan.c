@@ -561,7 +561,7 @@ singleline_comment|//  calling routine (mptbase.c|mpt_interrupt)
 singleline_comment|//  would Oops because mf has already been set
 singleline_comment|//  to NULL.  So after return from this func,
 singleline_comment|//  mpt_interrupt() will attempt to put (NULL) mf ptr
-singleline_comment|//  item back onto it&squot;s adapter FreeQ - Oops!:-(
+singleline_comment|//  item back onto its adapter FreeQ - Oops!:-(
 singleline_comment|//  It&squot;s Ok, since mpt_lan_send_turbo() *currently*
 singleline_comment|//  always returns 0, but..., just in case:
 (paren

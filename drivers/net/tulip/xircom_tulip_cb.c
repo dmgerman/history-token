@@ -2110,7 +2110,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * To quote Arjan van de Ven:&n; *   tranceiver_voodoo() enables the external UTP plug thingy.&n; *   it&squot;s called voodoo as I stole this code and cannot cross-reference&n; *   it with the specification.&n; * Actually it seems to go like this:&n; * - GPIO2 enables the MII itself so we can talk to it. The MII gets reset&n; *   so any prior MII settings are lost.&n; * - GPIO0 enables the TP port so the MII can talk to the network.&n; * - a software reset will reset both GPIO pins.&n; * I also moved the software reset here, because doing it in xircom_up()&n; * required enabling the GPIO pins each time, which reset the MII each time.&n; * Thus we couldn&squot;t control the MII -- which sucks because we don&squot;t know&n; * how to handle full-duplex modes so we *must* disable them.&n; */
+multiline_comment|/*&n; * To quote Arjan van de Ven:&n; *   transceiver_voodoo() enables the external UTP plug thingy.&n; *   it&squot;s called voodoo as I stole this code and cannot cross-reference&n; *   it with the specification.&n; * Actually it seems to go like this:&n; * - GPIO2 enables the MII itself so we can talk to it. The MII gets reset&n; *   so any prior MII settings are lost.&n; * - GPIO0 enables the TP port so the MII can talk to the network.&n; * - a software reset will reset both GPIO pins.&n; * I also moved the software reset here, because doing it in xircom_up()&n; * required enabling the GPIO pins each time, which reset the MII each time.&n; * Thus we couldn&squot;t control the MII -- which sucks because we don&squot;t know&n; * how to handle full-duplex modes so we *must* disable them.&n; */
 DECL|function|transceiver_voodoo
 r_static
 r_void

@@ -5,7 +5,7 @@ mdefine_line|#define __ASM_DDB5XXX_DDB5XXX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
-multiline_comment|/*&n; *  This file is based on the following documentation:&n; *&n; *&t;NEC Vrc 5074 System Controller Data Sheet, June 1998&n; *&n; * [jsun] It is modified so that this file only contains the macros&n; * that are true for all DDB 5xxx boards.  The modification is based on&n; *&n; *&t;uPD31577(VRC5477) VR5432-SDRAM/PCI Bridge (Luke)&n; *&t;Preliminary Specification Decoment, Rev 1.1, 27 Dec, 2000&n; *  &n; */
+multiline_comment|/*&n; *  This file is based on the following documentation:&n; *&n; *&t;NEC Vrc 5074 System Controller Data Sheet, June 1998&n; *&n; * [jsun] It is modified so that this file only contains the macros&n; * that are true for all DDB 5xxx boards.  The modification is based on&n; *&n; *&t;uPD31577(VRC5477) VR5432-SDRAM/PCI Bridge (Luke)&n; *&t;Preliminary Specification Document, Rev 1.1, 27 Dec, 2000&n; *  &n; */
 DECL|macro|DDB_BASE
 mdefine_line|#define DDB_BASE&t;&t;0xbfa00000
 DECL|macro|DDB_SIZE
