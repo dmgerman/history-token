@@ -4849,6 +4849,17 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|new_rlim.rlim_cur
+OG
+id|new_rlim.rlim_max
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|old_rlim
 op_assign
 id|current-&gt;rlim
