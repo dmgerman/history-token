@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -105,6 +106,13 @@ r_static
 r_int
 id|hvc_offset
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+DECL|variable|sysrq_pressed
+r_static
+r_int
+id|sysrq_pressed
+suffix:semicolon
+macro_line|#endif
 DECL|macro|N_OUTBUF
 mdefine_line|#define N_OUTBUF&t;16
 DECL|macro|__ALIGNED__
@@ -820,6 +828,57 @@ suffix:semicolon
 op_increment
 id|i
 )paren
+(brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ&t;&t;/* Handle the SysRq Hack */
+r_if
+c_cond
+(paren
+id|buf
+(braket
+id|i
+)braket
+op_eq
+l_char|&squot;&bslash;x0f&squot;
+)paren
+(brace
+multiline_comment|/* ^O -- should support a sequence */
+id|sysrq_pressed
+op_assign
+l_int|1
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sysrq_pressed
+)paren
+(brace
+id|handle_sysrq
+c_func
+(paren
+id|buf
+(braket
+id|i
+)braket
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+id|tty
+)paren
+suffix:semicolon
+id|sysrq_pressed
+op_assign
+l_int|0
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+macro_line|#endif
 id|tty_insert_flip_char
 c_func
 (paren
@@ -833,6 +892,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
