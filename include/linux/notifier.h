@@ -144,8 +144,10 @@ DECL|macro|CPU_UP_CANCELED
 mdefine_line|#define CPU_UP_CANCELED&t;&t;0x0004 /* CPU (unsigned)v NOT coming up */
 DECL|macro|CPU_DOWN_PREPARE
 mdefine_line|#define CPU_DOWN_PREPARE&t;0x0005 /* CPU (unsigned)v going down */
+DECL|macro|CPU_DOWN_FAILED
+mdefine_line|#define CPU_DOWN_FAILED&t;&t;0x0006 /* CPU (unsigned)v NOT going down */
 DECL|macro|CPU_DEAD
-mdefine_line|#define CPU_DEAD&t;&t;0x0006 /* CPU (unsigned)v dead */
+mdefine_line|#define CPU_DEAD&t;&t;0x0007 /* CPU (unsigned)v dead */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_NOTIFIER_H */
 eof
