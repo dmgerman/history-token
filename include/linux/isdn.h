@@ -1111,11 +1111,6 @@ id|flags
 suffix:semicolon
 multiline_comment|/* Bitmapped Flags:           */
 multiline_comment|/*                            */
-DECL|member|drivers
-r_int
-id|drivers
-suffix:semicolon
-multiline_comment|/* Current number of drivers  */
 DECL|member|channels
 r_int
 id|channels
