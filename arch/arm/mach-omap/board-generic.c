@@ -6,12 +6,29 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/usb.h&gt;
 macro_line|#include &lt;asm/arch/board.h&gt;
+macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
+DECL|variable|generic_serial_ports
+r_static
+r_int
+id|__initdata
+id|generic_serial_ports
+(braket
+id|OMAP_MAX_NR_PORTS
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+)brace
+suffix:semicolon
 DECL|function|omap_generic_init_irq
 r_static
 r_void
@@ -28,62 +45,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Muxes the serial ports on&n; */
-macro_line|#ifdef CONFIG_ARCH_OMAP1510
-DECL|function|omap_early_serial_init
-r_static
-r_void
-id|__init
-id|omap_early_serial_init
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_OMAP_LL_DEBUG_UART1
-id|omap_cfg_reg
-c_func
-(paren
-id|UART1_TX
-)paren
-suffix:semicolon
-id|omap_cfg_reg
-c_func
-(paren
-id|UART1_RTS
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_OMAP_LL_DEBUG_UART2
-id|omap_cfg_reg
-c_func
-(paren
-id|UART2_TX
-)paren
-suffix:semicolon
-id|omap_cfg_reg
-c_func
-(paren
-id|UART2_RTS
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_OMAP_LL_DEBUG_UART1
-id|omap_cfg_reg
-c_func
-(paren
-id|UART3_TX
-)paren
-suffix:semicolon
-id|omap_cfg_reg
-c_func
-(paren
-id|UART3_RX
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif
 multiline_comment|/* assume no Mini-AB port */
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 DECL|variable|__initdata
@@ -120,7 +81,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 DECL|variable|__initdata
 r_static
 r_struct
@@ -193,11 +154,6 @@ c_func
 )paren
 )paren
 (brace
-id|omap_early_serial_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|generic_config
 (braket
 l_int|0
@@ -210,7 +166,7 @@ id|generic1510_usb_config
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP1610
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 r_if
 c_cond
 (paren
@@ -243,6 +199,12 @@ id|ARRAY_SIZE
 c_func
 (paren
 id|generic_config
+)paren
+suffix:semicolon
+id|omap_serial_init
+c_func
+(paren
+id|generic_serial_ports
 )paren
 suffix:semicolon
 )brace
