@@ -57,7 +57,7 @@ op_star
 id|tsk
 )paren
 suffix:semicolon
-multiline_comment|/* The idle threads do not count.. */
+multiline_comment|/* The idle threads do not count..&n; * Protected by write_lock_irq(&amp;tasklist_lock)&n; */
 DECL|variable|nr_threads
 r_int
 id|nr_threads
@@ -3276,7 +3276,7 @@ op_amp
 id|p-&gt;user-&gt;processes
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Counter increases are protected by&n;&t; * the kernel lock so nr_threads can&squot;t&n;&t; * increase under us (but it may decrease).&n;&t; */
+multiline_comment|/*&n;&t; * If multiple threads are within copy_process(), then this check&n;&t; * triggers too late. This doesn&squot;t hurt, the check is only there&n;&t; * to stop root fork bombs.&n;&t; */
 r_if
 c_cond
 (paren

@@ -4874,9 +4874,7 @@ op_star
 id|buffer
 )paren
 suffix:semicolon
-DECL|function|bdevname
 r_extern
-r_inline
 r_const
 r_char
 op_star
@@ -4892,17 +4890,7 @@ r_char
 op_star
 id|buffer
 )paren
-(brace
-r_return
-id|__bdevname
-c_func
-(paren
-id|bdev-&gt;bd_dev
-comma
-id|buffer
-)paren
 suffix:semicolon
-)brace
 r_extern
 r_struct
 id|block_device
