@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/connect.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
+multiline_comment|/*&n; *   fs/cifs/connect.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2004&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -17,6 +17,7 @@ macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &quot;ntlmssp.h&quot;
 macro_line|#include &quot;nterr.h&quot;
+macro_line|#include &quot;rfc1002pdu.h&quot;
 DECL|macro|CIFS_PORT
 mdefine_line|#define CIFS_PORT 445
 DECL|macro|RFC1001_PORT
@@ -1016,7 +1017,7 @@ op_eq
 (paren
 r_char
 )paren
-l_int|0x85
+id|RFC1002_SESSION_KEEP_ALIVE
 )paren
 (brace
 id|iov.iov_base
@@ -1048,7 +1049,56 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;Received 4 byte keep alive packet &quot;
+l_string|&quot;Received 4 byte keep alive packet&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|temp
+(braket
+l_int|0
+)braket
+op_eq
+(paren
+r_char
+)paren
+id|RFC1002_POSITIVE_SESSION_RESPONSE
+)paren
+(brace
+id|iov.iov_base
+op_assign
+id|smb_buffer
+suffix:semicolon
+id|iov.iov_len
+op_assign
+l_int|4
+suffix:semicolon
+id|length
+op_assign
+id|sock_recvmsg
+c_func
+(paren
+id|csocket
+comma
+op_amp
+id|smb_msg
+comma
+l_int|4
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Good RFC 1002 session rsp&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1066,7 +1116,7 @@ op_eq
 (paren
 r_char
 )paren
-l_int|0x83
+id|RFC1002_NEGATIVE_SESSION_RESPONSE
 )paren
 op_logical_and
 (paren
@@ -1116,7 +1166,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Unknown RFC 1001 frame not 0x00 nor 0x85&quot;
+l_string|&quot;Unknown RFC 1002 frame&quot;
 )paren
 )paren
 suffix:semicolon
