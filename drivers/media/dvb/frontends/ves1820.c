@@ -997,7 +997,7 @@ l_int|0x08
 id|mdelay
 c_func
 (paren
-l_int|30
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -1785,7 +1785,7 @@ multiline_comment|/* yes, this speeds things up: userspace reports lock in about
 id|mdelay
 c_func
 (paren
-l_int|30
+l_int|50
 )paren
 suffix:semicolon
 r_return
