@@ -1456,9 +1456,11 @@ id|action-&gt;flags
 op_assign
 id|irqflags
 suffix:semicolon
+id|cpus_clear
+c_func
+(paren
 id|action-&gt;mask
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|action-&gt;name
 op_assign

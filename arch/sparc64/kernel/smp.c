@@ -1774,9 +1774,6 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* Cheetah now allows to send the whole 64-bytes of data in the interrupt&n; * packet, but we have no use for that.  However we do take advantage of&n; * the new pipelining feature (ie. dispatch to multiple cpus simultaneously).&n; */
-macro_line|#if NR_CPUS &gt; 32
-macro_line|#error Fixup cheetah_xcall_deliver Dave...
-macro_line|#endif
 DECL|function|cheetah_xcall_deliver
 r_static
 r_void
