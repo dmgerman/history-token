@@ -18,9 +18,9 @@ macro_line|#include &lt;asm/hvconsole.h&gt;
 macro_line|#include &lt;asm/hvcserver.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
-multiline_comment|/*&n; * 1.0.0 -&gt; 1.1.0 Added kernel_thread scheduling methodology to driver to&n; * replace wait_task constructs.&n; *&n; * 1.1.0 -&gt; 1.2.0 Moved pi_buff initialization out of arch code into driver code&n; * and added locking to share this buffer between hvcs_struct instances.  This&n; * is because the page_size kmalloc can&squot;t be done with a spin_lock held.&n; *&n; * Also added sysfs attribute to manually disconnect the vty-server from the vty&n; * due to stupid firmware behavior when opening the connection then sending data&n; * then then quickly closing the connection would cause data loss on the&n; * receiving side.  This required some reordering of the termination code.&n; *&n; * Fixed the hangup scenario and fixed memory leaks on module_exit.&n; *&n; * 1.2.0 -&gt; 1.3.0 Moved from manual kernel thread creation &amp; execution to&n; * kthread construct which replaced in-kernel IPC for thread termination with&n; * kthread_stop and kthread_should_stop.  Explicit wait_queue handling was&n; * removed because kthread handles this.  Minor bug fix to postpone partner_info&n; * clearing on hvcs_close until adapter removal to preserve context data for&n; * printk on partner connection free.  Added lock to protect hvcs_structs so&n; * that hvcs_struct instances aren&squot;t added or removed during list traversal.&n; * Cleaned up comment style, added spaces after commas, and broke function&n; * declaration lines to be under 80 columns.&n; *&n; * 1.3.0 -&gt; 1.3.1 In hvcs_open memset(..,0x00,..) instead of memset(..,0x3F,00).&n; * Removed braces around single statements following conditionals.  Removed &squot;=&n; * 0&squot; after static int declarations since these default to zero.  Removed&n; * list_for_each_safe() and replaced with list_for_each_entry() in&n; * hvcs_get_by_index().  The &squot;safe&squot; version is un-needed now that the driver is&n; * using spinlocks.  Changed spin_lock_irqsave() to spin_lock() when locking&n; * hvcs_structs_lock and hvcs_pi_lock since these are not touched in an int&n; * handler.  Initialized hvcs_structs_lock and hvcs_pi_lock to&n; * SPIN_LOCK_UNLOCKED at declaration time rather than in hvcs_module_init().&n; * Added spin_lock around list_del() in destroy_hvcs_struct() to protect the&n; * list traversals from a deletion.  Removed &squot;= NULL&squot; from pointer declaration&n; * statements since they are initialized NULL by default.  In hvcs_probe()&n; * changed kmalloc(sizeof(*hvcsd),...) to kmalloc(sizeof(struct&n; * hvcs_struct),...) because otherwise allocation would only be the size of a&n; * pointer.  Removed wmb() instances from hvcs_try_write().  They probably&n; * aren&squot;t needed with locking in place.  Added check and cleanup for&n; * hvcs_pi_buff = kmalloc() in hvcs_module_init().  Exposed hvcs_struct.index&n; * via a sysfs attribute so that the coupling between /dev/hvcs* and a&n; * vty-server can be automatically determined.  Moved kobject_put() in hvcs_open&n; * outside of the spin_unlock_irqrestore().&n; */
+multiline_comment|/*&n; * 1.3.0 -&gt; 1.3.1 In hvcs_open memset(..,0x00,..) instead of memset(..,0x3F,00).&n; * Removed braces around single statements following conditionals.  Removed &squot;=&n; * 0&squot; after static int declarations since these default to zero.  Removed&n; * list_for_each_safe() and replaced with list_for_each_entry() in&n; * hvcs_get_by_index().  The &squot;safe&squot; version is un-needed now that the driver is&n; * using spinlocks.  Changed spin_lock_irqsave() to spin_lock() when locking&n; * hvcs_structs_lock and hvcs_pi_lock since these are not touched in an int&n; * handler.  Initialized hvcs_structs_lock and hvcs_pi_lock to&n; * SPIN_LOCK_UNLOCKED at declaration time rather than in hvcs_module_init().&n; * Added spin_lock around list_del() in destroy_hvcs_struct() to protect the&n; * list traversals from a deletion.  Removed &squot;= NULL&squot; from pointer declaration&n; * statements since they are initialized NULL by default.  Removed wmb()&n; * instances from hvcs_try_write().  They probably aren&squot;t needed with locking in&n; * place.  Added check and cleanup for hvcs_pi_buff = kmalloc() in&n; * hvcs_module_init().  Exposed hvcs_struct.index via a sysfs attribute so that&n; * the coupling between /dev/hvcs* and a vty-server can be automatically&n; * determined.  Moved kobject_put() in hvcs_open outside of the&n; * spin_unlock_irqrestore().&n; *&n; * 1.3.1 -&gt; 1.3.2 Changed method for determining hvcs_struct-&gt;index and had it&n; * align with how the tty layer always assigns the lowest index available.  This&n; * change resulted in a list of ints that denotes which indexes are available.&n; * Device additions and removals use the new hvcs_get_index() and&n; * hvcs_return_index() helper functions.  The list is created with&n; * hvsc_alloc_index_list() and it is destroyed with hvcs_free_index_list().&n; * Without these fixes hotplug vty-server adapter support goes crazy with this&n; * driver if the user removes a vty-server adapter.  Moved free_irq() outside of&n; * the hvcs_final_close() function in order to get it out of the spinlock.&n; * Rearranged hvcs_close().  Cleaned up some printks and did some housekeeping&n; * on the changelog.  Removed local CLC_LENGTH and used HVCS_CLC_LENGTH from&n; * arch/ppc64/hvcserver.h.&n; */
 DECL|macro|HVCS_DRIVER_VERSION
-mdefine_line|#define HVCS_DRIVER_VERSION &quot;1.3.1&quot;
+mdefine_line|#define HVCS_DRIVER_VERSION &quot;1.3.2&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -52,15 +52,12 @@ mdefine_line|#define HVCS_DEFAULT_SERVER_ADAPTERS&t;64
 multiline_comment|/*&n; * The user can&squot;t insmod with more than HVCS_MAX_SERVER_ADAPTERS hvcs device&n; * nodes as a sanity check.  Theoretically there can be over 1 Billion&n; * vty-server &amp; vty partner connections.&n; */
 DECL|macro|HVCS_MAX_SERVER_ADAPTERS
 mdefine_line|#define HVCS_MAX_SERVER_ADAPTERS&t;1024
-multiline_comment|/*&n; * We let Linux assign us a major number and we start the minors at zero.  There&n; * is no intuitive mapping between minor number and the target partition.  The&n; * mapping of minor number is related to the order the vty-servers are exposed&n; * to this driver via the hvcs_probe function.&n; */
+multiline_comment|/*&n; * We let Linux assign us a major number and we start the minors at zero.  There&n; * is no intuitive mapping between minor number and the target vty-server&n; * adapter except that each new vty-server adapter is always assigned to the&n; * smallest minor number available.&n; */
 DECL|macro|HVCS_MINOR_START
 mdefine_line|#define HVCS_MINOR_START&t;0
 multiline_comment|/*&n; * The hcall interface involves putting 8 chars into each of two registers.&n; * We load up those 2 registers (in arch/ppc64/hvconsole.c) by casting char[16]&n; * to long[2].  It would work without __ALIGNED__, but a little (tiny) bit&n; * slower because an unaligned load is slower than aligned load.&n; */
 DECL|macro|__ALIGNED__
 mdefine_line|#define __ALIGNED__&t;__attribute__((__aligned__(8)))
-multiline_comment|/* Converged location code string length + 1 null terminator */
-DECL|macro|CLC_LENGTH
-mdefine_line|#define CLC_LENGTH&t;&t;80
 multiline_comment|/*&n; * How much data can firmware send with each hvc_put_chars()?  Maybe this&n; * should be moved into an architecture specific area.&n; */
 DECL|macro|HVCS_BUFF_LEN
 mdefine_line|#define HVCS_BUFF_LEN&t;16
@@ -160,14 +157,18 @@ id|tty_driver
 op_star
 id|hvcs_tty_driver
 suffix:semicolon
-multiline_comment|/*&n; * This is used to associate a vty-server, as it is exposed to this driver, with&n; * a preallocated tty_struct.index.  The dev node and hvcs index numbers are not&n; * re-used after device removal otherwise removing and adding a new one would&n; * link a /dev/hvcs* entry to a different vty-server than it did before the&n; * removal.  Incidentally, a newly exposed vty-server will always map to an&n; * incrementally higher /dev/hvcs* entry than the last exposed vty-server.&n; */
-DECL|variable|hvcs_struct_count
+multiline_comment|/*&n; * In order to be somewhat sane this driver always associates the hvcs_struct&n; * index element with the numerically equal tty-&gt;index.  This means that a&n; * hotplugged vty-server adapter will always map to the lowest index valued&n; * device node.  If vty-servers were hotplug removed from the system and then&n; * new ones added the new vty-server may have the largest slot number of all&n; * the vty-server adapters in the partition but it may have the lowest dev node&n; * index of all the adapters due to the hole left by the hotplug removed&n; * adapter.  There are a set of functions provided to get the lowest index for&n; * a new device as well as return the index to the list.  This list is allocated&n; * with a number of elements equal to the number of device nodes requested when&n; * the module was inserted.&n; */
+DECL|variable|hvcs_index_list
 r_static
 r_int
-id|hvcs_struct_count
-op_assign
-op_minus
-l_int|1
+op_star
+id|hvcs_index_list
+suffix:semicolon
+multiline_comment|/*&n; * How large is the list?  This is kept for traversal since the list is&n; * dynamically created.&n; */
+DECL|variable|hvcs_index_count
+r_static
+r_int
+id|hvcs_index_count
 suffix:semicolon
 multiline_comment|/*&n; * Used by the khvcsd to pick up I/O operations when the kernel_thread is&n; * already awake but potentially shifted to TASK_INTERRUPTIBLE state.&n; */
 DECL|variable|hvcs_kicked
@@ -175,7 +176,7 @@ r_static
 r_int
 id|hvcs_kicked
 suffix:semicolon
-multiline_comment|/* Used the the kthread construct for task operations */
+multiline_comment|/*&n; * Use by the kthread construct for task operations like waking the sleeping&n; * thread and stopping the kthread.&n; */
 DECL|variable|hvcs_task
 r_static
 r_struct
@@ -191,6 +192,7 @@ r_int
 op_star
 id|hvcs_pi_buff
 suffix:semicolon
+multiline_comment|/* Only allow one hvcs_struct to use the hvcs_pi_buff at a time. */
 DECL|variable|hvcs_pi_lock
 r_static
 id|spinlock_t
@@ -267,9 +269,12 @@ DECL|member|p_location_code
 r_char
 id|p_location_code
 (braket
-id|CLC_LENGTH
+id|HVCS_CLC_LENGTH
+op_plus
+l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* CLC + Null Term */
 DECL|member|next
 r_struct
 id|list_head
@@ -1355,6 +1360,61 @@ comma
 id|hvcs_driver_table
 )paren
 suffix:semicolon
+DECL|function|hvcs_return_index
+r_static
+r_void
+id|hvcs_return_index
+c_func
+(paren
+r_int
+id|index
+)paren
+(brace
+multiline_comment|/* Paranoia check */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hvcs_index_list
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+OL
+l_int|0
+op_logical_or
+id|index
+op_ge
+id|hvcs_index_count
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hvcs_index_list
+(braket
+id|index
+)braket
+op_eq
+op_minus
+l_int|1
+)paren
+r_return
+suffix:semicolon
+r_else
+id|hvcs_index_list
+(braket
+id|index
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* callback when the kboject ref count reaches zero */
 DECL|function|destroy_hvcs_struct
 r_static
@@ -1471,6 +1531,12 @@ id|hvcsd-&gt;p_partition_ID
 op_assign
 l_int|0
 suffix:semicolon
+id|hvcs_return_index
+c_func
+(paren
+id|hvcsd-&gt;index
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -1482,7 +1548,9 @@ l_int|0
 comma
 l_int|0x00
 comma
-id|CLC_LENGTH
+id|HVCS_CLC_LENGTH
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1514,7 +1582,7 @@ id|hvcsd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This function must be called with hvcsd-&gt;lock held. */
+multiline_comment|/*&n; * This function must be called with hvcsd-&gt;lock held.  Do not free the irq in&n; * this function since it is called with the spinlock held.&n; */
 DECL|function|hvcs_final_close
 r_static
 r_void
@@ -1531,14 +1599,6 @@ id|vio_disable_interrupts
 c_func
 (paren
 id|hvcsd-&gt;vdev
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|hvcsd-&gt;vdev-&gt;irq
-comma
-id|hvcsd
 )paren
 suffix:semicolon
 id|hvcsd-&gt;todo_mask
@@ -1598,6 +1658,83 @@ id|destroy_hvcs_struct
 comma
 )brace
 suffix:semicolon
+DECL|function|hvcs_get_index
+r_static
+r_int
+id|hvcs_get_index
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* Paranoia check */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hvcs_index_list
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;HVCS: hvcs_index_list NOT valid!.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+multiline_comment|/* Find the numerically lowest first free index. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|hvcs_index_count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|hvcs_index_list
+(braket
+id|i
+)braket
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|hvcs_index_list
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 DECL|function|hvcs_probe
 r_static
 r_int
@@ -1622,6 +1759,9 @@ id|hvcs_struct
 op_star
 id|hvcsd
 suffix:semicolon
+r_int
+id|index
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1644,6 +1784,27 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
+multiline_comment|/* early to avoid cleanup on failure */
+id|index
+op_assign
+id|hvcs_get_index
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 id|hvcsd
 op_assign
 id|kmalloc
@@ -1651,8 +1812,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|hvcs_struct
+op_star
+id|hvcsd
 )paren
 comma
 id|GFP_KERNEL
@@ -1711,9 +1872,9 @@ id|hvcsd
 suffix:semicolon
 id|hvcsd-&gt;index
 op_assign
-op_increment
-id|hvcs_struct_count
+id|index
 suffix:semicolon
+multiline_comment|/* hvcsd-&gt;index = ++hvcs_struct_count; */
 id|hvcsd-&gt;chars_in_buffer
 op_assign
 l_int|0
@@ -1785,7 +1946,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HVCS: Added vty-server@%X.&bslash;n&quot;
+l_string|&quot;HVCS: vty-server@%X added to the vio bus.&bslash;n&quot;
 comma
 id|dev-&gt;unit_address
 )paren
@@ -1975,15 +2136,11 @@ c_cond
 (paren
 id|clclength
 OG
-id|CLC_LENGTH
-op_minus
-l_int|1
+id|HVCS_CLC_LENGTH
 )paren
 id|clclength
 op_assign
-id|CLC_LENGTH
-op_minus
-l_int|1
+id|HVCS_CLC_LENGTH
 suffix:semicolon
 multiline_comment|/* copy the null-term char too */
 id|strncpy
@@ -2756,7 +2913,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HVCS: open failed, no index.&bslash;n&quot;
+l_string|&quot;HVCS: open failed, no device associated&quot;
+l_string|&quot; with tty-&gt;index %d.&bslash;n&quot;
+comma
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_return
@@ -2853,7 +3013,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This must be done outside of the spinlock because it requests irqs&n;&t; * and will grab the spinlcok and free the connection if it fails.&n;&t; */
+multiline_comment|/*&n;&t; * This must be done outside of the spinlock because it requests irqs&n;&t; * and will grab the spinlock and free the connection if it fails.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2974,7 +3134,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;HVCS: vty-server@%X opened.&bslash;n&quot;
+l_string|&quot;HVCS: vty-server@%X connection opened.&bslash;n&quot;
 comma
 id|hvcsd-&gt;vdev-&gt;unit_address
 )paren
@@ -3009,7 +3169,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HVCS: HVCS partner connect failed.&bslash;n&quot;
+l_string|&quot;HVCS: partner connect failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3047,6 +3207,11 @@ id|kobject
 op_star
 id|kobjp
 suffix:semicolon
+r_int
+id|irq
+op_assign
+id|NO_IRQ
+suffix:semicolon
 multiline_comment|/*&n;&t; * Is someone trying to close the file associated with this device after&n;&t; * we have hung up?  If so tty-&gt;driver_data wouldn&squot;t be valid.&n;&t; */
 r_if
 c_cond
@@ -3080,6 +3245,11 @@ id|hvcsd-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+id|kobjp
+op_assign
+op_amp
+id|hvcsd-&gt;kobj
 suffix:semicolon
 r_if
 c_cond
@@ -3138,6 +3308,35 @@ c_func
 id|hvcsd
 )paren
 suffix:semicolon
+id|irq
+op_assign
+id|hvcsd-&gt;vdev-&gt;irq
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|hvcsd-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|irq
+comma
+id|hvcsd
+)paren
+suffix:semicolon
+id|kobject_put
+c_func
+(paren
+id|kobjp
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3161,11 +3360,6 @@ id|hvcsd-&gt;open_count
 )paren
 suffix:semicolon
 )brace
-id|kobjp
-op_assign
-op_amp
-id|hvcsd-&gt;kobj
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3213,6 +3407,11 @@ id|kobject
 op_star
 id|kobjp
 suffix:semicolon
+r_int
+id|irq
+op_assign
+id|NO_IRQ
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3240,6 +3439,10 @@ c_func
 id|hvcsd
 )paren
 suffix:semicolon
+id|irq
+op_assign
+id|hvcsd-&gt;vdev-&gt;irq
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3247,6 +3450,14 @@ op_amp
 id|hvcsd-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|irq
+comma
+id|hvcsd
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to kobject_put() for every open_count we have since the&n;&t; * tty_hangup() function doesn&squot;t invoke a close per open connection on a&n;&t; * non-console device.&n;&t; */
@@ -3822,6 +4033,108 @@ id|hvcs_throttle
 comma
 )brace
 suffix:semicolon
+DECL|function|hvcs_alloc_index_list
+r_static
+r_int
+id|hvcs_alloc_index_list
+c_func
+(paren
+r_int
+id|n
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|hvcs_index_list
+op_assign
+id|kmalloc
+c_func
+(paren
+id|n
+op_star
+r_sizeof
+(paren
+id|hvcs_index_count
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hvcs_index_list
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|hvcs_index_count
+op_assign
+id|n
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|hvcs_index_count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|hvcs_index_list
+(braket
+id|i
+)braket
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|hvcs_free_index_list
+r_static
+r_void
+id|hvcs_free_index_list
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Paranoia check to be thorough. */
+r_if
+c_cond
+(paren
+id|hvcs_index_list
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|hvcs_index_list
+)paren
+suffix:semicolon
+id|hvcs_index_list
+op_assign
+l_int|NULL
+suffix:semicolon
+id|hvcs_index_count
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 DECL|function|hvcs_module_init
 r_static
 r_int
@@ -3890,6 +4203,19 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hvcs_alloc_index_list
+c_func
+(paren
+id|num_ttys_to_alloc
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|hvcs_tty_driver-&gt;owner
 op_assign
 id|THIS_MODULE
@@ -3948,6 +4274,11 @@ l_string|&quot;HVCS: registration &quot;
 l_string|&quot; as a tty driver failed.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|hvcs_free_index_list
+c_func
+(paren
+)paren
+suffix:semicolon
 id|put_tty_driver
 c_func
 (paren
@@ -3979,6 +4310,11 @@ id|tty_unregister_driver
 c_func
 (paren
 id|hvcs_tty_driver
+)paren
+suffix:semicolon
+id|hvcs_free_index_list
+c_func
+(paren
 )paren
 suffix:semicolon
 id|put_tty_driver
@@ -4017,13 +4353,25 @@ id|hvcs_task
 id|printk
 c_func
 (paren
-l_string|&quot;khvcsd creation failed.  Driver not loaded.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;HVCS: khvcsd creation failed.  Driver not loaded.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
 id|hvcs_pi_buff
+)paren
+suffix:semicolon
+id|tty_unregister_driver
+c_func
+(paren
+id|hvcs_tty_driver
+)paren
+suffix:semicolon
+id|hvcs_free_index_list
+c_func
+(paren
 )paren
 suffix:semicolon
 id|put_tty_driver
@@ -4121,6 +4469,11 @@ id|tty_unregister_driver
 c_func
 (paren
 id|hvcs_tty_driver
+)paren
+suffix:semicolon
+id|hvcs_free_index_list
+c_func
+(paren
 )paren
 suffix:semicolon
 id|put_tty_driver
