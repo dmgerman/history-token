@@ -1223,7 +1223,6 @@ multiline_comment|/*&n; * Dynamically select a `spare&squot; PMEG and use it to 
 singleline_comment|//todo: better allocation scheme? but is extra complexity worthwhile?
 singleline_comment|//todo: only clear old entries if necessary? how to tell?
 DECL|function|mmu_emu_map_pmeg
-r_static
 r_inline
 r_void
 id|mmu_emu_map_pmeg

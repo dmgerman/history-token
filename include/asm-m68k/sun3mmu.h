@@ -451,6 +451,25 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_extern
+r_void
+op_star
+id|sun3_ioremap
+c_func
+(paren
+r_int
+r_int
+id|phys
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|type
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* !__ASSEMBLY__ */
 macro_line|#endif&t;/* !__SUN3_MMU_H__ */
 eof
