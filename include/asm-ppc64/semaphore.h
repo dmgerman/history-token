@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC64_SEMAPHORE_H
 DECL|macro|_PPC64_SEMAPHORE_H
 mdefine_line|#define _PPC64_SEMAPHORE_H
-multiline_comment|/*&n; * Remove spinlock-based RW semaphores; RW semaphore definitions are&n; * now in rwsem.h and we use the the generic lib/rwsem.c implementation.&n; * Rework semaphores to use atomic_dec_if_positive.&n; * -- Paul Mackerras (paulus@samba.org)&n; */
+multiline_comment|/*&n; * Remove spinlock-based RW semaphores; RW semaphore definitions are&n; * now in rwsem.h and we use the generic lib/rwsem.c implementation.&n; * Rework semaphores to use atomic_dec_if_positive.&n; * -- Paul Mackerras (paulus@samba.org)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

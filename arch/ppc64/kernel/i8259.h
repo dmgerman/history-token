@@ -2,7 +2,6 @@ multiline_comment|/*&n; * c 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is
 macro_line|#ifndef _PPC_KERNEL_i8259_H
 DECL|macro|_PPC_KERNEL_i8259_H
 mdefine_line|#define _PPC_KERNEL_i8259_H
-macro_line|#include &quot;local_irq.h&quot;
 r_extern
 r_struct
 id|hw_interrupt_type
