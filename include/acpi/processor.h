@@ -198,6 +198,8 @@ suffix:semicolon
 multiline_comment|/* success indicator */
 )brace
 suffix:semicolon
+DECL|macro|ACPI_PDC_REVISION_ID
+mdefine_line|#define ACPI_PDC_REVISION_ID                   0x1
 DECL|struct|acpi_processor_performance
 r_struct
 id|acpi_processor_performance
@@ -234,6 +236,13 @@ id|states
 (braket
 id|ACPI_PROCESSOR_MAX_PERFORMANCE
 )braket
+suffix:semicolon
+multiline_comment|/* the _PDC objects passed by the driver, if any */
+DECL|member|pdc
+r_struct
+id|acpi_object_list
+op_star
+id|pdc
 suffix:semicolon
 )brace
 suffix:semicolon
