@@ -46,6 +46,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* PROLiNK 1456VH ISA PnP K56flex Fax Modem */
+(brace
+l_string|&quot;AEI0250&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* Actiontec ISA PNP 56K X2 Fax Modem */
 (brace
 l_string|&quot;AEI1240&quot;
