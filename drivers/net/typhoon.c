@@ -6,7 +6,7 @@ r_static
 r_int
 id|rx_copybreak
 op_assign
-l_int|0
+l_int|200
 suffix:semicolon
 multiline_comment|/* end user-configurable values */
 multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n; */
@@ -48,9 +48,9 @@ mdefine_line|#define PKT_BUF_SZ&t;&t;1536
 DECL|macro|DRV_MODULE_NAME
 mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;typhoon&quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.0&quot;
+mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.1&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;03/02/14&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;03/06/26&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_MODULE_NAME &quot;: &quot;
 DECL|macro|ERR_PFX
@@ -158,7 +158,7 @@ mdefine_line|#define TYPHOON_CRYPTO_3DES&t;&t;2
 DECL|macro|TYPHOON_CRYPTO_VARIABLE
 mdefine_line|#define&t;TYPHOON_CRYPTO_VARIABLE&t;&t;4
 DECL|macro|TYPHOON_FIBER
-mdefine_line|#define TYPHOON_FIBER&t;&t;&t;5
+mdefine_line|#define TYPHOON_FIBER&t;&t;&t;8
 DECL|enum|typhoon_cards
 r_enum
 id|typhoon_cards
@@ -7727,7 +7727,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|intr_status
+op_amp
+id|TYPHOON_INTR_HOST_INT
+)paren
 )paren
 (brace
 r_return

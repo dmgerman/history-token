@@ -8117,6 +8117,10 @@ op_assign
 id|CHECKSUM_NONE
 suffix:semicolon
 )brace
+id|bdp-&gt;drv_stats.net_stats.rx_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8156,10 +8160,6 @@ suffix:semicolon
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
-suffix:semicolon
-id|bdp-&gt;drv_stats.net_stats.rx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 id|rfd_cnt
 op_increment
