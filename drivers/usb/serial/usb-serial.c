@@ -3674,16 +3674,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* quietly accept this device, but don&squot;t bind to a serial port&n;&t;&t;&t; * as it&squot;s about to disappear */
-id|dev_set_drvdata
-(paren
-op_amp
-id|interface-&gt;dev
-comma
-id|serial
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+m_exit
 suffix:semicolon
 )brace
 )brace
@@ -3784,11 +3776,12 @@ comma
 id|minor
 )paren
 suffix:semicolon
+m_exit
+suffix:colon
 multiline_comment|/* success */
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|interface-&gt;dev
+id|interface
 comma
 id|serial
 )paren
@@ -3963,10 +3956,9 @@ id|usb_serial
 op_star
 id|serial
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|interface-&gt;dev
+id|interface
 )paren
 suffix:semicolon
 r_struct
@@ -3992,10 +3984,9 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|interface-&gt;dev
+id|interface
 comma
 l_int|NULL
 )paren
