@@ -435,6 +435,13 @@ op_star
 id|req
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
+multiline_comment|/* tty ports reserved for the ACPI serial console port and debug port */
+DECL|macro|ACPI_SERIAL_CONSOLE_PORT
+mdefine_line|#define ACPI_SERIAL_CONSOLE_PORT        4
+DECL|macro|ACPI_SERIAL_DEBUG_PORT
+mdefine_line|#define ACPI_SERIAL_DEBUG_PORT          5
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SERIAL_H */
 eof

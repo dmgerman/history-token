@@ -18,6 +18,10 @@ DECL|variable|is_sony_vaio_laptop
 r_int
 id|is_sony_vaio_laptop
 suffix:semicolon
+DECL|variable|enable_acpi_smp_table
+r_int
+id|enable_acpi_smp_table
+suffix:semicolon
 DECL|struct|dmi_header
 r_struct
 id|dmi_header
@@ -1289,11 +1293,6 @@ id|pm_kbd_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-id|pm_kbd_func
-op_star
-id|pm_kbd_request_override
 suffix:semicolon
 DECL|function|broken_ps2_resume
 r_static

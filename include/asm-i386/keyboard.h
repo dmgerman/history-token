@@ -7,6 +7,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1
@@ -83,12 +84,23 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|pckbd_pm_resume
 c_func
 (paren
+r_struct
+id|pm_dev
+op_star
+comma
+id|pm_request_t
+comma
 r_void
+op_star
 )paren
+suffix:semicolon
+r_extern
+id|pm_callback
+id|pm_kbd_request_override
 suffix:semicolon
 r_extern
 r_int

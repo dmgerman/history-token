@@ -4,8 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|function|_inb
-r_int
-r_int
+id|u8
 id|_inb
 c_func
 (paren
@@ -23,8 +22,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|_inw
-r_int
-r_int
+id|u16
 id|_inw
 c_func
 (paren
@@ -42,8 +40,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|_inl
-r_int
-r_int
+id|u32
 id|_inl
 c_func
 (paren
@@ -65,8 +62,7 @@ r_void
 id|_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -88,8 +84,7 @@ r_void
 id|_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -111,8 +106,7 @@ r_void
 id|_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -130,8 +124,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|___raw_readb
-r_int
-r_int
+id|u8
 id|___raw_readb
 c_func
 (paren
@@ -149,8 +142,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|___raw_readw
-r_int
-r_int
+id|u16
 id|___raw_readw
 c_func
 (paren
@@ -168,8 +160,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|___raw_readl
-r_int
-r_int
+id|u32
 id|___raw_readl
 c_func
 (paren
@@ -187,8 +178,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|___raw_readq
-r_int
-r_int
+id|u64
 id|___raw_readq
 c_func
 (paren
@@ -206,8 +196,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|_readb
-r_int
-r_int
+id|u8
 id|_readb
 c_func
 (paren
@@ -236,8 +225,7 @@ id|r
 suffix:semicolon
 )brace
 DECL|function|_readw
-r_int
-r_int
+id|u16
 id|_readw
 c_func
 (paren
@@ -266,8 +254,7 @@ id|r
 suffix:semicolon
 )brace
 DECL|function|_readl
-r_int
-r_int
+id|u32
 id|_readl
 c_func
 (paren
@@ -296,8 +283,7 @@ id|r
 suffix:semicolon
 )brace
 DECL|function|_readq
-r_int
-r_int
+id|u64
 id|_readq
 c_func
 (paren
@@ -330,8 +316,7 @@ r_void
 id|___raw_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -353,8 +338,7 @@ r_void
 id|___raw_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -376,8 +360,7 @@ r_void
 id|___raw_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -399,8 +382,7 @@ r_void
 id|___raw_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int
@@ -422,8 +404,7 @@ r_void
 id|_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -450,8 +431,7 @@ r_void
 id|_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -478,8 +458,7 @@ r_void
 id|_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -506,8 +485,7 @@ r_void
 id|_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

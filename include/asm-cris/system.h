@@ -41,7 +41,7 @@ r_void
 )paren
 (brace
 r_int
-r_int
+r_char
 id|vr
 suffix:semicolon
 id|__asm__

@@ -4978,6 +4978,12 @@ l_int|NULL
 r_goto
 id|startio
 suffix:semicolon
+id|blkdev_dequeue_request
+c_func
+(paren
+id|creq
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -5251,19 +5257,6 @@ id|c-&gt;req.hdr.blk_cnt
 op_assign
 id|creq-&gt;nr_sectors
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|io_request_lock
-)paren
-suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|creq
-)paren
-suffix:semicolon
 id|c-&gt;req.hdr.cmd
 op_assign
 (paren
@@ -5280,6 +5273,13 @@ suffix:semicolon
 id|c-&gt;type
 op_assign
 id|CMD_RWREQ
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
 suffix:semicolon
 multiline_comment|/* Put the request on the tail of the request queue */
 id|addQ

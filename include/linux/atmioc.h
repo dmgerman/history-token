@@ -30,7 +30,11 @@ DECL|macro|ATMIOC_ITF
 mdefine_line|#define ATMIOC_ITF&t;  0x80 /* Interface ioctls, globally unique */
 DECL|macro|ATMIOC_ITF_END
 mdefine_line|#define ATMIOC_ITF_END&t;  0x8f
-multiline_comment|/* 0x90-0xbf: Reserved for future use */
+DECL|macro|ATMIOC_BACKEND
+mdefine_line|#define ATMIOC_BACKEND&t;  0x90 /* ATM generic backend ioctls, u. per backend */
+DECL|macro|ATMIOC_BACKEND_END
+mdefine_line|#define ATMIOC_BACKEND_END 0xaf
+multiline_comment|/* 0xb0-0xbf: Reserved for future use */
 DECL|macro|ATMIOC_AREQUIPA
 mdefine_line|#define ATMIOC_AREQUIPA&t;  0xc0 /* Application requested IP over ATM, glob. u. */
 DECL|macro|ATMIOC_LANE

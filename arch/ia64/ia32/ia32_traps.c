@@ -1,8 +1,96 @@
-multiline_comment|/*&n; * IA32 exceptions handler&n; *&n; * 06/16/00&t;A. Mallick&t;added siginfo for most cases (close to IA32)&n; */
+multiline_comment|/*&n; * IA-32 exception handlers&n; *&n; * Copyright (C) 2000 Asit K. Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 06/16/00&t;A. Mallick&t;added siginfo for most cases (close to IA32)&n; * 09/29/00&t;D. Mosberger&t;added ia32_intercept()&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+r_int
+DECL|function|ia32_intercept
+id|ia32_intercept
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|isr
+)paren
+(brace
+r_switch
+c_cond
+(paren
+(paren
+id|isr
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* Instruction intercept fault */
+r_case
+l_int|3
+suffix:colon
+multiline_comment|/* Locked Data reference fault */
+r_case
+l_int|1
+suffix:colon
+multiline_comment|/* Gate intercept trap */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+multiline_comment|/* System flag trap */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|isr
+op_rshift
+l_int|14
+)paren
+op_amp
+l_int|0x3
+)paren
+op_ge
+l_int|2
+)paren
+(brace
+multiline_comment|/* MOV SS, POP SS instructions */
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|id
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_int
 DECL|function|ia32_exception
 id|ia32_exception

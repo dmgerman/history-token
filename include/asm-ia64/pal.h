@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PAL_H
 DECL|macro|_ASM_IA64_PAL_H
 mdefine_line|#define _ASM_IA64_PAL_H
-multiline_comment|/*&n; * Processor Abstraction Layer definitions.&n; *&n; * This is based on Intel IA-64 Architecture Software Developer&squot;s Manual rev 1.0&n; * chapter 11 IA-64 Processor Abstraction Layer&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 99/10/01&t;davidm&t;Make sure we pass zero for reserved parameters.&n; * 00/03/07&t;davidm&t;Updated pal_cache_flush() to be in sync with PAL v2.6.&n; * 00/03/23     cfleck  Modified processor min-state save area to match updated PAL &amp; SAL info&n; * 00/05/24     eranian Updated to latest PAL spec, fix structures bugs, added &n; * 00/05/25&t;eranian Support for stack calls, and static physical calls&n; * 00/06/18&t;eranian Support for stacked physical calls&n; */
+multiline_comment|/*&n; * Processor Abstraction Layer definitions.&n; *&n; * This is based on Intel IA-64 Architecture Software Developer&squot;s Manual rev 1.0&n; * chapter 11 IA-64 Processor Abstraction Layer&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 99/10/01&t;davidm&t;Make sure we pass zero for reserved parameters.&n; * 00/03/07&t;davidm&t;Updated pal_cache_flush() to be in sync with PAL v2.6.&n; * 00/03/23     cfleck  Modified processor min-state save area to match updated PAL &amp; SAL info&n; * 00/05/24     eranian Updated to latest PAL spec, fix structures bugs, added&n; * 00/05/25&t;eranian Support for stack calls, and static physical calls&n; * 00/06/18&t;eranian Support for stacked physical calls&n; */
 multiline_comment|/*&n; * Note that some of these calls use a static-register only calling&n; * convention which has nothing to do with the regular calling&n; * convention.&n; */
 DECL|macro|PAL_CACHE_FLUSH
 mdefine_line|#define PAL_CACHE_FLUSH&t;&t;1&t;/* flush i/d cache */
@@ -111,7 +111,7 @@ mdefine_line|#define PAL_STATUS_EINVAL&t;&t;-2&t;/* Invalid argument */
 DECL|macro|PAL_STATUS_ERROR
 mdefine_line|#define PAL_STATUS_ERROR&t;&t;-3&t;/* Error */
 DECL|macro|PAL_STATUS_CACHE_INIT_FAIL
-mdefine_line|#define PAL_STATUS_CACHE_INIT_FAIL&t;-4&t;/* Could not initialize the &n;&t;&t;&t;&t;&t;&t; * specified level and type of&n;&t;&t;&t;&t;&t;&t; * cache without sideeffects &n;&t;&t;&t;&t;&t;&t; * and &quot;restrict&quot; was 1&n;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PAL_STATUS_CACHE_INIT_FAIL&t;-4&t;/* Could not initialize the&n;&t;&t;&t;&t;&t;&t; * specified level and type of&n;&t;&t;&t;&t;&t;&t; * cache without sideeffects&n;&t;&t;&t;&t;&t;&t; * and &quot;restrict&quot; was 1&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* Processor cache level in the heirarchy */
 DECL|typedef|pal_cache_level_t
 r_typedef
@@ -371,7 +371,7 @@ mdefine_line|#define PAL_CACHE_ATTR_WT&t;&t;0&t;/* Write through cache */
 DECL|macro|PAL_CACHE_ATTR_WB
 mdefine_line|#define PAL_CACHE_ATTR_WB&t;&t;1&t;/* Write back cache */
 DECL|macro|PAL_CACHE_ATTR_WT_OR_WB
-mdefine_line|#define PAL_CACHE_ATTR_WT_OR_WB&t;&t;2&t;/* Either write thru or write &n;&t;&t;&t;&t;&t;&t; * back depending on TLB &n;&t;&t;&t;&t;&t;&t; * memory attributes&n;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PAL_CACHE_ATTR_WT_OR_WB&t;&t;2&t;/* Either write thru or write&n;&t;&t;&t;&t;&t;&t; * back depending on TLB&n;&t;&t;&t;&t;&t;&t; * memory attributes&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* Possible values for cache hints */
 DECL|macro|PAL_CACHE_HINT_TEMP_1
 mdefine_line|#define PAL_CACHE_HINT_TEMP_1&t;&t;0&t;/* Temporal level 1 */
@@ -409,7 +409,7 @@ id|tagprot_msb
 suffix:colon
 l_int|6
 comma
-multiline_comment|/* Most Sig. tag address&n;&t;&t;&t;&t;&t;&t;      * bit that this &n;&t;&t;&t;&t;&t;&t;      * protection covers.&n;&t;&t;&t;&t;&t;&t;      */
+multiline_comment|/* Most Sig. tag address&n;&t;&t;&t;&t;&t;&t;      * bit that this&n;&t;&t;&t;&t;&t;&t;      * protection covers.&n;&t;&t;&t;&t;&t;&t;      */
 DECL|member|prot_bits
 id|prot_bits
 suffix:colon
@@ -427,7 +427,7 @@ id|t_d
 suffix:colon
 l_int|2
 suffix:semicolon
-multiline_comment|/* Indicates which part&n;&t;&t;&t;&t;&t;&t;      * of the cache this &n;&t;&t;&t;&t;&t;&t;      * protection encoding&n;&t;&t;&t;&t;&t;&t;      * applies.&n;&t;&t;&t;&t;&t;&t;      */
+multiline_comment|/* Indicates which part&n;&t;&t;&t;&t;&t;&t;      * of the cache this&n;&t;&t;&t;&t;&t;&t;      * protection encoding&n;&t;&t;&t;&t;&t;&t;      * applies.&n;&t;&t;&t;&t;&t;&t;      */
 DECL|member|pcp_info
 )brace
 id|pcp_info
@@ -456,7 +456,7 @@ mdefine_line|#define PAL_CACHE_PROT_PART_TAG&t;&t;1&t;/* Tag  protection */
 DECL|macro|PAL_CACHE_PROT_PART_TAG_DATA
 mdefine_line|#define PAL_CACHE_PROT_PART_TAG_DATA&t;2&t;/* Tag+data protection (tag is&n;&t;&t;&t;&t;&t;&t; * more significant )&n;&t;&t;&t;&t;&t;&t; */
 DECL|macro|PAL_CACHE_PROT_PART_DATA_TAG
-mdefine_line|#define PAL_CACHE_PROT_PART_DATA_TAG&t;3&t;/* Data+tag protection (data is&n;&t;&t;&t;&t;&t;&t; * more significant )&n;&t;&t;&t;&t;&t;&t; */ 
+mdefine_line|#define PAL_CACHE_PROT_PART_DATA_TAG&t;3&t;/* Data+tag protection (data is&n;&t;&t;&t;&t;&t;&t; * more significant )&n;&t;&t;&t;&t;&t;&t; */
 DECL|macro|PAL_CACHE_PROT_PART_MAX
 mdefine_line|#define PAL_CACHE_PROT_PART_MAX&t;&t;6
 DECL|struct|pal_cache_protection_info_s
@@ -512,7 +512,7 @@ id|level
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* 15-8 level of the&n;&t;&t;&t;&t;&t;&t;&t; * cache in the &n;&t;&t;&t;&t;&t;&t;&t; * heirarchy.&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 15-8 level of the&n;&t;&t;&t;&t;&t;&t;&t; * cache in the&n;&t;&t;&t;&t;&t;&t;&t; * heirarchy.&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|way
 id|way
 suffix:colon
@@ -524,7 +524,7 @@ id|part
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* 31-24 part of the&n;&t;&t;&t;&t;&t;&t;&t; * cache &n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 31-24 part of the&n;&t;&t;&t;&t;&t;&t;&t; * cache&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|reserved
 id|reserved
 suffix:colon
@@ -549,7 +549,7 @@ id|level
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* 15-8 level of the&n;&t;&t;&t;&t;&t;&t;&t; * cache in the &n;&t;&t;&t;&t;&t;&t;&t; * heirarchy.&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 15-8 level of the&n;&t;&t;&t;&t;&t;&t;&t; * cache in the&n;&t;&t;&t;&t;&t;&t;&t; * heirarchy.&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|way
 id|way
 suffix:colon
@@ -561,13 +561,13 @@ id|part
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* 31-24 part of the&n;&t;&t;&t;&t;&t;&t;&t; * cache &n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 31-24 part of the&n;&t;&t;&t;&t;&t;&t;&t; * cache&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|mesi
 id|mesi
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* 39-32 cache line &n;&t;&t;&t;&t;&t;&t;&t; * state&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 39-32 cache line&n;&t;&t;&t;&t;&t;&t;&t; * state&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|start
 id|start
 suffix:colon
@@ -579,13 +579,13 @@ id|length
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* 55-48 #bits to&n;&t;&t;&t;&t;&t;&t;&t; * invert &n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 55-48 #bits to&n;&t;&t;&t;&t;&t;&t;&t; * invert&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|trigger
 id|trigger
 suffix:colon
 l_int|8
 suffix:semicolon
-multiline_comment|/* 63-56 Trigger error&n;&t;&t;&t;&t;&t;&t;&t; * by doing a load &n;&t;&t;&t;&t;&t;&t;&t; * after the write &n;&t;&t;&t;&t;&t;&t;         */
+multiline_comment|/* 63-56 Trigger error&n;&t;&t;&t;&t;&t;&t;&t; * by doing a load&n;&t;&t;&t;&t;&t;&t;&t; * after the write&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|pclid_info_write
 )brace
 id|pclid_info_write
@@ -628,7 +628,7 @@ mdefine_line|#define PAL_CACHE_LINE_ID_PART_DATA_PROT&t;2&t;/* Data protection *
 DECL|macro|PAL_CACHE_LINE_ID_PART_TAG_PROT
 mdefine_line|#define PAL_CACHE_LINE_ID_PART_TAG_PROT&t;&t;3&t;/* Tag protection */
 DECL|macro|PAL_CACHE_LINE_ID_PART_DATA_TAG_PROT
-mdefine_line|#define PAL_CACHE_LINE_ID_PART_DATA_TAG_PROT&t;4&t;/* Data+tag &n;&t;&t;&t;&t;&t;&t;&t; * protection&n;&t;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PAL_CACHE_LINE_ID_PART_DATA_TAG_PROT&t;4&t;/* Data+tag&n;&t;&t;&t;&t;&t;&t;&t; * protection&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|struct|pal_cache_line_info_s
 r_typedef
 r_struct
@@ -638,7 +638,7 @@ DECL|member|pcli_status
 id|pal_status_t
 id|pcli_status
 suffix:semicolon
-multiline_comment|/* Return status of the read cache line &n;&t;&t;&t;&t;&t;&t;&t; * info call.&n;&t;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Return status of the read cache line&n;&t;&t;&t;&t;&t;&t;&t; * info call.&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|pcli_data
 id|u64
 id|pcli_data
@@ -690,7 +690,7 @@ mdefine_line|#define PAL_MC_INFO_RESP_ADDR&t;&t;&t;5&t;/* Responder address */
 DECL|macro|PAL_MC_INFO_TARGET_ADDR
 mdefine_line|#define PAL_MC_INFO_TARGET_ADDR&t;&t;&t;6&t;/* Target address */
 DECL|macro|PAL_MC_INFO_IMPL_DEP
-mdefine_line|#define PAL_MC_INFO_IMPL_DEP&t;&t;&t;7&t;/* Implementation &n;&t;&t;&t;&t;&t;&t;&t; * dependent &n;&t;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PAL_MC_INFO_IMPL_DEP&t;&t;&t;7&t;/* Implementation&n;&t;&t;&t;&t;&t;&t;&t; * dependent&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|struct|pal_process_state_info_s
 r_typedef
 r_struct
@@ -707,7 +707,7 @@ id|rz
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* PAL_CHECK processor&n;&t;&t;&t;&t;&t;&t; * rendezvous &n;&t;&t;&t;&t;&t;&t; * successful.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* PAL_CHECK processor&n;&t;&t;&t;&t;&t;&t; * rendezvous&n;&t;&t;&t;&t;&t;&t; * successful.&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|ra
 id|ra
 suffix:colon
@@ -725,13 +725,13 @@ id|mn
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Min. state save &n;&t;&t;&t;&t;&t;&t; * area has been &n;&t;&t;&t;&t;&t;&t; * registered with PAL&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Min. state save&n;&t;&t;&t;&t;&t;&t; * area has been&n;&t;&t;&t;&t;&t;&t; * registered with PAL&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|sy
 id|sy
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Storage integrity&n;&t;&t;&t;&t;&t;&t; * synched &n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Storage integrity&n;&t;&t;&t;&t;&t;&t; * synched&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|co
 id|co
 suffix:colon
@@ -755,13 +755,13 @@ id|hd
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Non-essential hw&n;&t;&t;&t;&t;&t;&t; * lost (no loss of&n;&t;&t;&t;&t;&t;&t; * functionality) &n;&t;&t;&t;&t;&t;&t; * causing the &n;&t;&t;&t;&t;&t;&t; * processor to run in&n;&t;&t;&t;&t;&t;&t; * degraded mode.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Non-essential hw&n;&t;&t;&t;&t;&t;&t; * lost (no loss of&n;&t;&t;&t;&t;&t;&t; * functionality)&n;&t;&t;&t;&t;&t;&t; * causing the&n;&t;&t;&t;&t;&t;&t; * processor to run in&n;&t;&t;&t;&t;&t;&t; * degraded mode.&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|tl
 id|tl
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* 1 =&gt; MC occurred&n;&t;&t;&t;&t;&t;&t; * after an instr was&n;&t;&t;&t;&t;&t;&t; * executed but before&n;&t;&t;&t;&t;&t;&t; * the trap that &n;&t;&t;&t;&t;&t;&t; * resulted from instr&n;&t;&t;&t;&t;&t;&t; * execution was &n;&t;&t;&t;&t;&t;&t; * generated.&n;&t;&t;&t;&t;&t;&t; * (Trap Lost )&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* 1 =&gt; MC occurred&n;&t;&t;&t;&t;&t;&t; * after an instr was&n;&t;&t;&t;&t;&t;&t; * executed but before&n;&t;&t;&t;&t;&t;&t; * the trap that&n;&t;&t;&t;&t;&t;&t; * resulted from instr&n;&t;&t;&t;&t;&t;&t; * execution was&n;&t;&t;&t;&t;&t;&t; * generated.&n;&t;&t;&t;&t;&t;&t; * (Trap Lost )&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|op
 id|op
 suffix:colon
@@ -773,7 +773,7 @@ id|dy
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Processor dynamic&n;&t;&t;&t;&t;&t;&t; * state valid &n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Processor dynamic&n;&t;&t;&t;&t;&t;&t; * state valid&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|in
 id|in
 suffix:colon
@@ -869,13 +869,13 @@ id|gr
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* General registers&n;&t;&t;&t;&t;&t;&t; * are valid &n;&t;&t;&t;&t;&t;&t; * (excl. banked regs)&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* General registers&n;&t;&t;&t;&t;&t;&t; * are valid&n;&t;&t;&t;&t;&t;&t; * (excl. banked regs)&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|dsize
 id|dsize
 suffix:colon
 l_int|16
 comma
-multiline_comment|/* size of dynamic &n;&t;&t;&t;&t;&t;&t; * state returned&n;&t;&t;&t;&t;&t;&t; * by the processor&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* size of dynamic&n;&t;&t;&t;&t;&t;&t; * state returned&n;&t;&t;&t;&t;&t;&t; * by the processor&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|reserved2
 id|reserved2
 suffix:colon
@@ -925,7 +925,7 @@ id|way
 suffix:colon
 l_int|5
 comma
-multiline_comment|/* Way in which the &n;&t;&t;&t;&t;&t;&t; * error occurred &n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Way in which the&n;&t;&t;&t;&t;&t;&t; * error occurred&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|reserved2
 id|reserved2
 suffix:colon
@@ -954,7 +954,7 @@ id|op
 suffix:colon
 l_int|3
 comma
-multiline_comment|/* Type of cache &n;&t;&t;&t;&t;&t;&t; * operation that &n;&t;&t;&t;&t;&t;&t; * caused the machine&n;&t;&t;&t;&t;&t;&t; * check.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Type of cache&n;&t;&t;&t;&t;&t;&t; * operation that&n;&t;&t;&t;&t;&t;&t; * caused the machine&n;&t;&t;&t;&t;&t;&t; * check.&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|dl
 id|dl
 suffix:colon
@@ -1018,7 +1018,7 @@ id|tr_slot
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* Slot# of TR where&n;&t;&t;&t;&t;&t;&t; * error occurred &n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Slot# of TR where&n;&t;&t;&t;&t;&t;&t; * error occurred&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|reserved2
 id|reserved2
 suffix:colon
@@ -1092,7 +1092,7 @@ id|cc
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Error occurred &n;&t;&t;&t;&t;&t;&t; * during cache-cache&n;&t;&t;&t;&t;&t;&t; * transfer.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Error occurred&n;&t;&t;&t;&t;&t;&t; * during cache-cache&n;&t;&t;&t;&t;&t;&t; * transfer.&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|type
 id|type
 suffix:colon
@@ -1128,7 +1128,7 @@ id|bsi
 suffix:colon
 l_int|8
 comma
-multiline_comment|/* Bus error status &n;&t;&t;&t;&t;&t;&t; * info&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Bus error status&n;&t;&t;&t;&t;&t;&t; * info&n;&t;&t;&t;&t;&t;&t; */
 DECL|member|mc
 id|mc
 suffix:colon
@@ -1299,7 +1299,7 @@ DECL|macro|pmci_bus_external_error
 mdefine_line|#define pmci_bus_external_error&t;&t;&t;pme_bus.eb
 DECL|macro|pmci_bus_mc
 mdefine_line|#define pmci_bus_mc&t;&t;&t;&t;pme_bus.mc
-multiline_comment|/* &n; * NOTE: this min_state_save area struct only includes the 1KB &n; * architectural state save area.  The other 3 KB is scratch space&n; * for PAL.&n; */
+multiline_comment|/*&n; * NOTE: this min_state_save area struct only includes the 1KB&n; * architectural state save area.  The other 3 KB is scratch space&n; * for PAL.&n; */
 DECL|struct|pal_min_state_area_s
 r_typedef
 r_struct
@@ -1993,6 +1993,10 @@ comma
 id|u64
 op_star
 id|progress
+comma
+id|u64
+op_star
+id|vector
 )paren
 (brace
 r_struct
@@ -2013,6 +2017,16 @@ comma
 op_star
 id|progress
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vector
+)paren
+op_star
+id|vector
+op_assign
+id|iprv.v0
 suffix:semicolon
 op_star
 id|progress
@@ -2062,7 +2076,7 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize the tags and data of a data or unified cache line of &n; * processor controlled cache to known values without the availability &n; * of backing memory.&n; */
+multiline_comment|/* Initialize the tags and data of a data or unified cache line of&n; * processor controlled cache to known values without the availability&n; * of backing memory.&n; */
 r_static
 r_inline
 id|s64
@@ -2535,7 +2549,7 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get the ratios for processor frequency, bus frequency and interval timer to&n; * to base frequency of the platform &n; */
+multiline_comment|/*&n; * Get the ratios for processor frequency, bus frequency and interval timer to&n; * to base frequency of the platform&n; */
 r_static
 r_inline
 id|s64
@@ -2622,7 +2636,7 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Make the processor enter HALT or one of the implementation dependent low &n; * power states where prefetching and execution are suspended and cache and&n; * TLB coherency is not maintained.&n; */
+multiline_comment|/* Make the processor enter HALT or one of the implementation dependent low&n; * power states where prefetching and execution are suspended and cache and&n; * TLB coherency is not maintained.&n; */
 r_static
 r_inline
 id|s64
@@ -2819,7 +2833,7 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Ensure that all outstanding transactions in a processor are completed or that any &n; * MCA due to thes outstanding transaction is taken.&n; */
+multiline_comment|/* Ensure that all outstanding transactions in a processor are completed or that any&n; * MCA due to thes outstanding transaction is taken.&n; */
 r_static
 r_inline
 id|s64
@@ -3680,7 +3694,7 @@ DECL|typedef|pal_hints_u_t
 )brace
 id|pal_hints_u_t
 suffix:semicolon
-multiline_comment|/* Return information about the register stack and RSE for this processor &n; * implementation.&n; */
+multiline_comment|/* Return information about the register stack and RSE for this processor&n; * implementation.&n; */
 r_static
 r_inline
 id|s64
@@ -3737,7 +3751,7 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Cause the processor to enter&t;SHUTDOWN state, where prefetching and execution are &n; * suspended, but cause cache and TLB coherency to be maintained.&n; * This is usually called in IA-32 mode.&n; */
+multiline_comment|/* Cause the processor to enter&t;SHUTDOWN state, where prefetching and execution are&n; * suspended, but cause cache and TLB coherency to be maintained.&n; * This is usually called in IA-32 mode.&n; */
 r_static
 r_inline
 id|s64
@@ -4006,7 +4020,7 @@ DECL|macro|tc_associativity
 mdefine_line|#define tc_associativity&t;pal_tc_info_s.associativity
 DECL|macro|tc_num_sets
 mdefine_line|#define tc_num_sets&t;&t;pal_tc_info_s.num_sets
-multiline_comment|/* Return information about the virtual memory characteristics of the processor &n; * implementation.&n; */
+multiline_comment|/* Return information about the virtual memory characteristics of the processor&n; * implementation.&n; */
 r_static
 r_inline
 id|s64
@@ -4069,7 +4083,7 @@ r_return
 id|iprv.status
 suffix:semicolon
 )brace
-multiline_comment|/* Get page size information about the virtual memory characteristics of the processor &n; * implementation.&n; */
+multiline_comment|/* Get page size information about the virtual memory characteristics of the processor&n; * implementation.&n; */
 r_static
 r_inline
 id|s64
@@ -4227,7 +4241,7 @@ DECL|typedef|pal_vm_info_2_u_t
 )brace
 id|pal_vm_info_2_u_t
 suffix:semicolon
-multiline_comment|/* Get summary information about the virtual memory characteristics of the processor &n; * implementation.&n; */
+multiline_comment|/* Get summary information about the virtual memory characteristics of the processor&n; * implementation.&n; */
 r_static
 r_inline
 id|s64

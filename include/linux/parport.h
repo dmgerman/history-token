@@ -4,9 +4,9 @@ macro_line|#ifndef _PARPORT_H_
 DECL|macro|_PARPORT_H_
 mdefine_line|#define _PARPORT_H_
 multiline_comment|/* Start off with user-visible constants */
-multiline_comment|/* Maximum of 8 ports per machine */
+multiline_comment|/* Maximum of 16 ports per machine */
 DECL|macro|PARPORT_MAX
-mdefine_line|#define PARPORT_MAX  8 
+mdefine_line|#define PARPORT_MAX  16
 multiline_comment|/* Magic numbers */
 DECL|macro|PARPORT_IRQ_NONE
 mdefine_line|#define PARPORT_IRQ_NONE  -1

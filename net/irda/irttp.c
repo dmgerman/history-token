@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irttp.c&n; * Version:       1.2&n; * Description:   Tiny Transport Protocol (TTP) implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 31 20:14:31 1997&n; * Modified at:   Wed Jan  5 11:31:27 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irttp.c&n; * Version:       1.2&n; * Description:   Tiny Transport Protocol (TTP) implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 31 20:14:31 1997&n; * Modified at:   Wed Jan  5 11:31:27 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -841,6 +841,18 @@ op_amp
 id|self-&gt;todo_timer
 )paren
 suffix:semicolon
+multiline_comment|/* This one won&squot;t be cleaned up if we are diconnect_pend + close_pend&n;&t; * and we receive a disconnect_indication */
+r_if
+c_cond
+(paren
+id|self-&gt;disconnect_skb
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|self-&gt;disconnect_skb
+)paren
+suffix:semicolon
 id|self-&gt;connected
 op_assign
 id|FALSE
@@ -857,7 +869,7 @@ id|self
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_close (self)&n; *&n; *    Remove TSAP from list of all TSAPs and then deallocate all resources&n; *    associated with this TSAP&n; *&n; */
+multiline_comment|/*&n; * Function irttp_close (self)&n; *&n; *    Remove TSAP from list of all TSAPs and then deallocate all resources&n; *    associated with this TSAP&n; *&n; * Note : because we *free* the tsap structure, it is the responsability&n; * of the caller to make sure we are called only once and to deal with&n; * possible race conditions. - Jean II&n; */
 DECL|function|irttp_close_tsap
 r_int
 id|irttp_close_tsap
@@ -921,14 +933,19 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|self-&gt;disconnect_pend
-)paren
-(brace
-id|IRDA_DEBUG
+id|test_bit
 c_func
 (paren
 l_int|0
 comma
+op_amp
+id|self-&gt;disconnect_pend
+)paren
+)paren
+(brace
+id|WARNING
+c_func
+(paren
 id|__FUNCTION__
 l_string|&quot;(), TSAP still connected!&bslash;n&quot;
 )paren
@@ -1487,6 +1504,7 @@ suffix:semicolon
 r_int
 id|n
 suffix:semicolon
+multiline_comment|/* Get exclusive access to the tx queue, otherwise don&squot;t touch it */
 r_if
 c_cond
 (paren
@@ -1637,11 +1655,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|tx_skb
-suffix:semicolon
 multiline_comment|/* IrSOCK application, IrOBEX, ... */
 id|IRDA_DEBUG
 c_func
@@ -1652,38 +1665,13 @@ id|__FUNCTION__
 l_string|&quot;() : Detaching SKB from socket.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Note : still looking for a more efficient way&n;&t;&t;&t; * to do that - Jean II */
-multiline_comment|/* Get another skb on the same buffer, but without&n;&t;&t;&t; * a reference to the socket (skb-&gt;sk = NULL) */
-id|tx_skb
-op_assign
-id|skb_clone
-c_func
-(paren
-id|skb
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tx_skb
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* Release the skb associated with the&n;&t;&t;&t;&t; * socket, and use the new skb insted */
-id|kfree_skb
+multiline_comment|/* That&squot;s the right way to do it - Jean II */
+id|skb_orphan
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-id|skb
-op_assign
-id|tx_skb
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -1698,6 +1686,7 @@ l_string|&quot;() : Got SKB not attached to a socket.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Pass the skb to IrLMP - done */
 id|irlmp_data_request
 c_func
 (paren
@@ -3977,22 +3966,40 @@ id|__FUNCTION__
 l_string|&quot;(), already disconnected!&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Disconnect already pending? */
+multiline_comment|/* Disconnect already pending ?&n;&t; * We need to use an atomic operation to prevent reentry. This&n;&t; * function may be called from various context, like user, timer&n;&t; * for following a disconnect_indication() (i.e. net_bh).&n;&t; * Jean II */
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;disconnect_pend
+)paren
 )paren
 (brace
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 id|__FUNCTION__
 l_string|&quot;(), disconnect already pending&bslash;n&quot;
@@ -4003,16 +4010,14 @@ c_cond
 (paren
 id|userdata
 )paren
-(brace
 id|dev_kfree_skb
 c_func
 (paren
 id|userdata
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Try to make some progress */
-id|irttp_run_rx_queue
+id|irttp_run_tx_queue
 c_func
 (paren
 id|self
@@ -4045,6 +4050,7 @@ op_eq
 id|P_HIGH
 )paren
 (brace
+multiline_comment|/* &n;&t;&t;&t; *  No need to send the queued data, if we are &n;&t;&t;&t; *  disconnecting right now since the data will&n;&t;&t;&t; *  not have any usable connection to be sent on&n;&t;&t;&t; */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -4054,7 +4060,6 @@ id|__FUNCTION__
 l_string|&quot;High priority!!()&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; *  No need to send the queued data, if we are &n;&t;&t;&t; *  disconnecting right now since the data will&n;&t;&t;&t; *  not have any usable connection to be sent on&n;&t;&t;&t; */
 id|irttp_flush_queues
 c_func
 (paren
@@ -4071,25 +4076,13 @@ op_eq
 id|P_NORMAL
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; *  Must delay disconnect til after all data segments&n;&t;&t;&t; *  have been sent an the tx_queue is empty&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|userdata
-)paren
+multiline_comment|/* &n;&t;&t;&t; *  Must delay disconnect until after all data segments&n;&t;&t;&t; *  have been sent and the tx_queue is empty&n;&t;&t;&t; */
+multiline_comment|/* We&squot;ll reuse this one later for the disconnect */
 id|self-&gt;disconnect_skb
 op_assign
 id|userdata
 suffix:semicolon
-r_else
-id|self-&gt;disconnect_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|self-&gt;disconnect_pend
-op_assign
-id|TRUE
-suffix:semicolon
+multiline_comment|/* May be NULL */
 id|irttp_run_tx_queue
 c_func
 (paren
@@ -4176,6 +4169,17 @@ comma
 id|userdata
 )paren
 suffix:semicolon
+multiline_comment|/* The disconnect is no longer pending */
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;disconnect_pend
+)paren
+suffix:semicolon
+multiline_comment|/* FALSE */
 r_return
 id|ret
 suffix:semicolon
@@ -4248,6 +4252,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Prevent higher layer to send more data */
 id|self-&gt;connected
 op_assign
 id|FALSE
@@ -4259,6 +4264,18 @@ c_cond
 id|self-&gt;close_pend
 )paren
 (brace
+multiline_comment|/* In this case, the higher layer is probably gone. Don&squot;t&n;&t;&t; * bother it and clean up the remains - Jean II */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|irttp_close_tsap
 c_func
 (paren
@@ -4268,19 +4285,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* If we are here, we assume that is the higher layer is still&n;&t; * waiting for the disconnect notification and able to process it,&n;&t; * even if he tried to disconnect. Otherwise, it would have already&n;&t; * attempted to close the tsap and self-&gt;close_pend would be TRUE.&n;&t; * Jean II */
 multiline_comment|/* No need to notify the client if has already tried to disconnect */
-r_if
-c_cond
-(paren
-id|self-&gt;disconnect_pend
-)paren
-r_return
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|self-&gt;notify.disconnect_indication
 )paren
+(brace
 id|self-&gt;notify
 dot
 id|disconnect_indication
@@ -4295,6 +4307,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -4333,8 +4346,6 @@ r_if
 c_cond
 (paren
 id|self-&gt;close_pend
-op_logical_or
-id|self-&gt;disconnect_pend
 )paren
 (brace
 id|dev_kfree_skb
@@ -4450,6 +4461,7 @@ comma
 id|self-&gt;remote_credit
 )paren
 suffix:semicolon
+multiline_comment|/* Get exclusive access to the rx queue, otherwise don&squot;t touch it */
 r_if
 c_cond
 (paren
@@ -5280,7 +5292,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;(), MaxSduSize=%d&bslash;n&quot;
@@ -5378,7 +5390,14 @@ multiline_comment|/* Check if time for disconnect */
 r_if
 c_cond
 (paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;disconnect_pend
+)paren
 )paren
 (brace
 multiline_comment|/* Check if it&squot;s possible to disconnect yet */
@@ -5394,16 +5413,17 @@ id|self-&gt;tx_queue
 )paren
 (brace
 multiline_comment|/* Make sure disconnect is not pending anymore */
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;disconnect_pend
-op_assign
-id|FALSE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|self-&gt;disconnect_skb
 )paren
-(brace
+suffix:semicolon
+multiline_comment|/* FALSE */
+multiline_comment|/* Note : self-&gt;disconnect_skb may be NULL */
 id|irttp_disconnect_request
 c_func
 (paren
@@ -5417,18 +5437,6 @@ suffix:semicolon
 id|self-&gt;disconnect_skb
 op_assign
 l_int|NULL
-suffix:semicolon
-)brace
-r_else
-id|irttp_disconnect_request
-c_func
-(paren
-id|self
-comma
-l_int|NULL
-comma
-id|P_NORMAL
-)paren
 suffix:semicolon
 )brace
 r_else

@@ -179,12 +179,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We should be able to just perform&n;&t; * the free directly, but check our&n;&t; * list for extra sanity.&n;&t; */
 id|ahc
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-r_struct
-id|ahc_softc
-op_star
+id|pdev
 )paren
-id|pdev-&gt;driver_data
 suffix:semicolon
 id|TAILQ_FOREACH
 c_func
@@ -572,9 +571,13 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|ahc
+)paren
 suffix:semicolon
 r_if
 c_cond

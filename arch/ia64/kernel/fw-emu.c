@@ -528,6 +528,43 @@ l_string|&quot;&t;srlz.i&bslash;n&quot;
 l_string|&quot;&t;;;&bslash;n&quot;
 l_string|&quot;&t;mov ar.lc=r9&bslash;n&quot;
 l_string|&quot;&t;mov r8=r0&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;1:&t;cmp.eq p6,p7=15,r28&t;&t;/* PAL_PERF_MON_INFO */&bslash;n&quot;
+l_string|&quot;(p7)&t;br.cond.sptk.few 1f&bslash;n&quot;
+l_string|&quot;&t;mov r8=0&t;&t;&t;/* status = 0 */&bslash;n&quot;
+l_string|&quot;&t;movl r9 =0x12082004&t;&t;/* generic=4 width=32 retired=8 cycles=18 */&bslash;n&quot;
+l_string|&quot;&t;mov r10=0&t;&t;&t;/* reserved */&bslash;n&quot;
+l_string|&quot;&t;mov r11=0&t;&t;&t;/* reserved */&bslash;n&quot;
+l_string|&quot;&t;mov r16=0xffff&t;&t;&t;/* implemented PMC */&bslash;n&quot;
+l_string|&quot;&t;mov r17=0xffff&t;&t;&t;/* implemented PMD */&bslash;n&quot;
+l_string|&quot;&t;add r18=8,r29&t;&t;&t;/* second index */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r16,16&t;&t;/* store implemented PMC */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r17,16&t;&t;/* store implemented PMD */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;mov r16=0xf0&t;&t;&t;/* cycles count capable PMC */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;mov r17=0x10&t;&t;&t;/* retired bundles capable PMC */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r16,16&t;&t;/* store cycles capable */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r17,16&t;&t;/* store retired bundle capable */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
+l_string|&quot;&t;st8 [r29]=r0,16&t;&t;&t;/* store implemented PMC */&bslash;n&quot;
+l_string|&quot;&t;st8 [r18]=r0,16&t;&t;&t;/* clear remaining bits  */&bslash;n&quot;
+l_string|&quot;&t;;;&bslash;n&quot;
 l_string|&quot;1:&t;br.cond.sptk.few rp&bslash;n&quot;
 l_string|&quot;stacked:&bslash;n&quot;
 l_string|&quot;&t;br.ret.sptk.few rp&bslash;n&quot;
@@ -1686,24 +1723,6 @@ c_func
 id|sal_systab-&gt;product_id
 comma
 l_string|&quot;SDV&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IA64_SGI_SN1_SIM
-id|strcpy
-c_func
-(paren
-id|sal_systab-&gt;oem_id
-comma
-l_string|&quot;SGI&quot;
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|sal_systab-&gt;product_id
-comma
-l_string|&quot;SN1&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

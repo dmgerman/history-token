@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_isa.c,v 1.16.6.1 2001/09/23 22:24:37 kai Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for old ISA cards.&n; *&n; * Copyright 1998      by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: eicon_isa.c,v 1.16.6.2 2001/11/06 20:58:29 kai Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for old ISA cards.&n; *&n; * Copyright 1998      by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;eicon.h&quot;
 macro_line|#include &quot;eicon_isa.h&quot;
@@ -13,7 +13,7 @@ r_char
 op_star
 id|eicon_isa_revision
 op_assign
-l_string|&quot;$Revision: 1.16.6.1 $&quot;
+l_string|&quot;$Revision: 1.16.6.2 $&quot;
 suffix:semicolon
 DECL|macro|EICON_MCA_DEBUG
 macro_line|#undef EICON_MCA_DEBUG
@@ -1004,7 +1004,9 @@ multiline_comment|/* Delay 0.2 sec. */
 id|SLEEP
 c_func
 (paren
-l_int|20
+id|HZ
+op_div
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Start CPU */
@@ -1047,7 +1049,9 @@ multiline_comment|/* Delay 0.2 sec. */
 id|SLEEP
 c_func
 (paren
-l_int|20
+id|HZ
+op_div
+l_int|5
 )paren
 suffix:semicolon
 id|timeout
@@ -1063,9 +1067,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 r_if
@@ -1728,14 +1736,20 @@ id|timeout
 op_assign
 id|jiffies
 op_plus
+id|HZ
+op_div
 l_int|10
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 r_if
@@ -1878,9 +1892,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 r_if
@@ -2005,14 +2023,20 @@ id|timeout
 op_assign
 id|jiffies
 op_plus
-l_int|20
+id|HZ
+op_div
+l_int|5
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 r_if

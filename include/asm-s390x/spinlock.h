@@ -14,16 +14,16 @@ id|lock
 suffix:semicolon
 DECL|typedef|spinlock_t
 )brace
-id|spinlock_t
 id|__attribute__
 (paren
 (paren
 id|aligned
 (paren
-l_int|8
+l_int|4
 )paren
 )paren
 )paren
+id|spinlock_t
 suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }

@@ -1,4 +1,4 @@
-multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.8&n; *&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; * 140501 :&t;Use pppoe_rcv_core to handle all backlog. (Alexey)&n; * 170701 :&t;Do not lock_sock with rwlock held. (DaveM)&n; *&t;&t;Ignore discovery frames if user has socket&n; *&t;&t;locked. (DaveM)&n; *&t;&t;Ignore return value of dev_queue_xmit in __pppoe_xmit&n; *&t;&t;or else we may kfree an SKB twice. (DaveM)&n; * 190701 :&t;When doing copies of skb&squot;s in __pppoe_xmit, always delete&n; *&t;&t;the original skb that was passed in on success, never on&n; *&t;&t;failure.  Delete the copy of the skb on failure to avoid&n; *&t;&t;a memory leak.&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@speakeasy.net&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@xconectiva.com.br&gt;&n; *&t;&t;David S. Miller (davem@redhat.com)&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/** -*- linux-c -*- ***********************************************************&n; * Linux PPP over Ethernet (PPPoX/PPPoE) Sockets&n; *&n; * PPPoX --- Generic PPP encapsulation socket family&n; * PPPoE --- PPP over Ethernet (RFC 2516)&n; *&n; *&n; * Version:    0.6.9&n; *&n; * 030700 :     Fixed connect logic to allow for disconnect.&n; * 270700 :&t;Fixed potential SMP problems; we must protect against&n; *&t;&t;simultaneous invocation of ppp_input&n; *&t;&t;and ppp_unregister_channel.&n; * 040800 :&t;Respect reference count mechanisms on net-devices.&n; * 200800 :     fix kfree(skb) in pppoe_rcv (acme)&n; *&t;&t;Module reference count is decremented in the right spot now,&n; *&t;&t;guards against sock_put not actually freeing the sk&n; *&t;&t;in pppoe_release.&n; * 051000 :&t;Initialization cleanup.&n; * 111100 :&t;Fix recvmsg.&n; * 050101 :&t;Fix PADT procesing.&n; * 140501 :&t;Use pppoe_rcv_core to handle all backlog. (Alexey)&n; * 170701 :&t;Do not lock_sock with rwlock held. (DaveM)&n; *&t;&t;Ignore discovery frames if user has socket&n; *&t;&t;locked. (DaveM)&n; *&t;&t;Ignore return value of dev_queue_xmit in __pppoe_xmit&n; *&t;&t;or else we may kfree an SKB twice. (DaveM)&n; * 190701 :&t;When doing copies of skb&squot;s in __pppoe_xmit, always delete&n; *&t;&t;the original skb that was passed in on success, never on&n; *&t;&t;failure.  Delete the copy of the skb on failure to avoid&n; *&t;&t;a memory leak.&n; * 081001 :     Misc. cleanup (licence string, non-blocking, prevent&n; *              reference of device on close).&n; *&n; * Author:&t;Michal Ostrowski &lt;mostrows@speakeasy.net&gt;&n; * Contributors:&n; * &t;&t;Arnaldo Carvalho de Melo &lt;acme@xconectiva.com.br&gt;&n; *&t;&t;David S. Miller (davem@redhat.com)&n; *&n; * License:&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1779,10 +1779,6 @@ comma
 id|po-&gt;pppoe_pa.remote
 )paren
 suffix:semicolon
-id|po-&gt;pppoe_pa.sid
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3350,8 +3346,13 @@ c_func
 id|sk
 comma
 id|flags
+op_amp
+op_complement
+id|MSG_DONTWAIT
 comma
-l_int|0
+id|flags
+op_amp
+id|MSG_DONTWAIT
 comma
 op_amp
 id|error
@@ -3910,6 +3911,24 @@ id|module_exit
 c_func
 (paren
 id|pppoe_exit
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Michal Ostrowski &lt;mostrows@speakeasy.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;PPP over Ethernet driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

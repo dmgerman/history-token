@@ -1,15 +1,6 @@
 macro_line|#ifndef _LINUX_SISFB
 DECL|macro|_LINUX_SISFB
 mdefine_line|#define _LINUX_SISFB
-multiline_comment|/* CRT2 connection */
-DECL|macro|MASK_DISPTYPE_CRT2
-mdefine_line|#define MASK_DISPTYPE_CRT2     0x04         /* Connect CRT2 */
-DECL|macro|MASK_DISPTYPE_LCD
-mdefine_line|#define MASK_DISPTYPE_LCD      0x02         /* Connect LCD */
-DECL|macro|MASK_DISPTYPE_TV
-mdefine_line|#define MASK_DISPTYPE_TV       0x01         /* Connect TV */
-DECL|macro|MASK_DISPTYPE_DISP2
-mdefine_line|#define MASK_DISPTYPE_DISP2    (MASK_DISPTYPE_LCD | MASK_DISPTYPE_TV | MASK_DISPTYPE_CRT2)
 DECL|macro|DISPTYPE_CRT1
 mdefine_line|#define DISPTYPE_CRT1       0x00000008L
 DECL|macro|DISPTYPE_CRT2
@@ -29,20 +20,74 @@ mdefine_line|#define DISPMODE_MIRROR&t;    0x00000010L
 DECL|macro|DISPMODE_DUALVIEW
 mdefine_line|#define DISPMODE_DUALVIEW   0x00000040L
 DECL|macro|HASVB_NONE
-mdefine_line|#define HASVB_NONE      &t;0
+mdefine_line|#define HASVB_NONE      &t;0x00
 DECL|macro|HASVB_301
-mdefine_line|#define HASVB_301       &t;1
+mdefine_line|#define HASVB_301       &t;0x01
 DECL|macro|HASVB_LVDS
-mdefine_line|#define HASVB_LVDS      &t;2
+mdefine_line|#define HASVB_LVDS      &t;0x02
 DECL|macro|HASVB_TRUMPION
-mdefine_line|#define HASVB_TRUMPION  &t;3
+mdefine_line|#define HASVB_TRUMPION  &t;0x04
 DECL|macro|HASVB_LVDS_CHRONTEL
-mdefine_line|#define HASVB_LVDS_CHRONTEL&t;4
-DECL|macro|HASVB_LVDS_ALL
-mdefine_line|#define HASVB_LVDS_ALL      (HASVB_LVDS | HASVB_TRUMPION | HASVB_LVDS_CHRONTEL)
-DECL|enum|_TVMODE
+mdefine_line|#define HASVB_LVDS_CHRONTEL&t;0x10
+DECL|macro|HASVB_302
+mdefine_line|#define HASVB_302       &t;0x20
+DECL|macro|HASVB_303
+mdefine_line|#define HASVB_303       &t;0x40
+DECL|macro|HASVB_CHRONTEL
+mdefine_line|#define HASVB_CHRONTEL  &t;0x80
+DECL|enum|_SIS_CHIP_TYPE
+r_typedef
 r_enum
-id|_TVMODE
+id|_SIS_CHIP_TYPE
+(brace
+DECL|enumerator|SIS_VGALegacy
+id|SIS_VGALegacy
+op_assign
+l_int|0
+comma
+DECL|enumerator|SIS_300
+id|SIS_300
+comma
+DECL|enumerator|SIS_630
+id|SIS_630
+comma
+DECL|enumerator|SIS_540
+id|SIS_540
+comma
+DECL|enumerator|SIS_730
+id|SIS_730
+comma
+DECL|enumerator|SIS_315H
+id|SIS_315H
+comma
+DECL|enumerator|SIS_315
+id|SIS_315
+comma
+DECL|enumerator|SIS_550
+id|SIS_550
+comma
+DECL|enumerator|SIS_315PRO
+id|SIS_315PRO
+comma
+DECL|enumerator|SIS_640
+id|SIS_640
+comma
+DECL|enumerator|SIS_740
+id|SIS_740
+comma
+DECL|enumerator|SIS_330
+id|SIS_330
+comma
+DECL|enumerator|MAX_SIS_CHIP
+id|MAX_SIS_CHIP
+DECL|typedef|SIS_CHIP_TYPE
+)brace
+id|SIS_CHIP_TYPE
+suffix:semicolon
+DECL|enum|_TVTYPE
+r_typedef
+r_enum
+id|_TVTYPE
 (brace
 DECL|enumerator|TVMODE_NTSC
 id|TVMODE_NTSC
@@ -57,14 +102,17 @@ id|TVMODE_HIVISION
 comma
 DECL|enumerator|TVMODE_TOTAL
 id|TVMODE_TOTAL
+DECL|typedef|SIS_TV_TYPE
 )brace
+id|SIS_TV_TYPE
 suffix:semicolon
 DECL|enum|_TVPLUGTYPE
+r_typedef
 r_enum
 id|_TVPLUGTYPE
 (brace
-DECL|enumerator|TVPLUG_UNKNOWN
-id|TVPLUG_UNKNOWN
+DECL|enumerator|TVPLUG_Legacy
+id|TVPLUG_Legacy
 op_assign
 l_int|0
 comma
@@ -79,32 +127,9 @@ id|TVPLUG_SCART
 comma
 DECL|enumerator|TVPLUG_TOTAL
 id|TVPLUG_TOTAL
+DECL|typedef|SIS_TV_PLUG
 )brace
-suffix:semicolon
-DECL|enum|CHIPTYPE
-r_enum
-id|CHIPTYPE
-(brace
-DECL|enumerator|SiS_UNKNOWN
-id|SiS_UNKNOWN
-op_assign
-l_int|0
-comma
-DECL|enumerator|SiS_300
-id|SiS_300
-comma
-DECL|enumerator|SiS_540
-id|SiS_540
-comma
-DECL|enumerator|SiS_630
-id|SiS_630
-comma
-DECL|enumerator|SiS_630S
-id|SiS_630S
-comma
-DECL|enumerator|SiS_730
-id|SiS_730
-)brace
+id|SIS_TV_PLUG
 suffix:semicolon
 DECL|struct|sis_memreq
 r_struct
@@ -122,7 +147,6 @@ id|size
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Data for AP */
 DECL|struct|mode_info
 r_struct
 id|mode_info
@@ -187,18 +211,40 @@ r_int
 id|disp_state
 suffix:semicolon
 DECL|member|chip
-r_enum
-id|CHIPTYPE
+id|SIS_CHIP_TYPE
 id|chip
+suffix:semicolon
+DECL|member|hasVB
+r_int
+r_char
+id|hasVB
+suffix:semicolon
+DECL|member|TV_type
+id|SIS_TV_TYPE
+id|TV_type
+suffix:semicolon
+DECL|member|TV_plug
+id|SIS_TV_PLUG
+id|TV_plug
+suffix:semicolon
+DECL|member|version
+r_int
+r_int
+id|version
+suffix:semicolon
+DECL|member|reserved
+r_char
+id|reserved
+(braket
+l_int|256
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Data for kernel */
 DECL|struct|video_info
 r_struct
 id|video_info
 (brace
-multiline_comment|/* card parameters */
 DECL|member|chip_id
 r_int
 id|chip_id
@@ -233,7 +279,6 @@ r_int
 r_int
 id|vga_base
 suffix:semicolon
-multiline_comment|/* mode */
 DECL|member|video_bpp
 r_int
 id|video_bpp
@@ -267,7 +312,6 @@ r_int
 r_int
 id|refresh_rate
 suffix:semicolon
-multiline_comment|/* VB functions */
 DECL|member|disp_state
 r_int
 r_int
@@ -287,6 +331,22 @@ DECL|member|TV_plug
 r_int
 r_char
 id|TV_plug
+suffix:semicolon
+DECL|member|chip
+id|SIS_CHIP_TYPE
+id|chip
+suffix:semicolon
+DECL|member|revision_id
+r_int
+r_char
+id|revision_id
+suffix:semicolon
+DECL|member|reserved
+r_char
+id|reserved
+(braket
+l_int|256
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -315,6 +375,17 @@ c_func
 r_int
 r_int
 id|base
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sis_dispinfo
+c_func
+(paren
+r_struct
+id|ap_data
+op_star
+id|rec
 )paren
 suffix:semicolon
 macro_line|#endif

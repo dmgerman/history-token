@@ -2415,7 +2415,6 @@ c_cond
 l_string|&quot;tea&quot;
 suffix:colon
 (paren
-(paren
 id|sb_hash_function_code
 c_func
 (paren
@@ -2423,37 +2422,27 @@ id|rs
 )paren
 op_eq
 id|YURA_HASH
-)paren
 ques
 c_cond
 l_string|&quot;rupasov&quot;
 suffix:colon
+(paren
+id|sb_hash_function_code
+c_func
+(paren
+id|rs
+)paren
+op_eq
+id|R5_HASH
+ques
+c_cond
+l_string|&quot;r5&quot;
+suffix:colon
 l_string|&quot;unknown&quot;
 )paren
 )paren
+)paren
 suffix:semicolon
-macro_line|#if 0
-id|__u32
-id|s_journal_trans_max
-suffix:semicolon
-multiline_comment|/* max number of blocks in a transaction.  */
-id|__u32
-id|s_journal_block_count
-suffix:semicolon
-multiline_comment|/* total size of the journal. can change over time  */
-id|__u32
-id|s_journal_max_batch
-suffix:semicolon
-multiline_comment|/* max number of blocks to batch into a trans */
-id|__u32
-id|s_journal_max_commit_age
-suffix:semicolon
-multiline_comment|/* in seconds, how old can an async commit be */
-id|__u32
-id|s_journal_max_trans_age
-suffix:semicolon
-multiline_comment|/* in seconds, how old can a transaction be */
-macro_line|#endif
 id|printk
 (paren
 l_string|&quot;Tree height %d&bslash;n&quot;

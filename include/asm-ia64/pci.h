@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-multiline_comment|/*&n; * Can be used to override the logic in pci_scan_bus for skipping&n; * already-configured bus numbers - to be used for buggy BIOSes or&n; * architectures with incomplete PCI setup by the loader.&n; */
+multiline_comment|/*&n; * Can be used to override the logic in pci_scan_bus for skipping already-configured bus&n; * numbers - to be used for buggy BIOSes or architectures with incomplete PCI setup by the&n; * loader.&n; */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()     0
 DECL|macro|PCIBIOS_MIN_IO
@@ -82,10 +82,49 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|macro|pci_map_page
+mdefine_line|#define pci_map_page(dev,pg,off,size,dir)&t;&t;&t;&t;&bslash;&n;&t;pci_map_single((dev), page_address(pg) + (off), (size), (dir))
+DECL|macro|pci_unmap_page
+mdefine_line|#define pci_unmap_page(dev,dma_addr,size,dir)&t;&t;&t;&t;&bslash;&n;&t;pci_unmap_single((dev), (dma_addr), (size), (dir))
+multiline_comment|/* The ia64 platform always supports 64-bit addressing. */
+DECL|macro|pci_dac_dma_supported
+mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(1)
+DECL|macro|pci_dac_page_to_dma
+mdefine_line|#define pci_dac_page_to_dma(dev,pg,off,dir)&t;((dma64_addr_t) page_to_bus(pg) + (off))
+DECL|macro|pci_dac_dma_to_page
+mdefine_line|#define pci_dac_dma_to_page(dev,dma_addr)&t;(virt_to_page(bus_to_virt(dma_addr)))
+DECL|macro|pci_dac_dma_to_offset
+mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;((dma_addr) &amp; ~PAGE_MASK)
+DECL|macro|pci_dac_dma_sync_single
+mdefine_line|#define pci_dac_dma_sync_single(dev,dma_addr,len,dir)&t;do { /* nothing */ } while (0)
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_controller_num
 mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
+DECL|macro|HAVE_PCI_MMAP
+mdefine_line|#define HAVE_PCI_MMAP
+r_extern
+r_int
+id|pci_mmap_page_range
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_enum
+id|pci_mmap_state
+id|mmap_state
+comma
+r_int
+id|write_combine
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_PCI_H */
 eof

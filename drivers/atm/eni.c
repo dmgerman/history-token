@@ -13056,9 +13056,13 @@ id|dev
 r_goto
 id|out2
 suffix:semicolon
-id|pci_dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pci_dev
+comma
 id|dev
+)paren
 suffix:semicolon
 id|eni_dev-&gt;pci_dev
 op_assign

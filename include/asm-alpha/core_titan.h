@@ -1320,8 +1320,7 @@ DECL|macro|vulp
 mdefine_line|#define vulp&t;volatile unsigned long *
 DECL|function|titan_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|titan_inb
 c_func
 (paren
@@ -1353,8 +1352,7 @@ r_void
 id|titan_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1386,8 +1384,7 @@ suffix:semicolon
 )brace
 DECL|function|titan_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|titan_inw
 c_func
 (paren
@@ -1418,8 +1415,7 @@ r_void
 id|titan_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1451,8 +1447,7 @@ suffix:semicolon
 )brace
 DECL|function|titan_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|titan_inl
 c_func
 (paren
@@ -1479,8 +1474,7 @@ r_void
 id|titan_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1569,8 +1563,7 @@ suffix:semicolon
 )brace
 DECL|function|titan_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|titan_readb
 c_func
 (paren
@@ -1593,8 +1586,7 @@ suffix:semicolon
 )brace
 DECL|function|titan_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|titan_readw
 c_func
 (paren
@@ -1617,8 +1609,7 @@ suffix:semicolon
 )brace
 DECL|function|titan_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|titan_readl
 c_func
 (paren
@@ -1628,17 +1619,20 @@ id|addr
 )paren
 (brace
 r_return
+(paren
 op_star
 (paren
 id|vuip
 )paren
 id|addr
+)paren
+op_amp
+l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|titan_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|titan_readq
 c_func
 (paren
@@ -1661,8 +1655,7 @@ r_void
 id|titan_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1689,8 +1682,7 @@ r_void
 id|titan_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1717,8 +1709,7 @@ r_void
 id|titan_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1741,8 +1732,7 @@ r_void
 id|titan_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

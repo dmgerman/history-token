@@ -1935,12 +1935,22 @@ id|outDAC1064
 c_func
 (paren
 id|PMINFO
-id|M1064_X8B
+id|M1064_XSYNCCTRL
 comma
 l_int|0xCC
 )paren
 suffix:semicolon
 multiline_comment|/* only matrox know... */
+id|outDAC1064
+c_func
+(paren
+id|PMINFO
+id|M1064_XPWRCTRL
+comma
+l_int|0x1F
+)paren
+suffix:semicolon
+multiline_comment|/* powerup everything */
 id|outDAC1064
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Kernel support for the ptrace() and syscall tracing interfaces.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; * Copyright (C) 1999-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from the x86 and Alpha versions.  Most of the code in here&n; * could actually be factored into a common set of routines.&n; */
+multiline_comment|/*&n; * Kernel support for the ptrace() and syscall tracing interfaces.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from the x86 and Alpha versions.  Most of the code in here&n; * could actually be factored into a common set of routines.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3663,10 +3663,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by kernel/ptrace.c when detaching..&n; *&n; * Make sure the single step bit is not set.&n; */
-DECL|function|ptrace_disable
 r_void
+DECL|function|ptrace_disable
 id|ptrace_disable
-c_func
 (paren
 r_struct
 id|task_struct
@@ -3674,24 +3673,27 @@ op_star
 id|child
 )paren
 (brace
-multiline_comment|/* make sure the single step/take-branch tra bits are not set: */
+r_struct
+id|ia64_psr
+op_star
+id|child_psr
+op_assign
 id|ia64_psr
 c_func
 (paren
-id|pt
+id|ia64_task_regs
+c_func
+(paren
+id|child
 )paren
-op_member_access_from_pointer
-id|ss
+)paren
+suffix:semicolon
+multiline_comment|/* make sure the single step/take-branch tra bits are not set: */
+id|child_psr-&gt;ss
 op_assign
 l_int|0
 suffix:semicolon
-id|ia64_psr
-c_func
-(paren
-id|pt
-)paren
-op_member_access_from_pointer
-id|tb
+id|child_psr-&gt;tb
 op_assign
 l_int|0
 suffix:semicolon
@@ -3755,8 +3757,6 @@ id|stack
 suffix:semicolon
 r_int
 r_int
-id|flags
-comma
 id|urbs_end
 suffix:semicolon
 r_struct
@@ -3945,6 +3945,49 @@ id|current
 r_goto
 id|out_tsk
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|request
+op_ne
+id|PTRACE_KILL
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|child-&gt;state
+op_ne
+id|TASK_STOPPED
+)paren
+r_goto
+id|out_tsk
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_while
+c_loop
+(paren
+id|child-&gt;has_cpu
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|child-&gt;state
+op_ne
+id|TASK_STOPPED
+)paren
+r_goto
+id|out_tsk
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
 id|pt
 op_assign
 id|ia64_task_regs
@@ -4331,7 +4374,7 @@ id|child-&gt;exit_code
 op_assign
 id|data
 suffix:semicolon
-multiline_comment|/* make sure the single step/take-branch tra bits are not set: */
+multiline_comment|/* make sure the single step/taken-branch trap bits are not set: */
 id|ia64_psr
 c_func
 (paren

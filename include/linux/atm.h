@@ -488,6 +488,12 @@ id|arg
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|typedef|atm_backend_t
+r_typedef
+r_int
+r_int
+id|atm_backend_t
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/net.h&gt;&t;/* struct net_proto */
 r_void

@@ -1253,6 +1253,19 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+id|PROC_INFO_INC
+c_func
+(paren
+id|tb
+op_member_access_from_pointer
+id|tb_sb
+comma
+id|balance_at
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 multiline_comment|/* Make balance in case insert_size[0] &lt; 0 */
 r_if
 c_cond

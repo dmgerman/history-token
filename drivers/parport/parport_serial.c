@@ -1141,6 +1141,10 @@ id|ASYNC_SKIP_TEST
 op_or
 id|ASYNC_AUTOPROBE
 suffix:semicolon
+id|serial_req.baud_base
+op_assign
+id|base_baud
+suffix:semicolon
 id|line
 op_assign
 id|register_serial

@@ -397,8 +397,7 @@ DECL|macro|vulp
 mdefine_line|#define vulp&t;volatile unsigned long *
 DECL|function|cia_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|cia_inb
 c_func
 (paren
@@ -446,8 +445,7 @@ r_void
 id|cia_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -495,8 +493,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|cia_inw
 c_func
 (paren
@@ -544,8 +541,7 @@ r_void
 id|cia_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -593,8 +589,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|cia_inl
 c_func
 (paren
@@ -627,8 +622,7 @@ r_void
 id|cia_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -662,8 +656,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|cia_bwx_inb
 c_func
 (paren
@@ -695,8 +688,7 @@ r_void
 id|cia_bwx_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -728,8 +720,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|cia_bwx_inw
 c_func
 (paren
@@ -760,8 +751,7 @@ r_void
 id|cia_bwx_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -793,8 +783,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|cia_bwx_inl
 c_func
 (paren
@@ -821,8 +810,7 @@ r_void
 id|cia_bwx_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -851,8 +839,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory functions.  64-bit and 32-bit accesses are done through&n; * dense memory space, everything else through sparse space.&n; *&n; * For reading and writing 8 and 16 bit quantities we need to&n; * go through one of the three sparse address mapping regions&n; * and use the HAE_MEM CSR to provide some bits of the address.&n; * The following few routines use only sparse address region 1&n; * which gives 1Gbyte of accessible space which relates exactly&n; * to the amount of PCI memory mapping *into* system address space.&n; * See p 6-17 of the specification but it looks something like this:&n; *&n; * 21164 Address:&n; *&n; *          3         2         1&n; * 9876543210987654321098765432109876543210&n; * 1ZZZZ0.PCI.QW.Address............BBLL&n; *&n; * ZZ = SBZ&n; * BB = Byte offset&n; * LL = Transfer length&n; *&n; * PCI Address:&n; *&n; * 3         2         1&n; * 10987654321098765432109876543210&n; * HHH....PCI.QW.Address........ 00&n; *&n; * HHH = 31:29 HAE_MEM CSR&n; *&n; */
 DECL|function|cia_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|cia_readb
 c_func
 (paren
@@ -901,8 +888,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|cia_readw
 c_func
 (paren
@@ -955,8 +941,7 @@ r_void
 id|cia_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1009,8 +994,7 @@ r_void
 id|cia_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1059,8 +1043,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|cia_readl
 c_func
 (paren
@@ -1079,8 +1062,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|cia_readq
 c_func
 (paren
@@ -1103,8 +1085,7 @@ r_void
 id|cia_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1127,8 +1108,7 @@ r_void
 id|cia_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int
@@ -1190,8 +1170,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|cia_bwx_readb
 c_func
 (paren
@@ -1214,8 +1193,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|cia_bwx_readw
 c_func
 (paren
@@ -1238,8 +1216,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|cia_bwx_readl
 c_func
 (paren
@@ -1258,8 +1235,7 @@ suffix:semicolon
 )brace
 DECL|function|cia_bwx_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|cia_bwx_readq
 c_func
 (paren
@@ -1282,8 +1258,7 @@ r_void
 id|cia_bwx_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1310,8 +1285,7 @@ r_void
 id|cia_bwx_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1338,8 +1312,7 @@ r_void
 id|cia_bwx_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1362,8 +1335,7 @@ r_void
 id|cia_bwx_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

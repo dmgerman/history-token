@@ -23,6 +23,7 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipconfig.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* Define this to allow debugging output */
 DECL|macro|IPCONFIG_DEBUG
 macro_line|#undef IPCONFIG_DEBUG
@@ -507,10 +508,17 @@ id|GFP_KERNEL
 )paren
 )paren
 )paren
+(brace
+id|rtnl_shunlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|d-&gt;dev
 op_assign
 id|dev
@@ -2321,6 +2329,32 @@ op_star
 id|e
 op_increment
 op_assign
+l_int|57
+suffix:semicolon
+multiline_comment|/* set extension buffer size for reply */
+op_star
+id|e
+op_increment
+op_assign
+l_int|2
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* 128+236+8+20+14, see dhcpd sources */
+op_star
+id|e
+op_increment
+op_assign
+l_int|150
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
 l_int|255
 suffix:semicolon
 multiline_comment|/* End of the list */
@@ -4033,11 +4067,18 @@ op_logical_and
 op_logical_neg
 id|ic_got_reply
 )paren
+(brace
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef IPCONFIG_DHCP
 multiline_comment|/* DHCP isn&squot;t done until we get a DHCPACK. */
 r_if

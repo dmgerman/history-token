@@ -251,15 +251,23 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_ARCH_S390)
 r_extern
 r_int
-id|mdisk_init
+id|viodasd_init
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|viocd_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_ARCH_S390)
 r_extern
 r_int
 id|dasd_init
@@ -271,6 +279,14 @@ suffix:semicolon
 r_extern
 r_int
 id|xpram_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|tapeblock_init
 c_func
 (paren
 r_void

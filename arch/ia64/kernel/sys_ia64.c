@@ -11,8 +11,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|COLOR_ALIGN
-mdefine_line|#define COLOR_ALIGN(addr)&t;(((addr) + SHMLBA - 1) &amp; ~(SHMLBA - 1))
 r_int
 r_int
 DECL|function|arch_get_unmapped_area
@@ -40,11 +38,6 @@ r_int
 id|flags
 )paren
 (brace
-r_struct
-id|vm_area_struct
-op_star
-id|vmm
-suffix:semicolon
 r_int
 id|map_shared
 op_assign
@@ -53,6 +46,19 @@ id|flags
 op_amp
 id|MAP_SHARED
 )paren
+suffix:semicolon
+r_int
+r_int
+id|align_mask
+op_assign
+id|PAGE_SIZE
+op_minus
+l_int|1
+suffix:semicolon
+r_struct
+id|vm_area_struct
+op_star
+id|vmm
 suffix:semicolon
 r_if
 c_cond
@@ -79,23 +85,30 @@ r_if
 c_cond
 (paren
 id|map_shared
-)paren
-id|addr
-op_assign
-id|COLOR_ALIGN
-c_func
+op_logical_and
 (paren
-id|addr
+id|TASK_SIZE
+OG
+l_int|0xfffffffful
 )paren
+)paren
+multiline_comment|/*&n;&t;&t; * For 64-bit tasks, align shared segments to 1MB to avoid potential&n;&t;&t; * performance penalty due to virtual aliasing (see ASDM).  For 32-bit&n;&t;&t; * tasks, we prefer to avoid exhausting the address space too quickly by&n;&t;&t; * limiting alignment to a single page.&n;&t;&t; */
+id|align_mask
+op_assign
+id|SHMLBA
+op_minus
+l_int|1
 suffix:semicolon
-r_else
 id|addr
 op_assign
-id|PAGE_ALIGN
-c_func
 (paren
 id|addr
+op_plus
+id|align_mask
 )paren
+op_amp
+op_complement
+id|align_mask
 suffix:semicolon
 r_for
 c_loop
@@ -165,20 +178,14 @@ id|addr
 suffix:semicolon
 id|addr
 op_assign
+(paren
 id|vmm-&gt;vm_end
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|map_shared
+op_plus
+id|align_mask
 )paren
-id|addr
-op_assign
-id|COLOR_ALIGN
-c_func
-(paren
-id|addr
-)paren
+op_amp
+op_complement
+id|align_mask
 suffix:semicolon
 )brace
 )brace
@@ -853,10 +860,16 @@ op_logical_or
 op_logical_neg
 id|file-&gt;f_op-&gt;mmap
 )paren
-r_return
+(brace
+id|addr
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * A zero mmap always succeeds in Linux, independent of whether or not the&n;&t; * remaining arguments are valid.&n;&t; */
 id|len
@@ -874,8 +887,8 @@ id|len
 op_eq
 l_int|0
 )paren
-r_return
-id|addr
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/* don&squot;t permit mappings into unmapped space or the virtual page table of a region: */
 id|roff
@@ -903,10 +916,16 @@ id|len
 op_ge
 id|RGN_MAP_LIMIT
 )paren
-r_return
+(brace
+id|addr
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/* don&squot;t permit mappings that would cross a region boundary: */
 r_if
 c_cond
@@ -925,10 +944,16 @@ op_plus
 id|len
 )paren
 )paren
-r_return
+(brace
+id|addr
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|down_write
 c_func
 (paren
@@ -961,6 +986,8 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_if
 c_cond
 (paren

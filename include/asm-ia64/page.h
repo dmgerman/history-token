@@ -65,14 +65,20 @@ macro_line|#ifdef CONFIG_IA64_GENERIC
 macro_line|# include &lt;asm/machvec.h&gt;
 DECL|macro|virt_to_page
 macro_line|# define virt_to_page(kaddr)&t;(mem_map + platform_map_nr(kaddr))
+DECL|macro|page_to_phys
+macro_line|# define page_to_phys(page)&t;XXX fix me
 macro_line|#elif defined (CONFIG_IA64_SGI_SN1)
 macro_line|# ifndef CONFIG_DISCONTIGMEM
 DECL|macro|virt_to_page
 macro_line|#  define virt_to_page(kaddr)&t;(mem_map + MAP_NR_DENSE(kaddr))
+DECL|macro|page_to_phys
+macro_line|#  define page_to_phys(page)&t;XXX fix me
 macro_line|# endif
 macro_line|#else
 DECL|macro|virt_to_page
 macro_line|# define virt_to_page(kaddr)&t;(mem_map + MAP_NR_DENSE(kaddr))
+DECL|macro|page_to_phys
+macro_line|# define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif
 DECL|macro|VALID_PAGE
 mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)

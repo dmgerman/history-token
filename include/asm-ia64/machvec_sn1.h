@@ -18,6 +18,10 @@ id|ia64_mv_send_ipi_t
 id|sn1_send_IPI
 suffix:semicolon
 r_extern
+id|ia64_mv_global_tlb_purge_t
+id|sn1_global_tlb_purge
+suffix:semicolon
+r_extern
 id|ia64_mv_pci_fixup_t
 id|sn1_pci_fixup
 suffix:semicolon
@@ -92,6 +96,8 @@ DECL|macro|platform_map_nr
 mdefine_line|#define platform_map_nr&t;&t;sn1_map_nr
 DECL|macro|platform_send_ipi
 mdefine_line|#define platform_send_ipi&t;sn1_send_IPI
+DECL|macro|platform_global_tlb_purge
+mdefine_line|#define platform_global_tlb_purge       sn1_global_tlb_purge
 DECL|macro|platform_pci_fixup
 mdefine_line|#define platform_pci_fixup&t;sn1_pci_fixup
 DECL|macro|platform_inb

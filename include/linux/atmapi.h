@@ -3,7 +3,7 @@ multiline_comment|/* Written 1999,2000 by Werner Almesberger, EPFL ICA */
 macro_line|#ifndef _LINUX_ATMAPI_H
 DECL|macro|_LINUX_ATMAPI_H
 mdefine_line|#define _LINUX_ATMAPI_H
-macro_line|#ifdef __sparc__
+macro_line|#if defined(__sparc__) || defined(__ia64__)
 multiline_comment|/* such alignment is not required on 32 bit sparcs, but we can&squot;t&n;   figure that we are on a sparc64 while compiling user-space programs. */
 DECL|macro|__ATM_API_ALIGN
 mdefine_line|#define __ATM_API_ALIGN&t;__attribute__((aligned(8)))
@@ -25,6 +25,7 @@ l_int|8
 )braket
 suffix:semicolon
 )brace
+id|__ATM_API_ALIGN
 id|atm_kptr_t
 suffix:semicolon
 macro_line|#endif

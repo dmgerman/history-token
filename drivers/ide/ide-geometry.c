@@ -219,9 +219,11 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;hd%d: C/H/S=%d/%d/%d from BIOS ignored&bslash;n&quot;
+l_string|&quot;hd%c: C/H/S=%d/%d/%d from BIOS ignored&bslash;n&quot;
 comma
 id|unit
+op_plus
+l_char|&squot;a&squot;
 comma
 id|cyl
 comma

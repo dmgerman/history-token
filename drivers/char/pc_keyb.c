@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1210,11 +1211,21 @@ l_int|0200
 suffix:semicolon
 )brace
 DECL|function|pckbd_pm_resume
-r_void
+r_int
 id|pckbd_pm_resume
 c_func
 (paren
+r_struct
+id|pm_dev
+op_star
+id|dev
+comma
+id|pm_request_t
+id|rqst
+comma
 r_void
+op_star
+id|data
 )paren
 (brace
 macro_line|#if defined CONFIG_PSMOUSE
@@ -1222,6 +1233,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rqst
+op_eq
+id|PM_RESUME
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1247,7 +1266,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                        * Dell Lat. C600 A06 enables mouse after resume.&n;                        * When user touches the pad, it posts IRQ 12&n;                        * (which we do not process), thus holding keyboard.&n;                        */
+multiline_comment|/*&n;&t;&t;&t;&t;* Dell Lat. C600 A06 enables mouse after resume.&n;&t;&t;&t;&t;* When user touches the pad, it posts IRQ 12&n;&t;&t;&t;&t;* (which we do not process), thus holding keyboard.&n;&t;&t;&t;&t;*/
 id|kbd_write_command
 c_func
 (paren
@@ -1289,7 +1308,11 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif       
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|handle_mouse_event
 r_static

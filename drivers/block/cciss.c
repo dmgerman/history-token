@@ -5989,6 +5989,12 @@ l_int|NULL
 r_goto
 id|startio
 suffix:semicolon
+id|blkdev_dequeue_request
+c_func
+(paren
+id|creq
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -6471,13 +6477,6 @@ op_amp
 id|io_request_lock
 )paren
 suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|creq
-)paren
-suffix:semicolon
-multiline_comment|/*&n;         * ehh, we can&squot;t really end the request here since it&squot;s not&n;         * even started yet. for now it shouldn&squot;t hurt though&n;         */
 id|addQ
 c_func
 (paren
@@ -9780,12 +9779,16 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the pdev driver private data. &n;&t;&t;have it point to hba[i].  */
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|hba
 (braket
 id|i
 )braket
+)paren
 suffix:semicolon
 multiline_comment|/* command and error info recs zeroed out before &n;&t;&t;&t;they are used */
 id|memset
@@ -10129,7 +10132,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 op_eq
 l_int|NULL
 )paren
@@ -10146,11 +10153,11 @@ suffix:semicolon
 )brace
 id|tmp_ptr
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-id|ctlr_info_t
-op_star
+id|pdev
 )paren
-id|pdev-&gt;driver_data
 suffix:semicolon
 id|i
 op_assign
@@ -10213,9 +10220,13 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 id|iounmap
 c_func

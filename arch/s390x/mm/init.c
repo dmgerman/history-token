@@ -164,7 +164,7 @@ l_int|0
 suffix:semicolon
 id|freed
 op_add_assign
-l_int|4
+l_int|1
 suffix:semicolon
 )brace
 )brace

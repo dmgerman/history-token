@@ -1,6 +1,9 @@
 multiline_comment|/*&n; *  Copyright (C) 1997 Cullen Jennings&n; *  Copyright (C) 1998 Elmer Joandiu, elmer@ylenurme.ee&n; *  GNU General Public License applies&n; * This module provides support for the Arlan 655 card made by Aironet&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;arlan.h&quot;
+macro_line|#if BITS_PER_LONG != 32
+macro_line|#  error FIXME: this driver requires a 32-bit platform
+macro_line|#endif
 DECL|variable|arlan_version
 r_static
 r_const

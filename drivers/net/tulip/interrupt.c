@@ -26,7 +26,7 @@ l_int|1
 )braket
 op_assign
 (brace
-multiline_comment|/*  CRS11 21143 hardware Mitigation Control Interrupt &n;            We use only RX mitigation we other techniques for &n;            TX intr. mitigation.&n;&n;           31    Cycle Size (timer control)&n;           30:27 TX timer in 16 * Cycle size&n;           26:24 TX No pkts before Int.&n;           23:20 RX timer in Cycle size&n;           19:17 RX No pkts before Int.&n;           16       Continues Mode (CM)&n;        */
+multiline_comment|/*  CRS11 21143 hardware Mitigation Control Interrupt&n;            We use only RX mitigation we other techniques for&n;            TX intr. mitigation.&n;&n;           31    Cycle Size (timer control)&n;           30:27 TX timer in 16 * Cycle size&n;           26:24 TX No pkts before Int.&n;           23:20 RX timer in Cycle size&n;           19:17 RX No pkts before Int.&n;           16       Continues Mode (CM)&n;        */
 l_int|0x0
 comma
 multiline_comment|/* IM disabled */
@@ -323,7 +323,7 @@ id|mit_sel
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* that one buffer is needed for mit activation; or might be a &n;   bug in the ring buffer code; check later -- JHS*/
+multiline_comment|/* that one buffer is needed for mit activation; or might be a&n;   bug in the ring buffer code; check later -- JHS*/
 r_if
 c_cond
 (paren
@@ -1013,7 +1013,7 @@ id|RX_RING_SIZE
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-multiline_comment|/* We use this simplistic scheme for IM. It&squot;s proven by&n;           real life installations. We can have IM enabled&n;           continuesly but this would cause unnecessary latency. &n;           Unfortunely we can&squot;t use all the NET_RX_* feedback here. &n;           This would turn on IM for devices that is not contributing &n;           to backlog congestion with unnecessary latency. &n;&n;           We monitor the the device RX-ring and have:&n;&n;           HW Interrupt Mitigation either ON or OFF.&n;&n;           ON:  More then 1 pkt received (per intr.) OR we are dropping &n;           OFF: Only 1 pkt received&n;           &n;           Note. We only use min and max (0, 15) settings from mit_table */
+multiline_comment|/* We use this simplistic scheme for IM. It&squot;s proven by&n;           real life installations. We can have IM enabled&n;           continuesly but this would cause unnecessary latency.&n;           Unfortunely we can&squot;t use all the NET_RX_* feedback here.&n;           This would turn on IM for devices that is not contributing&n;           to backlog congestion with unnecessary latency.&n;&n;           We monitor the the device RX-ring and have:&n;&n;           HW Interrupt Mitigation either ON or OFF.&n;&n;           ON:  More then 1 pkt received (per intr.) OR we are dropping&n;           OFF: Only 1 pkt received&n;&n;           Note. We only use min and max (0, 15) settings from mit_table */
 r_if
 c_cond
 (paren

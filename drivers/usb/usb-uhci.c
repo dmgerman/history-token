@@ -12976,11 +12976,11 @@ id|uhci_t
 op_star
 id|s
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-id|uhci_t
-op_star
+id|dev
 )paren
-id|dev-&gt;driver_data
 suffix:semicolon
 r_struct
 id|usb_device
@@ -13161,7 +13161,11 @@ c_func
 id|uhci_t
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -13186,7 +13190,11 @@ c_func
 id|uhci_t
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -13659,9 +13667,13 @@ l_int|1
 suffix:semicolon
 )brace
 singleline_comment|//chain new uhci device into global list
-id|dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
 id|s
+)paren
 suffix:semicolon
 id|devs
 op_assign

@@ -99,6 +99,11 @@ id|IRDA_OLD_BELKIN_DONGLE
 op_assign
 l_int|7
 comma
+DECL|enumerator|IRDA_EP7211_IR
+id|IRDA_EP7211_IR
+op_assign
+l_int|8
+comma
 DECL|typedef|IRDA_DONGLE
 )brace
 id|IRDA_DONGLE

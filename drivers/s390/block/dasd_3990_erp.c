@@ -88,7 +88,7 @@ id|KERN_ERR
 comma
 id|device
 comma
-l_string|&quot;(%s) ERP chain report for req: %p&bslash;n&quot;
+l_string|&quot;(%s) ERP chain report for req: %p&quot;
 comma
 id|caller
 op_eq
@@ -134,7 +134,7 @@ comma
 id|device
 comma
 l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&bslash;n&quot;
+l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
 comma
 id|nl
 comma
@@ -249,7 +249,7 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;Start of channel program:&bslash;n&quot;
+l_string|&quot;Start of channel program:&quot;
 )paren
 suffix:semicolon
 r_for
@@ -275,7 +275,7 @@ comma
 id|device
 comma
 l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&bslash;n&quot;
+l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
 comma
 id|nl
 comma
@@ -373,7 +373,7 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;End of channel program:&bslash;n&quot;
+l_string|&quot;End of channel program:&quot;
 )paren
 suffix:semicolon
 id|nl
@@ -419,7 +419,7 @@ comma
 id|device
 comma
 l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&bslash;n&quot;
+l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
 comma
 id|nl
 comma
@@ -521,7 +521,7 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;Channel program (complete):&bslash;n&quot;
+l_string|&quot;Channel program (complete):&quot;
 )paren
 suffix:semicolon
 r_for
@@ -551,7 +551,7 @@ comma
 id|device
 comma
 l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&bslash;n&quot;
+l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
 comma
 id|nl
 comma
@@ -723,7 +723,7 @@ id|KERN_ERR
 comma
 id|device
 comma
-l_string|&quot;Failed CCW (%p) (area):&bslash;n&quot;
+l_string|&quot;Failed CCW (%p) (area):&quot;
 comma
 (paren
 r_void
@@ -758,7 +758,7 @@ comma
 id|device
 comma
 l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&bslash;n&quot;
+l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
 comma
 id|nl
 comma
@@ -857,7 +857,7 @@ id|KERN_ERR
 comma
 id|device
 comma
-l_string|&quot;Failed CCW (%p) already logged&bslash;n&quot;
+l_string|&quot;Failed CCW (%p) already logged&quot;
 comma
 (paren
 r_void

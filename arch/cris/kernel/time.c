@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.8 2001/07/18 14:01:03 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.9 2001/10/25 10:26:37 johana Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -38,6 +38,17 @@ r_struct
 id|irqaction
 op_star
 )paren
+suffix:semicolon
+multiline_comment|/* Lookup table to convert *R_TIMER0 to microseconds (us) &n; * Timer goes from TIMER0_DIV down to 1 meaning 0-10000us in step of approx 52us&n; */
+DECL|variable|cris_timer0_value_us
+r_int
+r_int
+id|cris_timer0_value_us
+(braket
+id|TIMER0_DIV
+op_plus
+l_int|1
+)braket
 suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE tick
@@ -1088,6 +1099,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* probe for the RTC and read it if it exists */
 r_if
 c_cond
@@ -1467,6 +1481,56 @@ id|c19k2Hz
 )paren
 suffix:semicolon
 macro_line|#endif
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_le
+id|TIMER0_DIV
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* We must be careful not to get overflow... */
+id|cris_timer0_value_us
+(braket
+id|TIMER0_DIV
+op_minus
+id|i
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+(paren
+(paren
+id|i
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+)paren
+op_div
+id|TIMER0_DIV
+)paren
+op_amp
+l_int|0x0000FFFFL
+)paren
+suffix:semicolon
+)brace
 op_star
 id|R_IRQ_MASK0_SET
 op_assign

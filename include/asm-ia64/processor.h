@@ -243,12 +243,18 @@ DECL|macro|IA64_THREAD_UAC_SIGBUS
 mdefine_line|#define IA64_THREAD_UAC_SIGBUS&t;(__IA64_UL(1) &lt;&lt; 4)&t;/* generate SIGBUS on unaligned acc. */
 DECL|macro|IA64_THREAD_KRBS_SYNCED
 mdefine_line|#define IA64_THREAD_KRBS_SYNCED&t;(__IA64_UL(1) &lt;&lt; 5)&t;/* krbs synced with process vm? */
-DECL|macro|IA64_KERNEL_DEATH
-mdefine_line|#define IA64_KERNEL_DEATH&t;(__IA64_UL(1) &lt;&lt; 63)&t;/* see die_if_kernel()... */
+DECL|macro|IA64_THREAD_FPEMU_NOPRINT
+mdefine_line|#define IA64_THREAD_FPEMU_NOPRINT (__IA64_UL(1) &lt;&lt; 6)&t;/* don&squot;t log any fpswa faults */
+DECL|macro|IA64_THREAD_FPEMU_SIGFPE
+mdefine_line|#define IA64_THREAD_FPEMU_SIGFPE  (__IA64_UL(1) &lt;&lt; 7)&t;/* send a SIGFPE for fpswa faults */
 DECL|macro|IA64_THREAD_UAC_SHIFT
 mdefine_line|#define IA64_THREAD_UAC_SHIFT&t;3
 DECL|macro|IA64_THREAD_UAC_MASK
 mdefine_line|#define IA64_THREAD_UAC_MASK&t;(IA64_THREAD_UAC_NOPRINT | IA64_THREAD_UAC_SIGBUS)
+DECL|macro|IA64_THREAD_FPEMU_SHIFT
+mdefine_line|#define IA64_THREAD_FPEMU_SHIFT&t;6
+DECL|macro|IA64_THREAD_FPEMU_MASK
+mdefine_line|#define IA64_THREAD_FPEMU_MASK&t;(IA64_THREAD_FPEMU_NOPRINT | IA64_THREAD_FPEMU_SIGFPE)
 multiline_comment|/*&n; * This shift should be large enough to be able to represent&n; * 1000000/itc_freq with good accuracy while being small enough to fit&n; * 1000000&lt;&lt;IA64_USEC_PER_CYC_SHIFT in 64 bits.&n; */
 DECL|macro|IA64_USEC_PER_CYC_SHIFT
 mdefine_line|#define IA64_USEC_PER_CYC_SHIFT&t;41
@@ -259,6 +265,7 @@ macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* like above but expressed as bitfields for more efficient access: */
 DECL|struct|ia64_psr
 r_struct
@@ -732,6 +739,10 @@ DECL|macro|SET_UNALIGN_CTL
 mdefine_line|#define SET_UNALIGN_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_UAC_MASK)&t;&t;&t;&bslash;&n;&t;&t;&t;&t;| (((value) &lt;&lt; IA64_THREAD_UAC_SHIFT) &amp; IA64_THREAD_UAC_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|GET_UNALIGN_CTL
 mdefine_line|#define GET_UNALIGN_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_UAC_MASK) &gt;&gt; IA64_THREAD_UAC_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|SET_FPEMU_CTL
+mdefine_line|#define SET_FPEMU_CTL(task,value)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(task)-&gt;thread.flags = (((task)-&gt;thread.flags &amp; ~IA64_THREAD_FPEMU_MASK)&t;&t;&bslash;&n;&t;&t;&t;  | (((value) &lt;&lt; IA64_THREAD_FPEMU_SHIFT) &amp; IA64_THREAD_FPEMU_MASK));&t;&bslash;&n;&t;0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|GET_FPEMU_CTL
+mdefine_line|#define GET_FPEMU_CTL(task,addr)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;put_user(((task)-&gt;thread.flags &amp; IA64_THREAD_FPEMU_MASK) &gt;&gt; IA64_THREAD_FPEMU_SHIFT,&t;&bslash;&n;&t;&t; (int *) (addr));&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 r_struct
 id|siginfo
 suffix:semicolon
@@ -803,29 +814,18 @@ id|__u64
 id|ssd
 suffix:semicolon
 multiline_comment|/* IA32 stack selector descriptor */
-DECL|member|tssd
+DECL|member|old_k1
 id|__u64
-id|tssd
+id|old_k1
 suffix:semicolon
-multiline_comment|/* IA32 TSS descriptor */
+multiline_comment|/* old value of ar.k1 */
 DECL|member|old_iob
 id|__u64
 id|old_iob
 suffix:semicolon
 multiline_comment|/* old IOBase value */
-r_union
-(brace
-DECL|member|sigmask
-id|__u64
-id|sigmask
-suffix:semicolon
-multiline_comment|/* aligned mask for sigsuspend scall */
-DECL|member|un
-)brace
-id|un
-suffix:semicolon
 DECL|macro|INIT_THREAD_IA32
-macro_line|# define INIT_THREAD_IA32&t;0, 0, 0x17800000037fULL, 0, 0, 0, 0, 0, 0, {0},
+macro_line|# define INIT_THREAD_IA32&t;0, 0, 0x17800000037fULL, 0, 0, 0, 0, 0, 0,
 macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32
@@ -845,20 +845,25 @@ id|pmd
 id|IA64_NUM_PMD_REGS
 )braket
 suffix:semicolon
-DECL|member|pfm_pend_notify
+DECL|member|pfm_must_block
 r_int
 r_int
-id|pfm_pend_notify
+id|pfm_must_block
 suffix:semicolon
-multiline_comment|/* non-zero if we need to notify and block */
+multiline_comment|/* non-zero if we need to block on overflow */
 DECL|member|pfm_context
 r_void
 op_star
 id|pfm_context
 suffix:semicolon
 multiline_comment|/* pointer to detailed PMU context */
+DECL|member|pfm_notifiers_check
+id|atomic_t
+id|pfm_notifiers_check
+suffix:semicolon
+multiline_comment|/* indicate if release_thread much check tasklist */
 DECL|macro|INIT_THREAD_PM
-macro_line|# define INIT_THREAD_PM&t;&t;{0, }, {0, }, 0, 0,
+macro_line|# define INIT_THREAD_PM&t;&t;{0, }, {0, }, 0, 0, {0},
 macro_line|#else
 DECL|macro|INIT_THREAD_PM
 macro_line|# define INIT_THREAD_PM
@@ -1751,9 +1756,9 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Save the processor status flags in FLAGS and then clear the&n; * interrupt collection and interrupt enable bits.&n; */
+multiline_comment|/*&n; * Save the processor status flags in FLAGS and then clear the interrupt collection and&n; * interrupt enable bits.  Don&squot;t trigger any mandatory RSE references while this bit is&n; * off!&n; */
 DECL|macro|ia64_clear_ic
-mdefine_line|#define ia64_clear_ic(flags)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;mov %0=psr;; rsm psr.i | psr.ic;; srlz.i;;&quot;&t;&bslash;&n;&t;&t;&t;      : &quot;=r&quot;(flags) :: &quot;memory&quot;);
+mdefine_line|#define ia64_clear_ic(flags)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&quot;mov %0=psr;; rsm psr.i | psr.ic;; srlz.i;;&quot;&t;&bslash;&n;&t;&t;&t;      : &quot;=r&quot;(flags) :: &quot;memory&quot;);
 multiline_comment|/*&n; * Insert a translation into an instruction and/or data translation&n; * register.&n; */
 r_static
 r_inline
@@ -2141,6 +2146,8 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|macro|cpu_relax
+mdefine_line|#define cpu_relax()&t;do { } while (0)
 r_static
 r_inline
 r_void
@@ -2484,7 +2491,7 @@ multiline_comment|/* NOTE: The task struct and the stacks are allocated together
 DECL|macro|alloc_task_struct
 mdefine_line|#define alloc_task_struct() &bslash;&n;        ((struct task_struct *) __get_free_pages(GFP_KERNEL, IA64_TASK_STRUCT_LOG_NUM_PAGES))
 DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p)     free_pages((unsigned long)(p), IA64_TASK_STRUCT_LOG_NUM_PAGES)
+mdefine_line|#define free_task_struct(p)&t;free_pages((unsigned long)(p), IA64_TASK_STRUCT_LOG_NUM_PAGES)
 DECL|macro|get_task_struct
 mdefine_line|#define get_task_struct(tsk)&t;atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
 DECL|macro|init_task
@@ -2877,6 +2884,148 @@ r_return
 id|val
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|ia64_set_ibr
+id|ia64_set_ibr
+(paren
+id|__u64
+id|regnum
+comma
+id|__u64
+id|value
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov ibr[%0]=%1&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|regnum
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|value
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|ia64_set_dbr
+id|ia64_set_dbr
+(paren
+id|__u64
+id|regnum
+comma
+id|__u64
+id|value
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov dbr[%0]=%1&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|regnum
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|value
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ITANIUM
+id|asm
+r_volatile
+(paren
+l_string|&quot;;; srlz.d&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_static
+r_inline
+id|__u64
+DECL|function|ia64_get_ibr
+id|ia64_get_ibr
+(paren
+id|__u64
+id|regnum
+)paren
+(brace
+id|__u64
+id|retval
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov %0=ibr[%1]&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|retval
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|regnum
+)paren
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+r_static
+r_inline
+id|__u64
+DECL|function|ia64_get_dbr
+id|ia64_get_dbr
+(paren
+id|__u64
+id|regnum
+)paren
+(brace
+id|__u64
+id|retval
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov %0=dbr[%1]&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|retval
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|regnum
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ITANIUM
+id|asm
+r_volatile
+(paren
+l_string|&quot;;; srlz.d&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|retval
+suffix:semicolon
+)brace
 multiline_comment|/* XXX remove the handcoded version once we have a sufficiently clever compiler... */
 macro_line|#ifdef SMART_COMPILER
 DECL|macro|ia64_rotr
@@ -2919,8 +3068,38 @@ r_return
 id|result
 suffix:semicolon
 )brace
-DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+r_static
+r_inline
+id|__u64
+DECL|function|ia64_tpa
+id|ia64_tpa
+(paren
+id|__u64
+id|addr
+)paren
+(brace
+id|__u64
+id|result
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;tpa %0=%1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW
@@ -2929,12 +3108,11 @@ DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
 DECL|macro|PREFETCH_STRIDE
 mdefine_line|#define PREFETCH_STRIDE 256
-DECL|function|prefetch
 r_extern
 r_inline
 r_void
+DECL|function|prefetch
 id|prefetch
-c_func
 (paren
 r_const
 r_void
@@ -2955,12 +3133,11 @@ id|x
 )paren
 suffix:semicolon
 )brace
-DECL|function|prefetchw
 r_extern
 r_inline
 r_void
+DECL|function|prefetchw
 id|prefetchw
-c_func
 (paren
 r_const
 r_void
@@ -2982,7 +3159,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
-mdefine_line|#define spin_lock_prefetch(x)   prefetchw(x)
+mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PROCESSOR_H */
 eof

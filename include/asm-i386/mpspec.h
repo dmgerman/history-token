@@ -6,8 +6,15 @@ multiline_comment|/*&n; * This tag identifies where the SMP configuration&n; * i
 DECL|macro|SMP_MAGIC_IDENT
 mdefine_line|#define SMP_MAGIC_IDENT&t;((&squot;_&squot;&lt;&lt;24)|(&squot;P&squot;&lt;&lt;16)|(&squot;M&squot;&lt;&lt;8)|&squot;_&squot;)
 multiline_comment|/*&n; * a maximum of 16 APICs with the current APIC ID architecture.&n; */
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|macro|MAX_APICS
+mdefine_line|#define MAX_APICS 256
+macro_line|#else /* !CONFIG_MULTIQUAD */
 DECL|macro|MAX_APICS
 mdefine_line|#define MAX_APICS 16
+macro_line|#endif /* CONFIG_MULTIQUAD */
+DECL|macro|MAX_MPC_ENTRY
+mdefine_line|#define MAX_MPC_ENTRY 1024
 DECL|struct|intel_mp_floating
 r_struct
 id|intel_mp_floating
@@ -159,6 +166,8 @@ DECL|macro|MP_INTSRC
 mdefine_line|#define&t;MP_INTSRC&t;3
 DECL|macro|MP_LINTSRC
 mdefine_line|#define&t;MP_LINTSRC&t;4
+DECL|macro|MP_TRANSLATION
+mdefine_line|#define&t;MP_TRANSLATION  192  /* Used by IBM NUMA-Q to describe node locality */
 DECL|struct|mpc_config_processor
 r_struct
 id|mpc_config_processor
@@ -431,9 +440,92 @@ id|mpc_destapiclint
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|mp_config_oemtable
+r_struct
+id|mp_config_oemtable
+(brace
+DECL|member|oem_signature
+r_char
+id|oem_signature
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|macro|MPC_OEM_SIGNATURE
+mdefine_line|#define MPC_OEM_SIGNATURE &quot;_OEM&quot;
+DECL|member|oem_length
+r_int
+r_int
+id|oem_length
+suffix:semicolon
+multiline_comment|/* Size of table */
+DECL|member|oem_rev
+r_char
+id|oem_rev
+suffix:semicolon
+multiline_comment|/* 0x01 */
+DECL|member|oem_checksum
+r_char
+id|oem_checksum
+suffix:semicolon
+DECL|member|mpc_oem
+r_char
+id|mpc_oem
+(braket
+l_int|8
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|mpc_config_translation
+r_struct
+id|mpc_config_translation
+(brace
+DECL|member|mpc_type
+r_int
+r_char
+id|mpc_type
+suffix:semicolon
+DECL|member|trans_len
+r_int
+r_char
+id|trans_len
+suffix:semicolon
+DECL|member|trans_type
+r_int
+r_char
+id|trans_type
+suffix:semicolon
+DECL|member|trans_quad
+r_int
+r_char
+id|trans_quad
+suffix:semicolon
+DECL|member|trans_global
+r_int
+r_char
+id|trans_global
+suffix:semicolon
+DECL|member|trans_local
+r_int
+r_char
+id|trans_local
+suffix:semicolon
+DECL|member|trans_reserved
+r_int
+r_int
+id|trans_reserved
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *&t;Default configurations&n; *&n; *&t;1&t;2 CPU ISA 82489DX&n; *&t;2&t;2 CPU EISA 82489DX neither IRQ 0 timer nor IRQ 13 DMA chaining&n; *&t;3&t;2 CPU EISA 82489DX&n; *&t;4&t;2 CPU MCA 82489DX&n; *&t;5&t;2 CPU ISA+PCI&n; *&t;6&t;2 CPU EISA+PCI&n; *&t;7&t;2 CPU MCA+PCI&n; */
+macro_line|#ifdef CONFIG_MULTIQUAD
+DECL|macro|MAX_IRQ_SOURCES
+mdefine_line|#define MAX_IRQ_SOURCES 512
+macro_line|#else /* !CONFIG_MULTIQUAD */
 DECL|macro|MAX_IRQ_SOURCES
 mdefine_line|#define MAX_IRQ_SOURCES 256
+macro_line|#endif /* CONFIG_MULTIQUAD */
 DECL|macro|MAX_MP_BUSSES
 mdefine_line|#define MAX_MP_BUSSES 32
 DECL|enum|mp_bustype

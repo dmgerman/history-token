@@ -444,6 +444,12 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;220
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;221
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security           223     /* syscall for security modules */
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid             224
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead          225
 multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0
 mdefine_line|#define _syscall0(type,name) &bslash;&n;type name(void) &bslash;&n;{ &bslash;&n;  register long __a __asm__ (&quot;r10&quot;); &bslash;&n;  __asm__ __volatile__ (&quot;movu.w %1,$r9&bslash;n&bslash;tbreak 13&quot; &bslash;&n;&t;&t;&t;: &quot;=r&quot; (__a) &bslash;&n;&t;&t;&t;: &quot;g&quot; (__NR_##name) &bslash;&n;&t;&t;&t;: &quot;r10&quot;, &quot;r9&quot;); &bslash;&n;  if(__a &gt;= 0) &bslash;&n;     return (type) __a; &bslash;&n;  errno = -__a; &bslash;&n;  return (type) -1; &bslash;&n;}

@@ -1122,7 +1122,6 @@ suffix:semicolon
 multiline_comment|/* extended control word */
 DECL|typedef|irb_t
 )brace
-id|irb_t
 id|__attribute__
 (paren
 (paren
@@ -1135,6 +1134,7 @@ l_int|4
 )paren
 )paren
 )paren
+id|irb_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * TPI info structure&n; */

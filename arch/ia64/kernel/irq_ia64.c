@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/ia64/kernel/irq.c&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *  6/10/99: Updated to bring in sync with x86 version to facilitate&n; *&t;     support for SMP and different interrupt controllers.&n; *&n; * 09/15/00 Goutham Rao &lt;goutham.rao@intel.com&gt; Implemented pci_irq_to_vector&n; *                      PCI to vector allocation routine.&n; */
+multiline_comment|/*&n; * linux/arch/ia64/kernel/irq.c&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *  6/10/99: Updated to bring in sync with x86 version to facilitate&n; *&t;     support for SMP and different interrupt controllers.&n; *&n; * 09/15/00 Goutham Rao &lt;goutham.rao@intel.com&gt; Implemented pci_irq_to_vector&n; *                      PCI to vector allocation routine.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -324,6 +324,20 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * This must be done *after* the ia64_eoi().  For example, the keyboard softirq&n;&t; * handler needs to be able to wait for further keyboard interrupts, which can&squot;t&n;&t; * come through until ia64_eoi() has been done.&n;&t; */
+r_if
+c_cond
+(paren
+id|local_softirq_pending
+c_func
+(paren
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 r_extern

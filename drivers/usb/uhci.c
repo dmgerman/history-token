@@ -11489,9 +11489,13 @@ id|uhci-&gt;io_size
 op_assign
 id|io_size
 suffix:semicolon
-id|dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
 id|uhci
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|uhci-&gt;num
@@ -12776,7 +12780,11 @@ id|uhci
 op_star
 id|uhci
 op_assign
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -12860,7 +12868,11 @@ r_struct
 id|uhci
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -12887,7 +12899,11 @@ r_struct
 id|uhci
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|start_hc
@@ -12898,7 +12914,11 @@ r_struct
 id|uhci
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|open_map
@@ -376,25 +377,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|open_map
-op_amp
+id|test_and_set_bit
+c_func
 (paren
-l_int|1
-op_lshift
 id|minor
+comma
+op_amp
+id|open_map
 )paren
 )paren
 r_return
 op_minus
 id|EBUSY
-suffix:semicolon
-id|open_map
-op_or_assign
-(paren
-l_int|1
-op_lshift
-id|minor
-)paren
 suffix:semicolon
 id|err
 op_assign
@@ -497,13 +491,13 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|open_map
-op_and_assign
-op_complement
+id|clear_bit
+c_func
 (paren
-l_int|1
-op_lshift
 id|minor
+comma
+op_amp
+id|open_map
 )paren
 suffix:semicolon
 r_return
@@ -542,11 +536,6 @@ id|socket
 op_star
 id|sock
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sock
 op_assign
 id|netlink_user
@@ -561,18 +550,13 @@ id|minor
 op_assign
 l_int|NULL
 suffix:semicolon
-id|open_map
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-id|minor
-)paren
-suffix:semicolon
-id|unlock_kernel
+id|clear_bit
 c_func
 (paren
+id|minor
+comma
+op_amp
+id|open_map
 )paren
 suffix:semicolon
 id|sock_release

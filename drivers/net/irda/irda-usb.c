@@ -798,11 +798,9 @@ id|purb
 )paren
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), failed Speed URB&bslash;n&quot;
 )paren
@@ -855,11 +853,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), Bug : self == NULL&bslash;n&quot;
 )paren
@@ -877,9 +873,11 @@ id|USB_ST_NOERROR
 )paren
 (brace
 multiline_comment|/* I get a lot of -ECONNABORTED = -103 here - Jean II */
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 id|__FUNCTION__
 l_string|&quot;(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
 comma
@@ -1339,11 +1337,9 @@ id|purb
 )paren
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), failed Tx URB&bslash;n&quot;
 )paren
@@ -1435,11 +1431,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), Bug : self == NULL&bslash;n&quot;
 )paren
@@ -1468,9 +1462,11 @@ id|USB_ST_NOERROR
 )paren
 (brace
 multiline_comment|/* I get a lot of -ECONNABORTED = -103 here - Jean II */
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 id|__FUNCTION__
 l_string|&quot;(), URB complete status %d, transfer_flags 0x%04X&bslash;n&quot;
 comma
@@ -1538,7 +1534,7 @@ l_int|1
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;(), Changing speed now...&bslash;n&quot;
@@ -1647,9 +1643,11 @@ op_ne
 id|USB_ST_NOERROR
 )paren
 (brace
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 l_string|&quot;%s: Speed change timed out, urb-&gt;status=%d, urb-&gt;transfer_flags=0x%04X&bslash;n&quot;
 comma
 id|netdev-&gt;name
@@ -1746,9 +1744,11 @@ id|skb
 op_assign
 id|purb-&gt;context
 suffix:semicolon
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 l_string|&quot;%s: Tx timed out, urb-&gt;status=%d, urb-&gt;transfer_flags=0x%04X&bslash;n&quot;
 comma
 id|netdev-&gt;name
@@ -1938,11 +1938,9 @@ op_logical_neg
 id|purb
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), Bug : purb == NULL&bslash;n&quot;
 )paren
@@ -1976,11 +1974,9 @@ id|skb
 )paren
 (brace
 multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t;&t; * Basically, the Rx path will stop... */
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), Failed to allocate Rx skb&bslash;n&quot;
 )paren
@@ -2080,11 +2076,9 @@ id|ret
 )paren
 (brace
 multiline_comment|/* If this ever happen, we are in deep s***.&n;&t;&t; * Basically, the Rx path will stop... */
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 id|__FUNCTION__
 l_string|&quot;(), Failed to submit Rx URB %d&bslash;n&quot;
 comma
@@ -2244,9 +2238,11 @@ op_minus
 id|ECONNRESET
 suffix:colon
 multiline_comment|/* -104 */
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 id|__FUNCTION__
 l_string|&quot;(), Connection Reset (-104), transfer_flags 0x%04X &bslash;n&quot;
 comma
@@ -2258,9 +2254,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|WARNING
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|0
+comma
 id|__FUNCTION__
 l_string|&quot;(), RX status %d,transfer_flags 0x%04X &bslash;n&quot;
 comma
@@ -2498,7 +2496,7 @@ id|dev
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -2547,7 +2545,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -2756,7 +2754,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -3367,7 +3365,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -3579,7 +3577,7 @@ id|self
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -4016,17 +4014,9 @@ id|ifnum
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
-op_star
-id|interface
-suffix:semicolon
-r_struct
 id|irda_class_desc
 op_star
 id|desc
-comma
-op_star
-id|ptr
 suffix:semicolon
 r_int
 id|ret
@@ -4038,8 +4028,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|irda_class_desc
+op_star
+id|desc
 )paren
 comma
 id|GFP_KERNEL
@@ -4064,41 +4054,58 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|irda_class_desc
+op_star
+id|desc
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* USB-IrDA class spec 1.0:&n;&t; *&t;6.1.3: Standard &quot;Get Descriptor&quot; Device Request is not&n;&t; *&t;       appropriate to retrieve class-specific descriptor&n;&t; *&t;6.2.5: Class Specific &quot;Get Class Descriptor&quot; Interface Request&n;&t; *&t;       is mandatory and returns the USB-IrDA class descriptor&n;&t; */
 id|ret
 op_assign
-id|usb_get_class_descriptor
+id|usb_control_msg
 c_func
 (paren
 id|dev
 comma
-id|ifnum
+id|usb_rcvctrlpipe
+c_func
+(paren
+id|dev
 comma
-id|USB_DT_IRDA
+l_int|0
+)paren
+comma
+id|IU_REQ_GET_CLASS_DESC
+comma
+id|USB_DIR_IN
+op_or
+id|USB_TYPE_CLASS
+op_or
+id|USB_RECIP_INTERFACE
 comma
 l_int|0
 comma
-(paren
-r_void
-op_star
-)paren
+id|ifnum
+comma
 id|desc
 comma
 r_sizeof
 (paren
-r_struct
-id|irda_class_desc
+op_star
+id|desc
+)paren
+comma
+id|MSECS_TO_JIFFIES
+c_func
+(paren
+l_int|500
 )paren
 )paren
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;(), ret=%d&bslash;n&quot;
@@ -4110,86 +4117,52 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+r_sizeof
+(paren
+op_star
+id|desc
+)paren
 )paren
 (brace
 id|WARNING
 c_func
 (paren
-l_string|&quot;usb-irda: usb_get_class_descriptor failed (0x%x)&bslash;n&quot;
+l_string|&quot;usb-irda: class_descriptor read %s (%d)&bslash;n&quot;
+comma
+(paren
+id|ret
+OL
+l_int|0
+)paren
+ques
+c_cond
+l_string|&quot;failed&quot;
+suffix:colon
+l_string|&quot;too short&quot;
 comma
 id|ret
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check if we found it? */
+r_else
 r_if
 c_cond
 (paren
 id|desc-&gt;bDescriptorType
-op_eq
+op_ne
 id|USB_DT_IRDA
-)paren
-r_return
-id|desc
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), parsing extra descriptors ...&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Check if the class descriptor is interleaved with standard descriptors */
-id|interface
-op_assign
-op_amp
-id|dev-&gt;actconfig-&gt;interface
-(braket
-id|ifnum
-)braket
-dot
-id|altsetting
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|ret
-op_assign
-id|usb_get_extra_descriptor
-c_func
-(paren
-id|interface
-comma
-id|USB_DT_IRDA
-comma
-op_amp
-id|ptr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
 )paren
 (brace
-id|kfree
+id|WARNING
 c_func
 (paren
-id|desc
+l_string|&quot;usb-irda: bad class_descriptor type&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
 )brace
-op_star
-id|desc
-op_assign
-op_star
-id|ptr
-suffix:semicolon
+r_else
+(brace
 macro_line|#ifdef IU_DUMP_CLASS_DESC
 id|irda_usb_dump_class_desc
 c_func
@@ -4200,6 +4173,16 @@ suffix:semicolon
 macro_line|#endif&t;/* IU_DUMP_CLASS_DESC */
 r_return
 id|desc
+suffix:semicolon
+)brace
+id|kfree
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*********************** USB DEVICE CALLBACKS ***********************/
@@ -4253,24 +4236,16 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Note : the probe make sure to call us only for devices that&n;&t; * matches the list of dongle (top of the file). So, we&n;&t; * don&squot;t need to check if the dongle is really ours.&n;&t; * Jean II */
-id|IRDA_DEBUG
+id|MESSAGE
 c_func
 (paren
-l_int|0
+l_string|&quot;IRDA-USB found at address %d, Vendor: %x, Product: %x&bslash;n&quot;
 comma
-l_string|&quot;Vendor: %x, Product: %x&bslash;n&quot;
+id|dev-&gt;devnum
 comma
 id|dev-&gt;descriptor.idVendor
 comma
 id|dev-&gt;descriptor.idProduct
-)paren
-suffix:semicolon
-id|MESSAGE
-c_func
-(paren
-l_string|&quot;IRDA-USB found at address %d&bslash;n&quot;
-comma
-id|dev-&gt;devnum
 )paren
 suffix:semicolon
 multiline_comment|/* Try to cleanup all instance that have a pending disconnect&n;&t; * Instance will be in this state is the disconnect() occurs&n;&t; * before the net_close().&n;&t; * Jean II */
@@ -4398,11 +4373,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 l_string|&quot;Too many USB IrDA devices !!! (max = %d)&bslash;n&quot;
 comma
 id|NIRUSB
@@ -4467,7 +4440,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 l_string|&quot;usb-irda: set interface %d result %d&bslash;n&quot;
 comma
@@ -4673,7 +4646,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;

@@ -22,6 +22,7 @@ macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -30,6 +31,8 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+DECL|macro|SMP_DEBUG
+mdefine_line|#define SMP_DEBUG 0
 macro_line|#if SMP_DEBUG
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)  printk(x)
@@ -897,6 +900,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__init
 DECL|function|smp_callin
@@ -995,6 +999,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64_MCA
+id|ia64_mca_cmc_vector_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Setup vector on AP &amp; enable */
+id|ia64_mca_check_errors
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* For post-failure MCA error logging */
+macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 id|perfmon_init_percpu
 c_func
@@ -1056,6 +1074,17 @@ id|cpu_idle
 r_void
 )paren
 suffix:semicolon
+id|Dprintk
+c_func
+(paren
+l_string|&quot;start_secondary: starting CPU 0x%x&bslash;n&quot;
+comma
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|efi_map_pal_code
 c_func
 (paren
@@ -1074,7 +1103,7 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;CPU %d is set to go. &bslash;n&quot;
+l_string|&quot;CPU %d is set to go.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -1097,7 +1126,7 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;CPU %d is starting idle. &bslash;n&quot;
+l_string|&quot;CPU %d is starting idle.&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -1239,7 +1268,9 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;Sending Wakeup Vector to AP 0x%x/0x%x.&bslash;n&quot;
+l_string|&quot;Sending wakeup vector %u to AP 0x%x/0x%x.&bslash;n&quot;
+comma
+id|ap_wakeup_vector
 comma
 id|cpu
 comma
@@ -1280,12 +1311,6 @@ id|timeout
 op_increment
 )paren
 (brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

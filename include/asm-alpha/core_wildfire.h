@@ -916,8 +916,7 @@ DECL|macro|vulp
 mdefine_line|#define vulp&t;volatile unsigned long *
 DECL|function|wildfire_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|wildfire_inb
 c_func
 (paren
@@ -949,8 +948,7 @@ r_void
 id|wildfire_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -982,8 +980,7 @@ suffix:semicolon
 )brace
 DECL|function|wildfire_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|wildfire_inw
 c_func
 (paren
@@ -1014,8 +1011,7 @@ r_void
 id|wildfire_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1047,8 +1043,7 @@ suffix:semicolon
 )brace
 DECL|function|wildfire_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|wildfire_inl
 c_func
 (paren
@@ -1075,8 +1070,7 @@ r_void
 id|wildfire_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1165,8 +1159,7 @@ suffix:semicolon
 )brace
 DECL|function|wildfire_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|wildfire_readb
 c_func
 (paren
@@ -1189,8 +1182,7 @@ suffix:semicolon
 )brace
 DECL|function|wildfire_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|wildfire_readw
 c_func
 (paren
@@ -1213,8 +1205,7 @@ suffix:semicolon
 )brace
 DECL|function|wildfire_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|wildfire_readl
 c_func
 (paren
@@ -1224,17 +1215,20 @@ id|addr
 )paren
 (brace
 r_return
+(paren
 op_star
 (paren
 id|vuip
 )paren
 id|addr
+)paren
+op_amp
+l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|wildfire_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|wildfire_readq
 c_func
 (paren
@@ -1257,8 +1251,7 @@ r_void
 id|wildfire_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1285,8 +1278,7 @@ r_void
 id|wildfire_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1313,8 +1305,7 @@ r_void
 id|wildfire_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1337,8 +1328,7 @@ r_void
 id|wildfire_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

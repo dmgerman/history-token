@@ -7874,15 +7874,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|fealnx_pci_tbl
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|pci_device_id
 id|fealnx_pci_tbl
 (braket
 )braket
-op_assign
 id|__devinitdata
+op_assign
 (brace
 (brace
 l_int|0x1516

@@ -2452,11 +2452,18 @@ id|HZ
 op_div
 l_int|100
 )paren
+(brace
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|spin_lock_irq
 c_func
 (paren
@@ -3368,11 +3375,18 @@ id|HZ
 op_div
 l_int|100
 )paren
+(brace
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Only the values that we read from the RTC are set. We leave&n;&t; * tm_wday, tm_yday and tm_isdst untouched. Even though the&n;&t; * RTC has RTC_DAY_OF_WEEK, we ignore it, as it is only updated&n;&t; * by the RTC when initially set to a non-zero value.&n;&t; */
 id|spin_lock_irq
 c_func

@@ -29509,6 +29509,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined (MODULE) || (LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0))
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
@@ -29517,5 +29518,6 @@ op_assign
 id|IPS
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
+macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we almost follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 2&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -2&n; * c-argdecl-indent: 2&n; * c-label-offset: -2&n; * c-continued-statement-offset: 2&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -37,18 +37,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IA64_SEMFIX_INSN
-DECL|macro|IA64_SEMFIX_INSN
-macro_line|#undef IA64_SEMFIX_INSN
-macro_line|#endif
-macro_line|#ifdef IA64_SEMFIX
-DECL|macro|IA64_SEMFIX
-macro_line|#undef IA64_SEMFIX
-macro_line|#endif
-DECL|macro|IA64_SEMFIX_INSN
-macro_line|# define IA64_SEMFIX_INSN
-DECL|macro|IA64_SEMFIX
-macro_line|# define IA64_SEMFIX    &quot;&quot;
 multiline_comment|/*&n; * Test parameter table for AUTOTEST&n; */
 r_typedef
 r_struct
@@ -829,13 +817,6 @@ c_cond
 l_string|&quot;on&quot;
 suffix:colon
 l_string|&quot;off&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;  SEMFIX: %s&bslash;n&quot;
-comma
-id|IA64_SEMFIX
 )paren
 suffix:semicolon
 id|printk

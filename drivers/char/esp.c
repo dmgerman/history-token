@@ -9291,9 +9291,11 @@ c_cond
 id|info-&gt;close_delay
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -9480,9 +9482,11 @@ l_int|0xff
 )paren
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -9545,9 +9549,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * esp_hangup() --- called by tty_hangup() when a hangup is signaled.&n; */
@@ -9669,6 +9675,10 @@ r_int
 id|do_clocal
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the device is in the middle of being closed, then block&n;&t; * until it&squot;s done, and then try again.&n;&t; */
 r_if
@@ -9904,6 +9914,12 @@ id|info-&gt;count
 )paren
 suffix:semicolon
 macro_line|#endif
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|cli
 c_func
 (paren
@@ -9922,9 +9938,10 @@ id|filp
 id|info-&gt;count
 op_decrement
 suffix:semicolon
-id|sti
+id|restore_flags
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|info-&gt;blocked_open
@@ -9936,6 +9953,12 @@ c_loop
 l_int|1
 )paren
 (brace
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|cli
 c_func
 (paren
@@ -10027,9 +10050,10 @@ id|UART_MCR_RTS
 )paren
 suffix:semicolon
 )brace
-id|sti
+id|restore_flags
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|set_current_state
@@ -10170,9 +10194,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func

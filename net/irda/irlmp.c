@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer                 &n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer                 &n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -132,7 +132,7 @@ r_void
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -556,10 +556,7 @@ id|self-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
 suffix:semicolon
-id|self-&gt;connected
-op_assign
-id|FALSE
-suffix:semicolon
+multiline_comment|/* self-&gt;connected = FALSE; -&gt; already NULL via memset() */
 id|init_timer
 c_func
 (paren
@@ -584,13 +581,9 @@ op_assign
 op_star
 id|notify
 suffix:semicolon
-id|irlmp_next_lsap_state
-c_func
-(paren
-id|self
-comma
+id|self-&gt;lsap_state
+op_assign
 id|LSAP_DISCONNECTED
-)paren
 suffix:semicolon
 multiline_comment|/* Insert into queue of unconnected LSAPs */
 id|hashbin_insert
@@ -792,6 +785,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+id|self-&gt;lap
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* Check if we found the LSAP! If not then try the unconnected lsaps */
 r_if
 c_cond
@@ -970,13 +967,9 @@ c_func
 id|HB_GLOBAL
 )paren
 suffix:semicolon
-id|irlmp_next_lap_state
-c_func
-(paren
-id|lap
-comma
+id|lap-&gt;lap_state
+op_assign
 id|LAP_STANDBY
-)paren
 suffix:semicolon
 id|init_timer
 c_func
@@ -1195,7 +1188,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;connected
+)paren
 )paren
 r_return
 op_minus
@@ -1561,10 +1561,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;connected
-op_assign
-id|TRUE
+)paren
 suffix:semicolon
+multiline_comment|/* TRUE */
 multiline_comment|/*&n;&t; *  User supplied qos specifications?&n;&t; */
 r_if
 c_cond
@@ -1731,6 +1737,13 @@ comma
 id|skb
 )paren
 suffix:semicolon
+r_else
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_connect_response (handle, userdata)&n; *&n; *    Service user is accepting connection&n; *&n; */
 DECL|function|irlmp_connect_response
@@ -1788,10 +1801,16 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;connected
-op_assign
-id|TRUE
+)paren
 suffix:semicolon
+multiline_comment|/* TRUE */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -1995,6 +2014,13 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+r_else
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_dup (orig, instance)&n; *&n; *    Duplicate LSAP, can be used by servers to confirm a connection on a&n; *    new LSAP so it can keep listening on the old one.&n; *&n; */
 DECL|function|irlmp_dup
@@ -2202,26 +2228,6 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Already disconnected? */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|self-&gt;connected
-)paren
-(brace
-id|WARNING
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot;(), already disconnected!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|ASSERT
 c_func
 (paren
@@ -2235,19 +2241,41 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
+multiline_comment|/* Already disconnected ?&n;&t; * There is a race condition between irlmp_disconnect_indication()&n;&t; * and us that might mess up the hashbins below. This fixes it.&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_clear_bit
 c_func
 (paren
-id|self-&gt;connected
-op_eq
-id|TRUE
+l_int|0
 comma
+op_amp
+id|self-&gt;connected
+)paren
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), already disconnected!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)paren
-suffix:semicolon
+)brace
 id|skb_push
 c_func
 (paren
@@ -2381,10 +2409,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Reset some values */
-id|self-&gt;connected
-op_assign
-id|FALSE
-suffix:semicolon
 id|self-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
@@ -2458,17 +2482,6 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self-&gt;connected
-op_eq
-id|TRUE
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2482,14 +2495,44 @@ comma
 id|self-&gt;dlsap_sel
 )paren
 suffix:semicolon
+multiline_comment|/* Already disconnected ?&n;&t; * There is a race condition between irlmp_disconnect_request()&n;&t; * and us that might mess up the hashbins below. This fixes it.&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;connected
-op_assign
-id|FALSE
+)paren
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), already disconnected!&bslash;n&quot;
+)paren
 suffix:semicolon
-id|self-&gt;dlsap_sel
-op_assign
-id|LSAP_ANY
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
 id|irlmp-&gt;cache.valid
 op_assign
@@ -2575,6 +2618,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|self-&gt;dlsap_sel
+op_assign
+id|LSAP_ANY
+suffix:semicolon
 id|self-&gt;lap
 op_assign
 l_int|NULL
@@ -2610,6 +2657,11 @@ id|__FUNCTION__
 l_string|&quot;(), no handler&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|userdata
+)paren
 id|dev_kfree_skb
 c_func
 (paren
@@ -5032,7 +5084,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
@@ -6129,9 +6181,13 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;refcount: %d&quot;
+l_string|&quot;num lsaps: %d&quot;
 comma
-id|lap-&gt;refcount
+id|HASHBIN_GET_SIZE
+c_func
+(paren
+id|lap-&gt;lsaps
+)paren
 )paren
 suffix:semicolon
 id|len
@@ -6155,7 +6211,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nConnected LSAPs:&bslash;n&quot;
+l_string|&quot;&bslash;n  Connected LSAPs:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -6200,7 +6256,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;lsap state: %s, &quot;
+l_string|&quot;  lsap state: %s, &quot;
 comma
 id|irlsap_state
 (braket

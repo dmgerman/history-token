@@ -85,6 +85,33 @@ id|atm_tcp_ops
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+macro_line|#if defined(CONFIG_PPPOATM) || defined(CONFIG_PPPOATM_MODULE)
+DECL|variable|pppoatm_ioctl_hook
+r_int
+(paren
+op_star
+id|pppoatm_ioctl_hook
+)paren
+(paren
+r_struct
+id|atm_vcc
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|variable|pppoatm_ioctl_hook
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pppoatm_ioctl_hook
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;resources.h&quot;&t;&t;/* atm_find_dev */
 macro_line|#include &quot;common.h&quot;&t;&t;/* prototypes */
 macro_line|#include &quot;protocols.h&quot;&t;&t;/* atm_init_&lt;transport&gt; */
@@ -4154,6 +4181,38 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_PPPOATM) || defined(CONFIG_PPPOATM_MODULE)
+r_if
+c_cond
+(paren
+id|pppoatm_ioctl_hook
+)paren
+(brace
+id|ret_val
+op_assign
+id|pppoatm_ioctl_hook
+c_func
+(paren
+id|vcc
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret_val
+op_ne
+op_minus
+id|ENOIOCTLCMD
+)paren
+r_goto
+id|done
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

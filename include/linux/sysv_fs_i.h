@@ -20,6 +20,10 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* zone numbers: max. 10 data blocks,&n;&t;&t;&t;&t; * then 1 indirection block,&n;&t;&t;&t;&t; * then 1 double indirection block,&n;&t;&t;&t;&t; * then 1 triple indirection block.&n;&t;&t;&t;&t; */
+DECL|member|i_dir_start_lookup
+id|u32
+id|i_dir_start_lookup
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

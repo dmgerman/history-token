@@ -147,26 +147,6 @@ macro_line|#ifndef PCI_SS_VENDOR_ID_MATROX
 DECL|macro|PCI_SS_VENDOR_ID_MATROX
 mdefine_line|#define PCI_SS_VENDOR_ID_MATROX&t;&t;PCI_VENDOR_ID_MATROX
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_MATROX_G200_PCI
-DECL|macro|PCI_DEVICE_ID_MATROX_G200_PCI
-mdefine_line|#define PCI_DEVICE_ID_MATROX_G200_PCI&t;0x0520
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_MATROX_G200_AGP
-DECL|macro|PCI_DEVICE_ID_MATROX_G200_AGP
-mdefine_line|#define PCI_DEVICE_ID_MATROX_G200_AGP&t;0x0521
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_MATROX_G100
-DECL|macro|PCI_DEVICE_ID_MATROX_G100
-mdefine_line|#define PCI_DEVICE_ID_MATROX_G100&t;0x1000
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_MATROX_G100_AGP
-DECL|macro|PCI_DEVICE_ID_MATROX_G100_AGP
-mdefine_line|#define PCI_DEVICE_ID_MATROX_G100_AGP&t;0x1001
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_MATROX_G400_AGP
-DECL|macro|PCI_DEVICE_ID_MATROX_G400_AGP
-mdefine_line|#define PCI_DEVICE_ID_MATROX_G400_AGP&t;0x0525
-macro_line|#endif
 macro_line|#ifndef PCI_SS_ID_MATROX_PRODUCTIVA_G100_AGP
 DECL|macro|PCI_SS_ID_MATROX_GENERIC
 mdefine_line|#define PCI_SS_ID_MATROX_GENERIC&t;&t;0xFF00
@@ -1813,6 +1793,10 @@ suffix:semicolon
 DECL|member|g450dac
 r_int
 id|g450dac
+suffix:semicolon
+DECL|member|g550dac
+r_int
+id|g550dac
 suffix:semicolon
 DECL|member|dfp_type
 r_int

@@ -3217,9 +3217,17 @@ multiline_comment|/* Check if we are connected */
 r_if
 c_cond
 (paren
-id|self-&gt;ttp_open
-op_eq
+op_logical_neg
+(paren
+id|test_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_open
+)paren
+)paren
 )paren
 (brace
 macro_line|#ifdef CONNECT_IN_SEND
@@ -3251,7 +3259,14 @@ multiline_comment|/* If we are attempting to connect */
 r_if
 c_cond
 (paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;ttp_connect
+)paren
 )paren
 (brace
 multiline_comment|/* Blocking packet, ppp_generic will retry later */

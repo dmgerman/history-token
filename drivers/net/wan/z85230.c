@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;(c) Copyright 1998 Building Number Three Ltd&n; *&t;(c) Copyright 2000 Red Hat Software&n; *&n; *&t;Development of this driver was funded by Equiinet Ltd&n; *&t;&t;&t;http://www.equiinet.com&n; *&n; *&t;ChangeLog:&n; *&n; *&t;Asynchronous mode dropped for 2.2. For 2.5 we will attempt the&n; *&t;unification of all the Z85x30 asynchronous drivers for real.&n; *&n; *&t;DMA now uses get_free_page as kmalloc buffers may span a 64K &n; *&t;boundary.&n; *&n; *&t;Performance&n; *&n; *&t;Z85230:&n; *&t;Non DMA you want a 486DX50 or better to do 64Kbits. 9600 baud&n; *&t;X.25 is not unrealistic on all machines. DMA mode can in theory&n; *&t;handle T1/E1 quite nicely. In practice the limit seems to be about&n; *&t;512Kbit-&gt;1Mbit depending on motherboard.&n; *&n; *&t;Z85C30:&n; *&t;64K will take DMA, 9600 baud X.25 should be ok.&n; *&n; *&t;Z8530:&n; *&t;Synchronous mode without DMA is unlikely to pass about 2400 baud.&n; */
+multiline_comment|/*&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;(c) Copyright 1998 Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&t;(c) Copyright 2000, 2001 Red Hat Inc&n; *&n; *&t;Development of this driver was funded by Equiinet Ltd&n; *&t;&t;&t;http://www.equiinet.com&n; *&n; *&t;ChangeLog:&n; *&n; *&t;Asynchronous mode dropped for 2.2. For 2.5 we will attempt the&n; *&t;unification of all the Z85x30 asynchronous drivers for real.&n; *&n; *&t;DMA now uses get_free_page as kmalloc buffers may span a 64K &n; *&t;boundary.&n; *&n; *&t;Modified for SMP safety and SMP locking by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;Performance&n; *&n; *&t;Z85230:&n; *&t;Non DMA you want a 486DX50 or better to do 64Kbits. 9600 baud&n; *&t;X.25 is not unrealistic on all machines. DMA mode can in theory&n; *&t;handle T1/E1 quite nicely. In practice the limit seems to be about&n; *&t;512Kbit-&gt;1Mbit depending on motherboard.&n; *&n; *&t;Z85C30:&n; *&t;64K will take DMA, 9600 baud X.25 should be ok.&n; *&n; *&t;Z8530:&n; *&t;Synchronous mode without DMA is unlikely to pass about 2400 baud.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -18,13 +18,6 @@ mdefine_line|#define RT_UNLOCK
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/syncppp.h&gt;
 macro_line|#include &quot;z85230.h&quot;
-DECL|variable|z8530_buffer_lock
-r_static
-id|spinlock_t
-id|z8530_buffer_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/**&n; *&t;z8530_read_port - Architecture specific interface function&n; *&t;@p: port to read&n; *&n; *&t;Provided port access methods. The Comtrol SV11 requires no delays&n; *&t;between accesses and uses PC I/O. Some drivers may need a 5uS delay&n; *&t;&n; *&t;In the longer term this should become an architecture specific&n; *&t;section so that this can become a generic driver interface for all&n; *&t;platforms. For now we only handle PC I/O ports with or without the&n; *&t;dread 5uS sanity delay.&n; *&n; *&t;The caller must hold sufficient locks to avoid violating the horrible&n; *&t;5uS delay rule.&n; */
 DECL|function|z8530_read_port
 r_static
@@ -137,7 +130,7 @@ op_star
 id|c
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;read_zsreg - Read a register from a Z85230 &n; *&t;@c: Z8530 channel to read from (2 per chip)&n; *&t;@reg: Register to read&n; *&t;FIXME: Use a spinlock.&n; *&t;&n; *&t;Most of the Z8530 registers are indexed off the control registers.&n; *&t;A read is done by writing to the control register and reading the&n; *&t;register back. We do the locking needed to protect this &n; *&t;operation.&n; */
+multiline_comment|/**&n; *&t;read_zsreg - Read a register from a Z85230 &n; *&t;@c: Z8530 channel to read from (2 per chip)&n; *&t;@reg: Register to read&n; *&t;FIXME: Use a spinlock.&n; *&t;&n; *&t;Most of the Z8530 registers are indexed off the control registers.&n; *&t;A read is done by writing to the control register and reading the&n; *&t;register back.  The caller must hold the lock&n; */
 DECL|function|read_zsreg
 r_static
 r_inline
@@ -154,24 +147,6 @@ id|u8
 id|reg
 )paren
 (brace
-id|u8
-id|r
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -187,22 +162,12 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-id|r
-op_assign
+r_return
 id|z8530_read_port
 c_func
 (paren
 id|c-&gt;ctrlio
 )paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|r
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;read_zsdata - Read the data port of a Z8530 channel&n; *&t;@c: The Z8530 channel to read the data port from&n; *&n; *&t;The data port provides fast access to some things. We still&n; *&t;have all the 5uS delays to worry about.&n; */
@@ -234,7 +199,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;write_zsreg - Write to a Z8530 channel register&n; *&t;@c: The Z8530 channel&n; *&t;@reg: Register number&n; *&t;@val: Value to write&n; *&n; *&t;Write a value to an indexed register. Perform the locking needed&n; *&t;to honour the irritating delay rules. We know about register 0&n; *&t;being fast to access.&n; */
+multiline_comment|/**&n; *&t;write_zsreg - Write to a Z8530 channel register&n; *&t;@c: The Z8530 channel&n; *&t;@reg: Register number&n; *&t;@val: Value to write&n; *&n; *&t;Write a value to an indexed register. The caller must hold the lock&n; *&t;to honour the irritating delay rules. We know about register 0&n; *&t;being fast to access.&n; */
 DECL|function|write_zsreg
 r_static
 r_inline
@@ -258,15 +223,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|c-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -292,9 +254,11 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|c-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -688,7 +652,7 @@ id|R1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;z8530_rtsdtr - Control the outgoing DTS/RTS line&n; *&t;@c: The Z8530 channel to control;&n; *&t;@set: 1 to set, 0 to clear&n; *&n; *&t;Sets or clears DTR/RTS on the requested line. All locking is handled&n; *&t;for the caller. For now we assume all boards use the actual RTS/DTR&n; *&t;on the chip. Apparently one or two don&squot;t. We&squot;ll scream about them&n; *&t;later.&n; */
+multiline_comment|/**&n; *&t;z8530_rtsdtr - Control the outgoing DTS/RTS line&n; *&t;@c: The Z8530 channel to control;&n; *&t;@set: 1 to set, 0 to clear&n; *&n; *&t;Sets or clears DTR/RTS on the requested line. All locking is handled&n; *&t;by the caller. For now we assume all boards use the actual RTS/DTR&n; *&t;on the chip. Apparently one or two don&squot;t. We&squot;ll scream about them&n; *&t;later.&n; */
 DECL|function|z8530_rtsdtr
 r_static
 r_void
@@ -747,7 +711,7 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;z8530_rx - Handle a PIO receive event&n; *&t;@c: Z8530 channel to process&n; *&n; *&t;Receive handler for receiving in PIO mode. This is much like the &n; *&t;async one but not quite the same or as complex&n; *&n; *&t;Note: Its intended that this handler can easily be separated from&n; *&t;the main code to run realtime. That&squot;ll be needed for some machines&n; *&t;(eg to ever clock 64kbits on a sparc ;)).&n; *&n; *&t;The RT_LOCK macros don&squot;t do anything now. Keep the code covered&n; *&t;by them as short as possible in all circumstances - clocks cost&n; *&t;baud. The interrupt handler is assumed to be atomic w.r.t. to&n; *&t;other code - this is true in the RT case too.&n; *&n; *&t;We only cover the sync cases for this. If you want 2Mbit async&n; *&t;do it yourself but consider medical assistance first. This non DMA &n; *&t;synchronous mode is portable code. The DMA mode assumes PCI like &n; *&t;ISA DMA&n; */
+multiline_comment|/**&n; *&t;z8530_rx - Handle a PIO receive event&n; *&t;@c: Z8530 channel to process&n; *&n; *&t;Receive handler for receiving in PIO mode. This is much like the &n; *&t;async one but not quite the same or as complex&n; *&n; *&t;Note: Its intended that this handler can easily be separated from&n; *&t;the main code to run realtime. That&squot;ll be needed for some machines&n; *&t;(eg to ever clock 64kbits on a sparc ;)).&n; *&n; *&t;The RT_LOCK macros don&squot;t do anything now. Keep the code covered&n; *&t;by them as short as possible in all circumstances - clocks cost&n; *&t;baud. The interrupt handler is assumed to be atomic w.r.t. to&n; *&t;other code - this is true in the RT case too.&n; *&n; *&t;We only cover the sync cases for this. If you want 2Mbit async&n; *&t;do it yourself but consider medical assistance first. This non DMA &n; *&t;synchronous mode is portable code. The DMA mode assumes PCI like &n; *&t;ISA DMA&n; *&n; *&t;Called with the device lock held&n; */
 DECL|function|z8530_rx
 r_static
 r_void
@@ -904,6 +868,7 @@ multiline_comment|/* Shove the frame upstream */
 )brace
 r_else
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; *&t;Drop the lock for RX processing, or&n;&t;&t; &t;&t; *&t;there are deadlocks&n;&t;&t; &t;&t; */
 id|z8530_rx_done
 c_func
 (paren
@@ -1037,8 +1002,6 @@ id|ABUNDER
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;End of frame TX - fire another one&n;&t; */
 id|write_zsctrl
@@ -1055,7 +1018,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-multiline_comment|/*&t;write_zsreg(c, R8, *c-&gt;tx_ptr++); */
 id|write_zsctrl
 c_func
 (paren
@@ -1080,6 +1042,10 @@ id|chan
 (brace
 id|u8
 id|status
+comma
+id|altered
+suffix:semicolon
+id|status
 op_assign
 id|read_zsreg
 c_func
@@ -1089,7 +1055,6 @@ comma
 id|R0
 )paren
 suffix:semicolon
-id|u8
 id|altered
 op_assign
 id|chan-&gt;status
@@ -1424,11 +1389,11 @@ op_star
 id|chan
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|u8
+id|status
+comma
+id|altered
+suffix:semicolon
 id|status
 op_assign
 id|read_zsreg
@@ -1439,7 +1404,6 @@ comma
 id|R0
 )paren
 suffix:semicolon
-id|u8
 id|altered
 op_assign
 id|chan-&gt;status
@@ -1464,6 +1428,10 @@ op_amp
 id|TxEOM
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|flags
 op_assign
 id|claim_dma_lock
@@ -1837,7 +1805,7 @@ c_func
 id|z8530_nop
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;z8530_interrupt - Handle an interrupt from a Z8530&n; *&t;@irq: &t;Interrupt number&n; *&t;@dev_id: The Z8530 device that is interrupting.&n; *&t;@regs: unused&n; *&n; *&t;A Z85[2]30 device has stuck its hand in the air for attention.&n; *&t;We scan both the channels on the chip for events and then call&n; *&t;the channel specific call backs for each channel that has events.&n; *&t;We have to use callback functions because the two channels can be&n; *&t;in different modes.&n; */
+multiline_comment|/**&n; *&t;z8530_interrupt - Handle an interrupt from a Z8530&n; *&t;@irq: &t;Interrupt number&n; *&t;@dev_id: The Z8530 device that is interrupting.&n; *&t;@regs: unused&n; *&n; *&t;A Z85[2]30 device has stuck its hand in the air for attention.&n; *&t;We scan both the channels on the chip for events and then call&n; *&t;the channel specific call backs for each channel that has events.&n; *&t;We have to use callback functions because the two channels can be&n; *&t;in different modes.&n; *&n; *&t;Locking is done for the handlers. Note that locking is done&n; *&t;at the chip level (the 5uS delay issue is per chip not per&n; *&t;channel). c-&gt;lock for both channels points to dev-&gt;lock&n; */
 DECL|function|z8530_interrupt
 r_void
 id|z8530_interrupt
@@ -1878,6 +1846,13 @@ id|work
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|z8530_irqhandler
+op_star
+id|irqs
+op_assign
+id|dev-&gt;chanA.irqs
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1898,6 +1873,13 @@ id|locker
 op_assign
 l_int|1
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1907,13 +1889,6 @@ OL
 l_int|5000
 )paren
 (brace
-r_struct
-id|z8530_irqhandler
-op_star
-id|irqs
-op_assign
-id|dev-&gt;chanA.irqs
-suffix:semicolon
 id|intr
 op_assign
 id|read_zsreg
@@ -2096,6 +2071,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2188,6 +2170,18 @@ op_star
 id|c
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|c-&gt;sync
 op_assign
 l_int|1
@@ -2277,6 +2271,14 @@ op_or
 id|RxENABLE
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2307,6 +2309,18 @@ id|c
 (brace
 id|u8
 id|chk
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|c-&gt;irqs
 op_assign
@@ -2350,6 +2364,14 @@ c_func
 id|c
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2562,6 +2584,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Enable DMA control mode&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;TX DMA via DIR/REQ&n;&t; */
 id|c-&gt;regs
 (braket
@@ -2800,6 +2830,14 @@ op_or
 id|RxENABLE
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2897,6 +2935,14 @@ suffix:semicolon
 id|c-&gt;tx_dma_used
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Disable DMA control mode&n;&t; */
 id|c-&gt;regs
@@ -3066,6 +3112,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3125,28 +3179,6 @@ suffix:semicolon
 id|c-&gt;skb2
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Load the PIO receive ring&n;&t; */
-id|z8530_rx_done
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-id|z8530_rx_done
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Load the DMA interfaces up&n;&t; */
-id|c-&gt;rxdma_on
-op_assign
-l_int|0
-suffix:semicolon
-id|c-&gt;txdma_on
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Allocate the DMA flip buffers. Limit by page size.&n;&t; *&t;Everyone runs 1500 mtu or less on wan links so this&n;&t; *&t;should be fine.&n;&t; */
 r_if
@@ -3210,6 +3242,36 @@ op_plus
 id|PAGE_SIZE
 op_div
 l_int|2
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Load the PIO receive ring&n;&t; */
+id|z8530_rx_done
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+id|z8530_rx_done
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Load the DMA interfaces up&n;&t; */
+id|c-&gt;rxdma_on
+op_assign
+l_int|0
+suffix:semicolon
+id|c-&gt;txdma_on
+op_assign
+l_int|0
 suffix:semicolon
 id|c-&gt;tx_dma_used
 op_assign
@@ -3328,24 +3390,12 @@ op_assign
 op_amp
 id|z8530_txdma_sync
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Loading RX&bslash;n&quot;
-)paren
-suffix:semicolon
 id|z8530_rtsdtr
 c_func
 (paren
 id|c
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Rx interrupts ON&bslash;n&quot;
 )paren
 suffix:semicolon
 id|write_zsreg
@@ -3361,6 +3411,14 @@ id|R3
 )braket
 op_or
 id|RxENABLE
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -3397,6 +3455,14 @@ id|flags
 suffix:semicolon
 id|u8
 id|chk
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|c-&gt;irqs
 op_assign
@@ -3657,10 +3723,11 @@ c_func
 id|z8530_describe
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;z8530_init - Initialise a Z8530 device&n; *&t;@dev: Z8530 device to initialise.&n; *&n; *&t;Configure up a Z8530/Z85C30 or Z85230 chip. We check the device&n; *&t;is present, identify the type and then program it to hopefully&n; *&t;keep quite and behave. This matters a lot, a Z8530 in the wrong&n; *&t;state will sometimes get into stupid modes generating 10Khz&n; *&t;interrupt streams and the like.&n; *&n; *&t;We set the interrupt handler up to discard any events, in case&n; *&t;we get them during reset or setp.&n; *&n; *&t;Return 0 for success, or a negative value indicating the problem&n; *&t;in errno form.&n; */
-DECL|function|z8530_init
+multiline_comment|/*&n; *&t;Locked operation part of the z8530 init code&n; */
+DECL|function|do_z8530_init
+r_static
 r_int
-id|z8530_init
+id|do_z8530_init
 c_func
 (paren
 r_struct
@@ -3687,6 +3754,24 @@ suffix:semicolon
 id|dev-&gt;chanB.dcdcheck
 op_assign
 id|DCD
+suffix:semicolon
+multiline_comment|/* Set up the chip level lock */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
+id|dev-&gt;chanA.lock
+op_assign
+op_amp
+id|dev-&gt;lock
+suffix:semicolon
+id|dev-&gt;chanB.lock
+op_assign
+op_amp
+id|dev-&gt;lock
 suffix:semicolon
 multiline_comment|/* Reset the chip */
 id|write_zsreg
@@ -3879,6 +3964,73 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;z8530_init - Initialise a Z8530 device&n; *&t;@dev: Z8530 device to initialise.&n; *&n; *&t;Configure up a Z8530/Z85C30 or Z85230 chip. We check the device&n; *&t;is present, identify the type and then program it to hopefully&n; *&t;keep quite and behave. This matters a lot, a Z8530 in the wrong&n; *&t;state will sometimes get into stupid modes generating 10Khz&n; *&t;interrupt streams and the like.&n; *&n; *&t;We set the interrupt handler up to discard any events, in case&n; *&t;we get them during reset or setp.&n; *&n; *&t;Return 0 for success, or a negative value indicating the problem&n; *&t;in errno form.&n; */
+DECL|function|z8530_init
+r_int
+id|z8530_init
+c_func
+(paren
+r_struct
+id|z8530_dev
+op_star
+id|dev
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* Set up the chip level lock */
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
+id|dev-&gt;chanA.lock
+op_assign
+op_amp
+id|dev-&gt;lock
+suffix:semicolon
+id|dev-&gt;chanB.lock
+op_assign
+op_amp
+id|dev-&gt;lock
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|do_z8530_init
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|variable|z8530_init
 id|EXPORT_SYMBOL
 c_func
@@ -3886,7 +4038,7 @@ c_func
 id|z8530_init
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;z8530_shutdown - Shutdown a Z8530 device&n; *&t;@dev: The Z8530 chip to shutdown&n; *&n; *&t;We set the interrupt handlers to silence any interrupts. We then &n; *&t;reset the chip and wait 100uS to be sure the reset completed. Just&n; *&t;in case the caller then tries to do stuff.&n; */
+multiline_comment|/**&n; *&t;z8530_shutdown - Shutdown a Z8530 device&n; *&t;@dev: The Z8530 chip to shutdown&n; *&n; *&t;We set the interrupt handlers to silence any interrupts. We then &n; *&t;reset the chip and wait 100uS to be sure the reset completed. Just&n; *&t;in case the caller then tries to do stuff.&n; *&n; *&t;This is called without the lock held&n; */
 DECL|function|z8530_shutdown
 r_int
 id|z8530_shutdown
@@ -3898,7 +4050,20 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* Reset the chip */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dev-&gt;chanA.irqs
 op_assign
 op_amp
@@ -3920,10 +4085,20 @@ comma
 l_int|0xC0
 )paren
 suffix:semicolon
+multiline_comment|/* We must lock the udelay, the chip is offlimits here */
 id|udelay
 c_func
 (paren
 l_int|100
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dev-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -3953,6 +4128,18 @@ op_star
 id|rtable
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4098,6 +4285,14 @@ op_or
 id|RxENABLE
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|c-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4109,7 +4304,7 @@ c_func
 id|z8530_channel_load
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;z8530_tx_begin - Begin packet transmission&n; *&t;@c: The Z8530 channel to kick&n; *&n; *&t;This is the speed sensitive side of transmission. If we are called&n; *&t;and no buffer is being transmitted we commence the next buffer. If&n; *&t;nothing is queued we idle the sync. &n; *&n; *&t;Note: We are handling this code path in the interrupt path, keep it&n; *&t;fast or bad things will happen.&n; */
+multiline_comment|/**&n; *&t;z8530_tx_begin - Begin packet transmission&n; *&t;@c: The Z8530 channel to kick&n; *&n; *&t;This is the speed sensitive side of transmission. If we are called&n; *&t;and no buffer is being transmitted we commence the next buffer. If&n; *&t;nothing is queued we idle the sync. &n; *&n; *&t;Note: We are handling this code path in the interrupt path, keep it&n; *&t;fast or bad things will happen.&n; *&n; *&t;Called with the lock held.&n; */
 DECL|function|z8530_tx_begin
 r_static
 r_void
@@ -4343,17 +4538,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* ABUNDER off */
 id|write_zsreg
 c_func
@@ -4411,16 +4595,10 @@ id|c-&gt;txcount
 op_decrement
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; *&t;z8530_tx_done - TX complete callback&n; *&t;@c: The channel that completed a transmit.&n; *&n; *&t;This is called when we complete a packet send. We wake the queue,&n; *&t;start the next packet going and then free the buffer of the existing&n; *&t;packet. This code is fairly timing sensitive.&n; */
+multiline_comment|/**&n; *&t;z8530_tx_done - TX complete callback&n; *&t;@c: The channel that completed a transmit.&n; *&n; *&t;This is called when we complete a packet send. We wake the queue,&n; *&t;start the next packet going and then free the buffer of the existing&n; *&t;packet. This code is fairly timing sensitive.&n; *&n; *&t;Called with the register lock held.&n; */
 DECL|function|z8530_tx_done
 r_static
 r_void
@@ -4433,23 +4611,10 @@ op_star
 id|c
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|sk_buff
 op_star
 id|skb
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|z8530_buffer_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -4466,15 +4631,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|z8530_buffer_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4490,15 +4646,6 @@ id|z8530_tx_begin
 c_func
 (paren
 id|c
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|z8530_buffer_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|c-&gt;stats.tx_packets
@@ -4532,7 +4679,7 @@ op_star
 id|skb
 )paren
 (brace
-id|kfree_skb
+id|dev_kfree_skb_any
 c_func
 (paren
 id|skb
@@ -4546,7 +4693,7 @@ c_func
 id|z8530_null_rx
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;z8530_rx_done - Receive completion callback&n; *&t;@c: The channel that completed a receive&n; *&n; *&t;A new packet is complete. Our goal here is to get back into receive&n; *&t;mode as fast as possible. On the Z85230 we could change to using&n; *&t;ESCC mode, but on the older chips we have no choice. We flip to the&n; *&t;new buffer immediately in DMA mode so that the DMA of the next&n; *&t;frame can occur while we are copying the previous buffer to an sk_buff&n; */
+multiline_comment|/**&n; *&t;z8530_rx_done - Receive completion callback&n; *&t;@c: The channel that completed a receive&n; *&n; *&t;A new packet is complete. Our goal here is to get back into receive&n; *&t;mode as fast as possible. On the Z85230 we could change to using&n; *&t;ESCC mode, but on the older chips we have no choice. We flip to the&n; *&t;new buffer immediately in DMA mode so that the DMA of the next&n; *&t;frame can occur while we are copying the previous buffer to an sk_buff&n; *&n; *&t;Called with the lock held&n; */
 DECL|function|z8530_rx_done
 r_static
 r_void
@@ -4981,7 +5128,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;z8530_queue_xmit - Queue a packet&n; *&t;@c: The channel to use&n; *&t;@skb: The packet to kick down the channel&n; *&n; *&t;Queue a packet for transmission. Because we have rather&n; *&t;hard to hit interrupt latencies for the Z85230 per packet &n; *&t;even in DMA mode we do the flip to DMA buffer if needed here&n; *&t;not in the IRQ.&n; */
+multiline_comment|/**&n; *&t;z8530_queue_xmit - Queue a packet&n; *&t;@c: The channel to use&n; *&t;@skb: The packet to kick down the channel&n; *&n; *&t;Queue a packet for transmission. Because we have rather&n; *&t;hard to hit interrupt latencies for the Z85230 per packet &n; *&t;even in DMA mode we do the flip to DMA buffer if needed here&n; *&t;not in the IRQ.&n; *&n; *&t;Called from the network code. The lock is not held at this &n; *&t;point.&n; */
 DECL|function|z8530_queue_xmit
 r_int
 id|z8530_queue_xmit
@@ -5094,8 +5241,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
-id|z8530_buffer_lock
+id|c-&gt;lock
 comma
 id|flags
 )paren
@@ -5109,8 +5255,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
-id|z8530_buffer_lock
+id|c-&gt;lock
 comma
 id|flags
 )paren
@@ -5132,7 +5277,7 @@ c_func
 id|z8530_queue_xmit
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;z8530_get_stats - Get network statistics&n; *&t;@c: The channel to use&n; *&n; *&t;Get the statistics block. We keep the statistics in software as&n; *&t;the chip doesn&squot;t do it for us.&n; */
+multiline_comment|/**&n; *&t;z8530_get_stats - Get network statistics&n; *&t;@c: The channel to use&n; *&n; *&t;Get the statistics block. We keep the statistics in software as&n; *&t;the chip doesn&squot;t do it for us.&n; *&n; *&t;Locking is ignored here - we could lock for a copy but its&n; *&t;not likely to be that big an issue&n; */
 DECL|function|z8530_get_stats
 r_struct
 id|net_device_stats

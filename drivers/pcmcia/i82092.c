@@ -3624,7 +3624,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Card %i is from %x to %x &bslash;n&quot;
+l_string|&quot;Card %i is from %lx to %lx &bslash;n&quot;
 comma
 id|sock
 comma
@@ -3728,7 +3728,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;invalid mem map for socket %i : %x to %x with a start of %x &bslash;n&quot;
+l_string|&quot;invalid mem map for socket %i : %lx to %lx with a start of %x &bslash;n&quot;
 comma
 id|sock
 comma
@@ -4044,9 +4044,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|enter
 c_func
 (paren

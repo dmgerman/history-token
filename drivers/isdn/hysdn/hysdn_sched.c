@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hysdn_sched.c,v 1.5.6.3 2001/09/23 22:24:54 kai Exp $&n; *&n; * Linux driver for HYSDN cards&n; * scheduler routines for handling exchange card &lt;-&gt; pc.&n; *&n; * Author    Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; * Copyright 1999 by Werner Cornelius (werner@titro.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: hysdn_sched.c,v 1.5.6.4 2001/11/06 21:58:19 kai Exp $&n; *&n; * Linux driver for HYSDN cards&n; * scheduler routines for handling exchange card &lt;-&gt; pc.&n; *&n; * Author    Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; * Copyright 1999 by Werner Cornelius (werner@titro.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;

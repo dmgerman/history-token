@@ -886,8 +886,7 @@ DECL|macro|vulp
 mdefine_line|#define vulp&t;volatile unsigned long *
 DECL|function|tsunami_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|tsunami_inb
 c_func
 (paren
@@ -919,8 +918,7 @@ r_void
 id|tsunami_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -952,8 +950,7 @@ suffix:semicolon
 )brace
 DECL|function|tsunami_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|tsunami_inw
 c_func
 (paren
@@ -984,8 +981,7 @@ r_void
 id|tsunami_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1017,8 +1013,7 @@ suffix:semicolon
 )brace
 DECL|function|tsunami_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|tsunami_inl
 c_func
 (paren
@@ -1045,8 +1040,7 @@ r_void
 id|tsunami_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1135,8 +1129,7 @@ suffix:semicolon
 )brace
 DECL|function|tsunami_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|tsunami_readb
 c_func
 (paren
@@ -1159,8 +1152,7 @@ suffix:semicolon
 )brace
 DECL|function|tsunami_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|tsunami_readw
 c_func
 (paren
@@ -1183,8 +1175,7 @@ suffix:semicolon
 )brace
 DECL|function|tsunami_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|tsunami_readl
 c_func
 (paren
@@ -1203,8 +1194,7 @@ suffix:semicolon
 )brace
 DECL|function|tsunami_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|tsunami_readq
 c_func
 (paren
@@ -1227,8 +1217,7 @@ r_void
 id|tsunami_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1255,8 +1244,7 @@ r_void
 id|tsunami_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1283,8 +1271,7 @@ r_void
 id|tsunami_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1307,8 +1294,7 @@ r_void
 id|tsunami_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

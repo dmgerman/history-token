@@ -6,6 +6,8 @@ multiline_comment|/*&n; * This file defines the kernel register usage convention
 multiline_comment|/*&n; * Kernel registers:&n; */
 DECL|macro|IA64_KR_IO_BASE
 mdefine_line|#define IA64_KR_IO_BASE&t;&t;0&t;/* ar.k0: legacy I/O base address */
+DECL|macro|IA64_KR_TSSD
+mdefine_line|#define IA64_KR_TSSD&t;&t;1&t;/* ar.k1: IVE uses this as the TSSD */
 DECL|macro|IA64_KR_CURRENT_STACK
 mdefine_line|#define IA64_KR_CURRENT_STACK&t;4&t;/* ar.k4: what&squot;s mapped in IA64_TR_CURRENT_STACK */
 DECL|macro|IA64_KR_FPU_OWNER
@@ -28,6 +30,6 @@ mdefine_line|#define IA64_TR_PALCODE&t;&t;1&t;/* itr1: maps PALcode as required 
 DECL|macro|IA64_TR_PERCPU_DATA
 mdefine_line|#define IA64_TR_PERCPU_DATA&t;1&t;/* dtr1: percpu data */
 DECL|macro|IA64_TR_CURRENT_STACK
-mdefine_line|#define IA64_TR_CURRENT_STACK&t;2&t;/* dtr2: maps kernel memory &amp; register stacks */
+mdefine_line|#define IA64_TR_CURRENT_STACK&t;2&t;/* dtr2: maps kernel&squot;s memory- &amp; register-stacks */
 macro_line|#endif /* _ASM_IA64_kREGS_H */
 eof

@@ -40,10 +40,6 @@ id|truncate
 suffix:colon
 id|sysv_truncate
 comma
-id|setattr
-suffix:colon
-id|sysv_notify_change
-comma
 )brace
 suffix:semicolon
 DECL|function|sysv_sync_file

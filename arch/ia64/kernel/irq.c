@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -201,11 +202,15 @@ id|end_none
 )brace
 suffix:semicolon
 DECL|variable|irq_err_count
-r_volatile
-r_int
-r_int
+id|atomic_t
 id|irq_err_count
 suffix:semicolon
+macro_line|#if defined(CONFIG_X86) &amp;&amp; defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
+DECL|variable|irq_mis_count
+id|atomic_t
+id|irq_mis_count
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Generic, controller-independent functions:&n; */
 DECL|function|get_irq_list
 r_int
@@ -493,7 +498,7 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(__i386__)
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_X86)
 id|p
 op_add_assign
 id|sprintf
@@ -555,11 +560,35 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;ERR: %10lu&bslash;n&quot;
+l_string|&quot;ERR: %10u&bslash;n&quot;
 comma
+id|atomic_read
+c_func
+(paren
+op_amp
 id|irq_err_count
 )paren
+)paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_X86) &amp;&amp; defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(APIC_MISMATCH_DEBUG)
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;MIS: %10u&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|irq_mis_count
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|p
 op_minus
@@ -576,12 +605,12 @@ op_assign
 id|NO_PROC_ID
 suffix:semicolon
 DECL|variable|global_irq_lock
-r_volatile
 r_int
+r_volatile
 r_int
 id|global_irq_lock
 suffix:semicolon
-multiline_comment|/* long for set_bit --RR */
+multiline_comment|/* pedantic: long for set_bit --RR */
 r_extern
 r_void
 id|show_stack
@@ -716,9 +745,9 @@ c_func
 l_string|&quot; ]&bslash;nStack dumps:&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(__ia64__)
+macro_line|#if defined(CONFIG_IA64)
 multiline_comment|/*&n;&t; * We can&squot;t unwind the stack of another CPU without access to&n;&t; * the registers of that CPU.  And sending an IPI when we&squot;re&n;&t; * in a potentially wedged state doesn&squot;t sound like a smart&n;&t; * idea.&n;&t; */
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(CONFIG_X86)
 r_for
 c_loop
 (paren
@@ -850,7 +879,7 @@ DECL|macro|SYNC_OTHER_CORES
 macro_line|# define SYNC_OTHER_CORES(x) udelay(x+1)
 macro_line|#else
 multiline_comment|/*&n; * We have to allow irqs to arrive between __sti and __cli&n; */
-macro_line|# ifdef __ia64__
+macro_line|# ifdef CONFIG_IA64
 DECL|macro|SYNC_OTHER_CORES
 macro_line|#  define SYNC_OTHER_CORES(x) __asm__ __volatile__ (&quot;nop 0&quot;)
 macro_line|# else
@@ -1089,6 +1118,13 @@ r_do
 (brace
 r_do
 (brace
+macro_line|#ifdef CONFIG_X86
+id|rep_nop
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_while
 c_loop
@@ -1148,7 +1184,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef __ia64__
+macro_line|#ifdef CONFIG_IA64
 id|__save_flags
 c_func
 (paren
@@ -1290,7 +1326,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef __ia64__
+macro_line|#ifdef CONFIG_IA64
 id|local_enabled
 op_assign
 (paren
@@ -1541,10 +1577,10 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock.&n; */
+multiline_comment|/**&n; *&t;disable_irq_nosync - disable an irq without waiting&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  Disables and Enables are&n; *&t;nested.&n; *&t;Unlike disable_irq(), this function does not ensure existing&n; *&t;instances of the IRQ handler have completed before returning.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|disable_irq_nosync
-r_void
 r_inline
+r_void
 id|disable_irq_nosync
 c_func
 (paren
@@ -1607,7 +1643,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Synchronous version of the above, making sure the IRQ is&n; * no longer running on any other IRQ..&n; */
+multiline_comment|/**&n; *&t;disable_irq - disable an irq and wait for completion&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line.  Enables and Disables are&n; *&t;nested.&n; *&t;This function waits for any pending IRQ handlers for this interrupt&n; *&t;to complete before returning. If you use this function while&n; *&t;holding a resource the IRQ handler may need you will deadlock.&n; *&n; *&t;This function may be called - with care - from IRQ context.&n; */
 DECL|function|disable_irq
 r_void
 id|disable_irq
@@ -1660,6 +1696,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+multiline_comment|/**&n; *&t;enable_irq - enable handling of an irq&n; *&t;@irq: Interrupt to enable&n; *&n; *&t;Undoes the effect of one call to disable_irq().  If this&n; *&t;matches the last disable, processing of interrupts on this&n; *&t;IRQ line is re-enabled.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|enable_irq
 r_void
 id|enable_irq
@@ -1770,7 +1807,9 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;enable_irq() unbalanced from %p&bslash;n&quot;
+l_string|&quot;enable_irq(%u) unbalanced from %p&bslash;n&quot;
+comma
+id|irq
 comma
 (paren
 r_void
@@ -2042,23 +2081,11 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|local_softirq_pending
-c_func
-(paren
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;request_irq - allocate an interrupt line&n; *&t;@irq: Interrupt line to allocate&n; *&t;@handler: Function to be called when the IRQ occurs&n; *&t;@irqflags: Interrupt type flags&n; *&t;@devname: An ascii name for the claiming device&n; *&t;@dev_id: A cookie passed back to the handler function&n; *&n; *&t;This call allocates interrupt resources and enables the&n; *&t;interrupt line and IRQ handling. From the point this&n; *&t;call is made your handler function may be invoked. Since&n; *&t;your handler function must clear any interrupt the board &n; *&t;raises, you must take care both to initialise your hardware&n; *&t;and to set up the interrupt handler in the right order.&n; *&n; *&t;Dev_id must be globally unique. Normally the address of the&n; *&t;device data structure is used as the cookie. Since the handler&n; *&t;receives this value it makes sense to use it.&n; *&n; *&t;If your interrupt is shared you must pass a non NULL dev_id&n; *&t;as this is required when freeing the interrupt.&n; *&n; *&t;Flags:&n; *&n; *&t;SA_SHIRQ&t;&t;Interrupt is shared&n; *&n; *&t;SA_INTERRUPT&t;&t;Disable local interrupts while processing&n; *&n; *&t;SA_SAMPLE_RANDOM&t;The interrupt can be used for entropy&n; *&n; */
 DECL|function|request_irq
 r_int
 id|request_irq
@@ -2231,6 +2258,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function. The function&n; *&t;does not return until any executing interrupts for this IRQ&n; *&t;have completed.&n; *&n; *&t;This function may be called from interrupt context. &n; *&n; *&t;Bugs: Attempting to free an irq in a handler for the same irq hangs&n; *&t;      the machine.&n; */
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -2414,6 +2442,14 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * IRQ autodetection code..&n; *&n; * This depends on the fact that any interrupt that&n; * comes in on to an unassigned handler will get stuck&n; * with &quot;IRQ_WAITING&quot; cleared and the interrupt&n; * disabled.&n; */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|probe_sem
+)paren
+suffix:semicolon
+multiline_comment|/**&n; *&t;probe_irq_on&t;- begin an interrupt autodetect&n; *&n; *&t;Commence probing for an interrupt. The interrupts are scanned&n; *&t;and a mask of potential interrupt lines is returned.&n; *&n; */
 DECL|function|probe_irq_on
 r_int
 r_int
@@ -2438,6 +2474,13 @@ suffix:semicolon
 r_int
 r_int
 id|delay
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|probe_sem
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * something may have generated an irq long ago and we want to&n;&t; * flush such a longstanding irq before considering it as spurious.&n;&t; */
 r_for
@@ -2726,7 +2769,7 @@ r_return
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return a mask of triggered interrupts (this&n; * can handle only legacy ISA interrupts).&n; */
+multiline_comment|/**&n; *&t;probe_irq_mask - scan a bitmap of interrupt lines&n; *&t;@val:&t;mask of interrupts to consider&n; *&n; *&t;Scan the ISA bus interrupt lines and return a bitmap of&n; *&t;active interrupts. The interrupt probe logic state is then&n; *&t;returned to its previous value.&n; *&n; *&t;Note: we need to scan all the irq&squot;s even though we will&n; *&t;only return ISA irq numbers - just so that we reset them&n; *&t;all to a known state.&n; */
 DECL|function|probe_irq_mask
 r_int
 r_int
@@ -2837,13 +2880,20 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|probe_sem
+)paren
+suffix:semicolon
 r_return
 id|mask
 op_amp
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the one interrupt that triggered (this can&n; * handle any interrupt source)&n; */
+multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldnt happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -2966,6 +3016,13 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|probe_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3146,7 +3203,13 @@ suffix:semicolon
 id|desc-&gt;status
 op_and_assign
 op_complement
+(paren
 id|IRQ_DISABLED
+op_or
+id|IRQ_AUTODETECT
+op_or
+id|IRQ_WAITING
+)paren
 suffix:semicolon
 id|desc-&gt;handler
 op_member_access_from_pointer
@@ -3193,101 +3256,8 @@ id|irq_dir
 id|NR_IRQS
 )braket
 suffix:semicolon
-DECL|variable|smp_affinity_entry
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|smp_affinity_entry
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
-DECL|variable|irq_affinity
-r_static
-r_int
-r_int
-id|irq_affinity
-(braket
-id|NR_IRQS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-id|NR_IRQS
-op_minus
-l_int|1
-)braket
-op_assign
-op_complement
-l_int|0UL
-)brace
-suffix:semicolon
 DECL|macro|HEX_DIGITS
 mdefine_line|#define HEX_DIGITS 8
-DECL|function|irq_affinity_read_proc
-r_static
-r_int
-id|irq_affinity_read_proc
-(paren
-r_char
-op_star
-id|page
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|off
-comma
-r_int
-id|count
-comma
-r_int
-op_star
-id|eof
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|count
-OL
-id|HEX_DIGITS
-op_plus
-l_int|1
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_return
-id|sprintf
-(paren
-id|page
-comma
-l_string|&quot;%08lx&bslash;n&quot;
-comma
-id|irq_affinity
-(braket
-(paren
-r_int
-)paren
-id|data
-)braket
-)paren
-suffix:semicolon
-)brace
 DECL|function|parse_hex_value
 r_static
 r_int
@@ -3467,6 +3437,100 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if CONFIG_SMP
+DECL|variable|smp_affinity_entry
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|smp_affinity_entry
+(braket
+id|NR_IRQS
+)braket
+suffix:semicolon
+DECL|variable|irq_affinity
+r_static
+r_int
+r_int
+id|irq_affinity
+(braket
+id|NR_IRQS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_IRQS
+op_minus
+l_int|1
+)braket
+op_assign
+op_complement
+l_int|0UL
+)brace
+suffix:semicolon
+DECL|function|irq_affinity_read_proc
+r_static
+r_int
+id|irq_affinity_read_proc
+(paren
+r_char
+op_star
+id|page
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|off
+comma
+r_int
+id|count
+comma
+r_int
+op_star
+id|eof
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|count
+OL
+id|HEX_DIGITS
+op_plus
+l_int|1
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_return
+id|sprintf
+(paren
+id|page
+comma
+l_string|&quot;%08lx&bslash;n&quot;
+comma
+id|irq_affinity
+(braket
+(paren
+r_int
+)paren
+id|data
+)braket
+)paren
+suffix:semicolon
+)brace
 DECL|function|irq_affinity_write_proc
 r_static
 r_int
@@ -3538,7 +3602,6 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 r_if
 c_cond
@@ -3554,7 +3617,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#endif
 id|irq_affinity
 (braket
 id|irq
@@ -3582,6 +3644,7 @@ r_return
 id|full_count
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_SMP */
 DECL|function|prof_cpu_mask_read_proc
 r_static
 r_int
@@ -3736,11 +3799,6 @@ r_int
 id|irq
 )paren
 (brace
-r_struct
-id|proc_dir_entry
-op_star
-id|entry
-suffix:semicolon
 r_char
 id|name
 (braket
@@ -3802,6 +3860,13 @@ comma
 id|root_irq_dir
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_SMP
+(brace
+r_struct
+id|proc_dir_entry
+op_star
+id|entry
+suffix:semicolon
 multiline_comment|/* create /proc/irq/1234/smp_affinity */
 id|entry
 op_assign
@@ -3818,6 +3883,12 @@ id|irq
 )braket
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+)paren
+(brace
 id|entry-&gt;nlink
 op_assign
 l_int|1
@@ -3841,6 +3912,7 @@ id|entry-&gt;write_proc
 op_assign
 id|irq_affinity_write_proc
 suffix:semicolon
+)brace
 id|smp_affinity_entry
 (braket
 id|irq
@@ -3848,6 +3920,8 @@ id|irq
 op_assign
 id|entry
 suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 DECL|variable|prof_cpu_mask
 r_int
@@ -3895,6 +3969,14 @@ l_int|0600
 comma
 id|root_irq_dir
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|entry
+)paren
+r_return
 suffix:semicolon
 id|entry-&gt;nlink
 op_assign

@@ -882,6 +882,8 @@ mdefine_line|#define C_NEW_RNG&t;0x0A
 DECL|macro|C_CONN
 mdefine_line|#define C_CONN&t;&t;0x0D
 multiline_comment|/*&n; * Mode bits&n; */
+DECL|macro|PACKET_BAD
+mdefine_line|#define  PACKET_BAD&t;&t;0x01 /* Packet had link-layer error */
 DECL|macro|INTERRUPT
 mdefine_line|#define  INTERRUPT&t;&t;0x02
 DECL|macro|TX_IP_CKSUM

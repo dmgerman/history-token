@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/mm/vmscan.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Swap reorganised 29.12.95, Stephen Tweedie.&n; *  kswapd added: 7.1.96  sct&n; *  Removed kswapd_ctl limits, and swap out as many pages as needed&n; *  to bring the system back to freepages.high: 2.4.97, Rik van Riel.&n; *  Version: $Id: vmscan.c,v 1.5 1998/02/23 22:14:28 sct Exp $&n; *  Zone aware kswapd started 02/00, Kanoj Sarcar (kanoj@sgi.com).&n; *  Multiqueue VM started 5.8.00, Rik van Riel.&n; */
+multiline_comment|/*&n; *  linux/mm/vmscan.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Swap reorganised 29.12.95, Stephen Tweedie.&n; *  kswapd added: 7.1.96  sct&n; *  Removed kswapd_ctl limits, and swap out as many pages as needed&n; *  to bring the system back to freepages.high: 2.4.97, Rik van Riel.&n; *  Zone aware kswapd started 02/00, Kanoj Sarcar (kanoj@sgi.com).&n; *  Multiqueue VM started 5.8.00, Rik van Riel.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -259,6 +259,15 @@ id|page
 r_goto
 id|drop_pte
 suffix:semicolon
+multiline_comment|/*&n;&t; * Anonymous buffercache pages can be left behind by&n;&t; * concurrent truncate and pagefault.&n;&t; */
+r_if
+c_cond
+(paren
+id|page-&gt;buffers
+)paren
+r_goto
+id|preserve
+suffix:semicolon
 multiline_comment|/*&n;&t; * This is a dirty, swappable page.  First of all,&n;&t; * get a suitable swap entry for it, and make sure&n;&t; * we have the swap cache set up to associate the&n;&t; * page with that swap entry.&n;&t; */
 r_for
 c_loop
@@ -322,6 +331,8 @@ id|entry
 suffix:semicolon
 )brace
 multiline_comment|/* No swap space left */
+id|preserve
+suffix:colon
 id|set_pte
 c_func
 (paren
@@ -1699,7 +1710,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|try_to_free_buffers
+id|try_to_release_page
 c_func
 (paren
 id|page
@@ -1755,7 +1766,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * The page is still in pagecache so undo the stuff&n;&t;&t;&t;&t;&t; * before the try_to_free_buffers since we&squot;ve not&n;&t;&t;&t;&t;&t; * finished and we can now try the next step.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * The page is still in pagecache so undo the stuff&n;&t;&t;&t;&t;&t; * before the try_to_release_page since we&squot;ve not&n;&t;&t;&t;&t;&t; * finished and we can now try the next step.&n;&t;&t;&t;&t;&t; */
 id|page_cache_release
 c_func
 (paren

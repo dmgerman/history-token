@@ -2053,11 +2053,6 @@ id|l
 comma
 id|features
 suffix:semicolon
-r_int
-id|needs_pm
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 r_void
 id|get_cpu_vendor
@@ -2194,10 +2189,6 @@ comma
 id|h
 )paren
 suffix:semicolon
-id|needs_pm
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * The APIC feature bit should now be enabled&n;&t; * in `cpuid&squot;&n;&t; */
@@ -2269,11 +2260,6 @@ c_func
 l_string|&quot;Found and enabled local APIC!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|needs_pm
-)paren
 id|apic_pm_init1
 c_func
 (paren

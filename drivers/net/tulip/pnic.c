@@ -319,7 +319,7 @@ op_plus
 id|CSR7
 )paren
 suffix:semicolon
-multiline_comment|/* If we use an external MII, then we mustn&squot;t use the &n;&t;&t; * internal negotiation.&n;&t;&t; */
+multiline_comment|/* If we use an external MII, then we mustn&squot;t use the&n;&t;&t; * internal negotiation.&n;&t;&t; */
 r_if
 c_cond
 (paren

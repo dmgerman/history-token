@@ -11,8 +11,6 @@ DECL|macro|module_unmap
 mdefine_line|#define module_unmap(x)&t;&t;ia64_module_unmap(x)
 DECL|macro|module_arch_init
 mdefine_line|#define module_arch_init(x)&t;ia64_module_init(x)
-DECL|macro|arch_init_modules
-mdefine_line|#define arch_init_modules(x)&t;{ &t;static struct archdata archdata; &bslash;&n;&t;&t;&t;&t;&t;register char *kernel_gp asm (&quot;gp&quot;);&bslash;&n;&t;&t;&t;&t;&t;archdata.gp = kernel_gp; &bslash;&n;&t;&t;&t;&t;&t;kernel_module.archdata_start = (const char *) &amp;archdata; &bslash;&n;&t;&t;&t;&t;&t;kernel_module.archdata_end   = (const char *) (&amp;archdata + 1); &bslash;&n;&t;&t;&t;&t;}
 multiline_comment|/*&n; * This must match in size and layout the data created by&n; * modutils/obj/obj-ia64.c&n; */
 DECL|struct|archdata
 r_struct
@@ -50,13 +48,67 @@ id|gp
 suffix:semicolon
 )brace
 suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|arch_init_modules
+id|arch_init_modules
+(paren
+r_struct
+id|module
+op_star
+id|kmod
+)paren
+(brace
+r_static
+r_struct
+id|archdata
+id|archdata
+suffix:semicolon
+r_register
+r_char
+op_star
+id|kernel_gp
+id|asm
+(paren
+l_string|&quot;gp&quot;
+)paren
+suffix:semicolon
+id|archdata.gp
+op_assign
+id|kernel_gp
+suffix:semicolon
+id|kmod-&gt;archdata_start
+op_assign
+(paren
+r_const
+r_char
+op_star
+)paren
+op_amp
+id|archdata
+suffix:semicolon
+id|kmod-&gt;archdata_end
+op_assign
+(paren
+r_const
+r_char
+op_star
+)paren
+(paren
+op_amp
+id|archdata
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * functions to add/remove a modules unwind info when&n; * it is loaded or unloaded.&n; */
 r_static
 r_inline
 r_int
 DECL|function|ia64_module_init
 id|ia64_module_init
-c_func
 (paren
 r_struct
 id|module
@@ -254,7 +306,6 @@ r_inline
 r_void
 DECL|function|ia64_module_unmap
 id|ia64_module_unmap
-c_func
 (paren
 r_void
 op_star

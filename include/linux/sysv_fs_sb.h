@@ -16,11 +16,6 @@ r_char
 id|s_bytesex
 suffix:semicolon
 multiline_comment|/* bytesex (le/be/pdp) */
-DECL|member|s_kludge_symlinks
-r_char
-id|s_kludge_symlinks
-suffix:semicolon
-multiline_comment|/* flag whether symlinks have a kludgey mode */
 DECL|member|s_truncate
 r_char
 id|s_truncate
@@ -205,8 +200,6 @@ DECL|macro|sv_type
 mdefine_line|#define sv_type&t;&t;&t;&t;&t;u.sysv_sb.s_type
 DECL|macro|sv_bytesex
 mdefine_line|#define sv_bytesex&t;&t;&t;&t;u.sysv_sb.s_bytesex
-DECL|macro|sv_kludge_symlinks
-mdefine_line|#define sv_kludge_symlinks&t;&t;&t;u.sysv_sb.s_kludge_symlinks
 DECL|macro|sv_truncate
 mdefine_line|#define sv_truncate&t;&t;&t;&t;u.sysv_sb.s_truncate
 DECL|macro|sv_link_max

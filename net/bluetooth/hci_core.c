@@ -3927,6 +3927,10 @@ c_cond
 id|ir.length
 OG
 l_int|2048
+op_logical_or
+id|ir.num_rsp
+OG
+l_int|2048
 )paren
 (brace
 id|err

@@ -3140,6 +3140,7 @@ suffix:semicolon
 multiline_comment|/* Resolution to high */
 multiline_comment|/* XXX FIXME - should try to pick best refresh rate */
 multiline_comment|/* for now, pick closest dot-clock within 3MHz*/
+macro_line|#error &quot;Floating point not allowed in kernel&quot;  
 id|req_dot
 op_assign
 (paren
@@ -4571,6 +4572,12 @@ id|info
 multiline_comment|/* Nothing */
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

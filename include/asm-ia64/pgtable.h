@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -853,12 +853,22 @@ multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes 
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 macro_line|# endif /* !__ASSEMBLY__ */
-multiline_comment|/*&n; * Identity-mapped regions use a large page size.  KERNEL_PG_NUM is the&n; * number of the (large) page frame that mapps the kernel.&n; */
-DECL|macro|KERNEL_PG_SHIFT
-mdefine_line|#define KERNEL_PG_SHIFT&t;&t;_PAGE_SIZE_64M
-DECL|macro|KERNEL_PG_SIZE
-mdefine_line|#define KERNEL_PG_SIZE&t;&t;(1 &lt;&lt; KERNEL_PG_SHIFT)
-DECL|macro|KERNEL_PG_NUM
-mdefine_line|#define KERNEL_PG_NUM&t;&t;((KERNEL_START - PAGE_OFFSET) / KERNEL_PG_SIZE)
+multiline_comment|/*&n; * Identity-mapped regions use a large page size.  We&squot;ll call such large pages&n; * &quot;granules&quot;.  If you can think of a better name that&squot;s unambiguous, let me&n; * know...&n; */
+macro_line|#if defined(CONFIG_IA64_GRANULE_64MB)
+DECL|macro|IA64_GRANULE_SHIFT
+macro_line|# define IA64_GRANULE_SHIFT&t;_PAGE_SIZE_64M
+macro_line|#elif defined(CONFIG_IA64_GRANULE_16MB)
+DECL|macro|IA64_GRANULE_SHIFT
+macro_line|# define IA64_GRANULE_SHIFT&t;_PAGE_SIZE_16M
+macro_line|#endif
+DECL|macro|IA64_GRANULE_SIZE
+mdefine_line|#define IA64_GRANULE_SIZE&t;(1 &lt;&lt; IA64_GRANULE_SHIFT)
+multiline_comment|/*&n; * log2() of the page size we use to map the kernel image (IA64_TR_KERNEL):&n; */
+DECL|macro|KERNEL_TR_PAGE_SHIFT
+mdefine_line|#define KERNEL_TR_PAGE_SHIFT&t;_PAGE_SIZE_64M
+DECL|macro|KERNEL_TR_PAGE_SIZE
+mdefine_line|#define KERNEL_TR_PAGE_SIZE&t;(1 &lt;&lt; KERNEL_TR_PAGE_SHIFT)
+DECL|macro|KERNEL_TR_PAGE_NUM
+mdefine_line|#define KERNEL_TR_PAGE_NUM&t;((KERNEL_START - PAGE_OFFSET) / KERNEL_TR_PAGE_SIZE)
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof

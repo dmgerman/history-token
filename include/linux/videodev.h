@@ -364,7 +364,8 @@ l_int|32
 suffix:semicolon
 DECL|member|rangelow
 DECL|member|rangehigh
-id|ulong
+r_int
+r_int
 id|rangelow
 comma
 id|rangehigh

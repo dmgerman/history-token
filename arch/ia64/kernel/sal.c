@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * System Abstraction Layer (SAL) interface routines.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
+multiline_comment|/*&n; * System Abstraction Layer (SAL) interface routines.&n; *&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,8 +8,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
-DECL|macro|SAL_DEBUG
-mdefine_line|#define SAL_DEBUG
 DECL|variable|sal_lock
 id|spinlock_t
 id|sal_lock
@@ -494,20 +492,16 @@ op_star
 )paren
 id|p
 suffix:semicolon
-macro_line|#ifdef SAL_DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;sal[%d] - entry: pal_proc=0x%lx, sal_proc=0x%lx&bslash;n&quot;
-comma
-id|i
+l_string|&quot;SAL: entry: pal_proc=0x%lx, sal_proc=0x%lx&bslash;n&quot;
 comma
 id|ep-&gt;pal_proc
 comma
 id|ep-&gt;sal_proc
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ia64_pal_handler_init
 c_func
 (paren
@@ -565,20 +559,6 @@ op_star
 )paren
 id|p
 suffix:semicolon
-macro_line|# ifdef SAL_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;sal[%d] - wakeup type %x, 0x%lx&bslash;n&quot;
-comma
-id|i
-comma
-id|ap-&gt;mechanism
-comma
-id|ap-&gt;vector
-)paren
-suffix:semicolon
-macro_line|# endif
 r_switch
 c_cond
 (paren
@@ -592,7 +572,6 @@ id|ap_wakeup_vector
 op_assign
 id|ap-&gt;vector
 suffix:semicolon
-macro_line|# ifdef SAL_DEBUG
 id|printk
 c_func
 (paren
@@ -602,7 +581,6 @@ comma
 id|ap_wakeup_vector
 )paren
 suffix:semicolon
-macro_line|# endif
 r_break
 suffix:semicolon
 r_default
@@ -641,17 +619,6 @@ c_func
 l_string|&quot;SAL: Platform features &quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_HAVE_IRQREDIR
-multiline_comment|/*&n;&t;&t;&t;       * Early versions of SAL say we don&squot;t have&n;&t;&t;&t;       * IRQ redirection, even though we do...&n;&t;&t;&t;       */
-id|pf-&gt;feature_mask
-op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

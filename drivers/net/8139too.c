@@ -1,11 +1,12 @@
-multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver for Linux.&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001 Jeff Garzik&n;&n;&t;Much code comes from Donald Becker&squot;s rtl8139.c driver,&n;&t;versions 1.13 and older.  This driver was originally based&n;&t;on rtl8139.c version 1.07.  Header of rtl8139.c version 1.13:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2001 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Contributors:&n;&n;&t;&t;Donald Becker - he wrote the original driver, kudos to him!&n;&t;&t;(but please don&squot;t e-mail him for support, this isn&squot;t his driver)&n;&n;&t;&t;Tigran Aivazian - bug fixes, skbuff free cleanup&n;&n;&t;&t;Martin Mares - suggestions for PCI cleanup&n;&n;&t;&t;David S. Miller - PCI DMA and softnet updates&n;&n;&t;&t;Ernst Gill - fixes ported from BSD driver&n;&n;&t;&t;Daniel Kobras - identified specific locations of&n;&t;&t;&t;posted MMIO write bugginess&n;&n;&t;&t;Gerard Sharp - bug fix, testing and feedback&n;&n;&t;&t;David Ford - Rx ring wrap fix&n;&n;&t;&t;Dan DeMaggio - swapped RTL8139 cards with me, and allowed me&n;&t;&t;to find and fix a crucial bug on older chipsets.&n;&n;&t;&t;Donald Becker/Chris Butterworth/Marcus Westergren -&n;&t;&t;Noticed various Rx packet size-related buglets.&n;&n;&t;&t;Santiago Garcia Mantinan - testing and feedback&n;&n;&t;&t;Jens David - 2.2.x kernel backports&n;&n;&t;&t;Martin Dennett - incredibly helpful insight on undocumented&n;&t;&t;features of the 8139 chips&n;&n;&t;&t;Jean-Jacques Michel - bug fix&n;&n;&t;&t;Tobias Ringstr&#xfffd;m - Rx interrupt status checking suggestion&n;&n;&t;&t;Andrew Morton - Clear blocked signals, avoid&n;&t;&t;buffer overrun setting current-&gt;comm.&n;&n;&t;&t;Kalle Olavi Niemitalo - Wake-on-LAN ioctls&n;&n;&t;Submitting bug reports:&n;&n;&t;&t;&quot;rtl8139-diag -mmmaaavvveefN&quot; output&n;&t;&t;enable RTL8139_DEBUG below, and look at &squot;dmesg&squot; or kernel log&n;&n;&t;&t;See 8139too.txt for more details.&n;&n;-----------------------------------------------------------------------------&n;&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the RealTek RTL8139 series, the RealTek&n;Fast Ethernet controllers for PCI and CardBus.  This chip is used on many&n;low-end boards, sometimes with its markings changed.&n;&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS will assign the&n;PCI INTA signal to a (preferably otherwise unused) system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Rx Ring buffers&n;&n;The receive unit uses a single linear ring buffer rather than the more&n;common (and more efficient) descriptor-based architecture.  Incoming frames&n;are sequentially stored into the Rx region, and the host copies them into&n;skbuffs.&n;&n;Comment: While it is theoretically possible to process many frames in place,&n;any delay in Rx processing would cause us to drop frames.  More importantly,&n;the Linux protocol stack is not designed to operate in this manner.&n;&n;IIIb. Tx operation&n;&n;The RTL8139 uses a fixed set of four Tx descriptors in register space.&n;In a stunningly bad design choice, Tx frames must be 32 bit aligned.  Linux&n;aligns the IP header on word boundaries, and 14 byte ethernet header means&n;that almost all frames will need to be copied to an alignment buffer.&n;&n;IVb. References&n;&n;http://www.realtek.com.tw/cn/cn.html&n;http://www.scyld.com/expert/NWay.html&n;&n;IVc. Errata&n;&n;1) The RTL-8139 has a serious problem with motherboards which do&n;posted MMIO writes to PCI space.  This driver works around the&n;problem by having an MMIO  register write be immediately followed by&n;an MMIO register read.&n;&n;*/
+multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver for Linux.&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001 Jeff Garzik&n;&n;&t;Much code comes from Donald Becker&squot;s rtl8139.c driver,&n;&t;versions 1.13 and older.  This driver was originally based&n;&t;on rtl8139.c version 1.07.  Header of rtl8139.c version 1.13:&n;&n;&t;-----&lt;snip&gt;-----&n;&n;        &t;Written 1997-2001 by Donald Becker.&n;&t;&t;This software may be used and distributed according to the&n;&t;&t;terms of the GNU General Public License (GPL), incorporated&n;&t;&t;herein by reference.  Drivers based on or derived from this&n;&t;&t;code fall under the GPL and must retain the authorship,&n;&t;&t;copyright and license notice.  This file is not a complete&n;&t;&t;program and may only be used when the entire operating&n;&t;&t;system is licensed under the GPL.&n;&n;&t;&t;This driver is for boards based on the RTL8129 and RTL8139&n;&t;&t;PCI ethernet chips.&n;&n;&t;&t;The author may be reached as becker@scyld.com, or C/O Scyld&n;&t;&t;Computing Corporation 410 Severn Ave., Suite 210 Annapolis&n;&t;&t;MD 21403&n;&n;&t;&t;Support and updates available at&n;&t;&t;http://www.scyld.com/network/rtl8139.html&n;&n;&t;&t;Twister-tuning table provided by Kinston&n;&t;&t;&lt;shangh@realtek.com.tw&gt;.&n;&n;&t;-----&lt;snip&gt;-----&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Contributors:&n;&n;&t;&t;Donald Becker - he wrote the original driver, kudos to him!&n;&t;&t;(but please don&squot;t e-mail him for support, this isn&squot;t his driver)&n;&n;&t;&t;Tigran Aivazian - bug fixes, skbuff free cleanup&n;&n;&t;&t;Martin Mares - suggestions for PCI cleanup&n;&n;&t;&t;David S. Miller - PCI DMA and softnet updates&n;&n;&t;&t;Ernst Gill - fixes ported from BSD driver&n;&n;&t;&t;Daniel Kobras - identified specific locations of&n;&t;&t;&t;posted MMIO write bugginess&n;&n;&t;&t;Gerard Sharp - bug fix, testing and feedback&n;&n;&t;&t;David Ford - Rx ring wrap fix&n;&n;&t;&t;Dan DeMaggio - swapped RTL8139 cards with me, and allowed me&n;&t;&t;to find and fix a crucial bug on older chipsets.&n;&n;&t;&t;Donald Becker/Chris Butterworth/Marcus Westergren -&n;&t;&t;Noticed various Rx packet size-related buglets.&n;&n;&t;&t;Santiago Garcia Mantinan - testing and feedback&n;&n;&t;&t;Jens David - 2.2.x kernel backports&n;&n;&t;&t;Martin Dennett - incredibly helpful insight on undocumented&n;&t;&t;features of the 8139 chips&n;&n;&t;&t;Jean-Jacques Michel - bug fix&n;&n;&t;&t;Tobias Ringstr&#xfffd;m - Rx interrupt status checking suggestion&n;&n;&t;&t;Andrew Morton - Clear blocked signals, avoid&n;&t;&t;buffer overrun setting current-&gt;comm.&n;&n;&t;&t;Kalle Olavi Niemitalo - Wake-on-LAN ioctls&n;&n;&t;&t;Robert Kuebel - Save kernel thread from dying on any signal.&n;&n;&t;Submitting bug reports:&n;&n;&t;&t;&quot;rtl8139-diag -mmmaaavvveefN&quot; output&n;&t;&t;enable RTL8139_DEBUG below, and look at &squot;dmesg&squot; or kernel log&n;&n;&t;&t;See 8139too.txt for more details.&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;8139too&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.20&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.22&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -140,15 +141,13 @@ multiline_comment|/* Size of the in-memory receive ring. */
 DECL|macro|RX_BUF_LEN_IDX
 mdefine_line|#define RX_BUF_LEN_IDX&t;2&t;/* 0==8K, 1==16K, 2==32K, 3==64K */
 DECL|macro|RX_BUF_LEN
-mdefine_line|#define RX_BUF_LEN (8192 &lt;&lt; RX_BUF_LEN_IDX)
+mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; RX_BUF_LEN_IDX)
 DECL|macro|RX_BUF_PAD
-mdefine_line|#define RX_BUF_PAD 16
+mdefine_line|#define RX_BUF_PAD&t;16
 DECL|macro|RX_BUF_WRAP_PAD
 mdefine_line|#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
 DECL|macro|RX_BUF_TOT_LEN
-mdefine_line|#define RX_BUF_TOT_LEN (RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
-DECL|macro|RX_EARLY_THRESH
-mdefine_line|#define RX_EARLY_THRESH 14
+mdefine_line|#define RX_BUF_TOT_LEN&t;(RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
 multiline_comment|/* Number of Tx descriptor registers. */
 DECL|macro|NUM_TX_DESC
 mdefine_line|#define NUM_TX_DESC&t;4
@@ -170,6 +169,8 @@ DECL|macro|RX_DMA_BURST
 mdefine_line|#define RX_DMA_BURST&t;7&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
 DECL|macro|TX_DMA_BURST
 mdefine_line|#define TX_DMA_BURST&t;6&t;/* Maximum PCI burst, &squot;6&squot; is 1024 */
+DECL|macro|TX_RETRY
+mdefine_line|#define TX_RETRY&t;8&t;/* 0-15.  retries = 16 + (TX_RETRY * 16) */
 multiline_comment|/* Operational parameters that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
@@ -529,16 +530,6 @@ DECL|enumerator|RxBuf
 id|RxBuf
 op_assign
 l_int|0x30
-comma
-DECL|enumerator|RxEarlyCnt
-id|RxEarlyCnt
-op_assign
-l_int|0x34
-comma
-DECL|enumerator|RxEarlyStatus
-id|RxEarlyStatus
-op_assign
-l_int|0x36
 comma
 DECL|enumerator|ChipCmd
 id|ChipCmd
@@ -1026,7 +1017,13 @@ id|TxDMAShift
 op_assign
 l_int|8
 comma
-multiline_comment|/* DMA burst value (0-7) is shift this many bits */
+multiline_comment|/* DMA burst value (0-7) is shifted this many bits */
+DECL|enumerator|TxRetryShift
+id|TxRetryShift
+op_assign
+l_int|4
+comma
+multiline_comment|/* TXRR value (0-15) is shifted this many bits */
 DECL|enumerator|TxVersionMask
 id|TxVersionMask
 op_assign
@@ -1288,17 +1285,6 @@ DECL|enum|RxConfigBits
 r_enum
 id|RxConfigBits
 (brace
-multiline_comment|/* Early Rx threshold, none or X/16 */
-DECL|enumerator|RxCfgEarlyRxNone
-id|RxCfgEarlyRxNone
-op_assign
-l_int|0
-comma
-DECL|enumerator|RxCfgEarlyRxShift
-id|RxCfgEarlyRxShift
-op_assign
-l_int|24
-comma
 multiline_comment|/* rx fifo threshold */
 DECL|enumerator|RxCfgFIFOShift
 id|RxCfgFIFOShift
@@ -1487,22 +1473,6 @@ l_int|0xbb39ce83
 comma
 l_int|0xbb39ce83
 )brace
-)brace
-suffix:semicolon
-DECL|struct|ring_info
-r_struct
-id|ring_info
-(brace
-DECL|member|skb
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-DECL|member|mapping
-id|dma_addr_t
-id|mapping
-suffix:semicolon
 )brace
 suffix:semicolon
 r_typedef
@@ -1732,15 +1702,6 @@ r_int
 r_int
 id|dirty_tx
 suffix:semicolon
-multiline_comment|/* The saved address of a sent-in-place packet/buffer, for skfree(). */
-DECL|member|tx_info
-r_struct
-id|ring_info
-id|tx_info
-(braket
-id|NUM_TX_DESC
-)braket
-suffix:semicolon
 DECL|member|tx_buf
 r_int
 r_char
@@ -1862,6 +1823,10 @@ DECL|member|xstats
 r_struct
 id|rtl_extra_stats
 id|xstats
+suffix:semicolon
+DECL|member|time_to_die
+r_int
+id|time_to_die
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2264,12 +2229,6 @@ r_int
 r_int
 id|rtl8139_rx_config
 op_assign
-(paren
-id|RX_EARLY_THRESH
-op_lshift
-id|RxCfgEarlyRxShift
-)paren
-op_or
 id|RxCfgRcv32K
 op_or
 id|RxNoWrap
@@ -2284,6 +2243,25 @@ op_or
 id|RX_DMA_BURST
 op_lshift
 id|RxCfgDMAShift
+)paren
+suffix:semicolon
+DECL|variable|rtl8139_tx_config
+r_static
+r_const
+r_int
+r_int
+id|rtl8139_tx_config
+op_assign
+(paren
+id|TX_DMA_BURST
+op_lshift
+id|TxDMAShift
+)paren
+op_or
+(paren
+id|TX_RETRY
+op_lshift
+id|TxRetryShift
 )paren
 suffix:semicolon
 DECL|function|__rtl8139_cleanup_dev
@@ -2518,11 +2496,6 @@ suffix:semicolon
 id|u32
 id|tmp
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 m_assert
 (paren
 id|pdev
@@ -2562,11 +2535,6 @@ id|PFX
 l_string|&quot;%s: Unable to alloc new net device&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning -ENOMEM&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3187,11 +3155,6 @@ id|rtl8139_chip_reset
 id|ioaddr
 )paren
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning 0&bslash;n&quot;
-)paren
-suffix:semicolon
 op_star
 id|dev_out
 op_assign
@@ -3205,13 +3168,6 @@ suffix:colon
 id|__rtl8139_cleanup_dev
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning %d&bslash;n&quot;
-comma
-id|rc
 )paren
 suffix:semicolon
 r_return
@@ -3268,11 +3224,6 @@ l_int|1
 suffix:semicolon
 id|u8
 id|pci_rev
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 m_assert
 (paren
@@ -3383,18 +3334,9 @@ id|i
 OL
 l_int|0
 )paren
-(brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning %d&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 r_return
 id|i
 suffix:semicolon
-)brace
 id|tp
 op_assign
 id|dev-&gt;priv
@@ -3988,11 +3930,6 @@ l_char|&squot;H&squot;
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;R&squot; would leave the clock running. */
-id|DPRINTK
-(paren
-l_string|&quot;EXIT - returning 0&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4001,13 +3938,6 @@ suffix:colon
 id|__rtl8139_cleanup_dev
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT - returning %d&bslash;n&quot;
-comma
-id|i
 )paren
 suffix:semicolon
 r_return
@@ -4041,11 +3971,6 @@ id|rtl8139_private
 op_star
 id|np
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 m_assert
 (paren
 id|dev
@@ -4072,11 +3997,6 @@ suffix:semicolon
 id|__rtl8139_cleanup_dev
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4148,11 +4068,6 @@ op_or
 id|EE_READ_CMD
 op_lshift
 id|addr_len
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
 id|writeb
@@ -4329,13 +4244,6 @@ id|eeprom_delay
 (paren
 )paren
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT - returning %d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -4397,11 +4305,6 @@ id|mdio_addr
 r_int
 id|i
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4444,11 +4347,6 @@ id|mdio_addr
 )paren
 suffix:semicolon
 )brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|mdio_read
@@ -4510,11 +4408,6 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#endif
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4524,11 +4417,6 @@ l_int|31
 )paren
 (brace
 multiline_comment|/* Really a 8139.  Use internal registers. */
-id|DPRINTK
-(paren
-l_string|&quot;EXIT after directly using 8139 internal regs&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|location
 OL
@@ -4690,19 +4578,6 @@ id|mdio_addr
 suffix:semicolon
 )brace
 macro_line|#endif
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning %d&bslash;n&quot;
-comma
-(paren
-id|retval
-op_rshift
-l_int|1
-)paren
-op_amp
-l_int|0xffff
-)paren
-suffix:semicolon
 r_return
 (paren
 id|retval
@@ -4776,11 +4651,6 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#endif
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4991,11 +4861,6 @@ op_assign
 id|tp-&gt;mmio_addr
 suffix:semicolon
 macro_line|#endif
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|request_irq
@@ -5016,18 +4881,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning %d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-)brace
 id|tp-&gt;tx_bufs
 op_assign
 id|pci_alloc_consistent
@@ -5106,11 +4962,6 @@ comma
 id|tp-&gt;rx_ring
 comma
 id|tp-&gt;rx_ring_dma
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning -ENOMEM&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5203,11 +5054,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning 0&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5229,12 +5075,6 @@ op_star
 id|tp
 op_assign
 id|dev-&gt;priv
-suffix:semicolon
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5365,11 +5205,6 @@ suffix:semicolon
 id|u8
 id|tmp
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Bring old chips out of low-power mode. */
 r_if
 c_cond
@@ -5476,11 +5311,7 @@ id|RTL_W32
 (paren
 id|TxConfig
 comma
-(paren
-id|TX_DMA_BURST
-op_lshift
-id|TxDMAShift
-)paren
+id|rtl8139_tx_config
 )paren
 suffix:semicolon
 id|tp-&gt;cur_rx
@@ -5650,11 +5481,6 @@ id|netif_start_queue
 id|dev
 )paren
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Initialize the Rx and Tx rings, along with various &squot;dev&squot; bits. */
 DECL|function|rtl8139_init_ring
@@ -5677,11 +5503,6 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 id|tp-&gt;cur_rx
 op_assign
@@ -5709,25 +5530,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|tp-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|tp-&gt;tx_info
-(braket
-id|i
-)braket
-dot
-id|mapping
-op_assign
-l_int|0
-suffix:semicolon
 id|tp-&gt;tx_buf
 (braket
 id|i
@@ -5740,12 +5542,6 @@ id|i
 op_star
 id|TX_BUF_SIZE
 )braket
-suffix:semicolon
-)brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This must be global for CONFIG_8139TOO_TUNE_TWISTER case */
@@ -5802,11 +5598,6 @@ op_star
 id|ioaddr
 op_assign
 id|tp-&gt;mmio_addr
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* This is a complicated state machine to configure the &quot;twister&quot; for&n;&t;   impedance/echos based on the cable length.&n;&t;   All of this is magic and undocumented.&n;&t; */
 r_switch
@@ -6134,11 +5925,6 @@ multiline_comment|/* do nothing */
 r_break
 suffix:semicolon
 )brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_8139TOO_TUNE_TWISTER */
 DECL|function|rtl8139_thread_iter
@@ -6318,8 +6104,7 @@ id|NWayLPAR
 suffix:semicolon
 id|DPRINTK
 (paren
-l_string|&quot;%s:  Other registers are IntMask %4.4x IntStatus %4.4x&quot;
-l_string|&quot; RxStatus %4.4lx.&bslash;n&quot;
+l_string|&quot;%s:  Other registers are IntMask %4.4x IntStatus %4.4x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6331,11 +6116,6 @@ comma
 id|RTL_R16
 (paren
 id|IntrStatus
-)paren
-comma
-id|RTL_R32
-(paren
-id|RxEarlyStatus
 )paren
 )paren
 suffix:semicolon
@@ -6494,6 +6274,33 @@ id|signal_pending
 id|current
 )paren
 )paren
+(brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sigmask_lock
+)paren
+suffix:semicolon
+id|flush_signals
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sigmask_lock
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tp-&gt;time_to_die
+)paren
 r_break
 suffix:semicolon
 id|rtnl_lock
@@ -6534,9 +6341,6 @@ op_star
 id|tp
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|tp-&gt;cur_tx
 op_assign
 l_int|0
@@ -6545,77 +6349,7 @@ id|tp-&gt;dirty_tx
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Dump the unsent Tx packets. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NUM_TX_DESC
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_struct
-id|ring_info
-op_star
-id|rp
-op_assign
-op_amp
-id|tp-&gt;tx_info
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rp-&gt;mapping
-op_ne
-l_int|0
-)paren
-(brace
-id|pci_unmap_single
-(paren
-id|tp-&gt;pci_dev
-comma
-id|rp-&gt;mapping
-comma
-id|rp-&gt;skb-&gt;len
-comma
-id|PCI_DMA_TODEVICE
-)paren
-suffix:semicolon
-id|rp-&gt;mapping
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|rp-&gt;skb
-)paren
-(brace
-id|dev_kfree_skb
-(paren
-id|rp-&gt;skb
-)paren
-suffix:semicolon
-id|rp-&gt;skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|tp-&gt;stats.tx_dropped
-op_increment
-suffix:semicolon
-)brace
-)brace
+multiline_comment|/* XXX account for unsent Tx packets in tp-&gt;stats.tx_dropped */
 )brace
 DECL|function|rtl8139_tx_timeout
 r_static
@@ -6833,14 +6567,6 @@ r_int
 r_int
 id|entry
 suffix:semicolon
-id|u32
-id|dma_addr
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Calculate the next Tx descriptor entry. */
 id|entry
 op_assign
@@ -6848,106 +6574,16 @@ id|tp-&gt;cur_tx
 op_mod
 id|NUM_TX_DESC
 suffix:semicolon
-m_assert
-(paren
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|skb
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
-m_assert
-(paren
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|mapping
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|skb
-op_assign
-id|skb
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-(paren
-r_int
-r_int
-)paren
-id|skb-&gt;data
-op_amp
-l_int|3
-)paren
-op_logical_and
-id|skb_shinfo
+id|likely
 c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-op_eq
-l_int|0
-op_logical_and
-id|skb-&gt;ip_summed
-op_ne
-id|CHECKSUM_HW
-)paren
-(brace
-id|tp-&gt;xstats.tx_buf_mapped
-op_increment
-suffix:semicolon
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|mapping
-op_assign
-id|pci_map_single
-(paren
-id|tp-&gt;pci_dev
-comma
-id|skb-&gt;data
-comma
-id|skb-&gt;len
-comma
-id|PCI_DMA_TODEVICE
-)paren
-suffix:semicolon
-id|dma_addr
-op_assign
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|mapping
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
 (paren
 id|skb-&gt;len
 OL
 id|TX_BUF_SIZE
+)paren
 )paren
 (brace
 id|skb_copy_and_csum_dev
@@ -6961,17 +6597,10 @@ id|entry
 )braket
 )paren
 suffix:semicolon
-id|dma_addr
-op_assign
-id|tp-&gt;tx_bufs_dma
-op_plus
+id|dev_kfree_skb
+c_func
 (paren
-id|tp-&gt;tx_buf
-(braket
-id|entry
-)braket
-op_minus
-id|tp-&gt;tx_bufs
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -6983,14 +6612,8 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|skb
-op_assign
-l_int|NULL
+id|tp-&gt;stats.tx_dropped
+op_increment
 suffix:semicolon
 r_return
 l_int|0
@@ -7002,19 +6625,6 @@ c_func
 (paren
 op_amp
 id|tp-&gt;lock
-)paren
-suffix:semicolon
-id|RTL_W32_F
-(paren
-id|TxAddr0
-op_plus
-(paren
-id|entry
-op_star
-l_int|4
-)paren
-comma
-id|dma_addr
 )paren
 suffix:semicolon
 id|RTL_W32_F
@@ -7051,7 +6661,7 @@ suffix:semicolon
 id|tp-&gt;cur_tx
 op_increment
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -7243,17 +6853,23 @@ id|TxAborted
 id|tp-&gt;stats.tx_aborted_errors
 op_increment
 suffix:semicolon
-id|RTL_W32_F
+id|RTL_W32
 (paren
 id|TxConfig
 comma
 id|TxClearAbt
-op_or
-(paren
-id|TX_DMA_BURST
-op_lshift
-id|TxDMAShift
 )paren
+suffix:semicolon
+id|RTL_W16
+(paren
+id|IntrStatus
+comma
+id|TxErr
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -7340,71 +6956,6 @@ id|tp-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Free the original skb. */
-r_if
-c_cond
-(paren
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|mapping
-op_ne
-l_int|0
-)paren
-(brace
-id|pci_unmap_single
-c_func
-(paren
-id|tp-&gt;pci_dev
-comma
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|mapping
-comma
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|skb-&gt;len
-comma
-id|PCI_DMA_TODEVICE
-)paren
-suffix:semicolon
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|mapping
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|dev_kfree_skb_irq
-(paren
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|skb
-)paren
-suffix:semicolon
-id|tp-&gt;tx_info
-(braket
-id|entry
-)braket
-dot
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
 id|dirty_tx
 op_increment
 suffix:semicolon
@@ -7982,6 +7533,7 @@ l_string|&quot;.&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Packet copy from FIFO still in progress.&n;&t;&t; * Theoretically, this should never happen&n;&t;&t; * since EarlyRx is disabled.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7990,7 +7542,6 @@ op_eq
 l_int|0xfff0
 )paren
 (brace
-multiline_comment|/* Early Rx in progress */
 id|tp-&gt;xstats.early_rx
 op_increment
 suffix:semicolon
@@ -8206,34 +7757,6 @@ id|tp-&gt;cur_rx
 op_assign
 id|cur_rx
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|RTL_R8
-(paren
-id|ChipCmd
-)paren
-op_amp
-id|RxBufEmpty
-)paren
-op_logical_and
-(paren
-id|RTL_R16
-(paren
-id|IntrStatus
-)paren
-op_amp
-id|RxAckBits
-)paren
-)paren
-id|RTL_W16_F
-(paren
-id|IntrStatus
-comma
-id|RxAckBits
-)paren
-suffix:semicolon
 )brace
 DECL|function|rtl8139_weird_interrupt
 r_static
@@ -8423,9 +7946,7 @@ c_cond
 (paren
 id|status
 op_amp
-(paren
 id|PCSTimeout
-)paren
 )paren
 id|tp-&gt;stats.rx_length_errors
 op_increment
@@ -8462,6 +7983,15 @@ comma
 id|PCI_STATUS
 comma
 op_amp
+id|pci_cmd_status
+)paren
+suffix:semicolon
+id|pci_write_config_word
+(paren
+id|tp-&gt;pci_dev
+comma
+id|PCI_STATUS
+comma
 id|pci_cmd_status
 )paren
 suffix:semicolon
@@ -8562,54 +8092,6 @@ l_int|0xFFFF
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* Acknowledge all of the current interrupt sources ASAP, but&n;&t;&t;   an first get an additional status bit from CSCR. */
-r_if
-c_cond
-(paren
-id|status
-op_amp
-id|RxUnderrun
-)paren
-id|link_changed
-op_assign
-id|RTL_R16
-(paren
-id|CSCR
-)paren
-op_amp
-id|CSCR_LinkChangeBit
-suffix:semicolon
-multiline_comment|/* The chip takes special action when we clear RxAckBits,&n;&t;&t; * so we clear them later in rtl8139_rx_interrupt&n;&t;&t; */
-id|ackstat
-op_assign
-id|status
-op_amp
-op_complement
-id|RxAckBits
-suffix:semicolon
-id|RTL_W16
-(paren
-id|IntrStatus
-comma
-id|ackstat
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;%s: interrupt  status=%#4.4x ackstat=%#4.4x new intstat=%#4.4x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|ackstat
-comma
-id|status
-comma
-id|RTL_R16
-(paren
-id|IntrStatus
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8640,6 +8122,58 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+multiline_comment|/* Acknowledge all of the current interrupt sources ASAP, but&n;&t;&t;   an first get an additional status bit from CSCR. */
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|RxUnderrun
+)paren
+id|link_changed
+op_assign
+id|RTL_R16
+(paren
+id|CSCR
+)paren
+op_amp
+id|CSCR_LinkChangeBit
+suffix:semicolon
+multiline_comment|/* The chip takes special action when we clear RxAckBits,&n;&t;&t; * so we clear them later in rtl8139_rx_interrupt&n;&t;&t; */
+id|ackstat
+op_assign
+id|status
+op_amp
+op_complement
+(paren
+id|RxAckBits
+op_or
+id|TxErr
+)paren
+suffix:semicolon
+id|RTL_W16
+(paren
+id|IntrStatus
+comma
+id|ackstat
+)paren
+suffix:semicolon
+id|DPRINTK
+(paren
+l_string|&quot;%s: interrupt  status=%#4.4x ackstat=%#4.4x new intstat=%#4.4x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|ackstat
+comma
+id|status
+comma
+id|RTL_R16
+(paren
+id|IntrStatus
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8681,8 +8215,6 @@ id|RxOverflow
 op_or
 id|RxFIFOOver
 op_or
-id|TxErr
-op_or
 id|RxErr
 )paren
 )paren
@@ -8717,6 +8249,7 @@ id|TxErr
 )paren
 )paren
 )paren
+(brace
 id|rtl8139_tx_interrupt
 (paren
 id|dev
@@ -8726,6 +8259,21 @@ comma
 id|ioaddr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|TxErr
+)paren
+id|RTL_W16
+(paren
+id|IntrStatus
+comma
+id|TxErr
+)paren
+suffix:semicolon
+)brace
 id|boguscnt
 op_decrement
 suffix:semicolon
@@ -8818,11 +8366,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 id|netif_stop_queue
 (paren
 id|dev
@@ -8836,6 +8379,15 @@ op_ge
 l_int|0
 )paren
 (brace
+id|tp-&gt;time_to_die
+op_assign
+l_int|1
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|kill_proc
@@ -9007,11 +8559,6 @@ l_char|&squot;H&squot;
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;R&squot; would leave the clock running. */
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9874,11 +9421,6 @@ l_int|0
 op_amp
 l_int|0x3f
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10071,13 +9613,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning %d&bslash;n&quot;
-comma
-id|rc
-)paren
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -10111,11 +9646,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10158,11 +9688,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_amp
 id|tp-&gt;stats
@@ -10197,11 +9722,6 @@ id|crc
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -10269,13 +9789,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, returning %u&bslash;n&quot;
-comma
-id|crc
-)paren
-suffix:semicolon
 r_return
 id|crc
 suffix:semicolon
@@ -10318,11 +9831,6 @@ id|rx_mode
 suffix:semicolon
 id|u32
 id|tmp
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;ENTER&bslash;n&quot;
-)paren
 suffix:semicolon
 id|DPRINTK
 (paren
@@ -10555,11 +10063,6 @@ id|mc_filter
 (braket
 l_int|1
 )braket
-)paren
-suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

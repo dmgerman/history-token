@@ -3802,6 +3802,33 @@ id|segsize_rem
 op_assign
 l_int|230
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|DN_SK
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|services_rem
+op_amp
+id|NSP_FC_MASK
+)paren
+op_eq
+id|NSP_FC_NONE
+)paren
+id|DN_SK
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|max_window
+op_assign
+id|decnet_no_fc_max_cwnd
+suffix:semicolon
 id|newsk-&gt;state
 op_assign
 id|TCP_LISTEN
@@ -4259,9 +4286,15 @@ id|peer
 r_if
 c_cond
 (paren
+(paren
 id|sock-&gt;state
 op_ne
 id|SS_CONNECTED
+op_logical_and
+id|sock-&gt;state
+op_ne
+id|SS_CONNECTING
+)paren
 op_logical_and
 id|scp-&gt;accept_mode
 op_eq
@@ -9088,6 +9121,12 @@ c_func
 l_string|&quot;Linux DECnet Project Team&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|addr
 r_static
 r_int
@@ -9128,7 +9167,7 @@ id|banner
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;NET4: DECnet for Linux: V.2.4.0-test12s (C) 1995-2000 Linux DECnet Project Team&bslash;n&quot;
+l_string|&quot;NET4: DECnet for Linux: V.2.4.9s (C) 1995-2001 Linux DECnet Project Team&bslash;n&quot;
 suffix:semicolon
 DECL|function|decnet_init
 r_static

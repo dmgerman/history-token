@@ -264,6 +264,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 r_goto
 id|again
 suffix:semicolon

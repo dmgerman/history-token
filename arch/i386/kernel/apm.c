@@ -3965,8 +3965,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|as-&gt;suser
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|as-&gt;writer
+)paren
 )paren
 r_return
 op_minus

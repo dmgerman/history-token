@@ -1370,11 +1370,17 @@ c_func
 id|inf-&gt;mode
 )paren
 )paren
+(brace
+id|inode-&gt;i_size
+op_assign
+id|inf-&gt;size
+suffix:semicolon
 id|inode-&gt;i_op
 op_assign
 op_amp
 id|autofs4_symlink_inode_operations
 suffix:semicolon
+)brace
 r_return
 id|inode
 suffix:semicolon

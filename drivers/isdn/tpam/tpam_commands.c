@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tpam_commands.c,v 1.1.2.3 2001/09/23 22:25:03 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver - ISDN commands)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
+multiline_comment|/* $Id: tpam_commands.c,v 1.1.2.4 2001/11/06 20:58:30 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver - ISDN commands)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -745,9 +745,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 id|spin_lock_irq
@@ -908,9 +912,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|timeout
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|timeout
+)paren
 )paren
 (brace
 r_if
@@ -1966,7 +1974,7 @@ id|templen
 suffix:semicolon
 id|finallen
 op_assign
-id|hdlc_encode
+id|tpam_hdlc_encode
 c_func
 (paren
 id|tempdata
@@ -3170,7 +3178,7 @@ suffix:semicolon
 )brace
 id|templen
 op_assign
-id|hdlc_decode
+id|tpam_hdlc_decode
 c_func
 (paren
 id|data
@@ -3720,9 +3728,9 @@ id|timer-&gt;expires
 op_assign
 id|jiffies
 op_plus
-l_float|0.1
-op_star
 id|HZ
+op_div
+l_int|10
 suffix:semicolon
 multiline_comment|/* 0.1 second */
 id|add_timer

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap_event.c&n; * Version:       0.9&n; * Description:   IrLAP state machine implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Sat Dec 25 21:07:57 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dag@brattli.net&gt;,&n; *     Copyright (c) 1998      Thomas Davis &lt;ratbert@radiks.net&gt;&n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap_event.c&n; * Version:       0.9&n; * Description:   IrLAP state machine implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Sat Dec 25 21:07:57 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dag@brattli.net&gt;,&n; *     Copyright (c) 1998      Thomas Davis &lt;ratbert@radiks.net&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -448,6 +448,8 @@ comma
 l_string|&quot;WD_TIMER_EXPIRED&quot;
 comma
 l_string|&quot;BACKOFF_TIMER_EXPIRED&quot;
+comma
+l_string|&quot;MEDIA_BUSY_TIMER_EXPIRED&quot;
 comma
 )brace
 suffix:semicolon
@@ -968,47 +970,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_case
-id|LAP_NDM
-suffix:colon
-multiline_comment|/* Check if we should try to connect */
-r_if
-c_cond
-(paren
-(paren
-id|self-&gt;connect_pending
-)paren
-op_logical_and
-op_logical_neg
-id|self-&gt;media_busy
-)paren
-(brace
-id|self-&gt;connect_pending
-op_assign
-id|FALSE
-suffix:semicolon
-id|ret
-op_assign
-(paren
-op_star
-id|state
-(braket
-id|self-&gt;state
-)braket
-)paren
-(paren
-id|self
-comma
-id|CONNECT_REQUEST
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
+multiline_comment|/*&t;case LAP_NDM: */
 multiline_comment|/* &t;case LAP_CONN: */
 multiline_comment|/* &t;case LAP_RESET_WAIT: */
 multiline_comment|/* &t;case LAP_RESET_CHECK: */
@@ -1084,38 +1046,6 @@ op_assign
 id|self-&gt;line_capacity
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
-macro_line|#ifdef CONFIG_IRDA_ULTRA
-multiline_comment|/* Send any pending Ultra frames if any */
-multiline_comment|/* The higher layers may have sent a few Ultra frames while we&n;&t; * were doing discovery (either query or reply). Those frames&n;&t; * have been queued, but were never sent. It is now time to&n;&t; * send them...&n;&t; * Jean II */
-r_if
-c_cond
-(paren
-(paren
-id|state
-op_eq
-id|LAP_NDM
-)paren
-op_logical_and
-(paren
-op_logical_neg
-id|skb_queue_empty
-c_func
-(paren
-op_amp
-id|self-&gt;txq_ultra
-)paren
-)paren
-)paren
-multiline_comment|/* Force us to listen 500 ms before sending Ultra */
-id|irda_device_set_media_busy
-c_func
-(paren
-id|self-&gt;netdev
-comma
-id|TRUE
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_ULTRA */
 )brace
 multiline_comment|/*&n; * Function irlap_state_ndm (event, skb, frame)&n; *&n; *    NDM (Normal Disconnected Mode) state&n; *&n; */
 DECL|function|irlap_state_ndm
@@ -1209,6 +1139,7 @@ c_cond
 id|self-&gt;media_busy
 )paren
 (brace
+multiline_comment|/* Note : this will never happen, because we test&n;&t;&t;&t; * media busy in irlap_connect_request() and&n;&t;&t;&t; * postpone the event... - Jean II */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -1362,6 +1293,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Note : the discovery log is not cleaned up here,&n;&t;&t;&t; * it will be done in irlap_discovery_request()&n;&t;&t;&t; * Jean II */
 r_return
 l_int|0
 suffix:semicolon
@@ -1533,6 +1465,99 @@ id|info-&gt;discovery
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|MEDIA_BUSY_TIMER_EXPIRED
+suffix:colon
+multiline_comment|/* A bunch of events may be postponed because the media is&n;&t;&t; * busy (usually immediately after we close a connection),&n;&t;&t; * or while we are doing discovery (state query/reply).&n;&t;&t; * In all those cases, the media busy flag will be cleared&n;&t;&t; * when it&squot;s OK for us to process those postponed events.&n;&t;&t; * This event is not mentioned in the state machines in the&n;&t;&t; * IrLAP spec. It&squot;s because they didn&squot;t consider Ultra and&n;&t;&t; * postponing connection request is optional.&n;&t;&t; * Jean II */
+macro_line|#ifdef CONFIG_IRDA_ULTRA
+multiline_comment|/* Send any pending Ultra frames if any */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb_queue_empty
+c_func
+(paren
+op_amp
+id|self-&gt;txq_ultra
+)paren
+)paren
+(brace
+multiline_comment|/* We don&squot;t send the frame, just post an event.&n;&t;&t;&t; * Also, previously this code was in timer.c...&n;&t;&t;&t; * Jean II */
+id|ret
+op_assign
+(paren
+op_star
+id|state
+(braket
+id|self-&gt;state
+)braket
+)paren
+(paren
+id|self
+comma
+id|SEND_UI_FRAME
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_IRDA_ULTRA */
+multiline_comment|/* Check if we should try to connect.&n;&t;&t; * This code was previously in irlap_do_event() */
+r_if
+c_cond
+(paren
+id|self-&gt;connect_pending
+)paren
+(brace
+id|self-&gt;connect_pending
+op_assign
+id|FALSE
+suffix:semicolon
+multiline_comment|/* This one *should* not pend in this state, except&n;&t;&t;&t; * if a socket try to connect and immediately&n;&t;&t;&t; * disconnect. - clear - Jean II */
+r_if
+c_cond
+(paren
+id|self-&gt;disconnect_pending
+)paren
+id|irlap_disconnect_indication
+c_func
+(paren
+id|self
+comma
+id|LAP_DISC_INDICATION
+)paren
+suffix:semicolon
+r_else
+id|ret
+op_assign
+(paren
+op_star
+id|state
+(braket
+id|self-&gt;state
+)braket
+)paren
+(paren
+id|self
+comma
+id|CONNECT_REQUEST
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|self-&gt;disconnect_pending
+op_assign
+id|FALSE
+suffix:semicolon
+)brace
+multiline_comment|/* Note : one way to test if this code works well (including&n;&t;&t; * media busy and small busy) is to create a user space&n;&t;&t; * application generating an Ultra packet every 3.05 sec (or&n;&t;&t; * 2.95 sec) and to see how it interact with discovery.&n;&t;&t; * It&squot;s fairly easy to check that no packet is lost, that the&n;&t;&t; * packets are postponed during discovery and that after&n;&t;&t; * discovery indication you have a 100ms &quot;gap&quot;.&n;&t;&t; * As connection request and Ultra are now processed the same&n;&t;&t; * way, this avoid the tedious job of trying IrLAP connection&n;&t;&t; * in all those cases...&n;&t;&t; * Jean II */
 r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_ULTRA
@@ -2507,6 +2532,15 @@ suffix:semicolon
 r_case
 id|DISCONNECT_REQUEST
 suffix:colon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), Disconnect request!&bslash;n&quot;
+)paren
+suffix:semicolon
 id|irlap_send_dm_frame
 c_func
 (paren
@@ -2518,7 +2552,15 @@ c_func
 (paren
 id|self
 comma
-id|LAP_CONN
+id|LAP_NDM
+)paren
+suffix:semicolon
+id|irlap_disconnect_indication
+c_func
+(paren
+id|self
+comma
+id|LAP_DISC_INDICATION
 )paren
 suffix:semicolon
 r_break
@@ -4923,24 +4965,10 @@ suffix:colon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|0
+l_int|1
 comma
 id|__FUNCTION__
 l_string|&quot;(), RECV_RD_RSP&bslash;n&quot;
-)paren
-suffix:semicolon
-id|irlap_next_state
-c_func
-(paren
-id|self
-comma
-id|LAP_PCLOSE
-)paren
-suffix:semicolon
-id|irlap_send_disc_frame
-c_func
-(paren
-id|self
 )paren
 suffix:semicolon
 id|irlap_flush_all_queues
@@ -4949,17 +4977,20 @@ c_func
 id|self
 )paren
 suffix:semicolon
-id|irlap_start_final_timer
+id|irlap_next_state
 c_func
 (paren
 id|self
 comma
-id|self-&gt;final_timeout
+id|LAP_XMIT_P
 )paren
 suffix:semicolon
-id|self-&gt;retry_count
-op_assign
-l_int|0
+multiline_comment|/* Call back the LAP state machine to do a proper disconnect */
+id|irlap_disconnect_request
+c_func
+(paren
+id|self
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

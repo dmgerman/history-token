@@ -23,6 +23,14 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 singleline_comment|//#define DEBUG
 multiline_comment|/*&n; * Initial task structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
+DECL|variable|init_mmap
+r_static
+r_struct
+id|vm_area_struct
+id|init_mmap
+op_assign
+id|INIT_MMAP
+suffix:semicolon
 DECL|variable|init_fs
 r_static
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      timer.c&n; * Version:       &n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Wed Dec  8 12:50:34 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      timer.c&n; * Version:       &n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Wed Dec  8 12:50:34 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -300,6 +300,9 @@ r_struct
 id|irlap_cb
 op_star
 id|self
+comma
+r_int
+id|timeout
 )paren
 (brace
 id|irda_start_timer
@@ -308,7 +311,7 @@ c_func
 op_amp
 id|self-&gt;media_busy_timer
 comma
-id|MEDIABUSY_TIMEOUT
+id|timeout
 comma
 (paren
 r_void
@@ -332,17 +335,6 @@ id|self
 )paren
 (brace
 multiline_comment|/* If timer is activated, kill it! */
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|self-&gt;media_busy_timer
-)paren
-)paren
-(brace
 id|del_timer
 c_func
 (paren
@@ -350,34 +342,26 @@ op_amp
 id|self-&gt;media_busy_timer
 )paren
 suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_IRDA_ULTRA
-multiline_comment|/* Send any pending Ultra frames if any */
+multiline_comment|/* If we are in NDM, there is a bunch of events in LAP that&n;&t; * that be pending due to the media_busy condition, such as&n;&t; * CONNECT_REQUEST and SEND_UI_FRAME. If we don&squot;t generate&n;&t; * an event, they will wait forever...&n;&t; * Jean II */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|skb_queue_empty
-c_func
-(paren
-op_amp
-id|self-&gt;txq_ultra
+id|self-&gt;state
+op_eq
+id|LAP_NDM
 )paren
-)paren
-multiline_comment|/* Note : we don&squot;t send the frame, just post an event.&n;&t;&t; * Frames will be sent only if we are in NDM mode (see&n;&t;&t; * irlap_event.c).&n;&t;&t; * Also, moved this code from irlap_media_busy_expired()&n;&t;&t; * to here to catch properly all cases...&n;&t;&t; * Jean II */
 id|irlap_do_event
 c_func
 (paren
 id|self
 comma
-id|SEND_UI_FRAME
+id|MEDIA_BUSY_TIMER_EXPIRED
 comma
 l_int|NULL
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_ULTRA */
 )brace
 DECL|function|irlmp_start_watchdog_timer
 r_void
@@ -844,6 +828,6 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/* Note : will deal with Ultra frames */
+multiline_comment|/* Note : the LAP event will be send in irlap_stop_mbusy_timer(),&n;&t;* to catch other cases where the flag is cleared (for example&n;&t;* after a discovery) - Jean II */
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tpam.h,v 1.1.2.2 2001/09/23 22:25:03 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
+multiline_comment|/* $Id: tpam.h,v 1.1.2.3 2001/11/06 20:58:30 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. (Kernel Driver)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
 macro_line|#ifndef _TPAM_PRIV_H_
 DECL|macro|_TPAM_PRIV_H_
 mdefine_line|#define _TPAM_PRIV_H_
@@ -964,7 +964,7 @@ suffix:semicolon
 multiline_comment|/* Function prototypes from tpam_hdlc.c */
 r_extern
 id|u32
-id|hdlc_encode
+id|tpam_hdlc_encode
 c_func
 (paren
 id|u8
@@ -981,7 +981,7 @@ id|u32
 suffix:semicolon
 r_extern
 id|u32
-id|hdlc_decode
+id|tpam_hdlc_decode
 c_func
 (paren
 id|u8

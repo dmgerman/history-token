@@ -365,8 +365,7 @@ macro_line|#endif /* GENERIC */
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * The convention used for inb/outb etc. is that names starting with&n; * two underscores are the inline versions, names starting with a&n; * single underscore are proper functions, and names starting with a&n; * letter are macros that map in some way to inline or proper function&n; * versions.  Not all that pretty, but before you change it, be sure&n; * to convince yourself that it won&squot;t break anything (in particular&n; * module support).&n; */
 r_extern
-r_int
-r_int
+id|u8
 id|_inb
 (paren
 r_int
@@ -375,8 +374,7 @@ id|port
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u16
 id|_inw
 (paren
 r_int
@@ -385,8 +383,7 @@ id|port
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u32
 id|_inl
 (paren
 r_int
@@ -398,8 +395,7 @@ r_extern
 r_void
 id|_outb
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -411,8 +407,7 @@ r_extern
 r_void
 id|_outw
 (paren
-r_int
-r_int
+id|u16
 id|w
 comma
 r_int
@@ -424,8 +419,7 @@ r_extern
 r_void
 id|_outl
 (paren
-r_int
-r_int
+id|u32
 id|l
 comma
 r_int
@@ -434,8 +428,7 @@ id|port
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u8
 id|_readb
 c_func
 (paren
@@ -445,8 +438,7 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u16
 id|_readw
 c_func
 (paren
@@ -456,8 +448,7 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u32
 id|_readl
 c_func
 (paren
@@ -467,8 +458,7 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u64
 id|_readq
 c_func
 (paren
@@ -482,8 +472,7 @@ r_void
 id|_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -496,8 +485,7 @@ r_void
 id|_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -510,8 +498,7 @@ r_void
 id|_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -524,8 +511,7 @@ r_void
 id|_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int
@@ -586,7 +572,7 @@ macro_line|#endif
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffff
 macro_line|#else 
-multiline_comment|/* Userspace declarations.  */
+multiline_comment|/* Userspace declarations.  Kill in 2.5. */
 r_extern
 r_int
 r_int
@@ -819,8 +805,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Indirect back to the macros provided.  */
 r_extern
-r_int
-r_int
+id|u8
 id|___raw_readb
 c_func
 (paren
@@ -830,8 +815,7 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u16
 id|___raw_readw
 c_func
 (paren
@@ -841,8 +825,7 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u32
 id|___raw_readl
 c_func
 (paren
@@ -852,8 +835,7 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|u64
 id|___raw_readq
 c_func
 (paren
@@ -867,8 +849,7 @@ r_void
 id|___raw_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -881,8 +862,7 @@ r_void
 id|___raw_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -895,8 +875,7 @@ r_void
 id|___raw_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -909,8 +888,7 @@ r_void
 id|___raw_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int
@@ -920,19 +898,19 @@ id|addr
 suffix:semicolon
 macro_line|#ifdef __raw_readb
 DECL|macro|readb
-macro_line|# define readb(a)&t;({ unsigned long r_ = __raw_readb(a); mb(); r_; })
+macro_line|# define readb(a)&t;({ u8 r_ = __raw_readb(a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_readw
 DECL|macro|readw
-macro_line|# define readw(a)&t;({ unsigned long r_ = __raw_readw(a); mb(); r_; })
+macro_line|# define readw(a)&t;({ u16 r_ = __raw_readw(a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_readl
 DECL|macro|readl
-macro_line|# define readl(a)&t;({ unsigned long r_ = __raw_readl(a); mb(); r_; })
+macro_line|# define readl(a)&t;({ u32 r_ = __raw_readl(a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_readq
 DECL|macro|readq
-macro_line|# define readq(a)&t;({ unsigned long r_ = __raw_readq(a); mb(); r_; })
+macro_line|# define readq(a)&t;({ u64 r_ = __raw_readq(a); mb(); r_; })
 macro_line|#endif
 macro_line|#ifdef __raw_writeb
 DECL|macro|writeb

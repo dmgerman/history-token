@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Hewlett-Packard Co&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Adapted from arch/i386/kernel/ldt.c&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Adapted from arch/i386/kernel/ldt.c&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
+DECL|macro|P
+mdefine_line|#define P(p)&t;((void *) (unsigned long) (p))
 multiline_comment|/*&n; * read_ldt() is not really atomic - this is not a problem since synchronization of reads&n; * and writes done to the LDT has to be assured by user-space anyway. Writes are atomic,&n; * to protect the security checks done on new descriptors.&n; */
 r_static
 r_int
@@ -151,6 +153,71 @@ suffix:semicolon
 )brace
 r_static
 r_int
+DECL|function|read_default_ldt
+id|read_default_ldt
+(paren
+r_void
+op_star
+id|ptr
+comma
+r_int
+r_int
+id|bytecount
+)paren
+(brace
+r_int
+r_int
+id|size
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+multiline_comment|/* XXX fix me: should return equivalent of default_ldt[0] */
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+id|size
+op_assign
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+OG
+id|bytecount
+)paren
+id|size
+op_assign
+id|bytecount
+suffix:semicolon
+id|err
+op_assign
+id|size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|clear_user
+c_func
+(paren
+id|ptr
+comma
+id|size
+)paren
+)paren
+id|err
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+r_static
+r_int
 DECL|function|write_ldt
 id|write_ldt
 (paren
@@ -172,6 +239,9 @@ id|ldt_info
 suffix:semicolon
 id|__u64
 id|entry
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -348,7 +418,8 @@ id|ldt_info.limit_in_pages
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Install the new entry.  We know we&squot;re accessing valid (mapped) user-level&n;&t; * memory, but we still need to guard against out-of-memory, hence we must use&n;&t; * put_user().&n;&t; */
-r_return
+id|ret
+op_assign
 id|__put_user
 c_func
 (paren
@@ -363,6 +434,15 @@ op_plus
 id|ldt_info.entry_number
 )paren
 suffix:semicolon
+id|ia32_load_segment_descriptors
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 id|asmlinkage
 r_int
@@ -372,8 +452,8 @@ id|sys32_modify_ldt
 r_int
 id|func
 comma
-r_void
-op_star
+r_int
+r_int
 id|ptr
 comma
 r_int
@@ -401,7 +481,11 @@ op_assign
 id|read_ldt
 c_func
 (paren
+id|P
+c_func
+(paren
 id|ptr
+)paren
 comma
 id|bytecount
 )paren
@@ -416,11 +500,34 @@ op_assign
 id|write_ldt
 c_func
 (paren
+id|P
+c_func
+(paren
 id|ptr
+)paren
 comma
 id|bytecount
 comma
 l_int|1
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|ret
+op_assign
+id|read_default_ldt
+c_func
+(paren
+id|P
+c_func
+(paren
+id|ptr
+)paren
+comma
+id|bytecount
 )paren
 suffix:semicolon
 r_break
@@ -433,7 +540,11 @@ op_assign
 id|write_ldt
 c_func
 (paren
+id|P
+c_func
+(paren
 id|ptr
+)paren
 comma
 id|bytecount
 comma

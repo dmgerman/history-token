@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * palinfo.c&n; *&n; * Prints processor specific information reported by PAL.&n; * This code is based on specification of PAL as of the&n; * Intel IA-64 Architecture Software Developer&squot;s Manual v1.0.&n; *&n; *&n; * Copyright (C) 2000 Hewlett-Packard Co&n; * Copyright (C) 2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 05/26/2000&t;S.Eranian&t;initial release&n; * 08/21/2000&t;S.Eranian&t;updated to July 2000 PAL specs&n; * 02/05/2001   S.Eranian&t;fixed module support&n; */
+multiline_comment|/*&n; * palinfo.c&n; *&n; * Prints processor specific information reported by PAL.&n; * This code is based on specification of PAL as of the&n; * Intel IA-64 Architecture Software Developer&squot;s Manual v1.0.&n; *&n; *&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 05/26/2000&t;S.Eranian&t;initial release&n; * 08/21/2000&t;S.Eranian&t;updated to July 2000 PAL specs&n; * 02/05/2001   S.Eranian&t;fixed module support&n; * 10/23/2001&t;S.Eranian&t;updated pal_perf_mon_info bug fixes&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -26,8 +26,14 @@ c_func
 l_string|&quot;/proc interface to IA-64 PAL&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|PALINFO_VERSION
-mdefine_line|#define PALINFO_VERSION &quot;0.4&quot;
+mdefine_line|#define PALINFO_VERSION &quot;0.5&quot;
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|cpu_is_online
 mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
@@ -2284,24 +2290,6 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef IA64_PAL_PERF_MON_INFO_BUG
-multiline_comment|/*&n;&t; * This bug has been fixed in PAL 2.2.9 and higher&n;&t; */
-id|pm_buffer
-(braket
-l_int|5
-)braket
-op_assign
-l_int|0x3
-suffix:semicolon
-id|pm_info.pal_perf_mon_info_s.cycles
-op_assign
-l_int|0x12
-suffix:semicolon
-id|pm_info.pal_perf_mon_info_s.retired
-op_assign
-l_int|0x08
-suffix:semicolon
-macro_line|#endif
 id|p
 op_add_assign
 id|sprintf
@@ -2398,6 +2386,26 @@ comma
 l_string|&quot;&bslash;nRetired bundles count capable : &quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ITANIUM
+multiline_comment|/*&n;&t; * PAL_PERF_MON_INFO reports that only PMC4 can be used to count CPU_CYCLES&n;&t; * which is wrong, both PMC4 and PMD5 support it.&n;&t; */
+r_if
+c_cond
+(paren
+id|pm_buffer
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0x10
+)paren
+id|pm_buffer
+(braket
+l_int|12
+)braket
+op_assign
+l_int|0x30
+suffix:semicolon
+macro_line|#endif
 id|p
 op_assign
 id|bitregister_process

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: redboot.c,v 1.5 2001/10/02 15:05:11 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
+multiline_comment|/*&n; * $Id: redboot.c,v 1.6 2001/10/25 09:16:06 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -246,20 +246,62 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* RedBoot image could appear in any of the first three slots */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|memcmp
 c_func
 (paren
 id|buf
+(braket
+id|i
+)braket
+dot
+id|name
 comma
 l_string|&quot;RedBoot&quot;
 comma
 l_int|8
 )paren
 )paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|3
+)paren
 (brace
+multiline_comment|/* Didn&squot;t find it */
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;No RedBoot partition table detected in %s&bslash;n&quot;
+comma
+id|master-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 l_int|0

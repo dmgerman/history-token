@@ -395,6 +395,14 @@ comma
 l_string|&quot;vs-4070: can not free such block&quot;
 )paren
 suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|free_block
+)paren
+suffix:semicolon
 id|rs
 op_assign
 id|SB_DISK_SUPER_BLOCK
@@ -579,6 +587,14 @@ id|next_block_to_try
 op_assign
 l_int|0
 suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|find_forward.call
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -601,6 +617,14 @@ op_star
 id|offset
 op_assign
 l_int|0
+comma
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|find_forward.bmap
+)paren
 )paren
 (brace
 multiline_comment|/* get corresponding bitmap block */
@@ -623,6 +647,14 @@ id|bh
 )paren
 )paren
 (brace
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|find_forward.wait
+)paren
+suffix:semicolon
 id|__wait_on_buffer
 (paren
 id|bh
@@ -759,6 +791,14 @@ comma
 id|offset
 )paren
 suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|find_forward.in_journal_hint
+)paren
+suffix:semicolon
 multiline_comment|/* block is not in this bitmap. reset i and continue&n;&t;  ** we only reset i if new_i is in a later bitmap.&n;&t;  */
 r_if
 c_cond
@@ -777,6 +817,14 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* i gets incremented by the for loop */
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|find_forward.in_journal_out
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -792,6 +840,14 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|find_forward.retry
+)paren
+suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon

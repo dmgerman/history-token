@@ -671,12 +671,10 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* Max STB is 256, So 256/32 */
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 DECL|member|BitAllocFlagLock
 id|spinlock_t
 id|BitAllocFlagLock
 suffix:semicolon
-macro_line|#endif
 DECL|member|pSRB_head
 id|ULONG
 id|pSRB_head
@@ -685,12 +683,10 @@ DECL|member|pSRB_tail
 id|ULONG
 id|pSRB_tail
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 DECL|member|pSRB_lock
 id|spinlock_t
 id|pSRB_lock
 suffix:semicolon
-macro_line|#endif
 DECL|typedef|ORC_HCS
 )brace
 id|ORC_HCS

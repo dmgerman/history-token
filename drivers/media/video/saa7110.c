@@ -244,6 +244,12 @@ c_func
 id|decoder-&gt;bus
 )paren
 suffix:semicolon
+id|UNLOCK_I2C_BUS
+c_func
+(paren
+id|decoder-&gt;bus
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN

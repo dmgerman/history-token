@@ -1418,10 +1418,6 @@ id|bsize
 op_rshift
 l_int|2
 suffix:semicolon
-id|sb-&gt;sv_kludge_symlinks
-op_assign
-l_int|1
-suffix:semicolon
 id|sb-&gt;sv_firstinodezone
 op_assign
 l_int|2

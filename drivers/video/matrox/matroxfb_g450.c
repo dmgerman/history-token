@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.51 2001/01/19&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
 macro_line|#include &quot;matroxfb_g450.h&quot;
 macro_line|#include &quot;matroxfb_misc.h&quot;
 macro_line|#include &quot;matroxfb_DAC1064.h&quot;
@@ -112,6 +113,29 @@ comma
 l_int|3
 )brace
 suffix:semicolon
+DECL|variable|g550_pll
+r_static
+r_const
+r_struct
+id|matrox_pll_features
+id|g550_pll
+op_assign
+(brace
+l_int|135000
+comma
+l_int|27000
+comma
+l_int|4
+comma
+l_int|127
+comma
+l_int|0
+comma
+l_int|9
+comma
+l_int|3
+)brace
+suffix:semicolon
 DECL|function|DAC1064_calcclock
 r_static
 r_void
@@ -140,6 +164,10 @@ r_int
 r_int
 op_star
 id|post
+comma
+r_int
+r_int
+id|timmings
 )paren
 (brace
 r_int
@@ -150,6 +178,14 @@ r_int
 r_int
 id|p
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|timmings
+)paren
+(brace
+r_default
+suffix:colon
 id|fvco
 op_assign
 id|matroxfb_PLL_calcclock
@@ -170,7 +206,7 @@ op_amp
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* 0 =&gt; 100 ... 275 MHz&n;           1 =&gt; 243 ... 367 MHz&n;           2 =&gt; 320 ... 475 MHz&n;           3 =&gt; 453 ... 556 MHz&n;           4 =&gt; 540 ... 594 MHz&n;           5 =&gt; 588 ... 621 MHz&n;           6 =&gt; 626 ... 637 MHz&n;           7 =&gt; 631 ... 642 MHz&n;&n;           As you can see, never choose frequency &gt; 621 MHz, there is unavailable gap...&n;           Just to be sure, currently driver uses 110 ... 500 MHz range.&n;         */
+multiline_comment|/* 0 =&gt; 100 ... 275 MHz&n;&t;&t;           1 =&gt; 243 ... 367 MHz&n;&t;&t;           2 =&gt; 320 ... 475 MHz&n;&t;&t;           3 =&gt; 453 ... 556 MHz&n;&t;&t;           4 =&gt; 540 ... 594 MHz&n;&t;&t;           5 =&gt; 588 ... 621 MHz&n;&t;&t;           6 =&gt; 626 ... 637 MHz&n;&t;&t;           7 =&gt; 631 ... 642 MHz&n;&n;&t;&t;           As you can see, never choose frequency &gt; 621 MHz, there is unavailable gap...&n;&t;&t;           Just to be sure, currently driver uses 110 ... 500 MHz range.&n;&t;&t;         */
 r_if
 c_cond
 (paren
@@ -232,6 +268,35 @@ id|p
 op_or_assign
 l_int|0x28
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|fvco
+op_assign
+id|matroxfb_PLL_calcclock
+c_func
+(paren
+op_amp
+id|g550_pll
+comma
+id|freq
+comma
+id|fmax
+comma
+id|in
+comma
+id|feed
+comma
+op_amp
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* p |= 0x00; */
+r_break
+suffix:semicolon
+)brace
 op_star
 id|post
 op_assign
@@ -276,7 +341,7 @@ c_func
 (paren
 id|mt-&gt;pixclock
 comma
-l_int|500000
+l_int|300000
 comma
 op_amp
 id|a
@@ -286,6 +351,8 @@ id|b
 comma
 op_amp
 id|c
+comma
+id|m2info-&gt;timmings
 )paren
 suffix:semicolon
 id|m-&gt;regs
@@ -639,6 +706,23 @@ id|output.all
 op_or_assign
 id|MATROXFB_OUTPUT_CONN_SECONDARY
 suffix:semicolon
+id|matroxfb_switch
+c_func
+(paren
+id|ACCESS_FBINFO
+c_func
+(paren
+id|currcon
+)paren
+comma
+(paren
+r_struct
+id|fb_info
+op_star
+)paren
+id|MINFO
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -829,6 +913,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ACCESS_FBINFO
+c_func
+(paren
+id|devflags.g550dac
+)paren
+)paren
+(brace
+id|m2info-&gt;timmings
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|m2info-&gt;timmings
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|matroxfb_g450_connect
 c_func
 (paren
@@ -946,13 +1052,19 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c) 2000 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+l_string|&quot;(c) 2000-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Matrox G450 secondary output driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|matroxfb_g450_init

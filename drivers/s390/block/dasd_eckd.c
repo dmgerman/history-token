@@ -2981,7 +2981,7 @@ id|KERN_WARNING
 comma
 id|device
 comma
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 l_string|&quot;Volume has incompatible disk layout&quot;
 )paren
@@ -3552,7 +3552,7 @@ id|KERN_INFO
 comma
 id|device
 comma
-l_string|&quot;Format Cylinder: %d Flags: %d&bslash;n&quot;
+l_string|&quot;Format Cylinder: %d Flags: %d&quot;
 comma
 id|fdata-&gt;start_unit
 op_div

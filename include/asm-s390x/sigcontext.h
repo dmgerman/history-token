@@ -35,7 +35,6 @@ id|addr
 suffix:semicolon
 DECL|typedef|_psw_t
 )brace
-id|_psw_t
 id|__attribute__
 (paren
 (paren
@@ -46,6 +45,7 @@ l_int|8
 )paren
 )paren
 )paren
+id|_psw_t
 suffix:semicolon
 r_typedef
 r_struct
@@ -73,12 +73,6 @@ suffix:semicolon
 DECL|typedef|_s390_regs_common
 )brace
 id|_s390_regs_common
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 r_typedef
 r_struct

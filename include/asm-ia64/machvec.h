@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Machine vector for IA-64.&n; * &n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; * Copyright (C) 1999-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Machine vector for IA-64.&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_MACHVEC_H
 DECL|macro|_ASM_IA64_MACHVEC_H
 mdefine_line|#define _ASM_IA64_MACHVEC_H
@@ -103,6 +103,21 @@ r_int
 comma
 r_int
 comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_global_tlb_purge_t
+r_typedef
+r_void
+id|ia64_mv_global_tlb_purge_t
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
 r_int
 )paren
 suffix:semicolon
@@ -371,6 +386,8 @@ macro_line|# elif defined (CONFIG_IA64_DIG)
 macro_line|#  include &lt;asm/machvec_dig.h&gt;
 macro_line|# elif defined (CONFIG_IA64_SGI_SN1)
 macro_line|#  include &lt;asm/machvec_sn1.h&gt;
+macro_line|# elif defined (CONFIG_IA64_SGI_SN2)
+macro_line|#  include &lt;asm/machvec_sn2.h&gt;
 macro_line|# elif defined (CONFIG_IA64_GENERIC)
 macro_line|# ifdef MACHVEC_PLATFORM_HEADER
 macro_line|#  include MACHVEC_PLATFORM_HEADER
@@ -395,6 +412,8 @@ DECL|macro|platform_pci_fixup
 macro_line|#  define platform_pci_fixup&t;ia64_mv.pci_fixup
 DECL|macro|platform_send_ipi
 macro_line|#  define platform_send_ipi&t;ia64_mv.send_ipi
+DECL|macro|platform_global_tlb_purge
+macro_line|#  define platform_global_tlb_purge&t;ia64_mv.global_tlb_purge
 DECL|macro|platform_pci_dma_init
 macro_line|#  define platform_pci_dma_init&t;&t;ia64_mv.dma_init
 DECL|macro|platform_pci_alloc_consistent
@@ -587,7 +606,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl&t;&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -679,6 +698,10 @@ macro_line|#endif
 macro_line|#ifndef platform_send_ipi
 DECL|macro|platform_send_ipi
 macro_line|# define platform_send_ipi&t;ia64_send_ipi&t;/* default to architected version */
+macro_line|#endif
+macro_line|#ifndef platform_global_tlb_purge
+DECL|macro|platform_global_tlb_purge
+macro_line|# define platform_global_tlb_purge&t;ia64_global_tlb_purge /* default to architected version */
 macro_line|#endif
 macro_line|#ifndef platform_pci_dma_init
 DECL|macro|platform_pci_dma_init

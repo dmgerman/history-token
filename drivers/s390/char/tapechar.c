@@ -3316,6 +3316,8 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|ti
 op_assign
@@ -3416,8 +3418,8 @@ c_func
 id|ti
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -3450,11 +3452,15 @@ l_string|&quot;c:notidle!&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
+id|rc
+op_assign
 op_minus
 id|ENXIO
 suffix:semicolon
 multiline_comment|/* error in tape_release */
+r_goto
+id|out
+suffix:semicolon
 )brace
 macro_line|#ifdef TAPE_DEBUG
 id|debug_text_event
@@ -3602,12 +3608,14 @@ comma
 id|lockflags
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 macro_line|#ifdef MODULE
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
 r_return
-l_int|0
+id|rc
 suffix:semicolon
 )brace
 eof

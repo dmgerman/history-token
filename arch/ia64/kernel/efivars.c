@@ -24,6 +24,12 @@ c_func
 l_string|&quot;/proc interface to EFI Variables&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|EFIVARS_VERSION
 mdefine_line|#define EFIVARS_VERSION &quot;0.03 2001-Apr-20&quot;
 r_static
@@ -930,13 +936,6 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|efivars_lock
-)paren
-suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|var_data
@@ -957,13 +956,6 @@ id|var_data
 )paren
 (brace
 id|MOD_DEC_USE_COUNT
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|efivars_lock
-)paren
 suffix:semicolon
 r_return
 op_minus
@@ -986,11 +978,10 @@ id|size
 (brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-id|spin_unlock
+id|kfree
 c_func
 (paren
-op_amp
-id|efivars_lock
+id|var_data
 )paren
 suffix:semicolon
 r_return
@@ -998,6 +989,13 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|efivars_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Since the data ptr we&squot;ve currently got is probably for&n;&t;   a different variable find the right variable.&n;&t;   This allows any properly formatted data structure to&n;&t;   be written to any of the files in /proc/efi/vars and it will work.&n;&t;*/
 id|list_for_each
 c_func

@@ -1,10 +1,10 @@
 macro_line|#ifndef _ASM_IA64_SIGCONTEXT_H
 DECL|macro|_ASM_IA64_SIGCONTEXT_H
 mdefine_line|#define _ASM_IA64_SIGCONTEXT_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/fpu.h&gt;
 DECL|macro|IA64_SC_FLAG_ONSTACK_BIT
-mdefine_line|#define IA64_SC_FLAG_ONSTACK_BIT&t;&t;1&t;/* is handler running on signal stack? */
+mdefine_line|#define IA64_SC_FLAG_ONSTACK_BIT&t;&t;0&t;/* is handler running on signal stack? */
 DECL|macro|IA64_SC_FLAG_IN_SYSCALL_BIT
 mdefine_line|#define IA64_SC_FLAG_IN_SYSCALL_BIT&t;&t;1&t;/* did signal interrupt a syscall? */
 DECL|macro|IA64_SC_FLAG_FPH_VALID_BIT
@@ -16,6 +16,7 @@ mdefine_line|#define IA64_SC_FLAG_IN_SYSCALL&t;&t;(1 &lt;&lt; IA64_SC_FLAG_IN_SY
 DECL|macro|IA64_SC_FLAG_FPH_VALID
 mdefine_line|#define IA64_SC_FLAG_FPH_VALID&t;&t;(1 &lt;&lt; IA64_SC_FLAG_FPH_VALID_BIT)
 macro_line|# ifndef __ASSEMBLY__
+multiline_comment|/*&n; * Note on handling of register backing store: sc_ar_bsp contains the address that would&n; * be found in ar.bsp after executing a &quot;cover&quot; instruction the context in which the&n; * signal was raised.  If signal delivery required switching to an alternate signal stack&n; * (sc_rbs_base is not NULL), the &quot;dirty&quot; partition (as it would exist after executing the&n; * imaginary &quot;cover&quot; instruction) is backed by the *alternate* signal stack, not the&n; * original one.  In this case, sc_rbs_base contains the base address of the new register&n; * backing store.  The number of registers in the dirty partition can be calculated as:&n; *&n; *   ndirty = ia64_rse_num_regs(sc_rbs_base, sc_rbs_base + (sc_loadrs &gt;&gt; 16))&n; *&n; */
 DECL|struct|sigcontext
 r_struct
 id|sigcontext
@@ -137,12 +138,24 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* floating-point registers */
+DECL|member|sc_rbs_base
+r_int
+r_int
+id|sc_rbs_base
+suffix:semicolon
+multiline_comment|/* NULL or new base of sighandler&squot;s rbs */
+DECL|member|sc_loadrs
+r_int
+r_int
+id|sc_loadrs
+suffix:semicolon
+multiline_comment|/* see description above */
 DECL|member|sc_rsvd
 r_int
 r_int
 id|sc_rsvd
 (braket
-l_int|16
+l_int|14
 )braket
 suffix:semicolon
 multiline_comment|/* reserved for future use */

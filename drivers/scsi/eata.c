@@ -10130,7 +10130,7 @@ macro_line|#endif /* end MODULE */
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;BSD&quot;
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -2972,6 +2972,18 @@ id|dev-&gt;channo
 op_increment
 )paren
 (brace
+multiline_comment|/* We only have 32 channels */
+r_if
+c_cond
+(paren
+id|dev-&gt;channo
+op_ge
+l_int|32
+)paren
+id|dev-&gt;channo
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* If we need to do RX, AND the RX is inuse, try the next */
 r_if
 c_cond
@@ -4339,7 +4351,8 @@ id|func_exit
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/version.c&n; *&n; *  Copyright (C) 1992  Theodore Ts&squot;o&n; *&n; *  May be freely distributed as part of Linux.&n; */
+multiline_comment|/*&n; *  linux/init/version.c&n; *&n; *  Copyright (C) 1992  Theodore Ts&squot;o&n; *&n; *  May be freely distributed as part of Linux.&n; */
 macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/version.h&gt;

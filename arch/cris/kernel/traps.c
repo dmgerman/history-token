@@ -419,7 +419,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;IRP: %08lx SRP: %08lx DCCR: %08lx USP: %08lx MOF: %08lx    %s&bslash;n&quot;
+l_string|&quot;IRP: %08lx SRP: %08lx DCCR: %08lx USP: %08lx MOF: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;irp
 comma
@@ -430,11 +430,6 @@ comma
 id|usp
 comma
 id|regs-&gt;mof
-comma
-id|print_tainted
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|printk

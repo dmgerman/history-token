@@ -339,6 +339,10 @@ DECL|enumerator|BH_launder
 id|BH_launder
 comma
 multiline_comment|/* 1 if we should throttle on this buffer */
+DECL|enumerator|BH_JBD
+id|BH_JBD
+comma
+multiline_comment|/* 1 if it has an attached journal_head */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -573,6 +577,7 @@ mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 macro_line|#include &lt;linux/minix_fs_i.h&gt;
 macro_line|#include &lt;linux/ext2_fs_i.h&gt;
+macro_line|#include &lt;linux/ext3_fs_i.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_i.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_i.h&gt;
 macro_line|#include &lt;linux/msdos_fs_i.h&gt;
@@ -734,6 +739,7 @@ id|page
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * ext3 requires that a successful prepare_write() call be followed&n;&t; * by a commit_write() call - they must be balanced&n;&t; */
 DECL|member|prepare_write
 r_int
 (paren
@@ -784,6 +790,35 @@ id|bmap
 (paren
 r_struct
 id|address_space
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|flushpage
+r_int
+(paren
+op_star
+id|flushpage
+)paren
+(paren
+r_struct
+id|page
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|releasepage
+r_int
+(paren
+op_star
+id|releasepage
+)paren
+(paren
+r_struct
+id|page
 op_star
 comma
 r_int
@@ -1193,6 +1228,11 @@ DECL|member|ext2_i
 r_struct
 id|ext2_inode_info
 id|ext2_i
+suffix:semicolon
+DECL|member|ext3_i
+r_struct
+id|ext3_inode_info
+id|ext3_i
 suffix:semicolon
 DECL|member|hpfs_i
 r_struct
@@ -2056,6 +2096,7 @@ DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
 macro_line|#include &lt;linux/minix_fs_sb.h&gt;
 macro_line|#include &lt;linux/ext2_fs_sb.h&gt;
+macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
@@ -2223,6 +2264,11 @@ DECL|member|ext2_sb
 r_struct
 id|ext2_sb_info
 id|ext2_sb
+suffix:semicolon
+DECL|member|ext3_sb
+r_struct
+id|ext3_sb_info
+id|ext3_sb
 suffix:semicolon
 DECL|member|hpfs_sb
 r_struct
@@ -4559,6 +4605,21 @@ id|buf
 suffix:semicolon
 r_extern
 r_void
+id|create_empty_buffers
+c_func
+(paren
+r_struct
+id|page
+op_star
+comma
+id|kdev_t
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|end_buffer_io_sync
 c_func
 (paren
@@ -4920,6 +4981,16 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|set_buffer_flushtime
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|balance_dirty
@@ -6108,6 +6179,28 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|put_unused_buffer_head
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|buffer_head
+op_star
+id|get_unused_buffer_head
+c_func
+(paren
+r_int
+id|async
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|brw_page
 c_func
@@ -6148,6 +6241,20 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* Generic buffer handling for block filesystems.. */
+r_extern
+r_int
+id|try_to_release_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|gfp_mask
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|discard_bh_page
@@ -6740,7 +6847,8 @@ r_void
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_extern
-id|kdev_t
+r_int
+r_int
 id|real_root_dev
 suffix:semicolon
 r_extern

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap.c&n; * Version:       1.0&n; * Description:   IrLAP implementation for Linux&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 09:26:44 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap.c&n; * Version:       1.0&n; * Description:   IrLAP implementation for Linux&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 09:26:44 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1797,10 +1797,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Note : in theory, if we are not in NDM, we could postpone&n;&t;&t; * the discovery like we do for connection request.&n;&t;&t; * In practice, it&squot;s not worth it. If the media was busy,&n;&t;&t; * it&squot;s likely next time around it won&squot;t be busy. If we are&n;&t;&t; * in REPLY state, we will get passive discovery info &amp; event.&n;&t;&t; * Jean II */
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Check if last discovery request finished in time */
+multiline_comment|/* Check if last discovery request finished in time, or if&n;&t; * it was aborted due to the media busy flag. */
 r_if
 c_cond
 (paren
@@ -1964,19 +1965,11 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Check for successful discovery, since we are then allowed to clear &n;&t; * the media busy condition (irlap p.94). This should allow us to make &n;&t; * connection attempts much easier.&n;&t; */
+multiline_comment|/* &n;&t; * Check for successful discovery, since we are then allowed to clear &n;&t; * the media busy condition (IrLAP 6.13.4 - p.94). This should allow&n;&t; * us to make connection attempts much faster and easier (i.e. no&n;&t; * collisions).&n;&t; * Setting media busy to false will also generate an event allowing&n;&t; * to process pending events in NDM state machine.&n;&t; * Note : the spec doesn&squot;t define what&squot;s a successful discovery is.&n;&t; * If we want Ultra to work, it&squot;s successful even if there is&n;&t; * nobody discovered - Jean II&n;&t; */
 r_if
 c_cond
 (paren
 id|discovery_log
-op_logical_and
-id|HASHBIN_GET_SIZE
-c_func
-(paren
-id|discovery_log
-)paren
-OG
-l_int|0
 )paren
 id|irda_device_set_media_busy
 c_func
@@ -2063,6 +2056,15 @@ l_int|NULL
 comma
 r_return
 suffix:semicolon
+)paren
+suffix:semicolon
+multiline_comment|/* A device is very likely to connect immediately after it performs&n;&t; * a successful discovery. This means that in our case, we are much&n;&t; * more likely to receive a connection request over the medium.&n;&t; * So, we backoff to avoid collisions.&n;&t; * IrLAP spec 6.13.4 suggest 100ms...&n;&t; * Note : this little trick actually make a *BIG* difference. If I set&n;&t; * my Linux box with discovery enabled and one Ultra frame sent every&n;&t; * second, my Palm has no trouble connecting to it every time !&n;&t; * Jean II */
+id|irda_device_set_media_busy
+c_func
+(paren
+id|self-&gt;netdev
+comma
+id|SMALL
 )paren
 suffix:semicolon
 id|irlmp_link_discovery_indication

@@ -11006,6 +11006,14 @@ id|num_ac97
 op_increment
 )paren
 (brace
+multiline_comment|/* Assume codec isn&squot;t available until we go through the&n;&t;&t; * gauntlet below */
+id|card-&gt;ac97_codec
+(braket
+id|num_ac97
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* The ICH programmer&squot;s reference says you should   */
 multiline_comment|/* check the ready status before probing. So we chk */
 multiline_comment|/*   What do we do if it&squot;s not ready?  Wait and try */
@@ -11039,13 +11047,6 @@ l_string|&quot;i810_audio: Primary codec not ready.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|card-&gt;ac97_codec
-(braket
-id|num_ac97
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* I think this works, if not ready stop */
@@ -11125,6 +11126,12 @@ c_func
 l_string|&quot;i810_audio: timed out waiting for codec %d analog ready&quot;
 comma
 id|num_ac97
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|codec
 )paren
 suffix:semicolon
 r_break
@@ -12294,9 +12301,13 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|pci_dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pci_dev
+comma
 id|card
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -12448,7 +12459,11 @@ id|i810_card
 op_star
 id|card
 op_assign
-id|pci_dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pci_dev
+)paren
 suffix:semicolon
 multiline_comment|/* free hardware resources */
 id|free_irq
@@ -12555,7 +12570,11 @@ id|i810_card
 op_star
 id|card
 op_assign
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|i810_state
@@ -12877,12 +12896,11 @@ id|i810_card
 op_star
 id|card
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-r_struct
-id|i810_card
-op_star
+id|dev
 )paren
-id|dev-&gt;driver_data
 suffix:semicolon
 id|pci_enable_device
 c_func
@@ -12933,6 +12951,9 @@ multiline_comment|/* check they haven&squot;t stolen the hardware while we were&
 r_if
 c_cond
 (paren
+op_logical_neg
+id|codec
+op_logical_or
 op_logical_neg
 id|i810_ac97_exists
 c_func

@@ -444,6 +444,12 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+multiline_comment|/* XXX there should be a cleaner way for declaring an alias... */
+id|asm
+(paren
+l_string|&quot;.global get_fast_time; get_fast_time = do_gettimeofday&quot;
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|timer_interrupt

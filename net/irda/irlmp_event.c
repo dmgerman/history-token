@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_event.c&n; * Version:       0.8&n; * Description:   An IrDA LMP event driver for Linux&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 23:04:16 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_event.c&n; * Version:       0.8&n; * Description:   An IrDA LMP event driver for Linux&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 23:04:16 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -303,6 +303,50 @@ comma
 id|irlmp_state_setup_pend
 )brace
 suffix:semicolon
+DECL|function|irlmp_next_lap_state
+r_static
+r_inline
+r_void
+id|irlmp_next_lap_state
+c_func
+(paren
+r_struct
+id|lap_cb
+op_star
+id|self
+comma
+id|IRLMP_STATE
+id|state
+)paren
+(brace
+multiline_comment|/*&n;&t;IRDA_DEBUG(4, __FUNCTION__ &quot;(), LMP LAP = %s&bslash;n&quot;, irlmp_state[state]);&n;&t;*/
+id|self-&gt;lap_state
+op_assign
+id|state
+suffix:semicolon
+)brace
+DECL|function|irlmp_next_lsap_state
+r_static
+r_inline
+r_void
+id|irlmp_next_lsap_state
+c_func
+(paren
+r_struct
+id|lsap_cb
+op_star
+id|self
+comma
+id|LSAP_STATE
+id|state
+)paren
+(brace
+multiline_comment|/*&n;&t;ASSERT(self != NULL, return;);&n;&t;IRDA_DEBUG(4, __FUNCTION__ &quot;(), LMP LSAP = %s&bslash;n&quot;, irlsap_state[state]);&n;&t;*/
+id|self-&gt;lsap_state
+op_assign
+id|state
+suffix:semicolon
+)brace
 multiline_comment|/* Do connection control events */
 DECL|function|irlmp_do_lsap_event
 r_int
@@ -745,9 +789,6 @@ comma
 id|LAP_U_CONNECT
 )paren
 suffix:semicolon
-id|self-&gt;refcount
-op_increment
-suffix:semicolon
 multiline_comment|/* FIXME: need to set users requested QoS */
 id|irlap_connect_request
 c_func
@@ -946,6 +987,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;() NO LSAPs !&bslash;n&quot;
+)paren
+suffix:semicolon
 id|irlmp_start_idle_timer
 c_func
 (paren
@@ -961,9 +1011,6 @@ r_case
 id|LM_LAP_CONNECT_REQUEST
 suffix:colon
 multiline_comment|/* Already trying to connect */
-id|self-&gt;refcount
-op_increment
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1036,6 +1083,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;() NO LSAPs !&bslash;n&quot;
+)paren
+suffix:semicolon
 id|irlmp_start_idle_timer
 c_func
 (paren
@@ -1050,6 +1106,15 @@ suffix:semicolon
 r_case
 id|LM_LAP_DISCONNECT_INDICATION
 suffix:colon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+id|__FUNCTION__
+l_string|&quot;(), LM_LAP_DISCONNECT_INDICATION&bslash;n&quot;
+)paren
+suffix:semicolon
 id|irlmp_next_lap_state
 c_func
 (paren
@@ -1057,10 +1122,6 @@ id|self
 comma
 id|LAP_STANDBY
 )paren
-suffix:semicolon
-id|self-&gt;refcount
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Send disconnect event to all LSAPs using this link */
 id|lsap
@@ -1138,24 +1199,26 @@ id|__FUNCTION__
 l_string|&quot;(), LM_LAP_DISCONNECT_REQUEST&bslash;n&quot;
 )paren
 suffix:semicolon
-id|self-&gt;refcount
-op_decrement
-suffix:semicolon
+multiline_comment|/* One of the LSAP did timeout or was closed, if it was&n;&t;&t; * the last one, try to get out of here - Jean II */
 r_if
 c_cond
 (paren
-id|self-&gt;refcount
-op_eq
-l_int|0
-)paren
-id|irlmp_next_lap_state
+id|HASHBIN_GET_SIZE
 c_func
 (paren
-id|self
-comma
-id|LAP_STANDBY
+id|self-&gt;lsaps
+)paren
+op_le
+l_int|1
+)paren
+(brace
+id|irlap_disconnect_request
+c_func
+(paren
+id|self-&gt;irlap
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -1246,9 +1309,6 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), LS_CONNECT_REQUEST&bslash;n&quot;
 )paren
-suffix:semicolon
-id|self-&gt;refcount
-op_increment
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  LAP connection allready active, just bounce back! Since we &n;&t;&t; *  don&squot;t know which LSAP that tried to do this, we have to &n;&t;&t; *  notify all LSAPs using this LAP, but that should be safe to&n;&t;&t; *  do anyway.&n;&t;&t; */
 id|lsap
@@ -1353,9 +1413,6 @@ suffix:semicolon
 r_case
 id|LM_LAP_DISCONNECT_REQUEST
 suffix:colon
-id|self-&gt;refcount
-op_decrement
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Need to find out if we should close IrLAP or not. If there&n;&t;&t; *  is only one LSAP connection left on this link, that LSAP &n;&t;&t; *  must be the one that tries to close IrLAP. It will be &n;&t;&t; *  removed later and moved to the list of unconnected LSAPs&n;&t;&t; */
 r_if
 c_cond
@@ -1459,10 +1516,6 @@ id|self
 comma
 id|LAP_STANDBY
 )paren
-suffix:semicolon
-id|self-&gt;refcount
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* In some case, at this point our side has already closed&n;&t;&t; * all lsaps, and we are waiting for the idle_timer to&n;&t;&t; * expire. If another device reconnect immediately, the&n;&t;&t; * idle timer will expire in the midle of the connection&n;&t;&t; * initialisation, screwing up things a lot...&n;&t;&t; * Therefore, we must stop the timer... */
 id|irlmp_stop_idle_timer
@@ -1757,7 +1810,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Start watchdog timer&n;&t;&t; * This is not mentionned in the spec, but there is a rare&n;&t;&t; * race condition that can get the socket stuck.&n;&t;&t; * If we receive this event while our LAP is closing down,&n;&t;&t; * the LM_LAP_CONNECT_REQUEST get lost and we get stuck in&n;&t;&t; * CONNECT_PEND state forever.&n;&t;&t; * Anyway, it make sense to make sure that we always have&n;&t;&t; * a backup plan. 1 second is plenty (should be immediate).&n;&t;&t; * Jean II */
+multiline_comment|/* Start watchdog timer&n;&t;&t; * This is not mentionned in the spec, but there is a rare&n;&t;&t; * race condition that can get the socket stuck.&n;&t;&t; * If we receive this event while our LAP is closing down,&n;&t;&t; * the LM_LAP_CONNECT_REQUEST get lost and we get stuck in&n;&t;&t; * CONNECT_PEND state forever.&n;&t;&t; * The other cause of getting stuck down there is if the&n;&t;&t; * higher layer never reply to the CONNECT_INDICATION.&n;&t;&t; * Anyway, it make sense to make sure that we always have&n;&t;&t; * a backup plan. 1 second is plenty (should be immediate).&n;&t;&t; * Jean II */
 id|irlmp_start_watchdog_timer
 c_func
 (paren
@@ -1997,14 +2050,10 @@ id|__FUNCTION__
 l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Here, we should probably disconnect proper */
+multiline_comment|/* Disconnect, get out... - Jean II */
 id|self-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
-suffix:semicolon
-id|self-&gt;conn_skb
-op_assign
-l_int|NULL
 suffix:semicolon
 id|irlmp_next_lsap_state
 c_func
@@ -2124,33 +2173,6 @@ multiline_comment|/* Keep state */
 r_break
 suffix:semicolon
 r_case
-id|LM_CONNECT_INDICATION
-suffix:colon
-multiline_comment|/* Will happen in some rare cases when the socket get stuck,&n;&t;&t; * the other side retries the connect request.&n;&t;&t; * We just unstuck the socket - Jean II */
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot;(), LM_CONNECT_INDICATION, &quot;
-l_string|&quot;LSAP stuck in CONNECT_PEND state...&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Keep state */
-id|irlmp_do_lap_event
-c_func
-(paren
-id|self-&gt;lap
-comma
-id|LM_LAP_CONNECT_REQUEST
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|LM_CONNECT_RESPONSE
 suffix:colon
 id|IRDA_DEBUG
@@ -2238,6 +2260,19 @@ id|self-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|self-&gt;conn_skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|self-&gt;conn_skb
+)paren
+suffix:semicolon
+)brace
 id|self-&gt;conn_skb
 op_assign
 l_int|NULL
@@ -3181,7 +3216,7 @@ c_func
 l_int|0
 comma
 id|__FUNCTION__
-l_string|&quot;() WATCHDOG_TIMEOUT!&bslash;n&quot;
+l_string|&quot;() : WATCHDOG_TIMEOUT !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3298,83 +3333,6 @@ suffix:semicolon
 )brace
 r_return
 id|ret
-suffix:semicolon
-)brace
-DECL|function|irlmp_next_lap_state
-r_void
-id|irlmp_next_lap_state
-c_func
-(paren
-r_struct
-id|lap_cb
-op_star
-id|self
-comma
-id|IRLMP_STATE
-id|state
-)paren
-(brace
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), LMP LAP = %s&bslash;n&quot;
-comma
-id|irlmp_state
-(braket
-id|state
-)braket
-)paren
-suffix:semicolon
-id|self-&gt;lap_state
-op_assign
-id|state
-suffix:semicolon
-)brace
-DECL|function|irlmp_next_lsap_state
-r_void
-id|irlmp_next_lsap_state
-c_func
-(paren
-r_struct
-id|lsap_cb
-op_star
-id|self
-comma
-id|LSAP_STATE
-id|state
-)paren
-(brace
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|4
-comma
-id|__FUNCTION__
-l_string|&quot;(), LMP LSAP = %s&bslash;n&quot;
-comma
-id|irlsap_state
-(braket
-id|state
-)braket
-)paren
-suffix:semicolon
-id|self-&gt;lsap_state
-op_assign
-id|state
 suffix:semicolon
 )brace
 eof

@@ -520,6 +520,9 @@ id|eax
 )paren
 l_int|1
 suffix:colon
+id|rep
+suffix:semicolon
+id|nop
 id|cmpl
 "$"
 l_string|&quot; RW_LOCK_BIAS_STR &quot;
@@ -560,6 +563,9 @@ id|eax
 )paren
 l_int|1
 suffix:colon
+id|rep
+suffix:semicolon
+id|nop
 id|cmpl
 "$"
 l_int|1

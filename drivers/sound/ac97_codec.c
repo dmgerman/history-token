@@ -622,7 +622,7 @@ comma
 (brace
 l_int|0x54524123
 comma
-l_string|&quot;TriTech TR?????&quot;
+l_string|&quot;TriTech TR A5&quot;
 comma
 op_amp
 id|null_ops
@@ -736,10 +736,6 @@ op_amp
 id|null_ops
 )brace
 comma
-(brace
-l_int|0
-comma
-)brace
 )brace
 suffix:semicolon
 DECL|variable|ac97_stereo_enhancements

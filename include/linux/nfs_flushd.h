@@ -4,9 +4,7 @@ mdefine_line|#define NFS_CLUSTER_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
-multiline_comment|/*&n; * Counters of total number and pending number of requests.&n; * When the total number of requests exceeds the soft limit, we start&n; * flushing out requests. If it exceeds the hard limit, we stall until&n; * it drops again.&n; */
-DECL|macro|MAX_REQUEST_SOFT
-mdefine_line|#define MAX_REQUEST_SOFT        192
+multiline_comment|/*&n; * Counters of total number and pending number of requests.&n; * When the total number of requests exceeds the hard limit, we stall&n; * until it drops again.&n; */
 DECL|macro|MAX_REQUEST_HARD
 mdefine_line|#define MAX_REQUEST_HARD        256
 multiline_comment|/*&n; * Maximum number of requests per write cluster.&n; * 32 requests per cluster account for 128K of data on an intel box.&n; * Note: it&squot;s a good idea to make this number smaller than MAX_REQUEST_SOFT.&n; *&n; * For 100Mbps Ethernet, 128 pages (i.e. 256K) per cluster gives much&n; * better performance.&n; */
@@ -54,29 +52,6 @@ c_func
 (paren
 r_struct
 id|nfs_server
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|inode_schedule_scan
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|inode_remove_flushd
-c_func
-(paren
-r_struct
-id|inode
 op_star
 )paren
 suffix:semicolon

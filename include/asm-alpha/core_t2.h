@@ -1077,8 +1077,7 @@ DECL|macro|vuip
 mdefine_line|#define vuip&t;volatile unsigned int *
 DECL|function|t2_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|t2_inb
 c_func
 (paren
@@ -1124,8 +1123,7 @@ r_void
 id|t2_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1175,8 +1173,7 @@ suffix:semicolon
 )brace
 DECL|function|t2_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|t2_inw
 c_func
 (paren
@@ -1222,8 +1219,7 @@ r_void
 id|t2_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1273,8 +1269,7 @@ suffix:semicolon
 )brace
 DECL|function|t2_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|t2_inl
 c_func
 (paren
@@ -1307,8 +1302,7 @@ r_void
 id|t2_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1343,8 +1337,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory functions.&n; *&n; * For reading and writing 8 and 16 bit quantities we need to&n; * go through one of the three sparse address mapping regions&n; * and use the HAE_MEM CSR to provide some bits of the address.&n; * The following few routines use only sparse address region 1&n; * which gives 1Gbyte of accessible space which relates exactly&n; * to the amount of PCI memory mapping *into* system address space.&n; * See p 6-17 of the specification but it looks something like this:&n; *&n; * 21164 Address:&n; *&n; *          3         2         1&n; * 9876543210987654321098765432109876543210&n; * 1ZZZZ0.PCI.QW.Address............BBLL&n; *&n; * ZZ = SBZ&n; * BB = Byte offset&n; * LL = Transfer length&n; *&n; * PCI Address:&n; *&n; * 3         2         1&n; * 10987654321098765432109876543210&n; * HHH....PCI.QW.Address........ 00&n; *&n; * HHH = 31:29 HAE_MEM CSR&n; *&n; */
 DECL|function|t2_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|t2_readb
 c_func
 (paren
@@ -1407,8 +1400,7 @@ suffix:semicolon
 )brace
 DECL|function|t2_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|t2_readw
 c_func
 (paren
@@ -1472,8 +1464,7 @@ suffix:semicolon
 multiline_comment|/* On SABLE with T2, we must use SPARSE memory even for 32-bit access. */
 DECL|function|t2_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|t2_readl
 c_func
 (paren
@@ -1522,8 +1513,7 @@ suffix:semicolon
 )brace
 DECL|function|t2_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|t2_readq
 c_func
 (paren
@@ -1610,8 +1600,7 @@ r_void
 id|t2_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1678,8 +1667,7 @@ r_void
 id|t2_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -1747,8 +1735,7 @@ r_void
 id|t2_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -1801,8 +1788,7 @@ r_void
 id|t2_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

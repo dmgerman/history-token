@@ -10431,8 +10431,8 @@ comma
 id|currstr
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;&t;&t;currstr=currstr+strlen(currstr)+1;
-r_continue
+r_goto
+id|NextOption
 suffix:semicolon
 )brace
 r_else
@@ -12140,6 +12140,8 @@ r_else
 r_goto
 id|BadArgs
 suffix:semicolon
+id|NextOption
+suffix:colon
 r_if
 c_cond
 (paren

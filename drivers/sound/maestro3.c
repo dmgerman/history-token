@@ -12199,9 +12199,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|pci_dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pci_dev
+comma
 id|card
+)paren
 suffix:semicolon
 id|m3_enable_ints
 c_func
@@ -12577,7 +12581,11 @@ id|m3_card
 op_star
 id|card
 op_assign
-id|pci_dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pci_dev
+)paren
 suffix:semicolon
 multiline_comment|/* must be a better way.. */
 id|save_flags
@@ -12836,7 +12844,11 @@ id|m3_card
 op_star
 id|card
 op_assign
-id|pci_dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pci_dev
+)paren
 suffix:semicolon
 id|save_flags
 c_func

@@ -5888,6 +5888,15 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*BMS try to reopen*/
+id|spin_unlock
+c_func
+(paren
+op_amp
+(paren
+id|ti-&gt;lock
+)paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      timer.h&n; * Version:       &n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Thu Oct  7 12:25:24 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      timer.h&n; * Version:       &n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Thu Oct  7 12:25:24 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#ifndef TIMER_H
 DECL|macro|TIMER_H
 mdefine_line|#define TIMER_H
@@ -19,6 +19,8 @@ DECL|macro|WD_TIMEOUT
 mdefine_line|#define WD_TIMEOUT          (POLL_TIMEOUT*2)
 DECL|macro|MEDIABUSY_TIMEOUT
 mdefine_line|#define MEDIABUSY_TIMEOUT   (500*HZ/1000)    /* 500 msec */
+DECL|macro|SMALLBUSY_TIMEOUT
+mdefine_line|#define SMALLBUSY_TIMEOUT   (100*HZ/1000)    /* 100 msec - IrLAP 6.13.4 */
 multiline_comment|/*&n; *  Slot timer must never exceed 85 ms, and must always be at least 25 ms, &n; *  suggested to  75-85 msec by IrDA lite. This doesn&squot;t work with a lot of&n; *  devices, and other stackes uses a lot more, so it&squot;s best we do it as well&n; */
 DECL|macro|SLOT_TIMEOUT
 mdefine_line|#define SLOT_TIMEOUT            (90*HZ/1000)
@@ -136,6 +138,10 @@ c_func
 r_struct
 id|irlap_cb
 op_star
+id|self
+comma
+r_int
+id|timeout
 )paren
 suffix:semicolon
 r_void

@@ -5688,9 +5688,13 @@ id|error_unmap_ctlmem
 suffix:semicolon
 )brace
 multiline_comment|/* Record driver data for later use */
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|card
+)paren
 suffix:semicolon
 multiline_comment|/* Remainder of card setup */
 id|fst_init_card
@@ -5778,7 +5782,11 @@ id|i
 suffix:semicolon
 id|card
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_for
 c_loop

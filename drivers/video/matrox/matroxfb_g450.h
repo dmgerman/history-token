@@ -13,6 +13,11 @@ id|matrox_fb_info
 op_star
 id|primary_dev
 suffix:semicolon
+DECL|member|timmings
+r_int
+r_int
+id|timmings
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __MATROXFB_MAVEN_H__ */

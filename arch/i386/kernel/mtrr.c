@@ -8873,6 +8873,7 @@ id|mtrr_fops
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef USERSPACE_INTERFACE
 id|devfs_handle
 op_assign
 id|devfs_register
@@ -8899,6 +8900,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 id|init_table
 (paren
 )paren

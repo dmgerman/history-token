@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ACPI_EXT_H
 DECL|macro|_ASM_IA64_ACPI_EXT_H
 mdefine_line|#define _ASM_IA64_ACPI_EXT_H
-multiline_comment|/*&n; * Advanced Configuration and Power Infterface&n; * Based on &squot;ACPI Specification 1.0b&squot; Febryary 2, 1999&n; * and &squot;IA-64 Extensions to the ACPI Specification&squot; Rev 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *&t;ACPI 2.0 specification&n; */
+multiline_comment|/*&n; * Advanced Configuration and Power Infterface&n; * Based on &squot;ACPI Specification 1.0b&squot; Febryary 2, 1999&n; * and &squot;IA-64 Extensions to the ACPI Specification&squot; Rev 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *&t;ACPI 2.0 specification&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#pragma&t;pack(1)
 DECL|macro|ACPI_RSDP_SIG
@@ -587,6 +587,15 @@ DECL|typedef|acpi20_entry_platform_src_t
 )brace
 id|acpi20_entry_platform_src_t
 suffix:semicolon
+multiline_comment|/* constants for interrupt routing API for device drivers */
+DECL|macro|ACPI20_ENTRY_PIS_PMI
+mdefine_line|#define&t;ACPI20_ENTRY_PIS_PMI&t;1
+DECL|macro|ACPI20_ENTRY_PIS_INIT
+mdefine_line|#define&t;ACPI20_ENTRY_PIS_INIT&t;2
+DECL|macro|ACPI20_ENTRY_PIS_CPEI
+mdefine_line|#define&t;ACPI20_ENTRY_PIS_CPEI&t;3
+DECL|macro|ACPI_MAX_PLATFORM_IRQS
+mdefine_line|#define&t;ACPI_MAX_PLATFORM_IRQS&t;4
 r_extern
 r_int
 id|acpi20_parse
@@ -612,6 +621,15 @@ op_star
 id|acpi_get_sysname
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpi_request_vector
+c_func
+(paren
+id|u32
+id|int_type
 )paren
 suffix:semicolon
 r_extern

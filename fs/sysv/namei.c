@@ -1426,10 +1426,6 @@ id|rename
 suffix:colon
 id|sysv_rename
 comma
-id|setattr
-suffix:colon
-id|sysv_notify_change
-comma
 )brace
 suffix:semicolon
 eof

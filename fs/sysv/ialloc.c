@@ -795,6 +795,10 @@ id|inode-&gt;i_blksize
 op_assign
 l_int|0
 suffix:semicolon
+id|inode-&gt;u.sysv_i.i_dir_start_lookup
+op_assign
+l_int|0
+suffix:semicolon
 id|insert_inode_hash
 c_func
 (paren

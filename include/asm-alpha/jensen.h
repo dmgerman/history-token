@@ -116,8 +116,7 @@ r_void
 id|jensen_local_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -208,8 +207,7 @@ r_void
 id|jensen_bus_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -254,8 +252,7 @@ DECL|macro|jensen_is_local
 mdefine_line|#define jensen_is_local(addr) ( &bslash;&n;/* keyboard */&t;(addr == 0x60 || addr == 0x64) || &bslash;&n;/* RTC */&t;(addr == 0x170 || addr == 0x171) || &bslash;&n;/* mb COM2 */&t;(addr &gt;= 0x2f8 &amp;&amp; addr &lt;= 0x2ff) || &bslash;&n;/* mb LPT1 */&t;(addr &gt;= 0x3bc &amp;&amp; addr &lt;= 0x3be) || &bslash;&n;/* mb COM2 */&t;(addr &gt;= 0x3f8 &amp;&amp; addr &lt;= 0x3ff))
 DECL|function|jensen_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|jensen_inb
 c_func
 (paren
@@ -295,8 +292,7 @@ r_void
 id|jensen_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -333,8 +329,7 @@ suffix:semicolon
 )brace
 DECL|function|jensen_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|jensen_inw
 c_func
 (paren
@@ -390,8 +385,7 @@ suffix:semicolon
 )brace
 DECL|function|jensen_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|jensen_inl
 c_func
 (paren
@@ -430,8 +424,7 @@ r_void
 id|jensen_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -477,8 +470,7 @@ r_void
 id|jensen_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -519,8 +511,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory functions.&n; */
 DECL|function|jensen_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|jensen_readb
 c_func
 (paren
@@ -580,8 +571,7 @@ suffix:semicolon
 )brace
 DECL|function|jensen_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|jensen_readw
 c_func
 (paren
@@ -641,8 +631,7 @@ suffix:semicolon
 )brace
 DECL|function|jensen_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|jensen_readl
 c_func
 (paren
@@ -681,8 +670,7 @@ suffix:semicolon
 )brace
 DECL|function|jensen_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|jensen_readq
 c_func
 (paren
@@ -759,8 +747,7 @@ r_void
 id|jensen_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -805,8 +792,7 @@ r_void
 id|jensen_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -851,8 +837,7 @@ r_void
 id|jensen_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -895,8 +880,7 @@ r_void
 id|jensen_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

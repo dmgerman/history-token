@@ -266,7 +266,7 @@ mdefine_line|#define SNDCTL_TMR_METRONOME&t;&t;_SIOW (&squot;T&squot;, 7, int)
 DECL|macro|SNDCTL_TMR_SELECT
 mdefine_line|#define SNDCTL_TMR_SELECT&t;&t;_SIOW (&squot;T&squot;, 8, int)
 multiline_comment|/*&n; * Some big endian/little endian handling macros&n; */
-macro_line|#if defined(_AIX) || defined(AIX) || defined(sparc) || defined(__sparc__) || defined(HPPA) || defined(PPC)
+macro_line|#if defined(_AIX) || defined(AIX) || defined(sparc) || defined(__sparc__) || defined(HPPA) || defined(PPC) || defined(__mc68000__)
 multiline_comment|/* Big endian machines */
 DECL|macro|_PATCHKEY
 macro_line|#  define _PATCHKEY(id) (0xfd00|id)

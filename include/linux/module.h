@@ -480,8 +480,6 @@ mdefine_line|#define MODULE_PARM_DESC(var,desc)&t;&t;&bslash;&n;const char __mod
 multiline_comment|/*&n; * MODULE_DEVICE_TABLE exports information about devices&n; * currently supported by this module.  A device type, such as PCI,&n; * is a C-like identifier passed as the first arg to this macro.&n; * The second macro arg is the variable containing the device&n; * information being made public.&n; *&n; * The following is a list of known device types (arg 1),&n; * and the C types which are to be passed as arg 2.&n; * pci - struct pci_device_id - List of PCI ids supported by this module&n; * isapnp - struct isapnp_device_id - List of ISA PnP ids supported by this module&n; * usb - struct usb_device_id - List of USB ids supported by this module&n; */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
-DECL|macro|MODULE_DEVICE_TABLE
-mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
 multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2 or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2 or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(license) &t;&bslash;&n;static const char __module_license[] __attribute__((section(&quot;.modinfo&quot;))) =   &bslash;&n;&quot;license=&quot; license
@@ -558,10 +556,9 @@ DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)
 DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
+multiline_comment|/* Create a dummy reference to the table to suppress gcc unused warnings.  Put&n; * the reference in the .data.exit section which is discarded when code is built&n; * in, so the reference does not bloat the running kernel.  Note: cannot be&n; * const, other exit data may be writable.&n; */
 DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
-DECL|macro|MODULE_DEVICE_TABLE
-mdefine_line|#define MODULE_DEVICE_TABLE(type,name)
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name) &bslash;&n;static struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused, __section__(&quot;.data.exit&quot;))) = name
 macro_line|#ifndef __GENKSYMS__
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE&t;&t;NULL
@@ -579,6 +576,8 @@ id|module_list
 suffix:semicolon
 macro_line|#endif /* !__GENKSYMS__ */
 macro_line|#endif /* MODULE */
+DECL|macro|MODULE_DEVICE_TABLE
+mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
 multiline_comment|/* Export a symbol either from the kernel or a module.&n;&n;   In the kernel, the symbol is added to the kernel&squot;s global symbol table.&n;&n;   In a module, it controls which variables are exported.  If no&n;   variables are explicitly exported, the action is controled by the&n;   insmod -[xX] flags.  Otherwise, only the variables listed are exported.&n;   This obviates the need for the old register_symtab() function.  */
 macro_line|#if defined(__GENKSYMS__)
 multiline_comment|/* We want the EXPORT_SYMBOL tag left intact for recognition.  */

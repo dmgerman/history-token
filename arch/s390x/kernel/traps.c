@@ -219,6 +219,19 @@ op_star
 id|info
 )paren
 (brace
+multiline_comment|/*&n;&t; * We got all needed information from the lowcore and can&n;&t; * now safely switch on interrupts.&n;&t; */
+r_if
+c_cond
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -539,6 +552,19 @@ op_minus
 id|S390_lowcore.pgm_ilc
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We got all needed information from the lowcore and can&n;&t; * now safely switch on interrupts.&n;&t; */
+r_if
+c_cond
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* WARNING don&squot;t change this check back to */
 multiline_comment|/* int problem_state=(regs-&gt;psw.mask &amp; PSW_PROBLEM_STATE); */
 multiline_comment|/* &amp; then doing if(problem_state) an int is too small for this */
@@ -678,6 +704,19 @@ op_star
 id|regs-&gt;psw.addr
 op_minus
 id|S390_lowcore.pgm_ilc
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We got all needed information from the lowcore and can&n;&t; * now safely switch on interrupts.&n;&t; */
+r_if
+c_cond
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+id|__sti
+c_func
+(paren
 )paren
 suffix:semicolon
 id|__asm__

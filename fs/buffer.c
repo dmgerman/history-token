@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2334,7 +2335,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* If invalidate_buffers() will trash dirty buffers, it means some kind&n;   of fs corruption is going on. Trashing dirty data always imply losing&n;   information that was supposed to be just stored on the physical layer&n;   by the user.&n;&n;   Thus invalidate_buffers in general usage is not allwowed to trash dirty&n;   buffers. For example ioctl(FLSBLKBUF) expects dirty data to be preserved.&n;&n;   NOTE: In the case where the user removed a removable-media-disk even if&n;   there&squot;s still dirty data not synced on disk (due a bug in the device driver&n;   or due an error of the user), by not destroying the dirty buffers we could&n;   generate corruption also on the next media inserted, thus a parameter is&n;   necessary to handle this case in the most safe way possible (trying&n;   to not corrupt also the new disk inserted with the data belonging to&n;   the old now corrupted disk). Also for the ramdisk the natural thing&n;   to do in order to release the ramdisk memory is to destroy dirty buffers.&n;&n;   These are two special cases. Normal usage imply the device driver&n;   to issue a sync on the device (without waiting I/O completion) and&n;   then an invalidate_buffers call that doesn&squot;t trash dirty buffers.&n;&n;   For handling cache coherency with the blkdev pagecache the &squot;update&squot; case&n;   is been introduced. It is needed to re-read from disk any pinned&n;   buffer. NOTE: re-reading from disk is destructive so we can do it only&n;   when we assume nobody is changing the buffercache under our I/O and when&n;   we think the disk contains more recent information than the buffercache.&n;   The update == 1 pass marks the buffers we need to update, the update == 2&n;   pass does the actual I/O. */
+multiline_comment|/* If invalidate_buffers() will trash dirty buffers, it means some kind&n;   of fs corruption is going on. Trashing dirty data always imply losing&n;   information that was supposed to be just stored on the physical layer&n;   by the user.&n;&n;   Thus invalidate_buffers in general usage is not allwowed to trash&n;   dirty buffers. For example ioctl(FLSBLKBUF) expects dirty data to&n;   be preserved.  These buffers are simply skipped.&n;  &n;   We also skip buffers which are still in use.  For example this can&n;   happen if a userspace program is reading the block device.&n;&n;   NOTE: In the case where the user removed a removable-media-disk even if&n;   there&squot;s still dirty data not synced on disk (due a bug in the device driver&n;   or due an error of the user), by not destroying the dirty buffers we could&n;   generate corruption also on the next media inserted, thus a parameter is&n;   necessary to handle this case in the most safe way possible (trying&n;   to not corrupt also the new disk inserted with the data belonging to&n;   the old now corrupted disk). Also for the ramdisk the natural thing&n;   to do in order to release the ramdisk memory is to destroy dirty buffers.&n;&n;   These are two special cases. Normal usage imply the device driver&n;   to issue a sync on the device (without waiting I/O completion) and&n;   then an invalidate_buffers call that doesn&squot;t trash dirty buffers.&n;&n;   For handling cache coherency with the blkdev pagecache the &squot;update&squot; case&n;   is been introduced. It is needed to re-read from disk any pinned&n;   buffer. NOTE: re-reading from disk is destructive so we can do it only&n;   when we assume nobody is changing the buffercache under our I/O and when&n;   we think the disk contains more recent information than the buffercache.&n;   The update == 1 pass marks the buffers we need to update, the update == 2&n;   pass does the actual I/O. */
 DECL|function|invalidate_bdev
 r_void
 id|invalidate_bdev
@@ -4129,6 +4130,31 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|function|set_buffer_flushtime
+r_void
+id|set_buffer_flushtime
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+(brace
+id|bh-&gt;b_flushtime
+op_assign
+id|jiffies
+op_plus
+id|bdf_prm.b_un.age_buffer
+suffix:semicolon
+)brace
+DECL|variable|set_buffer_flushtime
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_buffer_flushtime
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * A buffer may need to be moved from one buffer list to another&n; * (e.g. in case it is not shared any more). Handle this.&n; */
 DECL|function|__refile_buffer
 r_static
@@ -4400,7 +4426,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Note: the caller should wake up the buffer_wait list if needed.&n; */
 DECL|function|__put_unused_buffer_head
 r_static
-id|__inline__
 r_void
 id|__put_unused_buffer_head
 c_func
@@ -4466,9 +4491,47 @@ id|bh
 suffix:semicolon
 )brace
 )brace
+DECL|function|put_unused_buffer_head
+r_void
+id|put_unused_buffer_head
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|unused_list_lock
+)paren
+suffix:semicolon
+id|__put_unused_buffer_head
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|unused_list_lock
+)paren
+suffix:semicolon
+)brace
+DECL|variable|put_unused_buffer_head
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|put_unused_buffer_head
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Reserve NR_RESERVED buffer heads for async IO requests to avoid&n; * no-buffer-head deadlock.  Return NULL on failure; waiting for&n; * buffer heads is now handled in create_buffers().&n; */
 DECL|function|get_unused_buffer_head
-r_static
 r_struct
 id|buffer_head
 op_star
@@ -4614,6 +4677,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|get_unused_buffer_head
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_unused_buffer_head
+)paren
+suffix:semicolon
 DECL|function|set_bh_page
 r_void
 id|set_bh_page
@@ -4683,6 +4753,13 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
+DECL|variable|set_bh_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_bh_page
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Create the appropriate buffers when given a page for data area and&n; * the size of each buffer.. Use the bh-&gt;b_this_page linked list to&n; * follow the buffers created.  Return NULL if unable to create more&n; * buffers.&n; * The async flag is used to differentiate async IO (paging, swapping)&n; * from ordinary buffer allocations, and only async requests are allowed&n; * to sleep waiting for buffer heads. &n; */
 DECL|function|create_buffers
 r_static
@@ -4975,6 +5052,86 @@ id|bh
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * try_to_release_page - release old fs-specific metadata on a page&n; *&n; */
+DECL|function|try_to_release_page
+r_int
+id|try_to_release_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|gfp_mask
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageLocked
+c_func
+(paren
+id|page
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page-&gt;mapping
+)paren
+r_goto
+id|try_to_free
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page-&gt;mapping-&gt;a_ops-&gt;releasepage
+)paren
+r_goto
+id|try_to_free
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|page-&gt;mapping-&gt;a_ops
+op_member_access_from_pointer
+id|releasepage
+c_func
+(paren
+id|page
+comma
+id|gfp_mask
+)paren
+)paren
+r_goto
+id|try_to_free
+suffix:semicolon
+multiline_comment|/*&n;&t; * We couldn&squot;t release buffer metadata; don&squot;t even bother trying&n;&t; * to release buffers.&n;&t; */
+r_return
+l_int|0
+suffix:semicolon
+id|try_to_free
+suffix:colon
+r_return
+id|try_to_free_buffers
+c_func
+(paren
+id|page
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * We don&squot;t have to release all buffers here, but&n; * we have to be sure that no dirty buffer is left&n; * and no IO is going on (no buffer is locked), because&n; * we have truncated the file and are going to free the&n; * blocks on-disk..&n; */
 DECL|function|discard_bh_page
 r_int
@@ -5100,7 +5257,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_to_free_buffers
+id|try_to_release_page
 c_func
 (paren
 id|page
@@ -5216,6 +5373,13 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|variable|create_empty_buffers
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|create_empty_buffers
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We are taking a block for data and we don&squot;t want any output from any&n; * buffer-cache aliases starting from return from that function and&n; * until the moment when something will explicitly mark the buffer&n; * dirty (hopefully that will not happen until we will free that block ;-)&n; * We don&squot;t even need to mark it not-uptodate - nobody can expect&n; * anything from a newly allocated buffer anyway. We used to used&n; * unmap_buffer() for such invalidation, but that was wrong. We definitely&n; * don&squot;t want to mark the alias unmapped, for example - it would confuse&n; * anyone who might pick it with bread() afterwards...&n; */
 DECL|function|unmap_underlying_metadata
 r_static
@@ -5282,7 +5446,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * NOTE! All mapped/uptodate combinations are valid:&n; *&n; *&t;Mapped&t;Uptodate&t;Meaning&n; *&n; *&t;No&t;No&t;&t;&quot;unknown&quot; - must do get_block()&n; *&t;No&t;Yes&t;&t;&quot;hole&quot; - zero-filled&n; *&t;Yes&t;No&t;&t;&quot;allocated&quot; - allocated on disk, not read in&n; *&t;Yes&t;Yes&t;&t;&quot;valid&quot; - allocated and up-to-date in memory.&n; *&n; * &quot;Dirty&quot; is valid only with the last case (mapped+uptodate).&n; */
-multiline_comment|/*&n; * block_write_full_page() is SMP-safe - currently it&squot;s still&n; * being called with the kernel lock held, but the code is ready.&n; */
+multiline_comment|/*&n; * block_write_full_page() is SMP threaded - the kernel lock is not held.&n; */
 DECL|function|__block_write_full_page
 r_static
 r_int
@@ -9881,6 +10045,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|try_to_free_buffers
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|try_to_free_buffers
+)paren
+suffix:semicolon
 multiline_comment|/* ================== Debugging =================== */
 DECL|function|show_buffers
 r_void

@@ -3378,12 +3378,6 @@ r_int
 id|n
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_extern
-id|kdev_t
-id|real_root_dev
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -206,6 +206,9 @@ suffix:semicolon
 multiline_comment|/* SECTION: Constant definitions to be used within this file */
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER DASD_NAME&quot;:&quot;
+DECL|macro|DASD_PROFILE
+macro_line|#undef  DASD_PROFILE            /* fill profile information - used for */
+multiline_comment|/* statistics and perfomance           */
 DECL|macro|DASD_MIN_SIZE_FOR_QUEUE
 mdefine_line|#define DASD_MIN_SIZE_FOR_QUEUE 32
 DECL|macro|CONFIG_DYNAMIC_QUEUE_MIN_SIZE
@@ -1752,6 +1755,11 @@ l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/* check for features - e.g. (ro) ; the &squot;&bslash;0&squot;, &squot;)&squot; and &squot;-&squot; stops check */
+op_star
+id|features
+op_assign
+id|DASD_DEFAULT_FEATURES
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1930,8 +1938,6 @@ id|to
 suffix:semicolon
 r_int
 id|features
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|rc
@@ -3849,6 +3855,7 @@ r_static
 id|dasd_profile_info_t
 id|dasd_global_profile
 suffix:semicolon
+macro_line|#ifdef DASD_PROFILE
 multiline_comment|/*&n; * macro: dasd_profile_add_counter&n; * increments counter in global and local profiling structures&n; * according to the value&n; */
 DECL|macro|dasd_profile_add_counter
 mdefine_line|#define dasd_profile_add_counter( value, counter, device ) &bslash;&n;{ &bslash;&n;        int ind; &bslash;&n;        long help; &bslash;&n;&t;for (ind = 0, help = value &gt;&gt; 3; &bslash;&n;             ind &lt; 31 &amp;&amp; help; &bslash;&n;             help = help &gt;&gt; 1, ind++) {} &bslash;&n;&t;dasd_global_profile.counter[ind]++; &bslash;&n;        device-&gt;profile.counter[ind]++; &bslash;&n;}
@@ -3871,6 +3878,7 @@ id|endtime
 comma
 id|tottime
 suffix:semicolon
+multiline_comment|/* in microsecnds*/
 r_int
 id|tottimeps
 comma
@@ -3891,6 +3899,32 @@ id|cqr-&gt;req
 multiline_comment|/* safeguard against abnormal cqrs */
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|cqr-&gt;buildclk
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|cqr-&gt;startclk
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|cqr-&gt;stopclk
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|cqr-&gt;endclk
+)paren
+op_logical_or
+(paren
+op_logical_neg
+(paren
 id|sectors
 op_assign
 (paren
@@ -3905,6 +3939,10 @@ id|cqr-&gt;req
 )paren
 op_member_access_from_pointer
 id|nr_sectors
+)paren
+)paren
+)paren
+r_return
 suffix:semicolon
 id|strtime
 op_assign
@@ -4084,6 +4122,7 @@ id|device
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* SECTION: All the gendisk stuff */
 multiline_comment|/* SECTION: Managing wrappers for ccwcache */
 multiline_comment|/*&n; * function dasd_alloc_request&n; * tries to return space for a channel program of length cplength with&n; * additional data of size datasize.&n; * If the ccwcache cannot fulfill the request it tries the emergeny requests&n; * before giving up finally&n; * FIXME: initialization of ccw_req_t should be done by function of ccwcache&n; */
@@ -5728,6 +5767,17 @@ id|dasd_device_from_kdev
 id|kdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|device
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_return
 id|device-&gt;request_queue
 suffix:semicolon
@@ -5861,11 +5911,13 @@ c_cond
 id|cqr-&gt;req
 )paren
 (brace
+macro_line|#ifdef DASD_PROFILE
 id|dasd_profile_add
 (paren
 id|cqr
 )paren
 suffix:semicolon
+macro_line|#endif
 id|dasd_end_request
 (paren
 id|cqr-&gt;req
@@ -8526,77 +8578,6 @@ r_break
 suffix:semicolon
 )brace
 r_case
-id|BLKGETSIZE
-suffix:colon
-(brace
-multiline_comment|/* Return device size */
-r_int
-r_int
-id|blocks
-op_assign
-id|major_info-&gt;gendisk.sizes
-(braket
-id|MINOR
-(paren
-id|inp-&gt;i_rdev
-)paren
-)braket
-op_lshift
-l_int|1
-suffix:semicolon
-id|rc
-op_assign
-id|put_user
-c_func
-(paren
-id|blocks
-comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|data
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_case
-id|BLKGETSIZE64
-suffix:colon
-(brace
-id|u64
-id|blocks
-op_assign
-id|major_info-&gt;gendisk.sizes
-(braket
-id|MINOR
-(paren
-id|inp-&gt;i_rdev
-)paren
-)braket
-suffix:semicolon
-id|rc
-op_assign
-id|put_user
-c_func
-(paren
-id|blocks
-op_lshift
-l_int|10
-comma
-(paren
-id|u64
-op_star
-)paren
-id|data
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_case
 id|BLKRRPART
 suffix:colon
 (brace
@@ -9485,6 +9466,12 @@ suffix:semicolon
 )brace
 macro_line|#endif /* 0 */
 r_case
+id|BLKGETSIZE
+suffix:colon
+r_case
+id|BLKGETSIZE64
+suffix:colon
+r_case
 id|BLKSSZGET
 suffix:colon
 r_case
@@ -9833,9 +9820,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|device
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -9995,9 +9981,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|device
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -10086,6 +10071,8 @@ c_func
 id|device-&gt;discipline-&gt;owner
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -10168,6 +10155,16 @@ id|dasd_device_from_kdev
 (paren
 id|kdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|device
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -12158,6 +12155,7 @@ macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_S390X
 id|noidal
 suffix:colon
 id|free_page
@@ -12168,6 +12166,7 @@ r_int
 id|device-&gt;lowmem_ccws
 )paren
 suffix:semicolon
+macro_line|#endif
 id|noccw
 suffix:colon
 id|kfree
@@ -13082,12 +13081,28 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|s390irq_spin_lock_irqsave
+(paren
+id|device-&gt;devinfo.irq
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|device-&gt;init_cqr
 op_ne
 l_int|NULL
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dasd_init_pending
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if
@@ -13102,24 +13117,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|s390irq_spin_lock_irqsave
-(paren
-id|device-&gt;devinfo.irq
-comma
-id|flags
-)paren
-suffix:semicolon
 id|device-&gt;discipline-&gt;term_IO
 (paren
 id|device-&gt;init_cqr
-)paren
-suffix:semicolon
-id|s390irq_spin_unlock_irqrestore
-c_func
-(paren
-id|device-&gt;devinfo.irq
-comma
-id|flags
 )paren
 suffix:semicolon
 id|atomic_dec
@@ -13140,6 +13140,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|s390irq_spin_unlock_irqrestore
+c_func
+(paren
+id|device-&gt;devinfo.irq
+comma
+id|flags
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -14556,6 +14564,9 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+r_int
+id|features
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14565,6 +14576,25 @@ op_minus
 id|ENODEV
 )paren
 r_continue
+suffix:semicolon
+id|features
+op_assign
+id|dasd_features_from_devno
+c_func
+(paren
+id|devno
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|features
+OL
+id|DASD_DEFAULT_FEATURES
+)paren
+id|features
+op_assign
+id|DASD_DEFAULT_FEATURES
 suffix:semicolon
 id|device
 op_assign
@@ -14587,7 +14617,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;%04x(%s) at (%3d:%3d) is %7s:&quot;
+l_string|&quot;%04x(%s) at (%3d:%3d) is %-7s%4s: &quot;
 comma
 id|device-&gt;devinfo.devno
 comma
@@ -14607,6 +14637,17 @@ op_lshift
 id|DASD_PARTN_BITS
 comma
 id|device-&gt;name
+comma
+(paren
+id|features
+op_amp
+id|DASD_FEATURE_READONLY
+)paren
+ques
+c_cond
+l_string|&quot;(ro)&quot;
+suffix:colon
+l_string|&quot; &quot;
 )paren
 suffix:semicolon
 r_switch
@@ -14863,7 +14904,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;(none) at (%3d:%3d) is %7s: unknown&quot;
+l_string|&quot;(none) at (%3d:%3d) is %-7s%4s: unknown&quot;
 comma
 id|temp-&gt;gendisk.major
 comma
@@ -14872,6 +14913,17 @@ op_lshift
 id|DASD_PARTN_BITS
 comma
 id|buffer
+comma
+(paren
+id|features
+op_amp
+id|DASD_FEATURE_READONLY
+)paren
+ques
+c_cond
+l_string|&quot;(ro)&quot;
+suffix:colon
+l_string|&quot; &quot;
 )paren
 suffix:semicolon
 )brace
@@ -15084,8 +15136,6 @@ id|range
 suffix:semicolon
 r_int
 id|features
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -15916,7 +15966,7 @@ id|info-&gt;data
 op_plus
 id|len
 comma
-l_string|&quot;Histogram of I/O times&bslash;n&quot;
+l_string|&quot;Histogram of I/O times (microseconds)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for

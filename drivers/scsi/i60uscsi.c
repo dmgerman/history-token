@@ -1,8 +1,4 @@
 multiline_comment|/**************************************************************************&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; *************************************************************************&n; *&n; * module: i60uscsi.c &n; * DESCRIPTION:&n; * &t;This is the Linux low-level SCSI driver for Initio INIA100 SCSI host&n; * adapters&n; *&n; * 07/02/98 hl&t;- v.91n Initial drivers.&n; * 09/14/98 hl - v1.01 Support new Kernel.&n; * 09/22/98 hl - v1.01a Support reset.&n; * 09/24/98 hl - v1.01b Fixed reset.&n; * 10/05/98 hl - v1.02 split the source code and release.&n; * 12/19/98 bv - v1.02a Use spinlocks for 2.1.95 and up&n; * 01/31/99 bv - v1.02b Use mdelay instead of waitForPause&n; * 08/08/99 bv - v1.02c Use waitForPause again.&n; **************************************************************************/
-macro_line|#ifndef CVT_LINUX_VERSION
-DECL|macro|CVT_LINUX_VERSION
-mdefine_line|#define CVT_LINUX_VERSION(V,P,S)        (V * 65536 + P * 256 + S)
-macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -442,7 +438,6 @@ c_func
 id|amount
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 r_while
 c_loop
 (paren
@@ -454,17 +449,11 @@ comma
 id|the_time
 )paren
 )paren
-suffix:semicolon
-macro_line|#else
-r_while
-c_loop
+id|cpu_relax
+c_func
 (paren
-id|jiffies
-OL
-id|the_time
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|waitChipReady
@@ -2670,27 +2659,6 @@ multiline_comment|/* I need Host Control Block Information */
 id|ULONG
 id|flags
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;inia100: enter inia100_reset&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2702,7 +2670,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|initAFlag
 c_func
 (paren
@@ -2732,14 +2699,6 @@ op_eq
 id|FALSE
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2751,7 +2710,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_RESET_ERROR
@@ -2760,14 +2718,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2779,7 +2729,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_RESET_SUCCESS
@@ -2828,27 +2777,6 @@ suffix:semicolon
 id|ULONG
 id|flags
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;inia100: enter inia100_reset&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2860,7 +2788,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pScb
 op_assign
 (paren
@@ -2950,14 +2877,6 @@ c_func
 l_string|&quot;Unable to Reset - No SCB Found&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2969,7 +2888,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_RESET_NOT_RUNNING
@@ -2992,14 +2910,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3011,7 +2921,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_RESET_NOT_RUNNING
@@ -3089,14 +2998,6 @@ id|pScb
 )paren
 suffix:semicolon
 multiline_comment|/* Start execute SCB            */
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3108,16 +3009,15 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_RESET_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
-DECL|function|orc_alloc_scb
+DECL|function|__orc_alloc_scb
 id|ORC_SCB
 op_star
-id|orc_alloc_scb
+id|__orc_alloc_scb
 c_func
 (paren
 id|ORC_HCS
@@ -3144,31 +3044,6 @@ suffix:semicolon
 id|ULONG
 id|flags
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-(paren
-id|hcsp-&gt;BitAllocFlagLock
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 id|Ch
 op_assign
 id|hcsp-&gt;HCS_Index
@@ -3269,40 +3144,55 @@ id|ORC_SCB
 )paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-(paren
-id|hcsp-&gt;BitAllocFlagLock
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|pTmpScb
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
+r_return
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+DECL|function|orc_alloc_scb
+id|ORC_SCB
+op_star
+id|orc_alloc_scb
 c_func
 (paren
+id|ORC_HCS
+op_star
+id|hcsp
+)paren
+(brace
+id|ORC_SCB
+op_star
+id|pTmpScb
+suffix:semicolon
+id|ULONG
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+(paren
+id|hcsp-&gt;BitAllocFlagLock
+)paren
+comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
+id|pTmpScb
+op_assign
+id|__orc_alloc_scb
+c_func
+(paren
+id|hcsp
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3314,10 +3204,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
-l_int|NULL
+id|pTmpScb
 )paren
 suffix:semicolon
 )brace
@@ -3348,19 +3237,6 @@ suffix:semicolon
 id|UCHAR
 id|Ch
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3372,7 +3248,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|Ch
 op_assign
 id|hcsp-&gt;HCS_Index
@@ -3405,14 +3280,6 @@ op_lshift
 id|Index
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3424,7 +3291,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*****************************************************************************&n; Function name&t;: Addinia100_into_Adapter_table&n; Description&t;: This function will scan PCI bus to get all Orchid card&n; Input&t;&t;: None.&n; Output&t;&t;: None.&n; Return&t;&t;: SUCCESSFUL&t;- Successful scan&n; ohterwise&t;- No drives founded&n;*****************************************************************************/
 DECL|function|Addinia100_into_Adapter_table
@@ -4006,27 +3872,6 @@ suffix:semicolon
 id|ULONG
 id|flags
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;inia100: abort SRB &bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4038,7 +3883,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pVirScb
 op_assign
 (paren
@@ -4096,14 +3940,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4115,7 +3951,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_ABORT_BUSY
@@ -4140,14 +3975,6 @@ id|pVirEscb-&gt;SCB_Srb
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4159,7 +3986,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_ABORT_SUCCESS
@@ -4168,14 +3994,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4187,7 +4005,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_ABORT_NOT_RUNNING
@@ -4197,14 +4014,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; CVT_LINUX_VERSION(2,1,95)
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#else
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4216,7 +4025,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_ABORT_NOT_RUNNING

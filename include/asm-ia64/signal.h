@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SIGNAL_H
 DECL|macro|_ASM_IA64_SIGNAL_H
 mdefine_line|#define _ASM_IA64_SIGNAL_H
-multiline_comment|/*&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Unfortunately, this file is being included by bits/signal.h in&n; * glibc-2.x.  Hence the #ifdef __KERNEL__ ugliness.&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Unfortunately, this file is being included by bits/signal.h in&n; * glibc-2.x.  Hence the #ifdef __KERNEL__ ugliness.&n; */
 DECL|macro|SIGHUP
 mdefine_line|#define SIGHUP&t;&t; 1
 DECL|macro|SIGINT
@@ -100,15 +100,16 @@ DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x20000000 /* dummy -- ignored */
 DECL|macro|SA_RESTORER
 mdefine_line|#define SA_RESTORER&t;0x04000000
-multiline_comment|/* &n; * sigaltstack controls&n; */
+multiline_comment|/*&n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK&t;1
 DECL|macro|SS_DISABLE
 mdefine_line|#define SS_DISABLE&t;2
+multiline_comment|/*&n; * The minimum stack size needs to be fairly large because we want to&n; * be sure that an app compiled for today&squot;s CPUs will continue to run&n; * on all future CPU models.  The CPU model matters because the signal&n; * frame needs to have space for the complete machine state, including&n; * all physical stacked registers.  The number of physical stacked&n; * registers is CPU model dependent, but given that the width of&n; * ar.rsc.loadrs is 14 bits, we can assume that they&squot;ll never take up&n; * more than 16KB of space.&n; */
 DECL|macro|MINSIGSTKSZ
-mdefine_line|#define MINSIGSTKSZ&t;2048
+mdefine_line|#define MINSIGSTKSZ&t;131027&t;/* min. stack size for sigaltstack() */
 DECL|macro|SIGSTKSZ
-mdefine_line|#define SIGSTKSZ&t;8192
+mdefine_line|#define SIGSTKSZ&t;262144&t;/* default stack size for sigaltstack() */
 macro_line|#ifdef __KERNEL__
 DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;64

@@ -741,9 +741,14 @@ op_ne
 l_int|0
 )paren
 (brace
-id|self-&gt;ttp_connect
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
 suffix:semicolon
 id|DERROR
 c_func
@@ -786,9 +791,14 @@ op_ne
 l_int|0
 )paren
 (brace
-id|self-&gt;ttp_connect
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
 suffix:semicolon
 id|DERROR
 c_func
@@ -969,9 +979,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|self-&gt;ttp_connect
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
 suffix:semicolon
 id|DRETURN
 c_func
@@ -1048,9 +1063,14 @@ id|self-&gt;discoveries
 op_assign
 l_int|NULL
 suffix:semicolon
-id|self-&gt;ttp_connect
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
 suffix:semicolon
 id|DRETURN
 c_func
@@ -1405,11 +1425,18 @@ r_int
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Check if we have opened a local TSAP :&n;   * If we have already opened a TSAP, it means that either we are already&n;   * connected or in the process of doing so... */
+multiline_comment|/* Check if we are already trying to connect.&n;   * Because irda_irnet_connect() can be called directly by pppd plus&n;   * packet retries in ppp_generic and connect may take time, plus we may&n;   * race with irnet_connect_indication(), we need to be careful there... */
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;ttp_connect
+)paren
 )paren
 (brace
 id|DRETURN
@@ -1424,10 +1451,6 @@ l_string|&quot;Already connecting...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|self-&gt;ttp_connect
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1635,7 +1658,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irda_irnet_destroy(self)&n; *&n; *    Destroy irnet instance&n; *&n; */
+multiline_comment|/*&n; * Function irda_irnet_destroy(self)&n; *&n; *    Destroy irnet instance&n; *&n; * Note : this need to be called from a process context.&n; */
 r_void
 DECL|function|irda_irnet_destroy
 id|irda_irnet_destroy
@@ -1753,6 +1776,56 @@ l_string|&quot;Can&squot;t remove from hash.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* If we were connected, post a message */
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_open
+)paren
+)paren
+(brace
+multiline_comment|/* Note : as the disconnect comes from ppp_generic, the unit number&n;       * doesn&squot;t exist anymore when we post the event, so we need to pass&n;       * NULL as the first arg... */
+id|irnet_post_event
+c_func
+(paren
+l_int|NULL
+comma
+id|IRNET_DISCONNECT_TO
+comma
+id|self-&gt;saddr
+comma
+id|self-&gt;daddr
+comma
+id|self-&gt;rname
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Prevent various IrDA callbacks from messing up things&n;   * Need to be first */
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
+suffix:semicolon
+multiline_comment|/* Prevent higher layer from accessing IrTTP */
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_open
+)paren
+suffix:semicolon
 multiline_comment|/* Unregister with IrLMP */
 id|irlmp_unregister_client
 c_func
@@ -1778,34 +1851,27 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* If we were connected, post a message */
+multiline_comment|/* Cleanup eventual discoveries from connection attempt */
 r_if
 c_cond
 (paren
-id|self-&gt;ttp_open
+id|self-&gt;discoveries
+op_ne
+l_int|NULL
 )paren
 (brace
-multiline_comment|/* Note : as the disconnect comes from ppp_generic, the unit number&n;       * doesn&squot;t exist anymore when we post the event, so we need to pass&n;       * NULL as the first arg... */
-id|irnet_post_event
+multiline_comment|/* Cleanup our copy of the discovery log */
+id|kfree
 c_func
 (paren
-l_int|NULL
-comma
-id|IRNET_DISCONNECT_TO
-comma
-id|self-&gt;saddr
-comma
-id|self-&gt;daddr
-comma
-id|self-&gt;rname
+id|self-&gt;discoveries
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Prevent higher layer from accessing IrTTP */
-id|self-&gt;ttp_open
+id|self-&gt;discoveries
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
+)brace
 multiline_comment|/* Close our IrTTP connection */
 r_if
 c_cond
@@ -2310,9 +2376,16 @@ c_cond
 (paren
 op_logical_neg
 (paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 r_new
 op_member_access_from_pointer
 id|ttp_open
+)paren
 )paren
 op_logical_and
 (paren
@@ -2412,7 +2485,7 @@ c_func
 (paren
 id|irnet_socket
 op_star
-id|self
+id|server
 comma
 id|irnet_socket
 op_star
@@ -2435,13 +2508,13 @@ c_func
 (paren
 id|IRDA_SERV_TRACE
 comma
-l_string|&quot;(self=0x%X, new=0x%X)&bslash;n&quot;
+l_string|&quot;(server=0x%X, new=0x%X)&bslash;n&quot;
 comma
 (paren
 r_int
 r_int
 )paren
-id|self
+id|server
 comma
 (paren
 r_int
@@ -2458,7 +2531,7 @@ op_assign
 id|irttp_dup
 c_func
 (paren
-id|self-&gt;tsap
+id|server-&gt;tsap
 comma
 r_new
 )paren
@@ -2564,13 +2637,13 @@ suffix:semicolon
 )brace
 macro_line|#endif /* STREAM_COMPAT */
 multiline_comment|/* Clean up the original one to keep it in listen state */
-id|self-&gt;tsap-&gt;dtsap_sel
+id|server-&gt;tsap-&gt;dtsap_sel
 op_assign
-id|self-&gt;tsap-&gt;lsap-&gt;dlsap_sel
+id|server-&gt;tsap-&gt;lsap-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
 suffix:semicolon
-id|self-&gt;tsap-&gt;lsap-&gt;lsap_state
+id|server-&gt;tsap-&gt;lsap-&gt;lsap_state
 op_assign
 id|LSAP_DISCONNECTED
 suffix:semicolon
@@ -2590,20 +2663,79 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Allow PPP to send its junk over the new socket... */
+id|set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 r_new
 op_member_access_from_pointer
 id|ttp_open
-op_assign
-l_int|1
+)paren
 suffix:semicolon
+multiline_comment|/* Not connecting anymore, and clean up last possible remains&n;   * of connection attempts on the socket */
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 r_new
 op_member_access_from_pointer
 id|ttp_connect
-op_assign
-l_int|0
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_new
+op_member_access_from_pointer
+id|iriap
+)paren
+(brace
+id|iriap_close
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|iriap
+)paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|iriap
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+r_new
+op_member_access_from_pointer
+id|discoveries
+op_ne
+l_int|NULL
+)paren
+(brace
+id|kfree
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|discoveries
+)paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|discoveries
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#ifdef CONNECT_INDIC_KICK
-multiline_comment|/* As currently we don&squot;t packets in ppp_irnet_send(), this is not needed...&n;   * Also, not doing it give IrDA a chance to finish the setup properly&n;   * before beeing swamped with packets... */
+multiline_comment|/* As currently we don&squot;t block packets in ppp_irnet_send() while passive,&n;   * this is not really needed...&n;   * Also, not doing it give IrDA a chance to finish the setup properly&n;   * before beeing swamped with packets... */
 id|ppp_output_wakeup
 c_func
 (paren
@@ -2630,7 +2762,7 @@ r_new
 op_member_access_from_pointer
 id|daddr
 comma
-id|self-&gt;rname
+id|server-&gt;rname
 )paren
 suffix:semicolon
 id|DEXIT
@@ -3221,6 +3353,11 @@ op_star
 )paren
 id|instance
 suffix:semicolon
+r_int
+id|test
+op_assign
+l_int|0
+suffix:semicolon
 id|DENTER
 c_func
 (paren
@@ -3248,11 +3385,75 @@ comma
 l_string|&quot;Self is NULL !!!&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t care about it, but let&squot;s not leak it */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Prevent higher layer from accessing IrTTP */
+id|test
+op_assign
+id|test_and_clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_open
+)paren
+suffix:semicolon
+multiline_comment|/* Not connecting anymore...&n;   * (note : TSAP is open, so IAP callbacks are no longer pending...) */
+id|test
+op_or_assign
+id|test_and_clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
+suffix:semicolon
+multiline_comment|/* If both self-&gt;ttp_open and self-&gt;ttp_connect are NULL, it mean that we&n;   * have a race condition with irda_irnet_destroy() or&n;   * irnet_connect_indication(), so don&squot;t mess up tsap...&n;   */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_CB_ERROR
+comma
+l_string|&quot;Race condition detected...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* If we were active, notify the control channel */
 r_if
 c_cond
 (paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|self-&gt;ttp_open
+)paren
 )paren
 (brace
 id|irnet_post_event
@@ -3302,16 +3503,7 @@ id|self-&gt;rname
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Prevent higher layer from accessing IrTTP */
-id|self-&gt;ttp_open
-op_assign
-l_int|0
-suffix:semicolon
-id|self-&gt;ttp_connect
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Close our IrTTP connection */
+multiline_comment|/* Close our IrTTP connection, cleanup tsap */
 r_if
 c_cond
 (paren
@@ -3333,16 +3525,6 @@ c_func
 id|IRDA_CB_INFO
 comma
 l_string|&quot;Closing our TTP connection.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|irttp_disconnect_request
-c_func
-(paren
-id|self-&gt;tsap
-comma
-l_int|NULL
-comma
-id|P_NORMAL
 )paren
 suffix:semicolon
 id|irttp_close_tsap
@@ -3451,6 +3633,32 @@ r_int
 id|self
 )paren
 suffix:semicolon
+multiline_comment|/* Check if socket is closing down (via irda_irnet_destroy()) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_CB_ERROR
+comma
+l_string|&quot;Socket no longer connecting. Ouch !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* How much header space do we need to reserve */
 id|self-&gt;max_header_size
 op_assign
@@ -3494,14 +3702,25 @@ id|self-&gt;tsap
 )paren
 suffix:semicolon
 multiline_comment|/* Allow higher layer to access IrTTP */
-id|self-&gt;ttp_connect
-op_assign
+id|set_bit
+c_func
+(paren
 l_int|0
-suffix:semicolon
+comma
+op_amp
 id|self-&gt;ttp_open
-op_assign
-l_int|1
+)paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
+suffix:semicolon
+multiline_comment|/* Not racy, IrDA traffic is serial */
 multiline_comment|/* Give a kick in the ass of ppp_generic so that he sends us some data */
 id|ppp_output_wakeup
 c_func
@@ -3862,7 +4081,7 @@ id|skb
 (brace
 id|irnet_socket
 op_star
-id|self
+id|server
 op_assign
 op_amp
 id|irnet_server.s
@@ -3882,13 +4101,13 @@ c_func
 (paren
 id|IRDA_TCB_TRACE
 comma
-l_string|&quot;(self=0x%X)&bslash;n&quot;
+l_string|&quot;(server=0x%X)&bslash;n&quot;
 comma
 (paren
 r_int
 r_int
 )paren
-id|self
+id|server
 )paren
 suffix:semicolon
 id|DASSERT
@@ -3930,7 +4149,7 @@ op_assign
 id|irnet_find_socket
 c_func
 (paren
-id|self
+id|server
 )paren
 suffix:semicolon
 multiline_comment|/* After all this hard work, do we have an socket ? */
@@ -3957,7 +4176,7 @@ suffix:semicolon
 id|irnet_disconnect_server
 c_func
 (paren
-id|self
+id|server
 comma
 id|skb
 )paren
@@ -3969,9 +4188,16 @@ multiline_comment|/* Is the socket already busy ? */
 r_if
 c_cond
 (paren
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 r_new
 op_member_access_from_pointer
 id|ttp_open
+)paren
 )paren
 (brace
 id|DEXIT
@@ -3985,7 +4211,7 @@ suffix:semicolon
 id|irnet_disconnect_server
 c_func
 (paren
-id|self
+id|server
 comma
 id|skb
 )paren
@@ -3993,7 +4219,33 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Socket connecting */
+multiline_comment|/* Socket connecting ?&n;   * Clear up flag : prevent irnet_disconnect_indication() to mess up tsap */
+r_if
+c_cond
+(paren
+id|test_and_clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+r_new
+op_member_access_from_pointer
+id|ttp_connect
+)paren
+)paren
+(brace
+multiline_comment|/* The socket is trying to connect to the other end and may have sent&n;       * a IrTTP connection request and is waiting for a connection response&n;       * (that may never come).&n;       * Now, the pain is that the socket may have opened a tsap and is&n;       * waiting on it, while the other end is trying to connect to it on&n;       * another tsap.&n;       */
+id|DERROR
+c_func
+(paren
+id|IRDA_CB_ERROR
+comma
+l_string|&quot;Socket already connecting. Ouch !&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef ALLOW_SIMULT_CONNECT
+multiline_comment|/* Cleanup the TSAP if necessary - IrIAP will be cleaned up later */
 r_if
 c_cond
 (paren
@@ -4004,17 +4256,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* The socket has sent a IrTTP connection request and is waiting for&n;       * a connection response (that may never come).&n;       * Now, the pain is that the socket has open a tsap and is waiting on it,&n;       * while the other end is trying to connect to it on another tsap.&n;       * Argh ! We will deal with that later...&n;       */
-id|DERROR
-c_func
-(paren
-id|IRDA_CB_ERROR
-comma
-l_string|&quot;Socket already connecting. Ouch !&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef ALLOW_SIMULT_CONNECT
-multiline_comment|/* Close the connection the new socket was attempting.&n;       * WARNING : This need more testing ! */
+multiline_comment|/* Close the connection the new socket was attempting.&n;&t;   * This seems to be safe... */
 id|irttp_close_tsap
 c_func
 (paren
@@ -4023,12 +4265,19 @@ op_member_access_from_pointer
 id|tsap
 )paren
 suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|tsap
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* Note : no return, fall through... */
 macro_line|#else /* ALLOW_SIMULT_CONNECT */
 id|irnet_disconnect_server
 c_func
 (paren
-id|self
+id|server
 comma
 id|skb
 )paren
@@ -4037,11 +4286,44 @@ r_return
 suffix:semicolon
 macro_line|#endif /* ALLOW_SIMULT_CONNECT */
 )brace
+r_else
+multiline_comment|/* If socket is not connecting or connected, tsap should be NULL */
+r_if
+c_cond
+(paren
+r_new
+op_member_access_from_pointer
+id|tsap
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* If we are here, we are also in irnet_disconnect_indication(),&n;&t; * and it&squot;s a nice race condition... On the other hand, we can&squot;t be&n;&t; * in irda_irnet_destroy() otherwise we would not have found the&n;&t; * socket in the hashbin. */
+multiline_comment|/* Better get out of here, otherwise we will mess up tsaps ! */
+id|DERROR
+c_func
+(paren
+id|IRDA_CB_ERROR
+comma
+l_string|&quot;Race condition detected, abort connect...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|irnet_disconnect_server
+c_func
+(paren
+id|server
+comma
+id|skb
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* So : at this point, we have a socket, and it is idle. Good ! */
 id|irnet_connect_socket
 c_func
 (paren
-id|self
+id|server
 comma
 r_new
 comma
@@ -4180,6 +4462,32 @@ comma
 l_string|&quot;Self is NULL !!!&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Check if already connected (via irnet_connect_socket())&n;   * or socket is closing down (via irda_irnet_destroy()) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_OCB_ERROR
+comma
+l_string|&quot;Socket no longer connecting. Ouch !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* We probably don&squot;t need to make any more queries */
 id|iriap_close
 c_func
@@ -4191,24 +4499,6 @@ id|self-&gt;iriap
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Check if already connected (via irnet_connect_socket()) */
-r_if
-c_cond
-(paren
-id|self-&gt;ttp_open
-)paren
-(brace
-id|DERROR
-c_func
-(paren
-id|IRDA_OCB_ERROR
-comma
-l_string|&quot;Socket already connected. Ouch !&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Post process the IAS reply */
 id|self-&gt;dtsap_sel
 op_assign
@@ -4229,9 +4519,14 @@ c_cond
 id|self-&gt;errno
 )paren
 (brace
-id|self-&gt;ttp_connect
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
 suffix:semicolon
 id|DERROR
 c_func
@@ -4339,6 +4634,32 @@ comma
 l_string|&quot;Self is NULL !!!&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Check if already connected (via irnet_connect_socket())&n;   * or socket is closing down (via irda_irnet_destroy()) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
+)paren
+(brace
+id|DERROR
+c_func
+(paren
+id|IRDA_OCB_ERROR
+comma
+l_string|&quot;Socket no longer connecting. Ouch !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Post process the IAS reply */
 id|dtsap_sel
 op_assign
@@ -4505,9 +4826,14 @@ id|self-&gt;daddr
 op_assign
 id|DEV_ADDR_ANY
 suffix:semicolon
-id|self-&gt;ttp_connect
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|self-&gt;ttp_connect
+)paren
 suffix:semicolon
 id|DEXIT
 c_func
@@ -4515,24 +4841,6 @@ c_func
 id|IRDA_OCB_TRACE
 comma
 l_string|&quot;: cannot discover IrNET in any device !!!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* Check if already connected (via irnet_connect_socket()) */
-r_if
-c_cond
-(paren
-id|self-&gt;ttp_open
-)paren
-(brace
-id|DERROR
-c_func
-(paren
-id|IRDA_OCB_ERROR
-comma
-l_string|&quot;Socket already connected. Ouch !&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Audio Command Interface (ACI) driver (sound/aci.c)&n; *&n; * ACI is a protocol used to communicate with the microcontroller on&n; * some sound cards produced by miro, e.g. the miroSOUND PCM12 and&n; * PCM20. The ACI has been developed for miro by Norberto Pellicci&n; * &lt;pellicci@home.com&gt;. Special thanks to both him and miro for&n; * providing the ACI specification.&n; *&n; * The main function of the ACI is to control the mixer and to get a&n; * product identification. On the PCM20, ACI also controls the radio&n; * tuner on this card, this is supported in the Video for Linux &n; * miropcm20 driver.&n; * -&n; * This is a fullfeatured implementation. Unsupported features&n; * are bugs... (:&n; *&n; * It is not longer necessary to load the mad16 module first. The&n; * user is currently responsible to set the mad16 mixer correctly.&n; *&n; * To toggle the solo mode for full duplex operation just use the OSS&n; * record switch for the pcm (&squot;wave&squot;) controller.           Robert&n; * -&n; *&n; * Revision history:&n; *&n; *   1995-11-10  Markus Kuhn &lt;mskuhn@cip.informatik.uni-erlangen.de&gt;&n; *        First version written.&n; *   1995-12-31  Markus Kuhn&n; *        Second revision, general code cleanup.&n; *   1996-05-16&t; Hannu Savolainen&n; *&t;  Integrated with other parts of the driver.&n; *   1996-05-28  Markus Kuhn&n; *        Initialize CS4231A mixer, make ACI first mixer,&n; *        use new private mixer API for solo mode.&n; *   1998-08-18  Ruurd Reitsma &lt;R.A.Reitsma@wbmt.tudelft.nl&gt;&n; *&t;  Small modification to export ACI functions and &n; *&t;  complete modularisation.&n; *   2000-06-20  Robert Siemer &lt;Robert.Siemer@gmx.de&gt;&n; *        Don&squot;t initialize the CS4231A mixer anymore, so the code is&n; *        working again, and other small changes to fit in todays&n; *        kernels.&n; *   2000-08-26  Robert Siemer&n; *        Clean up and rewrite for 2.4.x. Maybe it&squot;s SMP safe now... (:&n; *        ioctl bugfix, and integration of solo-mode into OSS-API,&n; *        added (OSS-limited) equalizer support, return value bugfix,&n; *        changed param aci_reset to reset, new params: ide, wss.&n; *   2001-04-20  Robert Siemer&n; *        even more cleanups...&n; */
+multiline_comment|/*&n; * Audio Command Interface (ACI) driver (sound/aci.c)&n; *&n; * ACI is a protocol used to communicate with the microcontroller on&n; * some sound cards produced by miro, e.g. the miroSOUND PCM12 and&n; * PCM20. The ACI has been developed for miro by Norberto Pellicci&n; * &lt;pellicci@home.com&gt;. Special thanks to both him and miro for&n; * providing the ACI specification.&n; *&n; * The main function of the ACI is to control the mixer and to get a&n; * product identification. On the PCM20, ACI also controls the radio&n; * tuner on this card, this is supported in the Video for Linux &n; * miropcm20 driver.&n; * -&n; * This is a fullfeatured implementation. Unsupported features&n; * are bugs... (:&n; *&n; * It is not longer necessary to load the mad16 module first. The&n; * user is currently responsible to set the mad16 mixer correctly.&n; *&n; * To toggle the solo mode for full duplex operation just use the OSS&n; * record switch for the pcm (&squot;wave&squot;) controller.           Robert&n; * -&n; *&n; * Revision history:&n; *&n; *   1995-11-10  Markus Kuhn &lt;mskuhn@cip.informatik.uni-erlangen.de&gt;&n; *        First version written.&n; *   1995-12-31  Markus Kuhn&n; *        Second revision, general code cleanup.&n; *   1996-05-16&t; Hannu Savolainen&n; *&t;  Integrated with other parts of the driver.&n; *   1996-05-28  Markus Kuhn&n; *        Initialize CS4231A mixer, make ACI first mixer,&n; *        use new private mixer API for solo mode.&n; *   1998-08-18  Ruurd Reitsma &lt;R.A.Reitsma@wbmt.tudelft.nl&gt;&n; *&t;  Small modification to export ACI functions and &n; *&t;  complete modularisation.&n; *   2000-06-20  Robert Siemer &lt;Robert.Siemer@gmx.de&gt;&n; *        Don&squot;t initialize the CS4231A mixer anymore, so the code is&n; *        working again, and other small changes to fit in todays&n; *        kernels.&n; *   2000-08-26  Robert Siemer&n; *        Clean up and rewrite for 2.4.x. Maybe it&squot;s SMP safe now... (:&n; *        ioctl bugfix, and integration of solo-mode into OSS-API,&n; *        added (OSS-limited) equalizer support, return value bugfix,&n; *        changed param aci_reset to reset, new params: ide, wss.&n; *   2001-04-20  Robert Siemer&n; *        even more cleanups...&n; *   2001-10-08  Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *   &t;  Get rid of check_region, .bss optimizations, use set_current_state&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
@@ -52,16 +52,12 @@ DECL|variable|aci_solo
 r_static
 r_int
 id|aci_solo
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* status bit of the card that can&squot;t be&t;&t;*&n;&t;&t;&t; * checked with ACI versions prior to 0xb0&t;*/
 DECL|variable|aci_amp
 r_static
 r_int
 id|aci_amp
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* status bit for power-amp/line-out level&n;&t;&t;&t;   but I have no docs about what is what... */
 DECL|variable|aci_micpreamp
@@ -88,8 +84,6 @@ DECL|variable|reset
 r_static
 r_int
 id|reset
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -362,9 +356,11 @@ l_int|10
 suffix:semicolon
 r_default
 suffix:colon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -527,6 +523,9 @@ id|write3
 suffix:semicolon
 r_int
 id|read
+op_assign
+op_minus
+id|EINTR
 comma
 id|i
 suffix:semicolon
@@ -540,9 +539,8 @@ op_amp
 id|aci_sem
 )paren
 )paren
-r_return
-op_minus
-id|EINTR
+r_goto
+id|out
 suffix:semicolon
 r_for
 c_loop
@@ -572,9 +570,9 @@ l_int|255
 r_break
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
+(brace
+id|read
+op_assign
 id|aci_rawwrite
 c_func
 (paren
@@ -583,38 +581,28 @@ id|write
 id|i
 )braket
 )paren
-OL
-l_int|0
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|aci_sem
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
-(paren
+id|read
+OL
+l_int|0
+)paren
+r_goto
+id|out_up
+suffix:semicolon
+)brace
+)brace
 id|read
 op_assign
 id|aci_rawread
 c_func
 (paren
 )paren
-)paren
-OL
-l_int|0
-)paren
-(brace
+suffix:semicolon
+id|out_up
+suffix:colon
 id|up
 c_func
 (paren
@@ -622,18 +610,8 @@ op_amp
 id|aci_sem
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-id|up
-c_func
-(paren
-op_amp
-id|aci_sem
-)paren
-suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|read
 suffix:semicolon
@@ -2658,6 +2636,11 @@ id|boardname
 suffix:semicolon
 r_int
 id|i
+comma
+id|rc
+op_assign
+op_minus
+id|EBUSY
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -2696,12 +2679,15 @@ multiline_comment|/* Get aci_port from MC4_PORT */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|aci_port
 comma
 l_int|3
+comma
+l_string|&quot;sound mixer (ACI)&quot;
 )paren
 )paren
 (brace
@@ -2718,12 +2704,16 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EBUSY
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* force ACI into a known state */
+id|rc
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2755,11 +2745,15 @@ l_int|1
 OL
 l_int|0
 )paren
-r_return
+r_goto
+id|out_release_region
+suffix:semicolon
+multiline_comment|/* official this is one aci read call: */
+id|rc
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* official this is one aci read call: */
 r_if
 c_cond
 (paren
@@ -2815,9 +2809,8 @@ comma
 id|aci_port
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 r_if
@@ -2851,9 +2844,8 @@ comma
 id|aci_port
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EFAULT
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 r_if
@@ -2960,6 +2952,11 @@ comma
 id|aci_port
 )paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3008,9 +3005,8 @@ id|ACI_ERROR_OP
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EBUSY
+r_goto
+id|out_release_region
 suffix:semicolon
 )brace
 multiline_comment|/* the PCM20 is muted after reset (and reboot) */
@@ -3030,9 +3026,8 @@ l_int|1
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EBUSY
+r_goto
+id|out_release_region
 suffix:semicolon
 r_if
 c_cond
@@ -3058,9 +3053,8 @@ l_int|1
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EBUSY
+r_goto
+id|out_release_region
 suffix:semicolon
 r_if
 c_cond
@@ -3094,32 +3088,9 @@ l_int|1
 OL
 l_int|0
 )paren
-r_return
-op_minus
-id|EBUSY
+r_goto
+id|out_release_region
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
-c_func
-(paren
-id|aci_port
-comma
-l_int|3
-comma
-l_string|&quot;sound mixer (ACI)&quot;
-)paren
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|mixer_device
 op_assign
 id|sound_install_mixer
@@ -3139,14 +3110,18 @@ id|aci_mixer_operations
 comma
 l_int|NULL
 )paren
-)paren
-op_ge
+suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mixer_device
+OL
 l_int|0
 )paren
-(brace
-multiline_comment|/* Maybe initialize the CS4231A mixer here... */
-)brace
-r_else
 (brace
 id|printk
 c_func
@@ -3155,6 +3130,22 @@ id|KERN_ERR
 l_string|&quot;aci: Failed to install mixer.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|rc
+op_assign
+id|mixer_device
+suffix:semicolon
+r_goto
+id|out_release_region
+suffix:semicolon
+)brace
+multiline_comment|/* else Maybe initialize the CS4231A mixer here... */
+id|out
+suffix:colon
+r_return
+id|rc
+suffix:semicolon
+id|out_release_region
+suffix:colon
 id|release_region
 c_func
 (paren
@@ -3163,12 +3154,8 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-r_return
-id|mixer_device
-suffix:semicolon
-)brace
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|unload_aci

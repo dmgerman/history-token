@@ -92,6 +92,11 @@ id|p
 suffix:semicolon
 r_do
 (brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|barrier
 c_func
 (paren
@@ -1991,6 +1996,11 @@ suffix:semicolon
 r_case
 id|TASK_ZOMBIE
 suffix:colon
+multiline_comment|/* Make sure no other waiter picks this task up */
+id|p-&gt;state
+op_assign
+id|TASK_DEAD
+suffix:semicolon
 id|current-&gt;times.tms_cutime
 op_add_assign
 id|p-&gt;times.tms_utime

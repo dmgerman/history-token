@@ -13421,6 +13421,13 @@ op_ne
 l_int|0
 )paren
 (brace
+id|DO_UNLOCK
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* _error never returns.. */
 id|aha152x_error
 c_func
 (paren

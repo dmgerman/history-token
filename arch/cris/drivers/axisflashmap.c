@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.14  2001/09/21 07:14:10  jonashg&n; * Made root filesystem (cramfs) use mtdblock driver when booting from flash.&n; *&n; * Revision 1.13  2001/08/15 13:57:35  jonashg&n; * Entire MTD updated to the linux 2.4.7 version.&n; *&n; * Revision 1.12  2001/06/11 09:50:30  jonashg&n; * Oops, 2MB is 0x200000 bytes.&n; *&n; * Revision 1.11  2001/06/08 11:39:44  jonashg&n; * Changed sizes and offsets in axis_default_partitions to use&n; * CONFIG_ETRAX_PTABLE_SECTOR.&n; *&n; * Revision 1.10  2001/05/29 09:42:03  jonashg&n; * Use macro for end marker length instead of sizeof.&n; *&n; * Revision 1.9  2001/05/29 08:52:52  jonashg&n; * Gave names to the magic fours (size of the ptable end marker).&n; *&n; * Revision 1.8  2001/05/28 15:36:20  jonashg&n; * * Removed old comment about ptable location in flash (it&squot;s a CONFIG_ option).&n; * * Variable ptable was initialized twice to the same value.&n; *&n; * Revision 1.7  2001/04/05 13:41:46  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.6  2001/03/07 09:21:21  bjornw&n; * No need to waste .data&n; *&n; * Revision 1.5  2001/03/06 16:27:01  jonashg&n; * Probe the entire flash area for flash devices.&n; *&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
+multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.15  2001/10/19 12:41:04  jonashg&n; * Name of probe has changed in MTD.&n; *&n; * Revision 1.14  2001/09/21 07:14:10  jonashg&n; * Made root filesystem (cramfs) use mtdblock driver when booting from flash.&n; *&n; * Revision 1.13  2001/08/15 13:57:35  jonashg&n; * Entire MTD updated to the linux 2.4.7 version.&n; *&n; * Revision 1.12  2001/06/11 09:50:30  jonashg&n; * Oops, 2MB is 0x200000 bytes.&n; *&n; * Revision 1.11  2001/06/08 11:39:44  jonashg&n; * Changed sizes and offsets in axis_default_partitions to use&n; * CONFIG_ETRAX_PTABLE_SECTOR.&n; *&n; * Revision 1.10  2001/05/29 09:42:03  jonashg&n; * Use macro for end marker length instead of sizeof.&n; *&n; * Revision 1.9  2001/05/29 08:52:52  jonashg&n; * Gave names to the magic fours (size of the ptable end marker).&n; *&n; * Revision 1.8  2001/05/28 15:36:20  jonashg&n; * * Removed old comment about ptable location in flash (it&squot;s a CONFIG_ option).&n; * * Variable ptable was initialized twice to the same value.&n; *&n; * Revision 1.7  2001/04/05 13:41:46  markusl&n; * Updated according to review remarks&n; *&n; * Revision 1.6  2001/03/07 09:21:21  bjornw&n; * No need to waste .data&n; *&n; * Revision 1.5  2001/03/06 16:27:01  jonashg&n; * Probe the entire flash area for flash devices.&n; *&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -553,6 +553,7 @@ comma
 id|FLASH_CACHED_ADDR
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_CFI
 id|mymtd
 op_assign
 (paren
@@ -563,12 +564,13 @@ op_star
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi&quot;
+l_string|&quot;cfi_probe&quot;
 comma
 op_amp
 id|axis_map
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_MTD_AMDSTD
 r_if
 c_cond

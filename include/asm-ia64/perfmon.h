@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_IA64_PERFMON_H
 DECL|macro|_ASM_IA64_PERFMON_H
 mdefine_line|#define _ASM_IA64_PERFMON_H
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n; * Structure used to define a context&n; */
+multiline_comment|/*&n; * Request structure used to define a context&n; */
 r_typedef
 r_struct
 (brace
@@ -44,7 +44,7 @@ DECL|typedef|pfreq_context_t
 )brace
 id|pfreq_context_t
 suffix:semicolon
-multiline_comment|/*&n; * Structure used to configure a PMC or PMD&n; */
+multiline_comment|/*&n; * Request structure used to write/read a PMC or PMD&n; */
 r_typedef
 r_struct
 (brace
@@ -99,6 +99,7 @@ DECL|typedef|perfmon_req_t
 )brace
 id|perfmon_req_t
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 r_extern
 r_void
 id|pfm_save_regs
@@ -124,6 +125,10 @@ id|pfm_inherit
 r_struct
 id|task_struct
 op_star
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -144,5 +149,15 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pfm_cleanup_notifiers
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_PERFMON_H */
 eof

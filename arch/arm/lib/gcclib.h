@@ -91,7 +91,10 @@ id|DI
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 0 /* FIXME: endian test here!!! */
+macro_line|#ifdef __ARMEB__
+DECL|struct|DIstruct
+DECL|member|high
+DECL|member|low
 r_struct
 id|DIstruct
 (brace

@@ -13,7 +13,6 @@ r_int
 id|counter
 suffix:semicolon
 )brace
-id|atomic_t
 id|__attribute__
 (paren
 (paren
@@ -23,6 +22,7 @@ l_int|4
 )paren
 )paren
 )paren
+id|atomic_t
 suffix:semicolon
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)  { (i) }

@@ -750,9 +750,6 @@ multiline_comment|/* eighteen available extents              */
 DECL|member|DS5PTRDS
 id|cchhb_t
 id|DS5PTRDS
-(braket
-l_int|5
-)braket
 suffix:semicolon
 multiline_comment|/* pointer to next format5 DSCB            */
 DECL|typedef|format5_label_t

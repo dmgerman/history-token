@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                                &n; * Filename:      qos.c&n; * Version:       1.0&n; * Description:   IrLAP QoS parameter negotiation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Sep  9 00:00:26 1997&n; * Modified at:   Sun Jan 30 14:29:16 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                                &n; * Filename:      qos.c&n; * Version:       1.0&n; * Description:   IrLAP QoS parameter negotiation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Sep  9 00:00:26 1997&n; * Modified at:   Sun Jan 30 14:29:16 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -1765,12 +1765,18 @@ l_int|2
 comma
 l_string|&quot;Requested BAUD_RATE: 0x%04x&bslash;n&quot;
 comma
-id|param-&gt;pv.s
+(paren
+id|__u16
+)paren
+id|param-&gt;pv.i
 )paren
 suffix:semicolon
 id|final
 op_assign
-id|param-&gt;pv.s
+(paren
+id|__u16
+)paren
+id|param-&gt;pv.i
 op_amp
 id|self-&gt;qos_rx.baud_rate.bits
 suffix:semicolon
@@ -1862,7 +1868,7 @@ c_cond
 (paren
 id|get
 )paren
-id|param-&gt;pv.b
+id|param-&gt;pv.i
 op_assign
 id|self-&gt;qos_rx.link_disc_time.bits
 suffix:semicolon
@@ -1876,12 +1882,18 @@ l_int|2
 comma
 l_string|&quot;LINK_DISC: %02x&bslash;n&quot;
 comma
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 )paren
 suffix:semicolon
 id|final
 op_assign
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 op_amp
 id|self-&gt;qos_rx.link_disc_time.bits
 suffix:semicolon
@@ -1970,14 +1982,17 @@ c_cond
 (paren
 id|get
 )paren
-id|param-&gt;pv.b
+id|param-&gt;pv.i
 op_assign
 id|self-&gt;qos_rx.max_turn_time.bits
 suffix:semicolon
 r_else
 id|self-&gt;qos_tx.max_turn_time.bits
 op_assign
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 suffix:semicolon
 r_return
 l_int|0
@@ -2045,14 +2060,17 @@ c_cond
 (paren
 id|get
 )paren
-id|param-&gt;pv.b
+id|param-&gt;pv.i
 op_assign
 id|self-&gt;qos_rx.data_size.bits
 suffix:semicolon
 r_else
 id|self-&gt;qos_tx.data_size.bits
 op_assign
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 suffix:semicolon
 r_return
 l_int|0
@@ -2120,14 +2138,17 @@ c_cond
 (paren
 id|get
 )paren
-id|param-&gt;pv.b
+id|param-&gt;pv.i
 op_assign
 id|self-&gt;qos_rx.window_size.bits
 suffix:semicolon
 r_else
 id|self-&gt;qos_tx.window_size.bits
 op_assign
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 suffix:semicolon
 r_return
 l_int|0
@@ -2195,14 +2216,17 @@ c_cond
 (paren
 id|get
 )paren
-id|param-&gt;pv.b
+id|param-&gt;pv.i
 op_assign
 id|self-&gt;qos_rx.additional_bofs.bits
 suffix:semicolon
 r_else
 id|self-&gt;qos_tx.additional_bofs.bits
 op_assign
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 suffix:semicolon
 r_return
 l_int|0
@@ -2270,14 +2294,17 @@ c_cond
 (paren
 id|get
 )paren
-id|param-&gt;pv.b
+id|param-&gt;pv.i
 op_assign
 id|self-&gt;qos_rx.min_turn_time.bits
 suffix:semicolon
 r_else
 id|self-&gt;qos_tx.min_turn_time.bits
 op_assign
-id|param-&gt;pv.b
+(paren
+id|__u8
+)paren
+id|param-&gt;pv.i
 suffix:semicolon
 r_return
 l_int|0

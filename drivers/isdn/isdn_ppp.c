@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_ppp.c,v 1.85.6.7 2001/09/23 22:24:31 kai Exp $&n; *&n; * Linux ISDN subsystem, functions for synchronous PPP (linklevel).&n; *&n; * Copyright 1995,96 by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdn_ppp.c,v 1.85.6.9 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, functions for synchronous PPP (linklevel).&n; *&n; * Copyright 1995,96 by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -400,7 +400,7 @@ r_char
 op_star
 id|isdn_ppp_revision
 op_assign
-l_string|&quot;$Revision: 1.85.6.7 $&quot;
+l_string|&quot;$Revision: 1.85.6.9 $&quot;
 suffix:semicolon
 DECL|variable|ippp_table
 r_static
@@ -4641,7 +4641,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is-&gt;compflags
+id|mis-&gt;compflags
 op_amp
 id|SC_DECOMP_ON
 )paren
@@ -4731,6 +4731,22 @@ id|ETH_P_IP
 )paren
 suffix:semicolon
 r_break
+suffix:semicolon
+r_case
+id|PPP_COMP
+suffix:colon
+r_case
+id|PPP_COMPFRAG
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;isdn_ppp: unexpected compressed frame dropped&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|drop_packet
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_PPP_VJ
 r_case
@@ -5680,6 +5696,15 @@ op_amp
 id|SC_COMP_ON
 )paren
 (brace
+multiline_comment|/* We send compressed only if both down- und upstream&n;&t;&t;   compression is negotiated, that means, CCP is up */
+r_if
+c_cond
+(paren
+id|ipts-&gt;compflags
+op_amp
+id|SC_DECOMP_ON
+)paren
+(brace
 id|skb
 op_assign
 id|isdn_ppp_compress
@@ -5697,6 +5722,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;isdn_ppp: CCP not yet up - sending as-is&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -9641,15 +9677,6 @@ id|CCPResetSentReq
 )paren
 (brace
 multiline_comment|/* We are correct here */
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ippp_ccp: CCP Reset timed out for id %d&bslash;n&quot;
-comma
-id|rs-&gt;id
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9673,6 +9700,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ippp_ccp: CCP Reset timed out for id %d&bslash;n&quot;
+comma
+id|rs-&gt;id
+)paren
+suffix:semicolon
 multiline_comment|/* Push it again */
 id|isdn_ppp_ccp_xmit_reset
 c_func
@@ -10579,10 +10615,6 @@ id|len
 r_case
 id|DECOMP_ERROR
 suffix:colon
-id|ri-&gt;pppcfg
-op_or_assign
-id|SC_DC_ERROR
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -11293,11 +11325,6 @@ op_and_assign
 op_complement
 id|SC_DECOMP_DISCARD
 suffix:semicolon
-id|mis-&gt;pppcfg
-op_and_assign
-op_complement
-id|SC_DC_ERROR
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -11359,11 +11386,6 @@ id|is-&gt;compflags
 op_and_assign
 op_complement
 id|SC_LINK_DECOMP_DISCARD
-suffix:semicolon
-id|is-&gt;pppcfg
-op_and_assign
-op_complement
-id|SC_DC_ERROR
 suffix:semicolon
 )brace
 r_break
@@ -11621,6 +11643,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Daemon sends a CCP frame ...&n; */
 multiline_comment|/* TODO: Clean this up with new Reset semantics */
 multiline_comment|/* I believe the CCP handling as-is is done wrong. Compressed frames&n; * should only be sent/received after CCP reaches UP state, which means&n; * both sides have sent CONF_ACK. Currently, we handle both directions&n; * independently, which means we may accept compressed frames too early&n; * (supposedly not a problem), but may also mean we send compressed frames&n; * too early, which may turn out to be a problem.&n; * This part of state machine should actually be handled by (i)pppd, but&n; * that&squot;s too big of a change now. --kai&n; */
+multiline_comment|/* Actually, we might turn this into an advantage: deal with the RFC in&n; * the old tradition of beeing generous on what we accept, but beeing&n; * strict on what we send. Thus we should just&n; * - accept compressed frames as soon as decompression is negotiated&n; * - send compressed frames only when decomp *and* comp are negotiated&n; * - drop rx compressed frames if we cannot decomp (instead of pushing them&n; *   up to ipppd)&n; * and I tried to modify this file according to that. --abp&n; */
 DECL|function|isdn_ppp_send_ccp
 r_static
 r_void

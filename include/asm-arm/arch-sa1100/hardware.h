@@ -34,7 +34,7 @@ DECL|macro|io_v2p
 mdefine_line|#define io_v2p( x )             &bslash;&n;   ( (((x)&amp;0x00ffffff) | (((x)&amp;(0x30000000&gt;&gt;VIO_SHIFT))&lt;&lt;VIO_SHIFT)) + PIO_START )
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if 0
-macro_line|# define __REG(x)&t;(*((volatile unsigned long *)io_p2v(x)))
+macro_line|# define __REG(x)&t;(*((volatile u32 *)io_p2v(x)))
 macro_line|#else
 multiline_comment|/*&n; * This __REG() version gives the same results as the one above,  except&n; * that we are fooling gcc somehow so it generates far better and smaller&n; * assembly code for access to contigous registers.  It&squot;s a shame that gcc&n; * doesn&squot;t guess this by itself.&n; */
 DECL|member|offset
@@ -43,8 +43,7 @@ r_typedef
 r_struct
 (brace
 r_volatile
-r_int
-r_int
+id|u32
 id|offset
 (braket
 l_int|4096
@@ -59,7 +58,7 @@ DECL|macro|__REG
 macro_line|# define __REG(x)&t;__REGP(io_p2v(x))
 macro_line|#endif
 DECL|macro|__PREG
-macro_line|# define __PREG(x)&t;(io_v2p((unsigned long)&amp;(x)))
+macro_line|# define __PREG(x)&t;(io_v2p((u32)&amp;(x)))
 macro_line|#else
 DECL|macro|__REG
 macro_line|# define __REG(x)&t;io_p2v(x)

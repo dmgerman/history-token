@@ -74,7 +74,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_SBUS) &amp;&amp; !defined(CONFIG_SUN3)
+macro_line|#if defined(CONFIG_SBUS) &amp;&amp; !defined(CONFIG_SUN3) &amp;&amp; !defined(CONFIG_SUN3X)
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#if ((SCSI_DATA_UNKNOWN == SBUS_DMA_BIDIRECTIONAL) &amp;&amp; (SCSI_DATA_WRITE == SBUS_DMA_TODEVICE) &amp;&amp; (SCSI_DATA_READ == SBUS_DMA_FROMDEVICE) &amp;&amp; (SCSI_DATA_NONE == SBUS_DMA_NONE))
 DECL|macro|scsi_to_sbus_dma_dir
@@ -387,7 +387,7 @@ mdefine_line|#define DRIVER_MASK         0x0f
 DECL|macro|SUGGEST_MASK
 mdefine_line|#define SUGGEST_MASK        0xf0
 DECL|macro|MAX_COMMAND_SIZE
-mdefine_line|#define MAX_COMMAND_SIZE    12
+mdefine_line|#define MAX_COMMAND_SIZE    16
 DECL|macro|SCSI_SENSE_BUFFERSIZE
 mdefine_line|#define SCSI_SENSE_BUFFERSIZE   64
 multiline_comment|/*&n; *  SCSI command sets&n; */

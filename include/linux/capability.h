@@ -208,6 +208,7 @@ mdefine_line|#define CAP_SYS_NICE         23
 multiline_comment|/* Override resource limits. Set resource limits. */
 multiline_comment|/* Override quota limits. */
 multiline_comment|/* Override reserved space on ext2 filesystem */
+multiline_comment|/* Modify data journaling mode on ext3 filesystem (uses journaling&n;   resources) */
 multiline_comment|/* NOTE: ext2 honors fsuid when checking for resource overrides, so &n;   you can override using fsuid too */
 multiline_comment|/* Override size restrictions on IPC message queues */
 multiline_comment|/* Allow more than 64hz interrupts from the real-time clock */

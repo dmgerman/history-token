@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114.6.15 2001/09/23 22:24:31 kai Exp $&n; *&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.16 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -55,7 +55,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114.6.15 $&quot;
+l_string|&quot;$Revision: 1.114.6.16 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -8332,10 +8332,6 @@ c_cond
 (paren
 id|p
 op_assign
-(paren
-id|infostruct
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -10258,10 +10254,6 @@ op_logical_neg
 (paren
 id|d-&gt;rcverr
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -10332,10 +10324,6 @@ op_logical_neg
 (paren
 id|d-&gt;rcvcount
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -10444,11 +10432,6 @@ op_logical_neg
 (paren
 id|d-&gt;rpqueue
 op_assign
-(paren
-r_struct
-id|sk_buff_head
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -10542,10 +10525,6 @@ id|d-&gt;rcv_waitq
 suffix:semicolon
 id|d-&gt;rcv_waitq
 op_assign
-(paren
-id|wait_queue_head_t
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -11087,10 +11066,6 @@ op_logical_neg
 (paren
 id|d
 op_assign
-(paren
-id|driver
-op_star
-)paren
 id|kmalloc
 c_func
 (paren

@@ -13,7 +13,6 @@ mdefine_line|#define I2O_MAX_MANAGERS&t;4
 macro_line|#include &lt;asm/semaphore.h&gt;&t;/* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;&t;/* Needed for struct resource */
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; *&t;Message structures&n; */
 DECL|struct|i2o_message
@@ -147,7 +146,7 @@ DECL|member|queue_buggy
 r_int
 id|queue_buggy
 suffix:colon
-l_int|1
+l_int|3
 suffix:semicolon
 multiline_comment|/* Don&squot;t send a lot of messages */
 DECL|member|short_req

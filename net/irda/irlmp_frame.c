@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_frame.c&n; * Version:       0.9&n; * Description:   IrLMP frame implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 02:09:59 1997&n; * Modified at:   Mon Dec 13 13:41:12 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_frame.c&n; * Version:       0.9&n; * Description:   IrLMP frame implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 02:09:59 1997&n; * Modified at:   Mon Dec 13 13:41:12 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,14 +8,6 @@ macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/irlmp_frame.h&gt;
 macro_line|#include &lt;net/irda/discovery.h&gt;
-DECL|macro|DISCO_SMALL_DELAY
-mdefine_line|#define&t;DISCO_SMALL_DELAY&t;250&t;/* Delay for some discoveries in ms */
-DECL|variable|disco_delay
-r_struct
-id|timer_list
-id|disco_delay
-suffix:semicolon
-multiline_comment|/* The timer associated */
 r_static
 r_struct
 id|lsap_cb
@@ -1257,60 +1249,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_discovery_timeout (priv)&n; *&n; *    Create a discovery event to the state machine (called after a delay)&n; *&n; * Note : irlmp_do_lap_event will handle the very rare case where the LAP&n; * is destroyed while we were sleeping.&n; */
-DECL|function|irlmp_discovery_timeout
-r_static
-r_void
-id|irlmp_discovery_timeout
-c_func
-(paren
-id|u_long
-id|priv
-)paren
-(brace
-r_struct
-id|lap_cb
-op_star
-id|self
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|self
-op_assign
-(paren
-r_struct
-id|lap_cb
-op_star
-)paren
-id|priv
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-suffix:semicolon
-)paren
-suffix:semicolon
-multiline_comment|/* Just handle it the same way as a discovery confirm,&n;&t; * bypass the LM_LAP state machine (see below) */
-id|irlmp_discovery_confirm
-c_func
-(paren
-id|irlmp-&gt;cachelog
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Function irlmp_link_discovery_indication (self, log)&n; *&n; *    Device is discovering us&n; *&n; * It&squot;s not an answer to our own discoveries, just another device trying&n; * to perform discovery, but we don&squot;t want to miss the opportunity&n; * to exploit this information, because :&n; *&t;o We may not actively perform discovery (just passive discovery)&n; *&t;o This type of discovery is much more reliable. In some cases, it&n; *&t;  seem that less than 50% of our discoveries get an answer, while&n; *&t;  we always get ~100% of these.&n; *&t;o Make faster discovery, statistically divide time of discovery&n; *&t;  events by 2 (important for the latency aspect and user feel)&n; *&t;o Even is we do active discovery, the other node might not&n; *&t;  answer our discoveries (ex: Palm).&n; *&n; * However, when both devices discover each other, they might attempt to&n; * connect to each other following the discovery event, and it would create&n; * collisions on the medium (SNRM battle).&n; * The trick here is to defer the event by a little delay to avoid both&n; * devices to jump in exactly at the same time...&n; *&n; * The delay is currently set to 0.25s, which leave enough time to perform&n; * a connection and don&squot;t interfer with next discovery (the lowest discovery&n; * period/timeout that may be set is 1s). The message triggering this&n; * event was the last of the discovery, so the medium is now free...&n; * Maybe more testing is needed to get the value right...&n;&n; * One more problem : the other node might do only a single discovery&n; * and connect immediately to us, and we would receive only a single&n; * discovery indication event, and because of the delay, it will arrive&n; * while the LAP is connected. That&squot;s another good reason to&n; * bypass the LM_LAP state machine ;-)&n; *&n; * Jean II&n; */
+multiline_comment|/*&n; * Function irlmp_link_discovery_indication (self, log)&n; *&n; *    Device is discovering us&n; *&n; * It&squot;s not an answer to our own discoveries, just another device trying&n; * to perform discovery, but we don&squot;t want to miss the opportunity&n; * to exploit this information, because :&n; *&t;o We may not actively perform discovery (just passive discovery)&n; *&t;o This type of discovery is much more reliable. In some cases, it&n; *&t;  seem that less than 50% of our discoveries get an answer, while&n; *&t;  we always get ~100% of these.&n; *&t;o Make faster discovery, statistically divide time of discovery&n; *&t;  events by 2 (important for the latency aspect and user feel)&n; *&t;o Even is we do active discovery, the other node might not&n; *&t;  answer our discoveries (ex: Palm). The Palm will just perform&n; *&t;  one active discovery and connect directly to us.&n; *&n; * However, when both devices discover each other, they might attempt to&n; * connect to each other following the discovery event, and it would create&n; * collisions on the medium (SNRM battle).&n; * The &quot;fix&quot; for that is to disable all connection requests in IrLAP&n; * for 100ms after a discovery indication by setting the media_busy flag.&n; * Previously, we used to postpone the event which was quite ugly. Now&n; * that IrLAP takes care of this problem, just pass the event up...&n; *&n; * Jean II&n; */
 DECL|function|irlmp_link_discovery_indication
 r_void
 id|irlmp_link_discovery_indication
@@ -1356,56 +1295,11 @@ comma
 id|discovery
 )paren
 suffix:semicolon
-multiline_comment|/* If delay was activated, kill it! */
-r_if
-c_cond
-(paren
-id|timer_pending
+multiline_comment|/* Just handle it the same way as a discovery confirm,&n;&t; * bypass the LM_LAP state machine (see below) */
+id|irlmp_discovery_confirm
 c_func
 (paren
-op_amp
-id|disco_delay
-)paren
-)paren
-(brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|disco_delay
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Set delay timer to expire in 0.25s. */
-id|disco_delay.expires
-op_assign
-id|jiffies
-op_plus
-(paren
-id|DISCO_SMALL_DELAY
-op_star
-id|HZ
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-id|disco_delay.function
-op_assign
-id|irlmp_discovery_timeout
-suffix:semicolon
-id|disco_delay.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|self
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|disco_delay
+id|irlmp-&gt;cachelog
 )paren
 suffix:semicolon
 )brace
@@ -1464,26 +1358,6 @@ comma
 id|log
 )paren
 suffix:semicolon
-multiline_comment|/* If discovery delay was activated, kill it! */
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|disco_delay
-)paren
-)paren
-(brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|disco_delay
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Propagate event to various LSAPs registered for it.&n;&t; * We bypass the LM_LAP state machine because&n;&t; *&t;1) We do it regardless of the LM_LAP state&n;&t; *&t;2) It doesn&squot;t affect the LM_LAP state&n;&t; *&t;3) Faster, slimer, simpler, ...&n;&t; * Jean II */
 id|irlmp_discovery_confirm
 c_func

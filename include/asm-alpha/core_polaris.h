@@ -71,8 +71,7 @@ DECL|macro|vulp
 mdefine_line|#define vulp&t;volatile unsigned long  *
 DECL|function|polaris_inb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|polaris_inb
 c_func
 (paren
@@ -104,8 +103,7 @@ r_void
 id|polaris_outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -137,8 +135,7 @@ suffix:semicolon
 )brace
 DECL|function|polaris_inw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|polaris_inw
 c_func
 (paren
@@ -169,8 +166,7 @@ r_void
 id|polaris_outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -202,8 +198,7 @@ suffix:semicolon
 )brace
 DECL|function|polaris_inl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|polaris_inl
 c_func
 (paren
@@ -230,8 +225,7 @@ r_void
 id|polaris_outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -260,8 +254,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory functions.  Polaris allows all accesses (byte/word&n; * as well as long/quad) to be done through dense space.&n; *&n; * We will only support DENSE access via BWX insns.&n; */
 DECL|function|polaris_readb
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u8
 id|polaris_readb
 c_func
 (paren
@@ -284,8 +277,7 @@ suffix:semicolon
 )brace
 DECL|function|polaris_readw
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u16
 id|polaris_readw
 c_func
 (paren
@@ -308,8 +300,7 @@ suffix:semicolon
 )brace
 DECL|function|polaris_readl
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u32
 id|polaris_readl
 c_func
 (paren
@@ -319,17 +310,20 @@ id|addr
 )paren
 (brace
 r_return
+(paren
 op_star
 (paren
 id|vuip
 )paren
 id|addr
+)paren
+op_amp
+l_int|0xffffffff
 suffix:semicolon
 )brace
 DECL|function|polaris_readq
 id|__EXTERN_INLINE
-r_int
-r_int
+id|u64
 id|polaris_readq
 c_func
 (paren
@@ -352,8 +346,7 @@ r_void
 id|polaris_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -380,8 +373,7 @@ r_void
 id|polaris_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -408,8 +400,7 @@ r_void
 id|polaris_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -432,8 +423,7 @@ r_void
 id|polaris_writeq
 c_func
 (paren
-r_int
-r_int
+id|u64
 id|b
 comma
 r_int

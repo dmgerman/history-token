@@ -1,6 +1,7 @@
 macro_line|#ifndef _NFS_FS_SB
 DECL|macro|_NFS_FS_SB
 mdefine_line|#define _NFS_FS_SB
+macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/*&n; * NFS client parameters stored in the superblock.&n; */
 DECL|struct|nfs_server
 r_struct
@@ -100,6 +101,20 @@ op_star
 id|rw_requests
 suffix:semicolon
 multiline_comment|/* async read/write requests */
+DECL|member|lru_read
+r_struct
+id|list_head
+id|lru_read
+comma
+DECL|member|lru_dirty
+id|lru_dirty
+comma
+DECL|member|lru_commit
+id|lru_commit
+comma
+DECL|member|lru_busy
+id|lru_busy
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * nfs super-block data in memory&n; */

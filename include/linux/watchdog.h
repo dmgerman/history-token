@@ -41,6 +41,8 @@ DECL|macro|WDIOC_SETOPTIONS
 mdefine_line|#define&t;WDIOC_SETOPTIONS&t;_IOR(WATCHDOG_IOCTL_BASE, 4, int)
 DECL|macro|WDIOC_KEEPALIVE
 mdefine_line|#define&t;WDIOC_KEEPALIVE&t;&t;_IOR(WATCHDOG_IOCTL_BASE, 5, int)
+DECL|macro|WDIOC_SETTIMEOUT
+mdefine_line|#define&t;WDIOC_SETTIMEOUT        _IOW(WATCHDOG_IOCTL_BASE, 6, int)
 DECL|macro|WDIOF_UNKNOWN
 mdefine_line|#define&t;WDIOF_UNKNOWN&t;&t;-1&t;/* Unknown flag error */
 DECL|macro|WDIOS_UNKNOWN

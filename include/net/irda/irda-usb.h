@@ -124,6 +124,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* class specific interface request to get the IrDA-USB class descriptor&n; * (6.2.5, USB-IrDA class spec 1.0) */
+DECL|macro|IU_REQ_GET_CLASS_DESC
+mdefine_line|#define IU_REQ_GET_CLASS_DESC&t;0x06
 DECL|struct|irda_usb_cb
 r_struct
 id|irda_usb_cb

@@ -15,7 +15,7 @@ id|serial_revdate
 op_assign
 l_string|&quot;2001-07-08&quot;
 suffix:semicolon
-multiline_comment|/*&n; * Serial driver configuration section.  Here are the various options:&n; *&n; * CONFIG_HUB6&n; *&t;&t;Enables support for the venerable Bell Technologies&n; *&t;&t;HUB6 card.&n; *&n; * CONFIG_SERIAL_MANY_PORTS&n; * &t;&t;Enables support for ports beyond the standard, stupid&n; * &t;&t;COM 1/2/3/4.&n; *&n; * CONFIG_SERIAL_MULTIPORT&n; * &t;&t;Enables support for special multiport board support.&n; *&n; * CONFIG_SERIAL_SHARE_IRQ&n; * &t;&t;Enables support for multiple serial ports on one IRQ&n; *&n; * CONFIG_SERIAL_DETECT_IRQ&n; *&t;&t;Enable the autodetection of IRQ on standart ports&n; *&n; * SERIAL_PARANOIA_CHECK&n; * &t;&t;Check the magic number for the async_structure where&n; * &t;&t;ever possible.&n; */
+multiline_comment|/*&n; * Serial driver configuration section.  Here are the various options:&n; *&n; * CONFIG_HUB6&n; *&t;&t;Enables support for the venerable Bell Technologies&n; *&t;&t;HUB6 card.&n; *&n; * CONFIG_SERIAL_MANY_PORTS&n; * &t;&t;Enables support for ports beyond the standard, stupid&n; * &t;&t;COM 1/2/3/4.&n; *&n; * CONFIG_SERIAL_MULTIPORT&n; * &t;&t;Enables support for special multiport board support.&n; *&n; * CONFIG_SERIAL_SHARE_IRQ&n; * &t;&t;Enables support for multiple serial ports on one IRQ&n; *&n; * CONFIG_SERIAL_DETECT_IRQ&n; *&t;&t;Enable the autodetection of IRQ on standart ports&n; *&n; * SERIAL_PARANOIA_CHECK&n; * &t;&t;Check the magic number for the async_structure where&n; * &t;&t;ever possible.&n; *&n; * CONFIG_SERIAL_ACPI&n; *&t;&t;Enable support for serial console port and serial &n; *&t;&t;debug port as defined by the SPCR and DBGP tables in &n; *&t;&t;ACPI 2.0.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SERIAL_PARANOIA_CHECK
@@ -43,6 +43,10 @@ macro_line|#ifndef CONFIG_SERIAL_MANY_PORTS
 DECL|macro|CONFIG_SERIAL_MANY_PORTS
 mdefine_line|#define CONFIG_SERIAL_MANY_PORTS
 macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_ACPI
+DECL|macro|ENABLE_SERIAL_ACPI
+mdefine_line|#define ENABLE_SERIAL_ACPI
 macro_line|#endif
 macro_line|#if defined(CONFIG_ISAPNP)|| (defined(CONFIG_ISAPNP_MODULE) &amp;&amp; defined(MODULE))
 macro_line|#ifndef ENABLE_SERIAL_PNP
@@ -6561,7 +6565,6 @@ op_or_assign
 id|UART_LSR_OE
 suffix:semicolon
 )brace
-macro_line|#if 0 /* breaks serial console during boot stage */
 multiline_comment|/*&n;&t; * !!! ignore all characters if CREAD is not set&n;&t; */
 r_if
 c_cond
@@ -6578,7 +6581,6 @@ id|info-&gt;ignore_status_mask
 op_or_assign
 id|UART_LSR_DR
 suffix:semicolon
-macro_line|#endif
 id|save_flags
 c_func
 (paren
@@ -8899,6 +8901,7 @@ id|info-&gt;tty-&gt;hw_stopped
 )paren
 id|result
 op_and_assign
+op_complement
 id|TIOCSER_TEMT
 suffix:semicolon
 r_if
@@ -9509,6 +9512,10 @@ id|ASYNC_AUTO_IRQ
 op_logical_and
 (paren
 id|info-&gt;state-&gt;port
+op_ne
+l_int|0
+op_logical_or
+id|info-&gt;state-&gt;iomem_base
 op_ne
 l_int|0
 )paren
@@ -13928,6 +13935,11 @@ mdefine_line|#define SERIAL_OPT
 macro_line|#endif
 macro_line|#ifdef ENABLE_SERIAL_PNP
 l_string|&quot; ISAPNP&quot;
+DECL|macro|SERIAL_OPT
+mdefine_line|#define SERIAL_OPT
+macro_line|#endif
+macro_line|#ifdef ENABLE_SERIAL_ACPI
+l_string|&quot; SERIAL_ACPI&quot;
 DECL|macro|SERIAL_OPT
 mdefine_line|#define SERIAL_OPT
 macro_line|#endif
@@ -24409,6 +24421,10 @@ op_logical_and
 id|state-&gt;port
 op_ne
 l_int|0
+op_logical_or
+id|state-&gt;iomem_base
+op_ne
+l_int|0
 )paren
 )paren
 id|state-&gt;irq
@@ -24419,6 +24435,50 @@ c_func
 id|state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|state-&gt;io_type
+op_eq
+id|SERIAL_IO_MEM
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ttyS%02d%s at 0x%px (irq = %d) is a %s&bslash;n&quot;
+comma
+id|state-&gt;line
+op_plus
+id|SERIAL_DEV_OFFSET
+comma
+(paren
+id|state-&gt;flags
+op_amp
+id|ASYNC_FOURPORT
+)paren
+ques
+c_cond
+l_string|&quot; FourPort&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|state-&gt;iomem_base
+comma
+id|state-&gt;irq
+comma
+id|uart_config
+(braket
+id|state-&gt;type
+)braket
+dot
+id|name
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|printk
 c_func
 (paren
@@ -24452,6 +24512,7 @@ dot
 id|name
 )paren
 suffix:semicolon
+)brace
 id|tty_register_devfs
 c_func
 (paren

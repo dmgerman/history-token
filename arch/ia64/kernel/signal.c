@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; * Copyright (C) 1999-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
+multiline_comment|/*&n; * Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -33,28 +33,6 @@ macro_line|# define PUT_SIGSET(k,u)&t;__put_user((k)-&gt;sig[0], &amp;(u)-&gt;si
 DECL|macro|GET_SIGSET
 macro_line|# define GET_SIGSET(k,u)&t;__get_user((k)-&gt;sig[0], &amp;(u)-&gt;sig[0])
 macro_line|#endif
-DECL|struct|sigscratch
-r_struct
-id|sigscratch
-(brace
-DECL|member|scratch_unat
-r_int
-r_int
-id|scratch_unat
-suffix:semicolon
-multiline_comment|/* ar.unat for the general registers saved in pt */
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|member|pt
-r_struct
-id|pt_regs
-id|pt
-suffix:semicolon
-)brace
-suffix:semicolon
 r_extern
 r_int
 id|ia64_do_signal
@@ -106,6 +84,24 @@ id|sigset_t
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
+c_func
+(paren
+id|VERIFY_READ
+comma
+id|uset
+comma
+id|sigsetsize
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -164,27 +160,6 @@ id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The return below usually returns to the signal handler.  We need to&n;&t; * pre-set the correct error code here to ensure that the right values&n;&t; * get saved in sigcontext by ia64_do_signal.&n;&t; */
-macro_line|#ifdef CONFIG_IA32_SUPPORT
-r_if
-c_cond
-(paren
-id|IS_IA32_PROCESS
-c_func
-(paren
-op_amp
-id|scr-&gt;pt
-)paren
-)paren
-(brace
-id|scr-&gt;pt.r8
-op_assign
-op_minus
-id|EINTR
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif
-(brace
 id|scr-&gt;pt.r8
 op_assign
 id|EINTR
@@ -194,7 +169,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -669,24 +643,23 @@ op_star
 l_int|16
 )paren
 suffix:semicolon
+id|psr-&gt;mfh
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* drop signal handler&squot;s fph contents... */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|psr-&gt;dfh
 )paren
-(brace
-id|psr-&gt;mfh
-op_assign
-l_int|0
-suffix:semicolon
 id|__ia64_load_fpu
 c_func
 (paren
 id|current-&gt;thread.fph
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|err
@@ -1957,9 +1930,21 @@ c_func
 id|new_rbs
 comma
 op_amp
-id|frame-&gt;rbs_base
+id|frame-&gt;sc.sc_rbs_base
 )paren
 suffix:semicolon
+id|err
+op_or_assign
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|frame-&gt;sc.sc_loadrs
+)paren
+suffix:semicolon
+multiline_comment|/* initialize to zero */
 id|err
 op_or_assign
 id|__put_user
@@ -2330,6 +2315,11 @@ r_int
 id|in_syscall
 )paren
 (brace
+r_struct
+id|signal_struct
+op_star
+id|sig
+suffix:semicolon
 r_struct
 id|k_sigaction
 op_star
@@ -2727,12 +2717,18 @@ id|current-&gt;exit_code
 op_assign
 id|signr
 suffix:semicolon
+id|sig
+op_assign
+id|current-&gt;p_pptr-&gt;sig
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|sig
+op_logical_and
 op_logical_neg
 (paren
-id|current-&gt;p_pptr-&gt;sig-&gt;action
+id|sig-&gt;action
 (braket
 id|SIGCHLD
 op_minus

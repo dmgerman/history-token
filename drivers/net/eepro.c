@@ -1,5 +1,5 @@
 multiline_comment|/* eepro.c: Intel EtherExpress Pro/10 device driver for Linux. */
-multiline_comment|/*&n;&t;Written 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;Copyright (C) 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;This software may be used and distributed&n;&t;according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;The author may be reached at bao.ha@srs.gov &n;&t;or 418 Hastings Place, Martinez, GA 30907.&n;&n;&t;Things remaining to do:&n;&t;Better record keeping of errors.&n;&t;Eliminate transmit interrupt to reduce overhead.&n;&t;Implement &quot;concurrent processing&quot;. I won&squot;t be doing it!&n;&n;&t;Bugs:&n;&n;&t;If you have a problem of not detecting the 82595 during a&n;&t;reboot (warm reset), disable the FLASH memory should fix it.&n;&t;This is a compatibility hardware problem.&n;&n;&t;Versions:&n;&t;0.12c&t;fixing some problems with old cards (aris, 01/08/2001)&n;&t;0.12b&t;misc fixes (aris, 06/26/2000)&n;&t;0.12a   port of version 0.12a of 2.2.x kernels to 2.3.x&n;&t;&t;(aris (aris@conectiva.com.br), 05/19/2000)&n;&t;0.11e   some tweaks about multiple cards support (PdP, jul/aug 1999)&n;&t;0.11d&t;added __initdata, __init stuff; call spin_lock_init&n;&t;        in eepro_probe1. Replaced &quot;eepro&quot; by dev-&gt;name. Augmented &n;&t;&t;the code protected by spin_lock in interrupt routine &n;&t;&t;(PdP, 12/12/1998)&n;&t;0.11c   minor cleanup (PdP, RMC, 09/12/1998)  &n;&t;0.11b   Pascal Dupuis (dupuis@lei.ucl.ac.be): works as a module &n;&t;        under 2.1.xx. Debug messages are flagged as KERN_DEBUG to &n;&t;&t;avoid console flooding. Added locking at critical parts. Now &n;&t;&t;the dawn thing is SMP safe.&n;&t;0.11a   Attempt to get 2.1.xx support up (RMC)&n;&t;0.11&t;Brian Candler added support for multiple cards. Tested as&n;&t;&t;a module, no idea if it works when compiled into kernel.&n;&n;&t;0.10e&t;Rick Bressler notified me that ifconfig up;ifconfig down fails&n;&t;&t;because the irq is lost somewhere. Fixed that by moving &n;&t;&t;request_irq and free_irq to eepro_open and eepro_close respectively.&n;&t;0.10d&t;Ugh! Now Wakeup works. Was seriously broken in my first attempt.&n;&t;&t;I&squot;ll need to find a way to specify an ioport other than&n;&t;&t;the default one in the PnP case. PnP definitively sucks.&n;&t;&t;And, yes, this is not the only reason.&n;&t;0.10c&t;PnP Wakeup Test for 595FX. uncomment #define PnPWakeup;&n;&t;&t;to use.&n;&t;0.10b&t;Should work now with (some) Pro/10+. At least for &n;&t;&t;me (and my two cards) it does. _No_ guarantee for &n;&t;&t;function with non-Pro/10+ cards! (don&squot;t have any)&n;&t;&t;(RMC, 9/11/96)&n;&n;&t;0.10&t;Added support for the Etherexpress Pro/10+.  The&n;&t;&t;IRQ map was changed significantly from the old&n;&t;&t;pro/10.  The new interrupt map was provided by&n;&t;&t;Rainer M. Canavan (Canavan@Zeus.cs.bonn.edu).&n;&t;&t;(BCH, 9/3/96)&n;&n;&t;0.09&t;Fixed a race condition in the transmit algorithm,&n;&t;&t;which causes crashes under heavy load with fast&n;&t;&t;pentium computers.  The performance should also&n;&t;&t;improve a bit.  The size of RX buffer, and hence&n;&t;&t;TX buffer, can also be changed via lilo or insmod.&n;&t;&t;(BCH, 7/31/96)&n;&n;&t;0.08&t;Implement 32-bit I/O for the 82595TX and 82595FX&n;&t;&t;based lan cards.  Disable full-duplex mode if TPE&n;&t;&t;is not used.  (BCH, 4/8/96)&n;&n;&t;0.07a&t;Fix a stat report which counts every packet as a&n;&t;&t;heart-beat failure. (BCH, 6/3/95)&n;&n;&t;0.07&t;Modified to support all other 82595-based lan cards.  &n;&t;&t;The IRQ vector of the EtherExpress Pro will be set&n;&t;&t;according to the value saved in the EEPROM.  For other&n;&t;&t;cards, I will do autoirq_request() to grab the next&n;&t;&t;available interrupt vector. (BCH, 3/17/95)&n;&n;&t;0.06a,b&t;Interim released.  Minor changes in the comments and&n;&t;&t;print out format. (BCH, 3/9/95 and 3/14/95)&n;&n;&t;0.06&t;First stable release that I am comfortable with. (BCH,&n;&t;&t;3/2/95)&t;&n;&n;&t;0.05&t;Complete testing of multicast. (BCH, 2/23/95)&t;&n;&n;&t;0.04&t;Adding multicast support. (BCH, 2/14/95)&t;&n;&n;&t;0.03&t;First widely alpha release for public testing. &n;&t;&t;(BCH, 2/14/95)&t;&n;&n;*/
+multiline_comment|/*&n;&t;Written 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;Copyright (C) 1994, 1995,1996 by Bao C. Ha.&n;&n;&t;This software may be used and distributed&n;&t;according to the terms of the GNU General Public License,&n;&t;incorporated herein by reference.&n;&n;&t;The author may be reached at bao.ha@srs.gov&n;&t;or 418 Hastings Place, Martinez, GA 30907.&n;&n;&t;Things remaining to do:&n;&t;Better record keeping of errors.&n;&t;Eliminate transmit interrupt to reduce overhead.&n;&t;Implement &quot;concurrent processing&quot;. I won&squot;t be doing it!&n;&n;&t;Bugs:&n;&n;&t;If you have a problem of not detecting the 82595 during a&n;&t;reboot (warm reset), disable the FLASH memory should fix it.&n;&t;This is a compatibility hardware problem.&n;&n;&t;Versions:&n;&t;0.12d&t;fixing a problem with single card detected as eight eth devices&n;&t;&t;fixing a problem with sudden drop in card performance&n;&t;&t;(chris (asdn@go2.pl), 10/29/2001)&n;&t;0.12c&t;fixing some problems with old cards (aris, 01/08/2001)&n;&t;0.12b&t;misc fixes (aris, 06/26/2000)&n;&t;0.12a   port of version 0.12a of 2.2.x kernels to 2.3.x&n;&t;&t;(aris (aris@conectiva.com.br), 05/19/2000)&n;&t;0.11e   some tweaks about multiple cards support (PdP, jul/aug 1999)&n;&t;0.11d&t;added __initdata, __init stuff; call spin_lock_init&n;&t;        in eepro_probe1. Replaced &quot;eepro&quot; by dev-&gt;name. Augmented&n;&t;&t;the code protected by spin_lock in interrupt routine&n;&t;&t;(PdP, 12/12/1998)&n;&t;0.11c   minor cleanup (PdP, RMC, 09/12/1998)&n;&t;0.11b   Pascal Dupuis (dupuis@lei.ucl.ac.be): works as a module&n;&t;        under 2.1.xx. Debug messages are flagged as KERN_DEBUG to&n;&t;&t;avoid console flooding. Added locking at critical parts. Now&n;&t;&t;the dawn thing is SMP safe.&n;&t;0.11a   Attempt to get 2.1.xx support up (RMC)&n;&t;0.11&t;Brian Candler added support for multiple cards. Tested as&n;&t;&t;a module, no idea if it works when compiled into kernel.&n;&n;&t;0.10e&t;Rick Bressler notified me that ifconfig up;ifconfig down fails&n;&t;&t;because the irq is lost somewhere. Fixed that by moving&n;&t;&t;request_irq and free_irq to eepro_open and eepro_close respectively.&n;&t;0.10d&t;Ugh! Now Wakeup works. Was seriously broken in my first attempt.&n;&t;&t;I&squot;ll need to find a way to specify an ioport other than&n;&t;&t;the default one in the PnP case. PnP definitively sucks.&n;&t;&t;And, yes, this is not the only reason.&n;&t;0.10c&t;PnP Wakeup Test for 595FX. uncomment #define PnPWakeup;&n;&t;&t;to use.&n;&t;0.10b&t;Should work now with (some) Pro/10+. At least for&n;&t;&t;me (and my two cards) it does. _No_ guarantee for&n;&t;&t;function with non-Pro/10+ cards! (don&squot;t have any)&n;&t;&t;(RMC, 9/11/96)&n;&n;&t;0.10&t;Added support for the Etherexpress Pro/10+.  The&n;&t;&t;IRQ map was changed significantly from the old&n;&t;&t;pro/10.  The new interrupt map was provided by&n;&t;&t;Rainer M. Canavan (Canavan@Zeus.cs.bonn.edu).&n;&t;&t;(BCH, 9/3/96)&n;&n;&t;0.09&t;Fixed a race condition in the transmit algorithm,&n;&t;&t;which causes crashes under heavy load with fast&n;&t;&t;pentium computers.  The performance should also&n;&t;&t;improve a bit.  The size of RX buffer, and hence&n;&t;&t;TX buffer, can also be changed via lilo or insmod.&n;&t;&t;(BCH, 7/31/96)&n;&n;&t;0.08&t;Implement 32-bit I/O for the 82595TX and 82595FX&n;&t;&t;based lan cards.  Disable full-duplex mode if TPE&n;&t;&t;is not used.  (BCH, 4/8/96)&n;&n;&t;0.07a&t;Fix a stat report which counts every packet as a&n;&t;&t;heart-beat failure. (BCH, 6/3/95)&n;&n;&t;0.07&t;Modified to support all other 82595-based lan cards.&n;&t;&t;The IRQ vector of the EtherExpress Pro will be set&n;&t;&t;according to the value saved in the EEPROM.  For other&n;&t;&t;cards, I will do autoirq_request() to grab the next&n;&t;&t;available interrupt vector. (BCH, 3/17/95)&n;&n;&t;0.06a,b&t;Interim released.  Minor changes in the comments and&n;&t;&t;print out format. (BCH, 3/9/95 and 3/14/95)&n;&n;&t;0.06&t;First stable release that I am comfortable with. (BCH,&n;&t;&t;3/2/95)&n;&n;&t;0.05&t;Complete testing of multicast. (BCH, 2/23/95)&n;&n;&t;0.04&t;Adding multicast support. (BCH, 2/14/95)&n;&n;&t;0.03&t;First widely alpha release for public testing.&n;&t;&t;(BCH, 2/14/95)&n;&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -11,7 +11,7 @@ op_assign
 l_string|&quot;eepro.c: v0.12c 01/08/2000 aris@conectiva.com.br&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
-multiline_comment|/*&n;  Sources:&n;&n;&t;This driver wouldn&squot;t have been written without the availability &n;&t;of the Crynwr&squot;s Lan595 driver source code.  It helps me to &n;&t;familiarize with the 82595 chipset while waiting for the Intel &n;&t;documentation.  I also learned how to detect the 82595 using &n;&t;the packet driver&squot;s technique.&n;&n;&t;This driver is written by cutting and pasting the skeleton.c driver&n;&t;provided by Donald Becker.  I also borrowed the EEPROM routine from&n;&t;Donald Becker&squot;s 82586 driver.&n;&n;&t;Datasheet for the Intel 82595 (including the TX and FX version). It &n;&t;provides just enough info that the casual reader might think that it &n;&t;documents the i82595.&n;&n;&t;The User Manual for the 82595.  It provides a lot of the missing&n;&t;information.&n;&n;*/
+multiline_comment|/*&n;  Sources:&n;&n;&t;This driver wouldn&squot;t have been written without the availability&n;&t;of the Crynwr&squot;s Lan595 driver source code.  It helps me to&n;&t;familiarize with the 82595 chipset while waiting for the Intel&n;&t;documentation.  I also learned how to detect the 82595 using&n;&t;the packet driver&squot;s technique.&n;&n;&t;This driver is written by cutting and pasting the skeleton.c driver&n;&t;provided by Donald Becker.  I also borrowed the EEPROM routine from&n;&t;Donald Becker&squot;s 82586 driver.&n;&n;&t;Datasheet for the Intel 82595 (including the TX and FX version). It&n;&t;provides just enough info that the casual reader might think that it&n;&t;documents the i82595.&n;&n;&t;The User Manual for the 82595.  It provides a lot of the missing&n;&t;information.&n;&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -74,7 +74,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/* note: 0x300 is default, the 595FX supports ALL IO Ports &n;  from 0x000 to 0x3F0, some of which are reserved in PCs */
+multiline_comment|/* note: 0x300 is default, the 595FX supports ALL IO Ports&n;  from 0x000 to 0x3F0, some of which are reserved in PCs */
 multiline_comment|/* To try the (not-really PnP Wakeup: */
 multiline_comment|/*&n;#define PnPWakeup&n;*/
 multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug */
@@ -232,7 +232,7 @@ mdefine_line|#define ee_BNC_TPE   0 /* 0=TPE */
 DECL|macro|ee_BootType
 mdefine_line|#define ee_BootType  1 /* 00=None, 01=IPX, 10=ODI, 11=NDIS */
 DECL|macro|ee_BootTypeMask
-mdefine_line|#define ee_BootTypeMask 0x3 
+mdefine_line|#define ee_BootTypeMask 0x3
 DECL|macro|ee_NumConn
 mdefine_line|#define ee_NumConn   3  /* Number of Connections 0= One or Two */
 DECL|macro|ee_FlashSock
@@ -471,7 +471,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;Details of the i82595.&n;&n;You will need either the datasheet or the user manual to understand what&n;is going on here.  The 82595 is very different from the 82586, 82593.&n;&n;The receive algorithm in eepro_rx() is just an implementation of the&n;RCV ring structure that the Intel 82595 imposes at the hardware level.&n;The receive buffer is set at 24K, and the transmit buffer is 8K.  I&n;am assuming that the total buffer memory is 32K, which is true for the&n;Intel EtherExpress Pro/10.  If it is less than that on a generic card,&n;the driver will be broken.&n;&n;The transmit algorithm in the hardware_send_packet() is similar to the&n;one in the eepro_rx().  The transmit buffer is a ring linked list.&n;I just queue the next available packet to the end of the list.  In my&n;system, the 82595 is so fast that the list seems to always contain a&n;single packet.  In other systems with faster computers and more congested&n;network traffics, the ring linked list should improve performance by&n;allowing up to 8K worth of packets to be queued.&n;&n;The sizes of the receive and transmit buffers can now be changed via lilo &n;or insmod.  Lilo uses the appended line &quot;ether=io,irq,debug,rx-buffer,eth0&quot;&n;where rx-buffer is in KB unit.  Modules uses the parameter mem which is&n;also in KB unit, for example &quot;insmod io=io-address irq=0 mem=rx-buffer.&quot;  &n;The receive buffer has to be more than 3K or less than 29K.  Otherwise,&n;it is reset to the default of 24K, and, hence, 8K for the trasnmit&n;buffer (transmit-buffer = 32K - receive-buffer).&n;&n;*/
+multiline_comment|/*&n;&t;&t;&t;Details of the i82595.&n;&n;You will need either the datasheet or the user manual to understand what&n;is going on here.  The 82595 is very different from the 82586, 82593.&n;&n;The receive algorithm in eepro_rx() is just an implementation of the&n;RCV ring structure that the Intel 82595 imposes at the hardware level.&n;The receive buffer is set at 24K, and the transmit buffer is 8K.  I&n;am assuming that the total buffer memory is 32K, which is true for the&n;Intel EtherExpress Pro/10.  If it is less than that on a generic card,&n;the driver will be broken.&n;&n;The transmit algorithm in the hardware_send_packet() is similar to the&n;one in the eepro_rx().  The transmit buffer is a ring linked list.&n;I just queue the next available packet to the end of the list.  In my&n;system, the 82595 is so fast that the list seems to always contain a&n;single packet.  In other systems with faster computers and more congested&n;network traffics, the ring linked list should improve performance by&n;allowing up to 8K worth of packets to be queued.&n;&n;The sizes of the receive and transmit buffers can now be changed via lilo&n;or insmod.  Lilo uses the appended line &quot;ether=io,irq,debug,rx-buffer,eth0&quot;&n;where rx-buffer is in KB unit.  Modules uses the parameter mem which is&n;also in KB unit, for example &quot;insmod io=io-address irq=0 mem=rx-buffer.&quot;&n;The receive buffer has to be more than 3K or less than 29K.  Otherwise,&n;it is reset to the default of 24K, and, hence, 8K for the trasnmit&n;buffer (transmit-buffer = 32K - receive-buffer).&n;&n;*/
 multiline_comment|/* now this section could be used by both boards: the oldies and the ee10:&n; * ee10 uses tx buffer before of rx buffer and the oldies the inverse.&n; * (aris)&n; */
 DECL|macro|RAM_SIZE
 mdefine_line|#define RAM_SIZE        0x8000
@@ -531,11 +531,11 @@ mdefine_line|#define&t;XMT_CHAIN&t;0x04
 DECL|macro|XMT_COUNT
 mdefine_line|#define&t;XMT_COUNT&t;0x06
 DECL|macro|BANK0_SELECT
-mdefine_line|#define&t;BANK0_SELECT&t;0x00&t;&t;
+mdefine_line|#define&t;BANK0_SELECT&t;0x00
 DECL|macro|BANK1_SELECT
-mdefine_line|#define&t;BANK1_SELECT&t;0x40&t;&t;
+mdefine_line|#define&t;BANK1_SELECT&t;0x40
 DECL|macro|BANK2_SELECT
-mdefine_line|#define&t;BANK2_SELECT&t;0x80&t;&t;
+mdefine_line|#define&t;BANK2_SELECT&t;0x80
 multiline_comment|/* Bank 0 registers */
 DECL|macro|COMMAND_REG
 mdefine_line|#define&t;COMMAND_REG&t;0x00&t;/* Register 0 */
@@ -776,7 +776,12 @@ suffix:semicolon
 r_int
 id|base_addr
 op_assign
+id|dev
+ques
+c_cond
 id|dev-&gt;base_addr
+suffix:colon
+l_int|0
 suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
@@ -2020,7 +2025,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* From now on, dev-&gt;mem_end - dev-&gt;mem_start contains &n;&t;&t;&t; * the actual size of rx buffer &n;&t;&t;&t; */
+multiline_comment|/* From now on, dev-&gt;mem_end - dev-&gt;mem_start contains&n;&t;&t;&t; * the actual size of rx buffer&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3823,7 +3828,7 @@ comma
 l_string|&quot;network cable problem&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* This is not a duplicate. One message for the console, &n;&t;   one for the the log file  */
+multiline_comment|/* This is not a duplicate. One message for the console,&n;&t;   one for the the log file  */
 id|printk
 (paren
 id|KERN_DEBUG
@@ -4104,6 +4109,7 @@ op_decrement
 )paren
 )paren
 (brace
+macro_line|#ifdef ANSWER_TX_AND_RX
 r_switch
 c_cond
 (paren
@@ -4116,7 +4122,6 @@ id|TX_INT
 )paren
 )paren
 (brace
-macro_line|#ifdef ANSWER_TX_AND_RX
 r_case
 (paren
 id|RX_INT
@@ -4132,7 +4137,6 @@ id|ioaddr
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|RX_INT
 suffix:colon
@@ -4156,6 +4160,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4180,6 +4185,14 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#ifndef ANSWER_TX_AND_RX
+id|eepro_ack_rx
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Get the received packets */
 id|eepro_rx
 c_func
@@ -4187,10 +4200,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifndef ANSWER_TX_AND_RX
-r_continue
-suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
@@ -4216,6 +4225,14 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#ifndef ANSWER_TX_AND_RX
+id|eepro_ack_tx
+c_func
+(paren
+id|ioaddr
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Process the status of transmitted packets */
 id|eepro_transmit_interrupt
 c_func
@@ -4911,7 +4928,7 @@ op_ne
 id|lp-&gt;tx_end
 )paren
 (brace
-multiline_comment|/* update the next address and the chain bit in the &n;&t;&t;&t;   last packet */
+multiline_comment|/* update the next address and the chain bit in the&n;&t;&t;&t;   last packet */
 id|outw
 c_func
 (paren
@@ -5866,7 +5883,7 @@ multiline_comment|/* I don&squot;t like to change tx_start here */
 )brace
 r_else
 (brace
-multiline_comment|/* update the next address and the chain bit in the &n;&t;&t;&t;last packet */
+multiline_comment|/* update the next address and the chain bit in the&n;&t;&t;&t;last packet */
 r_if
 c_cond
 (paren
@@ -6357,7 +6374,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Not sure will ever reach here, &n;&t;&t;&t;I set the 595 to discard bad received frames */
+multiline_comment|/* Not sure will ever reach here,&n;&t;&t;&t;I set the 595 to discard bad received frames */
 id|lp-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
@@ -7133,7 +7150,7 @@ id|d-&gt;base_addr
 op_assign
 id|io
 (braket
-l_int|0
+id|n_eepro
 )braket
 suffix:semicolon
 id|d-&gt;irq
@@ -7147,6 +7164,17 @@ id|d-&gt;init
 op_assign
 id|eepro_probe
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|io
+(braket
+id|n_eepro
+)braket
+OG
+l_int|0
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -7164,6 +7192,7 @@ suffix:semicolon
 r_else
 r_break
 suffix:semicolon
+)brace
 )brace
 r_return
 id|n_eepro

@@ -50,6 +50,38 @@ macro_line|#ifndef PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 DECL|macro|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 mdefine_line|#define PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8 0x2000
 macro_line|#endif
+DECL|variable|sx_pci_tbl
+r_static
+r_struct
+id|pci_device_id
+id|sx_pci_tbl
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_SPECIALIX
+comma
+id|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
+(brace
+l_int|0
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|sx_pci_tbl
+)paren
+suffix:semicolon
 multiline_comment|/* Configurable options: &n;   (Don&squot;t be too sure that it&squot;ll work if you toggle them) */
 multiline_comment|/* Am I paranoid or not ? ;-) */
 DECL|macro|SX_PARANOIA_CHECK

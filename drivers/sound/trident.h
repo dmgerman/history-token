@@ -9,7 +9,7 @@ mdefine_line|#define PCI_VENDOR_ID_TRIDENT&t;&t;0x1023
 macro_line|#endif
 macro_line|#ifndef PCI_VENDOR_ID_SI
 DECL|macro|PCI_VENDOR_ID_SI
-mdefine_line|#define PCI_VENDOR_ID_SI&t;&t;&t;0x0139
+mdefine_line|#define PCI_VENDOR_ID_SI&t;&t;&t;0x1039
 macro_line|#endif
 macro_line|#ifndef PCI_VENDOR_ID_ALI
 DECL|macro|PCI_VENDOR_ID_ALI

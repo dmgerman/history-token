@@ -320,10 +320,6 @@ id|random_state
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*****************************************************************&n; *&n; * Utility functions, with some ASM defined functions for speed&n; * purposes&n; * &n; *****************************************************************/
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/*&n; * Unfortunately, while the GCC optimizer for the i386 understands how&n; * to optimize a static rotate left of x bits, it doesn&squot;t know how to&n; * deal with a variable rotate of x bits.  So we use a bit of asm magic.&n; */
 macro_line|#if (!defined (__i386__))
 DECL|function|rotate_left
@@ -7170,7 +7166,7 @@ macro_line|#endif
 multiline_comment|/* Copy data to destination buffer */
 id|i
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|nbytes
@@ -8221,7 +8217,7 @@ l_int|0
 (brace
 id|bytes
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|c

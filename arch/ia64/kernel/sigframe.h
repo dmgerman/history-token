@@ -1,3 +1,25 @@
+DECL|struct|sigscratch
+r_struct
+id|sigscratch
+(brace
+DECL|member|scratch_unat
+r_int
+r_int
+id|scratch_unat
+suffix:semicolon
+multiline_comment|/* ar.unat for the general registers saved in pt */
+DECL|member|pad
+r_int
+r_int
+id|pad
+suffix:semicolon
+DECL|member|pt
+r_struct
+id|pt_regs
+id|pt
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|sigframe
 r_struct
 id|sigframe
@@ -21,12 +43,7 @@ r_int
 id|arg2
 suffix:semicolon
 multiline_comment|/* sigcontext pointer */
-DECL|member|rbs_base
-r_int
-r_int
-id|rbs_base
-suffix:semicolon
-multiline_comment|/* base of new register backing store (or NULL) */
+multiline_comment|/*&n;&t; * End of architected state.&n;&t; */
 DECL|member|handler
 r_void
 op_star

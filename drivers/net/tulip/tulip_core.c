@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.15-pre8&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.15-pre9&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Oct 11, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;Nov 6, 2001&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
@@ -17,6 +17,9 @@ macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef __sparc__
+macro_line|#include &lt;asm/pbm.h&gt;
+macro_line|#endif
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -494,7 +497,7 @@ id|HAS_8023X
 op_or
 id|HAS_PCI_MWI
 comma
-id|t21142_timer
+id|pnic2_timer
 )brace
 comma
 multiline_comment|/* COMET */
@@ -1491,93 +1494,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;chip_id
-op_eq
-id|PNIC2
-)paren
-(brace
-id|u32
-id|addr_high
-op_assign
-(paren
-id|dev-&gt;dev_addr
-(braket
-l_int|1
-)braket
-op_lshift
-l_int|8
-)paren
-op_plus
-(paren
-id|dev-&gt;dev_addr
-(braket
-l_int|0
-)braket
-op_lshift
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* This address setting does not appear to impact chip operation?? */
-id|outl
-c_func
-(paren
-(paren
-id|dev-&gt;dev_addr
-(braket
-l_int|5
-)braket
-op_lshift
-l_int|8
-)paren
-op_plus
-id|dev-&gt;dev_addr
-(braket
-l_int|4
-)braket
-op_plus
-(paren
-id|dev-&gt;dev_addr
-(braket
-l_int|3
-)braket
-op_lshift
-l_int|24
-)paren
-op_plus
-(paren
-id|dev-&gt;dev_addr
-(braket
-l_int|2
-)braket
-op_lshift
-l_int|16
-)paren
-comma
-id|ioaddr
-op_plus
-l_int|0xB0
-)paren
-suffix:semicolon
-id|outl
-c_func
-(paren
-id|addr_high
-op_plus
-(paren
-id|addr_high
-op_lshift
-l_int|16
-)paren
-comma
-id|ioaddr
-op_plus
-l_int|0xB8
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|tp-&gt;flags
 op_amp
 id|MC_HASH_ONLY
@@ -2386,7 +2302,49 @@ op_eq
 id|PNIC2
 )paren
 (brace
-id|t21142_start_nway
+multiline_comment|/* for initial startup advertise 10/100 Full and Half */
+id|tp-&gt;sym_advertise
+op_assign
+l_int|0x01E0
+suffix:semicolon
+multiline_comment|/* enable autonegotiate end interrupt */
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|CSR5
+)paren
+op_or
+l_int|0x00008010
+comma
+id|ioaddr
+op_plus
+id|CSR5
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|CSR7
+)paren
+op_or
+l_int|0x00008010
+comma
+id|ioaddr
+op_plus
+id|CSR7
+)paren
+suffix:semicolon
+id|pnic2_start_nway
 c_func
 (paren
 id|dev
@@ -5770,11 +5728,30 @@ l_int|0x1200
 op_eq
 l_int|0x1200
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|tp-&gt;chip_id
+op_eq
+id|PNIC2
+)paren
+(brace
+id|pnic2_start_nway
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|t21142_start_nway
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
+)brace
 )brace
 r_else
 r_if
@@ -7840,8 +7817,8 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; *&t;Looks for early PCI chipsets where people report hangs &n;&t; *&t;without the workarounds being on.&n;&t; */
-multiline_comment|/* Intel Saturn. Switch to 8 long words burst, 8 long word cache aligned &n;&t;   Aries might need this too. The Saturn errata are not pretty reading but&n;&t;   thankfully its an old 486 chipset.&n;&t;*/
+multiline_comment|/*&n;&t; *&t;Looks for early PCI chipsets where people report hangs&n;&t; *&t;without the workarounds being on.&n;&t; */
+multiline_comment|/* Intel Saturn. Switch to 8 long words burst, 8 long word cache aligned&n;&t;   Aries might need this too. The Saturn errata are not pretty reading but&n;&t;   thankfully its an old 486 chipset.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -7956,7 +7933,7 @@ op_complement
 l_int|0xfff10000
 suffix:semicolon
 multiline_comment|/* zero reserved bits 31:20, 16 */
-multiline_comment|/* DM9102A has troubles with MRM, clear bit 24 too. */
+multiline_comment|/* DM9102A has troubles with MRM &amp; clear reserved bits 24:22, 20, 16, 7:1 */
 r_if
 c_cond
 (paren
@@ -7971,8 +7948,33 @@ l_int|0x9102
 id|csr0
 op_and_assign
 op_complement
-l_int|0x01200000
+l_int|0x01f100ff
 suffix:semicolon
+macro_line|#if defined(__sparc__)
+multiline_comment|/* DM9102A needs 32-dword alignment/burst length on sparc - chip bug? */
+r_if
+c_cond
+(paren
+id|pdev-&gt;vendor
+op_eq
+l_int|0x1282
+op_logical_and
+id|pdev-&gt;device
+op_eq
+l_int|0x9102
+)paren
+id|csr0
+op_assign
+(paren
+id|csr0
+op_amp
+op_complement
+l_int|0xff00
+)paren
+op_or
+l_int|0xe000
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; *&t;And back to business&n;&t; */
 id|i
 op_assign
@@ -8774,6 +8776,74 @@ op_assign
 l_int|4
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DDB5476
+r_if
+c_cond
+(paren
+(paren
+id|pdev-&gt;bus-&gt;number
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+op_eq
+l_int|6
+)paren
+)paren
+(brace
+multiline_comment|/* DDB5476 MAC address in first EEPROM locations. */
+id|sa_offset
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* No media table either */
+id|tp-&gt;flags
+op_and_assign
+op_complement
+id|HAS_MEDIA_TABLE
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_DDB5477
+r_if
+c_cond
+(paren
+(paren
+id|pdev-&gt;bus-&gt;number
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
+op_eq
+l_int|4
+)paren
+)paren
+(brace
+multiline_comment|/* DDB5477 MAC address in first EEPROM locations. */
+id|sa_offset
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* No media table either */
+id|tp-&gt;flags
+op_and_assign
+op_complement
+id|HAS_MEDIA_TABLE
+suffix:semicolon
+)brace
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -8885,7 +8955,7 @@ op_assign
 id|tmp
 suffix:semicolon
 )brace
-multiline_comment|/* On the Zynx 315 Etherarray and other multiport boards only the&n;&t;   first Tulip has an EEPROM.&n;&t;   The addresses of the subsequent ports are derived from the first.&n;&t;   Many PCI BIOSes also incorrectly report the IRQ line, so we correct&n;&t;   that here as well. */
+multiline_comment|/* On the Zynx 315 Etherarray and other multiport boards only the&n;&t;   first Tulip has an EEPROM.&n;&t;   On Sparc systems the mac address is held in the OBP property&n;&t;   &quot;local-mac-address&quot;.&n;&t;   The addresses of the subsequent ports are derived from the first.&n;&t;   Many PCI BIOSes also incorrectly report the IRQ line, so we correct&n;&t;   that here as well. */
 r_if
 c_cond
 (paren
@@ -8900,6 +8970,15 @@ op_star
 l_int|0xff
 )paren
 (brace
+macro_line|#if defined(__sparc__)
+r_struct
+id|pcidev_cookie
+op_star
+id|pcp
+op_assign
+id|pdev-&gt;sysdata
+suffix:semicolon
+macro_line|#endif
 id|eeprom_missing
 op_assign
 l_int|1
@@ -8940,6 +9019,41 @@ id|i
 op_plus
 l_int|1
 suffix:semicolon
+macro_line|#if defined(__sparc__)
+r_if
+c_cond
+(paren
+(paren
+id|pcp
+op_ne
+l_int|NULL
+)paren
+op_logical_and
+id|prom_getproplen
+c_func
+(paren
+id|pcp-&gt;prom_node
+comma
+l_string|&quot;local-mac-address&quot;
+)paren
+op_eq
+l_int|6
+)paren
+(brace
+id|prom_getproperty
+c_func
+(paren
+id|pcp-&gt;prom_node
+comma
+l_string|&quot;local-mac-address&quot;
+comma
+id|dev-&gt;dev_addr
+comma
+l_int|6
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#if defined(__i386__)&t;&t;/* Patch up x86 BIOS bug. */
 r_if
 c_cond
@@ -9464,6 +9578,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|tp-&gt;chip_id
+op_eq
+id|PNIC2
+)paren
+id|tp-&gt;link_change
+op_assign
+id|pnic2_lnk_change
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|tp-&gt;flags
 op_amp
@@ -9477,18 +9603,6 @@ id|DC21041
 id|tp-&gt;link_change
 op_assign
 id|t21142_lnk_change
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|tp-&gt;chip_id
-op_eq
-id|PNIC2
-)paren
-id|tp-&gt;link_change
-op_assign
-id|pnic2_lnk_change
 suffix:semicolon
 r_else
 r_if
@@ -9641,9 +9755,6 @@ suffix:semicolon
 r_case
 id|DC21142
 suffix:colon
-r_case
-id|PNIC2
-suffix:colon
 r_if
 c_cond
 (paren
@@ -9703,6 +9814,32 @@ id|t21142_start_nway
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PNIC2
+suffix:colon
+multiline_comment|/* just do a reset for sanity sake */
+id|outl
+c_func
+(paren
+l_int|0x0000
+comma
+id|ioaddr
+op_plus
+id|CSR13
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0x0000
+comma
+id|ioaddr
+op_plus
+id|CSR14
 )paren
 suffix:semicolon
 r_break

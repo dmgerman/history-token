@@ -233,9 +233,11 @@ id|cols
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 DECL|variable|real_root_dev
-id|kdev_t
+r_int
+r_int
 id|real_root_dev
 suffix:semicolon
+multiline_comment|/* do_proc_dointvec cannot handle kdev_t */
 macro_line|#endif
 DECL|variable|root_mountflags
 r_int

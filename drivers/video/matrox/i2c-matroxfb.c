@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *&n; * Hardware accelerated Matrox Millennium I, II, Mystique, G100, G200, G400 and G450.&n; *&n; * (c) 1998-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&n; *&n; * Version: 1.51 2001/01/19&n; *&n; * See matroxfb_base.c for contributors.&n; *&n; */
 macro_line|#include &quot;matroxfb_base.h&quot;
 macro_line|#include &quot;matroxfb_maven.h&quot;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -1246,7 +1247,7 @@ c_func
 id|PMINFO
 id|DAC_XGENIODATA
 comma
-l_int|0x00
+l_int|0xFF
 )paren
 suffix:semicolon
 id|matroxfb_DAC_out
@@ -1255,7 +1256,7 @@ c_func
 id|PMINFO
 id|DAC_XGENIOCTRL
 comma
-l_int|0xFF
+l_int|0x00
 )paren
 suffix:semicolon
 id|matroxfb_DAC_unlock_irqrestore
@@ -1547,7 +1548,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;(c) 1999 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+l_string|&quot;(c) 1999-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

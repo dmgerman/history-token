@@ -1,4 +1,4 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * $Id: jedec.h,v 1.1 2000/07/04 07:21:51 jgg Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * $Id: jedec.h,v 1.2 2001/11/06 14:37:36 dwmw2 Exp $&n; */
 macro_line|#ifndef __LINUX_MTD_JEDEC_H__
 DECL|macro|__LINUX_MTD_JEDEC_H__
 mdefine_line|#define __LINUX_MTD_JEDEC_H__
@@ -129,21 +129,6 @@ id|MAX_JEDEC_CHIPS
 )braket
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|JEDECTable
-op_star
-id|jedec_idtoinf
-c_func
-(paren
-id|__u8
-id|mfr
-comma
-id|__u8
-id|id
-)paren
 suffix:semicolon
 macro_line|#endif
 eof

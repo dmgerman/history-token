@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MMU fault handling support.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * MMU fault handling support.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 r_extern
 r_void
-id|die_if_kernel
+id|die
 (paren
 r_char
 op_star
@@ -128,6 +128,23 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|signal
+op_assign
+id|SIGSEGV
+comma
+id|code
+op_assign
+id|SEGV_MAPERR
+suffix:semicolon
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+op_star
+id|prev_vma
+suffix:semicolon
 r_struct
 id|mm_struct
 op_star
@@ -140,27 +157,14 @@ id|exception_fixup
 id|fix
 suffix:semicolon
 r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-op_star
-id|prev_vma
-suffix:semicolon
-r_struct
 id|siginfo
 id|si
-suffix:semicolon
-r_int
-id|signal
-op_assign
-id|SIGSEGV
 suffix:semicolon
 r_int
 r_int
 id|mask
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user context, we must not take the fault..&n;&t; */
 r_if
 c_cond
 (paren
@@ -217,6 +221,10 @@ id|check_expansion
 suffix:semicolon
 id|good_area
 suffix:colon
+id|code
+op_assign
+id|SEGV_ACCERR
+suffix:semicolon
 multiline_comment|/* OK, we&squot;ve got a good vm_area for this memory area.  Check the access permissions: */
 DECL|macro|VM_READ_BIT
 macro_line|#&t;define VM_READ_BIT&t;0
@@ -287,6 +295,8 @@ id|mask
 r_goto
 id|bad_area
 suffix:semicolon
+id|survive
+suffix:colon
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault, make&n;&t; * sure we exit gracefully rather than endlessly redo the&n;&t; * fault.&n;&t; */
 r_switch
 c_cond
@@ -302,8 +312,6 @@ id|address
 comma
 id|mask
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 r_case
@@ -526,7 +534,7 @@ l_int|0
 suffix:semicolon
 id|si.si_code
 op_assign
-id|SI_KERNEL
+id|code
 suffix:semicolon
 id|si.si_addr
 op_assign
@@ -618,7 +626,28 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Oops. The kernel tried to access some bad page. We&squot;ll have&n;&t; * to terminate things with extreme prejudice.&n;&t; */
+multiline_comment|/*&n;&t; * Oops. The kernel tried to access some bad page. We&squot;ll have to terminate things&n;&t; * with extreme prejudice.&n;&t; */
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|address
+OL
+id|PAGE_SIZE
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;Unable to handle kernel NULL pointer dereference&quot;
+)paren
+suffix:semicolon
+r_else
 id|printk
 c_func
 (paren
@@ -629,7 +658,7 @@ comma
 id|address
 )paren
 suffix:semicolon
-id|die_if_kernel
+id|die
 c_func
 (paren
 l_string|&quot;Oops&quot;
@@ -637,6 +666,12 @@ comma
 id|regs
 comma
 id|isr
+)paren
+suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|do_exit
@@ -656,6 +691,34 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

@@ -134,7 +134,6 @@ op_star
 id|mm
 )paren
 (brace
-multiline_comment|/* check if our ASN is of an older generation and thus invalid: */
 r_if
 c_cond
 (paren

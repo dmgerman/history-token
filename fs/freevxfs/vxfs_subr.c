@@ -47,6 +47,12 @@ dot
 id|bmap
 op_assign
 id|vxfs_bmap
+comma
+dot
+id|sync_page
+op_assign
+id|block_sync_page
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * vxfs_get_page - read a page into memory.&n; * @ip:&t;&t;inode to read from&n; * @n:&t;&t;page number&n; *&n; * Description:&n; *   vxfs_get_page reads the @n th page of @ip into the pagecache.&n; *&n; * Returns:&n; *   The wanted page on success, else a NULL pointer.&n; */

@@ -1471,11 +1471,29 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|INTEL_I820
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;Intel i820&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|INTEL_I840
 suffix:colon
 id|head-&gt;chipset
 op_assign
 l_string|&quot;Intel i840&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|INTEL_I845
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;Intel i845&quot;
 suffix:semicolon
 r_break
 suffix:semicolon

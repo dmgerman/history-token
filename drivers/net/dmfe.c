@@ -1,6 +1,10 @@
-multiline_comment|/*&n;    dmfe.c: Version 1.36p1 2001-05-12 for Linux kernel 2.4.x&n;&n;    A Davicom DM9102/DM9102A/DM9102A+DM9801/DM9102A+DM9802 NIC fast&n;    ethernet driver for Linux.&n;    Copyright (C) 1997  Sten Wang&n;&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    DAVICOM Web-Site: www.davicom.com.tw&n;&n;    Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;    Maintainer: Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt;&n;&n;    (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;    Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; :&n;    Made it compile in 2.3 (device to net_device)&n;&n;    Alan Cox &lt;alan@redhat.com&gt; :&n;    Cleaned up for kernel merge.&n;    Removed the back compatibility support&n;    Reformatted, fixing spelling etc as I went&n;    Removed IRQ 0-15 assumption&n;&n;    Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; :&n;    Updated to use new PCI driver API.&n;    Resource usage cleanups.&n;    Report driver version to user.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Cleaned up and added SMP safety.  Thanks go to Jeff Garzik,&n;&t;Andrew Morton and Frank Davis for the SMP safety fixes.&n;&n;    TODO&n;&n;    Implement pci_driver::suspend() and pci_driver::resume()&n;    power management methods.&n;&n;    Check and fix on 64bit and big endian boxes.&n;&n;    Test and make sure PCI latency is now correct for all cases.&n;*/
-DECL|macro|DMFE_VERSION
-mdefine_line|#define DMFE_VERSION &quot;1.36p1 (May 12, 2001)&quot;
+multiline_comment|/*&n;    A Davicom DM9102/DM9102A/DM9102A+DM9801/DM9102A+DM9802 NIC fast&n;    ethernet driver for Linux.&n;    Copyright (C) 1997  Sten Wang&n;&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    DAVICOM Web-Site: www.davicom.com.tw&n;&n;    Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;    Maintainer: Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt;&n;&n;    (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;    Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; :&n;    Made it compile in 2.3 (device to net_device)&n;&n;    Alan Cox &lt;alan@redhat.com&gt; :&n;    Cleaned up for kernel merge.&n;    Removed the back compatibility support&n;    Reformatted, fixing spelling etc as I went&n;    Removed IRQ 0-15 assumption&n;&n;    Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; :&n;    Updated to use new PCI driver API.&n;    Resource usage cleanups.&n;    Report driver version to user.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Cleaned up and added SMP safety.  Thanks go to Jeff Garzik,&n;    Andrew Morton and Frank Davis for the SMP safety fixes.&n;&n;    Vojtech Pavlik &lt;vojtech@suse.cz&gt; :&n;    Cleaned up pointer arithmetics.&n;    Fixed a lot of 64bit issues.&n;    Cleaned up printk()s a bit.&n;    Fixed some obvious big endian problems.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Use time_after for jiffies calculation.  Added ethtool&n;    support.  Updated PCI resource allocation.  Do not&n;    forget to unmap PCI mapped skbs.&n;&n;    TODO&n;&n;    Implement pci_driver::suspend() and pci_driver::resume()&n;    power management methods.&n;&n;    Check on 64 bit boxes.&n;    Check and fix on big endian boxes.&n;&n;    Test and make sure PCI latency is now correct for all cases.&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;dmfe&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.36.3&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;2001-11-06&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -16,6 +20,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -23,9 +28,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#if BITS_PER_LONG == 64
-macro_line|#error FIXME: driver does not support 64-bit platforms
-macro_line|#endif
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Board/System/Debug information/definition ---------------- */
 DECL|macro|PCI_DM9132_ID
 mdefine_line|#define PCI_DM9132_ID   0x91321282      /* Davicom DM9132 ID */
@@ -112,9 +115,9 @@ mdefine_line|#define DMFE_TX_TIMEOUT ((3*HZ)/2)&t;/* tx packet time-out time 1.5
 DECL|macro|DMFE_TX_KICK
 mdefine_line|#define DMFE_TX_KICK &t;(HZ/2)&t;/* tx packet Kick-out time 0.5 s&quot; */
 DECL|macro|DMFE_DBUG
-mdefine_line|#define DMFE_DBUG(dbug_now, msg, value) if (dmfe_debug || (dbug_now)) printk(KERN_ERR &quot;&lt;DMFE&gt;: %s %lx&bslash;n&quot;, (msg), (long) (value))
+mdefine_line|#define DMFE_DBUG(dbug_now, msg, value) if (dmfe_debug || (dbug_now)) printk(KERN_ERR DRV_NAME &quot;: %s %lx&bslash;n&quot;, (msg), (long) (value))
 DECL|macro|SHOW_MEDIA_TYPE
-mdefine_line|#define SHOW_MEDIA_TYPE(mode) printk(KERN_ERR &quot;&lt;DMFE&gt;: Change Speed to %sMhz %s duplex&bslash;n&quot;,mode &amp; 1 ?&quot;100&quot;:&quot;10&quot;, mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
+mdefine_line|#define SHOW_MEDIA_TYPE(mode) printk(KERN_ERR DRV_NAME &quot;: Change Speed to %sMhz %s duplex&bslash;n&quot;,mode &amp; 1 ?&quot;100&quot;:&quot;10&quot;, mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
 multiline_comment|/* CR9 definition: SROM/MII */
 DECL|macro|CR9_SROM_READ
 mdefine_line|#define CR9_SROM_READ   0x4800
@@ -165,23 +168,31 @@ id|tdes2
 comma
 id|tdes3
 suffix:semicolon
-DECL|member|tx_skb_ptr
-id|u32
-id|tx_skb_ptr
-suffix:semicolon
+multiline_comment|/* Data for the card */
 DECL|member|tx_buf_ptr
-id|u32
+r_char
+op_star
 id|tx_buf_ptr
 suffix:semicolon
+multiline_comment|/* Data for us */
 DECL|member|next_tx_desc
-id|u32
+r_struct
+id|tx_desc
+op_star
 id|next_tx_desc
 suffix:semicolon
-DECL|member|reserved
-id|u32
-id|reserved
-suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|32
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|struct|rx_desc
 r_struct
@@ -200,23 +211,32 @@ id|rdes2
 comma
 id|rdes3
 suffix:semicolon
+multiline_comment|/* Data for the card */
 DECL|member|rx_skb_ptr
-id|u32
+r_struct
+id|sk_buff
+op_star
 id|rx_skb_ptr
 suffix:semicolon
-DECL|member|rx_buf_ptr
-id|u32
-id|rx_buf_ptr
-suffix:semicolon
+multiline_comment|/* Data for us */
 DECL|member|next_rx_desc
-id|u32
+r_struct
+id|rx_desc
+op_star
 id|next_rx_desc
 suffix:semicolon
-DECL|member|reserved
-id|u32
-id|reserved
-suffix:semicolon
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|32
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|struct|dmfe_board_info
 r_struct
@@ -239,11 +259,11 @@ op_star
 id|next_dev
 suffix:semicolon
 multiline_comment|/* next device */
-DECL|member|net_dev
+DECL|member|pdev
 r_struct
 id|pci_dev
 op_star
-id|net_dev
+id|pdev
 suffix:semicolon
 multiline_comment|/* PCI device */
 DECL|member|lock
@@ -679,9 +699,12 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;Davicom DM9xxx net driver, version &quot;
-id|DMFE_VERSION
-l_string|&quot;&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Davicom DM9xxx net driver, version &quot;
+id|DRV_VERSION
+l_string|&quot; (&quot;
+id|DRV_RELDATE
+l_string|&quot;)&bslash;n&quot;
 suffix:semicolon
 DECL|variable|dmfe_debug
 r_static
@@ -1392,7 +1415,7 @@ r_int
 suffix:semicolon
 r_static
 r_void
-id|allocated_rx_buffer
+id|allocate_rx_buffer
 c_func
 (paren
 r_struct
@@ -1546,7 +1569,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|dmfe_reused_skb
+id|dmfe_reuse_skb
 c_func
 (paren
 r_struct
@@ -1676,22 +1699,12 @@ op_star
 id|ent
 )paren
 (brace
-r_int
-r_int
-id|pci_iobase
-suffix:semicolon
-id|u8
-id|pci_irqline
-suffix:semicolon
 r_struct
 id|dmfe_board_info
 op_star
 id|db
 suffix:semicolon
 multiline_comment|/* board information structure */
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|net_device
 op_star
@@ -1701,6 +1714,21 @@ id|u32
 id|dev_rev
 comma
 id|pci_pmr
+suffix:semicolon
+r_int
+id|i
+comma
+id|err
+suffix:semicolon
+id|DMFE_DBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;dmfe_init_one()&quot;
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1713,100 +1741,6 @@ id|printk
 c_func
 (paren
 id|version
-)paren
-suffix:semicolon
-id|DMFE_DBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;dmfe_init_one()&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Enable Master/IO access, Disable memory access */
-id|i
-op_assign
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-)paren
-r_return
-id|i
-suffix:semicolon
-id|pci_set_master
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-id|pci_iobase
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|pci_irqline
-op_assign
-id|pdev-&gt;irq
-suffix:semicolon
-multiline_comment|/* iobase check */
-r_if
-c_cond
-(paren
-id|pci_iobase
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;&lt;DMFE&gt;: I/O base is zero&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#if 0&t;/* pci_{enable_device,set_master} sets minimum latency for us now */
-multiline_comment|/* Set Latency Timer 80h */
-multiline_comment|/* FIXME: setting values &gt; 32 breaks some SiS 559x stuff.&n;&t;   Need a PCI quirk.. */
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_LATENCY_TIMER
-comma
-l_int|0x80
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Read Chip revision */
-id|pci_read_config_dword
-c_func
-(paren
-id|pdev
-comma
-id|PCI_REVISION_ID
-comma
-op_amp
-id|dev_rev
 )paren
 suffix:semicolon
 multiline_comment|/* Init network device */
@@ -1839,11 +1773,99 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* IO range check */
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|DRV_NAME
+l_string|&quot;: 32-bit PCI DMA not available.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|err_out_free
+suffix:semicolon
+)brace
+multiline_comment|/* Enable Master/IO access, Disable memory access */
+id|err
+op_assign
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|err_out_free
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|DRV_NAME
+l_string|&quot;: I/O base is zero&bslash;n&quot;
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|err_out_disable
+suffix:semicolon
+)brace
+multiline_comment|/* Read Chip revision */
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|PCI_REVISION_ID
+comma
+op_amp
+id|dev_rev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|pci_resource_len
+c_func
 (paren
 id|pdev
 comma
@@ -1865,30 +1887,42 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;&lt;DMFE&gt;: Allocated I/O size too small&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: Allocated I/O size too small&bslash;n&quot;
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
-id|err_out
+id|err_out_disable
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
+macro_line|#if 0&t;/* pci_{enable_device,set_master} sets minimum latency for us now */
+multiline_comment|/* Set Latency Timer 80h */
+multiline_comment|/* FIXME: setting values &gt; 32 breaks some SiS 559x stuff.&n;&t;   Need a PCI quirk.. */
+id|pci_write_config_byte
 c_func
-(paren
-id|pci_iobase
-comma
-id|pci_resource_len
 (paren
 id|pdev
 comma
-l_int|0
-)paren
+id|PCI_LATENCY_TIMER
 comma
-id|dev-&gt;name
+l_int|0x80
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|pci_request_regions
+c_func
+(paren
+id|pdev
+comma
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -1896,21 +1930,17 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;&lt;DMFE&gt;: I/O conflict : IO=%lx Range=%x&bslash;n&quot;
-comma
-id|pci_iobase
-comma
-id|CHK_IO_SIZE
-c_func
-(paren
-id|pdev
-comma
-id|dev_rev
-)paren
+id|DRV_NAME
+l_string|&quot;: Failed to request PCI regions&bslash;n&quot;
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
-id|err_out
+id|err_out_disable
 suffix:semicolon
 )brace
 multiline_comment|/* Init system &amp; device */
@@ -1918,7 +1948,7 @@ id|db
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-multiline_comment|/* Allocated Tx/Rx descriptor memory */
+multiline_comment|/* Allocate Tx/Rx descriptor memory */
 id|db-&gt;desc_pool_ptr
 op_assign
 id|pci_alloc_consistent
@@ -1978,33 +2008,35 @@ id|db-&gt;buf_pool_dma_start
 op_assign
 id|db-&gt;buf_pool_dma_ptr
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
-id|dev
-suffix:semicolon
 id|db-&gt;chip_id
 op_assign
 id|ent-&gt;driver_data
 suffix:semicolon
 id|db-&gt;ioaddr
 op_assign
-id|pci_iobase
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|db-&gt;chip_revision
 op_assign
 id|dev_rev
 suffix:semicolon
-id|db-&gt;net_dev
+id|db-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
-id|pci_iobase
+id|db-&gt;ioaddr
 suffix:semicolon
 id|dev-&gt;irq
 op_assign
-id|pci_irqline
+id|pdev-&gt;irq
 suffix:semicolon
 id|pci_set_drvdata
 c_func
@@ -2117,12 +2149,16 @@ id|db-&gt;srom
 id|i
 )braket
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|read_srom_word
 c_func
 (paren
-id|pci_iobase
+id|db-&gt;ioaddr
 comma
 id|i
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Set Node address */
@@ -2152,7 +2188,7 @@ op_plus
 id|i
 )braket
 suffix:semicolon
-id|i
+id|err
 op_assign
 id|register_netdev
 (paren
@@ -2162,16 +2198,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|i
+id|err
 )paren
 r_goto
-id|err_out
+id|err_out_res
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Davicom DM%04lx at 0x%lx,&quot;
+l_string|&quot;%s: Davicom DM%04lx at pci%s,&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2179,7 +2215,7 @@ id|ent-&gt;driver_data
 op_rshift
 l_int|16
 comma
-id|pci_iobase
+id|pdev-&gt;slot_name
 )paren
 suffix:semicolon
 r_for
@@ -2217,15 +2253,37 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;, IRQ %d&bslash;n&quot;
+l_string|&quot;, irq %d.&bslash;n&quot;
 comma
-id|pci_irqline
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_out
+id|err_out_res
+suffix:colon
+id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|err_out_disable
+suffix:colon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|err_out_free
 suffix:colon
 id|pci_set_drvdata
 c_func
@@ -2242,8 +2300,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|err
 suffix:semicolon
 )brace
 DECL|function|dmfe_remove_one
@@ -2295,7 +2352,7 @@ id|dev
 id|pci_free_consistent
 c_func
 (paren
-id|db-&gt;net_dev
+id|db-&gt;pdev
 comma
 r_sizeof
 (paren
@@ -2315,7 +2372,7 @@ suffix:semicolon
 id|pci_free_consistent
 c_func
 (paren
-id|db-&gt;net_dev
+id|db-&gt;pdev
 comma
 id|TX_BUF_ALLOC
 op_star
@@ -2334,18 +2391,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|CHK_IO_SIZE
+id|pci_release_regions
 c_func
 (paren
 id|pdev
-comma
-id|db-&gt;chip_revision
-)paren
 )paren
 suffix:semicolon
 id|kfree
@@ -2901,7 +2950,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;&lt;DMFE&gt;: big packet = %d&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: big packet = %d&bslash;n&quot;
 comma
 (paren
 id|u16
@@ -2950,7 +3000,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;&lt;DMFE&gt;: No Tx resource %ld&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: No Tx resource %ld&bslash;n&quot;
 comma
 id|db-&gt;tx_queue_cnt
 )paren
@@ -2978,16 +3029,8 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|txptr-&gt;tx_buf_ptr
 comma
-(paren
-r_char
-op_star
-)paren
 id|skb-&gt;data
 comma
 id|skb-&gt;len
@@ -3006,11 +3049,6 @@ suffix:semicolon
 multiline_comment|/* Point to next transmit free descriptor */
 id|db-&gt;tx_insert_ptr
 op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
 multiline_comment|/* Transmit Packet Process */
@@ -3225,7 +3263,8 @@ multiline_comment|/* show statistic counter */
 id|printk
 c_func
 (paren
-l_string|&quot;&lt;DMFE&gt;: FU:%lx EC:%lx LC:%lx NC:%lx LOC:%lx TXJT:%lx RESET:%lx RCR8:%lx FAL:%lx TT:%lx&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;: FU:%lx EC:%lx LC:%lx NC:%lx LOC:%lx TXJT:%lx RESET:%lx RCR8:%lx FAL:%lx TT:%lx&bslash;n&quot;
 comma
 id|db-&gt;tx_fifo_underrun
 comma
@@ -3456,7 +3495,7 @@ comma
 id|db
 )paren
 suffix:semicolon
-multiline_comment|/* reallocated rx descriptor buffer */
+multiline_comment|/* reallocate rx descriptor buffer */
 r_if
 c_cond
 (paren
@@ -3464,7 +3503,7 @@ id|db-&gt;rx_avail_cnt
 OL
 id|RX_DESC_CNT
 )paren
-id|allocated_rx_buffer
+id|allocate_rx_buffer
 c_func
 (paren
 id|db
@@ -3562,6 +3601,9 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+id|u32
+id|tdes0
+suffix:semicolon
 id|txptr
 op_assign
 id|db-&gt;tx_remove_ptr
@@ -3572,11 +3614,19 @@ c_loop
 id|db-&gt;tx_packet_cnt
 )paren
 (brace
-multiline_comment|/* printk(&quot;&lt;DMFE&gt;: tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
+id|tdes0
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|txptr-&gt;tdes0
+)paren
+suffix:semicolon
+multiline_comment|/* printk(DRV_NAME &quot;: tdes0=%x&bslash;n&quot;, tdes0); */
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x80000000
 )paren
@@ -3593,16 +3643,16 @@ multiline_comment|/* Transmit statistic counter */
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_ne
 l_int|0x7fffffff
 )paren
 (brace
-multiline_comment|/* printk(&quot;&lt;DMFE&gt;: tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
+multiline_comment|/* printk(DRV_NAME &quot;: tdes0=%x&bslash;n&quot;, tdes0); */
 id|db-&gt;stats.collisions
 op_add_assign
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_rshift
 l_int|3
 )paren
@@ -3611,14 +3661,18 @@ l_int|0xf
 suffix:semicolon
 id|db-&gt;stats.tx_bytes
 op_add_assign
+id|le32_to_cpu
+c_func
+(paren
 id|txptr-&gt;tdes1
+)paren
 op_amp
 l_int|0x7ff
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 id|TDES0_ERR_MASK
 )paren
@@ -3629,7 +3683,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x0002
 )paren
@@ -3668,7 +3722,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x0100
 )paren
@@ -3678,7 +3732,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x0200
 )paren
@@ -3688,7 +3742,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x0400
 )paren
@@ -3698,7 +3752,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x0800
 )paren
@@ -3708,7 +3762,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
+id|tdes0
 op_amp
 l_int|0x4000
 )paren
@@ -3719,11 +3773,6 @@ suffix:semicolon
 )brace
 id|txptr
 op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
 )brace
@@ -3731,11 +3780,6 @@ multiline_comment|/* End of while */
 multiline_comment|/* Update TX remove pointer to next */
 id|db-&gt;tx_remove_ptr
 op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
 id|txptr
 suffix:semicolon
 multiline_comment|/* Send the Tx packet in queue */
@@ -3831,6 +3875,9 @@ suffix:semicolon
 r_int
 id|rxlen
 suffix:semicolon
+id|u32
+id|rdes0
+suffix:semicolon
 id|rxptr
 op_assign
 id|db-&gt;rx_ready_ptr
@@ -3841,10 +3888,18 @@ c_loop
 id|db-&gt;rx_avail_cnt
 )paren
 (brace
+id|rdes0
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|rxptr-&gt;rdes0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|0x80000000
 )paren
@@ -3857,11 +3912,27 @@ suffix:semicolon
 id|db-&gt;interval_rx_cnt
 op_increment
 suffix:semicolon
+id|pci_unmap_single
+c_func
+(paren
+id|db-&gt;pdev
+comma
+id|le32_to_cpu
+c_func
+(paren
+id|rxptr-&gt;rdes2
+)paren
+comma
+id|RX_ALLOC_SIZE
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|0x300
 )paren
@@ -3870,27 +3941,22 @@ l_int|0x300
 )paren
 (brace
 multiline_comment|/* A packet without First/Last flag */
-multiline_comment|/* reused this SKB */
+multiline_comment|/* reuse this SKB */
 id|DMFE_DBUG
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot;Reused SK buffer, rdes0&quot;
+l_string|&quot;Reuse SK buffer, rdes0&quot;
 comma
-id|rxptr-&gt;rdes0
+id|rdes0
 )paren
 suffix:semicolon
-id|dmfe_reused_skb
+id|dmfe_reuse_skb
 c_func
 (paren
 id|db
 comma
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|rxptr-&gt;rx_skb_ptr
 )paren
 suffix:semicolon
@@ -3902,7 +3968,7 @@ id|rxlen
 op_assign
 (paren
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_rshift
 l_int|16
 )paren
@@ -3916,20 +3982,20 @@ multiline_comment|/* error summary bit check */
 r_if
 c_cond
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|0x8000
 )paren
 (brace
 multiline_comment|/* This is a error packet */
-singleline_comment|//printk(&quot;&lt;DMFE&gt;: rdes0: %lx&bslash;n&quot;, rxptr-&gt;rdes0);
+singleline_comment|//printk(DRV_NAME &quot;: rdes0: %lx&bslash;n&quot;, rdes0);
 id|db-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|1
 )paren
@@ -3939,7 +4005,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|2
 )paren
@@ -3949,7 +4015,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|0x80
 )paren
@@ -3962,7 +4028,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|rxptr-&gt;rdes0
+id|rdes0
 op_amp
 l_int|0x8000
 )paren
@@ -3984,11 +4050,6 @@ l_int|6
 (brace
 id|skb
 op_assign
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|rxptr-&gt;rx_skb_ptr
 suffix:semicolon
 multiline_comment|/* Received Packet CRC check need or not */
@@ -4015,8 +4076,7 @@ op_ne
 (paren
 op_star
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 (paren
@@ -4028,17 +4088,13 @@ id|rxlen
 )paren
 )paren
 (brace
+multiline_comment|/* FIXME (?) */
 multiline_comment|/* Found a error received packet */
-id|dmfe_reused_skb
+id|dmfe_reuse_skb
 c_func
 (paren
 id|db
 comma
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|rxptr-&gt;rx_skb_ptr
 )paren
 suffix:semicolon
@@ -4077,7 +4133,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-multiline_comment|/* size less than COPY_SIZE, allocated a rxlen SKB */
+multiline_comment|/* size less than COPY_SIZE, allocate a rxlen SKB */
 id|skb-&gt;dev
 op_assign
 id|dev
@@ -4102,30 +4158,16 @@ comma
 id|rxlen
 )paren
 comma
-(paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-id|rxptr-&gt;rx_skb_ptr
-)paren
-op_member_access_from_pointer
-id|tail
+id|rxptr-&gt;rx_skb_ptr-&gt;tail
 comma
 id|rxlen
 )paren
 suffix:semicolon
-id|dmfe_reused_skb
+id|dmfe_reuse_skb
 c_func
 (paren
 id|db
 comma
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|rxptr-&gt;rx_skb_ptr
 )paren
 suffix:semicolon
@@ -4182,21 +4224,16 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;Reused SK buffer, rdes0&quot;
+l_string|&quot;Reuse SK buffer, rdes0&quot;
 comma
-id|rxptr-&gt;rdes0
+id|rdes0
 )paren
 suffix:semicolon
-id|dmfe_reused_skb
+id|dmfe_reuse_skb
 c_func
 (paren
 id|db
 comma
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
 id|rxptr-&gt;rx_skb_ptr
 )paren
 suffix:semicolon
@@ -4204,11 +4241,6 @@ suffix:semicolon
 )brace
 id|rxptr
 op_assign
-(paren
-r_struct
-id|rx_desc
-op_star
-)paren
 id|rxptr-&gt;next_rx_desc
 suffix:semicolon
 )brace
@@ -4439,6 +4471,143 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;Process the ethtool ioctl command&n; */
+DECL|function|dmfe_ethtool_ioctl
+r_static
+r_int
+id|dmfe_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|db-&gt;pdev
+)paren
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|db-&gt;pdev-&gt;slot_name
+)paren
+suffix:semicolon
+r_else
+id|sprintf
+c_func
+(paren
+id|info.bus_info
+comma
+l_string|&quot;EISA 0x%lx %d&quot;
+comma
+id|dev-&gt;base_addr
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Process the upper socket ioctl command&n; */
 DECL|function|dmfe_do_ioctl
 r_static
@@ -4460,6 +4629,12 @@ r_int
 id|cmd
 )paren
 (brace
+r_int
+id|retval
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 id|DMFE_DBUG
 c_func
 (paren
@@ -4470,11 +4645,34 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
 r_return
-l_int|0
+id|dmfe_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|ifr-&gt;ifr_data
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;A periodic timer routine&n; *&t;Dynamic media sense, allocated Rx buffer...&n; */
+r_return
+id|retval
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;A periodic timer routine&n; *&t;Dynamic media sense, allocate Rx buffer...&n; */
 DECL|function|dmfe_timer
 r_static
 r_void
@@ -4695,13 +4893,13 @@ c_cond
 (paren
 id|db-&gt;tx_packet_cnt
 op_logical_and
-(paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|dev-&gt;trans_start
-)paren
-OG
+op_plus
 id|DMFE_TX_KICK
 )paren
 )paren
@@ -4721,13 +4919,15 @@ multiline_comment|/* TX Timeout */
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|dev-&gt;trans_start
-)paren
-OG
+op_plus
 id|DMFE_TX_TIMEOUT
+)paren
 )paren
 (brace
 id|db-&gt;reset_TXtimeout
@@ -5232,22 +5432,11 @@ id|db-&gt;rx_avail_cnt
 id|dev_kfree_skb
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
 id|db-&gt;rx_ready_ptr-&gt;rx_skb_ptr
-)paren
 )paren
 suffix:semicolon
 id|db-&gt;rx_ready_ptr
 op_assign
-(paren
-r_struct
-id|rx_desc
-op_star
-)paren
 id|db-&gt;rx_ready_ptr-&gt;next_rx_desc
 suffix:semicolon
 id|db-&gt;rx_avail_cnt
@@ -5255,11 +5444,11 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;Reused the SK buffer&n; */
-DECL|function|dmfe_reused_skb
+multiline_comment|/*&n; *&t;Reuse the SK buffer&n; */
+DECL|function|dmfe_reuse_skb
 r_static
 r_void
-id|dmfe_reused_skb
+id|dmfe_reuse_skb
 c_func
 (paren
 r_struct
@@ -5287,15 +5476,16 @@ op_logical_neg
 (paren
 id|rxptr-&gt;rdes0
 op_amp
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x80000000
+)paren
 )paren
 )paren
 (brace
 id|rxptr-&gt;rx_skb_ptr
 op_assign
-(paren
-id|u32
-)paren
 id|skb
 suffix:semicolon
 id|rxptr-&gt;rdes2
@@ -5306,7 +5496,7 @@ c_func
 id|pci_map_single
 c_func
 (paren
-id|db-&gt;net_dev
+id|db-&gt;pdev
 comma
 id|skb-&gt;tail
 comma
@@ -5314,6 +5504,11 @@ id|RX_ALLOC_SIZE
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|rxptr-&gt;rdes0
@@ -5329,11 +5524,6 @@ op_increment
 suffix:semicolon
 id|db-&gt;rx_insert_ptr
 op_assign
-(paren
-r_struct
-id|rx_desc
-op_star
-)paren
 id|rxptr-&gt;next_rx_desc
 suffix:semicolon
 )brace
@@ -5343,13 +5533,13 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;SK Buffer reused method error&quot;
+l_string|&quot;SK Buffer reuse method error&quot;
 comma
 id|db-&gt;rx_avail_cnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Initialize transmit/Receive descriptor&n; *&t;Using Chain structure, and allocated Tx/Rx buffer&n; */
+multiline_comment|/*&n; *&t;Initialize transmit/Receive descriptor&n; *&t;Using Chain structure, and allocate Tx/Rx buffer&n; */
 DECL|function|dmfe_descriptor_init
 r_static
 r_void
@@ -5426,38 +5616,30 @@ multiline_comment|/* rx descriptor start pointer */
 id|db-&gt;first_rx_desc
 op_assign
 (paren
-r_struct
-id|rx_desc
+r_void
 op_star
-)paren
-(paren
-(paren
-id|u32
 )paren
 id|db-&gt;first_tx_desc
 op_plus
 r_sizeof
 (paren
 r_struct
-id|rx_desc
+id|tx_desc
 )paren
 op_star
 id|TX_DESC_CNT
-)paren
 suffix:semicolon
 id|db-&gt;first_rx_desc_dma
 op_assign
-(paren
 id|db-&gt;first_tx_desc_dma
 op_plus
 r_sizeof
 (paren
 r_struct
-id|rx_desc
+id|tx_desc
 )paren
 op_star
 id|TX_DESC_CNT
-)paren
 suffix:semicolon
 id|db-&gt;rx_insert_ptr
 op_assign
@@ -5515,9 +5697,6 @@ op_increment
 (brace
 id|tmp_tx-&gt;tx_buf_ptr
 op_assign
-(paren
-id|u32
-)paren
 id|tmp_buf
 suffix:semicolon
 id|tmp_tx-&gt;tdes0
@@ -5563,37 +5742,15 @@ id|tmp_tx_dma
 suffix:semicolon
 id|tmp_tx-&gt;next_tx_desc
 op_assign
-(paren
-id|u32
-)paren
-(paren
-(paren
-id|u32
-)paren
 id|tmp_tx
 op_plus
-r_sizeof
-(paren
-r_struct
-id|tx_desc
-)paren
-)paren
+l_int|1
 suffix:semicolon
 id|tmp_buf
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-(paren
-(paren
-id|u32
-)paren
 id|tmp_buf
 op_plus
 id|TX_BUF_ALLOC
-)paren
 suffix:semicolon
 id|tmp_buf_dma
 op_assign
@@ -5617,9 +5774,6 @@ id|db-&gt;first_tx_desc_dma
 suffix:semicolon
 id|tmp_tx-&gt;next_tx_desc
 op_assign
-(paren
-id|u32
-)paren
 id|db-&gt;first_tx_desc
 suffix:semicolon
 multiline_comment|/* Init Receive descriptor chain */
@@ -5683,21 +5837,9 @@ id|tmp_rx_dma
 suffix:semicolon
 id|tmp_rx-&gt;next_rx_desc
 op_assign
-(paren
-id|u32
-)paren
-(paren
-(paren
-id|u32
-)paren
 id|tmp_rx
 op_plus
-r_sizeof
-(paren
-r_struct
-id|rx_desc
-)paren
-)paren
+l_int|1
 suffix:semicolon
 )brace
 (paren
@@ -5715,13 +5857,10 @@ id|db-&gt;first_rx_desc_dma
 suffix:semicolon
 id|tmp_rx-&gt;next_rx_desc
 op_assign
-(paren
-id|u32
-)paren
 id|db-&gt;first_rx_desc
 suffix:semicolon
-multiline_comment|/* pre-allocated Rx buffer */
-id|allocated_rx_buffer
+multiline_comment|/* pre-allocate Rx buffer */
+id|allocate_rx_buffer
 c_func
 (paren
 id|db
@@ -6233,11 +6372,6 @@ suffix:semicolon
 multiline_comment|/* prepare the setup frame */
 id|db-&gt;tx_insert_ptr
 op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
 id|txptr-&gt;tdes1
@@ -6308,11 +6442,11 @@ op_increment
 suffix:semicolon
 multiline_comment|/* Put in TX queue */
 )brace
-multiline_comment|/*&n; *&t;Allocate rx buffer,&n; *&t;As possible as allocated maxiumn Rx buffer&n; */
-DECL|function|allocated_rx_buffer
+multiline_comment|/*&n; *&t;Allocate rx buffer,&n; *&t;As possible as allocate maxiumn Rx buffer&n; */
+DECL|function|allocate_rx_buffer
 r_static
 r_void
-id|allocated_rx_buffer
+id|allocate_rx_buffer
 c_func
 (paren
 r_struct
@@ -6362,12 +6496,9 @@ r_break
 suffix:semicolon
 id|rxptr-&gt;rx_skb_ptr
 op_assign
-(paren
-id|u32
-)paren
 id|skb
 suffix:semicolon
-multiline_comment|/* FIXME */
+multiline_comment|/* FIXME (?) */
 id|rxptr-&gt;rdes2
 op_assign
 id|cpu_to_le32
@@ -6376,7 +6507,7 @@ c_func
 id|pci_map_single
 c_func
 (paren
-id|db-&gt;net_dev
+id|db-&gt;pdev
 comma
 id|skb-&gt;tail
 comma
@@ -6384,6 +6515,11 @@ id|RX_ALLOC_SIZE
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|rxptr-&gt;rdes0
@@ -6396,11 +6532,6 @@ l_int|0x80000000
 suffix:semicolon
 id|rxptr
 op_assign
-(paren
-r_struct
-id|rx_desc
-op_star
-)paren
 id|rxptr-&gt;next_rx_desc
 suffix:semicolon
 id|db-&gt;rx_avail_cnt
@@ -6740,7 +6871,7 @@ id|db-&gt;chip_id
 op_amp
 l_int|0xf000
 suffix:semicolon
-multiline_comment|/* printk(&quot;&lt;DMFE&gt;: Phy_mode %x &quot;,phy_mode); */
+multiline_comment|/* printk(DRV_NAME &quot;: Phy_mode %x &quot;,phy_mode); */
 r_switch
 c_cond
 (paren
@@ -7995,17 +8126,12 @@ multiline_comment|/* SROM V4.01 */
 multiline_comment|/* Get NIC support media mode */
 id|db-&gt;NIC_capability
 op_assign
-op_star
+id|le16_to_cpup
+c_func
 (paren
-id|u16
-op_star
-)paren
-(paren
-op_amp
 id|srom
-(braket
+op_plus
 l_int|34
-)braket
 )paren
 suffix:semicolon
 id|db-&gt;PHY_reg4
@@ -8077,30 +8203,20 @@ suffix:semicolon
 multiline_comment|/* Media Mode Force or not check */
 id|dmfe_mode
 op_assign
-op_star
+id|le32_to_cpup
+c_func
 (paren
-(paren
-r_int
-op_star
-)paren
-op_amp
 id|srom
-(braket
+op_plus
 l_int|34
-)braket
 )paren
 op_amp
-op_star
+id|le32_to_cpup
+c_func
 (paren
-(paren
-r_int
-op_star
-)paren
-op_amp
 id|srom
-(braket
+op_plus
 l_int|36
-)braket
 )paren
 suffix:semicolon
 r_switch

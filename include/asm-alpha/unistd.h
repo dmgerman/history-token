@@ -593,6 +593,12 @@ DECL|macro|__NR_pciconfig_iobase
 mdefine_line|#define __NR_pciconfig_iobase&t;&t;376
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;&t;377
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;&t;378
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;&t;379
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security&t;&t;&t;380 /* syscall for security modules */
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret

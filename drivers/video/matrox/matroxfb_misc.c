@@ -3526,4 +3526,22 @@ id|matroxfb_vgaHWrestore
 )paren
 suffix:semicolon
 multiline_comment|/* DAC1064, Ti3026 */
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;(c) 1999-2001 Petr Vandrovec &lt;vandrove@vc.cvut.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Miscellaneous support for Matrox video cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

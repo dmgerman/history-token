@@ -588,9 +588,19 @@ id|rs-&gt;s_oid_cursize
 op_eq
 id|rs-&gt;s_oid_maxsize
 )paren
+(brace
 multiline_comment|/* objectid map must be expanded, but there is no space */
+id|PROC_INFO_INC
+c_func
+(paren
+id|s
+comma
+id|leaked_oid
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 multiline_comment|/* expand the objectid map*/
 id|memmove
 (paren

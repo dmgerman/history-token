@@ -45,6 +45,31 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+r_struct
+id|irq_routing_table
+op_star
+id|pcibios_get_irq_routing_table
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|pcibios_set_irq_routing
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|pin
+comma
+r_int
+id|irq
+)paren
+suffix:semicolon
 multiline_comment|/* Dynamic DMA mapping stuff.&n; * i386 has everything mapped statically.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -131,6 +156,11 @@ op_eq
 id|PCI_DMA_NONE
 )paren
 id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+id|flush_write_buffers
 c_func
 (paren
 )paren
@@ -309,7 +339,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * temporary 2.4 hack&n;&t; */
+multiline_comment|/*&n; &t; * temporary 2.4 hack&n; &t; */
 r_for
 c_loop
 (paren
@@ -427,6 +457,11 @@ dot
 id|offset
 suffix:semicolon
 )brace
+id|flush_write_buffers
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|nents
 suffix:semicolon
@@ -505,7 +540,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+id|flush_write_buffers
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 DECL|function|pci_dma_sync_sg
@@ -544,7 +583,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+id|flush_write_buffers
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 DECL|function|pci_dma_supported
@@ -708,7 +751,11 @@ r_int
 id|direction
 )paren
 (brace
-multiline_comment|/* Nothing to do. */
+id|flush_write_buffers
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* These macros should be used after a pci_map_sg call has been done&n; * to get bus addresses of each of the SG entries and their lengths.&n; * You should only work with the number of sg entries pci_map_sg&n; * returns.&n; */
 DECL|macro|sg_dma_address

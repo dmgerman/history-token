@@ -1,5 +1,5 @@
 multiline_comment|/* via-rhine.c: A Linux Ethernet device driver for VIA Rhine family chips. */
-multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86c100A Rhine-II PCI Fast Ethernet&n;&t;controller.  It also works with the older 3043 Rhine-I chip.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;*/
+multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86c100A Rhine-II PCI Fast Ethernet&n;&t;controller.  It also works with the older 3043 Rhine-I chip.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;*/
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -153,7 +153,7 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;via-rhine.c:v1.10-LK1.1.11  20/08/2001  Written by Donald Becker&bslash;n&quot;
+l_string|&quot;via-rhine.c:v1.10-LK1.1.12  03/11/2001  Written by Donald Becker&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/via-rhine.html&bslash;n&quot;
 suffix:semicolon
@@ -168,9 +168,9 @@ op_assign
 l_string|&quot;via-rhine&quot;
 suffix:semicolon
 multiline_comment|/* This driver was written to use PCI memory space, however most versions&n;   of the Rhine only work correctly with I/O space accesses. */
-macro_line|#if defined(VIA_USE_MEMORY)
-macro_line|#warning Many adapters using the VIA Rhine chip are not configured to work
-macro_line|#warning with PCI memory space accesses.
+macro_line|#ifdef CONFIG_VIA_RHINE_MMIO
+DECL|macro|USE_MEM
+mdefine_line|#define USE_MEM
 macro_line|#else
 DECL|macro|USE_IO
 mdefine_line|#define USE_IO
@@ -432,16 +432,12 @@ l_int|0x20
 comma
 )brace
 suffix:semicolon
-macro_line|#if defined(VIA_USE_MEMORY)
+macro_line|#ifdef USE_MEM
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_MEM | PCI_USES_MASTER | PCI_ADDR1)
-DECL|macro|RHINEII_IOSIZE
-mdefine_line|#define RHINEII_IOSIZE 4096
 macro_line|#else
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_IO  | PCI_USES_MASTER | PCI_ADDR0)
-DECL|macro|RHINEII_IOSIZE
-mdefine_line|#define RHINEII_IOSIZE 256
 macro_line|#endif
 multiline_comment|/* directly indexed by enum via_rhine_chips, above */
 DECL|variable|__devinitdata
@@ -471,7 +467,7 @@ l_string|&quot;VIA VT6102 Rhine-II&quot;
 comma
 id|RHINE_IOTYPE
 comma
-id|RHINEII_IOSIZE
+l_int|256
 comma
 id|CanHaveMII
 op_or
@@ -659,18 +655,28 @@ id|MACRegEEcsr
 op_assign
 l_int|0x74
 comma
-DECL|enumerator|Config
 DECL|enumerator|ConfigA
-DECL|enumerator|RxMissed
-DECL|enumerator|RxCRCErrs
-id|Config
+DECL|enumerator|ConfigB
+DECL|enumerator|ConfigC
+DECL|enumerator|ConfigD
+id|ConfigA
 op_assign
 l_int|0x78
 comma
-id|ConfigA
+id|ConfigB
+op_assign
+l_int|0x79
+comma
+id|ConfigC
 op_assign
 l_int|0x7A
 comma
+id|ConfigD
+op_assign
+l_int|0x7B
+comma
+DECL|enumerator|RxMissed
+DECL|enumerator|RxCRCErrs
 id|RxMissed
 op_assign
 l_int|0x7C
@@ -701,6 +707,33 @@ l_int|0xAC
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef USE_MEM
+multiline_comment|/* Registers we check that mmio and reg are the same. */
+DECL|variable|mmio_verify_registers
+r_int
+id|mmio_verify_registers
+(braket
+)braket
+op_assign
+(brace
+id|RxConfig
+comma
+id|TxConfig
+comma
+id|IntrEnable
+comma
+id|ConfigA
+comma
+id|ConfigB
+comma
+id|ConfigC
+comma
+id|ConfigD
+comma
+l_int|0
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Bits in the interrupt status/mask registers. */
 DECL|enum|intr_status_bits
 r_enum
@@ -1547,6 +1580,152 @@ id|i
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef USE_MEM
+DECL|function|enable_mmio
+r_static
+r_void
+id|__devinit
+id|enable_mmio
+c_func
+(paren
+r_int
+id|ioaddr
+comma
+r_int
+id|chip_id
+)paren
+(brace
+r_int
+id|n
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip_id
+op_eq
+id|VT3043
+op_logical_or
+id|chip_id
+op_eq
+id|VT86C100A
+)paren
+(brace
+multiline_comment|/* More recent docs say that this bit is reserved ... */
+id|n
+op_assign
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ConfigA
+)paren
+op_or
+l_int|0x20
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|n
+comma
+id|ioaddr
+op_plus
+id|ConfigA
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|chip_id
+op_eq
+id|VT6102
+)paren
+(brace
+id|n
+op_assign
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ConfigD
+)paren
+op_or
+l_int|0x80
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|n
+comma
+id|ioaddr
+op_plus
+id|ConfigD
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+DECL|function|reload_eeprom
+r_static
+r_void
+id|__devinit
+id|reload_eeprom
+c_func
+(paren
+r_int
+id|ioaddr
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0x20
+comma
+id|ioaddr
+op_plus
+id|MACRegEEcsr
+)paren
+suffix:semicolon
+multiline_comment|/* Typically 2 cycles to reload. */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|150
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|inb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|MACRegEEcsr
+)paren
+op_amp
+l_int|0x20
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
 DECL|function|via_rhine_init_one
 r_static
 r_int
@@ -1599,11 +1778,19 @@ r_int
 id|ioaddr
 suffix:semicolon
 r_int
+id|memaddr
+suffix:semicolon
+r_int
 id|io_size
 suffix:semicolon
 r_int
 id|pci_flags
 suffix:semicolon
+macro_line|#ifdef USE_MEM
+r_int
+id|ioaddr0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* when built into the kernel, we only print version if device is found */
 macro_line|#ifndef MODULE
 r_static
@@ -1737,13 +1924,15 @@ id|pci_resource_start
 (paren
 id|pdev
 comma
-id|pci_flags
-op_amp
-id|PCI_ADDR0
-ques
-c_cond
 l_int|0
-suffix:colon
+)paren
+suffix:semicolon
+id|memaddr
+op_assign
+id|pci_resource_start
+(paren
+id|pdev
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -1811,7 +2000,19 @@ id|shortname
 r_goto
 id|err_out_free_netdev
 suffix:semicolon
-macro_line|#ifndef USE_IO
+macro_line|#ifdef USE_MEM
+id|ioaddr0
+op_assign
+id|ioaddr
+suffix:semicolon
+id|enable_mmio
+c_func
+(paren
+id|ioaddr0
+comma
+id|chip_id
+)paren
+suffix:semicolon
 id|ioaddr
 op_assign
 (paren
@@ -1819,7 +2020,7 @@ r_int
 )paren
 id|ioremap
 (paren
-id|ioaddr
+id|memaddr
 comma
 id|io_size
 )paren
@@ -1834,23 +2035,90 @@ id|ioaddr
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;ioremap failed for device %s, region 0x%X @ 0x%X&bslash;n&quot;
+l_string|&quot;ioremap failed for device %s, region 0x%X @ 0x%lX&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 comma
 id|io_size
 comma
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|1
-)paren
+id|memaddr
 )paren
 suffix:semicolon
 r_goto
 id|err_out_free_res
 suffix:semicolon
+)brace
+multiline_comment|/* Check that selected MMIO registers match the PIO ones */
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|mmio_verify_registers
+(braket
+id|i
+)braket
+)paren
+(brace
+r_int
+id|reg
+op_assign
+id|mmio_verify_registers
+(braket
+id|i
+op_increment
+)braket
+suffix:semicolon
+r_int
+r_char
+id|a
+op_assign
+id|inb
+c_func
+(paren
+id|ioaddr0
+op_plus
+id|reg
+)paren
+suffix:semicolon
+r_int
+r_char
+id|b
+op_assign
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|reg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|a
+op_ne
+id|b
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;MMIO do not match PIO [%02x] (%02x != %02x)&bslash;n&quot;
+comma
+id|reg
+comma
+id|a
+comma
+id|b
+)paren
+suffix:semicolon
+r_goto
+id|err_out_unmap
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 multiline_comment|/* D-Link provided reset code (with comment additions) */
@@ -1957,49 +2225,30 @@ id|shortname
 )paren
 suffix:semicolon
 multiline_comment|/* Reload the station address from the EEPROM. */
-id|writeb
+macro_line|#ifdef USE_IO
+id|reload_eeprom
 c_func
 (paren
-l_int|0x20
+id|ioaddr
+)paren
+suffix:semicolon
+macro_line|#else
+id|reload_eeprom
+c_func
+(paren
+id|ioaddr0
+)paren
+suffix:semicolon
+multiline_comment|/* Reloading from eeprom overwrites cfgA-D, so we must re-enable MMIO.&n;&t;   If reload_eeprom() was done first this could be avoided, but it is&n;&t;   not known if that still works with the &quot;win98-reboot&quot; problem. */
+id|enable_mmio
+c_func
+(paren
+id|ioaddr0
 comma
-id|ioaddr
-op_plus
-id|MACRegEEcsr
+id|chip_id
 )paren
 suffix:semicolon
-multiline_comment|/* Typically 2 cycles to reload. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|150
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|readb
-c_func
-(paren
-id|ioaddr
-op_plus
-id|MACRegEEcsr
-)paren
-op_amp
-l_int|0x20
-)paren
-)paren
-r_break
-suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -2257,7 +2506,16 @@ id|chip_id
 dot
 id|name
 comma
+(paren
+id|pci_flags
+op_amp
+id|PCI_USES_IO
+)paren
+ques
+c_cond
 id|ioaddr
+suffix:colon
+id|memaddr
 )paren
 suffix:semicolon
 r_for
@@ -2565,7 +2823,7 @@ l_int|0
 suffix:semicolon
 id|err_out_unmap
 suffix:colon
-macro_line|#ifndef USE_IO
+macro_line|#ifdef USE_MEM
 id|iounmap
 c_func
 (paren
@@ -7162,13 +7420,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-r_struct
-id|netdev_private
-op_star
-id|np
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -7181,7 +7432,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifndef USE_IO
+macro_line|#ifdef USE_MEM
 id|iounmap
 c_func
 (paren
@@ -7199,6 +7450,12 @@ id|kfree
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|pci_set_drvdata

@@ -470,6 +470,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;&t;testl %0, %0&bslash;n&quot;
+l_string|&quot;&t;jz 3f&bslash;n&quot;
 l_string|&quot;&t;andl %0,%%ecx&bslash;n&quot;
 l_string|&quot;0:&t;repne; scasb&bslash;n&quot;
 l_string|&quot;&t;setne %%al&bslash;n&quot;
@@ -478,6 +480,8 @@ l_string|&quot;&t;addl %0,%%eax&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;2:&t;xorl %%eax,%%eax&bslash;n&quot;
+l_string|&quot;&t;jmp 1b&bslash;n&quot;
+l_string|&quot;3:&t;movb $1,%%al&bslash;n&quot;
 l_string|&quot;&t;jmp 1b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;

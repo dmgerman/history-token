@@ -49,11 +49,23 @@ r_int
 r_int
 id|__kernel_uid_t32
 suffix:semicolon
+DECL|typedef|__kernel_uid32_t32
+r_typedef
+r_int
+r_int
+id|__kernel_uid32_t32
+suffix:semicolon
 DECL|typedef|__kernel_gid_t32
 r_typedef
 r_int
 r_int
 id|__kernel_gid_t32
+suffix:semicolon
+DECL|typedef|__kernel_gid32_t32
+r_typedef
+r_int
+r_int
+id|__kernel_gid32_t32
 suffix:semicolon
 DECL|typedef|__kernel_dev_t32
 r_typedef
@@ -113,11 +125,29 @@ suffix:semicolon
 DECL|macro|IA32_PAGE_SHIFT
 mdefine_line|#define IA32_PAGE_SHIFT&t;&t;12&t;/* 4KB pages */
 DECL|macro|IA32_PAGE_SIZE
-mdefine_line|#define IA32_PAGE_SIZE&t;&t;(1ULL &lt;&lt; IA32_PAGE_SHIFT)
+mdefine_line|#define IA32_PAGE_SIZE&t;&t;(1UL &lt;&lt; IA32_PAGE_SHIFT)
+DECL|macro|IA32_PAGE_MASK
+mdefine_line|#define IA32_PAGE_MASK&t;&t;(~(IA32_PAGE_SIZE - 1))
+DECL|macro|IA32_PAGE_ALIGN
+mdefine_line|#define IA32_PAGE_ALIGN(addr)&t;(((addr) + IA32_PAGE_SIZE - 1) &amp; IA32_PAGE_MASK)
 DECL|macro|IA32_CLOCKS_PER_SEC
 mdefine_line|#define IA32_CLOCKS_PER_SEC&t;100&t;/* Cast in stone for IA32 Linux */
 DECL|macro|IA32_TICK
 mdefine_line|#define IA32_TICK(tick)&t;&t;((unsigned long long)(tick) * IA32_CLOCKS_PER_SEC / CLOCKS_PER_SEC)
+DECL|struct|timespec32
+r_struct
+id|timespec32
+(brace
+DECL|member|tv_sec
+r_int
+id|tv_sec
+suffix:semicolon
+DECL|member|tv_nsec
+r_int
+id|tv_nsec
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* fcntl.h */
 DECL|struct|flock32
 r_struct
@@ -145,6 +175,12 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|F_GETLK64
+mdefine_line|#define F_GETLK64&t;12
+DECL|macro|F_SETLK64
+mdefine_line|#define F_SETLK64&t;13
+DECL|macro|F_SETLKW64
+mdefine_line|#define F_SETLKW64&t;14
 multiline_comment|/* sigcontext.h */
 multiline_comment|/*&n; * As documented in the iBCS2 standard..&n; *&n; * The first part of &quot;struct _fpstate&quot; is just the&n; * normal i387 hardware setup, the extra &quot;status&quot;&n; * word is used to save the coprocessor status word&n; * before entering the handler.&n; */
 DECL|struct|_fpreg_ia32
@@ -350,6 +386,12 @@ DECL|macro|_IA32_NSIG_BPW
 mdefine_line|#define _IA32_NSIG_BPW&t;       32
 DECL|macro|_IA32_NSIG_WORDS
 mdefine_line|#define _IA32_NSIG_WORDS&t;       (_IA32_NSIG / _IA32_NSIG_BPW)
+DECL|macro|IA32_SET_SA_HANDLER
+mdefine_line|#define IA32_SET_SA_HANDLER(ka,handler,restorer)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;((ka)-&gt;sa.sa_handler = (__sighandler_t)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;(((unsigned long)(restorer) &lt;&lt; 32)&t;&bslash;&n;&t;&t;&t;&t;&t; | ((handler) &amp; 0xffffffff)))
+DECL|macro|IA32_SA_HANDLER
+mdefine_line|#define IA32_SA_HANDLER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &amp; 0xffffffff)
+DECL|macro|IA32_SA_RESTORER
+mdefine_line|#define IA32_SA_RESTORER(ka)&t;((unsigned long) (ka)-&gt;sa.sa_handler &gt;&gt; 32)
 r_typedef
 r_struct
 (brace
@@ -374,7 +416,7 @@ r_int
 r_int
 id|sa_handler
 suffix:semicolon
-multiline_comment|/* Really a pointer, but need to deal&n;&t;&t;&t;&t;&t;     with 32 bits */
+multiline_comment|/* Really a pointer, but need to deal with 32 bits */
 DECL|member|sa_flags
 r_int
 r_int
@@ -584,6 +626,131 @@ DECL|member|__unused5
 r_int
 r_int
 id|__unused5
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|stat64
+r_struct
+id|stat64
+(brace
+DECL|member|st_dev
+r_int
+r_int
+id|st_dev
+suffix:semicolon
+DECL|member|__pad0
+r_int
+r_char
+id|__pad0
+(braket
+l_int|10
+)braket
+suffix:semicolon
+DECL|member|__st_ino
+r_int
+r_int
+id|__st_ino
+suffix:semicolon
+DECL|member|st_mode
+r_int
+r_int
+id|st_mode
+suffix:semicolon
+DECL|member|st_nlink
+r_int
+r_int
+id|st_nlink
+suffix:semicolon
+DECL|member|st_uid
+r_int
+r_int
+id|st_uid
+suffix:semicolon
+DECL|member|st_gid
+r_int
+r_int
+id|st_gid
+suffix:semicolon
+DECL|member|st_rdev
+r_int
+r_int
+id|st_rdev
+suffix:semicolon
+DECL|member|__pad3
+r_int
+r_char
+id|__pad3
+(braket
+l_int|10
+)braket
+suffix:semicolon
+DECL|member|st_size_lo
+r_int
+r_int
+id|st_size_lo
+suffix:semicolon
+DECL|member|st_size_hi
+r_int
+r_int
+id|st_size_hi
+suffix:semicolon
+DECL|member|st_blksize
+r_int
+r_int
+id|st_blksize
+suffix:semicolon
+DECL|member|st_blocks
+r_int
+r_int
+id|st_blocks
+suffix:semicolon
+multiline_comment|/* Number 512-byte blocks allocated. */
+DECL|member|__pad4
+r_int
+r_int
+id|__pad4
+suffix:semicolon
+multiline_comment|/* future possible st_blocks high bits */
+DECL|member|st_atime
+r_int
+r_int
+id|st_atime
+suffix:semicolon
+DECL|member|__pad5
+r_int
+r_int
+id|__pad5
+suffix:semicolon
+DECL|member|st_mtime
+r_int
+r_int
+id|st_mtime
+suffix:semicolon
+DECL|member|__pad6
+r_int
+r_int
+id|__pad6
+suffix:semicolon
+DECL|member|st_ctime
+r_int
+r_int
+id|st_ctime
+suffix:semicolon
+DECL|member|__pad7
+r_int
+r_int
+id|__pad7
+suffix:semicolon
+multiline_comment|/* will be high 32 bits of ctime someday */
+DECL|member|st_ino_lo
+r_int
+r_int
+id|st_ino_lo
+suffix:semicolon
+DECL|member|st_ino_hi
+r_int
+r_int
+id|st_ino_hi
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -820,6 +987,56 @@ DECL|typedef|siginfo_t32
 )brace
 id|siginfo_t32
 suffix:semicolon
+DECL|struct|linux32_dirent
+r_struct
+id|linux32_dirent
+(brace
+DECL|member|d_ino
+id|u32
+id|d_ino
+suffix:semicolon
+DECL|member|d_off
+id|u32
+id|d_off
+suffix:semicolon
+DECL|member|d_reclen
+id|u16
+id|d_reclen
+suffix:semicolon
+DECL|member|d_name
+r_char
+id|d_name
+(braket
+l_int|256
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|old_linux32_dirent
+r_struct
+id|old_linux32_dirent
+(brace
+DECL|member|d_ino
+id|u32
+id|d_ino
+suffix:semicolon
+DECL|member|d_offset
+id|u32
+id|d_offset
+suffix:semicolon
+DECL|member|d_namlen
+id|u16
+id|d_namlen
+suffix:semicolon
+DECL|member|d_name
+r_char
+id|d_name
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * IA-32 ELF specific definitions for IA-64.&n; */
 DECL|macro|_ASM_IA64_ELF_H
 mdefine_line|#define _ASM_IA64_ELF_H&t;&t;/* Don&squot;t include elf.h */
@@ -838,7 +1055,7 @@ mdefine_line|#define ELF_ARCH&t;EM_386
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET&t;0xc0000000
 DECL|macro|IA32_STACK_TOP
-mdefine_line|#define IA32_STACK_TOP&t;&t;((IA32_PAGE_OFFSET/3) * 2)
+mdefine_line|#define IA32_STACK_TOP&t;&t;IA32_PAGE_OFFSET
 multiline_comment|/*&n; * The system segments (GDT, TSS, LDT) have to be mapped below 4GB so the IA-32 engine can&n; * access them.&n; */
 DECL|macro|IA32_GDT_OFFSET
 mdefine_line|#define IA32_GDT_OFFSET&t;&t;(IA32_PAGE_OFFSET)
@@ -938,6 +1155,12 @@ DECL|macro|_TSS
 mdefine_line|#define _TSS(n) ((((unsigned long) n)&lt;&lt;4)+(FIRST_TSS_ENTRY&lt;&lt;3))
 DECL|macro|_LDT
 mdefine_line|#define _LDT(n) ((((unsigned long) n)&lt;&lt;4)+(FIRST_LDT_ENTRY&lt;&lt;3))
+DECL|macro|IA32_SEGSEL_RPL
+mdefine_line|#define IA32_SEGSEL_RPL&t;&t;(0x3 &lt;&lt; 0)
+DECL|macro|IA32_SEGSEL_TI
+mdefine_line|#define IA32_SEGSEL_TI&t;&t;(0x1 &lt;&lt; 2)
+DECL|macro|IA32_SEGSEL_INDEX_SHIFT
+mdefine_line|#define IA32_SEGSEL_INDEX_SHIFT&t;3
 DECL|macro|IA32_SEG_BASE
 mdefine_line|#define IA32_SEG_BASE&t;&t;16
 DECL|macro|IA32_SEG_TYPE
@@ -989,7 +1212,7 @@ multiline_comment|/*&n; *  IA32 floating point control registers starting values
 DECL|macro|IA32_FSR_DEFAULT
 mdefine_line|#define IA32_FSR_DEFAULT&t;0x55550000&t;&t;/* set all tag bits */
 DECL|macro|IA32_FCR_DEFAULT
-mdefine_line|#define IA32_FCR_DEFAULT&t;0x17800000037fULL&t;/* extended precision, all masks */
+mdefine_line|#define IA32_FCR_DEFAULT&t;0x17800000037fUL&t;/* extended precision, all masks */
 DECL|macro|IA32_PTRACE_GETREGS
 mdefine_line|#define IA32_PTRACE_GETREGS&t;12
 DECL|macro|IA32_PTRACE_SETREGS
@@ -1133,6 +1356,52 @@ comma
 r_int
 r_int
 id|isr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ia32_intercept
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|isr
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ia32_do_mmap
+(paren
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+comma
+r_int
+comma
+id|loff_t
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia32_load_segment_descriptors
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */

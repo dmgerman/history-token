@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 multiline_comment|/*&n; *  wait_buffer_until_released&n; *  reiserfs_bread&n; *  reiserfs_getblk&n; *  get_new_buffer&n; */
 multiline_comment|/* when we allocate a new block (get_new_buffer, get_empty_nodes) and&n;   get buffer for it, it is possible that it is held by someone else&n;   or even by this process. In this function we wait until all other&n;   holders release buffer. To make sure, that current process does not&n;   hold we did free all buffers in tree balance structure&n;   (get_empty_nodes and get_nodes_for_preserving) or in path structure&n;   only (get_new_buffer) just before calling this */
 DECL|function|wait_buffer_until_released
@@ -126,8 +127,10 @@ id|buffer_head
 op_star
 id|reiserfs_bread
 (paren
-id|kdev_t
-id|n_dev
+r_struct
+id|super_block
+op_star
+id|super
 comma
 r_int
 id|n_block
@@ -136,15 +139,62 @@ r_int
 id|n_size
 )paren
 (brace
-r_return
+r_struct
+id|buffer_head
+op_star
+id|result
+suffix:semicolon
+id|PROC_EXP
+c_func
+(paren
+r_int
+r_int
+id|ctx_switches
+op_assign
+id|kstat.context_swtch
+)paren
+suffix:semicolon
+id|result
+op_assign
 id|bread
 (paren
-id|n_dev
+id|super
+op_member_access_from_pointer
+id|s_dev
 comma
 id|n_block
 comma
 id|n_size
 )paren
+suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|super
+comma
+id|breads
+)paren
+suffix:semicolon
+id|PROC_EXP
+c_func
+(paren
+r_if
+(paren
+id|kstat.context_swtch
+op_ne
+id|ctx_switches
+)paren
+id|PROC_INFO_INC
+c_func
+(paren
+id|super
+comma
+id|bread_miss
+)paren
+)paren
+suffix:semicolon
+r_return
+id|result
 suffix:semicolon
 )brace
 multiline_comment|/* This function looks for a buffer which contains a given block.  If&n;   the block is in cache it returns it, otherwise it returns a new&n;   buffer which is not uptodate.  This is called by reiserfs_bread and&n;   other functions. Note that get_new_buffer ought to be called this&n;   and this ought to be called get_new_buffer, since this doesn&squot;t&n;   actually get the block off of the disk. */

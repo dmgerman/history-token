@@ -776,6 +776,12 @@ r_char
 id|tx_stopped
 suffix:semicolon
 multiline_comment|/* output is suspended */
+DECL|member|lock
+id|spinlock_t
+op_star
+id|lock
+suffix:semicolon
+multiline_comment|/* Devicr lock */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Each Z853x0 device.&n; */
@@ -821,6 +827,10 @@ r_int
 id|active
 suffix:semicolon
 multiline_comment|/* Soft interrupt enable - the Mac doesn&squot;t &n;&t;&t;&t;   always have a hard disable on its 8530s... */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Functions&n; */

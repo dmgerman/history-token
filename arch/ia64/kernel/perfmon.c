@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt; /* for ia64_get_itc() */
 macro_line|#ifdef CONFIG_PERFMON
 DECL|macro|PFM_VERSION
-mdefine_line|#define PFM_VERSION&t;&t;&quot;0.2&quot;
+mdefine_line|#define PFM_VERSION&t;&t;&quot;0.3&quot;
 DECL|macro|PFM_SMPL_HDR_VERSION
 mdefine_line|#define PFM_SMPL_HDR_VERSION&t;1
 DECL|macro|PMU_FIRST_COUNTER
@@ -48,11 +48,15 @@ DECL|macro|PFM_RESTART
 mdefine_line|#define PFM_RESTART&t;&t;0xcf
 DECL|macro|PFM_CREATE_CONTEXT
 mdefine_line|#define PFM_CREATE_CONTEXT&t;0xa7
+DECL|macro|PFM_DESTROY_CONTEXT
+mdefine_line|#define PFM_DESTROY_CONTEXT&t;0xa8
 multiline_comment|/*&n; * Those 2 are just meant for debugging. I considered using sysctl() for&n; * that but it is a little bit too pervasive. This solution is at least&n; * self-contained.&n; */
 DECL|macro|PFM_DEBUG_ON
 mdefine_line|#define PFM_DEBUG_ON&t;&t;0xe0
 DECL|macro|PFM_DEBUG_OFF
 mdefine_line|#define PFM_DEBUG_OFF&t;&t;0xe1
+DECL|macro|PFM_DEBUG_BASE
+mdefine_line|#define PFM_DEBUG_BASE&t;&t;PFM_DEBUG_ON
 multiline_comment|/*&n; * perfmon API flags&n; */
 DECL|macro|PFM_FL_INHERIT_NONE
 mdefine_line|#define PFM_FL_INHERIT_NONE&t; 0x00&t;/* never inherit a context across fork (default) */
@@ -62,8 +66,10 @@ DECL|macro|PFM_FL_INHERIT_ALL
 mdefine_line|#define PFM_FL_INHERIT_ALL&t; 0x02&t;/* always clone pfm_context across fork() */
 DECL|macro|PFM_FL_SMPL_OVFL_NOBLOCK
 mdefine_line|#define PFM_FL_SMPL_OVFL_NOBLOCK 0x04&t;/* do not block on sampling buffer overflow */
-DECL|macro|PFM_FL_SYSTEMWIDE
-mdefine_line|#define PFM_FL_SYSTEMWIDE&t; 0x08&t;/* create a systemwide context */
+DECL|macro|PFM_FL_SYSTEM_WIDE
+mdefine_line|#define PFM_FL_SYSTEM_WIDE&t; 0x08&t;/* create a system wide context */
+DECL|macro|PFM_FL_EXCL_INTR
+mdefine_line|#define PFM_FL_EXCL_INTR&t; 0x10&t;/* exclude interrupt from system wide monitoring */
 multiline_comment|/*&n; * PMC API flags&n; */
 DECL|macro|PFM_REGFL_OVFL_NOTIFY
 mdefine_line|#define PFM_REGFL_OVFL_NOTIFY&t;1&t;&t;/* send notification on overflow */
@@ -80,7 +86,7 @@ macro_line|#endif
 DECL|macro|PMC_IS_IMPL
 mdefine_line|#define PMC_IS_IMPL(i)&t;&t;(i &lt; pmu_conf.num_pmcs &amp;&amp; pmu_conf.impl_regs[i&gt;&gt;6] &amp; (1&lt;&lt; (i&amp;~(64-1))))
 DECL|macro|PMD_IS_IMPL
-mdefine_line|#define PMD_IS_IMPL(i)&t;(i &lt; pmu_conf.num_pmds &amp;&amp;  pmu_conf.impl_regs[4+(i&gt;&gt;6)] &amp; (1&lt;&lt; (i&amp;~(64-1))))
+mdefine_line|#define PMD_IS_IMPL(i)&t;&t;(i &lt; pmu_conf.num_pmds &amp;&amp;  pmu_conf.impl_regs[4+(i&gt;&gt;6)] &amp; (1&lt;&lt; (i&amp;~(64-1))))
 DECL|macro|PMD_IS_COUNTER
 mdefine_line|#define PMD_IS_COUNTER(i)&t;(i&gt;=PMU_FIRST_COUNTER &amp;&amp; i &lt; (PMU_FIRST_COUNTER+pmu_conf.max_counters))
 DECL|macro|PMC_IS_COUNTER
@@ -451,12 +457,20 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* pmu must be kept frozen on ctxsw in */
+DECL|member|exclintr
+r_int
+r_int
+id|exclintr
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* exlcude interrupts from system wide monitoring */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 suffix:colon
-l_int|27
+l_int|26
 suffix:semicolon
 DECL|typedef|pfm_context_flags_t
 )brace
@@ -491,23 +505,31 @@ r_int
 id|ctx_btb_counter
 suffix:semicolon
 multiline_comment|/* which PMD holds BTB */
-DECL|member|ctx_notify_pid
-id|pid_t
-id|ctx_notify_pid
+DECL|member|ctx_notify_lock
+id|spinlock_t
+id|ctx_notify_lock
 suffix:semicolon
-multiline_comment|/* who to notify on overflow */
-DECL|member|ctx_notify_sig
-r_int
-id|ctx_notify_sig
-suffix:semicolon
-multiline_comment|/* XXX: SIGPROF or other */
 DECL|member|ctx_flags
 id|pfm_context_flags_t
 id|ctx_flags
 suffix:semicolon
 multiline_comment|/* block/noblock */
+DECL|member|ctx_notify_sig
+r_int
+id|ctx_notify_sig
+suffix:semicolon
+multiline_comment|/* XXX: SIGPROF or other */
+DECL|member|ctx_notify_task
+r_struct
+id|task_struct
+op_star
+id|ctx_notify_task
+suffix:semicolon
+multiline_comment|/* who to notify on overflow */
 DECL|member|ctx_creator
-id|pid_t
+r_struct
+id|task_struct
+op_star
 id|ctx_creator
 suffix:semicolon
 multiline_comment|/* pid of creator (debug) */
@@ -529,6 +551,24 @@ id|semaphore
 id|ctx_restart_sem
 suffix:semicolon
 multiline_comment|/* use for blocking notification mode */
+DECL|member|ctx_used_pmds
+r_int
+r_int
+id|ctx_used_pmds
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* bitmask of used PMD (speedup ctxsw) */
+DECL|member|ctx_used_pmcs
+r_int
+r_int
+id|ctx_used_pmcs
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* bitmask of used PMC (speedup ctxsw) */
 DECL|member|ctx_pmds
 id|pfm_counter_t
 id|ctx_pmds
@@ -541,6 +581,10 @@ DECL|typedef|pfm_context_t
 )brace
 id|pfm_context_t
 suffix:semicolon
+DECL|macro|CTX_USED_PMD
+mdefine_line|#define CTX_USED_PMD(ctx,n) (ctx)-&gt;ctx_used_pmds[(n)&gt;&gt;6] |= 1&lt;&lt; ((n) % 64)
+DECL|macro|CTX_USED_PMC
+mdefine_line|#define CTX_USED_PMC(ctx,n) (ctx)-&gt;ctx_used_pmcs[(n)&gt;&gt;6] |= 1&lt;&lt; ((n) % 64)
 DECL|macro|ctx_fl_inherit
 mdefine_line|#define ctx_fl_inherit&t;ctx_flags.inherit
 DECL|macro|ctx_fl_noblock
@@ -549,12 +593,8 @@ DECL|macro|ctx_fl_system
 mdefine_line|#define ctx_fl_system&t;ctx_flags.system
 DECL|macro|ctx_fl_frozen
 mdefine_line|#define ctx_fl_frozen&t;ctx_flags.frozen
-DECL|macro|CTX_IS_DEAR
-mdefine_line|#define CTX_IS_DEAR(c,n)&t;((c)-&gt;ctx_dear_counter == (n))
-DECL|macro|CTX_IS_IEAR
-mdefine_line|#define CTX_IS_IEAR(c,n)&t;((c)-&gt;ctx_iear_counter == (n))
-DECL|macro|CTX_IS_BTB
-mdefine_line|#define CTX_IS_BTB(c,n)&t;&t;((c)-&gt;ctx_btb_counter == (n))
+DECL|macro|ctx_fl_exclintr
+mdefine_line|#define ctx_fl_exclintr&t;ctx_flags.exclintr
 DECL|macro|CTX_OVFL_NOBLOCK
 mdefine_line|#define CTX_OVFL_NOBLOCK(c)&t;((c)-&gt;ctx_fl_noblock == 1)
 DECL|macro|CTX_INHERIT_MODE
@@ -570,40 +610,19 @@ multiline_comment|/* for debug only */
 DECL|variable|pfm_debug
 r_static
 r_int
-r_int
 id|pfm_debug
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* 0= nodebug, &gt;0= debug output on */
 DECL|macro|DBprintk
-mdefine_line|#define DBprintk(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (pfm_debug &gt;0) { printk(__FUNCTION__&quot; &quot;); printk a; } &bslash;&n;&t;} while (0);
-r_static
-r_void
-id|perfmon_softint
-c_func
-(paren
-r_int
-r_int
-id|ignored
-)paren
-suffix:semicolon
+mdefine_line|#define DBprintk(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (pfm_debug &gt;0) { printk(__FUNCTION__&quot; %d: &quot;, __LINE__); printk a; } &bslash;&n;&t;} while (0);
 r_static
 r_void
 id|ia64_reset_pmu
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-id|DECLARE_TASKLET
-c_func
-(paren
-id|pfm_tasklet
-comma
-id|perfmon_softint
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * structure used to pass information between the interrupt handler&n; * and the tasklet.&n; */
@@ -635,19 +654,35 @@ DECL|typedef|notification_info_t
 )brace
 id|notification_info_t
 suffix:semicolon
-DECL|macro|notification_is_invalid
-mdefine_line|#define notification_is_invalid(i)&t;(i-&gt;to_pid &lt; 2)
-multiline_comment|/* will need to be cache line padded */
-DECL|variable|notify_info
-r_static
-id|notification_info_t
-id|notify_info
-(braket
-id|NR_CPUS
-)braket
+r_typedef
+r_struct
+(brace
+DECL|member|pfs_proc_sessions
+r_int
+r_int
+id|pfs_proc_sessions
 suffix:semicolon
-multiline_comment|/*&n; * We force cache line alignment to avoid false sharing&n; * given that we have one entry per CPU.&n; */
-r_static
+DECL|member|pfs_sys_session
+r_int
+r_int
+id|pfs_sys_session
+suffix:semicolon
+multiline_comment|/* can only be 0/1 */
+DECL|member|pfs_dfl_dcr
+r_int
+r_int
+id|pfs_dfl_dcr
+suffix:semicolon
+multiline_comment|/* XXX: hack */
+DECL|member|pfs_pp
+r_int
+r_int
+id|pfs_pp
+suffix:semicolon
+DECL|typedef|pfm_session_t
+)brace
+id|pfm_session_t
+suffix:semicolon
 r_struct
 (brace
 DECL|member|owner
@@ -664,11 +699,28 @@ id|pmu_owners
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/* helper macros */
+multiline_comment|/* &n; * helper macros&n; */
 DECL|macro|SET_PMU_OWNER
 mdefine_line|#define SET_PMU_OWNER(t)&t;do { pmu_owners[smp_processor_id()].owner = (t); } while(0);
 DECL|macro|PMU_OWNER
 mdefine_line|#define PMU_OWNER()&t;&t;pmu_owners[smp_processor_id()].owner
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|PFM_CAN_DO_LAZY
+mdefine_line|#define PFM_CAN_DO_LAZY()&t;(smp_num_cpus==1 &amp;&amp; pfs_info.pfs_sys_session==0)
+macro_line|#else
+DECL|macro|PFM_CAN_DO_LAZY
+mdefine_line|#define PFM_CAN_DO_LAZY()&t;(pfs_info.pfs_sys_session==0)
+macro_line|#endif
+r_static
+r_void
+id|pfm_lazy_save_regs
+(paren
+r_struct
+id|task_struct
+op_star
+id|ta
+)paren
+suffix:semicolon
 multiline_comment|/* for debug only */
 DECL|variable|perfmon_dir
 r_static
@@ -676,6 +728,12 @@ r_struct
 id|proc_dir_entry
 op_star
 id|perfmon_dir
+suffix:semicolon
+multiline_comment|/*&n; * XXX: hack to indicate that a system wide monitoring session is active&n; */
+DECL|variable|pfs_info
+r_static
+id|pfm_session_t
+id|pfs_info
 suffix:semicolon
 multiline_comment|/*&n; * finds the number of PM(C|D) registers given&n; * the bitvector returned by PAL&n; */
 r_static
@@ -927,23 +985,11 @@ id|adr
 (brace
 id|__u64
 id|pa
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;tpa %0 = %1&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|pa
-)paren
-suffix:colon
-l_string|&quot;r&quot;
+op_assign
+id|ia64_tpa
+c_func
 (paren
 id|adr
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|DBprintk
@@ -1915,20 +1961,25 @@ op_star
 id|pfx
 )paren
 (brace
+r_int
+id|ctx_flags
+suffix:semicolon
 multiline_comment|/* valid signal */
+singleline_comment|//if (pfx-&gt;notify_sig &lt; 1 || pfx-&gt;notify_sig &gt;= _NSIG) return -EINVAL;
 r_if
 c_cond
 (paren
 id|pfx-&gt;notify_sig
-OL
-l_int|1
-op_logical_or
+op_ne
+l_int|0
+op_logical_and
 id|pfx-&gt;notify_sig
-op_ge
-id|_NSIG
+op_ne
+id|SIGPROF
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* cannot send to process 1, 0 means do not notify */
 r_if
@@ -1943,11 +1994,69 @@ op_eq
 l_int|1
 )paren
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
+id|ctx_flags
+op_assign
+id|pfx-&gt;flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx_flags
+op_amp
+id|PFM_FL_SYSTEM_WIDE
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|smp_num_cpus
+OG
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon: system wide monitoring on SMP not yet supported&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+id|ctx_flags
+op_amp
+id|PFM_FL_SMPL_OVFL_NOBLOCK
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon: system wide monitoring cannot use blocking notification mode&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* probably more to add here */
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -1956,11 +2065,6 @@ DECL|function|pfm_context_create
 id|pfm_context_create
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|task
-comma
 r_int
 id|flags
 comma
@@ -1973,6 +2077,13 @@ id|pfm_context_t
 op_star
 id|ctx
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|task
+op_assign
+l_int|NULL
+suffix:semicolon
 id|perfmon_req_t
 id|tmp
 suffix:semicolon
@@ -1984,12 +2095,12 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|ret
-op_assign
-op_minus
-id|EFAULT
 suffix:semicolon
 r_int
 id|ctx_flags
+suffix:semicolon
+id|pid_t
+id|pid
 suffix:semicolon
 multiline_comment|/* to go away */
 r_if
@@ -2026,36 +2137,83 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|ctx_flags
+id|ret
 op_assign
-id|tmp.pfr_ctx.flags
-suffix:semicolon
-multiline_comment|/* not yet supported */
-r_if
-c_cond
-(paren
-id|ctx_flags
-op_amp
-id|PFM_FL_SYSTEMWIDE
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|pfx_is_sane
 c_func
 (paren
 op_amp
 id|tmp.pfr_ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|ctx_flags
+op_assign
+id|tmp.pfr_ctx.flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx_flags
+op_amp
+id|PFM_FL_SYSTEM_WIDE
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * XXX: This is not AT ALL SMP safe&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pfs_info.pfs_proc_sessions
+OG
+l_int|0
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EBUSY
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pfs_info.pfs_sys_session
+OG
+l_int|0
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|pfs_info.pfs_sys_session
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pfs_info.pfs_sys_session
+OG
+l_int|0
+)paren
+(brace
+multiline_comment|/* no per-process monitoring while there is a system wide session */
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+r_else
+id|pfs_info.pfs_proc_sessions
+op_increment
 suffix:semicolon
 id|ctx
 op_assign
@@ -2070,19 +2228,134 @@ c_cond
 op_logical_neg
 id|ctx
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|error
 suffix:semicolon
-multiline_comment|/* record who the creator is (for debug) */
+multiline_comment|/* record the creator (debug only) */
 id|ctx-&gt;ctx_creator
 op_assign
-id|task-&gt;pid
+id|current
 suffix:semicolon
-id|ctx-&gt;ctx_notify_pid
+id|pid
 op_assign
 id|tmp.pfr_ctx.notify_pid
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pid
+op_eq
+id|current-&gt;pid
+)paren
+(brace
+id|ctx-&gt;ctx_notify_task
+op_assign
+id|task
+op_assign
+id|current
+suffix:semicolon
+id|current-&gt;thread.pfm_context
+op_assign
+id|ctx
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|current-&gt;thread.pfm_notifiers_check
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pid
+op_ne
+l_int|0
+)paren
+(brace
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|task
+op_assign
+id|find_task_by_pid
+c_func
+(paren
+id|pid
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|task
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; &t; * record who to notify&n;&t;&t; &t; */
+id|ctx-&gt;ctx_notify_task
+op_assign
+id|task
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; &t; * make visible&n;&t;&t; &t; * must be done inside critical section&n;&t;&t; &t; *&n;&t;&t; &t; * if the initialization does not go through it is still&n;&t;&t; &t; * okay because child will do the scan for nothing which&n;&t;&t; &t; * won&squot;t hurt.&n;&t;&t; &t; */
+id|current-&gt;thread.pfm_context
+op_assign
+id|ctx
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * will cause task to check on exit for monitored&n;&t;&t;&t; * processes that would notify it. see release_thread()&n;&t;&t;&t; * Note: the scan MUST be done in release thread, once the&n;&t;&t;&t; * task has been detached from the tasklist otherwise you are&n;&t;&t;&t; * exposed to race conditions.&n;&t;&t;&t; */
+id|atomic_add
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|task-&gt;thread.pfm_notifiers_check
+)paren
+suffix:semicolon
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * notification process does not exist&n;&t; */
+r_if
+c_cond
+(paren
+id|pid
+op_ne
+l_int|0
+op_logical_and
+id|task
+op_eq
+l_int|NULL
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|buffer_error
+suffix:semicolon
+)brace
 id|ctx-&gt;ctx_notify_sig
 op_assign
 id|SIGPROF
@@ -2104,10 +2377,6 @@ id|tmp.pfr_ctx.smpl_entries
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|pfm_smpl_buffer_alloc
@@ -2122,7 +2391,13 @@ comma
 op_amp
 id|uaddr
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
 )paren
 r_goto
 id|buffer_error
@@ -2157,7 +2432,20 @@ op_assign
 (paren
 id|ctx_flags
 op_amp
-id|PFM_FL_SYSTEMWIDE
+id|PFM_FL_SYSTEM_WIDE
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+id|ctx-&gt;ctx_fl_exclintr
+op_assign
+(paren
+id|ctx_flags
+op_amp
+id|PFM_FL_EXCL_INTR
 )paren
 ques
 c_cond
@@ -2169,6 +2457,22 @@ id|ctx-&gt;ctx_fl_frozen
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* &n;&t; * Keep track of the pmds we want to sample&n;&t; * XXX: may be we don&squot;t need to save/restore the DEAR/IEAR pmds&n;&t; * but we do need the BTB for sure. This is because of a hardware&n;&t; * buffer of 1 only for non-BTB pmds.&n;&t; */
+id|ctx-&gt;ctx_used_pmds
+(braket
+l_int|0
+)braket
+op_assign
+id|tmp.pfr_ctx.smpl_regs
+suffix:semicolon
+id|ctx-&gt;ctx_used_pmcs
+(braket
+l_int|0
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* always save/restore PMC[0] */
 id|sema_init
 c_func
 (paren
@@ -2196,14 +2500,21 @@ id|tmp
 )paren
 )paren
 )paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_goto
 id|buffer_error
 suffix:semicolon
+)brace
 id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; context=%p, pid=%d notify_sig %d notify_pid=%d&bslash;n&quot;
+l_string|&quot; context=%p, pid=%d notify_sig %d notify_task=%p&bslash;n&quot;
 comma
 (paren
 r_void
@@ -2211,11 +2522,11 @@ op_star
 )paren
 id|ctx
 comma
-id|task-&gt;pid
+id|current-&gt;pid
 comma
 id|ctx-&gt;ctx_notify_sig
 comma
-id|ctx-&gt;ctx_notify_pid
+id|ctx-&gt;ctx_notify_task
 )paren
 )paren
 suffix:semicolon
@@ -2231,7 +2542,7 @@ op_star
 )paren
 id|ctx
 comma
-id|task-&gt;pid
+id|current-&gt;pid
 comma
 id|ctx_flags
 comma
@@ -2243,22 +2554,98 @@ id|ctx-&gt;ctx_fl_system
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* link with task */
-id|task-&gt;thread.pfm_context
+multiline_comment|/*&n;&t; * when no notification is required, we can make this visible at the last moment&n;&t; */
+r_if
+c_cond
+(paren
+id|pid
+op_eq
+l_int|0
+)paren
+id|current-&gt;thread.pfm_context
 op_assign
 id|ctx
 suffix:semicolon
+multiline_comment|/*&n;&t; * by default, we always include interrupts for system wide&n;&t; * DCR.pp is set by default to zero by kernel  in cpu_init()&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_exclintr
+op_eq
+l_int|0
+)paren
+(brace
+r_int
+r_int
+id|dcr
+op_assign
+id|ia64_get_dcr
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_set_dcr
+c_func
+(paren
+id|dcr
+op_or
+id|IA64_DCR_PP
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;* keep track of the kernel default value&n;&t;&t;&t; */
+id|pfs_info.pfs_dfl_dcr
+op_assign
+id|dcr
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; dcr.pp is set&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 l_int|0
 suffix:semicolon
 id|buffer_error
 suffix:colon
-id|vfree
+id|pfm_context_free
 c_func
 (paren
 id|ctx
 )paren
 suffix:semicolon
+id|error
+suffix:colon
+multiline_comment|/*&n;&t; * undo session reservation&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx_flags
+op_amp
+id|PFM_FL_SYSTEM_WIDE
+)paren
+(brace
+id|pfs_info.pfs_sys_session
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|pfs_info.pfs_proc_sessions
+op_decrement
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -2363,8 +2750,39 @@ dot
 id|smpl_rval
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * we must reset BTB index (clears pmd16.full to make&n;&t;&t;&t; * sure we do not report the same branches twice.&n;&t;&t;&t; * The non-blocking case in handled in update_counters()&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|cnum
+op_eq
+id|ctx-&gt;ctx_btb_counter
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;reseting PMD16&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|ia64_set_pmd
+c_func
+(paren
+l_int|16
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 )brace
+)brace
+multiline_comment|/* just in case ! */
+id|ctx-&gt;ctx_ovfl_regs
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_int
@@ -2541,6 +2959,7 @@ op_assign
 id|cnum
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -2559,7 +2978,17 @@ id|flags
 op_or_assign
 id|PFM_REGFL_OVFL_NOTIFY
 suffix:semicolon
+macro_line|#endif
 )brace
+multiline_comment|/* keep track of what we use */
+id|CTX_USED_PMC
+c_func
+(paren
+id|ctx
+comma
+id|cnum
+)paren
+suffix:semicolon
 id|ia64_set_pmc
 c_func
 (paren
@@ -2572,7 +3001,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; setting PMC[%ld]=0x%lx flags=0x%x&bslash;n&quot;
+l_string|&quot; setting PMC[%ld]=0x%lx flags=0x%x used_pmcs=0%lx&bslash;n&quot;
 comma
 id|cnum
 comma
@@ -2586,11 +3015,23 @@ id|PMU_FIRST_COUNTER
 )braket
 dot
 id|flags
+comma
+id|ctx-&gt;ctx_used_pmcs
+(braket
+l_int|0
+)braket
 )paren
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * we have to set this here event hough we haven&squot;t necessarily started monitoring&n;&t; * because we may be context switched out&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
 id|th-&gt;flags
 op_or_assign
 id|IA64_THREAD_PM_VALID
@@ -2759,7 +3200,34 @@ id|ovfl_rval
 op_assign
 id|tmp.pfr_reg.reg_ovfl_reset
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp.pfr_reg.reg_flags
+op_amp
+id|PFM_REGFL_OVFL_NOTIFY
+)paren
+id|ctx-&gt;ctx_pmds
+(braket
+id|cnum
+op_minus
+id|PMU_FIRST_COUNTER
+)braket
+dot
+id|flags
+op_or_assign
+id|PFM_REGFL_OVFL_NOTIFY
+suffix:semicolon
 )brace
+multiline_comment|/* keep track of what we use */
+id|CTX_USED_PMD
+c_func
+(paren
+id|ctx
+comma
+id|cnum
+)paren
+suffix:semicolon
 multiline_comment|/* writes to unimplemented part is ignored, so this is safe */
 id|ia64_set_pmd
 c_func
@@ -2779,9 +3247,19 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; setting PMD[%ld]:  pmd.val=0x%lx pmd.ovfl_rval=0x%lx pmd.smpl_rval=0x%lx pmd=%lx&bslash;n&quot;
+l_string|&quot; setting PMD[%ld]:  ovfl_notify=%d pmd.val=0x%lx pmd.ovfl_rval=0x%lx pmd.smpl_rval=0x%lx pmd=%lx used_pmds=0%lx&bslash;n&quot;
 comma
 id|cnum
+comma
+id|PMD_OVFL_NOTIFY
+c_func
+(paren
+id|ctx
+comma
+id|cnum
+op_minus
+id|PMU_FIRST_COUNTER
+)paren
 comma
 id|ctx-&gt;ctx_pmds
 (braket
@@ -2811,11 +3289,23 @@ id|cnum
 )paren
 op_amp
 id|pmu_conf.perf_ovfl_val
+comma
+id|ctx-&gt;ctx_used_pmds
+(braket
+l_int|0
+)braket
 )paren
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * we have to set this here event hough we haven&squot;t necessarily started monitoring&n;&t; * because we may be context switched out&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
 id|th-&gt;flags
 op_or_assign
 id|IA64_THREAD_PM_VALID
@@ -2889,6 +3379,18 @@ id|req
 op_increment
 )paren
 (brace
+r_int
+r_int
+id|reg_val
+op_assign
+op_complement
+l_int|0
+comma
+id|ctx_val
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2955,6 +3457,8 @@ r_else
 (brace
 id|val
 op_assign
+id|reg_val
+op_assign
 id|th-&gt;pmd
 (braket
 id|tmp.pfr_reg.reg_num
@@ -2968,6 +3472,8 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * lower part of .val may not be zero, so we must be an addition because of&n;&t;&t;&t; * residual count (see update_counters).&n;&t;&t;&t; */
 id|val
 op_add_assign
+id|ctx_val
+op_assign
 id|ctx-&gt;ctx_pmds
 (braket
 id|tmp.pfr_reg.reg_num
@@ -2992,6 +3498,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
 id|val
 op_assign
 id|ia64_get_pmd
@@ -3009,11 +3520,21 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; reading PMD[%ld]=0x%lx&bslash;n&quot;
+l_string|&quot; reading PMD[%ld]=0x%lx reg=0x%lx ctx_val=0x%lx pmc=0x%lx&bslash;n&quot;
 comma
 id|tmp.pfr_reg.reg_num
 comma
 id|val
+comma
+id|reg_val
+comma
+id|ctx_val
+comma
+id|ia64_get_pmc
+c_func
+(paren
+id|tmp.pfr_reg.reg_num
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -3088,7 +3609,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; restartig self %d frozen=%d &bslash;n&quot;
+l_string|&quot; restarting self %d frozen=%d &bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -3213,6 +3734,65 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * system-wide mode: propagate activation/desactivation throughout the tasklist&n; *&n; * XXX: does not work for SMP, of course&n; */
+r_static
+r_void
+DECL|function|pfm_process_tasklist
+id|pfm_process_tasklist
+c_func
+(paren
+r_int
+id|cmd
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|p
+suffix:semicolon
+r_struct
+id|pt_regs
+op_star
+id|regs
+suffix:semicolon
+id|for_each_task
+c_func
+(paren
+id|p
+)paren
+(brace
+id|regs
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|p
+op_plus
+id|IA64_STK_OFFSET
+)paren
+suffix:semicolon
+id|regs
+op_decrement
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+id|cmd
+suffix:semicolon
+)brace
+)brace
 r_static
 r_int
 DECL|function|do_perfmonctl
@@ -3273,6 +3853,37 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+op_logical_and
+id|cmd
+op_ne
+id|PFM_CREATE_CONTEXT
+op_logical_and
+id|cmd
+OL
+id|PFM_DEBUG_BASE
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; PFM_WRITE_PMCS: no context for task %d&bslash;n&quot;
+comma
+id|task-&gt;pid
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -3292,7 +3903,7 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-multiline_comment|/* may be a temporary limitation */
+multiline_comment|/*&n;&t;&t;&t; * cannot directly create a context in another process&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3347,8 +3958,6 @@ r_return
 id|pfm_context_create
 c_func
 (paren
-id|task
-comma
 id|flags
 comma
 id|req
@@ -3393,28 +4002,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; PFM_WRITE_PMCS: no context for task %d&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
 id|pfm_write_pmcs
 c_func
@@ -3465,28 +4052,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; PFM_WRITE_PMDS: no context for task %d&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
 id|pfm_write_pmds
 c_func
@@ -3516,25 +4081,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|DBprintk
+id|PMU_OWNER
 c_func
 (paren
+)paren
+op_logical_and
+id|PMU_OWNER
+c_func
 (paren
-l_string|&quot; PFM_START: no context for task %d&bslash;n&quot;
-comma
-id|task-&gt;pid
+)paren
+op_ne
+id|current
+op_logical_and
+id|PFM_CAN_DO_LAZY
+c_func
+(paren
+)paren
+)paren
+id|pfm_lazy_save_regs
+c_func
+(paren
+id|PMU_OWNER
+c_func
+(paren
 )paren
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|SET_PMU_OWNER
 c_func
 (paren
@@ -3552,7 +4124,41 @@ id|up
 op_assign
 l_int|1
 suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+)paren
+(brace
+id|pfm_process_tasklist
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|pfs_info.pfs_pp
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * mark the state as valid.&n;&t;&t;&t; * this will trigger save/restore at context switch&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
 id|th-&gt;flags
 op_or_assign
 id|IA64_THREAD_PM_VALID
@@ -3590,25 +4196,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|DBprintk
+id|PMU_OWNER
 c_func
 (paren
+)paren
+op_logical_and
+id|PMU_OWNER
+c_func
 (paren
-l_string|&quot; PFM_ENABLE: no context for task %d&bslash;n&quot;
-comma
-id|task-&gt;pid
+)paren
+op_ne
+id|current
+op_logical_and
+id|PFM_CAN_DO_LAZY
+c_func
+(paren
+)paren
+)paren
+id|pfm_lazy_save_regs
+c_func
+(paren
+id|PMU_OWNER
+c_func
+(paren
 )paren
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 multiline_comment|/* reset all registers to stable quiet state */
 id|ia64_reset_pmu
 c_func
@@ -3653,6 +4266,13 @@ id|current
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * mark the state as valid.&n;&t;&t;&t; * this will trigger save/restore at context switch&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
 id|th-&gt;flags
 op_or_assign
 id|IA64_THREAD_PM_VALID
@@ -3702,6 +4322,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * XXX: cannot really toggle IA64_THREAD_PM_VALID&n;&t;&t;&t; * but context is still considered valid, so any &n;&t;&t;&t; * read request would return something valid. Same&n;&t;&t;&t; * thing when this task terminates (pfm_flush_regs()).&n;&t;&t;&t; */
 r_break
 suffix:semicolon
 r_case
@@ -3755,28 +4376,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; PFM_READ_PMDS: no context for task %d&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_return
 id|pfm_read_pmds
 c_func
@@ -3803,19 +4402,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|ia64_set_pmc
-c_func
-(paren
-l_int|0
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|ia64_srlz_d
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* simply stop monitors, not PMU */
 id|ia64_psr
 c_func
 (paren
@@ -3826,48 +4413,33 @@ id|up
 op_assign
 l_int|0
 suffix:semicolon
-id|th-&gt;flags
-op_and_assign
-op_complement
-id|IA64_THREAD_PM_VALID
-suffix:semicolon
-id|SET_PMU_OWNER
+id|ia64_psr
 c_func
 (paren
-l_int|NULL
+id|regs
 )paren
-suffix:semicolon
-multiline_comment|/* we probably will need some more cleanup here */
-r_break
-suffix:semicolon
-r_case
-id|PFM_DEBUG_ON
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot; debugging on&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pfm_debug
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PFM_DEBUG_OFF
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot; debugging off&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pfm_debug
+op_member_access_from_pointer
+id|pp
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+)paren
+(brace
+id|pfm_process_tasklist
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|pfs_info.pfs_pp
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -3884,32 +4456,16 @@ id|IA64_THREAD_PM_VALID
 )paren
 op_eq
 l_int|0
+op_logical_and
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 l_string|&quot; PFM_RESTART not monitoring&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctx
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; PFM_RESTART no ctx for %d&bslash;n&quot;
-comma
-id|task-&gt;pid
 )paren
 suffix:semicolon
 r_return
@@ -3954,6 +4510,114 @@ id|task
 )paren
 suffix:semicolon
 multiline_comment|/* we only look at first entry */
+r_case
+id|PFM_DESTROY_CONTEXT
+suffix:colon
+multiline_comment|/* we don&squot;t quite support this right now */
+r_if
+c_cond
+(paren
+id|task
+op_ne
+id|current
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* first stop monitors */
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|up
+op_assign
+l_int|0
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* then freeze PMU */
+id|ia64_set_pmc
+c_func
+(paren
+l_int|0
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* don&squot;t save/restore on context switch */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
+)paren
+id|task-&gt;thread.flags
+op_and_assign
+op_complement
+id|IA64_THREAD_PM_VALID
+suffix:semicolon
+id|SET_PMU_OWNER
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* now free context and related state */
+id|pfm_context_exit
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PFM_DEBUG_ON
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon debugging on&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pfm_debug
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PFM_DEBUG_OFF
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon debugging off&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pfm_debug
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DBprintk
@@ -4110,7 +4774,6 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-(brace
 id|child
 op_assign
 id|find_task_by_pid
@@ -4119,18 +4782,6 @@ c_func
 id|pid
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|child
-)paren
-id|get_task_struct
-c_func
-(paren
-id|child
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4222,12 +4873,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is invoked on the exit path of the kernel. Therefore it must make sure&n; * it does does modify the caller&squot;s input registers (in0-in7) in case of entry by system call&n; * which can be restarted. That&squot;s why it&squot;s declared as a system call and all 8 possible args&n; * are declared even though not used.&n; */
 macro_line|#if __GNUC__ &gt;= 3
 r_void
 id|asmlinkage
-DECL|function|pfm_overflow_notify
-id|pfm_overflow_notify
+DECL|function|pfm_block_on_overflow
+id|pfm_block_on_overflow
 c_func
 (paren
 r_void
@@ -4235,7 +4885,7 @@ r_void
 macro_line|#else
 r_void
 id|asmlinkage
-id|pfm_overflow_notify
+id|pfm_block_on_overflow
 c_func
 (paren
 id|u64
@@ -4265,11 +4915,6 @@ id|arg7
 macro_line|#endif
 (brace
 r_struct
-id|task_struct
-op_star
-id|task
-suffix:semicolon
-r_struct
 id|thread_struct
 op_star
 id|th
@@ -4283,12 +4928,13 @@ id|ctx
 op_assign
 id|current-&gt;thread.pfm_context
 suffix:semicolon
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+multiline_comment|/*&n;&t; * NO matter what notify_pid is,&n;&t; * we clear overflow, won&squot;t notify again&n;&t; */
+id|th-&gt;pfm_must_block
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * do some sanity checks first&n;&t; */
 r_if
@@ -4312,52 +4958,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ctx-&gt;ctx_notify_pid
-OL
-l_int|2
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;perfmon: process %d invalid notify_pid=%d&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|ctx-&gt;ctx_notify_pid
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; current=%d ctx=%p bv=0%lx&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-(paren
-r_void
-op_star
-)paren
-id|ctx
-comma
-id|ctx-&gt;ctx_ovfl_regs
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * NO matter what notify_pid is,&n;&t; * we clear overflow, won&squot;t notify again&n;&t; */
-id|th-&gt;pfm_pend_notify
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * When measuring in kernel mode and non-blocking fashion, it is possible to&n;&t; * get an overflow while executing this code. Therefore the state of pend_notify&n;&t; * and ovfl_regs can be altered. The important point is not to loose any notification.&n;&t; * It is fine to get called for nothing. To make sure we do collect as much state as&n;&t; * possible, update_counters() always uses |= to add bit to the ovfl_regs field.&n;&t; *&n;&t; * In certain cases, it is possible to come here, with ovfl_regs == 0;&n;&t; *&n;&t; * XXX: pend_notify and ovfl_regs could be merged maybe !&n;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_ovfl_regs
+id|ctx-&gt;ctx_notify_task
 op_eq
 l_int|0
 )paren
@@ -4365,7 +4966,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;perfmon: spurious overflow notification from pid %d&bslash;n&quot;
+l_string|&quot;perfmon: process %d has no task to notify&bslash;n&quot;
 comma
 id|current-&gt;pid
 )paren
@@ -4373,135 +4974,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|read_lock
+id|DBprintk
 c_func
 (paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-id|task
-op_assign
-id|find_task_by_pid
-c_func
 (paren
-id|ctx-&gt;ctx_notify_pid
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|task
-)paren
-(brace
-id|si.si_signo
-op_assign
-id|ctx-&gt;ctx_notify_sig
-suffix:semicolon
-id|si.si_errno
-op_assign
-l_int|0
-suffix:semicolon
-id|si.si_code
-op_assign
-id|PROF_OVFL
-suffix:semicolon
-multiline_comment|/* goes to user */
-id|si.si_addr
-op_assign
-l_int|NULL
-suffix:semicolon
-id|si.si_pid
-op_assign
+l_string|&quot; current=%d task=%d&bslash;n&quot;
+comma
 id|current-&gt;pid
-suffix:semicolon
-multiline_comment|/* who is sending */
-id|si.si_pfm_ovfl
-op_assign
-id|ctx-&gt;ctx_ovfl_regs
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; SIGPROF to %d @ %p&bslash;n&quot;
 comma
-id|task-&gt;pid
-comma
-(paren
-r_void
-op_star
-)paren
-id|task
+id|ctx-&gt;ctx_notify_task-&gt;pid
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* must be done with tasklist_lock locked */
-id|ret
-op_assign
-id|send_sig_info
-c_func
-(paren
-id|ctx-&gt;ctx_notify_sig
-comma
-op_amp
-id|si
-comma
-id|task
-)paren
-suffix:semicolon
+multiline_comment|/* should not happen */
 r_if
 c_cond
 (paren
-id|ret
-op_ne
-l_int|0
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; send_sig_info(process %d, SIGPROF)=%d&bslash;n&quot;
-comma
-id|ctx-&gt;ctx_notify_pid
-comma
-id|ret
-)paren
-)paren
-suffix:semicolon
-id|task
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* will cause return */
-)brace
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;perfmon: notify_pid %d not found&bslash;n&quot;
-comma
-id|ctx-&gt;ctx_notify_pid
-)paren
-suffix:semicolon
-)brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-multiline_comment|/* now that we have released the lock handle error condition */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|task
-op_logical_or
 id|CTX_OVFL_NOBLOCK
 c_func
 (paren
@@ -4509,10 +4997,13 @@ id|ctx
 )paren
 )paren
 (brace
-multiline_comment|/* we clear all pending overflow bits in noblock mode */
-id|ctx-&gt;ctx_ovfl_regs
-op_assign
-l_int|0
+id|printk
+c_func
+(paren
+l_string|&quot;perfmon: process %d non-blocking ctx should not be here&bslash;n&quot;
+comma
+id|current-&gt;pid
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -4580,11 +5071,6 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-multiline_comment|/* now we can clear this mask */
-id|ctx-&gt;ctx_ovfl_regs
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Unlock sampling buffer and reset index atomically&n;&t;&t; * XXX: not really needed when blocking&n;&t;&t; */
 r_if
 c_cond
@@ -4636,302 +5122,7 @@ suffix:semicolon
 multiline_comment|/* state restored, can go back to work (user mode) */
 )brace
 )brace
-r_static
-r_void
-DECL|function|perfmon_softint
-id|perfmon_softint
-c_func
-(paren
-r_int
-r_int
-id|ignored
-)paren
-(brace
-id|notification_info_t
-op_star
-id|info
-suffix:semicolon
-r_int
-id|my_cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|task
-suffix:semicolon
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
-id|info
-op_assign
-id|notify_info
-op_plus
-id|my_cpu
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; CPU%d current=%d to_pid=%d from_pid=%d bv=0x%lx&bslash;n&quot;
-comma
-"&bslash;"
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|current-&gt;pid
-comma
-id|info-&gt;to_pid
-comma
-id|info-&gt;from_pid
-comma
-id|info-&gt;bitvect
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* assumption check */
-r_if
-c_cond
-(paren
-id|info-&gt;from_pid
-op_eq
-id|info-&gt;to_pid
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; Tasklet assumption error: from=%d tor=%d&bslash;n&quot;
-comma
-id|info-&gt;from_pid
-comma
-id|info-&gt;to_pid
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|notification_is_invalid
-c_func
-(paren
-id|info
-)paren
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; invalid notification information&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/* sanity check */
-r_if
-c_cond
-(paren
-id|info-&gt;to_pid
-op_eq
-l_int|1
-)paren
-(brace
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; cannot notify init&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * XXX: needs way more checks here to make sure we send to a task we have control over&n;&t; */
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-id|task
-op_assign
-id|find_task_by_pid
-c_func
-(paren
-id|info-&gt;to_pid
-)paren
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; after find %p&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|task
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|task
-)paren
-(brace
-r_int
-id|ret
-suffix:semicolon
-id|si.si_signo
-op_assign
-id|SIGPROF
-suffix:semicolon
-id|si.si_errno
-op_assign
-l_int|0
-suffix:semicolon
-id|si.si_code
-op_assign
-id|PROF_OVFL
-suffix:semicolon
-multiline_comment|/* goes to user */
-id|si.si_addr
-op_assign
-l_int|NULL
-suffix:semicolon
-id|si.si_pid
-op_assign
-id|info-&gt;from_pid
-suffix:semicolon
-multiline_comment|/* who is sending */
-id|si.si_pfm_ovfl
-op_assign
-id|info-&gt;bitvect
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; SIGPROF to %d @ %p&bslash;n&quot;
-comma
-id|task-&gt;pid
-comma
-(paren
-r_void
-op_star
-)paren
-id|task
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* must be done with tasklist_lock locked */
-id|ret
-op_assign
-id|send_sig_info
-c_func
-(paren
-id|SIGPROF
-comma
-op_amp
-id|si
-comma
-id|task
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|0
-)paren
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; send_sig_info(process %d, SIGPROF)=%d&bslash;n&quot;
-comma
-id|info-&gt;to_pid
-comma
-id|ret
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* invalidate notification */
-id|info-&gt;to_pid
-op_assign
-id|info-&gt;from_pid
-op_assign
-l_int|0
-suffix:semicolon
-id|info-&gt;bitvect
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; after unlock %p&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|task
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|task
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;perfmon: CPU%d cannot find process %d&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|info-&gt;to_pid
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n; * main overflow processing routine.&n; * it can be called from the interrupt path or explicitely during the context switch code&n; * Return:&n; *&t;0 : do not unfreeze the PMU&n; *&t;1 : PMU can be unfrozen&n; */
-r_static
+multiline_comment|/*&n; * main overflow processing routine.&n; * it can be called from the interrupt path or explicitely during the context switch code&n; * Return:&n; *&t;new value of pmc[0]. if 0x0 then unfreeze, else keep frozen&n; */
 r_int
 r_int
 DECL|function|update_counters
@@ -4940,7 +5131,7 @@ id|update_counters
 r_struct
 id|task_struct
 op_star
-id|ta
+id|task
 comma
 id|u64
 id|pmc0
@@ -4992,7 +5183,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|ovfl_is_smpl
+id|ovfl_has_long_recovery
 comma
 id|can_notify
 comma
@@ -5000,11 +5191,15 @@ id|need_reset_pmd16
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|siginfo
+id|si
+suffix:semicolon
 multiline_comment|/*&n;&t; * It is never safe to access the task for which the overflow interrupt is destinated&n;&t; * using the current variable as the interrupt may occur in the middle of a context switch&n;&t; * where current does not hold the task that is running yet.&n;&t; *&n;&t; * For monitoring, however, we do need to get access to the task which caused the overflow&n;&t; * to account for overflow on the counters.&n;&t; *&n;&t; * We accomplish this by maintaining a current owner of the PMU per CPU. During context&n;&t; * switch the ownership is changed in a way such that the reflected owner is always the&n;&t; * valid one, i.e. the one that caused the interrupt.&n;&t; */
 r_if
 c_cond
 (paren
-id|ta
+id|task
 op_eq
 l_int|NULL
 )paren
@@ -5026,7 +5221,7 @@ suffix:semicolon
 id|th
 op_assign
 op_amp
-id|ta-&gt;thread
+id|task-&gt;thread
 suffix:semicolon
 id|ctx
 op_assign
@@ -5043,6 +5238,10 @@ id|IA64_THREAD_PM_VALID
 )paren
 op_eq
 l_int|0
+op_logical_and
+id|ctx-&gt;ctx_fl_system
+op_eq
+l_int|0
 )paren
 (brace
 id|printk
@@ -5050,7 +5249,7 @@ c_func
 (paren
 l_string|&quot;perfmon: Spurious overflow interrupt: process %d not using perfmon&bslash;n&quot;
 comma
-id|ta-&gt;pid
+id|task-&gt;pid
 )paren
 suffix:semicolon
 r_return
@@ -5069,7 +5268,7 @@ c_func
 (paren
 l_string|&quot;perfmon: Spurious overflow interrupt: process %d has no PFM context&bslash;n&quot;
 comma
-id|ta-&gt;pid
+id|task-&gt;pid
 )paren
 suffix:semicolon
 r_return
@@ -5094,7 +5293,7 @@ c_func
 (paren
 l_string|&quot;perfmon: pid %d pmc0=0x%lx assumption error for freeze bit&bslash;n&quot;
 comma
-id|ta-&gt;pid
+id|task-&gt;pid
 comma
 id|pmc0
 )paren
@@ -5113,19 +5312,20 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot;pmc0=0x%lx pid=%d&bslash;n&quot;
+l_string|&quot;pmc0=0x%lx pid=%d owner=%d iip=0x%lx, ctx is in %s mode used_pmds=0x%lx used_pmcs=0x%lx&bslash;n&quot;
 comma
 id|pmc0
 comma
-id|ta-&gt;pid
-)paren
-)paren
-suffix:semicolon
-id|DBprintk
+id|task-&gt;pid
+comma
+id|PMU_OWNER
 c_func
 (paren
-(paren
-l_string|&quot;ctx is in %s mode&bslash;n&quot;
+)paren
+op_member_access_from_pointer
+id|pid
+comma
+id|regs-&gt;cr_iip
 comma
 id|CTX_OVFL_NOBLOCK
 c_func
@@ -5137,9 +5337,20 @@ c_cond
 l_string|&quot;NO-BLOCK&quot;
 suffix:colon
 l_string|&quot;BLOCK&quot;
+comma
+id|ctx-&gt;ctx_used_pmds
+(braket
+l_int|0
+)braket
+comma
+id|ctx-&gt;ctx_used_pmcs
+(braket
+l_int|0
+)braket
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX: need to record sample only when an EAR/BTB has overflowed&n;&t; */
 r_if
 c_cond
 (paren
@@ -5189,7 +5400,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; trying to record index=%ld entries=%ld&bslash;n&quot;
+l_string|&quot; recording index=%ld entries=%ld&bslash;n&quot;
 comma
 id|idx
 comma
@@ -5197,7 +5408,7 @@ id|psb-&gt;psb_entries
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * XXX: there is a small chance that we could run out on index before resetting&n;&t;&t; * but index is unsigned long, so it will take some time.....&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * XXX: there is a small chance that we could run out on index before resetting&n;&t;&t; * but index is unsigned long, so it will take some time.....&n;&t;&t; * We use &gt; instead of == because fetch_and_add() is off by one (see below)&n;&t;&t; *&n;&t;&t; * This case can happen in non-blocking mode or with multiple processes.&n;&t;&t; * For non-blocking, we need to reload and continue.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5242,7 +5453,7 @@ id|psb-&gt;psb_entry_size
 suffix:semicolon
 id|h-&gt;pid
 op_assign
-id|ta-&gt;pid
+id|task-&gt;pid
 suffix:semicolon
 id|h-&gt;cpu
 op_assign
@@ -5350,6 +5561,7 @@ id|pmu_conf.perf_ovfl_val
 )paren
 suffix:semicolon
 r_else
+(brace
 op_star
 id|e
 op_assign
@@ -5360,6 +5572,7 @@ id|j
 )paren
 suffix:semicolon
 multiline_comment|/* slow */
+)brace
 id|DBprintk
 c_func
 (paren
@@ -5384,7 +5597,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* make the new entry visible to user, needs to be atomic */
+multiline_comment|/*&n;&t;&t; * make the new entry visible to user, needs to be atomic&n;&t;&t; */
 id|ia64_fetch_and_add
 c_func
 (paren
@@ -5408,7 +5621,7 @@ id|psb-&gt;psb_hdr-&gt;hdr_count
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* sampling buffer full ? */
+multiline_comment|/* &n;&t;&t; * sampling buffer full ? &n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5421,9 +5634,12 @@ l_int|1
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * will cause notification, cannot be 0&n;&t;&t;&t; */
 id|bv
 op_assign
 id|mask
+op_lshift
+id|PMU_FIRST_COUNTER
 suffix:semicolon
 id|buffer_is_full
 op_assign
@@ -5439,6 +5655,7 @@ id|bv
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * we do not reload here, when context is blocking&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5450,14 +5667,16 @@ id|ctx
 )paren
 )paren
 r_goto
-id|buffer_full
+id|no_reload
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * here, we have a full buffer but we are in non-blocking mode&n;&t;&t;&t; * so we need to reloads overflowed PMDs with sampling reset values&n;&t;&t;&t; * and restart&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * here, we have a full buffer but we are in non-blocking mode&n;&t;&t;&t; * so we need to reload overflowed PMDs with sampling reset values&n;&t;&t;&t; * and restart right away.&n;&t;&t;&t; */
 )brace
+multiline_comment|/* FALL THROUGH */
 )brace
 id|reload_pmds
 suffix:colon
-id|ovfl_is_smpl
+multiline_comment|/*&n;&t; * in the case of a non-blocking context, we reload&n;&t; * with the ovfl_rval when no user notification is taking place (short recovery)&n;&t; * otherwise when the buffer is full which requires user interaction) then we use&n;&t; * smpl_rval which is the long_recovery path (disturbance introduce by user execution).&n;&t; *&n;&t; * XXX: implies that when buffer is full then there is always notification.&n;&t; */
+id|ovfl_has_long_recovery
 op_assign
 id|CTX_OVFL_NOBLOCK
 c_func
@@ -5467,6 +5686,7 @@ id|ctx
 op_logical_and
 id|buffer_is_full
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX: CTX_HAS_SMPL() should really be something like CTX_HAS_SMPL() and is activated,i.e.,&n;&t; * one of the PMC is configured for EAR/BTB.&n;&t; *&n;&t; * When sampling, we can only notify when the sampling buffer is full.&n;&t; */
 id|can_notify
 op_assign
 id|CTX_HAS_SMPL
@@ -5477,7 +5697,19 @@ id|ctx
 op_eq
 l_int|0
 op_logical_and
-id|ctx-&gt;ctx_notify_pid
+id|ctx-&gt;ctx_notify_task
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; ovfl_has_long_recovery=%d can_notify=%d&bslash;n&quot;
+comma
+id|ovfl_has_long_recovery
+comma
+id|can_notify
+)paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -5605,11 +5837,11 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; CPU%d should notify process %d with signal %d&bslash;n&quot;
+l_string|&quot; CPU%d should notify task %p with signal %d&bslash;n&quot;
 comma
 id|my_cpu
 comma
-id|ctx-&gt;ctx_notify_pid
+id|ctx-&gt;ctx_notify_task
 comma
 id|ctx-&gt;ctx_notify_sig
 )paren
@@ -5641,14 +5873,14 @@ multiline_comment|/* writes to upper part are ignored, so this is safe */
 r_if
 c_cond
 (paren
-id|ovfl_is_smpl
+id|ovfl_has_long_recovery
 )paren
 (brace
 id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; CPU%d PMD[%ld] reloaded with smpl_val=%lx&bslash;n&quot;
+l_string|&quot; CPU%d PMD[%ld] reload with smpl_val=%lx&bslash;n&quot;
 comma
 id|my_cpu
 comma
@@ -5683,7 +5915,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; CPU%d PMD[%ld] reloaded with ovfl_val=%lx&bslash;n&quot;
+l_string|&quot; CPU%d PMD[%ld] reload with ovfl_val=%lx&bslash;n&quot;
 comma
 id|my_cpu
 comma
@@ -5725,7 +5957,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * In case of BTB, overflow&n;&t; * we need to reset the BTB index.&n;&t; */
+multiline_comment|/*&n;&t; * In case of BTB overflow we need to reset the BTB index.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5749,14 +5981,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|buffer_full
+id|no_reload
 suffix:colon
-multiline_comment|/* see pfm_overflow_notify() on details for why we use |= here */
-id|ctx-&gt;ctx_ovfl_regs
-op_or_assign
-id|bv
-suffix:semicolon
-multiline_comment|/* nobody to notify, return and unfreeze */
+multiline_comment|/*&n;&t; * some counters overflowed, but they did not require&n;&t; * user notification, so after having reloaded them above&n;&t; * we simply restart&n;&t; */
 r_if
 c_cond
 (paren
@@ -5766,18 +5993,19 @@ id|bv
 r_return
 l_int|0x0
 suffix:semicolon
+id|ctx-&gt;ctx_ovfl_regs
+op_assign
+id|bv
+suffix:semicolon
+multiline_comment|/* keep track of what to reset when unblocking */
+multiline_comment|/*&n;&t; * Now we know that:&n;&t; * &t;- we have some counters which overflowed (contains in bv)&n;&t; * &t;- someone has asked to be notified on overflow. &n;&t; */
+multiline_comment|/*&n;&t; * If the notification task is still present, then notify_task is non&n;&t; * null. It is clean by that task if it ever exits before we do. &n;&t; */
 r_if
 c_cond
 (paren
-id|ctx-&gt;ctx_notify_pid
-op_eq
-id|ta-&gt;pid
+id|ctx-&gt;ctx_notify_task
 )paren
 (brace
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
 id|si.si_errno
 op_assign
 l_int|0
@@ -5788,7 +6016,7 @@ l_int|NULL
 suffix:semicolon
 id|si.si_pid
 op_assign
-id|ta-&gt;pid
+id|task-&gt;pid
 suffix:semicolon
 multiline_comment|/* who is sending */
 id|si.si_signo
@@ -5805,20 +6033,68 @@ id|si.si_pfm_ovfl
 op_assign
 id|bv
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * in this case, we don&squot;t stop the task, we let it go on. It will&n;&t;&t; * necessarily go to the signal handler (if any) when it goes back to&n;&t;&t; * user mode.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * when the target of the signal is not ourself, we have to be more&n;&t;&t; * careful. The notify_task may being cleared by the target task itself&n;&t;&t; * in release_thread(). We must ensure mutual exclusion here such that&n;&t;&t; * the signal is delivered (even to a dying task) safely.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_ne
+id|current
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * grab the notification lock for this task&n;&t;&t;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * now notify_task cannot be modified until we&squot;re done&n;&t;&t;&t; * if NULL, they it got modified while we were in the handler&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_eq
+l_int|NULL
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+r_goto
+id|lost_notify
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * required by send_sig_info() to make sure the target&n;&t;&t;&t; * task does not disappear on us.&n;&t;&t;&t; */
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; &t; * in this case, we don&squot;t stop the task, we let it go on. It will&n;&t; &t; * necessarily go to the signal handler (if any) when it goes back to&n;&t; &t; * user mode.&n;&t; &t; */
 id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; sending %d notification to self %d&bslash;n&quot;
+l_string|&quot; %d sending %d notification to %d&bslash;n&quot;
+comma
+id|task-&gt;pid
 comma
 id|si.si_signo
 comma
-id|ta-&gt;pid
+id|ctx-&gt;ctx_notify_task-&gt;pid
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* this call is safe in an interrupt handler */
+multiline_comment|/* &n;&t;&t; * this call is safe in an interrupt handler, so does read_lock() on tasklist_lock&n;&t;&t; */
 id|ret
 op_assign
 id|send_sig_info
@@ -5829,7 +6105,7 @@ comma
 op_amp
 id|si
 comma
-id|ta
+id|ctx-&gt;ctx_notify_task
 )paren
 suffix:semicolon
 r_if
@@ -5844,64 +6120,77 @@ c_func
 (paren
 l_string|&quot; send_sig_info(process %d, SIGPROF)=%d&bslash;n&quot;
 comma
-id|ta-&gt;pid
+id|ctx-&gt;ctx_notify_task-&gt;pid
 comma
 id|ret
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * no matter if we block or not, we keep PMU frozen and do not unfreeze on ctxsw&n;&t;&t; */
-id|ctx-&gt;ctx_fl_frozen
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
+multiline_comment|/*&n;&t;&t; * now undo the protections in order&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+op_ne
+id|current
+)paren
 (brace
-macro_line|#if 0
-multiline_comment|/*&n;&t;&t;&t; * The tasklet is guaranteed to be scheduled for this CPU only&n;&t;&t;&t; */
-id|notify_info
-(braket
-id|my_cpu
-)braket
-dot
-id|to_pid
-op_assign
-id|ctx-&gt;notify_pid
-suffix:semicolon
-id|notify_info
-(braket
-id|my_cpu
-)braket
-dot
-id|from_pid
-op_assign
-id|ta-&gt;pid
-suffix:semicolon
-multiline_comment|/* for debug only */
-id|notify_info
-(braket
-id|my_cpu
-)braket
-dot
-id|bitvect
-op_assign
-id|bv
-suffix:semicolon
-multiline_comment|/* tasklet is inserted and active */
-id|tasklet_schedule
+id|read_unlock
 c_func
 (paren
 op_amp
-id|pfm_tasklet
+id|tasklist_lock
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t;&t;&t; * stored the vector of overflowed registers for use in notification&n;&t;&t;&t; * mark that a notification/blocking is pending (arm the trap)&n;&t;&t;&t; */
-id|th-&gt;pfm_pend_notify
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * if we block set the pfm_must_block bit&n;&t;&t; * when in block mode, we can effectively block only when the notified&n;&t;&t; * task is not self, otherwise we would deadlock. &n;&t;&t; * in this configuration, the notification is sent, the task will not &n;&t;&t; * block on the way back to user mode, but the PMU will be kept frozen&n;&t;&t; * until PFM_RESTART.&n;&t;&t; * Note that here there is still a race condition with notify_task&n;&t;&t; * possibly being nullified behind our back, but this is fine because&n;&t;&t; * it can only be changed to NULL which by construction, can only be&n;&t;&t; * done when notify_task != current. So if it was already different&n;&t;&t; * before, changing it to NULL will still maintain this invariant.&n;&t;&t; * Of course, when it is equal to current it cannot change at this point.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|CTX_OVFL_NOBLOCK
+c_func
+(paren
+id|ctx
+)paren
+op_logical_and
+id|ctx-&gt;ctx_notify_task
+op_ne
+id|current
+)paren
+(brace
+id|th-&gt;pfm_must_block
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * if we do block, then keep PMU frozen until restart&n;&t;&t; */
+multiline_comment|/* will cause blocking */
+)brace
+)brace
+r_else
+(brace
+id|lost_notify
+suffix:colon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; notification task has disappeared !&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * for a non-blocking context, we make sure we do not fall into the pfm_overflow_notify()&n;&t;&t; * trap. Also in the case of a blocking context with lost notify process, then we do not&n;&t;&t; * want to block either (even though it is interruptible). In this case, the PMU will be kept&n;&t;&t; * frozen and the process will run to completion without monitoring enabled.&n;&t;&t; *&n;&t;&t; * Of course, we cannot loose notify process when self-monitoring.&n;&t;&t; */
+id|th-&gt;pfm_must_block
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * if we block, we keep the PMU frozen. If non-blocking we restart.&n;&t; * in the case of non-blocking were the notify process is lost, we also &n;&t; * restart. &n;&t; */
 r_if
 c_cond
 (paren
@@ -5916,25 +6205,16 @@ id|ctx-&gt;ctx_fl_frozen
 op_assign
 l_int|1
 suffix:semicolon
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; process %d notify ovfl_regs=0x%lx&bslash;n&quot;
-comma
-id|ta-&gt;pid
-comma
-id|bv
-)paren
-)paren
+r_else
+id|ctx-&gt;ctx_fl_frozen
+op_assign
+l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * keep PMU frozen (and overflowed bits cleared) when we have to stop,&n;&t; * otherwise return a resume &squot;value&squot; for PMC[0]&n;&t; *&n;&t; * XXX: maybe that&squot;s enough to get rid of ctx_fl_frozen ?&n;&t; */
 id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; will return pmc0=0x%x&bslash;n&quot;
+l_string|&quot; reload pmc0=0x%x must_block=%ld&bslash;n&quot;
 comma
 id|ctx-&gt;ctx_fl_frozen
 ques
@@ -5942,6 +6222,8 @@ c_cond
 l_int|0x1
 suffix:colon
 l_int|0x0
+comma
+id|th-&gt;pfm_must_block
 )paren
 )paren
 suffix:semicolon
@@ -6096,7 +6378,12 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;PMC[0]=%lx&bslash;nPerfmon debug: %s&bslash;n&quot;
+l_string|&quot;CPU%d.pmc[0]=%lx&bslash;nPerfmon debug: %s&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|pmc0
 comma
@@ -6106,6 +6393,20 @@ c_cond
 l_string|&quot;On&quot;
 suffix:colon
 l_string|&quot;Off&quot;
+)paren
+suffix:semicolon
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;proc_sessions=%lu sys_sessions=%lu&bslash;n&quot;
+comma
+id|pfs_info.pfs_proc_sessions
+comma
+id|pfs_info.pfs_sys_session
 )paren
 suffix:semicolon
 r_for
@@ -6132,6 +6433,7 @@ c_func
 id|i
 )paren
 )paren
+(brace
 id|p
 op_add_assign
 id|sprintf
@@ -6139,7 +6441,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;CPU%d.PMU %d&bslash;n&quot;
+l_string|&quot;CPU%d.pmu_owner: %-6d&bslash;n&quot;
 comma
 id|i
 comma
@@ -6158,9 +6460,11 @@ id|i
 dot
 id|owner-&gt;pid
 suffix:colon
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|p
@@ -6379,7 +6683,7 @@ id|pmu_conf.max_counters
 op_assign
 id|pm_info.pal_perf_mon_info_s.generic
 suffix:semicolon
-id|pmu_conf.num_pmds
+id|pmu_conf.num_pmcs
 op_assign
 id|find_num_pm_regs
 c_func
@@ -6387,7 +6691,7 @@ c_func
 id|pmu_conf.impl_regs
 )paren
 suffix:semicolon
-id|pmu_conf.num_pmcs
+id|pmu_conf.num_pmds
 op_assign
 id|find_num_pm_regs
 c_func
@@ -6487,7 +6791,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * XXX: for system wide this function MUST never be called&n; */
 r_void
 DECL|function|pfm_save_regs
 id|pfm_save_regs
@@ -6503,6 +6806,10 @@ id|task_struct
 op_star
 id|owner
 suffix:semicolon
+id|pfm_context_t
+op_star
+id|ctx
+suffix:semicolon
 r_struct
 id|thread_struct
 op_star
@@ -6514,28 +6821,20 @@ comma
 id|psr
 suffix:semicolon
 r_int
+r_int
+id|mask
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ta
-op_eq
-l_int|NULL
-)paren
-(brace
-id|panic
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; task is NULL&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|t
 op_assign
 op_amp
 id|ta-&gt;thread
+suffix:semicolon
+id|ctx
+op_assign
+id|ta-&gt;thread.pfm_context
 suffix:semicolon
 multiline_comment|/*&n;&t; * We must make sure that we don&squot;t loose any potential overflow&n;&t; * interrupt while saving PMU context. In this code, external&n;&t; * interrupts are always enabled.&n;&t; */
 multiline_comment|/*&n;&t; * save current PSR: needed because we modify it&n;&t; */
@@ -6556,7 +6855,7 @@ multiline_comment|/*&n;&t; * stop monitoring:&n;&t; * This is the only way to st
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;rum psr.up;;&quot;
+l_string|&quot;rsm psr.up|psr.pp;;&quot;
 op_scope_resolution
 suffix:colon
 l_string|&quot;memory&quot;
@@ -6600,11 +6899,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|ia64_srlz_d
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Check for overflow bits and proceed manually if needed&n;&t; *&n;&t; * It is safe to call the interrupt handler now because it does&n;&t; * not try to block the task right away. Instead it will set a&n;&t; * flag and let the task proceed. The blocking will only occur&n;&t; * next time the task exits from the kernel.&n;&t; */
 r_if
 c_cond
@@ -6615,43 +6909,6 @@ op_complement
 l_int|0x1
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|owner
-op_ne
-id|ta
-)paren
-id|printk
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; owner=%p task=%p&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|owner
-comma
-(paren
-r_void
-op_star
-)paren
-id|ta
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|__FUNCTION__
-l_string|&quot; Warning: pmc[0]=0x%lx explicit call&bslash;n&quot;
-comma
-id|pmc0
-)paren
-suffix:semicolon
-id|pmc0
-op_assign
 id|update_counters
 c_func
 (paren
@@ -6678,7 +6935,33 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * we do not save registers if we can do lazy&n;&t; */
+r_if
+c_cond
+(paren
+id|PFM_CAN_DO_LAZY
+c_func
+(paren
+)paren
+)paren
+(brace
+id|SET_PMU_OWNER
+c_func
+(paren
+id|owner
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * XXX needs further optimization.&n;&t; * Also must take holes into account&n;&t; */
+id|mask
+op_assign
+id|ctx-&gt;ctx_used_pmds
+(braket
+l_int|0
+)braket
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6686,14 +6969,23 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|i
-OL
-id|pmu_conf.num_pmds
+id|mask
 suffix:semicolon
 id|i
 op_increment
+comma
+id|mask
+op_rshift_assign
+l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
 id|t-&gt;pmd
 (braket
 id|i
@@ -6707,6 +6999,15 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* skip PMC[0], we handle it separately */
+id|mask
+op_assign
+id|ctx-&gt;ctx_used_pmcs
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6714,14 +7015,23 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|i
-OL
-id|pmu_conf.num_pmcs
+id|mask
 suffix:semicolon
 id|i
 op_increment
+comma
+id|mask
+op_rshift_assign
+l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
 id|t-&gt;pmc
 (braket
 id|i
@@ -6735,6 +7045,151 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Throughout this code we could have gotten an overflow interrupt. It is transformed&n;&t; * into a spurious interrupt as soon as we give up pmu ownership.&n;&t; */
+)brace
+r_static
+r_void
+DECL|function|pfm_lazy_save_regs
+id|pfm_lazy_save_regs
+(paren
+r_struct
+id|task_struct
+op_star
+id|ta
+)paren
+(brace
+id|pfm_context_t
+op_star
+id|ctx
+suffix:semicolon
+r_struct
+id|thread_struct
+op_star
+id|t
+suffix:semicolon
+r_int
+r_int
+id|mask
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot;  on [%d] by [%d]&bslash;n&quot;
+comma
+id|ta-&gt;pid
+comma
+id|current-&gt;pid
+)paren
+)paren
+suffix:semicolon
+id|t
+op_assign
+op_amp
+id|ta-&gt;thread
+suffix:semicolon
+id|ctx
+op_assign
+id|ta-&gt;thread.pfm_context
+suffix:semicolon
+multiline_comment|/*&n;&t; * XXX needs further optimization.&n;&t; * Also must take holes into account&n;&t; */
+id|mask
+op_assign
+id|ctx-&gt;ctx_used_pmds
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|mask
+suffix:semicolon
+id|i
+op_increment
+comma
+id|mask
+op_rshift_assign
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
+id|t-&gt;pmd
+(braket
+id|i
+)braket
+op_assign
+id|ia64_get_pmd
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* skip PMC[0], we handle it separately */
+id|mask
+op_assign
+id|ctx-&gt;ctx_used_pmcs
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|mask
+suffix:semicolon
+id|i
+op_increment
+comma
+id|mask
+op_rshift_assign
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
+id|t-&gt;pmc
+(braket
+id|i
+)braket
+op_assign
+id|ia64_get_pmc
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+)brace
+id|SET_PMU_OWNER
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|pfm_load_regs
@@ -6760,10 +7215,59 @@ id|ctx
 op_assign
 id|ta-&gt;thread.pfm_context
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|owner
+suffix:semicolon
+r_int
+r_int
+id|mask
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX needs further optimization.&n;&t; * Also must take holes into account&n;&t; */
+id|owner
+op_assign
+id|PMU_OWNER
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|owner
+op_eq
+id|ta
+)paren
+r_goto
+id|skip_restore
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|owner
+)paren
+id|pfm_lazy_save_regs
+c_func
+(paren
+id|owner
+)paren
+suffix:semicolon
+id|SET_PMU_OWNER
+c_func
+(paren
+id|ta
+)paren
+suffix:semicolon
+id|mask
+op_assign
+id|ctx-&gt;ctx_used_pmds
+(braket
+l_int|0
+)braket
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6771,14 +7275,23 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|i
-OL
-id|pmu_conf.num_pmds
+id|mask
 suffix:semicolon
 id|i
 op_increment
+comma
+id|mask
+op_rshift_assign
+l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
 id|ia64_set_pmd
 c_func
 (paren
@@ -6792,6 +7305,15 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* skip PMC[0] to avoid side effects */
+id|mask
+op_assign
+id|ctx-&gt;ctx_used_pmcs
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6799,14 +7321,23 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-id|i
-OL
-id|pmu_conf.num_pmcs
+id|mask
 suffix:semicolon
 id|i
 op_increment
+comma
+id|mask
+op_rshift_assign
+l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mask
+op_amp
+l_int|0x1
+)paren
 id|ia64_set_pmc
 c_func
 (paren
@@ -6819,56 +7350,8 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * we first restore ownership of the PMU to the &squot;soon to be current&squot;&n;&t; * context. This way, if, as soon as we unfreeze the PMU at the end&n;&t; * of this function, we get an interrupt, we attribute it to the correct&n;&t; * task&n;&t; */
-id|SET_PMU_OWNER
-c_func
-(paren
-id|ta
-)paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;&t; * check if we had pending overflow before context switching out&n;&t; * If so, we invoke the handler manually, i.e. simulate interrupt.&n;&t; *&n;&t; * XXX: given that we do not use the tasklet anymore to stop, we can&n;&t; * move this back to the pfm_save_regs() routine.&n;&t; */
-r_if
-c_cond
-(paren
-id|t-&gt;pmc
-(braket
-l_int|0
-)braket
-op_amp
-op_complement
-l_int|0x1
-)paren
-(brace
-multiline_comment|/* freeze set in pfm_save_regs() */
-id|DBprintk
-c_func
-(paren
-(paren
-l_string|&quot; pmc[0]=0x%lx manual interrupt&bslash;n&quot;
-comma
-id|t-&gt;pmc
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
-id|update_counters
-c_func
-(paren
-id|ta
-comma
-id|t-&gt;pmc
-(braket
-l_int|0
-)braket
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
+id|skip_restore
+suffix:colon
 multiline_comment|/*&n;&t; * unfreeze only when possible&n;&t; */
 r_if
 c_cond
@@ -6891,9 +7374,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* place where we potentially (kernel level) start monitoring again */
 )brace
 )brace
-multiline_comment|/*&n; * This function is called when a thread exits (from exit_thread()).&n; * This is a simplified pfm_save_regs() that simply flushes hthe current&n; * register state into the save area taking into account any pending&n; * overflow. This time no notification is sent because the taks is dying&n; * anyway. The inline processing of overflows avoids loosing some counts.&n; * The PMU is frozen on exit from this call and is to never be reenabled&n; * again for this task.&n; */
+multiline_comment|/*&n; * This function is called when a thread exits (from exit_thread()).&n; * This is a simplified pfm_save_regs() that simply flushes the current&n; * register state into the save area taking into account any pending&n; * overflow. This time no notification is sent because the taks is dying&n; * anyway. The inline processing of overflows avoids loosing some counts.&n; * The PMU is frozen on exit from this call and is to never be reenabled&n; * again for this task.&n; */
 r_void
 DECL|function|pfm_flush_regs
 id|pfm_flush_regs
@@ -7076,6 +7560,14 @@ id|j
 op_amp
 id|pmu_conf.perf_ovfl_val
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * now everything is in ctx_pmds[] and we need&n;&t;&t; * to clear the saved context from save_regs() such that&n;&t;&t; * pfm_read_pmds() gets the correct value&n;&t;&t; */
+id|ta-&gt;thread.pmd
+(braket
+id|j
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* take care of overflow inline */
 r_if
 c_cond
@@ -7120,6 +7612,10 @@ id|val
 )paren
 suffix:semicolon
 )brace
+id|mask
+op_rshift_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * XXX: this routine is not very portable for PMCs&n; * XXX: make this routine able to work with non current context&n; */
@@ -7278,6 +7774,11 @@ r_struct
 id|task_struct
 op_star
 id|task
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pfm_context_t
@@ -7303,6 +7804,37 @@ id|i
 comma
 id|cnum
 suffix:semicolon
+multiline_comment|/*&n;&t; * bypass completely for system wide&n;&t; */
+r_if
+c_cond
+(paren
+id|pfs_info.pfs_sys_session
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; enabling psr.pp for %d&bslash;n&quot;
+comma
+id|task-&gt;pid
+)paren
+)paren
+suffix:semicolon
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|pp
+op_assign
+id|pfs_info.pfs_pp
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * takes care of easiest case first&n;&t; */
 r_if
 c_cond
@@ -7330,9 +7862,18 @@ id|task-&gt;thread.pfm_context
 op_assign
 l_int|NULL
 suffix:semicolon
-id|task-&gt;thread.pfm_pend_notify
+id|task-&gt;thread.pfm_must_block
 op_assign
 l_int|0
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|task-&gt;thread.pfm_notifiers_check
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* copy_thread() clears IA64_THREAD_PM_VALID */
 r_return
@@ -7367,7 +7908,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ctx-&gt;ctx_fl_inherit
+id|CTX_INHERIT_MODE
+c_func
+(paren
+id|ctx
+)paren
 op_eq
 id|PFM_FL_INHERIT_ONCE
 )paren
@@ -7375,6 +7920,15 @@ id|PFM_FL_INHERIT_ONCE
 id|nctx-&gt;ctx_fl_inherit
 op_assign
 id|PFM_FL_INHERIT_NONE
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|task-&gt;thread.pfm_notifiers_check
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|DBprintk
 c_func
@@ -7385,6 +7939,9 @@ comma
 id|task-&gt;pid
 )paren
 )paren
+suffix:semicolon
+id|pfs_info.pfs_proc_sessions
+op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* initialize counters in new context */
@@ -7484,7 +8041,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* reset this semaphore to locked */
 multiline_comment|/* clear pending notification */
-id|th-&gt;pfm_pend_notify
+id|th-&gt;pfm_must_block
 op_assign
 l_int|0
 suffix:semicolon
@@ -7537,7 +8094,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* called from exit_thread() */
+multiline_comment|/* &n; * called from release_thread(), at this point this task is not in the &n; * tasklist anymore&n; */
 r_void
 DECL|function|pfm_context_exit
 id|pfm_context_exit
@@ -7593,7 +8150,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; pid %d: task %d sampling psb-&gt;refcnt=%d&bslash;n&quot;
+l_string|&quot; [%d] [%d] psb-&gt;refcnt=%d&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -7632,7 +8189,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; pid %d: cleaning task %d sampling buffer&bslash;n&quot;
+l_string|&quot; [%d] cleaning [%d] sampling buffer&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -7646,7 +8203,7 @@ id|DBprintk
 c_func
 (paren
 (paren
-l_string|&quot; pid %d: task %d pfm_context is freed @%p&bslash;n&quot;
+l_string|&quot; [%d] cleaning [%d] pfm_context @%p&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -7660,10 +8217,242 @@ id|ctx
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * To avoid getting the notified task scan the entire process list&n;&t; * when it exits because it would have pfm_notifiers_check set, we &n;&t; * decrease it by 1 to inform the task, that one less task is going&n;&t; * to send it notification. each new notifer increases this field by&n;&t; * 1 in pfm_context_create(). Of course, there is race condition between&n;&t; * decreasing the value and the notified task exiting. The danger comes&n;&t; * from the fact that we have a direct pointer to its task structure&n;&t; * thereby bypassing the tasklist. We must make sure that if we have &n;&t; * notify_task!= NULL, the target task is still somewhat present. It may&n;&t; * already be detached from the tasklist but that&squot;s okay. Note that it is&n;&t; * okay if we &squot;miss the deadline&squot; and the task scans the list for nothing,&n;&t; * it will affect performance but not correctness. The correctness is ensured&n;&t; * by using the notify_lock whic prevents the notify_task from changing on us.&n;&t; * Once holdhing this lock, if we see notify_task!= NULL, then it will stay like&n;&t; * that until we release the lock. If it is NULL already then we came too late.&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_notify_task
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; [%d] [%d] atomic_sub on [%d] notifiers=%u&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|task-&gt;pid
+comma
+id|ctx-&gt;ctx_notify_task-&gt;pid
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_task-&gt;thread.pfm_notifiers_check
+)paren
+)paren
+)paren
+suffix:semicolon
+id|atomic_sub
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|ctx-&gt;ctx_notify_task-&gt;thread.pfm_notifiers_check
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_system
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * if included interrupts (true by default), then reset&n;&t;&t; * to get default value&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_fl_exclintr
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * reload kernel default DCR value&n;&t;&t;&t; */
+id|ia64_set_dcr
+c_func
+(paren
+id|pfs_info.pfs_dfl_dcr
+)paren
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; restored dcr to 0x%lx&bslash;n&quot;
+comma
+id|pfs_info.pfs_dfl_dcr
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* &n;&t;&t; * free system wide session slot&n;&t;&t; */
+id|pfs_info.pfs_sys_session
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|pfs_info.pfs_proc_sessions
+op_decrement
+suffix:semicolon
+)brace
 id|pfm_context_free
 c_func
 (paren
 id|ctx
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t; *  clean pfm state in thread structure,&n;&t; */
+id|task-&gt;thread.pfm_context
+op_assign
+l_int|NULL
+suffix:semicolon
+id|task-&gt;thread.pfm_must_block
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* pfm_notifiers is cleaned in pfm_cleanup_notifiers() */
+)brace
+r_void
+DECL|function|pfm_cleanup_notifiers
+id|pfm_cleanup_notifiers
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|p
+suffix:semicolon
+id|pfm_context_t
+op_star
+id|ctx
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; [%d] called&bslash;n&quot;
+comma
+id|task-&gt;pid
+)paren
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|for_each_task
+c_func
+(paren
+id|p
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * It is safe to do the 2-step test here, because thread.ctx&n;&t;&t; * is cleaned up only in release_thread() and at that point&n;&t;&t; * the task has been detached from the tasklist which is an&n;&t;&t; * operation which uses the write_lock() on the tasklist_lock&n;&t;&t; * so it cannot run concurrently to this loop. So we have the&n;&t;&t; * guarantee that if we find p and it has a perfmon ctx then&n;&t;&t; * it is going to stay like this for the entire execution of this&n;&t;&t; * loop.&n;&t;&t; */
+id|ctx
+op_assign
+id|p-&gt;thread.pfm_context
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; [%d] scanning task [%d] ctx=%p&bslash;n&quot;
+comma
+id|task-&gt;pid
+comma
+id|p-&gt;pid
+comma
+id|ctx
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctx
+op_logical_and
+id|ctx-&gt;ctx_notify_task
+op_eq
+id|task
+)paren
+(brace
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; trying for notifier %d in %d&bslash;n&quot;
+comma
+id|task-&gt;pid
+comma
+id|p-&gt;pid
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * the spinlock is required to take care of a race condition&n;&t;&t;&t; * with the send_sig_info() call. We must make sure that &n;&t;&t;&t; * either the send_sig_info() completes using a valid task,&n;&t;&t;&t; * or the notify_task is cleared before the send_sig_info()&n;&t;&t;&t; * can pick up a stale value. Note that by the time this&n;&t;&t;&t; * function is executed the &squot;task&squot; is already detached from the&n;&t;&t;&t; * tasklist. The problem is that the notifiers have a direct&n;&t;&t;&t; * pointer to it. It is okay to send a signal to a task in this&n;&t;&t;&t; * stage, it simply will have no effect. But it is better than sending&n;&t;&t;&t; * to a completely destroyed task or worse to a new task using the same&n;&t;&t;&t; * task_struct address.&n;&t;&t;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+id|ctx-&gt;ctx_notify_task
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_notify_lock
+)paren
+suffix:semicolon
+id|DBprintk
+c_func
+(paren
+(paren
+l_string|&quot; done for notifier %d in %d&bslash;n&quot;
+comma
+id|task-&gt;pid
+comma
+id|p-&gt;pid
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
 )paren
 suffix:semicolon
 )brace

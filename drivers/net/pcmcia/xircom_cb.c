@@ -1329,7 +1329,11 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 r_struct
 id|xircom_private

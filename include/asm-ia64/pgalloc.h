@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGALLOC_H
 DECL|macro|_ASM_IA64_PGALLOC_H
 mdefine_line|#define _ASM_IA64_PGALLOC_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to allocate&n; * page tables.&n; *&n; * This hopefully works with any (fixed) ia-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000, Goutham Rao &lt;goutham.rao@intel.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to allocate&n; * page tables.&n; *&n; * This hopefully works with any (fixed) ia-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000, Goutham Rao &lt;goutham.rao@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -630,11 +630,6 @@ macro_line|#else
 DECL|macro|flush_tlb_all
 macro_line|# define flush_tlb_all()&t;__flush_tlb_all()
 macro_line|#endif
-multiline_comment|/*&n; * Serialize usage of ptc.g:&n; */
-r_extern
-id|spinlock_t
-id|ptcg_lock
-suffix:semicolon
 multiline_comment|/*&n; * Flush a specified user mapping&n; */
 r_static
 r_inline

@@ -1,10 +1,139 @@
-multiline_comment|/* &n;   3w-xxxx.h -- 3ware Storage Controller device driver for Linux.&n;   &n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By:&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;   &n;   For more information, goto:&n;   http://www.3ware.com&n;*/
+multiline_comment|/* &n;   3w-xxxx.h -- 3ware Storage Controller device driver for Linux.&n;   &n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                     Brad Strand &lt;linux@3ware.com&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By:&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;   &n;   For more information, goto:&n;   http://www.3ware.com&n;*/
 macro_line|#ifndef _3W_XXXX_H
 DECL|macro|_3W_XXXX_H
 mdefine_line|#define _3W_XXXX_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
+multiline_comment|/* AEN strings */
+DECL|variable|tw_aen_string
+r_static
+r_char
+op_star
+id|tw_aen_string
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;AEN queue empty&quot;
+comma
+singleline_comment|// 0x000
+l_string|&quot;Soft reset occurred&quot;
+comma
+singleline_comment|// 0x001
+l_string|&quot;Mirorr degraded: Unit #&quot;
+comma
+singleline_comment|// 0x002
+l_string|&quot;Controller error&quot;
+comma
+singleline_comment|// 0x003 
+l_string|&quot;Rebuild failed: Unit #&quot;
+comma
+singleline_comment|// 0x004
+l_string|&quot;Rebuild complete: Unit #&quot;
+comma
+singleline_comment|// 0x005
+l_string|&quot;Incomplete unit detected: Unit #&quot;
+comma
+singleline_comment|// 0x006
+l_string|&quot;Initialization complete: Unit #&quot;
+comma
+singleline_comment|// 0x007
+l_string|&quot;Unclean shutdown detected: Unit #&quot;
+comma
+singleline_comment|// 0x008
+l_string|&quot;ATA port timeout: Port #&quot;
+comma
+singleline_comment|// 0x009
+l_string|&quot;Drive error: Port #&quot;
+comma
+singleline_comment|// 0x00A
+l_string|&quot;Rebuild started: Unit #&quot;
+comma
+singleline_comment|// 0x00B 
+l_string|&quot;Initialization started: Unit #&quot;
+comma
+singleline_comment|// 0x00C
+l_string|&quot;Logical unit deleted: Unit #&quot;
+comma
+singleline_comment|// 0x00D
+l_int|NULL
+comma
+singleline_comment|// 0x00E unused
+l_string|&quot;SMART threshold exceeded: Port #&quot;
+comma
+singleline_comment|// 0x00F
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+singleline_comment|// 0x010-0x020 unused
+l_string|&quot;ATA UDMA downgrade: Port #&quot;
+comma
+singleline_comment|// 0x021
+l_string|&quot;ATA UDMA upgrade: Port #&quot;
+comma
+singleline_comment|// 0x022
+l_string|&quot;Sector repair occurred: Port #&quot;
+comma
+singleline_comment|// 0x023
+l_string|&quot;SBUF integrity check failure&quot;
+comma
+singleline_comment|// 0x024
+l_string|&quot;Lost cached write: Port #&quot;
+comma
+singleline_comment|// 0x025
+l_string|&quot;Drive ECC error detected: Port #&quot;
+comma
+singleline_comment|// 0x026
+l_string|&quot;DCB checksum error: Port #&quot;
+comma
+singleline_comment|// 0x027
+l_string|&quot;DCB unsupported version: Port #&quot;
+comma
+singleline_comment|// 0x028
+l_string|&quot;Verify started: Unit #&quot;
+comma
+singleline_comment|// 0x029
+l_string|&quot;Verify failed: Port #&quot;
+comma
+singleline_comment|// 0x02A
+l_string|&quot;Verify complete: Unit #&quot;
+singleline_comment|// 0x02B
+)brace
+suffix:semicolon
+DECL|macro|TW_AEN_STRING_MAX
+mdefine_line|#define TW_AEN_STRING_MAX                      0x02C
 multiline_comment|/* Control register bit definitions */
 DECL|macro|TW_CONTROL_CLEAR_HOST_INTERRUPT
 mdefine_line|#define TW_CONTROL_CLEAR_HOST_INTERRUPT&t;       0x00080000
@@ -106,6 +235,8 @@ DECL|macro|TW_OP_AEN_LISTEN
 mdefine_line|#define TW_OP_AEN_LISTEN      0x1c
 DECL|macro|TW_CMD_PACKET
 mdefine_line|#define TW_CMD_PACKET         0x1d
+DECL|macro|TW_ATA_PASSTHRU
+mdefine_line|#define TW_ATA_PASSTHRU       0x1e
 multiline_comment|/* Asynchronous Event Notification (AEN) Codes */
 DECL|macro|TW_AEN_QUEUE_EMPTY
 mdefine_line|#define TW_AEN_QUEUE_EMPTY       0x0000
@@ -146,8 +277,14 @@ DECL|macro|TW_POLL_MAX_RETRIES
 mdefine_line|#define TW_POLL_MAX_RETRIES        &t;      20000
 DECL|macro|TW_MAX_SGL_LENGTH
 mdefine_line|#define TW_MAX_SGL_LENGTH&t;&t;      62
+DECL|macro|TW_ATA_PASS_SGL_MAX
+mdefine_line|#define TW_ATA_PASS_SGL_MAX                   60
+DECL|macro|TW_MAX_PASSTHRU_BYTES
+mdefine_line|#define TW_MAX_PASSTHRU_BYTES                 4096
 DECL|macro|TW_Q_LENGTH
-mdefine_line|#define TW_Q_LENGTH&t;&t;&t;      16
+mdefine_line|#define TW_Q_LENGTH&t;&t;&t;      256
+DECL|macro|TW_MAX_BOUNCEBUF
+mdefine_line|#define TW_MAX_BOUNCEBUF                      16
 DECL|macro|TW_Q_START
 mdefine_line|#define TW_Q_START&t;&t;&t;      0
 DECL|macro|TW_MAX_SLOT
@@ -423,6 +560,11 @@ r_int
 r_char
 id|parameter_size_bytes
 suffix:semicolon
+DECL|member|unit_index
+r_int
+r_char
+id|unit_index
+suffix:semicolon
 DECL|member|data
 r_int
 r_char
@@ -563,38 +705,149 @@ DECL|typedef|TW_Info
 )brace
 id|TW_Info
 suffix:semicolon
-DECL|enum|TAG_TW_Cmd_State
-r_typedef
-r_enum
-id|TAG_TW_Cmd_State
-(brace
-DECL|enumerator|TW_S_INITIAL
-id|TW_S_INITIAL
-comma
-multiline_comment|/* Initial state */
-DECL|enumerator|TW_S_STARTED
-id|TW_S_STARTED
-comma
-multiline_comment|/* Id in use */
-DECL|enumerator|TW_S_POSTED
-id|TW_S_POSTED
-comma
-multiline_comment|/* Posted to the controller */
-DECL|enumerator|TW_S_PENDING
-id|TW_S_PENDING
-comma
-multiline_comment|/* Waiting to be posted in isr */
-DECL|enumerator|TW_S_COMPLETED
-id|TW_S_COMPLETED
-comma
-multiline_comment|/* Completed by isr */
-DECL|enumerator|TW_S_FINISHED
-id|TW_S_FINISHED
-comma
-multiline_comment|/* I/O completely done */
 DECL|typedef|TW_Cmd_State
-)brace
+r_typedef
+r_int
 id|TW_Cmd_State
+suffix:semicolon
+DECL|macro|TW_S_INITIAL
+mdefine_line|#define TW_S_INITIAL   0x1  /* Initial state */
+DECL|macro|TW_S_STARTED
+mdefine_line|#define TW_S_STARTED   0x2  /* Id in use */
+DECL|macro|TW_S_POSTED
+mdefine_line|#define TW_S_POSTED    0x4  /* Posted to the controller */
+DECL|macro|TW_S_PENDING
+mdefine_line|#define TW_S_PENDING   0x8  /* Waiting to be posted in isr */
+DECL|macro|TW_S_COMPLETED
+mdefine_line|#define TW_S_COMPLETED 0x10 /* Completed by isr */
+DECL|macro|TW_S_FINISHED
+mdefine_line|#define TW_S_FINISHED  0x20 /* I/O completely done */
+DECL|macro|TW_START_MASK
+mdefine_line|#define TW_START_MASK (TW_S_STARTED | TW_S_POSTED | TW_S_PENDING | TW_S_COMPLETED)
+multiline_comment|/* Command header for ATA pass-thru */
+DECL|struct|TAG_TW_Passthru
+r_typedef
+r_struct
+id|TAG_TW_Passthru
+(brace
+r_struct
+(brace
+DECL|member|opcode
+r_int
+r_char
+id|opcode
+suffix:colon
+l_int|5
+suffix:semicolon
+DECL|member|sgloff
+r_int
+r_char
+id|sgloff
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|byte0
+)brace
+id|byte0
+suffix:semicolon
+DECL|member|size
+r_int
+r_char
+id|size
+suffix:semicolon
+DECL|member|request_id
+r_int
+r_char
+id|request_id
+suffix:semicolon
+r_struct
+(brace
+DECL|member|aport
+r_int
+r_char
+id|aport
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|host_id
+r_int
+r_char
+id|host_id
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|byte3
+)brace
+id|byte3
+suffix:semicolon
+DECL|member|status
+r_int
+r_char
+id|status
+suffix:semicolon
+DECL|member|flags
+r_int
+r_char
+id|flags
+suffix:semicolon
+DECL|member|param
+r_int
+r_int
+id|param
+suffix:semicolon
+DECL|member|features
+r_int
+r_int
+id|features
+suffix:semicolon
+DECL|member|sector_count
+r_int
+r_int
+id|sector_count
+suffix:semicolon
+DECL|member|sector_num
+r_int
+r_int
+id|sector_num
+suffix:semicolon
+DECL|member|cylinder_lo
+r_int
+r_int
+id|cylinder_lo
+suffix:semicolon
+DECL|member|cylinder_hi
+r_int
+r_int
+id|cylinder_hi
+suffix:semicolon
+DECL|member|drive_head
+r_int
+r_char
+id|drive_head
+suffix:semicolon
+DECL|member|command
+r_int
+r_char
+id|command
+suffix:semicolon
+DECL|member|sg_list
+id|TW_SG_Entry
+id|sg_list
+(braket
+id|TW_ATA_PASS_SGL_MAX
+)braket
+suffix:semicolon
+DECL|member|padding
+r_int
+r_char
+id|padding
+(braket
+l_int|12
+)braket
+suffix:semicolon
+DECL|typedef|TW_Passthru
+)brace
+id|TW_Passthru
 suffix:semicolon
 DECL|struct|TAG_TW_Device_Extension
 r_typedef
@@ -697,6 +950,11 @@ r_int
 r_char
 id|free_tail
 suffix:semicolon
+DECL|member|free_wrap
+r_int
+r_char
+id|free_wrap
+suffix:semicolon
 DECL|member|pending_queue
 r_int
 r_char
@@ -782,7 +1040,6 @@ id|tw_lock
 suffix:semicolon
 DECL|member|ioctl_size
 r_int
-r_char
 id|ioctl_size
 (braket
 id|TW_Q_LENGTH

@@ -38,5 +38,11 @@ DECL|macro|IO_SHUTDOWN
 mdefine_line|#define IO_SHUTDOWN   0xD
 DECL|macro|IO_GET_PWR_BT
 mdefine_line|#define IO_GET_PWR_BT 0xE
+multiline_comment|/* Bit toggling in driver settings */
+multiline_comment|/* bit set in low byte0 is CLK mask (0x00FF), &n;   bit set in byte1 is DATA mask    (0xFF00) &n;   msb, data_mask[7:0] , clk_mask[7:0]&n; */
+DECL|macro|IO_CFG_WRITE_MODE
+mdefine_line|#define IO_CFG_WRITE_MODE 0xF 
+DECL|macro|IO_CFG_WRITE_MODE_VALUE
+mdefine_line|#define IO_CFG_WRITE_MODE_VALUE(msb, data_mask, clk_mask) &bslash;&n;  ( (((msb)&amp;1) &lt;&lt; 16) | (((data_mask) &amp;0xFF) &lt;&lt; 8) | ((clk_mask) &amp; 0xFF) )
 macro_line|#endif
 eof

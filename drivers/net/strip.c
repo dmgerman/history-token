@@ -11001,7 +11001,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;BSD without advertisement clause&quot;
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE

@@ -1,4 +1,4 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.11 2001/10/02 15:05:12 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.12 2001/11/06 14:37:35 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/mtd/jedec.h&gt;
 r_static
 r_struct
@@ -257,6 +257,21 @@ comma
 (brace
 )brace
 )brace
+suffix:semicolon
+r_static
+r_const
+r_struct
+id|JEDECTable
+op_star
+id|jedec_idtoinf
+c_func
+(paren
+id|__u8
+id|mfr
+comma
+id|__u8
+id|id
+)paren
 suffix:semicolon
 DECL|function|jedec_sync
 r_static
@@ -1263,6 +1278,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Take an array of JEDEC numbers that represent interleved flash chips&n;   and process them. Check to make sure they are good JEDEC numbers, look&n;   them up and then add them to the chip list */
 DECL|function|handle_jedecs
+r_static
 r_int
 id|handle_jedecs
 c_func
@@ -1785,6 +1801,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Lookup the chip information from the JEDEC ID table. */
 DECL|function|jedec_idtoinf
+r_static
 r_const
 r_struct
 id|JEDECTable
@@ -4641,11 +4658,10 @@ id|chip-&gt;addrshift
 suffix:semicolon
 )brace
 )brace
-DECL|function|jedec_probe_init
-r_static
+DECL|function|jedec_init
 r_int
 id|__init
-id|jedec_probe_init
+id|jedec_init
 c_func
 (paren
 r_void
@@ -4662,11 +4678,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|jedec_probe_exit
+DECL|function|jedec_exit
 r_static
 r_void
 id|__exit
-id|jedec_probe_exit
+id|jedec_exit
 c_func
 (paren
 r_void
@@ -4680,18 +4696,18 @@ id|jedec_chipdrv
 )paren
 suffix:semicolon
 )brace
-DECL|variable|jedec_probe_init
+DECL|variable|jedec_init
 id|module_init
 c_func
 (paren
-id|jedec_probe_init
+id|jedec_init
 )paren
 suffix:semicolon
-DECL|variable|jedec_probe_exit
+DECL|variable|jedec_exit
 id|module_exit
 c_func
 (paren
-id|jedec_probe_exit
+id|jedec_exit
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

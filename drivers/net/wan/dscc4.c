@@ -2810,10 +2810,6 @@ op_amp
 id|ppriv-&gt;lock
 )paren
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
-id|ppriv
-suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren

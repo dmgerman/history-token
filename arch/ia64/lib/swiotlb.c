@@ -1385,7 +1385,7 @@ id|sg
 op_increment
 )paren
 (brace
-id|sg-&gt;orig_address
+id|sg-&gt;page
 op_assign
 id|sg-&gt;address
 suffix:semicolon
@@ -1483,7 +1483,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|sg-&gt;orig_address
+id|sg-&gt;page
 op_ne
 id|sg-&gt;address
 )paren
@@ -1502,7 +1502,7 @@ id|direction
 suffix:semicolon
 id|sg-&gt;address
 op_assign
-id|sg-&gt;orig_address
+id|sg-&gt;page
 suffix:semicolon
 )brace
 r_else
@@ -1579,7 +1579,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|sg-&gt;orig_address
+id|sg-&gt;page
 op_ne
 id|sg-&gt;address
 )paren

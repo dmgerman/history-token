@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNISTD_H
 DECL|macro|_ASM_IA64_UNISTD_H
 mdefine_line|#define _ASM_IA64_UNISTD_H
-multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/break.h&gt;
 DECL|macro|__BREAK_SYSCALL
 mdefine_line|#define __BREAK_SYSCALL&t;&t;&t;__IA64_BREAK_SYSCALL
@@ -167,7 +167,8 @@ DECL|macro|__NR_statfs
 mdefine_line|#define __NR_statfs&t;&t;&t;1103
 DECL|macro|__NR_fstatfs
 mdefine_line|#define __NR_fstatfs&t;&t;&t;1104
-multiline_comment|/* unused; used to be __NR_ioperm */
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;&t;1105
 DECL|macro|__NR_semget
 mdefine_line|#define __NR_semget&t;&t;&t;1106
 DECL|macro|__NR_semop
@@ -388,6 +389,8 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;&t;1214
 DECL|macro|__NR_getunwind
 mdefine_line|#define __NR_getunwind&t;&t;&t;1215
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;&t;1216
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

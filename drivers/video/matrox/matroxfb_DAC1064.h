@@ -277,8 +277,8 @@ DECL|macro|M1064_XTVO_DATA
 mdefine_line|#define M1064_XTVO_DATA&t;&t;0x88
 DECL|macro|M1064_XOUTPUTCONN
 mdefine_line|#define M1064_XOUTPUTCONN&t;0x8A
-DECL|macro|M1064_X8B
-mdefine_line|#define M1064_X8B&t;&t;0x8B
+DECL|macro|M1064_XSYNCCTRL
+mdefine_line|#define M1064_XSYNCCTRL&t;&t;0x8B
 DECL|macro|M1064_XPIXPLL2STAT
 mdefine_line|#define M1064_XPIXPLL2STAT&t;0x8C
 DECL|macro|M1064_XPIXPLL2P
@@ -287,6 +287,8 @@ DECL|macro|M1064_XPIXPLL2N
 mdefine_line|#define M1064_XPIXPLL2N&t;&t;0x8E
 DECL|macro|M1064_XPIXPLL2M
 mdefine_line|#define M1064_XPIXPLL2M&t;&t;0x8F
+DECL|macro|M1064_XPWRCTRL
+mdefine_line|#define M1064_XPWRCTRL&t;&t;0xA0
 DECL|enum|POS1064
 r_enum
 id|POS1064

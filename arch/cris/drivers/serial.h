@@ -277,6 +277,44 @@ op_star
 id|close_wait
 suffix:semicolon
 macro_line|#endif  
+DECL|member|char_time_usec
+r_int
+r_int
+id|char_time_usec
+suffix:semicolon
+multiline_comment|/* The time for 1 char, in usecs */
+DECL|member|last_tx_active_usec
+r_int
+r_int
+id|last_tx_active_usec
+suffix:semicolon
+multiline_comment|/* Last tx usec in the jiffies */
+DECL|member|last_tx_active
+r_int
+r_int
+id|last_tx_active
+suffix:semicolon
+multiline_comment|/* Last tx time in jiffies */
+DECL|member|last_rx_active_usec
+r_int
+r_int
+id|last_rx_active_usec
+suffix:semicolon
+multiline_comment|/* Last rx usec in the jiffies */
+DECL|member|last_rx_active
+r_int
+r_int
+id|last_rx_active
+suffix:semicolon
+multiline_comment|/* Last rx time in jiffies */
+DECL|member|break_detected_cnt
+r_int
+id|break_detected_cnt
+suffix:semicolon
+DECL|member|errorcode
+r_int
+id|errorcode
+suffix:semicolon
 macro_line|#ifdef CONFIG_RS485
 DECL|member|rs485
 r_struct

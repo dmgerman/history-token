@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-integrator/hardware.h&n; *
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
-macro_line|#include &lt;asm/arch/sizes.h&gt;
+macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/arch/platform.h&gt;
 multiline_comment|/*&n; * Where in virtual memory the IO devices (timers, system controllers&n; * and so on)&n; */
 DECL|macro|IO_BASE

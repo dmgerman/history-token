@@ -26,7 +26,7 @@ suffix:semicolon
 r_struct
 id|net_device
 suffix:semicolon
-DECL|variable|gdb_dev
+r_extern
 r_struct
 id|net_device
 op_star

@@ -193,7 +193,10 @@ id|global_irq_lock
 )paren
 )paren
 (brace
-multiline_comment|/* nothing */
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace

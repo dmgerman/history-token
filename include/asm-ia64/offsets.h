@@ -7,7 +7,7 @@ mdefine_line|#define PT_PTRACED_BIT&t;&t;0
 DECL|macro|PT_TRACESYS_BIT
 mdefine_line|#define PT_TRACESYS_BIT&t;&t;1
 DECL|macro|IA64_TASK_SIZE
-mdefine_line|#define IA64_TASK_SIZE&t;&t;&t;3904&t;/* 0xf40 */
+mdefine_line|#define IA64_TASK_SIZE&t;&t;&t;3408&t;/* 0xd50 */
 DECL|macro|IA64_PT_REGS_SIZE
 mdefine_line|#define IA64_PT_REGS_SIZE&t;&t;400&t;/* 0x190 */
 DECL|macro|IA64_SWITCH_STACK_SIZE
@@ -17,7 +17,7 @@ mdefine_line|#define IA64_SIGINFO_SIZE&t;&t;128&t;/* 0x80 */
 DECL|macro|IA64_CPU_SIZE
 mdefine_line|#define IA64_CPU_SIZE&t;&t;&t;16384&t;/* 0x4000 */
 DECL|macro|SIGFRAME_SIZE
-mdefine_line|#define SIGFRAME_SIZE&t;&t;&t;2832&t;/* 0xb10 */
+mdefine_line|#define SIGFRAME_SIZE&t;&t;&t;2816&t;/* 0xb00 */
 DECL|macro|UNW_FRAME_INFO_SIZE
 mdefine_line|#define UNW_FRAME_INFO_SIZE&t;&t;448&t;/* 0x1c0 */
 DECL|macro|IA64_TASK_PTRACE_OFFSET
@@ -29,15 +29,13 @@ mdefine_line|#define IA64_TASK_NEED_RESCHED_OFFSET&t;40&t;/* 0x28 */
 DECL|macro|IA64_TASK_PROCESSOR_OFFSET
 mdefine_line|#define IA64_TASK_PROCESSOR_OFFSET&t;100&t;/* 0x64 */
 DECL|macro|IA64_TASK_THREAD_OFFSET
-mdefine_line|#define IA64_TASK_THREAD_OFFSET&t;&t;1456&t;/* 0x5b0 */
+mdefine_line|#define IA64_TASK_THREAD_OFFSET&t;&t;976&t;/* 0x3d0 */
 DECL|macro|IA64_TASK_THREAD_KSP_OFFSET
-mdefine_line|#define IA64_TASK_THREAD_KSP_OFFSET&t;1456&t;/* 0x5b0 */
-DECL|macro|IA64_TASK_THREAD_SIGMASK_OFFSET
-mdefine_line|#define IA64_TASK_THREAD_SIGMASK_OFFSET&t;1568&t;/* 0x620 */
-DECL|macro|IA64_TASK_PFM_NOTIFY_OFFSET
-mdefine_line|#define IA64_TASK_PFM_NOTIFY_OFFSET&t;2088&t;/* 0x828 */
+mdefine_line|#define IA64_TASK_THREAD_KSP_OFFSET&t;976&t;/* 0x3d0 */
+DECL|macro|IA64_TASK_PFM_MUST_BLOCK_OFFSET
+mdefine_line|#define IA64_TASK_PFM_MUST_BLOCK_OFFSET&t;1600&t;/* 0x640 */
 DECL|macro|IA64_TASK_PID_OFFSET
-mdefine_line|#define IA64_TASK_PID_OFFSET&t;&t;196&t;/* 0xc4 */
+mdefine_line|#define IA64_TASK_PID_OFFSET&t;&t;220&t;/* 0xdc */
 DECL|macro|IA64_TASK_MM_OFFSET
 mdefine_line|#define IA64_TASK_MM_OFFSET&t;&t;88&t;/* 0x58 */
 DECL|macro|IA64_PT_REGS_CR_IPSR_OFFSET
@@ -240,18 +238,20 @@ DECL|macro|IA64_SIGCONTEXT_PR_OFFSET
 mdefine_line|#define IA64_SIGCONTEXT_PR_OFFSET&t;128&t;/* 0x80 */
 DECL|macro|IA64_SIGCONTEXT_R12_OFFSET
 mdefine_line|#define IA64_SIGCONTEXT_R12_OFFSET&t;296&t;/* 0x128 */
+DECL|macro|IA64_SIGCONTEXT_RBS_BASE_OFFSET
+mdefine_line|#define IA64_SIGCONTEXT_RBS_BASE_OFFSET&t;2512&t;/* 0x9d0 */
+DECL|macro|IA64_SIGCONTEXT_LOADRS_OFFSET
+mdefine_line|#define IA64_SIGCONTEXT_LOADRS_OFFSET&t;2520&t;/* 0x9d8 */
 DECL|macro|IA64_SIGFRAME_ARG0_OFFSET
 mdefine_line|#define IA64_SIGFRAME_ARG0_OFFSET&t;0&t;/* 0x0 */
 DECL|macro|IA64_SIGFRAME_ARG1_OFFSET
 mdefine_line|#define IA64_SIGFRAME_ARG1_OFFSET&t;8&t;/* 0x8 */
 DECL|macro|IA64_SIGFRAME_ARG2_OFFSET
 mdefine_line|#define IA64_SIGFRAME_ARG2_OFFSET&t;16&t;/* 0x10 */
-DECL|macro|IA64_SIGFRAME_RBS_BASE_OFFSET
-mdefine_line|#define IA64_SIGFRAME_RBS_BASE_OFFSET&t;24&t;/* 0x18 */
 DECL|macro|IA64_SIGFRAME_HANDLER_OFFSET
-mdefine_line|#define IA64_SIGFRAME_HANDLER_OFFSET&t;32&t;/* 0x20 */
+mdefine_line|#define IA64_SIGFRAME_HANDLER_OFFSET&t;24&t;/* 0x18 */
 DECL|macro|IA64_SIGFRAME_SIGCONTEXT_OFFSET
-mdefine_line|#define IA64_SIGFRAME_SIGCONTEXT_OFFSET&t;176&t;/* 0xb0 */
+mdefine_line|#define IA64_SIGFRAME_SIGCONTEXT_OFFSET&t;160&t;/* 0xa0 */
 DECL|macro|IA64_CLONE_VFORK
 mdefine_line|#define IA64_CLONE_VFORK&t;&t;16384&t;/* 0x4000 */
 DECL|macro|IA64_CLONE_VM

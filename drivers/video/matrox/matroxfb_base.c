@@ -4682,20 +4682,6 @@ suffix:semicolon
 DECL|macro|minfo
 macro_line|#undef minfo
 )brace
-r_static
-r_int
-id|matroxfb_switch
-c_func
-(paren
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 DECL|function|matroxfb_get_vblank
 r_static
 r_int
@@ -5756,7 +5742,6 @@ comma
 )brace
 suffix:semicolon
 DECL|function|matroxfb_switch
-r_static
 r_int
 id|matroxfb_switch
 c_func
@@ -7402,14 +7387,16 @@ DECL|macro|DEVF_SWAPS
 mdefine_line|#define&t;DEVF_SWAPS&t;&t;0x0002
 DECL|macro|DEVF_SRCORG
 mdefine_line|#define DEVF_SRCORG&t;&t;0x0004
-multiline_comment|/* #define DEVF_recycled&t;0x0008 */
+DECL|macro|DEVF_BOTHDACS
+mdefine_line|#define DEVF_BOTHDACS&t;&t;0x0008&t;/* put CRTC1 on both outputs by default */
 DECL|macro|DEVF_CROSS4MB
 mdefine_line|#define DEVF_CROSS4MB&t;&t;0x0010
 DECL|macro|DEVF_TEXT4B
 mdefine_line|#define DEVF_TEXT4B&t;&t;0x0020
 DECL|macro|DEVF_DDC_8_2
 mdefine_line|#define DEVF_DDC_8_2&t;&t;0x0040
-multiline_comment|/* #define DEVF_recycled&t;0x0080 */
+DECL|macro|DEVF_G550DAC
+mdefine_line|#define DEVF_G550DAC&t;&t;0x0080
 DECL|macro|DEVF_SUPPORT32MB
 mdefine_line|#define DEVF_SUPPORT32MB&t;0x0100
 DECL|macro|DEVF_ANY_VXRES
@@ -7437,6 +7424,8 @@ mdefine_line|#define DEVF_G400&t;(DEVF_G2CORE | DEVF_SUPPORT32MB | DEVF_TEXT16B 
 multiline_comment|/* if you&squot;ll find how to drive DFP... */
 DECL|macro|DEVF_G450
 mdefine_line|#define DEVF_G450&t;(DEVF_GCORE | DEVF_ANY_VXRES | DEVF_SUPPORT32MB | DEVF_TEXT16B | DEVF_CRTC2 | DEVF_G450DAC | DEVF_SRCORG)
+DECL|macro|DEVF_G550
+mdefine_line|#define DEVF_G550&t;(DEVF_G450 | DEVF_G550DAC | DEVF_BOTHDACS)
 DECL|struct|board
 r_static
 r_struct
@@ -7607,7 +7596,7 @@ macro_line|#ifdef CONFIG_FB_MATROX_G100
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G100
+id|PCI_DEVICE_ID_MATROX_G100_MM
 comma
 l_int|0xFF
 comma
@@ -7628,7 +7617,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G100
+id|PCI_DEVICE_ID_MATROX_G100_MM
 comma
 l_int|0xFF
 comma
@@ -7901,7 +7890,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G400_AGP
+id|PCI_DEVICE_ID_MATROX_G400
 comma
 l_int|0x80
 comma
@@ -7922,7 +7911,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G400_AGP
+id|PCI_DEVICE_ID_MATROX_G400
 comma
 l_int|0x80
 comma
@@ -7943,7 +7932,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G400_AGP
+id|PCI_DEVICE_ID_MATROX_G400
 comma
 l_int|0xFF
 comma
@@ -7959,7 +7948,28 @@ multiline_comment|/* ??? vco goes up to 900MHz... */
 op_amp
 id|vbG400
 comma
-l_string|&quot;G450 (AGP)&quot;
+l_string|&quot;G450&quot;
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MATROX
+comma
+id|PCI_DEVICE_ID_MATROX_G550
+comma
+l_int|0xFF
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVF_G550
+comma
+l_int|500000
+comma
+op_amp
+id|vbG400
+comma
+l_string|&quot;G550&quot;
 )brace
 comma
 macro_line|#endif
@@ -8317,6 +8327,48 @@ op_or_assign
 id|MATROXFB_OUTPUT_CONN_DFP
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|b-&gt;flags
+op_amp
+id|DEVF_BOTHDACS
+)paren
+(brace
+macro_line|#ifdef CONFIG_FB_MATROX_G450&t;
+id|ACCESS_FBINFO
+c_func
+(paren
+id|output.all
+)paren
+op_or_assign
+id|MATROXFB_OUTPUT_CONN_SECONDARY
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|output.ph
+)paren
+op_or_assign
+id|MATROXFB_OUTPUT_CONN_SECONDARY
+suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Only digital output of G550 is now working (in analog mode). Enable G450 support in&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;kernel configuration if you have analog monitor connected to G550 analog output.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 id|ACCESS_FBINFO
 c_func
 (paren
@@ -8334,6 +8386,16 @@ op_assign
 id|b-&gt;flags
 op_amp
 id|DEVF_G450DAC
+suffix:semicolon
+id|ACCESS_FBINFO
+c_func
+(paren
+id|devflags.g550dac
+)paren
+op_assign
+id|b-&gt;flags
+op_amp
+id|DEVF_G550DAC
 suffix:semicolon
 id|ACCESS_FBINFO
 c_func
@@ -10887,9 +10949,13 @@ id|usecount
 op_assign
 l_int|0
 suffix:semicolon
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|MINFO
+)paren
 suffix:semicolon
 multiline_comment|/* CMDLINE */
 id|memcpy
@@ -11249,7 +11315,11 @@ id|minfo
 suffix:semicolon
 id|minfo
 op_assign
-id|pdev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|matroxfb_remove
 c_func
@@ -11341,7 +11411,7 @@ macro_line|#ifdef CONFIG_FB_MATROX_G100
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G100
+id|PCI_DEVICE_ID_MATROX_G100_MM
 comma
 id|PCI_ANY_ID
 comma
@@ -11405,7 +11475,23 @@ comma
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
-id|PCI_DEVICE_ID_MATROX_G400_AGP
+id|PCI_DEVICE_ID_MATROX_G400
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MATROX
+comma
+id|PCI_DEVICE_ID_MATROX_G550
 comma
 id|PCI_ANY_ID
 comma
@@ -15222,6 +15308,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|matroxfb_unregister_driver
+)paren
+suffix:semicolon
+DECL|variable|matroxfb_switch
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|matroxfb_switch
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999-2001 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -965,7 +965,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|KERNEL_PG_SHIFT
+id|KERNEL_TR_PAGE_SHIFT
 )paren
 op_minus
 l_int|1
@@ -977,7 +977,7 @@ id|PAGE_OFFSET
 op_plus
 id|md-&gt;phys_addr
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We must check that the PAL mapping won&squot;t overlap with the kernel&n;&t;&t; * mapping.&n;&t;&t; *&n;&t;&t; * PAL code is guaranteed to be aligned on a power of 2 between 4k and&n;&t;&t; * 256KB.  Also from the documentation, it seems like there is an implicit&n;&t;&t; * guarantee that you will need only ONE ITR to map it. This implies that&n;&t;&t; * the PAL code is always aligned on its size, i.e., the closest matching&n;&t;&t; * page size supported by the TLB. Therefore PAL code is guaranteed never&n;&t;&t; * to cross a 64MB unless it is bigger than 64MB (very unlikely!).  So for&n;&t;&t; * now the following test is enough to determine whether or not we need a&n;&t;&t; * dedicated ITR for the PAL code.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We must check that the PAL mapping won&squot;t overlap with the kernel&n;&t;&t; * mapping.&n;&t;&t; *&n;&t;&t; * PAL code is guaranteed to be aligned on a power of 2 between 4k and&n;&t;&t; * 256KB and that only one ITR is needed to map it. This implies that the&n;&t;&t; * PAL code is always aligned on its size, i.e., the closest matching page&n;&t;&t; * size supported by the TLB. Therefore PAL code is guaranteed never to&n;&t;&t; * cross a 64MB unless it is bigger than 64MB (very unlikely!).  So for&n;&t;&t; * now the following test is enough to determine whether or not we need a&n;&t;&t; * dedicated ITR for the PAL code.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -998,12 +998,40 @@ id|printk
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; : no need to install ITR for PAL code&bslash;n&quot;
+l_string|&quot;: no need to install ITR for PAL code&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|md-&gt;num_pages
+op_lshift
+l_int|12
+OG
+id|IA64_GRANULE_SIZE
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Woah!  PAL code size bigger than a granule!&quot;
+)paren
+suffix:semicolon
+id|mask
+op_assign
+op_complement
+(paren
+(paren
+l_int|1
+op_lshift
+id|IA64_GRANULE_SHIFT
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1034,7 +1062,7 @@ op_amp
 id|mask
 )paren
 op_plus
-id|KERNEL_PG_SIZE
+id|IA64_GRANULE_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Cannot write to CRx with PSR.ic=1&n;&t;&t; */
@@ -1067,7 +1095,7 @@ id|PAGE_KERNEL
 )paren
 )paren
 comma
-id|KERNEL_PG_SHIFT
+id|IA64_GRANULE_SHIFT
 )paren
 suffix:semicolon
 id|local_irq_restore
@@ -2226,6 +2254,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -2234,5 +2263,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 eof

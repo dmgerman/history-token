@@ -93,7 +93,7 @@ DECL|macro|VENDORS
 mdefine_line|#define VENDORS (sizeof(pci_vendor_list)/sizeof(struct pci_vendor_info))
 DECL|function|pci_name_device
 r_void
-id|__init
+id|__devinit
 id|pci_name_device
 c_func
 (paren

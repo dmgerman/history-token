@@ -283,6 +283,13 @@ id|last_cli_ip
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;asm/pgalloc.h&gt;
+DECL|variable|flush_tlb_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_range
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|smp_flush_tlb_all
 id|EXPORT_SYMBOL

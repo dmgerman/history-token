@@ -161,10 +161,6 @@ op_star
 id|sem
 )paren
 suffix:semicolon
-r_extern
-id|spinlock_t
-id|semaphore_wake_lock
-suffix:semicolon
 multiline_comment|/*&n; * Atomically decrement the semaphore&squot;s count.  If it goes negative,&n; * block the calling thread in the TASK_UNINTERRUPTIBLE state.&n; */
 r_static
 r_inline

@@ -378,11 +378,23 @@ c_func
 op_logical_or
 op_logical_neg
 id|mm
+op_logical_or
+op_logical_neg
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|_PSW_IO_MASK_BIT
+)paren
 )paren
 r_goto
 id|no_context
 suffix:semicolon
-multiline_comment|/*&n;&t; * When we get here, the fault happened in the current&n;&t; * task&squot;s user address space, so we search the VMAs&n;&t; */
+multiline_comment|/*&n;&t; * When we get here, the fault happened in the current&n;&t; * task&squot;s user address space, so we can switch on the&n;&t; * interrupts again and then search the VMAs&n;&t; */
+id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
 id|down_read
 c_func
 (paren
@@ -1178,7 +1190,11 @@ id|__volatile__
 l_string|&quot;  la   2,0(%0)&bslash;n&quot;
 l_string|&quot;  sacf 512&bslash;n&quot;
 l_string|&quot;  ic   2,0(2)&bslash;n&quot;
-l_string|&quot;  sacf 0&quot;
+l_string|&quot;0:sacf 0&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;  .align 4&bslash;n&quot;
+l_string|&quot;  .long  0b,0b&bslash;n&quot;
+l_string|&quot;.previous&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
@@ -1517,7 +1533,7 @@ op_amp
 l_int|0xff00
 )paren
 op_ne
-l_int|0x0600
+l_int|0x0200
 )paren
 r_return
 suffix:semicolon
@@ -1541,6 +1557,19 @@ id|__LC_PFAULT_INTPARM
 )paren
 op_minus
 id|THREAD_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We got all needed information from the lowcore and can&n;&t; * now safely switch on interrupts.&n;&t; */
+r_if
+c_cond
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+id|__sti
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

@@ -5956,7 +5956,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ns83820.c: National Semiconductor DP83820 10/100/100 driver.&bslash;n&quot;
+l_string|&quot;ns83820.c: National Semiconductor DP83820 10/100/1000 driver.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

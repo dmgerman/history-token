@@ -1869,6 +1869,19 @@ id|deh
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* update max-hash-collisions counter in reiserfs_sb_info */
+id|PROC_INFO_MAX
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|max_hash_collisions
+comma
+id|gen_number
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1,7 +1,6 @@
 macro_line|#ifndef _ST_H
 DECL|macro|_ST_H
 mdefine_line|#define _ST_H
-multiline_comment|/*&n;   $Header: /usr/src/linux/kernel/blk_drv/scsi/RCS/st.h,v 1.1 1992/04/24 18:01:50 root Exp root $&n; */
 macro_line|#ifndef _SCSI_H
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#endif
@@ -261,6 +260,11 @@ r_int
 r_char
 id|fast_mteom
 suffix:semicolon
+DECL|member|immediate
+r_int
+r_char
+id|immediate
+suffix:semicolon
 DECL|member|restr_dma
 r_int
 r_char
@@ -277,6 +281,22 @@ r_char
 id|default_drvbuffer
 suffix:semicolon
 multiline_comment|/* 0xff = don&squot;t touch, value 3 bits */
+DECL|member|cln_mode
+r_int
+r_char
+id|cln_mode
+suffix:semicolon
+multiline_comment|/* 0 = none, otherwise sense byte nbr */
+DECL|member|cln_sense_value
+r_int
+r_char
+id|cln_sense_value
+suffix:semicolon
+DECL|member|cln_sense_mask
+r_int
+r_char
+id|cln_sense_mask
+suffix:semicolon
 DECL|member|use_pf
 r_int
 r_char
@@ -422,6 +442,12 @@ r_int
 r_char
 id|inited
 suffix:semicolon
+DECL|member|cleaning_req
+r_int
+r_char
+id|cleaning_req
+suffix:semicolon
+multiline_comment|/* cleaning requested? */
 DECL|member|block_size
 r_int
 id|block_size
@@ -537,5 +563,7 @@ DECL|macro|ST_NO
 mdefine_line|#define ST_NO          1
 DECL|macro|ST_YES
 mdefine_line|#define ST_YES         2
+DECL|macro|EXTENDED_SENSE_START
+mdefine_line|#define EXTENDED_SENSE_START  18
 macro_line|#endif
 eof

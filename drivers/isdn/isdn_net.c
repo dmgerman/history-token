@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_net.c,v 1.140.6.10 2001/09/28 08:05:29 kai Exp $&n; *&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Jan 2001: fix CISCO HDLC      Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *           for info on the protocol, see &n; *           http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
+multiline_comment|/* $Id: isdn_net.c,v 1.140.6.11 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, network interfaces and related functions (linklevel).&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Jan 2001: fix CISCO HDLC      Bjoern A. Zeeb &lt;i4l@zabbadoz.net&gt;&n; *           for info on the protocol, see &n; *           http://i4l.zabbadoz.net/i4l/cisco-hdlc.txt&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
@@ -432,7 +432,7 @@ r_char
 op_star
 id|isdn_net_revision
 op_assign
-l_string|&quot;$Revision: 1.140.6.10 $&quot;
+l_string|&quot;$Revision: 1.140.6.11 $&quot;
 suffix:semicolon
 multiline_comment|/*&n;  * Code for raw-networking over ISDN&n;  */
 r_static
@@ -1019,13 +1019,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|jiffies
-op_minus
-id|last_jiffies
-)paren
 op_eq
-l_int|0
+id|last_jiffies
 )paren
 id|l-&gt;cps
 op_assign
@@ -1120,11 +1116,15 @@ id|ISDN_CHARGEHUP
 r_while
 c_loop
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|l-&gt;chargetime
-OG
+op_plus
 id|l-&gt;chargeint
+)paren
 )paren
 id|l-&gt;chargetime
 op_add_assign
@@ -1133,15 +1133,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|l-&gt;chargetime
-op_ge
+op_plus
 id|l-&gt;chargeint
 op_minus
 l_int|2
 op_star
 id|HZ
+)paren
 )paren
 r_if
 c_cond
@@ -1206,11 +1210,15 @@ r_else
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|l-&gt;chargetime
-OG
+op_plus
 id|l-&gt;chargeint
+)paren
 )paren
 (brace
 id|printk
@@ -2074,9 +2082,11 @@ id|lp-&gt;dialstarted
 op_eq
 l_int|0
 op_logical_or
-id|jiffies
-OG
+id|time_after
+c_func
 (paren
+id|jiffies
+comma
 id|lp-&gt;dialstarted
 op_plus
 id|lp-&gt;dialtimeout
@@ -2376,9 +2386,11 @@ l_int|0
 r_if
 c_cond
 (paren
-id|jiffies
-OG
+id|time_after
+c_func
 (paren
+id|jiffies
+comma
 id|lp-&gt;dialstarted
 op_plus
 id|lp-&gt;dialtimeout
@@ -4308,13 +4320,15 @@ multiline_comment|/* subsequent overload: if slavedelay exceeded, start dialing 
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|lp-&gt;sqfull_stamp
-)paren
-OG
+op_plus
 id|lp-&gt;slavedelay
+)paren
 )paren
 (brace
 id|slp
@@ -4354,21 +4368,19 @@ c_cond
 (paren
 id|lp-&gt;sqfull
 op_logical_and
-(paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|lp-&gt;sqfull_stamp
-)paren
-OG
-(paren
+op_plus
 id|lp-&gt;slavedelay
 op_plus
 (paren
 l_int|10
 op_star
 id|HZ
-)paren
 )paren
 )paren
 )paren
@@ -4737,13 +4749,17 @@ id|lp-&gt;dialtimeout
 OG
 l_int|0
 op_logical_and
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|lp-&gt;dialstarted
 op_plus
 id|lp-&gt;dialtimeout
 op_plus
 id|lp-&gt;dialwait
+)paren
 )paren
 (brace
 id|lp-&gt;dialwait_timer
@@ -4766,9 +4782,13 @@ l_int|0
 r_if
 c_cond
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|lp-&gt;dialwait_timer
+)paren
 )paren
 (brace
 id|isdn_net_unreachable

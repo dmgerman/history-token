@@ -684,7 +684,9 @@ mdefine_line|#define GMT_DR_OPEN(x)          ((x) &amp; 0x00040000)  /* door ope
 multiline_comment|/* #define GMT_ ? &t;&t;((x) &amp; 0x00020000) */
 DECL|macro|GMT_IM_REP_EN
 mdefine_line|#define GMT_IM_REP_EN(x)        ((x) &amp; 0x00010000)  /* immediate report mode */
-multiline_comment|/* 16 generic status bits unused */
+DECL|macro|GMT_CLN
+mdefine_line|#define GMT_CLN(x)              ((x) &amp; 0x00008000)  /* cleaning requested */
+multiline_comment|/* 15 generic status bits unused */
 multiline_comment|/* SCSI-tape specific definitions */
 multiline_comment|/* Bitfield shifts in the status  */
 DECL|macro|MT_ST_BLKSIZE_SHIFT
@@ -720,6 +722,8 @@ DECL|macro|MT_ST_SET_TIMEOUT
 mdefine_line|#define MT_ST_SET_TIMEOUT&t;(MT_ST_TIMEOUTS | 0x000000)
 DECL|macro|MT_ST_SET_LONG_TIMEOUT
 mdefine_line|#define MT_ST_SET_LONG_TIMEOUT&t;(MT_ST_TIMEOUTS | 0x100000)
+DECL|macro|MT_ST_SET_CLN
+mdefine_line|#define MT_ST_SET_CLN&t;&t;0x80000000
 DECL|macro|MT_ST_BUFFER_WRITES
 mdefine_line|#define MT_ST_BUFFER_WRITES&t;0x1
 DECL|macro|MT_ST_ASYNC_WRITES
@@ -746,6 +750,8 @@ DECL|macro|MT_ST_SCSI2LOGICAL
 mdefine_line|#define MT_ST_SCSI2LOGICAL      0x800
 DECL|macro|MT_ST_SYSV
 mdefine_line|#define MT_ST_SYSV              0x1000
+DECL|macro|MT_ST_NOWAIT
+mdefine_line|#define MT_ST_NOWAIT            0x2000
 multiline_comment|/* The mode parameters to be controlled. Parameter chosen with bits 20-28 */
 DECL|macro|MT_ST_CLEAR_DEFAULT
 mdefine_line|#define MT_ST_CLEAR_DEFAULT&t;0xfffff

@@ -739,5 +739,9 @@ r_extern
 r_int
 id|decnet_dr_count
 suffix:semicolon
+r_extern
+r_int
+id|decnet_no_fc_max_cwnd
+suffix:semicolon
 macro_line|#endif /* _NET_DN_H */
 eof

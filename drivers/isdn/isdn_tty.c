@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_tty.c,v 1.94.6.8 2001/09/23 22:24:32 kai Exp $&n; *&n; * Linux ISDN subsystem, tty functions and AT-command emulator (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdn_tty.c,v 1.94.6.9 2001/11/06 20:58:29 kai Exp $&n; *&n; * Linux ISDN subsystem, tty functions and AT-command emulator (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|ISDN_TTY_STAT_DEBUG
 macro_line|#undef ISDN_TTY_STAT_DEBUG
 macro_line|#include &lt;linux/config.h&gt;
@@ -208,7 +208,7 @@ r_char
 op_star
 id|isdn_tty_revision
 op_assign
-l_string|&quot;$Revision: 1.94.6.8 $&quot;
+l_string|&quot;$Revision: 1.94.6.9 $&quot;
 suffix:semicolon
 multiline_comment|/* isdn_tty_try_read() is called from within isdn_tty_rcv_skb()&n; * to stuff incoming data directly into a tty&squot;s flip-buffer. This&n; * is done to speed up tty-receiving if the receive-queue is empty.&n; * This routine MUST be called with interrupts off.&n; * Return:&n; *  1 = Success&n; *  0 = Failure, data has to be buffered and later processed by&n; *      isdn_tty_readmodem().&n; */
 r_static
@@ -11358,14 +11358,16 @@ multiline_comment|/* Time since last &squot;+&squot; &gt; 0.5 sec. ? */
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 op_star
 id|lastplus
-)paren
-OG
+op_plus
 id|PLUSWAIT1
+)paren
 )paren
 op_star
 id|pluscount
@@ -11379,14 +11381,16 @@ multiline_comment|/* Time since last non-&squot;+&squot; &lt; 1.5 sec. ? */
 r_if
 c_cond
 (paren
+id|time_before
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 op_star
 id|lastplus
-)paren
-OL
+op_plus
 id|PLUSWAIT2
+)paren
 )paren
 op_star
 id|pluscount
@@ -17774,13 +17778,13 @@ op_eq
 l_int|3
 )paren
 op_logical_and
-(paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|info-&gt;emu.lastplus
-)paren
-OG
+op_plus
 id|PLUSWAIT2
 )paren
 )paren

@@ -1151,5 +1151,8 @@ mdefine_line|#define PageSkip(page)          (0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)   (1)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* _CRIS_PGTABLE_H */
 eof

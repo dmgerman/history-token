@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * File:&t;mca.h&n; * Purpose:&t;Machine check handling specific defines&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander (vijay@engr.sgi.com)&n; * Copyright (C) Srinivasa Thirumalachar (sprasad@engr.sgi.com)&n; */
 multiline_comment|/* XXX use this temporary define for MP systems trying to INIT */
 DECL|macro|SAL_MPINIT_WORKAROUND
-mdefine_line|#define SAL_MPINIT_WORKAROUND
+macro_line|#undef SAL_MPINIT_WORKAROUND
 macro_line|#ifndef _ASM_IA64_MCA_H
 DECL|macro|_ASM_IA64_MCA_H
 mdefine_line|#define _ASM_IA64_MCA_H
@@ -121,8 +121,6 @@ op_assign
 l_int|0x1
 )brace
 suffix:semicolon
-DECL|macro|IA64_MAXCPUS
-mdefine_line|#define IA64_MAXCPUS&t;64&t;/* Need to do something about this */
 multiline_comment|/* Information maintained by the MC infrastructure */
 DECL|struct|ia64_mc_info_s
 r_typedef
@@ -157,7 +155,7 @@ DECL|member|imi_rendez_checkin
 id|u8
 id|imi_rendez_checkin
 (braket
-id|IA64_MAXCPUS
+id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|typedef|ia64_mc_info_t
@@ -400,11 +398,50 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|ia64_mca_cpe_int_handler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ia64_log_print
 c_func
 (paren
 r_int
 comma
+id|prfunc_t
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia64_mca_cmc_vector_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ia64_mca_check_errors
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|u64
+id|ia64_log_get
+c_func
+(paren
 r_int
 comma
 id|prfunc_t
@@ -415,13 +452,13 @@ mdefine_line|#define PLATFORM_CALL(fn, args)&t;printk(&quot;Platform call TBD&bs
 DECL|macro|MCA_TEST
 macro_line|#undef&t;MCA_TEST
 DECL|macro|IA64_MCA_DEBUG_INFO
-mdefine_line|#define IA64_MCA_DEBUG_INFO 1
+macro_line|#undef IA64_MCA_DEBUG_INFO
 macro_line|#if defined(IA64_MCA_DEBUG_INFO)
 DECL|macro|IA64_MCA_DEBUG
-macro_line|# define IA64_MCA_DEBUG&t;printk
+macro_line|# define IA64_MCA_DEBUG(fmt...)&t;printk(fmt)
 macro_line|#else
 DECL|macro|IA64_MCA_DEBUG
-macro_line|# define IA64_MCA_DEBUG
+macro_line|# define IA64_MCA_DEBUG(fmt...)
 macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_MCA_H */

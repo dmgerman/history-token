@@ -2491,7 +2491,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_inline
 r_int
 DECL|function|unw_access_pr
 id|unw_access_pr

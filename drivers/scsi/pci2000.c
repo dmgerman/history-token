@@ -3264,7 +3264,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;BSD without advertisement clause&quot;
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Eventually this will go into an include file, but this will be later */

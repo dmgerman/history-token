@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_IO_H
 DECL|macro|_ASM_IA64_IO_H
 mdefine_line|#define _ASM_IA64_IO_H
-multiline_comment|/*&n; * This file contains the definitions for the emulated IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated to&n; * (a) handle it all in a way that makes gcc able to optimize it as&n; * well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the definitions for the emulated IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated to&n; * (a) handle it all in a way that makes gcc able to optimize it as&n; * well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 multiline_comment|/* We don&squot;t use IO slowdowns on the ia64, but.. */
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO&t;do { } while (0)
@@ -9,8 +9,9 @@ DECL|macro|SLOW_DOWN_IO
 mdefine_line|#define SLOW_DOWN_IO&t;do { } while (0)
 DECL|macro|__IA64_UNCACHED_OFFSET
 mdefine_line|#define __IA64_UNCACHED_OFFSET&t;0xc000000000000000&t;/* region 6 */
+multiline_comment|/*&n; * The legacy I/O space defined by the ia64 architecture supports only 65536 ports, but&n; * large machines may have multiple other I/O spaces so we can&squot;t place any a priori limit&n; * on IO_SPACE_LIMIT.  These additional spaces are described in ACPI.&n; */
 DECL|macro|IO_SPACE_LIMIT
-mdefine_line|#define IO_SPACE_LIMIT 0xffff
+mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffffffffffffUL
 macro_line|# ifdef __KERNEL__
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -45,7 +46,6 @@ r_void
 op_star
 DECL|function|phys_to_virt
 id|phys_to_virt
-c_func
 (paren
 r_int
 r_int
@@ -69,6 +69,8 @@ DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt&t;phys_to_virt
 DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus&t;virt_to_phys
+DECL|macro|page_to_bus
+mdefine_line|#define page_to_bus&t;page_to_phys
 macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
