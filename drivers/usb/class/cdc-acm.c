@@ -2978,10 +2978,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acm_table
-(braket
 id|minor
-)braket
+op_eq
+id|ACM_TTY_MINORS
 )paren
 (brace
 id|err
