@@ -2852,6 +2852,19 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Reenable any watchpoints before delivering the&n;&t;&t; * signal to user space. The processor register will&n;&t;&t; * have been cleared if the watchpoint triggered&n;&t;&t; * inside the kernel.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;thread.debugreg
+(braket
+l_int|7
+)braket
+)paren
+)paren
+(brace
 id|__asm__
 c_func
 (paren
@@ -2867,6 +2880,7 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Whee!  Actually deliver the signal.  */
 id|handle_signal
 c_func
