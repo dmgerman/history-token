@@ -346,6 +346,7 @@ id|c
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_int
 DECL|function|vfat_strnicmp
 id|vfat_strnicmp
