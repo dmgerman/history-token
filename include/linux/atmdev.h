@@ -735,12 +735,6 @@ r_struct
 id|atm_vcc
 op_star
 id|vcc
-comma
-r_int
-id|vpi
-comma
-r_int
-id|vci
 )paren
 suffix:semicolon
 DECL|member|close
@@ -1041,10 +1035,15 @@ suffix:semicolon
 multiline_comment|/* ATM layer options */
 )brace
 suffix:semicolon
+DECL|macro|VCC_HTABLE_SIZE
+mdefine_line|#define VCC_HTABLE_SIZE 32
 r_extern
 r_struct
 id|hlist_head
-id|vcc_sklist
+id|vcc_hash
+(braket
+id|VCC_HTABLE_SIZE
+)braket
 suffix:semicolon
 r_extern
 id|rwlock_t
@@ -1344,24 +1343,6 @@ id|pdu_size
 comma
 r_int
 id|gfp_flags
-)paren
-suffix:semicolon
-r_int
-id|atm_find_ci
-c_func
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-op_star
-id|vpi
-comma
-r_int
-op_star
-id|vci
 )paren
 suffix:semicolon
 r_int

@@ -355,9 +355,17 @@ id|sk2
 op_ne
 id|sk
 op_logical_and
+(paren
+op_logical_neg
+id|sk2-&gt;sk_bound_dev_if
+op_logical_or
+op_logical_neg
+id|sk-&gt;sk_bound_dev_if
+op_logical_or
 id|sk2-&gt;sk_bound_dev_if
 op_eq
 id|sk-&gt;sk_bound_dev_if
+)paren
 op_logical_and
 (paren
 op_logical_neg

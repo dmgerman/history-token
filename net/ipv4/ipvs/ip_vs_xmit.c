@@ -460,6 +460,7 @@ op_star
 id|pp
 )paren
 (brace
+multiline_comment|/* we do not touch skb and do not need pskb ptr */
 r_return
 id|NF_ACCEPT
 suffix:semicolon
@@ -737,6 +738,12 @@ id|skb
 suffix:semicolon
 id|tx_error
 suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|LeaveFunction
 c_func
 (paren
@@ -744,7 +751,7 @@ l_int|10
 )paren
 suffix:semicolon
 r_return
-id|NF_DROP
+id|NF_STOLEN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      NAT transmitter (only for outside-to-inside nat forwarding)&n; *      Not used for related ICMP&n; */
@@ -1088,8 +1095,14 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
-id|NF_DROP
+id|NF_STOLEN
 suffix:semicolon
 id|tx_error_put
 suffix:colon
@@ -1423,6 +1436,12 @@ c_func
 id|rt
 )paren
 suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|IP_VS_ERR_RL
 c_func
 (paren
@@ -1430,7 +1449,7 @@ l_string|&quot;ip_vs_tunnel_xmit(): no memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|NF_DROP
+id|NF_STOLEN
 suffix:semicolon
 )brace
 id|kfree_skb
@@ -1627,6 +1646,12 @@ id|skb
 suffix:semicolon
 id|tx_error
 suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|LeaveFunction
 c_func
 (paren
@@ -1634,7 +1659,7 @@ l_int|10
 )paren
 suffix:semicolon
 r_return
-id|NF_DROP
+id|NF_STOLEN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      Direct Routing transmitter&n; *      Used for ANY protocol&n; */
@@ -1853,6 +1878,12 @@ id|skb
 suffix:semicolon
 id|tx_error
 suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|LeaveFunction
 c_func
 (paren
@@ -1860,7 +1891,7 @@ l_int|10
 )paren
 suffix:semicolon
 r_return
-id|NF_DROP
+id|NF_STOLEN
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;ICMP packet transmitter&n; *&t;called by the ip_vs_in_icmp&n; */
@@ -1943,6 +1974,7 @@ id|rc
 op_assign
 id|NF_ACCEPT
 suffix:semicolon
+multiline_comment|/* do not touch skb anymore */
 id|atomic_inc
 c_func
 (paren
