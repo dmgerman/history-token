@@ -116,7 +116,7 @@ multiline_comment|/* wait for command with timeout: */
 DECL|macro|WAIT_4_SCB_CMD
 mdefine_line|#define WAIT_4_SCB_CMD() { int i; &bslash;&n;  for(i=0;i&lt;1024;i++) { &bslash;&n;    if(!p-&gt;scb-&gt;cmd) break; &bslash;&n;    DELAY_16(); &bslash;&n;    if(i == 1023) { &bslash;&n;      printk(KERN_WARNING &quot;%s:%d: scb_cmd timed out .. resetting i82586&bslash;n&quot;,&bslash;&n;      &t;dev-&gt;name,__LINE__); &bslash;&n;      elmc_id_reset586(); } } }
 r_static
-r_void
+id|irqreturn_t
 id|elmc_interrupt
 c_func
 (paren
@@ -3708,9 +3708,9 @@ id|ptr
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************&n; * Interrupt Handler ...&n; */
-DECL|function|elmc_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|elmc_interrupt
 id|elmc_interrupt
 c_func
 (paren
@@ -3783,6 +3783,7 @@ l_int|2
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_else
@@ -3805,6 +3806,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* ack inter. and disable any more */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -3827,6 +3829,7 @@ id|ELMC_CTRL
 (brace
 multiline_comment|/* wasn&squot;t this device */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* reading ELMC_CTRL also clears the INT bit. */
@@ -4014,6 +4017,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************&n; * receive-interrupt&n; */
 DECL|function|elmc_rcv_int

@@ -709,7 +709,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|eth16i_interrupt
 c_func
 (paren
@@ -4712,7 +4712,7 @@ multiline_comment|/* while */
 )brace
 DECL|function|eth16i_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|eth16i_interrupt
 c_func
 (paren
@@ -4747,6 +4747,11 @@ op_assign
 l_int|0
 comma
 id|status
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -4802,6 +4807,15 @@ id|TX_STATUS_REG
 )paren
 suffix:semicolon
 multiline_comment|/* Clear status bits */
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5185,6 +5199,11 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|eth16i_skip_packet

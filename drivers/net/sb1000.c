@@ -186,7 +186,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sb1000_interrupt
 c_func
 (paren
@@ -6911,7 +6911,7 @@ suffix:semicolon
 multiline_comment|/* SB1000 interrupt handler. */
 DECL|function|sb1000_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sb1000_interrupt
 c_func
 (paren
@@ -7034,6 +7034,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -7085,6 +7086,7 @@ l_int|0x20
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -7262,6 +7264,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|sb1000_stats

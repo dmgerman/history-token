@@ -175,9 +175,8 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* static void scc_enet_interrupt(void *dev_id); */
 r_static
-r_void
+id|irqreturn_t
 id|scc_enet_interrupt
 c_func
 (paren
@@ -635,10 +634,9 @@ multiline_comment|/* &t;&t;netif_wake_queue(dev); */
 )brace
 macro_line|#endif
 multiline_comment|/* The interrupt handler.&n; * This is called from the CPM handler, not the MPC core interrupt.&n; */
-multiline_comment|/* static void scc_enet_interrupt(void *dev_id) */
 DECL|function|scc_enet_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|scc_enet_interrupt
 c_func
 (paren
@@ -1008,6 +1006,7 @@ l_string|&quot;CPM ENET: BSY can&squot;t happen.&bslash;n&quot;
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* During a receive, the cur_rx points to the current incoming buffer.&n; * When we update through the ring, if the next incoming buffer has&n; * not been given to the system, we just set the empty indicator,&n; * effectively tossing the packet.&n; */

@@ -34,7 +34,9 @@ macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#ifdef NETIF_F_TSO
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;

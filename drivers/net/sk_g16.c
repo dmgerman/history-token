@@ -447,7 +447,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|SK_interrupt
 c_func
 (paren
@@ -3274,7 +3274,7 @@ multiline_comment|/* End of SK_send_packet */
 multiline_comment|/*-&n; * Function       : SK_interrupt&n; * Author         : Patrick J.D. Weichmann&n; * Date Created   : 94/05/27&n; *&n; * Description    : SK_G16 interrupt handler which checks for LANCE&n; *                  Errors, handles transmit and receive interrupts&n; *&n; * Parameters     : I : int irq, void *dev_id, struct pt_regs * regs -&n; * Return Value   : None&n; * Errors         : None&n; * Globals        : None&n; * Side Effects   : None&n; * Update History :&n; *     YY/MM/DD  uid  Description&n;-*/
 DECL|function|SK_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|SK_interrupt
 c_func
 (paren
@@ -3451,6 +3451,9 @@ id|spin_unlock
 op_amp
 id|SK_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* End of SK_interrupt() */
