@@ -2283,6 +2283,14 @@ id|unlikely
 c_func
 (paren
 id|p-&gt;array
+op_logical_or
+id|task_running
+c_func
+(paren
+id|rq
+comma
+id|p
+)paren
 )paren
 )paren
 (brace
