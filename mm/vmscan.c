@@ -2910,21 +2910,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|total_scanned
-op_eq
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s: I am buggy&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|gfp_mask
