@@ -55,13 +55,6 @@ id|u32
 id|vidmvs
 suffix:semicolon
 multiline_comment|/* usable value calculated from mvs, from PSB */
-DECL|variable|ppst
-r_struct
-id|pst_s
-op_star
-id|ppst
-suffix:semicolon
-multiline_comment|/* array of p states, valid for this part */
 DECL|variable|currvid
 r_static
 id|u32
@@ -1921,6 +1914,11 @@ id|pst_s
 op_star
 id|pst
 suffix:semicolon
+r_struct
+id|pst_s
+op_star
+id|ppst
+suffix:semicolon
 r_int
 id|i
 comma
@@ -3029,15 +3027,29 @@ op_eq
 id|currvid
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|ppst
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
 id|BFX
 l_string|&quot;currfid/vid do not match PST, ignoring&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ppst
 )paren
 suffix:semicolon
 r_return
@@ -3639,16 +3651,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ppst
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3734,12 +3736,6 @@ id|PFX
 l_string|&quot;powernowk8_init fail, change pending bit set&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ppst
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -3778,12 +3774,6 @@ c_func
 (paren
 op_amp
 id|cpufreq_amd64_driver
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ppst
 )paren
 suffix:semicolon
 )brace
