@@ -4128,9 +4128,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ip_vs_sync_state
-op_eq
+op_amp
 id|IP_VS_STATE_MASTER
+)paren
 op_logical_and
 (paren
 id|cp-&gt;protocol
