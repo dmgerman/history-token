@@ -94,7 +94,7 @@ DECL|macro|SRMMU_SWP_OFF_SHIFT
 mdefine_line|#define SRMMU_SWP_OFF_SHIFT&t;(SRMMU_PTE_FILE_SHIFT + 5)
 multiline_comment|/* Some day I will implement true fine grained access bits for&n; * user pages because the SRMMU gives us the capabilities to&n; * enforce all the protection levels that vma&squot;s can have.&n; * XXX But for now...&n; */
 DECL|macro|SRMMU_PAGE_NONE
-mdefine_line|#define SRMMU_PAGE_NONE    __pgprot(SRMMU_VALID | SRMMU_CACHE | &bslash;&n;&t;&t;&t;&t;    SRMMU_PRIV | SRMMU_REF)
+mdefine_line|#define SRMMU_PAGE_NONE    __pgprot(SRMMU_CACHE | &bslash;&n;&t;&t;&t;&t;    SRMMU_PRIV | SRMMU_REF)
 DECL|macro|SRMMU_PAGE_SHARED
 mdefine_line|#define SRMMU_PAGE_SHARED  __pgprot(SRMMU_VALID | SRMMU_CACHE | &bslash;&n;&t;&t;&t;&t;    SRMMU_EXEC | SRMMU_WRITE | SRMMU_REF)
 DECL|macro|SRMMU_PAGE_COPY
