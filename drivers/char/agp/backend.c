@@ -8,10 +8,11 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+multiline_comment|/* Due to XFree86 brain-damage, we can&squot;t go to 1.0 until they&n; * fix some real stupidity. It&squot;s only by chance we can bump&n; * past 0.99 at all due to some boolean logic error. */
 DECL|macro|AGPGART_VERSION_MAJOR
-mdefine_line|#define AGPGART_VERSION_MAJOR 1
+mdefine_line|#define AGPGART_VERSION_MAJOR 0
 DECL|macro|AGPGART_VERSION_MINOR
-mdefine_line|#define AGPGART_VERSION_MINOR 0
+mdefine_line|#define AGPGART_VERSION_MINOR 100
 DECL|variable|agp_bridge
 r_struct
 id|agp_bridge_data
@@ -992,7 +993,6 @@ suffix:semicolon
 )brace
 DECL|function|agp_unregister_driver
 r_int
-id|__exit
 id|agp_unregister_driver
 c_func
 (paren
@@ -1032,6 +1032,30 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|agp_exit
+r_int
+id|__exit
+id|agp_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|agp_count
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|agp_init
 r_int
 id|__init
@@ -1041,6 +1065,26 @@ c_func
 r_void
 )paren
 (brace
+r_static
+r_int
+id|already_initialised
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|already_initialised
+op_ne
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|already_initialised
+op_assign
+l_int|1
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -1083,6 +1127,13 @@ c_func
 id|agp_init
 )paren
 suffix:semicolon
+DECL|variable|agp_exit
+id|module_exit
+c_func
+(paren
+id|agp_exit
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|agp_backend_acquire
 id|EXPORT_SYMBOL
@@ -1103,6 +1154,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|agp_register_driver
+)paren
+suffix:semicolon
+DECL|variable|agp_unregister_driver
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|agp_unregister_driver
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
