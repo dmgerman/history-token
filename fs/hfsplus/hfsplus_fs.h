@@ -294,6 +294,12 @@ id|inode
 op_star
 id|hidden_dir
 suffix:semicolon
+DECL|member|nls
+r_struct
+id|nls_table
+op_star
+id|nls
+suffix:semicolon
 multiline_comment|/* Runtime variables */
 DECL|member|blockoffset
 id|u32
@@ -1083,6 +1089,11 @@ r_void
 id|hfsplus_cat_build_key
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
 id|hfsplus_btree_key
 op_star
 comma
@@ -1457,6 +1468,10 @@ r_int
 id|hfsplus_uni2asc
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+comma
 r_const
 r_struct
 id|hfsplus_unistr
@@ -1473,6 +1488,10 @@ r_int
 id|hfsplus_asc2uni
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+comma
 r_struct
 id|hfsplus_unistr
 op_star

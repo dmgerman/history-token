@@ -72,6 +72,11 @@ r_void
 id|hfsplus_cat_build_key
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
 id|hfsplus_btree_key
 op_star
 id|key
@@ -105,6 +110,8 @@ id|str
 id|hfsplus_asc2uni
 c_func
 (paren
+id|sb
+comma
 op_amp
 id|key-&gt;cat.name
 comma
@@ -618,6 +625,11 @@ r_int
 id|hfsplus_fill_cat_thread
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
 id|hfsplus_cat_entry
 op_star
 id|entry
@@ -657,6 +669,8 @@ suffix:semicolon
 id|hfsplus_asc2uni
 c_func
 (paren
+id|sb
+comma
 op_amp
 id|entry-&gt;thread.nodeName
 comma
@@ -709,6 +723,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd-&gt;search_key
 comma
 id|cnid
@@ -872,6 +888,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|cnid
@@ -884,6 +902,8 @@ op_assign
 id|hfsplus_fill_cat_thread
 c_func
 (paren
+id|sb
+comma
 op_amp
 id|entry
 comma
@@ -961,6 +981,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|dir-&gt;i_ino
@@ -1067,6 +1089,8 @@ suffix:colon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|cnid
@@ -1199,6 +1223,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|cnid
@@ -1296,6 +1322,8 @@ r_else
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|dir-&gt;i_ino
@@ -1497,6 +1525,8 @@ suffix:semicolon
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|fd.search_key
 comma
 id|cnid
@@ -1664,6 +1694,8 @@ multiline_comment|/* find the old dir entry and read the data */
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|src_fd.search_key
 comma
 id|src_dir-&gt;i_ino
@@ -1705,6 +1737,8 @@ multiline_comment|/* create new dir entry with the data from the old entry */
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|dst_fd.search_key
 comma
 id|dst_dir-&gt;i_ino
@@ -1786,6 +1820,8 @@ multiline_comment|/* finally remove the old entry */
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|src_fd.search_key
 comma
 id|src_dir-&gt;i_ino
@@ -1846,6 +1882,8 @@ multiline_comment|/* remove old thread entry */
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|src_fd.search_key
 comma
 id|cnid
@@ -1901,6 +1939,8 @@ multiline_comment|/* create new thread entry */
 id|hfsplus_cat_build_key
 c_func
 (paren
+id|sb
+comma
 id|dst_fd.search_key
 comma
 id|cnid
@@ -1913,6 +1953,8 @@ op_assign
 id|hfsplus_fill_cat_thread
 c_func
 (paren
+id|sb
+comma
 op_amp
 id|entry
 comma
