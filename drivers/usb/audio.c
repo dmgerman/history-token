@@ -3491,6 +3491,10 @@ op_assign
 id|offs
 suffix:semicolon
 )brace
+id|urb-&gt;interval
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4080,6 +4084,10 @@ op_rshift
 l_int|16
 suffix:semicolon
 )brace
+id|urb-&gt;interval
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
