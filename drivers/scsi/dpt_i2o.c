@@ -4995,14 +4995,6 @@ op_minus
 id|ETIME
 suffix:semicolon
 )brace
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-op_star
-id|HZ
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
