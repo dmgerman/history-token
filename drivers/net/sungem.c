@@ -11776,6 +11776,7 @@ id|u32
 id|rom_reg_orig
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -12547,10 +12548,6 @@ id|dev
 suffix:semicolon
 id|gp-&gt;regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -13026,10 +13023,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|gp-&gt;regs
 )paren
 suffix:semicolon
@@ -13161,10 +13154,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|gp-&gt;regs
 )paren
 suffix:semicolon
