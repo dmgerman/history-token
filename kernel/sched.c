@@ -5643,7 +5643,7 @@ id|rq-&gt;nr_iowait
 suffix:semicolon
 )brace
 DECL|function|io_schedule_timeout
-r_void
+r_int
 id|io_schedule_timeout
 c_func
 (paren
@@ -5661,6 +5661,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -5668,6 +5671,8 @@ op_amp
 id|rq-&gt;nr_iowait
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|schedule_timeout
 c_func
 (paren
@@ -5680,6 +5685,9 @@ c_func
 op_amp
 id|rq-&gt;nr_iowait
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sys_sched_get_priority_max - return maximum RT priority.&n; * @policy: scheduling class.&n; *&n; * this syscall returns the maximum rt_priority that can be used&n; * by a given scheduling class.&n; */
