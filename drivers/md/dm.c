@@ -2655,6 +2655,11 @@ id|md-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Then we wait for the already mapped ios to&n;&t; * complete.&n;&t; */
+id|blk_run_queues
+c_func
+(paren
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
