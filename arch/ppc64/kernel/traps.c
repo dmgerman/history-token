@@ -1942,6 +1942,8 @@ suffix:semicolon
 multiline_comment|/* Ensure exceptions are disabled */
 DECL|macro|MMCR0_PMXE
 mdefine_line|#define MMCR0_PMXE      (1UL &lt;&lt; (31 - 5))
+DECL|macro|MMCR0_PMAO
+mdefine_line|#define MMCR0_PMAO      (1UL &lt;&lt; (31 - 24))
 DECL|function|dummy_perf
 r_static
 r_void
@@ -1967,7 +1969,11 @@ suffix:semicolon
 id|mmcr0
 op_and_assign
 op_complement
+(paren
 id|MMCR0_PMXE
+op_or
+id|MMCR0_PMAO
+)paren
 suffix:semicolon
 id|mtspr
 c_func
