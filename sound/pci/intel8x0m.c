@@ -220,16 +220,21 @@ macro_line|#ifndef PCI_DEVICE_ID_SI_7013
 DECL|macro|PCI_DEVICE_ID_SI_7013
 mdefine_line|#define PCI_DEVICE_ID_SI_7013&t;&t;0x7013
 macro_line|#endif
-macro_line|#if 0
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP_AUDIO&t;0x01b1
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP_MODEM
+DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP_MODEM
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP_MODEM&t;0x01c1
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO&t;0x006a
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP2_MODEM
+DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP2_MODEM
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP2_MODEM&t;0x0069
 macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO&t;0x00da
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP2S_MODEM
+DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP2S_MODEM
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP2S_MODEM 0x0089
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP3_MODEM
+DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP3_MODEM
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP3_MODEM&t;0x00d9
 macro_line|#endif
 DECL|enumerator|DEVICE_INTEL
 DECL|enumerator|DEVICE_SIS
@@ -787,8 +792,6 @@ id|DEVICE_INTEL
 )brace
 comma
 multiline_comment|/* AMD768 */
-macro_line|#if 0
-multiline_comment|/* TODO: support needed */
 (brace
 l_int|0x1039
 comma
@@ -806,7 +809,6 @@ id|DEVICE_SIS
 )brace
 comma
 multiline_comment|/* SI7013 */
-macro_line|#endif
 (brace
 l_int|0x10de
 comma
@@ -1077,6 +1079,50 @@ id|offset
 suffix:semicolon
 r_else
 id|outb
+c_func
+(paren
+id|val
+comma
+id|chip-&gt;bmaddr
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
+DECL|function|iputword
+r_static
+r_void
+id|iputword
+c_func
+(paren
+id|intel8x0_t
+op_star
+id|chip
+comma
+id|u32
+id|offset
+comma
+id|u16
+id|val
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;bm_mmio
+)paren
+id|writew
+c_func
+(paren
+id|val
+comma
+id|chip-&gt;remap_bmaddr
+op_plus
+id|offset
+)paren
+suffix:semicolon
+r_else
+id|outw
 c_func
 (paren
 id|val
@@ -2921,7 +2967,7 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|32
+l_int|64
 op_star
 l_int|1024
 comma
@@ -2933,7 +2979,7 @@ comma
 dot
 id|period_bytes_max
 op_assign
-l_int|32
+l_int|64
 op_star
 l_int|1024
 comma
@@ -3549,14 +3595,14 @@ comma
 dot
 id|prealloc_size
 op_assign
-l_int|4
+l_int|32
 op_star
 l_int|1024
 comma
 dot
 id|prealloc_max_size
 op_assign
-l_int|16
+l_int|64
 op_star
 l_int|1024
 comma
@@ -4521,6 +4567,34 @@ id|end_time
 comma
 id|jiffies
 )paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_eq
+id|DEVICE_SIS
+)paren
+(brace
+multiline_comment|/* unmute the output on SIS7012 */
+id|iputword
+c_func
+(paren
+id|chip
+comma
+l_int|0x4c
+comma
+id|igetword
+c_func
+(paren
+id|chip
+comma
+l_int|0x4c
+)paren
+op_or
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -6074,7 +6148,6 @@ comma
 l_string|&quot;AMD AMD768&quot;
 )brace
 comma
-macro_line|#if 0
 (brace
 id|PCI_DEVICE_ID_SI_7013
 comma
@@ -6082,23 +6155,30 @@ l_string|&quot;SiS SI7013&quot;
 )brace
 comma
 (brace
-id|PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
+id|PCI_DEVICE_ID_NVIDIA_MCP_MODEM
 comma
 l_string|&quot;NVidia nForce&quot;
 )brace
 comma
 (brace
-id|PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
+id|PCI_DEVICE_ID_NVIDIA_MCP2_MODEM
 comma
 l_string|&quot;NVidia nForce2&quot;
 )brace
 comma
 (brace
-id|PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
+id|PCI_DEVICE_ID_NVIDIA_MCP2S_MODEM
+comma
+l_string|&quot;NVidia nForce2s&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_MCP3_MODEM
 comma
 l_string|&quot;NVidia nForce3&quot;
 )brace
 comma
+macro_line|#if 0
 (brace
 l_int|0x5455
 comma
