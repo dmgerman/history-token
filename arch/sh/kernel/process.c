@@ -1855,22 +1855,6 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|first_sched
 mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched
@@ -1926,19 +1910,11 @@ c_cond
 (paren
 id|pc
 op_ge
-(paren
-r_int
-r_int
-)paren
-id|interruptible_sleep_on
+id|first_sched
 op_logical_and
 id|pc
 OL
-(paren
-r_int
-r_int
-)paren
-id|add_timer
+id|last_sched
 )paren
 (brace
 id|schedule_frame

@@ -1,6 +1,7 @@
 multiline_comment|/* rwsem.c: R/W semaphores: contention handling functions&n; *&n; * Written by David Howells (dhowells@redhat.com).&n; * Derived from arch/i386/kernel/semaphore.c&n; */
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|struct|rwsem_waiter
 r_struct
@@ -539,6 +540,7 @@ DECL|function|rwsem_down_read_failed
 r_struct
 id|rw_semaphore
 id|fastcall
+id|__sched
 op_star
 id|rwsem_down_read_failed
 c_func
@@ -595,6 +597,7 @@ DECL|function|rwsem_down_write_failed
 r_struct
 id|rw_semaphore
 id|fastcall
+id|__sched
 op_star
 id|rwsem_down_write_failed
 c_func

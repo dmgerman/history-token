@@ -3227,6 +3227,7 @@ DECL|function|schedule_timeout
 id|fastcall
 r_int
 r_int
+id|__sched
 id|schedule_timeout
 c_func
 (paren
@@ -3390,6 +3391,7 @@ suffix:semicolon
 DECL|function|nanosleep_restart
 r_static
 r_int
+id|__sched
 id|nanosleep_restart
 c_func
 (paren

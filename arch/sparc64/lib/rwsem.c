@@ -1,6 +1,7 @@
 multiline_comment|/* rwsem.c: Don&squot;t inline expand these suckers all over the place.&n; *&n; * Written by David S. Miller (davem@redhat.com), 2001.&n; * Derived from asm-i386/rwsem.h&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 r_extern
 r_struct
@@ -70,6 +71,7 @@ op_star
 suffix:semicolon
 DECL|function|__down_read
 r_void
+id|__sched
 id|__down_read
 c_func
 (paren
@@ -201,6 +203,7 @@ id|__down_read_trylock
 suffix:semicolon
 DECL|function|__down_write
 r_void
+id|__sched
 id|__down_write
 c_func
 (paren

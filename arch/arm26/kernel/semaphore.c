@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  ARM semaphore implementation, taken from&n; *&n; *  i
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to acquire the semaphore, while the &quot;sleeping&quot;&n; * variable is a count of such acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is&n; * protected by the semaphore spinlock.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 multiline_comment|/*&n; * Logic:&n; *  - only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - when we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleeper&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
@@ -33,6 +34,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -177,6 +179,7 @@ suffix:semicolon
 )brace
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren
@@ -435,7 +438,7 @@ multiline_comment|/*&n; * The semaphore operations have a special calling sequen
 id|asm
 c_func
 (paren
-l_string|&quot;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_failed&t;&t;&t;&bslash;n&bslash;&n;__down_failed:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_interruptible_failed&t;&bslash;n&bslash;&n;__down_interruptible_failed:&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_interruptible&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_trylock_failed&t;&t;&bslash;n&bslash;&n;__down_trylock_failed:&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_trylock&t;&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__up_wakeup&t;&t;&t;&bslash;n&bslash;&n;__up_wakeup:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__up&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&quot;
+l_string|&quot;&t;.section .sched.text&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_failed&t;&t;&t;&bslash;n&bslash;&n;__down_failed:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_interruptible_failed&t;&bslash;n&bslash;&n;__down_interruptible_failed:&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_interruptible&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_trylock_failed&t;&t;&bslash;n&bslash;&n;__down_trylock_failed:&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_trylock&t;&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__up_wakeup&t;&t;&t;&bslash;n&bslash;&n;__up_wakeup:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__up&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&quot;
 )paren
 suffix:semicolon
 eof

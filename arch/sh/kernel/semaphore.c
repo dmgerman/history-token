@@ -3,6 +3,7 @@ multiline_comment|/*&n; *  Generic semaphore code. Buyer beware. Do your own&n; 
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/semaphore-helper.h&gt;
 DECL|variable|semaphore_wake_lock
@@ -44,6 +45,7 @@ DECL|macro|DOWN_TAIL
 mdefine_line|#define DOWN_TAIL(task_state)&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;state = (task_state);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;&t;tsk-&gt;state = TASK_RUNNING;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;sem-&gt;wait, &amp;wait);
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -83,6 +85,7 @@ id|TASK_UNINTERRUPTIBLE
 )brace
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren

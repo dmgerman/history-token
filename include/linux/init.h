@@ -13,6 +13,8 @@ DECL|macro|__exitdata
 mdefine_line|#define __exitdata&t;__attribute__ ((__section__(&quot;.exit.data&quot;)))
 DECL|macro|__exit_call
 mdefine_line|#define __exit_call&t;__attribute_used__ __attribute__ ((__section__ (&quot;.exitcall.exit&quot;)))
+DECL|macro|__sched
+mdefine_line|#define __sched&t;&t;__attribute__((__section__(&quot;.sched.text&quot;)))
 macro_line|#ifdef MODULE
 DECL|macro|__exit
 mdefine_line|#define __exit&t;&t;__attribute__ ((__section__(&quot;.exit.text&quot;)))

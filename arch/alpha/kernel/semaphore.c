@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Alpha semaphore implementation.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; * (C) Copyright 1999, 2000 Richard Henderson&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * This is basically the PPC semaphore scheme ported to use&n; * the Alpha ll/sc sequences, so see the PPC code for&n; * credits.&n; */
 multiline_comment|/*&n; * Atomically update sem-&gt;count.&n; * This does the equivalent of the following:&n; *&n; *&t;old_count = sem-&gt;count;&n; *&t;tmp = MAX(old_count, 0) + incr;&n; *&t;sem-&gt;count = tmp;&n; *&t;return old_count;&n; */
 DECL|function|__sem_update_count
@@ -77,6 +78,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Perform the &quot;down&quot; function.  Return zero for semaphore acquired,&n; * return negative for signalled out of the function.&n; *&n; * If called from down, the return is ignored and the wait loop is&n; * not interruptible.  This means that a task waiting on a semaphore&n; * using &quot;down()&quot; cannot be killed until someone does an &quot;up()&quot; on&n; * the semaphore.&n; *&n; * If called from down_interruptible, the return value gets checked&n; * upon return.  If the return value is negative then the task continues&n; * with the negative value in the return register (it can be tested by&n; * the caller).&n; *&n; * Either form may be used in conjunction with &quot;up()&quot;.&n; */
 r_void
+id|__sched
 DECL|function|__down_failed
 id|__down_failed
 c_func
@@ -203,6 +205,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_int
+id|__sched
 DECL|function|__down_failed_interruptible
 id|__down_failed_interruptible
 c_func
@@ -401,6 +404,7 @@ id|sem-&gt;wait
 suffix:semicolon
 )brace
 r_void
+id|__sched
 DECL|function|down
 id|down
 c_func
@@ -454,6 +458,7 @@ id|sem
 suffix:semicolon
 )brace
 r_int
+id|__sched
 DECL|function|down_interruptible
 id|down_interruptible
 c_func

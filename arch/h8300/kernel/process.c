@@ -930,22 +930,6 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|first_sched
 mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched
@@ -1078,7 +1062,6 @@ id|fp
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* FIXME: This depends on the order of these functions. */
 r_if
 c_cond
 (paren
