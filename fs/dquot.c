@@ -412,14 +412,15 @@ op_star
 id|dquot
 )paren
 suffix:semicolon
-DECL|function|hashfn
 r_static
 r_inline
 r_int
-r_const
+r_int
+DECL|function|hashfn
 id|hashfn
 c_func
 (paren
+r_const
 r_struct
 id|super_block
 op_star
@@ -435,6 +436,8 @@ id|type
 (brace
 r_int
 r_int
+id|tmp
+suffix:semicolon
 id|tmp
 op_assign
 (paren
