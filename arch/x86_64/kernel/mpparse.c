@@ -3351,6 +3351,17 @@ id|mp_irqs
 id|idx
 )braket
 dot
+id|mpc_dstapic
+op_eq
+id|ioapic
+)paren
+op_logical_and
+(paren
+id|mp_irqs
+(braket
+id|idx
+)braket
+dot
 id|mpc_srcbusirq
 op_eq
 id|i
