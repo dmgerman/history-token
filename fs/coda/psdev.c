@@ -1453,11 +1453,7 @@ suffix:semicolon
 )brace
 id|devfs_mk_dir
 (paren
-l_int|NULL
-comma
 l_string|&quot;coda&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_for
