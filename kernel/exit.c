@@ -1975,6 +1975,11 @@ id|current-&gt;exit_signal
 op_ne
 id|SIGCHLD
 op_logical_and
+id|current-&gt;exit_signal
+op_ne
+op_minus
+l_int|1
+op_logical_and
 (paren
 id|current-&gt;parent_exec_id
 op_ne
@@ -1992,12 +1997,10 @@ c_func
 id|CAP_KILL
 )paren
 )paren
-(brace
 id|current-&gt;exit_signal
 op_assign
 id|SIGCHLD
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * This loop does two things:&n;&t; *&n;  &t; * A.  Make init inherit all the child processes&n;&t; * B.  Check to see if any process groups have become orphaned&n;&t; *&t;as a result of our exiting, and if they have any stopped&n;&t; *&t;jobs, send them a SIGHUP and then a SIGCONT.  (POSIX 3.2.2.2)&n;&t; */
 id|write_lock_irq
 c_func

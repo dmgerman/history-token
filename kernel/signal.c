@@ -4569,6 +4569,13 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|recalc_sigpending
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|recalc_sigpending
+)paren
+suffix:semicolon
 DECL|variable|dequeue_signal
 id|EXPORT_SYMBOL
 c_func
