@@ -380,7 +380,7 @@ mdefine_line|#define hugetlb_report_node_meminfo(n, buf)&t;0
 DECL|macro|mark_mm_hugetlb
 mdefine_line|#define mark_mm_hugetlb(mm, vma)&t;&t;do { } while (0)
 DECL|macro|follow_huge_pmd
-mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;0
+mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;NULL
 DECL|macro|is_aligned_hugepage_range
 mdefine_line|#define is_aligned_hugepage_range(addr, len)&t;0
 DECL|macro|prepare_hugepage_range

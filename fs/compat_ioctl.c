@@ -4018,7 +4018,7 @@ suffix:semicolon
 r_else
 id|r4.rt_dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|r
 op_assign
