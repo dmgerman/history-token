@@ -1190,7 +1190,13 @@ comma
 id|dst
 )paren
 suffix:semicolon
-multiline_comment|/* init_timer has been done by the memset */
+id|init_timer
+c_func
+(paren
+op_amp
+id|fq-&gt;timer
+)paren
+suffix:semicolon
 id|fq-&gt;timer.function
 op_assign
 id|ip6_frag_expire
