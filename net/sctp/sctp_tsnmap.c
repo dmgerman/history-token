@@ -147,7 +147,10 @@ suffix:semicolon
 id|fail_map
 suffix:colon
 id|kfree
+c_func
+(paren
 id|retval
+)paren
 suffix:semicolon
 id|fail
 suffix:colon
