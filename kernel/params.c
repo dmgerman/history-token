@@ -632,8 +632,9 @@ comma
 l_string|&quot;%hu&quot;
 comma
 r_int
+r_int
 comma
-id|simple_strtol
+id|simple_strtoul
 )paren
 suffix:semicolon
 id|STANDARD_PARAM_DEF
@@ -661,8 +662,9 @@ comma
 l_string|&quot;%u&quot;
 comma
 r_int
+r_int
 comma
-id|simple_strtol
+id|simple_strtoul
 )paren
 suffix:semicolon
 id|STANDARD_PARAM_DEF
