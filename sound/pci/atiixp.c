@@ -34,7 +34,7 @@ suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
-l_string|&quot;{{ATI,IXP150/200/250/300}}&quot;
+l_string|&quot;{{ATI,IXP150/200/250/300/400}}&quot;
 )paren
 suffix:semicolon
 DECL|variable|index
@@ -814,6 +814,23 @@ l_int|0
 )brace
 comma
 multiline_comment|/* SB300 */
+(brace
+l_int|0x1002
+comma
+l_int|0x4370
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* SB400 */
 (brace
 l_int|0
 comma
