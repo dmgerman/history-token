@@ -2558,29 +2558,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|i2c_algo_bit_init
-r_int
-id|__init
-id|i2c_algo_bit_init
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-algo-bit.o: i2c bit algorithm module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|variable|i2c_bit_add_bus
 id|EXPORT_SYMBOL
 c_func
@@ -2595,7 +2572,6 @@ c_func
 id|i2c_bit_del_bus
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2662,29 +2638,4 @@ comma
 l_string|&quot;debug level - 0 off; 1 normal; 2,3 more verbose; 9 bit-protocol&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|i2c_algo_bit_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif
 eof

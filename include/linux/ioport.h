@@ -301,7 +301,7 @@ DECL|macro|release_mem_region
 mdefine_line|#define release_mem_region(start,n)&t;__release_region(&amp;iomem_resource, (start), (n))
 r_extern
 r_int
-id|deprecated
+id|__deprecated
 id|__check_region
 c_func
 (paren

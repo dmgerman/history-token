@@ -1138,7 +1138,8 @@ c_cond
 (paren
 id|quot
 )paren
-r_break
+r_return
+id|quot
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Oops, the quotient was zero.  Try again with&n;&t;&t; * the old baud rate if possible.&n;&t;&t; */
 id|termios-&gt;c_cflag

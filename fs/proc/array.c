@@ -2012,9 +2012,11 @@ r_return
 id|len
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MMU
 DECL|function|proc_pid_read_maps
 id|ssize_t
 id|proc_pid_read_maps
+c_func
 (paren
 r_struct
 id|task_struct
@@ -2413,4 +2415,5 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_MMU */
 eof

@@ -218,12 +218,7 @@ op_star
 id|fmt
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fmt-&gt;qf_owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|fmt-&gt;qf_owner

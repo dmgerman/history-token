@@ -5,12 +5,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/sensors.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static
@@ -129,30 +123,6 @@ id|temp_hyst
 suffix:semicolon
 multiline_comment|/* Register values */
 )brace
-suffix:semicolon
-r_int
-id|__init
-id|sensors_lm75_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|__exit
-id|sensors_lm75_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
-id|lm75_cleanup
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_static
 r_int
@@ -401,15 +371,6 @@ comma
 l_int|0
 )brace
 )brace
-suffix:semicolon
-multiline_comment|/* Used by init/cleanup */
-DECL|variable|lm75_initialized
-r_static
-r_int
-id|__initdata
-id|lm75_initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|lm75_id
 r_static
@@ -754,8 +715,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;lm75.o: Internal error: unknown kind (%d)?!?&quot;
@@ -763,7 +723,6 @@ comma
 id|kind
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|error1
 suffix:semicolon
@@ -1228,14 +1187,12 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Starting lm75 update&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|data-&gt;temp
 op_assign
 id|lm75_read_value
@@ -1463,60 +1420,17 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;lm75.o version %s (%s)&bslash;n&quot;
-comma
-id|LM_VERSION
-comma
-id|LM_DATE
-)paren
-suffix:semicolon
-id|lm75_initialized
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
+r_return
 id|i2c_add_driver
 c_func
 (paren
 op_amp
 id|lm75_driver
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;lm75.o: Driver registration failed, module not inserted.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|lm75_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-id|lm75_initialized
-op_increment
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|sensors_lm75_exit
+r_static
 r_void
 id|__exit
 id|sensors_lm75_exit
@@ -1525,66 +1439,14 @@ c_func
 r_void
 )paren
 (brace
-id|lm75_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|lm75_cleanup
-r_static
-r_int
-id|lm75_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm75_initialized
-op_ge
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
 id|i2c_del_driver
 c_func
 (paren
 op_amp
 id|lm75_driver
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;lm75.o: Driver deregistration failed, module not removed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|res
 suffix:semicolon
 )brace
-id|lm75_initialized
-op_decrement
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1595,6 +1457,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;LM75 driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|sensors_lm75_init

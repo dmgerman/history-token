@@ -4241,9 +4241,9 @@ r_int
 suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
 DECL|macro|fops_get
-mdefine_line|#define fops_get(fops) &bslash;&n;&t;(((fops) &amp;&amp; (fops)-&gt;owner)&t;&bslash;&n;&t;&t;? ( try_inc_mod_count((fops)-&gt;owner) ? (fops) : NULL ) &bslash;&n;&t;&t;: (fops))
+mdefine_line|#define fops_get(fops) &bslash;&n;&t;(((fops) &amp;&amp; (fops)-&gt;owner)&t;&bslash;&n;&t;&t;? (try_inc_mod_count((fops)-&gt;owner) ? (fops) : NULL) &bslash;&n;&t;&t;: (fops))
 DECL|macro|fops_put
-mdefine_line|#define fops_put(fops) &bslash;&n;do {&t;&bslash;&n;&t;if ((fops) &amp;&amp; (fops)-&gt;owner) &bslash;&n;&t;&t;__MOD_DEC_USE_COUNT((fops)-&gt;owner);&t;&bslash;&n;} while(0)
+mdefine_line|#define fops_put(fops) &bslash;&n;do {&t;&bslash;&n;&t;if ((fops) &amp;&amp; (fops)-&gt;owner) &bslash;&n;&t;&t;module_put((fops)-&gt;owner);&t;&bslash;&n;} while(0)
 r_extern
 r_int
 id|register_filesystem
@@ -6712,6 +6712,24 @@ r_void
 op_star
 comma
 id|filldir_t
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|simple_getattr
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+comma
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|kstat
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -321,7 +321,7 @@ DECL|macro|outl
 mdefine_line|#define outl(v,p)&t;(__builtin_constant_p((p)) ? __outlc(v,p) : __outl(v,p))
 DECL|macro|__ioaddr
 mdefine_line|#define __ioaddr(p)&t;(__builtin_constant_p((p)) ? __ioaddr(p)  : __ioaddrc(p))
-multiline_comment|/* the following macro is depreciated */
+multiline_comment|/* the following macro is deprecated */
 DECL|macro|ioaddr
 mdefine_line|#define ioaddr(port)&t;&t;&t;__ioaddr((port))
 multiline_comment|/*&n; * No ioremap support here.&n; */
