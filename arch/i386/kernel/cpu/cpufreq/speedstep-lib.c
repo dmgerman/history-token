@@ -433,7 +433,7 @@ id|msr_tmp
 op_star
 l_int|100
 op_star
-l_int|10000
+l_int|1000
 )paren
 suffix:semicolon
 )brace
