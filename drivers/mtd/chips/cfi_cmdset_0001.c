@@ -2743,6 +2743,16 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_else
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|shared-&gt;lock
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
