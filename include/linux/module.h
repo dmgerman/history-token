@@ -308,6 +308,51 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Similar stuff for section attributes. */
+DECL|macro|MODULE_SECT_NAME_LEN
+mdefine_line|#define MODULE_SECT_NAME_LEN 32
+DECL|struct|module_sect_attr
+r_struct
+id|module_sect_attr
+(brace
+DECL|member|attr
+r_struct
+id|attribute
+id|attr
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|MODULE_SECT_NAME_LEN
+)braket
+suffix:semicolon
+DECL|member|address
+r_int
+r_int
+id|address
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|module_sections
+r_struct
+id|module_sections
+(brace
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
+DECL|member|attrs
+r_struct
+id|module_sect_attr
+id|attrs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|module
 r_struct
 id|module
@@ -505,6 +550,13 @@ DECL|member|strtab
 r_char
 op_star
 id|strtab
+suffix:semicolon
+multiline_comment|/* Section attributes */
+DECL|member|sect_attrs
+r_struct
+id|module_sections
+op_star
+id|sect_attrs
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Per-cpu data. */
