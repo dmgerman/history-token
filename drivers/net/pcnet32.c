@@ -3639,6 +3639,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pcnet32_get_regs_len
+r_static
 r_int
 id|pcnet32_get_regs_len
 c_func
@@ -3659,6 +3660,7 @@ id|u16
 suffix:semicolon
 )brace
 DECL|function|pcnet32_get_regs
+r_static
 r_void
 id|pcnet32_get_regs
 c_func
