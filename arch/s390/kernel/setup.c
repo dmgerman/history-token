@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  arch/s390/kernel/setup.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/kernel/setup.c&quot;&n; *    Copyright (C) 1995, Linus Torvalds&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1085,6 +1086,13 @@ id|command
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -1099,6 +1107,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -1113,6 +1128,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Setup function called from init/main.c just after the banner&n; * was printed.&n; */
 r_extern
 r_char

@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: irq.c,v 1.8 2003/07/04 08:27:52 starvik Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
 multiline_comment|/*&n; * IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -122,6 +123,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 r_int
 DECL|function|probe_irq_off
 id|probe_irq_off
@@ -136,6 +144,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initial irq handlers.&n; */
 DECL|variable|irq_action
 r_static
@@ -841,6 +856,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -984,6 +1006,13 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 DECL|function|weird_irq
 r_void
 id|weird_irq

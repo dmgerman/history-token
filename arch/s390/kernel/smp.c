@@ -69,6 +69,13 @@ id|cache_decay_ticks
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Reboot, halt and power_off routines for SMP.&n; */
 r_extern
 r_char

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/lib/ctype.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|_ctype
 r_int
 r_char
@@ -583,4 +584,11 @@ id|_L
 )brace
 suffix:semicolon
 multiline_comment|/* 240-255 */
+DECL|variable|_ctype
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_ctype
+)paren
+suffix:semicolon
 eof

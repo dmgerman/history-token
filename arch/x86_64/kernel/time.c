@@ -24,6 +24,13 @@ id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|using_apic_timer
@@ -338,6 +345,13 @@ op_mod
 l_int|1000000
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * settimeofday() first undoes the correction that gettimeofday would do&n; * on the time, and then saves it. This is ugly, but has been like this for&n; * ages already.&n; */
 DECL|function|do_settimeofday
 r_int
@@ -482,6 +496,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be called 500&n; * ms after the second nowtime has started, because when nowtime is written&n; * into the registers of the CMOS clock, it will jump to the next second&n; * precisely 500 ms later. Check the Motorola MC146818A or Dallas DS12887 data&n; * sheet for details.&n; */
 DECL|function|set_rtc_mmss
 r_static

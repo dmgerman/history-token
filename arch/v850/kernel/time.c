@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/arch/v850/kernel/time.c -- Arch-dependent timer 
 macro_line|#include &lt;linux/config.h&gt; /* CONFIG_HEARTBEAT */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -16,6 +17,13 @@ id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
+suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
 suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE&t;(tick_nsec / 1000)
@@ -467,6 +475,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday
@@ -562,6 +577,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 DECL|variable|timer_dev_id
 r_static
 r_int

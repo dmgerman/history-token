@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm26/kernel/process.c&n; *&n; *  Copyright (C) 2003 Ian Molton - adapted for ARM26&n; *  Copyright (C) 1996-2000 Russell King - Converted to ARM.&n; *  Origional Copyright (C) 1995  Linus Torvalds&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -54,6 +55,13 @@ id|hlt_counter
 op_increment
 suffix:semicolon
 )brace
+DECL|variable|disable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_hlt
+)paren
+suffix:semicolon
 DECL|function|enable_hlt
 r_void
 id|enable_hlt
@@ -66,6 +74,13 @@ id|hlt_counter
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|enable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_hlt
+)paren
+suffix:semicolon
 DECL|function|nohlt_setup
 r_static
 r_int
@@ -302,6 +317,13 @@ id|led_halted
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -327,6 +349,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 DECL|function|machine_restart
 r_void
 id|machine_restart
@@ -402,6 +431,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|show_regs
 r_void
 id|show_regs

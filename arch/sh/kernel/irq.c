@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: irq.c,v 1.12 2003/06/28 15:34:55 lethal Exp $&n; *&n; * linux/arch/sh/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; *&n; * SuperH version:  Copyright (C) 1999  Niibe Yutaka&n; */
 multiline_comment|/*&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -1187,6 +1188,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -1358,6 +1366,13 @@ r_return
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -1677,6 +1692,13 @@ r_return
 id|val
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -1820,6 +1842,13 @@ r_return
 id|irq_found
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|setup_irq
 r_int
 id|setup_irq

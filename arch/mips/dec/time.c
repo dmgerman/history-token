@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/mips/dec/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2003  Maciej W. Rozycki&n; *&n; * This file contains the time handling details for PC-style clocks as&n; * found in some MIPS systems.&n; *&n; */
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -542,6 +543,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_void
 id|do_settimeofday
@@ -635,6 +643,13 @@ id|xtime_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be&n; * called 500 ms after the second nowtime has started, because when&n; * nowtime is written into the registers of the CMOS clock, it will&n; * jump to the next second precisely 500 ms later. Check the Motorola&n; * MC146818A or Dallas DS12887 data sheet for details.&n; */
 DECL|function|set_rtc_mmss
 r_static

@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: irq.c,v 1.114 2002/01/11 08:45:38 davem Exp $&n; * irq.c: UltraSparc IRQ handling/init/registry.&n; *&n; * Copyright (C) 1997  David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1998  Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1998  Jakub Jelinek    (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1918,6 +1919,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -2471,6 +2479,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|function|synchronize_irq
 r_void
@@ -3926,6 +3941,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -3940,6 +3962,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|function|retarget_one_irq
 r_static

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/v850e_uart.h&gt;
 macro_line|#include &quot;mach.h&quot;
@@ -174,6 +175,13 @@ l_string|&quot;jmp r0&quot;
 suffix:semicolon
 multiline_comment|/* Jump to the reset vector.  */
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 multiline_comment|/* This says `HALt.&squot; in LEDese.  */
 DECL|variable|halt_leds_msg
 r_static
@@ -235,6 +243,13 @@ l_string|&quot;halt; nop; nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -247,6 +262,13 @@ id|machine_halt
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/* Animated LED display for timer tick.  */
 DECL|macro|TICK_UPD_FREQ

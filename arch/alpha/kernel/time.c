@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/alpha/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995, 1999, 2000  Linus Torvalds&n; *&n; * This file contains the PC-specific time handling details:&n; * reading the RTC at bootup, etc..&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; * 1997-01-09    Adrian Sun&n; *      use interval timer if CONFIG_RTC=y&n; * 1997-10-29    John Bowman (bowman@math.ualberta.ca)&n; *      fixed tick loss calculation in timer_interrupt&n; *      (round system clock to nearest tick instead of truncating)&n; *      fixed algorithm in time_init for getting time from CMOS clock&n; * 1999-04-16&t;Thorsten Kranzkowski (dl8bcu@gmx.net)&n; *&t;fixed algorithm in do_gettimeofday() for calculating the precise time&n; *&t;from processor cycle counter (now taking lost_ticks into account)&n; * 2000-08-13&t;Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; * &t;Fixed time_init to be aware of epoches != 1900. This prevents&n; * &t;booting up in 2048 for me;) Code is stolen from rtc.c.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -25,6 +26,13 @@ id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
+suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
 suffix:semicolon
 r_extern
 r_int
@@ -1656,6 +1664,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 r_int
 DECL|function|do_settimeofday
 id|do_settimeofday
@@ -1862,6 +1877,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * In order to set the CMOS clock precisely, set_rtc_mmss has to be&n; * called 500 ms after the second nowtime has started, because when&n; * nowtime is written into the registers of the CMOS clock, it will&n; * jump to the next second precisely 500 ms later. Check the Motorola&n; * MC146818A or Dallas DS12887 data sheet for details.&n; *&n; * BUG: This routine does not handle hour overflow properly; it just&n; *      sets the minutes. Usually you won&squot;t notice until after reboot!&n; */
 r_extern
 r_int

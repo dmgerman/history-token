@@ -515,6 +515,13 @@ id|sum
 )paren
 suffix:semicolon
 )brace
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
 DECL|function|ip_compute_csum
 r_int

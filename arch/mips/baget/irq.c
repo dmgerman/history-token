@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Code to handle Baget/MIPS IRQs plus some generic inter
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1486,6 +1487,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -1612,6 +1620,13 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 DECL|function|probe_irq_on
 r_int
 r_int
@@ -1625,6 +1640,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -1639,6 +1661,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|write_err_interrupt
 r_static
 r_void

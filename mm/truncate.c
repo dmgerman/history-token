@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * mm/truncate.c - code for taking down pages from address_spaces&n; *&n; * Copyright (C) 2002, Linus Torvalds&n; *&n; * 10Sep2002&t;akpm@zip.com.au&n; *&t;&t;Initial version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* grr. try_to_release_page,&n;&t;&t;&t;&t;   block_invalidatepage */
@@ -667,6 +668,13 @@ id|pvec
 suffix:semicolon
 )brace
 )brace
+DECL|variable|truncate_inode_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|truncate_inode_pages
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * invalidate_mapping_pages - Invalidate all the unlocked pages of one inode&n; * @mapping: the address_space which holds the pages to invalidate&n; * @start: the offset &squot;from&squot; which to invalidate&n; * @end: the offset &squot;to&squot; which to invalidate (inclusive)&n; *&n; * This function only removes the unlocked pages, if you want to&n; * remove all the pages of one inode, you must call truncate_inode_pages.&n; *&n; * invalidate_mapping_pages() will not block on IO activity. It will not&n; * invalidate pages which are dirty, locked, under writeback or mapped into&n; * pagetables.&n; */
 DECL|function|invalidate_mapping_pages
 r_int
@@ -885,6 +893,13 @@ l_int|0UL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|invalidate_inode_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|invalidate_inode_pages
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * invalidate_inode_pages2 - remove all unmapped pages from an address_space&n; * @mapping - the address_space&n; *&n; * invalidate_inode_pages2() is like truncate_inode_pages(), except for the case&n; * where the page is seen to be mapped into process pagetables.  In that case,&n; * the page is marked clean but is left attached to its address_space.&n; *&n; * FIXME: invalidate_inode_pages2() is probably trivially livelockable.&n; */
 DECL|function|invalidate_inode_pages2
 r_void
@@ -1038,4 +1053,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|variable|invalidate_inode_pages2
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|invalidate_inode_pages2
+)paren
+suffix:semicolon
 eof

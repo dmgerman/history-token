@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/kernel/capability.c&n; *&n; * Copyright (C) 1997  Andrew Main &lt;zefram@fysh.org&gt;&n; *&n; * Integrated into 2.1.97+,  Andrew G. Morgan &lt;morgan@transmeta.com&gt;&n; * 30 May 2002:&t;Cleanup, Robert M. Love &lt;rml@tech9.net&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|securebits
@@ -14,6 +15,20 @@ id|kernel_cap_t
 id|cap_bset
 op_assign
 id|CAP_INIT_EFF_SET
+suffix:semicolon
+DECL|variable|securebits
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|securebits
+)paren
+suffix:semicolon
+DECL|variable|cap_bset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cap_bset
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * This global lock protects task-&gt;cap_* for all tasks including current.&n; * Locking rule: acquire this prior to tasklist_lock.&n; */
 DECL|variable|task_capability_lock

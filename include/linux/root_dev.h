@@ -1,6 +1,7 @@
 macro_line|#ifndef _ROOT_DEV_H_
 DECL|macro|_ROOT_DEV_H_
 mdefine_line|#define _ROOT_DEV_H_
+macro_line|#include &lt;linux/major.h&gt;
 r_enum
 (brace
 DECL|enumerator|Root_NFS

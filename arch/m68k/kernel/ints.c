@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/m68k/kernel/ints.c -- Linux/m68k general interrupt handling code&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * 07/03/96: Timer initialization, and thus mach_sched_init(),&n; *           removed from request_irq() and moved to init_time().&n; *           We should therefore consider renaming our add_isr() and&n; *           remove_isr() to request_irq() and free_irq()&n; *           respectively, so they are compliant with the other&n; *           architectures.                                     /Jes&n; * 11/07/96: Changed all add_/remove_isr() to request_/free_irq() calls.&n; *           Removed irq list support, if any machine needs an irq server&n; *           it must implement this itself (as it&squot;s already done), instead&n; *           only default handler are used with mach_default_handler.&n; *           request_irq got some flags different from other architectures:&n; *           - IRQ_FLG_REPLACE : Replace an existing handler (the default one&n; *                               can be replaced without this flag)&n; *           - IRQ_FLG_LOCK : handler can&squot;t be replaced&n; *           There are other machine depending flags, see there&n; *           If you want to replace a default handler you should know what&n; *           you&squot;re doing, since it might handle different other irq sources&n; *           which must be served                               /Roman Zippel&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -448,6 +449,13 @@ id|dev_id
 )paren
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -471,6 +479,13 @@ id|dev_id
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 DECL|function|sys_request_irq
 r_int
 id|sys_request_irq
@@ -800,6 +815,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -827,6 +849,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|dummy_enable_irq
 r_static
 r_void

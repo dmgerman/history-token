@@ -27,6 +27,13 @@ id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
+suffix:semicolon
 DECL|variable|disarm_decr
 r_int
 r_int
@@ -680,6 +687,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday
@@ -859,6 +873,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/* This function is only called on the boot processor */
 DECL|function|time_init
 r_void

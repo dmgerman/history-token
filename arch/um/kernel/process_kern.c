@@ -1226,6 +1226,13 @@ l_string|&quot;enable_hlt&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|enable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_hlt
+)paren
+suffix:semicolon
 DECL|function|disable_hlt
 r_void
 id|disable_hlt
@@ -1241,6 +1248,13 @@ l_string|&quot;disable_hlt&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|disable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_hlt
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|signal_frame_size

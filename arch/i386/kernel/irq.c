@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;linux/arch/i386/kernel/irq.c&n; *&n; *&t;Copyright (
 multiline_comment|/*&n; * (mostly architecture independent, will move to kernel/irq.c in 2.5.)&n; *&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -1774,6 +1775,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;free_irq - free an interrupt&n; *&t;@irq: Interrupt line to free&n; *&t;@dev_id: Device identity to free&n; *&n; *&t;Remove an interrupt handler. The handler is removed and if the&n; *&t;interrupt line is no longer in use by any driver it is disabled.&n; *&t;On a shared IRQ the caller must ensure the interrupt is disabled&n; *&t;on the card it drives before calling this function. The function&n; *&t;does not return until any executing interrupts for this IRQ&n; *&t;have completed.&n; *&n; *&t;This function must not be called from interrupt context. &n; */
 DECL|function|free_irq
 r_void
@@ -1947,6 +1955,13 @@ r_return
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * IRQ autodetection code..&n; *&n; * This depends on the fact that any interrupt that&n; * comes in on to an unassigned handler will get stuck&n; * with &quot;IRQ_WAITING&quot; cleared and the interrupt&n; * disabled.&n; */
 r_static
 id|DECLARE_MUTEX
@@ -2279,6 +2294,13 @@ r_return
 id|val
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return a mask of triggered interrupts (this&n; * can handle only legacy ISA interrupts).&n; */
 multiline_comment|/**&n; *&t;probe_irq_mask - scan a bitmap of interrupt lines&n; *&t;@val:&t;mask of interrupts to consider&n; *&n; *&t;Scan the ISA bus interrupt lines and return a bitmap of&n; *&t;active interrupts. The interrupt probe logic state is then&n; *&t;returned to its previous value.&n; *&n; *&t;Note: we need to scan all the irq&squot;s even though we will&n; *&t;only return ISA irq numbers - just so that we reset them&n; *&t;all to a known state.&n; */
 DECL|function|probe_irq_mask
@@ -2551,6 +2573,13 @@ r_return
 id|irq_found
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 multiline_comment|/* this was setup_x86_irq but it seems pretty generic */
 DECL|function|setup_irq
 r_int

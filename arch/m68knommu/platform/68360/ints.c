@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/$(ARCH)/platform/$(PLATFORM)/ints.c&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000  Michael Leslie &lt;mleslie@lineo.com&gt;&n; * Copyright (c) 1996 Roman Zippel&n; * Copyright (c) 1999 D. Jeff Dionne &lt;jeff@uclinux.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1030,6 +1031,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -1143,6 +1151,13 @@ op_lshift
 id|irq
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 macro_line|#if 0
 multiline_comment|/*&n; * Enable/disable a particular machine specific interrupt source.&n; * Note that this may affect other interrupts in case of a shared interrupt.&n; * This function should only be called for a _very_ short time to change some&n; * internal data, that may not be changed by the interrupt at the same time.&n; * int_(enable|disable)_irq calls may also be nested.&n; */
 r_void

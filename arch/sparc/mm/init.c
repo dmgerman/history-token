@@ -1,5 +1,6 @@
 multiline_comment|/*  $Id: init.c,v 1.103 2001/11/19 19:03:08 davem Exp $&n; *  linux/arch/sparc/mm/init.c&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Eddie C. Dost (ecd@skynet.be)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Copyright (C) 2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -107,6 +108,20 @@ suffix:semicolon
 DECL|variable|kmap_prot
 id|pgprot_t
 id|kmap_prot
+suffix:semicolon
+DECL|variable|kmap_prot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_prot
+)paren
+suffix:semicolon
+DECL|variable|kmap_pte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_pte
+)paren
 suffix:semicolon
 multiline_comment|/* These are set in {srmmu,sun4c}_paging_init() */
 DECL|variable|fix_kmap_begin

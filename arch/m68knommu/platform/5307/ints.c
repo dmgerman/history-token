@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/m68knommu/kernel/ints.c -- General interrupt handling code&n; *&n; * Copyright (C) 1999-2002  Greg Ungerer (gerg@snapgear.com)&n; * Copyright (C) 1998  D. Jeff Dionne &lt;jeff@lineo.ca&gt;,&n; *                     Kenneth Albanowski &lt;kjahds@kjahds.com&gt;,&n; * Copyright (C) 2000  Lineo Inc. (www.lineo.com) &n; *&n; * Based on:&n; *&n; * linux/arch/m68k/kernel/ints.c -- Linux/m68k general interrupt handling code&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -505,6 +506,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -676,6 +684,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 DECL|function|sys_request_irq
 r_int
 id|sys_request_irq
@@ -989,6 +1004,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -1002,6 +1024,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|process_int
 id|asmlinkage
 r_void
