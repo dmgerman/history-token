@@ -115,6 +115,8 @@ DECL|macro|I2C_DRIVERID_24LC32A
 mdefine_line|#define I2C_DRIVERID_24LC32A&t;51&t;/* Microchip 24LC32A 32k EEPROM&t;*/
 DECL|macro|I2C_DRIVERID_STM41T00
 mdefine_line|#define I2C_DRIVERID_STM41T00&t;52&t;/* real time clock&t;&t;*/
+DECL|macro|I2C_DRIVERID_UDA1342
+mdefine_line|#define I2C_DRIVERID_UDA1342&t;53&t;/* UDA1342 audio codec&t;&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -245,6 +247,8 @@ DECL|macro|I2C_ALGO_OCP
 mdefine_line|#define I2C_ALGO_OCP    0x120000&t;/* IBM or otherwise On-chip I2C algorithm */
 DECL|macro|I2C_ALGO_BITHS
 mdefine_line|#define I2C_ALGO_BITHS&t;0x130000&t;/* enhanced bit style adapters&t;*/
+DECL|macro|I2C_ALGO_OCP_IOP3XX
+mdefine_line|#define I2C_ALGO_OCP_IOP3XX  0x140000&t;/* XSCALE IOP3XX On-chip I2C alg */
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -299,6 +303,12 @@ DECL|macro|I2C_HW_B_OMAHA
 mdefine_line|#define I2C_HW_B_OMAHA  0x14    /* Omaha I2C interface (ARM)&t;&t;*/
 DECL|macro|I2C_HW_B_GUIDE
 mdefine_line|#define I2C_HW_B_GUIDE  0x15    /* Guide bit-basher&t;&t;&t;*/
+DECL|macro|I2C_HW_B_IXP2000
+mdefine_line|#define I2C_HW_B_IXP2000 0x16&t;/* GPIO on IXP2000 systems              */
+DECL|macro|I2C_HW_B_IXP425
+mdefine_line|#define I2C_HW_B_IXP425 0x17&t;/* GPIO on IXP425 systems&t;&t;*/
+DECL|macro|I2C_HW_B_S3VIA
+mdefine_line|#define I2C_HW_B_S3VIA&t;0x18&t;/* S3Via ProSavage adapter&t;&t;*/
 multiline_comment|/* --- PCF 8584 based algorithms&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_P_LP
 mdefine_line|#define I2C_HW_P_LP&t;0x00&t;/* Parallel port interface&t;&t;*/
@@ -321,6 +331,9 @@ mdefine_line|#define I2C_HW_I_IIC&t;0x00&t;/* controller on the ITE */
 multiline_comment|/* --- PowerPC on-chip adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_OCP
 mdefine_line|#define I2C_HW_OCP 0x00&t;/* IBM on-chip I2C adapter &t;*/
+multiline_comment|/* --- XSCALE on-chip adapters                          */
+DECL|macro|I2C_HW_IOP321
+mdefine_line|#define I2C_HW_IOP321 0x00
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00
