@@ -92,6 +92,7 @@ suffix:semicolon
 DECL|typedef|bus_addr_t
 r_typedef
 r_void
+id|__iomem
 op_star
 id|bus_addr_t
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 DECL|typedef|virt_addr_t
 r_typedef
 r_void
+id|__iomem
 op_star
 id|virt_addr_t
 suffix:semicolon

@@ -456,6 +456,7 @@ id|irq
 suffix:semicolon
 DECL|member|membase
 r_void
+id|__iomem
 op_star
 id|membase
 suffix:semicolon

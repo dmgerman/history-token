@@ -731,6 +731,7 @@ suffix:semicolon
 multiline_comment|/* ATM device desriptor */
 DECL|member|membase
 r_void
+id|__iomem
 op_star
 id|membase
 suffix:semicolon
@@ -743,6 +744,7 @@ suffix:semicolon
 multiline_comment|/* SAR&squot;s sram  base address */
 DECL|member|fbq
 r_void
+id|__iomem
 op_star
 id|fbq
 (braket

@@ -778,6 +778,7 @@ suffix:semicolon
 multiline_comment|/* mem base address */
 DECL|member|base
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
