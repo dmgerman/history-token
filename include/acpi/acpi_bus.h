@@ -589,6 +589,13 @@ id|acpi_hardware_id
 id|hardware_id
 suffix:semicolon
 multiline_comment|/* _HID */
+DECL|member|cid_list
+r_struct
+id|acpi_compatible_id_list
+op_star
+id|cid_list
+suffix:semicolon
+multiline_comment|/* _CIDs */
 DECL|member|unique_id
 id|acpi_unique_id
 id|unique_id
