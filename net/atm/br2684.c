@@ -1819,7 +1819,7 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|net_dev
@@ -2848,7 +2848,7 @@ id|KERN_ERR
 l_string|&quot;br2684_create: register_netdev failed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|netdev
@@ -3703,7 +3703,7 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|net_dev
