@@ -6141,6 +6141,10 @@ DECL|macro|USB_VENDOR_ID_A4TECH
 mdefine_line|#define USB_VENDOR_ID_A4TECH&t;&t;0x09DA
 DECL|macro|USB_DEVICE_ID_A4TECH_WCP32PU
 mdefine_line|#define USB_DEVICE_ID_A4TECH_WCP32PU&t;0x0006
+DECL|macro|USB_VENDOR_ID_BERKSHIRE
+mdefine_line|#define USB_VENDOR_ID_BERKSHIRE&t;&t;0x0c98
+DECL|macro|USB_DEVICE_ID_BERKSHIRE_PCWD
+mdefine_line|#define USB_DEVICE_ID_BERKSHIRE_PCWD&t;0x1140
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6560,6 +6564,14 @@ comma
 id|USB_DEVICE_ID_A4TECH_WCP32PU
 comma
 id|HID_QUIRK_2WHEEL_MOUSE_HACK
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_BERKSHIRE
+comma
+id|USB_DEVICE_ID_BERKSHIRE_PCWD
+comma
+id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace

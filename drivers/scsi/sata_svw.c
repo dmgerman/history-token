@@ -845,6 +845,11 @@ id|proc_info
 op_assign
 id|k2_sata_proc_info
 macro_line|#endif
+dot
+id|bios_param
+op_assign
+id|ata_std_bios_param
+comma
 )brace
 suffix:semicolon
 DECL|variable|k2_sata_ops

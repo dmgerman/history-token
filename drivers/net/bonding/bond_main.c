@@ -13064,12 +13064,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|free_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 id|bond_destroy_proc_dir
@@ -13410,6 +13404,10 @@ id|bond
 )paren
 suffix:semicolon
 macro_line|#endif
+id|dev-&gt;destructor
+op_assign
+id|free_netdev
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
