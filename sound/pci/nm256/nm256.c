@@ -224,11 +224,6 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* disabled */
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -236,7 +231,7 @@ id|index
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -258,7 +253,7 @@ id|id
 comma
 id|charp
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -280,7 +275,7 @@ id|enable
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -300,7 +295,7 @@ id|playback_bufsize
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -322,7 +317,7 @@ id|capture_bufsize
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -344,7 +339,7 @@ id|force_ac97
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -366,7 +361,7 @@ id|buffer_top
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -388,7 +383,7 @@ id|use_cache
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -408,7 +403,7 @@ id|vaio_hack
 comma
 r_bool
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

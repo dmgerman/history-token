@@ -196,6 +196,7 @@ id|irq_list
 comma
 r_int
 comma
+op_amp
 id|irq_list_count
 comma
 l_int|0444

@@ -82,12 +82,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|nv
-r_static
-r_int
-r_int
-id|nv
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -95,7 +89,7 @@ id|video_nr
 comma
 r_int
 comma
-id|nv
+l_int|NULL
 comma
 l_int|0444
 )paren

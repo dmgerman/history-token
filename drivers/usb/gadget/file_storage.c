@@ -303,6 +303,7 @@ id|file
 comma
 id|charp
 comma
+op_amp
 id|mod_data.num_filenames
 comma
 id|S_IRUGO
@@ -323,6 +324,7 @@ id|ro
 comma
 r_bool
 comma
+op_amp
 id|mod_data.num_ros
 comma
 id|S_IRUGO
@@ -341,6 +343,7 @@ c_func
 (paren
 id|luns
 comma
+op_amp
 id|mod_data.nluns
 comma
 id|uint
@@ -361,6 +364,7 @@ c_func
 (paren
 id|removable
 comma
+op_amp
 id|mod_data.removable
 comma
 r_bool

@@ -1386,6 +1386,11 @@ comma
 id|arr-&gt;set
 comma
 id|arr-&gt;num
+ques
+c_cond
+suffix:colon
+op_amp
+id|arr-&gt;max
 )paren
 suffix:semicolon
 )brace
@@ -1438,8 +1443,15 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+id|arr-&gt;num
+ques
+c_cond
 op_star
 id|arr-&gt;num
+suffix:colon
+id|arr-&gt;max
+)paren
 suffix:semicolon
 id|i
 op_increment

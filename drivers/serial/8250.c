@@ -9890,6 +9890,7 @@ id|probe_rsa
 comma
 id|ulong
 comma
+op_amp
 id|probe_rsa_count
 comma
 l_int|0444

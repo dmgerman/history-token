@@ -457,11 +457,6 @@ c_func
 l_string|&quot;AceNIC/3C985/GA620 Gigabit Ethernet driver&quot;
 )paren
 suffix:semicolon
-DECL|variable|num_params
-r_static
-r_int
-id|num_params
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -469,7 +464,7 @@ id|link
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -481,7 +476,7 @@ id|trace
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -493,7 +488,7 @@ id|tx_coal_tick
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -505,7 +500,7 @@ id|max_tx_desc
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -517,7 +512,7 @@ id|rx_coal_tick
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -529,7 +524,7 @@ id|max_rx_desc
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -541,7 +536,7 @@ id|tx_ratio
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren

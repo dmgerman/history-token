@@ -75,11 +75,6 @@ r_static
 r_int
 id|nonblock_open
 suffix:semicolon
-DECL|variable|boot_devs
-r_static
-r_int
-id|boot_devs
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -105,7 +100,7 @@ id|dsp_map
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren
@@ -125,7 +120,7 @@ id|adsp_map
 comma
 r_int
 comma
-id|boot_devs
+l_int|NULL
 comma
 l_int|0444
 )paren

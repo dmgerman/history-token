@@ -11015,11 +11015,6 @@ r_static
 r_int
 id|pcnet32_have_pci
 suffix:semicolon
-DECL|variable|num_params
-r_static
-r_int
-id|num_params
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -11122,7 +11117,7 @@ id|options
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -11143,7 +11138,7 @@ id|full_duplex
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -11165,7 +11160,7 @@ id|homepna
 comma
 r_int
 comma
-id|num_params
+l_int|NULL
 comma
 l_int|0
 )paren
