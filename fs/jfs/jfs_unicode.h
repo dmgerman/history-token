@@ -341,12 +341,10 @@ m_wchar_t
 id|UniToupper
 c_func
 (paren
-r_register
 m_wchar_t
 id|uc
 )paren
 (brace
-r_register
 id|UNICASERANGE
 op_star
 id|rp
@@ -436,13 +434,11 @@ op_star
 id|UniStrupr
 c_func
 (paren
-r_register
 m_wchar_t
 op_star
 id|upin
 )paren
 (brace
-r_register
 m_wchar_t
 op_star
 id|up
