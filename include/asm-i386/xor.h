@@ -920,7 +920,7 @@ l_string|&quot;       jnz 1b               ;&bslash;n&quot;
 l_string|&quot;&t;popl %5&bslash;n&quot;
 l_string|&quot;&t;popl %4&bslash;n&quot;
 suffix:colon
-l_string|&quot;+g&quot;
+l_string|&quot;+r&quot;
 (paren
 id|lines
 )paren
