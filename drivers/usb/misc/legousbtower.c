@@ -1144,7 +1144,7 @@ r_sizeof
 id|reset_reply
 )paren
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -3459,7 +3459,7 @@ r_sizeof
 id|get_version_reply
 )paren
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
