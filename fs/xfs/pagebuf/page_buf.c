@@ -1942,6 +1942,14 @@ id|pi
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pb-&gt;pb_pages
+(braket
+id|pi
+)braket
+)paren
 id|unlock_page
 c_func
 (paren
