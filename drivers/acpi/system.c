@@ -1,6 +1,8 @@
 multiline_comment|/*&n; *  acpi_system.c - ACPI System Driver ($Revision: 57 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 DECL|macro|ACPI_C
 mdefine_line|#define ACPI_C
+DECL|macro|HAVE_NEW_DEVICE_MODEL
+mdefine_line|#define HAVE_NEW_DEVICE_MODEL
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -213,13 +215,23 @@ c_func
 id|RESUME_RESTORE_STATE
 )paren
 suffix:semicolon
+macro_line|#else
+macro_line|#error Resume cant work without driver model
 macro_line|#endif
 r_if
 c_cond
 (paren
+(paren
+id|state
+op_eq
+id|ACPI_STATE_S1
+)paren
+op_logical_and
+(paren
 id|dmi_broken
 op_amp
 id|BROKEN_INIT_AFTER_S1
+)paren
 )paren
 (brace
 id|printk
