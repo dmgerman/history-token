@@ -4075,7 +4075,7 @@ macro_line|#ifdef CONFIG_SND_SB16_CSP
 r_if
 c_cond
 (paren
-id|csp
+id|xcsp
 op_ne
 id|INT_MAX
 )paren

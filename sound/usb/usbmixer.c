@@ -142,6 +142,7 @@ r_int
 r_int
 id|control
 suffix:semicolon
+multiline_comment|/* CS or ICN (high byte) */
 DECL|member|cmask
 r_int
 r_int
@@ -803,6 +804,16 @@ id|val
 r_if
 c_cond
 (paren
+op_logical_neg
+id|cval-&gt;res
+)paren
+id|cval-&gt;res
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|val
 OL
 id|cval-&gt;min
@@ -861,6 +872,16 @@ l_int|0
 )paren
 r_return
 id|cval-&gt;min
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cval-&gt;res
+)paren
+id|cval-&gt;res
+op_assign
+l_int|1
 suffix:semicolon
 id|val
 op_mul_assign
@@ -4801,6 +4822,8 @@ c_func
 id|cval
 comma
 id|cval-&gt;control
+op_lshift
+l_int|8
 comma
 op_amp
 id|val
@@ -4905,6 +4928,8 @@ c_func
 id|cval
 comma
 id|cval-&gt;control
+op_lshift
+l_int|8
 comma
 op_amp
 id|oval
@@ -4963,6 +4988,8 @@ c_func
 id|cval
 comma
 id|cval-&gt;control
+op_lshift
+l_int|8
 comma
 id|val
 )paren
@@ -6656,6 +6683,10 @@ suffix:semicolon
 id|cval-&gt;max
 op_assign
 id|num_ins
+suffix:semicolon
+id|cval-&gt;res
+op_assign
+l_int|1
 suffix:semicolon
 id|cval-&gt;initialized
 op_assign

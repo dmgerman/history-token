@@ -8052,9 +8052,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|snd_ctl_register_ioctl
 c_func
 (paren
@@ -8062,6 +8059,10 @@ id|snd_rawmidi_control_ioctl
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_OSSEMUL
+(brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* check device map table */
 r_for
 c_loop
@@ -8157,6 +8158,7 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#endif /* CONFIG_SND_OSSEMUL */

@@ -8289,6 +8289,8 @@ c_func
 (paren
 id|card
 comma
+id|kctl
+op_assign
 id|snd_ac97_cnew
 c_func
 (paren

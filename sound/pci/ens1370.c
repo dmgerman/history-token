@@ -7510,6 +7510,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CHIP1370
 DECL|function|snd_ensoniq_control_put
 r_static
 r_int
@@ -7618,7 +7619,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-macro_line|#ifdef CHIP1370
 DECL|macro|ES1370_CONTROLS
 mdefine_line|#define ES1370_CONTROLS 2
 DECL|variable|__devinitdata
