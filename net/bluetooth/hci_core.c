@@ -72,6 +72,7 @@ id|event
 )paren
 suffix:semicolon
 DECL|variable|hci_task_lock
+r_static
 id|rwlock_t
 id|hci_task_lock
 op_assign
@@ -247,6 +248,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|hci_req_cancel
+r_static
 r_void
 id|hci_req_cancel
 c_func

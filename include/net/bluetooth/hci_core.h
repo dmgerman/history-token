@@ -1036,16 +1036,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_void
-id|hci_acl_connect
-c_func
-(paren
-r_struct
-id|hci_conn
-op_star
-id|conn
-)paren
-suffix:semicolon
-r_void
 id|hci_acl_disconn
 c_func
 (paren
@@ -2828,19 +2818,6 @@ id|hdev
 comma
 r_int
 id|result
-)paren
-suffix:semicolon
-r_void
-id|hci_req_cancel
-c_func
-(paren
-r_struct
-id|hci_dev
-op_star
-id|hdev
-comma
-r_int
-id|err
 )paren
 suffix:semicolon
 macro_line|#endif /* __HCI_CORE_H */
