@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 - 2003 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the LGPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 - 2003 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 - 2005 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the LGPL.&n; */
 macro_line|#ifndef _LINUX_DM_IOCTL_V4_H
 DECL|macro|_LINUX_DM_IOCTL_V4_H
 mdefine_line|#define _LINUX_DM_IOCTL_V4_H
@@ -340,11 +340,11 @@ mdefine_line|#define DM_TARGET_MSG&t; _IOWR(DM_IOCTL, DM_TARGET_MSG_CMD, struct 
 DECL|macro|DM_VERSION_MAJOR
 mdefine_line|#define DM_VERSION_MAJOR&t;4
 DECL|macro|DM_VERSION_MINOR
-mdefine_line|#define DM_VERSION_MINOR&t;3
+mdefine_line|#define DM_VERSION_MINOR&t;4
 DECL|macro|DM_VERSION_PATCHLEVEL
 mdefine_line|#define DM_VERSION_PATCHLEVEL&t;0
 DECL|macro|DM_VERSION_EXTRA
-mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2004-09-30)&quot;
+mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2005-01-12)&quot;
 multiline_comment|/* Status bits */
 DECL|macro|DM_READONLY_FLAG
 mdefine_line|#define DM_READONLY_FLAG&t;(1 &lt;&lt; 0) /* In/Out */
@@ -363,5 +363,8 @@ mdefine_line|#define DM_INACTIVE_PRESENT_FLAG (1 &lt;&lt; 6) /* Out */
 multiline_comment|/*&n; * Indicates that the buffer passed in wasn&squot;t big enough for the&n; * results.&n; */
 DECL|macro|DM_BUFFER_FULL_FLAG
 mdefine_line|#define DM_BUFFER_FULL_FLAG&t;(1 &lt;&lt; 8) /* Out */
+multiline_comment|/*&n; * Set this to improve performance when you aren&squot;t going to use open_count&n; */
+DECL|macro|DM_SKIP_BDGET_FLAG
+mdefine_line|#define DM_SKIP_BDGET_FLAG&t;(1 &lt;&lt; 9) /* In */
 macro_line|#endif&t;&t;&t;&t;/* _LINUX_DM_IOCTL_H */
 eof

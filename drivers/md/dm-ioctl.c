@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited.&n; * Copyright (C) 2004 - 2005 Red Hat, Inc. All rights reserved.&n; *&n; * This file is released under the GPL.&n; */
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -2073,6 +2073,31 @@ id|param-&gt;flags
 op_or_assign
 id|DM_SUSPEND_FLAG
 suffix:semicolon
+id|param-&gt;dev
+op_assign
+id|huge_encode_dev
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|disk-&gt;major
+comma
+id|disk-&gt;first_minor
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|param-&gt;flags
+op_amp
+id|DM_SKIP_BDGET_FLAG
+)paren
+)paren
+(brace
 id|bdev
 op_assign
 id|bdget_disk
@@ -2093,21 +2118,7 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-id|param-&gt;dev
-op_assign
-id|huge_encode_dev
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|disk-&gt;major
-comma
-id|disk-&gt;first_minor
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Yes, this will be out of date by the time it gets back&n;&t; * to userland, but it is still very useful ofr&n;&t; * debugging.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Yes, this will be out of date by the time it gets back&n;&t;&t; * to userland, but it is still very useful for&n;&t;&t; * debugging.&n;&t;&t; */
 id|param-&gt;open_count
 op_assign
 id|bdev-&gt;bd_openers
@@ -2117,6 +2128,13 @@ c_func
 (paren
 id|bdev
 )paren
+suffix:semicolon
+)brace
+r_else
+id|param-&gt;open_count
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
