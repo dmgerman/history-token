@@ -19506,17 +19506,7 @@ id|ahc_softc
 op_star
 id|ahc
 suffix:semicolon
-id|u_long
-id|l
-suffix:semicolon
 multiline_comment|/*&n;&t; * Shutdown DV threads before going into the SCSI mid-layer.&n;&t; * This avoids situations where the mid-layer locks the entire&n;&t; * kernel so that waiting for our DV threads to exit leads&n;&t; * to deadlock.&n;&t; */
-id|ahc_list_lock
-c_func
-(paren
-op_amp
-id|l
-)paren
-suffix:semicolon
 id|TAILQ_FOREACH
 c_func
 (paren
@@ -19535,13 +19525,6 @@ id|ahc
 )paren
 suffix:semicolon
 )brace
-id|ahc_list_unlock
-c_func
-(paren
-op_amp
-id|l
-)paren
-suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n;&t; * In 2.4 we have to unregister from the PCI core _after_&n;&t; * unregistering from the scsi midlayer to avoid dangling&n;&t; * references.&n;&t; */
 id|scsi_unregister_module

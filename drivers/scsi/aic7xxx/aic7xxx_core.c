@@ -16272,17 +16272,6 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
-id|TAILQ_REMOVE
-c_func
-(paren
-op_amp
-id|ahc_tailq
-comma
-id|ahc
-comma
-id|links
-)paren
-suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
 r_case
 l_int|4
