@@ -4202,10 +4202,9 @@ c_cond
 id|uvd
 )paren
 (brace
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|uvd
 )paren

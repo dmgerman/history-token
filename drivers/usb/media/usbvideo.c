@@ -4632,10 +4632,9 @@ id|uvd
 op_star
 id|uvd
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_int
@@ -4662,10 +4661,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren
