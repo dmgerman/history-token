@@ -213,7 +213,7 @@ r_struct
 id|in_device
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ip_rt_init
 c_func
 (paren
