@@ -2848,18 +2848,12 @@ id|clocks
 (brace
 r_int
 r_int
-id|lvtt1_value
+id|lvtt_value
 comma
 id|tmp_value
 suffix:semicolon
-id|lvtt1_value
+id|lvtt_value
 op_assign
-id|SET_APIC_TIMER_BASE
-c_func
-(paren
-id|APIC_TIMER_BASE_DIV
-)paren
-op_or
 id|APIC_LVT_TIMER_PERIODIC
 op_or
 id|LOCAL_TIMER_VECTOR
@@ -2869,7 +2863,7 @@ c_func
 (paren
 id|APIC_LVTT
 comma
-id|lvtt1_value
+id|lvtt_value
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Divide PICLK by 16&n;&t; */
