@@ -24,7 +24,10 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-macro_line|#include &quot;../scsi/scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;csr1212.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
@@ -325,7 +328,8 @@ comma
 id|u32
 id|scsi_status
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -335,14 +339,16 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
 suffix:semicolon
 DECL|variable|scsi_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|scsi_driver_template
 suffix:semicolon
 DECL|variable|sbp2_speedto_max_payload
@@ -1591,7 +1597,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Current_SCpnt
 comma
@@ -1601,7 +1608,8 @@ op_star
 id|Current_done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -5832,9 +5840,9 @@ r_void
 op_star
 id|scsi_request_buffer
 comma
-r_int
-r_char
-id|scsi_dir
+r_enum
+id|dma_data_direction
+id|dma_dir
 )paren
 (brace
 r_struct
@@ -5874,14 +5882,6 @@ id|command-&gt;scatter_gather_element
 (braket
 l_int|0
 )braket
-suffix:semicolon
-r_int
-id|dma_dir
-op_assign
-id|scsi_to_pci_dma_dir
-(paren
-id|scsi_dir
-)paren
 suffix:semicolon
 id|u32
 id|sg_count
@@ -5938,11 +5938,11 @@ multiline_comment|/*&n;&t; * Get the direction of the transfer. If the direction
 r_switch
 c_cond
 (paren
-id|scsi_dir
+id|dma_dir
 )paren
 (brace
 r_case
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:colon
 id|orb_direction
 op_assign
@@ -5951,7 +5951,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 id|orb_direction
 op_assign
@@ -5960,7 +5960,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 id|orb_direction
 op_assign
@@ -5969,7 +5969,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:colon
 r_default
 suffix:colon
@@ -5981,7 +5981,8 @@ l_string|&quot;Update the SBP2 direction table in sbp2.h if &quot;
 l_string|&quot;necessary for your application&quot;
 )paren
 suffix:semicolon
-id|print_command
+id|__scsi_print_command
+c_func
 (paren
 id|scsi_cmd
 )paren
@@ -6976,7 +6977,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -6986,7 +6988,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -7025,9 +7028,10 @@ c_func
 l_string|&quot;[scsi command]&bslash;n   &quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|cmd
+id|SCpnt
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7813,7 +7817,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -8102,7 +8107,8 @@ suffix:semicolon
 id|u32
 id|id
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 op_assign
@@ -8529,8 +8535,10 @@ DECL|function|sbp2scsi_queuecommand
 r_static
 r_int
 id|sbp2scsi_queuecommand
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -8540,7 +8548,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -8895,25 +8904,16 @@ c_cond
 id|command-&gt;Current_SCpnt
 )paren
 (brace
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-op_assign
-id|command-&gt;Current_done
-suffix:semicolon
 id|command-&gt;Current_SCpnt-&gt;result
 op_assign
 id|status
 op_lshift
 l_int|16
 suffix:semicolon
-id|done
+id|command
+op_member_access_from_pointer
+id|Current_done
+c_func
 (paren
 id|command-&gt;Current_SCpnt
 )paren
@@ -8938,7 +8938,8 @@ comma
 id|u32
 id|scsi_status
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -8948,7 +8949,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -9057,12 +9059,13 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Debug stuff&n;&t;&t;&t; */
 macro_line|#if CONFIG_IEEE1394_SBP2_DEBUG &gt;= 1
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;bh&quot;
@@ -9088,9 +9091,10 @@ id|DID_NO_CONNECT
 op_lshift
 l_int|16
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
 r_break
@@ -9118,9 +9122,10 @@ id|DID_ERROR
 op_lshift
 l_int|16
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
 r_break
@@ -9283,8 +9288,10 @@ DECL|function|sbp2scsi_abort
 r_static
 r_int
 id|sbp2scsi_abort
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -9322,9 +9329,10 @@ c_func
 l_string|&quot;aborting sbp2 command&quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
+c_func
 (paren
-id|SCpnt-&gt;cmnd
+id|SCpnt
 )paren
 suffix:semicolon
 r_if
@@ -9401,25 +9409,16 @@ c_cond
 id|command-&gt;Current_SCpnt
 )paren
 (brace
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-op_assign
-id|command-&gt;Current_done
-suffix:semicolon
 id|command-&gt;Current_SCpnt-&gt;result
 op_assign
 id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
-id|done
+id|command
+op_member_access_from_pointer
+id|Current_done
+c_func
 (paren
 id|command-&gt;Current_SCpnt
 )paren
@@ -9453,8 +9452,10 @@ DECL|function|sbp2scsi_reset
 r_static
 r_int
 id|sbp2scsi_reset
+c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -9687,7 +9688,8 @@ suffix:semicolon
 multiline_comment|/* SCSI host template */
 DECL|variable|scsi_driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|scsi_driver_template
 op_assign
 (brace
