@@ -315,7 +315,7 @@ suffix:colon
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Get the BPQ device for the ethernet device&n; * need to hold bqp_lock at least for read&n; */
+multiline_comment|/*&n; *&t;Get the BPQ device for the ethernet device&n; */
 DECL|function|bpq_get_ax25_dev
 r_static
 r_inline
@@ -1977,6 +1977,11 @@ id|dev
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2065,6 +2070,11 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
