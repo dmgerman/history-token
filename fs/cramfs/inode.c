@@ -80,6 +80,17 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+r_static
+r_struct
+id|timespec
+id|zerotime
+op_assign
+(brace
+l_int|0
+comma
+l_int|0
+)brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -118,13 +129,14 @@ id|inode-&gt;i_gid
 op_assign
 id|cramfs_inode-&gt;gid
 suffix:semicolon
+multiline_comment|/* Struct copy intentional */
 id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_atime
 op_assign
 id|inode-&gt;i_ctime
 op_assign
-l_int|0
+id|zerotime
 suffix:semicolon
 id|inode-&gt;i_ino
 op_assign
