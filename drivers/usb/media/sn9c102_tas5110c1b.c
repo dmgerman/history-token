@@ -412,15 +412,13 @@ comma
 dot
 id|slave_read_id
 op_assign
-l_int|0xff
+id|SN9C102_I2C_SLAVEID_UNAVAILABLE
 comma
-multiline_comment|/* fictitious */
 dot
 id|slave_write_id
 op_assign
-l_int|0xff
+id|SN9C102_I2C_SLAVEID_FICTITIOUS
 comma
-multiline_comment|/* fictitious */
 dot
 id|init
 op_assign

@@ -79,7 +79,7 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x20
+l_int|0x30
 comma
 l_int|0x19
 )paren
@@ -105,7 +105,7 @@ id|cam
 comma
 l_int|0x02
 comma
-l_int|0x0c
+l_int|0x14
 )paren
 suffix:semicolon
 id|err
@@ -187,9 +187,9 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x08
+l_int|0x10
 comma
-l_int|0x01
+l_int|0x08
 )paren
 suffix:semicolon
 id|err
@@ -202,6 +202,18 @@ comma
 l_int|0x0b
 comma
 l_int|0x01
+)paren
+suffix:semicolon
+id|err
+op_add_assign
+id|sn9c102_i2c_write
+c_func
+(paren
+id|cam
+comma
+l_int|0x0c
+comma
+l_int|0x04
 )paren
 suffix:semicolon
 id|err
@@ -997,7 +1009,7 @@ c_func
 (paren
 id|cam
 comma
-l_int|0x00
+l_int|0x40
 comma
 l_int|0x01
 )paren

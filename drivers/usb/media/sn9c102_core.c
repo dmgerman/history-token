@@ -1941,7 +1941,7 @@ id|sensor-&gt;name
 id|PDBGG
 c_func
 (paren
-l_string|&quot;I2C write: %u bytes, data0 = 0x%02X, data1 = 0x%02X, &quot;
+l_string|&quot;I2C raw write: %u bytes, data0 = 0x%02X, data1 = 0x%02X, &quot;
 l_string|&quot;data2 = 0x%02X, data3 = 0x%02X, data4 = 0x%02X, data5 = 0x%02X&quot;
 comma
 id|n
@@ -4803,6 +4803,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cam-&gt;sensor-&gt;slave_read_id
+op_eq
+id|SN9C102_I2C_SLAVEID_UNAVAILABLE
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|sn9c102_sysfs_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|val
 op_assign
@@ -5635,8 +5655,12 @@ r_if
 c_cond
 (paren
 id|cam-&gt;sensor-&gt;slave_write_id
-op_logical_and
+op_ne
+id|SN9C102_I2C_SLAVEID_UNAVAILABLE
+op_logical_or
 id|cam-&gt;sensor-&gt;slave_read_id
+op_ne
+id|SN9C102_I2C_SLAVEID_UNAVAILABLE
 )paren
 (brace
 id|video_device_create_file
@@ -11548,16 +11572,29 @@ op_eq
 l_int|0x6080
 ques
 c_cond
+id|BRIDGE_SN9C103
+suffix:colon
+id|BRIDGE_SN9C102
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cam-&gt;bridge
+)paren
+(brace
+r_case
+id|BRIDGE_SN9C101
+suffix:colon
+r_case
 id|BRIDGE_SN9C102
 suffix:colon
-id|BRIDGE_SN9C103
-suffix:semicolon
 id|DBG
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SN9C10x PC Camera Controller detected (vid/pid 0x%04X/0x%04X)&quot;
+l_string|&quot;SN9C10[12] PC Camera Controller detected &quot;
+l_string|&quot;(vid/pid 0x%04X/0x%04X)&quot;
 comma
 id|sn9c102_id_table
 (braket
@@ -11573,6 +11610,36 @@ id|i
 dot
 id|idProduct
 )paren
+r_break
+suffix:semicolon
+r_case
+id|BRIDGE_SN9C103
+suffix:colon
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;SN9C103 PC Camera Controller detected &quot;
+l_string|&quot;(vid/pid 0x%04X/0x%04X)&quot;
+comma
+id|sn9c102_id_table
+(braket
+id|i
+)braket
+dot
+id|idVendor
+comma
+id|sn9c102_id_table
+(braket
+id|i
+)braket
+dot
+id|idProduct
+)paren
+r_break
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren

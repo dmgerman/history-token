@@ -254,6 +254,10 @@ id|SN9C102_I2C_3WIRES
 comma
 )brace
 suffix:semicolon
+DECL|macro|SN9C102_I2C_SLAVEID_FICTITIOUS
+mdefine_line|#define SN9C102_I2C_SLAVEID_FICTITIOUS 0xff
+DECL|macro|SN9C102_I2C_SLAVEID_UNAVAILABLE
+mdefine_line|#define SN9C102_I2C_SLAVEID_UNAVAILABLE 0x00
 DECL|struct|sn9c102_sensor
 r_struct
 id|sn9c102_sensor
