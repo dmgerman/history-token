@@ -348,13 +348,9 @@ comma
 multiline_comment|/* inode logging flags */
 r_int
 id|whichfork
-comma
-multiline_comment|/* data or attr fork */
-r_int
-id|async
 )paren
 suffix:semicolon
-multiline_comment|/* xaction can be async */
+multiline_comment|/* data or attr fork */
 macro_line|#ifdef XFSDEBUG
 multiline_comment|/*&n; * Check that the extents list for the inode ip is in the right order.&n; */
 id|STATIC
@@ -412,10 +408,6 @@ op_star
 r_new
 comma
 multiline_comment|/* new data to put in extent list */
-r_int
-id|iflags
-comma
-multiline_comment|/* input flags (meta-data or not) */
 r_int
 op_star
 id|logflagsp
@@ -2883,8 +2875,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -5830,8 +5820,6 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
-comma
 op_amp
 id|i
 )paren
@@ -5887,8 +5875,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -6121,8 +6107,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -6357,8 +6341,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-l_int|0
 comma
 op_amp
 id|i
@@ -9379,8 +9361,6 @@ c_func
 (paren
 id|cur
 comma
-l_int|0
-comma
 op_amp
 id|i
 )paren
@@ -12038,12 +12018,8 @@ comma
 multiline_comment|/* inode logging flags */
 r_int
 id|whichfork
-comma
-multiline_comment|/* data or attr fork */
-r_int
-id|async
 )paren
-multiline_comment|/* xaction can be async */
+multiline_comment|/* data or attr fork */
 (brace
 multiline_comment|/* REFERENCED */
 id|xfs_bmbt_block_t
@@ -12290,18 +12266,6 @@ comma
 id|mp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|async
-)paren
-id|xfs_trans_set_sync
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 id|ip-&gt;i_d.di_nblocks
 op_decrement
 suffix:semicolon
@@ -12453,10 +12417,6 @@ op_star
 id|del
 comma
 multiline_comment|/* data to remove from extent list */
-r_int
-id|iflags
-comma
-multiline_comment|/* input flags */
 r_int
 op_star
 id|logflagsp
@@ -13060,10 +13020,6 @@ id|xfs_bmbt_delete
 c_func
 (paren
 id|cur
-comma
-id|iflags
-op_amp
-id|XFS_BMAPI_ASYNC
 comma
 op_amp
 id|i
@@ -23640,8 +23596,6 @@ op_amp
 id|tmp_logflags
 comma
 id|whichfork
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|logflags
@@ -24190,10 +24144,6 @@ id|done
 )paren
 multiline_comment|/* set if not done yet */
 (brace
-r_int
-id|async
-suffix:semicolon
-multiline_comment|/* xactions can be async */
 id|xfs_btree_cur_t
 op_star
 id|cur
@@ -24373,12 +24323,6 @@ c_func
 (paren
 id|EIO
 )paren
-suffix:semicolon
-id|async
-op_assign
-id|flags
-op_amp
-id|XFS_BMAPI_ASYNC
 suffix:semicolon
 id|rsvd
 op_assign
@@ -25483,8 +25427,6 @@ comma
 op_amp
 id|del
 comma
-id|flags
-comma
 op_amp
 id|tmp_logflags
 comma
@@ -25756,8 +25698,6 @@ op_amp
 id|tmp_logflags
 comma
 id|whichfork
-comma
-id|async
 )paren
 suffix:semicolon
 id|logflags
