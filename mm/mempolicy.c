@@ -245,9 +245,6 @@ r_int
 r_int
 id|endmask
 suffix:semicolon
-op_decrement
-id|maxnode
-suffix:semicolon
 id|bitmap_zero
 c_func
 (paren

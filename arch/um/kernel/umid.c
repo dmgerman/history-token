@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;unistd.h&gt;
-macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;string.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
@@ -61,7 +60,21 @@ r_int
 id|make_umid
 c_func
 (paren
-r_void
+r_int
+(paren
+op_star
+id|printer
+)paren
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
 )paren
 suffix:semicolon
 DECL|function|set_umid
@@ -77,6 +90,22 @@ id|name
 comma
 r_int
 id|is_random
+comma
+r_int
+(paren
+op_star
+id|printer
+)paren
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
 )paren
 (brace
 r_if
@@ -85,8 +114,10 @@ c_cond
 id|umid_inited
 )paren
 (brace
-id|printk
-c_func
+(paren
+op_star
+id|printer
+)paren
 (paren
 l_string|&quot;Unique machine name can&squot;t be set twice&bslash;n&quot;
 )paren
@@ -110,8 +141,10 @@ op_minus
 l_int|1
 )paren
 (brace
-id|printk
-c_func
+(paren
+op_star
+id|printer
+)paren
 (paren
 l_string|&quot;Unique machine name is being truncated to %s &quot;
 l_string|&quot;characters&bslash;n&quot;
@@ -168,6 +201,8 @@ c_func
 id|name
 comma
 l_int|0
+comma
+id|printf
 )paren
 suffix:semicolon
 )brace
@@ -213,6 +248,7 @@ op_logical_and
 id|make_umid
 c_func
 (paren
+id|printk
 )paren
 )paren
 (brace
@@ -322,6 +358,8 @@ l_string|&quot;nnnnn&bslash;0&quot;
 suffix:semicolon
 r_int
 id|fd
+comma
+id|n
 suffix:semicolon
 r_if
 c_cond
@@ -379,11 +417,11 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Open of machine pid file &bslash;&quot;%s&bslash;&quot; failed - &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
 id|file
 comma
@@ -408,10 +446,9 @@ c_func
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|write
+id|n
+op_assign
+id|os_write_file
 c_func
 (paren
 id|fd
@@ -424,6 +461,11 @@ c_func
 id|pid
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 op_ne
 id|strlen
 c_func
@@ -432,16 +474,17 @@ id|pid
 )paren
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
-l_string|&quot;Write of pid file failed - errno = %d&bslash;n&quot;
+l_string|&quot;Write of pid file failed - err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -480,10 +523,6 @@ id|file
 l_int|256
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|directory
 op_assign
 id|opendir
@@ -491,7 +530,11 @@ c_func
 (paren
 id|dir
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|directory
 op_eq
 l_int|NULL
 )paren
@@ -792,6 +835,8 @@ comma
 id|fd
 comma
 id|p
+comma
+id|n
 suffix:semicolon
 id|sprintf
 c_func
@@ -807,10 +852,6 @@ id|dead
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|fd
 op_assign
 id|os_open_file
@@ -829,7 +870,11 @@ c_func
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
 OL
 l_int|0
 )paren
@@ -847,7 +892,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;not_dead_yet : couldn&squot;t open pid file &squot;%s&squot;, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
 id|file
 comma
@@ -872,10 +917,9 @@ OG
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|read
+id|n
+op_assign
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -887,6 +931,11 @@ r_sizeof
 id|pid
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 OL
 l_int|0
 )paren
@@ -895,11 +944,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;not_dead_yet : couldn&squot;t read pid file &squot;%s&squot;, &quot;
-l_string|&quot;errno = %d&bslash;n&quot;
+l_string|&quot;err = %d&bslash;n&quot;
 comma
 id|file
 comma
-id|errno
+op_minus
+id|n
 )paren
 suffix:semicolon
 r_return
@@ -1074,7 +1124,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Failed to malloc uml_dir - error = %d&bslash;n&quot;
@@ -1162,7 +1212,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;make_uml_dir : no value in environment for &quot;
@@ -1272,10 +1322,6 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|uml_dir
 op_assign
 id|malloc
@@ -1289,7 +1335,11 @@ id|dir
 op_plus
 l_int|1
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|uml_dir
 op_eq
 l_int|NULL
 )paren
@@ -1338,7 +1388,7 @@ id|EEXIST
 )paren
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Failed to mkdir %s - errno = %i&bslash;n&quot;
@@ -1364,7 +1414,21 @@ id|__init
 id|make_umid
 c_func
 (paren
-r_void
+r_int
+(paren
+op_star
+id|printer
+)paren
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
 )paren
 (brace
 r_int
@@ -1402,10 +1466,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-id|umid
-op_eq
-l_int|0
+op_logical_neg
+id|umid_inited
 )paren
 (brace
 id|strcat
@@ -1432,8 +1494,10 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+(paren
+op_star
+id|printer
+)paren
 (paren
 l_string|&quot;make_umid - mkstemp failed, errno = %d&bslash;n&quot;
 comma
@@ -1444,7 +1508,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -1471,6 +1535,8 @@ id|uml_dir
 )braket
 comma
 l_int|1
+comma
+id|printer
 )paren
 suffix:semicolon
 )brace
@@ -1486,10 +1552,6 @@ comma
 id|umid
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|err
 op_assign
 id|mkdir
@@ -1499,7 +1561,11 @@ id|tmp
 comma
 l_int|0777
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
@@ -1522,8 +1588,10 @@ id|tmp
 )paren
 )paren
 (brace
-id|printk
-c_func
+(paren
+op_star
+id|printer
+)paren
 (paren
 l_string|&quot;umid &squot;%s&squot; is in use&bslash;n&quot;
 comma
@@ -1555,8 +1623,10 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+(paren
+op_star
+id|printer
+)paren
 (paren
 l_string|&quot;Failed to create %s - errno = %d&bslash;n&quot;
 comma
@@ -1592,11 +1662,29 @@ c_func
 id|make_uml_dir
 )paren
 suffix:semicolon
-DECL|variable|make_umid
+DECL|function|make_umid_setup
+r_static
+r_int
+id|__init
+id|make_umid_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|make_umid
+c_func
+(paren
+id|printf
+)paren
+suffix:semicolon
+)brace
+DECL|variable|make_umid_setup
 id|__uml_postsetup
 c_func
 (paren
-id|make_umid
+id|make_umid_setup
 )paren
 suffix:semicolon
 DECL|variable|create_pid_file

@@ -193,6 +193,25 @@ op_star
 id|bp
 )paren
 suffix:semicolon
+multiline_comment|/* Weak function for boards which don&squot;t need to build the&n; * board info struct because they are using PPCBoot/U-Boot.&n; */
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|embed_config
+id|embed_config
+c_func
+(paren
+id|bd_t
+op_star
+op_star
+id|bdp
+)paren
+(brace
+)brace
 r_int
 r_int
 DECL|function|load_kernel

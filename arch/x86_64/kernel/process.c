@@ -412,7 +412,7 @@ id|X86_FEATURE_MWAIT
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Skip, if setup has overridden idle.&n;&t;&t; * Also, take care of system with asymmetric CPUs.&n;&t;&t; * Use, mwait_idle only if all cpus support it.&n;&t;&t; * If not, we fallback to default_idle()&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Skip, if setup has overridden idle.&n;&t;&t; * One CPU supports mwait =&gt; All CPUs supports mwait&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -443,15 +443,7 @@ op_assign
 id|mwait_idle
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
-id|pm_idle
-op_assign
-id|default_idle
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|idle_setup
 r_static
@@ -2059,6 +2051,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -2068,9 +2061,8 @@ c_func
 (paren
 id|SIGCHLD
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 comma
-op_amp
 id|regs
 comma
 l_int|0
@@ -2107,6 +2099,7 @@ id|child_tid
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -2118,20 +2111,16 @@ id|newsp
 )paren
 id|newsp
 op_assign
-id|regs.rsp
+id|regs-&gt;rsp
 suffix:semicolon
 r_return
 id|do_fork
 c_func
 (paren
 id|clone_flags
-op_amp
-op_complement
-id|CLONE_IDLETASK
 comma
 id|newsp
 comma
-op_amp
 id|regs
 comma
 l_int|0
@@ -2151,6 +2140,7 @@ c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -2164,9 +2154,8 @@ id|CLONE_VM
 op_or
 id|SIGCHLD
 comma
-id|regs.rsp
+id|regs-&gt;rsp
 comma
-op_amp
 id|regs
 comma
 l_int|0

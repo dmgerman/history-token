@@ -1180,8 +1180,6 @@ id|bfs_inode_info
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
-op_or
 id|SLAB_RECLAIM_ACCOUNT
 comma
 id|init_once

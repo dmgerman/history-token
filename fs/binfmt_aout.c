@@ -1366,7 +1366,7 @@ id|ex
 suffix:semicolon
 id|current-&gt;mm-&gt;free_area_cache
 op_assign
-id|TASK_UNMAPPED_BASE
+id|current-&gt;mm-&gt;mmap_base
 suffix:semicolon
 id|current-&gt;mm-&gt;rss
 op_assign

@@ -2338,6 +2338,12 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
+id|arch_pick_mmap_layout
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4661,7 +4667,7 @@ id|file
 r_return
 id|retval
 suffix:semicolon
-id|sched_balance_exec
+id|sched_exec
 c_func
 (paren
 )paren
@@ -5149,6 +5155,7 @@ DECL|macro|CORENAME_MAX_SIZE
 mdefine_line|#define CORENAME_MAX_SIZE 64
 multiline_comment|/* format_corename will inspect the pattern parameter, and output a&n; * name into corename, which must have space for at least&n; * CORENAME_MAX_SIZE bytes plus one byte for the zero terminator.&n; */
 DECL|function|format_corename
+r_static
 r_void
 id|format_corename
 c_func
@@ -5872,11 +5879,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|binfmt
 op_assign
 id|current-&gt;binfmt
@@ -5958,6 +5960,12 @@ id|binfmt-&gt;min_coredump
 r_goto
 id|fail_unlock
 suffix:semicolon
+multiline_comment|/*&n;&t; * lock_kernel() because format_corename() is controlled by sysctl, which&n;&t; * uses lock_kernel()&n;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|format_corename
 c_func
 (paren
@@ -5966,6 +5974,11 @@ comma
 id|core_pattern
 comma
 id|signr
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|file
@@ -6111,11 +6124,6 @@ id|mm-&gt;core_done
 suffix:semicolon
 id|fail
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon

@@ -80,9 +80,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-m_setjmp
+id|sigsetjmp
+c_func
 (paren
 id|jbuf
+comma
+l_int|1
 )paren
 op_eq
 l_int|0

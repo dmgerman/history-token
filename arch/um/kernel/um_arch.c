@@ -34,7 +34,7 @@ macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;mode_kern.h&quot;
 macro_line|#include &quot;mode.h&quot;
 DECL|macro|DEFAULT_COMMAND_LINE
-mdefine_line|#define DEFAULT_COMMAND_LINE &quot;root=6200&quot;
+mdefine_line|#define DEFAULT_COMMAND_LINE &quot;root=98:0&quot;
 DECL|variable|boot_cpu_data
 r_struct
 id|cpuinfo_um
@@ -57,6 +57,12 @@ op_minus
 l_int|1
 )brace
 )brace
+suffix:semicolon
+multiline_comment|/* Placeholder to make UML link until the vsyscall stuff is actually&n; * implemented&n; */
+DECL|variable|__kernel_vsyscall
+r_void
+op_star
+id|__kernel_vsyscall
 suffix:semicolon
 DECL|function|thread_saved_pc
 r_int
@@ -104,7 +110,10 @@ id|v
 (brace
 r_int
 id|index
+op_assign
+l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|index
 op_assign
 (paren
@@ -116,7 +125,6 @@ id|v
 op_minus
 id|cpu_data
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -136,7 +144,59 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;bogomips&bslash;t: %lu.%02lu&bslash;n&quot;
+l_string|&quot;processor&bslash;t: %d&bslash;n&quot;
+comma
+id|index
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;vendor_id&bslash;t: User Mode Linux&bslash;n&quot;
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;model name&bslash;t: UML&bslash;n&quot;
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;mode&bslash;t&bslash;t: %s&bslash;n&quot;
+comma
+id|CHOOSE_MODE
+c_func
+(paren
+l_string|&quot;tt&quot;
+comma
+l_string|&quot;skas&quot;
+)paren
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;host&bslash;t&bslash;t: %s&bslash;n&quot;
+comma
+id|host_info
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;bogomips&bslash;t: %lu.%02lu&bslash;n&bslash;n&quot;
 comma
 id|loops_per_jiffy
 op_div
@@ -157,16 +217,6 @@ id|HZ
 )paren
 op_mod
 l_int|100
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;host&bslash;t&bslash;t: %s&bslash;n&quot;
-comma
-id|host_info
 )paren
 suffix:semicolon
 r_return
@@ -451,7 +501,7 @@ op_star
 id|ptr
 )paren
 comma
-l_string|&quot;(%s)&quot;
+l_string|&quot;(%s) &quot;
 comma
 id|umid
 )paren
@@ -491,7 +541,7 @@ op_star
 id|ptr
 )paren
 comma
-l_string|&quot; [%s]&quot;
+l_string|&quot;[%s]&quot;
 comma
 id|cmd
 )paren
@@ -644,7 +694,7 @@ id|ncpus
 )paren
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;Couldn&squot;t parse [%s]&bslash;n&quot;
@@ -726,7 +776,7 @@ op_star
 id|add
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;CONFIG_MODE_TT disabled - &squot;mode=tt&squot; ignored&bslash;n&quot;
@@ -756,7 +806,7 @@ op_star
 id|add
 )paren
 (brace
-id|printk
+id|printf
 c_func
 (paren
 l_string|&quot;CONFIG_MODE_SKAS disabled - &squot;mode=tt&squot; redundant&bslash;n&quot;
@@ -1000,11 +1050,10 @@ r_int
 r_int
 id|brk_start
 suffix:semicolon
-DECL|variable|kernel_vm_reserved
-r_static
-r_struct
-id|vm_reserved
-id|kernel_vm_reserved
+DECL|variable|end_iomem
+r_int
+r_int
+id|end_iomem
 suffix:semicolon
 DECL|macro|MIN_VMALLOC
 mdefine_line|#define MIN_VMALLOC (32 * 1024 * 1024)
@@ -1037,8 +1086,6 @@ r_int
 id|i
 comma
 id|add
-comma
-id|err
 suffix:semicolon
 r_for
 c_loop
@@ -1237,20 +1284,21 @@ l_int|1
 )braket
 suffix:semicolon
 macro_line|#endif
-id|set_usable_vm
-c_func
-(paren
-id|uml_physmem
-comma
-id|get_kmem_end
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 id|highmem
 op_assign
 l_int|0
+suffix:semicolon
+id|iomem_size
+op_assign
+(paren
+id|iomem_size
+op_plus
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 id|max_physmem
 op_assign
@@ -1261,12 +1309,34 @@ c_func
 op_minus
 id|uml_physmem
 op_minus
+id|iomem_size
+op_minus
 id|MIN_VMALLOC
+suffix:semicolon
+multiline_comment|/* Zones have to begin on a 1 &lt;&lt; MAX_ORDER page boundary,&n;&t; * so this makes sure that&squot;s true for highmem&n;&t; */
+id|max_physmem
+op_and_assign
+op_complement
+(paren
+(paren
+l_int|1
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_plus
+id|MAX_ORDER
+)paren
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|physmem_size
+op_plus
+id|iomem_size
 OG
 id|max_physmem
 )paren
@@ -1274,6 +1344,8 @@ id|max_physmem
 id|highmem
 op_assign
 id|physmem_size
+op_plus
+id|iomem_size
 op_minus
 id|max_physmem
 suffix:semicolon
@@ -1303,13 +1375,19 @@ id|uml_physmem
 op_plus
 id|physmem_size
 suffix:semicolon
+id|end_iomem
+op_assign
+id|high_physmem
+op_plus
+id|iomem_size
+suffix:semicolon
 id|high_memory
 op_assign
 (paren
 r_void
 op_star
 )paren
-id|high_physmem
+id|end_iomem
 suffix:semicolon
 id|start_vm
 op_assign
@@ -1323,8 +1401,41 @@ comma
 id|uml_reserved
 comma
 id|physmem_size
+comma
+id|highmem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|init_maps
+c_func
+(paren
+id|physmem_size
+comma
+id|iomem_size
+comma
+id|highmem
+)paren
+)paren
+(brace
+id|printf
+c_func
+(paren
+l_string|&quot;Failed to allocate mem_map for %ld bytes of physical &quot;
+l_string|&quot;memory and %ld bytes of highmem&bslash;n&quot;
+comma
+id|physmem_size
+comma
+id|highmem
+)paren
+suffix:semicolon
+m_exit
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|virtmem_size
 op_assign
 id|physmem_size
@@ -1374,37 +1485,6 @@ id|virtmem_size
 )paren
 suffix:semicolon
 )brace
-id|err
-op_assign
-id|reserve_vm
-c_func
-(paren
-id|high_physmem
-comma
-id|end_vm
-comma
-op_amp
-id|kernel_vm_reserved
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;Failed to reserve VM area for kernel VM&bslash;n&quot;
-)paren
-suffix:semicolon
-m_exit
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|uml_postsetup
 c_func
 (paren
@@ -1434,6 +1514,11 @@ op_amp
 id|init_thread_info
 )paren
 suffix:semicolon
+id|os_flush_stdout
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|CHOOSE_MODE
 c_func
@@ -1450,6 +1535,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|uml_exitcode
+suffix:semicolon
 DECL|function|panic_exit
 r_static
 r_int
@@ -1480,11 +1569,13 @@ op_amp
 id|current-&gt;thread.regs
 comma
 l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
+id|uml_exitcode
+op_assign
+l_int|1
+suffix:semicolon
 id|machine_halt
 c_func
 (paren
@@ -1587,6 +1678,26 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|check_devanon
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|apply_alternatives
+r_void
+id|apply_alternatives
+c_func
+(paren
+r_void
+op_star
+id|start
+comma
+r_void
+op_star
+id|end
+)paren
+(brace
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

@@ -52,7 +52,11 @@ suffix:semicolon
 id|cpumask_t
 id|mask
 op_assign
-id|node_dev-&gt;cpumap
+id|node_to_cpumask
+c_func
+(paren
+id|node_dev-&gt;sysdev.id
+)paren
 suffix:semicolon
 r_int
 id|len
@@ -143,6 +147,18 @@ r_struct
 id|sysinfo
 id|i
 suffix:semicolon
+r_int
+r_int
+id|inactive
+suffix:semicolon
+r_int
+r_int
+id|active
+suffix:semicolon
+r_int
+r_int
+id|free
+suffix:semicolon
 id|si_meminfo_node
 c_func
 (paren
@@ -150,6 +166,25 @@ op_amp
 id|i
 comma
 id|nid
+)paren
+suffix:semicolon
+id|__get_zone_counts
+c_func
+(paren
+op_amp
+id|active
+comma
+op_amp
+id|inactive
+comma
+op_amp
+id|free
+comma
+id|NODE_DATA
+c_func
+(paren
+id|nid
+)paren
 )paren
 suffix:semicolon
 id|n
@@ -163,6 +198,8 @@ l_string|&quot;&bslash;n&quot;
 l_string|&quot;Node %d MemTotal:     %8lu kB&bslash;n&quot;
 l_string|&quot;Node %d MemFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;Node %d MemUsed:      %8lu kB&bslash;n&quot;
+l_string|&quot;Node %d Active:       %8lu kB&bslash;n&quot;
+l_string|&quot;Node %d Inactive:     %8lu kB&bslash;n&quot;
 l_string|&quot;Node %d HighTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;Node %d HighFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Node %d LowTotal:     %8lu kB&bslash;n&quot;
@@ -192,6 +229,22 @@ c_func
 id|i.totalram
 op_minus
 id|i.freeram
+)paren
+comma
+id|nid
+comma
+id|K
+c_func
+(paren
+id|active
+)paren
+comma
+id|nid
+comma
+id|K
+c_func
+(paren
+id|inactive
 )paren
 comma
 id|nid
@@ -474,14 +527,6 @@ id|parent
 (brace
 r_int
 id|error
-suffix:semicolon
-id|node-&gt;cpumap
-op_assign
-id|node_to_cpumask
-c_func
-(paren
-id|num
-)paren
 suffix:semicolon
 id|node-&gt;sysdev.id
 op_assign

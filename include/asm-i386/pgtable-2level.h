@@ -149,5 +149,16 @@ DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(pte) &bslash;&n;&t;((((pte).pte_low &gt;&gt; 1) &amp; 0x1f ) + (((pte).pte_low &gt;&gt; 8) &lt;&lt; 5 ))
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 1) + (((off) &gt;&gt; 5) &lt;&lt; 8) + _PAGE_FILE })
+multiline_comment|/* Encode and de-code a swap entry */
+DECL|macro|__swp_type
+mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x1f)
+DECL|macro|__swp_offset
+mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 8)
+DECL|macro|__swp_entry
+mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { ((type) &lt;&lt; 1) | ((offset) &lt;&lt; 8) })
+DECL|macro|__pte_to_swp_entry
+mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { (pte).pte_low })
+DECL|macro|__swp_entry_to_pte
+mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
 macro_line|#endif /* _I386_PGTABLE_2LEVEL_H */
 eof

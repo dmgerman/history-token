@@ -1,10 +1,10 @@
-multiline_comment|/* &n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2001 - 2004 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/string.h&quot;
 macro_line|#include &quot;linux/smp_lock.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
-macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &quot;linux/highmem.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;asm/delay.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
@@ -15,6 +15,7 @@ macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;helper.h&quot;
 DECL|variable|stop
@@ -101,32 +102,11 @@ c_func
 id|arch_validate
 )paren
 suffix:semicolon
-DECL|variable|region_pa
+DECL|variable|get_kmem_end
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|region_pa
-)paren
-suffix:semicolon
-DECL|variable|region_va
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|region_va
-)paren
-suffix:semicolon
-DECL|variable|phys_mem_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|phys_mem_map
-)paren
-suffix:semicolon
-DECL|variable|page_mem_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|page_mem_map
+id|get_kmem_end
 )paren
 suffix:semicolon
 DECL|variable|page_to_phys
@@ -164,6 +144,27 @@ c_func
 id|um_virt_to_phys
 )paren
 suffix:semicolon
+DECL|variable|__virt_to_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__virt_to_page
+)paren
+suffix:semicolon
+DECL|variable|to_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|to_phys
+)paren
+suffix:semicolon
+DECL|variable|to_virt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|to_virt
+)paren
+suffix:semicolon
 DECL|variable|mode_tt
 id|EXPORT_SYMBOL
 c_func
@@ -176,6 +177,101 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|handle_page_fault
+)paren
+suffix:semicolon
+DECL|variable|find_iomem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_iomem
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_TT
+DECL|variable|strncpy_from_user_tt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncpy_from_user_tt
+)paren
+suffix:semicolon
+DECL|variable|copy_from_user_tt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_from_user_tt
+)paren
+suffix:semicolon
+DECL|variable|copy_to_user_tt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_to_user_tt
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|variable|strncpy_from_user_skas
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncpy_from_user_skas
+)paren
+suffix:semicolon
+DECL|variable|copy_to_user_skas
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_to_user_skas
+)paren
+suffix:semicolon
+DECL|variable|copy_from_user_skas
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|copy_from_user_skas
+)paren
+suffix:semicolon
+macro_line|#endif
+DECL|variable|os_stat_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_stat_fd
+)paren
+suffix:semicolon
+DECL|variable|os_stat_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_stat_file
+)paren
+suffix:semicolon
+DECL|variable|os_access
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_access
+)paren
+suffix:semicolon
+DECL|variable|os_print_error
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_print_error
+)paren
+suffix:semicolon
+DECL|variable|os_get_exec_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_get_exec_close
+)paren
+suffix:semicolon
+DECL|variable|os_set_exec_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_set_exec_close
 )paren
 suffix:semicolon
 DECL|variable|os_getpid
@@ -213,6 +309,20 @@ c_func
 id|os_seek_file
 )paren
 suffix:semicolon
+DECL|variable|os_lock_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_lock_file
+)paren
+suffix:semicolon
+DECL|variable|os_ioctl_generic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_ioctl_generic
+)paren
+suffix:semicolon
 DECL|variable|os_pipe
 id|EXPORT_SYMBOL
 c_func
@@ -227,11 +337,46 @@ c_func
 id|os_file_type
 )paren
 suffix:semicolon
+DECL|variable|os_file_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_file_mode
+)paren
+suffix:semicolon
+DECL|variable|os_file_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_file_size
+)paren
+suffix:semicolon
+DECL|variable|os_flush_stdout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_flush_stdout
+)paren
+suffix:semicolon
 DECL|variable|os_close_file
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|os_close_file
+)paren
+suffix:semicolon
+DECL|variable|os_set_fd_async
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_set_fd_async
+)paren
+suffix:semicolon
+DECL|variable|os_set_fd_block
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_set_fd_block
 )paren
 suffix:semicolon
 DECL|variable|helper_wait
@@ -248,11 +393,32 @@ c_func
 id|os_shutdown_socket
 )paren
 suffix:semicolon
+DECL|variable|os_create_unix_socket
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_create_unix_socket
+)paren
+suffix:semicolon
 DECL|variable|os_connect_socket
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|os_connect_socket
+)paren
+suffix:semicolon
+DECL|variable|os_accept_connection
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_accept_connection
+)paren
+suffix:semicolon
+DECL|variable|os_rcv_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|os_rcv_fd
 )paren
 suffix:semicolon
 DECL|variable|run_helper
@@ -274,6 +440,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dump_thread
+)paren
+suffix:semicolon
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
 )paren
 suffix:semicolon
 multiline_comment|/* This is here because UML expands open to sys_open, not to a system&n; * call instruction.&n; */
@@ -387,4 +567,5 @@ id|kmap_atomic_to_page
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

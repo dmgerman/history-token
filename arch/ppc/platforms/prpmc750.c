@@ -664,13 +664,6 @@ op_assign
 id|Root_SDA2
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 id|OpenPIC_InitSenses
 op_assign
 id|prpmc750_openpic_initsenses

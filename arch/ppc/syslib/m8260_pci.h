@@ -50,6 +50,9 @@ DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE isa_io_base
 macro_line|#endif
 macro_line|#ifdef CONFIG_8260_PCI9
+r_struct
+id|pci_controller
+suffix:semicolon
 r_extern
 r_void
 id|setup_m8260_indirect_pci

@@ -14,6 +14,11 @@ DECL|macro|BCSR_SIZE
 mdefine_line|#define BCSR_SIZE&t;&t;((uint)(32 * 1024))
 DECL|macro|BOOTROM_RESTART_ADDR
 mdefine_line|#define BOOTROM_RESTART_ADDR&t;((uint)0xff000104)
+multiline_comment|/* For our show_cpuinfo hooks. */
+DECL|macro|CPUINFO_VENDOR
+mdefine_line|#define CPUINFO_VENDOR&t;&t;&quot;Motorola&quot;
+DECL|macro|CPUINFO_MACHINE
+mdefine_line|#define CPUINFO_MACHINE&t;&t;&quot;PQ2 ADS PowerPC&quot;
 multiline_comment|/* The ADS8260 has 16, 32-bit wide control/status registers, accessed&n; * only on word boundaries.&n; * Not all are used (yet), or are interesting to us (yet).&n; */
 multiline_comment|/* Things of interest in the CSR.&n;*/
 DECL|macro|BCSR0_LED0

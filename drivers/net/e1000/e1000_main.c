@@ -579,7 +579,6 @@ id|p
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_irq_disable
 c_func
@@ -591,7 +590,6 @@ id|adapter
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_irq_enable
 c_func
@@ -760,7 +758,6 @@ id|adapter
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|e1000_rx_checksum
 c_func
@@ -8711,7 +8708,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_irq_disable - Mask off interrupt generation on the NIC&n; * @adapter: board private structure&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_irq_disable
 id|e1000_irq_disable
@@ -8758,7 +8754,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_irq_enable - Enable default interrupt generation settings&n; * @adapter: board private structure&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_irq_enable
 id|e1000_irq_enable
@@ -10838,7 +10833,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_rx_checksum - Receive Checksum Offload for 82543&n; * @adapter: board private structure&n; * @rx_desc: receive descriptor&n; * @sk_buff: socket buffer with received data&n; **/
 r_static
-r_inline
 r_void
 DECL|function|e1000_rx_checksum
 id|e1000_rx_checksum

@@ -1,7 +1,6 @@
 macro_line|#ifndef __UM_TIMEX_H
 DECL|macro|__UM_TIMEX_H
 mdefine_line|#define __UM_TIMEX_H
-macro_line|#include &quot;linux/time.h&quot;
 DECL|typedef|cycles_t
 r_typedef
 r_int

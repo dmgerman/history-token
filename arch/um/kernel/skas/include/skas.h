@@ -6,6 +6,8 @@ macro_line|#include &quot;sysdep/ptrace.h&quot;
 r_extern
 r_int
 id|userspace_pid
+(braket
+)braket
 suffix:semicolon
 r_extern
 r_void
@@ -288,7 +290,8 @@ r_void
 id|start_userspace
 c_func
 (paren
-r_void
+r_int
+id|cpu
 )paren
 suffix:semicolon
 r_extern

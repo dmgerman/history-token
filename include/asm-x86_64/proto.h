@@ -508,10 +508,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|swiotlb
-suffix:semicolon
-r_extern
-r_int
 r_int
 id|max_mapnr
 suffix:semicolon
@@ -584,6 +580,14 @@ suffix:semicolon
 r_extern
 r_int
 id|iommu_aperture_allowed
+suffix:semicolon
+r_extern
+r_int
+id|fix_aperture
+suffix:semicolon
+r_extern
+r_int
+id|force_iommu
 suffix:semicolon
 r_extern
 r_void

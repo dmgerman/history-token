@@ -4,11 +4,11 @@ DECL|macro|__UM_PROCESSOR_I386_H
 mdefine_line|#define __UM_PROCESSOR_I386_H
 r_extern
 r_int
-id|cpu_has_xmm
+id|host_has_xmm
 suffix:semicolon
 r_extern
 r_int
-id|cpu_has_cmov
+id|host_has_cmov
 suffix:semicolon
 DECL|struct|arch_thread
 r_struct

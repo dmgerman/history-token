@@ -27,17 +27,17 @@ r_int
 r_int
 id|hash
 suffix:semicolon
+DECL|member|len
+r_int
+r_int
+id|len
+suffix:semicolon
 DECL|member|name
 r_const
 r_int
 r_char
 op_star
 id|name
-suffix:semicolon
-DECL|member|len
-r_int
-r_int
-id|len
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -290,10 +290,6 @@ op_star
 id|d_sb
 suffix:semicolon
 multiline_comment|/* The root of the dentry tree */
-DECL|member|d_mounted
-r_int
-id|d_mounted
-suffix:semicolon
 DECL|member|d_fsdata
 r_void
 op_star
@@ -318,6 +314,10 @@ id|hlist_node
 id|d_hash
 suffix:semicolon
 multiline_comment|/* lookup hash list */
+DECL|member|d_mounted
+r_int
+id|d_mounted
+suffix:semicolon
 DECL|member|d_iname
 r_int
 r_char

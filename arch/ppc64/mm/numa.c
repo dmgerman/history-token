@@ -1938,11 +1938,6 @@ id|zholes_size
 id|MAX_NR_ZONES
 )braket
 suffix:semicolon
-r_struct
-id|page
-op_star
-id|node_mem_map
-suffix:semicolon
 r_int
 id|nid
 suffix:semicolon
@@ -2079,6 +2074,12 @@ id|nid
 dot
 id|node_spanned_pages
 )paren
+id|NODE_DATA
+c_func
+(paren
+id|nid
+)paren
+op_member_access_from_pointer
 id|node_mem_map
 op_assign
 id|alloc_bootmem
@@ -2092,6 +2093,12 @@ id|page
 )paren
 suffix:semicolon
 r_else
+id|NODE_DATA
+c_func
+(paren
+id|nid
+)paren
+op_member_access_from_pointer
 id|node_mem_map
 op_assign
 l_int|NULL
@@ -2106,8 +2113,6 @@ c_func
 (paren
 id|nid
 )paren
-comma
-id|node_mem_map
 comma
 id|zones_size
 comma

@@ -43,6 +43,15 @@ r_extern
 r_int
 id|page_cluster
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_int
+id|sysctl_legacy_va_layout
+suffix:semicolon
+macro_line|#else
+DECL|macro|sysctl_legacy_va_layout
+mdefine_line|#define sysctl_legacy_va_layout 0
+macro_line|#endif
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -424,12 +433,11 @@ id|atomic_t
 id|_count
 suffix:semicolon
 multiline_comment|/* Usage count, see below. */
-DECL|member|mapcount
-r_int
-r_int
-id|mapcount
+DECL|member|_mapcount
+id|atomic_t
+id|_mapcount
 suffix:semicolon
-multiline_comment|/* Count of ptes mapped in mms,&n;&t;&t;&t;&t;&t; * to show when page is mapped&n;&t;&t;&t;&t;&t; * &amp; limit reverse map searches,&n;&t;&t;&t;&t;&t; * protected by PG_maplock.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Count of ptes mapped in mms,&n;&t;&t;&t;&t;&t; * to show when page is mapped&n;&t;&t;&t;&t;&t; * &amp; limit reverse map searches.&n;&t;&t;&t;&t;&t; */
 DECL|member|private
 r_int
 r_int
@@ -442,7 +450,7 @@ id|address_space
 op_star
 id|mapping
 suffix:semicolon
-multiline_comment|/* If PG_anon clear, points to&n;&t;&t;&t;&t;&t; * inode address_space, or NULL.&n;&t;&t;&t;&t;&t; * If page mapped as anonymous&n;&t;&t;&t;&t;&t; * memory, PG_anon is set, and&n;&t;&t;&t;&t;&t; * it points to anon_vma object.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* If low bit clear, points to&n;&t;&t;&t;&t;&t; * inode address_space, or NULL.&n;&t;&t;&t;&t;&t; * If page mapped as anonymous&n;&t;&t;&t;&t;&t; * memory, low bit is set, and&n;&t;&t;&t;&t;&t; * it points to anon_vma object:&n;&t;&t;&t;&t;&t; * see PAGE_MAPPING_ANON below.&n;&t;&t;&t;&t;&t; */
 DECL|member|index
 id|pgoff_t
 id|index
@@ -881,7 +889,9 @@ mdefine_line|#define set_page_address(page, address)  do { } while(0)
 DECL|macro|page_address_init
 mdefine_line|#define page_address_init()  do { } while(0)
 macro_line|#endif
-multiline_comment|/*&n; * On an anonymous page mapped into a user virtual memory area,&n; * page-&gt;mapping points to its anon_vma, not to a struct address_space.&n; *&n; * Please note that, confusingly, &quot;page_mapping&quot; refers to the inode&n; * address_space which maps the page from disk; whereas &quot;page_mapped&quot;&n; * refers to user virtual address space into which the page is mapped.&n; */
+multiline_comment|/*&n; * On an anonymous page mapped into a user virtual memory area,&n; * page-&gt;mapping points to its anon_vma, not to a struct address_space;&n; * with the PAGE_MAPPING_ANON bit set to distinguish it.&n; *&n; * Please note that, confusingly, &quot;page_mapping&quot; refers to the inode&n; * address_space which maps the page from disk; whereas &quot;page_mapped&quot;&n; * refers to user virtual address space into which the page is mapped.&n; */
+DECL|macro|PAGE_MAPPING_ANON
+mdefine_line|#define PAGE_MAPPING_ANON&t;1
 r_extern
 r_struct
 id|address_space
@@ -907,7 +917,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-l_int|NULL
+id|page-&gt;mapping
 suffix:semicolon
 r_if
 c_cond
@@ -931,23 +941,51 @@ r_else
 r_if
 c_cond
 (paren
-id|likely
+id|unlikely
 c_func
 (paren
-op_logical_neg
-id|PageAnon
-c_func
 (paren
-id|page
+r_int
+r_int
 )paren
+id|mapping
+op_amp
+id|PAGE_MAPPING_ANON
 )paren
 )paren
 id|mapping
 op_assign
-id|page-&gt;mapping
+l_int|NULL
 suffix:semicolon
 r_return
 id|mapping
+suffix:semicolon
+)brace
+DECL|function|PageAnon
+r_static
+r_inline
+r_int
+id|PageAnon
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+(paren
+(paren
+r_int
+r_int
+)paren
+id|page-&gt;mapping
+op_amp
+id|PAGE_MAPPING_ANON
+)paren
+op_ne
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return the pagecache index of the passed page.  Regular pagecache pages&n; * use -&gt;index whereas swapcache pages use -&gt;private&n; */
@@ -986,6 +1024,63 @@ r_return
 id|page-&gt;index
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The atomic page-&gt;_mapcount, like _count, starts from -1:&n; * so that transitions both from it and to it can be tracked,&n; * using atomic_inc_and_test and atomic_add_negative(-1).&n; */
+DECL|function|reset_page_mapcount
+r_static
+r_inline
+r_void
+id|reset_page_mapcount
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+id|atomic_set
+c_func
+(paren
+op_amp
+(paren
+id|page
+)paren
+op_member_access_from_pointer
+id|_mapcount
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+DECL|function|page_mapcount
+r_static
+r_inline
+r_int
+id|page_mapcount
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+id|atomic_read
+c_func
+(paren
+op_amp
+(paren
+id|page
+)paren
+op_member_access_from_pointer
+id|_mapcount
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Return true if this page is mapped into pagetables.&n; */
 DECL|function|page_mapped
 r_static
@@ -1001,8 +1096,17 @@ id|page
 )paren
 (brace
 r_return
-id|page-&gt;mapcount
-op_ne
+id|atomic_read
+c_func
+(paren
+op_amp
+(paren
+id|page
+)paren
+op_member_access_from_pointer
+id|_mapcount
+)paren
+op_ge
 l_int|0
 suffix:semicolon
 )brace
@@ -1851,11 +1955,6 @@ id|pg_data_t
 op_star
 id|pgdat
 comma
-r_struct
-id|page
-op_star
-id|pmap
-comma
 r_int
 r_int
 op_star
@@ -1876,10 +1975,6 @@ r_void
 id|memmap_init_zone
 c_func
 (paren
-r_struct
-id|page
-op_star
-comma
 r_int
 r_int
 comma

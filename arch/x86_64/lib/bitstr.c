@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* Find string of zero bits in a bitmap */
 r_int
@@ -117,4 +118,11 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|find_next_zero_string
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_next_zero_string
+)paren
+suffix:semicolon
 eof

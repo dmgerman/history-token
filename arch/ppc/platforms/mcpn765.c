@@ -39,7 +39,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/hawk.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &quot;mcpn765.h&quot;
-macro_line|#include &quot;mcpn765_serial.h&quot;
 DECL|variable|__initdata
 r_static
 id|u_char
@@ -1170,13 +1169,6 @@ macro_line|#else
 id|ROOT_DEV
 op_assign
 id|Root_SDA2
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
 suffix:semicolon
 macro_line|#endif
 r_if

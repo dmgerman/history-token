@@ -66,7 +66,7 @@ c_func
 id|default_backing_dev_info
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initialise a struct file&squot;s readahead state&n; */
+multiline_comment|/*&n; * Initialise a struct file&squot;s readahead state.  Assumes that the caller has&n; * memset *ra to zero.&n; */
 r_void
 DECL|function|file_ra_state_init
 id|file_ra_state_init
@@ -83,20 +83,6 @@ op_star
 id|mapping
 )paren
 (brace
-id|memset
-c_func
-(paren
-id|ra
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|ra
-)paren
-)paren
-suffix:semicolon
 id|ra-&gt;ra_pages
 op_assign
 id|mapping-&gt;backing_dev_info-&gt;ra_pages
@@ -108,13 +94,6 @@ op_div
 l_int|2
 suffix:semicolon
 )brace
-DECL|variable|file_ra_state_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|file_ra_state_init
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Return max readahead size for this inode in number-of-pages.&n; */
 DECL|function|get_max_readahead
 r_static
@@ -1686,7 +1665,7 @@ r_int
 r_int
 id|free
 suffix:semicolon
-id|get_zone_counts
+id|__get_zone_counts
 c_func
 (paren
 op_amp
@@ -1697,6 +1676,15 @@ id|inactive
 comma
 op_amp
 id|free
+comma
+id|NODE_DATA
+c_func
+(paren
+id|numa_node_id
+c_func
+(paren
+)paren
+)paren
 )paren
 suffix:semicolon
 r_return

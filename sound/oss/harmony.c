@@ -1,4 +1,4 @@
-multiline_comment|/*&n; &t;drivers/sound/harmony.c &n;&n;&t;This is a sound driver for ASP&squot;s and Lasi&squot;s Harmony sound chip&n;&t;and is unlikely to be used for anything other than on a HP PA-RISC.&n;&n;&t;Harmony is found in HP 712s, 715/new and many other GSC based machines.&n;&t;On older 715 machines you&squot;ll find the technically identical chip &n;&t;called &squot;Vivace&squot;. Both Harmony and Vicace are supported by this driver.&n;&n;&t;Copyright 2000 (c) Linuxcare Canada, Alex deVries &lt;alex@linuxcare.com&gt;&n;&t;Copyright 2000-2003 (c) Helge Deller &lt;deller@gmx.de&gt;&n;&t;Copyright 2001 (c) Matthieu Delahaye &lt;delahaym@esiee.fr&gt;&n;&t;Copyright 2001 (c) Jean-Christophe Vaugeois &lt;vaugeoij@esiee.fr&gt;&n;&t;Copyright 2004 (c) Stuart Brady &lt;sdbrady@ntlworld.com&gt;&n;&n;&t;&t;&t;&t;&n;TODO:&n;&t;- fix SNDCTL_DSP_GETOSPACE and SNDCTL_DSP_GETISPACE ioctls to&n;&t;&t;return the real values&n;&t;- add private ioctl for selecting line- or microphone input&n;&t;&t;(only one of them is available at the same time)&n;&t;- add module parameters&n;&t;- implement mmap functionality&n;&t;- implement gain meter ?&n;&t;- ...&n;*/
+multiline_comment|/*&n; &t;drivers/sound/harmony.c &n;&n;&t;This is a sound driver for ASP&squot;s and Lasi&squot;s Harmony sound chip&n;&t;and is unlikely to be used for anything other than on a HP PA-RISC.&n;&n;&t;Harmony is found in HP 712s, 715/new and many other GSC based machines.&n;&t;On older 715 machines you&squot;ll find the technically identical chip &n;&t;called &squot;Vivace&squot;. Both Harmony and Vicace are supported by this driver.&n;&n;&t;Copyright 2000 (c) Linuxcare Canada, Alex deVries &lt;alex@onefishtwo.ca&gt;&n;&t;Copyright 2000-2003 (c) Helge Deller &lt;deller@gmx.de&gt;&n;&t;Copyright 2001 (c) Matthieu Delahaye &lt;delahaym@esiee.fr&gt;&n;&t;Copyright 2001 (c) Jean-Christophe Vaugeois &lt;vaugeoij@esiee.fr&gt;&n;&t;Copyright 2004 (c) Stuart Brady &lt;sdbrady@ntlworld.com&gt;&n;&n;&t;&t;&t;&t;&n;TODO:&n;&t;- fix SNDCTL_DSP_GETOSPACE and SNDCTL_DSP_GETISPACE ioctls to&n;&t;&t;return the real values&n;&t;- add private ioctl for selecting line- or microphone input&n;&t;&t;(only one of them is available at the same time)&n;&t;- add module parameters&n;&t;- implement mmap functionality&n;&t;- implement gain meter ?&n;&t;- ...&n;*/
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -5116,7 +5116,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Alex DeVries &lt;alex@linuxcare.com&gt;&quot;
+l_string|&quot;Alex DeVries &lt;alex@onefishtwo.ca&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

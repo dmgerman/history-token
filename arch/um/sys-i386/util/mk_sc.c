@@ -181,6 +181,14 @@ comma
 id|fpstate
 )paren
 suffix:semicolon
+id|SC_OFFSET
+c_func
+(paren
+l_string|&quot;SC_SIGMASK&quot;
+comma
+id|oldmask
+)paren
+suffix:semicolon
 id|SC_FP_OFFSET
 c_func
 (paren

@@ -108,11 +108,6 @@ r_int
 id|b_state
 suffix:semicolon
 multiline_comment|/* buffer state bitmap (see above) */
-DECL|member|b_count
-id|atomic_t
-id|b_count
-suffix:semicolon
-multiline_comment|/* users using this block */
 DECL|member|b_this_page
 r_struct
 id|buffer_head
@@ -127,16 +122,21 @@ op_star
 id|b_page
 suffix:semicolon
 multiline_comment|/* the page this bh is mapped to */
-DECL|member|b_blocknr
-id|sector_t
-id|b_blocknr
+DECL|member|b_count
+id|atomic_t
+id|b_count
 suffix:semicolon
-multiline_comment|/* block number */
+multiline_comment|/* users using this block */
 DECL|member|b_size
 id|u32
 id|b_size
 suffix:semicolon
 multiline_comment|/* block size */
+DECL|member|b_blocknr
+id|sector_t
+id|b_blocknr
+suffix:semicolon
+multiline_comment|/* block number */
 DECL|member|b_data
 r_char
 op_star

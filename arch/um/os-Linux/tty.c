@@ -68,10 +68,6 @@ suffix:semicolon
 r_int
 id|fd
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|fd
 op_assign
 id|os_open_file
@@ -90,7 +86,11 @@ c_func
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
 OL
 l_int|0
 )paren
@@ -98,14 +98,14 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;get_pty : Couldn&squot;t open /dev/ptmx - errno = %d&bslash;n&quot;
+l_string|&quot;get_pty : Couldn&squot;t open /dev/ptmx - err = %d&bslash;n&quot;
 comma
-id|errno
+op_minus
+id|fd
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|fd
 suffix:semicolon
 )brace
 id|info.fd
@@ -134,6 +134,7 @@ c_func
 (paren
 l_string|&quot;get_pty : Couldn&squot;t grant pty - errno = %d&bslash;n&quot;
 comma
+op_minus
 id|info.err
 )paren
 suffix:semicolon

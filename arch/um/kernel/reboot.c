@@ -18,6 +18,7 @@ r_int
 id|me
 )paren
 (brace
+macro_line|#ifdef CONFIG_MODE_TT
 r_struct
 id|task_struct
 op_star
@@ -85,6 +86,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 )brace
 macro_line|#endif
 DECL|function|kill_off_processes

@@ -776,6 +776,8 @@ mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
+DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
+mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 multiline_comment|/*&n; * Size of io_bitmap.&n; */
 DECL|macro|IO_BITMAP_BITS
 mdefine_line|#define IO_BITMAP_BITS  65536
@@ -1869,11 +1871,5 @@ id|c
 suffix:semicolon
 DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
-macro_line|#ifdef CONFIG_SCHED_SMT
-DECL|macro|ARCH_HAS_SCHED_DOMAIN
-mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
-DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
-mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
-macro_line|#endif
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

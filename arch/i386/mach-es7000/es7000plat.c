@@ -992,7 +992,7 @@ r_int
 r_int
 r_int
 )paren
-l_int|0xffff0000000000
+l_int|0xffff0000000000ULL
 )paren
 op_rshift
 l_int|48

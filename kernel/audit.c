@@ -2808,13 +2808,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p
-op_eq
-id|ERR_PTR
+id|IS_ERR
 c_func
 (paren
-op_minus
-id|ENAMETOOLONG
+id|p
 )paren
 )paren
 (brace

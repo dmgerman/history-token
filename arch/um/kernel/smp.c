@@ -1,5 +1,18 @@
-multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
+macro_line|#include &quot;linux/percpu.h&quot;
+macro_line|#include &quot;asm/pgalloc.h&quot;
+macro_line|#include &quot;asm/tlb.h&quot;
+multiline_comment|/* For some reason, mmu_gathers are referenced when CONFIG_SMP is off. */
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|mmu_gather
+comma
+id|mmu_gathers
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
@@ -21,11 +34,7 @@ r_int
 r_int
 id|cpu_online_map
 op_assign
-id|cpumask_of_cpu
-c_func
-(paren
-l_int|0
-)paren
+id|CPU_MASK_NONE
 suffix:semicolon
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
@@ -42,30 +51,6 @@ id|cpu_data
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-DECL|variable|um_bh_lock
-id|spinlock_t
-id|um_bh_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|global_bh_count
-id|atomic_t
-id|global_bh_count
-suffix:semicolon
-multiline_comment|/* Not used by UML */
-DECL|variable|global_irq_holder
-r_int
-r_char
-id|global_irq_holder
-op_assign
-id|NO_PROC_ID
-suffix:semicolon
-DECL|variable|global_irq_lock
-r_int
-r_volatile
-r_int
-id|global_irq_lock
 suffix:semicolon
 multiline_comment|/* Set when the idlers are all forked */
 DECL|variable|smp_threads_ready
@@ -108,7 +93,7 @@ r_int
 id|cpu
 )paren
 (brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|cpu_data
@@ -128,123 +113,6 @@ l_int|1
 suffix:semicolon
 id|num_reschedules_sent
 op_increment
-suffix:semicolon
-)brace
-DECL|function|show
-r_static
-r_void
-id|show
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;&bslash;n%s, CPU %d:&bslash;n&quot;
-comma
-id|str
-comma
-id|cpu
-)paren
-suffix:semicolon
-)brace
-DECL|macro|MAXCOUNT
-mdefine_line|#define MAXCOUNT 100000000
-DECL|function|wait_on_bh
-r_static
-r_inline
-r_void
-id|wait_on_bh
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|count
-op_assign
-id|MAXCOUNT
-suffix:semicolon
-r_do
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-op_decrement
-id|count
-)paren
-(brace
-id|show
-c_func
-(paren
-l_string|&quot;wait_on_bh&quot;
-)paren
-suffix:semicolon
-id|count
-op_assign
-op_complement
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* nothing .. wait for the other bh&squot;s to go away */
-)brace
-r_while
-c_loop
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|global_bh_count
-)paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is called when we want to synchronize with&n; * bottom half handlers. We need to wait until&n; * no other CPU is executing any bottom half handler.&n; *&n; * Don&squot;t wait if we&squot;re already running in an interrupt&n; * context or are inside a bh handler. &n; */
-DECL|function|synchronize_bh
-r_void
-id|synchronize_bh
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|global_bh_count
-)paren
-op_logical_and
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|wait_on_bh
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|smp_send_stop
@@ -288,13 +156,13 @@ c_cond
 (paren
 id|i
 op_eq
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 )paren
 (brace
 r_continue
 suffix:semicolon
 )brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|cpu_data
@@ -324,11 +192,13 @@ DECL|variable|smp_commenced_mask
 r_static
 id|cpumask_t
 id|smp_commenced_mask
+op_assign
+id|CPU_MASK_NONE
 suffix:semicolon
-DECL|variable|smp_callin_map
+DECL|variable|cpu_callin_map
 r_static
 id|cpumask_t
-id|smp_callin_map
+id|cpu_callin_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
@@ -374,12 +244,14 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|panic
 c_func
 (paren
-l_string|&quot;CPU#%d failed to create IPI pipe, errno = %d&quot;
+l_string|&quot;CPU#%d failed to create IPI pipe, err = %d&quot;
 comma
 id|cpu
 comma
@@ -417,8 +289,7 @@ c_func
 (paren
 id|cpu
 comma
-op_amp
-id|smp_callin_map
+id|cpu_callin_map
 )paren
 )paren
 (brace
@@ -445,7 +316,6 @@ c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_commenced_mask
 )paren
 )paren
@@ -506,22 +376,10 @@ id|cpu
 suffix:semicolon
 id|new_task
 op_assign
-id|do_fork
+id|fork_idle
 c_func
 (paren
-id|CLONE_VM
-op_or
-id|CLONE_IDLETASK
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
+id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -537,7 +395,13 @@ id|new_task
 id|panic
 c_func
 (paren
-l_string|&quot;do_fork failed in idle_thread&quot;
+l_string|&quot;copy_process failed in idle_thread, error = %ld&quot;
+comma
+id|PTR_ERR
+c_func
+(paren
+id|new_task
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -574,7 +438,7 @@ suffix:semicolon
 id|CHOOSE_MODE
 c_func
 (paren
-id|write
+id|os_write_file
 c_func
 (paren
 id|new_task-&gt;thread.mode.tt.switch_pipe
@@ -630,11 +494,18 @@ r_int
 id|err
 comma
 id|cpu
-suffix:semicolon
-id|cpu_set
+comma
+id|me
+op_assign
+id|smp_processor_id
 c_func
 (paren
-l_int|0
+)paren
+suffix:semicolon
+id|cpu_clear
+c_func
+(paren
+id|me
 comma
 id|cpu_online_map
 )paren
@@ -642,9 +513,17 @@ suffix:semicolon
 id|cpu_set
 c_func
 (paren
-l_int|0
+id|me
 comma
-id|smp_callin_map
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|me
+comma
+id|cpu_callin_map
 )paren
 suffix:semicolon
 id|err
@@ -654,7 +533,7 @@ c_func
 (paren
 id|cpu_data
 (braket
-l_int|0
+id|me
 )braket
 dot
 id|ipi_pipe
@@ -668,6 +547,8 @@ r_if
 c_cond
 (paren
 id|err
+OL
+l_int|0
 )paren
 (brace
 id|panic
@@ -685,7 +566,7 @@ c_func
 (paren
 id|cpu_data
 (braket
-l_int|0
+id|me
 )braket
 dot
 id|ipi_pipe
@@ -757,7 +638,7 @@ c_func
 (paren
 id|cpu
 comma
-id|smp_callin_map
+id|cpu_callin_map
 )paren
 )paren
 id|cpu_relax
@@ -773,7 +654,7 @@ c_func
 (paren
 id|cpu
 comma
-id|smp_callin_map
+id|cpu_callin_map
 )paren
 )paren
 id|printk
@@ -910,7 +791,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|read
+id|os_read_file
 c_func
 (paren
 id|fd
@@ -1193,7 +1074,7 @@ c_cond
 (paren
 id|i
 op_ne
-id|current-&gt;thread_info-&gt;cpu
+id|current_thread-&gt;cpu
 )paren
 op_logical_and
 id|cpu_isset
@@ -1205,7 +1086,7 @@ id|cpu_online_map
 )paren
 )paren
 (brace
-id|write
+id|os_write_file
 c_func
 (paren
 id|cpu_data

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/x86-64/kernel/time.c&n; *&n; *  &quot;High Precision Event Timer&quot; based timekeeping.&n; *&n; *  Copyright (c) 1991,1992,1995  Linus Torvalds&n; *  Copyright (c) 1994  Alan Modra&n; *  Copyright (c) 1995  Markus Kuhn&n; *  Copyright (c) 1996  Ingo Molnar&n; *  Copyright (c) 1998  Andrea Arcangeli&n; *  Copyright (c) 2002  Vojtech Pavlik&n; *  Copyright (c) 2003  Andi Kleen&n; *  RTC support code taken from arch/i386/kernel/timers/time_hpet.c&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/x86-64/kernel/time.c&n; *&n; *  &quot;High Precision Event Timer&quot; based timekeeping.&n; *&n; *  Copyright (c) 1991,1992,1995  Linus Torvalds&n; *  Copyright (c) 1994  Alan Modra&n; *  Copyright (c) 1995  Markus Kuhn&n; *  Copyright (c) 1996  Ingo Molnar&n; *  Copyright (c) 1998  Andrea Arcangeli&n; *  Copyright (c) 2002  Vojtech Pavlik&n; *  Copyright (c) 2003  Andi Kleen&n; *  RTC support code taken from arch/i386/kernel/timers/time_hpet.c&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -35,6 +35,16 @@ c_func
 id|jiffies_64
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ
+r_static
+r_void
+id|cpufreq_delayed_get
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|using_apic_timer
@@ -161,7 +171,7 @@ id|tsc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_gettimeoffset() returns microseconds since last timer interrupt was&n; * triggered by hardware. A memory read of HPET is slower than a register read&n; * of TSC, but much more reliable. It&squot;s also synchronized to the timer&n; * interrupt. Note that do_gettimeoffset() may return more than hpet_tick, if a&n; * timer interrupt has happened already, but vxtime.trigger wasn&squot;t updated yet.&n; * This is not a problem, because jiffies hasn&squot;t updated either. They are bound&n; * together by xtime_lock.&n;         */
+multiline_comment|/*&n; * do_gettimeoffset() returns microseconds since last timer interrupt was&n; * triggered by hardware. A memory read of HPET is slower than a register read&n; * of TSC, but much more reliable. It&squot;s also synchronized to the timer&n; * interrupt. Note that do_gettimeoffset() may return more than hpet_tick, if a&n; * timer interrupt has happened already, but vxtime.trigger wasn&squot;t updated yet.&n; * This is not a problem, because jiffies hasn&squot;t updated either. They are bound&n; * together by xtime_lock.&n; */
 DECL|function|do_gettimeoffset_tsc
 r_static
 r_inline
@@ -305,7 +315,7 @@ id|xtime.tv_nsec
 op_div
 l_int|1000
 suffix:semicolon
-multiline_comment|/* i386 does some correction here to keep the clock &n;&t;&t;   monotonus even when ntpd is fixing drift.&n;&t;&t;   But they didn&squot;t work for me, there is a non monotonic&n;&t;&t;   clock anyways with ntp.&n;&t;&t;   I dropped all corrections now until a real solution can&n;&t;&t;   be found. Note when you fix it here you need to do the same&n;&t;&t;   in arch/x86_64/kernel/vsyscall.c and export all needed&n;&t;&t;   variables in vmlinux.lds. -AK */
+multiline_comment|/* i386 does some correction here to keep the clock &n;&t;&t;   monotonous even when ntpd is fixing drift.&n;&t;&t;   But they didn&squot;t work for me, there is a non monotonic&n;&t;&t;   clock anyways with ntp.&n;&t;&t;   I dropped all corrections now until a real solution can&n;&t;&t;   be found. Note when you fix it here you need to do the same&n;&t;&t;   in arch/x86_64/kernel/vsyscall.c and export all needed&n;&t;&t;   variables in vmlinux.lds. -AK */
 id|t
 op_assign
 (paren
@@ -600,7 +610,7 @@ c_func
 id|cmos_minutes
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * since we&squot;re only adjusting minutes and seconds, don&squot;t interfere with hour&n; * overflow. This avoids messing with unknown time zones but requires your RTC&n; * not to be off by more than 15 minutes. Since we&squot;re calling it only when&n; * our clock is externally synchronized using NTP, this shouldn&squot;t be a problem.&n;&t; */
+multiline_comment|/*&n; * since we&squot;re only adjusting minutes and seconds, don&squot;t interfere with hour&n; * overflow. This avoids messing with unknown time zones but requires your RTC&n; * not to be off by more than 15 minutes. Since we&squot;re calling it only when&n; * our clock is externally synchronized using NTP, this shouldn&squot;t be a problem.&n; */
 id|real_seconds
 op_assign
 id|nowtime
@@ -932,10 +942,6 @@ suffix:semicolon
 r_int
 r_int
 id|tsc
-comma
-id|lost
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|delay
@@ -943,8 +949,12 @@ comma
 id|offset
 op_assign
 l_int|0
+comma
+id|lost
+op_assign
+l_int|0
 suffix:semicolon
-multiline_comment|/*&n; * Here we are in the timer irq handler. We have irqs locally disabled (so we&n; * don&squot;t need spin_lock_irqsave()) but we don&squot;t know if the timer_bh is running&n; * on the other CPU, so we need a lock. We also need to lock the vsyscall&n; * variables, because both do_timer() and us change them -arca+vojtech&n;&t; */
+multiline_comment|/*&n; * Here we are in the timer irq handler. We have irqs locally disabled (so we&n; * don&squot;t need spin_lock_irqsave()) but we don&squot;t know if the timer_bh is running&n; * on the other CPU, so we need a lock. We also need to lock the vsyscall&n; * variables, because both do_timer() and us change them -arca+vojtech&n; */
 id|write_seqlock
 c_func
 (paren
@@ -1220,8 +1230,14 @@ r_if
 c_cond
 (paren
 id|lost
+OG
+l_int|0
 )paren
 (brace
+r_static
+r_int
+id|lost_count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1232,7 +1248,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;time.c: Lost %ld timer &quot;
+l_string|&quot;time.c: Lost %d timer &quot;
 l_string|&quot;tick(s)! &quot;
 comma
 id|lost
@@ -1246,6 +1262,60 @@ comma
 id|regs-&gt;rip
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lost_count
+op_eq
+l_int|100
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;warning: many lost ticks.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Your time source seems to be instable or some driver is hogging interupts&bslash;n&quot;
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;rip %s&bslash;n&quot;
+comma
+id|regs-&gt;rip
+)paren
+suffix:semicolon
+id|lost_count
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+id|lost_count
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|lost_count
+op_mod
+l_int|25
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+macro_line|#ifdef CONFIG_CPU_FREQ
+id|cpufreq_delayed_get
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|jiffies
 op_add_assign
@@ -1658,6 +1728,101 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_CPU_FREQ
 multiline_comment|/* Frequency scaling support. Adjust the TSC based timer when the cpu frequency&n;   changes.&n;   &n;   RED-PEN: On SMP we assume all CPUs run with the same frequency.  It&squot;s&n;   not that important because current Opteron setups do not support&n;   scaling on SMP anyroads.&n;&n;   Should fix up last_tsc too. Currently gettimeofday in the&n;   first tick after the change will be slightly wrong. */
+macro_line|#include &lt;linux/workqueue.h&gt;
+DECL|variable|cpufreq_delayed_issched
+r_static
+r_int
+r_int
+id|cpufreq_delayed_issched
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|cpufreq_init
+r_static
+r_int
+r_int
+id|cpufreq_init
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|cpufreq_delayed_get_work
+r_static
+r_struct
+id|work_struct
+id|cpufreq_delayed_get_work
+suffix:semicolon
+DECL|function|handle_cpufreq_delayed_get
+r_static
+r_void
+id|handle_cpufreq_delayed_get
+c_func
+(paren
+r_void
+op_star
+id|v
+)paren
+(brace
+r_int
+r_int
+id|cpu
+suffix:semicolon
+id|for_each_online_cpu
+c_func
+(paren
+id|cpu
+)paren
+(brace
+id|cpufreq_get
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+)brace
+id|cpufreq_delayed_issched
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* if we notice lost ticks, schedule a call to cpufreq_get() as it tries&n; * to verify the CPU frequency the timing core thinks the CPU is running&n; * at is still correct.&n; */
+DECL|function|cpufreq_delayed_get
+r_static
+r_void
+id|cpufreq_delayed_get
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpufreq_init
+op_logical_and
+op_logical_neg
+id|cpufreq_delayed_issched
+)paren
+(brace
+id|cpufreq_delayed_issched
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Losing some ticks... checking if CPU frequency changed.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|schedule_work
+c_func
+(paren
+op_amp
+id|cpufreq_delayed_get_work
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|variable|ref_freq
 r_static
 r_int
@@ -1713,7 +1878,24 @@ r_int
 r_int
 op_star
 id|lpj
+comma
+id|dummy
 suffix:semicolon
+id|lpj
+op_assign
+op_amp
+id|dummy
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|freq-&gt;flags
+op_amp
+id|CPUFREQ_CONST_LOOPS
+)paren
+)paren
 macro_line|#ifdef CONFIG_SMP
 id|lpj
 op_assign
@@ -1816,6 +1998,16 @@ op_member_access_from_pointer
 r_new
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|freq-&gt;flags
+op_amp
+id|CPUFREQ_CONST_LOOPS
+)paren
+)paren
 id|vxtime.tsc_quot
 op_assign
 (paren
@@ -1851,6 +2043,55 @@ id|notifier_call
 op_assign
 id|time_cpufreq_notifier
 )brace
+suffix:semicolon
+DECL|function|cpufreq_tsc
+r_static
+r_int
+id|__init
+id|cpufreq_tsc
+c_func
+(paren
+r_void
+)paren
+(brace
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cpufreq_delayed_get_work
+comma
+id|handle_cpufreq_delayed_get
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpufreq_register_notifier
+c_func
+(paren
+op_amp
+id|time_cpufreq_notifier_block
+comma
+id|CPUFREQ_TRANSITION_NOTIFIER
+)paren
+)paren
+id|cpufreq_init
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|cpufreq_tsc
+id|core_initcall
+c_func
+(paren
+id|cpufreq_tsc
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * calibrate_tsc() calibrates the processor TSC in a very simple way, comparing&n; * it to the HPET timer of known frequency.&n; */
@@ -2700,17 +2941,6 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ
-id|cpufreq_register_notifier
-c_func
-(paren
-op_amp
-id|time_cpufreq_notifier_block
-comma
-id|CPUFREQ_TRANSITION_NOTIFIER
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|time_init_smp
 r_void

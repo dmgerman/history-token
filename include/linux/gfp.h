@@ -61,6 +61,25 @@ DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA
 multiline_comment|/*&n; * There is only one page-allocator function, and two main namespaces to&n; * it. The alloc_page*() variants return &squot;struct page *&squot; and as such&n; * can allocate highmem pages, the *get*page*() variants return&n; * virtual kernel addresses to the allocated page(s).&n; */
 multiline_comment|/*&n; * We get the zone list from the current node and the gfp_mask.&n; * This zone list contains a maximum of MAXNODES*MAX_NR_ZONES zones.&n; *&n; * For the normal case of non-DISCONTIGMEM systems the NODE_DATA() gets&n; * optimized to &amp;contig_page_data at compile-time.&n; */
+macro_line|#ifndef HAVE_ARCH_FREE_PAGE
+DECL|function|arch_free_page
+r_static
+r_inline
+r_void
+id|arch_free_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|order
+)paren
+(brace
+)brace
+macro_line|#endif
 r_extern
 r_struct
 id|page

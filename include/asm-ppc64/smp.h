@@ -38,6 +38,13 @@ DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (get_paca()-&gt;paca_index)
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;hw_cpu_id)
+r_extern
+id|cpumask_t
+id|cpu_sibling_map
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION   0

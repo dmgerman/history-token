@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/types.h&quot;
 macro_line|#include &quot;linux/utime.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;

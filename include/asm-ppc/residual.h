@@ -1201,6 +1201,10 @@ DECL|typedef|RESIDUAL
 )brace
 id|RESIDUAL
 suffix:semicolon
+multiline_comment|/*&n; * Forward declaration - we can&squot;t include &lt;linux/pci.h&gt; because it&n; * breaks the boot loader&n; */
+r_struct
+id|pci_dev
+suffix:semicolon
 r_extern
 id|RESIDUAL
 op_star
@@ -1240,6 +1244,40 @@ id|Interface
 comma
 r_int
 id|n
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|residual_pcidev_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|residual_irq_mask
+c_func
+(paren
+r_char
+op_star
+id|irq_edge_mask_lo
+comma
+r_char
+op_star
+id|irq_edge_mask_hi
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|residual_isapic_addr
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -1296,6 +1334,13 @@ r_int
 id|n
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
+DECL|macro|have_residual_data
+mdefine_line|#define have_residual_data&t;(res &amp;&amp; res-&gt;ResidualLength)
+macro_line|#else
+DECL|macro|have_residual_data
+mdefine_line|#define have_residual_data&t;0
+macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif  /* ndef _RESIDUAL_ */
 macro_line|#endif /* __KERNEL__ */

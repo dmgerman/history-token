@@ -1,3 +1,4 @@
+macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 DECL|macro|PRINT_REG

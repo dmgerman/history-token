@@ -81,7 +81,8 @@ comma
 id|UML_ROUND_UP
 c_func
 (paren
-id|brk_start
+op_amp
+id|_end
 )paren
 comma
 l_int|1

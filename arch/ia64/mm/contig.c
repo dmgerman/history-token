@@ -967,8 +967,6 @@ comma
 op_amp
 id|contig_page_data
 comma
-l_int|NULL
-comma
 id|zones_size
 comma
 l_int|0
@@ -1023,6 +1021,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|contig_page_data.node_mem_map
+op_assign
+id|vmem_map
+suffix:semicolon
 id|free_area_init_node
 c_func
 (paren
@@ -1030,8 +1032,6 @@ l_int|0
 comma
 op_amp
 id|contig_page_data
-comma
-id|vmem_map
 comma
 id|zones_size
 comma

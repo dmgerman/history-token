@@ -5589,7 +5589,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|rdev
+id|rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6778,7 +6778,7 @@ id|flags
 id|md_sync_acct
 c_func
 (paren
-id|rdev
+id|rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren

@@ -82,10 +82,6 @@ c_func
 id|size
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|addr
 op_assign
 id|mmap
@@ -105,7 +101,11 @@ id|data
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
 op_eq
 id|MAP_FAILED
 )paren

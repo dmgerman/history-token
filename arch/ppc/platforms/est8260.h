@@ -6,6 +6,11 @@ DECL|macro|CPM_MAP_ADDR
 mdefine_line|#define CPM_MAP_ADDR&t;&t;((uint)0xf0000000)
 DECL|macro|BOOTROM_RESTART_ADDR
 mdefine_line|#define BOOTROM_RESTART_ADDR&t;((uint)0xff000104)
+multiline_comment|/* For our show_cpuinfo hooks. */
+DECL|macro|CPUINFO_VENDOR
+mdefine_line|#define CPUINFO_VENDOR&t;&t;&quot;EST Corporation&quot;
+DECL|macro|CPUINFO_MACHINE
+mdefine_line|#define CPUINFO_MACHINE&t;&t;&quot;SBC8260 PowerPC&quot;
 multiline_comment|/* A Board Information structure that is given to a program when&n; * prom starts it up.&n; */
 DECL|struct|bd_info
 r_typedef

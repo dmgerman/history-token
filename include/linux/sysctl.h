@@ -641,6 +641,12 @@ op_assign
 l_int|26
 comma
 multiline_comment|/* dcache/icache reclaim pressure */
+DECL|enumerator|VM_LEGACY_VA_LAYOUT
+id|VM_LEGACY_VA_LAYOUT
+op_assign
+l_int|27
+comma
+multiline_comment|/* legacy/compatibility virtual address space layout */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

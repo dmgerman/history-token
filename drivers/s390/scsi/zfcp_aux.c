@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_aux.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_AUX_REVISION
-mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.115 $&quot;
+mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.121 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 multiline_comment|/* accumulated log level (module parameter) */
 DECL|variable|loglevel
@@ -74,6 +74,7 @@ id|zfcp_sg_list
 op_star
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -86,6 +87,7 @@ id|zfcp_sg_list_copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 comma
 r_struct
@@ -239,7 +241,7 @@ c_func
 id|loglevel
 comma
 l_string|&quot;log levels, 8 nibbles: &quot;
-l_string|&quot;(unassigned) ERP QDIO DIO Config FSF SCSI Other, &quot;
+l_string|&quot;(unassigned) FC ERP QDIO CIO Config FSF SCSI Other, &quot;
 l_string|&quot;levels: 0=none 1=normal 2=devel 3=trace&quot;
 )paren
 suffix:semicolon
@@ -1567,6 +1569,7 @@ r_struct
 id|zfcp_cfdc_sense_data
 id|sense_data
 comma
+id|__user
 op_star
 id|sense_data_user
 suffix:semicolon
@@ -1684,8 +1687,8 @@ c_cond
 id|sense_data_user
 op_assign
 (paren
-r_struct
-id|zfcp_cfdc_sense_data
+r_void
+id|__user
 op_star
 )paren
 id|buffer
@@ -2150,6 +2153,31 @@ op_amp
 id|ZFCP_STATUS_FSFREQ_COMPLETED
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|fsf_req-&gt;qtcb-&gt;prefix.prot_status
+op_ne
+id|FSF_PROT_GOOD
+)paren
+op_logical_and
+(paren
+id|fsf_req-&gt;qtcb-&gt;prefix.prot_status
+op_ne
+id|FSF_PROT_FSF_STATUS_PRESENTED
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|sense_data.fsf_status
 op_assign
 id|fsf_req-&gt;qtcb-&gt;header.fsf_status
@@ -2571,6 +2599,7 @@ op_star
 id|sg_list
 comma
 r_void
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2692,6 +2721,7 @@ id|zfcp_sg_list_copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user_buffer
 comma
@@ -6419,49 +6449,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ct_iu_resp-&gt;header.revision
-op_ne
-id|ZFCP_CT_REVISION
-)paren
-r_goto
-id|failed
-suffix:semicolon
-r_if
-c_cond
+id|zfcp_check_ct_response
+c_func
 (paren
-id|ct_iu_resp-&gt;header.gs_type
-op_ne
-id|ZFCP_CT_DIRECTORY_SERVICE
+op_amp
+id|ct_iu_resp-&gt;header
 )paren
-r_goto
-id|failed
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ct_iu_resp-&gt;header.gs_subtype
-op_ne
-id|ZFCP_CT_NAME_SERVER
-)paren
-r_goto
-id|failed
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ct_iu_resp-&gt;header.options
-op_ne
-id|ZFCP_CT_SYNCHRONOUS
-)paren
-r_goto
-id|failed
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ct_iu_resp-&gt;header.cmd_rsp_code
-op_ne
-id|ZFCP_CT_ACCEPT
 )paren
 (brace
 multiline_comment|/* FIXME: do we need some specific erp entry points */
@@ -6612,6 +6605,720 @@ id|gid_pn
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+multiline_comment|/* reject CT_IU reason codes acc. to FC-GS-4 */
+DECL|variable|zfcp_ct_rc
+r_static
+r_const
+r_struct
+id|zfcp_rc_entry
+id|zfcp_ct_rc
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x01
+comma
+l_string|&quot;invalid command code&quot;
+)brace
+comma
+(brace
+l_int|0x02
+comma
+l_string|&quot;invalid version level&quot;
+)brace
+comma
+(brace
+l_int|0x03
+comma
+l_string|&quot;logical error&quot;
+)brace
+comma
+(brace
+l_int|0x04
+comma
+l_string|&quot;invalid CT_IU size&quot;
+)brace
+comma
+(brace
+l_int|0x05
+comma
+l_string|&quot;logical busy&quot;
+)brace
+comma
+(brace
+l_int|0x07
+comma
+l_string|&quot;protocol error&quot;
+)brace
+comma
+(brace
+l_int|0x09
+comma
+l_string|&quot;unable to perform command request&quot;
+)brace
+comma
+(brace
+l_int|0x0b
+comma
+l_string|&quot;command not supported&quot;
+)brace
+comma
+(brace
+l_int|0x0d
+comma
+l_string|&quot;server not available&quot;
+)brace
+comma
+(brace
+l_int|0x0e
+comma
+l_string|&quot;session could not be established&quot;
+)brace
+comma
+(brace
+l_int|0xff
+comma
+l_string|&quot;vendor specific error&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|NULL
+)brace
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* LS_RJT reason codes acc. to FC-FS */
+DECL|variable|zfcp_ls_rjt_rc
+r_static
+r_const
+r_struct
+id|zfcp_rc_entry
+id|zfcp_ls_rjt_rc
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x01
+comma
+l_string|&quot;invalid LS_Command code&quot;
+)brace
+comma
+(brace
+l_int|0x03
+comma
+l_string|&quot;logical error&quot;
+)brace
+comma
+(brace
+l_int|0x05
+comma
+l_string|&quot;logical busy&quot;
+)brace
+comma
+(brace
+l_int|0x07
+comma
+l_string|&quot;protocol error&quot;
+)brace
+comma
+(brace
+l_int|0x09
+comma
+l_string|&quot;unable to perform command request&quot;
+)brace
+comma
+(brace
+l_int|0x0b
+comma
+l_string|&quot;command not supported&quot;
+)brace
+comma
+(brace
+l_int|0x0e
+comma
+l_string|&quot;command already in progress&quot;
+)brace
+comma
+(brace
+l_int|0xff
+comma
+l_string|&quot;vendor specific error&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|NULL
+)brace
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* reject reason codes according to FC-PH/FC-FS */
+DECL|variable|zfcp_p_rjt_rc
+r_static
+r_const
+r_struct
+id|zfcp_rc_entry
+id|zfcp_p_rjt_rc
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x01
+comma
+l_string|&quot;invalid D_ID&quot;
+)brace
+comma
+(brace
+l_int|0x02
+comma
+l_string|&quot;invalid S_ID&quot;
+)brace
+comma
+(brace
+l_int|0x03
+comma
+l_string|&quot;Nx_Port not available, temporary&quot;
+)brace
+comma
+(brace
+l_int|0x04
+comma
+l_string|&quot;Nx_Port not available, permament&quot;
+)brace
+comma
+(brace
+l_int|0x05
+comma
+l_string|&quot;class not supported&quot;
+)brace
+comma
+(brace
+l_int|0x06
+comma
+l_string|&quot;delimiter usage error&quot;
+)brace
+comma
+(brace
+l_int|0x07
+comma
+l_string|&quot;TYPE not supported&quot;
+)brace
+comma
+(brace
+l_int|0x08
+comma
+l_string|&quot;invalid Link_Control&quot;
+)brace
+comma
+(brace
+l_int|0x09
+comma
+l_string|&quot;invalid R_CTL field&quot;
+)brace
+comma
+(brace
+l_int|0x0a
+comma
+l_string|&quot;invalid F_CTL field&quot;
+)brace
+comma
+(brace
+l_int|0x0b
+comma
+l_string|&quot;invalid OX_ID&quot;
+)brace
+comma
+(brace
+l_int|0x0c
+comma
+l_string|&quot;invalid RX_ID&quot;
+)brace
+comma
+(brace
+l_int|0x0d
+comma
+l_string|&quot;invalid SEQ_ID&quot;
+)brace
+comma
+(brace
+l_int|0x0e
+comma
+l_string|&quot;invalid DF_CTL&quot;
+)brace
+comma
+(brace
+l_int|0x0f
+comma
+l_string|&quot;invalid SEQ_CNT&quot;
+)brace
+comma
+(brace
+l_int|0x10
+comma
+l_string|&quot;invalid parameter field&quot;
+)brace
+comma
+(brace
+l_int|0x11
+comma
+l_string|&quot;exchange error&quot;
+)brace
+comma
+(brace
+l_int|0x12
+comma
+l_string|&quot;protocol error&quot;
+)brace
+comma
+(brace
+l_int|0x13
+comma
+l_string|&quot;incorrect length&quot;
+)brace
+comma
+(brace
+l_int|0x14
+comma
+l_string|&quot;unsupported ACK&quot;
+)brace
+comma
+(brace
+l_int|0x15
+comma
+l_string|&quot;class of service not supported by entity at FFFFFE&quot;
+)brace
+comma
+(brace
+l_int|0x16
+comma
+l_string|&quot;login required&quot;
+)brace
+comma
+(brace
+l_int|0x17
+comma
+l_string|&quot;excessive sequences attempted&quot;
+)brace
+comma
+(brace
+l_int|0x18
+comma
+l_string|&quot;unable to establish exchange&quot;
+)brace
+comma
+(brace
+l_int|0x1a
+comma
+l_string|&quot;fabric path not available&quot;
+)brace
+comma
+(brace
+l_int|0x1b
+comma
+l_string|&quot;invalid VC_ID (class 4)&quot;
+)brace
+comma
+(brace
+l_int|0x1c
+comma
+l_string|&quot;invalid CS_CTL field&quot;
+)brace
+comma
+(brace
+l_int|0x1d
+comma
+l_string|&quot;insufficient resources for VC (class 4)&quot;
+)brace
+comma
+(brace
+l_int|0x1f
+comma
+l_string|&quot;invalid class of service&quot;
+)brace
+comma
+(brace
+l_int|0x20
+comma
+l_string|&quot;preemption request rejected&quot;
+)brace
+comma
+(brace
+l_int|0x21
+comma
+l_string|&quot;preemption not enabled&quot;
+)brace
+comma
+(brace
+l_int|0x22
+comma
+l_string|&quot;multicast error&quot;
+)brace
+comma
+(brace
+l_int|0x23
+comma
+l_string|&quot;multicast error terminate&quot;
+)brace
+comma
+(brace
+l_int|0x24
+comma
+l_string|&quot;process login required&quot;
+)brace
+comma
+(brace
+l_int|0xff
+comma
+l_string|&quot;vendor specific reject&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|NULL
+)brace
+comma
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * zfcp_rc_description - return description for given reaon code&n; * @code: reason code&n; * @rc_table: table of reason codes and descriptions&n; */
+r_static
+r_inline
+r_const
+r_char
+op_star
+DECL|function|zfcp_rc_description
+id|zfcp_rc_description
+c_func
+(paren
+id|u8
+id|code
+comma
+r_const
+r_struct
+id|zfcp_rc_entry
+op_star
+id|rc_table
+)paren
+(brace
+r_const
+r_char
+op_star
+id|descr
+op_assign
+l_string|&quot;unknown reason code&quot;
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|code
+op_eq
+id|rc_table-&gt;code
+)paren
+(brace
+id|descr
+op_assign
+id|rc_table-&gt;description
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|rc_table
+op_increment
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|rc_table-&gt;code
+op_logical_and
+id|rc_table-&gt;description
+)paren
+suffix:semicolon
+r_return
+id|descr
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_check_ct_response - evaluate reason code for CT_IU&n; * @rjt: response payload to an CT_IU request&n; * Return: 0 for accept CT_IU, 1 for reject CT_IU or invlid response code&n; */
+r_int
+DECL|function|zfcp_check_ct_response
+id|zfcp_check_ct_response
+c_func
+(paren
+r_struct
+id|ct_hdr
+op_star
+id|rjt
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|rjt-&gt;cmd_rsp_code
+op_eq
+id|ZFCP_CT_ACCEPT
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rjt-&gt;cmd_rsp_code
+op_ne
+id|ZFCP_CT_REJECT
+)paren
+(brace
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;error: invalid Generic Service command/&quot;
+l_string|&quot;response code (0x%04hx)&bslash;n&quot;
+comma
+id|rjt-&gt;cmd_rsp_code
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;Generic Service command rejected&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;%s (0x%02x, 0x%02x, 0x%02x)&bslash;n&quot;
+comma
+id|zfcp_rc_description
+c_func
+(paren
+id|rjt-&gt;reason_code
+comma
+id|zfcp_ct_rc
+)paren
+comma
+(paren
+id|u32
+)paren
+id|rjt-&gt;reason_code
+comma
+(paren
+id|u32
+)paren
+id|rjt-&gt;reason_code_expl
+comma
+(paren
+id|u32
+)paren
+id|rjt-&gt;vendor_unique
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_print_els_rjt - print reject parameter and description for ELS reject&n; * @rjt_par: reject parameter acc. to FC-PH/FC-FS&n; * @rc_table: table of reason codes and descriptions&n; */
+r_static
+r_inline
+r_void
+DECL|function|zfcp_print_els_rjt
+id|zfcp_print_els_rjt
+c_func
+(paren
+r_struct
+id|zfcp_ls_rjt_par
+op_star
+id|rjt_par
+comma
+r_const
+r_struct
+id|zfcp_rc_entry
+op_star
+id|rc_table
+)paren
+(brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;%s (%02x %02x %02x %02x)&bslash;n&quot;
+comma
+id|zfcp_rc_description
+c_func
+(paren
+id|rjt_par-&gt;reason_code
+comma
+id|rc_table
+)paren
+comma
+(paren
+id|u32
+)paren
+id|rjt_par-&gt;action
+comma
+(paren
+id|u32
+)paren
+id|rjt_par-&gt;reason_code
+comma
+(paren
+id|u32
+)paren
+id|rjt_par-&gt;reason_expl
+comma
+(paren
+id|u32
+)paren
+id|rjt_par-&gt;vendor_unique
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * zfcp_fsf_handle_els_rjt - evaluate status qualifier/reason code on ELS reject&n; * @sq: status qualifier word&n; * @rjt_par: reject parameter as described in FC-PH and FC-FS&n; * Return: -EROMTEIO for LS_RJT, -EREMCHG for invalid D_ID, -EIO else&n; */
+r_int
+DECL|function|zfcp_handle_els_rjt
+id|zfcp_handle_els_rjt
+c_func
+(paren
+id|u32
+id|sq
+comma
+r_struct
+id|zfcp_ls_rjt_par
+op_star
+id|rjt_par
+)paren
+(brace
+r_int
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sq
+op_eq
+id|FSF_IOSTAT_NPORT_RJT
+)paren
+(brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;ELS rejected (P_RJT)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|zfcp_print_els_rjt
+c_func
+(paren
+id|rjt_par
+comma
+id|zfcp_p_rjt_rc
+)paren
+suffix:semicolon
+multiline_comment|/* invalid d_id */
+r_if
+c_cond
+(paren
+id|rjt_par-&gt;reason_code
+op_eq
+l_int|0x01
+)paren
+id|ret
+op_assign
+op_minus
+id|EREMCHG
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sq
+op_eq
+id|FSF_IOSTAT_FABRIC_RJT
+)paren
+(brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;ELS rejected (F_RJT)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|zfcp_print_els_rjt
+c_func
+(paren
+id|rjt_par
+comma
+id|zfcp_p_rjt_rc
+)paren
+suffix:semicolon
+multiline_comment|/* invalid d_id */
+r_if
+c_cond
+(paren
+id|rjt_par-&gt;reason_code
+op_eq
+l_int|0x01
+)paren
+id|ret
+op_assign
+op_minus
+id|EREMCHG
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sq
+op_eq
+id|FSF_IOSTAT_LS_RJT
+)paren
+(brace
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;ELS rejected (LS_RJT)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|zfcp_print_els_rjt
+c_func
+(paren
+id|rjt_par
+comma
+id|zfcp_ls_rjt_rc
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EREMOTEIO
+suffix:semicolon
+)brace
+r_else
+id|ZFCP_LOG_INFO
+c_func
+(paren
+l_string|&quot;unexpected SQ: 0x%02x&bslash;n&quot;
+comma
+id|sq
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|macro|ZFCP_LOG_AREA

@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 DECL|macro|VTIMER_MAGIC
-mdefine_line|#define VTIMER_MAGIC (0x4b87ad6e + 1)
+mdefine_line|#define VTIMER_MAGIC (TIMER_MAGIC + 1)
 DECL|variable|ext_int_info_timer
 r_static
 id|ext_int_info_t

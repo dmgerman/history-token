@@ -162,6 +162,7 @@ comma
 l_int|8
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x08
 comma
@@ -170,6 +171,7 @@ comma
 l_int|16
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x0a
 comma
@@ -178,6 +180,7 @@ comma
 l_int|8
 )brace
 comma
+multiline_comment|/* 2 way set assoc, 32 byte line size */
 (brace
 l_int|0x0c
 comma
@@ -186,6 +189,7 @@ comma
 l_int|16
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x22
 comma
@@ -194,6 +198,7 @@ comma
 l_int|512
 )brace
 comma
+multiline_comment|/* 4-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x23
 comma
@@ -202,6 +207,7 @@ comma
 l_int|1024
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x25
 comma
@@ -210,6 +216,7 @@ comma
 l_int|2048
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x29
 comma
@@ -218,6 +225,7 @@ comma
 l_int|4096
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x2c
 comma
@@ -226,6 +234,7 @@ comma
 l_int|32
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 64 byte line size */
 (brace
 l_int|0x30
 comma
@@ -234,6 +243,7 @@ comma
 l_int|32
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 64 byte line size */
 (brace
 l_int|0x39
 comma
@@ -242,6 +252,7 @@ comma
 l_int|128
 )brace
 comma
+multiline_comment|/* 4-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x3b
 comma
@@ -250,6 +261,7 @@ comma
 l_int|128
 )brace
 comma
+multiline_comment|/* 2-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x3c
 comma
@@ -258,6 +270,7 @@ comma
 l_int|256
 )brace
 comma
+multiline_comment|/* 4-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x41
 comma
@@ -266,6 +279,7 @@ comma
 l_int|128
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x42
 comma
@@ -274,6 +288,7 @@ comma
 l_int|256
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x43
 comma
@@ -282,6 +297,7 @@ comma
 l_int|512
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x44
 comma
@@ -290,6 +306,7 @@ comma
 l_int|1024
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x45
 comma
@@ -298,6 +315,7 @@ comma
 l_int|2048
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 32 byte line size */
 (brace
 l_int|0x60
 comma
@@ -306,6 +324,7 @@ comma
 l_int|16
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x66
 comma
@@ -314,6 +333,7 @@ comma
 l_int|8
 )brace
 comma
+multiline_comment|/* 4-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x67
 comma
@@ -322,6 +342,7 @@ comma
 l_int|16
 )brace
 comma
+multiline_comment|/* 4-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x68
 comma
@@ -330,6 +351,7 @@ comma
 l_int|32
 )brace
 comma
+multiline_comment|/* 4-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x70
 comma
@@ -338,6 +360,7 @@ comma
 l_int|12
 )brace
 comma
+multiline_comment|/* 8-way set assoc */
 (brace
 l_int|0x71
 comma
@@ -346,6 +369,7 @@ comma
 l_int|16
 )brace
 comma
+multiline_comment|/* 8-way set assoc */
 (brace
 l_int|0x72
 comma
@@ -354,6 +378,7 @@ comma
 l_int|32
 )brace
 comma
+multiline_comment|/* 8-way set assoc */
 (brace
 l_int|0x78
 comma
@@ -362,6 +387,7 @@ comma
 l_int|1024
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 64 byte line size */
 (brace
 l_int|0x79
 comma
@@ -370,6 +396,7 @@ comma
 l_int|128
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x7a
 comma
@@ -378,6 +405,7 @@ comma
 l_int|256
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x7b
 comma
@@ -386,6 +414,7 @@ comma
 l_int|512
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x7c
 comma
@@ -394,6 +423,7 @@ comma
 l_int|1024
 )brace
 comma
+multiline_comment|/* 8-way set assoc, sectored cache, 64 byte line size */
 (brace
 l_int|0x7d
 comma
@@ -402,6 +432,7 @@ comma
 l_int|2048
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 64 byte line size */
 (brace
 l_int|0x7f
 comma
@@ -410,6 +441,7 @@ comma
 l_int|512
 )brace
 comma
+multiline_comment|/* 2-way set assoc, 64 byte line size */
 (brace
 l_int|0x82
 comma
@@ -418,6 +450,7 @@ comma
 l_int|256
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 32 byte line size */
 (brace
 l_int|0x83
 comma
@@ -426,6 +459,7 @@ comma
 l_int|512
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 32 byte line size */
 (brace
 l_int|0x84
 comma
@@ -434,6 +468,7 @@ comma
 l_int|1024
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 32 byte line size */
 (brace
 l_int|0x85
 comma
@@ -442,6 +477,7 @@ comma
 l_int|2048
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 32 byte line size */
 (brace
 l_int|0x86
 comma
@@ -450,6 +486,7 @@ comma
 l_int|512
 )brace
 comma
+multiline_comment|/* 4-way set assoc, 64 byte line size */
 (brace
 l_int|0x87
 comma
@@ -458,6 +495,7 @@ comma
 l_int|1024
 )brace
 comma
+multiline_comment|/* 8-way set assoc, 64 byte line size */
 (brace
 l_int|0x00
 comma

@@ -11,6 +11,7 @@ macro_line|#include &quot;mcast.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;user.h&quot;
+macro_line|#include &quot;os.h&quot;
 DECL|macro|MAX_PACKET
 mdefine_line|#define MAX_PACKET (ETH_MAX_PACKET + ETH_HEADER_OTHER)
 DECL|function|new_addr
@@ -183,10 +184,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|fd
 op_assign
 id|socket
@@ -198,7 +195,11 @@ id|SOCK_DGRAM
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fd
 OL
 l_int|0
 )paren
@@ -252,7 +253,7 @@ comma
 id|errno
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -300,7 +301,7 @@ comma
 id|errno
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -348,7 +349,7 @@ comma
 id|errno
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -397,7 +398,7 @@ comma
 id|errno
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -467,7 +468,7 @@ l_string|&quot;eth0 should be configured in order to use the &quot;
 l_string|&quot;multicast transport.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
@@ -558,7 +559,7 @@ id|errno
 )paren
 suffix:semicolon
 )brace
-id|close
+id|os_close_file
 c_func
 (paren
 id|fd
