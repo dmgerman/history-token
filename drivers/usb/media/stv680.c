@@ -7340,7 +7340,7 @@ suffix:semicolon
 )brace
 DECL|function|stv680_read
 r_static
-r_int
+id|ssize_t
 id|stv680_read
 (paren
 r_struct

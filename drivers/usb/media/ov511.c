@@ -20553,7 +20553,7 @@ id|rc
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|ov51x_v4l1_read
 id|ov51x_v4l1_read
 c_func

@@ -5337,7 +5337,7 @@ suffix:semicolon
 )brace
 DECL|function|se401_read
 r_static
-r_int
+id|ssize_t
 id|se401_read
 c_func
 (paren
