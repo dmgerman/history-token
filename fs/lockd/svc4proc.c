@@ -1732,6 +1732,13 @@ id|saddr.sin_addr.s_addr
 op_assign
 id|argp-&gt;addr
 suffix:semicolon
+id|nlmsvc_ops
+op_member_access_from_pointer
+id|exp_readlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1781,6 +1788,13 @@ id|nlm_release_host
 c_func
 (paren
 id|host
+)paren
+suffix:semicolon
+id|nlmsvc_ops
+op_member_access_from_pointer
+id|exp_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
