@@ -17,8 +17,10 @@ DECL|function|ide_init_rz1000
 r_void
 id|__init
 id|ide_init_rz1000
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren
@@ -221,7 +223,8 @@ op_increment
 id|h
 )paren
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
@@ -297,7 +300,7 @@ id|IDE_DATA_OFFSET
 op_eq
 l_int|0x170
 )paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_assign
 l_int|1
 suffix:semicolon

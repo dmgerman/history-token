@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/ide/ide-geometry.c&n; *&n; * Sun Feb 24 23:13:03 CET 2002: Patch by Andries Brouwer to remove the&n; * confused CMOS probe applied. This is solving more problems then it my&n; * (unexpectedly) introduce.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

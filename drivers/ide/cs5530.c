@@ -397,7 +397,7 @@ multiline_comment|/*&n; * After chip reset, the PIO timings are set to 0x0000e13
 DECL|macro|CS5530_BAD_PIO
 mdefine_line|#define CS5530_BAD_PIO(timings) (((timings)&amp;~0x80000000)==0x0000e132)
 DECL|macro|CS5530_BASEREG
-mdefine_line|#define CS5530_BASEREG(hwif)&t;(((hwif)-&gt;dma_base &amp; ~0xf) + ((hwif)-&gt;channel ? 0x30 : 0x20))
+mdefine_line|#define CS5530_BASEREG(hwif)&t;(((hwif)-&gt;dma_base &amp; ~0xf) + ((hwif)-&gt;unit ? 0x30 : 0x20))
 multiline_comment|/*&n; * cs5530_tuneproc() handles selection/setting of PIO modes&n; * for both the chipset and drive.&n; *&n; * The ide_init_cs5530() routine guarantees that all drives&n; * will have valid default PIO timings set up before we get here.&n; */
 DECL|function|cs5530_tuneproc
 r_static
@@ -413,15 +413,12 @@ id|pio
 )paren
 multiline_comment|/* pio=255 means &quot;autotune&quot; */
 (brace
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_int
 r_int
@@ -541,15 +538,12 @@ id|mode
 op_assign
 l_int|0
 suffix:semicolon
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 op_assign
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
 r_int
 id|unit
@@ -1372,8 +1366,10 @@ DECL|function|ide_init_cs5530
 r_void
 id|__init
 id|ide_init_cs5530
+c_func
 (paren
-id|ide_hwif_t
+r_struct
+id|ata_channel
 op_star
 id|hwif
 )paren

@@ -2401,8 +2401,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|ext2_super_block
+op_star
+id|sbi
 )paren
 comma
 id|GFP_KERNEL
@@ -2431,8 +2431,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-r_struct
-id|ext2_super_block
+op_star
+id|sbi
 )paren
 )paren
 suffix:semicolon
