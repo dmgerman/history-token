@@ -2208,7 +2208,7 @@ suffix:semicolon
 )brace
 DECL|function|socal_intr
 r_static
-r_void
+id|irqreturn_t
 id|socal_intr
 c_func
 (paren
@@ -2379,6 +2379,9 @@ id|s-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|macro|TOKEN
