@@ -1454,9 +1454,9 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|ASSERT_RTNL
-mdefine_line|#define ASSERT_RTNL() do { if (down_trylock(&amp;rtnl_sem) == 0)  { up(&amp;rtnl_sem); &bslash;&n;printk(&quot;RTNL: assertion failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); } &bslash;&n;&t;&t;   } while(0)
+mdefine_line|#define ASSERT_RTNL() do { &bslash;&n;&t;if (unlikely(down_trylock(&amp;rtnl_sem) == 0)) { &bslash;&n;&t;&t;up(&amp;rtnl_sem); &bslash;&n;&t;&t;printk(KERN_ERR &quot;RTNL: assertion failed at %s (%d)&bslash;n&quot;, &bslash;&n;&t;&t;       __FILE__,  __LINE__); &bslash;&n;&t;&t;dump_stack(); &bslash;&n;&t;} &bslash;&n;} while(0)
 DECL|macro|BUG_TRAP
-mdefine_line|#define BUG_TRAP(x) if (!(x)) { printk(&quot;KERNEL: assertion (&quot; #x &quot;) failed at &quot; __FILE__ &quot;(%d)&bslash;n&quot;, __LINE__); }
+mdefine_line|#define BUG_TRAP(x) do { &bslash;&n;&t;if (unlikely(!(x))) { &bslash;&n;&t;&t;printk(KERN_ERR &quot;KERNEL: assertion (%s) failed at %s (%d)&bslash;n&quot;, &bslash;&n;&t;&t;&t;#x,  __FILE__ , __LINE__); &bslash;&n;&t;} &bslash;&n;} while(0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_RTNETLINK_H */
 eof
