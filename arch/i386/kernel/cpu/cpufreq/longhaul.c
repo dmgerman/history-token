@@ -1626,11 +1626,11 @@ id|memcpy
 (paren
 id|clock_ratio
 comma
-id|longhaul2_clock_ratio
+id|ezra_clock_ratio
 comma
 r_sizeof
 (paren
-id|longhaul2_clock_ratio
+id|ezra_clock_ratio
 )paren
 )paren
 suffix:semicolon

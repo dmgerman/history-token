@@ -337,11 +337,11 @@ multiline_comment|/* 1111 -&gt;  6.5x */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * VIA C3 Samuel2 Stepping 1-&gt;15 &amp; VIA C3 Ezra&n; */
-DECL|variable|longhaul2_clock_ratio
+DECL|variable|ezra_clock_ratio
 r_static
 r_int
 id|__initdata
-id|longhaul2_clock_ratio
+id|ezra_clock_ratio
 (braket
 l_int|16
 )braket
