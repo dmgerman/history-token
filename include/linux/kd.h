@@ -51,10 +51,10 @@ DECL|macro|KDSETLED
 mdefine_line|#define KDSETLED&t;0x4B32&t;/* set led state [lights, not flags] */
 DECL|macro|LED_SCR
 mdefine_line|#define &t;LED_SCR&t;&t;0x01&t;/* scroll lock led */
-DECL|macro|LED_CAP
-mdefine_line|#define &t;LED_CAP&t;&t;0x04&t;/* caps lock led */
 DECL|macro|LED_NUM
 mdefine_line|#define &t;LED_NUM&t;&t;0x02&t;/* num lock led */
+DECL|macro|LED_CAP
+mdefine_line|#define &t;LED_CAP&t;&t;0x04&t;/* caps lock led */
 DECL|macro|KDGKBTYPE
 mdefine_line|#define KDGKBTYPE&t;0x4B33&t;/* get keyboard type */
 DECL|macro|KB_84
@@ -191,14 +191,14 @@ DECL|macro|KDSKBMETA
 mdefine_line|#define KDSKBMETA&t;0x4B63&t;/* sets meta key handling mode */
 DECL|macro|K_SCROLLLOCK
 mdefine_line|#define&t;&t;K_SCROLLLOCK&t;0x01
-DECL|macro|K_CAPSLOCK
-mdefine_line|#define&t;&t;K_CAPSLOCK&t;0x02
 DECL|macro|K_NUMLOCK
-mdefine_line|#define&t;&t;K_NUMLOCK&t;0x04
+mdefine_line|#define&t;&t;K_NUMLOCK&t;0x02
+DECL|macro|K_CAPSLOCK
+mdefine_line|#define&t;&t;K_CAPSLOCK&t;0x04
 DECL|macro|KDGKBLED
 mdefine_line|#define&t;KDGKBLED&t;0x4B64&t;/* get led flags (not lights) */
 DECL|macro|KDSKBLED
-mdefine_line|#define KDSKBLED&t;0x4B65&t;/* set led flags (not lights) */
+mdefine_line|#define&t;KDSKBLED&t;0x4B65&t;/* set led flags (not lights) */
 DECL|struct|kbentry
 r_struct
 id|kbentry
