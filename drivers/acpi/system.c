@@ -433,14 +433,12 @@ id|status
 op_assign
 id|AE_ERROR
 suffix:semicolon
-macro_line|#if 0
 r_int
 r_int
 id|flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* this is very broken, so don&squot;t do anything until it&squot;s fixed */
 id|save_flags
 c_func
 (paren
@@ -456,25 +454,6 @@ id|state
 r_case
 id|ACPI_STATE_S1
 suffix:colon
-multiline_comment|/* do nothing */
-r_break
-suffix:semicolon
-r_case
-id|ACPI_STATE_S2
-suffix:colon
-r_case
-id|ACPI_STATE_S3
-suffix:colon
-id|save_processor_context
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* TODO: this is horribly broken, fix it */
-multiline_comment|/* TODO: inline this function in acpi_suspend,or something. */
-r_break
-suffix:semicolon
-)brace
 id|barrier
 c_func
 (paren
@@ -488,29 +467,27 @@ c_func
 id|state
 )paren
 suffix:semicolon
-id|acpi_sleep_done
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_S2
 suffix:colon
-id|restore_processor_context
+r_case
+id|ACPI_STATE_S3
+suffix:colon
+id|do_suspend_lowlevel
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
-id|fix_processor_context
-c_func
-(paren
-)paren
+r_break
 suffix:semicolon
+)brace
 id|restore_flags
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;ACPI: ACPI-based suspend currently broken, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -540,6 +517,12 @@ id|ACPI_STATE_S5
 r_return
 id|AE_ERROR
 suffix:semicolon
+id|freeze_processes
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* device_suspend needs processes to be stopped */
 multiline_comment|/* do we have a wakeup address for S2 and S3? */
 r_if
 c_cond
@@ -646,6 +629,11 @@ c_func
 id|ACPI_PHYSICAL_ADDRESS
 )paren
 l_int|0
+)paren
+suffix:semicolon
+id|thaw_processes
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

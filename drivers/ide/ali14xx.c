@@ -1,13 +1,7 @@
 multiline_comment|/*&n; *  Copyright (C) 1996  Linus Torvalds &amp; author (see below)&n; */
-multiline_comment|/*&n; * ALI M14xx chipset EIDE controller&n; *&n; * Works for ALI M1439/1443/1445/1487/1489 chipsets.&n; *&n; * Adapted from code developed by derekn@vw.ece.cmu.edu.  -ml&n; * Derek&squot;s notes follow:&n; *&n; * I think the code should be pretty understandable,&n; * but I&squot;ll be happy to (try to) answer questions.&n; *&n; * The critical part is in the setupDrive function.  The initRegisters&n; * function doesn&squot;t seem to be necessary, but the DOS driver does it, so&n; * I threw it in.&n; *&n; * I&squot;ve only tested this on my system, which only has one disk.  I posted&n; * it to comp.sys.linux.hardware, so maybe some other people will try it&n; * out.&n; *&n; * Derek Noonburg  (derekn@ece.cmu.edu)&n; * 95-sep-26&n; *&n; * Update 96-jul-13:&n; *&n; * I&squot;ve since upgraded to two disks and a CD-ROM, with no trouble, and&n; * I&squot;ve also heard from several others who have used it successfully.&n; * This driver appears to work with both the 1443/1445 and the 1487/1489&n; * chipsets.  I&squot;ve added support for PIO mode 4 for the 1487.  This&n; * seems to work just fine on the 1443 also, although I&squot;m not sure it&squot;s&n; * advertised as supporting mode 4.  (I&squot;ve been running a WDC AC21200 in&n; * mode 4 for a while now with no trouble.)  -Derek&n; */
+multiline_comment|/*&n; * ALI M14xx chipset EIDE controller&n; *&n; * Works for ALI M1439/1443/1445/1487/1489 chipsets.&n; *&n; * Adapted from code developed by derekn@vw.ece.cmu.edu.  -ml&n; * Derek&squot;s notes follow:&n; *&n; * I think the code should be pretty understandable,&n; * but I&squot;ll be happy to (try to) answer questions.&n; *&n; * The critical part is in the ali14xx_tune_drive function.  The init_registers&n; * function doesn&squot;t seem to be necessary, but the DOS driver does it, so&n; * I threw it in.&n; *&n; * I&squot;ve only tested this on my system, which only has one disk.  I posted&n; * it to comp.sys.linux.hardware, so maybe some other people will try it&n; * out.&n; *&n; * Derek Noonburg  (derekn@ece.cmu.edu)&n; * 95-sep-26&n; *&n; * Update 96-jul-13:&n; *&n; * I&squot;ve since upgraded to two disks and a CD-ROM, with no trouble, and&n; * I&squot;ve also heard from several others who have used it successfully.&n; * This driver appears to work with both the 1443/1445 and the 1487/1489&n; * chipsets.  I&squot;ve added support for PIO mode 4 for the 1487.  This&n; * seems to work just fine on the 1443 also, although I&squot;m not sure it&squot;s&n; * advertised as supporting mode 4.  (I&squot;ve been running a WDC AC21200 in&n; * mode 4 for a while now with no trouble.)  -Derek&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -35,24 +29,24 @@ l_int|0x0e4
 )brace
 suffix:semicolon
 multiline_comment|/* register initialization data */
+DECL|struct|reg_initializer
+r_struct
+id|reg_initializer
+(brace
 DECL|member|reg
 DECL|member|data
-DECL|typedef|RegInitializer
-r_typedef
-r_struct
-(brace
-id|byte
+id|u8
 id|reg
 comma
 id|data
 suffix:semicolon
 )brace
-id|RegInitializer
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-id|RegInitializer
-id|initData
+r_struct
+id|reg_initializer
+id|init_data
 (braket
 )braket
 id|__initdata
@@ -216,15 +210,14 @@ l_int|0x00
 )brace
 suffix:semicolon
 multiline_comment|/* timing parameter registers for each drive */
+r_static
+r_struct
+(brace
 DECL|member|reg1
 DECL|member|reg2
 DECL|member|reg3
 DECL|member|reg4
-DECL|variable|regTab
-r_static
-r_struct
-(brace
-id|byte
+id|u8
 id|reg1
 comma
 id|reg2
@@ -233,8 +226,9 @@ id|reg3
 comma
 id|reg4
 suffix:semicolon
+DECL|variable|reg_tab
 )brace
-id|regTab
+id|reg_tab
 (braket
 l_int|4
 )braket
@@ -286,45 +280,45 @@ comma
 multiline_comment|/* drive 3 */
 )brace
 suffix:semicolon
-DECL|variable|basePort
+DECL|variable|base_port
 r_static
 r_int
-id|basePort
+id|base_port
 suffix:semicolon
 multiline_comment|/* base port address */
-DECL|variable|regPort
+DECL|variable|reg_port
 r_static
 r_int
-id|regPort
+id|reg_port
 suffix:semicolon
 multiline_comment|/* port for register number */
-DECL|variable|dataPort
+DECL|variable|data_port
 r_static
 r_int
-id|dataPort
+id|data_port
 suffix:semicolon
 multiline_comment|/* port for register data */
-DECL|variable|regOn
+DECL|variable|reg_on
 r_static
-id|byte
-id|regOn
+id|u8
+id|reg_on
 suffix:semicolon
 multiline_comment|/* output to base port to access registers */
-DECL|variable|regOff
+DECL|variable|reg_off
 r_static
-id|byte
-id|regOff
+id|u8
+id|reg_off
 suffix:semicolon
 multiline_comment|/* output to base port to close registers */
-multiline_comment|/*------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Read a controller register.&n; */
-DECL|function|inReg
+DECL|function|in_reg
 r_static
 r_inline
-id|byte
-id|inReg
+id|u8
+id|in_reg
+c_func
 (paren
-id|byte
+id|u8
 id|reg
 )paren
 (brace
@@ -333,27 +327,29 @@ c_func
 (paren
 id|reg
 comma
-id|regPort
+id|reg_port
 )paren
 suffix:semicolon
 r_return
 id|inb
 c_func
 (paren
-id|dataPort
+id|data_port
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write a controller register.&n; */
-DECL|function|outReg
+DECL|function|out_reg
 r_static
+r_inline
 r_void
-id|outReg
+id|out_reg
+c_func
 (paren
-id|byte
+id|u8
 id|data
 comma
-id|byte
+id|u8
 id|reg
 )paren
 (brace
@@ -362,7 +358,7 @@ c_func
 (paren
 id|reg
 comma
-id|regPort
+id|reg_port
 )paren
 suffix:semicolon
 id|outb_p
@@ -370,7 +366,7 @@ c_func
 (paren
 id|data
 comma
-id|dataPort
+id|data_port
 )paren
 suffix:semicolon
 )brace
@@ -391,7 +387,7 @@ id|pio
 )paren
 (brace
 r_int
-id|driveNum
+id|drive_num
 suffix:semicolon
 r_int
 id|time1
@@ -443,7 +439,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -517,6 +513,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: PIO mode%d, t1=%dns, t2=%dns, cycles = %d+%d, %d+%d&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -539,7 +536,7 @@ id|param4
 )paren
 suffix:semicolon
 multiline_comment|/* stuff timing parameters into controller registers */
-id|driveNum
+id|drive_num
 op_assign
 (paren
 id|drive-&gt;channel-&gt;index
@@ -565,58 +562,58 @@ multiline_comment|/* all CPUs */
 id|outb_p
 c_func
 (paren
-id|regOn
+id|reg_on
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
-id|outReg
+id|out_reg
 c_func
 (paren
 id|param1
 comma
-id|regTab
+id|reg_tab
 (braket
-id|driveNum
+id|drive_num
 )braket
 dot
 id|reg1
 )paren
 suffix:semicolon
-id|outReg
+id|out_reg
 c_func
 (paren
 id|param2
 comma
-id|regTab
+id|reg_tab
 (braket
-id|driveNum
+id|drive_num
 )braket
 dot
 id|reg2
 )paren
 suffix:semicolon
-id|outReg
+id|out_reg
 c_func
 (paren
 id|param3
 comma
-id|regTab
+id|reg_tab
 (braket
-id|driveNum
+id|drive_num
 )braket
 dot
 id|reg3
 )paren
 suffix:semicolon
-id|outReg
+id|out_reg
 c_func
 (paren
 id|param4
 comma
-id|regTab
+id|reg_tab
 (braket
-id|driveNum
+id|drive_num
 )braket
 dot
 id|reg4
@@ -625,9 +622,9 @@ suffix:semicolon
 id|outb_p
 c_func
 (paren
-id|regOff
+id|reg_off
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 id|restore_flags
@@ -639,20 +636,18 @@ suffix:semicolon
 multiline_comment|/* all CPUs */
 )brace
 multiline_comment|/*&n; * Auto-detect the IDE controller port.&n; */
-DECL|function|findPort
+DECL|function|find_port
 r_static
 r_int
 id|__init
-id|findPort
+id|find_port
+c_func
 (paren
 r_void
 )paren
 (brace
 r_int
 id|i
-suffix:semicolon
-id|byte
-id|t
 suffix:semicolon
 r_int
 r_int
@@ -682,46 +677,46 @@ id|i
 OL
 id|ALI_NUM_PORTS
 suffix:semicolon
-op_increment
 id|i
+op_increment
 )paren
 (brace
-id|basePort
+id|base_port
 op_assign
 id|ports
 (braket
 id|i
 )braket
 suffix:semicolon
-id|regOff
+id|reg_off
 op_assign
 id|inb
 c_func
 (paren
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|regOn
+id|reg_on
 op_assign
 l_int|0x30
 suffix:semicolon
-id|regOn
+id|reg_on
 op_le
 l_int|0x33
 suffix:semicolon
+id|reg_on
 op_increment
-id|regOn
 )paren
 (brace
 id|outb_p
 c_func
 (paren
-id|regOn
+id|reg_on
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 r_if
@@ -730,27 +725,30 @@ c_cond
 id|inb
 c_func
 (paren
-id|basePort
+id|base_port
 )paren
 op_eq
-id|regOn
+id|reg_on
 )paren
 (brace
-id|regPort
+id|u8
+id|t
+suffix:semicolon
+id|reg_port
 op_assign
-id|basePort
+id|base_port
 op_plus
 l_int|4
 suffix:semicolon
-id|dataPort
+id|data_port
 op_assign
-id|basePort
+id|base_port
 op_plus
 l_int|8
 suffix:semicolon
 id|t
 op_assign
-id|inReg
+id|in_reg
 c_func
 (paren
 l_int|0
@@ -761,9 +759,9 @@ suffix:semicolon
 id|outb_p
 c_func
 (paren
-id|regOff
+id|reg_off
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 id|__restore_flags
@@ -792,9 +790,9 @@ multiline_comment|/* success */
 id|outb_p
 c_func
 (paren
-id|regOff
+id|reg_off
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 )brace
@@ -810,25 +808,27 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize controller registers with default values.&n; */
-DECL|function|initRegisters
+DECL|function|init_registers
 r_static
 r_int
 id|__init
-id|initRegisters
+id|init_registers
+c_func
 (paren
 r_void
 )paren
 (brace
-id|RegInitializer
+r_struct
+id|reg_initializer
 op_star
 id|p
-suffix:semicolon
-id|byte
-id|t
 suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|u8
+id|t
 suffix:semicolon
 id|__save_flags
 c_func
@@ -846,9 +846,9 @@ multiline_comment|/* local CPU only */
 id|outb_p
 c_func
 (paren
-id|regOn
+id|reg_on
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 r_for
@@ -856,7 +856,7 @@ c_loop
 (paren
 id|p
 op_assign
-id|initData
+id|init_data
 suffix:semicolon
 id|p-&gt;reg
 op_ne
@@ -865,7 +865,7 @@ suffix:semicolon
 op_increment
 id|p
 )paren
-id|outReg
+id|out_reg
 c_func
 (paren
 id|p-&gt;data
@@ -878,7 +878,7 @@ c_func
 (paren
 l_int|0x01
 comma
-id|regPort
+id|reg_port
 )paren
 suffix:semicolon
 id|t
@@ -886,7 +886,7 @@ op_assign
 id|inb
 c_func
 (paren
-id|regPort
+id|reg_port
 )paren
 op_amp
 l_int|0x01
@@ -894,9 +894,9 @@ suffix:semicolon
 id|outb_p
 c_func
 (paren
-id|regOff
+id|reg_off
 comma
-id|basePort
+id|base_port
 )paren
 suffix:semicolon
 id|__restore_flags
@@ -914,6 +914,7 @@ DECL|function|init_ali14xx
 r_void
 id|__init
 id|init_ali14xx
+c_func
 (paren
 r_void
 )paren
@@ -923,7 +924,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|findPort
+id|find_port
 c_func
 (paren
 )paren
@@ -932,7 +933,8 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nali14xx: not found&quot;
+id|KERN_ERR
+l_string|&quot;ali14xx: not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -941,11 +943,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nali14xx: base= 0x%03x, regOn = 0x%02x&quot;
+id|KERN_DEBUG
+l_string|&quot;ali14xx: base=%#03x, reg_on=%#02x&bslash;n&quot;
 comma
-id|basePort
+id|base_port
 comma
-id|regOn
+id|reg_on
 )paren
 suffix:semicolon
 id|ide_hwifs
@@ -1009,7 +1012,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|initRegisters
+id|init_registers
 c_func
 (paren
 )paren
@@ -1018,7 +1021,8 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nali14xx: Chip initialization failed&quot;
+id|KERN_ERR
+l_string|&quot;ali14xx: Chip initialization failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

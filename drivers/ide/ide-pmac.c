@@ -5175,7 +5175,7 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
-id|REQ_DRIVE_ACB
+id|REQ_SPECIAL
 )paren
 (brace
 id|pmac_ide
@@ -6796,7 +6796,7 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
-id|REQ_DRIVE_ACB
+id|REQ_SPECIAL
 )paren
 op_logical_and
 (paren
@@ -6813,10 +6813,11 @@ id|args
 op_assign
 id|rq-&gt;special
 suffix:semicolon
+multiline_comment|/* FIXME: this is never reached */
 id|OUT_BYTE
 c_func
 (paren
-id|args-&gt;taskfile.command
+id|args-&gt;cmd
 comma
 id|IDE_COMMAND_REG
 )paren

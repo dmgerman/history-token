@@ -1,11 +1,8 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/mm.c&n; *&n; *  Extra MM routines for the ARM Integrator board&n; *&n; *  Copyright (C) 1999,2000 Arm Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 multiline_comment|/*&n; * Logical      Physical&n; * e8000000&t;40000000&t;PCI memory&t;&t;PHYS_PCI_MEM_BASE&t;(max 512M)&n; * ec000000&t;61000000&t;PCI config space&t;PHYS_PCI_CONFIG_BASE&t;(max 16M)&n; * ed000000&t;62000000&t;PCI V3 regs&t;&t;PHYS_PCI_V3_BASE&t;(max 64k)&n; * ee000000&t;60000000&t;PCI IO&t;&t;&t;PHYS_PCI_IO_BASE&t;(max 16M)&n; * ef000000&t;&t;&t;Cache flush&n; * f1000000&t;10000000&t;Core module registers&n; * f1100000&t;11000000&t;System controller registers&n; * f1200000&t;12000000&t;EBI registers&n; * f1300000&t;13000000&t;Counter/Timer&n; * f1400000&t;14000000&t;Interrupt controller&n; * f1500000&t;15000000&t;RTC&n; * f1600000&t;16000000&t;UART 0&n; * f1700000&t;17000000&t;UART 1&n; * f1800000&t;18000000&t;Keyboard&n; * f1900000&t;19000000&t;Mouse&n; * f1a00000&t;1a000000&t;Debug LEDs&n; * f1b00000&t;1b000000&t;GPIO&n; */
 DECL|variable|__initdata
@@ -29,11 +26,7 @@ id|INTEGRATOR_HDR_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -47,11 +40,7 @@ id|INTEGRATOR_SC_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -65,11 +54,7 @@ id|INTEGRATOR_EBI_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -83,11 +68,7 @@ id|INTEGRATOR_CT_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -101,11 +82,7 @@ id|INTEGRATOR_IC_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -119,11 +96,7 @@ id|INTEGRATOR_RTC_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -137,11 +110,7 @@ id|INTEGRATOR_UART0_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -155,11 +124,7 @@ id|INTEGRATOR_UART1_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -173,11 +138,7 @@ id|INTEGRATOR_KBD_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -191,11 +152,7 @@ id|INTEGRATOR_MOUSE_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -209,11 +166,7 @@ id|INTEGRATOR_DBG_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -227,11 +180,7 @@ id|INTEGRATOR_GPIO_BASE
 comma
 id|SZ_4K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -241,11 +190,7 @@ id|PHYS_PCI_MEM_BASE
 comma
 id|SZ_16M
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -255,11 +200,7 @@ id|PHYS_PCI_CONFIG_BASE
 comma
 id|SZ_16M
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -269,11 +210,7 @@ id|PHYS_PCI_V3_BASE
 comma
 id|SZ_64K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -283,14 +220,8 @@ id|PHYS_PCI_IO_BASE
 comma
 id|SZ_64K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|integrator_map_io
@@ -306,6 +237,12 @@ id|iotable_init
 c_func
 (paren
 id|integrator_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|integrator_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

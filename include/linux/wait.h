@@ -49,58 +49,12 @@ r_struct
 id|__wait_queue
 id|wait_queue_t
 suffix:semicolon
-multiline_comment|/*&n; * &squot;dual&squot; spinlock architecture. Can be switched between spinlock_t and&n; * rwlock_t locks via changing this define. Since waitqueues are quite&n; * decoupled in the new architecture, lightweight &squot;simple&squot; spinlocks give&n; * us slightly better latencies and smaller waitqueue structure size.&n; */
-DECL|macro|USE_RW_WAIT_QUEUE_SPINLOCK
-mdefine_line|#define USE_RW_WAIT_QUEUE_SPINLOCK 0
-macro_line|#if USE_RW_WAIT_QUEUE_SPINLOCK
-DECL|macro|wq_lock_t
-macro_line|# define wq_lock_t rwlock_t
-DECL|macro|WAITQUEUE_RW_LOCK_UNLOCKED
-macro_line|# define WAITQUEUE_RW_LOCK_UNLOCKED RW_LOCK_UNLOCKED
-DECL|macro|wq_read_lock
-macro_line|# define wq_read_lock read_lock
-DECL|macro|wq_read_lock_irqsave
-macro_line|# define wq_read_lock_irqsave read_lock_irqsave
-DECL|macro|wq_read_unlock_irqrestore
-macro_line|# define wq_read_unlock_irqrestore read_unlock_irqrestore
-DECL|macro|wq_read_unlock
-macro_line|# define wq_read_unlock read_unlock
-DECL|macro|wq_write_lock_irq
-macro_line|# define wq_write_lock_irq write_lock_irq
-DECL|macro|wq_write_lock_irqsave
-macro_line|# define wq_write_lock_irqsave write_lock_irqsave
-DECL|macro|wq_write_unlock_irqrestore
-macro_line|# define wq_write_unlock_irqrestore write_unlock_irqrestore
-DECL|macro|wq_write_unlock
-macro_line|# define wq_write_unlock write_unlock
-macro_line|#else
-DECL|macro|wq_lock_t
-macro_line|# define wq_lock_t spinlock_t
-DECL|macro|WAITQUEUE_RW_LOCK_UNLOCKED
-macro_line|# define WAITQUEUE_RW_LOCK_UNLOCKED SPIN_LOCK_UNLOCKED
-DECL|macro|wq_read_lock
-macro_line|# define wq_read_lock spin_lock
-DECL|macro|wq_read_lock_irqsave
-macro_line|# define wq_read_lock_irqsave spin_lock_irqsave
-DECL|macro|wq_read_unlock
-macro_line|# define wq_read_unlock spin_unlock
-DECL|macro|wq_read_unlock_irqrestore
-macro_line|# define wq_read_unlock_irqrestore spin_unlock_irqrestore
-DECL|macro|wq_write_lock_irq
-macro_line|# define wq_write_lock_irq spin_lock_irq
-DECL|macro|wq_write_lock_irqsave
-macro_line|# define wq_write_lock_irqsave spin_lock_irqsave
-DECL|macro|wq_write_unlock_irqrestore
-macro_line|# define wq_write_unlock_irqrestore spin_unlock_irqrestore
-DECL|macro|wq_write_unlock
-macro_line|# define wq_write_unlock spin_unlock
-macro_line|#endif
 DECL|struct|__wait_queue_head
 r_struct
 id|__wait_queue_head
 (brace
 DECL|member|lock
-id|wq_lock_t
+id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|task_list
@@ -122,7 +76,7 @@ mdefine_line|#define __WAITQUEUE_INITIALIZER(name, tsk) {&t;&t;&t;&t;&bslash;&n;
 DECL|macro|DECLARE_WAITQUEUE
 mdefine_line|#define DECLARE_WAITQUEUE(name, tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t name = __WAITQUEUE_INITIALIZER(name, tsk)
 DECL|macro|__WAIT_QUEUE_HEAD_INITIALIZER
-mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;lock:&t;&t;WAITQUEUE_RW_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;&t;task_list:&t;{ &amp;(name).task_list, &amp;(name).task_list } }
+mdefine_line|#define __WAIT_QUEUE_HEAD_INITIALIZER(name) {&t;&t;&t;&t;&bslash;&n;&t;lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;&t;task_list:&t;{ &amp;(name).task_list, &amp;(name).task_list } }
 DECL|macro|DECLARE_WAIT_QUEUE_HEAD
 mdefine_line|#define DECLARE_WAIT_QUEUE_HEAD(name) &bslash;&n;&t;wait_queue_head_t name = __WAIT_QUEUE_HEAD_INITIALIZER(name)
 DECL|function|init_waitqueue_head
@@ -139,7 +93,7 @@ id|q
 (brace
 id|q-&gt;lock
 op_assign
-id|WAITQUEUE_RW_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func

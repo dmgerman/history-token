@@ -1216,7 +1216,7 @@ op_assign
 id|fcntl_getlk
 c_func
 (paren
-id|fd
+id|filp
 comma
 (paren
 r_struct
@@ -1239,7 +1239,7 @@ op_assign
 id|fcntl_setlk
 c_func
 (paren
-id|fd
+id|filp
 comma
 id|cmd
 comma
@@ -1565,7 +1565,7 @@ op_assign
 id|fcntl_getlk64
 c_func
 (paren
-id|fd
+id|filp
 comma
 (paren
 r_struct
@@ -1580,25 +1580,6 @@ suffix:semicolon
 r_case
 id|F_SETLK64
 suffix:colon
-id|err
-op_assign
-id|fcntl_setlk64
-c_func
-(paren
-id|fd
-comma
-id|cmd
-comma
-(paren
-r_struct
-id|flock64
-op_star
-)paren
-id|arg
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|F_SETLKW64
 suffix:colon
@@ -1607,7 +1588,7 @@ op_assign
 id|fcntl_setlk64
 c_func
 (paren
-id|fd
+id|filp
 comma
 id|cmd
 comma
@@ -2345,7 +2326,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;fasync cache&quot;
+l_string|&quot;fasync_cache&quot;
 comma
 r_sizeof
 (paren

@@ -50,10 +50,33 @@ DECL|macro|MSR_IA32_MCG_STATUS
 mdefine_line|#define MSR_IA32_MCG_STATUS&t;&t;0x17a
 DECL|macro|MSR_IA32_MCG_CTL
 mdefine_line|#define MSR_IA32_MCG_CTL&t;&t;0x17b
+multiline_comment|/* P4/Xeon+ specific */
+DECL|macro|MSR_IA32_MCG_EAX
+mdefine_line|#define MSR_IA32_MCG_EAX&t;&t;0x180
+DECL|macro|MSR_IA32_MCG_EBX
+mdefine_line|#define MSR_IA32_MCG_EBX&t;&t;0x181
+DECL|macro|MSR_IA32_MCG_ECX
+mdefine_line|#define MSR_IA32_MCG_ECX&t;&t;0x182
+DECL|macro|MSR_IA32_MCG_EDX
+mdefine_line|#define MSR_IA32_MCG_EDX&t;&t;0x183
+DECL|macro|MSR_IA32_MCG_ESI
+mdefine_line|#define MSR_IA32_MCG_ESI&t;&t;0x184
+DECL|macro|MSR_IA32_MCG_EDI
+mdefine_line|#define MSR_IA32_MCG_EDI&t;&t;0x185
+DECL|macro|MSR_IA32_MCG_EBP
+mdefine_line|#define MSR_IA32_MCG_EBP&t;&t;0x186
+DECL|macro|MSR_IA32_MCG_ESP
+mdefine_line|#define MSR_IA32_MCG_ESP&t;&t;0x187
+DECL|macro|MSR_IA32_MCG_EFLAGS
+mdefine_line|#define MSR_IA32_MCG_EFLAGS&t;&t;0x188
+DECL|macro|MSR_IA32_MCG_EIP
+mdefine_line|#define MSR_IA32_MCG_EIP&t;&t;0x189
+DECL|macro|MSR_IA32_MCG_RESERVED
+mdefine_line|#define MSR_IA32_MCG_RESERVED&t;&t;0x18A
 DECL|macro|MSR_P6_EVNTSEL0
-mdefine_line|#define MSR_P6_EVNTSEL0&t;&t;0x186
+mdefine_line|#define MSR_P6_EVNTSEL0&t;&t;&t;0x186
 DECL|macro|MSR_P6_EVNTSEL1
-mdefine_line|#define MSR_P6_EVNTSEL1&t;&t;0x187
+mdefine_line|#define MSR_P6_EVNTSEL1&t;&t;&t;0x187
 DECL|macro|MSR_IA32_THERM_CONTROL
 mdefine_line|#define MSR_IA32_THERM_CONTROL&t;&t;0x19a
 DECL|macro|MSR_IA32_THERM_INTERRUPT

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-rpc/riscpc.c&n; *&n; *  Copyright (C) 1998-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Architecture specific fixups.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -135,15 +136,7 @@ l_int|2
 op_star
 l_int|1048576
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* VRAM&t;&t;*/
@@ -154,15 +147,7 @@ id|IO_START
 comma
 id|IO_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* IO space&t;&t;*/
@@ -173,19 +158,9 @@ id|EASI_START
 comma
 id|EASI_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* EASI space&t;*/
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|rpc_map_io
@@ -201,6 +176,12 @@ id|iotable_init
 c_func
 (paren
 id|rpc_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|rpc_io_desc
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * RiscPC can&squot;t handle half-word loads and stores&n;&t; */

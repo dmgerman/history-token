@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-ftvpci/core.c&n; *&n; *  Architecture specific fixups.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -288,15 +289,7 @@ id|INTCONT_START
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -306,15 +299,7 @@ id|PLX_START
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -324,15 +309,7 @@ id|PLX_IO_START
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -342,15 +319,7 @@ id|DUART_START
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -360,18 +329,8 @@ id|STATUS_START
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|ftvpci_map_io
@@ -388,6 +347,12 @@ id|iotable_init
 c_func
 (paren
 id|ftvpci_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|ftvpci_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

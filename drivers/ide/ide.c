@@ -31,9 +31,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 macro_line|#include &quot;ioctl.h&quot;
-multiline_comment|/* default maximum number of failures */
-DECL|macro|IDE_DEFAULT_MAX_FAILURES
-mdefine_line|#define IDE_DEFAULT_MAX_FAILURES&t;1
 multiline_comment|/*&n; * CompactFlash cards and their relatives pretend to be removable hard disks, except:&n; *&t;(1) they never have a slave unit, and&n; *&t;(2) they don&squot;t have a door lock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate config bits.&n; *&n; * FIXME FIXME: Yes this is for certain applicable for all of them as time has shown.&n; *&n; * FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD) devices,&n; * so in linux 2.3.x we should change this to just treat all PCMCIA drives this way,&n; * and get rid of the model-name tests below (too big of an interface change for 2.2.x).&n; * At that time, we might also consider parameterizing the timeouts and retries,&n; * since these are MUCH faster than mechanical drives.&t;-M.Lord&n; */
 DECL|function|drive_is_flashcard
 r_int
@@ -1236,199 +1233,6 @@ id|IDE_SECTOR_REG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd&n; *&n; * Should be called under lock held.&n; */
-DECL|function|ide_end_drive_cmd
-r_void
-id|ide_end_drive_cmd
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|rq-&gt;flags
-op_amp
-id|REQ_DRIVE_ACB
-)paren
-(brace
-r_struct
-id|ata_taskfile
-op_star
-id|ar
-op_assign
-id|rq-&gt;special
-suffix:semicolon
-id|rq-&gt;errors
-op_assign
-op_logical_neg
-id|ata_status
-c_func
-(paren
-id|drive
-comma
-id|READY_STAT
-comma
-id|BAD_STAT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ar
-)paren
-(brace
-id|ar-&gt;taskfile.feature
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_ERROR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.sector_count
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_NSECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.sector_number
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_SECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.low_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_LCYL_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.high_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_HCYL_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.device_head
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_SELECT_REG
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|drive-&gt;id-&gt;command_set_2
-op_amp
-l_int|0x0400
-)paren
-op_logical_and
-(paren
-id|drive-&gt;id-&gt;cfs_enable_2
-op_amp
-l_int|0x0400
-)paren
-op_logical_and
-(paren
-id|drive-&gt;addressing
-op_eq
-l_int|1
-)paren
-)paren
-(brace
-multiline_comment|/* The following command goes to the hob file! */
-id|OUT_BYTE
-c_func
-(paren
-l_int|0x80
-comma
-id|drive-&gt;channel-&gt;io_ports
-(braket
-id|IDE_CONTROL_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.feature
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_FEATURE_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.sector_count
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_NSECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.sector_number
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_SECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.low_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_LCYL_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.high_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_HCYL_REG
-)paren
-suffix:semicolon
-)brace
-)brace
-)brace
-id|blkdev_dequeue_request
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-id|drive-&gt;rq
-op_assign
-l_int|NULL
-suffix:semicolon
-id|end_that_request_last
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-)brace
 macro_line|#if FANCY_STATUS_DUMPS
 DECL|struct|ata_bit_messages
 r_struct
@@ -1464,7 +1268,7 @@ id|BUSY_STAT
 comma
 id|BUSY_STAT
 comma
-l_string|&quot;Busy&quot;
+l_string|&quot;busy&quot;
 )brace
 comma
 (brace
@@ -1472,7 +1276,7 @@ id|READY_STAT
 comma
 id|READY_STAT
 comma
-l_string|&quot;DriveReady&quot;
+l_string|&quot;drive ready&quot;
 )brace
 comma
 (brace
@@ -1480,7 +1284,7 @@ id|WRERR_STAT
 comma
 id|WRERR_STAT
 comma
-l_string|&quot;DeviceFault&quot;
+l_string|&quot;device fault&quot;
 )brace
 comma
 (brace
@@ -1488,7 +1292,7 @@ id|SEEK_STAT
 comma
 id|SEEK_STAT
 comma
-l_string|&quot;SeekComplete&quot;
+l_string|&quot;seek complete&quot;
 )brace
 comma
 (brace
@@ -1496,7 +1300,7 @@ id|DRQ_STAT
 comma
 id|DRQ_STAT
 comma
-l_string|&quot;DataRequest&quot;
+l_string|&quot;data request&quot;
 )brace
 comma
 (brace
@@ -1504,7 +1308,7 @@ id|ECC_STAT
 comma
 id|ECC_STAT
 comma
-l_string|&quot;CorrectedError&quot;
+l_string|&quot;corrected error&quot;
 )brace
 comma
 (brace
@@ -1512,7 +1316,7 @@ id|INDEX_STAT
 comma
 id|INDEX_STAT
 comma
-l_string|&quot;Index&quot;
+l_string|&quot;index&quot;
 )brace
 comma
 (brace
@@ -1520,7 +1324,7 @@ id|ERR_STAT
 comma
 id|ERR_STAT
 comma
-l_string|&quot;Error&quot;
+l_string|&quot;error&quot;
 )brace
 )brace
 suffix:semicolon
@@ -1540,7 +1344,7 @@ id|ABRT_ERR
 comma
 id|ABRT_ERR
 comma
-l_string|&quot;DriveStatusError&quot;
+l_string|&quot;drive status error&quot;
 )brace
 comma
 (brace
@@ -1550,7 +1354,7 @@ id|ABRT_ERR
 comma
 id|ICRC_ERR
 comma
-l_string|&quot;BadSector&quot;
+l_string|&quot;bad sectorr&quot;
 )brace
 comma
 (brace
@@ -1562,7 +1366,7 @@ id|ICRC_ERR
 op_or
 id|ABRT_ERR
 comma
-l_string|&quot;BadCRC&quot;
+l_string|&quot;invalid checksum&quot;
 )brace
 comma
 (brace
@@ -1570,7 +1374,7 @@ id|ECC_ERR
 comma
 id|ECC_ERR
 comma
-l_string|&quot;UncorrectableError&quot;
+l_string|&quot;uncorrectable error&quot;
 )brace
 comma
 (brace
@@ -1578,7 +1382,7 @@ id|ID_ERR
 comma
 id|ID_ERR
 comma
-l_string|&quot;SectorIdNotFound&quot;
+l_string|&quot;sector id not found&quot;
 )brace
 comma
 (brace
@@ -1586,7 +1390,7 @@ id|TRK0_ERR
 comma
 id|TRK0_ERR
 comma
-l_string|&quot;TrackZeroNotFound&quot;
+l_string|&quot;track zero not found&quot;
 )brace
 comma
 (brace
@@ -1594,14 +1398,14 @@ id|MARK_ERR
 comma
 id|MARK_ERR
 comma
-l_string|&quot;AddrMarkNotFound&quot;
+l_string|&quot;addr mark not found&quot;
 )brace
 )brace
 suffix:semicolon
-DECL|function|ata_dump_bits
+DECL|function|dump_bits
 r_static
 r_void
-id|ata_dump_bits
+id|dump_bits
 c_func
 (paren
 r_struct
@@ -1622,7 +1426,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; { &quot;
+l_string|&quot; [ &quot;
 )paren
 suffix:semicolon
 r_for
@@ -1664,18 +1468,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;} &quot;
+l_string|&quot;] &quot;
 )paren
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|ata_dump_bits
-macro_line|# define ata_dump_bits(msgs,nr,bits) do { } while (0)
+DECL|macro|dump_bits
+macro_line|# define dump_bits(msgs,nr,bits) do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
-DECL|function|ide_dump_status
+DECL|function|ata_dump
 id|u8
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 r_struct
@@ -1692,9 +1496,6 @@ r_const
 r_char
 op_star
 id|msg
-comma
-id|u8
-id|stat
 )paren
 (brace
 r_int
@@ -1727,10 +1528,10 @@ id|drive-&gt;name
 comma
 id|msg
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
-id|ata_dump_bits
+id|dump_bits
 c_func
 (paren
 id|ata_status_msgs
@@ -1741,7 +1542,7 @@ c_func
 id|ata_status_msgs
 )paren
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 id|printk
@@ -1754,7 +1555,7 @@ r_if
 c_cond
 (paren
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 (paren
 id|BUSY_STAT
@@ -1794,7 +1595,7 @@ op_eq
 id|ATA_DISK
 )paren
 (brace
-id|ata_dump_bits
+id|dump_bits
 c_func
 (paren
 id|ata_error_msgs
@@ -2150,15 +1951,6 @@ op_star
 id|drive
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: recalibrating!&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2179,6 +1971,15 @@ id|IS_PDC4030_DRIVE
 r_struct
 id|ata_taskfile
 id|args
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: recalibrating...&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -2202,19 +2003,22 @@ id|args.cmd
 op_assign
 id|WIN_RESTORE
 suffix:semicolon
-id|args.handler
-op_assign
-id|recal_intr
-suffix:semicolon
-id|ata_taskfile
+id|ide_raw_taskfile
 c_func
 (paren
 id|drive
 comma
 op_amp
 id|args
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: done!&bslash;n&quot;
 comma
-l_int|NULL
+id|drive-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -2259,7 +2063,7 @@ id|drive-&gt;status
 suffix:semicolon
 id|err
 op_assign
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -2267,8 +2071,6 @@ comma
 id|rq
 comma
 id|msg
-comma
-id|stat
 )paren
 suffix:semicolon
 r_if
@@ -2298,14 +2100,6 @@ id|REQ_CMD
 id|rq-&gt;errors
 op_assign
 l_int|1
-suffix:semicolon
-id|ide_end_drive_cmd
-c_func
-(paren
-id|drive
-comma
-id|rq
-)paren
 suffix:semicolon
 r_return
 id|ide_stopped
@@ -2491,6 +2285,15 @@ op_ge
 id|ERROR_MAX
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: max number of retries exceeded!&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2891,12 +2694,12 @@ multiline_comment|/* Strange disk manager remap.&n;&t; */
 r_if
 c_cond
 (paren
-(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_CMD
 )paren
-op_logical_and
+r_if
+c_cond
 (paren
 id|drive-&gt;type
 op_eq
@@ -2906,13 +2709,10 @@ id|drive-&gt;type
 op_eq
 id|ATA_FLOPPY
 )paren
-)paren
-(brace
 id|block
 op_add_assign
 id|drive-&gt;sect0
 suffix:semicolon
-)brace
 multiline_comment|/* Yecch - this will shift the entire interval, possibly killing some&n;&t; * innocent following sector.&n;&t; */
 r_if
 c_cond
@@ -2985,39 +2785,19 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
-id|REQ_DRIVE_ACB
+id|REQ_SPECIAL
 )paren
-(brace
-r_struct
-id|ata_taskfile
-op_star
-id|ar
-op_assign
-id|rq-&gt;special
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ar
-)paren
-)paren
-r_goto
-id|args_error
-suffix:semicolon
 r_return
 id|ata_taskfile
 c_func
 (paren
 id|drive
 comma
-id|ar
+id|rq-&gt;special
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* The normal way of execution is to pass and execute the request&n;&t; * handler down to the device type driver.&n;&t; */
 r_if
 c_cond
@@ -3130,30 +2910,6 @@ comma
 id|rq
 comma
 l_int|0
-)paren
-suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
-id|args_error
-suffix:colon
-multiline_comment|/* NULL as arguemnt is used by ioctls as a way of waiting for all&n;&t; * current requests to be flushed from the queue.&n;&t; */
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: DRIVE_CMD (null)&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
-id|ide_end_drive_cmd
-c_func
-(paren
-id|drive
-comma
-id|rq
 )paren
 suffix:semicolon
 r_return
@@ -5419,11 +5175,11 @@ c_func
 id|ide_set_handler
 )paren
 suffix:semicolon
-DECL|variable|ide_dump_status
+DECL|variable|ata_dump
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_dump_status
+id|ata_dump
 )paren
 suffix:semicolon
 DECL|variable|ata_error
@@ -5440,18 +5196,12 @@ c_func
 id|ide_wait_stat
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: this is a trully bad name */
 DECL|variable|restart_request
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|restart_request
-)paren
-suffix:semicolon
-DECL|variable|ide_end_drive_cmd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_end_drive_cmd
 )paren
 suffix:semicolon
 DECL|variable|__ide_end_request

@@ -110,7 +110,7 @@ op_and_assign
 op_complement
 id|WQ_FLAG_EXCLUSIVE
 suffix:semicolon
-id|wq_write_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -127,7 +127,7 @@ comma
 id|wait
 )paren
 suffix:semicolon
-id|wq_write_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -159,7 +159,7 @@ id|wait-&gt;flags
 op_or_assign
 id|WQ_FLAG_EXCLUSIVE
 suffix:semicolon
-id|wq_write_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -176,7 +176,7 @@ comma
 id|wait
 )paren
 suffix:semicolon
-id|wq_write_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -204,7 +204,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|wq_write_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -221,7 +221,7 @@ comma
 id|wait
 )paren
 suffix:semicolon
-id|wq_write_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp

@@ -1,15 +1,8 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-shark/arch.c&n; *&n; *  Architecture specific stuff.&n; */
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
@@ -38,18 +31,8 @@ id|IO_START
 comma
 id|IO_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|shark_map_io
@@ -66,6 +49,12 @@ id|iotable_init
 c_func
 (paren
 id|shark_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|shark_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -85,11 +85,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|ide_end_drive_cmd
+id|blkdev_dequeue_request
 c_func
 (paren
-id|drive
-comma
+id|rq
+)paren
+suffix:semicolon
+id|drive-&gt;rq
+op_assign
+l_int|NULL
+suffix:semicolon
+id|end_that_request_last
+c_func
+(paren
 id|rq
 )paren
 suffix:semicolon
@@ -786,25 +794,14 @@ id|BUSY_STAT
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: BUSY clear took too long&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-id|__FUNCTION__
-comma
-id|stat
+l_string|&quot;BUSY clear took too long&quot;
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -836,16 +833,14 @@ op_amp
 id|ERR_STAT
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-id|__FUNCTION__
-comma
-id|stat
+l_string|&quot;ERR condition&quot;
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -1089,20 +1084,7 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: %s: error status %x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|drive-&gt;name
-comma
-id|drive-&gt;status
-)paren
-suffix:semicolon
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1110,8 +1092,6 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -1354,6 +1334,7 @@ l_int|1
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * do taskfile and check ABRT bit -- intelligent adapters will not&n;&t; * pass NOP with sub-code 0x01 to device, so the command will not&n;&t; * fail there&n;&t; */
 id|memset
 c_func
 (paren
@@ -1376,14 +1357,6 @@ id|args.cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
-id|ide_cmd_type_parser
-c_func
-(paren
-op_amp
-id|args
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * do taskfile and check ABRT bit -- intelligent adapters will not&n;&t; * pass NOP with sub-code 0x01 to device, so the command will not&n;&t; * fail there&n;&t; */
 id|ide_raw_taskfile
 c_func
 (paren
@@ -1494,13 +1467,6 @@ id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
-id|ide_cmd_type_parser
-c_func
-(paren
-op_amp
-id|args
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1548,13 +1514,6 @@ suffix:semicolon
 id|args.cmd
 op_assign
 id|WIN_SETFEATURES
-suffix:semicolon
-id|ide_cmd_type_parser
-c_func
-(paren
-op_amp
-id|args
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1604,13 +1563,6 @@ suffix:semicolon
 id|args.cmd
 op_assign
 id|WIN_SETFEATURES
-suffix:semicolon
-id|ide_cmd_type_parser
-c_func
-(paren
-op_amp
-id|args
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1927,7 +1879,7 @@ id|BUSY_STAT
 )paren
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1935,8 +1887,6 @@ comma
 id|rq
 comma
 l_string|&quot;queued start&quot;
-comma
-id|stat
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -1967,7 +1917,7 @@ op_amp
 id|ERR_STAT
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1975,8 +1925,6 @@ comma
 id|rq
 comma
 l_string|&quot;tcq_start&quot;
-comma
-id|stat
 )paren
 suffix:semicolon
 r_return
