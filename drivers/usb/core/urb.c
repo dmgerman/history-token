@@ -147,7 +147,7 @@ id|urb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_get_urb - increments the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transfered from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
+multiline_comment|/**&n; * usb_get_urb - increments the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transferred from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
 DECL|function|usb_get_urb
 r_struct
 id|urb

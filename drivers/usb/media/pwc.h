@@ -289,7 +289,7 @@ r_char
 id|vmirror
 suffix:semicolon
 multiline_comment|/* for ToUCaM series */
-multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transfered to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES.... &n;      We have in effect a back-to-back-double-buffer system.&n;    */
+multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transferred to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES.... &n;      We have in effect a back-to-back-double-buffer system.&n;    */
 multiline_comment|/* 1: isoc */
 DECL|member|sbuf
 r_struct

@@ -380,7 +380,7 @@ id|udsl_driver_name
 op_assign
 l_string|&quot;speedtch&quot;
 suffix:semicolon
-multiline_comment|/*&n; * atm driver prototypes and stuctures&n; */
+multiline_comment|/*&n; * atm driver prototypes and structures&n; */
 r_static
 r_void
 id|udsl_atm_dev_close
