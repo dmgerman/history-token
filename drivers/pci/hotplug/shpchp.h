@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;
 macro_line|#include &quot;pci_hotplug.h&quot;
-macro_line|#if !defined(CONFIG_HOTPLUG_PCI_SHPC_MODULE)
+macro_line|#if !defined(MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;shpchp&quot;
 macro_line|#else
