@@ -336,12 +336,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|piix4_smba
 comma
 l_int|8
+comma
+l_string|&quot;piix4-smbus&quot;
 )paren
 )paren
 (brace
@@ -482,17 +485,6 @@ id|END
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Everything is happy, let&squot;s grab the memory and set things up. */
-id|request_region
-c_func
-(paren
-id|piix4_smba
-comma
-l_int|8
-comma
-l_string|&quot;piix4-smbus&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef DEBUG
 r_if
 c_cond
