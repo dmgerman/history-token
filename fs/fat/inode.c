@@ -785,7 +785,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;,uid=%d&quot;
+l_string|&quot;,uid=%u&quot;
 comma
 id|opts-&gt;fs_uid
 )paren
@@ -802,7 +802,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;,gid=%d&quot;
+l_string|&quot;,gid=%u&quot;
 comma
 id|opts-&gt;fs_gid
 )paren
