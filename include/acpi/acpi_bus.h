@@ -6,10 +6,6 @@ macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
-r_extern
-r_int
-id|acpi_disabled
-suffix:semicolon
 multiline_comment|/* TBD: Make dynamic */
 DECL|macro|ACPI_MAX_HANDLES
 mdefine_line|#define ACPI_MAX_HANDLES&t;10

@@ -60,11 +60,6 @@ r_int
 r_char
 id|acpi_legacy_devices
 suffix:semicolon
-DECL|variable|acpi_disabled
-r_int
-id|acpi_disabled
-suffix:semicolon
-multiline_comment|/* XXX this shouldn&squot;t be needed---we can&squot;t boot without ACPI! */
 r_const
 r_char
 op_star

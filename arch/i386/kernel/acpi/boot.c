@@ -1984,9 +1984,10 @@ c_cond
 id|error
 )paren
 (brace
-id|acpi_disabled
-op_assign
-l_int|1
+id|disable_acpi
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|error
@@ -2022,9 +2023,10 @@ id|PREFIX
 l_string|&quot;BIOS listed in blacklist, disabling ACPI support&bslash;n&quot;
 )paren
 suffix:semicolon
-id|acpi_disabled
-op_assign
-l_int|1
+id|disable_acpi
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|error
