@@ -3661,6 +3661,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|do_gettimeofday
+c_func
+(paren
+op_amp
 id|ENI_VCC
 c_func
 (paren
@@ -3668,8 +3672,7 @@ id|vcc
 )paren
 op_member_access_from_pointer
 id|timestamp
-op_assign
-id|xtime
+)paren
 suffix:semicolon
 id|ENI_VCC
 c_func
