@@ -1764,7 +1764,7 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;hw status page @ %lx&bslash;n&quot;
+l_string|&quot;hw status page @ %p&bslash;n&quot;
 comma
 id|dev_priv-&gt;hw_status_page
 )paren
