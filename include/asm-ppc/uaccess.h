@@ -43,6 +43,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -161,11 +162,13 @@ id|__copy_tofrom_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -188,6 +191,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -217,6 +221,11 @@ r_return
 id|__copy_tofrom_user
 c_func
 (paren
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|to
 comma
 id|from
@@ -252,6 +261,11 @@ r_return
 id|__copy_tofrom_user
 c_func
 (paren
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|to
 comma
 id|from
@@ -277,6 +291,7 @@ id|copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -313,6 +328,11 @@ c_func
 (paren
 id|to
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|from
 comma
 id|n
@@ -348,6 +368,11 @@ c_func
 (paren
 id|to
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|from
 comma
 id|n
@@ -363,9 +388,9 @@ id|n
 suffix:semicolon
 )brace
 DECL|macro|__copy_from_user
-mdefine_line|#define __copy_from_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((to), (from), (size))
+mdefine_line|#define __copy_from_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((void __user *)(to), (from), (size))
 DECL|macro|__copy_to_user
-mdefine_line|#define __copy_to_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((to), (from), (size))
+mdefine_line|#define __copy_to_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((to), (void __user *)(from), (size))
 r_extern
 r_int
 r_int
@@ -373,6 +398,7 @@ id|__clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -390,6 +416,7 @@ id|clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -475,6 +502,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -495,6 +523,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -539,6 +568,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|str
 comma
@@ -560,6 +590,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|str
 comma

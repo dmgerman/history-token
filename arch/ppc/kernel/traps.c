@@ -999,6 +999,7 @@ id|instword
 comma
 (paren
 id|uint
+id|__user
 op_star
 )paren
 (paren
