@@ -340,6 +340,10 @@ DECL|variable|sctp_sf_ignore_primitive
 id|sctp_state_fn_t
 id|sctp_sf_ignore_primitive
 suffix:semicolon
+DECL|variable|sctp_sf_do_prm_requestheartbeat
+id|sctp_state_fn_t
+id|sctp_sf_do_prm_requestheartbeat
+suffix:semicolon
 multiline_comment|/* Prototypes for other event state functions.  */
 DECL|variable|sctp_sf_do_9_2_start_shutdown
 id|sctp_state_fn_t

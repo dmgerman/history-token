@@ -2137,7 +2137,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|new_transport-&gt;state.active
+id|new_transport-&gt;active
 )paren
 (brace
 multiline_comment|/* If the chunk is Heartbeat, send it to&n;&t;&t;&t; * chunk-&gt;transport, even it&squot;s inactive.&n;&t;&t;&t; */
@@ -2620,7 +2620,7 @@ op_eq
 l_int|NULL
 op_logical_or
 op_logical_neg
-id|new_transport-&gt;state.active
+id|new_transport-&gt;active
 )paren
 id|new_transport
 op_assign
@@ -4333,7 +4333,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|transport-&gt;state.active
+id|transport-&gt;active
 )paren
 (brace
 id|sctp_assoc_control_transport

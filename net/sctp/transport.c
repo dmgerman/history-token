@@ -165,11 +165,11 @@ id|peer-&gt;last_time_ecne_reduced
 op_assign
 id|jiffies
 suffix:semicolon
-id|peer-&gt;state.active
+id|peer-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
-id|peer-&gt;state.hb_allowed
+id|peer-&gt;hb_allowed
 op_assign
 l_int|0
 suffix:semicolon

@@ -1507,20 +1507,15 @@ r_int
 r_int
 id|last_time_ecne_reduced
 suffix:semicolon
-multiline_comment|/* state       : The current state of this destination,&n;&t; *             :  i.e. DOWN, UP, ALLOW-HB, NO-HEARTBEAT, etc.&n;&t; */
-r_struct
-(brace
+multiline_comment|/* active      : The current active state of this destination,&n;&t; *             :  i.e. DOWN, UP, etc.&n;&t; */
 DECL|member|active
 r_int
 id|active
 suffix:semicolon
+multiline_comment|/* hb_allowed  : The current heartbeat state of this destination,&n;&t; *             :  i.e. ALLOW-HB, NO-HEARTBEAT, etc.&n;&t; */
 DECL|member|hb_allowed
 r_int
 id|hb_allowed
-suffix:semicolon
-DECL|member|state
-)brace
-id|state
 suffix:semicolon
 multiline_comment|/* These are the error stats for this destination.  */
 multiline_comment|/* Error count : The current error count for this destination.  */
