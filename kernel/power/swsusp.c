@@ -3531,6 +3531,7 @@ multiline_comment|/*&n; * Returns true if given address/order collides with any 
 DECL|function|does_collide_order
 r_static
 r_int
+id|__init
 id|does_collide_order
 c_func
 (paren
@@ -3611,6 +3612,7 @@ multiline_comment|/*&n; * We check here that pagedir &amp; pages it points to wo
 DECL|function|check_pagedir
 r_static
 r_int
+id|__init
 id|check_pagedir
 c_func
 (paren
@@ -3687,10 +3689,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|relocate_pagedir
-r_static
+DECL|function|swsusp_pagedir_relocate
 r_int
-id|relocate_pagedir
+id|__init
+id|swsusp_pagedir_relocate
 c_func
 (paren
 r_void
@@ -3906,7 +3908,10 @@ l_string|&quot;|&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|check_pagedir
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Sanity check if this image makes sense with this kernel/swap context&n; * I really don&squot;t think that it&squot;s foolproof but more than nothing..&n; */
@@ -4670,19 +4675,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|relocate_pagedir
-c_func
-(paren
-)paren
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|check_pagedir
+id|swsusp_pagedir_relocate
 c_func
 (paren
 )paren
