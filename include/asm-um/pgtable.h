@@ -211,35 +211,6 @@ DECL|macro|pud_newpage
 mdefine_line|#define pud_newpage(x)  (pud_val(x) &amp; _PAGE_NEWPAGE)
 DECL|macro|pud_mkuptodate
 mdefine_line|#define pud_mkuptodate(x) (pud_val(x) &amp;= ~_PAGE_NEWPAGE)
-DECL|function|__pud_alloc
-r_static
-r_inline
-id|pud_t
-id|fastcall
-op_star
-id|__pud_alloc
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-id|pgd_t
-op_star
-id|pgd
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))
 DECL|macro|pmd_page
