@@ -3824,7 +3824,7 @@ id|CAP_FOWNER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Check whether we can remove a link victim from directory dir, check&n; *  whether the type of victim is right.&n; *  1. We can&squot;t do it if dir is read-only (done in permission())&n; *  2. We should have write and exec permissions on dir&n; *  3. We can&squot;t remove anything from append-only dir&n; *  4. We can&squot;t do anything with immutable dir (done in permission())&n; *  5. If the sticky bit on dir is set we should either&n; *&t;a. be owner of dir, or&n; *&t;b. be owner of victim, or&n; *&t;c. have CAP_FOWNER capability&n; *  6. If the victim is append-only or immutable we can&squot;t do antyhing with&n; *     links pointing to it.&n; *  7. If we were asked to remove a directory and victim isn&squot;t one - ENOTDIR.&n; *  8. If we were asked to remove a non-directory and victim isn&squot;t one - EISDIR.&n; *  9. We can&squot;t remove a root or mountpoint.&n; */
+multiline_comment|/*&n; *&t;Check whether we can remove a link victim from directory dir, check&n; *  whether the type of victim is right.&n; *  1. We can&squot;t do it if dir is read-only (done in permission())&n; *  2. We should have write and exec permissions on dir&n; *  3. We can&squot;t remove anything from append-only dir&n; *  4. We can&squot;t do anything with immutable dir (done in permission())&n; *  5. If the sticky bit on dir is set we should either&n; *&t;a. be owner of dir, or&n; *&t;b. be owner of victim, or&n; *&t;c. have CAP_FOWNER capability&n; *  6. If the victim is append-only or immutable we can&squot;t do antyhing with&n; *     links pointing to it.&n; *  7. If we were asked to remove a directory and victim isn&squot;t one - ENOTDIR.&n; *  8. If we were asked to remove a non-directory and victim isn&squot;t one - EISDIR.&n; *  9. We can&squot;t remove a root or mountpoint.&n; * 10. We don&squot;t allow removal of NFS sillyrenamed files; it&squot;s handled by&n; *     nfs_async_unlink().&n; */
 DECL|function|may_delete
 r_static
 r_inline
@@ -3983,6 +3983,17 @@ id|dir
 r_return
 op_minus
 id|ENOENT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|victim-&gt;d_flags
+op_amp
+id|DCACHE_NFSFS_RENAMED
+)paren
+r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 r_return
 l_int|0
