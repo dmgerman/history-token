@@ -273,6 +273,7 @@ l_int|64
 suffix:semicolon
 multiline_comment|/* &gt; this, need CAP_SYS_RESOURCE */
 macro_line|#if RTC_IRQ
+multiline_comment|/*&n; * rtc_task_lock nests inside rtc_lock.&n; */
 DECL|variable|rtc_task_lock
 r_static
 id|spinlock_t
@@ -2603,6 +2604,13 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
+id|rtc_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
 id|rtc_task_lock
 )paren
 suffix:semicolon
@@ -2614,11 +2622,18 @@ op_ne
 id|task
 )paren
 (brace
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|rtc_task_lock
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rtc_lock
 )paren
 suffix:semicolon
 r_return
@@ -2629,13 +2644,6 @@ suffix:semicolon
 id|rtc_callback
 op_assign
 l_int|NULL
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|rtc_lock
-)paren
 suffix:semicolon
 multiline_comment|/* disable controls */
 id|tmp
@@ -2705,14 +2713,14 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|rtc_lock
+id|rtc_task_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|rtc_task_lock
+id|rtc_lock
 )paren
 suffix:semicolon
 r_return

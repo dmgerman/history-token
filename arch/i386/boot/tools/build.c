@@ -761,7 +761,7 @@ l_int|15
 op_div
 l_int|16
 suffix:semicolon
-multiline_comment|/* 0x28000*16 = 2.5 MB, conservative estimate for the current maximum */
+multiline_comment|/* 0x40000*16 = 4.0 MB, reasonable estimate for the current maximum */
 r_if
 c_cond
 (paren
@@ -771,7 +771,7 @@ OG
 id|is_big_kernel
 ques
 c_cond
-l_int|0x28000
+l_int|0x40000
 suffix:colon
 id|DEF_SYSSIZE
 )paren
@@ -787,22 +787,6 @@ c_cond
 l_string|&quot;&quot;
 suffix:colon
 l_string|&quot;bzImage or &quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sys_size
-OG
-l_int|0xefff
-)paren
-id|fprintf
-c_func
-(paren
-id|stderr
-comma
-l_string|&quot;warning: kernel is too big for standalone boot &quot;
-l_string|&quot;from floppy&bslash;n&quot;
 )paren
 suffix:semicolon
 r_while

@@ -631,6 +631,8 @@ OG
 id|CIFS_MAX_MSGSIZE
 op_plus
 id|MAX_CIFS_HDR_SIZE
+op_minus
+l_int|4
 )paren
 (brace
 id|cERROR

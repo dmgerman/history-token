@@ -419,7 +419,8 @@ DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;&t;1232
 DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;&t;1233
-multiline_comment|/* 1234 available for reuse */
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;&t;1234
 multiline_comment|/* 1235 available for reuse */
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;1236
@@ -445,6 +446,24 @@ DECL|macro|__NR_restart_syscall
 mdefine_line|#define __NR_restart_syscall&t;&t;1246
 DECL|macro|__NR_semtimedop
 mdefine_line|#define __NR_semtimedop&t;&t;&t;1247
+DECL|macro|__NR_sys_timer_create
+mdefine_line|#define __NR_sys_timer_create&t;&t;1248
+DECL|macro|__NR_sys_timer_settime
+mdefine_line|#define __NR_sys_timer_settime&t;&t;1249
+DECL|macro|__NR_sys_timer_gettime
+mdefine_line|#define __NR_sys_timer_gettime&t;&t;1250
+DECL|macro|__NR_sys_timer_getoverrun
+mdefine_line|#define __NR_sys_timer_getoverrun&t;1251
+DECL|macro|__NR_sys_timer_delete
+mdefine_line|#define __NR_sys_timer_delete&t;&t;1252
+DECL|macro|__NR_sys_clock_settime
+mdefine_line|#define __NR_sys_clock_settime&t;&t;1253
+DECL|macro|__NR_sys_clock_gettime
+mdefine_line|#define __NR_sys_clock_gettime&t;&t;1254
+DECL|macro|__NR_sys_clock_getres
+mdefine_line|#define __NR_sys_clock_getres&t;&t;1255
+DECL|macro|__NR_sys_clock_nanosleep
+mdefine_line|#define __NR_sys_clock_nanosleep&t;1256
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int

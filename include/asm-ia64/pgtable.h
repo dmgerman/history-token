@@ -405,10 +405,10 @@ multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
 multiline_comment|/*&n; * Find an entry in the third-level page table.  This looks more complicated than it&n; * should be because some platforms place page tables in high memory.&n; */
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(addr)&t; &t;(((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_index
+mdefine_line|#define pte_index(addr)&t; &t;(((addr) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(dir,addr)&t;((pte_t *) pmd_page_kernel(*(dir)) + __pte_offset(addr))
+mdefine_line|#define pte_offset_kernel(dir,addr)&t;((pte_t *) pmd_page_kernel(*(dir)) + pte_index(addr))
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir,addr)&t;pte_offset_kernel(dir, addr)
 DECL|macro|pte_offset_map_nested

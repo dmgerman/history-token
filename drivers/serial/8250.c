@@ -8326,6 +8326,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|serial8250_console_init
+r_static
 r_void
 id|__init
 id|serial8250_console_init
@@ -8347,6 +8348,13 @@ id|serial8250_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|serial8250_console_init
+id|console_initcall
+c_func
+(paren
+id|serial8250_console_init
+)paren
+suffix:semicolon
 DECL|macro|SERIAL8250_CONSOLE
 mdefine_line|#define SERIAL8250_CONSOLE&t;&amp;serial8250_console
 macro_line|#else

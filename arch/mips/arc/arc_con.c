@@ -188,6 +188,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; *    Register console.&n; */
 DECL|function|arc_console_init
+r_static
 r_void
 id|__init
 id|arc_console_init
@@ -204,4 +205,11 @@ id|arc_cons
 )paren
 suffix:semicolon
 )brace
+DECL|variable|arc_console_init
+id|console_initcall
+c_func
+(paren
+id|arc_console_init
+)paren
+suffix:semicolon
 eof

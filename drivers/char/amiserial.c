@@ -8977,10 +8977,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Register console.&n; */
-DECL|function|serial_console_init
+DECL|function|amiserial_console_init
+r_static
 r_void
 id|__init
-id|serial_console_init
+id|amiserial_console_init
 c_func
 (paren
 r_void
@@ -8994,6 +8995,13 @@ id|sercons
 )paren
 suffix:semicolon
 )brace
+DECL|variable|amiserial_console_init
+id|console_initcall
+c_func
+(paren
+id|amiserial_console_init
+)paren
+suffix:semicolon
 macro_line|#endif
 id|MODULE_LICENSE
 c_func

@@ -1057,7 +1057,7 @@ id|tsk
 suffix:semicolon
 r_int
 r_int
-id|offset
+id|index
 suffix:semicolon
 id|pgd_t
 op_star
@@ -1091,9 +1091,9 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|offset
+id|index
 op_assign
-id|__pgd_offset
+id|pgd_index
 c_func
 (paren
 id|addr
@@ -1107,13 +1107,13 @@ c_func
 (paren
 )paren
 op_plus
-id|offset
+id|index
 suffix:semicolon
 id|pgd_k
 op_assign
 id|init_mm.pgd
 op_plus
-id|offset
+id|index
 suffix:semicolon
 r_if
 c_cond

@@ -1381,6 +1381,22 @@ id|STB_GLOBAL
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* ignore global offset table */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|symname
+comma
+l_string|&quot;_GLOBAL_OFFSET_TABLE_&quot;
+)paren
+op_eq
+l_int|0
+)paren
+r_break
+suffix:semicolon
 r_if
 c_cond
 (paren

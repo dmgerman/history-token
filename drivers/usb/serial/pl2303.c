@@ -134,6 +134,16 @@ id|TRIPP_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|RADIOSHACK_VENDOR_ID
+comma
+id|RADIOSHACK_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace

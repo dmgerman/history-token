@@ -280,7 +280,7 @@ id|pfm_syst_info
 )paren
 suffix:semicolon
 DECL|macro|PERFMON_IS_SYSWIDE
-macro_line|# define PERFMON_IS_SYSWIDE() (get_cpu_var(pfm_syst_info) &amp; 0x1)
+macro_line|# define PERFMON_IS_SYSWIDE() (__get_cpu_var(pfm_syst_info) &amp; 0x1)
 macro_line|#else
 DECL|macro|PERFMON_IS_SYSWIDE
 macro_line|# define PERFMON_IS_SYSWIDE() (0)

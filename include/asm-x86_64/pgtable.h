@@ -1275,10 +1275,10 @@ DECL|macro|pmd_page_kernel
 mdefine_line|#define pmd_page_kernel(pmd) ((unsigned long) __va(pmd_val(pmd) &amp; PTE_MASK))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;(pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
-DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) (((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+DECL|macro|pmd_index
+mdefine_line|#define pmd_index(address) (((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address) ((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;__pmd_offset(address))
+mdefine_line|#define pmd_offset(dir, address) ((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;pmd_index(address))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 DECL|macro|pmd_present
@@ -1379,10 +1379,10 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_index
+mdefine_line|#define pte_index(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel(dir, address) ((pte_t *) pmd_page_kernel(*(dir)) + &bslash;&n;&t;&t;&t;__pte_offset(address))
+mdefine_line|#define pte_offset_kernel(dir, address) ((pte_t *) pmd_page_kernel(*(dir)) + &bslash;&n;&t;&t;&t;pte_index(address))
 multiline_comment|/* x86-64 always has all page tables mapped. */
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir,address) pte_offset_kernel(dir,address)

@@ -562,6 +562,11 @@ id|name
 op_assign
 l_string|&quot;timer&quot;
 comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Include architecture specific code&n; */

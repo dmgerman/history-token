@@ -268,6 +268,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|amd_base
 r_static
 r_int
+r_int
 id|amd_base
 suffix:semicolon
 DECL|variable|bmide_dev
@@ -414,7 +415,7 @@ suffix:semicolon
 id|amd_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     2.8&quot;
+l_string|&quot;Driver Version:                     2.9&quot;
 )paren
 suffix:semicolon
 id|amd_print
@@ -2005,6 +2006,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The initialization callback. Here we determine the IDE chip type&n; * and initialize its drive independent registers.&n; */
 DECL|function|init_chipset_amd74xx
+r_static
 r_int
 r_int
 id|__init
@@ -2476,6 +2478,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ata66_amd74xx
+r_static
 r_int
 r_int
 id|__init
@@ -2502,6 +2505,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|init_hwif_amd74xx
+r_static
 r_void
 id|__init
 id|init_hwif_amd74xx

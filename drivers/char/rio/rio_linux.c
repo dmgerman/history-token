@@ -24,7 +24,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#if BITS_PER_LONG != 32
 macro_line|#  error FIXME: this driver only works on 32-bit platforms
@@ -2016,7 +2015,7 @@ id|TIOCGSOFTCAR
 suffix:colon
 id|rc
 op_assign
-id|Put_user
+id|put_user
 c_func
 (paren
 (paren
@@ -2073,7 +2072,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -2446,7 +2445,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -2527,7 +2526,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -2608,7 +2607,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -3793,10 +3792,13 @@ id|CNTRL_REG_OFFSET
 )paren
 suffix:semicolon
 )brace
-id|my_iounmap
+id|iounmap
+c_func
 (paren
-id|hwbase
-comma
+(paren
+r_char
+op_star
+)paren
 id|rebase
 )paren
 suffix:semicolon
@@ -4092,10 +4094,7 @@ id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
 id|hp-&gt;Ivec
 op_assign
-id|get_irq
-(paren
-id|pdev
-)paren
+id|pdev-&gt;irq
 suffix:semicolon
 r_if
 c_cond
@@ -4364,21 +4363,21 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|my_iounmap
+id|iounmap
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
 (paren
 id|p-&gt;RIOHosts
 (braket
 id|p-&gt;RIONumHosts
 )braket
 dot
-id|PaddrP
-comma
-id|p-&gt;RIOHosts
-(braket
-id|p-&gt;RIONumHosts
-)braket
-dot
 id|Caddr
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4486,10 +4485,7 @@ id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
 id|hp-&gt;Ivec
 op_assign
-id|get_irq
-(paren
-id|pdev
-)paren
+id|pdev-&gt;irq
 suffix:semicolon
 r_if
 c_cond
@@ -4769,21 +4765,21 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|my_iounmap
+id|iounmap
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
 (paren
 id|p-&gt;RIOHosts
 (braket
 id|p-&gt;RIONumHosts
 )braket
 dot
-id|PaddrP
-comma
-id|p-&gt;RIOHosts
-(braket
-id|p-&gt;RIONumHosts
-)braket
-dot
 id|Caddr
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -5022,11 +5018,15 @@ c_cond
 op_logical_neg
 id|okboard
 )paren
-id|my_iounmap
+id|iounmap
 (paren
-id|hp-&gt;PaddrP
-comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|hp-&gt;Caddr
+)paren
 )paren
 suffix:semicolon
 )brace

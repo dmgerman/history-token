@@ -681,9 +681,9 @@ id|sn_rtc_usec_per_cyc
 op_assign
 (paren
 (paren
-l_int|1000000UL
+l_int|1000000000UL
 op_lshift
-id|IA64_USEC_PER_CYC_SHIFT
+id|IA64_NSEC_PER_CYC_SHIFT
 )paren
 op_plus
 id|sn_rtc_cycles_per_second

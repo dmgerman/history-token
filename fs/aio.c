@@ -197,10 +197,9 @@ c_func
 l_string|&quot;aio&quot;
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;aio_setup: sizeof(struct page) = %d&bslash;n&quot;
 comma
 (paren
@@ -5074,7 +5073,7 @@ r_struct
 id|io_event
 id|tmp
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;calling cancel&bslash;n&quot;

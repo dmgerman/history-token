@@ -400,7 +400,7 @@ suffix:semicolon
 r_int
 id|nr
 op_assign
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -566,6 +566,11 @@ id|nr
 )paren
 suffix:semicolon
 multiline_comment|/* LDTD */
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Setup IA32 GDT and TSS&n; */
 r_void

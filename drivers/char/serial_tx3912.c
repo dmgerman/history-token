@@ -4156,6 +4156,7 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|function|tx3912_console_init
+r_static
 r_void
 id|__init
 id|tx3912_console_init
@@ -4172,5 +4173,12 @@ id|sercons
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tx3912_console_init
+id|console_initcall
+c_func
+(paren
+id|tx3912_console_init
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

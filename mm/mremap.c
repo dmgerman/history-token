@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;mm/remap.c&n; *&n; *&t;(C) Copyright 1996 Linus Torvalds&n; *&n; *&t;Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *&t;(C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
+multiline_comment|/*&n; *&t;mm/mremap.c&n; *&n; *&t;(C) Copyright 1996 Linus Torvalds&n; *&n; *&t;Address space accounting code&t;&lt;alan@redhat.com&gt;&n; *&t;(C) Copyright 2002 Red Hat Inc, All Rights Reserved&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;

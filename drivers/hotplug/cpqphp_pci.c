@@ -202,10 +202,6 @@ r_char
 id|bus
 suffix:semicolon
 r_struct
-id|pci_dev
-id|dev0
-suffix:semicolon
-r_struct
 id|pci_bus
 op_star
 id|child
@@ -214,21 +210,6 @@ r_int
 id|rc
 op_assign
 l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|dev0
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|pci_dev
-)paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -272,12 +253,14 @@ c_func
 l_string|&quot;INFO: pci_dev still null&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev0.bus
+singleline_comment|//this will generate pci_dev structures for all functions, but we will only call this case when lookup fails
+id|func-&gt;pci_dev
 op_assign
+id|pci_scan_slot
+c_func
+(paren
 id|ctrl-&gt;pci_dev-&gt;bus
-suffix:semicolon
-id|dev0.devfn
-op_assign
+comma
 (paren
 id|func-&gt;device
 op_lshift
@@ -289,19 +272,6 @@ id|func-&gt;function
 op_amp
 l_int|0x7
 )paren
-suffix:semicolon
-id|dev0.sysdata
-op_assign
-id|ctrl-&gt;pci_dev-&gt;sysdata
-suffix:semicolon
-singleline_comment|//this will generate pci_dev structures for all functions, but we will only call this case when lookup fails
-id|func-&gt;pci_dev
-op_assign
-id|pci_scan_slot
-c_func
-(paren
-op_amp
-id|dev0
 )paren
 suffix:semicolon
 r_if

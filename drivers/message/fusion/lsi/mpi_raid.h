@@ -473,7 +473,7 @@ id|MPI_POINTER
 id|pSCSIIORaidPassthroughReply_t
 suffix:semicolon
 multiline_comment|/****************************************************************************/
-multiline_comment|/* Mailbox reqeust structure */
+multiline_comment|/* Mailbox request structure */
 multiline_comment|/****************************************************************************/
 DECL|struct|_MSG_MAILBOX_REQUEST
 r_typedef

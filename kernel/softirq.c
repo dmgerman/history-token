@@ -218,11 +218,6 @@ r_goto
 id|restart
 suffix:semicolon
 )brace
-id|__local_bh_enable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -232,6 +227,11 @@ id|wakeup_softirqd
 c_func
 (paren
 id|cpu
+)paren
+suffix:semicolon
+id|__local_bh_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

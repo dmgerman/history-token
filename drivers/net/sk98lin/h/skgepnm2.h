@@ -339,7 +339,7 @@ DECL|macro|SK_PNMI_HUNDREDS_SEC
 mdefine_line|#define SK_PNMI_HUNDREDS_SEC(t)&t;(t)
 macro_line|#else
 DECL|macro|SK_PNMI_HUNDREDS_SEC
-mdefine_line|#define SK_PNMI_HUNDREDS_SEC(t)&t;(((t) * 100) / (SK_TICKS_PER_SEC))
+mdefine_line|#define SK_PNMI_HUNDREDS_SEC(t)&t;((((long)t) * 100) / (SK_TICKS_PER_SEC))
 macro_line|#endif
 multiline_comment|/*&n; * Macros to work around alignment problems&n; */
 macro_line|#ifndef SK_PNMI_STORE_U16

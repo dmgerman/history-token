@@ -228,14 +228,8 @@ DECL|macro|WAN_PACKET_MR_ALLMULTI
 mdefine_line|#define WAN_PACKET_MR_ALLMULTI&t;2
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef netdevice_t
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 DECL|macro|netdevice_t
 mdefine_line|#define netdevice_t struct net_device
-macro_line|#else
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct device
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Private wanpipe socket structures. */
 DECL|struct|wanpipe_opt
