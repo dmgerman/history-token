@@ -188,6 +188,15 @@ mdefine_line|#define XFS_ALLOC_USERDATA&t;&t;1&t;/* allocation is for user data*
 DECL|macro|XFS_ALLOC_INITIAL_USER_DATA
 mdefine_line|#define XFS_ALLOC_INITIAL_USER_DATA&t;2&t;/* special case start of file */
 macro_line|#ifdef __KERNEL__
+macro_line|#if defined(XFS_ALLOC_TRACE)
+multiline_comment|/*&n; * Allocation tracing buffer size.&n; */
+DECL|macro|XFS_ALLOC_TRACE_SIZE
+mdefine_line|#define&t;XFS_ALLOC_TRACE_SIZE&t;4096
+r_extern
+id|ktrace_t
+op_star
+id|xfs_alloc_trace_buf
+suffix:semicolon
 multiline_comment|/*&n; * Types for alloc tracing.&n; */
 DECL|macro|XFS_ALLOC_KTRACE_ALLOC
 mdefine_line|#define&t;XFS_ALLOC_KTRACE_ALLOC&t;1
@@ -201,18 +210,7 @@ DECL|macro|XFS_ALLOC_KTRACE_UNBUSY
 mdefine_line|#define&t;XFS_ALLOC_KTRACE_UNBUSY&t;5
 DECL|macro|XFS_ALLOC_KTRACE_BUSYSEARCH
 mdefine_line|#define&t;XFS_ALLOC_KTRACE_BUSYSEARCH&t;6
-multiline_comment|/*&n; * Allocation tracing buffer size.&n; */
-DECL|macro|XFS_ALLOC_TRACE_SIZE
-mdefine_line|#define&t;XFS_ALLOC_TRACE_SIZE&t;4096
-macro_line|#ifdef&t;XFS_ALL_TRACE
-DECL|macro|XFS_ALLOC_TRACE
-mdefine_line|#define&t;XFS_ALLOC_TRACE
 macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_ALLOC_TRACE
-macro_line|#undef&t;XFS_ALLOC_TRACE
-macro_line|#endif
-multiline_comment|/*&n; * Prototypes for visible xfs_alloc.c routines&n; */
 multiline_comment|/*&n; * Compute and fill in value of m_ag_maxlevels.&n; */
 r_void
 id|xfs_alloc_compute_maxlevels

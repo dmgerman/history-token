@@ -90,6 +90,14 @@ DECL|macro|xfs_inherit_nodump
 mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
 DECL|macro|xfs_inherit_noatime
 mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
+DECL|macro|current_cpu
+mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
+DECL|macro|current_pid
+mdefine_line|#define current_pid()&t;&t;(current-&gt;pid)
+DECL|macro|current_fsuid
+mdefine_line|#define current_fsuid(cred)&t;(current-&gt;fsuid)
+DECL|macro|current_fsgid
+mdefine_line|#define current_fsgid(cred)&t;(current-&gt;fsgid)
 DECL|macro|NBPP
 mdefine_line|#define NBPP&t;&t;PAGE_SIZE
 DECL|macro|DPPSHFT

@@ -3,14 +3,6 @@ macro_line|#ifndef __XFS_ATTR_H__
 DECL|macro|__XFS_ATTR_H__
 mdefine_line|#define&t;__XFS_ATTR_H__
 multiline_comment|/*&n; * xfs_attr.h&n; *&n; * Large attribute lists are structured around Btrees where all the data&n; * elements are in the leaf nodes.  Attribute names are hashed into an int,&n; * then that int is used as the index into the Btree.  Since the hashval&n; * of an attribute name may not be unique, we may have duplicate keys.&n; * The internal links in the Btree are logical block offsets into the file.&n; *&n; * Small attribute lists use a different format and are packed as tightly&n; * as possible so as to fit into the literal area of the inode.&n; */
-macro_line|#ifdef XFS_ALL_TRACE
-DECL|macro|XFS_ATTR_TRACE
-mdefine_line|#define&t;XFS_ATTR_TRACE
-macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_ATTR_TRACE
-macro_line|#undef XFS_ATTR_TRACE
-macro_line|#endif
 multiline_comment|/*========================================================================&n; * External interfaces&n; *========================================================================*/
 DECL|macro|ATTR_ROOT
 mdefine_line|#define ATTR_ROOT&t;0x0002&t;/* use attrs in root namespace, not user */

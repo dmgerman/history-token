@@ -35,13 +35,6 @@ macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
 macro_line|#include &quot;xfs_buf_item.h&quot;
-macro_line|#ifdef DEBUG
-DECL|variable|xfs_bmap_trace_buf
-id|ktrace_t
-op_star
-id|xfs_bmap_trace_buf
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef XFSDEBUG
 id|STATIC
 r_void
@@ -901,7 +894,7 @@ macro_line|#else
 DECL|macro|xfs_bmap_validate_ret
 mdefine_line|#define&t;xfs_bmap_validate_ret(bno,len,flags,mval,onmap,nmap)
 macro_line|#endif /* DEBUG */
-macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_RW_TRACE)
+macro_line|#if defined(XFS_RW_TRACE)
 id|STATIC
 r_void
 id|xfs_bunmap_trace
@@ -928,7 +921,7 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_bunmap_trace
 mdefine_line|#define&t;xfs_bunmap_trace(ip, bno, len, flags, ra)
-macro_line|#endif&t;/* DEBUG &amp;&amp; XFS_RW_TRACE */
+macro_line|#endif&t;/* XFS_RW_TRACE */
 id|STATIC
 r_int
 id|xfs_bmap_count_tree
@@ -16082,6 +16075,11 @@ id|prevp
 suffix:semicolon
 )brace
 macro_line|#ifdef XFS_BMAP_TRACE
+DECL|variable|xfs_bmap_trace_buf
+id|ktrace_t
+op_star
+id|xfs_bmap_trace_buf
+suffix:semicolon
 multiline_comment|/*&n; * Add a bmap trace buffer entry.  Base routine for the others.&n; */
 id|STATIC
 r_void
@@ -17191,7 +17189,7 @@ r_return
 id|rval
 suffix:semicolon
 )brace
-macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_RW_TRACE)
+macro_line|#if defined(XFS_RW_TRACE)
 id|STATIC
 r_void
 DECL|function|xfs_bunmap_trace
@@ -17333,12 +17331,10 @@ comma
 r_void
 op_star
 )paren
+id|current_cpu
+c_func
 (paren
-id|__psint_t
 )paren
-r_private
-dot
-id|p_cpuid
 comma
 (paren
 r_void
