@@ -1,7 +1,5 @@
-multiline_comment|/*&n; *&n; * Alchemy Semi Au1000 ethernet driver&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * &n; */
-macro_line|#ifndef __mips__
-macro_line|#error This driver only works with MIPS architectures!
-macro_line|#endif
+multiline_comment|/*&n; * Alchemy Semi Au1000 ethernet driver&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -445,9 +443,9 @@ id|AU1000_ETH0_IRQ
 )brace
 comma
 (brace
-l_int|NULL
+l_int|0
 comma
-l_int|NULL
+l_int|0
 )brace
 )brace
 suffix:semicolon
@@ -496,30 +494,6 @@ mdefine_line|#define cpu_to_dma32 cpu_to_be32
 DECL|macro|dma32_to_cpu
 mdefine_line|#define dma32_to_cpu be32_to_cpu
 multiline_comment|/* FIXME &n; * All of the PHY code really should be detached from the MAC &n; * code.&n; */
-DECL|variable|phy_link
-r_static
-r_char
-op_star
-id|phy_link
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;unknown&quot;
-comma
-l_string|&quot;10Base2&quot;
-comma
-l_string|&quot;10BaseT&quot;
-comma
-l_string|&quot;AUI&quot;
-comma
-l_string|&quot;100BaseT&quot;
-comma
-l_string|&quot;100BaseTX&quot;
-comma
-l_string|&quot;100BaseFX&quot;
-)brace
-suffix:semicolon
 DECL|function|bcm_5201_init
 r_int
 id|bcm_5201_init
@@ -628,6 +602,36 @@ comma
 id|phy_addr
 comma
 id|MII_CONTROL
+comma
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* Enable TX LED instead of FDX */
+id|data
+op_assign
+id|mdio_read
+c_func
+(paren
+id|dev
+comma
+id|phy_addr
+comma
+id|MII_INT
+)paren
+suffix:semicolon
+id|data
+op_and_assign
+op_complement
+id|MII_FDX_LED
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|dev
+comma
+id|phy_addr
+comma
+id|MII_INT
 comma
 id|data
 )paren
@@ -2764,10 +2768,9 @@ id|irq
 suffix:semicolon
 id|prid
 op_assign
-id|read_32bit_cp0_register
+id|read_c0_prid
 c_func
 (paren
-id|CP0_PRID
 )paren
 suffix:semicolon
 r_for
@@ -3001,7 +3004,11 @@ op_logical_neg
 id|request_region
 c_func
 (paren
+id|PHYSADDR
+c_func
+(paren
 id|ioaddr
+)paren
 comma
 id|MAC_IOSIZE
 comma
@@ -3713,7 +3720,11 @@ suffix:colon
 id|release_region
 c_func
 (paren
+id|PHYSADDR
+c_func
+(paren
 id|ioaddr
+)paren
 comma
 id|MAC_IOSIZE
 )paren
@@ -4766,7 +4777,10 @@ id|dev
 comma
 id|ptxd-&gt;status
 comma
-id|ptxd-&gt;len
+id|aup-&gt;tx_len
+(braket
+id|aup-&gt;tx_tail
+)braket
 op_amp
 l_int|0x3ff
 )paren
@@ -4775,6 +4789,13 @@ id|ptxd-&gt;buff_stat
 op_and_assign
 op_complement
 id|TX_T_DONE
+suffix:semicolon
+id|aup-&gt;tx_len
+(braket
+id|aup-&gt;tx_tail
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 id|ptxd-&gt;len
 op_assign
@@ -4946,10 +4967,20 @@ id|dev
 comma
 id|ptxd-&gt;status
 comma
-id|ptxd-&gt;len
+id|aup-&gt;tx_len
+(braket
+id|aup-&gt;tx_head
+)braket
 op_amp
 l_int|0x3ff
 )paren
+suffix:semicolon
+id|aup-&gt;tx_len
+(braket
+id|aup-&gt;tx_head
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 id|ptxd-&gt;len
 op_assign
@@ -5031,16 +5062,32 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|aup-&gt;tx_len
+(braket
+id|aup-&gt;tx_head
+)braket
+op_assign
+id|MAC_MIN_PKT_SIZE
+suffix:semicolon
 id|ptxd-&gt;len
 op_assign
 id|MAC_MIN_PKT_SIZE
 suffix:semicolon
 )brace
 r_else
+(brace
+id|aup-&gt;tx_len
+(braket
+id|aup-&gt;tx_head
+)braket
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|ptxd-&gt;len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
+)brace
 id|ptxd-&gt;buff_stat
 op_assign
 id|pDB-&gt;dma_addr
@@ -5700,6 +5747,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|set_rx_mode
 r_static
@@ -5856,7 +5913,7 @@ id|mclist-&gt;next
 id|set_bit
 c_func
 (paren
-id|ether_crc
+id|ether_crc_le
 c_func
 (paren
 id|ETH_ALEN
@@ -5943,6 +6000,9 @@ l_int|0
 )braket
 op_assign
 id|PHY_ADDRESS
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 r_case
 id|SIOCGMIIREG
