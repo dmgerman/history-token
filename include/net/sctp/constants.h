@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; * &n; * The SCTP reference implementation  is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * the SCTP reference implementation  is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; *                 ************************&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to one of the following email&n; * addresses:&n; * &n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Randall Stewart &lt;randall@stewart.chicago.il.us&gt;&n; * Ken Morneau &lt;kmorneau@cisco.com&gt;&n; * Qiaobing Xie &lt;qxie1@motorola.com&gt;&n; * Xingang Guo &lt;xingang.guo@intel.com&gt;&n; * Sridhar Samudrala &lt;samudrala@us.ibm.com&gt;&n; * Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; * &n; * There are still LOTS of bugs in this code... I always run on the motto&n; * &quot;it is a wonder any code ever works :)&quot;&n; * &n; * &n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; *                 ************************&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the following email&n; * addresses:&n; *&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Randall Stewart &lt;randall@stewart.chicago.il.us&gt;&n; * Ken Morneau &lt;kmorneau@cisco.com&gt;&n; * Qiaobing Xie &lt;qxie1@motorola.com&gt;&n; * Xingang Guo &lt;xingang.guo@intel.com&gt;&n; * Sridhar Samudrala &lt;samudrala@us.ibm.com&gt;&n; * Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; *&n; * There are still LOTS of bugs in this code... I always run on the motto&n; * &quot;it is a wonder any code ever works :)&quot;&n; *&n; *&n; */
 macro_line|#ifndef __sctp_constants_h__
 DECL|macro|__sctp_constants_h__
 mdefine_line|#define __sctp_constants_h__
@@ -31,9 +31,6 @@ op_assign
 id|SCTP_MAX_STREAM
 )brace
 suffix:semicolon
-multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
-DECL|macro|SCTP_IP_OVERHEAD
-mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
 multiline_comment|/* Define the amount of space to reserve for SCTP, IP, LL.&n; * There is a little bit of waste that we are always allocating&n; * for ipv6 headers, but this seems worth the simplicity.&n; */
 DECL|macro|SCTP_IP_OVERHEAD
 mdefine_line|#define SCTP_IP_OVERHEAD ((sizeof(struct sctphdr)&bslash;&n;                          + sizeof(struct ipv6hdr)&bslash;&n;                          + MAX_HEADER))
@@ -442,14 +439,57 @@ DECL|macro|SCTP_ADDR_REACHABLE
 mdefine_line|#define SCTP_ADDR_REACHABLE&t;&t;2
 DECL|macro|SCTP_ADDR_NOT_REACHABLE
 mdefine_line|#define SCTP_ADDR_NOT_REACHABLE&t;&t;1
+multiline_comment|/* Maximum chunk length considering padding requirements. */
+DECL|enumerator|SCTP_MAX_CHUNK_LEN
+r_enum
+(brace
+id|SCTP_MAX_CHUNK_LEN
+op_assign
+(paren
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+op_minus
+r_sizeof
+(paren
+id|__u32
+)paren
+)paren
+)brace
+suffix:semicolon
+multiline_comment|/* Encourage Cookie-Echo bundling by pre-fragmenting chunks a little&n; * harder (until reaching ESTABLISHED state).&n; */
+DECL|enumerator|SCTP_ARBITRARY_COOKIE_ECHO_LEN
+r_enum
+(brace
+id|SCTP_ARBITRARY_COOKIE_ECHO_LEN
+op_assign
+l_int|200
+)brace
+suffix:semicolon
 multiline_comment|/* Guess at how big to make the TSN mapping array.&n; * We guarantee that we can handle at least this big a gap between the&n; * cumulative ACK and the highest TSN.  In practice, we can often&n; * handle up to twice this value.&n; *&n; * NEVER make this more than 32767 (2^15-1).  The Gap Ack Blocks in a&n; * SACK (see  section 3.3.4) are only 16 bits, so 2*SCTP_TSN_MAP_SIZE&n; * must be less than 65535 (2^16 - 1), or we will have overflow&n; * problems creating SACK&squot;s.&n; */
 DECL|macro|SCTP_TSN_MAP_SIZE
 mdefine_line|#define SCTP_TSN_MAP_SIZE 2048
 DECL|macro|SCTP_TSN_MAX_GAP
 mdefine_line|#define SCTP_TSN_MAX_GAP  65535
 multiline_comment|/* We will not record more than this many duplicate TSNs between two&n; * SACKs.  The minimum PMTU is 576.  Remove all the headers and there&n; * is enough room for 131 duplicate reports.  Round down to the&n; * nearest power of 2.&n; */
-DECL|macro|SCTP_MAX_DUP_TSNS
-mdefine_line|#define SCTP_MAX_DUP_TSNS 128
+DECL|enumerator|SCTP_MIN_PMTU
+r_enum
+(brace
+id|SCTP_MIN_PMTU
+op_assign
+l_int|576
+)brace
+suffix:semicolon
+DECL|enumerator|SCTP_MAX_DUP_TSNS
+r_enum
+(brace
+id|SCTP_MAX_DUP_TSNS
+op_assign
+l_int|128
+)brace
+suffix:semicolon
 r_typedef
 r_enum
 (brace
