@@ -1001,10 +1001,7 @@ id|SCtmp-&gt;request_buffer
 comma
 id|SCtmp-&gt;use_sg
 comma
-id|scsi_to_dma_dir
-(paren
 id|SCtmp-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1759,11 +1756,7 @@ id|sgpnt
 comma
 id|SCpnt-&gt;use_sg
 comma
-id|scsi_to_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -2581,11 +2574,6 @@ dot
 id|name
 op_assign
 l_string|&quot;Adaptec 174x (EISA)&quot;
-comma
-dot
-id|command
-op_assign
-id|aha1740_command
 comma
 dot
 id|queuecommand
