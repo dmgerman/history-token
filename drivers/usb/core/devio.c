@@ -93,6 +93,8 @@ l_string|&quot;true to log all usbfs traffic&quot;
 suffix:semicolon
 DECL|macro|snoop
 mdefine_line|#define snoop(dev, format, arg...)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (usbfs_snoop)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dev_info( dev , format , ## arg);&t;&bslash;&n;&t;} while (0)
+DECL|macro|MAX_USBFS_BUFFER_SIZE
+mdefine_line|#define&t;MAX_USBFS_BUFFER_SIZE&t;16384
 DECL|function|connected
 r_static
 r_inline
@@ -3085,6 +3087,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|len1
+OG
+id|MAX_USBFS_BUFFER_SIZE
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|tbuf
@@ -4465,7 +4478,7 @@ c_cond
 (paren
 id|uurb.buffer_length
 OG
-l_int|16384
+id|MAX_USBFS_BUFFER_SIZE
 )paren
 r_return
 op_minus
@@ -4747,7 +4760,7 @@ c_cond
 (paren
 id|uurb.buffer_length
 OG
-l_int|16384
+id|MAX_USBFS_BUFFER_SIZE
 )paren
 r_return
 op_minus
