@@ -1,4 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/char/serial_core.h&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#ifndef LINUX_SERIAL_CORE_H
+DECL|macro|LINUX_SERIAL_CORE_H
+mdefine_line|#define LINUX_SERIAL_CORE_H
 multiline_comment|/*&n; * The type definitions.  These are from Ted Ts&squot;o&squot;s serial.h&n; */
 DECL|macro|PORT_UNKNOWN
 mdefine_line|#define PORT_UNKNOWN&t;0
@@ -94,6 +97,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 r_struct
 id|uart_port
 suffix:semicolon
@@ -1470,4 +1474,5 @@ multiline_comment|/*&n; *&t;UART_ENABLE_MS - determine if port should enable mod
 DECL|macro|UART_ENABLE_MS
 mdefine_line|#define UART_ENABLE_MS(port,cflag)&t;((port)-&gt;flags &amp; UPF_HARDPPS_CD || &bslash;&n;&t;&t;&t;&t;&t; (cflag) &amp; CRTSCTS || &bslash;&n;&t;&t;&t;&t;&t; !((cflag) &amp; CLOCAL))
 macro_line|#endif
+macro_line|#endif /* LINUX_SERIAL_CORE_H */
 eof
