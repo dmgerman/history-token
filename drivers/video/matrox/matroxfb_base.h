@@ -1923,6 +1923,10 @@ DECL|member|dfp_type
 r_int
 id|dfp_type
 suffix:semicolon
+DECL|member|dualhead
+r_int
+id|dualhead
+suffix:semicolon
 DECL|member|fbResource
 r_int
 r_int
