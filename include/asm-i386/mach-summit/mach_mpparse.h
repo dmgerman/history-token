@@ -110,6 +110,17 @@ c_func
 (paren
 id|productid
 comma
+l_string|&quot;EXA&quot;
+comma
+l_int|3
+)paren
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|productid
+comma
 l_string|&quot;RUTHLESS SMP&quot;
 comma
 l_int|12
@@ -159,6 +170,7 @@ comma
 l_int|3
 )paren
 op_logical_and
+(paren
 op_logical_neg
 id|strncmp
 c_func
@@ -168,6 +180,18 @@ comma
 l_string|&quot;SERVIGIL&quot;
 comma
 l_int|8
+)paren
+op_logical_or
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|oem_table_id
+comma
+l_string|&quot;EXA&quot;
+comma
+l_int|3
+)paren
 )paren
 )paren
 (brace
