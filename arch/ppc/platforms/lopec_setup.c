@@ -1332,7 +1332,7 @@ id|ppc_md.nvram_write_val
 op_assign
 id|todc_direct_write_val
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_ID_MODULE)
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ppc_ide_md.default_irq
 op_assign
 id|lopec_ide_default_irq
