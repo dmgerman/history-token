@@ -1672,7 +1672,7 @@ r_struct
 id|hpsb_address_serve
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
