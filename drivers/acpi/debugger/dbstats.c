@@ -1,11 +1,11 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 60 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 61 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;acdebug.h&gt;
 macro_line|#include &lt;acnamesp.h&gt;
-macro_line|#ifdef ENABLE_DEBUGGER
+macro_line|#ifdef ACPI_DEBUGGER
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
+mdefine_line|#define _COMPONENT          ACPI_CA_DEBUGGER
 id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbstats&quot;
@@ -278,7 +278,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef PARSER_ONLY
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_classify_one_object&n; *&n; * PARAMETERS:  Callback for Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enumerate both the object descriptor (including subobjects) and&n; *              the parent namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_db_classify_one_object
@@ -443,7 +442,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_display_statistics&n; *&n; * PARAMETERS:  Type_arg        - Subcommand&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Display various statistics&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_db_display_statistics
@@ -542,7 +540,6 @@ c_cond
 id|type
 )paren
 (brace
-macro_line|#ifndef PARSER_ONLY
 r_case
 id|CMD_STAT_ALLOCATIONS
 suffix:colon
@@ -554,7 +551,6 @@ suffix:semicolon
 macro_line|#endif
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|CMD_STAT_TABLES
 suffix:colon
@@ -584,7 +580,6 @@ suffix:semicolon
 r_case
 id|CMD_STAT_OBJECTS
 suffix:colon
-macro_line|#ifndef PARSER_ONLY
 id|acpi_db_count_namespace_objects
 (paren
 )paren
@@ -663,7 +658,6 @@ comma
 id|acpi_gbl_num_objects
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -1251,7 +1245,7 @@ suffix:semicolon
 r_case
 id|CMD_STAT_STACK
 suffix:colon
-macro_line|#if defined(ACPI_DEBUG)
+macro_line|#if defined(ACPI_DEBUG_OUTPUT)
 id|size
 op_assign
 (paren
@@ -1317,5 +1311,5 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ENABLE_DEBUGGER  */
+macro_line|#endif /* ACPI_DEBUGGER  */
 eof

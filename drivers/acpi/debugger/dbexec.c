@@ -1,10 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 42 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 44 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
-macro_line|#ifdef ENABLE_DEBUGGER
+macro_line|#ifdef ACPI_DEBUGGER
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
+mdefine_line|#define _COMPONENT          ACPI_CA_DEBUGGER
 id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dbexec&quot;
@@ -412,7 +412,7 @@ suffix:semicolon
 id|acpi_buffer
 id|return_obj
 suffix:semicolon
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 id|u32
 id|previous_allocations
 suffix:semicolon
@@ -472,7 +472,7 @@ comma
 l_int|10
 )paren
 suffix:semicolon
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 multiline_comment|/* Memory allocation tracking */
 id|allocations
 op_assign
@@ -930,5 +930,5 @@ id|ACPI_DB_CONSOLE_OUTPUT
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ENABLE_DEBUGGER */
+macro_line|#endif /* ACPI_DEBUGGER */
 eof

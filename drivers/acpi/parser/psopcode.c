@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 71 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 72 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -2564,7 +2564,7 @@ comma
 multiline_comment|/* 63 */
 id|ACPI_OP
 (paren
-l_string|&quot;[NamePath]&quot;
+l_string|&quot;-NamePath-&quot;
 comma
 id|ARGP_NAMEPATH_OP
 comma
@@ -2584,7 +2584,7 @@ comma
 multiline_comment|/* 64 */
 id|ACPI_OP
 (paren
-l_string|&quot;[MethodCall]&quot;
+l_string|&quot;-MethodCall-&quot;
 comma
 id|ARGP_METHODCALL_OP
 comma
@@ -2606,7 +2606,7 @@ comma
 multiline_comment|/* 65 */
 id|ACPI_OP
 (paren
-l_string|&quot;[ByteList]&quot;
+l_string|&quot;-ByteList-&quot;
 comma
 id|ARGP_BYTELIST_OP
 comma
@@ -2624,7 +2624,7 @@ comma
 multiline_comment|/* 66 */
 id|ACPI_OP
 (paren
-l_string|&quot;[ReservedField]&quot;
+l_string|&quot;-ReservedField-&quot;
 comma
 id|ARGP_RESERVEDFIELD_OP
 comma
@@ -2642,7 +2642,7 @@ comma
 multiline_comment|/* 67 */
 id|ACPI_OP
 (paren
-l_string|&quot;[NamedField]&quot;
+l_string|&quot;-NamedField-&quot;
 comma
 id|ARGP_NAMEDFIELD_OP
 comma
@@ -2666,7 +2666,7 @@ comma
 multiline_comment|/* 68 */
 id|ACPI_OP
 (paren
-l_string|&quot;[AccessField]&quot;
+l_string|&quot;-AccessField-&quot;
 comma
 id|ARGP_ACCESSFIELD_OP
 comma
@@ -2684,7 +2684,7 @@ comma
 multiline_comment|/* 69 */
 id|ACPI_OP
 (paren
-l_string|&quot;[StaticString&quot;
+l_string|&quot;-StaticString&quot;
 comma
 id|ARGP_STATICSTRING_OP
 comma
@@ -2702,7 +2702,7 @@ comma
 multiline_comment|/* 6A */
 id|ACPI_OP
 (paren
-l_string|&quot;[Return Value]&quot;
+l_string|&quot;-Return Value-&quot;
 comma
 id|ARG_NONE
 comma
@@ -2722,7 +2722,7 @@ comma
 multiline_comment|/* 6B */
 id|ACPI_OP
 (paren
-l_string|&quot;UNKNOWN_OP!&quot;
+l_string|&quot;-UNKNOWN_OP-&quot;
 comma
 id|ARG_NONE
 comma
@@ -2740,7 +2740,7 @@ comma
 multiline_comment|/* 6C */
 id|ACPI_OP
 (paren
-l_string|&quot;ASCII_ONLY!&quot;
+l_string|&quot;-ASCII_ONLY-&quot;
 comma
 id|ARG_NONE
 comma
@@ -2758,7 +2758,7 @@ comma
 multiline_comment|/* 6D */
 id|ACPI_OP
 (paren
-l_string|&quot;PREFIX_ONLY!&quot;
+l_string|&quot;-PREFIX_ONLY-&quot;
 comma
 id|ARG_NONE
 comma

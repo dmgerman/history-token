@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 68 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -1792,6 +1792,10 @@ id|walk_state-&gt;thread
 op_assign
 id|thread
 suffix:semicolon
+id|walk_state-&gt;parser_state.start_op
+op_assign
+id|origin
+suffix:semicolon
 multiline_comment|/* Init the method args/local */
 macro_line|#if (!defined (ACPI_NO_METHOD_EXECUTION) &amp;&amp; !defined (ACPI_CONSTANT_EVAL_ONLY))
 id|acpi_ds_method_data_init
@@ -1891,6 +1895,10 @@ id|parser_state
 op_assign
 op_amp
 id|walk_state-&gt;parser_state
+suffix:semicolon
+id|acpi_parse_object
+op_star
+id|extra_op
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -2031,11 +2039,44 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Setup the current scope */
+multiline_comment|/*&n;&t;&t; * Setup the current scope.&n;&t;&t; * Find a Named Op that has a namespace node associated with it.&n;&t;&t; * search upwards from this Op.  Current scope is the first&n;&t;&t; * Op with a namespace node.&n;&t;&t; */
+id|extra_op
+op_assign
+id|parser_state-&gt;start_op
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|extra_op
+op_logical_and
+op_logical_neg
+id|extra_op-&gt;common.node
+)paren
+(brace
+id|extra_op
+op_assign
+id|extra_op-&gt;common.parent
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|extra_op
+)paren
+(brace
 id|parser_state-&gt;start_node
 op_assign
-id|parser_state-&gt;start_op-&gt;common.node
+l_int|NULL
 suffix:semicolon
+)brace
+r_else
+(brace
+id|parser_state-&gt;start_node
+op_assign
+id|extra_op-&gt;common.node
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

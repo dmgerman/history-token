@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 99 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 101 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
@@ -6,8 +6,8 @@ mdefine_line|#define __ACENV_H__
 multiline_comment|/*&n; * Configuration for ACPI tools and utilities&n; */
 macro_line|#ifdef _ACPI_DUMP_APP
 macro_line|#ifndef MSDOS
-DECL|macro|ACPI_DEBUG
-mdefine_line|#define ACPI_DEBUG
+DECL|macro|ACPI_DEBUG_OUTPUT
+mdefine_line|#define ACPI_DEBUG_OUTPUT
 macro_line|#endif
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
@@ -23,20 +23,20 @@ DECL|macro|DEBUGGER_THREADING
 macro_line|#undef DEBUGGER_THREADING
 DECL|macro|DEBUGGER_THREADING
 mdefine_line|#define DEBUGGER_THREADING      DEBUGGER_SINGLE_THREADED
-DECL|macro|ACPI_DEBUG
-mdefine_line|#define ACPI_DEBUG
+DECL|macro|ACPI_DEBUG_OUTPUT
+mdefine_line|#define ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
-DECL|macro|ENABLE_DEBUGGER
-mdefine_line|#define ENABLE_DEBUGGER
+DECL|macro|ACPI_DEBUGGER
+mdefine_line|#define ACPI_DEBUGGER
 DECL|macro|ACPI_DISASSEMBLER
 mdefine_line|#define ACPI_DISASSEMBLER
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
 macro_line|#endif
 macro_line|#ifdef _ACPI_ASL_COMPILER
-DECL|macro|ACPI_DEBUG
-mdefine_line|#define ACPI_DEBUG
+DECL|macro|ACPI_DEBUG_OUTPUT
+mdefine_line|#define ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
 DECL|macro|ACPI_DISASSEMBLER
@@ -80,7 +80,7 @@ DECL|macro|ACPI_PRINTF_LIKE_FUNC
 mdefine_line|#define ACPI_PRINTF_LIKE_FUNC
 macro_line|#endif
 multiline_comment|/*&n; * Memory allocation tracking.  Used only if&n; * 1) This is the debug version&n; * 2) This is NOT a 16-bit version of the code (not enough real-mode memory)&n; */
-macro_line|#ifdef ACPI_DEBUG
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
 macro_line|#if ACPI_MACHINE_WIDTH != 16
 DECL|macro|ACPI_DBG_TRACK_ALLOCATIONS
 mdefine_line|#define ACPI_DBG_TRACK_ALLOCATIONS

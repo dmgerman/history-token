@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -26,12 +26,12 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Acpi_enable&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure we have ACPI tables */
+multiline_comment|/* Make sure we have the FADT*/
 r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_gbl_DSDT
+id|acpi_gbl_FADT
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -39,7 +39,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;No ACPI tables present!&bslash;n&quot;
+l_string|&quot;No FADT information present!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -49,16 +49,13 @@ id|AE_NO_ACPI_TABLES
 )paren
 suffix:semicolon
 )brace
-id|acpi_gbl_original_mode
-op_assign
-id|acpi_hw_get_mode
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_gbl_original_mode
+id|acpi_hw_get_mode
+c_func
+(paren
+)paren
 op_eq
 id|ACPI_SYS_MODE_ACPI
 )paren
@@ -123,7 +120,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns the system to original ACPI/legacy mode, and&n; *              uninstalls the SCI interrupt handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into LEGACY mode.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_disable
 id|acpi_disable
@@ -144,19 +141,54 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_hw_get_mode
-(paren
-)paren
-op_ne
-id|acpi_gbl_original_mode
+op_logical_neg
+id|acpi_gbl_FADT
 )paren
 (brace
-multiline_comment|/* Restore original mode  */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;No FADT information present!&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_ACPI_TABLES
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_hw_get_mode
+c_func
+(paren
+)paren
+op_eq
+id|ACPI_SYS_MODE_LEGACY
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_OK
+comma
+l_string|&quot;Already in LEGACY mode.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Transition to LEGACY mode */
 id|status
 op_assign
 id|acpi_hw_set_mode
 (paren
-id|acpi_gbl_original_mode
+id|ACPI_SYS_MODE_LEGACY
 )paren
 suffix:semicolon
 r_if
@@ -173,7 +205,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unable to transition to original mode&quot;
+l_string|&quot;Could not transition to LEGACY mode.&quot;
 )paren
 )paren
 suffix:semicolon
@@ -183,14 +215,16 @@ id|status
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Unload the SCI interrupt handler  */
-id|status
-op_assign
-id|acpi_ev_remove_sci_handler
+id|ACPI_DEBUG_PRINT
 (paren
+(paren
+id|ACPI_DB_OK
+comma
+l_string|&quot;Transition to LEGACY mode successful&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status

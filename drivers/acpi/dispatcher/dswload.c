@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -642,7 +642,7 @@ id|NATIVE_CHAR
 op_star
 id|buffer_ptr
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_load2_begin_op&quot;
 )paren
@@ -699,7 +699,7 @@ id|AML_NAMED
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -727,7 +727,7 @@ id|buffer_ptr
 )paren
 (brace
 multiline_comment|/* No name, just exit */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -883,14 +883,14 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -951,7 +951,7 @@ op_logical_neg
 id|op
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -988,7 +988,7 @@ op_assign
 id|node
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1033,7 +1033,7 @@ id|u32
 id|i
 suffix:semicolon
 macro_line|#endif
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_load2_end_op&quot;
 )paren
@@ -1069,7 +1069,7 @@ id|AML_NSOBJECT
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -1130,6 +1130,12 @@ id|acpi_ns_opens_scope
 (paren
 id|object_type
 )paren
+op_logical_and
+(paren
+id|op-&gt;common.aml_opcode
+op_ne
+id|AML_INT_METHODCALL_OP
+)paren
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1164,7 +1170,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1678,7 +1684,7 @@ id|walk_state-&gt;num_operands
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

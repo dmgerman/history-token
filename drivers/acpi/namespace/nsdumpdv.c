@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 1 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 3 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsdumpdv&quot;
 )paren
-macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
+macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_one_device&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into Walk_namespace&n; *&n; * DESCRIPTION: Dump a single Node that represents a device&n; *              This procedure is a User_function called by Acpi_ns_walk_namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_dump_one_device

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 62 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 63 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -1172,19 +1172,52 @@ multiline_comment|/*&n;&t;&t; * Check for an indirect store if an argument&n;&t;
 r_if
 c_cond
 (paren
-(paren
 id|opcode
 op_eq
 id|AML_ARG_OP
 )paren
-op_logical_and
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Make sure that the object is the correct type.  This may be overkill, but&n;&t;&t;&t; * it is here because references were NS nodes in the past.  Now they are&n;&t;&t;&t; * operand objects of type Reference.&n;&t;&t;&t; */
+r_if
+c_cond
 (paren
 id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
 id|current_obj_desc
 )paren
+op_ne
+id|ACPI_DESC_TYPE_OPERAND
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Invalid descriptor type while storing to method arg: %X&bslash;n&quot;
+comma
+id|current_obj_desc-&gt;common.type
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_INTERNAL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * If we have a valid reference object that came from Ref_of(), do the&n;&t;&t;&t; * indirect store&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|current_obj_desc-&gt;common.type
 op_eq
-id|ACPI_DESC_TYPE_NAMED
+id|INTERNAL_TYPE_REFERENCE
+)paren
+op_logical_and
+(paren
+id|current_obj_desc-&gt;reference.opcode
+op_eq
+id|AML_REF_OF_OP
 )paren
 )paren
 (brace
@@ -1201,26 +1234,18 @@ id|current_obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Detach an existing object from the Node */
+multiline_comment|/* Detach an existing object from the referenced Node */
 id|acpi_ns_detach_object
 (paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|current_obj_desc
+id|current_obj_desc-&gt;reference.object
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Store this object into the Node&n;&t;&t;&t; * (perform the indirect store)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Store this object into the Node&n;&t;&t;&t;&t; * (perform the indirect store)&n;&t;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_attach_object
 (paren
-(paren
-id|acpi_namespace_node
-op_star
-)paren
-id|current_obj_desc
+id|current_obj_desc-&gt;reference.object
 comma
 id|obj_desc
 comma
@@ -1235,6 +1260,7 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t;&t; * Delete the existing object&n;&t;&t; * before storing the new one&n;&t;&t; */
 id|acpi_ds_method_data_delete_value
