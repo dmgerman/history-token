@@ -1718,11 +1718,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sys_execve() executes a new program.&n; *&n; * This works due to the alpha calling sequence: the first 6 args&n; * are gotten from registers, while the rest is on the stack, so&n; * we get a0-a5 for free, and then magically find &quot;struct pt_regs&quot;&n; * on the stack for us..&n; *&n; * Don&squot;t do this at home.&n; */
+multiline_comment|/*&n; * sys_execve() executes a new program.&n; */
 id|asmlinkage
 r_int
-DECL|function|sys_execve
-id|sys_execve
+DECL|function|do_sys_execve
+id|do_sys_execve
 c_func
 (paren
 r_char
@@ -1744,20 +1744,9 @@ id|__user
 op_star
 id|envp
 comma
-r_int
-r_int
-id|a3
-comma
-r_int
-r_int
-id|a4
-comma
-r_int
-r_int
-id|a5
-comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1807,7 +1796,6 @@ id|argv
 comma
 id|envp
 comma
-op_amp
 id|regs
 )paren
 suffix:semicolon
