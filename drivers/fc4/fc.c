@@ -4952,26 +4952,6 @@ id|fcmd
 suffix:semicolon
 )brace
 )brace
-DECL|function|fcp_old_abort
-r_int
-id|fcp_old_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;FC: Abort not implemented&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 DECL|function|fcp_scsi_abort
 r_int
 id|fcp_scsi_abort
