@@ -1560,9 +1560,12 @@ c_func
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * XXX disable 32bit slb invalidate optimisation until we fix&n;&t;&t; * the issue where a 32bit app execed out of a 64bit app can&n;&t;&t; * cause segments above 4GB not to be flushed - Anton&n;&t;&t; */
 r_if
 c_cond
 (paren
+l_int|0
+op_logical_and
 op_logical_neg
 id|STAB_PRESSURE
 op_logical_and
