@@ -2274,7 +2274,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Create an Operation Error chunk with the specified space reserved. &n; * This routine can be used for containing multiple causes in the chunk.&n; */
+multiline_comment|/* Create an Operation Error chunk with the specified space reserved.&n; * This routine can be used for containing multiple causes in the chunk.&n; */
 DECL|function|sctp_make_op_error_space
 id|sctp_chunk_t
 op_star
@@ -4449,7 +4449,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* RFC 3.2.1 &amp; the Implementers Guide 2.2.&n; *&n; * The Parameter Types are encoded such that the&n; * highest-order two bits specify the action that must be&n; * taken if the processing endpoint does not recognize the&n; * Parameter Type.&n; *&n; * 00 - Stop processing this SCTP chunk and discard it,&n; *&t;do not process any further chunks within it.&n; *&n; * 01 - Stop processing this SCTP chunk and discard it, &n; *&t;do not process any further chunks within it, and report&n; *&t;the unrecognized parameter in an &squot;Unrecognized&n; *&t;Parameter Type&squot; (in either an ERROR or in the INIT ACK).&n; *&n; * 10 - Skip this parameter and continue processing.&n; *&n; * 11 - Skip this parameter and continue processing but&n; *&t;report the unrecognized parameter in an&n; *&t;&squot;Unrecognized Parameter Type&squot; (in either an ERROR or in&n; *&t;the INIT ACK).&n; *&n; * Return value:&n; * &t;0 - discard the chunk&n; * &t;1 - continue with the chunk&n; */
+multiline_comment|/* RFC 3.2.1 &amp; the Implementers Guide 2.2.&n; *&n; * The Parameter Types are encoded such that the&n; * highest-order two bits specify the action that must be&n; * taken if the processing endpoint does not recognize the&n; * Parameter Type.&n; *&n; * 00 - Stop processing this SCTP chunk and discard it,&n; *&t;do not process any further chunks within it.&n; *&n; * 01 - Stop processing this SCTP chunk and discard it,&n; *&t;do not process any further chunks within it, and report&n; *&t;the unrecognized parameter in an &squot;Unrecognized&n; *&t;Parameter Type&squot; (in either an ERROR or in the INIT ACK).&n; *&n; * 10 - Skip this parameter and continue processing.&n; *&n; * 11 - Skip this parameter and continue processing but&n; *&t;report the unrecognized parameter in an&n; *&t;&squot;Unrecognized Parameter Type&squot; (in either an ERROR or in&n; *&t;the INIT ACK).&n; *&n; * Return value:&n; * &t;0 - discard the chunk&n; * &t;1 - continue with the chunk&n; */
 DECL|function|sctp_process_unk_param
 r_int
 id|sctp_process_unk_param
