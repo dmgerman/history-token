@@ -135,17 +135,6 @@ op_star
 id|tf
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|atapi_start
-c_func
-(paren
-r_struct
-id|ata_queued_cmd
-op_star
-id|qc
-)paren
-suffix:semicolon
 multiline_comment|/* libata-scsi.c */
 r_extern
 r_void
