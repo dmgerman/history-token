@@ -207,8 +207,13 @@ comma
 DECL|enumerator|TCA_TBF_PTAB
 id|TCA_TBF_PTAB
 comma
+DECL|enumerator|__TCA_TBF_MAX
+id|__TCA_TBF_MAX
+comma
 )brace
 suffix:semicolon
+DECL|macro|TCA_TBF_MAX
+mdefine_line|#define TCA_TBF_MAX (__TCA_TBF_MAX - 1)
 multiline_comment|/* TEQL section */
 multiline_comment|/* TEQL does not require any parameters */
 multiline_comment|/* SFQ section */
@@ -256,8 +261,13 @@ comma
 DECL|enumerator|TCA_RED_STAB
 id|TCA_RED_STAB
 comma
+DECL|enumerator|__TCA_RED_MAX
+id|__TCA_RED_MAX
+comma
 )brace
 suffix:semicolon
+DECL|macro|TCA_RED_MAX
+mdefine_line|#define TCA_RED_MAX (__TCA_RED_MAX - 1)
 DECL|struct|tc_red_qopt
 r_struct
 id|tc_red_qopt
@@ -347,8 +357,13 @@ comma
 DECL|enumerator|TCA_GRED_DPS
 id|TCA_GRED_DPS
 comma
+DECL|enumerator|__TCA_GRED_MAX
+id|__TCA_GRED_MAX
+comma
 )brace
 suffix:semicolon
+DECL|macro|TCA_GRED_MAX
+mdefine_line|#define TCA_GRED_MAX (__TCA_GRED_MAX - 1)
 DECL|macro|TCA_SET_OFF
 mdefine_line|#define TCA_SET_OFF TCA_GRED_PARMS
 DECL|struct|tc_gred_qopt
@@ -544,8 +559,13 @@ comma
 DECL|enumerator|TCA_HTB_RTAB
 id|TCA_HTB_RTAB
 comma
+DECL|enumerator|__TCA_HTB_MAX
+id|__TCA_HTB_MAX
+comma
 )brace
 suffix:semicolon
+DECL|macro|TCA_HTB_MAX
+mdefine_line|#define TCA_HTB_MAX (__TCA_HTB_MAX - 1)
 DECL|struct|tc_htb_xstats
 r_struct
 id|tc_htb_xstats
@@ -646,12 +666,13 @@ comma
 DECL|enumerator|TCA_HFSC_USC
 id|TCA_HFSC_USC
 comma
-DECL|enumerator|TCA_HFSC_MAX
-id|TCA_HFSC_MAX
-op_assign
-id|TCA_HFSC_USC
+DECL|enumerator|__TCA_HFSC_MAX
+id|__TCA_HFSC_MAX
+comma
 )brace
 suffix:semicolon
+DECL|macro|TCA_HFSC_MAX
+mdefine_line|#define TCA_HFSC_MAX (__TCA_HFSC_MAX - 1)
 multiline_comment|/* CBQ section */
 DECL|macro|TC_CBQ_MAXPRIO
 mdefine_line|#define TC_CBQ_MAXPRIO&t;&t;8
@@ -868,10 +889,13 @@ comma
 DECL|enumerator|TCA_CBQ_POLICE
 id|TCA_CBQ_POLICE
 comma
+DECL|enumerator|__TCA_CBQ_MAX
+id|__TCA_CBQ_MAX
+comma
 )brace
 suffix:semicolon
 DECL|macro|TCA_CBQ_MAX
-mdefine_line|#define TCA_CBQ_MAX&t;TCA_CBQ_POLICE
+mdefine_line|#define TCA_CBQ_MAX&t;(__TCA_CBQ_MAX - 1)
 multiline_comment|/* dsmark section */
 r_enum
 (brace
@@ -892,10 +916,14 @@ id|TCA_DSMARK_MASK
 comma
 DECL|enumerator|TCA_DSMARK_VALUE
 id|TCA_DSMARK_VALUE
+comma
+DECL|enumerator|__TCA_DSMARK_MAX
+id|__TCA_DSMARK_MAX
+comma
 )brace
 suffix:semicolon
 DECL|macro|TCA_DSMARK_MAX
-mdefine_line|#define TCA_DSMARK_MAX TCA_DSMARK_VALUE
+mdefine_line|#define TCA_DSMARK_MAX (__TCA_DSMARK_MAX - 1)
 multiline_comment|/* ATM  section */
 r_enum
 (brace
@@ -924,11 +952,15 @@ comma
 multiline_comment|/* PVC address (for output only) */
 DECL|enumerator|TCA_ATM_STATE
 id|TCA_ATM_STATE
+comma
 multiline_comment|/* VC state (ATM_VS_*; for output only) */
+DECL|enumerator|__TCA_ATM_MAX
+id|__TCA_ATM_MAX
+comma
 )brace
 suffix:semicolon
 DECL|macro|TCA_ATM_MAX
-mdefine_line|#define TCA_ATM_MAX&t;TCA_ATM_STATE
+mdefine_line|#define TCA_ATM_MAX&t;(__TCA_ATM_MAX - 1)
 multiline_comment|/* Network emulator */
 r_enum
 (brace
@@ -941,10 +973,13 @@ comma
 DECL|enumerator|TCA_NETEM_DELAY_DIST
 id|TCA_NETEM_DELAY_DIST
 comma
+DECL|enumerator|__TCA_NETEM_MAX
+id|__TCA_NETEM_MAX
+comma
 )brace
 suffix:semicolon
 DECL|macro|TCA_NETEM_MAX
-mdefine_line|#define TCA_NETEM_MAX&t;TCA_NETEM_DELAY_DIST
+mdefine_line|#define TCA_NETEM_MAX (__TCA_NETEM_MAX - 1)
 DECL|struct|tc_netem_qopt
 r_struct
 id|tc_netem_qopt
