@@ -156,7 +156,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* PERC 2/Si */
+multiline_comment|/* PERC 2/Si (Iguana/PERC2Si) */
 (brace
 l_int|0x1028
 comma
@@ -173,7 +173,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Opal/PERC3Di) */
 (brace
 l_int|0x1028
 comma
@@ -190,7 +190,7 @@ comma
 l_int|2
 )brace
 comma
-multiline_comment|/* PERC 3/Si */
+multiline_comment|/* PERC 3/Si (SlimFast/PERC3Si */
 (brace
 l_int|0x1028
 comma
@@ -207,7 +207,7 @@ comma
 l_int|3
 )brace
 comma
-multiline_comment|/* PERC 3/Si */
+multiline_comment|/* PERC 3/Di (Iguana FlipChip/PERC3DiF */
 (brace
 l_int|0x1028
 comma
@@ -224,7 +224,7 @@ comma
 l_int|4
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Viper/PERC3DiV) */
 (brace
 l_int|0x1028
 comma
@@ -241,7 +241,7 @@ comma
 l_int|5
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Lexus/PERC3DiL) */
 (brace
 l_int|0x1028
 comma
@@ -258,7 +258,7 @@ comma
 l_int|6
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Jaguar/PERC3DiJ) */
 (brace
 l_int|0x1028
 comma
@@ -275,7 +275,7 @@ comma
 l_int|7
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Dagger/PERC3DiD) */
 (brace
 l_int|0x1028
 comma
@@ -292,7 +292,7 @@ comma
 l_int|8
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Boxster/PERC3DiB) */
 (brace
 l_int|0x9005
 comma
@@ -309,7 +309,7 @@ comma
 l_int|9
 )brace
 comma
-multiline_comment|/* catapult*/
+multiline_comment|/* catapult */
 (brace
 l_int|0x9005
 comma
@@ -326,7 +326,7 @@ comma
 l_int|10
 )brace
 comma
-multiline_comment|/* tomcat*/
+multiline_comment|/* tomcat */
 (brace
 l_int|0x9005
 comma
@@ -343,7 +343,7 @@ comma
 l_int|11
 )brace
 comma
-multiline_comment|/* Adaptec 2120S (Crusader)*/
+multiline_comment|/* Adaptec 2120S (Crusader) */
 (brace
 l_int|0x9005
 comma
@@ -360,7 +360,7 @@ comma
 l_int|12
 )brace
 comma
-multiline_comment|/* Adaptec 2200S (Vulcan)*/
+multiline_comment|/* Adaptec 2200S (Vulcan) */
 (brace
 l_int|0x9005
 comma
@@ -377,7 +377,7 @@ comma
 l_int|13
 )brace
 comma
-multiline_comment|/* Adaptec 2200S (Vulcan-2m)*/
+multiline_comment|/* Adaptec 2200S (Vulcan-2m) */
 (brace
 l_int|0x9005
 comma
@@ -394,7 +394,7 @@ comma
 l_int|14
 )brace
 comma
-multiline_comment|/* Legend S220*/
+multiline_comment|/* Legend S220 (Legend Crusader) */
 (brace
 l_int|0x9005
 comma
@@ -411,7 +411,7 @@ comma
 l_int|15
 )brace
 comma
-multiline_comment|/* Legend S230*/
+multiline_comment|/* Legend S230 (Legend Vulcan) */
 (brace
 l_int|0x9005
 comma
@@ -428,7 +428,7 @@ comma
 l_int|16
 )brace
 comma
-multiline_comment|/* Adaptec 3230S (Harrier)*/
+multiline_comment|/* Adaptec 3230S (Harrier) */
 (brace
 l_int|0x9005
 comma
@@ -445,7 +445,7 @@ comma
 l_int|17
 )brace
 comma
-multiline_comment|/* Adaptec 3240S (Tornado)*/
+multiline_comment|/* Adaptec 3240S (Tornado) */
 (brace
 l_int|0x9005
 comma
@@ -462,7 +462,7 @@ comma
 l_int|18
 )brace
 comma
-multiline_comment|/* ASR-2020 ZCR PCI-X U320 */
+multiline_comment|/* ASR-2020ZCR SCSI PCI-X ZCR (Skyhawk) */
 (brace
 l_int|0x9005
 comma
@@ -479,7 +479,92 @@ comma
 l_int|19
 )brace
 comma
-multiline_comment|/* ASR-2025 ZCR DIMM U320 */
+multiline_comment|/* ASR-2025ZCR SCSI SO-DIMM PCI-X ZCR (Terminator) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x028c
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|20
+)brace
+comma
+multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x028d
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|21
+)brace
+comma
+multiline_comment|/* ASR-2130S (Lancer) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x0800
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|22
+)brace
+comma
+multiline_comment|/* Jupiter Platform */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x028e
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|23
+)brace
+comma
+multiline_comment|/* ASR-2020SA SATA PCI-X ZCR (Skyhawk) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x028f
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|24
+)brace
+comma
+multiline_comment|/* ASR-2025SA SATA SO-DIMM PCI-X ZCR (Terminator) */
 (brace
 l_int|0x9005
 comma
@@ -493,95 +578,10 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|20
-)brace
-comma
-multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
-(brace
-l_int|0x9005
-comma
-l_int|0x0285
-comma
-l_int|0x1028
-comma
-l_int|0x0287
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|21
-)brace
-comma
-multiline_comment|/* Perc 320/DC*/
-(brace
-l_int|0x1011
-comma
-l_int|0x0046
-comma
-l_int|0x9005
-comma
-l_int|0x0365
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|22
-)brace
-comma
-multiline_comment|/* Adaptec 5400S (Mustang)*/
-(brace
-l_int|0x1011
-comma
-l_int|0x0046
-comma
-l_int|0x9005
-comma
-l_int|0x0364
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|23
-)brace
-comma
-multiline_comment|/* Adaptec 5400S (Mustang)*/
-(brace
-l_int|0x1011
-comma
-l_int|0x0046
-comma
-l_int|0x9005
-comma
-l_int|0x1364
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|24
-)brace
-comma
-multiline_comment|/* Dell PERC2 &quot;Quad Channel&quot; */
-(brace
-l_int|0x1011
-comma
-l_int|0x0046
-comma
-l_int|0x103c
-comma
-l_int|0x10c2
-comma
-l_int|0
-comma
-l_int|0
-comma
 l_int|25
 )brace
 comma
-multiline_comment|/* HP NetRAID-4M */
+multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II) */
 (brace
 l_int|0x9005
 comma
@@ -666,15 +666,15 @@ comma
 l_int|30
 )brace
 comma
-multiline_comment|/* SATA 6Ch (Bearcat) */
+multiline_comment|/* AAR-2610SA PCI SATA 6ch */
 (brace
 l_int|0x9005
 comma
-l_int|0x0286
+l_int|0x0285
 comma
 l_int|0x9005
 comma
-l_int|0x028c
+l_int|0x0296
 comma
 l_int|0
 comma
@@ -683,7 +683,7 @@ comma
 l_int|31
 )brace
 comma
-multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
+multiline_comment|/* ASR-2240S */
 (brace
 l_int|0x9005
 comma
@@ -691,7 +691,7 @@ l_int|0x0285
 comma
 l_int|0x9005
 comma
-l_int|0x028e
+l_int|0x0296
 comma
 l_int|0
 comma
@@ -700,7 +700,7 @@ comma
 l_int|32
 )brace
 comma
-multiline_comment|/* ASR-2020SA      (ZCR PCI-X SATA) */
+multiline_comment|/* ASR-4005SAS */
 (brace
 l_int|0x9005
 comma
@@ -708,7 +708,7 @@ l_int|0x0285
 comma
 l_int|0x9005
 comma
-l_int|0x028f
+l_int|0x0296
 comma
 l_int|0
 comma
@@ -717,7 +717,194 @@ comma
 l_int|33
 )brace
 comma
-multiline_comment|/* ASR-2025SA      (ZCR DIMM SATA) */
+multiline_comment|/* ASR-4000SAS */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0296
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|34
+)brace
+comma
+multiline_comment|/* ASR-4800SAS */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0296
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|35
+)brace
+comma
+multiline_comment|/* ASR-4805SAS */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x1028
+comma
+l_int|0x0287
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|36
+)brace
+comma
+multiline_comment|/* Perc 320/DC*/
+(brace
+l_int|0x1011
+comma
+l_int|0x0046
+comma
+l_int|0x9005
+comma
+l_int|0x0365
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|37
+)brace
+comma
+multiline_comment|/* Adaptec 5400S (Mustang)*/
+(brace
+l_int|0x1011
+comma
+l_int|0x0046
+comma
+l_int|0x9005
+comma
+l_int|0x0364
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|38
+)brace
+comma
+multiline_comment|/* Adaptec 5400S (Mustang)*/
+(brace
+l_int|0x1011
+comma
+l_int|0x0046
+comma
+l_int|0x9005
+comma
+l_int|0x1364
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|39
+)brace
+comma
+multiline_comment|/* Dell PERC2/QC */
+(brace
+l_int|0x1011
+comma
+l_int|0x0046
+comma
+l_int|0x103c
+comma
+l_int|0x10c2
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|40
+)brace
+comma
+multiline_comment|/* HP NetRAID-4M */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x1028
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|41
+)brace
+comma
+multiline_comment|/* Dell Catchall */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x17aa
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|42
+)brace
+comma
+multiline_comment|/* Legend Catchall */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|43
+)brace
+comma
+multiline_comment|/* Adaptec Catch All */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|44
+)brace
+comma
+multiline_comment|/* Adaptec Rocket Catch All */
 (brace
 l_int|0
 comma
@@ -756,7 +943,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 2/Si */
+multiline_comment|/* PERC 2/Si (Iguana/PERC2Si) */
 (brace
 id|aac_rx_init
 comma
@@ -771,7 +958,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Opal/PERC3Di) */
 (brace
 id|aac_rx_init
 comma
@@ -786,7 +973,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Si */
+multiline_comment|/* PERC 3/Si (SlimFast/PERC3Si */
 (brace
 id|aac_rx_init
 comma
@@ -801,7 +988,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Si */
+multiline_comment|/* PERC 3/Di (Iguana FlipChip/PERC3DiF */
 (brace
 id|aac_rx_init
 comma
@@ -816,7 +1003,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Viper/PERC3DiV) */
 (brace
 id|aac_rx_init
 comma
@@ -831,7 +1018,22 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Lexus/PERC3DiL) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;percraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;PERCRAID        &quot;
+comma
+l_int|1
+comma
+id|AAC_QUIRK_31BIT
+)brace
+comma
+multiline_comment|/* PERC 3/Di (Jaguar/PERC3DiJ) */
 (brace
 id|aac_rx_init
 comma
@@ -846,7 +1048,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Dagger/PERC3DiD) */
 (brace
 id|aac_rx_init
 comma
@@ -861,22 +1063,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* PERC 3/Di */
-(brace
-id|aac_rx_init
-comma
-l_string|&quot;percraid&quot;
-comma
-l_string|&quot;DELL    &quot;
-comma
-l_string|&quot;PERCRAID        &quot;
-comma
-l_int|2
-comma
-id|AAC_QUIRK_31BIT
-)brace
-comma
-multiline_comment|/* PERC 3/Di */
+multiline_comment|/* PERC 3/Di (Boxster/PERC3DiB) */
 (brace
 id|aac_rx_init
 comma
@@ -891,7 +1078,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* catapult*/
+multiline_comment|/* catapult */
 (brace
 id|aac_rx_init
 comma
@@ -906,7 +1093,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* tomcat*/
+multiline_comment|/* tomcat */
 (brace
 id|aac_rx_init
 comma
@@ -921,7 +1108,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* Adaptec 2120S (Crusader)*/
+multiline_comment|/* Adaptec 2120S (Crusader) */
 (brace
 id|aac_rx_init
 comma
@@ -936,7 +1123,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* Adaptec 2200S (Vulcan)*/
+multiline_comment|/* Adaptec 2200S (Vulcan) */
 (brace
 id|aac_rx_init
 comma
@@ -951,7 +1138,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* Adaptec 2200S (Vulcan-2m)*/
+multiline_comment|/* Adaptec 2200S (Vulcan-2m) */
 (brace
 id|aac_rx_init
 comma
@@ -966,7 +1153,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* Legend S220*/
+multiline_comment|/* Legend S220 (Legend Crusader) */
 (brace
 id|aac_rx_init
 comma
@@ -981,7 +1168,7 @@ comma
 id|AAC_QUIRK_31BIT
 )brace
 comma
-multiline_comment|/* Legend S230*/
+multiline_comment|/* Legend S230 (Legend Vulcan) */
 (brace
 id|aac_rx_init
 comma
@@ -994,7 +1181,7 @@ comma
 l_int|2
 )brace
 comma
-multiline_comment|/* Adaptec 3230S (Harrier)*/
+multiline_comment|/* Adaptec 3230S (Harrier) */
 (brace
 id|aac_rx_init
 comma
@@ -1007,7 +1194,7 @@ comma
 l_int|2
 )brace
 comma
-multiline_comment|/* Adaptec 3240S (Tornado)*/
+multiline_comment|/* Adaptec 3240S (Tornado) */
 (brace
 id|aac_rx_init
 comma
@@ -1020,7 +1207,7 @@ comma
 l_int|2
 )brace
 comma
-multiline_comment|/* ASR-2020 ZCR PCI-X U320 */
+multiline_comment|/* ASR-2020ZCR SCSI PCI-X ZCR (Skyhawk) */
 (brace
 id|aac_rx_init
 comma
@@ -1033,7 +1220,72 @@ comma
 l_int|2
 )brace
 comma
-multiline_comment|/* ASR-2025 ZCR DIMM U320 */
+multiline_comment|/* ASR-2025ZCR SCSI SO-DIMM PCI-X ZCR (Terminator) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2230S PCI-X &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2130S PCI-X &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-2130S (Lancer) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;Callisto        &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* Jupiter Platform */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2020SA       &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-2020SA SATA PCI-X ZCR (Skyhawk) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2025SA       &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-2025SA SATA SO-DIMM PCI-X ZCR (Terminator) */
 (brace
 id|aac_rx_init
 comma
@@ -1043,79 +1295,10 @@ l_string|&quot;ADAPTEC &quot;
 comma
 l_string|&quot;AAR-2410SA SATA &quot;
 comma
-l_int|2
+l_int|1
 )brace
 comma
-multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
-(brace
-id|aac_rx_init
-comma
-l_string|&quot;percraid&quot;
-comma
-l_string|&quot;DELL    &quot;
-comma
-l_string|&quot;PERC 320/DC     &quot;
-comma
-l_int|2
-comma
-id|AAC_QUIRK_31BIT
-)brace
-comma
-multiline_comment|/* Perc 320/DC*/
-(brace
-id|aac_sa_init
-comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;Adaptec 5400S   &quot;
-comma
-l_int|4
-)brace
-comma
-multiline_comment|/* Adaptec 5400S (Mustang)*/
-(brace
-id|aac_sa_init
-comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;AAC-364         &quot;
-comma
-l_int|4
-)brace
-comma
-multiline_comment|/* Adaptec 5400S (Mustang)*/
-(brace
-id|aac_sa_init
-comma
-l_string|&quot;percraid&quot;
-comma
-l_string|&quot;DELL    &quot;
-comma
-l_string|&quot;PERCRAID        &quot;
-comma
-l_int|4
-comma
-id|AAC_QUIRK_31BIT
-)brace
-comma
-multiline_comment|/* Dell PERC2 &quot;Quad Channel&quot; */
-(brace
-id|aac_sa_init
-comma
-l_string|&quot;hpnraid&quot;
-comma
-l_string|&quot;HP      &quot;
-comma
-l_string|&quot;NetRAID         &quot;
-comma
-l_int|4
-)brace
-comma
-multiline_comment|/* HP NetRAID-4M */
+multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II) */
 (brace
 id|aac_rx_init
 comma
@@ -1175,12 +1358,191 @@ l_string|&quot;aacraid&quot;
 comma
 l_string|&quot;ADAPTEC &quot;
 comma
-l_string|&quot;SATA 6Channel   &quot;
+l_string|&quot;AAR-2610SA      &quot;
 comma
 l_int|1
 )brace
 comma
 multiline_comment|/* SATA 6Ch (Bearcat) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2240S       &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-2240S */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-4005SAS     &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-4005SAS */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-4000SAS     &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-4000SAS */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-4800SAS     &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-4800SAS */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-4805SAS     &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-4805SAS */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;percraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;PERC 320/DC     &quot;
+comma
+l_int|2
+comma
+id|AAC_QUIRK_31BIT
+)brace
+comma
+multiline_comment|/* Perc 320/DC*/
+(brace
+id|aac_sa_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;Adaptec 5400S   &quot;
+comma
+l_int|4
+)brace
+comma
+multiline_comment|/* Adaptec 5400S (Mustang)*/
+(brace
+id|aac_sa_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAC-364         &quot;
+comma
+l_int|4
+)brace
+comma
+multiline_comment|/* Adaptec 5400S (Mustang)*/
+(brace
+id|aac_sa_init
+comma
+l_string|&quot;percraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;PERCRAID        &quot;
+comma
+l_int|4
+comma
+id|AAC_QUIRK_31BIT
+)brace
+comma
+multiline_comment|/* Dell PERC2/QC */
+(brace
+id|aac_sa_init
+comma
+l_string|&quot;hpnraid&quot;
+comma
+l_string|&quot;HP      &quot;
+comma
+l_string|&quot;NetRAID         &quot;
+comma
+l_int|4
+)brace
+comma
+multiline_comment|/* HP NetRAID-4M */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;RAID            &quot;
+comma
+l_int|2
+comma
+id|AAC_QUIRK_31BIT
+)brace
+comma
+multiline_comment|/* Dell Catchall */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;Legend  &quot;
+comma
+l_string|&quot;RAID            &quot;
+comma
+l_int|2
+comma
+id|AAC_QUIRK_31BIT
+)brace
+comma
+multiline_comment|/* Legend Catchall */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;RAID            &quot;
+comma
+l_int|2
+comma
+id|AAC_QUIRK_31BIT
+)brace
+comma
+multiline_comment|/* Adaptec Catch All */
 (brace
 id|aac_rkt_init
 comma
@@ -1188,38 +1550,11 @@ l_string|&quot;aacraid&quot;
 comma
 l_string|&quot;ADAPTEC &quot;
 comma
-l_string|&quot;ASR-2230S PCI-X &quot;
+l_string|&quot;RAID            &quot;
 comma
 l_int|2
 )brace
-comma
-multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
-(brace
-id|aac_rx_init
-comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;ASR-2020SA      &quot;
-comma
-l_int|1
-)brace
-comma
-multiline_comment|/* ASR-2020SA      (ZCR PCI-X SATA) */
-(brace
-id|aac_rx_init
-comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;ASR-2025SA      &quot;
-comma
-l_int|1
-)brace
-comma
-multiline_comment|/* ASR-2025SA      (ZCR DIMM SATA) */
+multiline_comment|/* Adaptec Rocket Catch All */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
