@@ -1831,7 +1831,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|ips_intr_copperhead
 c_func
 (paren
@@ -1840,7 +1840,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|ips_intr_morpheus
 c_func
 (paren
@@ -5383,6 +5383,9 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
+r_int
+id|irqstatus
+suffix:semicolon
 id|METHOD_TRACE
 c_func
 (paren
@@ -5462,6 +5465,8 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+id|irqstatus
+op_assign
 (paren
 op_star
 id|ha-&gt;func.intr
@@ -5488,7 +5493,11 @@ id|IPS_INTR_ON
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|irqstatus
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
@@ -5502,7 +5511,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*   ASSUMES interrupts are disabled                                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
-r_void
+r_int
 DECL|function|ips_intr_copperhead
 id|ips_intr_copperhead
 c_func
@@ -5541,6 +5550,7 @@ op_logical_neg
 id|ha
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5549,6 +5559,7 @@ op_logical_neg
 id|ha-&gt;active
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|intrstatus
 op_assign
@@ -5569,6 +5580,7 @@ id|intrstatus
 (brace
 multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_while
@@ -5657,6 +5669,9 @@ id|scb
 suffix:semicolon
 )brace
 multiline_comment|/* end while */
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
@@ -5669,7 +5684,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*   ASSUMES interrupts are disabled                                        */
 multiline_comment|/*                                                                          */
 multiline_comment|/****************************************************************************/
-r_void
+r_int
 DECL|function|ips_intr_morpheus
 id|ips_intr_morpheus
 c_func
@@ -5708,6 +5723,7 @@ op_logical_neg
 id|ha
 )paren
 r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5716,6 +5732,7 @@ op_logical_neg
 id|ha-&gt;active
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|intrstatus
 op_assign
@@ -5736,6 +5753,7 @@ id|intrstatus
 (brace
 multiline_comment|/*&n;       * Unexpected/Shared interrupt&n;       */
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_while
@@ -5844,6 +5862,9 @@ id|scb
 suffix:semicolon
 )brace
 multiline_comment|/* end while */
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */

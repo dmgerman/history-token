@@ -153,6 +153,17 @@ DECL|macro|scsi_set_pci_device
 mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+DECL|typedef|irqreturn_t
+r_typedef
+r_void
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_NONE
+mdefine_line|#define IRQ_NONE
+DECL|macro|IRQ_HANDLED
+mdefine_line|#define IRQ_HANDLED
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define IRQ_RETVAL(x)
 DECL|macro|IPS_REGISTER_HOSTS
 mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      scsi_register_module(MODULE_SCSI_HA,SHT)
 DECL|macro|IPS_UNREGISTER_HOSTS
@@ -3125,7 +3136,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|intr
-r_void
+r_int
 (paren
 op_star
 id|intr
