@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.c,v 1.60 2004/03/22 16:28:27 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capifunc.c,v 1.61 2004/03/26 19:48:48 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;os_capi.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -4788,6 +4788,18 @@ r_return
 id|CAPI_REGOSRESOURCEERR
 suffix:semicolon
 )brace
+id|diva_os_enter_spin_lock
+c_func
+(paren
+op_amp
+id|api_lock
+comma
+op_amp
+id|old_irql
+comma
+l_string|&quot;send message&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4795,6 +4807,18 @@ op_logical_neg
 id|this-&gt;Id
 )paren
 (brace
+id|diva_os_leave_spin_lock
+c_func
+(paren
+op_amp
+id|api_lock
+comma
+op_amp
+id|old_irql
+comma
+l_string|&quot;send message&quot;
+)paren
+suffix:semicolon
 r_return
 id|CAPI_ILLAPPNR
 suffix:semicolon
@@ -4814,18 +4838,6 @@ l_int|0x80
 )paren
 suffix:semicolon
 multiline_comment|/* preserve external controller bit */
-id|diva_os_enter_spin_lock
-c_func
-(paren
-op_amp
-id|api_lock
-comma
-op_amp
-id|old_irql
-comma
-l_string|&quot;send message&quot;
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
