@@ -5295,4 +5295,11 @@ c_func
 id|aio_put_req
 )paren
 suffix:semicolon
+DECL|variable|wait_on_sync_kiocb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wait_on_sync_kiocb
+)paren
+suffix:semicolon
 eof
