@@ -2137,8 +2137,8 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* Copy page is dangerous: it likes to mess with&n;&t;&t;&t;&t;&t;   preempt count on specific cpus. Wrong preempt &n;&t;&t;&t;&t;&t;   count is then copied, oops. &n;&t;&t;&t;&t;&t;*/
-id|copy_page
+multiline_comment|/* copy_page is no usable for copying task structs. */
+id|memcpy
 c_func
 (paren
 (paren
@@ -2152,6 +2152,8 @@ r_void
 op_star
 )paren
 id|pbe-&gt;orig_address
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|pbe
