@@ -19,7 +19,7 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|function|dn_process_int
-r_void
+id|irqreturn_t
 id|dn_process_int
 c_func
 (paren
@@ -32,6 +32,11 @@ op_star
 id|fp
 )paren
 (brace
+id|irqreturn_t
+id|res
+op_assign
+id|IRQ_NONE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -45,6 +50,8 @@ dot
 id|handler
 )paren
 (brace
+id|res
+op_assign
 id|dn_irqs
 (braket
 id|irq
@@ -106,6 +113,9 @@ id|picb
 )paren
 op_assign
 l_int|0x20
+suffix:semicolon
+r_return
+id|res
 suffix:semicolon
 )brace
 DECL|function|dn_init_IRQ
@@ -181,7 +191,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
