@@ -2549,6 +2549,12 @@ op_amp
 id|svsk-&gt;sk_flags
 )paren
 suffix:semicolon
+id|svc_sock_enqueue
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
 id|slen
 op_assign
 r_sizeof
@@ -4842,7 +4848,7 @@ c_func
 (paren
 id|sock
 comma
-l_int|5
+l_int|64
 )paren
 )paren
 OL
