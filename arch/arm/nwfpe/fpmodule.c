@@ -238,7 +238,7 @@ id|nwfpe_enter
 suffix:semicolon
 id|fp_init
 op_assign
-id|nwfpe_init
+id|nwfpe_init_fpa
 suffix:semicolon
 r_return
 l_int|0

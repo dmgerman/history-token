@@ -132,7 +132,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|nwfpe_init
+id|nwfpe_init_fpa
 c_func
 (paren
 r_union

@@ -206,9 +206,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|function|nwfpe_init
+DECL|function|nwfpe_init_fpa
 r_void
-id|nwfpe_init
+id|nwfpe_init_fpa
 c_func
 (paren
 r_union
@@ -227,6 +227,14 @@ op_star
 )paren
 id|fp
 suffix:semicolon
+macro_line|#ifdef NWFPE_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;NWFPE: setting up state.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|memset
 c_func
 (paren
@@ -276,12 +284,18 @@ id|opcode
 (brace
 r_int
 r_int
-id|nRc
-op_assign
-l_int|1
-comma
 id|code
 suffix:semicolon
+macro_line|#ifdef NWFPE_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;NWFPE: emulating opcode %08x&bslash;n&quot;
+comma
+id|opcode
+)paren
+suffix:semicolon
+macro_line|#endif
 id|code
 op_assign
 id|opcode
@@ -326,8 +340,7 @@ l_int|0x00000010
 multiline_comment|/* Emulate conversion opcodes. */
 multiline_comment|/* Emulate register transfer opcodes. */
 multiline_comment|/* Emulate comparison opcodes. */
-id|nRc
-op_assign
+r_return
 id|EmulateCPRT
 c_func
 (paren
@@ -339,8 +352,7 @@ r_else
 (brace
 multiline_comment|/* Emulate monadic arithmetic opcodes. */
 multiline_comment|/* Emulate dyadic arithmetic opcodes. */
-id|nRc
-op_assign
+r_return
 id|EmulateCPDO
 c_func
 (paren
@@ -360,8 +372,7 @@ l_int|0x0c000000
 (brace
 multiline_comment|/* Emulate load/store opcodes. */
 multiline_comment|/* Emulate load/store multiple opcodes. */
-id|nRc
-op_assign
+r_return
 id|EmulateCPDT
 c_func
 (paren
@@ -369,19 +380,10 @@ id|opcode
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
+)brace
 multiline_comment|/* Invalid instruction detected.  Return FALSE. */
-id|nRc
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
 r_return
-(paren
-id|nRc
-)paren
+l_int|0
 suffix:semicolon
 )brace
 eof
