@@ -435,11 +435,11 @@ r_return
 id|path
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG
 DECL|variable|hotplug_seqnum
 id|u64
 id|hotplug_seqnum
 suffix:semicolon
-macro_line|#ifdef CONFIG_HOTPLUG
 DECL|macro|BUFFER_SIZE
 mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
 DECL|macro|NUM_ENVP

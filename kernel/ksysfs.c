@@ -9,6 +9,7 @@ DECL|macro|KERNEL_ATTR_RO
 mdefine_line|#define KERNEL_ATTR_RO(_name) &bslash;&n;static struct subsys_attribute _name##_attr = __ATTR_RO(_name)
 DECL|macro|KERNEL_ATTR_RW
 mdefine_line|#define KERNEL_ATTR_RW(_name) &bslash;&n;static struct subsys_attribute _name##_attr = &bslash;&n;&t;__ATTR(_name, 0644, _name##_show, _name##_store)
+macro_line|#ifdef CONFIG_HOTPLUG
 DECL|function|hotplug_seqnum_show
 r_static
 id|ssize_t
@@ -44,6 +45,7 @@ c_func
 id|hotplug_seqnum
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 id|decl_subsys
 c_func
@@ -65,9 +67,11 @@ id|kernel_attrs
 )braket
 op_assign
 (brace
+macro_line|#ifdef CONFIG_HOTPLUG
 op_amp
 id|hotplug_seqnum_attr.attr
 comma
+macro_line|#endif
 l_int|NULL
 )brace
 suffix:semicolon
