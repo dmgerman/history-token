@@ -3744,7 +3744,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 id|lpmask
 op_amp
 (paren
@@ -3752,6 +3752,9 @@ l_int|1
 op_lshift
 id|i
 )paren
+)paren
+op_eq
+l_int|0
 )paren
 r_continue
 suffix:semicolon
