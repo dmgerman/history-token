@@ -560,6 +560,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -593,6 +594,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -604,6 +606,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 comma
 id|u8
@@ -621,6 +624,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 comma
 id|u8
@@ -637,6 +641,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -648,6 +653,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -1593,6 +1599,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1793,6 +1800,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1891,6 +1899,7 @@ id|type
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2396,6 +2405,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -2535,6 +2545,7 @@ id|vptr
 suffix:semicolon
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -3706,6 +3717,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -5980,6 +5992,7 @@ id|ISR_TXSTLI
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -6038,6 +6051,7 @@ id|ISR_SRCI
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -6779,6 +6793,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -7954,6 +7969,7 @@ id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -8773,6 +8789,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -8836,6 +8853,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -8955,6 +8973,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -9067,6 +9086,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 comma
@@ -9456,6 +9476,7 @@ id|curr_status
 suffix:semicolon
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -9859,6 +9880,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -10078,6 +10100,7 @@ c_func
 (paren
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 )paren
@@ -10234,6 +10257,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -10521,6 +10545,7 @@ id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -10791,6 +10816,7 @@ id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -11174,6 +11200,7 @@ id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -11363,6 +11390,7 @@ id|context
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -11372,11 +11400,13 @@ id|u16
 id|i
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|ptr
 op_assign
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 id|regs
@@ -11510,6 +11540,7 @@ id|context
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -11519,11 +11550,13 @@ r_int
 id|i
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|ptr
 op_assign
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 id|regs
@@ -11902,6 +11935,7 @@ id|vptr
 (brace
 r_struct
 id|mac_regs
+id|__iomem
 op_star
 id|regs
 op_assign
