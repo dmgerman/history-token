@@ -8952,7 +8952,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* The sequence is:&n; *&n; *&t;rtnl_lock();&n; *&t;...&n; *&t;register_netdevyce(x1);&n; *&t;register_netdevyce(x2);&n; *&t;...&n; *&t;unregister_netdevice(y1);&n; *&t;unregister_netdevice(y2);&n; *      ...&n; *&t;rtnl_unlock();&n; *&n; * We are invoked by rtnl_unlock() after it drops the semaphore.&n; * This allows us to deal with two problems:&n; * 1) We can invoke hotplug without deadlocking with linkwatch via&n; *    keventd.&n; * 2) Since we run with the RTNL semaphore not held, we can sleep&n; *    safely in order to wait for the netdev refcnt to drop to zero.&n; */
+multiline_comment|/* The sequence is:&n; *&n; *&t;rtnl_lock();&n; *&t;...&n; *&t;register_netdevice(x1);&n; *&t;register_netdevice(x2);&n; *&t;...&n; *&t;unregister_netdevice(y1);&n; *&t;unregister_netdevice(y2);&n; *      ...&n; *&t;rtnl_unlock();&n; *&n; * We are invoked by rtnl_unlock() after it drops the semaphore.&n; * This allows us to deal with two problems:&n; * 1) We can invoke hotplug without deadlocking with linkwatch via&n; *    keventd.&n; * 2) Since we run with the RTNL semaphore not held, we can sleep&n; *    safely in order to wait for the netdev refcnt to drop to zero.&n; */
 DECL|variable|unregister_todo_lock
 r_static
 id|spinlock_t
