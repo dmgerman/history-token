@@ -27,14 +27,9 @@ op_star
 id|ops
 )paren
 (brace
-id|timer_init
-c_func
-(paren
-id|ops
-)paren
-suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

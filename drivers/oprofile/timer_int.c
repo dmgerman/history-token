@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &quot;op_counter.h&quot;
 DECL|function|timer_notify
 r_static
 r_int

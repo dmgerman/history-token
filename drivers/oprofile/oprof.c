@@ -353,6 +353,18 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|timer_init
+c_func
+(paren
+r_struct
+id|oprofile_operations
+op_star
+op_star
+id|ops
+)paren
+suffix:semicolon
 DECL|function|oprofile_init
 r_static
 r_int
@@ -366,7 +378,7 @@ r_void
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/* Architecture must fill in the interrupt ops and the&n;&t; * logical CPU type.&n;&t; */
+multiline_comment|/* Architecture must fill in the interrupt ops and the&n;&t; * logical CPU type, or we can fall back to the timer&n;&t; * interrupt profiler.&n;&t; */
 id|err
 op_assign
 id|oprofile_arch_init
@@ -376,6 +388,27 @@ op_amp
 id|oprofile_ops
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENODEV
+)paren
+(brace
+id|timer_init
+c_func
+(paren
+op_amp
+id|oprofile_ops
+)paren
+suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
