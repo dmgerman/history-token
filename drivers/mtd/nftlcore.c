@@ -36,23 +36,6 @@ mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 multiline_comment|/* Linux-specific block device functions */
-multiline_comment|/* I _HATE_ the Linux block device setup more than anything else I&squot;ve ever&n; *  encountered, except ...&n; */
-multiline_comment|/* .. for the Linux partition table handling. */
-multiline_comment|/* So why didn&squot;t you fucking go and clean it up? -- AV */
-DECL|variable|part_table
-r_struct
-id|hd_struct
-id|part_table
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|variable|nftl_fops
-r_static
-r_struct
-id|block_device_operations
-id|nftl_fops
-suffix:semicolon
 DECL|variable|NFTLs
 r_struct
 id|NFTLrecord
@@ -515,23 +498,9 @@ id|gd-&gt;minor_shift
 op_assign
 id|NFTL_PARTN_BITS
 suffix:semicolon
-id|gd-&gt;part
-op_assign
-id|part_table
-op_plus
-(paren
-id|firstfree
-op_lshift
-id|NFTL_PARTN_BITS
-)paren
-suffix:semicolon
 id|gd-&gt;major_name
 op_assign
 id|name
-suffix:semicolon
-id|gd-&gt;nr_real
-op_assign
-l_int|1
 suffix:semicolon
 id|nftl-&gt;disk
 op_assign
@@ -3377,12 +3346,11 @@ id|block
 op_plus
 id|nsect
 OG
-id|part_table
-(braket
-id|dev
-)braket
-dot
-id|nr_sects
+id|get_capacity
+c_func
+(paren
+id|nftl-&gt;disk
+)paren
 )paren
 (brace
 multiline_comment|/* access past the end of device */
@@ -3391,15 +3359,7 @@ c_func
 (paren
 l_string|&quot;nftl%c%d: bad access: block = %d, count = %d&bslash;n&quot;
 comma
-(paren
-id|minor
-c_func
-(paren
-id|req-&gt;rq_dev
-)paren
-op_rshift
-l_int|6
-)paren
+id|unit
 op_plus
 l_char|&squot;a&squot;
 comma

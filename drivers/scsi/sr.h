@@ -3,6 +3,7 @@ macro_line|#ifndef _SR_H
 DECL|macro|_SR_H
 mdefine_line|#define _SR_H
 macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;linux/genhd.h&gt;
 r_typedef
 r_struct
 (brace
@@ -68,20 +69,22 @@ r_struct
 id|cdrom_device_info
 id|cdi
 suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
+suffix:semicolon
 DECL|typedef|Scsi_CD
 )brace
 id|Scsi_CD
-suffix:semicolon
-r_extern
-id|Scsi_CD
-op_star
-id|scsi_CDs
 suffix:semicolon
 r_int
 id|sr_do_ioctl
 c_func
 (paren
-r_int
+id|Scsi_CD
+op_star
 comma
 r_int
 r_char
@@ -222,30 +225,11 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|sr_read_sector
-c_func
-(paren
-r_int
-id|minor
-comma
-r_int
-id|lba
-comma
-r_int
-id|blksize
-comma
-r_int
-r_char
-op_star
-id|dest
-)paren
-suffix:semicolon
-r_int
 id|sr_is_xa
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* sr_vendor.c */
@@ -270,8 +254,8 @@ r_int
 id|sr_set_blocklength
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
 comma
 r_int
 id|blocklength

@@ -1,6 +1,7 @@
 macro_line|#ifndef _ALPHA_USER_H
 DECL|macro|_ALPHA_USER_H
 mdefine_line|#define _ALPHA_USER_H
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;

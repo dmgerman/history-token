@@ -8225,12 +8225,6 @@ r_struct
 id|hd_geometry
 id|DiskGeometry_T
 suffix:semicolon
-DECL|typedef|DiskPartition_T
-r_typedef
-r_struct
-id|hd_struct
-id|DiskPartition_T
-suffix:semicolon
 DECL|typedef|Inode_T
 r_typedef
 r_struct
@@ -9409,13 +9403,6 @@ suffix:semicolon
 DECL|member|FW
 )brace
 id|FW
-suffix:semicolon
-DECL|member|DiskPartitions
-id|DiskPartition_T
-id|DiskPartitions
-(braket
-id|DAC960_MinorCount
-)braket
 suffix:semicolon
 DECL|member|ProgressBuffer
 r_int
