@@ -4221,6 +4221,13 @@ op_star
 id|cp
 )paren
 (brace
+r_struct
+id|net_device
+op_star
+id|dev
+op_assign
+id|cp-&gt;dev
+suffix:semicolon
 id|cpw16
 c_func
 (paren
@@ -4275,6 +4282,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|udelay

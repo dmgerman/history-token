@@ -1204,7 +1204,7 @@ id|pr
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * Interrupts must be disabled during bus mastering calculations and&n;&t; * for C2/C3 transitions.&n;&t; */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1314,7 +1314,7 @@ op_amp
 id|cx-&gt;demotion.threshold.bm
 )paren
 (brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1397,7 +1397,7 @@ id|acpi_fadt.Xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enable interrupts */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1484,7 +1484,7 @@ id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enable interrupts */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1508,7 +1508,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -3609,7 +3609,7 @@ id|pr-&gt;throttling.state
 op_assign
 l_int|0
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -3667,7 +3667,7 @@ id|pr-&gt;throttling.state
 op_assign
 id|state
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -3798,7 +3798,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -3907,7 +3907,7 @@ id|pr-&gt;throttling.state
 op_assign
 id|state
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

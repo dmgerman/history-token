@@ -221,7 +221,7 @@ id|haxr2
 op_assign
 l_int|0
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -521,7 +521,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -564,7 +564,7 @@ id|haxr2
 op_assign
 l_int|0
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -768,7 +768,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -472,7 +472,7 @@ op_star
 id|dummy
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1737,7 +1737,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1749,7 +1749,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1849,7 +1849,7 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

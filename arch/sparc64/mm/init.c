@@ -7038,7 +7038,7 @@ id|_PAGE_L
 op_or
 id|_PAGE_W
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -7313,7 +7313,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -20,7 +20,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -81,7 +81,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* turn on IDE, really! */
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

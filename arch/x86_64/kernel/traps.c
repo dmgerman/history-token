@@ -1562,7 +1562,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* racy, but better than risking deadlock. */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

@@ -388,24 +388,16 @@ suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 multiline_comment|/*&n; * Compatibility macros, to be removed in future...&n; */
 DECL|macro|cli
-mdefine_line|#define cli()&t;__cli()
+mdefine_line|#define cli()&t;local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti()&t;__sti()
+mdefine_line|#define sti()&t;local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(flags)&t;__save_flags(flags)
+mdefine_line|#define save_flags(flags)&t;local_save_flags(flags)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(flags)&t;__restore_flags(flags)
+mdefine_line|#define restore_flags(flags)&t;local_irq_restore(flags)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;__save_and_cli(flags)
+mdefine_line|#define save_and_cli(flags)&t;local_irq_save(flags)
 macro_line|#endif /* !CONFIG_SMP */
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;__sti()
-DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
 r_static
 id|__inline__
 r_int

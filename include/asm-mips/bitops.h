@@ -17,13 +17,13 @@ multiline_comment|/*&n; * Only disable interrupt for kernel mode stuff to keep u
 DECL|macro|__bi_flags
 mdefine_line|#define __bi_flags unsigned long flags
 DECL|macro|__bi_cli
-mdefine_line|#define __bi_cli() __cli()
+mdefine_line|#define __bi_cli() local_irq_disable()
 DECL|macro|__bi_save_flags
-mdefine_line|#define __bi_save_flags(x) __save_flags(x)
+mdefine_line|#define __bi_save_flags(x) local_save_flags(x)
 DECL|macro|__bi_save_and_cli
-mdefine_line|#define __bi_save_and_cli(x) __save_and_cli(x)
+mdefine_line|#define __bi_save_and_cli(x) local_irq_save(x)
 DECL|macro|__bi_restore_flags
-mdefine_line|#define __bi_restore_flags(x) __restore_flags(x)
+mdefine_line|#define __bi_restore_flags(x) local_irq_restore(x)
 macro_line|#else
 DECL|macro|__bi_flags
 mdefine_line|#define __bi_flags

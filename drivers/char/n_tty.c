@@ -3931,7 +3931,7 @@ id|tty
 )paren
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -4214,7 +4214,7 @@ comma
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

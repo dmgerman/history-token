@@ -1095,7 +1095,7 @@ c_func
 id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1118,7 +1118,7 @@ comma
 id|irqmask
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

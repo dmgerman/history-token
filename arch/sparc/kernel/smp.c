@@ -1074,7 +1074,7 @@ c_func
 r_void
 )paren
 (brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

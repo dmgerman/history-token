@@ -199,13 +199,13 @@ comma
 id|A3D_MAX_STROBE
 )paren
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -278,7 +278,7 @@ id|s
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

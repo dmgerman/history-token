@@ -341,14 +341,14 @@ mdefine_line|#define set_mb(var, value)      do { var = value; mb(); } while (0)
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value)     do { var = value; wmb(); } while (0)
 multiline_comment|/* interrupt control.. */
-DECL|macro|__sti
-mdefine_line|#define __sti() ({ &bslash;&n;        unsigned long __dummy; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stosm 0(%0),0x03&quot; : : &quot;a&quot; (&amp;__dummy) : &quot;memory&quot;); &bslash;&n;        })
-DECL|macro|__cli
-mdefine_line|#define __cli() ({ &bslash;&n;        unsigned long __flags; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stnsm 0(%0),0xFC&quot; : : &quot;a&quot; (&amp;__flags) : &quot;memory&quot;); &bslash;&n;        __flags; &bslash;&n;        })
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm 0(%0),0&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   0(%0)&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable() ({ &bslash;&n;        unsigned long __dummy; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stosm 0(%0),0x03&quot; : : &quot;a&quot; (&amp;__dummy) : &quot;memory&quot;); &bslash;&n;        })
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable() ({ &bslash;&n;        unsigned long __flags; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stnsm 0(%0),0xFC&quot; : : &quot;a&quot; (&amp;__flags) : &quot;memory&quot;); &bslash;&n;        __flags; &bslash;&n;        })
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm 0(%0),0&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   0(%0)&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
 DECL|macro|__load_psw
 mdefine_line|#define __load_psw(psw) &bslash;&n;        __asm__ __volatile__(&quot;lpswe 0(%0)&quot; : : &quot;a&quot; (&amp;psw) : &quot;cc&quot; );
 DECL|macro|__ctl_load
@@ -361,13 +361,7 @@ DECL|macro|__ctl_clear_bit
 mdefine_line|#define __ctl_clear_bit(cr, bit) ({ &bslash;&n;        __u8 __dummy[24]; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;    la    1,%0&bslash;n&quot;       /* align to 8 byte */ &bslash;&n;                &quot;    aghi  1,7&bslash;n&quot; &bslash;&n;                &quot;    nill  1,0xfff8&bslash;n&quot; &bslash;&n;                &quot;    bras  2,0f&bslash;n&quot;       /* skip indirect insns */ &bslash;&n;                &quot;    stctg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    lctlg 0,0,0(1)&bslash;n&quot; &bslash;&n;                &quot;0:  ex    %1,0(2)&bslash;n&quot;    /* execute stctl */ &bslash;&n;                &quot;    lg    0,0(1)&bslash;n&quot; &bslash;&n;                &quot;    ngr   0,%2&bslash;n&quot;       /* set the bit */ &bslash;&n;                &quot;    stg   0,0(1)&bslash;n&quot; &bslash;&n;                &quot;1:  ex    %1,6(2)&quot;      /* execute lctl */ &bslash;&n;                : &quot;=m&quot; (__dummy) : &quot;a&quot; (cr*17), &quot;a&quot; (~(1L&lt;&lt;(bit))) &bslash;&n;                : &quot;cc&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;); &bslash;&n;        })
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(x)&t;((x) = __cli())
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x)&t;__restore_flags(x)
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;__sti()
+mdefine_line|#define local_irq_save(x)&t;((x) = local_irq_disable())
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -441,13 +435,13 @@ DECL|macro|ctl_clear_bit
 mdefine_line|#define ctl_clear_bit(cr, bit) smp_ctl_clear_bit(cr, bit)
 macro_line|#else
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
+mdefine_line|#define cli() local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti() __sti()
+mdefine_line|#define sti() local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+mdefine_line|#define save_flags(x) local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+mdefine_line|#define restore_flags(x) local_irq_restore(x)
 DECL|macro|ctl_set_bit
 mdefine_line|#define ctl_set_bit(cr, bit) __ctl_set_bit(cr, bit)
 DECL|macro|ctl_clear_bit

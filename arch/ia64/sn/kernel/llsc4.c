@@ -5591,7 +5591,7 @@ suffix:colon
 l_int|1000000
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
