@@ -7051,7 +7051,7 @@ c_func
 (paren
 id|latency_timer
 comma
-id|S_IWUGO
+id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
@@ -7066,7 +7066,7 @@ c_func
 (paren
 id|event_char
 comma
-id|S_IWUGO
+id|S_IWUSR
 comma
 l_int|NULL
 comma
