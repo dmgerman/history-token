@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
-macro_line|#include &lt;linux/jbd.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * akpm: A new design for ext3_sync_file().&n; *&n; * This is only called from sys_fsync(), sys_fdatasync() and sys_msync().&n; * There cannot be a transaction open by this task.&n; * Another task could have dirtied this inode.  Its data can be in any&n; * state in the journalling system.&n; *&n; * What we do is just kick off a commit and wait on it.  This will snapshot the&n; * inode to disk.&n; *&n; * Note that there is a serious optimisation we can make here: if the current&n; * inode is not part of j_running_transaction or j_committing_transaction&n; * then we have nothing to do.  That would require implementation of t_ilist,&n; * which isn&squot;t too hard.&n; */
 DECL|function|ext3_sync_file
 r_int
