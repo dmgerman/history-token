@@ -7624,6 +7624,10 @@ id|nr_exclusive
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 r_struct
@@ -7682,7 +7686,7 @@ id|mode
 comma
 id|sync
 comma
-l_int|NULL
+id|key
 )paren
 op_logical_and
 (paren
@@ -7716,6 +7720,10 @@ id|mode
 comma
 r_int
 id|nr_exclusive
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 r_int
@@ -7741,6 +7749,8 @@ comma
 id|nr_exclusive
 comma
 l_int|0
+comma
+id|key
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7786,6 +7796,8 @@ comma
 l_int|1
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -7862,6 +7874,8 @@ comma
 id|nr_exclusive
 comma
 id|sync
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7923,6 +7937,8 @@ comma
 l_int|1
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7986,6 +8002,8 @@ comma
 l_int|0
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
