@@ -2,10 +2,9 @@ multiline_comment|/*&n;=========================================================
 macro_line|#ifndef __SOFTFLOAT_H__
 DECL|macro|__SOFTFLOAT_H__
 mdefine_line|#define __SOFTFLOAT_H__
-multiline_comment|/*&n;-------------------------------------------------------------------------------&n;The macro `FLOATX80&squot; must be defined to enable the extended double-precision&n;floating-point format `floatx80&squot;.  If this macro is not defined, the&n;`floatx80&squot; type will not be defined, and none of the functions that either&n;input or output the `floatx80&squot; type will be defined.  The same applies to&n;the `FLOAT128&squot; macro and the quadruple-precision format `float128&squot;.&n;-------------------------------------------------------------------------------&n;*/
+multiline_comment|/*&n;-------------------------------------------------------------------------------&n;The macro `FLOATX80&squot; must be defined to enable the extended double-precision&n;floating-point format `floatx80&squot;.  If this macro is not defined, the&n;`floatx80&squot; type will not be defined, and none of the functions that either&n;input or output the `floatx80&squot; type will be defined.&n;-------------------------------------------------------------------------------&n;*/
 DECL|macro|FLOATX80
 mdefine_line|#define FLOATX80
-multiline_comment|/* #define FLOAT128 */
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE floating-point types.&n;-------------------------------------------------------------------------------&n;*/
 DECL|typedef|float32
 r_typedef
@@ -21,7 +20,6 @@ r_int
 r_int
 id|float64
 suffix:semicolon
-macro_line|#ifdef FLOATX80
 r_typedef
 r_struct
 (brace
@@ -40,25 +38,6 @@ DECL|typedef|floatx80
 )brace
 id|floatx80
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FLOAT128
-r_typedef
-r_struct
-(brace
-DECL|member|high
-DECL|member|low
-r_int
-r_int
-r_int
-id|high
-comma
-id|low
-suffix:semicolon
-DECL|typedef|float128
-)brace
-id|float128
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE floating-point underflow tininess-detection mode.&n;-------------------------------------------------------------------------------&n;*/
 r_extern
 r_int
@@ -177,16 +156,6 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef FLOAT128
-id|float128
-id|int32_to_float128
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE single-precision conversion routines.&n;-------------------------------------------------------------------------------&n;*/
 r_int
 r_int
@@ -214,15 +183,6 @@ suffix:semicolon
 macro_line|#ifdef FLOATX80
 id|floatx80
 id|float32_to_floatx80
-c_func
-(paren
-id|float32
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FLOAT128
-id|float128
-id|float32_to_float128
 c_func
 (paren
 id|float32
@@ -383,15 +343,6 @@ id|float64
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef FLOAT128
-id|float128
-id|float64_to_float128
-c_func
-(paren
-id|float64
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE double-precision operations.&n;-------------------------------------------------------------------------------&n;*/
 id|float64
 id|float64_round_to_int
@@ -545,15 +496,6 @@ c_func
 id|floatx80
 )paren
 suffix:semicolon
-macro_line|#ifdef FLOAT128
-id|float128
-id|floatx80_to_float128
-c_func
-(paren
-id|floatx80
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE extended double-precision rounding precision.  Valid&n;values are 32, 64, and 80.&n;-------------------------------------------------------------------------------&n;*/
 r_extern
 r_int
@@ -679,169 +621,6 @@ id|floatx80_is_signaling_nan
 c_func
 (paren
 id|floatx80
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FLOAT128
-multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE quadruple-precision conversion routines.&n;-------------------------------------------------------------------------------&n;*/
-r_int
-r_int
-id|float128_to_int32
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-r_int
-r_int
-id|float128_to_int32_round_to_zero
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-id|float32
-id|float128_to_float32
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-id|float64
-id|float128_to_float64
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-macro_line|#ifdef FLOATX80
-id|floatx80
-id|float128_to_floatx80
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;-------------------------------------------------------------------------------&n;Software IEC/IEEE quadruple-precision operations.&n;-------------------------------------------------------------------------------&n;*/
-id|float128
-id|float128_round_to_int
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-id|float128
-id|float128_add
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-id|float128
-id|float128_sub
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-id|float128
-id|float128_mul
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-id|float128
-id|float128_div
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-id|float128
-id|float128_rem
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-id|float128
-id|float128_sqrt
-c_func
-(paren
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_eq
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_le
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_lt
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_eq_signaling
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_le_quiet
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_lt_quiet
-c_func
-(paren
-id|float128
-comma
-id|float128
-)paren
-suffix:semicolon
-r_char
-id|float128_is_signaling_nan
-c_func
-(paren
-id|float128
 )paren
 suffix:semicolon
 macro_line|#endif
