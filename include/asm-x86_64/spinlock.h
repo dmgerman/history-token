@@ -72,7 +72,7 @@ mdefine_line|#define spin_is_locked(x)&t;(*(volatile signed char *)(&amp;(x)-&gt
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|spin_lock_string
-mdefine_line|#define spin_lock_string &bslash;&n;&t;&quot;&bslash;n1:&bslash;t&quot; &bslash;&n;&t;&quot;lock ; decb %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;js 2f&bslash;n&quot; &bslash;&n;&t;&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot; &bslash;&n;&t;&quot;2:&bslash;t&quot; &bslash;&n;&t;&quot;cmpb $0,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rep;nop&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jle 2b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jmp 1b&bslash;n&quot; &bslash;&n;&t;&quot;.previous&quot;
+mdefine_line|#define spin_lock_string &bslash;&n;&t;&quot;&bslash;n1:&bslash;t&quot; &bslash;&n;&t;&quot;lock ; decb %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;js 2f&bslash;n&quot; &bslash;&n;&t;LOCK_SECTION_START(&quot;&quot;) &bslash;&n;&t;&quot;2:&bslash;t&quot; &bslash;&n;&t;&quot;cmpb $0,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rep;nop&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jle 2b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jmp 1b&bslash;n&quot; &bslash;&n;&t;LOCK_SECTION_END
 multiline_comment|/*&n; * This works. Despite all the confusion.&n; */
 DECL|macro|spin_unlock_string
 mdefine_line|#define spin_unlock_string &bslash;&n;&t;&quot;movb $1,%0&quot;
@@ -394,5 +394,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|rwlock_is_locked
+mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock != RW_LOCK_BIAS)
 macro_line|#endif /* __ASM_SPINLOCK_H */
 eof

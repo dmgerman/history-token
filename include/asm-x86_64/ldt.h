@@ -10,9 +10,9 @@ DECL|macro|LDT_ENTRY_SIZE
 mdefine_line|#define LDT_ENTRY_SIZE&t;8
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Note on 64bit base and limit is ignored and you cannot set&n;   DS/ES/CS not to the default values if you still want to do syscalls. This&n;   call is more for 32bit mode therefore. */
-DECL|struct|modify_ldt_ldt_s
+DECL|struct|user_desc
 r_struct
-id|modify_ldt_ldt_s
+id|user_desc
 (brace
 DECL|member|entry_number
 r_int

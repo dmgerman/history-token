@@ -17,17 +17,6 @@ macro_line|#ifndef __devexit_p
 DECL|macro|__devexit_p
 mdefine_line|#define __devexit_p(x) x
 macro_line|#endif
-multiline_comment|/* This showed up around this time */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,12)
-macro_line|# ifndef MODULE_LICENSE
-DECL|macro|MODULE_LICENSE
-macro_line|# define MODULE_LICENSE(x)
-macro_line|# endif
-macro_line|# ifndef min
-DECL|macro|min
-macro_line|# define min(x,y) ({ &bslash;&n;&t;const typeof(x) _x = (x);       &bslash;&n;&t;const typeof(y) _y = (y);       &bslash;&n;&t;(void) (&amp;_x == &amp;_y);            &bslash;&n;&t;_x &lt; _y ? _x : _y; })
-macro_line|# endif
-macro_line|#endif /* Linux version &lt; 2.4.12 */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifndef list_for_each_safe
 DECL|macro|list_for_each_safe
@@ -45,6 +34,34 @@ macro_line|#ifndef MAX
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b) ((a) &gt; (b) ? (a) : (b))
 macro_line|#endif
+multiline_comment|/* Compatibility for task/work queues */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,42)
+multiline_comment|/* Use task queue */
+macro_line|#include &lt;linux/tqueue.h&gt;
+DECL|macro|hpsb_queue_struct
+mdefine_line|#define hpsb_queue_struct tq_struct
+DECL|macro|hpsb_queue_list
+mdefine_line|#define hpsb_queue_list list
+DECL|macro|hpsb_schedule_work
+mdefine_line|#define hpsb_schedule_work(x) schedule_task(x)
+DECL|macro|HPSB_INIT_WORK
+mdefine_line|#define HPSB_INIT_WORK(x,y,z) INIT_TQUEUE(x,y,z)
+DECL|macro|HPSB_PREPARE_WORK
+mdefine_line|#define HPSB_PREPARE_WORK(x,y,z) PREPARE_TQUEUE(x,y,z)
+macro_line|#else
+multiline_comment|/* Use work queue */
+macro_line|#include &lt;linux/workqueue.h&gt;
+DECL|macro|hpsb_queue_struct
+mdefine_line|#define hpsb_queue_struct work_struct
+DECL|macro|hpsb_queue_list
+mdefine_line|#define hpsb_queue_list entry
+DECL|macro|hpsb_schedule_work
+mdefine_line|#define hpsb_schedule_work(x) schedule_work(x)
+DECL|macro|HPSB_INIT_WORK
+mdefine_line|#define HPSB_INIT_WORK(x,y,z) INIT_WORK(x,y,z)
+DECL|macro|HPSB_PREPARE_WORK
+mdefine_line|#define HPSB_PREPARE_WORK(x,y,z) PREPARE_WORK(x,y,z)
+macro_line|#endif
 DECL|typedef|quadlet_t
 r_typedef
 id|u32
@@ -59,6 +76,21 @@ DECL|typedef|nodeid_t
 r_typedef
 id|u16
 id|nodeid_t
+suffix:semicolon
+DECL|typedef|byte_t
+r_typedef
+id|u8
+id|byte_t
+suffix:semicolon
+DECL|typedef|nodeaddr_t
+r_typedef
+id|u64
+id|nodeaddr_t
+suffix:semicolon
+DECL|typedef|arm_length_t
+r_typedef
+id|u16
+id|arm_length_t
 suffix:semicolon
 DECL|macro|BUS_MASK
 mdefine_line|#define BUS_MASK  0xffc0

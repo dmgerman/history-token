@@ -1853,8 +1853,71 @@ id|__NR_sched_getaffinity
 comma
 id|sys_sched_getaffinity
 )paren
+DECL|macro|__NR_set_thread_area
+mdefine_line|#define __NR_set_thread_area&t;205
+id|__SYSCALL
+c_func
+(paren
+id|__NR_set_thread_area
+comma
+id|sys_set_thread_area
+)paren
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;206
+id|__SYSCALL
+c_func
+(paren
+id|__NR_io_setup
+comma
+id|sys_io_setup
+)paren
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;207
+id|__SYSCALL
+c_func
+(paren
+id|__NR_io_destroy
+comma
+id|sys_io_destroy
+)paren
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;208
+id|__SYSCALL
+c_func
+(paren
+id|__NR_io_getevents
+comma
+id|sys_io_getevents
+)paren
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;209
+id|__SYSCALL
+c_func
+(paren
+id|__NR_io_submit
+comma
+id|sys_io_submit
+)paren
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;210
+id|__SYSCALL
+c_func
+(paren
+id|__NR_io_cancel
+comma
+id|sys_io_cancel
+)paren
+DECL|macro|__NR_get_thread_area
+mdefine_line|#define __NR_get_thread_area&t;211
+id|__SYSCALL
+c_func
+(paren
+id|__NR_get_thread_area
+comma
+id|sys_get_thread_area
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_sched_getaffinity
+mdefine_line|#define __NR_syscall_max __NR_get_thread_area
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber
@@ -1872,11 +1935,13 @@ mdefine_line|#define _syscall1(type,name,type1,arg1) &bslash;&n;type name(type1 
 DECL|macro|_syscall2
 mdefine_line|#define _syscall2(type,name,type1,arg1,type2,arg2) &bslash;&n;type name(type1 arg1,type2 arg2) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (__syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)) : __syscall_clobber ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
 DECL|macro|_syscall3
-mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3) &bslash;&n;type name(type1 arg1,type2 arg2,type3 arg3) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (__syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)), &bslash;&n;&t;&t;  &quot;d&quot; ((long)(arg3)) : __syscall_clobber, &quot;r9&quot; ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
+mdefine_line|#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3) &bslash;&n;type name(type1 arg1,type2 arg2,type3 arg3) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (__syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)), &bslash;&n;&t;&t;  &quot;d&quot; ((long)(arg3)) : __syscall_clobber); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
 DECL|macro|_syscall4
 mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4) &bslash;&n;type name (type1 arg1, type2 arg2, type3 arg3, type4 arg4) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (&quot;movq %5,%%r10 ;&quot; __syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)), &bslash;&n;&t;  &quot;d&quot; ((long)(arg3)),&quot;g&quot; ((long)(arg4)) : __syscall_clobber,&quot;r10&quot; ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;} 
 DECL|macro|_syscall5
-mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5) &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (&quot;movq %5,%%r10 ; movq %6,%%r9 ; &quot; __syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)), &bslash;&n;&t;  &quot;d&quot; ((long)(arg3)),&quot;g&quot; ((long)(arg4)),&quot;g&quot; ((long)(arg5)) : &bslash;&n;&t;__syscall_clobber,&quot;r8&quot;,&quot;r9&quot;,&quot;r10&quot; ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
+mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5) &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (&quot;movq %5,%%r10 ; movq %6,%%r8 ; &quot; __syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)), &bslash;&n;&t;  &quot;d&quot; ((long)(arg3)),&quot;g&quot; ((long)(arg4)),&quot;g&quot; ((long)(arg5)) : &bslash;&n;&t;__syscall_clobber,&quot;r8&quot;,&quot;r10&quot; ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
+DECL|macro|_syscall6
+mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5,type6,arg6) &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5,type6 arg6) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;__asm__ volatile (&quot;movq %5,%%r10 ; movq %6,%%r8 ; movq %7,%%r9&quot; __syscall &bslash;&n;&t;: &quot;=a&quot; (__res) &bslash;&n;&t;: &quot;0&quot; (__NR_##name),&quot;D&quot; ((long)(arg1)),&quot;S&quot; ((long)(arg2)), &bslash;&n;&t;  &quot;d&quot; ((long)(arg3)),&quot;g&quot; ((long)(arg4)),&quot;g&quot; ((long)(arg5), &bslash;&n;&t;  &quot;g&quot; ((long)(arg6),) : &bslash;&n;&t;__syscall_clobber,&quot;r8&quot;,&quot;r10&quot;,&quot;r9&quot; ); &bslash;&n;__syscall_return(type,__res); &bslash;&n;}
 macro_line|#else /* __KERNEL_SYSCALLS__ */
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 mdefine_line|#define __NR__exit __NR_exit

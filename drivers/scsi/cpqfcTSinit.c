@@ -47,7 +47,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA v. 2.5.3&quot;
+l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA v. 2.5.4&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -2130,6 +2130,22 @@ comma
 r_sizeof
 (paren
 id|ScsiPassThruReq-&gt;sr_sense_buffer
+)paren
+OL
+r_sizeof
+(paren
+id|vendor_cmd-&gt;sense_data
+)paren
+ques
+c_cond
+r_sizeof
+(paren
+id|ScsiPassThruReq-&gt;sr_sense_buffer
+)paren
+suffix:colon
+r_sizeof
+(paren
+id|vendor_cmd-&gt;sense_data
 )paren
 )paren
 suffix:semicolon

@@ -301,6 +301,8 @@ DECL|macro|MODULES_END
 mdefine_line|#define MODULES_END      0xffffffffafffffff
 DECL|macro|MODULES_LEN
 mdefine_line|#define MODULES_LEN   (MODULES_END - MODULES_VADDR)
+DECL|macro|IOMAP_START
+mdefine_line|#define IOMAP_START      0xfffffe8000000000
 DECL|macro|_PAGE_BIT_PRESENT
 mdefine_line|#define _PAGE_BIT_PRESENT&t;0
 DECL|macro|_PAGE_BIT_RW
@@ -365,6 +367,8 @@ DECL|macro|__PAGE_KERNEL_RO
 mdefine_line|#define __PAGE_KERNEL_RO &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_DIRTY | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL_VSYSCALL
 mdefine_line|#define __PAGE_KERNEL_VSYSCALL &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED)
+DECL|macro|__PAGE_KERNEL_LARGE
+mdefine_line|#define __PAGE_KERNEL_LARGE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_USER | _PAGE_ACCESSED | _PAGE_PSE)
 DECL|macro|MAKE_GLOBAL
 mdefine_line|#define MAKE_GLOBAL(x) __pgprot((x) | _PAGE_GLOBAL)
 DECL|macro|PAGE_KERNEL
@@ -375,6 +379,8 @@ DECL|macro|PAGE_KERNEL_NOCACHE
 mdefine_line|#define PAGE_KERNEL_NOCACHE MAKE_GLOBAL(__PAGE_KERNEL_NOCACHE)
 DECL|macro|PAGE_KERNEL_VSYSCALL
 mdefine_line|#define PAGE_KERNEL_VSYSCALL MAKE_GLOBAL(__PAGE_KERNEL_VSYSCALL)
+DECL|macro|PAGE_KERNEL_LARGE
+mdefine_line|#define PAGE_KERNEL_LARGE MAKE_GLOBAL(__PAGE_KERNEL_LARGE)
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
@@ -1043,6 +1049,33 @@ id|_PAGE_BIT_DIRTY
 comma
 id|ptep
 )paren
+suffix:semicolon
+)brace
+DECL|macro|__LARGE_PTE
+mdefine_line|#define __LARGE_PTE (_PAGE_PSE|_PAGE_PRESENT) 
+DECL|function|pmd_large
+r_static
+r_inline
+r_int
+id|pmd_large
+c_func
+(paren
+id|pmd_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+id|pmd_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|__LARGE_PTE
+)paren
+op_eq
+id|__LARGE_PTE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */

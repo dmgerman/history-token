@@ -92,6 +92,8 @@ id|tv_usec
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|jiffies_to_timeval
+mdefine_line|#define jiffies_to_timeval(a,b) do { (b)-&gt;tv_usec = 0; (b)-&gt;tv_sec = (a)/HZ; }while(0)
 DECL|struct|elf_prstatus
 r_struct
 id|elf_prstatus
@@ -309,6 +311,16 @@ DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(r)&t;&t;elf32_init(r)
 DECL|macro|setup_arg_pages
 mdefine_line|#define setup_arg_pages(bprm)&t;&t;ia32_setup_arg_pages(bprm)
+r_int
+id|ia32_setup_arg_pages
+c_func
+(paren
+r_struct
+id|linux_binprm
+op_star
+id|bprm
+)paren
+suffix:semicolon
 DECL|macro|start_thread
 macro_line|#undef start_thread
 DECL|macro|start_thread

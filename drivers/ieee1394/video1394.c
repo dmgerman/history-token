@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -7253,26 +7252,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-id|devfs_handle
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-l_int|NULL
-comma
-id|VIDEO1394_DRIVER_NAME
-comma
-id|strlen
-c_func
-(paren
-id|VIDEO1394_DRIVER_NAME
-)paren
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#else
 id|devfs_handle
 op_assign
 id|devfs_mk_dir
@@ -7285,7 +7264,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|hl_handle
 op_assign
 id|hpsb_register_highlevel

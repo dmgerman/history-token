@@ -129,5 +129,7 @@ DECL|macro|cpu_has_cyrix_arr
 mdefine_line|#define cpu_has_cyrix_arr      0
 DECL|macro|cpu_has_centaur_mcr
 mdefine_line|#define cpu_has_centaur_mcr    0
+DECL|macro|cpu_has_clflush
+mdefine_line|#define cpu_has_clflush&t;       boot_cpu_has(X86_FEATURE_CLFLSH)
 macro_line|#endif /* __ASM_X8664_CPUFEATURE_H */
 eof

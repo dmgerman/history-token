@@ -174,6 +174,7 @@ id|hpsb_address_ops
 (brace
 multiline_comment|/*&n;         * Null function pointers will make the respective operation complete &n;         * with RCODE_TYPE_ERROR.  Makes for easy to implement read-only &n;         * registers (just leave everything but read NULL).&n;         *&n;         * All functions shall return appropriate IEEE 1394 rcodes.&n;         */
 multiline_comment|/* These functions have to implement block reads for themselves. */
+multiline_comment|/* These functions either return a response code&n;           or a negative number. In the first case a response will be generated; in the &n;           later case, no response will be sent and the driver, that handled the request&n;           will send the response itself&n;        */
 DECL|member|read
 r_int
 (paren
@@ -199,6 +200,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 DECL|member|write
@@ -229,6 +233,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Lock transactions: write results of ext_tcode operation into&n;         * *store. */
@@ -262,6 +269,9 @@ id|arg
 comma
 r_int
 id|ext_tcode
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 DECL|member|lock64
@@ -294,6 +304,9 @@ id|arg
 comma
 r_int
 id|ext_tcode
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -335,6 +348,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
+multiline_comment|/* these functions are called to handle transactions. They are called, when&n;   a packet arrives. The flags argument contains the second word of the first header&n;   quadlet of the incoming packet (containing transaction label, retry code,&n;   transaction code and priority). These functions either return a response code&n;   or a negative number. In the first case a response will be generated; in the &n;   later case, no response will be sent and the driver, that handled the request&n;   will send the response itself.&n;*/
 r_int
 id|highlevel_read
 c_func
@@ -357,6 +371,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 r_int
@@ -384,6 +401,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 r_int
@@ -413,6 +433,9 @@ id|arg
 comma
 r_int
 id|ext_tcode
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 r_int
@@ -442,6 +465,9 @@ id|arg
 comma
 r_int
 id|ext_tcode
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 r_void
@@ -534,6 +560,19 @@ id|start
 comma
 id|u64
 id|end
+)paren
+suffix:semicolon
+r_int
+id|hpsb_unregister_addrspace
+c_func
+(paren
+r_struct
+id|hpsb_highlevel
+op_star
+id|hl
+comma
+id|u64
+id|start
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Enable or disable receving a certain isochronous channel through the&n; * iso_receive op.&n; */

@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -200,7 +200,7 @@ id|psoft_isr
 suffix:semicolon
 DECL|member|trap_script_task
 r_struct
-id|tq_struct
+id|work_struct
 id|trap_script_task
 suffix:semicolon
 DECL|member|card_failed
@@ -990,7 +990,7 @@ id|ANum
 op_plus
 l_int|1
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -2519,7 +2519,7 @@ id|pdpc-&gt;psoft_isr
 op_assign
 id|psoft_isr
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -2679,7 +2679,7 @@ id|psoft_isr-&gt;object
 op_assign
 l_int|0
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren

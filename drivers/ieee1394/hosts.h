@@ -2,11 +2,13 @@ macro_line|#ifndef _IEEE1394_HOSTS_H
 DECL|macro|_IEEE1394_HOSTS_H
 mdefine_line|#define _IEEE1394_HOSTS_H
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;csr.h&quot;
+multiline_comment|/* size of the array used to store config rom (in quadlets)&n;   maximum is 0x100. About 0x40 is needed for the default&n;   entries. So 0x80 should provide enough space for additional&n;   directories etc. &n;   Note: All lowlevel drivers are required to allocate at least&n;         this amount of memory for the configuration rom!&n;*/
+DECL|macro|CSR_CONFIG_ROM_SIZE
+mdefine_line|#define CSR_CONFIG_ROM_SIZE       0x100
 r_struct
 id|hpsb_packet
 suffix:semicolon
@@ -43,7 +45,7 @@ id|pending_pkt_lock
 suffix:semicolon
 DECL|member|timeout_tq
 r_struct
-id|tq_struct
+id|hpsb_queue_struct
 id|timeout_tq
 suffix:semicolon
 multiline_comment|/* A bitmask where a set bit means that this tlabel is in use.&n;         * FIXME - should be handled per node instead of per bus. */
@@ -252,7 +254,6 @@ id|hpsb_host
 op_star
 id|host
 comma
-r_const
 id|quadlet_t
 op_star
 op_star
@@ -406,6 +407,56 @@ r_struct
 id|hpsb_host
 op_star
 id|h
+)paren
+suffix:semicolon
+multiline_comment|/* updates the configuration rom of a host.&n; * rom_version must be the current version,&n; * otherwise it will fail with return value -1.&n; * Return value -2 indicates that the new&n; * rom version is too big.&n; * Return value 0 indicates success&n; */
+r_int
+id|hpsb_update_config_rom
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+r_const
+id|quadlet_t
+op_star
+id|new_rom
+comma
+r_int
+id|size
+comma
+r_int
+r_char
+id|rom_version
+)paren
+suffix:semicolon
+multiline_comment|/* reads the current version of the configuration rom of a host.&n; * buffersize is the size of the buffer, rom_size&n; * returns the size of the current rom image.&n; * rom_version is the version number of the fetched rom.&n; * return value -1 indicates, that the buffer was&n; * too small, 0 indicates success.&n; */
+r_int
+id|hpsb_get_config_rom
+c_func
+(paren
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+id|quadlet_t
+op_star
+id|buffer
+comma
+r_int
+id|buffersize
+comma
+r_int
+op_star
+id|rom_size
+comma
+r_int
+r_char
+op_star
+id|rom_version
 )paren
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_HOSTS_H */

@@ -4,6 +4,10 @@ DECL|macro|_SR_H
 mdefine_line|#define _SR_H
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;linux/genhd.h&gt;
+multiline_comment|/* The CDROM is fairly slow, so we need a little extra time */
+multiline_comment|/* In fact, it is very slow if it has to spin up first */
+DECL|macro|IOCTL_TIMEOUT
+mdefine_line|#define IOCTL_TIMEOUT 30*HZ
 r_typedef
 r_struct
 (brace
@@ -86,21 +90,8 @@ c_func
 id|Scsi_CD
 op_star
 comma
-r_int
-r_char
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
 r_struct
-id|request_sense
+id|cdrom_generic_command
 op_star
 )paren
 suffix:semicolon

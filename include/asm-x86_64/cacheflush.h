@@ -1,6 +1,6 @@
-macro_line|#ifndef _I386_CACHEFLUSH_H
-DECL|macro|_I386_CACHEFLUSH_H
-mdefine_line|#define _I386_CACHEFLUSH_H
+macro_line|#ifndef _X8664_CACHEFLUSH_H
+DECL|macro|_X8664_CACHEFLUSH_H
+mdefine_line|#define _X8664_CACHEFLUSH_H
 multiline_comment|/* Keep includes the same across arches.  */
 macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/* Caches aren&squot;t brain-dead on the intel. */
@@ -45,5 +45,5 @@ id|pgprot_t
 id|prot
 )paren
 suffix:semicolon
-macro_line|#endif /* _I386_CACHEFLUSH_H */
+macro_line|#endif /* _X8664_CACHEFLUSH_H */
 eof

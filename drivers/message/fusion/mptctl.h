@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptioctl.h&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptctl.h,v 1.10 2002/05/28 15:57:16 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptioctl.h&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptctl.h,v 1.11 2002/10/03 13:10:13 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTCTL_H_INCLUDED
@@ -554,17 +554,17 @@ DECL|macro|CPQFCTS_IOC_MAGIC
 mdefine_line|#define CPQFCTS_IOC_MAGIC &squot;Z&squot;
 DECL|macro|CPQFCTS_GETPCIINFO
 mdefine_line|#define CPQFCTS_GETPCIINFO&t;&t;_IOR(CPQFCTS_IOC_MAGIC, 1, cpqfc_pci_info_struct)
-DECL|macro|CPQFCTS_GETDRIVER
-mdefine_line|#define CPQFCTS_GETDRIVER&t;&t;_IOR(CPQFCTS_IOC_MAGIC, 2, int)
+DECL|macro|CPQFCTS_GETDRIVVER
+mdefine_line|#define CPQFCTS_GETDRIVVER&t;&t;_IOR(CPQFCTS_IOC_MAGIC, 9, int)
 DECL|macro|CPQFCTS_CTLR_STATUS
 mdefine_line|#define CPQFCTS_CTLR_STATUS&t;&t;_IOR(CPQFCTS_IOC_MAGIC, 3, struct _cpqfc_ctlr_status)
 DECL|macro|CPQFCTS_SCSI_IOCTL_FC_TARGET_ADDRESS
-mdefine_line|#define CPQFCTS_SCSI_IOCTL_FC_TARGET_ADDRESS&t;_IOR(CPQFCTS_IOC_MAGIC, 4, struct scsi_fctargaddress)
+mdefine_line|#define CPQFCTS_SCSI_IOCTL_FC_TARGET_ADDRESS&t;_IOR(CPQFCTS_IOC_MAGIC, 13, struct scsi_fctargaddress)
 DECL|macro|CPQFCTS_SCSI_PASSTHRU
-mdefine_line|#define CPQFCTS_SCSI_PASSTHRU&t;&t;_IOWR(CPQFCTS_IOC_MAGIC, 5, VENDOR_IOCTL_REQ)
+mdefine_line|#define CPQFCTS_SCSI_PASSTHRU&t;&t;_IOWR(CPQFCTS_IOC_MAGIC, 11, VENDOR_IOCTL_REQ)
 macro_line|#if defined(__sparc__) &amp;&amp; defined(__sparc_v9__)
 DECL|macro|CPQFCTS_SCSI_PASSTHRU32
-mdefine_line|#define CPQFCTS_SCSI_PASSTHRU32&t;&t;_IOWR(CPQFCTS_IOC_MAGIC, 5, VENDOR_IOCTL_REQ32)
+mdefine_line|#define CPQFCTS_SCSI_PASSTHRU32&t;&t;_IOWR(CPQFCTS_IOC_MAGIC, 11, VENDOR_IOCTL_REQ32)
 macro_line|#endif
 r_typedef
 r_struct

@@ -1403,10 +1403,14 @@ comma
 l_string|&quot;ext2_new_inode&quot;
 comma
 l_string|&quot;reserved inode or inode &gt; inodes count - &quot;
-l_string|&quot;block_group = %d,inode=%ld&quot;
+l_string|&quot;block_group = %d,inode=%lu&quot;
 comma
 id|group
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon

@@ -94,6 +94,9 @@ c_loop
 id|s
 OG
 l_int|0
+op_logical_and
+op_star
+id|bp
 )paren
 (brace
 id|bp
@@ -160,7 +163,7 @@ suffix:semicolon
 r_int
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|buf
 op_assign
@@ -189,7 +192,7 @@ id|data
 op_assign
 id|buf
 suffix:semicolon
-multiline_comment|/*&n; &t; *&t;Stop when we see al the items the table claimed to have&n; &t; *&t;OR we run off the end of the table (also happens)&n; &t; */
+multiline_comment|/*&n; &t; *&t;Stop when we see all the items the table claimed to have&n; &t; *&t;OR we run off the end of the table (also happens)&n; &t; */
 r_while
 c_loop
 (paren
@@ -197,12 +200,16 @@ id|i
 OL
 id|num
 op_logical_and
-(paren
 id|data
 op_minus
 id|buf
+op_plus
+r_sizeof
+(paren
+r_struct
+id|dmi_header
 )paren
-OL
+op_le
 id|len
 )paren
 (brace
@@ -215,49 +222,27 @@ op_star
 )paren
 id|data
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Avoid misparsing crud if the length of the last&n;&t; &t; *&t;record is crap &n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|data
-op_minus
-id|buf
-op_plus
-id|dm-&gt;length
-)paren
-op_ge
-id|len
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
-id|decode
-c_func
-(paren
-id|dm
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  We want to know the total length (formated area and strings)&n;&t;&t; *  before decoding to make sure we won&squot;t run off the table in&n;&t;&t; *  dmi_decode or dmi_string&n;&t;&t; */
 id|data
 op_add_assign
 id|dm-&gt;length
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Don&squot;t go off the end of the data if there is&n;&t; &t; *&t;stuff looking like string fill past the end&n;&t; &t; */
 r_while
 c_loop
-(paren
 (paren
 id|data
 op_minus
 id|buf
-)paren
 OL
 id|len
+op_minus
+l_int|1
 op_logical_and
 (paren
-op_star
 id|data
+(braket
+l_int|0
+)braket
 op_logical_or
 id|data
 (braket
@@ -268,6 +253,25 @@ l_int|1
 (brace
 id|data
 op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data
+op_minus
+id|buf
+OL
+id|len
+op_minus
+l_int|1
+)paren
+(brace
+id|decode
+c_func
+(paren
+id|dm
+)paren
 suffix:semicolon
 )brace
 id|data
@@ -290,6 +294,58 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dmi_checksum
+r_inline
+r_static
+r_int
+id|__init
+id|dmi_checksum
+c_func
+(paren
+id|u8
+op_star
+id|buf
+)paren
+(brace
+id|u8
+id|sum
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|a
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|a
+op_assign
+l_int|0
+suffix:semicolon
+id|a
+OL
+l_int|15
+suffix:semicolon
+id|a
+op_increment
+)paren
+(brace
+id|sum
+op_add_assign
+id|buf
+(braket
+id|a
+)braket
+suffix:semicolon
+)brace
+r_return
+(paren
+id|sum
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
 DECL|function|dmi_iterate
 r_static
 r_int
@@ -309,21 +365,16 @@ op_star
 )paren
 )paren
 (brace
-r_int
-r_char
+id|u8
 id|buf
 (braket
-l_int|20
+l_int|15
 )braket
 suffix:semicolon
-r_int
+id|u32
 id|fp
 op_assign
-l_int|0xE0000L
-suffix:semicolon
-id|fp
-op_sub_assign
-l_int|16
+l_int|0xF0000
 suffix:semicolon
 macro_line|#ifdef CONFIG_SIMNOW
 multiline_comment|/*&n; &t; *&t;Skip on x86/64 with simnow. Will eventually go away&n; &t; *&t;If you see this ifdef in 2.6pre mail me !&n; &t; */
@@ -340,10 +391,6 @@ OL
 l_int|0xFFFFF
 )paren
 (brace
-id|fp
-op_add_assign
-l_int|16
-suffix:semicolon
 id|isa_memcpy_fromio
 c_func
 (paren
@@ -351,7 +398,7 @@ id|buf
 comma
 id|fp
 comma
-l_int|20
+l_int|15
 )paren
 suffix:semicolon
 r_if
@@ -368,6 +415,12 @@ l_int|5
 )paren
 op_eq
 l_int|0
+op_logical_and
+id|dmi_checksum
+c_func
+(paren
+id|buf
+)paren
 )paren
 (brace
 id|u16
@@ -429,6 +482,18 @@ id|buf
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * DMI version 0.0 means that the real version is taken from&n;&t;&t;&t; * the SMBIOS version, which we don&squot;t know at this point.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|buf
+(braket
+l_int|14
+)braket
+op_ne
+l_int|0
+)paren
+(brace
 id|dmi_printk
 c_func
 (paren
@@ -452,6 +517,17 @@ l_int|0x0F
 )paren
 )paren
 suffix:semicolon
+)brace
+r_else
+id|dmi_printk
+c_func
+(paren
+(paren
+id|KERN_INFO
+l_string|&quot;DMI present.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|dmi_printk
 c_func
 (paren
@@ -459,29 +535,9 @@ c_func
 id|KERN_INFO
 l_string|&quot;%d structures occupying %d bytes.&bslash;n&quot;
 comma
-id|buf
-(braket
-l_int|13
-)braket
-op_lshift
-l_int|8
-op_or
-id|buf
-(braket
-l_int|12
-)braket
+id|num
 comma
-id|buf
-(braket
-l_int|7
-)braket
-op_lshift
-l_int|8
-op_or
-id|buf
-(braket
-l_int|6
-)braket
+id|len
 )paren
 )paren
 suffix:semicolon
@@ -492,31 +548,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;DMI table at 0x%08X.&bslash;n&quot;
 comma
-id|buf
-(braket
-l_int|11
-)braket
-op_lshift
-l_int|24
-op_or
-id|buf
-(braket
-l_int|10
-)braket
-op_lshift
-l_int|16
-op_or
-id|buf
-(braket
-l_int|9
-)braket
-op_lshift
-l_int|8
-op_or
-id|buf
-(braket
-l_int|8
-)braket
+id|base
 )paren
 )paren
 suffix:semicolon
@@ -543,6 +575,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|fp
+op_add_assign
+l_int|16
+suffix:semicolon
 )brace
 r_return
 op_minus
@@ -1689,10 +1725,6 @@ op_star
 )paren
 id|dm
 suffix:semicolon
-r_char
-op_star
-id|p
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1702,8 +1734,12 @@ id|dm-&gt;type
 r_case
 l_int|0
 suffix:colon
-id|p
-op_assign
+id|dmi_printk
+c_func
+(paren
+(paren
+l_string|&quot;BIOS Vendor: %s&bslash;n&quot;
+comma
 id|dmi_string
 c_func
 (paren
@@ -1714,21 +1750,6 @@ id|data
 l_int|4
 )braket
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|p
-)paren
-(brace
-id|dmi_printk
-c_func
-(paren
-(paren
-l_string|&quot;BIOS Vendor: %s&bslash;n&quot;
-comma
-id|p
 )paren
 )paren
 suffix:semicolon
@@ -1800,14 +1821,17 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|p
-op_assign
+id|dmi_printk
+c_func
+(paren
+(paren
+l_string|&quot;System Vendor: %s&bslash;n&quot;
+comma
 id|dmi_string
 c_func
 (paren
@@ -1818,21 +1842,6 @@ id|data
 l_int|4
 )braket
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|p
-)paren
-(brace
-id|dmi_printk
-c_func
-(paren
-(paren
-l_string|&quot;System Vendor: %s.&bslash;n&quot;
-comma
-id|p
 )paren
 )paren
 suffix:semicolon
@@ -1850,7 +1859,7 @@ id|dmi_printk
 c_func
 (paren
 (paren
-l_string|&quot;Product Name: %s.&bslash;n&quot;
+l_string|&quot;Product Name: %s&bslash;n&quot;
 comma
 id|dmi_string
 c_func
@@ -1879,7 +1888,7 @@ id|dmi_printk
 c_func
 (paren
 (paren
-l_string|&quot;Version %s.&bslash;n&quot;
+l_string|&quot;Version: %s&bslash;n&quot;
 comma
 id|dmi_string
 c_func
@@ -1908,7 +1917,7 @@ id|dmi_printk
 c_func
 (paren
 (paren
-l_string|&quot;Serial Number %s.&bslash;n&quot;
+l_string|&quot;Serial Number: %s&bslash;n&quot;
 comma
 id|dmi_string
 c_func
@@ -1923,14 +1932,17 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|p
-op_assign
+id|dmi_printk
+c_func
+(paren
+(paren
+l_string|&quot;Board Vendor: %s&bslash;n&quot;
+comma
 id|dmi_string
 c_func
 (paren
@@ -1941,21 +1953,6 @@ id|data
 l_int|4
 )braket
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|p
-)paren
-(brace
-id|dmi_printk
-c_func
-(paren
-(paren
-l_string|&quot;Board Vendor: %s.&bslash;n&quot;
-comma
-id|p
 )paren
 )paren
 suffix:semicolon
@@ -1973,7 +1970,7 @@ id|dmi_printk
 c_func
 (paren
 (paren
-l_string|&quot;Board Name: %s.&bslash;n&quot;
+l_string|&quot;Board Name: %s&bslash;n&quot;
 comma
 id|dmi_string
 c_func
@@ -2002,7 +1999,7 @@ id|dmi_printk
 c_func
 (paren
 (paren
-l_string|&quot;Board Version: %s.&bslash;n&quot;
+l_string|&quot;Board Version: %s&bslash;n&quot;
 comma
 id|dmi_string
 c_func
@@ -2027,48 +2024,6 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-id|p
-op_assign
-id|dmi_string
-c_func
-(paren
-id|dm
-comma
-id|data
-(braket
-l_int|8
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|p
-op_logical_and
-op_star
-id|p
-op_ne
-l_char|&squot; &squot;
-)paren
-(brace
-id|dmi_printk
-c_func
-(paren
-(paren
-l_string|&quot;Asset Tag: %s.&bslash;n&quot;
-comma
-id|p
-)paren
-)paren
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace

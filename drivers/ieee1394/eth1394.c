@@ -40,7 +40,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 546 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 601 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETHER1394_DRIVER_NAME
@@ -2049,6 +2049,9 @@ comma
 r_int
 r_int
 id|len
+comma
+id|u16
+id|fl
 )paren
 (brace
 r_struct
@@ -2691,7 +2694,7 @@ id|ptask-&gt;dest_node
 op_assign
 id|dest_node
 suffix:semicolon
-id|INIT_TQUEUE
+id|HPSB_INIT_WORK
 c_func
 (paren
 op_amp
@@ -2702,7 +2705,7 @@ comma
 id|ptask
 )paren
 suffix:semicolon
-id|schedule_task
+id|hpsb_schedule_work
 c_func
 (paren
 op_amp
