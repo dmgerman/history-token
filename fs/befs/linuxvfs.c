@@ -1544,12 +1544,12 @@ id|befs_ino-&gt;i_inode_num.len
 suffix:semicolon
 id|bh
 op_assign
-id|befs_bread_iaddr
+id|befs_bread
 c_func
 (paren
 id|sb
 comma
-id|befs_ino-&gt;i_inode_num
+id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_if
