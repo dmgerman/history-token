@@ -416,6 +416,7 @@ id|NETCARD_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|netcard_probe
 r_struct
 id|net_device
@@ -535,6 +536,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * This is the real probe routine. Linux has a history of friendly device&n; * probes on the ISA bus. A good device probes avoids doing writes, and&n; * verifies that the correct device exists and functions.&n; */
 DECL|function|netcard_probe1
 r_static

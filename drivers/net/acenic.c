@@ -28,6 +28,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;acenic&quot;
 DECL|macro|INDEX_DEBUG
 macro_line|#undef INDEX_DEBUG
 macro_line|#ifdef CONFIG_ACENIC_OMIT_TIGON_I
@@ -3797,7 +3799,7 @@ id|ace_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren
@@ -3814,7 +3816,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: Requested IRQ %d is busy&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|pdev-&gt;irq
 )paren

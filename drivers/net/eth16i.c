@@ -990,6 +990,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|eth16i_probe
 r_struct
 id|net_device
@@ -1119,6 +1120,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|eth16i_probe1
 r_static
 r_int
@@ -1165,7 +1167,7 @@ id|ioaddr
 comma
 id|ETH16I_IO_EXTENT
 comma
-id|dev-&gt;name
+id|cardname
 )paren
 )paren
 r_return
@@ -1335,7 +1337,7 @@ id|eth16i_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|cardname
 comma
 id|dev
 )paren
@@ -1346,9 +1348,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: %s at %#3x, but is unusable due conflicting IRQ %d.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;%s at %#3x, but is unusable due to conflicting IRQ %d.&bslash;n&quot;
 comma
 id|cardname
 comma

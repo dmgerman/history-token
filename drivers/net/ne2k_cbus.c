@@ -22,6 +22,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ne2k_cbus&quot;
 multiline_comment|/* Some defines that people can play with if so inclined. */
 multiline_comment|/* Do we support clones that don&squot;t adhere to 14,15 of the SAprom ? */
 DECL|macro|SUPPORT_NE_BAD_CLONES
@@ -652,6 +654,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|ne_probe
 r_struct
 id|net_device
@@ -766,6 +769,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ne_probe_cbus
 r_static
 r_int
@@ -1078,7 +1082,7 @@ id|rlist-&gt;start
 comma
 id|rlist-&gt;range
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

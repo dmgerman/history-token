@@ -41,6 +41,8 @@ id|__initdata
 op_assign
 l_string|&quot;cs89x0.c: v2.4.3-pre1 Russell Nelson &lt;nelson@crynwr.com&gt;, Andrew Morton &lt;andrewm@uow.edu.au&gt;&bslash;n&quot;
 suffix:semicolon
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;cs89x0&quot;
 multiline_comment|/* First, a few definitions that the brave might change.&n;   A zero-terminated list of I/O addresses to be probed. Some special flags..&n;      Addr &amp; 1 = Read back the address port, look for signature and reset&n;                 the page window before probing &n;      Addr &amp; 3 = Reset the page window and probe &n;   The CLPS eval board has the Cirrus chip at 0x80090300, in ARM IO space,&n;   but it is possible that a Cirrus board could be plugged into the ISA&n;   slots. */
 multiline_comment|/* The cs8900 has 4 IRQ pins, software selectable. cs8900_irq_map maps &n;   them to system IRQ numbers. This mapping is card specific and is set to&n;   the configuration of the Cirrus Eval board for this chip. */
 macro_line|#ifdef CONFIG_ARCH_CLPS7500
@@ -683,7 +685,6 @@ comma
 id|media_fn
 )paren
 suffix:semicolon
-macro_line|#endif
 "&f;"
 multiline_comment|/* Check for a network adaptor of this type, and return &squot;0&squot; iff one exists.&n;   If dev-&gt;base_addr == 0, probe all likely locations.&n;   If dev-&gt;base_addr == 1, always return failure.&n;   If dev-&gt;base_addr == 2, allocate space for the device and return success&n;   (detachable devices only).&n;   Return 0 on success.&n;   */
 DECL|function|cs89x0_probe
@@ -939,6 +940,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|readreg
@@ -1469,7 +1471,7 @@ l_int|3
 comma
 id|NETCARD_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -1479,7 +1481,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: request_region(0x%x, 0x%x) failed&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|ioaddr
 comma

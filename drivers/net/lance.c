@@ -1350,6 +1350,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|lance_probe
 r_struct
 id|net_device
@@ -1465,6 +1466,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|lance_probe1
 r_static
 r_int

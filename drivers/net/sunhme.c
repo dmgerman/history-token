@@ -53,6 +53,8 @@ macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#endif
 macro_line|#endif
 macro_line|#include &quot;sunhme.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;sunhme&quot;
 DECL|variable|macaddr
 r_static
 r_int
@@ -14341,7 +14343,7 @@ c_func
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

@@ -351,7 +351,7 @@ id|ioaddr
 comma
 id|EL1_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

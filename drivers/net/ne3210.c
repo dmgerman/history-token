@@ -21,6 +21,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ne3210&quot;
 r_static
 r_int
 id|ne3210_open
@@ -344,7 +346,7 @@ id|ioaddr
 comma
 id|NE3210_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -370,7 +372,7 @@ id|NE3210_CFG1
 comma
 id|NE3210_CFG_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -520,7 +522,7 @@ id|ei_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren
@@ -639,7 +641,7 @@ id|NE3210_STOP_PG
 op_star
 l_int|0x100
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

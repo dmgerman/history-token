@@ -17,6 +17,8 @@ macro_line|#ifdef CONFIG_SH_STANDARD_BIOS
 macro_line|#include &lt;asm/sh_bios.h&gt;
 macro_line|#endif
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;stnic&quot;
 DECL|macro|byte
 mdefine_line|#define byte&t;unsigned char
 DECL|macro|half
@@ -443,7 +445,7 @@ id|ei_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

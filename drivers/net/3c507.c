@@ -902,7 +902,7 @@ id|ioaddr
 comma
 id|EL16_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -1019,7 +1019,7 @@ id|el16_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

@@ -20,6 +20,8 @@ mdefine_line|#define _IBM_LANA_DRIVER_
 macro_line|#include &quot;ibmlana.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ibmlana&quot;
 multiline_comment|/* ------------------------------------------------------------------------&n; * global static data - not more since we can handle multiple boards and&n; * have to pack all state info into the device struct!&n; * ------------------------------------------------------------------------ */
 DECL|variable|MediaNames
 r_static
@@ -3736,7 +3738,7 @@ id|iobase
 comma
 id|IBM_LANA_IORANGE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -3746,7 +3748,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: cannot allocate I/O range at %#x!&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|iobase
 )paren

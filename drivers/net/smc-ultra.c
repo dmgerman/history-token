@@ -22,6 +22,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;smc-ultra&quot;
 multiline_comment|/* A zero-terminated list of I/O addresses to be probed. */
 DECL|variable|__initdata
 r_static
@@ -556,6 +558,7 @@ id|ULTRA_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|ultra_probe
 r_struct
 id|net_device
@@ -670,6 +673,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ultra_probe1
 r_static
 r_int
@@ -759,7 +763,7 @@ id|ioaddr
 comma
 id|ULTRA_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

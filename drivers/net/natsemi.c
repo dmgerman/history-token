@@ -2327,7 +2327,7 @@ c_func
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 suffix:semicolon
 r_if

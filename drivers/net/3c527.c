@@ -1310,7 +1310,7 @@ id|SA_SHIRQ
 op_or
 id|SA_SAMPLE_RANDOM
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren
@@ -1335,7 +1335,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: unable to get IRQ %d.&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev-&gt;irq
 )paren

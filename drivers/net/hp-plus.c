@@ -22,6 +22,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;hp-plus&quot;
 multiline_comment|/* A zero-terminated list of I/O addresses to be probed. */
 DECL|variable|__initdata
 r_static
@@ -467,6 +469,7 @@ id|HP_IO_EXTENT
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|hp_plus_probe
 r_struct
 id|net_device
@@ -581,6 +584,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Do the interesting part of the probe at a single address. */
 DECL|function|hpp_probe1
 r_static
@@ -635,7 +639,7 @@ id|ioaddr
 comma
 id|HP_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

@@ -3037,7 +3037,7 @@ c_func
 (paren
 id|pdev
 comma
-id|dev-&gt;name
+id|MODULENAME
 )paren
 suffix:semicolon
 r_if
