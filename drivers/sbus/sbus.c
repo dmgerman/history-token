@@ -1376,6 +1376,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SUN4
+r_extern
+r_void
+id|sun4_dvma_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|sbus_init
 r_static
 r_int

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Copyright 2002 Hewlett-Packard Company&n; * &n; * OMAP Bus Glue&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Rusell King et al.&n; *&n; * Modified for OMAP from ohci-sa1111.c by Tony Lindgren &lt;tony@atomide.com&gt;&n; * Based on the 2.4 OMAP OHCI driver originally done by MontaVista Software Inc.&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/bus.h&gt;
 macro_line|#include &lt;asm/arch/hardware.h&gt;

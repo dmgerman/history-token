@@ -10217,6 +10217,7 @@ c_cond
 (paren
 id|uss32
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -10253,7 +10254,7 @@ id|uss.ss_flags
 op_assign
 id|buf32.ss_flags
 suffix:semicolon
-multiline_comment|/* MINSIGSTKSZ is different for ia32 vs ia64. We lie here to pass the &n;           check and set it to the user requested value later */
+multiline_comment|/* MINSIGSTKSZ is different for ia32 vs ia64. We lie here to pass the &n;&t;           check and set it to the user requested value later */
 r_if
 c_cond
 (paren
@@ -10283,6 +10284,7 @@ id|uss.ss_size
 op_assign
 id|MINSIGSTKSZ
 suffix:semicolon
+)brace
 id|set_fs
 c_func
 (paren

@@ -15989,18 +15989,18 @@ id|task
 suffix:semicolon
 r_int
 id|state
+comma
+id|old_state
 suffix:semicolon
+id|recheck
+suffix:colon
 id|state
 op_assign
 id|ctx-&gt;ctx_state
 suffix:semicolon
 id|task
 op_assign
-id|PFM_CTX_TASK
-c_func
-(paren
-id|ctx
-)paren
+id|ctx-&gt;ctx_task
 suffix:semicolon
 r_if
 c_cond
@@ -16061,7 +16061,31 @@ id|ctx-&gt;ctx_fl_system
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * context is UNLOADED, MASKED we are safe to go&n;&t; */
+multiline_comment|/*&n;&t; * no command can operate on a zombie context&n;&t; */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|PFM_CTX_ZOMBIE
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;cmd %d state zombie cannot operate on context&bslash;n&quot;
+comma
+id|cmd
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * if context is UNLOADED, MASKED we are safe to go&n;&t; */
 r_if
 c_cond
 (paren
@@ -16072,18 +16096,7 @@ id|PFM_CTX_LOADED
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|state
-op_eq
-id|PFM_CTX_ZOMBIE
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/*&n;&t; * context is loaded, we must make sure the task is stopped&n;&t; * We could lift this restriction for UP but it would mean that&n;&t; * the user has no guarantee the task would not run between&n;&t; * two successive calls to perfmonctl(). That&squot;s probably OK.&n;&t; * If this user wants to ensure the task does not run, then&n;&t; * the task must be stopped.&n;&t; */
+multiline_comment|/*&n;&t; * context is LOADED, we must make sure the task is stopped&n;&t; * We could lift this restriction for UP but it would mean that&n;&t; * the user has no guarantee the task would not run between&n;&t; * two successive calls to perfmonctl(). That&squot;s probably OK.&n;&t; * If this user wants to ensure the task does not run, then&n;&t; * the task must be stopped.&n;&t; */
 r_if
 c_cond
 (paren
@@ -16092,7 +16105,11 @@ c_func
 (paren
 id|cmd
 )paren
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|task-&gt;state
 op_ne
 id|TASK_STOPPED
@@ -16113,6 +16130,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * task is now stopped, wait for ctxsw out&n;&t;&t; *&n;&t;&t; * This is an interesting point in the code.&n;&t;&t; * We need to unprotect the context because&n;&t;&t; * the pfm_save_regs() routines needs to grab&n;&t;&t; * the same lock. There are danger in doing&n;&t;&t; * this because it leaves a window open for&n;&t;&t; * another task to get access to the context&n;&t;&t; * and possibly change its state. The one thing&n;&t;&t; * that is not possible is for the context to disappear&n;&t;&t; * because we are protected by the VFS layer, i.e.,&n;&t;&t; * get_fd()/put_fd().&n;&t;&t; */
+id|old_state
+op_assign
+id|state
+suffix:semicolon
 id|UNPROTECT_CTX
 c_func
 (paren
@@ -16135,6 +16157,32 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * we must recheck to verify if state has changed&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ctx-&gt;ctx_state
+op_ne
+id|old_state
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;old_state=%d new_state=%d&bslash;n&quot;
+comma
+id|old_state
+comma
+id|ctx-&gt;ctx_state
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|recheck
+suffix:semicolon
+)brace
+)brace
 r_return
 l_int|0
 suffix:semicolon

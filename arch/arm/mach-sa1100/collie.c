@@ -291,7 +291,7 @@ comma
 suffix:semicolon
 DECL|function|collie_init
 r_static
-r_int
+r_void
 id|__init
 id|collie_init
 c_func
@@ -465,21 +465,8 @@ id|KERN_WARNING
 l_string|&quot;collie: Unable to register LoCoMo device&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
 )brace
-r_return
-id|ret
-suffix:semicolon
 )brace
-DECL|variable|collie_init
-id|arch_initcall
-c_func
-(paren
-id|collie_init
-)paren
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -579,6 +566,11 @@ id|INITIRQ
 c_func
 (paren
 id|sa1100_init_irq
+)paren
+id|INIT_MACHINE
+c_func
+(paren
+id|collie_init
 )paren
 id|MACHINE_END
 eof
