@@ -25,6 +25,46 @@ DECL|macro|BUS_RESET_SETTLE_TIME
 mdefine_line|#define BUS_RESET_SETTLE_TIME   10*HZ
 DECL|macro|HOST_RESET_SETTLE_TIME
 mdefine_line|#define HOST_RESET_SETTLE_TIME  10*HZ
+multiline_comment|/* called with shost-&gt;host_lock held */
+DECL|function|scsi_eh_wakeup
+r_void
+id|scsi_eh_wakeup
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|shost-&gt;host_busy
+op_eq
+id|shost-&gt;host_failed
+)paren
+(brace
+id|up
+c_func
+(paren
+id|shost-&gt;eh_wait
+)paren
+suffix:semicolon
+id|SCSI_LOG_ERROR_RECOVERY
+c_func
+(paren
+l_int|5
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;Waking error handler thread&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/**&n; * scsi_eh_scmd_add - add scsi cmd to error handling.&n; * @scmd:&t;scmd to run eh on.&n; * @eh_flag:&t;optional SCSI_EH flag.&n; *&n; * Return value:&n; *&t;0 on failure.&n; **/
 DECL|function|scsi_eh_scmd_add
 r_int
@@ -108,34 +148,12 @@ suffix:semicolon
 id|shost-&gt;host_failed
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|shost-&gt;host_busy
-op_eq
-id|shost-&gt;host_failed
-)paren
-(brace
-id|up
+id|scsi_eh_wakeup
 c_func
 (paren
-id|shost-&gt;eh_wait
+id|shost
 )paren
 suffix:semicolon
-id|SCSI_LOG_ERROR_RECOVERY
-c_func
-(paren
-l_int|5
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;Waking error handler&quot;
-l_string|&quot; thread&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
