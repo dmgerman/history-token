@@ -1343,6 +1343,8 @@ c_loop
 id|q
 op_assign
 id|pend
+op_minus
+l_int|1
 suffix:semicolon
 id|q
 op_ge
