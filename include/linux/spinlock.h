@@ -161,6 +161,8 @@ DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(lock)&t;({preempt_disable(); _raw_spin_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 DECL|macro|spin_unlock
 mdefine_line|#define spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
+DECL|macro|spin_unlock_no_resched
+mdefine_line|#define spin_unlock_no_resched(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable_no_resched(); &bslash;&n;} while (0)
 DECL|macro|read_lock
 mdefine_line|#define read_lock(lock)&t;&t;({preempt_disable(); _raw_read_lock(lock);})
 DECL|macro|read_unlock
@@ -173,29 +175,31 @@ DECL|macro|write_trylock
 mdefine_line|#define write_trylock(lock)&t;({preempt_disable();_raw_write_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 macro_line|#else
 DECL|macro|preempt_get_count
-mdefine_line|#define preempt_get_count()&t;(0)
+mdefine_line|#define preempt_get_count()&t;&t;(0)
 DECL|macro|preempt_disable
-mdefine_line|#define preempt_disable()&t;do { } while (0)
+mdefine_line|#define preempt_disable()&t;&t;do { } while (0)
 DECL|macro|preempt_enable_no_resched
 mdefine_line|#define preempt_enable_no_resched()&t;do {} while(0)
 DECL|macro|preempt_enable
-mdefine_line|#define preempt_enable()&t;do { } while (0)
+mdefine_line|#define preempt_enable()&t;&t;do { } while (0)
 DECL|macro|spin_lock
-mdefine_line|#define spin_lock(lock)&t;&t;_raw_spin_lock(lock)
+mdefine_line|#define spin_lock(lock)&t;&t;&t;_raw_spin_lock(lock)
 DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock)&t;_raw_spin_trylock(lock)
+mdefine_line|#define spin_trylock(lock)&t;&t;_raw_spin_trylock(lock)
 DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(lock)&t;_raw_spin_unlock(lock)
+mdefine_line|#define spin_unlock(lock)&t;&t;_raw_spin_unlock(lock)
+DECL|macro|spin_unlock_no_resched
+mdefine_line|#define spin_unlock_no_resched(lock)&t;_raw_spin_unlock(lock)
 DECL|macro|read_lock
-mdefine_line|#define read_lock(lock)&t;&t;_raw_read_lock(lock)
+mdefine_line|#define read_lock(lock)&t;&t;&t;_raw_read_lock(lock)
 DECL|macro|read_unlock
-mdefine_line|#define read_unlock(lock)&t;_raw_read_unlock(lock)
+mdefine_line|#define read_unlock(lock)&t;&t;_raw_read_unlock(lock)
 DECL|macro|write_lock
-mdefine_line|#define write_lock(lock)&t;_raw_write_lock(lock)
+mdefine_line|#define write_lock(lock)&t;&t;_raw_write_lock(lock)
 DECL|macro|write_unlock
-mdefine_line|#define write_unlock(lock)&t;_raw_write_unlock(lock)
+mdefine_line|#define write_unlock(lock)&t;&t;_raw_write_unlock(lock)
 DECL|macro|write_trylock
-mdefine_line|#define write_trylock(lock)&t;_raw_write_trylock(lock)
+mdefine_line|#define write_trylock(lock)&t;&t;_raw_write_trylock(lock)
 macro_line|#endif
 multiline_comment|/* &quot;lock on reference count zero&quot; */
 macro_line|#ifndef ATOMIC_DEC_AND_LOCK
