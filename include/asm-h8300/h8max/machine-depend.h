@@ -16,12 +16,6 @@ DECL|macro|NE2000_IRQ_VECTOR
 mdefine_line|#define NE2000_IRQ_VECTOR&t;(12 + NE2000_IRQ)
 DECL|macro|NE2000_BYTE
 mdefine_line|#define&t;NE2000_BYTE&t;&t;volatile unsigned short
-DECL|macro|IER
-mdefine_line|#define IER                     0xfee015
-DECL|macro|ISR
-mdefine_line|#define ISR&t;&t;&t;0xfee016
-DECL|macro|IRQ_MASK
-mdefine_line|#define IRQ_MASK&t;&t;(1 &lt;&lt; NE2000_IRQ)
 multiline_comment|/* sorry quick hack */
 macro_line|#if defined(outb)
 DECL|macro|outb
