@@ -968,6 +968,22 @@ id|CONEXANT
 )brace
 comma
 (brace
+l_int|0x1186
+comma
+l_int|0x1561
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|COMET
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminate list */
 )brace
