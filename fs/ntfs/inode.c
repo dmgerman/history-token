@@ -1770,6 +1770,26 @@ id|m-&gt;link_count
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME: Reparse points can have the directory bit set even though&n;&t; * they would be S_IFLNK. Need to deal with this further below when we&n;&t; * implement reparse points / symbolic links but it will do for now.&n;&t; * Also if not a directory, it could be something else, rather than&n;&t; * a regular file. But again, will do for now.&n;&t; */
+multiline_comment|/* Everyone gets all permissions. */
+id|vi-&gt;i_mode
+op_or_assign
+id|S_IRWXUGO
+suffix:semicolon
+multiline_comment|/* If read-only, noone gets write permissions. */
+r_if
+c_cond
+(paren
+id|IS_RDONLY
+c_func
+(paren
+id|vi
+)paren
+)paren
+id|vi-&gt;i_mode
+op_and_assign
+op_complement
+id|S_IWUGO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1781,6 +1801,12 @@ id|MFT_RECORD_IS_DIRECTORY
 id|vi-&gt;i_mode
 op_or_assign
 id|S_IFDIR
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Apply the directory permissions mask set in the mount&n;&t;&t; * options.&n;&t;&t; */
+id|vi-&gt;i_mode
+op_and_assign
+op_complement
+id|vol-&gt;dmask
 suffix:semicolon
 multiline_comment|/* Things break without this kludge! */
 r_if
@@ -1796,10 +1822,18 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+(brace
 id|vi-&gt;i_mode
 op_or_assign
 id|S_IFREG
 suffix:semicolon
+multiline_comment|/* Apply the file permissions mask set in the mount options. */
+id|vi-&gt;i_mode
+op_and_assign
+op_complement
+id|vol-&gt;fmask
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Find the standard information attribute in the mft record. At this&n;&t; * stage we haven&squot;t setup the attribute list stuff yet, so this could&n;&t; * in fact fail if the standard information is in an extent record, but&n;&t; * I don&squot;t think this actually ever happens.&n;&t; */
 id|err
 op_assign
@@ -3158,34 +3192,6 @@ suffix:semicolon
 )brace
 id|skip_large_dir_stuff
 suffix:colon
-multiline_comment|/* Everyone gets read and scan permissions. */
-id|vi-&gt;i_mode
-op_or_assign
-id|S_IRUGO
-op_or
-id|S_IXUGO
-suffix:semicolon
-multiline_comment|/* If not read-only, set write permissions. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_RDONLY
-c_func
-(paren
-id|vi
-)paren
-)paren
-id|vi-&gt;i_mode
-op_or_assign
-id|S_IWUGO
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Apply the directory permissions mask set in the mount&n;&t;&t; * options.&n;&t;&t; */
-id|vi-&gt;i_mode
-op_and_assign
-op_complement
-id|vol-&gt;dmask
-suffix:semicolon
 multiline_comment|/* Setup the operations for this inode. */
 id|vi-&gt;i_op
 op_assign
@@ -3629,32 +3635,6 @@ suffix:semicolon
 id|ctx
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/* Everyone gets all permissions. */
-id|vi-&gt;i_mode
-op_or_assign
-id|S_IRWXUGO
-suffix:semicolon
-multiline_comment|/* If read-only, noone gets write permissions. */
-r_if
-c_cond
-(paren
-id|IS_RDONLY
-c_func
-(paren
-id|vi
-)paren
-)paren
-id|vi-&gt;i_mode
-op_and_assign
-op_complement
-id|S_IWUGO
-suffix:semicolon
-multiline_comment|/* Apply the file permissions mask set in the mount options. */
-id|vi-&gt;i_mode
-op_and_assign
-op_complement
-id|vol-&gt;fmask
 suffix:semicolon
 multiline_comment|/* Setup the operations for this inode. */
 id|vi-&gt;i_op
