@@ -62,6 +62,8 @@ l_string|&quot;policy&quot;
 comma
 l_string|&quot;scmp_packet&quot;
 comma
+l_string|&quot;devnull&quot;
+comma
 )brace
 suffix:semicolon
 eof

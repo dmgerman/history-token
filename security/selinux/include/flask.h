@@ -116,7 +116,9 @@ DECL|macro|SECINITSID_POLICY
 mdefine_line|#define SECINITSID_POLICY                               25
 DECL|macro|SECINITSID_SCMP_PACKET
 mdefine_line|#define SECINITSID_SCMP_PACKET                          26
+DECL|macro|SECINITSID_DEVNULL
+mdefine_line|#define SECINITSID_DEVNULL                              27
 DECL|macro|SECINITSID_NUM
-mdefine_line|#define SECINITSID_NUM                                  26
+mdefine_line|#define SECINITSID_NUM                                  27
 macro_line|#endif
 eof
