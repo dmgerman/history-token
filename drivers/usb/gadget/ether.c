@@ -6079,55 +6079,20 @@ l_string|&quot;usb%d&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* one random address for the gadget device ... both of these could&n;&t; * reasonably come from an id prom or a module parameter.&n;&t; */
-id|get_random_bytes
+id|random_ether_addr
+c_func
 (paren
 id|net-&gt;dev_addr
-comma
-id|ETH_ALEN
 )paren
 suffix:semicolon
-id|net-&gt;dev_addr
-(braket
-l_int|0
-)braket
-op_and_assign
-l_int|0xfe
-suffix:semicolon
-singleline_comment|// clear multicast bit
-id|net-&gt;dev_addr
-(braket
-l_int|0
-)braket
-op_or_assign
-l_int|0x02
-suffix:semicolon
-singleline_comment|// set local assignment bit (IEEE802)
 macro_line|#ifdef&t;DEV_CONFIG_CDC
 multiline_comment|/* ... another address for the host, on the other end of the&n;&t; * link, gets exported through CDC (see CDC spec table 41)&n;&t; */
-id|get_random_bytes
+id|random_ether_addr
+c_func
 (paren
-id|node_id
-comma
-r_sizeof
 id|node_id
 )paren
 suffix:semicolon
-id|node_id
-(braket
-l_int|0
-)braket
-op_and_assign
-l_int|0xfe
-suffix:semicolon
-singleline_comment|// clear multicast bit
-id|node_id
-(braket
-l_int|0
-)braket
-op_or_assign
-l_int|0x02
-suffix:semicolon
-singleline_comment|// set local assignment bit (IEEE802)
 id|snprintf
 (paren
 id|ethaddr
