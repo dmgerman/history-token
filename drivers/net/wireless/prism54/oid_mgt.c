@@ -246,7 +246,7 @@ id|u8
 l_int|6
 )braket
 comma
-id|OID_TYPE_SSID
+id|OID_TYPE_RAW
 )paren
 comma
 id|OID_STRUCT_C
@@ -4195,7 +4195,9 @@ id|str
 comma
 id|PRIV_STR_SIZE
 comma
-l_string|&quot;length=%u&bslash;noctets=%s&bslash;n&quot;
+l_string|&quot;length=%u&bslash;noctets=%.*s&bslash;n&quot;
+comma
+id|ssid-&gt;length
 comma
 id|ssid-&gt;length
 comma
