@@ -7,10 +7,6 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801DB_12
-DECL|macro|PCI_DEVICE_ID_INTEL_82801DB_12
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801DB_12  0x24cc
-macro_line|#endif
 multiline_comment|/* speedstep_chipset:&n; *   It is necessary to know which chipset is used. As accesses to &n; * this device occur at various places in this module, we need a &n; * static struct pci_dev * pointing to that device.&n; */
 DECL|variable|speedstep_chipset
 r_static
