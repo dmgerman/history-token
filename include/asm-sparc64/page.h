@@ -288,6 +288,7 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x) - PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long) (x) + PAGE_OFFSET))
+multiline_comment|/* PFNs are real physical page numbers.  However, mem_map only begins to record&n; * per-page information starting at pfn_base.  This is to handle systems where&n; * the first physical page in the machine is at some huge physical address, such&n; * as 4GB.   This is common on a partitioned E10000, for example.&n; */
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + ((pfn)-(pfn_base)))
 DECL|macro|page_to_pfn
@@ -295,7 +296,7 @@ mdefine_line|#define page_to_pfn(page)&t;((unsigned long)(((page) - mem_map) + p
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr)&gt;&gt;PAGE_SHIFT)
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn)-(pfn_base)) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_to_phys
