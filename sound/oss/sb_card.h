@@ -37,7 +37,7 @@ multiline_comment|/* Card PnP ID Table */
 DECL|variable|sb_pnp_card_table
 r_static
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 id|sb_pnp_card_table
 (braket
 )braket

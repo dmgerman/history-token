@@ -1109,7 +1109,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|card_id
 )paren

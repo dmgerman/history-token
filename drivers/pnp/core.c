@@ -621,7 +621,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Linux Plug and Play Support v0.95 (c) Adam Belay&bslash;n&quot;
+l_string|&quot;Linux Plug and Play Support v0.96 (c) Adam Belay&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

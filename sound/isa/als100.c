@@ -494,7 +494,7 @@ suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 id|snd_als100_pnpids
 (braket
 )braket
@@ -673,7 +673,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id
 )paren
@@ -949,6 +949,12 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;AUDIO pnp configure failure&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cfg
 )paren
 suffix:semicolon
 r_return
@@ -1354,7 +1360,7 @@ id|pcard
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|pid
 )paren
@@ -1844,7 +1850,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id
 )paren
