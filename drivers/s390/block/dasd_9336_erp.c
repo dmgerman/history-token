@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_9336_erp.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_9336_erp.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000&n; *&n; * $Revision: 1.6 $&n; *&n; * History of changes &n; *&n; */
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd_erp(9336)&quot;
 macro_line|#include &quot;dasd_int.h&quot;
@@ -12,20 +12,21 @@ id|dasd_ccw_req_t
 op_star
 id|cqr
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
-id|stat
+id|irb
 )paren
 (brace
 multiline_comment|/* check for successful execution first */
 r_if
 c_cond
 (paren
-id|stat-&gt;cstat
+id|irb-&gt;scsw.cstat
 op_eq
 l_int|0x00
 op_logical_and
-id|stat-&gt;dstat
+id|irb-&gt;scsw.dstat
 op_eq
 (paren
 id|DEV_STAT_CHN_END

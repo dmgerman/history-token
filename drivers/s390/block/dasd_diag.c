@@ -1,16 +1,16 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n;&n; * History of changes&n; * 07/13/00 Added fixup sections for diagnoses ans saved some registers&n; * 07/14/00 fixed constraints in newly generated inline asm&n; * 10/05/00 adapted to &squot;new&squot; DASD driver&n; *&t;    fixed return codes of dia250()&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.27 $&n; *&n; * History of changes&n; * 07/13/00 Added fixup sections for diagnoses ans saved some registers&n; * 07/14/00 fixed constraints in newly generated inline asm&n; * 10/05/00 adapted to &squot;new&squot; DASD driver&n; *&t;    fixed return codes of dia250()&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;&t;/* HDIO_GETGEO&t;&t;&t;    */
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/s390dyn.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/todclk.h&gt;
 macro_line|#include &quot;dasd_int.h&quot;
@@ -21,10 +21,11 @@ macro_line|#undef PRINTK_HEADER
 macro_line|#endif&t;&t;&t;&t;/* PRINTK_HEADER */
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd(diag):&quot;
-DECL|variable|dasd_diag_discipline
-r_static
-id|dasd_discipline_t
-id|dasd_diag_discipline
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
 suffix:semicolon
 DECL|struct|dasd_diag_private_t
 r_typedef
@@ -87,33 +88,42 @@ r_int
 id|cmd
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;  lr&t;0,%1&bslash;n&quot;
-l_string|&quot;&t;  diag&t;0,%0,0x250&bslash;n&quot;
+l_string|&quot;    lhi   %0,3&bslash;n&quot;
+l_string|&quot;&t;  lr&t;0,%2&bslash;n&quot;
+l_string|&quot;&t;  diag&t;0,%1,0x250&bslash;n&quot;
 l_string|&quot;0:  ipm&t;%0&bslash;n&quot;
 l_string|&quot;&t;  srl&t;%0,28&bslash;n&quot;
 l_string|&quot;&t;  or&t;%0,1&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;2:  lhi&t;%0,3&bslash;n&quot;
-l_string|&quot;&t;  bras&t;1,3f&bslash;n&quot;
-l_string|&quot;&t;  .long 1b&bslash;n&quot;
-l_string|&quot;3:  l&t;1,0(1)&bslash;n&quot;
-l_string|&quot;&t;  br&t;1&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+macro_line|#ifndef CONFIG_ARCH_S390X
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;&t;  .align 4&bslash;n&quot;
-l_string|&quot;&t;  .long 0b,2b&bslash;n&quot;
+l_string|&quot;&t;  .long 0b,1b&bslash;n&quot;
 l_string|&quot;.previous&bslash;n&quot;
+macro_line|#else
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;&t;  .align 8&bslash;n&quot;
+l_string|&quot;&t;  .quad  0b,1b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+macro_line|#endif
 suffix:colon
-l_string|&quot;+d&quot;
+l_string|&quot;=&amp;d&quot;
+(paren
+id|rc
+)paren
+suffix:colon
+l_string|&quot;d&quot;
 (paren
 id|cmd
 )paren
-suffix:colon
+comma
 l_string|&quot;d&quot;
 (paren
 (paren
@@ -135,7 +145,7 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
-id|cmd
+id|rc
 suffix:semicolon
 )brace
 r_static
@@ -202,7 +212,7 @@ id|diag_init_io_t
 suffix:semicolon
 id|iib-&gt;dev_nr
 op_assign
-id|device-&gt;devinfo.devno
+id|device-&gt;devno
 suffix:semicolon
 id|iib-&gt;block_size
 op_assign
@@ -291,7 +301,7 @@ id|diag_init_io_t
 suffix:semicolon
 id|iib-&gt;dev_nr
 op_assign
-id|device-&gt;devinfo.devno
+id|device-&gt;devno
 suffix:semicolon
 id|rc
 op_assign
@@ -361,7 +371,7 @@ r_private
 op_member_access_from_pointer
 id|iob.dev_nr
 op_assign
-id|device-&gt;devinfo.devno
+id|device-&gt;devno
 suffix:semicolon
 r_private
 op_member_access_from_pointer
@@ -668,10 +678,10 @@ multiline_comment|/* get irq lock to modify request queue */
 id|spin_lock_irqsave
 c_func
 (paren
-id|get_irq_lock
+id|get_ccwdev_lock
 c_func
 (paren
-id|device-&gt;devinfo.irq
+id|device-&gt;cdev
 )paren
 comma
 id|flags
@@ -798,10 +808,10 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|get_irq_lock
+id|get_ccwdev_lock
 c_func
 (paren
-id|device-&gt;devinfo.irq
+id|device-&gt;cdev
 )paren
 comma
 id|flags
@@ -928,7 +938,7 @@ id|rdc_data
 suffix:semicolon
 id|rdc_data-&gt;dev_nr
 op_assign
-id|device-&gt;devinfo.devno
+id|device-&gt;devno
 suffix:semicolon
 id|rdc_data-&gt;rdc_len
 op_assign
@@ -943,7 +953,8 @@ id|diag210
 c_func
 (paren
 (paren
-id|diag210_t
+r_struct
+id|diag210
 op_star
 )paren
 id|rdc_data
@@ -1378,7 +1389,8 @@ id|dasd_ccw_req_t
 op_star
 id|cqr
 comma
-id|devstat_t
+r_struct
+id|irb
 op_star
 id|stat
 )paren
@@ -1892,6 +1904,11 @@ comma
 id|dasd_ccw_req_t
 op_star
 id|req
+comma
+r_struct
+id|irb
+op_star
+id|stat
 )paren
 (brace
 r_char
@@ -1938,11 +1955,9 @@ id|page
 comma
 id|KERN_WARNING
 id|PRINTK_HEADER
-l_string|&quot;device %04X on irq %d: I/O status report:&bslash;n&quot;
+l_string|&quot;device %s: I/O status report:&bslash;n&quot;
 comma
-id|device-&gt;devinfo.devno
-comma
-id|device-&gt;devinfo.irq
+id|device-&gt;cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 id|MESSAGE
@@ -1968,7 +1983,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). dasd diag is only relevant for 31 bit.&n; * The dasd_ccw_req_t has 96 bytes, the dasd_diag_req_t has 8 bytes and&n; * the diag_bio_t for each block has 16 bytes. &n; * That makes:&n; * (8192 - 96 - 8) / 16 = 505.5 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediatly&n; * start the next request if one finishes off. That makes 252.75 blocks&n; * for one request. Give a little safety and the result is 240.&n; */
 DECL|variable|dasd_diag_discipline
-r_static
 id|dasd_discipline_t
 id|dasd_diag_discipline
 op_assign
@@ -2040,7 +2054,9 @@ id|dasd_diag_fill_info
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
+id|__init
 DECL|function|dasd_diag_init
 id|dasd_diag_init
 c_func
@@ -2094,18 +2110,13 @@ comma
 id|dasd_ext_handler
 )paren
 suffix:semicolon
-id|dasd_discipline_add
-c_func
-(paren
-op_amp
-id|dasd_diag_discipline
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
+id|__exit
 DECL|function|dasd_diag_cleanup
 id|dasd_diag_cleanup
 c_func
@@ -2133,13 +2144,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|dasd_discipline_del
-c_func
-(paren
-op_amp
-id|dasd_diag_discipline
-)paren
-suffix:semicolon
 id|unregister_external_interrupt
 c_func
 (paren
@@ -2157,36 +2161,19 @@ l_int|9
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-r_int
-DECL|function|init_module
-id|init_module
+DECL|variable|dasd_diag_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|dasd_diag_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-r_void
-DECL|function|cleanup_module
-id|cleanup_module
+DECL|variable|dasd_diag_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|dasd_diag_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4 &n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: 1&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -1,3 +1,4 @@
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.5 $&n; *&n; * History of changes &n; * &n; */
 macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
@@ -387,6 +388,31 @@ DECL|member|end_ext
 id|ch_t
 id|end_ext
 suffix:semicolon
+DECL|member|ep_sys_time
+r_int
+r_int
+r_int
+id|ep_sys_time
+suffix:semicolon
+multiline_comment|/* Extended Parameter - System Time Stamp */
+DECL|member|ep_format
+id|__u8
+id|ep_format
+suffix:semicolon
+multiline_comment|/* Extended Parameter format byte       */
+DECL|member|ep_prio
+id|__u8
+id|ep_prio
+suffix:semicolon
+multiline_comment|/* Extended Parameter priority I/O byte */
+DECL|member|ep_reserved
+id|__u8
+id|ep_reserved
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* Extended Parameter Reserved          */
 DECL|typedef|DE_eckd_data_t
 )brace
 id|__attribute__
@@ -610,12 +636,19 @@ id|defect_wr
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|XRC_supported
+r_int
+r_char
+id|XRC_supported
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|reserved4
 r_int
 r_char
 id|reserved4
 suffix:colon
-l_int|2
+l_int|1
 suffix:semicolon
 DECL|member|striping
 r_int
@@ -1678,20 +1711,6 @@ id|packed
 )paren
 )paren
 id|dasd_psf_prssd_data_t
-suffix:semicolon
-r_int
-id|dasd_eckd_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dasd_eckd_cleanup
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* DASD_ECKD_H */
 eof

@@ -1,3 +1,4 @@
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.4 $&n; *&n; * History of changes &n; * &n; */
 macro_line|#ifndef DASD_FBA_H
 DECL|macro|DASD_FBA_H
 mdefine_line|#define DASD_FBA_H
@@ -337,20 +338,6 @@ id|packed
 )paren
 DECL|typedef|dasd_fba_characteristics_t
 id|dasd_fba_characteristics_t
-suffix:semicolon
-r_int
-id|dasd_fba_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dasd_fba_cleanup
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* DASD_FBA_H */
 eof
