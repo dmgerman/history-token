@@ -5634,6 +5634,21 @@ id|tp-&gt;Tx_skbuff
 id|cur
 )braket
 suffix:semicolon
+multiline_comment|/* FIXME: is it really accurate for TxErr ? */
+id|tp-&gt;stats.tx_bytes
+op_add_assign
+id|skb-&gt;len
+op_ge
+id|ETH_ZLEN
+ques
+c_cond
+id|skb-&gt;len
+suffix:colon
+id|ETH_ZLEN
+suffix:semicolon
+id|tp-&gt;stats.tx_packets
+op_increment
+suffix:semicolon
 id|rtl8169_unmap_tx_skb
 c_func
 (paren
@@ -5653,9 +5668,6 @@ c_func
 (paren
 id|skb
 )paren
-suffix:semicolon
-id|tp-&gt;stats.tx_packets
-op_increment
 suffix:semicolon
 id|dirty_tx
 op_increment
