@@ -5384,6 +5384,7 @@ op_amp
 id|details
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * In nonlinear VMAs there is no correspondence between virtual address&n;&t; * offset and file offset.  So we must perform an exhaustive search&n;&t; * across *all* the pages in each nonlinear VMA, not just the pages&n;&t; * whose virtual address lies outside the file truncation point.&n;&t; */
 r_if
 c_cond
 (paren
