@@ -53,7 +53,7 @@ op_assign
 l_int|0x0020
 suffix:semicolon
 multiline_comment|/* Bypass external Tx FIFO. */
-macro_line|#elif YF_NEW&t;&t;&t;&t;&t;/* A future perfect board :-&gt;.  */
+macro_line|#elif defined(YF_NEW)&t;&t;&t;&t;&t;/* A future perfect board :-&gt;.  */
 DECL|variable|dma_ctrl
 r_static
 r_int

@@ -2,7 +2,7 @@ multiline_comment|/* sbni.h:  definitions for a Granch SBNI12 driver, version 5.
 macro_line|#ifndef SBNI_H
 DECL|macro|SBNI_H
 mdefine_line|#define SBNI_H
-macro_line|#if SBNI_DEBUG
+macro_line|#ifdef SBNI_DEBUG
 DECL|macro|DP
 mdefine_line|#define DP( A ) A
 macro_line|#else
