@@ -590,14 +590,14 @@ id|receive
 )paren
 (paren
 r_struct
-id|isdn_net_dev_s
-op_star
-id|p
-comma
-r_struct
 id|isdn_net_local_s
 op_star
-id|olp
+id|lp
+comma
+r_struct
+id|isdn_net_dev_s
+op_star
+id|idev
 comma
 r_struct
 id|sk_buff
@@ -799,16 +799,6 @@ id|u_char
 id|l3_proto
 suffix:semicolon
 multiline_comment|/* Layer-3-protocol                 */
-DECL|member|sqfull
-r_int
-id|sqfull
-suffix:semicolon
-multiline_comment|/* Flag: netdev-queue overloaded    */
-DECL|member|sqfull_stamp
-id|ulong
-id|sqfull_stamp
-suffix:semicolon
-multiline_comment|/* Start-Time of overload           */
 DECL|member|slavedelay
 id|ulong
 id|slavedelay
@@ -830,34 +820,6 @@ suffix:semicolon
 multiline_comment|/* List of remote-phonenumbers      */
 multiline_comment|/* phone[0] = Incoming Numbers      */
 multiline_comment|/* phone[1] = Outgoing Numbers      */
-DECL|member|master
-r_struct
-id|net_device
-op_star
-id|master
-suffix:semicolon
-multiline_comment|/* Ptr to Master device for slaves  */
-DECL|member|slave
-r_struct
-id|net_device
-op_star
-id|slave
-suffix:semicolon
-multiline_comment|/* Ptr to Slave device for masters  */
-DECL|member|next
-r_struct
-id|isdn_net_local_s
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Ptr to next link in bundle       */
-DECL|member|last
-r_struct
-id|isdn_net_local_s
-op_star
-id|last
-suffix:semicolon
-multiline_comment|/* Ptr to last link in bundle       */
 DECL|member|netdev
 r_struct
 id|isdn_net_dev_s
@@ -865,27 +827,18 @@ op_star
 id|netdev
 suffix:semicolon
 multiline_comment|/* Ptr to netdev                    */
-DECL|member|super_tx_queue
+DECL|member|queue
 r_struct
-id|sk_buff_head
-id|super_tx_queue
+id|isdn_net_dev_s
+op_star
+id|queue
 suffix:semicolon
-multiline_comment|/* List of supervisory frames to  */
-multiline_comment|/* be transmitted asap              */
-DECL|member|frame_cnt
-id|atomic_t
-id|frame_cnt
-suffix:semicolon
-multiline_comment|/* number of frames currently       */
-multiline_comment|/* queued in HL driver              */
-multiline_comment|/* Ptr to orig. hard_header_cache   */
-DECL|member|xmit_lock
+multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
+DECL|member|queue_lock
 id|spinlock_t
-id|xmit_lock
+id|queue_lock
 suffix:semicolon
-multiline_comment|/* used to protect the xmit path of */
-multiline_comment|/* a particular channel (including  */
-multiline_comment|/* the frame_cnt                    */
+multiline_comment|/* lock to protect queue            */
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|dops
 r_struct
@@ -936,17 +889,18 @@ r_struct
 id|timer_list
 id|cisco_timer
 suffix:semicolon
-DECL|member|tqueue
-r_struct
-id|tq_struct
-id|tqueue
-suffix:semicolon
 DECL|member|ops
 r_struct
 id|isdn_netif_ops
 op_star
 id|ops
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|net_device
+id|dev
+suffix:semicolon
+multiline_comment|/* interface to upper levels        */
 DECL|typedef|isdn_net_local
 )brace
 id|isdn_net_local
@@ -1034,6 +988,16 @@ r_int
 id|last_jiffies
 suffix:semicolon
 multiline_comment|/* when transcount was reset        */
+DECL|member|sqfull
+r_int
+id|sqfull
+suffix:semicolon
+multiline_comment|/* Flag: netdev-queue overloaded    */
+DECL|member|sqfull_stamp
+id|ulong
+id|sqfull_stamp
+suffix:semicolon
+multiline_comment|/* Start-Time of overload           */
 DECL|member|hup_timer
 r_struct
 id|timer_list
@@ -1076,17 +1040,58 @@ r_int
 id|ppp_slot
 suffix:semicolon
 multiline_comment|/* PPPD device slot number          */
-DECL|member|queue
+DECL|member|xmit_lock
+id|spinlock_t
+id|xmit_lock
+suffix:semicolon
+multiline_comment|/* used to protect the xmit path of */
+multiline_comment|/* a particular channel (including  */
+multiline_comment|/* the frame_cnt                    */
+DECL|member|super_tx_queue
+r_struct
+id|sk_buff_head
+id|super_tx_queue
+suffix:semicolon
+multiline_comment|/* List of supervisory frames to  */
+multiline_comment|/* be transmitted asap              */
+DECL|member|frame_cnt
+id|atomic_t
+id|frame_cnt
+suffix:semicolon
+multiline_comment|/* number of frames currently       */
+multiline_comment|/* queued in HL driver              */
+DECL|member|tqueue
+r_struct
+id|tq_struct
+id|tqueue
+suffix:semicolon
+DECL|member|master
 id|isdn_net_local
 op_star
-id|queue
+id|master
 suffix:semicolon
-multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
-DECL|member|queue_lock
-id|spinlock_t
-id|queue_lock
+multiline_comment|/* Ptr to Master device for slaves  */
+DECL|member|slave
+r_struct
+id|isdn_net_dev_s
+op_star
+id|slave
 suffix:semicolon
-multiline_comment|/* lock to protect queue            */
+multiline_comment|/* Ptr to Slave device for masters  */
+DECL|member|next
+r_struct
+id|isdn_net_dev_s
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Ptr to next link in bundle       */
+DECL|member|last
+r_struct
+id|isdn_net_dev_s
+op_star
+id|last
+suffix:semicolon
+multiline_comment|/* Ptr to last link in bundle       */
 DECL|member|name
 r_char
 id|name
@@ -1101,12 +1106,6 @@ id|list_head
 id|global_list
 suffix:semicolon
 multiline_comment|/* global list of all isdn_net_devs */
-DECL|member|dev
-r_struct
-id|net_device
-id|dev
-suffix:semicolon
-multiline_comment|/* interface to upper levels        */
 macro_line|#ifdef CONFIG_ISDN_PPP
 DECL|member|pb
 id|ippp_bundle
