@@ -1168,10 +1168,10 @@ multiline_comment|/* rx bufs on alpha, sparc, ... */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;** Kludge to get around the fact that the CSR addresses have different&n;** offsets in the PCI and EISA boards. Also note that the ethernet address&n;** PROM is accessed differently.&n;*/
-DECL|struct|bus_type
+DECL|struct|de4x5_bus_type
 r_static
 r_struct
-id|bus_type
+id|de4x5_bus_type
 (brace
 DECL|member|bus
 r_int
@@ -2015,7 +2015,7 @@ op_star
 id|name
 comma
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 )paren
@@ -2044,7 +2044,7 @@ id|de4x5_bad_srom
 c_func
 (paren
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 )paren
@@ -2381,7 +2381,7 @@ id|an_exception
 c_func
 (paren
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 )paren
@@ -3222,7 +3222,7 @@ id|pdev
 )paren
 (brace
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -8032,7 +8032,7 @@ id|u_long
 id|iobase
 suffix:semicolon
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -8399,7 +8399,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Clear upper 32 bits in Alphas */
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -8986,7 +8986,7 @@ comma
 id|j
 suffix:semicolon
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -17619,7 +17619,7 @@ op_star
 id|name
 comma
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 )paren
@@ -17900,7 +17900,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -18295,7 +18295,7 @@ comma
 id|chksum
 suffix:semicolon
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -18909,7 +18909,7 @@ id|de4x5_bad_srom
 c_func
 (paren
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 )paren
@@ -19097,7 +19097,7 @@ id|card
 )paren
 (brace
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -19193,7 +19193,7 @@ id|status
 )paren
 (brace
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 op_assign
@@ -19435,7 +19435,7 @@ id|an_exception
 c_func
 (paren
 r_struct
-id|bus_type
+id|de4x5_bus_type
 op_star
 id|lp
 )paren
