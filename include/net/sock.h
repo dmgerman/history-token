@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
-macro_line|#include &lt;net/scm.h&gt;&t;/* for sock_iocb */
+macro_line|#include &lt;net/scm.h&gt;
 multiline_comment|/*&n; * This structure really needs to be cleaned up.&n; * Most of it is for TCP, and not used by any of&n; * the other protocols.&n; */
 multiline_comment|/* Define this to get the sk-&gt;debug debugging facility. */
 DECL|macro|SOCK_DEBUGGING
