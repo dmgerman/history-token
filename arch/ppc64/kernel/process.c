@@ -1229,12 +1229,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_struct
-id|naca_struct
-op_star
-id|naca
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon

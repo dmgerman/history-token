@@ -62,14 +62,6 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|_TIF_32BIT
-comma
-id|_TIF_32BIT
-)paren
-suffix:semicolon
 multiline_comment|/* task_struct-&gt;thread */
 id|DEFINE
 c_func
