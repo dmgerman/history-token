@@ -3910,9 +3910,7 @@ c_func
 (paren
 id|name
 comma
-id|nd-&gt;dentry-&gt;d_inode-&gt;i_ino
-comma
-id|nd-&gt;dentry-&gt;d_inode-&gt;i_rdev
+id|nd-&gt;dentry-&gt;d_inode
 )paren
 suffix:semicolon
 r_return
