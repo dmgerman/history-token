@@ -984,20 +984,15 @@ id|ret
 OG
 l_int|0
 )paren
-(brace
-id|inode-&gt;i_ctime
-op_assign
-id|inode-&gt;i_mtime
-op_assign
-id|CURRENT_TIME
-suffix:semicolon
-id|mark_inode_dirty
+id|inode_update_time
 c_func
 (paren
 id|inode
+comma
+l_int|1
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* mtime and ctime */
 r_return
 id|ret
 suffix:semicolon
