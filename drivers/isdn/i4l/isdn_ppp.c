@@ -33,7 +33,7 @@ multiline_comment|/* IPPPD handling                                             
 multiline_comment|/* ====================================================================== */
 multiline_comment|/* We use reference counting for struct ipppd. It is alloced on&n; * open() on /dev/ipppX and saved into file-&gt;private, making for one&n; * reference. release() will release this reference, after all other&n; * references are gone, the destructor frees it.&n; *&n; * Another reference is taken by isdn_ppp_bind() and freed by&n; * isdn_ppp_unbind(). The callbacks from isdn_net_lib.c happen only&n; * between isdn_ppp_bind() and isdn_ppp_unbind(), i.e. access to &n; * idev-&gt;ipppd is safe without further locking.&n; */
 DECL|macro|IPPPD_DEBUG
-mdefine_line|#define IPPPD_DEBUG
+macro_line|#undef IPPPD_DEBUG
 macro_line|#ifdef IPPPD_DEBUG
 DECL|macro|ipppd_debug
 mdefine_line|#define ipppd_debug(i, fmt, arg...) &bslash;&n;        printk(KERN_DEBUG &quot;ipppd %p minor %d state %#x %s: &quot; fmt &quot;&bslash;n&quot;, (i), &bslash;&n;               (i)-&gt;minor, (i)-&gt;state, __FUNCTION__ , ## arg)
