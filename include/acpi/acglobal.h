@@ -49,7 +49,7 @@ id|ACPI_EXTERN
 id|u8
 id|ACPI_INIT_GLOBAL
 (paren
-id|acpi_gbl_enable_interpeter_slack
+id|acpi_gbl_enable_interpreter_slack
 comma
 id|FALSE
 )paren

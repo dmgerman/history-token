@@ -54,7 +54,7 @@ id|FALSE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:  Node            - NS node for the notified object&n; *              notify_value    - Value from the Notify() request&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|variable|acpi_notify_value_names
 r_static
@@ -175,7 +175,7 @@ id|notify_value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get the notify object attached to the NS Node&n;&t; */
+multiline_comment|/* Get the notify object attached to the NS Node */
 id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
@@ -339,7 +339,7 @@ op_logical_neg
 id|handler_obj
 )paren
 (brace
-multiline_comment|/* There is no per-device notify handler for this device */
+multiline_comment|/*&n;&t;&t; * There is no per-device notify handler for this device.&n;&t;&t; * This may or may not be a problem.&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -365,7 +365,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_notify_dispatch&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_notify_dispatch&n; *&n; * PARAMETERS:  Context         - To be passsed to the notify handler&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
 r_void
 id|ACPI_SYSTEM_XFACE
 DECL|function|acpi_ev_notify_dispatch
@@ -498,7 +498,7 @@ id|notify_info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_global_lock_thread&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Invoked by SCI interrupt handler upon acquisition of the&n; *              Global Lock.  Simply signal all threads that are waiting&n; *              for the lock.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_global_lock_thread&n; *&n; * PARAMETERS:  Context         - From thread interface, not used&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Invoked by SCI interrupt handler upon acquisition of the&n; *              Global Lock.  Simply signal all threads that are waiting&n; *              for the lock.&n; *&n; ******************************************************************************/
 r_static
 r_void
 id|ACPI_SYSTEM_XFACE
@@ -549,7 +549,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Invoked directly from the SCI handler when a global lock&n; *              release interrupt occurs.  Grab the global lock and queue&n; *              the global lock thread for execution&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_global_lock_handler&n; *&n; * PARAMETERS:  Context         - From thread interface, not used&n; *&n; * RETURN:      ACPI_INTERRUPT_HANDLED or ACPI_INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Invoked directly from the SCI handler when a global lock&n; *              release interrupt occurs.  Grab the global lock and queue&n; *              the global lock thread for execution&n; *&n; ******************************************************************************/
 r_static
 id|u32
 DECL|function|acpi_ev_global_lock_handler
@@ -633,7 +633,7 @@ id|ACPI_INTERRUPT_HANDLED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for the global lock release event&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_global_lock_handler&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for the global lock release event&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_init_global_lock_handler
 id|acpi_ev_init_global_lock_handler
@@ -688,7 +688,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attempt to gain ownership of the Global Lock.&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_acquire_global_lock&n; *&n; * PARAMETERS:  Timeout         - Max time to wait for the lock, in millisec.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attempt to gain ownership of the Global Lock.&n; *&n; *****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_acquire_global_lock
 id|acpi_ev_acquire_global_lock
@@ -805,7 +805,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_release_global_lock&n; *&n; * DESCRIPTION: Releases ownership of the Global Lock.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_release_global_lock&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Releases ownership of the Global Lock.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_release_global_lock
 id|acpi_ev_release_global_lock

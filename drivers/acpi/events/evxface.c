@@ -746,7 +746,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *                                  ACPI_ALL_NOTIFY:  both system and device&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: system_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: driver_handler (80-ff)&n; *                                  ACPI_ALL_NOTIFY:  both system and device&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_notify_handler
 id|acpi_remove_notify_handler
@@ -856,7 +856,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Root Object&n;&t; */
+multiline_comment|/* Root Object */
 r_if
 c_cond
 (paren
@@ -988,7 +988,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * All Other Objects&n;&t; */
+multiline_comment|/* All Other Objects */
 r_else
 (brace
 multiline_comment|/* Notifies allowed on this object? */
