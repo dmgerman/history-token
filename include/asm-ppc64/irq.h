@@ -8,33 +8,6 @@ macro_line|#include &lt;linux/threads.h&gt;
 multiline_comment|/*&n; * Maximum number of interrupt sources that we can handle.&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;512
-r_extern
-r_void
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|disable_irq_nosync
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* this number is used when no interrupt has been assigned */
 DECL|macro|NO_IRQ
 mdefine_line|#define NO_IRQ&t;&t;&t;(-1)
@@ -176,21 +149,6 @@ suffix:semicolon
 r_struct
 id|pt_regs
 suffix:semicolon
-r_int
-id|handle_irq_event
-c_func
-(paren
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_IRQSTACKS
 multiline_comment|/*&n; * Per-cpu stacks for handling hard and soft interrupts.&n; */
 r_extern
@@ -232,7 +190,7 @@ id|tp
 suffix:semicolon
 r_extern
 r_int
-id|call_handle_irq_event
+id|call_handle_IRQ_event
 c_func
 (paren
 r_int
