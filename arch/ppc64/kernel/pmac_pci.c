@@ -3178,6 +3178,12 @@ op_assign
 l_int|16
 suffix:semicolon
 multiline_comment|/* 64 bytes */
+multiline_comment|/* Allow all IO */
+id|io_page_mask
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Disable second function on K2-SATA, it&squot;s broken&n; * and disable IO BARs on first one&n; */
 DECL|function|fixup_k2_sata

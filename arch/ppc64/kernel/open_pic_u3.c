@@ -1268,7 +1268,7 @@ c_func
 (paren
 l_int|0x25
 comma
-l_string|&quot;OpenPic2 Done&quot;
+l_string|&quot;OpenPic U3 Done&quot;
 )paren
 suffix:semicolon
 )brace

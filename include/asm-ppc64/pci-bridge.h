@@ -182,6 +182,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * pci_device_loc returns the bus number and device/function number&n; * for a device on a PCI bus, given its device_node struct.&n; * It returns 0 if OK, -1 on error.&n; */
+r_extern
 r_int
 id|pci_device_loc
 c_func
@@ -272,6 +273,25 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|pci_process_bridge_OF_ranges
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+comma
+r_struct
+id|device_node
+op_star
+id|dev
+comma
+r_int
+id|primary
+)paren
+suffix:semicolon
 multiline_comment|/* Use this macro after the PCI bus walk for max performance when it&n; * is known that sysdata is correct.&n; */
 DECL|macro|PCI_GET_DN
 mdefine_line|#define PCI_GET_DN(dev) ((struct device_node *)((dev)-&gt;sysdata))

@@ -2424,6 +2424,7 @@ id|nvram_dev
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* nvram_write_error_log&n; *&n; * We need to buffer the error logs into nvram to ensure that we have&n; * the failure information to decode.  If we have a severe error there&n; * is no way to guarantee that the OS or the machine is in a state to&n; * get back to user land and write the error to disk.  For example if&n; * the SCSI device driver causes a Machine Check by writing to a bad&n; * IO address, there is no way of guaranteeing that the device driver&n; * is in any state that is would also be able to write the error data&n; * captured to disk, thus we buffer it in NVRAM for analysis on the&n; * next boot.&n; *&n; * In NVRAM the partition containing the error log buffer will looks like:&n; * Header (in bytes):&n; * +-----------+----------+--------+------------+------------------+&n; * | signature | checksum | length | name       | data             |&n; * |0          |1         |2      3|4         15|16        length-1|&n; * +-----------+----------+--------+------------+------------------+&n; *&n; * The &squot;data&squot; section would look like (in bytes):&n; * +--------------+------------+-----------------------------------+&n; * | event_logged | sequence # | error log                         |&n; * |0            3|4          7|8            nvram_error_log_size-1|&n; * +--------------+------------+-----------------------------------+&n; *&n; * event_logged: 0 if event has not been logged to syslog, 1 if it has&n; * sequence #: The unique sequence # for each event. (until it wraps)&n; * error log: The error log from event_scan&n; */
 DECL|function|nvram_write_error_log
 r_int
@@ -2808,6 +2809,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 DECL|variable|nvram_init
 id|module_init
 c_func

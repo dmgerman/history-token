@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
-macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|DEFINE
@@ -758,20 +757,6 @@ r_struct
 id|ItLpPaca
 comma
 id|xIntDword.xFields.xDecrInt
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PROMENTRY
-comma
-m_offsetof
-(paren
-r_struct
-id|prom_t
-comma
-id|entry
 )paren
 )paren
 suffix:semicolon

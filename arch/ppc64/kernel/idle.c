@@ -13,22 +13,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
-r_extern
-r_int
-id|cede_processor
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|poll_pending
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/plpar_wrappers.h&gt;
 r_extern
 r_void
 id|power4_idle
@@ -476,6 +461,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 id|DECLARE_PER_CPU
 c_func
 (paren
@@ -866,10 +852,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|powermac_idle
+macro_line|#endif /* CONFIG_PPC_PSERIES */
+DECL|function|native_idle
 r_static
 r_int
-id|powermac_idle
+id|native_idle
 c_func
 (paren
 r_void
@@ -881,6 +868,7 @@ c_loop
 l_int|1
 )paren
 (brace
+multiline_comment|/* check CPU type here */
 r_if
 c_cond
 (paren
@@ -913,7 +901,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|function|cpu_idle
 r_int
 id|cpu_idle
@@ -1014,12 +1002,22 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/*&n;&t; * Move that junk to each platform specific file, eventually define&n;&t; * a pSeries_idle for shared processor stuff&n;&t; */
 macro_line|#ifdef CONFIG_PPC_ISERIES
 id|idle_loop
 op_assign
 id|iSeries_idle
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 macro_line|#else
+id|idle_loop
+op_assign
+id|default_idle
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -1050,7 +1048,8 @@ id|lppaca.xSharedProc
 id|printk
 c_func
 (paren
-l_string|&quot;idle = shared_idle&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Using shared processor idle loop&bslash;n&quot;
 )paren
 suffix:semicolon
 id|idle_loop
@@ -1063,7 +1062,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;idle = dedicated_idle&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Using dedicated idle loop&bslash;n&quot;
 )paren
 suffix:semicolon
 id|idle_loop
@@ -1077,7 +1077,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;idle = default_idle&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Using default idle loop&bslash;n&quot;
 )paren
 suffix:semicolon
 id|idle_loop
@@ -1086,7 +1087,8 @@ id|default_idle
 suffix:semicolon
 )brace
 )brace
-r_else
+macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_if
 c_cond
 (paren
@@ -1098,28 +1100,16 @@ id|PLATFORM_POWERMAC
 id|printk
 c_func
 (paren
-l_string|&quot;idle = powermac_idle&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Using native/NAP idle loop&bslash;n&quot;
 )paren
 suffix:semicolon
 id|idle_loop
 op_assign
-id|powermac_idle
+id|native_idle
 suffix:semicolon
 )brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;idle_setup: unknown platform, use default_idle&bslash;n&quot;
-)paren
-suffix:semicolon
-id|idle_loop
-op_assign
-id|default_idle
-suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_PMAC */
 r_return
 l_int|1
 suffix:semicolon

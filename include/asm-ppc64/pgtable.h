@@ -1375,7 +1375,15 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|hpte_init_pSeries
+id|hpte_init_native
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|hpte_init_lpar
 c_func
 (paren
 r_void
@@ -1441,6 +1449,7 @@ op_star
 id|addr
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|pSeries_lpar_hpte_insert
 c_func
@@ -1471,8 +1480,9 @@ r_int
 id|large
 )paren
 suffix:semicolon
+r_extern
 r_int
-id|pSeries_hpte_insert
+id|native_hpte_insert
 c_func
 (paren
 r_int

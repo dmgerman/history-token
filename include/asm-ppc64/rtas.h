@@ -433,6 +433,7 @@ r_void
 id|call_rtas_display_status
 c_func
 (paren
+r_int
 r_char
 )paren
 suffix:semicolon
@@ -530,6 +531,14 @@ id|index
 comma
 r_int
 id|new_value
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rtas_initialize
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Given an RTAS status code of 9900..9905 compute the hinted delay */

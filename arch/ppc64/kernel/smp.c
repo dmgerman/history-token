@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * SMP support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; * PowerPC-64 Support added by Dave Engebretsen, Peter Bergner, and&n; * Mike Corrigan {engebret|bergner|mikec}@us.ibm.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -35,6 +37,14 @@ macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/plpar_wrappers.h&gt;
+macro_line|#ifdef DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...)
+macro_line|#endif
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
@@ -155,6 +165,12 @@ id|smt_enabled_at_boot
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|boot_cpuid
+r_int
+id|boot_cpuid
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Low level assembly function used to backup CPU 0 state */
 r_extern
 r_void
@@ -162,6 +178,15 @@ id|__save_cpu_setup
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pseries_secondary_smp_init
+c_func
+(paren
+r_int
+r_int
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -590,7 +615,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|function|smp_openpic_message_pass
 r_void
 id|smp_openpic_message_pass
@@ -740,6 +765,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PPC_MULTIPLATFORM */
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* Get state of physical CPU.&n; * Return codes:&n; *&t;0&t;- The processor is in the RTAS stopped state&n; *&t;1&t;- stop-self is in progress&n; *&t;2&t;- The processor is not in the RTAS stopped state&n; *&t;-1&t;- Hardware Error&n; *&t;-2&t;- Hardware Busy, Try again later.&n; */
 DECL|function|query_cpu_stopped
 r_int
@@ -758,6 +785,14 @@ r_int
 id|status
 comma
 id|qcss_tok
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot; -&gt; query_cpu_stopped(%d)&bslash;n&quot;
+comma
+id|pcpu
+)paren
 suffix:semicolon
 id|qcss_tok
 op_assign
@@ -816,6 +851,14 @@ r_return
 id|status
 suffix:semicolon
 )brace
+id|DBG
+c_func
+(paren
+l_string|&quot; &lt;- query_cpu_stopped(), status: %d&bslash;n&quot;
+comma
+id|cpu_status
+)paren
+suffix:semicolon
 r_return
 id|cpu_status
 suffix:semicolon
@@ -925,6 +968,11 @@ c_cond
 id|cpu_status
 op_eq
 l_int|0
+op_logical_or
+id|cpu_status
+op_eq
+op_minus
+l_int|1
 )paren
 r_break
 suffix:semicolon
@@ -1262,18 +1310,6 @@ id|lcpu
 r_int
 id|status
 suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|pseries_secondary_smp_init
-)paren
-(paren
-r_int
-r_int
-id|cpu
-)paren
-suffix:semicolon
 r_int
 r_int
 id|start_here
@@ -1538,6 +1574,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|function|vpa_init
+r_static
 r_void
 id|vpa_init
 c_func
@@ -1971,6 +2008,17 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+comma
+id|i
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot; -&gt; smp_init_pSeries()&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1988,6 +2036,102 @@ id|smp_ops
 op_assign
 op_amp
 id|pSeries_xics_smp_ops
+suffix:semicolon
+multiline_comment|/* Start secondary threads on SMT systems; primary threads&n;&t; * are already in the running state.&n;&t; */
+id|for_each_present_cpu
+c_func
+(paren
+id|i
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|query_cpu_stopped
+c_func
+(paren
+id|get_hard_smp_processor_id
+c_func
+(paren
+id|i
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%16.16x : starting thread&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;%16.16x : starting thread&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|rtas_call
+c_func
+(paren
+id|rtas_token
+c_func
+(paren
+l_string|&quot;start-cpu&quot;
+)paren
+comma
+l_int|3
+comma
+l_int|1
+comma
+op_amp
+id|ret
+comma
+id|get_hard_smp_processor_id
+c_func
+(paren
+id|i
+)paren
+comma
+id|__pa
+c_func
+(paren
+(paren
+id|u32
+)paren
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|pseries_secondary_smp_init
+)paren
+)paren
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;firmware_features
+op_amp
+id|FW_FEATURE_SPLPAR
+)paren
+id|vpa_init
+c_func
+(paren
+id|boot_cpuid
+)paren
 suffix:semicolon
 multiline_comment|/* Non-lpar has additional take/give timebase */
 r_if
@@ -2007,8 +2151,14 @@ op_assign
 id|pSeries_take_timebase
 suffix:semicolon
 )brace
+id|DBG
+c_func
+(paren
+l_string|&quot; &lt;- smp_init_pSeries()&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 DECL|function|smp_local_timer_interrupt
 r_void
 id|smp_local_timer_interrupt
@@ -2702,9 +2852,10 @@ comma
 id|id
 )paren
 op_assign
-id|_get_PVR
+id|mfspr
 c_func
 (paren
+id|SPRN_PVR
 )paren
 suffix:semicolon
 )brace

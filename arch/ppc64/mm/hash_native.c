@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * pSeries hashtable management.&n; *&n; * SMP scalability work:&n; *    Copyright (C) 2001 Anton Blanchard &lt;anton@au.ibm.com&gt;, IBM&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * native hashtable management.&n; *&n; * SMP scalability work:&n; *    Copyright (C) 2001 Anton Blanchard &lt;anton@au.ibm.com&gt;, IBM&n; * &n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -13,11 +13,18 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|HPTE_LOCK_BIT
 mdefine_line|#define HPTE_LOCK_BIT 3
-DECL|function|pSeries_lock_hpte
+DECL|variable|native_tlbie_lock
+r_static
+id|spinlock_t
+id|native_tlbie_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|native_lock_hpte
 r_static
 r_inline
 r_void
-id|pSeries_lock_hpte
+id|native_lock_hpte
 c_func
 (paren
 id|HPTE
@@ -73,11 +80,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|pSeries_unlock_hpte
+DECL|function|native_unlock_hpte
 r_static
 r_inline
 r_void
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|HPTE
@@ -111,16 +118,9 @@ id|word
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pSeries_tlbie_lock
-r_static
-id|spinlock_t
-id|pSeries_tlbie_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|function|pSeries_hpte_insert
+DECL|function|native_hpte_insert
 r_int
-id|pSeries_hpte_insert
+id|native_hpte_insert
 c_func
 (paren
 r_int
@@ -203,7 +203,7 @@ id|dw0.v
 )paren
 (brace
 multiline_comment|/* retry with lock held */
-id|pSeries_lock_hpte
+id|native_lock_hpte
 c_func
 (paren
 id|hptep
@@ -221,7 +221,7 @@ id|dw0.v
 )paren
 r_break
 suffix:semicolon
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|hptep
@@ -333,10 +333,10 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-DECL|function|pSeries_hpte_remove
+DECL|function|native_hpte_remove
 r_static
 r_int
-id|pSeries_hpte_remove
+id|native_hpte_remove
 c_func
 (paren
 r_int
@@ -404,7 +404,7 @@ id|dw0.bolted
 )paren
 (brace
 multiline_comment|/* retry with lock held */
-id|pSeries_lock_hpte
+id|native_lock_hpte
 c_func
 (paren
 id|hptep
@@ -424,7 +424,7 @@ id|dw0.bolted
 )paren
 r_break
 suffix:semicolon
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|hptep
@@ -525,10 +525,10 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Only works on small pages. Yes its ugly to have to check each slot in&n; * the group but we only use this during bootup.&n; */
-DECL|function|pSeries_hpte_find
+DECL|function|native_hpte_find
 r_static
 r_int
-id|pSeries_hpte_find
+id|native_hpte_find
 c_func
 (paren
 r_int
@@ -668,10 +668,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|pSeries_hpte_updatepp
+DECL|function|native_hpte_updatepp
 r_static
 r_int
-id|pSeries_hpte_updatepp
+id|native_hpte_updatepp
 c_func
 (paren
 r_int
@@ -727,7 +727,7 @@ op_and_assign
 op_complement
 l_int|0x1UL
 suffix:semicolon
-id|pSeries_lock_hpte
+id|native_lock_hpte
 c_func
 (paren
 id|hptep
@@ -751,7 +751,7 @@ op_logical_neg
 id|dw0.v
 )paren
 (brace
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|hptep
@@ -773,7 +773,7 @@ comma
 id|hptep
 )paren
 suffix:semicolon
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|hptep
@@ -824,7 +824,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 )paren
 suffix:semicolon
 id|tlbie
@@ -844,7 +844,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 )paren
 suffix:semicolon
 )brace
@@ -853,10 +853,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Update the page protection bits. Intended to be used to create&n; * guard pages for kernel data structures on pages which are bolted&n; * in the HPT. Assumes pages being operated on will not be stolen.&n; * Does not work on large pages.&n; *&n; * No need to lock here because we should be the only user.&n; */
-DECL|function|pSeries_hpte_updateboltedpp
+DECL|function|native_hpte_updateboltedpp
 r_static
 r_void
-id|pSeries_hpte_updateboltedpp
+id|native_hpte_updateboltedpp
 c_func
 (paren
 r_int
@@ -925,7 +925,7 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|slot
 op_assign
-id|pSeries_hpte_find
+id|native_hpte_find
 c_func
 (paren
 id|vpn
@@ -969,7 +969,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 comma
 id|flags
 )paren
@@ -991,16 +991,16 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 comma
 id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|pSeries_hpte_invalidate
+DECL|function|native_hpte_invalidate
 r_static
 r_void
-id|pSeries_hpte_invalidate
+id|native_hpte_invalidate
 c_func
 (paren
 r_int
@@ -1067,7 +1067,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|pSeries_lock_hpte
+id|native_lock_hpte
 c_func
 (paren
 id|hptep
@@ -1091,7 +1091,7 @@ op_logical_neg
 id|dw0.v
 )paren
 (brace
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|hptep
@@ -1140,7 +1140,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 )paren
 suffix:semicolon
 id|tlbie
@@ -1160,7 +1160,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 )paren
 suffix:semicolon
 )brace
@@ -1171,10 +1171,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|pSeries_flush_hash_range
+DECL|function|native_flush_hash_range
 r_static
 r_void
-id|pSeries_flush_hash_range
+id|native_flush_hash_range
 c_func
 (paren
 r_int
@@ -1437,7 +1437,7 @@ op_and_assign
 op_complement
 l_int|0x1UL
 suffix:semicolon
-id|pSeries_lock_hpte
+id|native_lock_hpte
 c_func
 (paren
 id|hptep
@@ -1461,7 +1461,7 @@ op_logical_neg
 id|dw0.v
 )paren
 (brace
-id|pSeries_unlock_hpte
+id|native_unlock_hpte
 c_func
 (paren
 id|hptep
@@ -1558,7 +1558,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 )paren
 suffix:semicolon
 id|asm
@@ -1613,7 +1613,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|pSeries_tlbie_lock
+id|native_tlbie_lock
 )paren
 suffix:semicolon
 )brace
@@ -1624,14 +1624,15 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|hpte_init_pSeries
+DECL|function|hpte_init_native
 r_void
-id|hpte_init_pSeries
+id|hpte_init_native
 c_func
 (paren
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_struct
 id|device_node
 op_star
@@ -1642,26 +1643,28 @@ r_char
 op_star
 id|model
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 id|ppc_md.hpte_invalidate
 op_assign
-id|pSeries_hpte_invalidate
+id|native_hpte_invalidate
 suffix:semicolon
 id|ppc_md.hpte_updatepp
 op_assign
-id|pSeries_hpte_updatepp
+id|native_hpte_updatepp
 suffix:semicolon
 id|ppc_md.hpte_updateboltedpp
 op_assign
-id|pSeries_hpte_updateboltedpp
+id|native_hpte_updateboltedpp
 suffix:semicolon
 id|ppc_md.hpte_insert
 op_assign
-id|pSeries_hpte_insert
+id|native_hpte_insert
 suffix:semicolon
 id|ppc_md.hpte_remove
 op_assign
-id|pSeries_hpte_remove
+id|native_hpte_remove
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* Disable TLB batching on nighthawk */
 id|root
 op_assign
@@ -1718,9 +1721,15 @@ id|root
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 id|ppc_md.flush_hash_range
 op_assign
-id|pSeries_flush_hash_range
+id|native_flush_hash_range
+suffix:semicolon
+id|htab_finish_init
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 eof
