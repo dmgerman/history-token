@@ -4,7 +4,6 @@ DECL|macro|_ASM_IA64_SN_IOERROR_HANDLING_H
 mdefine_line|#define _ASM_IA64_SN_IOERROR_HANDLING_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#if __KERNEL__
 multiline_comment|/*&n; * Basic types required for io error handling interfaces.&n; */

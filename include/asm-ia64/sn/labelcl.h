@@ -74,7 +74,7 @@ DECL|typedef|label_info_t
 )brace
 id|label_info_t
 suffix:semicolon
-multiline_comment|/*&n; * Definition of the data structure that provides the link to &n; * the hwgraph fastinfo and the label entries associated with a &n; * particular devfs entry.&n; */
+multiline_comment|/*&n; * Definition of the data structure that provides the link to &n; * the hwgraph fastinfo and the label entries associated with a &n; * particular hwgraph entry.&n; */
 DECL|struct|labelcl_info_s
 r_typedef
 r_struct
@@ -294,15 +294,6 @@ r_int
 comma
 id|arbitrary_info_t
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|devfs_handle_t
-id|device_info_connectpt_get
-c_func
-(paren
-id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_LABELCL_H */

@@ -667,7 +667,7 @@ id|GRAPH_VERTEX_NONE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * Create our private vertex, and connect our&n;     * driver information to it. This makes it possible&n;     * for diagnostic drivers to open the crossbow&n;     * vertex for access to registers.&n;     */
-multiline_comment|/*&n;     * Register a xbow driver with devfs.&n;     * file ops.&n;     */
+multiline_comment|/*&n;     * Register a xbow driver with hwgraph.&n;     * file ops.&n;     */
 id|vhdl
 op_assign
 l_int|NULL

@@ -3143,45 +3143,6 @@ c_func
 id|pciio
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_PCIIO
-(brace
-r_int
-id|pos
-suffix:semicolon
-r_char
-id|dname
-(braket
-l_int|256
-)braket
-suffix:semicolon
-id|pos
-op_assign
-id|devfs_generate_path
-c_func
-(paren
-id|pciio
-comma
-id|dname
-comma
-l_int|256
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s : path= %s&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-op_amp
-id|dname
-(braket
-id|pos
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* DEBUG_PCIIO */
 r_if
 c_cond
 (paren
@@ -3926,45 +3887,6 @@ comma
 id|pciio_info
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_PCIIO
-(brace
-r_int
-id|pos
-suffix:semicolon
-r_char
-id|dname
-(braket
-l_int|256
-)braket
-suffix:semicolon
-id|pos
-op_assign
-id|devfs_generate_path
-c_func
-(paren
-id|pconn
-comma
-id|dname
-comma
-l_int|256
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s : pconn path= %s &bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-op_amp
-id|dname
-(braket
-id|pos
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* DEBUG_PCIIO */
 multiline_comment|/*&n;     * create link to our pci provider&n;     */
 id|device_master_set
 c_func
