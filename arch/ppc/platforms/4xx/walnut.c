@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/time.h&gt;

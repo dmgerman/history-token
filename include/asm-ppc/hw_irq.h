@@ -3,6 +3,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_HW_IRQ_H
 DECL|macro|_PPC_HW_IRQ_H
 mdefine_line|#define _PPC_HW_IRQ_H
+macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 r_extern
 r_void
 id|timer_interrupt
@@ -29,10 +31,6 @@ id|irq
 suffix:semicolon
 DECL|macro|INLINE_IRQS
 mdefine_line|#define INLINE_IRQS
-DECL|macro|mfmsr
-mdefine_line|#define mfmsr()&t;&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfmsr %0&quot; : &quot;=r&quot; (rval)); rval;})
-DECL|macro|mtmsr
-mdefine_line|#define mtmsr(v)&t;asm volatile(&quot;mtmsr %0&quot; : : &quot;r&quot; (v))
 DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;((mfmsr() &amp; MSR_EE) == 0)
 macro_line|#ifdef INLINE_IRQS

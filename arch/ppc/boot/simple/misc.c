@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#ifdef CONFIG_44x

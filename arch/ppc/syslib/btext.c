@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 DECL|macro|NO_SCROLL
 mdefine_line|#define NO_SCROLL
 macro_line|#ifndef NO_SCROLL

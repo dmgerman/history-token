@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;

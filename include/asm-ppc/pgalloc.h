@@ -4,7 +4,6 @@ DECL|macro|_PPC_PGALLOC_H
 mdefine_line|#define _PPC_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 r_extern
 r_void
 id|__bad_pte

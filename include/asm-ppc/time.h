@@ -6,7 +6,7 @@ mdefine_line|#define __ASM_TIME_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 multiline_comment|/* time.c */
 r_extern
 r_int

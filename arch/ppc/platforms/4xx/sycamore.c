@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
