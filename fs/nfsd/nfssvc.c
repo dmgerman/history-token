@@ -710,7 +710,7 @@ id|rqstp
 )paren
 suffix:semicolon
 multiline_comment|/* Unlock export hash tables */
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 )paren

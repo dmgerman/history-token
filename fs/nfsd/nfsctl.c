@@ -455,7 +455,7 @@ comma
 id|data-&gt;gd_maxlen
 )paren
 suffix:semicolon
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 )paren
@@ -572,7 +572,7 @@ comma
 id|NFS_FHSIZE
 )paren
 suffix:semicolon
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 )paren
