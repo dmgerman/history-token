@@ -2330,11 +2330,13 @@ id|type
 )paren
 (brace
 r_int
-id|i
-comma
-id|j
-comma
 id|num_entries
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|off_t
+id|j
 suffix:semicolon
 r_void
 op_star
