@@ -253,6 +253,13 @@ op_amp
 id|q-&gt;queue_wait
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|q-&gt;plug_list
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * blk_queue_bounce_limit - set bounce buffer limit for queue&n; * @q:  the request queue for the device&n; * @dma_addr:   bus address limit&n; *&n; * Description:&n; *    Different hardware can have different requirements as to what pages&n; *    it can do I/O directly to. A low level driver can call&n; *    blk_queue_bounce_limit to have lower memory pages allocated as bounce&n; *    buffers for doing I/O to pages residing above @page. By default&n; *    the block layer sets this to the highest numbered &quot;low&quot; memory page.&n; **/
 DECL|function|blk_queue_bounce_limit
