@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &quot;base.h&quot;
@@ -617,14 +618,12 @@ l_int|0
 suffix:semicolon
 id|new_data
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|fw_priv-&gt;alloc_size
 op_plus
 id|PAGE_SIZE
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -675,7 +674,7 @@ comma
 id|fw_priv-&gt;fw-&gt;size
 )paren
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|fw_priv-&gt;fw-&gt;data
@@ -1541,7 +1540,7 @@ op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
-id|kfree
+id|vfree
 c_func
 (paren
 id|fw_priv-&gt;fw-&gt;data
@@ -1585,7 +1584,7 @@ c_cond
 id|fw
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|fw-&gt;data
