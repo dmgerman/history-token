@@ -1,15 +1,15 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;MIPS specific IP/TCP/UDP checksumming routines&n; *&n; * Authors:&t;Ralf Baechle, &lt;ralf@waldorf-gmbh.de&gt;&n; *&t;&t;Lots of code moved from tcp.c and ip.c; see those files&n; *&t;&t;for more names.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * $Id$&n; */
-macro_line|#include &lt;net/checksum.h&gt;
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;MIPS specific IP/TCP/UDP checksumming routines&n; *&n; * Authors:&t;Ralf Baechle, &lt;ralf@waldorf-gmbh.de&gt;&n; *&t;&t;Lots of code moved from tcp.c and ip.c; see those files&n; *&t;&t;for more names.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n; * copy while checksumming, otherwise like csum_partial&n; */
-DECL|function|csum_partial_copy
+multiline_comment|/*&n; * Copy while checksumming, otherwise like csum_partial&n; */
+DECL|function|csum_partial_copy_nocheck
 r_int
 r_int
-id|csum_partial_copy
-c_func
+id|csum_partial_copy_nocheck
 (paren
 r_const
 r_char
@@ -24,10 +24,10 @@ r_int
 id|len
 comma
 r_int
+r_int
 id|sum
 )paren
 (brace
-multiline_comment|/*&n;&t; * It&squot;s 2:30 am and I don&squot;t feel like doing it real ...&n;&t; * This is lots slower than the real thing (tm)&n;&t; */
 id|sum
 op_assign
 id|csum_partial
@@ -54,14 +54,22 @@ r_return
 id|sum
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Copy from userspace and compute checksum.  If we catch an exception&n; * then zero the rest of the buffer.&n;unsigned int csum_partial_copy_from_user (const char *src, char *dst,&n;                                          int len, unsigned int sum,&n;                                          int *err_ptr)&n; */
-DECL|function|csum_partial_copy_generic_from
+DECL|variable|csum_partial_copy_nocheck
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial_copy_nocheck
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Copy from userspace and compute checksum.  If we catch an exception&n; * then zero the rest of the buffer.&n; */
+DECL|function|csum_partial_copy_from_user
 r_int
 r_int
-id|csum_partial_copy_generic_from
+id|csum_partial_copy_from_user
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -137,73 +145,11 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-DECL|function|csum_partial_copy_generic_to
-r_int
-r_int
-id|csum_partial_copy_generic_to
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dst
-comma
-r_int
-id|len
-comma
-r_int
-r_int
-id|sum
-comma
-r_int
-op_star
-id|err_ptr
-)paren
-(brace
-r_int
-id|missing
-suffix:semicolon
-id|missing
-op_assign
-id|copy_to_user
+DECL|variable|csum_partial_copy_from_user
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|dst
-comma
-id|src
-comma
-id|len
+id|csum_partial_copy_from_user
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|missing
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;memset(dst + len - missing, 0, missing);&n;*/
-op_star
-id|err_ptr
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-id|csum_partial
-c_func
-(paren
-id|src
-comma
-id|len
-op_minus
-id|missing
-comma
-id|sum
-)paren
-suffix:semicolon
-)brace
 eof

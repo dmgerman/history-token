@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -138,13 +137,6 @@ id|__down_trylock
 )paren
 suffix:semicolon
 multiline_comment|/* Networking helper routines. */
-DECL|variable|csum_partial_copy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy
-)paren
-suffix:semicolon
 multiline_comment|/* Delay loops */
 DECL|variable|__udelay
 id|EXPORT_SYMBOL
