@@ -1524,7 +1524,7 @@ id|size
 op_rshift_assign
 l_int|8
 suffix:semicolon
-multiline_comment|/* VIA also screwed up Nehemiah stepping 1, and made&n;&t;   it return &squot;65KB&squot; instead of &squot;64KB&squot; */
+multiline_comment|/* VIA also screwed up Nehemiah stepping 1, and made&n;&t;   it return &squot;65KB&squot; instead of &squot;64KB&squot;&n;&t;   - Note, it seems this may only be in engineering samples. */
 r_if
 c_cond
 (paren
@@ -1544,6 +1544,12 @@ op_logical_and
 id|c-&gt;x86_mask
 op_eq
 l_int|1
+)paren
+op_logical_and
+(paren
+id|size
+op_eq
+l_int|65
 )paren
 )paren
 id|size
