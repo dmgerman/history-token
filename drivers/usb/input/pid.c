@@ -375,14 +375,6 @@ r_int
 id|flags
 suffix:semicolon
 r_int
-id|wanted_report
-op_assign
-id|HID_UP_PID
-op_or
-id|FF_PID_USAGE_BLOCK_FREE
-suffix:semicolon
-multiline_comment|/*  PID Block Free Report */
-r_int
 id|ret
 suffix:semicolon
 r_if
@@ -402,17 +394,16 @@ op_minus
 id|EACCES
 suffix:semicolon
 multiline_comment|/* Find report */
-id|ret
+id|report
 op_assign
 id|hid_find_report_by_usage
 c_func
 (paren
 id|hid
 comma
-id|wanted_report
-comma
-op_amp
-id|report
+id|HID_UP_PID
+op_or
+id|FF_PID_USAGE_BLOCK_FREE
 comma
 id|HID_OUTPUT_REPORT
 )paren
@@ -421,7 +412,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ret
+id|report
 )paren
 (brace
 id|dev_err
@@ -498,7 +489,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|ret
 )paren
 (brace
