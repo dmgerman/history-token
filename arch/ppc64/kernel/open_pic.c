@@ -2159,11 +2159,11 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do per-cpu setup for SMP systems.&n; *&n; * Get IPI&squot;s working and start taking interrupts.&n; *   -- Cort&n; */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 id|spinlock_t
 id|openpic_setup_lock
-id|__initdata
+id|__devinitdata
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
