@@ -3871,7 +3871,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|memset
 c_func
