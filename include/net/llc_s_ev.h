@@ -112,6 +112,10 @@ DECL|struct|llc_sap_state_ev
 r_struct
 id|llc_sap_state_ev
 (brace
+DECL|member|primitive
+id|u8
+id|primitive
+suffix:semicolon
 DECL|member|type
 id|u8
 id|type

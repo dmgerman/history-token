@@ -15,7 +15,7 @@ macro_line|#include &lt;net/llc_c_ac.h&gt;
 macro_line|#include &lt;net/llc_c_st.h&gt;
 macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_mac.h&gt;
-multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@nw_indicate: pointer to indicate function of upper layer.&n; *&t;@nw_confirm: pointer to confirm function of upper layer.&n; *&t;@lsap: SAP number.&n; *&t;@sap: pointer to allocated SAP (output argument).&n; *&n; *&t;Interface function to upper layer. Each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns the opened&n; *&t;SAP for success, NULL for failure.&n; */
+multiline_comment|/**&n; *&t;llc_sap_open - open interface to the upper layers.&n; *&t;@lsap: SAP number.&n; *&t;@func: rcv func for datalink protos&n; *&n; *&t;Interface function to upper layer. Each one who wants to get a SAP&n; *&t;(for example NetBEUI) should call this function. Returns the opened&n; *&t;SAP for success, NULL for failure.&n; */
 DECL|function|llc_sap_open
 r_struct
 id|llc_sap
@@ -23,14 +23,30 @@ op_star
 id|llc_sap_open
 c_func
 (paren
-id|llc_prim_call_t
-id|nw_indicate
-comma
-id|llc_prim_call_t
-id|nw_confirm
-comma
 id|u8
 id|lsap
+comma
+r_int
+(paren
+op_star
+id|func
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|packet_type
+op_star
+id|pt
+)paren
 )paren
 (brace
 multiline_comment|/* verify this SAP is not already open; if so, return error */
@@ -86,13 +102,9 @@ id|sap-&gt;laddr.lsap
 op_assign
 id|lsap
 suffix:semicolon
-id|sap-&gt;ind
+id|sap-&gt;rcv_func
 op_assign
-id|nw_indicate
-suffix:semicolon
-id|sap-&gt;conf
-op_assign
-id|nw_confirm
+id|func
 suffix:semicolon
 id|sap-&gt;parent_station
 op_assign
@@ -253,6 +265,9 @@ c_func
 id|sap
 comma
 id|skb
+comma
+op_amp
+id|llc_packet_type
 )paren
 suffix:semicolon
 )brace
@@ -367,6 +382,9 @@ c_func
 id|sap
 comma
 id|skb
+comma
+op_amp
+id|llc_packet_type
 )paren
 suffix:semicolon
 )brace
@@ -481,6 +499,9 @@ c_func
 id|sap
 comma
 id|skb
+comma
+op_amp
+id|llc_packet_type
 )paren
 suffix:semicolon
 )brace

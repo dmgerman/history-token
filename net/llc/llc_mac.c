@@ -63,6 +63,11 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_struct
+id|packet_type
+op_star
+id|pt
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;mac_send_pdu - Sends PDU to specific device.&n; *&t;@skb: pdu which must be sent&n; *&n; *&t;If module is not initialized then returns failure, else figures out&n; *&t;where to direct this PDU. Sends PDU to specific device, at this point a&n; *&t;device must has been assigned to the PDU; If not, can&squot;t transmit the&n; *&t;PDU. PDU sent to MAC layer, is free to re-send at a later time. Returns&n; *&t;0 on success, 1 for failure.&n; */
@@ -321,12 +326,43 @@ id|LLC_DEST_SAP
 )paren
 (brace
 multiline_comment|/* type 1 services */
-id|dprintk
+r_struct
+id|llc_addr
+id|laddr
+suffix:semicolon
+r_struct
+id|sock
+op_star
+id|sk
+suffix:semicolon
+id|llc_pdu_decode_da
 c_func
 (paren
-l_string|&quot;%s: calling llc_sap_rcv!&bslash;n&quot;
+id|skb
 comma
-id|__FUNCTION__
+id|laddr.mac
+)paren
+suffix:semicolon
+id|llc_pdu_decode_dsap
+c_func
+(paren
+id|skb
+comma
+op_amp
+id|laddr.lsap
+)paren
+suffix:semicolon
+id|skb-&gt;sk
+op_assign
+id|sk
+op_assign
+id|llc_lookup_dgram
+c_func
+(paren
+id|sap
+comma
+op_amp
+id|laddr
 )paren
 suffix:semicolon
 id|llc_sap_rcv
@@ -335,6 +371,19 @@ c_func
 id|sap
 comma
 id|skb
+comma
+id|pt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sk
+)paren
+id|sock_put
+c_func
+(paren
+id|sk
 )paren
 suffix:semicolon
 )brace
@@ -876,7 +925,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_rcv - sends received pdus to the sap state machine&n; *&t;@sap: current sap component structure.&n; *&t;@skb: received frame.&n; *&n; *&t;Sends received pdus to the sap state machine.&n; */
+multiline_comment|/**&n; *&t;llc_sap_rcv - sends received pdus to the sap state machine&n; *&t;@sap: current sap component structure.&n; *&t;@skb: received frame.&n; *&t;@pt: packet type&n; *&n; *&t;Sends received pdus to the sap state machine.&n; */
 DECL|function|llc_sap_rcv
 r_static
 r_void
@@ -892,6 +941,11 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_struct
+id|packet_type
+op_star
+id|pt
 )paren
 (brace
 r_struct
@@ -919,6 +973,8 @@ c_func
 id|sap
 comma
 id|skb
+comma
+id|pt
 )paren
 suffix:semicolon
 )brace

@@ -8,27 +8,27 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/llc.h&gt;
 DECL|macro|LLC_DATAUNIT_PRIM
-mdefine_line|#define LLC_DATAUNIT_PRIM&t;0
+mdefine_line|#define LLC_DATAUNIT_PRIM&t;1
 DECL|macro|LLC_CONN_PRIM
-mdefine_line|#define LLC_CONN_PRIM&t;&t;1
+mdefine_line|#define LLC_CONN_PRIM&t;&t;2
 DECL|macro|LLC_DATA_PRIM
-mdefine_line|#define LLC_DATA_PRIM&t;&t;2
+mdefine_line|#define LLC_DATA_PRIM&t;&t;3
 DECL|macro|LLC_DISC_PRIM
-mdefine_line|#define LLC_DISC_PRIM&t;&t;3
+mdefine_line|#define LLC_DISC_PRIM&t;&t;4
 DECL|macro|LLC_RESET_PRIM
-mdefine_line|#define LLC_RESET_PRIM&t;&t;4
+mdefine_line|#define LLC_RESET_PRIM&t;&t;5
 DECL|macro|LLC_FLOWCONTROL_PRIM
-mdefine_line|#define LLC_FLOWCONTROL_PRIM&t;5 /* Not supported at this time */
+mdefine_line|#define LLC_FLOWCONTROL_PRIM&t;6 /* Not supported at this time */
 DECL|macro|LLC_DISABLE_PRIM
-mdefine_line|#define LLC_DISABLE_PRIM&t;6
+mdefine_line|#define LLC_DISABLE_PRIM&t;7
 DECL|macro|LLC_XID_PRIM
-mdefine_line|#define LLC_XID_PRIM&t;&t;7
+mdefine_line|#define LLC_XID_PRIM&t;&t;8
 DECL|macro|LLC_TEST_PRIM
-mdefine_line|#define LLC_TEST_PRIM&t;&t;8
+mdefine_line|#define LLC_TEST_PRIM&t;&t;9
 DECL|macro|LLC_SAP_ACTIVATION
-mdefine_line|#define LLC_SAP_ACTIVATION      9
+mdefine_line|#define LLC_SAP_ACTIVATION     10
 DECL|macro|LLC_SAP_DEACTIVATION
-mdefine_line|#define LLC_SAP_DEACTIVATION   10
+mdefine_line|#define LLC_SAP_DEACTIVATION   11
 DECL|macro|LLC_NBR_PRIMITIVES
 mdefine_line|#define LLC_NBR_PRIMITIVES     11
 DECL|macro|LLC_IND
@@ -249,20 +249,6 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|llc_prim_call_t
-r_typedef
-r_int
-(paren
-op_star
-id|llc_prim_call_t
-)paren
-(paren
-r_struct
-id|llc_prim_if_block
-op_star
-id|prim_if
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|llc_sap
@@ -270,14 +256,30 @@ op_star
 id|llc_sap_open
 c_func
 (paren
-id|llc_prim_call_t
-id|network_indicate
-comma
-id|llc_prim_call_t
-id|network_confirm
-comma
 id|u8
 id|lsap
+comma
+r_int
+(paren
+op_star
+id|func
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|packet_type
+op_star
+id|pt
+)paren
 )paren
 suffix:semicolon
 r_extern

@@ -192,5 +192,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|packet_type
+id|llc_packet_type
+suffix:semicolon
 macro_line|#endif /* LLC_MAIN_H */
 eof

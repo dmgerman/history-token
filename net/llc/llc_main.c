@@ -225,16 +225,6 @@ op_amp
 id|sap-&gt;mac_pdu_q
 )paren
 suffix:semicolon
-id|sap-&gt;llc_ind_prim.data
-op_assign
-op_amp
-id|sap-&gt;llc_ind_data_prim
-suffix:semicolon
-id|sap-&gt;llc_cfm_prim.data
-op_assign
-op_amp
-id|sap-&gt;llc_cfm_data_prim
-suffix:semicolon
 )brace
 r_return
 id|sap
@@ -2215,7 +2205,6 @@ id|len
 suffix:semicolon
 )brace
 DECL|variable|llc_packet_type
-r_static
 r_struct
 id|packet_type
 id|llc_packet_type
