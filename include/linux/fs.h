@@ -1449,6 +1449,18 @@ r_int
 r_int
 id|ahead_size
 suffix:semicolon
+DECL|member|serial_cnt
+r_int
+r_int
+id|serial_cnt
+suffix:semicolon
+multiline_comment|/* measure of sequentiality */
+DECL|member|average
+r_int
+r_int
+id|average
+suffix:semicolon
+multiline_comment|/* another measure of sequentiality */
 DECL|member|ra_pages
 r_int
 r_int
