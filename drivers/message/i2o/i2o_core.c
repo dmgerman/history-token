@@ -11397,8 +11397,12 @@ r_if
 c_cond
 (paren
 id|req_status
-OG
-id|I2O_REPLY_STATUS_PROGRESS_REPORT
+op_ge
+id|ARRAY_SIZE
+c_func
+(paren
+id|REPLY_STATUS
+)paren
 )paren
 id|printk
 c_func

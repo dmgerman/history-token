@@ -17309,8 +17309,8 @@ r_if
 c_cond
 (paren
 id|handle
-OG
-l_int|32
+op_ge
+id|MAXFILT
 )paren
 (brace
 id|dprintk
@@ -23088,7 +23088,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|32
+id|MAXFILT
 suffix:semicolon
 id|i
 op_increment
