@@ -6863,7 +6863,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|pbn_b0_2_115200
+id|pbn_b0_bt_2_921600
 )brace
 comma
 multiline_comment|/*&n;&t; * Digitan DS560-558, from jimd@esoft.com&n;&t; */
