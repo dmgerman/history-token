@@ -774,6 +774,7 @@ DECL|macro|CIRC_INC
 mdefine_line|#define CIRC_INC( a, b ) if ( ++a &gt;= b ) a = 0
 multiline_comment|/* Routines to access internal registers. */
 DECL|function|TLan_DioRead8
+r_static
 r_inline
 id|u8
 id|TLan_DioRead8
@@ -818,6 +819,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* TLan_DioRead8 */
 DECL|function|TLan_DioRead16
+r_static
 r_inline
 id|u16
 id|TLan_DioRead16
@@ -862,6 +864,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* TLan_DioRead16 */
 DECL|function|TLan_DioRead32
+r_static
 r_inline
 id|u32
 id|TLan_DioRead32
@@ -898,6 +901,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* TLan_DioRead32 */
 DECL|function|TLan_DioWrite8
+r_static
 r_inline
 r_void
 id|TLan_DioWrite8
@@ -941,6 +945,7 @@ l_int|0x3
 suffix:semicolon
 )brace
 DECL|function|TLan_DioWrite16
+r_static
 r_inline
 r_void
 id|TLan_DioWrite16
@@ -984,6 +989,7 @@ l_int|0x2
 suffix:semicolon
 )brace
 DECL|function|TLan_DioWrite32
+r_static
 r_inline
 r_void
 id|TLan_DioWrite32
@@ -1027,6 +1033,7 @@ l_int|0x2
 suffix:semicolon
 )brace
 macro_line|#if 0
+r_static
 r_inline
 r_void
 id|TLan_ClearBit
@@ -1055,6 +1062,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
+r_static
 r_inline
 r_int
 id|TLan_GetBit
@@ -1084,6 +1092,7 @@ id|bit
 )paren
 suffix:semicolon
 )brace
+r_static
 r_inline
 r_void
 id|TLan_SetBit
@@ -1122,6 +1131,7 @@ macro_line|#ifdef I_LIKE_A_FAST_HASH_FUNCTION
 multiline_comment|/* given 6 bytes, view them as 8 6-bit numbers and return the XOR of those */
 multiline_comment|/* the code below is about seven times as fast as the original code */
 DECL|function|TLan_HashFunc
+r_static
 r_inline
 id|u32
 id|TLan_HashFunc
@@ -1255,6 +1265,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* original code */
 DECL|function|xor
+r_static
 r_inline
 id|u32
 op_xor
@@ -1289,6 +1300,7 @@ mdefine_line|#define XOR8( a, b, c, d, e, f, g, h )&t;xor( a, xor( b, xor( c, xo
 DECL|macro|DA
 mdefine_line|#define DA( a, bit )&t;&t;&t;&t;&t;( ( (u8) a[bit/8] ) &amp; ( (u8) ( 1 &lt;&lt; bit%8 ) ) )
 DECL|function|TLan_HashFunc
+r_static
 r_inline
 id|u32
 id|TLan_HashFunc
