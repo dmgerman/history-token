@@ -1518,10 +1518,11 @@ id|pppoe_disc_rcv
 comma
 )brace
 suffix:semicolon
-multiline_comment|/***********************************************************************&n; *&n; * Really kill the socket. (Called from sock_put if refcnt == 0.)&n; *&n; **********************************************************************/
-DECL|function|pppoe_sock_destruct
+multiline_comment|/***********************************************************************&n; *&n; * Really kill the socket. (Called from pppox_sk_free if refcnt == 0.)&n; *&n; **********************************************************************/
+DECL|function|pppoe_sk_free
+r_static
 r_void
-id|pppoe_sock_destruct
+id|pppoe_sk_free
 c_func
 (paren
 r_struct
@@ -1551,8 +1552,6 @@ c_func
 (paren
 id|po
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; *&n; * Initialize a new struct sock.&n; *&n; **********************************************************************/
@@ -1584,14 +1583,14 @@ id|pppox_opt
 op_star
 id|po
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|sk
 op_assign
-id|sk_alloc
+id|pppox_sk_alloc
 c_func
 (paren
-id|PF_PPPOX
+id|sock
+comma
+id|PX_PROTO_OE
 comma
 id|GFP_KERNEL
 comma
@@ -1607,15 +1606,7 @@ op_logical_neg
 id|sk
 )paren
 r_goto
-id|decmod
-suffix:semicolon
-id|sock_init_data
-c_func
-(paren
-id|sock
-comma
-id|sk
-)paren
+id|out
 suffix:semicolon
 id|sock-&gt;state
 op_assign
@@ -1626,25 +1617,9 @@ op_assign
 op_amp
 id|pppoe_ops
 suffix:semicolon
-id|sk-&gt;protocol
-op_assign
-id|PX_PROTO_OE
-suffix:semicolon
-id|sk-&gt;family
-op_assign
-id|PF_PPPOX
-suffix:semicolon
 id|sk-&gt;backlog_rcv
 op_assign
 id|pppoe_rcv_core
-suffix:semicolon
-id|sk-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-id|sk-&gt;pprev
-op_assign
-l_int|NULL
 suffix:semicolon
 id|sk-&gt;state
 op_assign
@@ -1653,10 +1628,6 @@ suffix:semicolon
 id|sk-&gt;type
 op_assign
 id|SOCK_STREAM
-suffix:semicolon
-id|sk-&gt;destruct
-op_assign
-id|pppoe_sock_destruct
 suffix:semicolon
 id|po
 op_assign
@@ -1709,10 +1680,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|sock-&gt;sk
-op_assign
-id|sk
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -1725,10 +1692,6 @@ c_func
 (paren
 id|sk
 )paren
-suffix:semicolon
-id|decmod
-suffix:colon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_goto
 id|out
@@ -4012,6 +3975,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
+multiline_comment|/* -&gt;release and -&gt;ioctl are set at pppox_create */
 DECL|variable|pppoe_ops
 r_struct
 id|proto_ops
@@ -4022,11 +3986,6 @@ dot
 id|family
 op_assign
 id|AF_PPPOX
-comma
-dot
-id|release
-op_assign
-id|pppoe_release
 comma
 dot
 id|bind
@@ -4057,11 +4016,6 @@ dot
 id|poll
 op_assign
 id|datagram_poll
-comma
-dot
-id|ioctl
-op_assign
-id|pppoe_ioctl
 comma
 dot
 id|listen
@@ -4114,6 +4068,22 @@ dot
 id|ioctl
 op_assign
 id|pppoe_ioctl
+comma
+dot
+id|release
+op_assign
+id|pppoe_release
+comma
+dot
+id|sk_free
+op_assign
+id|pppoe_sk_free
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|pppoe_init
