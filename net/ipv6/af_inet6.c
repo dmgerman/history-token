@@ -2238,6 +2238,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|inet6_family_ops
+r_static
 r_struct
 id|net_proto_family
 id|inet6_family_ops

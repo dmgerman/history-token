@@ -227,10 +227,6 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|udma_destroy_table
 c_func
 (paren
@@ -398,10 +394,6 @@ id|writing
 comma
 id|ch-&gt;dma_base
 )paren
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|1
 suffix:semicolon
 id|outw
 c_func

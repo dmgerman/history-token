@@ -2,7 +2,7 @@ multiline_comment|/*&n;    i2c-dev.c - i2c-bus driver, char device interface  &n
 multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s i2c-dev module.&n;   But I have used so much of his original code and ideas that it seems&n;   only fair to recognize him as co-author -- Frodo */
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
-multiline_comment|/* $Id: i2c-dev.c,v 1.40 2001/08/25 01:28:01 mds Exp $ */
+multiline_comment|/* $Id: i2c-dev.c,v 1.44 2001/11/19 18:45:02 mds Exp $ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -392,6 +392,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d lseek to %ld bytes relative to %d.&bslash;n&quot;
 comma
 id|minor
@@ -491,6 +492,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d reading %d bytes.&bslash;n&quot;
 comma
 id|minor
@@ -651,6 +653,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d writing %d bytes.&bslash;n&quot;
 comma
 id|minor
@@ -752,6 +755,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: i2c-%d ioctl, cmd: 0x%x, arg: %lx.&bslash;n&quot;
 comma
 id|minor
@@ -1290,6 +1294,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: size out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
 comma
 id|data_arg.size
@@ -1322,6 +1327,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: read_write out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
 comma
 id|data_arg.read_write
@@ -1389,6 +1395,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: data is NULL pointer in ioctl I2C_SMBUS.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1621,6 +1628,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: Trying to open unattached adapter i2c-%d&bslash;n&quot;
 comma
 id|minor
@@ -1717,6 +1725,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: opened i2c-%d&bslash;n&quot;
 comma
 id|minor
@@ -1767,6 +1776,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: Closed: i2c-%d&bslash;n&quot;
 comma
 id|minor
@@ -1775,6 +1785,12 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0)
 id|MOD_DEC_USE_COUNT
+suffix:semicolon
+macro_line|#else /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif /* LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0) */
 r_if
@@ -1801,6 +1817,13 @@ id|minor
 )braket
 )paren
 suffix:semicolon
+macro_line|#if LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0)
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
 r_return
 l_int|0
 suffix:semicolon
@@ -1844,6 +1867,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: Unknown adapter ?!?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1863,6 +1887,7 @@ id|I2CDEV_ADAPS_MAX
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: Adapter number too large?!? (%d)&bslash;n&quot;
 comma
 id|i
@@ -1933,6 +1958,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: Registered &squot;%s&squot; as minor %d&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -1966,6 +1992,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-dev.o: Adapter unregistered: %s&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -2032,7 +2059,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-dev.o: i2c /dev entries driver module&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;i2c-dev.o: i2c /dev entries driver module version %s (%s)&bslash;n&quot;
+comma
+id|I2C_VERSION
+comma
+id|I2C_DATE
 )paren
 suffix:semicolon
 id|i2cdev_initialized
@@ -2075,6 +2107,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-dev.o: unable to get major %d for i2c bus&bslash;n&quot;
 comma
 id|I2C_MAJOR
@@ -2120,6 +2153,7 @@ id|i2cdev_driver
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-dev.o: Driver registration failed, module not inserted.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2176,6 +2210,7 @@ id|i2cdev_driver
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-dev.o: Driver deregistration failed, &quot;
 l_string|&quot;module not removed.&bslash;n&quot;
 )paren
@@ -2240,6 +2275,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-dev.o: unable to release major %d for i2c bus&bslash;n&quot;
 comma
 id|I2C_MAJOR

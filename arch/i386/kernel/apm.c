@@ -1660,6 +1660,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * handle_poweroff&t;-&t;sysrq callback for power down&n; * @key: key pressed (unused)&n; * @pt_regs: register state (unused)&n; * @kbd: keyboard state (unused)&n; * @tty: tty involved (unused)&n; *&n; * When the user hits Sys-Rq o to power down the machine this is the&n; * callback we use.&n; */
 DECL|function|handle_poweroff
+r_static
 r_void
 id|handle_poweroff
 (paren
@@ -1689,6 +1690,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|sysrq_poweroff_op
+r_static
 r_struct
 id|sysrq_key_op
 id|sysrq_poweroff_op

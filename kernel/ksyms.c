@@ -2453,6 +2453,13 @@ c_func
 id|complete_and_exit
 )paren
 suffix:semicolon
+DECL|variable|default_wake_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|default_wake_function
+)paren
+suffix:semicolon
 DECL|variable|__wake_up
 id|EXPORT_SYMBOL
 c_func

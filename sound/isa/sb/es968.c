@@ -746,7 +746,6 @@ macro_line|#endif&t;/* __ISAPNP__ */
 DECL|function|snd_card_es968_free
 r_static
 r_void
-id|__exit
 id|snd_card_es968_free
 c_func
 (paren

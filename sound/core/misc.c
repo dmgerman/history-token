@@ -496,13 +496,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%sALSA %s:%d: &quot;
+l_string|&quot;%sALSA: &quot;
 comma
 id|tmp
-comma
-id|file
-comma
-id|line
 )paren
 suffix:semicolon
 id|format
@@ -516,11 +512,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;ALSA %s:%d: &quot;
-comma
-id|file
-comma
-id|line
+l_string|&quot;ALSA: &quot;
 )paren
 suffix:semicolon
 )brace

@@ -1040,7 +1040,7 @@ suffix:semicolon
 )brace
 id|len
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|skb-&gt;len

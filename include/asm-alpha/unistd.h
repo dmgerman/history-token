@@ -601,6 +601,30 @@ DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;&t;380 /* syscall for security modules */
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;&t;381
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;&t;382
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;&t;383
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;&t;384
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;&t;385
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;&t;386
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;&t;387
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;&t;388
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;&t;389
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;&t;390
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;&t;391
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;&t;392
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;&t;393
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret

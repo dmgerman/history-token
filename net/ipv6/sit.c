@@ -561,6 +561,7 @@ id|t
 suffix:semicolon
 )brace
 DECL|function|ipip6_tunnel_locate
+r_static
 r_struct
 id|ip_tunnel
 op_star
@@ -1039,6 +1040,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ipip6_err
+r_static
 r_void
 id|ipip6_err
 c_func
@@ -1610,6 +1612,7 @@ id|skb-&gt;nh.ipv6h
 suffix:semicolon
 )brace
 DECL|function|ipip6_rcv
+r_static
 r_int
 id|ipip6_rcv
 c_func

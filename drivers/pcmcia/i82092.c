@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;

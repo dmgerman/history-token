@@ -880,7 +880,7 @@ suffix:semicolon
 )brace
 id|card-&gt;mbase
 op_assign
-id|ioremap_nocache
+id|ioremap
 c_func
 (paren
 id|card-&gt;membase

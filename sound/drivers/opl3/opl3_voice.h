@@ -234,7 +234,7 @@ id|chan
 )paren
 suffix:semicolon
 multiline_comment|/* Prototypes for opl3_oss.c */
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 r_void
 id|snd_opl3_init_seq_oss
 c_func

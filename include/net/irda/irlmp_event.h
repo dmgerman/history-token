@@ -1,7 +1,8 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_event.h&n; * Version:       0.1&n; * Description:   IrDA-LMP event handling&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Thu Jul  8 12:18:54 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp_event.h&n; * Version:       0.1&n; * Description:   IrDA-LMP event handling&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Thu Jul  8 12:18:54 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#ifndef IRLMP_EVENT_H
 DECL|macro|IRLMP_EVENT_H
 mdefine_line|#define IRLMP_EVENT_H
+multiline_comment|/* A few forward declarations (to make compiler happy) */
 r_struct
 id|irlmp_cb
 suffix:semicolon
@@ -10,6 +11,9 @@ id|lsap_cb
 suffix:semicolon
 r_struct
 id|lap_cb
+suffix:semicolon
+r_struct
+id|discovery_t
 suffix:semicolon
 multiline_comment|/* LAP states */
 r_typedef
@@ -171,6 +175,7 @@ r_int
 id|reason
 suffix:semicolon
 DECL|member|discovery
+r_struct
 id|discovery_t
 op_star
 id|discovery

@@ -506,5 +506,20 @@ id|snd_sf_vol_table
 l_int|128
 )braket
 suffix:semicolon
+r_int
+id|snd_sf_linear_to_log
+c_func
+(paren
+r_int
+r_int
+id|amount
+comma
+r_int
+id|offset
+comma
+r_int
+id|ratio
+)paren
+suffix:semicolon
 macro_line|#endif /* __SOUND_SOUNDFONT_H */
 eof

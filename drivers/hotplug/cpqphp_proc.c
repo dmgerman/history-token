@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 DECL|variable|ctrl_proc_root

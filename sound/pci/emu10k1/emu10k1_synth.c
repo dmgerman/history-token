@@ -166,6 +166,10 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* audigy has two external midis */
+id|emu-&gt;linear_panning
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -7866,6 +7866,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/**&n; *&t;register_netdevice&t;- register a network device&n; *&t;@dev: device to register&n; *&n; *&t;Take a completed network device structure and add it to the kernel&n; *&t;interfaces. A %NETDEV_REGISTER message is sent to the netdev notifier&n; *&t;chain. 0 is returned on success. A negative errno code is returned&n; *&t;on a failure to set up the device, or if the name is a duplicate.&n; *&n; *&t;Callers must hold the rtnl semaphore.  See the comment at the&n; *&t;end of Space.c for details about the locking.  You may want&n; *&t;register_netdev() instead of this.&n; *&n; *&t;BUGS:&n; *&t;The locking appears insufficient to guarantee two parallel registers&n; *&t;will not get the same name.&n; */
+r_static
 r_int
 id|net_dev_init
 c_func
@@ -8697,6 +8698,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
 multiline_comment|/*&n; *       Callers must hold the rtnl semaphore.  See the comment at the&n; *       end of Space.c for details about the locking.&n; */
 DECL|function|net_dev_init
+r_static
 r_int
 id|__init
 id|net_dev_init
@@ -9168,6 +9170,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|net_dev_init
+id|__initcall
+c_func
+(paren
+id|net_dev_init
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG
 multiline_comment|/* Notify userspace when a netdevice event occurs,&n; * by running &squot;/sbin/hotplug net&squot; with certain&n; * environment variables set.&n; */
 DECL|function|net_run_sbin_hotplug

@@ -13918,6 +13918,9 @@ id|trident-&gt;tlb.entries
 id|i
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|trident-&gt;tlb.silent_page_dmaaddr
 op_amp
 op_complement
@@ -13925,6 +13928,7 @@ op_complement
 id|SNDRV_TRIDENT_PAGE_SIZE
 op_minus
 l_int|1
+)paren
 )paren
 suffix:semicolon
 id|trident-&gt;tlb.shadow_entries

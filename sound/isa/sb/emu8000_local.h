@@ -73,5 +73,22 @@ op_star
 id|emu
 )paren
 suffix:semicolon
+multiline_comment|/* emu8000_pcm.c */
+r_int
+id|snd_emu8000_pcm_new
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+id|emu8000_t
+op_star
+id|emu
+comma
+r_int
+id|index
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __EMU8000_LOCAL_H */
 eof

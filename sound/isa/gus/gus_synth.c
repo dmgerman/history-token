@@ -220,6 +220,12 @@ comma
 id|info-&gt;sender.port
 )paren
 suffix:semicolon
+id|snd_gus_use_dec
+c_func
+(paren
+id|gus
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -294,6 +300,12 @@ comma
 id|info-&gt;sender.client
 comma
 id|info-&gt;sender.port
+)paren
+suffix:semicolon
+id|snd_gus_use_dec
+c_func
+(paren
+id|gus
 )paren
 suffix:semicolon
 id|up

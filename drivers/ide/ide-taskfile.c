@@ -496,7 +496,13 @@ id|drive
 r_if
 c_cond
 (paren
-id|drive-&gt;waiting_for_dma
+id|test_bit
+c_func
+(paren
+id|IDE_DMA
+comma
+id|drive-&gt;channel-&gt;active
+)paren
 )paren
 r_return
 id|udma_irq_status
@@ -768,10 +774,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Invoked on completion of a special REQ_SPECIAL command.&n; */
-DECL|function|special_intr
-r_static
+DECL|function|ata_special_intr
 id|ide_startstop_t
-id|special_intr
+id|ata_special_intr
 c_func
 (paren
 r_struct
@@ -1041,10 +1046,6 @@ r_struct
 id|ata_taskfile
 op_star
 id|ar
-comma
-r_char
-op_star
-id|buffer
 )paren
 (brace
 r_struct
@@ -1057,7 +1058,7 @@ id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
 id|ar-&gt;XXX_handler
 op_assign
-id|special_intr
+id|ata_special_intr
 suffix:semicolon
 id|memset
 c_func
@@ -1080,10 +1081,6 @@ suffix:semicolon
 id|req.special
 op_assign
 id|ar
-suffix:semicolon
-id|req.buffer
-op_assign
-id|buffer
 suffix:semicolon
 r_return
 id|ide_do_drive_cmd
@@ -1124,6 +1121,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ata_write
+)paren
+suffix:semicolon
+DECL|variable|ata_special_intr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ata_special_intr
 )paren
 suffix:semicolon
 DECL|variable|ide_raw_taskfile

@@ -5083,13 +5083,8 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode 0x%Lx, type 0x%x.&quot;
+l_string|&quot;Entering for inode 0x%lx, type 0x%x.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|ni-&gt;mft_no
 comma
 id|type

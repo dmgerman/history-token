@@ -1,11 +1,14 @@
-multiline_comment|/*********************************************************************&n; *                &n; *                &n; * Filename:      irlap_event.h&n; * Version:       0.1&n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Tue Dec 21 11:20:30 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; *                &n; * Filename:      irlap_event.h&n; * Version:       0.1&n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Tue Dec 21 11:20:30 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#ifndef IRLAP_EVENT_H
 DECL|macro|IRLAP_EVENT_H
 mdefine_line|#define IRLAP_EVENT_H
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/discovery.h&gt;
+multiline_comment|/* A few forward declarations (to make compiler happy) */
 r_struct
 id|irlap_cb
+suffix:semicolon
+r_struct
+id|irlap_info
 suffix:semicolon
 multiline_comment|/* IrLAP States */
 r_typedef
@@ -192,70 +195,38 @@ DECL|typedef|IRLAP_EVENT
 )brace
 id|IRLAP_EVENT
 suffix:semicolon
-multiline_comment|/*&n; *  Various things used by the IrLAP state machine&n; */
-DECL|struct|irlap_info
-r_struct
-id|irlap_info
+multiline_comment|/*&n; * Disconnect reason code&n; */
+r_typedef
+r_enum
 (brace
-DECL|member|caddr
-id|__u8
-id|caddr
-suffix:semicolon
-multiline_comment|/* Connection address */
-DECL|member|control
-id|__u8
-id|control
-suffix:semicolon
-multiline_comment|/* Frame type */
-DECL|member|cmd
-id|__u8
-id|cmd
-suffix:semicolon
-DECL|member|saddr
-id|__u32
-id|saddr
-suffix:semicolon
-DECL|member|daddr
-id|__u32
-id|daddr
-suffix:semicolon
-DECL|member|pf
-r_int
-id|pf
-suffix:semicolon
-multiline_comment|/* Poll/final bit set */
-DECL|member|nr
-id|__u8
-id|nr
-suffix:semicolon
-multiline_comment|/* Sequence number of next frame expected */
-DECL|member|ns
-id|__u8
-id|ns
-suffix:semicolon
-multiline_comment|/* Sequence number of frame sent */
-DECL|member|S
-r_int
-id|S
-suffix:semicolon
-multiline_comment|/* Number of slots */
-DECL|member|slot
-r_int
-id|slot
-suffix:semicolon
-multiline_comment|/* Random chosen slot */
-DECL|member|s
-r_int
-id|s
-suffix:semicolon
-multiline_comment|/* Current slot */
-DECL|member|discovery
-id|discovery_t
-op_star
-id|discovery
-suffix:semicolon
-multiline_comment|/* Discovery information */
+multiline_comment|/* FIXME check the two first reason codes */
+DECL|enumerator|LAP_DISC_INDICATION
+id|LAP_DISC_INDICATION
+op_assign
+l_int|1
+comma
+multiline_comment|/* Received a disconnect request from peer */
+DECL|enumerator|LAP_NO_RESPONSE
+id|LAP_NO_RESPONSE
+comma
+multiline_comment|/* To many retransmits without response */
+DECL|enumerator|LAP_RESET_INDICATION
+id|LAP_RESET_INDICATION
+comma
+multiline_comment|/* To many retransmits, or invalid nr/ns */
+DECL|enumerator|LAP_FOUND_NONE
+id|LAP_FOUND_NONE
+comma
+multiline_comment|/* No devices were discovered */
+DECL|enumerator|LAP_MEDIA_BUSY
+id|LAP_MEDIA_BUSY
+comma
+DECL|enumerator|LAP_PRIMARY_CONFLICT
+id|LAP_PRIMARY_CONFLICT
+comma
+DECL|typedef|LAP_REASON
 )brace
+id|LAP_REASON
 suffix:semicolon
 r_extern
 r_const

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_IOC.H&n; *          Title:  MPI IOC, Port, Event, FW Download, and FW Upload messages&n; *  Creation Date:  August 11, 2000&n; *&n; *    MPI Version:  01.01.07&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added _MSG_IOC_INIT_REPLY structure.&n; *  06-06-00  01.00.01  Added CurReplyFrameSize field to _MSG_IOC_FACTS_REPLY.&n; *  06-12-00  01.00.02  Added _MSG_PORT_ENABLE_REPLY structure.&n; *                      Added _MSG_EVENT_ACK_REPLY structure.&n; *                      Added _MSG_FW_DOWNLOAD_REPLY structure.&n; *                      Added _MSG_TOOLBOX_REPLY structure.&n; *  06-30-00  01.00.03  Added MaxLanBuckets to _PORT_FACT_REPLY structure.&n; *  07-27-00  01.00.04  Added _EVENT_DATA structure definitions for _SCSI,&n; *                      _LINK_STATUS, _LOOP_STATE and _LOGOUT.&n; *  08-11-00  01.00.05  Switched positions of MsgLength and Function fields in&n; *                      _MSG_EVENT_ACK_REPLY structure to match specification.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *                      Added a value for Manufacturer to WhoInit.&n; *  12-04-00  01.01.02  Modified IOCFacts reply, added FWUpload messages, and&n; *                      removed toolbox message.&n; *  01-09-01  01.01.03  Added event enabled and disabled defines.&n; *                      Added structures for FwHeader and DataHeader.&n; *                      Added ImageType to FwUpload reply.&n; *  02-20-01  01.01.04  Started using MPI_POINTER.&n; *  02-27-01  01.01.05  Added event for RAID status change and its event data.&n; *                      Added IocNumber field to MSG_IOC_FACTS_REPLY.&n; *  03-27-01  01.01.06  Added defines for ProductId field of MPI_FW_HEADER.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.07  Added structure EVENT_DATA_EVENT_CHANGE.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_IOC.H&n; *          Title:  MPI IOC, Port, Event, FW Download, and FW Upload messages&n; *  Creation Date:  August 11, 2000&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added _MSG_IOC_INIT_REPLY structure.&n; *  06-06-00  01.00.01  Added CurReplyFrameSize field to _MSG_IOC_FACTS_REPLY.&n; *  06-12-00  01.00.02  Added _MSG_PORT_ENABLE_REPLY structure.&n; *                      Added _MSG_EVENT_ACK_REPLY structure.&n; *                      Added _MSG_FW_DOWNLOAD_REPLY structure.&n; *                      Added _MSG_TOOLBOX_REPLY structure.&n; *  06-30-00  01.00.03  Added MaxLanBuckets to _PORT_FACT_REPLY structure.&n; *  07-27-00  01.00.04  Added _EVENT_DATA structure definitions for _SCSI,&n; *                      _LINK_STATUS, _LOOP_STATE and _LOGOUT.&n; *  08-11-00  01.00.05  Switched positions of MsgLength and Function fields in&n; *                      _MSG_EVENT_ACK_REPLY structure to match specification.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *                      Added a value for Manufacturer to WhoInit.&n; *  12-04-00  01.01.02  Modified IOCFacts reply, added FWUpload messages, and&n; *                      removed toolbox message.&n; *  01-09-01  01.01.03  Added event enabled and disabled defines.&n; *                      Added structures for FwHeader and DataHeader.&n; *                      Added ImageType to FwUpload reply.&n; *  02-20-01  01.01.04  Started using MPI_POINTER.&n; *  02-27-01  01.01.05  Added event for RAID status change and its event data.&n; *                      Added IocNumber field to MSG_IOC_FACTS_REPLY.&n; *  03-27-01  01.01.06  Added defines for ProductId field of MPI_FW_HEADER.&n; *                      Added structure offset comments.&n; *  04-09-01  01.01.07  Added structure EVENT_DATA_EVENT_CHANGE.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *                      New format for FWVersion and ProductId in&n; *                      MSG_IOC_FACTS_REPLY and MPI_FW_HEADER.&n; *  08-31-01  01.02.02  Addded event MPI_EVENT_SCSI_DEVICE_STATUS_CHANGE and&n; *                      related structure and defines.&n; *                      Added event MPI_EVENT_ON_BUS_TIMER_EXPIRED.&n; *                      Added MPI_IOCINIT_FLAGS_DISCARD_FW_IMAGE.&n; *                      Replaced a reserved field in MSG_IOC_FACTS_REPLY with&n; *                      IOCExceptions and changed DataImageSize to reserved.&n; *                      Added MPI_FW_DOWNLOAD_ITYPE_NVSTORE_DATA and&n; *                      MPI_FW_UPLOAD_ITYPE_NVDATA.&n; *  09-28-01  01.02.03  Modified Event Data for Integrated RAID.&n; *  11-01-01  01.02.04  Added defines for MPI_EXT_IMAGE_HEADER ImageType field.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_IOC_H
 DECL|macro|MPI_IOC_H
 mdefine_line|#define MPI_IOC_H
@@ -94,6 +94,22 @@ comma
 id|MPI_POINTER
 id|pIOCInit_t
 suffix:semicolon
+multiline_comment|/* WhoInit values */
+DECL|macro|MPI_WHOINIT_NO_ONE
+mdefine_line|#define MPI_WHOINIT_NO_ONE                      (0x00)
+DECL|macro|MPI_WHOINIT_SYSTEM_BIOS
+mdefine_line|#define MPI_WHOINIT_SYSTEM_BIOS                 (0x01)
+DECL|macro|MPI_WHOINIT_ROM_BIOS
+mdefine_line|#define MPI_WHOINIT_ROM_BIOS                    (0x02)
+DECL|macro|MPI_WHOINIT_PCI_PEER
+mdefine_line|#define MPI_WHOINIT_PCI_PEER                    (0x03)
+DECL|macro|MPI_WHOINIT_HOST_DRIVER
+mdefine_line|#define MPI_WHOINIT_HOST_DRIVER                 (0x04)
+DECL|macro|MPI_WHOINIT_MANUFACTURER
+mdefine_line|#define MPI_WHOINIT_MANUFACTURER                (0x05)
+multiline_comment|/* Flags values */
+DECL|macro|MPI_IOCINIT_FLAGS_DISCARD_FW_IMAGE
+mdefine_line|#define MPI_IOCINIT_FLAGS_DISCARD_FW_IMAGE      (0x01)
 DECL|struct|_MSG_IOC_INIT_REPLY
 r_typedef
 r_struct
@@ -174,19 +190,6 @@ comma
 id|MPI_POINTER
 id|pIOCInitReply_t
 suffix:semicolon
-multiline_comment|/* WhoInit values */
-DECL|macro|MPI_WHOINIT_NO_ONE
-mdefine_line|#define MPI_WHOINIT_NO_ONE                      (0x00)
-DECL|macro|MPI_WHOINIT_SYSTEM_BIOS
-mdefine_line|#define MPI_WHOINIT_SYSTEM_BIOS                 (0x01)
-DECL|macro|MPI_WHOINIT_ROM_BIOS
-mdefine_line|#define MPI_WHOINIT_ROM_BIOS                    (0x02)
-DECL|macro|MPI_WHOINIT_PCI_PEER
-mdefine_line|#define MPI_WHOINIT_PCI_PEER                    (0x03)
-DECL|macro|MPI_WHOINIT_HOST_DRIVER
-mdefine_line|#define MPI_WHOINIT_HOST_DRIVER                 (0x04)
-DECL|macro|MPI_WHOINIT_MANUFACTURER
-mdefine_line|#define MPI_WHOINIT_MANUFACTURER                (0x05)
 multiline_comment|/****************************************************************************/
 multiline_comment|/*  IOC Facts message                                                       */
 multiline_comment|/****************************************************************************/
@@ -246,6 +249,52 @@ comma
 id|MPI_POINTER
 id|pIOCFacts_t
 suffix:semicolon
+DECL|struct|_MPI_FW_VERSION_STRUCT
+r_typedef
+r_struct
+id|_MPI_FW_VERSION_STRUCT
+(brace
+DECL|member|Dev
+id|U8
+id|Dev
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|Unit
+id|U8
+id|Unit
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|Minor
+id|U8
+id|Minor
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|Major
+id|U8
+id|Major
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|typedef|MPI_FW_VERSION_STRUCT
+)brace
+id|MPI_FW_VERSION_STRUCT
+suffix:semicolon
+DECL|union|_MPI_FW_VERSION
+r_typedef
+r_union
+id|_MPI_FW_VERSION
+(brace
+DECL|member|Struct
+id|MPI_FW_VERSION_STRUCT
+id|Struct
+suffix:semicolon
+DECL|member|Word
+id|U32
+id|Word
+suffix:semicolon
+DECL|typedef|MPI_FW_VERSION
+)brace
+id|MPI_FW_VERSION
+suffix:semicolon
 multiline_comment|/* IOC Facts Reply */
 DECL|struct|_MSG_IOC_FACTS_REPLY
 r_typedef
@@ -287,9 +336,9 @@ id|U32
 id|MsgContext
 suffix:semicolon
 multiline_comment|/* 08h */
-DECL|member|Reserved2
+DECL|member|IOCExceptions
 id|U16
-id|Reserved2
+id|IOCExceptions
 suffix:semicolon
 multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
@@ -332,11 +381,12 @@ id|U16
 id|RequestFrameSize
 suffix:semicolon
 multiline_comment|/* 1Ah */
-DECL|member|FWVersion
+DECL|member|Reserved_0101_FWVersion
 id|U16
-id|FWVersion
+id|Reserved_0101_FWVersion
 suffix:semicolon
 multiline_comment|/* 1Ch */
+multiline_comment|/* obsolete 16-bit FWVersion */
 DECL|member|ProductID
 id|U16
 id|ProductID
@@ -387,11 +437,16 @@ id|U32
 id|FWImageSize
 suffix:semicolon
 multiline_comment|/* 30h */
-DECL|member|DataImageSize
+DECL|member|Reserved4
 id|U32
-id|DataImageSize
+id|Reserved4
 suffix:semicolon
 multiline_comment|/* 34h */
+DECL|member|FWVersion
+id|MPI_FW_VERSION
+id|FWVersion
+suffix:semicolon
+multiline_comment|/* 38h */
 DECL|typedef|MSG_IOC_FACTS_REPLY
 DECL|typedef|PTR_MSG_IOC_FACTS_REPLY
 )brace
@@ -408,17 +463,17 @@ id|MPI_POINTER
 id|pIOCFactsReply_t
 suffix:semicolon
 DECL|macro|MPI_IOCFACTS_MSGVERSION_MAJOR_MASK
-mdefine_line|#define MPI_IOCFACTS_MSGVERSION_MAJOR_MASK      (0xFF00)
+mdefine_line|#define MPI_IOCFACTS_MSGVERSION_MAJOR_MASK          (0xFF00)
 DECL|macro|MPI_IOCFACTS_MSGVERSION_MINOR_MASK
-mdefine_line|#define MPI_IOCFACTS_MSGVERSION_MINOR_MASK      (0x00FF)
+mdefine_line|#define MPI_IOCFACTS_MSGVERSION_MINOR_MASK          (0x00FF)
+DECL|macro|MPI_IOCFACTS_EXCEPT_CONFIG_CHECKSUM_FAIL
+mdefine_line|#define MPI_IOCFACTS_EXCEPT_CONFIG_CHECKSUM_FAIL    (0x0001)
 DECL|macro|MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT
-mdefine_line|#define MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT     (0x01)
-DECL|macro|MPI_IOCFACTS_FLAGS_DATA_IMAGE_UPLOAD
-mdefine_line|#define MPI_IOCFACTS_FLAGS_DATA_IMAGE_UPLOAD    (0x02)
+mdefine_line|#define MPI_IOCFACTS_FLAGS_FW_DOWNLOAD_BOOT         (0x01)
 DECL|macro|MPI_IOCFACTS_EVENTSTATE_DISABLED
-mdefine_line|#define MPI_IOCFACTS_EVENTSTATE_DISABLED        (0x00)
+mdefine_line|#define MPI_IOCFACTS_EVENTSTATE_DISABLED            (0x00)
 DECL|macro|MPI_IOCFACTS_EVENTSTATE_ENABLED
-mdefine_line|#define MPI_IOCFACTS_EVENTSTATE_ENABLED         (0x01)
+mdefine_line|#define MPI_IOCFACTS_EVENTSTATE_ENABLED             (0x01)
 multiline_comment|/*****************************************************************************&n;*&n;*               P o r t    M e s s a g e s&n;*&n;*****************************************************************************/
 multiline_comment|/****************************************************************************/
 multiline_comment|/*  Port Facts message and Reply                                            */
@@ -1083,8 +1138,12 @@ DECL|macro|MPI_EVENT_LOGOUT
 mdefine_line|#define MPI_EVENT_LOGOUT                    (0x00000009)
 DECL|macro|MPI_EVENT_EVENT_CHANGE
 mdefine_line|#define MPI_EVENT_EVENT_CHANGE              (0x0000000A)
-DECL|macro|MPI_EVENT_RAID_STATUS_CHANGE
-mdefine_line|#define MPI_EVENT_RAID_STATUS_CHANGE        (0x0000000B)
+DECL|macro|MPI_EVENT_INTEGRATED_RAID
+mdefine_line|#define MPI_EVENT_INTEGRATED_RAID           (0x0000000B)
+DECL|macro|MPI_EVENT_SCSI_DEVICE_STATUS_CHANGE
+mdefine_line|#define MPI_EVENT_SCSI_DEVICE_STATUS_CHANGE (0x0000000C)
+DECL|macro|MPI_EVENT_ON_BUS_TIMER_EXPIRED
+mdefine_line|#define MPI_EVENT_ON_BUS_TIMER_EXPIRED      (0x0000000D)
 multiline_comment|/* AckRequired field values */
 DECL|macro|MPI_EVENT_NOTIFICATION_ACK_NOT_REQUIRED
 mdefine_line|#define MPI_EVENT_NOTIFICATION_ACK_NOT_REQUIRED (0x00)
@@ -1162,6 +1221,69 @@ comma
 id|MPI_POINTER
 id|pEventDataScsi_t
 suffix:semicolon
+multiline_comment|/* SCSI Device Status Change Event data */
+DECL|struct|_EVENT_DATA_SCSI_DEVICE_STATUS_CHANGE
+r_typedef
+r_struct
+id|_EVENT_DATA_SCSI_DEVICE_STATUS_CHANGE
+(brace
+DECL|member|TargetID
+id|U8
+id|TargetID
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|Bus
+id|U8
+id|Bus
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|ReasonCode
+id|U8
+id|ReasonCode
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|LUN
+id|U8
+id|LUN
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|member|ASC
+id|U8
+id|ASC
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|ASCQ
+id|U8
+id|ASCQ
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|Reserved
+id|U16
+id|Reserved
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|typedef|EVENT_DATA_SCSI_DEVICE_STATUS_CHANGE
+)brace
+id|EVENT_DATA_SCSI_DEVICE_STATUS_CHANGE
+comma
+DECL|typedef|PTR_EVENT_DATA_SCSI_DEVICE_STATUS_CHANGE
+id|MPI_POINTER
+id|PTR_EVENT_DATA_SCSI_DEVICE_STATUS_CHANGE
+comma
+DECL|typedef|MpiEventDataScsiDeviceStatusChange_t
+id|MpiEventDataScsiDeviceStatusChange_t
+comma
+DECL|typedef|pMpiEventDataScsiDeviceStatusChange_t
+id|MPI_POINTER
+id|pMpiEventDataScsiDeviceStatusChange_t
+suffix:semicolon
+multiline_comment|/* MPI SCSI Device Status Change Event data ReasonCode values */
+DECL|macro|MPI_EVENT_SCSI_DEV_STAT_RC_ADDED
+mdefine_line|#define MPI_EVENT_SCSI_DEV_STAT_RC_ADDED                (0x03)
+DECL|macro|MPI_EVENT_SCSI_DEV_STAT_RC_NOT_RESPONDING
+mdefine_line|#define MPI_EVENT_SCSI_DEV_STAT_RC_NOT_RESPONDING       (0x04)
+DECL|macro|MPI_EVENT_SCSI_DEV_STAT_RC_SMART_DATA
+mdefine_line|#define MPI_EVENT_SCSI_DEV_STAT_RC_SMART_DATA           (0x05)
 multiline_comment|/* MPI Link Status Change Event data */
 DECL|struct|_EVENT_DATA_LINK_STATUS
 r_typedef
@@ -1320,15 +1442,15 @@ comma
 id|MPI_POINTER
 id|pEventDataLogout_t
 suffix:semicolon
-multiline_comment|/* MPI RAID Status Change Event data */
-DECL|struct|_EVENT_DATA_RAID_STATUS_CHANGE
+multiline_comment|/* MPI Integrated RAID Event data */
+DECL|struct|_EVENT_DATA_RAID
 r_typedef
 r_struct
-id|_EVENT_DATA_RAID_STATUS_CHANGE
+id|_EVENT_DATA_RAID
 (brace
-DECL|member|VolumeTargetID
+DECL|member|VolumeID
 id|U8
-id|VolumeTargetID
+id|VolumeID
 suffix:semicolon
 multiline_comment|/* 00h */
 DECL|member|VolumeBus
@@ -1361,34 +1483,51 @@ id|U16
 id|Reserved
 suffix:semicolon
 multiline_comment|/* 06h */
-DECL|typedef|EVENT_DATA_RAID_STATUS_CHANGE
-DECL|typedef|PTR_EVENT_DATA_RAID_STATUS_CHANGE
-)brace
-id|EVENT_DATA_RAID_STATUS_CHANGE
-comma
-id|MPI_POINTER
-id|PTR_EVENT_DATA_RAID_STATUS_CHANGE
-comma
-DECL|typedef|MpiEventDataRaidStatusChange_t
-DECL|typedef|pMpiEventDataRaidStatusChange_t
-id|MpiEventDataRaidStatusChange_t
-comma
-id|MPI_POINTER
-id|pMpiEventDataRaidStatusChange_t
+DECL|member|SettingsStatus
+id|U32
+id|SettingsStatus
 suffix:semicolon
-multiline_comment|/* MPI RAID Status Change Event data ReasonCode values */
-DECL|macro|MPI_EVENT_RAID_DATA_RC_VOLUME_OPTIMAL
-mdefine_line|#define MPI_EVENT_RAID_DATA_RC_VOLUME_OPTIMAL       (0x00)
-DECL|macro|MPI_EVENT_RAID_DATA_RC_VOLUME_DEGRADED
-mdefine_line|#define MPI_EVENT_RAID_DATA_RC_VOLUME_DEGRADED      (0x01)
-DECL|macro|MPI_EVENT_RAID_DATA_RC_STARTED_RESYNC
-mdefine_line|#define MPI_EVENT_RAID_DATA_RC_STARTED_RESYNC       (0x02)
-DECL|macro|MPI_EVENT_RAID_DATA_RC_DISK_ADDED
-mdefine_line|#define MPI_EVENT_RAID_DATA_RC_DISK_ADDED           (0x03)
-DECL|macro|MPI_EVENT_RAID_DATA_RC_DISK_NOT_RESPONDING
-mdefine_line|#define MPI_EVENT_RAID_DATA_RC_DISK_NOT_RESPONDING  (0x04)
-DECL|macro|MPI_EVENT_RAID_DATA_RC_SMART_DATA
-mdefine_line|#define MPI_EVENT_RAID_DATA_RC_SMART_DATA           (0x05)
+multiline_comment|/* 08h */
+DECL|typedef|EVENT_DATA_RAID
+DECL|typedef|PTR_EVENT_DATA_RAID
+)brace
+id|EVENT_DATA_RAID
+comma
+id|MPI_POINTER
+id|PTR_EVENT_DATA_RAID
+comma
+DECL|typedef|MpiEventDataRaid_t
+DECL|typedef|pMpiEventDataRaid_t
+id|MpiEventDataRaid_t
+comma
+id|MPI_POINTER
+id|pMpiEventDataRaid_t
+suffix:semicolon
+multiline_comment|/* MPI Integrated RAID Event data ReasonCode values */
+DECL|macro|MPI_EVENT_RAID_RC_VOLUME_CREATED
+mdefine_line|#define MPI_EVENT_RAID_RC_VOLUME_CREATED                (0x00)
+DECL|macro|MPI_EVENT_RAID_RC_VOLUME_DELETED
+mdefine_line|#define MPI_EVENT_RAID_RC_VOLUME_DELETED                (0x01)
+DECL|macro|MPI_EVENT_RAID_RC_VOLUME_SETTINGS_CHANGED
+mdefine_line|#define MPI_EVENT_RAID_RC_VOLUME_SETTINGS_CHANGED       (0x02)
+DECL|macro|MPI_EVENT_RAID_RC_VOLUME_STATUS_CHANGED
+mdefine_line|#define MPI_EVENT_RAID_RC_VOLUME_STATUS_CHANGED         (0x03)
+DECL|macro|MPI_EVENT_RAID_RC_VOLUME_PHYSDISK_CHANGED
+mdefine_line|#define MPI_EVENT_RAID_RC_VOLUME_PHYSDISK_CHANGED       (0x04)
+DECL|macro|MPI_EVENT_RAID_RC_PHYSDISK_CREATED
+mdefine_line|#define MPI_EVENT_RAID_RC_PHYSDISK_CREATED              (0x05)
+DECL|macro|MPI_EVENT_RAID_RC_PHYSDISK_DELETED
+mdefine_line|#define MPI_EVENT_RAID_RC_PHYSDISK_DELETED              (0x06)
+DECL|macro|MPI_EVENT_RAID_RC_PHYSDISK_SETTINGS_CHANGED
+mdefine_line|#define MPI_EVENT_RAID_RC_PHYSDISK_SETTINGS_CHANGED     (0x07)
+DECL|macro|MPI_EVENT_RAID_RC_PHYSDISK_STATUS_CHANGED
+mdefine_line|#define MPI_EVENT_RAID_RC_PHYSDISK_STATUS_CHANGED       (0x08)
+DECL|macro|MPI_EVENT_RAID_RC_DOMAIN_VAL_NEEDED
+mdefine_line|#define MPI_EVENT_RAID_RC_DOMAIN_VAL_NEEDED             (0x09)
+DECL|macro|MPI_EVENT_RAID_RC_SMART_DATA
+mdefine_line|#define MPI_EVENT_RAID_RC_SMART_DATA                    (0x0A)
+DECL|macro|MPI_EVENT_RAID_RC_REPLACE_ACTION_STARTED
+mdefine_line|#define MPI_EVENT_RAID_RC_REPLACE_ACTION_STARTED        (0x0B)
 multiline_comment|/*****************************************************************************&n;*&n;*               F i r m w a r e    L o a d    M e s s a g e s&n;*&n;*****************************************************************************/
 multiline_comment|/****************************************************************************/
 multiline_comment|/*  Firmware Download message and associated structures                     */
@@ -1462,6 +1601,8 @@ DECL|macro|MPI_FW_DOWNLOAD_ITYPE_FW
 mdefine_line|#define MPI_FW_DOWNLOAD_ITYPE_FW            (0x01)
 DECL|macro|MPI_FW_DOWNLOAD_ITYPE_BIOS
 mdefine_line|#define MPI_FW_DOWNLOAD_ITYPE_BIOS          (0x02)
+DECL|macro|MPI_FW_DOWNLOAD_ITYPE_NVDATA
+mdefine_line|#define MPI_FW_DOWNLOAD_ITYPE_NVDATA        (0x03)
 DECL|struct|_FWDownloadTCSGE
 r_typedef
 r_struct
@@ -1487,11 +1628,12 @@ id|U8
 id|Flags
 suffix:semicolon
 multiline_comment|/* 03h */
-DECL|member|Reserved1
+DECL|member|Reserved_0100_Checksum
 id|U32
-id|Reserved1
+id|Reserved_0100_Checksum
 suffix:semicolon
 multiline_comment|/* 04h */
+multiline_comment|/* obsolete Checksum */
 DECL|member|ImageOffset
 id|U32
 id|ImageOffset
@@ -1663,8 +1805,8 @@ DECL|macro|MPI_FW_UPLOAD_ITYPE_FW_FLASH
 mdefine_line|#define MPI_FW_UPLOAD_ITYPE_FW_FLASH        (0x01)
 DECL|macro|MPI_FW_UPLOAD_ITYPE_BIOS_FLASH
 mdefine_line|#define MPI_FW_UPLOAD_ITYPE_BIOS_FLASH      (0x02)
-DECL|macro|MPI_FW_UPLOAD_ITYPE_DATA_IOC_MEM
-mdefine_line|#define MPI_FW_UPLOAD_ITYPE_DATA_IOC_MEM    (0x03)
+DECL|macro|MPI_FW_UPLOAD_ITYPE_NVDATA
+mdefine_line|#define MPI_FW_UPLOAD_ITYPE_NVDATA          (0x03)
 DECL|struct|_FWUploadTCSGE
 r_typedef
 r_struct
@@ -1854,16 +1996,11 @@ id|U16
 id|ProductId
 suffix:semicolon
 multiline_comment|/* 22h */
-DECL|member|FwVersion
-id|U16
-id|FwVersion
+DECL|member|FWVersion
+id|MPI_FW_VERSION
+id|FWVersion
 suffix:semicolon
 multiline_comment|/* 24h */
-DECL|member|Reserved1
-id|U16
-id|Reserved1
-suffix:semicolon
-multiline_comment|/* 26h */
 DECL|member|SeqCodeVersion
 id|U32
 id|SeqCodeVersion
@@ -1874,9 +2011,9 @@ id|U32
 id|ImageSize
 suffix:semicolon
 multiline_comment|/* 2Ch */
-DECL|member|Reserved2
+DECL|member|NextImageHeaderOffset
 id|U32
-id|Reserved2
+id|NextImageHeaderOffset
 suffix:semicolon
 multiline_comment|/* 30h */
 DECL|member|LoadStartAddress
@@ -1939,71 +2076,119 @@ DECL|macro|MPI_FW_HEADER_WHAT_SIGNATURE
 mdefine_line|#define MPI_FW_HEADER_WHAT_SIGNATURE        (0x29232840)
 multiline_comment|/* defines for using the ProductId field */
 DECL|macro|MPI_FW_HEADER_PID_TYPE_MASK
-mdefine_line|#define MPI_FW_HEADER_PID_TYPE_MASK         (0xF000)
+mdefine_line|#define MPI_FW_HEADER_PID_TYPE_MASK             (0xF000)
 DECL|macro|MPI_FW_HEADER_PID_TYPE_SCSI
-mdefine_line|#define MPI_FW_HEADER_PID_TYPE_SCSI         (0x0000)
+mdefine_line|#define MPI_FW_HEADER_PID_TYPE_SCSI             (0x0000)
 DECL|macro|MPI_FW_HEADER_PID_TYPE_FC
-mdefine_line|#define MPI_FW_HEADER_PID_TYPE_FC           (0x1000)
-DECL|macro|MPI_FW_HEADER_PID_FW_VENDOR_MASK
-mdefine_line|#define MPI_FW_HEADER_PID_FW_VENDOR_MASK    (0x0F00)
-DECL|macro|MPI_FW_HEADER_PID_FW_VENDOR_LSI
-mdefine_line|#define MPI_FW_HEADER_PID_FW_VENDOR_LSI     (0x0000)
+mdefine_line|#define MPI_FW_HEADER_PID_TYPE_FC               (0x1000)
+DECL|macro|MPI_FW_HEADER_PID_PROD_MASK
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_MASK                     (0x0F00)
+DECL|macro|MPI_FW_HEADER_PID_PROD_INITIATOR_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_INITIATOR_SCSI           (0x0100)
+DECL|macro|MPI_FW_HEADER_PID_PROD_TARGET_INITIATOR_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_TARGET_INITIATOR_SCSI    (0x0200)
+DECL|macro|MPI_FW_HEADER_PID_PROD_TARGET_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_TARGET_SCSI              (0x0300)
+DECL|macro|MPI_FW_HEADER_PID_PROD_IM_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_IM_SCSI                  (0x0400)
+DECL|macro|MPI_FW_HEADER_PID_PROD_IS_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_IS_SCSI                  (0x0500)
+DECL|macro|MPI_FW_HEADER_PID_PROD_CTX_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_PROD_CTX_SCSI                 (0x0600)
 DECL|macro|MPI_FW_HEADER_PID_FAMILY_MASK
-mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_MASK       (0x000F)
-DECL|macro|MPI_FW_HEADER_PID_FAMILY_1030_SCSI
-mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1030_SCSI  (0x0000)
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_MASK           (0x00FF)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1030A0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1030A0_SCSI    (0x0001)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1030B0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1030B0_SCSI    (0x0002)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1030B1_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1030B1_SCSI    (0x0003)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1030C0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1030C0_SCSI    (0x0004)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1020A0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1020A0_SCSI    (0x0005)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1020B0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1020B0_SCSI    (0x0006)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1020B1_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1020B1_SCSI    (0x0007)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1020C0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1020C0_SCSI    (0x0008)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1035A0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1035A0_SCSI    (0x0009)
+DECL|macro|MPI_FW_HEADER_PID_FAMILY_1035B0_SCSI
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_1035B0_SCSI    (0x000A)
 DECL|macro|MPI_FW_HEADER_PID_FAMILY_909_FC
-mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_909_FC     (0x0000)
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_909_FC         (0x0000)
 DECL|macro|MPI_FW_HEADER_PID_FAMILY_919_FC
-mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_919_FC     (0x0001)
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_919_FC         (0x0001)
 DECL|macro|MPI_FW_HEADER_PID_FAMILY_919X_FC
-mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_919X_FC    (0x0002)
-DECL|struct|_MPI_DATA_HEADER
+mdefine_line|#define MPI_FW_HEADER_PID_FAMILY_919X_FC        (0x0002)
+DECL|struct|_MPI_EXT_IMAGE_HEADER
 r_typedef
 r_struct
-id|_MPI_DATA_HEADER
+id|_MPI_EXT_IMAGE_HEADER
 (brace
-DECL|member|Signature
-id|U32
-id|Signature
+DECL|member|ImageType
+id|U8
+id|ImageType
 suffix:semicolon
 multiline_comment|/* 00h */
-DECL|member|FunctionNumber
-id|U16
-id|FunctionNumber
+DECL|member|Reserved
+id|U8
+id|Reserved
 suffix:semicolon
-multiline_comment|/* 04h */
-DECL|member|Length
+multiline_comment|/* 01h */
+DECL|member|Reserved1
 id|U16
-id|Length
+id|Reserved1
 suffix:semicolon
-multiline_comment|/* 06h */
+multiline_comment|/* 02h */
 DECL|member|Checksum
 id|U32
 id|Checksum
 suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|ImageSize
+id|U32
+id|ImageSize
+suffix:semicolon
 multiline_comment|/* 08h */
+DECL|member|NextImageHeaderOffset
+id|U32
+id|NextImageHeaderOffset
+suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|LoadStartAddress
 id|U32
 id|LoadStartAddress
 suffix:semicolon
-multiline_comment|/* 0Ch */
-DECL|typedef|MPI_DATA_HEADER
-DECL|typedef|PTR_MPI_DATA_HEADER
-)brace
-id|MPI_DATA_HEADER
-comma
-id|MPI_POINTER
-id|PTR_MPI_DATA_HEADER
-comma
-DECL|typedef|MpiDataHeader_t
-DECL|typedef|pMpiDataHeader_t
-id|MpiDataHeader_t
-comma
-id|MPI_POINTER
-id|pMpiDataHeader_t
+multiline_comment|/* 10h */
+DECL|member|Reserved2
+id|U32
+id|Reserved2
 suffix:semicolon
-DECL|macro|MPI_DATA_HEADER_SIGNATURE
-mdefine_line|#define MPI_DATA_HEADER_SIGNATURE           (0x43504147)
+multiline_comment|/* 14h */
+DECL|typedef|MPI_EXT_IMAGE_HEADER
+DECL|typedef|PTR_MPI_EXT_IMAGE_HEADER
+)brace
+id|MPI_EXT_IMAGE_HEADER
+comma
+id|MPI_POINTER
+id|PTR_MPI_EXT_IMAGE_HEADER
+comma
+DECL|typedef|MpiExtImageHeader_t
+DECL|typedef|pMpiExtImageHeader_t
+id|MpiExtImageHeader_t
+comma
+id|MPI_POINTER
+id|pMpiExtImageHeader_t
+suffix:semicolon
+multiline_comment|/* defines for the ImageType field */
+DECL|macro|MPI_EXT_IMAGE_TYPE_UNSPECIFIED
+mdefine_line|#define MPI_EXT_IMAGE_TYPE_UNSPECIFIED          (0x00)
+DECL|macro|MPI_EXT_IMAGE_TYPE_FW
+mdefine_line|#define MPI_EXT_IMAGE_TYPE_FW                   (0x01)
+DECL|macro|MPI_EXT_IMAGE_TYPE_NVDATA
+mdefine_line|#define MPI_EXT_IMAGE_TYPE_NVDATA               (0x03)
 macro_line|#endif
 eof

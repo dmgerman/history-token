@@ -650,24 +650,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FUSION
-r_extern
-r_int
-id|fusion_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_int
-id|net_dev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|soc_probe
@@ -733,13 +715,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FUSION
-id|fusion_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FC4_SOC
 multiline_comment|/* This has to be done before scsi_dev_init */
 id|soc_probe
@@ -750,13 +725,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_CPQ_DA
 id|cpqarray_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET
-id|net_dev_init
 c_func
 (paren
 )paren

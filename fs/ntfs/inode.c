@@ -1126,9 +1126,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Attribute list found in inode %li (0x%lx).&quot;
-comma
-id|vi-&gt;i_ino
+l_string|&quot;Attribute list found in inode 0x%lx.&quot;
 comma
 id|vi-&gt;i_ino
 )paren
@@ -3163,13 +3161,11 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Failed with error code %i. Marking inode &quot;
-l_string|&quot;%li (0x%lx) as bad.&quot;
+l_string|&quot;Failed with error code %i. Marking inode 0x%lx &quot;
+l_string|&quot;as bad.&quot;
 comma
 op_minus
 id|err
-comma
-id|vi-&gt;i_ino
 comma
 id|vi-&gt;i_ino
 )paren
@@ -3288,7 +3284,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Called for inode %ld but only inode %d &quot;
+l_string|&quot;Called for inode 0x%lx but only inode %d &quot;
 l_string|&quot;allowed.&quot;
 comma
 id|vi-&gt;i_ino
@@ -4091,7 +4087,7 @@ c_func
 id|al_entry-&gt;mft_reference
 )paren
 op_ne
-id|ni-&gt;mft_no
+id|vi-&gt;i_ino
 )paren
 (brace
 multiline_comment|/* MFT references do not match, logic fails. */
@@ -4290,6 +4286,9 @@ op_logical_neg
 id|next_vcn
 )paren
 (brace
+id|u64
+id|ll
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4378,6 +4377,37 @@ id|allocated_size
 )paren
 suffix:semicolon
 multiline_comment|/* Set the number of mft records. */
+id|ll
+op_assign
+id|vi-&gt;i_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Verify the number of mft records does not exceed&n;&t;&t;&t; * 2^32 - 1.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ll
+op_ge
+(paren
+l_int|1ULL
+op_lshift
+l_int|32
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;$MFT is too big! Aborting.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|put_err_out
+suffix:semicolon
+)brace
 id|vol
 op_member_access_from_pointer
 id|_VMM
@@ -4386,9 +4416,7 @@ c_func
 id|nr_mft_records
 )paren
 op_assign
-id|vi-&gt;i_size
-op_rshift
-id|vol-&gt;mft_record_size_bits
+id|ll
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * We have got the first extent of the run_list for&n;&t;&t;&t; * $MFT which means it is now relatively safe to call&n;&t;&t;&t; * the normal ntfs_read_inode() function. Thus, take&n;&t;&t;&t; * us out of the calling chain. Also we need to do this&n;&t;&t;&t; * now because we need ntfs_read_inode() in place to&n;&t;&t;&t; * get at subsequent extents.&n;&t;&t;&t; */
 id|sb-&gt;s_op
@@ -4717,13 +4745,8 @@ id|ni
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode 0x%Lx.&quot;
+l_string|&quot;Entering for inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -4753,13 +4776,8 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode 0x%Lx.&quot;
+l_string|&quot;Entering for inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|ni-&gt;mft_no
 )paren
 suffix:semicolon

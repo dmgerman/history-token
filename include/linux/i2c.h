@@ -6,14 +6,14 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c.h,v 1.46 2001/08/31 00:04:07 phil Exp $ */
+multiline_comment|/* $Id: i2c.h,v 1.50 2002/03/23 00:53:38 phil Exp $ */
 macro_line|#ifndef I2C_H
 DECL|macro|I2C_H
 mdefine_line|#define I2C_H
 DECL|macro|I2C_DATE
-mdefine_line|#define I2C_DATE &quot;20010830&quot;
+mdefine_line|#define I2C_DATE &quot;20020322&quot;
 DECL|macro|I2C_VERSION
-mdefine_line|#define I2C_VERSION &quot;2.6.1&quot;
+mdefine_line|#define I2C_VERSION &quot;2.6.3&quot;
 macro_line|#include &lt;linux/i2c-id.h&gt;&t;/* id values of adapters et. al. &t;*/
 macro_line|#include &lt;linux/types.h&gt;
 r_struct
@@ -27,11 +27,8 @@ DECL|macro|KERNEL_VERSION
 mdefine_line|#define KERNEL_VERSION(a,b,c) (((a) &lt;&lt; 16) | ((b) &lt;&lt; 8) | (c))
 macro_line|#endif
 macro_line|#include &lt;asm/page.h&gt;&t;&t;&t;/* for 2.2.xx &t;&t;&t;*/
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,0,25)
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#else
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
 DECL|macro|I2C_ALGO_MAX
@@ -331,6 +328,24 @@ id|command
 comma
 id|u8
 id|length
+comma
+id|u8
+op_star
+id|values
+)paren
+suffix:semicolon
+r_extern
+id|s32
+id|i2c_smbus_read_i2c_block_data
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|client
+comma
+id|u8
+id|command
 comma
 id|u8
 op_star
@@ -1174,9 +1189,13 @@ mdefine_line|#define I2C_FUNC_SMBUS_READ_BLOCK_DATA&t;0x01000000
 DECL|macro|I2C_FUNC_SMBUS_WRITE_BLOCK_DATA
 mdefine_line|#define I2C_FUNC_SMBUS_WRITE_BLOCK_DATA 0x02000000 
 DECL|macro|I2C_FUNC_SMBUS_READ_I2C_BLOCK
-mdefine_line|#define I2C_FUNC_SMBUS_READ_I2C_BLOCK&t;0x04000000 /* New I2C-like block */
+mdefine_line|#define I2C_FUNC_SMBUS_READ_I2C_BLOCK&t;0x04000000 /* I2C-like block xfer  */
 DECL|macro|I2C_FUNC_SMBUS_WRITE_I2C_BLOCK
-mdefine_line|#define I2C_FUNC_SMBUS_WRITE_I2C_BLOCK&t;0x08000000 /* transfer */
+mdefine_line|#define I2C_FUNC_SMBUS_WRITE_I2C_BLOCK&t;0x08000000 /* w/ 1-byte reg. addr. */
+DECL|macro|I2C_FUNC_SMBUS_READ_I2C_BLOCK_2
+mdefine_line|#define I2C_FUNC_SMBUS_READ_I2C_BLOCK_2&t; 0x10000000 /* I2C-like block xfer  */
+DECL|macro|I2C_FUNC_SMBUS_WRITE_I2C_BLOCK_2
+mdefine_line|#define I2C_FUNC_SMBUS_WRITE_I2C_BLOCK_2 0x20000000 /* w/ 2-byte reg. addr. */
 DECL|macro|I2C_FUNC_SMBUS_BYTE
 mdefine_line|#define I2C_FUNC_SMBUS_BYTE I2C_FUNC_SMBUS_READ_BYTE | &bslash;&n;                            I2C_FUNC_SMBUS_WRITE_BYTE
 DECL|macro|I2C_FUNC_SMBUS_BYTE_DATA
@@ -1187,8 +1206,10 @@ DECL|macro|I2C_FUNC_SMBUS_BLOCK_DATA
 mdefine_line|#define I2C_FUNC_SMBUS_BLOCK_DATA I2C_FUNC_SMBUS_READ_BLOCK_DATA | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_BLOCK_DATA
 DECL|macro|I2C_FUNC_SMBUS_I2C_BLOCK
 mdefine_line|#define I2C_FUNC_SMBUS_I2C_BLOCK I2C_FUNC_SMBUS_READ_I2C_BLOCK | &bslash;&n;                                  I2C_FUNC_SMBUS_WRITE_I2C_BLOCK
+DECL|macro|I2C_FUNC_SMBUS_I2C_BLOCK_2
+mdefine_line|#define I2C_FUNC_SMBUS_I2C_BLOCK_2 I2C_FUNC_SMBUS_READ_I2C_BLOCK_2 | &bslash;&n;                                   I2C_FUNC_SMBUS_WRITE_I2C_BLOCK_2
 DECL|macro|I2C_FUNC_SMBUS_EMUL
-mdefine_line|#define I2C_FUNC_SMBUS_EMUL I2C_FUNC_SMBUS_QUICK | &bslash;&n;                            I2C_FUNC_SMBUS_BYTE | &bslash;&n;                            I2C_FUNC_SMBUS_BYTE_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_WORD_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_PROC_CALL | &bslash;&n;                            I2C_FUNC_SMBUS_WRITE_BLOCK_DATA
+mdefine_line|#define I2C_FUNC_SMBUS_EMUL I2C_FUNC_SMBUS_QUICK | &bslash;&n;                            I2C_FUNC_SMBUS_BYTE | &bslash;&n;                            I2C_FUNC_SMBUS_BYTE_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_WORD_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_PROC_CALL | &bslash;&n;                            I2C_FUNC_SMBUS_WRITE_BLOCK_DATA | &bslash;&n;                            I2C_FUNC_SMBUS_I2C_BLOCK | &bslash;&n;                            I2C_FUNC_SMBUS_I2C_BLOCK_2
 multiline_comment|/* &n; * Data for SMBus Messages &n; */
 DECL|union|i2c_smbus_data
 r_union

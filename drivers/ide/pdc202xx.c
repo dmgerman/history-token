@@ -2671,6 +2671,7 @@ suffix:semicolon
 multiline_comment|/* start DMA */
 )brace
 DECL|function|pdc202xx_udma_stop
+r_static
 r_int
 id|pdc202xx_udma_stop
 c_func
@@ -2771,10 +2772,6 @@ id|PDC_CLK
 )paren
 suffix:semicolon
 )brace
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -2874,6 +2871,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|pdc202xx_new_reset
+r_static
 r_void
 id|pdc202xx_new_reset
 c_func

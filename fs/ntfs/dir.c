@@ -45,7 +45,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/**&n; * ntfs_lookup_inode_by_name - find an inode in a directory given its name&n; * @dir_ni:&t;ntfs inode of the directory in which to search for the name&n; * @uname:&t;Unicode name for which to search in the directory&n; * @uname_len:&t;length of the name @uname in Unicode characters&n; * @res:&t;return the found file name if necessary (see below)&n; *&n; * Look for an inode with name @uname in the directory with inode @dir_ni.&n; * ntfs_lookup_inode_by_name() walks the contents of the directory looking for&n; * the Unicode name. If the name is found in the directory, the corresponding&n; * inode number (&gt;= 0) is returned as a mft reference in cpu format, i.e. it&n; * is a 64-bit number containing the sequence number.&n; *&n; * On error, a negative value is returned corresponding to the error code. In&n; * particular if the inode is not found -ENOENT is returned. Note that you&n; * can&squot;t just check the return value for being negative, you have to check the&n; * inode number for being negative which you can extract using MREC(return&n; * value).&n; *&n; * Note, @uname_len does not include the (optional) terminating NULL character.&n; *&n; * Note, we look for a case sensitive match first but we also look for a case&n; * insensitive match at the same time. If we find a case insensitive match, we&n; * save that for the case that we don&squot;t find an exact match, where we return&n; * the case insensitive match and setup @res (which we allocate!) with the mft&n; * reference, the file name type, length and with a copy of the little endian&n; * Unicode file name itself. If we match a file name which is in the DOS name&n; * space, we only return the mft reference and file name type in @res.&n; * ntfs_lookup() then uses this to find the long file name in the inode itself.&n; * This is to avoid polluting the dcache with short file names. We want them to&n; * work but we don&squot;t care for how quickly one can access them. This also fixes&n; * the dcache aliasing issues.&n; */
 DECL|function|ntfs_lookup_inode_by_name
-id|u64
+id|MFT_REF
 id|ntfs_lookup_inode_by_name
 c_func
 (paren
@@ -221,13 +221,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%Lx.&quot;
+l_string|&quot;inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -894,14 +889,9 @@ c_func
 id|sb
 comma
 l_string|&quot;No index allocation attribute but index entry &quot;
-l_string|&quot;requires one. Directory inode 0x%Lx is &quot;
+l_string|&quot;requires one. Directory inode 0x%lx is &quot;
 l_string|&quot;corrupt or driver bug.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -1066,13 +1056,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Out of bounds check failed. Corrupt directory &quot;
-l_string|&quot;inode 0x%Lx or driver bug.&quot;
+l_string|&quot;inode 0x%lx or driver bug.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -1104,7 +1089,7 @@ id|sb
 comma
 l_string|&quot;Actual VCN (0x%Lx) of index buffer is &quot;
 l_string|&quot;different from expected VCN (0x%Lx). &quot;
-l_string|&quot;Directory inode 0x%Lx is corrupt or driver &quot;
+l_string|&quot;Directory inode 0x%lx is corrupt or driver &quot;
 l_string|&quot;bug.&quot;
 comma
 (paren
@@ -1123,11 +1108,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -1166,7 +1146,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
-l_string|&quot;0x%Lx has a size (%u) differing from the &quot;
+l_string|&quot;0x%lx has a size (%u) differing from the &quot;
 l_string|&quot;directory specified size (%u). Directory &quot;
 l_string|&quot;inode is corrupt or driver bug.&quot;
 comma
@@ -1176,11 +1156,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 comma
 id|le32_to_cpu
@@ -1241,7 +1216,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
-l_string|&quot;0x%Lx crosses page boundary. Impossible! &quot;
+l_string|&quot;0x%lx crosses page boundary. Impossible! &quot;
 l_string|&quot;Cannot access! This is probably a bug in the &quot;
 l_string|&quot;driver.&quot;
 comma
@@ -1251,11 +1226,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -1309,7 +1279,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Size of index buffer (VCN 0x%Lx) of directory &quot;
-l_string|&quot;inode 0x%Lx exceeds maximum size.&quot;
+l_string|&quot;inode 0x%lx exceeds maximum size.&quot;
 comma
 (paren
 r_int
@@ -1317,11 +1287,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -1428,13 +1393,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Index entry out of bounds in &quot;
-l_string|&quot;directory inode 0x%Lx.&quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -1938,13 +1898,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Index entry with child node found in &quot;
-l_string|&quot;a leaf node in directory inode 0x%Lx.&quot;
+l_string|&quot;a leaf node in directory inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -2031,13 +1986,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Negative child node vcn in directory inode &quot;
-l_string|&quot;0x%Lx.&quot;
+l_string|&quot;0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -2364,13 +2314,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%Lx.&quot;
+l_string|&quot;inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -2747,14 +2692,9 @@ c_func
 id|sb
 comma
 l_string|&quot;No index allocation attribute but index entry &quot;
-l_string|&quot;requires one. Directory inode 0x%Lx is &quot;
+l_string|&quot;requires one. Directory inode 0x%lx is &quot;
 l_string|&quot;corrupt or driver bug.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -2919,13 +2859,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Out of bounds check failed. Corrupt directory &quot;
-l_string|&quot;inode 0x%Lx or driver bug.&quot;
+l_string|&quot;inode 0x%lx or driver bug.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -2957,7 +2892,7 @@ id|sb
 comma
 l_string|&quot;Actual VCN (0x%Lx) of index buffer is &quot;
 l_string|&quot;different from expected VCN (0x%Lx). &quot;
-l_string|&quot;Directory inode 0x%Lx is corrupt or driver &quot;
+l_string|&quot;Directory inode 0x%lx is corrupt or driver &quot;
 l_string|&quot;bug.&quot;
 comma
 (paren
@@ -2976,11 +2911,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -3019,7 +2949,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
-l_string|&quot;0x%Lx has a size (%u) differing from the &quot;
+l_string|&quot;0x%lx has a size (%u) differing from the &quot;
 l_string|&quot;directory specified size (%u). Directory &quot;
 l_string|&quot;inode is corrupt or driver bug.&quot;
 comma
@@ -3029,11 +2959,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 comma
 id|le32_to_cpu
@@ -3094,7 +3019,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
-l_string|&quot;0x%Lx crosses page boundary. Impossible! &quot;
+l_string|&quot;0x%lx crosses page boundary. Impossible! &quot;
 l_string|&quot;Cannot access! This is probably a bug in the &quot;
 l_string|&quot;driver.&quot;
 comma
@@ -3104,11 +3029,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -3162,7 +3082,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Size of index buffer (VCN 0x%Lx) of directory &quot;
-l_string|&quot;inode 0x%Lx exceeds maximum size.&quot;
+l_string|&quot;inode 0x%lx exceeds maximum size.&quot;
 comma
 (paren
 r_int
@@ -3170,11 +3090,6 @@ r_int
 )paren
 id|vcn
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -3281,13 +3196,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Index entry out of bounds in &quot;
-l_string|&quot;directory inode 0x%Lx.&quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -3524,13 +3434,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Index entry with child node found in &quot;
-l_string|&quot;a leaf node in directory inode 0x%Lx.&quot;
+l_string|&quot;a leaf node in directory inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -3617,13 +3522,8 @@ c_func
 id|sb
 comma
 l_string|&quot;Negative child node vcn in directory inode &quot;
-l_string|&quot;0x%Lx.&quot;
+l_string|&quot;0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|dir_ni-&gt;mft_no
 )paren
 suffix:semicolon
@@ -3767,7 +3667,7 @@ DECL|typedef|INDEX_TYPE
 )brace
 id|INDEX_TYPE
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @filp:&t;open file descriptor for the current directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode name to the loaded NLS and pass it to&n; * the filldir callback.&n; */
+multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @filp:&t;open file descriptor for the current directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; */
 DECL|function|ntfs_filldir
 r_static
 r_inline
@@ -3982,7 +3882,7 @@ id|name
 comma
 id|NTFS_MAX_NAME_LEN
 op_star
-l_int|3
+id|NLS_MAX_CHARSET_SIZE
 op_plus
 l_int|1
 )paren
@@ -4025,7 +3925,7 @@ id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Calling filldir for %s with len %i, f_pos 0x%Lx, inode &quot;
-l_string|&quot;0x%Lx, DT_%s.&quot;
+l_string|&quot;0x%lx, DT_%s.&quot;
 comma
 id|name
 comma
@@ -4033,11 +3933,6 @@ id|name_len
 comma
 id|filp-&gt;f_pos
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
 id|MREF_LE
 c_func
 (paren
@@ -4072,10 +3967,6 @@ id|name_len
 comma
 id|filp-&gt;f_pos
 comma
-(paren
-r_int
-r_int
-)paren
 id|MREF_LE
 c_func
 (paren
@@ -4209,14 +4100,9 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode 0x%Lx, f_pos 0x%Lx.&quot;
+l_string|&quot;Entering for inode 0x%lx, f_pos 0x%Lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 comma
 id|filp-&gt;f_pos
 )paren
@@ -4252,14 +4138,9 @@ id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Calling filldir for . with len 1, f_pos 0x0, &quot;
-l_string|&quot;inode 0x%Lx, DT_DIR.&quot;
+l_string|&quot;inode 0x%lx, DT_DIR.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|rc
@@ -4418,7 +4299,7 @@ c_func
 (paren
 id|NTFS_MAX_NAME_LEN
 op_star
-l_int|3
+id|NLS_MAX_CHARSET_SIZE
 op_plus
 l_int|1
 comma
@@ -4492,14 +4373,9 @@ c_func
 id|sb
 comma
 l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%Lx.&quot;
+l_string|&quot;inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|err
@@ -4819,14 +4695,9 @@ c_func
 id|sb
 comma
 l_string|&quot;Index bitmap attribute missing in &quot;
-l_string|&quot;directory inode 0x%Lx.&quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|err
@@ -5125,14 +4996,9 @@ c_func
 id|sb
 comma
 l_string|&quot;Out of bounds check failed. Corrupt directory &quot;
-l_string|&quot;inode 0x%Lx or driver bug.&quot;
+l_string|&quot;inode 0x%lx or driver bug.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|err
@@ -5189,7 +5055,7 @@ id|sb
 comma
 l_string|&quot;Actual VCN (0x%Lx) of index buffer is &quot;
 l_string|&quot;different from expected VCN (0x%Lx). &quot;
-l_string|&quot;Directory inode 0x%Lx is corrupt or driver &quot;
+l_string|&quot;Directory inode 0x%lx is corrupt or driver &quot;
 l_string|&quot;bug. &quot;
 comma
 (paren
@@ -5216,12 +5082,7 @@ c_func
 id|index_vcn_size_bits
 )paren
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|err
@@ -5259,7 +5120,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
-l_string|&quot;0x%Lx has a size (%u) differing from the &quot;
+l_string|&quot;0x%lx has a size (%u) differing from the &quot;
 l_string|&quot;directory specified size (%u). Directory &quot;
 l_string|&quot;inode is corrupt or driver bug.&quot;
 comma
@@ -5277,12 +5138,7 @@ c_func
 id|index_vcn_size_bits
 )paren
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 comma
 id|le32_to_cpu
 c_func
@@ -5342,7 +5198,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
-l_string|&quot;0x%Lx crosses page boundary. Impossible! &quot;
+l_string|&quot;0x%lx crosses page boundary. Impossible! &quot;
 l_string|&quot;Cannot access! This is probably a bug in the &quot;
 l_string|&quot;driver.&quot;
 comma
@@ -5360,12 +5216,7 @@ c_func
 id|index_vcn_size_bits
 )paren
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|err
@@ -5438,7 +5289,7 @@ c_func
 id|sb
 comma
 l_string|&quot;Size of index buffer (VCN 0x%Lx) of directory &quot;
-l_string|&quot;inode 0x%Lx exceeds maximum size.&quot;
+l_string|&quot;inode 0x%lx exceeds maximum size.&quot;
 comma
 (paren
 r_int
@@ -5454,12 +5305,7 @@ c_func
 id|index_vcn_size_bits
 )paren
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|ndir-&gt;mft_no
+id|vdir-&gt;i_ino
 )paren
 suffix:semicolon
 id|err

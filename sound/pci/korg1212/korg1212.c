@@ -12,11 +12,18 @@ macro_line|#include &lt;sound/pcm.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG                    1
-singleline_comment|//#define LARGEALLOC               1
-DECL|macro|PRINTK
-mdefine_line|#define PRINTK&t;printk
+singleline_comment|// ----------------------------------------------------------------------------
+singleline_comment|// Debug Stuff
+singleline_comment|// ----------------------------------------------------------------------------
+DECL|macro|K1212_DEBUG_LEVEL
+mdefine_line|#define K1212_DEBUG_LEVEL&t;&t;0
+DECL|macro|K1212_DEBUG_PRINTK
+mdefine_line|#define K1212_DEBUG_PRINTK&t;&t;printk
+singleline_comment|// ----------------------------------------------------------------------------
+singleline_comment|// Record/Play Buffer Allocation Method. If K1212_LARGEALLOC is defined all 
+singleline_comment|// buffers are alocated as a large piece inside KorgSharedBuffer.
+singleline_comment|// ----------------------------------------------------------------------------
+singleline_comment|//#define K1212_LARGEALLOC&t;&t;1
 singleline_comment|// ----------------------------------------------------------------------------
 singleline_comment|// the following enum defines the valid states of the Korg 1212 I/O card.
 singleline_comment|// ----------------------------------------------------------------------------
@@ -597,7 +604,7 @@ r_typedef
 r_struct
 id|KorgSharedBuffer
 (brace
-macro_line|#ifdef LARGEALLOC
+macro_line|#ifdef K1212_LARGEALLOC
 DECL|member|playDataBufs
 id|KorgAudioBuffer
 id|playDataBufs
@@ -1607,11 +1614,11 @@ c_cond
 id|korg1212-&gt;outDoorbellPtr
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Card &lt;- 0x%08x 0x%08x [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Card &lt;- 0x%08x 0x%08x [%s]&bslash;n&quot;
 comma
 id|doorbellVal
 comma
@@ -1795,11 +1802,11 @@ l_int|20
 op_star
 id|HZ
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: WaitForCardStopAck [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: WaitForCardStopAck [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -1807,8 +1814,7 @@ id|korg1212-&gt;cardState
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif 
-singleline_comment|// DEBUG
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2003,11 +2009,11 @@ op_star
 id|korg1212
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: OpenCard [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: OpenCard [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -2039,11 +2045,11 @@ op_star
 id|korg1212
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: CloseCard [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: CloseCard [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -2078,16 +2084,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: CloseCard - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: CloseCard - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -2164,11 +2170,11 @@ op_star
 id|korg1212
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: SetupForPlay [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: SetupForPlay [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -2203,16 +2209,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: SetupForPlay - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: SetupForPlay - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -2250,11 +2256,11 @@ op_star
 id|korg1212
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: TriggerPlay [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: TriggerPlay [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -2289,16 +2295,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: TriggerPlay - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: TriggerPlay - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -2336,11 +2342,11 @@ op_star
 id|korg1212
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: StopPlay [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: StopPlay [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -2424,11 +2430,11 @@ id|MonitorModeSelector
 id|mode
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: SetMonitorMode [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: SetMonitorMode [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -2672,16 +2678,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Set Clock Source Selector - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Set Clock Source Selector - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -2787,11 +2793,11 @@ singleline_comment|//  the card&squot;s eeprom control register.
 id|u16
 id|count
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: WriteADCSensivity [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: WriteADCSensivity [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -3312,16 +3318,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: WriteADCSensivity - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: WriteADCSensivity - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -3351,11 +3357,11 @@ id|korg1212
 r_int
 id|channel
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: DSP download is complete. [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: DSP download is complete. [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -3385,16 +3391,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Boot from Page 4 - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Boot from Page 4 - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -3450,16 +3456,16 @@ singleline_comment|// is based on 2 buffers
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Configure Buffer Memory - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Configure Buffer Memory - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -3506,16 +3512,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Configure Misc Memory - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Configure Misc Memory - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -3605,16 +3611,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Set Clock Source Selector - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Set Clock Source Selector - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -3633,16 +3639,16 @@ comma
 id|K1212_STATE_READY
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Set Monitor On - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Set Monitor On - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -3747,11 +3753,11 @@ id|doorbellValue
 r_case
 id|K1212_DB_DSPDownloadDone
 suffix:colon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: IRQ DNLD count - %ld, %x, [%s].&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: IRQ DNLD count - %ld, %x, [%s].&bslash;n&quot;
 comma
 id|korg1212-&gt;irqcount
 comma
@@ -3795,11 +3801,11 @@ singleline_comment|// ----------------------------------------------------------
 r_case
 id|K1212_ISRCODE_DMAERROR
 suffix:colon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: IRQ DMAE count - %ld, %x, [%s].&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: IRQ DMAE count - %ld, %x, [%s].&bslash;n&quot;
 comma
 id|korg1212-&gt;irqcount
 comma
@@ -3830,11 +3836,11 @@ singleline_comment|// ----------------------------------------------------------
 r_case
 id|K1212_ISRCODE_CARDSTOPPED
 suffix:colon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: IRQ CSTP count - %ld, %x, [%s].&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: IRQ CSTP count - %ld, %x, [%s].&bslash;n&quot;
 comma
 id|korg1212-&gt;irqcount
 comma
@@ -3860,11 +3866,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-macro_line|#ifdef XDEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 1
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: IRQ DFLT count - %ld, %x, cpos=%d [%s].&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: IRQ DFLT count - %ld, %x, cpos=%d [%s].&bslash;n&quot;
 comma
 id|korg1212-&gt;irqcount
 comma
@@ -3958,11 +3964,11 @@ op_star
 id|korg1212
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: DSP download is starting... [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: DSP download is starting... [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4026,16 +4032,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Start DSP Download RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Start DSP Download RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -4222,11 +4228,11 @@ op_star
 )paren
 id|pcm-&gt;private_data
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_free_pcm [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_free_pcm [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4304,11 +4310,11 @@ id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_playback_open [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_playback_open [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4432,11 +4438,11 @@ id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_capture_open [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_capture_open [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4554,11 +4560,11 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_playback_close [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_playback_close [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4628,11 +4634,11 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_capture_close [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_capture_close [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4721,11 +4727,11 @@ id|KorgAudioFrame
 op_star
 l_int|8
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_channel_info %d:, offset=%ld, first=%d, step=%d&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_channel_info %d:, offset=%ld, first=%d, step=%d&bslash;n&quot;
 comma
 id|chn
 comma
@@ -4760,11 +4766,11 @@ op_star
 id|arg
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_ioctl: cmd=%d&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_ioctl: cmd=%d&bslash;n&quot;
 comma
 id|cmd
 )paren
@@ -4838,11 +4844,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_hw_params [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_hw_params [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -4963,11 +4969,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_prepare [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_prepare [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -5033,11 +5039,11 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_trigger [%s] cmd=%d&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_trigger [%s] cmd=%d&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -5135,11 +5141,11 @@ id|korg1212-&gt;currentBuffer
 op_star
 id|kPlayBufferFrames
 suffix:semicolon
-macro_line|#ifdef XDEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 1
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_pointer [%s] %ld&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_pointer [%s] %ld&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -5202,11 +5208,11 @@ id|bufferData
 op_plus
 id|pos
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_playback_copy [%s] %ld %ld&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_playback_copy [%s] %ld %ld&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -5245,7 +5251,8 @@ id|count
 op_star
 id|K1212_FRAME_SIZE
 )paren
-suffix:colon
+ques
+c_cond
 op_minus
 id|EFAULT
 suffix:colon
@@ -5300,11 +5307,11 @@ id|bufferData
 op_plus
 id|pos
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_capture_copy [%s] %ld %ld&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_capture_copy [%s] %ld %ld&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -5395,11 +5402,11 @@ id|bufferData
 op_plus
 id|pos
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: snd_korg1212_playback_silence [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: snd_korg1212_playback_silence [%s]&bslash;n&quot;
 comma
 id|stateName
 (braket
@@ -7547,11 +7554,11 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: resources:&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: resources:&bslash;n&quot;
 l_string|&quot;    iomem = 0x%lx (%d)&bslash;n&quot;
 l_string|&quot;    ioport  = 0x%lx (%d)&bslash;n&quot;
 l_string|&quot;    iomem = 0x%lx (%d)&bslash;n&quot;
@@ -7919,11 +7926,11 @@ op_plus
 id|DEV_VEND_ID_OFFSET
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: card registers:&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: card registers:&bslash;n&quot;
 l_string|&quot;    Status register = 0x%p&bslash;n&quot;
 l_string|&quot;    OutDoorbell     = 0x%p&bslash;n&quot;
 l_string|&quot;    InDoorbell      = 0x%p&bslash;n&quot;
@@ -8015,11 +8022,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Shared Buffer Area = 0x%p (0x%08lx), %d bytes&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Shared Buffer Area = 0x%p (0x%08lx), %d bytes&bslash;n&quot;
 comma
 id|korg1212-&gt;sharedBufferPtr
 comma
@@ -8032,7 +8039,7 @@ id|KorgSharedBuffer
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef LARGEALLOC
+macro_line|#ifndef K1212_LARGEALLOC
 id|korg1212-&gt;DataBufsSize
 op_assign
 r_sizeof
@@ -8087,11 +8094,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Play Data Area = 0x%p (0x%08x), %d bytes&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Play Data Area = 0x%p (0x%08x), %d bytes&bslash;n&quot;
 comma
 id|korg1212-&gt;playDataBufsPtr
 comma
@@ -8146,11 +8153,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Record Data Area = 0x%p (0x%08x), %d bytes&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Record Data Area = 0x%p (0x%08x), %d bytes&bslash;n&quot;
 comma
 id|korg1212-&gt;recordDataBufsPtr
 comma
@@ -8161,7 +8168,7 @@ id|korg1212-&gt;DataBufsSize
 suffix:semicolon
 macro_line|#endif
 macro_line|#else 
-singleline_comment|// LARGEALLOC
+singleline_comment|// K1212_LARGEALLOC
 id|korg1212-&gt;recordDataBufsPtr
 op_assign
 id|korg1212-&gt;sharedBufferPtr-&gt;recordDataBufs
@@ -8203,7 +8210,7 @@ op_member_access_from_pointer
 id|recordDataBufs
 suffix:semicolon
 macro_line|#endif 
-singleline_comment|// LARGEALLOC
+singleline_comment|// K1212_LARGEALLOC
 id|korg1212-&gt;dspCodeSize
 op_assign
 r_sizeof
@@ -8300,11 +8307,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: DSP Code area = 0x%p (0x%08x) %d bytes [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: DSP Code area = 0x%p (0x%08x) %d bytes [%s]&bslash;n&quot;
 comma
 id|korg1212-&gt;dspMemPtr
 comma
@@ -8337,16 +8344,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 r_if
 c_cond
 (paren
 id|rc
 )paren
-id|PRINTK
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Reboot Card - RC = %d [%s]&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Reboot Card - RC = %d [%s]&bslash;n&quot;
 comma
 id|rc
 comma
@@ -8780,7 +8787,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef LARGEALLOC
+macro_line|#ifndef K1212_LARGEALLOC
 singleline_comment|// ------------------------------------------------------
 singleline_comment|// free up memory resources used for the Play/Rec Buffers
 singleline_comment|// ------------------------------------------------------
@@ -8897,11 +8904,11 @@ op_star
 id|card
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: Freeing card&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: Freeing card&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9087,11 +9094,11 @@ comma
 id|korg1212-&gt;irq
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|PRINTK
+macro_line|#if K1212_DEBUG_LEVEL &gt; 0
+id|K1212_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;DEBUG: %s&bslash;n&quot;
+l_string|&quot;K1212_DEBUG: %s&bslash;n&quot;
 comma
 id|card-&gt;longname
 )paren

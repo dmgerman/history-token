@@ -1175,7 +1175,7 @@ DECL|member|allocatable
 id|u_int
 id|allocatable
 suffix:semicolon
-multiline_comment|/* total sync bw availabel for alloc */
+multiline_comment|/* total sync bw available for alloc */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * P20 0B : frame status capabilities&n; * NOTE: not in swap table, is used by smt.c AND PMF table&n; */

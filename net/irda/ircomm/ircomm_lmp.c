@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
+macro_line|#include &lt;net/irda/irda_device.h&gt;&t;/* struct irda_skb_cb */
 macro_line|#include &lt;net/irda/ircomm_event.h&gt;
 macro_line|#include &lt;net/irda/ircomm_lmp.h&gt;
 multiline_comment|/*&n; * Function ircomm_open_lsap (self)&n; *&n; *    Open LSAP. This function will only be used when using &quot;raw&quot; services&n; *&n; */

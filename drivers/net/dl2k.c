@@ -1,6 +1,6 @@
 multiline_comment|/*  D-Link DL2000-based Gigabit Ethernet Adapter Linux driver */
-multiline_comment|/*&n;    Copyright (c) 2001,2002 by D-Link Corporation&n;    Written by Edward Peng.&lt;edward_peng@dlink.com.tw&gt;&n;    Created 03-May-2001, base on Linux&squot; sundance.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;*/
-multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ==========================================================================&n;    0.01&t;2001/05/03&t;Created DL2000-based linux driver&n;    0.02&t;2001/05/21&t;Added VLAN and hardware checksum support.&n;    1.00&t;2001/06/26&t;Added jumbo frame support.&n;    1.01&t;2001/08/21&t;Added two parameters, rx_coalesce and rx_timeout.&n;    1.02&t;2001/10/08&t;Supported fiber media.&n;    &t;&t;&t;&t;Added flow control parameters.&n;    1.03&t;2001/10/12&t;Changed the default media to 1000mbps_fd for &n;    &t;&t;&t;&t;the fiber devices.&n;    1.04&t;2001/11/08&t;Fixed Tx stopped when tx very busy.&n;    1.05&t;2001/11/22&t;Fixed Tx stopped when unidirectional tx busy.&n;    1.06&t;2001/12/13&t;Fixed disconnect bug at 10Mbps mode.&n;    &t;&t;&t;&t;Fixed tx_full flag incorrect.&n;&t;&t;&t;&t;Added tx_coalesce paramter.&n;    1.07&t;2002/01/03&t;Fixed miscount of RX frame error.&n;    1.08&t;2002/01/17&t;Fixed the multicast bug.&n;    1.09&t;2002/03/07&t;Move rx-poll-now to re-fill loop.&t;&n;    &t;&t;&t;&t;Added rio_timer() to watch rx buffers. &n;    1.10&t;2002/04/16&t;Fixed miscount of carrier error.&n;    1.11&t;2002/05/23&t;Added ISR schedule scheme.&n;    &t;&t;&t;&t;Fixed miscount of rx frame error for DGE-550SX.&n;    &t;&t;&t;&t;Fixed VLAN bug.&n; */
+multiline_comment|/*&n;    Copyright (c) 2001, 2002 by D-Link Corporation&n;    Written by Edward Peng.&lt;edward_peng@dlink.com.tw&gt;&n;    Created 03-May-2001, base on Linux&squot; sundance.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;*/
+multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ==========================================================================&n;    0.01&t;2001/05/03&t;Created DL2000-based linux driver&n;    0.02&t;2001/05/21&t;Added VLAN and hardware checksum support.&n;    1.00&t;2001/06/26&t;Added jumbo frame support.&n;    1.01&t;2001/08/21&t;Added two parameters, rx_coalesce and rx_timeout.&n;    1.02&t;2001/10/08&t;Supported fiber media.&n;    &t;&t;&t;&t;Added flow control parameters.&n;    1.03&t;2001/10/12&t;Changed the default media to 1000mbps_fd for &n;    &t;&t;&t;&t;the fiber devices.&n;    1.04&t;2001/11/08&t;Fixed Tx stopped when tx very busy.&n;    1.05&t;2001/11/22&t;Fixed Tx stopped when unidirectional tx busy.&n;    1.06&t;2001/12/13&t;Fixed disconnect bug at 10Mbps mode.&n;    &t;&t;&t;&t;Fixed tx_full flag incorrect.&n;&t;&t;&t;&t;Added tx_coalesce paramter.&n;    1.07&t;2002/01/03&t;Fixed miscount of RX frame error.&n;    1.08&t;2002/01/17&t;Fixed the multicast bug.&n;    1.09&t;2002/03/07&t;Move rx-poll-now to re-fill loop.&t;&n;    &t;&t;&t;&t;Added rio_timer() to watch rx buffers. &n;    1.10&t;2002/04/16&t;Fixed miscount of carrier error.&n;    1.11&t;2002/05/23&t;Added ISR schedule scheme.&n;    &t;&t;&t;&t;Fixed miscount of rx frame error for DGE-550SX.&n;    &t;&t;&t;&t;Fixed VLAN bug.&n;    1.12&t;2002/06/13&t;Lock tx_coalesce=1 on 10/100Mbps mode.&n; */
 macro_line|#include &quot;dl2k.h&quot;
 DECL|variable|__devinitdata
 r_static
@@ -11,7 +11,7 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;D-Link DL2000-based linux driver v1.11 2002/05/23&bslash;n&quot;
+l_string|&quot;D-Link DL2000-based linux driver v1.12 2002/06/13&bslash;n&quot;
 suffix:semicolon
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8
@@ -676,17 +676,7 @@ id|SET_MODULE_OWNER
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_IO_OPS
-id|ioaddr
-op_assign
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#ifdef MEM_MAPPING
 id|ioaddr
 op_assign
 id|pci_resource_start
@@ -724,6 +714,16 @@ r_goto
 id|err_out_dev
 suffix:semicolon
 )brace
+macro_line|#else
+id|ioaddr
+op_assign
+id|pci_resource_start
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+suffix:semicolon
 macro_line|#endif
 id|dev-&gt;base_addr
 op_assign
@@ -759,6 +759,10 @@ id|np-&gt;rx_lock
 suffix:semicolon
 multiline_comment|/* Parse manual configuration */
 id|np-&gt;an_enable
+op_assign
+l_int|1
+suffix:semicolon
+id|np-&gt;tx_coalesce
 op_assign
 l_int|1
 suffix:semicolon
@@ -1205,6 +1209,7 @@ id|tx_coalesce
 op_assign
 l_int|1
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -1633,7 +1638,7 @@ id|np-&gt;tx_ring_dma
 suffix:semicolon
 id|err_out_iounmap
 suffix:colon
-macro_line|#ifndef USE_IO_OPS
+macro_line|#ifdef MEM_MAPPING
 id|iounmap
 (paren
 (paren
@@ -1874,7 +1879,6 @@ id|crc
 op_assign
 op_complement
 id|ether_crc_le
-c_func
 (paren
 l_int|256
 op_minus
@@ -3226,7 +3230,7 @@ c_cond
 (paren
 id|entry
 op_mod
-id|tx_coalesce
+id|np-&gt;tx_coalesce
 op_eq
 l_int|0
 op_logical_or
@@ -4694,6 +4698,22 @@ id|mii_get_media
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;speed
+op_eq
+l_int|1000
+)paren
+id|np-&gt;tx_coalesce
+op_assign
+id|tx_coalesce
+suffix:semicolon
+r_else
+id|np-&gt;tx_coalesce
+op_assign
+l_int|1
 suffix:semicolon
 id|macctrl
 op_assign
@@ -8191,7 +8211,7 @@ comma
 id|np-&gt;tx_ring_dma
 )paren
 suffix:semicolon
-macro_line|#ifndef USE_IO_OPS
+macro_line|#ifdef MEM_MAPPING
 id|iounmap
 (paren
 (paren

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/parameters.h&gt;
@@ -391,9 +390,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_cleanup (void)&n; *&n; *    Called by module destruction/cleanup code&n; *&n; */
-macro_line|#ifdef MODULE
 DECL|function|irttp_cleanup
 r_void
+id|__exit
 id|irttp_cleanup
 c_func
 (paren
@@ -451,7 +450,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*************************** SUBROUTINES ***************************/
 multiline_comment|/*&n; * Function irttp_start_todo_timer (self, timeout)&n; *&n; *    Start todo timer.&n; *&n; * Made it more effient and unsensitive to race conditions - Jean II&n; */
 DECL|function|irttp_start_todo_timer

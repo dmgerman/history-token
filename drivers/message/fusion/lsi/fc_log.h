@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation. All rights reserved.&n; *&n; *  NAME:           fc_log.h&n; *  SUMMARY:        MPI IocLogInfo definitions for the SYMFC9xx chips&n; *  DESCRIPTION:    Contains the enumerated list of values that may be returned&n; *                  in the IOCLogInfo field of a MPI Default Reply Message.&n; *&n; *  CREATION DATE:  6/02/2000&n; *  ID:             $Id: fc_log.h,v 4.5 2001/06/07 19:18:00 sschremm Exp $&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation. All rights reserved.&n; *&n; *  NAME:           fc_log.h&n; *  SUMMARY:        MPI IocLogInfo definitions for the SYMFC9xx chips&n; *  DESCRIPTION:    Contains the enumerated list of values that may be returned&n; *                  in the IOCLogInfo field of a MPI Default Reply Message.&n; *&n; *  CREATION DATE:  6/02/2000&n; *  ID:             $Id: fc_log.h,v 4.6 2001/07/26 14:41:33 sschremm Exp $&n; */
 multiline_comment|/*&n; * MpiIocLogInfo_t enum&n; *&n; * These 32 bit values are used in the IOCLogInfo field of the MPI reply&n; * messages.&n; * The value is 0xabcccccc where&n; *          a = The type of log info as per the MPI spec. Since these codes are&n; *              all for Fibre Channel this value will always be 2.&n; *          b = Specifies a subclass of the firmware where&n; *                  0 = FCP Initiator&n; *                  1 = FCP Target&n; *                  2 = LAN&n; *                  3 = MPI Message Layer&n; *                  4 = FC Link&n; *                  5 = Context Manager&n; *                  6 = Invalid Field Offset&n; *                  7 = State Change Info&n; *                  all others are reserved for future use&n; *          c = A specific value within the subclass.&n; *&n; * NOTE: Any new values should be added to the end of each subclass so that the&n; *       codes remain consistent across firmware releases.&n; */
 DECL|enum|_MpiIocLogInfoFc
 r_typedef
@@ -158,7 +158,7 @@ id|MPI_IOCLOGINFO_FC_TARGET_FROM_OUTBOUND
 op_assign
 l_int|0x2100000e
 comma
-multiline_comment|/* cleared from the outbound after a logout */
+multiline_comment|/* cleared from the outbound queue after a logout */
 DECL|enumerator|MPI_IOCLOGINFO_FC_TARGET_WAITING_FOR_DATA_IN
 id|MPI_IOCLOGINFO_FC_TARGET_WAITING_FOR_DATA_IN
 op_assign

@@ -146,6 +146,14 @@ DECL|macro|MASK_MUX_AUDIN
 mdefine_line|#define MASK_MUX_AUDIN&t;(0x1 &lt;&lt; 11)&t;/* Select Audio In in MUX */
 DECL|macro|MASK_MUX_LINE
 mdefine_line|#define MASK_MUX_LINE&t;MASK_MUX_AUDIN
+DECL|macro|SHIFT_GAINLINE
+mdefine_line|#define SHIFT_GAINLINE&t;8
+DECL|macro|SHIFT_MUX_CD
+mdefine_line|#define SHIFT_MUX_CD&t;9
+DECL|macro|SHIFT_MUX_MIC
+mdefine_line|#define SHIFT_MUX_MIC&t;10
+DECL|macro|SHIFT_MUX_LINE
+mdefine_line|#define SHIFT_MUX_LINE&t;11
 DECL|macro|GAINRIGHT
 mdefine_line|#define GAINRIGHT(x)&t;((x) &amp; MASK_GAINRIGHT)
 DECL|macro|GAINLEFT
@@ -160,16 +168,22 @@ DECL|macro|MASK_SAMPLERATE
 mdefine_line|#define MASK_SAMPLERATE&t;(0x7 &lt;&lt; 3)&t;/* Sample Rate: */
 DECL|macro|MASK_LOOPTHRU
 mdefine_line|#define MASK_LOOPTHRU&t;(0x1 &lt;&lt; 6)&t;/* Loopthrough Enable */
+DECL|macro|SHIFT_LOOPTHRU
+mdefine_line|#define SHIFT_LOOPTHRU&t;6
 DECL|macro|MASK_CMUTE
 mdefine_line|#define MASK_CMUTE&t;(0x1 &lt;&lt; 7)&t;/* Output C (Speaker) Mute when 1 */
 DECL|macro|MASK_SPKMUTE
 mdefine_line|#define MASK_SPKMUTE&t;MASK_CMUTE
+DECL|macro|SHIFT_SPKMUTE
+mdefine_line|#define SHIFT_SPKMUTE&t;7
 DECL|macro|MASK_ADDR1RES2
 mdefine_line|#define MASK_ADDR1RES2&t;(0x1 &lt;&lt; 8)&t;/* Reserved */
 DECL|macro|MASK_AMUTE
 mdefine_line|#define MASK_AMUTE&t;(0x1 &lt;&lt; 9)&t;/* Output A (Headphone) Mute when 1 */
 DECL|macro|MASK_HDMUTE
 mdefine_line|#define MASK_HDMUTE&t;MASK_AMUTE
+DECL|macro|SHIFT_HDMUTE
+mdefine_line|#define SHIFT_HDMUTE&t;9
 DECL|macro|MASK_PAROUT
 mdefine_line|#define MASK_PAROUT&t;(0x3 &lt;&lt; 10)&t;/* Parallel Out (???) */
 DECL|macro|SAMPLERATE_48000
@@ -206,6 +220,11 @@ DECL|macro|VOLRIGHT
 mdefine_line|#define VOLRIGHT(x)&t;(((~(x)) &amp; MASK_OUTVOLRIGHT))
 DECL|macro|VOLLEFT
 mdefine_line|#define VOLLEFT(x)&t;(((~(x)) &lt;&lt; 6) &amp; MASK_OUTVOLLEFT)
+multiline_comment|/* address 6 */
+DECL|macro|MASK_MIC_BOOST
+mdefine_line|#define MASK_MIC_BOOST  (0x4)           /* screamer mic boost */
+DECL|macro|SHIFT_MIC_BOOST
+mdefine_line|#define SHIFT_MIC_BOOST&t;2
 multiline_comment|/* Audio Codec Status Reg Bit Masks */
 multiline_comment|/* ----- ----- ------ --- --- ----- */
 DECL|macro|MASK_EXTEND

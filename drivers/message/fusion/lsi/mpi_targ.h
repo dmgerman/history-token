@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_TARG.H&n; *          Title:  MPI Target mode messages and structures&n; *  Creation Date:  June 22, 2000&n; *&n; *    MPI Version:  01.01.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-22-00  01.00.02  Added _MSG_TARGET_CMD_BUFFER_POST_REPLY structure.&n; *                      Corrected DECSRIPTOR typo to DESCRIPTOR.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Modified target mode to use IoIndex instead of&n; *                      HostIndex and IocIndex. Added Alias.&n; *  01-09-01  01.01.02  Added defines for TARGET_ASSIST_FLAGS_REPOST_CMD_BUFFER&n; *                      and TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *                      Added structures for MPI_TARGET_SCSI_SPI_CMD_BUFFER and&n; *                      MPI_TARGET_FCP_CMD_BUFFER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_TARG.H&n; *          Title:  MPI Target mode messages and structures&n; *  Creation Date:  June 22, 2000&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-22-00  01.00.02  Added _MSG_TARGET_CMD_BUFFER_POST_REPLY structure.&n; *                      Corrected DECSRIPTOR typo to DESCRIPTOR.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Modified target mode to use IoIndex instead of&n; *                      HostIndex and IocIndex. Added Alias.&n; *  01-09-01  01.01.02  Added defines for TARGET_ASSIST_FLAGS_REPOST_CMD_BUFFER&n; *                      and TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *                      Added structures for MPI_TARGET_SCSI_SPI_CMD_BUFFER and&n; *                      MPI_TARGET_FCP_CMD_BUFFER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  09-28-01  01.02.02  Added structure for MPI_TARGET_SCSI_SPI_STATUS_IU.&n; *                      Added PriorityReason field to some replies and&n; *                      defined more PriorityReason codes.&n; *                      Added some defines for to support previous version&n; *                      of MPI.&n; *  10-04-01  01.02.03  Added PriorityReason to MSG_TARGET_ERROR_REPLY.&n; *  11-01-01  01.02.04  Added define for TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_TARG_H
 DECL|macro|MPI_TARG_H
 mdefine_line|#define MPI_TARG_H
@@ -136,6 +136,8 @@ DECL|macro|CMD_BUFFER_POST_FLAGS_64_BIT_ADDR
 mdefine_line|#define CMD_BUFFER_POST_FLAGS_64_BIT_ADDR       (0x80)
 DECL|macro|CMD_BUFFER_POST_IO_INDEX_MASK
 mdefine_line|#define CMD_BUFFER_POST_IO_INDEX_MASK           (0x00003FFF)
+DECL|macro|CMD_BUFFER_POST_IO_INDEX_MASK_0100
+mdefine_line|#define CMD_BUFFER_POST_IO_INDEX_MASK_0100      (0x000003FF) /* obsolete */
 DECL|struct|_MSG_TARGET_CMD_BUFFER_POST_REPLY
 r_typedef
 r_struct
@@ -216,6 +218,7 @@ comma
 id|MPI_POINTER
 id|pTargetCmdBufferPostReply_t
 suffix:semicolon
+multiline_comment|/* the following structure is obsolete as of MPI v1.2 */
 DECL|struct|_MSG_PRIORITY_CMD_RECEIVED_REPLY
 r_typedef
 r_struct
@@ -300,6 +303,20 @@ DECL|macro|PRIORITY_REASON_NO_DISCONNECT
 mdefine_line|#define PRIORITY_REASON_NO_DISCONNECT           (0x00)
 DECL|macro|PRIORITY_REASON_SCSI_TASK_MANAGEMENT
 mdefine_line|#define PRIORITY_REASON_SCSI_TASK_MANAGEMENT    (0x01)
+DECL|macro|PRIORITY_REASON_CMD_PARITY_ERR
+mdefine_line|#define PRIORITY_REASON_CMD_PARITY_ERR          (0x02)
+DECL|macro|PRIORITY_REASON_MSG_OUT_PARITY_ERR
+mdefine_line|#define PRIORITY_REASON_MSG_OUT_PARITY_ERR      (0x03)
+DECL|macro|PRIORITY_REASON_LQ_CRC_ERR
+mdefine_line|#define PRIORITY_REASON_LQ_CRC_ERR              (0x04)
+DECL|macro|PRIORITY_REASON_CMD_CRC_ERR
+mdefine_line|#define PRIORITY_REASON_CMD_CRC_ERR             (0x05)
+DECL|macro|PRIORITY_REASON_PROTOCOL_ERR
+mdefine_line|#define PRIORITY_REASON_PROTOCOL_ERR            (0x06)
+DECL|macro|PRIORITY_REASON_DATA_OUT_PARITY_ERR
+mdefine_line|#define PRIORITY_REASON_DATA_OUT_PARITY_ERR     (0x07)
+DECL|macro|PRIORITY_REASON_DATA_OUT_CRC_ERR
+mdefine_line|#define PRIORITY_REASON_DATA_OUT_CRC_ERR        (0x08)
 DECL|macro|PRIORITY_REASON_UNKNOWN
 mdefine_line|#define PRIORITY_REASON_UNKNOWN                 (0xFF)
 DECL|struct|_MSG_TARGET_CMD_BUFFER_POST_ERROR_REPLY
@@ -342,11 +359,16 @@ id|U32
 id|MsgContext
 suffix:semicolon
 multiline_comment|/* 08h */
-DECL|member|Reserved3
-id|U16
-id|Reserved3
+DECL|member|PriorityReason
+id|U8
+id|PriorityReason
 suffix:semicolon
 multiline_comment|/* 0Ch */
+DECL|member|Reserved3
+id|U8
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 0Dh */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
@@ -646,11 +668,16 @@ id|U32
 id|MsgContext
 suffix:semicolon
 multiline_comment|/* 08h */
-DECL|member|Reserved3
-id|U16
-id|Reserved3
+DECL|member|PriorityReason
+id|U8
+id|PriorityReason
 suffix:semicolon
 multiline_comment|/* 0Ch */
+DECL|member|Reserved3
+id|U8
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 0Dh */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
@@ -769,8 +796,147 @@ id|pTargetStatusSendRequest_t
 suffix:semicolon
 DECL|macro|TARGET_STATUS_SEND_FLAGS_AUTO_GOOD_STATUS
 mdefine_line|#define TARGET_STATUS_SEND_FLAGS_AUTO_GOOD_STATUS   (0x01)
+DECL|macro|TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY
+mdefine_line|#define TARGET_STATUS_SEND_FLAGS_HIGH_PRIORITY      (0x04)
 DECL|macro|TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER
 mdefine_line|#define TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER  (0x80)
+DECL|struct|_MPI_TARGET_FCP_RSP_BUFFER
+r_typedef
+r_struct
+id|_MPI_TARGET_FCP_RSP_BUFFER
+(brace
+DECL|member|Reserved0
+id|U8
+id|Reserved0
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|FcpStatus
+id|U8
+id|FcpStatus
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|FcpFlags
+id|U8
+id|FcpFlags
+suffix:semicolon
+multiline_comment|/* 09h */
+DECL|member|Reserved1
+id|U8
+id|Reserved1
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0Ah */
+DECL|member|FcpResid
+id|U32
+id|FcpResid
+suffix:semicolon
+multiline_comment|/* 0Ch */
+DECL|member|FcpSenseLength
+id|U32
+id|FcpSenseLength
+suffix:semicolon
+multiline_comment|/* 10h */
+DECL|member|FcpResponseLength
+id|U32
+id|FcpResponseLength
+suffix:semicolon
+multiline_comment|/* 14h */
+DECL|member|FcpResponseData
+id|U8
+id|FcpResponseData
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* 18h */
+DECL|member|FcpSenseData
+id|U8
+id|FcpSenseData
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* Pad to 64 bytes */
+multiline_comment|/* 20h */
+DECL|typedef|MPI_TARGET_FCP_RSP_BUFFER
+DECL|typedef|PTR_MPI_TARGET_FCP_RSP_BUFFER
+)brace
+id|MPI_TARGET_FCP_RSP_BUFFER
+comma
+id|MPI_POINTER
+id|PTR_MPI_TARGET_FCP_RSP_BUFFER
+comma
+DECL|typedef|MpiTargetFcpRspBuffer
+DECL|typedef|pMpiTargetFcpRspBuffer
+id|MpiTargetFcpRspBuffer
+comma
+id|MPI_POINTER
+id|pMpiTargetFcpRspBuffer
+suffix:semicolon
+DECL|struct|_MPI_TARGET_SCSI_SPI_STATUS_IU
+r_typedef
+r_struct
+id|_MPI_TARGET_SCSI_SPI_STATUS_IU
+(brace
+DECL|member|Reserved0
+id|U8
+id|Reserved0
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|Reserved1
+id|U8
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|Valid
+id|U8
+id|Valid
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|Status
+id|U8
+id|Status
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|member|SenseDataListLength
+id|U32
+id|SenseDataListLength
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|PktFailuresListLength
+id|U32
+id|PktFailuresListLength
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|SenseData
+id|U8
+id|SenseData
+(braket
+l_int|52
+)braket
+suffix:semicolon
+multiline_comment|/* Pad the IU to 64 bytes */
+multiline_comment|/* 0Ch */
+DECL|typedef|MPI_TARGET_SCSI_SPI_STATUS_IU
+DECL|typedef|PTR_MPI_TARGET_SCSI_SPI_STATUS_IU
+)brace
+id|MPI_TARGET_SCSI_SPI_STATUS_IU
+comma
+id|MPI_POINTER
+id|PTR_MPI_TARGET_SCSI_SPI_STATUS_IU
+comma
+DECL|typedef|TargetScsiSpiStatusIU_t
+DECL|typedef|pTargetScsiSpiStatusIU_t
+id|TargetScsiSpiStatusIU_t
+comma
+id|MPI_POINTER
+id|pTargetScsiSpiStatusIU_t
+suffix:semicolon
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Target Mode Abort Request                                                */
 multiline_comment|/****************************************************************************/
@@ -963,5 +1129,34 @@ DECL|macro|GET_PORT
 mdefine_line|#define GET_PORT(x) (((x) &amp; TARGET_MODE_REPLY_PORT_MASK)                       &bslash;&n;                                               &gt;&gt; TARGET_MODE_REPLY_PORT_SHIFT)
 DECL|macro|SET_PORT
 mdefine_line|#define SET_PORT(t, p)  ((t) = ((t) &amp; ~TARGET_MODE_REPLY_PORT_MASK) |          &bslash;&n;                                    (((p) &lt;&lt; TARGET_MODE_REPLY_PORT_SHIFT) &amp;   &bslash;&n;                                                  TARGET_MODE_REPLY_PORT_MASK))
+multiline_comment|/* the following obsolete values are for MPI v1.0 support */
+DECL|macro|TARGET_MODE_REPLY_0100_MASK_HOST_INDEX
+mdefine_line|#define TARGET_MODE_REPLY_0100_MASK_HOST_INDEX       (0x000003FF)
+DECL|macro|TARGET_MODE_REPLY_0100_SHIFT_HOST_INDEX
+mdefine_line|#define TARGET_MODE_REPLY_0100_SHIFT_HOST_INDEX      (0)
+DECL|macro|TARGET_MODE_REPLY_0100_MASK_IOC_INDEX
+mdefine_line|#define TARGET_MODE_REPLY_0100_MASK_IOC_INDEX        (0x001FF800)
+DECL|macro|TARGET_MODE_REPLY_0100_SHIFT_IOC_INDEX
+mdefine_line|#define TARGET_MODE_REPLY_0100_SHIFT_IOC_INDEX       (11)
+DECL|macro|TARGET_MODE_REPLY_0100_PORT_MASK
+mdefine_line|#define TARGET_MODE_REPLY_0100_PORT_MASK             (0x00400000)
+DECL|macro|TARGET_MODE_REPLY_0100_PORT_SHIFT
+mdefine_line|#define TARGET_MODE_REPLY_0100_PORT_SHIFT            (22)
+DECL|macro|TARGET_MODE_REPLY_0100_MASK_INITIATOR_INDEX
+mdefine_line|#define TARGET_MODE_REPLY_0100_MASK_INITIATOR_INDEX  (0x1F800000)
+DECL|macro|TARGET_MODE_REPLY_0100_SHIFT_INITIATOR_INDEX
+mdefine_line|#define TARGET_MODE_REPLY_0100_SHIFT_INITIATOR_INDEX (23)
+DECL|macro|GET_HOST_INDEX_0100
+mdefine_line|#define GET_HOST_INDEX_0100(x) (((x) &amp; TARGET_MODE_REPLY_0100_MASK_HOST_INDEX) &bslash;&n;                                  &gt;&gt; TARGET_MODE_REPLY_0100_SHIFT_HOST_INDEX)
+DECL|macro|SET_HOST_INDEX_0100
+mdefine_line|#define SET_HOST_INDEX_0100(t, hi)                                             &bslash;&n;            ((t) = ((t) &amp; ~TARGET_MODE_REPLY_0100_MASK_HOST_INDEX) |           &bslash;&n;                         (((hi) &lt;&lt; TARGET_MODE_REPLY_0100_SHIFT_HOST_INDEX) &amp;  &bslash;&n;                                      TARGET_MODE_REPLY_0100_MASK_HOST_INDEX))
+DECL|macro|GET_IOC_INDEX_0100
+mdefine_line|#define GET_IOC_INDEX_0100(x)   (((x) &amp; TARGET_MODE_REPLY_0100_MASK_IOC_INDEX) &bslash;&n;                                  &gt;&gt; TARGET_MODE_REPLY_0100_SHIFT_IOC_INDEX)
+DECL|macro|SET_IOC_INDEX_0100
+mdefine_line|#define SET_IOC_INDEX_0100(t, ii)                                              &bslash;&n;            ((t) = ((t) &amp; ~TARGET_MODE_REPLY_0100_MASK_IOC_INDEX) |            &bslash;&n;                        (((ii) &lt;&lt; TARGET_MODE_REPLY_0100_SHIFT_IOC_INDEX) &amp;    &bslash;&n;                                     TARGET_MODE_REPLY_0100_MASK_IOC_INDEX))
+DECL|macro|GET_INITIATOR_INDEX_0100
+mdefine_line|#define GET_INITIATOR_INDEX_0100(x)                                            &bslash;&n;            (((x) &amp; TARGET_MODE_REPLY_0100_MASK_INITIATOR_INDEX)               &bslash;&n;                              &gt;&gt; TARGET_MODE_REPLY_0100_SHIFT_INITIATOR_INDEX)
+DECL|macro|SET_INITIATOR_INDEX_0100
+mdefine_line|#define SET_INITIATOR_INDEX_0100(t, ii)                                        &bslash;&n;        ((t) = ((t) &amp; ~TARGET_MODE_REPLY_0100_MASK_INITIATOR_INDEX) |          &bslash;&n;                   (((ii) &lt;&lt; TARGET_MODE_REPLY_0100_SHIFT_INITIATOR_INDEX) &amp;   &bslash;&n;                                TARGET_MODE_REPLY_0100_MASK_INITIATOR_INDEX))
 macro_line|#endif
 eof

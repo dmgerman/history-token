@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; *   ToDo: - Switching to Mono (32, 32/8, 32Pro)&n; *         - ADAT (32/8)&n; *         - Doublespeed-Bit, 96kHz (32Pro)&n; *         - DAC (32Pro)&n; *         - full duplex should be possible&n; *         - testing, testing, testing ....&n; */
+multiline_comment|/*&n; *   ALSA driver for RME Digi32, Digi32/8 and Digi32 PRO audio interfaces&n; *&n; *&t;Copyright (c) 2002 Martin Langer &lt;martin-langer@gmx.de&gt;&n; *&n; *      Thanks to :        Anders Torger &lt;torger@ludd.luth.se&gt;,&n; *                         Henk Hesselink &lt;henk@anda.nl&gt;&n; *                         for writing the digi96-driver &n; *                         and RME for all informations.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * &n; *   ToDo: - ADAT (32/8)&n; *         - full duplex (32, 32/8, 32Pro)&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -170,8 +170,6 @@ l_string|&quot;{RME,Digi32 PRO}}&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Defines for RME Digi32 series */
-DECL|macro|RME32_DRIVER_VERSION
-mdefine_line|#define RME32_DRIVER_VERSION &quot;0.3.2&quot;
 DECL|macro|RME32_SPDIF_NCHANNELS
 mdefine_line|#define RME32_SPDIF_NCHANNELS 2
 multiline_comment|/* Playback and capture buffer size */
@@ -195,7 +193,7 @@ multiline_comment|/* Write control register bits */
 DECL|macro|RME32_WCR_START
 mdefine_line|#define RME32_WCR_START     (1 &lt;&lt; 0)
 DECL|macro|RME32_WCR_MONO
-mdefine_line|#define RME32_WCR_MONO      (1 &lt;&lt; 1)
+mdefine_line|#define RME32_WCR_MONO      (1 &lt;&lt; 1)    /* 0: stereo, 1: mono&n;                                           Setting the whole card to mono&n;                                           don&squot;t seems to be very useful.&n;                                           A software-solution can handle &n;                                           full-duplex with one direction in&n;                                           stereo and the other way in mono. &n;                                           So, the hardware should work all &n;                                           the time in stereo! */
 DECL|macro|RME32_WCR_MODE24
 mdefine_line|#define RME32_WCR_MODE24    (1 &lt;&lt; 2)
 DECL|macro|RME32_WCR_SEL
@@ -215,7 +213,7 @@ mdefine_line|#define RME32_WCR_MUTE      (1 &lt;&lt; 9)
 DECL|macro|RME32_WCR_PRO
 mdefine_line|#define RME32_WCR_PRO       (1 &lt;&lt; 10)
 DECL|macro|RME32_WCR_DS_BM
-mdefine_line|#define RME32_WCR_DS_BM     (1 &lt;&lt; 11)&t;/* only PRO-Version */
+mdefine_line|#define RME32_WCR_DS_BM     (1 &lt;&lt; 11)&t;/* only PRO/Adat-Version */
 DECL|macro|RME32_WCR_ADAT
 mdefine_line|#define RME32_WCR_ADAT      (1 &lt;&lt; 12)&t;/* only Adat-Version */
 DECL|macro|RME32_WCR_AUTOSYNC
@@ -358,14 +356,6 @@ id|u8
 id|rev
 suffix:semicolon
 multiline_comment|/* card revision number */
-DECL|member|capture_pid
-id|pid_t
-id|capture_pid
-suffix:semicolon
-DECL|member|playback_pid
-id|pid_t
-id|playback_pid
-suffix:semicolon
 DECL|member|playback_substream
 id|snd_pcm_substream_t
 op_star
@@ -589,7 +579,6 @@ id|substream
 suffix:semicolon
 r_static
 r_void
-id|__init
 id|snd_rme32_proc_init
 c_func
 (paren
@@ -780,6 +769,9 @@ id|pos
 op_lshift_assign
 id|rme32-&gt;playback_frlog
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user_toio
 c_func
 (paren
@@ -793,6 +785,10 @@ id|src
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -841,6 +837,9 @@ id|pos
 op_lshift_assign
 id|rme32-&gt;capture_frlog
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user_fromio
 c_func
 (paren
@@ -854,6 +853,10 @@ id|pos
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -1025,6 +1028,40 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|function|snd_rme32_reset_dac
+r_static
+r_void
+id|snd_rme32_reset_dac
+c_func
+(paren
+id|rme32_t
+op_star
+id|rme32
+)paren
+(brace
+id|writel
+c_func
+(paren
+id|rme32-&gt;wcreg
+op_or
+id|RME32_WCR_PD
+comma
+id|rme32-&gt;iobase
+op_plus
+id|RME32_IO_CONTROL_REGISTER
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|rme32-&gt;wcreg
+comma
+id|rme32-&gt;iobase
+op_plus
+id|RME32_IO_CONTROL_REGISTER
+)paren
+suffix:semicolon
+)brace
 DECL|function|snd_rme32_playback_getrate
 r_static
 r_int
@@ -1106,6 +1143,17 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
+(paren
+id|rme32-&gt;wcreg
+op_amp
+id|RME32_WCR_DS_BM
+)paren
+ques
+c_cond
+id|rate
+op_lshift
+l_int|1
+suffix:colon
 id|rate
 suffix:semicolon
 )brace
@@ -1334,6 +1382,15 @@ r_int
 id|rate
 )paren
 (brace
+r_int
+id|ds
+suffix:semicolon
+id|ds
+op_assign
+id|rme32-&gt;wcreg
+op_amp
+id|RME32_WCR_DS_BM
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1343,6 +1400,11 @@ id|rate
 r_case
 l_int|32000
 suffix:colon
+id|rme32-&gt;wcreg
+op_and_assign
+op_complement
+id|RME32_WCR_DS_BM
+suffix:semicolon
 id|rme32-&gt;wcreg
 op_assign
 (paren
@@ -1360,6 +1422,11 @@ r_case
 l_int|44100
 suffix:colon
 id|rme32-&gt;wcreg
+op_and_assign
+op_complement
+id|RME32_WCR_DS_BM
+suffix:semicolon
+id|rme32-&gt;wcreg
 op_assign
 (paren
 id|rme32-&gt;wcreg
@@ -1375,6 +1442,103 @@ suffix:semicolon
 r_case
 l_int|48000
 suffix:colon
+id|rme32-&gt;wcreg
+op_and_assign
+op_complement
+id|RME32_WCR_DS_BM
+suffix:semicolon
+id|rme32-&gt;wcreg
+op_assign
+(paren
+id|rme32-&gt;wcreg
+op_or
+id|RME32_WCR_FREQ_0
+)paren
+op_or
+id|RME32_WCR_FREQ_1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|64000
+suffix:colon
+r_if
+c_cond
+(paren
+id|rme32-&gt;pci-&gt;device
+op_ne
+id|PCI_DEVICE_ID_DIGI32_PRO
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|rme32-&gt;wcreg
+op_or_assign
+id|RME32_WCR_DS_BM
+suffix:semicolon
+id|rme32-&gt;wcreg
+op_assign
+(paren
+id|rme32-&gt;wcreg
+op_or
+id|RME32_WCR_FREQ_0
+)paren
+op_amp
+op_complement
+id|RME32_WCR_FREQ_1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|88200
+suffix:colon
+r_if
+c_cond
+(paren
+id|rme32-&gt;pci-&gt;device
+op_ne
+id|PCI_DEVICE_ID_DIGI32_PRO
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|rme32-&gt;wcreg
+op_or_assign
+id|RME32_WCR_DS_BM
+suffix:semicolon
+id|rme32-&gt;wcreg
+op_assign
+(paren
+id|rme32-&gt;wcreg
+op_or
+id|RME32_WCR_FREQ_1
+)paren
+op_amp
+op_complement
+id|RME32_WCR_FREQ_0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|96000
+suffix:colon
+r_if
+c_cond
+(paren
+id|rme32-&gt;pci-&gt;device
+op_ne
+id|PCI_DEVICE_ID_DIGI32_PRO
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|rme32-&gt;wcreg
+op_or_assign
+id|RME32_WCR_DS_BM
+suffix:semicolon
 id|rme32-&gt;wcreg
 op_assign
 (paren
@@ -1394,6 +1558,40 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|ds
+op_logical_and
+id|rme32-&gt;wcreg
+op_amp
+id|RME32_WCR_DS_BM
+)paren
+op_logical_or
+(paren
+id|ds
+op_logical_and
+op_logical_neg
+(paren
+id|rme32-&gt;wcreg
+op_amp
+id|RME32_WCR_DS_BM
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* change to/from double-speed: reset the DAC (if available) */
+id|snd_rme32_reset_dac
+c_func
+(paren
+id|rme32
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|writel
 c_func
 (paren
@@ -1404,6 +1602,7 @@ op_plus
 id|RME32_IO_CONTROL_REGISTER
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2803,18 +3002,6 @@ id|rme32-&gt;playback_ptr
 op_assign
 l_int|0
 suffix:semicolon
-id|runtime-&gt;hw
-op_assign
-id|snd_rme32_playback_spdif_info
-suffix:semicolon
-id|rme32-&gt;playback_pid
-op_assign
-id|current-&gt;pid
-suffix:semicolon
-id|rme32-&gt;playback_substream
-op_assign
-id|substream
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2824,6 +3011,31 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|runtime-&gt;hw
+op_assign
+id|snd_rme32_playback_spdif_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rme32-&gt;pci-&gt;device
+op_eq
+id|PCI_DEVICE_ID_DIGI32_PRO
+)paren
+(brace
+id|runtime-&gt;hw.rates
+op_or_assign
+id|SNDRV_PCM_RATE_64000
+op_or
+id|SNDRV_PCM_RATE_88200
+op_or
+id|SNDRV_PCM_RATE_96000
+suffix:semicolon
+id|runtime-&gt;hw.rate_max
+op_assign
+l_int|96000
+suffix:semicolon
+)brace
 id|snd_pcm_hw_constraint_minmax
 c_func
 (paren
@@ -2967,10 +3179,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|rme32-&gt;capture_pid
-op_assign
-id|current-&gt;pid
-suffix:semicolon
 id|rme32-&gt;capture_substream
 op_assign
 id|substream
@@ -3060,11 +3268,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|rme32-&gt;playback_pid
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|rme32-&gt;playback_substream
 op_assign
 l_int|NULL
@@ -3153,11 +3356,6 @@ id|rme32-&gt;lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|rme32-&gt;capture_pid
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|rme32-&gt;capture_substream
 op_assign
@@ -3367,13 +3565,6 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|rme32-&gt;lock
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3507,13 +3698,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|rme32-&gt;lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4137,7 +4321,7 @@ suffix:semicolon
 DECL|function|snd_rme32_create
 r_static
 r_int
-id|__init
+id|__devinit
 id|snd_rme32_create
 c_func
 (paren
@@ -4451,6 +4635,13 @@ c_func
 id|rme32
 )paren
 suffix:semicolon
+multiline_comment|/* reset DAC */
+id|snd_rme32_reset_dac
+c_func
+(paren
+id|rme32
+)paren
+suffix:semicolon
 multiline_comment|/* reset buffer pointer */
 id|writel
 c_func
@@ -4513,16 +4704,6 @@ c_func
 (paren
 id|rme32
 )paren
-suffix:semicolon
-id|rme32-&gt;playback_pid
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|rme32-&gt;capture_pid
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|rme32-&gt;capture_substream
 op_assign
@@ -4601,16 +4782,6 @@ c_func
 id|buffer
 comma
 l_string|&quot;&bslash;nGeneral settings&bslash;n&quot;
-)paren
-suffix:semicolon
-id|snd_iprintf
-c_func
-(paren
-id|buffer
-comma
-l_string|&quot;  driver version: %s&bslash;n&quot;
-comma
-id|RME32_DRIVER_VERSION
 )paren
 suffix:semicolon
 r_if
@@ -5033,7 +5204,7 @@ suffix:semicolon
 DECL|function|snd_rme32_proc_init
 r_static
 r_void
-id|__init
+id|__devinit
 id|snd_rme32_proc_init
 c_func
 (paren
@@ -6795,7 +6966,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|snd_rme32_probe
 id|snd_rme32_probe
 c_func
@@ -7069,7 +7240,7 @@ suffix:semicolon
 DECL|function|snd_rme32_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|snd_rme32_remove
 c_func
 (paren
@@ -7119,7 +7290,11 @@ id|snd_rme32_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|snd_rme32_remove
+)paren
 comma
 )brace
 suffix:semicolon

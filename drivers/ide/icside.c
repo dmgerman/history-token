@@ -1419,10 +1419,6 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|disable_dma
 c_func
 (paren
@@ -1678,10 +1674,6 @@ id|ch-&gt;hw.dma
 comma
 id|dma_mode
 )paren
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|1
 suffix:semicolon
 r_return
 l_int|0

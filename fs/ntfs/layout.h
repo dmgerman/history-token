@@ -495,11 +495,11 @@ id|u64
 id|MFT_REF
 suffix:semicolon
 DECL|macro|MREF
-mdefine_line|#define MREF(x)&t;&t;((u64)((x) &amp; MFT_REF_MASK_CPU))
+mdefine_line|#define MREF(x)&t;&t;((unsigned long)((x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO
 mdefine_line|#define MSEQNO(x)&t;((u16)(((x) &gt;&gt; 48) &amp; 0xffff))
 DECL|macro|MREF_LE
-mdefine_line|#define MREF_LE(x)&t;((u64)(le64_to_cpu(x) &amp; MFT_REF_MASK_CPU))
+mdefine_line|#define MREF_LE(x)&t;((unsigned long)(le64_to_cpu(x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO_LE
 mdefine_line|#define MSEQNO_LE(x)&t;((u16)((le64_to_cpu(x) &gt;&gt; 48) &amp; 0xffff))
 DECL|macro|IS_ERR_MREF
@@ -1673,7 +1673,7 @@ multiline_comment|/* 30*/
 id|s64
 id|data_size
 suffix:semicolon
-multiline_comment|/* Byte size of actual data in data&n;&t;&t;&t;&t;&t;   attribute. NOTE: Only present when&n;&t;&t;&t;&t;&t;   lowest_vcn is 0. */
+multiline_comment|/* Byte size of actual data in data&n;&t;&t;&t;&t;&t;   attribute. */
 DECL|member|file_attributes
 multiline_comment|/* 38*/
 id|FILE_ATTR_FLAGS

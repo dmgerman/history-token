@@ -573,6 +573,16 @@ id|timeri
 suffix:semicolon
 r_extern
 r_int
+id|snd_timer_del
+c_func
+(paren
+id|snd_timer_instance_t
+op_star
+id|timeri
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|snd_timer_continue
 c_func
 (paren

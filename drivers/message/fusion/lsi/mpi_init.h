@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_INIT.H&n; *          Title:  MPI initiator mode messages and structures&n; *  Creation Date:  June 8, 2000&n; *&n; *    MPI Version:  01.01.05&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added SenseBufferLength to _MSG_SCSI_IO_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added MPI_SCSI_RSP_INFO_ definitions.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added MPI_SCSIIO_CONTROL_NO_DISCONNECT.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  04-10-01  01.01.05  Added new MsgFlag for MSG_SCSI_TASK_MGMT.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_INIT.H&n; *          Title:  MPI initiator mode messages and structures&n; *  Creation Date:  June 8, 2000&n; *&n; *    MPI Version:  01.02.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added SenseBufferLength to _MSG_SCSI_IO_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added MPI_SCSI_RSP_INFO_ definitions.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added MPI_SCSIIO_CONTROL_NO_DISCONNECT.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  04-10-01  01.01.05  Added new MsgFlag for MSG_SCSI_TASK_MGMT.&n; *  08-08-01  01.02.01  Original release for v1.2 work.&n; *  08-29-01  01.02.02  Added MPI_SCSITASKMGMT_TASKTYPE_LOGICAL_UNIT_RESET.&n; *                      Added MPI_SCSI_STATE_QUEUE_TAG_REJECTED for&n; *                      MSG_SCSI_IO_REPLY.&n; *  09-28-01  01.02.03  Added structures and defines for SCSI Enclosure&n; *                      Processor messages.&n; *  10-04-01  01.02.04  Added defines for SEP request Action field.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_INIT_H
 DECL|macro|MPI_INIT_H
 mdefine_line|#define MPI_INIT_H
@@ -311,6 +311,8 @@ DECL|macro|MPI_SCSI_STATE_TERMINATED
 mdefine_line|#define MPI_SCSI_STATE_TERMINATED               (0x08)
 DECL|macro|MPI_SCSI_STATE_RESPONSE_INFO_VALID
 mdefine_line|#define MPI_SCSI_STATE_RESPONSE_INFO_VALID      (0x10)
+DECL|macro|MPI_SCSI_STATE_QUEUE_TAG_REJECTED
+mdefine_line|#define MPI_SCSI_STATE_QUEUE_TAG_REJECTED       (0x20)
 multiline_comment|/* SCSIIO Reply ResponseInfo values */
 multiline_comment|/* (FCP-1 RSP_CODE values and SPI-3 Packetized Failure codes) */
 DECL|macro|MPI_SCSI_RSP_INFO_FUNCTION_COMPLETE
@@ -425,6 +427,8 @@ DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET
 mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET          (0x03)
 DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_RESET_BUS
 mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_RESET_BUS             (0x04)
+DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_LOGICAL_UNIT_RESET
+mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_LOGICAL_UNIT_RESET    (0x05)
 multiline_comment|/* MsgFlags bits */
 DECL|macro|MPI_SCSITASKMGMT_MSGFLAGS_TARGET_RESET_OPTION
 mdefine_line|#define MPI_SCSITASKMGMT_MSGFLAGS_TARGET_RESET_OPTION   (0x00)
@@ -521,5 +525,250 @@ comma
 id|MPI_POINTER
 id|pSCSITaskMgmtReply_t
 suffix:semicolon
+multiline_comment|/****************************************************************************/
+multiline_comment|/*  SCSI Enclosure Processor messages                                       */
+multiline_comment|/****************************************************************************/
+DECL|struct|_MSG_SEP_REQUEST
+r_typedef
+r_struct
+id|_MSG_SEP_REQUEST
+(brace
+DECL|member|TargetID
+id|U8
+id|TargetID
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|Bus
+id|U8
+id|Bus
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|ChainOffset
+id|U8
+id|ChainOffset
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|Function
+id|U8
+id|Function
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|member|Action
+id|U8
+id|Action
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|Reserved1
+id|U8
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|Reserved2
+id|U8
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|MsgFlags
+id|U8
+id|MsgFlags
+suffix:semicolon
+multiline_comment|/* 07h */
+DECL|member|MsgContext
+id|U32
+id|MsgContext
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|SlotStatus
+id|U32
+id|SlotStatus
+suffix:semicolon
+multiline_comment|/* 0Ch */
+DECL|typedef|MSG_SEP_REQUEST
+DECL|typedef|PTR_MSG_SEP_REQUEST
+)brace
+id|MSG_SEP_REQUEST
+comma
+id|MPI_POINTER
+id|PTR_MSG_SEP_REQUEST
+comma
+DECL|typedef|SEPRequest_t
+DECL|typedef|pSEPRequest_t
+id|SEPRequest_t
+comma
+id|MPI_POINTER
+id|pSEPRequest_t
+suffix:semicolon
+multiline_comment|/* Action defines */
+DECL|macro|MPI_SEP_REQ_ACTION_WRITE_STATUS
+mdefine_line|#define MPI_SEP_REQ_ACTION_WRITE_STATUS                 (0x00)
+DECL|macro|MPI_SEP_REQ_ACTION_READ_STATUS
+mdefine_line|#define MPI_SEP_REQ_ACTION_READ_STATUS                  (0x01)
+multiline_comment|/* SlotStatus bits for MSG_SEP_REQUEST */
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_NO_ERROR
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_NO_ERROR                 (0x00000001)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_DEV_FAULTY
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_DEV_FAULTY               (0x00000002)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_DEV_REBUILDING
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_DEV_REBUILDING           (0x00000004)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_IN_FAILED_ARRAY
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_IN_FAILED_ARRAY          (0x00000008)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_IN_CRITICAL_ARRAY
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_IN_CRITICAL_ARRAY        (0x00000010)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_PARITY_CHECK
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_PARITY_CHECK             (0x00000020)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_PREDICTED_FAULT
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_PREDICTED_FAULT          (0x00000040)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_UNCONFIGURED
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_UNCONFIGURED             (0x00000080)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_HOT_SPARE
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_HOT_SPARE                (0x00000100)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_REBUILD_STOPPED
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_REBUILD_STOPPED          (0x00000200)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_IDENTIFY_REQUEST
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_IDENTIFY_REQUEST         (0x00020000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_REQUEST_REMOVE
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_REQUEST_REMOVE           (0x00040000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_REQUEST_INSERT
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_REQUEST_INSERT           (0x00080000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_DO_NOT_MOVE
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_DO_NOT_MOVE              (0x00400000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_B_ENABLE_BYPASS
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_B_ENABLE_BYPASS          (0x04000000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_A_ENABLE_BYPASS
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_A_ENABLE_BYPASS          (0x08000000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_DEV_OFF
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_DEV_OFF                  (0x10000000)
+DECL|macro|MPI_SEP_REQ_SLOTSTATUS_SWAP_RESET
+mdefine_line|#define MPI_SEP_REQ_SLOTSTATUS_SWAP_RESET               (0x80000000)
+DECL|struct|_MSG_SEP_REPLY
+r_typedef
+r_struct
+id|_MSG_SEP_REPLY
+(brace
+DECL|member|TargetID
+id|U8
+id|TargetID
+suffix:semicolon
+multiline_comment|/* 00h */
+DECL|member|Bus
+id|U8
+id|Bus
+suffix:semicolon
+multiline_comment|/* 01h */
+DECL|member|MsgLength
+id|U8
+id|MsgLength
+suffix:semicolon
+multiline_comment|/* 02h */
+DECL|member|Function
+id|U8
+id|Function
+suffix:semicolon
+multiline_comment|/* 03h */
+DECL|member|Action
+id|U8
+id|Action
+suffix:semicolon
+multiline_comment|/* 04h */
+DECL|member|Reserved1
+id|U8
+id|Reserved1
+suffix:semicolon
+multiline_comment|/* 05h */
+DECL|member|Reserved2
+id|U8
+id|Reserved2
+suffix:semicolon
+multiline_comment|/* 06h */
+DECL|member|MsgFlags
+id|U8
+id|MsgFlags
+suffix:semicolon
+multiline_comment|/* 07h */
+DECL|member|MsgContext
+id|U32
+id|MsgContext
+suffix:semicolon
+multiline_comment|/* 08h */
+DECL|member|Reserved3
+id|U16
+id|Reserved3
+suffix:semicolon
+multiline_comment|/* 0Ch */
+DECL|member|IOCStatus
+id|U16
+id|IOCStatus
+suffix:semicolon
+multiline_comment|/* 0Eh */
+DECL|member|IOCLogInfo
+id|U32
+id|IOCLogInfo
+suffix:semicolon
+multiline_comment|/* 10h */
+DECL|member|SlotStatus
+id|U32
+id|SlotStatus
+suffix:semicolon
+multiline_comment|/* 14h */
+DECL|typedef|MSG_SEP_REPLY
+DECL|typedef|PTR_MSG_SEP_REPLY
+)brace
+id|MSG_SEP_REPLY
+comma
+id|MPI_POINTER
+id|PTR_MSG_SEP_REPLY
+comma
+DECL|typedef|SEPReply_t
+DECL|typedef|pSEPReply_t
+id|SEPReply_t
+comma
+id|MPI_POINTER
+id|pSEPReply_t
+suffix:semicolon
+multiline_comment|/* SlotStatus bits for MSG_SEP_REPLY */
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_NO_ERROR
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_NO_ERROR               (0x00000001)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_DEV_FAULTY
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_DEV_FAULTY             (0x00000002)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_DEV_REBUILDING
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_DEV_REBUILDING         (0x00000004)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_IN_FAILED_ARRAY
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_IN_FAILED_ARRAY        (0x00000008)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_IN_CRITICAL_ARRAY
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_IN_CRITICAL_ARRAY      (0x00000010)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_PARITY_CHECK
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_PARITY_CHECK           (0x00000020)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_PREDICTED_FAULT
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_PREDICTED_FAULT        (0x00000040)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_UNCONFIGURED
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_UNCONFIGURED           (0x00000080)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_HOT_SPARE
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_HOT_SPARE              (0x00000100)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_REBUILD_STOPPED
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_REBUILD_STOPPED        (0x00000200)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_REPORT
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_REPORT                 (0x00010000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_IDENTIFY_REQUEST
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_IDENTIFY_REQUEST       (0x00020000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_REMOVE_READY
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_REMOVE_READY           (0x00040000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_INSERT_READY
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_INSERT_READY           (0x00080000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_DO_NOT_REMOVE
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_DO_NOT_REMOVE          (0x00400000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_B_BYPASS_ENABLED
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_B_BYPASS_ENABLED       (0x01000000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_A_BYPASS_ENABLED
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_A_BYPASS_ENABLED       (0x02000000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_B_ENABLE_BYPASS
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_B_ENABLE_BYPASS        (0x04000000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_A_ENABLE_BYPASS
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_A_ENABLE_BYPASS        (0x08000000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_DEV_OFF
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_DEV_OFF                (0x10000000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_FAULT_SENSED
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_FAULT_SENSED           (0x40000000)
+DECL|macro|MPI_SEP_REPLY_SLOTSTATUS_SWAPPED
+mdefine_line|#define MPI_SEP_REPLY_SLOTSTATUS_SWAPPED                (0x80000000)
 macro_line|#endif
 eof

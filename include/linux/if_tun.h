@@ -71,10 +71,6 @@ suffix:semicolon
 macro_line|#endif  
 )brace
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ( (a)&lt;(b) ? (a):(b) ) 
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Read queue size */
 DECL|macro|TUN_READQ_SIZE

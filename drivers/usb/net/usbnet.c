@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 singleline_comment|// #define&t;DEBUG&t;&t;&t;// error path messages, extra info

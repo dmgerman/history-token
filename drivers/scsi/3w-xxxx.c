@@ -1,15 +1,23 @@
-multiline_comment|/* &n;   3w-xxxx.c -- 3ware Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                     Brad Strand &lt;linux@3ware.com&gt;&n;&n;   Copyright (C) 1999-2002 3ware Inc.&n;&n;   Kernel compatablity By: &t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   &n;   Further tiny build fixes and trivial hoovering    Alan Cox&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;&n;   For more information, goto:&n;   http://www.3ware.com&n;&n;   History&n;   -------&n;   0.1.000 -     Initial release.&n;   0.4.000 -     Added support for Asynchronous Event Notification through&n;                 ioctls for 3DM.&n;   1.0.000 -     Added DPO &amp; FUA bit support for WRITE_10 &amp; WRITE_6 cdb&n;                 to disable drive write-cache before writes.&n;   1.1.000 -     Fixed performance bug with DPO &amp; FUA not existing for WRITE_6.&n;   1.2.000 -     Added support for clean shutdown notification/feature table.&n;   1.02.00.001 - Added support for full command packet posts through ioctls&n;                 for 3DM.&n;                 Bug fix so hot spare drives don&squot;t show up.&n;   1.02.00.002 - Fix bug with tw_setfeature() call that caused oops on some&n;                 systems.&n;   08/21/00    - release previously allocated resources on failure at&n;                 tw_allocate_memory (acme)&n;   1.02.00.003 - Fix tw_interrupt() to report error to scsi layer when&n;                 controller status is non-zero.&n;                 Added handling of request_sense opcode.&n;                 Fix possible null pointer dereference in &n;                 tw_reset_device_extension()&n;   1.02.00.004 - Add support for device id of 3ware 7000 series controllers.&n;                 Make tw_setfeature() call with interrupts disabled.&n;                 Register interrupt handler before enabling interrupts.&n;                 Clear attention interrupt before draining aen queue.&n;   1.02.00.005 - Allocate bounce buffers and custom queue depth for raid5 for&n;                 6000 and 5000 series controllers.&n;                 Reduce polling mdelays causing problems on some systems.&n;                 Fix use_sg = 1 calculation bug.&n;                 Check for scsi_register returning NULL.&n;                 Add aen count to /proc/scsi/3w-xxxx.&n;                 Remove aen code unit masking in tw_aen_complete().&n;   1.02.00.006 - Remove unit from printk in tw_scsi_eh_abort(), causing&n;                 possible oops.&n;                 Fix possible null pointer dereference in tw_scsi_queue()&n;                 if done function pointer was invalid.&n;   1.02.00.007 - Fix possible null pointer dereferences in tw_ioctl().&n;                 Remove check for invalid done function pointer from&n;                 tw_scsi_queue().&n;   1.02.00.008 - Set max sectors per io to TW_MAX_SECTORS in tw_findcards().&n;                 Add tw_decode_error() for printing readable error messages.&n;                 Print some useful information on certain aen codes.&n;                 Add tw_decode_bits() for interpreting status register output.&n;                 Make scsi_set_pci_device() for kernels &gt;= 2.4.4&n;                 Fix bug where aen&squot;s could be lost before a reset.&n;                 Re-add spinlocks in tw_scsi_detect().&n;                 Fix possible null pointer dereference in tw_aen_drain_queue()&n;                 during initialization.&n;                 Clear pci parity errors during initialization and during io.&n;   1.02.00.009 - Remove redundant increment in tw_state_request_start().&n;                 Add ioctl support for direct ATA command passthru.&n;                 Add entire aen code string list.&n;   1.02.00.010 - Cleanup queueing code, fix jbod thoughput.&n;                 Fix get_param for specific units.&n;   1.02.00.011 - Fix bug in tw_aen_complete() where aen&squot;s could be lost.&n;                 Fix tw_aen_drain_queue() to display useful info at init.&n;                 Set tw_host-&gt;max_id for 12 port cards.&n;                 Add ioctl support for raw command packet post from userspace&n;                 with sglist fragments (parameter and io).&n;   1.02.00.012 - Fix read capacity to under report by 1 sector to fix get&n;                 last sector ioctl.&n;   1.02.00.013 - Fix bug where more AEN codes weren&squot;t coming out during&n;                 driver initialization.&n;                 Improved handling of PCI aborts.&n;   1.02.00.014 - Fix bug in tw_findcards() where AEN code could be lost.&n;                 Increase timeout in tw_aen_drain_queue() to 30 seconds.&n;   1.02.00.015 - Re-write raw command post with data ioctl method.&n;                 Remove raid5 bounce buffers for raid5 for 6XXX for kernel 2.5&n;                 Add tw_map/unmap_scsi_sg/single_data() for kernel 2.5&n;                 Replace io_request_lock with host_lock for kernel 2.5&n;                 Set max_cmd_len to 16 for 3dm for kernel 2.5&n;   1.02.00.016 - Set host-&gt;max_sectors back up to 256.&n;   1.02.00.017 - Modified pci parity error handling/clearing from config space&n;                 during initialization.&n;   1.02.00.018 - Better handling of request sense opcode and sense information&n;                 for failed commands.  Add tw_decode_sense().&n;                 Replace all mdelay()&squot;s with scsi_sleep().&n;   1.02.00.019 - Revert mdelay&squot;s and scsi_sleep&squot;s, this caused problems on&n;                 some SMP systems.&n;   1.02.00.020 - Add pci_set_dma_mask(), rewrite kmalloc()/virt_to_bus() to&n;                 pci_alloc/free_consistent().&n;                 Better alignment checking in tw_allocate_memory().&n;                 Cleanup tw_initialize_device_extension().&n;   1.02.00.021 - Bump cmd_per_lun in SHT to 255 for better jbod performance.&n;                 Improve handling of errors in tw_interrupt().&n;                 Add handling/clearing of controller queue error.&n;                 Empty stale responses before draining aen queue.&n;                 Fix tw_scsi_eh_abort() to not reset on every io abort.&n;                 Set can_queue in SHT to 255 to prevent hang from AEN.&n;*/
+multiline_comment|/* &n;   3w-xxxx.c -- 3ware Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;                     Brad Strand &lt;linux@3ware.com&gt;&n;&n;   Copyright (C) 1999-2002 3ware Inc.&n;&n;   Kernel compatablity By: &t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   &n;   Further tiny build fixes and trivial hoovering    Alan Cox&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;&n;   For more information, goto:&n;   http://www.3ware.com&n;&n;   History&n;   -------&n;   0.1.000 -     Initial release.&n;   0.4.000 -     Added support for Asynchronous Event Notification through&n;                 ioctls for 3DM.&n;   1.0.000 -     Added DPO &amp; FUA bit support for WRITE_10 &amp; WRITE_6 cdb&n;                 to disable drive write-cache before writes.&n;   1.1.000 -     Fixed performance bug with DPO &amp; FUA not existing for WRITE_6.&n;   1.2.000 -     Added support for clean shutdown notification/feature table.&n;   1.02.00.001 - Added support for full command packet posts through ioctls&n;                 for 3DM.&n;                 Bug fix so hot spare drives don&squot;t show up.&n;   1.02.00.002 - Fix bug with tw_setfeature() call that caused oops on some&n;                 systems.&n;   08/21/00    - release previously allocated resources on failure at&n;                 tw_allocate_memory (acme)&n;   1.02.00.003 - Fix tw_interrupt() to report error to scsi layer when&n;                 controller status is non-zero.&n;                 Added handling of request_sense opcode.&n;                 Fix possible null pointer dereference in &n;                 tw_reset_device_extension()&n;   1.02.00.004 - Add support for device id of 3ware 7000 series controllers.&n;                 Make tw_setfeature() call with interrupts disabled.&n;                 Register interrupt handler before enabling interrupts.&n;                 Clear attention interrupt before draining aen queue.&n;   1.02.00.005 - Allocate bounce buffers and custom queue depth for raid5 for&n;                 6000 and 5000 series controllers.&n;                 Reduce polling mdelays causing problems on some systems.&n;                 Fix use_sg = 1 calculation bug.&n;                 Check for scsi_register returning NULL.&n;                 Add aen count to /proc/scsi/3w-xxxx.&n;                 Remove aen code unit masking in tw_aen_complete().&n;   1.02.00.006 - Remove unit from printk in tw_scsi_eh_abort(), causing&n;                 possible oops.&n;                 Fix possible null pointer dereference in tw_scsi_queue()&n;                 if done function pointer was invalid.&n;   1.02.00.007 - Fix possible null pointer dereferences in tw_ioctl().&n;                 Remove check for invalid done function pointer from&n;                 tw_scsi_queue().&n;   1.02.00.008 - Set max sectors per io to TW_MAX_SECTORS in tw_findcards().&n;                 Add tw_decode_error() for printing readable error messages.&n;                 Print some useful information on certain aen codes.&n;                 Add tw_decode_bits() for interpreting status register output.&n;                 Make scsi_set_pci_device() for kernels &gt;= 2.4.4&n;                 Fix bug where aen&squot;s could be lost before a reset.&n;                 Re-add spinlocks in tw_scsi_detect().&n;                 Fix possible null pointer dereference in tw_aen_drain_queue()&n;                 during initialization.&n;                 Clear pci parity errors during initialization and during io.&n;   1.02.00.009 - Remove redundant increment in tw_state_request_start().&n;                 Add ioctl support for direct ATA command passthru.&n;                 Add entire aen code string list.&n;   1.02.00.010 - Cleanup queueing code, fix jbod thoughput.&n;                 Fix get_param for specific units.&n;   1.02.00.011 - Fix bug in tw_aen_complete() where aen&squot;s could be lost.&n;                 Fix tw_aen_drain_queue() to display useful info at init.&n;                 Set tw_host-&gt;max_id for 12 port cards.&n;                 Add ioctl support for raw command packet post from userspace&n;                 with sglist fragments (parameter and io).&n;   1.02.00.012 - Fix read capacity to under report by 1 sector to fix get&n;                 last sector ioctl.&n;   1.02.00.013 - Fix bug where more AEN codes weren&squot;t coming out during&n;                 driver initialization.&n;                 Improved handling of PCI aborts.&n;   1.02.00.014 - Fix bug in tw_findcards() where AEN code could be lost.&n;                 Increase timeout in tw_aen_drain_queue() to 30 seconds.&n;   1.02.00.015 - Re-write raw command post with data ioctl method.&n;                 Remove raid5 bounce buffers for raid5 for 6XXX for kernel 2.5&n;                 Add tw_map/unmap_scsi_sg/single_data() for kernel 2.5&n;                 Replace io_request_lock with host_lock for kernel 2.5&n;                 Set max_cmd_len to 16 for 3dm for kernel 2.5&n;   1.02.00.016 - Set host-&gt;max_sectors back up to 256.&n;   1.02.00.017 - Modified pci parity error handling/clearing from config space&n;                 during initialization.&n;   1.02.00.018 - Better handling of request sense opcode and sense information&n;                 for failed commands.  Add tw_decode_sense().&n;                 Replace all mdelay()&squot;s with scsi_sleep().&n;   1.02.00.019 - Revert mdelay&squot;s and scsi_sleep&squot;s, this caused problems on&n;                 some SMP systems.&n;   1.02.00.020 - Add pci_set_dma_mask(), rewrite kmalloc()/virt_to_bus() to&n;                 pci_alloc/free_consistent().&n;                 Better alignment checking in tw_allocate_memory().&n;                 Cleanup tw_initialize_device_extension().&n;   1.02.00.021 - Bump cmd_per_lun in SHT to 255 for better jbod performance.&n;                 Improve handling of errors in tw_interrupt().&n;                 Add handling/clearing of controller queue error.&n;                 Empty stale responses before draining aen queue.&n;                 Fix tw_scsi_eh_abort() to not reset on every io abort.&n;                 Set can_queue in SHT to 255 to prevent hang from AEN.&n;   1.02.00.022 - Fix possible null pointer dereference in tw_scsi_release().&n;   1.02.00.023 - Fix bug in tw_aen_drain_queue() where unit # was always zero.&n;   1.02.00.024 - Add severity levels to AEN strings.&n;   1.02.00.025 - Fix command interrupt spurious error messages.&n;                 Fix bug in raw command post with data ioctl method.&n;                 Fix bug where rollcall sometimes failed with cable errors.&n;                 Print unit # on all command timeouts.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;3ware Inc.&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef __SMP__
+id|MODULE_DESCRIPTION
+(paren
+l_string|&quot;3ware Storage Controller Linux Driver (SMP)&quot;
+)paren
+suffix:semicolon
+macro_line|#else
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;3ware Storage Controller Linux Driver&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
@@ -176,7 +184,7 @@ r_char
 op_star
 id|tw_driver_version
 op_assign
-l_string|&quot;1.02.00.021&quot;
+l_string|&quot;1.02.00.025&quot;
 suffix:semicolon
 DECL|variable|tw_device_extension_list
 id|TW_Device_Extension
@@ -294,7 +302,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: scsi%d: AEN: AEN queue overflow.&bslash;n&quot;
+l_string|&quot;3w-xxxx: scsi%d: AEN: INFO: AEN queue overflow.&bslash;n&quot;
 comma
 id|tw_dev-&gt;host-&gt;host_no
 )paren
@@ -667,6 +675,8 @@ c_func
 id|tw_dev
 comma
 id|TW_STATUS_ATTENTION_INTERRUPT
+op_or
+id|TW_STATUS_MICROCONTROLLER_READY
 comma
 l_int|30
 )paren
@@ -1205,7 +1215,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: AEN: AEN queue overflow.&bslash;n&quot;
+l_string|&quot;3w-xxxx: AEN: INFO: AEN queue overflow.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1322,7 +1332,7 @@ id|tw_dev-&gt;aen_queue
 id|tw_dev-&gt;aen_tail
 )braket
 op_assign
-id|aen_code
+id|aen
 suffix:semicolon
 r_if
 c_cond
@@ -5718,15 +5728,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;3w-xxxx: scsi%d: Error posting pending commands.&bslash;n&quot;
-comma
-id|tw_dev-&gt;host-&gt;host_no
-)paren
-suffix:semicolon
+multiline_comment|/* If we get here, we will continue re-posting on the next command interrupt */
 r_break
 suffix:semicolon
 )brace
@@ -5856,6 +5858,34 @@ op_ne
 id|TW_S_POSTED
 )paren
 (brace
+multiline_comment|/* Handle timed out ioctl&squot;s */
+r_if
+c_cond
+(paren
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tw_dev-&gt;srb
+(braket
+id|request_id
+)braket
+op_member_access_from_pointer
+id|cmnd
+(braket
+l_int|0
+)braket
+op_ne
+id|TW_IOCTL
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5873,6 +5903,8 @@ id|error
 op_assign
 l_int|1
 suffix:semicolon
+)brace
+)brace
 )brace
 id|dprintk
 c_func
@@ -6313,9 +6345,19 @@ r_int
 id|total_bytes
 op_assign
 l_int|0
+comma
+id|posted
+op_assign
+l_int|0
 suffix:semicolon
 id|dma_addr_t
 id|dma_handle
+suffix:semicolon
+r_struct
+id|timeval
+id|before
+comma
+id|timeout
 suffix:semicolon
 id|ioctl
 op_assign
@@ -7299,7 +7341,7 @@ c_cond
 id|error
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_WARNING
@@ -7532,7 +7574,7 @@ c_cond
 id|error
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_WARNING
@@ -7608,17 +7650,26 @@ op_assign
 id|total_bytes
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tw_dev-&gt;tw_lock
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 id|tw_dev-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|set_bit
 c_func
 (paren
+id|TW_IN_IOCTL
+comma
 op_amp
-id|tw_dev-&gt;tw_lock
+id|tw_dev-&gt;flags
 )paren
 suffix:semicolon
 multiline_comment|/* Finally post the command packet */
@@ -7630,23 +7681,90 @@ comma
 id|request_id
 )paren
 suffix:semicolon
+id|posted
+op_assign
+l_int|1
+suffix:semicolon
+id|do_gettimeofday
+c_func
+(paren
+op_amp
+id|before
+)paren
+suffix:semicolon
+id|tw_ioctl_retry
+suffix:colon
 id|mdelay
 c_func
 (paren
 id|TW_IOCTL_WAIT_TIME
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|TW_IN_IOCTL
+comma
+op_amp
+id|tw_dev-&gt;flags
+)paren
+)paren
+(brace
+id|do_gettimeofday
+c_func
+(paren
+op_amp
+id|timeout
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|before.tv_sec
+op_plus
+id|TW_IOCTL_TIMEOUT
+OL
+id|timeout.tv_sec
+)paren
+(brace
 id|spin_lock_irq
+c_func
+(paren
+id|tw_dev-&gt;host-&gt;host_lock
+)paren
+suffix:semicolon
+id|spin_lock
 c_func
 (paren
 op_amp
 id|tw_dev-&gt;tw_lock
 )paren
 suffix:semicolon
+r_goto
+id|tw_ioctl_bail
+suffix:semicolon
+)brace
+r_else
+(brace
+r_goto
+id|tw_ioctl_retry
+suffix:semicolon
+)brace
+)brace
 id|spin_lock_irq
 c_func
 (paren
 id|tw_dev-&gt;host-&gt;host_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tw_dev-&gt;tw_lock
 )paren
 suffix:semicolon
 r_if
@@ -7790,7 +7908,7 @@ c_cond
 id|error
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_WARNING
@@ -7960,7 +8078,7 @@ c_cond
 id|error
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 id|KERN_WARNING
@@ -8084,6 +8202,11 @@ comma
 id|request_id
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|posted
+)paren
 id|tw_dev-&gt;posted_request_count
 op_decrement
 suffix:semicolon
@@ -8491,6 +8614,15 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_ioctl_complete(): caught TW_CMD_PACKET_WITH_DATA.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|TW_IN_IOCTL
+comma
+op_amp
+id|tw_dev-&gt;flags
 )paren
 suffix:semicolon
 r_return
@@ -9838,9 +9970,26 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: scsi%d: Command (0x%x) timed out.&bslash;n&quot;
+l_string|&quot;3w-xxxx: scsi%d: Unit #%d: Command (0x%x) timed out.&bslash;n&quot;
 comma
 id|tw_dev-&gt;host-&gt;host_no
+comma
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+op_eq
+l_int|0
+ques
+c_cond
+l_int|0
+suffix:colon
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|target
 comma
 (paren
 id|u32
@@ -9891,9 +10040,26 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: scsi%d: Command (0x%x) timed out.&bslash;n&quot;
+l_string|&quot;3w-xxxx: scsi%d: Unit #%d: Command (0x%x) timed out.&bslash;n&quot;
 comma
 id|tw_dev-&gt;host-&gt;host_no
+comma
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+op_eq
+l_int|0
+ques
+c_cond
+l_int|0
+suffix:colon
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|target
 comma
 (paren
 id|u32
@@ -9972,9 +10138,26 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: scsi%d: Command (0x%x) timed out, resetting card.&bslash;n&quot;
+l_string|&quot;3w-xxxx: scsi%d: Unit #%d: Command (0x%x) timed out, resetting card.&bslash;n&quot;
 comma
 id|tw_dev-&gt;host-&gt;host_no
+comma
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+op_eq
+l_int|0
+ques
+c_cond
+l_int|0
+suffix:colon
+id|tw_dev-&gt;srb
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|target
 comma
 (paren
 id|u32
@@ -11133,6 +11316,18 @@ id|KERN_NOTICE
 l_string|&quot;3w-xxxx: tw_scsi_release()&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Fake like we just shut down, so notify the card that&n;&t; * we &quot;shut down cleanly&quot;.&n;&t; */
+id|tw_halt
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+singleline_comment|// parameters aren&squot;t actually used
 multiline_comment|/* Free up the IO region */
 id|release_region
 c_func
@@ -11172,18 +11367,6 @@ c_func
 id|tw_host
 )paren
 suffix:semicolon
-multiline_comment|/* Fake like we just shut down, so notify the card that&n;&t; * we &quot;shut down cleanly&quot;.&n;&t; */
-id|tw_halt
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-singleline_comment|// parameters aren&squot;t actually used
 r_return
 l_int|0
 suffix:semicolon

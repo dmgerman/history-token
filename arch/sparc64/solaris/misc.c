@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &quot;conv.h&quot;
 multiline_comment|/* Conversion from Linux to Solaris errnos. 0-34 are identity mapped.&n;   Some Linux errnos (EPROCLIM, EDOTDOT, ERREMOTE, EUCLEAN, ENOTNAM, &n;   ENAVAIL, EISNAM, EREMOTEIO, ENOMEDIUM, EMEDIUMTYPE) have no Solaris&n;   equivalents. I return EINVAL in that case, which is very wrong. If&n;   someone suggest a better value for them, you&squot;re welcomed.&n;   On the other side, Solaris ECANCELED and ENOTSUP have no Linux equivalents,&n;   but that doesn&squot;t matter here. --jj */
 DECL|variable|solaris_err_table
@@ -1914,13 +1915,6 @@ DECL|macro|SOLARIS_CONFIG_PHYS_PAGES
 mdefine_line|#define&t;SOLARIS_CONFIG_PHYS_PAGES&t;&t;26
 DECL|macro|SOLARIS_CONFIG_AVPHYS_PAGES
 mdefine_line|#define&t;SOLARIS_CONFIG_AVPHYS_PAGES&t;&t;27
-r_extern
-r_int
-id|prom_cpu_nodes
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|function|solaris_sysconf
 id|asmlinkage
 r_int
@@ -2007,7 +2001,10 @@ r_case
 id|SOLARIS_CONFIG_NPROC_ONLN
 suffix:colon
 r_return
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#else
 r_case

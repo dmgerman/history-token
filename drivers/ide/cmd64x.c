@@ -2700,10 +2700,6 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -2977,10 +2973,6 @@ id|ch-&gt;dma_base
 suffix:semicolon
 id|u8
 id|dma_stat
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
 suffix:semicolon
 id|dma_stat
 op_assign
