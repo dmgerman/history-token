@@ -3621,11 +3621,9 @@ id|input.rep
 id|REP_DELAY
 )braket
 op_assign
-id|HZ
-op_div
-l_int|2
+l_int|500
 suffix:semicolon
-multiline_comment|/* input layer default: HZ/4 */
+multiline_comment|/* input layer default: 250 */
 id|adbhid
 (braket
 id|id
@@ -3636,11 +3634,9 @@ id|input.rep
 id|REP_PERIOD
 )braket
 op_assign
-id|HZ
-op_div
-l_int|15
+l_int|66
 suffix:semicolon
-multiline_comment|/* input layer default: HZ/33 */
+multiline_comment|/* input layer default: 33 */
 )brace
 )brace
 DECL|function|adbhid_input_unregister

@@ -115,6 +115,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/* this is 8kB-aligned so we can get to the thread_info struct&n;   at the base of it from the stack pointer with 1 integer instruction. */
 DECL|variable|init_thread_union
 r_union

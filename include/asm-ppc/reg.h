@@ -130,6 +130,14 @@ DECL|macro|SPRN_DABR
 mdefine_line|#define SPRN_DABR&t;0x3F5&t;/* Data Address Breakpoint Register */
 DECL|macro|SPRN_DAR
 mdefine_line|#define SPRN_DAR&t;0x013&t;/* Data Address Register */
+DECL|macro|SPRN_TBRL
+mdefine_line|#define SPRN_TBRL&t;0x10C&t;/* Time Base Read Lower Register (user, R/O) */
+DECL|macro|SPRN_TBRU
+mdefine_line|#define SPRN_TBRU&t;0x10D&t;/* Time Base Read Upper Register (user, R/O) */
+DECL|macro|SPRN_TBWL
+mdefine_line|#define SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, R/W) */
+DECL|macro|SPRN_TBWU
+mdefine_line|#define SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (super, R/W) */
 DECL|macro|SPRN_DBAT0L
 mdefine_line|#define SPRN_DBAT0L&t;0x219&t;/* Data BAT 0 Lower Register */
 DECL|macro|SPRN_DBAT0U
@@ -735,6 +743,14 @@ DECL|macro|THRM3
 mdefine_line|#define THRM3&t;SPRN_THRM3&t;/* Thermal Management Register 3 */
 DECL|macro|XER
 mdefine_line|#define XER&t;SPRN_XER
+DECL|macro|TBRL
+mdefine_line|#define TBRL&t;SPRN_TBRL&t;/* Time Base Read Lower Register */
+DECL|macro|TBRU
+mdefine_line|#define TBRU&t;SPRN_TBRU&t;/* Time Base Read Upper Register */
+DECL|macro|TBWL
+mdefine_line|#define TBWL&t;SPRN_TBWL&t;/* Time Base Write Lower Register */
+DECL|macro|TBWU
+mdefine_line|#define TBWU&t;SPRN_TBWU&t;/* Time Base Write Upper Register */
 multiline_comment|/* Processor Version Register */
 multiline_comment|/* Processor Version Register (PVR) field extraction */
 DECL|macro|PVR_VER
