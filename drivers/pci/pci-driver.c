@@ -409,12 +409,10 @@ r_if
 c_cond
 (paren
 id|error
-op_ge
-l_int|0
+op_eq
+op_minus
+id|ENODEV
 )paren
-r_return
-id|error
-suffix:semicolon
 id|error
 op_assign
 id|pci_device_probe_dynamic

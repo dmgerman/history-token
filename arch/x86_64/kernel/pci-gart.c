@@ -19,13 +19,6 @@ macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
-macro_line|#ifdef CONFIG_PCI_NAMES
-DECL|macro|pci_pretty_name
-mdefine_line|#define pci_pretty_name(dev) ((dev)-&gt;pretty_name)
-macro_line|#else
-DECL|macro|pci_pretty_name
-mdefine_line|#define pci_pretty_name(dev) &quot;&quot;
-macro_line|#endif
 DECL|variable|bad_dma_address
 id|dma_addr_t
 id|bad_dma_address

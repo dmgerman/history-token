@@ -2510,6 +2510,9 @@ suffix:semicolon
 )brace
 multiline_comment|/***************** last of pencam  routines  *******************/
 multiline_comment|/********************************************************************&n; * /proc interface&n; *******************************************************************/
+macro_line|#warning please convert me from procfs to sysfs
+DECL|macro|CONFIG_VIDEO_PROC_FS
+macro_line|#undef CONFIG_VIDEO_PROC_FS
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 DECL|variable|stv680_proc_entry
 r_static
