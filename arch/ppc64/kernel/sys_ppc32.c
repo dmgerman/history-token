@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
+macro_line|#include &lt;linux/aio.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
@@ -13459,6 +13460,12 @@ c_func
 id|__get_user
 c_func
 (paren
+(paren
+id|u32
+)paren
+(paren
+r_int
+)paren
 id|user_iocb
 comma
 id|iocbpp
@@ -13513,6 +13520,11 @@ c_func
 (paren
 id|ctx
 comma
+(paren
+r_struct
+id|iocb
+op_star
+)paren
 id|user_iocb
 comma
 op_amp
