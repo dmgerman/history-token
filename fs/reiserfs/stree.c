@@ -6725,14 +6725,8 @@ OL
 id|n_new_file_size
 )paren
 (brace
-id|pathrelse
-c_func
-(paren
-op_amp
-id|s_search_path
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|update_and_out
 suffix:semicolon
 )brace
 multiline_comment|/* Update key to search for the last file item. */
@@ -6939,6 +6933,8 @@ comma
 id|s_item_key.on_disk_key.k_objectid
 )paren
 suffix:semicolon
+id|update_and_out
+suffix:colon
 r_if
 c_cond
 (paren
