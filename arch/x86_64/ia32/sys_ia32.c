@@ -138,7 +138,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -429,7 +430,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1107,7 +1109,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1452,7 +1455,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1572,7 +1576,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -1688,7 +1693,8 @@ id|oact
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3017,7 +3023,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -4292,7 +4299,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -4486,12 +4494,10 @@ op_amp
 id|utp-&gt;stbcnt
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|ret
 op_assign
 id|do_adjtimex
@@ -4504,7 +4510,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -4698,13 +4705,11 @@ op_amp
 id|utp-&gt;stbcnt
 )paren
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon

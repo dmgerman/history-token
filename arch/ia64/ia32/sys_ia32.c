@@ -12621,9 +12621,6 @@ id|event64
 suffix:semicolon
 r_int
 id|error
-op_assign
-op_minus
-id|EFAULT
 suffix:semicolon
 id|u32
 id|data_halfword
@@ -12631,10 +12628,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|error
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -12648,9 +12643,9 @@ id|epoll_event32
 )paren
 )paren
 )paren
-)paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 id|__get_user
 c_func
@@ -12804,10 +12799,8 @@ multiline_comment|/* Verify that the area passed by the user is writeable */
 r_if
 c_cond
 (paren
-(paren
-id|error
-op_assign
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -12823,9 +12816,9 @@ id|epoll_event32
 )paren
 )paren
 )paren
-)paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 multiline_comment|/*&n; &t; * Allocate space for the intermediate copy.  If the space needed&n;&t; * is large enough to cause kmalloc to fail, then try again with&n;&t; * __get_free_pages.&n;&t; */
 id|size
