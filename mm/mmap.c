@@ -35,6 +35,23 @@ r_int
 id|size
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|clear_page_tables
+c_func
+(paren
+id|mmu_gather_t
+op_star
+id|tlb
+comma
+r_int
+r_int
+id|first
+comma
+r_int
+id|nr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * WARNING: the debugging will use recursive algorithms so never enable this&n; * unless you know what you are doing.&n; */
 DECL|macro|DEBUG_MM_RB
 macro_line|#undef DEBUG_MM_RB
@@ -3456,10 +3473,9 @@ r_void
 id|free_pgtables
 c_func
 (paren
-r_struct
-id|mm_struct
+id|mmu_gather_t
 op_star
-id|mm
+id|tlb
 comma
 r_struct
 id|vm_area_struct
@@ -3498,6 +3514,13 @@ r_int
 id|start_index
 comma
 id|end_index
+suffix:semicolon
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|tlb-&gt;mm
 suffix:semicolon
 r_if
 c_cond
@@ -3638,7 +3661,7 @@ id|start_index
 id|clear_page_tables
 c_func
 (paren
-id|mm
+id|tlb
 comma
 id|start_index
 comma
@@ -4071,7 +4094,7 @@ suffix:semicolon
 id|free_pgtables
 c_func
 (paren
-id|mm
+id|tlb
 comma
 id|prev
 comma
@@ -4764,7 +4787,7 @@ suffix:semicolon
 id|clear_page_tables
 c_func
 (paren
-id|mm
+id|tlb
 comma
 id|FIRST_USER_PGD_NR
 comma

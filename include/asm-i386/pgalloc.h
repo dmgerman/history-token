@@ -156,11 +156,15 @@ id|pte
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pte_free_tlb
+mdefine_line|#define pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; * (In the PAE case we free the pmds as part of the pgd.)&n; */
 DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm, addr)&t;&t;({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
+DECL|macro|pmd_free_tlb
+mdefine_line|#define pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
 DECL|macro|check_pgt_cache
