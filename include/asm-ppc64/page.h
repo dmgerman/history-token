@@ -262,27 +262,6 @@ mdefine_line|#define __pgd(x)&t;(x)
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;(x)
 macro_line|#endif
-macro_line|#ifdef CONFIG_XMON
-macro_line|#include &lt;asm/ptrace.h&gt;
-r_extern
-r_void
-id|xmon
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|excp
-)paren
-suffix:semicolon
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;xmon(0); &bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;__asm__ __volatile__(&quot;.long &quot; BUG_ILLEGAL_INSTR); &bslash;&n;} while (0)
-macro_line|#endif
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { BUG(); } while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_static
