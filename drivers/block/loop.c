@@ -2899,8 +2899,13 @@ op_assign
 id|inode-&gt;i_mapping-&gt;gfp_mask
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;gfp_mask
-op_assign
-id|GFP_NOIO
+op_and_assign
+op_complement
+(paren
+id|__GFP_IO
+op_or
+id|__GFP_FS
+)paren
 suffix:semicolon
 id|set_blocksize
 c_func
