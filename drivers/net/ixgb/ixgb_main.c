@@ -6557,19 +6557,6 @@ id|work_done
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_carrier_ok
-c_func
-(paren
-id|netdev
-)paren
-)paren
-r_goto
-id|quit_polling
-suffix:semicolon
 id|tx_cleaned
 op_assign
 id|ixgb_clean_tx_irq
@@ -6598,7 +6585,7 @@ id|netdev-&gt;quota
 op_sub_assign
 id|work_done
 suffix:semicolon
-multiline_comment|/* if no Tx cleanup and not enough Rx work done, exit the polling mode */
+multiline_comment|/* if no Tx and not enough Rx work done, exit the polling mode */
 r_if
 c_cond
 (paren
@@ -6608,8 +6595,8 @@ id|tx_cleaned
 op_logical_and
 (paren
 id|work_done
-OL
-id|work_to_do
+op_eq
+l_int|0
 )paren
 )paren
 op_logical_or
@@ -6621,8 +6608,6 @@ id|netdev
 )paren
 )paren
 (brace
-id|quit_polling
-suffix:colon
 id|netif_rx_complete
 c_func
 (paren
