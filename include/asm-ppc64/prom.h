@@ -544,6 +544,11 @@ id|prom_t
 id|prom
 suffix:semicolon
 r_extern
+r_char
+op_star
+id|of_stdout_device
+suffix:semicolon
+r_extern
 r_int
 id|boot_cpuid
 suffix:semicolon
