@@ -981,7 +981,7 @@ c_cond
 id|tp-&gt;packets_out
 op_logical_or
 op_logical_neg
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 (brace
 id|tp-&gt;probes_out
@@ -2333,7 +2333,7 @@ c_cond
 (paren
 id|tp-&gt;packets_out
 op_logical_or
-id|tp-&gt;send_head
+id|sk-&gt;sk_send_head
 )paren
 r_goto
 id|resched
