@@ -1964,12 +1964,6 @@ r_int
 r_int
 id|expires
 suffix:semicolon
-id|e100_phy_reset
-c_func
-(paren
-id|bdp
-)paren
-suffix:semicolon
 id|bdp-&gt;flags
 op_or_assign
 id|DF_SPEED_FORCED
@@ -2928,6 +2922,22 @@ comma
 id|ctrl_reg
 )paren
 suffix:semicolon
+multiline_comment|/* ieee 802.3 : The reset process shall be completed       */
+multiline_comment|/* within 0.5 seconds from the settting of PHY reset bit.  */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|2
+)paren
+suffix:semicolon
 )brace
 r_int
 r_char
@@ -2984,6 +2994,12 @@ suffix:semicolon
 id|bdp-&gt;zlock_state
 op_assign
 id|ZLOCK_INITIAL
+suffix:semicolon
+id|e100_phy_reset
+c_func
+(paren
+id|bdp
+)paren
 suffix:semicolon
 id|e100_phy_set_speed_duplex
 c_func

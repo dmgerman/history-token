@@ -162,7 +162,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|seeq8005_interrupt
 c_func
 (paren
@@ -1786,7 +1786,7 @@ suffix:semicolon
 multiline_comment|/* The typical workload of the driver:&n;   Handle the network interface interrupts. */
 DECL|function|seeq8005_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|seeq8005_interrupt
 c_func
 (paren
@@ -1821,6 +1821,11 @@ comma
 id|status
 comma
 id|boguscount
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|handled
 op_assign
 l_int|0
 suffix:semicolon
@@ -1874,6 +1879,10 @@ op_amp
 id|SEEQSTAT_WINDOW_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|outw
 c_func
 (paren
@@ -1912,6 +1921,10 @@ op_amp
 id|SEEQSTAT_TX_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|outw
 c_func
 (paren
@@ -1945,6 +1958,10 @@ op_amp
 id|SEEQSTAT_RX_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Got a packet(s). */
 id|seeq8005_rx
 c_func
@@ -1996,6 +2013,13 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* We have a good packet(s), get it/them out of the buffers. */
 DECL|function|seeq8005_rx
