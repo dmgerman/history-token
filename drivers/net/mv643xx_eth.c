@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *                    Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * Copyright (C) 2004 Steven J. Hill &lt;sjhill1@rockwellcollins.com&gt;&n; *                                   &lt;sjhill@realitydiluted.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *&t;&t;&t;   Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * Copyright (C) 2004 Steven J. Hill &lt;sjhill1@rockwellcollins.com&gt;&n; *&t;&t;&t;&t;     &lt;sjhill@realitydiluted.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;mv643xx_eth.h&quot;
-multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports. &n; */
+multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports.&n; */
 multiline_comment|/* Constants */
 DECL|macro|WRAP
 mdefine_line|#define WRAP&t;&t;&t;&t;ETH_HLEN + 2 + 4
@@ -185,7 +185,7 @@ DECL|macro|MV_WRITE
 macro_line|#undef MV_WRITE
 DECL|macro|MV_WRITE
 mdefine_line|#define MV_WRITE(offset, data)&t;&bslash;&n;&t;writel((u32)data,&t;&bslash;&n;&t;&t;mv64x60_eth_shared_base - MV64340_ETH_SHARED_REGS + offset)
-multiline_comment|/*&n; * Changes MTU (maximum transfer unit) of the gigabit ethenret port&n; *&n; * Input : pointer to ethernet interface network device structure&n; *         new mtu size &n; * Output : 0 upon success, -EINVAL upon failure&n; */
+multiline_comment|/*&n; * Changes MTU (maximum transfer unit) of the gigabit ethenret port&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; *&t;&t;new mtu size&n; * Output :&t;0 upon success, -EINVAL upon failure&n; */
 DECL|function|mv64340_eth_change_mtu
 r_static
 r_int
@@ -259,7 +259,7 @@ id|dev-&gt;mtu
 op_assign
 id|new_mtu
 suffix:semicolon
-multiline_comment|/* &n;&t; * Stop then re-open the interface. This will allocate RX skb&squot;s with&n;&t; * the new MTU.&n;&t; * There is a possible danger that the open will not successed, due&n;&t; * to memory is full, which might fail the open function.&n;&t; */
+multiline_comment|/*&n;&t; * Stop then re-open the interface. This will allocate RX skb&squot;s with&n;&t; * the new MTU.&n;&t; * There is a possible danger that the open will not successed, due&n;&t; * to memory is full, which might fail the open function.&n;&t; */
 r_if
 c_cond
 (paren
@@ -320,7 +320,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_rx_task&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Fills / refills RX queue on a certain gigabit ethernet port&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_eth_rx_task&n; *&n; * Fills / refills RX queue on a certain gigabit ethernet port&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_eth_rx_task
 r_static
 r_void
@@ -554,7 +554,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * mv64340_eth_rx_task_timer_wrapper&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Timer routine to wake up RX queue filling task. This function is&n; * used only in case the RX queue is empty, and all alloc_skb has&n; * failed (due to out of memory event).&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_eth_rx_task_timer_wrapper&n; *&n; * Timer routine to wake up RX queue filling task. This function is&n; * used only in case the RX queue is empty, and all alloc_skb has&n; * failed (due to out of memory event).&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_eth_rx_task_timer_wrapper
 r_static
 r_void
@@ -604,7 +604,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_update_mac_address&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Update the MAC address of the port in the address table&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_eth_update_mac_address&n; *&n; * Update the MAC address of the port in the address table&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_eth_update_mac_address
 r_static
 r_void
@@ -659,7 +659,7 @@ id|mp-&gt;port_mac_addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_set_rx_mode&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Change from promiscuos to regular rx mode&n; *&n; * Input : pointer to ethernet interface network device structure&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_eth_set_rx_mode&n; *&n; * Change from promiscuos to regular rx mode&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_eth_set_rx_mode
 r_static
 r_void
@@ -726,7 +726,7 @@ id|config_reg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_set_mac_address&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Change the interface&squot;s mac address.&n; * No special hardware thing should be done because interface is always&n; * put in promiscuous mode.&n; *&n; * Input : pointer to ethernet interface network device structure and&n; *         a pointer to the designated entry to be added to the cache.&n; * Output : zero upon success, negative upon failure&n; */
+multiline_comment|/*&n; * mv64340_eth_set_mac_address&n; *&n; * Change the interface&squot;s mac address.&n; * No special hardware thing should be done because interface is always&n; * put in promiscuous mode.&n; *&n; * Input :&t;pointer to ethernet interface network device structure and&n; *&t;&t;a pointer to the designated entry to be added to the cache.&n; * Output :&t;zero upon success, negative upon failure&n; */
 DECL|function|mv64340_eth_set_mac_address
 r_static
 r_int
@@ -790,7 +790,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_tx_timeout&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * Called upon a timeout on transmitting a packet&n; *&n; * Input : pointer to ethernet interface network device structure.&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_eth_tx_timeout&n; *&n; * Called upon a timeout on transmitting a packet&n; *&n; * Input :&t;pointer to ethernet interface network device structure.&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_eth_tx_timeout
 r_static
 r_void
@@ -881,7 +881,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_free_tx_queue&n; *&n; * Input : dev - a pointer to the required interface&n; *&n; * Output : 0 if was able to release skb , nonzero otherwise&n; */
+multiline_comment|/*&n; * mv64340_eth_free_tx_queue&n; *&n; * Input :&t;dev - a pointer to the required interface&n; *&n; * Output :&t;0 if was able to release skb , nonzero otherwise&n; */
 DECL|function|mv64340_eth_free_tx_queue
 r_static
 r_int
@@ -986,7 +986,7 @@ id|stats-&gt;tx_errors
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * If return_info is different than 0, release the skb.&n;&t;&t; * The case where return_info is not 0 is only in case&n;&t;&t; * when transmitted a scatter/gather packet, where only&n;&t;&t; * last skb releases the whole chain.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If return_info is different than 0, release the skb.&n;&t;&t; * The case where return_info is not 0 is only in case&n;&t;&t; * when transmitted a scatter/gather packet, where only&n;&t;&t; * last skb releases the whole chain.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1039,7 +1039,7 @@ id|released
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * Decrement the number of outstanding skbs counter on&n;&t;&t;&t; * the TX queue.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Decrement the number of outstanding skbs counter on&n;&t;&t;&t; * the TX queue.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1083,7 +1083,7 @@ r_return
 id|released
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_receive&n; *&n; * This function is forward packets that are received from the port&squot;s&n; * queues toward kernel core or FastRoute them to another interface.&n; *&n; * Input : dev - a pointer to the required interface&n; *         max - maximum number to receive (0 means unlimted)&n; *&n; * Output : number of served packets&n; */
+multiline_comment|/*&n; * mv64340_eth_receive&n; *&n; * This function is forward packets that are received from the port&squot;s&n; * queues toward kernel core or FastRoute them to another interface.&n; *&n; * Input :&t;dev - a pointer to the required interface&n; *&t;&t;max - maximum number to receive (0 means unlimted)&n; *&n; * Output :&t;number of served packets&n; */
 macro_line|#ifdef MV64340_NAPI
 DECL|function|mv64340_eth_receive_queue
 r_static
@@ -1270,8 +1270,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Received packet spread on multiple&quot;
-l_string|&quot; descriptors&bslash;n&quot;
+l_string|&quot;%s: Received packet spread &quot;
+l_string|&quot;on multiple descriptors&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -1369,7 +1369,7 @@ r_return
 id|received_packets
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_int_handler&n; *&n; * Main interrupt handler for the gigbit ethernet ports&n; *&n; * Input : irq - irq number (not used)&n; *         dev_id - a pointer to the required interface&squot;s data structure&n; *         regs   - not used&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_eth_int_handler&n; *&n; * Main interrupt handler for the gigbit ethernet ports&n; *&n; * Input :&t;irq&t;- irq number (not used)&n; *&t;&t;dev_id&t;- a pointer to the required interface&squot;s data structure&n; *&t;&t;regs&t;- not used&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_eth_int_handler
 r_static
 id|irqreturn_t
@@ -1609,7 +1609,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * After forwarded received packets to upper layer,  add a task&n;&t;&t; * in an interrupts enabled context that refills the RX ring&n;&t;&t; * with skb&squot;s.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * After forwarded received packets to upper layer, add a task&n;&t;&t; * in an interrupts enabled context that refills the RX ring&n;&t;&t; * with skb&squot;s.&n;&t;&t; */
 macro_line|#ifdef MV64340_RX_QUEUE_FILL_ON_TASK
 multiline_comment|/* Unmask all interrupts on ethernet port */
 id|MV_WRITE
@@ -1740,7 +1740,7 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef MV64340_COAL
-multiline_comment|/*&n; * eth_port_set_rx_coal - Sets coalescing interrupt mechanism on RX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the RX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the tClk of the MV-643xx chip&n; *&t;, and the required delay of the interrupt in usec.&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num      Ethernet port number&n; *&t;unsigned int t_clk        t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay       Delay in usec&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
+multiline_comment|/*&n; * eth_port_set_rx_coal - Sets coalescing interrupt mechanism on RX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the RX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the tClk of the MV-643xx chip&n; *&t;, and the required delay of the interrupt in usec.&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num&t;Ethernet port number&n; *&t;unsigned int t_clk&t;&t;t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay&t;&t;Delay in usec&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
 DECL|function|eth_port_set_rx_coal
 r_static
 r_int
@@ -1817,7 +1817,7 @@ id|coal
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * eth_port_set_tx_coal - Sets coalescing interrupt mechanism on TX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the TX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the t_cLK frequency of the &n; *&t;MV-643xx chip and the required delay in the interrupt in uSec&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num      Ethernet port number&n; *&t;unsigned int t_clk        t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay       Delay in uSeconds&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
+multiline_comment|/*&n; * eth_port_set_tx_coal - Sets coalescing interrupt mechanism on TX path&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the TX coalescing interrupt mechanism parameter.&n; *&t;This parameter is a timeout counter, that counts in 64 t_clk&n; *&t;chunks ; that when timeout event occurs a maskable interrupt&n; *&t;occurs.&n; *&t;The parameter is calculated using the t_cLK frequency of the&n; *&t;MV-643xx chip and the required delay in the interrupt in uSec&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num&t;Ethernet port number&n; *&t;unsigned int t_clk&t;&t;t_clk of the MV-643xx chip in HZ units&n; *&t;unsigned int delay&t;&t;Delay in uSeconds&n; *&n; * OUTPUT:&n; *&t;Interrupt coalescing mechanism value is set in MV-643xx chip.&n; *&n; * RETURN:&n; *&t;The interrupt coalescing value set in the gigE port.&n; *&n; */
 DECL|function|eth_port_set_tx_coal
 r_static
 r_int
@@ -1875,7 +1875,7 @@ r_return
 id|coal
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_open&n; *&n; * This function is called when openning the network device. The function&n; * should initialize all the hardware, initialize cyclic Rx/Tx&n; * descriptors chain and buffers and allocate an IRQ to the network&n; * device.&n; *&n; * Input : a pointer to the network device structure&n; *&n; * Output : zero of success , nonzero if fails.&n; */
+multiline_comment|/*&n; * mv64340_eth_open&n; *&n; * This function is called when openning the network device. The function&n; * should initialize all the hardware, initialize cyclic Rx/Tx&n; * descriptors chain and buffers and allocate an IRQ to the network&n; * device.&n; *&n; * Input :&t;a pointer to the network device structure&n; *&n; * Output :&t;zero of success , nonzero if fails.&n; */
 DECL|function|mv64340_eth_open
 r_static
 r_int
@@ -2017,7 +2017,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ether_init_rx_desc_ring - Curve a Rx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Rx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Rx descriptors and buffers.&n; *&n; * RETURN:&n; *      None.&n; */
+multiline_comment|/*&n; * ether_init_rx_desc_ring - Curve a Rx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *&t;This function prepares a Rx chained list of descriptors and packet&n; *&t;buffers in a form of a ring. The routine must be called after port&n; *&t;initialization routine and before port start routine.&n; *&t;The Ethernet SDMA engine uses CPU bus addresses to access the various&n; *&t;devices in the system (i.e. DRAM). This function uses the ethernet&n; *&t;struct &squot;virtual to physical&squot; routine (set by the user) to set the ring&n; *&t;with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private *mp&t;Ethernet Port Control srtuct.&n; *&n; * OUTPUT:&n; *&t;The routine updates the Ethernet port control struct with information&n; *&t;regarding the Rx descriptors and buffers.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|ether_init_rx_desc_ring
 r_static
 r_void
@@ -2120,7 +2120,7 @@ op_or_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ether_init_tx_desc_ring - Curve a Tx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *       This function prepares a Tx chained list of descriptors and packet &n; *       buffers in a form of a ring. The routine must be called after port &n; *       initialization routine and before port start routine. &n; *       The Ethernet SDMA engine uses CPU bus addresses to access the various &n; *       devices in the system (i.e. DRAM). This function uses the ethernet &n; *       struct &squot;virtual to physical&squot; routine (set by the user) to set the ring &n; *       with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&n; * OUTPUT:&n; *      The routine updates the Ethernet port control struct with information &n; *      regarding the Tx descriptors and buffers.&n; *&n; * RETURN:&n; *      None.&n; */
+multiline_comment|/*&n; * ether_init_tx_desc_ring - Curve a Tx chain desc list and buffer in memory.&n; *&n; * DESCRIPTION:&n; *&t;This function prepares a Tx chained list of descriptors and packet&n; *&t;buffers in a form of a ring. The routine must be called after port&n; *&t;initialization routine and before port start routine.&n; *&t;The Ethernet SDMA engine uses CPU bus addresses to access the various&n; *&t;devices in the system (i.e. DRAM). This function uses the ethernet&n; *&t;struct &squot;virtual to physical&squot; routine (set by the user) to set the ring&n; *&t;with physical addresses.&n; *&n; * INPUT:&n; *&t;struct mv64340_private *mp&t;Ethernet Port Control srtuct.&n; *&n; * OUTPUT:&n; *&t;The routine updates the Ethernet port control struct with information&n; *&t;regarding the Tx descriptors and buffers.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|ether_init_tx_desc_ring
 r_static
 r_void
@@ -3131,7 +3131,7 @@ id|mp-&gt;rx_desc_dma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_eth_stop&n; *&n; * This function is used when closing the network device. &n; * It updates the hardware, &n; * release all memory that holds buffers and descriptors and release the IRQ.&n; * Input : a pointer to the device structure&n; * Output : zero if success , nonzero if fails&n; */
+multiline_comment|/*&n; * mv64340_eth_stop&n; *&n; * This function is used when closing the network device.&n; * It updates the hardware,&n; * release all memory that holds buffers and descriptors and release the IRQ.&n; * Input :&t;a pointer to the device structure&n; * Output :&t;zero if success , nonzero if fails&n; */
 multiline_comment|/* Helper function for mv64340_eth_stop */
 DECL|function|mv64340_eth_real_stop
 r_static
@@ -3523,9 +3523,6 @@ r_if
 c_cond
 (paren
 (paren
-id|u32
-)paren
-(paren
 id|MV_READ
 c_func
 (paren
@@ -3687,7 +3684,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * mv64340_eth_start_xmit&n; *&n; * This function is queues a packet in the Tx descriptor for &n; * required port.&n; *&n; * Input : skb - a pointer to socket buffer&n; *         dev - a pointer to the required port&n; *&n; * Output : zero upon success&n; */
+multiline_comment|/*&n; * mv64340_eth_start_xmit&n; *&n; * This function is queues a packet in the Tx descriptor for&n; * required port.&n; *&n; * Input :&t;skb - a pointer to socket buffer&n; *&t;&t;dev - a pointer to the required port&n; *&n; * Output :&t;zero upon success&n; */
 DECL|function|mv64340_eth_start_xmit
 r_static
 r_int
@@ -4382,7 +4379,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Error on transmitting packet&bslash;n&quot;
+l_string|&quot;%s: Error on &quot;
+l_string|&quot;transmitting packet&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4498,7 +4496,7 @@ op_plus
 id|MAX_DESCS_PER_SKB
 )paren
 )paren
-multiline_comment|/* &n;&t;&t; * Stop getting skb&squot;s from upper layers.&n;&t;&t; * Getting skb&squot;s from upper layers will be enabled again after&n;&t;&t; * packets are released.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Stop getting skb&squot;s from upper layers.&n;&t;&t; * Getting skb&squot;s from upper layers will be enabled again after&n;&t;&t; * packets are released.&n;&t;&t; */
 id|netif_stop_queue
 c_func
 (paren
@@ -4531,7 +4529,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-multiline_comment|/*&n; * mv64340_eth_get_stats&n; *&n; * Returns a pointer to the interface statistics.&n; *&n; * Input : dev - a pointer to the required interface&n; *&n; * Output : a pointer to the interface&squot;s statistics&n; */
+multiline_comment|/*&n; * mv64340_eth_get_stats&n; *&n; * Returns a pointer to the interface statistics.&n; *&n; * Input :&t;dev - a pointer to the required interface&n; *&n; * Output :&t;a pointer to the interface&squot;s statistics&n; */
 DECL|function|mv64340_eth_get_stats
 r_static
 r_struct
@@ -4562,7 +4560,7 @@ op_amp
 id|mp-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/*/&n; * mv64340_eth_probe&n; *&t;&t;&t;&t;&t;&t;&t;&t;       &n; * First function called after registering the network device. &n; * It&squot;s purpose is to initialize the device as an ethernet device, &n; * fill the ethernet device structure with pointers * to functions,&n; * and set the MAC address of the interface&n; *&n; * Input : struct device *&n; * Output : -ENOMEM if failed , 0 if success&n; */
+multiline_comment|/*/&n; * mv64340_eth_probe&n; *&n; * First function called after registering the network device.&n; * It&squot;s purpose is to initialize the device as an ethernet device,&n; * fill the ethernet device structure with pointers * to functions,&n; * and set the MAC address of the interface&n; *&n; * Input :&t;struct device *&n; * Output :&t;-ENOMEM if failed , 0 if success&n; */
 DECL|function|mv64340_eth_probe
 r_static
 r_int
@@ -5347,7 +5345,7 @@ id|mv64340_eth_shared_remove
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * mv64340_init_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input : N/A&n; *&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_init_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input :&t;N/A&n; *&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_init_module
 r_static
 r_int
@@ -5403,7 +5401,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * mv64340_cleanup_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input : N/A&n; *&n; * Output : N/A&n; */
+multiline_comment|/*&n; * mv64340_cleanup_module&n; *&n; * Registers the network drivers into the Linux kernel&n; *&n; * Input :&t;N/A&n; *&n; * Output :&t;N/A&n; */
 DECL|function|mv64340_cleanup_module
 r_static
 r_void
@@ -5462,8 +5460,8 @@ c_func
 l_string|&quot;Ethernet driver for Marvell MV64340&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  The second part is the low level driver of the gigE ethernet ports.&n; */
-multiline_comment|/*&n; * Marvell&squot;s Gigabit Ethernet controller low level driver&n; *&n; * DESCRIPTION:&n; *       This file introduce low level API to Marvell&squot;s Gigabit Ethernet&n; *&t;&t;controller. This Gigabit Ethernet Controller driver API controls&n; *&t;&t;1) Operations (i.e. port init, start, reset etc&squot;).&n; *&t;&t;2) Data flow (i.e. port send, receive etc&squot;).&n; *&t;&t;Each Gigabit Ethernet port is controlled via&n; *              struct mv64340_private.&n; *&t;&t;This struct includes user configuration information as well as&n; *&t;&t;driver internal data needed for its operations.&n; *&n; *&t;&t;Supported Features:  &n; *&t;&t;- This low level driver is OS independent. Allocating memory for&n; *&t;&t;  the descriptor rings and buffers are not within the scope of&n; *&t;&t;  this driver.&n; *&t;&t;- The user is free from Rx/Tx queue managing.&n; *&t;&t;- This low level driver introduce functionality API that enable&n; *&t;&t;  the to operate Marvell&squot;s Gigabit Ethernet Controller in a&n; *&t;&t;  convenient way.&n; *&t;&t;- Simple Gigabit Ethernet port operation API.&n; *&t;&t;- Simple Gigabit Ethernet port data flow API.&n; *&t;&t;- Data flow and operation API support per queue functionality.&n; *&t;&t;- Support cached descriptors for better performance.&n; *&t;&t;- Enable access to all four DRAM banks and internal SRAM memory&n; *&t;&t;  spaces.&n; *&t;&t;- PHY access and control API.&n; *&t;&t;- Port control register configuration API.&n; *&t;&t;- Full control over Unicast and Multicast MAC configurations.&n; *&t;&t;&t;&t;&t;&t;&t;&t;   &n; *&t;&t;Operation flow:&n; *&n; *&t;&t;Initialization phase&n; *&t;&t;This phase complete the initialization of the the mv64340_private&n; *&t;&t;struct. &n; *&t;&t;User information regarding port configuration has to be set&n; *&t;&t;prior to calling the port initialization routine.&n; *&n; *&t;&t;In this phase any port Tx/Rx activity is halted, MIB counters&n; *&t;&t;are cleared, PHY address is set according to user parameter and&n; *&t;&t;access to DRAM and internal SRAM memory spaces.&n; *&n; *&t;&t;Driver ring initialization&n; *&t;&t;Allocating memory for the descriptor rings and buffers is not &n; *&t;&t;within the scope of this driver. Thus, the user is required to&n; *&t;&t;allocate memory for the descriptors ring and buffers. Those&n; *&t;&t;memory parameters are used by the Rx and Tx ring initialization&n; *&t;&t;routines in order to curve the descriptor linked list in a form&n; *&t;&t;of a ring.&n; *&t;&t;Note: Pay special attention to alignment issues when using&n; *&t;&t;cached descriptors/buffers. In this phase the driver store&n; *&t;&t;information in the mv64340_private struct regarding each queue&n; *&t;&t;ring.&n; *&n; *&t;&t;Driver start &n; *&t;&t;This phase prepares the Ethernet port for Rx and Tx activity.&n; *&t;&t;It uses the information stored in the mv64340_private struct to &n; *&t;&t;initialize the various port registers.&n; *&n; *&t;&t;Data flow:&n; *&t;&t;All packet references to/from the driver are done using&n; *              struct pkt_info.&n; *&t;&t;This struct is a unified struct used with Rx and Tx operations. &n; *&t;&t;This way the user is not required to be familiar with neither&n; *&t;&t;Tx nor Rx descriptors structures.&n; *&t;&t;The driver&squot;s descriptors rings are management by indexes.&n; *&t;&t;Those indexes controls the ring resources and used to indicate&n; *&t;&t;a SW resource error:&n; *&t;&t;&squot;current&squot; &n; *&t;&t;This index points to the current available resource for use. For &n; *&t;&t;example in Rx process this index will point to the descriptor  &n; *&t;&t;that will be passed to the user upon calling the receive routine.&n; *&t;&t;In Tx process, this index will point to the descriptor&n; *&t;&t;that will be assigned with the user packet info and transmitted.&n; *&t;&t;&squot;used&squot;    &n; *&t;&t;This index points to the descriptor that need to restore its &n; *&t;&t;resources. For example in Rx process, using the Rx buffer return&n; *&t;&t;API will attach the buffer returned in packet info to the&n; *&t;&t;descriptor pointed by &squot;used&squot;. In Tx process, using the Tx&n; *&t;&t;descriptor return will merely return the user packet info with&n; *&t;&t;the command status of  the transmitted buffer pointed by the&n; *&t;&t;&squot;used&squot; index. Nevertheless, it is essential to use this routine&n; *&t;&t;to update the &squot;used&squot; index.&n; *&t;&t;&squot;first&squot;&n; *&t;&t;This index supports Tx Scatter-Gather. It points to the first &n; *&t;&t;descriptor of a packet assembled of multiple buffers. For example&n; *&t;&t;when in middle of Such packet we have a Tx resource error the &n; *&t;&t;&squot;curr&squot; index get the value of &squot;first&squot; to indicate that the ring &n; *&t;&t;returned to its state before trying to transmit this packet.&n; *&n; *&t;&t;Receive operation:&n; *&t;&t;The eth_port_receive API set the packet information struct,&n; *&t;&t;passed by the caller, with received information from the &n; *&t;&t;&squot;current&squot; SDMA descriptor. &n; *&t;&t;It is the user responsibility to return this resource back&n; *&t;&t;to the Rx descriptor ring to enable the reuse of this source.&n; *&t;&t;Return Rx resource is done using the eth_rx_return_buff API.&n; *&n; *&t;&t;Transmit operation:&n; *&t;&t;The eth_port_send API supports Scatter-Gather which enables to&n; *&t;&t;send a packet spanned over multiple buffers. This means that&n; *&t;&t;for each packet info structure given by the user and put into&n; *&t;&t;the Tx descriptors ring, will be transmitted only if the &squot;LAST&squot;&n; *&t;&t;bit will be set in the packet info command status field. This&n; *&t;&t;API also consider restriction regarding buffer alignments and&n; *&t;&t;sizes.&n; *&t;&t;The user must return a Tx resource after ensuring the buffer&n; *&t;&t;has been transmitted to enable the Tx ring indexes to update.&n; *&n; *&t;&t;BOARD LAYOUT&n; *&t;&t;This device is on-board.  No jumper diagram is necessary.&n; *&n; *&t;&t;EXTERNAL INTERFACE&n; *&n; *       Prior to calling the initialization routine eth_port_init() the user&n; *&t; must set the following fields under mv64340_private struct:&n; *       port_num             User Ethernet port number.&n; *       port_mac_addr[6]&t;    User defined port MAC address.&n; *       port_config          User port configuration value.&n; *       port_config_extend    User port config extend value.&n; *       port_sdma_config      User port SDMA config value.&n; *       port_serial_control   User port serial control value.&n; *&n; *&t;&t;This driver data flow is done using the struct pkt_info which&n; *              is a unified struct for Rx and Tx operations:&n; *&n; *&t;&t;byte_cnt&t;Tx/Rx descriptor buffer byte count.&n; *&t;&t;l4i_chk&t;&t;CPU provided TCP Checksum. For Tx operation&n; *                              only.&n; *&t;&t;cmd_sts&t;&t;Tx/Rx descriptor command status.&n; *&t;&t;buf_ptr&t;&t;Tx/Rx descriptor buffer pointer.&n; *&t;&t;return_info&t;Tx/Rx user resource return information.&n; */
+multiline_comment|/*&n; * The second part is the low level driver of the gigE ethernet ports.&n; */
+multiline_comment|/*&n; * Marvell&squot;s Gigabit Ethernet controller low level driver&n; *&n; * DESCRIPTION:&n; *&t;This file introduce low level API to Marvell&squot;s Gigabit Ethernet&n; *&t;&t;controller. This Gigabit Ethernet Controller driver API controls&n; *&t;&t;1) Operations (i.e. port init, start, reset etc&squot;).&n; *&t;&t;2) Data flow (i.e. port send, receive etc&squot;).&n; *&t;&t;Each Gigabit Ethernet port is controlled via&n; *&t;&t;struct mv64340_private.&n; *&t;&t;This struct includes user configuration information as well as&n; *&t;&t;driver internal data needed for its operations.&n; *&n; *&t;&t;Supported Features:&n; *&t;&t;- This low level driver is OS independent. Allocating memory for&n; *&t;&t;  the descriptor rings and buffers are not within the scope of&n; *&t;&t;  this driver.&n; *&t;&t;- The user is free from Rx/Tx queue managing.&n; *&t;&t;- This low level driver introduce functionality API that enable&n; *&t;&t;  the to operate Marvell&squot;s Gigabit Ethernet Controller in a&n; *&t;&t;  convenient way.&n; *&t;&t;- Simple Gigabit Ethernet port operation API.&n; *&t;&t;- Simple Gigabit Ethernet port data flow API.&n; *&t;&t;- Data flow and operation API support per queue functionality.&n; *&t;&t;- Support cached descriptors for better performance.&n; *&t;&t;- Enable access to all four DRAM banks and internal SRAM memory&n; *&t;&t;  spaces.&n; *&t;&t;- PHY access and control API.&n; *&t;&t;- Port control register configuration API.&n; *&t;&t;- Full control over Unicast and Multicast MAC configurations.&n; *&n; *&t;&t;Operation flow:&n; *&n; *&t;&t;Initialization phase&n; *&t;&t;This phase complete the initialization of the the&n; *&t;&t;mv64340_private struct.&n; *&t;&t;User information regarding port configuration has to be set&n; *&t;&t;prior to calling the port initialization routine.&n; *&n; *&t;&t;In this phase any port Tx/Rx activity is halted, MIB counters&n; *&t;&t;are cleared, PHY address is set according to user parameter and&n; *&t;&t;access to DRAM and internal SRAM memory spaces.&n; *&n; *&t;&t;Driver ring initialization&n; *&t;&t;Allocating memory for the descriptor rings and buffers is not&n; *&t;&t;within the scope of this driver. Thus, the user is required to&n; *&t;&t;allocate memory for the descriptors ring and buffers. Those&n; *&t;&t;memory parameters are used by the Rx and Tx ring initialization&n; *&t;&t;routines in order to curve the descriptor linked list in a form&n; *&t;&t;of a ring.&n; *&t;&t;Note: Pay special attention to alignment issues when using&n; *&t;&t;cached descriptors/buffers. In this phase the driver store&n; *&t;&t;information in the mv64340_private struct regarding each queue&n; *&t;&t;ring.&n; *&n; *&t;&t;Driver start&n; *&t;&t;This phase prepares the Ethernet port for Rx and Tx activity.&n; *&t;&t;It uses the information stored in the mv64340_private struct to&n; *&t;&t;initialize the various port registers.&n; *&n; *&t;&t;Data flow:&n; *&t;&t;All packet references to/from the driver are done using&n; *&t;&t;struct pkt_info.&n; *&t;&t;This struct is a unified struct used with Rx and Tx operations.&n; *&t;&t;This way the user is not required to be familiar with neither&n; *&t;&t;Tx nor Rx descriptors structures.&n; *&t;&t;The driver&squot;s descriptors rings are management by indexes.&n; *&t;&t;Those indexes controls the ring resources and used to indicate&n; *&t;&t;a SW resource error:&n; *&t;&t;&squot;current&squot;&n; *&t;&t;This index points to the current available resource for use. For&n; *&t;&t;example in Rx process this index will point to the descriptor&n; *&t;&t;that will be passed to the user upon calling the receive&n; *&t;&t;routine.  In Tx process, this index will point to the descriptor&n; *&t;&t;that will be assigned with the user packet info and transmitted.&n; *&t;&t;&squot;used&squot;&n; *&t;&t;This index points to the descriptor that need to restore its&n; *&t;&t;resources. For example in Rx process, using the Rx buffer return&n; *&t;&t;API will attach the buffer returned in packet info to the&n; *&t;&t;descriptor pointed by &squot;used&squot;. In Tx process, using the Tx&n; *&t;&t;descriptor return will merely return the user packet info with&n; *&t;&t;the command status of the transmitted buffer pointed by the&n; *&t;&t;&squot;used&squot; index. Nevertheless, it is essential to use this routine&n; *&t;&t;to update the &squot;used&squot; index.&n; *&t;&t;&squot;first&squot;&n; *&t;&t;This index supports Tx Scatter-Gather. It points to the first&n; *&t;&t;descriptor of a packet assembled of multiple buffers. For&n; *&t;&t;example when in middle of Such packet we have a Tx resource&n; *&t;&t;error the &squot;curr&squot; index get the value of &squot;first&squot; to indicate&n; *&t;&t;that the ring returned to its state before trying to transmit&n; *&t;&t;this packet.&n; *&n; *&t;&t;Receive operation:&n; *&t;&t;The eth_port_receive API set the packet information struct,&n; *&t;&t;passed by the caller, with received information from the&n; *&t;&t;&squot;current&squot; SDMA descriptor.&n; *&t;&t;It is the user responsibility to return this resource back&n; *&t;&t;to the Rx descriptor ring to enable the reuse of this source.&n; *&t;&t;Return Rx resource is done using the eth_rx_return_buff API.&n; *&n; *&t;&t;Transmit operation:&n; *&t;&t;The eth_port_send API supports Scatter-Gather which enables to&n; *&t;&t;send a packet spanned over multiple buffers. This means that&n; *&t;&t;for each packet info structure given by the user and put into&n; *&t;&t;the Tx descriptors ring, will be transmitted only if the &squot;LAST&squot;&n; *&t;&t;bit will be set in the packet info command status field. This&n; *&t;&t;API also consider restriction regarding buffer alignments and&n; *&t;&t;sizes.&n; *&t;&t;The user must return a Tx resource after ensuring the buffer&n; *&t;&t;has been transmitted to enable the Tx ring indexes to update.&n; *&n; *&t;&t;BOARD LAYOUT&n; *&t;&t;This device is on-board.  No jumper diagram is necessary.&n; *&n; *&t;&t;EXTERNAL INTERFACE&n; *&n; *&t;Prior to calling the initialization routine eth_port_init() the user&n; *&t;must set the following fields under mv64340_private struct:&n; *&t;port_num&t;&t;User Ethernet port number.&n; *&t;port_mac_addr[6]&t;User defined port MAC address.&n; *&t;port_config&t;&t;User port configuration value.&n; *&t;port_config_extend&t;User port config extend value.&n; *&t;port_sdma_config&t;User port SDMA config value.&n; *&t;port_serial_control&t;User port serial control value.&n; *&n; *&t;&t;This driver data flow is done using the struct pkt_info which&n; *&t;&t;is a unified struct for Rx and Tx operations:&n; *&n; *&t;&t;byte_cnt&t;Tx/Rx descriptor buffer byte count.&n; *&t;&t;l4i_chk&t;&t;CPU provided TCP Checksum. For Tx operation&n; *&t;&t;&t;&t;only.&n; *&t;&t;cmd_sts&t;&t;Tx/Rx descriptor command status.&n; *&t;&t;buf_ptr&t;&t;Tx/Rx descriptor buffer pointer.&n; *&t;&t;return_info&t;Tx/Rx user resource return information.&n; */
 multiline_comment|/* defines */
 multiline_comment|/* SDMA command macros */
 DECL|macro|ETH_ENABLE_TX_QUEUE
@@ -5511,7 +5509,7 @@ r_int
 id|option
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * eth_port_init - Initialize the Ethernet port driver&n; *&n; * DESCRIPTION:&n; *       This function prepares the ethernet port to start its activity:&n; *       1) Completes the ethernet port driver struct initialization toward port&n; *           start routine.&n; *       2) Resets the device to a quiescent state in case of warm reboot.&n; *       3) Enable SDMA access to all four DRAM banks as well as internal SRAM.&n; *       4) Clean MAC tables. The reset status of those tables is unknown.&n; *       5) Set PHY address. &n; *       Note: Call this routine prior to eth_port_start routine and after&n; *       setting user values in the user fields of Ethernet port control&n; *       struct.&n; *&n; * INPUT:&n; *       struct mv64340_private *mp   Ethernet port control struct&n; *&n; * OUTPUT:&n; *       See description.&n; *&n; * RETURN:&n; *       None.&n; */
+multiline_comment|/*&n; * eth_port_init - Initialize the Ethernet port driver&n; *&n; * DESCRIPTION:&n; *&t;This function prepares the ethernet port to start its activity:&n; *&t;1) Completes the ethernet port driver struct initialization toward port&n; *&t;&t;start routine.&n; *&t;2) Resets the device to a quiescent state in case of warm reboot.&n; *&t;3) Enable SDMA access to all four DRAM banks as well as internal SRAM.&n; *&t;4) Clean MAC tables. The reset status of those tables is unknown.&n; *&t;5) Set PHY address.&n; *&t;Note: Call this routine prior to eth_port_start routine and after&n; *&t;setting user values in the user fields of Ethernet port control&n; *&t;struct.&n; *&n; * INPUT:&n; *&t;struct mv64340_private *mp&t;Ethernet port control struct&n; *&n; * OUTPUT:&n; *&t;See description.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|eth_port_init
 r_static
 r_void
@@ -5559,7 +5557,7 @@ id|mp-&gt;port_num
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_start - Start the Ethernet port activity.&n; *&n; * DESCRIPTION:&n; *       This routine prepares the Ethernet port for Rx and Tx activity:&n; *       1. Initialize Tx and Rx Current Descriptor Pointer for each queue that&n; *          has been initialized a descriptor&squot;s ring (using&n; *          ether_init_tx_desc_ring for Tx and ether_init_rx_desc_ring for Rx)&n; *       2. Initialize and enable the Ethernet configuration port by writing to&n; *          the port&squot;s configuration and command registers.&n; *       3. Initialize and enable the SDMA by writing to the SDMA&squot;s &n; *          configuration and command registers.  After completing these steps,&n; *          the ethernet port SDMA can starts to perform Rx and Tx activities.&n; *&n; *       Note: Each Rx and Tx queue descriptor&squot;s list must be initialized prior&n; *       to calling this function (use ether_init_tx_desc_ring for Tx queues&n; *       and ether_init_rx_desc_ring for Rx queues).&n; *&n; * INPUT:&n; *       struct mv64340_private &t;*mp   Ethernet port control struct&n; *&n; * OUTPUT:&n; *       Ethernet port is ready to receive and transmit.&n; *&n; * RETURN:&n; *       None.&n; */
+multiline_comment|/*&n; * eth_port_start - Start the Ethernet port activity.&n; *&n; * DESCRIPTION:&n; *&t;This routine prepares the Ethernet port for Rx and Tx activity:&n; *&t; 1. Initialize Tx and Rx Current Descriptor Pointer for each queue that&n; *&t;    has been initialized a descriptor&squot;s ring (using&n; *&t;    ether_init_tx_desc_ring for Tx and ether_init_rx_desc_ring for Rx)&n; *&t; 2. Initialize and enable the Ethernet configuration port by writing to&n; *&t;    the port&squot;s configuration and command registers.&n; *&t; 3. Initialize and enable the SDMA by writing to the SDMA&squot;s&n; *&t;    configuration and command registers.  After completing these steps,&n; *&t;    the ethernet port SDMA can starts to perform Rx and Tx activities.&n; *&n; *&t;Note: Each Rx and Tx queue descriptor&squot;s list must be initialized prior&n; *&t;to calling this function (use ether_init_tx_desc_ring for Tx queues&n; *&t;and ether_init_rx_desc_ring for Rx queues).&n; *&n; * INPUT:&n; *&t;struct mv64340_private *mp&t;Ethernet port control struct&n; *&n; * OUTPUT:&n; *&t;Ethernet port is ready to receive and transmit.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|eth_port_start
 r_static
 r_void
@@ -5726,7 +5724,7 @@ id|mp-&gt;port_rx_queue_command
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_uc_addr_set - This function Set the port Unicast address.&n; *&n; * DESCRIPTION:&n; *&t;&t;This function Set the port Ethernet MAC address.&n; *&n; * INPUT:&n; *&t;unsigned int eth_port_num     Port number.&n; *&t;char *        p_addr&t;&t;Address to be set &n; *&n; * OUTPUT:&n; *&t;Set MAC address low and high registers. also calls eth_port_uc_addr() &n; *       To set the unicast table with the proper information.&n; *&n; * RETURN:&n; *&t;N/A.&n; *&n; */
+multiline_comment|/*&n; * eth_port_uc_addr_set - This function Set the port Unicast address.&n; *&n; * DESCRIPTION:&n; *&t;&t;This function Set the port Ethernet MAC address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Port number.&n; *&t;char *&t;&t;p_addr&t;&t;Address to be set&n; *&n; * OUTPUT:&n; *&t;Set MAC address low and high registers. also calls eth_port_uc_addr()&n; *&t;To set the unicast table with the proper information.&n; *&n; * RETURN:&n; *&t;N/A.&n; *&n; */
 DECL|function|eth_port_uc_addr_set
 r_static
 r_void
@@ -5980,7 +5978,7 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_uc_addr - This function Set the port unicast address table&n; *&n; * DESCRIPTION:&n; *&t;This function locates the proper entry in the Unicast table for the &n; *&t;specified MAC nibble and sets its properties according to function &n; *&t;parameters.&n; *&n; * INPUT:&n; *&t;unsigned int &t;eth_port_num      Port number.&n; *&t;unsigned char uc_nibble&t;&t;Unicast MAC Address last nibble. &n; *&t;int &t;&t;&t;option      0 = Add, 1 = remove address.&n; *&n; * OUTPUT:&n; *&t;This function add/removes MAC addresses from the port unicast address&n; *&t;table. &n; *&n; * RETURN:&n; *&t;true is output succeeded.&n; *&t;false if option parameter is invalid.&n; *&n; */
+multiline_comment|/*&n; * eth_port_uc_addr - This function Set the port unicast address table&n; *&n; * DESCRIPTION:&n; *&t;This function locates the proper entry in the Unicast table for the&n; *&t;specified MAC nibble and sets its properties according to function&n; *&t;parameters.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Port number.&n; *&t;unsigned char&t;uc_nibble&t;Unicast MAC Address last nibble.&n; *&t;int &t;&t;option&t;&t;0 = Add, 1 = remove address.&n; *&n; * OUTPUT:&n; *&t;This function add/removes MAC addresses from the port unicast address&n; *&t;table.&n; *&n; * RETURN:&n; *&t;true is output succeeded.&n; *&t;false if option parameter is invalid.&n; *&n; */
 DECL|function|eth_port_uc_addr
 r_static
 r_int
@@ -6047,7 +6045,7 @@ id|option
 r_case
 id|REJECT_MAC_ADDR
 suffix:colon
-multiline_comment|/* Clear accepts frame bit at specified unicast DA table entry */
+multiline_comment|/* Clear accepts frame bit at given unicast DA table entry */
 id|unicast_reg
 op_assign
 id|MV_READ
@@ -6150,7 +6148,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_init_mac_tables - Clear all entrance in the UC, SMC and OMC tables&n; *&n; * DESCRIPTION:&n; *       Go through all the DA filter tables (Unicast, Special Multicast &amp;&n; *       Other Multicast) and set each entry to 0.&n; *&n; * INPUT:&n; *&t;unsigned int    eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       Multicast and Unicast packets are rejected.&n; *&n; * RETURN:&n; *       None.&n; */
+multiline_comment|/*&n; * eth_port_init_mac_tables - Clear all entrance in the UC, SMC and OMC tables&n; *&n; * DESCRIPTION:&n; *&t;Go through all the DA filter tables (Unicast, Special Multicast &amp;&n; *&t;Other Multicast) and set each entry to 0.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;Multicast and Unicast packets are rejected.&n; *&n; * RETURN:&n; *&t;None.&n; */
 DECL|function|eth_port_init_mac_tables
 r_static
 r_void
@@ -6246,7 +6244,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * eth_clear_mib_counters - Clear all MIB counters&n; *&n; * DESCRIPTION:&n; *       This function clears all MIB counters of a specific ethernet port.&n; *       A read from the MIB counter will reset the counter.&n; *&n; * INPUT:&n; *&t;unsigned int    eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       After reading all MIB counters, the counters resets.&n; *&n; * RETURN:&n; *       MIB counter value.&n; *&n; */
+multiline_comment|/*&n; * eth_clear_mib_counters - Clear all MIB counters&n; *&n; * DESCRIPTION:&n; *&t;This function clears all MIB counters of a specific ethernet port.&n; *&t;A read from the MIB counter will reset the counter.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;After reading all MIB counters, the counters resets.&n; *&n; * RETURN:&n; *&t;MIB counter value.&n; *&n; */
 DECL|function|eth_clear_mib_counters
 r_static
 r_void
@@ -6290,7 +6288,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_detect - Detect whether a phy is present&n; *&n; * DESCRIPTION:&n; *&t;This function tests whether there is a PHY present on&n; *&t;the specified port.&n; *&n; * INPUT:&n; *&t;unsigned int    eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       None&n; *&n; * RETURN:&n; *       0 on success&n; *       -ENODEV on failure&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_detect - Detect whether a phy is present&n; *&n; * DESCRIPTION:&n; *&t;This function tests whether there is a PHY present on&n; *&t;the specified port.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;None&n; *&n; * RETURN:&n; *&t;0 on success&n; *&t;-ENODEV on failure&n; *&n; */
 DECL|function|ethernet_phy_detect
 r_static
 r_int
@@ -6386,7 +6384,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_get - Get the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *       This routine returns the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       None.&n; *&n; * RETURN:&n; *       PHY address.&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_get - Get the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *&t;This routine returns the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;None.&n; *&n; * RETURN:&n; *&t;PHY address.&n; *&n; */
 DECL|function|ethernet_phy_get
 r_static
 r_int
@@ -6426,7 +6424,7 @@ l_int|0x1f
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_set - Set the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *       This routine sets the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;int&t;&t;phy_addr&t;PHY address.&n; *&n; * OUTPUT:&n; *       None.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_set - Set the ethernet port PHY address.&n; *&n; * DESCRIPTION:&n; *&t;This routine sets the given ethernet port PHY address.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;int&t;&t;phy_addr&t;PHY address.&n; *&n; * OUTPUT:&n; *&t;None.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|ethernet_phy_set
 r_static
 r_void
@@ -6487,7 +6485,7 @@ id|reg_data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_phy_reset - Reset Ethernet port PHY.&n; *&n; * DESCRIPTION:&n; *       This routine utilizes the SMI interface to reset the ethernet port PHY.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       The PHY is reset.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * ethernet_phy_reset - Reset Ethernet port PHY.&n; *&n; * DESCRIPTION:&n; *&t;This routine utilizes the SMI interface to reset the ethernet port PHY.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;The PHY is reset.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|ethernet_phy_reset
 r_static
 r_void
@@ -6531,7 +6529,7 @@ id|phy_reg_data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_reset - Reset Ethernet port&n; *&n; * DESCRIPTION:&n; * &t;This routine resets the chip by aborting any SDMA engine activity and&n; *      clearing the MIB counters. The Receiver and the Transmit unit are in &n; *      idle state after this command is performed and the port is disabled.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       Channel activity is halted.&n; *&n; * RETURN:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * eth_port_reset - Reset Ethernet port&n; *&n; * DESCRIPTION:&n; * &t;This routine resets the chip by aborting any SDMA engine activity and&n; *&t;clearing the MIB counters. The Receiver and the Transmit unit are in&n; *&t;idle state after this command is performed and the port is disabled.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;Channel activity is halted.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|eth_port_reset
 r_static
 r_void
@@ -6709,7 +6707,7 @@ id|reg_data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_set_config_reg - Set specified bits in configuration register.&n; *&n; * DESCRIPTION:&n; *       This function sets specified bits in the given ethernet &n; *       configuration register. &n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *      unsigned int    value   32 bit value.&n; *&n; * OUTPUT:&n; *      The set bits in the value parameter are set in the configuration &n; *      register.&n; *&n; * RETURN:&n; *      None.&n; *&n; */
+multiline_comment|/*&n; * ethernet_set_config_reg - Set specified bits in configuration register.&n; *&n; * DESCRIPTION:&n; *&t;This function sets specified bits in the given ethernet&n; *&t;configuration register.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;unsigned int&t;value&t;&t;32 bit value.&n; *&n; * OUTPUT:&n; *&t;The set bits in the value parameter are set in the configuration&n; *&t;register.&n; *&n; * RETURN:&n; *&t;None.&n; *&n; */
 DECL|function|ethernet_set_config_reg
 r_static
 r_void
@@ -6836,7 +6834,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ethernet_get_config_reg - Get the port configuration register&n; *&n; * DESCRIPTION:&n; *       This function returns the configuration register value of the given &n; *       ethernet port.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *&n; * OUTPUT:&n; *       None.&n; *&n; * RETURN:&n; *       Port configuration register value.&n; */
+multiline_comment|/*&n; * ethernet_get_config_reg - Get the port configuration register&n; *&n; * DESCRIPTION:&n; *&t;This function returns the configuration register value of the given&n; *&t;ethernet port.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&n; * OUTPUT:&n; *&t;None.&n; *&n; * RETURN:&n; *&t;Port configuration register value.&n; */
 DECL|function|ethernet_get_config_reg
 r_static
 r_int
@@ -6868,7 +6866,7 @@ r_return
 id|eth_config_reg
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_read_smi_reg - Read PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform PHY register read.&n; *&n; * INPUT:&n; *       unsigned int   port_num  Ethernet Port number.&n; *       unsigned int   phy_reg   PHY register address offset.&n; *       unsigned int   *value   Register value buffer.&n; *&n; * OUTPUT:&n; *       Write the value of a specified PHY register into given buffer.&n; *&n; * RETURN:&n; *       false if the PHY is busy or read data is not in valid state.&n; *       true otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_port_read_smi_reg - Read PHY registers&n; *&n; * DESCRIPTION:&n; *&t;This routine utilize the SMI interface to interact with the PHY in&n; *&t;order to perform PHY register read.&n; *&n; * INPUT:&n; *&t;unsigned int&t;port_num&t;Ethernet Port number.&n; *&t;unsigned int&t;phy_reg&t;&t;PHY register address offset.&n; *&t;unsigned int&t;*value&t;&t;Register value buffer.&n; *&n; * OUTPUT:&n; *&t;Write the value of a specified PHY register into given buffer.&n; *&n; * RETURN:&n; *&t;false if the PHY is busy or read data is not in valid state.&n; *&t;true otherwise.&n; *&n; */
 DECL|function|eth_port_read_smi_reg
 r_static
 r_void
@@ -7055,7 +7053,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_write_smi_reg - Write to PHY registers&n; *&n; * DESCRIPTION:&n; *       This routine utilize the SMI interface to interact with the PHY in &n; *       order to perform writes to PHY registers.&n; *&n; * INPUT:&n; *&t;unsigned int   eth_port_num   Ethernet Port number.&n; *      unsigned int   phy_reg   PHY register address offset.&n; *      unsigned int    value   Register value.&n; *&n; * OUTPUT:&n; *      Write the given value to the specified PHY register.&n; *&n; * RETURN:&n; *      false if the PHY is busy.&n; *      true otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_port_write_smi_reg - Write to PHY registers&n; *&n; * DESCRIPTION:&n; *&t;This routine utilize the SMI interface to interact with the PHY in&n; *&t;order to perform writes to PHY registers.&n; *&n; * INPUT:&n; *&t;unsigned int&t;eth_port_num&t;Ethernet Port number.&n; *&t;unsigned int&t;phy_reg&t;&t;PHY register address offset.&n; *&t;unsigned int&t;value&t;&t;Register value.&n; *&n; * OUTPUT:&n; *&t;Write the given value to the specified PHY register.&n; *&n; * RETURN:&n; *&t;false if the PHY is busy.&n; *&t;true otherwise.&n; *&n; */
 DECL|function|eth_port_write_smi_reg
 r_static
 r_void
@@ -7188,8 +7186,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_send - Send an Ethernet packet&n; *&n; * DESCRIPTION:&n; *&t;This routine send a given packet described by p_pktinfo parameter. It &n; *      supports transmitting of a packet spaned over multiple buffers. The &n; *      routine updates &squot;curr&squot; and &squot;first&squot; indexes according to the packet &n; *      segment passed to the routine. In case the packet segment is first, &n; *      the &squot;first&squot; index is update. In any case, the &squot;curr&squot; index is updated. &n; *      If the routine get into Tx resource error it assigns &squot;curr&squot; index as &n; *      &squot;first&squot;. This way the function can abort Tx process of multiple &n; *      descriptors per packet.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;curr&squot; and &squot;first&squot; indexes are updated. &n; *&n; * RETURN:&n; *      ETH_QUEUE_FULL in case of Tx resource error.&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_QUEUE_LAST_RESOURCE if the routine uses the last Tx resource.&n; *      ETH_OK otherwise.&n; *&n; */
-macro_line|#ifdef  MV64340_CHECKSUM_OFFLOAD_TX
+multiline_comment|/*&n; * eth_port_send - Send an Ethernet packet&n; *&n; * DESCRIPTION:&n; *&t;This routine send a given packet described by p_pktinfo parameter. It&n; *&t;supports transmitting of a packet spaned over multiple buffers. The&n; *&t;routine updates &squot;curr&squot; and &squot;first&squot; indexes according to the packet&n; *&t;segment passed to the routine. In case the packet segment is first,&n; *&t;the &squot;first&squot; index is update. In any case, the &squot;curr&squot; index is updated.&n; *&t;If the routine get into Tx resource error it assigns &squot;curr&squot; index as&n; *&t;&squot;first&squot;. This way the function can abort Tx process of multiple&n; *&t;descriptors per packet.&n; *&n; * INPUT:&n; *&t;struct mv64340_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;curr&squot; and &squot;first&squot; indexes are updated.&n; *&n; * RETURN:&n; *&t;ETH_QUEUE_FULL in case of Tx resource error.&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_QUEUE_LAST_RESOURCE if the routine uses the last Tx resource.&n; *&t;ETH_OK otherwise.&n; *&n; */
+macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
 multiline_comment|/*&n; * Modified to include the first descriptor pointer in case of SG&n; */
 DECL|function|eth_port_send
 r_static
@@ -7596,7 +7594,7 @@ id|ETH_OK
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * eth_tx_return_desc - Free all used Tx descriptors&n; *&n; * DESCRIPTION:&n; *&t;This routine returns the transmitted packet information to the caller.&n; *      It uses the &squot;first&squot; index to support Tx desc return in case a transmit &n; *      of a packet spanned over multiple buffer still in process.&n; *      In case the Tx queue was in &quot;resource error&quot; condition, where there are &n; *      no available Tx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;first&squot; and &squot;used&squot; indexes are updated. &n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *      ETH_RETRY in case there is transmission in process.&n; *&t;ETH_END_OF_JOB if the routine has nothing to release.&n; *      ETH_OK otherwise.&n; *&n; */
+multiline_comment|/*&n; * eth_tx_return_desc - Free all used Tx descriptors&n; *&n; * DESCRIPTION:&n; *&t;This routine returns the transmitted packet information to the caller.&n; *&t;It uses the &squot;first&squot; index to support Tx desc return in case a transmit&n; *&t;of a packet spanned over multiple buffer still in process.&n; *&t;In case the Tx queue was in &quot;resource error&quot; condition, where there are&n; *&t;no available Tx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv64340_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Tx ring &squot;first&squot; and &squot;used&squot; indexes are updated.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Tx desc ring.&n; *&t;ETH_RETRY in case there is transmission in process.&n; *&t;ETH_END_OF_JOB if the routine has nothing to release.&n; *&t;ETH_OK otherwise.&n; *&n; */
 DECL|function|eth_tx_return_desc
 r_static
 id|ETH_FUNC_RET_STATUS
@@ -7733,7 +7731,7 @@ r_return
 id|ETH_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_port_receive - Get received information from Rx ring.&n; *&n; * DESCRIPTION:&n; * &t;This routine returns the received data to the caller. There is no &n; *&t;data copying during routine operation. All information is returned &n; *&t;using pointer to packet information struct passed from the caller. &n; *      If the routine exhausts&t;Rx ring resources then the resource error flag &n; *      is set.  &n; *&n; * INPUT:&n; *&t;struct mv64340_private   *mp   Ethernet Port Control srtuct. &n; *&t;struct pkt_info        *p_pkt_info       User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Rx ring current and used indexes are updated. &n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *&t;ETH_QUEUE_FULL if Rx ring resources are exhausted.&n; *&t;ETH_END_OF_JOB if there is no received data.&n; *      ETH_OK otherwise.&n; */
+multiline_comment|/*&n; * eth_port_receive - Get received information from Rx ring.&n; *&n; * DESCRIPTION:&n; * &t;This routine returns the received data to the caller. There is no&n; *&t;data copying during routine operation. All information is returned&n; *&t;using pointer to packet information struct passed from the caller.&n; *&t;If the routine exhausts Rx ring resources then the resource error flag&n; *&t;is set.&n; *&n; * INPUT:&n; *&t;struct mv64340_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;User packet buffer.&n; *&n; * OUTPUT:&n; *&t;Rx ring current and used indexes are updated.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *&t;ETH_QUEUE_FULL if Rx ring resources are exhausted.&n; *&t;ETH_END_OF_JOB if there is no received data.&n; *&t;ETH_OK otherwise.&n; */
 DECL|function|eth_port_receive
 r_static
 id|ETH_FUNC_RET_STATUS
@@ -7849,7 +7847,7 @@ op_assign
 id|p_rx_desc-&gt;buf_size
 suffix:semicolon
 multiline_comment|/* Clean the return info field to indicate that the packet has been */
-multiline_comment|/* moved to the upper layers                                        */
+multiline_comment|/* moved to the upper layers&t;&t;&t;&t;&t;    */
 id|mp-&gt;rx_skb
 (braket
 id|rx_curr_desc
@@ -7888,7 +7886,7 @@ r_return
 id|ETH_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * eth_rx_return_buff - Returns a Rx buffer back to the Rx ring.&n; *&n; * DESCRIPTION:&n; *&t;This routine returns a Rx buffer back to the Rx ring. It retrieves the &n; *      next &squot;used&squot; descriptor and attached the returned buffer to it.&n; *      In case the Rx ring was in &quot;resource error&quot; condition, where there are &n; *      no available Rx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv64340_private *mp   Ethernet Port Control srtuct. &n; *      struct pkt_info        *p_pkt_info   Information on the returned buffer.&n; *&n; * OUTPUT:&n; *&t;New available Rx resource in Rx descriptor ring.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *      ETH_OK otherwise.&n; */
+multiline_comment|/*&n; * eth_rx_return_buff - Returns a Rx buffer back to the Rx ring.&n; *&n; * DESCRIPTION:&n; *&t;This routine returns a Rx buffer back to the Rx ring. It retrieves the&n; *&t;next &squot;used&squot; descriptor and attached the returned buffer to it.&n; *&t;In case the Rx ring was in &quot;resource error&quot; condition, where there are&n; *&t;no available Rx resources, the function resets the resource error flag.&n; *&n; * INPUT:&n; *&t;struct mv64340_private&t;*mp&t;&t;Ethernet Port Control srtuct.&n; *&t;struct pkt_info&t;&t;*p_pkt_info&t;Information on returned buffer.&n; *&n; * OUTPUT:&n; *&t;New available Rx resource in Rx descriptor ring.&n; *&n; * RETURN:&n; *&t;ETH_ERROR in case the routine can not access Rx desc ring.&n; *&t;ETH_OK otherwise.&n; */
 DECL|function|eth_rx_return_buff
 r_static
 id|ETH_FUNC_RET_STATUS

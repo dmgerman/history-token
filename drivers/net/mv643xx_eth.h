@@ -83,7 +83,7 @@ DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
 macro_line|#undef&t;MV64340_RX_QUEUE_FILL_ON_TASK&t;/* Does not work, yet */
 DECL|macro|MV64340_COAL
 macro_line|#undef&t;MV64340_COAL
-multiline_comment|/* &n; * Number of RX / TX descriptors on RX / TX rings.&n; * Note that allocating RX descriptors is done by allocating the RX&n; * ring AND a preallocated RX buffers (skb&squot;s) for each descriptor.&n; * The TX descriptors only allocates the TX descriptors ring,&n; * with no pre allocated TX buffers (skb&squot;s are allocated by higher layers.&n; */
+multiline_comment|/*&n; * Number of RX / TX descriptors on RX / TX rings.&n; * Note that allocating RX descriptors is done by allocating the RX&n; * ring AND a preallocated RX buffers (skb&squot;s) for each descriptor.&n; * The TX descriptors only allocates the TX descriptors ring,&n; * with no pre allocated TX buffers (skb&squot;s are allocated by higher layers.&n; */
 multiline_comment|/* Default TX ring size is 1000 descriptors */
 DECL|macro|MV64340_DEFAULT_TX_QUEUE_SIZE
 mdefine_line|#define MV64340_DEFAULT_TX_QUEUE_SIZE 1000
@@ -96,221 +96,221 @@ macro_line|#ifdef MV64340_COAL
 DECL|macro|MV64340_RX_COAL
 mdefine_line|#define MV64340_RX_COAL 100
 macro_line|#endif
-multiline_comment|/*&n; * The second part is the low level driver of the gigE ethernet ports.   *&n; */
-multiline_comment|/*&n; * Header File for : MV-643xx network interface header &n; *&n; * DESCRIPTION:&n; *       This header file contains macros typedefs and function declaration for&n; *       the Marvell Gig Bit Ethernet Controller. &n; *&n; * DEPENDENCIES:&n; *       None.&n; *&n; */
+multiline_comment|/*&n; * The second part is the low level driver of the gigE ethernet ports.&n; */
+multiline_comment|/*&n; * Header File for : MV-643xx network interface header&n; *&n; * DESCRIPTION:&n; *&t;This header file contains macros typedefs and function declaration for&n; *&t;the Marvell Gig Bit Ethernet Controller.&n; *&n; * DEPENDENCIES:&n; *&t;None.&n; *&n; */
 multiline_comment|/* MAC accepet/reject macros */
 DECL|macro|ACCEPT_MAC_ADDR
-mdefine_line|#define ACCEPT_MAC_ADDR&t;    0
+mdefine_line|#define ACCEPT_MAC_ADDR&t;&t;&t;&t;0
 DECL|macro|REJECT_MAC_ADDR
-mdefine_line|#define REJECT_MAC_ADDR&t;    1
+mdefine_line|#define REJECT_MAC_ADDR&t;&t;&t;&t;1
 multiline_comment|/* Buffer offset from buffer pointer */
 DECL|macro|RX_BUF_OFFSET
 mdefine_line|#define RX_BUF_OFFSET&t;&t;&t;&t;0x2
 multiline_comment|/* Gigabit Ethernet Unit Global Registers */
 multiline_comment|/* MIB Counters register definitions */
 DECL|macro|ETH_MIB_GOOD_OCTETS_RECEIVED_LOW
-mdefine_line|#define ETH_MIB_GOOD_OCTETS_RECEIVED_LOW   0x0
+mdefine_line|#define ETH_MIB_GOOD_OCTETS_RECEIVED_LOW&t;0x0
 DECL|macro|ETH_MIB_GOOD_OCTETS_RECEIVED_HIGH
-mdefine_line|#define ETH_MIB_GOOD_OCTETS_RECEIVED_HIGH  0x4
+mdefine_line|#define ETH_MIB_GOOD_OCTETS_RECEIVED_HIGH&t;0x4
 DECL|macro|ETH_MIB_BAD_OCTETS_RECEIVED
-mdefine_line|#define ETH_MIB_BAD_OCTETS_RECEIVED        0x8
+mdefine_line|#define ETH_MIB_BAD_OCTETS_RECEIVED&t;&t;0x8
 DECL|macro|ETH_MIB_INTERNAL_MAC_TRANSMIT_ERR
-mdefine_line|#define ETH_MIB_INTERNAL_MAC_TRANSMIT_ERR  0xc
+mdefine_line|#define ETH_MIB_INTERNAL_MAC_TRANSMIT_ERR&t;0xc
 DECL|macro|ETH_MIB_GOOD_FRAMES_RECEIVED
-mdefine_line|#define ETH_MIB_GOOD_FRAMES_RECEIVED       0x10
+mdefine_line|#define ETH_MIB_GOOD_FRAMES_RECEIVED&t;&t;0x10
 DECL|macro|ETH_MIB_BAD_FRAMES_RECEIVED
-mdefine_line|#define ETH_MIB_BAD_FRAMES_RECEIVED        0x14
+mdefine_line|#define ETH_MIB_BAD_FRAMES_RECEIVED&t;&t;0x14
 DECL|macro|ETH_MIB_BROADCAST_FRAMES_RECEIVED
-mdefine_line|#define ETH_MIB_BROADCAST_FRAMES_RECEIVED  0x18
+mdefine_line|#define ETH_MIB_BROADCAST_FRAMES_RECEIVED&t;0x18
 DECL|macro|ETH_MIB_MULTICAST_FRAMES_RECEIVED
-mdefine_line|#define ETH_MIB_MULTICAST_FRAMES_RECEIVED  0x1c
+mdefine_line|#define ETH_MIB_MULTICAST_FRAMES_RECEIVED&t;0x1c
 DECL|macro|ETH_MIB_FRAMES_64_OCTETS
-mdefine_line|#define ETH_MIB_FRAMES_64_OCTETS           0x20
+mdefine_line|#define ETH_MIB_FRAMES_64_OCTETS&t;&t;0x20
 DECL|macro|ETH_MIB_FRAMES_65_TO_127_OCTETS
-mdefine_line|#define ETH_MIB_FRAMES_65_TO_127_OCTETS    0x24
+mdefine_line|#define ETH_MIB_FRAMES_65_TO_127_OCTETS&t;&t;0x24
 DECL|macro|ETH_MIB_FRAMES_128_TO_255_OCTETS
-mdefine_line|#define ETH_MIB_FRAMES_128_TO_255_OCTETS   0x28
+mdefine_line|#define ETH_MIB_FRAMES_128_TO_255_OCTETS&t;0x28
 DECL|macro|ETH_MIB_FRAMES_256_TO_511_OCTETS
-mdefine_line|#define ETH_MIB_FRAMES_256_TO_511_OCTETS   0x2c
+mdefine_line|#define ETH_MIB_FRAMES_256_TO_511_OCTETS&t;0x2c
 DECL|macro|ETH_MIB_FRAMES_512_TO_1023_OCTETS
-mdefine_line|#define ETH_MIB_FRAMES_512_TO_1023_OCTETS  0x30
+mdefine_line|#define ETH_MIB_FRAMES_512_TO_1023_OCTETS&t;0x30
 DECL|macro|ETH_MIB_FRAMES_1024_TO_MAX_OCTETS
-mdefine_line|#define ETH_MIB_FRAMES_1024_TO_MAX_OCTETS  0x34
+mdefine_line|#define ETH_MIB_FRAMES_1024_TO_MAX_OCTETS&t;0x34
 DECL|macro|ETH_MIB_GOOD_OCTETS_SENT_LOW
-mdefine_line|#define ETH_MIB_GOOD_OCTETS_SENT_LOW       0x38
+mdefine_line|#define ETH_MIB_GOOD_OCTETS_SENT_LOW&t;&t;0x38
 DECL|macro|ETH_MIB_GOOD_OCTETS_SENT_HIGH
-mdefine_line|#define ETH_MIB_GOOD_OCTETS_SENT_HIGH      0x3c
+mdefine_line|#define ETH_MIB_GOOD_OCTETS_SENT_HIGH&t;&t;0x3c
 DECL|macro|ETH_MIB_GOOD_FRAMES_SENT
-mdefine_line|#define ETH_MIB_GOOD_FRAMES_SENT           0x40
+mdefine_line|#define ETH_MIB_GOOD_FRAMES_SENT&t;&t;0x40
 DECL|macro|ETH_MIB_EXCESSIVE_COLLISION
-mdefine_line|#define ETH_MIB_EXCESSIVE_COLLISION        0x44
+mdefine_line|#define ETH_MIB_EXCESSIVE_COLLISION&t;&t;0x44
 DECL|macro|ETH_MIB_MULTICAST_FRAMES_SENT
-mdefine_line|#define ETH_MIB_MULTICAST_FRAMES_SENT      0x48
+mdefine_line|#define ETH_MIB_MULTICAST_FRAMES_SENT&t;&t;0x48
 DECL|macro|ETH_MIB_BROADCAST_FRAMES_SENT
-mdefine_line|#define ETH_MIB_BROADCAST_FRAMES_SENT      0x4c
+mdefine_line|#define ETH_MIB_BROADCAST_FRAMES_SENT&t;&t;0x4c
 DECL|macro|ETH_MIB_UNREC_MAC_CONTROL_RECEIVED
-mdefine_line|#define ETH_MIB_UNREC_MAC_CONTROL_RECEIVED 0x50
+mdefine_line|#define ETH_MIB_UNREC_MAC_CONTROL_RECEIVED&t;0x50
 DECL|macro|ETH_MIB_FC_SENT
-mdefine_line|#define ETH_MIB_FC_SENT                    0x54
+mdefine_line|#define ETH_MIB_FC_SENT&t;&t;&t;&t;0x54
 DECL|macro|ETH_MIB_GOOD_FC_RECEIVED
-mdefine_line|#define ETH_MIB_GOOD_FC_RECEIVED           0x58
+mdefine_line|#define ETH_MIB_GOOD_FC_RECEIVED&t;&t;0x58
 DECL|macro|ETH_MIB_BAD_FC_RECEIVED
-mdefine_line|#define ETH_MIB_BAD_FC_RECEIVED            0x5c
+mdefine_line|#define ETH_MIB_BAD_FC_RECEIVED&t;&t;&t;0x5c
 DECL|macro|ETH_MIB_UNDERSIZE_RECEIVED
-mdefine_line|#define ETH_MIB_UNDERSIZE_RECEIVED         0x60
+mdefine_line|#define ETH_MIB_UNDERSIZE_RECEIVED&t;&t;0x60
 DECL|macro|ETH_MIB_FRAGMENTS_RECEIVED
-mdefine_line|#define ETH_MIB_FRAGMENTS_RECEIVED         0x64
+mdefine_line|#define ETH_MIB_FRAGMENTS_RECEIVED&t;&t;0x64
 DECL|macro|ETH_MIB_OVERSIZE_RECEIVED
-mdefine_line|#define ETH_MIB_OVERSIZE_RECEIVED          0x68
+mdefine_line|#define ETH_MIB_OVERSIZE_RECEIVED&t;&t;0x68
 DECL|macro|ETH_MIB_JABBER_RECEIVED
-mdefine_line|#define ETH_MIB_JABBER_RECEIVED            0x6c
+mdefine_line|#define ETH_MIB_JABBER_RECEIVED&t;&t;&t;0x6c
 DECL|macro|ETH_MIB_MAC_RECEIVE_ERROR
-mdefine_line|#define ETH_MIB_MAC_RECEIVE_ERROR          0x70
+mdefine_line|#define ETH_MIB_MAC_RECEIVE_ERROR&t;&t;0x70
 DECL|macro|ETH_MIB_BAD_CRC_EVENT
-mdefine_line|#define ETH_MIB_BAD_CRC_EVENT              0x74
+mdefine_line|#define ETH_MIB_BAD_CRC_EVENT&t;&t;&t;0x74
 DECL|macro|ETH_MIB_COLLISION
-mdefine_line|#define ETH_MIB_COLLISION                  0x78
+mdefine_line|#define ETH_MIB_COLLISION&t;&t;&t;0x78
 DECL|macro|ETH_MIB_LATE_COLLISION
-mdefine_line|#define ETH_MIB_LATE_COLLISION             0x7c
+mdefine_line|#define ETH_MIB_LATE_COLLISION&t;&t;&t;0x7c
 multiline_comment|/* Port serial status reg (PSR) */
 DECL|macro|ETH_INTERFACE_GMII_MII
-mdefine_line|#define ETH_INTERFACE_GMII_MII                          0
+mdefine_line|#define ETH_INTERFACE_GMII_MII&t;&t;&t;0
 DECL|macro|ETH_INTERFACE_PCM
-mdefine_line|#define ETH_INTERFACE_PCM                               BIT0
+mdefine_line|#define ETH_INTERFACE_PCM&t;&t;&t;BIT0
 DECL|macro|ETH_LINK_IS_DOWN
-mdefine_line|#define ETH_LINK_IS_DOWN                                0
+mdefine_line|#define ETH_LINK_IS_DOWN&t;&t;&t;0
 DECL|macro|ETH_LINK_IS_UP
-mdefine_line|#define ETH_LINK_IS_UP                                  BIT1
+mdefine_line|#define ETH_LINK_IS_UP&t;&t;&t;&t;BIT1
 DECL|macro|ETH_PORT_AT_HALF_DUPLEX
-mdefine_line|#define ETH_PORT_AT_HALF_DUPLEX                         0
+mdefine_line|#define ETH_PORT_AT_HALF_DUPLEX&t;&t;&t;0
 DECL|macro|ETH_PORT_AT_FULL_DUPLEX
-mdefine_line|#define ETH_PORT_AT_FULL_DUPLEX                         BIT2
+mdefine_line|#define ETH_PORT_AT_FULL_DUPLEX&t;&t;&t;BIT2
 DECL|macro|ETH_RX_FLOW_CTRL_DISABLED
-mdefine_line|#define ETH_RX_FLOW_CTRL_DISABLED                       0
+mdefine_line|#define ETH_RX_FLOW_CTRL_DISABLED&t;&t;0
 DECL|macro|ETH_RX_FLOW_CTRL_ENBALED
-mdefine_line|#define ETH_RX_FLOW_CTRL_ENBALED                        BIT3
+mdefine_line|#define ETH_RX_FLOW_CTRL_ENBALED&t;&t;BIT3
 DECL|macro|ETH_GMII_SPEED_100_10
-mdefine_line|#define ETH_GMII_SPEED_100_10                           0
+mdefine_line|#define ETH_GMII_SPEED_100_10&t;&t;&t;0
 DECL|macro|ETH_GMII_SPEED_1000
-mdefine_line|#define ETH_GMII_SPEED_1000                             BIT4
+mdefine_line|#define ETH_GMII_SPEED_1000&t;&t;&t;BIT4
 DECL|macro|ETH_MII_SPEED_10
-mdefine_line|#define ETH_MII_SPEED_10                                0
+mdefine_line|#define ETH_MII_SPEED_10&t;&t;&t;0
 DECL|macro|ETH_MII_SPEED_100
-mdefine_line|#define ETH_MII_SPEED_100                               BIT5
+mdefine_line|#define ETH_MII_SPEED_100&t;&t;&t;BIT5
 DECL|macro|ETH_NO_TX
-mdefine_line|#define ETH_NO_TX                                       0
+mdefine_line|#define ETH_NO_TX&t;&t;&t;&t;0
 DECL|macro|ETH_TX_IN_PROGRESS
-mdefine_line|#define ETH_TX_IN_PROGRESS                              BIT7
+mdefine_line|#define ETH_TX_IN_PROGRESS&t;&t;&t;BIT7
 DECL|macro|ETH_BYPASS_NO_ACTIVE
-mdefine_line|#define ETH_BYPASS_NO_ACTIVE                            0
+mdefine_line|#define ETH_BYPASS_NO_ACTIVE&t;&t;&t;0
 DECL|macro|ETH_BYPASS_ACTIVE
-mdefine_line|#define ETH_BYPASS_ACTIVE                               BIT8
+mdefine_line|#define ETH_BYPASS_ACTIVE&t;&t;&t;BIT8
 DECL|macro|ETH_PORT_NOT_AT_PARTITION_STATE
-mdefine_line|#define ETH_PORT_NOT_AT_PARTITION_STATE                 0
+mdefine_line|#define ETH_PORT_NOT_AT_PARTITION_STATE&t;&t;0
 DECL|macro|ETH_PORT_AT_PARTITION_STATE
-mdefine_line|#define ETH_PORT_AT_PARTITION_STATE                     BIT9
+mdefine_line|#define ETH_PORT_AT_PARTITION_STATE&t;&t;BIT9
 DECL|macro|ETH_PORT_TX_FIFO_NOT_EMPTY
-mdefine_line|#define ETH_PORT_TX_FIFO_NOT_EMPTY                      0
+mdefine_line|#define ETH_PORT_TX_FIFO_NOT_EMPTY&t;&t;0
 DECL|macro|ETH_PORT_TX_FIFO_EMPTY
-mdefine_line|#define ETH_PORT_TX_FIFO_EMPTY                          BIT10
+mdefine_line|#define ETH_PORT_TX_FIFO_EMPTY&t;&t;&t;BIT10
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_3
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_3                     (BIT23 | BIT22)
+mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_3&t;&t;(BIT23 | BIT22)
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_4
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_4                     BIT24
+mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_4&t;&t;BIT24
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_5
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_5                     (BIT24 | BIT22)
+mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_5&t;&t;(BIT24 | BIT22)
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_6
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_6                     (BIT24 | BIT23)
+mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_6&t;&t;(BIT24 | BIT23)
 DECL|macro|ETH_DEFAULT_RX_BPDU_QUEUE_7
-mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_7                     (BIT24 | BIT23 | BIT22)
+mdefine_line|#define ETH_DEFAULT_RX_BPDU_QUEUE_7&t;&t;(BIT24 | BIT23 | BIT22)
 multiline_comment|/* SMI reg */
 DECL|macro|ETH_SMI_BUSY
-mdefine_line|#define ETH_SMI_BUSY        &t;BIT28&t;/* 0 - Write, 1 - Read          */
+mdefine_line|#define ETH_SMI_BUSY&t;&t;BIT28&t;/* 0 - Write, 1 - Read&t;&t;*/
 DECL|macro|ETH_SMI_READ_VALID
-mdefine_line|#define ETH_SMI_READ_VALID  &t;BIT27&t;/* 0 - Write, 1 - Read          */
+mdefine_line|#define ETH_SMI_READ_VALID&t;BIT27&t;/* 0 - Write, 1 - Read&t;&t;*/
 DECL|macro|ETH_SMI_OPCODE_WRITE
 mdefine_line|#define ETH_SMI_OPCODE_WRITE&t;0&t;/* Completion of Read operation */
 DECL|macro|ETH_SMI_OPCODE_READ
-mdefine_line|#define ETH_SMI_OPCODE_READ &t;BIT26&t;/* Operation is in progress             */
+mdefine_line|#define ETH_SMI_OPCODE_READ &t;BIT26&t;/* Operation is in progress&t;*/
 multiline_comment|/* SDMA command status fields macros */
 multiline_comment|/* Tx &amp; Rx descriptors status */
 DECL|macro|ETH_ERROR_SUMMARY
-mdefine_line|#define ETH_ERROR_SUMMARY                   (BIT0)
+mdefine_line|#define ETH_ERROR_SUMMARY&t;&t;&t;(BIT0)
 multiline_comment|/* Tx &amp; Rx descriptors command */
 DECL|macro|ETH_BUFFER_OWNED_BY_DMA
-mdefine_line|#define ETH_BUFFER_OWNED_BY_DMA             (BIT31)
+mdefine_line|#define ETH_BUFFER_OWNED_BY_DMA&t;&t;&t;(BIT31)
 multiline_comment|/* Tx descriptors status */
 DECL|macro|ETH_LC_ERROR
-mdefine_line|#define ETH_LC_ERROR                        (0&t;  )
+mdefine_line|#define ETH_LC_ERROR&t;&t;&t;&t;(0    )
 DECL|macro|ETH_UR_ERROR
-mdefine_line|#define ETH_UR_ERROR                        (BIT1 )
+mdefine_line|#define ETH_UR_ERROR&t;&t;&t;&t;(BIT1 )
 DECL|macro|ETH_RL_ERROR
-mdefine_line|#define ETH_RL_ERROR                        (BIT2 )
+mdefine_line|#define ETH_RL_ERROR&t;&t;&t;&t;(BIT2 )
 DECL|macro|ETH_LLC_SNAP_FORMAT
-mdefine_line|#define ETH_LLC_SNAP_FORMAT                 (BIT9 )
+mdefine_line|#define ETH_LLC_SNAP_FORMAT&t;&t;&t;(BIT9 )
 multiline_comment|/* Rx descriptors status */
 DECL|macro|ETH_CRC_ERROR
-mdefine_line|#define ETH_CRC_ERROR                       (0&t;  )
+mdefine_line|#define ETH_CRC_ERROR&t;&t;&t;&t;(0    )
 DECL|macro|ETH_OVERRUN_ERROR
-mdefine_line|#define ETH_OVERRUN_ERROR                   (BIT1 )
+mdefine_line|#define ETH_OVERRUN_ERROR&t;&t;&t;(BIT1 )
 DECL|macro|ETH_MAX_FRAME_LENGTH_ERROR
-mdefine_line|#define ETH_MAX_FRAME_LENGTH_ERROR          (BIT2 )
+mdefine_line|#define ETH_MAX_FRAME_LENGTH_ERROR&t;&t;(BIT2 )
 DECL|macro|ETH_RESOURCE_ERROR
-mdefine_line|#define ETH_RESOURCE_ERROR                  ((BIT2 | BIT1))
+mdefine_line|#define ETH_RESOURCE_ERROR&t;&t;&t;((BIT2 | BIT1))
 DECL|macro|ETH_VLAN_TAGGED
-mdefine_line|#define ETH_VLAN_TAGGED                     (BIT19)
+mdefine_line|#define ETH_VLAN_TAGGED&t;&t;&t;&t;(BIT19)
 DECL|macro|ETH_BPDU_FRAME
-mdefine_line|#define ETH_BPDU_FRAME                      (BIT20)
+mdefine_line|#define ETH_BPDU_FRAME&t;&t;&t;&t;(BIT20)
 DECL|macro|ETH_TCP_FRAME_OVER_IP_V_4
-mdefine_line|#define ETH_TCP_FRAME_OVER_IP_V_4           (0    )
+mdefine_line|#define ETH_TCP_FRAME_OVER_IP_V_4&t;&t;(0    )
 DECL|macro|ETH_UDP_FRAME_OVER_IP_V_4
-mdefine_line|#define ETH_UDP_FRAME_OVER_IP_V_4           (BIT21)
+mdefine_line|#define ETH_UDP_FRAME_OVER_IP_V_4&t;&t;(BIT21)
 DECL|macro|ETH_OTHER_FRAME_TYPE
-mdefine_line|#define ETH_OTHER_FRAME_TYPE                (BIT22)
+mdefine_line|#define ETH_OTHER_FRAME_TYPE&t;&t;&t;(BIT22)
 DECL|macro|ETH_LAYER_2_IS_ETH_V_2
-mdefine_line|#define ETH_LAYER_2_IS_ETH_V_2              (BIT23)
+mdefine_line|#define ETH_LAYER_2_IS_ETH_V_2&t;&t;&t;(BIT23)
 DECL|macro|ETH_FRAME_TYPE_IP_V_4
-mdefine_line|#define ETH_FRAME_TYPE_IP_V_4               (BIT24)
+mdefine_line|#define ETH_FRAME_TYPE_IP_V_4&t;&t;&t;(BIT24)
 DECL|macro|ETH_FRAME_HEADER_OK
-mdefine_line|#define ETH_FRAME_HEADER_OK                 (BIT25)
+mdefine_line|#define ETH_FRAME_HEADER_OK&t;&t;&t;(BIT25)
 DECL|macro|ETH_RX_LAST_DESC
-mdefine_line|#define ETH_RX_LAST_DESC                    (BIT26)
+mdefine_line|#define ETH_RX_LAST_DESC&t;&t;&t;(BIT26)
 DECL|macro|ETH_RX_FIRST_DESC
-mdefine_line|#define ETH_RX_FIRST_DESC                   (BIT27)
+mdefine_line|#define ETH_RX_FIRST_DESC&t;&t;&t;(BIT27)
 DECL|macro|ETH_UNKNOWN_DESTINATION_ADDR
-mdefine_line|#define ETH_UNKNOWN_DESTINATION_ADDR        (BIT28)
+mdefine_line|#define ETH_UNKNOWN_DESTINATION_ADDR&t;&t;(BIT28)
 DECL|macro|ETH_RX_ENABLE_INTERRUPT
-mdefine_line|#define ETH_RX_ENABLE_INTERRUPT             (BIT29)
+mdefine_line|#define ETH_RX_ENABLE_INTERRUPT&t;&t;&t;(BIT29)
 DECL|macro|ETH_LAYER_4_CHECKSUM_OK
-mdefine_line|#define ETH_LAYER_4_CHECKSUM_OK             (BIT30)
+mdefine_line|#define ETH_LAYER_4_CHECKSUM_OK&t;&t;&t;(BIT30)
 multiline_comment|/* Rx descriptors byte count */
 DECL|macro|ETH_FRAME_FRAGMENTED
-mdefine_line|#define ETH_FRAME_FRAGMENTED                (BIT2)
+mdefine_line|#define ETH_FRAME_FRAGMENTED&t;&t;&t;(BIT2)
 multiline_comment|/* Tx descriptors command */
 DECL|macro|ETH_LAYER_4_CHECKSUM_FIRST_DESC
 mdefine_line|#define ETH_LAYER_4_CHECKSUM_FIRST_DESC&t;&t;(BIT10)
 DECL|macro|ETH_FRAME_SET_TO_VLAN
-mdefine_line|#define ETH_FRAME_SET_TO_VLAN               (BIT15)
+mdefine_line|#define ETH_FRAME_SET_TO_VLAN&t;&t;&t;(BIT15)
 DECL|macro|ETH_TCP_FRAME
-mdefine_line|#define ETH_TCP_FRAME                       (0&t;  )
+mdefine_line|#define ETH_TCP_FRAME&t;&t;&t;&t;(0    )
 DECL|macro|ETH_UDP_FRAME
-mdefine_line|#define ETH_UDP_FRAME                       (BIT16)
+mdefine_line|#define ETH_UDP_FRAME&t;&t;&t;&t;(BIT16)
 DECL|macro|ETH_GEN_TCP_UDP_CHECKSUM
-mdefine_line|#define ETH_GEN_TCP_UDP_CHECKSUM            (BIT17)
+mdefine_line|#define ETH_GEN_TCP_UDP_CHECKSUM&t;&t;(BIT17)
 DECL|macro|ETH_GEN_IP_V_4_CHECKSUM
-mdefine_line|#define ETH_GEN_IP_V_4_CHECKSUM             (BIT18)
+mdefine_line|#define ETH_GEN_IP_V_4_CHECKSUM&t;&t;&t;(BIT18)
 DECL|macro|ETH_ZERO_PADDING
-mdefine_line|#define ETH_ZERO_PADDING                    (BIT19)
+mdefine_line|#define ETH_ZERO_PADDING&t;&t;&t;(BIT19)
 DECL|macro|ETH_TX_LAST_DESC
-mdefine_line|#define ETH_TX_LAST_DESC                    (BIT20)
+mdefine_line|#define ETH_TX_LAST_DESC&t;&t;&t;(BIT20)
 DECL|macro|ETH_TX_FIRST_DESC
-mdefine_line|#define ETH_TX_FIRST_DESC                   (BIT21)
+mdefine_line|#define ETH_TX_FIRST_DESC&t;&t;&t;(BIT21)
 DECL|macro|ETH_GEN_CRC
-mdefine_line|#define ETH_GEN_CRC                         (BIT22)
+mdefine_line|#define ETH_GEN_CRC&t;&t;&t;&t;(BIT22)
 DECL|macro|ETH_TX_ENABLE_INTERRUPT
-mdefine_line|#define ETH_TX_ENABLE_INTERRUPT             (BIT23)
+mdefine_line|#define ETH_TX_ENABLE_INTERRUPT&t;&t;&t;(BIT23)
 DECL|macro|ETH_AUTO_MODE
-mdefine_line|#define ETH_AUTO_MODE                       (BIT30)
+mdefine_line|#define ETH_AUTO_MODE&t;&t;&t;&t;(BIT30)
 multiline_comment|/* typedefs */
 DECL|enum|_eth_func_ret_status
 r_typedef
@@ -320,26 +320,26 @@ id|_eth_func_ret_status
 DECL|enumerator|ETH_OK
 id|ETH_OK
 comma
-multiline_comment|/* Returned as expected.                    */
+multiline_comment|/* Returned as expected.&t;&t;*/
 DECL|enumerator|ETH_ERROR
 id|ETH_ERROR
 comma
-multiline_comment|/* Fundamental error.                       */
+multiline_comment|/* Fundamental error.&t;&t;&t;*/
 DECL|enumerator|ETH_RETRY
 id|ETH_RETRY
 comma
-multiline_comment|/* Could not process request. Try later.    */
+multiline_comment|/* Could not process request. Try later.*/
 DECL|enumerator|ETH_END_OF_JOB
 id|ETH_END_OF_JOB
 comma
-multiline_comment|/* Ring has nothing to process.             */
+multiline_comment|/* Ring has nothing to process.&t;&t;*/
 DECL|enumerator|ETH_QUEUE_FULL
 id|ETH_QUEUE_FULL
 comma
-multiline_comment|/* Ring resource error.                     */
+multiline_comment|/* Ring resource error.&t;&t;&t;*/
 DECL|enumerator|ETH_QUEUE_LAST_RESOURCE
 id|ETH_QUEUE_LAST_RESOURCE
-multiline_comment|/* Ring resources about to exhaust.         */
+multiline_comment|/* Ring resources about to exhaust.&t;*/
 DECL|typedef|ETH_FUNC_RET_STATUS
 )brace
 id|ETH_FUNC_RET_STATUS
@@ -377,27 +377,27 @@ DECL|member|byte_cnt
 id|u16
 id|byte_cnt
 suffix:semicolon
-multiline_comment|/* Descriptor buffer byte count     */
+multiline_comment|/* Descriptor buffer byte count&t;&t;*/
 DECL|member|buf_size
 id|u16
 id|buf_size
 suffix:semicolon
-multiline_comment|/* Buffer size                      */
+multiline_comment|/* Buffer size&t;&t;&t;&t;*/
 DECL|member|cmd_sts
 id|u32
 id|cmd_sts
 suffix:semicolon
-multiline_comment|/* Descriptor command status        */
+multiline_comment|/* Descriptor command status&t;&t;*/
 DECL|member|next_desc_ptr
 id|u32
 id|next_desc_ptr
 suffix:semicolon
-multiline_comment|/* Next descriptor pointer          */
+multiline_comment|/* Next descriptor pointer&t;&t;*/
 DECL|member|buf_ptr
 id|u32
 id|buf_ptr
 suffix:semicolon
-multiline_comment|/* Descriptor buffer pointer        */
+multiline_comment|/* Descriptor buffer pointer&t;&t;*/
 )brace
 suffix:semicolon
 DECL|struct|eth_tx_desc
@@ -408,27 +408,27 @@ DECL|member|byte_cnt
 id|u16
 id|byte_cnt
 suffix:semicolon
-multiline_comment|/* buffer byte count */
+multiline_comment|/* buffer byte count&t;&t;&t;*/
 DECL|member|l4i_chk
 id|u16
 id|l4i_chk
 suffix:semicolon
-multiline_comment|/* CPU provided TCP checksum */
+multiline_comment|/* CPU provided TCP checksum&t;&t;*/
 DECL|member|cmd_sts
 id|u32
 id|cmd_sts
 suffix:semicolon
-multiline_comment|/* Command/status field */
+multiline_comment|/* Command/status field&t;&t;&t;*/
 DECL|member|next_desc_ptr
 id|u32
 id|next_desc_ptr
 suffix:semicolon
-multiline_comment|/* Pointer to next descriptor */
+multiline_comment|/* Pointer to next descriptor&t;&t;*/
 DECL|member|buf_ptr
 id|u32
 id|buf_ptr
 suffix:semicolon
-multiline_comment|/* pointer to buffer for this descriptor */
+multiline_comment|/* pointer to buffer for this descriptor*/
 )brace
 suffix:semicolon
 macro_line|#elif defined(__LITTLE_ENDIAN)
@@ -440,27 +440,27 @@ DECL|member|cmd_sts
 id|u32
 id|cmd_sts
 suffix:semicolon
-multiline_comment|/* Descriptor command status        */
+multiline_comment|/* Descriptor command status&t;&t;*/
 DECL|member|buf_size
 id|u16
 id|buf_size
 suffix:semicolon
-multiline_comment|/* Buffer size                      */
+multiline_comment|/* Buffer size&t;&t;&t;&t;*/
 DECL|member|byte_cnt
 id|u16
 id|byte_cnt
 suffix:semicolon
-multiline_comment|/* Descriptor buffer byte count     */
+multiline_comment|/* Descriptor buffer byte count&t;&t;*/
 DECL|member|buf_ptr
 id|u32
 id|buf_ptr
 suffix:semicolon
-multiline_comment|/* Descriptor buffer pointer        */
+multiline_comment|/* Descriptor buffer pointer&t;&t;*/
 DECL|member|next_desc_ptr
 id|u32
 id|next_desc_ptr
 suffix:semicolon
-multiline_comment|/* Next descriptor pointer          */
+multiline_comment|/* Next descriptor pointer&t;&t;*/
 )brace
 suffix:semicolon
 DECL|struct|eth_tx_desc
@@ -471,34 +471,34 @@ DECL|member|cmd_sts
 id|u32
 id|cmd_sts
 suffix:semicolon
-multiline_comment|/* Command/status field */
+multiline_comment|/* Command/status field&t;&t;&t;*/
 DECL|member|l4i_chk
 id|u16
 id|l4i_chk
 suffix:semicolon
-multiline_comment|/* CPU provided TCP checksum */
+multiline_comment|/* CPU provided TCP checksum&t;&t;*/
 DECL|member|byte_cnt
 id|u16
 id|byte_cnt
 suffix:semicolon
-multiline_comment|/* buffer byte count */
+multiline_comment|/* buffer byte count&t;&t;&t;*/
 DECL|member|buf_ptr
 id|u32
 id|buf_ptr
 suffix:semicolon
-multiline_comment|/* pointer to buffer for this descriptor */
+multiline_comment|/* pointer to buffer for this descriptor*/
 DECL|member|next_desc_ptr
 id|u32
 id|next_desc_ptr
 suffix:semicolon
-multiline_comment|/* Pointer to next descriptor */
+multiline_comment|/* Pointer to next descriptor&t;&t;*/
 )brace
 suffix:semicolon
 macro_line|#else
 macro_line|#error One of __BIG_ENDIAN or __LITTLE_ENDIAN must be defined
 macro_line|#endif
-multiline_comment|/* Unified struct for Rx and Tx operations. The user is not required to */
-multiline_comment|/* be familier with neither Tx nor Rx descriptors.                       */
+multiline_comment|/* Unified struct for Rx and Tx operations. The user is not required to&t;*/
+multiline_comment|/* be familier with neither Tx nor Rx descriptors.&t;&t;&t;*/
 DECL|struct|pkt_info
 r_struct
 id|pkt_info
@@ -508,24 +508,24 @@ r_int
 r_int
 id|byte_cnt
 suffix:semicolon
-multiline_comment|/* Descriptor buffer byte count     */
+multiline_comment|/* Descriptor buffer byte count&t;*/
 DECL|member|l4i_chk
 r_int
 r_int
 id|l4i_chk
 suffix:semicolon
-multiline_comment|/* Tx CPU provided TCP Checksum     */
+multiline_comment|/* Tx CPU provided TCP Checksum&t;*/
 DECL|member|cmd_sts
 r_int
 r_int
 id|cmd_sts
 suffix:semicolon
-multiline_comment|/* Descriptor command status        */
+multiline_comment|/* Descriptor command status&t;*/
 DECL|member|buf_ptr
 id|dma_addr_t
 id|buf_ptr
 suffix:semicolon
-multiline_comment|/* Descriptor buffer pointer        */
+multiline_comment|/* Descriptor buffer pointer&t;*/
 DECL|member|return_info
 r_struct
 id|sk_buff
@@ -544,7 +544,7 @@ DECL|member|port_num
 r_int
 id|port_num
 suffix:semicolon
-multiline_comment|/* User Ethernet port number */
+multiline_comment|/* User Ethernet port number&t;*/
 DECL|member|port_mac_addr
 id|u8
 id|port_mac_addr
@@ -552,22 +552,22 @@ id|port_mac_addr
 l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* User defined port MAC address. */
+multiline_comment|/* User defined port MAC address.*/
 DECL|member|port_config
 id|u32
 id|port_config
 suffix:semicolon
-multiline_comment|/* User port configuration value */
+multiline_comment|/* User port configuration value*/
 DECL|member|port_config_extend
 id|u32
 id|port_config_extend
 suffix:semicolon
-multiline_comment|/* User port config extend value */
+multiline_comment|/* User port config extend value*/
 DECL|member|port_sdma_config
 id|u32
 id|port_sdma_config
 suffix:semicolon
-multiline_comment|/* User port SDMA config value */
+multiline_comment|/* User port SDMA config value&t;*/
 DECL|member|port_serial_control
 id|u32
 id|port_serial_control
@@ -577,12 +577,12 @@ DECL|member|port_tx_queue_command
 id|u32
 id|port_tx_queue_command
 suffix:semicolon
-multiline_comment|/* Port active Tx queues summary */
+multiline_comment|/* Port active Tx queues summary*/
 DECL|member|port_rx_queue_command
 id|u32
 id|port_rx_queue_command
 suffix:semicolon
-multiline_comment|/* Port active Rx queues summary */
+multiline_comment|/* Port active Rx queues summary*/
 DECL|member|rx_sram_addr
 id|u32
 id|rx_sram_addr
@@ -592,7 +592,7 @@ DECL|member|rx_sram_size
 id|u32
 id|rx_sram_size
 suffix:semicolon
-multiline_comment|/* Size of rx sram area         */
+multiline_comment|/* Size of rx sram area&t;&t;*/
 DECL|member|tx_sram_addr
 id|u32
 id|tx_sram_addr
@@ -602,7 +602,7 @@ DECL|member|tx_sram_size
 id|u32
 id|tx_sram_size
 suffix:semicolon
-multiline_comment|/* Size of tx sram area         */
+multiline_comment|/* Size of tx sram area&t;&t;*/
 DECL|member|rx_resource_err
 r_int
 id|rx_resource_err
@@ -729,13 +729,13 @@ r_int
 r_int
 id|rx_ring_skbs
 suffix:semicolon
-multiline_comment|/*&n;&t; * rx_task used to fill RX ring out of bottom half context &n;&t; */
+multiline_comment|/*&n;&t; * rx_task used to fill RX ring out of bottom half context&n;&t; */
 DECL|member|rx_task
 r_struct
 id|work_struct
 id|rx_task
 suffix:semicolon
-multiline_comment|/* &n;&t; * Used in case RX Ring is empty, which can be caused when &n;&t; * system does not have resources (skb&squot;s) &n;&t; */
+multiline_comment|/*&n;&t; * Used in case RX Ring is empty, which can be caused when&n;&t; * system does not have resources (skb&squot;s)&n;&t; */
 DECL|member|timeout
 r_struct
 id|timer_list
