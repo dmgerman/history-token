@@ -371,6 +371,22 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|lock_ipi_calllock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unlock_ipi_calllock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* _ASM_IA64_SMP_H */
 eof

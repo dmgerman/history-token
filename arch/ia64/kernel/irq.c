@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/arch/ia64/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; */
+multiline_comment|/*&n; *&t;linux/arch/ia64/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Copyright (C) Ashok Raj&lt;ashok.raj@intel.com&gt;, Intel Corporation 2004&n; *&n; * 4/14/2004: Added code to handle cpu migration and do safe irq&n; *&t;&t;&t;migration without lossing interrupts for iosapic&n; *&t;&t;&t;architecture.&n; */
 multiline_comment|/*&n; * (mostly architecture independent, will move to kernel/irq.c in 2.5.)&n; *&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -18,13 +19,16 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 r_extern
@@ -3399,6 +3403,286 @@ id|full_count
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+DECL|variable|vectors_in_migration
+r_int
+r_int
+id|vectors_in_migration
+(braket
+id|NR_IRQS
+)braket
+suffix:semicolon
+multiline_comment|/*&n; * Since cpu_online_map is already updated, we just need to check for&n; * affinity that has zeros&n; */
+DECL|function|migrate_irqs
+r_static
+r_void
+id|migrate_irqs
+c_func
+(paren
+r_void
+)paren
+(brace
+id|cpumask_t
+id|mask
+suffix:semicolon
+id|irq_desc_t
+op_star
+id|desc
+suffix:semicolon
+r_int
+id|irq
+comma
+id|new_cpu
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|irq
+op_assign
+l_int|0
+suffix:semicolon
+id|irq
+OL
+id|NR_IRQS
+suffix:semicolon
+id|irq
+op_increment
+)paren
+(brace
+id|desc
+op_assign
+id|irq_descp
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * No handling for now.&n;&t;&t; * TBD: Implement a disable function so we can now&n;&t;&t; * tell CPU not to respond to these local intr sources.&n;&t;&t; * such as ITV,CPEI,MCA etc.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|desc-&gt;status
+op_eq
+id|IRQ_PER_CPU
+)paren
+r_continue
+suffix:semicolon
+id|cpus_and
+c_func
+(paren
+id|mask
+comma
+id|irq_affinity
+(braket
+id|irq
+)braket
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|any_online_cpu
+c_func
+(paren
+id|mask
+)paren
+op_eq
+id|NR_CPUS
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Save it for phase 2 processing&n;&t;&t;&t; */
+id|vectors_in_migration
+(braket
+id|irq
+)braket
+op_assign
+id|irq
+suffix:semicolon
+id|new_cpu
+op_assign
+id|any_online_cpu
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|mask
+op_assign
+id|cpumask_of_cpu
+c_func
+(paren
+id|new_cpu
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Al three are essential, currently WARN_ON.. maybe panic?&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|desc-&gt;handler
+op_logical_and
+id|desc-&gt;handler-&gt;disable
+op_logical_and
+id|desc-&gt;handler-&gt;enable
+op_logical_and
+id|desc-&gt;handler-&gt;set_affinity
+)paren
+(brace
+id|desc-&gt;handler
+op_member_access_from_pointer
+id|disable
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|desc-&gt;handler
+op_member_access_from_pointer
+id|set_affinity
+c_func
+(paren
+id|irq
+comma
+id|mask
+)paren
+suffix:semicolon
+id|desc-&gt;handler
+op_member_access_from_pointer
+id|enable
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|WARN_ON
+c_func
+(paren
+(paren
+op_logical_neg
+(paren
+id|desc-&gt;handler
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|desc-&gt;handler-&gt;disable
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|desc-&gt;handler-&gt;enable
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|desc-&gt;handler-&gt;set_affinity
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+)brace
+DECL|function|fixup_irqs
+r_void
+id|fixup_irqs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|irq
+suffix:semicolon
+r_extern
+r_void
+id|ia64_process_pending_intr
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|ia64_set_itv
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Phase 1: Locate irq&squot;s bound to this cpu and&n;&t; * relocate them for cpu removal.&n;&t; */
+id|migrate_irqs
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Phase 2: Perform interrupt processing for all entries reported in&n;&t; * local APIC.&n;&t; */
+id|ia64_process_pending_intr
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Phase 3: Now handle any interrupts not captured in local APIC.&n;&t; * This is to account for cases that device interrupted during the time the&n;&t; * rte was being disabled and re-programmed.&n;&t; */
+r_for
+c_loop
+(paren
+id|irq
+op_assign
+l_int|0
+suffix:semicolon
+id|irq
+OL
+id|NR_IRQS
+suffix:semicolon
+id|irq
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|vectors_in_migration
+(braket
+id|irq
+)braket
+)paren
+(brace
+id|vectors_in_migration
+(braket
+id|irq
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|do_IRQ
+c_func
+(paren
+id|irq
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Now let processor die. We do irq disable and max_xtp() to&n;&t; * ensure there is no more interrupts routed to this processor.&n;&t; * But the local timer interrupt can have 1 pending which we&n;&t; * take care in timer_interrupt().&n;&t; */
+id|max_xtp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|prof_cpu_mask_read_proc
 r_static
 r_int
