@@ -53,6 +53,8 @@ DECL|macro|ASI_PCACHE_TAG
 mdefine_line|#define ASI_PCACHE_TAG&t;&t;0x32 /* (III) PCache tag RAM diag&t;&t;*/
 DECL|macro|ASI_PCACHE_SNOOP_TAG
 mdefine_line|#define ASI_PCACHE_SNOOP_TAG&t;0x33 /* (III) PCache snoop tag RAM diag&t;&t;*/
+DECL|macro|ASI_QUAD_LDD_PHYS
+mdefine_line|#define ASI_QUAD_LDD_PHYS&t;0x34 /* (III+) PADDR, qword load&t;&t;*/
 DECL|macro|ASI_WCACHE_VALID_BITS
 mdefine_line|#define ASI_WCACHE_VALID_BITS&t;0x38 /* (III) WCache Valid Bits diag&t;&t;*/
 DECL|macro|ASI_WCACHE_DATA
@@ -61,6 +63,8 @@ DECL|macro|ASI_WCACHE_TAG
 mdefine_line|#define ASI_WCACHE_TAG&t;&t;0x3a /* (III) WCache tag RAM diag&t;&t;*/
 DECL|macro|ASI_WCACHE_SNOOP_TAG
 mdefine_line|#define ASI_WCACHE_SNOOP_TAG&t;0x3b /* (III) WCache snoop tag RAM diag&t;&t;*/
+DECL|macro|ASI_QUAD_LDD_PHYS_L
+mdefine_line|#define ASI_QUAD_LDD_PHYS_L&t;0x3c /* (III+) PADDR, qword load, little endian&t;*/
 DECL|macro|ASI_SRAM_FAST_INIT
 mdefine_line|#define ASI_SRAM_FAST_INIT&t;0x40 /* (III+) Fast SRAM init&t;&t;&t;*/
 DECL|macro|ASI_DCACHE_INVALIDATE
