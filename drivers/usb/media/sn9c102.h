@@ -42,15 +42,15 @@ multiline_comment|/*************************************************************
 DECL|macro|SN9C102_MODULE_NAME
 mdefine_line|#define SN9C102_MODULE_NAME     &quot;V4L2 driver for SN9C10x PC Camera Controllers&quot;
 DECL|macro|SN9C102_MODULE_AUTHOR
-mdefine_line|#define SN9C102_MODULE_AUTHOR   &quot;(C) 2004 Luca Risolia&quot;
+mdefine_line|#define SN9C102_MODULE_AUTHOR   &quot;(C) 2004-2005 Luca Risolia&quot;
 DECL|macro|SN9C102_AUTHOR_EMAIL
 mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo.it&gt;&quot;
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.22&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.23&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 22)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 23)
 DECL|enum|sn9c102_bridge
 r_enum
 id|sn9c102_bridge
