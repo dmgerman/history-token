@@ -577,6 +577,16 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* End structure*/
+DECL|macro|S390_lowcore
+mdefine_line|#define S390_lowcore (*((struct _lowcore *) 0))
+r_extern
+r_struct
+id|_lowcore
+op_star
+id|lowcore_ptr
+(braket
+)braket
+suffix:semicolon
 DECL|function|set_prefix
 r_extern
 id|__inline__
@@ -603,29 +613,8 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|S390_lowcore
-mdefine_line|#define S390_lowcore (*((struct _lowcore *) 0))
-r_extern
-r_struct
-id|_lowcore
-op_star
-id|lowcore_ptr
-(braket
-)braket
-suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)      (&amp;S390_lowcore)
-DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) (&amp;S390_lowcore)
-macro_line|#else
-DECL|macro|get_cpu_lowcore
-mdefine_line|#define get_cpu_lowcore(cpu)      (lowcore_ptr[(cpu)])
-DECL|macro|safe_get_cpu_lowcore
-mdefine_line|#define safe_get_cpu_lowcore(cpu) &bslash;&n;        ((cpu) == smp_processor_id() ? &amp;S390_lowcore : lowcore_ptr[(cpu)])
-macro_line|#endif
-macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|__PANIC_MAGIC
 mdefine_line|#define __PANIC_MAGIC           0xDEADC0DE
+macro_line|#endif
 macro_line|#endif
 eof

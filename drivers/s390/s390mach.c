@@ -951,9 +951,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * s390_dequeue_mchchk&n; *&n; * Dequeue an entry from the machine check queue&n; *&n; * Note : The queue elements provide for a double linked list.&n; *  We dequeue entries from the tail, and enqueue entries to&n; *  the head.&n; *&n; */
@@ -1505,9 +1503,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-(paren
 id|count
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MACHCHK_WARNING
@@ -1579,9 +1575,7 @@ l_string|&quot;post_warning : 1 warning machine check posted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif

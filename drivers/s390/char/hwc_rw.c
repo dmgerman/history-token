@@ -7191,13 +7191,6 @@ id|__u16
 id|code
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-(paren
-)paren
-suffix:semicolon
 id|u32
 id|ext_int_param
 op_assign

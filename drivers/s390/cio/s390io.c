@@ -1155,14 +1155,10 @@ op_logical_or
 op_logical_neg
 id|length
 )paren
-(brace
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
-)brace
 id|SANITY_CHECK
 (paren
 id|irq
@@ -1180,14 +1176,10 @@ id|ui.flags.oper
 op_eq
 l_int|0
 )paren
-(brace
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
-)brace
 id|sprintf
 (paren
 id|dbf_txt
@@ -1553,10 +1545,8 @@ id|length
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -1574,10 +1564,8 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -1595,10 +1583,8 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|EOPNOTSUPP
-)paren
 suffix:semicolon
 )brace
 id|sprintf
@@ -2171,9 +2157,7 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * s390_device_recognition_irq&n; *&n; * Used for individual device recognition. Issues the device&n; *  independant SenseID command to obtain info the device type.&n; *&n; */
@@ -3803,9 +3787,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * s390_SenseID&n; *&n; * Try to obtain the &squot;control unit&squot;/&squot;device type&squot; information&n; *  associated with the subchannel.&n; *&n; * The function is primarily meant to be called without irq&n; *  action handler in place. However, it also allows for&n; *  use with an action handler in place. If there is already&n; *  an action handler registered assure it can handle the&n; *  s390_SenseID() related device interrupts - interruption&n; *  parameter used is 0x00E2C9C4 ( SID ).&n; */
@@ -3895,11 +3877,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* nothing went wrong yet */
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3914,10 +3891,8 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 id|sprintf
@@ -6121,11 +6096,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* try multi-path first */
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6140,10 +6110,8 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 id|sprintf
@@ -6851,9 +6819,7 @@ id|pdevstat
 )paren
 suffix:semicolon
 r_return
-(paren
 id|irq_ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * s390_SensePGID&n; *&n; * Sense Path Group ID&n; *&n; */
@@ -6917,11 +6883,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6936,10 +6897,8 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 )brace
 id|sprintf
@@ -7456,9 +7415,7 @@ id|pdevstat
 )paren
 suffix:semicolon
 r_return
-(paren
 id|irq_ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function: s390_send_nop&n; * &n; * sends a nop CCW to the specified subchannel down the given path(s)&n; * FIXME: why not put nop_ccw on the stack, it&squot;s only 64 bits?&n; */
@@ -7507,12 +7464,6 @@ r_int
 id|inlreq
 op_assign
 l_int|0
-suffix:semicolon
-id|SANITY_CHECK
-c_func
-(paren
-id|irq
-)paren
 suffix:semicolon
 r_if
 c_cond

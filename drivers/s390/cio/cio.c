@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.15 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.25 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -166,7 +166,7 @@ id|cio_debug_initialized
 )paren
 id|debug_text_event
 (paren
-id|cio_debug_trace_id
+id|cio_debug_msg_id
 comma
 id|level
 comma
@@ -1569,11 +1569,6 @@ id|dbf_txt
 l_int|15
 )braket
 suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * The flag usage is mutal exclusive ...&n;&t; */
 r_if
 c_cond
@@ -1644,9 +1639,7 @@ c_cond
 id|ret
 )paren
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -2011,9 +2004,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -2240,9 +2231,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * resume suspended I/O operation&n; */
@@ -2400,9 +2389,7 @@ id|ENOTCONN
 suffix:semicolon
 )brace
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: The &quot;intparm&quot; parameter is not used by the halt_IO() function&n; *       itself, as no ORB is built for the HSCH instruction. However,&n; *       it allows the device interrupt handler to associate the upcoming&n; *       interrupt with the halt_IO() request.&n; */
@@ -2508,9 +2495,7 @@ c_cond
 id|ret
 )paren
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Issue &quot;Halt subchannel&quot; and process condition code&n;&t; */
@@ -2718,9 +2703,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: The &quot;intparm&quot; parameter is not used by the clear_IO() function&n; *       itself, as no ORB is built for the CSCH instruction. However,&n; *       it allows the device interrupt handler to associate the upcoming&n; *       interrupt with the clear_IO() request.&n; */
@@ -2771,10 +2754,8 @@ op_eq
 id|INVALID_STORAGE_AREA
 )paren
 r_return
-(paren
 op_minus
 id|ENODEV
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we only allow for clear_IO if the device has an I/O handler associated&n;&t; */
 r_if
@@ -2844,9 +2825,7 @@ c_cond
 id|ret
 )paren
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Issue &quot;Clear subchannel&quot; and process condition code&n;&t; */
@@ -3045,9 +3024,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function: cancel_IO&n; * Issues a &quot;Cancel Subchannel&quot; on the specified subchannel&n; * Note: We don&squot;t need any fancy intparms and flags here&n; *       since xsch is executed synchronously.&n; * Only for common I/O internal use as for now.&n; */
@@ -3072,11 +3049,6 @@ r_int
 id|ret
 op_assign
 l_int|0
-suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
 suffix:semicolon
 id|sprintf
 (paren
@@ -3197,13 +3169,6 @@ op_star
 )paren
 (paren
 id|__LC_SUBCHANNEL_ID
-)paren
-suffix:semicolon
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * take fast exit if CPU is in sync. I/O state&n;&t; *&n;&t; * Note: we have to turn off the WAIT bit and re-disable&n;&t; *       interrupts prior to return as this was the initial&n;&t; *       entry condition to synchronous I/O.&n;&t; */
@@ -3927,9 +3892,7 @@ op_member_access_from_pointer
 id|ui.flags.ready
 )paren
 r_return
-(paren
 id|ending_status
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check whether we must issue a SENSE CCW ourselves if there is no&n;&t; *  concurrent sense facility installed for the subchannel.&n;&t; *&n;&t; * Note: We should check for ioinfo[irq]-&gt;ui.flags.consns but VM&n;&t; *       violates the ESA/390 architecture and doesn&squot;t present an&n;&t; *       operand exception for virtual devices without concurrent&n;&t; *       sense facility available/supported when enabling the&n;&t; *       concurrent sense facility.&n;&t; */
 r_if
@@ -4781,11 +4744,18 @@ id|cpu
 op_increment
 suffix:semicolon
 )brace
+id|CIO_TRACE_EVENT
+(paren
+l_int|3
+comma
+l_string|&quot;procIRQ&quot;
+)paren
+suffix:semicolon
 id|sprintf
 (paren
 id|dbf_txt
 comma
-l_string|&quot;procIRQ%x&quot;
+l_string|&quot;%x&quot;
 comma
 id|irq
 )paren
@@ -4833,29 +4803,6 @@ id|irq
 comma
 op_amp
 id|p_init_irb
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-op_member_access_from_pointer
-id|st
-)paren
-(brace
-multiline_comment|/* can&squot;t be */
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -5395,11 +5342,6 @@ id|dbf_txt
 l_int|15
 )braket
 suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5525,9 +5467,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 r_int
@@ -5712,9 +5652,7 @@ l_int|6
 suffix:semicolon
 )brace
 r_return
-(paren
 id|rc
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * used by {en,dis}able_cpu_sync_isc&n; */

@@ -848,11 +848,6 @@ id|dbf_txt
 l_int|15
 )braket
 suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
-suffix:semicolon
 id|sprintf
 (paren
 id|dbf_txt
@@ -1115,9 +1110,7 @@ id|dbf_txt
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Disable IRQ by modifying the subchannel&n; */
@@ -1151,11 +1144,6 @@ id|dbf_txt
 (braket
 l_int|15
 )braket
-suffix:semicolon
-id|SANITY_CHECK
-(paren
-id|irq
-)paren
 suffix:semicolon
 id|sprintf
 (paren
@@ -1431,9 +1419,7 @@ id|dbf_txt
 )paren
 suffix:semicolon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: there must be a cleaner way to express what happens */

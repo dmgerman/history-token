@@ -566,11 +566,11 @@ DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value)     do { var = value; wmb(); } while (0)
 multiline_comment|/* interrupt control.. */
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable() ({ &bslash;&n;        __u8 __dummy; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stosm 0(%0),0x03&quot; : : &quot;a&quot; (&amp;__dummy) : &quot;memory&quot;); &bslash;&n;        })
+mdefine_line|#define local_irq_enable() ({ &bslash;&n;        __u8 __dummy; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stosm 0(%1),0x03&quot; : &quot;=m&quot; (__dummy) : &quot;a&quot; (&amp;__dummy) ); &bslash;&n;        })
 DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable() ({ &bslash;&n;        __u32 __flags; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stnsm 0(%0),0xFC&quot; : : &quot;a&quot; (&amp;__flags) : &quot;memory&quot;); &bslash;&n;        __flags; &bslash;&n;        })
+mdefine_line|#define local_irq_disable() ({ &bslash;&n;        __u32 __flags; &bslash;&n;        __asm__ __volatile__ ( &bslash;&n;                &quot;stnsm 0(%1),0xFC&quot; : &quot;=m&quot; (__flags) : &quot;a&quot; (&amp;__flags) ); &bslash;&n;        __flags; &bslash;&n;        })
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm 0(%0),0&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
+mdefine_line|#define local_save_flags(x) &bslash;&n;        __asm__ __volatile__(&quot;stosm 0(%1),0&quot; : &quot;=m&quot; (x) : &quot;a&quot; (&amp;x) )
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x) &bslash;&n;        __asm__ __volatile__(&quot;ssm   0(%0)&quot; : : &quot;a&quot; (&amp;x) : &quot;memory&quot;)
 DECL|macro|irqs_disabled
