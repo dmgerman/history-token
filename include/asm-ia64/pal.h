@@ -2075,7 +2075,7 @@ id|u64
 id|cache_type
 comma
 id|u64
-r_restrict
+id|rest
 )paren
 (brace
 r_struct
@@ -2093,7 +2093,7 @@ id|level
 comma
 id|cache_type
 comma
-r_restrict
+id|rest
 )paren
 suffix:semicolon
 r_return

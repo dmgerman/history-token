@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -1902,13 +1903,15 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_rsm
+c_func
 (paren
-l_string|&quot;rsm psr.pp;; srlz.i;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
+id|IA64_PSR_PP
+)paren
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1922,13 +1925,15 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_ssm
+c_func
 (paren
-l_string|&quot;ssm psr.pp;; srlz.i;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
+id|IA64_PSR_PP
+)paren
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1942,13 +1947,15 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_rsm
+c_func
 (paren
-l_string|&quot;rsm psr.up;; srlz.i;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
+id|IA64_PSR_UP
+)paren
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1962,13 +1969,15 @@ c_func
 r_void
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_ssm
+c_func
 (paren
-l_string|&quot;ssm psr.up;; srlz.i;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
+id|IA64_PSR_UP
+)paren
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1987,17 +1996,17 @@ r_int
 r_int
 id|tmp
 suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;mov %0=psr;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|tmp
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_PSR
 )paren
-op_scope_resolution
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2016,17 +2025,17 @@ r_int
 id|val
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov psr.l=%0;; srlz.i;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_PSR_L
+comma
 id|val
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
+suffix:semicolon
+id|ia64_srlz_i
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -2990,12 +2999,15 @@ id|PFM_CPUINFO_DCR_PP
 )paren
 (brace
 multiline_comment|/* disable dcr pp */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
-id|ia64_get_dcr
+id|_IA64_REG_CR_DCR
+comma
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
 )paren
 op_amp
 op_complement
@@ -3229,12 +3241,15 @@ id|PFM_CPUINFO_DCR_PP
 )paren
 (brace
 multiline_comment|/* enable dcr pp */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
-id|ia64_get_dcr
+id|_IA64_REG_CR_DCR
+comma
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
 )paren
 op_or
 id|IA64_DCR_PP
@@ -6354,12 +6369,15 @@ id|ctx-&gt;ctx_task-&gt;pid
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Update local PMU&n;&t; */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
-id|ia64_get_dcr
+id|_IA64_REG_CR_DCR
+comma
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
 )paren
 op_amp
 op_complement
@@ -13837,12 +13855,15 @@ id|ctx-&gt;ctx_fl_system
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Update local PMU first&n;&t;&t; *&n;&t;&t; * disable dcr pp&n;&t;&t; */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
-id|ia64_get_dcr
+id|_IA64_REG_CR_DCR
+comma
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
 )paren
 op_amp
 op_complement
@@ -14056,12 +14077,15 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* enable dcr pp */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
-id|ia64_get_dcr
+id|_IA64_REG_CR_DCR
+comma
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
 )paren
 op_or
 id|IA64_DCR_PP
@@ -14575,7 +14599,7 @@ op_assign
 id|ia64_cmpxchg
 c_func
 (paren
-l_string|&quot;acq&quot;
+id|acq
 comma
 op_amp
 id|thread-&gt;pfm_context
@@ -19423,9 +19447,10 @@ id|dcr_pp
 (brace
 id|dcr
 op_assign
-id|ia64_get_dcr
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * context switching in?&n;&t;&t; */
@@ -19436,9 +19461,11 @@ id|is_ctxswin
 )paren
 (brace
 multiline_comment|/* mask monitoring for the idle task */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
+comma
 id|dcr
 op_amp
 op_complement
@@ -19459,9 +19486,11 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * context switching out&n;&t;&t; * restore monitoring for next task&n;&t;&t; *&n;&t;&t; * Due to inlining this odd if-then-else construction generates&n;&t;&t; * better code.&n;&t;&t; */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_DCR
+comma
 id|dcr
 op_or
 id|IA64_DCR_PP
@@ -21708,9 +21737,11 @@ op_amp
 id|perfmon_irqaction
 )paren
 suffix:semicolon
-id|ia64_set_pmv
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_PMV
+comma
 id|IA64_PERFMON_VECTOR
 )paren
 suffix:semicolon

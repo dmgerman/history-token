@@ -4,6 +4,7 @@ mdefine_line|#define _ASM_IA64_TLBFLUSH_H
 multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * Now for some TLB flushing routines.  This is the kind of stuff that&n; * can be very expensive, so try to avoid them whenever possible.&n; */
@@ -219,24 +220,16 @@ id|vma-&gt;vm_mm
 op_eq
 id|current-&gt;active_mm
 )paren
-id|asm
-r_volatile
-(paren
-l_string|&quot;ptc.l %0,%1&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+id|ia64_ptcl
+c_func
 (paren
 id|addr
-)paren
 comma
-l_string|&quot;r&quot;
 (paren
 id|PAGE_SHIFT
 op_lshift
 l_int|2
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_else

@@ -36,9 +36,10 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -12195,15 +12196,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Trying to gain more privileges? */
-id|asm
-r_volatile
-(paren
-l_string|&quot;mov %0=ar.eflag ;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|old
-)paren
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_EFLAG
 )paren
 suffix:semicolon
 r_if
@@ -12368,15 +12366,12 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
-id|asm
-r_volatile
+id|ia64_setreg
+c_func
 (paren
-l_string|&quot;mov ar.eflag=%0;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|_IA64_REG_AR_EFLAG
+comma
 id|old
-)paren
 )paren
 suffix:semicolon
 )brace
