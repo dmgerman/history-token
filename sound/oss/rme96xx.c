@@ -7132,7 +7132,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -7148,6 +7148,8 @@ id|dma-&gt;outoffset
 op_star
 id|RME96xx_DMA_MAX_SIZE
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma
@@ -7192,7 +7194,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -7208,6 +7210,8 @@ id|dma-&gt;inoffset
 op_star
 id|RME96xx_DMA_MAX_SIZE
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|size
 comma
