@@ -826,6 +826,8 @@ DECL|macro|MID_REQUEST_SUBMITTED
 mdefine_line|#define   MID_REQUEST_SUBMITTED 2
 DECL|macro|MID_RESPONSE_RECEIVED
 mdefine_line|#define   MID_RESPONSE_RECEIVED 4
+DECL|macro|MID_RETRY_NEEDED
+mdefine_line|#define   MID_RETRY_NEEDED      8 /* session closed while this request out */
 DECL|struct|servers_not_supported
 r_struct
 id|servers_not_supported
