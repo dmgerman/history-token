@@ -2259,9 +2259,8 @@ id|ni
 r_goto
 id|done
 suffix:semicolon
-multiline_comment|/* Make sure we have mapped buffers. */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|page_has_buffers
@@ -2270,29 +2269,7 @@ c_func
 id|page
 )paren
 )paren
-(brace
-id|no_buffers_err_out
-suffix:colon
-id|ntfs_error
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Writing mft records without existing &quot;
-l_string|&quot;buffers is not implemented yet.  %s&quot;
-comma
-id|ntfs_please_email
-)paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-r_goto
-id|err_out
-suffix:semicolon
-)brace
 id|bh
 op_assign
 id|head
@@ -2303,14 +2280,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|bh
 )paren
-r_goto
-id|no_buffers_err_out
 suffix:semicolon
 id|nr_bhs
 op_assign
@@ -3001,6 +2976,24 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Clear the page uptodate flag.  This will cause anyone trying to get&n;&t; * hold of the page to block on the page lock in read_cache_page().&n;&t; */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|ClearPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3498,6 +3491,12 @@ id|vi
 )paren
 suffix:semicolon
 )brace
+id|SetPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|kunmap
 c_func
 (paren
