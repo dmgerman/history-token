@@ -132,6 +132,10 @@ multiline_comment|/* 6.00.00  - Add 6x Adapters and Battery Flash               
 multiline_comment|/* 6.10.00  - Remove 1G Addressing Limitations                               */
 multiline_comment|/* 6.11.xx  - Get VersionInfo buffer off the stack !              DDTS 60401 */
 multiline_comment|/* 6.11.xx  - Make Logical Drive Info structure safe for DMA      DDTS 60639 */
+multiline_comment|/* 7.10.xx  - Add highmem_io flag in SCSI Templete for 2.4 kernels           */
+multiline_comment|/*          - Fix path/name for scsi_hosts.h include for 2.6 kernels         */
+multiline_comment|/*          - Fix sort order of 7k                                           */
+multiline_comment|/*          - Remove 3 unused &quot;inline&quot; functions                             */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * Conditional Compilation directives for this driver:&n; *&n; * IPS_DEBUG            - Turn on debugging info&n; *&n; * Parameters:&n; *&n; * debug:&lt;number&gt;       - Set debug level to &lt;number&gt;&n; *                        NOTE: only works when IPS_DEBUG compile directive is used.&n; *       1              - Normal debug messages&n; *       2              - Verbose debug messages&n; *       11             - Method trace (non interrupt)&n; *       12             - Method trace (includes interrupt)&n; *&n; * noi2o                - Don&squot;t use I2O Queues (ServeRAID 4 only)&n; * nommap               - Don&squot;t use memory mapped I/O&n; * ioctlsize            - Initial size of the IOCTL buffer&n; */
 macro_line|#include &lt;asm/io.h&gt;
@@ -153,7 +157,11 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 macro_line|#include &quot;scsi.h&quot;
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
+macro_line|#include &quot;hosts.h&quot;
+macro_line|#else
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#endif
 macro_line|#include &quot;ips.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -181,9 +189,9 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * DRIVER_VER&n; */
 DECL|macro|IPS_VERSION_HIGH
-mdefine_line|#define IPS_VERSION_HIGH        &quot;7.00&quot;
+mdefine_line|#define IPS_VERSION_HIGH        &quot;7.10&quot;
 DECL|macro|IPS_VERSION_LOW
-mdefine_line|#define IPS_VERSION_LOW         &quot;.15 &quot;
+mdefine_line|#define IPS_VERSION_LOW         &quot;.18 &quot;
 macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__x86_64__)
 macro_line|#warning &quot;This driver has only been tested on the x86/ia64/x86_64 platforms&quot;
 macro_line|#endif
@@ -447,6 +455,13 @@ comma
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 dot
 id|use_new_eh_code
+op_assign
+l_int|1
+comma
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20)  &amp;&amp;  LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+dot
+id|highmem_io
 op_assign
 l_int|1
 comma
@@ -26144,9 +26159,6 @@ r_case
 id|IPS_ADTYPE_SERVERAID6M
 suffix:colon
 r_case
-id|IPS_ADTYPE_SERVERAID7k
-suffix:colon
-r_case
 id|IPS_ADTYPE_SERVERAID7M
 suffix:colon
 r_if
@@ -26219,6 +26231,9 @@ id|IPS_ADTYPE_SERVERAID5I2
 suffix:colon
 r_case
 id|IPS_ADTYPE_SERVERAID5I1
+suffix:colon
+r_case
+id|IPS_ADTYPE_SERVERAID7k
 suffix:colon
 r_if
 c_cond
@@ -28357,6 +28372,22 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IBM ServeRAID Adapter Driver &quot;
+id|IPS_VER_STRING
+)paren
+suffix:semicolon
+macro_line|#ifdef MODULE_VERSION
+DECL|variable|IPS_VER_STRING
+id|MODULE_VERSION
+c_func
+(paren
+id|IPS_VER_STRING
 )paren
 suffix:semicolon
 macro_line|#endif
