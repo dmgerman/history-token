@@ -140,6 +140,9 @@ id|ELF_NVRREG
 )braket
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+r_struct
+id|task_struct
+suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
 mdefine_line|#define elf_check_arch(x) ((x)-&gt;e_machine == EM_PPC)
