@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -52,12 +53,14 @@ c_func
 l_string|&quot;{sound}&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|timer_limit
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9484,58 +9487,13 @@ c_func
 (paren
 id|alsa_timer_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-timer=timer_limit */
-DECL|function|alsa_timer_setup
-r_static
-r_int
-id|__init
-id|alsa_timer_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|timer_limit
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-timer=&quot;
-comma
-id|alsa_timer_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef MODULE */
-DECL|variable|snd_timer_open
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_timer_open
 )paren
 suffix:semicolon
-DECL|variable|snd_timer_close
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

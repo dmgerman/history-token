@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;sound/memalloc.h&gt;
 macro_line|#ifdef CONFIG_SBUS
@@ -58,18 +59,21 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|enable
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3407,82 +3411,14 @@ c_func
 (paren
 id|snd_mem_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-page-alloc=enable */
-DECL|function|snd_mem_setup
-r_static
-r_int
-id|__init
-id|snd_mem_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_static
-r_int
-id|__initdata
-id|nr_dev
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr_dev
-op_ge
-id|SNDRV_CARDS
-)paren
-r_return
-l_int|0
-suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|enable
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-id|nr_dev
-op_increment
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-page-alloc=&quot;
-comma
-id|snd_mem_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * exports&n; */
-DECL|variable|snd_dma_alloc_pages
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_dma_alloc_pages
 )paren
 suffix:semicolon
-DECL|variable|snd_dma_alloc_pages_fallback
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

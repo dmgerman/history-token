@@ -4,14 +4,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -103,18 +102,21 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* digital input rate */
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|index
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -133,18 +135,16 @@ comma
 id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|id
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -163,18 +163,16 @@ comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|enable
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -193,18 +191,16 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|digital_rate
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4057,101 +4053,4 @@ c_func
 (paren
 id|alsa_card_bt87x_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-bt87x=enable,index,id */
-DECL|function|alsa_card_bt87x_setup
-r_static
-r_int
-id|__init
-id|alsa_card_bt87x_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_static
-r_int
-id|__initdata
-id|nr_dev
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr_dev
-op_ge
-id|SNDRV_CARDS
-)paren
-r_return
-l_int|0
-suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|enable
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|index
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_id
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|id
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-id|nr_dev
-op_increment
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-bt87x=&quot;
-comma
-id|alsa_card_bt87x_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef MODULE */
 eof

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
@@ -48,12 +49,14 @@ id|output_buffer_size
 op_assign
 id|PAGE_SIZE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|output_buffer_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -70,12 +73,14 @@ id|input_buffer_size
 op_assign
 id|PAGE_SIZE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|input_buffer_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

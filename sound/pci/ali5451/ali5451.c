@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Matt Wu &lt;Matt_Wu@acersoftech.com.cn&gt;&n; *  Apr 26, 2001&n; *  Routines for control of ALi pci audio M5451&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public Lcodecnse as published by&n; *   the Free Software Foundation; either version 2 of the Lcodecnse, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public Lcodecnse for more details.&n; *&n; *   You should have received a copy of the GNU General Public Lcodecnse&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-DECL|macro|__SNDRV_OSS_COMPAT__
-mdefine_line|#define __SNDRV_OSS_COMPAT__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -8,13 +6,12 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -127,18 +124,21 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|index
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -157,18 +157,16 @@ comma
 id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|id
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -187,18 +185,16 @@ comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|enable
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -217,18 +213,16 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|pcm_channels
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;l&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -248,18 +242,16 @@ id|SNDRV_ENABLED
 l_string|&quot;,default:32,allows:{{1,32}}&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|spdif
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;l&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -11556,116 +11548,4 @@ c_func
 (paren
 id|alsa_card_ali_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-ali5451=enable,index,id,pcm_channels */
-DECL|function|alsa_card_ali_setup
-r_static
-r_int
-id|__init
-id|alsa_card_ali_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_static
-r_int
-id|__initdata
-id|nr_dev
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr_dev
-op_ge
-id|SNDRV_CARDS
-)paren
-r_return
-l_int|0
-suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|enable
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|index
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_id
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|id
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|pcm_channels
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-id|nr_dev
-op_increment
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-ali5451=&quot;
-comma
-id|alsa_card_ali_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef */
 eof

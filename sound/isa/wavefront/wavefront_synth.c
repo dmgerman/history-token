@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/snd_wavefront.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
@@ -82,12 +83,14 @@ op_assign
 l_int|10
 suffix:semicolon
 multiline_comment|/* time in seconds we wait for the OS to&n;&t;&t;&t;      start running.&n;&t;&t;&t;   */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|wf_raw
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -98,12 +101,14 @@ comma
 l_string|&quot;if non-zero, assume that we need to boot the OS&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fx_raw
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -114,12 +119,14 @@ comma
 l_string|&quot;if non-zero, assume that the FX process needs help&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug_default
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -130,12 +137,14 @@ comma
 l_string|&quot;debug parameters for card initialization&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|wait_usecs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -146,12 +155,14 @@ comma
 l_string|&quot;how long to wait without sleeping, usecs&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sleep_interval
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -162,12 +173,14 @@ comma
 l_string|&quot;how long to sleep when waiting for reply&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sleep_tries
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -178,12 +191,14 @@ comma
 l_string|&quot;how many times to try sleeping during a wait&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ospath
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -194,12 +209,14 @@ comma
 l_string|&quot;full pathname to processed ICS2115 OS firmware&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|reset_time
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -210,12 +227,14 @@ comma
 l_string|&quot;how long to wait for a reset to take effect&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ramcheck_time
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -226,12 +245,14 @@ comma
 l_string|&quot;how many seconds to wait for the RAM test&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|osrun_time
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

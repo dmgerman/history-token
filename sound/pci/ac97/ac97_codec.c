@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
@@ -35,12 +36,14 @@ r_static
 r_int
 id|enable_loopback
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|enable_loopback
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
