@@ -4,6 +4,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/arch/h3600.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 DECL|struct|irqs
 r_static
@@ -772,4 +774,57 @@ id|h3600_pcmcia_socket_suspend
 comma
 )brace
 suffix:semicolon
+DECL|function|pcmcia_h3600_init
+r_int
+id|__init
+id|pcmcia_h3600_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_h3600
+c_func
+(paren
+)paren
+)paren
+id|ret
+op_assign
+id|sa1100_register_pcmcia
+c_func
+(paren
+op_amp
+id|h3600_pcmcia_ops
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|pcmcia_h3600_exit
+r_void
+id|__exit
+id|pcmcia_h3600_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|sa1100_unregister_pcmcia
+c_func
+(paren
+op_amp
+id|h3600_pcmcia_ops
+)paren
+suffix:semicolon
+)brace
 eof

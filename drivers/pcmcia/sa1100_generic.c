@@ -4109,6 +4109,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_H3600
+id|pcmcia_h3600_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
 id|pcmcia_pangolin_init
 c_func
@@ -4196,6 +4203,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_GRAPHICSCLIENT
 id|pcmcia_gcplus_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_H3600
+id|pcmcia_h3600_exit
 c_func
 (paren
 )paren
