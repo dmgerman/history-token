@@ -160,6 +160,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/xqm.h&gt;
+macro_line|#include &lt;linux/dqblk_v1.h&gt;
 multiline_comment|/*&n; * Data for one user/group kept in memory&n; */
 DECL|struct|mem_dqblk
 r_struct
@@ -237,6 +238,11 @@ id|dqi_igrace
 suffix:semicolon
 r_union
 (brace
+DECL|member|v1_i
+r_struct
+id|v1_mem_dqinfo
+id|v1_i
+suffix:semicolon
 DECL|member|u
 )brace
 id|u
