@@ -476,7 +476,6 @@ multiline_comment|/*&n; * Cleanup stuff&n; */
 DECL|function|prosavage_remove
 r_static
 r_void
-id|__devexit
 id|prosavage_remove
 c_func
 (paren
@@ -981,11 +980,7 @@ comma
 dot
 id|remove
 op_assign
-id|__devexit_p
-c_func
-(paren
 id|prosavage_remove
-)paren
 comma
 )brace
 suffix:semicolon
