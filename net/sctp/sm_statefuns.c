@@ -2386,12 +2386,12 @@ c_func
 suffix:semicolon
 id|out
 suffix:colon
-multiline_comment|/* Even if there is no memory, treat as a failure so&n;&t; * the packet will get dropped. &n;&t; */
+multiline_comment|/* Even if there is no memory, treat as a failure so&n;&t; * the packet will get dropped.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* A restart is occuring, check to make sure no new addresses &n; * are being added as we may be under a takeover attack.&n; */
+multiline_comment|/* A restart is occuring, check to make sure no new addresses&n; * are being added as we may be under a takeover attack.&n; */
 DECL|function|sctp_sf_check_restart_addrs
 r_static
 r_int
@@ -3039,7 +3039,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure no new addresses are being added during the&n;&t; * restart.   Do not do this check for COOKIE-WAIT state,&n;&t; * since there are no peer addresses to check against.&n;&t; * Upon return an ABORT will have been sent if needed.  &n;&t; */
+multiline_comment|/* Make sure no new addresses are being added during the&n;&t; * restart.   Do not do this check for COOKIE-WAIT state,&n;&t; * since there are no peer addresses to check against.&n;&t; * Upon return an ABORT will have been sent if needed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5626,28 +5626,7 @@ id|sctp_ecnehdr_t
 )paren
 )paren
 suffix:semicolon
-id|ecne-&gt;lowest_tsn
-op_assign
-id|ntohl
-c_func
-(paren
-id|ecne-&gt;lowest_tsn
-)paren
-suffix:semicolon
-multiline_comment|/* Casting away the const, as we are just modifying the spinlock,&n;&t; * not the association itself.   This should go away in the near&n;&t; * future when we move to an endpoint based lock.&n;&t; */
 multiline_comment|/* If this is a newer ECNE than the last CWR packet we sent out */
-r_if
-c_cond
-(paren
-id|TSN_lt
-c_func
-(paren
-id|asoc-&gt;last_cwr_tsn
-comma
-id|ecne-&gt;lowest_tsn
-)paren
-)paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -5658,11 +5637,14 @@ comma
 id|SCTP_U32
 c_func
 (paren
+id|ntohl
+c_func
+(paren
 id|ecne-&gt;lowest_tsn
 )paren
 )paren
+)paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon

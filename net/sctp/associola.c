@@ -492,6 +492,10 @@ id|asoc-&gt;highest_sacked
 op_assign
 id|asoc-&gt;ctsn_ack_point
 suffix:semicolon
+id|asoc-&gt;last_cwr_tsn
+op_assign
+id|asoc-&gt;ctsn_ack_point
+suffix:semicolon
 id|asoc-&gt;unack_data
 op_assign
 l_int|0
