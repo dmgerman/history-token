@@ -453,12 +453,10 @@ id|tmprec.tempo
 op_assign
 id|timer-&gt;tempo
 suffix:semicolon
-id|snd_seq_kernel_client_ctl
+id|snd_seq_set_queue_tempo
 c_func
 (paren
 id|dp-&gt;cseq
-comma
-id|SNDRV_SEQ_IOCTL_SET_QUEUE_TEMPO
 comma
 op_amp
 id|tmprec

@@ -35,6 +35,8 @@ macro_line|#ifndef SNDRV_CARDS
 DECL|macro|SNDRV_CARDS
 mdefine_line|#define SNDRV_CARDS&t;8
 macro_line|#endif
+multiline_comment|/* FIXME: so far only some PCI devices have the preallocation table */
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|enable
 r_static
 r_int
@@ -84,6 +86,7 @@ comma
 l_string|&quot;Enable cards to allocate buffers.&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; */
 r_void
 op_star

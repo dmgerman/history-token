@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for ATI IXP 150/200/250 AC97 controllers&n; *&n; *&t;Copyright (c) 2004 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   ALSA driver for ATI IXP 150/200/250/300 AC97 controllers&n; *&n; *&t;Copyright (c) 2004 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -5802,18 +5802,6 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|chip-&gt;codec_not_ready_bits
-)paren
-multiline_comment|/* codec(s) was detected but not available.&n;&t;&t;&t;&t; * return the error&n;&t;&t;&t;&t; */
-r_return
-id|err
-suffix:semicolon
-r_else
-(brace
-multiline_comment|/* codec(s) was NOT detected, so just ignore here */
 id|chip-&gt;ac97
 (braket
 id|i
@@ -5822,17 +5810,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* to be sure */
-id|snd_printd
+id|snd_printdd
 c_func
 (paren
-l_string|&quot;atiixp: codec %d not found&bslash;n&quot;
+l_string|&quot;atiixp: codec %d not available for audio&bslash;n&quot;
 comma
 id|i
 )paren
 suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 )brace
 id|codec_count
 op_increment
