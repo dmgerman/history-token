@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;RAW sockets for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Adapted from linux/net/ipv4/raw.c&n; *&n; *&t;$Id: raw.c,v 1.51 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;RAW sockets for IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Adapted from linux/net/ipv4/raw.c&n; *&n; *&t;$Id: raw.c,v 1.51 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&t;YOSHIFUJI,H.@USAGI&t;:&t;raw checksum (RFC2292(bis) compliance) &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -2119,6 +2119,8 @@ r_if
 c_cond
 (paren
 id|opt-&gt;offset
+op_plus
+l_int|1
 OL
 id|len
 )paren
@@ -2139,11 +2141,48 @@ op_plus
 id|opt-&gt;offset
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|csum
+)paren
+(brace
+multiline_comment|/* in case cksum was not initialized */
+id|__u32
+id|sum
+op_assign
+id|hdr-&gt;cksum
+suffix:semicolon
+id|sum
+op_add_assign
+op_star
+id|csum
+suffix:semicolon
+op_star
+id|csum
+op_assign
+id|hdr-&gt;cksum
+op_assign
+(paren
+id|sum
+op_plus
+(paren
+id|sum
+op_rshift
+l_int|16
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 op_star
 id|csum
 op_assign
 id|hdr-&gt;cksum
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -3197,6 +3236,24 @@ id|optname
 r_case
 id|IPV6_CHECKSUM
 suffix:colon
+multiline_comment|/* You may get strange result with a positive odd offset;&n;&t;&t;&t;   RFC2292bis agrees with me. */
+r_if
+c_cond
+(paren
+id|val
+OG
+l_int|0
+op_logical_and
+(paren
+id|val
+op_amp
+l_int|1
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3637,6 +3694,34 @@ op_star
 id|sk
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|sk-&gt;num
+op_eq
+id|IPPROTO_ICMPV6
+)paren
+(brace
+r_struct
+id|raw6_opt
+op_star
+id|opt
+op_assign
+id|raw6_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|opt-&gt;checksum
+op_assign
+l_int|1
+suffix:semicolon
+id|opt-&gt;offset
+op_assign
+l_int|2
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
