@@ -2286,7 +2286,7 @@ r_int
 id|on
 )paren
 (brace
-id|dma64_addr_t
+id|u64
 id|addr
 op_assign
 id|BLK_BOUNCE_HIGH

@@ -206,7 +206,7 @@ op_assign
 op_amp
 id|SDpnt-&gt;request_queue
 suffix:semicolon
-id|dma64_addr_t
+id|u64
 id|bounce_limit
 suffix:semicolon
 multiline_comment|/*&n;&t; * The generic merging functions work just fine for us.&n;&t; * Enable highmem I/O, if appropriate.&n;&t; */
