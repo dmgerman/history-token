@@ -3810,9 +3810,17 @@ multiline_comment|/* netfid stays le */
 r_if
 c_cond
 (paren
+(paren
 id|numLock
 op_ne
 l_int|0
+)paren
+op_logical_or
+(paren
+id|numUnlock
+op_ne
+l_int|0
+)paren
 )paren
 (brace
 id|pSMB-&gt;Locks
