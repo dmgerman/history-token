@@ -1322,7 +1322,7 @@ id|x
 )paren
 suffix:semicolon
 DECL|macro|fls
-mdefine_line|#define fls(x) &bslash;&n;&t;( __builtin_constant_p(x) ? generic_fls(x) : &bslash;&n;&t;  ({ int __r; asm(&quot;clz%?&bslash;t%0, %1&quot; : &quot;=r&quot;(__r) : &quot;r&quot;(x)); 32-__r; }) )
+mdefine_line|#define fls(x) &bslash;&n;&t;( __builtin_constant_p(x) ? generic_fls(x) : &bslash;&n;&t;  ({ int __r; asm(&quot;clz&bslash;t%0, %1&quot; : &quot;=r&quot;(__r) : &quot;r&quot;(x) : &quot;cc&quot;); 32-__r; }) )
 DECL|macro|ffs
 mdefine_line|#define ffs(x) ({ unsigned long __t = (x); fls(__t &amp; -__t); })
 DECL|macro|__ffs
