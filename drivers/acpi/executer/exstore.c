@@ -148,7 +148,7 @@ suffix:semicolon
 multiline_comment|/*lint -fallthrough */
 r_default
 suffix:colon
-multiline_comment|/* Destination is not an Reference */
+multiline_comment|/* Destination is not a Reference object */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -300,7 +300,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;%8.8X%8.8X&bslash;n&quot;
+l_string|&quot;0x%8.8X%8.8X&bslash;n&quot;
 comma
 id|ACPI_FORMAT_UINT64
 (paren
@@ -319,13 +319,29 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Length %.2X&bslash;n&quot;
+l_string|&quot;Length 0x%.2X&quot;
 comma
 (paren
 id|u32
 )paren
 id|source_desc-&gt;buffer.length
 )paren
+)paren
+suffix:semicolon
+id|ACPI_DUMP_BUFFER
+(paren
+id|source_desc-&gt;buffer.pointer
+comma
+(paren
+id|source_desc-&gt;buffer.length
+OL
+l_int|32
+)paren
+ques
+c_cond
+id|source_desc-&gt;buffer.length
+suffix:colon
+l_int|32
 )paren
 suffix:semicolon
 r_break
@@ -338,7 +354,9 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;Length 0x%.2X, &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+comma
+id|source_desc-&gt;string.length
 comma
 id|source_desc-&gt;string.pointer
 )paren
@@ -354,7 +372,9 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Elements Ptr - %p&bslash;n&quot;
+l_string|&quot;Size 0x%.2X Elements Ptr - %p&bslash;n&quot;
+comma
+id|source_desc-&gt;package.count
 comma
 id|source_desc-&gt;package.elements
 )paren
@@ -369,12 +389,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Type %s %p&bslash;n&quot;
-comma
-id|acpi_ut_get_object_type_name
-(paren
-id|source_desc
-)paren
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|source_desc
 )paren
@@ -396,12 +411,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Unknown Reference opcode %X&bslash;n&quot;
+l_string|&quot;ex_store: Unknown Reference opcode %X&bslash;n&quot;
 comma
 id|ref_desc-&gt;reference.opcode
 )paren
@@ -468,6 +481,9 @@ id|value
 op_assign
 l_int|0
 suffix:semicolon
+id|u32
+id|i
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ex_store_object_to_index&quot;
@@ -484,7 +500,7 @@ r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Storing to a package element is not simple.  The source must be&n;&t;&t; * evaluated and converted to the type of the destination and then the&n;&t;&t; * source is copied into the destination - we can&squot;t just point to the&n;&t;&t; * source object.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * The object at *(index_desc-&gt;Reference.Where) is the&n;&t;&t; * element within the package that is to be modified.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The object at *(index_desc-&gt;Reference.Where) is the&n;&t;&t; * element within the package that is to be modified.&n;&t;&t; * The parent package object is at index_desc-&gt;Reference.Object&n;&t;&t; */
 id|obj_desc
 op_assign
 op_star
@@ -559,6 +575,37 @@ c_cond
 id|new_desc
 op_eq
 id|source_desc
+)paren
+(brace
+id|acpi_ut_add_reference
+(paren
+id|new_desc
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Increment reference count by the ref count of the parent package -1 */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+OL
+(paren
+(paren
+r_union
+id|acpi_operand_object
+op_star
+)paren
+id|index_desc-&gt;reference.object
+)paren
+op_member_access_from_pointer
+id|common.reference_count
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
 id|acpi_ut_add_reference
