@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_inum.h&quot;
 macro_line|#include &quot;xfs_log.h&quot;
@@ -24,7 +24,7 @@ macro_line|#include &quot;xfs_iomap.h&quot;
 macro_line|#include &lt;linux/mpage.h&gt;
 id|STATIC
 r_void
-id|count_page_state
+id|xfs_count_page_state
 c_func
 (paren
 r_struct
@@ -43,7 +43,7 @@ op_star
 suffix:semicolon
 id|STATIC
 r_void
-id|convert_page
+id|xfs_convert_page
 c_func
 (paren
 r_struct
@@ -129,7 +129,7 @@ id|unmapped
 comma
 id|unwritten
 suffix:semicolon
-id|count_page_state
+id|xfs_count_page_state
 c_func
 (paren
 id|page
@@ -668,8 +668,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_int
-DECL|function|map_blocks
-id|map_blocks
+DECL|function|xfs_map_blocks
+id|xfs_map_blocks
 c_func
 (paren
 r_struct
@@ -851,12 +851,12 @@ op_minus
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * match_offset_to_mapping&n; * Finds the corresponding mapping in block @map array of the&n; * given @offset within a @page.&n; */
+multiline_comment|/*&n; * Finds the corresponding mapping in block @map array of the&n; * given @offset within a @page.&n; */
 id|STATIC
 id|xfs_iomap_t
 op_star
-DECL|function|match_offset_to_mapping
-id|match_offset_to_mapping
+DECL|function|xfs_offset_to_map
+id|xfs_offset_to_map
 c_func
 (paren
 r_struct
@@ -928,8 +928,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_void
-DECL|function|map_buffer_at_offset
-id|map_buffer_at_offset
+DECL|function|xfs_map_at_offset
+id|xfs_map_at_offset
 c_func
 (paren
 r_struct
@@ -1073,8 +1073,8 @@ id|STATIC
 r_struct
 id|page
 op_star
-DECL|function|probe_unwritten_page
-id|probe_unwritten_page
+DECL|function|xfs_probe_unwritten_page
+id|xfs_probe_unwritten_page
 c_func
 (paren
 r_struct
@@ -1203,7 +1203,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|page
@@ -1224,7 +1224,7 @@ id|max_offset
 )paren
 r_break
 suffix:semicolon
-id|map_buffer_at_offset
+id|xfs_map_at_offset
 c_func
 (paren
 id|page
@@ -1296,8 +1296,8 @@ multiline_comment|/*&n; * Look for a page at index which is unlocked and not map
 id|STATIC
 r_int
 r_int
-DECL|function|probe_unmapped_page
-id|probe_unmapped_page
+DECL|function|xfs_probe_unmapped_page
+id|xfs_probe_unmapped_page
 c_func
 (paren
 r_struct
@@ -1463,8 +1463,8 @@ suffix:semicolon
 id|STATIC
 r_int
 r_int
-DECL|function|probe_unmapped_cluster
-id|probe_unmapped_cluster
+DECL|function|xfs_probe_unmapped_cluster
+id|xfs_probe_unmapped_cluster
 c_func
 (paren
 r_struct
@@ -1593,7 +1593,7 @@ op_increment
 (brace
 id|len
 op_assign
-id|probe_unmapped_page
+id|xfs_probe_unmapped_page
 c_func
 (paren
 id|mapping
@@ -1643,7 +1643,7 @@ l_int|1
 (brace
 id|total
 op_add_assign
-id|probe_unmapped_page
+id|xfs_probe_unmapped_page
 c_func
 (paren
 id|mapping
@@ -1664,8 +1664,8 @@ id|STATIC
 r_struct
 id|page
 op_star
-DECL|function|probe_delalloc_page
-id|probe_delalloc_page
+DECL|function|xfs_probe_delalloc_page
+id|xfs_probe_delalloc_page
 c_func
 (paren
 r_struct
@@ -1820,8 +1820,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_int
-DECL|function|map_unwritten
-id|map_unwritten
+DECL|function|xfs_map_unwritten
+id|xfs_map_unwritten
 c_func
 (paren
 r_struct
@@ -1978,7 +1978,7 @@ r_break
 suffix:semicolon
 id|tmp
 op_assign
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|start_page
@@ -1996,7 +1996,7 @@ id|tmp
 )paren
 r_break
 suffix:semicolon
-id|map_buffer_at_offset
+id|xfs_map_at_offset
 c_func
 (paren
 id|start_page
@@ -2040,34 +2040,6 @@ op_ne
 id|head
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|nblocks
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;XFS: bad unwritten extent map: bh=0x%p, iomapp=0x%p&bslash;n&quot;
-comma
-id|curr
-comma
-id|iomapp
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|atomic_add
 c_func
 (paren
@@ -2163,7 +2135,7 @@ op_increment
 (brace
 id|page
 op_assign
-id|probe_unwritten_page
+id|xfs_probe_unwritten_page
 c_func
 (paren
 id|mapping
@@ -2203,7 +2175,7 @@ op_amp
 id|pb-&gt;pb_io_remaining
 )paren
 suffix:semicolon
-id|convert_page
+id|xfs_convert_page
 c_func
 (paren
 id|inode
@@ -2267,7 +2239,7 @@ l_int|1
 (brace
 id|page
 op_assign
-id|probe_unwritten_page
+id|xfs_probe_unwritten_page
 c_func
 (paren
 id|mapping
@@ -2305,7 +2277,7 @@ op_amp
 id|pb-&gt;pb_io_remaining
 )paren
 suffix:semicolon
-id|convert_page
+id|xfs_convert_page
 c_func
 (paren
 id|inode
@@ -2440,8 +2412,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_void
-DECL|function|submit_page
-id|submit_page
+DECL|function|xfs_submit_page
+id|xfs_submit_page
 c_func
 (paren
 r_struct
@@ -2595,8 +2567,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Allocate &amp; map buffers for page given the extent map. Write it out.&n; * except for the original page of a writepage, this is called on&n; * delalloc/unwritten pages only, for the original page it is possible&n; * that the page has no mapping at all.&n; */
 id|STATIC
 r_void
-DECL|function|convert_page
-id|convert_page
+DECL|function|xfs_convert_page
+id|xfs_convert_page
 c_func
 (paren
 r_struct
@@ -2805,7 +2777,7 @@ suffix:semicolon
 )brace
 id|tmp
 op_assign
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|page
@@ -2867,7 +2839,7 @@ op_amp
 id|IOMAP_UNWRITTEN
 )paren
 suffix:semicolon
-id|map_unwritten
+id|xfs_map_unwritten
 c_func
 (paren
 id|inode
@@ -2910,7 +2882,7 @@ id|bh
 )paren
 )paren
 (brace
-id|map_buffer_at_offset
+id|xfs_map_at_offset
 c_func
 (paren
 id|page
@@ -3016,7 +2988,7 @@ c_cond
 id|startio
 )paren
 (brace
-id|submit_page
+id|xfs_submit_page
 c_func
 (paren
 id|page
@@ -3040,8 +3012,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Convert &amp; write out a cluster of pages in the same extent as defined&n; * by mp and following the start page.&n; */
 id|STATIC
 r_void
-DECL|function|cluster_write
-id|cluster_write
+DECL|function|xfs_cluster_write
+id|xfs_cluster_write
 c_func
 (paren
 r_struct
@@ -3097,7 +3069,7 @@ op_increment
 (brace
 id|page
 op_assign
-id|probe_delalloc_page
+id|xfs_probe_delalloc_page
 c_func
 (paren
 id|inode
@@ -3113,7 +3085,7 @@ id|page
 )paren
 r_break
 suffix:semicolon
-id|convert_page
+id|xfs_convert_page
 c_func
 (paren
 id|inode
@@ -3134,8 +3106,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage.&n; *&n; * When called with startio set it is important that we write the WHOLE&n; * page if possible.&n; * The bh-&gt;b_state&squot;s cannot know if any of the blocks or which block for&n; * that matter are dirty due to mmap writes, and therefore bh uptodate is&n; * only vaild if the page itself isn&squot;t completely uptodate.  Some layers&n; * may clear the page dirty flag prior to calling write page, under the&n; * assumption the entire page will be written out; by not writing out the&n; * whole page the page can be reused before all valid dirty data is&n; * written out.  Note: in the case of a page that has been dirty&squot;d by&n; * mapwrite and but partially setup by block_prepare_write the&n; * bh-&gt;b_states&squot;s will not agree and only ones setup by BPW/BCW will have&n; * valid state, thus the whole page must be written out thing.&n; */
 id|STATIC
 r_int
-DECL|function|page_state_convert
-id|page_state_convert
+DECL|function|xfs_page_state_convert
+id|xfs_page_state_convert
 c_func
 (paren
 r_struct
@@ -3383,7 +3355,7 @@ id|iomp
 (brace
 id|iomp
 op_assign
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|page
@@ -3415,7 +3387,7 @@ id|iomp
 (brace
 id|err
 op_assign
-id|map_blocks
+id|xfs_map_blocks
 c_func
 (paren
 id|inode
@@ -3444,7 +3416,7 @@ suffix:semicolon
 )brace
 id|iomp
 op_assign
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|page
@@ -3473,7 +3445,7 @@ id|bh-&gt;b_end_io
 (brace
 id|err
 op_assign
-id|map_unwritten
+id|xfs_map_unwritten
 c_func
 (paren
 id|inode
@@ -3541,7 +3513,7 @@ id|iomp
 (brace
 id|err
 op_assign
-id|map_blocks
+id|xfs_map_blocks
 c_func
 (paren
 id|inode
@@ -3570,7 +3542,7 @@ suffix:semicolon
 )brace
 id|iomp
 op_assign
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|page
@@ -3588,7 +3560,7 @@ c_cond
 id|iomp
 )paren
 (brace
-id|map_buffer_at_offset
+id|xfs_map_at_offset
 c_func
 (paren
 id|page
@@ -3693,7 +3665,7 @@ id|iomp
 (brace
 id|size
 op_assign
-id|probe_unmapped_cluster
+id|xfs_probe_unmapped_cluster
 c_func
 (paren
 id|inode
@@ -3707,7 +3679,7 @@ id|head
 suffix:semicolon
 id|err
 op_assign
-id|map_blocks
+id|xfs_map_blocks
 c_func
 (paren
 id|inode
@@ -3736,7 +3708,7 @@ suffix:semicolon
 )brace
 id|iomp
 op_assign
-id|match_offset_to_mapping
+id|xfs_offset_to_map
 c_func
 (paren
 id|page
@@ -3754,7 +3726,7 @@ c_cond
 id|iomp
 )paren
 (brace
-id|map_buffer_at_offset
+id|xfs_map_at_offset
 c_func
 (paren
 id|page
@@ -3895,7 +3867,7 @@ c_cond
 (paren
 id|startio
 )paren
-id|submit_page
+id|xfs_submit_page
 c_func
 (paren
 id|page
@@ -3910,7 +3882,7 @@ c_cond
 (paren
 id|iomp
 )paren
-id|cluster_write
+id|xfs_cluster_write
 c_func
 (paren
 id|inode
@@ -4816,8 +4788,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_void
-DECL|function|count_page_state
-id|count_page_state
+DECL|function|xfs_count_page_state
+id|xfs_count_page_state
 c_func
 (paren
 r_struct
@@ -5036,7 +5008,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|count_page_state
+id|xfs_count_page_state
 c_func
 (paren
 id|page
@@ -5114,7 +5086,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Convert delayed allocate, unwritten or unmapped space&n;&t; * to real space and flush out to disk.&n;&t; */
 id|error
 op_assign
-id|page_state_convert
+id|xfs_page_state_convert
 c_func
 (paren
 id|inode
@@ -5227,7 +5199,7 @@ comma
 id|gfp_mask
 )paren
 suffix:semicolon
-id|count_page_state
+id|xfs_count_page_state
 c_func
 (paren
 id|page
@@ -5282,7 +5254,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Convert delalloc space to real space, do not flush the&n;&t; * data out to disk, that will be done by the caller.&n;&t; * Never need to allocate space here - we will always&n;&t; * come back to writepage in that case.&n;&t; */
 id|dirty
 op_assign
-id|page_state_convert
+id|xfs_page_state_convert
 c_func
 (paren
 id|inode
