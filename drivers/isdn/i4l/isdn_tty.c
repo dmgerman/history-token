@@ -3354,12 +3354,6 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-id|isdn_slot_all_eaz
-c_func
-(paren
-id|slot
-)paren
-suffix:semicolon
 id|info-&gt;emu.mdmreg
 (braket
 id|REG_RINGCNT
@@ -9587,9 +9581,6 @@ r_int
 id|wret
 suffix:semicolon
 r_int
-id|idx
-suffix:semicolon
-r_int
 id|si1
 suffix:semicolon
 r_int
@@ -9761,16 +9752,6 @@ id|si2
 )paren
 (brace
 multiline_comment|/* SI2 is matching */
-id|idx
-op_assign
-id|isdn_dc2minor
-c_func
-(paren
-id|di
-comma
-id|ch
-)paren
-suffix:semicolon
 macro_line|#ifdef ISDN_DEBUG_MODEM_ICALL
 id|printk
 c_func
@@ -9785,9 +9766,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;m_fi: idx=%d flags=%08lx drv=%d ch=%d usg=%d&bslash;n&quot;
+l_string|&quot;m_fi: sl=%d flags=%08lx drv=%d ch=%d usg=%d&bslash;n&quot;
 comma
-id|idx
+id|sl
 comma
 id|info-&gt;flags
 comma
@@ -9827,7 +9808,7 @@ c_func
 id|isdn_slot_usage
 c_func
 (paren
-id|idx
+id|sl
 )paren
 )paren
 )paren
@@ -9870,12 +9851,12 @@ id|matchret
 multiline_comment|/* EAZ is matching */
 id|info-&gt;isdn_slot
 op_assign
-id|idx
+id|sl
 suffix:semicolon
 id|isdn_slot_set_m_idx
 c_func
 (paren
-id|idx
+id|sl
 comma
 id|info-&gt;line
 )paren
@@ -9883,7 +9864,7 @@ suffix:semicolon
 id|isdn_slot_set_priv
 c_func
 (paren
-id|idx
+id|sl
 comma
 id|isdn_calc_usage
 c_func
@@ -9909,7 +9890,7 @@ c_func
 id|isdn_slot_num
 c_func
 (paren
-id|idx
+id|sl
 )paren
 comma
 id|nr
@@ -10142,22 +10123,6 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|info-&gt;isdn_slot
-op_eq
-id|isdn_dc2minor
-c_func
-(paren
-id|c-&gt;driver
-comma
-id|c-&gt;arg
-)paren
-)paren
-)paren
-(brace
 id|info-&gt;msr
 op_or_assign
 id|UART_MSR_CTS
@@ -10188,9 +10153,6 @@ id|info
 suffix:semicolon
 r_return
 l_int|1
-suffix:semicolon
-)brace
-r_break
 suffix:semicolon
 r_case
 id|ISDN_STAT_CAUSE

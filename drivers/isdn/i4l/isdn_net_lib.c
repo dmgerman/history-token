@@ -5600,6 +5600,9 @@ op_star
 id|idev
 comma
 r_int
+id|slot
+comma
+r_int
 id|di
 comma
 r_int
@@ -5627,17 +5630,6 @@ r_struct
 id|isdn_net_phone
 op_star
 id|ph
-suffix:semicolon
-r_int
-id|slot
-op_assign
-id|isdn_dc2minor
-c_func
-(paren
-id|di
-comma
-id|ch
-)paren
 suffix:semicolon
 r_char
 op_star
@@ -6007,7 +5999,7 @@ r_int
 id|ch
 comma
 r_int
-id|idx
+id|sl
 comma
 id|setup_parm
 op_star
@@ -6172,18 +6164,18 @@ suffix:semicolon
 id|dbg_net_icall
 c_func
 (paren
-l_string|&quot;n_fi: di=%d ch=%d idx=%d usg=%d&bslash;n&quot;
+l_string|&quot;n_fi: di=%d ch=%d sl=%d usg=%d&bslash;n&quot;
 comma
 id|di
 comma
 id|ch
 comma
-id|idx
+id|sl
 comma
 id|isdn_slot_usage
 c_func
 (paren
-id|idx
+id|sl
 )paren
 )paren
 suffix:semicolon
@@ -6243,6 +6235,8 @@ id|isdn_net_dev_icall
 c_func
 (paren
 id|idev
+comma
+id|sl
 comma
 id|di
 comma
@@ -6878,12 +6872,6 @@ op_amp
 id|idev-&gt;dial_timer
 )paren
 suffix:semicolon
-id|isdn_slot_all_eaz
-c_func
-(paren
-id|idev-&gt;isdn_slot
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -7247,12 +7235,6 @@ comma
 id|idev-&gt;name
 comma
 id|idev-&gt;charge
-)paren
-suffix:semicolon
-id|isdn_slot_all_eaz
-c_func
-(paren
-id|idev-&gt;isdn_slot
 )paren
 suffix:semicolon
 id|isdn_net_unbind_channel
