@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/divert.h&gt;
-DECL|macro|NEXT_DEV
-mdefine_line|#define&t;NEXT_DEV&t;NULL
 multiline_comment|/* A unified ethernet device probe.  This is the easiest way to have every&n;   ethernet adaptor have the name &quot;eth[0123...]&quot;.&n;   */
 r_extern
 r_int
@@ -1649,6 +1647,15 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; *&t;The loopback device is global so it can be directly referenced&n; *&t;by the network code. Also, it must be first on device list.&n; */
+r_extern
+r_int
+id|loopback_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*  Statically configured drivers -- order matters here. */
 DECL|function|probe_old_netdevs
 r_void
@@ -1662,6 +1669,23 @@ r_void
 r_int
 id|num
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|loopback_init
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Network loopback device setup failed&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SBNI
 r_for
 c_loop
@@ -1805,49 +1829,12 @@ macro_line|#undef NEXT_DEV
 DECL|macro|NEXT_DEV
 mdefine_line|#define NEXT_DEV&t;(&amp;dev_ltpc)
 macro_line|#endif  /* LTPC */
-multiline_comment|/*&n; *&t;The loopback device is global so it can be directly referenced&n; *&t;by the network code. Also, it must be first on device list.&n; */
-r_extern
-r_int
-id|loopback_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-DECL|variable|loopback_dev
-r_struct
-id|net_device
-id|loopback_dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;lo&quot;
-comma
-dot
-id|next
-op_assign
-id|NEXT_DEV
-comma
-dot
-id|init
-op_assign
-id|loopback_init
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * The @dev_base list is protected by @dev_base_lock and the rtln&n; * semaphore.&n; *&n; * Pure readers hold dev_base_lock for reading.&n; *&n; * Writers must hold the rtnl semaphore while they loop through the&n; * dev_base list, and hold dev_base_lock for writing when they do the&n; * actual updates.  This allows pure readers to access the list even&n; * while a writer is preparing to update it.&n; *&n; * To put it another way, dev_base_lock is held for writing only to&n; * protect against pure readers; the rtnl semaphore provides the&n; * protection against other writers.&n; *&n; * See, for example usages, register_netdevice() and&n; * unregister_netdevice(), which must be called with the rtnl&n; * semaphore held.&n; */
 DECL|variable|dev_base
 r_struct
 id|net_device
 op_star
 id|dev_base
-op_assign
-op_amp
-id|loopback_dev
 suffix:semicolon
 DECL|variable|dev_base_lock
 id|rwlock_t
