@@ -94,6 +94,23 @@ id|Kerberos
 multiline_comment|/* Kerberos via SPNEGO */
 )brace
 suffix:semicolon
+DECL|enum|protocolEnum
+r_enum
+id|protocolEnum
+(brace
+DECL|enumerator|IPV4
+id|IPV4
+op_assign
+l_int|0
+comma
+DECL|enumerator|IPV6
+id|IPV6
+comma
+DECL|enumerator|SCTP
+id|SCTP
+multiline_comment|/* Netbios frames protocol not supported at this time */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *****************************************************************&n; * Except the CIFS PDUs themselves all the&n; * globally interesting structs should go here&n; *****************************************************************&n; */
 DECL|struct|TCP_Server_Info
 r_struct
@@ -155,12 +172,11 @@ r_int
 id|ip_address
 suffix:semicolon
 multiline_comment|/* IP addr for the server if known     */
-DECL|member|svType
-r_int
-r_int
-id|svType
+DECL|member|protocolType
+r_enum
+id|protocolEnum
+id|protocolType
 suffix:semicolon
-multiline_comment|/* computer type                       */
 DECL|member|versionMajor
 r_char
 id|versionMajor

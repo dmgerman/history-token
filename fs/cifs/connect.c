@@ -180,6 +180,21 @@ op_star
 id|csocket
 )paren
 suffix:semicolon
+r_int
+id|ipv6_connect
+c_func
+(paren
+r_struct
+id|sockaddr_in6
+op_star
+id|psin_server
+comma
+r_struct
+id|socket
+op_star
+op_star
+id|csocket
+)paren
 multiline_comment|/* &n;&t; * cifs tcp session reconnection&n;&t; * &n;&t; * mark tcp session as reconnecting so temporarily locked&n;&t; * mark all smb sessions as reconnecting for tcp session&n;&t; * reconnect tcp session&n;&t; * wake up waiters on reconnection? - (not needed currently)&n;&t; */
 r_int
 DECL|function|cifs_reconnect
@@ -486,6 +501,29 @@ id|CifsGood
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|server-&gt;protocolType
+op_eq
+id|IPV6
+)paren
+(brace
+id|rc
+op_assign
+id|ipv6_connect
+c_func
+(paren
+op_amp
+id|server-&gt;sockAddr
+comma
+op_amp
+id|server-&gt;ssocket
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rc
 op_assign
 id|ipv4_connect
@@ -498,6 +536,7 @@ op_amp
 id|server-&gt;ssocket
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4087,6 +4126,11 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|connected
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4196,13 +4240,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|rc
-OL
+op_ge
 l_int|0
+)paren
+id|connected
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|connected
 )paren
 (brace
 multiline_comment|/* do not retry on the same port we just failed on */
@@ -4257,14 +4311,24 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ge
+l_int|0
+)paren
+id|connected
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
 r_if
 c_cond
 (paren
-id|rc
-OL
-l_int|0
+op_logical_neg
+id|connected
 )paren
 (brace
 id|psin_server-&gt;sin_port
@@ -4310,8 +4374,20 @@ r_if
 c_cond
 (paren
 id|rc
-OL
+op_ge
 l_int|0
+)paren
+id|connected
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* give up here - unless we want to retry on different&n;&t;&t;protocol families some day */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|connected
 )paren
 (brace
 id|cFYI
@@ -4320,7 +4396,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error connecting to socket. %d&quot;
+l_string|&quot;Error %d connecting to server via ipv4&quot;
 comma
 id|rc
 )paren
@@ -4341,7 +4417,6 @@ suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Eventually check for other socket options to change from &n;&t;&t;the default. sock_setsockopt not used because it expects &n;&t;&t;user space buffer */
 (paren
@@ -4381,6 +4456,20 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|connected
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|csocket
+op_eq
+l_int|NULL
+)paren
+(brace
 id|rc
 op_assign
 id|sock_create
@@ -4391,7 +4480,6 @@ comma
 id|SOCK_STREAM
 comma
 id|IPPROTO_TCP
-multiline_comment|/* IPPROTO_IPV6 ? */
 comma
 id|csocket
 )paren
@@ -4410,13 +4498,35 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error creating socket. Aborting operation&quot;
+l_string|&quot;Error %d creating ipv6 socket&quot;
+comma
+id|rc
 )paren
 )paren
+suffix:semicolon
+op_star
+id|csocket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BB other socket options to set KEEPALIVE, NODELAY? */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;ipv6 Socket created&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|psin_server-&gt;sin6_family
 op_assign
@@ -4467,13 +4577,18 @@ id|rc
 op_ge
 l_int|0
 )paren
-(brace
-multiline_comment|/* BB other socket options to set KEEPALIVE, timeouts? NODELAY? */
-r_return
-id|rc
+id|connected
+op_assign
+l_int|1
 suffix:semicolon
 )brace
-)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|connected
+)paren
+(brace
 multiline_comment|/* do not retry on the same port we just failed on */
 r_if
 c_cond
@@ -4526,14 +4641,24 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* BB fix the timeout to be shorter above - and check flags */
-)brace
 r_if
 c_cond
 (paren
 id|rc
-OL
+op_ge
 l_int|0
+)paren
+id|connected
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|connected
 )paren
 (brace
 id|psin_server-&gt;sin6_port
@@ -4579,8 +4704,20 @@ r_if
 c_cond
 (paren
 id|rc
-OL
+op_ge
 l_int|0
+)paren
+id|connected
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* give up here - unless we want to retry on different&n;&t;&t;protocol families some day */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|connected
 )paren
 (brace
 id|cFYI
@@ -4589,7 +4726,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Error connecting to socket (via ipv6). %d&quot;
+l_string|&quot;Error %d connecting to server via ipv6&quot;
 comma
 id|rc
 )paren
@@ -4611,7 +4748,21 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-)brace
+multiline_comment|/* Eventually check for other socket options to change from &n;&t;&t;the default. sock_setsockopt not used because it expects &n;&t;&t;user space buffer */
+(paren
+op_star
+id|csocket
+)paren
+op_member_access_from_pointer
+id|sk-&gt;sk_rcvtimeo
+op_assign
+l_int|7
+op_star
+id|HZ
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -4797,7 +4948,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|volume_info.UNC
+id|volume_info.UNCip
 )paren
 (brace
 id|sin_server.sin_addr.s_addr
@@ -4816,7 +4967,7 @@ comma
 (paren
 l_string|&quot;UNC: %s  &quot;
 comma
-id|volume_info.UNC
+id|volume_info.UNCip
 )paren
 )paren
 suffix:semicolon
@@ -4953,6 +5104,11 @@ id|volume_info.port
 )paren
 suffix:semicolon
 )brace
+r_else
+id|sin_server.sin_port
+op_assign
+l_int|0
+suffix:semicolon
 id|rc
 op_assign
 id|ipv4_connect
@@ -5113,6 +5269,10 @@ multiline_comment|/* BB Add code for ipv6 case too */
 id|srvTcp-&gt;ssocket
 op_assign
 id|csocket
+suffix:semicolon
+id|srvTcp-&gt;protocolType
+op_assign
+id|IPV4
 suffix:semicolon
 id|init_waitqueue_head
 c_func
