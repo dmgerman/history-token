@@ -58,12 +58,12 @@ id|SHMEM_NR_DIRECT
 )braket
 suffix:semicolon
 multiline_comment|/* first blocks */
-DECL|member|list
+DECL|member|swaplist
 r_struct
 id|list_head
-id|list
+id|swaplist
 suffix:semicolon
-multiline_comment|/* chain of all shmem inodes */
+multiline_comment|/* chain of maybes on swap */
 DECL|member|vfs_inode
 r_struct
 id|inode
