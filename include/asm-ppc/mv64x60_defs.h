@@ -1216,6 +1216,10 @@ DECL|macro|MV64x60_GPP_INTR_CAUSE
 mdefine_line|#define&t;MV64x60_GPP_INTR_CAUSE&t;&t;&t;0xf108
 DECL|macro|MV64x60_GPP_INTR_MASK
 mdefine_line|#define&t;MV64x60_GPP_INTR_MASK&t;&t;&t;0xf10c
+DECL|macro|MV64x60_GPP_VALUE_SET
+mdefine_line|#define&t;MV64x60_GPP_VALUE_SET&t;&t;&t;0xf118
+DECL|macro|MV64x60_GPP_VALUE_CLR
+mdefine_line|#define&t;MV64x60_GPP_VALUE_CLR&t;&t;&t;0xf11c
 multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;Multi-Purpose Pins Controller Interface Registers&n; *&n; *****************************************************************************&n; */
 DECL|macro|MV64x60_MPP_CNTL_0
 mdefine_line|#define&t;MV64x60_MPP_CNTL_0&t;&t;&t;0xf000
