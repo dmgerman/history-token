@@ -2522,8 +2522,7 @@ c_cond
 (paren
 id|sb-&gt;level
 op_ne
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 (brace
 id|printk

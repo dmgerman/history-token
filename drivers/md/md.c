@@ -4215,8 +4215,7 @@ c_cond
 (paren
 id|rdev-&gt;sb-&gt;level
 op_ne
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 (brace
 id|rdev-&gt;old_dev
@@ -4755,8 +4754,7 @@ c_cond
 (paren
 id|mddev-&gt;sb-&gt;level
 op_ne
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 id|ITERATE_RDEV
 c_func
@@ -5012,8 +5010,7 @@ id|desc
 op_logical_and
 id|mddev-&gt;sb-&gt;level
 op_ne
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 (brace
 id|found
@@ -5198,8 +5195,7 @@ c_cond
 (paren
 id|sb-&gt;level
 op_eq
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 op_logical_and
 id|kdev_same
@@ -5380,8 +5376,7 @@ c_cond
 (paren
 id|mddev-&gt;sb-&gt;level
 op_eq
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 (brace
 r_if
@@ -5463,8 +5458,7 @@ c_cond
 (paren
 id|mddev-&gt;sb-&gt;level
 op_ne
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 )paren
 (brace
 id|ITERATE_RDEV
@@ -5796,8 +5790,7 @@ id|sb-&gt;level
 )paren
 (brace
 r_case
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 suffix:colon
 id|data_disks
 op_assign
@@ -5826,8 +5819,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 suffix:colon
 id|zoned_raid_size
 c_func
@@ -14791,6 +14783,8 @@ comma
 id|factor
 comma
 id|fault
+comma
+id|pers
 suffix:semicolon
 r_char
 op_star
@@ -14896,13 +14890,13 @@ multiline_comment|/* could be 0 or -1.. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|level
+op_eq
+l_int|0
 op_logical_or
 id|level
 op_eq
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 )paren
 (brace
 r_if
@@ -14972,10 +14966,9 @@ id|level
 )paren
 (brace
 r_case
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 suffix:colon
-id|level
+id|pers
 op_assign
 id|LINEAR
 suffix:semicolon
@@ -14988,7 +14981,7 @@ suffix:semicolon
 r_case
 l_int|0
 suffix:colon
-id|level
+id|pers
 op_assign
 id|RAID0
 suffix:semicolon
@@ -15018,7 +15011,7 @@ id|md_setup_args.pers
 id|minor
 )braket
 op_assign
-id|level
+id|pers
 suffix:semicolon
 r_break
 suffix:semicolon

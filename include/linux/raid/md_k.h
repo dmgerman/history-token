@@ -20,6 +20,10 @@ DECL|macro|MULTIPATH
 mdefine_line|#define MULTIPATH         7UL
 DECL|macro|MAX_PERSONALITY
 mdefine_line|#define MAX_PERSONALITY   8UL
+DECL|macro|LEVEL_MULTIPATH
+mdefine_line|#define&t;LEVEL_MULTIPATH&t;&t;(-4)
+DECL|macro|LEVEL_LINEAR
+mdefine_line|#define&t;LEVEL_LINEAR&t;&t;(-1)
 DECL|function|pers_to_level
 r_static
 r_inline
@@ -40,8 +44,7 @@ r_case
 id|MULTIPATH
 suffix:colon
 r_return
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 suffix:semicolon
 r_case
 id|HSM
@@ -61,8 +64,7 @@ r_case
 id|LINEAR
 suffix:colon
 r_return
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 suffix:semicolon
 r_case
 id|RAID0
@@ -109,8 +111,7 @@ id|level
 )paren
 (brace
 r_case
-op_minus
-l_int|4
+id|LEVEL_MULTIPATH
 suffix:colon
 r_return
 id|MULTIPATH
@@ -130,8 +131,7 @@ r_return
 id|TRANSLUCENT
 suffix:semicolon
 r_case
-op_minus
-l_int|1
+id|LEVEL_LINEAR
 suffix:colon
 r_return
 id|LINEAR
