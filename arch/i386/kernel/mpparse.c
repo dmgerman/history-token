@@ -3161,18 +3161,6 @@ comma
 l_int|0x400
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|smp_found_config
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;WARNING: MP table in the EBDA can be UNSAFE, contact linux-smp@vger.kernel.org if you experience SMP problems!&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                            ACPI-based MP Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
