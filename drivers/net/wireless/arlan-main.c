@@ -801,10 +801,6 @@ id|priv-&gt;txLast
 op_assign
 l_int|0
 suffix:semicolon
-id|priv-&gt;txOffset
-op_assign
-l_int|0
-suffix:semicolon
 id|priv-&gt;bad
 op_assign
 l_int|0
@@ -2572,10 +2568,6 @@ id|KERN_ERR
 l_string|&quot;ReTransmit buff empty&quot;
 )paren
 suffix:semicolon
-id|priv-&gt;txOffset
-op_assign
-l_int|0
-suffix:semicolon
 id|netif_wake_queue
 (paren
 id|dev
@@ -2679,10 +2671,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|next_tick
-op_assign
-l_int|1
-suffix:semicolon
-id|priv-&gt;timer_chain_active
 op_assign
 l_int|1
 suffix:semicolon
@@ -3028,10 +3016,6 @@ id|offset
 )paren
 )paren
 (brace
-id|priv-&gt;txOffset
-op_assign
-l_int|0
-suffix:semicolon
 id|netif_wake_queue
 (paren
 id|dev
@@ -3053,10 +3037,6 @@ c_cond
 id|bh_mark_needed
 )paren
 (brace
-id|priv-&gt;txOffset
-op_assign
-l_int|0
-suffix:semicolon
 id|netif_wake_queue
 (paren
 id|dev
@@ -3079,10 +3059,6 @@ id|priv-&gt;card_polling_interval
 id|next_tick
 op_assign
 id|priv-&gt;card_polling_interval
-suffix:semicolon
-id|priv-&gt;timer_chain_active
-op_assign
-l_int|0
 suffix:semicolon
 id|priv-&gt;timer.expires
 op_assign
@@ -6310,10 +6286,6 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-id|priv-&gt;txOffset
-op_assign
-l_int|0
-suffix:semicolon
 id|dev-&gt;tx_queue_len
 op_assign
 id|tx_queue_len
@@ -6488,13 +6460,6 @@ op_star
 id|dev
 )paren
 (brace
-r_struct
-id|arlan_private
-op_star
-id|priv
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
 r_int
 id|length
 suffix:semicolon
@@ -6527,8 +6492,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;txOffset
-op_plus
 id|length
 op_plus
 l_int|0x12
@@ -6584,10 +6547,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|priv-&gt;tx_chain_active
-op_assign
-l_int|0
-suffix:semicolon
 id|ARLAN_DEBUG_EXIT
 c_func
 (paren
@@ -6604,10 +6563,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|priv-&gt;tx_chain_active
-op_assign
-l_int|0
 suffix:semicolon
 id|netif_stop_queue
 (paren
@@ -7011,10 +6966,6 @@ dot
 id|offset
 )paren
 (brace
-id|priv-&gt;txOffset
-op_assign
-l_int|0
-suffix:semicolon
 id|netif_wake_queue
 (paren
 id|dev
