@@ -1947,6 +1947,14 @@ op_amp
 id|bus-&gt;subsys.rwsem
 )paren
 suffix:semicolon
+id|module_add_driver
+c_func
+(paren
+id|drv-&gt;owner
+comma
+id|drv
+)paren
+suffix:semicolon
 id|driver_add_attrs
 c_func
 (paren
@@ -2014,6 +2022,12 @@ c_func
 (paren
 op_amp
 id|drv-&gt;bus-&gt;subsys.rwsem
+)paren
+suffix:semicolon
+id|module_remove_driver
+c_func
+(paren
+id|drv
 )paren
 suffix:semicolon
 id|kobject_unregister

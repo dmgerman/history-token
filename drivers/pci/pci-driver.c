@@ -1695,6 +1695,10 @@ id|drv-&gt;driver.remove
 op_assign
 id|pci_device_remove
 suffix:semicolon
+id|drv-&gt;driver.owner
+op_assign
+id|drv-&gt;owner
+suffix:semicolon
 id|drv-&gt;driver.kobj.ktype
 op_assign
 op_amp
