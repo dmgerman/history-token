@@ -2778,24 +2778,10 @@ op_rshift
 l_int|24
 )paren
 suffix:semicolon
-multiline_comment|/* DTLB and ITLB together, but only 4K */
+multiline_comment|/* On K8 L1 TLB is inclusive, so don&squot;t count it */
 id|c-&gt;x86_tlbsize
 op_assign
-(paren
-(paren
-id|ebx
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xff
-)paren
-op_plus
-(paren
-id|ebx
-op_amp
-l_int|0xff
-)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
