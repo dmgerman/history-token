@@ -4674,6 +4674,7 @@ l_int|16
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef FIXME
 r_case
 id|ETH_P_IPX
 suffix:colon
@@ -4731,6 +4732,7 @@ id|ETH_ALEN
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|ETH_P_ARP
 suffix:colon
