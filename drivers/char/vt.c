@@ -3593,9 +3593,17 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|newscreen
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 id|rlth
 op_assign
 id|min
