@@ -97,85 +97,85 @@ l_string|&quot;{OAK,Mozart}}&quot;
 suffix:semicolon
 macro_line|#endif&t;/* CS4231 */
 macro_line|#endif&t;/* OPTi93X */
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 op_assign
 id|SNDRV_DEFAULT_IDX1
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 op_assign
 id|SNDRV_DEFAULT_STR1
 suffix:semicolon
 multiline_comment|/* ID for this card */
-singleline_comment|//static int snd_enable = SNDRV_DEFAULT_ENABLE1;&t;/* Enable this card */
-DECL|variable|snd_isapnp
+singleline_comment|//static int enable = SNDRV_DEFAULT_ENABLE1;&t;/* Enable this card */
+DECL|variable|isapnp
 r_static
 r_int
-id|snd_isapnp
+id|isapnp
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Enable ISA PnP detection */
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 op_assign
 id|SNDRV_DEFAULT_PORT1
 suffix:semicolon
 multiline_comment|/* 0x530,0xe80,0xf40,0x604 */
-DECL|variable|snd_mpu_port
+DECL|variable|mpu_port
 r_static
 r_int
-id|snd_mpu_port
+id|mpu_port
 op_assign
 id|SNDRV_DEFAULT_PORT1
 suffix:semicolon
 multiline_comment|/* 0x300,0x310,0x320,0x330 */
-DECL|variable|snd_fm_port
+DECL|variable|fm_port
 r_static
 r_int
-id|snd_fm_port
+id|fm_port
 op_assign
 id|SNDRV_DEFAULT_PORT1
 suffix:semicolon
 multiline_comment|/* 0x388 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 op_assign
 id|SNDRV_DEFAULT_IRQ1
 suffix:semicolon
 multiline_comment|/* 5,7,9,10,11 */
-DECL|variable|snd_mpu_irq
+DECL|variable|mpu_irq
 r_static
 r_int
-id|snd_mpu_irq
+id|mpu_irq
 op_assign
 id|SNDRV_DEFAULT_IRQ1
 suffix:semicolon
 multiline_comment|/* 5,7,9,10 */
-DECL|variable|snd_dma1
+DECL|variable|dma1
 r_static
 r_int
-id|snd_dma1
+id|dma1
 op_assign
 id|SNDRV_DEFAULT_DMA1
 suffix:semicolon
 multiline_comment|/* 0,1,3 */
 macro_line|#if defined(CS4231) || defined(OPTi93X)
-DECL|variable|snd_dma2
+DECL|variable|dma2
 r_static
 r_int
-id|snd_dma2
+id|dma2
 op_assign
 id|SNDRV_DEFAULT_DMA1
 suffix:semicolon
@@ -184,7 +184,7 @@ macro_line|#endif&t;/* CS4231 || OPTi93X */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;i&quot;
 )paren
@@ -192,7 +192,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for opti9xx based soundcard.&quot;
 )paren
@@ -200,7 +200,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -208,7 +208,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;s&quot;
 )paren
@@ -216,7 +216,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for opti9xx based soundcard.&quot;
 )paren
@@ -224,18 +224,18 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-singleline_comment|//MODULE_PARM(snd_enable, &quot;i&quot;);
-singleline_comment|//MODULE_PARM_DESC(snd_enable, &quot;Enable opti9xx soundcard.&quot;);
-singleline_comment|//MODULE_PARM_SYNTAX(snd_enable, SNDRV_ENABLE_DESC);
+singleline_comment|//MODULE_PARM(enable, &quot;i&quot;);
+singleline_comment|//MODULE_PARM_DESC(enable, &quot;Enable opti9xx soundcard.&quot;);
+singleline_comment|//MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC);
 id|MODULE_PARM
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;i&quot;
 )paren
@@ -243,7 +243,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;Enable ISA PnP detection for specified soundcard.&quot;
 )paren
@@ -251,7 +251,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 id|SNDRV_ISAPNP_DESC
 )paren
@@ -259,7 +259,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;l&quot;
 )paren
@@ -267,7 +267,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;WSS port # for opti9xx driver.&quot;
 )paren
@@ -275,7 +275,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_PORT_DESC
 )paren
@@ -283,7 +283,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;l&quot;
 )paren
@@ -291,7 +291,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;MPU-401 port # for opti9xx driver.&quot;
 )paren
@@ -299,7 +299,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 id|SNDRV_PORT_DESC
 )paren
@@ -307,7 +307,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;l&quot;
 )paren
@@ -315,7 +315,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;FM port # for opti9xx driver.&quot;
 )paren
@@ -323,7 +323,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 id|SNDRV_PORT_DESC
 )paren
@@ -331,7 +331,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;i&quot;
 )paren
@@ -339,7 +339,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;WSS irq # for opti9xx driver.&quot;
 )paren
@@ -347,7 +347,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_IRQ_DESC
 )paren
@@ -355,7 +355,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_string|&quot;i&quot;
 )paren
@@ -363,7 +363,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_string|&quot;MPU-401 irq # for opti9xx driver.&quot;
 )paren
@@ -371,7 +371,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 id|SNDRV_IRQ_DESC
 )paren
@@ -379,7 +379,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;i&quot;
 )paren
@@ -387,7 +387,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;1st dma # for opti9xx driver.&quot;
 )paren
@@ -395,7 +395,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_DMA_DESC
 )paren
@@ -404,7 +404,7 @@ macro_line|#if defined(CS4231) || defined(OPTi93X)
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;i&quot;
 )paren
@@ -412,7 +412,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;2nd dma # for opti9xx driver.&quot;
 )paren
@@ -420,7 +420,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 id|SNDRV_DMA_DESC
 )paren
@@ -8280,7 +8280,7 @@ macro_line|#ifdef OPTi93X
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 op_ne
 id|SNDRV_AUTO_PORT
 )paren
@@ -8293,7 +8293,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_port
+id|port
 op_plus
 l_int|4
 comma
@@ -8315,7 +8315,7 @@ l_int|0x0924
 )paren
 op_logical_and
 (paren
-id|snd_port
+id|port
 op_ne
 id|SNDRV_AUTO_PORT
 )paren
@@ -8329,7 +8329,7 @@ id|pdev-&gt;resource
 l_int|1
 )braket
 comma
-id|snd_port
+id|port
 comma
 l_int|4
 )paren
@@ -8338,7 +8338,7 @@ macro_line|#endif&t;/* OPTi93X */
 r_if
 c_cond
 (paren
-id|snd_irq
+id|irq
 op_ne
 id|SNDRV_AUTO_IRQ
 )paren
@@ -8351,7 +8351,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_irq
+id|irq
 comma
 l_int|1
 )paren
@@ -8359,7 +8359,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dma1
+id|dma1
 op_ne
 id|SNDRV_AUTO_DMA
 )paren
@@ -8372,7 +8372,7 @@ id|pdev-&gt;dma_resource
 l_int|0
 )braket
 comma
-id|snd_dma1
+id|dma1
 comma
 l_int|1
 )paren
@@ -8381,7 +8381,7 @@ macro_line|#if defined(CS4231) || defined(OPTi93X)
 r_if
 c_cond
 (paren
-id|snd_dma2
+id|dma2
 op_ne
 id|SNDRV_AUTO_DMA
 )paren
@@ -8394,7 +8394,7 @@ id|pdev-&gt;dma_resource
 l_int|1
 )braket
 comma
-id|snd_dma2
+id|dma2
 comma
 l_int|1
 )paren
@@ -8403,7 +8403,7 @@ macro_line|#endif&t;/* CS4231 || OPTi93X */
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 op_ne
 id|SNDRV_AUTO_PORT
 )paren
@@ -8416,7 +8416,7 @@ id|pdev-&gt;resource
 l_int|1
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 comma
 l_int|4
 )paren
@@ -8447,7 +8447,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 macro_line|#ifdef OPTi93X
-id|snd_port
+id|port
 op_assign
 id|pdev-&gt;resource
 (braket
@@ -8458,7 +8458,7 @@ id|start
 op_minus
 l_int|4
 suffix:semicolon
-id|snd_fm_port
+id|fm_port
 op_assign
 id|pdev-&gt;resource
 (braket
@@ -8479,7 +8479,7 @@ c_func
 l_int|0x0924
 )paren
 )paren
-id|snd_port
+id|port
 op_assign
 id|pdev-&gt;resource
 (braket
@@ -8488,7 +8488,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|snd_fm_port
+id|fm_port
 op_assign
 id|pdev-&gt;resource
 (braket
@@ -8498,7 +8498,7 @@ dot
 id|start
 suffix:semicolon
 macro_line|#endif&t;/* OPTi93X */
-id|snd_irq
+id|irq
 op_assign
 id|pdev-&gt;irq_resource
 (braket
@@ -8507,7 +8507,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_dma1
+id|dma1
 op_assign
 id|pdev-&gt;dma_resource
 (braket
@@ -8517,7 +8517,7 @@ dot
 id|start
 suffix:semicolon
 macro_line|#if defined(CS4231) || defined(OPTi93X)
-id|snd_dma2
+id|dma2
 op_assign
 id|pdev-&gt;dma_resource
 (braket
@@ -8549,7 +8549,7 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_mpu_port
+id|mpu_port
 op_assign
 op_minus
 l_int|1
@@ -8565,7 +8565,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 op_ne
 id|SNDRV_AUTO_PORT
 )paren
@@ -8578,7 +8578,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_mpu_port
+id|mpu_port
 comma
 l_int|2
 )paren
@@ -8586,7 +8586,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 op_ne
 id|SNDRV_AUTO_IRQ
 )paren
@@ -8599,7 +8599,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_int|1
 )paren
@@ -8624,7 +8624,7 @@ c_func
 l_string|&quot;MPU-401 isapnp configure failure&bslash;n&quot;
 )paren
 suffix:semicolon
-id|snd_mpu_port
+id|mpu_port
 op_assign
 op_minus
 l_int|1
@@ -8636,7 +8636,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|snd_mpu_port
+id|mpu_port
 op_assign
 id|pdev-&gt;resource
 (braket
@@ -8645,7 +8645,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_mpu_irq
+id|mpu_irq
 op_assign
 id|pdev-&gt;irq_resource
 (braket
@@ -8740,7 +8740,7 @@ id|chip-&gt;chip-&gt;hardware
 op_eq
 id|OPTi9XX_HW_82C928
 )paren
-id|snd_mpu_port
+id|mpu_port
 op_assign
 op_minus
 l_int|1
@@ -8757,7 +8757,7 @@ op_logical_neg
 id|pnp
 op_logical_and
 (paren
-id|snd_mpu_port
+id|mpu_port
 op_eq
 id|SNDRV_DEFAULT_PORT1
 )paren
@@ -8804,7 +8804,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|snd_mpu_port
+id|mpu_port
 op_assign
 id|possible_mpu_ports
 (braket
@@ -8817,7 +8817,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 op_eq
 id|SNDRV_DEFAULT_PORT1
 )paren
@@ -8831,7 +8831,7 @@ r_else
 id|error
 op_assign
 (paren
-id|snd_mpu_port
+id|mpu_port
 op_eq
 op_minus
 l_int|1
@@ -8846,7 +8846,7 @@ c_func
 (paren
 id|card
 comma
-id|snd_mpu_port
+id|mpu_port
 comma
 l_int|2
 comma
@@ -8873,14 +8873,14 @@ c_cond
 id|pnp
 op_logical_and
 (paren
-id|snd_irq
+id|irq
 op_eq
-id|snd_mpu_irq
+id|mpu_irq
 )paren
 )paren
 id|chip-&gt;chip-&gt;mpu_irq
 op_assign
-id|snd_mpu_irq
+id|mpu_irq
 suffix:semicolon
 r_else
 r_if
@@ -8895,7 +8895,7 @@ comma
 id|DRIVER_NAME
 l_string|&quot; - MPU-401&quot;
 comma
-id|snd_mpu_irq
+id|mpu_irq
 comma
 id|SNDRV_IRQ_TYPE_ISA
 comma
@@ -8917,7 +8917,7 @@ id|chip-&gt;mpuirqptr
 (brace
 id|chip-&gt;chip-&gt;mpu_port
 op_assign
-id|snd_mpu_port
+id|mpu_port
 suffix:semicolon
 id|chip-&gt;chip-&gt;mpu_irq
 op_assign
@@ -8937,7 +8937,7 @@ op_logical_neg
 id|pnp
 op_logical_and
 (paren
-id|snd_port
+id|port
 op_eq
 id|SNDRV_DEFAULT_PORT1
 )paren
@@ -8984,7 +8984,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|snd_port
+id|port
 op_assign
 id|possible_ports
 (braket
@@ -8997,7 +8997,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 op_eq
 id|SNDRV_DEFAULT_PORT1
 )paren
@@ -9018,7 +9018,7 @@ c_func
 (paren
 id|card
 comma
-id|snd_port
+id|port
 comma
 l_int|8
 comma
@@ -9036,7 +9036,7 @@ id|error
 suffix:semicolon
 id|chip-&gt;chip-&gt;wss_base
 op_assign
-id|snd_port
+id|port
 suffix:semicolon
 r_if
 c_cond
@@ -9052,7 +9052,7 @@ comma
 id|DRIVER_NAME
 l_string|&quot; - WSS&quot;
 comma
-id|snd_irq
+id|irq
 comma
 id|SNDRV_IRQ_TYPE_ISA
 comma
@@ -9101,11 +9101,11 @@ id|DRIVER_NAME
 l_string|&quot; - WSS&quot;
 comma
 macro_line|#endif&t;/* CS4231 || OPTi93X */
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_DMA_TYPE_ISA
 comma
-id|snd_dma1_size
+id|dma1_size
 comma
 id|pnp
 ques
@@ -9143,11 +9143,11 @@ comma
 id|DRIVER_NAME
 l_string|&quot; - WSS capture&quot;
 comma
-id|snd_dma2
+id|dma2
 comma
 id|SNDRV_DMA_TYPE_ISA
 comma
-id|snd_dma2_size
+id|dma2_size
 comma
 id|pnp
 ques
@@ -9185,9 +9185,9 @@ comma
 id|pnp
 ques
 c_cond
-id|snd_fm_port
+id|fm_port
 suffix:colon
-id|snd_fm_port
+id|fm_port
 op_assign
 l_int|0x388
 comma
@@ -9201,14 +9201,14 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|snd_fm_port
+id|fm_port
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
 id|chip-&gt;chip-&gt;fm_port
 op_assign
-id|snd_fm_port
+id|fm_port
 suffix:semicolon
 r_return
 l_int|0
@@ -9498,9 +9498,9 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 comma
-id|snd_id
+id|id
 comma
 id|THIS_MODULE
 comma
@@ -9531,7 +9531,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 op_logical_and
 (paren
 id|hw
@@ -9709,32 +9709,32 @@ suffix:semicolon
 )brace
 id|chip-&gt;wss_base
 op_assign
-id|snd_port
+id|port
 suffix:semicolon
 id|chip-&gt;fm_port
 op_assign
-id|snd_fm_port
+id|fm_port
 suffix:semicolon
 id|chip-&gt;mpu_port
 op_assign
-id|snd_mpu_port
+id|mpu_port
 suffix:semicolon
 id|chip-&gt;irq
 op_assign
-id|snd_irq
+id|irq
 suffix:semicolon
 id|chip-&gt;mpu_irq
 op_assign
-id|snd_mpu_irq
+id|mpu_irq
 suffix:semicolon
 id|chip-&gt;dma1
 op_assign
-id|snd_dma1
+id|dma1
 suffix:semicolon
 macro_line|#if defined(CS4231) || defined(OPTi93X)
 id|chip-&gt;dma2
 op_assign
-id|snd_dma2
+id|dma2
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef __ISAPNP__
@@ -9742,7 +9742,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_isapnp
+id|isapnp
 )paren
 (brace
 macro_line|#endif
@@ -10720,7 +10720,7 @@ c_func
 id|alsa_card_opti9xx_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-opti9xx=snd_enable,snd_index,snd_id,snd_isapnp,&n;&t;&t;&t;  snd_port,snd_mpu_port,snd_fm_port,&n;&t;&t;&t;  snd_irq,snd_mpu_irq,&n;&t;&t;&t;  snd_dma1,[snd_dma2] */
+multiline_comment|/* format is: snd-opti9xx=enable,index,id,isapnp,&n;&t;&t;&t;  port,mpu_port,fm_port,&n;&t;&t;&t;  irq,mpu_irq,&n;&t;&t;&t;  dma1,[dma2] */
 DECL|function|alsa_card_opti9xx_setup
 r_static
 r_int
@@ -10778,7 +10778,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 )paren
 op_eq
 l_int|2
@@ -10790,7 +10790,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 )paren
 op_eq
 l_int|2
@@ -10818,7 +10818,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 )paren
 op_eq
 l_int|2
@@ -10834,7 +10834,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_mpu_port
+id|mpu_port
 )paren
 op_eq
 l_int|2
@@ -10850,7 +10850,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_fm_port
+id|fm_port
 )paren
 op_eq
 l_int|2
@@ -10862,7 +10862,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 )paren
 op_eq
 l_int|2
@@ -10874,7 +10874,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_mpu_irq
+id|mpu_irq
 )paren
 op_eq
 l_int|2
@@ -10886,7 +10886,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma1
+id|dma1
 )paren
 op_eq
 l_int|2
@@ -10899,7 +10899,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma2
+id|dma2
 )paren
 op_eq
 l_int|2
@@ -10914,7 +10914,7 @@ id|pnp
 op_ne
 id|INT_MAX
 )paren
-id|snd_isapnp
+id|isapnp
 op_assign
 id|pnp
 suffix:semicolon

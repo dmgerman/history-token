@@ -7258,7 +7258,7 @@ suffix:semicolon
 r_int
 id|return_status
 op_assign
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 r_int
 r_int
@@ -7415,7 +7415,7 @@ l_int|0
 suffix:semicolon
 id|return_status
 op_assign
-id|SCSI_ABORT_ERROR
+id|FAILED
 suffix:semicolon
 )brace
 id|qlogicpti_enable_irqs
@@ -7445,10 +7445,6 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|Cmnd
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 id|u_short
@@ -7479,7 +7475,7 @@ suffix:semicolon
 r_int
 id|return_status
 op_assign
-id|SCSI_RESET_SUCCESS
+id|SUCCESS
 suffix:semicolon
 r_int
 r_int
@@ -7558,7 +7554,7 @@ l_int|0
 suffix:semicolon
 id|return_status
 op_assign
-id|SCSI_RESET_ERROR
+id|FAILED
 suffix:semicolon
 )brace
 id|qlogicpti_enable_irqs

@@ -977,9 +977,6 @@ r_int
 r_int
 id|status
 suffix:semicolon
-r_int
-id|esp
-suffix:semicolon
 id|irq_enter
 c_func
 (paren
@@ -987,6 +984,10 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_STACKOVERFLOW
 multiline_comment|/* Debugging check for stack overflow: is there less than 1KB free? */
+(brace
+r_int
+id|esp
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1024,16 +1025,6 @@ l_int|1024
 )paren
 )paren
 (brace
-r_extern
-r_void
-id|show_stack
-c_func
-(paren
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1048,28 +1039,12 @@ id|task_struct
 )paren
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|dump_stack
 c_func
 (paren
-l_string|&quot;movl %%esp,%0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|esp
-)paren
 )paren
 suffix:semicolon
-id|show_stack
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|esp
-)paren
-suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|kstat.irqs

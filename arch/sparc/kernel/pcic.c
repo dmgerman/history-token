@@ -4551,7 +4551,6 @@ l_int|4
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 DECL|variable|pcic_init
 id|subsys_initcall
 c_func
@@ -4559,4 +4558,5 @@ c_func
 id|pcic_init
 )paren
 suffix:semicolon
+macro_line|#endif
 eof

@@ -46,10 +46,10 @@ c_func
 l_string|&quot;{{VIA,VT82C686A/B/C,pci},{VIA,VT8233A/B/C}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -57,11 +57,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -69,10 +69,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -80,10 +80,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_mpu_port
+DECL|variable|mpu_port
 r_static
 r_int
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -105,10 +105,10 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_ac97_clock
+DECL|variable|ac97_clock
 r_static
 r_int
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|SNDRV_CARDS
 )braket
@@ -132,7 +132,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -146,7 +146,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for VIA 82xx bridge.&quot;
 )paren
@@ -154,7 +154,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -162,7 +162,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -176,7 +176,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for VIA 82xx bridge.&quot;
 )paren
@@ -184,7 +184,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -192,7 +192,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -206,7 +206,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable audio part of VIA 82xx bridge.&quot;
 )paren
@@ -214,7 +214,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -222,7 +222,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -236,7 +236,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;MPU-401 port.&quot;
 )paren
@@ -244,7 +244,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 id|SNDRV_PORT_DESC
 )paren
@@ -252,7 +252,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_ac97_clock
+id|ac97_clock
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -266,7 +266,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_ac97_clock
+id|ac97_clock
 comma
 l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
 )paren
@@ -274,7 +274,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_ac97_clock
+id|ac97_clock
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,default:48000&quot;
@@ -5545,7 +5545,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -5586,7 +5586,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -5605,12 +5605,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -5633,7 +5633,7 @@ id|ENOMEM
 suffix:semicolon
 id|chip_type
 op_assign
-id|id-&gt;driver_data
+id|pci_id-&gt;driver_data
 suffix:semicolon
 r_switch
 c_cond
@@ -5720,7 +5720,7 @@ id|pci
 comma
 id|chip_type
 comma
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|dev
 )braket
@@ -5934,7 +5934,7 @@ c_cond
 (paren
 id|rev_h
 op_logical_and
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -5956,7 +5956,7 @@ comma
 l_int|0x18
 comma
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -5982,7 +5982,7 @@ l_int|0x02
 )paren
 )paren
 (brace
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -5998,7 +5998,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6018,7 +6018,7 @@ r_else
 r_switch
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6049,7 +6049,7 @@ suffix:semicolon
 id|legacy_cfg
 op_or_assign
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6077,7 +6077,7 @@ id|legacy
 op_amp
 l_int|0x02
 )paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6131,7 +6131,7 @@ c_cond
 id|check_region
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6146,7 +6146,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;unable to get MPU-401 port at 0x%lx, skipping&bslash;n&quot;
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6183,7 +6183,7 @@ l_int|0
 comma
 id|MPU401_HW_VIA686A
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6207,7 +6207,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;unable to initialize MPU-401 at 0x%lx, skipping&bslash;n&quot;
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -6524,7 +6524,7 @@ c_func
 id|alsa_card_via82xx_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-via82xx=snd_enable,snd_index,snd_id,&n;&t;&t;&t;  snd_mpu_port,snd_ac97_clock */
+multiline_comment|/* format is: snd-via82xx=enable,index,id,&n;&t;&t;&t;  mpu_port,ac97_clock */
 DECL|function|alsa_card_via82xx_setup
 r_static
 r_int
@@ -6565,7 +6565,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -6580,7 +6580,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -6595,7 +6595,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -6614,7 +6614,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|nr_dev
 )braket
@@ -6629,7 +6629,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|nr_dev
 )braket

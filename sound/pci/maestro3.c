@@ -53,10 +53,10 @@ l_string|&quot;{ESS,Allegro-1 PCI},&quot;
 l_string|&quot;{ESS,Canyon3D-2/LE PCI}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -64,11 +64,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -76,10 +76,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -87,10 +87,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* all enabled */
-DECL|variable|snd_external_amp
+DECL|variable|external_amp
 r_static
 r_int
-id|snd_external_amp
+id|external_amp
 (braket
 id|SNDRV_CARDS
 )braket
@@ -111,10 +111,10 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_amp_gpio
+DECL|variable|amp_gpio
 r_static
 r_int
-id|snd_amp_gpio
+id|amp_gpio
 (braket
 id|SNDRV_CARDS
 )braket
@@ -139,7 +139,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -153,7 +153,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for &quot;
 id|CARD_NAME
@@ -163,7 +163,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -171,7 +171,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -185,7 +185,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for &quot;
 id|CARD_NAME
@@ -195,7 +195,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -203,7 +203,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -217,7 +217,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable this soundcard.&quot;
 )paren
@@ -225,7 +225,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -233,7 +233,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_external_amp
+id|external_amp
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -247,7 +247,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_external_amp
+id|external_amp
 comma
 l_string|&quot;Enable external amp for &quot;
 id|CARD_NAME
@@ -257,7 +257,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_external_amp
+id|external_amp
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -267,7 +267,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_amp_gpio
+id|amp_gpio
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -281,7 +281,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_amp_gpio
+id|amp_gpio
 comma
 l_string|&quot;GPIO pin number for external amp. (default = -1)&quot;
 )paren
@@ -289,7 +289,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_amp_gpio
+id|amp_gpio
 comma
 id|SNDRV_ENABLED
 )paren
@@ -11845,7 +11845,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -11900,7 +11900,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -11919,12 +11919,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -12009,12 +12009,12 @@ id|card
 comma
 id|pci
 comma
-id|snd_external_amp
+id|external_amp
 (braket
 id|dev
 )braket
 comma
-id|snd_amp_gpio
+id|amp_gpio
 (braket
 id|dev
 )braket
@@ -12274,7 +12274,7 @@ c_func
 id|alsa_card_m3_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-maestro3=snd_enable,snd_index,snd_id,snd_external_amp,snd_amp_gpio */
+multiline_comment|/* format is: snd-maestro3=enable,index,id,external_amp,amp_gpio */
 DECL|function|alsa_card_maestro3_setup
 r_static
 r_int
@@ -12315,7 +12315,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -12330,7 +12330,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -12345,7 +12345,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -12360,7 +12360,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_external_amp
+id|external_amp
 (braket
 id|nr_dev
 )braket
@@ -12375,7 +12375,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_amp_gpio
+id|amp_gpio
 (braket
 id|nr_dev
 )braket

@@ -4435,6 +4435,24 @@ comma
 id|EXT3_MIN_BLOCK_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|blocksize
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EXT3-fs: unable to set blocksize&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out_fail
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * The ext3 superblock will not be buffer aligned for other than 1kB&n;&t; * block sizes.  We need to calculate the offset from buffer start.&n;&t; */
 r_if
 c_cond

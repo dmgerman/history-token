@@ -40,9 +40,15 @@ id|handle
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|DMI_DEBUG
+macro_line|#undef DMI_DEBUG
+macro_line|#ifdef DMI_DEBUG
+DECL|macro|dmi_printk
+mdefine_line|#define dmi_printk(x) printk x
+macro_line|#else
 DECL|macro|dmi_printk
 mdefine_line|#define dmi_printk(x)
-singleline_comment|//#define dmi_printk(x) printk x
+macro_line|#endif
 DECL|function|dmi_string
 r_static
 r_char
@@ -1715,6 +1721,7 @@ op_star
 id|dm
 )paren
 (brace
+macro_line|#ifdef DMI_DEBUG
 id|u8
 op_star
 id|data
@@ -1725,6 +1732,7 @@ op_star
 )paren
 id|dm
 suffix:semicolon
+macro_line|#endif
 r_switch
 c_cond
 (paren

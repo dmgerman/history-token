@@ -114,6 +114,19 @@ id|tmp
 op_or_assign
 id|ak-&gt;add_flags
 suffix:semicolon
+id|tmp
+op_and_assign
+op_complement
+id|ak-&gt;mask_flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ak-&gt;cs_mask
+op_eq
+id|ak-&gt;cs_addr
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -122,7 +135,7 @@ id|ak-&gt;cif
 (brace
 id|tmp
 op_or_assign
-id|ak-&gt;codecs_mask
+id|ak-&gt;cs_mask
 suffix:semicolon
 multiline_comment|/* start without chip select */
 )brace
@@ -131,7 +144,7 @@ r_else
 id|tmp
 op_and_assign
 op_complement
-id|ak-&gt;codecs_mask
+id|ak-&gt;cs_mask
 suffix:semicolon
 multiline_comment|/* chip select low */
 id|snd_ice1712_write
@@ -149,6 +162,19 @@ c_func
 (paren
 l_int|1
 )paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|tmp
+op_and_assign
+op_complement
+id|ak-&gt;cs_mask
+suffix:semicolon
+id|tmp
+op_or_assign
+id|ak-&gt;cs_addr
 suffix:semicolon
 )brace
 id|addr
@@ -292,6 +318,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ak-&gt;cs_mask
+op_eq
+id|ak-&gt;cs_addr
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|ak-&gt;cif
 )paren
 (brace
@@ -299,7 +333,7 @@ multiline_comment|/* assert a cs pulse to trigger */
 id|tmp
 op_and_assign
 op_complement
-id|ak-&gt;codecs_mask
+id|ak-&gt;cs_mask
 suffix:semicolon
 id|snd_ice1712_write
 c_func
@@ -320,9 +354,23 @@ suffix:semicolon
 )brace
 id|tmp
 op_or_assign
-id|ak-&gt;codecs_mask
+id|ak-&gt;cs_mask
 suffix:semicolon
 multiline_comment|/* chip select high to trigger */
+)brace
+r_else
+(brace
+id|tmp
+op_and_assign
+op_complement
+id|ak-&gt;cs_mask
+suffix:semicolon
+id|tmp
+op_or_assign
+id|ak-&gt;cs_none
+suffix:semicolon
+multiline_comment|/* deselect address */
+)brace
 id|snd_ice1712_write
 c_func
 (paren

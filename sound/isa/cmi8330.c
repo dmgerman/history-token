@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  Driver for C-Media&squot;s CMI8330 soundcards.&n; *  Copyright (c) by George Talusan &lt;gstalusan@uwaterloo.ca&gt;&n; *    http://www.undergrad.math.uwaterloo.ca/~gstalusa&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-multiline_comment|/*&n; * NOTES&n; *&n; *  The extended registers contain mixer settings which are largely&n; *  untapped for the time being.&n; *&n; *  MPU401 and SPDIF are not supported yet.  I don&squot;t have the hardware&n; *  to aid in coding and testing, so I won&squot;t bother.&n; *&n; *  To quickly load the module,&n; *&n; *  modprobe -a snd-card-cmi8330 snd_sbport=0x220 snd_sbirq=5 snd_sbdma8=1&n; *    snd_sbdma16=5 snd_wssport=0x530 snd_wssirq=11 snd_wssdma=0&n; *&n; *  This card has two mixers and two PCM devices.  I&squot;ve cheesed it such&n; *  that recording and playback can be done through the same device.&n; *  The driver &quot;magically&quot; routes the capturing to the AD1848 codec,&n; *  and playback to the SB16 codec.  This allows for full-duplex mode&n; *  to some extent.&n; *  The utilities in alsa-utils are aware of both devices, so passing&n; *  the appropriate parameters to amixer and alsactl will give you&n; *  full control over both mixers.&n; */
+multiline_comment|/*&n; * NOTES&n; *&n; *  The extended registers contain mixer settings which are largely&n; *  untapped for the time being.&n; *&n; *  MPU401 and SPDIF are not supported yet.  I don&squot;t have the hardware&n; *  to aid in coding and testing, so I won&squot;t bother.&n; *&n; *  To quickly load the module,&n; *&n; *  modprobe -a snd-card-cmi8330 sbport=0x220 sbirq=5 sbdma8=1&n; *    sbdma16=5 wssport=0x530 wssirq=11 wssdma=0&n; *&n; *  This card has two mixers and two PCM devices.  I&squot;ve cheesed it such&n; *  that recording and playback can be done through the same device.&n; *  The driver &quot;magically&quot; routes the capturing to the AD1848 codec,&n; *  and playback to the SB16 codec.  This allows for full-duplex mode&n; *  to some extent.&n; *  The utilities in alsa-utils are aware of both devices, so passing&n; *  the appropriate parameters to amixer and alsactl will give you&n; *  full control over both mixers.&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -46,31 +46,31 @@ c_func
 l_string|&quot;{{C-Media,CMI8330,isapnp:{CMI0001,@@@0001,@X@0001}}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -78,10 +78,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_ISAPNP
 suffix:semicolon
 macro_line|#ifdef __ISAPNP__
-DECL|variable|snd_isapnp
+DECL|variable|isapnp
 r_static
 r_int
-id|snd_isapnp
+id|isapnp
 (braket
 id|SNDRV_CARDS
 )braket
@@ -103,70 +103,70 @@ l_int|1
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|variable|snd_sbport
+DECL|variable|sbport
 r_static
 r_int
-id|snd_sbport
+id|sbport
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
-DECL|variable|snd_sbirq
+DECL|variable|sbirq
 r_static
 r_int
-id|snd_sbirq
+id|sbirq
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
-DECL|variable|snd_sbdma8
+DECL|variable|sbdma8
 r_static
 r_int
-id|snd_sbdma8
+id|sbdma8
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
-DECL|variable|snd_sbdma16
+DECL|variable|sbdma16
 r_static
 r_int
-id|snd_sbdma16
+id|sbdma16
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
-DECL|variable|snd_wssport
+DECL|variable|wssport
 r_static
 r_int
-id|snd_wssport
+id|wssport
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
-DECL|variable|snd_wssirq
+DECL|variable|wssirq
 r_static
 r_int
-id|snd_wssirq
+id|wssirq
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
-DECL|variable|snd_wssdma
+DECL|variable|wssdma
 r_static
 r_int
-id|snd_wssdma
+id|wssdma
 (braket
 id|SNDRV_CARDS
 )braket
@@ -176,7 +176,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -190,7 +190,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for CMI8330 soundcard.&quot;
 )paren
@@ -198,7 +198,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -206,7 +206,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -220,7 +220,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string  for CMI8330 soundcard.&quot;
 )paren
@@ -228,7 +228,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -236,7 +236,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -250,7 +250,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable CMI8330 soundcard.&quot;
 )paren
@@ -258,7 +258,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -267,7 +267,7 @@ macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -281,7 +281,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;ISA PnP detection for specified soundcard.&quot;
 )paren
@@ -289,7 +289,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 id|SNDRV_ISAPNP_DESC
 )paren
@@ -298,7 +298,7 @@ macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
-id|snd_sbport
+id|sbport
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -312,7 +312,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_sbport
+id|sbport
 comma
 l_string|&quot;Port # for CMI8330 SB driver.&quot;
 )paren
@@ -320,7 +320,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_sbport
+id|sbport
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x220,0x280,0x20}},prefers:{0x220},base:16,dialog:list&quot;
@@ -329,7 +329,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_sbirq
+id|sbirq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -343,7 +343,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_sbirq
+id|sbirq
 comma
 l_string|&quot;IRQ # for CMI8330 SB driver.&quot;
 )paren
@@ -351,7 +351,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_sbirq
+id|sbirq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{5},{7},{9},{10},{11},{12}},prefers:{5},dialog:list&quot;
@@ -360,7 +360,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_sbdma8
+id|sbdma8
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -374,7 +374,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_sbdma8
+id|sbdma8
 comma
 l_string|&quot;DMA8 for CMI8330 SB driver.&quot;
 )paren
@@ -382,7 +382,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_sbdma8
+id|sbdma8
 comma
 id|SNDRV_DMA8_DESC
 l_string|&quot;,prefers:{1}&quot;
@@ -391,7 +391,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_sbdma16
+id|sbdma16
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -405,7 +405,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_sbdma16
+id|sbdma16
 comma
 l_string|&quot;DMA16 for CMI8330 SB driver.&quot;
 )paren
@@ -413,7 +413,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_sbdma16
+id|sbdma16
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{5},{7}},prefers:{5},dialog:list&quot;
@@ -422,7 +422,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_wssport
+id|wssport
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -436,7 +436,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_wssport
+id|wssport
 comma
 l_string|&quot;Port # for CMI8330 WSS driver.&quot;
 )paren
@@ -444,7 +444,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_wssport
+id|wssport
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x530},{0xe80,0xf40,0xc0}},prefers:{0x530},base:16,dialog:list&quot;
@@ -453,7 +453,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_wssirq
+id|wssirq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -467,7 +467,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_wssirq
+id|wssirq
 comma
 l_string|&quot;IRQ # for CMI8330 WSS driver.&quot;
 )paren
@@ -475,7 +475,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_wssirq
+id|wssirq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{5},{7},{9},{10},{11},{12}},prefers:{11},dialog:list&quot;
@@ -484,7 +484,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_wssdma
+id|wssdma
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -498,7 +498,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_wssdma
+id|wssdma
 comma
 l_string|&quot;DMA for CMI8330 WSS driver.&quot;
 )paren
@@ -506,7 +506,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_wssdma
+id|wssdma
 comma
 id|SNDRV_DMA8_DESC
 l_string|&quot;,prefers:{0}&quot;
@@ -1385,7 +1385,7 @@ multiline_comment|/* allocate AD1848 resources */
 r_if
 c_cond
 (paren
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
@@ -1401,7 +1401,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
@@ -1412,7 +1412,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_wssdma
+id|wssdma
 (braket
 id|dev
 )braket
@@ -1428,7 +1428,7 @@ id|pdev-&gt;dma_resource
 l_int|0
 )braket
 comma
-id|snd_wssdma
+id|wssdma
 (braket
 id|dev
 )braket
@@ -1439,7 +1439,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_wssirq
+id|wssirq
 (braket
 id|dev
 )braket
@@ -1455,7 +1455,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_wssirq
+id|wssirq
 (braket
 id|dev
 )braket
@@ -1488,7 +1488,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
@@ -1500,7 +1500,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_wssdma
+id|wssdma
 (braket
 id|dev
 )braket
@@ -1512,7 +1512,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_wssirq
+id|wssirq
 (braket
 id|dev
 )braket
@@ -1559,7 +1559,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -1575,7 +1575,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -1586,7 +1586,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sbdma8
+id|sbdma8
 (braket
 id|dev
 )braket
@@ -1602,7 +1602,7 @@ id|pdev-&gt;dma_resource
 l_int|0
 )braket
 comma
-id|snd_sbdma8
+id|sbdma8
 (braket
 id|dev
 )braket
@@ -1613,7 +1613,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sbdma16
+id|sbdma16
 (braket
 id|dev
 )braket
@@ -1629,7 +1629,7 @@ id|pdev-&gt;dma_resource
 l_int|1
 )braket
 comma
-id|snd_sbdma16
+id|sbdma16
 (braket
 id|dev
 )braket
@@ -1640,7 +1640,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sbirq
+id|sbirq
 (braket
 id|dev
 )braket
@@ -1656,7 +1656,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_sbirq
+id|sbirq
 (braket
 id|dev
 )braket
@@ -1697,7 +1697,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -1709,7 +1709,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_sbdma8
+id|sbdma8
 (braket
 id|dev
 )braket
@@ -1721,7 +1721,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_sbdma16
+id|sbdma16
 (braket
 id|dev
 )braket
@@ -1733,7 +1733,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|snd_sbirq
+id|sbirq
 (braket
 id|dev
 )braket
@@ -1896,7 +1896,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -1906,7 +1906,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
@@ -1917,7 +1917,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_wssport&bslash;n&quot;
+l_string|&quot;specify wssport&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1928,7 +1928,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -1939,7 +1939,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_sbport&bslash;n&quot;
+l_string|&quot;specify sbport&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1955,12 +1955,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -2010,7 +2010,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -2058,19 +2058,19 @@ c_func
 (paren
 id|card
 comma
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
 op_plus
 l_int|4
 comma
-id|snd_wssirq
+id|wssirq
 (braket
 id|dev
 )braket
 comma
-id|snd_wssdma
+id|wssdma
 (braket
 id|dev
 )braket
@@ -2174,24 +2174,24 @@ c_func
 (paren
 id|card
 comma
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
 comma
-id|snd_sbirq
+id|sbirq
 (braket
 id|dev
 )braket
 comma
 id|snd_sb16dsp_interrupt
 comma
-id|snd_sbdma8
+id|sbdma8
 (braket
 id|dev
 )braket
 comma
-id|snd_sbdma16
+id|sbdma16
 (braket
 id|dev
 )braket
@@ -2495,12 +2495,12 @@ id|wss_pcm-&gt;name
 comma
 id|chip_wss-&gt;port
 comma
-id|snd_wssirq
+id|wssirq
 (braket
 id|dev
 )braket
 comma
-id|snd_wssdma
+id|wssdma
 (braket
 id|dev
 )braket
@@ -2623,13 +2623,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
 op_logical_or
 op_logical_neg
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -2717,7 +2717,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -2728,7 +2728,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -2799,7 +2799,7 @@ c_func
 id|alsa_card_cmi8330_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-cmi8330=snd_enable,snd_index,snd_id,snd_isapnp,&n;&t;&t;&t;  snd_sbport,snd_sbirq,&n;&t;&t;&t;  snd_sbdma8,snd_sbdma16,&n;&t;&t;&t;  snd_wssport,snd_wssirq,&n;&t;&t;&t;  snd_wssdma */
+multiline_comment|/* format is: snd-cmi8330=enable,index,id,isapnp,&n;&t;&t;&t;  sbport,sbirq,&n;&t;&t;&t;  sbdma8,sbdma16,&n;&t;&t;&t;  wssport,wssirq,&n;&t;&t;&t;  wssdma */
 DECL|function|alsa_card_cmi8330_setup
 r_static
 r_int
@@ -2851,7 +2851,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -2866,7 +2866,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -2881,7 +2881,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -2912,7 +2912,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_sbport
+id|sbport
 (braket
 id|nr_dev
 )braket
@@ -2927,7 +2927,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_sbirq
+id|sbirq
 (braket
 id|nr_dev
 )braket
@@ -2942,7 +2942,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_sbdma8
+id|sbdma8
 (braket
 id|nr_dev
 )braket
@@ -2957,7 +2957,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_sbdma16
+id|sbdma16
 (braket
 id|nr_dev
 )braket
@@ -2976,7 +2976,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_wssport
+id|wssport
 (braket
 id|nr_dev
 )braket
@@ -2991,7 +2991,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_wssirq
+id|wssirq
 (braket
 id|nr_dev
 )braket
@@ -3006,7 +3006,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_wssdma
+id|wssdma
 (braket
 id|nr_dev
 )braket
@@ -3023,7 +3023,7 @@ id|pnp
 op_ne
 id|INT_MAX
 )paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|nr_dev
 )braket

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  Dummy soundcard for virtual rawmidi devices&n; *&n; *  Copyright (c) 2000 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-multiline_comment|/*&n; * VIRTUAL RAW MIDI DEVICE CARDS&n; *&n; * This dummy card contains up to 4 virtual rawmidi devices.&n; * They are not real rawmidi devices but just associated with sequencer&n; * clients, so that any input/output sources can be connected as a raw&n; * MIDI device arbitrary.&n; * Also, multiple access is allowed to a single rawmidi device.&n; *&n; * Typical usage is like following:&n; * - Load snd-virmidi module.&n; *&t;# modprobe snd-virmidi snd_index=2&n; *   Then, sequencer clients 72:0 to 75:0 will be created, which are&n; *   mapped from /dev/snd/midiC1D0 to /dev/snd/midiC1D3, respectively.&n; *&n; * - Connect input/output via aconnect.&n; *&t;% aconnect 64:0 72:0&t;# keyboard input redirection 64:0 -&gt; 72:0&n; *&t;% aconnect 72:0 65:0&t;# output device redirection 72:0 -&gt; 65:0&n; *&n; * - Run application using a midi device (eg. /dev/snd/midiC1D0)&n; */
+multiline_comment|/*&n; * VIRTUAL RAW MIDI DEVICE CARDS&n; *&n; * This dummy card contains up to 4 virtual rawmidi devices.&n; * They are not real rawmidi devices but just associated with sequencer&n; * clients, so that any input/output sources can be connected as a raw&n; * MIDI device arbitrary.&n; * Also, multiple access is allowed to a single rawmidi device.&n; *&n; * Typical usage is like following:&n; * - Load snd-virmidi module.&n; *&t;# modprobe snd-virmidi index=2&n; *   Then, sequencer clients 72:0 to 75:0 will be created, which are&n; *   mapped from /dev/snd/midiC1D0 to /dev/snd/midiC1D3, respectively.&n; *&n; * - Connect input/output via aconnect.&n; *&t;% aconnect 64:0 72:0&t;# keyboard input redirection 64:0 -&gt; 72:0&n; *&t;% aconnect 72:0 65:0&t;# output device redirection 72:0 -&gt; 65:0&n; *&n; * - Run application using a midi device (eg. /dev/snd/midiC1D0)&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -42,10 +42,10 @@ l_string|&quot;{{ALSA,Virtual rawmidi device}}&quot;
 suffix:semicolon
 DECL|macro|MAX_MIDI_DEVICES
 mdefine_line|#define MAX_MIDI_DEVICES&t;8
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -53,11 +53,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -65,10 +65,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -91,10 +91,10 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|snd_midi_devs
+DECL|variable|midi_devs
 r_static
 r_int
-id|snd_midi_devs
+id|midi_devs
 (braket
 id|SNDRV_CARDS
 )braket
@@ -118,7 +118,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -132,7 +132,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for virmidi soundcard.&quot;
 )paren
@@ -140,7 +140,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -148,7 +148,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -162,7 +162,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for virmidi soundcard.&quot;
 )paren
@@ -170,7 +170,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -178,7 +178,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -192,7 +192,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable this soundcard.&quot;
 )paren
@@ -200,7 +200,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -208,7 +208,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_midi_devs
+id|midi_devs
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -222,7 +222,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_midi_devs
+id|midi_devs
 comma
 l_string|&quot;MIDI devices # (1-8)&quot;
 )paren
@@ -230,7 +230,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_midi_devs
+id|midi_devs
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,8}}&quot;
@@ -298,7 +298,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -312,12 +312,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -358,7 +358,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_midi_devs
+id|midi_devs
 (braket
 id|dev
 )braket
@@ -376,7 +376,7 @@ comma
 id|MAX_MIDI_DEVICES
 )paren
 suffix:semicolon
-id|snd_midi_devs
+id|midi_devs
 (braket
 id|dev
 )braket
@@ -393,7 +393,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|snd_midi_devs
+id|midi_devs
 (braket
 id|dev
 )braket
@@ -560,7 +560,7 @@ id|dev
 OL
 id|SNDRV_CARDS
 op_logical_and
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -674,7 +674,7 @@ c_func
 id|alsa_card_virmidi_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-virmidi=snd_enable,snd_index,snd_id,snd_midi_devs */
+multiline_comment|/* format is: snd-virmidi=enable,index,id,midi_devs */
 DECL|function|alsa_card_virmidi_setup
 r_static
 r_int
@@ -715,7 +715,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -730,7 +730,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -745,7 +745,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -760,7 +760,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_midi_devs
+id|midi_devs
 (braket
 id|nr_dev
 )braket

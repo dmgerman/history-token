@@ -1920,9 +1920,11 @@ op_amp
 id|SB_IRQTYPE_MPUIN
 )paren
 op_logical_and
-id|chip-&gt;rmidi
+id|chip-&gt;rmidi_callback
 )paren
-id|snd_mpu401_uart_interrupt
+id|chip
+op_member_access_from_pointer
+id|rmidi_callback
 c_func
 (paren
 id|irq

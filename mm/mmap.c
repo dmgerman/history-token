@@ -1607,6 +1607,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The caller must hold down_write(current-&gt;mm-&gt;mmap_sem).&n; */
 DECL|function|do_mmap_pgoff
 r_int
 r_int

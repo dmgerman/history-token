@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *      MOTU Midi Timepiece ALSA Main routines&n; *      Copyright by Michael T. Mayers (c) Jan 09, 2000&n; *      mail: tweakoz@pacbell.net&n; *      Thanks to John Galbraith&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *      This driver is for the &squot;Mark Of The Unicorn&squot; (MOTU)&n; *      MidiTimePiece AV multiport MIDI interface &n; *&n; *      IOPORTS&n; *      -------&n; *      8 MIDI Ins and 8 MIDI outs&n; *      Video Sync In (BNC), Word Sync Out (BNC), &n; *      ADAT Sync Out (DB9)&n; *      SMPTE in/out (1/4&quot;)&n; *      2 programmable pedal/footswitch inputs and 4 programmable MIDI controller knobs.&n; *      Macintosh RS422 serial port&n; *      RS422 &quot;network&quot; port for ganging multiple MTP&squot;s&n; *      PC Parallel Port ( which this driver currently uses )&n; *&n; *      MISC FEATURES&n; *      -------------&n; *      Hardware MIDI routing, merging, and filtering   &n; *      MIDI Synchronization to Video, ADAT, SMPTE and other Clock sources&n; *      128 &squot;scene&squot; memories, recallable from MIDI program change&n; *&n; *&n; * ChangeLog&n; * Jun 11 2001&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *      - Recoded &amp; debugged&n; *      - Added timer interrupt for midi outputs&n; *      - snd_hwports is between 1 and 8, which specifies the number of hardware ports.&n; *        The three global ports, computer, adat and broadcast ports, are created&n; *        always after h/w and remote ports.&n; *&n; */
+multiline_comment|/*&n; *      MOTU Midi Timepiece ALSA Main routines&n; *      Copyright by Michael T. Mayers (c) Jan 09, 2000&n; *      mail: michael@tweakoz.com&n; *      Thanks to John Galbraith&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; *&n; *      This driver is for the &squot;Mark Of The Unicorn&squot; (MOTU)&n; *      MidiTimePiece AV multiport MIDI interface &n; *&n; *      IOPORTS&n; *      -------&n; *      8 MIDI Ins and 8 MIDI outs&n; *      Video Sync In (BNC), Word Sync Out (BNC), &n; *      ADAT Sync Out (DB9)&n; *      SMPTE in/out (1/4&quot;)&n; *      2 programmable pedal/footswitch inputs and 4 programmable MIDI controller knobs.&n; *      Macintosh RS422 serial port&n; *      RS422 &quot;network&quot; port for ganging multiple MTP&squot;s&n; *      PC Parallel Port ( which this driver currently uses )&n; *&n; *      MISC FEATURES&n; *      -------------&n; *      Hardware MIDI routing, merging, and filtering   &n; *      MIDI Synchronization to Video, ADAT, SMPTE and other Clock sources&n; *      128 &squot;scene&squot; memories, recallable from MIDI program change&n; *&n; *&n; * ChangeLog&n; * Jun 11 2001&t;Takashi Iwai &lt;tiwai@suse.de&gt;&n; *      - Recoded &amp; debugged&n; *      - Added timer interrupt for midi outputs&n; *      - hwports is between 1 and 8, which specifies the number of hardware ports.&n; *        The three global ports, computer, adat and broadcast ports, are created&n; *        always after h/w and remote ports.&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -48,41 +48,41 @@ DECL|macro|MTPAV_IRQ
 mdefine_line|#define MTPAV_IRQ&t;&t;7
 DECL|macro|MTPAV_MAX_PORTS
 mdefine_line|#define MTPAV_MAX_PORTS&t;&t;8
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 op_assign
 id|SNDRV_DEFAULT_IDX1
 suffix:semicolon
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 op_assign
 id|SNDRV_DEFAULT_STR1
 suffix:semicolon
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 op_assign
 id|MTPAV_IOBASE
 suffix:semicolon
 multiline_comment|/* 0x378, 0x278 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 op_assign
 id|MTPAV_IRQ
 suffix:semicolon
 multiline_comment|/* 7, 5 */
-DECL|variable|snd_hwports
+DECL|variable|hwports
 r_static
 r_int
-id|snd_hwports
+id|hwports
 op_assign
 id|MTPAV_MAX_PORTS
 suffix:semicolon
@@ -90,7 +90,7 @@ multiline_comment|/* use hardware ports 1-8 */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;i&quot;
 )paren
@@ -98,7 +98,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for MotuMTPAV MIDI.&quot;
 )paren
@@ -106,7 +106,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -114,7 +114,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;s&quot;
 )paren
@@ -122,7 +122,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for MotuMTPAV MIDI.&quot;
 )paren
@@ -130,7 +130,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -138,7 +138,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;l&quot;
 )paren
@@ -146,7 +146,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Parallel port # for MotuMTPAV MIDI.&quot;
 )paren
@@ -154,7 +154,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x378},{0x278}},dialog:list&quot;
@@ -163,7 +163,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;i&quot;
 )paren
@@ -171,7 +171,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;Parallel IRQ # for MotuMTPAV MIDI.&quot;
 )paren
@@ -179,7 +179,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{7},{5}},dialog:list&quot;
@@ -188,7 +188,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_hwports
+id|hwports
 comma
 l_string|&quot;i&quot;
 )paren
@@ -196,7 +196,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_hwports
+id|hwports
 comma
 l_string|&quot;Hardware ports # for MotuMTPAV MIDI.&quot;
 )paren
@@ -204,7 +204,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_hwports
+id|hwports
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,8}},dialog:list&quot;
@@ -1393,6 +1393,7 @@ id|chip-&gt;spinlock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* spinlock held! */
 DECL|function|snd_mtpav_add_output_timer
 r_static
 r_void
@@ -1404,19 +1405,6 @@ op_star
 id|chip
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;spinlock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|chip-&gt;timer.function
 op_assign
 id|snd_mtpav_output_timer
@@ -1442,16 +1430,8 @@ op_amp
 id|chip-&gt;timer
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;spinlock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
+multiline_comment|/* spinlock held! */
 DECL|function|snd_mtpav_remove_output_timer
 r_static
 r_void
@@ -1463,33 +1443,11 @@ op_star
 id|chip
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;spinlock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|del_timer
 c_func
 (paren
 op_amp
 id|chip-&gt;timer
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;spinlock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1775,6 +1733,14 @@ id|port-&gt;mode
 op_amp
 id|MTPAV_MODE_INPUT_TRIGGERED
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mcrd-&gt;spinlock
+)paren
+suffix:semicolon
 id|snd_rawmidi_receive
 c_func
 (paren
@@ -1786,6 +1752,14 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mcrd-&gt;spinlock
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|snd_mtpav_inmidi_h
 r_static
@@ -2136,7 +2110,7 @@ op_assign
 id|request_region
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_int|3
 comma
@@ -2152,7 +2126,7 @@ c_func
 (paren
 l_string|&quot;MTVAP port 0x%lx is busy&bslash;n&quot;
 comma
-id|snd_port
+id|port
 )paren
 suffix:semicolon
 r_return
@@ -2162,7 +2136,7 @@ suffix:semicolon
 )brace
 id|mcard-&gt;port
 op_assign
-id|snd_port
+id|port
 suffix:semicolon
 r_if
 c_cond
@@ -2170,7 +2144,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|snd_mtpav_irqh
 comma
@@ -2191,7 +2165,7 @@ c_func
 (paren
 l_string|&quot;MTVAP IRQ %d busy&bslash;n&quot;
 comma
-id|snd_irq
+id|irq
 )paren
 suffix:semicolon
 r_return
@@ -2201,7 +2175,7 @@ suffix:semicolon
 )brace
 id|mcard-&gt;irq
 op_assign
-id|snd_irq
+id|irq
 suffix:semicolon
 r_return
 l_int|0
@@ -2408,7 +2382,7 @@ singleline_comment|//printk(&quot;entering snd_mtpav_get_RAWMIDI&bslash;n&quot;)
 r_if
 c_cond
 (paren
-id|snd_hwports
+id|hwports
 OL
 l_int|1
 )paren
@@ -2420,7 +2394,7 @@ r_else
 r_if
 c_cond
 (paren
-id|snd_hwports
+id|hwports
 OG
 l_int|8
 )paren
@@ -2431,7 +2405,7 @@ suffix:semicolon
 r_else
 id|mcard-&gt;num_ports
 op_assign
-id|snd_hwports
+id|hwports
 suffix:semicolon
 r_if
 c_cond
@@ -2813,9 +2787,9 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 comma
-id|snd_id
+id|id
 comma
 id|THIS_MODULE
 comma
@@ -2948,9 +2922,9 @@ c_func
 id|KERN_INFO
 l_string|&quot;Motu MidiTimePiece on parallel port irq: %d ioport: 0x%lx&bslash;n&quot;
 comma
-id|snd_irq
+id|irq
 comma
-id|snd_port
+id|port
 )paren
 suffix:semicolon
 r_return
@@ -3024,7 +2998,7 @@ c_func
 id|alsa_card_mtpav_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-mtpav=snd_enable,snd_index,snd_id,&n;&t;&t;&t;snd_port,snd_irq,snd_hwports */
+multiline_comment|/* format is: snd-mtpav=snd_enable,index,id,&n;&t;&t;&t;port,irq,hwports */
 DECL|function|alsa_card_mtpav_setup
 r_static
 r_int
@@ -3071,7 +3045,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 )paren
 op_eq
 l_int|2
@@ -3083,7 +3057,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 )paren
 op_eq
 l_int|2
@@ -3099,7 +3073,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 )paren
 op_eq
 l_int|2
@@ -3111,7 +3085,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 )paren
 op_eq
 l_int|2
@@ -3123,7 +3097,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_hwports
+id|hwports
 )paren
 op_eq
 l_int|2

@@ -537,6 +537,10 @@ DECL|member|resetting_bus
 id|u8
 id|resetting_bus
 suffix:semicolon
+DECL|member|reset_queue
+id|wait_queue_head_t
+id|reset_queue
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Bitfield meanings for the above registers. */
@@ -901,9 +905,6 @@ c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -944,13 +945,15 @@ id|SDptr
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SPARC64
-DECL|macro|SCSI_SPARC_ESP
-mdefine_line|#define SCSI_SPARC_ESP {                                        &bslash;&n;&t;&t;proc_name:      &quot;esp&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;proc_info:      &amp;esp_proc_info,&t;&t;&t;&bslash;&n;&t;&t;name:           &quot;Sun ESP 100/100a/200&quot;,&t;&t;&bslash;&n;&t;&t;detect:         esp_detect,&t;&t;&t;&bslash;&n;&t;&t;slave_detach:&t;esp_slave_detach,&t;&t;&bslash;&n;&t;&t;info:           esp_info,&t;&t;&t;&bslash;&n;&t;&t;command:        esp_command,&t;&t;&t;&bslash;&n;&t;&t;queuecommand:   esp_queue,&t;&t;&t;&bslash;&n;&t;&t;abort:          esp_abort,&t;&t;&t;&bslash;&n;&t;&t;reset:          esp_reset,&t;&t;&t;&bslash;&n;&t;&t;can_queue:      7,&t;&t;&t;&t;&bslash;&n;&t;&t;this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;&t;cmd_per_lun:    1,&t;&t;&t;&t;&bslash;&n;&t;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;&t;highmem_io:&t;1,&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|ESP_HIGHMEM_IO
+mdefine_line|#define ESP_HIGHMEM_IO&t;1
 macro_line|#else
 multiline_comment|/* Sparc32&squot;s iommu code cannot handle highmem pages yet. */
-DECL|macro|SCSI_SPARC_ESP
-mdefine_line|#define SCSI_SPARC_ESP {                                        &bslash;&n;&t;&t;proc_name:      &quot;esp&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;proc_info:      &amp;esp_proc_info,&t;&t;&t;&bslash;&n;&t;&t;name:           &quot;Sun ESP 100/100a/200&quot;,&t;&t;&bslash;&n;&t;&t;detect:         esp_detect,&t;&t;&t;&bslash;&n;&t;&t;slave_detach:&t;esp_slave_detach,&t;&t;&bslash;&n;&t;&t;info:           esp_info,&t;&t;&t;&bslash;&n;&t;&t;command:        esp_command,&t;&t;&t;&bslash;&n;&t;&t;queuecommand:   esp_queue,&t;&t;&t;&bslash;&n;&t;&t;abort:          esp_abort,&t;&t;&t;&bslash;&n;&t;&t;reset:          esp_reset,&t;&t;&t;&bslash;&n;&t;&t;can_queue:      7,&t;&t;&t;&t;&bslash;&n;&t;&t;this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;&t;cmd_per_lun:    1,&t;&t;&t;&t;&bslash;&n;&t;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&bslash;&n;}
+DECL|macro|ESP_HIGHMEM_IO
+mdefine_line|#define ESP_HIGHMEM_IO&t;0
 macro_line|#endif
+DECL|macro|SCSI_SPARC_ESP
+mdefine_line|#define SCSI_SPARC_ESP {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.proc_name&t;=&t;&quot;esp&quot;,&t;&t;&t;&bslash;&n;&t;&t;.proc_info&t;=&t;&amp;esp_proc_info,&t;&t;&bslash;&n;&t;&t;.name&t;&t;=&t;&quot;Sun ESP 100/100a/200&quot;,&t;&bslash;&n;&t;&t;.detect&t;&t;=&t;esp_detect,&t;&t;&bslash;&n;&t;&t;.slave_detach&t;=&t;esp_slave_detach,&t;&bslash;&n;&t;&t;.info&t;&t;=&t;esp_info,&t;&t;&bslash;&n;&t;&t;.command&t;=&t;esp_command,&t;&t;&bslash;&n;&t;&t;.queuecommand&t;=&t;esp_queue,&t;&t;&bslash;&n;&t;&t;.eh_abort_handler =&t;esp_abort,&t;&t;&bslash;&n;&t;&t;.eh_bus_reset_handler =&t;esp_reset,&t;&t;&bslash;&n;&t;&t;.can_queue&t;=&t;7,&t;&t;&t;&bslash;&n;&t;&t;.this_id&t;=&t;7,&t;&t;&t;&bslash;&n;&t;&t;.sg_tablesize&t;=&t;SG_ALL,&t;&t;&t;&bslash;&n;&t;&t;.cmd_per_lun&t;=&t;1,&t;&t;&t;&bslash;&n;&t;&t;.use_clustering&t;=&t;ENABLE_CLUSTERING,&t;&bslash;&n;&t;&t;.highmem_io&t;=&t;ESP_HIGHMEM_IO,&t;&t;&bslash;&n;}
 multiline_comment|/* For our interrupt engine. */
 DECL|macro|for_each_esp
 mdefine_line|#define for_each_esp(esp) &bslash;&n;        for((esp) = espchain; (esp); (esp) = (esp)-&gt;next)
