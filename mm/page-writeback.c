@@ -1874,7 +1874,7 @@ c_cond
 id|mapping
 )paren
 (brace
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -1932,7 +1932,7 @@ id|PAGECACHE_TAG_DIRTY
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -2178,7 +2178,7 @@ c_cond
 id|mapping
 )paren
 (brace
-id|spin_lock_irqsave
+id|write_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2212,7 +2212,7 @@ comma
 id|PAGECACHE_TAG_DIRTY
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2237,7 +2237,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2372,7 +2372,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spin_lock_irqsave
+id|write_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2406,7 +2406,7 @@ comma
 id|PAGECACHE_TAG_DIRTY
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2419,7 +2419,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2475,7 +2475,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spin_lock_irqsave
+id|write_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2512,7 +2512,7 @@ comma
 id|PAGECACHE_TAG_WRITEBACK
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2572,7 +2572,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spin_lock_irqsave
+id|write_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2635,7 +2635,7 @@ comma
 id|PAGECACHE_TAG_DIRTY
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|write_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -2689,7 +2689,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|spin_lock_irqsave
+id|read_lock_irqsave
 c_func
 (paren
 op_amp
@@ -2709,7 +2709,7 @@ comma
 id|tag
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|read_unlock_irqrestore
 c_func
 (paren
 op_amp

@@ -780,10 +780,10 @@ id|page_tree
 suffix:semicolon
 multiline_comment|/* radix tree of all pages */
 DECL|member|tree_lock
-id|spinlock_t
+id|rwlock_t
 id|tree_lock
 suffix:semicolon
-multiline_comment|/* and spinlock protecting it */
+multiline_comment|/* and rwlock protecting it */
 DECL|member|i_mmap_writable
 r_int
 r_int

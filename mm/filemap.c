@@ -106,7 +106,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -119,7 +119,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1095,7 +1095,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -1152,7 +1152,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1557,7 +1557,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1586,7 +1586,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1627,7 +1627,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1660,7 +1660,7 @@ id|page
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1701,7 +1701,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1743,7 +1743,7 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1756,7 +1756,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1794,7 +1794,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1989,7 +1989,7 @@ r_int
 r_int
 id|ret
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -2039,7 +2039,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -2087,7 +2087,7 @@ r_int
 r_int
 id|ret
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -2159,7 +2159,7 @@ id|index
 op_plus
 l_int|1
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
