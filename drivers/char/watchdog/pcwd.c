@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * These are the auto-probe addresses available.&n; *&n; * Revision A only uses ports 0x270 and 0x370.  Revision C introduced 0x350.&n; * Revision A has an address range of 2 addresses, while Revision C has 3.&n; */
@@ -442,10 +443,15 @@ c_func
 l_string|&quot;pcwd: Card senses a CPU Overheat.  Panicking!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;pcwd: CPU Overheat.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|machine_power_off
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -506,10 +512,15 @@ c_func
 l_string|&quot;pcwd: Card senses a CPU Overheat.  Panicking!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;pcwd: CPU Overheat.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|machine_power_off
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
