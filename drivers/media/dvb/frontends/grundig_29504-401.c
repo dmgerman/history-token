@@ -21,33 +21,28 @@ id|dvb_frontend_info
 id|grundig_29504_401_info
 op_assign
 (brace
-dot
 id|name
-op_assign
+suffix:colon
 l_string|&quot;Grundig 29504-401&quot;
 comma
-dot
 id|type
-op_assign
+suffix:colon
 id|FE_OFDM
 comma
-multiline_comment|/*&t;.frequency_min &t;&t;= ???,*/
-multiline_comment|/*&t;.frequency_max &t;&t;= ???,*/
-dot
+multiline_comment|/*&t;frequency_min: ???,*/
+multiline_comment|/*&t;frequency_max: ???,*/
 id|frequency_stepsize
-op_assign
+suffix:colon
 l_int|166666
 comma
-multiline_comment|/*      .frequency_tolerance &t;= ???,*/
-multiline_comment|/*      .symbol_rate_tolerance &t;= ???,*/
-dot
+multiline_comment|/*      frequency_tolerance: ???,*/
+multiline_comment|/*      symbol_rate_tolerance: ???,*/
 id|notifier_delay
-op_assign
+suffix:colon
 l_int|0
 comma
-dot
 id|caps
-op_assign
+suffix:colon
 id|FE_CAN_FEC_1_2
 op_or
 id|FE_CAN_FEC_2_3
@@ -426,28 +421,28 @@ l_int|0x88
 suffix:semicolon
 id|cpump
 op_assign
-id|div
+id|freq
 OL
 l_int|175000000
 ques
 c_cond
 l_int|2
 suffix:colon
-id|div
+id|freq
 OL
 l_int|390000000
 ques
 c_cond
 l_int|1
 suffix:colon
-id|div
+id|freq
 OL
 l_int|470000000
 ques
 c_cond
 l_int|2
 suffix:colon
-id|div
+id|freq
 OL
 l_int|750000000
 ques
@@ -458,14 +453,14 @@ l_int|3
 suffix:semicolon
 id|band_select
 op_assign
-id|div
+id|freq
 OL
 l_int|175000000
 ques
 c_cond
 l_int|0x0e
 suffix:colon
-id|div
+id|freq
 OL
 l_int|470000000
 ques
@@ -518,7 +513,11 @@ id|buf
 l_int|3
 )braket
 op_assign
+(paren
 id|cpump
+op_lshift
+l_int|6
+)paren
 op_or
 id|band_select
 suffix:semicolon
@@ -1323,7 +1322,7 @@ suffix:semicolon
 )brace
 DECL|function|reset_and_configure
 r_static
-r_void
+r_int
 id|reset_and_configure
 (paren
 r_struct
@@ -1367,6 +1366,8 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
+r_return
+(paren
 id|i2c-&gt;xfer
 (paren
 id|i2c
@@ -1376,6 +1377,15 @@ id|msg
 comma
 l_int|1
 )paren
+op_eq
+l_int|1
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|init
@@ -1818,6 +1828,7 @@ comma
 id|p-&gt;frequency
 )paren
 suffix:semicolon
+r_return
 id|apply_frontend_param
 (paren
 id|i2c
@@ -1886,6 +1897,9 @@ op_star
 id|i2c
 )paren
 (brace
+id|u8
+id|reg0x3e
+suffix:semicolon
 id|u8
 id|b0
 (braket
@@ -1956,34 +1970,38 @@ l_int|1
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/**&n;&t; *  the L64781 won&squot;t show up before we send the reset_and_configure()&n;&t; *  broadcast. If nothing responds there is no L64781 on the bus...&n;&t; */
 r_if
 c_cond
 (paren
-id|i2c-&gt;xfer
+id|reset_and_configure
+c_func
 (paren
 id|i2c
-comma
-id|msg
-comma
-l_int|2
 )paren
-op_eq
-l_int|2
+OL
+l_int|0
 )paren
-multiline_comment|/*  probably an EEPROM... */
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;no response on reset_and_configure() broadcast, bailing out...&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|reset_and_configure
-(paren
-id|i2c
-)paren
-suffix:semicolon
+)brace
+multiline_comment|/* The chip always responds to reads */
 r_if
 c_cond
 (paren
-id|i2c-&gt;xfer
+id|i2c
+op_member_access_from_pointer
+id|xfer
+c_func
 (paren
 id|i2c
 comma
@@ -1994,25 +2012,119 @@ l_int|2
 op_ne
 l_int|2
 )paren
-multiline_comment|/*  nothing... */
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;no response to read on I2C bus&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
+multiline_comment|/* Save current register contents for bailout */
+id|reg0x3e
+op_assign
+id|l64781_readreg
+c_func
+(paren
+id|i2c
+comma
+l_int|0x3e
+)paren
+suffix:semicolon
+multiline_comment|/* Reading the POWER_DOWN register always returns 0 */
 r_if
 c_cond
 (paren
-id|b1
-(braket
+id|reg0x3e
+op_ne
 l_int|0
-)braket
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;Device doesn&squot;t look like L64781&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+multiline_comment|/* Turn the chip off */
+id|l64781_writereg
+(paren
+id|i2c
+comma
+l_int|0x3e
+comma
+l_int|0x5a
+)paren
+suffix:semicolon
+multiline_comment|/* Responds to all reads with 0 */
+r_if
+c_cond
+(paren
+id|l64781_readreg
+c_func
+(paren
+id|i2c
+comma
+l_int|0x1a
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;Read 1 returned unexpcted value&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|bailout
+suffix:semicolon
+)brace
+multiline_comment|/* Turn the chip on */
+id|l64781_writereg
+(paren
+id|i2c
+comma
+l_int|0x3e
+comma
+l_int|0xa5
+)paren
+suffix:semicolon
+multiline_comment|/* Responds with register default value */
+r_if
+c_cond
+(paren
+id|l64781_readreg
+c_func
+(paren
+id|i2c
+comma
+l_int|0x1a
+)paren
 op_ne
 l_int|0xa1
 )paren
-r_return
-op_minus
-id|ENODEV
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;Read 2 returned unexpcted value&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|bailout
+suffix:semicolon
+)brace
 id|dvb_register_frontend
 (paren
 id|grundig_29504_401_ioctl
@@ -2027,6 +2139,22 @@ id|grundig_29504_401_info
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|bailout
+suffix:colon
+id|l64781_writereg
+(paren
+id|i2c
+comma
+l_int|0x3e
+comma
+id|reg0x3e
+)paren
+suffix:semicolon
+multiline_comment|/* restore reg 0x3e */
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|l64781_detach

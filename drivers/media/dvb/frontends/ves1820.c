@@ -153,9 +153,9 @@ l_int|0x6A
 comma
 l_int|0x9B
 comma
-l_int|0x0A
+l_int|0x12
 comma
-l_int|0x52
+l_int|0x12
 comma
 l_int|0x46
 comma
@@ -298,8 +298,9 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 comma
 dot
@@ -433,8 +434,9 @@ id|msg
 op_assign
 (brace
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 comma
 dot
@@ -454,8 +456,9 @@ l_int|2
 )brace
 comma
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 comma
 dot
@@ -548,8 +551,9 @@ id|i2c_msg
 id|msg
 op_assign
 (brace
+dot
 id|addr
-suffix:colon
+op_assign
 id|addr
 comma
 dot

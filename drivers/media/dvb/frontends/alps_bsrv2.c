@@ -159,7 +159,7 @@ l_int|0x00
 comma
 l_int|0xDC
 comma
-l_int|0x20
+l_int|0x00
 comma
 l_int|0x81
 comma
@@ -842,6 +842,7 @@ id|inversion
 id|u8
 id|val
 suffix:semicolon
+multiline_comment|/*&n;&t; * inversion on/off are interchanged because i and q seem to&n;&t; * be swapped on the hardware&n;&t; */
 r_switch
 c_cond
 (paren
@@ -871,7 +872,7 @@ id|INVERSION_AUTO
 suffix:colon
 id|val
 op_assign
-l_int|0x40
+l_int|0x00
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -882,13 +883,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_return
-id|ves1893_writereg
-(paren
-id|i2c
-comma
+multiline_comment|/* needs to be saved for FE_GET_FRONTEND */
+id|init_1893_tab
+(braket
 l_int|0x0c
-comma
+)braket
+op_assign
 (paren
 id|init_1893_tab
 (braket
@@ -899,6 +899,18 @@ l_int|0x3f
 )paren
 op_or
 id|val
+suffix:semicolon
+r_return
+id|ves1893_writereg
+(paren
+id|i2c
+comma
+l_int|0x0c
+comma
+id|init_1893_tab
+(braket
+l_int|0x0c
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -2072,6 +2084,20 @@ id|p-&gt;frequency
 op_sub_assign
 id|afc
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * inversion indicator is only valid&n;&t;&t; * if auto inversion was used&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|init_1893_tab
+(braket
+l_int|0x0c
+)braket
+op_amp
+l_int|0x80
+)paren
+)paren
 id|p-&gt;inversion
 op_assign
 (paren
@@ -2086,9 +2112,9 @@ l_int|2
 )paren
 ques
 c_cond
-id|INVERSION_ON
-suffix:colon
 id|INVERSION_OFF
+suffix:colon
+id|INVERSION_ON
 suffix:semicolon
 id|p-&gt;u.qpsk.fec_inner
 op_assign
