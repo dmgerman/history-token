@@ -2534,26 +2534,6 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_int
-id|__prep
-DECL|function|prep_get_irq
-id|prep_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_return
-id|i8259_irq
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
 r_void
 id|__init
 DECL|function|prep_init_IRQ
@@ -2579,8 +2559,6 @@ c_func
 l_int|1
 comma
 id|NUM_8259_INTERRUPTS
-comma
-l_int|0
 comma
 op_minus
 l_int|1
@@ -3183,7 +3161,7 @@ suffix:semicolon
 multiline_comment|/* this gets changed later on if we have an OpenPIC -- Cort */
 id|ppc_md.get_irq
 op_assign
-id|prep_get_irq
+id|i8259_irq
 suffix:semicolon
 id|ppc_md.init
 op_assign

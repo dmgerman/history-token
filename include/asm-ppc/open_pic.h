@@ -14,6 +14,19 @@ DECL|macro|OPENPIC_VEC_IPI
 mdefine_line|#define OPENPIC_VEC_IPI&t;&t;72&t;/* and up */
 DECL|macro|OPENPIC_VEC_SPURIOUS
 mdefine_line|#define OPENPIC_VEC_SPURIOUS&t;127
+multiline_comment|/*&n; * For the OpenPIC_InitSenses table, we include both the sense&n; * and polarity in one number and mask out the value we want&n; * later on. -- Tom&n; */
+DECL|macro|IRQ_SENSE_MASK
+mdefine_line|#define IRQ_SENSE_MASK&t;&t;0x1
+DECL|macro|IRQ_SENSE_LEVEL
+mdefine_line|#define IRQ_SENSE_LEVEL&t;&t;0x1
+DECL|macro|IRQ_SENSE_EDGE
+mdefine_line|#define IRQ_SENSE_EDGE&t;&t;0x0
+DECL|macro|IRQ_POLARITY_MASK
+mdefine_line|#define IRQ_POLARITY_MASK&t;0x2
+DECL|macro|IRQ_POLARITY_POSITIVE
+mdefine_line|#define IRQ_POLARITY_POSITIVE&t;0x2
+DECL|macro|IRQ_POLARITY_NEGATIVE
+mdefine_line|#define IRQ_POLARITY_NEGATIVE&t;0x0
 multiline_comment|/* OpenPIC IRQ controller structure */
 r_extern
 r_struct
@@ -67,10 +80,6 @@ c_func
 r_int
 comma
 r_int
-comma
-r_int
-r_char
-op_star
 comma
 r_int
 )paren
