@@ -4861,9 +4861,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* USB 2.0 spec, 7.1.7.3 / fig 7-29:&n; *&n; * Between connect detection and reset signaling there must be a delay&n; * of 100ms at least for debounce and power-settling.  The corresponding&n; * timer shall restart whenever the downstream port detects a disconnect.&n; * &n; * Apparently there are some bluetooth and irda-dongles and a number of&n; * low-speed devices for which this debounce period may last over a second.&n; * Not covered by the spec - but easy to deal with.&n; *&n; * This implementation uses a 400ms total debounce timeout; if the&n; * connection isn&squot;t stable by then it returns -ETIMEDOUT.  It checks&n; * every 25ms for transient disconnects.  When the port status has been&n; * unchanged for 100ms it returns the port status.&n; */
+multiline_comment|/* USB 2.0 spec, 7.1.7.3 / fig 7-29:&n; *&n; * Between connect detection and reset signaling there must be a delay&n; * of 100ms at least for debounce and power-settling.  The corresponding&n; * timer shall restart whenever the downstream port detects a disconnect.&n; * &n; * Apparently there are some bluetooth and irda-dongles and a number of&n; * low-speed devices for which this debounce period may last over a second.&n; * Not covered by the spec - but easy to deal with.&n; *&n; * This implementation uses a 1500ms total debounce timeout; if the&n; * connection isn&squot;t stable by then it returns -ETIMEDOUT.  It checks&n; * every 25ms for transient disconnects.  When the port status has been&n; * unchanged for 100ms it returns the port status.&n; */
 DECL|macro|HUB_DEBOUNCE_TIMEOUT
-mdefine_line|#define HUB_DEBOUNCE_TIMEOUT&t; 400  /* 1500 */
+mdefine_line|#define HUB_DEBOUNCE_TIMEOUT&t;1500
 DECL|macro|HUB_DEBOUNCE_STEP
 mdefine_line|#define HUB_DEBOUNCE_STEP&t;  25
 DECL|macro|HUB_DEBOUNCE_STABLE
@@ -4945,7 +4945,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-multiline_comment|/* !(portchange &amp; USB_PORT_STAT_C_CONNECTION) &amp;&amp; */
+op_logical_neg
+(paren
+id|portchange
+op_amp
+id|USB_PORT_STAT_C_CONNECTION
+)paren
+op_logical_and
 (paren
 id|portstatus
 op_amp
@@ -4965,9 +4971,6 @@ c_cond
 id|stable_time
 op_ge
 id|HUB_DEBOUNCE_STABLE
-op_logical_and
-id|connection
-multiline_comment|/* */
 )paren
 r_break
 suffix:semicolon
