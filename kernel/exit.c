@@ -2074,8 +2074,6 @@ comma
 id|current-&gt;exit_signal
 )paren
 suffix:semicolon
-id|zap_again
-suffix:colon
 r_while
 c_loop
 (paren
