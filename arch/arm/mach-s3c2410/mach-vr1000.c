@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n; *&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Added clock init&n; *     15-Jan-2005 BJD  Add serial port device definition&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n; *&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Added clock init&n; *     15-Jan-2005 BJD  Add serial port device definition&n; *     20-Jan-2005 BJD  Use UPF_IOREMAP for ports&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -79,17 +79,6 @@ id|BAST_PA_ISAIO
 )paren
 comma
 id|SZ_16M
-comma
-id|MT_DEVICE
-)brace
-comma
-multiline_comment|/* serial ports */
-(brace
-id|VR1000_VA_SERIAL
-comma
-id|VR1000_PA_SERIAL
-comma
-id|SZ_1M
 comma
 id|MT_DEVICE
 )brace
@@ -726,8 +715,6 @@ suffix:semicolon
 multiline_comment|/* definitions for the vr1000 extra 16550 serial ports */
 DECL|macro|VR1000_BAUDBASE
 mdefine_line|#define VR1000_BAUDBASE (3692307)
-DECL|macro|VR1000_SERIAL_MEMBASE
-mdefine_line|#define VR1000_SERIAL_MEMBASE(x) ((void __iomem *)VR1000_VA_SERIAL + 0x80 + ((x) &lt;&lt; 5))
 DECL|macro|VR1000_SERIAL_MAPBASE
 mdefine_line|#define VR1000_SERIAL_MAPBASE(x) (VR1000_PA_SERIAL + 0x80 + ((x) &lt;&lt; 5))
 DECL|variable|serial_platform_data
@@ -745,15 +732,6 @@ l_int|0
 op_assign
 (brace
 dot
-id|membase
-op_assign
-id|VR1000_SERIAL_MEMBASE
-c_func
-(paren
-l_int|0
-)paren
-comma
-dot
 id|mapbase
 op_assign
 id|VR1000_SERIAL_MAPBASE
@@ -773,6 +751,8 @@ dot
 id|flags
 op_assign
 id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_IOREMAP
 comma
 dot
 id|iotype
@@ -797,15 +777,6 @@ l_int|1
 op_assign
 (brace
 dot
-id|membase
-op_assign
-id|VR1000_SERIAL_MEMBASE
-c_func
-(paren
-l_int|1
-)paren
-comma
-dot
 id|mapbase
 op_assign
 id|VR1000_SERIAL_MAPBASE
@@ -825,6 +796,8 @@ dot
 id|flags
 op_assign
 id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_IOREMAP
 comma
 dot
 id|iotype
@@ -849,15 +822,6 @@ l_int|2
 op_assign
 (brace
 dot
-id|membase
-op_assign
-id|VR1000_SERIAL_MEMBASE
-c_func
-(paren
-l_int|2
-)paren
-comma
-dot
 id|mapbase
 op_assign
 id|VR1000_SERIAL_MAPBASE
@@ -877,6 +841,8 @@ dot
 id|flags
 op_assign
 id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_IOREMAP
 comma
 dot
 id|iotype
@@ -901,15 +867,6 @@ l_int|3
 op_assign
 (brace
 dot
-id|membase
-op_assign
-id|VR1000_SERIAL_MEMBASE
-c_func
-(paren
-l_int|3
-)paren
-comma
-dot
 id|mapbase
 op_assign
 id|VR1000_SERIAL_MAPBASE
@@ -929,6 +886,8 @@ dot
 id|flags
 op_assign
 id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_IOREMAP
 comma
 dot
 id|iotype
