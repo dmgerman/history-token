@@ -19,7 +19,7 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|function|init_hwif_rz1000
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_rz1000
 (paren
 id|ide_hwif_t
