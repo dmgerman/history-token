@@ -1660,7 +1660,8 @@ c_func
 id|pte
 )paren
 op_logical_and
-id|page_mapping
+op_logical_neg
+id|PageAnon
 c_func
 (paren
 id|page
