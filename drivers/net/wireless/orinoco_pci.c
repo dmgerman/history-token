@@ -546,11 +546,6 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-multiline_comment|/* Override the normal firmware detection - the Prism 2.5 PCI&n;&t; * cards look like Lucent firmware but are actually Intersil */
-id|priv-&gt;firmware_type
-op_assign
-id|FIRMWARE_TYPE_INTERSIL
-suffix:semicolon
 id|err
 op_assign
 id|register_netdev
