@@ -11557,11 +11557,18 @@ id|mddev
 OL
 id|mddev2
 )paren
+(brace
 multiline_comment|/* arbitrarily yield */
 id|mddev-&gt;curr_resync
 op_assign
 l_int|1
 suffix:semicolon
+id|yield
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
