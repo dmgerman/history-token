@@ -194,7 +194,6 @@ id|u8
 id|fshift
 )paren
 (brace
-macro_line|#ifndef fix_u32_bug
 r_int
 id|h
 op_assign
@@ -206,29 +205,6 @@ id|sel-&gt;hmask
 op_rshift
 id|fshift
 suffix:semicolon
-macro_line|#else
-r_int
-id|h
-op_assign
-(paren
-id|key
-op_amp
-id|sel-&gt;hmask
-)paren
-suffix:semicolon
-id|h
-op_xor_assign
-id|h
-op_rshift
-l_int|16
-suffix:semicolon
-id|h
-op_xor_assign
-id|h
-op_rshift
-l_int|8
-suffix:semicolon
-macro_line|#endif
 r_return
 id|h
 suffix:semicolon
