@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.16 2002/03/17 10:18:42 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.19 2002/05/20 14:56:38 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
@@ -139,6 +139,10 @@ DECL|macro|jffs2_write_nand_badblock
 mdefine_line|#define jffs2_write_nand_badblock(c,jeb) do { ; } while(0)
 DECL|macro|jffs2_flash_writev
 mdefine_line|#define jffs2_flash_writev jffs2_flash_direct_writev
+DECL|macro|jffs2_wbuf_timeout
+mdefine_line|#define jffs2_wbuf_timeout NULL
+DECL|macro|jffs2_wbuf_process
+mdefine_line|#define jffs2_wbuf_process NULL
 macro_line|#else /* NAND support present */
 DECL|macro|jffs2_can_mark_obsolete
 mdefine_line|#define jffs2_can_mark_obsolete(c) (c-&gt;mtd-&gt;type == MTD_NORFLASH || c-&gt;mtd-&gt;type == MTD_RAM)
@@ -286,6 +290,24 @@ r_struct
 id|jffs2_eraseblock
 op_star
 id|jeb
+)paren
+suffix:semicolon
+r_void
+id|jffs2_wbuf_timeout
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
+r_void
+id|jffs2_wbuf_process
+c_func
+(paren
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 macro_line|#endif /* NAND */

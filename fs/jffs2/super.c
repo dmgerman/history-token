@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.64 2002/03/17 10:18:42 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.71 2002/07/23 12:57:38 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,12 +7,12 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_void
 id|jffs2_put_super
@@ -1158,12 +1158,26 @@ c_func
 id|c
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
+)paren
+suffix:semicolon
 id|jffs2_flush_wbuf
 c_func
 (paren
 id|c
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
 id|jffs2_free_ino_caches
@@ -1182,6 +1196,23 @@ id|kfree
 c_func
 (paren
 id|c-&gt;blocks
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;wbuf
+)paren
+id|kfree
+c_func
+(paren
+id|c-&gt;wbuf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|c-&gt;inocache_list
 )paren
 suffix:semicolon
 r_if
@@ -1357,8 +1388,8 @@ id|KERN_ERR
 l_string|&quot;JFFS2 error: Failed to initialise zlib workspaces&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|ret
@@ -1381,8 +1412,8 @@ id|KERN_ERR
 l_string|&quot;JFFS2 error: Failed to initialise slab caches&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out_zlib
 suffix:semicolon
 )brace
 id|ret
@@ -1407,12 +1438,29 @@ id|KERN_ERR
 l_string|&quot;JFFS2 error: Failed to register filesystem&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|out_slab
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+id|out_slab
+suffix:colon
 id|jffs2_destroy_slab_caches
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
+id|out_zlib
+suffix:colon
+id|jffs2_zlib_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|ret
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: file.c,v 1.70 2002/03/05 09:55:07 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: file.c,v 1.74 2002/07/23 12:58:53 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* for min() */
 macro_line|#include &lt;linux/slab.h&gt;
@@ -120,6 +120,13 @@ id|down
 c_func
 (paren
 op_amp
+id|c-&gt;alloc_sem
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
 id|f-&gt;sem
 )paren
 suffix:semicolon
@@ -136,6 +143,13 @@ c_func
 (paren
 op_amp
 id|f-&gt;sem
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
 r_return
@@ -1249,7 +1263,7 @@ op_assign
 id|JFFS2_INODE_INFO
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode
+id|pg-&gt;mapping-&gt;host
 )paren
 suffix:semicolon
 r_int
@@ -1267,7 +1281,7 @@ op_assign
 id|jffs2_do_readpage_unlock
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode
+id|pg-&gt;mapping-&gt;host
 comma
 id|pg
 )paren
@@ -1309,7 +1323,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
+id|pg-&gt;mapping-&gt;host
 suffix:semicolon
 r_struct
 id|jffs2_inode_info
@@ -1805,7 +1819,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
+id|pg-&gt;mapping-&gt;host
 suffix:semicolon
 r_struct
 id|jffs2_inode_info

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.68 2002/03/08 11:27:19 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.74 2002/06/26 01:20:43 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -111,6 +111,8 @@ id|nlink
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|INOCACHE_HASHSIZE
+mdefine_line|#define INOCACHE_HASHSIZE 128
 DECL|struct|jffs2_scan_info
 r_struct
 id|jffs2_scan_info
@@ -260,11 +262,6 @@ r_uint32
 id|ofs
 suffix:semicolon
 multiline_comment|/* Don&squot;t really need this, but optimisation */
-DECL|member|node_ofs
-r_uint32
-id|node_ofs
-suffix:semicolon
-multiline_comment|/* offset within the physical node */
 )brace
 suffix:semicolon
 DECL|struct|jffs2_eraseblock
@@ -343,6 +340,9 @@ DECL|macro|JFFS2_RESERVED_BLOCKS_GCBAD
 mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCBAD (JFFS2_RESERVED_BLOCKS_BASE + 1)&t;&t;/* ... pick a block from the bad_list to GC */
 DECL|macro|JFFS2_RESERVED_BLOCKS_GCMERGE
 mdefine_line|#define JFFS2_RESERVED_BLOCKS_GCMERGE (JFFS2_RESERVED_BLOCKS_BASE)&t;&t;/* ... merge pages when garbage collecting */
+multiline_comment|/* How much dirty space before it goes on the very_dirty_list */
+DECL|macro|VERYDIRTY
+mdefine_line|#define VERYDIRTY(c, size) ((size) &gt;= ((c)-&gt;sector_size / 2))
 DECL|macro|PAD
 mdefine_line|#define PAD(x) (((x)+3)&amp;~3)
 DECL|function|jffs2_raw_ref_to_inum
@@ -630,6 +630,16 @@ r_struct
 id|jffs2_raw_node_ref
 op_star
 id|raw
+)paren
+suffix:semicolon
+r_void
+id|jffs2_dump_block_lists
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
 )paren
 suffix:semicolon
 multiline_comment|/* write.c */
@@ -1247,6 +1257,16 @@ suffix:semicolon
 multiline_comment|/* scan.c */
 r_int
 id|jffs2_scan_medium
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+r_void
+id|jffs2_rotate_lists
 c_func
 (paren
 r_struct

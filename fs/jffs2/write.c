@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: write.c,v 1.52 2002/03/08 11:01:43 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: write.c,v 1.56 2002/07/10 14:05:16 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -292,7 +292,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ARGH. About to write node to 0x%08x on flash, but there&squot;s data already there:&bslash;n&quot;
+l_string|&quot;ARGH. About to write node to 0x%08x on flash, but there are data already there:&bslash;n&quot;
 comma
 id|ofs
 )paren
@@ -2035,9 +2035,18 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|f-&gt;sem
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+)brace
 id|ri-&gt;data_crc
 op_assign
 l_int|0
@@ -2731,13 +2740,16 @@ op_amp
 id|dir_f-&gt;sem
 )paren
 suffix:semicolon
+multiline_comment|/* dead_f is NULL if this was a rename not a real unlink */
+multiline_comment|/* Also catch the !f-&gt;inocache case, where there was a dirent&n;&t;   pointing to an inode which didn&squot;t exist. */
 r_if
 c_cond
 (paren
 id|dead_f
+op_logical_and
+id|dead_f-&gt;inocache
 )paren
 (brace
-multiline_comment|/* Null if this was a rename not a real unlink */
 id|down
 c_func
 (paren

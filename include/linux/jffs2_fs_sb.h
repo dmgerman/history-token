@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.26 2002/03/17 10:18:42 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.31 2002/07/02 22:48:24 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-DECL|macro|INOCACHE_HASHSIZE
-mdefine_line|#define INOCACHE_HASHSIZE 14
 DECL|macro|JFFS2_SB_FLAG_RO
 mdefine_line|#define JFFS2_SB_FLAG_RO 1
 DECL|macro|JFFS2_SB_FLAG_MOUNTING
@@ -58,6 +56,11 @@ id|semaphore
 id|alloc_sem
 suffix:semicolon
 multiline_comment|/* Used to protect all the following &n;&t;&t;&t;&t;&t;   fields, and also to protect against&n;&t;&t;&t;&t;&t;   out-of-order writing of nodes.&n;&t;&t;&t;&t;&t;   And GC.&n;&t;&t;&t;&t;&t;*/
+DECL|member|cleanmarker_size
+r_uint32
+id|cleanmarker_size
+suffix:semicolon
+multiline_comment|/* Size of an _inline_ CLEANMARKER&n;&t;&t;&t;&t;&t; (i.e. zero for OOB CLEANMARKER */
 DECL|member|flash_size
 r_uint32
 id|flash_size
@@ -125,6 +128,12 @@ id|list_head
 id|clean_list
 suffix:semicolon
 multiline_comment|/* Blocks 100% full of clean data */
+DECL|member|very_dirty_list
+r_struct
+id|list_head
+id|very_dirty_list
+suffix:semicolon
+multiline_comment|/* Blocks with lots of dirty space */
 DECL|member|dirty_list
 r_struct
 id|list_head
@@ -193,21 +202,12 @@ DECL|member|inocache_list
 r_struct
 id|jffs2_inode_cache
 op_star
+op_star
 id|inocache_list
-(braket
-id|INOCACHE_HASHSIZE
-)braket
 suffix:semicolon
 DECL|member|inocache_lock
 id|spinlock_t
 id|inocache_lock
-suffix:semicolon
-multiline_comment|/* This _really_ speeds up mounts. */
-DECL|member|inocache_last
-r_struct
-id|jffs2_inode_cache
-op_star
-id|inocache_last
 suffix:semicolon
 multiline_comment|/* Sem to allow jffs2_garbage_collect_deletion_dirent to&n;&t;   drop the erase_completion_lock while it&squot;s holding a pointer &n;&t;   to an obsoleted node. I don&squot;t like this. Alternatives welcomed. */
 DECL|member|erase_free_sem
@@ -234,6 +234,18 @@ DECL|member|wbuf_pagesize
 r_uint32
 id|wbuf_pagesize
 suffix:semicolon
+DECL|member|wbuf_task
+r_struct
+id|tq_struct
+id|wbuf_task
+suffix:semicolon
+multiline_comment|/* task for timed wbuf flush */
+DECL|member|wbuf_timer
+r_struct
+id|timer_list
+id|wbuf_timer
+suffix:semicolon
+multiline_comment|/* timer for flushing wbuf */
 multiline_comment|/* OS-private pointer for getting back to master superblock info */
 DECL|member|os_priv
 r_void

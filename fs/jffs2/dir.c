@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.68 2002/03/11 12:36:59 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.70 2002/06/20 23:33:12 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3534,9 +3534,95 @@ c_func
 id|old_dir_i-&gt;i_sb
 )paren
 suffix:semicolon
+r_struct
+id|jffs2_inode_info
+op_star
+id|victim_f
+op_assign
+l_int|NULL
+suffix:semicolon
 r_uint8
 id|type
 suffix:semicolon
+multiline_comment|/* The VFS will check for us and prevent trying to rename a &n;&t; * file over a directory and vice versa, but if it&squot;s a directory,&n;&t; * the VFS can&squot;t check whether the victim is empty. The filesystem&n;&t; * needs to do that for itself.&n;&t; */
+r_if
+c_cond
+(paren
+id|new_dentry-&gt;d_inode
+)paren
+(brace
+id|victim_f
+op_assign
+id|JFFS2_INODE_INFO
+c_func
+(paren
+id|new_dentry-&gt;d_inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|new_dentry-&gt;d_inode-&gt;i_mode
+)paren
+)paren
+(brace
+r_struct
+id|jffs2_full_dirent
+op_star
+id|fd
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|victim_f-&gt;sem
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|fd
+op_assign
+id|victim_f-&gt;dents
+suffix:semicolon
+id|fd
+suffix:semicolon
+id|fd
+op_assign
+id|fd-&gt;next
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fd-&gt;ino
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|victim_f-&gt;sem
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOTEMPTY
+suffix:semicolon
+)brace
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|victim_f-&gt;sem
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* XXX: We probably ought to alloc enough space for&n;&t;   both nodes at the same time. Writing the new link, &n;&t;   then getting -ENOSPC, is quite bad :)&n;&t;*/
 multiline_comment|/* Make a hard link */
 multiline_comment|/* XXX: This is ugly */
@@ -3593,11 +3679,51 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|victim_f
+)paren
+(brace
+multiline_comment|/* There was a victim. Kill it off nicely */
+id|new_dentry-&gt;d_inode-&gt;i_nlink
+op_decrement
+suffix:semicolon
+multiline_comment|/* Don&squot;t oops if the victim was a dirent pointing to an&n;&t;&t;   inode which didn&squot;t exist. */
+r_if
+c_cond
+(paren
+id|victim_f-&gt;inocache
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|victim_f-&gt;sem
+)paren
+suffix:semicolon
+id|victim_f-&gt;inocache-&gt;nlink
+op_decrement
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|victim_f-&gt;sem
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* If it was a directory we moved, and there was no victim, &n;&t;   increase i_nlink on its new parent */
+r_if
+c_cond
+(paren
 id|S_ISDIR
 c_func
 (paren
 id|old_dentry-&gt;d_inode-&gt;i_mode
 )paren
+op_logical_and
+op_logical_neg
+id|victim_f
 )paren
 id|new_dir_i-&gt;i_nlink
 op_increment

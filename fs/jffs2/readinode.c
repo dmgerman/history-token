@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: readinode.c,v 1.71 2002/03/06 12:25:59 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: readinode.c,v 1.73 2002/05/20 14:56:38 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1591,6 +1591,13 @@ id|latest_node
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: If this fails, there seems to be a memory leak. Find it. */
+id|up
+c_func
+(paren
+op_amp
+id|f-&gt;sem
+)paren
+suffix:semicolon
 id|jffs2_do_clear_inode
 c_func
 (paren
@@ -1647,6 +1654,13 @@ id|fn-&gt;raw-&gt;flash_offset
 op_amp
 op_complement
 l_int|3
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|f-&gt;sem
 )paren
 suffix:semicolon
 id|jffs2_do_clear_inode
@@ -1747,6 +1761,13 @@ comma
 id|latest_node-&gt;mode
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|f-&gt;sem
+)paren
+suffix:semicolon
 id|jffs2_do_clear_inode
 c_func
 (paren
@@ -1776,6 +1797,13 @@ comma
 id|ino
 comma
 id|latest_node-&gt;mode
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|f-&gt;sem
 )paren
 suffix:semicolon
 id|jffs2_do_clear_inode
@@ -1810,6 +1838,13 @@ id|latest_node-&gt;mode
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Deal with it - check crc32, check for duplicate node, check times and discard the older one */
+id|up
+c_func
+(paren
+op_amp
+id|f-&gt;sem
+)paren
+suffix:semicolon
 id|jffs2_do_clear_inode
 c_func
 (paren

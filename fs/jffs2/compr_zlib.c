@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_zlib.c,v 1.15 2002/03/04 09:35:48 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_zlib.c,v 1.18 2002/05/20 14:56:37 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __KERNEL__
 macro_line|#error &quot;The userspace support got too messy and was removed. Update your mkfs.jffs2&quot;
 macro_line|#endif
@@ -68,6 +68,7 @@ id|deflate_workspace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Failed to allocate %d bytes for deflate workspace&bslash;n&quot;
 comma
 id|zlib_deflate_workspacesize
@@ -87,6 +88,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Allocated %d bytes for deflate workspace&bslash;n&quot;
 comma
 id|zlib_deflate_workspacesize
@@ -117,6 +119,7 @@ id|inflate_workspace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Failed to allocate %d bytes for inflate workspace&bslash;n&quot;
 comma
 id|zlib_inflate_workspacesize
@@ -142,6 +145,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Allocated %d bytes for inflate workspace&bslash;n&quot;
 comma
 id|zlib_inflate_workspacesize
@@ -157,7 +161,6 @@ suffix:semicolon
 )brace
 DECL|function|jffs2_zlib_exit
 r_void
-id|__exit
 id|jffs2_zlib_exit
 c_func
 (paren

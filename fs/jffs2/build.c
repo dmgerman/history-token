@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.32 2002/03/08 15:11:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.35 2002/05/20 14:56:37 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
@@ -371,6 +371,13 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;Pass 3 complete&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Rotate the lists by some number to ensure wear levelling */
+id|jffs2_rotate_lists
+c_func
+(paren
+id|c
 )paren
 suffix:semicolon
 r_return
@@ -1245,6 +1252,13 @@ c_func
 (paren
 op_amp
 id|c-&gt;clean_list
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|c-&gt;very_dirty_list
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD

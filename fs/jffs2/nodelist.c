@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.42 2002/03/11 11:17:29 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.47 2002/06/26 01:25:30 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -270,7 +270,7 @@ r_new
 suffix:semicolon
 id|out
 suffix:colon
-id|D1
+id|D2
 c_func
 (paren
 r_while
@@ -1529,23 +1529,6 @@ op_amp
 id|c-&gt;inocache_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;inocache_last
-op_logical_and
-id|c-&gt;inocache_last-&gt;ino
-op_eq
-id|ino
-)paren
-(brace
-id|ret
-op_assign
-id|c-&gt;inocache_last
-suffix:semicolon
-)brace
-r_else
-(brace
 id|ret
 op_assign
 id|c-&gt;inocache_list
@@ -1583,7 +1566,6 @@ id|ret
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -1710,10 +1692,6 @@ id|prev
 op_assign
 r_new
 suffix:semicolon
-id|c-&gt;inocache_last
-op_assign
-r_new
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1822,17 +1800,6 @@ op_assign
 id|old-&gt;next
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|c-&gt;inocache_last
-op_eq
-id|old
-)paren
-id|c-&gt;inocache_last
-op_assign
-l_int|NULL
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1929,10 +1896,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|c-&gt;inocache_last
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 DECL|function|jffs2_free_raw_node_refs
 r_void
