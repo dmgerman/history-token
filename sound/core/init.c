@@ -227,6 +227,10 @@ id|card-&gt;id
 )paren
 suffix:semicolon
 )brace
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -319,10 +323,10 @@ op_lshift
 id|idx
 )paren
 )paren
-id|idx
+id|err
 op_assign
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* invalid */
 )brace
@@ -342,15 +346,19 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* increase the limit */
 r_else
-id|idx
+id|err
 op_assign
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|idx
+OL
+l_int|0
+op_logical_or
+id|err
 OL
 l_int|0
 )paren
@@ -362,18 +370,11 @@ op_amp
 id|snd_card_rwlock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|idx
-op_ge
-id|snd_ecards_limit
-)paren
 id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;card %i is out of range (0-%i)&bslash;n&quot;
+l_string|&quot;cannot find the slot for index %d (range 0-%i)&bslash;n&quot;
 comma
 id|idx
 comma
@@ -1064,7 +1065,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|snd_info_free_entry
+id|snd_info_unregister
 c_func
 (paren
 id|card-&gt;proc_id

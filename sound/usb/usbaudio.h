@@ -193,6 +193,12 @@ DECL|member|next_midi_device
 r_int
 id|next_midi_device
 suffix:semicolon
+DECL|member|ignore_ctl_error
+r_int
+r_int
+id|ignore_ctl_error
+suffix:semicolon
+multiline_comment|/* for mixer */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Information about devices with broken descriptors&n; */

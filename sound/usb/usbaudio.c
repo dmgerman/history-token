@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -320,7 +319,7 @@ c_func
 id|nrpacks
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{2,10}}&quot;
+l_string|&quot;,allows:{{1,10}}&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -396,14 +395,12 @@ r_int
 id|channels
 suffix:semicolon
 multiline_comment|/* # channels */
-DECL|member|nonaudio
+DECL|member|fmt_type
 r_int
 r_int
-id|nonaudio
-suffix:colon
-l_int|1
+id|fmt_type
 suffix:semicolon
-multiline_comment|/* non-audio (type II) */
+multiline_comment|/* USB audio format type (1-3) */
 DECL|member|frame_size
 r_int
 r_int
@@ -743,14 +740,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* fill max packet size always */
-DECL|member|nonaudio
+DECL|member|fmt_type
 r_int
 r_int
-id|nonaudio
-suffix:colon
-l_int|1
+id|fmt_type
 suffix:semicolon
-multiline_comment|/* Type II format (MPEG, AC3) */
+multiline_comment|/* USB audio format type (1-3) */
 DECL|member|running
 r_int
 r_int
@@ -882,6 +877,12 @@ DECL|member|pcm_index
 r_int
 id|pcm_index
 suffix:semicolon
+DECL|member|fmt_type
+r_int
+r_int
+id|fmt_type
+suffix:semicolon
+multiline_comment|/* USB audio format type (1-3) */
 DECL|member|substream
 id|snd_usb_substream_t
 id|substream
@@ -2087,7 +2088,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|subs-&gt;nonaudio
+id|subs-&gt;fmt_type
+op_eq
+id|USB_FORMAT_TYPE_II
 )paren
 (brace
 r_if
@@ -4123,7 +4126,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|subs-&gt;nonaudio
+id|subs-&gt;fmt_type
+op_eq
+id|USB_FORMAT_TYPE_II
 )paren
 id|u-&gt;packets
 op_increment
@@ -5320,8 +5325,10 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* check sync-pipe endpoint */
+multiline_comment|/* ... and check descriptor size before accessing bSynchAddress&n;&t;&t;   because there is a version of the SB Audigy 2 NX firmware lacking&n;&t;&t;   the audio fields in the endpoint descriptors */
 r_if
 c_cond
+(paren
 (paren
 id|get_endpoint
 c_func
@@ -5332,9 +5339,25 @@ l_int|1
 )paren
 op_member_access_from_pointer
 id|bmAttributes
+op_amp
+id|USB_ENDPOINT_XFERTYPE_MASK
+)paren
 op_ne
 l_int|0x01
 op_logical_or
+(paren
+id|get_endpoint
+c_func
+(paren
+id|alts
+comma
+l_int|1
+)paren
+op_member_access_from_pointer
+id|bLength
+op_ge
+id|USB_DT_ENDPOINT_AUDIO_SIZE
+op_logical_and
 id|get_endpoint
 c_func
 (paren
@@ -5346,6 +5369,7 @@ op_member_access_from_pointer
 id|bSynchAddress
 op_ne
 l_int|0
+)paren
 )paren
 (brace
 id|snd_printk
@@ -5380,6 +5404,19 @@ id|bEndpointAddress
 suffix:semicolon
 r_if
 c_cond
+(paren
+id|get_endpoint
+c_func
+(paren
+id|alts
+comma
+l_int|0
+)paren
+op_member_access_from_pointer
+id|bLength
+op_ge
+id|USB_DT_ENDPOINT_AUDIO_SIZE
+op_logical_and
 (paren
 (paren
 id|is_playback
@@ -5428,6 +5465,7 @@ id|bSynchAddress
 op_amp
 op_complement
 id|USB_DIR_IN
+)paren
 )paren
 )paren
 )paren
@@ -7650,7 +7688,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fp-&gt;nonaudio
+id|fp-&gt;fmt_type
+op_eq
+id|USB_FORMAT_TYPE_II
 op_logical_and
 id|fp-&gt;frame_size
 OG
@@ -8849,12 +8889,25 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;    Momentary freq = %d,%03d Hz&bslash;n&quot;
+l_string|&quot;    Momentary freq = %d.%d Hz&bslash;n&quot;
 comma
+(paren
+id|subs-&gt;freqm
+op_star
+l_int|125
+)paren
+op_rshift
+l_int|11
+comma
+(paren
 id|subs-&gt;freqm
 op_rshift
-l_int|14
-comma
+l_int|10
+)paren
+op_star
+l_int|625
+op_plus
+(paren
 (paren
 (paren
 id|subs-&gt;freqm
@@ -8863,24 +8916,29 @@ op_amp
 (paren
 l_int|1
 op_lshift
-l_int|14
+l_int|10
 )paren
 op_minus
 l_int|1
 )paren
 )paren
 op_star
-l_int|1000
+l_int|625
 )paren
-op_div
-(paren
-(paren
-l_int|1
-op_lshift
-l_int|14
+op_rshift
+l_int|10
 )paren
 op_minus
-l_int|1
+l_int|10
+op_star
+(paren
+(paren
+id|subs-&gt;freqm
+op_star
+l_int|125
+)paren
+op_rshift
+l_int|11
 )paren
 )paren
 suffix:semicolon
@@ -9165,6 +9223,14 @@ id|stream
 dot
 id|substream
 comma
+id|SNDRV_DMA_TYPE_CONTINUOUS
+comma
+id|snd_dma_continuous_data
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+comma
 l_int|64
 op_star
 l_int|1024
@@ -9172,8 +9238,6 @@ comma
 l_int|128
 op_star
 l_int|1024
-comma
-id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|snd_pcm_set_ops
@@ -9218,9 +9282,9 @@ suffix:semicolon
 id|subs-&gt;num_formats
 op_increment
 suffix:semicolon
-id|subs-&gt;nonaudio
+id|subs-&gt;fmt_type
 op_assign
-id|fp-&gt;nonaudio
+id|fp-&gt;fmt_type
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * free a substream&n; */
@@ -9446,6 +9510,15 @@ comma
 id|list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|as-&gt;fmt_type
+op_ne
+id|fp-&gt;fmt_type
+)paren
+r_continue
+suffix:semicolon
 id|subs
 op_assign
 op_amp
@@ -9460,7 +9533,7 @@ c_cond
 op_logical_neg
 id|subs-&gt;endpoint
 )paren
-r_break
+r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -9470,40 +9543,6 @@ op_eq
 id|fp-&gt;endpoint
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fp-&gt;nonaudio
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|subs-&gt;nonaudio
-op_logical_or
-id|subs-&gt;formats
-op_ne
-(paren
-l_int|1ULL
-op_lshift
-id|fp-&gt;format
-)paren
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* non-linear formats are handled exclusively */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|subs-&gt;nonaudio
-)paren
-r_continue
-suffix:semicolon
-)brace
 id|list_add_tail
 c_func
 (paren
@@ -9549,6 +9588,15 @@ id|snd_usb_stream_t
 comma
 id|list
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|as-&gt;fmt_type
+op_ne
+id|fp-&gt;fmt_type
+)paren
+r_continue
 suffix:semicolon
 id|subs
 op_assign
@@ -9645,6 +9693,10 @@ suffix:semicolon
 id|as-&gt;chip
 op_assign
 id|chip
+suffix:semicolon
+id|as-&gt;fmt_type
+op_assign
+id|fp-&gt;fmt_type
 suffix:semicolon
 id|err
 op_assign
@@ -10610,10 +10662,6 @@ id|fp-&gt;channels
 op_assign
 l_int|1
 suffix:semicolon
-id|fp-&gt;nonaudio
-op_assign
-l_int|1
-suffix:semicolon
 id|brate
 op_assign
 id|combine_word
@@ -10776,6 +10824,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|fp-&gt;fmt_type
+op_assign
+id|fmt
+(braket
+l_int|3
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11196,6 +11251,41 @@ comma
 id|alts-&gt;endpoint
 (braket
 l_int|0
+)braket
+dot
+id|extralen
+comma
+l_int|NULL
+comma
+id|USB_DT_CS_ENDPOINT
+)paren
+suffix:semicolon
+multiline_comment|/* Creamware Noah has this descriptor after the 2nd endpoint */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|csep
+op_logical_and
+id|altsd-&gt;bNumEndpoints
+op_ge
+l_int|2
+)paren
+id|csep
+op_assign
+id|snd_usb_find_desc
+c_func
+(paren
+id|alts-&gt;endpoint
+(braket
+l_int|1
+)braket
+dot
+id|extra
+comma
+id|alts-&gt;endpoint
+(braket
+l_int|1
 )braket
 dot
 id|extralen

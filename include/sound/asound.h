@@ -343,7 +343,7 @@ id|sndrv_hwdep_dsp_image
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 5)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 6)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int

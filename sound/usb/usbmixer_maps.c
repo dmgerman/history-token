@@ -38,6 +38,10 @@ id|usbmix_name_map
 op_star
 id|map
 suffix:semicolon
+DECL|member|ignore_ctl_error
+r_int
+id|ignore_ctl_error
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * USB control mappers for SB Exitigy&n; */
@@ -200,6 +204,13 @@ comma
 multiline_comment|/* DISABLED: EU (for what?) */
 multiline_comment|/* 28: FU speaker (mute) */
 (brace
+l_int|29
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Digital Input Playback Source? */
+(brace
 l_int|0
 )brace
 multiline_comment|/* terminator */
@@ -279,6 +290,8 @@ comma
 l_int|0x3000
 comma
 id|extigy_map
+comma
+l_int|1
 )brace
 comma
 (brace
@@ -287,6 +300,8 @@ comma
 l_int|0x1158
 comma
 id|justlink_map
+comma
+l_int|0
 )brace
 comma
 (brace
