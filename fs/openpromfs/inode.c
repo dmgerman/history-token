@@ -1948,7 +1948,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|filp-&gt;f_pos
+op_plus
+id|count
+)paren
 op_ge
 l_int|0xffffff
 )paren
