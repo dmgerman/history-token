@@ -13363,11 +13363,6 @@ op_assign
 id|lanai_change_qos
 comma
 dot
-id|free_rx_skb
-op_assign
-l_int|NULL
-comma
-dot
 id|proc_read
 op_assign
 id|lanai_proc_read

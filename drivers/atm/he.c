@@ -1,6 +1,6 @@
 multiline_comment|/* $Id: he.c,v 1.18 2003/05/06 22:57:15 chas Exp $ */
 multiline_comment|/*&n;&n;  he.c&n;&n;  ForeRunnerHE ATM Adapter driver for ATM on Linux&n;  Copyright (C) 1999-2001  Naval Research Laboratory&n;&n;  This library is free software; you can redistribute it and/or&n;  modify it under the terms of the GNU Lesser General Public&n;  License as published by the Free Software Foundation; either&n;  version 2.1 of the License, or (at your option) any later version.&n;&n;  This library is distributed in the hope that it will be useful,&n;  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;  Lesser General Public License for more details.&n;&n;  You should have received a copy of the GNU Lesser General Public&n;  License along with this library; if not, write to the Free Software&n;  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
-multiline_comment|/*&n;&n;  he.c&n;&n;  ForeRunnerHE ATM Adapter driver for ATM on Linux&n;  Copyright (C) 1999-2001  Naval Research Laboratory&n;&n;  Permission to use, copy, modify and distribute this software and its&n;  documentation is hereby granted, provided that both the copyright&n;  notice and this permission notice appear in all copies of the software,&n;  derivative works or modified versions, and any portions thereof, and&n;  that both notices appear in supporting documentation.&n;&n;  NRL ALLOWS FREE USE OF THIS SOFTWARE IN ITS &quot;AS IS&quot; CONDITION AND&n;  DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER&n;  RESULTING FROM THE USE OF THIS SOFTWARE.&n;&n;  This driver was written using the &quot;Programmer&squot;s Reference Manual for&n;  ForeRunnerHE(tm)&quot;, MANU0361-01 - Rev. A, 08/21/98.&n;&n;  AUTHORS:&n;&t;chas williams &lt;chas@cmf.nrl.navy.mil&gt;&n;&t;eric kinzie &lt;ekinzie@cmf.nrl.navy.mil&gt;&n;&n;  NOTES:&n;&t;4096 supported &squot;connections&squot;&n;&t;group 0 is used for all traffic&n;&t;interrupt queue 0 is used for all interrupts&n;&t;aal0 support for receive only&n;&n; */
+multiline_comment|/*&n;&n;  he.c&n;&n;  ForeRunnerHE ATM Adapter driver for ATM on Linux&n;  Copyright (C) 1999-2001  Naval Research Laboratory&n;&n;  Permission to use, copy, modify and distribute this software and its&n;  documentation is hereby granted, provided that both the copyright&n;  notice and this permission notice appear in all copies of the software,&n;  derivative works or modified versions, and any portions thereof, and&n;  that both notices appear in supporting documentation.&n;&n;  NRL ALLOWS FREE USE OF THIS SOFTWARE IN ITS &quot;AS IS&quot; CONDITION AND&n;  DISCLAIMS ANY LIABILITY OF ANY KIND FOR ANY DAMAGES WHATSOEVER&n;  RESULTING FROM THE USE OF THIS SOFTWARE.&n;&n;  This driver was written using the &quot;Programmer&squot;s Reference Manual for&n;  ForeRunnerHE(tm)&quot;, MANU0361-01 - Rev. A, 08/21/98.&n;&n;  AUTHORS:&n;&t;chas williams &lt;chas@cmf.nrl.navy.mil&gt;&n;&t;eric kinzie &lt;ekinzie@cmf.nrl.navy.mil&gt;&n;&n;  NOTES:&n;&t;4096 supported &squot;connections&squot;&n;&t;group 0 is used for all traffic&n;&t;interrupt queue 0 is used for all interrupts&n;&t;aal0 support (based on work from ulrich.u.muller@nokia.com)&n;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -81,21 +81,15 @@ macro_line|#include &quot;he.h&quot;
 macro_line|#include &quot;suni.h&quot;
 macro_line|#include &lt;linux/atm_he.h&gt;
 DECL|macro|hprintk
-mdefine_line|#define hprintk(fmt,args...)&t;printk(DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number, args)
-DECL|macro|hprintk1
-mdefine_line|#define hprintk1(fmt)&t;&t;printk(DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number)
+mdefine_line|#define hprintk(fmt,args...)&t;printk(KERN_ERR DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number, ##args)
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|HPRINTK
 mdefine_line|#define HPRINTK(fmt,args...)&t;hprintk(fmt,args)
-DECL|macro|HPRINTK1
-mdefine_line|#define HPRINTK1(fmt)&t;&t;hprintk1(fmt)
 macro_line|#else
 DECL|macro|HPRINTK
-mdefine_line|#define HPRINTK(fmt,args...)
-DECL|macro|HPRINTK1
-mdefine_line|#define HPRINTK1(fmt,args...)
+mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while(0)
 macro_line|#endif /* DEBUG */
 multiline_comment|/* version definition */
 DECL|variable|version
@@ -106,9 +100,6 @@ id|version
 op_assign
 l_string|&quot;$Id: he.c,v 1.18 2003/05/06 22:57:15 chas Exp $&quot;
 suffix:semicolon
-multiline_comment|/* defines */
-DECL|macro|ALIGN_ADDRESS
-mdefine_line|#define ALIGN_ADDRESS(addr, alignment) &bslash;&n;&t;((((unsigned long) (addr)) + (((unsigned long) (alignment)) - 1)) &amp; ~(((unsigned long) (alignment)) - 1))
 multiline_comment|/* declarations */
 r_static
 r_int
@@ -1690,7 +1681,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc tpdrq&bslash;n&quot;
@@ -2881,7 +2872,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbps pages&bslash;n&quot;
@@ -2916,7 +2907,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbps page pool&bslash;n&quot;
@@ -2955,7 +2946,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc rbps&bslash;n&quot;
@@ -3322,7 +3313,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbpl pool&bslash;n&quot;
@@ -3361,7 +3352,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create rbpl pages&bslash;n&quot;
@@ -3400,7 +3391,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc rbpl&bslash;n&quot;
@@ -3670,7 +3661,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate rbrq&bslash;n&quot;
@@ -3767,7 +3758,7 @@ c_cond
 id|irq_coalesce
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;coalescing interrupts&bslash;n&quot;
@@ -3855,7 +3846,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate tbrq&bslash;n&quot;
@@ -4004,7 +3995,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate irq&bslash;n&quot;
@@ -4451,7 +4442,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read GEN_CNTL_0&bslash;n&quot;
@@ -4488,7 +4479,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t write GEN_CNTL_0.&bslash;n&quot;
@@ -4516,7 +4507,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read PCI_COMMAND.&bslash;n&quot;
@@ -4553,7 +4544,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t enable memory.&bslash;n&quot;
@@ -4579,7 +4570,7 @@ id|cache_size
 )paren
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read cache line size?&bslash;n&quot;
@@ -4639,7 +4630,7 @@ id|timer
 )paren
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t read latency timer?&bslash;n&quot;
@@ -4718,7 +4709,7 @@ id|HE_REGMAP_SIZE
 )paren
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;can&squot;t set up page mapping&bslash;n&quot;
@@ -4781,7 +4772,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;reset failed&bslash;n&quot;
@@ -4828,7 +4819,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;disabling 64-bit pci bus transfers&bslash;n&quot;
@@ -4847,7 +4838,7 @@ id|gen_cntl_0
 op_amp
 id|ENBL_64
 )paren
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;64-bit transfers enabled&bslash;n&quot;
@@ -6451,7 +6442,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to create tpd pci_pool&bslash;n&quot;
@@ -6905,7 +6896,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to allocate host status page&bslash;n&quot;
@@ -7094,7 +7085,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;failed to alloc he_vcc_table&bslash;n&quot;
@@ -8125,7 +8116,7 @@ op_star
 id|he_vcc
 suffix:semicolon
 r_struct
-id|iovec
+id|he_iovec
 op_star
 id|iov
 suffix:semicolon
@@ -8457,10 +8448,6 @@ suffix:semicolon
 )brace
 id|he_vcc-&gt;iov_tail-&gt;iov_base
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|RBRQ_ADDR
 c_func
 (paren
@@ -8516,11 +8503,13 @@ macro_line|#ifdef notdef
 r_if
 c_cond
 (paren
+(paren
 id|he_vcc-&gt;iov_tail
 op_minus
 id|he_vcc-&gt;iov_head
+)paren
 OG
-l_int|32
+id|HE_MAXIOV
 )paren
 (brace
 id|hprintk
@@ -8750,9 +8739,6 @@ macro_line|#ifdef USE_RBPS
 r_if
 c_cond
 (paren
-(paren
-id|u32
-)paren
 id|iov-&gt;iov_base
 op_amp
 id|RBP_SMALLBUF
@@ -8964,9 +8950,6 @@ macro_line|#ifdef USE_RBPS
 r_if
 c_cond
 (paren
-(paren
-id|u32
-)paren
 id|iov-&gt;iov_base
 op_amp
 id|RBP_SMALLBUF
@@ -10098,7 +10081,7 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HPRINTK1
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;phy interrupt&bslash;n&quot;
@@ -10120,7 +10103,7 @@ id|group
 r_case
 id|ITYPE_PARITY
 suffix:colon
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;parity error&bslash;n&quot;
@@ -10405,7 +10388,7 @@ op_eq
 id|he_dev-&gt;irq_head
 )paren
 (brace
-id|HPRINTK1
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;tailoffset not updated?&bslash;n&quot;
@@ -10464,7 +10447,7 @@ op_eq
 id|he_dev-&gt;irq_tail
 multiline_comment|/* &amp;&amp; !IRQ_PENDING */
 )paren
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;spurious (or shared) interrupt?&bslash;n&quot;
@@ -10999,7 +10982,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;unable to allocate he_vcc during open&bslash;n&quot;
@@ -12970,7 +12953,7 @@ op_member_access_from_pointer
 id|nr_frags
 )paren
 (brace
-id|hprintk1
+id|hprintk
 c_func
 (paren
 l_string|&quot;no scatter/gather support&bslash;n&quot;

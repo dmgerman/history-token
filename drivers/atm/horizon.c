@@ -5925,13 +5925,13 @@ r_int
 r_int
 id|tx_iovcnt
 op_assign
-id|ATM_SKB
+id|skb_shinfo
 c_func
 (paren
 id|skb
 )paren
 op_member_access_from_pointer
-id|iovcnt
+id|nr_frags
 suffix:semicolon
 singleline_comment|// remember this so we can free it later
 id|dev-&gt;tx_skb
@@ -5951,13 +5951,9 @@ id|tx_iovcnt
 suffix:semicolon
 id|dev-&gt;tx_iovec
 op_assign
-(paren
-r_struct
-id|iovec
-op_star
-)paren
-id|skb-&gt;data
+l_int|0
 suffix:semicolon
+multiline_comment|/* @@@ needs rewritten */
 id|dev-&gt;tx_bytes
 op_assign
 l_int|0
@@ -5974,6 +5970,20 @@ id|skb-&gt;data
 comma
 id|tx_len
 )paren
+suffix:semicolon
+id|tx_release
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|hrz_kfree_skb
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_else

@@ -6012,16 +6012,6 @@ id|vcc
 op_assign
 id|vcc
 suffix:semicolon
-id|ATM_SKB
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|iovcnt
-op_assign
-l_int|0
-suffix:semicolon
 id|ATM_DESC
 c_func
 (paren

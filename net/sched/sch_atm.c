@@ -2569,16 +2569,6 @@ op_amp
 id|flow-&gt;vcc-&gt;sk-&gt;wmem_alloc
 )paren
 suffix:semicolon
-id|ATM_SKB
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|iovcnt
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* atm.atm_options are already set by atm_tc_enqueue */
 (paren
 r_void
