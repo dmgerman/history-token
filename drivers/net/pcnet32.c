@@ -4876,7 +4876,7 @@ l_int|0x2628
 suffix:colon
 id|chipname
 op_assign
-l_string|&quot;PCnet/FAST III 79C976&quot;
+l_string|&quot;PCnet/PRO 79C976&quot;
 suffix:semicolon
 id|fdx
 op_assign
