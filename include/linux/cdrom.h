@@ -707,6 +707,8 @@ DECL|macro|GPCMD_READ_10
 mdefine_line|#define GPCMD_READ_10&t;&t;&t;    0x28
 DECL|macro|GPCMD_READ_12
 mdefine_line|#define GPCMD_READ_12&t;&t;&t;    0xa8
+DECL|macro|GPCMD_READ_BUFFER_CAPACITY
+mdefine_line|#define GPCMD_READ_BUFFER_CAPACITY&t;    0x5c
 DECL|macro|GPCMD_READ_CDVD_CAPACITY
 mdefine_line|#define GPCMD_READ_CDVD_CAPACITY&t;    0x25
 DECL|macro|GPCMD_READ_CD
