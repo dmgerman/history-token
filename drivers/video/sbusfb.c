@@ -4939,6 +4939,9 @@ c_func
 id|fb
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Read a single color register and split it into&n;     *  colors/transparent. Return != 0 for invalid regno.&n;     */
 DECL|function|sbusfb_getcolreg
