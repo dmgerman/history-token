@@ -349,7 +349,7 @@ mdefine_line|#define ror13(v) ((v &gt;&gt; 13) | (v &lt;&lt; 19))
 DECL|macro|dir_u8
 mdefine_line|#define dir_u8(idx)&t;&t;&t;&t;&bslash;&n;&t;({ int _buf = idx &gt;&gt; blocksize_bits;&t;&bslash;&n;&t;   int _off = idx - (_buf &lt;&lt; blocksize_bits);&bslash;&n;&t;  *(u8 *)(bh[_buf]-&gt;b_data + _off);&t;&bslash;&n;&t;})
 DECL|macro|dir_u32
-mdefine_line|#define dir_u32(idx)&t;&t;&t;&t;&bslash;&n;&t;({ int _buf = idx &gt;&gt; blocksize_bits;&t;&bslash;&n;&t;   int _off = idx - (_buf &lt;&lt; blocksize_bits);&bslash;&n;&t;  *(u32 *)(bh[_buf]-&gt;b_data + _off);&t;&bslash;&n;&t;})
+mdefine_line|#define dir_u32(idx)&t;&t;&t;&t;&bslash;&n;&t;({ int _buf = idx &gt;&gt; blocksize_bits;&t;&bslash;&n;&t;   int _off = idx - (_buf &lt;&lt; blocksize_bits);&bslash;&n;&t;  *(__le32 *)(bh[_buf]-&gt;b_data + _off);&t;&bslash;&n;&t;})
 DECL|macro|bufoff
 mdefine_line|#define bufoff(_bh,_idx)&t;&t;&t;&bslash;&n;&t;({ int _buf = _idx &gt;&gt; blocksize_bits;&t;&bslash;&n;&t;   int _off = _idx - (_buf &lt;&lt; blocksize_bits);&bslash;&n;&t;  (u8 *)(_bh[_buf]-&gt;b_data + _off);&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * There are some algorithms that are nice in&n; * assembler, but a bitch in C...  This is one&n; * of them.&n; */
@@ -383,7 +383,7 @@ id|dir-&gt;sb-&gt;s_blocksize_bits
 suffix:semicolon
 r_union
 (brace
-id|u32
+id|__le32
 op_star
 id|ptr32
 suffix:semicolon
@@ -424,7 +424,7 @@ r_do
 (brace
 id|dircheck
 op_assign
-id|cpu_to_le32
+id|le32_to_cpu
 c_func
 (paren
 id|dir_u32
@@ -542,8 +542,7 @@ l_int|36
 suffix:semicolon
 r_do
 (brace
-r_int
-r_int
+id|__le32
 id|v
 op_assign
 op_star
@@ -552,7 +551,7 @@ op_increment
 suffix:semicolon
 id|dircheck
 op_assign
-id|cpu_to_le32
+id|le32_to_cpu
 c_func
 (paren
 id|v
