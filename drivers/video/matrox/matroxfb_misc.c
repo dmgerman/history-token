@@ -4894,7 +4894,7 @@ id|bd-&gt;pins
 l_int|53
 )braket
 op_lshift
-l_int|10
+l_int|7
 )paren
 op_amp
 l_int|0x00001C00
