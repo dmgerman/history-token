@@ -18,6 +18,21 @@ DECL|macro|TYPE_LONGHAUL_V2
 mdefine_line|#define TYPE_LONGHAUL_V2&t;2
 DECL|macro|TYPE_POWERSAVER
 mdefine_line|#define TYPE_POWERSAVER&t;&t;3
+DECL|macro|CPU_SAMUEL
+mdefine_line|#define&t;CPU_SAMUEL&t;1
+DECL|macro|CPU_SAMUEL2
+mdefine_line|#define&t;CPU_SAMUEL2&t;2
+DECL|macro|CPU_EZRA
+mdefine_line|#define&t;CPU_EZRA&t;3
+DECL|macro|CPU_EZRA_T
+mdefine_line|#define&t;CPU_EZRA_T&t;4
+DECL|macro|CPU_NEHEMIAH
+mdefine_line|#define&t;CPU_NEHEMIAH&t;5
+DECL|variable|cpu_model
+r_static
+r_int
+id|cpu_model
+suffix:semicolon
 DECL|variable|numscales
 DECL|variable|numvscales
 r_static
@@ -422,24 +437,17 @@ r_int
 id|clock_ratio_index
 )paren
 (brace
-r_struct
-id|cpuinfo_x86
-op_star
-id|c
-op_assign
-id|cpu_data
-suffix:semicolon
 r_int
 id|version
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|c-&gt;x86_model
+id|cpu_model
 )paren
 (brace
 r_case
-l_int|8
+id|CPU_EZRA_T
 suffix:colon
 id|version
 op_assign
@@ -448,7 +456,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|9
+id|CPU_NEHEMIAH
 suffix:colon
 id|version
 op_assign
@@ -944,13 +952,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|cpuinfo_x86
-op_star
-id|c
-op_assign
-id|cpu_data
-suffix:semicolon
 r_int
 r_int
 id|invalue
@@ -1138,9 +1139,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|c-&gt;x86_model
+id|cpu_model
 op_eq
-l_int|6
+id|CPU_SAMUEL
 )paren
 id|fsb
 op_assign
@@ -1166,9 +1167,9 @@ multiline_comment|/* Ezra-T */
 r_if
 c_cond
 (paren
-id|c-&gt;x86_model
+id|cpu_model
 op_eq
-l_int|8
+id|CPU_EZRA_T
 )paren
 (brace
 id|rdmsrl
@@ -1235,9 +1236,9 @@ multiline_comment|/* Nehemiah */
 r_if
 c_cond
 (paren
-id|c-&gt;x86_model
+id|cpu_model
 op_eq
-l_int|9
+id|CPU_NEHEMIAH
 )paren
 (brace
 id|rdmsrl
@@ -1991,6 +1992,10 @@ id|c-&gt;x86_model
 r_case
 l_int|6
 suffix:colon
+id|cpu_model
+op_assign
+id|CPU_SAMUEL
+suffix:semicolon
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Samuel&squot; [C5A]&quot;
@@ -2041,6 +2046,10 @@ id|c-&gt;x86_mask
 r_case
 l_int|0
 suffix:colon
+id|cpu_model
+op_assign
+id|CPU_SAMUEL2
+suffix:semicolon
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
@@ -2086,15 +2095,27 @@ id|c-&gt;x86_mask
 OL
 l_int|8
 )paren
+(brace
+id|cpu_model
+op_assign
+id|CPU_SAMUEL2
+suffix:semicolon
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
 suffix:semicolon
+)brace
 r_else
+(brace
+id|cpu_model
+op_assign
+id|CPU_EZRA
+suffix:semicolon
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Ezra&squot; [C5C]&quot;
 suffix:semicolon
+)brace
 id|memcpy
 (paren
 id|clock_ratio
@@ -2127,6 +2148,10 @@ suffix:semicolon
 r_case
 l_int|8
 suffix:colon
+id|cpu_model
+op_assign
+id|CPU_EZRA_T
+suffix:semicolon
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Ezra-T&squot; [C5M]&quot;
@@ -2168,6 +2193,10 @@ suffix:semicolon
 r_case
 l_int|9
 suffix:colon
+id|cpu_model
+op_assign
+id|CPU_NEHEMIAH
+suffix:semicolon
 id|longhaul_version
 op_assign
 id|TYPE_POWERSAVER
