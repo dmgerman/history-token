@@ -1826,7 +1826,7 @@ c_func
 id|node_to_cpumask
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|console_nasid

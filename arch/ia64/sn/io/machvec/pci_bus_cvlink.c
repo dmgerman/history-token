@@ -3154,7 +3154,7 @@ op_assign
 id|NODE_MODULEID
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|pcibr_soft-&gt;bs_nasid

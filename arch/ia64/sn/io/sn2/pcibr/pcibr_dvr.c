@@ -2550,7 +2550,7 @@ id|nasid
 suffix:semicolon
 id|nasid
 op_assign
-id|COMPACT_TO_NASID_NODEID
+id|cnodeid_to_nasid
 c_func
 (paren
 id|cnodeid
@@ -7363,7 +7363,7 @@ id|pciio_info
 )paren
 suffix:semicolon
 r_return
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|NASID_GET
@@ -9515,7 +9515,7 @@ op_assign
 id|NODEPDA
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid
