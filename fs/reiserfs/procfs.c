@@ -422,7 +422,7 @@ mdefine_line|#define SFP( x ) SF( s_proc_info_data.x )
 DECL|macro|SFPL
 mdefine_line|#define SFPL( x ) SFP( x[ level ] )
 DECL|macro|SFPF
-mdefine_line|#define SFPF( x ) SFP( find_forward.x )
+mdefine_line|#define SFPF( x ) SFP( scan_bitmap.x )
 DECL|macro|SFPJ
 mdefine_line|#define SFPJ( x ) SFP( journal.x )
 DECL|macro|D2C
@@ -662,16 +662,25 @@ l_string|&quot;TEST4 &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
-id|dont_have_tails
+id|have_large_tails
 c_func
 (paren
 id|sb
 )paren
 ques
 c_cond
-l_string|&quot;NO_TAILS &quot;
-suffix:colon
 l_string|&quot;TAILS &quot;
+suffix:colon
+id|have_small_tails
+c_func
+(paren
+id|sb
+)paren
+ques
+c_cond
+l_string|&quot;SMALL_TAILS &quot;
+suffix:colon
+l_string|&quot;NO_TAILS &quot;
 comma
 id|replay_only
 c_func
@@ -1270,19 +1279,21 @@ id|len
 )braket
 comma
 l_string|&quot;free_block: %lu&bslash;n&quot;
-l_string|&quot;find_forward:&quot;
-l_string|&quot;         wait&quot;
-l_string|&quot;         bmap&quot;
-l_string|&quot;        retry&quot;
-l_string|&quot; journal_hint&quot;
-l_string|&quot;  journal_out&quot;
+l_string|&quot;  scan_bitmap:&quot;
+l_string|&quot;          wait&quot;
+l_string|&quot;          bmap&quot;
+l_string|&quot;         retry&quot;
+l_string|&quot;        stolen&quot;
+l_string|&quot;  journal_hint&quot;
+l_string|&quot;journal_nohint&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot; %12lu&quot;
-l_string|&quot; %12lu&quot;
-l_string|&quot; %12lu&quot;
-l_string|&quot; %12lu&quot;
-l_string|&quot; %12lu&quot;
-l_string|&quot; %12lu&quot;
+l_string|&quot; %14lu&quot;
+l_string|&quot; %14lu&quot;
+l_string|&quot; %14lu&quot;
+l_string|&quot; %14lu&quot;
+l_string|&quot; %14lu&quot;
+l_string|&quot; %14lu&quot;
+l_string|&quot; %14lu&quot;
 l_string|&quot;&bslash;n&quot;
 comma
 id|SFP
@@ -1318,13 +1329,19 @@ comma
 id|SFPF
 c_func
 (paren
+id|stolen
+)paren
+comma
+id|SFPF
+c_func
+(paren
 id|in_journal_hint
 )paren
 comma
 id|SFPF
 c_func
 (paren
-id|in_journal_out
+id|in_journal_nohint
 )paren
 )paren
 suffix:semicolon

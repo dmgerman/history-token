@@ -6389,7 +6389,7 @@ c_cond
 id|n_is_inode_locked
 )paren
 (brace
-multiline_comment|/* we&squot;ve done an indirect-&gt;direct conversion.  when the data block &n;&t;** was freed, it was removed from the list of blocks that must &n;&t;** be flushed before the transaction commits, so we don&squot;t need to &n;&t;** deal with it here.&n;&t;*/
+multiline_comment|/* we&squot;ve done an indirect-&gt;direct conversion.  when the data block&n;&t;** was freed, it was removed from the list of blocks that must&n;&t;** be flushed before the transaction commits, so we don&squot;t need to&n;&t;** deal with it here.&n;&t;*/
 id|REISERFS_I
 c_func
 (paren
@@ -7216,6 +7216,12 @@ comma
 id|n_pasted_size
 )paren
 suffix:semicolon
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+id|s_paste_balance.key
+op_assign
+id|p_s_key-&gt;on_disk_key
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -7288,7 +7294,7 @@ id|POSITION_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;PAP-5710: reiserfs_paste_into_item: entry or pasted byte (%K) exists&quot;
+l_string|&quot;PAP-5710: reiserfs_paste_into_item: entry or pasted byte (%K) exists&bslash;n&quot;
 comma
 id|p_s_key
 )paren
@@ -7432,6 +7438,12 @@ id|p_s_ih
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+id|s_ins_balance.key
+op_assign
+id|key-&gt;on_disk_key
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;    if (p_c_body == 0)&n;      n_zeros_num = ih_item_len(p_s_ih);&n;    */
 singleline_comment|//    le_key2cpu_key (&amp;key, &amp;(p_s_ih-&gt;ih_key));
 r_while

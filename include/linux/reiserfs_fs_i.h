@@ -82,6 +82,13 @@ id|list_head
 id|i_prealloc_list
 suffix:semicolon
 multiline_comment|/* per-transaction list of inodes which&n;                                       * have preallocated blocks */
+DECL|member|new_packing_locality
+r_int
+id|new_packing_locality
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* new_packig_locality is created; new blocks&n;&t;&t;&t;&t;       * for the contents of this directory should be&n;&t;&t;&t;&t;       * displaced */
 multiline_comment|/* we use these for fsync or O_SYNC to decide which transaction&n;    ** needs to be committed in order for this inode to be properly&n;    ** flushed */
 DECL|member|i_trans_id
 r_int
