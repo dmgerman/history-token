@@ -657,17 +657,6 @@ r_int
 r_int
 id|max_host_blocked
 suffix:semicolon
-multiline_comment|/* &n;&t; * Support for sysfs&n;&t; */
-DECL|member|host_gendev
-r_struct
-id|device
-id|host_gendev
-suffix:semicolon
-DECL|member|class_dev
-r_struct
-id|class_device
-id|class_dev
-suffix:semicolon
 multiline_comment|/* legacy crap */
 DECL|member|base
 r_int
@@ -693,6 +682,17 @@ DECL|member|irq
 r_int
 r_int
 id|irq
+suffix:semicolon
+multiline_comment|/* ldm bits */
+DECL|member|shost_gendev
+r_struct
+id|device
+id|shost_gendev
+suffix:semicolon
+DECL|member|shost_classdev
+r_struct
+id|class_device
+id|shost_classdev
 suffix:semicolon
 multiline_comment|/*&n;&t; * List of hosts per template.&n;&t; *&n;&t; * This is only for use by scsi_module.c for legacy templates.&n;&t; * For these access to it is synchronized implicitly by&n;&t; * module_init/module_exit.&n;&t; */
 DECL|member|sht_legacy_list
@@ -726,9 +726,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|dev_to_shost
-mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, host_gendev)
+mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_gendev)
 DECL|macro|class_to_shost
-mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, class_dev)
+mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_classdev)
 r_extern
 r_struct
 id|Scsi_Host
@@ -849,7 +849,7 @@ op_star
 id|dev
 )paren
 (brace
-id|shost-&gt;host_gendev.parent
+id|shost-&gt;shost_gendev.parent
 op_assign
 id|dev
 suffix:semicolon
@@ -870,7 +870,7 @@ id|shost
 )paren
 (brace
 r_return
-id|shost-&gt;host_gendev.parent
+id|shost-&gt;shost_gendev.parent
 suffix:semicolon
 )brace
 r_extern

@@ -5507,7 +5507,7 @@ suffix:semicolon
 id|gd-&gt;driverfs_dev
 op_assign
 op_amp
-id|sdp-&gt;sdev_driverfs_dev
+id|sdp-&gt;sdev_gendev
 suffix:semicolon
 id|gd-&gt;flags
 op_assign
