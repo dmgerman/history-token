@@ -1,5 +1,6 @@
 multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer&n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -39,6 +40,13 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* 3 seconds by default */
+DECL|variable|sysctl_discovery_timeout
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_discovery_timeout
+)paren
+suffix:semicolon
 DECL|variable|sysctl_discovery_slots
 r_int
 id|sysctl_discovery_slots
@@ -63,10 +71,11 @@ id|sysctl_devname
 l_int|65
 )braket
 suffix:semicolon
-DECL|variable|lmp_reasons
+DECL|variable|irlmp_reasons
+r_const
 r_char
 op_star
-id|lmp_reasons
+id|irlmp_reasons
 (braket
 )braket
 op_assign
@@ -87,14 +96,11 @@ l_string|&quot;ERROR, NOT USED&quot;
 comma
 )brace
 suffix:semicolon
-id|__u8
-op_star
-id|irlmp_hint_to_service
+DECL|variable|irlmp_reasons
+id|EXPORT_SYMBOL
 c_func
 (paren
-id|__u8
-op_star
-id|hint
+id|irlmp_reasons
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_init (void)&n; *&n; *    Create (allocate) the main IrLMP structure&n; *&n; */
@@ -623,6 +629,13 @@ r_return
 id|self
 suffix:semicolon
 )brace
+DECL|variable|irlmp_open_lsap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_open_lsap
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function __irlmp_close_lsap (self)&n; *&n; *    Remove an instance of LSAP&n; */
 DECL|function|__irlmp_close_lsap
 r_static
@@ -869,6 +882,13 @@ id|self
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irlmp_close_lsap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_close_lsap
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_register_irlap (saddr, notify)&n; *&n; *    Register IrLAP layer with IrLMP. There is possible to have multiple&n; *    instances of the IrLAP layer, each connected to different IrDA ports&n; *&n; */
 DECL|function|irlmp_register_link
 r_void
@@ -1741,6 +1761,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irlmp_connect_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_connect_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_connect_indication (self)&n; *&n; *    Incoming connection&n; *&n; */
 DECL|function|irlmp_connect_indication
 r_void
@@ -2012,6 +2039,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irlmp_connect_response
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_connect_response
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_connect_confirm (handle, skb)&n; *&n; *    LSAP connection confirmed peer device!&n; */
 DECL|function|irlmp_connect_confirm
 r_void
@@ -2393,6 +2427,13 @@ r_return
 r_new
 suffix:semicolon
 )brace
+DECL|variable|irlmp_dup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_dup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_disconnect_request (handle, userdata)&n; *&n; *    The service user is requesting disconnection, this will not remove the&n; *    LSAP, but only mark it as disconnected&n; */
 DECL|function|irlmp_disconnect_request
 r_int
@@ -2648,6 +2689,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irlmp_disconnect_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_disconnect_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_disconnect_indication (reason, userdata)&n; *&n; *    LSAP is being closed!&n; */
 DECL|function|irlmp_disconnect_indication
 r_void
@@ -2682,7 +2730,7 @@ l_string|&quot;%s(), reason=%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lmp_reasons
+id|irlmp_reasons
 (braket
 id|reason
 )braket
@@ -3187,6 +3235,13 @@ suffix:semicolon
 multiline_comment|/* Note : we never do expiry here. Expiry will run on the&n;&t;&t; * discovery timer regardless of the state of sysctl_discovery&n;&t;&t; * Jean II */
 )brace
 )brace
+DECL|variable|irlmp_discovery_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_discovery_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_get_discoveries (pn, mask, slots)&n; *&n; *    Return the current discovery log&n; *&n; * If discovery is not enabled, you should call this function again&n; * after 1 or 2 seconds (i.e. after discovery has been done).&n; */
 DECL|function|irlmp_get_discoveries
 r_struct
@@ -3250,6 +3305,13 @@ id|TRUE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irlmp_get_discoveries
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_get_discoveries
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_notify_client (log)&n; *&n; *    Notify all about discovered devices&n; *&n; * Clients registered with IrLMP are :&n; *&t;o IrComm&n; *&t;o IrLAN&n; *&t;o Any socket (in any state - ouch, that may be a lot !)&n; * The client may have defined a callback to be notified in case of&n; * partial/selective discovery based on the hints that it passed to IrLMP.&n; */
 r_static
 r_inline
@@ -3803,6 +3865,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irlmp_data_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_data_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_data_indication (handle, skb)&n; *&n; *    Got data from LAP layer so pass it up to upper layer&n; *&n; */
 DECL|function|irlmp_data_indication
 r_void
@@ -5087,6 +5156,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|variable|service_hint_mapping
+r_static
 r_const
 id|__u16
 id|service_hint_mapping
@@ -5220,6 +5290,13 @@ r_return
 id|hint.word
 suffix:semicolon
 )brace
+DECL|variable|irlmp_service_to_hint
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_service_to_hint
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_register_service (service)&n; *&n; *    Register local service with IrLMP&n; *&n; */
 DECL|function|irlmp_register_service
 r_void
@@ -5317,6 +5394,13 @@ op_star
 id|service
 suffix:semicolon
 )brace
+DECL|variable|irlmp_register_service
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_register_service
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_unregister_service (handle)&n; *&n; *    Unregister service with IrLMP.&n; *&n; *    Returns: 0 on success, -1 on error&n; */
 DECL|function|irlmp_unregister_service
 r_int
@@ -5475,6 +5559,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irlmp_unregister_service
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_unregister_service
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_register_client (hint_mask, callback1, callback2)&n; *&n; *    Register a local client with IrLMP&n; *&t;First callback is selective discovery (based on hints)&n; *&t;Second callback is for selective discovery expiries&n; *&n; *    Returns: handle &gt; 0 on success, 0 on error&n; */
 DECL|function|irlmp_register_client
 r_void
@@ -5601,6 +5692,13 @@ op_star
 id|client
 suffix:semicolon
 )brace
+DECL|variable|irlmp_register_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_register_client
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_update_client (handle, hint_mask, callback1, callback2)&n; *&n; *    Updates specified client (handle) with possibly new hint_mask and&n; *    callback&n; *&n; *    Returns: 0 on success, -1 on error&n; */
 DECL|function|irlmp_update_client
 r_int
@@ -5696,6 +5794,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irlmp_update_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_update_client
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_unregister_client (handle)&n; *&n; *    Returns: 0 on success, -1 on error&n; *&n; */
 DECL|function|irlmp_unregister_client
 r_int
@@ -5802,6 +5907,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irlmp_unregister_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irlmp_unregister_client
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_slsap_inuse (slsap)&n; *&n; *    Check if the given source LSAP selector is in use&n; */
 DECL|function|irlmp_slsap_inuse
 r_int
@@ -6284,84 +6396,6 @@ suffix:semicolon
 )brace
 r_return
 id|reason
-suffix:semicolon
-)brace
-DECL|function|irlmp_get_saddr
-id|__u32
-id|irlmp_get_saddr
-c_func
-(paren
-r_struct
-id|lsap_cb
-op_star
-id|self
-)paren
-(brace
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|0
-suffix:semicolon
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self-&gt;lap
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|0
-suffix:semicolon
-)paren
-suffix:semicolon
-r_return
-id|self-&gt;lap-&gt;saddr
-suffix:semicolon
-)brace
-DECL|function|irlmp_get_daddr
-id|__u32
-id|irlmp_get_daddr
-c_func
-(paren
-r_struct
-id|lsap_cb
-op_star
-id|self
-)paren
-(brace
-id|ASSERT
-c_func
-(paren
-id|self
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|0
-suffix:semicolon
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|self-&gt;lap
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|0
-suffix:semicolon
-)paren
-suffix:semicolon
-r_return
-id|self-&gt;lap-&gt;daddr
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS

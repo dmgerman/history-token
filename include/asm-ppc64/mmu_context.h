@@ -580,7 +580,7 @@ op_rshift
 l_int|28
 )paren
 op_amp
-l_int|0x1fffff
+l_int|0x1fff
 )paren
 op_star
 id|LAST_USER_CONTEXT
@@ -672,7 +672,7 @@ op_rshift
 l_int|28
 )paren
 op_amp
-l_int|0x1fffff
+l_int|0x1fff
 )paren
 op_star
 id|LAST_USER_CONTEXT

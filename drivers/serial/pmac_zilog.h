@@ -1,12 +1,14 @@
 macro_line|#ifndef __PMAC_ZILOG_H__
 DECL|macro|__PMAC_ZILOG_H__
 mdefine_line|#define __PMAC_ZILOG_H__
+DECL|macro|pmz_debug
+mdefine_line|#define pmz_debug(fmt,arg...)&t;dev_dbg(&amp;uap-&gt;dev-&gt;ofdev.dev, fmt, ## arg)
 multiline_comment|/*&n; * At most 2 ESCCs with 2 ports each&n; */
 DECL|macro|MAX_ZS_PORTS
 mdefine_line|#define MAX_ZS_PORTS&t;4
 multiline_comment|/* &n; * We wrap our port structure around the generic uart_port.&n; */
 DECL|macro|NUM_ZSREGS
-mdefine_line|#define NUM_ZSREGS    16
+mdefine_line|#define NUM_ZSREGS    17
 DECL|struct|uart_pmac_port
 r_struct
 id|uart_pmac_port
@@ -77,6 +79,14 @@ DECL|macro|PMACZILOG_FLAG_HAS_DMA
 mdefine_line|#define PMACZILOG_FLAG_HAS_DMA&t;&t;0x00000400
 DECL|macro|PMACZILOG_FLAG_RSRC_REQUESTED
 mdefine_line|#define PMACZILOG_FLAG_RSRC_REQUESTED&t;0x00000800
+DECL|macro|PMACZILOG_FLAG_IS_ASLEEP
+mdefine_line|#define PMACZILOG_FLAG_IS_ASLEEP&t;0x00001000
+DECL|macro|PMACZILOG_FLAG_IS_OPEN
+mdefine_line|#define PMACZILOG_FLAG_IS_OPEN&t;&t;0x00002000
+DECL|macro|PMACZILOG_FLAG_IS_IRQ_ON
+mdefine_line|#define PMACZILOG_FLAG_IS_IRQ_ON&t;0x00004000
+DECL|macro|PMACZILOG_FLAG_IS_EXTCLK
+mdefine_line|#define PMACZILOG_FLAG_IS_EXTCLK&t;0x00008000
 DECL|member|parity_mask
 r_int
 r_char
@@ -123,10 +133,44 @@ id|dbdma_regs
 op_star
 id|rx_dma_regs
 suffix:semicolon
+DECL|member|termios_cache
+r_struct
+id|termios
+id|termios_cache
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_pmz
 mdefine_line|#define to_pmz(p) ((struct uart_pmac_port *)(p))
+DECL|function|pmz_get_port_A
+r_static
+r_inline
+r_struct
+id|uart_pmac_port
+op_star
+id|pmz_get_port_A
+c_func
+(paren
+r_struct
+id|uart_pmac_port
+op_star
+id|uap
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|uap-&gt;flags
+op_amp
+id|PMACZILOG_FLAG_IS_CHANNEL_A
+)paren
+r_return
+id|uap
+suffix:semicolon
+r_return
+id|uap-&gt;mate
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Register acessors. Note that we don&squot;t need to enforce a recovery&n; * delay on PCI PowerMac hardware, it&squot;s dealt in HW by the MacIO chip,&n; * though if we try to use this driver on older machines, we might have&n; * to add it back&n; */
 DECL|function|read_zsreg
 r_static
@@ -322,6 +366,8 @@ DECL|macro|R14
 mdefine_line|#define&t;R14&t;14
 DECL|macro|R15
 mdefine_line|#define&t;R15&t;15
+DECL|macro|R7P
+mdefine_line|#define&t;R7P&t;16
 DECL|macro|NULLCODE
 mdefine_line|#define&t;NULLCODE&t;0&t;/* Null Code */
 DECL|macro|POINT_HIGH
@@ -682,5 +728,13 @@ DECL|macro|ZS_IS_INTMODEM
 mdefine_line|#define ZS_IS_INTMODEM(UP)&t;       &t;((UP)-&gt;flags &amp; PMACZILOG_FLAG_IS_INTMODEM)
 DECL|macro|ZS_HAS_DMA
 mdefine_line|#define ZS_HAS_DMA(UP)&t;&t;&t;((UP)-&gt;flags &amp; PMACZILOG_FLAG_HAS_DMA)
+DECL|macro|ZS_IS_ASLEEP
+mdefine_line|#define ZS_IS_ASLEEP(UP)       &t;&t;((UP)-&gt;flags &amp; PMACZILOG_FLAG_IS_ASLEEP)
+DECL|macro|ZS_IS_OPEN
+mdefine_line|#define ZS_IS_OPEN(UP)       &t;&t;((UP)-&gt;flags &amp; PMACZILOG_FLAG_IS_OPEN)
+DECL|macro|ZS_IS_IRQ_ON
+mdefine_line|#define ZS_IS_IRQ_ON(UP)       &t;&t;((UP)-&gt;flags &amp; PMACZILOG_FLAG_IS_IRQ_ON)
+DECL|macro|ZS_IS_EXTCLK
+mdefine_line|#define ZS_IS_EXTCLK(UP)       &t;&t;((UP)-&gt;flags &amp; PMACZILOG_FLAG_IS_EXTCLK)
 macro_line|#endif /* __PMAC_ZILOG_H__ */
 eof

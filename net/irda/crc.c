@@ -1,5 +1,6 @@
 multiline_comment|/*********************************************************************&n; *                &n; * Filename:      crc.c&n; * Version:       0.1&n; * Description:   CRC calculation routines&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Sun May  2 20:28:08 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Sources:       ppp.c by Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;&n; *                Al Longyear &lt;longyear@netcom.com&gt;&n; *&n; ********************************************************************/
 macro_line|#include &lt;net/irda/crc.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * This mysterious table is just the CRC of each possible byte.  It can be&n; * computed using the standard bit-at-a-time methods.  The polynomial can&n; * be seen in entry 128, 0x8408.  This corresponds to x^0 + x^5 + x^12.&n; * Add the implicit x^16, and you have the standard CRC-CCITT.&n; */
 DECL|variable|irda_crc16_table
 id|__u16
@@ -523,9 +524,15 @@ comma
 l_int|0x0f78
 )brace
 suffix:semicolon
+DECL|variable|irda_crc16_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_crc16_table
+)paren
+suffix:semicolon
 DECL|function|irda_calc_crc16
-r_int
-r_int
+id|__u16
 id|irda_calc_crc16
 c_func
 (paren
@@ -563,4 +570,11 @@ r_return
 id|fcs
 suffix:semicolon
 )brace
+DECL|variable|irda_calc_crc16
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_calc_crc16
+)paren
+suffix:semicolon
 eof

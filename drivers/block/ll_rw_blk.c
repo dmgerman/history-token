@@ -6992,16 +6992,28 @@ r_goto
 id|again
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * first three bits are identical in rq-&gt;flags and bio-&gt;bi_rw,&n;&t; * see bio.h and blkdev.h&n;&t; */
 id|req-&gt;flags
-op_assign
-(paren
-id|bio-&gt;bi_rw
-op_amp
-l_int|7
-)paren
-op_or
+op_or_assign
 id|REQ_CMD
+suffix:semicolon
+multiline_comment|/*&n;&t; * inherit FAILFAST from bio and don&squot;t stack up&n;&t; * retries for read ahead&n;&t; */
+r_if
+c_cond
+(paren
+id|ra
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|BIO_RW_FAILFAST
+comma
+op_amp
+id|bio-&gt;bi_rw
+)paren
+)paren
+id|req-&gt;flags
+op_or_assign
+id|REQ_FAILFAST
 suffix:semicolon
 multiline_comment|/*&n;&t; * REQ_BARRIER implies no merging, but lets make it explicit&n;&t; */
 r_if
@@ -7016,16 +7028,6 @@ id|REQ_HARDBARRIER
 op_or
 id|REQ_NOMERGE
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t stack up retries for read ahead&n;&t; */
-r_if
-c_cond
-(paren
-id|ra
-)paren
-id|req-&gt;flags
-op_or_assign
-id|REQ_FAILFAST
 suffix:semicolon
 id|req-&gt;errors
 op_assign

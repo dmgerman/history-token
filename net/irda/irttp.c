@@ -1601,6 +1601,13 @@ r_return
 id|self
 suffix:semicolon
 )brace
+DECL|variable|irttp_open_tsap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_open_tsap
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_close (handle)&n; *&n; *    Remove an instance of a TSAP. This function should only deal with the&n; *    deallocation of the TSAP, and resetting of the TSAPs values;&n; *&n; */
 DECL|function|__irttp_close_tsap
 r_static
@@ -1847,6 +1854,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irttp_close_tsap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_close_tsap
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_udata_request (self, skb)&n; *&n; *    Send unreliable data on this TSAP&n; *&n; */
 DECL|function|irttp_udata_request
 r_int
@@ -1992,6 +2006,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|irttp_udata_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_udata_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_data_request (handle, skb)&n; *&n; *    Queue frame for transmission. If SAR is enabled, fragement the frame&n; *    and queue the fragments for transmission&n; */
 DECL|function|irttp_data_request
 r_int
@@ -2354,6 +2375,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irttp_data_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_data_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_run_tx_queue (self)&n; *&n; *    Transmit packets queued for transmission (if possible)&n; *&n; */
 DECL|function|irttp_run_tx_queue
 r_static
@@ -3360,6 +3388,13 @@ id|__FUNCTION__
 suffix:semicolon
 )brace
 )brace
+DECL|variable|irttp_flow_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_flow_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_connect_request (self, dtsap_sel, daddr, qos)&n; *&n; *    Try to connect to remote destination TSAP selector&n; *&n; */
 DECL|function|irttp_connect_request
 r_int
@@ -3750,6 +3785,13 @@ id|tx_skb
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irttp_connect_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_connect_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_connect_confirm (handle, qos, skb)&n; *&n; *    Sevice user confirms TSAP connection with peer.&n; *&n; */
 DECL|function|irttp_connect_confirm
 r_static
@@ -4733,6 +4775,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irttp_connect_response
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_connect_response
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_dup (self, instance)&n; *&n; *    Duplicate TSAP, can be used by servers to confirm a connection on a&n; *    new TSAP so it can keep listening on the old one.&n; */
 DECL|function|irttp_dup
 r_struct
@@ -5001,6 +5050,13 @@ r_return
 r_new
 suffix:semicolon
 )brace
+DECL|variable|irttp_dup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_dup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_disconnect_request (self)&n; *&n; *    Close this connection please! If priority is high, the queued data&n; *    segments, if any, will be deallocated first&n; *&n; */
 DECL|function|irttp_disconnect_request
 r_int
@@ -5293,6 +5349,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|irttp_disconnect_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irttp_disconnect_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irttp_disconnect_indication (self, reason)&n; *&n; *    Disconnect indication, TSAP disconnected by peer?&n; *&n; */
 DECL|function|irttp_disconnect_indication
 r_void
