@@ -10574,13 +10574,7 @@ suffix:semicolon
 multiline_comment|/* find which port we want to open */
 id|line
 op_assign
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond

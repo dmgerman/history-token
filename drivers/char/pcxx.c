@@ -1822,13 +1822,7 @@ id|retval
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond

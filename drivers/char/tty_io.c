@@ -423,7 +423,7 @@ id|tty
 suffix:semicolon
 )brace
 DECL|macro|TTY_NUMBER
-mdefine_line|#define TTY_NUMBER(tty) (minor((tty)-&gt;device) - (tty)-&gt;driver-&gt;minor_start + &bslash;&n;&t;&t;&t; (tty)-&gt;driver-&gt;name_base)
+mdefine_line|#define TTY_NUMBER(tty) ((tty)-&gt;index + (tty)-&gt;driver-&gt;name_base)
 DECL|function|tty_name
 r_char
 op_star
@@ -3428,6 +3428,10 @@ id|tty-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
+id|tty-&gt;index
+op_assign
+id|idx
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -3596,6 +3600,10 @@ suffix:semicolon
 id|o_tty-&gt;driver
 op_assign
 id|driver-&gt;other
+suffix:semicolon
+id|o_tty-&gt;index
+op_assign
+id|idx
 suffix:semicolon
 id|sprintf
 c_func
@@ -4353,13 +4361,7 @@ l_int|0
 suffix:semicolon
 id|idx
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 id|pty_master
 op_assign
@@ -6222,13 +6224,7 @@ r_int
 r_int
 id|currcons
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond

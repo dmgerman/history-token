@@ -5076,11 +5076,7 @@ op_assign
 id|RC_BOARD
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if
@@ -5125,11 +5121,7 @@ op_plus
 id|RC_PORT
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if

@@ -532,6 +532,10 @@ id|tty_driver
 op_star
 id|driver
 suffix:semicolon
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
 DECL|member|ldisc
 r_struct
 id|tty_ldisc

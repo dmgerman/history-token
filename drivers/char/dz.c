@@ -4176,13 +4176,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 multiline_comment|/*&n;&t; * The dz lines for the mouse/keyboard must be opened using their&n;&t; * respective drivers.&n;&t; */
 r_if

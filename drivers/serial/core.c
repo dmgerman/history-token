@@ -1959,13 +1959,7 @@ c_func
 (paren
 l_string|&quot;uart_flush_buffer(%d) called&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -5690,13 +5684,7 @@ id|retval
 comma
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 id|BUG_ON
 c_func

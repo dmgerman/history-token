@@ -3643,13 +3643,7 @@ id|filp
 r_int
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|SCC_MINOR_BASE
+id|tty-&gt;index
 suffix:semicolon
 r_int
 id|retval

@@ -7259,11 +7259,7 @@ op_assign
 id|AURORA_BOARD
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if
@@ -7331,11 +7327,7 @@ op_plus
 id|AURORA_PORT
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if

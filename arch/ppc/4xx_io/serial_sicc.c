@@ -3671,13 +3671,7 @@ c_func
 (paren
 l_string|&quot;siccuart_flush_buffer(%d) called&bslash;n&quot;
 comma
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5987,13 +5981,7 @@ c_func
 (paren
 l_string|&quot;siccuart_wait_until_sent(%d), jiff=%lu, expire=%lu  char_time=%lu...&bslash;n&quot;
 comma
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 comma
 id|jiffies
 comma
@@ -6812,13 +6800,7 @@ id|retval
 comma
 id|line
 op_assign
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver-&gt;minor_start
+id|tty-&gt;index
 suffix:semicolon
 singleline_comment|// is this a line that we&squot;ve got?
 id|MOD_INC_USE_COUNT

@@ -410,7 +410,7 @@ mdefine_line|#define SERIAL_TYPE_CALLOUT&t;2
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS&t;&t;256
 DECL|macro|PORTNO
-mdefine_line|#define PORTNO(x)&t;&t;(minor((x)-&gt;device) - (x)-&gt;driver-&gt;minor_start)
+mdefine_line|#define PORTNO(x)&t;&t;((x)-&gt;index)
 DECL|variable|verbose
 r_static
 r_int

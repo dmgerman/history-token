@@ -3570,13 +3570,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|SCI_MINOR_START
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond

@@ -5975,11 +5975,7 @@ op_assign
 id|SX_BOARD
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if
@@ -6024,11 +6020,7 @@ op_plus
 id|SX_PORT
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_SPECIALIX
@@ -6046,11 +6038,7 @@ comma
 id|SX_PORT
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 )paren
 suffix:semicolon

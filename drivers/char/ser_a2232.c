@@ -1437,11 +1437,7 @@ id|port
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 suffix:semicolon
 id|port
 op_assign
