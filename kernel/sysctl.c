@@ -3176,12 +3176,11 @@ id|error
 suffix:semicolon
 id|de
 op_assign
+id|PDE
+c_func
 (paren
-r_struct
-id|proc_dir_entry
-op_star
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;u.generic_ip
 suffix:semicolon
 r_if
 c_cond

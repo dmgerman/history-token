@@ -133,7 +133,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|ino-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|ino
+)paren
 suffix:semicolon
 r_struct
 id|zorro_dev

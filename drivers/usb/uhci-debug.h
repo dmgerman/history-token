@@ -2595,7 +2595,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|inode-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_struct
 id|uhci
