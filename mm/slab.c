@@ -4528,8 +4528,7 @@ id|slabp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * CAREFUL: do not enable preemption yet, the per-CPU&n;&t; * entries rely on us being atomic.&n;&t; */
-id|_raw_spin_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -4661,12 +4660,6 @@ id|local_irq_restore
 c_func
 (paren
 id|save_flags
-)paren
-suffix:semicolon
-multiline_comment|/* end of non-preemptible region */
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
