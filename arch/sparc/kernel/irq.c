@@ -32,7 +32,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/pcic.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/*&n; * Dave Redman (djhr@tadpole.co.uk)&n; *&n; * IRQ numbers.. These are no longer restricted to 15..&n; *&n; * this is done to enable SBUS cards and onboard IO to be masked&n; * correctly. using the interrupt level isn&squot;t good enough.&n; *&n; * For example:&n; *   A device interrupting at sbus level6 and the Floppy both come in&n; *   at IRQ11, but enabling and disabling them requires writing to&n; *   different bits in the SLAVIO/SEC.&n; *&n; * As a result of these changes sun4m machines could now support&n; * directed CPU interrupts using the existing enable/disable irq code&n; * with tweaks.&n; *&n; */

@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/auxio.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/svr4.h&gt;

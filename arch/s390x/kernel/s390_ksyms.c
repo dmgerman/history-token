@@ -4,11 +4,11 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#if CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#endif
