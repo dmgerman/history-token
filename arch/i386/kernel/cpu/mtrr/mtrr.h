@@ -380,6 +380,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_char
+op_star
+id|mtrr_attrib_to_str
+c_func
+(paren
+r_int
+id|x
+)paren
+suffix:semicolon
 r_extern
 r_char
 op_star
