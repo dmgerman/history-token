@@ -1306,6 +1306,10 @@ id|skb
 op_assign
 l_int|0
 suffix:semicolon
+id|ret
+op_assign
+id|count
+suffix:semicolon
 r_if
 c_cond
 (paren
