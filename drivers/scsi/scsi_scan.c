@@ -589,10 +589,6 @@ id|sdev-&gt;channel
 op_assign
 id|channel
 suffix:semicolon
-id|sdev-&gt;online
-op_assign
-id|TRUE
-suffix:semicolon
 id|sdev-&gt;sdev_state
 op_assign
 id|SDEV_CREATED
@@ -1746,9 +1742,13 @@ l_string|&quot; qualifier of 1, device offlined&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|sdev-&gt;online
-op_assign
-id|FALSE
+id|scsi_device_set_state
+c_func
+(paren
+id|sdev
+comma
+id|SDEV_OFFLINE
+)paren
 suffix:semicolon
 )brace
 id|sdev-&gt;removable

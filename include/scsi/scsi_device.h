@@ -14,7 +14,7 @@ suffix:semicolon
 r_struct
 id|scsi_mode_data
 suffix:semicolon
-multiline_comment|/*&n; * sdev state&n; */
+multiline_comment|/*&n; * sdev state: If you alter this, you also need to alter scsi_sysfs.c&n; * (for the ascii descriptions) and the state model enforcer:&n; * scsi_lib:scsi_device_set_state().&n; */
 DECL|enum|scsi_device_state
 r_enum
 id|scsi_device_state
@@ -41,6 +41,10 @@ DECL|enumerator|SDEV_QUIESCE
 id|SDEV_QUIESCE
 comma
 multiline_comment|/* Device quiescent.  No block commands&n;&t;&t;&t;&t; * will be accepted, only specials (which&n;&t;&t;&t;&t; * originate in the mid-layer) */
+DECL|enumerator|SDEV_OFFLINE
+id|SDEV_OFFLINE
+comma
+multiline_comment|/* Device offlined (by error handling or&n;&t;&t;&t;&t; * user request */
 )brace
 suffix:semicolon
 DECL|struct|scsi_device
@@ -218,12 +222,6 @@ op_star
 id|sdev_target
 suffix:semicolon
 multiline_comment|/* used only for single_lun */
-DECL|member|online
-r_int
-id|online
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|writeable
 r_int
 id|writeable
@@ -685,5 +683,35 @@ op_star
 id|sdev
 )paren
 suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|scsi_device_state_name
+c_func
+(paren
+r_enum
+id|scsi_device_state
+)paren
+suffix:semicolon
+DECL|function|scsi_device_online
+r_static
+r_int
+r_inline
+id|scsi_device_online
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+(brace
+r_return
+id|sdev-&gt;sdev_state
+op_ne
+id|SDEV_OFFLINE
+suffix:semicolon
+)brace
 macro_line|#endif /* _SCSI_SCSI_DEVICE_H */
 eof
