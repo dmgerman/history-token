@@ -1371,10 +1371,6 @@ id|drv
 suffix:semicolon
 id|id
 op_assign
-id|usb_drv-&gt;id_table
-suffix:semicolon
-id|id
-op_assign
 id|usb_match_id
 (paren
 id|intf
