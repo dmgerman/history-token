@@ -5921,9 +5921,10 @@ c_func
 (paren
 id|NEW_SKB_SIZE
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
+multiline_comment|/* Why not GFP_KERNEL? */
 r_if
 c_cond
 (paren

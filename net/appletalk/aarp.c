@@ -181,31 +181,11 @@ op_star
 id|a
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|a-&gt;packet_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 id|kfree
@@ -3214,11 +3194,10 @@ id|notifier_block
 id|aarp_notifier
 op_assign
 (brace
+id|notifier_call
+suffix:colon
 id|aarp_device_event
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|variable|aarp_snap_id
@@ -3431,7 +3410,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%-10.10s  &quot;&quot;%-10.10s&quot;&quot;%-18.18s&quot;&quot;%12.12s&quot;&quot;%12.12s&quot;&quot; xmit_count  status&bslash;n&quot;
+l_string|&quot;%-10.10s  %-10.10s%-18.18s%12.12s%12.12s xmit_count  status&bslash;n&quot;
 comma
 l_string|&quot;address&quot;
 comma

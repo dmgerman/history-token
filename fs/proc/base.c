@@ -1562,6 +1562,9 @@ r_void
 op_star
 )paren
 (paren
+(paren
+r_int
+)paren
 id|current-&gt;self_exec_id
 )paren
 suffix:semicolon
@@ -1694,6 +1697,9 @@ r_void
 op_star
 )paren
 (paren
+(paren
+r_int
+)paren
 id|current-&gt;self_exec_id
 )paren
 )paren

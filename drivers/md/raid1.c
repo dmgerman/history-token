@@ -164,7 +164,7 @@ r_struct
 id|buffer_head
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -585,7 +585,7 @@ r_struct
 id|raid1_bh
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if

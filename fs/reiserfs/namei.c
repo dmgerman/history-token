@@ -1543,7 +1543,7 @@ id|reiserfs_kmalloc
 (paren
 id|buflen
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 comma
 id|dir-&gt;i_sb
 )paren
@@ -3566,7 +3566,7 @@ id|kmalloc
 (paren
 id|item_len
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if

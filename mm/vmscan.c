@@ -1490,10 +1490,10 @@ suffix:semicolon
 multiline_comment|/**&n; * page_launder - clean dirty inactive pages, move to inactive_clean list&n; * @gfp_mask: what operations we are allowed to do&n; * @sync: are we allowed to do synchronous IO in emergencies ?&n; *&n; * When this function is called, we are most likely low on free +&n; * inactive_clean pages. Since we want to refill those pages as&n; * soon as possible, we&squot;ll make two loops over the inactive list,&n; * one to move the already cleaned pages to the inactive_clean lists&n; * and one to (often asynchronously) clean the dirty inactive pages.&n; *&n; * In situations where kswapd cannot keep up, user processes will&n; * end up calling this function. Since the user process needs to&n; * have a page before it can continue with its allocation, we&squot;ll&n; * do synchronous page flushing in that case.&n; *&n; * This code is heavily inspired by the FreeBSD source code. Thanks&n; * go out to Matthew Dillon.&n; */
 DECL|macro|MAX_LAUNDER
 mdefine_line|#define MAX_LAUNDER &t;&t;(4 * (1 &lt;&lt; page_cluster))
+DECL|macro|CAN_DO_FS
+mdefine_line|#define CAN_DO_FS&t;&t;(gfp_mask &amp; __GFP_FS)
 DECL|macro|CAN_DO_IO
 mdefine_line|#define CAN_DO_IO&t;&t;(gfp_mask &amp; __GFP_IO)
-DECL|macro|CAN_DO_BUFFERS
-mdefine_line|#define CAN_DO_BUFFERS&t;&t;(gfp_mask &amp; __GFP_BUFFER)
 DECL|function|page_launder
 r_int
 id|page_launder
@@ -1733,7 +1733,7 @@ op_logical_neg
 id|launder_loop
 op_logical_or
 op_logical_neg
-id|CAN_DO_IO
+id|CAN_DO_FS
 )paren
 (brace
 id|list_del
@@ -1811,8 +1811,10 @@ id|page-&gt;buffers
 )paren
 (brace
 r_int
-id|wait
-comma
+r_int
+id|buffer_mask
+suffix:semicolon
+r_int
 id|clearedbuf
 suffix:semicolon
 r_int
@@ -1841,46 +1843,54 @@ id|pagemap_lru_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Will we do (asynchronous) IO? */
-id|wait
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* No IO */
 r_if
 c_cond
 (paren
 id|launder_loop
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|maxlaunder
 op_eq
 l_int|0
 op_logical_and
 id|sync
 )paren
-id|wait
+id|buffer_mask
 op_assign
-l_int|2
+id|gfp_mask
 suffix:semicolon
-multiline_comment|/* Synchrounous IO */
+multiline_comment|/* Do as much as we can */
 r_else
 r_if
 c_cond
 (paren
+id|launder_loop
+op_logical_and
 id|maxlaunder
 op_decrement
 OG
 l_int|0
 )paren
-id|wait
+id|buffer_mask
 op_assign
-l_int|1
+id|gfp_mask
+op_amp
+op_complement
+id|__GFP_WAIT
 suffix:semicolon
-multiline_comment|/* Async IO */
-)brace
+multiline_comment|/* Don&squot;t wait, async write-out */
+r_else
+id|buffer_mask
+op_assign
+id|gfp_mask
+op_amp
+op_complement
+(paren
+id|__GFP_WAIT
+op_or
+id|__GFP_IO
+)paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t even start IO */
 multiline_comment|/* Try to free the page buffers. */
 id|clearedbuf
 op_assign
@@ -1889,7 +1899,7 @@ c_func
 (paren
 id|page
 comma
-id|wait
+id|buffer_mask
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Re-take the spinlock. Note that we cannot&n;&t;&t;&t; * unlock the page yet since we&squot;re still&n;&t;&t;&t; * accessing the page_struct here...&n;&t;&t;&t; */
@@ -2080,7 +2090,7 @@ c_cond
 (paren
 id|CAN_DO_IO
 op_logical_or
-id|CAN_DO_BUFFERS
+id|CAN_DO_FS
 )paren
 op_logical_and
 op_logical_neg

@@ -373,7 +373,7 @@ op_star
 id|get_zeroed_page
 c_func
 (paren
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if

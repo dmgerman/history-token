@@ -1030,6 +1030,9 @@ id|mce_disabled
 op_assign
 l_int|1
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
 id|__setup
 c_func

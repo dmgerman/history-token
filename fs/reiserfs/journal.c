@@ -261,7 +261,7 @@ r_struct
 id|reiserfs_bitmap_node
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -282,7 +282,7 @@ c_func
 (paren
 id|p_s_sb-&gt;s_blocksize
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -6946,7 +6946,7 @@ id|buffer_head
 op_star
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 id|real_blocks
@@ -6967,7 +6967,7 @@ id|buffer_head
 op_star
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -8777,7 +8777,7 @@ id|reiserfs_journal_commit_task
 op_star
 id|ct
 suffix:semicolon
-multiline_comment|/* using GFP_BUFFER, GFP_KERNEL could try to flush inodes, which will try&n;  ** to start/join a transaction, which will deadlock&n;  */
+multiline_comment|/* using GFP_NOFS, GFP_KERNEL could try to flush inodes, which will try&n;  ** to start/join a transaction, which will deadlock&n;  */
 id|ct
 op_assign
 id|kmalloc
@@ -8789,7 +8789,7 @@ r_struct
 id|reiserfs_journal_commit_task
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if
@@ -14254,7 +14254,7 @@ r_struct
 id|reiserfs_page_list
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 comma
 id|inode-&gt;i_sb
 )paren

@@ -1337,7 +1337,7 @@ id|le16_to_cpu
 id|rs-&gt;s_bmap_nr
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 comma
 id|s
 )paren
@@ -1548,7 +1548,7 @@ id|le16_to_cpu
 id|rs-&gt;s_bmap_nr
 )paren
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 comma
 id|s
 )paren

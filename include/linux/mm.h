@@ -1624,27 +1624,29 @@ DECL|macro|__GFP_HIGHMEM
 mdefine_line|#define __GFP_HIGHMEM&t;0x02
 multiline_comment|/* Action modifiers - doesn&squot;t change the zoning */
 DECL|macro|__GFP_WAIT
-mdefine_line|#define __GFP_WAIT&t;0x10
+mdefine_line|#define __GFP_WAIT&t;0x10&t;/* Can wait and reschedule? */
 DECL|macro|__GFP_HIGH
-mdefine_line|#define __GFP_HIGH&t;0x20
+mdefine_line|#define __GFP_HIGH&t;0x20&t;/* Should access emergency pools? */
 DECL|macro|__GFP_IO
-mdefine_line|#define __GFP_IO&t;0x40
-DECL|macro|__GFP_BUFFER
-mdefine_line|#define __GFP_BUFFER&t;0x80
-DECL|macro|GFP_BUFFER
-mdefine_line|#define GFP_BUFFER&t;(__GFP_HIGH | __GFP_WAIT | __GFP_BUFFER)
+mdefine_line|#define __GFP_IO&t;0x40&t;/* Can start physical IO? */
+DECL|macro|__GFP_FS
+mdefine_line|#define __GFP_FS&t;0x80&t;/* Can call down to low-level FS? */
+DECL|macro|GFP_NOIO
+mdefine_line|#define GFP_NOIO&t;(__GFP_HIGH | __GFP_WAIT)
+DECL|macro|GFP_NOFS
+mdefine_line|#define GFP_NOFS&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO)
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_USER
-mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO)
+mdefine_line|#define GFP_USER&t;(             __GFP_WAIT | __GFP_IO | __GFP_FS)
 DECL|macro|GFP_HIGHUSER
-mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_HIGHMEM)
+mdefine_line|#define GFP_HIGHUSER&t;(             __GFP_WAIT | __GFP_IO | __GFP_FS | __GFP_HIGHMEM)
 DECL|macro|GFP_KERNEL
-mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO)
+mdefine_line|#define GFP_KERNEL&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_FS)
 DECL|macro|GFP_NFS
-mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO)
+mdefine_line|#define GFP_NFS&t;&t;(__GFP_HIGH | __GFP_WAIT | __GFP_IO | __GFP_FS)
 DECL|macro|GFP_KSWAPD
-mdefine_line|#define GFP_KSWAPD&t;(                          __GFP_IO)
+mdefine_line|#define GFP_KSWAPD&t;(                          __GFP_IO | __GFP_FS)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */
 DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA

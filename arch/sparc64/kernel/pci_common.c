@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_common.c,v 1.25 2001/06/14 16:57:41 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_common.c,v 1.26 2001/06/28 01:32:18 davem Exp $&n; * pci_common.c: PCI controller common support.&n; *&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3069,7 +3069,7 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now figure out the slot. */
+multiline_comment|/* Now figure out the slot.&n;&t;&t; *&n;&t;&t; * Basically, device number zero on the top-level bus is&n;&t;&t; * always the PCI host controller.  Slot 0 is then device 1.&n;&t;&t; * PBM A supports two external slots (0 and 1), and PBM B&n;&t;&t; * supports 4 external slots (0, 1, 2, and 3).  On-board PCI&n;&t;&t; * devices are wired to device numbers outside of these&n;&t;&t; * ranges. -DaveM&n; &t;&t; */
 r_if
 c_cond
 (paren
@@ -3078,14 +3078,6 @@ op_eq
 id|pbm-&gt;pci_first_busno
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pbm
-op_eq
-op_amp
-id|pbm-&gt;parent-&gt;pbm_A
-)paren
 id|slot
 op_assign
 (paren
@@ -3095,29 +3087,11 @@ l_int|3
 )paren
 op_minus
 l_int|1
-suffix:semicolon
-r_else
-id|slot
-op_assign
-(paren
-id|pdev-&gt;devfn
-op_rshift
-l_int|3
-)paren
-op_minus
-l_int|2
 suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|pbm
-op_eq
-op_amp
-id|pbm-&gt;parent-&gt;pbm_A
-)paren
+multiline_comment|/* Underneath a bridge, use slot number of parent&n;&t;&t;&t; * bridge.&n;&t;&t;&t; */
 id|slot
 op_assign
 (paren
@@ -3127,17 +3101,6 @@ l_int|3
 )paren
 op_minus
 l_int|1
-suffix:semicolon
-r_else
-id|slot
-op_assign
-(paren
-id|pdev-&gt;bus-&gt;self-&gt;devfn
-op_rshift
-l_int|3
-)paren
-op_minus
-l_int|2
 suffix:semicolon
 )brace
 id|slot

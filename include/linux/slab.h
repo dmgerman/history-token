@@ -12,8 +12,10 @@ suffix:semicolon
 macro_line|#include&t;&lt;linux/mm.h&gt;
 macro_line|#include&t;&lt;linux/cache.h&gt;
 multiline_comment|/* flags for kmem_cache_alloc() */
-DECL|macro|SLAB_BUFFER
-mdefine_line|#define&t;SLAB_BUFFER&t;&t;GFP_BUFFER
+DECL|macro|SLAB_NOFS
+mdefine_line|#define&t;SLAB_NOFS&t;&t;GFP_NOFS
+DECL|macro|SLAB_NOIO
+mdefine_line|#define&t;SLAB_NOIO&t;&t;GFP_NOIO
 DECL|macro|SLAB_ATOMIC
 mdefine_line|#define&t;SLAB_ATOMIC&t;&t;GFP_ATOMIC
 DECL|macro|SLAB_USER
@@ -25,7 +27,7 @@ mdefine_line|#define&t;SLAB_NFS&t;&t;GFP_NFS
 DECL|macro|SLAB_DMA
 mdefine_line|#define&t;SLAB_DMA&t;&t;GFP_DMA
 DECL|macro|SLAB_LEVEL_MASK
-mdefine_line|#define SLAB_LEVEL_MASK&t;&t;(__GFP_WAIT|__GFP_HIGH|__GFP_IO|__GFP_BUFFER)
+mdefine_line|#define SLAB_LEVEL_MASK&t;&t;(__GFP_WAIT|__GFP_HIGH|__GFP_IO|__GFP_FS)
 DECL|macro|SLAB_NO_GROW
 mdefine_line|#define&t;SLAB_NO_GROW&t;&t;0x00001000UL&t;/* don&squot;t grow a cache */
 multiline_comment|/* flags to pass to kmem_cache_create().&n; * The first 3 are only valid when the allocator as been build&n; * SLAB_DEBUG_SUPPORT.&n; */

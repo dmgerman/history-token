@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: zs.c,v 1.65 2001/05/09 07:00:10 davem Exp $&n; * zs.c: Zilog serial port driver for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Fixes by Pete A. Zaitcev &lt;zaitcev@yahoo.com&gt;.&n; */
+multiline_comment|/* $Id: zs.c,v 1.66 2001/06/29 21:33:22 davem Exp $&n; * zs.c: Zilog serial port driver for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Fixes by Pete A. Zaitcev &lt;zaitcev@yahoo.com&gt;.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -468,8 +468,6 @@ suffix:semicolon
 DECL|variable|zs_curlog
 r_int
 id|zs_curlog
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|ZSLOG
 mdefine_line|#define ZSLOG(__reg, __val, __write) &bslash;&n;do{&t;int index = zs_curlog; &bslash;&n;&t;zslog[index].reg = (__reg); &bslash;&n;&t;zslog[index].val = (__val); &bslash;&n;&t;zslog[index].write = (__write); &bslash;&n;&t;zs_curlog = (index + 1) &amp; (32 - 1); &bslash;&n;}while(0)
@@ -8399,7 +8397,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.65 $&quot;
+l_string|&quot;$Revision: 1.66 $&quot;
 suffix:semicolon
 r_char
 op_star

@@ -246,7 +246,7 @@ r_do
 (brace
 id|sock-&gt;sk-&gt;allocation
 op_assign
-id|GFP_BUFFER
+id|GFP_NOIO
 suffix:semicolon
 id|iov.iov_base
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;&t;INETPEER - A storage for permanent information about peers&n; *&n; *  This source is covered by the GNU GPL, the same as all kernel sources.&n; *&n; *  Version:&t;$Id: inetpeer.c,v 1.3 2000/10/03 07:29:00 anton Exp $&n; *&n; *  Authors:&t;Andrey V. Savochkin &lt;saw@msu.ru&gt;&n; */
+multiline_comment|/*&n; *&t;&t;INETPEER - A storage for permanent information about peers&n; *&n; *  This source is covered by the GNU GPL, the same as all kernel sources.&n; *&n; *  Version:&t;$Id: inetpeer.c,v 1.6 2001/06/21 20:30:14 davem Exp $&n; *&n; *  Authors:&t;Andrey V. Savochkin &lt;saw@msu.ru&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -197,9 +197,13 @@ c_cond
 (paren
 id|si.totalram
 op_le
+(paren
 l_int|32768
 op_star
 l_int|1024
+)paren
+op_div
+id|PAGE_SIZE
 )paren
 id|inet_peer_threshold
 op_rshift_assign
@@ -211,9 +215,13 @@ c_cond
 (paren
 id|si.totalram
 op_le
+(paren
 l_int|16384
 op_star
 l_int|1024
+)paren
+op_div
+id|PAGE_SIZE
 )paren
 id|inet_peer_threshold
 op_rshift_assign
@@ -225,9 +233,13 @@ c_cond
 (paren
 id|si.totalram
 op_le
+(paren
 l_int|8192
 op_star
 l_int|1024
+)paren
+op_div
+id|PAGE_SIZE
 )paren
 id|inet_peer_threshold
 op_rshift_assign

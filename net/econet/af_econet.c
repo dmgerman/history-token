@@ -109,8 +109,6 @@ r_static
 r_int
 r_int
 id|aun_seq
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Queue of packets waiting to be transmitted. */
 DECL|variable|aun_queue
@@ -404,14 +402,7 @@ r_sizeof
 r_struct
 id|sockaddr_ec
 )paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|sec-&gt;sec_family
 op_ne
 id|AF_ECONET
@@ -1711,11 +1702,6 @@ id|sock
 )paren
 (brace
 r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-r_struct
 id|sock
 op_star
 id|sk
@@ -1763,26 +1749,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Purge queues */
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|sk-&gt;receive_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-id|kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_if

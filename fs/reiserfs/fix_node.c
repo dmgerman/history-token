@@ -9481,7 +9481,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 comma
 id|tb-&gt;tb_sb
 )paren

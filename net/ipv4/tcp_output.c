@@ -2685,7 +2685,7 @@ id|skb-&gt;csum
 comma
 id|next_skb-&gt;csum
 comma
-id|skb-&gt;len
+id|skb_size
 )paren
 suffix:semicolon
 )brace

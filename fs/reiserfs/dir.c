@@ -659,7 +659,7 @@ c_func
 (paren
 id|d_reclen
 comma
-id|GFP_BUFFER
+id|GFP_NOFS
 )paren
 suffix:semicolon
 r_if

@@ -1534,7 +1534,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * When we arrive here, we are really tight on memory.&n;&t;&t; * Since kswapd didn&squot;t succeed in freeing pages for us,&n;&t;&t; * we try to help it.&n;&t;&t; *&n;&t;&t; * Single page allocs loop until the allocation succeeds.&n;&t;&t; * Multi-page allocs can fail due to memory fragmentation;&n;&t;&t; * in that case we bail out to prevent infinite loops and&n;&t;&t; * hanging device drivers ...&n;&t;&t; *&n;&t;&t; * Another issue are GFP_BUFFER allocations; because they&n;&t;&t; * do not have __GFP_IO set it&squot;s possible we cannot make&n;&t;&t; * any progress freeing pages, in that case it&squot;s better&n;&t;&t; * to give up than to deadlock the kernel looping here.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * When we arrive here, we are really tight on memory.&n;&t;&t; * Since kswapd didn&squot;t succeed in freeing pages for us,&n;&t;&t; * we try to help it.&n;&t;&t; *&n;&t;&t; * Single page allocs loop until the allocation succeeds.&n;&t;&t; * Multi-page allocs can fail due to memory fragmentation;&n;&t;&t; * in that case we bail out to prevent infinite loops and&n;&t;&t; * hanging device drivers ...&n;&t;&t; *&n;&t;&t; * Another issue are GFP_NOFS allocations; because they&n;&t;&t; * do not have __GFP_FS set it&squot;s possible we cannot make&n;&t;&t; * any progress freeing pages, in that case it&squot;s better&n;&t;&t; * to give up than to deadlock the kernel looping here.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1572,7 +1572,7 @@ op_logical_or
 (paren
 id|gfp_mask
 op_amp
-id|__GFP_IO
+id|__GFP_FS
 )paren
 )paren
 r_goto

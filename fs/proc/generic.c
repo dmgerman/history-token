@@ -792,7 +792,7 @@ suffix:semicolon
 DECL|variable|proc_alloc_map
 r_static
 r_int
-r_char
+r_int
 id|proc_alloc_map
 (braket
 id|PROC_NDYNAMIC
@@ -830,10 +830,6 @@ op_assign
 id|find_first_zero_bit
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|proc_alloc_map
 comma
 id|PROC_NDYNAMIC
@@ -865,10 +861,6 @@ c_func
 (paren
 id|i
 comma
-(paren
-r_void
-op_star
-)paren
 id|proc_alloc_map
 )paren
 suffix:semicolon
@@ -2517,10 +2509,6 @@ id|de-&gt;low_ino
 op_minus
 id|PROC_DYNAMIC_FIRST
 comma
-(paren
-r_void
-op_star
-)paren
 id|proc_alloc_map
 )paren
 suffix:semicolon

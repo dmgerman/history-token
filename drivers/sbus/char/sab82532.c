@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sab82532.c,v 1.62 2001/06/10 06:48:47 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; */
+multiline_comment|/* $Id: sab82532.c,v 1.63 2001/06/29 21:23:44 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -5837,14 +5837,12 @@ id|value
 )paren
 (brace
 r_int
-id|error
-suffix:semicolon
-r_int
 r_int
 id|arg
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -5852,14 +5850,10 @@ id|arg
 comma
 id|value
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -6311,9 +6305,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 r_struct
 id|sab82532
 op_star
@@ -6458,8 +6449,9 @@ suffix:semicolon
 r_case
 id|TIOCSSOFTCAR
 suffix:colon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -6472,14 +6464,10 @@ op_star
 )paren
 id|arg
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 id|tty-&gt;termios-&gt;c_cflag
 op_assign
@@ -6812,8 +6800,9 @@ op_star
 )paren
 id|arg
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|put_user
 c_func
 (paren
@@ -6822,17 +6811,7 @@ comma
 op_amp
 id|p_cuser-&gt;cts
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -6841,17 +6820,7 @@ comma
 op_amp
 id|p_cuser-&gt;dsr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -6860,17 +6829,7 @@ comma
 op_amp
 id|p_cuser-&gt;rng
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -6879,14 +6838,10 @@ comma
 op_amp
 id|p_cuser-&gt;dcd
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -9882,7 +9837,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.62 $&quot;
+l_string|&quot;$Revision: 1.63 $&quot;
 suffix:semicolon
 r_char
 op_star

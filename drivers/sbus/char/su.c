@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: su.c,v 1.50 2001/05/16 08:37:03 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@yahoo.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; */
+multiline_comment|/* $Id: su.c,v 1.52 2001/06/29 21:54:32 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@yahoo.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; */
 multiline_comment|/*&n; * Configuration section.&n; */
 DECL|macro|SERIAL_PARANOIA_CHECK
 macro_line|#undef SERIAL_PARANOIA_CHECK
@@ -626,6 +626,7 @@ r_char
 op_star
 id|badmagic
 op_assign
+id|KERN_WARNING
 l_string|&quot;Warning: bad magic number for serial struct (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_static
@@ -634,6 +635,7 @@ r_char
 op_star
 id|badinfo
 op_assign
+id|KERN_WARNING
 l_string|&quot;Warning: null su_struct for (%s) in %s&bslash;n&quot;
 suffix:semicolon
 r_if
@@ -6136,9 +6138,6 @@ id|value
 )paren
 (brace
 r_int
-id|error
-suffix:semicolon
-r_int
 r_int
 id|arg
 suffix:semicolon
@@ -6146,8 +6145,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -6155,14 +6155,10 @@ id|arg
 comma
 id|value
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_switch
 c_cond
@@ -6538,9 +6534,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 r_struct
 id|su_struct
 op_star
@@ -6938,8 +6931,9 @@ op_star
 )paren
 id|arg
 suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|put_user
 c_func
 (paren
@@ -6948,17 +6942,7 @@ comma
 op_amp
 id|p_cuser-&gt;cts
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -6967,17 +6951,7 @@ comma
 op_amp
 id|p_cuser-&gt;dsr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -6986,17 +6960,7 @@ comma
 op_amp
 id|p_cuser-&gt;rng
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -7005,14 +6969,10 @@ comma
 op_amp
 id|p_cuser-&gt;dcd
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -9441,7 +9401,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.50 $&quot;
+l_string|&quot;$Revision: 1.52 $&quot;
 suffix:semicolon
 r_char
 op_star

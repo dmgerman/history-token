@@ -1581,7 +1581,7 @@ c_func
 (paren
 id|bh_cachep
 comma
-id|SLAB_BUFFER
+id|SLAB_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -1679,7 +1679,7 @@ op_assign
 id|alloc_page
 c_func
 (paren
-id|GFP_BUFFER
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -2669,7 +2669,7 @@ id|inode-&gt;i_mapping-&gt;gfp_mask
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;gfp_mask
 op_assign
-id|GFP_BUFFER
+id|GFP_NOIO
 suffix:semicolon
 id|bs
 op_assign
