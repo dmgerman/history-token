@@ -478,7 +478,6 @@ id|r7
 (brace
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PPC_PSERIES)
 r_int
-r_int
 id|ret
 comma
 id|i
@@ -725,10 +724,6 @@ l_int|3
 comma
 l_int|1
 comma
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ret
 comma
@@ -738,6 +733,9 @@ c_func
 id|i
 )paren
 comma
+(paren
+id|u32
+)paren
 op_star
 (paren
 (paren

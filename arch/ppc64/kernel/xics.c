@@ -1114,7 +1114,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;xics_enable_irq: irq=%x: ibm_set_xive &quot;
-l_string|&quot;returned %lx&bslash;n&quot;
+l_string|&quot;returned %x&bslash;n&quot;
 comma
 id|irq
 comma
@@ -1154,7 +1154,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;xics_enable_irq: irq=%x: ibm_int_on &quot;
-l_string|&quot;returned %lx&bslash;n&quot;
+l_string|&quot;returned %x&bslash;n&quot;
 comma
 id|irq
 comma
@@ -1221,7 +1221,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;xics_disable_real_irq: irq=%x: &quot;
-l_string|&quot;ibm_int_off returned %lx&bslash;n&quot;
+l_string|&quot;ibm_int_off returned %x&bslash;n&quot;
 comma
 id|irq
 comma
@@ -1273,7 +1273,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;xics_disable_irq: irq=%x: ibm_set_xive(0xff)&quot;
-l_string|&quot; returned %lx&bslash;n&quot;
+l_string|&quot; returned %x&bslash;n&quot;
 comma
 id|irq
 comma
@@ -2781,7 +2781,6 @@ r_int
 id|status
 suffix:semicolon
 r_int
-r_int
 id|xics_status
 (braket
 l_int|2
@@ -2832,11 +2831,6 @@ l_int|1
 comma
 l_int|3
 comma
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|xics_status
 comma
 id|irq
@@ -2853,7 +2847,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;xics_set_affinity: irq=%d ibm,get-xive &quot;
-l_string|&quot;returns %ld&bslash;n&quot;
+l_string|&quot;returns %d&bslash;n&quot;
 comma
 id|irq
 comma
@@ -2951,7 +2945,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;xics_set_affinity irq=%d ibm,set-xive &quot;
-l_string|&quot;returns %ld&bslash;n&quot;
+l_string|&quot;returns %d&bslash;n&quot;
 comma
 id|irq
 comma
@@ -2990,7 +2984,6 @@ l_int|9005UL
 suffix:semicolon
 multiline_comment|/* Global Interrupt Queue Server */
 r_int
-r_int
 id|status
 op_assign
 l_int|0
@@ -3006,7 +2999,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_int
 r_int
 id|xics_status
 (braket
@@ -3061,7 +3053,7 @@ c_func
 (paren
 )paren
 comma
-l_int|0UL
+l_int|0
 )paren
 suffix:semicolon
 id|WARN_ON
@@ -3167,11 +3159,6 @@ l_int|1
 comma
 l_int|3
 comma
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|xics_status
 comma
 id|irq
@@ -3188,7 +3175,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;migrate_irqs_away: irq=%d &quot;
-l_string|&quot;ibm,get-xive returns %ld&bslash;n&quot;
+l_string|&quot;ibm,get-xive returns %d&bslash;n&quot;
 comma
 id|irq
 comma
@@ -3272,7 +3259,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;migrate_irqs_away irq=%d &quot;
-l_string|&quot;ibm,set-xive returns %ld&bslash;n&quot;
+l_string|&quot;ibm,set-xive returns %d&bslash;n&quot;
 comma
 id|irq
 comma
