@@ -35,7 +35,7 @@ mdefine_line|#define SOL_SCO     17
 DECL|macro|SOL_RFCOMM
 mdefine_line|#define SOL_RFCOMM  18
 DECL|macro|BT_INFO
-mdefine_line|#define BT_INFO(fmt, arg...) printk(KERN_INFO fmt &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define BT_INFO(fmt, arg...) printk(KERN_INFO &quot;Bluetooth: &quot; fmt &quot;&bslash;n&quot; , ## arg)
 DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(fmt, arg...)  printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 DECL|macro|BT_ERR

@@ -3583,15 +3583,9 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth HCI USB driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;HCI USB driver ver %s&quot;
 comma
 id|VERSION
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 r_if

@@ -1095,6 +1095,18 @@ id|hu-&gt;tty
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|HCI_UART_PROTO_SET
+comma
+op_amp
+id|hu-&gt;flags
+)paren
+)paren
 id|hci_uart_tx_wakeup
 c_func
 (paren
@@ -1724,15 +1736,9 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth HCI UART driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;HCI UART driver ver %s&quot;
 comma
 id|VERSION
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register the tty discipline */
@@ -1814,7 +1820,7 @@ id|hci_uart_ldisc
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register HCI line discipline (%d)&quot;
+l_string|&quot;HCI line discipline registration failed. (%d)&quot;
 comma
 id|err
 )paren
