@@ -1529,7 +1529,7 @@ multiline_comment|/* EPP timeout should never occur... */
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: EPP timeout occured while talking to &quot;
+l_string|&quot;%s: EPP timeout occurred while talking to &quot;
 l_string|&quot;w91284pic (should not have done)&bslash;n&quot;
 comma
 id|port-&gt;name

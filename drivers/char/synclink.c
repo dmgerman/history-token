@@ -25743,7 +25743,7 @@ id|BIT1
 )paren
 )paren
 (brace
-multiline_comment|/* receive error has occured */
+multiline_comment|/* receive error has occurred */
 id|rc
 op_assign
 id|FALSE

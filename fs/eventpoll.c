@@ -3234,7 +3234,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We have to signal that an error occured */
+multiline_comment|/* We have to signal that an error occurred */
 id|epi-&gt;nwait
 op_assign
 op_minus

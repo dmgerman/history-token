@@ -3124,7 +3124,7 @@ id|crc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * if CRC is right but framelen incorrect then transmitter&n;&t;&t; * error was occured... drop entire packet&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * if CRC is right but framelen incorrect then transmitter&n;&t;&t; * error was occurred... drop entire packet&n;&t;&t; */
 r_else
 r_if
 c_cond

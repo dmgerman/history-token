@@ -7043,7 +7043,7 @@ suffix:semicolon
 r_case
 id|FR_INTR_DLC
 suffix:colon
-multiline_comment|/* Event interrupt occured */
+multiline_comment|/* Event interrupt occurred */
 id|mbox-&gt;cmd.command
 op_assign
 id|FR_READ_STATUS

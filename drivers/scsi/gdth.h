@@ -3170,7 +3170,7 @@ DECL|member|media_changed
 id|unchar
 id|media_changed
 suffix:semicolon
-multiline_comment|/* Flag:MOUNT/UNMOUNT occured */
+multiline_comment|/* Flag:MOUNT/UNMOUNT occurred*/
 DECL|member|start_sec
 id|ulong32
 id|start_sec

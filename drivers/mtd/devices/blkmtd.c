@@ -1625,7 +1625,7 @@ id|item-&gt;rawdevice-&gt;sector_bits
 )paren
 )paren
 (brace
-multiline_comment|/* if an error occured - set this to exit the loop */
+multiline_comment|/* if an error occurred - set this to exit the loop */
 id|sectorcnt
 op_assign
 l_int|0

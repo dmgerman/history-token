@@ -360,7 +360,7 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function to stop a processor until an interruption occured&n; */
+multiline_comment|/*&n; * Function to stop a processor until an interruption occurred&n; */
 DECL|function|enabled_wait
 r_static
 r_inline

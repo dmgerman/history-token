@@ -8247,7 +8247,7 @@ c_func
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX: By default, the -&gt;readlink() VFS op will truncate symlinks&n;&t; * if they would overflow the buffer.  Is this kosher in NFSv4?  If&n;&t; * not, one easy fix is: if -&gt;readlink() precisely fills the buffer,&n;&t; * assume that truncation occured, and return NFS4ERR_RESOURCE.&n;&t; */
+multiline_comment|/*&n;&t; * XXX: By default, the -&gt;readlink() VFS op will truncate symlinks&n;&t; * if they would overflow the buffer.  Is this kosher in NFSv4?  If&n;&t; * not, one easy fix is: if -&gt;readlink() precisely fills the buffer,&n;&t; * assume that truncation occurred, and return NFS4ERR_RESOURCE.&n;&t; */
 id|nfserr
 op_assign
 id|nfsd_readlink

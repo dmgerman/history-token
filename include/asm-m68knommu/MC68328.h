@@ -1655,13 +1655,13 @@ mdefine_line|#define RTCISR&t;&t;WORD_REF(RTCISR_ADDR)
 DECL|macro|RTCISR_SW
 mdefine_line|#define RTCISR_SW&t;0x0001&t;/* Stopwatch timed out */
 DECL|macro|RTCISR_MIN
-mdefine_line|#define RTCISR_MIN&t;0x0002&t;/* 1-minute interrupt has occured */
+mdefine_line|#define RTCISR_MIN&t;0x0002&t;/* 1-minute interrupt has occurred */
 DECL|macro|RTCISR_ALM
-mdefine_line|#define RTCISR_ALM&t;0x0004&t;/* Alarm interrupt has occured */
+mdefine_line|#define RTCISR_ALM&t;0x0004&t;/* Alarm interrupt has occurred */
 DECL|macro|RTCISR_DAY
-mdefine_line|#define RTCISR_DAY&t;0x0008&t;/* 24-hour rollover interrupt has occured */
+mdefine_line|#define RTCISR_DAY&t;0x0008&t;/* 24-hour rollover interrupt has occurred */
 DECL|macro|RTCISR_1HZ
-mdefine_line|#define RTCISR_1HZ&t;0x0010&t;/* 1Hz interrupt has occured */
+mdefine_line|#define RTCISR_1HZ&t;0x0010&t;/* 1Hz interrupt has occurred */
 multiline_comment|/*&n; * RTC Interrupt Enable Register&n; */
 DECL|macro|RTCIENR_ADDR
 mdefine_line|#define RTCIENR_ADDR&t;0xfffffb10

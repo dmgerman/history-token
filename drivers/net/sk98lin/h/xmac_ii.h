@@ -397,7 +397,7 @@ mdefine_line|#define XM_ST_MC&t;&t;(1L&lt;&lt;6)&t;&t;/* Bit&t;6:&t;Multicast pa
 DECL|macro|XM_ST_UC
 mdefine_line|#define XM_ST_UC&t;&t;(1L&lt;&lt;5)&t;&t;/* Bit&t;5:&t;Unicast packet */
 DECL|macro|XM_ST_TX_UR
-mdefine_line|#define XM_ST_TX_UR&t;&t;(1L&lt;&lt;4)&t;&t;/* Bit&t;4:&t;FIFO Underrun occured */
+mdefine_line|#define XM_ST_TX_UR&t;&t;(1L&lt;&lt;4)&t;&t;/* Bit&t;4:&t;FIFO Underrun occurred */
 DECL|macro|XM_ST_CS_ERR
 mdefine_line|#define XM_ST_CS_ERR&t;(1L&lt;&lt;3)&t;&t;/* Bit&t;3:&t;Carrier Sense Error */
 DECL|macro|XM_ST_LAT_COL

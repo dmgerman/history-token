@@ -227,7 +227,7 @@ id|GT_INTRCAUSE_TARABORT0_BIT
 )paren
 )paren
 (brace
-multiline_comment|/* Error occured */
+multiline_comment|/* Error occurred */
 multiline_comment|/* Clear bits */
 id|GT_WRITE
 c_func

@@ -9949,7 +9949,7 @@ comma
 id|ohci-&gt;id
 comma
 l_string|&quot;SelfID received, but NodeID invalid &quot;
-l_string|&quot;(probably new bus reset occured): %08X&quot;
+l_string|&quot;(probably new bus reset occurred): %08X&quot;
 comma
 id|node_id
 )paren

@@ -7427,7 +7427,7 @@ multiline_comment|/* Routine Name: ips_fill_scb_sg_single                       
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Description:                                                     */
 multiline_comment|/*   Fill in a single scb sg_list element from an address                   */
-multiline_comment|/*   return a -1 if a breakup occured                                       */
+multiline_comment|/*   return a -1 if a breakup occurred                                      */
 multiline_comment|/****************************************************************************/
 DECL|function|ips_fill_scb_sg_single
 r_static

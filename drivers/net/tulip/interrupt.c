@@ -2053,7 +2053,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: (%lu) System Error occured (%d)&bslash;n&quot;
+l_string|&quot;%s: (%lu) System Error occurred (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

@@ -7212,7 +7212,7 @@ op_star
 id|card-&gt;u.p.rxbuf_next
 )paren
 suffix:semicolon
-multiline_comment|/* Tell timer interrupt that PPP event occured */
+multiline_comment|/* Tell timer interrupt that PPP event occurred */
 id|ppp_priv_area-&gt;timer_int_enabled
 op_or_assign
 id|TMR_INT_ENABLED_PPP_EVENT

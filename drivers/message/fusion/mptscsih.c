@@ -95,7 +95,7 @@ mdefine_line|#define MPT_ICFLAG_PHYS_DISK&t;0x04&t;/* Any SCSI IO but do Phys Di
 DECL|macro|MPT_ICFLAG_TAGGED_CMD
 mdefine_line|#define MPT_ICFLAG_TAGGED_CMD&t;0x08&t;/* Do tagged IO */
 DECL|macro|MPT_ICFLAG_DID_RESET
-mdefine_line|#define MPT_ICFLAG_DID_RESET&t;0x20&t;/* Bus Reset occured with this command */
+mdefine_line|#define MPT_ICFLAG_DID_RESET&t;0x20&t;/* Bus Reset occurred with this command */
 DECL|macro|MPT_ICFLAG_RESERVED
 mdefine_line|#define MPT_ICFLAG_RESERVED&t;0x40&t;/* Reserved has been issued */
 DECL|struct|_internal_cmd
