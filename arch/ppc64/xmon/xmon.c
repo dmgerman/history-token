@@ -1037,12 +1037,6 @@ id|regs
 )paren
 )paren
 suffix:semicolon
-id|printf
-c_func
-(paren
-l_string|&quot;xmon called&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Fetch the link reg for this stack frame.&n;&t;&t; NOTE: the prev printf fills in the lr. */
 id|regs.nip
 op_assign
