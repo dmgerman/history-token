@@ -1168,7 +1168,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot; %s : enter, count = %d&quot;
+l_string|&quot; %s : enter, count = %Zd&quot;
 comma
 id|__func__
 comma
@@ -1549,7 +1549,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot; %s : enter, count = %d&quot;
+l_string|&quot; %s : enter, count = %Zd&quot;
 comma
 id|__func__
 comma
@@ -1769,7 +1769,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot; %s : in progress, count = %d&quot;
+l_string|&quot; %s : in progress, count = %Zd&quot;
 comma
 id|__func__
 comma
@@ -1784,7 +1784,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot; %s : sending, count = %d&quot;
+l_string|&quot; %s : sending, count = %Zd&quot;
 comma
 id|__func__
 comma
@@ -1812,7 +1812,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot; %s : buffer_size = %d, count = %d, bytes_to_write = %d&quot;
+l_string|&quot; %s : buffer_size = %Zd, count = %Zd, bytes_to_write = %Zd&quot;
 comma
 id|__func__
 comma
