@@ -1257,7 +1257,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|TIMEOUT
+id|TIMEOUT_ERROR
 suffix:colon
 multiline_comment|/* &n;&t;&t;&t;&t; * If called via scsi_times_out.&n;&t;&t;&t;&t; */
 id|printk
