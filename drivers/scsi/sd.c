@@ -6311,6 +6311,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|SRpnt-&gt;sr_data_direction
+op_assign
+id|SCSI_DATA_NONE
+suffix:semicolon
 r_for
 c_loop
 (paren
