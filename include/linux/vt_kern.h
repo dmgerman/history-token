@@ -506,7 +506,7 @@ id|vc
 suffix:semicolon
 multiline_comment|/*&n; * vc_screen.c shares this temporary buffer with the console write code so that&n; * we can easily avoid touching user space while holding the console spinlock.&n; */
 DECL|macro|CON_BUF_SIZE
-mdefine_line|#define CON_BUF_SIZE&t;PAGE_SIZE
+mdefine_line|#define CON_BUF_SIZE (CONFIG_BASE_SMALL ? 256 : PAGE_SIZE)
 r_extern
 r_char
 id|con_buf
