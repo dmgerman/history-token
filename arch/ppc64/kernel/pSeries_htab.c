@@ -325,6 +325,12 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 r_return
 id|i
+op_or
+(paren
+id|secondary
+op_lshift
+l_int|3
+)paren
 suffix:semicolon
 )brace
 DECL|function|pSeries_hpte_remove
@@ -1159,13 +1165,11 @@ op_star
 id|batch
 op_assign
 op_amp
-id|ppc64_tlb_batch
-(braket
-id|smp_processor_id
+id|__get_cpu_var
 c_func
 (paren
+id|ppc64_tlb_batch
 )paren
-)braket
 suffix:semicolon
 multiline_comment|/* XXX fix for large ptes */
 r_int

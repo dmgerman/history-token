@@ -185,7 +185,6 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|hu-&gt;hdev
 suffix:semicolon
 multiline_comment|/* Update HCI stat counters */
@@ -291,7 +290,6 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|hu-&gt;hdev
 suffix:semicolon
 r_struct
@@ -993,7 +991,6 @@ id|hci_dev
 op_star
 id|hdev
 op_assign
-op_amp
 id|hu-&gt;hdev
 suffix:semicolon
 id|hci_uart_close
@@ -1024,6 +1021,12 @@ id|hu
 )paren
 suffix:semicolon
 id|hci_unregister_dev
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
+id|hci_free_dev
 c_func
 (paren
 id|hdev
@@ -1209,7 +1212,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|hu-&gt;hdev.stat.byte_rx
+id|hu-&gt;hdev-&gt;stat.byte_rx
 op_add_assign
 id|count
 suffix:semicolon
@@ -1269,8 +1272,32 @@ suffix:semicolon
 multiline_comment|/* Initialize and register HCI device */
 id|hdev
 op_assign
-op_amp
+id|hci_alloc_dev
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+(brace
+id|BT_ERR
+c_func
+(paren
+l_string|&quot;Can&squot;t allocate HCI device&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|hu-&gt;hdev
+op_assign
+id|hdev
 suffix:semicolon
 id|hdev-&gt;type
 op_assign
@@ -1319,9 +1346,13 @@ l_int|0
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register HCI device %s&quot;
-comma
-id|hdev-&gt;name
+l_string|&quot;Can&squot;t register HCI device&quot;
+)paren
+suffix:semicolon
+id|hci_free_dev
+c_func
+(paren
+id|hdev
 )paren
 suffix:semicolon
 r_return

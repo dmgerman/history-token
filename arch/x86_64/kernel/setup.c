@@ -1616,6 +1616,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|check_efer
+c_func
+(paren
+)paren
+suffix:semicolon
 id|init_memory_mapping
 c_func
 (paren
@@ -2587,14 +2592,12 @@ op_assign
 l_int|31
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * At this point we only support two siblings per&n;&t;&t; * processor package.&n;&t;&t; */
-DECL|macro|NR_SIBLINGS
-mdefine_line|#define NR_SIBLINGS&t;2
 r_if
 c_cond
 (paren
 id|smp_num_siblings
-op_ne
-id|NR_SIBLINGS
+OG
+id|NR_CPUS
 )paren
 (brace
 id|printk
@@ -3991,6 +3994,12 @@ id|i
 )braket
 suffix:semicolon
 )brace
+id|mcheck_init
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 )brace
 DECL|function|print_cpu_info
 r_void
@@ -4365,7 +4374,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-l_int|NULL
+l_string|&quot;cmpxchg16b&quot;
 comma
 l_int|NULL
 comma

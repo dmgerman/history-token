@@ -3037,7 +3037,16 @@ multiline_comment|/* And we&squot;d better return too much than too little anywa
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|oldalarm
+op_logical_and
 id|it_old.it_value.tv_usec
+)paren
+op_logical_or
+id|it_old.it_value.tv_usec
+op_ge
+l_int|500000
 )paren
 id|oldalarm
 op_increment

@@ -871,7 +871,7 @@ l_int|1
 suffix:semicolon
 id|band
 op_assign
-l_int|0x68
+l_int|0x60
 suffix:semicolon
 multiline_comment|/* analog band */
 id|source
@@ -993,7 +993,7 @@ l_int|0
 suffix:semicolon
 id|band
 op_assign
-l_int|0x28
+l_int|0x20
 suffix:semicolon
 multiline_comment|/* digital band */
 id|source
@@ -3365,8 +3365,7 @@ comma
 dot
 id|v_offset
 op_assign
-l_int|0x18
-multiline_comment|/* 0 */
+l_int|0x1b
 comma
 dot
 id|v_field

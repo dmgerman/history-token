@@ -629,7 +629,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Disable device.&n; */
+multiline_comment|/*&n; * Disable device.&n; * Used by dasdfmt. Disable I/O operations but allow ioctls.&n; */
 r_static
 r_int
 DECL|function|dasd_ioctl_disable
@@ -689,6 +689,29 @@ c_func
 id|device
 comma
 id|DASD_STATE_BASIC
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set i_size to zero, since read, write, etc. check against this&n;&t; * value.&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_sem
+)paren
+suffix:semicolon
+id|i_size_write
+c_func
+(paren
+id|bdev-&gt;bd_inode
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|bdev-&gt;bd_sem
 )paren
 suffix:semicolon
 r_return
@@ -939,14 +962,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|device-&gt;open_count
-)paren
-OG
-l_int|1
+id|device-&gt;state
+op_ne
+id|DASD_STATE_BASIC
 )paren
 (brace
 id|DEV_MESSAGE
@@ -958,7 +976,7 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;dasd_format: device is open! &quot;
+l_string|&quot;dasd_format: device is not disabled! &quot;
 )paren
 suffix:semicolon
 r_return
@@ -984,6 +1002,43 @@ comma
 id|fdata-&gt;intensity
 )paren
 suffix:semicolon
+multiline_comment|/* Since dasdfmt keeps the device open after it was disabled,&n;&t; * there still exists an inode for this device. We must update i_blkbits,&n;&t; * otherwise we might get errors when enabling the device later.&n;&t; */
+r_if
+c_cond
+(paren
+id|fdata-&gt;start_unit
+op_eq
+l_int|0
+)paren
+(brace
+r_struct
+id|block_device
+op_star
+id|bdev
+op_assign
+id|bdget_disk
+c_func
+(paren
+id|device-&gt;gdp
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|bdev-&gt;bd_inode-&gt;i_blkbits
+op_assign
+id|blksize_bits
+c_func
+(paren
+id|fdata-&gt;blksize
+)paren
+suffix:semicolon
+id|bdput
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren

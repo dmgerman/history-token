@@ -2545,8 +2545,7 @@ id|rq
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|block
 suffix:semicolon
 id|BUG_ON

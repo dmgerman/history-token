@@ -407,8 +407,21 @@ id|scsi_cmnd
 op_star
 comma
 r_int
+r_int
 comma
 r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_finish_command
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
 )paren
 suffix:semicolon
 macro_line|#endif /* _SCSI_SCSI_CMND_H */

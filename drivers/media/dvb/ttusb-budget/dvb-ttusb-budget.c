@@ -759,6 +759,32 @@ comma
 l_int|0x20
 )paren
 suffix:semicolon
+multiline_comment|/* check if the i2c transaction was successful */
+r_if
+c_cond
+(paren
+(paren
+id|snd_len
+op_ne
+id|b
+(braket
+l_int|5
+)braket
+)paren
+op_logical_or
+(paren
+id|rcv_len
+op_ne
+id|b
+(braket
+l_int|6
+)braket
+)paren
+)paren
+r_return
+op_minus
+id|EREMOTEIO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1056,7 +1082,7 @@ OL
 id|rcv_len
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;%s: i == %i&bslash;n&quot;
@@ -2098,6 +2124,18 @@ op_plus
 l_int|4
 comma
 l_string|&quot;V 1.1&quot;
+comma
+l_int|5
+)paren
+op_logical_and
+id|memcmp
+c_func
+(paren
+id|get_version
+op_plus
+l_int|4
+comma
+l_string|&quot;V 2.1&quot;
 comma
 l_int|5
 )paren
@@ -4385,7 +4423,7 @@ id|ttusb_channel
 op_star
 id|channel
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
 l_string|&quot;ttusb_start_feed&bslash;n&quot;
@@ -4637,10 +4675,12 @@ op_star
 id|ttusb
 )paren
 (brace
-id|usb_reset_configuration
+id|usb_set_configuration
 c_func
 (paren
 id|ttusb-&gt;dev
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|usb_set_interface
@@ -5493,7 +5533,6 @@ l_int|0x1005
 )paren
 )brace
 comma
-multiline_comment|/* to be confirmed ????  */
 (brace
 )brace
 )brace

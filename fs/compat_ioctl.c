@@ -51,6 +51,7 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/if_tun.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
@@ -7542,6 +7543,9 @@ r_int
 r_char
 id|dir
 suffix:semicolon
+r_int
+id|itmp
+suffix:semicolon
 id|cgc
 op_assign
 id|compat_alloc_user_space
@@ -7646,7 +7650,7 @@ c_func
 id|dir
 comma
 op_amp
-id|cgc-&gt;data_direction
+id|cgc32-&gt;data_direction
 )paren
 op_logical_or
 id|put_user
@@ -7655,7 +7659,7 @@ c_func
 id|dir
 comma
 op_amp
-id|cgc32-&gt;data_direction
+id|cgc-&gt;data_direction
 )paren
 )paren
 r_return
@@ -7665,21 +7669,47 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|copy_in_user
+id|get_user
 c_func
 (paren
-op_amp
-id|cgc-&gt;quiet
+id|itmp
 comma
 op_amp
 id|cgc32-&gt;quiet
-comma
-l_int|2
-op_star
-r_sizeof
-(paren
-r_int
 )paren
+op_logical_or
+id|put_user
+c_func
+(paren
+id|itmp
+comma
+op_amp
+id|cgc-&gt;quiet
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|itmp
+comma
+op_amp
+id|cgc32-&gt;timeout
+)paren
+op_logical_or
+id|put_user
+c_func
+(paren
+id|itmp
+comma
+op_amp
+id|cgc-&gt;timeout
 )paren
 )paren
 r_return

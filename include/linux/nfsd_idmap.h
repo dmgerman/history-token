@@ -1,0 +1,89 @@
+multiline_comment|/*&n; *  include/linux/nfsd_idmap.h&n; *&n; *  Mapping of UID to name and vice versa.&n; *&n; *  Copyright (c) 2002, 2003 The Regents of the University of&n; *  Michigan.  All rights reserved.&n;&gt; *&n; *  Marius Aamodt Eriksen &lt;marius@umich.edu&gt;&n; *&n; *  Redistribution and use in source and binary forms, with or without&n; *  modification, are permitted provided that the following conditions&n; *  are met:&n; *&n; *  1. Redistributions of source code must retain the above copyright&n; *     notice, this list of conditions and the following disclaimer.&n; *  2. Redistributions in binary form must reproduce the above copyright&n; *     notice, this list of conditions and the following disclaimer in the&n; *     documentation and/or other materials provided with the distribution.&n; *  3. Neither the name of the University nor the names of its&n; *     contributors may be used to endorse or promote products derived&n; *     from this software without specific prior written permission.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; *  DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE&n; *  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR&n; *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF&n; *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR&n; *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&n; *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&n; *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS&n; *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+macro_line|#ifndef LINUX_NFSD_IDMAP_H
+DECL|macro|LINUX_NFSD_IDMAP_H
+mdefine_line|#define LINUX_NFSD_IDMAP_H
+macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/sunrpc/svc.h&gt;
+multiline_comment|/* XXX from linux/nfs_idmap.h */
+DECL|macro|IDMAP_NAMESZ
+mdefine_line|#define IDMAP_NAMESZ 128
+r_void
+id|nfsd_idmap_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|nfsd_idmap_shutdown
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|nfsd_map_name_to_uid
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+id|__u32
+op_star
+)paren
+suffix:semicolon
+r_int
+id|nfsd_map_name_to_gid
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+id|__u32
+op_star
+)paren
+suffix:semicolon
+r_int
+id|nfsd_map_uid_to_name
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+id|__u32
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_int
+id|nfsd_map_gid_to_name
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+comma
+id|__u32
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* LINUX_NFSD_IDMAP_H */
+eof

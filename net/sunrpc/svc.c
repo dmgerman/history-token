@@ -1,12 +1,9 @@
 multiline_comment|/*&n; * linux/net/sunrpc/svc.c&n; *&n; * High-level RPC service routines&n; *&n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
@@ -801,6 +798,17 @@ c_func
 id|rqstp-&gt;rq_argp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rqstp-&gt;rq_auth_data
+)paren
+id|kfree
+c_func
+(paren
+id|rqstp-&gt;rq_auth_data
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1335,6 +1343,12 @@ id|SVC_DROP
 suffix:colon
 r_goto
 id|dropit
+suffix:semicolon
+r_case
+id|SVC_COMPLETE
+suffix:colon
+r_goto
+id|sendit
 suffix:semicolon
 )brace
 id|progp

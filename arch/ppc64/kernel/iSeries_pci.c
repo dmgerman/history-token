@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallSm.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
@@ -35,7 +35,7 @@ id|iSeries_Base_Io_Memory
 suffix:semicolon
 r_extern
 r_struct
-id|TceTable
+id|iommu_table
 op_star
 id|tceTables
 (braket
@@ -916,13 +916,9 @@ comma
 id|Buffer
 )paren
 suffix:semicolon
-id|create_pci_bus_tce_table
+id|iommu_devnode_init
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|node
 )paren
 suffix:semicolon
@@ -939,6 +935,10 @@ r_int
 )paren
 id|pdev
 )paren
+suffix:semicolon
+id|pdev-&gt;irq
+op_assign
+id|node-&gt;Irq
 suffix:semicolon
 )brace
 id|iSeries_IoMmTable_Status
@@ -1618,22 +1618,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;connected bus unit at bus %d subbus 0x%x agentid 0x%x (idsel=%d func=%d)&bslash;n&quot;
-comma
-id|Bus
-comma
-id|SubBus
-comma
-id|AgentId
-comma
-id|IdSel
-comma
-id|Function
-)paren
-suffix:semicolon
 id|HvRc
 op_assign
 id|HvCallPci_configLoad16
@@ -1690,7 +1674,7 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;PCI:- FoundDevice: 0x%02X.%02X.%02X = 0x%04X&bslash;n&quot;
+l_string|&quot;PCI:- FoundDevice: 0x%02X.%02X.%02X = 0x%04X, irq %d&bslash;n&quot;
 comma
 id|Bus
 comma
@@ -1699,6 +1683,8 @@ comma
 id|AgentId
 comma
 id|VendorId
+comma
+id|Irq
 )paren
 suffix:semicolon
 id|HvRc

@@ -1488,10 +1488,16 @@ op_star
 id|p
 )paren
 suffix:semicolon
+DECL|macro|THREAD_SIZE_LONGS
+mdefine_line|#define THREAD_SIZE_LONGS      (THREAD_SIZE/sizeof(unsigned long))
+DECL|macro|KSTK_TOP
+mdefine_line|#define KSTK_TOP(info)                                                 &bslash;&n;({                                                                     &bslash;&n;       unsigned long *__ptr = (unsigned long *)(info);                 &bslash;&n;       (unsigned long)(&amp;__ptr[THREAD_SIZE_LONGS]);                     &bslash;&n;})
+DECL|macro|task_pt_regs
+mdefine_line|#define task_pt_regs(task)                                             &bslash;&n;({                                                                     &bslash;&n;       struct pt_regs *__regs__;                                       &bslash;&n;       __regs__ = (struct pt_regs *)KSTK_TOP((task)-&gt;thread_info);     &bslash;&n;       __regs__ - 1;                                                   &bslash;&n;})
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)-&gt;thread_info))[1019])
+mdefine_line|#define KSTK_EIP(task) (task_pt_regs(task)-&gt;eip)
 DECL|macro|KSTK_ESP
-mdefine_line|#define KSTK_ESP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)-&gt;thread_info))[1022])
+mdefine_line|#define KSTK_ESP(task) (task_pt_regs(task)-&gt;esp)
 DECL|struct|microcode_header
 r_struct
 id|microcode_header

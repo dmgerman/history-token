@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   (c) 2003 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;../../../COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; *&n; *  Support : paul.devriendt@amd.com&n; *&n; *  Based on the powernow-k7.c module written by Dave Jones.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.ork.uk&gt; on behalf of SuSE Labs&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  Processor information obtained from Chapter 9 (Power and Thermal Management)&n; *  of the &quot;BIOS and Kernel Developer&squot;s Guide for the AMD Athlon 64 and AMD&n; *  Opteron Processors&quot;, revision 3.03, available for download from www.amd.com&n; *&n; */
+multiline_comment|/*&n; *   (c) 2003 Advanced Micro Devices, Inc.&n; *  Your use of this code is subject to the terms and conditions of the&n; *  GNU general public license version 2. See &quot;../../../COPYING&quot; or&n; *  http://www.gnu.org/licenses/gpl.html&n; *&n; *  Support : paul.devriendt@amd.com&n; *&n; *  Based on the powernow-k7.c module written by Dave Jones.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.ork.uk&gt; on behalf of SuSE Labs&n; *  (C) 2004 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *  (C) 2004 Pavel Machek &lt;pavel@suse.cz&gt;&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  Processor information obtained from Chapter 9 (Power and Thermal Management)&n; *  of the &quot;BIOS and Kernel Developer&squot;s Guide for the AMD Athlon 64 and AMD&n; *  Opteron Processors&quot;, revision 3.03, available for download from www.amd.com&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -16,9 +16,6 @@ mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;version 1.00.08a&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
-macro_line|#ifdef CONFIG_PREEMPT
-macro_line|#warning this driver has not been tested on a preempt system
-macro_line|#endif
 DECL|variable|vstable
 r_static
 id|u32
@@ -2464,47 +2461,12 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|numps
+id|psb-&gt;numpstates
 suffix:semicolon
 id|j
 op_increment
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;   %d : fid 0x%x (%d MHz), vid 0x%x&bslash;n&quot;
-comma
-id|j
-comma
-id|pst
-(braket
-id|j
-)braket
-dot
-id|fid
-comma
-id|find_freq_from_fid
-c_func
-(paren
-id|pst
-(braket
-id|j
-)braket
-dot
-id|fid
-)paren
-comma
-id|pst
-(braket
-id|j
-)braket
-dot
-id|vid
-)paren
-suffix:semicolon
 id|powernow_table
 (braket
 id|j
@@ -2539,6 +2501,23 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* upper 8 bits */
+)brace
+multiline_comment|/* If you want to override your frequency tables, this&n;&t;&t;   is right place. */
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|numps
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
 id|powernow_table
 (braket
 id|j
@@ -2549,12 +2528,53 @@ op_assign
 id|find_freq_from_fid
 c_func
 (paren
-id|pst
+id|powernow_table
 (braket
 id|j
 )braket
 dot
-id|fid
+id|index
+op_amp
+l_int|0xff
+)paren
+op_star
+l_int|1000
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;   %d : fid 0x%x (%d MHz), vid 0x%x&bslash;n&quot;
+comma
+id|j
+comma
+id|powernow_table
+(braket
+id|j
+)braket
+dot
+id|index
+op_amp
+l_int|0xff
+comma
+id|powernow_table
+(braket
+id|j
+)braket
+dot
+id|frequency
+op_div
+l_int|1000
+comma
+id|powernow_table
+(braket
+id|j
+)braket
+dot
+id|index
+op_rshift
+l_int|8
 )paren
 suffix:semicolon
 )brace
@@ -3263,6 +3283,14 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|cpufreq_frequency_table_get_attr
+c_func
+(paren
+id|powernow_table
+comma
+id|pol-&gt;cpu
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3302,6 +3330,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|cpufreq_frequency_table_put_attr
+c_func
+(paren
+id|pol-&gt;cpu
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3317,6 +3351,23 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|powernow_k8_attr
+r_static
+r_struct
+id|freq_attr
+op_star
+id|powernow_k8_attr
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|cpufreq_freq_attr_scaling_available_freqs
+comma
+l_int|NULL
+comma
+)brace
+suffix:semicolon
 DECL|variable|cpufreq_amd64_driver
 r_static
 r_struct
@@ -3353,6 +3404,11 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
+comma
+dot
+id|attr
+op_assign
+id|powernow_k8_attr
 comma
 )brace
 suffix:semicolon

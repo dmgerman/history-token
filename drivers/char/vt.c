@@ -12848,6 +12848,8 @@ comma
 id|VESA_VSYNC_SUSPEND
 op_plus
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -12868,6 +12870,8 @@ comma
 id|VESA_POWERDOWN
 op_plus
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -12969,6 +12973,8 @@ id|d
 comma
 op_minus
 l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|console_blanked
@@ -13043,6 +13049,8 @@ dot
 id|d
 comma
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|console_blanked
@@ -13117,16 +13125,19 @@ comma
 id|vesa_blank_mode
 op_plus
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by timer as well as from vt_console_driver&n; */
-DECL|function|unblank_screen
+DECL|function|do_unblank_screen
 r_void
-id|unblank_screen
+id|do_unblank_screen
 c_func
 (paren
-r_void
+r_int
+id|leaving_gfx
 )paren
 (brace
 r_int
@@ -13230,6 +13241,8 @@ dot
 id|d
 comma
 l_int|0
+comma
+id|leaving_gfx
 )paren
 )paren
 multiline_comment|/* Low-level driver cannot restore -&gt; do it ourselves */
@@ -13260,6 +13273,22 @@ id|set_cursor
 c_func
 (paren
 id|fg_console
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is called by the outside world to cause a forced unblank, mostly for&n; * oopses. Currently, I just call do_unblank_screen(0), but we could eventually&n; * call it with 1 as an argument and so force a mode restore... that may kill&n; * X or at least garbage the screen but would also make the Oops visible...&n; */
+DECL|function|unblank_screen
+r_void
+id|unblank_screen
+c_func
+(paren
+r_void
+)paren
+(brace
+id|do_unblank_screen
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 )brace

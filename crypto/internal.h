@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Cryptographic API.&n; *&n; * Copyright (c) 2002 James 
 macro_line|#ifndef _CRYPTO_INTERNAL_H
 DECL|macro|_CRYPTO_INTERNAL_H
 mdefine_line|#define _CRYPTO_INTERNAL_H
+macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

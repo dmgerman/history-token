@@ -1511,7 +1511,13 @@ id|ei_local-&gt;page_lock
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|nr_serviced
+OG
+l_int|0
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER

@@ -754,8 +754,6 @@ suffix:semicolon
 macro_line|#pragma pack()
 DECL|macro|MAX_FRAG_NUMBERS
 mdefine_line|#define MAX_FRAG_NUMBERS    9&t;/* Maximal number of fragments possible to use&n;&t;&t;&t;&t; * in one RPL/TPL. (depending on TI firmware &n;&t;&t;&t;&t; * version)&n;&t;&t;&t;&t; */
-DECL|macro|MAX_TX_QUEUE
-mdefine_line|#define MAX_TX_QUEUE&t;    10&t;/* Maximal number of skb&squot;s queued in driver. */
 multiline_comment|/*&n; * AC (1), FC (1), Dst (6), Src (6), RIF (18), Data (4472) = 4504&n; * The packet size can be one of the follows: 548, 1502, 2084, 4504, 8176,&n; * 11439, 17832. Refer to TMS380 Second Generation Token Ring User&squot;s Guide&n; * Page 2-27.&n; */
 DECL|macro|HEADER_SIZE
 mdefine_line|#define HEADER_SIZE&t;&t;(1 + 1 + 6 + 6)
@@ -1388,16 +1386,6 @@ DECL|member|LastSendTime
 r_int
 r_int
 id|LastSendTime
-suffix:semicolon
-DECL|member|SendSkbQueue
-r_struct
-id|sk_buff_head
-id|SendSkbQueue
-suffix:semicolon
-DECL|member|QueueSkb
-r_int
-r_int
-id|QueueSkb
 suffix:semicolon
 DECL|member|MacStat
 r_struct

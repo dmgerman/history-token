@@ -1062,10 +1062,29 @@ c_func
 id|mixcomwd_exit
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Gergely Madarasz &lt;gorgo@itc.hu&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;MixCom Watchdog driver&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
 )paren
 suffix:semicolon
 eof

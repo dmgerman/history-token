@@ -8,17 +8,9 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/nmi.h&gt;
-id|asmlinkage
-r_void
-id|sys_sync
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* it&squot;s really int */
 DECL|variable|panic_timeout
 r_int
 id|panic_timeout

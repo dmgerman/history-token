@@ -228,7 +228,7 @@ l_int|0x85
 comma
 l_int|0x43
 comma
-l_int|0x28
+l_int|0x20
 comma
 l_int|0xE0
 comma
@@ -1872,7 +1872,7 @@ c_cond
 (paren
 id|sync
 op_amp
-l_int|2
+l_int|1
 )paren
 op_star
 id|status
@@ -2189,14 +2189,6 @@ comma
 l_int|0x11
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sync
-op_amp
-l_int|2
-)paren
-multiline_comment|/* AFC only valid when carrier has been recovered */
 id|afc
 op_assign
 id|ves1820_readreg
@@ -2212,9 +2204,19 @@ c_cond
 (paren
 id|verbose
 )paren
+(brace
+multiline_comment|/* AFC only valid when carrier has been recovered */
 id|printk
+c_func
 (paren
+id|sync
+op_amp
+l_int|2
+ques
+c_cond
 l_string|&quot;DVB: VES1820(%d): AFC (%d) %dHz&bslash;n&quot;
+suffix:colon
+l_string|&quot;DVB: VES1820(%d): [AFC (%d) %dHz]&bslash;n&quot;
 comma
 id|fe-&gt;i2c-&gt;adapter-&gt;num
 comma
@@ -2225,18 +2227,15 @@ op_minus
 (paren
 id|s32
 )paren
-(paren
 id|p-&gt;u.qam.symbol_rate
-op_rshift
-l_int|3
-)paren
 op_star
 id|afc
-op_rshift
-l_int|7
 )paren
+op_rshift
+l_int|10
 )paren
 suffix:semicolon
+)brace
 id|p-&gt;inversion
 op_assign
 id|HAS_INVERSION
@@ -2282,21 +2281,25 @@ l_int|62500
 op_star
 l_int|62500
 suffix:semicolon
-multiline_comment|/* To prevent overflow, shift symbol rate first a&n;&t;&t;   couple of bits. */
+r_if
+c_cond
+(paren
+id|sync
+op_amp
+l_int|2
+)paren
 id|p-&gt;frequency
 op_sub_assign
 (paren
+(paren
 id|s32
 )paren
-(paren
 id|p-&gt;u.qam.symbol_rate
-op_rshift
-l_int|3
-)paren
 op_star
 id|afc
+)paren
 op_rshift
-l_int|7
+l_int|10
 suffix:semicolon
 r_break
 suffix:semicolon

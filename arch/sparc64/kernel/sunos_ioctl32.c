@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/kbio.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. */
@@ -240,25 +241,6 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
 id|compat_sys_ioctl
 c_func
 (paren
@@ -269,15 +251,6 @@ r_int
 r_int
 comma
 id|u32
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_int
-id|sys_setsid
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|function|sunos_ioctl

@@ -50,10 +50,8 @@ mdefine_line|#define&t;IOSAPIC_LEVEL&t;&t;&t;1
 multiline_comment|/*&n; * Mask bit&n; */
 DECL|macro|IOSAPIC_MASK_SHIFT
 mdefine_line|#define&t;IOSAPIC_MASK_SHIFT&t;&t;16
-DECL|macro|IOSAPIC_UNMASK
-mdefine_line|#define&t;IOSAPIC_UNMASK&t;&t;&t;0
-DECL|macro|IOSAPIC_MSAK
-mdefine_line|#define&t;IOSAPIC_MSAK&t;&t;&t;1
+DECL|macro|IOSAPIC_MASK
+mdefine_line|#define&t;IOSAPIC_MASK&t;&t;&t;(1&lt;&lt;IOSAPIC_MASK_SHIFT)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_IOSAPIC
 DECL|macro|NR_IOSAPICS

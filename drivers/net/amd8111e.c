@@ -31,8 +31,8 @@ macro_line|#endif
 macro_line|#include &quot;amd8111e.h&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME&t;&quot;amd8111e&quot;
-DECL|macro|MODULE_VERSION
-mdefine_line|#define MODULE_VERSION&t;&quot;3.0.3&quot;
+DECL|macro|MODULE_VERS
+mdefine_line|#define MODULE_VERS&t;&quot;3.0.3&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -6063,7 +6063,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-id|MODULE_VERSION
+id|MODULE_VERS
 )paren
 suffix:semicolon
 id|memset
@@ -8436,7 +8436,7 @@ l_string|&quot;%s: AMD-8111e Driver Version: %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|MODULE_VERSION
+id|MODULE_VERS
 )paren
 suffix:semicolon
 id|printk

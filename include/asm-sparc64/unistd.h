@@ -535,6 +535,8 @@ mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, &bslash;&n;&t;  type5,arg5) &bslash;&n;type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5) &bslash;&n;{ &bslash;&n;long __res; &bslash;&n;register long __g1 __asm__ (&quot;g1&quot;) = __NR_##name; &bslash;&n;register long __o0 __asm__ (&quot;o0&quot;) = (long)(arg1); &bslash;&n;register long __o1 __asm__ (&quot;o1&quot;) = (long)(arg2); &bslash;&n;register long __o2 __asm__ (&quot;o2&quot;) = (long)(arg3); &bslash;&n;register long __o3 __asm__ (&quot;o3&quot;) = (long)(arg4); &bslash;&n;register long __o4 __asm__ (&quot;o4&quot;) = (long)(arg5); &bslash;&n;__asm__ __volatile__ (&quot;t 0x6d&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;sub %%g0, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      &quot;movcc %%xcc, %%o0, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&t;      : &quot;=r&quot; (__res), &quot;=&amp;r&quot; (__o0) &bslash;&n;&t;&t;      : &quot;1&quot; (__o0), &quot;r&quot; (__o1), &quot;r&quot; (__o2), &quot;r&quot; (__o3), &quot;r&quot; (__o4), &quot;r&quot; (__g1) &bslash;&n;&t;&t;      : &quot;cc&quot;); &bslash;&n;if (__res&gt;=0) &bslash;&n;&t;return (type) __res; &bslash;&n;errno = -__res; &bslash;&n;return -1; &bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * we need this inline - forking from kernel space will result&n; * in NO COPY ON WRITE (!!!), until an execve is executed. This&n; * is no problem, but for the stack. This is handled by not letting&n; * main() use the stack at all after fork(). Thus, no function&n; * calls - which means inline code for fork too, as otherwise we&n; * would use the stack upon exit from &squot;fork()&squot;.&n; *&n; * Actually only pause and fork are needed inline, so that there&n; * won&squot;t be any messing with the stack from main(), but we define&n; * some others too.&n; */
 DECL|macro|__NR__exit
 mdefine_line|#define __NR__exit __NR_exit
@@ -724,6 +726,87 @@ r_int
 comma
 id|options
 )paren
+id|asmlinkage
+r_int
+r_int
+id|sys_mmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+comma
+r_int
+r_int
+id|prot
+comma
+r_int
+r_int
+id|flags
+comma
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|off
+)paren
+suffix:semicolon
+id|asmlinkage
+r_int
+id|sys_ioperm
+c_func
+(paren
+r_int
+r_int
+id|from
+comma
+r_int
+r_int
+id|num
+comma
+r_int
+id|on
+)paren
+suffix:semicolon
+r_struct
+id|sigaction
+suffix:semicolon
+id|asmlinkage
+r_int
+id|sys_rt_sigaction
+c_func
+(paren
+r_int
+id|sig
+comma
+r_const
+r_struct
+id|sigaction
+id|__user
+op_star
+id|act
+comma
+r_struct
+id|sigaction
+id|__user
+op_star
+id|oact
+comma
+r_void
+id|__user
+op_star
+id|restorer
+comma
+r_int
+id|sigsetsize
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* sysconf options, for SunOS compatibility */

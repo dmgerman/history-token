@@ -1356,6 +1356,10 @@ id|moxaDriver-&gt;name
 op_assign
 l_string|&quot;ttya&quot;
 suffix:semicolon
+id|moxaDriver-&gt;devfs_name
+op_assign
+l_string|&quot;tts/a&quot;
+suffix:semicolon
 id|moxaDriver-&gt;major
 op_assign
 id|ttymajor

@@ -50,6 +50,9 @@ comma
 DECL|enumerator|DEV_STATE_DISCONNECTED_SENSE_ID
 id|DEV_STATE_DISCONNECTED_SENSE_ID
 comma
+DECL|enumerator|DEV_STATE_CMFCHANGE
+id|DEV_STATE_CMFCHANGE
+comma
 multiline_comment|/* last element! */
 DECL|enumerator|NR_DEV_STATES
 id|NR_DEV_STATES
@@ -444,14 +447,6 @@ id|ccw_device
 op_star
 )paren
 suffix:semicolon
-r_void
-id|ccw_device_add_stlck
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
 r_int
 id|ccw_device_stlck
 c_func
@@ -471,6 +466,16 @@ id|ccw_device
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_void
+id|retry_set_schib
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+id|cdev
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
@@ -408,28 +409,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_select
-c_func
-(paren
-r_int
-comma
-id|fd_set
-op_star
-comma
-id|fd_set
-op_star
-comma
-id|fd_set
-op_star
-comma
-r_struct
-id|timeval
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_ARCH_S390X
 DECL|struct|sel_arg_struct
 r_struct
@@ -1325,18 +1304,6 @@ id|ENOSYS
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_ARCH_S390X */
-r_extern
-id|asmlinkage
-r_int
-id|sys_newuname
-c_func
-(paren
-r_struct
-id|new_utsname
-op_star
-id|name
-)paren
-suffix:semicolon
 DECL|function|s390x_newuname
 id|asmlinkage
 r_int
@@ -1396,16 +1363,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_personality
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|s390x_personality
 id|asmlinkage
 r_int
@@ -1461,21 +1418,6 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * Wrapper function for sys_fadvise64/fadvise64_64&n; */
 macro_line|#ifndef CONFIG_ARCH_S390X
-r_extern
-id|asmlinkage
-r_int
-id|sys_fadvise64
-c_func
-(paren
-r_int
-comma
-id|loff_t
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 id|asmlinkage
 r_int
 DECL|function|s390_fadvise64
@@ -1520,21 +1462,6 @@ id|advice
 suffix:semicolon
 )brace
 macro_line|#endif
-r_extern
-id|asmlinkage
-r_int
-id|sys_fadvise64_64
-c_func
-(paren
-r_int
-comma
-id|loff_t
-comma
-id|loff_t
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|struct|fadvise64_64_args
 r_struct
 id|fadvise64_64_args

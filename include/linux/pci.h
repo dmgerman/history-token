@@ -859,6 +859,17 @@ id|name
 l_int|48
 )braket
 suffix:semicolon
+DECL|member|bridge_ctl
+r_int
+r_int
+id|bridge_ctl
+suffix:semicolon
+multiline_comment|/* manage NO_ISA/FBB/et al behaviors */
+DECL|member|pad2
+r_int
+r_int
+id|pad2
+suffix:semicolon
 DECL|member|bridge
 r_struct
 id|device

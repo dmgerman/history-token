@@ -1700,11 +1700,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Sleep for up to 1.5 second */
+multiline_comment|/* Sleep for up to 2 seconds */
 id|schedule_timeout
 c_func
 (paren
-l_float|1.5
+l_int|2
 op_star
 id|HZ
 )paren

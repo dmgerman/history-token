@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/compat_signal.h&gt;
@@ -263,26 +264,6 @@ r_int
 id|sigsetsize
 )paren
 (brace
-r_extern
-r_int
-id|sys_rt_sigprocmask
-c_func
-(paren
-r_int
-id|how
-comma
-id|sigset_t
-op_star
-id|set
-comma
-id|sigset_t
-op_star
-id|oset
-comma
-r_int
-id|sigsetsize
-)paren
-suffix:semicolon
 id|sigset_t
 id|old_set
 comma
@@ -385,19 +366,6 @@ id|ret
 suffix:semicolon
 id|sigset_t
 id|set
-suffix:semicolon
-r_extern
-r_int
-id|sys_rt_sigpending
-c_func
-(paren
-id|sigset_t
-op_star
-id|set
-comma
-r_int
-id|sigsetsize
-)paren
 suffix:semicolon
 id|KERNEL_SYSCALL
 c_func

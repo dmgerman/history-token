@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/file.h&gt;&t;&t;/* doh, must come after sched.h... */
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/shmparam.h&gt;
@@ -253,15 +254,6 @@ r_int
 id|who
 )paren
 (brace
-r_extern
-r_int
-id|sys_getpriority
-(paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 r_int
 id|prio
 suffix:semicolon

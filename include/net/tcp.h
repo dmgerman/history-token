@@ -647,7 +647,9 @@ suffix:semicolon
 DECL|macro|tw_for_each
 mdefine_line|#define tw_for_each(tw, node, head) &bslash;&n;&t;hlist_for_each_entry(tw, node, head, tw_node)
 DECL|macro|tw_for_each_inmate
-mdefine_line|#define tw_for_each_inmate(tw, node, safe, jail) &bslash;&n;&t;hlist_for_each_entry_safe(tw, node, safe, jail, tw_death_node)
+mdefine_line|#define tw_for_each_inmate(tw, node, jail) &bslash;&n;&t;hlist_for_each_entry(tw, node, jail, tw_death_node)
+DECL|macro|tw_for_each_inmate_safe
+mdefine_line|#define tw_for_each_inmate_safe(tw, node, safe, jail) &bslash;&n;&t;hlist_for_each_entry_safe(tw, node, safe, jail, tw_death_node)
 DECL|macro|tcptw_sk
 mdefine_line|#define tcptw_sk(__sk)&t;((struct tcp_tw_bucket *)(__sk))
 DECL|function|tcp_v4_rcv_saddr

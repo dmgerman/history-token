@@ -161,6 +161,9 @@ mdefine_line|#define THREAD_SIZE&t;8192
 multiline_comment|/* how to get the thread information struct from ASM */
 DECL|macro|GET_THREAD_INFO
 mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movl $-THREAD_SIZE, reg; &bslash;&n;&t;andl %esp, reg
+multiline_comment|/* use this one if reg already contains %esp */
+DECL|macro|GET_THREAD_INFO_WITH_ESP
+mdefine_line|#define GET_THREAD_INFO_WITH_ESP(reg) &bslash;&n;&t;andl $-THREAD_SIZE, reg
 macro_line|#endif
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to access&n; * - pending work-to-be-done flags are in LSW&n; * - other flags in MSW&n; */
 DECL|macro|TIF_SYSCALL_TRACE

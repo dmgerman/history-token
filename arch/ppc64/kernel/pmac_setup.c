@@ -36,7 +36,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/bootx.h&gt;
@@ -355,21 +355,6 @@ comma
 id|mbflags
 )paren
 suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;memory&bslash;t&bslash;t: %luMB&bslash;n&quot;
-comma
-id|lmb_phys_mem_size
-c_func
-(paren
-)paren
-op_rshift
-l_int|20
-)paren
-suffix:semicolon
 multiline_comment|/* Checks &quot;l2cr-value&quot; property in the registry */
 id|np
 op_assign
@@ -594,7 +579,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Setup the PCI DMA to &quot;direct&quot; for now, until we have proper&n;&t; * DART support and can deal with more than 2Gb of RAM&n;&t; */
+multiline_comment|/* Setup the PCI DMA to &quot;direct&quot; by default. May be overriden&n;&t; * by iommu later on&n;&t; */
 id|pci_dma_init_direct
 c_func
 (paren

@@ -4377,8 +4377,6 @@ id|dev-&gt;irq
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4467,8 +4465,6 @@ id|dev
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN

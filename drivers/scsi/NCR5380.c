@@ -3967,6 +3967,25 @@ r_struct
 id|Scsi_Host
 op_star
 id|instance
+op_assign
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+id|dev_id
+suffix:semicolon
+r_struct
+id|NCR5380_hostdata
+op_star
+id|hostdata
+op_assign
+(paren
+r_struct
+id|NCR5380_hostdata
+op_star
+)paren
+id|instance-&gt;hostdata
 suffix:semicolon
 r_int
 id|done
@@ -3974,16 +3993,6 @@ suffix:semicolon
 r_int
 r_char
 id|basr
-suffix:semicolon
-r_struct
-id|NCR5380_hostdata
-op_star
-id|hostdata
-suffix:semicolon
-r_int
-id|handled
-op_assign
-l_int|0
 suffix:semicolon
 id|dprintk
 c_func
@@ -4000,39 +4009,6 @@ suffix:semicolon
 r_do
 (brace
 id|done
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* The instance list is constant while the driver is&n;&t;&t;   loaded */
-r_for
-c_loop
-(paren
-id|hostdata
-op_assign
-id|first_host
-suffix:semicolon
-id|hostdata
-op_ne
-l_int|NULL
-suffix:semicolon
-id|hostdata
-op_assign
-id|hostdata-&gt;next
-)paren
-(brace
-id|instance
-op_assign
-id|hostdata-&gt;host
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|instance-&gt;irq
-op_eq
-id|irq
-)paren
-(brace
-id|handled
 op_assign
 l_int|1
 suffix:semicolon
@@ -4203,7 +4179,7 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#if defined(REAL_DMA)
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * We should only get PHASE MISMATCH and EOP interrupts&n;&t;&t;&t;&t;&t;&t; * if we have DMA enabled, so do a sanity check based on&n;&t;&t;&t;&t;&t;&t; * the current setting of the MODE register.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We should only get PHASE MISMATCH and EOP interrupts&n;&t;&t;&t;&t; * if we have DMA enabled, so do a sanity check based on&n;&t;&t;&t;&t; * the current setting of the MODE register.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4377,9 +4353,6 @@ id|hostdata-&gt;coroutine
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* if (instance-&gt;irq == irq) */
-)brace
-)brace
 r_while
 c_loop
 (paren
@@ -4388,11 +4361,7 @@ id|done
 )paren
 suffix:semicolon
 r_return
-id|IRQ_RETVAL
-c_func
-(paren
-id|handled
-)paren
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif 

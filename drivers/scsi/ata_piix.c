@@ -258,6 +258,7 @@ id|ich5_pata
 )brace
 comma
 macro_line|#endif
+multiline_comment|/* NOTE: The following PCI ids must be kept in sync with the&n;&t; * list in drivers/pci/quirks.c.&n;&t; */
 (brace
 l_int|0x8086
 comma
@@ -318,6 +319,25 @@ comma
 l_int|0
 comma
 l_int|0
+comma
+id|ich5_sata
+)brace
+comma
+multiline_comment|/* ICH6 operates in two modes, &quot;looks-like-ICH5&quot; mode,&n;&t; * and enhanced mode, with queueing and other fancy stuff.&n;&t; * This is distinguished by PCI class code.&n;&t; */
+(brace
+l_int|0x8086
+comma
+l_int|0x2562
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_CLASS_STORAGE_IDE
+op_lshift
+l_int|8
+comma
+l_int|0xffff00
 comma
 id|ich5_sata
 )brace
@@ -395,7 +415,7 @@ comma
 dot
 id|sg_tablesize
 op_assign
-id|ATA_MAX_PRD
+id|LIBATA_MAX_PRD
 comma
 dot
 id|max_sectors
