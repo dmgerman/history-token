@@ -207,15 +207,17 @@ suffix:semicolon
 multiline_comment|/* Where the card ROM starts, used to &n;&t;&t;&t;&t;&t;   calculate memory mapped register&n;&t;&t;&t;&t;&t;   location.  */
 DECL|variable|st0x_cr_sr
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|st0x_cr_sr
 suffix:semicolon
 multiline_comment|/* control register write, status&n;&t;&t;&t;&t;&t;   register read.  256 bytes in&n;&t;&t;&t;&t;&t;   length.&n;&t;&t;&t;&t;&t;   Read is status of SCSI BUS, as per &n;&t;&t;&t;&t;&t;   STAT masks.  */
 DECL|variable|st0x_dr
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|st0x_dr
 suffix:semicolon
 multiline_comment|/* data register, read write 256&n;&t;&t;&t;&t;   bytes in length.  */
@@ -283,13 +285,13 @@ suffix:semicolon
 DECL|macro|retcode
 mdefine_line|#define retcode(result) (((result) &lt;&lt; 16) | (message &lt;&lt; 8) | status)
 DECL|macro|STATUS
-mdefine_line|#define STATUS ((u8) isa_readb(st0x_cr_sr))
+mdefine_line|#define STATUS ((u8) readb(st0x_cr_sr))
 DECL|macro|DATA
-mdefine_line|#define DATA ((u8) isa_readb(st0x_dr))
+mdefine_line|#define DATA ((u8) readb(st0x_dr))
 DECL|macro|WRITE_CONTROL
-mdefine_line|#define WRITE_CONTROL(d) { isa_writeb((d), st0x_cr_sr); }
+mdefine_line|#define WRITE_CONTROL(d) { writeb((d), st0x_cr_sr); }
 DECL|macro|WRITE_DATA
-mdefine_line|#define WRITE_DATA(d) { isa_writeb((d), st0x_dr); }
+mdefine_line|#define WRITE_DATA(d) { writeb((d), st0x_dr); }
 macro_line|#ifndef OVERRIDE
 DECL|variable|seagate_bases
 r_static
@@ -721,6 +723,12 @@ id|i
 comma
 id|j
 suffix:semicolon
+r_int
+r_int
+id|cr
+comma
+id|dr
+suffix:semicolon
 id|tpnt-&gt;proc_name
 op_assign
 l_string|&quot;seagate&quot;
@@ -819,7 +827,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|seagate_base
+id|seagate_bases
 (braket
 id|i
 )braket
@@ -953,7 +961,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|st0x_cr_sr
+id|cr
 op_assign
 id|base_address
 op_plus
@@ -968,11 +976,31 @@ suffix:colon
 l_int|0x1c00
 )paren
 suffix:semicolon
-id|st0x_dr
+id|dr
 op_assign
-id|st0x_cr_sr
+id|cr
 op_plus
 l_int|0x200
+suffix:semicolon
+id|st0x_cr_sr
+op_assign
+id|ioremap
+c_func
+(paren
+id|cr
+comma
+l_int|0x100
+)paren
+suffix:semicolon
+id|st0x_dr
+op_assign
+id|ioremap
+c_func
+(paren
+id|dr
+comma
+l_int|0x100
+)paren
 suffix:semicolon
 id|DANY
 c_func
@@ -983,9 +1011,9 @@ id|tpnt-&gt;name
 comma
 id|base_address
 comma
-id|st0x_cr_sr
+id|cr
 comma
-id|st0x_dr
+id|dr
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;At all times, we will use IRQ 5.  Should also check for IRQ3&n;&t; *&t;if we lose our first interrupt.&n;&t; */
@@ -3147,10 +3175,7 @@ multiline_comment|/* input */
 suffix:colon
 l_string|&quot;D&quot;
 (paren
-id|phys_to_virt
-(paren
 id|st0x_dr
-)paren
 )paren
 comma
 l_string|&quot;S&quot;
@@ -3172,80 +3197,16 @@ l_string|&quot;esi&quot;
 )paren
 suffix:semicolon
 macro_line|#else&t;&t;&t;&t;/* SEAGATE_USE_ASM */
-(brace
-macro_line|#ifdef FAST32
-r_int
-r_int
-op_star
-id|iop
-op_assign
-id|phys_to_virt
+id|memcpy_toio
+c_func
 (paren
 id|st0x_dr
-)paren
-suffix:semicolon
-r_const
-r_int
-r_int
-op_star
-id|dp
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
+comma
 id|data
-suffix:semicolon
-r_int
-id|xferlen
-op_assign
+comma
 id|transfersize
-op_rshift
-l_int|2
-suffix:semicolon
-macro_line|#else
-r_int
-r_char
-op_star
-id|iop
-op_assign
-id|phys_to_virt
-(paren
-id|st0x_dr
 )paren
 suffix:semicolon
-r_const
-r_int
-r_char
-op_star
-id|dp
-op_assign
-id|data
-suffix:semicolon
-r_int
-id|xferlen
-op_assign
-id|transfersize
-suffix:semicolon
-macro_line|#endif
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|xferlen
-suffix:semicolon
-op_decrement
-id|xferlen
-)paren
-op_star
-id|iop
-op_assign
-op_star
-id|dp
-op_increment
-suffix:semicolon
-)brace
 macro_line|#endif&t;&t;&t;&t;/* SEAGATE_USE_ASM */
 multiline_comment|/* SJT: End */
 id|len
@@ -3340,18 +3301,12 @@ id|len
 comma
 l_string|&quot;2&quot;
 (paren
-id|phys_to_virt
-(paren
 id|st0x_cr_sr
-)paren
 )paren
 comma
 l_string|&quot;3&quot;
 (paren
-id|phys_to_virt
-(paren
 id|st0x_dr
-)paren
 )paren
 multiline_comment|/* clobbered */
 suffix:colon
@@ -3596,10 +3551,7 @@ multiline_comment|/* input */
 suffix:colon
 l_string|&quot;S&quot;
 (paren
-id|phys_to_virt
-(paren
 id|st0x_dr
-)paren
 )paren
 comma
 l_string|&quot;D&quot;
@@ -3621,80 +3573,16 @@ l_string|&quot;edi&quot;
 )paren
 suffix:semicolon
 macro_line|#else&t;&t;&t;&t;/* SEAGATE_USE_ASM */
-(brace
-macro_line|#ifdef FAST32
-r_const
-r_int
-r_int
-op_star
-id|iop
-op_assign
-id|phys_to_virt
+id|memcpy_fromio
+c_func
 (paren
-id|st0x_dr
-)paren
-suffix:semicolon
-r_int
-r_int
-op_star
-id|dp
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|data
-suffix:semicolon
-r_int
-id|xferlen
-op_assign
-id|len
-op_rshift
-l_int|2
-suffix:semicolon
-macro_line|#else
-r_const
-r_int
-r_char
-op_star
-id|iop
-op_assign
-id|phys_to_virt
-(paren
+comma
 id|st0x_dr
-)paren
-suffix:semicolon
-r_int
-r_char
-op_star
-id|dp
-op_assign
-id|data
-suffix:semicolon
-r_int
-id|xferlen
-op_assign
+comma
 id|len
-suffix:semicolon
-macro_line|#endif
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|xferlen
-suffix:semicolon
-op_decrement
-id|xferlen
 )paren
-op_star
-id|dp
-op_increment
-op_assign
-op_star
-id|iop
 suffix:semicolon
-)brace
 macro_line|#endif&t;&t;&t;&t;/* SEAGATE_USE_ASM */
 multiline_comment|/* SJT: End */
 id|len
@@ -3823,18 +3711,12 @@ id|len
 comma
 l_string|&quot;2&quot;
 (paren
-id|phys_to_virt
-(paren
 id|st0x_cr_sr
-)paren
 )paren
 comma
 l_string|&quot;3&quot;
 (paren
-id|phys_to_virt
-(paren
 id|st0x_dr
-)paren
 )paren
 multiline_comment|/* clobbered */
 suffix:colon
