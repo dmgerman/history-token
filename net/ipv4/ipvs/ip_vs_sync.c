@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * IPVS         An implementation of the IP virtual server support for the&n; *              LINUX operating system.  IPVS is now implemented as a module&n; *              over the NetFilter framework. IPVS can be used to build a&n; *              high-performance and highly available server based on a&n; *              cluster of servers.&n; *&n; * Version:     $Id: ip_vs_sync.c,v 1.13 2003/06/08 09:31:19 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; * ip_vs_sync:  sync connection info from master load balancer to backups&n; *              through multicast&n; *&n; * Changes:&n; *&t;Alexandre Cassen&t;:&t;Added master &amp; backup support at a time.&n; *&t;Alexandre Cassen&t;:&t;Added SyncID support for incoming sync&n; *&t;&t;&t;&t;&t;messages filtering.&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__             /*  for waitpid */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,7 +6,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -3179,9 +3176,6 @@ suffix:semicolon
 id|pid_t
 id|pid
 suffix:semicolon
-r_int
-id|waitpid_result
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3296,40 +3290,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|waitpid_result
-op_assign
-id|waitpid
-c_func
-(paren
-id|pid
-comma
-l_int|NULL
-comma
-id|__WCLONE
-)paren
-)paren
-op_ne
-id|pid
-)paren
-(brace
-id|IP_VS_ERR
-c_func
-(paren
-l_string|&quot;%s: waitpid(%d,...) failed, errno %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|pid
-comma
-op_minus
-id|waitpid_result
-)paren
-suffix:semicolon
-)brace
 id|wait_for_completion
 c_func
 (paren
