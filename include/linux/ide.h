@@ -4826,16 +4826,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ide_init_drive_taskfile
-c_func
-(paren
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|ide_raw_taskfile
 c_func
