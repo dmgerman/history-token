@@ -816,7 +816,7 @@ id|page
 r_goto
 id|keep_locked
 suffix:semicolon
-id|rmap_lock
+id|page_map_lock
 c_func
 (paren
 id|page
@@ -843,7 +843,7 @@ id|page
 )paren
 (brace
 multiline_comment|/* In active use or really unfreeable.  Activate it. */
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -888,7 +888,7 @@ id|page
 )paren
 )paren
 (brace
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -907,7 +907,7 @@ id|page
 r_goto
 id|activate_locked
 suffix:semicolon
-id|rmap_lock
+id|page_map_lock
 c_func
 (paren
 id|page
@@ -965,7 +965,7 @@ id|page
 r_case
 id|SWAP_FAIL
 suffix:colon
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -977,7 +977,7 @@ suffix:semicolon
 r_case
 id|SWAP_AGAIN
 suffix:colon
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -993,7 +993,7 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -2250,7 +2250,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|rmap_lock
+id|page_map_lock
 c_func
 (paren
 id|page
@@ -2266,7 +2266,7 @@ id|page
 )paren
 )paren
 (brace
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -2285,7 +2285,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page

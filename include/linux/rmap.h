@@ -4,10 +4,10 @@ mdefine_line|#define _LINUX_RMAP_H
 multiline_comment|/*&n; * Declarations for Reverse Mapping functions in mm/rmap.c&n; * Its structures are declared within that file.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
-DECL|macro|rmap_lock
-mdefine_line|#define rmap_lock(page) &bslash;&n;&t;bit_spin_lock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
-DECL|macro|rmap_unlock
-mdefine_line|#define rmap_unlock(page) &bslash;&n;&t;bit_spin_unlock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
+DECL|macro|page_map_lock
+mdefine_line|#define page_map_lock(page) &bslash;&n;&t;bit_spin_lock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
+DECL|macro|page_map_unlock
+mdefine_line|#define page_map_unlock(page) &bslash;&n;&t;bit_spin_unlock(PG_maplock, (unsigned long *)&amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_MMU
 r_struct
 id|pte_chain
