@@ -4694,6 +4694,11 @@ l_string|&quot;***jffs_mknod()&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dir_f
 op_assign
 (paren
@@ -5024,6 +5029,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

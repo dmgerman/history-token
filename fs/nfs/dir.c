@@ -2736,6 +2736,11 @@ id|attr.ia_valid
 op_assign
 id|ATTR_MODE
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|nfs_zap_caches
 c_func
 (paren
@@ -2807,6 +2812,11 @@ id|d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
