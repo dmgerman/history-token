@@ -3435,12 +3435,11 @@ op_ne
 l_int|0
 )paren
 (brace
-suffix:semicolon
-)brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|strcpy
 c_func
 (paren

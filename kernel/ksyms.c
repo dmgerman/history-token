@@ -713,6 +713,13 @@ c_func
 id|end_buffer_io_sync
 )paren
 suffix:semicolon
+DECL|variable|end_buffer_async_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|end_buffer_async_write
+)paren
+suffix:semicolon
 DECL|variable|__mark_inode_dirty
 id|EXPORT_SYMBOL
 c_func

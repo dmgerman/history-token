@@ -17859,8 +17859,6 @@ op_logical_and
 id|qdonep-&gt;remain_bytes
 op_le
 id|scp-&gt;request_bufflen
-op_ne
-l_int|0
 )paren
 (brace
 id|ASC_DBG1

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; **********************************************************************&n; *     passthrough.c -- Emu10k1 digital passthrough&n; *     Copyright (C) 2001  Juha Yrj&#xfffd;l&#xfffd; &lt;jyrjola@cc.hut.fi&gt;&n; *&n; **********************************************************************&n; *&n; *     Date                 Author          Summary of changes&n; *     ----                 ------          ------------------&n; *     May 15, 2001&t;    Juha Yrj&#xfffd;l&#xfffd;&t;    base code release&n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; **********************************************************************&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -723,9 +721,6 @@ OL
 id|needed
 )paren
 (brace
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -737,10 +732,6 @@ id|buffer
 comma
 id|count
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|pt-&gt;prepend_size
 op_add_assign
@@ -760,9 +751,6 @@ r_return
 id|count
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -774,10 +762,6 @@ id|buffer
 comma
 id|needed
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|r
 op_assign
@@ -850,9 +834,6 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -862,10 +843,6 @@ id|bufptr
 comma
 id|PT_BLOCKSIZE
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|bufptr
 op_assign
@@ -933,9 +910,6 @@ id|pt-&gt;prepend_size
 op_assign
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|copy_from_user
 c_func
 (paren
@@ -947,10 +921,6 @@ id|bytes_copied
 comma
 id|i
 )paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|bytes_copied
 op_add_assign

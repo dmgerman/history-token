@@ -113,6 +113,8 @@ DECL|variable|retry_lock
 r_static
 id|spinlock_t
 id|retry_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|retry_ct
 r_static

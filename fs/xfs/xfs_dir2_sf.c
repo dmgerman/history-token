@@ -2913,7 +2913,6 @@ id|XFS_DIR2_DATA_DOT_OFFSET
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * NOTE! Linux &quot;filldir&quot; semantics require that the&n;&t;&t; *&t; offset &quot;cookie&quot; be for this entry, not the&n;&t;&t; *&t; next; all the actual shuffling to make it&n;&t;&t; *&t; &quot;look right&quot; to the user is done in filldir.&n;&t;&t; */
 id|p.cook
 op_assign
 id|XFS_DIR2_DB_OFF_TO_DATAPTR
@@ -2923,7 +2922,7 @@ id|mp
 comma
 l_int|0
 comma
-id|XFS_DIR2_DATA_DOT_OFFSET
+id|XFS_DIR2_DATA_DOTDOT_OFFSET
 )paren
 suffix:semicolon
 macro_line|#if XFS_BIG_FILESYSTEMS
@@ -2999,7 +2998,6 @@ id|XFS_DIR2_DATA_DOTDOT_OFFSET
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * NOTE! Linux &quot;filldir&quot; semantics require that the&n;&t;&t; *&t; offset &quot;cookie&quot; be for this entry, not the&n;&t;&t; *&t; next; all the actual shuffling to make it&n;&t;&t; *&t; &quot;look right&quot; to the user is done in filldir.&n;&t;&t; */
 id|p.cook
 op_assign
 id|XFS_DIR2_DB_OFF_TO_DATAPTR
@@ -3009,7 +3007,7 @@ id|mp
 comma
 id|mp-&gt;m_dirdatablk
 comma
-id|XFS_DIR2_DATA_DOTDOT_OFFSET
+id|XFS_DIR2_DATA_FIRST_OFFSET
 )paren
 suffix:semicolon
 macro_line|#if XFS_BIG_FILESYSTEMS
@@ -3151,7 +3149,6 @@ id|p.namelen
 op_assign
 id|sfep-&gt;namelen
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * NOTE! Linux &quot;filldir&quot; semantics require that the&n;&t;&t; *&t; offset &quot;cookie&quot; be for this entry, not the&n;&t;&t; *&t; next; all the actual shuffling to make it&n;&t;&t; *&t; &quot;look right&quot; to the user is done in filldir.&n;&t;&t; */
 id|p.cook
 op_assign
 id|XFS_DIR2_DB_OFF_TO_DATAPTR
@@ -3167,6 +3164,12 @@ c_func
 id|sfep
 comma
 id|ARCH_CONVERT
+)paren
+op_plus
+id|XFS_DIR2_DATA_ENTSIZE
+c_func
+(paren
+id|p.namelen
 )paren
 )paren
 suffix:semicolon

@@ -473,7 +473,6 @@ c_cond
 op_logical_neg
 id|rval
 op_logical_and
-op_logical_neg
 (paren
 id|flags
 op_amp
@@ -639,6 +638,11 @@ c_cond
 id|ptr
 )paren
 (brace
+r_if
+c_cond
+(paren
+r_new
+)paren
 id|memcpy
 c_func
 (paren

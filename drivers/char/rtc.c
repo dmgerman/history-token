@@ -2,7 +2,7 @@ multiline_comment|/*&n; *&t;Real Time Clock interface for Linux&t;&n; *&n; *&t;C
 DECL|macro|RTC_VERSION
 mdefine_line|#define RTC_VERSION&t;&t;&quot;1.11&quot;
 DECL|macro|RTC_IO_EXTENT
-mdefine_line|#define RTC_IO_EXTENT&t;0x10&t;/* Only really two ports, but...&t;*/
+mdefine_line|#define RTC_IO_EXTENT&t;0x8
 multiline_comment|/*&n; *&t;Note that *all* calls to CMOS_READ and CMOS_WRITE are done with&n; *&t;interrupts disabled. Due to the index-port/data-port (0x70/0x71)&n; *&t;design of the RTC, we don&squot;t want two different things trying to&n; *&t;get to it at once. (e.g. the periodic 11 min sync from time.c vs.&n; *&t;this driver.)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -1,5 +1,4 @@
 multiline_comment|/* &n; * dvbdev.c&n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-multiline_comment|/*#define CONFIG_DVB_DEVFS_ONLY 1*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -73,20 +72,10 @@ comma
 l_string|&quot;osd&quot;
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_DVB_DEVFS_ONLY
-DECL|macro|DVB_MAX_IDS
-mdefine_line|#define DVB_MAX_IDS              ~0
-DECL|macro|nums2minor
-mdefine_line|#define nums2minor(num,type,id)  0
-DECL|macro|DVB_DEVFS_FLAGS
-mdefine_line|#define DVB_DEVFS_FLAGS          (DEVFS_FL_DEFAULT|DEVFS_FL_AUTO_DEVNUM)
-macro_line|#else
 DECL|macro|DVB_MAX_IDS
 mdefine_line|#define DVB_MAX_IDS              4
 DECL|macro|nums2minor
 mdefine_line|#define nums2minor(num,type,id)  ((num &lt;&lt; 6) | (id &lt;&lt; 4) | type)
-DECL|macro|DVB_DEVFS_FLAGS
-mdefine_line|#define DVB_DEVFS_FLAGS          (DEVFS_FL_DEFAULT)
 r_static
 DECL|function|dvbdev_find_device
 r_struct
@@ -808,7 +797,7 @@ id|adap-&gt;devfs_handle
 comma
 id|name
 comma
-id|DVB_DEVFS_FLAGS
+l_int|0
 comma
 id|DVB_MAJOR
 comma

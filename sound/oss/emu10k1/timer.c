@@ -114,7 +114,7 @@ id|emu_timer
 op_star
 id|timer
 comma
-id|u32
+id|u16
 id|delay
 )paren
 (brace
@@ -231,12 +231,10 @@ suffix:colon
 l_int|1024
 )paren
 suffix:semicolon
-id|emu10k1_writefn0
+id|emu10k1_timer_set
 c_func
 (paren
 id|card
-comma
-id|TIMER_RATE
 comma
 id|delay
 )paren
@@ -326,7 +324,7 @@ id|list_head
 op_star
 id|entry
 suffix:semicolon
-id|u32
+id|u16
 id|delay
 op_assign
 id|TIMER_STOPPED
@@ -436,12 +434,10 @@ suffix:colon
 l_int|1024
 )paren
 suffix:semicolon
-id|emu10k1_writefn0
+id|emu10k1_timer_set
 c_func
 (paren
 id|card
-comma
-id|TIMER_RATE
 comma
 id|delay
 )paren

@@ -1267,14 +1267,12 @@ id|hwif-&gt;tuneproc
 op_assign
 id|tuneproc
 suffix:semicolon
-macro_line|#ifndef HWIF_PROBE_CLASSIC_METHOD
 id|probe_hwif_init
 c_func
 (paren
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#endif /* HWIF_PROBE_CLASSIC_METHOD */
 )brace
 multiline_comment|/*&n; * qd_unsetup:&n; *&n; * called to unsetup an ata channel : back to default values, unlinks tuning&n; */
 DECL|function|qd_unsetup

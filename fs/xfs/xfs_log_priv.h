@@ -881,10 +881,6 @@ r_struct
 id|xfs_mount
 op_star
 id|mp
-comma
-id|xlog_in_core_t
-op_star
-id|iclog
 )paren
 suffix:semicolon
 r_extern

@@ -1569,6 +1569,37 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;Exploding PnPBIOS. Don&squot;t yet know if its the BIOS or us for&n; *&t;some entries&n; */
+DECL|function|exploding_pnp_bios
+r_static
+id|__init
+r_int
+id|exploding_pnp_bios
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s detected. Disabling PnPBIOS&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+id|dmi_broken
+op_or_assign
+id|BROKEN_PNP_BIOS
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Simple &quot;print if true&quot; callback&n; */
 DECL|function|print_if_true
 r_static

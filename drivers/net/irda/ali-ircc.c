@@ -1131,9 +1131,6 @@ r_int
 id|dongle_id
 suffix:semicolon
 r_int
-id|ret
-suffix:semicolon
-r_int
 id|err
 suffix:semicolon
 id|IRDA_DEBUG

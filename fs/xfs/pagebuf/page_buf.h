@@ -450,7 +450,7 @@ r_typedef
 id|page_buf_bmap_t
 id|pb_bmap_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure. The buffer structure is&n; * used on temporary basis only, and discarded when released.  &n; *&n; * The real data storage is recorded in the page cache.&t; Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
+multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.&t;The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.&t; Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
 r_struct
 id|page_buf_s
 suffix:semicolon
@@ -732,6 +732,27 @@ multiline_comment|/* PBF_ASYNC&t;&t;&t;*/
 r_extern
 id|page_buf_t
 op_star
+id|pagebuf_lookup
+c_func
+(paren
+r_struct
+id|pb_target
+op_star
+comma
+id|loff_t
+comma
+multiline_comment|/* starting offset of range&t;*/
+r_int
+comma
+multiline_comment|/* length of range&t;&t;*/
+id|page_buf_flags_t
+)paren
+suffix:semicolon
+multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
+multiline_comment|/* PBF_FORCEIO, _PBF_LOCKABLE&t;*/
+r_extern
+id|page_buf_t
+op_star
 id|pagebuf_get_empty
 c_func
 (paren
@@ -909,6 +930,9 @@ id|page_buf_t
 op_star
 comma
 multiline_comment|/* buffer to mark&t;&t;*/
+r_int
+comma
+multiline_comment|/* use data/log helper thread.&t;*/
 r_int
 )paren
 suffix:semicolon

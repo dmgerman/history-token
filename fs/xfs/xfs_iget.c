@@ -1306,12 +1306,6 @@ id|I_NEW
 (brace
 id|inode_allocate
 suffix:colon
-id|XFS_STATS_INC
-c_func
-(paren
-id|xfsstats.vn_alloc
-)paren
-suffix:semicolon
 id|vn_initialize
 c_func
 (paren
