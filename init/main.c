@@ -552,7 +552,49 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* this should be approx 2 Bo*oMips to start (note initial shift), and will&n;   still work even if initially too large, it will just take slightly longer */
+DECL|variable|preset_lpj
+r_static
+r_int
+r_int
+id|preset_lpj
+suffix:semicolon
+DECL|function|lpj_setup
+r_static
+r_int
+id|__init
+id|lpj_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|preset_lpj
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;lpj=&quot;
+comma
+id|lpj_setup
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * This should be approx 2 Bo*oMips to start (note initial shift), and will&n; * still work even if initially too large, it will just take slightly longer&n; */
 DECL|variable|loops_per_jiffy
 r_int
 r_int
@@ -571,7 +613,7 @@ c_func
 id|loops_per_jiffy
 )paren
 suffix:semicolon
-multiline_comment|/* This is the number of bits of precision for the loops_per_jiffy.  Each&n;   bit takes on average 1.5/HZ seconds.  This (like the original) is a little&n;   better than 1% */
+multiline_comment|/*&n; * This is the number of bits of precision for the loops_per_jiffy.  Each&n; * bit takes on average 1.5/HZ seconds.  This (like the original) is a little&n; * better than 1%&n; */
 DECL|macro|LPS_PREC
 mdefine_line|#define LPS_PREC 8
 DECL|function|calibrate_delay
@@ -594,6 +636,46 @@ id|lps_precision
 op_assign
 id|LPS_PREC
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|preset_lpj
+)paren
+(brace
+id|loops_per_jiffy
+op_assign
+id|preset_lpj
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Calibrating delay loop (skipped)... &quot;
+l_string|&quot;%lu.%02lu BogoMIPS preset&bslash;n&quot;
+comma
+id|loops_per_jiffy
+op_div
+(paren
+l_int|500000
+op_div
+id|HZ
+)paren
+comma
+(paren
+id|loops_per_jiffy
+op_div
+(paren
+l_int|5000
+op_div
+id|HZ
+)paren
+)paren
+op_mod
+l_int|100
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|loops_per_jiffy
 op_assign
 (paren
@@ -659,7 +741,7 @@ id|ticks
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Do a binary approximation to get loops_per_jiffy set to equal one clock&n;   (up to lps_precision bits) */
+multiline_comment|/*&n;&t;&t; * Do a binary approximation to get loops_per_jiffy set to&n;&t;&t; * equal one clock (up to lps_precision bits)&n;&t;&t; */
 id|loops_per_jiffy
 op_rshift_assign
 l_int|1
@@ -696,6 +778,7 @@ id|ticks
 op_eq
 id|jiffies
 )paren
+multiline_comment|/* nothing */
 suffix:semicolon
 id|ticks
 op_assign
@@ -725,7 +808,7 @@ multiline_comment|/* Round the value and print it */
 id|printk
 c_func
 (paren
-l_string|&quot;%lu.%02lu BogoMIPS&bslash;n&quot;
+l_string|&quot;%lu.%02lu BogoMIPS (lpj=%lu)&bslash;n&quot;
 comma
 id|loops_per_jiffy
 op_div
@@ -746,8 +829,11 @@ id|HZ
 )paren
 op_mod
 l_int|100
+comma
+id|loops_per_jiffy
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|debug_kernel
 r_static
@@ -823,7 +909,7 @@ comma
 id|quiet_kernel
 )paren
 suffix:semicolon
-multiline_comment|/* Unknown boot options get handed to init, unless they look like&n;   failed parameters */
+multiline_comment|/*&n; * Unknown boot options get handed to init, unless they look like&n; * failed parameters&n; */
 DECL|function|unknown_bootoption
 r_static
 r_int
@@ -867,7 +953,7 @@ id|param
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Preemptive maintenance for &quot;why didn&squot;t my mispelled command&n;           line work?&quot; */
+multiline_comment|/*&n;&t; * Preemptive maintenance for &quot;why didn&squot;t my mispelled command&n;&t; * line work?&quot;&n;&t; */
 r_if
 c_cond
 (paren
@@ -1063,7 +1149,7 @@ id|execute_command
 op_assign
 id|str
 suffix:semicolon
-multiline_comment|/* In case LILO is going to boot us with default command line,&n;&t; * it prepends &quot;auto&quot; before the whole cmdline which makes&n;&t; * the shell think it should execute a script with such name.&n;&t; * So we ignore all arguments entered _before_ init=... [MJ]&n;&t; */
+multiline_comment|/*&n;&t; * In case LILO is going to boot us with default command line,&n;&t; * it prepends &quot;auto&quot; before the whole cmdline which makes&n;&t; * the shell think it should execute a script with such name.&n;&t; * So we ignore all arguments entered _before_ init=... [MJ]&n;&t; */
 r_for
 c_loop
 (paren
