@@ -164,23 +164,36 @@ id|address
 r_int
 r_int
 id|phys
-suffix:semicolon
-id|__asm__
+op_assign
 (paren
-l_string|&quot;sll %1, 63-40, %0&bslash;n&quot;
-l_string|&quot;sra %0, 63-40, %0&bslash;n&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|phys
+r_int
+r_int
 )paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
 id|address
-)paren
+suffix:semicolon
+multiline_comment|/* Sign-extend from bit 41.  */
+id|phys
+op_lshift_assign
+(paren
+l_int|64
+op_minus
+l_int|41
 )paren
 suffix:semicolon
+id|phys
+op_assign
+(paren
+r_int
+)paren
+id|phys
+op_rshift
+(paren
+l_int|64
+op_minus
+l_int|41
+)paren
+suffix:semicolon
+multiline_comment|/* Crop to the physical address width of the processor.  */
 id|phys
 op_and_assign
 (paren
