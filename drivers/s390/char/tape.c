@@ -331,10 +331,6 @@ l_string|&quot;NOT&quot;
 suffix:semicolon
 multiline_comment|/*******************************************************************&n; * DEVFS Functions&n; *******************************************************************/
 macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|tape_devfs_root_entry
-id|devfs_handle_t
-id|tape_devfs_root_entry
-suffix:semicolon
 multiline_comment|/*&n; * Create devfs root entry (devno in hex) for device td&n; */
 r_static
 r_inline
@@ -363,17 +359,14 @@ id|td-&gt;devinfo.devno
 )paren
 suffix:semicolon
 r_return
-(paren
-id|td-&gt;devfs_dir
-op_assign
 id|devfs_mk_dir
+c_func
 (paren
 l_int|NULL
 comma
 id|devno
 comma
 l_int|NULL
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -389,14 +382,12 @@ op_star
 id|td
 )paren
 (brace
-r_if
-c_cond
+id|devfs_remove
+c_func
 (paren
-id|td-&gt;devfs_dir
-)paren
-id|devfs_unregister
-(paren
-id|td-&gt;devfs_dir
+l_string|&quot;tape/%04x&quot;
+comma
+id|td-&gt;devinfo.devno
 )paren
 suffix:semicolon
 )brace
@@ -6863,8 +6854,6 @@ id|tape_parm_string
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
-id|tape_devfs_root_entry
-op_assign
 id|devfs_mk_dir
 (paren
 l_int|NULL
@@ -7126,9 +7115,10 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|tape_devfs_root_entry
+l_string|&quot;tape&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* devfs checks for NULL */

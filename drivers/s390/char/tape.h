@@ -631,23 +631,6 @@ r_int
 id|block_size
 suffix:semicolon
 multiline_comment|/* block size of tape */
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|member|devfs_char_dir
-id|devfs_handle_t
-id|devfs_char_dir
-suffix:semicolon
-multiline_comment|/* tape/DEVNO/char dir */
-DECL|member|devfs_nonrewinding
-id|devfs_handle_t
-id|devfs_nonrewinding
-suffix:semicolon
-multiline_comment|/* tape/DEVNO/char/nonrewinding */
-DECL|member|devfs_rewinding
-id|devfs_handle_t
-id|devfs_rewinding
-suffix:semicolon
-multiline_comment|/* tape/DEVNO/char/rewinding */
-macro_line|#endif /* CONFIG_DEVFS_FS */
 DECL|typedef|tape_char_data_t
 )brace
 id|tape_char_data_t
@@ -685,18 +668,6 @@ r_struct
 id|tq_struct
 id|bh_tq
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|member|devfs_block_dir
-id|devfs_handle_t
-id|devfs_block_dir
-suffix:semicolon
-multiline_comment|/* tape/DEVNO/block dir */
-DECL|member|devfs_disc
-id|devfs_handle_t
-id|devfs_disc
-suffix:semicolon
-multiline_comment|/* tape/DEVNO/block/disc */
-macro_line|#endif /* CONFIG_DEVFS_FS */
 DECL|typedef|tape_blk_data_t
 )brace
 id|tape_blk_data_t
@@ -773,13 +744,6 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* ptr to next tape_dev */
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|member|devfs_dir
-id|devfs_handle_t
-id|devfs_dir
-suffix:semicolon
-multiline_comment|/* toplevel devfs dir */
-macro_line|#endif /* CONFIG_DEVFS_FS */
 DECL|member|char_data
 id|tape_char_data_t
 id|char_data
