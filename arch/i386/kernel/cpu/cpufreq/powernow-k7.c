@@ -1317,6 +1317,29 @@ id|latency
 op_assign
 id|psb-&gt;settlingtime
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|latency
+OL
+l_int|10000
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;BIOS set settling time to %d microseconds.&quot;
+l_string|&quot;Should be at least 10000. Correcting.&bslash;n&quot;
+comma
+id|latency
+)paren
+suffix:semicolon
+id|latency
+op_assign
+l_int|10000
+suffix:semicolon
+)brace
 id|dprintk
 (paren
 id|KERN_INFO
