@@ -1,6 +1,5 @@
 multiline_comment|/* NAT for netfilter; shared with compatibility layer. */
 multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n;   Public Licence. */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;

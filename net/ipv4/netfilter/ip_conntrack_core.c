@@ -1,6 +1,5 @@
 multiline_comment|/* Connection state tracking for netfilter.  This is separated from,&n;   but required by, the NAT layer; it can also be used by an iptables&n;   extension. */
 multiline_comment|/* (c) 1999 Paul `Rusty&squot; Russell.  Licenced under the GNU General&n; * Public Licence. &n; *&n; * 23 Apr 2001: Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- new API and handling of conntrack/nat helpers&n; * &t;- now capable of multiple expectations for one master&n; * 16 Jul 2002: Harald Welte &lt;laforge@gnumonks.org&gt;&n; * &t;- add usage/reference counts to ip_conntrack_expect&n; *&t;- export ip_conntrack[_expect]_{find_get,put} functions&n; * */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/icmp.h&gt;

@@ -48,7 +48,6 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_core.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 id|MODULE_LICENSE
 c_func
 (paren
