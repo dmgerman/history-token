@@ -185,11 +185,13 @@ macro_line|#if defined(CONFIG_ALPHA_GENERIC) &amp;&amp; defined(USE_48_BIT_KSEG)
 macro_line|#error &quot;EV6-only feature in a generic kernel&quot;
 macro_line|#endif
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) || &bslash;&n;    (defined(CONFIG_ALPHA_EV6) &amp;&amp; !defined(USE_48_BIT_KSEG))
+DECL|macro|KSEG_PFN
+mdefine_line|#define KSEG_PFN&t;(0xc0000000000UL &gt;&gt; PAGE_SHIFT)
 DECL|macro|PHYS_TWIDDLE
-mdefine_line|#define PHYS_TWIDDLE(phys) &bslash;&n;  ((((phys) &amp; 0xc0000000000UL) == 0x40000000000UL) &bslash;&n;  ? ((phys) ^= 0xc0000000000UL) : (phys))
+mdefine_line|#define PHYS_TWIDDLE(pfn) &bslash;&n;  ((((pfn) &amp; KSEG_PFN) == (0x40000000000UL &gt;&gt; PAGE_SHIFT)) &bslash;&n;  ? ((pfn) ^= KSEG_PFN) : (pfn))
 macro_line|#else
 DECL|macro|PHYS_TWIDDLE
-mdefine_line|#define PHYS_TWIDDLE(phys) (phys)
+mdefine_line|#define PHYS_TWIDDLE(pfn) (pfn)
 macro_line|#endif
 multiline_comment|/*&n; * Conversion functions:  convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 macro_line|#ifndef CONFIG_DISCONTIGMEM
@@ -200,22 +202,28 @@ DECL|macro|PAGE_TO_PA
 mdefine_line|#define PAGE_TO_PA(page) &bslash;&n;&t;&t;((((page)-(page)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) &bslash;&n;&t;&t;+ (page)-&gt;zone-&gt;zone_start_paddr)
 macro_line|#endif
 macro_line|#ifndef CONFIG_DISCONTIGMEM
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(pte)&t;(pte_val(pte) &gt;&gt; 32)
+DECL|macro|pte_page
+mdefine_line|#define pte_page(pte)&t;pfn_to_page(pte_pfn(pte))
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = ((unsigned long)(page - mem_map) &lt;&lt; 32) |&t;&bslash;&n;&t;&t;       pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(pte) = (page_to_pfn(page) &lt;&lt; 32) | pgprot_val(pgprot);&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#else
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long pfn;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pfn = ((unsigned long)((page)-(page)-&gt;zone-&gt;zone_mem_map)) &lt;&lt; 32;&t;&bslash;&n;&t;pfn += (page)-&gt;zone-&gt;zone_start_paddr &lt;&lt; (32-PAGE_SHIFT);&t;&t;&bslash;&n;&t;pte_val(pte) = pfn | pgprot_val(pgprot);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|pte_page
+mdefine_line|#define pte_page(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long kvirt;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page * __xx;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;kvirt = (unsigned long)__va(pte_val(x) &gt;&gt; (32-PAGE_SHIFT));&t;&bslash;&n;&t;__xx = virt_to_page(kvirt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__xx;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
-DECL|function|mk_pte_phys
+DECL|function|pfn_pte
 r_extern
 r_inline
 id|pte_t
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 r_int
 r_int
-id|physpage
+id|physpfn
 comma
 id|pgprot_t
 id|pgprot
@@ -234,14 +242,10 @@ op_assign
 id|PHYS_TWIDDLE
 c_func
 (paren
-id|physpage
+id|physpfn
 )paren
 op_lshift
-(paren
 l_int|32
-op_minus
-id|PAGE_SHIFT
-)paren
 )paren
 op_or
 id|pgprot_val
@@ -386,13 +390,6 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;(mem_map+(unsigned long)((pte_val(x) &gt;&gt; 32)))
-macro_line|#else
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long kvirt;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct page * __xx;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;kvirt = (unsigned long)__va(pte_val(x) &gt;&gt; (32-PAGE_SHIFT));&t;&bslash;&n;&t;__xx = virt_to_page(kvirt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__xx;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-macro_line|#endif
 r_extern
 r_inline
 r_int
