@@ -1930,6 +1930,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_timer-&gt;it_sigev_notify
+op_eq
+(paren
+id|SIGEV_SIGNAL
+op_or
+id|SIGEV_THREAD_ID
+)paren
+)paren
 id|get_task_struct
 c_func
 (paren
