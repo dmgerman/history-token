@@ -240,16 +240,6 @@ l_int|11
 )paren
 comma
 multiline_comment|/* filesystem controls freeing memory  */
-DECL|enumerator|PBF_RELEASE
-id|PBF_RELEASE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|12
-)paren
-comma
-multiline_comment|/* buffer to be released after I/O is done */
 multiline_comment|/* flags used only as arguments to access routines */
 DECL|enumerator|PBF_LOCK
 id|PBF_LOCK
@@ -271,23 +261,13 @@ l_int|14
 )paren
 comma
 multiline_comment|/* lock requested, but do not wait&t;   */
-DECL|enumerator|PBF_ALLOCATE
-id|PBF_ALLOCATE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|15
-)paren
-comma
-multiline_comment|/* allocate all pages&t;&t;  (UNUSED) */
 DECL|enumerator|PBF_FILE_ALLOCATE
 id|PBF_FILE_ALLOCATE
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|16
+l_int|15
 )paren
 comma
 multiline_comment|/* allocate all file space&t;   */
@@ -297,7 +277,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|17
+l_int|16
 )paren
 comma
 multiline_comment|/* do not block in current thread&t;   */
@@ -307,22 +287,10 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|18
+l_int|17
 )paren
 comma
 multiline_comment|/* direct I/O desired&t;&t;&t;   */
-DECL|enumerator|PBF_ENTER_PAGES
-id|PBF_ENTER_PAGES
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|21
-)paren
-comma
-multiline_comment|/* create invalid pages for all&t;   */
-multiline_comment|/* pages in the range of the buffer&t;   */
-multiline_comment|/* not already associated with buffer&t;   */
 multiline_comment|/* flags used only internally */
 DECL|enumerator|_PBF_LOCKABLE
 id|_PBF_LOCKABLE
@@ -350,27 +318,17 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|22
+l_int|21
 )paren
 comma
 multiline_comment|/* all pages in rage are mapped&t;&t;   */
-DECL|enumerator|_PBF_SOME_INVALID_PAGES
-id|_PBF_SOME_INVALID_PAGES
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|23
-)paren
-comma
-multiline_comment|/* some mapped pages are not valid&t;   */
 DECL|enumerator|_PBF_ADDR_ALLOCATED
 id|_PBF_ADDR_ALLOCATED
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|24
+l_int|22
 )paren
 comma
 multiline_comment|/* pb_addr space was allocated&t;&t;   */
@@ -380,7 +338,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|25
+l_int|23
 )paren
 comma
 multiline_comment|/* pb_mem and underlying pages allocated   */
@@ -390,7 +348,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|27
+l_int|24
 )paren
 comma
 DECL|enumerator|PBF_FLUSH
@@ -399,7 +357,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|28
+l_int|25
 )paren
 comma
 multiline_comment|/* flush disk write cache */
@@ -409,18 +367,9 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|29
+l_int|26
 )paren
 comma
-DECL|enumerator|PBF_FS_RESERVED_3
-id|PBF_FS_RESERVED_3
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|31
-)paren
-multiline_comment|/* reserved (XFS use: XFS_B_STALE) */
 DECL|typedef|page_buf_flags_t
 )brace
 id|page_buf_flags_t
@@ -464,11 +413,6 @@ DECL|member|pbr_blocksize
 r_int
 r_int
 id|pbr_blocksize
-suffix:semicolon
-DECL|member|pbr_blocksize_bits
-r_int
-r_int
-id|pbr_blocksize_bits
 suffix:semicolon
 DECL|typedef|pb_target_t
 )brace
@@ -927,47 +871,6 @@ suffix:semicolon
 multiline_comment|/* buffer to lock&t;&t;*/
 r_extern
 r_void
-id|pagebuf_lock_disable
-c_func
-(paren
-multiline_comment|/* disable buffer locking&t;*/
-r_struct
-id|pb_target
-op_star
-comma
-multiline_comment|/* inode for buffers&t;&t;*/
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* do blkdev_put?&t;&t;*/
-r_extern
-r_struct
-id|pb_target
-op_star
-id|pagebuf_lock_enable
-c_func
-(paren
-id|dev_t
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* do blkdev_get?&t;&t;*/
-r_extern
-r_void
-id|pagebuf_target_blocksize
-c_func
-(paren
-id|pb_target_t
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* block size&t;&t;&t;*/
-r_extern
-r_void
 id|pagebuf_target_clear
 c_func
 (paren
@@ -988,8 +891,29 @@ op_star
 suffix:semicolon
 multiline_comment|/* buffer to unlock&t;&t;*/
 multiline_comment|/* Buffer Utility Routines */
-DECL|macro|pagebuf_geterror
-mdefine_line|#define pagebuf_geterror(pb)&t;((pb)-&gt;pb_error)
+DECL|function|pagebuf_geterror
+r_static
+r_inline
+r_int
+id|pagebuf_geterror
+c_func
+(paren
+id|page_buf_t
+op_star
+id|pb
+)paren
+(brace
+r_return
+(paren
+id|pb
+ques
+c_cond
+id|pb-&gt;pb_error
+suffix:colon
+id|ENOMEM
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_void
 id|pagebuf_iodone

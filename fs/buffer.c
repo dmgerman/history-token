@@ -2570,6 +2570,13 @@ c_func
 id|lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Ensure any pending I/O completes so that&n;&t;&t;&t;&t; * ll_rw_block() actually writes the current&n;&t;&t;&t;&t; * contents - it is a noop if I/O is still in&n;&t;&t;&t;&t; * flight on potentially older contents.&n;&t;&t;&t;&t; */
+id|wait_on_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 id|ll_rw_block
 c_func
 (paren

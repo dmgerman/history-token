@@ -3,6 +3,7 @@ DECL|macro|_ASM_HW_IRQ_H
 mdefine_line|#define _ASM_HW_IRQ_H
 multiline_comment|/*&n; *&t;linux/include/asm/hw_irq.h&n; *&n; *&t;(C) 1992, 1993 Linus Torvalds, (C) 1997 Ingo Molnar&n; *&n; *&t;moved some of the old arch/i386/kernel/irq.h to here. VY&n; *&n; *&t;IRQ/IPI changes taken from work by Thomas Radke&n; *&t;&lt;tomsoft@informatik.tu-chemnitz.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Various low-level irq details needed by irq.c, process.c,&n; * time.c, io_apic.c and smp.c&n; *&n; * Interrupt entry/exit code at both C and assembly level&n; */
@@ -258,39 +259,62 @@ id|_etext
 suffix:semicolon
 DECL|macro|IO_APIC_IRQ
 mdefine_line|#define IO_APIC_IRQ(x) (((x) &gt;= 16) || ((1&lt;&lt;(x)) &amp; io_apic_irqs))
+multiline_comment|/*&n; * The profiling function is SMP safe. (nothing can mess&n; * around with &quot;current&quot;, and the profiling counters are&n; * updated with atomic operations). This is especially&n; * useful with a profiling multiplier != 1&n; */
+DECL|function|x86_do_profile
+r_static
+r_inline
+r_void
+id|x86_do_profile
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|eip
+suffix:semicolon
 r_extern
 r_int
 r_int
 id|prof_cpu_mask
 suffix:semicolon
 r_extern
-r_int
-r_int
-op_star
-id|prof_buffer
+r_char
+id|_stext
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
 r_extern
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
-multiline_comment|/*&n; * x86 profiling function, SMP safe. We might want to do this in&n; * assembly totally?&n; */
-DECL|function|x86_do_profile
-r_static
-r_inline
 r_void
-id|x86_do_profile
+id|x86_profile_hook
+c_func
 (paren
-r_int
-r_int
-id|eip
+r_struct
+id|pt_regs
+op_star
 )paren
-(brace
+suffix:semicolon
+id|x86_profile_hook
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -298,6 +322,10 @@ op_logical_neg
 id|prof_buffer
 )paren
 r_return
+suffix:semicolon
+id|eip
+op_assign
+id|regs-&gt;eip
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only measure the CPUs specified by /proc/irq/prof_cpu_mask.&n;&t; * (default is all CPUs.)&n;&t; */
 r_if
@@ -363,6 +391,68 @@ id|eip
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|notifier_block
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|register_profile_notifier
+r_static
+r_inline
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|unregister_profile_notifier
+r_static
+r_inline
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PROFILING */
 macro_line|#ifdef CONFIG_SMP /*more of this file should probably be ifdefed SMP */
 DECL|function|hw_resend_irq
 r_static

@@ -1603,6 +1603,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|bpp
 )paren
 r_return
@@ -1625,6 +1626,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_star
 id|bpp
 )paren
 r_return

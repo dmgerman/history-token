@@ -1224,6 +1224,18 @@ op_star
 id|prev
 suffix:semicolon
 multiline_comment|/* Used for linked list */
+DECL|member|siblings
+r_struct
+id|list_head
+id|siblings
+suffix:semicolon
+multiline_comment|/* list of all devices on this host */
+DECL|member|same_target_siblings
+r_struct
+id|list_head
+id|same_target_siblings
+suffix:semicolon
+multiline_comment|/* just the devices sharing same target id */
 DECL|member|scpnt_wait
 id|wait_queue_head_t
 id|scpnt_wait
@@ -1251,6 +1263,18 @@ r_int
 id|device_busy
 suffix:semicolon
 multiline_comment|/* commands actually active on low-level */
+DECL|member|free_cmnds
+r_struct
+id|list_head
+id|free_cmnds
+suffix:semicolon
+multiline_comment|/* list of available Scsi_Cmnd structs */
+DECL|member|busy_cmnds
+r_struct
+id|list_head
+id|busy_cmnds
+suffix:semicolon
+multiline_comment|/* list of Scsi_Cmnd structs in use */
 DECL|member|device_queue
 id|Scsi_Cmnd
 op_star
@@ -1263,10 +1287,10 @@ op_star
 id|current_cmnd
 suffix:semicolon
 multiline_comment|/* currently active command */
-DECL|member|queue_depth
+DECL|member|current_queue_depth
 r_int
 r_int
-id|queue_depth
+id|current_queue_depth
 suffix:semicolon
 multiline_comment|/* How deep of a queue we have */
 DECL|member|new_queue_depth
@@ -1790,6 +1814,12 @@ id|scsi_cmnd
 op_star
 id|reset_chain
 suffix:semicolon
+DECL|member|list_entry
+r_struct
+id|list_head
+id|list_entry
+suffix:semicolon
+multiline_comment|/* Used to place us on the cmd lists */
 DECL|member|eh_state
 r_int
 id|eh_state

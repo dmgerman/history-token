@@ -2634,6 +2634,10 @@ id|log_flags
 )paren
 suffix:semicolon
 macro_line|#endif
+id|tp-&gt;t_commit_lsn
+op_assign
+id|commit_lsn
+suffix:semicolon
 r_if
 c_cond
 (paren

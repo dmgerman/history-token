@@ -310,7 +310,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -319,6 +319,8 @@ op_star
 )paren
 op_amp
 id|args
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -739,7 +741,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -748,6 +750,8 @@ op_star
 )paren
 op_amp
 id|args
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -1666,7 +1670,7 @@ id|XFS_ILOCK_SHARED
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
-id|bzero
+id|memset
 c_func
 (paren
 (paren
@@ -1675,6 +1679,8 @@ op_star
 )paren
 op_amp
 id|args
+comma
+l_int|0
 comma
 r_sizeof
 (paren

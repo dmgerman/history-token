@@ -67,6 +67,13 @@ c_func
 id|__do_copy_from_user
 )paren
 suffix:semicolon
+DECL|variable|__do_copy_to_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__do_copy_to_user
+)paren
+suffix:semicolon
 DECL|variable|__do_strncpy_from_user
 id|EXPORT_SYMBOL
 c_func

@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
+macro_line|#include &quot;mach_apic.h&quot;
 multiline_comment|/* Have we found an MP table */
 DECL|variable|smp_found_config
 r_int
@@ -153,6 +154,33 @@ DECL|variable|phys_cpu_present_map
 r_int
 r_int
 id|phys_cpu_present_map
+suffix:semicolon
+DECL|variable|summit_x86
+r_int
+id|summit_x86
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|raw_phys_apicid
+id|u8
+id|raw_phys_apicid
+(braket
+id|NR_CPUS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_CPUS
+op_minus
+l_int|1
+)braket
+op_assign
+id|BAD_APICID
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
@@ -795,9 +823,11 @@ r_else
 (brace
 id|phys_cpu_present_map
 op_or_assign
-l_int|1
-op_lshift
+id|apicid_to_cpu_present
+c_func
+(paren
 id|m-&gt;mpc_apicid
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Validate version&n;&t; */
@@ -828,6 +858,15 @@ id|m-&gt;mpc_apicid
 )braket
 op_assign
 id|ver
+suffix:semicolon
+id|raw_phys_apicid
+(braket
+id|num_processors
+op_minus
+l_int|1
+)braket
+op_assign
+id|m-&gt;mpc_apicid
 suffix:semicolon
 )brace
 DECL|function|MP_bus_info
@@ -1619,6 +1658,12 @@ id|str
 l_int|16
 )braket
 suffix:semicolon
+r_char
+id|oem
+(braket
+l_int|10
+)braket
+suffix:semicolon
 r_int
 id|count
 op_assign
@@ -1761,14 +1806,14 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|str
+id|oem
 comma
 id|mpc-&gt;mpc_oem
 comma
 l_int|8
 )paren
 suffix:semicolon
-id|str
+id|oem
 (braket
 l_int|8
 )braket
@@ -1780,7 +1825,7 @@ c_func
 (paren
 l_string|&quot;OEM ID: %s &quot;
 comma
-id|str
+id|oem
 )paren
 suffix:semicolon
 id|memcpy
@@ -1804,6 +1849,14 @@ id|printk
 c_func
 (paren
 l_string|&quot;Product ID: %s &quot;
+comma
+id|str
+)paren
+suffix:semicolon
+id|summit_check
+c_func
+(paren
+id|oem
 comma
 id|str
 )paren
@@ -2103,6 +2156,11 @@ op_increment
 id|mpc_record
 suffix:semicolon
 )brace
+id|clustered_apic_check
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

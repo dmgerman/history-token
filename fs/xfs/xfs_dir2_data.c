@@ -1827,10 +1827,12 @@ id|XFS_DIR2_BLOCK_MAGIC
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Start by clearing the table.&n;&t; */
-id|bzero
+id|memset
 c_func
 (paren
 id|d-&gt;hdr.bestfree
+comma
+l_int|0
 comma
 r_sizeof
 (paren

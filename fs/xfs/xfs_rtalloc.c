@@ -645,7 +645,7 @@ r_goto
 id|error_exit
 suffix:semicolon
 )brace
-id|bzero
+id|memset
 c_func
 (paren
 id|XFS_BUF_PTR
@@ -653,6 +653,8 @@ c_func
 (paren
 id|bp
 )paren
+comma
+l_int|0
 comma
 id|mp-&gt;m_sb.sb_blocksize
 )paren
@@ -8715,8 +8717,6 @@ id|VMAP
 c_func
 (paren
 id|rbmvp
-comma
-id|mp-&gt;m_rbmip
 comma
 id|vmap
 )paren

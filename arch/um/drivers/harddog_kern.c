@@ -19,6 +19,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Locked by the BKL in harddog_open and harddog_release */
 DECL|variable|timer_alive
 r_static
 r_int
@@ -85,6 +86,11 @@ id|sock
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -136,6 +142,11 @@ suffix:semicolon
 id|timer_alive
 op_assign
 l_int|1
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

@@ -6,6 +6,7 @@ macro_line|#include &quot;asm/irq.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;sigio.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
+multiline_comment|/* Protected by sigio_lock() called from write_sigio_workaround */
 DECL|variable|sigio_irq_fd
 r_static
 r_int
@@ -97,6 +98,45 @@ id|fd
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|variable|sigio_spinlock
+r_static
+id|spinlock_t
+id|sigio_spinlock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|sigio_lock
+r_void
+id|sigio_lock
+c_func
+(paren
+r_void
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sigio_spinlock
+)paren
+suffix:semicolon
+)brace
+DECL|function|sigio_unlock
+r_void
+id|sigio_unlock
+c_func
+(paren
+r_void
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sigio_spinlock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

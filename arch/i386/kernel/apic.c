@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &quot;mach_apic.h&quot;
 DECL|function|apic_intr_init
 r_void
 id|__init
@@ -1089,7 +1090,7 @@ c_func
 (paren
 id|APIC_DFR
 comma
-l_int|0xffffffff
+id|APIC_DFR_VALUE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set up the logical destination ID.&n;&t;&t; */
@@ -1101,32 +1102,16 @@ c_func
 id|APIC_LDR
 )paren
 suffix:semicolon
-id|value
-op_and_assign
-op_complement
-id|APIC_LDR_MASK
-suffix:semicolon
-id|value
-op_or_assign
-(paren
-l_int|1
-op_lshift
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-op_plus
-l_int|24
-)paren
-)paren
-suffix:semicolon
 id|apic_write_around
 c_func
 (paren
 id|APIC_LDR
 comma
+id|calculate_ldr
+c_func
+(paren
 id|value
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3392,15 +3377,6 @@ id|regs
 )paren
 (brace
 r_int
-id|user
-op_assign
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -3408,17 +3384,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The profiling function is SMP safe. (nothing can mess&n;&t; * around with &quot;current&quot;, and the profiling counters are&n;&t; * updated with atomic operations). This is especially&n;&t; * useful with a profiling multiplier != 1&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user
-)paren
 id|x86_do_profile
 c_func
 (paren
-id|regs-&gt;eip
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3484,7 +3453,11 @@ macro_line|#ifdef CONFIG_SMP
 id|update_process_times
 c_func
 (paren
-id|user
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -5745,7 +5745,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdevscan-&gt;queue_depth
+id|sdevscan-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -6008,7 +6008,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdevscan-&gt;queue_depth
+id|sdevscan-&gt;current_queue_depth
 op_ne
 l_int|0
 )paren
@@ -6404,7 +6404,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdevscan-&gt;queue_depth
+id|sdevscan-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -7406,7 +7406,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sdev-&gt;queue_depth
+id|sdev-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren

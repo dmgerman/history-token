@@ -1401,22 +1401,6 @@ DECL|variable|time_adjust
 r_int
 id|time_adjust
 suffix:semicolon
-DECL|variable|prof_buffer
-r_int
-r_int
-op_star
-id|prof_buffer
-suffix:semicolon
-DECL|variable|prof_len
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-DECL|variable|prof_shift
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
 multiline_comment|/*&n; * this routine handles the overflow of the microsecond field&n; *&n; * The tricky bits of code to handle the accurate clock support&n; * were provided by Dave Mills (Mills@UDEL.EDU) of NTP fame.&n; * They were originally developed for SUN and DEC kernels.&n; * All the kudos should go to Dave for this stuff.&n; *&n; */
 DECL|function|second_overflow
 r_static

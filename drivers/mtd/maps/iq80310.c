@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: iq80310.c,v 1.8 2001/10/02 15:05:14 dwmw2 Exp $&n; *&n; * Mapping for the Intel XScale IQ80310 evaluation board&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * $Id: iq80310.c,v 1.9 2002/01/01 22:45:02 rmk Exp $&n; *&n; * Mapping for the Intel XScale IQ80310 evaluation board&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -489,14 +489,12 @@ op_assign
 r_int
 r_int
 )paren
-id|__ioremap
+id|ioremap
 c_func
 (paren
 id|WINDOW_ADDR
 comma
 id|WINDOW_SIZE
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -703,9 +701,6 @@ op_star
 )paren
 id|iq80310_map.map_priv_1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|init_iq80310

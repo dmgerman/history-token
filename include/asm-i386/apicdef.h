@@ -48,6 +48,10 @@ DECL|macro|APIC_ALL_CPUS
 mdefine_line|#define&t;&t;&t;APIC_ALL_CPUS&t;&t;0xFF
 DECL|macro|APIC_DFR
 mdefine_line|#define&t;&t;APIC_DFR&t;0xE0
+DECL|macro|APIC_DFR_CLUSTER
+mdefine_line|#define&t;&t;&t;APIC_DFR_CLUSTER&t;&t;0x0FFFFFFFul
+DECL|macro|APIC_DFR_FLAT
+mdefine_line|#define&t;&t;&t;APIC_DFR_FLAT&t;&t;&t;0xFFFFFFFFul
 DECL|macro|APIC_SPIV
 mdefine_line|#define&t;&t;APIC_SPIV&t;0xF0
 DECL|macro|APIC_SPIV_FOCUS_DISABLED
@@ -196,8 +200,13 @@ DECL|macro|APIC_TDR_DIV_128
 mdefine_line|#define&t;&t;&t;APIC_TDR_DIV_128&t;0xA
 DECL|macro|APIC_BASE
 mdefine_line|#define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
+macro_line|#ifdef CONFIG_X86_NUMA
+DECL|macro|MAX_IO_APICS
+mdefine_line|#define MAX_IO_APICS 32
+macro_line|#else
 DECL|macro|MAX_IO_APICS
 mdefine_line|#define MAX_IO_APICS 8
+macro_line|#endif
 multiline_comment|/*&n; * the local APIC register structure, memory mapped. Not terribly well&n; * tested, but we might eventually use this one in the future - the&n; * problem why we cannot use it right now is the P5 APIC, it has an&n; * errata which cannot take 8-bit reads and writes, only 32-bit ones ...&n; */
 DECL|macro|u32
 mdefine_line|#define u32 unsigned int

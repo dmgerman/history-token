@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
-macro_line|#ifndef HCI_CORE_DEBUG
+macro_line|#ifndef CONFIG_BT_HCI_CORE_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -79,7 +79,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Complete OGF LINK_POLICY  */
 DECL|function|hci_cc_link_policy
@@ -210,7 +209,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Complete OGF HOST_CTL  */
 DECL|function|hci_cc_host_ctl
@@ -767,7 +765,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Complete OGF INFO_PARAM  */
 DECL|function|hci_cc_info_param
@@ -1115,7 +1112,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Status OGF LINK_CTL  */
 DECL|function|hci_cs_create_conn
@@ -1508,7 +1504,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Status OGF LINK_POLICY */
 DECL|function|hci_cs_link_policy
@@ -1560,7 +1555,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Status OGF HOST_CTL */
 DECL|function|hci_cs_host_ctl
@@ -1612,7 +1606,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Command Status OGF INFO_PARAM  */
 DECL|function|hci_cs_info_param
@@ -1664,7 +1657,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* Inquiry Complete */
 DECL|function|hci_inquiry_complete_evt
@@ -3672,7 +3664,7 @@ id|dlen
 suffix:semicolon
 id|skb
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 id|size

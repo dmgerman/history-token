@@ -813,6 +813,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  INFO PART&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|snd_minor_info_oss_entry
 r_static
 id|snd_info_entry_t
@@ -958,6 +959,7 @@ id|sound_oss_mutex
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PROC_FS */
 DECL|function|snd_minor_info_oss_init
 r_int
 id|__init
@@ -967,6 +969,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 id|snd_info_entry_t
 op_star
 id|entry
@@ -1029,6 +1032,7 @@ id|snd_minor_info_oss_entry
 op_assign
 id|entry
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1042,6 +1046,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
@@ -1053,6 +1058,7 @@ c_func
 id|snd_minor_info_oss_entry
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1096,15 +1102,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
-DECL|function|snd_oss_cleanup_module
-r_void
-id|snd_oss_cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
 )brace
 macro_line|#endif /* CONFIG_SND_OSSEMUL */
 eof
