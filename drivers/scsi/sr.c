@@ -755,7 +755,7 @@ c_func
 (paren
 l_string|&quot;Doing sr request, dev = %s, block = %d&bslash;n&quot;
 comma
-id|disk-&gt;disk_name
+id|cd-&gt;disk-&gt;disk_name
 comma
 id|block
 )paren

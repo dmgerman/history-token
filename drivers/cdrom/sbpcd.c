@@ -229,13 +229,6 @@ l_string|&quot;i&quot;
 suffix:semicolon
 DECL|macro|NUM_PROBE
 mdefine_line|#define NUM_PROBE  (sizeof(sbpcd) / sizeof(int))
-DECL|variable|sbpcd_lock
-r_static
-id|spinlock_t
-id|sbpcd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*==========================================================================*/
 DECL|macro|INLINE
 mdefine_line|#define INLINE inline
@@ -25246,7 +25239,11 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-id|CURRENT
+id|elv_next_request
+c_func
+(paren
+id|q
+)paren
 )paren
 op_ne
 id|READ
@@ -30609,17 +30606,12 @@ comma
 id|cdi-&gt;name
 )paren
 suffix:semicolon
-id|invalidate_buffers
-c_func
-(paren
-id|full_dev
-)paren
-suffix:semicolon
 id|current_drive-&gt;diskstate_flags
 op_and_assign
 op_complement
 id|toc_bit
 suffix:semicolon
+multiline_comment|/* we *don&squot;t* need invalidate here, it&squot;s done by caller */
 id|current_drive-&gt;diskstate_flags
 op_and_assign
 op_complement
