@@ -76,16 +76,17 @@ id|max
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* A range consists of an array of 1 or more ip_nat_range */
-DECL|struct|ip_nat_multi_range
+multiline_comment|/* For backwards compat: don&squot;t use in modern code. */
+DECL|struct|ip_nat_multi_range_compat
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_multi_range_compat
 (brace
 DECL|member|rangesize
 r_int
 r_int
 id|rangesize
 suffix:semicolon
+multiline_comment|/* Must be 1. */
 multiline_comment|/* hangs off end. */
 DECL|member|range
 r_struct
@@ -200,9 +201,9 @@ id|conntrack
 comma
 r_const
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_range
 op_star
-id|mr
+id|range
 comma
 r_int
 r_int
@@ -244,6 +245,9 @@ id|u_int16_t
 id|oldcheck
 )paren
 suffix:semicolon
+macro_line|#else  /* !__KERNEL__: iptables wants this to compile. */
+DECL|macro|ip_nat_multi_range
+mdefine_line|#define ip_nat_multi_range ip_nat_multi_range_compat
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif
 eof

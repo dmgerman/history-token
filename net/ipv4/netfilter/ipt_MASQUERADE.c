@@ -77,7 +77,7 @@ id|hook_mask
 (brace
 r_const
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_multi_range_compat
 op_star
 id|mr
 op_assign
@@ -265,12 +265,12 @@ id|ctinfo
 suffix:semicolon
 r_const
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_multi_range_compat
 op_star
 id|mr
 suffix:semicolon
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_range
 id|newrange
 suffix:semicolon
 r_struct
@@ -410,12 +410,8 @@ op_assign
 (paren
 (paren
 r_struct
-id|ip_nat_multi_range
+id|ip_nat_range
 )paren
-(brace
-l_int|1
-comma
-(brace
 (brace
 id|mr-&gt;range
 (braket
@@ -443,8 +439,6 @@ l_int|0
 )braket
 dot
 id|max
-)brace
-)brace
 )brace
 )paren
 suffix:semicolon
