@@ -817,6 +817,8 @@ op_plus
 l_int|1
 comma
 )brace
+suffix:semicolon
+DECL|function|ingress_init
 r_int
 id|ingress_init
 c_func
@@ -922,6 +924,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|function|ingress_reset
 r_static
 r_void
 id|ingress_reset
@@ -966,6 +969,7 @@ multiline_comment|/*&n;#endif&n;*/
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 multiline_comment|/* ------------------------------------------------------------- */
+DECL|function|ingress_destroy
 r_static
 r_void
 id|ingress_destroy
@@ -1054,6 +1058,7 @@ id|p-&gt;q
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|ingress_dump
 r_static
 r_int
 id|ingress_dump
@@ -1129,6 +1134,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|ingress_class_ops
 r_static
 r_struct
 id|Qdisc_class_ops
