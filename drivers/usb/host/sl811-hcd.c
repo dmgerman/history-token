@@ -7753,7 +7753,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;power.power_state
 op_assign
-id|PM_SUSPEND_ON
+id|PMSG_ON
 suffix:semicolon
 r_return
 id|sl811h_hub_resume

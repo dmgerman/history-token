@@ -7072,7 +7072,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -7278,7 +7278,7 @@ c_func
 (paren
 id|dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_enable_device
