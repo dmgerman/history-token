@@ -104,6 +104,7 @@ id|app-&gt;module
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Allocate/initialize app incarnation and register it in proto apps.&n; */
+r_static
 r_int
 DECL|function|ip_vs_app_inc_new
 id|ip_vs_app_inc_new

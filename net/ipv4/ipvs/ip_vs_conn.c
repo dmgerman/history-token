@@ -81,6 +81,7 @@ id|SMP_CACHE_BYTES
 )paren
 suffix:semicolon
 multiline_comment|/* lock array for conn table */
+r_static
 r_struct
 id|ip_vs_aligned_lock
 DECL|variable|__cacheline_aligned
