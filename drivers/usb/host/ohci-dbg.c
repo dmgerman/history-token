@@ -352,7 +352,7 @@ l_string|&quot;%s, ohci %s frame %2d:&quot;
 comma
 id|label
 comma
-id|ohci-&gt;hcd.bus_name
+id|ohci-&gt;hcd.self.bus_name
 comma
 id|i
 )paren
@@ -419,7 +419,7 @@ l_string|&quot;%s, ohci %s, empty periodic schedule&bslash;n&quot;
 comma
 id|label
 comma
-id|ohci-&gt;hcd.bus_name
+id|ohci-&gt;hcd.self.bus_name
 )paren
 suffix:semicolon
 )brace
@@ -1224,7 +1224,7 @@ id|dbg
 (paren
 l_string|&quot;OHCI controller %s state&quot;
 comma
-id|controller-&gt;hcd.bus_name
+id|controller-&gt;hcd.self.bus_name
 )paren
 suffix:semicolon
 singleline_comment|// dumps some of the state we know about
