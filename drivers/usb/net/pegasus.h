@@ -383,6 +383,8 @@ DECL|macro|VENDOR_LINKSYS
 mdefine_line|#define&t;VENDOR_LINKSYS&t;&t;0x066b
 DECL|macro|VENDOR_MELCO
 mdefine_line|#define&t;VENDOR_MELCO&t;&t;0x0411
+DECL|macro|VENDOR_MICROSOFT
+mdefine_line|#define&t;VENDOR_MICROSOFT&t;0x045e
 DECL|macro|VENDOR_MOBILITY
 mdefine_line|#define&t;VENDOR_MOBILITY&t;&t;0x1342
 DECL|macro|VENDOR_NETGEAR
@@ -1100,6 +1102,19 @@ comma
 id|VENDOR_MELCO
 comma
 l_int|0x0009
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;Microsoft MN-110&quot;
+comma
+id|VENDOR_MICROSOFT
+comma
+l_int|0x007a
 comma
 id|DEFAULT_GPIO_RESET
 op_or
