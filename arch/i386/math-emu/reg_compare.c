@@ -1485,6 +1485,7 @@ r_void
 id|fcom_st
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fcom st(i) */
@@ -1500,6 +1501,7 @@ r_void
 id|fcompst
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fcomp st(i) */
@@ -1524,6 +1526,7 @@ r_void
 id|fcompp
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fcompp */
@@ -1564,6 +1567,7 @@ r_void
 id|fucom_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fucom st(i) */
@@ -1579,6 +1583,7 @@ r_void
 id|fucomp
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fucomp st(i) */
@@ -1603,6 +1608,7 @@ r_void
 id|fucompp
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fucompp */

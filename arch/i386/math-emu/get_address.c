@@ -263,6 +263,7 @@ id|base
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 (paren
@@ -394,6 +395,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -448,6 +450,7 @@ id|displacement
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -894,6 +897,7 @@ suffix:semicolon
 multiline_comment|/*&n;       MOD R/M byte:  MOD == 3 has a special use for the FPU&n;                      SIB byte used iff R/M = 100b&n;&n;       7   6   5   4   3   2   1   0&n;       .....   .........   .........&n;        MOD    OPCODE(2)     R/M&n;&n;&n;       SIB byte&n;&n;       7   6   5   4   3   2   1   0&n;       .....   .........   .........&n;        SS      INDEX        BASE&n;&n;*/
 DECL|function|FPU_get_address
 r_void
+id|__user
 op_star
 id|FPU_get_address
 c_func
@@ -1047,6 +1051,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1071,6 +1076,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
@@ -1091,6 +1097,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
@@ -1116,6 +1123,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -1153,6 +1161,7 @@ id|address
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1255,6 +1264,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
@@ -1262,6 +1272,7 @@ suffix:semicolon
 )brace
 DECL|function|FPU_get_address_16
 r_void
+id|__user
 op_star
 id|FPU_get_address_16
 c_func
@@ -1377,6 +1388,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1420,6 +1432,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -1458,6 +1471,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1682,6 +1696,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address

@@ -42,6 +42,7 @@ l_string|&quot;Unimplemented FPU Opcode at eip=%p : &quot;
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|address
@@ -68,6 +69,7 @@ id|byte1
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|address
@@ -115,6 +117,7 @@ l_int|1
 op_plus
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|address
@@ -290,6 +293,7 @@ id|byte1
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|address
@@ -354,6 +358,7 @@ l_int|1
 op_plus
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|address

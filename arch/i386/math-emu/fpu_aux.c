@@ -56,6 +56,7 @@ r_void
 id|finit
 c_func
 (paren
+r_void
 )paren
 (brace
 id|control_word
@@ -139,6 +140,7 @@ r_void
 id|finit_
 c_func
 (paren
+r_void
 )paren
 (brace
 (paren
@@ -209,6 +211,7 @@ r_void
 id|fstsw_
 c_func
 (paren
+r_void
 )paren
 (brace
 (paren
@@ -252,6 +255,7 @@ r_void
 id|fp_nop
 c_func
 (paren
+r_void
 )paren
 (brace
 (paren
@@ -269,6 +273,7 @@ r_void
 id|fld_i_
 c_func
 (paren
+r_void
 )paren
 (brace
 id|FPU_REG
@@ -374,6 +379,7 @@ r_void
 id|fxch_i
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fxch st(i) */
@@ -640,6 +646,7 @@ r_void
 id|ffree_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* ffree st(i) */
@@ -657,6 +664,7 @@ r_void
 id|ffreep
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* ffree st(i) + pop - unofficial code */
@@ -679,6 +687,7 @@ r_void
 id|fst_i_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fst st(i) */
@@ -706,6 +715,7 @@ r_void
 id|fstp_i
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fstp st(i) */

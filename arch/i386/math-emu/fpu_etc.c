@@ -510,6 +510,7 @@ r_void
 id|FPU_etc
 c_func
 (paren
+r_void
 )paren
 (brace
 (paren

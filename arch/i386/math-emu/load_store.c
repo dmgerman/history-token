@@ -251,6 +251,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 r_void
+id|__user
 op_star
 id|data_address
 )paren
@@ -477,6 +478,7 @@ c_func
 (paren
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -546,6 +548,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -581,6 +584,7 @@ c_func
 (paren
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -650,6 +654,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -687,6 +692,7 @@ id|st0_tag
 comma
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -712,6 +718,7 @@ id|st0_tag
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -737,6 +744,7 @@ id|st0_tag
 comma
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -762,6 +770,7 @@ id|st0_tag
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -790,6 +799,7 @@ id|st0_tag
 comma
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -824,6 +834,7 @@ id|st0_tag
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -858,6 +869,7 @@ id|st0_tag
 comma
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -892,6 +904,7 @@ id|st0_tag
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -916,6 +929,7 @@ id|addr_modes
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|data_address
@@ -936,6 +950,7 @@ id|addr_modes
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|data_address
@@ -961,6 +976,7 @@ c_func
 (paren
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|data_address
@@ -998,6 +1014,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -1060,6 +1077,7 @@ c_func
 (paren
 r_int
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -1092,6 +1110,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -1116,6 +1135,7 @@ id|addr_modes
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|data_address
@@ -1135,6 +1155,7 @@ id|addr_modes
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|data_address
@@ -1164,6 +1185,7 @@ id|st0_tag
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|data_address
@@ -1201,6 +1223,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -1233,6 +1256,7 @@ comma
 (paren
 r_int
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -1273,6 +1297,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -1305,6 +1330,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data_address

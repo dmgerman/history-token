@@ -635,6 +635,7 @@ op_star
 id|Byte
 comma
 id|u_char
+id|__user
 op_star
 op_star
 id|fpu_eip
@@ -682,6 +683,7 @@ comma
 id|st0_tag
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|data_address
 suffix:semicolon
@@ -862,12 +864,6 @@ id|SIGILL
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|SEG_D_SIZE
-c_func
-(paren
 id|code_descriptor
 op_assign
 id|LDT_DESCRIPTOR
@@ -875,6 +871,14 @@ c_func
 (paren
 id|FPU_CS
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|SEG_D_SIZE
+c_func
+(paren
+id|code_descriptor
 )paren
 )paren
 (brace
@@ -964,6 +968,7 @@ id|byte1
 comma
 (paren
 id|u_char
+id|__user
 op_star
 op_star
 )paren
@@ -1107,6 +1112,7 @@ id|FPU_modrm
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|FPU_EIP
@@ -1418,6 +1424,7 @@ c_func
 (paren
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -1449,6 +1456,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -1469,6 +1477,7 @@ c_func
 (paren
 (paren
 r_float
+id|__user
 op_star
 )paren
 id|data_address
@@ -1503,6 +1512,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|data_address
@@ -2395,6 +2405,7 @@ id|byte1
 comma
 (paren
 id|u_char
+id|__user
 op_star
 op_star
 )paren
@@ -2433,6 +2444,7 @@ op_star
 id|Byte
 comma
 id|u_char
+id|__user
 op_star
 op_star
 id|fpu_eip
@@ -2446,6 +2458,7 @@ id|u_char
 id|byte
 suffix:semicolon
 id|u_char
+id|__user
 op_star
 id|ip
 op_assign
@@ -2750,16 +2763,19 @@ id|s387
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
 (brace
 id|u_char
+id|__user
 op_star
 id|d
 op_assign
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|buf
@@ -3040,16 +3056,19 @@ id|s387
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
 (brace
 id|u_char
+id|__user
 op_star
 id|d
 op_assign
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|buf

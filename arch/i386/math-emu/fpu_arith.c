@@ -8,6 +8,7 @@ r_void
 id|fadd__
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fadd st,st(i) */
@@ -48,6 +49,7 @@ r_void
 id|fmul__
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fmul st,st(i) */
@@ -88,6 +90,7 @@ r_void
 id|fsub__
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fsub st,st(i) */
@@ -112,6 +115,7 @@ r_void
 id|fsubr_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fsubr st,st(i) */
@@ -136,6 +140,7 @@ r_void
 id|fdiv__
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fdiv st,st(i) */
@@ -160,6 +165,7 @@ r_void
 id|fdivr_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fdivr st,st(i) */
@@ -184,6 +190,7 @@ r_void
 id|fadd_i
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fadd st(i),st */
@@ -224,6 +231,7 @@ r_void
 id|fmul_i
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fmul st(i),st */
@@ -258,6 +266,7 @@ r_void
 id|fsubri
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fsubr st(i),st */
@@ -282,6 +291,7 @@ r_void
 id|fsub_i
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fsub st(i),st */
@@ -308,6 +318,7 @@ r_void
 id|fdivri
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fdivr st(i),st */
@@ -332,6 +343,7 @@ r_void
 id|fdiv_i
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fdiv st(i),st */
@@ -358,6 +370,7 @@ r_void
 id|faddp_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* faddp st(i),st */
@@ -408,6 +421,7 @@ r_void
 id|fmulp_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fmulp st(i),st */
@@ -452,6 +466,7 @@ r_void
 id|fsubrp
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fsubrp st(i),st */
@@ -486,6 +501,7 @@ r_void
 id|fsubp_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fsubp st(i),st */
@@ -522,6 +538,7 @@ r_void
 id|fdivrp
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fdivrp st(i),st */
@@ -556,6 +573,7 @@ r_void
 id|fdivp_
 c_func
 (paren
+r_void
 )paren
 (brace
 multiline_comment|/* fdivp st(i),st */

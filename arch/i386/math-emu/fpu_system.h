@@ -83,7 +83,7 @@ mdefine_line|#define&t;FPU_code_verify_area(z)
 macro_line|#else
 multiline_comment|/* A simpler test than verify_area() can probably be done for&n;   FPU_code_verify_area() because the only possible error is to step&n;   past the upper boundary of a legal code area. */
 DECL|macro|FPU_code_verify_area
-mdefine_line|#define&t;FPU_code_verify_area(z) FPU_verify_area(VERIFY_READ,(void *)FPU_EIP,z)
+mdefine_line|#define&t;FPU_code_verify_area(z) FPU_verify_area(VERIFY_READ,(void __user *)FPU_EIP,z)
 macro_line|#endif
 DECL|macro|FPU_get_user
 mdefine_line|#define FPU_get_user(x,y)       get_user((x),(y))

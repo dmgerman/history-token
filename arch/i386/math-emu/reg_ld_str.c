@@ -170,6 +170,7 @@ c_func
 (paren
 r_int
 r_float
+id|__user
 op_star
 id|s
 comma
@@ -227,6 +228,7 @@ id|FPU_load_double
 c_func
 (paren
 r_float
+id|__user
 op_star
 id|dfloat
 comma
@@ -269,6 +271,7 @@ op_plus
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|dfloat
@@ -282,6 +285,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|dfloat
@@ -552,6 +556,7 @@ id|FPU_load_single
 c_func
 (paren
 r_float
+id|__user
 op_star
 id|single
 comma
@@ -590,6 +595,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|single
@@ -820,6 +826,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|_s
 )paren
@@ -938,6 +945,7 @@ id|FPU_load_int32
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|_s
 comma
@@ -1045,6 +1053,7 @@ id|FPU_load_int16
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|_s
 comma
@@ -1154,6 +1163,7 @@ id|FPU_load_bcd
 c_func
 (paren
 id|u_char
+id|__user
 op_star
 id|s
 )paren
@@ -1224,10 +1234,6 @@ c_func
 (paren
 id|bcd
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|s
 op_plus
 id|pos
@@ -1259,10 +1265,6 @@ c_func
 (paren
 id|sign
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|s
 op_plus
 l_int|9
@@ -1350,6 +1352,7 @@ id|st0_tag
 comma
 r_int
 r_float
+id|__user
 op_star
 id|d
 )paren
@@ -1383,6 +1386,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -1396,11 +1400,13 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|d
@@ -1421,11 +1427,13 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|d
@@ -1477,6 +1485,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -1492,6 +1501,7 @@ op_plus
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -1506,6 +1516,7 @@ l_int|4
 op_plus
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -1536,6 +1547,7 @@ id|u_char
 id|st0_tag
 comma
 r_float
+id|__user
 op_star
 id|dfloat
 )paren
@@ -2330,10 +2342,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|dfloat
 comma
 l_int|8
@@ -2347,6 +2355,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|dfloat
@@ -2362,6 +2371,7 @@ op_plus
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|dfloat
@@ -2401,10 +2411,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|dfloat
 comma
 l_int|8
@@ -2421,6 +2427,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|dfloat
@@ -2439,6 +2446,7 @@ op_plus
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|dfloat
@@ -2464,6 +2472,7 @@ id|u_char
 id|st0_tag
 comma
 r_float
+id|__user
 op_star
 id|single
 )paren
@@ -3190,10 +3199,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|single
 comma
 l_int|4
@@ -3207,6 +3212,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|single
@@ -3259,10 +3265,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|single
 comma
 l_int|4
@@ -3276,6 +3278,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|single
@@ -3302,6 +3305,7 @@ id|st0_tag
 comma
 r_int
 r_int
+id|__user
 op_star
 id|d
 )paren
@@ -3531,10 +3535,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|d
 comma
 l_int|8
@@ -3571,6 +3571,7 @@ id|u_char
 id|st0_tag
 comma
 r_int
+id|__user
 op_star
 id|d
 )paren
@@ -3774,6 +3775,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -3799,6 +3801,7 @@ id|u_char
 id|st0_tag
 comma
 r_int
+id|__user
 op_star
 id|d
 )paren
@@ -3999,10 +4002,6 @@ r_int
 )paren
 id|t.sigl
 comma
-(paren
-r_int
-op_star
-)paren
 id|d
 )paren
 suffix:semicolon
@@ -4026,6 +4025,7 @@ id|u_char
 id|st0_tag
 comma
 id|u_char
+id|__user
 op_star
 id|d
 )paren
@@ -4230,10 +4230,6 @@ c_func
 (paren
 l_int|0
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|d
 op_plus
 id|i
@@ -4245,10 +4241,6 @@ c_func
 (paren
 l_int|0xc0
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|d
 op_plus
 l_int|7
@@ -4260,10 +4252,6 @@ c_func
 (paren
 l_int|0xff
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|d
 op_plus
 l_int|8
@@ -4274,10 +4262,6 @@ c_func
 (paren
 l_int|0xff
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|d
 op_plus
 l_int|9
@@ -4371,10 +4355,6 @@ c_func
 (paren
 id|b
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|d
 op_plus
 id|i
@@ -4390,10 +4370,6 @@ c_func
 (paren
 id|sign
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|d
 op_plus
 l_int|9
@@ -4658,6 +4634,7 @@ suffix:semicolon
 multiline_comment|/*===========================================================================*/
 DECL|function|fldenv
 id|u_char
+id|__user
 op_star
 id|fldenv
 c_func
@@ -4666,6 +4643,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|s
 )paren
@@ -4726,6 +4704,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|s
@@ -4739,6 +4718,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4756,6 +4736,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4773,6 +4754,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4790,6 +4772,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4807,6 +4790,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4824,6 +4808,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4891,6 +4876,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|s
@@ -4904,6 +4890,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4921,6 +4908,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4938,6 +4926,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4955,6 +4944,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4972,6 +4962,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -4989,6 +4980,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5006,6 +4998,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5257,6 +5250,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|data_address
 )paren
@@ -5267,6 +5261,7 @@ comma
 id|regnr
 suffix:semicolon
 id|u_char
+id|__user
 op_star
 id|s
 op_assign
@@ -5397,6 +5392,7 @@ suffix:semicolon
 )brace
 DECL|function|fstenv
 id|u_char
+id|__user
 op_star
 id|fstenv
 c_func
@@ -5405,6 +5401,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|d
 )paren
@@ -5457,6 +5454,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -5471,6 +5469,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|d
@@ -5488,6 +5487,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5505,6 +5505,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5522,6 +5523,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5539,6 +5541,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5570,6 +5573,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5593,6 +5597,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5613,6 +5618,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5630,6 +5636,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -5743,11 +5750,13 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|data_address
 )paren
 (brace
 id|u_char
+id|__user
 op_star
 id|d
 suffix:semicolon

@@ -627,6 +627,7 @@ suffix:semicolon
 multiline_comment|/* get_address.c */
 r_extern
 r_void
+id|__user
 op_star
 id|FPU_get_address
 c_func
@@ -650,6 +651,7 @@ id|addr_modes
 suffix:semicolon
 r_extern
 r_void
+id|__user
 op_star
 id|FPU_get_address_16
 c_func
@@ -684,6 +686,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 r_void
+id|__user
 op_star
 id|data_address
 )paren
@@ -917,6 +920,7 @@ c_func
 (paren
 r_int
 r_float
+id|__user
 op_star
 id|s
 comma
@@ -930,6 +934,7 @@ id|FPU_load_double
 c_func
 (paren
 r_float
+id|__user
 op_star
 id|dfloat
 comma
@@ -944,6 +949,7 @@ id|FPU_load_single
 c_func
 (paren
 r_float
+id|__user
 op_star
 id|single
 comma
@@ -959,6 +965,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|_s
 )paren
@@ -969,6 +976,7 @@ id|FPU_load_int32
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|_s
 comma
@@ -983,6 +991,7 @@ id|FPU_load_int16
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|_s
 comma
@@ -997,6 +1006,7 @@ id|FPU_load_bcd
 c_func
 (paren
 id|u_char
+id|__user
 op_star
 id|s
 )paren
@@ -1015,6 +1025,7 @@ id|st0_tag
 comma
 r_int
 r_float
+id|__user
 op_star
 id|d
 )paren
@@ -1032,6 +1043,7 @@ id|u_char
 id|st0_tag
 comma
 r_float
+id|__user
 op_star
 id|dfloat
 )paren
@@ -1049,6 +1061,7 @@ id|u_char
 id|st0_tag
 comma
 r_float
+id|__user
 op_star
 id|single
 )paren
@@ -1067,6 +1080,7 @@ id|st0_tag
 comma
 r_int
 r_int
+id|__user
 op_star
 id|d
 )paren
@@ -1084,6 +1098,7 @@ id|u_char
 id|st0_tag
 comma
 r_int
+id|__user
 op_star
 id|d
 )paren
@@ -1101,6 +1116,7 @@ id|u_char
 id|st0_tag
 comma
 r_int
+id|__user
 op_star
 id|d
 )paren
@@ -1118,6 +1134,7 @@ id|u_char
 id|st0_tag
 comma
 id|u_char
+id|__user
 op_star
 id|d
 )paren
@@ -1137,6 +1154,7 @@ id|tag
 suffix:semicolon
 r_extern
 id|u_char
+id|__user
 op_star
 id|fldenv
 c_func
@@ -1145,6 +1163,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|s
 )paren
@@ -1158,12 +1177,14 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|data_address
 )paren
 suffix:semicolon
 r_extern
 id|u_char
+id|__user
 op_star
 id|fstenv
 c_func
@@ -1172,6 +1193,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|d
 )paren
@@ -1185,6 +1207,7 @@ id|fpu_addr_modes
 id|addr_modes
 comma
 id|u_char
+id|__user
 op_star
 id|data_address
 )paren
