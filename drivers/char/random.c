@@ -344,6 +344,9 @@ DECL|macro|DEBUG_ENT
 mdefine_line|#define DEBUG_ENT(fmt, arg...) do {} while (0)
 macro_line|#endif
 multiline_comment|/**********************************************************************&n; *&n; * OS independent entropy store.   Here are the functions which handle&n; * storing entropy in an entropy pool.&n; *&n; **********************************************************************/
+r_struct
+id|entropy_store
+suffix:semicolon
 DECL|struct|entropy_store
 r_struct
 id|entropy_store
@@ -369,6 +372,12 @@ suffix:semicolon
 DECL|member|limit
 r_int
 id|limit
+suffix:semicolon
+DECL|member|pull
+r_struct
+id|entropy_store
+op_star
+id|pull
 suffix:semicolon
 multiline_comment|/* read-write data: */
 DECL|member|____cacheline_aligned_in_smp
@@ -478,6 +487,12 @@ op_assign
 l_int|1
 comma
 dot
+id|pull
+op_assign
+op_amp
+id|input_pool
+comma
+dot
 id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
@@ -508,6 +523,12 @@ dot
 id|name
 op_assign
 l_string|&quot;nonblocking&quot;
+comma
+dot
+id|pull
+op_assign
+op_amp
+id|input_pool
 comma
 dot
 id|lock
@@ -6607,8 +6628,6 @@ macro_line|#endif /* !USE_SHA */
 multiline_comment|/*********************************************************************&n; *&n; * Entropy extraction routines&n; *&n; *********************************************************************/
 DECL|macro|EXTRACT_ENTROPY_USER
 mdefine_line|#define EXTRACT_ENTROPY_USER&t;&t;1
-DECL|macro|EXTRACT_ENTROPY_SECONDARY
-mdefine_line|#define EXTRACT_ENTROPY_SECONDARY&t;2
 DECL|macro|TMP_BUF_SIZE
 mdefine_line|#define TMP_BUF_SIZE&t;&t;&t;(HASH_BUFFER_SIZE + HASH_EXTRA_SIZE)
 DECL|macro|SEC_XFER_SIZE
@@ -6664,6 +6683,8 @@ id|tmp
 r_if
 c_cond
 (paren
+id|r-&gt;pull
+op_logical_and
 id|r-&gt;entropy_count
 OL
 id|nbytes
@@ -6734,8 +6755,7 @@ op_assign
 id|extract_entropy
 c_func
 (paren
-op_amp
-id|input_pool
+id|r-&gt;pull
 comma
 id|tmp
 comma
@@ -6778,7 +6798,7 @@ l_int|8
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This function extracts randomness from the &quot;entropy pool&quot;, and&n; * returns it in a buffer.  This function computes how many remaining&n; * bits of entropy are left in the pool, but it does not restrict the&n; * number of bytes that are actually obtained.  If the EXTRACT_ENTROPY_USER&n; * flag is given, then the buf pointer is assumed to be in user space.&n; *&n; * If the EXTRACT_ENTROPY_SECONDARY flag is given, then we are actually&n; * extracting entropy from the secondary pool, and can refill from the&n; * primary pool if needed.&n; *&n; * The min parameter specifies the minimum amount we can pull before&n; * failing to avoid races that defeat catastrophic reseeding while the&n; * reserved parameter indicates how much entropy we must leave in the&n; * pool after each pull to avoid starving other readers.&n; *&n; * Note: extract_entropy() assumes that .poolwords is a multiple of 16 words.&n; */
+multiline_comment|/*&n; * This function extracts randomness from the &quot;entropy pool&quot;, and&n; * returns it in a buffer.  This function computes how many remaining&n; * bits of entropy are left in the pool, but it does not restrict the&n; * number of bytes that are actually obtained.  If the EXTRACT_ENTROPY_USER&n; * flag is given, then the buf pointer is assumed to be in user space.&n; *&n; * The min parameter specifies the minimum amount we can pull before&n; * failing to avoid races that defeat catastrophic reseeding while the&n; * reserved parameter indicates how much entropy we must leave in the&n; * pool after each pull to avoid starving other readers.&n; *&n; * Note: extract_entropy() assumes that .poolwords is a multiple of 16 words.&n; */
 DECL|function|extract_entropy
 r_static
 id|ssize_t
@@ -6842,13 +6862,6 @@ id|r-&gt;entropy_count
 op_assign
 id|r-&gt;poolinfo-&gt;POOLBITS
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|EXTRACT_ENTROPY_SECONDARY
-)paren
 id|xfer_secondary_pool
 c_func
 (paren
@@ -7375,7 +7388,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|EXTRACT_ENTROPY_SECONDARY
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -7759,8 +7772,6 @@ comma
 l_int|0
 comma
 id|EXTRACT_ENTROPY_USER
-op_or
-id|EXTRACT_ENTROPY_SECONDARY
 )paren
 suffix:semicolon
 id|DEBUG_ENT
