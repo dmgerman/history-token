@@ -1060,10 +1060,10 @@ id|frame_cnt
 suffix:semicolon
 multiline_comment|/* number of frames currently       */
 multiline_comment|/* queued in HL driver              */
-DECL|member|tqueue
+DECL|member|tlet
 r_struct
-id|tq_struct
-id|tqueue
+id|tasklet_struct
+id|tlet
 suffix:semicolon
 DECL|member|master
 id|isdn_net_local
