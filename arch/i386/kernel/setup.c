@@ -2456,6 +2456,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|ARCH_SETUP
 id|setup_memory_region
 c_func
 (paren

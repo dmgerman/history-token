@@ -1,4 +1,7 @@
-macro_line|#ifdef SETUP_POST
+macro_line|#ifndef SETUP_POST
+DECL|macro|ARCH_SETUP
+mdefine_line|#define ARCH_SETUP
+macro_line|#else
 DECL|function|machine_specific_memory_setup
 r_static
 r_inline
