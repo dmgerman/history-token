@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2005, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 DECL|macro|_COMPONENT
@@ -842,6 +842,21 @@ id|string
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Any string left? */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|string
+)paren
+)paren
+(brace
+r_goto
+id|error_exit
+suffix:semicolon
+)brace
 multiline_comment|/* Main loop: convert the string to a 64-bit integer */
 r_while
 c_loop
@@ -1360,9 +1375,6 @@ id|acpi_status
 id|status
 suffix:semicolon
 id|u32
-id|i
-suffix:semicolon
-id|u32
 id|this_thread_id
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
@@ -1390,7 +1402,12 @@ id|acpi_os_get_thread_id
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Deadlock prevention.  Check if this thread owns any mutexes of value&n;&t; * greater than or equal to this one.  If so, the thread has violated&n;&t; * the mutex ordering rule.  This indicates a coding error somewhere in&n;&t; * the ACPI subsystem code.&n;&t; */
+macro_line|#ifdef ACPI_MUTEX_DEBUG
+(brace
+id|u32
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Mutex debug code, for internal debugging only.&n;&t;&t; *&n;&t;&t; * Deadlock prevention.  Check if this thread owns any mutexes of value&n;&t;&t; * greater than or equal to this one.  If so, the thread has violated&n;&t;&t; * the mutex ordering rule.  This indicates a coding error somewhere in&n;&t;&t; * the ACPI subsystem code.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1477,6 +1494,8 @@ id|AE_ACQUIRE_DEADLOCK
 suffix:semicolon
 )brace
 )brace
+)brace
+macro_line|#endif
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -2390,6 +2409,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ENABLE_OBJECT_CACHE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_delete_generic_state_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_generic_state_cache
@@ -2411,6 +2431,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_walk_package_tree&n; *&n; * PARAMETERS:  obj_desc        - The Package object on which to resolve refs&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk through a package&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_walk_package_tree

@@ -153,6 +153,11 @@ id|acpi_processor_cx
 op_star
 id|state
 suffix:semicolon
+DECL|member|bm_check_timestamp
+r_int
+r_int
+id|bm_check_timestamp
+suffix:semicolon
 DECL|member|default_state
 id|u32
 id|default_state
