@@ -5907,9 +5907,13 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Our driver data&n;&t; */
-id|pdev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
 id|info
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -5934,12 +5938,11 @@ id|fb_info
 op_star
 id|info
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-r_struct
-id|fb_info
-op_star
+id|pdev
 )paren
-id|pdev-&gt;driver_data
 suffix:semicolon
 r_struct
 id|tdfx_par
@@ -6030,6 +6033,14 @@ id|pdev
 comma
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

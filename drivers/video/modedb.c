@@ -537,6 +537,35 @@ id|FB_VMODE_INTERLACED
 )brace
 comma
 (brace
+multiline_comment|/* 1400x1050 @ 60Hz, 63.9 kHz hsync */
+l_int|NULL
+comma
+l_int|68
+comma
+l_int|1400
+comma
+l_int|1050
+comma
+l_int|9259
+comma
+l_int|136
+comma
+l_int|40
+comma
+l_int|13
+comma
+l_int|1
+comma
+l_int|112
+comma
+l_int|3
+comma
+l_int|0
+comma
+id|FB_VMODE_NONINTERLACED
+)brace
+comma
+(brace
 multiline_comment|/* 800x600 @ 100 Hz, 64.02 kHz hsync */
 l_int|NULL
 comma

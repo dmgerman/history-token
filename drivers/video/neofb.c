@@ -7539,9 +7539,13 @@ id|info-&gt;modename
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Our driver data&n;&t; */
-id|dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
 id|info
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -7588,12 +7592,11 @@ id|fb_info
 op_star
 id|info
 op_assign
+id|pci_get_drvdata
+c_func
 (paren
-r_struct
-id|fb_info
-op_star
+id|dev
 )paren
-id|dev-&gt;driver_data
 suffix:semicolon
 id|DBG
 c_func
@@ -7643,9 +7646,13 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Ensure that the driver data is no longer&n;&t;&t; * valid.&n;&t;&t; */
-id|dev-&gt;driver_data
-op_assign
+id|pci_set_drvdata
+c_func
+(paren
+id|dev
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 )brace
