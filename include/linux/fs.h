@@ -2028,7 +2028,6 @@ macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
 r_struct
@@ -2234,11 +2233,6 @@ DECL|member|bfs_sb
 r_struct
 id|bfs_sb_info
 id|bfs_sb
-suffix:semicolon
-DECL|member|udf_sb
-r_struct
-id|udf_sb_info
-id|udf_sb
 suffix:semicolon
 DECL|member|jffs2_sb
 r_struct

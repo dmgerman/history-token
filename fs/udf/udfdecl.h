@@ -7,14 +7,14 @@ macro_line|#include &quot;osta_udf.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/udf_fs_i.h&gt;
+macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
 macro_line|#if !defined(CONFIG_UDF_FS) &amp;&amp; !defined(CONFIG_UDF_FS_MODULE)
 DECL|macro|CONFIG_UDF_FS_MODULE
 mdefine_line|#define CONFIG_UDF_FS_MODULE
-macro_line|#include &lt;linux/udf_fs_i.h&gt;
-macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#endif
 macro_line|#include &quot;udfend.h&quot;
 DECL|macro|udf_fixed_to_variable
