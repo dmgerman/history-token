@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
+multiline_comment|/*&n; * Architecture-specific signal handling support.&n; *&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Derived from i386 and Alpha versions.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
@@ -35,8 +36,8 @@ macro_line|# define PUT_SIGSET(k,u)&t;__put_user((k)-&gt;sig[0], &amp;(u)-&gt;si
 DECL|macro|GET_SIGSET
 macro_line|# define GET_SIGSET(k,u)&t;__get_user((k)-&gt;sig[0], &amp;(u)-&gt;sig[0])
 macro_line|#endif
-macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#ifdef ASM_SUPPORTED
+multiline_comment|/*&n; * Don&squot;t let GCC uses f16-f31 so that when we setup/restore the registers in the signal&n; * context in __kernel_sigtramp(), we can be sure that registers f16-f31 contain user-level&n; * values.&n; */
 r_register
 r_float
 id|f16
@@ -1083,10 +1084,10 @@ op_or_assign
 id|__put_user
 c_func
 (paren
-id|from-&gt;si_value.sival_ptr
+id|from-&gt;si_ptr
 comma
 op_amp
-id|to-&gt;si_value.sival_ptr
+id|to-&gt;si_ptr
 )paren
 suffix:semicolon
 r_break

@@ -3,10 +3,10 @@ DECL|macro|_ASM_IA64_PROCESSOR_H
 mdefine_line|#define _ASM_IA64_PROCESSOR_H
 multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; *&n; * 11/24/98&t;S.Eranian&t;added ia64_set_iva()&n; * 12/03/99&t;D. Mosberger&t;implement thread_saved_pc() via kernel unwind API&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/kregs.h&gt;
-macro_line|#include &lt;asm/ustack.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/kregs.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/ustack.h&gt;
 DECL|macro|IA64_NUM_DBG_REGS
 mdefine_line|#define IA64_NUM_DBG_REGS&t;8
 multiline_comment|/*&n; * Limits for PMC and PMD are set to less than maximum architected values&n; * but should be sufficient for a while&n; */
@@ -736,7 +736,6 @@ mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.ksp)
 r_extern
 r_void
 id|ia64_getreg_unknown_kr
-c_func
 (paren
 r_void
 )paren
@@ -744,13 +743,12 @@ suffix:semicolon
 r_extern
 r_void
 id|ia64_setreg_unknown_kr
-c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 DECL|macro|ia64_get_kr
-mdefine_line|#define ia64_get_kr(regnum)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long r=0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (regnum) {&t;&t;&t;&t;&t;&bslash;&n;&t;    case 0: r = ia64_getreg(_IA64_REG_AR_KR0); break;&t;&bslash;&n;&t;    case 1: r = ia64_getreg(_IA64_REG_AR_KR1); break;&t;&bslash;&n;&t;    case 2: r = ia64_getreg(_IA64_REG_AR_KR2); break;&t;&bslash;&n;&t;    case 3: r = ia64_getreg(_IA64_REG_AR_KR3); break;&t;&bslash;&n;&t;    case 4: r = ia64_getreg(_IA64_REG_AR_KR4); break;&t;&bslash;&n;&t;    case 5: r = ia64_getreg(_IA64_REG_AR_KR5); break;&t;&bslash;&n;&t;    case 6: r = ia64_getreg(_IA64_REG_AR_KR6); break;&t;&bslash;&n;&t;    case 7: r = ia64_getreg(_IA64_REG_AR_KR7); break;&t;&bslash;&n;&t;    default: ia64_getreg_unknown_kr(); break;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ia64_get_kr(regnum)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long r = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (regnum) {&t;&t;&t;&t;&t;&bslash;&n;&t;    case 0: r = ia64_getreg(_IA64_REG_AR_KR0); break;&t;&bslash;&n;&t;    case 1: r = ia64_getreg(_IA64_REG_AR_KR1); break;&t;&bslash;&n;&t;    case 2: r = ia64_getreg(_IA64_REG_AR_KR2); break;&t;&bslash;&n;&t;    case 3: r = ia64_getreg(_IA64_REG_AR_KR3); break;&t;&bslash;&n;&t;    case 4: r = ia64_getreg(_IA64_REG_AR_KR4); break;&t;&bslash;&n;&t;    case 5: r = ia64_getreg(_IA64_REG_AR_KR5); break;&t;&bslash;&n;&t;    case 6: r = ia64_getreg(_IA64_REG_AR_KR6); break;&t;&bslash;&n;&t;    case 7: r = ia64_getreg(_IA64_REG_AR_KR7); break;&t;&bslash;&n;&t;    default: ia64_getreg_unknown_kr(); break;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;r;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|ia64_set_kr
 mdefine_line|#define ia64_set_kr(regnum, r) &t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (regnum) {&t;&t;&t;&t;&t;&bslash;&n;&t;    case 0: ia64_setreg(_IA64_REG_AR_KR0, r); break;&t;&bslash;&n;&t;    case 1: ia64_setreg(_IA64_REG_AR_KR1, r); break;&t;&bslash;&n;&t;    case 2: ia64_setreg(_IA64_REG_AR_KR2, r); break;&t;&bslash;&n;&t;    case 3: ia64_setreg(_IA64_REG_AR_KR3, r); break;&t;&bslash;&n;&t;    case 4: ia64_setreg(_IA64_REG_AR_KR4, r); break;&t;&bslash;&n;&t;    case 5: ia64_setreg(_IA64_REG_AR_KR5, r); break;&t;&bslash;&n;&t;    case 6: ia64_setreg(_IA64_REG_AR_KR6, r); break;&t;&bslash;&n;&t;    case 7: ia64_setreg(_IA64_REG_AR_KR7, r); break;&t;&bslash;&n;&t;    default: ia64_setreg_unknown_kr(); break;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * The following three macros can&squot;t be inline functions because we don&squot;t have struct&n; * task_struct at this point.&n; */
@@ -1572,10 +1570,10 @@ suffix:semicolon
 multiline_comment|/* XXX remove the handcoded version once we have a sufficiently clever compiler... */
 macro_line|#ifdef SMART_COMPILER
 DECL|macro|ia64_rotr
-macro_line|# define ia64_rotr(w,n)&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 _w = (w), _n = (n);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(_w &gt;&gt; _n) | (_w &lt;&lt; (64 - _n));&t;&t;&bslash;&n;  })
+macro_line|# define ia64_rotr(w,n)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 __ia64_rotr_w = (w), _n = (n);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__ia64_rotr_w &gt;&gt; _n) | (__ia64_rotr_w &lt;&lt; (64 - _n));&t;&bslash;&n;  })
 macro_line|#else
 DECL|macro|ia64_rotr
-macro_line|# define ia64_rotr(w,n)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 result;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result = ia64_shrp((w), (w), (n));&t;&t;&t;&t;&bslash;&n;&t;result;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  })
+macro_line|# define ia64_rotr(w,n)&t;&t;&t;&t;&t;&bslash;&n;  ({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 __ia64_rotr_w;&t;&t;&t;&t;&bslash;&n;&t;__ia64_rotr_w = ia64_shrp((w), (w), (n));&t;&bslash;&n;&t;__ia64_rotr_w;&t;&t;&t;&t;&t;&bslash;&n;  })
 macro_line|#endif
 DECL|macro|ia64_rotl
 mdefine_line|#define ia64_rotl(w,n)&t;ia64_rotr((w),(64)-(n))

@@ -3,11 +3,11 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/rse.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/rse.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 r_extern
 r_void
 id|die_if_kernel

@@ -988,7 +988,6 @@ op_assign
 id|ia64_popcnt
 c_func
 (paren
-(paren
 id|x
 op_amp
 (paren
@@ -996,7 +995,6 @@ op_complement
 id|x
 op_minus
 l_int|1
-)paren
 )paren
 )paren
 suffix:semicolon

@@ -2832,6 +2832,7 @@ c_func
 (paren
 id|_IA64_REG_CR_DCR
 comma
+(paren
 id|IA64_DCR_DP
 op_or
 id|IA64_DCR_DK
@@ -2845,6 +2846,7 @@ op_or
 id|IA64_DCR_DD
 op_or
 id|IA64_DCR_LC
+)paren
 )paren
 suffix:semicolon
 id|atomic_inc

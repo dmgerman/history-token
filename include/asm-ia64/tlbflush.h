@@ -4,9 +4,9 @@ mdefine_line|#define _ASM_IA64_TLBFLUSH_H
 multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/intrinsics.h&gt;
 multiline_comment|/*&n; * Now for some TLB flushing routines.  This is the kind of stuff that&n; * can be very expensive, so try to avoid them whenever possible.&n; */
 multiline_comment|/*&n; * Flush everything (kernel mapping may also have changed due to&n; * vmalloc/vfree).&n; */
 r_extern

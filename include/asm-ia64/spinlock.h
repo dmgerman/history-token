@@ -2,12 +2,12 @@ macro_line|#ifndef _ASM_IA64_SPINLOCK_H
 DECL|macro|_ASM_IA64_SPINLOCK_H
 mdefine_line|#define _ASM_IA64_SPINLOCK_H
 multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * This file is used for SMP configurations only.&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 r_typedef
 r_struct
 (brace

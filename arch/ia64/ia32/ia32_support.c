@@ -4,11 +4,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
 r_extern
 r_void

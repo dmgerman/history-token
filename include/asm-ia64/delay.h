@@ -1,13 +1,13 @@
 macro_line|#ifndef _ASM_IA64_DELAY_H
 DECL|macro|_ASM_IA64_DELAY_H
 mdefine_line|#define _ASM_IA64_DELAY_H
-multiline_comment|/*&n; * Delay routines using a pre-computed &quot;cycles/usec&quot; value.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * Delay routines using a pre-computed &quot;cycles/usec&quot; value.&n; *&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 r_static
 id|__inline__
 r_void
@@ -197,13 +197,11 @@ l_int|1
 )paren
 r_return
 suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-suffix:semicolon
 id|loops
 op_decrement
-suffix:semicolon
 )paren
 id|ia64_nop
 c_func

@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* include compiler specific intrinsics */
 macro_line|#include &lt;asm/ia64regs.h&gt;
 macro_line|#ifdef __INTEL_COMPILER
-macro_line|#include &lt;asm/intel_intrin.h&gt;
+macro_line|# include &lt;asm/intel_intrin.h&gt;
 macro_line|#else
-macro_line|#include &lt;asm/gcc_intrin.h&gt;
+macro_line|# include &lt;asm/gcc_intrin.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Force an unresolved reference if someone tries to use&n; * ia64_fetch_and_add() with a bad value.&n; */
 r_extern
@@ -53,7 +53,6 @@ multiline_comment|/*&n; * This function doesn&squot;t exist, so you&squot;ll get
 r_extern
 r_int
 id|ia64_cmpxchg_called_with_bad_pointer
-c_func
 (paren
 r_void
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * For the HP simulator, this file gets include in boot/bootloader.c.&n; * For SoftSDV, this file gets included in sys_softsdv.c.&n; */
+multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|# include &lt;linux/pci.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &quot;ssc.h&quot;
 DECL|macro|MB
 mdefine_line|#define MB&t;(1024*1024UL)
 DECL|macro|SIMPLE_MEMMAP
@@ -79,31 +80,6 @@ id|aligned
 l_int|8
 )paren
 )paren
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_HP_SIM) || defined(CONFIG_IA64_GENERIC)
-multiline_comment|/* Simulator system calls: */
-DECL|macro|SSC_EXIT
-mdefine_line|#define SSC_EXIT&t;66
-multiline_comment|/*&n; * Simulator system call.&n; */
-r_extern
-r_int
-id|ssc
-(paren
-r_int
-id|arg0
-comma
-r_int
-id|arg1
-comma
-r_int
-id|arg2
-comma
-r_int
-id|arg3
-comma
-r_int
-id|nr
 )paren
 suffix:semicolon
 DECL|macro|SECS_PER_HOUR
@@ -422,8 +398,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_HP_SIM */
-multiline_comment|/*&n; * Very ugly, but we need this in the simulator only.  Once we run on&n; * real hw, this can all go away.&n; */
 r_extern
 r_void
 id|pal_emulator_static
@@ -1352,6 +1326,10 @@ l_int|1
 suffix:semicolon
 id|efi_systab-&gt;runtime
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|__pa
 c_func
 (paren

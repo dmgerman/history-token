@@ -55,10 +55,10 @@ r_int
 id|num_io_spaces
 suffix:semicolon
 macro_line|# ifdef __KERNEL__
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/intrinsics.h&gt;
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; */
 r_static
 r_inline

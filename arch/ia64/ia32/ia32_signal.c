@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
@@ -28,8 +29,8 @@ DECL|macro|__IA32_NR_sigreturn
 mdefine_line|#define __IA32_NR_sigreturn            119
 DECL|macro|__IA32_NR_rt_sigreturn
 mdefine_line|#define __IA32_NR_rt_sigreturn         173
-macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#ifdef ASM_SUPPORTED
+multiline_comment|/*&n; * Don&squot;t let GCC uses f16-f31 so that save_ia32_fpstate_live() and&n; * restore_ia32_fpstate_live() can be sure the live register contain user-level state.&n; */
 r_register
 r_float
 id|f16
@@ -841,7 +842,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* Readin fsr, fcr, fir, fdr and copy onto fpstate */
+multiline_comment|/* Read in fsr, fcr, fir, fdr and copy onto fpstate */
 id|fsr
 op_assign
 id|ia64_getreg

@@ -3,8 +3,8 @@ DECL|macro|_ASM_IA64_PAGE_H
 mdefine_line|#define _ASM_IA64_PAGE_H
 multiline_comment|/*&n; * Pagetable related stuff.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n; * PAGE_SHIFT determines the actual kernel page size.&n; */
 macro_line|#if defined(CONFIG_IA64_PAGE_SIZE_4KB)
 DECL|macro|PAGE_SHIFT

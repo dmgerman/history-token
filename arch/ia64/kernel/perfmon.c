@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -25,7 +26,6 @@ macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#ifdef CONFIG_PERFMON
 multiline_comment|/*&n; * perfmon context state&n; */
 DECL|macro|PFM_CTX_UNLOADED
@@ -1919,6 +1919,7 @@ c_func
 (paren
 id|IA64_PSR_PP
 )paren
+suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
@@ -1940,6 +1941,7 @@ c_func
 (paren
 id|IA64_PSR_PP
 )paren
+suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
@@ -1961,6 +1963,7 @@ c_func
 (paren
 id|IA64_PSR_UP
 )paren
+suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
@@ -1982,6 +1985,7 @@ c_func
 (paren
 id|IA64_PSR_UP
 )paren
+suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren

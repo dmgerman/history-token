@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2002,2003 Intel Corp.&n; *      Jun Naka
 macro_line|#ifndef _ASM_IA64_IA64REGS_H
 DECL|macro|_ASM_IA64_IA64REGS_H
 mdefine_line|#define _ASM_IA64_IA64REGS_H
-multiline_comment|/*&n;** Register Names for getreg() and setreg()&n;*/
+multiline_comment|/*&n; * Register Names for getreg() and setreg().&n; *&n; * The &quot;magic&quot; numbers happen to match the values used by the Intel compiler&squot;s&n; * getreg()/setreg() intrinsics.&n; */
 multiline_comment|/* Special Registers */
 DECL|macro|_IA64_REG_IP
 mdefine_line|#define _IA64_REG_IP&t;&t;1016&t;/* getreg only */
@@ -10,17 +10,17 @@ DECL|macro|_IA64_REG_PSR
 mdefine_line|#define _IA64_REG_PSR&t;&t;1019
 DECL|macro|_IA64_REG_PSR_L
 mdefine_line|#define _IA64_REG_PSR_L&t;&t;1019
-singleline_comment|// General Integer Registers
+multiline_comment|/* General Integer Registers */
 DECL|macro|_IA64_REG_GP
-mdefine_line|#define _IA64_REG_GP&t;1025&t;/* R1 */
+mdefine_line|#define _IA64_REG_GP&t;&t;1025&t;/* R1 */
 DECL|macro|_IA64_REG_R8
-mdefine_line|#define _IA64_REG_R8    1032    /* R8 */
+mdefine_line|#define _IA64_REG_R8&t;&t;1032&t;/* R8 */
 DECL|macro|_IA64_REG_R9
-mdefine_line|#define _IA64_REG_R9    1033    /* R9 */
+mdefine_line|#define _IA64_REG_R9&t;&t;1033&t;/* R9 */
 DECL|macro|_IA64_REG_SP
-mdefine_line|#define _IA64_REG_SP&t;1036&t;/* R12 */
+mdefine_line|#define _IA64_REG_SP&t;&t;1036&t;/* R12 */
 DECL|macro|_IA64_REG_TP
-mdefine_line|#define _IA64_REG_TP&t;1037&t;/* R13 */
+mdefine_line|#define _IA64_REG_TP&t;&t;1037&t;/* R13 */
 multiline_comment|/* Application Registers */
 DECL|macro|_IA64_REG_AR_KR0
 mdefine_line|#define _IA64_REG_AR_KR0&t;3072

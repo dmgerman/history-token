@@ -160,8 +160,6 @@ id|sem
 (brace
 r_int
 id|result
-suffix:semicolon
-id|result
 op_assign
 id|ia64_fetchadd4_acq
 c_func
@@ -267,8 +265,6 @@ id|sem
 )paren
 (brace
 r_int
-id|result
-suffix:semicolon
 id|result
 op_assign
 id|ia64_fetchadd4_rel

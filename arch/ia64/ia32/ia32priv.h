@@ -1190,9 +1190,9 @@ id|task
 )paren
 suffix:semicolon
 DECL|macro|ia32f2ia64f
-mdefine_line|#define ia32f2ia64f(dst,src)&t;&t;&t;&bslash;&n;do { &t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_ldfe(6,src);&t;&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_stf_spill(dst, 6);&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define ia32f2ia64f(dst,src)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_ldfe(6,src);&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_stf_spill(dst, 6);&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|ia64f2ia32f
-mdefine_line|#define ia64f2ia32f(dst,src)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_ldf_fill(6, src);&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_stfe(dst, 6);&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define ia64f2ia32f(dst,src)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_ldf_fill(6, src);&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_stfe(dst, 6);&t;&t;&t;&bslash;&n;} while(0)
 DECL|struct|user_regs_struct32
 r_struct
 id|user_regs_struct32
@@ -1280,6 +1280,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Prototypes for use in elfcore32.h */
+r_extern
 r_int
 id|save_ia32_fpstate
 (paren
@@ -1294,6 +1295,7 @@ op_star
 id|save
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|save_ia32_fpxstate
 (paren

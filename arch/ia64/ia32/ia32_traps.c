@@ -2,8 +2,8 @@ multiline_comment|/*&n; * IA-32 exception handlers&n; *&n; * Copyright (C) 2000 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 r_int
 DECL|function|ia32_intercept
 id|ia32_intercept
