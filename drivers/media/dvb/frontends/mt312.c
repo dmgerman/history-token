@@ -3685,6 +3685,11 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
 r_int
@@ -3784,6 +3789,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dvb_unregister_frontend

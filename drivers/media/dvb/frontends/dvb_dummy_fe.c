@@ -548,8 +548,14 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
+r_return
 id|dvb_register_frontend
 (paren
 id|dvbdummyfe_ioctl
@@ -564,9 +570,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|dvbdummyfe_detach
 r_static
@@ -577,6 +580,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dvb_unregister_frontend
@@ -606,9 +613,6 @@ comma
 id|dvbdummyfe_detach
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|exit_dvbdummyfe
 r_static
@@ -623,8 +627,6 @@ id|dvb_unregister_i2c_device
 (paren
 id|dvbdummyfe_attach
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|variable|init_dvbdummyfe

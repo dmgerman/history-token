@@ -5089,6 +5089,11 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
 r_int
@@ -5389,6 +5394,7 @@ id|tda_state.tda1004x_address
 r_case
 id|TDA10045H_ADDRESS
 suffix:colon
+r_return
 id|dvb_register_frontend
 c_func
 (paren
@@ -5416,13 +5422,13 @@ op_amp
 id|tda10045h_info
 )paren
 suffix:semicolon
-r_break
+r_default
+suffix:colon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
-singleline_comment|// success
-r_return
-l_int|0
-suffix:semicolon
 )brace
 r_static
 DECL|function|tda1004x_detach
@@ -5434,6 +5440,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dprintk

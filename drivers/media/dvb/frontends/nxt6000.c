@@ -3374,6 +3374,11 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
 id|u8
@@ -3621,6 +3626,9 @@ op_amp
 id|nxt6000_info
 )paren
 suffix:semicolon
+id|fe_count
+op_increment
+suffix:semicolon
 )brace
 r_return
 (paren
@@ -3646,6 +3654,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dprintk

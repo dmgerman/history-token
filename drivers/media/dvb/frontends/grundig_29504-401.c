@@ -1900,6 +1900,11 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
 id|u8
@@ -2130,6 +2135,7 @@ r_goto
 id|bailout
 suffix:semicolon
 )brace
+r_return
 id|dvb_register_frontend
 (paren
 id|grundig_29504_401_ioctl
@@ -2141,9 +2147,6 @@ comma
 op_amp
 id|grundig_29504_401_info
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 id|bailout
 suffix:colon
@@ -2171,6 +2174,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dvb_unregister_frontend

@@ -538,6 +538,11 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
 id|dprintk
@@ -548,6 +553,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+r_return
 id|dvb_register_frontend
 c_func
 (paren
@@ -561,9 +567,6 @@ op_amp
 id|dec2000_frontend_info
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|dec2000_frontend_detach
 r_static
@@ -575,6 +578,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dprintk

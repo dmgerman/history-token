@@ -4667,6 +4667,11 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+op_star
+id|data
 )paren
 (brace
 r_int
@@ -4739,6 +4744,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_return
 id|dvb_register_frontend
 (paren
 id|uni0299_ioctl
@@ -4755,9 +4761,6 @@ op_amp
 id|uni0299_info
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|uni0299_detach
 r_static
@@ -4768,6 +4771,10 @@ r_struct
 id|dvb_i2c_bus
 op_star
 id|i2c
+comma
+r_void
+op_star
+id|data
 )paren
 (brace
 id|dprintk
