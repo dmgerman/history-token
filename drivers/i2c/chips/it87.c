@@ -222,10 +222,10 @@ DECL|macro|VID_FROM_REG
 mdefine_line|#define VID_FROM_REG(val) ((val)==0x1f?0:(val)&gt;=0x10?510-(val)*10:&bslash;&n;&t;&t;&t;&t;205-(val)*5)
 DECL|macro|ALARMS_FROM_REG
 mdefine_line|#define ALARMS_FROM_REG(val) (val)
-DECL|function|log2
+DECL|function|DIV_TO_REG
 r_static
 r_int
-id|log2
+id|DIV_TO_REG
 c_func
 (paren
 r_int
@@ -253,8 +253,6 @@ r_return
 id|answer
 suffix:semicolon
 )brace
-DECL|macro|DIV_TO_REG
-mdefine_line|#define DIV_TO_REG(val) log2(val)
 DECL|macro|DIV_FROM_REG
 mdefine_line|#define DIV_FROM_REG(val) (1 &lt;&lt; (val))
 multiline_comment|/* Initial limits. Use the config file to set better limits. */
