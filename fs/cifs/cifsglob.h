@@ -741,6 +741,10 @@ DECL|member|entries_in_buffer
 r_int
 id|entries_in_buffer
 suffix:semicolon
+DECL|member|info_level
+r_int
+id|info_level
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * One of these for each file inode&n; */
