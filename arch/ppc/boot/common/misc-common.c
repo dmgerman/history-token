@@ -266,7 +266,7 @@ id|ISA_io
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 r_extern
 r_int
 r_int
@@ -353,7 +353,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 r_if
 c_cond
 (paren
@@ -408,7 +408,7 @@ c_loop
 l_int|1
 )paren
 (brace
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 r_if
 c_cond
 (paren
@@ -427,7 +427,7 @@ id|com_port
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#endif /* serial console */
 r_if
 c_cond
 (paren
@@ -468,7 +468,7 @@ id|x
 comma
 id|y
 suffix:semicolon
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 id|serial_putc
 c_func
 (paren
@@ -492,7 +492,7 @@ comma
 l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#endif /* serial console */
 id|x
 op_assign
 id|orig_x
@@ -676,7 +676,7 @@ op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
 (brace
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 id|serial_putc
 c_func
 (paren
@@ -700,7 +700,7 @@ comma
 l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SERIAL_CONSOLE */
+macro_line|#endif /* serial console */
 r_if
 c_cond
 (paren
