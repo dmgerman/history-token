@@ -46,7 +46,7 @@ mdefine_line|#define SCREEN_BASE&t;&t;0xdf800000
 DECL|macro|FLUSH_BASE
 mdefine_line|#define FLUSH_BASE&t;&t;0xdf000000
 DECL|macro|VIDC_BASE
-mdefine_line|#define VIDC_BASE&t;&t;0xe0400000
+mdefine_line|#define VIDC_BASE&t;&t;(void __iomem *)0xe0400000
 DECL|macro|IOMD_BASE
 mdefine_line|#define IOMD_BASE&t;&t;0xe0200000
 DECL|macro|IOC_BASE
