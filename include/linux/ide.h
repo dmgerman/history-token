@@ -1730,6 +1730,11 @@ id|u8
 id|init_speed
 suffix:semicolon
 multiline_comment|/* transfer rate set at boot */
+DECL|member|pio_speed
+id|u8
+id|pio_speed
+suffix:semicolon
+multiline_comment|/* unused by core, used by some drivers for fallback from DMA */
 DECL|member|current_speed
 id|u8
 id|current_speed
