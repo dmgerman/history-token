@@ -1149,6 +1149,9 @@ id|discovery_t
 op_star
 id|discovery
 comma
+id|DISCOVERY_MODE
+id|mode
+comma
 r_void
 op_star
 id|priv

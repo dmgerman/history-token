@@ -28,6 +28,8 @@ c_func
 id|discovery_t
 op_star
 comma
+id|DISCOVERY_MODE
+comma
 r_void
 op_star
 )paren
