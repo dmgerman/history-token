@@ -4478,7 +4478,7 @@ suffix:semicolon
 )brace
 r_case
 id|AIPTEK_TOOL_BUTTON_PEN_MODE
-suffix:semicolon
+suffix:colon
 (brace
 id|s
 op_assign
