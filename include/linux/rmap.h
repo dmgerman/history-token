@@ -77,6 +77,46 @@ id|page
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called from kernel/fork.c to manage anonymous memory&n; */
+r_void
+id|init_rmap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|exec_rmap
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
+r_int
+id|dup_rmap
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+comma
+r_struct
+id|mm_struct
+op_star
+id|oldmm
+)paren
+suffix:semicolon
+r_void
+id|exit_rmap
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Called from mm/vmscan.c to handle paging out&n; */
 r_int
 id|fastcall
@@ -99,6 +139,14 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#else&t;/* !CONFIG_MMU */
+DECL|macro|init_rmap
+mdefine_line|#define init_rmap()&t;&t;do {} while (0)
+DECL|macro|exec_rmap
+mdefine_line|#define exec_rmap(mm)&t;&t;(0)
+DECL|macro|dup_rmap
+mdefine_line|#define dup_rmap(mm, oldmm)&t;(0)
+DECL|macro|exit_rmap
+mdefine_line|#define exit_rmap(mm)&t;&t;do {} while (0)
 DECL|macro|page_referenced
 mdefine_line|#define page_referenced(page)&t;TestClearPageReferenced(page)
 DECL|macro|try_to_unmap

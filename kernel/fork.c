@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1547,16 +1548,46 @@ id|mm
 )paren
 )paren
 suffix:semicolon
-r_return
+id|mm
+op_assign
 id|mm_init
 c_func
 (paren
 id|mm
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mm
+op_logical_and
+id|exec_rmap
+c_func
+(paren
+id|mm
+)paren
+)paren
+(brace
+id|mm_free_pgd
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|free_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|mm
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 r_return
-l_int|NULL
+id|mm
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called when the last reference to the mm&n; * is dropped: either by a lazy thread or by&n; * mmput. Free the page directory and the mm.&n; */
@@ -1650,6 +1681,12 @@ id|mm
 )paren
 suffix:semicolon
 id|exit_mmap
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|exit_rmap
 c_func
 (paren
 id|mm
@@ -1971,6 +2008,34 @@ id|mm
 r_goto
 id|fail_nomem
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dup_rmap
+c_func
+(paren
+id|mm
+comma
+id|oldmm
+)paren
+)paren
+(brace
+id|mm_free_pgd
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|free_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+r_goto
+id|fail_nomem
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5025,6 +5090,11 @@ comma
 l_int|NULL
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|init_rmap
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
