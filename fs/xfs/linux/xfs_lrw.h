@@ -93,10 +93,6 @@ comma
 id|xfs_fsize_t
 comma
 id|xfs_fsize_t
-comma
-r_struct
-id|pm
-op_star
 )paren
 suffix:semicolon
 r_extern

@@ -26,10 +26,6 @@ op_star
 comma
 r_int
 op_star
-comma
-r_struct
-id|pm
-op_star
 )paren
 suffix:semicolon
 id|STATIC
@@ -51,10 +47,6 @@ r_int
 op_star
 comma
 r_int
-comma
-r_struct
-id|pm
-op_star
 )paren
 suffix:semicolon
 id|STATIC
@@ -895,11 +887,6 @@ id|isize
 comma
 id|xfs_fsize_t
 id|end_size
-comma
-r_struct
-id|pm
-op_star
-id|pmp
 )paren
 (brace
 id|xfs_fileoff_t
@@ -1167,13 +1154,8 @@ comma
 multiline_comment|/* current inode size */
 id|xfs_fsize_t
 id|end_size
-comma
-multiline_comment|/* terminal inode size */
-r_struct
-id|pm
-op_star
-id|pmp
 )paren
+multiline_comment|/* terminal inode size */
 (brace
 r_struct
 id|inode
@@ -1271,8 +1253,6 @@ comma
 id|isize
 comma
 id|end_size
-comma
-id|pmp
 )paren
 suffix:semicolon
 r_if
@@ -2300,8 +2280,6 @@ op_star
 id|offset
 op_plus
 id|size
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3047,8 +3025,6 @@ comma
 id|pbmapp
 comma
 id|npbmaps
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|xfs_iunlock_map_shared
@@ -3163,8 +3139,6 @@ comma
 id|npbmaps
 comma
 id|flags
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* xfs_iomap_write unlocks/locks/unlocks */
@@ -4745,11 +4719,6 @@ comma
 r_int
 op_star
 id|npbmaps
-comma
-r_struct
-id|pm
-op_star
-id|pmp
 )paren
 (brace
 id|xfs_fileoff_t
@@ -4970,11 +4939,6 @@ id|npbmaps
 comma
 r_int
 id|ioflag
-comma
-r_struct
-id|pm
-op_star
-id|pmp
 )paren
 (brace
 r_int
@@ -5028,8 +4992,6 @@ comma
 id|pbmapp
 comma
 id|npbmaps
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

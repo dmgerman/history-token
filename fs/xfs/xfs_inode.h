@@ -164,9 +164,6 @@ suffix:semicolon
 r_struct
 id|xfs_dquot
 suffix:semicolon
-r_struct
-id|pm
-suffix:semicolon
 multiline_comment|/*&n; * This structure is used to communicate which extents of a file&n; * were holes when a write started from xfs_write_file() to&n; * xfs_strat_read().  This is necessary so that we can know which&n; * blocks need to be zeroed when they are read in in xfs_strat_read()&n; * if they weren&bslash;&squot;t allocated when the buffer given to xfs_strat_read()&n; * was mapped.&n; *&n; * We keep a list of these attached to the inode.  The list is&n; * protected by the inode lock and the fact that the io lock is&n; * held exclusively by writers.&n; */
 DECL|struct|xfs_gap
 r_typedef

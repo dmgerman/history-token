@@ -5797,8 +5797,6 @@ comma
 id|isize
 comma
 id|new_size
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_return
