@@ -1789,6 +1789,7 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -1800,6 +1801,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -1861,6 +1863,7 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -1872,6 +1875,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren

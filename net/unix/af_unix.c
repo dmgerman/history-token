@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 DECL|variable|sysctl_unix_max_dgram_qlen
 r_int
 id|sysctl_unix_max_dgram_qlen
@@ -3191,6 +3192,24 @@ id|other
 r_goto
 id|out_unlock
 suffix:semicolon
+id|err
+op_assign
+id|security_unix_may_send
+c_func
+(paren
+id|sk-&gt;socket
+comma
+id|other-&gt;socket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out_unlock
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -3836,6 +3855,34 @@ id|other
 suffix:semicolon
 r_goto
 id|restart
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|security_unix_stream_connect
+c_func
+(paren
+id|sock
+comma
+id|other-&gt;socket
+comma
+id|newsk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|unix_state_wunlock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_goto
+id|out_unlock
 suffix:semicolon
 )brace
 multiline_comment|/* The way is open! Fastly set all the necessary fields... */
@@ -5216,6 +5263,24 @@ c_cond
 id|other-&gt;shutdown
 op_amp
 id|RCV_SHUTDOWN
+)paren
+r_goto
+id|out_unlock
+suffix:semicolon
+id|err
+op_assign
+id|security_unix_may_send
+c_func
+(paren
+id|sk-&gt;socket
+comma
+id|other-&gt;socket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|out_unlock

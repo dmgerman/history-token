@@ -2076,6 +2076,20 @@ op_amp
 id|sdev-&gt;same_target_siblings
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|sdev-&gt;cmd_list
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|sdev-&gt;list_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Some low level driver could use device-&gt;type&n;&t;&t; */
 id|sdev-&gt;type
 op_assign

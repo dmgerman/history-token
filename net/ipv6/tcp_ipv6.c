@@ -7135,13 +7135,6 @@ id|tcp_opt
 op_star
 id|tp
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
-r_struct
-id|sk_filter
-op_star
-id|filter
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|sk_buff
 op_star
@@ -7170,28 +7163,22 @@ comma
 id|skb
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
-id|filter
-op_assign
-id|sk-&gt;filter
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|filter
-op_logical_and
 id|sk_filter
 c_func
 (paren
+id|sk
+comma
 id|skb
 comma
-id|filter
+l_int|0
 )paren
 )paren
 r_goto
 id|discard
 suffix:semicolon
-macro_line|#endif /* CONFIG_FILTER */
 multiline_comment|/*&n;&t; *&t;socket locking is here for SMP purposes as backlog rcv&n;&t; *&t;is currently called with bh processing disabled.&n;&t; */
 multiline_comment|/* Do Stevens&squot; IPV6_PKTOPTIONS.&n;&n;&t;   Yes, guys, it is the only place in our code, where we&n;&t;   may make it not affecting IPv4.&n;&t;   The rest of code is protocol independent,&n;&t;   and I do not like idea to uglify IPv4.&n;&n;&t;   Actually, all the idea behind IPV6_PKTOPTIONS&n;&t;   looks not very well thought. For now we latch&n;&t;   options, received in the last packet, enqueued&n;&t;   by tcp. Feel free to propose better solution.&n;&t;                                       --ANK (980728)&n;&t; */
 r_if
@@ -7824,6 +7811,22 @@ r_goto
 id|do_time_wait
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sk_filter
+c_func
+(paren
+id|sk
+comma
+id|skb
+comma
+l_int|0
+)paren
+)paren
+r_goto
+id|discard_and_relse
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 l_int|NULL
@@ -7945,6 +7948,17 @@ id|skb
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|discard_and_relse
+suffix:colon
+id|sock_put
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_goto
+id|discard_it
 suffix:semicolon
 id|do_time_wait
 suffix:colon

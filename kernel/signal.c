@@ -3109,8 +3109,9 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-r_int
+multiline_comment|/*&n; * Must be called with the tasklist_lock held for reading!&n; */
 DECL|function|group_send_sig_info
+r_int
 id|group_send_sig_info
 c_func
 (paren
@@ -3719,6 +3720,9 @@ op_star
 id|p
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 multiline_comment|/* XXX should nix these interfaces and update the kernel */
 r_if
 c_cond
@@ -3731,8 +3735,16 @@ comma
 id|SIG_KERNEL_BROADCAST_MASK
 )paren
 )paren
-multiline_comment|/* XXX do callers really always hold the tasklist_lock?? */
-r_return
+(brace
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|group_send_sig_info
 c_func
 (paren
@@ -3743,11 +3755,16 @@ comma
 id|p
 )paren
 suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
-r_int
-id|error
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3755,7 +3772,7 @@ op_amp
 id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-id|error
+id|ret
 op_assign
 id|specific_send_sig_info
 c_func
@@ -3774,10 +3791,10 @@ op_amp
 id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-r_return
-id|error
-suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 r_int
 DECL|function|send_sig
