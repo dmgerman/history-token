@@ -3566,6 +3566,9 @@ id|msdos_sb_info
 op_star
 id|sbi
 suffix:semicolon
+id|u16
+id|logical_sector_size
+suffix:semicolon
 id|u32
 id|total_sectors
 comma
@@ -3576,8 +3579,6 @@ comma
 id|rootdir_sectors
 suffix:semicolon
 r_int
-id|logical_sector_size
-comma
 id|debug
 comma
 id|cp
@@ -3917,8 +3918,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
@@ -3965,7 +3965,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: bogus logical sector size %d&bslash;n&quot;
+l_string|&quot;FAT: bogus logical sector size %u&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -4011,7 +4011,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: bogus sectors per cluster %d&bslash;n&quot;
+l_string|&quot;FAT: bogus sectors per cluster %u&bslash;n&quot;
 comma
 id|sbi-&gt;sec_per_clus
 )paren
@@ -4039,7 +4039,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;FAT: logical sector size too small for device&quot;
-l_string|&quot; (logical sector size = %d)&bslash;n&quot;
+l_string|&quot; (logical sector size = %u)&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -4085,7 +4085,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: unable to set blocksize %d&bslash;n&quot;
+l_string|&quot;FAT: unable to set blocksize %u&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -4401,8 +4401,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
@@ -4422,11 +4421,20 @@ l_int|1
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: bogus directroy-entries per block&bslash;n&quot;
+l_string|&quot;FAT: bogus directroy-entries per block&quot;
+l_string|&quot; (%u)&bslash;n&quot;
+comma
+id|sbi-&gt;dir_entries
 )paren
 suffix:semicolon
 id|brelse
@@ -4466,8 +4474,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
