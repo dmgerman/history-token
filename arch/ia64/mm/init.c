@@ -203,7 +203,12 @@ id|PAGE_SIZE
 suffix:semicolon
 id|vma-&gt;vm_page_prot
 op_assign
-id|PAGE_COPY
+id|protection_map
+(braket
+id|VM_READ
+op_or
+id|VM_WRITE
+)braket
 suffix:semicolon
 id|vma-&gt;vm_flags
 op_assign
