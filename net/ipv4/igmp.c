@@ -27,7 +27,6 @@ macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#endif
 DECL|macro|IP_MAX_MEMBERSHIPS
 mdefine_line|#define IP_MAX_MEMBERSHIPS 20
-macro_line|#ifdef CONFIG_IP_MULTICAST
 multiline_comment|/* Parameter names and values are taken from igmp-v2-06 draft */
 DECL|macro|IGMP_V1_Router_Present_Timeout
 mdefine_line|#define IGMP_V1_Router_Present_Timeout&t;&t;(400*HZ)
@@ -46,7 +45,7 @@ DECL|macro|IGMP_V1_SEEN
 mdefine_line|#define IGMP_V1_SEEN(in_dev) ((in_dev)-&gt;mr_v1_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (in_dev)-&gt;mr_v1_seen))
 DECL|macro|IGMP_V2_SEEN
 mdefine_line|#define IGMP_V2_SEEN(in_dev) ((in_dev)-&gt;mr_v2_seen &amp;&amp; &bslash;&n;&t;&t;time_before(jiffies, (in_dev)-&gt;mr_v2_seen))
-macro_line|#endif
+macro_line|#ifdef CONFIG_MULTICAST
 r_static
 r_void
 id|igmpv3_add_delrec
@@ -63,6 +62,7 @@ op_star
 id|im
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|igmpv3_del_delrec
@@ -4120,6 +4120,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IP_MULTICAST
 multiline_comment|/*&n; * deleted ip_mc_list manipulation&n; */
 DECL|function|igmpv3_add_delrec
 r_static
@@ -4294,6 +4295,7 @@ id|in_dev-&gt;mc_lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|igmpv3_del_delrec
 r_static
 r_void
@@ -4526,16 +4528,16 @@ op_star
 id|im
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_MULTICAST
-r_int
-id|reporter
-suffix:semicolon
 r_struct
 id|in_device
 op_star
 id|in_dev
 op_assign
 id|im-&gt;interface
+suffix:semicolon
+macro_line|#ifdef CONFIG_IP_MULTICAST
+r_int
+id|reporter
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -5255,6 +5257,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_MULTICAST
 id|in_dev-&gt;mc_lock
 op_assign
 id|RW_LOCK_UNLOCKED
@@ -5315,6 +5318,7 @@ id|in_dev-&gt;mr_qrv
 op_assign
 id|IGMP_Unsolicited_Report_Count
 suffix:semicolon
+macro_line|#endif
 id|ip_mc_inc_group
 c_func
 (paren
@@ -5767,6 +5771,10 @@ r_return
 id|rv
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_IP_MULTICAST
+DECL|macro|igmp_ifc_event
+mdefine_line|#define igmp_ifc_event(x)&t;do { } while (0)
+macro_line|#endif
 DECL|function|ip_mc_del_src
 r_int
 id|ip_mc_del_src
@@ -6055,12 +6063,14 @@ id|pmc
 op_logical_or
 id|changerec
 )paren
+(brace
 id|igmp_ifc_event
 c_func
 (paren
 id|pmc-&gt;interface
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_bh
 c_func
 (paren
