@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial_8250.h&gt;
+macro_line|#include &quot;common.h&quot;
 DECL|variable|h7202ps2_resources
 r_static
 r_struct
@@ -309,23 +310,6 @@ op_amp
 id|serial_device
 comma
 )brace
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|h720x_gettimeoffset
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__init
-id|h720x_init_irq
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* Although we have two interrupt lines for the timers, we only have one&n; * status register which clears all pending timer interrupts on reading. So&n; * we have to handle all timer interrupts in one place.&n; */
 r_static
@@ -639,10 +623,6 @@ c_func
 r_void
 )paren
 (brace
-id|gettimeoffset
-op_assign
-id|h720x_gettimeoffset
-suffix:semicolon
 id|CPU_REG
 (paren
 id|TIMER_VIRT
@@ -693,6 +673,24 @@ id|h7202_timer_irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|h7202_timer
+r_struct
+id|sys_timer
+id|h7202_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|h7202_init_time
+comma
+dot
+id|offset
+op_assign
+id|h720x_gettimeoffset
+comma
+)brace
+suffix:semicolon
 DECL|function|h7202_init_irq
 r_void
 id|__init
