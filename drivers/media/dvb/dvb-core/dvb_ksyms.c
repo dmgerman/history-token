@@ -9,6 +9,7 @@ macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
 macro_line|#include &quot;dvb_filter.h&quot;
+macro_line|#include &quot;dvb_ca_en50221.h&quot;
 DECL|variable|dvb_dmxdev_init
 id|EXPORT_SYMBOL
 c_func
@@ -231,6 +232,41 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dvb_filter_get_ac3info
+)paren
+suffix:semicolon
+DECL|variable|dvb_ca_en50221_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_ca_en50221_init
+)paren
+suffix:semicolon
+DECL|variable|dvb_ca_en50221_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_ca_en50221_release
+)paren
+suffix:semicolon
+DECL|variable|dvb_ca_en50221_frda_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_ca_en50221_frda_irq
+)paren
+suffix:semicolon
+DECL|variable|dvb_ca_en50221_camchange_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_ca_en50221_camchange_irq
+)paren
+suffix:semicolon
+DECL|variable|dvb_ca_en50221_camready_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_ca_en50221_camready_irq
 )paren
 suffix:semicolon
 eof
