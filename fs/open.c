@@ -231,7 +231,8 @@ c_cond
 (paren
 id|st.f_files
 op_ne
-l_int|0xffffffffffffffffULL
+op_minus
+l_int|1
 op_logical_and
 (paren
 id|st.f_files
@@ -248,7 +249,8 @@ c_cond
 (paren
 id|st.f_ffree
 op_ne
-l_int|0xffffffffffffffffULL
+op_minus
+l_int|1
 op_logical_and
 (paren
 id|st.f_ffree
