@@ -3141,16 +3141,6 @@ r_int
 )paren
 id|us
 suffix:semicolon
-multiline_comment|/* associate this host with our interface */
-id|scsi_set_device
-c_func
-(paren
-id|us-&gt;host
-comma
-op_amp
-id|intf-&gt;dev
-)paren
-suffix:semicolon
 multiline_comment|/* now add the host */
 id|result
 op_assign
@@ -3159,7 +3149,8 @@ c_func
 (paren
 id|us-&gt;host
 comma
-l_int|NULL
+op_amp
+id|intf-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -3341,6 +3332,22 @@ c_func
 id|us-&gt;host
 )paren
 suffix:semicolon
+multiline_comment|/* prevent new USB transfers and stop the current command */
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+id|usb_stor_stop_transport
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
 multiline_comment|/* lock device access -- no need to unlock, as we&squot;re going away */
 id|down
 c_func
@@ -3351,28 +3358,6 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Complete all pending commands with * cmd-&gt;result = DID_ERROR &lt;&lt; 16.&n;&t; * Since we only queue one command at a time, this is pretty easy. */
-r_if
-c_cond
-(paren
-id|us-&gt;srb
-)paren
-(brace
-id|us-&gt;srb-&gt;result
-op_assign
-id|DID_ERROR
-op_lshift
-l_int|16
-suffix:semicolon
-id|us-&gt;srb
-op_member_access_from_pointer
-id|scsi_done
-c_func
-(paren
-id|us-&gt;srb
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* TODO: somehow, wait for the device to&n;&t; * be &squot;idle&squot; (tasklet completion) */
 multiline_comment|/* remove the pointer to the data structure we were using */
 (paren

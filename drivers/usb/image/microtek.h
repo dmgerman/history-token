@@ -95,14 +95,6 @@ id|Scsi_Host
 op_star
 id|host
 suffix:semicolon
-DECL|member|ctempl
-id|Scsi_Host_Template
-id|ctempl
-suffix:semicolon
-DECL|member|host_number
-r_int
-id|host_number
-suffix:semicolon
 DECL|member|lock
 r_struct
 id|semaphore
