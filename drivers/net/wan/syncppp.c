@@ -5904,13 +5904,8 @@ comma
 dot
 id|data
 op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|1
+id|PKT_CAN_SHARE_SKB
 comma
-multiline_comment|/* must be non-NULL to indicate &squot;new&squot; protocol */
 )brace
 suffix:semicolon
 DECL|variable|__initdata

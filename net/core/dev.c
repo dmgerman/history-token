@@ -183,14 +183,9 @@ c_cond
 (paren
 id|pt-&gt;data
 op_logical_and
-(paren
-r_int
-)paren
-(paren
 id|pt-&gt;data
-)paren
 op_ne
-l_int|1
+id|PKT_CAN_SHARE_SKB
 )paren
 (brace
 id|netdev_fastroute_obstacles
@@ -360,6 +355,10 @@ r_if
 c_cond
 (paren
 id|pt-&gt;data
+op_logical_and
+id|pt-&gt;data
+op_ne
+id|PKT_CAN_SHARE_SKB
 )paren
 id|netdev_fastroute_obstacles
 op_decrement

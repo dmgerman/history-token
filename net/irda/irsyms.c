@@ -839,13 +839,8 @@ multiline_comment|/* Packet type handler irlap_frame.c */
 dot
 id|data
 op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|1
+id|PKT_CAN_SHARE_SKB
 comma
-multiline_comment|/* Understand shared skbs */
 singleline_comment|//.next&t;= NULL,
 )brace
 suffix:semicolon

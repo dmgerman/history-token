@@ -65,11 +65,7 @@ comma
 dot
 id|data
 op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|1
+id|PKT_CAN_SHARE_SKB
 comma
 )brace
 suffix:semicolon
