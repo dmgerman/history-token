@@ -5164,6 +5164,17 @@ l_string|&quot;__vermagic&quot;
 )paren
 op_eq
 l_int|0
+op_logical_and
+(paren
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_flags
+op_amp
+id|SHF_ALLOC
+)paren
 )paren
 (brace
 multiline_comment|/* Version magic. */
@@ -5178,6 +5189,20 @@ suffix:semicolon
 id|vmagindex
 op_assign
 id|i
+suffix:semicolon
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_flags
+op_and_assign
+op_complement
+(paren
+r_int
+r_int
+)paren
+id|SHF_ALLOC
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_KALLSYMS
@@ -5280,7 +5305,7 @@ id|modindex
 dot
 id|sh_addr
 suffix:semicolon
-multiline_comment|/* This is allowed: modprobe --force will strip it. */
+multiline_comment|/* This is allowed: modprobe --force will invalidate it. */
 r_if
 c_cond
 (paren
