@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
@@ -18,13 +17,7 @@ macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;atmsar.h&quot;
 multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
-macro_line|#ifdef DEBUG
-DECL|macro|PDEBUG
-mdefine_line|#define PDEBUG(arg...)  printk(KERN_DEBUG __FILE__ &quot;: &quot; arg)
-macro_line|#else
-DECL|macro|PDEBUG
-mdefine_line|#define PDEBUG(arg...)
-macro_line|#endif
+macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef DEBUG_PACKET
 r_static
 r_int
@@ -1063,17 +1056,17 @@ id|rcv-&gt;instance
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_complete_receive: bad urb!&bslash;n&quot;
+l_string|&quot;udsl_complete_receive: bad urb!&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_complete_receive entered (urb 0x%p, status %d)&bslash;n&quot;
+l_string|&quot;udsl_complete_receive entered (urb 0x%p, status %d)&quot;
 comma
 id|urb
 comma
@@ -1181,9 +1174,9 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_receive entered&bslash;n&quot;
+l_string|&quot;udsl_process_receive entered&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1235,9 +1228,9 @@ id|urb
 op_assign
 id|rcv-&gt;urb
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_receive: got packet %p with length %d and status %d&bslash;n&quot;
+l_string|&quot;udsl_process_receive: got packet %p with length %d and status %d&quot;
 comma
 id|urb
 comma
@@ -1255,9 +1248,9 @@ id|urb-&gt;status
 r_case
 l_int|0
 suffix:colon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_receive: processing urb with rcv %p, urb %p, skb %p&bslash;n&quot;
+l_string|&quot;udsl_process_receive: processing urb with rcv %p, urb %p, skb %p&quot;
 comma
 id|rcv
 comma
@@ -1289,9 +1282,9 @@ id|data_start
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;skb-&gt;len = %d&bslash;n&quot;
+l_string|&quot;skb-&gt;len = %d&quot;
 comma
 id|skb-&gt;len
 )paren
@@ -1323,9 +1316,9 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;(after cell processing)skb-&gt;len = %d&bslash;n&quot;
+l_string|&quot;(after cell processing)skb-&gt;len = %d&quot;
 comma
 r_new
 op_member_access_from_pointer
@@ -1361,9 +1354,9 @@ c_cond
 r_new
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;(after aal5 decap) skb-&gt;len = %d&bslash;n&quot;
+l_string|&quot;(after aal5 decap) skb-&gt;len = %d&quot;
 comma
 r_new
 op_member_access_from_pointer
@@ -1408,9 +1401,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;dropping incoming packet : rx_inuse = %d, vcc-&gt;sk-&gt;rcvbuf = %d, skb-&gt;true_size = %d&bslash;n&quot;
+l_string|&quot;dropping incoming packet : rx_inuse = %d, vcc-&gt;sk-&gt;rcvbuf = %d, skb-&gt;true_size = %d&quot;
 comma
 id|atomic_read
 (paren
@@ -1434,9 +1427,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5 returned NULL!&bslash;n&quot;
+l_string|&quot;atmsar_decode_aal5 returned NULL!&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -1521,9 +1514,9 @@ id|GFP_ATOMIC
 )paren
 r_break
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_receive: submission failed (%d)&bslash;n&quot;
+l_string|&quot;udsl_process_receive: submission failed (%d)&quot;
 comma
 id|err
 )paren
@@ -1532,9 +1525,9 @@ multiline_comment|/* fall through */
 r_default
 suffix:colon
 multiline_comment|/* error or urb unlinked */
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_receive: adding to spare_receivers&bslash;n&quot;
+l_string|&quot;udsl_process_receive: adding to spare_receivers&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1584,9 +1577,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_receive successful&bslash;n&quot;
+l_string|&quot;udsl_process_receive successful&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1677,9 +1670,9 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_fire_receivers: firing urb %p&bslash;n&quot;
+l_string|&quot;udsl_fire_receivers: firing urb %p&quot;
 comma
 id|rcv-&gt;urb
 )paren
@@ -1726,9 +1719,9 @@ OL
 l_int|0
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_fire_receivers: submit failed!&bslash;n&quot;
+l_string|&quot;udsl_fire_receivers: submit failed!&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1816,17 +1809,17 @@ id|snd-&gt;instance
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_complete_send: bad urb!&bslash;n&quot;
+l_string|&quot;udsl_complete_send: bad urb!&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_complete_send entered (urb 0x%p, status %d)&bslash;n&quot;
+l_string|&quot;udsl_complete_send entered (urb 0x%p, status %d)&quot;
 comma
 id|urb
 comma
@@ -1932,9 +1925,9 @@ r_char
 op_star
 id|target
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_process_send entered&bslash;n&quot;
+l_string|&quot;udsl_process_send entered&quot;
 )paren
 suffix:semicolon
 id|made_progress
@@ -1987,9 +1980,9 @@ op_amp
 id|buf-&gt;list
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;sending filled buffer (0x%p)&bslash;n&quot;
+l_string|&quot;sending filled buffer (0x%p)&quot;
 comma
 id|buf
 )paren
@@ -2010,9 +2003,9 @@ id|instance-&gt;current_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;sending current buffer (0x%p)&bslash;n&quot;
+l_string|&quot;sending current buffer (0x%p)&quot;
 comma
 id|buf
 )paren
@@ -2080,9 +2073,9 @@ comma
 id|snd
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;submitting urb 0x%p, contains %d cells&bslash;n&quot;
+l_string|&quot;submitting urb 0x%p, contains %d cells&quot;
 comma
 id|snd-&gt;urb
 comma
@@ -2109,9 +2102,9 @@ OL
 l_int|0
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;submission failed (%d)!&bslash;n&quot;
+l_string|&quot;submission failed (%d)!&quot;
 comma
 id|err
 )paren
@@ -2189,9 +2182,9 @@ id|instance-&gt;sndqueue
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;done - no more skbs&bslash;n&quot;
+l_string|&quot;done - no more skbs&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2242,9 +2235,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;done - no more buffers&bslash;n&quot;
+l_string|&quot;done - no more buffers&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2307,9 +2300,9 @@ id|target
 op_assign
 id|buf-&gt;free_start
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;writing %u cells from skb 0x%p to buffer 0x%p&bslash;n&quot;
+l_string|&quot;writing %u cells from skb 0x%p to buffer 0x%p&quot;
 comma
 id|cells_to_write
 comma
@@ -2369,15 +2362,15 @@ id|instance-&gt;current_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;queued filled buffer&bslash;n&quot;
+l_string|&quot;queued filled buffer&quot;
 )paren
 suffix:semicolon
 )brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;buffer contains %d cells, %d left&bslash;n&quot;
+l_string|&quot;buffer contains %d cells, %d left&quot;
 comma
 id|UDSL_SND_BUFFER_SIZE
 op_minus
@@ -2410,9 +2403,9 @@ id|skb
 op_member_access_from_pointer
 id|atm_data.vcc
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;discarding empty skb&bslash;n&quot;
+l_string|&quot;discarding empty skb&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2481,9 +2474,9 @@ comma
 op_star
 id|n
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_cancel_send entered&bslash;n&quot;
+l_string|&quot;udsl_cancel_send entered&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2536,9 +2529,9 @@ op_eq
 id|vcc
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;popping skb 0x%p&bslash;n&quot;
+l_string|&quot;popping skb 0x%p&quot;
 comma
 id|skb
 )paren
@@ -2605,9 +2598,9 @@ id|vcc
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;popping current skb (0x%p)&bslash;n&quot;
+l_string|&quot;popping current skb (0x%p)&quot;
 comma
 id|skb
 )paren
@@ -2641,9 +2634,9 @@ op_amp
 id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_cancel_send done&bslash;n&quot;
+l_string|&quot;udsl_cancel_send done&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2670,9 +2663,9 @@ id|instance
 op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_send called (skb 0x%p, len %u)&bslash;n&quot;
+l_string|&quot;udsl_atm_send called (skb 0x%p, len %u)&quot;
 comma
 id|skb
 comma
@@ -2686,9 +2679,9 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;NULL instance!&bslash;n&quot;
+l_string|&quot;NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2714,9 +2707,9 @@ op_ne
 id|ATM_AAL5
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;unsupported ATM type %d!&bslash;n&quot;
+l_string|&quot;unsupported ATM type %d!&quot;
 comma
 id|vcc-&gt;qos.aal
 )paren
@@ -2734,9 +2727,9 @@ OG
 id|ATM_MAX_AAL5_PDU
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;packet too long (%d vs %d)!&bslash;n&quot;
+l_string|&quot;packet too long (%d vs %d)!&quot;
 comma
 id|skb-&gt;len
 comma
@@ -2807,24 +2800,24 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_dev_close: NULL instance!&bslash;n&quot;
+l_string|&quot;udsl_atm_dev_close: NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_dev_close: queue has %u elements&bslash;n&quot;
+l_string|&quot;udsl_atm_dev_close: queue has %u elements&quot;
 comma
 id|instance-&gt;sndqueue.qlen
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_dev_close: killing tasklet&bslash;n&quot;
+l_string|&quot;udsl_atm_dev_close: killing tasklet&quot;
 )paren
 suffix:semicolon
 id|tasklet_kill
@@ -2833,9 +2826,19 @@ op_amp
 id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_dev_close: freeing instance&bslash;n&quot;
+l_string|&quot;udsl_atm_dev_close: freeing USB device&quot;
+)paren
+suffix:semicolon
+id|usb_put_dev
+(paren
+id|instance-&gt;usb_dev
+)paren
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;udsl_atm_dev_close: freeing instance&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2884,9 +2887,9 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;NULL instance!&bslash;n&quot;
+l_string|&quot;NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3017,9 +3020,9 @@ id|instance
 op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_open called&bslash;n&quot;
+l_string|&quot;udsl_atm_open called&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3029,9 +3032,9 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;NULL instance!&bslash;n&quot;
+l_string|&quot;NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3149,9 +3152,9 @@ id|udsl_fire_receivers
 id|instance
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_open successfull&bslash;n&quot;
+l_string|&quot;udsl_atm_open successful&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3176,9 +3179,9 @@ id|instance
 op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_close called&bslash;n&quot;
+l_string|&quot;udsl_atm_close called&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3188,9 +3191,9 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;NULL instance!&bslash;n&quot;
+l_string|&quot;NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3246,9 +3249,9 @@ id|vcc-&gt;flags
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_atm_close successfull&bslash;n&quot;
+l_string|&quot;udsl_atm_close successful&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3338,9 +3341,9 @@ id|usb_get_intfdata
 id|intf
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_ioctl entered&bslash;n&quot;
+l_string|&quot;udsl_usb_ioctl entered&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3350,9 +3353,9 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;NULL instance!&bslash;n&quot;
+l_string|&quot;NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3488,9 +3491,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;Trying device with Vendor=0x%x, Product=0x%x, ifnum %d&bslash;n&quot;
+l_string|&quot;Trying device with Vendor=0x%x, Product=0x%x, ifnum %d&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
@@ -3530,9 +3533,9 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;Device Accepted&bslash;n&quot;
+l_string|&quot;Device Accepted&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* instance init */
@@ -3556,9 +3559,9 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;No memory for Instance data!&bslash;n&quot;
+l_string|&quot;No memory for Instance data!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3716,9 +3719,9 @@ id|ATM_CELL_SIZE
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;No memory for skb %d!&bslash;n&quot;
+l_string|&quot;No memory for skb %d!&quot;
 comma
 id|i
 )paren
@@ -3743,9 +3746,9 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;No memory for receive urb %d!&bslash;n&quot;
+l_string|&quot;No memory for receive urb %d!&quot;
 comma
 id|i
 )paren
@@ -3767,9 +3770,9 @@ op_amp
 id|instance-&gt;spare_receivers
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;skb-&gt;truesize = %d (asked for %d)&bslash;n&quot;
+l_string|&quot;skb-&gt;truesize = %d (asked for %d)&quot;
 comma
 id|rcv-&gt;skb-&gt;truesize
 comma
@@ -3824,9 +3827,9 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;No memory for send urb %d!&bslash;n&quot;
+l_string|&quot;No memory for send urb %d!&quot;
 comma
 id|i
 )paren
@@ -3895,9 +3898,9 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;No memory for send buffer %d!&bslash;n&quot;
+l_string|&quot;No memory for send buffer %d!&quot;
 comma
 id|i
 )paren
@@ -3939,9 +3942,9 @@ l_int|0
 )paren
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;failed to register ATM device!&bslash;n&quot;
+l_string|&quot;failed to register ATM device!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4028,9 +4031,9 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;MAC is %02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
+l_string|&quot;MAC is %02x:%02x:%02x:%02x:%02x:%02x&quot;
 comma
 id|mac
 (braket
@@ -4085,6 +4088,11 @@ id|usb_set_intfdata
 id|intf
 comma
 id|instance
+)paren
+suffix:semicolon
+id|usb_get_dev
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -4235,9 +4243,9 @@ id|result
 comma
 id|i
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;disconnecting&bslash;n&quot;
+l_string|&quot;disconnecting&quot;
 )paren
 suffix:semicolon
 id|usb_set_intfdata
@@ -4254,9 +4262,9 @@ op_logical_neg
 id|instance
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;NULL instance!&bslash;n&quot;
+l_string|&quot;NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4312,9 +4320,9 @@ op_amp
 id|instance-&gt;serialize
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: flushed %u spare receivers&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: flushed %u spare receivers&quot;
 comma
 id|count
 )paren
@@ -4358,9 +4366,9 @@ id|urb
 OL
 l_int|0
 )paren
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on receive urb %d returned %d&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on receive urb %d returned %d&quot;
 comma
 id|i
 comma
@@ -4415,9 +4423,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: found %u completed receivers&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: found %u completed receivers&quot;
 comma
 id|completed
 )paren
@@ -4442,9 +4450,9 @@ c_loop
 l_int|1
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: flushing&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: flushing&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* no need to take the spinlock */
@@ -4466,9 +4474,9 @@ op_amp
 id|instance-&gt;receive_tasklet
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: freeing receivers&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: freeing receivers&quot;
 )paren
 suffix:semicolon
 r_for
@@ -4550,9 +4558,9 @@ id|urb
 OL
 l_int|0
 )paren
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on send urb %d returned %d&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: usb_unlink_urb on send urb %d returned %d&quot;
 comma
 id|i
 comma
@@ -4605,9 +4613,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: found %u spare senders&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: found %u spare senders&quot;
 comma
 id|count
 )paren
@@ -4632,9 +4640,9 @@ c_loop
 l_int|1
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: flushing&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: flushing&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* no need to take the spinlock */
@@ -4660,9 +4668,9 @@ op_amp
 id|instance-&gt;send_tasklet
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: freeing senders&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: freeing senders&quot;
 )paren
 suffix:semicolon
 r_for
@@ -4689,9 +4697,9 @@ dot
 id|urb
 )paren
 suffix:semicolon
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_disconnect: freeing buffers&bslash;n&quot;
+l_string|&quot;udsl_usb_disconnect: freeing buffers&quot;
 )paren
 suffix:semicolon
 r_for
@@ -4741,11 +4749,10 @@ op_star
 id|skb
 suffix:semicolon
 multiline_comment|/* dummy for sizeof */
-id|PDEBUG
+id|dbg
 (paren
 l_string|&quot;udsl_usb_init: driver version &quot;
 id|DRIVER_VERSION
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4792,9 +4799,9 @@ id|udsl_usb_cleanup
 r_void
 )paren
 (brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;udsl_usb_cleanup&bslash;n&quot;
+l_string|&quot;udsl_usb_cleanup&quot;
 )paren
 suffix:semicolon
 id|usb_deregister
@@ -4936,9 +4943,9 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|PDEBUG
+id|dbg
 (paren
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|buffer
 )paren

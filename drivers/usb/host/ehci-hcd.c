@@ -557,6 +557,11 @@ comma
 l_string|&quot;lost IAA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|COUNT
+(paren
+id|ehci-&gt;stats.lost_iaa
+)paren
+suffix:semicolon
 id|writel
 (paren
 id|STS_IAA
@@ -1687,13 +1692,15 @@ id|ehci_dbg
 (paren
 id|ehci
 comma
-l_string|&quot;irq normal %ld err %ld reclaim %ld&bslash;n&quot;
+l_string|&quot;irq normal %ld err %ld reclaim %ld (lost %ld)&bslash;n&quot;
 comma
 id|ehci-&gt;stats.normal
 comma
 id|ehci-&gt;stats.error
 comma
 id|ehci-&gt;stats.reclaim
+comma
+id|ehci-&gt;stats.lost_iaa
 )paren
 suffix:semicolon
 id|ehci_dbg

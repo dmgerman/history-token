@@ -4728,7 +4728,7 @@ c_func
 (paren
 id|khubd_pid
 comma
-id|SIGTERM
+id|SIGKILL
 comma
 l_int|1
 )paren
