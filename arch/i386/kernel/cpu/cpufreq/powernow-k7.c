@@ -193,7 +193,7 @@ l_int|90
 comma
 l_int|95
 comma
-l_int|10
+l_int|100
 comma
 l_int|105
 comma
