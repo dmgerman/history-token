@@ -459,11 +459,9 @@ id|p
 op_eq
 l_int|NULL
 )paren
-(brace
 multiline_comment|/* No problem parts */
 r_return
 suffix:semicolon
-)brace
 id|pci_read_config_byte
 c_func
 (paren
@@ -2247,22 +2245,16 @@ op_star
 id|r
 op_assign
 op_amp
-id|dev
-op_member_access_from_pointer
-id|resource
+id|dev-&gt;resource
 (braket
 l_int|1
 )braket
 suffix:semicolon
-id|r
-op_member_access_from_pointer
-id|start
+id|r-&gt;start
 op_assign
 l_int|0
 suffix:semicolon
-id|r
-op_member_access_from_pointer
-id|end
+id|r-&gt;end
 op_assign
 l_int|0xffffff
 suffix:semicolon
@@ -2679,11 +2671,9 @@ id|rev
 op_ne
 l_int|0x04
 )paren
-(brace
 multiline_comment|/* Only C0 requires this */
 r_return
 suffix:semicolon
-)brace
 id|pci_read_config_word
 c_func
 (paren
@@ -3235,7 +3225,6 @@ id|val
 op_amp
 l_int|0x8
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -3245,7 +3234,6 @@ comma
 id|val
 )paren
 suffix:semicolon
-)brace
 r_else
 id|printk
 c_func
@@ -3647,7 +3635,6 @@ comma
 l_int|0
 )paren
 )paren
-(brace
 id|insert_resource
 c_func
 (paren
@@ -3661,7 +3648,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* The next five BARs all seem to be rubbish, so just clean&n;&t; * them out */
 r_for
 c_loop
@@ -4072,8 +4058,7 @@ id|PCI_ANY_ID
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 id|KERN_INFO
@@ -4088,7 +4073,6 @@ id|dev
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|f
 op_member_access_from_pointer
 id|hook
