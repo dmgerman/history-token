@@ -12,15 +12,12 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#if 0
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;asm/ide.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
@@ -33,7 +30,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
-macro_line|#include &lt;asm/smplock.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;

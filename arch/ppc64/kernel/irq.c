@@ -1542,9 +1542,11 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|macro|IDLE_ENOUGH
-mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;&t;(idle_cpu(cpu) &amp;&amp; ((now) - irq_stat[(cpu)].idle_timestamp &gt; ((HZ/100)+1)))
+mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;&t;(idle_cpu(cpu) &amp;&amp; ((now) - irq_stat[(cpu)].idle_timestamp &gt; 1))
 DECL|macro|IRQ_ALLOWED
 mdefine_line|#define IRQ_ALLOWED(cpu,allowed_mask) &bslash;&n;&t;&t;((1 &lt;&lt; cpu) &amp; (allowed_mask))
+DECL|macro|IRQ_BALANCE_INTERVAL
+mdefine_line|#define IRQ_BALANCE_INTERVAL (HZ/50)
 DECL|function|move
 r_static
 r_int
@@ -1712,15 +1714,25 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|entry-&gt;timestamp
-op_ne
+id|time_after
+c_func
+(paren
 id|now
+comma
+id|entry-&gt;timestamp
+op_plus
+id|IRQ_BALANCE_INTERVAL
+)paren
 )paren
 )paren
 (brace
 r_int
 r_int
 id|allowed_mask
+suffix:semicolon
+r_int
+r_int
+id|new_cpu
 suffix:semicolon
 r_int
 r_int
@@ -1763,7 +1775,7 @@ id|entry-&gt;timestamp
 op_assign
 id|now
 suffix:semicolon
-id|entry-&gt;cpu
+id|new_cpu
 op_assign
 id|move
 c_func
@@ -1776,6 +1788,18 @@ id|now
 comma
 id|random_number
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry-&gt;cpu
+op_ne
+id|new_cpu
+)paren
+(brace
+id|entry-&gt;cpu
+op_assign
+id|new_cpu
 suffix:semicolon
 id|irq_desc
 (braket
@@ -1791,9 +1815,10 @@ id|irq
 comma
 l_int|1
 op_lshift
-id|entry-&gt;cpu
+id|new_cpu
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#else
