@@ -216,7 +216,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/**&n; * bond_for_each_slave_from - iterate the slaves list from a starting point&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; * @start:&t;starting point.&n; *&n; * Caller must hold bond-&gt;lock&n; */
 DECL|macro|bond_for_each_slave_from
-mdefine_line|#define bond_for_each_slave_from(bond, pos, cnt, start)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&bslash;&n;&t;     cnt &lt; (bond)-&gt;slave_cnt;&t;&t;&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
+mdefine_line|#define bond_for_each_slave_from(bond, pos, cnt, start)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&t;&bslash;&n;&t;     cnt &lt; (bond)-&gt;slave_cnt;&t;&t;&t;&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
 multiline_comment|/**&n; * bond_for_each_slave_from_to - iterate the slaves list from start point to stop point&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for number max of moves&n; * @start:&t;start point.&n; * @stop:&t;stop point.&n; *&n; * Caller must hold bond-&gt;lock&n; */
 DECL|macro|bond_for_each_slave_from_to
 mdefine_line|#define bond_for_each_slave_from_to(bond, pos, cnt, start, stop)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&t;&t;&bslash;&n;&t;     ((cnt &lt; (bond)-&gt;slave_cnt) &amp;&amp; (pos != (stop)-&gt;next));&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
@@ -224,12 +224,12 @@ multiline_comment|/**&n; * bond_for_each_slave - iterate the slaves list from he
 DECL|macro|bond_for_each_slave
 mdefine_line|#define bond_for_each_slave(bond, pos, cnt)&t;&bslash;&n;&t;&t;bond_for_each_slave_from(bond, pos, cnt, (bond)-&gt;first_slave)
 multiline_comment|/**&n; * Returns NULL if the net_device does not belong to any of the bond&squot;s slaves&n; *&n; * Caller must hold bond lock for read&n; */
+DECL|function|bond_get_slave_by_dev
 r_extern
 r_inline
 r_struct
 id|slave
 op_star
-DECL|function|bond_get_slave_by_dev
 id|bond_get_slave_by_dev
 c_func
 (paren
@@ -280,12 +280,12 @@ r_return
 id|slave
 suffix:semicolon
 )brace
+DECL|function|bond_get_bond_by_slave
 r_extern
 r_inline
 r_struct
 id|bonding
 op_star
-DECL|function|bond_get_bond_by_slave
 id|bond_get_bond_by_slave
 c_func
 (paren

@@ -157,10 +157,10 @@ id|mac_addr
 )braket
 )paren
 suffix:semicolon
+DECL|function|_simple_hash
 r_static
 r_inline
 id|u8
-DECL|function|_simple_hash
 id|_simple_hash
 c_func
 (paren
@@ -208,10 +208,10 @@ id|hash
 suffix:semicolon
 )brace
 multiline_comment|/*********************** tlb specific functions ***************************/
+DECL|function|_lock_tx_hashtbl
 r_static
 r_inline
 r_void
-DECL|function|_lock_tx_hashtbl
 id|_lock_tx_hashtbl
 c_func
 (paren
@@ -237,10 +237,10 @@ id|tx_hashtbl_lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|_unlock_tx_hashtbl
 r_static
 r_inline
 r_void
-DECL|function|_unlock_tx_hashtbl
 id|_unlock_tx_hashtbl
 c_func
 (paren
@@ -267,10 +267,10 @@ id|tx_hashtbl_lock
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold tx_hashtbl lock */
+DECL|function|tlb_init_table_entry
 r_static
 r_inline
 r_void
-DECL|function|tlb_init_table_entry
 id|tlb_init_table_entry
 c_func
 (paren
@@ -315,10 +315,10 @@ op_assign
 id|TLB_NULL_INDEX
 suffix:semicolon
 )brace
+DECL|function|tlb_init_slave
 r_static
 r_inline
 r_void
-DECL|function|tlb_init_slave
 id|tlb_init_slave
 c_func
 (paren
@@ -350,10 +350,9 @@ id|TLB_NULL_INDEX
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
-r_static
-r_inline
-r_void
 DECL|function|tlb_clear_slave
+r_static
+r_void
 id|tlb_clear_slave
 c_func
 (paren
@@ -457,9 +456,9 @@ id|slave
 suffix:semicolon
 )brace
 multiline_comment|/* Must be called before starting the monitor timer */
+DECL|function|tlb_initialize
 r_static
 r_int
-DECL|function|tlb_initialize
 id|tlb_initialize
 c_func
 (paren
@@ -602,9 +601,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Must be called only after all slaves have been released */
+DECL|function|tlb_deinitialize
 r_static
 r_void
-DECL|function|tlb_deinitialize
 id|tlb_deinitialize
 c_func
 (paren
@@ -652,11 +651,11 @@ id|bond
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
+DECL|function|tlb_get_least_loaded_slave
 r_static
 r_struct
 id|slave
 op_star
-DECL|function|tlb_get_least_loaded_slave
 id|tlb_get_least_loaded_slave
 c_func
 (paren
@@ -831,10 +830,10 @@ id|least_loaded
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
+DECL|function|tlb_choose_channel
 r_struct
 id|slave
 op_star
-DECL|function|tlb_choose_channel
 id|tlb_choose_channel
 c_func
 (paren
@@ -1024,10 +1023,10 @@ id|assigned_slave
 suffix:semicolon
 )brace
 multiline_comment|/*********************** rlb specific functions ***************************/
+DECL|function|_lock_rx_hashtbl
 r_static
 r_inline
 r_void
-DECL|function|_lock_rx_hashtbl
 id|_lock_rx_hashtbl
 c_func
 (paren
@@ -1053,10 +1052,10 @@ id|rx_hashtbl_lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|_unlock_rx_hashtbl
 r_static
 r_inline
 r_void
-DECL|function|_unlock_rx_hashtbl
 id|_unlock_rx_hashtbl
 c_func
 (paren
@@ -1083,9 +1082,9 @@ id|rx_hashtbl_lock
 suffix:semicolon
 )brace
 multiline_comment|/* when an ARP REPLY is received from a client update its info&n; * in the rx_hashtbl&n; */
+DECL|function|rlb_update_entry_from_arp
 r_static
 r_void
-DECL|function|rlb_update_entry_from_arp
 id|rlb_update_entry_from_arp
 c_func
 (paren
@@ -1204,9 +1203,9 @@ id|bond
 )paren
 suffix:semicolon
 )brace
+DECL|function|rlb_arp_recv
 r_static
 r_int
-DECL|function|rlb_arp_recv
 id|rlb_arp_recv
 c_func
 (paren
@@ -1354,11 +1353,11 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
+DECL|function|rlb_next_rx_slave
 r_static
 r_struct
 id|slave
 op_star
-DECL|function|rlb_next_rx_slave
 id|rlb_next_rx_slave
 c_func
 (paren
@@ -1481,9 +1480,9 @@ id|rx_slave
 suffix:semicolon
 )brace
 multiline_comment|/* teach the switch the mac of a disabled slave&n; * on the primary for fault tolerance&n; *&n; * Caller must hold bond-&gt;ptrlock for write or bond lock for write&n; */
+DECL|function|rlb_teach_disabled_mac_on_primary
 r_static
 r_void
-DECL|function|rlb_teach_disabled_mac_on_primary
 id|rlb_teach_disabled_mac_on_primary
 c_func
 (paren
@@ -1542,9 +1541,9 @@ id|addr
 suffix:semicolon
 )brace
 multiline_comment|/* slave being removed should not be active at this point&n; *&n; * Caller must hold bond lock for read&n; */
+DECL|function|rlb_clear_slave
 r_static
 r_void
-DECL|function|rlb_clear_slave
 id|rlb_clear_slave
 c_func
 (paren
@@ -1773,9 +1772,9 @@ id|bond-&gt;ptrlock
 )paren
 suffix:semicolon
 )brace
+DECL|function|rlb_update_client
 r_static
 r_void
-DECL|function|rlb_update_client
 id|rlb_update_client
 c_func
 (paren
@@ -1839,9 +1838,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* sends ARP REPLIES that update the clients that need updating */
+DECL|function|rlb_update_rx_clients
 r_static
 r_void
-DECL|function|rlb_update_rx_clients
 id|rlb_update_rx_clients
 c_func
 (paren
@@ -1948,9 +1947,9 @@ id|bond
 suffix:semicolon
 )brace
 multiline_comment|/* The slave was assigned a new mac address - update the clients */
+DECL|function|rlb_req_update_slave_clients
 r_static
 r_void
-DECL|function|rlb_req_update_slave_clients
 id|rlb_req_update_slave_clients
 c_func
 (paren
@@ -2102,9 +2101,9 @@ id|bond
 suffix:semicolon
 )brace
 multiline_comment|/* mark all clients using src_ip to be updated */
+DECL|function|rlb_req_update_subnet_clients
 r_static
 r_void
-DECL|function|rlb_req_update_subnet_clients
 id|rlb_req_update_subnet_clients
 c_func
 (paren
@@ -2262,10 +2261,10 @@ id|bond
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold both bond and ptr locks for read */
+DECL|function|rlb_choose_channel
 r_struct
 id|slave
 op_star
-DECL|function|rlb_choose_channel
 id|rlb_choose_channel
 c_func
 (paren
@@ -2585,11 +2584,11 @@ id|assigned_slave
 suffix:semicolon
 )brace
 multiline_comment|/* chooses (and returns) transmit channel for arp reply&n; * does not choose channel for other arp types since they are&n; * sent on the current_slave&n; */
+DECL|function|rlb_arp_xmit
 r_static
 r_struct
 id|slave
 op_star
-DECL|function|rlb_arp_xmit
 id|rlb_arp_xmit
 c_func
 (paren
@@ -2718,9 +2717,9 @@ id|tx_slave
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
+DECL|function|rlb_rebalance
 r_static
 r_void
-DECL|function|rlb_rebalance
 id|rlb_rebalance
 c_func
 (paren
@@ -2853,10 +2852,9 @@ id|bond
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold rx_hashtbl lock */
-r_static
-r_inline
-r_void
 DECL|function|rlb_init_table_entry
+r_static
+r_void
 id|rlb_init_table_entry
 c_func
 (paren
@@ -2889,9 +2887,9 @@ op_assign
 id|RLB_NULL_INDEX
 suffix:semicolon
 )brace
+DECL|function|rlb_initialize
 r_static
 r_int
-DECL|function|rlb_initialize
 id|rlb_initialize
 c_func
 (paren
@@ -3063,9 +3061,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|rlb_deinitialize
 r_static
 r_void
-DECL|function|rlb_deinitialize
 id|rlb_deinitialize
 c_func
 (paren
@@ -3122,9 +3120,9 @@ id|bond
 suffix:semicolon
 )brace
 multiline_comment|/*********************** tlb/rlb shared functions *********************/
+DECL|function|alb_send_learning_packets
 r_static
 r_void
-DECL|function|alb_send_learning_packets
 id|alb_send_learning_packets
 c_func
 (paren
@@ -3297,9 +3295,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* hw is a boolean parameter that determines whether we should try and&n; * set the hw address of the device as well as the hw address of the&n; * net_device&n; */
+DECL|function|alb_set_slave_mac_addr
 r_static
 r_int
-DECL|function|alb_set_slave_mac_addr
 id|alb_set_slave_mac_addr
 c_func
 (paren
@@ -3407,9 +3405,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for write or ptrlock for write*/
+DECL|function|alb_swap_mac_addr
 r_static
 r_void
-DECL|function|alb_swap_mac_addr
 id|alb_swap_mac_addr
 c_func
 (paren
@@ -3596,9 +3594,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * alb_change_hw_addr_on_detach&n; * @bond: bonding we&squot;re working on&n; * @slave: the slave that was just detached&n; *&n; * We assume that @slave was already detached from the slave list.&n; *&n; * If @slave&squot;s permanent hw address is different both from its current&n; * address and from @bond&squot;s address, then somewhere in the bond there&squot;s&n; * a slave that has @slave&squot;s permanet address as its current address.&n; * We&squot;ll make sure that that slave no longer uses @slave&squot;s permanent address.&n; *&n; * Caller must hold bond lock&n; */
+DECL|function|alb_change_hw_addr_on_detach
 r_static
 r_void
-DECL|function|alb_change_hw_addr_on_detach
 id|alb_change_hw_addr_on_detach
 c_func
 (paren
@@ -3716,9 +3714,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * alb_handle_addr_collision_on_attach&n; * @bond: bonding we&squot;re working on&n; * @slave: the slave that was just attached&n; *&n; * checks uniqueness of slave&squot;s mac address and handles the case the&n; * new slave uses the bonds mac address.&n; *&n; * If the permanent hw address of @slave is @bond&squot;s hw address, we need to&n; * find a different hw address to give @slave, that isn&squot;t in use by any other&n; * slave in the bond. This address must be, of course, one of the premanent&n; * addresses of the other slaves.&n; *&n; * We go over the slave list, and for each slave there we compare its&n; * permanent hw address with the current address of all the other slaves.&n; * If no match was found, then we&squot;ve found a slave with a permanent address&n; * that isn&squot;t used by any other slave in the bond, so we can assign it to&n; * @slave.&n; *&n; * assumption: this function is called before @slave is attached to the&n; * &t;       bond slave list.&n; *&n; * caller must hold the bond lock for write since the mac addresses are compared&n; * and may be swapped.&n; */
+DECL|function|alb_handle_addr_collision_on_attach
 r_static
 r_int
-DECL|function|alb_handle_addr_collision_on_attach
 id|alb_handle_addr_collision_on_attach
 c_func
 (paren
@@ -3963,10 +3961,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * alb_set_mac_address&n; * @bond:&n; * @addr:&n; *&n; * In TLB mode all slaves are configured to the bond&squot;s hw address, but set&n; * their dev_addr field to different addresses (based on their permanent hw&n; * addresses).&n; *&n; * For each slave, this function sets the interface to the new address and then&n; * changes its dev_addr field to its previous value.&n; * &n; * Unwinding assumes bond&squot;s mac address has not yet changed.&n; */
-r_static
-r_inline
-r_int
 DECL|function|alb_set_mac_address
+r_static
+r_int
 id|alb_set_mac_address
 c_func
 (paren
@@ -4161,8 +4158,8 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/************************ exported alb funcions ************************/
-r_int
 DECL|function|bond_alb_initialize
+r_int
 id|bond_alb_initialize
 c_func
 (paren
@@ -4236,8 +4233,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
 DECL|function|bond_alb_deinitialize
+r_void
 id|bond_alb_deinitialize
 c_func
 (paren
@@ -4281,8 +4278,8 @@ id|bond
 suffix:semicolon
 )brace
 )brace
-r_int
 DECL|function|bond_alb_xmit
+r_int
 id|bond_alb_xmit
 c_func
 (paren
@@ -4787,8 +4784,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
 DECL|function|bond_alb_monitor
+r_void
 id|bond_alb_monitor
 c_func
 (paren
@@ -5138,8 +5135,8 @@ id|bond-&gt;lock
 suffix:semicolon
 )brace
 multiline_comment|/* assumption: called before the slave is attched to the bond&n; * and not locked by the bond lock&n; */
-r_int
 DECL|function|bond_alb_init_slave
+r_int
 id|bond_alb_init_slave
 c_func
 (paren
@@ -5243,8 +5240,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Caller must hold bond lock for write */
-r_void
 DECL|function|bond_alb_deinit_slave
+r_void
 id|bond_alb_deinit_slave
 c_func
 (paren
@@ -5307,8 +5304,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Caller must hold bond lock for read */
-r_void
 DECL|function|bond_alb_handle_link_change
+r_void
 id|bond_alb_handle_link_change
 c_func
 (paren
@@ -5402,10 +5399,10 @@ multiline_comment|/* If the updelay module parameter is smaller than the&n;&t;&t
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * bond_alb_assign_current_slave - assign new current_slave&n; * @bond: our bonding struct&n; * @new_slave: new slave to assign&n; *&n; * Set the bond-&gt;current_slave to @new_slave and handle&n; * mac address swapping and promiscuity changes as needed.&n; *&n; * Caller must hold bond ptrlock for write (or bond lock for write)&n; */
+multiline_comment|/**&n; * bond_alb_handle_active_change - assign new current_slave&n; * @bond: our bonding struct&n; * @new_slave: new slave to assign&n; *&n; * Set the bond-&gt;current_slave to @new_slave and handle&n; * mac address swapping and promiscuity changes as needed.&n; *&n; * Caller must hold bond ptrlock for write (or bond lock for write)&n; */
+DECL|function|bond_alb_handle_active_change
 r_void
-DECL|function|bond_alb_assign_current_slave
-id|bond_alb_assign_current_slave
+id|bond_alb_handle_active_change
 c_func
 (paren
 r_struct
@@ -5576,8 +5573,8 @@ id|bond-&gt;device-&gt;dev_addr
 suffix:semicolon
 )brace
 )brace
-r_int
 DECL|function|bond_alb_set_mac_address
+r_int
 id|bond_alb_set_mac_address
 c_func
 (paren

@@ -570,7 +570,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|loadbalance_arp_monitor
+id|bond_loadbalance_arp_mon
 c_func
 (paren
 r_struct
@@ -581,7 +581,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|activebackup_arp_monitor
+id|bond_activebackup_arp_mon
 c_func
 (paren
 r_struct
@@ -640,6 +640,7 @@ suffix:semicolon
 r_static
 r_int
 id|bond_mc_list_copy
+c_func
 (paren
 r_struct
 id|dev_mc_list
@@ -658,7 +659,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-id|dmi_same
+id|bond_is_dmi_same
 c_func
 (paren
 r_struct
@@ -720,7 +721,7 @@ id|mc_list
 suffix:semicolon
 r_static
 r_void
-id|bond_mc_update
+id|bond_mc_swap
 c_func
 (paren
 r_struct
@@ -800,7 +801,7 @@ id|slave
 suffix:semicolon
 r_static
 r_void
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 r_struct
@@ -816,7 +817,7 @@ r_new
 suffix:semicolon
 r_static
 r_void
-id|reselect_active_interface
+id|bond_select_active_slave
 c_func
 (paren
 r_struct
@@ -829,7 +830,7 @@ r_static
 r_struct
 id|slave
 op_star
-id|find_best_interface
+id|bond_find_best_slave
 c_func
 (paren
 r_struct
@@ -838,10 +839,10 @@ op_star
 id|bond
 )paren
 suffix:semicolon
-DECL|function|arp_send_all
+DECL|function|bond_arp_send_all
 r_static
 r_void
-id|arp_send_all
+id|bond_arp_send_all
 c_func
 (paren
 r_struct
@@ -900,11 +901,11 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+DECL|function|bond_mode_name
 r_static
 r_const
 r_char
 op_star
-DECL|function|bond_mode_name
 id|bond_mode_name
 c_func
 (paren
@@ -1008,9 +1009,9 @@ id|IFF_NOARP
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * This function detaches the slave from the list.&n; * WARNING: no check is made to verify if the slave effectively&n; * belongs to &lt;bond&gt;.&n; * Nothing is freed on return, structures are just unchained.&n; * If any slave pointer in bond was pointing to &lt;slave&gt;,&n; * it should be changed by the calling function.&n; *&n; * bond-&gt;lock held for writing by caller.&n; */
+DECL|function|bond_detach_slave
 r_static
 r_void
-DECL|function|bond_detach_slave
 id|bond_detach_slave
 c_func
 (paren
@@ -1092,9 +1093,9 @@ op_decrement
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function attaches the slave to the end of list.&n; *&n; * bond-&gt;lock held for writing by caller.&n; */
+DECL|function|bond_attach_slave
 r_static
 r_void
-DECL|function|bond_attach_slave
 id|bond_attach_slave
 c_func
 (paren
@@ -1328,9 +1329,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * if &lt;dev&gt; supports MII link status reporting, check its link status.&n; *&n; * We either do MII/ETHTOOL ioctls, or check netif_carrier_ok(),&n; * depening upon the setting of the use_carrier parameter.&n; *&n; * Return either BMSR_LSTATUS, meaning that the link is up (or we&n; * can&squot;t tell and just pretend it is), or 0, meaning that the link is&n; * down.&n; *&n; * If reporting is non-zero, instead of faking link up, return -1 if&n; * both ETHTOOL and MII ioctls fail (meaning the device does not&n; * support them).  If use_carrier is set, return whatever it says.&n; * It&squot;d be nice if there was a good way to tell if a driver supports&n; * netif_carrier, but there really isn&squot;t.&n; */
+DECL|function|bond_check_dev_link
 r_static
 r_int
-DECL|function|bond_check_dev_link
 id|bond_check_dev_link
 c_func
 (paren
@@ -1837,7 +1838,7 @@ r_void
 op_star
 )paren
 op_amp
-id|activebackup_arp_monitor
+id|bond_activebackup_arp_mon
 suffix:semicolon
 )brace
 r_else
@@ -1849,7 +1850,7 @@ r_void
 op_star
 )paren
 op_amp
-id|loadbalance_arp_monitor
+id|bond_loadbalance_arp_mon
 suffix:semicolon
 )brace
 id|add_timer
@@ -1962,6 +1963,7 @@ id|bond-&gt;lock
 )paren
 suffix:semicolon
 id|bond_mc_list_destroy
+c_func
 (paren
 id|bond
 )paren
@@ -2420,6 +2422,7 @@ DECL|function|bond_mc_list_copy
 r_static
 r_int
 id|bond_mc_list_copy
+c_func
 (paren
 r_struct
 id|dev_mc_list
@@ -2522,11 +2525,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns 0 if dmi1 and dmi2 are the same, non-0 otherwise&n; */
-DECL|function|dmi_same
+DECL|function|bond_is_dmi_same
 r_static
 r_inline
 r_int
-id|dmi_same
+id|bond_is_dmi_same
 c_func
 (paren
 r_struct
@@ -2750,7 +2753,7 @@ id|idmi-&gt;next
 r_if
 c_cond
 (paren
-id|dmi_same
+id|bond_is_dmi_same
 c_func
 (paren
 id|dmi
@@ -2768,10 +2771,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|set_multicast_list
+DECL|function|bond_set_multicast_list
 r_static
 r_void
-id|set_multicast_list
+id|bond_set_multicast_list
 c_func
 (paren
 r_struct
@@ -2992,11 +2995,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* save master&squot;s multicast list */
 id|bond_mc_list_destroy
+c_func
 (paren
 id|bond
 )paren
 suffix:semicolon
 id|bond_mc_list_copy
+c_func
 (paren
 id|master-&gt;mc_list
 comma
@@ -3014,10 +3019,10 @@ id|bond-&gt;lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Update the mc list and multicast-related flags for the new and &n; * old active slaves (if any) according to the multicast mode, and&n; * promiscuous flags unconditionally.&n; */
-DECL|function|bond_mc_update
+DECL|function|bond_mc_swap
 r_static
 r_void
-id|bond_mc_update
+id|bond_mc_swap
 c_func
 (paren
 r_struct
@@ -4093,7 +4098,7 @@ l_string|&quot;This is the first active slave&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* first slave or no active slave yet, and this link&n;&t;&t;&t;   is OK, so make this interface the active one */
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -4218,7 +4223,7 @@ id|BOND_LINK_DOWN
 )paren
 (brace
 multiline_comment|/* first slave or no active slave yet, and this link&n;&t;&t;&t; * is OK, so make this interface the active one&n;&t;&t;&t; */
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -4453,10 +4458,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * This function changes the active slave to slave &lt;slave_dev&gt;.&n; * It returns -EINVAL in the following cases.&n; *  - &lt;slave_dev&gt; is not found in the list.&n; *  - There is not active slave now.&n; *  - &lt;slave_dev&gt; is already active.&n; *  - The link state of &lt;slave_dev&gt; is not BOND_LINK_UP.&n; *  - &lt;slave_dev&gt; is not running.&n; * In these cases, this fuction does nothing.&n; * In the other cases, currnt_slave pointer is changed and 0 is returned.&n; */
-DECL|function|bond_change_active
+DECL|function|bond_ioctl_change_active
 r_static
 r_int
-id|bond_change_active
+id|bond_ioctl_change_active
 c_func
 (paren
 r_struct
@@ -4599,7 +4604,7 @@ id|newactive-&gt;dev
 )paren
 )paren
 (brace
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -4628,12 +4633,12 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * find_best_interface - select the best available slave to be the active one&n; * @bond: our bonding struct&n; *&n; * Warning: Caller must hold ptrlock for writing.&n; */
-DECL|function|find_best_interface
+DECL|function|bond_find_best_slave
 r_static
 r_struct
 id|slave
 op_star
-id|find_best_interface
+id|bond_find_best_slave
 c_func
 (paren
 r_struct
@@ -4809,10 +4814,10 @@ id|bestslave
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * change_active_interface - change the active slave into the specified one&n; * @bond: our bonding struct&n; * @new: the new slave to make the active one&n; * &n; * Set the new slave to the bond&squot;s settings and unset them on the old&n; * current_slave.&n; * Setting include flags, mc-list, promiscuity, allmulti, etc.&n; *&n; * If @new&squot;s link state is %BOND_LINK_BACK we&squot;ll set it to %BOND_LINK_UP,&n; * because it is apparently the best available slave we have, even though its&n; * updelay hasn&squot;t timed out yet.&n; *&n; * Warning: Caller must hold ptrlock for writing.&n; */
-DECL|function|change_active_interface
+DECL|function|bond_change_active_slave
 r_static
 r_void
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 r_struct
@@ -5034,7 +5039,7 @@ id|bond_mode
 )paren
 )paren
 (brace
-id|bond_mc_update
+id|bond_mc_swap
 c_func
 (paren
 id|bond
@@ -5061,7 +5066,7 @@ id|BOND_MODE_ALB
 )paren
 )paren
 (brace
-id|bond_alb_assign_current_slave
+id|bond_alb_handle_active_change
 c_func
 (paren
 id|bond
@@ -5079,10 +5084,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * reselect_active_interface - select a new active slave, if needed&n; * @bond: our bonding struct&n; *&n; * This functions shoud be called when one of the following occurs:&n; * - The old current_slave has been released or lost its link.&n; * - The primary_slave has got its link back.&n; * - A slave has got its link back and there&squot;s no old current_slave.&n; *&n; * Warning: Caller must hold ptrlock for writing.&n; */
-DECL|function|reselect_active_interface
+DECL|function|bond_select_active_slave
 r_static
 r_void
-id|reselect_active_interface
+id|bond_select_active_slave
 c_func
 (paren
 r_struct
@@ -5098,7 +5103,7 @@ id|best_slave
 suffix:semicolon
 id|best_slave
 op_assign
-id|find_best_interface
+id|bond_find_best_slave
 c_func
 (paren
 id|bond
@@ -5112,7 +5117,7 @@ op_ne
 id|bond-&gt;current_slave
 )paren
 (brace
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -5392,7 +5397,7 @@ op_eq
 id|our_slave
 )paren
 (brace
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -5400,7 +5405,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|reselect_active_interface
+id|bond_select_active_slave
 c_func
 (paren
 id|bond
@@ -5690,7 +5695,7 @@ id|bond-&gt;primary_slave
 op_assign
 l_int|NULL
 suffix:semicolon
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -6677,7 +6682,7 @@ op_amp
 id|bond-&gt;ptrlock
 )paren
 suffix:semicolon
-id|reselect_active_interface
+id|bond_select_active_slave
 c_func
 (paren
 id|bond
@@ -6736,10 +6741,10 @@ id|bond-&gt;lock
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * this function is called regularly to monitor each slave&squot;s link &n; * ensuring that traffic is being sent and received when arp monitoring&n; * is used in load-balancing mode. if the adapter has been dormant, then an &n; * arp is transmitted to generate traffic. see activebackup_arp_monitor for &n; * arp monitoring in active backup mode. &n; */
-DECL|function|loadbalance_arp_monitor
+DECL|function|bond_loadbalance_arp_mon
 r_static
 r_void
-id|loadbalance_arp_monitor
+id|bond_loadbalance_arp_mon
 c_func
 (paren
 r_struct
@@ -7027,7 +7032,7 @@ id|slave-&gt;dev
 )paren
 )paren
 (brace
-id|arp_send_all
+id|bond_arp_send_all
 c_func
 (paren
 id|slave
@@ -7048,7 +7053,7 @@ op_amp
 id|bond-&gt;ptrlock
 )paren
 suffix:semicolon
-id|reselect_active_interface
+id|bond_select_active_slave
 c_func
 (paren
 id|bond
@@ -7107,10 +7112,10 @@ id|bond-&gt;lock
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * When using arp monitoring in active-backup mode, this function is&n; * called to determine if any backup slaves have went down or a new&n; * current slave needs to be found.&n; * The backup slaves never generate traffic, they are considered up by merely &n; * receiving traffic. If the current slave goes down, each backup slave will &n; * be given the opportunity to tx/rx an arp before being taken down - this &n; * prevents all slaves from being taken down due to the current slave not &n; * sending any traffic for the backups to receive. The arps are not necessarily&n; * necessary, any tx and rx traffic will keep the current slave up. While any &n; * rx traffic will keep the backup slaves up, the current slave is responsible &n; * for generating traffic to keep them up regardless of any other traffic they &n; * may have received.&n; * see loadbalance_arp_monitor for arp monitoring in load balancing mode&n; */
-DECL|function|activebackup_arp_monitor
+DECL|function|bond_activebackup_arp_mon
 r_static
 r_void
-id|activebackup_arp_monitor
+id|bond_activebackup_arp_mon
 c_func
 (paren
 r_struct
@@ -7239,7 +7244,7 @@ id|the_delta_in_ticks
 )paren
 )paren
 (brace
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -7537,7 +7542,7 @@ op_amp
 id|bond-&gt;ptrlock
 )paren
 suffix:semicolon
-id|reselect_active_interface
+id|bond_select_active_slave
 c_func
 (paren
 id|bond
@@ -7619,7 +7624,7 @@ op_amp
 id|bond-&gt;ptrlock
 )paren
 suffix:semicolon
-id|change_active_interface
+id|bond_change_active_slave
 c_func
 (paren
 id|bond
@@ -7667,7 +7672,7 @@ l_int|0
 )paren
 )paren
 (brace
-id|arp_send_all
+id|bond_arp_send_all
 c_func
 (paren
 id|slave
@@ -7742,7 +7747,7 @@ c_func
 id|slave
 )paren
 suffix:semicolon
-id|arp_send_all
+id|bond_arp_send_all
 c_func
 (paren
 id|slave
@@ -8300,10 +8305,10 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-DECL|function|bond_ioctl
+DECL|function|bond_do_ioctl
 r_static
 r_int
-id|bond_ioctl
+id|bond_do_ioctl
 c_func
 (paren
 r_struct
@@ -8861,7 +8866,7 @@ id|bond_mode
 (brace
 id|ret
 op_assign
-id|bond_change_active
+id|bond_ioctl_change_active
 c_func
 (paren
 id|master_dev
@@ -10865,10 +10870,10 @@ id|seq_release
 comma
 )brace
 suffix:semicolon
-DECL|function|bond_create_proc_info
+DECL|function|bond_create_proc_entry
 r_static
 r_int
-id|bond_create_proc_info
+id|bond_create_proc_entry
 c_func
 (paren
 r_struct
@@ -10952,10 +10957,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bond_destroy_proc_info
+DECL|function|bond_remove_proc_entry
 r_static
 r_void
-id|bond_destroy_proc_info
+id|bond_remove_proc_entry
 c_func
 (paren
 r_struct
@@ -11191,10 +11196,9 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * Change HW address&n; *&n; * Note that many devices must be down to change the HW address, and&n; * downing the master releases all slaves.  We can make bonds full of&n; * bonding devices to test this, however.&n; */
-r_static
-r_inline
-r_int
 DECL|function|bond_set_mac_address
+r_static
+r_int
 id|bond_set_mac_address
 c_func
 (paren
@@ -11444,10 +11448,9 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change the MTU of all of a master&squot;s slaves to match the master&n; */
-r_static
-r_inline
-r_int
 DECL|function|bond_change_mtu
+r_static
+r_int
 id|bond_change_mtu
 c_func
 (paren
@@ -11640,7 +11643,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Change device name&n; */
 DECL|function|bond_event_changename
 r_static
-r_inline
 r_int
 id|bond_event_changename
 c_func
@@ -11652,13 +11654,13 @@ id|bond
 )paren
 (brace
 macro_line|#ifdef CONFIG_PROC_FS
-id|bond_destroy_proc_info
+id|bond_remove_proc_entry
 c_func
 (paren
 id|bond
 )paren
 suffix:semicolon
-id|bond_create_proc_info
+id|bond_create_proc_entry
 c_func
 (paren
 id|bond
@@ -11962,7 +11964,7 @@ id|bond-&gt;bond_list
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-id|bond_destroy_proc_info
+id|bond_remove_proc_entry
 c_func
 (paren
 id|bond
@@ -12207,11 +12209,11 @@ id|bond_close
 suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
-id|set_multicast_list
+id|bond_set_multicast_list
 suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
-id|bond_ioctl
+id|bond_do_ioctl
 suffix:semicolon
 id|dev-&gt;change_mtu
 op_assign
@@ -12358,7 +12360,7 @@ l_string|&quot;out ARP monitoring&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-id|bond_create_proc_info
+id|bond_create_proc_entry
 c_func
 (paren
 id|bond
@@ -12384,10 +12386,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Convert string input module parms.  Accept either the&n; * number of the mode or its string name.&n; */
+DECL|function|bond_parse_parm
 r_static
 r_inline
 r_int
-DECL|function|bond_parse_parm
 id|bond_parse_parm
 c_func
 (paren

@@ -285,7 +285,7 @@ id|link
 )paren
 suffix:semicolon
 r_void
-id|bond_alb_assign_current_slave
+id|bond_alb_handle_active_change
 c_func
 (paren
 r_struct
