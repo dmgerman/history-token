@@ -10464,6 +10464,14 @@ c_func
 l_string|&quot;sh-459: unable to read  journal header&bslash;n&quot;
 )paren
 suffix:semicolon
+id|release_journal_dev
+c_func
+(paren
+id|p_s_sb
+comma
+id|journal
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -10558,6 +10566,14 @@ suffix:semicolon
 id|brelse
 (paren
 id|bhjh
+)paren
+suffix:semicolon
+id|release_journal_dev
+c_func
+(paren
+id|p_s_sb
+comma
+id|journal
 )paren
 suffix:semicolon
 r_return
@@ -11340,6 +11356,14 @@ c_func
 l_string|&quot;journal-2005, get_list_bitmap failed for journal list 0&bslash;n&quot;
 )paren
 suffix:semicolon
+id|release_journal_dev
+c_func
+(paren
+id|p_s_sb
+comma
+id|journal
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -11366,6 +11390,14 @@ id|free_journal_ram
 c_func
 (paren
 id|p_s_sb
+)paren
+suffix:semicolon
+id|release_journal_dev
+c_func
+(paren
+id|p_s_sb
+comma
+id|journal
 )paren
 suffix:semicolon
 r_return
