@@ -778,11 +778,6 @@ op_star
 id|substr
 suffix:semicolon
 r_int
-id|major
-comma
-id|minor
-suffix:semicolon
-r_int
 id|len
 suffix:semicolon
 id|device
@@ -858,22 +853,6 @@ l_string|&quot;(none)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Print kdev. */
-id|major
-op_assign
-id|MAJOR
-c_func
-(paren
-id|device-&gt;bdev-&gt;bd_dev
-)paren
-suffix:semicolon
-id|minor
-op_assign
-id|MINOR
-c_func
-(paren
-id|device-&gt;bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -885,9 +864,9 @@ id|len
 comma
 l_string|&quot; at (%3d:%3d)&quot;
 comma
-id|major
+id|device-&gt;gdp-&gt;major
 comma
-id|minor
+id|device-&gt;gdp-&gt;first_minor
 )paren
 suffix:semicolon
 multiline_comment|/* Print device name. */
@@ -902,7 +881,7 @@ id|len
 comma
 l_string|&quot; is %-7s&quot;
 comma
-id|device-&gt;name
+id|device-&gt;gdp-&gt;disk_name
 )paren
 suffix:semicolon
 multiline_comment|/* Print devices features. */

@@ -151,7 +151,7 @@ DECL|macro|DBF_DEBUG
 mdefine_line|#define&t;DBF_DEBUG&t;6&t;/* debug-level messages&t;&t;&t;*/
 multiline_comment|/* messages to be written via klogd and dbf */
 DECL|macro|DEV_MESSAGE
-mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%04x@%02x: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, bdevname(d_device-&gt;bdev), &bslash;&n;&t;       d_device-&gt;devinfo.devno, d_device-&gt;devinfo.irq, &bslash;&n;&t;       d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
+mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%04x@%02x: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, d_device-&gt;gdp-&gt;disk_name, &bslash;&n;&t;       d_device-&gt;devinfo.devno, d_device-&gt;devinfo.irq, &bslash;&n;&t;       d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
 DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;&t;DBF_EVENT(DBF_ALERT, d_string, d_args); &bslash;&n;} while(0)
 DECL|struct|dasd_ccw_req_t
@@ -539,20 +539,6 @@ r_struct
 id|dasd_device_t
 (brace
 multiline_comment|/* Block device stuff. */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* The device name in /dev. */
-DECL|member|bdev
-r_struct
-id|block_device
-op_star
-id|bdev
-suffix:semicolon
 DECL|member|gdp
 r_struct
 id|gendisk
@@ -590,6 +576,11 @@ r_int
 id|s2b_shift
 suffix:semicolon
 multiline_comment|/* log2 (bp_block/512) */
+DECL|member|ro_flag
+r_int
+id|ro_flag
+suffix:semicolon
+multiline_comment|/* read-only flag */
 multiline_comment|/* Device discipline stuff. */
 DECL|member|discipline
 id|dasd_discipline_t
@@ -1675,9 +1666,6 @@ op_star
 id|dasd_gendisk_alloc
 c_func
 (paren
-r_char
-op_star
-comma
 r_int
 )paren
 suffix:semicolon
