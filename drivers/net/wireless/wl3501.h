@@ -1781,10 +1781,6 @@ DECL|member|chan
 id|u8
 id|chan
 suffix:semicolon
-DECL|member|def_chan
-id|u8
-id|def_chan
-suffix:semicolon
 DECL|member|cap_info
 id|u8
 id|cap_info

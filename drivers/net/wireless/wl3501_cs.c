@@ -2052,7 +2052,7 @@ op_assign
 l_int|2
 )braket
 op_assign
-id|this-&gt;def_chan
+id|this-&gt;chan
 comma
 )brace
 comma
@@ -7003,7 +7003,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|this-&gt;def_chan
+id|this-&gt;chan
 op_assign
 id|channel
 suffix:semicolon
@@ -9678,7 +9678,7 @@ suffix:colon
 r_case
 id|WL3501_REG_DOMAIN_FRANCE
 suffix:colon
-id|this-&gt;def_chan
+id|this-&gt;chan
 op_assign
 l_int|10
 suffix:semicolon
@@ -9687,7 +9687,7 @@ suffix:semicolon
 r_case
 id|WL3501_REG_DOMAIN_MKK
 suffix:colon
-id|this-&gt;def_chan
+id|this-&gt;chan
 op_assign
 l_int|14
 suffix:semicolon
@@ -9704,7 +9704,7 @@ id|WL3501_REG_DOMAIN_ETSI
 suffix:colon
 r_default
 suffix:colon
-id|this-&gt;def_chan
+id|this-&gt;chan
 op_assign
 l_int|1
 suffix:semicolon
