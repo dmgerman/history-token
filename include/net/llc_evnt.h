@@ -35,50 +35,6 @@ DECL|macro|LLC_STATION_EV_RX_NULL_DSAP_TEST_C
 mdefine_line|#define LLC_STATION_EV_RX_NULL_DSAP_TEST_C&t;&t;&t;8
 DECL|macro|LLC_STATION_EV_DISABLE_REQ
 mdefine_line|#define LLC_STATION_EV_DISABLE_REQ&t;&t;&t;&t;9
-multiline_comment|/* Interfaces for various types of supported events */
-DECL|struct|llc_stat_ev_simple_if
-r_struct
-id|llc_stat_ev_simple_if
-(brace
-DECL|member|ev
-id|u8
-id|ev
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|llc_stat_ev_prim_if
-r_struct
-id|llc_stat_ev_prim_if
-(brace
-DECL|member|prim
-id|u8
-id|prim
-suffix:semicolon
-multiline_comment|/* connect, disconnect, reset, ... */
-DECL|member|type
-id|u8
-id|type
-suffix:semicolon
-multiline_comment|/* request, indicate, response, confirm */
-)brace
-suffix:semicolon
-DECL|union|llc_stat_ev_if
-r_union
-id|llc_stat_ev_if
-(brace
-DECL|member|a
-r_struct
-id|llc_stat_ev_simple_if
-id|a
-suffix:semicolon
-multiline_comment|/* &squot;a&squot; for simple, easy ... */
-DECL|member|prim
-r_struct
-id|llc_stat_ev_prim_if
-id|prim
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|llc_station_state_ev
 r_struct
 id|llc_station_state_ev
@@ -87,14 +43,17 @@ DECL|member|type
 id|u8
 id|type
 suffix:semicolon
+DECL|member|prim
+id|u8
+id|prim
+suffix:semicolon
+DECL|member|prim_type
+id|u8
+id|prim_type
+suffix:semicolon
 DECL|member|reason
 id|u8
 id|reason
-suffix:semicolon
-DECL|member|data
-r_union
-id|llc_stat_ev_if
-id|data
 suffix:semicolon
 DECL|member|node
 r_struct

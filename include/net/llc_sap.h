@@ -3,6 +3,7 @@ DECL|macro|LLC_SAP_H
 mdefine_line|#define LLC_SAP_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology,Inc.&n; * &t;&t; 2001 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;net/llc_if.h&gt;
 multiline_comment|/**&n; * struct llc_sap - Defines the SAP component&n; *&n; * @p_bit - only lowest-order bit used&n; * @f_bit - only lowest-order bit used&n; * @ind - provided by network layer&n; * @conf - provided by network layer&n; * @laddr - SAP value in this &squot;lsap&squot;&n; * @node - entry in station sap_list&n; * @sk_list - LLC sockets this one manages&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
 DECL|struct|llc_sap
 r_struct
@@ -26,29 +27,28 @@ DECL|member|f_bit
 id|u8
 id|f_bit
 suffix:semicolon
-DECL|member|ind
-id|llc_prim_call_t
-id|ind
-suffix:semicolon
-DECL|member|conf
-id|llc_prim_call_t
-id|conf
-suffix:semicolon
-DECL|member|llc_ind_prim
-DECL|member|llc_cfm_prim
+DECL|member|rcv_func
+r_int
+(paren
+op_star
+id|rcv_func
+)paren
+(paren
 r_struct
-id|llc_prim_if_block
-id|llc_ind_prim
+id|sk_buff
+op_star
+id|skb
 comma
-id|llc_cfm_prim
-suffix:semicolon
-DECL|member|llc_ind_data_prim
-DECL|member|llc_cfm_data_prim
-r_union
-id|llc_u_prim_data
-id|llc_ind_data_prim
+r_struct
+id|net_device
+op_star
+id|dev
 comma
-id|llc_cfm_data_prim
+r_struct
+id|packet_type
+op_star
+id|pt
+)paren
 suffix:semicolon
 DECL|member|laddr
 r_struct
@@ -131,6 +131,11 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_struct
+id|packet_type
+op_star
+id|pt
 )paren
 suffix:semicolon
 r_extern
