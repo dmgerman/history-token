@@ -1267,7 +1267,7 @@ c_func
 (paren
 l_int|NULL
 comma
-l_string|&quot;Failed. Returning -EOVERFLOW.&bslash;n&quot;
+l_string|&quot;Failed. Returning -EOVERFLOW.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2965,7 +2965,7 @@ id|vol-&gt;sb
 comma
 l_string|&quot;ntfs_decompress() failed in inode &quot;
 l_string|&quot;0x%lx with error code %i. Skipping &quot;
-l_string|&quot;this compression block.&bslash;n&quot;
+l_string|&quot;this compression block.&quot;
 comma
 id|ni-&gt;mft_no
 comma

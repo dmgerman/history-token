@@ -1844,7 +1844,7 @@ id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Entering for inode %li, attribute type 0x%x, page index &quot;
-l_string|&quot;0x%lx.&bslash;n&quot;
+l_string|&quot;0x%lx.&quot;
 comma
 id|vi-&gt;i_ino
 comma
