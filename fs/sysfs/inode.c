@@ -1183,15 +1183,15 @@ id|attr
 r_goto
 id|Einval
 suffix:semicolon
-multiline_comment|/* if the kobject has no subsystem, then it is a subsystem itself,&n;&t; * so give it the subsys_sysfs_ops.&n;&t; */
+multiline_comment|/* if the kobject has no ktype, then we assume that it is a subsystem&n;&t; * itself, and use ops for it.&n;&t; */
 r_if
 c_cond
 (paren
-id|kobj-&gt;subsys
+id|kobj-&gt;ktype
 )paren
 id|ops
 op_assign
-id|kobj-&gt;subsys-&gt;sysfs_ops
+id|kobj-&gt;ktype-&gt;sysfs_ops
 suffix:semicolon
 r_else
 id|ops
