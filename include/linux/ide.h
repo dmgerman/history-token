@@ -4308,15 +4308,8 @@ suffix:semicolon
 id|ide_drive_t
 op_star
 id|ide_scan_devices
+c_func
 (paren
-id|byte
-id|media
-comma
-r_const
-r_char
-op_star
-id|name
-comma
 id|ide_driver_t
 op_star
 id|driver
