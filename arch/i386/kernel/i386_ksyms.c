@@ -486,18 +486,18 @@ c_func
 id|strnlen_user
 )paren
 suffix:semicolon
-DECL|variable|pci_alloc_consistent
+DECL|variable|dma_alloc_coherent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 )paren
 suffix:semicolon
-DECL|variable|pci_free_consistent
+DECL|variable|dma_free_coherent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_free_consistent
+id|dma_free_coherent
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
