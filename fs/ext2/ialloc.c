@@ -1683,6 +1683,21 @@ r_goto
 id|found
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|avefreei
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The free-inodes counter is approximate, and for really small&n;&t;&t; * filesystems the above test can fail to find any blockgroups&n;&t;&t; */
+id|avefreei
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|fallback
+suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1

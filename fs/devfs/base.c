@@ -2757,7 +2757,7 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function wait_for_devfsd_finished  */
-multiline_comment|/**&n; *&t;devfsd_notify_de - Notify the devfsd daemon of a change.&n; *&t;@de: The devfs entry that has changed. This and all parent entries will&n; *            have their reference counts incremented if the event was queued.&n; *&t;@type: The type of change.&n; *&t;@mode: The mode of the entry.&n; *&t;@uid: The user ID.&n; *&t;@gid: The group ID.&n; *&t;@fs_info: The filesystem info.&n; *&t;@atomic: If TRUE, an atomic allocation is required.&n; *&n; *&t;Returns %TRUE if an event was queued and devfsd woken up, else %FALSE.&n; */
+multiline_comment|/**&n; *&t;devfsd_notify_de - Notify the devfsd daemon of a change.&n; *&t;@de: The devfs entry that has changed. This and all parent entries will&n; *            have their reference counts incremented if the event was queued.&n; *&t;@type: The type of change.&n; *&t;@mode: The mode of the entry.&n; *&t;@uid: The user ID.&n; *&t;@gid: The group ID.&n; *&t;@fs_info: The filesystem info.&n; *&n; *&t;Returns %TRUE if an event was queued and devfsd woken up, else %FALSE.&n; */
 DECL|function|devfsd_notify_de
 r_static
 r_int
@@ -2785,9 +2785,6 @@ r_struct
 id|fs_info
 op_star
 id|fs_info
-comma
-r_int
-id|atomic
 )paren
 (brace
 r_struct
@@ -2829,11 +2826,6 @@ id|kmem_cache_alloc
 (paren
 id|devfsd_buf_cache
 comma
-id|atomic
-ques
-c_cond
-id|SLAB_ATOMIC
-suffix:colon
 id|SLAB_KERNEL
 )paren
 )paren
@@ -2959,15 +2951,10 @@ comma
 r_int
 r_int
 id|type
-comma
-r_int
-id|wait
 )paren
 (brace
-r_if
-c_cond
-(paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -2981,21 +2968,10 @@ id|current-&gt;egid
 comma
 op_amp
 id|fs_info
-comma
-l_int|0
-)paren
-op_logical_and
-id|wait
-)paren
-id|wait_for_devfsd_finished
-(paren
-op_amp
-id|fs_info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  End Function devfsd_notify  */
-multiline_comment|/**&n; *&t;devfs_register - Register a device entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@name: The name of the entry.&n; *&t;@flags: A set of bitwise-ORed flags (DEVFS_FL_*).&n; *&t;@major: The major number. Not needed for regular files.&n; *&t;@minor: The minor number. Not needed for regular files.&n; *&t;@mode: The default file mode.&n; *&t;@ops: The &amp;file_operations or &amp;block_device_operations structure.&n; *&t;&t;This must not be externally deallocated.&n; *&t;@info: An arbitrary pointer which will be written to the @private_data&n; *&t;&t;field of the &amp;file structure passed to the device driver. You can set&n; *&t;&t;this to whatever you like, and change it once the file is opened (the next&n; *&t;&t;file opened will not see this change).&n; *&n; *&t;Returns a handle which may later be used in a call to devfs_unregister().&n; *&t;On failure %NULL is returned.&n; */
+multiline_comment|/**&n; *&t;devfs_register - Register a device entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@name: The name of the entry.&n; *&t;@flags: Must be 0&n; *&t;@major: The major number. Not needed for regular files.&n; *&t;@minor: The minor number. Not needed for regular files.&n; *&t;@mode: The default file mode.&n; *&t;@ops: The &amp;file_operations or &amp;block_device_operations structure.&n; *&t;&t;This must not be externally deallocated.&n; *&t;@info: An arbitrary pointer which will be written to the @private_data&n; *&t;&t;field of the &amp;file structure passed to the device driver. You can set&n; *&t;&t;this to whatever you like, and change it once the file is opened (the next&n; *&t;&t;file opened will not see this change).&n; *&n; *&t;Returns a handle which may later be used in a call to devfs_unregister().&n; *&t;On failure %NULL is returned.&n; */
 DECL|function|devfs_register
 id|devfs_handle_t
 id|devfs_register
@@ -3054,6 +3030,13 @@ r_struct
 id|devfs_entry
 op_star
 id|de
+suffix:semicolon
+multiline_comment|/* we don&squot;t accept any flags anymore.  prototype will change soon. */
+id|WARN_ON
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3254,25 +3237,6 @@ id|de-&gt;info
 op_assign
 id|info
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|DEVFS_FL_CURRENT_OWNER
-)paren
-(brace
-id|de-&gt;inode.uid
-op_assign
-id|current-&gt;uid
-suffix:semicolon
-id|de-&gt;inode.gid
-op_assign
-id|current-&gt;gid
-suffix:semicolon
-)brace
-r_else
-(brace
 id|de-&gt;inode.uid
 op_assign
 l_int|0
@@ -3281,7 +3245,6 @@ id|de-&gt;inode.gid
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|_devfs_append_entry
@@ -3352,10 +3315,6 @@ id|devfsd_notify
 id|de
 comma
 id|DEVFSD_NOTIFY_REGISTERED
-comma
-id|flags
-op_amp
-id|DEVFS_FL_WAIT
 )paren
 suffix:semicolon
 id|devfs_put
@@ -3500,8 +3459,6 @@ id|devfsd_notify
 id|de
 comma
 id|DEVFSD_NOTIFY_UNREGISTERED
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|free_dentry
@@ -3985,8 +3942,6 @@ c_func
 id|de
 comma
 id|DEVFSD_NOTIFY_REGISTERED
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -4181,8 +4136,6 @@ c_func
 id|de
 comma
 id|DEVFSD_NOTIFY_REGISTERED
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|out_put
@@ -4288,6 +4241,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;devfs_generate_path - Generate a pathname for an entry, relative to the devfs root.&n; *&t;@de: The devfs entry.&n; *&t;@path: The buffer to write the pathname to. The pathname and &squot;&bslash;0&squot;&n; *&t;&t;terminator will be written at the end of the buffer.&n; *&t;@buflen: The length of the buffer.&n; *&n; *&t;Returns the offset in the buffer where the pathname starts on success,&n; *&t;else a negative error code.&n; */
 DECL|function|devfs_generate_path
+r_static
 r_int
 id|devfs_generate_path
 (paren
@@ -4924,13 +4878,6 @@ c_func
 id|devfs_remove
 )paren
 suffix:semicolon
-DECL|variable|devfs_generate_path
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_generate_path
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;try_modload - Notify devfsd of an inode lookup by a non-devfsd process.&n; *&t;@parent: The parent devfs entry.&n; *&t;@fs_info: The filesystem info.&n; *&t;@name: The device name.&n; *&t;@namelen: The number of characters in @name.&n; *&t;@buf: A working area that will be used. This must not go out of scope&n; *            until devfsd is idle again.&n; *&n; *&t;Returns 0 on success (event was queued), else a negative error code.&n; */
 DECL|function|try_modload
 r_static
@@ -5046,8 +4993,6 @@ comma
 id|current-&gt;egid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 )paren
 r_return
@@ -5282,8 +5227,6 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -7246,8 +7189,6 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|free_dentry
@@ -7453,8 +7394,6 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -7666,8 +7605,6 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -7860,8 +7797,6 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|free_dentry
@@ -8110,8 +8045,6 @@ comma
 id|inode-&gt;i_gid
 comma
 id|fs_info
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return

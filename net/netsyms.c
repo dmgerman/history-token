@@ -880,11 +880,11 @@ id|dev_change_flags
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|vlan_ioctl_hook
+DECL|variable|vlan_ioctl_set
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|vlan_ioctl_hook
+id|vlan_ioctl_set
 )paren
 suffix:semicolon
 DECL|variable|scm_detach_fds

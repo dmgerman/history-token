@@ -1014,5 +1014,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|macro|DN_MAX_NSP_DATA_HEADER
+mdefine_line|#define DN_MAX_NSP_DATA_HEADER (11)
 macro_line|#endif /* _NET_DN_NSP_H */
 eof

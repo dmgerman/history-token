@@ -66,6 +66,7 @@ id|neigh_table
 op_star
 id|tbl
 comma
+r_const
 r_void
 op_star
 id|ptr

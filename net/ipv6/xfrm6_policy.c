@@ -957,14 +957,14 @@ op_star
 )paren
 id|exthdr
 suffix:semicolon
-id|fl-&gt;uli_u.ports.sport
+id|fl-&gt;fl_ip_sport
 op_assign
 id|ports
 (braket
 l_int|0
 )braket
 suffix:semicolon
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 op_assign
 id|ports
 (braket
@@ -986,7 +986,7 @@ id|IPPROTO_COMP
 suffix:colon
 r_default
 suffix:colon
-id|fl-&gt;uli_u.spi
+id|fl-&gt;fl_ipsec_spi
 op_assign
 l_int|0
 suffix:semicolon

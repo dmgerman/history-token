@@ -1662,6 +1662,13 @@ id|sk
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* &n;&t; * It appears that its possible for remote machines to send disc&n;&t; * init messages with no port identifier if we are in the CI and&n;&t; * possibly also the CD state. Obviously we shouldn&squot;t reply with&n;&t; * a message if we don&squot;t know what the end point is.&n;&t; */
+r_if
+c_cond
+(paren
+id|scp-&gt;addrrem
+)paren
+(brace
 id|dn_nsp_send_disc
 c_func
 (paren
@@ -1674,6 +1681,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+)brace
 id|scp-&gt;persist_fxn
 op_assign
 id|dn_destroy_timer

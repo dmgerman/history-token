@@ -78,17 +78,17 @@ c_func
 r_int
 r_int
 op_star
-id|count
+id|count_p
 )paren
 (brace
-op_star
+r_int
+r_int
 id|count
 op_assign
-l_int|0L
+l_int|0
 suffix:semicolon
 r_do
 (brace
-op_star
 id|count
 op_increment
 suffix:semicolon
@@ -108,6 +108,11 @@ l_int|0x20
 op_eq
 l_int|0
 )paren
+suffix:semicolon
+op_star
+id|count_p
+op_assign
+id|count
 suffix:semicolon
 )brace
 macro_line|#endif /* !_MACH_TIMER_H */

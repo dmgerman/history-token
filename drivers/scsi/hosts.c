@@ -480,6 +480,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_GENERIC_ISA_DMA
 r_if
 c_cond
 (paren
@@ -493,6 +494,7 @@ c_func
 id|shost-&gt;dma_channel
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

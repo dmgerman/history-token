@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Device handling code&n; *&t;Linux ethernet bridge&n;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 DECL|function|br_dev_do_ioctl
@@ -350,7 +351,7 @@ id|br
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|read_lock
+id|write_lock
 c_func
 (paren
 op_amp
@@ -363,7 +364,7 @@ c_func
 id|br
 )paren
 suffix:semicolon
-id|read_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
@@ -408,7 +409,7 @@ id|br
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|read_lock
+id|write_lock
 c_func
 (paren
 op_amp
@@ -421,7 +422,7 @@ c_func
 id|br
 )paren
 suffix:semicolon
-id|read_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
@@ -458,6 +459,25 @@ id|dst
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+DECL|function|br_dev_destruct
+r_static
+r_void
+id|br_dev_destruct
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev-&gt;priv
+)paren
 suffix:semicolon
 )brace
 DECL|function|br_dev_setup
@@ -500,6 +520,14 @@ suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 id|br_dev_set_multicast_list
+suffix:semicolon
+id|dev-&gt;destructor
+op_assign
+id|br_dev_destruct
+suffix:semicolon
+id|dev-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|dev-&gt;stop
 op_assign

@@ -1127,9 +1127,9 @@ op_assign
 id|ohci_urb_dequeue
 comma
 dot
-id|free_config
+id|endpoint_disable
 op_assign
-id|ohci_free_config
+id|ohci_endpoint_disable
 comma
 multiline_comment|/*&n;&t; * scheduling support&n;&t; */
 dot

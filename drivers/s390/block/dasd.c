@@ -618,11 +618,11 @@ id|device
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 multiline_comment|/* Add a proc directory and the dasd device entry to devfs. */
-id|device-&gt;gdp-&gt;de
-op_assign
-id|devfs_mk_dir
+id|sprintf
 c_func
 (paren
+id|device-&gt;gdp-&gt;devfs_name
+comma
 l_string|&quot;dasd/%04x&quot;
 comma
 id|_ccw_device_get_device_number

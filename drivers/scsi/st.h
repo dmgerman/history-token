@@ -4,7 +4,6 @@ mdefine_line|#define _ST_H
 macro_line|#ifndef _SCSI_H
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#endif
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/* The tape buffer descriptor. */
 r_typedef
@@ -397,22 +396,6 @@ DECL|member|current_mode
 r_int
 id|current_mode
 suffix:semicolon
-DECL|member|de_r
-id|devfs_handle_t
-id|de_r
-(braket
-id|ST_NBR_MODES
-)braket
-suffix:semicolon
-multiline_comment|/*  Rewind entries     */
-DECL|member|de_n
-id|devfs_handle_t
-id|de_n
-(braket
-id|ST_NBR_MODES
-)braket
-suffix:semicolon
-multiline_comment|/*  No-rewind entries  */
 DECL|member|driverfs_dev_r
 r_struct
 id|device

@@ -1087,6 +1087,14 @@ id|pte
 )paren
 suffix:semicolon
 multiline_comment|/* the pte points outside of valid memory, the&n;&t;&t;&t;&t; * mapping is assumed to be good, meaningful&n;&t;&t;&t;&t; * and not mapped via rmap - duplicate the&n;&t;&t;&t;&t; * mapping as is.&n;&t;&t;&t;&t; */
+id|page
+op_assign
+id|pfn_to_page
+c_func
+(paren
+id|pfn
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1095,6 +1103,12 @@ id|pfn_valid
 c_func
 (paren
 id|pfn
+)paren
+op_logical_or
+id|PageReserved
+c_func
+(paren
+id|page
 )paren
 )paren
 (brace
@@ -1110,26 +1124,6 @@ r_goto
 id|cont_copy_pte_range_noset
 suffix:semicolon
 )brace
-id|page
-op_assign
-id|pfn_to_page
-c_func
-(paren
-id|pfn
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageReserved
-c_func
-(paren
-id|page
-)paren
-)paren
-r_goto
-id|cont_copy_pte_range
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * If it&squot;s a COW mapping, write protect it both&n;&t;&t;&t;&t; * in the parent and the child&n;&t;&t;&t;&t; */
 r_if
 c_cond
@@ -1182,8 +1176,6 @@ suffix:semicolon
 id|dst-&gt;rss
 op_increment
 suffix:semicolon
-id|cont_copy_pte_range
-suffix:colon
 id|set_pte
 c_func
 (paren

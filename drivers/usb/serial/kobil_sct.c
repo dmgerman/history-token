@@ -2169,6 +2169,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|kernel_termios_to_user_termios
 c_func
 (paren
@@ -2182,6 +2185,10 @@ comma
 op_amp
 id|priv-&gt;internal_termios
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -2253,6 +2260,9 @@ r_return
 id|result
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|user_termios_to_kernel_termios
 c_func
 (paren
@@ -2266,6 +2276,10 @@ op_star
 )paren
 id|arg
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|settings
 op_assign

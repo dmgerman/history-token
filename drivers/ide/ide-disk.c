@@ -10046,9 +10046,13 @@ id|g-&gt;minor_shift
 op_assign
 id|PARTN_BITS
 suffix:semicolon
-id|g-&gt;de
-op_assign
-id|drive-&gt;de
+id|strcpy
+c_func
+(paren
+id|g-&gt;devfs_name
+comma
+id|drive-&gt;devfs_name
+)paren
 suffix:semicolon
 id|g-&gt;driverfs_dev
 op_assign
@@ -10063,10 +10067,6 @@ c_cond
 id|GENHD_FL_REMOVABLE
 suffix:colon
 l_int|0
-suffix:semicolon
-id|g-&gt;flags
-op_or_assign
-id|GENHD_FL_DEVFS
 suffix:semicolon
 id|set_capacity
 c_func

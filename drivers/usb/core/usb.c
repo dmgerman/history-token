@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
+multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002-2003&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -121,6 +121,11 @@ op_assign
 id|generic_remove
 comma
 )brace
+suffix:semicolon
+DECL|variable|usb_generic_driver_data
+r_static
+r_int
+id|usb_generic_driver_data
 suffix:semicolon
 multiline_comment|/* needs to be called with BKL held */
 DECL|function|usb_device_probe
@@ -1302,13 +1307,23 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* Must check driver_data here, as on remove driver is always NULL */
 r_if
 c_cond
+(paren
 (paren
 id|dev-&gt;driver
 op_eq
 op_amp
 id|usb_generic_driver
+)paren
+op_logical_or
+(paren
+id|dev-&gt;driver_data
+op_eq
+op_amp
+id|usb_generic_driver_data
+)paren
 )paren
 r_return
 l_int|0
@@ -2074,8 +2089,26 @@ op_assign
 op_star
 id|pdev
 suffix:semicolon
+r_struct
+id|usb_bus
+op_star
+id|bus
+op_assign
+id|dev-&gt;bus
+suffix:semicolon
+r_struct
+id|usb_operations
+op_star
+id|ops
+op_assign
+id|bus-&gt;op
+suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|might_sleep
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2144,6 +2177,7 @@ id|child
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* disconnect() drivers from interfaces (a key side effect) */
 id|dev_dbg
 (paren
 op_amp
@@ -2177,6 +2211,9 @@ r_struct
 id|usb_interface
 op_star
 id|interface
+suffix:semicolon
+multiline_comment|/* remove this interface */
+id|interface
 op_assign
 op_amp
 id|dev-&gt;actconfig-&gt;interface
@@ -2184,12 +2221,66 @@ id|dev-&gt;actconfig-&gt;interface
 id|i
 )braket
 suffix:semicolon
-multiline_comment|/* remove this interface */
 id|device_unregister
 c_func
 (paren
 op_amp
 id|interface-&gt;dev
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* deallocate hcd/hardware state */
+r_if
+c_cond
+(paren
+id|ops-&gt;disable
+)paren
+(brace
+r_void
+(paren
+op_star
+id|disable
+)paren
+(paren
+r_struct
+id|usb_device
+op_star
+comma
+r_int
+)paren
+op_assign
+id|ops-&gt;disable
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|15
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|disable
+(paren
+id|dev
+comma
+id|i
+)paren
+suffix:semicolon
+id|disable
+(paren
+id|dev
+comma
+id|USB_DIR_IN
+op_or
+id|i
 )paren
 suffix:semicolon
 )brace
@@ -2732,6 +2823,11 @@ suffix:semicolon
 id|dev-&gt;dev.release
 op_assign
 id|usb_release_dev
+suffix:semicolon
+id|dev-&gt;dev.driver_data
+op_assign
+op_amp
+id|usb_generic_driver_data
 suffix:semicolon
 id|usb_get_dev
 c_func

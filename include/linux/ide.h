@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/hdsmart.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
@@ -1461,11 +1460,14 @@ op_star
 id|settings
 suffix:semicolon
 multiline_comment|/* /proc/ide/ drive settings */
-DECL|member|de
-id|devfs_handle_t
-id|de
+DECL|member|devfs_name
+r_char
+id|devfs_name
+(braket
+l_int|64
+)braket
 suffix:semicolon
-multiline_comment|/* directory for device */
+multiline_comment|/* devfs crap */
 DECL|member|hwif
 r_struct
 id|hwif_s

@@ -8576,9 +8576,13 @@ op_assign
 op_amp
 id|drive-&gt;gendev
 suffix:semicolon
-id|g-&gt;de
-op_assign
-id|drive-&gt;de
+id|strcpy
+c_func
+(paren
+id|g-&gt;devfs_name
+comma
+id|drive-&gt;devfs_name
+)paren
 suffix:semicolon
 id|g-&gt;flags
 op_assign
@@ -8588,10 +8592,6 @@ c_cond
 id|GENHD_FL_REMOVABLE
 suffix:colon
 l_int|0
-suffix:semicolon
-id|g-&gt;flags
-op_or_assign
-id|GENHD_FL_DEVFS
 suffix:semicolon
 id|g-&gt;fops
 op_assign

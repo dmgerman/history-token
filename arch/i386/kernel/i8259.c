@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;io_ports.h&gt;
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
 id|spinlock_t
@@ -189,18 +190,18 @@ l_int|8
 id|outb
 c_func
 (paren
-id|cached_A1
+id|cached_slave_mask
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 r_else
 id|outb
 c_func
 (paren
-id|cached_21
+id|cached_master_mask
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -261,18 +262,18 @@ l_int|8
 id|outb
 c_func
 (paren
-id|cached_A1
+id|cached_slave_mask
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 r_else
 id|outb
 c_func
 (paren
-id|cached_21
+id|cached_master_mask
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -331,7 +332,7 @@ op_assign
 id|inb
 c_func
 (paren
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 op_amp
 id|mask
@@ -342,7 +343,7 @@ op_assign
 id|inb
 c_func
 (paren
-l_int|0xA0
+id|PIC_SLAVE_CMD
 )paren
 op_amp
 (paren
@@ -442,7 +443,7 @@ c_func
 (paren
 l_int|0x0B
 comma
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* ISR register */
@@ -451,7 +452,7 @@ op_assign
 id|inb
 c_func
 (paren
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 op_amp
 id|irqmask
@@ -461,7 +462,7 @@ c_func
 (paren
 l_int|0x0A
 comma
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* back to the IRR register */
@@ -474,7 +475,7 @@ c_func
 (paren
 l_int|0x0B
 comma
-l_int|0xA0
+id|PIC_SLAVE_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* ISR register */
@@ -483,7 +484,7 @@ op_assign
 id|inb
 c_func
 (paren
-l_int|0xA0
+id|PIC_SLAVE_CMD
 )paren
 op_amp
 (paren
@@ -497,7 +498,7 @@ c_func
 (paren
 l_int|0x0A
 comma
-l_int|0xA0
+id|PIC_SLAVE_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* back to the IRR register */
@@ -565,16 +566,16 @@ l_int|8
 id|inb
 c_func
 (paren
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* DUMMY - (do we need this?) */
 id|outb
 c_func
 (paren
-id|cached_A1
+id|cached_slave_mask
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 id|outb
@@ -588,16 +589,18 @@ op_amp
 l_int|7
 )paren
 comma
-l_int|0xA0
+id|PIC_SLAVE_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;Specific EOI&squot; to slave */
 id|outb
 c_func
 (paren
-l_int|0x62
+l_int|0x60
+op_plus
+id|PIC_CASCADE_IR
 comma
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* &squot;Specific EOI&squot; to master-IRQ2 */
@@ -607,16 +610,16 @@ r_else
 id|inb
 c_func
 (paren
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* DUMMY - (do we need this?) */
 id|outb
 c_func
 (paren
-id|cached_21
+id|cached_master_mask
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 id|outb
@@ -626,10 +629,10 @@ l_int|0x60
 op_plus
 id|irq
 comma
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 suffix:semicolon
-multiline_comment|/* &squot;Specific EOI&squot; to master */
+multiline_comment|/* &squot;Specific EOI to master */
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -854,7 +857,7 @@ c_func
 (paren
 l_int|0xff
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* mask all of 8259A-1 */
@@ -863,7 +866,7 @@ c_func
 (paren
 l_int|0xff
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* mask all of 8259A-2 */
@@ -873,7 +876,7 @@ c_func
 (paren
 l_int|0x11
 comma
-l_int|0x20
+id|PIC_MASTER_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* ICW1: select 8259A-1 init */
@@ -884,16 +887,18 @@ l_int|0x20
 op_plus
 l_int|0
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* ICW2: 8259A-1 IR0-7 mapped to 0x20-0x27 */
 id|outb_p
 c_func
 (paren
-l_int|0x04
+l_int|1U
+op_lshift
+id|PIC_CASCADE_IR
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* 8259A-1 (the master) has a slave on IR2 */
@@ -902,31 +907,33 @@ c_cond
 (paren
 id|auto_eoi
 )paren
-id|outb_p
-c_func
-(paren
-l_int|0x03
-comma
-l_int|0x21
-)paren
-suffix:semicolon
 multiline_comment|/* master does Auto EOI */
-r_else
 id|outb_p
 c_func
 (paren
-l_int|0x01
+id|MASTER_ICW4_DEFAULT
+op_or
+id|PIC_ICW4_AEOI
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
+r_else
 multiline_comment|/* master expects normal EOI */
+id|outb_p
+c_func
+(paren
+id|MASTER_ICW4_DEFAULT
+comma
+id|PIC_MASTER_IMR
+)paren
+suffix:semicolon
 id|outb_p
 c_func
 (paren
 l_int|0x11
 comma
-l_int|0xA0
+id|PIC_SLAVE_CMD
 )paren
 suffix:semicolon
 multiline_comment|/* ICW1: select 8259A-2 init */
@@ -937,28 +944,28 @@ l_int|0x20
 op_plus
 l_int|8
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* ICW2: 8259A-2 IR0-7 mapped to 0x28-0x2f */
 id|outb_p
 c_func
 (paren
-l_int|0x02
+id|PIC_CASCADE_IR
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* 8259A-2 is a slave on master&squot;s IR2 */
 id|outb_p
 c_func
 (paren
-l_int|0x01
+id|SLAVE_ICW4_DEFAULT
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
-multiline_comment|/* (slave&squot;s support for AEOI in flat mode&n;&t;&t;&t;&t;    is to be investigated) */
+multiline_comment|/* (slave&squot;s support for AEOI in flat mode is to be investigated) */
 r_if
 c_cond
 (paren
@@ -984,18 +991,18 @@ multiline_comment|/* wait for 8259A to initialize */
 id|outb
 c_func
 (paren
-id|cached_21
+id|cached_master_mask
 comma
-l_int|0x21
+id|PIC_MASTER_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* restore master IRQ mask */
 id|outb
 c_func
 (paren
-id|cached_A1
+id|cached_slave_mask
 comma
-l_int|0xA1
+id|PIC_SLAVE_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* restore slave IRQ mask */
@@ -1010,6 +1017,7 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note that on a 486, we don&squot;t want to do a SIGFPE on an irq13&n; * as the irq is unreliable, and exception 16 works correctly&n; * (ie as explained in the intel literature). On a 386, you&n; * can&squot;t use exception 16 due to bad IBM design, so we have to&n; * rely on the less exact irq13.&n; *&n; * Careful.. Not only is IRQ13 unreliable, but it is also&n; * leads to races. IBM designers who came up with it should&n; * be shot.&n; */
+multiline_comment|/*&n; * =PC9800NOTE= In NEC PC-9800, we use irq8 instead of irq13!&n; */
 DECL|function|math_error_irq
 r_static
 r_void
@@ -1038,6 +1046,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_PC9800
 id|outb
 c_func
 (paren
@@ -1046,10 +1055,11 @@ comma
 l_int|0xF0
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
-id|ignore_irq13
+id|ignore_fpu_irq
 op_logical_or
 op_logical_neg
 id|boot_cpu_data.hard_math
@@ -1068,11 +1078,11 @@ id|regs-&gt;eip
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * New motherboards sometimes make IRQ 13 be a PCI interrupt,&n; * so allow interrupt sharing.&n; */
-DECL|variable|irq13
+DECL|variable|fpu_irq
 r_static
 r_struct
 id|irqaction
-id|irq13
+id|fpu_irq
 op_assign
 (brace
 id|math_error_irq
@@ -1204,7 +1214,7 @@ c_func
 (paren
 l_int|0x34
 comma
-l_int|0x43
+id|PIT_MODE
 )paren
 suffix:semicolon
 multiline_comment|/* binary, mode 2, LSB/MSB, ch 0 */
@@ -1221,7 +1231,7 @@ id|LATCH
 op_amp
 l_int|0xff
 comma
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 multiline_comment|/* LSB */
@@ -1238,7 +1248,7 @@ id|LATCH
 op_rshift
 l_int|8
 comma
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 multiline_comment|/* MSB */
@@ -1452,10 +1462,10 @@ id|cpu_has_fpu
 id|setup_irq
 c_func
 (paren
-l_int|13
+id|FPU_IRQ
 comma
 op_amp
-id|irq13
+id|fpu_irq
 )paren
 suffix:semicolon
 )brace

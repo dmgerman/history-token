@@ -812,6 +812,11 @@ id|bridge
 op_assign
 id|s-&gt;cap.cb_dev
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bridge
+)paren
 id|pci_remove_behind_bridge
 c_func
 (paren
