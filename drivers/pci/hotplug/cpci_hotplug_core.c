@@ -1250,6 +1250,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This is the interrupt mode interrupt handler */
+r_static
 id|irqreturn_t
 DECL|function|cpci_hp_intr
 id|cpci_hp_intr

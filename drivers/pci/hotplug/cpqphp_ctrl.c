@@ -386,6 +386,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * cpqhp_find_slot: find the struct slot of given device&n; * @ctrl: scan lots of this controller&n; * @device: the device id to find&n; */
 DECL|function|cpqhp_find_slot
+r_static
 r_struct
 id|slot
 op_star
@@ -8313,6 +8314,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * switch_leds: switch the leds, go from one site to the other.&n; * @ctrl: controller to use&n; * @num_of_slots: number of slots to use&n; * @direction: 1 to start from the left side, 0 to start right.&n; */
 DECL|function|switch_leds
+r_static
 r_void
 id|switch_leds
 c_func

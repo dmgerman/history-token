@@ -560,6 +560,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|zt5550_hc_disable_irq
+r_static
 r_int
 id|zt5550_hc_disable_irq
 c_func

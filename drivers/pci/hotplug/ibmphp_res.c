@@ -107,13 +107,6 @@ c_func
 id|gbuses
 )paren
 suffix:semicolon
-DECL|variable|ibmphp_res_head
-id|LIST_HEAD
-c_func
-(paren
-id|ibmphp_res_head
-)paren
-suffix:semicolon
 DECL|function|alloc_error_bus
 r_static
 r_struct

@@ -559,16 +559,6 @@ id|ctrl
 suffix:semicolon
 multiline_comment|/* controller functions */
 r_extern
-r_void
-id|shpchp_pushbutton_thread
-c_func
-(paren
-r_int
-r_int
-id|event_pointer
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|shpchprm_find_available_resources
 c_func

@@ -520,11 +520,6 @@ r_struct
 id|list_head
 id|ibmphp_slot_head
 suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|ibmphp_res_head
-suffix:semicolon
 multiline_comment|/***********************************************************&n;* FUNCTION PROTOTYPES                                      *&n;***********************************************************/
 r_extern
 r_void
@@ -1663,16 +1658,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* This function is called from EBDA, so we need it not be static */
-r_extern
-r_int
-id|ibmphp_disable_slot
-(paren
-r_struct
-id|hotplug_slot
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* This function is called from HPC, so we need it to not be static */
 r_extern
 r_int
 id|ibmphp_do_disable_slot

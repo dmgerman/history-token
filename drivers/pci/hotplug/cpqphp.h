@@ -2159,21 +2159,6 @@ op_star
 id|func
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|slot
-op_star
-id|cpqhp_find_slot
-(paren
-r_struct
-id|controller
-op_star
-id|ctrl
-comma
-id|u8
-id|device
-)paren
-suffix:semicolon
 multiline_comment|/* Global variables */
 r_extern
 r_int

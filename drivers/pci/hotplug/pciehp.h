@@ -546,15 +546,6 @@ id|ctrl
 suffix:semicolon
 multiline_comment|/* controller functions */
 r_extern
-r_void
-id|pciehp_pushbutton_thread
-(paren
-r_int
-r_int
-id|event_pointer
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|pciehprm_find_available_resources
 (paren
