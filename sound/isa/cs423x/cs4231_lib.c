@@ -464,6 +464,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|snd_cs4231_outm
+r_static
 r_void
 id|snd_cs4231_outm
 c_func
@@ -1194,8 +1195,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_cs4231_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_cs4231_debug
 c_func
@@ -5916,6 +5917,7 @@ suffix:semicolon
 macro_line|#endif /* LEGACY_SUPPORT */
 multiline_comment|/*&n;&n; */
 DECL|function|snd_cs4231_probe
+r_static
 r_int
 id|snd_cs4231_probe
 c_func
@@ -10961,13 +10963,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_cs4231_in
-)paren
-suffix:semicolon
-DECL|variable|snd_cs4231_outm
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_cs4231_outm
 )paren
 suffix:semicolon
 DECL|variable|snd_cs4236_ext_out

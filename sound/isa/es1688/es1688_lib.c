@@ -244,6 +244,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|snd_es1688_read
+r_static
 r_int
 id|snd_es1688_read
 c_func
@@ -358,6 +359,7 @@ l_int|10
 suffix:semicolon
 )brace
 DECL|function|snd_es1688_mixer_read
+r_static
 r_int
 r_char
 id|snd_es1688_mixer_read
@@ -6023,13 +6025,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_es1688_mixer_write
-)paren
-suffix:semicolon
-DECL|variable|snd_es1688_mixer_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_es1688_mixer_read
 )paren
 suffix:semicolon
 DECL|variable|snd_es1688_create

@@ -1701,6 +1701,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_opl3sa2_get_single
+r_static
 r_int
 id|snd_opl3sa2_get_single
 c_func
@@ -1824,6 +1825,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_opl3sa2_put_single
+r_static
 r_int
 id|snd_opl3sa2_put_single
 c_func
@@ -1989,6 +1991,7 @@ suffix:semicolon
 DECL|macro|OPL3SA2_DOUBLE
 mdefine_line|#define OPL3SA2_DOUBLE(xname, xindex, left_reg, right_reg, shift_left, shift_right, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_opl3sa2_info_double, &bslash;&n;  .get = snd_opl3sa2_get_double, .put = snd_opl3sa2_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (shift_left &lt;&lt; 16) | (shift_right &lt;&lt; 19) | (mask &lt;&lt; 24) | (invert &lt;&lt; 22) }
 DECL|function|snd_opl3sa2_info_double
+r_static
 r_int
 id|snd_opl3sa2_info_double
 c_func
@@ -2041,6 +2044,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_opl3sa2_get_double
+r_static
 r_int
 id|snd_opl3sa2_get_double
 c_func
@@ -2216,6 +2220,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_opl3sa2_put_double
+r_static
 r_int
 id|snd_opl3sa2_put_double
 c_func

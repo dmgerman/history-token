@@ -447,16 +447,5 @@ id|c-&gt;private_value
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-r_void
-id|snd_ad1848_debug
-c_func
-(paren
-id|ad1848_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __SOUND_AD1848_H */
 eof

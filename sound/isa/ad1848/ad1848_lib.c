@@ -592,8 +592,8 @@ id|REG
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_ad1848_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_ad1848_debug
 c_func
