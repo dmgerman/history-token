@@ -3698,6 +3698,8 @@ DECL|macro|IPS_VER_BUILD_STRING
 mdefine_line|#define IPS_VER_BUILD_STRING &quot;00&quot;
 DECL|macro|IPS_VER_STRING
 mdefine_line|#define IPS_VER_STRING &quot;5.99.00&quot;
+DECL|macro|IPS_BUILD_IDENT
+mdefine_line|#define IPS_BUILD_IDENT 1132
 multiline_comment|/* Version numbers for various adapters */
 DECL|macro|IPS_VER_SERVERAID1
 mdefine_line|#define IPS_VER_SERVERAID1 &quot;2.25.01&quot;
