@@ -2384,14 +2384,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|strlcpy
+id|kobject_set_name
 c_func
 (paren
-id|slot-&gt;kobj.name
+op_amp
+id|slot-&gt;kobj
 comma
 id|slot-&gt;name
-comma
-id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|kobj_set_kset_s
