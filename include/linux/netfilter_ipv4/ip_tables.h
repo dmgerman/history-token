@@ -101,7 +101,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 DECL|member|user
 )brace
@@ -161,7 +167,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 DECL|member|user
 )brace
@@ -692,7 +704,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 multiline_comment|/* Return true or false: return FALSE and set *hotdrop = 1 to&n;           force immediate packet drop. */
 multiline_comment|/* Arguments changed since 2.4, as this must now handle&n;           non-linear skbs, using skb_copy_bits and&n;           skb_ip_make_writable. */
@@ -809,7 +827,13 @@ r_char
 id|name
 (braket
 id|IPT_FUNCTION_MAXNAMELEN
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+DECL|member|revision
+id|u_int8_t
+id|revision
 suffix:semicolon
 multiline_comment|/* Called when user tries to insert an entry of this type:&n;           hook_mask is a bitmask of hooks from which it can be&n;           called. */
 multiline_comment|/* Should return true or false. */
