@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/powerpmc250.c&n; * &n; * Board setup routines for Force PowerPMC-250 Processor PMC&n; *&n; * Author: Troy Benjegerdes &lt;tbenjegerdes@mvista.com&gt;&n; * Borrowed heavily from prpmc750_*.c by&n; * &t;Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/powerpmc250.c&n; *&n; * Board setup routines for Force PowerPMC-250 Processor PMC&n; *&n; * Author: Troy Benjegerdes &lt;tbenjegerdes@mvista.com&gt;&n; * Borrowed heavily from prpmc750_*.c by&n; * &t;Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -810,7 +810,7 @@ op_assign
 id|powerpmc250_calibrate_decr
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * (This used to be arch/ppc/platforms/powerpmc250_pci.c)&n; * &n; * PCI support for Force PowerPMC250&n; *&n; */
+multiline_comment|/*&n; * (This used to be arch/ppc/platforms/powerpmc250_pci.c)&n; *&n; * PCI support for Force PowerPMC250&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -819,7 +819,7 @@ mdefine_line|#define DBG(x...) printk(x)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
-macro_line|#endif /* DEBUG */ 
+macro_line|#endif /* DEBUG */
 r_static
 r_inline
 r_int
@@ -953,7 +953,7 @@ id|u_char
 id|devfn
 )paren
 (brace
-multiline_comment|/*&n;&t; * While doing PCI Scan  the MPC107 will &squot;detect&squot; itself as&n;&t; * device on the PCI Bus, will create an incorrect response and&n;&t; * later will respond incorrectly to Configuration read coming&n;&t; * from another device.&n;&t; * &n;&t; * The work around is that when doing a PCI Scan one&n;&t; * should skip its own device number in the scan.&n;&t; * &n;&t; * The top IDsel is AD13 and the middle is AD14.&n;&t; *&n;&t; * -- Note from force&n;&t; */
+multiline_comment|/*&n;&t; * While doing PCI Scan  the MPC107 will &squot;detect&squot; itself as&n;&t; * device on the PCI Bus, will create an incorrect response and&n;&t; * later will respond incorrectly to Configuration read coming&n;&t; * from another device.&n;&t; *&n;&t; * The work around is that when doing a PCI Scan one&n;&t; * should skip its own device number in the scan.&n;&t; *&n;&t; * The top IDsel is AD13 and the middle is AD14.&n;&t; *&n;&t; * -- Note from force&n;&t; */
 r_if
 c_cond
 (paren

@@ -606,7 +606,7 @@ id|pin
 (brace
 multiline_comment|/* 2600&n;&t; * Raven 31&n;&t; * ISA   11&n;&t; * SCSI&t; 12 - IRQ3&n;&t; * Univ  13&n;&t; * eth   14 - IRQ2&n;&t; * VGA   15 - IRQ4&n;&t; * PMC1  16 - IRQ9,10,11,12 = PMC1 A-D&n;&t; * PMC2  17 - IRQ12,9,10,11 = A-D&n;&t; * SCSI2 18 - IRQ11&n;&t; * eth2  19 - IRQ10&n;&t; * PCIX  20 - IRQ9,10,11,12 = PCI A-D&n;&t; */
 multiline_comment|/* 2400&n;&t; * Hawk 31&n;&t; * ISA&t;11&n;&t; * Univ 13&n;&t; * eth  14 - IRQ2&n;&t; * PMC1 16 - IRQ9,10,11,12 = PMC A-D&n;&t; * PMC2 17 - IRQ12,9,10,11 = PMC A-D&n;&t; * PCIX 20 - IRQ9,10,11,12 = PMC A-D&n;&t; */
-multiline_comment|/* 2300&n;&t; * Raven 31&n;&t; * ISA   11&n;&t; * Univ  13 &n;&t; * eth   14 - IRQ2&n;&t; * PMC1  16 - 9,10,11,12 = A-D&n;&t; * PMC2  17 - 9,10,11,12 = B,C,D,A&n;&t; */
+multiline_comment|/* 2300&n;&t; * Raven 31&n;&t; * ISA   11&n;&t; * Univ  13&n;&t; * eth   14 - IRQ2&n;&t; * PMC1  16 - 9,10,11,12 = A-D&n;&t; * PMC2  17 - 9,10,11,12 = B,C,D,A&n;&t; */
 r_static
 r_char
 id|pci_irq_table

@@ -287,47 +287,8 @@ id|on
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|vme_scc_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|serial167_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|rs_8xx_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|tub3270_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|rs_360_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|tx3912_rs_init
 c_func
 (paren
 r_void
@@ -3446,18 +3407,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-id|tty-&gt;device
-op_assign
-id|MKDEV
-c_func
-(paren
-id|driver-&gt;major
-comma
-id|driver-&gt;minor_start
-)paren
-op_plus
-id|idx
-suffix:semicolon
 id|tty-&gt;driver
 op_assign
 id|driver
@@ -3614,18 +3563,6 @@ c_func
 (paren
 id|o_tty
 )paren
-suffix:semicolon
-id|o_tty-&gt;device
-op_assign
-id|MKDEV
-c_func
-(paren
-id|driver-&gt;other-&gt;major
-comma
-id|driver-&gt;other-&gt;minor_start
-)paren
-op_plus
-id|idx
 suffix:semicolon
 id|o_tty-&gt;driver
 op_assign
@@ -10710,116 +10647,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|vty_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ESPSERIAL  /* init ESP before rs, so rs doesn&squot;t see the port */
-id|espserial_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_MVME162_SCC) || defined(CONFIG_BVME6000_SCC) || defined(CONFIG_MVME147_SCC)
-id|vme_scc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_TX3912
-id|tx3912_rs_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ROCKETPORT
-id|rp_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL167
-id|serial167_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_CYCLADES
-id|cy_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_STALLION
-id|stl_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISTALLION
-id|stli_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DIGI
-id|pcxe_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DIGIEPCA
-id|pc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SPECIALIX
-id|specialix_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if (defined(CONFIG_8xx) || defined(CONFIG_8260))
-id|rs_8xx_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_8xx */
-id|pty_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MOXA_INTELLIO
-id|moxa_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;
-macro_line|#ifdef CONFIG_TN3270
-id|tub3270_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_A2232
-id|a2232board_init
 c_func
 (paren
 )paren

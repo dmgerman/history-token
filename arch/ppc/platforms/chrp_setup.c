@@ -1599,7 +1599,7 @@ op_minus
 id|NUM_8259_INTERRUPTS
 )braket
 suffix:semicolon
-macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(XMON)&t;
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_INPUT_ADBHID) &amp;&amp; defined(XMON)
 r_struct
 id|device_node
 op_star
@@ -1814,7 +1814,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_NVRAM  
+macro_line|#ifdef CONFIG_NVRAM
 singleline_comment|// XX replace this in a more saner way
 singleline_comment|//&t;pmac_nvram_init();
 macro_line|#endif
@@ -2142,7 +2142,7 @@ op_amp
 id|chrp_smp_ops
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/*&n;&t; * Print the banner, then scroll down so boot progress&n;&t; * can be printed.  -- Cort &n;&t; */
+multiline_comment|/*&n;&t; * Print the banner, then scroll down so boot progress&n;&t; * can be printed.  -- Cort&n;&t; */
 r_if
 c_cond
 (paren

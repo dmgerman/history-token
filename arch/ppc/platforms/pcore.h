@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/pcore.h&n; * &n; * Definitions for Force PowerCore board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/pcore.h&n; *&n; * Definitions for Force PowerCore board support&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef __PPC_PLATFORMS_PCORE_H
 DECL|macro|__PPC_PLATFORMS_PCORE_H
 mdefine_line|#define __PPC_PLATFORMS_PCORE_H
@@ -12,7 +12,7 @@ mdefine_line|#define PCORE_NVRAM_AS0&t;&t;&t;0x73
 DECL|macro|PCORE_NVRAM_AS1
 mdefine_line|#define PCORE_NVRAM_AS1&t;&t;&t;0x75
 DECL|macro|PCORE_NVRAM_DATA
-mdefine_line|#define PCORE_NVRAM_DATA&t;&t;0x77    
+mdefine_line|#define PCORE_NVRAM_DATA&t;&t;0x77
 DECL|macro|PCORE_DCCR_REG
 mdefine_line|#define PCORE_DCCR_REG&t;&t;&t;(MPC10X_MAPB_ISA_IO_BASE + 0x308)
 DECL|macro|PCORE_DCCR_L2_MASK

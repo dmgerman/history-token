@@ -13179,6 +13179,9 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -13198,6 +13201,10 @@ r_struct
 id|he_ioctl_reg
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -13300,6 +13307,9 @@ id|err
 op_eq
 l_int|0
 )paren
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -13319,6 +13329,10 @@ r_struct
 id|he_ioctl_reg
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon

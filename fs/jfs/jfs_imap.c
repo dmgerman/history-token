@@ -10771,7 +10771,7 @@ id|dip-&gt;di_rdev
 suffix:semicolon
 id|ip-&gt;i_rdev
 op_assign
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|jfs_ip-&gt;dev

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/platforms/pmac_nvram.c&n; *&n; *  Copyright (C) 2002 Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *  &n; *  Todo: - cleanup some coding horrors in the flash code&n; *        - add support for the OF persistent properties&n; */
+multiline_comment|/*&n; *  arch/ppc/platforms/pmac_nvram.c&n; *&n; *  Copyright (C) 2002 Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Todo: - cleanup some coding horrors in the flash code&n; *        - add support for the OF persistent properties&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -376,7 +376,7 @@ c_func
 l_string|&quot;Invalid signature&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -989,7 +989,7 @@ id|pmac_nvram_NR
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 r_void
 id|__init

@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_FD
 macro_line|#include &lt;asm/floppy.h&gt;

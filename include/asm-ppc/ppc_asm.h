@@ -52,11 +52,11 @@ mdefine_line|#define REST_32FPRS(n, base)&t;REST_16FPRS(n, base); REST_16FPRS(n+
 DECL|macro|SAVE_VR
 mdefine_line|#define SAVE_VR(n,b,base)&t;li b,THREAD_VR0+(16*(n));  stvx n,b,base
 DECL|macro|SAVE_2VR
-mdefine_line|#define SAVE_2VR(n,b,base)&t;SAVE_VR(n,b,base); SAVE_VR(n+1,b,base) 
+mdefine_line|#define SAVE_2VR(n,b,base)&t;SAVE_VR(n,b,base); SAVE_VR(n+1,b,base)
 DECL|macro|SAVE_4VR
-mdefine_line|#define SAVE_4VR(n,b,base)&t;SAVE_2VR(n,b,base); SAVE_2VR(n+2,b,base) 
+mdefine_line|#define SAVE_4VR(n,b,base)&t;SAVE_2VR(n,b,base); SAVE_2VR(n+2,b,base)
 DECL|macro|SAVE_8VR
-mdefine_line|#define SAVE_8VR(n,b,base)&t;SAVE_4VR(n,b,base); SAVE_4VR(n+4,b,base) 
+mdefine_line|#define SAVE_8VR(n,b,base)&t;SAVE_4VR(n,b,base); SAVE_4VR(n+4,b,base)
 DECL|macro|SAVE_16VR
 mdefine_line|#define SAVE_16VR(n,b,base)&t;SAVE_8VR(n,b,base); SAVE_8VR(n+8,b,base)
 DECL|macro|SAVE_32VR
@@ -64,13 +64,13 @@ mdefine_line|#define SAVE_32VR(n,b,base)&t;SAVE_16VR(n,b,base); SAVE_16VR(n+16,b
 DECL|macro|REST_VR
 mdefine_line|#define REST_VR(n,b,base)&t;li b,THREAD_VR0+(16*(n)); lvx n,b,base
 DECL|macro|REST_2VR
-mdefine_line|#define REST_2VR(n,b,base)&t;REST_VR(n,b,base); REST_VR(n+1,b,base) 
+mdefine_line|#define REST_2VR(n,b,base)&t;REST_VR(n,b,base); REST_VR(n+1,b,base)
 DECL|macro|REST_4VR
-mdefine_line|#define REST_4VR(n,b,base)&t;REST_2VR(n,b,base); REST_2VR(n+2,b,base) 
+mdefine_line|#define REST_4VR(n,b,base)&t;REST_2VR(n,b,base); REST_2VR(n+2,b,base)
 DECL|macro|REST_8VR
-mdefine_line|#define REST_8VR(n,b,base)&t;REST_4VR(n,b,base); REST_4VR(n+4,b,base) 
+mdefine_line|#define REST_8VR(n,b,base)&t;REST_4VR(n,b,base); REST_4VR(n+4,b,base)
 DECL|macro|REST_16VR
-mdefine_line|#define REST_16VR(n,b,base)&t;REST_8VR(n,b,base); REST_8VR(n+8,b,base) 
+mdefine_line|#define REST_16VR(n,b,base)&t;REST_8VR(n,b,base); REST_8VR(n+8,b,base)
 DECL|macro|REST_32VR
 mdefine_line|#define REST_32VR(n,b,base)&t;REST_16VR(n,b,base); REST_16VR(n+16,b,base)
 macro_line|#ifdef CONFIG_PPC601_SYNC_FIX

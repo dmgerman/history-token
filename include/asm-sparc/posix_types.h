@@ -57,12 +57,6 @@ r_int
 r_int
 id|__kernel_gid_t
 suffix:semicolon
-DECL|typedef|__kernel_dev_t
-r_typedef
-r_int
-r_int
-id|__kernel_dev_t
-suffix:semicolon
 DECL|typedef|__kernel_ino_t
 r_typedef
 r_int

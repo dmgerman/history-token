@@ -1933,7 +1933,11 @@ id|MS_RDONLY
 suffix:semicolon
 id|ROOT_DEV
 op_assign
+id|old_decode_dev
+c_func
+(paren
 id|tag-&gt;u.core.rootdev
+)paren
 suffix:semicolon
 )brace
 r_return

@@ -91,7 +91,7 @@ multiline_comment|/*&n; * DCRN definitions&n; */
 macro_line|#ifdef CONFIG_440GX
 multiline_comment|/* SDRs */
 DECL|macro|DCRN_SDR_CONFIG_ADDR
-mdefine_line|#define DCRN_SDR_CONFIG_ADDR &t;0xe 
+mdefine_line|#define DCRN_SDR_CONFIG_ADDR &t;0xe
 DECL|macro|DCRN_SDR_CONFIG_DATA
 mdefine_line|#define DCRN_SDR_CONFIG_DATA&t;0xf
 DECL|macro|DCRN_SDR_PFC0
@@ -129,7 +129,7 @@ mdefine_line|#define DCRN_SDR_MFR_E1TXFL&t;0x00000800
 DECL|macro|DCRN_SDR_MFR_E1TXFH
 mdefine_line|#define DCRN_SDR_MFR_E1TXFH&t;0x00000400
 DECL|macro|DCRN_SDR_MFR_E1RXFL
-mdefine_line|#define DCRN_SDR_MFR_E1RXFL&t;0x00000200 
+mdefine_line|#define DCRN_SDR_MFR_E1RXFL&t;0x00000200
 DECL|macro|DCRN_SDR_MFR_E1RXFH
 mdefine_line|#define DCRN_SDR_MFR_E1RXFH&t;0x00000100
 DECL|macro|DCRN_SDR_MFR_E2TXFL
@@ -222,7 +222,7 @@ mdefine_line|#define DCRN_MALRXEOBISR(base)&t;&t;(base + 0x12)&t;/* Rx End of Bu
 DECL|macro|DCRN_MALRXDEIR
 mdefine_line|#define DCRN_MALRXDEIR(base)&t;&t;(base + 0x13)&t;/* Rx Descriptor Error Interrupt */
 DECL|macro|DCRN_MALTXCTP0R
-mdefine_line|#define DCRN_MALTXCTP0R(base)&t;&t;(base + 0x20)&t;/* Channel Tx 0 Channel Table Pointer */&t;
+mdefine_line|#define DCRN_MALTXCTP0R(base)&t;&t;(base + 0x20)&t;/* Channel Tx 0 Channel Table Pointer */
 DECL|macro|DCRN_MALTXCTP1R
 mdefine_line|#define DCRN_MALTXCTP1R(base)&t;&t;(base + 0x21)&t;/* Channel Tx 1 Channel Table Pointer */
 DECL|macro|DCRN_MALTXCTP2R
@@ -230,13 +230,13 @@ mdefine_line|#define DCRN_MALTXCTP2R(base)&t;&t;(base + 0x22)&t;/* Channel Tx 2 
 DECL|macro|DCRN_MALTXCTP3R
 mdefine_line|#define DCRN_MALTXCTP3R(base)&t;&t;(base + 0x23)&t;/* Channel Tx 3 Channel Table Pointer */
 DECL|macro|DCRN_MALRXCTP0R
-mdefine_line|#define DCRN_MALRXCTP0R(base)&t;&t;(base + 0x40)&t;/* Channel Rx 0 Channel Table Pointer */&t;
+mdefine_line|#define DCRN_MALRXCTP0R(base)&t;&t;(base + 0x40)&t;/* Channel Rx 0 Channel Table Pointer */
 DECL|macro|DCRN_MALRXCTP1R
-mdefine_line|#define DCRN_MALRXCTP1R(base)&t;&t;(base + 0x41)&t;/* Channel Rx 1 Channel Table Pointer */&t;
+mdefine_line|#define DCRN_MALRXCTP1R(base)&t;&t;(base + 0x41)&t;/* Channel Rx 1 Channel Table Pointer */
 DECL|macro|DCRN_MALRCBS0
-mdefine_line|#define DCRN_MALRCBS0(base)&t;&t;(base + 0x60)&t;/* Channel Rx 0 Channel Buffer Size */&t;
+mdefine_line|#define DCRN_MALRCBS0(base)&t;&t;(base + 0x60)&t;/* Channel Rx 0 Channel Buffer Size */
 DECL|macro|DCRN_MALRCBS1
-mdefine_line|#define DCRN_MALRCBS1(base)&t;&t;(base + 0x61)&t;/* Channel Rx 1 Channel Buffer Size */&t;
+mdefine_line|#define DCRN_MALRCBS1(base)&t;&t;(base + 0x61)&t;/* Channel Rx 1 Channel Buffer Size */
 multiline_comment|/* Compatibility DCRN&squot;s */
 DECL|macro|DCRN_MALRXCTP2R
 mdefine_line|#define DCRN_MALRXCTP2R(base)&t;((base) + 0x42)&t;/* Channel Rx 2 Channel Table Pointer */

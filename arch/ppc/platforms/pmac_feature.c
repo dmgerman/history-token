@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/platforms/pmac_feature.c&n; *&n; *  Copyright (C) 1996-2001 Paul Mackerras (paulus@cs.anu.edu.au)&n; *                          Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *  &n; *  TODO: &n; *  &n; *   - Replace mdelay with some schedule loop if possible&n; *   - Shorten some obfuscated delays on some routines (like modem&n; *     power)&n; *   - Refcount some clocks (see darwin)&n; *   - Split split split...&n; *&n; */
+multiline_comment|/*&n; *  arch/ppc/platforms/pmac_feature.c&n; *&n; *  Copyright (C) 1996-2001 Paul Mackerras (paulus@cs.anu.edu.au)&n; *                          Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  TODO:&n; *&n; *   - Replace mdelay with some schedule loop if possible&n; *   - Shorten some obfuscated delays on some routines (like modem&n; *     power)&n; *   - Refcount some clocks (see darwin)&n; *   - Split split split...&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -551,7 +551,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ADB_PMU */&t;&t;
+macro_line|#endif /* CONFIG_ADB_PMU */
 id|LOCK
 c_func
 (paren
@@ -873,7 +873,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ADB_PMU */&t;&t;
+macro_line|#endif /* CONFIG_ADB_PMU */
 )brace
 r_return
 l_int|0
@@ -1656,7 +1656,7 @@ comma
 l_int|0x00040000
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 (paren
 r_void
 )paren
@@ -7479,7 +7479,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Put the host bridge to sleep&n;&t; */
+multiline_comment|/*&n;&t; * Put the host bridge to sleep&n;&t; */
 id|save_unin_clock_ctl
 op_assign
 id|UN_IN
@@ -8155,7 +8155,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Table definitions&n; */
+multiline_comment|/*&n; * Table definitions&n; */
 multiline_comment|/* Used on any machine&n; */
 DECL|variable|__pmacdata
 r_static

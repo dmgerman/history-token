@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-multiline_comment|/*&n; * Define all of the IRQ senses and polarities.  &n; */
+multiline_comment|/*&n; * Define all of the IRQ senses and polarities.&n; */
 DECL|variable|__initdata
 r_static
 id|u_char

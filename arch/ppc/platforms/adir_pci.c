@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/adir_pci.c&n; * &n; * PCI support for SBS Adirondack&n; *&n; * By Michael Sokolov &lt;msokolov@ivan.Harhan.ORG&gt;&n; * based on the K2 version by Matt Porter &lt;mporter@mvista.com&gt;&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/adir_pci.c&n; *&n; * PCI support for SBS Adirondack&n; *&n; * By Michael Sokolov &lt;msokolov@ivan.Harhan.ORG&gt;&n; * based on the K2 version by Matt Porter &lt;mporter@mvista.com&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -71,7 +71,7 @@ id|pci_irq_table
 l_int|4
 )braket
 op_assign
-multiline_comment|/*&n;&t;&t; *             PCI IDSEL/INTPIN-&gt;INTLINE &n;&t;&t; *             A          B          C          D&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *             PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; *             A          B          C          D&n;&t;&t; */
 (brace
 multiline_comment|/* south bridge */
 id|PCIIRQ
@@ -164,7 +164,7 @@ id|pci_irq_table
 l_int|4
 )braket
 op_assign
-multiline_comment|/*&n;&t;&t; *             PCI IDSEL/INTPIN-&gt;INTLINE &n;&t;&t; *             A          B          C          D&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *             PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; *             A          B          C          D&n;&t;&t; */
 (brace
 multiline_comment|/* Ethernet 1 */
 id|PCIIRQ

@@ -4464,7 +4464,7 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|rdev
@@ -4596,7 +4596,7 @@ c_func
 (paren
 id|sd_v2
 comma
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4752,7 +4752,7 @@ c_func
 (paren
 id|sd_v1
 comma
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|inode-&gt;i_rdev

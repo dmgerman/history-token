@@ -184,6 +184,10 @@ multiline_comment|/* HIT */
 r_goto
 id|out
 suffix:semicolon
+id|q
+op_assign
+id|q-&gt;next
+suffix:semicolon
 )brace
 r_while
 c_loop

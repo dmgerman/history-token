@@ -4684,7 +4684,7 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* If there is a WD 90C, reset the IO BAR to 0x0 (it started that &n;&t; * way, but the PCI layer relocated it because it thought 0x0 was&n;&t; * invalid for a BAR).&n;&t; * If you don&squot;t do this, the card&squot;s VGA base will be &lt;IO BAR&gt;+0xc0000&n;&t; * instead of 0xc0000. vgacon.c (for example) is completely unaware of&n;&t; * this little quirk.&n;&t; */
+multiline_comment|/* If there is a WD 90C, reset the IO BAR to 0x0 (it started that&n;&t; * way, but the PCI layer relocated it because it thought 0x0 was&n;&t; * invalid for a BAR).&n;&t; * If you don&squot;t do this, the card&squot;s VGA base will be &lt;IO BAR&gt;+0xc0000&n;&t; * instead of 0xc0000. vgacon.c (for example) is completely unaware of&n;&t; * this little quirk.&n;&t; */
 id|dev
 op_assign
 id|pci_find_device
@@ -4897,7 +4897,7 @@ c_func
 l_string|&quot;PReP architecture&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;  
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 (brace
 id|PPC_DEVICE
 op_star

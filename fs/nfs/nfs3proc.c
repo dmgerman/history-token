@@ -3264,14 +3264,21 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS call  mknod %s %x&bslash;n&quot;
+l_string|&quot;NFS call  mknod %s %u:%u&bslash;n&quot;
 comma
 id|name-&gt;name
 comma
+id|MAJOR
+c_func
 (paren
-r_int
-)paren
 id|rdev
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|rdev
+)paren
 )paren
 suffix:semicolon
 id|dir_attr.valid

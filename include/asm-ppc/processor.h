@@ -314,9 +314,9 @@ DECL|macro|DBCR0_FT
 mdefine_line|#define   DBCR0_FT          0x00000001  /* Freeze Timers on debug event    */
 macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_DBCR1
-mdefine_line|#define&t;SPRN_DBCR1&t;0x3BD&t;/* Debug Control Register 1 */&t;&t;  
+mdefine_line|#define&t;SPRN_DBCR1&t;0x3BD&t;/* Debug Control Register 1 */&t;&t;
 DECL|macro|SPRN_DBSR
-mdefine_line|#define&t;SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */&t;&t;  
+mdefine_line|#define&t;SPRN_DBSR&t;0x3F0&t;/* Debug Status Register */&t;&t;
 DECL|macro|DBSR_IC
 mdefine_line|#define   DBSR_IC&t;    0x80000000&t;/* Instruction Completion          */
 DECL|macro|DBSR_BT

@@ -19,7 +19,7 @@ mdefine_line|#define DPRINTK(a,b...)&t;printk(KERN_DEBUG &quot;apus_pci: %s: &qu
 macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
-macro_line|#endif 
+macro_line|#endif
 multiline_comment|/*&n; * The _DEFINITIVE_ memory mapping/unmapping functions.&n; * This is due to the fact that they&squot;re changing soooo often...&n; */
 DECL|macro|DEFW
 mdefine_line|#define DEFW()&t;&t;wmb()
@@ -478,7 +478,7 @@ op_amp
 id|pci_mem
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * This is from pm2fb.c again&n; * &n; * Check if PCI (B/CVisionPPC) is available, initialize it and set up&n; * the pcibios_* pointers&n; */
+multiline_comment|/*&n; * This is from pm2fb.c again&n; *&n; * Check if PCI (B/CVisionPPC) is available, initialize it and set up&n; * the pcibios_* pointers&n; */
 r_void
 id|__init
 DECL|function|apus_setup_pci_ptrs

@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC_MSGBUF_H
 DECL|macro|_PPC_MSGBUF_H
 mdefine_line|#define _PPC_MSGBUF_H
-multiline_comment|/* &n; * The msqid64_ds structure for the PPC architecture.&n; */
+multiline_comment|/*&n; * The msqid64_ds structure for the PPC architecture.&n; */
 DECL|struct|msqid64_ds
 r_struct
 id|msqid64_ds

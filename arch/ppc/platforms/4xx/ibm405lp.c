@@ -101,7 +101,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/* Set up the 405LP clock and power management unit for aggressive power&n;   management.  &n;&n;   Briefly, there are 3 CPM &quot;classes&quot;:&n;&n;   Class 1 - Either completely asleep or awake.  The &quot;force&quot; state is&n;             equivalent to the &quot;enabled&quot; state.  Many Class 1 units are &n;             critical system components and are never power managed.&n;&n;   Class 2 - Can be enabled for power management, where sleep requests are&n;             made by the peripheral, typically after an inactivity timeout.&n;&t;     When sleeping, critical interfaces remain active, and&n;&t;     awaken the unit whenever it is targeted with a transaction.&n;&n;   Class 3 - Can be enabled for power management, where sleep requests are&n;             made by the CPM.  Power management for these units typically &n;             will require intelligence in a device driver.&n;&n;   In the current implementation, the &quot;force&quot; bits are only used on Class 1&n;   devices, and only when the associated driver has the intelligence necessary&n;   to &quot;unforce&quot; the power management state.  A previous scheme, which tried to&n;   enable power management based on whether a particular driver was compiled&n;   with the kernel, caused many problems and is never used here.  &n;&n;   Class 2 devices with timeouts are normally initialized for the most&n;   aggressive values.  There is no power management benefit of &quot;forcing&quot; Class&n;   2 devices over letting their inactivity timeouts take effect.  Therefore,&n;   after being set up here, Class 2 device drivers don&squot;t need to worry about&n;   CPM.  &n;&n;   No Class 3 devices are handled yet.  */
+multiline_comment|/* Set up the 405LP clock and power management unit for aggressive power&n;   management.&n;&n;   Briefly, there are 3 CPM &quot;classes&quot;:&n;&n;   Class 1 - Either completely asleep or awake.  The &quot;force&quot; state is&n;             equivalent to the &quot;enabled&quot; state.  Many Class 1 units are&n;             critical system components and are never power managed.&n;&n;   Class 2 - Can be enabled for power management, where sleep requests are&n;             made by the peripheral, typically after an inactivity timeout.&n;&t;     When sleeping, critical interfaces remain active, and&n;&t;     awaken the unit whenever it is targeted with a transaction.&n;&n;   Class 3 - Can be enabled for power management, where sleep requests are&n;             made by the CPM.  Power management for these units typically&n;             will require intelligence in a device driver.&n;&n;   In the current implementation, the &quot;force&quot; bits are only used on Class 1&n;   devices, and only when the associated driver has the intelligence necessary&n;   to &quot;unforce&quot; the power management state.  A previous scheme, which tried to&n;   enable power management based on whether a particular driver was compiled&n;   with the kernel, caused many problems and is never used here.&n;&n;   Class 2 devices with timeouts are normally initialized for the most&n;   aggressive values.  There is no power management benefit of &quot;forcing&quot; Class&n;   2 devices over letting their inactivity timeouts take effect.  Therefore,&n;   after being set up here, Class 2 device drivers don&squot;t need to worry about&n;   CPM.&n;&n;   No Class 3 devices are handled yet.  */
 r_void
 id|__init
 DECL|function|ibm405lp_setup_cpm
@@ -191,7 +191,7 @@ id|enable
 op_or_assign
 id|IBM_CPM_DMA
 suffix:semicolon
-multiline_comment|/* BRG - Class 2.  Seems to crash the system when enabled in 405LP Pass&n;&t;   1 &n;&n;&t;   DCP (CodePack) - Class 2.  The semantics of the sleep delay are not&n;&t;   documented. We&squot;ll use 32 (what the heck). */
+multiline_comment|/* BRG - Class 2.  Seems to crash the system when enabled in 405LP Pass&n;&t;   1&n;&n;&t;   DCP (CodePack) - Class 2.  The semantics of the sleep delay are not&n;&t;   documented. We&squot;ll use 32 (what the heck). */
 id|dcp0_cfg.reg
 op_assign
 id|mfdcri
@@ -344,7 +344,7 @@ id|enable
 op_or_assign
 id|IBM_CPM_SLA
 suffix:semicolon
-multiline_comment|/* CSI  - Class 1.  &n;&t;   TPC  - Class 1.&n;&t;   TDES - Class 1.&n;&n;&t;   The drivers for these units are power-aware, and manage the device&n;&t;   properly. By default these units are forced off at boot. */
+multiline_comment|/* CSI  - Class 1.&n;&t;   TPC  - Class 1.&n;&t;   TDES - Class 1.&n;&n;&t;   The drivers for these units are power-aware, and manage the device&n;&t;   properly. By default these units are forced off at boot. */
 id|force
 op_or_assign
 id|IBM_CPM_CSI

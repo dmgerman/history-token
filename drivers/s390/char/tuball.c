@@ -373,13 +373,6 @@ comma
 l_int|0x7f
 )brace
 suffix:semicolon
-r_int
-id|tub3270_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifndef MODULE
 multiline_comment|/*&n; * Can&squot;t have this driver a module &amp; support console at the same time&n; */
 macro_line|#ifdef CONFIG_TN3270_CONSOLE
@@ -894,47 +887,13 @@ id|rc
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_TN3270_CONSOLE */
-macro_line|#else /* If generated as a MODULE */
-multiline_comment|/*&n; * module init:  find tubes; get a major nbr&n; */
-r_int
-DECL|function|init_module
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|tubnummins
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;EEEK!!  Tube driver cobbigling!!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|tub3270_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif
 multiline_comment|/*&n; * remove driver:  unregister the major number&n; */
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|tub3270_exit
+id|tub3270_exit
 c_func
 (paren
 r_void
@@ -956,7 +915,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* Not a MODULE or a MODULE */
 r_static
 r_int
 DECL|function|tub3270_is_ours
@@ -997,7 +955,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * tub3270_init() called by kernel or module initialization&n; */
+r_static
 r_int
+id|__init
 DECL|function|tub3270_init
 id|tub3270_init
 c_func
@@ -1013,6 +973,28 @@ id|i
 comma
 id|rc
 suffix:semicolon
+macro_line|#ifdef MODULE
+r_if
+c_cond
+(paren
+id|tubnummins
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EEEK!!  Tube driver cobbigling!!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Copy and correct ebcdic - ascii translate tables&n;&t; */
 id|memcpy
 c_func
@@ -2767,4 +2749,18 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+DECL|variable|tub3270_init
+id|module_init
+c_func
+(paren
+id|tub3270_init
+)paren
+suffix:semicolon
+DECL|variable|tub3270_exit
+id|module_exit
+c_func
+(paren
+id|tub3270_exit
+)paren
+suffix:semicolon
 eof

@@ -20,9 +20,9 @@ DECL|macro|const_cpu_to_le32
 mdefine_line|#define const_cpu_to_le32(x)&t;__constant_cpu_to_le32(x)
 DECL|macro|const_cpu_to_le64
 mdefine_line|#define const_cpu_to_le64(x)&t;__constant_cpu_to_le64(x)
-multiline_comment|/* The NTFS oem_id */
+multiline_comment|/* The NTFS oem_id &quot;NTFS    &quot; */
 DECL|macro|magicNTFS
-mdefine_line|#define magicNTFS&t;const_cpu_to_le64(0x202020205346544e) /* &quot;NTFS    &quot; */
+mdefine_line|#define magicNTFS&t;const_cpu_to_le64(0x202020205346544eULL)
 multiline_comment|/*&n; * Location of bootsector on partition:&n; * &t;The standard NTFS_BOOT_SECTOR is on sector 0 of the partition.&n; * &t;On NT4 and above there is one backup copy of the boot sector to&n; * &t;be found on the last sector of the partition (not normally accessible&n; * &t;from within Windows as the bootsector contained number of sectors&n; *&t;value is one less than the actual value!).&n; * &t;On versions of NT 3.51 and earlier, the backup copy was located at &n; * &t;number of sectors/2 (integer divide), i.e. in the middle of the volume.&n; */
 multiline_comment|/*&n; * BIOS parameter block (bpb) structure.&n; */
 r_typedef

@@ -12715,7 +12715,7 @@ op_assign
 id|pci_map_sg
 c_func
 (paren
-id|Command-&gt;PciDevice
+id|Controller-&gt;PCIDevice
 comma
 id|Command-&gt;cmd_sglist
 comma
@@ -12795,7 +12795,7 @@ r_void
 id|pci_map_sg
 c_func
 (paren
-id|Command-&gt;PciDevice
+id|Controller-&gt;PCIDevice
 comma
 id|Command-&gt;cmd_sglist
 comma
@@ -12904,7 +12904,7 @@ suffix:semicolon
 id|pci_unmap_sg
 c_func
 (paren
-id|Command-&gt;PciDevice
+id|Command-&gt;Controller-&gt;PCIDevice
 comma
 id|Command-&gt;cmd_sglist
 comma

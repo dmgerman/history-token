@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Support for PCI bridges found on Power Macintoshes.&n; * &n; * This includes support for bandit, chaos, grackle (motorola&n; * MPC106), and uninorth&n; *&n; * Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; * Maintained by Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * Support for PCI bridges found on Power Macintoshes.&n; *&n; * This includes support for bandit, chaos, grackle (motorola&n; * MPC106), and uninorth&n; *&n; * Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; * Maintained by Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -195,7 +195,7 @@ r_return
 id|higher
 suffix:semicolon
 )brace
-multiline_comment|/* This routine fixes the &quot;bus-range&quot; property of all bridges in the&n; * system since they tend to have their &quot;last&quot; member wrong on macs&n; * &n; * Note that the bus numbers manipulated here are OF bus numbers, they&n; * are not Linux bus numbers.&n; */
+multiline_comment|/* This routine fixes the &quot;bus-range&quot; property of all bridges in the&n; * system since they tend to have their &quot;last&quot; member wrong on macs&n; *&n; * Note that the bus numbers manipulated here are OF bus numbers, they&n; * are not Linux bus numbers.&n; */
 r_static
 r_void
 id|__init
@@ -280,7 +280,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Apple MacRISC (UniNorth, Bandit, Chaos) PCI controllers.&n; * &n; * The &quot;Bandit&quot; version is present in all early PCI PowerMacs,&n; * and up to the first ones using Grackle. Some machines may&n; * have 2 bandit controllers (2 PCI busses).&n; * &n; * &quot;Chaos&quot; is used in some &quot;Bandit&quot;-type machines as a bridge&n; * for the separate display bus. It is accessed the same&n; * way as bandit, but cannot be probed for devices. It therefore&n; * has its own config access functions.&n; *&n; * The &quot;UniNorth&quot; version is present in all Core99 machines&n; * (iBook, G4, new IMacs, and all the recent Apple machines).&n; * It contains 3 controllers in one ASIC.&n; */
+multiline_comment|/*&n; * Apple MacRISC (UniNorth, Bandit, Chaos) PCI controllers.&n; *&n; * The &quot;Bandit&quot; version is present in all early PCI PowerMacs,&n; * and up to the first ones using Grackle. Some machines may&n; * have 2 bandit controllers (2 PCI busses).&n; *&n; * &quot;Chaos&quot; is used in some &quot;Bandit&quot;-type machines as a bridge&n; * for the separate display bus. It is accessed the same&n; * way as bandit, but cannot be probed for devices. It therefore&n; * has its own config access functions.&n; *&n; * The &quot;UniNorth&quot; version is present in all Core99 machines&n; * (iBook, G4, new IMacs, and all the recent Apple machines).&n; * It contains 3 controllers in one ASIC.&n; */
 DECL|macro|MACRISC_CFA0
 mdefine_line|#define MACRISC_CFA0(devfn, off)&t;&bslash;&n;&t;((1 &lt;&lt; (unsigned long)PCI_SLOT(dev_fn)) &bslash;&n;&t;| (((unsigned long)PCI_FUNC(dev_fn)) &lt;&lt; 8) &bslash;&n;&t;| (((unsigned long)(off)) &amp; 0xFCUL))
 DECL|macro|MACRISC_CFA1
@@ -1246,11 +1246,11 @@ c_func
 l_string|&quot;Can&squot;t find PCI infos for PCI&lt;-&gt;PCI bridge&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif&t;
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Warning: At this point, we have not yet renumbered all busses. &n;&t; * So we must use OF walking to find out hose&n;&t; */
+multiline_comment|/* Warning: At this point, we have not yet renumbered all busses.&n;&t; * So we must use OF walking to find out hose&n;&t; */
 id|hose
 op_assign
 id|pci_find_hose_for_OF_device
@@ -1273,7 +1273,7 @@ c_func
 l_string|&quot;Can&squot;t find hose for PCI&lt;-&gt;PCI bridge&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif&t;
 r_return
 suffix:semicolon
 )brace
@@ -2185,7 +2185,7 @@ comma
 id|hose-&gt;cfg_data
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif&t;
 multiline_comment|/* Interpret the &quot;ranges&quot; property */
 multiline_comment|/* This also maps the I/O region and sets isa_io/mem_base */
 id|pci_process_bridge_OF_ranges
@@ -2506,7 +2506,7 @@ id|updatecfg
 id|u16
 id|cmd
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure PCI is correctly configured&n;&t;&t; *&n;&t;&t; * We use old pci_bios versions of the function since, by&n;&t;&t; * default, gmac is not powered up, and so will be absent&n;&t;&t; * from the kernel initial PCI lookup. &n;&t;&t; * &n;&t;&t; * Should be replaced by 2.4 new PCI mecanisms and really&n;&t;&t; * regiser the device.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure PCI is correctly configured&n;&t;&t; *&n;&t;&t; * We use old pci_bios versions of the function since, by&n;&t;&t; * default, gmac is not powered up, and so will be absent&n;&t;&t; * from the kernel initial PCI lookup.&n;&t;&t; *&n;&t;&t; * Should be replaced by 2.4 new PCI mecanisms and really&n;&t;&t; * regiser the device.&n;&t;&t; */
 id|pci_read_config_word
 c_func
 (paren
@@ -2584,7 +2584,7 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* OF fails to initialize IDE controllers on macs&n;&t; * (and maybe other machines)&n;&t; * &n;&t; * Ideally, this should be moved to the IDE layer, but we need&n;&t; * to check specifically with Andre Hedrick how to do it cleanly&n;&t; * since the common IDE code seem to care about the fact that the&n;&t; * BIOS may have disabled a controller.&n;&t; * &n;&t; * -- BenH&n;&t; */
+multiline_comment|/* OF fails to initialize IDE controllers on macs&n;&t; * (and maybe other machines)&n;&t; *&n;&t; * Ideally, this should be moved to the IDE layer, but we need&n;&t; * to check specifically with Andre Hedrick how to do it cleanly&n;&t; * since the common IDE code seem to care about the fact that the&n;&t; * BIOS may have disabled a controller.&n;&t; *&n;&t; * -- BenH&n;&t; */
 r_while
 c_loop
 (paren

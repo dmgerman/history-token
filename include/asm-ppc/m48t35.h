@@ -4,23 +4,23 @@ DECL|macro|__PPC_M48T35_H
 mdefine_line|#define __PPC_M48T35_H
 multiline_comment|/* RTC offsets */
 DECL|macro|M48T35_RTC_FLAGS
-mdefine_line|#define M48T35_RTC_FLAGS&t;(-8)&t;/* the negative regs are really T37 only */ 
+mdefine_line|#define M48T35_RTC_FLAGS&t;(-8)&t;/* the negative regs are really T37 only */
 DECL|macro|M48T35_RTC_CENTURY
 mdefine_line|#define M48T35_RTC_CENTURY&t;(-7)
 DECL|macro|M48T35_RTC_AL_SEC
-mdefine_line|#define M48T35_RTC_AL_SEC&t;(-6)    
+mdefine_line|#define M48T35_RTC_AL_SEC&t;(-6)
 DECL|macro|M48T35_RTC_AL_MIN
-mdefine_line|#define M48T35_RTC_AL_MIN&t;(-5)    
+mdefine_line|#define M48T35_RTC_AL_MIN&t;(-5)
 DECL|macro|M48T35_RTC_AL_HRS
-mdefine_line|#define M48T35_RTC_AL_HRS&t;(-4)    
+mdefine_line|#define M48T35_RTC_AL_HRS&t;(-4)
 DECL|macro|M48T35_RTC_AL_DOM
-mdefine_line|#define M48T35_RTC_AL_DOM&t;(-3)    
+mdefine_line|#define M48T35_RTC_AL_DOM&t;(-3)
 DECL|macro|M48T35_RTC_INTERRUPT
 mdefine_line|#define M48T35_RTC_INTERRUPT&t;(-2)
 DECL|macro|M48T35_RTC_WATCHDOG
 mdefine_line|#define M48T35_RTC_WATCHDOG&t;(-1)
 DECL|macro|M48T35_RTC_CONTROL
-mdefine_line|#define M48T35_RTC_CONTROL&t;0&t;/* T35 starts here */ 
+mdefine_line|#define M48T35_RTC_CONTROL&t;0&t;/* T35 starts here */
 DECL|macro|M48T35_RTC_SECONDS
 mdefine_line|#define M48T35_RTC_SECONDS&t;1
 DECL|macro|M48T35_RTC_MINUTES
@@ -61,7 +61,7 @@ mdefine_line|#define M48T35_RTC_CONTROL_WRITE       0x80
 DECL|macro|M48T35_RTC_CONTROL_READ
 mdefine_line|#define M48T35_RTC_CONTROL_READ        0x40
 DECL|macro|M48T35_RTC_CONTROL_CAL_SIGN
-mdefine_line|#define M48T35_RTC_CONTROL_CAL_SIGN    0x20    
+mdefine_line|#define M48T35_RTC_CONTROL_CAL_SIGN    0x20
 DECL|macro|M48T35_RTC_CONTROL_CAL_VALUE
 mdefine_line|#define M48T35_RTC_CONTROL_CAL_VALUE   0x1f
 DECL|macro|M48T35_RTC_CONTROL_LOCKED
@@ -71,7 +71,7 @@ mdefine_line|#define M48T35_RTC_CONTROL_CALIBRATION (M48T35_RTC_CONTROL_CAL_SIGN
 DECL|macro|M48T35_RTC_SECONDS_SEC_1
 mdefine_line|#define M48T35_RTC_SECONDS_SEC_1       0x0f
 DECL|macro|M48T35_RTC_SECONDS_SEC_10
-mdefine_line|#define M48T35_RTC_SECONDS_SEC_10      0x70    
+mdefine_line|#define M48T35_RTC_SECONDS_SEC_10      0x70
 DECL|macro|M48T35_RTC_SECONDS_ST
 mdefine_line|#define M48T35_RTC_SECONDS_ST          0x80
 DECL|macro|M48T35_RTC_SECONDS_SEC_ALL
@@ -79,7 +79,7 @@ mdefine_line|#define M48T35_RTC_SECONDS_SEC_ALL     (M48T35_RTC_SECONDS_SEC_1|M4
 DECL|macro|M48T35_RTC_MINUTES_MIN_1
 mdefine_line|#define M48T35_RTC_MINUTES_MIN_1       0x0f
 DECL|macro|M48T35_RTC_MINUTES_MIN_10
-mdefine_line|#define M48T35_RTC_MINUTES_MIN_10      0x70    
+mdefine_line|#define M48T35_RTC_MINUTES_MIN_10      0x70
 DECL|macro|M48T35_RTC_MINUTES_MIN_ALL
 mdefine_line|#define M48T35_RTC_MINUTES_MIN_ALL     (M48T35_RTC_MINUTES_MIN_1|M48T35_RTC_MINUTES_MIN_10)
 DECL|macro|M48T35_RTC_HOURS_HRS_1

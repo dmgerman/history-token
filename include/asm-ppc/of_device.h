@@ -3,13 +3,13 @@ DECL|macro|__OF_DEVICE_H__
 mdefine_line|#define __OF_DEVICE_H__
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
-multiline_comment|/* &n; * The of_platform_bus_type is a bus type used by drivers that do not&n; * attach to a macio or similar bus but still use OF probing&n; * mecanism&n; */
+multiline_comment|/*&n; * The of_platform_bus_type is a bus type used by drivers that do not&n; * attach to a macio or similar bus but still use OF probing&n; * mecanism&n; */
 r_extern
 r_struct
 id|bus_type
 id|of_platform_bus_type
 suffix:semicolon
-multiline_comment|/* &n; * The of_device is a kind of &quot;base class&quot; that is a superset of&n; * struct device for use by devices attached to an OF node and&n; * probed using OF properties&n; */
+multiline_comment|/*&n; * The of_device is a kind of &quot;base class&quot; that is a superset of&n; * struct device for use by devices attached to an OF node and&n; * probed using OF properties&n; */
 DECL|struct|of_device
 r_struct
 id|of_device

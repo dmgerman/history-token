@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TQM8260 board specific definitions&n; * &n; * Copyright (c) 2001 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * TQM8260 board specific definitions&n; *&n; * Copyright (c) 2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __TQM8260_PLATFORM
 DECL|macro|__TQM8260_PLATFORM
 mdefine_line|#define __TQM8260_PLATFORM

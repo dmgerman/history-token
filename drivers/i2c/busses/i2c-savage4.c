@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* 3DFX defines */
 DECL|macro|PCI_CHIP_SAVAGE3D
 mdefine_line|#define PCI_CHIP_SAVAGE3D&t;0x8A20

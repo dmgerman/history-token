@@ -199,7 +199,6 @@ l_int|0x030
 )braket
 op_assign
 l_string|&quot;ERROR: Drive not supported: Port #&quot;
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n;   Sense key lookup table&n;   Format: ESDC/flags,SenseKey,AdditionalSenseCode,AdditionalSenseCodeQualifier&n;*/
@@ -316,19 +315,19 @@ l_int|0x00
 )brace
 comma
 singleline_comment|// Unit offline                 Not ready
-multiline_comment|/* Codes for older firmware */
-singleline_comment|// 3ware Error                  SCSI Error
 (brace
 l_int|0x09
 comma
-l_int|0x0b
+l_int|0x02
 comma
-l_int|0x00
+l_int|0x04
 comma
 l_int|0x00
 )brace
 comma
-singleline_comment|// Unrecovered disk error       Aborted command
+singleline_comment|// Unrecovered disk error       Not ready
+multiline_comment|/* Codes for older firmware */
+singleline_comment|// 3ware Error                  SCSI Error
 (brace
 l_int|0x51
 comma
@@ -545,7 +544,7 @@ mdefine_line|#define TW_ISR_DONT_RESULT                    3
 DECL|macro|TW_IOCTL_TIMEOUT
 mdefine_line|#define TW_IOCTL_TIMEOUT                      25 /* 25 seconds */
 DECL|macro|TW_IOCTL_CHRDEV_TIMEOUT
-mdefine_line|#define TW_IOCTL_CHRDEV_TIMEOUT               25 /* 25 seconds */
+mdefine_line|#define TW_IOCTL_CHRDEV_TIMEOUT               60 /* 60 seconds */
 DECL|macro|TW_IOCTL_CHRDEV_FREE
 mdefine_line|#define TW_IOCTL_CHRDEV_FREE                  -1
 multiline_comment|/* Macros */
@@ -1895,6 +1894,15 @@ c_func
 id|TW_Device_Extension
 op_star
 id|tw_dev
+)paren
+suffix:semicolon
+r_int
+id|tw_slave_configure
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|SDptr
 )paren
 suffix:semicolon
 r_void
