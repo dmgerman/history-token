@@ -996,7 +996,7 @@ l_int|0x0000
 (brace
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;%s: Error EERPOM read %x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -1122,6 +1122,7 @@ id|isa_bridge
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Can not find ISA bridge&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -2366,7 +2367,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;Cannot allocate mem for struct mii_phy&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4446,7 +4447,7 @@ l_int|2
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Receive Filter Addrss[%d]=%x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -4602,7 +4603,7 @@ l_int|2
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: TX descriptor register loaded with: %8.8x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -4833,7 +4834,7 @@ l_int|2
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: RX descriptor register loaded with: %8.8x&bslash;n&quot;
 comma
 id|net_dev-&gt;name
@@ -6718,7 +6719,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Queued Tx packet at %p size %d &quot;
 l_string|&quot;to slot %d.&bslash;n&quot;
 comma
@@ -6947,7 +6948,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: exiting interrupt, &quot;
 l_string|&quot;interrupt status = 0x%#8.8x.&bslash;n&quot;
 comma
@@ -7029,7 +7030,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;sis900_rx, cur_rx:%4.4d, dirty_rx:%4.4d &quot;
 l_string|&quot;status:0x%8.8x&bslash;n&quot;
 comma
@@ -7095,7 +7096,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Corrupted packet &quot;
 l_string|&quot;received, buffer status = 0x%8.8x.&bslash;n&quot;
 comma
@@ -7625,7 +7626,7 @@ l_int|3
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s: Transmit &quot;
 l_string|&quot;error, Tx status %8.8x.&bslash;n&quot;
 comma
@@ -8515,13 +8516,6 @@ id|IF_PORT_100BASEFX
 suffix:colon
 multiline_comment|/* 100BaseFx */
 multiline_comment|/* These Modes are not supported (are they?)*/
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Not supported&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EOPNOTSUPP
@@ -8530,13 +8524,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Invalid&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
