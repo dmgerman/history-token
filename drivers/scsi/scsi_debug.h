@@ -255,6 +255,11 @@ id|use_clustering
 op_assign
 id|ENABLE_CLUSTERING
 comma
+dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
