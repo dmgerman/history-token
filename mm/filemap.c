@@ -599,7 +599,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This adds a page to the page cache, starting out as locked, unreferenced,&n; * not uptodate and with no errors.&n; *&n; * This function is used for two things: adding newly allocated pagecache&n; * pages and for moving existing anon pages into swapcache.&n; *&n; * This function is used to add newly allocated pagecache pages:&n; * the page is new, so we can just run SetPageLocked() against it.&n; * The other page state flags were set by rmqueue().&n; *&n; * This function does not add the page to the LRU.  The caller must do that.&n; */
+multiline_comment|/*&n; * This function is used to add newly allocated pagecache pages:&n; * the page is new, so we can just run SetPageLocked() against it.&n; * The other page state flags were set by rmqueue().&n; *&n; * This function does not add the page to the LRU.  The caller must do that.&n; */
 DECL|function|add_to_page_cache
 r_int
 id|add_to_page_cache
