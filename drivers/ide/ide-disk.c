@@ -9844,6 +9844,21 @@ id|drive
 op_assign
 id|disk-&gt;private_data
 suffix:semicolon
+multiline_comment|/* do not scan partitions twice if this is a removable device */
+r_if
+c_cond
+(paren
+id|drive-&gt;attach
+)paren
+(brace
+id|drive-&gt;attach
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* if removable, always assume it was changed */
 r_return
 id|drive-&gt;removable
@@ -10148,6 +10163,10 @@ id|g-&gt;fops
 op_assign
 op_amp
 id|idedisk_ops
+suffix:semicolon
+id|drive-&gt;attach
+op_assign
+l_int|1
 suffix:semicolon
 id|add_disk
 c_func

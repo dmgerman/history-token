@@ -1602,6 +1602,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 if need to do check_media_change */
+DECL|member|attach
+r_int
+id|attach
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* needed for removable devices */
 DECL|member|is_flash
 r_int
 id|is_flash
