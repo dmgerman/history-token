@@ -1,7 +1,7 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI UART(H4) protocol.&n; *&n; * $Id: hci_h4.c,v 1.2 2002/04/17 17:37:20 maxk Exp $    &n; */
+multiline_comment|/*&n; * BlueZ HCI UART(H4) protocol.&n; *&n; * $Id: hci_h4.c,v 1.3 2002/09/09 01:17:32 maxk Exp $    &n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;1.1&quot;
+mdefine_line|#define VERSION &quot;1.2&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -43,9 +43,9 @@ id|h4_open
 c_func
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
 )paren
 (brace
 r_struct
@@ -56,9 +56,9 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;n_hci %p&quot;
+l_string|&quot;hu %p&quot;
 comma
-id|n_hci
+id|hu
 )paren
 suffix:semicolon
 id|h4
@@ -99,7 +99,14 @@ id|h4
 )paren
 )paren
 suffix:semicolon
-id|n_hci-&gt;priv
+id|skb_queue_head_init
+c_func
+(paren
+op_amp
+id|h4-&gt;txq
+)paren
+suffix:semicolon
+id|hu-&gt;priv
 op_assign
 id|h4
 suffix:semicolon
@@ -115,17 +122,31 @@ id|h4_flush
 c_func
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
 )paren
 (brace
+r_struct
+id|h4_struct
+op_star
+id|h4
+op_assign
+id|hu-&gt;priv
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;n_hci %p&quot;
+l_string|&quot;hu %p&quot;
 comma
-id|n_hci
+id|hu
+)paren
+suffix:semicolon
+id|skb_queue_purge
+c_func
+(paren
+op_amp
+id|h4-&gt;txq
 )paren
 suffix:semicolon
 r_return
@@ -140,9 +161,9 @@ id|h4_close
 c_func
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
 )paren
 (brace
 r_struct
@@ -150,18 +171,25 @@ id|h4_struct
 op_star
 id|h4
 op_assign
-id|n_hci-&gt;priv
+id|hu-&gt;priv
 suffix:semicolon
-id|n_hci-&gt;priv
+id|hu-&gt;priv
 op_assign
 l_int|NULL
 suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;n_hci %p&quot;
+l_string|&quot;hu %p&quot;
 comma
-id|n_hci
+id|hu
+)paren
+suffix:semicolon
+id|skb_queue_purge
+c_func
+(paren
+op_amp
+id|h4-&gt;txq
 )paren
 suffix:semicolon
 r_if
@@ -175,6 +203,10 @@ c_func
 id|h4-&gt;rx_skb
 )paren
 suffix:semicolon
+id|hu-&gt;priv
+op_assign
+l_int|NULL
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -185,81 +217,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Send data */
-DECL|function|h4_send
+multiline_comment|/* Enqueue frame for transmittion (padding, crc, etc) */
+DECL|function|h4_enqueue
 r_static
 r_int
-id|h4_send
+id|h4_enqueue
 c_func
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
-comma
-r_void
-op_star
-id|data
-comma
-r_int
-id|len
-)paren
-(brace
-r_struct
-id|tty_struct
-op_star
-id|tty
-op_assign
-id|n_hci-&gt;tty
-suffix:semicolon
-id|BT_DBG
-c_func
-(paren
-l_string|&quot;n_hci %p len %d&quot;
-comma
-id|n_hci
-comma
-id|len
-)paren
-suffix:semicolon
-multiline_comment|/* Send frame to TTY driver */
-id|tty-&gt;flags
-op_or_assign
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-suffix:semicolon
-r_return
-id|tty-&gt;driver
-dot
-id|write
-c_func
-(paren
-id|tty
-comma
-l_int|0
-comma
-id|data
-comma
-id|len
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Init frame before queueing (padding, crc, etc) */
-DECL|function|h4_preq
-r_static
-r_struct
-id|sk_buff
-op_star
-id|h4_preq
-c_func
-(paren
-r_struct
-id|n_hci
-op_star
-id|n_hci
+id|hu
 comma
 r_struct
 id|sk_buff
@@ -267,12 +235,19 @@ op_star
 id|skb
 )paren
 (brace
+r_struct
+id|h4_struct
+op_star
+id|h4
+op_assign
+id|hu-&gt;priv
+suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;n_hci %p skb %p&quot;
+l_string|&quot;hu %p skb %p&quot;
 comma
-id|n_hci
+id|hu
 comma
 id|skb
 )paren
@@ -295,8 +270,17 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_return
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|h4-&gt;txq
+comma
 id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|h4_check_data_len
@@ -369,7 +353,7 @@ id|room
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Data length is to large&quot;
+l_string|&quot;Data length is too large&quot;
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -417,9 +401,9 @@ id|h4_recv
 c_func
 (paren
 r_struct
-id|n_hci
+id|hci_uart
 op_star
-id|n_hci
+id|hu
 comma
 r_void
 op_star
@@ -434,7 +418,7 @@ id|h4_struct
 op_star
 id|h4
 op_assign
-id|n_hci-&gt;priv
+id|hu-&gt;priv
 suffix:semicolon
 r_register
 r_char
@@ -464,9 +448,9 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;n_hci %p count %d rx_state %ld rx_count %ld&quot;
+l_string|&quot;hu %p count %d rx_state %ld rx_count %ld&quot;
 comma
-id|n_hci
+id|hu
 comma
 id|count
 comma
@@ -673,7 +657,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 multiline_comment|/* H4_W4_PACKET_TYPE */
 r_switch
@@ -766,7 +749,7 @@ op_star
 id|ptr
 )paren
 suffix:semicolon
-id|n_hci-&gt;hdev.stat.err_rx
+id|hu-&gt;hdev.stat.err_rx
 op_increment
 suffix:semicolon
 id|ptr
@@ -828,7 +811,7 @@ r_void
 op_star
 )paren
 op_amp
-id|n_hci-&gt;hdev
+id|hu-&gt;hdev
 suffix:semicolon
 id|h4-&gt;rx_skb-&gt;pkt_type
 op_assign
@@ -837,6 +820,36 @@ suffix:semicolon
 )brace
 r_return
 id|count
+suffix:semicolon
+)brace
+DECL|function|h4_dequeue
+r_static
+r_struct
+id|sk_buff
+op_star
+id|h4_dequeue
+c_func
+(paren
+r_struct
+id|hci_uart
+op_star
+id|hu
+)paren
+(brace
+r_struct
+id|h4_struct
+op_star
+id|h4
+op_assign
+id|hu-&gt;priv
+suffix:semicolon
+r_return
+id|skb_dequeue
+c_func
+(paren
+op_amp
+id|h4-&gt;txq
+)paren
 suffix:semicolon
 )brace
 DECL|variable|h4p
@@ -862,19 +875,19 @@ op_assign
 id|h4_close
 comma
 dot
-id|send
-op_assign
-id|h4_send
-comma
-dot
 id|recv
 op_assign
 id|h4_recv
 comma
 dot
-id|preq
+id|enqueue
 op_assign
-id|h4_preq
+id|h4_enqueue
+comma
+dot
+id|dequeue
+op_assign
+id|h4_dequeue
 comma
 dot
 id|flush
