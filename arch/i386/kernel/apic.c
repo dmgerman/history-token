@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
@@ -1461,8 +1463,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 r_static
 r_struct
 (brace
