@@ -2962,12 +2962,7 @@ id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Free the command urb
-id|usb_unlink_urb
-(paren
-id|urb
-)paren
-suffix:semicolon
+multiline_comment|/* Free the command urb */
 id|usb_free_urb
 (paren
 id|urb

@@ -364,6 +364,22 @@ id|dma_addr_t
 id|dma
 )paren
 suffix:semicolon
+DECL|member|disable
+r_void
+(paren
+op_star
+id|disable
+)paren
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+comma
+r_int
+id|bEndpointAddress
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* each driver provides one of these, and hardware init support */
@@ -549,13 +565,12 @@ op_star
 id|urb
 )paren
 suffix:semicolon
-singleline_comment|// frees configuration resources -- allocated as needed during
-singleline_comment|// urb_enqueue, and not freed by urb_dequeue
-DECL|member|free_config
+multiline_comment|/* hw synch, freeing endpoint resources that urb_dequeue can&squot;t */
+DECL|member|endpoint_disable
 r_void
 (paren
 op_star
-id|free_config
+id|endpoint_disable
 )paren
 (paren
 r_struct
@@ -564,9 +579,12 @@ op_star
 id|hcd
 comma
 r_struct
-id|usb_device
+id|hcd_dev
 op_star
 id|dev
+comma
+r_int
+id|bEndpointAddress
 )paren
 suffix:semicolon
 multiline_comment|/* root hub support */

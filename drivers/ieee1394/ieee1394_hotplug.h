@@ -12,6 +12,15 @@ DECL|macro|IEEE1394_MATCH_SPECIFIER_ID
 mdefine_line|#define IEEE1394_MATCH_SPECIFIER_ID&t;0x0004
 DECL|macro|IEEE1394_MATCH_VERSION
 mdefine_line|#define IEEE1394_MATCH_VERSION&t;&t;0x0008
+multiline_comment|/*&n; * Unit spec id and sw version entry for some protocols&n; */
+DECL|macro|AVC_UNIT_SPEC_ID_ENTRY
+mdefine_line|#define AVC_UNIT_SPEC_ID_ENTRY&t;&t;&t;&t;&t;0x0000A02D
+DECL|macro|AVC_SW_VERSION_ENTRY
+mdefine_line|#define AVC_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x00010001
+DECL|macro|CAMERA_UNIT_SPEC_ID_ENTRY
+mdefine_line|#define CAMERA_UNIT_SPEC_ID_ENTRY&t;&t;&t;&t;0x0000A02D
+DECL|macro|CAMERA_SW_VERSION_ENTRY
+mdefine_line|#define CAMERA_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x00000100
 DECL|struct|ieee1394_device_id
 r_struct
 id|ieee1394_device_id

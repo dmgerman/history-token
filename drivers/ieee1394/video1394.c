@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
+macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
@@ -6331,6 +6332,88 @@ op_assign
 id|video1394_release
 )brace
 suffix:semicolon
+multiline_comment|/*** HOTPLUG STUFF **********************************************************/
+multiline_comment|/*&n; * Export information about protocols/devices supported by this driver.&n; */
+DECL|variable|video1394_id_table
+r_static
+r_struct
+id|ieee1394_device_id
+id|video1394_id_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|match_flags
+op_assign
+id|IEEE1394_MATCH_SPECIFIER_ID
+op_or
+id|IEEE1394_MATCH_VERSION
+comma
+dot
+id|specifier_id
+op_assign
+id|CAMERA_UNIT_SPEC_ID_ENTRY
+op_amp
+l_int|0xffffff
+comma
+dot
+id|version
+op_assign
+id|CAMERA_SW_VERSION_ENTRY
+op_amp
+l_int|0xffffff
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|ieee1394
+comma
+id|video1394_id_table
+)paren
+suffix:semicolon
+DECL|variable|video1394_driver
+r_static
+r_struct
+id|hpsb_protocol_driver
+id|video1394_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;1394 Digital Camera Driver&quot;
+comma
+dot
+id|id_table
+op_assign
+id|video1394_id_table
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|VIDEO1394_DRIVER_NAME
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|ieee1394_bus_type
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|video1394_init
 r_static
 r_int
@@ -7318,6 +7401,13 @@ l_string|&quot;Error unregistering ioctl32 translations&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|hpsb_unregister_protocol
+c_func
+(paren
+op_amp
+id|video1394_driver
+)paren
+suffix:semicolon
 id|hpsb_unregister_highlevel
 (paren
 id|hl_handle
@@ -7441,6 +7531,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|hpsb_register_protocol
+c_func
+(paren
+op_amp
+id|video1394_driver
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
 multiline_comment|/* First the compatible ones */
 id|ret

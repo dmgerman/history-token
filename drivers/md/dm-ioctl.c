@@ -683,7 +683,7 @@ l_int|NULL
 comma
 id|name
 comma
-id|DEVFS_FL_CURRENT_OWNER
+l_int|0
 comma
 id|disk-&gt;major
 comma
