@@ -3823,6 +3823,8 @@ DECL|macro|TG3_FLG2_RESTART_TIMER
 mdefine_line|#define TG3_FLG2_RESTART_TIMER&t;&t;0x00000001
 DECL|macro|TG3_FLG2_SUN_5704
 mdefine_line|#define TG3_FLG2_SUN_5704&t;&t;0x00000002
+DECL|macro|TG3_FLG2_NO_ETH_WIRE_SPEED
+mdefine_line|#define TG3_FLG2_NO_ETH_WIRE_SPEED&t;0x00000004
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
