@@ -362,8 +362,9 @@ id|system_pnp_driver
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Reserve motherboard resources after PCI claim BARs,&n; * but before PCI assign resources for uninitialized PCI devices&n; */
 DECL|variable|pnp_system_init
-id|subsys_initcall
+id|fs_initcall
 c_func
 (paren
 id|pnp_system_init
