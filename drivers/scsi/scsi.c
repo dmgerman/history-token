@@ -1190,14 +1190,6 @@ id|host
 op_assign
 id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Assign a unique nonzero serial_number. */
 r_if
 c_cond
@@ -1650,14 +1642,6 @@ op_star
 id|host
 op_assign
 id|SCpnt-&gt;device-&gt;host
-suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-l_int|0
-)paren
 suffix:semicolon
 id|SCpnt-&gt;owner
 op_assign
@@ -2305,6 +2289,10 @@ id|Scsi_Request
 op_star
 id|SRpnt
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|host
 op_assign
 id|SCpnt-&gt;device-&gt;host
@@ -2313,14 +2301,6 @@ id|device
 op_assign
 id|SCpnt-&gt;device
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|host-&gt;host_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n;         * We need to protect the decrement, as otherwise a race condition&n;         * would exist.  Fiddling with SCpnt isn&squot;t a problem as the&n;         * design only allows a single SCpnt to be active in only&n;         * one execution context, but the device and host structures are&n;         * shared.&n;         */
 id|scsi_host_busy_dec_and_test
 c_func
@@ -2328,6 +2308,25 @@ c_func
 id|host
 comma
 id|device
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|SCpnt-&gt;device-&gt;request_queue-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|SCpnt-&gt;device-&gt;device_busy
+op_decrement
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|SCpnt-&gt;device-&gt;request_queue-&gt;queue_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * Clear the flags which say that the device/host is no longer&n;         * capable of accepting new commands.  These are set in scsi_queue.c&n;         * for both the queue full condition on a device, and for a&n;         * host full condition on the host.&n;         */
