@@ -1934,12 +1934,8 @@ macro_line|#ifdef EXT3FS_DEBUG
 r_static
 r_int
 id|goal_hits
-op_assign
-l_int|0
 comma
 id|goal_attempts
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 op_star

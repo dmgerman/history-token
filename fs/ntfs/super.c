@@ -15,8 +15,6 @@ r_static
 r_int
 r_int
 id|ntfs_nr_compression_users
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Error constants/strings used in inode.c::ntfs_show_options(). */
 r_typedef

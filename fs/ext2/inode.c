@@ -313,12 +313,8 @@ r_static
 r_int
 r_int
 id|alloc_hits
-op_assign
-l_int|0
 comma
 id|alloc_attempts
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 r_int

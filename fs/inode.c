@@ -2462,8 +2462,6 @@ id|max_reserved
 r_static
 id|ino_t
 id|counter
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|inode

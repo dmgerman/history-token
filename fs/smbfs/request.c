@@ -667,11 +667,6 @@ id|padding
 (braket
 l_int|4
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 multiline_comment|/* I know the following is very ugly, but I want to build the&n;&t;   smb packet as efficiently as possible. */
 r_const
