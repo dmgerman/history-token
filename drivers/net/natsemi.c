@@ -6293,6 +6293,12 @@ op_amp
 id|IntrRxDone
 op_or
 id|IntrRxIntr
+op_or
+id|RxStatusFIFOOver
+op_or
+id|IntrRxErr
+op_or
+id|IntrRxOverrun
 )paren
 )paren
 id|netdev_rx
