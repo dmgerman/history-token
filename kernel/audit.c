@@ -276,6 +276,8 @@ suffix:colon
 id|panic
 c_func
 (paren
+l_string|&quot;audit: %s&bslash;n&quot;
+comma
 id|message
 )paren
 suffix:semicolon
@@ -2569,21 +2571,17 @@ c_cond
 op_logical_neg
 id|ab
 )paren
+(brace
 id|audit_log_lost
 c_func
 (paren
-l_string|&quot;audit: out of memory in audit_log_start&quot;
+l_string|&quot;out of memory in audit_log_start&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ab
-)paren
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 id|atomic_inc
 c_func
 (paren
