@@ -22,8 +22,9 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(lock)&t;(*((volatile unsigned char *)(lock)) != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;&bslash;&n;do {&t;membar(&quot;#LoadLoad&quot;);&t;&bslash;&n;} while(*((volatile unsigned char *)lock))
-multiline_comment|/* arch/sparc64/lib/spinlock.S */
-r_extern
+DECL|function|_raw_spin_lock
+r_static
+id|__inline__
 r_void
 id|_raw_spin_lock
 c_func
@@ -32,7 +33,31 @@ id|spinlock_t
 op_star
 id|lock
 )paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;1: ldstub&t;[%0], %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pn&t;%%g7, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;b 3f&bslash;n&bslash;t&quot;
+l_string|&quot;2: ldub&t;[%0], %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pt&t;%%g7, 2b&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
+l_string|&quot;ba,a,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;3:&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
 suffix:semicolon
+)brace
 DECL|function|_raw_spin_trylock
 r_static
 id|__inline__
@@ -107,7 +132,9 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-r_extern
+DECL|function|_raw_spin_lock_flags
+r_static
+id|__inline__
 r_void
 id|_raw_spin_lock_flags
 c_func
@@ -120,7 +147,38 @@ r_int
 r_int
 id|flags
 )paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;1:ldstub&t;[%0], %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pn&t;%%g7, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;b 4f&bslash;n&bslash;t&quot;
+l_string|&quot;2: rdpr&t;%%pil, %%g2&t;! Save PIL&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr&t;%1, %%pil&t;! Set previous PIL&bslash;n&bslash;t&quot;
+l_string|&quot;3:ldub&t;[%0], %%g7&t;! Spin on lock set&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pt&t;%%g7, 3b&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
+l_string|&quot;ba,pt&t;%%xcc, 1b&t;! Retry lock acquire&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr&t;%%g2, %%pil&t;! Restore PIL&bslash;n&bslash;t&quot;
+l_string|&quot;4:&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flags
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
 suffix:semicolon
+)brace
 macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
@@ -174,7 +232,7 @@ id|lock
 suffix:semicolon
 r_extern
 r_int
-id|_spin_trylock
+id|_do_spin_trylock
 (paren
 id|spinlock_t
 op_star
@@ -182,7 +240,7 @@ id|lock
 )paren
 suffix:semicolon
 DECL|macro|_raw_spin_trylock
-mdefine_line|#define _raw_spin_trylock(lp)&t;_spin_trylock(lp)
+mdefine_line|#define _raw_spin_trylock(lp)&t;_do_spin_trylock(lp)
 DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(lock)&t;_do_spin_lock(lock, &quot;spin_lock&quot;)
 DECL|macro|_raw_spin_unlock
@@ -204,51 +262,198 @@ DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(x) (*(x) != RW_LOCK_UNLOCKED)
-r_extern
+DECL|function|__read_lock
+r_static
 r_void
+id|__inline__
 id|__read_lock
 c_func
 (paren
 id|rwlock_t
 op_star
+id|lock
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;b 1f&bslash;n&bslash;t&quot;
+l_string|&quot;99:&bslash;n&bslash;t&quot;
+l_string|&quot;ldsw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;brlz,pt&t;%%g5, 99b&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
+l_string|&quot;ba,a,pt&t;%%xcc, 4f&bslash;n&bslash;t&quot;
+l_string|&quot;1: ldsw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;brlz,pn&t;%%g5, 99b&bslash;n&bslash;t&quot;
+l_string|&quot;4:add&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;bne,pn&t;%%icc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-r_extern
+)brace
+DECL|function|__read_unlock
+r_static
 r_void
+id|__inline__
 id|__read_unlock
 c_func
 (paren
 id|rwlock_t
 op_star
+id|lock
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;1: lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;%%g5, 1, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;be,pt&t;%%xcc, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;ba,a,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-r_extern
+)brace
+DECL|function|__write_lock
+r_static
 r_void
+id|__inline__
 id|__write_lock
 c_func
 (paren
 id|rwlock_t
 op_star
+id|lock
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;sethi&t;%%hi(0x80000000), %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;b 1f&bslash;n&bslash;t&quot;
+l_string|&quot;99:&bslash;n&bslash;t&quot;
+l_string|&quot;lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pt&t;%%g5, 99b&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#LoadLoad&bslash;n&bslash;t&quot;
+l_string|&quot;ba,a,pt&t;%%xcc, 4f&bslash;n&bslash;t&quot;
+l_string|&quot;1: lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pn&t;%%g5, 99b&bslash;n&bslash;t&quot;
+l_string|&quot;4: or&t;%%g5, %%g2, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;be,pt&t;%%icc, 2f&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;ba,a,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-r_extern
+)brace
+DECL|function|__write_unlock
+r_static
 r_void
+id|__inline__
 id|__write_unlock
 c_func
 (paren
 id|rwlock_t
 op_star
+id|lock
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;membar&t;#LoadStore | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;retl&bslash;n&bslash;t&quot;
+l_string|&quot;stw&t;%%g0, [%0]&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-r_extern
+)brace
+DECL|function|__write_trylock
+r_static
 r_int
+id|__inline__
 id|__write_trylock
 c_func
 (paren
 id|rwlock_t
 op_star
+id|lock
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;sethi&t;%%hi(0x80000000), %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;1: lduw&t;[%0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;brnz,pn&t;%%g5, 100f&bslash;n&bslash;t&quot;
+l_string|&quot;4: or&t;%%g5, %%g2, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cas&t;[%0], %%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g5, %%g7&bslash;n&bslash;t&quot;
+l_string|&quot;be,pt&t;%%icc, 99f&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#StoreLoad | #StoreStore&bslash;n&bslash;t&quot;
+l_string|&quot;ba,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;99:&bslash;n&bslash;t&quot;
+l_string|&quot;retl&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;100:&bslash;n&bslash;t&quot;
+l_string|&quot;retl&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;0, %0&bslash;n&bslash;t&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+r_return
+id|rwlock_is_locked
+c_func
+(paren
+id|lock
+)paren
+suffix:semicolon
+)brace
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(p)&t;__read_lock(p)
 DECL|macro|_raw_read_unlock

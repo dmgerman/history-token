@@ -378,9 +378,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|_spin_trylock
+DECL|function|_do_spin_trylock
 r_int
-id|_spin_trylock
+id|_do_spin_trylock
 c_func
 (paren
 id|spinlock_t
