@@ -49,5 +49,27 @@ macro_line|#ifndef _IO_BASE
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE isa_io_base
 macro_line|#endif
+macro_line|#ifdef CONFIG_8260_PCI9
+r_extern
+r_void
+id|setup_m8260_indirect_pci
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+comma
+id|u32
+id|cfg_addr
+comma
+id|u32
+id|cfg_data
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|setup_m8260_indirect_pci
+mdefine_line|#define setup_m8260_indirect_pci setup_indirect_pci
+macro_line|#endif
 macro_line|#endif /* _PPC_KERNEL_M8260_PCI_H */
 eof
