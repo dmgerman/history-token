@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;
@@ -4436,6 +4437,12 @@ op_star
 id|zr
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_int
 id|timeout
 comma
@@ -4469,17 +4476,34 @@ comma
 id|ZR36057_ICR
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|zr-&gt;test_q
 comma
-l_int|1
-op_star
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|timeout
+op_assign
+id|schedule_timeout
+c_func
+(paren
 id|HZ
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|zr-&gt;test_q
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 id|btwrite
