@@ -1913,22 +1913,16 @@ c_func
 r_struct
 id|vm_area_struct
 op_star
-comma
-r_struct
-id|prio_tree_root
-op_star
+id|vma
 comma
 r_struct
 id|prio_tree_iter
 op_star
-comma
-id|pgoff_t
-id|begin
-comma
-id|pgoff_t
-id|end
+id|iter
 )paren
 suffix:semicolon
+DECL|macro|vma_prio_tree_foreach
+mdefine_line|#define vma_prio_tree_foreach(vma, iter, root, begin, end)&t;&bslash;&n;&t;for (prio_tree_iter_init(iter, root, begin, end), vma = NULL;&t;&bslash;&n;&t;&t;(vma = vma_prio_tree_next(vma, iter)); )
 DECL|function|vma_nonlinear_insert
 r_static
 r_inline
