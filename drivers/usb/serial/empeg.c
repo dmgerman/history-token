@@ -551,7 +551,8 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk read */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -1409,7 +1410,8 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren
@@ -2027,8 +2029,8 @@ id|i
 )braket
 )paren
 (brace
-multiline_comment|/* FIXME - uncomment the following usb_unlink_urb call when&n;&t;&t;&t; * the host controllers get fixed to set urb-&gt;dev = NULL after&n;&t;&t;&t; * the urb is finished.  Otherwise this call oopses. */
-multiline_comment|/* usb_unlink_urb(write_urb_pool[i]); */
+multiline_comment|/* FIXME - uncomment the following usb_kill_urb call when&n;&t;&t;&t; * the host controllers get fixed to set urb-&gt;dev = NULL after&n;&t;&t;&t; * the urb is finished.  Otherwise this call oopses. */
+multiline_comment|/* usb_kill_urb(write_urb_pool[i]); */
 r_if
 c_cond
 (paren
