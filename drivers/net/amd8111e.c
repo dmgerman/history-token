@@ -3040,7 +3040,7 @@ op_amp
 id|ERR_BIT
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; * There is a tricky error noted by John Murphy,&n;&t;&t;&t; * &lt;murf@perftech.com&gt; to Russ Nelson: Even with&n;&t;&t;&t; * full-sized * buffers it&squot;s possible for a  &n;&t;&t;&t; * jabber packet to use two buffers, with only &n;&t;&t;&t; * the last correctly noting the error.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t;&t; * There is a tricky error noted by John Murphy,&n;&t;&t;&t;&t; * &lt;murf@perftech.com&gt; to Russ Nelson: Even with&n;&t;&t;&t;&t; * full-sized * buffers it&squot;s possible for a  &n;&t;&t;&t;&t; * jabber packet to use two buffers, with only &n;&t;&t;&t;&t; * the last correctly noting the error.&n;&t;&t;&t;&t; */
 multiline_comment|/* reseting flags */
 id|lp-&gt;rx_ring
 (braket
@@ -3145,12 +3145,14 @@ id|vtag
 op_ne
 l_int|0
 )paren
+(brace
 id|min_pkt_len
 op_assign
 id|MIN_PKT_LEN
 op_minus
 l_int|4
 suffix:semicolon
+)brace
 r_else
 macro_line|#endif
 id|min_pkt_len
@@ -3189,9 +3191,11 @@ id|rx_pkt_limit
 OL
 l_int|0
 )paren
+(brace
 r_goto
 id|rx_not_empty
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3207,7 +3211,7 @@ id|lp-&gt;rx_buff_len
 )paren
 )paren
 (brace
-multiline_comment|/* if allocation fail, &n;&t;&t;&t;&t;ignore that pkt and go to next one */
+multiline_comment|/* if allocation fail, &n;&t;&t;&t;&t;   ignore that pkt and go to next one */
 id|lp-&gt;rx_ring
 (braket
 id|rx_index
@@ -3429,7 +3433,7 @@ op_amp
 id|RX_RING_DR_MOD_MASK
 suffix:semicolon
 )brace
-multiline_comment|/* Check the interrupt status register for more packets in the &n;&t;mean time. Process them since we have not used up our quota.*/
+multiline_comment|/* Check the interrupt status register for more packets in the &n;&t;&t;   mean time. Process them since we have not used up our quota.*/
 id|intr0
 op_assign
 id|readl
@@ -3461,7 +3465,9 @@ id|intr0
 op_amp
 id|RINT0
 )paren
+(brace
 suffix:semicolon
+)brace
 multiline_comment|/* Receive descriptor is empty now */
 id|dev-&gt;quota
 op_sub_assign
