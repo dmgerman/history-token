@@ -28,6 +28,10 @@ DECL|variable|sysctl_tcp_tw_reuse
 r_int
 id|sysctl_tcp_tw_reuse
 suffix:semicolon
+DECL|variable|sysctl_tcp_low_latency
+r_int
+id|sysctl_tcp_low_latency
+suffix:semicolon
 multiline_comment|/* Check TCP sequence numbers in ICMP packets. */
 DECL|macro|ICMP_MIN_LENGTH
 mdefine_line|#define ICMP_MIN_LENGTH 8

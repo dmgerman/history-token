@@ -3452,6 +3452,20 @@ id|TCP_FLAG_SYN
 r_goto
 id|embryonic_reset
 suffix:semicolon
+multiline_comment|/* ACK sequence verified above, just make sure ACK is&n;&t; * set.  If ACK not set, just silently drop the packet.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|flg
+op_amp
+id|TCP_FLAG_ACK
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* If TCP_DEFER_ACCEPT is set, drop bare ACK. */
 r_if
 c_cond
