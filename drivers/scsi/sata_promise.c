@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  sata_promise.c - Promise SATA&n; *&n; *  Copyright 2003-2004 Red Hat, Inc.&n; *&n; *  The contents of this file are subject to the Open&n; *  Software License version 1.1 that can be found at&n; *  http://www.opensource.org/licenses/osl-1.1.txt and is included herein&n; *  by reference.&n; *&n; *  Alternatively, the contents of this file may be used under the terms&n; *  of the GNU General Public License version 2 (the &quot;GPL&quot;) as distributed&n; *  in the kernel source COPYING file, in which case the provisions of&n; *  the GPL are applicable instead of the above.  If you wish to allow&n; *  the use of your version of this file only under the terms of the&n; *  GPL and not to allow others to use your version of this file under&n; *  the OSL, indicate your decision by deleting the provisions above and&n; *  replace them with the notice and other provisions required by the GPL.&n; *  If you do not delete the provisions above, a recipient may use your&n; *  version of this file under either the OSL or the GPL.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -998,12 +997,6 @@ op_assign
 id|sata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
-dot
 id|bmdma_start
 op_assign
 id|pdc_dma_start
@@ -1082,12 +1075,6 @@ id|phy_reset
 op_assign
 id|pdc_20621_phy_reset
 comma
-dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
 dot
 id|bmdma_start
 op_assign
@@ -8739,6 +8726,24 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+id|ATA_DMA_MASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|err_out_regions
+suffix:semicolon
+id|rc
+op_assign
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pdev
