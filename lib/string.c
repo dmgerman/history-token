@@ -1355,7 +1355,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_BCOPY
-multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @src: Where to copy from&n; * @dest: Where to copy to&n; * @count: The size of the area.&n; *&n; * Note that this is the same as memcpy(), with the arguments reversed.&n; * memcpy() is the standard, bcopy() is a legacy BSD function.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
+multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @srcp: Where to copy from&n; * @destp: Where to copy to&n; * @count: The size of the area.&n; *&n; * Note that this is the same as memcpy(), with the arguments reversed.&n; * memcpy() is the standard, bcopy() is a legacy BSD function.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
 DECL|function|bcopy
 r_void
 id|bcopy

@@ -3684,7 +3684,7 @@ id|q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * generic_unplug_device - fire a request queue&n; * @data:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   Linux uses plugging to build bigger requests queues before letting&n; *   the device have at them. If a queue is plugged, the I/O scheduler&n; *   is still adding and merging requests on the queue. Once the queue&n; *   gets unplugged, the request_fn defined for the queue is invoked and&n; *   transfers started.&n; **/
+multiline_comment|/**&n; * generic_unplug_device - fire a request queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   Linux uses plugging to build bigger requests queues before letting&n; *   the device have at them. If a queue is plugged, the I/O scheduler&n; *   is still adding and merging requests on the queue. Once the queue&n; *   gets unplugged, the request_fn defined for the queue is invoked and&n; *   transfers started.&n; **/
 DECL|function|generic_unplug_device
 r_void
 id|generic_unplug_device
