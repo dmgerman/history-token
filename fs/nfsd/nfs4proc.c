@@ -2162,10 +2162,29 @@ comma
 id|NFS4_FHSIZE
 )paren
 suffix:semicolon
+id|resp-&gt;xbuf
+op_assign
+op_amp
+id|rqstp-&gt;rq_res
+suffix:semicolon
 id|resp-&gt;p
 op_assign
-id|rqstp-&gt;rq_resbuf.buf
+id|rqstp-&gt;rq_res.head
+(braket
+l_int|0
+)braket
+dot
+id|iov_base
 op_plus
+id|rqstp-&gt;rq_res.head
+(braket
+l_int|0
+)braket
+dot
+id|iov_len
+suffix:semicolon
+id|resp-&gt;p
+op_add_assign
 l_int|3
 op_plus
 id|XDR_QUADLEN
@@ -2176,9 +2195,14 @@ id|args-&gt;taglen
 suffix:semicolon
 id|resp-&gt;end
 op_assign
-id|rqstp-&gt;rq_resbuf.base
+id|rqstp-&gt;rq_res.head
+(braket
+l_int|0
+)braket
+dot
+id|iov_base
 op_plus
-id|rqstp-&gt;rq_resbuf.buflen
+id|PAGE_SIZE
 suffix:semicolon
 id|resp-&gt;taglen
 op_assign
@@ -2191,6 +2215,10 @@ suffix:semicolon
 id|resp-&gt;opcnt
 op_assign
 l_int|0
+suffix:semicolon
+id|resp-&gt;rqstp
+op_assign
+id|rqstp
 suffix:semicolon
 multiline_comment|/*&n;&t; * According to RFC3010, this takes precedence over all other errors.&n;&t; */
 id|status
@@ -2241,6 +2269,7 @@ r_goto
 id|encode_op
 suffix:semicolon
 multiline_comment|/* We must be able to encode a successful response to&n;&t;&t; * this operation, with enough room left over to encode a&n;&t;&t; * failed response to the next operation.  If we don&squot;t&n;&t;&t; * have enough room, fail with ERR_RESOURCE.&n;&t;&t; */
+multiline_comment|/* FIXME - is slack_space *really* words, or bytes??? - neilb */
 id|slack_space
 op_assign
 (paren

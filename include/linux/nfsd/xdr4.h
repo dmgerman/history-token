@@ -504,6 +504,18 @@ id|u32
 id|rd_length
 suffix:semicolon
 multiline_comment|/* request */
+DECL|member|rd_iov
+r_struct
+id|iovec
+id|rd_iov
+(braket
+id|RPCSVC_MAXPAGES
+)braket
+suffix:semicolon
+DECL|member|rd_vlen
+r_int
+id|rd_vlen
+suffix:semicolon
 DECL|member|rd_rqstp
 r_struct
 id|svc_rqst
@@ -1088,6 +1100,18 @@ DECL|member|end
 id|u32
 op_star
 id|end
+suffix:semicolon
+DECL|member|xbuf
+r_struct
+id|xdr_buf
+op_star
+id|xbuf
+suffix:semicolon
+DECL|member|rqstp
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
 suffix:semicolon
 DECL|member|taglen
 id|u32
