@@ -336,15 +336,6 @@ id|dev-&gt;hpa
 op_plus
 id|LASI_SCSI_CORE_OFFSET
 suffix:semicolon
-r_int
-id|irq
-op_assign
-id|busdevice_alloc_irq
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_char
 op_star
 id|driver_name
@@ -505,6 +496,14 @@ op_assign
 id|DMODE_FC2
 suffix:semicolon
 )brace
+id|hostdata-&gt;pci_dev
+op_assign
+id|ccio_get_fake
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -543,7 +542,7 @@ suffix:semicolon
 )brace
 id|host-&gt;irq
 op_assign
-id|irq
+id|dev-&gt;irq
 suffix:semicolon
 r_if
 c_cond
@@ -551,7 +550,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|irq
+id|dev-&gt;irq
 comma
 id|NCR_700_intr
 comma
@@ -567,7 +566,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: irq problem, detatching&bslash;n&quot;
+l_string|&quot;%s: irq problem, detaching&bslash;n&quot;
 comma
 id|driver_name
 )paren
@@ -648,6 +647,13 @@ c_func
 id|host-&gt;base
 comma
 l_int|64
+)paren
+suffix:semicolon
+id|unregister_parisc_driver
+c_func
+(paren
+op_amp
+id|lasi700_driver
 )paren
 suffix:semicolon
 r_return

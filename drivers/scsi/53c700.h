@@ -571,7 +571,8 @@ id|clock
 suffix:semicolon
 multiline_comment|/* board clock speed in MHz */
 DECL|member|base
-id|__u32
+r_int
+r_int
 id|base
 suffix:semicolon
 multiline_comment|/* the base for the port (copied to host) */
@@ -648,11 +649,6 @@ id|__u32
 id|pScript
 suffix:semicolon
 multiline_comment|/* physical mem addr of script */
-multiline_comment|/* This will be the host lock.  Unfortunately, we can&squot;t use it&n;&t; * at the moment because of the necessity of holding the&n;&t; * io_request_lock */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|state
 r_enum
 id|NCR_700_Host_State
@@ -1142,7 +1138,7 @@ id|reg
 id|__u32
 id|value
 op_assign
-id|readl
+id|__raw_readl
 c_func
 (paren
 id|host-&gt;base
@@ -1322,7 +1318,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-id|writel
+id|__raw_writel
 c_func
 (paren
 id|bS_to_host
