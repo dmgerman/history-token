@@ -514,6 +514,89 @@ DECL|macro|PCI_X_STATUS_266MHZ
 mdefine_line|#define  PCI_X_STATUS_266MHZ&t;0x40000000&t;/* 266 MHz capable */
 DECL|macro|PCI_X_STATUS_533MHZ
 mdefine_line|#define  PCI_X_STATUS_533MHZ&t;0x80000000&t;/* 533 MHz capable */
+multiline_comment|/* PCI Express capability registers */
+DECL|macro|PCI_EXP_FLAGS
+mdefine_line|#define PCI_EXP_FLAGS&t;&t;2&t;/* Capabilities register */
+DECL|macro|PCI_EXP_FLAGS_VERS
+mdefine_line|#define PCI_EXP_FLAGS_VERS&t;0x000f&t;/* Capability version */
+DECL|macro|PCI_EXP_FLAGS_TYPE
+mdefine_line|#define PCI_EXP_FLAGS_TYPE&t;0x00f0&t;/* Device/Port type */
+DECL|macro|PCI_EXP_TYPE_ENDPOINT
+mdefine_line|#define  PCI_EXP_TYPE_ENDPOINT&t;0x0&t;/* Express Endpoint */
+DECL|macro|PCI_EXP_TYPE_LEG_END
+mdefine_line|#define  PCI_EXP_TYPE_LEG_END&t;0x1&t;/* Legacy Endpoint */
+DECL|macro|PCI_EXP_TYPE_ROOT_PORT
+mdefine_line|#define  PCI_EXP_TYPE_ROOT_PORT 0x4&t;/* Root Port */
+DECL|macro|PCI_EXP_TYPE_UPSTREAM
+mdefine_line|#define  PCI_EXP_TYPE_UPSTREAM&t;0x5&t;/* Upstream Port */
+DECL|macro|PCI_EXP_TYPE_DOWNSTREAM
+mdefine_line|#define  PCI_EXP_TYPE_DOWNSTREAM 0x6&t;/* Downstream Port */
+DECL|macro|PCI_EXP_TYPE_PCI_BRIDGE
+mdefine_line|#define  PCI_EXP_TYPE_PCI_BRIDGE 0x7&t;/* PCI/PCI-X Bridge */
+DECL|macro|PCI_EXP_FLAGS_SLOT
+mdefine_line|#define PCI_EXP_FLAGS_SLOT&t;0x0100&t;/* Slot implemented */
+DECL|macro|PCI_EXP_FLAGS_IRQ
+mdefine_line|#define PCI_EXP_FLAGS_IRQ&t;0x3e00&t;/* Interrupt message number */
+DECL|macro|PCI_EXP_DEVCAP
+mdefine_line|#define PCI_EXP_DEVCAP&t;&t;4&t;/* Device capabilities */
+DECL|macro|PCI_EXP_DEVCAP_PAYLOAD
+mdefine_line|#define  PCI_EXP_DEVCAP_PAYLOAD&t;0x07&t;/* Max_Payload_Size */
+DECL|macro|PCI_EXP_DEVCAP_PHANTOM
+mdefine_line|#define  PCI_EXP_DEVCAP_PHANTOM&t;0x18&t;/* Phantom functions */
+DECL|macro|PCI_EXP_DEVCAP_EXT_TAG
+mdefine_line|#define  PCI_EXP_DEVCAP_EXT_TAG&t;0x20&t;/* Extended tags */
+DECL|macro|PCI_EXP_DEVCAP_L0S
+mdefine_line|#define  PCI_EXP_DEVCAP_L0S&t;0x1c0&t;/* L0s Acceptable Latency */
+DECL|macro|PCI_EXP_DEVCAP_L1
+mdefine_line|#define  PCI_EXP_DEVCAP_L1&t;0xe00&t;/* L1 Acceptable Latency */
+DECL|macro|PCI_EXP_DEVCAP_ATN_BUT
+mdefine_line|#define  PCI_EXP_DEVCAP_ATN_BUT&t;0x1000&t;/* Attention Button Present */
+DECL|macro|PCI_EXP_DEVCAP_ATN_IND
+mdefine_line|#define  PCI_EXP_DEVCAP_ATN_IND&t;0x2000&t;/* Attention Indicator Present */
+DECL|macro|PCI_EXP_DEVCAP_PWR_IND
+mdefine_line|#define  PCI_EXP_DEVCAP_PWR_IND&t;0x4000&t;/* Power Indicator Present */
+DECL|macro|PCI_EXP_DEVCAP_PWR_VAL
+mdefine_line|#define  PCI_EXP_DEVCAP_PWR_VAL&t;0x3fc0000 /* Slot Power Limit Value */
+DECL|macro|PCI_EXP_DEVCAP_PWR_SCL
+mdefine_line|#define  PCI_EXP_DEVCAP_PWR_SCL&t;0xc000000 /* Slot Power Limit Scale */
+DECL|macro|PCI_EXP_DEVCTL
+mdefine_line|#define PCI_EXP_DEVCTL&t;&t;8&t;/* Device Control */
+DECL|macro|PCI_EXP_DEVCTL_CERE
+mdefine_line|#define  PCI_EXP_DEVCTL_CERE&t;0x0001&t;/* Correctable Error Reporting En. */
+DECL|macro|PCI_EXP_DEVCTL_NFERE
+mdefine_line|#define  PCI_EXP_DEVCTL_NFERE&t;0x0002&t;/* Non-Fatal Error Reporting Enable */
+DECL|macro|PCI_EXP_DEVCTL_FERE
+mdefine_line|#define  PCI_EXP_DEVCTL_FERE&t;0x0004&t;/* Fatal Error Reporting Enable */
+DECL|macro|PCI_EXP_DEVCTL_URRE
+mdefine_line|#define  PCI_EXP_DEVCTL_URRE&t;0x0008&t;/* Unsupported Request Reporting En. */
+DECL|macro|PCI_EXP_DEVCTL_RELAX_EN
+mdefine_line|#define  PCI_EXP_DEVCTL_RELAX_EN 0x0010 /* Enable relaxed ordering */
+DECL|macro|PCI_EXP_DEVCTL_PAYLOAD
+mdefine_line|#define  PCI_EXP_DEVCTL_PAYLOAD&t;0x00e0&t;/* Max_Payload_Size */
+DECL|macro|PCI_EXP_DEVCTL_EXT_TAG
+mdefine_line|#define  PCI_EXP_DEVCTL_EXT_TAG&t;0x0100&t;/* Extended Tag Field Enable */
+DECL|macro|PCI_EXP_DEVCTL_PHANTOM
+mdefine_line|#define  PCI_EXP_DEVCTL_PHANTOM&t;0x0200&t;/* Phantom Functions Enable */
+DECL|macro|PCI_EXP_DEVCTL_AUX_PME
+mdefine_line|#define  PCI_EXP_DEVCTL_AUX_PME&t;0x0400&t;/* Auxiliary Power PM Enable */
+DECL|macro|PCI_EXP_DEVCTL_NOSNOOP_EN
+mdefine_line|#define  PCI_EXP_DEVCTL_NOSNOOP_EN 0x0800  /* Enable No Snoop */
+DECL|macro|PCI_EXP_DEVCTL_READRQ
+mdefine_line|#define  PCI_EXP_DEVCTL_READRQ&t;0x7000&t;/* Max_Read_Request_Size */
+DECL|macro|PCI_EXP_DEVSTA
+mdefine_line|#define PCI_EXP_DEVSTA&t;&t;10&t;/* Device Status */
+DECL|macro|PCI_EXP_DEVSTA_CED
+mdefine_line|#define  PCI_EXP_DEVSTA_CED&t;0x01&t;/* Correctable Error Detected */
+DECL|macro|PCI_EXP_DEVSTA_NFED
+mdefine_line|#define  PCI_EXP_DEVSTA_NFED&t;0x02&t;/* Non-Fatal Error Detected */
+DECL|macro|PCI_EXP_DEVSTA_FED
+mdefine_line|#define  PCI_EXP_DEVSTA_FED&t;0x04&t;/* Fatal Error Detected */
+DECL|macro|PCI_EXP_DEVSTA_URD
+mdefine_line|#define  PCI_EXP_DEVSTA_URD&t;0x08&t;/* Unsupported Request Detected */
+DECL|macro|PCI_EXP_DEVSTA_AUXPD
+mdefine_line|#define  PCI_EXP_DEVSTA_AUXPD&t;0x10&t;/* AUX Power Detected */
+DECL|macro|PCI_EXP_DEVSTA_TRPND
+mdefine_line|#define  PCI_EXP_DEVSTA_TRPND&t;0x20&t;/* Transactions Pending */
 multiline_comment|/* Extended Capabilities (PCI-X 2.0 and Express) */
 DECL|macro|PCI_EXT_CAP_ID
 mdefine_line|#define PCI_EXT_CAP_ID(header)&t;&t;(header &amp; 0x0000ffff)
