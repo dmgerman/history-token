@@ -5180,6 +5180,12 @@ c_func
 id|zr-&gt;zr36057_mem
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|zr-&gt;pci_dev
+)paren
+suffix:semicolon
 id|video_unregister_device
 c_func
 (paren
