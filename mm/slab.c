@@ -832,13 +832,13 @@ id|BREAK_GFP_ORDER_LO
 suffix:semicolon
 multiline_comment|/* Macros for storing/retrieving the cachep and or slab from the&n; * global &squot;mem_map&squot;. These are used to find the slab an obj belongs to.&n; * With kfree(), these are used to find the cache which an obj belongs to.&n; */
 DECL|macro|SET_PAGE_CACHE
-mdefine_line|#define&t;SET_PAGE_CACHE(pg,x)  ((pg)-&gt;list.next = (struct list_head *)(x))
+mdefine_line|#define&t;SET_PAGE_CACHE(pg,x)  ((pg)-&gt;lru.next = (struct list_head *)(x))
 DECL|macro|GET_PAGE_CACHE
-mdefine_line|#define&t;GET_PAGE_CACHE(pg)    ((kmem_cache_t *)(pg)-&gt;list.next)
+mdefine_line|#define&t;GET_PAGE_CACHE(pg)    ((kmem_cache_t *)(pg)-&gt;lru.next)
 DECL|macro|SET_PAGE_SLAB
-mdefine_line|#define&t;SET_PAGE_SLAB(pg,x)   ((pg)-&gt;list.prev = (struct list_head *)(x))
+mdefine_line|#define&t;SET_PAGE_SLAB(pg,x)   ((pg)-&gt;lru.prev = (struct list_head *)(x))
 DECL|macro|GET_PAGE_SLAB
-mdefine_line|#define&t;GET_PAGE_SLAB(pg)     ((struct slab *)(pg)-&gt;list.prev)
+mdefine_line|#define&t;GET_PAGE_SLAB(pg)     ((struct slab *)(pg)-&gt;lru.prev)
 multiline_comment|/* These are the default caches for kmalloc. Custom caches can have other sizes. */
 DECL|variable|malloc_sizes
 r_struct
