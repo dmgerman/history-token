@@ -1700,6 +1700,26 @@ r_void
 r_if
 c_cond
 (paren
+id|dmi_broken
+op_amp
+id|BROKEN_CPUFREQ
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Disabled at boot time by DMI,&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|check_powernow
 c_func
 (paren
