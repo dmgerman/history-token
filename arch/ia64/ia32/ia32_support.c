@@ -980,11 +980,6 @@ id|ia32_init
 r_void
 )paren
 (brace
-r_extern
-id|kmem_cache_t
-op_star
-id|partial_page_cachep
-suffix:semicolon
 id|ia32_exec_domain.name
 op_assign
 l_string|&quot;Linux/x86&quot;
@@ -1015,6 +1010,13 @@ c_func
 op_amp
 id|ia32_exec_domain
 )paren
+suffix:semicolon
+macro_line|#if PAGE_SHIFT &gt; IA32_PAGE_SHIFT
+(brace
+r_extern
+id|kmem_cache_t
+op_star
+id|partial_page_cachep
 suffix:semicolon
 id|partial_page_cachep
 op_assign
@@ -1050,6 +1052,8 @@ c_func
 l_string|&quot;Cannot create partial page SLAB cache&quot;
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

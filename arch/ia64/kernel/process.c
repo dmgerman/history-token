@@ -2971,7 +2971,6 @@ c_func
 id|current
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -2988,10 +2987,9 @@ id|current
 id|ia32_drop_partial_page_list
 c_func
 (paren
-id|current-&gt;thread.ppl
+id|current
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Clean up state associated with current thread.  This is called when&n; * the thread calls exit().&n; */
 r_void
@@ -3035,7 +3033,6 @@ id|current
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IA32_SUPPORT
 r_if
 c_cond
 (paren
@@ -3052,10 +3049,9 @@ id|current
 id|ia32_drop_partial_page_list
 c_func
 (paren
-id|current-&gt;thread.ppl
+id|current
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_int
 r_int
