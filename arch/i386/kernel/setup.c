@@ -2471,6 +2471,7 @@ id|acpi_sci_flags.polarity
 op_assign
 l_int|3
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_IO_APIC
 r_else
 r_if
 c_cond
@@ -2490,6 +2491,7 @@ id|acpi_skip_timer_override
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* disable IO-APIC */
 r_else
