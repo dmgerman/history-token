@@ -232,6 +232,12 @@ c_func
 id|bp
 )paren
 suffix:semicolon
+id|XFS_BUF_UNDATAIO
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
 id|xfs_biodone
 c_func
 (paren
@@ -1776,6 +1782,12 @@ op_lshift_assign
 id|block_bits
 suffix:semicolon
 multiline_comment|/* convert fsb&squot;s to byte range */
+id|XFS_BUF_DATAIO
+c_func
+(paren
+id|pb
+)paren
+suffix:semicolon
 id|XFS_BUF_SET_SIZE
 c_func
 (paren

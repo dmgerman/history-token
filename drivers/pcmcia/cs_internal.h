@@ -427,12 +427,6 @@ id|u_char
 op_star
 id|cb_cis_virt
 suffix:semicolon
-DECL|member|cb_config
-r_struct
-id|cb_config_t
-op_star
-id|cb_config
-suffix:semicolon
 macro_line|#endif
 r_struct
 (brace
@@ -558,6 +552,8 @@ DECL|macro|SOCKET_REGION_INFO
 mdefine_line|#define SOCKET_REGION_INFO&t;0x4000
 DECL|macro|SOCKET_CARDBUS
 mdefine_line|#define SOCKET_CARDBUS&t;&t;0x8000
+DECL|macro|SOCKET_CARDBUS_CONFIG
+mdefine_line|#define SOCKET_CARDBUS_CONFIG&t;0x10000
 DECL|macro|CHECK_HANDLE
 mdefine_line|#define CHECK_HANDLE(h) &bslash;&n;    (((h) == NULL) || ((h)-&gt;client_magic != CLIENT_MAGIC))
 DECL|macro|CHECK_SOCKET
@@ -584,24 +580,6 @@ id|s
 suffix:semicolon
 r_void
 id|cb_free
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-suffix:semicolon
-r_void
-id|cb_enable
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-suffix:semicolon
-r_void
-id|cb_disable
 c_func
 (paren
 id|socket_info_t
@@ -950,27 +928,6 @@ r_void
 id|validate_mem
 c_func
 (paren
-r_int
-(paren
-op_star
-id|is_valid
-)paren
-(paren
-id|u_long
-)paren
-comma
-r_int
-(paren
-op_star
-id|do_cksum
-)paren
-(paren
-id|u_long
-)paren
-comma
-r_int
-id|force_low
-comma
 id|socket_info_t
 op_star
 id|s

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_VNODE_H__
 DECL|macro|__XFS_VNODE_H__
 mdefine_line|#define __XFS_VNODE_H__
@@ -166,6 +166,18 @@ DECL|enumerator|VN_BHV_XFS
 id|VN_BHV_XFS
 comma
 multiline_comment|/* xfs */
+DECL|enumerator|VN_BHV_DM
+id|VN_BHV_DM
+comma
+multiline_comment|/* data migration */
+DECL|enumerator|VN_BHV_QM
+id|VN_BHV_QM
+comma
+multiline_comment|/* quota manager */
+DECL|enumerator|VN_BHV_IO
+id|VN_BHV_IO
+comma
+multiline_comment|/* IO path */
 DECL|enumerator|VN_BHV_END
 id|VN_BHV_END
 multiline_comment|/* housekeeping end-of-range */
@@ -175,13 +187,17 @@ id|vn_bhv_t
 suffix:semicolon
 DECL|macro|VNODE_POSITION_XFS
 mdefine_line|#define VNODE_POSITION_XFS&t;(VNODE_POSITION_BASE)
+DECL|macro|VNODE_POSITION_DM
+mdefine_line|#define VNODE_POSITION_DM&t;(VNODE_POSITION_BASE+10)
+DECL|macro|VNODE_POSITION_QM
+mdefine_line|#define VNODE_POSITION_QM&t;(VNODE_POSITION_BASE+20)
+DECL|macro|VNODE_POSITION_IO
+mdefine_line|#define VNODE_POSITION_IO&t;(VNODE_POSITION_BASE+30)
 multiline_comment|/*&n; * Macros for dealing with the behavior descriptor inside of the vnode.&n; */
 DECL|macro|BHV_TO_VNODE
 mdefine_line|#define BHV_TO_VNODE(bdp)&t;((vnode_t *)BHV_VOBJ(bdp))
 DECL|macro|BHV_TO_VNODE_NULL
 mdefine_line|#define BHV_TO_VNODE_NULL(bdp)&t;((vnode_t *)BHV_VOBJNULL(bdp))
-DECL|macro|VNODE_TO_FIRST_BHV
-mdefine_line|#define VNODE_TO_FIRST_BHV(vp)&t;&t;(BHV_HEAD_FIRST(&amp;(vp)-&gt;v_bh))
 DECL|macro|VN_BHV_HEAD
 mdefine_line|#define VN_BHV_HEAD(vp)&t;&t;&t;((bhv_head_t *)(&amp;((vp)-&gt;v_bh)))
 DECL|macro|vn_bhv_head_init
@@ -227,26 +243,6 @@ mdefine_line|#define VWAIT&t;&t;       0x4&t;/* waiting for VINACT/VRECLM to end
 DECL|macro|VMODIFIED
 mdefine_line|#define VMODIFIED&t;       0x8&t;/* XFS inode state possibly differs */
 multiline_comment|/* to the Linux inode state.&t;*/
-DECL|macro|VROOT
-mdefine_line|#define VROOT&t;&t;  0x100000&t;/* root of its file system&t;*/
-DECL|macro|VNOSWAP
-mdefine_line|#define VNOSWAP&t;&t;  0x200000&t;/* cannot be used as virt swap device */
-DECL|macro|VISSWAP
-mdefine_line|#define VISSWAP&t;&t;  0x400000&t;/* vnode is part of virt swap device */
-DECL|macro|VREPLICABLE
-mdefine_line|#define VREPLICABLE&t;  0x800000&t;/* Vnode can have replicated pages */
-DECL|macro|VNONREPLICABLE
-mdefine_line|#define VNONREPLICABLE&t; 0x1000000&t;/* Vnode has writers. Don&squot;t replicate */
-DECL|macro|VDOCMP
-mdefine_line|#define VDOCMP&t;&t; 0x2000000&t;/* Vnode has special VOP_CMP impl. */
-DECL|macro|VSHARE
-mdefine_line|#define VSHARE&t;&t; 0x4000000&t;/* vnode part of global cache&t;*/
-DECL|macro|VFRLOCKS
-mdefine_line|#define VFRLOCKS&t; 0x8000000&t;/* vnode has FR locks applied&t;*/
-DECL|macro|VENF_LOCKING
-mdefine_line|#define VENF_LOCKING&t;0x10000000&t;/* enf. mode FR locking in effect */
-DECL|macro|VOPLOCK
-mdefine_line|#define VOPLOCK&t;&t;0x20000000&t;/* oplock set on the vnode&t;*/
 DECL|enum|vrwlock
 DECL|enumerator|VRWLOCK_NONE
 DECL|enumerator|VRWLOCK_READ
@@ -1245,82 +1241,84 @@ multiline_comment|/*&n; * VOP&squot;s.&n; */
 DECL|macro|_VOP_
 mdefine_line|#define _VOP_(op, vp)&t;(*((vnodeops_t *)(vp)-&gt;v_fops)-&gt;op)
 DECL|macro|VOP_READ
-mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr); &bslash;&n;}
+mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr)
 DECL|macro|VOP_WRITE
-mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr);&bslash;&n;}
+mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,cr,rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr)
 DECL|macro|VOP_SENDFILE
-mdefine_line|#define VOP_SENDFILE(vp,f,of,cnt,act,targ,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_sendfile, vp)((vp)-&gt;v_fbhv,f,of,cnt,act,targ,cr);&bslash;&n;}
+mdefine_line|#define VOP_SENDFILE(vp,f,off,cnt,act,targ,cr,rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_sendfile, vp)((vp)-&gt;v_fbhv,f,off,cnt,act,targ,cr)
 DECL|macro|VOP_BMAP
-mdefine_line|#define VOP_BMAP(vp,of,sz,rw,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,b,n);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_BMAP(vp,of,sz,rw,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,b,n)
 DECL|macro|VOP_OPEN
-mdefine_line|#define VOP_OPEN(vp, cr, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_open, vp)((vp)-&gt;v_fbhv, cr);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_OPEN(vp, cr, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_open, vp)((vp)-&gt;v_fbhv, cr)
 DECL|macro|VOP_GETATTR
-mdefine_line|#define VOP_GETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_getattr, vp)((vp)-&gt;v_fbhv, vap, f, cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_GETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_getattr, vp)((vp)-&gt;v_fbhv, vap, f, cr)
 DECL|macro|VOP_SETATTR
-mdefine_line|#define VOP_SETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_setattr, vp)((vp)-&gt;v_fbhv, vap, f, cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_SETATTR(vp, vap, f, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_setattr, vp)((vp)-&gt;v_fbhv, vap, f, cr)
 DECL|macro|VOP_ACCESS
-mdefine_line|#define VOP_ACCESS(vp, mode, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_access, vp)((vp)-&gt;v_fbhv, mode, cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_ACCESS(vp, mode, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_access, vp)((vp)-&gt;v_fbhv, mode, cr)
 DECL|macro|VOP_LOOKUP
-mdefine_line|#define VOP_LOOKUP(vp,d,vpp,f,rdir,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_lookup, vp)((vp)-&gt;v_fbhv,d,vpp,f,rdir,cr);&t;&bslash;&n;}
+mdefine_line|#define VOP_LOOKUP(vp,d,vpp,f,rdir,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_lookup, vp)((vp)-&gt;v_fbhv,d,vpp,f,rdir,cr)
 DECL|macro|VOP_CREATE
-mdefine_line|#define VOP_CREATE(dvp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_create, dvp)((dvp)-&gt;v_fbhv,d,vap,vpp,cr);&t;&bslash;&n;}
+mdefine_line|#define VOP_CREATE(dvp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_create, dvp)((dvp)-&gt;v_fbhv,d,vap,vpp,cr)
 DECL|macro|VOP_REMOVE
-mdefine_line|#define VOP_REMOVE(dvp,d,cr,rv)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_remove, dvp)((dvp)-&gt;v_fbhv,d,cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_REMOVE(dvp,d,cr,rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_remove, dvp)((dvp)-&gt;v_fbhv,d,cr)
 DECL|macro|VOP_LINK
-mdefine_line|#define VOP_LINK(tdvp,fvp,d,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_link, tdvp)((tdvp)-&gt;v_fbhv,fvp,d,cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_LINK(tdvp,fvp,d,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_link, tdvp)((tdvp)-&gt;v_fbhv,fvp,d,cr)
 DECL|macro|VOP_RENAME
-mdefine_line|#define VOP_RENAME(fvp,fnm,tdvp,tnm,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rename, fvp)((fvp)-&gt;v_fbhv,fnm,tdvp,tnm,cr);&t;&bslash;&n;}
+mdefine_line|#define VOP_RENAME(fvp,fnm,tdvp,tnm,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rename, fvp)((fvp)-&gt;v_fbhv,fnm,tdvp,tnm,cr)
 DECL|macro|VOP_MKDIR
-mdefine_line|#define VOP_MKDIR(dp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_mkdir, dp)((dp)-&gt;v_fbhv,d,vap,vpp,cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_MKDIR(dp,d,vap,vpp,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_mkdir, dp)((dp)-&gt;v_fbhv,d,vap,vpp,cr)
 DECL|macro|VOP_RMDIR
-mdefine_line|#define&t;VOP_RMDIR(dp,d,cr,rv)&t; &t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rmdir, dp)((dp)-&gt;v_fbhv,d,cr);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define&t;VOP_RMDIR(dp,d,cr,rv)&t; &t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_rmdir, dp)((dp)-&gt;v_fbhv,d,cr)
 DECL|macro|VOP_READDIR
-mdefine_line|#define VOP_READDIR(vp,uiop,cr,eofp,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readdir, vp)((vp)-&gt;v_fbhv,uiop,cr,eofp);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_READDIR(vp,uiop,cr,eofp,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readdir, vp)((vp)-&gt;v_fbhv,uiop,cr,eofp)
 DECL|macro|VOP_SYMLINK
-mdefine_line|#define VOP_SYMLINK(dvp,d,vap,tnm,vpp,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_symlink, dvp) ((dvp)-&gt;v_fbhv,d,vap,tnm,vpp,cr);&t;&bslash;&n;}
+mdefine_line|#define VOP_SYMLINK(dvp,d,vap,tnm,vpp,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_symlink, dvp) ((dvp)-&gt;v_fbhv,d,vap,tnm,vpp,cr)
 DECL|macro|VOP_READLINK
-mdefine_line|#define VOP_READLINK(vp,uiop,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readlink, vp)((vp)-&gt;v_fbhv,uiop,cr);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_READLINK(vp,uiop,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readlink, vp)((vp)-&gt;v_fbhv,uiop,cr)
 DECL|macro|VOP_FSYNC
-mdefine_line|#define VOP_FSYNC(vp,f,cr,b,e,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fsync, vp)((vp)-&gt;v_fbhv,f,cr,b,e);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_FSYNC(vp,f,cr,b,e,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fsync, vp)((vp)-&gt;v_fbhv,f,cr,b,e)
 DECL|macro|VOP_INACTIVE
-mdefine_line|#define VOP_INACTIVE(vp, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_inactive, vp)((vp)-&gt;v_fbhv, cr);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_INACTIVE(vp, cr, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_inactive, vp)((vp)-&gt;v_fbhv, cr)
 DECL|macro|VOP_RELEASE
-mdefine_line|#define VOP_RELEASE(vp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_release, vp)((vp)-&gt;v_fbhv);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_RELEASE(vp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_release, vp)((vp)-&gt;v_fbhv)
 DECL|macro|VOP_FID2
-mdefine_line|#define VOP_FID2(vp, fidp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fid2, vp)((vp)-&gt;v_fbhv, fidp);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_FID2(vp, fidp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fid2, vp)((vp)-&gt;v_fbhv, fidp)
 DECL|macro|VOP_RWLOCK
-mdefine_line|#define VOP_RWLOCK(vp,i)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_rwlock, vp)((vp)-&gt;v_fbhv, i);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_RWLOCK(vp,i)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_rwlock, vp)((vp)-&gt;v_fbhv, i)
 DECL|macro|VOP_RWLOCK_TRY
 mdefine_line|#define VOP_RWLOCK_TRY(vp,i)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_VOP_(vop_rwlock, vp)((vp)-&gt;v_fbhv, i)
 DECL|macro|VOP_RWUNLOCK
-mdefine_line|#define VOP_RWUNLOCK(vp,i)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_rwunlock, vp)((vp)-&gt;v_fbhv, i);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_RWUNLOCK(vp,i)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_rwunlock, vp)((vp)-&gt;v_fbhv, i)
+DECL|macro|VOP_FRLOCK
+mdefine_line|#define VOP_FRLOCK(vp,c,fl,flags,offset,fr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_frlock, vp)((vp)-&gt;v_fbhv,c,fl,flags,offset,fr)
 DECL|macro|VOP_RECLAIM
-mdefine_line|#define VOP_RECLAIM(vp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_reclaim, vp)((vp)-&gt;v_fbhv);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_RECLAIM(vp, rv)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_reclaim, vp)((vp)-&gt;v_fbhv)
 DECL|macro|VOP_ATTR_GET
-mdefine_line|#define VOP_ATTR_GET(vp, name, val, vallenp, fl, cred, rv)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_get, vp)((vp)-&gt;v_fbhv,name,val,vallenp,fl,cred); &bslash;&n;}
+mdefine_line|#define VOP_ATTR_GET(vp, name, val, vallenp, fl, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_get, vp)((vp)-&gt;v_fbhv,name,val,vallenp,fl,cred)
 DECL|macro|VOP_ATTR_SET
-mdefine_line|#define VOP_ATTR_SET(vp, name, val, vallen, fl, cred, rv)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_set, vp)((vp)-&gt;v_fbhv,name,val,vallen,fl,cred); &bslash;&n;}
+mdefine_line|#define VOP_ATTR_SET(vp, name, val, vallen, fl, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_set, vp)((vp)-&gt;v_fbhv,name,val,vallen,fl,cred)
 DECL|macro|VOP_ATTR_REMOVE
-mdefine_line|#define VOP_ATTR_REMOVE(vp, name, flags, cred, rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_remove, vp)((vp)-&gt;v_fbhv,name,flags,cred);&t;&bslash;&n;}
+mdefine_line|#define VOP_ATTR_REMOVE(vp, name, flags, cred, rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_remove, vp)((vp)-&gt;v_fbhv,name,flags,cred)
 DECL|macro|VOP_ATTR_LIST
-mdefine_line|#define VOP_ATTR_LIST(vp, buf, buflen, fl, cursor, cred, rv)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_list, vp)((vp)-&gt;v_fbhv,buf,buflen,fl,cursor,cred);&bslash;&n;}
+mdefine_line|#define VOP_ATTR_LIST(vp, buf, buflen, fl, cursor, cred, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_attr_list, vp)((vp)-&gt;v_fbhv,buf,buflen,fl,cursor,cred)
 DECL|macro|VOP_LINK_REMOVED
-mdefine_line|#define VOP_LINK_REMOVED(vp, dvp, linkzero)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_link_removed, vp)((vp)-&gt;v_fbhv, dvp, linkzero); &bslash;&n;}
+mdefine_line|#define VOP_LINK_REMOVED(vp, dvp, linkzero)&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_link_removed, vp)((vp)-&gt;v_fbhv, dvp, linkzero)
 DECL|macro|VOP_VNODE_CHANGE
-mdefine_line|#define VOP_VNODE_CHANGE(vp, cmd, val)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_vnode_change, vp)((vp)-&gt;v_fbhv,cmd,val);&t;&bslash;&n;}
+mdefine_line|#define VOP_VNODE_CHANGE(vp, cmd, val)&t;&t;&t;&t;&t;&bslash;&n;&t;(void)_VOP_(vop_vnode_change, vp)((vp)-&gt;v_fbhv,cmd,val)
 multiline_comment|/*&n; * These are page cache functions that now go thru VOPs.&n; * &squot;last&squot; parameter is unused and left in for IRIX compatibility&n; */
 DECL|macro|VOP_TOSS_PAGES
-mdefine_line|#define VOP_TOSS_PAGES(vp, first, last, fiopt)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_VOP_(vop_tosspages, vp)((vp)-&gt;v_fbhv,first, last, fiopt);&t;&bslash;&n;}
+mdefine_line|#define VOP_TOSS_PAGES(vp, first, last, fiopt)&t;&t;&t;&t;&bslash;&n;&t;_VOP_(vop_tosspages, vp)((vp)-&gt;v_fbhv,first, last, fiopt)
 multiline_comment|/*&n; * &squot;last&squot; parameter is unused and left in for IRIX compatibility&n; */
 DECL|macro|VOP_FLUSHINVAL_PAGES
-mdefine_line|#define VOP_FLUSHINVAL_PAGES(vp, first, last, fiopt)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;_VOP_(vop_flushinval_pages, vp)((vp)-&gt;v_fbhv,first,last,fiopt); &bslash;&n;}
+mdefine_line|#define VOP_FLUSHINVAL_PAGES(vp, first, last, fiopt)&t;&t;&t;&bslash;&n;&t;_VOP_(vop_flushinval_pages, vp)((vp)-&gt;v_fbhv,first,last,fiopt)
 multiline_comment|/*&n; * &squot;last&squot; parameter is unused and left in for IRIX compatibility&n; */
 DECL|macro|VOP_FLUSH_PAGES
-mdefine_line|#define VOP_FLUSH_PAGES(vp, first, last, flags, fiopt, rv)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_flush_pages, vp)((vp)-&gt;v_fbhv,first,last,flags,fiopt);&bslash;&n;}
+mdefine_line|#define VOP_FLUSH_PAGES(vp, first, last, flags, fiopt, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_flush_pages, vp)((vp)-&gt;v_fbhv,first,last,flags,fiopt)
 DECL|macro|VOP_IOCTL
-mdefine_line|#define VOP_IOCTL(vp, inode, filp, cmd, arg, rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_ioctl, vp)((vp)-&gt;v_fbhv,inode,filp,cmd,arg);&t;&bslash;&n;}
+mdefine_line|#define VOP_IOCTL(vp, inode, filp, cmd, arg, rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_ioctl, vp)((vp)-&gt;v_fbhv,inode,filp,cmd,arg)
 DECL|macro|VOP_IFLUSH
-mdefine_line|#define VOP_IFLUSH(vp, flags, rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_iflush, vp)((vp)-&gt;v_fbhv, flags);&t;&t;&bslash;&n;}
+mdefine_line|#define VOP_IFLUSH(vp, flags, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_iflush, vp)((vp)-&gt;v_fbhv, flags)
 multiline_comment|/*&n; * Flags for VOP_IFLUSH call&n; */
 DECL|macro|FLUSH_SYNC
 mdefine_line|#define FLUSH_SYNC&t;&t;1&t;/* wait for flush to complete&t;*/

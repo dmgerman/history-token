@@ -16,7 +16,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -211,7 +210,7 @@ id|dev_list
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;   A dev_link_t structure has fields for most things that are needed&n;   to keep track of a socket, but there will usually be some device&n;   specific information that also needs to be kept track of.  The&n;   &squot;priv&squot; pointer in a dev_link_t structure can be used to point to&n;   a device-specific private data structure, like this.&n;&n;   To simplify the data structure handling, we actually include the&n;   dev_link_t structure in the device&squot;s private data structure.&n;&n;   A driver needs to provide a dev_node_t structure for each device&n;   on a card.  In some cases, there is only one device per card (for&n;   example, ethernet cards, modems).  In other cases, there may be&n;   many actual or logical devices (SCSI adapters, memory cards with&n;   multiple partitions).  The dev_node_t structures need to be kept&n;   in a linked list starting at the &squot;dev&squot; field of a dev_link_t&n;   structure.  We allocate them in the card&squot;s private data structure,&n;   because they generally shouldn&squot;t be allocated dynamically.&n;   In this case, we also provide a flag to indicate if a device is&n;   &quot;stopped&quot; due to a power management event, or card ejection.  The&n;   device IO routines can use a flag like this to throttle IO to a&n;   card that is not ready to accept it.&n;&n;   The bus_operations pointer is used on platforms for which we need&n;   to use special socket-specific versions of normal IO primitives&n;   (inb, outb, readb, writeb, etc) for card IO.&n;*/
+multiline_comment|/*&n;   A dev_link_t structure has fields for most things that are needed&n;   to keep track of a socket, but there will usually be some device&n;   specific information that also needs to be kept track of.  The&n;   &squot;priv&squot; pointer in a dev_link_t structure can be used to point to&n;   a device-specific private data structure, like this.&n;&n;   To simplify the data structure handling, we actually include the&n;   dev_link_t structure in the device&squot;s private data structure.&n;&n;   A driver needs to provide a dev_node_t structure for each device&n;   on a card.  In some cases, there is only one device per card (for&n;   example, ethernet cards, modems).  In other cases, there may be&n;   many actual or logical devices (SCSI adapters, memory cards with&n;   multiple partitions).  The dev_node_t structures need to be kept&n;   in a linked list starting at the &squot;dev&squot; field of a dev_link_t&n;   structure.  We allocate them in the card&squot;s private data structure,&n;   because they generally shouldn&squot;t be allocated dynamically.&n;   In this case, we also provide a flag to indicate if a device is&n;   &quot;stopped&quot; due to a power management event, or card ejection.  The&n;   device IO routines can use a flag like this to throttle IO to a&n;   card that is not ready to accept it.&n;*/
 DECL|struct|local_info_t
 r_typedef
 r_struct
@@ -228,12 +227,6 @@ suffix:semicolon
 DECL|member|busy
 r_int
 id|busy
-suffix:semicolon
-DECL|member|bus
-r_struct
-id|bus_operations
-op_star
-id|bus
 suffix:semicolon
 DECL|typedef|local_info_t
 )brace
@@ -1615,10 +1608,6 @@ op_or_assign
 id|DEV_PRESENT
 op_or
 id|DEV_CONFIG_PENDING
-suffix:semicolon
-id|dev-&gt;bus
-op_assign
-id|args-&gt;bus
 suffix:semicolon
 id|elsa_cs_config
 c_func

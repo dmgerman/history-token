@@ -54,7 +54,7 @@ comma
 l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Define these values to match your device */
+multiline_comment|/* Define these values to match your devices */
 DECL|macro|USB_SKEL_VENDOR_ID
 mdefine_line|#define USB_SKEL_VENDOR_ID&t;0xfff0
 DECL|macro|USB_SKEL_PRODUCT_ID
@@ -76,6 +76,17 @@ c_func
 id|USB_SKEL_VENDOR_ID
 comma
 id|USB_SKEL_PRODUCT_ID
+)paren
+)brace
+comma
+multiline_comment|/* &quot;Gadget Zero&quot; firmware runs under Linux */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0525
+comma
+l_int|0xa4a0
 )paren
 )brace
 comma
@@ -2170,9 +2181,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;usb_register failed for the &quot;
-id|__FILE__
-l_string|&quot; driver. Error number %d&quot;
+l_string|&quot;usb_register failed. Error number %d&quot;
 comma
 id|result
 )paren

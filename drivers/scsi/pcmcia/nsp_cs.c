@@ -31,7 +31,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &quot;nsp_cs.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -128,12 +127,6 @@ suffix:semicolon
 DECL|member|stop
 r_int
 id|stop
-suffix:semicolon
-DECL|member|bus
-r_struct
-id|bus_operations
-op_star
-id|bus
 suffix:semicolon
 DECL|typedef|scsi_info_t
 )brace
@@ -7832,10 +7825,6 @@ op_or_assign
 id|DEV_PRESENT
 op_or
 id|DEV_CONFIG_PENDING
-suffix:semicolon
-id|info-&gt;bus
-op_assign
-id|args-&gt;bus
 suffix:semicolon
 id|nsp_cs_config
 c_func
