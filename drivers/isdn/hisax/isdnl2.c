@@ -709,7 +709,7 @@ id|Layer2
 op_star
 id|l2
 comma
-id|u_char
+id|u8
 op_star
 id|header
 comma
@@ -717,7 +717,7 @@ r_int
 id|rsp
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 op_assign
@@ -877,7 +877,7 @@ DECL|function|IsUI
 id|IsUI
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 )paren
@@ -903,7 +903,7 @@ DECL|function|IsUA
 id|IsUA
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 )paren
@@ -929,7 +929,7 @@ DECL|function|IsDM
 id|IsDM
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 )paren
@@ -955,7 +955,7 @@ DECL|function|IsDISC
 id|IsDISC
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 )paren
@@ -981,7 +981,7 @@ DECL|function|IsRR
 id|IsRR
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1035,7 +1035,7 @@ DECL|function|IsSFrame
 id|IsSFrame
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1046,7 +1046,7 @@ id|st
 )paren
 (brace
 r_register
-id|u_char
+id|u8
 id|d
 op_assign
 op_star
@@ -1097,7 +1097,7 @@ DECL|function|IsSABME
 id|IsSABME
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1107,7 +1107,7 @@ op_star
 id|st
 )paren
 (brace
-id|u_char
+id|u8
 id|d
 op_assign
 id|data
@@ -1146,7 +1146,7 @@ DECL|function|IsREJ
 id|IsREJ
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1194,7 +1194,7 @@ DECL|function|IsFRMR
 id|IsFRMR
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 )paren
@@ -1220,7 +1220,7 @@ DECL|function|IsRNR
 id|IsRNR
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|data
 comma
@@ -1595,7 +1595,7 @@ id|st-&gt;l2
 op_plus
 l_int|1
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|datap
 op_assign
@@ -1939,10 +1939,10 @@ id|PStack
 op_star
 id|st
 comma
-id|u_char
+id|u8
 id|cmd
 comma
-id|u_char
+id|u8
 id|cr
 )paren
 (brace
@@ -1951,7 +1951,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u_char
+id|u8
 id|tmp
 (braket
 id|MAX_HEADER_LEN
@@ -2034,7 +2034,7 @@ id|skb
 suffix:semicolon
 )brace
 r_inline
-id|u_char
+id|u8
 DECL|function|get_PollFlag
 id|get_PollFlag
 c_func
@@ -2088,7 +2088,7 @@ id|skb
 suffix:semicolon
 )brace
 r_inline
-id|u_char
+id|u8
 DECL|function|get_PollFlagFree
 id|get_PollFlagFree
 c_func
@@ -2104,7 +2104,7 @@ op_star
 id|skb
 )paren
 (brace
-id|u_char
+id|u8
 id|PF
 suffix:semicolon
 id|PF
@@ -2372,7 +2372,7 @@ id|st
 op_assign
 id|fi-&gt;userdata
 suffix:semicolon
-id|u_char
+id|u8
 id|cmd
 suffix:semicolon
 id|clear_exception
@@ -2939,7 +2939,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u_char
+id|u8
 id|header
 (braket
 id|MAX_HEADER_LEN
@@ -4527,13 +4527,13 @@ id|PStack
 op_star
 id|st
 comma
-id|u_char
+id|u8
 id|typ
 comma
-id|u_char
+id|u8
 id|cr
 comma
-id|u_char
+id|u8
 id|pf
 )paren
 (brace
@@ -4547,7 +4547,7 @@ id|Layer2
 op_star
 id|l2
 suffix:semicolon
-id|u_char
+id|u8
 id|tmp
 (braket
 id|MAX_HEADER_LEN
@@ -7004,7 +7004,7 @@ op_assign
 op_amp
 id|st-&gt;l2
 suffix:semicolon
-id|u_char
+id|u8
 id|header
 (braket
 id|MAX_HEADER_LEN
@@ -9499,7 +9499,7 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|datap
 suffix:semicolon

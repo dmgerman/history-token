@@ -2683,7 +2683,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u_char
+id|u8
 id|val
 suffix:semicolon
 r_char

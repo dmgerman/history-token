@@ -867,7 +867,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|u_char
+id|u8
 id|buf
 (braket
 l_int|64

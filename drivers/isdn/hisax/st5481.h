@@ -392,7 +392,7 @@ DECL|member|r
 DECL|member|w
 DECL|member|count
 DECL|member|size
-id|u_char
+id|u8
 id|r
 comma
 id|w
@@ -773,7 +773,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* double buffering */
 DECL|member|flow_event
-id|u_char
+id|u8
 id|flow_event
 suffix:semicolon
 DECL|member|busy
@@ -1219,7 +1219,7 @@ id|st5481_adapter
 op_star
 id|adapter
 comma
-id|u_char
+id|u8
 id|pipe
 comma
 id|ctrl_complete_t
@@ -1368,7 +1368,7 @@ id|len
 comma
 id|ofs
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|data
 suffix:semicolon

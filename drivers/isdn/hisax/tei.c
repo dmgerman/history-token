@@ -42,7 +42,7 @@ id|PStack
 op_star
 id|st
 comma
-id|u_char
+id|u8
 id|pr
 comma
 r_struct
@@ -246,14 +246,14 @@ id|PStack
 op_star
 id|st
 comma
-id|u_char
+id|u8
 id|m_id
 comma
 r_int
 r_int
 id|ri
 comma
-id|u_char
+id|u8
 id|tei
 )paren
 (brace
@@ -262,7 +262,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|bp
 suffix:semicolon

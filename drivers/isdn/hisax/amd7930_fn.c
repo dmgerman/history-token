@@ -71,9 +71,9 @@ id|reg
 )paren
 (brace
 r_return
-id|cs
+id|cs-&gt;dc_hw_ops
 op_member_access_from_pointer
-id|readisac
+id|read_reg
 c_func
 (paren
 id|cs
@@ -101,9 +101,9 @@ id|u8
 id|val
 )paren
 (brace
-id|cs
+id|cs-&gt;dc_hw_ops
 op_member_access_from_pointer
-id|writeisac
+id|write_reg
 c_func
 (paren
 id|cs
@@ -322,7 +322,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|command
 comma
 r_char
@@ -609,7 +609,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|index
 op_assign
 id|stateHelper
@@ -626,7 +626,7 @@ id|cs-&gt;dc.amd7930.ph_state
 op_minus
 l_int|1
 suffix:semicolon
-id|u_char
+id|u8
 id|message
 op_assign
 id|i430States

@@ -23,34 +23,4 @@ mdefine_line|#define TJ_LED2 &t;&t;&t;&t;&t;&t;0x80
 multiline_comment|/* Das Fenster zum AMD...&n; * Ab Adresse hw.njet.base + TJ_AMD_PORT werden vom AMD jeweils 8 Bit in&n; * den TigerJet i/o-Raum gemappt&n; * -&gt; 0x01 des AMD bei hw.njet.base + 0C4 */
 DECL|macro|TJ_AMD_PORT
 mdefine_line|#define TJ_AMD_PORT&t;&t;&t;&t;&t;&t;0xC0
-multiline_comment|/* ***************************************************************************************** *&n; * *************************************** Prototypen ************************************** *&n; * ***************************************************************************************** */
-id|BYTE
-id|ReadByteAmd7930
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-id|BYTE
-id|offset
-)paren
-suffix:semicolon
-r_void
-id|WriteByteAmd7930
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-comma
-id|BYTE
-id|offset
-comma
-id|BYTE
-id|value
-)paren
-suffix:semicolon
 eof

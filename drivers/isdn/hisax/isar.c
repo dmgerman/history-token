@@ -14,7 +14,7 @@ DECL|macro|ETX
 mdefine_line|#define ETX&t;0x03
 DECL|variable|faxmodulation_s
 r_const
-id|u_char
+id|u8
 id|faxmodulation_s
 (braket
 )braket
@@ -23,7 +23,7 @@ l_string|&quot;3,24,48,72,73,74,96,97,98,121,122,145,146&quot;
 suffix:semicolon
 DECL|variable|faxmodulation
 r_const
-id|u_char
+id|u8
 id|faxmodulation
 (braket
 )braket
@@ -78,10 +78,10 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|cmd
 comma
-id|u_char
+id|u8
 id|para
 )paren
 suffix:semicolon
@@ -96,7 +96,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|status
 )paren
 suffix:semicolon
@@ -107,6 +107,76 @@ id|isar_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_static
+r_inline
+id|u8
+DECL|function|isar_read_reg
+id|isar_read_reg
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|mode
+comma
+id|u8
+id|addr
+)paren
+(brace
+r_return
+id|cs-&gt;bc_hw_ops
+op_member_access_from_pointer
+id|read_reg
+c_func
+(paren
+id|cs
+comma
+id|mode
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isar_write_reg
+id|isar_write_reg
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|mode
+comma
+id|u8
+id|addr
+comma
+id|u8
+id|val
+)paren
+(brace
+id|cs-&gt;bc_hw_ops
+op_member_access_from_pointer
+id|write_reg
+c_func
+(paren
+id|cs
+comma
+id|mode
+comma
+id|addr
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
 r_static
 r_inline
 r_int
@@ -127,9 +197,7 @@ r_while
 c_loop
 (paren
 (paren
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -182,16 +250,16 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|his
 comma
-id|u_char
+id|u8
 id|creg
 comma
-id|u_char
+id|u8
 id|len
 comma
-id|u_char
+id|u8
 op_star
 id|msg
 )paren
@@ -250,9 +318,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -264,9 +330,7 @@ comma
 id|creg
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -278,9 +342,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -300,9 +362,7 @@ op_logical_and
 id|len
 )paren
 (brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -331,9 +391,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -435,9 +493,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -487,7 +543,7 @@ id|isar_reg
 op_star
 id|ireg
 comma
-id|u_char
+id|u8
 op_star
 id|msg
 )paren
@@ -495,9 +551,7 @@ id|msg
 r_int
 id|i
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -522,9 +576,7 @@ id|msg
 l_int|0
 )braket
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -553,9 +605,7 @@ id|msg
 id|i
 )braket
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -652,9 +702,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -687,9 +735,7 @@ id|ireg
 (brace
 id|ireg-&gt;iis
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -701,9 +747,7 @@ id|ISAR_IIS
 suffix:semicolon
 id|ireg-&gt;cmsb
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -715,9 +759,7 @@ id|ISAR_CTRL_H
 suffix:semicolon
 id|ireg-&gt;clsb
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -761,11 +803,11 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|len
 comma
-id|u_char
+id|u8
 op_star
 id|msg
 comma
@@ -800,9 +842,7 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -913,20 +953,20 @@ id|s
 r_int
 id|ver
 suffix:semicolon
-id|u_char
+id|u8
 id|msg
 (braket
 )braket
 op_assign
 id|ISAR_MSG_HWVER
 suffix:semicolon
-id|u_char
+id|u8
 id|tmp
 (braket
 l_int|64
 )braket
 suffix:semicolon
-id|u_char
+id|u8
 id|len
 suffix:semicolon
 r_int
@@ -945,9 +985,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* disable ISAR IRQ */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -1084,7 +1122,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|buf
 )paren
@@ -1098,7 +1136,7 @@ id|cnt
 comma
 id|debug
 suffix:semicolon
-id|u_char
+id|u8
 id|len
 comma
 id|nom
@@ -1113,13 +1151,13 @@ comma
 op_star
 id|sp
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|p
 op_assign
 id|buf
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|msg
 comma
@@ -1350,9 +1388,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* disable ISAR IRQ */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2113,9 +2149,7 @@ l_string|&quot;isar start dsp success&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* NORMAL mode entered */
 multiline_comment|/* Enable IRQs of ISAR */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2528,9 +2562,7 @@ c_cond
 id|ret
 )paren
 multiline_comment|/* disable ISAR IRQ */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2666,7 +2698,7 @@ op_star
 id|bcs
 )paren
 (brace
-id|u_char
+id|u8
 id|dleetx
 (braket
 l_int|2
@@ -2856,7 +2888,7 @@ op_star
 id|bcs
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -2887,9 +2919,7 @@ comma
 l_string|&quot;isar zero len frame&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2940,9 +2970,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2984,7 +3012,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|skb_put
@@ -3023,9 +3051,7 @@ id|KERN_WARNING
 l_string|&quot;HiSax: skb out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3070,9 +3096,7 @@ comma
 l_string|&quot;isar_rcv_frame: incoming packet too large&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3143,9 +3167,7 @@ id|bcs-&gt;hw.isar.rcvidx
 op_assign
 l_int|0
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3326,9 +3348,7 @@ comma
 l_string|&quot;isar_rcv_frame: not ACTIV&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3414,7 +3434,7 @@ id|insert_dle
 c_func
 (paren
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|skb_put
@@ -3471,9 +3491,7 @@ comma
 l_string|&quot;isar_rcv_frame: no more data&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3538,9 +3556,7 @@ id|KERN_WARNING
 l_string|&quot;HiSax: skb out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3581,9 +3597,7 @@ comma
 id|bcs-&gt;hw.isar.cmd
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3630,9 +3644,7 @@ comma
 l_string|&quot;isar_rcv_frame: incoming packet too large&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3681,9 +3693,7 @@ id|bcs-&gt;hw.isar.rcvidx
 op_assign
 l_int|0
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3807,7 +3817,7 @@ id|insert_dle
 c_func
 (paren
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|skb_put
@@ -3885,9 +3895,7 @@ comma
 l_string|&quot;isar_rcv_frame: no more data&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3955,9 +3963,7 @@ comma
 id|bcs-&gt;mode
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3994,10 +4000,10 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
-id|u_char
+id|u8
 id|msb
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -4403,7 +4409,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|dpath
 )paren
 (brace
@@ -4672,7 +4678,7 @@ id|bcs-&gt;Flag
 )paren
 )paren
 (brace
-id|u_char
+id|u8
 id|dummy
 op_assign
 l_int|0
@@ -4751,7 +4757,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|rdm
 )paren
 (brace
@@ -4937,7 +4943,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|ril
 op_assign
 id|ireg-&gt;par
@@ -4945,7 +4951,7 @@ id|ireg-&gt;par
 l_int|0
 )braket
 suffix:semicolon
-id|u_char
+id|u8
 id|rim
 suffix:semicolon
 r_if
@@ -5152,7 +5158,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|devt
 )paren
 (brace
@@ -5163,7 +5169,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -5542,7 +5548,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|status
 )paren
 (brace
@@ -5615,7 +5621,7 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|devt
 )paren
 (brace
@@ -5626,7 +5632,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -5635,7 +5641,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|p1
 suffix:semicolon
 r_switch
@@ -6717,9 +6723,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6737,9 +6741,7 @@ suffix:semicolon
 r_case
 id|ISAR_IIS_GSTEV
 suffix:colon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6830,9 +6832,7 @@ comma
 id|ireg-&gt;cmsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6875,7 +6875,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -6955,9 +6955,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -7001,7 +6999,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -7032,9 +7030,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -7066,7 +7062,7 @@ comma
 id|ireg
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -7088,7 +7084,7 @@ op_eq
 id|L1_DEB_HSCX
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|tp
 op_assign
@@ -7114,7 +7110,7 @@ c_func
 id|tp
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|ireg-&gt;par
@@ -7280,7 +7276,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -7289,7 +7285,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|ctrl
 comma
 id|param
@@ -7578,7 +7574,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -7587,7 +7583,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|ctrl
 comma
 id|param
@@ -7764,7 +7760,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -7773,7 +7769,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|cmsb
 op_assign
 id|IOM_CTRL_ENA
@@ -8183,10 +8179,10 @@ id|BCState
 op_star
 id|bcs
 comma
-id|u_char
+id|u8
 id|cmd
 comma
-id|u_char
+id|u8
 id|para
 )paren
 (brace
@@ -8197,7 +8193,7 @@ id|cs
 op_assign
 id|bcs-&gt;cs
 suffix:semicolon
-id|u_char
+id|u8
 id|dps
 op_assign
 id|SET_DPS
@@ -8206,7 +8202,7 @@ c_func
 id|bcs-&gt;hw.isar.dpath
 )paren
 suffix:semicolon
-id|u_char
+id|u8
 id|ctrl
 op_assign
 l_int|0
@@ -8680,7 +8676,7 @@ op_star
 id|cs
 )paren
 (brace
-id|u_char
+id|u8
 id|msg
 suffix:semicolon
 r_int
@@ -9774,7 +9770,7 @@ c_func
 id|cs
 comma
 (paren
-id|u_char
+id|u8
 op_star
 )paren
 id|adr
@@ -9826,6 +9822,20 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|isar_l1_ops
+r_static
+r_struct
+id|bc_l1_ops
+id|isar_l1_ops
+op_assign
+(brace
+dot
+id|fill_fifo
+op_assign
+id|isar_fill_fifo
+comma
+)brace
+suffix:semicolon
 r_void
 id|__devinit
 DECL|function|initisar
@@ -9838,6 +9848,11 @@ op_star
 id|cs
 )paren
 (brace
+id|cs-&gt;bc_l1_ops
+op_assign
+op_amp
+id|isar_l1_ops
+suffix:semicolon
 id|cs-&gt;bcs
 (braket
 l_int|0

@@ -1513,7 +1513,7 @@ DECL|function|l2cmd
 id|l2cmd
 c_func
 (paren
-id|u_char
+id|u8
 id|cmd
 )paren
 (brace
@@ -1623,7 +1623,7 @@ DECL|function|l2frames
 id|l2frames
 c_func
 (paren
-id|u_char
+id|u8
 op_star
 id|ptr
 )paren
@@ -1815,7 +1815,7 @@ r_int
 id|dir
 )paren
 (brace
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon

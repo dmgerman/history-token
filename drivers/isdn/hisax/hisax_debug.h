@@ -29,7 +29,7 @@ op_star
 id|name
 comma
 r_const
-id|u_char
+id|u8
 op_star
 id|data
 comma

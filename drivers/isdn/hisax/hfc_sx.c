@@ -32,7 +32,7 @@ macro_line|#undef CCD_DEMO_BOARD
 macro_line|#ifdef CCD_DEMO_BOARD
 DECL|variable|ccd_sp_irqtab
 r_static
-id|u_char
+id|u8
 id|ccd_sp_irqtab
 (braket
 l_int|16
@@ -75,7 +75,7 @@ suffix:semicolon
 macro_line|#else /* Teles 16.3c */
 DECL|variable|ccd_sp_irqtab
 r_static
-id|u_char
+id|u8
 id|ccd_sp_irqtab
 (braket
 l_int|16
@@ -137,10 +137,10 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|regnum
 comma
-id|u_char
+id|u8
 id|val
 )paren
 (brace
@@ -165,7 +165,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-id|u_char
+id|u8
 DECL|function|Read_hfc
 id|Read_hfc
 c_func
@@ -175,11 +175,11 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|regnum
 )paren
 (brace
-id|u_char
+id|u8
 id|ret
 suffix:semicolon
 id|byteout
@@ -218,7 +218,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|fifo
 )paren
 (brace
@@ -310,7 +310,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|fifo
 )paren
 (brace
@@ -387,7 +387,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|u_char
+id|u8
 id|fifo
 comma
 r_int
@@ -408,7 +408,7 @@ id|z1
 comma
 id|z2
 suffix:semicolon
-id|u_char
+id|u8
 id|f_msk
 comma
 id|f1
@@ -935,7 +935,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 id|fifo
 comma
 r_int
@@ -951,7 +951,7 @@ id|z1
 comma
 id|z2
 suffix:semicolon
-id|u_char
+id|u8
 id|f_msk
 comma
 id|f1
@@ -3127,7 +3127,7 @@ id|count
 op_assign
 l_int|5
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -3311,7 +3311,7 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
-id|u_char
+id|u8
 id|exval
 suffix:semicolon
 r_struct
@@ -3324,7 +3324,7 @@ id|count
 op_assign
 l_int|15
 suffix:semicolon
-id|u_char
+id|u8
 id|val
 comma
 id|stat
@@ -5649,6 +5649,20 @@ id|cs
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hfcsx_l1_ops
+r_static
+r_struct
+id|bc_l1_ops
+id|hfcsx_l1_ops
+op_assign
+(brace
+dot
+id|fill_fifo
+op_assign
+id|hfcsx_fill_fifo
+comma
+)brace
+suffix:semicolon
 multiline_comment|/********************************/
 multiline_comment|/* called for card init message */
 multiline_comment|/********************************/
@@ -5701,9 +5715,10 @@ comma
 id|cs
 )paren
 suffix:semicolon
-id|cs-&gt;BC_Send_Data
+id|cs-&gt;bc_l1_ops
 op_assign
-id|hfcsx_fill_fifo
+op_amp
+id|hfcsx_l1_ops
 suffix:semicolon
 id|cs-&gt;DC_Send_Data
 op_assign
@@ -6598,30 +6613,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* no valid card type */
-id|cs-&gt;readisac
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;writeisac
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;readisacfifo
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;writeisacfifo
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;BC_Read_Reg
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cs-&gt;BC_Write_Reg
-op_assign
-l_int|NULL
-suffix:semicolon
 id|cs-&gt;irq_func
 op_assign
 op_amp

@@ -25,7 +25,7 @@ singleline_comment|//#define SERIAL_DEBUG_REG 1
 macro_line|#ifdef SERIAL_DEBUG_REG
 DECL|variable|deb
 r_static
-id|u_char
+id|u8
 id|deb
 (braket
 l_int|32
@@ -1714,6 +1714,20 @@ id|cs-&gt;hw.elsa.IER
 suffix:semicolon
 )brace
 )brace
+DECL|variable|modem_l1_ops
+r_static
+r_struct
+id|bc_l1_ops
+id|modem_l1_ops
+op_assign
+(brace
+dot
+id|fill_fifo
+op_assign
+id|modem_fill
+comma
+)brace
+suffix:semicolon
 DECL|function|rs_interrupt_elsa
 r_static
 r_void
@@ -2067,7 +2081,7 @@ id|IsdnCardState
 op_star
 id|cs
 comma
-id|u_char
+id|u8
 op_star
 id|buf
 comma
@@ -2080,7 +2094,7 @@ id|count
 comma
 id|fp
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|msg
 op_assign
@@ -3171,9 +3185,10 @@ id|st-&gt;l1.l2l1
 op_assign
 id|modem_l2l1
 suffix:semicolon
-id|bcs-&gt;cs-&gt;BC_Send_Data
+id|bcs-&gt;cs-&gt;bc_l1_ops
 op_assign
-id|modem_fill
+op_amp
+id|modem_l1_ops
 suffix:semicolon
 r_break
 suffix:semicolon

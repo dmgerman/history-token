@@ -1746,7 +1746,7 @@ id|count
 (brace
 singleline_comment|// this also works for isacsx, since
 singleline_comment|// CMDR(D) register works the same
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
@@ -1869,7 +1869,7 @@ r_int
 r_char
 id|cmd
 suffix:semicolon
-id|u_char
+id|u8
 op_star
 id|ptr
 suffix:semicolon
