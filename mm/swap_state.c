@@ -53,7 +53,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * swapper_space doesn&squot;t have a real inode, so it gets a special vm_writeback()&n; * so we don&squot;t need swap special cases in generic_vm_writeback().&n; *&n; * FIXME: swap pages are locked, but not PageWriteback while under writeout.&n; * This will confuse throttling in shrink_cache().  It may be advantageous to&n; * set PG_writeback against swap pages while they&squot;re also locked.  Either that,&n; * or special-case swap pages in shrink_cache().&n; */
+multiline_comment|/*&n; * swapper_space doesn&squot;t have a real inode, so it gets a special vm_writeback()&n; * so we don&squot;t need swap special cases in generic_vm_writeback().&n; *&n; * Swap pages are PageLocked and PageWriteback while under writeout so that&n; * memory allocators will throttle against them.&n; */
 DECL|function|swap_vm_writeback
 r_static
 r_int

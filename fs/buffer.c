@@ -1866,6 +1866,28 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * swap page handling is a bit hacky.  A standalone completion handler&n;&t; * for swapout pages would fix that up.  swapin can use this function.&n;&t; */
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+id|end_page_writeback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|unlock_page
 c_func
 (paren
@@ -8460,7 +8482,7 @@ suffix:colon
 id|transferred
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to avoid a deadlock which occurs when free_swap_and_cache()&n; * calls block_flushpage() under spinlock and hits a locked buffer, and&n; * schedules under spinlock.   Another approach would be to teach&n; * find_trylock_page() to also trylock the page&squot;s writeback flags.&n; */
+multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to avoid a deadlock which occurs when free_swap_and_cache()&n; * calls block_flushpage() under spinlock and hits a locked buffer, and&n; * schedules under spinlock.   Another approach would be to teach&n; * find_trylock_page() to also trylock the page&squot;s writeback flags.&n; *&n; * Swap pages are also marked PageWriteback when they are being written&n; * so that memory allocators will throttle on them.&n; */
 DECL|function|brw_page
 r_int
 id|brw_page
@@ -8605,6 +8627,31 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rw
+op_eq
+id|WRITE
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|SetPageWriteback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Stage 2: start the IO */
 r_do
 (brace
