@@ -119,7 +119,7 @@ id|usec
 op_assign
 (paren
 id|__xtime.tv_nsec
-op_star
+op_div
 l_int|1000
 )paren
 op_plus

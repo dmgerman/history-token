@@ -4,6 +4,7 @@ mdefine_line|#define _ASMx8664_SIGNAL_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
 id|siginfo

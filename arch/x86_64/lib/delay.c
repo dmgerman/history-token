@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Precise Delay Loops for i386&n; *&n; *&t;Copyright (C) 1993 Linus Torvalds&n; *&t;Copyright (C) 1997 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *&t;The __delay function must _NOT_ be inlined as its execution time&n; *&t;depends wildly on alignment on many x86 processors. &n; */
+multiline_comment|/*&n; *&t;Precise Delay Loops for x86-64&n; *&n; *&t;Copyright (C) 1993 Linus Torvalds&n; *&t;Copyright (C) 1997 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *&t;The __delay function must _NOT_ be inlined as its execution time&n; *&t;depends wildly on alignment on many x86 processors. &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -113,5 +113,25 @@ l_int|0x000010c6
 )paren
 suffix:semicolon
 multiline_comment|/* 2**32 / 1000000 */
+)brace
+DECL|function|__ndelay
+r_void
+id|__ndelay
+c_func
+(paren
+r_int
+r_int
+id|nsecs
+)paren
+(brace
+id|__const_udelay
+c_func
+(paren
+id|nsecs
+op_star
+l_int|0x00005
+)paren
+suffix:semicolon
+multiline_comment|/* 2**32 / 1000000000 (rounded up) */
 )brace
 eof

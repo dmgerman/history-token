@@ -919,6 +919,11 @@ c_func
 r_void
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smp_call_function
 (paren
 id|flush_tlb_all_ipi
@@ -931,6 +936,11 @@ l_int|1
 )paren
 suffix:semicolon
 id|do_flush_tlb_all_local
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren
