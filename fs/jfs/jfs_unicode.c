@@ -263,6 +263,7 @@ op_star
 id|to
 comma
 r_const
+r_int
 r_char
 op_star
 id|from
@@ -353,10 +354,6 @@ l_string|&quot;charset = %s, char = 0x%x&quot;
 comma
 id|codepage-&gt;charset
 comma
-(paren
-r_int
-r_char
-)paren
 op_star
 id|from
 )paren
