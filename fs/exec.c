@@ -3638,7 +3638,7 @@ id|mode
 op_assign
 id|inode-&gt;i_mode
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check execute perms again - if the caller has CAP_DAC_OVERRIDE,&n;&t; * vfs_permission lets a non-executable through&n;&t; */
+multiline_comment|/*&n;&t; * Check execute perms again - if the caller has CAP_DAC_OVERRIDE,&n;&t; * generic_permission lets a non-executable through&n;&t; */
 r_if
 c_cond
 (paren
