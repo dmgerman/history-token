@@ -3043,6 +3043,12 @@ comma
 id|req
 )paren
 suffix:semicolon
+id|TCP_INC_STATS_BH
+c_func
+(paren
+id|TcpPassiveOpens
+)paren
+suffix:semicolon
 )brace
 r_return
 id|newsk
