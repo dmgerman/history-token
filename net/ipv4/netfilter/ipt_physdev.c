@@ -194,7 +194,7 @@ c_cond
 (paren
 (paren
 id|ret
-op_ne
+op_eq
 l_int|0
 )paren
 op_xor
@@ -206,7 +206,7 @@ id|IPT_PHYSDEV_OP_MATCH_IN
 )paren
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_for
 c_loop

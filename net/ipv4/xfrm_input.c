@@ -634,6 +634,17 @@ c_cond
 id|decaps
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|skb-&gt;dev-&gt;flags
+op_amp
+id|IFF_LOOPBACK
+)paren
+)paren
+(brace
 id|dst_release
 c_func
 (paren
@@ -644,6 +655,7 @@ id|skb-&gt;dst
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 id|netif_rx
 c_func
 (paren
