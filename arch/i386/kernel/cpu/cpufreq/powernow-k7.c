@@ -1481,7 +1481,7 @@ id|dprintk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;acpi:  P%d: %d MHz, %d mW, %d uS, control %08x, status %08x, vid: %02x fid: %02x SGTC: %d&bslash;n&quot;
+l_string|&quot;acpi:  P%d: %d MHz %d mW %d uS control %08x SGTC %d&bslash;n&quot;
 comma
 id|i
 comma
@@ -1524,20 +1524,6 @@ id|i
 )braket
 dot
 id|control
-comma
-(paren
-id|u32
-)paren
-id|acpi_processor_perf-&gt;states
-(braket
-id|i
-)braket
-dot
-id|status
-comma
-id|pc.bits.vid
-comma
-id|pc.bits.fid
 comma
 id|pc.bits.sgtc
 )paren
