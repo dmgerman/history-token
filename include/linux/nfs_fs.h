@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
@@ -1426,10 +1427,37 @@ macro_line|#ifdef CONFIG_NFS_V4
 multiline_comment|/*&n; * In a seqid-mutating op, this macro controls which error return&n; * values trigger incrementation of the seqid.&n; *&n; * from rfc 3010:&n; * The client MUST monotonically increment the sequence number for the&n; * CLOSE, LOCK, LOCKU, OPEN, OPEN_CONFIRM, and OPEN_DOWNGRADE&n; * operations.  This is true even in the event that the previous&n; * operation that used the sequence number received an error.  The only&n; * exception to this rule is if the previous operation received one of&n; * the following errors: NFSERR_STALE_CLIENTID, NFSERR_STALE_STATEID,&n; * NFSERR_BAD_STATEID, NFSERR_BAD_SEQID, NFSERR_BADXDR,&n; * NFSERR_RESOURCE, NFSERR_NOFILEHANDLE.&n; *&n; */
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)       &bslash;&n;(((err) != NFSERR_STALE_CLIENTID) &amp;&amp;  &bslash;&n; ((err) != NFSERR_STALE_STATEID)  &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_STATEID)    &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_SEQID)      &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_XDR)        &amp;&amp;  &bslash;&n; ((err) != NFSERR_RESOURCE)       &amp;&amp;  &bslash;&n; ((err) != NFSERR_NOFILEHANDLE))
+DECL|enum|nfs4_client_state
+r_enum
+id|nfs4_client_state
+(brace
+DECL|enumerator|NFS4CLNT_OK
+id|NFS4CLNT_OK
+op_assign
+l_int|0
+comma
+DECL|enumerator|NFS4CLNT_NEW
+id|NFS4CLNT_NEW
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * The nfs4_client identifies our client state to the server.&n; */
 DECL|struct|nfs4_client
 r_struct
 id|nfs4_client
 (brace
+DECL|member|cl_servers
+r_struct
+id|list_head
+id|cl_servers
+suffix:semicolon
+multiline_comment|/* Global list of servers */
+DECL|member|cl_addr
+r_struct
+id|in_addr
+id|cl_addr
+suffix:semicolon
+multiline_comment|/* Server identifier */
 DECL|member|cl_clientid
 id|u64
 id|cl_clientid
@@ -1439,9 +1467,33 @@ DECL|member|cl_confirm
 id|nfs4_verifier
 id|cl_confirm
 suffix:semicolon
+DECL|member|cl_state
+r_enum
+id|nfs4_client_state
+id|cl_state
+suffix:semicolon
 DECL|member|cl_lockowner_id
 id|u32
 id|cl_lockowner_id
+suffix:semicolon
+multiline_comment|/*&n;&t; * The following rwsem ensures exclusive access to the server&n;&t; * while we recover the state following a lease expiration.&n;&t; */
+DECL|member|cl_sem
+r_struct
+id|rw_semaphore
+id|cl_sem
+suffix:semicolon
+DECL|member|cl_state_owners
+r_struct
+id|list_head
+id|cl_state_owners
+suffix:semicolon
+DECL|member|cl_lock
+id|spinlock_t
+id|cl_lock
+suffix:semicolon
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1450,6 +1502,12 @@ DECL|struct|nfs4_state_owner
 r_struct
 id|nfs4_state_owner
 (brace
+DECL|member|so_list
+r_struct
+id|list_head
+id|so_list
+suffix:semicolon
+multiline_comment|/* per-clientid list of state_owners */
 DECL|member|so_id
 id|u32
 id|so_id
@@ -1526,7 +1584,9 @@ op_star
 id|nfs4_get_client
 c_func
 (paren
-r_void
+r_struct
+id|in_addr
+op_star
 )paren
 suffix:semicolon
 r_extern
