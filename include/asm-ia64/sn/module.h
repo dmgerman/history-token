@@ -254,7 +254,7 @@ multiline_comment|/* module.c */
 r_extern
 id|module_t
 op_star
-id|modules
+id|sn_modules
 (braket
 id|MODULE_MAX
 )braket

@@ -509,6 +509,9 @@ DECL|macro|GDT_ENTRY_TLS_MAX
 mdefine_line|#define GDT_ENTRY_TLS_MAX &t;(GDT_ENTRY_TLS_MIN + GDT_ENTRY_TLS_ENTRIES - 1)
 DECL|macro|TLS_SIZE
 mdefine_line|#define TLS_SIZE (GDT_ENTRY_TLS_ENTRIES * 8)
+r_struct
+id|partial_page_list
+suffix:semicolon
 macro_line|#endif
 DECL|struct|thread_struct
 r_struct
@@ -593,6 +596,13 @@ id|__u64
 id|old_iob
 suffix:semicolon
 multiline_comment|/* old IOBase value */
+DECL|member|ppl
+r_struct
+id|partial_page_list
+op_star
+id|ppl
+suffix:semicolon
+multiline_comment|/* partial page list for 4K page size issue */
 multiline_comment|/* cached TLS descriptors. */
 DECL|member|tls_array
 r_struct
@@ -603,7 +613,7 @@ id|GDT_ENTRY_TLS_ENTRIES
 )braket
 suffix:semicolon
 DECL|macro|INIT_THREAD_IA32
-macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,
+macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ppl =&t;&t;0,
 macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32

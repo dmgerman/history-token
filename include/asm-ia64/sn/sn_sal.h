@@ -33,6 +33,9 @@ DECL|macro|SN_SAL_NO_FAULT_ZONE_PHYSICAL
 mdefine_line|#define  SN_SAL_NO_FAULT_ZONE_PHYSICAL&t;&t;   0x02000011
 DECL|macro|SN_SAL_PRINT_ERROR
 mdefine_line|#define  SN_SAL_PRINT_ERROR&t;&t;&t;   0x02000012
+DECL|macro|SN_SAL_SET_ERROR_HANDLING_FEATURES
+mdefine_line|#define  SN_SAL_SET_ERROR_HANDLING_FEATURES&t;   0x0200001a&t;
+singleline_comment|// reentrant
 DECL|macro|SN_SAL_CONSOLE_PUTC
 mdefine_line|#define  SN_SAL_CONSOLE_PUTC                       0x02000021
 DECL|macro|SN_SAL_CONSOLE_GETC
@@ -119,6 +122,25 @@ DECL|macro|SALRET_INVALID_ARG
 mdefine_line|#define SALRET_INVALID_ARG&t;-2
 DECL|macro|SALRET_ERROR
 mdefine_line|#define SALRET_ERROR&t;&t;-3
+multiline_comment|/*&n; * SN_SAL_SET_ERROR_HANDLING_FEATURES bit settings&n; */
+r_enum
+(brace
+multiline_comment|/* if &quot;rz always&quot; is set, have the mca slaves call os_init_slave */
+DECL|enumerator|SN_SAL_EHF_MCA_SLV_TO_OS_INIT_SLV
+id|SN_SAL_EHF_MCA_SLV_TO_OS_INIT_SLV
+op_assign
+l_int|0
+comma
+multiline_comment|/* do not rz on tlb checks, even if &quot;rz always&quot; is set */
+DECL|enumerator|SN_SAL_EHF_NO_RZ_TLBC
+id|SN_SAL_EHF_NO_RZ_TLBC
+comma
+multiline_comment|/* do not rz on PIO reads to I/O space, even if &quot;rz always&quot; is set */
+DECL|enumerator|SN_SAL_EHF_NO_RZ_IO_READ
+id|SN_SAL_EHF_NO_RZ_IO_READ
+comma
+)brace
+suffix:semicolon
 multiline_comment|/**&n; * sn_sal_rev_major - get the major SGI SAL revision number&n; *&n; * The SGI PROM stores its version in sal_[ab]_rev_(major|minor).&n; * This routine simply extracts the major value from the&n; * @ia64_sal_systab structure constructed by ia64_sal_init().&n; */
 r_static
 r_inline
@@ -2014,6 +2036,81 @@ id|rv.v0
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Tell the prom how the OS wants to handle specific error features.&n; * It takes an array of 7 u64.&n; */
+r_static
+r_inline
+id|u64
+DECL|function|ia64_sn_set_error_handling_features
+id|ia64_sn_set_error_handling_features
+c_func
+(paren
+r_const
+id|u64
+op_star
+id|feature_bits
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|rv
+op_assign
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+suffix:semicolon
+id|SAL_CALL_REENTRANT
+c_func
+(paren
+id|rv
+comma
+id|SN_SAL_SET_ERROR_HANDLING_FEATURES
+comma
+id|feature_bits
+(braket
+l_int|0
+)braket
+comma
+id|feature_bits
+(braket
+l_int|1
+)braket
+comma
+id|feature_bits
+(braket
+l_int|2
+)braket
+comma
+id|feature_bits
+(braket
+l_int|3
+)braket
+comma
+id|feature_bits
+(braket
+l_int|4
+)braket
+comma
+id|feature_bits
+(braket
+l_int|5
+)braket
+comma
+id|feature_bits
+(braket
+l_int|6
+)braket
+)paren
+suffix:semicolon
+r_return
+id|rv.status
 suffix:semicolon
 )brace
 macro_line|#endif /* _ASM_IA64_SN_SN_SAL_H */
