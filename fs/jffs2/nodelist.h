@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.124 2004/11/17 09:30:02 dedekind Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.h,v 1.126 2004/11/19 15:06:29 dedekind Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_NODELIST_H__
 DECL|macro|__JFFS2_NODELIST_H__
 mdefine_line|#define __JFFS2_NODELIST_H__
@@ -123,25 +123,6 @@ DECL|macro|ref_obsolete
 mdefine_line|#define ref_obsolete(ref)&t;(((ref)-&gt;flash_offset &amp; 3) == REF_OBSOLETE)
 DECL|macro|mark_ref_normal
 mdefine_line|#define mark_ref_normal(ref)    do { (ref)-&gt;flash_offset = ref_offset(ref) | REF_NORMAL; } while(0)
-multiline_comment|/* &n;   Used for keeping track of deletion nodes &amp;c, which can only be marked&n;   as obsolete when the node which they mark as deleted has actually been &n;   removed from the flash.&n;*/
-DECL|struct|jffs2_raw_node_ref_list
-r_struct
-id|jffs2_raw_node_ref_list
-(brace
-DECL|member|rew
-r_struct
-id|jffs2_raw_node_ref
-op_star
-id|rew
-suffix:semicolon
-DECL|member|next
-r_struct
-id|jffs2_raw_node_ref_list
-op_star
-id|next
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* For each inode in the filesystem, we need to keep a record of&n;   nlink, because it would be a PITA to scan the whole directory tree&n;   at read_inode() time to calculate it, and to keep sufficient information&n;   in the raw_node_ref (basically both parent and child inode number for &n;   dirent nodes) would take more space than this does. We also keep&n;   a pointer to the first physical node which is part of this inode, too.&n;*/
 DECL|struct|jffs2_inode_cache
 r_struct
@@ -210,7 +191,7 @@ DECL|member|ofs
 r_uint32
 id|ofs
 suffix:semicolon
-multiline_comment|/* Don&squot;t really need this, but optimisation */
+multiline_comment|/* The offset to which the data of this node belongs */
 DECL|member|size
 r_uint32
 id|size
@@ -219,7 +200,7 @@ DECL|member|frags
 r_uint32
 id|frags
 suffix:semicolon
-multiline_comment|/* Number of fragments which currently refer&n;&t;&t;&t;to this node. When this reaches zero, &n;&t;&t;&t;the node is obsolete.&n;&t;&t;     */
+multiline_comment|/* Number of fragments which currently refer&n;&t;&t;&t;to this node. When this reaches zero, &n;&t;&t;&t;the node is obsolete.  */
 )brace
 suffix:semicolon
 multiline_comment|/* &n;   Even larger representation of a raw node, kept in-core only while&n;   we&squot;re actually building up the original map of which nodes go where,&n;   in read_inode()&n;*/
@@ -315,7 +296,7 @@ DECL|member|ofs
 r_uint32
 id|ofs
 suffix:semicolon
-multiline_comment|/* Don&squot;t really need this, but optimisation */
+multiline_comment|/* The offset to which this fragment belongs */
 )brace
 suffix:semicolon
 DECL|struct|jffs2_eraseblock
@@ -376,8 +357,6 @@ op_star
 id|gc_node
 suffix:semicolon
 multiline_comment|/* Next node to be garbage collected */
-multiline_comment|/* For deletia. When a dirent node in this eraseblock is&n;&t;   deleted by a node elsewhere, that other node can only &n;&t;   be marked as obsolete when this block is actually erased.&n;&t;   So we keep a list of the nodes to mark as obsolete when&n;&t;   the erase is completed.&n;&t;*/
-singleline_comment|// MAYBE&t;struct jffs2_raw_node_ref_list *deletia;
 )brace
 suffix:semicolon
 DECL|macro|ACCT_SANITY_CHECK
