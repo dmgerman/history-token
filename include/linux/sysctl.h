@@ -1188,6 +1188,11 @@ id|NET_IPV4_IPFRAG_SECRET_INTERVAL
 op_assign
 l_int|94
 comma
+DECL|enumerator|NET_TCP_WESTWOOD
+id|NET_TCP_WESTWOOD
+op_assign
+l_int|95
+comma
 )brace
 suffix:semicolon
 r_enum
@@ -1381,6 +1386,11 @@ DECL|enumerator|NET_IPV4_CONF_NOPOLICY
 id|NET_IPV4_CONF_NOPOLICY
 op_assign
 l_int|16
+comma
+DECL|enumerator|NET_IPV4_CONF_FORCE_IGMP_VERSION
+id|NET_IPV4_CONF_FORCE_IGMP_VERSION
+op_assign
+l_int|17
 comma
 )brace
 suffix:semicolon

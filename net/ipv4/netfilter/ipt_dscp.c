@@ -1,4 +1,4 @@
-multiline_comment|/* IP tables module for matching the value of the IPv4 DSCP field&n; *&n; * ipt_dscp.c,v 1.3 2002/08/05 19:00:21 laforge Exp&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * This software is distributed under the terms  GNU GPL&n; */
+multiline_comment|/* IP tables module for matching the value of the IPv4 DSCP field&n; *&n; * ipt_dscp.c,v 1.3 2002/08/05 19:00:21 laforge Exp&n; *&n; * (C) 2002 by Harald Welte &lt;laforge@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_dscp.h&gt;

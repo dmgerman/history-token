@@ -3067,11 +3067,7 @@ id|sk-&gt;sk_backlog_rcv
 op_assign
 id|llc_backlog_rcv
 suffix:semicolon
-id|llc_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|llc
 suffix:semicolon

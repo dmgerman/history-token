@@ -18,7 +18,6 @@ DECL|macro|ACCESSMODE_CNF
 mdefine_line|#define ACCESSMODE_CNF 0x83
 DECL|macro|CONTROL_BIT
 mdefine_line|#define CONTROL_BIT    0x80
-r_inline
 r_void
 id|irlmp_send_data_pdu
 c_func
