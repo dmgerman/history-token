@@ -1978,13 +1978,6 @@ id|err
 )paren
 suffix:semicolon
 )brace
-r_else
-id|cq-&gt;ibcq.cqe
-op_assign
-id|nent
-op_minus
-l_int|1
-suffix:semicolon
 r_return
 op_amp
 id|cq-&gt;ibcq
