@@ -49,7 +49,6 @@ id|regs
 suffix:semicolon
 multiline_comment|/* nmi_active:&n; * +1: the lapic NMI watchdog is active, but can be disabled&n; *  0: the lapic NMI watchdog has not been set up, and cannot&n; *     be enabled&n; * -1: the lapic NMI watchdog is disabled, but can be enabled&n; */
 DECL|variable|nmi_active
-r_static
 r_int
 id|nmi_active
 suffix:semicolon
@@ -1598,6 +1597,13 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+DECL|variable|nmi_active
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nmi_active
+)paren
+suffix:semicolon
 DECL|variable|nmi_watchdog
 id|EXPORT_SYMBOL
 c_func
