@@ -101,6 +101,6 @@ multiline_comment|/* other similar things on the&t;*/
 multiline_comment|/* user level.&t;&t;&t;*/
 DECL|macro|SOCK_MAX
 mdefine_line|#define&t;SOCK_MAX&t;(SOCK_PACKET+1)
-macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_SOCKET_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *    Copyright 2000-2001 MontaVista Software Inc.&n; *      Completed implementation.&n; *      Author: Armin Kuster&n; *&n; *    Module name: redwood5.c&n; *&n; *    Description:&n; *    &t;IBM redwood5 eval board file&n; *&n; *      History:  12/29/2001 - Armin&n; *    &t;initail release&n; *&n; */
+multiline_comment|/*&n; *&n; *    Copyright 2000-2001 MontaVista Software Inc.&n; *      Completed implementation.&n; *      Author: Armin Kuster&n; *&n; *    Module name: redwood5.c&n; *&n; *    Description:&n; *    &t;IBM redwood5 eval board file&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -6,8 +6,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 r_void
 id|__init
-DECL|function|board_setup_arch
-id|board_setup_arch
+DECL|function|redwood5_setup_arch
+id|redwood5_setup_arch
 c_func
 (paren
 r_void
@@ -17,14 +17,14 @@ id|bd_t
 op_star
 id|bip
 op_assign
-(paren
-id|bd_t
-op_star
-)paren
+op_amp
 id|__res
 suffix:semicolon
-DECL|macro|CONFIG_DEBUG_BRINGUP
-mdefine_line|#define CONFIG_DEBUG_BRINGUP
+id|ppc4xx_setup_arch
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_BRINGUP
 id|printk
 c_func
@@ -162,8 +162,8 @@ macro_line|#endif
 )brace
 r_void
 id|__init
-DECL|function|board_io_mapping
-id|board_io_mapping
+DECL|function|redwood5_map_io
+id|redwood5_map_io
 c_func
 (paren
 r_void
@@ -171,6 +171,11 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|ppc4xx_map_io
+c_func
+(paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -238,22 +243,52 @@ suffix:semicolon
 )brace
 r_void
 id|__init
-DECL|function|board_setup_irq
-id|board_setup_irq
+DECL|function|platform_init
+id|platform_init
 c_func
 (paren
-r_void
+r_int
+r_int
+id|r3
+comma
+r_int
+r_int
+id|r4
+comma
+r_int
+r_int
+id|r5
+comma
+r_int
+r_int
+id|r6
+comma
+r_int
+r_int
+id|r7
 )paren
 (brace
-)brace
-r_void
-id|__init
-DECL|function|board_init
-id|board_init
+id|ppc4xx_init
 c_func
 (paren
-r_void
+id|r3
+comma
+id|r4
+comma
+id|r5
+comma
+id|r6
+comma
+id|r7
 )paren
-(brace
+suffix:semicolon
+id|ppc_md.setup_arch
+op_assign
+id|redwood5_setup_arch
+suffix:semicolon
+id|ppc_md.setup_io_mappings
+op_assign
+id|redwood5_map_io
+suffix:semicolon
 )brace
 eof

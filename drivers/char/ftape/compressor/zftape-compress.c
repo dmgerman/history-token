@@ -27,11 +27,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,6)
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#endif
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-eof.h&quot;
 macro_line|#include &quot;../zftape/zftape-ctl.h&quot;
@@ -756,22 +752,9 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VER(2,1,18)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#else
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
-macro_line|#endif
 id|keep_module_locked
 op_assign
 l_int|1
@@ -816,17 +799,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VER(2,1,18)
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 id|keep_module_locked
 op_assign
 l_int|0
@@ -1813,22 +1785,9 @@ id|keep_module_locked
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Note: we do not unlock the module because&n;&t; * there are some values cached in that `cseg&squot; variable.  We&n;&t; * don&squot;t don&squot;t want to use this information when being&n;&t; * unloaded by kerneld even when the tape is full or when we&n;&t; * cannot allocate enough memory.&n;&t; */
 r_if
 c_cond
@@ -1964,7 +1923,6 @@ l_int|18
 )paren
 (brace
 multiline_comment|/* now we have some size left for a new compressed&n;&t;&t; * block.  We know, that the compression buffer is&n;&t;&t; * empty (else there wouldn&squot;t be any space left).  &n;&t;&t; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -1988,37 +1946,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|TRACE_CATCH
-c_func
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|src_buf
-op_plus
-id|result
-comma
-id|volume-&gt;blk_sz
-)paren
-comma
-)paren
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-id|zftc_scratch_buf
-comma
-id|src_buf
-op_plus
-id|result
-comma
-id|volume-&gt;blk_sz
-)paren
-suffix:semicolon
-macro_line|#endif
 id|req_len_left
 op_sub_assign
 id|volume-&gt;blk_sz
@@ -2264,22 +2191,9 @@ id|keep_module_locked
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 id|TRACE_CATCH
 c_func
 (paren
@@ -2461,7 +2375,6 @@ id|volume-&gt;blk_sz
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -2485,20 +2398,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|memcpy_tofs
-c_func
-(paren
-id|dst_buf
-op_plus
-id|result
-comma
-id|zftc_scratch_buf
-comma
-id|uncompressed_sz
-)paren
-suffix:semicolon
-macro_line|#endif
 id|remaining
 op_sub_assign
 id|uncompressed_sz
@@ -2893,22 +2792,9 @@ id|keep_module_locked
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 multiline_comment|/*  sets MOD_VISITED and MOD_USED_ONCE,&n;&t;&t;&t;    *  locking is done with can_unload()&n;&t;&t;&t;    */
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MOD_IN_USE
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4771,15 +4657,6 @@ r_void
 r_int
 id|result
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VER(2,1,18)
-id|register_symtab
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* remove global ftape symbols */
-macro_line|#else
 macro_line|#if 0 /* FIXME --RR */
 r_if
 c_cond
@@ -4802,7 +4679,6 @@ id|__this_module.can_unload
 op_assign
 id|can_unload
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|result
 op_assign

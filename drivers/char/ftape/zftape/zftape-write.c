@@ -2,11 +2,7 @@ multiline_comment|/*&n; *      Copyright (C) 1996, 1997 Claus Heine&n;&n; This p
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,6)
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#endif
 macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-eof.h&quot;
 macro_line|#include &quot;../zftape/zftape-ctl.h&quot;
@@ -1174,7 +1170,6 @@ id|req_len
 suffix:colon
 id|space_left
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VER(2,1,3)
 r_if
 c_cond
 (paren
@@ -1199,37 +1194,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|TRACE_CATCH
-c_func
-(paren
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|src_buf
-comma
-op_star
-id|cnt
-)paren
-comma
-)paren
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-id|dst_buf
-op_plus
-id|pos-&gt;seg_byte_pos
-comma
-id|src_buf
-comma
-op_star
-id|cnt
-)paren
-suffix:semicolon
-macro_line|#endif
 id|TRACE_EXIT
 op_star
 id|cnt

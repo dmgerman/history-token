@@ -2570,7 +2570,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|btv-&gt;digital_video
+id|bttv_tvcards
+(braket
+id|btv-&gt;type
+)braket
+dot
+id|muxsel
+(braket
+id|btv-&gt;input
+)braket
+OL
+l_int|0
 )paren
 (brace
 id|swidth
@@ -4609,8 +4619,6 @@ comma
 id|buf-&gt;fmt-&gt;hshift
 comma
 id|buf-&gt;fmt-&gt;vshift
-op_rshift
-l_int|1
 comma
 id|cpadding
 )paren
@@ -4644,8 +4652,6 @@ comma
 id|buf-&gt;fmt-&gt;hshift
 comma
 id|buf-&gt;fmt-&gt;vshift
-op_rshift
-l_int|1
 comma
 id|cpadding
 )paren

@@ -4255,7 +4255,6 @@ id|fdc_mode
 op_assign
 id|fdc_idle
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,0,16)
 )brace
 r_else
 r_if
@@ -4270,17 +4269,6 @@ id|ftape_wait_intr
 )paren
 )paren
 (brace
-macro_line|#else
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ftape_wait_intr
-)paren
-(brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4404,7 +4392,6 @@ id|ft_hide_interrupt
 id|ft_interrupt_seen
 op_increment
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,0,16)
 r_if
 c_cond
 (paren
@@ -4424,26 +4411,9 @@ id|ftape_wait_intr
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|ftape_wait_intr
-)paren
-(brace
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|ftape_wait_intr
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 r_else
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,0,16)
 id|TRACE
 c_func
 (paren
@@ -4464,23 +4434,6 @@ suffix:colon
 l_string|&quot;active&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|TRACE
-c_func
-(paren
-id|ft_t_flow
-comma
-l_string|&quot;hiding interrupt while %s&quot;
-comma
-id|ftape_wait_intr
-ques
-c_cond
-l_string|&quot;waiting&quot;
-suffix:colon
-l_string|&quot;active&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef TESTING
 id|t0

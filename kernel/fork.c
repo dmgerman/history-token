@@ -1527,6 +1527,12 @@ op_amp
 id|mmlist_lock
 )paren
 suffix:semicolon
+id|exit_aio
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 id|exit_mmap
 c_func
 (paren

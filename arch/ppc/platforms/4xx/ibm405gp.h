@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * ibm405gp.h&n; *&n; *&t;This was derived from the ppc4xx.h and all 405GP specific&n; *&t;definition and board inclusions were moved here.&n; *&n; *      Armin Kuster akuster@mvista.com&n; *      Oct, 2001&n; *&n; *&n; * Copyright 2001 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Version 1.0 (01/10/10) - A. Kuster&n; *&t;Initial version&t; - moved 40GP  specific out of ppc4xx.h&n; *&t;&t;&t;- moved emac reg from ppc405_enet.h&n; *&n; *&t;Version 1.1 02/01/17 - A. Kuster&n; *&t;Moved offsets to ibm405.h&n; *&n; *&t;Version 1.2 05/01/02 - Armin&n; *&t; added IIC_PORT_DFNS&n; *&n; *&t;Version 1.3 - armin&n; *&t;  removed iic &amp; uart num defines&n; *&t;  and IIC_PORT_DFNS&n; */
+multiline_comment|/*&n; * ibm405gp.h&n; *&n; *&t;This was derived from the ppc4xx.h and all 405GP specific&n; *&t;definition and board inclusions were moved here.&n; *&n; *      Armin Kuster akuster@mvista.com&n; *      Oct, 2001&n; *&n; *&n; * Copyright 2001 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_IBM405GP_H__
 DECL|macro|__ASM_IBM405GP_H__
 mdefine_line|#define __ASM_IBM405GP_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 multiline_comment|/* ibm405.h at bottom of this file */
 multiline_comment|/* PCI&n; * PCI Bridge config reg definitions&n; * see 17-19 of manual&n; */
 DECL|macro|PPC405_PCI_CONFIG_ADDR
@@ -54,6 +53,10 @@ DECL|macro|PPC4xx_ONB_IO_VADDR
 mdefine_line|#define PPC4xx_ONB_IO_VADDR&t;PPC4xx_ONB_IO_PADDR
 DECL|macro|PPC4xx_ONB_IO_SIZE
 mdefine_line|#define PPC4xx_ONB_IO_SIZE&t;((uint)4*1024)
+DECL|macro|OPB_BASE_START
+mdefine_line|#define OPB_BASE_START&t;0x40000000
+DECL|macro|EBIU_BASE_START
+mdefine_line|#define EBIU_BASE_START&t;0xF0100000
 multiline_comment|/* serial port defines */
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE&t;2
@@ -75,6 +78,20 @@ DECL|macro|GPIO0_BASE
 mdefine_line|#define GPIO0_BASE&t;0xEF600700
 DECL|macro|EMAC0_BASE
 mdefine_line|#define EMAC0_BASE&t;0xEF600800
+DECL|macro|BL_MAC_WOL
+mdefine_line|#define BL_MAC_WOL&t;9&t;/* WOL */
+DECL|macro|BL_MAL_SERR
+mdefine_line|#define BL_MAL_SERR&t;10&t;/* MAL SERR */
+DECL|macro|BL_MAL_TXDE
+mdefine_line|#define BL_MAL_TXDE&t;13&t;/* MAL TXDE */
+DECL|macro|BL_MAL_RXDE
+mdefine_line|#define BL_MAL_RXDE&t;14&t;/* MAL RXDE */
+DECL|macro|BL_MAL_TXEOB
+mdefine_line|#define BL_MAL_TXEOB&t;11&t;/* MAL TX EOB */
+DECL|macro|BL_MAL_RXEOB
+mdefine_line|#define BL_MAL_RXEOB&t;12&t;/* MAL RX EOB */
+DECL|macro|BL_MAC_ETH0
+mdefine_line|#define BL_MAC_ETH0&t;15&t;/* MAC */
 DECL|macro|EMAC_NUMS
 mdefine_line|#define EMAC_NUMS&t;1
 DECL|macro|IIC0_IRQ
@@ -142,40 +159,38 @@ DECL|macro|PSR_PCI_ASYNC_EN
 mdefine_line|#define  PSR_PCI_ASYNC_EN        0x00001000
 DECL|macro|PSR_PCI_ARBIT_EN
 mdefine_line|#define  PSR_PCI_ARBIT_EN        0x00000400
-DECL|macro|CPM_IIC0
-mdefine_line|#define CPM_IIC0&t;&t;0x80000000&t;/* IIC interface */
-DECL|macro|CPM_PCI
-mdefine_line|#define CPM_PCI&t;&t;&t;0x40000000&t;/* PCI bridge */
-DECL|macro|CPM_CPU
-mdefine_line|#define CPM_CPU&t;&t;&t;0x20000000&t;/* processor core */
-DECL|macro|CPM_DMA
-mdefine_line|#define CPM_DMA&t;&t;&t;0x10000000&t;/* DMA controller */
-DECL|macro|CPM_BRG
-mdefine_line|#define CPM_BRG&t;&t;&t;0x08000000&t;/* PLB to OPB bridge */
-DECL|macro|CPM_DCP
-mdefine_line|#define CPM_DCP&t;&t;&t;0x04000000&t;/* CodePack */
-DECL|macro|CPM_EBC
-mdefine_line|#define CPM_EBC&t;&t;&t;0x02000000&t;/* ROM/SRAM peripheral controller */
-DECL|macro|CPM_SDRAM0
-mdefine_line|#define CPM_SDRAM0&t;&t;0x01000000&t;/* SDRAM memory controller */
-DECL|macro|CPM_PLB
-mdefine_line|#define CPM_PLB&t;&t;&t;0x00800000&t;/* PLB bus arbiter */
-DECL|macro|CPM_GPIO0
-mdefine_line|#define CPM_GPIO0&t;&t;0x00400000&t;/* General Purpose IO (??) */
-DECL|macro|CPM_UART0
-mdefine_line|#define CPM_UART0&t;&t;0x00200000&t;/* serial port 0 */
-DECL|macro|CPM_UART1
-mdefine_line|#define CPM_UART1&t;&t;0x00100000&t;/* serial port 1 */
-DECL|macro|CPM_UIC
-mdefine_line|#define CPM_UIC&t;&t;&t;0x00080000&t;/* Universal Interrupt Controller */
-DECL|macro|CPM_TMRCLK
-mdefine_line|#define CPM_TMRCLK&t;&t;0x00040000&t;/* CPU timers */
-DECL|macro|CPM_EMAC_MM
-mdefine_line|#define CPM_EMAC_MM&t;&t;0x00020000&t;/* on-chip ethernet MM unit */
-DECL|macro|CPM_EMAC_RM
-mdefine_line|#define CPM_EMAC_RM&t;&t;0x00010000&t;/* on-chip ethernet RM unit */
-DECL|macro|CPM_EMAC_TM
-mdefine_line|#define CPM_EMAC_TM&t;&t;0x00008000&t;/* on-chip ethernet TM unit */
+DECL|macro|IBM_CPM_IIC0
+mdefine_line|#define IBM_CPM_IIC0&t;&t;0x80000000&t;/* IIC interface */
+DECL|macro|IBM_CPM_PCI
+mdefine_line|#define IBM_CPM_PCI&t;&t;0x40000000&t;/* PCI bridge */
+DECL|macro|IBM_CPM_CPU
+mdefine_line|#define IBM_CPM_CPU&t;&t;0x20000000&t;/* processor core */
+DECL|macro|IBM_CPM_DMA
+mdefine_line|#define IBM_CPM_DMA&t;&t;0x10000000&t;/* DMA controller */
+DECL|macro|IBM_CPM_OPB
+mdefine_line|#define IBM_CPM_OPB&t;&t;0x08000000&t;/* PLB to OPB bridge */
+DECL|macro|IBM_CPM_DCP
+mdefine_line|#define IBM_CPM_DCP&t;&t;0x04000000&t;/* CodePack */
+DECL|macro|IBM_CPM_EBC
+mdefine_line|#define IBM_CPM_EBC&t;&t;0x02000000&t;/* ROM/SRAM peripheral controller */
+DECL|macro|IBM_CPM_SDRAM0
+mdefine_line|#define IBM_CPM_SDRAM0&t;&t;0x01000000&t;/* SDRAM memory controller */
+DECL|macro|IBM_CPM_PLB
+mdefine_line|#define IBM_CPM_PLB&t;&t;0x00800000&t;/* PLB bus arbiter */
+DECL|macro|IBM_CPM_GPIO0
+mdefine_line|#define IBM_CPM_GPIO0&t;&t;0x00400000&t;/* General Purpose IO (??) */
+DECL|macro|IBM_CPM_UART0
+mdefine_line|#define IBM_CPM_UART0&t;&t;0x00200000&t;/* serial port 0 */
+DECL|macro|IBM_CPM_UART1
+mdefine_line|#define IBM_CPM_UART1&t;&t;0x00100000&t;/* serial port 1 */
+DECL|macro|IBM_CPM_UIC
+mdefine_line|#define IBM_CPM_UIC&t;&t;0x00080000&t;/* Universal Interrupt Controller */
+DECL|macro|IBM_CPM_TMRCLK
+mdefine_line|#define IBM_CPM_TMRCLK&t;&t;0x00040000&t;/* CPU timers */
+DECL|macro|IBM_CPM_EMAC0
+mdefine_line|#define IBM_CPM_EMAC0&t;&t;0x00020000&t;/* on-chip ethernet MM unit */
+DECL|macro|DFLT_IBM4xx_PM
+mdefine_line|#define DFLT_IBM4xx_PM&t;&t;~(IBM_CPM_PCI | IBM_CPM_CPU | IBM_CPM_DMA &bslash;&n;&t;&t;&t;&t;&t;| IBM_CPM_OPB | IBM_CPM_EBC &bslash;&n;&t;&t;&t;&t;&t;| IBM_CPM_SDRAM0 | IBM_CPM_PLB &bslash;&n;&t;&t;&t;&t;&t;| IBM_CPM_UIC | IBM_CPM_TMRCLK)
 DECL|macro|DCRN_DMA0_BASE
 mdefine_line|#define DCRN_DMA0_BASE&t;&t;0x100
 DECL|macro|DCRN_DMA1_BASE

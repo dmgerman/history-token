@@ -6492,6 +6492,8 @@ r_sizeof
 (paren
 id|server-&gt;ip_addr
 )paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if

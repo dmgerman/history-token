@@ -1,19 +1,14 @@
-multiline_comment|/*&n; * FILE NAME: ppc405_pci.c&n; *&n; * BRIEF MODULE DESCRIPTION: &n; * Based on arch/ppc/kernel/indirect.c, Copyright (C) 1998 Gabriel Paubert.&n; *&n; * Author: MontaVista Software, Inc.  &lt;source@mvista.com&gt;&n; *         Frank Rowand &lt;frank_rowand@mvista.com&gt;&n; *         Debbie Chu   &lt;debbie_chu@mvista.com&gt;&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * FILE NAME: ppc405_pci.c&n; *&n; * BRIEF MODULE DESCRIPTION: &n; * Based on arch/ppc/kernel/indirect.c, Copyright (C) 1998 Gabriel Paubert.&n; *&n; * Author: MontaVista Software, Inc.  &lt;source@mvista.com&gt;&n; *         Frank Rowand &lt;frank_rowand@mvista.com&gt;&n; *         Debbie Chu   &lt;debbie_chu@mvista.com&gt;&n; * Further modifications by Armin Kuster.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
-macro_line|#ifdef  CONFIG_DEBUG_BRINGUP
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
+macro_line|#include &lt;asm/ibm_ocp_pci.h&gt;
 r_extern
 r_void
 id|bios_fixup
@@ -23,7 +18,8 @@ r_struct
 id|pci_controller
 op_star
 comma
-r_void
+r_struct
+id|pcil0_regs
 op_star
 )paren
 suffix:semicolon
@@ -45,14 +41,6 @@ r_int
 r_char
 id|pin
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|pcil0_regs
-op_star
-id|PCIL_ADDR
-(braket
-)braket
 suffix:semicolon
 r_void
 DECL|function|ppc405_pcibios_fixup_resources
@@ -206,7 +194,7 @@ c_func
 id|dev-&gt;devfn
 )paren
 comma
-id|dev-&gt;name
+id|dev-&gt;slot.name
 )paren
 suffix:semicolon
 multiline_comment|/* force pcibios_assign_resources() to assign a new address */
@@ -299,6 +287,7 @@ id|pci_dram_offset
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if  (PSR_PCI_ARBIT_EN &gt; 1)
 multiline_comment|/* Check if running in slave mode */
 r_if
 c_cond
@@ -325,6 +314,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Setup PCI32 hose */
 id|hose_a
 op_assign
@@ -356,14 +346,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
-id|PCIL_ADDR
-(braket
-l_int|0
-)braket
+id|PPC4xx_PCI_LCFG_PADDR
 comma
 id|PAGE_SIZE
 )paren
@@ -410,12 +393,7 @@ op_assign
 id|in_le32
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
-(paren
 id|pcip-&gt;pmm
 (braket
 id|reg_index
@@ -423,28 +401,28 @@ id|reg_index
 dot
 id|ma
 )paren
-)paren
 suffix:semicolon
-singleline_comment|// *_PMM0MA
+singleline_comment|// mask &amp; attrs
+multiline_comment|/* test the enable bit */
 r_if
 c_cond
+(paren
 (paren
 id|tmp_size
 op_amp
 l_int|0x1
 )paren
-(brace
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 id|tmp_addr
 op_assign
 id|in_le32
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
-(paren
 id|pcip-&gt;pmm
 (braket
 id|reg_index
@@ -452,9 +430,8 @@ id|reg_index
 dot
 id|pcila
 )paren
-)paren
 suffix:semicolon
-singleline_comment|// *_PMM0PCILA
+singleline_comment|// PCI addr
 r_if
 c_cond
 (paren
@@ -475,19 +452,13 @@ suffix:semicolon
 id|out_le32
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
-(paren
 id|pcip-&gt;pmm
 (braket
 id|reg_index
 )braket
 dot
 id|ma
-)paren
 comma
 id|tmp_size
 op_amp
@@ -496,27 +467,21 @@ l_int|1
 )paren
 suffix:semicolon
 singleline_comment|// *_PMMOMA
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 id|tmp_addr
 op_assign
 id|in_le32
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
-(paren
 id|pcip-&gt;pmm
 (braket
 id|reg_index
 )braket
 dot
 id|la
-)paren
 )paren
 suffix:semicolon
 singleline_comment|// *_PMMOLA
@@ -565,8 +530,6 @@ id|new_pmm_max
 op_assign
 id|PPC405_PCI_UPPER_MEM
 suffix:semicolon
-)brace
-)brace
 )brace
 )brace
 singleline_comment|// for
