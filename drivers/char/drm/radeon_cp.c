@@ -3,6 +3,7 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;radeon_drm.h&quot;
 macro_line|#include &quot;radeon_drv.h&quot;
+macro_line|#include &quot;ati_pcigart.h&quot;
 DECL|macro|RADEON_FIFO_DEBUG
 mdefine_line|#define RADEON_FIFO_DEBUG&t;0
 multiline_comment|/* CP microcode (from ATI) */

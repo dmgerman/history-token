@@ -3,6 +3,7 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;r128_drm.h&quot;
 macro_line|#include &quot;r128_drv.h&quot;
+macro_line|#include &quot;ati_pcigart.h&quot;
 DECL|macro|R128_FIFO_DEBUG
 mdefine_line|#define R128_FIFO_DEBUG&t;&t;0
 multiline_comment|/* CCE microcode (from ATI) */
