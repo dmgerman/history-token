@@ -16,22 +16,22 @@ id|dinode
 (brace
 multiline_comment|/*&n;&t; *      I. base area (128 bytes)&n;&t; *      ------------------------&n;&t; *&n;&t; * define generic/POSIX attributes&n;&t; */
 DECL|member|di_inostamp
-id|u32
+id|__le32
 id|di_inostamp
 suffix:semicolon
 multiline_comment|/* 4: stamp to show inode belongs to fileset */
 DECL|member|di_fileset
-id|s32
+id|__le32
 id|di_fileset
 suffix:semicolon
 multiline_comment|/* 4: fileset number */
 DECL|member|di_number
-id|u32
+id|__le32
 id|di_number
 suffix:semicolon
 multiline_comment|/* 4: inode number, aka file serial number */
 DECL|member|di_gen
-id|u32
+id|__le32
 id|di_gen
 suffix:semicolon
 multiline_comment|/* 4: inode generation number */
@@ -41,32 +41,32 @@ id|di_ixpxd
 suffix:semicolon
 multiline_comment|/* 8: inode extent descriptor */
 DECL|member|di_size
-id|s64
+id|__le64
 id|di_size
 suffix:semicolon
 multiline_comment|/* 8: size */
 DECL|member|di_nblocks
-id|s64
+id|__le64
 id|di_nblocks
 suffix:semicolon
 multiline_comment|/* 8: number of blocks allocated */
 DECL|member|di_nlink
-id|u32
+id|__le32
 id|di_nlink
 suffix:semicolon
 multiline_comment|/* 4: number of links to the object */
 DECL|member|di_uid
-id|u32
+id|__le32
 id|di_uid
 suffix:semicolon
 multiline_comment|/* 4: user id of owner */
 DECL|member|di_gid
-id|u32
+id|__le32
 id|di_gid
 suffix:semicolon
 multiline_comment|/* 4: group id of owner */
 DECL|member|di_mode
-id|u32
+id|__le32
 id|di_mode
 suffix:semicolon
 multiline_comment|/* 4: attribute, format and permission */
@@ -105,12 +105,12 @@ id|di_ea
 suffix:semicolon
 multiline_comment|/* 16: ea descriptor */
 DECL|member|di_next_index
-id|u32
+id|__le32
 id|di_next_index
 suffix:semicolon
 multiline_comment|/* 4: Next available dir_table index */
 DECL|member|di_acltype
-id|s32
+id|__le32
 id|di_acltype
 suffix:semicolon
 multiline_comment|/* 4: Type of ACL */
@@ -168,7 +168,7 @@ id|_imap
 suffix:semicolon
 multiline_comment|/* 4: unused */
 DECL|member|_gengen
-id|u32
+id|__le32
 id|_gengen
 suffix:semicolon
 multiline_comment|/* 4: generator */
@@ -207,7 +207,7 @@ multiline_comment|/* 16: */
 r_union
 (brace
 DECL|member|_rdev
-id|u32
+id|__le32
 id|_rdev
 suffix:semicolon
 multiline_comment|/* 4: */

@@ -649,6 +649,7 @@ c_cond
 id|error
 )paren
 (brace
+multiline_comment|/* unlink does the kobject_put() for us */
 id|unlink
 c_func
 (paren
@@ -664,12 +665,6 @@ id|kobject_put
 c_func
 (paren
 id|parent
-)paren
-suffix:semicolon
-id|kobject_put
-c_func
-(paren
-id|kobj
 )paren
 suffix:semicolon
 )brace

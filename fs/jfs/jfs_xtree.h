@@ -32,7 +32,7 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* 1: offset in unit of fsblksize */
 DECL|member|off2
-id|u32
+id|__le32
 id|off2
 suffix:semicolon
 multiline_comment|/* 4: offset in unit of fsblksize */
@@ -51,7 +51,7 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* 1: address in unit of fsblksize */
 DECL|member|addr2
-id|u32
+id|__le32
 id|addr2
 suffix:semicolon
 multiline_comment|/* 4: address in unit of fsblksize */
@@ -131,12 +131,12 @@ r_struct
 id|xtheader
 (brace
 DECL|member|next
-id|s64
+id|__le64
 id|next
 suffix:semicolon
 multiline_comment|/* 8: */
 DECL|member|prev
-id|s64
+id|__le64
 id|prev
 suffix:semicolon
 multiline_comment|/* 8: */
@@ -151,17 +151,17 @@ id|rsrvd1
 suffix:semicolon
 multiline_comment|/* 1: */
 DECL|member|nextindex
-id|s16
+id|__le16
 id|nextindex
 suffix:semicolon
 multiline_comment|/* 2: next index = number of entries */
 DECL|member|maxentry
-id|s16
+id|__le16
 id|maxentry
 suffix:semicolon
 multiline_comment|/* 2: max number of entries */
 DECL|member|rsrvd2
-id|s16
+id|__le16
 id|rsrvd2
 suffix:semicolon
 multiline_comment|/* 2: */
