@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -11276,7 +11278,7 @@ id|keydata
 op_star
 id|keyptr
 suffix:semicolon
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -11356,7 +11358,7 @@ id|ip_cnt
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
