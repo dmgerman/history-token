@@ -366,8 +366,7 @@ c_cond
 id|status
 )paren
 (brace
-r_int
-id|base_irq
+id|irq
 op_assign
 id|IRQ_GBUS_INT
 (paren
@@ -375,10 +374,6 @@ id|w
 op_star
 id|GBUS_INT_BITS_PER_WORD
 )paren
-suffix:semicolon
-id|irq
-op_assign
-id|base_irq
 suffix:semicolon
 r_do
 (brace
@@ -863,7 +858,7 @@ dot
 id|gint
 suffix:semicolon
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 id|gint_irq_init
 (braket
 l_int|2
@@ -933,7 +928,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Terminate the vector.  */
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 id|gint_irq_init
 comma
