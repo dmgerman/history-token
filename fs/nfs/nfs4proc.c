@@ -9952,6 +9952,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_inline
@@ -10767,9 +10770,15 @@ id|otl
 op_assign
 (brace
 dot
-id|lock_owner.clientid
+id|lock_owner
+op_assign
+(brace
+dot
+id|clientid
 op_assign
 id|server-&gt;nfs4_state-&gt;cl_clientid
+comma
+)brace
 comma
 )brace
 suffix:semicolon
