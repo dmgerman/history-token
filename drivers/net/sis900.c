@@ -1917,6 +1917,29 @@ op_amp
 id|revision
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_probe
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: detected revision %2.2x, &quot;
+l_string|&quot;trying to get MAC address...&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+comma
+id|revision
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 l_int|0
@@ -2001,6 +2024,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Cannot read MAC address.&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -2049,6 +2081,15 @@ op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Error probing MII device.&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -2339,9 +2380,31 @@ id|mii_status
 op_eq
 l_int|0x0000
 )paren
-multiline_comment|/* the mii is not accessible, try next one */
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_probe
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: MII at address %d&quot;
+l_string|&quot; not accessible&bslash;n&quot;
+comma
+id|net_dev-&gt;name
+comma
+id|phy_addr
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2538,7 +2601,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s transceiver found at address %d.&bslash;n&quot;
+l_string|&quot;%s: %s transceiver found &quot;
+l_string|&quot;at address %d.&bslash;n&quot;
 comma
 id|net_dev-&gt;name
 comma
@@ -4340,6 +4404,13 @@ op_star
 id|net_dev
 )paren
 (brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
 r_int
 id|ioaddr
 op_assign
@@ -4439,9 +4510,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 (brace
 id|printk
@@ -4596,9 +4669,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
@@ -4827,9 +4902,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
@@ -5515,6 +5592,16 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5524,6 +5611,7 @@ comma
 id|net_dev-&gt;name
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Change mode issue */
 r_if
 c_cond
@@ -5950,6 +6038,16 @@ id|MII_STAT_LINK
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -5959,6 +6057,7 @@ comma
 id|net_dev-&gt;name
 )paren
 suffix:semicolon
+)brace
 id|sis_priv-&gt;autong_complete
 op_assign
 l_int|1
@@ -6216,6 +6315,16 @@ op_assign
 id|HW_SPEED_100_MBPS
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6245,6 +6354,7 @@ suffix:colon
 l_string|&quot;half&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; *&t;sis900_tx_timeout - sis900 transmit timeout routine&n; *&t;@net_dev: the net device to transmit&n; *&n; *&t;print transmit timeout status&n; *&t;disable interrupts and do some tasks&n; */
 DECL|function|sis900_tx_timeout
@@ -6278,6 +6388,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6303,6 +6423,7 @@ id|isr
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
 id|outl
 c_func
@@ -6712,9 +6833,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_tx_queued
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
@@ -6892,6 +7015,16 @@ op_amp
 id|HIBERR
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_intr
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6904,6 +7037,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -6914,6 +7048,16 @@ op_decrement
 id|boguscnt
 OL
 l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_intr
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 (brace
 id|printk
@@ -6928,6 +7072,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -6941,10 +7086,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_intr
+c_func
+(paren
+id|sis_priv
 )paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -6963,6 +7111,7 @@ id|isr
 )paren
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock
 (paren
 op_amp
@@ -7023,9 +7172,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_rx_status
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
@@ -7089,9 +7240,11 @@ multiline_comment|/* corrupted packet received */
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_rx_err
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
@@ -7186,6 +7339,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7292,6 +7454,15 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* not enough memory for skbuff, this makes a&n;&t;&t;&t;&t; * &quot;hole&quot; on the buffer ring, it is not clear&n;&t;&t;&t;&t; * how the hardware will react to this kind&n;&t;&t;&t;&t; * of degenerated buffer */
+r_if
+c_cond
+(paren
+id|netif_msg_rx_status
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7451,6 +7622,15 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* not enough memory for skbuff, this makes a&n;&t;&t;&t;&t; * &quot;hole&quot; on the buffer ring, it is not clear&n;&t;&t;&t;&t; * how the hardware will react to this kind&n;&t;&t;&t;&t; * of degenerated buffer */
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
+c_func
+(paren
+id|sis_priv
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7619,9 +7799,11 @@ multiline_comment|/* packet unsuccessfully transmitted */
 r_if
 c_cond
 (paren
-id|sis900_debug
-OG
-l_int|3
+id|netif_msg_tx_err
+c_func
+(paren
+id|sis_priv
+)paren
 )paren
 id|printk
 c_func
