@@ -79,6 +79,9 @@ id|HCI_INQUIRY
 comma
 DECL|enumerator|HCI_RAW
 id|HCI_RAW
+comma
+DECL|enumerator|HCI_SECMGR
+id|HCI_SECMGR
 )brace
 suffix:semicolon
 multiline_comment|/* HCI ioctl defines */
@@ -116,8 +119,8 @@ DECL|macro|HCISETACLMTU
 mdefine_line|#define HCISETACLMTU&t;_IOW(&squot;H&squot;, 227, int)
 DECL|macro|HCISETSCOMTU
 mdefine_line|#define HCISETSCOMTU&t;_IOW(&squot;H&squot;, 228, int)
-DECL|macro|HCISETRAWVND
-mdefine_line|#define HCISETRAWVND&t;_IOW(&squot;H&squot;, 229, int)
+DECL|macro|HCISETSECMGR
+mdefine_line|#define HCISETSECMGR&t;_IOW(&squot;H&squot;, 230, int)
 DECL|macro|HCIINQUIRY
 mdefine_line|#define HCIINQUIRY&t;_IOR(&squot;H&squot;, 240, int)
 multiline_comment|/* HCI timeouts */
@@ -719,8 +722,6 @@ DECL|macro|OCF_INQUIRY_CANCEL
 mdefine_line|#define OCF_INQUIRY_CANCEL&t;0x0002
 DECL|macro|OCF_LINK_KEY_REPLY
 mdefine_line|#define OCF_LINK_KEY_REPLY&t;0x000B
-DECL|macro|OCF_LINK_KEY_NEG_REPLY
-mdefine_line|#define OCF_LINK_KEY_NEG_REPLY&t;0x000C
 DECL|struct|hci_cp_link_key_reply
 r_struct
 id|hci_cp_link_key_reply
@@ -744,10 +745,26 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|OCF_LINK_KEY_NEG_REPLY
+mdefine_line|#define OCF_LINK_KEY_NEG_REPLY&t;0x000C
+DECL|struct|hci_cp_link_key_neg_reply
+r_struct
+id|hci_cp_link_key_neg_reply
+(brace
+DECL|member|bdaddr
+id|bdaddr_t
+id|bdaddr
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|macro|OCF_PIN_CODE_REPLY
 mdefine_line|#define OCF_PIN_CODE_REPLY&t;0x000D
-DECL|macro|OCF_PIN_CODE_NEG_REPLY
-mdefine_line|#define OCF_PIN_CODE_NEG_REPLY&t;0x000E
 DECL|struct|hci_cp_pin_code_reply
 r_struct
 id|hci_cp_pin_code_reply
@@ -766,6 +783,24 @@ id|pin_code
 (braket
 l_int|16
 )braket
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|OCF_PIN_CODE_NEG_REPLY
+mdefine_line|#define OCF_PIN_CODE_NEG_REPLY&t;0x000E
+DECL|struct|hci_cp_pin_code_neg_reply
+r_struct
+id|hci_cp_pin_code_neg_reply
+(brace
+DECL|member|bdaddr
+id|bdaddr_t
+id|bdaddr
 suffix:semicolon
 )brace
 id|__attribute__
