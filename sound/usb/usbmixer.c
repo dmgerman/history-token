@@ -1061,9 +1061,7 @@ id|buf
 comma
 id|val_len
 comma
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 op_ge
 l_int|0
@@ -1312,9 +1310,7 @@ id|buf
 comma
 id|val_len
 comma
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 op_ge
 l_int|0
