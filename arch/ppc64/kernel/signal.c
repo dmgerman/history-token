@@ -87,6 +87,15 @@ l_int|288
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+(paren
+l_int|16
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
 DECL|function|sys_rt_sigsuspend
@@ -985,7 +994,7 @@ id|frame_size
 )paren
 op_amp
 op_minus
-l_int|8ul
+l_int|16ul
 )paren
 suffix:semicolon
 )brace
