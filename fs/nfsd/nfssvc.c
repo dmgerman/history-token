@@ -1118,7 +1118,7 @@ id|rqstp-&gt;rq_proc
 op_ne
 l_int|0
 )paren
-id|svc_putlong
+id|svc_putu32
 c_func
 (paren
 op_amp

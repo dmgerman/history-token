@@ -1330,6 +1330,8 @@ id|bio_io_error
 c_func
 (paren
 id|bio
+comma
+id|bio-&gt;bi_size
 )paren
 suffix:semicolon
 r_return

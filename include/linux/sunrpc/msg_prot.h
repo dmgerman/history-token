@@ -5,9 +5,15 @@ mdefine_line|#define _LINUX_SUNRPC_MSGPROT_H_
 macro_line|#ifdef __KERNEL__ /* user programs should get these from the rpc header files */
 DECL|macro|RPC_VERSION
 mdefine_line|#define RPC_VERSION 2
-DECL|enum|rpc_auth_flavor
+multiline_comment|/* spec defines authentication flavor as an unsigned 32 bit integer */
+DECL|typedef|rpc_authflavor_t
+r_typedef
+id|u32
+id|rpc_authflavor_t
+suffix:semicolon
+DECL|enum|rpc_auth_flavors
 r_enum
-id|rpc_auth_flavor
+id|rpc_auth_flavors
 (brace
 DECL|enumerator|RPC_AUTH_NULL
 id|RPC_AUTH_NULL
@@ -33,6 +39,11 @@ DECL|enumerator|RPC_AUTH_KRB
 id|RPC_AUTH_KRB
 op_assign
 l_int|4
+comma
+DECL|enumerator|RPC_AUTH_MAXFLAVOR
+id|RPC_AUTH_MAXFLAVOR
+op_assign
+l_int|8
 comma
 )brace
 suffix:semicolon

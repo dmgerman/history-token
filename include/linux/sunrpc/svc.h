@@ -138,10 +138,10 @@ id|nriov
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|svc_getlong
-mdefine_line|#define svc_getlong(argp, val)&t;{ (val) = *(argp)-&gt;buf++; (argp)-&gt;len--; }
-DECL|macro|svc_putlong
-mdefine_line|#define svc_putlong(resp, val)&t;{ *(resp)-&gt;buf++ = (val); (resp)-&gt;len++; }
+DECL|macro|svc_getu32
+mdefine_line|#define svc_getu32(argp, val)&t;{ (val) = *(argp)-&gt;buf++; (argp)-&gt;len--; }
+DECL|macro|svc_putu32
+mdefine_line|#define svc_putu32(resp, val)&t;{ *(resp)-&gt;buf++ = (val); (resp)-&gt;len++; }
 multiline_comment|/*&n; * The context of a single thread, including the request currently being&n; * processed.&n; * NOTE: First two items must be prev/next.&n; */
 DECL|struct|svc_rqst
 r_struct
