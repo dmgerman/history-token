@@ -866,7 +866,6 @@ suffix:semicolon
 )brace
 DECL|function|restore_fpu_state32
 r_static
-r_inline
 r_int
 id|restore_fpu_state32
 c_func
@@ -2674,7 +2673,6 @@ suffix:semicolon
 )brace
 DECL|function|get_sigframe
 r_static
-r_inline
 r_void
 op_star
 id|get_sigframe
@@ -3723,7 +3721,6 @@ suffix:semicolon
 )brace
 DECL|function|save_fpu_state32
 r_static
-r_inline
 r_int
 id|save_fpu_state32
 c_func
@@ -3890,7 +3887,6 @@ suffix:semicolon
 )brace
 DECL|function|new_setup_frame32
 r_static
-r_inline
 r_void
 id|new_setup_frame32
 c_func
@@ -4745,7 +4741,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Setup a Solaris stack frame */
 r_static
-r_inline
 r_void
 DECL|function|setup_svr4_frame32
 id|setup_svr4_frame32
@@ -6601,7 +6596,6 @@ suffix:semicolon
 )brace
 DECL|function|setup_rt_frame32
 r_static
-r_inline
 r_void
 id|setup_rt_frame32
 c_func

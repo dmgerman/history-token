@@ -734,7 +734,6 @@ suffix:semicolon
 )brace
 DECL|function|compute_effective_address
 r_static
-r_inline
 r_int
 r_int
 id|compute_effective_address

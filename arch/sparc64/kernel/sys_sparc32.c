@@ -1043,7 +1043,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|get_tv32
 r_static
-r_inline
 r_int
 id|get_tv32
 c_func
@@ -1232,7 +1231,6 @@ suffix:semicolon
 )brace
 DECL|function|put_it32
 r_static
-r_inline
 r_int
 id|put_it32
 c_func
@@ -4996,7 +4994,6 @@ suffix:semicolon
 )brace
 DECL|function|put_statfs
 r_static
-r_inline
 r_int
 id|put_statfs
 (paren
@@ -7000,10 +6997,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* end of readdir &amp; getdents */
 multiline_comment|/*&n; * Ooo, nasty.  We need here to frob 32-bit unsigned longs to&n; * 64-bit unsigned longs.&n; */
-r_static
-r_inline
-r_int
 DECL|function|get_fd_set32
+r_static
+r_int
 id|get_fd_set32
 c_func
 (paren
@@ -7160,10 +7156,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_void
 DECL|function|set_fd_set32
+r_static
+r_void
 id|set_fd_set32
 c_func
 (paren
@@ -12444,7 +12439,6 @@ suffix:semicolon
 )brace
 DECL|function|msghdr_from_user32_to_kern
 r_static
-r_inline
 r_int
 id|msghdr_from_user32_to_kern
 c_func
