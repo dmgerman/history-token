@@ -2787,6 +2787,11 @@ id|skt_dev_info
 op_star
 id|sinfo
 suffix:semicolon
+r_struct
+id|soc_pcmcia_socket
+op_star
+id|skt
+suffix:semicolon
 r_int
 id|ret
 comma
@@ -2863,9 +2868,6 @@ id|i
 op_increment
 )paren
 (brace
-r_struct
-id|soc_pcmcia_socket
-op_star
 id|skt
 op_assign
 op_amp
@@ -3300,9 +3302,6 @@ id|out
 suffix:semicolon
 r_do
 (brace
-r_struct
-id|soc_pcmcia_socket
-op_star
 id|skt
 op_assign
 op_amp
