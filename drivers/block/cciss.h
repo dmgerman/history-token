@@ -132,6 +132,10 @@ DECL|member|cylinders
 r_int
 id|cylinders
 suffix:semicolon
+DECL|member|raid_level
+r_int
+id|raid_level
+suffix:semicolon
 DECL|typedef|drive_info_struct
 )brace
 id|drive_info_struct
@@ -175,11 +179,13 @@ id|__u32
 id|board_id
 suffix:semicolon
 DECL|member|vaddr
-id|ulong
+r_int
+r_int
 id|vaddr
 suffix:semicolon
 DECL|member|paddr
-id|__u32
+r_int
+r_int
 id|paddr
 suffix:semicolon
 DECL|member|io_mem_addr
@@ -200,6 +206,10 @@ suffix:semicolon
 DECL|member|intr
 r_int
 id|intr
+suffix:semicolon
+DECL|member|interrupts_enabled
+r_int
+id|interrupts_enabled
 suffix:semicolon
 DECL|member|max_commands
 r_int
@@ -308,6 +318,10 @@ suffix:semicolon
 DECL|member|nr_frees
 r_int
 id|nr_frees
+suffix:semicolon
+DECL|member|busy_configuring
+r_int
+id|busy_configuring
 suffix:semicolon
 singleline_comment|// Disk structures we need to pass back
 DECL|member|gendisk
@@ -439,6 +453,10 @@ id|val
 )paren
 (brace
 multiline_comment|/* Turn interrupts on */
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -453,6 +471,10 @@ suffix:semicolon
 r_else
 multiline_comment|/* Turn them off */
 (brace
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -488,6 +510,10 @@ id|val
 )paren
 (brace
 multiline_comment|/* Turn interrupts on */
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|1
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -502,6 +528,10 @@ suffix:semicolon
 r_else
 multiline_comment|/* Turn them off */
 (brace
+id|h-&gt;interrupts_enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|writel
 c_func
 (paren

@@ -175,7 +175,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * filemap_fdatawrite - start writeback against all of a mapping&squot;s dirty pages&n; * @mapping: address space structure to write&n; *&n; * This is a &quot;data integrity&quot; operation, as opposed to a regular memory&n; * cleansing writeback.  The difference between these two operations is that&n; * if a dirty page/buffer is encountered, it must be waited upon, and not just&n; * skipped over.&n; */
+multiline_comment|/**&n; * filemap_fdatawrite - start writeback against all of a mapping&squot;s dirty pages&n; * @mapping: address space structure to write&n; *&n; * If sync_mode is WB_SYNC_ALL then this is a &quot;data integrity&quot; operation, as&n; * opposed to a regular memory * cleansing writeback.  The difference between&n; * these two operations is that if a dirty page/buffer is encountered, it must&n; * be waited upon, and not just skipped over.&n; */
 DECL|function|__filemap_fdatawrite
 r_static
 r_int

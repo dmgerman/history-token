@@ -1686,7 +1686,7 @@ id|dsp-&gt;name
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;loading dsp [%d] %s, size = %d&bslash;n&quot;
+l_string|&quot;loading dsp [%d] %s, size = %Zd&bslash;n&quot;
 comma
 id|dsp-&gt;index
 comma
