@@ -885,6 +885,12 @@ op_assign
 id|ps.nr_dirty
 op_plus
 id|ps.nr_unstable
+op_plus
+(paren
+id|inodes_stat.nr_inodes
+op_minus
+id|inodes_stat.nr_unused
+)paren
 suffix:semicolon
 r_while
 c_loop
