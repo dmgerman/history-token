@@ -1859,7 +1859,7 @@ l_int|6
 dot
 dot
 dot
-l_int|7
+l_int|8
 suffix:colon
 r_return
 id|cpufreq_register_driver
@@ -1868,19 +1868,6 @@ c_func
 op_amp
 id|longhaul_driver
 )paren
-suffix:semicolon
-r_case
-l_int|8
-suffix:colon
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Ezra-T unsupported: Waiting on updated docs &quot;
-l_string|&quot;from VIA before this is usable.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 l_int|9
