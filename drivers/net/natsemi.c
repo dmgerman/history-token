@@ -7104,7 +7104,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: increasing Tx theshold, new tx cfg %8.8xh.&bslash;n&quot;
+l_string|&quot;%s: increasing Tx threshold, new tx cfg %8.8xh.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

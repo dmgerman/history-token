@@ -21,9 +21,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#ifndef MODULE
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;sbni.h&quot;
 multiline_comment|/* device private data */
