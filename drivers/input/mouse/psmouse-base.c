@@ -1163,6 +1163,10 @@ op_assign
 l_int|200000
 suffix:semicolon
 multiline_comment|/* 200 msec */
+id|psmouse-&gt;nak
+op_assign
+l_int|1
+suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -1183,9 +1187,8 @@ comma
 id|byte
 )paren
 )paren
-r_return
-op_minus
-l_int|1
+r_goto
+id|out
 suffix:semicolon
 r_while
 c_loop
@@ -1208,6 +1211,8 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|clear_bit
 c_func
 (paren
