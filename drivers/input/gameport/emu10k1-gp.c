@@ -87,6 +87,17 @@ id|PCI_ANY_ID
 comma
 multiline_comment|/* Audigy gameport */
 (brace
+l_int|0x1102
+comma
+l_int|0x7004
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
+multiline_comment|/* Dell SB Live */
+(brace
 l_int|0
 comma
 )brace
