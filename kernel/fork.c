@@ -2841,6 +2841,10 @@ id|sig-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
+id|sig-&gt;stop_state
+op_assign
+l_int|0
+suffix:semicolon
 id|sig-&gt;curr_target
 op_assign
 l_int|NULL
