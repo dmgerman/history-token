@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_MTRR
@@ -16,8 +17,6 @@ DECL|variable|dpt
 r_static
 r_int
 id|dpt
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_pci_dispose&t;&t;-&t;Free bus specific resources&n; *&t;@c: I2O controller&n; *&n; *&t;Disable interrupts and then free interrupt, I/O and mtrr resources &n; *&t;used by this controller. Called by the I2O core on unload.&n; */
 DECL|function|i2o_pci_dispose

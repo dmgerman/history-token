@@ -654,7 +654,7 @@ c_func
 (paren
 id|ps.nr_pagecache
 op_minus
-id|swapper_space.nrpages
+id|total_swapcache_pages
 op_minus
 id|i.bufferram
 )paren
@@ -662,7 +662,7 @@ comma
 id|K
 c_func
 (paren
-id|swapper_space.nrpages
+id|total_swapcache_pages
 )paren
 comma
 id|K

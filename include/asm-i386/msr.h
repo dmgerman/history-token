@@ -136,6 +136,8 @@ DECL|macro|MSR_K7_PERFCTR3
 mdefine_line|#define MSR_K7_PERFCTR3&t;&t;&t;0xC0010007
 DECL|macro|MSR_K7_HWCR
 mdefine_line|#define MSR_K7_HWCR&t;&t;&t;0xC0010015
+DECL|macro|MSR_K7_CLK_CTL
+mdefine_line|#define MSR_K7_CLK_CTL&t;&t;&t;0xC001001b
 DECL|macro|MSR_K7_FID_VID_CTL
 mdefine_line|#define MSR_K7_FID_VID_CTL&t;&t;0xC0010041
 DECL|macro|MSR_K7_VID_STATUS

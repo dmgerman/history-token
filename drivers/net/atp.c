@@ -74,7 +74,6 @@ mdefine_line|#define TX_TIMEOUT  (400*HZ/1000)
 multiline_comment|/*&n;&t;This file is a device driver for the RealTek (aka AT-Lan-Tec) pocket&n;&t;ethernet adapter.  This is a common low-cost OEM pocket ethernet&n;&t;adapter, sold under many names.&n;&n;  Sources:&n;&t;This driver was written from the packet driver assembly code provided by&n;&t;Vincent Bono of AT-Lan-Tec.&t; Ever try to figure out how a complicated&n;&t;device works just from the assembly code?  It ain&squot;t pretty.  The following&n;&t;description is written based on guesses and writing lots of special-purpose&n;&t;code to test my theorized operation.&n;&n;&t;In 1997 Realtek made available the documentation for the second generation&n;&t;RTL8012 chip, which has lead to several driver improvements.&n;&t;  http://www.realtek.com.tw/cn/cn.html&n;&n;&t;&t;&t;&t;&t;Theory of Operation&n;&n;&t;The RTL8002 adapter seems to be built around a custom spin of the SEEQ&n;&t;controller core.  It probably has a 16K or 64K internal packet buffer, of&n;&t;which the first 4K is devoted to transmit and the rest to receive.&n;&t;The controller maintains the queue of received packet and the packet buffer&n;&t;access pointer internally, with only &squot;reset to beginning&squot; and &squot;skip to next&n;&t;packet&squot; commands visible.  The transmit packet queue holds two (or more?)&n;&t;packets: both &squot;retransmit this packet&squot; (due to collision) and &squot;transmit next&n;&t;packet&squot; commands must be started by hand.&n;&n;&t;The station address is stored in a standard bit-serial EEPROM which must be&n;&t;read (ughh) by the device driver.  (Provisions have been made for&n;&t;substituting a 74S288 PROM, but I haven&squot;t gotten reports of any models&n;&t;using it.)  Unlike built-in devices, a pocket adapter can temporarily lose&n;&t;power without indication to the device driver.  The major effect is that&n;&t;the station address, receive filter (promiscuous, etc.) and transceiver&n;&t;must be reset.&n;&n;&t;The controller itself has 16 registers, some of which use only the lower&n;&t;bits.  The registers are read and written 4 bits at a time.  The four bit&n;&t;register address is presented on the data lines along with a few additional&n;&t;timing and control bits.  The data is then read from status port or written&n;&t;to the data port.&n;&n;&t;Correction: the controller has two banks of 16 registers.  The second&n;&t;bank contains only the multicast filter table (now used) and the EEPROM&n;&t;access registers.&n;&n;&t;Since the bulk data transfer of the actual packets through the slow&n;&t;parallel port dominates the driver&squot;s running time, four distinct data&n;&t;(non-register) transfer modes are provided by the adapter, two in each&n;&t;direction.  In the first mode timing for the nibble transfers is&n;&t;provided through the data port.  In the second mode the same timing is&n;&t;provided through the control port.  In either case the data is read from&n;&t;the status port and written to the data port, just as it is accessing&n;&t;registers.&n;&n;&t;In addition to the basic data transfer methods, several more are modes are&n;&t;created by adding some delay by doing multiple reads of the data to allow&n;&t;it to stabilize.  This delay seems to be needed on most machines.&n;&n;&t;The data transfer mode is stored in the &squot;dev-&gt;if_port&squot; field.  Its default&n;&t;value is &squot;4&squot;.  It may be overridden at boot-time using the third parameter&n;&t;to the &quot;ether=...&quot; initialization.&n;&n;&t;The header file &lt;atp.h&gt; provides inline functions that encapsulate the&n;&t;register and data access methods.  These functions are hand-tuned to&n;&t;generate reasonable object code.  This header file also documents my&n;&t;interpretations of the device registers.&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -82,10 +81,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -94,6 +89,10 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;atp.h&quot;
 id|MODULE_AUTHOR
 c_func
