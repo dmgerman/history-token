@@ -592,6 +592,11 @@ r_struct
 id|list_head
 id|socket_list
 suffix:semicolon
+DECL|member|socket_released
+r_struct
+id|completion
+id|socket_released
+suffix:semicolon
 multiline_comment|/* deprecated */
 DECL|member|sock
 r_int
