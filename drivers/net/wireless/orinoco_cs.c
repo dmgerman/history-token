@@ -1511,6 +1511,19 @@ l_int|0
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Tell the stack we exist */
 r_if
 c_cond

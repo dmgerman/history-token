@@ -136,6 +136,10 @@ comma
 r_int
 comma
 r_int
+comma
+r_struct
+id|device
+op_star
 )paren
 suffix:semicolon
 r_void
@@ -1405,6 +1409,13 @@ comma
 id|link-&gt;io.BasePort1
 comma
 l_int|1
+comma
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
 )paren
 suffix:semicolon
 r_if
