@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.c#221 $&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Sources include the Adaptec 1740 driver (aha1740.c), the Ultrastor 24F&n; * driver (ultrastor.c), various Linux kernel source, the Adaptec EISA&n; * config file (!adp7771.cfg), the Adaptec AHA-2740A Series User&squot;s Guide,&n; * the Linux Kernel Hacker&squot;s Guide, Writing a SCSI Device Driver for Linux,&n; * the Adaptec 1542 driver (aha1542.c), the Adaptec EISA overlay file&n; * (adp7770.ovl), the Adaptec AHA-2740 Series Technical Reference Manual,&n; * the Adaptec AIC-7770 Data Book, the ANSI SCSI specification, the&n; * ANSI SCSI-2 specification (draft 10c), ...&n; *&n; * --------------------------------------------------------------------------&n; *&n; *  Modifications by Daniel M. Eischen (deischen@iworks.InterWorks.org):&n; *&n; *  Substantially modified to include support for wide and twin bus&n; *  adapters, DMAing of SCBs, tagged queueing, IRQ sharing, bug fixes,&n; *  SCB paging, and other rework of the code.&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; *---------------------------------------------------------------------------&n; *&n; *  Thanks also go to (in alphabetical order) the following:&n; *&n; *    Rory Bolt     - Sequencer bug fixes&n; *    Jay Estabrook - Initial DEC Alpha support&n; *    Doug Ledford  - Much needed abort/reset bug fixes&n; *    Kai Makisara  - DMAing of SCBs&n; *&n; *  A Boot time option was also added for not resetting the scsi bus.&n; *&n; *    Form:  aic7xxx=extended&n; *           aic7xxx=no_reset&n; *           aic7xxx=verbose&n; *&n; *  Daniel M. Eischen, deischen@iworks.InterWorks.org, 1/23/97&n; *&n; *  Id: aic7xxx.c,v 4.1 1997/06/12 08:23:42 deang Exp&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.c#232 $&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Sources include the Adaptec 1740 driver (aha1740.c), the Ultrastor 24F&n; * driver (ultrastor.c), various Linux kernel source, the Adaptec EISA&n; * config file (!adp7771.cfg), the Adaptec AHA-2740A Series User&squot;s Guide,&n; * the Linux Kernel Hacker&squot;s Guide, Writing a SCSI Device Driver for Linux,&n; * the Adaptec 1542 driver (aha1542.c), the Adaptec EISA overlay file&n; * (adp7770.ovl), the Adaptec AHA-2740 Series Technical Reference Manual,&n; * the Adaptec AIC-7770 Data Book, the ANSI SCSI specification, the&n; * ANSI SCSI-2 specification (draft 10c), ...&n; *&n; * --------------------------------------------------------------------------&n; *&n; *  Modifications by Daniel M. Eischen (deischen@iworks.InterWorks.org):&n; *&n; *  Substantially modified to include support for wide and twin bus&n; *  adapters, DMAing of SCBs, tagged queueing, IRQ sharing, bug fixes,&n; *  SCB paging, and other rework of the code.&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; *---------------------------------------------------------------------------&n; *&n; *  Thanks also go to (in alphabetical order) the following:&n; *&n; *    Rory Bolt     - Sequencer bug fixes&n; *    Jay Estabrook - Initial DEC Alpha support&n; *    Doug Ledford  - Much needed abort/reset bug fixes&n; *    Kai Makisara  - DMAing of SCBs&n; *&n; *  A Boot time option was also added for not resetting the scsi bus.&n; *&n; *    Form:  aic7xxx=extended&n; *           aic7xxx=no_reset&n; *           aic7xxx=verbose&n; *&n; *  Daniel M. Eischen, deischen@iworks.InterWorks.org, 1/23/97&n; *&n; *  Id: aic7xxx.c,v 4.1 1997/06/12 08:23:42 deang Exp&n; */
 multiline_comment|/*&n; * Further driver modifications made by Doug Ledford &lt;dledford@redhat.com&gt;&n; *&n; * Copyright (c) 1997-1999 Doug Ledford&n; *&n; * These changes are released under the same licensing terms as the FreeBSD&n; * driver written by Justin Gibbs.  Please see his Copyright notice above&n; * for the exact terms and conditions covering my changes as well as the&n; * warranty statement.&n; *&n; * Modifications made to the aic7xxx.c,v 4.1 driver from Dan Eischen include&n; * but are not limited to:&n; *&n; *  1: Import of the latest FreeBSD sequencer code for this driver&n; *  2: Modification of kernel code to accommodate different sequencer semantics&n; *  3: Extensive changes throughout kernel portion of driver to improve&n; *     abort/reset processing and error hanndling&n; *  4: Other work contributed by various people on the Internet&n; *  5: Changes to printk information and verbosity selection code&n; *  6: General reliability related changes, especially in IRQ management&n; *  7: Modifications to the default probe/attach order for supported cards&n; *  8: SMP friendliness has been improved&n; *&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
@@ -13,14 +13,6 @@ macro_line|#include &quot;sd.h&quot;&t;&t;&t;/* For geometry detection */
 macro_line|#endif
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
 macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* For block_size() */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 multiline_comment|/*&n; * Lock protecting manipulation of the ahc softc list.&n; */
 DECL|variable|ahc_list_spinlock
 id|spinlock_t
@@ -1955,109 +1947,6 @@ id|AHC_39BIT_ADDRESSING
 op_ne
 l_int|0
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * Due to DAC restrictions, we can&squot;t&n;&t;&t; * cross a 4GB boundary.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|addr
-op_xor
-(paren
-id|addr
-op_plus
-id|len
-op_minus
-l_int|1
-)paren
-)paren
-op_amp
-op_complement
-l_int|0xFFFFFFFF
-)paren
-(brace
-r_struct
-id|ahc_dma_seg
-op_star
-id|next_sg
-suffix:semicolon
-r_uint32
-id|next_len
-suffix:semicolon
-id|printf
-c_func
-(paren
-l_string|&quot;Crossed Seg&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|scb-&gt;sg_count
-op_plus
-l_int|2
-)paren
-OG
-id|AHC_NSEG
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Too few segs for dma mapping.  &quot;
-l_string|&quot;Increase AHC_NSEG&bslash;n&quot;
-)paren
-suffix:semicolon
-id|consumed
-op_increment
-suffix:semicolon
-id|next_sg
-op_assign
-id|sg
-op_plus
-l_int|1
-suffix:semicolon
-id|next_sg-&gt;addr
-op_assign
-l_int|0
-suffix:semicolon
-id|next_len
-op_assign
-l_int|0x100000000
-op_minus
-(paren
-id|addr
-op_amp
-l_int|0xFFFFFFFF
-)paren
-suffix:semicolon
-id|len
-op_sub_assign
-id|next_len
-suffix:semicolon
-id|next_len
-op_or_assign
-(paren
-(paren
-id|addr
-op_rshift
-l_int|8
-)paren
-op_plus
-l_int|0x1000000
-)paren
-op_amp
-l_int|0x7F000000
-suffix:semicolon
-id|next_sg-&gt;len
-op_assign
-id|ahc_htole32
-c_func
-(paren
-id|next_len
-)paren
-suffix:semicolon
-)brace
 id|len
 op_or_assign
 (paren
@@ -2066,9 +1955,8 @@ op_rshift
 l_int|8
 )paren
 op_amp
-l_int|0x7F000000
+id|AHC_SG_HIGH_ADDR_MASK
 suffix:semicolon
-)brace
 id|sg-&gt;len
 op_assign
 id|ahc_htole32
@@ -3637,8 +3525,8 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Return the disk geometry for the given SCSI device.&n; */
 macro_line|#if defined(__i386__)
+multiline_comment|/*&n; * Return the disk geometry for the given SCSI device.&n; */
 r_static
 r_int
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
@@ -5935,7 +5823,7 @@ id|u_long
 id|s
 suffix:semicolon
 id|u_int
-id|target
+id|targ_offset
 suffix:semicolon
 r_template
 op_member_access_from_pointer
@@ -6211,11 +6099,11 @@ multiline_comment|/*&n;&t; * Initially allocate *all* of our linux target object
 r_for
 c_loop
 (paren
-id|target
+id|targ_offset
 op_assign
 l_int|0
 suffix:semicolon
-id|target
+id|targ_offset
 OL
 id|host-&gt;max_id
 op_star
@@ -6225,16 +6113,23 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|target
+id|targ_offset
 op_increment
 )paren
 (brace
 id|u_int
 id|channel
 suffix:semicolon
+id|u_int
+id|target
+suffix:semicolon
 id|channel
 op_assign
 l_int|0
+suffix:semicolon
+id|target
+op_assign
+id|targ_offset
 suffix:semicolon
 r_if
 c_cond
@@ -6251,10 +6146,16 @@ id|AHC_TWIN
 op_ne
 l_int|0
 )paren
+(brace
 id|channel
 op_assign
 l_int|1
 suffix:semicolon
+id|target
+op_and_assign
+l_int|0x7
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Skip our own ID.  Some Compaq/HP storage devices&n;&t;&t; * have enclosure management devices that respond to&n;&t;&t; * single bit selection (i.e. selecting ourselves).&n;&t;&t; * It is expected that either an external application&n;&t;&t; * or a modified kernel will be used to probe this&n;&t;&t; * ID if it is appropriate.  To accommodate these&n;&t;&t; * installations, ahc_linux_alloc_target() will allocate&n;&t;&t; * for our ID if asked to do so.&n;&t;&t; */
 r_if
 c_cond
@@ -8665,7 +8566,14 @@ c_func
 op_amp
 id|devinfo
 comma
+id|targ-&gt;channel
+op_eq
+l_int|0
+ques
+c_cond
 id|ahc-&gt;our_id
+suffix:colon
+id|ahc-&gt;our_id_b
 comma
 id|targ-&gt;target
 comma
@@ -9435,30 +9343,8 @@ op_star
 id|targ
 )paren
 (brace
-id|cam_status
-id|cam_status
-suffix:semicolon
 id|u_int32_t
 id|status
-suffix:semicolon
-id|u_int
-id|scsi_status
-suffix:semicolon
-id|scsi_status
-op_assign
-id|ahc_cmd_get_scsi_status
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
-id|cam_status
-op_assign
-id|ahc_cmd_get_transaction_status
-c_func
-(paren
-id|cmd
-)paren
 suffix:semicolon
 id|status
 op_assign
@@ -9469,9 +9355,17 @@ id|cmd
 comma
 id|targ-&gt;inq_data
 comma
-id|cam_status
+id|ahc_cmd_get_transaction_status
+c_func
+(paren
+id|cmd
+)paren
 comma
-id|scsi_status
+id|ahc_cmd_get_scsi_status
+c_func
+(paren
+id|cmd
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef AHC_DEBUG
@@ -14389,9 +14283,7 @@ comma
 id|scsi_to_pci_dma_dir
 c_func
 (paren
-id|cmd
-op_member_access_from_pointer
-id|sc_data_direction
+id|cmd-&gt;sc_data_direction
 )paren
 )paren
 suffix:semicolon
@@ -14751,7 +14643,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * SCSI controller interrupt handler.&n; */
-id|AIC_LINUX_IRQRETURN_T
+id|irqreturn_t
 DECL|function|ahc_linux_isr
 id|ahc_linux_isr
 c_func
@@ -14838,7 +14730,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-id|AIC_LINUX_IRQRETURN
+r_return
+id|IRQ_RETVAL
 c_func
 (paren
 id|ours
@@ -18958,7 +18851,11 @@ comma
 id|SAVED_LUN
 )paren
 op_eq
-id|pending_scb-&gt;hscb-&gt;lun
+id|SCB_GET_LUN
+c_func
+(paren
+id|pending_scb
+)paren
 )paren
 id|disconnected
 op_assign
