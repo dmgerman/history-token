@@ -3599,6 +3599,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Buffer Utility Routines&n; */
 multiline_comment|/*&n; *&t;pagebuf_iodone&n; *&n; *&t;pagebuf_iodone marks a buffer for which I/O is in progress&n; *&t;done with respect to that I/O.&t;The pb_iodone routine, if&n; *&t;present, will be called as a side-effect.&n; */
+id|STATIC
 r_void
 DECL|function|pagebuf_iodone_work
 id|pagebuf_iodone_work
@@ -4336,6 +4337,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|STATIC
 r_void
 DECL|function|_pagebuf_ioapply
 id|_pagebuf_ioapply

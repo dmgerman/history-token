@@ -913,6 +913,7 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+id|STATIC
 r_int
 DECL|function|xfs_inode_shake
 id|xfs_inode_shake
