@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/nmi.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -596,6 +597,22 @@ id|flush_tlb_page
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_X86_LOCAL_APIC) &amp;&amp; defined(CONFIG_PM)
+DECL|variable|set_nmi_pm_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_nmi_pm_callback
+)paren
+suffix:semicolon
+DECL|variable|unset_nmi_pm_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unset_nmi_pm_callback
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|variable|IO_APIC_get_PCI_irq_vector
 id|EXPORT_SYMBOL
@@ -649,6 +666,20 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|unregister_profile_notifier
+)paren
+suffix:semicolon
+DECL|variable|set_nmi_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_nmi_callback
+)paren
+suffix:semicolon
+DECL|variable|unset_nmi_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unset_nmi_callback
 )paren
 suffix:semicolon
 DECL|macro|memcpy
