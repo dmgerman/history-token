@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Permedia2 framebuffer driver.&n; *&n; * 2.5/2.6 driver:&n; * Copyright (c) 2003 Jim Hague (jim.hague@acm.org)&n; *&n; * based on 2.4 driver:&n; * Copyright (c) 1998-2000 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * Copyright (c) 1999 Jakub Jelinek (jakub@redhat.com)&n; *&n; * and additional input from James Simmon&squot;s port of Hannu Mallat&squot;s tdfx&n; * driver.&n; *&n; * $Id$&n; *&n; * I have a Creative Graphics Blaster Exxtreme card - pm2fb on x86.&n; * I have no access to other pm2fb implementations, and cannot test&n; * on them. Therefore for now I am omitting Sparc and CVision code.&n; *&n; * Multiple boards support has been on the TODO list for ages.&n; * Don&squot;t expect this to change.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -5817,6 +5818,7 @@ id|pm2fb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 multiline_comment|/*&n; *  Cleanup&n; */
 DECL|function|pm2fb_exit
 r_static
@@ -5836,7 +5838,9 @@ id|pm2fb_driver
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; *  Setup&n; */
+macro_line|#ifndef MODULE
 multiline_comment|/**&n; * Parse user speficied options.&n; *&n; * This is, comma-separated options following `video=pm2fb:&squot;.&n; */
 DECL|function|pm2fb_setup
 r_int
@@ -5943,6 +5947,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* ------------------------------------------------------------------------- */
 DECL|variable|pm2fb_init
@@ -5952,6 +5957,7 @@ c_func
 id|pm2fb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|pm2fb_exit
 id|module_exit
 c_func
@@ -5959,28 +5965,58 @@ c_func
 id|pm2fb_exit
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mode
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mode
+comma
+l_string|&quot;Preferred video mode e.g. &squot;648x480-8@60&squot;&quot;
+)paren
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|lowhsync
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|lowhsync
+comma
+l_string|&quot;Force horizontal sync low regardless of mode&quot;
+)paren
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|lowvsync
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|lowvsync
+comma
+l_string|&quot;Force vertical sync low regardless of mode&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -6001,4 +6037,5 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 eof
