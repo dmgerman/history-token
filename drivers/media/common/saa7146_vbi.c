@@ -1154,6 +1154,8 @@ id|dev-&gt;pci
 comma
 op_amp
 id|buf-&gt;vb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -1,9 +1,8 @@
 multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 2000 Stelias Computing, Inc.&n; *  Copyright (C) 2000 Red Hat, Inc.&n; *  Copyright (C) 2000 Tacitus Systems&n; *  Copyright (C) 2000 Peter J. Braam&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/ioctls.h&gt;
+macro_line|#include &lt;asm/termios.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
@@ -56,11 +55,7 @@ id|dir
 (brace
 multiline_comment|/* vfs_mkdir locks */
 singleline_comment|//        down(&amp;dir-&gt;i_zombie);
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
+singleline_comment|//lock_kernel(); 
 )brace
 DECL|function|presto_fulllock
 r_static
@@ -85,11 +80,7 @@ id|dir-&gt;i_sem
 suffix:semicolon
 multiline_comment|/* vfs_mkdir locks */
 singleline_comment|//        down(&amp;dir-&gt;i_zombie);
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
+singleline_comment|//lock_kernel(); 
 )brace
 DECL|function|presto_unlock
 r_static
@@ -105,11 +96,7 @@ id|dir
 )paren
 (brace
 multiline_comment|/* vfs_mkdir locks */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
+singleline_comment|//unlock_kernel(); 
 singleline_comment|//        up(&amp;dir-&gt;i_zombie);
 multiline_comment|/* the lock from sys_mkdir / lookup_create */
 id|up
