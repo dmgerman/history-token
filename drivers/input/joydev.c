@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Joystick device driver for the input driver suite.&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik &n; * Copyright (c) 1999 Colin Van Dyke &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * Joystick device driver for the input driver suite.&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik&n; * Copyright (c) 1999 Colin Van Dyke&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -43,7 +43,7 @@ suffix:semicolon
 DECL|macro|JOYDEV_MINOR_BASE
 mdefine_line|#define JOYDEV_MINOR_BASE&t;0
 DECL|macro|JOYDEV_MINORS
-mdefine_line|#define JOYDEV_MINORS&t;&t;16&t;
+mdefine_line|#define JOYDEV_MINORS&t;&t;16
 DECL|macro|JOYDEV_BUFFER_SIZE
 mdefine_line|#define JOYDEV_BUFFER_SIZE&t;64
 DECL|macro|MSECS
