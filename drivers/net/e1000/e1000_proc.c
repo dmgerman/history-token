@@ -420,7 +420,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devexit
 DECL|function|e1000_proc_dirs_free
 id|e1000_proc_dirs_free
 c_func
@@ -692,7 +691,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__devinit
 DECL|function|e1000_proc_singles_create
 id|e1000_proc_singles_create
 c_func
@@ -802,7 +800,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e1000_proc_dirs_create
 id|e1000_proc_dirs_create
 c_func
@@ -1022,7 +1019,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e1000_proc_list_add
 id|e1000_proc_list_add
 c_func
@@ -1136,7 +1132,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devexit
 DECL|function|e1000_proc_list_free
 id|e1000_proc_list_free
 c_func
@@ -2458,7 +2453,6 @@ DECL|macro|LIST_ADD_U
 mdefine_line|#define LIST_ADD_U(T,D) LIST_ADD_F((T), (D), e1000_proc_unsigned)
 r_static
 r_void
-id|__devinit
 DECL|function|e1000_proc_list_setup
 id|e1000_proc_list_setup
 c_func
@@ -2646,7 +2640,7 @@ c_func
 (paren
 l_string|&quot;System_Device_Name&quot;
 comma
-id|adapter-&gt;netdev-&gt;name
+id|adapter-&gt;ifname
 )paren
 suffix:semicolon
 id|LIST_ADD_F
@@ -3175,7 +3169,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * e1000_proc_dev_setup - create proc fs nodes and link list&n; * @adapter: board private structure&n; */
 r_void
-id|__devinit
 DECL|function|e1000_proc_dev_setup
 id|e1000_proc_dev_setup
 c_func
@@ -3197,7 +3190,7 @@ c_func
 (paren
 id|adapter
 comma
-id|adapter-&gt;netdev-&gt;name
+id|adapter-&gt;ifname
 comma
 op_amp
 id|adapter-&gt;proc_list_head
@@ -3206,7 +3199,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * e1000_proc_dev_free - free proc fs nodes and link list&n; * @adapter: board private structure&n; */
 r_void
-id|__devexit
 DECL|function|e1000_proc_dev_free
 id|e1000_proc_dev_free
 c_func
@@ -3220,7 +3212,7 @@ id|adapter
 id|e1000_proc_dirs_free
 c_func
 (paren
-id|adapter-&gt;netdev-&gt;name
+id|adapter-&gt;ifname
 comma
 op_amp
 id|adapter-&gt;proc_list_head
@@ -3237,7 +3229,6 @@ suffix:semicolon
 macro_line|#else /* CONFIG_PROC_FS */
 DECL|function|e1000_proc_dev_setup
 r_void
-id|__devinit
 id|e1000_proc_dev_setup
 c_func
 (paren
@@ -3250,7 +3241,6 @@ id|adapter
 )brace
 DECL|function|e1000_proc_dev_free
 r_void
-id|__devexit
 id|e1000_proc_dev_free
 c_func
 (paren
