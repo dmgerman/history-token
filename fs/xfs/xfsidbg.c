@@ -7785,11 +7785,9 @@ l_string|&quot;DIRECT&quot;
 comma
 l_string|&quot;INVALID18&quot;
 comma
-l_string|&quot;INVALID19&quot;
-comma
-multiline_comment|/* 20 */
 l_string|&quot;LOCKABLE&quot;
 comma
+multiline_comment|/* 20 */
 l_string|&quot;PRIVATE_BH&quot;
 comma
 l_string|&quot;ALL_PAGES_MAPPED&quot;
@@ -7798,12 +7796,14 @@ l_string|&quot;ADDR_ALLOCATED&quot;
 comma
 l_string|&quot;MEM_ALLOCATED&quot;
 comma
-multiline_comment|/* 25 */
 l_string|&quot;FORCEIO&quot;
 comma
+multiline_comment|/* 25 */
 l_string|&quot;FLUSH&quot;
 comma
 l_string|&quot;READ_AHEAD&quot;
+comma
+l_string|&quot;INVALID27&quot;
 comma
 l_string|&quot;INVALID28&quot;
 comma
