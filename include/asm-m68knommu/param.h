@@ -2,44 +2,13 @@ macro_line|#ifndef _M68KNOMMU_PARAM_H
 DECL|macro|_M68KNOMMU_PARAM_H
 mdefine_line|#define _M68KNOMMU_PARAM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifndef HZ
-macro_line|#ifdef CONFIG_COLDFIRE
 macro_line|#if defined(CONFIG_CLEOPATRA)
 DECL|macro|HZ
-mdefine_line|#define HZ 1000
-macro_line|#else
+mdefine_line|#define&t;HZ 1000
+macro_line|#endif
+macro_line|#ifndef HZ
 DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
-macro_line|#endif
-macro_line|#ifdef CONFIG_M68EN302
-DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
-macro_line|#ifdef CONFIG_M68328
-DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
-macro_line|#ifdef CONFIG_M68EZ328
-DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
-macro_line|#ifdef CONFIG_UCSIMM
-DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
-macro_line|#ifdef CONFIG_M68VZ328
-DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
-macro_line|#ifdef CONFIG_SHGLCORE
-DECL|macro|HZ
-mdefine_line|#define HZ 50
-macro_line|#endif
-macro_line|#ifdef CONFIG_M68360
-DECL|macro|HZ
-mdefine_line|#define HZ 100
-macro_line|#endif
+mdefine_line|#define&t;HZ 100
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|USER_HZ
