@@ -4597,11 +4597,7 @@ id|yenta_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|pci_name
-c_func
-(paren
-id|socket-&gt;dev
-)paren
+l_string|&quot;yenta&quot;
 comma
 id|socket
 )paren
