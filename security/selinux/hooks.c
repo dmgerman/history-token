@@ -57,6 +57,7 @@ DECL|macro|XATTR_NAME_SELINUX
 mdefine_line|#define XATTR_NAME_SELINUX XATTR_SECURITY_PREFIX XATTR_SELINUX_SUFFIX
 r_extern
 r_int
+r_int
 id|policydb_loaded_version
 suffix:semicolon
 r_extern
