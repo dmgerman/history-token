@@ -3,6 +3,7 @@ macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;asm/elf.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
+macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;sysdep/sc.h&quot;
@@ -67,7 +68,7 @@ id|n
 id|printk
 c_func
 (paren
-l_string|&quot;is_syscall : failed to read instruction from 0x%lu&bslash;n&quot;
+l_string|&quot;is_syscall : failed to read instruction from 0x%lx&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -77,9 +78,24 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+(paren
 id|instr
 op_eq
 l_int|0x80cd
+op_logical_or
+id|instr
+op_eq
+l_int|0x340f
+)paren
+op_logical_and
+id|PT_REGS_EAX
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs
+)paren
+OL
+id|NR_syscalls
 suffix:semicolon
 )brace
 multiline_comment|/* determines which flags the user has access to. */
