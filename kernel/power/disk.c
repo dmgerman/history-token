@@ -169,17 +169,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|device_power_up
+multiline_comment|/* Valid image is on the disk, if we continue we risk serious data corruption&n;&t;   after resume. */
+id|printk
 c_func
 (paren
+l_string|&quot;Please power me down manually&bslash;n&quot;
 )paren
 suffix:semicolon
-id|local_irq_restore
-c_func
+r_while
+c_loop
 (paren
-id|flags
+l_int|1
 )paren
+(brace
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
