@@ -143,6 +143,14 @@ op_assign
 id|AC97_TUNE_DEFAULT
 )brace
 suffix:semicolon
+DECL|variable|buggy_irq
+r_static
+r_int
+id|buggy_irq
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|variable|joystick
 r_static
@@ -267,6 +275,26 @@ c_func
 id|ac97_quirk
 comma
 l_string|&quot;AC&squot;97 workaround for strange hardware.&quot;
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|buggy_irq
+comma
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|buggy_irq
+comma
+l_string|&quot;Enable workaround for buggy interrupts on some motherboards.&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -1247,6 +1275,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* workaround for 440MX */
+DECL|member|buggy_irq
+r_int
+id|buggy_irq
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* workaround for buggy mobos */
 DECL|member|ac97_bus
 id|ac97_bus_t
 op_star
@@ -3686,21 +3721,16 @@ comma
 id|status
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: on some ICH5 board shows the same&n;&t;&t;&t; *        problem.  So we return IRQ_HANDLED&n;&t;&t;&t; *        in any cases.&n;&t;&t;&t; * (or, maybe add a new module param to control this?)&n;&t;&t;&t; */
-macro_line|#if 0
-multiline_comment|/* some Nforce[2] boards have problems when&n;&t;&t;&t;   IRQ_NONE is returned here.&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
-id|chip-&gt;device_type
-op_ne
-id|DEVICE_NFORCE
+op_logical_neg
+id|chip-&gt;buggy_irq
 )paren
 id|status
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 id|IRQ_RETVAL
@@ -12119,6 +12149,18 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* enable workaround */
+multiline_comment|/* some Nforce[2] and ICH boards have problems with IRQ handling.&n;&t; * Needs to return IRQ_HANDLED for unknown irqs.&n;&t; */
+r_if
+c_cond
+(paren
+id|device_type
+op_eq
+id|DEVICE_NFORCE
+)paren
+id|chip-&gt;buggy_irq
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13153,6 +13195,18 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|buggy_irq
+(braket
+id|dev
+)braket
+)paren
+id|chip-&gt;buggy_irq
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
