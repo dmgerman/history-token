@@ -62,6 +62,14 @@ DECL|member|medium_id
 r_int
 id|medium_id
 suffix:semicolon
+DECL|member|no_xfrm
+r_int
+id|no_xfrm
+suffix:semicolon
+DECL|member|no_policy
+r_int
+id|no_policy
+suffix:semicolon
 DECL|member|sysctl
 r_void
 op_star

@@ -1005,7 +1005,7 @@ id|tfm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check that skb data bits are writable. If they are not, copy data&n; * to newly created private area. If &quot;tailbits&quot; is given, make sure that&n; * tailbits bytes beoynd current end of skb are writable.&n; *&n; * Returns amount of elements of scatterlist to load for subsequent&n; * transformations and pointer to writable trailer skb.&n; */
+multiline_comment|/* Check that skb data bits are writable. If they are not, copy data&n; * to newly created private area. If &quot;tailbits&quot; is given, make sure that&n; * tailbits bytes beyond current end of skb are writable.&n; *&n; * Returns amount of elements of scatterlist to load for subsequent&n; * transformations and pointer to writable trailer skb.&n; */
 DECL|function|skb_cow_data
 r_int
 id|skb_cow_data
@@ -2254,6 +2254,9 @@ suffix:semicolon
 id|x-&gt;curlft.bytes
 op_add_assign
 id|skb-&gt;len
+suffix:semicolon
+id|x-&gt;curlft.packets
+op_increment
 suffix:semicolon
 id|spin_unlock_bh
 c_func

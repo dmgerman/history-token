@@ -40,6 +40,7 @@ macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#ifdef CONFIG_IP_MROUTE
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#endif
@@ -293,6 +294,12 @@ id|sk
 suffix:semicolon
 multiline_comment|/* In this point socket cannot receive new packets,&n;&t; * but it is possible that some packets are in flight&n;&t; * because some CPU runs receiver and did hash table lookup&n;&t; * before we unhashed socket. They will achieve receive queue&n;&t; * and will be purged by socket destructor.&n;&t; *&n;&t; * Also we still have packets pending on receive&n;&t; * queue and probably, our own packets waiting in device queues.&n;&t; * sock_destroy will drain receive queue, but transmitted&n;&t; * packets will delay socket destruction until the last reference&n;&t; * will be released.&n;&t; */
 id|sock_orphan
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|xfrm_sk_free_policy
 c_func
 (paren
 id|sk

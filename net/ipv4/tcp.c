@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 DECL|variable|sysctl_tcp_fin_timeout
@@ -7141,6 +7142,12 @@ id|sk
 )paren
 suffix:semicolon
 id|tcp_kill_sk_queues
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|xfrm_sk_free_policy
 c_func
 (paren
 id|sk
