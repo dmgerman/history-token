@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/cfbcursor.c -- Generic software cursor for frame buffer devices&n; *&n; *  Created 14 Nov 2002 by James Simmons &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/drivers/video/softcursor.c -- Generic software cursor for frame buffer devices&n; *&n; *  Created 14 Nov 2002 by James Simmons &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -6,9 +6,9 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|function|cfb_cursor
+DECL|function|soft_cursor
 r_int
-id|cfb_cursor
+id|soft_cursor
 c_func
 (paren
 r_struct
@@ -206,11 +206,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|cfb_cursor
+DECL|variable|soft_cursor
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cfb_cursor
+id|soft_cursor
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

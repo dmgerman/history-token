@@ -398,7 +398,7 @@ comma
 dot
 id|fb_cursor
 op_assign
-id|cfb_cursor
+id|soft_cursor
 comma
 dot
 id|fb_mmap

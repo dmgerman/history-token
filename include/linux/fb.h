@@ -1418,7 +1418,7 @@ id|info
 suffix:semicolon
 r_extern
 r_int
-id|cfb_cursor
+id|soft_cursor
 c_func
 (paren
 r_struct
