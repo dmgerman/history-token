@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mcfserial.c -- serial driver for ColdFire internal UARTS.&n; *&n; * Copyright (C) 1999-2002 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * Copyright (c) 2000-2001 Lineo, Inc. &lt;www.lineo.com&gt; &n; * Copyright (C) 2001-2002 SnapGear Inc. &lt;www.snapgear.com&gt; &n; *&n; * Based on code from 68332serial.c which was:&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 TSHG&n; * Copyright (c) 1999 Rt-Control Inc. &lt;jeff@uclinux.org&gt;&n; */
+multiline_comment|/*&n; * mcfserial.c -- serial driver for ColdFire internal UARTS.&n; *&n; * Copyright (C) 1999-2003 Greg Ungerer &lt;gerg@snapgear.com&gt;&n; * Copyright (c) 2000-2001 Lineo, Inc. &lt;www.lineo.com&gt; &n; * Copyright (C) 2001-2002 SnapGear Inc. &lt;www.snapgear.com&gt; &n; *&n; * Based on code from 68332serial.c which was:&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 TSHG&n; * Copyright (c) 1999 Rt-Control Inc. &lt;jeff@uclinux.org&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -35,11 +35,6 @@ macro_line|#include &lt;asm/mcfuart.h&gt;
 macro_line|#include &lt;asm/nettel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;mcfserial.h&quot;
-multiline_comment|/*&n; *&t;the only event we use&n; */
-DECL|macro|RS_EVENT_WRITE_WAKEUP
-macro_line|#undef RS_EVENT_WRITE_WAKEUP
-DECL|macro|RS_EVENT_WRITE_WAKEUP
-mdefine_line|#define RS_EVENT_WRITE_WAKEUP 0
 DECL|variable|mcfrs_timer_struct
 r_struct
 id|timer_list
@@ -1486,19 +1481,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_and_clear_bit
-c_func
-(paren
-id|RS_EVENT_WRITE_WAKEUP
-comma
-op_amp
-id|info-&gt;event
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 (paren
 id|tty-&gt;flags
 op_amp
@@ -1525,7 +1507,6 @@ op_amp
 id|tty-&gt;write_wait
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *&t;Change of state on a DCD line.&n; */
 DECL|function|mcfrs_modem_change
