@@ -429,13 +429,18 @@ op_logical_or
 id|status
 op_eq
 op_minus
+id|ECONNRESET
+op_logical_or
+id|status
+op_eq
+op_minus
 id|ETIMEDOUT
 )paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* device removed */
+multiline_comment|/* device removed/shutdown */
 id|snd_printk
 c_func
 (paren
@@ -3193,14 +3198,6 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|usb_driver_release_interface
-c_func
-(paren
-id|driver
-comma
-id|umidi-&gt;iface
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3253,6 +3250,14 @@ id|ep-&gt;in-&gt;urb
 )paren
 suffix:semicolon
 )brace
+id|usb_driver_release_interface
+c_func
+(paren
+id|driver
+comma
+id|umidi-&gt;iface
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_usbmidi_rawmidi_free
 r_static
