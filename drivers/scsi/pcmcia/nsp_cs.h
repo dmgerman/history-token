@@ -612,27 +612,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_static
-r_int
-id|nsp_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*static int nsp_eh_abort(Scsi_Cmnd * SCpnt);*/
 multiline_comment|/*static int nsp_eh_device_reset(Scsi_Cmnd *SCpnt);*/
 r_static
