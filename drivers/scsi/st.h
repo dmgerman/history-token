@@ -65,19 +65,38 @@ r_int
 r_int
 id|use_sg
 suffix:semicolon
-multiline_comment|/* zero or number of segments for this adapter */
+multiline_comment|/* zero or maximum number of s/g segments for this adapter */
 DECL|member|sg_segs
 r_int
 r_int
 id|sg_segs
 suffix:semicolon
-multiline_comment|/* total number of allocated segments */
-DECL|member|orig_sg_segs
+multiline_comment|/* number of segments in s/g list */
+DECL|member|orig_frp_segs
 r_int
 r_int
-id|orig_sg_segs
+id|orig_frp_segs
 suffix:semicolon
 multiline_comment|/* number of segments allocated at first try */
+DECL|member|frp_segs
+r_int
+r_int
+id|frp_segs
+suffix:semicolon
+multiline_comment|/* number of buffer segments */
+DECL|member|frp_sg_current
+r_int
+r_int
+id|frp_sg_current
+suffix:semicolon
+multiline_comment|/* driver buffer length currently in s/g list */
+DECL|member|frp
+r_struct
+id|st_buf_fragment
+op_star
+id|frp
+suffix:semicolon
+multiline_comment|/* the allocated buffer fragment list */
 DECL|member|sg
 r_struct
 id|scatterlist
@@ -90,6 +109,24 @@ multiline_comment|/* MUST BE last item */
 DECL|typedef|ST_buffer
 )brace
 id|ST_buffer
+suffix:semicolon
+multiline_comment|/* The tape buffer fragment descriptor */
+DECL|struct|st_buf_fragment
+r_struct
+id|st_buf_fragment
+(brace
+DECL|member|page
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+DECL|member|length
+r_int
+r_int
+id|length
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/* The tape mode definition */
 r_typedef
@@ -550,6 +587,7 @@ mdefine_line|#define ST_EOD_2        6
 DECL|macro|ST_EOD
 mdefine_line|#define ST_EOD&t;&t;7
 multiline_comment|/* EOD hit while reading =&gt; ST_EOD_1 =&gt; return zero =&gt; ST_EOD_2 =&gt;&n;   return zero =&gt; ST_EOD, return ENOSPC */
+multiline_comment|/* When writing: ST_EOM_OK == early warning found, write OK&n;&t;&t; ST_EOD_1  == allow trying new write after early warning&n;&t;&t; ST_EOM_ERROR == early warning found, not able to write all */
 multiline_comment|/* Values of rw */
 DECL|macro|ST_IDLE
 mdefine_line|#define&t;ST_IDLE&t;&t;0
