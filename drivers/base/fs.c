@@ -452,13 +452,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* now add the path from the bus directory&n;&t; * It should be &squot;../..&squot; (one to get to the &squot;bus&squot; directory,&n;&t; * and one to get to the root of the fs.&n;&t; */
+multiline_comment|/* now add the path from the bus directory&n;&t; * It should be &squot;../../..&squot; (one to get to the bus&squot;s directory,&n;&t; * one to get to the &squot;bus&squot; directory, and one to get to the root &n;&t; * of the fs.)&n;&t; */
 id|length
 op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;../..&quot;
+l_string|&quot;../../..&quot;
 )paren
 suffix:semicolon
 r_if
@@ -508,7 +508,7 @@ c_func
 (paren
 id|path
 comma
-l_string|&quot;../..&quot;
+l_string|&quot;../../..&quot;
 )paren
 suffix:semicolon
 id|fill_devpath
