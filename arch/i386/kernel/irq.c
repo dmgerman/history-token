@@ -779,7 +779,7 @@ ques
 c_cond
 l_string|&quot;irq event %d: bogus retval mask %x&bslash;n&quot;
 suffix:colon
-l_string|&quot;irq %d: nobody cared!n&quot;
+l_string|&quot;irq %d: nobody cared!&bslash;n&quot;
 comma
 id|irq
 comma
