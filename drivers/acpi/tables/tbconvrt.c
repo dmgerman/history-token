@@ -155,7 +155,7 @@ id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
-id|new_table-&gt;header.length
+id|new_table-&gt;length
 op_assign
 (paren
 id|u32
@@ -912,7 +912,7 @@ multiline_comment|/*&n;&t; * FADT length and version validation.  The table must
 r_if
 c_cond
 (paren
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 OL
 r_sizeof
 (paren
@@ -926,7 +926,7 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Invalid FADT table length: 0x%X&bslash;n&quot;
 comma
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 )paren
 )paren
 suffix:semicolon
@@ -939,7 +939,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_gbl_FADT-&gt;header.revision
+id|acpi_gbl_FADT-&gt;revision
 op_ge
 id|FADT2_REVISION_ID
 )paren
@@ -947,7 +947,7 @@ id|FADT2_REVISION_ID
 r_if
 c_cond
 (paren
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 OL
 r_sizeof
 (paren
@@ -962,9 +962,9 @@ id|ACPI_REPORT_WARNING
 (paren
 l_string|&quot;Inconsistent FADT length (0x%X) and revision (0x%X), using FADT V1.0 portion of table&bslash;n&quot;
 comma
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 comma
-id|acpi_gbl_FADT-&gt;header.revision
+id|acpi_gbl_FADT-&gt;revision
 )paren
 )paren
 suffix:semicolon
@@ -1012,7 +1012,7 @@ id|acpi_gbl_FADT
 op_assign
 id|local_fadt
 suffix:semicolon
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 op_assign
 r_sizeof
 (paren
@@ -1064,9 +1064,9 @@ id|ACPI_DB_TABLES
 comma
 l_string|&quot;Hex dump of common internal FADT, size %d (%X)&bslash;n&quot;
 comma
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 comma
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 )paren
 )paren
 suffix:semicolon
@@ -1080,7 +1080,7 @@ op_star
 id|acpi_gbl_FADT
 )paren
 comma
-id|acpi_gbl_FADT-&gt;header.length
+id|acpi_gbl_FADT-&gt;length
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exfldio&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_setup_region&n; *&n; * PARAMETERS:  *obj_desc               - Field to be read or written&n; *              field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Common processing for acpi_ex_extract_from_field and&n; *              acpi_ex_insert_into_field. Initialize the&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_setup_region&n; *&n; * PARAMETERS:  *obj_desc               - Field to be read or written&n; *              field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Common processing for acpi_ex_extract_from_field and&n; *              acpi_ex_insert_into_field. Initialize the Region if necessary and&n; *              validate the request.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_setup_region
 id|acpi_ex_setup_region
@@ -89,7 +89,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|rgn_desc-&gt;region.flags
+id|rgn_desc-&gt;common.flags
 op_amp
 id|AOPOBJ_DATA_VALID
 )paren
@@ -133,6 +133,36 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_UNDER_DEVELOPMENT
+multiline_comment|/*&n;&t; * If the Field access is any_acc, we can now compute the optimal&n;&t; * access (because we know know the length of the parent region)&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|obj_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_DATA_VALID
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Validate the request.  The entire request from the byte offset for a&n;&t; * length of one field datum (access width) must fit within the region.&n;&t; * (Region length is specified in bytes)&n;&t; */
 r_if
 c_cond
@@ -405,7 +435,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot; Region[%s-%X] Access %X Base:Off %X:%X at %8.8X%8.8X&bslash;n&quot;
+l_string|&quot; Region [%s:%X], Width %X, byte_base %X, Offset %X at %8.8X%8.8X&bslash;n&quot;
 comma
 id|acpi_ut_get_region_name
 (paren
@@ -643,7 +673,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The four types of fields are:&n;&t; *&n;&t; * buffer_fields - Read/write from/to a Buffer&n;&t; * region_fields - Read/write from/to a Operation Region.&n;&t; * bank_fields  - Write to a Bank Register, then read/write from/to an op_region&n;&t; * index_fields - Write to an Index Register, then read/write from/to a Data Register&n;&t; */
+multiline_comment|/*&n;&t; * The four types of fields are:&n;&t; *&n;&t; * buffer_field - Read/write from/to a Buffer&n;&t; * region_field - Read/write from/to a Operation Region.&n;&t; * bank_field  - Write to a Bank Register, then read/write from/to an op_region&n;&t; * index_field - Write to an Index Register, then read/write from/to a Data Register&n;&t; */
 r_switch
 c_cond
 (paren
@@ -846,6 +876,21 @@ id|AE_AML_REGISTER_LIMIT
 suffix:semicolon
 )brace
 multiline_comment|/* Write the index value to the index_register (itself a region_field) */
+id|field_datum_byte_offset
+op_add_assign
+id|obj_desc-&gt;index_field.value
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_BFIELD
+comma
+l_string|&quot;Write to Index Register: Value %8.8X&bslash;n&quot;
+comma
+id|field_datum_byte_offset
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ex_insert_into_field
@@ -853,11 +898,11 @@ id|acpi_ex_insert_into_field
 id|obj_desc-&gt;index_field.index_obj
 comma
 op_amp
-id|obj_desc-&gt;index_field.value
+id|field_datum_byte_offset
 comma
 r_sizeof
 (paren
-id|obj_desc-&gt;index_field.value
+id|field_datum_byte_offset
 )paren
 )paren
 suffix:semicolon
@@ -876,6 +921,17 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_BFIELD
+comma
+l_string|&quot;I/O to Data Register: value_ptr %p&bslash;n&quot;
+comma
+id|value
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -893,13 +949,16 @@ id|obj_desc-&gt;index_field.data_obj
 comma
 id|value
 comma
-id|obj_desc-&gt;common_field.access_byte_width
+r_sizeof
+(paren
+id|acpi_integer
+)paren
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Write the datum to the Data register */
+multiline_comment|/* Write the datum to the data_register */
 id|status
 op_assign
 id|acpi_ex_insert_into_field
@@ -908,7 +967,10 @@ id|obj_desc-&gt;index_field.data_obj
 comma
 id|value
 comma
-id|obj_desc-&gt;common_field.access_byte_width
+r_sizeof
+(paren
+id|acpi_integer
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -961,7 +1023,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Value Read=%8.8X%8.8X&bslash;n&quot;
+l_string|&quot;Value Read %8.8X%8.8X, Width %d&bslash;n&quot;
 comma
 id|ACPI_HIDWORD
 (paren
@@ -974,6 +1036,8 @@ id|ACPI_LODWORD
 op_star
 id|value
 )paren
+comma
+id|obj_desc-&gt;common_field.access_byte_width
 )paren
 )paren
 suffix:semicolon
@@ -985,7 +1049,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Value Written=%8.8X%8.8X&bslash;n&quot;
+l_string|&quot;Value Written %8.8X%8.8X, Width %d&bslash;n&quot;
 comma
 id|ACPI_HIDWORD
 (paren
@@ -998,6 +1062,8 @@ id|ACPI_LODWORD
 op_star
 id|value
 )paren
+comma
+id|obj_desc-&gt;common_field.access_byte_width
 )paren
 )paren
 suffix:semicolon
@@ -1115,6 +1181,21 @@ comma
 id|ACPI_READ
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|merged_value
 op_or_assign
 (paren
@@ -1172,6 +1253,49 @@ id|AE_AML_OPERAND_VALUE
 suffix:semicolon
 )brace
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_BFIELD
+comma
+l_string|&quot;Mask %8.8X%8.8X, datum_offset %X, Width %X, Value %8.8X%8.8X, merged_value %8.8X%8.8X&bslash;n&quot;
+comma
+id|ACPI_HIDWORD
+(paren
+id|mask
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|mask
+)paren
+comma
+id|field_datum_byte_offset
+comma
+id|obj_desc-&gt;common_field.access_byte_width
+comma
+id|ACPI_HIDWORD
+(paren
+id|field_value
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|field_value
+)paren
+comma
+id|ACPI_HIDWORD
+(paren
+id|merged_value
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|merged_value
+)paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Write the merged value */
 id|status
 op_assign
@@ -1185,47 +1309,6 @@ op_amp
 id|merged_value
 comma
 id|ACPI_WRITE
-)paren
-suffix:semicolon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_BFIELD
-comma
-l_string|&quot;Mask %8.8X%8.8X datum_offset %X Value %8.8X%8.8X, merged_value %8.8X%8.8X&bslash;n&quot;
-comma
-id|ACPI_HIDWORD
-(paren
-id|mask
-)paren
-comma
-id|ACPI_LODWORD
-(paren
-id|mask
-)paren
-comma
-id|field_datum_byte_offset
-comma
-id|ACPI_HIDWORD
-(paren
-id|field_value
-)paren
-comma
-id|ACPI_LODWORD
-(paren
-id|field_value
-)paren
-comma
-id|ACPI_HIDWORD
-(paren
-id|merged_value
-)paren
-comma
-id|ACPI_LODWORD
-(paren
-id|merged_value
-)paren
-)paren
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -1260,8 +1343,11 @@ id|buffer_offset
 id|u32
 id|index
 suffix:semicolon
-id|ACPI_FUNCTION_ENTRY
+id|ACPI_FUNCTION_TRACE_U32
 (paren
+l_string|&quot;ex_get_buffer_datum&quot;
+comma
+id|byte_granularity
 )paren
 suffix:semicolon
 multiline_comment|/* Get proper index into buffer (handles big/little endian) */
@@ -1380,6 +1466,8 @@ multiline_comment|/* Should not get here */
 r_break
 suffix:semicolon
 )brace
+id|return_VOID
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_set_buffer_datum&n; *&n; * PARAMETERS:  merged_datum        - Value to store&n; *              Buffer              - Receiving buffer&n; *              buffer_length       - Entire length (used for big-endian only)&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              buffer_offset       - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Store the merged datum to the buffer according to the&n; *              byte granularity&n; *&n; ******************************************************************************/
 r_void
@@ -1406,8 +1494,11 @@ id|buffer_offset
 id|u32
 id|index
 suffix:semicolon
-id|ACPI_FUNCTION_ENTRY
+id|ACPI_FUNCTION_TRACE_U32
 (paren
+l_string|&quot;ex_set_buffer_datum&quot;
+comma
+id|byte_granularity
 )paren
 suffix:semicolon
 multiline_comment|/* Get proper index into buffer (handles big/little endian) */
@@ -1531,6 +1622,8 @@ multiline_comment|/* Should not get here */
 r_break
 suffix:semicolon
 )brace
+id|return_VOID
+suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_extract_from_field&n; *&n; * PARAMETERS:  *obj_desc           - Field to be read&n; *              *Value              - Where to store value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value of the given field&n; *&n; ******************************************************************************/
 id|acpi_status
@@ -1633,7 +1726,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;byte_len=%X, datum_len=%X, byte_gran=%X&bslash;n&quot;
+l_string|&quot;byte_len %X, datum_len %X, byte_gran %X&bslash;n&quot;
 comma
 id|byte_field_length
 comma
@@ -2005,6 +2098,15 @@ id|AE_BUFFER_OVERFLOW
 )paren
 suffix:semicolon
 )brace
+id|byte_field_length
+op_assign
+id|ACPI_ROUND_BITS_UP_TO_BYTES
+(paren
+id|obj_desc-&gt;common_field.start_field_bit_offset
+op_plus
+id|obj_desc-&gt;common_field.bit_length
+)paren
+suffix:semicolon
 multiline_comment|/* Convert byte count to datum count, round up if necessary */
 id|datum_count
 op_assign
@@ -2020,7 +2122,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;byte_len=%X, datum_len=%X, byte_gran=%X&bslash;n&quot;
+l_string|&quot;Bytes %X, Datums %X, byte_gran %X&bslash;n&quot;
 comma
 id|byte_field_length
 comma
@@ -2126,6 +2228,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* We just wrote the first datum */
+id|datum_offset
+op_increment
+suffix:semicolon
 multiline_comment|/* If the entire field fits within one datum, we are done. */
 r_if
 c_cond
@@ -2158,9 +2264,6 @@ OL
 id|datum_count
 )paren
 (brace
-id|datum_offset
-op_increment
-suffix:semicolon
 id|field_datum_byte_offset
 op_add_assign
 id|obj_desc-&gt;common_field.access_byte_width
@@ -2214,22 +2317,25 @@ id|this_raw_datum
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Special handling for the last datum if the field does NOT end on&n;&t;&t; * a datum boundary.  Update Rule must be applied to the bits outside&n;&t;&t; * the field.&n;&t;&t; */
+id|datum_offset
+op_increment
+suffix:semicolon
 r_if
 c_cond
+(paren
 (paren
 id|datum_offset
 op_eq
 id|datum_count
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * If there are dangling non-aligned bits, perform one more merged write&n;&t;&t;&t; * Else - field is aligned at the end, no need for any more writes&n;&t;&t;&t; */
-r_if
-c_cond
+op_logical_and
 (paren
 id|obj_desc-&gt;common_field.end_field_valid_bits
 )paren
+)paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Part3:&n;&t;&t;&t;&t; * This is the last datum and the field does not end on a datum boundary.&n;&t;&t;&t;&t; * Build the partial datum and write with the update rule.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Mask off the unused bits above (after) the end-of-field&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If there are dangling non-aligned bits, perform one more merged write&n;&t;&t;&t; * Else - field is aligned at the end, no need for any more writes&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Part3:&n;&t;&t;&t; * This is the last datum and the field does not end on a datum boundary.&n;&t;&t;&t; * Build the partial datum and write with the update rule.&n;&t;&t;&t; *&n;&t;&t;&t; * Mask off the unused bits above (after) the end-of-field&n;&t;&t;&t; */
 id|mask
 op_assign
 id|ACPI_MASK_BITS_ABOVE
@@ -2271,10 +2377,9 @@ id|status
 suffix:semicolon
 )brace
 )brace
-)brace
 r_else
 (brace
-multiline_comment|/* Normal case -- write the completed datum */
+multiline_comment|/* Normal (aligned) case -- write the completed datum */
 id|status
 op_assign
 id|acpi_ex_field_datum_io

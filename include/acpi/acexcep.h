@@ -184,6 +184,8 @@ DECL|macro|AE_AML_BAD_RESOURCE_VALUE
 mdefine_line|#define AE_AML_BAD_RESOURCE_VALUE       (acpi_status) (0x001F | AE_CODE_AML)
 DECL|macro|AE_AML_CIRCULAR_REFERENCE
 mdefine_line|#define AE_AML_CIRCULAR_REFERENCE       (acpi_status) (0x0020 | AE_CODE_AML)
+DECL|macro|AE_AML_BAD_RESOURCE_LENGTH
+mdefine_line|#define AE_AML_BAD_RESOURCE_LENGTH      (acpi_status) (0x0021 | AE_CODE_AML)
 DECL|macro|AE_CODE_AML_MAX
 mdefine_line|#define AE_CODE_AML_MAX                 0x0020
 multiline_comment|/*&n; * Internal exceptions used for control&n; */
@@ -405,6 +407,8 @@ comma
 l_string|&quot;AE_AML_BAD_RESOURCE_VALUE&quot;
 comma
 l_string|&quot;AE_AML_CIRCULAR_REFERENCE&quot;
+comma
+l_string|&quot;AE_AML_BAD_RESOURCE_LENGTH&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_ctrl

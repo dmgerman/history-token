@@ -615,6 +615,21 @@ comma
 id|buffer
 )paren
 suffix:semicolon
+multiline_comment|/* Validate minimum descriptor length */
+r_if
+c_cond
+(paren
+id|temp16
+OL
+l_int|6
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_BAD_RESOURCE_LENGTH
+)paren
+suffix:semicolon
+)brace
 op_star
 id|bytes_consumed
 op_assign
@@ -688,6 +703,21 @@ op_assign
 op_star
 id|buffer
 suffix:semicolon
+multiline_comment|/* Must have at least one IRQ */
+r_if
+c_cond
+(paren
+id|temp8
+OL
+l_int|1
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_BAD_RESOURCE_LENGTH
+)paren
+suffix:semicolon
+)brace
 id|output_struct-&gt;data.extended_irq.number_of_interrupts
 op_assign
 id|temp8
@@ -741,7 +771,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; */
+multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; *&n;&t; * Note: Some resource descriptors will have an additional null, so&n;&t; * we add 1 to the length.&n;&t; */
 r_if
 c_cond
 (paren
@@ -757,7 +787,11 @@ op_star
 l_int|4
 )paren
 op_plus
+(paren
 l_int|5
+op_plus
+l_int|1
+)paren
 )paren
 (brace
 multiline_comment|/* Dereference the Index */

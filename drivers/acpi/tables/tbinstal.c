@@ -807,8 +807,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Free the table */
-multiline_comment|/* Get the head of the list */
+multiline_comment|/*&n;&t; * Free the table&n;&t; * 1) Get the head of the list&n;&t; */
 id|table_desc
 op_assign
 id|acpi_gbl_table_lists
@@ -827,7 +826,7 @@ id|type
 dot
 id|count
 suffix:semicolon
-multiline_comment|/*&n;&t; * Walk the entire list, deleting both the allocated tables&n;&t; * and the table descriptors&n;&t; */
+multiline_comment|/*&n;&t; * 2) Walk the entire list, deleting both the allocated tables&n;&t; *    and the table descriptors&n;&t; */
 r_for
 c_loop
 (paren

@@ -1182,7 +1182,7 @@ id|value
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;ex_opcode_1A_0T_0R&quot;
+l_string|&quot;ex_opcode_1A_0T_1R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren

@@ -309,6 +309,20 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;hw_get_mode&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * ACPI 2.0 clarified that if SMI_CMD in FADT is zero,&n;&t; * system does not support mode transition.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_FADT-&gt;smi_cmd
+)paren
+(brace
+id|return_VALUE
+(paren
+id|ACPI_SYS_MODE_ACPI
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_get_register
