@@ -708,7 +708,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/* Entry point of PLIP driver.&n;   Probe the hardware, and register/initialize the driver.&n;&n;   PLIP is rather weird, because of the way it interacts with the parport&n;   system.  It is _not_ initialised from Space.c.  Instead, plip_init()&n;   is called, and that function makes up a &quot;struct net_device&quot; for each port, and&n;   then calls us here.&n;&n;   */
 r_static
-r_int
+r_void
 DECL|function|plip_init_netdev
 id|plip_init_netdev
 c_func
@@ -725,48 +725,6 @@ op_star
 id|nl
 op_assign
 id|dev-&gt;priv
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|version
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;irq
-op_ne
-op_minus
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Parallel port at %#3lx, using IRQ %d.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|dev-&gt;base_addr
-comma
-id|dev-&gt;irq
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: Parallel port at %#3lx, not using IRQ.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|dev-&gt;base_addr
-)paren
 suffix:semicolon
 multiline_comment|/* Then, override parts of it */
 id|dev-&gt;hard_start_xmit
@@ -921,9 +879,6 @@ c_func
 op_amp
 id|nl-&gt;lock
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 "&f;"
@@ -5151,10 +5106,6 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|dev-&gt;init
-op_assign
-id|plip_init_netdev
-suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -5235,6 +5186,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|plip_init_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5258,6 +5215,50 @@ r_goto
 id|err_parport_unregister
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s&quot;
+comma
+id|version
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;irq
+op_ne
+op_minus
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Parallel port at %#3lx, &quot;
+l_string|&quot;using IRQ %d.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;base_addr
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Parallel port at %#3lx, &quot;
+l_string|&quot;not using IRQ.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
 id|dev_plip
 (braket
 id|unit

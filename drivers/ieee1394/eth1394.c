@@ -1446,10 +1446,10 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* This function is called by register_netdev */
+multiline_comment|/* This function is called right before register_netdev */
 DECL|function|ether1394_init_dev
 r_static
-r_int
+r_void
 id|ether1394_init_dev
 (paren
 r_struct
@@ -1544,9 +1544,6 @@ id|dev
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function is called every time a card is found. It is generally called&n; * when the module is installed. This is where we add all of our ethernet&n; * devices. One for each host.&n; */
@@ -1648,10 +1645,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|dev-&gt;init
-op_assign
-id|ether1394_init_dev
 suffix:semicolon
 id|priv
 op_assign
@@ -1763,6 +1756,12 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|ether1394_init_dev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1857,7 +1856,7 @@ id|dev
 op_ne
 l_int|NULL
 )paren
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
