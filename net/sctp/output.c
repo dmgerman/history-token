@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions handle output processing.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions handle output processing.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -16,18 +16,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Forward declarations for private helpers. */
-id|__u32
-id|count_crc
-c_func
-(paren
-id|__u8
-op_star
-id|ptr
-comma
-id|__u16
-id|count
-)paren
-suffix:semicolon
 r_static
 r_void
 id|sctp_packet_reset
@@ -99,6 +87,10 @@ id|packet-&gt;has_cookie_echo
 op_assign
 l_int|0
 suffix:semicolon
+id|packet-&gt;ipfragok
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* We might need to call the prepend_handler right away.  */
 r_if
 c_cond
@@ -126,7 +118,8 @@ id|sctp_packet_t
 op_star
 id|packet
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 comma
@@ -169,6 +162,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|packet-&gt;has_cookie_echo
+op_assign
+l_int|0
+suffix:semicolon
+id|packet-&gt;ipfragok
 op_assign
 l_int|0
 suffix:semicolon
@@ -468,6 +465,10 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* The packet is too big but we can&n;&t;&t;&t;&t; * not fragment it--we have to just&n;&t;&t;&t;&t; * transmit and rely on IP&n;&t;&t;&t;&t; * fragmentation.&n;&t;&t;&t;&t; */
+id|packet-&gt;ipfragok
+op_assign
+l_int|1
+suffix:semicolon
 r_goto
 id|append
 suffix:semicolon
@@ -566,7 +567,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* All packets are sent to the network through this function from&n; * sctp_push_outqueue().&n; *&n; * The return value is a normal kernel error return value.&n; */
+multiline_comment|/* All packets are sent to the network through this function from&n; * sctp_outq_tail().&n; *&n; * The return value is a normal kernel error return value.&n; */
 DECL|function|sctp_packet_transmit
 r_int
 id|sctp_packet_transmit
@@ -577,7 +578,8 @@ op_star
 id|packet
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -955,7 +957,7 @@ suffix:semicolon
 multiline_comment|/* 2) Calculate the Adler-32 checksum of the whole packet,&n;&t; *    including the SCTP common header and all the&n;&t; *    chunks.&n;&t; *&n;&t; * Note: Adler-32 is no longer applicable, as has been replaced&n;&t; * by CRC32-C as described in &lt;draft-ietf-tsvwg-sctpcsum-02.txt&gt;.&n;&t; */
 id|crc32
 op_assign
-id|count_crc
+id|sctp_start_cksum
 c_func
 (paren
 (paren
@@ -967,6 +969,14 @@ comma
 id|nskb-&gt;len
 )paren
 suffix:semicolon
+id|crc32
+op_assign
+id|sctp_end_cksum
+c_func
+(paren
+id|crc32
+)paren
+suffix:semicolon
 multiline_comment|/* 3) Put the resultant value into the checksum field in the&n;&t; *    common header, and leave the rest of the bits unchanged.&n;&t; */
 id|sh-&gt;checksum
 op_assign
@@ -975,34 +985,6 @@ c_func
 (paren
 id|crc32
 )paren
-suffix:semicolon
-multiline_comment|/* FIXME:  Delete the rest of this switch statement once phase 2&n;&t; * of address selection (ipv6 support) drops in.&n;&t; */
-r_switch
-c_cond
-(paren
-id|transport-&gt;ipaddr.sa.sa_family
-)paren
-(brace
-r_case
-id|AF_INET6
-suffix:colon
-id|SCTP_V6
-c_func
-(paren
-id|inet6_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|daddr
-op_assign
-id|transport-&gt;ipaddr.v6.sin6_addr
-suffix:semicolon
-)paren
-r_break
-suffix:semicolon
-)brace
 suffix:semicolon
 multiline_comment|/* IP layer ECN support&n;&t; * From RFC 2481&n;&t; *  &quot;The ECN-Capable Transport (ECT) bit would be set by the&n;&t; *   data sender to indicate that the end-points of the&n;&t; *   transport protocol are ECN-capable.&quot;&n;&t; *&n;&t; * If ECN capable &amp;&amp; negotiated &amp;&amp; it makes sense for&n;&t; * this packet to support it (e.g. post ECN negotiation)&n;&t; * then lets set the ECT bit&n;&t; *&n;&t; * FIXME:  Need to do something else for IPv6&n;&t; */
 r_if
@@ -1121,13 +1103,18 @@ id|dst
 op_assign
 id|transport-&gt;dst
 suffix:semicolon
+multiline_comment|/* The &squot;obsolete&squot; field of dst is set to 2 when a dst is freed. */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|dst
 op_logical_or
+(paren
 id|dst-&gt;obsolete
+OG
+l_int|1
+)paren
 )paren
 (brace
 id|sctp_transport_route
@@ -1142,6 +1129,12 @@ c_func
 (paren
 id|sk
 )paren
+)paren
+suffix:semicolon
+id|sctp_assoc_sync_pmtu
+c_func
+(paren
+id|asoc
 )paren
 suffix:semicolon
 )brace
@@ -1172,10 +1165,14 @@ id|nskb-&gt;len
 suffix:semicolon
 (paren
 op_star
-id|transport-&gt;af_specific-&gt;queue_xmit
+id|transport-&gt;af_specific-&gt;sctp_xmit
 )paren
 (paren
 id|nskb
+comma
+id|transport
+comma
+id|packet-&gt;ipfragok
 )paren
 suffix:semicolon
 id|out
@@ -1201,11 +1198,8 @@ c_func
 id|IpOutNoRoutes
 )paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EHOSTUNREACH
-suffix:semicolon
+multiline_comment|/* FIXME: Returning the &squot;err&squot; will effect all the associations&n;&t; * associated with a socket, although only one of the paths of the&n;&t; * association is unreachable.&n;&t; * The real failure of a transport or association can be passed on&n;&t; * to the user via notifications. So setting this error may not be&n;&t; * required.&n;&t; */
+multiline_comment|/* err = -EHOSTUNREACH; */
 r_goto
 id|out
 suffix:semicolon
@@ -1291,7 +1285,8 @@ id|rwnd
 comma
 id|inflight
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign

@@ -255,7 +255,7 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, responding with an ABORT.&n;&t; */
+multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, respond with an ABORT.&n;&t; */
 r_if
 c_cond
 (paren
@@ -538,6 +538,22 @@ r_sizeof
 (paren
 id|sctp_chunkhdr_t
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sctp_assoc_set_bind_addr_from_ep
+c_func
+(paren
+id|new_asoc
+comma
+id|GFP_ATOMIC
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|nomem_ack
 suffix:semicolon
 id|repl
 op_assign
@@ -1214,7 +1230,7 @@ id|sctp_chunk_t
 op_star
 id|err_chk_p
 suffix:semicolon
-multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, responding with an ABORT.&n;&t; */
+multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, respond with an ABORT.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1772,12 +1788,14 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|arg
@@ -1911,12 +1929,14 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|arg
@@ -1997,7 +2017,7 @@ c_func
 (paren
 id|commands
 comma
-id|SCTP_CMD_HB_TIMERS_UPDATE
+id|SCTP_CMD_HB_TIMER_UPDATE
 comma
 id|SCTP_TRANSPORT
 c_func
@@ -2196,7 +2216,8 @@ r_union
 id|sctp_addr
 id|from_addr
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|link
 suffix:semicolon
@@ -2552,7 +2573,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|new_addr
 comma
@@ -2596,7 +2618,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -2621,7 +2644,8 @@ c_func
 (paren
 id|pos2
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -2823,25 +2847,6 @@ id|new_asoc-&gt;c.peer_ttag
 r_return
 l_char|&squot;A&squot;
 suffix:semicolon
-multiline_comment|/* Collision case D.&n;&t; * Note: Test case D first, otherwise it may be incorrectly&n;&t; * identified as second case of B if the value of the Tie_tag is&n;&t; * not filled into the state cookie.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|asoc-&gt;c.my_vtag
-op_eq
-id|new_asoc-&gt;c.my_vtag
-)paren
-op_logical_and
-(paren
-id|asoc-&gt;c.peer_vtag
-op_eq
-id|new_asoc-&gt;c.peer_vtag
-)paren
-)paren
-r_return
-l_char|&squot;D&squot;
-suffix:semicolon
 multiline_comment|/* Collision case B. */
 r_if
 c_cond
@@ -2860,16 +2865,35 @@ id|new_asoc-&gt;c.peer_vtag
 )paren
 op_logical_or
 (paren
-op_logical_neg
-id|new_asoc-&gt;c.my_ttag
-op_logical_and
-op_logical_neg
-id|new_asoc-&gt;c.peer_ttag
+l_int|0
+op_eq
+id|asoc-&gt;c.peer_vtag
 )paren
+)paren
+)paren
+(brace
+r_return
+l_char|&squot;B&squot;
+suffix:semicolon
+)brace
+multiline_comment|/* Collision case D. */
+r_if
+c_cond
+(paren
+(paren
+id|asoc-&gt;c.my_vtag
+op_eq
+id|new_asoc-&gt;c.my_vtag
+)paren
+op_logical_and
+(paren
+id|asoc-&gt;c.peer_vtag
+op_eq
+id|new_asoc-&gt;c.peer_vtag
 )paren
 )paren
 r_return
-l_char|&squot;B&squot;
+l_char|&squot;D&squot;
 suffix:semicolon
 multiline_comment|/* Collision case C. */
 r_if
@@ -2902,10 +2926,10 @@ id|new_asoc-&gt;c.peer_ttag
 r_return
 l_char|&squot;C&squot;
 suffix:semicolon
+multiline_comment|/* No match to any of the special cases; discard this packet. */
 r_return
 l_char|&squot;E&squot;
 suffix:semicolon
-multiline_comment|/* No such case available. */
 )brace
 multiline_comment|/* Common helper routine for both duplicate and simulataneous INIT&n; * chunk handling.&n; */
 DECL|function|sctp_sf_do_unexpected_init
@@ -3256,6 +3280,22 @@ id|sctp_chunkhdr_t
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sctp_assoc_set_bind_addr_from_ep
+c_func
+(paren
+id|new_asoc
+comma
+id|GFP_ATOMIC
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|nomem
+suffix:semicolon
 id|repl
 op_assign
 id|sctp_make_init_ack
@@ -3503,7 +3543,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Unexpected COOKIE-ECHO handlerfor peer restart (Table 2, action &squot;A&squot;)&n; *&n; * Section 5.2.4&n; *  A)  In this case, the peer may have restarted.&n; */
+multiline_comment|/* Unexpected COOKIE-ECHO handler for peer restart (Table 2, action &squot;A&squot;)&n; *&n; * Section 5.2.4&n; *  A)  In this case, the peer may have restarted.&n; */
 DECL|function|sctp_sf_do_dupcook_a
 r_static
 id|sctp_disposition_t
@@ -4027,15 +4067,30 @@ id|sctp_chunk_t
 op_star
 id|repl
 suffix:semicolon
-multiline_comment|/* The local endpoint cannot use any value from the received&n;&t; * state cookie and need to immediately resend a COOKIE-ACK&n;&t; * and move into ESTABLISHED if it hasn&squot;t done so.&n;&t; */
+multiline_comment|/* Clarification from Implementor&squot;s Guide:&n;&t; * D) When both local and remote tags match the endpoint should&n;         * enter the ESTABLISHED state, if it is in the COOKIE-ECHOED state.&n;         * It should stop any cookie timer that may be running and send&n;         * a COOKIE ACK.&n;&t; */
+multiline_comment|/* Don&squot;t accidentally move back into established state. */
 r_if
 c_cond
 (paren
-id|SCTP_STATE_ESTABLISHED
-op_ne
 id|asoc-&gt;state
+OL
+id|SCTP_STATE_ESTABLISHED
 )paren
 (brace
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_TIMER_STOP
+comma
+id|SCTP_TO
+c_func
+(paren
+id|SCTP_EVENT_TIMEOUT_T1_COOKIE
+)paren
+)paren
+suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -4343,8 +4398,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 op_minus
 id|SCTP_IERROR_BAD_SIG
@@ -4433,7 +4486,7 @@ suffix:semicolon
 r_case
 l_char|&squot;C&squot;
 suffix:colon
-multiline_comment|/* Collisioun case C. */
+multiline_comment|/* Collision case C. */
 id|retval
 op_assign
 id|sctp_sf_do_dupcook_c
@@ -4476,19 +4529,22 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* No such case, discard it. */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s:unknown case&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
+multiline_comment|/* Discard packet for all others. */
 id|retval
 op_assign
-id|SCTP_DISPOSITION_DISCARD
+id|sctp_sf_pdiscard
+c_func
+(paren
+id|ep
+comma
+id|asoc
+comma
+id|type
+comma
+id|arg
+comma
+id|commands
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4953,7 +5009,8 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|t
 suffix:semicolon
@@ -5133,7 +5190,7 @@ id|SCTP_COUNTER_INIT_ERROR
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;ve sent any data bundled with COOKIE-ECHO we need to resend. */
+multiline_comment|/* If we&squot;ve sent any data bundled with COOKIE-ECHO we need to&n;&t; * resend.&n;&t; */
 id|list_for_each
 c_func
 (paren
@@ -5150,7 +5207,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 comma
 id|transports
 )paren
@@ -5586,7 +5644,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 op_amp
@@ -8445,19 +8503,6 @@ id|sctp_chunk_t
 op_star
 id|repl
 suffix:semicolon
-id|sctp_bind_addr_t
-op_star
-id|bp
-suffix:semicolon
-id|sctp_scope_t
-id|scope
-suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* The comment below says that we enter COOKIE-WAIT AFTER&n;&t; * sending the INIT, but that doesn&squot;t actually work in our&n;&t; * implementation...&n;&t; */
 id|sctp_add_cmd_sf
 c_func
@@ -8473,104 +8518,6 @@ id|SCTP_STATE_COOKIE_WAIT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Build up the bind address list for the association based on&n;&t; * info from the local endpoint and the remote peer.&n;&t; */
-id|bp
-op_assign
-id|sctp_bind_addr_new
-c_func
-(paren
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bp
-)paren
-r_goto
-id|nomem
-suffix:semicolon
-multiline_comment|/* Use scoping rules to determine the subset of addresses from&n;&t; * the endpoint.&n;&t; */
-id|scope
-op_assign
-id|sctp_scope
-c_func
-(paren
-op_amp
-id|asoc-&gt;peer.active_path-&gt;ipaddr
-)paren
-suffix:semicolon
-id|flags
-op_assign
-(paren
-id|PF_INET6
-op_eq
-id|asoc-&gt;base.sk-&gt;family
-)paren
-ques
-c_cond
-id|SCTP_ADDR6_ALLOWED
-suffix:colon
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|asoc-&gt;peer.ipv4_address
-)paren
-id|flags
-op_or_assign
-id|SCTP_ADDR4_PEERSUPP
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|asoc-&gt;peer.ipv6_address
-)paren
-id|flags
-op_or_assign
-id|SCTP_ADDR6_PEERSUPP
-suffix:semicolon
-id|error
-op_assign
-id|sctp_bind_addr_copy
-c_func
-(paren
-id|bp
-comma
-op_amp
-id|ep-&gt;base.bind_addr
-comma
-id|scope
-comma
-id|GFP_ATOMIC
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_goto
-id|nomem
-suffix:semicolon
-multiline_comment|/* FIXME: Either move address assignment out of this function&n;&t; * or else move the association allocation/init into this function.&n;&t; * The association structure is brand new before calling this&n;&t; * function, so would not be a sideeffect if the allocation&n;&t; * moved into this function.  --jgrimm&n;&t; */
-id|sctp_add_cmd_sf
-c_func
-(paren
-id|commands
-comma
-id|SCTP_CMD_SET_BIND_ADDR
-comma
-(paren
-id|sctp_arg_t
-)paren
-id|bp
-)paren
-suffix:semicolon
 multiline_comment|/* RFC 2960 5.1 Normal Establishment of an Association&n;&t; *&n;&t; * A) &quot;A&quot; first sends an INIT chunk to &quot;Z&quot;.  In the INIT, &quot;A&quot;&n;&t; * must provide its Verification Tag (Tag_A) in the Initiate&n;&t; * Tag field.  Tag_A SHOULD be a random number in the range of&n;&t; * 1 to 4294967295 (see 5.3.1 for Tag value selection). ...&n;&t; */
 id|repl
 op_assign
@@ -8579,7 +8526,8 @@ c_func
 (paren
 id|asoc
 comma
-id|bp
+op_amp
+id|asoc-&gt;base.bind_addr
 comma
 id|GFP_ATOMIC
 comma
@@ -8648,17 +8596,6 @@ id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 id|nomem
 suffix:colon
-r_if
-c_cond
-(paren
-id|bp
-)paren
-id|sctp_bind_addr_free
-c_func
-(paren
-id|bp
-)paren
-suffix:semicolon
 r_return
 id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
@@ -8785,7 +8722,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 op_amp
@@ -9535,7 +9472,8 @@ comma
 id|type
 comma
 (paren
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 )paren
 id|arg
@@ -9701,6 +9639,20 @@ id|SCTP_STATE_SHUTDOWN_SENT
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* sctp-implguide 2.10 Issues with Heartbeating and failover&n;&t; *&n;&t; * HEARTBEAT ... is discontinued after sending either SHUTDOWN&n;         * or SHUTDOWN-ACK.&n;&t; */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_HB_TIMERS_STOP
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -9851,6 +9803,20 @@ id|SCTP_STATE_SHUTDOWN_ACK_SENT
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* sctp-implguide 2.10 Issues with Heartbeating and failover&n;&t; *&n;&t; * HEARTBEAT ... is discontinued after sending either SHUTDOWN&n;         * or SHUTDOWN-ACK.&n;&t; */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_HB_TIMERS_STOP
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -9945,7 +9911,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 op_assign
@@ -10636,7 +10603,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 op_amp
@@ -10989,7 +10956,8 @@ id|sctp_packet_t
 op_star
 id|packet
 suffix:semicolon
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
