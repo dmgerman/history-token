@@ -3647,6 +3647,7 @@ comma
 suffix:semicolon
 macro_line|#include &quot;ti113x.h&quot;
 macro_line|#include &quot;ricoh.h&quot;
+macro_line|#include &quot;topic.h&quot;
 r_enum
 (brace
 DECL|enumerator|CARDBUS_TYPE_DEFAULT
@@ -3669,6 +3670,9 @@ id|CARDBUS_TYPE_TI1250
 comma
 DECL|enumerator|CARDBUS_TYPE_RICOH
 id|CARDBUS_TYPE_RICOH
+comma
+DECL|enumerator|CARDBUS_TYPE_TOPIC97
+id|CARDBUS_TYPE_TOPIC97
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Different cardbus controllers have slightly different&n; * initialization sequences etc details. List them here..&n; */
@@ -3807,6 +3811,18 @@ dot
 id|restore_state
 op_assign
 id|ricoh_restore_state
+comma
+)brace
+comma
+(braket
+id|CARDBUS_TYPE_TOPIC97
+)braket
+op_assign
+(brace
+dot
+id|override
+op_assign
+id|topic97_override
 comma
 )brace
 comma
@@ -5160,6 +5176,26 @@ comma
 id|PCI_DEVICE_ID_RICOH_RL5C478
 comma
 id|RICOH
+)paren
+comma
+id|CB_ID
+c_func
+(paren
+id|PCI_VENDOR_ID_TOSHIBA
+comma
+id|PCI_DEVICE_ID_TOSHIBA_TOPIC97
+comma
+id|TOPIC97
+)paren
+comma
+id|CB_ID
+c_func
+(paren
+id|PCI_VENDOR_ID_TOSHIBA
+comma
+id|PCI_DEVICE_ID_TOSHIBA_TOPIC100
+comma
+id|TOPIC97
 )paren
 comma
 multiline_comment|/* match any cardbus bridge */
