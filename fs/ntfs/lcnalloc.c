@@ -984,14 +984,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Allocate more memory if needed, including space for&n;&t;&t;&t; * the not-mapped and terminator elements.&n;&t;&t;&t; * ntfs_malloc_nofs() operates on whole pages only.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Allocate more memory if needed, including space for&n;&t;&t;&t; * the terminator element.&n;&t;&t;&t; * ntfs_malloc_nofs() operates on whole pages only.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|rlpos
 op_plus
-l_int|3
+l_int|2
 )paren
 op_star
 r_sizeof
