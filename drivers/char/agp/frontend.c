@@ -4175,7 +4175,6 @@ id|agp_fops
 suffix:semicolon
 DECL|function|agp_frontend_initialize
 r_int
-id|__init
 id|agp_frontend_initialize
 c_func
 (paren
