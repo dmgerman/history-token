@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt; /* sector_div */

@@ -1,7 +1,6 @@
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &quot;do_mounts.h&quot;
 DECL|function|mount_devfs
 r_void

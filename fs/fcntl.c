@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/fcntl.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1496,6 +1497,7 @@ r_int
 id|sys_fcntl
 c_func
 (paren
+r_int
 r_int
 id|fd
 comma

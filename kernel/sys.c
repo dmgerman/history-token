@@ -18,6 +18,10 @@ macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+multiline_comment|/* Don&squot;t include this - it breaks ia64&squot;s cond_syscall() implementation */
+macro_line|#if 0
+macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;

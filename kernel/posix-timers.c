@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/idr.h&gt;
 macro_line|#include &lt;linux/posix-timers.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#ifndef div_long_long_rem

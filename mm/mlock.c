@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;linux/mm/mlock.c&n; *&n; *  (C) Copyright 1995 Linus Torvalds&n; *  (C) Copyright 2002 Christoph Hellwig&n; */
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 DECL|function|mlock_fixup
 r_static
 r_int

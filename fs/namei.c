@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/namei.h&gt;

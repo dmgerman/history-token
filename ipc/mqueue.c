@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/mqueue.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|MQUEUE_MAGIC
