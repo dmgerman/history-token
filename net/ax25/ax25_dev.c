@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Other kernels modules in this kit are generally BSD derived. See the copyright headers.&n; *&n; *&n; *&t;History&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Split from ax25_route.c.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -27,6 +28,12 @@ id|ax25_dev
 op_star
 id|ax25_dev_list
 suffix:semicolon
+DECL|variable|ax25_dev_lock
+id|spinlock_t
+id|ax25_dev_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|ax25_dev_ax25dev
 id|ax25_dev
 op_star
@@ -42,6 +49,18 @@ id|dev
 id|ax25_dev
 op_star
 id|ax25_dev
+comma
+op_star
+id|res
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -65,11 +84,23 @@ id|ax25_dev-&gt;dev
 op_eq
 id|dev
 )paren
-r_return
+(brace
+id|res
+op_assign
 id|ax25_dev
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
+suffix:semicolon
 r_return
-l_int|NULL
+id|res
 suffix:semicolon
 )brace
 DECL|function|ax25_addr_ax25dev
@@ -86,6 +117,18 @@ id|addr
 id|ax25_dev
 op_star
 id|ax25_dev
+comma
+op_star
+id|res
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -119,11 +162,21 @@ id|ax25_dev-&gt;dev-&gt;dev_addr
 op_eq
 l_int|0
 )paren
-r_return
+(brace
+id|res
+op_assign
 id|ax25_dev
 suffix:semicolon
+)brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
+suffix:semicolon
 r_return
-l_int|NULL
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This is called when an interface is brought up. These are&n; *&t;reasonable defaults.&n; */
@@ -141,10 +194,6 @@ id|dev
 id|ax25_dev
 op_star
 id|ax25_dev
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -303,15 +352,11 @@ id|AX25_VALUES_DS_TIMEOUT
 op_assign
 id|AX25_DEF_DS_TIMEOUT
 suffix:semicolon
-id|save_flags
+id|spin_lock_bh
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|ax25_dev_lock
 )paren
 suffix:semicolon
 id|ax25_dev-&gt;next
@@ -322,10 +367,11 @@ id|ax25_dev_list
 op_assign
 id|ax25_dev
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_bh
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_dev_lock
 )paren
 suffix:semicolon
 id|ax25_register_sysctl
@@ -352,10 +398,6 @@ comma
 op_star
 id|ax25_dev
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -378,15 +420,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_bh
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|ax25_dev_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_AX25_DAMA_SLAVE
@@ -440,10 +478,11 @@ id|ax25_dev_list
 op_assign
 id|s-&gt;next
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_bh
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_dev_lock
 )paren
 suffix:semicolon
 id|kfree
@@ -484,10 +523,11 @@ id|s-&gt;next
 op_assign
 id|ax25_dev-&gt;next
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_bh
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_dev_lock
 )paren
 suffix:semicolon
 id|kfree
@@ -509,10 +549,11 @@ op_assign
 id|s-&gt;next
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_bh
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_dev_lock
 )paren
 suffix:semicolon
 id|ax25_register_sysctl
@@ -705,6 +746,15 @@ id|s
 comma
 op_star
 id|ax25_dev
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
+suffix:semicolon
+id|ax25_dev
 op_assign
 id|ax25_dev_list
 suffix:semicolon
@@ -731,5 +781,16 @@ id|s
 )paren
 suffix:semicolon
 )brace
+id|ax25_dev_list
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_dev_lock
+)paren
+suffix:semicolon
 )brace
 eof

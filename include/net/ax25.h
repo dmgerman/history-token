@@ -4,6 +4,9 @@ DECL|macro|_AX25_H
 mdefine_line|#define _AX25_H 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ax25.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|AX25_T1CLAMPLO
 mdefine_line|#define&t;AX25_T1CLAMPLO  &t;&t;1
 DECL|macro|AX25_T1CLAMPHI
@@ -91,6 +94,10 @@ DECL|macro|AX25_FRMR
 mdefine_line|#define&t;AX25_FRMR&t;&t;0x87&t;/* Frame reject */
 DECL|macro|AX25_UI
 mdefine_line|#define&t;AX25_UI&t;&t;&t;0x03&t;/* Unnumbered information */
+DECL|macro|AX25_XID
+mdefine_line|#define&t;AX25_XID&t;&t;0xaf&t;/* Exchange information */
+DECL|macro|AX25_TEST
+mdefine_line|#define&t;AX25_TEST&t;&t;0xe3&t;/* Test */
 DECL|macro|AX25_PF
 mdefine_line|#define&t;AX25_PF&t;&t;&t;0x10&t;/* Poll/final bit for standard AX.25 */
 DECL|macro|AX25_EPF
@@ -300,6 +307,10 @@ id|ax25_route
 op_star
 id|next
 suffix:semicolon
+DECL|member|ref
+id|atomic_t
+id|ref
+suffix:semicolon
 DECL|member|callsign
 id|ax25_address
 id|callsign
@@ -318,6 +329,11 @@ suffix:semicolon
 DECL|member|ip_mode
 r_char
 id|ip_mode
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
 DECL|typedef|ax25_route
 )brace
@@ -556,8 +572,11 @@ multiline_comment|/* af_ax25.c */
 r_extern
 id|ax25_cb
 op_star
-r_volatile
 id|ax25_list
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ax25_list_lock
 suffix:semicolon
 r_extern
 r_void
@@ -598,7 +617,7 @@ suffix:semicolon
 r_struct
 id|sock
 op_star
-id|ax25_find_socket
+id|ax25_get_socket
 c_func
 (paren
 id|ax25_address
@@ -842,6 +861,10 @@ r_extern
 id|ax25_dev
 op_star
 id|ax25_dev_list
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ax25_dev_lock
 suffix:semicolon
 r_extern
 id|ax25_dev
@@ -1421,6 +1444,9 @@ op_star
 id|ax25_rt_find_route
 c_func
 (paren
+id|ax25_route
+op_star
+comma
 id|ax25_address
 op_star
 comma
@@ -1458,6 +1484,26 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|function|ax25_put_route
+r_static
+r_inline
+r_void
+id|ax25_put_route
+c_func
+(paren
+id|ax25_route
+op_star
+id|ax25_rt
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|ax25_rt-&gt;ref
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* ax25_std_in.c */
 r_extern
 r_int
