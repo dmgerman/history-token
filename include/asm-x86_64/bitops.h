@@ -1396,7 +1396,7 @@ l_string|&quot;=r&quot;
 id|r
 )paren
 suffix:colon
-l_string|&quot;g&quot;
+l_string|&quot;rm&quot;
 (paren
 id|x
 )paren
