@@ -526,12 +526,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*   &n;&t;&t; * IrTTPs tx queue is full, so we just have to&n;&t;&t; * drop the frame! You might think that we should&n;&t;&t; * just return -1 and don&squot;t deallocate the frame,&n;&t;&t; * but that is dangerous since it&squot;s possible that&n;&t;&t; * we have replaced the original skb with a new&n;&t;&t; * one with larger headroom, and that would really&n;&t;&t; * confuse do_dev_queue_xmit() in dev.c! I have&n;&t;&t; * tried :-) DB &n;&t;&t; */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* irttp_data_request already free the packet */
 id|self-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon

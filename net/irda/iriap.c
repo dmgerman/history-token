@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap.c&n; * Version:       0.8&n; * Description:   Information Access Protocol (IAP)&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Sat Dec 25 16:42:42 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap.c&n; * Version:       0.8&n; * Description:   Information Access Protocol (IAP)&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Sat Dec 25 16:42:42 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -695,12 +695,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|self-&gt;skb
+id|self-&gt;request_skb
 )paren
 id|dev_kfree_skb
 c_func
 (paren
-id|self-&gt;skb
+id|self-&gt;request_skb
 )paren
 suffix:semicolon
 id|self-&gt;magic
@@ -963,7 +963,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|userdata
+id|skb
 )paren
 (brace
 r_struct
@@ -1033,6 +1033,18 @@ c_func
 (paren
 op_amp
 id|self-&gt;watchdog_timer
+)paren
+suffix:semicolon
+multiline_comment|/* Not needed */
+r_if
+c_cond
+(paren
+id|skb
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 r_if
@@ -1113,17 +1125,6 @@ id|self
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|userdata
-)paren
-id|dev_kfree_skb
-c_func
-(paren
-id|userdata
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function iriap_disconnect_request (handle)&n; */
 DECL|function|iriap_disconnect_request
@@ -1140,7 +1141,7 @@ id|self
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 id|IRDA_DEBUG
 c_func
@@ -1174,7 +1175,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -1185,7 +1186,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|skb
+id|tx_skb
 op_eq
 l_int|NULL
 )paren
@@ -1209,7 +1210,7 @@ multiline_comment|/*&n;&t; *  Reserve space for MUX control and LAP header&n;&t;
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|LMP_MAX_HEADER
 )paren
@@ -1219,7 +1220,7 @@ c_func
 (paren
 id|self-&gt;lsap
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -1347,7 +1348,7 @@ id|attr
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_int
 id|name_len
@@ -1453,7 +1454,7 @@ id|attr_len
 op_plus
 l_int|4
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -1465,7 +1466,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -1475,7 +1476,7 @@ multiline_comment|/* Reserve space for MUX and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|self-&gt;max_header_size
 )paren
@@ -1483,7 +1484,7 @@ suffix:semicolon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|3
 op_plus
@@ -1494,7 +1495,7 @@ id|attr_len
 suffix:semicolon
 id|frame
 op_assign
-id|skb-&gt;data
+id|tx_skb-&gt;data
 suffix:semicolon
 multiline_comment|/* Build frame */
 id|frame
@@ -1559,7 +1560,14 @@ id|self
 comma
 id|IAP_CALL_REQUEST_GVBC
 comma
-id|skb
+id|tx_skb
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see state_s_disconnect(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
 )paren
 suffix:semicolon
 r_return
@@ -1849,12 +1857,6 @@ c_func
 id|self
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* break; */
@@ -2014,12 +2016,6 @@ id|value
 )paren
 suffix:semicolon
 )brace
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function iriap_getvaluebyclass_response ()&n; *&n; *    Send answer back to remote LM-IAS&n; *&n; */
 DECL|function|iriap_getvaluebyclass_response
@@ -2047,7 +2043,7 @@ id|value
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 r_int
 id|n
@@ -2121,7 +2117,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *  We must adjust the size of the response after the length of the&n;&t; *  value. We add 32 bytes because of the 6 bytes for the frame and&n;&t; *  max 5 bytes for the value coding.&n;&t; */
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -2137,7 +2133,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -2145,7 +2141,7 @@ multiline_comment|/* Reserve space for MUX and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|self-&gt;max_header_size
 )paren
@@ -2153,14 +2149,14 @@ suffix:semicolon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|6
 )paren
 suffix:semicolon
 id|fp
 op_assign
-id|skb-&gt;data
+id|tx_skb-&gt;data
 suffix:semicolon
 multiline_comment|/* Build frame */
 id|fp
@@ -2245,7 +2241,7 @@ suffix:colon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|3
 op_plus
@@ -2304,7 +2300,7 @@ suffix:colon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|5
 )paren
@@ -2350,7 +2346,7 @@ suffix:colon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|3
 op_plus
@@ -2424,7 +2420,7 @@ suffix:semicolon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|1
 )paren
@@ -2461,7 +2457,14 @@ id|self
 comma
 id|IAP_CALL_RESPONSE
 comma
-id|skb
+id|tx_skb
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see state_r_execute(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -2636,13 +2639,6 @@ id|attr_len
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/* We do not need the buffer anymore */
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2784,7 +2780,7 @@ id|self
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 id|__u8
 op_star
@@ -2822,7 +2818,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -2834,7 +2830,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 suffix:semicolon
@@ -2842,7 +2838,7 @@ multiline_comment|/* Reserve space for MUX and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|self-&gt;max_header_size
 )paren
@@ -2850,14 +2846,14 @@ suffix:semicolon
 id|skb_put
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 l_int|1
 )paren
 suffix:semicolon
 id|frame
 op_assign
-id|skb-&gt;data
+id|tx_skb-&gt;data
 suffix:semicolon
 multiline_comment|/* Build frame */
 id|frame
@@ -2876,7 +2872,7 @@ c_func
 (paren
 id|self-&gt;lsap
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -2997,7 +2993,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|userdata
+id|skb
 )paren
 (brace
 r_struct
@@ -3039,7 +3035,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|userdata
+id|skb
 op_ne
 l_int|NULL
 comma
@@ -3069,7 +3065,14 @@ id|self
 comma
 id|IAP_LM_CONNECT_CONFIRM
 comma
-id|userdata
+id|skb
+)paren
+suffix:semicolon
+multiline_comment|/* Drop reference count - see state_s_make_call(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -3102,7 +3105,7 @@ comma
 r_struct
 id|sk_buff
 op_star
-id|userdata
+id|skb
 )paren
 (brace
 r_struct
@@ -3135,7 +3138,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|self
+id|skb
 op_ne
 l_int|NULL
 comma
@@ -3146,11 +3149,24 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
+id|self
+op_ne
+l_int|NULL
+comma
+r_goto
+id|out
+suffix:semicolon
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
 id|self-&gt;magic
 op_eq
 id|IAS_MAGIC
 comma
-r_return
+r_goto
+id|out
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -3186,13 +3202,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|userdata
-)paren
-suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Now attach up the new &quot;socket&quot; */
@@ -3227,7 +3238,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_new
@@ -3256,7 +3268,16 @@ r_new
 comma
 id|IAP_LM_CONNECT_INDICATION
 comma
-id|userdata
+id|skb
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+multiline_comment|/* Drop reference count - see state_r_disconnect(). */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -3315,12 +3336,24 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|self
+id|skb
 op_ne
 l_int|NULL
 comma
 r_return
 l_int|0
+suffix:semicolon
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|self
+op_ne
+l_int|NULL
+comma
+r_goto
+id|out
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -3331,20 +3364,8 @@ id|self-&gt;magic
 op_eq
 id|IAS_MAGIC
 comma
-r_return
-l_int|0
-suffix:semicolon
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|skb
-op_ne
-l_int|NULL
-comma
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -3381,8 +3402,8 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|opcode
@@ -3410,14 +3431,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Check for ack frames since they don&squot;t contain any data */
@@ -3439,14 +3454,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|opcode
@@ -3470,12 +3479,6 @@ c_func
 l_int|0
 comma
 l_string|&quot;IrLMP GetInfoBaseDetails not implemented!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 r_break
@@ -3555,12 +3558,6 @@ comma
 id|self-&gt;priv
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3603,12 +3600,6 @@ comma
 id|self-&gt;priv
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -3628,15 +3619,18 @@ comma
 id|opcode
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|out
+suffix:colon
+multiline_comment|/* Cleanup - sub-calls will have done skb_get() as needed. */
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3778,6 +3772,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* skb will be cleaned up in iriap_data_indication */
 )brace
 multiline_comment|/*&n; * Function iriap_watchdog_timer_expired (data)&n; *&n; *    Query has taken too long time, so abort&n; *&n; */
 DECL|function|iriap_watchdog_timer_expired
