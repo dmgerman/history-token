@@ -8199,7 +8199,29 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;Hewlett-Packard onboard&quot;
+l_string|&quot;HP xw6000&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x129d
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP xw8000&quot;
 comma
 dot
 id|type
@@ -8246,6 +8268,28 @@ op_assign
 l_string|&quot;HP xw8200&quot;
 comma
 multiline_comment|/* AD1981B*/
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x12f2
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP xw6200&quot;
+comma
 dot
 id|type
 op_assign
