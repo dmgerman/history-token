@@ -170,11 +170,6 @@ id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
 macro_line|#endif
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|J_ASSERT
 c_func
 (paren
@@ -449,11 +444,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|jbd_debug

@@ -306,14 +306,6 @@ id|journal_superblock_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * List of all journals in the system.  Protected by the BKL.&n; */
-r_static
-id|LIST_HEAD
-c_func
-(paren
-id|all_journals
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Helper function used to manage commit timeouts&n; */
 DECL|function|commit_timeout
 r_static
@@ -424,11 +416,6 @@ c_func
 l_string|&quot;kjournald&quot;
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Set up an interval timer which can be used to trigger a&n;           commit wakeup after the commit interval expires */
 id|init_timer
 c_func
@@ -475,26 +462,6 @@ comma
 id|journal-&gt;j_commit_interval
 op_div
 id|HZ
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|journal-&gt;j_all_journals
-comma
-op_amp
-id|all_journals
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * And now, wait forever for commit wakeup events.&n;&t; */
@@ -801,23 +768,6 @@ op_amp
 id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|journal-&gt;j_all_journals
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|journal-&gt;j_task
 op_assign
 l_int|NULL
@@ -835,11 +785,6 @@ c_func
 l_int|1
 comma
 l_string|&quot;Journal thread exiting.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -1644,11 +1589,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_JBD_DEBUG
 id|lock_journal
 c_func
@@ -1806,11 +1746,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -3069,9 +3004,11 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* If we have just flushed the log (by marking s_start==0), then&n;&t; * any future commit will have to be careful to update the&n;&t; * superblock again to re-record the true start of the log. */
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_if
@@ -3089,9 +3026,11 @@ id|journal-&gt;j_flags
 op_or_assign
 id|JFS_FLUSHED
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 )brace
@@ -4728,11 +4667,6 @@ id|JFS_ABORT
 )paren
 r_return
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4760,11 +4694,6 @@ c_func
 id|journal
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -4806,6 +4735,7 @@ multiline_comment|/** &n; * int journal_errno () - returns the journal&squot;s e
 DECL|function|journal_errno
 r_int
 id|journal_errno
+c_func
 (paren
 id|journal_t
 op_star
@@ -4821,9 +4751,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_if
@@ -4843,9 +4775,11 @@ id|err
 op_assign
 id|journal-&gt;j_errno
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|unlock_journal
@@ -4862,6 +4796,7 @@ multiline_comment|/** &n; * int journal_clear_err () - clears the journal&squot;
 DECL|function|journal_clear_err
 r_int
 id|journal_clear_err
+c_func
 (paren
 id|journal_t
 op_star
@@ -4879,9 +4814,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_if
@@ -4901,9 +4838,11 @@ id|journal-&gt;j_errno
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|unlock_journal
@@ -4920,6 +4859,7 @@ multiline_comment|/** &n; * void journal_ack_err() - Ack journal err.&n; *&n; * 
 DECL|function|journal_ack_err
 r_void
 id|journal_ack_err
+c_func
 (paren
 id|journal_t
 op_star
@@ -4932,9 +4872,11 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-id|lock_kernel
+id|spin_lock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_if
@@ -4946,9 +4888,11 @@ id|journal-&gt;j_flags
 op_or_assign
 id|JFS_ACK_ERR
 suffix:semicolon
-id|unlock_kernel
+id|spin_unlock
 c_func
 (paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 id|unlock_journal
