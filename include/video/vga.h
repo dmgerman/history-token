@@ -9,14 +9,14 @@ macro_line|#ifndef CONFIG_AMIGA
 macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#else
 multiline_comment|/*&n; * FIXME&n; * Ugh, we don&squot;t have PCI space, so map readb() and friends to use Zorro space&n; * for MMIO accesses. This should make clgenfb work again on Amiga&n; */
-DECL|macro|inb
-mdefine_line|#define inb(port)&t;0
-DECL|macro|inw
-mdefine_line|#define inw(port)&t;0
-DECL|macro|outb
-mdefine_line|#define outb(port, val)&t;do { } while (0)
+DECL|macro|inb_p
+mdefine_line|#define inb_p(port)&t;0
+DECL|macro|inw_p
+mdefine_line|#define inw_p(port)&t;0
+DECL|macro|outb_p
+mdefine_line|#define outb_p(port, val)&t;do { } while (0)
 DECL|macro|outw
-mdefine_line|#define outw(port, val)&t;do { } while (0)
+mdefine_line|#define outw(port, val)&t;&t;do { } while (0)
 DECL|macro|readb
 mdefine_line|#define readb&t;&t;z_readb
 DECL|macro|writeb
@@ -364,7 +364,8 @@ id|port
 )paren
 (brace
 r_return
-id|inb
+id|inb_p
+c_func
 (paren
 id|port
 )paren
@@ -385,7 +386,8 @@ r_char
 id|val
 )paren
 (brace
-id|outb
+id|outb_p
+c_func
 (paren
 id|val
 comma
@@ -413,6 +415,7 @@ id|val
 )paren
 (brace
 id|outw
+c_func
 (paren
 id|VGA_OUT16VAL
 (paren

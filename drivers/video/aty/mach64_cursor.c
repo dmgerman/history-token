@@ -692,6 +692,18 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* In doublescan mode, the cursor location also needs to be&n;&t;&t;   doubled. */
+r_if
+c_cond
+(paren
+id|par-&gt;crtc.gen_cntl
+op_amp
+id|CRTC_DBL_SCAN_EN
+)paren
+id|y
+op_lshift_assign
+l_int|1
+suffix:semicolon
 id|wait_for_fifo
 c_func
 (paren
