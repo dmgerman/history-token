@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 r_struct
 id|us_data
 suffix:semicolon

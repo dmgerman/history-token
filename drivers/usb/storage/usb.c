@@ -3,6 +3,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
@@ -36,9 +39,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 macro_line|#include &quot;jumpshot.h&quot;
 macro_line|#endif
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Some informational data */
 id|MODULE_AUTHOR
 c_func

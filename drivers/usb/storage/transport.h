@@ -4,10 +4,6 @@ DECL|macro|_TRANSPORT_H_
 mdefine_line|#define _TRANSPORT_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;usb.h&quot;
-r_struct
-id|scsi_cmnd
-suffix:semicolon
 multiline_comment|/* Protocols */
 DECL|macro|US_PR_CBI
 mdefine_line|#define US_PR_CBI&t;0x00&t;&t;/* Control/Bulk/Interrupt */

@@ -5,9 +5,9 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
-macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;jumpshot.h&quot;
 DECL|function|jumpshot_bulk_read
