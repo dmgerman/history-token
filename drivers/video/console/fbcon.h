@@ -19,18 +19,6 @@ id|inverse
 suffix:semicolon
 multiline_comment|/* != 0 text black on white as default */
 multiline_comment|/* Filled in by the low-level console driver */
-DECL|member|fb_info
-r_struct
-id|fb_info
-op_star
-id|fb_info
-suffix:semicolon
-multiline_comment|/* frame buffer for this console */
-DECL|member|vrows
-r_int
-id|vrows
-suffix:semicolon
-multiline_comment|/* number of virtual rows */
 DECL|member|fontname
 r_char
 id|fontname
@@ -59,6 +47,11 @@ r_int
 id|yscroll
 suffix:semicolon
 multiline_comment|/* Hardware scrolling */
+DECL|member|vrows
+r_int
+id|vrows
+suffix:semicolon
+multiline_comment|/* number of virtual rows */
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/video/console/fbcon.c */

@@ -789,10 +789,10 @@ DECL|macro|FB_CUR_SETCMAP
 mdefine_line|#define FB_CUR_SETCMAP  0x08
 DECL|macro|FB_CUR_SETSHAPE
 mdefine_line|#define FB_CUR_SETSHAPE 0x10
-DECL|macro|FB_CUR_SETDEST
-mdefine_line|#define FB_CUR_SETDEST&t;0x20
 DECL|macro|FB_CUR_SETSIZE
-mdefine_line|#define FB_CUR_SETSIZE&t;0x40
+mdefine_line|#define FB_CUR_SETSIZE&t;0x20
+DECL|macro|FB_CUR_SETDEST
+mdefine_line|#define FB_CUR_SETDEST&t;0x40
 DECL|macro|FB_CUR_SETALL
 mdefine_line|#define FB_CUR_SETALL   0xFF
 DECL|struct|fbcurpos
