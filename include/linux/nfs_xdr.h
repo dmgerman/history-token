@@ -1633,13 +1633,6 @@ op_star
 id|gt_fsstat
 suffix:semicolon
 multiline_comment|/* response */
-DECL|member|gt_fsinfo
-r_struct
-id|nfs_fsinfo
-op_star
-id|gt_fsinfo
-suffix:semicolon
-multiline_comment|/* response */
 DECL|member|gt_pathconf
 r_struct
 id|nfs_pathconf
