@@ -2,32 +2,7 @@ multiline_comment|/*&n; * BIOS32 and PCI BIOS handling.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|macro|PCIBIOS_PCI_FUNCTION_ID
-mdefine_line|#define PCIBIOS_PCI_FUNCTION_ID &t;0xb1XX
-DECL|macro|PCIBIOS_PCI_BIOS_PRESENT
-mdefine_line|#define PCIBIOS_PCI_BIOS_PRESENT &t;0xb101
-DECL|macro|PCIBIOS_FIND_PCI_DEVICE
-mdefine_line|#define PCIBIOS_FIND_PCI_DEVICE&t;&t;0xb102
-DECL|macro|PCIBIOS_FIND_PCI_CLASS_CODE
-mdefine_line|#define PCIBIOS_FIND_PCI_CLASS_CODE&t;0xb103
-DECL|macro|PCIBIOS_GENERATE_SPECIAL_CYCLE
-mdefine_line|#define PCIBIOS_GENERATE_SPECIAL_CYCLE&t;0xb106
-DECL|macro|PCIBIOS_READ_CONFIG_BYTE
-mdefine_line|#define PCIBIOS_READ_CONFIG_BYTE&t;0xb108
-DECL|macro|PCIBIOS_READ_CONFIG_WORD
-mdefine_line|#define PCIBIOS_READ_CONFIG_WORD&t;0xb109
-DECL|macro|PCIBIOS_READ_CONFIG_DWORD
-mdefine_line|#define PCIBIOS_READ_CONFIG_DWORD&t;0xb10a
-DECL|macro|PCIBIOS_WRITE_CONFIG_BYTE
-mdefine_line|#define PCIBIOS_WRITE_CONFIG_BYTE&t;0xb10b
-DECL|macro|PCIBIOS_WRITE_CONFIG_WORD
-mdefine_line|#define PCIBIOS_WRITE_CONFIG_WORD&t;0xb10c
-DECL|macro|PCIBIOS_WRITE_CONFIG_DWORD
-mdefine_line|#define PCIBIOS_WRITE_CONFIG_DWORD&t;0xb10d
-DECL|macro|PCIBIOS_GET_ROUTING_OPTIONS
-mdefine_line|#define PCIBIOS_GET_ROUTING_OPTIONS&t;0xb10e
-DECL|macro|PCIBIOS_SET_PCI_HW_INT
-mdefine_line|#define PCIBIOS_SET_PCI_HW_INT&t;&t;0xb10f
+macro_line|#include &quot;pci-functions.h&quot;
 multiline_comment|/* BIOS32 signature: &quot;_32_&quot; */
 DECL|macro|BIOS32_SIGNATURE
 mdefine_line|#define BIOS32_SIGNATURE&t;((&squot;_&squot; &lt;&lt; 0) + (&squot;3&squot; &lt;&lt; 8) + (&squot;2&squot; &lt;&lt; 16) + (&squot;_&squot; &lt;&lt; 24))
