@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -16,7 +17,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/apollohw.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;busmouse.h&quot;
-multiline_comment|/* extern void handle_scancode(unsigned char,int ); */
 DECL|macro|DNKEY_CAPS
 mdefine_line|#define DNKEY_CAPS 0x7e
 DECL|macro|BREAK_FLAG
@@ -2448,7 +2448,12 @@ l_int|3
 )braket
 suffix:semicolon
 r_int
-id|mouse_buttons
+id|buttons
+suffix:semicolon
+r_int
+id|dx
+comma
+id|dy
 suffix:semicolon
 id|mouse_packet
 (braket
@@ -2523,17 +2528,7 @@ op_eq
 l_int|0x80
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|mouse_update_allowed
-)paren
-(brace
-id|mouse_ready
-op_assign
-l_int|1
-suffix:semicolon
-id|mouse_buttons
+id|buttons
 op_assign
 (paren
 id|mouse_packet
@@ -2546,8 +2541,8 @@ l_int|4
 op_amp
 l_int|0x7
 suffix:semicolon
-id|mouse_dx
-op_add_assign
+id|dx
+op_assign
 id|mouse_packet
 (braket
 l_int|1
@@ -2567,8 +2562,8 @@ id|mouse_packet
 l_int|1
 )braket
 suffix:semicolon
-id|mouse_dy
-op_add_assign
+id|dy
+op_assign
 id|mouse_packet
 (braket
 l_int|2
@@ -2588,75 +2583,18 @@ id|mouse_packet
 l_int|2
 )braket
 suffix:semicolon
-id|wake_up_interruptible
+id|busmouse_add_movementbuttons
 c_func
 (paren
-op_amp
-id|mouse_wait
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mouse_dx
-OL
-op_minus
-l_int|2048
-)paren
-id|mouse_dx
-op_assign
-op_minus
-l_int|2048
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|mouse_dx
-OG
-l_int|2048
-)paren
-id|mouse_dx
-op_assign
-l_int|2048
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mouse_dy
-OL
-op_minus
-l_int|2048
-)paren
-id|mouse_dy
-op_assign
-op_minus
-l_int|2048
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|mouse_dy
-OG
-l_int|2048
-)paren
-id|mouse_dy
-op_assign
-l_int|2048
-suffix:semicolon
-id|kill_fasync
-c_func
-(paren
-op_amp
-id|mouse_fasyncptr
+id|msedev
 comma
-id|SIGIO
+id|dx
 comma
-id|POLL_IN
+id|dy
+comma
+id|buttons
 )paren
 suffix:semicolon
-)brace
 id|mouse_byte_count
 op_assign
 l_int|0
