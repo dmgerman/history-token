@@ -1,10 +1,11 @@
-multiline_comment|/*&n; *  UART driver for MPC8260 CPM SCC or SMC&n; *  Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *  Copyright (c) 2000 MontaVista Software, Inc. (source@mvista.com)&n; *&t;2.3.99 updates&n; *&n; * I used the 8xx uart.c driver as the framework for this driver.&n; * The original code was written for the EST8260 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; *&n; * The 8xx and 8260 are similar, but not identical.  Over time we&n; * could probably merge these two drivers.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
+multiline_comment|/*&n; *  UART driver for MPC8260 CPM SCC or SMC&n; *  Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *  Copyright (c) 2000 MontaVista Software, Inc. (source@mvista.com)&n; *&t;2.3.99 updates&n; *  Copyright (c) 2002 Allen Curtis, Ones and Zeros, Inc. (acurtis@onz.com)&n; *&t;2.5.50 updates&n; *&n; * I used the 8xx uart.c driver as the framework for this driver.&n; * The original code was written for the EST8260 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; *&n; * The 8xx and 8260 are similar, but not identical.  Over time we&n; * could probably merge these two drivers.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
@@ -54,14 +55,7 @@ r_char
 op_star
 id|serial_version
 op_assign
-l_string|&quot;0.01&quot;
-suffix:semicolon
-r_static
-id|DECLARE_TASK_QUEUE
-c_func
-(paren
-id|tq_serial
-)paren
+l_string|&quot;0.02&quot;
 suffix:semicolon
 DECL|variable|serial_driver
 DECL|variable|callout_driver
@@ -394,12 +388,12 @@ suffix:semicolon
 multiline_comment|/* pgrp of opening process */
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|tqueue_hangup
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue_hangup
 suffix:semicolon
 DECL|member|open_wait
@@ -858,20 +852,11 @@ l_int|1
 op_lshift
 id|event
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|info-&gt;tqueue
-comma
-op_amp
-id|tq_serial
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|SERIAL_BH
 )paren
 suffix:semicolon
 )brace
@@ -1277,14 +1262,13 @@ op_star
 )paren
 id|bdp
 suffix:semicolon
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1529,7 +1513,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -1832,23 +1816,6 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * -------------------------------------------------------------------&n; * Here ends the serial interrupt routines.&n; * -------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * rs_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using rs_sched_event(), and they get done here.&n; */
-DECL|function|do_serial_bh
-r_static
-r_void
-id|do_serial_bh
-c_func
-(paren
-r_void
-)paren
-(brace
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_serial
-)paren
-suffix:semicolon
-)brace
 DECL|function|do_softint
 r_static
 r_void
@@ -1931,7 +1898,7 @@ id|tty-&gt;write_wait
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This routine is called from the scheduler tqueue when the interrupt&n; * routine has signalled that a hangup has occurred.  The path of&n; * hangup processing is:&n; *&n; * &t;serial interrupt routine -&gt; (scheduler tqueue) -&gt;&n; * &t;do_serial_hangup() -&gt; tty-&gt;hangup() -&gt; rs_hangup()&n; * &n; */
+multiline_comment|/*&n; * This routine is called from the scheduler work queue when the interrupt&n; * routine has signalled that a hangup has occurred.  The path of&n; * hangup processing is:&n; *&n; * &t;serial interrupt routine -&gt; (scheduler tqueue) -&gt;&n; * &t;do_serial_hangup() -&gt; tty-&gt;hangup() -&gt; rs_hangup()&n; * &n; */
 DECL|function|do_serial_hangup
 r_static
 r_void
@@ -4457,7 +4424,7 @@ id|page
 comma
 id|sblock
 suffix:semicolon
-id|ushort
+r_int
 id|num
 suffix:semicolon
 id|cp
@@ -4621,7 +4588,7 @@ id|page
 comma
 id|sblock
 suffix:semicolon
-id|ushort
+r_int
 id|num
 suffix:semicolon
 id|cp
@@ -6304,6 +6271,10 @@ c_func
 (paren
 id|char_time
 comma
+(paren
+r_int
+r_int
+)paren
 id|timeout
 )paren
 suffix:semicolon
@@ -7136,7 +7107,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
@@ -8884,7 +8855,7 @@ id|c
 )paren
 (brace
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR
@@ -9041,14 +9012,6 @@ r_volatile
 id|iop8260_t
 op_star
 id|io
-suffix:semicolon
-id|init_bh
-c_func
-(paren
-id|SERIAL_BH
-comma
-id|do_serial_bh
-)paren
 suffix:semicolon
 id|show_serial_version
 c_func
@@ -9658,21 +9621,27 @@ id|info-&gt;flags
 op_assign
 id|state-&gt;flags
 suffix:semicolon
-id|info-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;tqueue
+comma
 id|do_softint
-suffix:semicolon
-id|info-&gt;tqueue.data
-op_assign
+comma
 id|info
+)paren
 suffix:semicolon
-id|info-&gt;tqueue_hangup.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;tqueue_hangup
+comma
 id|do_serial_hangup
-suffix:semicolon
-id|info-&gt;tqueue_hangup.data
-op_assign
+comma
 id|info
+)paren
 suffix:semicolon
 id|info-&gt;line
 op_assign
@@ -10325,7 +10294,7 @@ l_int|0x3000
 suffix:semicolon
 )brace
 multiline_comment|/* Install interrupt handler.&n;&t;&t;&t;*/
-id|request_8xxirq
+id|request_irq
 c_func
 (paren
 id|state-&gt;irq

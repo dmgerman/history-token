@@ -1,6 +1,11 @@
 multiline_comment|/* Board information for the EST8260, which should be generic for&n; * all 8260 boards.  The IMMR is now given to us so the hard define&n; * will soon be removed.  All of the clock values are computed from&n; * the configuration SCMR and the Power-On-Reset word.&n; */
+macro_line|#ifndef __EST8260_PLATFORM
+DECL|macro|__EST8260_PLATFORM
+mdefine_line|#define __EST8260_PLATFORM
 DECL|macro|IMAP_ADDR
-mdefine_line|#define IMAP_ADDR&t;((uint)0xf0000000)
+mdefine_line|#define IMAP_ADDR&t;&t;((uint)0xf0000000)
+DECL|macro|BOOTROM_RESTART_ADDR
+mdefine_line|#define BOOTROM_RESTART_ADDR&t;((uint)0xff000104)
 multiline_comment|/* A Board Information structure that is given to a program when&n; * prom starts it up.&n; */
 DECL|struct|bd_info
 r_typedef
@@ -77,4 +82,5 @@ r_extern
 id|bd_t
 id|m8xx_board_info
 suffix:semicolon
+macro_line|#endif &t;/* __EST8260_PLATFORM */
 eof

@@ -5795,7 +5795,7 @@ multiline_comment|/* Install our interrupt handler.&n;&t;*/
 r_if
 c_cond
 (paren
-id|request_8xxirq
+id|request_irq
 c_func
 (paren
 id|fip-&gt;fc_interrupt
@@ -5823,7 +5823,7 @@ macro_line|#ifdef&t;CONFIG_USE_MDIO
 r_if
 c_cond
 (paren
-id|request_8xxirq
+id|request_irq
 c_func
 (paren
 id|PHY_INTERRUPT
