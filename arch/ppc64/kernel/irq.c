@@ -1356,6 +1356,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
@@ -1371,6 +1372,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_do
 (brace
 id|status
@@ -1415,11 +1417,13 @@ c_func
 id|irq
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC_ISERIES
 id|local_irq_disable
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
