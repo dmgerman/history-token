@@ -1161,13 +1161,8 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;nip: 0)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;gpr[1]: 0)
-multiline_comment|/* XXX Temporary work around for a gcc 3.1 bug - Anton */
-macro_line|#if 0
-mdefine_line|#define cpu_relax()     do { } while (0)
-macro_line|#else
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()     barrier()
-macro_line|#endif
+mdefine_line|#define cpu_relax()     do { } while (0)
 multiline_comment|/*&n; * Prefetch macros.&n; */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH

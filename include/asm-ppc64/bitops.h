@@ -33,14 +33,7 @@ r_return
 l_int|1UL
 op_amp
 (paren
-(paren
-(paren
-id|__const__
-r_int
-op_star
-)paren
 id|addr
-)paren
 (braket
 id|nr
 op_rshift
