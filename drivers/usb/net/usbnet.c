@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * USB Host-to-Host Links&n; * Copyright (C) 2000-2002 by David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; */
-multiline_comment|/*&n; * This is used for &quot;USB networking&quot;, connecting USB hosts as peers.&n; *&n; * It can be used with USB &quot;network cables&quot;, for IP-over-USB communications;&n; * Ethernet speeds without the Ethernet.  USB devices (including some PDAs)&n; * can support such links directly, replacing device-specific protocols&n; * with Internet standard ones.&n; *&n; * The links can be bridged using the Ethernet bridging (net/bridge)&n; * support as appropriate.  Devices currently supported include:&n; *&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- GeneSys GL620USB-A&n; *&t;- &quot;Linux Devices&quot; (like iPaq and similar SA-1100 based PDAs)&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the LINUXDEV support.&n; *&n; * &n; * Status:&n; *&n; * - AN2720 ... not widely available, but reportedly works well&n; *&n; * - Belkin/eTEK ... no known issues&n; *&n; * - Both GeneSys and PL-230x use interrupt transfers for driver-to-driver&n; *   handshaking; it&squot;d be worth implementing those as &quot;carrier detect&quot;.&n; *   Prefer generic hooks, not minidriver-specific hacks.&n; *&n; * - Linux devices ... the www.handhelds.org SA-1100 support works nicely,&n; *   but the Sharp Zaurus uses an incompatible protocol (extra checksums).&n; *   No reason not to merge the Zaurus protocol here too (got patch? :)&n; *&n; * - For Netchip, should use keventd to poll via control requests to detect&n; *   hardware level &quot;carrier detect&quot;. &n; *&n; * - PL-230x ... the initialization protocol doesn&squot;t seem to match chip data&n; *   sheets, sometimes it&squot;s not needed and sometimes it hangs.  Prolific has&n; *   not responded to repeated support/information requests.&n; *&n; * Interop with more Win32 drivers may be a good thing.&n; *&n; * Seems like reporting &quot;peer connected&quot; (carrier present) events may end&n; * up going through the netlink event system, not hotplug ... that may be&n; * awkward in terms of automatic configuration though.&n; *&n; * There are reports that bridging gives lower-than-usual throughput.&n; *&n; * Need smarter hotplug policy scripts ... ones that know how to arrange&n; * bridging with &quot;brctl&quot;, and can handle static and dynamic (&quot;pump&quot;) setups.&n; * Use those eventual &quot;peer connected&quot; events.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; * 07-may-2002&t;Generalize/cleanup keventd support, handling rx stalls (mostly&n; *&t;&t;for USB 2.0 TTs) and memory shortages (potential) too. (db)&n; *&t;&t;Use &quot;locally assigned&quot; IEEE802 address space. (Brad Hards)&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*&n; * This is used for &quot;USB networking&quot;, connecting USB hosts as peers.&n; *&n; * It can be used with USB &quot;network cables&quot;, for IP-over-USB communications;&n; * Ethernet speeds without the Ethernet.  USB devices (including some PDAs)&n; * can support such links directly, replacing device-specific protocols&n; * with Internet standard ones.&n; *&n; * The links can be bridged using the Ethernet bridging (net/bridge)&n; * support as appropriate.  Devices currently supported include:&n; *&n; *&t;- AnchorChip 2720&n; *&t;- Belkin, eTEK (interops with Win32 drivers)&n; *&t;- EPSON USB clients&n; *&t;- GeneSys GL620USB-A&n; *&t;- &quot;Linux Devices&quot; (like iPaq and similar SA-1100 based PDAs)&n; *&t;- NetChip 1080 (interoperates with NetChip Win32 drivers)&n; *&t;- Prolific PL-2301/2302 (replaces &quot;plusb&quot; driver)&n; *&n; * USB devices can implement their side of this protocol at the cost&n; * of two bulk endpoints; it&squot;s not restricted to &quot;cable&quot; applications.&n; * See the LINUXDEV or EPSON device/client support.&n; *&n; * &n; * Status:&n; *&n; * - AN2720 ... not widely available, but reportedly works well&n; *&n; * - Belkin/eTEK ... no known issues&n; *&n; * - Both GeneSys and PL-230x use interrupt transfers for driver-to-driver&n; *   handshaking; it&squot;d be worth implementing those as &quot;carrier detect&quot;.&n; *   Prefer generic hooks, not minidriver-specific hacks.&n; *&n; * - Linux devices ... the www.handhelds.org SA-1100 support works nicely,&n; *   but the Sharp Zaurus uses an incompatible protocol (extra checksums).&n; *   No reason not to merge the Zaurus protocol here too (got patch? :)&n; *&n; * - For Netchip, should use keventd to poll via control requests to detect&n; *   hardware level &quot;carrier detect&quot;. &n; *&n; * - PL-230x ... the initialization protocol doesn&squot;t seem to match chip data&n; *   sheets, sometimes it&squot;s not needed and sometimes it hangs.  Prolific has&n; *   not responded to repeated support/information requests.&n; *&n; * Interop with more Win32 drivers may be a good thing.&n; *&n; * Seems like reporting &quot;peer connected&quot; (carrier present) events may end&n; * up going through the netlink event system, not hotplug ... that may be&n; * awkward in terms of automatic configuration though.&n; *&n; * There are reports that bridging gives lower-than-usual throughput.&n; *&n; * Need smarter hotplug policy scripts ... ones that know how to arrange&n; * bridging with &quot;brctl&quot;, and can handle static and dynamic (&quot;pump&quot;) setups.&n; * Use those eventual &quot;peer connected&quot; events, and zeroconf.&n; *&n; *&n; * CHANGELOG:&n; *&n; * 13-sep-2000&t;experimental, new&n; * 10-oct-2000&t;usb_device_id table created. &n; * 28-oct-2000&t;misc fixes; mostly, discard more TTL-mangled rx packets.&n; * 01-nov-2000&t;usb_device_id table and probing api update by&n; *&t;&t;Adam J. Richter &lt;adam@yggdrasil.com&gt;.&n; * 18-dec-2000&t;(db) tx watchdog, &quot;net1080&quot; renaming to &quot;usbnet&quot;, device_info&n; *&t;&t;and prolific support, isolate net1080-specific bits, cleanup.&n; *&t;&t;fix unlink_urbs oops in D3 PM resume code path.&n; *&n; * 02-feb-2001&t;(db) fix tx skb sharing, packet length, match_flags, ...&n; * 08-feb-2001&t;stubbed in &quot;linuxdev&quot;, maybe the SA-1100 folk can use it;&n; *&t;&t;AnchorChips 2720 support (from spec) for testing;&n; *&t;&t;fix bit-ordering problem with ethernet multicast addr&n; * 19-feb-2001  Support for clearing halt conditions. SA1100 UDC support&n; *&t;&t;updates. Oleg Drokin (green@iXcelerator.com)&n; * 25-mar-2001&t;More SA-1100 updates, including workaround for ip problem&n; *&t;&t;expecting cleared skb-&gt;cb and framing change to match latest&n; *&t;&t;handhelds.org version (Oleg).  Enable device IDs from the&n; *&t;&t;Win32 Belkin driver; other cleanups (db).&n; * 16-jul-2001&t;Bugfixes for uhci oops-on-unplug, Belkin support, various&n; *&t;&t;cleanups for problems not yet seen in the field. (db)&n; * 17-oct-2001&t;Handle &quot;Advance USBNET&quot; product, like Belkin/eTEK devices,&n; *&t;&t;from Ioannis Mavroukakis &lt;i.mavroukakis@btinternet.com&gt;;&n; *&t;&t;rx unlinks somehow weren&squot;t async; minor cleanup.&n; * 03-nov-2001&t;Merged GeneSys driver; original code from Jiun-Jie Huang&n; *&t;&t;&lt;huangjj@genesyslogic.com.tw&gt;, updated by Stanislav Brabec&n; *&t;&t;&lt;utx@penguin.cz&gt;.  Made framing options (NetChip/GeneSys)&n; *&t;&t;tie mostly to (sub)driver info.  Workaround some PL-2302&n; *&t;&t;chips that seem to reject SET_INTERFACE requests.&n; *&n; * 06-apr-2002&t;Added ethtool support, based on a patch from Brad Hards.&n; *&t;&t;Level of diagnostics is more configurable; they use device&n; *&t;&t;location (usb_device-&gt;devpath) instead of address (2.5).&n; *&t;&t;For tx_fixup, memflags can&squot;t be NOIO.&n; * 07-may-2002&t;Generalize/cleanup keventd support, handling rx stalls (mostly&n; *&t;&t;for USB 2.0 TTs) and memory shortages (potential) too. (db)&n; *&t;&t;Use &quot;locally assigned&quot; IEEE802 address space. (Brad Hards)&n; *&n; *-------------------------------------------------------------------------*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -26,6 +26,8 @@ DECL|macro|CONFIG_USB_AN2720
 mdefine_line|#define&t;CONFIG_USB_AN2720
 DECL|macro|CONFIG_USB_BELKIN
 mdefine_line|#define&t;CONFIG_USB_BELKIN
+DECL|macro|CONFIG_USB_EPSON2888
+mdefine_line|#define&t;CONFIG_USB_EPSON2888
 DECL|macro|CONFIG_USB_GENESYS
 mdefine_line|#define&t;CONFIG_USB_GENESYS
 DECL|macro|CONFIG_USB_LINUXDEV
@@ -467,8 +469,42 @@ comma
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USB_BELKIN */
 "&f;"
+macro_line|#ifdef&t;CONFIG_USB_EPSON2888
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * EPSON USB clients&n; *&n; * This is the same idea as &quot;linuxdev&quot; (below) except the firmware in the&n; * device might not be Tux-powered.  Epson provides reference firmware that&n; * implements this interface.  Product developers can reuse or modify that&n; * code, such as by using their own product and vendor codes.&n; *&n; *-------------------------------------------------------------------------*/
+DECL|variable|epson2888_info
+r_static
+r_const
+r_struct
+id|driver_info
+id|epson2888_info
+op_assign
+(brace
+dot
+id|description
+op_assign
+l_string|&quot;Epson USB Device&quot;
+comma
+dot
+id|in
+op_assign
+l_int|4
+comma
+dot
+id|out
+op_assign
+l_int|3
+comma
+dot
+id|epsize
+op_assign
+l_int|64
+comma
+)brace
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_USB_EPSON2888 */
+"&f;"
 macro_line|#ifdef CONFIG_USB_GENESYS
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * GeneSys GL620USB-A (www.genesyslogic.com.tw)&n; *&n; * ... should partially interop with the Win32 driver for this hardware&n; * The GeneSys docs imply there&squot;s some NDIS issue motivating this framing.&n; *&n; *-------------------------------------------------------------------------*/
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * GeneSys GL620USB-A (www.genesyslogic.com.tw)&n; *&n; * ... should partially interop with the Win32 driver for this hardware&n; * The GeneSys docs imply there&squot;s some NDIS issue motivating this framing.&n; *&n; * Some info from GeneSys:&n; *  - GL620USB-A is full duplex; GL620USB is only half duplex for bulk.&n; *    (Some cables, like the BAFO-100c, use the half duplex version.)&n; *  - For the full duplex model, the low bit of the version code says&n; *    which side is which (&quot;left/right&quot;).&n; *  - For the half duplex type, a control/interrupt handshake settles&n; *    the transfer direction.  (That&squot;s disabled here, partially coded.)&n; *    A control URB would block until other side writes an interrupt.&n; *&n; *-------------------------------------------------------------------------*/
 singleline_comment|// control msg write command
 DECL|macro|GENELINK_CONNECT_WRITE
 mdefine_line|#define GENELINK_CONNECT_WRITE&t;&t;&t;0xF0
@@ -970,23 +1006,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-singleline_comment|// reset the device status
-DECL|function|genelink_reset
-r_static
-r_int
-id|genelink_reset
-(paren
-r_struct
-id|usbnet
-op_star
-id|dev
-)paren
-(brace
-singleline_comment|// we don&squot;t need to reset, just return 0
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|genelink_rx_fixup
 r_static
 r_int
@@ -1515,11 +1534,6 @@ op_or
 id|FLAG_NO_SETINT
 comma
 dot
-id|reset
-op_assign
-id|genelink_reset
-comma
-dot
 id|rx_fixup
 op_assign
 id|genelink_rx_fixup
@@ -1556,23 +1570,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_USB_GENESYS */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_LINUXDEV
-multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * This could talk to a device that uses Linux, such as a PDA or&n; * an embedded system, or in fact to any &quot;smart&quot; device using this&n; * particular mapping of USB and Ethernet.&n; *&n; * Such a Linux host would need a &quot;USB Device Controller&quot; hardware&n; * (not &quot;USB Host Controller&quot;), and a network driver talking to that&n; * hardware.&n; *&n; * One example is Intel&squot;s SA-1100 chip, which integrates basic USB&n; * support (arch/arm/sa1100/usb-eth.c); it&squot;s used in the iPaq PDA.&n; *&n; *-------------------------------------------------------------------------*/
-DECL|function|linuxdev_check_connect
-r_static
-r_int
-id|linuxdev_check_connect
-(paren
-r_struct
-id|usbnet
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-singleline_comment|// by definition, always connected
-)brace
+multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * This could talk to a device that uses Linux, such as a PDA or&n; * an embedded system, or in fact to any &quot;smart&quot; device using this&n; * particular mapping of USB and Ethernet.&n; *&n; * Such a Linux host would need a &quot;USB Device Controller&quot; hardware&n; * (not &quot;USB Host Controller&quot;), and a network driver talking to that&n; * hardware.&n; *&n; * One example is Intel&squot;s SA-1100 chip, which integrates basic USB&n; * support (arch/arm/sa1100/usb-eth.c); it&squot;s used in the iPaq PDA.&n; * And others too, like the Yopy.&n; *&n; *-------------------------------------------------------------------------*/
 DECL|variable|linuxdev_info
 r_static
 r_const
@@ -1585,12 +1583,6 @@ dot
 id|description
 op_assign
 l_string|&quot;Linux Device&quot;
-comma
-singleline_comment|// no reset defined (yet?)
-dot
-id|check_connect
-op_assign
-id|linuxdev_check_connect
 comma
 dot
 id|in
@@ -7075,6 +7067,28 @@ comma
 )brace
 comma
 macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_EPSON2888
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0525
+comma
+l_int|0x2888
+)paren
+comma
+singleline_comment|// EPSON USB client
+id|driver_info
+suffix:colon
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|epson2888_info
+comma
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_GENESYS
 (brace
 id|USB_DEVICE
@@ -7097,6 +7111,7 @@ id|genelink_info
 comma
 )brace
 comma
+multiline_comment|/* NOT: USB_DEVICE (0x05e3, 0x0501),&t;// GL620USB&n;&t; * that&squot;s half duplex, not currently supported&n;&t; */
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_LINUXDEV
 multiline_comment|/*&n; * for example, this can be a host side talk-to-PDA driver.&n; * this driver is NOT what runs _inside_ a Linux device !!&n; */

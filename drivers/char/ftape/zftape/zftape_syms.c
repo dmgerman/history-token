@@ -7,58 +7,49 @@ macro_line|#include &quot;../zftape/zftape-init.h&quot;
 macro_line|#include &quot;../zftape/zftape-read.h&quot;
 macro_line|#include &quot;../zftape/zftape-buffers.h&quot;
 macro_line|#include &quot;../zftape/zftape-ctl.h&quot;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
-DECL|macro|FT_KSYM
-macro_line|# define FT_KSYM(sym) EXPORT_SYMBOL(sym);
-macro_line|#else
-DECL|macro|FT_KSYM
-macro_line|# define FT_KSYM(sym) X(sym),
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VER(2,1,18)
-DECL|variable|zft_symbol_table
-r_struct
-id|symbol_table
-id|zft_symbol_table
-op_assign
-(brace
-macro_line|#include &lt;linux/symtab_begin.h&gt;
-macro_line|#endif
 multiline_comment|/* zftape-init.c */
-id|FT_KSYM
+DECL|variable|zft_cmpr_register
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|zft_cmpr_register
 )paren
-id|FT_KSYM
+suffix:semicolon
+DECL|variable|zft_cmpr_unregister
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|zft_cmpr_unregister
 )paren
+suffix:semicolon
 multiline_comment|/* zftape-read.c */
-id|FT_KSYM
+DECL|variable|zft_fetch_segment_fraction
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|zft_fetch_segment_fraction
 )paren
+suffix:semicolon
 multiline_comment|/* zftape-buffers.c */
-id|FT_KSYM
+DECL|variable|zft_vmalloc_once
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|zft_vmalloc_once
 )paren
-id|FT_KSYM
+suffix:semicolon
+DECL|variable|zft_vmalloc_always
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|zft_vmalloc_always
 )paren
-id|FT_KSYM
+suffix:semicolon
+DECL|variable|zft_vfree
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|zft_vfree
 )paren
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VER(2,1,18)
-macro_line|#include &lt;linux/symtab_end.h&gt;
-)brace
 suffix:semicolon
-macro_line|#endif
 eof

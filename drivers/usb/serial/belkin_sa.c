@@ -200,6 +200,16 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+id|GOHUBS_VID
+comma
+id|HANDYLINK_PID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
 id|BELKIN_DOCKSTATION_VID
 comma
 id|BELKIN_DOCKSTATION_PID
