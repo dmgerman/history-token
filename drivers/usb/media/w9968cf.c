@@ -1653,6 +1653,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -2172,7 +2173,6 @@ id|val
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|w9968cf_sensor_cmd
 c_func
@@ -2314,7 +2314,6 @@ id|palette
 )paren
 suffix:semicolon
 r_static
-r_inline
 id|u16
 id|w9968cf_valid_depth
 c_func
@@ -9763,7 +9762,6 @@ suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------&n;  Return the depth corresponding to the given palette.&n;  Palette _must_ be supported !&n;  --------------------------------------------------------------------------*/
 DECL|function|w9968cf_valid_depth
 r_static
-r_inline
 id|u16
 id|w9968cf_valid_depth
 c_func
@@ -10722,7 +10720,6 @@ id|err
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|w9968cf_sensor_cmd
 id|w9968cf_sensor_cmd
@@ -13361,6 +13358,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -14070,6 +14068,18 @@ id|w9968cf_device
 op_star
 id|cam
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|user_arg
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_const
 r_char
 op_star
@@ -14245,7 +14255,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|cap
@@ -14289,7 +14299,7 @@ c_func
 op_amp
 id|chan
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -14342,7 +14352,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|chan
@@ -14386,7 +14396,7 @@ c_func
 op_amp
 id|chan
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -14444,7 +14454,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|cam-&gt;picture
@@ -14493,7 +14503,7 @@ c_func
 op_amp
 id|pict
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -14856,7 +14866,7 @@ c_func
 op_amp
 id|win
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -15088,7 +15098,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|cam-&gt;window
@@ -15188,7 +15198,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|mbuf
@@ -15242,7 +15252,7 @@ c_func
 op_amp
 id|mmap
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -15800,7 +15810,7 @@ c_func
 op_amp
 id|f_num
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -16002,7 +16012,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|unit
@@ -16044,7 +16054,7 @@ c_cond
 id|clear_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -16085,7 +16095,7 @@ c_func
 op_amp
 id|tuner
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren
@@ -16142,7 +16152,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|arg
+id|user_arg
 comma
 op_amp
 id|tuner
@@ -16185,7 +16195,7 @@ c_func
 op_amp
 id|tuner
 comma
-id|arg
+id|user_arg
 comma
 r_sizeof
 (paren

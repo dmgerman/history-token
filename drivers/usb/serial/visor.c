@@ -788,6 +788,25 @@ id|palm_os_4_probe
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|KYOCERA_VENDOR_ID
+comma
+id|KYOCERA_7135_ID
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+id|kernel_ulong_t
+)paren
+op_amp
+id|palm_os_4_probe
+)brace
+comma
+(brace
 )brace
 comma
 multiline_comment|/* optional parameter entry */
@@ -1123,6 +1142,16 @@ c_func
 id|ACEECA_VENDOR_ID
 comma
 id|ACEECA_MEZ1000_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|KYOCERA_VENDOR_ID
+comma
+id|KYOCERA_7135_ID
 )paren
 )brace
 comma
@@ -2071,6 +2100,11 @@ suffix:semicolon
 id|count
 op_assign
 id|status
+suffix:semicolon
+id|kfree
+(paren
+id|buffer
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3174,7 +3208,7 @@ id|__FILE__
 comma
 id|__FUNCTION__
 comma
-l_int|0x14
+id|retval
 comma
 id|transfer_buffer
 )paren
@@ -3555,10 +3589,19 @@ multiline_comment|/* Only do this endpoint hack for the Handspring devices with&
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 (paren
 id|serial-&gt;dev-&gt;descriptor.idVendor
-op_ne
+op_eq
 id|HANDSPRING_VENDOR_ID
+)paren
+op_logical_or
+(paren
+id|serial-&gt;dev-&gt;descriptor.idVendor
+op_eq
+id|KYOCERA_VENDOR_ID
+)paren
 )paren
 op_logical_or
 (paren
@@ -3578,7 +3621,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;* It appears that Treos want to use the 1st interrupt endpoint to&n;&t;* communicate with the 2nd bulk out endpoint, so let&squot;s swap the 1st&n;&t;* and 2nd bulk in and interrupt endpoints.  Note that swapping the&n;&t;* bulk out endpoints would break lots of apps that want to communicate&n;&t;* on the second port.&n;&t;*/
+multiline_comment|/*&n;&t;* It appears that Treos and Kyoceras want to use the &n;&t;* 1st bulk in endpoint to communicate with the 2nd bulk out endpoint, &n;&t;* so let&squot;s swap the 1st and 2nd bulk in and interrupt endpoints.  &n;&t;* Note that swapping the bulk out endpoints would break lots of &n;&t;* apps that want to communicate on the second port.&n;&t;*/
 DECL|macro|COPY_PORT
 mdefine_line|#define COPY_PORT(dest, src)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dest-&gt;read_urb = src-&gt;read_urb;&t;&t;&t;&t;&t;&bslash;&n;&t;dest-&gt;bulk_in_endpointAddress = src-&gt;bulk_in_endpointAddress;&t;&bslash;&n;&t;dest-&gt;bulk_in_buffer = src-&gt;bulk_in_buffer;&t;&t;&t;&bslash;&n;&t;dest-&gt;interrupt_in_urb = src-&gt;interrupt_in_urb;&t;&t;&t;&bslash;&n;&t;dest-&gt;interrupt_in_endpointAddress = src-&gt;interrupt_in_endpointAddress;&t;&bslash;&n;&t;dest-&gt;interrupt_in_buffer = src-&gt;interrupt_in_buffer;
 id|swap_port

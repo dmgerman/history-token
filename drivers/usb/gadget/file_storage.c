@@ -8778,7 +8778,11 @@ id|fsg-&gt;tag
 suffix:semicolon
 id|csw-&gt;Residue
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|fsg-&gt;residue
+)paren
 suffix:semicolon
 id|csw-&gt;Status
 op_assign
@@ -11035,7 +11039,11 @@ id|DATA_DIR_FROM_HOST
 suffix:semicolon
 id|fsg-&gt;data_size
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|cbw-&gt;DataTransferLength
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -15245,6 +15253,12 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Find all the endpoints we will use */
+id|usb_ep_autoconfig_reset
+c_func
+(paren
+id|gadget
+)paren
+suffix:semicolon
 id|ep
 op_assign
 id|usb_ep_autoconfig

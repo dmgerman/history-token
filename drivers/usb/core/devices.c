@@ -2383,6 +2383,14 @@ id|bus_list
 )paren
 suffix:semicolon
 multiline_comment|/* recurse through all children of the root hub */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus-&gt;root_hub
+)paren
+r_continue
+suffix:semicolon
 id|down
 c_func
 (paren

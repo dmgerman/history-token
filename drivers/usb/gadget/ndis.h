@@ -8,6 +8,52 @@ DECL|macro|NDIS_STATUS_MULTICAST_EXISTS
 mdefine_line|#define NDIS_STATUS_MULTICAST_EXISTS      0xC001000A
 DECL|macro|NDIS_STATUS_MULTICAST_NOT_FOUND
 mdefine_line|#define NDIS_STATUS_MULTICAST_NOT_FOUND   0xC001000B
+DECL|enum|NDIS_DEVICE_POWER_STATE
+r_enum
+id|NDIS_DEVICE_POWER_STATE
+(brace
+DECL|enumerator|NdisDeviceStateUnspecified
+id|NdisDeviceStateUnspecified
+op_assign
+l_int|0
+comma
+DECL|enumerator|NdisDeviceStateD0
+id|NdisDeviceStateD0
+comma
+DECL|enumerator|NdisDeviceStateD1
+id|NdisDeviceStateD1
+comma
+DECL|enumerator|NdisDeviceStateD2
+id|NdisDeviceStateD2
+comma
+DECL|enumerator|NdisDeviceStateD3
+id|NdisDeviceStateD3
+comma
+DECL|enumerator|NdisDeviceStateMaximum
+id|NdisDeviceStateMaximum
+)brace
+suffix:semicolon
+DECL|struct|NDIS_PM_WAKE_UP_CAPABILITIES
+r_struct
+id|NDIS_PM_WAKE_UP_CAPABILITIES
+(brace
+DECL|member|MinMagicPacketWakeUp
+r_enum
+id|NDIS_DEVICE_POWER_STATE
+id|MinMagicPacketWakeUp
+suffix:semicolon
+DECL|member|MinPatternWakeUp
+r_enum
+id|NDIS_DEVICE_POWER_STATE
+id|MinPatternWakeUp
+suffix:semicolon
+DECL|member|MinLinkChangeWakeUp
+r_enum
+id|NDIS_DEVICE_POWER_STATE
+id|MinLinkChangeWakeUp
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* NDIS_PNP_CAPABILITIES.Flags constants */
 DECL|macro|NDIS_DEVICE_WAKE_UP_ENABLE
 mdefine_line|#define NDIS_DEVICE_WAKE_UP_ENABLE                0x00000001
@@ -15,6 +61,51 @@ DECL|macro|NDIS_DEVICE_WAKE_ON_PATTERN_MATCH_ENABLE
 mdefine_line|#define NDIS_DEVICE_WAKE_ON_PATTERN_MATCH_ENABLE  0x00000002
 DECL|macro|NDIS_DEVICE_WAKE_ON_MAGIC_PACKET_ENABLE
 mdefine_line|#define NDIS_DEVICE_WAKE_ON_MAGIC_PACKET_ENABLE   0x00000004
+DECL|struct|NDIS_PNP_CAPABILITIES
+r_struct
+id|NDIS_PNP_CAPABILITIES
+(brace
+DECL|member|Flags
+id|u32
+id|Flags
+suffix:semicolon
+DECL|member|WakeUpCapabilities
+r_struct
+id|NDIS_PM_WAKE_UP_CAPABILITIES
+id|WakeUpCapabilities
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|NDIS_PM_PACKET_PATTERN
+r_struct
+id|NDIS_PM_PACKET_PATTERN
+(brace
+DECL|member|Priority
+id|u32
+id|Priority
+suffix:semicolon
+DECL|member|Reserved
+id|u32
+id|Reserved
+suffix:semicolon
+DECL|member|MaskSize
+id|u32
+id|MaskSize
+suffix:semicolon
+DECL|member|PatternOffset
+id|u32
+id|PatternOffset
+suffix:semicolon
+DECL|member|PatternSize
+id|u32
+id|PatternSize
+suffix:semicolon
+DECL|member|PatternFlags
+id|u32
+id|PatternFlags
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Required Object IDs (OIDs) */
 DECL|macro|OID_GEN_SUPPORTED_LIST
 mdefine_line|#define OID_GEN_SUPPORTED_LIST            0x00010101

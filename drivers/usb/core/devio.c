@@ -2653,11 +2653,7 @@ r_int
 r_char
 )paren
 (paren
-(paren
-r_char
-op_star
-)paren
-id|ctrl.data
+id|tbuf
 )paren
 (braket
 id|j
@@ -2795,11 +2791,7 @@ r_int
 r_char
 )paren
 (paren
-(paren
-r_char
-op_star
-)paren
-id|ctrl.data
+id|tbuf
 )paren
 (braket
 id|j

@@ -9,7 +9,7 @@ DECL|macro|OV511_DEBUG
 mdefine_line|#define OV511_DEBUG&t;/* Turn on debug messages */
 macro_line|#ifdef OV511_DEBUG
 DECL|macro|PDEBUG
-mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;&t;if (debug &gt;= (level)) info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;__PRETTY_FUNCTION__, __LINE__ , ## args)
+mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;&t;if (debug &gt;= (level)) info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;__FUNCTION__, __LINE__ , ## args)
 macro_line|#else
 DECL|macro|PDEBUG
 mdefine_line|#define PDEBUG(level, fmt, args...) do {} while(0)

@@ -885,29 +885,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|usb_choose_address
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_release_address
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* exported to hub driver ONLY to support usb_reset_device () */
-r_extern
 r_int
 id|usb_get_configuration
 c_func
@@ -929,11 +906,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* use these only before the device&squot;s address has been set */
-DECL|macro|usb_snddefctrl
-mdefine_line|#define usb_snddefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30))
-DECL|macro|usb_rcvdefctrl
-mdefine_line|#define usb_rcvdefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | USB_DIR_IN)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * HCD Root Hub support&n; */
 macro_line|#include &quot;hub.h&quot;
@@ -1117,6 +1089,11 @@ r_int
 id|hcd_register_root
 (paren
 r_struct
+id|usb_device
+op_star
+id|usb_dev
+comma
+r_struct
 id|usb_hcd
 op_star
 id|hcd
@@ -1142,12 +1119,7 @@ suffix:semicolon
 r_return
 id|usb_register_root_hub
 (paren
-id|hcd_to_bus
-(paren
-id|hcd
-)paren
-op_member_access_from_pointer
-id|root_hub
+id|usb_dev
 comma
 id|hcd-&gt;self.controller
 )paren

@@ -195,9 +195,9 @@ id|uhci
 suffix:semicolon
 multiline_comment|/* If a transfer is still active after this much time, turn off FSBR */
 DECL|macro|IDLE_TIMEOUT
-mdefine_line|#define IDLE_TIMEOUT&t;(HZ / 20)&t;/* 50 ms */
+mdefine_line|#define IDLE_TIMEOUT&t;msecs_to_jiffies(50)
 DECL|macro|FSBR_DELAY
-mdefine_line|#define FSBR_DELAY&t;(HZ / 20)&t;/* 50 ms */
+mdefine_line|#define FSBR_DELAY&t;msecs_to_jiffies(50)
 multiline_comment|/* When we timeout an idle transfer for FSBR, we&squot;ll switch it over to */
 multiline_comment|/* depth first traversal. We&squot;ll do it in groups of this number of TD&squot;s */
 multiline_comment|/* to make sure it doesn&squot;t hog all of the bandwidth */
@@ -6759,6 +6759,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|called_uhci_finish_completion
+op_assign
+l_int|0
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -6808,6 +6813,10 @@ id|hcd
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+id|called_uhci_finish_completion
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 id|head
@@ -6941,6 +6950,19 @@ op_amp
 id|uhci-&gt;schedule_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Wake up anyone waiting for an URB to complete */
+r_if
+c_cond
+(paren
+id|called_uhci_finish_completion
+)paren
+id|wake_up_all
+c_func
+(paren
+op_amp
+id|uhci-&gt;waitqh
 )paren
 suffix:semicolon
 id|head
@@ -7083,10 +7105,10 @@ id|uhci-&gt;stall_timer.expires
 op_assign
 id|jiffies
 op_plus
+id|msecs_to_jiffies
+c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|add_timer
@@ -7815,6 +7837,35 @@ id|io_addr
 op_assign
 id|uhci-&gt;io_addr
 suffix:semicolon
+multiline_comment|/* Turn off PIRQ, SMI, and all interrupts.  This also turns off&n;&t; * the BIOS&squot;s USB Legacy Support.&n;&t; */
+id|pci_write_config_word
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+)paren
+comma
+id|USBLEGSUP
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|outw
+c_func
+(paren
+l_int|0
+comma
+id|uhci-&gt;io_addr
+op_plus
+id|USBINTR
+)paren
+suffix:semicolon
 multiline_comment|/* Global reset for 50ms */
 id|uhci-&gt;state
 op_assign
@@ -7830,24 +7881,10 @@ op_plus
 id|USBCMD
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_star
 l_int|50
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 id|outw
@@ -7861,24 +7898,10 @@ id|USBCMD
 )paren
 suffix:semicolon
 multiline_comment|/* Another 10ms delay */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_star
 l_int|10
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 id|uhci-&gt;resume_detect
@@ -8000,15 +8023,11 @@ id|uhci-&gt;state_end
 op_assign
 id|jiffies
 op_plus
+id|msecs_to_jiffies
+c_func
 (paren
 l_int|20
-op_star
-id|HZ
-op_plus
-l_int|999
 )paren
-op_div
-l_int|1000
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8449,7 +8468,25 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Turn on all interrupts */
+multiline_comment|/* Turn on PIRQ and all interrupts */
+id|pci_write_config_word
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+)paren
+comma
+id|USBLEGSUP
+comma
+id|USBLEGSUP_DEFAULT
+)paren
+suffix:semicolon
 id|outw
 c_func
 (paren
@@ -8712,40 +8749,11 @@ r_int
 )paren
 id|hcd-&gt;regs
 suffix:semicolon
-multiline_comment|/* Turn off all interrupts */
-id|outw
-c_func
-(paren
-l_int|0
-comma
-id|uhci-&gt;io_addr
-op_plus
-id|USBINTR
-)paren
-suffix:semicolon
-multiline_comment|/* Maybe kick BIOS off this hardware.  Then reset, so we won&squot;t get&n;&t; * interrupts from any previous setup.&n;&t; */
+multiline_comment|/* Kick BIOS off this hardware and reset, so we won&squot;t get&n;&t; * interrupts from any previous setup.&n;&t; */
 id|reset_hc
 c_func
 (paren
 id|uhci
-)paren
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|to_pci_dev
-c_func
-(paren
-id|uhci_dev
-c_func
-(paren
-id|uhci
-)paren
-)paren
-comma
-id|USBLEGSUP
-comma
-id|USBLEGSUP_DEFAULT
 )paren
 suffix:semicolon
 r_return
@@ -9216,8 +9224,6 @@ id|uhci-&gt;rh_numports
 op_assign
 id|port
 suffix:semicolon
-id|hcd-&gt;self.root_hub
-op_assign
 id|udev
 op_assign
 id|usb_alloc_dev
@@ -9533,16 +9539,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_register_root_hub
+id|hcd_register_root
 c_func
 (paren
 id|udev
 comma
-id|uhci_dev
-c_func
-(paren
-id|uhci
-)paren
+op_amp
+id|uhci-&gt;hcd
 )paren
 op_ne
 l_int|0
@@ -9651,10 +9654,6 @@ c_func
 (paren
 id|udev
 )paren
-suffix:semicolon
-id|hcd-&gt;self.root_hub
-op_assign
-l_int|NULL
 suffix:semicolon
 id|err_alloc_root_hub
 suffix:colon
@@ -9945,7 +9944,25 @@ op_eq
 id|UHCI_SUSPENDED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Some systems don&squot;t maintain the UHCI register values&n;&t;&t; * during a PM suspend/resume cycle, so reinitialize&n;&t;&t; * the Frame Number, the Framelist Base Address, and the&n;&t;&t; * Interrupt Enable registers.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Some systems don&squot;t maintain the UHCI register values&n;&t;&t; * during a PM suspend/resume cycle, so reinitialize&n;&t;&t; * the Frame Number, Framelist Base Address, Interrupt&n;&t;&t; * Enable, and Legacy Support registers.&n;&t;&t; */
+id|pci_write_config_word
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+)paren
+comma
+id|USBLEGSUP
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|outw
 c_func
 (paren
@@ -9985,6 +10002,24 @@ suffix:semicolon
 id|uhci-&gt;resume_detect
 op_assign
 l_int|1
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+)paren
+comma
+id|USBLEGSUP
+comma
+id|USBLEGSUP_DEFAULT
+)paren
 suffix:semicolon
 )brace
 r_else
