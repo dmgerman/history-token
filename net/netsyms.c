@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fddidevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
@@ -22,7 +21,6 @@ macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#ifdef CONFIG_INET
 macro_line|#include &lt;net/protocol.h&gt;
-macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
@@ -132,27 +130,6 @@ c_func
 id|inet_del_protocol
 )paren
 suffix:semicolon
-DECL|variable|icmp_send
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|icmp_send
-)paren
-suffix:semicolon
-DECL|variable|icmp_statistics
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|icmp_statistics
-)paren
-suffix:semicolon
-DECL|variable|icmp_err_convert
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|icmp_err_convert
-)paren
-suffix:semicolon
 DECL|variable|ip_options_compile
 id|EXPORT_SYMBOL
 c_func
@@ -258,14 +235,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ipv4_config
-)paren
-suffix:semicolon
-multiline_comment|/* Used by other modules */
-DECL|variable|xrlim_allow
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xrlim_allow
 )paren
 suffix:semicolon
 DECL|variable|ip_rcv
