@@ -8090,6 +8090,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s(%d): %s block %Lu on %s&bslash;n&quot;
 comma
 id|current-&gt;comm
