@@ -1069,6 +1069,7 @@ op_star
 op_amp
 id|skb-&gt;cb
 suffix:semicolon
+multiline_comment|/* BUG: saddr may be NULL */
 id|eb-&gt;cookie
 op_assign
 id|saddr-&gt;cookie
