@@ -363,7 +363,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * From fs/ntfs/aops.c&n; */
+multiline_comment|/**&n; * ntfs_readpage - external declaration, function is in fs/ntfs/aops.c&n; */
 r_extern
 r_int
 id|ntfs_readpage
@@ -386,12 +386,6 @@ id|ntfs_mft_aops
 op_assign
 (brace
 dot
-id|writepage
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* Write dirty page to disk. */
-dot
 id|readpage
 op_assign
 id|ntfs_readpage
@@ -403,18 +397,6 @@ op_assign
 id|block_sync_page
 comma
 multiline_comment|/* Currently, just unplugs the&n;&t;&t;&t;&t;&t;&t;   disk request queue. */
-dot
-id|prepare_write
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* . */
-dot
-id|commit_write
-op_assign
-l_int|NULL
-comma
-multiline_comment|/* . */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * map_mft_record_page - map the page in which a specific mft record resides&n; * @ni:&t;&t;ntfs inode whose mft record page to map&n; *&n; * This maps the page in which the mft record of the ntfs inode @ni is situated&n; * and returns a pointer to the mft record within the mapped page.&n; *&n; * Return value needs to be checked with IS_ERR() and if that is true PTR_ERR()&n; * contains the negative error code returned.&n; */

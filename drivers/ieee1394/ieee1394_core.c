@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/smplock.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;hosts.h&quot;
