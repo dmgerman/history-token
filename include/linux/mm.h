@@ -191,7 +191,7 @@ r_int
 r_int
 id|vm_truncate_count
 suffix:semicolon
-multiline_comment|/* compare mapping-&gt;truncate_count */
+multiline_comment|/* truncate_count or restart_addr */
 macro_line|#ifndef CONFIG_MMU
 DECL|member|vm_usage
 id|atomic_t
@@ -1399,24 +1399,6 @@ op_star
 id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/* For unmap_mapping_range: */
-DECL|member|restart_vma
-r_struct
-id|vm_area_struct
-op_star
-id|restart_vma
-suffix:semicolon
-multiline_comment|/* Where lock was dropped */
-DECL|member|restart_pgoff
-id|pgoff_t
-id|restart_pgoff
-suffix:semicolon
-multiline_comment|/* File offset for restart */
-DECL|member|restart_addr
-r_int
-r_int
-id|restart_addr
-suffix:semicolon
-multiline_comment|/* Where we should restart */
 DECL|member|break_addr
 r_int
 r_int
