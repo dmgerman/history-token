@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_FB_H
 DECL|macro|_LINUX_FB_H
 mdefine_line|#define _LINUX_FB_H
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Definitions of frame buffers&t;&t;&t;&t;&t;&t;*/
@@ -1357,18 +1358,24 @@ id|fb_cursor
 id|cursor
 suffix:semicolon
 multiline_comment|/* Current cursor */
-DECL|member|cmap
+DECL|member|queue
 r_struct
-id|fb_cmap
-id|cmap
+id|work_struct
+id|queue
 suffix:semicolon
-multiline_comment|/* Current cmap */
+multiline_comment|/* Framebuffer event queue */
 DECL|member|pixmap
 r_struct
 id|fb_pixmap
 id|pixmap
 suffix:semicolon
 multiline_comment|/* Current pixmap */
+DECL|member|cmap
+r_struct
+id|fb_cmap
+id|cmap
+suffix:semicolon
+multiline_comment|/* Current cmap */
 DECL|member|fbops
 r_struct
 id|fb_ops
