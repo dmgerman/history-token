@@ -331,6 +331,22 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* avoid the locking if we can */
+r_if
+c_cond
+(paren
+(paren
+id|inode-&gt;i_state
+op_amp
+id|flags
+)paren
+op_ne
+id|flags
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren

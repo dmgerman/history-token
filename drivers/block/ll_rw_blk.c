@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -119,6 +120,35 @@ id|max_sectors
 (braket
 id|MAX_BLKDEV
 )braket
+suffix:semicolon
+multiline_comment|/*&n; * queued sectors for all devices, used to make sure we don&squot;t fill all&n; * of memory with locked buffers&n; */
+DECL|variable|queued_sectors
+id|atomic_t
+id|queued_sectors
+suffix:semicolon
+multiline_comment|/*&n; * high and low watermark for above&n; */
+DECL|variable|high_queued_sectors
+DECL|variable|low_queued_sectors
+r_static
+r_int
+id|high_queued_sectors
+comma
+id|low_queued_sectors
+suffix:semicolon
+DECL|variable|batch_requests
+DECL|variable|queue_nr_requests
+r_static
+r_int
+id|batch_requests
+comma
+id|queue_nr_requests
+suffix:semicolon
+r_static
+id|DECLARE_WAIT_QUEUE_HEAD
+c_func
+(paren
+id|blk_buffers_wait
+)paren
 suffix:semicolon
 DECL|function|get_max_sectors
 r_static
@@ -364,7 +394,7 @@ id|q
 r_int
 id|count
 op_assign
-id|QUEUE_NR_REQUESTS
+id|queue_nr_requests
 suffix:semicolon
 id|count
 op_sub_assign
@@ -929,7 +959,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|QUEUE_NR_REQUESTS
+id|queue_nr_requests
 suffix:semicolon
 id|i
 op_increment
@@ -1660,7 +1690,7 @@ l_string|&quot;drive_stat_acct: cmd not R/W?&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * add-request adds a request to the linked list.&n; * It disables interrupts (acquires the request spinlock) so that it can muck&n; * with the request-lists in peace. Thus it should be called with no spinlocks&n; * held.&n; *&n; * By this point, req-&gt;cmd is always either READ/WRITE, never READA,&n; * which is important for drive_stat_acct() above.&n; */
+multiline_comment|/*&n; * add-request adds a request to the linked list.&n; * io_request_lock is held and interrupts disabled, as we muck with the&n; * request queue list.&n; *&n; * By this point, req-&gt;cmd is always either READ/WRITE, never READA,&n; * which is important for drive_stat_acct() above.&n; */
 DECL|function|add_request
 r_static
 r_inline
@@ -1901,13 +1931,40 @@ id|req-&gt;q
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Request may not have originated from ll_rw_blk&n;&t; */
+multiline_comment|/*&n;&t; * Request may not have originated from ll_rw_blk. if not,&n;&t; * asumme it has free buffers and check waiters&n;&t; */
 r_if
 c_cond
 (paren
 id|q
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * we&squot;ve released enough buffers to start I/O again&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|blk_buffers_wait
+)paren
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|queued_sectors
+)paren
+OL
+id|low_queued_sectors
+)paren
+id|wake_up
+c_func
+(paren
+op_amp
+id|blk_buffers_wait
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1970,11 +2027,7 @@ id|q-&gt;pending_free
 id|rw
 )braket
 op_ge
-(paren
-id|QUEUE_NR_REQUESTS
-op_rshift
-l_int|4
-)paren
+id|batch_requests
 )paren
 (brace
 r_int
@@ -2092,10 +2145,8 @@ comma
 id|max_segments
 )paren
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 id|q-&gt;elevator
 dot
 id|elevator_merge_req_fn
@@ -2413,6 +2464,11 @@ id|bh-&gt;b_rdev
 suffix:semicolon
 id|again
 suffix:colon
+id|head
+op_assign
+op_amp
+id|q-&gt;queue_head
+suffix:semicolon
 multiline_comment|/*&n;&t; * Now we acquire the request spinlock, we have to be mega careful&n;&t; * not to schedule or do something nonatomic&n;&t; */
 id|spin_lock_irq
 c_func
@@ -2420,11 +2476,6 @@ c_func
 op_amp
 id|io_request_lock
 )paren
-suffix:semicolon
-id|head
-op_assign
-op_amp
-id|q-&gt;queue_head
 suffix:semicolon
 id|insert_here
 op_assign
@@ -2546,6 +2597,12 @@ id|req-&gt;hard_nr_sectors
 op_add_assign
 id|count
 suffix:semicolon
+id|blk_started_io
+c_func
+(paren
+id|count
+)paren
+suffix:semicolon
 id|drive_stat_acct
 c_func
 (paren
@@ -2636,6 +2693,12 @@ id|req-&gt;hard_nr_sectors
 op_add_assign
 id|count
 suffix:semicolon
+id|blk_started_io
+c_func
+(paren
+id|count
+)paren
+suffix:semicolon
 id|drive_stat_acct
 c_func
 (paren
@@ -2698,7 +2761,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Grab a free request from the freelist. Read first try their&n;&t; * own queue - if that is empty, we steal from the write list.&n;&t; * Writes must block if the write list is empty, and read aheads&n;&t; * are not crucial.&n;&t; */
+multiline_comment|/*&n;&t; * Grab a free request from the freelist - if that is empty, check&n;&t; * if we are doing read ahead and abort instead of blocking for&n;&t; * a free slot.&n;&t; */
 id|get_rq
 suffix:colon
 r_if
@@ -2822,6 +2885,12 @@ suffix:semicolon
 id|req-&gt;rq_dev
 op_assign
 id|bh-&gt;b_rdev
+suffix:semicolon
+id|blk_started_io
+c_func
+(paren
+id|count
+)paren
 suffix:semicolon
 id|add_request
 c_func
@@ -2965,18 +3034,16 @@ suffix:semicolon
 r_int
 r_int
 id|sector
-comma
-id|count
+op_assign
+id|bh-&gt;b_rsector
 suffix:semicolon
+r_int
+r_int
 id|count
 op_assign
 id|bh-&gt;b_size
 op_rshift
 l_int|9
-suffix:semicolon
-id|sector
-op_assign
-id|bh-&gt;b_rsector
 suffix:semicolon
 r_if
 c_cond
@@ -3034,7 +3101,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: rw=%d, want=%d, limit=%d&bslash;n&quot;
+l_string|&quot;%s: rw=%d, want=%ld, limit=%d&bslash;n&quot;
 comma
 id|kdevname
 c_func
@@ -3141,7 +3208,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * submit_bh: submit a buffer_head to the block device later for I/O&n; * @rw: whether to %READ or %WRITE, or mayve to %READA (read ahead)&n; * @bh: The &amp;struct buffer_head which describes the I/O&n; *&n; * submit_bh() is very similar in purpose to generic_make_request(), and&n; * uses that function to do most of the work.&n; *&n; * The extra functionality provided by submit_bh is to determine&n; * b_rsector from b_blocknr and b_size, and to set b_rdev from b_dev.&n; * This is is appropriate for IO requests that come from the buffer&n; * cache and page cache which (currently) always use aligned blocks.&n; */
+multiline_comment|/**&n; * submit_bh: submit a buffer_head to the block device later for I/O&n; * @rw: whether to %READ or %WRITE, or maybe to %READA (read ahead)&n; * @bh: The &amp;struct buffer_head which describes the I/O&n; *&n; * submit_bh() is very similar in purpose to generic_make_request(), and&n; * uses that function to do most of the work.&n; *&n; * The extra functionality provided by submit_bh is to determine&n; * b_rsector from b_blocknr and b_size, and to set b_rdev from b_dev.&n; * This is is appropriate for IO requests that come from the buffer&n; * cache and page cache which (currently) always use aligned blocks.&n; */
 DECL|function|submit_bh
 r_void
 id|submit_bh
@@ -3374,8 +3441,6 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-suffix:semicolon
-id|bh
 op_assign
 id|bhs
 (braket
@@ -3480,14 +3545,49 @@ r_struct
 id|buffer_head
 op_star
 id|bh
-suffix:semicolon
-id|bh
 op_assign
 id|bhs
 (braket
 id|i
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * don&squot;t lock any more buffers if we are above the high&n;&t;&t; * water mark. instead start I/O on the queued stuff.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|queued_sectors
+)paren
+op_ge
+id|high_queued_sectors
+)paren
+(brace
+id|run_task_queue
+c_func
+(paren
+op_amp
+id|tq_disk
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
+id|blk_buffers_wait
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|queued_sectors
+)paren
+OL
+id|low_queued_sectors
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Only one thread can actually submit the I/O. */
 r_if
 c_cond
@@ -3706,6 +3806,12 @@ id|bh-&gt;b_size
 op_rshift
 l_int|9
 suffix:semicolon
+id|blk_finished_io
+c_func
+(paren
+id|nsect
+)paren
+suffix:semicolon
 id|req-&gt;bh
 op_assign
 id|bh-&gt;b_reqnext
@@ -3821,6 +3927,8 @@ id|req
 )paren
 suffix:semicolon
 )brace
+DECL|macro|MB
+mdefine_line|#define MB(kb)&t;((kb) &lt;&lt; 10)
 DECL|function|blk_dev_init
 r_int
 id|__init
@@ -3834,6 +3942,9 @@ r_struct
 id|blk_dev_struct
 op_star
 id|dev
+suffix:semicolon
+r_int
+id|total_ram
 suffix:semicolon
 id|request_cachep
 op_assign
@@ -3925,6 +4036,182 @@ r_sizeof
 (paren
 id|max_sectors
 )paren
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|queued_sectors
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|total_ram
+op_assign
+id|nr_free_pages
+c_func
+(paren
+)paren
+op_lshift
+(paren
+id|PAGE_SHIFT
+op_minus
+l_int|10
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Try to keep 128MB max hysteris. If not possible,&n;&t; * use half of RAM&n;&t; */
+id|high_queued_sectors
+op_assign
+(paren
+id|total_ram
+op_star
+l_int|2
+)paren
+op_div
+l_int|3
+suffix:semicolon
+id|low_queued_sectors
+op_assign
+id|high_queued_sectors
+op_minus
+id|MB
+c_func
+(paren
+l_int|128
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|low_queued_sectors
+OL
+l_int|0
+)paren
+id|low_queued_sectors
+op_assign
+id|total_ram
+op_div
+l_int|2
+suffix:semicolon
+multiline_comment|/*&n;&t; * for big RAM machines (&gt;= 384MB), use more for I/O&n;&t; */
+r_if
+c_cond
+(paren
+id|total_ram
+op_ge
+id|MB
+c_func
+(paren
+l_int|384
+)paren
+)paren
+(brace
+id|high_queued_sectors
+op_assign
+(paren
+id|total_ram
+op_star
+l_int|4
+)paren
+op_div
+l_int|5
+suffix:semicolon
+id|low_queued_sectors
+op_assign
+id|high_queued_sectors
+op_minus
+id|MB
+c_func
+(paren
+l_int|128
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * make it sectors (512b)&n;&t; */
+id|high_queued_sectors
+op_lshift_assign
+l_int|1
+suffix:semicolon
+id|low_queued_sectors
+op_lshift_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * Scale free request slots per queue too&n;&t; */
+id|total_ram
+op_assign
+(paren
+id|total_ram
+op_plus
+id|MB
+c_func
+(paren
+l_int|32
+)paren
+op_minus
+l_int|1
+)paren
+op_amp
+op_complement
+(paren
+id|MB
+c_func
+(paren
+l_int|32
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|queue_nr_requests
+op_assign
+id|total_ram
+op_rshift
+l_int|9
+)paren
+OG
+id|QUEUE_NR_REQUESTS
+)paren
+id|queue_nr_requests
+op_assign
+id|QUEUE_NR_REQUESTS
+suffix:semicolon
+multiline_comment|/*&n;&t; * adjust batch frees according to queue length, with upper limit&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|batch_requests
+op_assign
+id|queue_nr_requests
+op_rshift
+l_int|3
+)paren
+OG
+l_int|32
+)paren
+id|batch_requests
+op_assign
+l_int|32
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;block: queued sectors max/low %dkB/%dkB, %d slots per queue&bslash;n&quot;
+comma
+id|high_queued_sectors
+op_div
+l_int|2
+comma
+id|low_queued_sectors
+op_div
+l_int|2
+comma
+id|queue_nr_requests
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_AMIGA_Z2RAM
@@ -4282,6 +4569,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_unplug_device
+)paren
+suffix:semicolon
+DECL|variable|queued_sectors
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|queued_sectors
 )paren
 suffix:semicolon
 eof

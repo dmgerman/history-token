@@ -260,9 +260,9 @@ op_star
 id|q
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Default nr free requests per queue&n; */
+multiline_comment|/*&n; * Default nr free requests per queue, ll_rw_blk will scale it down&n; * according to available RAM at init time&n; */
 DECL|macro|QUEUE_NR_REQUESTS
-mdefine_line|#define QUEUE_NR_REQUESTS&t;512
+mdefine_line|#define QUEUE_NR_REQUESTS&t;8192
 DECL|struct|request_queue
 r_struct
 id|request_queue
@@ -624,6 +624,10 @@ id|max_segments
 id|MAX_BLKDEV
 )braket
 suffix:semicolon
+r_extern
+id|atomic_t
+id|queued_sectors
+suffix:semicolon
 DECL|macro|MAX_SEGMENTS
 mdefine_line|#define MAX_SEGMENTS 128
 DECL|macro|MAX_SECTORS
@@ -717,5 +721,9 @@ r_return
 l_int|512
 suffix:semicolon
 )brace
+DECL|macro|blk_finished_io
+mdefine_line|#define blk_finished_io(nsects)&t;&t;&t;&t;&bslash;&n;&t;atomic_sub(nsects, &amp;queued_sectors);&t;&t;&bslash;&n;&t;if (atomic_read(&amp;queued_sectors) &lt; 0) {&t;&t;&bslash;&n;&t;&t;printk(&quot;block: queued_sectors &lt; 0&bslash;n&quot;);&t;&bslash;&n;&t;&t;atomic_set(&amp;queued_sectors, 0);&t;&t;&bslash;&n;&t;}
+DECL|macro|blk_started_io
+mdefine_line|#define blk_started_io(nsects)&t;&t;&t;&t;&bslash;&n;&t;atomic_add(nsects, &amp;queued_sectors);
 macro_line|#endif
 eof

@@ -440,6 +440,11 @@ op_amp
 id|pagecache_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping-&gt;host
+)paren
 id|mark_inode_dirty_pages
 c_func
 (paren
