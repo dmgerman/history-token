@@ -4985,13 +4985,12 @@ c_func
 id|psched_clock_scale
 )paren
 suffix:semicolon
-macro_line|#ifdef PSCHED_WATCHER
 DECL|variable|psched_time_base
 id|psched_time_t
 id|psched_time_base
 suffix:semicolon
 DECL|variable|psched_time_mark
-id|PSCHED_WATCHER
+id|cycles_t
 id|psched_time_mark
 suffix:semicolon
 DECL|variable|psched_time_mark
@@ -5008,6 +5007,7 @@ c_func
 id|psched_time_base
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Periodically adjust psched_time_base to avoid overflow&n; * with 32-bit get_cycles(). Safe up to 4GHz CPU.&n; */
 r_static
 r_void
 id|psched_tick
@@ -5044,6 +5044,20 @@ r_int
 id|dummy
 )paren
 (brace
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|cycles_t
+)paren
+op_eq
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+(brace
 id|psched_time_t
 id|dummy_stamp
 suffix:semicolon
@@ -5053,7 +5067,6 @@ c_func
 id|dummy_stamp
 )paren
 suffix:semicolon
-multiline_comment|/* It is OK up to 4GHz cpu */
 id|psched_timer.expires
 op_assign
 id|jiffies
@@ -5070,7 +5083,7 @@ id|psched_timer
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 DECL|function|psched_calibrate_clock
 r_int
 id|__init
@@ -5101,14 +5114,12 @@ r_int
 r_int
 id|stop
 suffix:semicolon
-macro_line|#ifdef PSCHED_WATCHER
 id|psched_tick
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 id|stop
 op_assign
 id|jiffies

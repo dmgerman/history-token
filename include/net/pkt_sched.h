@@ -17,9 +17,6 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
-macro_line|#ifdef CONFIG_X86_TSC
-macro_line|#include &lt;asm/msr.h&gt;
-macro_line|#endif
 r_struct
 id|rtattr
 suffix:semicolon
@@ -867,6 +864,7 @@ mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+(1&lt;&lt;PSCHED_JSCALE)-
 DECL|macro|PSCHED_JIFFIE2US
 mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)&lt;&lt;PSCHED_JSCALE)
 macro_line|#elif PSCHED_CLOCK_SOURCE == PSCHED_CPU
+macro_line|#include &lt;asm/timex.h&gt;
 r_extern
 id|psched_tdiff_t
 id|psched_clock_per_hz
@@ -875,29 +873,20 @@ r_extern
 r_int
 id|psched_clock_scale
 suffix:semicolon
-DECL|macro|PSCHED_US2JIFFIE
-mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+psched_clock_per_hz-1)/psched_clock_per_hz)
-DECL|macro|PSCHED_JIFFIE2US
-mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*psched_clock_per_hz)
-macro_line|#ifdef CONFIG_X86_TSC
-DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u64 __cur; &bslash;&n;   rdtscll(__cur); &bslash;&n;   (stamp) = __cur&gt;&gt;psched_clock_scale; &bslash;&n;})
-macro_line|#elif defined (__alpha__)
-DECL|macro|PSCHED_WATCHER
-mdefine_line|#define PSCHED_WATCHER u32
 r_extern
 id|psched_time_t
 id|psched_time_base
 suffix:semicolon
 r_extern
-id|PSCHED_WATCHER
+id|cycles_t
 id|psched_time_mark
 suffix:semicolon
 DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u32 __res; &bslash;&n;   __asm__ __volatile__ (&quot;rpcc %0&quot; : &quot;r=&quot;(__res)); &bslash;&n;   if (__res &lt;= psched_time_mark) psched_time_base += 0x100000000UL; &bslash;&n;   psched_time_mark = __res; &bslash;&n;   (stamp) = (psched_time_base + __res)&gt;&gt;psched_clock_scale; &bslash;&n;})
-macro_line|#else
-macro_line|#error PSCHED_CLOCK_SOURCE=PSCHED_CPU is not supported on this arch.
-macro_line|#endif /* ARCH */
+mdefine_line|#define PSCHED_GET_TIME(stamp)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;cycles_t cur = get_cycles();&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(cycles_t) == sizeof(u32)) {&t;&t;&t;&t;&bslash;&n;&t;&t;if (cur &lt;= psched_time_mark)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;psched_time_base += 0x100000000ULL;&t;&t;&bslash;&n;&t;&t;psched_time_mark = cur;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(stamp) = (psched_time_base + cur)&gt;&gt;psched_clock_scale;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(stamp) = cur&gt;&gt;psched_clock_scale;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|PSCHED_US2JIFFIE
+mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+psched_clock_per_hz-1)/psched_clock_per_hz)
+DECL|macro|PSCHED_JIFFIE2US
+mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*psched_clock_per_hz)
 macro_line|#endif /* PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES */
 macro_line|#endif /* PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY */
 macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_GETTIMEOFDAY
