@@ -285,19 +285,23 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is just plain dumb.  We should move the bugger to drivers/net/wan,&n; * slap it first in directory and make it module_init().  The only reason&n; * for subsys_initcall() here is that net goes after drivers (why, BTW?)&n; */
-DECL|function|subsys_initcall
+DECL|variable|wanrouter_init
 id|subsys_initcall
 c_func
 (paren
 id|wanrouter_init
 )paren
+suffix:semicolon
+DECL|variable|wanrouter_cleanup
 id|module_exit
 c_func
 (paren
 id|wanrouter_cleanup
 )paren
+suffix:semicolon
 multiline_comment|/*&n; * &t;Kernel APIs&n; */
 multiline_comment|/*&n; * &t;Register WAN device.&n; * &t;o verify device credentials&n; * &t;o create an entry for the device in the /proc/net/router directory&n; * &t;o initialize internally maintained fields of the wan_device structure&n; * &t;o link device data space to a singly-linked list&n; * &t;o if it&squot;s the first device, then start kernel &squot;thread&squot;&n; * &t;o increment module use count&n; *&n; * &t;Return:&n; *&t;0&t;Ok&n; *&t;&lt; 0&t;error.&n; *&n; * &t;Context:&t;process&n; */
+DECL|function|register_wan_device
 r_int
 id|register_wan_device
 c_func

@@ -2505,6 +2505,11 @@ l_string|&quot;ok&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUSPEND_CONSOLE
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 id|update_screen
 c_func
 (paren
@@ -2512,6 +2517,11 @@ id|fg_console
 )paren
 suffix:semicolon
 multiline_comment|/* Hmm, is this the problem? */
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* do_magic() is implemented in arch/?/kernel/suspend_asm.S, and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;do_magic_suspend_1();&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;do_magic_suspend_2();&n;&t;&t;return;&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;do_magic_resume_1();&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;do_magic_resume_2();&n;&n; */

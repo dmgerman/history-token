@@ -69,8 +69,9 @@ comma
 l_int|0x012
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 id|IUC_SPEED_BUG
 op_or
 id|IUC_NO_WINDOW

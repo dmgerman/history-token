@@ -411,6 +411,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mc 0,0&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
