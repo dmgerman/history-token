@@ -430,7 +430,6 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|usb_release_interface_cache
-r_static
 r_void
 id|usb_release_interface_cache
 c_func
@@ -1729,8 +1728,6 @@ c_func
 (paren
 op_amp
 id|intfc-&gt;ref
-comma
-id|usb_release_interface_cache
 )paren
 suffix:semicolon
 )brace
@@ -2067,6 +2064,8 @@ id|i
 )braket
 op_member_access_from_pointer
 id|ref
+comma
+id|usb_release_interface_cache
 )paren
 suffix:semicolon
 )brace

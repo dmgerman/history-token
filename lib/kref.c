@@ -1,8 +1,7 @@
 multiline_comment|/*&n; * kref.c - library routines for handling generic reference counted objects&n; *&n; * Copyright (C) 2004 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; * Copyright (C) 2004 IBM Corp.&n; *&n; * based on lib/kobject.c which was:&n; * Copyright (C) 2002-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; * This file is released under the GPLv2.&n; *&n; */
-multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-multiline_comment|/**&n; * kref_init - initialize object.&n; * @kref: object in question.&n; * @release: pointer to a function that will clean up the object&n; *&t;     when the last reference to the object is released.&n; *&t;     This pointer is required.&n; */
+multiline_comment|/**&n; * kref_init - initialize object.&n; * @kref: object in question.&n; */
 DECL|function|kref_init
 r_void
 id|kref_init
@@ -12,28 +11,8 @@ r_struct
 id|kref
 op_star
 id|kref
-comma
-r_void
-(paren
-op_star
-id|release
-)paren
-(paren
-r_struct
-id|kref
-op_star
-id|kref
-)paren
 )paren
 (brace
-id|WARN_ON
-c_func
-(paren
-id|release
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -43,16 +22,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|kref-&gt;release
-op_assign
-id|release
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * kref_get - increment refcount for object.&n; * @kref: object.&n; */
 DECL|function|kref_get
-r_struct
-id|kref
-op_star
+r_void
 id|kref_get
 c_func
 (paren
@@ -81,11 +54,8 @@ op_amp
 id|kref-&gt;refcount
 )paren
 suffix:semicolon
-r_return
-id|kref
-suffix:semicolon
 )brace
-multiline_comment|/**&n; * kref_put - decrement refcount for object.&n; * @kref: object.&n; *&n; * Decrement the refcount, and if 0, call kref-&gt;release().&n; */
+multiline_comment|/**&n; * kref_put - decrement refcount for object.&n; * @kref: object.&n; * @release: pointer to the function that will clean up the object when the&n; *&t;     last reference to the object is released.&n; *&t;     This pointer is required, and it is not acceptable to pass kfree&n; *&t;     in as this function.&n; *&n; * Decrement the refcount, and if 0, call release().&n; */
 DECL|function|kref_put
 r_void
 id|kref_put
@@ -95,8 +65,47 @@ r_struct
 id|kref
 op_star
 id|kref
+comma
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|kref
+op_star
+id|kref
+)paren
 )paren
 (brace
+id|WARN_ON
+c_func
+(paren
+id|release
+op_eq
+l_int|NULL
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|release
+op_eq
+(paren
+r_void
+(paren
+op_star
+)paren
+(paren
+r_struct
+id|kref
+op_star
+)paren
+)paren
+id|kfree
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -107,22 +116,12 @@ op_amp
 id|kref-&gt;refcount
 )paren
 )paren
-(brace
-id|pr_debug
-c_func
-(paren
-l_string|&quot;kref cleaning up&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kref
-op_member_access_from_pointer
 id|release
 c_func
 (paren
 id|kref
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|kref_init
 id|EXPORT_SYMBOL
