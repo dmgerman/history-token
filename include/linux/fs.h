@@ -1547,6 +1547,7 @@ id|flock
 op_star
 )paren
 suffix:semicolon
+macro_line|#if BITS_PER_LONG == 32
 r_extern
 r_int
 id|fcntl_getlk64
@@ -1578,6 +1579,7 @@ id|flock64
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* fs/locks.c */
 r_extern
 r_void
