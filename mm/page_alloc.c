@@ -212,7 +212,8 @@ id|mask
 comma
 id|flags
 suffix:semicolon
-id|free_area_t
+r_struct
+id|free_area
 op_star
 id|area
 suffix:semicolon
@@ -620,7 +621,8 @@ comma
 r_int
 id|high
 comma
-id|free_area_t
+r_struct
+id|free_area
 op_star
 id|area
 )paren
@@ -848,7 +850,8 @@ r_int
 id|order
 )paren
 (brace
-id|free_area_t
+r_struct
+id|free_area
 op_star
 id|area
 op_assign

@@ -24,10 +24,9 @@ macro_line|#else
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
 macro_line|#endif
-DECL|struct|free_area_struct
-r_typedef
+DECL|struct|free_area
 r_struct
-id|free_area_struct
+id|free_area
 (brace
 DECL|member|free_list
 r_struct
@@ -40,9 +39,7 @@ r_int
 op_star
 id|map
 suffix:semicolon
-DECL|typedef|free_area_t
 )brace
-id|free_area_t
 suffix:semicolon
 r_struct
 id|pglist_data
@@ -135,7 +132,8 @@ c_func
 id|_pad2_
 )paren
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
-id|free_area_t
+r_struct
+id|free_area
 id|free_area
 (braket
 id|MAX_ORDER
