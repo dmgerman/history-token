@@ -111,6 +111,11 @@ op_minus
 id|RFC1051_HDR_SIZE
 comma
 dot
+id|is_ip
+op_assign
+l_int|1
+comma
+dot
 id|rx
 op_assign
 id|rx
@@ -125,6 +130,15 @@ id|prepare_tx
 op_assign
 id|prepare_tx
 comma
+dot
+id|continue_tx
+op_assign
+l_int|NULL
+comma
+dot
+id|ack_tx
+op_assign
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|arcnet_rfc1051_init

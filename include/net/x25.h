@@ -1105,6 +1105,20 @@ r_int
 r_char
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|x25_check_calluserdata
+c_func
+(paren
+r_struct
+id|x25_calluserdata
+op_star
+comma
+r_struct
+id|x25_calluserdata
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* x25_timer.c */
 r_extern
 r_void
