@@ -66,11 +66,6 @@ op_star
 id|inode
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -119,6 +114,11 @@ id|inode
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|inode-&gt;i_size
 op_assign
 l_int|0
@@ -147,11 +147,6 @@ r_return
 suffix:semicolon
 id|no_delete
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|clear_inode
 c_func
 (paren
@@ -182,12 +177,13 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|lock_kernel
+id|write_lock
 c_func
 (paren
+op_amp
+id|ei-&gt;i_meta_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: -&gt;i_prealloc* */
 r_if
 c_cond
 (paren
@@ -214,7 +210,13 @@ id|ei-&gt;i_prealloc_block
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Writer: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 id|ext2_free_blocks
 (paren
 id|inode
@@ -224,10 +226,15 @@ comma
 id|total
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-id|unlock_kernel
+r_else
+id|write_unlock
 c_func
 (paren
+op_amp
+id|ei-&gt;i_meta_lock
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -280,7 +287,13 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: -&gt;i_prealloc* */
+id|write_lock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -307,7 +320,13 @@ suffix:semicolon
 id|ei-&gt;i_prealloc_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* Writer: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 id|ext2_debug
 (paren
 l_string|&quot;preallocation hit (%lu/%lu).&bslash;n&quot;
@@ -322,6 +341,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 id|ext2_discard_prealloc
 (paren
 id|inode
@@ -881,7 +907,19 @@ id|bh
 r_goto
 id|failure
 suffix:semicolon
-multiline_comment|/* Reader: pointers */
+id|read_lock
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -916,7 +954,19 @@ op_increment
 id|offsets
 )paren
 suffix:semicolon
-multiline_comment|/* Reader: end */
+id|read_unlock
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -932,6 +982,19 @@ l_int|NULL
 suffix:semicolon
 id|changed
 suffix:colon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
+)paren
+suffix:semicolon
 op_star
 id|err
 op_assign
@@ -1106,7 +1169,13 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: -&gt;i_next_alloc* */
+id|write_lock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1124,8 +1193,6 @@ id|ei-&gt;i_next_alloc_goal
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Writer: end */
-multiline_comment|/* Reader: pointers, -&gt;i_next_alloc* */
 r_if
 c_cond
 (paren
@@ -1169,11 +1236,24 @@ comma
 id|partial
 )paren
 suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Reader: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
@@ -1559,7 +1639,13 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Verify that place we are splicing to is still there and vacant */
-multiline_comment|/* Writer: pointers, -&gt;i_next_alloc* */
+id|write_lock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1577,7 +1663,6 @@ op_logical_or
 op_star
 id|where-&gt;p
 )paren
-multiline_comment|/* Writer: end */
 r_goto
 id|changed
 suffix:semicolon
@@ -1606,7 +1691,13 @@ dot
 id|key
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 multiline_comment|/* We are done with atomic stuff, now do the rest of housekeeping */
 id|inode-&gt;i_ctime
 op_assign
@@ -1685,6 +1776,13 @@ l_int|0
 suffix:semicolon
 id|changed
 suffix:colon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1824,11 +1922,6 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|reread
 suffix:colon
 id|partial
@@ -1926,11 +2019,6 @@ id|partial
 op_decrement
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -2391,7 +2479,6 @@ op_amp
 id|err
 )paren
 suffix:semicolon
-multiline_comment|/* Writer: pointers */
 r_if
 c_cond
 (paren
@@ -2407,6 +2494,19 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the branch acquired continuation since we&squot;ve looked at it -&n;&t; * fine, it should all survive and (new) top doesn&squot;t belong to us.&n;&t; */
+id|write_lock
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2416,10 +2516,24 @@ op_logical_and
 op_star
 id|partial-&gt;p
 )paren
-multiline_comment|/* Writer: end */
+(brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
+)paren
+suffix:semicolon
 r_goto
 id|no_top
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -2482,7 +2596,19 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Writer: end */
+id|write_unlock
+c_func
+(paren
+op_amp
+id|EXT2_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2934,6 +3060,11 @@ id|inode
 )paren
 r_return
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ext2_discard_prealloc
 c_func
 (paren
@@ -3350,6 +3481,11 @@ id|mark_inode_dirty
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -4933,21 +5069,11 @@ r_int
 id|wait
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ext2_update_inode
 (paren
 id|inode
 comma
 id|wait
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

@@ -785,6 +785,14 @@ id|SLAB_CTOR_CONSTRUCTOR
 op_eq
 id|SLAB_CTOR_CONSTRUCTOR
 )paren
+(brace
+id|rwlock_init
+c_func
+(paren
+op_amp
+id|ei-&gt;i_meta_lock
+)paren
+suffix:semicolon
 id|inode_init_once
 c_func
 (paren
@@ -792,6 +800,7 @@ op_amp
 id|ei-&gt;vfs_inode
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|init_inodecache
 r_static

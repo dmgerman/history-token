@@ -4509,6 +4509,11 @@ id|warntype
 id|MAXQUOTAS
 )braket
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4702,6 +4707,11 @@ id|dquot
 (braket
 id|cnt
 )braket
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -4961,6 +4971,11 @@ op_star
 id|dquot
 suffix:semicolon
 multiline_comment|/* NOBLOCK Start */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5019,6 +5034,11 @@ op_lshift
 id|BLOCK_SIZE_BITS
 op_minus
 l_int|9
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* NOBLOCK End */

@@ -68,6 +68,10 @@ DECL|member|i_dir_start_lookup
 id|__u32
 id|i_dir_start_lookup
 suffix:semicolon
+DECL|member|i_meta_lock
+id|rwlock_t
+id|i_meta_lock
+suffix:semicolon
 DECL|member|vfs_inode
 r_struct
 id|inode
