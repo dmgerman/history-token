@@ -7752,9 +7752,9 @@ l_string|&quot;MAPPED&quot;
 comma
 l_string|&quot;PARTIAL&quot;
 comma
-multiline_comment|/*  4 */
 l_string|&quot;ASYNC&quot;
 comma
+multiline_comment|/*  5 */
 l_string|&quot;NONE&quot;
 comma
 l_string|&quot;DELWRI&quot;
@@ -7763,57 +7763,56 @@ l_string|&quot;FREED&quot;
 comma
 l_string|&quot;SYNC&quot;
 comma
-multiline_comment|/*  9 */
 l_string|&quot;MAPPABLE&quot;
 comma
+multiline_comment|/* 10 */
 l_string|&quot;STALE&quot;
 comma
 l_string|&quot;FS_MANAGED&quot;
 comma
-l_string|&quot;RELEASE&quot;
+l_string|&quot;INVALID12&quot;
 comma
-multiline_comment|/* 13 */
 l_string|&quot;LOCK&quot;
 comma
 l_string|&quot;TRYLOCK&quot;
 comma
-l_string|&quot;ALLOCATE&quot;
-comma
+multiline_comment|/* 15 */
 l_string|&quot;FILE_ALLOCATE&quot;
 comma
 l_string|&quot;DONT_BLOCK&quot;
 comma
-multiline_comment|/* 18 */
 l_string|&quot;DIRECT&quot;
 comma
+l_string|&quot;INVALID18&quot;
+comma
+l_string|&quot;INVALID19&quot;
+comma
+multiline_comment|/* 20 */
 l_string|&quot;LOCKABLE&quot;
 comma
 l_string|&quot;PRIVATE_BH&quot;
 comma
-l_string|&quot;ENTER_PAGES&quot;
-comma
-multiline_comment|/* 22 */
 l_string|&quot;ALL_PAGES_MAPPED&quot;
-comma
-l_string|&quot;SOME_INVALID_PAGES&quot;
 comma
 l_string|&quot;ADDR_ALLOCATED&quot;
 comma
-multiline_comment|/* 25 */
 l_string|&quot;MEM_ALLOCATED&quot;
 comma
-l_string|&quot;INVALID26&quot;
-comma
+multiline_comment|/* 25 */
 l_string|&quot;FORCEIO&quot;
 comma
 l_string|&quot;FLUSH&quot;
 comma
-multiline_comment|/* 29 */
 l_string|&quot;READ_AHEAD&quot;
 comma
+l_string|&quot;INVALID28&quot;
+comma
+l_string|&quot;INVALID29&quot;
+comma
+multiline_comment|/* 30 */
 l_string|&quot;INVALID30&quot;
 comma
-l_string|&quot;FS_RESERVED&quot;
+l_string|&quot;INVALID31&quot;
 comma
 l_int|NULL
 )brace
