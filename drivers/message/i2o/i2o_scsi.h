@@ -14,7 +14,7 @@ DECL|macro|I2O_SCSI_CAN_QUEUE
 mdefine_line|#define I2O_SCSI_CAN_QUEUE 4
 DECL|macro|I2O_SCSI_CMD_PER_LUN
 mdefine_line|#define I2O_SCSI_CMD_PER_LUN 6
-r_extern
+r_static
 r_int
 id|i2o_scsi_detect
 c_func
@@ -23,7 +23,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_const
 r_char
 op_star
@@ -35,7 +35,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|i2o_scsi_command
 c_func
@@ -44,7 +44,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|i2o_scsi_queuecommand
 c_func
@@ -63,7 +63,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|i2o_scsi_abort
 c_func
@@ -72,7 +72,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|i2o_scsi_reset
 c_func
@@ -84,7 +84,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|i2o_scsi_bios_param
 c_func
@@ -100,21 +100,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|i2o_scsi_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-suffix:semicolon
-r_extern
+r_static
 r_int
 id|i2o_scsi_release
 c_func
