@@ -78,6 +78,10 @@ DECL|macro|XFS_XFLAG_NODUMP
 mdefine_line|#define XFS_XFLAG_NODUMP&t;0x00000080&t;/* do not include in backups */
 DECL|macro|XFS_XFLAG_RTINHERIT
 mdefine_line|#define XFS_XFLAG_RTINHERIT&t;0x00000100&t;/* create with rt bit set */
+DECL|macro|XFS_XFLAG_PROJINHERIT
+mdefine_line|#define XFS_XFLAG_PROJINHERIT&t;0x00000200&t;/* create with parents projid */
+DECL|macro|XFS_XFLAG_NOSYMLINKS
+mdefine_line|#define XFS_XFLAG_NOSYMLINKS&t;0x00000400&t;/* disallow symlink creation */
 DECL|macro|XFS_XFLAG_HASATTR
 mdefine_line|#define XFS_XFLAG_HASATTR&t;0x80000000&t;/* no DIFLAG for this&t;*/
 multiline_comment|/*&n; * Structure for XFS_IOC_GETBMAP.&n; * On input, fill in bmv_offset and bmv_length of the first structure&n; * to indicate the area of interest in the file, and bmv_entry with the&n; * number of array elements given.  The first structure is updated on&n; * return to give the offset and length for the next call.&n; */

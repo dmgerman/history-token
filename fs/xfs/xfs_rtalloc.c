@@ -7102,10 +7102,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate new parameters.  These are the final values to be reached.&n;&t; */
 id|nrextents
 op_assign
+id|nrblocks
+suffix:semicolon
 id|do_div
 c_func
 (paren
-id|nrblocks
+id|nrextents
 comma
 id|in-&gt;extsize
 )paren
@@ -7348,10 +7350,12 @@ id|nsbp-&gt;sb_rextsize
 suffix:semicolon
 id|nsbp-&gt;sb_rextents
 op_assign
+id|nsbp-&gt;sb_rblocks
+suffix:semicolon
 id|do_div
 c_func
 (paren
-id|nsbp-&gt;sb_rblocks
+id|nsbp-&gt;sb_rextents
 comma
 id|nsbp-&gt;sb_rextsize
 )paren

@@ -1157,7 +1157,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* OK so we are holding the I/O lock for the duration&n;&t; * of the submission, then what happens if the I/O&n;&t; * does not really happen here, but is scheduled &n;&t; * later?&n;&t; */
 id|xfs_ilock
 c_func
 (paren
@@ -1615,6 +1614,13 @@ comma
 id|XFS_IOLOCK_SHARED
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OG
+l_int|0
+)paren
 id|XFS_STATS_ADD
 c_func
 (paren
@@ -1623,6 +1629,20 @@ comma
 id|ret
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+op_logical_neg
+(paren
+id|ioflags
+op_amp
+id|IO_INVIS
+)paren
+)paren
+)paren
 id|xfs_ichgtime
 c_func
 (paren

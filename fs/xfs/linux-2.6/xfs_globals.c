@@ -166,6 +166,17 @@ op_star
 l_int|100
 )brace
 comma
+dot
+id|inherit_nosym
+op_assign
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|1
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Global system credential structure.&n; */
