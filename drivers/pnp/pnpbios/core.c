@@ -2178,8 +2178,8 @@ r_void
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* Don&squot;t use pnpbios if pnpacpi is used */
-macro_line|#ifdef CONFIG_PNPACPI
+multiline_comment|/* Don&squot;t use pnpbios if ACPI is enabled */
+macro_line|#ifdef CONFIG_ACPI
 r_if
 c_cond
 (paren
@@ -2195,7 +2195,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PnPBIOS: Disabled by pnpacpi&bslash;n&quot;
+l_string|&quot;PnPBIOS: Disabled by ACPI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
