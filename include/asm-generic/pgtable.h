@@ -216,5 +216,13 @@ macro_line|#ifndef __HAVE_ARCH_PTE_SAME
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(pte_val(A) == pte_val(B))
 macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY
+DECL|macro|page_test_and_clear_dirty
+mdefine_line|#define page_test_and_clear_dirty(page) (0)
+macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
+DECL|macro|page_test_and_clear_young
+mdefine_line|#define page_test_and_clear_young(page) (0)
+macro_line|#endif
 macro_line|#endif /* _ASM_GENERIC_PGTABLE_H */
 eof

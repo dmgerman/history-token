@@ -129,9 +129,6 @@ DECL|macro|_PAGE_RO
 mdefine_line|#define _PAGE_RO        0x200          /* HW read-only                     */
 DECL|macro|_PAGE_INVALID
 mdefine_line|#define _PAGE_INVALID   0x400          /* HW invalid                       */
-multiline_comment|/* Software bits in the page table entry */
-DECL|macro|_PAGE_ISCLEAN
-mdefine_line|#define _PAGE_ISCLEAN   0x002
 multiline_comment|/* Mask and four different kinds of invalid pages. */
 DECL|macro|_PAGE_INVALID_MASK
 mdefine_line|#define _PAGE_INVALID_MASK&t;0x601
@@ -206,17 +203,17 @@ multiline_comment|/*&n; * No mapping available&n; */
 DECL|macro|PAGE_NONE_SHARED
 mdefine_line|#define PAGE_NONE_SHARED  __pgprot(_PAGE_INVALID_NONE)
 DECL|macro|PAGE_NONE_PRIVATE
-mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_INVALID_NONE|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_INVALID_NONE)
 DECL|macro|PAGE_RO_SHARED
 mdefine_line|#define PAGE_RO_SHARED&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_RO_PRIVATE
-mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_RO|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_RO|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_SHARED
 mdefine_line|#define PAGE_SHARED&t;  __pgprot(0)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;  __pgprot(_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_KERNEL&t;  __pgprot(0)
 multiline_comment|/*&n; * The S390 can&squot;t do page protection for execute, and considers that the&n; * same are read. Also, write permissions imply read permissions. This is&n; * the closest we can get..&n; */
 multiline_comment|/*xwr*/
 DECL|macro|__P000
@@ -676,47 +673,9 @@ id|pte_t
 id|pte
 )paren
 (brace
-r_int
-id|skey
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|_PAGE_ISCLEAN
-)paren
+multiline_comment|/* A pte is neither clean nor dirty on s/390. The dirty bit&n;&t; * is in the storage key. See page_test_and_clear_dirty for&n;&t; * details.&n;&t; */
 r_return
 l_int|0
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;iske %0,%1&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|skey
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
-r_return
-id|skey
-op_amp
-id|_PAGE_CHANGED
 suffix:semicolon
 )brace
 DECL|function|pte_young
@@ -730,33 +689,9 @@ id|pte_t
 id|pte
 )paren
 (brace
-r_int
-id|skey
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;iske %0,%1&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|skey
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* A pte is neither young nor old on s/390. The young bit&n;&t; * is in the storage key. See page_test_and_clear_young for&n;&t; * details.&n;&t; */
 r_return
-id|skey
-op_amp
-id|_PAGE_REFERENCED
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pgd/pmd/pte modification functions&n; */
@@ -936,8 +871,6 @@ id|pte
 )paren
 op_and_assign
 id|PAGE_MASK
-op_or
-id|_PAGE_ISCLEAN
 suffix:semicolon
 id|pte_val
 c_func
@@ -950,9 +883,6 @@ c_func
 (paren
 id|newprot
 )paren
-op_amp
-op_complement
-id|_PAGE_ISCLEAN
 suffix:semicolon
 r_return
 id|pte
@@ -1014,11 +944,7 @@ id|pte
 )paren
 op_and_assign
 op_complement
-(paren
 id|_PAGE_RO
-op_or
-id|_PAGE_ISCLEAN
-)paren
 suffix:semicolon
 r_return
 id|pte
@@ -1100,38 +1026,8 @@ op_star
 id|ptep
 )paren
 (brace
-r_int
-id|ccode
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;rrbe 0,%1&bslash;n&bslash;t&quot;
-l_string|&quot;ipm  %0&bslash;n&bslash;t&quot;
-l_string|&quot;srl  %0,28&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|ccode
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-op_star
-id|ptep
-)paren
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
 r_return
-id|ccode
-op_amp
-l_int|2
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -1176,76 +1072,8 @@ op_star
 id|ptep
 )paren
 (brace
-r_int
-id|skey
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_val
-c_func
-(paren
-op_star
-id|ptep
-)paren
-op_amp
-id|_PAGE_ISCLEAN
-)paren
 r_return
 l_int|0
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;iske %0,%1&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|skey
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-op_star
-id|ptep
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|skey
-op_amp
-id|_PAGE_CHANGED
-)paren
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* We can&squot;t clear the changed bit atomically. For now we&n;         * clear (!) the page referenced bit. */
-id|asm
-r_volatile
-(paren
-l_string|&quot;sske %0,%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-l_int|0
-)paren
-comma
-l_string|&quot;a&quot;
-(paren
-op_star
-id|ptep
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 r_static
@@ -1525,6 +1353,12 @@ id|entry
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Test and clear dirty bit in storage key.&n; * We can&squot;t clear the changed bit atomically. This is a potential&n; * race against modification of the referenced bit. This function&n; * should therefore only be called if it is not mapped in any&n; * address space.&n; */
+DECL|macro|page_test_and_clear_dirty
+mdefine_line|#define page_test_and_clear_dirty(page)&t;&t;&t;&t;&t;  &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;struct page *__page = (page);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;int __skey;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;asm volatile (&quot;iske %0,%1&quot; : &quot;=d&quot; (__skey) : &quot;a&quot; (__physpage));   &bslash;&n;&t;if (__skey &amp; _PAGE_CHANGED) {&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;asm volatile (&quot;sske %0,%1&quot;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;      : : &quot;d&quot; (__skey &amp; ~_PAGE_CHANGED),&t;  &bslash;&n;&t;&t;&t;          &quot;a&quot; (__physpage));&t;&t;&t;  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;(__skey &amp; _PAGE_CHANGED);&t;&t;&t;&t;&t;  &bslash;&n;})
+multiline_comment|/*&n; * Test and clear referenced bit in storage key.&n; */
+DECL|macro|page_test_and_clear_young
+mdefine_line|#define page_test_and_clear_young(page)&t;&t;&t;&t;&t;  &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;struct page *__page = (page);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;int __ccode;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;asm volatile (&quot;rrbe 0,%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;      &quot;ipm  %0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;      &quot;srl  %0,28&bslash;n&bslash;t&quot; &t;&t;&t;&t;&t;  &bslash;&n;                      : &quot;=d&quot; (__ccode) : &quot;a&quot; (__physpage) : &quot;cc&quot; );&t;  &bslash;&n;&t;(__ccode &amp; 2);&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;})
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|function|mk_pte_phys
 r_static
@@ -1773,6 +1607,10 @@ DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
 mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
+DECL|macro|__HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PAGE_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _S390_PAGE_H */
 eof
