@@ -3,8 +3,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/irda.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 multiline_comment|/*&n; * Belkin is selling a dongle called the SmartBeam.&n; * In fact, there is two hardware version of this dongle, of course with&n; * the same name and looking the exactly same (grrr...).&n; * I guess that I&squot;ve got the old one, because inside I don&squot;t have&n; * a jumper for IrDA/ASK...&n; *&n; * As far as I can make it from info on their web site, the old dongle &n; * support only 9600 b/s, which make our life much simpler as far as&n; * the driver is concerned, but you might not like it very much ;-)&n; * The new SmartBeam does 115 kb/s, and I&squot;ve not tested it...&n; *&n; * Belkin claim that the correct driver for the old dongle (in Windows)&n; * is the generic Parallax 9500a driver, but the Linux LiteLink driver&n; * fails for me (probably because Linux-IrDA doesn&squot;t rate fallback),&n; * so I created this really dumb driver...&n; *&n; * In fact, this driver doesn&squot;t do much. The only thing it does is to&n; * prevent Linux-IrDA to use any other speed than 9600 b/s ;-) This&n; * driver is called &quot;old_belkin&quot; so that when the new SmartBeam is supported&n; * its driver can be called &quot;belkin&quot; instead of &quot;new_belkin&quot;.&n; *&n; * Note : this driver was written without any info/help from Belkin,&n; * so a lot of info here might be totally wrong. Blame me ;-)&n; */
