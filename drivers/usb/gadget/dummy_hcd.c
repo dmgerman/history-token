@@ -2656,21 +2656,11 @@ op_star
 id|ep
 suffix:semicolon
 multiline_comment|/* prevent any more requests */
-id|dum-&gt;hdev
-op_assign
-l_int|0
-suffix:semicolon
 id|dum-&gt;address
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* this might not succeed ... */
-id|del_timer
-(paren
-op_amp
-id|dum-&gt;timer
-)paren
-suffix:semicolon
+multiline_comment|/* The timer is left running so that outstanding URBs can fail */
 multiline_comment|/* nuke any pending requests first, so driver i/o is quiesced */
 id|list_for_each_entry
 (paren
@@ -2825,12 +2815,6 @@ id|driver_unregister
 (paren
 op_amp
 id|driver-&gt;driver
-)paren
-suffix:semicolon
-id|del_timer_sync
-(paren
-op_amp
-id|dum-&gt;timer
 )paren
 suffix:semicolon
 r_return
