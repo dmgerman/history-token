@@ -2596,6 +2596,10 @@ op_assign
 l_int|999
 comma
 multiline_comment|/* dummy device number */
+dot
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * LANE2: new argument struct sk_buff *data contains&n; * the LE_ARP based TLVs introduced in the LANE2 spec&n; */

@@ -3519,6 +3519,10 @@ id|number
 op_assign
 l_int|42
 comma
+dot
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 multiline_comment|/* members not explicitly initialised will be 0 */
 )brace
 suffix:semicolon

@@ -3471,6 +3471,10 @@ id|number
 op_assign
 l_int|999
 comma
+dot
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
 DECL|function|atm_init_atmarp
