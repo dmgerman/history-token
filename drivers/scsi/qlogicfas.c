@@ -3287,7 +3287,7 @@ comma
 dot
 id|can_queue
 op_assign
-l_int|0
+l_int|1
 comma
 dot
 id|this_id
