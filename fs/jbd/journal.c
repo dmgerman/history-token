@@ -515,6 +515,13 @@ comma
 id|journal-&gt;j_commit_request
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -548,6 +555,13 @@ id|journal-&gt;j_commit_timer
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|journal_commit_transaction
 c_func
 (paren
@@ -557,6 +571,13 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -572,7 +593,7 @@ op_amp
 id|PF_FREEZE
 )paren
 (brace
-multiline_comment|/* The simpler the better. Flushing journal isn&squot;t a&n;&t;&t;&t;&t;&t;&t;     good idea, because that depends on threads that&n;&t;&t;&t;&t;&t;&t;     may be already stopped. */
+multiline_comment|/*&n;&t;&t;&t; * The simpler the better. Flushing journal isn&squot;t a&n;&t;&t;&t; * good idea, because that depends on threads that may&n;&t;&t;&t; * be already stopped.&n;&t;&t;&t; */
 id|jbd_debug
 c_func
 (paren
@@ -597,7 +618,8 @@ l_string|&quot;Resuming kjournald&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* we assume on resume that commits are already there,&n;&t;&t;&t;&t;   so we don&squot;t sleep */
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We assume on resume that commits are already there,&n;&t;&t;&t; * so we don&squot;t sleep&n;&t;&t;&t; */
 id|interruptible_sleep_on
 c_func
 (paren
@@ -605,6 +627,7 @@ op_amp
 id|journal-&gt;j_wait_commit
 )paren
 suffix:semicolon
+)brace
 id|jbd_debug
 c_func
 (paren
@@ -1487,6 +1510,7 @@ multiline_comment|/*&n; * Wait for a specified commit to complete.&n; * The call
 DECL|function|log_wait_commit
 r_int
 id|log_wait_commit
+c_func
 (paren
 id|journal_t
 op_star
@@ -1547,6 +1571,13 @@ id|journal
 )paren
 suffix:semicolon
 macro_line|#endif
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1578,14 +1609,43 @@ op_amp
 id|journal-&gt;j_wait_commit
 )paren
 suffix:semicolon
-id|sleep_on
+id|spin_unlock
 c_func
 (paren
 op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
 id|journal-&gt;j_wait_done_commit
+comma
+op_logical_neg
+id|tid_gt
+c_func
+(paren
+id|tid
+comma
+id|journal-&gt;j_commit_sequence
+)paren
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
