@@ -1990,6 +1990,8 @@ id|US_PR_CB
 comma
 l_int|NULL
 comma
+id|US_FL_NEED_OVERRIDE
+op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma

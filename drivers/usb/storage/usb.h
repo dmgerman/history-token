@@ -60,6 +60,8 @@ DECL|macro|US_FL_SINGLE_LUN
 mdefine_line|#define US_FL_SINGLE_LUN      0x00000001 /* allow access to only LUN 0&t;    */
 DECL|macro|US_FL_MODE_XLATE
 mdefine_line|#define US_FL_MODE_XLATE      0          /* [no longer used]                */
+DECL|macro|US_FL_NEED_OVERRIDE
+mdefine_line|#define US_FL_NEED_OVERRIDE   0x00000004 /* unusual_devs entry is necessary */
 DECL|macro|US_FL_IGNORE_SER
 mdefine_line|#define US_FL_IGNORE_SER      0&t;&t; /* [no longer used]&t;&t;    */
 DECL|macro|US_FL_SCM_MULT_TARG
