@@ -1875,7 +1875,7 @@ c_func
 (paren
 id|filp
 comma
-id|current-&gt;tgid
+id|current-&gt;pid
 comma
 l_int|1
 )paren

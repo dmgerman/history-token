@@ -4456,9 +4456,9 @@ c_func
 (paren
 id|filp
 comma
-id|current-&gt;tgid
+id|current-&gt;pid
 comma
-l_int|1
+l_int|0
 )paren
 suffix:semicolon
 id|out_unlock
