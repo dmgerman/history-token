@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef _H_JFS_INCORE
 DECL|macro|_H_JFS_INCORE
 mdefine_line|#define _H_JFS_INCORE
@@ -318,6 +318,13 @@ DECL|struct|jfs_sb_info
 r_struct
 id|jfs_sb_info
 (brace
+DECL|member|sb
+r_struct
+id|super_block
+op_star
+id|sb
+suffix:semicolon
+multiline_comment|/* Point back to vfs super block */
 DECL|member|mntflag
 r_int
 r_int
@@ -359,6 +366,12 @@ op_star
 id|log
 suffix:semicolon
 multiline_comment|/* log&t;&t;&t;*/
+DECL|member|log_list
+r_struct
+id|list_head
+id|log_list
+suffix:semicolon
+multiline_comment|/* volumes associated with a journal */
 DECL|member|bsize
 r_int
 id|bsize
