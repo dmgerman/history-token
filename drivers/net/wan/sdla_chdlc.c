@@ -3464,25 +3464,16 @@ id|chdlc_priv_area-&gt;config_chdlc_timeout
 op_assign
 id|jiffies
 suffix:semicolon
-id|del_timer
+multiline_comment|/* Start the CHDLC configuration after 1sec delay.&n;&t; * This will give the interface initilization time&n;&t; * to finish its configuration */
+id|mod_timer
 c_func
 (paren
 op_amp
 id|chdlc_priv_area-&gt;poll_delay_timer
-)paren
-suffix:semicolon
-multiline_comment|/* Start the CHDLC configuration after 1sec delay.&n;&t; * This will give the interface initilization time&n;&t; * to finish its configuration */
-id|chdlc_priv_area-&gt;poll_delay_timer.expires
-op_assign
+comma
 id|jiffies
 op_plus
 id|HZ
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|chdlc_priv_area-&gt;poll_delay_timer
 )paren
 suffix:semicolon
 r_return
