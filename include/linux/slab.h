@@ -47,6 +47,8 @@ DECL|macro|SLAB_MUST_HWCACHE_ALIGN
 mdefine_line|#define SLAB_MUST_HWCACHE_ALIGN&t;0x00008000UL&t;/* force alignment */
 DECL|macro|SLAB_STORE_USER
 mdefine_line|#define SLAB_STORE_USER&t;&t;0x00010000UL&t;/* store the last owner for bug hunting */
+DECL|macro|SLAB_RECLAIM_ACCOUNT
+mdefine_line|#define SLAB_RECLAIM_ACCOUNT&t;0x00020000UL&t;/* track pages allocated to indicate&n;&t;&t;&t;&t;&t;&t;   what is reclaimable later*/
 multiline_comment|/* flags passed to a constructor func */
 DECL|macro|SLAB_CTOR_CONSTRUCTOR
 mdefine_line|#define&t;SLAB_CTOR_CONSTRUCTOR&t;0x001UL&t;&t;/* if not set, then deconstructor */
