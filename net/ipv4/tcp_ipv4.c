@@ -17,6 +17,10 @@ r_extern
 r_int
 id|sysctl_ip_dynaddr
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_ip_default_ttl
+suffix:semicolon
 DECL|variable|sysctl_tcp_tw_reuse
 r_int
 id|sysctl_tcp_tw_reuse
@@ -4963,6 +4967,10 @@ id|check
 )paren
 op_div
 l_int|2
+suffix:semicolon
+id|tcp_socket-&gt;sk-&gt;protinfo.af_inet.ttl
+op_assign
+id|sysctl_ip_default_ttl
 suffix:semicolon
 id|ip_send_reply
 c_func
