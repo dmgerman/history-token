@@ -18,11 +18,17 @@ mdefine_line|#define D_TX_MON1&t;7
 DECL|macro|E_RCVBUFREADY
 mdefine_line|#define E_RCVBUFREADY&t;8
 DECL|macro|B_RCVBUFREADY
-mdefine_line|#define B_RCVBUFREADY 0
+mdefine_line|#define B_RCVBUFREADY   0
 DECL|macro|B_XMTBUFREADY
-mdefine_line|#define B_XMTBUFREADY 1
+mdefine_line|#define B_XMTBUFREADY   1
 DECL|macro|B_CMPLREADY
-mdefine_line|#define B_CMPLREADY   2
+mdefine_line|#define B_CMPLREADY     2
+DECL|macro|B_LL_NOCARRIER
+mdefine_line|#define B_LL_NOCARRIER&t;8
+DECL|macro|B_LL_CONNECT
+mdefine_line|#define B_LL_CONNECT&t;9
+DECL|macro|B_LL_OK
+mdefine_line|#define B_LL_OK&t;&t;10
 r_extern
 r_void
 id|debugl1

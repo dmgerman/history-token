@@ -1333,7 +1333,7 @@ comma
 id|bcs-&gt;tx_skb
 )paren
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -1388,7 +1388,7 @@ op_amp
 id|bcs-&gt;Flag
 )paren
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -1570,7 +1570,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|cs-&gt;hw.elsa.bcs

@@ -2730,7 +2730,7 @@ id|bcs-&gt;hw.hscx.rcvidx
 op_assign
 l_int|0
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -2818,7 +2818,7 @@ id|bcs-&gt;hw.hscx.rcvidx
 op_assign
 l_int|0
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -2867,7 +2867,7 @@ comma
 id|bcs-&gt;tx_skb
 )paren
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -2926,7 +2926,7 @@ op_amp
 id|bcs-&gt;Flag
 )paren
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs

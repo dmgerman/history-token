@@ -913,38 +913,6 @@ id|cs-&gt;work
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*********************************/
-multiline_comment|/* schedule a new b_channel task */
-multiline_comment|/*********************************/
-r_static
-r_void
-DECL|function|hfcpci_sched_event
-id|hfcpci_sched_event
-c_func
-(paren
-r_struct
-id|BCState
-op_star
-id|bcs
-comma
-r_int
-id|event
-)paren
-(brace
-id|bcs-&gt;event
-op_or_assign
-l_int|1
-op_lshift
-id|event
-suffix:semicolon
-id|schedule_work
-c_func
-(paren
-op_amp
-id|bcs-&gt;work
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/************************************************/
 multiline_comment|/* select a b-channel entry matching and active */
 multiline_comment|/************************************************/
@@ -2539,7 +2507,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|hfcpci_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -2889,7 +2857,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|hfcpci_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -4311,7 +4279,7 @@ comma
 id|bcs-&gt;tx_skb
 )paren
 suffix:semicolon
-id|hscx_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -6202,7 +6170,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|hfcpci_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -6364,7 +6332,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|hfcpci_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs

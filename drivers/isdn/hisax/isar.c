@@ -2592,12 +2592,6 @@ id|BCState
 op_star
 )paren
 suffix:semicolon
-DECL|macro|B_LL_NOCARRIER
-mdefine_line|#define B_LL_NOCARRIER&t;8
-DECL|macro|B_LL_CONNECT
-mdefine_line|#define B_LL_CONNECT&t;9
-DECL|macro|B_LL_OK
-mdefine_line|#define B_LL_OK&t;&t;10
 r_static
 r_void
 DECL|function|isar_bh
@@ -2684,35 +2678,6 @@ id|ISDN_FAX_CLASS1_OK
 suffix:semicolon
 )brace
 r_static
-r_void
-DECL|function|isar_sched_event
-id|isar_sched_event
-c_func
-(paren
-r_struct
-id|BCState
-op_star
-id|bcs
-comma
-r_int
-id|event
-)paren
-(brace
-id|bcs-&gt;event
-op_or_assign
-l_int|1
-op_lshift
-id|event
-suffix:semicolon
-id|schedule_work
-c_func
-(paren
-op_amp
-id|bcs-&gt;work
-)paren
-suffix:semicolon
-)brace
-r_static
 r_inline
 r_void
 DECL|function|send_DLE_ETX
@@ -2781,7 +2746,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3064,7 +3029,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3342,7 +3307,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3498,7 +3463,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3578,7 +3543,7 @@ id|bcs-&gt;hw.isar.state
 op_assign
 id|STFAX_ESCAPE
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3891,7 +3856,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3905,7 +3870,7 @@ c_func
 id|bcs
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -3992,7 +3957,7 @@ id|bcs-&gt;hw.isar.state
 op_assign
 id|STFAX_ESCAPE
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -4591,7 +4556,7 @@ comma
 id|bcs-&gt;tx_skb
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -4807,7 +4772,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -4826,7 +4791,7 @@ op_amp
 id|bcs-&gt;Flag
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -6226,7 +6191,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -6450,7 +6415,7 @@ id|bcs-&gt;Flag
 )paren
 )paren
 (brace
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -6474,7 +6439,7 @@ c_func
 id|bcs
 )paren
 suffix:semicolon
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs
@@ -7369,7 +7334,7 @@ id|bcs-&gt;Flag
 )paren
 )paren
 (brace
-id|isar_sched_event
+id|sched_b_event
 c_func
 (paren
 id|bcs

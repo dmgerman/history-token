@@ -390,9 +390,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* &t;&t;&t;&t;if (!(bcs-&gt;tx_skb = skb_dequeue(&amp;bcs-&gt;sq))) { */
-multiline_comment|/* &t;&t;&t;&t;&t;st5481B_sched_event(bcs, B_XMTBUFREADY); */
-multiline_comment|/* &t;&t;&t;&t;} */
 )brace
 )brace
 r_else
