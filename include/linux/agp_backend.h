@@ -32,15 +32,6 @@ comma
 DECL|enumerator|AMD_GENERIC
 id|AMD_GENERIC
 comma
-DECL|enumerator|AMD_IRONGATE
-id|AMD_IRONGATE
-comma
-DECL|enumerator|AMD_761
-id|AMD_761
-comma
-DECL|enumerator|AMD_762
-id|AMD_762
-comma
 DECL|enumerator|AMD_8151
 id|AMD_8151
 comma
