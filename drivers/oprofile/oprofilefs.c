@@ -716,7 +716,7 @@ op_logical_neg
 id|dentry
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|inode
 op_assign
@@ -744,7 +744,7 @@ id|dentry
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|inode-&gt;i_fop
@@ -1205,7 +1205,7 @@ op_logical_neg
 id|dentry
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|inode
 op_assign
@@ -1233,7 +1233,7 @@ id|dentry
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|inode-&gt;i_op

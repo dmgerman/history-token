@@ -131,15 +131,6 @@ DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (2*HZ)
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;&t;&t;/* Size of each temporary Rx buffer.*/
-macro_line|#ifndef __KERNEL__
-DECL|macro|__KERNEL__
-mdefine_line|#define __KERNEL__
-macro_line|#endif
-macro_line|#if !defined(__OPTIMIZE__)
-macro_line|#warning  You must compile this file with the correct options!
-macro_line|#warning  See the last lines of the source file.
-macro_line|#error You must compile this driver with &quot;-O&quot;.
-macro_line|#endif
 multiline_comment|/* Include files, designed to support most kernel versions 2.0.0 and later. */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

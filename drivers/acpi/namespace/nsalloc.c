@@ -949,7 +949,7 @@ id|ACPI_TYPE_ANY
 comma
 id|child_node
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -963,7 +963,7 @@ id|child_node
 suffix:semicolon
 id|child_node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

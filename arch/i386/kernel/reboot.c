@@ -301,7 +301,7 @@ op_assign
 (brace
 l_int|0x3ff
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 DECL|variable|no_idt
@@ -310,7 +310,7 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/* This is 16-bit protected mode code to disable paging and the cache,&n;   switch to real mode and jump to the BIOS reset code.&n;&n;   The instruction that switches to real mode by writing to CR0 must be&n;   followed immediately by a far jump instruction, which set CS to a&n;   valid value for real mode, and flushes the prefetch queue to avoid&n;   running instructions that have already been decoded in protected&n;   mode.&n;&n;   Clears all the flags except ET, especially PG (paging), PE&n;   (protected-mode enable) and TS (task switch for coprocessor state&n;   save).  Flushes the TLB after paging has been disabled.  Sets CD and&n;   NW, to disable the cache on a 486, and invalidates the cache.  This&n;   is more like the state of a 486 after reset.  I don&squot;t know if&n;   something else should be done for other chips.&n;&n;   More could be done here to set up the registers as if a CPU reset had&n;   occurred; hopefully real BIOSs don&squot;t assume much. */
@@ -833,7 +833,7 @@ id|EFI_SUCCESS
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|__asm__
@@ -925,7 +925,7 @@ id|EFI_SUCCESS
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|machine_real_restart
@@ -987,7 +987,7 @@ id|EFI_SUCCESS
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

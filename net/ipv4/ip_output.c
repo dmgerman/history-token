@@ -2045,7 +2045,7 @@ id|skb
 op_member_access_from_pointer
 id|frag_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|skb-&gt;data_len
 op_assign

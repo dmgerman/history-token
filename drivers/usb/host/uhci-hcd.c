@@ -10646,7 +10646,7 @@ l_string|&quot;driver/uhci&quot;
 comma
 id|S_IFDIR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -10735,7 +10735,7 @@ c_func
 (paren
 l_string|&quot;driver/uhci&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|proc_failed
@@ -10796,7 +10796,7 @@ c_func
 (paren
 l_string|&quot;driver/uhci&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

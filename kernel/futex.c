@@ -727,7 +727,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * The waiting task can free the futex_q as soon as this is written,&n;&t; * without taking any locks.  This must come last.&n;&t; */
 id|q-&gt;lock_ptr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wake up all waiters hashed on the physical page that is mapped&n; * to this virtual address:&n; */

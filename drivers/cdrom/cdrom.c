@@ -2826,6 +2826,10 @@ id|cdi
 r_goto
 id|err
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 r_if

@@ -1144,7 +1144,7 @@ id|proc_tty_driver
 suffix:semicolon
 id|driver-&gt;proc_entry
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by proc_root_init() to initialize the /proc/tty subtree&n; */
@@ -1171,7 +1171,7 @@ c_func
 (paren
 l_string|&quot;tty&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 r_return
@@ -1183,7 +1183,7 @@ c_func
 (paren
 l_string|&quot;tty/ldisc&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * /proc/tty/driver/serial reveals the exact character counts for&n;&t; * serial links which is just too easy to abuse for inferring&n;&t; * password lengths and inter-keystroke timings during password&n;&t; * entry.&n;&t; */
@@ -1198,7 +1198,7 @@ id|S_IRUSR
 op_or
 id|S_IXUSR
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|create_proc_read_entry
@@ -1208,7 +1208,7 @@ l_string|&quot;tty/ldiscs&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|tty_ldiscs_read_proc
 comma

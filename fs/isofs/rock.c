@@ -18,7 +18,7 @@ DECL|macro|CHECK_SP
 mdefine_line|#define CHECK_SP(FAIL)&t;       &t;&t;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[0] != 0xbe) FAIL;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[1] != 0xef) FAIL;       &bslash;&n;      ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset=rr-&gt;u.SP.skip;
 multiline_comment|/* We define a series of macros because each function must do exactly the&n;   same thing in certain places.  We use the macros to ensure that everything&n;   is done correctly */
 DECL|macro|CONTINUE_DECLS
-mdefine_line|#define CONTINUE_DECLS &bslash;&n;  int cont_extent = 0, cont_offset = 0, cont_size = 0;   &bslash;&n;  void * buffer = 0
+mdefine_line|#define CONTINUE_DECLS &bslash;&n;  int cont_extent = 0, cont_offset = 0, cont_size = 0;   &bslash;&n;  void *buffer = NULL
 DECL|macro|CHECK_CE
 mdefine_line|#define CHECK_CE&t;       &t;&t;&t;&bslash;&n;      {cont_extent = isonum_733(rr-&gt;u.CE.extent); &bslash;&n;      cont_offset = isonum_733(rr-&gt;u.CE.offset); &bslash;&n;      cont_size = isonum_733(rr-&gt;u.CE.size);}
 DECL|macro|SETUP_ROCK_RIDGE

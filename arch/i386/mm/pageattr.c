@@ -28,8 +28,6 @@ id|df_list
 )paren
 suffix:semicolon
 DECL|function|lookup_address
-r_static
-r_inline
 id|pte_t
 op_star
 id|lookup_address

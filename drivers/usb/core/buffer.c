@@ -212,7 +212,7 @@ id|hcd-&gt;pool
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

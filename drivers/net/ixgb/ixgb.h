@@ -51,7 +51,7 @@ suffix:semicolon
 macro_line|#include &quot;ixgb_hw.h&quot;
 macro_line|#include &quot;ixgb_ee.h&quot;
 macro_line|#include &quot;ixgb_ids.h&quot;
-macro_line|#if _DEBUG_DRIVER_
+macro_line|#ifdef _DEBUG_DRIVER_
 DECL|macro|IXGB_DBG
 mdefine_line|#define IXGB_DBG(args...) printk(KERN_DEBUG &quot;ixgb: &quot; args)
 macro_line|#else

@@ -2396,7 +2396,7 @@ id|scsi_transport_template
 id|blank_transport_template
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon

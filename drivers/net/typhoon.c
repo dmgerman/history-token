@@ -55,11 +55,6 @@ DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_MODULE_NAME &quot;: &quot;
 DECL|macro|ERR_PFX
 mdefine_line|#define ERR_PFX&t;&t;&t;KERN_ERR PFX
-macro_line|#if !defined(__OPTIMIZE__)  ||  !defined(__KERNEL__)
-macro_line|#warning  You must compile this file with the correct options!
-macro_line|#warning  See the last lines of the source file.
-macro_line|#error  You must compile this driver with &quot;-O&quot;.
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

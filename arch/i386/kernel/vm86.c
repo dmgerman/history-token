@@ -2669,7 +2669,7 @@ c_func
 (paren
 id|irqnumber
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|vm86_irqs
@@ -2679,7 +2679,7 @@ id|irqnumber
 dot
 id|tsk
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2986,7 +2986,7 @@ l_int|0
 comma
 id|VM86_IRQNAME
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

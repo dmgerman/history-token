@@ -5860,7 +5860,7 @@ r_void
 op_star
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|retval
@@ -5872,14 +5872,14 @@ id|usb_interface
 op_star
 id|intf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|usb_driver
 op_star
 id|driver
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* get input parameters and alloc buffer */
 r_if
