@@ -813,5 +813,7 @@ DECL|macro|SERIO_SEMTECH
 mdefine_line|#define SERIO_SEMTECH&t;0x27
 DECL|macro|SERIO_LKKBD
 mdefine_line|#define SERIO_LKKBD&t;0x28
+DECL|macro|SERIO_ELO
+mdefine_line|#define SERIO_ELO&t;0x29
 macro_line|#endif
 eof
