@@ -344,12 +344,6 @@ suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */
 multiline_comment|/****************************** TYPES ******************************/
 multiline_comment|/* Shortcuts */
-DECL|typedef|device
-r_typedef
-r_struct
-id|net_device
-id|device
-suffix:semicolon
 DECL|typedef|en_stats
 r_typedef
 r_struct
@@ -407,7 +401,8 @@ id|node
 suffix:semicolon
 multiline_comment|/* ???? What is this stuff ???? */
 DECL|member|dev
-id|device
+r_struct
+id|net_device
 op_star
 id|dev
 suffix:semicolon
@@ -717,7 +712,8 @@ r_void
 id|psa_read
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Read the Parameter Storage Area */
@@ -735,7 +731,8 @@ multiline_comment|/* size to read */
 id|psa_write
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Write to the PSA */
@@ -845,7 +842,8 @@ r_int
 id|wv_82593_cmd
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* synchronously send a command to i82593 */
@@ -863,7 +861,8 @@ r_int
 id|wv_diag
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -873,7 +872,8 @@ r_int
 id|read_ringbuf
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Read a receive buffer */
@@ -891,7 +891,8 @@ r_void
 id|wv_82593_reconfig
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -903,7 +904,8 @@ r_void
 id|wv_init_info
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -915,7 +917,8 @@ op_star
 id|wavelan_get_stats
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -927,7 +930,8 @@ r_int
 id|wv_start_of_frame
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Seek beggining of current frame */
@@ -944,7 +948,8 @@ r_void
 id|wv_packet_read
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Read a packet from a frame */
@@ -956,7 +961,8 @@ comma
 id|wv_packet_rcv
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -968,7 +974,8 @@ r_void
 id|wv_packet_write
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 comma
 multiline_comment|/* Write a packet to the Tx buffer */
@@ -988,7 +995,8 @@ id|sk_buff
 op_star
 comma
 multiline_comment|/* Send a packet */
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -999,7 +1007,8 @@ r_int
 id|wv_mmc_init
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1009,7 +1018,8 @@ r_int
 id|wv_ru_stop
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -1017,7 +1027,8 @@ multiline_comment|/* Stop the i82593 receiver unit */
 id|wv_ru_start
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1027,7 +1038,8 @@ r_int
 id|wv_82593_config
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1038,7 +1050,8 @@ r_int
 id|wv_pcmcia_reset
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1048,7 +1061,8 @@ r_int
 id|wv_hw_config
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1059,7 +1073,8 @@ r_void
 id|wv_hw_reset
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1107,7 +1122,8 @@ r_void
 id|wavelan_watchdog
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
@@ -1118,7 +1134,8 @@ r_int
 id|wavelan_open
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 comma
@@ -1126,7 +1143,8 @@ multiline_comment|/* Open the device */
 id|wavelan_close
 c_func
 (paren
-id|device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon
