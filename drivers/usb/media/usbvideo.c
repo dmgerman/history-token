@@ -8649,9 +8649,7 @@ id|i
 op_increment
 )paren
 (brace
-id|j
-op_assign
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|uvd-&gt;sbuf
@@ -8660,23 +8658,6 @@ id|i
 )braket
 dot
 id|urb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-OL
-l_int|0
-)paren
-id|err
-c_func
-(paren
-l_string|&quot;%s: usb_unlink_urb() error %d.&quot;
-comma
-id|__FUNCTION__
-comma
-id|j
 )paren
 suffix:semicolon
 )brace
