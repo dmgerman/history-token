@@ -764,52 +764,115 @@ comma
 multiline_comment|/* receive error */
 )brace
 suffix:semicolon
-multiline_comment|/* Bits in the NetworkConfig register. */
+multiline_comment|/* Bits in the NetworkConfig register, W for writing, R for reading */
+multiline_comment|/* FIXME: some names are invented by me. Marked with (name?) */
+multiline_comment|/* If you have docs and know bit names, please fix &squot;em */
 DECL|enum|rx_mode_bits
 r_enum
 id|rx_mode_bits
 (brace
-DECL|enumerator|RxModeMask
-id|RxModeMask
+DECL|enumerator|CR_W_ENH
+id|CR_W_ENH
 op_assign
-l_int|0xe0
+l_int|0x02000000
 comma
-DECL|enumerator|PROM
-id|PROM
+multiline_comment|/* enhanced mode (name?) */
+DECL|enumerator|CR_W_FD
+id|CR_W_FD
 op_assign
-l_int|0x80
+l_int|0x00100000
+comma
+multiline_comment|/* full duplex */
+DECL|enumerator|CR_W_PS10
+id|CR_W_PS10
+op_assign
+l_int|0x00080000
+comma
+multiline_comment|/* 10 mbit */
+DECL|enumerator|CR_W_TXEN
+id|CR_W_TXEN
+op_assign
+l_int|0x00040000
+comma
+multiline_comment|/* tx enable (name?) */
+DECL|enumerator|CR_W_PS1000
+id|CR_W_PS1000
+op_assign
+l_int|0x00010000
+comma
+multiline_comment|/* 1000 mbit */
+multiline_comment|/* CR_W_RXBURSTMASK= 0x00000e00, Im unsure about this */
+DECL|enumerator|CR_W_RXMODEMASK
+id|CR_W_RXMODEMASK
+op_assign
+l_int|0x000000e0
+comma
+DECL|enumerator|CR_W_PROM
+id|CR_W_PROM
+op_assign
+l_int|0x00000080
 comma
 multiline_comment|/* promiscuous mode */
-DECL|enumerator|AB
-id|AB
+DECL|enumerator|CR_W_AB
+id|CR_W_AB
 op_assign
-l_int|0x40
+l_int|0x00000040
 comma
 multiline_comment|/* accept broadcast */
-DECL|enumerator|AM
-id|AM
+DECL|enumerator|CR_W_AM
+id|CR_W_AM
 op_assign
-l_int|0x20
+l_int|0x00000020
 comma
 multiline_comment|/* accept mutlicast */
-DECL|enumerator|ARP
-id|ARP
+DECL|enumerator|CR_W_ARP
+id|CR_W_ARP
 op_assign
-l_int|0x08
+l_int|0x00000008
 comma
 multiline_comment|/* receive runt pkt */
-DECL|enumerator|ALP
-id|ALP
+DECL|enumerator|CR_W_ALP
+id|CR_W_ALP
 op_assign
-l_int|0x04
+l_int|0x00000004
 comma
 multiline_comment|/* receive long pkt */
-DECL|enumerator|SEP
-id|SEP
+DECL|enumerator|CR_W_SEP
+id|CR_W_SEP
 op_assign
-l_int|0x02
+l_int|0x00000002
 comma
 multiline_comment|/* receive error pkt */
+DECL|enumerator|CR_W_RXEN
+id|CR_W_RXEN
+op_assign
+l_int|0x00000001
+comma
+multiline_comment|/* rx enable (unicast?) (name?) */
+DECL|enumerator|CR_R_TXSTOP
+id|CR_R_TXSTOP
+op_assign
+l_int|0x04000000
+comma
+multiline_comment|/* tx stopped (name?) */
+DECL|enumerator|CR_R_FD
+id|CR_R_FD
+op_assign
+l_int|0x00100000
+comma
+multiline_comment|/* full duplex detected */
+DECL|enumerator|CR_R_PS10
+id|CR_R_PS10
+op_assign
+l_int|0x00080000
+comma
+multiline_comment|/* 10 mbit detected */
+DECL|enumerator|CR_R_RXSTOP
+id|CR_R_RXSTOP
+op_assign
+l_int|0x00008000
+comma
+multiline_comment|/* rx stopped (name?) */
 )brace
 suffix:semicolon
 multiline_comment|/* The Tulip Rx and Tx buffer descriptors. */
@@ -1192,13 +1255,7 @@ mdefine_line|#define LXT1000_1000M   0x0c000
 DECL|macro|LXT1000_Full
 mdefine_line|#define LXT1000_Full    0x200
 singleline_comment|// 89/12/29 add, for phy specific status register, levelone phy, (end)
-multiline_comment|/* for 3-in-1 case */
-DECL|macro|PS10
-mdefine_line|#define PS10            0x00080000
-DECL|macro|FD
-mdefine_line|#define FD              0x00100000
-DECL|macro|PS1000
-mdefine_line|#define PS1000          0x00010000
+multiline_comment|/* for 3-in-1 case, BMCRSR register */
 DECL|macro|LinkIsUp2
 mdefine_line|#define LinkIsUp2&t;0x00040000
 multiline_comment|/* for PHY */
@@ -1600,7 +1657,7 @@ id|crvalue
 op_amp
 (paren
 op_complement
-l_int|0x40000
+id|CR_W_TXEN
 )paren
 comma
 id|ioaddr
@@ -1633,7 +1690,7 @@ op_plus
 id|TCRRCR
 )paren
 op_amp
-l_int|0x04000000
+id|CR_R_TXSTOP
 )paren
 )paren
 op_logical_and
@@ -1669,7 +1726,7 @@ id|crvalue
 op_amp
 (paren
 op_complement
-l_int|0x1
+id|CR_W_RXEN
 )paren
 comma
 id|ioaddr
@@ -1702,7 +1759,7 @@ op_plus
 id|TCRRCR
 )paren
 op_amp
-l_int|0x00008000
+id|CR_R_RXSTOP
 )paren
 )paren
 op_logical_and
@@ -3756,7 +3813,7 @@ suffix:semicolon
 multiline_comment|/* set PROG bit */
 id|np-&gt;crvalue
 op_or_assign
-l_int|0x02000000
+id|CR_W_ENH
 suffix:semicolon
 multiline_comment|/* set enhanced bit */
 id|np-&gt;imrvalue
@@ -4102,7 +4159,7 @@ op_plus
 id|TCRRCR
 )paren
 op_amp
-id|FD
+id|CR_R_FD
 )paren
 id|np-&gt;duplexmode
 op_assign
@@ -4126,7 +4183,7 @@ op_plus
 id|TCRRCR
 )paren
 op_amp
-id|PS10
+id|CR_R_PS10
 )paren
 id|np-&gt;line_speed
 op_assign
@@ -4502,23 +4559,21 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* 10M */
 )brace
-singleline_comment|// chage crvalue
-singleline_comment|// np-&gt;crvalue&amp;=(~PS10)&amp;(~FD);
 id|np-&gt;crvalue
 op_and_assign
 (paren
 op_complement
-id|PS10
+id|CR_W_PS10
 )paren
 op_amp
 (paren
 op_complement
-id|FD
+id|CR_W_FD
 )paren
 op_amp
 (paren
 op_complement
-id|PS1000
+id|CR_W_PS1000
 )paren
 suffix:semicolon
 r_if
@@ -4530,7 +4585,7 @@ l_int|1
 )paren
 id|np-&gt;crvalue
 op_or_assign
-id|PS10
+id|CR_W_PS10
 suffix:semicolon
 r_else
 r_if
@@ -4542,7 +4597,7 @@ l_int|3
 )paren
 id|np-&gt;crvalue
 op_or_assign
-id|PS1000
+id|CR_W_PS1000
 suffix:semicolon
 r_if
 c_cond
@@ -4553,7 +4608,7 @@ l_int|2
 )paren
 id|np-&gt;crvalue
 op_or_assign
-id|FD
+id|CR_W_FD
 suffix:semicolon
 )brace
 )brace
@@ -4786,7 +4841,7 @@ id|np-&gt;crvalue
 op_amp
 (paren
 op_complement
-l_int|0x40000
+id|CR_W_TXEN
 )paren
 )paren
 suffix:semicolon
@@ -6327,7 +6382,7 @@ op_logical_neg
 (paren
 id|np-&gt;crvalue
 op_amp
-l_int|0x02000000
+id|CR_W_ENH
 )paren
 )paren
 (brace
@@ -6541,7 +6596,7 @@ c_cond
 (paren
 id|np-&gt;crvalue
 op_amp
-l_int|0x02000000
+id|CR_W_ENH
 )paren
 (brace
 r_int
@@ -7432,11 +7487,11 @@ id|mc_filter
 suffix:semicolon
 id|rx_mode
 op_assign
-id|PROM
+id|CR_W_PROM
 op_or
-id|AB
+id|CR_W_AB
 op_or
-id|AM
+id|CR_W_AM
 suffix:semicolon
 )brace
 r_else
@@ -7472,9 +7527,9 @@ id|mc_filter
 suffix:semicolon
 id|rx_mode
 op_assign
-id|AB
+id|CR_W_AB
 op_or
-id|AM
+id|CR_W_AM
 suffix:semicolon
 )brace
 r_else
@@ -7561,9 +7616,9 @@ suffix:semicolon
 )brace
 id|rx_mode
 op_assign
-id|AB
+id|CR_W_AB
 op_or
-id|AM
+id|CR_W_AM
 suffix:semicolon
 )brace
 id|stop_nic_tx
@@ -7583,7 +7638,7 @@ id|np-&gt;crvalue
 op_amp
 (paren
 op_complement
-l_int|0x40000
+id|CR_W_TXEN
 )paren
 )paren
 suffix:semicolon
@@ -7616,7 +7671,7 @@ suffix:semicolon
 id|np-&gt;crvalue
 op_and_assign
 op_complement
-id|RxModeMask
+id|CR_W_RXMODEMASK
 suffix:semicolon
 id|np-&gt;crvalue
 op_or_assign
