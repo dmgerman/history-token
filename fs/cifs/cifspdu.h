@@ -160,7 +160,7 @@ mdefine_line|#define SMBFLG2_SECURITY_SIGNATURE cpu_to_le16(4)
 DECL|macro|SMBFLG2_IS_LONG_NAME
 mdefine_line|#define SMBFLG2_IS_LONG_NAME cpu_to_le16(0x40)
 DECL|macro|SMBFLG2_EXT_SEC
-mdefine_line|#define SMBFLG2_EXT_SEC cpu_to_le16(0x80)
+mdefine_line|#define SMBFLG2_EXT_SEC cpu_to_le16(0x800)
 DECL|macro|SMBFLG2_DFS
 mdefine_line|#define SMBFLG2_DFS cpu_to_le16(0x1000)
 DECL|macro|SMBFLG2_PAGING_IO

@@ -638,16 +638,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;set POSIX ACL not supported yet&quot;
-)paren
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_POSIX
 id|rc
 op_assign
 id|CIFSSMBSetPosixACL
@@ -684,7 +675,18 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
+macro_line|#else
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;set POSIX ACL not supported&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 r_if
@@ -707,16 +709,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;set default POSIX ACL not supported yet&quot;
-)paren
-)paren
-suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_POSIX
 id|rc
 op_assign
 id|CIFSSMBSetPosixACL
@@ -753,7 +746,18 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
+macro_line|#else
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;set default POSIX ACL not supported&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -895,20 +899,6 @@ op_assign
 id|GetXid
 c_func
 (paren
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;getxattr %s with size %d&quot;
-comma
-id|ea_name
-comma
-id|buf_size
-)paren
 )paren
 suffix:semicolon
 id|cifs_sb
