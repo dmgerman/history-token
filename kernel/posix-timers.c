@@ -4210,6 +4210,7 @@ id|restart_block-&gt;arg1
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|tsave
 suffix:semicolon
