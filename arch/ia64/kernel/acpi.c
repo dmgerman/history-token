@@ -566,6 +566,10 @@ c_func
 (paren
 )paren
 op_eq
+(paren
+r_int
+r_int
+)paren
 id|smp_boot_data.cpu_phys_id
 (braket
 id|total_cpus

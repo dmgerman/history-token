@@ -472,6 +472,13 @@ id|master_time_stamp
 comma
 id|bound
 suffix:semicolon
+r_extern
+r_void
+id|ia64_cpu_local_tick
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#if DEBUG_ITC_SYNC
 r_struct
 (brace
@@ -770,6 +777,39 @@ comma
 id|rt
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Check whether we sync&squot;d the itc ahead of the next timer interrupt.  If so, just&n;&t; * reset it.&n;&t; */
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|ia64_get_itc
+c_func
+(paren
+)paren
+comma
+id|local_cpu_data-&gt;itm_next
+)paren
+)paren
+(brace
+id|Dprintk
+c_func
+(paren
+l_string|&quot;CPU %d: oops, jumped a timer tick; resetting timer.&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|ia64_cpu_local_tick
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Ideally sets up per-cpu profiling hooks.  Doesn&squot;t do much now...&n; */
 r_static
@@ -950,34 +990,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure we didn&squot;t sync the itc ahead of the next&n;&t;&t; * timer interrupt, if so, just reset it.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|ia64_get_itc
-c_func
-(paren
-)paren
-comma
-id|local_cpu_data-&gt;itm_next
-)paren
-)paren
-(brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;oops, jumped a timer.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ia64_cpu_local_tick
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|set_bit

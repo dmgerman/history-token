@@ -20,6 +20,9 @@ mdefine_line|#define DEFAULT_TASK_SIZE&t;0xa000000000000000
 multiline_comment|/*&n; * TASK_SIZE really is a mis-named.  It really is the maximum user&n; * space address (plus one).  On IA-64, there are five regions of 2TB&n; * each (assuming 8KB page size), for a total of 8TB of user virtual&n; * address space.&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;&t;(current-&gt;thread.task_size)
+multiline_comment|/*&n; * MM_VM_SIZE(mm) gives the maximum address (plus 1) which may contain a mapping for&n; * address-space MM.  Note that with 32-bit tasks, this is still DEFAULT_TASK_SIZE,&n; * because the kernel may have installed helper-mappings above TASK_SIZE.  For example,&n; * for x86 emulation, the LDT and GDT are mapped above TASK_SIZE.&n; */
+DECL|macro|MM_VM_SIZE
+mdefine_line|#define MM_VM_SIZE(mm)&t;&t;DEFAULT_TASK_SIZE
 multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(current-&gt;thread.map_base)

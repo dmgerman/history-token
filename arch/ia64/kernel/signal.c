@@ -2742,6 +2742,9 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|scr-&gt;pt.r10
 op_ne
 op_minus

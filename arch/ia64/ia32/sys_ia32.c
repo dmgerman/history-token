@@ -38,9 +38,9 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;0
 macro_line|#if DEBUG
@@ -602,6 +602,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|u64
+)paren
 id|stat-&gt;size
 OG
 id|MAX_NON_LFS
@@ -4554,10 +4557,9 @@ r_int
 id|type
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|u32
+id|i
+comma
 id|buf
 comma
 id|len
@@ -11567,11 +11569,16 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
+(paren
 l_int|17
 op_star
 r_sizeof
 (paren
 r_int
+)paren
 )paren
 suffix:semicolon
 id|i
@@ -11667,11 +11674,16 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
+(paren
 l_int|17
 op_star
 r_sizeof
 (paren
 r_int
+)paren
 )paren
 suffix:semicolon
 id|i
@@ -12041,6 +12053,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|level
 OG
 (paren

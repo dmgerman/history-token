@@ -1,9 +1,10 @@
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_IA64_GENERIC
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 DECL|variable|ia64_mv
 r_struct
 id|ia64_machine_vector
@@ -136,5 +137,18 @@ id|machvec_noop
 r_void
 )paren
 (brace
+)brace
+r_void
+DECL|function|machvec_memory_fence
+id|machvec_memory_fence
+(paren
+r_void
+)paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof

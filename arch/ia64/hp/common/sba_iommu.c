@@ -383,8 +383,13 @@ id|u64
 id|prefetch_spill_page
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|GET_IOC
-mdefine_line|#define GET_IOC(dev)&t;((struct ioc *) PCI_CONTROLLER(dev)-&gt;iommu)
+macro_line|# define GET_IOC(dev)&t;(((dev)-&gt;bus == &amp;pci_bus_type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t; ? ((struct ioc *) PCI_CONTROLLER(to_pci_dev(dev))-&gt;iommu) : NULL)
+macro_line|#else
+DECL|macro|GET_IOC
+macro_line|# define GET_IOC(dev)&t;NULL
+macro_line|#endif
 multiline_comment|/*&n;** DMA_CHUNK_SIZE is used by the SCSI mid-layer to break up&n;** (or rather not merge) DMA&squot;s into managable chunks.&n;** On parisc, this is more of the software/tuning constraint&n;** rather than the HW. I/O MMU allocation alogorithms can be&n;** faster with smaller size is (to some degree).&n;*/
 DECL|macro|DMA_CHUNK_SIZE
 mdefine_line|#define DMA_CHUNK_SIZE  (BITS_PER_LONG*PAGE_SIZE)
@@ -2145,14 +2150,14 @@ id|IOC_PCOM
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sba_map_single - map one buffer and return IOVA for DMA&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @addr:  driver buffer to map.&n; * @size:  number of bytes to map in driver buffer.&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+multiline_comment|/**&n; * sba_map_single - map one buffer and return IOVA for DMA&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @addr:  driver buffer to map.&n; * @size:  number of bytes to map in driver buffer.&n; * @dir:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 id|dma_addr_t
 DECL|function|sba_map_single
 id|sba_map_single
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -2164,7 +2169,7 @@ r_int
 id|size
 comma
 r_int
-id|direction
+id|dir
 )paren
 (brace
 r_struct
@@ -2220,10 +2225,15 @@ multiline_comment|/*&n; &t;** Check if the PCI device can DMA to ptr... if so, j
 r_if
 c_cond
 (paren
+id|dev
+op_logical_and
+id|dev-&gt;dma_mask
+op_logical_and
 (paren
 id|pci_addr
 op_amp
 op_complement
+op_star
 id|dev-&gt;dma_mask
 )paren
 op_eq
@@ -2259,6 +2269,7 @@ c_func
 (paren
 l_string|&quot;sba_map_single() bypass mask/addr: 0x%lx/0x%lx&bslash;n&quot;
 comma
+op_star
 id|dev-&gt;dma_mask
 comma
 id|pci_addr
@@ -2501,14 +2512,14 @@ id|DEFAULT_DMA_HINT_REG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sba_unmap_single - unmap one IOVA and free resources&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @iova:  IOVA of driver buffer previously mapped.&n; * @size:  number of bytes mapped in driver buffer.&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+multiline_comment|/**&n; * sba_unmap_single - unmap one IOVA and free resources&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @iova:  IOVA of driver buffer previously mapped.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dir:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 DECL|function|sba_unmap_single
 r_void
 id|sba_unmap_single
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -2519,7 +2530,7 @@ r_int
 id|size
 comma
 r_int
-id|direction
+id|dir
 )paren
 (brace
 r_struct
@@ -2604,9 +2615,9 @@ macro_line|#ifdef ENABLE_MARK_CLEAN
 r_if
 c_cond
 (paren
-id|direction
+id|dir
 op_eq
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|mark_clean
@@ -2803,9 +2814,9 @@ macro_line|#ifdef ENABLE_MARK_CLEAN
 r_if
 c_cond
 (paren
-id|direction
+id|dir
 op_eq
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|u32
@@ -2936,12 +2947,11 @@ multiline_comment|/* XXX REVISIT for 2.5 Linux - need syncdma for zero-copy supp
 multiline_comment|/**&n; * sba_alloc_consistent - allocate/map shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_void
 op_star
-DECL|function|sba_alloc_consistent
-id|sba_alloc_consistent
-c_func
+DECL|function|sba_alloc_coherent
+id|sba_alloc_coherent
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|hwdev
 comma
@@ -2951,6 +2961,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flags
 )paren
 (brace
 r_struct
@@ -2960,26 +2973,9 @@ id|ioc
 suffix:semicolon
 r_void
 op_star
-id|ret
+id|addr
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwdev
-)paren
-(brace
-multiline_comment|/* only support PCI */
-op_star
-id|dma_handle
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|ret
+id|addr
 op_assign
 (paren
 r_void
@@ -2988,7 +2984,7 @@ op_star
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|flags
 comma
 id|get_order
 c_func
@@ -3000,20 +2996,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+op_logical_neg
+id|addr
 )paren
-(brace
-id|memset
-c_func
-(paren
-id|ret
-comma
-l_int|0
-comma
-id|size
-)paren
+r_return
+l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * REVISIT: if sba_map_single starts needing more&n;&t;&t; * than dma_mask from the device, this needs to be&n;&t;&t; * updated.&n;&t;&t; */
+multiline_comment|/*&n;&t; * REVISIT: if sba_map_single starts needing more than dma_mask from the&n;&t; * device, this needs to be updated.&n;&t; */
 id|ioc
 op_assign
 id|GET_IOC
@@ -3022,34 +3011,49 @@ c_func
 id|hwdev
 )paren
 suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
 op_star
 id|dma_handle
 op_assign
 id|sba_map_single
 c_func
 (paren
-id|ioc-&gt;sac_only_dev
+op_amp
+id|ioc-&gt;sac_only_dev-&gt;dev
 comma
-id|ret
+id|addr
 comma
 id|size
 comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
+id|memset
+c_func
+(paren
+id|addr
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
 r_return
-id|ret
+id|addr
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sba_free_consistent - free/unmap shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @vaddr:  virtual address IOVA of &quot;consistent&quot; buffer.&n; * @dma_handler:  IO virtual address of &quot;consistent&quot; buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
-DECL|function|sba_free_consistent
+DECL|function|sba_free_coherent
 r_void
-id|sba_free_consistent
-c_func
+id|sba_free_coherent
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|hwdev
 comma
@@ -3701,14 +3705,14 @@ r_return
 id|n_mappings
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sba_map_sg - map Scatter/Gather list&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @sglist:  array of buffer/length pairs&n; * @nents:  number of entries in list&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+multiline_comment|/**&n; * sba_map_sg - map Scatter/Gather list&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @sglist:  array of buffer/length pairs&n; * @nents:  number of entries in list&n; * @dir:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 DECL|function|sba_map_sg
 r_int
 id|sba_map_sg
 c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -3721,7 +3725,7 @@ r_int
 id|nents
 comma
 r_int
-id|direction
+id|dir
 )paren
 (brace
 r_struct
@@ -3775,9 +3779,19 @@ macro_line|#ifdef ALLOW_IOV_BYPASS
 r_if
 c_cond
 (paren
+id|dev
+op_logical_and
 id|dev-&gt;dma_mask
-op_ge
+op_logical_and
+(paren
 id|ioc-&gt;dma_mask
+op_amp
+op_complement
+op_star
+id|dev-&gt;dma_mask
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 r_for
@@ -3871,7 +3885,7 @@ id|sglist
 comma
 id|sglist-&gt;length
 comma
-id|direction
+id|dir
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
@@ -4014,14 +4028,13 @@ r_return
 id|filled
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sba_unmap_sg - unmap Scatter/Gather list&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @sglist:  array of buffer/length pairs&n; * @nents:  number of entries in list&n; * @direction:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+multiline_comment|/**&n; * sba_unmap_sg - unmap Scatter/Gather list&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @sglist:  array of buffer/length pairs&n; * @nents:  number of entries in list&n; * @dir:  R/W or both.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 DECL|function|sba_unmap_sg
 r_void
 id|sba_unmap_sg
-c_func
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -4034,7 +4047,7 @@ r_int
 id|nents
 comma
 r_int
-id|direction
+id|dir
 )paren
 (brace
 r_struct
@@ -4130,7 +4143,7 @@ id|sglist-&gt;dma_address
 comma
 id|sglist-&gt;dma_length
 comma
-id|direction
+id|dir
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
@@ -4985,7 +4998,7 @@ id|controller
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * pci_alloc_consistent() must return a DMA address which is&n;&t; * SAC (single address cycle) addressable, so allocate a&n;&t; * pseudo-device to enforce that.&n;&t; */
+multiline_comment|/*&n;&t; * pci_alloc_coherent() must return a DMA address which is&n;&t; * SAC (single address cycle) addressable, so allocate a&n;&t; * pseudo-device to enforce that.&n;&t; */
 id|sac
 op_assign
 id|kmalloc
@@ -5080,6 +5093,13 @@ id|sac-&gt;dma_mask
 op_assign
 l_int|0xFFFFFFFFUL
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+id|sac-&gt;dev.bus
+op_assign
+op_amp
+id|pci_bus_type
+suffix:semicolon
+macro_line|#endif
 id|ioc-&gt;sac_only_dev
 op_assign
 id|sac
@@ -5366,6 +5386,10 @@ id|ioc-&gt;name
 id|sprintf
 c_func
 (paren
+(paren
+r_char
+op_star
+)paren
 id|ioc-&gt;name
 comma
 l_string|&quot;Unknown (%04x:%04x)&quot;
@@ -6027,6 +6051,8 @@ id|v
 suffix:semicolon
 r_int
 r_int
+id|i
+comma
 op_star
 id|res_ptr
 op_assign
@@ -6037,9 +6063,6 @@ op_star
 )paren
 id|ioc-&gt;res_map
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6049,14 +6072,12 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
 id|ioc-&gt;res_size
 op_div
 r_sizeof
 (paren
 r_int
 r_int
-)paren
 )paren
 suffix:semicolon
 op_increment
@@ -6575,11 +6596,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|pci_bus
-op_star
-id|b
-suffix:semicolon
 id|MAX_DMA_ADDRESS
 op_assign
 op_complement
@@ -6592,6 +6608,13 @@ op_amp
 id|acpi_sba_ioc_driver
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+(brace
+r_struct
+id|pci_bus
+op_star
+id|b
+suffix:semicolon
 id|pci_for_each_bus
 c_func
 (paren
@@ -6603,6 +6626,8 @@ c_func
 id|b
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|ioc_proc_init
 c_func
@@ -6647,7 +6672,7 @@ DECL|function|sba_dma_supported
 id|sba_dma_supported
 (paren
 r_struct
-id|pci_dev
+id|device
 op_star
 id|dev
 comma
@@ -6711,18 +6736,18 @@ c_func
 id|sba_dma_supported
 )paren
 suffix:semicolon
-DECL|variable|sba_alloc_consistent
+DECL|variable|sba_alloc_coherent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sba_alloc_consistent
+id|sba_alloc_coherent
 )paren
 suffix:semicolon
-DECL|variable|sba_free_consistent
+DECL|variable|sba_free_coherent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sba_free_consistent
+id|sba_free_coherent
 )paren
 suffix:semicolon
 eof

@@ -2457,6 +2457,7 @@ id|dest
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ACPI_PCI
 r_void
 id|__init
 DECL|function|iosapic_parse_prt
@@ -2662,4 +2663,5 @@ id|IOSAPIC_LEVEL
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_ACPI */
 eof

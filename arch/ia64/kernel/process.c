@@ -515,8 +515,6 @@ r_int
 r_int
 id|val
 comma
-id|sof
-comma
 op_star
 id|bsp
 comma
@@ -524,6 +522,8 @@ id|ndirty
 suffix:semicolon
 r_int
 id|i
+comma
+id|sof
 comma
 id|is_nat
 op_assign
@@ -1433,6 +1433,11 @@ id|THREAD_FLAGS_TO_CLEAR
 op_or
 id|THREAD_FLAGS_TO_SET
 )paren
+suffix:semicolon
+id|p-&gt;thread.last_fph_cpu
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 multiline_comment|/*&n;&t; * If we&squot;re cloning an IA32 task then save the IA32 extra&n;&t; * state from the current task to the new task&n;&t; */

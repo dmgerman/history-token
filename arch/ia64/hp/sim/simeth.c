@@ -122,7 +122,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|simeth_interrupt
 c_func
 (paren
@@ -1660,7 +1660,7 @@ multiline_comment|/* 0 = nothing left to read, otherwise, we can try again */
 )brace
 multiline_comment|/*&n; * Interrupt handler (Yes, we can do it too !!!)&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|simeth_interrupt
 id|simeth_interrupt
 c_func
@@ -1703,6 +1703,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * very simple loop because we get interrupts only when receiving&n;&t; */
@@ -1715,6 +1716,9 @@ c_func
 id|dev
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

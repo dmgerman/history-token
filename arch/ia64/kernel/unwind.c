@@ -3282,19 +3282,10 @@ OL
 (paren
 r_int
 )paren
-(paren
-r_sizeof
-(paren
-id|unw.save_order
-)paren
-op_div
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|unw.save_order
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 op_increment
@@ -5765,13 +5756,20 @@ op_amp
 id|unw.lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX We&squot;ll deadlock here if we interrupt a thread that is&n;&t; * holding a read lock on script-&gt;lock.  A try_write_lock()&n;&t; * might be mighty handy here...  Alternatively, we could&n;&t; * disable interrupts whenever we hold a read-lock, but that&n;&t; * seems silly.&n;&t; */
-id|write_lock
+multiline_comment|/*&n;&t; * We&squot;d deadlock here if we interrupted a thread that is holding a read lock on&n;&t; * script-&gt;lock.  Thus, if the write_trylock() fails, we simply bail out.  The&n;&t; * alternative would be to disable interrupts whenever we hold a read-lock, but&n;&t; * that seems silly.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|write_trylock
 c_func
 (paren
 op_amp
 id|script-&gt;lock
 )paren
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 id|spin_lock
 c_func

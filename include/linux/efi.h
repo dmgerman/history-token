@@ -1,7 +1,7 @@
 macro_line|#ifndef _LINUX_EFI_H
 DECL|macro|_LINUX_EFI_H
 mdefine_line|#define _LINUX_EFI_H
-multiline_comment|/*&n; * Extensible Firmware Interface&n; * Based on &squot;Extensible Firmware Interface Specification&squot; version 0.9, April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; * Based on &squot;Extensible Firmware Interface Specification&squot; version 0.9, April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999, 2002-2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -12,17 +12,17 @@ macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_SUCCESS
 mdefine_line|#define EFI_SUCCESS&t;&t;0
 DECL|macro|EFI_LOAD_ERROR
-mdefine_line|#define EFI_LOAD_ERROR          (1L | (1L &lt;&lt; 63))
+mdefine_line|#define EFI_LOAD_ERROR          ( 1 | (1UL &lt;&lt; 63))
 DECL|macro|EFI_INVALID_PARAMETER
-mdefine_line|#define EFI_INVALID_PARAMETER&t;(2L | (1L &lt;&lt; 63))
+mdefine_line|#define EFI_INVALID_PARAMETER&t;( 2 | (1UL &lt;&lt; 63))
 DECL|macro|EFI_UNSUPPORTED
-mdefine_line|#define EFI_UNSUPPORTED&t;&t;(3L | (1L &lt;&lt; 63))
+mdefine_line|#define EFI_UNSUPPORTED&t;&t;( 3 | (1UL &lt;&lt; 63))
 DECL|macro|EFI_BAD_BUFFER_SIZE
-mdefine_line|#define EFI_BAD_BUFFER_SIZE     (4L | (1L &lt;&lt; 63))
+mdefine_line|#define EFI_BAD_BUFFER_SIZE     ( 4 | (1UL &lt;&lt; 63))
 DECL|macro|EFI_BUFFER_TOO_SMALL
-mdefine_line|#define EFI_BUFFER_TOO_SMALL&t;(5L | (1L &lt;&lt; 63))
+mdefine_line|#define EFI_BUFFER_TOO_SMALL&t;( 5 | (1UL &lt;&lt; 63))
 DECL|macro|EFI_NOT_FOUND
-mdefine_line|#define EFI_NOT_FOUND          (14L | (1L &lt;&lt; 63))
+mdefine_line|#define EFI_NOT_FOUND&t;&t;(14 | (1UL &lt;&lt; 63))
 DECL|typedef|efi_status_t
 r_typedef
 r_int
@@ -848,9 +848,9 @@ r_void
 id|efi_gettimeofday
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
-id|tv
+id|ts
 )paren
 suffix:semicolon
 r_extern

@@ -1648,6 +1648,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
+(paren
 r_sizeof
 (paren
 id|tab
@@ -1659,6 +1663,7 @@ id|tab
 (braket
 l_int|0
 )braket
+)paren
 )paren
 suffix:semicolon
 op_increment

@@ -103,6 +103,9 @@ c_cond
 (paren
 id|pgtable_cache_size
 OG
+(paren
+id|u64
+)paren
 id|high
 )paren
 (brace
@@ -154,6 +157,9 @@ c_loop
 (paren
 id|pgtable_cache_size
 OG
+(paren
+id|u64
+)paren
 id|low
 )paren
 suffix:semicolon
@@ -1523,7 +1529,7 @@ id|pgdat
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * This needs to be called _after_ the command line has been parsed but _before_&n;&t; * any drivers that may need the PCI DMA interface are initialized or bootmem has&n;&t; * been freed.&n;&t; */
-id|platform_pci_dma_init
+id|platform_dma_init
 c_func
 (paren
 )paren
@@ -1734,6 +1740,9 @@ c_cond
 (paren
 id|num_pgt_pages
 OG
+(paren
+id|u64
+)paren
 id|pgt_cache_water
 (braket
 l_int|1

@@ -916,7 +916,7 @@ mdefine_line|#define PFM_CMD_NOCHK&t;&t;0x10&t;/* command does not need to check
 DECL|macro|PFM_CMD_IDX
 mdefine_line|#define PFM_CMD_IDX(cmd)&t;(cmd)
 DECL|macro|PFM_CMD_IS_VALID
-mdefine_line|#define PFM_CMD_IS_VALID(cmd)&t;((PFM_CMD_IDX(cmd) &gt;= 0) &amp;&amp; (PFM_CMD_IDX(cmd) &lt; PFM_CMD_COUNT) &bslash;&n;&t;&t;&t;&t;  &amp;&amp; pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_func != NULL)
+mdefine_line|#define PFM_CMD_IS_VALID(cmd)&t;((PFM_CMD_IDX(cmd) &gt;= 0)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t; &amp;&amp; (PFM_CMD_IDX(cmd) &lt; (int) PFM_CMD_COUNT)&t;&t;&bslash;&n;&t;&t;&t;&t; &amp;&amp; pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_func != NULL)
 DECL|macro|PFM_CMD_USE_PID
 mdefine_line|#define PFM_CMD_USE_PID(cmd)&t;((pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_flags &amp; PFM_CMD_PID) != 0)
 DECL|macro|PFM_CMD_READ_ARG
@@ -2116,12 +2116,11 @@ id|size
 (brace
 r_int
 r_int
+id|i
+comma
 id|res
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 r_for
 c_loop
@@ -7600,6 +7599,9 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
 id|pmu_conf.num_ibrs
 suffix:semicolon
 id|i
@@ -7629,6 +7631,9 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
 id|pmu_conf.num_dbrs
 suffix:semicolon
 id|i
@@ -8893,7 +8898,7 @@ op_assign
 initialization_block
 suffix:semicolon
 DECL|macro|PFM_CMD_COUNT
-mdefine_line|#define PFM_CMD_COUNT&t;(sizeof(pfm_cmd_tab)/sizeof(pfm_cmd_desc_t))
+mdefine_line|#define PFM_CMD_COUNT&t;ARRAY_SIZE(pfm_cmd_tab)
 r_static
 r_int
 DECL|function|check_task_state
@@ -10877,7 +10882,7 @@ l_int|0x1UL
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pfm_interrupt_handler
 id|pfm_interrupt_handler
 c_func
@@ -10943,6 +10948,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * srlz.d done before arriving here&n;&t; *&n;&t; * This is slow&n;&t; */
@@ -11008,6 +11014,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t;&t; * assume PMC[0].fr = 1 at this point &n;&t;&t; */
@@ -11082,6 +11089,9 @@ id|put_cpu_no_resched
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* for debug only */
@@ -12037,6 +12047,9 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
 id|pmu_conf.num_ibrs
 suffix:semicolon
 id|i
@@ -12069,6 +12082,9 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+(paren
+r_int
+)paren
 id|pmu_conf.num_dbrs
 suffix:semicolon
 id|i
@@ -12105,6 +12121,10 @@ id|task
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|atomic_read
 c_func
 (paren
@@ -12777,6 +12797,10 @@ multiline_comment|/*&n;&t; * This loop flushes the PMD into the PFM context.&n;&
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|atomic_read
 c_func
 (paren

@@ -406,7 +406,7 @@ r_void
 )paren
 (brace
 )brace
-r_void
+id|irqreturn_t
 DECL|function|ia64_mca_cpe_int_handler
 id|ia64_mca_cpe_int_handler
 (paren
@@ -444,6 +444,9 @@ id|SAL_INFO_TYPE_CPE
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
@@ -1557,6 +1560,16 @@ op_member_access_from_pointer
 id|min_state_area
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Backtrace of current task (pid %d, %s)&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
 id|fetch_min_state
 c_func
 (paren
@@ -1594,6 +1607,82 @@ op_amp
 id|info
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tasklist_lock.write_lock
+)paren
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+(brace
+r_struct
+id|task_struct
+op_star
+id|g
+comma
+op_star
+id|t
+suffix:semicolon
+id|do_each_thread
+(paren
+id|g
+comma
+id|t
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|t
+op_eq
+id|current
+)paren
+r_continue
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;nBacktrace of pid %d (%s)&bslash;n&quot;
+comma
+id|t-&gt;pid
+comma
+id|t-&gt;comm
+)paren
+suffix:semicolon
+id|show_stack
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
+)brace
+id|while_each_thread
+(paren
+id|g
+comma
+id|t
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tasklist_lock.write_lock
+)paren
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
 )paren
 suffix:semicolon
 id|printk
@@ -2727,7 +2816,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * ia64_mca_rendez_interrupt_handler&n; *&n; *&t;This is handler used to put slave processors into spinloop&n; *&t;while the monarch processor does the mca handling and later&n; *&t;wake each slave up once the monarch is done.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
-r_void
+id|irqreturn_t
 DECL|function|ia64_mca_rendez_int_handler
 id|ia64_mca_rendez_int_handler
 c_func
@@ -2790,9 +2879,12 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_wakeup_int_handler&n; *&n; *&t;The interrupt handler for processing the inter-cpu interrupt to the&n; *&t;slave cpu which was spinning in the rendez loop.&n; *&t;Since this spinning is done by turning off the interrupts and&n; *&t;polling on the wakeup-interrupt bit in the IRR, there is&n; *&t;nothing useful to be done in the handler.&n; *&n; *  Inputs  :   wakeup_irq  (Wakeup-interrupt bit)&n; *&t;arg&t;&t;(Interrupt handler specific argument)&n; *&t;ptregs&t;&t;(Exception frame at the time of the interrupt)&n; *  Outputs :   None&n; *&n; */
-r_void
+id|irqreturn_t
 DECL|function|ia64_mca_wakeup_int_handler
 id|ia64_mca_wakeup_int_handler
 c_func
@@ -2810,6 +2902,9 @@ op_star
 id|ptregs
 )paren
 (brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_return_to_sal_check&n; *&n; *&t;This is function called before going back from the OS_MCA handler&n; *&t;to the OS_MCA dispatch code which finally takes the control back&n; *&t;to the SAL.&n; *&t;The main purpose of this routine is to setup the OS_MCA to SAL&n; *&t;return state which can be used by the OS_MCA dispatch code&n; *&t;just before going back to SAL.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
 r_void
@@ -2895,7 +2990,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_cmc_int_handler&n; *&n; *  This is corrected machine check interrupt handler.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format.&n; *&n; * Inputs&n; *      interrupt number&n; *      client data arg ptr&n; *      saved registers ptr&n; *&n; * Outputs&n; *&t;None&n; */
-r_void
+id|irqreturn_t
 DECL|function|ia64_mca_cmc_int_handler
 id|ia64_mca_cmc_int_handler
 c_func
@@ -3114,6 +3209,7 @@ id|CMC_POLL_INTERVAL
 suffix:semicolon
 multiline_comment|/* lock already released, get out now */
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -3145,6 +3241,9 @@ c_func
 op_amp
 id|cmc_history_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * IA64_MCA log support&n; */
@@ -3247,6 +3346,7 @@ r_int
 id|dummy
 )paren
 (brace
+r_int
 r_int
 id|start_count
 suffix:semicolon
@@ -3379,6 +3479,7 @@ r_int
 id|dummy
 )paren
 (brace
+r_int
 r_int
 id|start_count
 suffix:semicolon
@@ -3713,8 +3814,10 @@ id|prfunc
 )paren
 (brace
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|j
 suffix:semicolon
 r_if
@@ -6939,7 +7042,7 @@ suffix:semicolon
 r_int
 id|n_sects
 suffix:semicolon
-r_int
+id|u32
 id|ercd_pos
 suffix:semicolon
 r_if
@@ -7135,7 +7238,7 @@ suffix:semicolon
 r_int
 id|n_sects
 suffix:semicolon
-r_int
+id|u32
 id|ercd_pos
 suffix:semicolon
 r_int
