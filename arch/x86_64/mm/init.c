@@ -32,13 +32,14 @@ macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
-DECL|variable|mmu_gathers
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|mmu_gather
+comma
 id|mmu_gathers
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * NOTE: pagetable_init alloc all the fixmap pagetables contiguous on the&n; * physical space so we can cache the place of the first one and move&n; * around without checking the pgd every time.&n; */
 DECL|function|show_mem
