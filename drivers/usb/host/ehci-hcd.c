@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
@@ -757,6 +758,55 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
+r_int
+DECL|function|ehci_reboot
+id|ehci_reboot
+(paren
+r_struct
+id|notifier_block
+op_star
+id|self
+comma
+r_int
+r_int
+id|code
+comma
+r_void
+op_star
+id|null
+)paren
+(brace
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+suffix:semicolon
+id|ehci
+op_assign
+id|container_of
+(paren
+id|self
+comma
+r_struct
+id|ehci_hcd
+comma
+id|reboot_notifier
+)paren
+suffix:semicolon
+multiline_comment|/* make BIOS/etc use companion controller during reboot */
+id|writel
+(paren
+l_int|0
+comma
+op_amp
+id|ehci-&gt;regs-&gt;configured_flag
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* called by khubd or root hub init threads */
 DECL|function|ehci_start
 r_static
@@ -1369,6 +1419,16 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Start, enabling full USB 2.0 functionality ... usb 1.1 devices&n;&t; * are explicitly handed to companion controller(s), so no TT is&n;&t; * involved with the root hub.&n;&t; */
+id|ehci-&gt;reboot_notifier.notifier_call
+op_assign
+id|ehci_reboot
+suffix:semicolon
+id|register_reboot_notifier
+(paren
+op_amp
+id|ehci-&gt;reboot_notifier
+)paren
+suffix:semicolon
 id|ehci-&gt;hcd.state
 op_assign
 id|USB_STATE_READY
@@ -1584,6 +1644,12 @@ l_int|0
 comma
 op_amp
 id|ehci-&gt;regs-&gt;configured_flag
+)paren
+suffix:semicolon
+id|unregister_reboot_notifier
+(paren
+op_amp
+id|ehci-&gt;reboot_notifier
 )paren
 suffix:semicolon
 id|remove_debug_files

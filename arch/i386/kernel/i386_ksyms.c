@@ -368,6 +368,13 @@ id|csum_partial_copy_generic
 )paren
 suffix:semicolon
 multiline_comment|/* Delay loops */
+DECL|variable|__ndelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ndelay
+)paren
+suffix:semicolon
 DECL|variable|__udelay
 id|EXPORT_SYMBOL
 c_func

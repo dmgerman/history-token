@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/list.h&gt;&t;&t;/* for struct list_head */
 macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* for struct file_operations */
 macro_line|#include &lt;linux/completion.h&gt;&t;/* for struct completion */
+macro_line|#include &lt;linux/sched.h&gt;&t;/* for current &amp;&amp; schedule_timeout */
 DECL|function|wait_ms
 r_static
 id|__inline__
@@ -551,6 +552,11 @@ r_int
 id|string_langid
 suffix:semicolon
 multiline_comment|/* language ID for strings */
+DECL|member|present
+r_int
+id|present
+suffix:semicolon
+multiline_comment|/* if device is present or not */
 DECL|member|hcpriv
 r_void
 op_star
