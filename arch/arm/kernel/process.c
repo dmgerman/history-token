@@ -193,11 +193,6 @@ r_void
 )paren
 (brace
 multiline_comment|/* endless idle loop with no priority at all */
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -225,6 +220,11 @@ id|idle
 op_assign
 id|default_idle
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|leds_event
 c_func
 (paren
@@ -249,6 +249,11 @@ id|leds_event
 c_func
 (paren
 id|led_idle_end
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|schedule
