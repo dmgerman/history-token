@@ -187,8 +187,8 @@ c_cond
 id|actqf
 op_logical_and
 op_logical_neg
-id|try_inc_mod_count
-c_func
+id|try_module_get
+suffix:colon
 (paren
 id|actqf-&gt;qf_owner
 )paren
@@ -218,12 +218,7 @@ op_star
 id|fmt
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|fmt-&gt;qf_owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|fmt-&gt;qf_owner

@@ -32,7 +32,7 @@ id|alg
 )paren
 (brace
 r_return
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|alg-&gt;cra_module
@@ -52,12 +52,7 @@ op_star
 id|alg
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|alg-&gt;cra_module
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|alg-&gt;cra_module

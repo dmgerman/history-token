@@ -4,6 +4,7 @@ mdefine_line|#define __ASM_SMP_H
 multiline_comment|/*&n; * We need the APIC definitions automatically as part of &squot;smp.h&squot;&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
@@ -197,6 +198,8 @@ DECL|macro|cpu_possible
 mdefine_line|#define cpu_possible(cpu) (cpu_callout_map &amp; (1&lt;&lt;(cpu)))
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+DECL|macro|for_each_cpu
+mdefine_line|#define for_each_cpu(cpu, mask) &bslash;&n;&t;for(mask = cpu_online_map; &bslash;&n;&t;    cpu = __ffs(mask), mask != 0; &bslash;&n;&t;    mask &amp;= ~(1&lt;&lt;cpu))
 DECL|function|num_online_cpus
 r_extern
 r_inline
@@ -213,6 +216,25 @@ id|hweight32
 c_func
 (paren
 id|cpu_online_map
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* We don&squot;t mark CPUs online until __cpu_up(), so we need another measure */
+DECL|function|num_booting_cpus
+r_static
+r_inline
+r_int
+id|num_booting_cpus
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|hweight32
+c_func
+(paren
+id|cpu_callout_map
 )paren
 suffix:semicolon
 )brace
@@ -249,6 +271,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|function|hard_smp_processor_id
 r_static
 id|__inline
@@ -307,25 +330,7 @@ id|APIC_LDR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We don&squot;t mark CPUs online until __cpu_up(), so we need another measure */
-DECL|function|num_booting_cpus
-r_static
-r_inline
-r_int
-id|num_booting_cpus
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|hweight32
-c_func
-(paren
-id|cpu_callout_map
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */

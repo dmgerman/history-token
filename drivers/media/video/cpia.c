@@ -15473,12 +15473,7 @@ op_star
 id|ops
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ops-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|ops-&gt;owner
@@ -15546,7 +15541,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|cam-&gt;ops-&gt;owner

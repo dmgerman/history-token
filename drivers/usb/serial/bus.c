@@ -180,9 +180,13 @@ id|driver-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+op_star
+id|dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -220,20 +224,21 @@ id|minor
 op_assign
 id|port-&gt;number
 suffix:semicolon
-id|tty_register_devfs
+id|tty_register_device
 (paren
 op_amp
 id|usb_serial_tty_driver
 comma
-l_int|0
-comma
 id|minor
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s converter now attached to ttyUSB%d (or usb/tts/%d for devfs)&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s converter now attached to ttyUSB%d (or usb/tts/%d for devfs)&bslash;n&quot;
 comma
 id|driver-&gt;name
 comma
@@ -318,9 +323,13 @@ id|driver-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+op_star
+id|dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -352,7 +361,7 @@ id|minor
 op_assign
 id|port-&gt;number
 suffix:semicolon
-id|tty_unregister_devfs
+id|tty_unregister_device
 (paren
 op_amp
 id|usb_serial_tty_driver
@@ -360,10 +369,13 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s converter now disconnected from ttyUSB%d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s converter now disconnected from ttyUSB%d&bslash;n&quot;
 comma
 id|driver-&gt;name
 comma
@@ -422,6 +434,11 @@ suffix:semicolon
 id|device-&gt;driver.remove
 op_assign
 id|usb_serial_device_remove
+suffix:semicolon
+id|device-&gt;driver.devclass
+op_assign
+op_amp
+id|tty_devclass
 suffix:semicolon
 id|retval
 op_assign

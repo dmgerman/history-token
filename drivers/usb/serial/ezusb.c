@@ -95,10 +95,12 @@ op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - kmalloc(%d) failed.&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -210,10 +212,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s- %d failed&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s- %d failed&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

@@ -1375,10 +1375,9 @@ id|dev_state
 op_star
 id|ps
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_if
@@ -1405,10 +1404,9 @@ id|ps-&gt;ifclaimed
 op_assign
 l_int|0
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

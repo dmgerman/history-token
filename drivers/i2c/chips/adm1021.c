@@ -3,14 +3,27 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/sensors.h&gt;
+macro_line|#include &lt;linux/i2c-proc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* Registers */
+DECL|macro|ADM1021_SYSCTL_TEMP
+mdefine_line|#define ADM1021_SYSCTL_TEMP&t;&t;1200
+DECL|macro|ADM1021_SYSCTL_REMOTE_TEMP
+mdefine_line|#define ADM1021_SYSCTL_REMOTE_TEMP&t;1201
+DECL|macro|ADM1021_SYSCTL_DIE_CODE
+mdefine_line|#define ADM1021_SYSCTL_DIE_CODE&t;&t;1202
+DECL|macro|ADM1021_SYSCTL_ALARMS
+mdefine_line|#define ADM1021_SYSCTL_ALARMS&t;&t;1203
+DECL|macro|ADM1021_ALARM_TEMP_HIGH
+mdefine_line|#define ADM1021_ALARM_TEMP_HIGH&t;&t;0x40
+DECL|macro|ADM1021_ALARM_TEMP_LOW
+mdefine_line|#define ADM1021_ALARM_TEMP_LOW&t;&t;0x20
+DECL|macro|ADM1021_ALARM_RTEMP_HIGH
+mdefine_line|#define ADM1021_ALARM_RTEMP_HIGH&t;0x10
+DECL|macro|ADM1021_ALARM_RTEMP_LOW
+mdefine_line|#define ADM1021_ALARM_RTEMP_LOW&t;&t;0x08
+DECL|macro|ADM1021_ALARM_RTEMP_NA
+mdefine_line|#define ADM1021_ALARM_RTEMP_NA&t;&t;0x04
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static
@@ -240,30 +253,6 @@ id|remote_temp_offset_prec
 suffix:semicolon
 )brace
 suffix:semicolon
-r_int
-id|__init
-id|sensors_adm1021_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|__exit
-id|sensors_adm1021_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
-id|adm1021_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|adm1021_attach_adapter
@@ -335,28 +324,6 @@ comma
 r_void
 op_star
 id|arg
-)paren
-suffix:semicolon
-r_static
-r_void
-id|adm1021_inc_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-suffix:semicolon
-r_static
-r_void
-id|adm1021_dec_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
 )paren
 suffix:semicolon
 r_static
@@ -517,34 +484,41 @@ id|i2c_driver
 id|adm1021_driver
 op_assign
 (brace
-multiline_comment|/* name */
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|name
+op_assign
 l_string|&quot;ADM1021, MAX1617 sensor driver&quot;
 comma
-multiline_comment|/* id */
+dot
+id|id
+op_assign
 id|I2C_DRIVERID_ADM1021
 comma
-multiline_comment|/* flags */
+dot
+id|flags
+op_assign
 id|I2C_DF_NOTIFY
 comma
-multiline_comment|/* attach_adapter */
-op_amp
+dot
+id|attach_adapter
+op_assign
 id|adm1021_attach_adapter
 comma
-multiline_comment|/* detach_client */
-op_amp
+dot
+id|detach_client
+op_assign
 id|adm1021_detach_client
 comma
-multiline_comment|/* command */
-op_amp
+dot
+id|command
+op_assign
 id|adm1021_command
 comma
-multiline_comment|/* inc_use */
-op_amp
-id|adm1021_inc_use
-comma
-multiline_comment|/* dec_use */
-op_amp
-id|adm1021_dec_use
 )brace
 suffix:semicolon
 multiline_comment|/* These files are created for each detected adm1021. This is just a template;&n;   though at first sight, you might think we could use a statically&n;   allocated list, we need some way to get back to the parent - which&n;   is done through one of the &squot;extra&squot; fields which are initialized&n;   when a new copy is allocated. */
@@ -748,15 +722,6 @@ comma
 l_int|0
 )brace
 )brace
-suffix:semicolon
-multiline_comment|/* Used by init/cleanup */
-DECL|variable|adm1021_initialized
-r_static
-r_int
-id|__initdata
-id|adm1021_initialized
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* I choose here for semi-static allocation. Complete dynamic&n;   allocation could also be used; the code needed for this would probably&n;   take more memory than the datastructure takes now. */
 DECL|variable|adm1021_id
@@ -1578,34 +1543,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|adm1021_inc_use
-r_void
-id|adm1021_inc_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|adm1021_dec_use
-r_void
-id|adm1021_dec_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 multiline_comment|/* All registers are byte-sized */
 DECL|function|adm1021_read_value
 r_int
@@ -2089,17 +2026,17 @@ op_star
 id|results
 )paren
 (brace
-r_int
-id|prec
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|adm1021_data
 op_star
 id|data
 op_assign
 id|client-&gt;data
+suffix:semicolon
+r_int
+id|prec
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2751,6 +2688,7 @@ multiline_comment|/* Can&squot;t write to it */
 )brace
 )brace
 DECL|function|sensors_adm1021_init
+r_static
 r_int
 id|__init
 id|sensors_adm1021_init
@@ -2759,60 +2697,17 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;adm1021.o version %s (%s)&bslash;n&quot;
-comma
-id|LM_VERSION
-comma
-id|LM_DATE
-)paren
-suffix:semicolon
-id|adm1021_initialized
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
+r_return
 id|i2c_add_driver
 c_func
 (paren
 op_amp
 id|adm1021_driver
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;adm1021.o: Driver registration failed, module not inserted.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|adm1021_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-id|adm1021_initialized
-op_increment
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|sensors_adm1021_exit
+r_static
 r_void
 id|__exit
 id|sensors_adm1021_exit
@@ -2821,62 +2716,12 @@ c_func
 r_void
 )paren
 (brace
-id|adm1021_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|adm1021_cleanup
-r_static
-r_int
-id|adm1021_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|adm1021_initialized
-op_ge
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
 id|i2c_del_driver
 c_func
 (paren
 op_amp
 id|adm1021_driver
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;adm1021.o: Driver deregistration failed, module not removed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-id|adm1021_initialized
-op_decrement
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 id|MODULE_AUTHOR
@@ -2888,6 +2733,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;adm1021 driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

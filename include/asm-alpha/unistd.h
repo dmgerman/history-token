@@ -642,10 +642,6 @@ DECL|macro|__NR_io_submit
 mdefine_line|#define __NR_io_submit&t;&t;&t;401
 DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;&t;402
-DECL|macro|__NR_alloc_hugepages
-mdefine_line|#define __NR_alloc_hugepages&t;&t;403
-DECL|macro|__NR_free_hugepages
-mdefine_line|#define __NR_free_hugepages&t;&t;404
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;&t;405
 DECL|macro|__NR_lookup_dcookie

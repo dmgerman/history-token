@@ -2495,7 +2495,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-id|for_each_task
+id|for_each_process
 c_func
 (paren
 id|p
@@ -3435,7 +3435,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;stram: bad access beyond end of device: &quot;
-l_string|&quot;block=%ld, count=%ld&bslash;n&quot;
+l_string|&quot;block=%ld, count=%d&bslash;n&quot;
 comma
 id|req-&gt;sector
 comma

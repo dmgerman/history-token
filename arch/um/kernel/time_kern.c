@@ -13,6 +13,7 @@ macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;time_user.h&quot;
+macro_line|#include &quot;mode.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -507,9 +508,18 @@ r_void
 r_int
 id|err
 suffix:semicolon
-id|user_time_init
+id|CHOOSE_MODE
 c_func
 (paren
+id|user_time_init_tt
+c_func
+(paren
+)paren
+comma
+id|user_time_init_skas
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_if

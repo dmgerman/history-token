@@ -1339,12 +1339,16 @@ DECL|macro|fb_readw
 mdefine_line|#define fb_readw __raw_readw
 DECL|macro|fb_readl
 mdefine_line|#define fb_readl __raw_readl
+DECL|macro|fb_readq
+mdefine_line|#define fb_readq __raw_readq
 DECL|macro|fb_writeb
 mdefine_line|#define fb_writeb __raw_writeb
 DECL|macro|fb_writew
 mdefine_line|#define fb_writew __raw_writew
 DECL|macro|fb_writel
 mdefine_line|#define fb_writel __raw_writel
+DECL|macro|fb_writeq
+mdefine_line|#define fb_writeq __raw_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset memset_io
 macro_line|#else

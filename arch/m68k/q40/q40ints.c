@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1394,7 +1395,7 @@ op_amp
 id|IRQ_INPROGRESS
 )paren
 (brace
-multiline_comment|/* some handlers do sti() for irq latency reasons, */
+multiline_comment|/* some handlers do local_irq_enable() for irq latency reasons, */
 multiline_comment|/* however reentering an active irq handler is not permitted */
 macro_line|#ifdef IP_USE_DISABLE
 multiline_comment|/* in theory this is the better way to do it because it still */

@@ -3,14 +3,10 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &lt;linux/sensors.h&gt;
+macro_line|#include &lt;linux/i2c-proc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
+DECL|macro|LM75_SYSCTL_TEMP
+mdefine_line|#define LM75_SYSCTL_TEMP 1200&t;/* Degrees Celcius * 10 */
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static
@@ -130,30 +126,6 @@ suffix:semicolon
 multiline_comment|/* Register values */
 )brace
 suffix:semicolon
-r_int
-id|__init
-id|sensors_lm75_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|__exit
-id|sensors_lm75_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
-id|lm75_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|lm75_attach_adapter
@@ -225,28 +197,6 @@ comma
 r_void
 op_star
 id|arg
-)paren
-suffix:semicolon
-r_static
-r_void
-id|lm75_inc_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-suffix:semicolon
-r_static
-r_void
-id|lm75_dec_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
 )paren
 suffix:semicolon
 r_static
@@ -333,34 +283,36 @@ id|i2c_driver
 id|lm75_driver
 op_assign
 (brace
-multiline_comment|/* name */
+dot
+id|name
+op_assign
 l_string|&quot;LM75 sensor chip driver&quot;
 comma
-multiline_comment|/* id */
+dot
+id|id
+op_assign
 id|I2C_DRIVERID_LM75
 comma
-multiline_comment|/* flags */
+dot
+id|flags
+op_assign
 id|I2C_DF_NOTIFY
 comma
-multiline_comment|/* attach_adapter */
-op_amp
+dot
+id|attach_adapter
+op_assign
 id|lm75_attach_adapter
 comma
-multiline_comment|/* detach_client */
-op_amp
+dot
+id|detach_client
+op_assign
 id|lm75_detach_client
 comma
-multiline_comment|/* command */
-op_amp
+dot
+id|command
+op_assign
 id|lm75_command
 comma
-multiline_comment|/* inc_use */
-op_amp
-id|lm75_inc_use
-comma
-multiline_comment|/* dec_use */
-op_amp
-id|lm75_dec_use
 )brace
 suffix:semicolon
 multiline_comment|/* These files are created for each detected LM75. This is just a template;&n;   though at first sight, you might think we could use a statically&n;   allocated list, we need some way to get back to the parent - which&n;   is done through one of the &squot;extra&squot; fields which are initialized&n;   when a new copy is allocated. */
@@ -401,15 +353,6 @@ comma
 l_int|0
 )brace
 )brace
-suffix:semicolon
-multiline_comment|/* Used by init/cleanup */
-DECL|variable|lm75_initialized
-r_static
-r_int
-id|__initdata
-id|lm75_initialized
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|lm75_id
 r_static
@@ -754,8 +697,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;lm75.o: Internal error: unknown kind (%d)?!?&quot;
@@ -763,7 +705,6 @@ comma
 id|kind
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|error1
 suffix:semicolon
@@ -890,60 +831,25 @@ op_star
 id|client
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
-macro_line|#ifdef MODULE
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-macro_line|#endif
-id|i2c_deregister_entry
-c_func
-(paren
-(paren
-(paren
 r_struct
 id|lm75_data
 op_star
-)paren
-(paren
+id|data
+op_assign
 id|client-&gt;data
-)paren
-)paren
-op_member_access_from_pointer
-id|sysctl_id
+suffix:semicolon
+id|i2c_deregister_entry
+c_func
+(paren
+id|data-&gt;sysctl_id
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|err
-op_assign
 id|i2c_detach_client
 c_func
 (paren
 id|client
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;lm75.o: Client deregistration failed, client not detached.&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren
@@ -975,34 +881,6 @@ id|arg
 (brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|lm75_inc_use
-r_void
-id|lm75_inc_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|lm75_dec_use
-r_void
-id|lm75_dec_use
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|swap_bytes
@@ -1228,14 +1106,12 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;Starting lm75 update&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|data-&gt;temp
 op_assign
 id|lm75_read_value
@@ -1463,60 +1339,17 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;lm75.o version %s (%s)&bslash;n&quot;
-comma
-id|LM_VERSION
-comma
-id|LM_DATE
-)paren
-suffix:semicolon
-id|lm75_initialized
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
+r_return
 id|i2c_add_driver
 c_func
 (paren
 op_amp
 id|lm75_driver
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;lm75.o: Driver registration failed, module not inserted.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|lm75_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-id|lm75_initialized
-op_increment
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|sensors_lm75_exit
+r_static
 r_void
 id|__exit
 id|sensors_lm75_exit
@@ -1525,66 +1358,14 @@ c_func
 r_void
 )paren
 (brace
-id|lm75_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|lm75_cleanup
-r_static
-r_int
-id|lm75_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lm75_initialized
-op_ge
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
 id|i2c_del_driver
 c_func
 (paren
 op_amp
 id|lm75_driver
 )paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;lm75.o: Driver deregistration failed, module not removed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|res
 suffix:semicolon
 )brace
-id|lm75_initialized
-op_decrement
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1595,6 +1376,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;LM75 driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|sensors_lm75_init

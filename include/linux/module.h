@@ -52,45 +52,27 @@ id|MODULE_NAME_LEN
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-macro_line|#ifdef KBUILD_MODNAME
-DECL|variable|__module_name
-r_static
-r_const
-r_char
-id|__module_name
-(braket
-id|MODULE_NAME_LEN
-)braket
-id|__attribute__
+multiline_comment|/* These are either module local, or the kernel&squot;s dummy ones. */
+r_extern
+r_int
+id|init_module
 c_func
 (paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;.gnu.linkonce.modname&quot;
-)paren
-)paren
-)paren
-op_assign
-"&bslash;"
-id|__stringify
-c_func
-(paren
-id|KBUILD_MODNAME
+r_void
 )paren
 suffix:semicolon
-macro_line|#endif
+r_extern
+r_void
+id|cleanup_module
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#ifdef MODULE
 multiline_comment|/* For replacement modutils, use an alias not a pointer. */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;static const unsigned long __module_##gtype##_size&t;&t;&bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id);&t;&t;&bslash;&n;static const struct gtype##_id * __module_##gtype##_table&t;&bslash;&n;  __attribute__ ((unused)) = name;&t;&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
-multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
-r_extern
-r_struct
-id|module
-id|__this_module
-suffix:semicolon
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
 macro_line|#else  /* !MODULE */
@@ -349,10 +331,8 @@ macro_line|#endif
 multiline_comment|/* The command line arguments (may be mangled).  People like&n;&t;   keeping pointers to this stuff */
 DECL|member|args
 r_char
+op_star
 id|args
-(braket
-l_int|0
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -679,6 +659,67 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MODULES */
+macro_line|#ifdef MODULE
+r_extern
+r_struct
+id|module
+id|__this_module
+suffix:semicolon
+macro_line|#ifdef KBUILD_MODNAME
+multiline_comment|/* We make the linker do some of the work. */
+DECL|variable|__this_module
+r_struct
+id|module
+id|__this_module
+id|__attribute__
+c_func
+(paren
+(paren
+id|section
+c_func
+(paren
+l_string|&quot;.gnu.linkonce.this_module&quot;
+)paren
+)paren
+)paren
+op_assign
+(brace
+dot
+id|name
+op_assign
+id|__stringify
+c_func
+(paren
+id|KBUILD_MODNAME
+)paren
+comma
+dot
+id|symbols
+op_assign
+(brace
+dot
+id|owner
+op_assign
+op_amp
+id|__this_module
+)brace
+comma
+dot
+id|init
+op_assign
+id|init_module
+comma
+macro_line|#ifdef CONFIG_MODULE_UNLOAD
+dot
+m_exit
+op_assign
+id|cleanup_module
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+macro_line|#endif /* KBUILD_MODNAME */
+macro_line|#endif /* MODULE */
 multiline_comment|/* For archs to search exception tables */
 r_extern
 r_struct
@@ -692,10 +733,55 @@ suffix:semicolon
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
-DECL|macro|__MOD_INC_USE_COUNT
-mdefine_line|#define __MOD_INC_USE_COUNT(mod) &bslash;&n;&t;do { __unsafe(mod); (void)try_module_get(mod); } while(0)
-DECL|macro|__MOD_DEC_USE_COUNT
-mdefine_line|#define __MOD_DEC_USE_COUNT(mod) module_put(mod)
+DECL|function|__MOD_INC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|__MOD_INC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|__unsafe
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Yes, we ignore the retval here, that&squot;s why it&squot;s deprecated.&n;&t; */
+id|try_module_get
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+)brace
+DECL|function|__MOD_DEC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+)brace
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
 DECL|struct|obsolete_modparm
@@ -738,17 +824,60 @@ DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)
 macro_line|#endif
 multiline_comment|/* People do this inside their init routines, when the module isn&squot;t&n;   &quot;live&quot; yet.  They should no longer be doing that, but&n;   meanwhile... */
+DECL|function|_MOD_INC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|_MOD_INC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|__unsafe
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_MODULE_UNLOAD) &amp;&amp; defined(MODULE)
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;&bslash;&n;&t;do { __unsafe(THIS_MODULE); local_inc(&amp;THIS_MODULE-&gt;ref[get_cpu()].count); put_cpu(); } while (0)
+id|local_inc
+c_func
+(paren
+op_amp
+id|module-&gt;ref
+(braket
+id|get_cpu
+c_func
+(paren
+)paren
+)braket
+dot
+id|count
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#else
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT &bslash;&n;&t;do { __unsafe(THIS_MODULE); (void)try_module_get(THIS_MODULE); } while (0)
+id|try_module_get
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
 macro_line|#endif
+)brace
+DECL|macro|MOD_INC_USE_COUNT
+mdefine_line|#define MOD_INC_USE_COUNT &bslash;&n;&t;_MOD_INC_USE_COUNT(THIS_MODULE)
 DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT module_put(THIS_MODULE)
-DECL|macro|try_inc_mod_count
-mdefine_line|#define try_inc_mod_count(mod) try_module_get(mod)
+mdefine_line|#define MOD_DEC_USE_COUNT &bslash;&n;&t;__MOD_DEC_USE_COUNT(THIS_MODULE)
 DECL|macro|EXPORT_NO_SYMBOLS
 mdefine_line|#define EXPORT_NO_SYMBOLS
 r_extern
@@ -765,13 +894,6 @@ DECL|macro|__mod_between
 mdefine_line|#define __mod_between(a_start, a_len, b_start, b_len)&t;&t;&bslash;&n;(((a_start) &gt;= (b_start) &amp;&amp; (a_start) &lt;= (b_start)+(b_len))&t;&bslash;&n; || ((a_start)+(a_len) &gt;= (b_start)&t;&t;&t;&t;&bslash;&n;     &amp;&amp; (a_start)+(a_len) &lt;= (b_start)+(b_len)))
 DECL|macro|mod_bound
 mdefine_line|#define mod_bound(p, n, m)&t;&t;&t;&t;&t;&bslash;&n;(((m)-&gt;module_init&t;&t;&t;&t;&t;&t;&bslash;&n;  &amp;&amp; __mod_between((p),(n),(m)-&gt;module_init,(m)-&gt;init_size))&t;&bslash;&n; || __mod_between((p),(n),(m)-&gt;module_core,(m)-&gt;core_size))
-multiline_comment|/* Old-style &quot;I&squot;ll just call it init_module and it&squot;ll be run at&n;   insert&quot;.  Use module_init(myroutine) instead. */
-macro_line|#ifdef MODULE
-DECL|macro|init_module
-mdefine_line|#define init_module(voidarg) __initfn(void)
-DECL|macro|cleanup_module
-mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
-macro_line|#endif
 multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
 r_extern
 id|spinlock_t

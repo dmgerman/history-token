@@ -1967,17 +1967,22 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|function|wakeup_secondary_via_NMI
+macro_line|#ifdef WAKE_SECONDARY_VIA_NMI
+multiline_comment|/* &n; * Poke the other CPU in the eye via NMI to wake it up. Remember that the normal&n; * INIT, INIT, STARTUP sequence will reset the chip hard for us, and this&n; * won&squot;t ... remember to clear down the APIC, etc later.&n; */
 r_static
 r_int
 id|__init
-id|wakeup_secondary_via_NMI
+DECL|function|wakeup_secondary_cpu
+id|wakeup_secondary_cpu
 c_func
 (paren
 r_int
 id|logical_apicid
+comma
+r_int
+r_int
+id|start_eip
 )paren
-multiline_comment|/* &n; * Poke the other CPU in the eye to wake it up. Remember that the normal&n; * INIT, INIT, STARTUP sequence will reset the chip hard for us, and this&n; * won&squot;t ... remember to clear down the APIC, etc later.&n; */
 (brace
 r_int
 r_int
@@ -2155,11 +2160,13 @@ id|accept_status
 )paren
 suffix:semicolon
 )brace
-DECL|function|wakeup_secondary_via_INIT
+macro_line|#endif&t;/* WAKE_SECONDARY_VIA_NMI */
+macro_line|#ifdef WAKE_SECONDARY_VIA_INIT
 r_static
 r_int
 id|__init
-id|wakeup_secondary_via_INIT
+DECL|function|wakeup_secondary_cpu
+id|wakeup_secondary_cpu
 c_func
 (paren
 r_int
@@ -2631,6 +2638,7 @@ id|accept_status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* WAKE_SECONDARY_VIA_INIT */
 r_extern
 r_int
 r_int
@@ -3486,25 +3494,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have the boot CPU online for sure.&n;&t; */
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|cpu_callout_map
-)paren
-suffix:semicolon
 id|boot_cpu_logical_apicid
 op_assign
 id|logical_smp_processor_id
@@ -4170,6 +4159,40 @@ id|smp_boot_cpus
 c_func
 (paren
 id|max_cpus
+)paren
+suffix:semicolon
+)brace
+DECL|function|smp_prepare_boot_cpu
+r_void
+id|__devinit
+id|smp_prepare_boot_cpu
+c_func
+(paren
+r_void
+)paren
+(brace
+id|set_bit
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+op_amp
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+op_amp
+id|cpu_callout_map
 )paren
 suffix:semicolon
 )brace

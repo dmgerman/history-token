@@ -290,7 +290,7 @@ id|ep-&gt;pers_high
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|ep-&gt;module
@@ -367,7 +367,7 @@ id|ep-&gt;pers_high
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|ep-&gt;module
@@ -680,10 +680,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|put_exec_domain
+id|module_put
 c_func
 (paren
-id|ep
+id|ep-&gt;module
 )paren
 suffix:semicolon
 r_return
@@ -747,23 +747,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|put_exec_domain
+id|module_put
 c_func
 (paren
-id|oep
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;[%s:%d]: set personality to %lx&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|current-&gt;pid
-comma
-id|personality
+id|oep-&gt;module
 )paren
 suffix:semicolon
 r_return

@@ -3676,10 +3676,10 @@ id|dev-&gt;devnum
 )paren
 suffix:semicolon
 multiline_comment|/* save a pointer to our structure */
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|ss
 )paren
@@ -3744,10 +3744,10 @@ id|us_data
 op_star
 id|ss
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3756,10 +3756,10 @@ c_func
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

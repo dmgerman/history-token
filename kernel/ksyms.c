@@ -239,6 +239,22 @@ c_func
 id|kfree
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|variable|kmalloc_percpu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmalloc_percpu
+)paren
+suffix:semicolon
+DECL|variable|kfree_percpu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kfree_percpu
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|vfree
 id|EXPORT_SYMBOL
 c_func
@@ -1596,6 +1612,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dcache_readdir
+)paren
+suffix:semicolon
+DECL|variable|simple_getattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_getattr
 )paren
 suffix:semicolon
 DECL|variable|simple_statfs

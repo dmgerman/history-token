@@ -1,10 +1,9 @@
 macro_line|#ifndef __LINUX_CACHE_H
 DECL|macro|__LINUX_CACHE_H
 mdefine_line|#define __LINUX_CACHE_H
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN(x,a) (((x)+(a)-1)&amp;~((a)-1))
 macro_line|#ifndef L1_CACHE_ALIGN
 DECL|macro|L1_CACHE_ALIGN
 mdefine_line|#define L1_CACHE_ALIGN(x) ALIGN(x, L1_CACHE_BYTES)

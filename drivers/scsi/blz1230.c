@@ -10,10 +10,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;blz1230.h&quot;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
@@ -21,6 +21,74 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|macro|MKIV
 mdefine_line|#define MKIV 1
+multiline_comment|/* The controller registers can be found in the Z2 config area at these&n; * offsets:&n; */
+DECL|macro|BLZ1230_ESP_ADDR
+mdefine_line|#define BLZ1230_ESP_ADDR 0x8000
+DECL|macro|BLZ1230_DMA_ADDR
+mdefine_line|#define BLZ1230_DMA_ADDR 0x10000
+DECL|macro|BLZ1230II_ESP_ADDR
+mdefine_line|#define BLZ1230II_ESP_ADDR 0x10000
+DECL|macro|BLZ1230II_DMA_ADDR
+mdefine_line|#define BLZ1230II_DMA_ADDR 0x10021
+multiline_comment|/* The Blizzard 1230 DMA interface&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; * Only two things can be programmed in the Blizzard DMA:&n; *  1) The data direction is controlled by the status of bit 31 (1 = write)&n; *  2) The source/dest address (word aligned, shifted one right) in bits 30-0&n; *&n; * Program DMA by first latching the highest byte of the address/direction&n; * (i.e. bits 31-24 of the long word constructed as described in steps 1+2&n; * above). Then write each byte of the address/direction (starting with the&n; * top byte, working down) to the DMA address register.&n; *&n; * Figure out interrupt status by reading the ESP status byte.&n; */
+DECL|struct|blz1230_dma_registers
+r_struct
+id|blz1230_dma_registers
+(brace
+DECL|member|dma_addr
+r_volatile
+r_int
+r_char
+id|dma_addr
+suffix:semicolon
+multiline_comment|/* DMA address      [0x0000] */
+DECL|member|dmapad2
+r_int
+r_char
+id|dmapad2
+(braket
+l_int|0x7fff
+)braket
+suffix:semicolon
+DECL|member|dma_latch
+r_volatile
+r_int
+r_char
+id|dma_latch
+suffix:semicolon
+multiline_comment|/* DMA latch        [0x8000] */
+)brace
+suffix:semicolon
+DECL|struct|blz1230II_dma_registers
+r_struct
+id|blz1230II_dma_registers
+(brace
+DECL|member|dma_addr
+r_volatile
+r_int
+r_char
+id|dma_addr
+suffix:semicolon
+multiline_comment|/* DMA address      [0x0000] */
+DECL|member|dmapad2
+r_int
+r_char
+id|dmapad2
+(braket
+l_int|0xf
+)braket
+suffix:semicolon
+DECL|member|dma_latch
+r_volatile
+r_int
+r_char
+id|dma_latch
+suffix:semicolon
+multiline_comment|/* DMA latch        [0x0010] */
+)brace
+suffix:semicolon
+DECL|macro|BLZ1230_DMA_WRITE
+mdefine_line|#define BLZ1230_DMA_WRITE 0x80000000
 r_static
 r_int
 id|dma_bytes_sent
@@ -1032,15 +1100,6 @@ suffix:semicolon
 )brace
 DECL|macro|HOSTS_C
 mdefine_line|#define HOSTS_C
-macro_line|#include &quot;blz1230.h&quot;
-DECL|variable|driver_template
-r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|SCSI_BLZ1230
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 DECL|function|blz1230_esp_release
 r_int
 id|blz1230_esp_release
@@ -1113,6 +1172,84 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|driver_template
+r_static
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp-blz1230&quot;
+comma
+dot
+id|proc_info
+op_assign
+id|esp_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Blizzard1230 SCSI IV&quot;
+comma
+dot
+id|detect
+op_assign
+id|blz1230_esp_detect
+comma
+dot
+id|release
+op_assign
+id|blz1230_esp_release
+comma
+dot
+id|command
+op_assign
+id|esp_command
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+)brace
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
 id|MODULE_LICENSE
 c_func
 (paren

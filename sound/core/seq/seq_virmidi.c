@@ -31,31 +31,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|dec_mod_count
-r_static
-r_inline
-r_void
-id|dec_mod_count
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|module
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * initialize an event record&n; */
 DECL|function|snd_virmidi_init_event
 r_static
@@ -1101,7 +1076,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|rdev-&gt;card-&gt;module
@@ -1158,7 +1133,7 @@ op_and_assign
 op_complement
 id|SNDRV_VIRMIDI_SUBSCRIBE
 suffix:semicolon
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|rdev-&gt;card-&gt;module
@@ -1206,7 +1181,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|rdev-&gt;card-&gt;module
@@ -1263,7 +1238,7 @@ op_and_assign
 op_complement
 id|SNDRV_VIRMIDI_USE
 suffix:semicolon
-id|dec_mod_count
+id|module_put
 c_func
 (paren
 id|rdev-&gt;card-&gt;module

@@ -7002,7 +7002,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|device-&gt;discipline-&gt;owner
@@ -7097,12 +7097,7 @@ c_func
 id|inp-&gt;i_rdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|device-&gt;discipline-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|device-&gt;discipline-&gt;owner

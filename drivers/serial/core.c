@@ -1138,7 +1138,8 @@ c_cond
 (paren
 id|quot
 )paren
-r_break
+r_return
+id|quot
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Oops, the quotient was zero.  Try again with&n;&t;&t; * the old baud rate if possible.&n;&t;&t; */
 id|termios-&gt;c_cflag
@@ -4806,12 +4807,7 @@ id|info-&gt;open_wait
 suffix:semicolon
 id|done
 suffix:colon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner
@@ -5733,7 +5729,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|drv-&gt;owner
@@ -5986,12 +5982,7 @@ id|retval
 suffix:semicolon
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|drv-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|drv-&gt;owner
@@ -7822,12 +7813,10 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Register the port whether it&squot;s detected or not.  This allows&n;&t; * setserial to be used to alter this ports parameters.&n;&t; */
-id|tty_register_devfs
+id|tty_register_device
 c_func
 (paren
 id|drv-&gt;tty_driver
-comma
-l_int|0
 comma
 id|drv-&gt;minor
 op_plus
@@ -8008,7 +7997,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Remove the devices from devfs&n;&t; */
-id|tty_unregister_devfs
+id|tty_unregister_device
 c_func
 (paren
 id|drv-&gt;tty_driver

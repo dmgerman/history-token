@@ -2018,8 +2018,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|journal
 op_assign
 id|jbd_kmalloc
@@ -2165,8 +2163,6 @@ id|journal
 suffix:semicolon
 id|fail
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -3551,8 +3547,6 @@ c_func
 (paren
 id|journal
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* Published API: Check whether the journal uses all of a given set of&n; * features.  Return true (non-zero) if it does. */

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * ioport.h&t;Definitions of routines for detecting, rese
 macro_line|#ifndef _LINUX_IOPORT_H
 DECL|macro|_LINUX_IOPORT_H
 mdefine_line|#define _LINUX_IOPORT_H
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Resources are tree-like, allowing&n; * nesting etc..&n; */
 DECL|struct|resource
 r_struct
@@ -300,6 +301,7 @@ DECL|macro|release_mem_region
 mdefine_line|#define release_mem_region(start,n)&t;__release_region(&amp;iomem_resource, (start), (n))
 r_extern
 r_int
+id|__deprecated
 id|__check_region
 c_func
 (paren

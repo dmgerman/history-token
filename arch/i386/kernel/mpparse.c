@@ -1199,6 +1199,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|function|MP_translation_info
 r_static
 r_void
@@ -1473,6 +1474,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif&t;/* CONFIG_X86_NUMAQ */
 multiline_comment|/*&n; * Read/parse the MPC&n; */
 DECL|function|smp_read_mpc
 r_static

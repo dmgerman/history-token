@@ -2215,6 +2215,7 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
 id|boot_cpu_data.x86
 op_eq
 l_int|6
@@ -2222,6 +2223,13 @@ op_logical_and
 id|boot_cpu_data.x86_model
 OG
 l_int|1
+)paren
+op_logical_or
+(paren
+id|boot_cpu_data.x86
+op_eq
+l_int|15
+)paren
 )paren
 r_break
 suffix:semicolon

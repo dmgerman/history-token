@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|variable|jiffies_64
@@ -703,6 +704,28 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * In the SMP case we use the local APIC timer interrupt to do the profiling,&n; * except when we simulate SMP mode on a uniprocessor system, in that case we&n; * have to call the local interrupt handler.&n; */
+macro_line|#ifndef CONFIG_X86_LOCAL_APIC
+id|x86_do_profile
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|using_apic_timer
+)paren
+id|smp_local_timer_interrupt
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * If we have an externally synchronized Linux clock, then update CMOS clock&n; * accordingly every ~11 minutes. set_rtc_mmss() will be called in the jiffy&n; * closest to exactly 500 ms before the next second. If the update fails, we&n; * don&squot;tcare, as it&squot;ll be updated on the next turn, and the problem (time way&n; * off) isn&squot;t likely to go away much sooner anyway.&n; */
 r_if
 c_cond

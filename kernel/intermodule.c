@@ -464,7 +464,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|ime-&gt;owner
@@ -615,7 +615,7 @@ c_cond
 (paren
 id|ime-&gt;owner
 )paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|ime-&gt;owner

@@ -459,10 +459,6 @@ mdefine_line|#define __NR_time               231 /* Linux Specific              
 multiline_comment|/* #define __NR_oldstat         232    Linux Specific                              */
 DECL|macro|__NR_stime
 mdefine_line|#define __NR_stime              233 /* Linux Specific                              */
-DECL|macro|__NR_alloc_hugepages
-mdefine_line|#define __NR_alloc_hugepages    234 /* Linux Specific                              */
-DECL|macro|__NR_free_hugepages
-mdefine_line|#define __NR_free_hugepages     235 /* Linux Specific                              */
 DECL|macro|__NR__llseek
 mdefine_line|#define __NR__llseek            236 /* Linux Specific                              */
 DECL|macro|__NR_mlock

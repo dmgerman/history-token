@@ -2294,26 +2294,31 @@ id|i2c_algorithm
 id|i2c_bit_algo
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Bit-shift algorithm&quot;
 comma
+dot
+id|id
+op_assign
 id|I2C_ALGO_BIT
 comma
+dot
+id|master_xfer
+op_assign
 id|bit_xfer
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* slave_xmit&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* slave_recv&t;&t;*/
+dot
+id|algo_control
+op_assign
 id|algo_control
 comma
-multiline_comment|/* ioctl&t;&t;*/
+dot
+id|functionality
+op_assign
 id|bit_func
 comma
-multiline_comment|/* functionality&t;*/
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * registering functions to load algorithms at runtime &n; */
@@ -2491,10 +2496,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|i2c_add_adapter
 c_func
 (paren
@@ -2550,33 +2551,6 @@ id|adap-&gt;name
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|i2c_algo_bit_init
-r_int
-id|__init
-id|i2c_algo_bit_init
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-algo-bit.o: i2c bit algorithm module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2595,7 +2569,6 @@ c_func
 id|i2c_bit_del_bus
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2662,29 +2635,4 @@ comma
 l_string|&quot;debug level - 0 off; 1 normal; 2,3 more verbose; 9 bit-protocol&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|i2c_algo_bit_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif
 eof

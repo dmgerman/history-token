@@ -1605,7 +1605,7 @@ multiline_comment|/*&n;&t; *&t;Call device private open method&n;&t; */
 r_if
 c_cond
 (paren
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|dev-&gt;owner
@@ -1652,12 +1652,7 @@ op_amp
 id|dev-&gt;state
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|dev-&gt;owner
@@ -1971,7 +1966,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *&t;Tell people we are down&n;&t; */
+multiline_comment|/*&n;&t; * Tell people we are down&n;&t; */
 id|notifier_call_chain
 c_func
 (paren
@@ -1984,12 +1979,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Drop the module refcount&n;&t; */
-r_if
-c_cond
-(paren
-id|dev-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|dev-&gt;owner

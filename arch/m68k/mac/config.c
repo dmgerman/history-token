@@ -278,6 +278,7 @@ id|p
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Resetting ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -568,17 +569,12 @@ id|writeback
 (brace
 r_int
 r_int
-id|cpu_flags
+id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
-id|cpu_flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+id|flags
 )paren
 suffix:semicolon
 id|via_flush_cache
@@ -586,10 +582,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
-id|cpu_flags
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -612,6 +608,7 @@ id|MACH_IS_MAC
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ERROR: no Mac, but config_mac() called!! &bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1096,6 +1093,26 @@ id|MAC_NUBUS
 )brace
 comma
 (brace
+id|MAC_MODEL_Q605_ACC
+comma
+l_string|&quot;Quadra 605&quot;
+comma
+id|MAC_ADB_CUDA
+comma
+id|MAC_VIA_QUADRA
+comma
+id|MAC_SCSI_QUADRA
+comma
+id|MAC_IDE_NONE
+comma
+id|MAC_SCC_QUADRA
+comma
+id|MAC_ETHER_NONE
+comma
+id|MAC_NUBUS
+)brace
+comma
+(brace
 id|MAC_MODEL_Q610
 comma
 l_string|&quot;Quadra 610&quot;
@@ -1169,7 +1186,7 @@ id|MAC_SCSI_QUADRA2
 comma
 id|MAC_IDE_NONE
 comma
-id|MAC_SCC_QUADRA2
+id|MAC_SCC_QUADRA
 comma
 id|MAC_ETHER_SONIC
 comma
@@ -1209,7 +1226,7 @@ id|MAC_SCSI_QUADRA3
 comma
 id|MAC_IDE_NONE
 comma
-id|MAC_SCC_II
+id|MAC_SCC_PSC
 comma
 id|MAC_ETHER_MACE
 comma
@@ -1357,6 +1374,7 @@ comma
 id|MAC_NUBUS
 )brace
 comma
+multiline_comment|/* These have the comm slot, and therefore the possibility of SONIC ethernet */
 (brace
 id|MAC_MODEL_P575
 comma
@@ -1372,12 +1390,11 @@ id|MAC_IDE_NONE
 comma
 id|MAC_SCC_II
 comma
-id|MAC_ETHER_NONE
+id|MAC_ETHER_SONIC
 comma
 id|MAC_NUBUS
 )brace
 comma
-multiline_comment|/* These have the comm slot, and therefore the possibility of SONIC ethernet */
 (brace
 id|MAC_MODEL_P588
 comma
@@ -1493,7 +1510,7 @@ id|MAC_SCSI_QUADRA3
 comma
 id|MAC_IDE_NONE
 comma
-id|MAC_SCC_QUADRA
+id|MAC_SCC_PSC
 comma
 id|MAC_ETHER_MACE
 comma
@@ -1898,6 +1915,7 @@ l_int|63
 suffix:semicolon
 id|printk
 (paren
+id|KERN_WARNING
 l_string|&quot;No bootinfo model ID, using cpuid instead (hey, use Penguin!)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1953,6 +1971,7 @@ c_func
 suffix:semicolon
 id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;Detected Macintosh model: %d &bslash;n&quot;
 comma
 id|model
@@ -1961,11 +1980,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Report booter data:&n;&t; */
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot; Penguin bootinfo data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot; Video: addr 0x%lx row 0x%lx depth %lx dimensions %ld x %ld&bslash;n&quot;
 comma
 id|mac_bi_data.videoaddr
@@ -1985,6 +2006,7 @@ l_int|16
 suffix:semicolon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot; Videological 0x%lx phys. 0x%lx, SCC at 0x%lx &bslash;n&quot;
 comma
 id|mac_bi_data.videological
@@ -1996,6 +2018,7 @@ id|mac_bi_data.sccbase
 suffix:semicolon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot; Boottime: 0x%lx GMTBias: 0x%lx &bslash;n&quot;
 comma
 id|mac_bi_data.boottime
@@ -2005,6 +2028,7 @@ id|mac_bi_data.gmtbias
 suffix:semicolon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot; Machine ID: %ld CPUid: 0x%lx memory size: 0x%lx &bslash;n&quot;
 comma
 id|mac_bi_data.id
@@ -2086,6 +2110,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;config.c: wtf: unknown scsi, using 53c80&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2135,6 +2160,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Apple Macintosh %s&bslash;n&quot;
 comma
 id|macintosh_config-&gt;name

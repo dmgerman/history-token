@@ -1353,10 +1353,6 @@ r_int
 r_int
 id|buses
 suffix:semicolon
-r_int
-r_int
-id|cr
-suffix:semicolon
 r_struct
 id|pci_bus
 op_star
