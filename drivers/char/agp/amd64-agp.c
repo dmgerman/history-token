@@ -1229,6 +1229,7 @@ c_cond
 op_logical_neg
 id|not_first_call
 op_logical_and
+op_logical_neg
 id|request_mem_region
 c_func
 (paren
@@ -1238,8 +1239,6 @@ id|size
 comma
 l_string|&quot;aperture&quot;
 )paren
-OL
-l_int|0
 )paren
 (brace
 id|printk
