@@ -25,15 +25,6 @@ macro_line|#ifndef MEM_SIZE
 DECL|macro|MEM_SIZE
 mdefine_line|#define MEM_SIZE&t;(16*1024*1024)
 macro_line|#endif
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-macro_line|#endif
 macro_line|#if defined(CONFIG_FPE_NWFPE) || defined(CONFIG_FPE_FASTFPE)
 DECL|variable|fpe_type
 r_char
