@@ -738,6 +738,16 @@ id|logit
 (brace
 id|buff_copy
 op_assign
+id|rtas_err_buf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem_init_done
+)paren
+(brace
+id|buff_copy
+op_assign
 id|kmalloc
 c_func
 (paren
@@ -751,7 +761,6 @@ c_cond
 (paren
 id|buff_copy
 )paren
-(brace
 id|memcpy
 c_func
 (paren
@@ -790,6 +799,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem_init_done
+)paren
 id|kfree
 c_func
 (paren

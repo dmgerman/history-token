@@ -519,6 +519,11 @@ id|t
 (brace
 )brace
 macro_line|#endif
+r_extern
+r_int
+id|mem_init_done
+suffix:semicolon
+multiline_comment|/* set on boot once kmalloc can be called */
 multiline_comment|/* EBCDIC -&gt; ASCII conversion for [0-9A-Z] on iSeries */
 r_extern
 r_int
