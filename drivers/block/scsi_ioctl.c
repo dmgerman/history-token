@@ -17,6 +17,34 @@ macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+multiline_comment|/* Command group 3 is reserved and should never be used.  */
+DECL|variable|scsi_command_size
+r_const
+r_int
+r_char
+id|scsi_command_size
+(braket
+l_int|8
+)braket
+op_assign
+(brace
+l_int|6
+comma
+l_int|10
+comma
+l_int|10
+comma
+l_int|12
+comma
+l_int|16
+comma
+l_int|12
+comma
+l_int|10
+comma
+l_int|10
+)brace
+suffix:semicolon
 DECL|macro|BLK_DEFAULT_TIMEOUT
 mdefine_line|#define BLK_DEFAULT_TIMEOUT&t;(60 * HZ)
 DECL|function|blk_do_rq
