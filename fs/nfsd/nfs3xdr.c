@@ -1937,7 +1937,7 @@ id|len
 op_assign
 id|NFSSVC_MAXBLKSIZE
 suffix:semicolon
-multiline_comment|/* set up the iovec */
+multiline_comment|/* set up the kvec */
 id|v
 op_assign
 l_int|0
@@ -2488,7 +2488,7 @@ op_star
 r_new
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vec
 suffix:semicolon

@@ -712,7 +712,7 @@ suffix:semicolon
 multiline_comment|/* request */
 DECL|member|rd_iov
 r_struct
-id|iovec
+id|kvec
 id|rd_iov
 (braket
 id|RPCSVC_MAXPAGES
@@ -1058,7 +1058,7 @@ suffix:semicolon
 multiline_comment|/* request */
 DECL|member|wr_vec
 r_struct
-id|iovec
+id|kvec
 id|wr_vec
 (braket
 id|RPCSVC_MAXPAGES

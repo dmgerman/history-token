@@ -623,6 +623,7 @@ c_func
 (paren
 (paren
 id|drm_auth_t
+id|__user
 op_star
 )paren
 id|arg
@@ -702,6 +703,7 @@ id|auth
 comma
 (paren
 id|drm_auth_t
+id|__user
 op_star
 )paren
 id|arg

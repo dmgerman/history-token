@@ -71,7 +71,7 @@ id|count
 suffix:semicolon
 DECL|member|vec
 r_struct
-id|iovec
+id|kvec
 id|vec
 (braket
 id|RPCSVC_MAXPAGES
@@ -101,7 +101,7 @@ id|len
 suffix:semicolon
 DECL|member|vec
 r_struct
-id|iovec
+id|kvec
 id|vec
 (braket
 id|RPCSVC_MAXPAGES
