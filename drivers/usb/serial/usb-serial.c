@@ -4202,7 +4202,7 @@ suffix:semicolon
 id|port-&gt;dev.parent
 op_assign
 op_amp
-id|serial-&gt;dev-&gt;dev
+id|interface-&gt;dev
 suffix:semicolon
 id|port-&gt;dev.driver
 op_assign
