@@ -9,9 +9,7 @@ macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &lt;stdarg.h&gt;
 multiline_comment|/*&n; *&n; */
 DECL|function|dec_mod_count

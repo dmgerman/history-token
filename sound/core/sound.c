@@ -10,9 +10,7 @@ macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 DECL|macro|SNDRV_OS_MINORS
 mdefine_line|#define SNDRV_OS_MINORS 256
 DECL|variable|major

@@ -40,6 +40,7 @@ id|devfs_entry
 op_star
 id|devfs_handle_t
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEVFS_FS
 r_extern
 r_void
 id|devfs_remove
@@ -69,7 +70,6 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|struct|unique_numspace
 r_struct
 id|unique_numspace
