@@ -418,7 +418,7 @@ comma
 id|KM_BIO_SRC_IRQ
 )paren
 op_plus
-id|sg-&gt;sg_off
+id|sg-&gt;offset
 suffix:semicolon
 )brace
 DECL|function|mmci_kunmap_atomic
