@@ -44,8 +44,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* libata-core.c */
 r_extern
-r_int
-r_int
+r_void
 id|ata_dev_id_string
 c_func
 (paren

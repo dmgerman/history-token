@@ -1355,6 +1355,7 @@ id|ap-&gt;ioaddr.status_addr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_prot_to_cmd - determine which read/write opcodes to use&n; *&t;@protocol: ATA_PROT_xxx taskfile protocol&n; *&t;@lba48: true is lba48 is present&n; *&n; *&t;Given necessary input, determine which read/write commands&n; *&t;to use to transfer data.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
 DECL|function|ata_prot_to_cmd
 r_static
 r_int
@@ -1462,6 +1463,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_dev_set_protocol - set taskfile protocol and r/w commands&n; *&t;@dev: device to examine and configure&n; *&n; *&t;Examine the device configuration, after we have&n; *&t;read the identify-device page and configured the&n; *&t;data transfer mode.  Set internal state related to&n; *&t;the ATA taskfile protocol (pio, pio mult, dma, etc.)&n; *&t;and calculate the proper read/write commands to use.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_set_protocol
 r_static
 r_void
@@ -1636,7 +1638,7 @@ r_return
 l_string|&quot;&lt;n/a&gt;&quot;
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_pio_devchk -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_pio_devchk - PATA device presence detection&n; *&t;@ap: ATA channel to examine&n; *&t;@device: Device to examine (starting at zero)&n; *&n; *&t;This technique was originally described in&n; *&t;Hale Landis&squot;s ATADRVR (www.ata-atapi.com), and&n; *&t;later found its way into the ATA/ATAPI spec.&n; *&n; *&t;Write a pattern to the ATA shadow registers,&n; *&t;and if a device is present, it will respond by&n; *&t;correctly storing and echoing back the&n; *&t;ATA shadow register contents.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_pio_devchk
 r_static
 r_int
@@ -1763,7 +1765,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* nothing found */
 )brace
-multiline_comment|/**&n; *&t;ata_mmio_devchk -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_mmio_devchk - PATA device presence detection&n; *&t;@ap: ATA channel to examine&n; *&t;@device: Device to examine (starting at zero)&n; *&n; *&t;This technique was originally described in&n; *&t;Hale Landis&squot;s ATADRVR (www.ata-atapi.com), and&n; *&t;later found its way into the ATA/ATAPI spec.&n; *&n; *&t;Write a pattern to the ATA shadow registers,&n; *&t;and if a device is present, it will respond by&n; *&t;correctly storing and echoing back the&n; *&t;ATA shadow register contents.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_mmio_devchk
 r_static
 r_int
@@ -1922,7 +1924,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* nothing found */
 )brace
-multiline_comment|/**&n; *&t;ata_dev_devchk -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_dev_devchk - PATA device presence detection&n; *&t;@ap: ATA channel to examine&n; *&t;@device: Device to examine (starting at zero)&n; *&n; *&t;Dispatch ATA device presence detection, depending&n; *&t;on whether we are using PIO or MMIO to talk to the&n; *&t;ATA shadow registers.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_devchk
 r_static
 r_int
@@ -2075,7 +2077,7 @@ r_return
 id|ATA_DEV_UNKNOWN
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_try_classify -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_dev_try_classify - Parse returned ATA device signature&n; *&t;@ap: ATA channel to examine&n; *&t;@device: Device to examine (starting at zero)&n; *&n; *&t;After an event -- SRST, E.D.D., or SATA COMRESET -- occurs,&n; *&t;an ATA/ATAPI-defined set of values is placed in the ATA&n; *&t;shadow registers, indicating the results of device detection&n; *&t;and diagnostics.&n; *&n; *&t;Select the ATA device, and read the values from the ATA shadow&n; *&t;registers.  Then parse according to the Error register value,&n; *&t;and the spec-defined values examined by ata_dev_classify().&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_try_classify
 r_static
 id|u8
@@ -2090,10 +2092,6 @@ comma
 r_int
 r_int
 id|device
-comma
-r_int
-r_int
-id|maybe_have_dev
 )paren
 (brace
 r_struct
@@ -2249,10 +2247,9 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_id_string -&n; *&t;@dev:&n; *&t;@s:&n; *&t;@ofs:&n; *&t;@len:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@dev: Device whose IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_id_string
-r_int
-r_int
+r_void
 id|ata_dev_id_string
 c_func
 (paren
@@ -2278,10 +2275,6 @@ id|len
 r_int
 r_int
 id|c
-comma
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -2308,8 +2301,6 @@ suffix:semicolon
 id|s
 op_increment
 suffix:semicolon
-id|ret
-op_assign
 id|c
 op_assign
 id|dev-&gt;id
@@ -2335,11 +2326,8 @@ op_sub_assign
 l_int|2
 suffix:semicolon
 )brace
-r_return
-id|ret
-suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_parse_strings -&n; *&t;@dev:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dev_parse_strings - Store useful IDENTIFY DEVICE page strings&n; *&t;@dev: Device whose IDENTIFY DEVICE page info we use&n; *&n; *&t;We store &squot;vendor&squot; and &squot;product&squot; strings read from the device,&n; *&t;for later use in the SCSI simulator&squot;s INQUIRY data.&n; *&n; *&t;Set these strings here, in the case of &squot;product&squot;, using&n; *&t;data read from the ATA IDENTIFY DEVICE page.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_parse_strings
 r_static
 r_void
@@ -2387,7 +2375,7 @@ id|dev-&gt;product
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;__ata_dev_select -&n; *&t;@ap:&n; *&t;@device:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;__ata_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|__ata_dev_select
 r_static
 r_void
@@ -2464,7 +2452,7 @@ id|ap
 suffix:semicolon
 multiline_comment|/* needed; also flushes, for mmio */
 )brace
-multiline_comment|/**&n; *&t;ata_dev_select -&n; *&t;@ap:&n; *&t;@device:&n; *&t;@wait:&n; *&t;@can_sleep:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&t;@wait: non-zero to wait for Status register BSY bit to clear&n; *&t;@can_sleep: non-zero if context allows sleeping&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;This is a high-level version of __ata_dev_select(),&n; *&t;which additionally provides the services of inserting&n; *&t;the proper pauses and status polling, where needed.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_select
 r_void
 id|ata_dev_select
@@ -2553,7 +2541,7 @@ id|ap
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;ata_dump_id -&n; *&t;@dev:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dump_id - IDENTIFY DEVICE info debugging output&n; *&t;@dev: Device whose IDENTIFY DEVICE page we will dump&n; *&n; *&t;Dump selected 16-bit words from a detected device&squot;s&n; *&t;IDENTIFY PAGE page.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dump_id
 r_static
 r_inline
@@ -4934,8 +4922,6 @@ c_func
 id|ap
 comma
 l_int|0
-comma
-id|dev0
 )paren
 suffix:semicolon
 r_if
@@ -4957,8 +4943,6 @@ c_func
 id|ap
 comma
 l_int|1
-comma
-id|dev1
 )paren
 suffix:semicolon
 multiline_comment|/* re-enable interrupts */
