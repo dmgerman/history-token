@@ -2098,6 +2098,11 @@ comma
 id|block
 )paren
 suffix:semicolon
+op_star
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|out_release
 suffix:colon
 id|group_release_blocks
@@ -2117,11 +2122,6 @@ id|sb
 comma
 id|es_alloc
 )paren
-suffix:semicolon
-op_star
-id|err
-op_assign
-l_int|0
 suffix:semicolon
 id|out_unlock
 suffix:colon
