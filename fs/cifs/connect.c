@@ -2305,15 +2305,6 @@ id|value
 )paren
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;npassword after munging: %s&quot;
-comma
-id|vol-&gt;password
-)paren
-suffix:semicolon
-multiline_comment|/* allocate memory for password and copy password in to it */
 )brace
 r_else
 r_if
@@ -4709,20 +4700,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Entering cifs_mount. Xid: %d with: %s&quot;
-comma
-id|xid
-comma
-id|mount_data
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* cFYI(1, (&quot;Entering cifs_mount. Xid: %d with: %s&quot;, xid, mount_data)); */
 id|memset
 c_func
 (paren
