@@ -97,6 +97,7 @@ macro_line|#&t;error Unknown platform.  Fix acpi.c.
 macro_line|# endif
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|macro|ACPI_MAX_PLATFORM_IRQS
 mdefine_line|#define ACPI_MAX_PLATFORM_IRQS&t;256
 multiline_comment|/* Array to record platform interrupt vectors for generic interrupt routing. */
@@ -1964,4 +1965,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ACPI_BOOT */
 eof
