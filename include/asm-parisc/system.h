@@ -347,5 +347,21 @@ mdefine_line|#define __lock_aligned __attribute__((__section__(&quot;.data.lock_
 macro_line|#endif
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START (0x10100000 - 0x1000)
+multiline_comment|/* This is for the serialisation of PxTLB broadcasts.  At least on the&n; * N class systems, only one PxTLB inter processor broadcast can be&n; * active at any one time on the Merced bus.  This tlb purge&n; * synchronisation is fairly lightweight and harmless so we activate&n; * it on all SMP systems not just the N class. */
+macro_line|#ifdef CONFIG_SMP
+r_extern
+id|spinlock_t
+id|pa_tlb_lock
+suffix:semicolon
+DECL|macro|purge_tlb_start
+mdefine_line|#define purge_tlb_start(x) spin_lock(&amp;pa_tlb_lock)
+DECL|macro|purge_tlb_end
+mdefine_line|#define purge_tlb_end(x) spin_unlock(&amp;pa_tlb_lock)
+macro_line|#else
+DECL|macro|purge_tlb_start
+mdefine_line|#define purge_tlb_start(x) do { } while(0)
+DECL|macro|purge_tlb_end
+mdefine_line|#define purge_tlb_end(x) do { } while (0)
+macro_line|#endif
 macro_line|#endif
 eof

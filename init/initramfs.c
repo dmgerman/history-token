@@ -2256,17 +2256,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|gunzip
 c_func
 (paren
 )paren
-)paren
-id|message
-op_assign
-l_string|&quot;ungzip failed&quot;
 suffix:semicolon
 r_if
 c_cond

@@ -1410,10 +1410,6 @@ macro_line|#endif
 multiline_comment|/* Definition taken from glibc 2.3.3&n; * sysdeps/unix/sysv/linux/hppa/sysdep.h&n; */
 macro_line|#ifdef PIC
 multiline_comment|/* WARNING: CANNOT BE USED IN A NOP! */
-DECL|macro|K_STW_PIC
-macro_line|# define K_STW_PIC stw %r19, -32(%sr0, %sp) ASM_LINE_SEP
-DECL|macro|K_LDW_PIC
-macro_line|# define K_LDW_PIC ldw -32(%sr0, %sp), %r19 ASM_LINE_SEP
 DECL|macro|K_STW_ASM_PIC
 macro_line|# define K_STW_ASM_PIC&t;&quot;       copy %%r19, %%r4&bslash;n&quot;
 DECL|macro|K_LDW_ASM_PIC
@@ -1421,10 +1417,6 @@ macro_line|# define K_LDW_ASM_PIC&t;&quot;       copy %%r4, %%r19&bslash;n&quot;
 DECL|macro|K_USING_GR4
 macro_line|# define K_USING_GR4&t;&quot;%r4&quot;,
 macro_line|#else
-DECL|macro|K_STW_PIC
-macro_line|# define K_STW_PIC ASM_LINE_SEP
-DECL|macro|K_LDW_PIC
-macro_line|# define K_LDW_PIC ASM_LINE_SEP
 DECL|macro|K_STW_ASM_PIC
 macro_line|# define K_STW_ASM_PIC&t;&quot; &bslash;n&quot;
 DECL|macro|K_LDW_ASM_PIC

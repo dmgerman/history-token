@@ -103,7 +103,7 @@ id|compat_fsid_t
 suffix:semicolon
 DECL|typedef|compat_timer_t
 r_typedef
-id|u32
+id|s32
 id|compat_timer_t
 suffix:semicolon
 DECL|typedef|compat_key_t

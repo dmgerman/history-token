@@ -864,6 +864,14 @@ c_func
 id|CALL_FUNCTION_VECTOR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wait
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* Wait for response */
 r_while
 c_loop
@@ -882,11 +890,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|wait
-)paren
 r_while
 c_loop
 (paren
@@ -1053,12 +1056,6 @@ id|call_lock
 )paren
 )paren
 (brace
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
 multiline_comment|/* ignore locking because we have paniced anyways */
 id|nolock
 op_assign
@@ -1072,7 +1069,7 @@ id|smp_really_stop_cpu
 comma
 l_int|NULL
 comma
-l_int|1
+l_int|0
 comma
 l_int|0
 )paren

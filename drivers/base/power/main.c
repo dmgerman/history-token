@@ -30,6 +30,13 @@ c_func
 id|dpm_sem
 )paren
 suffix:semicolon
+DECL|variable|dpm_list_sem
+id|DECLARE_MUTEX
+c_func
+(paren
+id|dpm_list_sem
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * PM Reference Counting.&n; */
 DECL|function|device_pm_hold
 r_static
@@ -173,7 +180,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dpm_sem
+id|dpm_list_sem
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -218,7 +225,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dpm_sem
+id|dpm_list_sem
 )paren
 suffix:semicolon
 r_return
@@ -255,7 +262,7 @@ id|down
 c_func
 (paren
 op_amp
-id|dpm_sem
+id|dpm_list_sem
 )paren
 suffix:semicolon
 id|dpm_sysfs_remove
@@ -270,7 +277,7 @@ c_func
 id|dev-&gt;power.pm_parent
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -281,7 +288,7 @@ id|up
 c_func
 (paren
 op_amp
-id|dpm_sem
+id|dpm_list_sem
 )paren
 suffix:semicolon
 )brace

@@ -2420,6 +2420,11 @@ id|siginfo_t
 op_star
 id|info
 comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
 id|sigset_t
 op_star
 id|oldset
@@ -2430,19 +2435,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 multiline_comment|/* Are we from a system call? */
 r_if
 c_cond
@@ -2584,17 +2576,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -2668,6 +2649,10 @@ suffix:semicolon
 r_int
 id|signr
 suffix:semicolon
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 multiline_comment|/*&n;&t; * We want the common case to go fast, which&n;&t; * is why we may in certain cases get here from&n;&t; * kernel mode. Just return without doing anything&n;&t; * if so.&n;&t; */
 r_if
 c_cond
@@ -2701,6 +2686,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -2722,6 +2710,9 @@ id|signr
 comma
 op_amp
 id|info
+comma
+op_amp
+id|ka
 comma
 id|oldset
 comma

@@ -3042,6 +3042,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ip_route_me_harder
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_route_me_harder
+)paren
+suffix:semicolon
 DECL|function|skb_ip_make_writable
 r_int
 id|skb_ip_make_writable
@@ -3759,13 +3766,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_ct_attach
-)paren
-suffix:semicolon
-DECL|variable|ip_route_me_harder
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ip_route_me_harder
 )paren
 suffix:semicolon
 DECL|variable|nf_getsockopt

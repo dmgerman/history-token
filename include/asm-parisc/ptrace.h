@@ -114,7 +114,9 @@ mdefine_line|#define PTRACE_SINGLEBLOCK&t;12&t;/* resume execution until next br
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* XXX should we use iaoq[1] or iaoq[0] ? */
 DECL|macro|user_mode
-mdefine_line|#define user_mode(regs)&t;&t;&t;(((regs)-&gt;iaoq[0] &amp;  3) ? 1 : 0)
+mdefine_line|#define user_mode(regs)&t;&t;&t;(((regs)-&gt;iaoq[0] &amp; 3) ? 1 : 0)
+DECL|macro|user_space
+mdefine_line|#define user_space(regs)&t;&t;(((regs)-&gt;iasq[0] != 0) ? 1 : 0)
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs)&t;((regs)-&gt;iaoq[0] &amp; ~3)
 DECL|macro|profile_pc

@@ -7722,6 +7722,13 @@ op_assign
 id|tp-&gt;total_retrans
 suffix:semicolon
 )brace
+DECL|variable|tcp_get_info
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|tcp_get_info
+)paren
+suffix:semicolon
 DECL|function|tcp_getsockopt
 r_int
 id|tcp_getsockopt
@@ -8867,11 +8874,6 @@ op_lshift
 l_int|1
 comma
 id|tcp_bhash_size
-)paren
-suffix:semicolon
-id|tcpdiag_init
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

@@ -46,7 +46,7 @@ mdefine_line|#define INITRD_START (*(unsigned int *) (PARAM+0x218))
 DECL|macro|INITRD_SIZE
 mdefine_line|#define INITRD_SIZE (*(unsigned int *) (PARAM+0x21c))
 DECL|macro|EDID_INFO
-mdefine_line|#define EDID_INFO (*(struct edid_info *) (PARAM+0x440))
+mdefine_line|#define EDID_INFO (*(struct edid_info *) (PARAM+0x140))
 DECL|macro|EDD_NR
 mdefine_line|#define EDD_NR     (*(unsigned char *) (PARAM+EDDNR))
 DECL|macro|EDD_MBR_SIG_NR

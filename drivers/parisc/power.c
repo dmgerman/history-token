@@ -16,10 +16,10 @@ macro_line|#include &lt;asm/led.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DPRINTK
-macro_line|# define DPRINTK(x) printk x
+macro_line|# define DPRINTK(x...) printk(x)
 macro_line|#else
 DECL|macro|DPRINTK
-macro_line|# define DPRINTK(x) do { } while (0)
+macro_line|# define DPRINTK(x...)
 macro_line|#endif
 multiline_comment|/* filename in /proc which can be used to enable/disable the power switch */
 DECL|macro|SYSCTL_FILENAME
@@ -145,10 +145,8 @@ l_int|0
 id|DPRINTK
 c_func
 (paren
-(paren
 id|KERN_INFO
 l_string|&quot;Shutdown requested...&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|shutdown_timer
@@ -174,12 +172,10 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
 id|KERN_INFO
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|msg
-)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CHASSIS_LCD_LED
