@@ -29,11 +29,9 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|A3D_MAX_START
-mdefine_line|#define A3D_MAX_START&t;&t;400&t;/* 400 us */
+mdefine_line|#define A3D_MAX_START&t;&t;600&t;/* 600 us */
 DECL|macro|A3D_MAX_STROBE
-mdefine_line|#define A3D_MAX_STROBE&t;&t;60&t;/* 40 us */
-DECL|macro|A3D_DELAY_READ
-mdefine_line|#define A3D_DELAY_READ&t;&t;3&t;/* 3 ms */
+mdefine_line|#define A3D_MAX_STROBE&t;&t;80&t;/* 80 us */
 DECL|macro|A3D_MAX_LENGTH
 mdefine_line|#define A3D_MAX_LENGTH&t;&t;40&t;/* 40*3 bits */
 DECL|macro|A3D_MODE_A3D

@@ -1843,10 +1843,10 @@ op_add_assign
 l_int|830
 suffix:semicolon
 macro_line|#endif
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|GET_TIME

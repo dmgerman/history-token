@@ -30,9 +30,9 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|INTERACT_MAX_START
-mdefine_line|#define INTERACT_MAX_START&t;400&t;/* 400 us */
+mdefine_line|#define INTERACT_MAX_START&t;600&t;/* 400 us */
 DECL|macro|INTERACT_MAX_STROBE
-mdefine_line|#define INTERACT_MAX_STROBE&t;40&t;/* 40 us */
+mdefine_line|#define INTERACT_MAX_STROBE&t;60&t;/* 40 us */
 DECL|macro|INTERACT_MAX_LENGTH
 mdefine_line|#define INTERACT_MAX_LENGTH&t;32&t;/* 32 bits */
 DECL|macro|INTERACT_TYPE_HHFX
