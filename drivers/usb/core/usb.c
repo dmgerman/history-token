@@ -2057,6 +2057,12 @@ id|dev
 )paren
 )paren
 (brace
+id|usb_bus_put
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
