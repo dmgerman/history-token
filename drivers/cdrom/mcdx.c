@@ -1152,12 +1152,12 @@ id|mcdx_stuffp
 id|MCDX_NDRIVES
 )braket
 suffix:semicolon
-DECL|variable|mcdx_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mcdx_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|mcdx_queue
 r_static

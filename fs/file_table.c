@@ -32,19 +32,19 @@ id|files_stat
 suffix:semicolon
 multiline_comment|/* Needed by unix.o */
 multiline_comment|/* public. Not pretty! */
-DECL|variable|files_lock
-id|spinlock_t
 id|__cacheline_aligned_in_smp
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|files_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|filp_count_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|filp_count_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* slab constructors and destructors are called from arbitrary&n; * context and must be fully threaded - use a local spinlock&n; * to protect files_stat.nr_files&n; */
 DECL|function|filp_ctor

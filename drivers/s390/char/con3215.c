@@ -265,12 +265,12 @@ id|NR_3215
 )braket
 suffix:semicolon
 multiline_comment|/* spinlock to protect the raw3215 array */
-DECL|variable|raw3215_device_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|raw3215_device_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* list of free request structures */
 DECL|variable|raw3215_freelist

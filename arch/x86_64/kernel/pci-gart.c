@@ -114,12 +114,12 @@ suffix:semicolon
 DECL|macro|MAX_NB
 mdefine_line|#define MAX_NB 8
 multiline_comment|/* Allocation bitmap for the remapping area */
-DECL|variable|iommu_bitmap_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|iommu_bitmap_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|iommu_gart_bitmap
 r_static

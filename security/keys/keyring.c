@@ -22,12 +22,12 @@ id|keyring_name_hash
 id|KEYRING_NAME_HASH_SIZE
 )braket
 suffix:semicolon
-DECL|variable|keyring_name_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|keyring_name_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|keyring_hash
 r_static

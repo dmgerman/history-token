@@ -125,12 +125,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Spin Lock declaration */
-DECL|variable|iucv_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|iucv_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|messagesDisabled
 r_static
@@ -162,12 +162,12 @@ r_struct
 id|list_head
 id|iucv_irq_queue
 suffix:semicolon
-DECL|variable|iucv_irq_queue_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|iucv_irq_queue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *Internal function prototypes&n; */
 r_static

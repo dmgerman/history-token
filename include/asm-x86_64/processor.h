@@ -126,6 +126,11 @@ DECL|member|x86_power
 id|__u32
 id|x86_power
 suffix:semicolon
+DECL|member|x86_cpuid_level
+id|__u32
+id|x86_cpuid_level
+suffix:semicolon
+multiline_comment|/* Max CPUID function supported */
 DECL|member|loops_per_jiffy
 r_int
 r_int

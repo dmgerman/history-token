@@ -12,12 +12,12 @@ c_func
 id|_log_types
 )paren
 suffix:semicolon
-DECL|variable|_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|dm_register_dirty_log_type
 r_int

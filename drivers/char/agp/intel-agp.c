@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Intel AGPGART routines.&n; */
-multiline_comment|/*&n; * Intel(R) 855GM/852GM and 865G support added by David Dawes&n; * &lt;dawes@tungstengraphics.com&gt;.&n; *&n; * Intel(R) 915G support added by Alan Hourihane&n; * &lt;alanh@tungstengraphics.com&gt;.&n; */
+multiline_comment|/*&n; * Intel(R) 855GM/852GM and 865G support added by David Dawes&n; * &lt;dawes@tungstengraphics.com&gt;.&n; *&n; * Intel(R) 915G/915GM support added by Alan Hourihane&n; * &lt;alanh@tungstengraphics.com&gt;.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1958,6 +1958,10 @@ c_cond
 id|agp_bridge-&gt;dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_INTEL_82915G_HB
+op_logical_or
+id|agp_bridge-&gt;dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82915GM_HB
 )paren
 id|gtt_entries
 op_assign
@@ -1990,6 +1994,10 @@ c_cond
 id|agp_bridge-&gt;dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_INTEL_82915G_HB
+op_logical_or
+id|agp_bridge-&gt;dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_INTEL_82915GM_HB
 )paren
 id|gtt_entries
 op_assign
@@ -7483,6 +7491,39 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|PCI_DEVICE_ID_INTEL_82915GM_HB
+suffix:colon
+r_if
+c_cond
+(paren
+id|find_i830
+c_func
+(paren
+id|PCI_DEVICE_ID_INTEL_82915GM_IG
+)paren
+)paren
+(brace
+id|bridge-&gt;driver
+op_assign
+op_amp
+id|intel_915_driver
+suffix:semicolon
+)brace
+r_else
+(brace
+id|bridge-&gt;driver
+op_assign
+op_amp
+id|intel_845_driver
+suffix:semicolon
+)brace
+id|name
+op_assign
+l_string|&quot;915GM&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|PCI_DEVICE_ID_INTEL_7505_0
 suffix:colon
 id|bridge-&gt;driver
@@ -7750,16 +7791,32 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|pci_dev_put
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|agp_remove_bridge
 c_func
 (paren
 id|bridge
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intel_i810_private.i810_dev
+)paren
+id|pci_dev_put
+c_func
+(paren
+id|intel_i810_private.i810_dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intel_i830_private.i830_dev
+)paren
+id|pci_dev_put
+c_func
+(paren
+id|intel_i830_private.i830_dev
 )paren
 suffix:semicolon
 id|agp_put_bridge
@@ -7998,6 +8055,12 @@ id|ID
 c_func
 (paren
 id|PCI_DEVICE_ID_INTEL_82915G_HB
+)paren
+comma
+id|ID
+c_func
+(paren
+id|PCI_DEVICE_ID_INTEL_82915GM_HB
 )paren
 comma
 (brace

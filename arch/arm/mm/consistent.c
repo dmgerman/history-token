@@ -23,12 +23,12 @@ id|pte_t
 op_star
 id|consistent_pte
 suffix:semicolon
-DECL|variable|consistent_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|consistent_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * VM region handling support.&n; *&n; * This should become something generic, handling VM region allocations for&n; * vmalloc and similar (ioremap, module space, etc).&n; *&n; * I envisage vmalloc()&squot;s supporting vm_struct becoming:&n; *&n; *  struct vm_struct {&n; *    struct vm_region&t;region;&n; *    unsigned long&t;flags;&n; *    struct page&t;**pages;&n; *    unsigned int&t;nr_pages;&n; *    unsigned long&t;phys_addr;&n; *  };&n; *&n; * get_vm_area() would then call vm_region_alloc with an appropriate&n; * struct vm_region head (eg):&n; *&n; *  struct vm_region vmalloc_head = {&n; *&t;.vm_list&t;= LIST_HEAD_INIT(vmalloc_head.vm_list),&n; *&t;.vm_start&t;= VMALLOC_START,&n; *&t;.vm_end&t;&t;= VMALLOC_END,&n; *  };&n; *&n; * However, vmalloc_head.vm_start is variable (typically, it is dependent on&n; * the amount of RAM found at boot time.)  I would imagine that get_vm_area()&n; * would have to initialise this each time prior to calling vm_region_alloc().&n; */
 DECL|struct|vm_region

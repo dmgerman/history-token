@@ -57,10 +57,11 @@ id|super_blocks
 )paren
 suffix:semicolon
 DECL|variable|sb_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;alloc_super&t;-&t;create new superblock&n; *&n; *&t;Allocates and initializes a new &amp;struct super_block.  alloc_super()&n; *&t;returns a pointer new superblock or %NULL if allocation had failed.&n; */
 DECL|function|alloc_super
@@ -2226,12 +2227,12 @@ r_struct
 id|idr
 id|unnamed_dev_idr
 suffix:semicolon
-DECL|variable|unnamed_dev_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|unnamed_dev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* protects the above */
 DECL|function|set_anon_super

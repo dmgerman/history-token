@@ -10,12 +10,12 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for file_fsync() */
 macro_line|#include &quot;adfs.h&quot;
 multiline_comment|/*&n; * For future.  This should probably be per-directory.&n; */
-DECL|variable|adfs_dir_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|adfs_dir_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

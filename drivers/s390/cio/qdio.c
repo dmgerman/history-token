@@ -180,12 +180,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* volatile as it could change&n;&t;&t;&t;&t;&t;&t; during a while loop */
-DECL|variable|ttiq_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ttiq_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|register_thinint_result
 r_static

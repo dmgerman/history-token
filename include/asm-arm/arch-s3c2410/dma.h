@@ -540,6 +540,24 @@ r_int
 id|devaddr
 )paren
 suffix:semicolon
+multiline_comment|/* s3c2410_dma_getposition&n; *&n; * get the position that the dma transfer is currently at&n;*/
+r_extern
+r_int
+id|s3c2410_dma_getposition
+c_func
+(paren
+id|dmach_t
+id|channel
+comma
+id|dma_addr_t
+op_star
+id|src
+comma
+id|dma_addr_t
+op_star
+id|dest
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|s3c2410_dma_set_opfn

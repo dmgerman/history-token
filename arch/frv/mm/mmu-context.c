@@ -30,12 +30,12 @@ c_func
 id|cxn_owners_lru
 )paren
 suffix:semicolon
-DECL|variable|cxn_owners_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cxn_owners_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|cxn_pinned
 r_int

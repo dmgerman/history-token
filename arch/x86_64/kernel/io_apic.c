@@ -22,12 +22,12 @@ r_int
 id|sis_apic_bug
 suffix:semicolon
 multiline_comment|/* not actually supported, dummy for compile */
-DECL|variable|ioapic_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ioapic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * # of IRQ routing registers&n; */
 DECL|variable|nr_ioapic_registers

@@ -115,12 +115,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|sigio_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sigio_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sigio_lock
 r_void

@@ -37,12 +37,12 @@ id|NVRW_CNT
 )braket
 suffix:semicolon
 multiline_comment|/* assume this is in the first 4GB */
-DECL|variable|nvram_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nvram_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pSeries_nvram_read
 r_static

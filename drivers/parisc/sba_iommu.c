@@ -6244,9 +6244,12 @@ id|res_map
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|sba_dev-&gt;sba_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|ioc_needs_fdc
 op_assign

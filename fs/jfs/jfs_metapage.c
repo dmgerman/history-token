@@ -9,12 +9,12 @@ macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
 macro_line|#include &quot;jfs_txnmgr.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
-DECL|variable|meta_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|meta_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 r_static

@@ -1424,10 +1424,11 @@ id|buffer
 suffix:semicolon
 )brace
 DECL|variable|die_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|die_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|die
 r_void

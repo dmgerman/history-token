@@ -14293,13 +14293,13 @@ c_func
 id|all_pmu_pvt
 )paren
 suffix:semicolon
-DECL|variable|__pmacdata
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|all_pvt_lock
 id|__pmacdata
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

@@ -185,12 +185,12 @@ id|pci_io_text
 op_assign
 l_string|&quot;iSeries PCI I/O&quot;
 suffix:semicolon
-DECL|variable|iomm_table_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|iomm_table_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * iomm_table_initialize&n; *&n; * Allocates and initalizes the Address Translation Table and Bar&n; * Tables to get them ready for use.  Must be called before any&n; * I/O space is handed out to the device BARs.&n; */
 DECL|function|iomm_table_initialize

@@ -5091,10 +5091,7 @@ id|mem_setup
 suffix:semicolon
 id|info-&gt;io.info
 op_assign
-(paren
-r_void
-op_star
-)paren
+op_amp
 id|addrs
 (braket
 id|intf_num
@@ -6195,10 +6192,12 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-multiline_comment|/* 16-bit boundaries */
+multiline_comment|/* 16-byte boundaries */
 id|ipmi_data-&gt;offset
 op_assign
-l_int|2
+l_int|16
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon

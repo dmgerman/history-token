@@ -241,6 +241,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Put the headers on a token ring packet. Token ring source routing&n; *&t;makes this a little more exciting than on ethernet.&n; */
 DECL|function|tr_header
+r_static
 r_int
 id|tr_header
 c_func
@@ -479,6 +480,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;A neighbour discovery of some species (eg arp) has completed. We&n; *&t;can now send the packet.&n; */
 DECL|function|tr_rebuild_header
+r_static
 r_int
 id|tr_rebuild_header
 c_func

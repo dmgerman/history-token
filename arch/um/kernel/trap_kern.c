@@ -1077,10 +1077,11 @@ r_void
 (brace
 )brace
 DECL|variable|trap_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|trap_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|trap_index
 r_static

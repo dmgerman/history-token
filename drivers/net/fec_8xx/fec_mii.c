@@ -38,12 +38,12 @@ DECL|macro|mk_mii_end
 mdefine_line|#define mk_mii_end&t;&t;0
 multiline_comment|/*************************************************/
 multiline_comment|/* XXX both FECs use the MII interface of FEC1 */
-DECL|variable|fec_mii_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|fec_mii_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|FEC_MII_LOOPS
 mdefine_line|#define FEC_MII_LOOPS&t;10000

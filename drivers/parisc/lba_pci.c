@@ -4687,9 +4687,12 @@ id|lba_dev
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|lba_dev-&gt;lba_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Set flags which depend on hw_rev&n;&t;*/
 r_if

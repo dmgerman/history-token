@@ -54,12 +54,12 @@ DECL|macro|NUM_ROUNDS
 mdefine_line|#define NUM_ROUNDS&t;64&t;/* magic value */
 DECL|macro|NUM_ITERS
 mdefine_line|#define NUM_ITERS&t;5&t;/* likewise */
-DECL|variable|itc_sync_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|itc_sync_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|go
 r_static

@@ -362,12 +362,12 @@ r_int
 r_int
 id|flush_va
 suffix:semicolon
-DECL|variable|tlbstate_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tlbstate_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL&t;0xffffffff
@@ -1121,12 +1121,12 @@ id|RESCHEDULE_VECTOR
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise&n; * static memory requirements. It also looks cleaner.&n; */
-DECL|variable|call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|call_data_struct
 r_struct

@@ -361,12 +361,12 @@ id|ctl
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|ps2esdi_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ps2esdi_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ps2esdi_queue
 r_static

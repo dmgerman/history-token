@@ -55,10 +55,11 @@ id|RTAS_ERROR_LOG_MAX
 )braket
 suffix:semicolon
 DECL|variable|rtas_data_buf_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtas_data_buf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|__page_aligned
 r_char

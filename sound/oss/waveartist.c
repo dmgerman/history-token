@@ -359,12 +359,12 @@ id|adev_info
 id|MAX_AUDIO_DEV
 )braket
 suffix:semicolon
-DECL|variable|waveartist_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|waveartist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_ARCH_NETWINDER
 DECL|macro|machine_is_netwinder

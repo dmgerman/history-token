@@ -34,10 +34,11 @@ id|acpi_device_list
 )paren
 suffix:semicolon
 DECL|variable|acpi_device_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|acpi_device_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|acpi_wakeup_device_list
 id|LIST_HEAD

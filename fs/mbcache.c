@@ -192,12 +192,12 @@ c_func
 id|mb_cache_lru_list
 )paren
 suffix:semicolon
-DECL|variable|mb_cache_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mb_cache_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|mb_shrinker
 r_static

@@ -6022,7 +6022,7 @@ id|GFP_KERNEL
 )paren
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_return
 op_minus
@@ -6302,11 +6302,11 @@ c_cond
 (paren
 id|driver
 op_eq
-l_int|0
+l_int|NULL
 op_logical_or
 id|driver-&gt;ioctl
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|retval
@@ -6394,7 +6394,7 @@ c_cond
 (paren
 id|buf
 op_ne
-l_int|0
+l_int|NULL
 )paren
 id|kfree
 (paren

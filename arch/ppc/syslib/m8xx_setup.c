@@ -721,7 +721,7 @@ r_int
 r_char
 id|dummy
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

@@ -1217,12 +1217,12 @@ id|deftype_lo
 comma
 id|deftype_hi
 suffix:semicolon
-DECL|variable|set_atomicity_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|set_atomicity_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Since we are disabling the cache don&squot;t allow any interrupts - they&n; * would run extremely slow and would only increase the pain.  The caller must&n; * ensure that local interrupts are disabled and are reenabled after post_set()&n; * has been called.&n; */
 DECL|function|prepare_set

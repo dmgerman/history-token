@@ -81,12 +81,12 @@ l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Single spinlock to protect devmap structures and lists.&n; */
-DECL|variable|dasd_devmap_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dasd_devmap_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Hash lists for devmap structures.&n; */
 DECL|variable|dasd_hashlists

@@ -2593,12 +2593,12 @@ id|vm86_irqs
 l_int|16
 )braket
 suffix:semicolon
-DECL|variable|irqbits_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irqbits_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|irqbits
 r_static

@@ -511,12 +511,12 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * all_channels_lock protects all_channels and last_channel_index,&n; * and the atomicity of find a channel and updating its file.refcnt&n; * field.&n; */
-DECL|variable|all_channels_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|all_channels_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -9331,12 +9331,12 @@ c_func
 id|compressor_list
 )paren
 suffix:semicolon
-DECL|variable|compressor_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|compressor_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|compressor_entry
 r_struct

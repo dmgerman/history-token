@@ -139,12 +139,12 @@ comma
 op_star
 id|last_req
 suffix:semicolon
-DECL|variable|macio_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|macio_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

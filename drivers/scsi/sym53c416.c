@@ -515,12 +515,12 @@ id|TC_HIGH
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sym53c416_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sym53c416_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Returns the number of bytes read */
 DECL|function|sym53c416_read

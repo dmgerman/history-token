@@ -31,10 +31,11 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|q40kbd_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|q40kbd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|q40kbd_port
 r_static

@@ -21,6 +21,13 @@ DECL|macro|mk_config_addr
 mdefine_line|#define mk_config_addr(bus, dev, offset) &bslash;&n;&t;(((bus)&lt;&lt;16) | ((dev)&lt;&lt;8) | (offset &amp; 0xfc))
 DECL|macro|mk_config_type1
 mdefine_line|#define mk_config_type1(bus, dev, offset) &bslash;&n;&t;mk_config_addr(bus, dev, offset) | 1;
+DECL|variable|pcibios_lock
+r_static
+id|spinlock_t
+id|pcibios_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|qspan_pcibios_read_config_byte
 r_int
 id|qspan_pcibios_read_config_byte
@@ -83,15 +90,14 @@ id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_RPXCLASSIC
-id|save_flags
+multiline_comment|/* disable interrupts */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -173,9 +179,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -273,15 +282,14 @@ id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_RPXCLASSIC
-id|save_flags
+multiline_comment|/* disable interrupts */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -367,9 +375,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -460,15 +471,14 @@ id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_RPXCLASSIC
-id|save_flags
+multiline_comment|/* disable interrupts */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -551,9 +561,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -655,15 +668,14 @@ op_assign
 id|val
 suffix:semicolon
 macro_line|#ifdef CONFIG_RPXCLASSIC
-id|save_flags
+multiline_comment|/* disable interrupts */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -740,9 +752,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -848,15 +863,14 @@ op_assign
 id|val
 suffix:semicolon
 macro_line|#ifdef CONFIG_RPXCLASSIC
-id|save_flags
+multiline_comment|/* disable interrupts */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -933,9 +947,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -991,15 +1008,14 @@ r_return
 id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 macro_line|#ifdef CONFIG_RPXCLASSIC
-id|save_flags
+multiline_comment|/* disable interrupts */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -1081,9 +1097,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|pcibios_lock
+comma
 id|flags
 )paren
 suffix:semicolon

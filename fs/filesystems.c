@@ -14,12 +14,12 @@ id|file_system_type
 op_star
 id|file_systems
 suffix:semicolon
-DECL|variable|file_systems_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|file_systems_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* WARNING: This can be used only if we _already_ own a reference */
 DECL|function|get_filesystem

@@ -394,6 +394,7 @@ suffix:semicolon
 DECL|function|init_intel_cacheinfo
 r_int
 r_int
+id|__init
 id|init_intel_cacheinfo
 c_func
 (paren

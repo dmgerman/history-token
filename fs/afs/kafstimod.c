@@ -41,12 +41,12 @@ c_func
 id|kafstimod_list
 )paren
 suffix:semicolon
-DECL|variable|kafstimod_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kafstimod_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

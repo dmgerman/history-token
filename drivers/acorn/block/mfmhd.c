@@ -43,12 +43,12 @@ id|request_queue
 op_star
 id|mfm_queue
 suffix:semicolon
-DECL|variable|mfm_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mfm_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;MFM_ACORN_MAJOR

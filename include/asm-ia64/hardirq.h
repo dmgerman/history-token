@@ -25,5 +25,14 @@ id|__iomem
 op_star
 id|ipi_base_addr
 suffix:semicolon
+r_void
+id|ack_bad_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_HARDIRQ_H */
 eof

@@ -102,6 +102,13 @@ op_amp
 id|dev-&gt;lock
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|dev-&gt;local
+)paren
+suffix:semicolon
 r_return
 id|dev
 suffix:semicolon

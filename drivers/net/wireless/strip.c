@@ -925,12 +925,12 @@ c_func
 id|strip_list
 )paren
 suffix:semicolon
-DECL|variable|strip_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|strip_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/************************************************************************/
 multiline_comment|/* Macros&t;&t;&t;&t;&t;&t;&t;&t;*/

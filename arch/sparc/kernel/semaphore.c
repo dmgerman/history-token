@@ -25,12 +25,12 @@ id|sem-&gt;wait
 )paren
 suffix:semicolon
 )brace
-DECL|variable|semaphore_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|semaphore_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__down
 r_void

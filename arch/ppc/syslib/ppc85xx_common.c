@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/ocp.h&gt;
 multiline_comment|/* ************************************************************************ */
 multiline_comment|/* Return the value of CCSRBAR for the current board */
 id|phys_addr_t
@@ -19,47 +18,6 @@ r_void
 r_return
 id|BOARD_CCSRBAR
 suffix:semicolon
-)brace
-multiline_comment|/* ************************************************************************ */
-multiline_comment|/* Update the 85xx OCP tables paddr field */
-r_void
-DECL|function|mpc85xx_update_paddr_ocp
-id|mpc85xx_update_paddr_ocp
-c_func
-(paren
-r_struct
-id|ocp_device
-op_star
-id|dev
-comma
-r_void
-op_star
-id|arg
-)paren
-(brace
-id|phys_addr_t
-id|ccsrbar
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|arg
-)paren
-(brace
-id|ccsrbar
-op_assign
-op_star
-(paren
-id|phys_addr_t
-op_star
-)paren
-id|arg
-suffix:semicolon
-id|dev-&gt;def-&gt;paddr
-op_add_assign
-id|ccsrbar
-suffix:semicolon
-)brace
 )brace
 DECL|variable|get_ccsrbar
 id|EXPORT_SYMBOL

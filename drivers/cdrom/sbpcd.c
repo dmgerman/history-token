@@ -196,13 +196,13 @@ macro_line|#endif /* DISTRIBUTION */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Protects access to global structures etc.&n; */
-DECL|variable|__cacheline_aligned
 r_static
-id|spinlock_t
-id|sbpcd_lock
 id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|sbpcd_lock
+)paren
 suffix:semicolon
 DECL|variable|sbpcd_queue
 r_static

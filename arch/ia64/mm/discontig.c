@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000, 2003 Silicon Graphics, Inc.  All rights reserved.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Tony Luck &lt;tony.luck@intel.com&gt;&n; * Copyright (c) 2002 NEC Corp.&n; * Copyright (c) 2002 Kimio Suganuma &lt;k-suganuma@da.jp.nec.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (c) 2000, 2003 Silicon Graphics, Inc.  All rights reserved.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Tony Luck &lt;tony.luck@intel.com&gt;&n; * Copyright (c) 2002 NEC Corp.&n; * Copyright (c) 2002 Kimio Suganuma &lt;k-suganuma@da.jp.nec.com&gt;&n; * Copyright (c) 2004 Silicon Graphics, Inc&n; *&t;Russ Anderson &lt;rja@sgi.com&gt;&n; *&t;Jesse Barnes &lt;jbarnes@sgi.com&gt;&n; *&t;Jack Steiner &lt;steiner@sgi.com&gt;&n; */
 multiline_comment|/*&n; * Platform initialization for Discontig Memory&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/meminit.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/mca.h&gt;
 multiline_comment|/*&n; * Track per-node information needed to setup the boot memory allocator, the&n; * per-node areas, and the real VM.&n; */
 DECL|struct|early_node_data
 r_struct
@@ -845,7 +846,74 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * early_nr_cpus_node - return number of cpus on a given node&n; * @node: node to check&n; *&n; * Count the number of cpus on @node.  We can&squot;t use nr_cpus_node() yet because&n; * acpi_boot_init() (which builds the node_to_cpu_mask array) hasn&squot;t been&n; * called yet.&n; */
+multiline_comment|/**&n; * early_nr_phys_cpus_node - return number of physical cpus on a given node&n; * @node: node to check&n; *&n; * Count the number of physical cpus on @node.  These are cpus that actually&n; * exist.  We can&squot;t use nr_cpus_node() yet because&n; * acpi_boot_init() (which builds the node_to_cpu_mask array) hasn&squot;t been&n; * called yet.&n; */
+DECL|function|early_nr_phys_cpus_node
+r_static
+r_int
+id|early_nr_phys_cpus_node
+c_func
+(paren
+r_int
+id|node
+)paren
+(brace
+r_int
+id|cpu
+comma
+id|n
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|node
+op_eq
+id|node_cpuid
+(braket
+id|cpu
+)braket
+dot
+id|nid
+)paren
+r_if
+c_cond
+(paren
+(paren
+id|cpu
+op_eq
+l_int|0
+)paren
+op_logical_or
+id|node_cpuid
+(braket
+id|cpu
+)braket
+dot
+id|phys_id
+)paren
+id|n
+op_increment
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * early_nr_cpus_node - return number of cpus on a given node&n; * @node: node to check&n; *&n; * Count the number of cpus on @node.  We can&squot;t use nr_cpus_node() yet because&n; * acpi_boot_init() (which builds the node_to_cpu_mask array) hasn&squot;t been&n; * called yet.  Note that node 0 will also count all non-existent cpus.&n; */
 DECL|function|early_nr_cpus_node
 r_static
 r_int
@@ -896,7 +964,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * find_pernode_space - allocate memory for memory map and per-node structures&n; * @start: physical start of range&n; * @len: length of range&n; * @node: node where this range resides&n; *&n; * This routine reserves space for the per-cpu data struct, the list of&n; * pg_data_ts and the per-node data struct.  Each node will have something like&n; * the following in the first chunk of addr. space large enough to hold it.&n; *&n; *    ________________________&n; *   |                        |&n; *   |~~~~~~~~~~~~~~~~~~~~~~~~| &lt;-- NODEDATA_ALIGN(start, node) for the first&n; *   |    PERCPU_PAGE_SIZE *  |     start and length big enough&n; *   |        NR_CPUS         |&n; *   |------------------------|&n; *   |   local pg_data_t *    |&n; *   |------------------------|&n; *   |  local ia64_node_data  |&n; *   |------------------------|&n; *   |          ???           |&n; *   |________________________|&n; *&n; * Once this space has been set aside, the bootmem maps are initialized.  We&n; * could probably move the allocation of the per-cpu and ia64_node_data space&n; * outside of this function and use alloc_bootmem_node(), but doing it here&n; * is straightforward and we get the alignments we want so...&n; */
+multiline_comment|/**&n; * find_pernode_space - allocate memory for memory map and per-node structures&n; * @start: physical start of range&n; * @len: length of range&n; * @node: node where this range resides&n; *&n; * This routine reserves space for the per-cpu data struct, the list of&n; * pg_data_ts and the per-node data struct.  Each node will have something like&n; * the following in the first chunk of addr. space large enough to hold it.&n; *&n; *    ________________________&n; *   |                        |&n; *   |~~~~~~~~~~~~~~~~~~~~~~~~| &lt;-- NODEDATA_ALIGN(start, node) for the first&n; *   |    PERCPU_PAGE_SIZE *  |     start and length big enough&n; *   |    cpus_on_this_node   | Node 0 will also have entries for all non-existent cpus.&n; *   |------------------------|&n; *   |   local pg_data_t *    |&n; *   |------------------------|&n; *   |  local ia64_node_data  |&n; *   |------------------------|&n; *   |    MCA/INIT data *     |&n; *   |    cpus_on_this_node   |&n; *   |------------------------|&n; *   |          ???           |&n; *   |________________________|&n; *&n; * Once this space has been set aside, the bootmem maps are initialized.  We&n; * could probably move the allocation of the per-cpu and ia64_node_data space&n; * outside of this function and use alloc_bootmem_node(), but doing it here&n; * is straightforward and we get the alignments we want so...&n; */
 DECL|function|find_pernode_space
 r_static
 r_int
@@ -923,6 +991,8 @@ comma
 id|cpu
 comma
 id|cpus
+comma
+id|phys_cpus
 suffix:semicolon
 r_int
 r_int
@@ -939,6 +1009,9 @@ suffix:semicolon
 r_void
 op_star
 id|cpu_data
+comma
+op_star
+id|mca_data_phys
 suffix:semicolon
 r_struct
 id|bootmem_data
@@ -1017,11 +1090,25 @@ c_func
 id|node
 )paren
 suffix:semicolon
+id|phys_cpus
+op_assign
+id|early_nr_phys_cpus_node
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
 id|pernodesize
 op_add_assign
 id|PERCPU_PAGE_SIZE
 op_star
 id|cpus
+suffix:semicolon
+id|pernodesize
+op_add_assign
+id|node
+op_star
+id|L1_CACHE_BYTES
 suffix:semicolon
 id|pernodesize
 op_add_assign
@@ -1045,6 +1132,19 @@ r_struct
 id|ia64_node_data
 )paren
 )paren
+suffix:semicolon
+id|pernodesize
+op_add_assign
+id|L1_CACHE_ALIGN
+c_func
+(paren
+r_sizeof
+(paren
+id|ia64_mca_cpu_t
+)paren
+)paren
+op_star
+id|phys_cpus
 suffix:semicolon
 id|pernodesize
 op_assign
@@ -1127,6 +1227,12 @@ id|PERCPU_PAGE_SIZE
 op_star
 id|cpus
 suffix:semicolon
+id|pernode
+op_add_assign
+id|node
+op_star
+id|L1_CACHE_BYTES
+suffix:semicolon
 id|mem_data
 (braket
 id|node
@@ -1196,6 +1302,27 @@ id|pg_data_t
 )paren
 )paren
 suffix:semicolon
+id|mca_data_phys
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|pernode
+suffix:semicolon
+id|pernode
+op_add_assign
+id|L1_CACHE_ALIGN
+c_func
+(paren
+r_sizeof
+(paren
+id|ia64_mca_cpu_t
+)paren
+)paren
+op_star
+id|phys_cpus
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Copy the static per-cpu data into the region we&n;&t;&t; * just set aside and then setup __per_cpu_offset&n;&t;&t; * for each CPU on this node.&n;&t;&t; */
 r_for
 c_loop
@@ -1241,6 +1368,51 @@ op_minus
 id|__per_cpu_start
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cpu
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|node_cpuid
+(braket
+id|cpu
+)braket
+dot
+id|phys_id
+OG
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* &n;&t;&t;&t;&t;&t; * The memory for the cpuinfo structure is allocated&n;&t;&t;&t;&t;&t; * here, but the data in the structure is initialized&n;&t;&t;&t;&t;&t; * later.  Save the physical address of the MCA save&n;&t;&t;&t;&t;&t; * area in __per_cpu_mca[cpu].  When the cpuinfo struct &n;&t;&t;&t;&t;&t; * is initialized, the value in __per_cpu_mca[cpu]&n;&t;&t;&t;&t;&t; * will be put in the cpuinfo structure.&n;&t;&t;&t;&t;&t; */
+id|__per_cpu_mca
+(braket
+id|cpu
+)braket
+op_assign
+id|__pa
+c_func
+(paren
+id|mca_data_phys
+)paren
+suffix:semicolon
+id|mca_data_phys
+op_add_assign
+id|L1_CACHE_ALIGN
+c_func
+(paren
+r_sizeof
+(paren
+id|ia64_mca_cpu_t
+)paren
+)paren
+suffix:semicolon
+)brace
 id|__per_cpu_offset
 (braket
 id|cpu

@@ -1184,7 +1184,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
-id|__exit
 DECL|function|aoechr_exit
 id|aoechr_exit
 c_func

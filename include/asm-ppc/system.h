@@ -187,6 +187,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|enable_kernel_altivec
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|giveup_altivec
 c_func
 (paren

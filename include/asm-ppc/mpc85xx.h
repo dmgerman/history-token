@@ -130,6 +130,22 @@ DECL|macro|MPC85xx_DMA_OFFSET
 mdefine_line|#define MPC85xx_DMA_OFFSET&t;(0x21000)
 DECL|macro|MPC85xx_DMA_SIZE
 mdefine_line|#define MPC85xx_DMA_SIZE&t;(0x01000)
+DECL|macro|MPC85xx_DMA0_OFFSET
+mdefine_line|#define MPC85xx_DMA0_OFFSET&t;(0x21100)
+DECL|macro|MPC85xx_DMA0_SIZE
+mdefine_line|#define MPC85xx_DMA0_SIZE&t;(0x00080)
+DECL|macro|MPC85xx_DMA1_OFFSET
+mdefine_line|#define MPC85xx_DMA1_OFFSET&t;(0x21180)
+DECL|macro|MPC85xx_DMA1_SIZE
+mdefine_line|#define MPC85xx_DMA1_SIZE&t;(0x00080)
+DECL|macro|MPC85xx_DMA2_OFFSET
+mdefine_line|#define MPC85xx_DMA2_OFFSET&t;(0x21200)
+DECL|macro|MPC85xx_DMA2_SIZE
+mdefine_line|#define MPC85xx_DMA2_SIZE&t;(0x00080)
+DECL|macro|MPC85xx_DMA3_OFFSET
+mdefine_line|#define MPC85xx_DMA3_OFFSET&t;(0x21280)
+DECL|macro|MPC85xx_DMA3_SIZE
+mdefine_line|#define MPC85xx_DMA3_SIZE&t;(0x00080)
 DECL|macro|MPC85xx_ENET1_OFFSET
 mdefine_line|#define MPC85xx_ENET1_OFFSET&t;(0x24000)
 DECL|macro|MPC85xx_ENET1_SIZE
@@ -196,6 +212,87 @@ macro_line|#else
 DECL|macro|CCSRBAR
 mdefine_line|#define CCSRBAR BOARD_CCSRBAR
 macro_line|#endif
+DECL|enum|ppc_sys_devices
+r_enum
+id|ppc_sys_devices
+(brace
+DECL|enumerator|MPC85xx_TSEC1
+id|MPC85xx_TSEC1
+comma
+DECL|enumerator|MPC85xx_TSEC2
+id|MPC85xx_TSEC2
+comma
+DECL|enumerator|MPC85xx_FEC
+id|MPC85xx_FEC
+comma
+DECL|enumerator|MPC85xx_IIC1
+id|MPC85xx_IIC1
+comma
+DECL|enumerator|MPC85xx_DMA0
+id|MPC85xx_DMA0
+comma
+DECL|enumerator|MPC85xx_DMA1
+id|MPC85xx_DMA1
+comma
+DECL|enumerator|MPC85xx_DMA2
+id|MPC85xx_DMA2
+comma
+DECL|enumerator|MPC85xx_DMA3
+id|MPC85xx_DMA3
+comma
+DECL|enumerator|MPC85xx_DUART
+id|MPC85xx_DUART
+comma
+DECL|enumerator|MPC85xx_PERFMON
+id|MPC85xx_PERFMON
+comma
+DECL|enumerator|MPC85xx_SEC2
+id|MPC85xx_SEC2
+comma
+DECL|enumerator|MPC85xx_CPM_SPI
+id|MPC85xx_CPM_SPI
+comma
+DECL|enumerator|MPC85xx_CPM_I2C
+id|MPC85xx_CPM_I2C
+comma
+DECL|enumerator|MPC85xx_CPM_USB
+id|MPC85xx_CPM_USB
+comma
+DECL|enumerator|MPC85xx_CPM_SCC1
+id|MPC85xx_CPM_SCC1
+comma
+DECL|enumerator|MPC85xx_CPM_SCC2
+id|MPC85xx_CPM_SCC2
+comma
+DECL|enumerator|MPC85xx_CPM_SCC3
+id|MPC85xx_CPM_SCC3
+comma
+DECL|enumerator|MPC85xx_CPM_SCC4
+id|MPC85xx_CPM_SCC4
+comma
+DECL|enumerator|MPC85xx_CPM_FCC1
+id|MPC85xx_CPM_FCC1
+comma
+DECL|enumerator|MPC85xx_CPM_FCC2
+id|MPC85xx_CPM_FCC2
+comma
+DECL|enumerator|MPC85xx_CPM_FCC3
+id|MPC85xx_CPM_FCC3
+comma
+DECL|enumerator|MPC85xx_CPM_MCC1
+id|MPC85xx_CPM_MCC1
+comma
+DECL|enumerator|MPC85xx_CPM_MCC2
+id|MPC85xx_CPM_MCC2
+comma
+DECL|enumerator|MPC85xx_CPM_SMC1
+id|MPC85xx_CPM_SMC1
+comma
+DECL|enumerator|MPC85xx_CPM_SMC2
+id|MPC85xx_CPM_SMC2
+comma
+)brace
+suffix:semicolon
 macro_line|#endif /* CONFIG_85xx */
 macro_line|#endif /* __ASM_MPC85xx_H__ */
 macro_line|#endif /* __KERNEL__ */

@@ -198,12 +198,12 @@ r_int
 r_int
 id|data_reg
 suffix:semicolon
-DECL|variable|sonycd535_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sonycd535_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* queue lock */
 DECL|variable|sonycd535_queue

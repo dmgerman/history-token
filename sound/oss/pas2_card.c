@@ -164,10 +164,11 @@ r_int
 id|pas_sb_base
 suffix:semicolon
 DECL|variable|pas_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pas_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_PAS_JOYSTICK
 DECL|variable|joystick

@@ -345,7 +345,7 @@ c_cond
 (paren
 id|addr
 OL
-id|FRAME_SIZE_OFFSET
+id|MAX_REG_OFFSET
 )paren
 (brace
 id|tmp
@@ -516,7 +516,7 @@ c_cond
 (paren
 id|addr
 OL
-id|FRAME_SIZE_OFFSET
+id|MAX_REG_OFFSET
 )paren
 (brace
 id|ret
@@ -534,6 +534,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+macro_line|#if 0 /* XXX x86_64 */
 r_else
 r_if
 c_cond
@@ -619,6 +620,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -838,7 +840,7 @@ op_star
 )paren
 id|data
 comma
-id|FRAME_SIZE_OFFSET
+id|MAX_REG_OFFSET
 )paren
 )paren
 (brace
@@ -859,7 +861,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|FRAME_SIZE_OFFSET
+id|MAX_REG_OFFSET
 suffix:semicolon
 id|i
 op_add_assign
@@ -932,7 +934,7 @@ op_star
 )paren
 id|data
 comma
-id|FRAME_SIZE_OFFSET
+id|MAX_REG_OFFSET
 )paren
 )paren
 (brace
@@ -953,7 +955,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|FRAME_SIZE_OFFSET
+id|MAX_REG_OFFSET
 suffix:semicolon
 id|i
 op_add_assign

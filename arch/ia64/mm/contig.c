@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/meminit.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
 DECL|variable|num_dma_physpages
 r_static
@@ -554,6 +555,9 @@ r_void
 r_void
 op_star
 id|cpu_data
+comma
+op_star
+id|mca_data
 suffix:semicolon
 r_int
 id|cpu
@@ -586,6 +590,16 @@ c_func
 (paren
 id|MAX_DMA_ADDRESS
 )paren
+)paren
+suffix:semicolon
+id|mca_data
+op_assign
+id|alloc_bootmem
+c_func
+(paren
+id|PERCPU_MCA_SIZE
+op_star
+id|NR_CPUS
 )paren
 suffix:semicolon
 r_for
@@ -644,6 +658,21 @@ id|__per_cpu_offset
 (braket
 id|cpu
 )braket
+suffix:semicolon
+id|__per_cpu_mca
+(braket
+id|cpu
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|mca_data
+suffix:semicolon
+id|mca_data
+op_add_assign
+id|PERCPU_MCA_SIZE
 suffix:semicolon
 )brace
 )brace

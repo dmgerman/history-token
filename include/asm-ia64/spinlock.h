@@ -250,8 +250,10 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x)&t;(*(volatile int *) (x) != 0)
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(rw)&t;(*(volatile int *)(rw) &gt;= 0)
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(rw)&t;(*(volatile int *)(rw) == 0)
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(rw)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rwlock_t *__read_lock_ptr = (rw);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (unlikely(ia64_fetchadd(1, (int *) __read_lock_ptr, acq) &lt; 0)) {&t;&t;&bslash;&n;&t;&t;ia64_fetchadd(-1, (int *) __read_lock_ptr, rel);&t;&t;&t;&bslash;&n;&t;&t;while (*(volatile int *)__read_lock_ptr &lt; 0)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_relax();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|_raw_read_unlock

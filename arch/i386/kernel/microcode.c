@@ -53,12 +53,12 @@ mdefine_line|#define sigmatch(s1, s2, p1, p2) &bslash;&n;&t;(((s1) == (s2)) &amp
 DECL|macro|exttable_size
 mdefine_line|#define exttable_size(et) ((et)-&gt;count * EXT_SIGNATURE_SIZE + EXT_HEADER_SIZE)
 multiline_comment|/* serialize access to the physical write to MSR 0x79 */
-DECL|variable|microcode_update_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|microcode_update_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* no concurrent -&gt;write()s are allowed on /dev/cpu/microcode */
 r_static

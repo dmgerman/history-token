@@ -407,12 +407,12 @@ id|aztCmd
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|aztSpin
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|aztSpin
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*###########################################################################&n;   Function Prototypes&n;  ###########################################################################&n;*/
 multiline_comment|/* CDROM Drive Low Level I/O Functions */

@@ -17,12 +17,12 @@ id|cached_irq_mask
 op_assign
 l_int|0xffff
 suffix:semicolon
-DECL|variable|i8259_irq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|i8259_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_inline

@@ -21,12 +21,12 @@ id|lbuf
 op_star
 id|log_redrive_list
 suffix:semicolon
-DECL|variable|log_redrive_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|log_redrive_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|jfs_IO_thread_wait
 id|DECLARE_WAIT_QUEUE_HEAD
@@ -58,12 +58,12 @@ DECL|macro|LOGSYNC_BARRIER
 mdefine_line|#define&t;LOGSYNC_BARRIER(logsize)&t;((logsize)/4)
 multiline_comment|/*&n;#define&t;LOGSYNC_DELTA(logsize)&t;&t;min((logsize)/4, 256*LOGPSIZE)&n;#define&t;LOGSYNC_BARRIER(logsize)&t;((logsize)/2)&n;*/
 multiline_comment|/*&n; *&t;log buffer cache synchronization&n; */
-DECL|variable|jfsLCacheLock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|jfsLCacheLock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|LCACHE_LOCK
 mdefine_line|#define&t;LCACHE_LOCK(flags)&t;spin_lock_irqsave(&amp;jfsLCacheLock, flags)

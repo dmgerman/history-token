@@ -59,12 +59,12 @@ r_int
 r_int
 id|smsg_pathid
 suffix:semicolon
-DECL|variable|smsg_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|smsg_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|smsg_list
 r_static

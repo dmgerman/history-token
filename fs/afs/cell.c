@@ -38,12 +38,12 @@ c_func
 id|afs_cells
 )paren
 suffix:semicolon
-DECL|variable|afs_cells_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|afs_cells_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_RWSEM

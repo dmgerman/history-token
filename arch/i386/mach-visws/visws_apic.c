@@ -10,12 +10,12 @@ macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &quot;cobalt.h&quot;
 macro_line|#include &quot;irq_vectors.h&quot;
-DECL|variable|cobalt_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cobalt_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Set the given Cobalt APIC Redirection Table entry to point&n; * to the given IDT vector/index.&n; */
 DECL|function|co_apic_set

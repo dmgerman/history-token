@@ -22,6 +22,6 @@ macro_line|#endif
 DECL|macro|MAXHOSTNAMELEN
 mdefine_line|#define MAXHOSTNAMELEN&t;64&t;/* max length of hostname */
 DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 2048
+mdefine_line|#define COMMAND_LINE_SIZE 256
 macro_line|#endif
 eof

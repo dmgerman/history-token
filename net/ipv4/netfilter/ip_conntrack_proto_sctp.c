@@ -65,6 +65,7 @@ mdefine_line|#define HOURS * 60 MINS
 DECL|macro|DAYS
 mdefine_line|#define DAYS  * 24 HOURS
 DECL|variable|ip_ct_sctp_timeout_closed
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_closed
@@ -73,6 +74,7 @@ l_int|10
 id|SECS
 suffix:semicolon
 DECL|variable|ip_ct_sctp_timeout_cookie_wait
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_cookie_wait
@@ -81,6 +83,7 @@ l_int|3
 id|SECS
 suffix:semicolon
 DECL|variable|ip_ct_sctp_timeout_cookie_echoed
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_cookie_echoed
@@ -89,6 +92,7 @@ l_int|3
 id|SECS
 suffix:semicolon
 DECL|variable|ip_ct_sctp_timeout_established
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_established
@@ -97,6 +101,7 @@ l_int|5
 id|DAYS
 suffix:semicolon
 DECL|variable|ip_ct_sctp_timeout_shutdown_sent
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_shutdown_sent
@@ -107,6 +112,7 @@ op_div
 l_int|1000
 suffix:semicolon
 DECL|variable|ip_ct_sctp_timeout_shutdown_recd
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_shutdown_recd
@@ -117,6 +123,7 @@ op_div
 l_int|1000
 suffix:semicolon
 DECL|variable|ip_ct_sctp_timeout_shutdown_ack_sent
+r_static
 r_int
 r_int
 id|ip_ct_sctp_timeout_shutdown_ack_sent
@@ -2179,30 +2186,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|sctp_exp_matches_pkt
-r_static
-r_int
-id|sctp_exp_matches_pkt
-c_func
-(paren
-r_struct
-id|ip_conntrack_expect
-op_star
-id|exp
-comma
-r_const
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-multiline_comment|/* To be implemented */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|variable|ip_conntrack_protocol_sctp
+r_static
 r_struct
 id|ip_conntrack_protocol
 id|ip_conntrack_protocol_sctp
@@ -2252,11 +2237,6 @@ dot
 id|destroy
 op_assign
 l_int|NULL
-comma
-dot
-id|exp_matches_pkt
-op_assign
-id|sctp_exp_matches_pkt
 comma
 dot
 id|me

@@ -84,12 +84,12 @@ id|vec
 )paren
 suffix:semicolon
 multiline_comment|/* &n; * locking for the reply cache:&n; * A cache entry is &quot;single use&quot; if c_state == RC_INPROG&n; * Otherwise, it when accessing _prev or _next, the lock must be held.&n; */
-DECL|variable|cache_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cache_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_void
 DECL|function|nfsd_cache_init

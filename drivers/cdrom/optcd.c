@@ -445,12 +445,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|optcd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|optcd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|opt_queue
 r_static

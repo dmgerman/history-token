@@ -369,12 +369,12 @@ id|STATIC
 r_int
 id|as_list_len
 suffix:semicolon
-DECL|variable|as_lock
 id|STATIC
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|as_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Try to batch vunmaps because they are costly.&n; */
 id|STATIC
@@ -5691,12 +5691,12 @@ c_func
 id|pbd_delwrite_queue
 )paren
 suffix:semicolon
-DECL|variable|pbd_delwrite_lock
 id|STATIC
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pbd_delwrite_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|STATIC
 r_void
