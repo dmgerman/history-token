@@ -1,14 +1,34 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      discovery.h&n; * Version:       &n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Apr  6 16:53:53 1999&n; * Modified at:   Tue Oct  5 10:05:10 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      discovery.h&n; * Version:       &n; * Description:   &n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Apr  6 16:53:53 1999&n; * Modified at:   Tue Oct  5 10:05:10 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#ifndef DISCOVERY_H
 DECL|macro|DISCOVERY_H
 mdefine_line|#define DISCOVERY_H
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irqueue.h&gt;
+macro_line|#include &lt;net/irda/irqueue.h&gt;&t;&t;/* irda_queue_t */
+macro_line|#include &lt;net/irda/irlap_event.h&gt;&t;/* LAP_REASON */
 DECL|macro|DISCOVERY_EXPIRE_TIMEOUT
 mdefine_line|#define DISCOVERY_EXPIRE_TIMEOUT (2*sysctl_discovery_timeout*HZ)
 DECL|macro|DISCOVERY_DEFAULT_SLOTS
 mdefine_line|#define DISCOVERY_DEFAULT_SLOTS  0
+multiline_comment|/*&n; *  This type is used by the protocols that transmit 16 bits words in &n; *  little endian format. A little endian machine stores MSB of word in&n; *  byte[1] and LSB in byte[0]. A big endian machine stores MSB in byte[0] &n; *  and LSB in byte[1].&n; */
+r_typedef
+r_union
+(brace
+DECL|member|word
+id|__u16
+id|word
+suffix:semicolon
+DECL|member|byte
+id|__u8
+id|byte
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|typedef|__u16_host_order
+)brace
+id|__u16_host_order
+suffix:semicolon
 multiline_comment|/* Types of discovery */
 r_typedef
 r_enum

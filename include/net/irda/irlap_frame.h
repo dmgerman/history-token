@@ -1,11 +1,16 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap_frame.h&n; * Version:       0.9&n; * Description:   IrLAP frame declarations&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 10:27:26 1997&n; * Modified at:   Sat Dec 25 21:07:26 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap_frame.h&n; * Version:       0.9&n; * Description:   IrLAP frame declarations&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 10:27:26 1997&n; * Modified at:   Sat Dec 25 21:07:26 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#ifndef IRLAP_FRAME_H
 DECL|macro|IRLAP_FRAME_H
 mdefine_line|#define IRLAP_FRAME_H
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irlap.h&gt;
-macro_line|#include &lt;net/irda/qos.h&gt;
+multiline_comment|/* A few forward declarations (to make compiler happy) */
+r_struct
+id|irlap_cb
+suffix:semicolon
+r_struct
+id|discovery_t
+suffix:semicolon
 multiline_comment|/* Frame types and templates */
 DECL|macro|INVALID
 mdefine_line|#define INVALID   0xff
@@ -94,9 +99,9 @@ DECL|member|version
 id|__u8
 id|version
 suffix:semicolon
-DECL|variable|PACK
+DECL|variable|IRDA_PACK
 )brace
-id|PACK
+id|IRDA_PACK
 suffix:semicolon
 DECL|struct|test_frame
 r_struct
@@ -121,9 +126,9 @@ id|__u32
 id|daddr
 suffix:semicolon
 multiline_comment|/* Destination device address */
-DECL|variable|PACK
+DECL|variable|IRDA_PACK
 )brace
-id|PACK
+id|IRDA_PACK
 suffix:semicolon
 DECL|struct|ua_frame
 r_struct
@@ -147,9 +152,9 @@ id|__u32
 id|daddr
 suffix:semicolon
 multiline_comment|/* Dest device address */
-DECL|variable|PACK
+DECL|variable|IRDA_PACK
 )brace
-id|PACK
+id|IRDA_PACK
 suffix:semicolon
 DECL|struct|i_frame
 r_struct
@@ -163,9 +168,9 @@ DECL|member|control
 id|__u8
 id|control
 suffix:semicolon
-DECL|variable|PACK
+DECL|variable|IRDA_PACK
 )brace
-id|PACK
+id|IRDA_PACK
 suffix:semicolon
 DECL|struct|snrm_frame
 r_struct
@@ -191,9 +196,9 @@ DECL|member|ncaddr
 id|__u8
 id|ncaddr
 suffix:semicolon
-DECL|variable|PACK
+DECL|variable|IRDA_PACK
 )brace
-id|PACK
+id|IRDA_PACK
 suffix:semicolon
 r_void
 id|irlap_queue_xmit
@@ -227,6 +232,7 @@ comma
 id|__u8
 id|command
 comma
+r_struct
 id|discovery_t
 op_star
 id|discovery

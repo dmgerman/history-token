@@ -5,7 +5,7 @@ mdefine_line|#define WRAPPER_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;net/irda/irda_device.h&gt;
+macro_line|#include &lt;net/irda/irda_device.h&gt;&t;/* iobuff_t */
 DECL|macro|BOF
 mdefine_line|#define BOF  0xc0 /* Beginning of frame */
 DECL|macro|XBOF

@@ -5564,6 +5564,7 @@ multiline_comment|/*&n; * Initialisation and teardown of the IrDA part, called a
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Prepare the IrNET layer for operation...&n; */
 r_int
+id|__init
 DECL|function|irda_irnet_init
 id|irda_irnet_init
 c_func
@@ -5703,6 +5704,7 @@ suffix:semicolon
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Cleanup at exit...&n; */
 r_void
+id|__exit
 DECL|function|irda_irnet_cleanup
 id|irda_irnet_cleanup
 c_func

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 multiline_comment|/* &n; * Define the timing of the pulses we send to the dongle (to reset it, and&n; * to toggle speeds). Basically, the limit here is the propagation speed of&n; * the signals through the serial port, the dongle being much faster.  Any&n; * serial port support 115 kb/s, so we are sure that pulses 8.5 us wide can&n; * go through cleanly . If you are on the wild side, you can try to lower&n; * this value (Actisys recommended me 2 us, and 0 us work for me on a P233!)&n; */
 DECL|macro|MIN_DELAY
@@ -191,6 +190,7 @@ suffix:semicolon
 )brace
 DECL|function|actisys_cleanup
 r_void
+id|__exit
 id|actisys_cleanup
 c_func
 (paren
@@ -671,7 +671,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -691,35 +690,19 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Actisys module&n; *&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|actisys_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|actisys_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Cleanup Actisys module&n; *&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|actisys_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|actisys_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

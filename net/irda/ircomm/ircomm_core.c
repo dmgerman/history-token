@@ -142,9 +142,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|ircomm_cleanup
 r_void
+id|__exit
 id|ircomm_cleanup
 c_func
 (paren
@@ -182,7 +182,6 @@ id|proc_irda
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * Function ircomm_open (client_notify)&n; *&n; *    Start a new IrCOMM instance&n; *&n; */
 DECL|function|ircomm_open
 r_struct
@@ -1873,7 +1872,6 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1892,34 +1890,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|ircomm_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|ircomm_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|ircomm_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|ircomm_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

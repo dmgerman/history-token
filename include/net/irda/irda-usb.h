@@ -1,8 +1,7 @@
 multiline_comment|/*****************************************************************************&n; *&n; * Filename:      irda-usb.h&n; * Version:       0.9b&n; * Description:   IrDA-USB Driver&n; * Status:        Experimental &n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *&t;Copyright (C) 2001, Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; *      Copyright (C) 2000, Dag Brattli &lt;dag@brattli.net&gt;&n; *      Copyright (C) 2001, Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *          &n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *****************************************************************************/
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irlap.h&gt;
-macro_line|#include &lt;net/irda/irda_device.h&gt;
+macro_line|#include &lt;net/irda/irda_device.h&gt;      /* struct irlap_cb */
 DECL|macro|RX_COPY_THRESHOLD
 mdefine_line|#define RX_COPY_THRESHOLD 200
 DECL|macro|IRDA_USB_MAX_MTU
