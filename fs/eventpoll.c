@@ -715,6 +715,7 @@ id|txlist
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 )paren
@@ -747,6 +748,7 @@ id|ep
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 comma
@@ -766,6 +768,7 @@ id|ep
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 comma
@@ -1461,10 +1464,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The following function implement the controller interface for the eventpoll&n; * file that enable the insertion/removal/change of file descriptors inside&n; * the interest set. It rapresents the kernel part of the user space epoll_ctl(2).&n; */
-DECL|function|sys_epoll_ctl
+multiline_comment|/*&n; * The following function implements the controller interface for&n; * the eventpoll file that enables the insertion/removal/change of&n; * file descriptors inside the interest set.  It represents&n; * the kernel part of the user space epoll_ctl(2).&n; */
 id|asmlinkage
 r_int
+DECL|function|sys_epoll_ctl
 id|sys_epoll_ctl
 c_func
 (paren
@@ -1479,6 +1482,7 @@ id|fd
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|event
 )paren
@@ -1853,6 +1857,7 @@ id|epfd
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 comma
@@ -1959,7 +1964,7 @@ id|file
 r_goto
 id|eexit_1
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to check that the file structure underneath the file descriptor&n;&t; * the user passed to us _is_ an eventpoll file.&n;&t; */
+multiline_comment|/*&n;&t; * We have to check that the file structure underneath the fd&n;&t; * the user passed to us _is_ an eventpoll file.&n;&t; */
 id|error
 op_assign
 op_minus
@@ -4780,6 +4785,7 @@ id|txlist
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 )paren
@@ -5172,6 +5178,7 @@ id|ep
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 comma
@@ -5270,6 +5277,7 @@ id|ep
 comma
 r_struct
 id|epoll_event
+id|__user
 op_star
 id|events
 comma
