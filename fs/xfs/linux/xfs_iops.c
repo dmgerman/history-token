@@ -35,6 +35,8 @@ op_assign
 id|XFS_AT_NLINK
 op_or
 id|XFS_AT_SIZE
+op_or
+id|XFS_AT_NBLOCKS
 suffix:semicolon
 id|VOP_GETATTR
 c_func

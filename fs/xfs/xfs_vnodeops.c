@@ -320,6 +320,8 @@ op_or
 id|XFS_AT_NODEID
 op_or
 id|XFS_AT_NLINK
+op_or
+id|XFS_AT_BLKSIZE
 )paren
 )paren
 op_eq
