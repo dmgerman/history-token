@@ -420,6 +420,10 @@ id|neighbour
 op_star
 id|neigh
 comma
+id|u8
+op_star
+id|lladdr
+comma
 r_int
 id|on_link
 )paren

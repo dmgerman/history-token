@@ -4130,6 +4130,10 @@ id|neighbour
 op_star
 id|neigh
 comma
+id|u8
+op_star
+id|lladdr
+comma
 r_int
 id|on_link
 )paren
@@ -4176,26 +4180,7 @@ id|rt-&gt;rt6i_dev
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Redirect received -&gt; path was valid.&n;&t;   Look, redirects are sent only in response to data packets,&n;&t;   so that this nexthop apparently is reachable. --ANK&n;&t; */
-id|dst_confirm
-c_func
-(paren
-op_amp
-id|rt-&gt;u.dst
-)paren
-suffix:semicolon
-multiline_comment|/* Duplicate redirect: silently ignore. */
-r_if
-c_cond
-(paren
-id|neigh
-op_eq
-id|rt-&gt;u.dst.neighbour
-)paren
-r_goto
-id|out
-suffix:semicolon
-multiline_comment|/* Current route is on-link; redirect is always invalid.&n;&t;   &n;&t;   Seems, previous statement is not true. It could&n;&t;   be node, which looks for us as on-link (f.e. proxy ndisc)&n;&t;   But then router serving it might decide, that we should&n;&t;   know truth 8)8) --ANK (980726).&n;&t; */
+multiline_comment|/*&n;&t; * Current route is on-link; redirect is always invalid.&n;&t; * &n;&t; * Seems, previous statement is not true. It could&n;&t; * be node, which looks for us as on-link (f.e. proxy ndisc)&n;&t; * But then router serving it might decide, that we should&n;&t; * know truth 8)8) --ANK (980726).&n;&t; */
 r_if
 c_cond
 (paren
@@ -4332,6 +4317,52 @@ suffix:semicolon
 id|source_ok
 suffix:colon
 multiline_comment|/*&n;&t; *&t;We have finally decided to accept it.&n;&t; */
+id|neigh_update
+c_func
+(paren
+id|neigh
+comma
+id|lladdr
+comma
+id|NUD_STALE
+comma
+id|NEIGH_UPDATE_F_WEAK_OVERRIDE
+op_or
+id|NEIGH_UPDATE_F_OVERRIDE
+op_or
+(paren
+id|on_link
+ques
+c_cond
+l_int|0
+suffix:colon
+(paren
+id|NEIGH_UPDATE_F_OVERRIDE_ISROUTER
+op_or
+id|NEIGH_UPDATE_F_ISROUTER
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Redirect received -&gt; path was valid.&n;&t; * Look, redirects are sent only in response to data packets,&n;&t; * so that this nexthop apparently is reachable. --ANK&n;&t; */
+id|dst_confirm
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
+suffix:semicolon
+multiline_comment|/* Duplicate redirect: silently ignore. */
+r_if
+c_cond
+(paren
+id|neigh
+op_eq
+id|rt-&gt;u.dst.neighbour
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|nrt
 op_assign
 id|ip6_rt_copy
