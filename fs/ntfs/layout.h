@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * layout.h - All NTFS associated on-disk structures. Part of the Linux-NTFS&n; *&t;      project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * layout.h - All NTFS associated on-disk structures. Part of the Linux-NTFS&n; *&t;      project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_LAYOUT_H
 DECL|macro|_LINUX_NTFS_LAYOUT_H
 mdefine_line|#define _LINUX_NTFS_LAYOUT_H
@@ -1669,7 +1669,7 @@ multiline_comment|/* 20*/
 id|s64
 id|last_access_time
 suffix:semicolon
-multiline_comment|/* Last time this mft record was&n;&t;&t;&t;&t;&t;   accessed. */
+multiline_comment|/* Time this mft record was last&n;&t;&t;&t;&t;&t;   accessed. */
 DECL|member|allocated_size
 multiline_comment|/* 28*/
 id|s64
