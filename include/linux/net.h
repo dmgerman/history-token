@@ -751,6 +751,23 @@ id|sock
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|socket
+op_star
+id|sockfd_lookup
+c_func
+(paren
+r_int
+id|fd
+comma
+r_int
+op_star
+id|err
+)paren
+suffix:semicolon
+DECL|macro|sockfd_put
+mdefine_line|#define         sockfd_put(sock) fput(sock-&gt;file)
+r_extern
 r_int
 id|net_ratelimit
 c_func

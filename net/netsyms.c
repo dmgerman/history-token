@@ -587,6 +587,13 @@ c_func
 id|sock_map_fd
 )paren
 suffix:semicolon
+DECL|variable|sockfd_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sockfd_lookup
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_FILTER
 DECL|variable|sk_run_filter
 id|EXPORT_SYMBOL
