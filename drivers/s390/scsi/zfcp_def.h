@@ -4,7 +4,7 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.73 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.75 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -16,6 +16,8 @@ macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_transport_fc.h&gt;
 macro_line|#include &quot;../../fc4/fc.h&quot;
 macro_line|#include &quot;zfcp_fsf.h&quot;
 macro_line|#include &lt;asm/ccwdev.h&gt;
@@ -1292,7 +1294,7 @@ DECL|macro|ZFCP_SET_LOG_NIBBLE
 mdefine_line|#define ZFCP_SET_LOG_NIBBLE(value, zfcp_lognibble) &bslash;&n;&t;       (value &lt;&lt; (zfcp_lognibble &lt;&lt; 2))
 multiline_comment|/* all log-level defaults are combined to generate initial log-level */
 DECL|macro|ZFCP_LOG_LEVEL_DEFAULTS
-mdefine_line|#define ZFCP_LOG_LEVEL_DEFAULTS &bslash;&n;&t;(ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_OTHER) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_SCSI) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_FSF) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_CONFIG) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_CIO) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_QDIO) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_ERP) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_INFO, ZFCP_LOG_AREA_FC))
+mdefine_line|#define ZFCP_LOG_LEVEL_DEFAULTS &bslash;&n;&t;(ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_OTHER) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_SCSI) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_FSF) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_CONFIG) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_CIO) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_QDIO) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_ERP) | &bslash;&n;&t; ZFCP_SET_LOG_NIBBLE(ZFCP_LOG_LEVEL_NORMAL, ZFCP_LOG_AREA_FC))
 multiline_comment|/* check whether we have the right level for logging */
 DECL|macro|ZFCP_LOG_CHECK
 mdefine_line|#define ZFCP_LOG_CHECK(level) &bslash;&n;&t;((ZFCP_GET_LOG_VALUE(ZFCP_LOG_AREA)) &gt;= level)

@@ -3,7 +3,7 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_ERP
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_ERP_REVISION
-mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.54 $&quot;
+mdefine_line|#define ZFCP_ERP_REVISION &quot;$Revision: 1.56 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -1735,9 +1735,75 @@ id|send_els-&gt;status
 op_ne
 l_int|0
 )paren
+(brace
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;ELS request timed out, physical port reopen &quot;
+l_string|&quot;of port 0x%016Lx on adapter %s failed&bslash;n&quot;
+comma
+id|port-&gt;wwpn
+comma
+id|zfcp_get_busid_by_port
+c_func
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+id|debug_text_event
+c_func
+(paren
+id|port-&gt;adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;forcreop&quot;
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|zfcp_erp_port_forced_reopen
+c_func
+(paren
+id|port
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|0
+)paren
+(brace
+id|ZFCP_LOG_NORMAL
+c_func
+(paren
+l_string|&quot;reopen of remote port 0x%016Lx &quot;
+l_string|&quot;on adapter %s failed&bslash;n&quot;
+comma
+id|port-&gt;wwpn
+comma
+id|zfcp_get_busid_by_port
+c_func
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 r_goto
 id|skip_fsfstatus
 suffix:semicolon
+)brace
 id|req
 op_assign
 (paren
@@ -7773,11 +7839,6 @@ id|adapter
 op_assign
 id|erp_action-&gt;adapter
 suffix:semicolon
-r_int
-id|retval_cleanup
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7838,10 +7899,14 @@ r_goto
 id|failed_qdio_establish
 suffix:semicolon
 )brace
-id|ZFCP_LOG_DEBUG
+id|debug_text_event
 c_func
 (paren
-l_string|&quot;queues established&bslash;n&quot;
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;qdio_est&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7875,10 +7940,14 @@ r_goto
 id|failed_qdio_activate
 suffix:semicolon
 )brace
-id|ZFCP_LOG_DEBUG
+id|debug_text_event
 c_func
 (paren
-l_string|&quot;queues activated&bslash;n&quot;
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;qdio_act&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * put buffers into response queue,&n;&t; */
@@ -8055,11 +8124,19 @@ suffix:colon
 multiline_comment|/* NOP */
 id|failed_qdio_activate
 suffix:colon
-multiline_comment|/* DEBUG */
-singleline_comment|//__ZFCP_WAIT_EVENT_TIMEOUT(timeout, 0);
-multiline_comment|/* cleanup queues previously established */
-id|retval_cleanup
-op_assign
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;qdio_down1a&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
 id|qdio_shutdown
 c_func
 (paren
@@ -8067,34 +8144,36 @@ id|adapter-&gt;ccw_device
 comma
 id|QDIO_FLAG_CLEANUP_USING_CLEAR
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval_cleanup
+op_eq
+op_minus
+id|EINPROGRESS
 )paren
 (brace
-id|ZFCP_LOG_NORMAL
+id|set_current_state
 c_func
 (paren
-l_string|&quot;bug: shutdown of QDIO queues failed &quot;
-l_string|&quot;(retval=%d)&bslash;n&quot;
-comma
-id|retval_cleanup
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
 )paren
 suffix:semicolon
 )brace
-id|failed_qdio_establish
-suffix:colon
-id|atomic_clear_mask
+id|debug_text_event
 c_func
 (paren
-id|ZFCP_STATUS_ADAPTER_QDIOUP
+id|adapter-&gt;erp_dbf
 comma
-op_amp
-id|adapter-&gt;status
+l_int|3
+comma
+l_string|&quot;qdio_down1b&quot;
 )paren
 suffix:semicolon
+id|failed_qdio_establish
+suffix:colon
 id|failed_sanity
 suffix:colon
 id|retval
@@ -8172,11 +8251,42 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* cleanup queues previously established */
-multiline_comment|/*&n;&t; * MUST NOT LOCK - qdio_cleanup might call schedule&n;&t; * FIXME: need another way to make cleanup safe&n;&t; */
-multiline_comment|/* Note:&n;&t; * We need the request_queue lock here, otherwise there exists the &n;&t; * following race:&n;&t; * &n;&t; * queuecommand calls create_fcp_commmand_task...calls req_create, &n;&t; * gets sbal x to x+y - meanwhile adapter reopen is called, completes &n;&t; * - req_send calls do_QDIO for sbal x to x+y, i.e. wrong indices.&n;&t; *&n;&t; * with lock:&n;&t; * queuecommand calls create_fcp_commmand_task...calls req_create, &n;&t; * gets sbal x to x+y - meanwhile adapter reopen is called, waits &n;&t; * - req_send calls do_QDIO for sbal x to x+y, i.e. wrong indices &n;&t; * but do_QDIO fails as adapter_reopen is still waiting for the lock&n;&t; * OR&n;&t; * queuecommand calls create_fcp_commmand_task...calls req_create &n;&t; * - meanwhile adapter reopen is called...completes,&n;&t; * - gets sbal 0 to 0+y, - req_send calls do_QDIO for sbal 0 to 0+y, &n;&t; * i.e. correct indices...though an fcp command is called before &n;&t; * exchange config data...that should be fine, however&n;&t; */
-r_if
-c_cond
+multiline_comment|/*&n;&t; * Get queue_lock and clear QDIOUP flag. Thus it&squot;s guaranteed that&n;&t; * do_QDIO won&squot;t be called while qdio_shutdown is in progress.&n;&t; */
+id|write_lock_irq
+c_func
+(paren
+op_amp
+id|adapter-&gt;request_queue.queue_lock
+)paren
+suffix:semicolon
+id|atomic_clear_mask
+c_func
+(paren
+id|ZFCP_STATUS_ADAPTER_QDIOUP
+comma
+op_amp
+id|adapter-&gt;status
+)paren
+suffix:semicolon
+id|write_unlock_irq
+c_func
+(paren
+op_amp
+id|adapter-&gt;request_queue.queue_lock
+)paren
+suffix:semicolon
+id|debug_text_event
+c_func
+(paren
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;qdio_down2a&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
 (paren
 id|qdio_shutdown
 c_func
@@ -8185,28 +8295,32 @@ id|adapter-&gt;ccw_device
 comma
 id|QDIO_FLAG_CLEANUP_USING_CLEAR
 )paren
+op_eq
+op_minus
+id|EINPROGRESS
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * FIXME(design):&n;&t;&t; * What went wrong? What to do best? Proper retval?&n;&t;&t; */
-id|ZFCP_LOG_NORMAL
+id|set_current_state
 c_func
 (paren
-l_string|&quot;bug: shutdown of QDIO queues failed on &quot;
-l_string|&quot;adapter %s&bslash;n&quot;
-comma
-id|zfcp_get_busid_by_adapter
-c_func
-(paren
-id|adapter
+id|TASK_UNINTERRUPTIBLE
 )paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
 )paren
 suffix:semicolon
 )brace
-r_else
-id|ZFCP_LOG_DEBUG
+id|debug_text_event
 c_func
 (paren
-l_string|&quot;queues cleaned up&bslash;n&quot;
+id|adapter-&gt;erp_dbf
+comma
+l_int|3
+comma
+l_string|&quot;qdio_down2b&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * First we had to stop QDIO operation.&n;&t; * Now it is safe to take the following actions.&n;&t; */
@@ -8290,15 +8404,6 @@ suffix:semicolon
 id|adapter-&gt;request_queue.distance_from_int
 op_assign
 l_int|0
-suffix:semicolon
-id|atomic_clear_mask
-c_func
-(paren
-id|ZFCP_STATUS_ADAPTER_QDIOUP
-comma
-op_amp
-id|adapter-&gt;status
-)paren
 suffix:semicolon
 id|out
 suffix:colon
