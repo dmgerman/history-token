@@ -1782,7 +1782,7 @@ id|IP_CT_DIR_REPLY
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Timer relative to confirmation time, not original&n;&t;&t;   setting time, otherwise we&squot;d get timer wrap in&n;&t;&t;   wierd delay cases. */
+multiline_comment|/* Timer relative to confirmation time, not original&n;&t;&t;   setting time, otherwise we&squot;d get timer wrap in&n;&t;&t;   weird delay cases. */
 id|ct-&gt;timeout.expires
 op_add_assign
 id|jiffies
