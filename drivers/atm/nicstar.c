@@ -748,27 +748,6 @@ c_func
 l_string|&quot;nicstar: nicstar_module_init() called.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;nicstar: no PCI subsystem found.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren

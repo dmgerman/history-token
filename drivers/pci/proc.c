@@ -118,6 +118,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -529,6 +530,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -971,10 +973,10 @@ id|PCIIOC_CONTROLLER
 suffix:colon
 id|ret
 op_assign
-id|pci_controller_num
+id|pci_domain_nr
 c_func
 (paren
-id|dev
+id|dev-&gt;bus
 )paren
 suffix:semicolon
 r_break
@@ -1382,6 +1384,10 @@ op_amp
 id|pci_devices
 ques
 c_cond
+(paren
+r_void
+op_star
+)paren
 id|p-&gt;next
 suffix:colon
 l_int|NULL
@@ -2638,15 +2644,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 r_struct
 id|proc_dir_entry
 op_star
@@ -2727,7 +2724,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

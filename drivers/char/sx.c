@@ -9573,14 +9573,6 @@ id|EIO
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|pci_present
-(paren
-)paren
-)paren
-(brace
 macro_line|#ifndef TWO_ZERO
 r_while
 c_loop
@@ -9647,8 +9639,8 @@ id|pci_fun
 r_break
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Specialix has a whole bunch of cards with&n;&t;&t;&t;   0x2000 as the device ID. They say its because&n;&t;&t;&t;   the standard requires it. Stupid standard. */
-multiline_comment|/* It seems that reading a word doesn&squot;t work reliably on 2.0.&n;&t;&t;&t;   Also, reading a non-aligned dword doesn&squot;t work. So we read the&n;&t;&t;&t;   whole dword at 0x2c and extract the word at 0x2e (SUBSYSTEM_ID)&n;&t;&t;&t;   ourselves */
+multiline_comment|/* Specialix has a whole bunch of cards with&n;&t;&t;   0x2000 as the device ID. They say its because&n;&t;&t;   the standard requires it. Stupid standard. */
+multiline_comment|/* It seems that reading a word doesn&squot;t work reliably on 2.0.&n;&t;&t;   Also, reading a non-aligned dword doesn&squot;t work. So we read the&n;&t;&t;   whole dword at 0x2c and extract the word at 0x2e (SUBSYSTEM_ID)&n;&t;&t;   ourselves */
 multiline_comment|/* I don&squot;t know why the define doesn&squot;t work, constant 0x2c does --REW */
 id|pci_read_config_dword
 (paren
@@ -9796,7 +9788,7 @@ l_string|&quot;ioremap failed&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* XXX handle error */
 )brace
-multiline_comment|/* Most of the stuff on the CF board is offset by&n;&t;&t;&t;   0x18000 ....  */
+multiline_comment|/* Most of the stuff on the CF board is offset by&n;&t;&t;   0x18000 ....  */
 r_if
 c_cond
 (paren
@@ -9865,7 +9857,6 @@ id|board-&gt;base
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 r_for

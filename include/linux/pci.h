@@ -1147,15 +1147,6 @@ id|list_head
 id|pci_devices
 suffix:semicolon
 multiline_comment|/* list of all devices */
-DECL|macro|pci_for_each_bus
-mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
-r_int
-id|pci_present
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|pcibios_fixup_bus
 c_func
@@ -1522,6 +1513,19 @@ id|dev
 comma
 r_int
 id|cap
+)paren
+suffix:semicolon
+r_struct
+id|pci_bus
+op_star
+id|pci_find_next_bus
+c_func
+(paren
+r_const
+r_struct
+id|pci_bus
+op_star
+id|from
 )paren
 suffix:semicolon
 r_int
@@ -2325,20 +2329,6 @@ multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
 multiline_comment|/*&n; *  If the system does not have PCI, clearly these return errors.  Define&n; *  these as simple inline functions to avoid hair in drivers.&n; */
 macro_line|#ifndef CONFIG_PCI
-DECL|function|pci_present
-r_static
-r_inline
-r_int
-id|pci_present
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|_PCI_NOP
 mdefine_line|#define _PCI_NOP(o,s,t) &bslash;&n;&t;static inline int pci_##o##_config_##s (struct pci_dev *dev, int where, t val) &bslash;&n;&t;&t;{ return PCIBIOS_FUNC_NOT_SUPPORTED; }
 DECL|macro|_PCI_NOP_ALL
@@ -2974,6 +2964,11 @@ DECL|macro|PCIPCI_VSFX
 mdefine_line|#define PCIPCI_VSFX&t;&t;16
 DECL|macro|PCIPCI_ALIMAGIK
 mdefine_line|#define PCIPCI_ALIMAGIK&t;&t;32
+multiline_comment|/*&n; * PCI domain support.  Sometimes called PCI segment (eg by ACPI),&n; * a PCI domain is defined to be a set of PCI busses which share&n; * configuration space.&n; */
+macro_line|#ifndef CONFIG_PCI_DOMAINS
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(bus)&t;0
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_PCI_H */
 eof

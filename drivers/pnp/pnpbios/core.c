@@ -4771,4 +4771,11 @@ id|pnpbios_exit
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|pnpbios_protocol
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pnpbios_protocol
+)paren
+suffix:semicolon
 eof

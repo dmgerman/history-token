@@ -232,8 +232,6 @@ multiline_comment|/*&n; * Compat macros&n; */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 4, 0)
 DECL|macro|pci_set_dma_mask
 mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;dev-&gt;dma_mask = mask;
-DECL|macro|pci_present
-mdefine_line|#define pci_present()&t;&t;&t;&t;pcibios_present()
 DECL|macro|pci_enable_device
 mdefine_line|#define pci_enable_device(pdev)&t;&t;&t;0
 DECL|macro|pci_find_subsys
@@ -2865,27 +2863,6 @@ l_string|&quot;qla1280: insmod or else it might trash certain memory areas.&bsla
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;scsi: PCI not present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|bdp
 op_assign
 op_amp

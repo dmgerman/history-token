@@ -103,6 +103,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|driver_name
+r_static
+r_const
+r_char
+id|driver_name
+(braket
+)braket
+op_assign
+l_string|&quot;kaweth&quot;
+suffix:semicolon
 r_static
 r_int
 id|kaweth_probe
@@ -551,7 +561,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;kaweth&quot;
+id|driver_name
 comma
 dot
 id|probe
@@ -2389,7 +2399,7 @@ c_func
 (paren
 id|info.driver
 comma
-l_string|&quot;kaweth&quot;
+id|driver_name
 comma
 r_sizeof
 (paren

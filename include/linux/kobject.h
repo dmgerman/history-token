@@ -456,6 +456,9 @@ r_char
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * Use this when initializing an embedded kset with no other &n; * fields to initialize.&n; */
+DECL|macro|set_kset_name
+mdefine_line|#define set_kset_name(str)&t;.kset = { .kobj = { .name = str } }
 DECL|struct|subsystem
 r_struct
 id|subsystem

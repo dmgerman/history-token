@@ -557,14 +557,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * PCI-bus probe.&n;&t; */
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
 (brace
 multiline_comment|/*&n;&t;&t; * Note: I removed the struct pci_device_list stuff since this&n;&t;&t; * driver only cares about one device ID.  If that changes in&n;&t;&t; * the future it can be added in with only a very moderate&n;&t;&t; * amount of work.  It made the double scan of the device list&n;&t;&t; * for getting a count and allocating the device list easier&n;&t;&t; * to not have the for(i ... ) loop in there....&n;&t;&t; */
 r_int

@@ -6733,11 +6733,16 @@ l_int|0
 suffix:semicolon
 r_void
 op_star
+id|percpu
+op_assign
+l_int|NULL
+comma
+op_star
 id|ptr
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Stops spurious gcc uninitialized warning */
+multiline_comment|/* Stops spurious gcc warning */
 id|DEBUGP
 c_func
 (paren
@@ -7479,7 +7484,7 @@ id|pcpuindex
 )paren
 (brace
 multiline_comment|/* We have a special allocation for this section. */
-id|mod-&gt;percpu
+id|percpu
 op_assign
 id|percpu_modalloc
 c_func
@@ -7503,7 +7508,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mod-&gt;percpu
+id|percpu
 )paren
 (brace
 id|err
@@ -7528,6 +7533,10 @@ r_int
 r_int
 )paren
 id|SHF_ALLOC
+suffix:semicolon
+id|mod-&gt;percpu
+op_assign
+id|percpu
 suffix:semicolon
 )brace
 multiline_comment|/* Determine total sizes, and put offsets in sh_entsize.  For now&n;&t;   this is done generically; there doesn&squot;t appear to be any&n;&t;   special cases for the architectures. */
@@ -8319,12 +8328,12 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|mod-&gt;percpu
+id|percpu
 )paren
 id|percpu_modfree
 c_func
 (paren
-id|mod-&gt;percpu
+id|percpu
 )paren
 suffix:semicolon
 id|free_mod

@@ -10276,14 +10276,6 @@ id|found
 op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
 (brace
 r_struct
 id|pci_dev

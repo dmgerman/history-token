@@ -6442,9 +6442,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;No IOC for PCI Bus %02x:%02x in ACPI&bslash;n&quot;
+l_string|&quot;No IOC for PCI Bus %04x:%02x in ACPI&bslash;n&quot;
 comma
-id|PCI_SEGMENT
+id|pci_domain_nr
 c_func
 (paren
 id|bus
@@ -6630,11 +6630,23 @@ r_struct
 id|pci_bus
 op_star
 id|b
+op_assign
+l_int|NULL
 suffix:semicolon
-id|pci_for_each_bus
+r_while
+c_loop
+(paren
+(paren
+id|b
+op_assign
+id|pci_find_next_bus
 c_func
 (paren
 id|b
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 id|sba_connect_bus
 c_func

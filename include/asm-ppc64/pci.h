@@ -293,16 +293,15 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 r_extern
 r_int
-id|pci_controller_num
+id|pci_domain_nr
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|pdev
+id|bus
 )paren
 suffix:semicolon
 r_struct

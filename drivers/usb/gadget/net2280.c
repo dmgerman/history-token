@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * Driver for the NetChip 2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.netchip.com&gt;.&n; *&n; * NetChip Technology Inc. supported the development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * Used with a gadget driver like &quot;zero.c&quot; this enumerates fine to Windows&n; * or Linux hosts; handles disconnect, reconnect, and reset, for full or&n; * high speed operation; and passes USB-IF &quot;chapter 9&quot; tests.&n; *&n; * Handles standard stress loads from the Linux &quot;usbtest&quot; driver, with&n; * either DMA (default) or PIO (use_dma=n) used for ep-{a,b,c,d}.  Testing&n; * with &quot;ttcp&quot; (and the &quot;ether.c&quot; driver) behaves nicely too.&n; *&n; * DMA is enabled by default.  Drivers using transfer queues might use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed&n; * and DMA chaining is enabled.&n; */
-singleline_comment|// #define NET2280_DMA_OUT_WORKAROUND
-singleline_comment|// #define USE_DMA_CHAINING
+multiline_comment|/*&n; * Driver for the NetChip 2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.netchip.com&gt;.&n; *&n; * NetChip Technology Inc. supported the development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * Used with a gadget driver like &quot;zero.c&quot; this enumerates fine to Windows&n; * or Linux hosts; handles disconnect, reconnect, and reset, for full or&n; * high speed operation; and passes USB-IF &quot;chapter 9&quot; tests.&n; *&n; * Handles standard stress loads from the Linux &quot;usbtest&quot; driver, with&n; * either DMA (default) or PIO (use_dma=n) used for ep-{a,b,c,d}.  Testing&n; * with &quot;ttcp&quot; (and the &quot;ether.c&quot; driver) behaves nicely too.&n; *&n; * DMA is enabled by default.  Drivers using transfer queues might use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed&n; * and DMA chaining is enabled.&n; *&n; * Note that almost all the errata workarounds here are only needed for&n; * rev1 chips.  Rev1a silicon (0110) fixes almost all of them.&n; */
+DECL|macro|USE_DMA_CHAINING
+mdefine_line|#define USE_DMA_CHAINING
 multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;1
@@ -423,6 +423,44 @@ op_assign
 id|USB_ENDPOINT_XFER_BULK
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|tmp
+op_eq
+id|USB_ENDPOINT_XFER_BULK
+)paren
+(brace
+multiline_comment|/* catch some particularly blatant driver bugs */
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;gadget.speed
+op_eq
+id|USB_SPEED_HIGH
+op_logical_and
+id|max
+op_ne
+l_int|512
+)paren
+op_logical_or
+(paren
+id|dev-&gt;gadget.speed
+op_eq
+id|USB_SPEED_FULL
+op_logical_and
+id|max
+OG
+l_int|64
+)paren
+)paren
+r_return
+op_minus
+id|ERANGE
+suffix:semicolon
+)brace
 id|ep-&gt;is_iso
 op_assign
 (paren
@@ -784,20 +822,6 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|done
-op_eq
-l_int|0
-)paren
-id|dump_stack
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* ignore out_flush timeout */
-macro_line|#endif
 r_return
 op_minus
 id|ETIMEDOUT
@@ -3496,6 +3520,18 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ep-&gt;num
+op_eq
+l_int|0
+)paren
+id|allow_status
+(paren
+id|ep
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t queue it */
 id|req
 op_assign
@@ -4662,11 +4698,25 @@ c_cond
 (paren
 id|value
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ep-&gt;num
+op_eq
+l_int|0
+)paren
+id|ep-&gt;dev-&gt;protocol_stall
+op_assign
+l_int|1
+suffix:semicolon
+r_else
 id|set_halt
 (paren
 id|ep
 )paren
 suffix:semicolon
+)brace
 r_else
 id|clear_halt
 (paren
@@ -8231,6 +8281,12 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* FIXME need mechanism (request flag?) so control OUT&n;&t;&t;&t; * can decide to stall ep0 after that done() returns,&n;&t;&t;&t; * from non-irq context&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep-&gt;stopped
+)paren
 id|allow_status
 (paren
 id|ep

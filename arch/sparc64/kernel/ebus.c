@@ -2628,17 +2628,6 @@ id|num_ebus
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-suffix:semicolon
 id|pdev
 op_assign
 id|find_next_ebus

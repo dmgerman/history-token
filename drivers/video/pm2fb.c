@@ -7436,26 +7436,6 @@ id|pm2pci_par
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;no PCI bus found.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|DPRINTK
 c_func
 (paren

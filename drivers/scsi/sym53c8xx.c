@@ -681,8 +681,6 @@ DECL|macro|PciDeviceFn
 mdefine_line|#define PciDeviceFn(d)&t;&t;((d)&amp;0xff)
 DECL|macro|__PciDev
 mdefine_line|#define __PciDev(busn, devfn)&t;(((busn)&lt;&lt;8)+(devfn))
-DECL|macro|pci_present
-mdefine_line|#define pci_present pcibios_present
 DECL|macro|pci_read_config_byte
 mdefine_line|#define pci_read_config_byte(d, w, v) &bslash;&n;&t;pcibios_read_config_byte(PciBusNumber(d), PciDeviceFn(d), w, v)
 DECL|macro|pci_read_config_word
@@ -39874,19 +39872,6 @@ op_star
 id|nvp
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;**    PCI is required.&n;&t;*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t;**    Initialize driver general stuff.&n;&t;*/
 macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)

@@ -4974,15 +4974,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|num_cards
 OL
 id|MAXBOARDS
@@ -5000,17 +4991,6 @@ id|num_cards
 op_add_assign
 id|pci_boards_found
 suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;&lt;Error&gt; - No PCI BIOS found&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif /* ENABLE_PCI */
 id|memset
 c_func

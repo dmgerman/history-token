@@ -2,7 +2,7 @@ multiline_comment|/*&n; * include/linux/node.h - generic node definition&n; *&n;
 macro_line|#ifndef _LINUX_NODE_H_
 DECL|macro|_LINUX_NODE_H_
 mdefine_line|#define _LINUX_NODE_H_
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 DECL|struct|node
 r_struct
 id|node
@@ -13,10 +13,10 @@ r_int
 id|cpumap
 suffix:semicolon
 multiline_comment|/* Bitmap of CPUs on the Node */
-DECL|member|sysroot
+DECL|member|sysdev
 r_struct
-id|sys_root
-id|sysroot
+id|sys_device
+id|sysdev
 suffix:semicolon
 )brace
 suffix:semicolon

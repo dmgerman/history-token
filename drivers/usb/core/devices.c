@@ -1684,6 +1684,7 @@ id|usb_device_dump
 c_func
 (paren
 r_char
+id|__user
 op_star
 op_star
 id|buffer
@@ -2207,6 +2208,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

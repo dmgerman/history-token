@@ -9470,16 +9470,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_present
-c_func
-(paren
-)paren
-op_logical_and
-(paren
 id|card
 OL
 id|BOARD_COUNT
-)paren
 )paren
 (brace
 r_for

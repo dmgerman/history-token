@@ -2502,24 +2502,6 @@ suffix:semicolon
 id|dma_addr_t
 id|consistentDma
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-(paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;pci2000: PCI BIOS not present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren

@@ -45,6 +45,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|driver_name
+r_static
+r_const
+r_char
+id|driver_name
+(braket
+)braket
+op_assign
+l_string|&quot;catc&quot;
+suffix:semicolon
 multiline_comment|/*&n; * Some defines.&n; */
 DECL|macro|STATS_UPDATE
 mdefine_line|#define STATS_UPDATE&t;&t;(HZ)&t;/* Time between stats updates */
@@ -2947,7 +2957,7 @@ c_func
 (paren
 id|info.driver
 comma
-id|SHORT_DRIVER_DESC
+id|driver_name
 comma
 id|ETHTOOL_BUSINFO_LEN
 )paren
@@ -4485,7 +4495,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;catc&quot;
+id|driver_name
 comma
 dot
 id|probe

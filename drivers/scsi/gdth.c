@@ -23813,16 +23813,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* scanning for PCI controllers */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x2015C
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-macro_line|#else
+macro_line|#if LINUX_VERSION_CODE &lt; 0x2015C
 r_if
 c_cond
 (paren

@@ -676,10 +676,17 @@ r_else
 r_if
 c_cond
 (paren
-id|pci_present
+id|pci_find_device
 c_func
 (paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|NULL
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* safe default value for PCI */
@@ -8643,22 +8650,12 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
 id|ide_scan_pcibus
 c_func
 (paren
 id|ide_scan_direction
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 macro_line|#ifdef CONFIG_ETRAX_IDE
 (brace

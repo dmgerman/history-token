@@ -2125,27 +2125,6 @@ id|tmpt-&gt;proc_name
 op_assign
 l_string|&quot;isp1020&quot;
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;qlogicisp : PCI not present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren

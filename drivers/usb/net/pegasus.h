@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 1999-2002 Petko Manolov - Petkan (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as published&n; * by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * Copyright (c) 1999-2003 Petko Manolov - Petkan (petkan@users.sourceforge.net)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as published&n; * by the Free Software Foundation.&n; */
 macro_line|#ifndef&t;PEGASUS_DEV
 DECL|macro|PEGASUS_II
 mdefine_line|#define&t;PEGASUS_II&t;&t;0x80000000
@@ -369,6 +369,8 @@ DECL|macro|VENDOR_ELSA
 mdefine_line|#define&t;VENDOR_ELSA&t;&t;0x05cc
 DECL|macro|VENDOR_HAWKING
 mdefine_line|#define&t;VENDOR_HAWKING&t;&t;0x0e66
+DECL|macro|VENDOR_HP
+mdefine_line|#define&t;VENDOR_HP&t;&t;0x03f0
 DECL|macro|VENDOR_IODATA
 mdefine_line|#define&t;VENDOR_IODATA&t;&t;0x04bb
 DECL|macro|VENDOR_KINGSTON
@@ -863,6 +865,19 @@ comma
 id|VENDOR_HAWKING
 comma
 l_int|0x400c
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;HP hn210c Ethernet USB&quot;
+comma
+id|VENDOR_HP
+comma
+l_int|0x811c
 comma
 id|DEFAULT_GPIO_RESET
 op_or

@@ -17772,22 +17772,6 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-multiline_comment|/* No PCI bus in this machine! */
-macro_line|#endif
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|printk
 c_func
 (paren

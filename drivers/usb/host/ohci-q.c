@@ -1428,7 +1428,7 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME:  Don&squot;t do this without knowing it&squot;s safe to clobber this&n;&t; * state/mode info.  Currently the upper layers don&squot;t support such&n;&t; * guarantees; we&squot;re lucky changing config/altsetting is rare.&n;&t; * The state/mode info also changes during enumeration: set_address&n;&t; * uses the &squot;wrong&squot; device address, and ep0 maxpacketsize will often&n;&t; * improve on the initial value.&n;&t; */
+multiline_comment|/* NOTE: only ep0 currently needs this &quot;re&quot;init logic, during&n;&t; * enumeration (after set_address, or if ep0 maxpacket &gt;8).&n;&t; */
 r_if
 c_cond
 (paren

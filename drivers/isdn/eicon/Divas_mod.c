@@ -123,15 +123,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|DivasCardsDiscover
 c_func
 (paren
@@ -145,21 +136,6 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;Divas: Not loaded&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Divas: No PCI bus present&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

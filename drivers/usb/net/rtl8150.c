@@ -311,6 +311,16 @@ op_star
 id|id
 )paren
 suffix:semicolon
+DECL|variable|driver_name
+r_static
+r_const
+r_char
+id|driver_name
+(braket
+)braket
+op_assign
+l_string|&quot;rtl8150&quot;
+suffix:semicolon
 DECL|variable|rtl8150_driver
 r_static
 r_struct
@@ -326,7 +336,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;rtl8150&quot;
+id|driver_name
 comma
 dot
 id|probe
@@ -3252,7 +3262,7 @@ c_func
 (paren
 id|info.driver
 comma
-id|DRIVER_DESC
+id|driver_name
 comma
 id|ETHTOOL_BUSINFO_LEN
 )paren

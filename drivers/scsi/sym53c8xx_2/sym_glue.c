@@ -9640,19 +9640,6 @@ op_star
 id|nvp
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  PCI is required.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; *    Initialize driver general stuff.&n;&t; */
 macro_line|#ifdef SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT
 macro_line|#ifdef MODULE

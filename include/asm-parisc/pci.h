@@ -342,9 +342,6 @@ mdefine_line|#define PCIBIOS_MIN_MEM         0x1000 /* NBPG - but pci/setup-res.
 multiline_comment|/* Don&squot;t support DAC yet. */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)   (0)
-multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-DECL|macro|pci_controller_num
-mdefine_line|#define&t;pci_controller_num(PDEV)&t;(0)
 multiline_comment|/* export the pci_ DMA API in terms of the dma_ one */
 macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;
 r_extern
