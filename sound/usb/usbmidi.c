@@ -3429,6 +3429,16 @@ l_int|0x0582
 comma
 l_int|0x0004
 comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0004
+comma
 l_int|1
 comma
 l_string|&quot;%s Control&quot;
@@ -3660,6 +3670,193 @@ comma
 l_int|3
 comma
 l_string|&quot;%s MIDI 2&quot;
+)brace
+comma
+multiline_comment|/* Edirol UA-700 */
+(brace
+l_int|0x0582
+comma
+l_int|0x002b
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x002b
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Roland VariOS */
+(brace
+l_int|0x0582
+comma
+l_int|0x002f
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x002f
+comma
+l_int|1
+comma
+l_string|&quot;%s External MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x002f
+comma
+l_int|2
+comma
+l_string|&quot;%s Sync&quot;
+)brace
+comma
+multiline_comment|/* Edirol PCR */
+(brace
+l_int|0x0582
+comma
+l_int|0x0033
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0033
+comma
+l_int|1
+comma
+l_string|&quot;%s 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0033
+comma
+l_int|2
+comma
+l_string|&quot;%s 2&quot;
+)brace
+comma
+multiline_comment|/* BOSS GS-10 */
+(brace
+l_int|0x0582
+comma
+l_int|0x003b
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x003b
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Edirol UA-1000 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0044
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0044
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Edirol UR-80 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0048
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0048
+comma
+l_int|1
+comma
+l_string|&quot;%s 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0048
+comma
+l_int|2
+comma
+l_string|&quot;%s 2&quot;
+)brace
+comma
+multiline_comment|/* Edirol PCR-A */
+(brace
+l_int|0x0582
+comma
+l_int|0x004d
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x004d
+comma
+l_int|1
+comma
+l_string|&quot;%s 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x004d
+comma
+l_int|2
+comma
+l_string|&quot;%s 2&quot;
 )brace
 comma
 multiline_comment|/* M-Audio MidiSport 8x8 */
