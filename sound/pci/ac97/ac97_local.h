@@ -2,11 +2,11 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 DECL|macro|AC97_SINGLE_VALUE
 mdefine_line|#define AC97_SINGLE_VALUE(reg,shift,mask,invert) ((reg) | ((shift) &lt;&lt; 8) | ((shift) &lt;&lt; 12) | ((mask) &lt;&lt; 16) | ((invert) &lt;&lt; 24))
 DECL|macro|AC97_PAGE_SINGLE_VALUE
-mdefine_line|#define AC97_PAGE_SINGLE_VALUE(reg,shift,mask,invert,page) (AC97_SINGLE_VALUE(reg,shift,mask,invert) | ((page) &lt;&lt; 25))
+mdefine_line|#define AC97_PAGE_SINGLE_VALUE(reg,shift,mask,invert,page) (AC97_SINGLE_VALUE(reg,shift,mask,invert) | (1&lt;&lt;25) | ((page) &lt;&lt; 26))
 DECL|macro|AC97_SINGLE
 mdefine_line|#define AC97_SINGLE(xname, reg, shift, mask, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_volsw, &bslash;&n;  .get = snd_ac97_get_volsw, .put = snd_ac97_put_volsw, &bslash;&n;  .private_value =  AC97_SINGLE_VALUE(reg, shift, mask, invert) }
 DECL|macro|AC97_PAGE_SINGLE
-mdefine_line|#define AC97_PAGE_SINGLE(xname, reg, shift, mask, invert, page)&t;&t;&bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_volsw, &bslash;&n;  .get = snd_ac97_page_get_volsw, .put = snd_ac97_page_put_volsw, &bslash;&n;  .private_value =  AC97_PAGE_SINGLE_VALUE(reg, shift, mask, invert, page) }
+mdefine_line|#define AC97_PAGE_SINGLE(xname, reg, shift, mask, invert, page)&t;&t;&bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_info_volsw, &bslash;&n;  .get = snd_ac97_get_volsw, .put = snd_ac97_put_volsw, &bslash;&n;  .private_value =  AC97_PAGE_SINGLE_VALUE(reg, shift, mask, invert, page) }
 multiline_comment|/* ac97_codec.c */
 r_extern
 r_const
@@ -93,32 +93,6 @@ id|ucontrol
 suffix:semicolon
 r_int
 id|snd_ac97_put_volsw
-c_func
-(paren
-id|snd_kcontrol_t
-op_star
-id|kcontrol
-comma
-id|snd_ctl_elem_value_t
-op_star
-id|ucontrol
-)paren
-suffix:semicolon
-r_int
-id|snd_ac97_page_get_volsw
-c_func
-(paren
-id|snd_kcontrol_t
-op_star
-id|kcontrol
-comma
-id|snd_ctl_elem_value_t
-op_star
-id|ucontrol
-)paren
-suffix:semicolon
-r_int
-id|snd_ac97_page_put_volsw
 c_func
 (paren
 id|snd_kcontrol_t
