@@ -470,13 +470,7 @@ macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_FORCED */
 r_if
 c_cond
 (paren
-(paren
 id|hwif-&gt;mmio
-)paren
-op_logical_and
-(paren
-id|hwif-&gt;dma_base
-)paren
 )paren
 r_return
 id|hwif-&gt;dma_base
@@ -507,27 +501,12 @@ r_else
 (brace
 id|dma_base
 op_assign
-(paren
-id|hwif-&gt;mmio
-)paren
-ques
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|hwif-&gt;hwif_data
-)paren
-suffix:colon
-(paren
 id|pci_resource_start
 c_func
 (paren
 id|dev
 comma
 l_int|4
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -541,16 +520,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: dma_base is invalid (0x%04lx)&bslash;n&quot;
+l_string|&quot;%s: dma_base is invalid&bslash;n&quot;
 comma
 id|hwif-&gt;cds-&gt;name
-comma
-id|dma_base
 )paren
-suffix:semicolon
-id|dma_base
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -763,46 +736,7 @@ l_int|0x80
 )paren
 (brace
 multiline_comment|/* simplex device? */
-macro_line|#if 0&t;&t;&t;&t;&t;
 multiline_comment|/*&n; *&t;At this point we haven&squot;t probed the drives so we can&squot;t make the&n; *&t;appropriate decision. Really we should defer this problem&n; *&t;until we tune the drive then try to grab DMA ownership if we want&n; *&t;to be the DMA end. This has to be become dynamic to handle hot&n; *&t;plug.&n; */
-multiline_comment|/* Don&squot;t enable DMA on a simplex channel with no drives */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;drives
-(braket
-l_int|0
-)braket
-dot
-id|present
-op_logical_and
-op_logical_neg
-id|hwif-&gt;drives
-(braket
-l_int|1
-)braket
-dot
-id|present
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: simplex device with no drives: DMA disabled&bslash;n&quot;
-comma
-id|hwif-&gt;cds-&gt;name
-)paren
-suffix:semicolon
-id|dma_base
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* If our other channel has DMA then we cannot */
-r_else
-macro_line|#endif&t;&t;&t;&t;&t;
 r_if
 c_cond
 (paren
