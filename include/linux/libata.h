@@ -1940,10 +1940,6 @@ id|qc
 comma
 id|u8
 id|drv_stat
-comma
-r_int
-r_int
-id|done_late
 )paren
 suffix:semicolon
 r_extern

@@ -3497,8 +3497,6 @@ c_func
 id|qc
 comma
 id|status
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|handled
@@ -3873,13 +3871,7 @@ multiline_comment|/* get drive status; clear intr; complete txn */
 id|ata_qc_complete
 c_func
 (paren
-id|ata_qc_from_tag
-c_func
-(paren
-id|ap
-comma
-id|ap-&gt;active_tag
-)paren
+id|qc
 comma
 id|ata_wait_idle
 c_func
@@ -3888,8 +3880,6 @@ id|ap
 )paren
 op_or
 id|err_bit
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3975,13 +3965,7 @@ suffix:semicolon
 id|ata_qc_complete
 c_func
 (paren
-id|ata_qc_from_tag
-c_func
-(paren
-id|ap
-comma
-id|ap-&gt;active_tag
-)paren
+id|qc
 comma
 id|ata_wait_idle
 c_func
@@ -3990,8 +3974,6 @@ id|ap
 )paren
 op_or
 id|ATA_ERR
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -4032,8 +4014,6 @@ c_func
 id|qc
 comma
 id|drv_stat
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -4073,8 +4053,6 @@ c_func
 id|qc
 comma
 id|drv_stat
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break

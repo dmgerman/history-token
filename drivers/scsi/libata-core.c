@@ -60,16 +60,12 @@ id|ata_dma_complete
 c_func
 (paren
 r_struct
-id|ata_port
+id|ata_queued_cmd
 op_star
-id|ap
+id|qc
 comma
 id|u8
 id|host_stat
-comma
-r_int
-r_int
-id|done_late
 )paren
 suffix:semicolon
 r_static
@@ -7130,8 +7126,6 @@ c_func
 id|qc
 comma
 id|drv_stat
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -7703,11 +7697,9 @@ suffix:semicolon
 id|ata_dma_complete
 c_func
 (paren
-id|ap
+id|qc
 comma
 id|host_stat
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -7748,8 +7740,6 @@ c_func
 id|qc
 comma
 id|drv_stat
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -7789,8 +7779,6 @@ c_func
 id|qc
 comma
 id|drv_stat
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -8001,7 +7989,7 @@ r_return
 id|qc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_qc_complete -&n; *&t;@qc:&n; *&t;@drv_stat:&n; *&t;@done_late:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_qc_complete -&n; *&t;@qc:&n; *&t;@drv_stat:&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|ata_qc_complete
 r_void
 id|ata_qc_complete
@@ -8014,10 +8002,6 @@ id|qc
 comma
 id|u8
 id|drv_stat
-comma
-r_int
-r_int
-id|done_late
 )paren
 (brace
 r_struct
@@ -8863,7 +8847,7 @@ id|ATA_DMA_CMD
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dma_complete -&n; *&t;@ap:&n; *&t;@host_stat:&n; *&t;@done_late:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_dma_complete -&n; *&t;@qc:&n; *&t;@host_stat:&n; *&n; *&t;LOCKING:&n; */
 DECL|function|ata_dma_complete
 r_static
 r_void
@@ -8871,18 +8855,21 @@ id|ata_dma_complete
 c_func
 (paren
 r_struct
-id|ata_port
+id|ata_queued_cmd
 op_star
-id|ap
+id|qc
 comma
 id|u8
 id|host_stat
-comma
-r_int
-r_int
-id|done_late
 )paren
 (brace
+r_struct
+id|ata_port
+op_star
+id|ap
+op_assign
+id|qc-&gt;ap
+suffix:semicolon
 id|VPRINTK
 c_func
 (paren
@@ -9015,21 +9002,13 @@ multiline_comment|/* get drive status; clear intr; complete txn */
 id|ata_qc_complete
 c_func
 (paren
-id|ata_qc_from_tag
-c_func
-(paren
-id|ap
-comma
-id|ap-&gt;active_tag
-)paren
+id|qc
 comma
 id|ata_wait_idle
 c_func
 (paren
 id|ap
 )paren
-comma
-id|done_late
 )paren
 suffix:semicolon
 )brace
@@ -9139,11 +9118,9 @@ suffix:semicolon
 id|ata_dma_complete
 c_func
 (paren
-id|ap
+id|qc
 comma
 id|host_stat
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|handled
@@ -9184,8 +9161,6 @@ c_func
 id|qc
 comma
 id|status
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|handled
@@ -9707,8 +9682,6 @@ c_func
 id|qc
 comma
 id|ATA_ERR
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
