@@ -380,12 +380,6 @@ comma
 id|p-&gt;irq
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 multiline_comment|/* Tell the high-level drivers about the port. */
 id|parport_announce_port
 (paren

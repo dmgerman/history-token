@@ -1570,12 +1570,6 @@ id|p-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: set operating mode */
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|p-&gt;private_data
 op_assign
 (paren
@@ -1673,15 +1667,6 @@ id|i
 r_continue
 suffix:semicolon
 id|parport_remove_port
-c_func
-(paren
-id|this_port
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|parport_proc_unregister
 c_func
 (paren
 id|this_port

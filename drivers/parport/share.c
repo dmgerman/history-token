@@ -1298,6 +1298,12 @@ id|port
 )paren
 suffix:semicolon
 macro_line|#endif
+id|parport_proc_register
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 id|down
 c_func
 (paren
@@ -1694,6 +1700,12 @@ c_func
 (paren
 op_amp
 id|registration_lock
+)paren
+suffix:semicolon
+id|parport_proc_unregister
+c_func
+(paren
+id|port
 )paren
 suffix:semicolon
 multiline_comment|/* Yes, parport_enumerate _is_ unsafe.  Don&squot;t use it. */

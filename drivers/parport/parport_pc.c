@@ -9919,12 +9919,6 @@ comma
 id|probedirq
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 multiline_comment|/* If No ECP release the ports grabbed above. */
 r_if
 c_cond
@@ -10246,12 +10240,6 @@ op_assign
 id|p-&gt;ops
 suffix:semicolon
 id|parport_remove_port
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|parport_proc_unregister
 c_func
 (paren
 id|p

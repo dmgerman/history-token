@@ -1434,12 +1434,6 @@ c_func
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1722,12 +1716,6 @@ c_func
 (paren
 id|p-&gt;irq
 comma
-id|p
-)paren
-suffix:semicolon
-id|parport_proc_unregister
-c_func
-(paren
 id|p
 )paren
 suffix:semicolon

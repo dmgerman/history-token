@@ -803,12 +803,6 @@ comma
 id|p-&gt;name
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|parport_announce_port
 (paren
 id|p
@@ -851,12 +845,6 @@ c_func
 (paren
 id|IRQ_MFP_BUSY
 comma
-id|this_port
-)paren
-suffix:semicolon
-id|parport_proc_unregister
-c_func
-(paren
 id|this_port
 )paren
 suffix:semicolon

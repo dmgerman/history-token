@@ -1624,12 +1624,6 @@ comma
 id|p-&gt;base
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 id|parport_announce_port
 (paren
 id|p
@@ -1758,12 +1752,6 @@ op_assign
 id|p-&gt;ops
 suffix:semicolon
 id|parport_remove_port
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|parport_proc_unregister
 c_func
 (paren
 id|p

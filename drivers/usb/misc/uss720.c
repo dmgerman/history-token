@@ -3051,12 +3051,6 @@ id|probe_abort_port
 suffix:semicolon
 )brace
 macro_line|#endif
-id|parport_proc_register
-c_func
-(paren
-id|pp
-)paren
-suffix:semicolon
 id|parport_announce_port
 c_func
 (paren
@@ -3141,12 +3135,6 @@ op_assign
 id|pp-&gt;private_data
 suffix:semicolon
 id|parport_remove_port
-c_func
-(paren
-id|pp
-)paren
-suffix:semicolon
-id|parport_proc_unregister
 c_func
 (paren
 id|pp
