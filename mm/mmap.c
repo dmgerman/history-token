@@ -156,6 +156,23 @@ op_amp
 id|slab_reclaim_pages
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Leave the last 3% for root&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+id|free
+op_sub_assign
+id|free
+op_div
+l_int|32
+suffix:semicolon
 r_if
 c_cond
 (paren
