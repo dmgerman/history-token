@@ -23,13 +23,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 DECL|macro|DEBUG_TASKFILE
 mdefine_line|#define DEBUG_TASKFILE&t;0&t;/* unset when fixed */
-macro_line|#if DEBUG_TASKFILE
-DECL|macro|DTF
-mdefine_line|#define DTF(x...) printk(x)
-macro_line|#else
-DECL|macro|DTF
-mdefine_line|#define DTF(x...)
-macro_line|#endif
 DECL|function|ata_bswap_data
 r_static
 r_void
@@ -1296,19 +1289,6 @@ id|BAD_STAT
 )paren
 )paren
 (brace
-id|DTF
-c_func
-(paren
-l_string|&quot;%s: command opcode 0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_COMMAND_OFFSET
-)braket
-)paren
-suffix:semicolon
 r_return
 id|DRIVER
 c_func
@@ -1468,12 +1448,6 @@ id|BUSY_STAT
 )paren
 )paren
 (brace
-id|DTF
-c_func
-(paren
-l_string|&quot;task_in_intr to Soon wait for next interrupt&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ide_set_handler
 c_func
 (paren
@@ -1500,21 +1474,6 @@ id|task_rq_offset
 c_func
 (paren
 id|rq
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Read: %p, rq-&gt;current_nr_sectors: %d, stat: %02x&bslash;n&quot;
-comma
-id|pBuf
-comma
-(paren
-r_int
-)paren
-id|rq-&gt;current_nr_sectors
-comma
-id|stat
 )paren
 suffix:semicolon
 id|taskfile_input_data
@@ -1731,22 +1690,6 @@ id|task_rq_offset
 c_func
 (paren
 id|rq
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Multiread: %p, nsect: %d, msect: %d, &quot;
-"&bslash;"
-l_string|&quot; rq-&gt;current_nr_sectors: %d&bslash;n&quot;
-comma
-id|pBuf
-comma
-id|nsect
-comma
-id|msect
-comma
-id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|taskfile_input_data
@@ -2071,19 +2014,6 @@ id|task_rq_offset
 c_func
 (paren
 id|rq
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;write: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;
-comma
-id|pBuf
-comma
-(paren
-r_int
-)paren
-id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|taskfile_output_data
@@ -2504,22 +2434,6 @@ id|task_rq_offset
 c_func
 (paren
 id|rq
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Multiwrite: %p, nsect: %d, msect: %d, &quot;
-"&bslash;"
-l_string|&quot;rq-&gt;current_nr_sectors: %ld&bslash;n&quot;
-comma
-id|pBuf
-comma
-id|nsect
-comma
-id|msect
-comma
-id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|msect
@@ -6623,19 +6537,6 @@ op_star
 id|SECTOR_SIZE
 )paren
 suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Read - rq-&gt;current_nr_sectors: %d, status: %02x&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|rq-&gt;current_nr_sectors
-comma
-id|stat
-)paren
-suffix:semicolon
 id|taskfile_input_data
 c_func
 (paren
@@ -6870,18 +6771,6 @@ id|rq-&gt;current_nr_sectors
 )paren
 op_star
 id|SECTOR_SIZE
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Multiread: %p, nsect: %d , rq-&gt;current_nr_sectors: %ld&bslash;n&quot;
-comma
-id|pBuf
-comma
-id|nsect
-comma
-id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|taskfile_input_data
@@ -7195,19 +7084,6 @@ op_star
 id|SECTOR_SIZE
 )paren
 suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Write - rq-&gt;current_nr_sectors: %d, status: %02x&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|rq-&gt;current_nr_sectors
-comma
-id|stat
-)paren
-suffix:semicolon
 id|taskfile_output_data
 c_func
 (paren
@@ -7329,18 +7205,6 @@ id|rq-&gt;current_nr_sectors
 )paren
 op_star
 id|SECTOR_SIZE
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Multiwrite: %p, nsect: %d , rq-&gt;current_nr_sectors: %ld&bslash;n&quot;
-comma
-id|pBuf
-comma
-id|nsect
-comma
-id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|taskfile_output_data
@@ -7538,18 +7402,6 @@ id|rq-&gt;current_nr_sectors
 )paren
 op_star
 id|SECTOR_SIZE
-)paren
-suffix:semicolon
-id|DTF
-c_func
-(paren
-l_string|&quot;Multiwrite: %p, nsect: %d , rq-&gt;current_nr_sectors: %ld&bslash;n&quot;
-comma
-id|pBuf
-comma
-id|nsect
-comma
-id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|taskfile_output_data
