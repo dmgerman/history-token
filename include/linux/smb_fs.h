@@ -476,6 +476,7 @@ op_star
 id|convert
 )paren
 (paren
+r_int
 r_char
 op_star
 id|output
@@ -484,6 +485,7 @@ r_int
 id|olen
 comma
 r_const
+r_int
 r_char
 op_star
 id|input
