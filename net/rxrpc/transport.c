@@ -2949,7 +2949,7 @@ id|sin
 id|printk
 c_func
 (paren
-l_string|&quot;%s: short control message (nlen=%u clen=%u fl=%x)&bslash;n&quot;
+l_string|&quot;%s: short control message (nlen=%u clen=%Zu fl=%x)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2966,7 +2966,7 @@ suffix:semicolon
 id|_net
 c_func
 (paren
-l_string|&quot;Rx Received control message { len=%u level=%u type=%u }&quot;
+l_string|&quot;Rx Received control message { len=%Zu level=%u type=%u }&quot;
 comma
 id|emsg.cmsg.cmsg_len
 comma
@@ -3056,7 +3056,7 @@ id|emsg.ee
 id|printk
 c_func
 (paren
-l_string|&quot;%s: short error message (%u)&bslash;n&quot;
+l_string|&quot;%s: short error message (%Zu)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

@@ -1870,6 +1870,9 @@ c_func
 id|cell
 )paren
 suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/* end afs_proc_cell_volumes_release() */
 multiline_comment|/*****************************************************************************/
@@ -2339,6 +2342,9 @@ c_func
 id|cell
 )paren
 suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/* end afs_proc_cell_vlservers_release() */
 multiline_comment|/*****************************************************************************/
@@ -2758,6 +2764,9 @@ c_func
 (paren
 id|cell
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_proc_cell_servers_release() */

@@ -2074,6 +2074,21 @@ comma
 id|pci_setup
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ISA) || defined(CONFIG_EISA)
+DECL|variable|isa_bridge
+r_struct
+id|pci_dev
+op_star
+id|isa_bridge
+suffix:semicolon
+DECL|variable|isa_bridge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|isa_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|pci_enable_device
 id|EXPORT_SYMBOL
 c_func
