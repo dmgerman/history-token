@@ -1,13 +1,10 @@
-multiline_comment|/*&n; * Alchemy Semi Au1000 ethernet driver include file&n; *&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|NUM_INTERFACES
-mdefine_line|#define NUM_INTERFACES 2
+multiline_comment|/*&n; *&n; * Alchemy Au1x00 ethernet driver include file&n; *&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * &n; */
 DECL|macro|MAC_IOSIZE
 mdefine_line|#define MAC_IOSIZE 0x10000
 DECL|macro|NUM_RX_DMA
-mdefine_line|#define NUM_RX_DMA 4       /* Au1000 has 4 rx hardware descriptors */
+mdefine_line|#define NUM_RX_DMA 4       /* Au1x00 has 4 rx hardware descriptors */
 DECL|macro|NUM_TX_DMA
-mdefine_line|#define NUM_TX_DMA 4       /* Au1000 has 4 tx hardware descriptors */
+mdefine_line|#define NUM_TX_DMA 4       /* Au1x00 has 4 tx hardware descriptors */
 DECL|macro|NUM_RX_BUFFS
 mdefine_line|#define NUM_RX_BUFFS 4
 DECL|macro|NUM_TX_BUFFS
@@ -18,14 +15,6 @@ DECL|macro|ETH_TX_TIMEOUT
 mdefine_line|#define ETH_TX_TIMEOUT HZ/4
 DECL|macro|MAC_MIN_PKT_SIZE
 mdefine_line|#define MAC_MIN_PKT_SIZE 64
-macro_line|#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_PB1500) || defined(CONFIG_MIPS_PB1100)
-DECL|macro|PHY_ADDRESS
-mdefine_line|#define PHY_ADDRESS              0
-DECL|macro|PHY_CONTROL_DEFAULT
-mdefine_line|#define PHY_CONTROL_DEFAULT 0x3000
-DECL|macro|PHY_CONTROL_REG_ADDR
-mdefine_line|#define PHY_CONTROL_REG_ADDR     0
-macro_line|#endif
 DECL|macro|MULTICAST_FILTER_LIMIT
 mdefine_line|#define MULTICAST_FILTER_LIMIT 64
 multiline_comment|/* FIXME &n; * The PHY defines should be in a separate file.&n; */
@@ -46,14 +35,17 @@ DECL|macro|MII_AEXP
 mdefine_line|#define MII_AEXP    0x0006
 DECL|macro|MII_ANEXT
 mdefine_line|#define MII_ANEXT   0x0007
-DECL|macro|MII_LSI_CONFIG
-mdefine_line|#define MII_LSI_CONFIG 0x0011
-DECL|macro|MII_LSI_STAT
-mdefine_line|#define MII_LSI_STAT   0x0012
+DECL|macro|MII_LSI_PHY_CONFIG
+mdefine_line|#define MII_LSI_PHY_CONFIG 0x0011
+multiline_comment|/* Status register */
+DECL|macro|MII_LSI_PHY_STAT
+mdefine_line|#define MII_LSI_PHY_STAT   0x0012
+DECL|macro|MII_AMD_PHY_STAT
+mdefine_line|#define MII_AMD_PHY_STAT   MII_LSI_PHY_STAT
+DECL|macro|MII_INTEL_PHY_STAT
+mdefine_line|#define MII_INTEL_PHY_STAT 0x0011
 DECL|macro|MII_AUX_CNTRL
 mdefine_line|#define MII_AUX_CNTRL  0x0018
-DECL|macro|MII_INT
-mdefine_line|#define MII_INT        0x001A
 multiline_comment|/* mii registers specific to AMD 79C901 */
 DECL|macro|MII_STATUS_SUMMARY
 mdefine_line|#define&t;MII_STATUS_SUMMARY = 0x0018
@@ -149,11 +141,21 @@ DECL|macro|MII_STSSUM_AUTO
 mdefine_line|#define&t;MII_STSSUM_AUTO  0x0002
 DECL|macro|MII_STSSUM_SPD
 mdefine_line|#define MII_STSSUM_SPD   0x0001
-multiline_comment|/* lsi status register */
-DECL|macro|MII_LSI_STAT_FDX
-mdefine_line|#define MII_LSI_STAT_FDX&t;0x0040
-DECL|macro|MII_LSI_STAT_SPD
-mdefine_line|#define MII_LSI_STAT_SPD&t;0x0080
+multiline_comment|/* lsi phy status register */
+DECL|macro|MII_LSI_PHY_STAT_FDX
+mdefine_line|#define MII_LSI_PHY_STAT_FDX&t;0x0040
+DECL|macro|MII_LSI_PHY_STAT_SPD
+mdefine_line|#define MII_LSI_PHY_STAT_SPD&t;0x0080
+multiline_comment|/* amd phy status register */
+DECL|macro|MII_AMD_PHY_STAT_FDX
+mdefine_line|#define MII_AMD_PHY_STAT_FDX&t;0x0800
+DECL|macro|MII_AMD_PHY_STAT_SPD
+mdefine_line|#define MII_AMD_PHY_STAT_SPD&t;0x0400
+multiline_comment|/* intel phy status register */
+DECL|macro|MII_INTEL_PHY_STAT_FDX
+mdefine_line|#define MII_INTEL_PHY_STAT_FDX&t;0x0200
+DECL|macro|MII_INTEL_PHY_STAT_SPD
+mdefine_line|#define MII_INTEL_PHY_STAT_SPD&t;0x4000
 multiline_comment|/* Auxilliary Control/Status Register */
 DECL|macro|MII_AUX_FDX
 mdefine_line|#define MII_AUX_FDX      0x0001
@@ -163,8 +165,6 @@ DECL|macro|MII_AUX_F100
 mdefine_line|#define MII_AUX_F100     0x0004
 DECL|macro|MII_AUX_ANEG
 mdefine_line|#define MII_AUX_ANEG     0x0008
-DECL|macro|MII_FDX_LED
-mdefine_line|#define MII_FDX_LED&t; 0x8000
 DECL|struct|mii_phy
 r_typedef
 r_struct
@@ -182,13 +182,19 @@ id|mii_chip_info
 op_star
 id|chip_info
 suffix:semicolon
-DECL|member|phy_addr
-r_int
-id|phy_addr
-suffix:semicolon
 DECL|member|status
 id|u16
 id|status
+suffix:semicolon
+DECL|member|mii_control_reg
+id|u32
+op_star
+id|mii_control_reg
+suffix:semicolon
+DECL|member|mii_data_reg
+id|u32
+op_star
+id|mii_data_reg
 suffix:semicolon
 DECL|typedef|mii_phy_t
 )brace
@@ -410,13 +416,6 @@ id|tx_dma_ring
 id|NUM_TX_DMA
 )braket
 suffix:semicolon
-DECL|member|tx_len
-r_int
-id|tx_len
-(braket
-id|NUM_TX_DMA
-)braket
-suffix:semicolon
 DECL|member|rx_db_inuse
 id|db_dest_t
 op_star
@@ -448,6 +447,10 @@ suffix:semicolon
 DECL|member|tx_full
 id|u32
 id|tx_full
+suffix:semicolon
+DECL|member|mac_id
+r_int
+id|mac_id
 suffix:semicolon
 DECL|member|mii
 id|mii_phy_t
@@ -500,10 +503,10 @@ id|intr_work_done
 suffix:semicolon
 multiline_comment|/* number of Rx and Tx pkts processed in the isr */
 DECL|member|phy_addr
-id|u32
+r_int
 id|phy_addr
 suffix:semicolon
-multiline_comment|/* PHY address */
+multiline_comment|/* phy address */
 DECL|member|options
 id|u32
 id|options
@@ -512,6 +515,10 @@ multiline_comment|/* User-settable misc. driver options. */
 DECL|member|drv_flags
 id|u32
 id|drv_flags
+suffix:semicolon
+DECL|member|want_autoneg
+r_int
+id|want_autoneg
 suffix:semicolon
 DECL|member|stats
 r_struct
