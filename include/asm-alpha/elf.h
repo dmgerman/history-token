@@ -196,10 +196,10 @@ DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(TASK, DEST) &bslash;&n;&t;dump_elf_task_fp(*(DEST), TASK)
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  This is trivial on Alpha, &n;   but not so on other machines. */
 DECL|macro|ELF_HWCAP
-mdefine_line|#define ELF_HWCAP&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Sadly, most folks don&squot;t yet have assemblers that know about&t;&bslash;&n;&t;   amask.  This is &quot;amask v0, v0&quot; */&t;&t;&t;&t;&bslash;&n;&t;register long _v0 __asm(&quot;$0&quot;) = -1;&t;&t;&t;&t;&bslash;&n;&t;__asm(&quot;.long 0x47e00c20&quot; : &quot;=r&quot;(_v0) : &quot;0&quot;(_v0));&t;&t;&bslash;&n;&t;~_v0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.  &n;&n;   This might do with checking bwx simultaneously...  */
+mdefine_line|#define ELF_HWCAP  (~amask(-1))
+multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.  */
 DECL|macro|ELF_PLATFORM
-mdefine_line|#define ELF_PLATFORM&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Or &quot;implver v0&quot; ... */&t;&t;&bslash;&n;&t;register long _v0 __asm(&quot;$0&quot;);&t;&t;&bslash;&n;&t;__asm(&quot;.long 0x47e03d80&quot; : &quot;=r&quot;(_v0));&t;&bslash;&n;&t;_v0 == 0 ? &quot;ev4&quot; : &quot;ev5&quot;;&t;&t;&bslash;&n;})
+mdefine_line|#define ELF_PLATFORM&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;enum implver_enum i_ = implver();&t;&bslash;&n;&t;( i_ == IMPLVER_EV4 ? &quot;ev4&quot;&t;&t;&bslash;&n;&t;: i_ == IMPLVER_EV5&t;&t;&t;&bslash;&n;&t;  ? (amask(AMASK_BWX) ? &quot;ev5&quot; : &quot;ev56&quot;)&t;&bslash;&n;&t;: amask (AMASK_CIX) ? &quot;ev6&quot; : &quot;ev67&quot;);&t;&bslash;&n;})
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(EX, IBCS2)&t;&t;&t;&t;&bslash;&n;&t;set_personality(((EX).e_flags &amp; EF_ALPHA_32BIT)&t;&t;&bslash;&n;&t;   ? PER_LINUX_32BIT : (IBCS2) ? PER_SVR4 : PER_LINUX)
