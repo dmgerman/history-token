@@ -3175,7 +3175,7 @@ multiline_comment|/* Use inline assembly to define this because the nops are def
 id|asm
 c_func
 (paren
-l_string|&quot;intelnops: &quot;
+l_string|&quot;&bslash;t.data&bslash;nintelnops: &quot;
 id|GENERIC_NOP1
 id|GENERIC_NOP2
 id|GENERIC_NOP3
@@ -3189,7 +3189,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;k8nops: &quot;
+l_string|&quot;&bslash;t.data&bslash;nk8nops: &quot;
 id|K8_NOP1
 id|K8_NOP2
 id|K8_NOP3
@@ -3203,7 +3203,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;k7nops: &quot;
+l_string|&quot;&bslash;t.data&bslash;nk7nops: &quot;
 id|K7_NOP1
 id|K7_NOP2
 id|K7_NOP3
