@@ -222,14 +222,14 @@ id|cdi
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 OG
 l_int|2048
 )paren
@@ -245,18 +245,18 @@ comma
 l_int|2048
 )paren
 suffix:semicolon
-id|SCp-&gt;device-&gt;access_count
+id|cd-&gt;device-&gt;access_count
 op_decrement
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|cd-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 id|__MOD_DEC_USE_COUNT
 c_func
 (paren
-id|SCp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|cd-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 suffix:semicolon
 r_if
@@ -387,7 +387,7 @@ id|slot
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -413,7 +413,7 @@ op_assign
 id|scsi_ioctl
 c_func
 (paren
-id|SCp-&gt;device
+id|cd-&gt;device
 comma
 id|SCSI_IOCTL_TEST_UNIT_READY
 comma
@@ -427,7 +427,7 @@ id|retval
 )paren
 (brace
 multiline_comment|/* Unable to test, unit probably not ready.  This usually&n;&t;&t; * means there is no disc in the drive.  Mark as changed,&n;&t;&t; * and we will figure it out later once the drive is&n;&t;&t; * available again.  */
-id|SCp-&gt;device-&gt;changed
+id|cd-&gt;device-&gt;changed
 op_assign
 l_int|1
 suffix:semicolon
@@ -439,9 +439,9 @@ multiline_comment|/* This will force a flush, if called from&n;&t;&t;&t;&t; * ch
 suffix:semicolon
 id|retval
 op_assign
-id|SCp-&gt;device-&gt;changed
+id|cd-&gt;device-&gt;changed
 suffix:semicolon
-id|SCp-&gt;device-&gt;changed
+id|cd-&gt;device-&gt;changed
 op_assign
 l_int|0
 suffix:semicolon
@@ -460,11 +460,11 @@ id|cdi
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * If the disk changed, the capacity will now be different,&n;&t;&t; * so we force a re-read of this information &n;&t;&t; * Force 2048 for the sector size so that filesystems won&squot;t&n;&t;&t; * be trying to use something that is too small if the disc&n;&t;&t; * has changed.&n;&t;&t; */
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 op_assign
 l_int|2048
 suffix:semicolon
@@ -527,7 +527,7 @@ id|SCpnt-&gt;request-&gt;rq_dev
 suffix:semicolon
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 op_amp
 id|scsi_CDs
@@ -656,7 +656,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 op_eq
 l_int|2048
 )paren
@@ -709,7 +709,7 @@ id|sr_sizes
 id|device_nr
 )braket
 op_logical_and
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_minus
 id|error_sector
 OL
@@ -752,7 +752,7 @@ id|dev
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 suffix:semicolon
 r_if
 c_cond
@@ -768,7 +768,7 @@ id|sr_template.dev_max
 r_return
 l_int|NULL
 suffix:semicolon
-id|SCp
+id|cd
 op_assign
 op_amp
 id|scsi_CDs
@@ -784,14 +784,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|SCp-&gt;device
+id|cd-&gt;device
 )paren
 r_return
 l_int|NULL
 suffix:semicolon
 r_return
 op_amp
-id|SCp-&gt;device-&gt;request_queue
+id|cd-&gt;device-&gt;request_queue
 suffix:semicolon
 )brace
 DECL|function|sr_init_command
@@ -820,7 +820,7 @@ id|s_size
 suffix:semicolon
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 suffix:semicolon
 id|devm
 op_assign
@@ -838,7 +838,7 @@ c_func
 id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
-id|SCp
+id|cd
 op_assign
 op_amp
 id|scsi_CDs
@@ -870,10 +870,10 @@ op_ge
 id|sr_template.nr_dev
 op_logical_or
 op_logical_neg
-id|SCp-&gt;device
+id|cd-&gt;device
 op_logical_or
 op_logical_neg
-id|SCp-&gt;device-&gt;online
+id|cd-&gt;device-&gt;online
 )paren
 (brace
 id|SCSI_LOG_HLQUEUE
@@ -911,7 +911,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;device-&gt;changed
+id|cd-&gt;device-&gt;changed
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * quietly refuse to do anything to a changed disc until the&n;&t;&t; * changed bit has been reset&n;&t;&t; */
@@ -945,7 +945,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * we do lazy blocksize switching (when reading XA sectors,&n;&t; * see CDROMREADMODE2 ioctl) &n;&t; */
 id|s_size
 op_assign
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 suffix:semicolon
 r_if
 c_cond
@@ -1028,7 +1028,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|SCp-&gt;device-&gt;writeable
+id|cd-&gt;device-&gt;writeable
 )paren
 r_return
 l_int|0
@@ -1139,7 +1139,7 @@ c_func
 (paren
 l_string|&quot;%s : %s %d/%ld 512 byte blocks.&bslash;n&quot;
 comma
-id|SCp-&gt;cdi.name
+id|cd-&gt;cdi.name
 comma
 (paren
 id|rq_data_dir
@@ -1316,7 +1316,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We shouldn&squot;t disconnect in the middle of a sector, so with a dumb&n;&t; * host adapter, it&squot;s safe to assume that we can at least transfer&n;&t; * this many bytes between each connect / disconnect.&n;&t; */
 id|SCpnt-&gt;transfersize
 op_assign
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 suffix:semicolon
 id|SCpnt-&gt;underflow
 op_assign
@@ -1451,7 +1451,7 @@ id|purpose
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -1467,7 +1467,7 @@ op_ge
 id|sr_template.dev_max
 op_logical_or
 op_logical_neg
-id|SCp-&gt;device
+id|cd-&gt;device
 )paren
 (brace
 r_return
@@ -1484,7 +1484,7 @@ op_logical_neg
 id|scsi_block_when_processing_errors
 c_func
 (paren
-id|SCp-&gt;device
+id|cd-&gt;device
 )paren
 )paren
 (brace
@@ -1493,18 +1493,18 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|SCp-&gt;device-&gt;access_count
+id|cd-&gt;device-&gt;access_count
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|cd-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 id|__MOD_INC_USE_COUNT
 c_func
 (paren
-id|SCp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|cd-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 suffix:semicolon
 r_if
@@ -1522,7 +1522,7 @@ multiline_comment|/* If this device did not have media in the drive at boot time
 r_if
 c_cond
 (paren
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 )paren
 id|get_sectorsize
 c_func
@@ -1748,13 +1748,13 @@ l_int|NULL
 suffix:semicolon
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 suffix:semicolon
 id|request_queue_t
 op_star
 id|queue
 suffix:semicolon
-id|SCp
+id|cd
 op_assign
 op_amp
 id|scsi_CDs
@@ -1786,7 +1786,7 @@ op_assign
 id|scsi_allocate_request
 c_func
 (paren
-id|SCp-&gt;device
+id|cd-&gt;device
 )paren
 suffix:semicolon
 r_if
@@ -1813,7 +1813,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -1821,7 +1821,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -1929,7 +1929,7 @@ c_cond
 id|the_result
 )paren
 (brace
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_assign
 l_int|0x1fffff
 suffix:semicolon
@@ -1938,7 +1938,7 @@ op_assign
 l_int|2048
 suffix:semicolon
 multiline_comment|/* A guess, just in case */
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 op_assign
 l_int|1
 suffix:semicolon
@@ -1953,14 +1953,14 @@ id|cdrom_get_last_written
 c_func
 (paren
 op_amp
-id|SCp-&gt;cdi
+id|cd-&gt;cdi
 comma
 op_amp
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 )paren
 )paren
 macro_line|#endif
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_assign
 l_int|1
 op_plus
@@ -2056,7 +2056,7 @@ multiline_comment|/* fall through */
 r_case
 l_int|2048
 suffix:colon
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_mul_assign
 l_int|4
 suffix:semicolon
@@ -2073,26 +2073,26 @@ c_func
 (paren
 l_string|&quot;%s: unsupported sector size %d.&bslash;n&quot;
 comma
-id|SCp-&gt;cdi.name
+id|cd-&gt;cdi.name
 comma
 id|sector_size
 )paren
 suffix:semicolon
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_assign
 l_int|0
 suffix:semicolon
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 op_assign
 id|sector_size
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Add this so that we have the ability to correctly gauge&n;&t;&t; * what the device is capable of.&n;&t;&t; */
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 op_assign
 l_int|0
 suffix:semicolon
@@ -2101,7 +2101,7 @@ id|sr_sizes
 id|i
 )braket
 op_assign
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_rshift
 (paren
 id|BLOCK_SIZE_BITS
@@ -2113,7 +2113,7 @@ suffix:semicolon
 id|queue
 op_assign
 op_amp
-id|SCp-&gt;device-&gt;request_queue
+id|cd-&gt;device-&gt;request_queue
 suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
@@ -2135,7 +2135,7 @@ r_return
 suffix:semicolon
 id|Enomem
 suffix:colon
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_assign
 l_int|0x1fffff
 suffix:semicolon
@@ -2144,7 +2144,7 @@ op_assign
 l_int|2048
 suffix:semicolon
 multiline_comment|/* A guess, just in case */
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 op_assign
 l_int|1
 suffix:semicolon
@@ -2174,7 +2174,7 @@ id|i
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 suffix:semicolon
 r_int
 r_char
@@ -2218,7 +2218,7 @@ comma
 l_string|&quot;&quot;
 )brace
 suffix:semicolon
-id|SCp
+id|cd
 op_assign
 op_amp
 id|scsi_CDs
@@ -2266,7 +2266,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;device-&gt;scsi_level
+id|cd-&gt;device-&gt;scsi_level
 op_le
 id|SCSI_2
 )paren
@@ -2274,7 +2274,7 @@ ques
 c_cond
 (paren
 (paren
-id|SCp-&gt;device-&gt;lun
+id|cd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -2337,11 +2337,11 @@ id|rc
 )paren
 (brace
 multiline_comment|/* failed, drive doesn&squot;t have capabilities mode page */
-id|SCp-&gt;cdi.speed
+id|cd-&gt;cdi.speed
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 (paren
 id|CDC_CD_R
@@ -2370,7 +2370,7 @@ c_func
 (paren
 l_string|&quot;%s: scsi-1 drive&bslash;n&quot;
 comma
-id|SCp-&gt;cdi.name
+id|cd-&gt;cdi.name
 )paren
 suffix:semicolon
 r_return
@@ -2385,7 +2385,7 @@ l_int|3
 op_plus
 l_int|4
 suffix:semicolon
-id|SCp-&gt;cdi.speed
+id|cd-&gt;cdi.speed
 op_assign
 (paren
 (paren
@@ -2409,11 +2409,11 @@ l_int|9
 op_div
 l_int|176
 suffix:semicolon
-id|SCp-&gt;readcd_known
+id|cd-&gt;readcd_known
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;readcd_cdda
+id|cd-&gt;readcd_cdda
 op_assign
 id|buffer
 (braket
@@ -2430,7 +2430,7 @@ c_func
 (paren
 l_string|&quot;%s: scsi3-mmc drive: %dx/%dx %s%s%s%s%s%s&bslash;n&quot;
 comma
-id|SCp-&gt;cdi.name
+id|cd-&gt;cdi.name
 comma
 (paren
 (paren
@@ -2454,7 +2454,7 @@ l_int|15
 op_div
 l_int|176
 comma
-id|SCp-&gt;cdi.speed
+id|cd-&gt;cdi.speed
 comma
 id|buffer
 (braket
@@ -2560,7 +2560,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* caddy drives can&squot;t close tray... */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_CLOSE_TRAY
 suffix:semicolon
@@ -2581,7 +2581,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* not a DVD drive */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_DVD
 suffix:semicolon
@@ -2603,14 +2603,14 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* can&squot;t write DVD-RAM media */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_DVD_RAM
 suffix:semicolon
 )brace
 r_else
 (brace
-id|SCp-&gt;device-&gt;writeable
+id|cd-&gt;device-&gt;writeable
 op_assign
 l_int|1
 suffix:semicolon
@@ -2632,7 +2632,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* can&squot;t write DVD-R media */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_DVD_R
 suffix:semicolon
@@ -2653,7 +2653,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* can&squot;t write CD-RW media */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_CD_RW
 suffix:semicolon
@@ -2674,7 +2674,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* can&squot;t write CD-R media */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_CD_R
 suffix:semicolon
@@ -2695,7 +2695,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* can&squot;t eject */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_OPEN_TRAY
 suffix:semicolon
@@ -2728,28 +2728,28 @@ l_int|5
 op_eq
 id|mechtype_cartridge_changer
 )paren
-id|SCp-&gt;cdi.capacity
+id|cd-&gt;cdi.capacity
 op_assign
 id|cdrom_number_of_slots
 c_func
 (paren
 op_amp
-id|SCp-&gt;cdi
+id|cd-&gt;cdi
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCp-&gt;cdi.capacity
+id|cd-&gt;cdi.capacity
 op_le
 l_int|1
 )paren
 multiline_comment|/* not a changer */
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_SELECT_DISC
 suffix:semicolon
-multiline_comment|/*else    I don&squot;t think it can close its tray&n;&t;&t;SCp-&gt;cdi.mask |= CDC_CLOSE_TRAY; */
+multiline_comment|/*else    I don&squot;t think it can close its tray&n;&t;&t;cd-&gt;cdi.mask |= CDC_CLOSE_TRAY; */
 id|kfree
 c_func
 (paren
@@ -2777,7 +2777,7 @@ id|cgc
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 id|cdi-&gt;handle
 suffix:semicolon
@@ -2785,7 +2785,7 @@ id|Scsi_Device
 op_star
 id|device
 op_assign
-id|SCp-&gt;device
+id|cd-&gt;device
 suffix:semicolon
 multiline_comment|/* set the LUN */
 r_if
@@ -3203,7 +3203,7 @@ id|i
 (brace
 id|Scsi_CD
 op_star
-id|SCp
+id|cd
 op_assign
 op_amp
 id|scsi_CDs
@@ -3215,24 +3215,24 @@ multiline_comment|/* If we have already seen this, then skip it.  Comes up&n;&t;
 r_if
 c_cond
 (paren
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 )paren
 r_continue
 suffix:semicolon
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_assign
 l_int|0x1fffff
 suffix:semicolon
-id|SCp-&gt;device-&gt;sector_size
+id|cd-&gt;device-&gt;sector_size
 op_assign
 l_int|2048
 suffix:semicolon
 multiline_comment|/* A guess, just in case */
-id|SCp-&gt;needs_sector_size
+id|cd-&gt;needs_sector_size
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;device-&gt;changed
+id|cd-&gt;device-&gt;changed
 op_assign
 l_int|1
 suffix:semicolon
@@ -3250,27 +3250,27 @@ c_func
 (paren
 l_string|&quot;Scd sectorsize = %d bytes.&bslash;n&quot;
 comma
-id|SCp-&gt;sector_size
+id|cd-&gt;sector_size
 )paren
 suffix:semicolon
 macro_line|#endif
-id|SCp-&gt;use
+id|cd-&gt;use
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;device-&gt;ten
+id|cd-&gt;device-&gt;ten
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;device-&gt;remap
+id|cd-&gt;device-&gt;remap
 op_assign
 l_int|1
 suffix:semicolon
-id|SCp-&gt;readcd_known
+id|cd-&gt;readcd_known
 op_assign
 l_int|0
 suffix:semicolon
-id|SCp-&gt;readcd_cdda
+id|cd-&gt;readcd_cdda
 op_assign
 l_int|0
 suffix:semicolon
@@ -3279,7 +3279,7 @@ id|sr_sizes
 id|i
 )braket
 op_assign
-id|SCp-&gt;capacity
+id|cd-&gt;capacity
 op_rshift
 (paren
 id|BLOCK_SIZE_BITS
@@ -3287,16 +3287,16 @@ op_minus
 l_int|9
 )paren
 suffix:semicolon
-id|SCp-&gt;cdi.ops
+id|cd-&gt;cdi.ops
 op_assign
 op_amp
 id|sr_dops
 suffix:semicolon
-id|SCp-&gt;cdi.handle
+id|cd-&gt;cdi.handle
 op_assign
-id|SCp
+id|cd
 suffix:semicolon
-id|SCp-&gt;cdi.dev
+id|cd-&gt;cdi.dev
 op_assign
 id|mk_kdev
 c_func
@@ -3306,11 +3306,11 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|SCp-&gt;cdi.mask
+id|cd-&gt;cdi.mask
 op_assign
 l_int|0
 suffix:semicolon
-id|SCp-&gt;cdi.capacity
+id|cd-&gt;cdi.capacity
 op_assign
 l_int|1
 suffix:semicolon
@@ -3324,40 +3324,40 @@ suffix:semicolon
 id|sr_vendor_init
 c_func
 (paren
-id|SCp
+id|cd
 )paren
 suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|SCp-&gt;cdi.cdrom_driverfs_dev.bus_id
+id|cd-&gt;cdi.cdrom_driverfs_dev.bus_id
 comma
 l_string|&quot;%s:cd&quot;
 comma
-id|SCp-&gt;device-&gt;sdev_driverfs_dev.bus_id
+id|cd-&gt;device-&gt;sdev_driverfs_dev.bus_id
 )paren
 suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|SCp-&gt;cdi.cdrom_driverfs_dev.name
+id|cd-&gt;cdi.cdrom_driverfs_dev.name
 comma
 l_string|&quot;%scdrom&quot;
 comma
-id|SCp-&gt;device-&gt;sdev_driverfs_dev.name
+id|cd-&gt;device-&gt;sdev_driverfs_dev.name
 )paren
 suffix:semicolon
-id|SCp-&gt;cdi.cdrom_driverfs_dev.parent
+id|cd-&gt;cdi.cdrom_driverfs_dev.parent
 op_assign
 op_amp
-id|SCp-&gt;device-&gt;sdev_driverfs_dev
+id|cd-&gt;device-&gt;sdev_driverfs_dev
 suffix:semicolon
-id|SCp-&gt;cdi.cdrom_driverfs_dev.bus
+id|cd-&gt;cdi.cdrom_driverfs_dev.bus
 op_assign
 op_amp
 id|scsi_driverfs_bus_type
 suffix:semicolon
-id|SCp-&gt;cdi.cdrom_driverfs_dev.driver_data
+id|cd-&gt;cdi.cdrom_driverfs_dev.driver_data
 op_assign
 (paren
 r_void
@@ -3378,14 +3378,14 @@ id|device_register
 c_func
 (paren
 op_amp
-id|SCp-&gt;cdi.cdrom_driverfs_dev
+id|cd-&gt;cdi.cdrom_driverfs_dev
 )paren
 suffix:semicolon
 id|device_create_file
 c_func
 (paren
 op_amp
-id|SCp-&gt;cdi.cdrom_driverfs_dev
+id|cd-&gt;cdi.cdrom_driverfs_dev
 comma
 op_amp
 id|dev_attr_type
@@ -3395,18 +3395,18 @@ id|device_create_file
 c_func
 (paren
 op_amp
-id|SCp-&gt;cdi.cdrom_driverfs_dev
+id|cd-&gt;cdi.cdrom_driverfs_dev
 comma
 op_amp
 id|dev_attr_kdev
 )paren
 suffix:semicolon
-id|SCp-&gt;cdi.de
+id|cd-&gt;cdi.de
 op_assign
 id|devfs_register
 c_func
 (paren
-id|SCp-&gt;device-&gt;de
+id|cd-&gt;device-&gt;de
 comma
 l_string|&quot;cd&quot;
 comma
@@ -3432,7 +3432,7 @@ id|register_cdrom
 c_func
 (paren
 op_amp
-id|SCp-&gt;cdi
+id|cd-&gt;cdi
 )paren
 suffix:semicolon
 )brace
