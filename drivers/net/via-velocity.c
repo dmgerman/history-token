@@ -3762,6 +3762,11 @@ l_int|4
 )paren
 r_return
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|unusable
 op_assign
 id|vptr-&gt;rd_filled
