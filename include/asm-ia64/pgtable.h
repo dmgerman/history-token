@@ -184,9 +184,6 @@ mdefine_line|#define pmd_ERROR(e)&t;printk(&quot;%s:%d: bad pmd %016lx.&bslash;n
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e)&t;printk(&quot;%s:%d: bad pte %016lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 multiline_comment|/*&n; * Some definitions to translate between mem_map, PTEs, and page&n; * addresses:&n; */
-multiline_comment|/*&n; * Given a pointer to an mem_map[] entry, return the kernel virtual&n; * address corresponding to that page.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 multiline_comment|/* Quick test to see if ADDR is a (potentially) valid physical address. */
 r_static
 r_inline

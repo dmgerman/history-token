@@ -702,8 +702,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
 r_extern

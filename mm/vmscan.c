@@ -105,7 +105,11 @@ op_logical_neg
 id|memclass
 c_func
 (paren
-id|page-&gt;zone
+id|page_zone
+c_func
+(paren
+id|page
+)paren
 comma
 id|classzone
 )paren
@@ -1494,7 +1498,11 @@ op_logical_neg
 id|memclass
 c_func
 (paren
-id|page-&gt;zone
+id|page_zone
+c_func
+(paren
+id|page
+)paren
 comma
 id|classzone
 )paren

@@ -149,8 +149,6 @@ mdefine_line|#define pmd_present(pmd)&t;(pmd_val(pmd))
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(pmdp)&t;&t;set_pmd(pmdp, __pmd(0))
 multiline_comment|/*&n; * Permanent address of a page. We never have highmem, so this is trivial.&n; */
-DECL|macro|page_address
-mdefine_line|#define page_address(page)&t;((page)-&gt;virtual)
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20 - PAGE_SHIFT))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */

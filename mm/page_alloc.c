@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/mm/page_alloc.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *  Reshaped it to be a zoned allocator, Ingo Molnar, Red Hat, 1999&n; *  Discontiguous memory support, Kanoj Sarcar, SGI, Nov 1999&n; *  Zone balancing, Kanoj Sarcar, SGI, Jan 2000&n; */
+multiline_comment|/*&n; *  linux/mm/page_alloc.c&n; *&n; *  Manages the free list, the system allocates free pages here.&n; *  Note that kmalloc() lives in slab.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *  Reshaped it to be a zoned allocator, Ingo Molnar, Red Hat, 1999&n; *  Discontiguous memory support, Kanoj Sarcar, SGI, Nov 1999&n; *  Zone balancing, Kanoj Sarcar, SGI, Jan 2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|nr_swap_pages
 r_int
 id|nr_swap_pages
@@ -34,6 +35,24 @@ DECL|variable|pgdat_list
 id|pg_data_t
 op_star
 id|pgdat_list
+suffix:semicolon
+multiline_comment|/* Used to look up the address of the struct zone encoded in page-&gt;zone */
+DECL|variable|zone_table
+id|zone_t
+op_star
+id|zone_table
+(braket
+id|MAX_NR_ZONES
+op_star
+id|MAX_NR_NODES
+)braket
+suffix:semicolon
+DECL|variable|zone_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|zone_table
+)paren
 suffix:semicolon
 DECL|variable|zone_names
 r_static
@@ -123,8 +142,8 @@ DECL|macro|memlist_prev
 mdefine_line|#define memlist_prev(x) ((x)-&gt;prev)
 multiline_comment|/*&n; * Temporary debugging check.&n; */
 DECL|macro|BAD_RANGE
-mdefine_line|#define BAD_RANGE(zone,x) (((zone) != (x)-&gt;zone) || (((x)-mem_map) &lt; (zone)-&gt;zone_start_mapnr) || (((x)-mem_map) &gt;= (zone)-&gt;zone_start_mapnr+(zone)-&gt;size))
-multiline_comment|/*&n; * Buddy system. Hairy. You really aren&squot;t expected to understand this&n; *&n; * Hint: -mask = 1+~mask&n; */
+mdefine_line|#define BAD_RANGE(zone, page)&t;&t;&t;&t;&t;&t;&bslash;&n;(&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((page) - mem_map) &gt;= ((zone)-&gt;zone_start_mapnr+(zone)-&gt;size))&t;&bslash;&n;&t;|| (((page) - mem_map) &lt; (zone)-&gt;zone_start_mapnr)&t;&t;&bslash;&n;&t;|| ((zone) != page_zone(page))&t;&t;&t;&t;&t;&bslash;&n;)
+multiline_comment|/*&n; * Freeing function for a buddy system allocator.&n; *&n; * The concept of a buddy system is to maintain direct-mapped table&n; * (containing bit values) for memory blocks of various &quot;orders&quot;.&n; * The bottom level table contains the map for the smallest allocatable&n; * units of memory (here, pages), and each level above it describes&n; * pairs of units from the levels below, hence, &quot;buddies&quot;.&n; * At a high level, all that happens here is marking the table entry&n; * at the bottom level available, and propagating the changes upward&n; * as necessary, plus some accounting needed to play nicely with other&n; * parts of the VM system.&n; *&n; * TODO: give references to descriptions of buddy system allocators,&n; * describe precisely the silly trick buddy allocators use to avoid&n; * storing an extra bit, utilizing entry point information.&n; *&n; * -- wli&n; */
 r_static
 r_void
 id|FASTCALL
@@ -303,7 +322,11 @@ id|back_local_freelist
 suffix:colon
 id|zone
 op_assign
-id|page-&gt;zone
+id|page_zone
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|mask
 op_assign
@@ -419,7 +442,7 @@ id|area-&gt;map
 multiline_comment|/*&n;&t;&t;&t; * the buddy page is still allocated.&n;&t;&t;&t; */
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Move the buddy up one level.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Move the buddy up one level.&n;&t;&t; * This code is taking advantage of the identity:&n;&t;&t; * &t;-mask = 1+~mask&n;&t;&t; */
 id|buddy1
 op_assign
 id|base
@@ -1193,7 +1216,11 @@ op_logical_and
 id|memclass
 c_func
 (paren
-id|tmp-&gt;zone
+id|page_zone
+c_func
+(paren
+id|tmp
+)paren
 comma
 id|classzone
 )paren
@@ -2808,6 +2835,81 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Helper functions to size the waitqueue hash table.&n; * Essentially these want to choose hash table sizes sufficiently&n; * large so that collisions trying to wait on pages are rare.&n; * But in fact, the number of active page waitqueues on typical&n; * systems is ridiculously low, less than 200. So this is even&n; * conservative, even though it seems large.&n; *&n; * The constant PAGES_PER_WAITQUEUE specifies the ratio of pages to&n; * waitqueues, i.e. the size of the waitq table given the number of pages.&n; */
+DECL|macro|PAGES_PER_WAITQUEUE
+mdefine_line|#define PAGES_PER_WAITQUEUE&t;256
+DECL|function|wait_table_size
+r_static
+r_inline
+r_int
+r_int
+id|wait_table_size
+c_func
+(paren
+r_int
+r_int
+id|pages
+)paren
+(brace
+r_int
+r_int
+id|size
+op_assign
+l_int|1
+suffix:semicolon
+id|pages
+op_div_assign
+id|PAGES_PER_WAITQUEUE
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|size
+OL
+id|pages
+)paren
+id|size
+op_lshift_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * Once we have dozens or even hundreds of threads sleeping&n;&t; * on IO we&squot;ve got bigger problems than wait queue collision.&n;&t; * Limit the size of the wait table to a reasonable size.&n;&t; */
+id|size
+op_assign
+id|min
+c_func
+(paren
+id|size
+comma
+l_int|4096UL
+)paren
+suffix:semicolon
+r_return
+id|size
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is an integer logarithm so that shifts can be used later&n; * to extract the more random high bits from the multiplicative&n; * hash function before the remainder is taken.&n; */
+DECL|function|wait_table_bits
+r_static
+r_inline
+r_int
+r_int
+id|wait_table_bits
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|ffz
+c_func
+(paren
+op_complement
+id|size
+)paren
+suffix:semicolon
+)brace
 DECL|macro|LONG_ALIGN
 mdefine_line|#define LONG_ALIGN(x) (((x)+(sizeof(long))-1)&amp;~((sizeof(long))-1))
 multiline_comment|/*&n; * Set up the zone data structures:&n; *   - mark all pages reserved&n; *   - mark all memory queues empty&n; *   - clear the memory bitmaps&n; */
@@ -2850,11 +2952,6 @@ op_star
 id|lmem_map
 )paren
 (brace
-r_struct
-id|page
-op_star
-id|p
-suffix:semicolon
 r_int
 r_int
 id|i
@@ -3080,53 +3177,6 @@ id|pgdat-&gt;nr_zones
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initially all pages are reserved - free ones are freed&n;&t; * up by free_all_bootmem() once the early boot process is&n;&t; * done.&n;&t; */
-r_for
-c_loop
-(paren
-id|p
-op_assign
-id|lmem_map
-suffix:semicolon
-id|p
-OL
-id|lmem_map
-op_plus
-id|totalpages
-suffix:semicolon
-id|p
-op_increment
-)paren
-(brace
-id|set_page_count
-c_func
-(paren
-id|p
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|SetPageReserved
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|p-&gt;wait
-)paren
-suffix:semicolon
-id|memlist_init
-c_func
-(paren
-op_amp
-id|p-&gt;list
-)paren
-suffix:semicolon
-)brace
 id|offset
 op_assign
 id|lmem_map
@@ -3165,6 +3215,17 @@ r_int
 id|size
 comma
 id|realsize
+suffix:semicolon
+id|zone_table
+(braket
+id|nid
+op_star
+id|MAX_NR_ZONES
+op_plus
+id|j
+)braket
+op_assign
+id|zone
 suffix:semicolon
 id|realsize
 op_assign
@@ -3232,6 +3293,68 @@ id|size
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The per-page waitqueue mechanism uses hashed waitqueues&n;&t;&t; * per zone.&n;&t;&t; */
+id|zone-&gt;wait_table_size
+op_assign
+id|wait_table_size
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
+id|zone-&gt;wait_table_shift
+op_assign
+id|BITS_PER_LONG
+op_minus
+id|wait_table_bits
+c_func
+(paren
+id|zone-&gt;wait_table_size
+)paren
+suffix:semicolon
+id|zone-&gt;wait_table
+op_assign
+(paren
+id|wait_queue_head_t
+op_star
+)paren
+id|alloc_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+id|zone-&gt;wait_table_size
+op_star
+r_sizeof
+(paren
+id|wait_queue_head_t
+)paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|zone-&gt;wait_table_size
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|init_waitqueue_head
+c_func
+(paren
+id|zone-&gt;wait_table
+op_plus
+id|i
+)paren
+suffix:semicolon
+)brace
 id|pgdat-&gt;nr_zones
 op_assign
 id|j
@@ -3335,6 +3458,7 @@ c_func
 l_string|&quot;BUG: wrong zone alignment, it will crash&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Initially all pages are reserved - free ones are freed&n;&t;&t; * up by free_all_bootmem() once the early boot process is&n;&t;&t; * done. Non-atomic initialization, single-pass.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -3361,9 +3485,36 @@ id|offset
 op_plus
 id|i
 suffix:semicolon
-id|page-&gt;zone
-op_assign
-id|zone
+id|set_page_zone
+c_func
+(paren
+id|page
+comma
+id|nid
+op_star
+id|MAX_NR_ZONES
+op_plus
+id|j
+)paren
+suffix:semicolon
+id|init_page_count
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|__SetPageReserved
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|memlist_init
+c_func
+(paren
+op_amp
+id|page-&gt;list
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3372,14 +3523,16 @@ id|j
 op_ne
 id|ZONE_HIGHMEM
 )paren
+id|set_page_address
+c_func
+(paren
 id|page
-op_member_access_from_pointer
-r_virtual
-op_assign
+comma
 id|__va
 c_func
 (paren
 id|zone_start_paddr
+)paren
 )paren
 suffix:semicolon
 id|zone_start_paddr
