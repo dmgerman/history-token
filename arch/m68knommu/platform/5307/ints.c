@@ -54,7 +54,7 @@ id|NR_CPUS
 suffix:semicolon
 DECL|function|default_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|default_irq_handler
 c_func
 (paren
@@ -87,6 +87,9 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * void init_IRQ(void)&n; *&n; * Parameters:&t;None&n; *&n; * Returns:&t;Nothing&n; *&n; * This function should be called during kernel startup to initialize&n; * the IRQ handling routines.&n; */
 DECL|function|init_IRQ
@@ -275,7 +278,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -682,7 +685,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
