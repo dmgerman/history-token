@@ -6,6 +6,165 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 multiline_comment|/*&n; * Intel IO-APIC support for SMP and UP systems.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2000 Ingo Molnar&n; */
 macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+DECL|function|use_pci_vector
+r_static
+r_inline
+r_int
+id|use_pci_vector
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|disable_edge_ioapic_vector
+r_static
+r_inline
+r_void
+id|disable_edge_ioapic_vector
+c_func
+(paren
+r_int
+r_int
+id|vector
+)paren
+(brace
+)brace
+DECL|function|mask_and_ack_level_ioapic_vector
+r_static
+r_inline
+r_void
+id|mask_and_ack_level_ioapic_vector
+c_func
+(paren
+r_int
+r_int
+id|vector
+)paren
+(brace
+)brace
+DECL|function|end_edge_ioapic_vector
+r_static
+r_inline
+r_void
+id|end_edge_ioapic_vector
+(paren
+r_int
+r_int
+id|vector
+)paren
+(brace
+)brace
+DECL|macro|startup_level_ioapic
+mdefine_line|#define startup_level_ioapic&t;startup_level_ioapic_vector
+DECL|macro|shutdown_level_ioapic
+mdefine_line|#define shutdown_level_ioapic&t;mask_IO_APIC_vector
+DECL|macro|enable_level_ioapic
+mdefine_line|#define enable_level_ioapic&t;unmask_IO_APIC_vector
+DECL|macro|disable_level_ioapic
+mdefine_line|#define disable_level_ioapic&t;mask_IO_APIC_vector
+DECL|macro|mask_and_ack_level_ioapic
+mdefine_line|#define mask_and_ack_level_ioapic mask_and_ack_level_ioapic_vector
+DECL|macro|end_level_ioapic
+mdefine_line|#define end_level_ioapic&t;end_level_ioapic_vector
+DECL|macro|set_ioapic_affinity
+mdefine_line|#define set_ioapic_affinity&t;set_ioapic_affinity_vector
+DECL|macro|startup_edge_ioapic
+mdefine_line|#define startup_edge_ioapic &t;startup_edge_ioapic_vector
+DECL|macro|shutdown_edge_ioapic
+mdefine_line|#define shutdown_edge_ioapic &t;disable_edge_ioapic_vector
+DECL|macro|enable_edge_ioapic
+mdefine_line|#define enable_edge_ioapic &t;unmask_IO_APIC_vector
+DECL|macro|disable_edge_ioapic
+mdefine_line|#define disable_edge_ioapic &t;disable_edge_ioapic_vector
+DECL|macro|ack_edge_ioapic
+mdefine_line|#define ack_edge_ioapic &t;ack_edge_ioapic_vector
+DECL|macro|end_edge_ioapic
+mdefine_line|#define end_edge_ioapic &t;end_edge_ioapic_vector
+macro_line|#else
+DECL|function|use_pci_vector
+r_static
+r_inline
+r_int
+id|use_pci_vector
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|disable_edge_ioapic_irq
+r_static
+r_inline
+r_void
+id|disable_edge_ioapic_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+)brace
+DECL|function|mask_and_ack_level_ioapic_irq
+r_static
+r_inline
+r_void
+id|mask_and_ack_level_ioapic_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+)brace
+DECL|function|end_edge_ioapic_irq
+r_static
+r_inline
+r_void
+id|end_edge_ioapic_irq
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+)brace
+DECL|macro|startup_level_ioapic
+mdefine_line|#define startup_level_ioapic&t;startup_level_ioapic_irq
+DECL|macro|shutdown_level_ioapic
+mdefine_line|#define shutdown_level_ioapic&t;mask_IO_APIC_irq
+DECL|macro|enable_level_ioapic
+mdefine_line|#define enable_level_ioapic&t;unmask_IO_APIC_irq
+DECL|macro|disable_level_ioapic
+mdefine_line|#define disable_level_ioapic&t;mask_IO_APIC_irq
+DECL|macro|mask_and_ack_level_ioapic
+mdefine_line|#define mask_and_ack_level_ioapic mask_and_ack_level_ioapic_irq
+DECL|macro|end_level_ioapic
+mdefine_line|#define end_level_ioapic&t;end_level_ioapic_irq
+DECL|macro|set_ioapic_affinity
+mdefine_line|#define set_ioapic_affinity&t;set_ioapic_affinity_irq
+DECL|macro|startup_edge_ioapic
+mdefine_line|#define startup_edge_ioapic &t;startup_edge_ioapic_irq
+DECL|macro|shutdown_edge_ioapic
+mdefine_line|#define shutdown_edge_ioapic &t;disable_edge_ioapic_irq
+DECL|macro|enable_edge_ioapic
+mdefine_line|#define enable_edge_ioapic &t;unmask_IO_APIC_irq
+DECL|macro|disable_edge_ioapic
+mdefine_line|#define disable_edge_ioapic &t;disable_edge_ioapic_irq
+DECL|macro|ack_edge_ioapic
+mdefine_line|#define ack_edge_ioapic &t;ack_edge_ioapic_irq
+DECL|macro|end_edge_ioapic
+mdefine_line|#define end_edge_ioapic &t;end_edge_ioapic_irq
+macro_line|#endif
 DECL|macro|APIC_MISMATCH_DEBUG
 mdefine_line|#define APIC_MISMATCH_DEBUG
 DECL|macro|IO_APIC_BASE
@@ -576,84 +735,15 @@ macro_line|#else  /* !CONFIG_X86_IO_APIC */
 DECL|macro|io_apic_assign_pci_irqs
 mdefine_line|#define io_apic_assign_pci_irqs 0
 macro_line|#endif
-DECL|function|use_pci_vector
-r_static
-r_inline
+r_extern
 r_int
-id|use_pci_vector
+id|assign_irq_vector
 c_func
 (paren
-r_void
+r_int
+id|irq
 )paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
-)brace
-DECL|function|disable_edge_ioapic_irq
-r_static
-r_inline
-r_void
-id|disable_edge_ioapic_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-(brace
-)brace
-DECL|function|mask_and_ack_level_ioapic_irq
-r_static
-r_inline
-r_void
-id|mask_and_ack_level_ioapic_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-(brace
-)brace
-DECL|function|end_edge_ioapic_irq
-r_static
-r_inline
-r_void
-id|end_edge_ioapic_irq
-(paren
-r_int
-r_int
-id|irq
-)paren
-(brace
-)brace
-DECL|macro|startup_level_ioapic
-mdefine_line|#define startup_level_ioapic&t;startup_level_ioapic_irq
-DECL|macro|shutdown_level_ioapic
-mdefine_line|#define shutdown_level_ioapic&t;mask_IO_APIC_irq
-DECL|macro|enable_level_ioapic
-mdefine_line|#define enable_level_ioapic&t;unmask_IO_APIC_irq
-DECL|macro|disable_level_ioapic
-mdefine_line|#define disable_level_ioapic&t;mask_IO_APIC_irq
-DECL|macro|mask_and_ack_level_ioapic
-mdefine_line|#define mask_and_ack_level_ioapic mask_and_ack_level_ioapic_irq
-DECL|macro|end_level_ioapic
-mdefine_line|#define end_level_ioapic&t;end_level_ioapic_irq
-DECL|macro|set_ioapic_affinity
-mdefine_line|#define set_ioapic_affinity&t;set_ioapic_affinity_irq
-DECL|macro|startup_edge_ioapic
-mdefine_line|#define startup_edge_ioapic &t;startup_edge_ioapic_irq
-DECL|macro|shutdown_edge_ioapic
-mdefine_line|#define shutdown_edge_ioapic &t;disable_edge_ioapic_irq
-DECL|macro|enable_edge_ioapic
-mdefine_line|#define enable_edge_ioapic &t;unmask_IO_APIC_irq
-DECL|macro|disable_edge_ioapic
-mdefine_line|#define disable_edge_ioapic &t;disable_edge_ioapic_irq
-DECL|macro|ack_edge_ioapic
-mdefine_line|#define ack_edge_ioapic &t;ack_edge_ioapic_irq
-DECL|macro|end_edge_ioapic
-mdefine_line|#define end_edge_ioapic &t;end_edge_ioapic_irq
 r_void
 id|enable_NMI_through_LVT0
 (paren
