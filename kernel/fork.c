@@ -340,6 +340,16 @@ id|max_threads
 op_div
 l_int|2
 suffix:semicolon
+id|init_task.signal-&gt;rlim
+(braket
+id|RLIMIT_SIGPENDING
+)braket
+op_assign
+id|init_task.signal-&gt;rlim
+(braket
+id|RLIMIT_NPROC
+)braket
+suffix:semicolon
 )brace
 DECL|function|dup_task_struct
 r_static
