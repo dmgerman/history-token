@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/device.h&gt;&t;&t;/* for MODULE_ALIAS_CHARDEV_MAJOR */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irmod.h&gt;
@@ -5536,6 +5537,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|IRCOMM_TTY_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|IRCOMM_TTY_MAJOR
 )paren
 suffix:semicolon
 DECL|variable|ircomm_tty_init

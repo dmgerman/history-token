@@ -1335,11 +1335,6 @@ id|host
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* for Kernel 2.6 */
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0))
-DECL|macro|__devinitdata
-macro_line|# define __devinitdata /* */
-macro_line|#endif
 macro_line|#endif /* _NSP32_H */
 multiline_comment|/* end */
 eof

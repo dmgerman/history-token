@@ -1239,7 +1239,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/* This check is ONLY to check for arithmetic overflow&n;&t;   on integer(!) len. Not more! Real check will be made&n;&t;   in ip_build_xmit --ANK&n;&n;&t;   BTW socket.c -&gt; af_*.c -&gt; ... make multiple&n;&t;   invalid conversions size_t -&gt; int. We MUST repair it f.e.&n;&t;   by replacing all of them with size_t and revise all&n;&t;   the places sort of len += sizeof(struct iphdr)&n;&t;   If len was ULONG_MAX-10 it would be cathastrophe  --ANK&n;&t; */
 id|err
 op_assign
 op_minus

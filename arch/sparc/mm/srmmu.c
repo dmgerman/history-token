@@ -1707,7 +1707,7 @@ c_cond
 id|vaddr
 op_plus
 id|size
-op_ge
+OG
 id|srmmu_nocache_end
 )paren
 (brace
@@ -5431,10 +5431,10 @@ op_assign
 (paren
 id|start
 op_plus
-id|SRMMU_PMD_SIZE
+id|SRMMU_PMD_SIZE_SOFT
 )paren
 op_amp
-id|SRMMU_PMD_MASK
+id|SRMMU_PMD_MASK_SOFT
 suffix:semicolon
 )brace
 )brace
@@ -5623,10 +5623,10 @@ op_assign
 (paren
 id|start
 op_plus
-id|SRMMU_PMD_SIZE
+id|SRMMU_PMD_SIZE_SOFT
 )paren
 op_amp
-id|SRMMU_PMD_MASK
+id|SRMMU_PMD_MASK_SOFT
 suffix:semicolon
 )brace
 )brace

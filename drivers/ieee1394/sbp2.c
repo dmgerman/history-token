@@ -42,7 +42,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1082 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1096 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -2365,6 +2365,50 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Register our sbp2 status address space... */
+id|hpsb_register_addrspace
+c_func
+(paren
+op_amp
+id|sbp2_highlevel
+comma
+id|host
+comma
+op_amp
+id|sbp2_ops
+comma
+id|SBP2_STATUS_FIFO_ADDRESS
+comma
+id|SBP2_STATUS_FIFO_ADDRESS
+op_plus
+id|SBP2_STATUS_FIFO_ENTRY_TO_OFFSET
+c_func
+(paren
+id|SBP2SCSI_MAX_SCSI_IDS
+op_plus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Handle data movement if physical dma is not enabled/supported&n;&t; * on host controller */
+macro_line|#ifdef CONFIG_IEEE1394_SBP2_PHYS_DMA
+id|hpsb_register_addrspace
+c_func
+(paren
+op_amp
+id|sbp2_highlevel
+comma
+id|host
+comma
+op_amp
+id|sbp2_physdma_ops
+comma
+l_int|0x0ULL
+comma
+l_int|0xfffffffcULL
+)paren
+suffix:semicolon
+macro_line|#endif
 id|hi
 op_assign
 id|hpsb_create_hostinfo
@@ -10125,46 +10169,6 @@ op_amp
 id|sbp2_highlevel
 )paren
 suffix:semicolon
-multiline_comment|/* Register our sbp2 status address space... */
-id|hpsb_register_addrspace
-c_func
-(paren
-op_amp
-id|sbp2_highlevel
-comma
-op_amp
-id|sbp2_ops
-comma
-id|SBP2_STATUS_FIFO_ADDRESS
-comma
-id|SBP2_STATUS_FIFO_ADDRESS
-op_plus
-id|SBP2_STATUS_FIFO_ENTRY_TO_OFFSET
-c_func
-(paren
-id|SBP2SCSI_MAX_SCSI_IDS
-op_plus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Handle data movement if physical dma is not enabled/supported&n;&t; * on host controller */
-macro_line|#ifdef CONFIG_IEEE1394_SBP2_PHYS_DMA
-id|hpsb_register_addrspace
-c_func
-(paren
-op_amp
-id|sbp2_highlevel
-comma
-op_amp
-id|sbp2_physdma_ops
-comma
-l_int|0x0ULL
-comma
-l_int|0xfffffffcULL
-)paren
-suffix:semicolon
-macro_line|#endif
 id|hpsb_register_protocol
 c_func
 (paren

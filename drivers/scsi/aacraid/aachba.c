@@ -6391,6 +6391,9 @@ suffix:semicolon
 r_case
 id|DMA_NONE
 suffix:colon
+r_default
+suffix:colon
+multiline_comment|/* shuts up some versions of gcc */
 id|flag
 op_assign
 id|SRB_NoDataXfer

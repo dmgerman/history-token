@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * hd64572.h&t;Description of the Hitachi HD64572 (SCA-II), valid for &n; * &t;&t;CPU modes 0 &amp; 2.&n; *&n; * Author:&t;Ivan Passos &lt;ivan@cyclades.com&gt;&n; *&n; * Copyright:   (c) 2000-2001 Cyclades Corp.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; * $Log: hd64572.h,v $&n; * Revision 3.1  2001/06/15 12:41:10  regina&n; * upping major version number&n; *&n; * Revision 1.1.1.1  2001/06/13 20:24:49  daniela&n; * PC300 initial CVS version (3.4.0-pre1)&n; *&n; * Revision 1.0 2000/01/25 ivan&n; * Initial version.&n; *&n; */
-macro_line|#ifndef _HD64572_H
-DECL|macro|_HD64572_H
-mdefine_line|#define _HD64572_H
+macro_line|#ifndef __HD64572_H
+DECL|macro|__HD64572_H
+mdefine_line|#define __HD64572_H
 multiline_comment|/* Illegal Access Register */
 DECL|macro|ILAR
 mdefine_line|#define&t;ILAR&t;0x00
@@ -55,6 +55,10 @@ mdefine_line|#define IR0_DTX(val, chan)&t;((val)&lt;&lt;(4*(2*chan + 1)))&t;/* I
 DECL|macro|IR0_M
 mdefine_line|#define IR0_M(val, chan)&t;((val)&lt;&lt;(8*(chan)))&t;&t;/* Int MSCI */
 multiline_comment|/* MSCI Channel Registers */
+DECL|macro|MSCI0_OFFSET
+mdefine_line|#define MSCI0_OFFSET 0x00
+DECL|macro|MSCI1_OFFSET
+mdefine_line|#define MSCI1_OFFSET 0x80
 DECL|macro|MD0
 mdefine_line|#define MD0&t;0x138&t;/* Mode reg 0 */
 DECL|macro|MD1
@@ -148,6 +152,14 @@ mdefine_line|#define RNR&t;0x154&t;/* Rx DMA Request Ctl Reg */
 DECL|macro|RCR
 mdefine_line|#define RCR&t;0x156&t;/* Rx DMA Critical Request Reg */
 multiline_comment|/* Timer Registers */
+DECL|macro|TIMER0RX_OFFSET
+mdefine_line|#define TIMER0RX_OFFSET 0x00
+DECL|macro|TIMER0TX_OFFSET
+mdefine_line|#define TIMER0TX_OFFSET 0x10
+DECL|macro|TIMER1RX_OFFSET
+mdefine_line|#define TIMER1RX_OFFSET 0x20
+DECL|macro|TIMER1TX_OFFSET
+mdefine_line|#define TIMER1TX_OFFSET 0x30
 DECL|macro|TCNTL
 mdefine_line|#define TCNTL&t;0x200&t;/* Timer Upcounter L */
 DECL|macro|TCNTH
@@ -192,6 +204,14 @@ mdefine_line|#define DCR_RX(chan)&t;(0x58 + 2*chan)&t;/* DMA Command Reg (Rx) */
 DECL|macro|DCR_TX
 mdefine_line|#define DCR_TX(chan)&t;(0x59 + 2*chan)&t;/* DMA Command Reg (Tx) */
 multiline_comment|/* DMA Channel Registers */
+DECL|macro|DMAC0RX_OFFSET
+mdefine_line|#define DMAC0RX_OFFSET 0x00
+DECL|macro|DMAC0TX_OFFSET
+mdefine_line|#define DMAC0TX_OFFSET 0x20
+DECL|macro|DMAC1RX_OFFSET
+mdefine_line|#define DMAC1RX_OFFSET 0x40
+DECL|macro|DMAC1TX_OFFSET
+mdefine_line|#define DMAC1TX_OFFSET 0x60
 DECL|macro|DARL
 mdefine_line|#define DARL&t;0x80&t;/* Dest Addr Register L (single-block, RX only) */
 DECL|macro|DARH
@@ -281,7 +301,40 @@ DECL|typedef|pcsca_bd_t
 )brace
 id|pcsca_bd_t
 suffix:semicolon
-multiline_comment|/* &n;&t;Descriptor Status definitions:&n;&n;&t;Bit&t;Transmission&t;Reception&n;&n;&t;7&t;EOM&t;&t;EOM&n;&t;6&t;-&t;&t;Short Frame&n;&t;5&t;-&t;&t;Abort&n;&t;4&t;-&t;&t;Residual bit&n;&t;3&t;Underrun&t;Overrun&t;&n;&t;2&t;-&t;&t;CRC&n;&t;1&t;Ownership&t;Ownership&n;&t;0&t;EOT&t;&t;-&n;*/
+multiline_comment|/* Block Descriptor Structure */
+r_typedef
+r_struct
+(brace
+DECL|member|cp
+id|u32
+id|cp
+suffix:semicolon
+multiline_comment|/* pointer to next block descriptor */
+DECL|member|bp
+id|u32
+id|bp
+suffix:semicolon
+multiline_comment|/* buffer pointer */
+DECL|member|len
+id|u16
+id|len
+suffix:semicolon
+multiline_comment|/* data length */
+DECL|member|stat
+id|u8
+id|stat
+suffix:semicolon
+multiline_comment|/* status */
+DECL|member|unused
+id|u8
+id|unused
+suffix:semicolon
+multiline_comment|/* pads to 4-byte boundary */
+DECL|typedef|pkt_desc
+)brace
+id|pkt_desc
+suffix:semicolon
+multiline_comment|/*&n;&t;Descriptor Status definitions:&n;&n;&t;Bit&t;Transmission&t;Reception&n;&n;&t;7&t;EOM&t;&t;EOM&n;&t;6&t;-&t;&t;Short Frame&n;&t;5&t;-&t;&t;Abort&n;&t;4&t;-&t;&t;Residual bit&n;&t;3&t;Underrun&t;Overrun&t;&n;&t;2&t;-&t;&t;CRC&n;&t;1&t;Ownership&t;Ownership&n;&t;0&t;EOT&t;&t;-&n;*/
 DECL|macro|DST_EOT
 mdefine_line|#define DST_EOT&t;&t;0x01&t;/* End of transmit command */
 DECL|macro|DST_OSB
@@ -300,6 +353,31 @@ DECL|macro|DST_SHRT
 mdefine_line|#define DST_SHRT&t;0x40&t;/* Short Frame  */
 DECL|macro|DST_EOM
 mdefine_line|#define DST_EOM&t;&t;0x80&t;/* End of Message  */
+multiline_comment|/* Packet Descriptor Status bits */
+DECL|macro|ST_TX_EOM
+mdefine_line|#define ST_TX_EOM     0x80&t;/* End of frame */
+DECL|macro|ST_TX_UNDRRUN
+mdefine_line|#define ST_TX_UNDRRUN 0x08
+DECL|macro|ST_TX_OWNRSHP
+mdefine_line|#define ST_TX_OWNRSHP 0x02
+DECL|macro|ST_TX_EOT
+mdefine_line|#define ST_TX_EOT     0x01&t;/* End of transmition */
+DECL|macro|ST_RX_EOM
+mdefine_line|#define ST_RX_EOM     0x80&t;/* End of frame */
+DECL|macro|ST_RX_SHORT
+mdefine_line|#define ST_RX_SHORT   0x40&t;/* Short frame */
+DECL|macro|ST_RX_ABORT
+mdefine_line|#define ST_RX_ABORT   0x20&t;/* Abort */
+DECL|macro|ST_RX_RESBIT
+mdefine_line|#define ST_RX_RESBIT  0x10&t;/* Residual bit */
+DECL|macro|ST_RX_OVERRUN
+mdefine_line|#define ST_RX_OVERRUN 0x08&t;/* Overrun */
+DECL|macro|ST_RX_CRC
+mdefine_line|#define ST_RX_CRC     0x04&t;/* CRC */
+DECL|macro|ST_RX_OWNRSHP
+mdefine_line|#define ST_RX_OWNRSHP 0x02
+DECL|macro|ST_ERROR_MASK
+mdefine_line|#define ST_ERROR_MASK 0x7C
 multiline_comment|/* Status Counter Registers */
 DECL|macro|CMCR
 mdefine_line|#define CMCR&t;0x158&t;/* Counter Master Ctl Reg */
@@ -402,6 +480,18 @@ DECL|macro|MD0_BIT_SYNC
 mdefine_line|#define MD0_BIT_SYNC&t;0x80
 DECL|macro|MD0_TRANSP
 mdefine_line|#define MD0_TRANSP&t;0xc0
+DECL|macro|MD0_HDLC
+mdefine_line|#define MD0_HDLC        0x80&t;/* Bit-sync HDLC mode */
+DECL|macro|MD0_CRC_NONE
+mdefine_line|#define MD0_CRC_NONE&t;0x00
+DECL|macro|MD0_CRC_16_0
+mdefine_line|#define MD0_CRC_16_0&t;0x04
+DECL|macro|MD0_CRC_16
+mdefine_line|#define MD0_CRC_16&t;0x05
+DECL|macro|MD0_CRC_ITU32
+mdefine_line|#define MD0_CRC_ITU32&t;0x06
+DECL|macro|MD0_CRC_ITU
+mdefine_line|#define MD0_CRC_ITU&t;0x07
 DECL|macro|MD1_NOADDR
 mdefine_line|#define MD1_NOADDR&t;0x00
 DECL|macro|MD1_SADDR1
@@ -410,6 +500,16 @@ DECL|macro|MD1_SADDR2
 mdefine_line|#define MD1_SADDR2&t;0x80
 DECL|macro|MD1_DADDR
 mdefine_line|#define MD1_DADDR&t;0xc0
+DECL|macro|MD2_NRZI_IEEE
+mdefine_line|#define MD2_NRZI_IEEE&t;0x40
+DECL|macro|MD2_MANCHESTER
+mdefine_line|#define MD2_MANCHESTER&t;0x80
+DECL|macro|MD2_FM_MARK
+mdefine_line|#define MD2_FM_MARK&t;0xA0
+DECL|macro|MD2_FM_SPACE
+mdefine_line|#define MD2_FM_SPACE&t;0xC0
+DECL|macro|MD2_LOOPBACK
+mdefine_line|#define MD2_LOOPBACK&t;0x03&t;/* Local data Loopback */
 DECL|macro|MD2_F_DUPLEX
 mdefine_line|#define MD2_F_DUPLEX&t;0x00
 DECL|macro|MD2_AUTO_ECHO
@@ -452,6 +552,12 @@ DECL|macro|CTL_URSKP
 mdefine_line|#define CTL_URSKP&t;0x40
 DECL|macro|CTL_URCT
 mdefine_line|#define CTL_URCT&t;0x80
+DECL|macro|CTL_NORTS
+mdefine_line|#define CTL_NORTS&t;0x01
+DECL|macro|CTL_NODTR
+mdefine_line|#define CTL_NODTR&t;0x02
+DECL|macro|CTL_IDLE
+mdefine_line|#define CTL_IDLE&t;0x10
 DECL|macro|RXS_BR0
 mdefine_line|#define&t;RXS_BR0&t;&t;0x01
 DECL|macro|RXS_BR1
@@ -502,6 +608,16 @@ DECL|macro|EXS_TES1
 mdefine_line|#define&t;EXS_TES1&t;0x20
 DECL|macro|EXS_TES2
 mdefine_line|#define&t;EXS_TES2&t;0x40
+DECL|macro|CLK_BRG_MASK
+mdefine_line|#define CLK_BRG_MASK&t;0x0F
+DECL|macro|CLK_PIN_OUT
+mdefine_line|#define CLK_PIN_OUT&t;0x80
+DECL|macro|CLK_LINE
+mdefine_line|#define CLK_LINE    &t;0x00&t;/* clock line input */
+DECL|macro|CLK_BRG
+mdefine_line|#define CLK_BRG     &t;0x40&t;/* internal baud rate generator */
+DECL|macro|CLK_TX_RXCLK
+mdefine_line|#define CLK_TX_RXCLK&t;0x60&t;/* TX clock from RX clock */
 DECL|macro|CMD_RX_RST
 mdefine_line|#define CMD_RX_RST&t;0x11
 DECL|macro|CMD_RX_ENA
@@ -544,6 +660,12 @@ DECL|macro|CMD_SRCH_MODE
 mdefine_line|#define CMD_SRCH_MODE&t;0x31
 DECL|macro|CMD_NOP
 mdefine_line|#define CMD_NOP&t;&t;0x00
+DECL|macro|CMD_RESET
+mdefine_line|#define CMD_RESET&t;0x21
+DECL|macro|CMD_TX_ENABLE
+mdefine_line|#define CMD_TX_ENABLE&t;0x02
+DECL|macro|CMD_RX_ENABLE
+mdefine_line|#define CMD_RX_ENABLE&t;0x12
 DECL|macro|ST0_RXRDY
 mdefine_line|#define ST0_RXRDY&t;0x01
 DECL|macro|ST0_TXRDY
@@ -632,6 +754,10 @@ DECL|macro|IE0_RXINTA
 mdefine_line|#define IE0_RXINTA&t;0x40
 DECL|macro|IE0_TXINT
 mdefine_line|#define IE0_TXINT&t;0x80
+DECL|macro|IE0_UDRN
+mdefine_line|#define IE0_UDRN&t;0x00008000 /* TX underrun MSCI interrupt enable */
+DECL|macro|IE0_CDCD
+mdefine_line|#define IE0_CDCD&t;0x00000400 /* CD level change interrupt enable */
 DECL|macro|IE1_IDLD
 mdefine_line|#define IE1_IDLD&t;0x01
 DECL|macro|IE1_ABTD
@@ -718,6 +844,20 @@ DECL|macro|DIR_EOM
 mdefine_line|#define DIR_EOM&t;&t;0x40
 DECL|macro|DIR_EOT
 mdefine_line|#define DIR_EOT&t;&t;0x80
+DECL|macro|DIR_REFE
+mdefine_line|#define DIR_REFE&t;0x04
+DECL|macro|DIR_UDRFE
+mdefine_line|#define DIR_UDRFE&t;0x04
+DECL|macro|DIR_COAE
+mdefine_line|#define DIR_COAE&t;0x08
+DECL|macro|DIR_COFE
+mdefine_line|#define DIR_COFE&t;0x10
+DECL|macro|DIR_BOFE
+mdefine_line|#define DIR_BOFE&t;0x20
+DECL|macro|DIR_EOME
+mdefine_line|#define DIR_EOME&t;0x40
+DECL|macro|DIR_EOTE
+mdefine_line|#define DIR_EOTE&t;0x80
 DECL|macro|DMR_CNTE
 mdefine_line|#define DMR_CNTE&t;0x02
 DECL|macro|DMR_NF
@@ -726,10 +866,18 @@ DECL|macro|DMR_SEOME
 mdefine_line|#define DMR_SEOME&t;0x08
 DECL|macro|DMR_TMOD
 mdefine_line|#define DMR_TMOD&t;0x10
+DECL|macro|DMER_DME
+mdefine_line|#define DMER_DME        0x80&t;/* DMA Master Enable */
 DECL|macro|DCR_SW_ABT
 mdefine_line|#define DCR_SW_ABT&t;0x01
 DECL|macro|DCR_FCT_CLR
 mdefine_line|#define DCR_FCT_CLR&t;0x02
+DECL|macro|DCR_ABORT
+mdefine_line|#define DCR_ABORT&t;0x01
+DECL|macro|DCR_CLEAR_EOF
+mdefine_line|#define DCR_CLEAR_EOF&t;0x02
+DECL|macro|PCR_COTE
+mdefine_line|#define PCR_COTE&t;0x80
 DECL|macro|PCR_PR0
 mdefine_line|#define PCR_PR0&t;&t;0x01
 DECL|macro|PCR_PR1
@@ -744,5 +892,5 @@ DECL|macro|PCR_OSB
 mdefine_line|#define PCR_OSB&t;&t;0x40
 DECL|macro|PCR_BURST
 mdefine_line|#define PCR_BURST&t;0x80
-macro_line|#endif /* (_HD64572_H) */
+macro_line|#endif /* (__HD64572_H) */
 eof

@@ -4183,8 +4183,6 @@ id|err
 r_return
 id|err
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|fst_openport
 (paren
 id|dev_to_port
@@ -4233,8 +4231,6 @@ id|dev_to_hdlc
 id|dev
 )paren
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -1812,10 +1812,6 @@ r_volatile
 r_uint32
 id|hw_status_tail
 suffix:semicolon
-DECL|member|logical_drive_info
-id|IPS_LD_INFO
-id|logical_drive_info
-suffix:semicolon
 DECL|typedef|IPS_ADAPTER
 DECL|typedef|PIPS_ADAPTER
 )brace
@@ -3334,6 +3330,17 @@ op_star
 id|adapt
 suffix:semicolon
 multiline_comment|/* Adapter status area        */
+DECL|member|logical_drive_info
+id|IPS_LD_INFO
+op_star
+id|logical_drive_info
+suffix:semicolon
+multiline_comment|/* Adapter Logical Drive Info */
+DECL|member|logical_drive_info_dma_addr
+id|dma_addr_t
+id|logical_drive_info_dma_addr
+suffix:semicolon
+multiline_comment|/* Logical Drive Info DMA Address */
 DECL|member|enq
 id|IPS_ENQ
 op_star
@@ -3568,10 +3575,11 @@ DECL|member|scb_busaddr
 r_uint32
 id|scb_busaddr
 suffix:semicolon
-DECL|member|data_busaddr
+DECL|member|old_data_busaddr
 r_uint32
-id|data_busaddr
+id|old_data_busaddr
 suffix:semicolon
+singleline_comment|// Obsolete, but kept for old utility compatibility
 DECL|member|timeout
 r_uint32
 id|timeout
@@ -3634,6 +3642,10 @@ suffix:semicolon
 DECL|member|sg_count
 r_int
 id|sg_count
+suffix:semicolon
+DECL|member|data_busaddr
+id|dma_addr_t
+id|data_busaddr
 suffix:semicolon
 DECL|typedef|ips_scb_t
 )brace
@@ -3797,23 +3809,23 @@ multiline_comment|/* Do not modify the next line; it&squot;s what SED is looking
 multiline_comment|/* Version Info                                                                */
 multiline_comment|/*************************************************************************&n;*&n;* VERSION.H -- version numbers and copyright notices in various formats&n;*&n;*************************************************************************/
 DECL|macro|IPS_VER_MAJOR
-mdefine_line|#define IPS_VER_MAJOR 6
+mdefine_line|#define IPS_VER_MAJOR 7
 DECL|macro|IPS_VER_MAJOR_STRING
-mdefine_line|#define IPS_VER_MAJOR_STRING &quot;6&quot;
+mdefine_line|#define IPS_VER_MAJOR_STRING &quot;7&quot;
 DECL|macro|IPS_VER_MINOR
-mdefine_line|#define IPS_VER_MINOR 10
+mdefine_line|#define IPS_VER_MINOR 00
 DECL|macro|IPS_VER_MINOR_STRING
-mdefine_line|#define IPS_VER_MINOR_STRING &quot;10&quot;
+mdefine_line|#define IPS_VER_MINOR_STRING &quot;00&quot;
 DECL|macro|IPS_VER_BUILD
-mdefine_line|#define IPS_VER_BUILD 90
+mdefine_line|#define IPS_VER_BUILD 00
 DECL|macro|IPS_VER_BUILD_STRING
-mdefine_line|#define IPS_VER_BUILD_STRING &quot;90&quot;
+mdefine_line|#define IPS_VER_BUILD_STRING &quot;00&quot;
 DECL|macro|IPS_VER_STRING
-mdefine_line|#define IPS_VER_STRING &quot;6.10.90&quot;
+mdefine_line|#define IPS_VER_STRING &quot;7.00.00&quot;
 DECL|macro|IPS_RELEASE_ID
-mdefine_line|#define IPS_RELEASE_ID 0x00010000
+mdefine_line|#define IPS_RELEASE_ID 0x00010001
 DECL|macro|IPS_BUILD_IDENT
-mdefine_line|#define IPS_BUILD_IDENT 364
+mdefine_line|#define IPS_BUILD_IDENT 475
 DECL|macro|IPS_LEGALCOPYRIGHT_STRING
 mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003. All Rights Reserved.&quot;
 DECL|macro|IPS_ADAPTECCOPYRIGHT_STRING
@@ -3830,15 +3842,15 @@ mdefine_line|#define IPS_VER_NAVAJO &quot;2.88.13&quot;
 DECL|macro|IPS_VER_SERVERAID3
 mdefine_line|#define IPS_VER_SERVERAID3 &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4H
-mdefine_line|#define IPS_VER_SERVERAID4H &quot;6.10.24&quot;
+mdefine_line|#define IPS_VER_SERVERAID4H &quot;6.11.07&quot;
 DECL|macro|IPS_VER_SERVERAID4MLx
-mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;6.10.24&quot;
+mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;6.11.07&quot;
 DECL|macro|IPS_VER_SARASOTA
-mdefine_line|#define IPS_VER_SARASOTA &quot;6.10.24&quot;
+mdefine_line|#define IPS_VER_SARASOTA &quot;6.11.07&quot;
 DECL|macro|IPS_VER_MARCO
-mdefine_line|#define IPS_VER_MARCO &quot;6.10.24&quot;
+mdefine_line|#define IPS_VER_MARCO &quot;6.11.07&quot;
 DECL|macro|IPS_VER_SEBRING
-mdefine_line|#define IPS_VER_SEBRING &quot;6.10.24&quot;
+mdefine_line|#define IPS_VER_SEBRING &quot;6.11.07&quot;
 multiline_comment|/* Compatability IDs for various adapters */
 DECL|macro|IPS_COMPAT_UNKNOWN
 mdefine_line|#define IPS_COMPAT_UNKNOWN &quot;&quot;

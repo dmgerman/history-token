@@ -787,7 +787,7 @@ suffix:semicolon
 )brace
 r_else
 r_goto
-id|out_free_queue
+id|out_cleanup_slave
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are any same target siblings, add this to the&n;&t; * sibling list&n;&t; */
 id|spin_lock_irqsave
@@ -870,6 +870,21 @@ id|flags
 suffix:semicolon
 r_return
 id|sdev
+suffix:semicolon
+id|out_cleanup_slave
+suffix:colon
+r_if
+c_cond
+(paren
+id|shost-&gt;hostt-&gt;slave_destroy
+)paren
+id|shost-&gt;hostt
+op_member_access_from_pointer
+id|slave_destroy
+c_func
+(paren
+id|sdev
+)paren
 suffix:semicolon
 id|out_free_queue
 suffix:colon

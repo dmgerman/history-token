@@ -4481,6 +4481,9 @@ id|ahc-&gt;dev_softc
 op_ne
 l_int|NULL
 )paren
+r_if
+c_cond
+(paren
 id|ahc_pci_set_dma_mask
 c_func
 (paren
@@ -4488,7 +4491,21 @@ id|ahc-&gt;dev_softc
 comma
 l_int|0xFFFFFFFF
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+(paren
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
 op_star
 id|vaddr
 op_assign
@@ -4510,6 +4527,9 @@ id|ahc-&gt;dev_softc
 op_ne
 l_int|NULL
 )paren
+r_if
+c_cond
+(paren
 id|ahc_pci_set_dma_mask
 c_func
 (paren
@@ -4517,7 +4537,21 @@ id|ahc-&gt;dev_softc
 comma
 id|ahc-&gt;platform_data-&gt;hw_dma_mask
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+(paren
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
 macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
 multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessible via DMA by the controller.&n;&t; */
 id|map

@@ -28,14 +28,10 @@ DECL|macro|HOST_CTRL_INTE
 mdefine_line|#define &t;HOST_CTRL_INTE&t;(1&lt;&lt;2)
 DECL|macro|HOST_RAMPAGE
 mdefine_line|#define HOST_RAMPAGE&t;&t;8
-DECL|macro|RX_HALTED
-mdefine_line|#define RX_HALTED (1&lt;&lt;0)
-DECL|macro|TX_HALTED
-mdefine_line|#define TX_HALTED (1&lt;&lt;1)  
 DECL|macro|HALTED
-mdefine_line|#define HALTED (RX_HALTED | TX_HALTED)
+mdefine_line|#define HALTED 0
 DECL|macro|RUNNING
-mdefine_line|#define RUNNING 0
+mdefine_line|#define RUNNING 1
 DECL|struct|mc32_mailbox
 r_struct
 id|mc32_mailbox

@@ -1404,7 +1404,7 @@ comma
 id|bios
 suffix:semicolon
 r_int
-id|ok
+id|error
 op_assign
 op_minus
 id|ENODEV
@@ -1456,6 +1456,12 @@ r_goto
 id|out_disable_device
 suffix:semicolon
 )brace
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|port
 op_assign
 id|pci_resource_start
@@ -1473,7 +1479,7 @@ op_logical_neg
 id|request_region
 c_func
 (paren
-id|pHCB-&gt;HCS_Base
+id|port
 comma
 l_int|256
 comma
@@ -1485,15 +1491,14 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;inia100: io port 0x%x, is busy.&bslash;n&quot;
+l_string|&quot;inia100: io port 0x%lx, is busy.&bslash;n&quot;
 comma
-id|pHCB-&gt;HCS_Base
+id|port
 )paren
 suffix:semicolon
 r_goto
 id|out_disable_device
 suffix:semicolon
-multiline_comment|/* XXX: undo init_orchid() ?? */
 )brace
 multiline_comment|/* &lt;02&gt; read from base address + 0x50 offset to get the bios balue. */
 id|bios
@@ -1504,12 +1509,6 @@ c_func
 id|port
 comma
 l_int|0x50
-)paren
-suffix:semicolon
-id|pci_set_master
-c_func
-(paren
-id|pdev
 )paren
 suffix:semicolon
 id|shost
@@ -1742,6 +1741,8 @@ suffix:semicolon
 id|shost-&gt;irq
 op_assign
 id|pHCB-&gt;HCS_Intr
+op_assign
+id|pdev-&gt;irq
 suffix:semicolon
 id|shost-&gt;this_id
 op_assign
@@ -1753,12 +1754,12 @@ op_assign
 id|TOTAL_SG_ENTRY
 suffix:semicolon
 multiline_comment|/* Initial orc chip           */
-id|ok
+id|error
 op_assign
 id|request_irq
 c_func
 (paren
-id|pHCB-&gt;HCS_Intr
+id|pdev-&gt;irq
 comma
 id|inia100_intr
 comma
@@ -1772,7 +1773,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ok
+id|error
 OL
 l_int|0
 )paren
@@ -1783,7 +1784,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;inia100: unable to get irq %d&bslash;n&quot;
 comma
-id|pHCB-&gt;HCS_Intr
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 r_goto
@@ -1798,7 +1799,7 @@ comma
 id|shost
 )paren
 suffix:semicolon
-id|ok
+id|error
 op_assign
 id|scsi_add_host
 c_func
@@ -1812,8 +1813,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ok
+id|error
 )paren
 r_goto
 id|out_free_irq
@@ -1888,7 +1888,7 @@ suffix:colon
 id|release_region
 c_func
 (paren
-id|pHCB-&gt;HCS_Base
+id|port
 comma
 l_int|256
 )paren
@@ -1904,7 +1904,7 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
-id|ok
+id|error
 suffix:semicolon
 )brace
 DECL|function|inia100_remove_one

@@ -23,6 +23,12 @@ id|hpsb_address_ops
 op_star
 id|op
 suffix:semicolon
+DECL|member|host
+r_struct
+id|hpsb_host
+op_star
+id|host
+suffix:semicolon
 multiline_comment|/* first address handled and first address behind, quadlet aligned */
 DECL|member|start
 DECL|member|end
@@ -79,7 +85,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/* Host experienced bus reset with possible configuration changes.  Note&n;         * that this one may occur during interrupt/bottom half handling.  You&n;         * can not expect to be able to do stock hpsb_reads. */
+multiline_comment|/* Host experienced bus reset with possible configuration changes.&n;&t; * Note that this one may occur during interrupt/bottom half handling.&n;&t; * You can not expect to be able to do stock hpsb_reads. */
 DECL|member|host_reset
 r_void
 (paren
@@ -117,7 +123,7 @@ r_int
 id|length
 )paren
 suffix:semicolon
-multiline_comment|/* A write request was received on either the FCP_COMMAND (direction =&n;         * 0) or the FCP_RESPONSE (direction = 1) register.  The cts arg&n;         * contains the cts field (first byte of data).&n;         */
+multiline_comment|/* A write request was received on either the FCP_COMMAND (direction =&n;         * 0) or the FCP_RESPONSE (direction = 1) register.  The cts arg&n;         * contains the cts field (first byte of data). */
 DECL|member|fcp_request
 r_void
 (paren
@@ -147,10 +153,16 @@ r_int
 id|length
 )paren
 suffix:semicolon
+multiline_comment|/* These are initialized by the subsystem when the&n;&t; * hpsb_higlevel is registered. */
 DECL|member|hl_list
 r_struct
 id|list_head
 id|hl_list
+suffix:semicolon
+DECL|member|irq_list
+r_struct
+id|list_head
+id|irq_list
 suffix:semicolon
 DECL|member|addr_list
 r_struct
@@ -533,6 +545,11 @@ op_star
 id|hl
 comma
 r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+r_struct
 id|hpsb_address_ops
 op_star
 id|ops
@@ -552,6 +569,11 @@ r_struct
 id|hpsb_highlevel
 op_star
 id|hl
+comma
+r_struct
+id|hpsb_host
+op_star
+id|host
 comma
 id|u64
 id|start
@@ -744,7 +766,10 @@ r_void
 id|init_hpsb_highlevel
 c_func
 (paren
-r_void
+r_struct
+id|hpsb_host
+op_star
+id|host
 )paren
 suffix:semicolon
 macro_line|#endif /* IEEE1394_HIGHLEVEL_H */

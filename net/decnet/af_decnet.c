@@ -7740,6 +7740,7 @@ id|nskb
 )paren
 (brace
 r_int
+r_int
 id|chunk
 op_assign
 id|skb-&gt;len

@@ -2940,6 +2940,9 @@ id|sk_buff
 op_star
 id|tx_skb
 suffix:semicolon
+r_int
+id|transmission_time
+suffix:semicolon
 multiline_comment|/* Stop P timer */
 id|del_timer
 c_func
@@ -3119,25 +3122,64 @@ id|CMD_FRAME
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* How much time we took for transmission of all frames.&n;&t; * We don&squot;t know, so let assume we used the full window. Jean II */
+id|transmission_time
+op_assign
+id|self-&gt;final_timeout
+suffix:semicolon
+multiline_comment|/* Reset parameter so that we can fill next window */
 id|self-&gt;window
 op_assign
 id|self-&gt;window_size
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
+multiline_comment|/* Remove what we have not used. Just do a prorata of the&n;&t; * bytes left in window to window capacity.&n;&t; * See max_line_capacities[][] in qos.c for details. Jean II */
+id|transmission_time
+op_sub_assign
+(paren
+id|self-&gt;final_timeout
+op_star
+id|self-&gt;bytes_left
+op_div
+id|self-&gt;line_capacity
+)paren
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;%s() adjusting transmission_time : ft=%d, bl=%d, lc=%d -&gt; tt=%d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|self-&gt;final_timeout
+comma
+id|self-&gt;bytes_left
+comma
+id|self-&gt;line_capacity
+comma
+id|transmission_time
+)paren
+suffix:semicolon
 multiline_comment|/* We are allowed to transmit a maximum number of bytes again. */
 id|self-&gt;bytes_left
 op_assign
 id|self-&gt;line_capacity
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
+multiline_comment|/*&n;&t; * The network layer has a intermediate buffer between IrLAP&n;&t; * and the IrDA driver which can contain 8 frames. So, even&n;&t; * though IrLAP is currently sending the *last* frame of the&n;&t; * tx-window, the driver most likely has only just started&n;&t; * sending the *first* frame of the same tx-window.&n;&t; * I.e. we are always at the very begining of or Tx window.&n;&t; * Now, we are supposed to set the final timer from the end&n;&t; * of our tx-window to let the other peer reply. So, we need&n;&t; * to add extra time to compensate for the fact that we&n;&t; * are really at the start of tx-window, otherwise the final timer&n;&t; * might expire before he can answer...&n;&t; * Jean II&n;&t; */
 id|irlap_start_final_timer
 c_func
 (paren
 id|self
 comma
 id|self-&gt;final_timeout
+op_plus
+id|transmission_time
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The clever amongst you might ask why we do this adjustement&n;&t; * only here, and not in all the other cases in irlap_event.c.&n;&t; * In all those other case, we only send a very short management&n;&t; * frame (few bytes), so the adjustement would be lost in the&n;&t; * noise...&n;&t; * The exception of course is irlap_resend_rejected_frame().&n;&t; * Jean II */
 )brace
 multiline_comment|/*&n; * Function irlap_send_data_secondary_final (self, skb)&n; *&n; *    Send I(nformation) frame as secondary with final bit set&n; *&n; */
 DECL|function|irlap_send_data_secondary_final
@@ -3714,7 +3756,7 @@ id|skb-&gt;next
 suffix:semicolon
 )brace
 macro_line|#if 0 /* Not yet */
-multiline_comment|/*&n;&t; *  We can now fill the window with additinal data frames&n;&t; */
+multiline_comment|/*&n;&t; *  We can now fill the window with additional data frames&n;&t; */
 r_while
 c_loop
 (paren

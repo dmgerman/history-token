@@ -32,6 +32,18 @@ id|bootstr_len
 op_assign
 id|BARG_LEN
 comma
+macro_line|#ifdef CONFIG_CMDLINE
+dot
+id|bootstr_valid
+op_assign
+l_int|1
+comma
+dot
+id|bootstr_buf
+op_assign
+id|CONFIG_CMDLINE
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 r_char

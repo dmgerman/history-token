@@ -18,12 +18,12 @@ suffix:semicolon
 r_struct
 id|lap_cb
 suffix:semicolon
-multiline_comment|/* &n; *  Timeout definitions, some defined in IrLAP p. 92&n; */
+multiline_comment|/* &n; *  Timeout definitions, some defined in IrLAP 6.13.5 - p. 92&n; */
 DECL|macro|POLL_TIMEOUT
 mdefine_line|#define POLL_TIMEOUT        (450*HZ/1000)    /* Must never exceed 500 ms */
 DECL|macro|FINAL_TIMEOUT
 mdefine_line|#define FINAL_TIMEOUT       (500*HZ/1000)    /* Must never exceed 500 ms */
-multiline_comment|/* &n; *  Normally twice of p-timer. Note 3, IrLAP p. 60 suggests at least twice &n; *  duration of the P-timer.&n; */
+multiline_comment|/* &n; *  Normally twice of p-timer. Note 3, IrLAP 6.3.11.2 - p. 60 suggests&n; *  at least twice duration of the P-timer.&n; */
 DECL|macro|WD_TIMEOUT
 mdefine_line|#define WD_TIMEOUT          (POLL_TIMEOUT*2)
 DECL|macro|MEDIABUSY_TIMEOUT

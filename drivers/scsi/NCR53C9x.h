@@ -1553,7 +1553,6 @@ DECL|macro|for_each_esp
 mdefine_line|#define for_each_esp(esp) &bslash;&n;        for((esp) = espchain; (esp); (esp) = (esp)-&gt;next)
 multiline_comment|/* External functions */
 r_extern
-r_inline
 r_void
 id|esp_cmd
 c_func

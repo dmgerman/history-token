@@ -2897,9 +2897,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
 id|len
 OG
 id|sk-&gt;sk_sndbuf

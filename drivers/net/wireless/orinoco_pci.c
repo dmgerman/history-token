@@ -1035,6 +1035,17 @@ op_assign
 (brace
 l_int|0x1260
 comma
+l_int|0x3872
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+l_int|0x1260
+comma
 l_int|0x3873
 comma
 id|PCI_ANY_ID

@@ -241,6 +241,13 @@ op_amp
 id|h-&gt;pending_pkt_lock
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|h-&gt;addr_space
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

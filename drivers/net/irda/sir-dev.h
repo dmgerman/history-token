@@ -746,6 +746,10 @@ DECL|member|enable_rx
 id|atomic_t
 id|enable_rx
 suffix:semicolon
+DECL|member|raw_tx
+r_int
+id|raw_tx
+suffix:semicolon
 DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock

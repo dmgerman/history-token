@@ -802,7 +802,8 @@ id|skb
 suffix:semicolon
 r_int
 id|copied
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|BT_DBG

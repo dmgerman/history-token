@@ -1059,10 +1059,6 @@ id|tp-&gt;inq_byte7
 op_assign
 id|inq_byte7
 suffix:semicolon
-id|tp-&gt;inq_byte56
-op_assign
-id|inq_byte56
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

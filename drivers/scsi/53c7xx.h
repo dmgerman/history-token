@@ -2339,6 +2339,42 @@ mdefine_line|#define patch_dsa_32(dsa, symbol, word, value)&t;&t;&t;&t;&bslash;&
 multiline_comment|/* Paranoid people could use panic() here. */
 DECL|macro|FATAL
 mdefine_line|#define FATAL(host) shutdown((host));
+r_extern
+r_int
+id|ncr53c7xx_init
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+id|tpnt
+comma
+r_int
+id|board
+comma
+r_int
+id|chip
+comma
+r_int
+r_int
+id|base
+comma
+r_int
+id|io_port
+comma
+r_int
+id|irq
+comma
+r_int
+id|dma
+comma
+r_int
+r_int
+id|options
+comma
+r_int
+id|clock
+)paren
+suffix:semicolon
 macro_line|#endif /* NCR53c710_C */
 macro_line|#endif /* NCR53c710_H */
 eof

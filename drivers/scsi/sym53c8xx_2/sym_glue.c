@@ -8371,7 +8371,6 @@ multiline_comment|/*&n; *  Called before unloading the module.&n; *  Detach the 
 DECL|function|sym_detach
 r_static
 r_int
-id|__devexit
 id|sym_detach
 c_func
 (paren
