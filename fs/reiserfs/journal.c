@@ -13939,12 +13939,6 @@ c_cond
 op_logical_neg
 id|prepared
 op_logical_or
-id|buffer_locked
-c_func
-(paren
-id|bh
-)paren
-op_logical_or
 id|buffer_dirty
 c_func
 (paren
