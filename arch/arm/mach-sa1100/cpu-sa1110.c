@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/cpu-sa1110.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; *  $Id: cpu-sa1110.c,v 1.2 2001/07/24 20:25:25 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Note: there are two erratas that apply to the SA1110 here:&n; *  7 - SDRAM auto-power-up failure (rev A0)&n; * 13 - Corruption of internal register reads/writes following&n; *      SDRAM reads (rev A0, B0, B1)&n; *&n; * We ignore rev. A0 and B0 devices; I don&squot;t think they&squot;re worth supporting.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/cpu-sa1110.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; *  $Id: cpu-sa1110.c,v 1.3 2001/08/12 15:41:53 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Note: there are two erratas that apply to the SA1110 here:&n; *  7 - SDRAM auto-power-up failure (rev A0)&n; * 13 - Corruption of internal register reads/writes following&n; *      SDRAM reads (rev A0, B0, B1)&n; *&n; * We ignore rev. A0 and B0 devices; I don&squot;t think they&squot;re worth supporting.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -67,11 +67,12 @@ suffix:semicolon
 multiline_comment|/* refresh time for array (us)&t; */
 )brace
 suffix:semicolon
-DECL|variable|tc59sm716_cl2_params
+DECL|variable|__initdata
 r_static
 r_struct
 id|sdram_params
 id|tc59sm716_cl2_params
+id|__initdata
 op_assign
 (brace
 id|rows
@@ -104,11 +105,12 @@ l_int|2
 comma
 )brace
 suffix:semicolon
-DECL|variable|tc59sm716_cl3_params
+DECL|variable|__initdata
 r_static
 r_struct
 id|sdram_params
 id|tc59sm716_cl3_params
+id|__initdata
 op_assign
 (brace
 id|rows
@@ -140,6 +142,12 @@ suffix:colon
 l_int|3
 comma
 )brace
+suffix:semicolon
+DECL|variable|sdram_params
+r_static
+r_struct
+id|sdram_params
+id|sdram_params
 suffix:semicolon
 multiline_comment|/*&n; * Given a period in ns and frequency in khz, calculate the number of&n; * cycles of frequency in period.  Note that we round up to the next&n; * cycle, even if we are only slightly over.&n; */
 DECL|function|ns_to_cycles
@@ -752,8 +760,34 @@ op_star
 id|sdram
 op_assign
 op_amp
-id|tc59sm716_cl3_params
+id|sdram_params
 suffix:semicolon
+multiline_comment|/* were we initialised? */
+r_if
+c_cond
+(paren
+id|sdram-&gt;cas_latency
+op_eq
+l_int|0
+)paren
+(brace
+r_struct
+id|cpufreq_minmax
+op_star
+id|m
+op_assign
+id|data
+suffix:semicolon
+id|m-&gt;min_freq
+op_assign
+id|m-&gt;max_freq
+op_assign
+id|m-&gt;cur_freq
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -881,8 +915,7 @@ id|sdram_params
 op_star
 id|sdram
 op_assign
-op_amp
-id|tc59sm716_cl3_params
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -897,12 +930,72 @@ c_func
 )paren
 )paren
 suffix:semicolon
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_assabet
+c_func
+(paren
+)paren
+)paren
+id|sdram
+op_assign
+op_amp
+id|tc59sm716_cl3_params
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sdram
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;SDRAM: tck: %d trcd: %d trp: %d&quot;
+l_string|&quot; twr: %d refresh: %d cas_latency: %d&quot;
+comma
+id|sdram-&gt;tck
+comma
+id|sdram-&gt;trcd
+comma
+id|sdram-&gt;trp
+comma
+id|sdram-&gt;twr
+comma
+id|sdram-&gt;refresh
+comma
+id|sdram-&gt;cas_latency
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|sdram_params
+comma
+id|sdram
+comma
+r_sizeof
+(paren
+id|sdram_params
+)paren
+)paren
+suffix:semicolon
 id|sdram_update_timing
 c_func
 (paren
 id|cur_freq
 comma
-id|sdram
+op_amp
+id|sdram_params
 )paren
 suffix:semicolon
 id|sdram_update_refresh
@@ -910,9 +1003,11 @@ c_func
 (paren
 id|cur_freq
 comma
-id|sdram
+op_amp
+id|sdram_params
 )paren
 suffix:semicolon
+)brace
 r_return
 id|cpufreq_register_notifier
 c_func

@@ -321,7 +321,7 @@ r_void
 id|machine_restart
 c_func
 (paren
-r_char
+r_void
 op_star
 id|__unused
 )paren

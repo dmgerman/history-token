@@ -15,10 +15,6 @@ DECL|macro|DIVAS_IRQ_RESET
 mdefine_line|#define DIVAS_IRQ_RESET&t;&t;0xC18
 DECL|macro|DIVAS_IRQ_RESET_VAL
 mdefine_line|#define DIVAS_IRQ_RESET_VAL&t;0xFE
-DECL|macro|PCI_LATENCY
-mdefine_line|#define&t;PCI_LATENCY&t;PCI_LATENCY_TIMER
-DECL|macro|PCI_INTERRUPT
-mdefine_line|#define PCI_INTERRUPT&t;PCI_INTERRUPT_LINE
 DECL|macro|TEST_INT_DIVAS
 mdefine_line|#define TEST_INT_DIVAS&t;&t;0x11
 DECL|macro|TEST_INT_DIVAS_BRI
@@ -1933,9 +1929,6 @@ id|card_t
 op_star
 id|card
 suffix:semicolon
-id|byte
-id|b
-suffix:semicolon
 r_static
 id|boolean_t
 id|first_call
@@ -2238,26 +2231,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|b
-op_assign
-id|card-&gt;cfg.irq
-suffix:semicolon
-id|UxPciConfigWrite
-c_func
-(paren
-id|card-&gt;hw
-comma
-r_sizeof
-(paren
-id|b
-)paren
-comma
-id|PCI_INTERRUPT_LINE
-comma
-op_amp
-id|b
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2618,10 +2591,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|bzero
+id|memset
 c_func
 (paren
 id|card-&gt;e_tbl
+comma
+l_int|0
 comma
 r_sizeof
 (paren

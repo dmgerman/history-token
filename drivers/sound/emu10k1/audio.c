@@ -5603,7 +5603,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* wait for the tasklet (bottom-half) to finish */
-id|tasklet_unlock_wait
+id|tasklet_kill
 c_func
 (paren
 op_amp
@@ -5665,7 +5665,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|tasklet_unlock_wait
+id|tasklet_kill
 c_func
 (paren
 op_amp
@@ -6677,6 +6677,14 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wiinst
+)paren
+r_return
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -6805,6 +6813,14 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|woinst
+)paren
+r_return
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

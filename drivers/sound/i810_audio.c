@@ -6108,8 +6108,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|ret
-op_assign
+r_return
 op_minus
 id|EINVAL
 suffix:semicolon

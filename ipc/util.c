@@ -169,7 +169,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|size
+id|ids-&gt;size
 suffix:semicolon
 id|i
 op_increment

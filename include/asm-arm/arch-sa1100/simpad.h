@@ -57,9 +57,9 @@ mdefine_line|#define GPIO_UCB1300_IRQ&t;GPIO_GPIO (22)&t;/* UCB GPIO and touchsc
 DECL|macro|IRQ_GPIO_UCB1300_IRQ
 mdefine_line|#define IRQ_GPIO_UCB1300_IRQ IRQ_GPIO22
 DECL|macro|SA1100_UART1_EXT
-mdefine_line|#define SA1100_UART1_EXT &bslash;&n;  (struct huw_irq_desc){GPIO_UART1_CTS, IRQ_UART1_CTS, &bslash;&n;&t;&t;&t;GPIO_UART1_DCD, IRQ_UART1_DCD, &bslash;&n;&t;&t;&t;GPIO_UART1_DSR, IRQ_UART1_DSR}
+mdefine_line|#define SA1100_UART1_EXT &bslash;&n;  (struct huw_irq_desc){GPIO_UART1_CTS, IRQ_UART1_CTS, &bslash;&n;                        GPIO_UART1_DCD, IRQ_UART1_DCD, &bslash;&n;                        GPIO_UART1_DSR, IRQ_UART1_DSR}
 DECL|macro|SA1100_UART3_EXT
-mdefine_line|#define SA1100_UART3_EXT &bslash;&n;  (struct huw_irq_desc){GPIO_UART3_CTS, IRQ_UART3_CTS, &bslash;&n;&t;&t;&t;GPIO_UART3_DCD, IRQ_UART3_DCD, &bslash;&n;&t;&t;&t;GPIO_UART3_DSR, IRQ_UART3_DSR}
+mdefine_line|#define SA1100_UART3_EXT &bslash;&n;  (struct huw_irq_desc){GPIO_UART3_CTS, IRQ_UART3_CTS, &bslash;&n;                        GPIO_UART3_DCD, IRQ_UART3_DCD, &bslash;&n;                        GPIO_UART3_DSR, IRQ_UART3_DSR}
 multiline_comment|/*---  PCMCIA  ---*/
 DECL|macro|GPIO_CF_CD
 mdefine_line|#define GPIO_CF_CD              GPIO_GPIO24

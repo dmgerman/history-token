@@ -2882,7 +2882,7 @@ DECL|macro|LCCR1_HSW
 mdefine_line|#define LCCR1_HSW&t;Fld (6, 10)&t;/* Horizontal Synchronization      */
 multiline_comment|/* pulse Width - 1 [Tpix] (L_LCLK) */
 DECL|macro|LCCR1_HorSnchWdth
-mdefine_line|#define LCCR1_HorSnchWdth(Tpix) &t;/*  Horizontal Synchronization     */ &bslash;&n;&t;&t;&t;&t;&t;/*  pulse Width [1..64 Tpix]       */ &bslash;&n;&t;&t;&t;(((Tpix) - 1) &lt;&lt; FShft (LCCR1_HSW))
+mdefine_line|#define LCCR1_HorSnchWdth(Tpix) &t;/*  Horizontal Synchronization     */ &bslash;&n;                &t;        &t;/*  pulse Width [1..64 Tpix]       */ &bslash;&n;                &t;(((Tpix) - 1) &lt;&lt; FShft (LCCR1_HSW))
 DECL|macro|LCCR1_ELW
 mdefine_line|#define LCCR1_ELW&t;Fld (8, 16)&t;/* End-of-Line pixel clock Wait    */
 multiline_comment|/* count - 1 [Tpix]                */

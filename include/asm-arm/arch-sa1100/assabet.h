@@ -171,9 +171,9 @@ mdefine_line|#define NEPONSET_USAR_IRQ&t;MISC_IRQ1
 DECL|macro|NEPONSET_CPLD_BASE
 mdefine_line|#define NEPONSET_CPLD_BASE      (0x10000000)
 DECL|macro|Nep_p2v
-mdefine_line|#define Nep_p2v( x )            ((x) - NEPONSET_CPLD_BASE + 0xf0000000)
+mdefine_line|#define Nep_p2v( x )            ((x) - NEPONSET_CPLD_BASE + 0xf3000000)
 DECL|macro|Nep_v2p
-mdefine_line|#define Nep_v2p( x )            ((x) - 0xf0000000 + NEPONSET_CPLD_BASE)
+mdefine_line|#define Nep_v2p( x )            ((x) - 0xf3000000 + NEPONSET_CPLD_BASE)
 DECL|macro|_IRR
 mdefine_line|#define _IRR                    0x10000024      /* Interrupt Reason Register */
 DECL|macro|_AUD_CTL

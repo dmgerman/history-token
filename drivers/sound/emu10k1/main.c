@@ -1167,7 +1167,7 @@ op_star
 id|card
 )paren
 (brace
-id|tasklet_unlock_wait
+id|tasklet_kill
 c_func
 (paren
 op_amp
@@ -1180,7 +1180,7 @@ c_func
 id|card-&gt;mpuout
 )paren
 suffix:semicolon
-id|tasklet_unlock_wait
+id|tasklet_kill
 c_func
 (paren
 op_amp

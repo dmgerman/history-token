@@ -22,14 +22,6 @@ macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/fbcon-cfb24.h&gt;
 multiline_comment|/*&n; * Define this if you don&squot;t want RGB565, but RGB555 for 16bpp displays.&n; */
 multiline_comment|/*#define CFB16_IS_CFB15*/
-multiline_comment|/*&n; * This is the offset of the PCI space in physical memory&n; */
-macro_line|#ifdef CONFIG_FOOTBRIDGE
-DECL|macro|PCI_PHYS_OFFSET
-mdefine_line|#define PCI_PHYS_OFFSET&t;0x80000000
-macro_line|#else
-DECL|macro|PCI_PHYS_OFFSET
-mdefine_line|#define&t;PCI_PHYS_OFFSET&t;0x00000000
-macro_line|#endif
 DECL|variable|CyberRegs
 r_static
 r_char
@@ -4356,7 +4348,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-multiline_comment|/* just software blanking of screen */
+multiline_comment|/* soft blank */
 id|cyber2000_grphw
 c_func
 (paren
@@ -4374,7 +4366,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|256
+id|NR_PALETTE
 suffix:semicolon
 id|i
 op_increment
@@ -4417,7 +4409,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* case 0, or anything else: unblank */
+multiline_comment|/* unblank */
 id|cyber2000_grphw
 c_func
 (paren
@@ -4435,7 +4427,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|256
+id|NR_PALETTE
 suffix:semicolon
 id|i
 op_increment
@@ -5253,7 +5245,7 @@ comma
 l_int|0x3cf
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * MCLK on the NetWinder is fixed at 75MHz&n;&t; */
+multiline_comment|/*&n;&t; * MCLK on the NetWinder and the Shark is fixed at 75MHz&n;&t; */
 id|cfb-&gt;mclk_mult
 op_assign
 l_int|0xdb
@@ -5385,6 +5377,10 @@ r_struct
 id|pci_device_id
 op_star
 id|id
+comma
+r_char
+op_star
+id|name
 )paren
 (brace
 r_struct
@@ -5504,14 +5500,12 @@ l_int|3
 op_assign
 l_int|8
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|cfb-&gt;fb.fix.id
 comma
-l_string|&quot;CyberPro%4X&quot;
-comma
-id|id-&gt;device
+id|name
 )paren
 suffix:semicolon
 id|cfb-&gt;fb.fix.type
@@ -5717,41 +5711,11 @@ suffix:semicolon
 id|cfb-&gt;fb.fix.mmio_start
 op_assign
 id|mmio_base
-op_plus
-id|PCI_PHYS_OFFSET
 suffix:semicolon
 id|cfb-&gt;fb.fix.mmio_len
 op_assign
 id|MMIO_SIZE
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_mem_region
-c_func
-(paren
-id|mmio_base
-comma
-id|MMIO_SIZE
-comma
-l_string|&quot;memory mapped I/O&quot;
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: memory mapped IO in use&bslash;n&quot;
-comma
-id|cfb-&gt;fb.fix.id
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 id|CyberRegs
 op_assign
 id|ioremap
@@ -5818,16 +5782,6 @@ id|CyberRegs
 op_assign
 l_int|NULL
 suffix:semicolon
-id|release_mem_region
-c_func
-(paren
-id|cfb-&gt;fb.fix.mmio_start
-op_minus
-id|PCI_PHYS_OFFSET
-comma
-id|cfb-&gt;fb.fix.mmio_len
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Map in screen memory&n; */
@@ -5868,41 +5822,11 @@ suffix:semicolon
 id|cfb-&gt;fb.fix.smem_start
 op_assign
 id|smem_base
-op_plus
-id|PCI_PHYS_OFFSET
 suffix:semicolon
 id|cfb-&gt;fb.fix.smem_len
 op_assign
 id|smem_len
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_mem_region
-c_func
-(paren
-id|smem_base
-comma
-id|smem_len
-comma
-l_string|&quot;frame buffer&quot;
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: frame buffer in use&bslash;n&quot;
-comma
-id|cfb-&gt;fb.fix.id
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
 id|cfb-&gt;fb.screen_base
 op_assign
 id|ioremap
@@ -5968,16 +5892,6 @@ id|cfb-&gt;fb.screen_base
 op_assign
 l_int|NULL
 suffix:semicolon
-id|release_mem_region
-c_func
-(paren
-id|cfb-&gt;fb.fix.smem_start
-op_minus
-id|PCI_PHYS_OFFSET
-comma
-id|cfb-&gt;fb.fix.smem_len
-)paren
-suffix:semicolon
 )brace
 )brace
 r_static
@@ -6012,8 +5926,24 @@ suffix:semicolon
 id|u_long
 id|smem_size
 suffix:semicolon
+r_char
+id|name
+(braket
+l_int|16
+)braket
+suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;CyberPro%4X&quot;
+comma
+id|id-&gt;device
+)paren
 suffix:semicolon
 id|err
 op_assign
@@ -6021,6 +5951,24 @@ id|pci_enable_device
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
+id|err
+op_assign
+id|pci_request_regions
+c_func
+(paren
+id|dev
+comma
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -6044,6 +5992,8 @@ c_func
 id|dev
 comma
 id|id
+comma
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -6336,6 +6286,14 @@ c_func
 id|cfb
 )paren
 suffix:semicolon
+id|release
+suffix:colon
+id|pci_release_regions
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -6428,6 +6386,12 @@ id|int_cfb_info
 id|int_cfb_info
 op_assign
 l_int|NULL
+suffix:semicolon
+id|pci_release_regions
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 )brace

@@ -356,6 +356,8 @@ DECL|macro|VID_CTL_25MHz
 mdefine_line|#define VID_CTL_25MHz&t;&t;(1)
 DECL|macro|VID_CTL_36MHz
 mdefine_line|#define VID_CTL_36MHz&t;&t;(2)
+DECL|macro|VIDC_CTRL_CSYNC
+mdefine_line|#define VIDC_CTRL_CSYNC&t;&t;(1 &lt;&lt; 7)
 DECL|macro|VIDC_CTRL_INTERLACE
 mdefine_line|#define VIDC_CTRL_INTERLACE&t;(1 &lt;&lt; 6)
 DECL|macro|VIDC_CTRL_FIFO_0_4

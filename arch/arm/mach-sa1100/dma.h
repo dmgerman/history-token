@@ -83,11 +83,11 @@ op_star
 id|curr
 suffix:semicolon
 multiline_comment|/* buffer currently DMA&squot;ed */
-DECL|member|ready
+DECL|member|stopped
 r_int
-id|ready
+id|stopped
 suffix:semicolon
-multiline_comment|/* 1 if DMA can occur */
+multiline_comment|/* 1 if DMA is stalled */
 DECL|member|regs
 id|dma_regs_t
 op_star

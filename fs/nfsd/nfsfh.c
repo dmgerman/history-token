@@ -72,7 +72,7 @@ comma
 r_int
 id|len
 comma
-id|off_t
+id|loff_t
 id|pos
 comma
 id|ino_t

@@ -344,12 +344,12 @@ multiline_comment|/* Enable GPIO as interrupt line */
 id|GPDR
 op_and_assign
 op_complement
-id|GPIO_GPIO1
+id|LART_GPIO_IDE
 suffix:semicolon
 id|set_GPIO_IRQ_edge
 c_func
 (paren
-id|GPIO_GPIO1
+id|LART_GPIO_IDE
 comma
 id|GPIO_RISING_EDGE
 )paren
@@ -379,7 +379,7 @@ l_int|NULL
 suffix:semicolon
 id|hw.irq
 op_assign
-id|IRQ_GPIO1
+id|LART_IRQ_IDE
 suffix:semicolon
 id|ide_register_hw
 c_func

@@ -63,6 +63,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s wait until sent...&bslash;n&quot;
 comma
 id|tty_name
@@ -109,6 +110,7 @@ macro_line|#ifdef TTY_DEBUG_WAIT_UNTIL_SENT
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;waiting %s...(%d)&bslash;n&quot;
 comma
 id|tty_name
@@ -245,6 +247,7 @@ id|locked
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning?!? termios_locked is NULL.&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -42,14 +42,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|rio_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|CONSOLE_DEV
 mdefine_line|#define CONSOLE_DEV MKDEV(TTY_MAJOR,0)
 DECL|macro|TTY_DEV
@@ -338,7 +330,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|tub3270_initfunc
+id|tub3270_init
 c_func
 (paren
 r_void
@@ -1499,29 +1491,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-DECL|function|tty_lseek
-r_static
-id|loff_t
-id|tty_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|variable|tty_fops
 r_static
 r_struct
@@ -1531,7 +1500,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|tty_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -1572,7 +1541,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|tty_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -9261,6 +9230,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#elif defined(CONFIG_PARISC)
+id|pdc_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#elif defined(CONFIG_SERIAL)
 id|serial_console_init
 c_func
@@ -9297,15 +9272,15 @@ c_func
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_3215
-id|con3215_init
+macro_line|#ifdef CONFIG_TN3270_CONSOLE
+id|tub3270_con_init
 c_func
 (paren
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_3270_CONSOLE
-id|tub3270_con_init
+macro_line|#ifdef CONFIG_TN3215
+id|con3215_init
 c_func
 (paren
 )paren
@@ -9313,6 +9288,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HWC
 id|hwc_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_STDIO_CONSOLE
+id|stdio_console_init
 c_func
 (paren
 )paren
@@ -9681,13 +9663,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_RIO
-id|rio_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if (defined(CONFIG_8xx) || defined(CONFIG_8260))
 id|rs_8xx_init
 c_func
@@ -9721,14 +9696,14 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_3270
-id|tub3270_initfunc
+macro_line|#ifdef CONFIG_TN3270
+id|tub3270_init
 c_func
 (paren
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_3215
+macro_line|#ifdef CONFIG_TN3215
 id|tty3215_init
 c_func
 (paren

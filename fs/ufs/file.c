@@ -142,6 +142,10 @@ id|mmap
 suffix:colon
 id|generic_file_mmap
 comma
+id|open
+suffix:colon
+id|generic_file_open
+comma
 )brace
 suffix:semicolon
 DECL|variable|ufs_file_inode_operations

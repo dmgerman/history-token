@@ -239,6 +239,19 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* only on assabet */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|machine_is_assabet
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -348,7 +361,7 @@ op_assign
 (brace
 multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
 (brace
-l_int|0xf0000000
+l_int|0xf3000000
 comma
 l_int|0x10000000
 comma

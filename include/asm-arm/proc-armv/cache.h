@@ -147,15 +147,20 @@ mdefine_line|#define flush_tlb_page(_vma,_page)&t;&t;&t;&t;&t;&bslash;&n;&t;do {
 multiline_comment|/*&n; * if PG_dcache_dirty is set for the page, we need to ensure that any&n; * cache entries for the kernels virtual memory range are written&n; * back to the page.&n; */
 r_extern
 r_void
-id|check_pgcache_dirty
+id|update_mmu_cache
 c_func
 (paren
 r_struct
-id|page
+id|vm_area_struct
 op_star
-id|page
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
+id|pte_t
+id|pte
 )paren
 suffix:semicolon
-DECL|macro|update_mmu_cache
-mdefine_line|#define update_mmu_cache(vma,address,pte) check_pgcache_dirty(pte_page(pte))
 eof

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &quot;pcipool.h&quot;
 multiline_comment|/*&n; * simple buffer allocator for copying of unsafe to safe buffers&n; * uses __alloc/__free for actual buffers&n; * keeps track of safe buffers we&squot;ve allocated so we can recover the&n; * unsafe buffers.&n; */
 DECL|macro|MAX_SAFE
 mdefine_line|#define MAX_SAFE&t;32

@@ -56,6 +56,11 @@ r_void
 r_if
 c_cond
 (paren
+id|machine_is_assabet
+c_func
+(paren
+)paren
+op_logical_and
 id|machine_has_neponset
 c_func
 (paren
@@ -574,6 +579,8 @@ l_int|0
 )brace
 comma
 multiline_comment|/* MQ200 */
+multiline_comment|/*  f3000000 - neponset system registers */
+multiline_comment|/*  f4000000 - neponset SA1111 registers */
 id|LAST_DESC
 )brace
 suffix:semicolon

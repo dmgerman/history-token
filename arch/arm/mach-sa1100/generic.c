@@ -374,7 +374,7 @@ l_int|0xf8000000
 comma
 l_int|0x80000000
 comma
-l_int|0x02000000
+l_int|0x00100000
 comma
 id|DOMAIN_IO
 comma
@@ -393,7 +393,7 @@ l_int|0xfa000000
 comma
 l_int|0x90000000
 comma
-l_int|0x02000000
+l_int|0x00100000
 comma
 id|DOMAIN_IO
 comma
@@ -412,7 +412,7 @@ l_int|0xfc000000
 comma
 l_int|0xa0000000
 comma
-l_int|0x02000000
+l_int|0x00100000
 comma
 id|DOMAIN_IO
 comma
@@ -431,7 +431,7 @@ l_int|0xfe000000
 comma
 l_int|0xb0000000
 comma
-l_int|0x01f00000
+l_int|0x00200000
 comma
 id|DOMAIN_IO
 comma

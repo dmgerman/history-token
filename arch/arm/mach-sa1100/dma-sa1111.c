@@ -833,10 +833,6 @@ id|dma-&gt;spin_size
 op_assign
 l_int|0
 suffix:semicolon
-id|dma-&gt;ready
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

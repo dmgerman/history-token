@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
+DECL|macro|BLOCKS
+mdefine_line|#define BLOCKS(size) (((size) + 511) &gt;&gt; 9)
 multiline_comment|/* HUH? */
 DECL|function|hpfs_open
 r_int
@@ -151,14 +153,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|BLOCKS
+c_func
 (paren
-(paren
-id|inode-&gt;i_size
-op_plus
-l_int|511
-)paren
-op_rshift
-l_int|9
+id|inode-&gt;u.hpfs_i.mmu_private
 )paren
 op_le
 id|file_secno

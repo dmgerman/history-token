@@ -130,7 +130,7 @@ macro_line|#ifdef CONFIG_LEDS_CPU
 r_case
 id|led_idle_start
 suffix:colon
-multiline_comment|/* The LART people like the LED to be off when the&n;&t;&t;   system is idle... */
+multiline_comment|/* The LART people like the LED to be off when the&n;                   system is idle... */
 r_if
 c_cond
 (paren

@@ -727,7 +727,7 @@ suffix:semicolon
 )brace
 DECL|function|setup_erase_request
 r_static
-r_void
+r_int
 id|setup_erase_request
 c_func
 (paren
@@ -835,6 +835,15 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|busy
+)paren
+r_return
+id|CS_GENERAL_FAILURE
+suffix:semicolon
 id|busy-&gt;erase
 op_assign
 id|erase
@@ -878,6 +887,9 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+r_return
+id|CS_SUCCESS
+suffix:semicolon
 )brace
 multiline_comment|/* setup_erase_request */
 multiline_comment|/*======================================================================&n;&n;    MTD helper functions&n;&n;======================================================================*/
@@ -1236,7 +1248,7 @@ multiline_comment|/* MTDHelperEntry */
 multiline_comment|/*======================================================================&n;&n;    This stuff is used by Card Services to initialize the table of&n;    region info used for subsequent calls to GetFirstRegion and&n;    GetNextRegion.&n;    &n;======================================================================*/
 DECL|function|setup_regions
 r_static
-r_void
+r_int
 id|setup_regions
 c_func
 (paren
@@ -1317,6 +1329,7 @@ op_ne
 id|CS_SUCCESS
 )paren
 r_return
+id|CS_GENERAL_FAILURE
 suffix:semicolon
 id|code
 op_assign
@@ -1485,6 +1498,15 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|r
+)paren
+r_return
+id|CS_GENERAL_FAILURE
+suffix:semicolon
 id|r-&gt;region_magic
 op_assign
 id|REGION_MAGIC
@@ -1638,6 +1660,9 @@ dot
 id|size
 suffix:semicolon
 )brace
+r_return
+id|CS_SUCCESS
+suffix:semicolon
 )brace
 multiline_comment|/* setup_regions */
 multiline_comment|/*======================================================================&n;&n;    This is tricky.  When get_first_region() is called by Driver&n;    Services, we initialize the region info table in the socket&n;    structure.  When it is called by an MTD, we can just scan the&n;    table for matching entries.&n;    &n;======================================================================*/
@@ -1762,6 +1787,9 @@ id|SOCKET_REGION_INFO
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|setup_regions
 c_func
 (paren
@@ -1772,7 +1800,15 @@ comma
 op_amp
 id|s-&gt;c_region
 )paren
+op_ne
+id|CS_SUCCESS
+)paren
+r_return
+id|CS_GENERAL_FAILURE
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|setup_regions
 c_func
 (paren
@@ -1783,6 +1819,11 @@ comma
 op_amp
 id|s-&gt;a_region
 )paren
+op_ne
+id|CS_SUCCESS
+)paren
+r_return
+id|CS_GENERAL_FAILURE
 suffix:semicolon
 id|s-&gt;state
 op_or_assign
