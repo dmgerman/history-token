@@ -718,11 +718,6 @@ op_logical_and
 id|inode-&gt;i_op-&gt;setattr
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|error
 op_assign
 id|security_inode_setattr
@@ -732,7 +727,12 @@ id|dentry
 comma
 id|attr
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
 )paren
 id|error
 op_assign

@@ -347,10 +347,6 @@ id|PT_PTRACED
 r_goto
 id|bad
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_ptrace
@@ -360,7 +356,11 @@ id|current
 comma
 id|task
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_goto
 id|bad

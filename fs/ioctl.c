@@ -264,10 +264,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_ioctl
@@ -279,7 +275,11 @@ id|cmd
 comma
 id|arg
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 (brace
 id|fput

@@ -170,11 +170,6 @@ DECL|macro|GEM_MODULE_NAME
 mdefine_line|#define GEM_MODULE_NAME&t;&quot;gem&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX GEM_MODULE_NAME &quot;: &quot;
-multiline_comment|/* Until this gets merged from 2.4.x... */
-macro_line|#ifndef PCI_DEVICE_ID_APPLE_UNI_N_GMACP
-DECL|macro|PCI_DEVICE_ID_APPLE_UNI_N_GMACP
-mdefine_line|#define PCI_DEVICE_ID_APPLE_UNI_N_GMACP 0x0024
-macro_line|#endif
 DECL|variable|__devinitdata
 r_static
 r_struct

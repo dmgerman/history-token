@@ -13,6 +13,16 @@ DECL|macro|BUFFER_SIZE
 mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
 DECL|macro|NUM_ENVP
 mdefine_line|#define NUM_ENVP&t;32&t;/* number of env pointers */
+DECL|variable|prefix
+r_static
+r_char
+id|prefix
+(braket
+)braket
+op_assign
+l_string|&quot;devices&quot;
+suffix:semicolon
+multiline_comment|/* /sys/devices/... */
 DECL|function|do_hotplug
 r_static
 r_int
@@ -232,7 +242,7 @@ op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;root&quot;
+id|prefix
 )paren
 suffix:semicolon
 id|dev_path
@@ -279,7 +289,7 @@ id|strcpy
 (paren
 id|dev_path
 comma
-l_string|&quot;root&quot;
+id|prefix
 )paren
 suffix:semicolon
 id|fill_devpath

@@ -6882,6 +6882,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -8895,7 +8899,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: ERROR: Unsuported PPP Mode Selected&bslash;n&quot;
+l_string|&quot;%s: ERROR: Unsupported PPP Mode Selected&bslash;n&quot;
 comma
 id|card-&gt;devname
 )paren
@@ -10474,6 +10478,10 @@ c_func
 (paren
 id|new_skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 )brace
 r_else

@@ -51,10 +51,6 @@ id|file-&gt;f_op-&gt;readdir
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|res
 op_assign
 id|security_file_permission
@@ -64,7 +60,11 @@ id|file
 comma
 id|MAY_READ
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
 )paren
 r_goto
 id|out

@@ -4,7 +4,7 @@ multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ================
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;D-Link DL2000-based linux driver&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;v1.17&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;v1.17a&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;2002/10/04&quot;
 macro_line|#include &quot;dl2k.h&quot;
@@ -4981,9 +4981,11 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+macro_line|#ifdef MEM_MAPPING
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif
 r_int
 r_int
 id|stat_reg
@@ -5205,6 +5207,7 @@ op_plus
 id|FramesWEXDeferal
 )paren
 suffix:semicolon
+macro_line|#ifdef MEM_MAPPING
 r_for
 c_loop
 (paren
@@ -5227,6 +5230,7 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+macro_line|#endif
 id|readw
 (paren
 id|ioaddr
@@ -5283,9 +5287,11 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+macro_line|#ifdef MEM_MAPPING
 r_int
 id|i
 suffix:semicolon
+macro_line|#endif 
 multiline_comment|/* All statistics registers need to be acknowledged,&n;&t;   else statistic overflow could cause problems */
 id|readl
 (paren
@@ -5472,6 +5478,7 @@ op_plus
 id|FramesWEXDeferal
 )paren
 suffix:semicolon
+macro_line|#ifdef MEM_MAPPING
 r_for
 c_loop
 (paren
@@ -5494,6 +5501,7 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+macro_line|#endif 
 id|readw
 (paren
 id|ioaddr

@@ -910,10 +910,6 @@ op_increment
 r_int
 id|new_fd
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|err
 op_assign
 id|security_file_receive
@@ -924,7 +920,11 @@ id|fp
 id|i
 )braket
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_break
 suffix:semicolon

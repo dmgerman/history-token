@@ -4935,11 +4935,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-op_plus
-id|dev-&gt;if_port
-op_assign
-id|np-&gt;default_port
-suffix:semicolon
 multiline_comment|/* Reinit. Gross */
 multiline_comment|/* Reset the chip&squot;s Tx and Rx processes. */
 id|stop_nic_tx

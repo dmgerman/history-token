@@ -4548,6 +4548,11 @@ r_static
 r_int
 id|exit_code
 suffix:semicolon
+DECL|variable|unzip_error
+r_static
+r_int
+id|unzip_error
+suffix:semicolon
 DECL|variable|bytes_out
 r_static
 r_int
@@ -4714,7 +4719,7 @@ id|ptr
 )paren
 (brace
 )brace
-multiline_comment|/* ===========================================================================&n; * Fill the input buffer. This is called only when the buffer is empty&n; * and at least one byte is really needed.&n; */
+multiline_comment|/* ===========================================================================&n; * Fill the input buffer. This is called only when the buffer is empty&n; * and at least one byte is really needed.&n; * Returning -1 does not guarantee that gunzip() will ever return.&n; */
 DECL|function|fill_inbuf
 r_static
 r_int
@@ -4753,10 +4758,18 @@ id|insize
 op_eq
 l_int|0
 )paren
+(brace
+id|error
+c_func
+(paren
+l_string|&quot;RAMDISK: ran out of compressed data&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|inptr
 op_assign
 l_int|1
@@ -4787,6 +4800,8 @@ suffix:semicolon
 multiline_comment|/* temporary variable */
 r_int
 id|n
+comma
+id|written
 suffix:semicolon
 id|uch
 op_star
@@ -4794,6 +4809,8 @@ id|in
 comma
 id|ch
 suffix:semicolon
+id|written
+op_assign
 id|write
 c_func
 (paren
@@ -4804,6 +4821,36 @@ comma
 id|outcnt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|written
+op_ne
+id|outcnt
+op_logical_and
+id|unzip_error
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;RAMDISK: incomplete write (%d != %d) %d&bslash;n&quot;
+comma
+id|written
+comma
+id|outcnt
+comma
+id|bytes_out
+)paren
+suffix:semicolon
+id|unzip_error
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|in
 op_assign
 id|window
@@ -4890,6 +4937,10 @@ id|x
 )paren
 suffix:semicolon
 id|exit_code
+op_assign
+l_int|1
+suffix:semicolon
+id|unzip_error
 op_assign
 l_int|1
 suffix:semicolon
@@ -5027,6 +5078,15 @@ id|gunzip
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unzip_error
+)paren
+id|result
+op_assign
+l_int|1
 suffix:semicolon
 id|kfree
 c_func

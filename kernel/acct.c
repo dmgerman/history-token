@@ -630,10 +630,6 @@ id|EIO
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_acct
@@ -641,7 +637,11 @@ c_func
 (paren
 id|file
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_return
 id|error

@@ -1844,6 +1844,9 @@ op_logical_neg
 id|up-&gt;port.iobase
 op_logical_and
 op_logical_neg
+id|up-&gt;port.mapbase
+op_logical_and
+op_logical_neg
 id|up-&gt;port.membase
 )paren
 r_return
@@ -4136,6 +4139,8 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+l_int|0
 )paren
 id|serial_do_unlink
 c_func
@@ -6796,6 +6801,8 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+l_int|0
 )paren
 r_return
 id|ret
@@ -6861,6 +6868,8 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+l_int|0
 )paren
 (brace
 r_if
@@ -6976,6 +6985,8 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+l_int|0
 )paren
 r_return
 suffix:semicolon
@@ -6994,6 +7005,8 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+l_int|0
 )paren
 id|probeflags
 op_and_assign
@@ -8094,6 +8107,10 @@ id|req-&gt;flags
 op_or
 id|UPF_BOOT_AUTOCONF
 suffix:semicolon
+id|port.mapbase
+op_assign
+id|req-&gt;iomap_base
+suffix:semicolon
 id|port.line
 op_assign
 id|line
@@ -8348,10 +8365,9 @@ r_if
 c_cond
 (paren
 id|ret
+op_ge
+l_int|0
 )paren
-r_return
-id|ret
-suffix:semicolon
 id|serial8250_register_ports
 c_func
 (paren
@@ -8360,7 +8376,7 @@ id|serial8250_reg
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|serial8250_exit

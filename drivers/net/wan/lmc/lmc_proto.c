@@ -701,6 +701,10 @@ id|LMC_NET
 suffix:colon
 r_default
 suffix:colon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|netif_rx
 c_func
 (paren

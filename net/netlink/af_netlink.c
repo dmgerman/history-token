@@ -1125,12 +1125,14 @@ id|netlink_notify
 id|n
 op_assign
 (brace
+dot
 id|protocol
-suffix:colon
+op_assign
 id|sk-&gt;protocol
 comma
+dot
 id|pid
-suffix:colon
+op_assign
 id|nlk-&gt;pid
 )brace
 suffix:semicolon
