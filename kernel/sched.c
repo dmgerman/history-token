@@ -6388,6 +6388,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|master_migration_thread
+r_static
+id|__initdata
+r_int
+id|master_migration_thread
+suffix:semicolon
 DECL|function|migration_thread
 r_static
 r_int
@@ -6447,14 +6453,13 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: First CPU may not be zero, but this crap code&n;           vanishes with hotplug cpu patch anyway. --RR */
-multiline_comment|/*&n;&t; * The first migration thread is started on CPU #0. This one can&n;&t; * migrate the other migration threads to their destination CPUs.&n;&t; */
+multiline_comment|/*&n;&t; * The first migration thread is started on the boot CPU, it&n;&t; * migrates the other migration threads to their destination CPUs.&n;&t; */
 r_if
 c_cond
 (paren
 id|cpu
 op_ne
-l_int|0
+id|master_migration_thread
 )paren
 (brace
 r_while
@@ -6464,7 +6469,7 @@ op_logical_neg
 id|cpu_rq
 c_func
 (paren
-l_int|0
+id|master_migration_thread
 )paren
 op_member_access_from_pointer
 id|migration_thread
@@ -6788,11 +6793,18 @@ r_void
 r_int
 id|cpu
 suffix:semicolon
+id|master_migration_thread
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|current-&gt;cpus_allowed
 op_assign
 l_int|1UL
 op_lshift
-l_int|0
+id|master_migration_thread
 suffix:semicolon
 r_for
 c_loop
