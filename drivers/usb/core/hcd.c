@@ -4872,6 +4872,12 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* hc&squot;s root hub is removed later removed in hcd-&gt;stop() */
+id|down
+(paren
+op_amp
+id|hub-&gt;serialize
+)paren
+suffix:semicolon
 id|hub-&gt;state
 op_assign
 id|USB_STATE_NOTATTACHED
@@ -4909,6 +4915,12 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|up
+(paren
+op_amp
+id|hub-&gt;serialize
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_hc_died - report abnormal shutdown of a host controller (bus glue)&n; * @hcd: pointer to the HCD representing the controller&n; *&n; * This is called by bus glue to report a USB host controller that died&n; * while operations may still have been pending.  It&squot;s called automatically&n; * by the PCI glue, so only glue for non-PCI busses should need to call it. &n; */
 DECL|function|usb_hc_died

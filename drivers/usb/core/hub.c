@@ -3648,7 +3648,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * usb_disconnect - disconnect a device (usbcore-internal)&n; * @pdev: pointer to device being disconnected&n; * Context: !in_interrupt ()&n; *&n; * Something got disconnected. Get rid of it, and all of its children.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
+multiline_comment|/**&n; * usb_disconnect - disconnect a device (usbcore-internal)&n; * @pdev: pointer to device being disconnected&n; * Context: !in_interrupt ()&n; *&n; * Something got disconnected. Get rid of it, and all of its children.&n; * If *pdev is a normal device then the parent hub should be locked.&n; * If *pdev is a root hub then this routine will acquire the&n; * usb_bus_list_lock on behalf of the caller.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; */
 DECL|function|usb_disconnect
 r_void
 id|usb_disconnect
@@ -3668,16 +3668,6 @@ id|udev
 op_assign
 op_star
 id|pdev
-suffix:semicolon
-r_struct
-id|usb_bus
-op_star
-id|bus
-suffix:semicolon
-r_struct
-id|usb_operations
-op_star
-id|ops
 suffix:semicolon
 r_int
 id|i
@@ -3699,31 +3689,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|bus
-op_assign
-id|udev-&gt;bus
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bus
-)paren
-(brace
-id|pr_debug
-(paren
-l_string|&quot;%s nobus&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|ops
-op_assign
-id|bus-&gt;op
-suffix:semicolon
 multiline_comment|/* mark the device as inactive, so any further urb submissions for&n;&t; * this device will fail.&n;&t; */
 id|udev-&gt;state
 op_assign
@@ -3776,26 +3741,22 @@ id|i
 op_increment
 )paren
 (brace
-r_struct
-id|usb_device
-op_star
-op_star
-id|child
-op_assign
-id|udev-&gt;children
-op_plus
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-id|child
+id|udev-&gt;children
+(braket
+id|i
+)braket
 )paren
 id|usb_disconnect
 c_func
 (paren
-id|child
+op_amp
+id|udev-&gt;children
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -4108,7 +4069,7 @@ id|index
 (brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * usb_new_device - perform initial device setup (usbcore-internal)&n; * @dev: newly addressed device (in ADDRESS state)&n; *&n; * This is called with devices which have been enumerated, but not yet&n; * configured.  The device descriptor is available, but not descriptors&n; * for any device configuration.  The caller owns dev-&gt;serialize, and&n; * the device is not visible through sysfs or other filesystem code.&n; *&n; * Returns 0 for success (device is configured and listed, with its&n; * interfaces, in sysfs); else a negative errno value.  On error, one&n; * reference count to the device has been dropped.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only the hub driver should ever call this; root hub registration&n; * uses it only indirectly.&n; */
+multiline_comment|/*&n; * usb_new_device - perform initial device setup (usbcore-internal)&n; * @udev: newly addressed device (in ADDRESS state)&n; *&n; * This is called with devices which have been enumerated, but not yet&n; * configured.  The device descriptor is available, but not descriptors&n; * for any device configuration.  The caller must have locked udev and&n; * either the parent hub (if udev is a normal device) or else the&n; * usb_bus_list_lock (if udev is a root hub).  The parent&squot;s pointer to&n; * udev has already been installed, but udev is not yet visible through&n; * sysfs or other filesystem code.&n; *&n; * Returns 0 for success (device is configured and listed, with its&n; * interfaces, in sysfs); else a negative errno value.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only the hub driver should ever call this; root hub registration&n; * uses it indirectly.&n; */
 DECL|function|usb_new_device
 r_int
 id|usb_new_device
@@ -4308,6 +4269,12 @@ comma
 id|c
 comma
 id|err
+)paren
+suffix:semicolon
+id|usb_remove_sysfs_dev_files
+c_func
+(paren
+id|udev
 )paren
 suffix:semicolon
 id|device_del
@@ -6268,12 +6235,6 @@ id|udev-&gt;speed
 op_assign
 id|USB_SPEED_UNKNOWN
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|udev-&gt;serialize
-)paren
-suffix:semicolon
 multiline_comment|/* set the address */
 id|choose_address
 c_func
@@ -6504,7 +6465,13 @@ comma
 id|port
 )paren
 suffix:semicolon
-multiline_comment|/* Run it through the hoops (find a driver, etc) */
+multiline_comment|/* Store the parent&squot;s children[] pointer.  At this point&n;&t;&t; * udev becomes globally accessible, although presumably&n;&t;&t; * no one will look at it until hdev is unlocked.&n;&t;&t; */
+id|down
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+suffix:semicolon
 id|hdev-&gt;children
 (braket
 id|port
@@ -6512,12 +6479,31 @@ id|port
 op_assign
 id|udev
 suffix:semicolon
+multiline_comment|/* Run it through the hoops (find a driver, etc) */
 id|status
 op_assign
 id|usb_new_device
 c_func
 (paren
 id|udev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|hdev-&gt;children
+(braket
+id|port
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|udev-&gt;serialize
 )paren
 suffix:semicolon
 r_if
@@ -6555,23 +6541,10 @@ op_star
 id|status
 )paren
 suffix:semicolon
-id|up
-(paren
-op_amp
-id|udev-&gt;serialize
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 id|loop
 suffix:colon
-id|hdev-&gt;children
-(braket
-id|port
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 id|hub_port_disable
 c_func
 (paren
@@ -6604,12 +6577,6 @@ id|release_address
 c_func
 (paren
 id|udev
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|udev-&gt;serialize
 )paren
 suffix:semicolon
 id|usb_put_dev
