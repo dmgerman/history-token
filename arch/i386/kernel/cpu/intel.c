@@ -682,12 +682,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-id|get_model_name
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
