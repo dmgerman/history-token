@@ -328,6 +328,8 @@ id|now
 suffix:semicolon
 r_int
 id|diff
+comma
+id|delay
 suffix:semicolon
 id|PSCHED_GET_TIME
 c_func
@@ -393,18 +395,6 @@ r_goto
 id|retry
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_queue_stopped
-c_func
-(paren
-id|sch-&gt;dev
-)paren
-)paren
-(brace
-r_int
 id|delay
 op_assign
 id|PSCHED_US2JIFFIE
@@ -435,7 +425,6 @@ op_plus
 id|delay
 )paren
 suffix:semicolon
-)brace
 id|sch-&gt;flags
 op_or_assign
 id|TCQ_F_THROTTLED

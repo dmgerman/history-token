@@ -4498,17 +4498,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|netif_queue_stopped
-c_func
-(paren
-id|sch-&gt;dev
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|delay
 op_le
 l_int|0
