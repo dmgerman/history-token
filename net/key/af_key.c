@@ -9715,6 +9715,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|xp-&gt;selector.family
+op_assign
+id|xp-&gt;family
+suffix:semicolon
 id|xp-&gt;selector.prefixlen_s
 op_assign
 id|sa-&gt;sadb_address_prefixlen
