@@ -3211,6 +3211,7 @@ multiline_comment|/* EHCI spec says PCI is required. */
 multiline_comment|/* PCI driver selection metadata; PCI hotplugging uses this */
 DECL|variable|pci_ids
 r_static
+r_const
 r_struct
 id|pci_device_id
 id|pci_ids
@@ -3220,9 +3221,9 @@ op_assign
 (brace
 (brace
 multiline_comment|/* handle any USB 2.0 EHCI controller */
-dot
-r_class
-op_assign
+id|PCI_DEVICE_CLASS
+c_func
+(paren
 (paren
 (paren
 id|PCI_CLASS_SERIAL_USB
@@ -3233,11 +3234,9 @@ op_or
 l_int|0x20
 )paren
 comma
-dot
-id|class_mask
-op_assign
 op_complement
 l_int|0
+)paren
 comma
 dot
 id|driver_data
@@ -3248,27 +3247,6 @@ r_int
 )paren
 op_amp
 id|ehci_driver
-comma
-multiline_comment|/* no matter who makes it */
-dot
-id|vendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|device
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subvendor
-op_assign
-id|PCI_ANY_ID
-comma
-dot
-id|subdevice
-op_assign
-id|PCI_ANY_ID
 comma
 )brace
 comma
