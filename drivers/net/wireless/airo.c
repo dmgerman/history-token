@@ -28176,6 +28176,9 @@ id|local
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+r_int
+id|mode
+suffix:semicolon
 id|readConfigRid
 c_func
 (paren
@@ -28184,7 +28187,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_int
 id|mode
 op_assign
 id|local-&gt;config.powerSaveMode
