@@ -183,16 +183,16 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(mm, pmd, pte)&t;pmd_set(pmd, pte)
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) pmd_set(pmd, pte)
+DECL|macro|pmd_populate
+mdefine_line|#define pmd_populate(mm, pmd, pte_page) &bslash;&n;&t;pmd_populate_kernel(mm, pmd, page_address(pte_page))
 r_static
 r_inline
 id|pte_t
 op_star
-DECL|function|pte_alloc_one
-id|pte_alloc_one
+DECL|function|pte_alloc_one_kernel
+id|pte_alloc_one_kernel
 c_func
 (paren
 r_struct
@@ -271,13 +271,13 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|macro|pte_alloc_one_kernel
-mdefine_line|#define pte_alloc_one_kernel(mm, address)&t;pte_alloc_one((mm), (address))
+DECL|macro|pte_alloc_one
+mdefine_line|#define pte_alloc_one(mm, address) &bslash;&n;&t;virt_to_page(pte_alloc_one_kernel((mm), (address)))
 r_static
 r_inline
 r_void
-DECL|function|pte_free
-id|pte_free
+DECL|function|pte_free_kernel
+id|pte_free_kernel
 c_func
 (paren
 id|pte_t
@@ -296,8 +296,8 @@ id|pte
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pte_free_kernel
-mdefine_line|#define pte_free_kernel(pte)&t;pte_free(pte)
+DECL|macro|pte_free
+mdefine_line|#define pte_free(pte_page)&t;pte_free_kernel(page_address(pte_page))
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _PPC64_PGALLOC_H */
