@@ -3859,6 +3859,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Enter Loss state after F-RTO was applied. Dupack arrived after RTO,&n; * which indicates that we should follow the traditional RTO recovery,&n; * i.e. mark everything lost and do go-back-N retransmission.&n; */
 DECL|function|tcp_enter_frto_loss
+r_static
 r_void
 id|tcp_enter_frto_loss
 c_func
