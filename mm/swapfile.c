@@ -2568,6 +2568,8 @@ comma
 id|i
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if
