@@ -543,6 +543,12 @@ id|cell_timer
 suffix:semicolon
 multiline_comment|/* Garbage collection */
 macro_line|#endif&t;/* WAVELAN_ROAMING */
+DECL|member|mem
+r_void
+id|__iomem
+op_star
+id|mem
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**************************** PROTOTYPES ****************************/
