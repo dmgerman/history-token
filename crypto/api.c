@@ -203,7 +203,7 @@ id|flags
 )paren
 suffix:semicolon
 r_case
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 suffix:colon
 r_return
 id|crypto_init_compress_flags
@@ -272,7 +272,7 @@ id|tfm
 )paren
 suffix:semicolon
 r_case
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 suffix:colon
 r_return
 id|crypto_init_compress_ops
@@ -341,7 +341,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 suffix:colon
 id|crypto_exit_compress_ops
 c_func
@@ -429,20 +429,6 @@ l_int|NULL
 )paren
 r_goto
 id|out_put
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|tfm
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|tfm
-)paren
-)paren
 suffix:semicolon
 id|memset
 c_func
