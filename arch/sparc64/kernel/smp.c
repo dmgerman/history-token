@@ -423,14 +423,6 @@ r_int
 id|save_p
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|cpu_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|smp_callin
 r_void
 id|__init
@@ -514,11 +506,6 @@ c_func
 )paren
 suffix:semicolon
 id|__flush_tlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
-id|cpu_probe
 c_func
 (paren
 )paren
