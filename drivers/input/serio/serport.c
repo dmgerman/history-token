@@ -425,14 +425,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-r_if
-c_cond
-(paren
-id|serport-&gt;serio.dev
-)paren
-id|serport-&gt;serio.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp

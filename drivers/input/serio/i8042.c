@@ -1511,14 +1511,7 @@ id|I8042_STR_AUXDATA
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|i8042_aux_port.dev
-)paren
-id|i8042_aux_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -1536,8 +1529,6 @@ r_if
 c_cond
 (paren
 id|i8042_kbd_values.exists
-op_logical_and
-id|i8042_kbd_port.dev
 )paren
 (brace
 r_if
@@ -1569,9 +1560,7 @@ id|i8042_unxlate_seen
 )paren
 )paren
 (brace
-id|i8042_kbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -1612,9 +1601,7 @@ id|data
 suffix:semicolon
 )brace
 )brace
-id|i8042_kbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
