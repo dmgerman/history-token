@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
+macro_line|#include &lt;linux/module.h&gt;       /* for EXPORT_SYMBOL */
 macro_line|#include &lt;asm/fpswa.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
@@ -182,6 +183,13 @@ DECL|variable|fpswa_interface
 id|fpswa_interface_t
 op_star
 id|fpswa_interface
+suffix:semicolon
+DECL|variable|fpswa_interface
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fpswa_interface
+)paren
 suffix:semicolon
 r_void
 id|__init
