@@ -768,7 +768,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|addr-&gt;in6_u.u6_addr32
+id|addr-&gt;s6_addr32
 (braket
 l_int|3
 )braket
@@ -4774,7 +4774,7 @@ suffix:semicolon
 r_case
 id|ARPHRD_ARCNET
 suffix:colon
-multiline_comment|/* XXX: inherit EUI-64 fro mother interface -- yoshfuji */
+multiline_comment|/* XXX: inherit EUI-64 from other interface -- yoshfuji */
 r_if
 c_cond
 (paren

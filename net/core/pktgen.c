@@ -1,4 +1,4 @@
-multiline_comment|/* -*-linux-c-*-&n; * $Id: pktgen.c,v 1.8 2002/07/15 19:30:17 robert Exp $&n; * pktgen.c: Packet Generator for performance evaluation.&n; *&n; * Copyright 2001, 2002 by Robert Olsson &lt;robert.olsson@its.uu.se&gt;&n; *&t;&t;&t;&t; Uppsala University, Sweden&n; *&n; * A tool for loading the network with preconfigurated packets.&n; * The tool is implemented as a linux module.  Parameters are output &n; * device, IPG (interpacket gap), number of packets, and whether&n; * to use multiple SKBs or just the same one.&n; * pktgen uses the installed interface&squot;s output routine.&n; *&n; * Additional hacking by:&n; *&n; * Jens.Laas@data.slu.se&n; * Improved by ANK. 010120.&n; * Improved by ANK even more. 010212.&n; * MAC address typo fixed. 010417 --ro&n; * Integrated.  020301 --DaveM&n; * Added multiskb option 020301 --DaveM&n; * Scaling of results. 020417--sigurdur@linpro.no&n; * Significant re-work of the module:&n; *   *  Updated to support generation over multiple interfaces at once&n; *       by creating 32 /proc/net/pg* files.  Each file can be manipulated&n; *       individually.&n; *   *  Converted many counters to __u64 to allow longer runs.&n; *   *  Allow configuration of ranges, like min/max IP address, MACs,&n; *       and UDP-ports, for both source and destination, and can&n; *       set to use a random distribution or sequentially walk the range.&n; *   *  Can now change some values after starting.&n; *   *  Place 12-byte packet in UDP payload with magic number,&n; *       sequence number, and timestamp.  Will write receiver next.&n; *   *  The new changes seem to have a performance impact of around 1%,&n; *       as far as I can tell.&n; *   --Ben Greear &lt;greearb@candelatech.com&gt;&n; * Integrated to 2.5.x 021029 --Lucio Maciel (luciomaciel@zipmail.com.br)&n; *&n; * Renamed multiskb to clone_skb and cleaned up sending core for two distinct &n; * skb modes. A clone_skb=0 mode for Ben &quot;ranges&quot; work and a clone_skb != 0 &n; * as a &quot;fastpath&quot; with a configurable number of clones after alloc&squot;s.&n; *&n; * clone_skb=0 means all packets are allocated this also means ranges time &n; * stamps etc can be used. clone_skb=100 means 1 malloc is followed by 100 &n; * clones.&n; *&n; * Also moved to /proc/net/pktgen/ &n; * --ro &n; *&n; * Fix refcount off by one if first packet fails, potential null deref, &n; * memleak 030710- KJP&n; *&n; * See Documentation/networking/pktgen.txt for how to use this.&n; */
+multiline_comment|/* -*-linux-c-*-&n; * $Id: pktgen.c,v 1.8 2002/07/15 19:30:17 robert Exp $&n; * pktgen.c: Packet Generator for performance evaluation.&n; *&n; * Copyright 2001, 2002 by Robert Olsson &lt;robert.olsson@its.uu.se&gt;&n; *&t;&t;&t;&t; Uppsala University, Sweden&n; *&n; * A tool for loading the network with preconfigurated packets.&n; * The tool is implemented as a linux module.  Parameters are output &n; * device, IPG (interpacket gap), number of packets, and whether&n; * to use multiple SKBs or just the same one.&n; * pktgen uses the installed interface&squot;s output routine.&n; *&n; * Additional hacking by:&n; *&n; * Jens.Laas@data.slu.se&n; * Improved by ANK. 010120.&n; * Improved by ANK even more. 010212.&n; * MAC address typo fixed. 010417 --ro&n; * Integrated.  020301 --DaveM&n; * Added multiskb option 020301 --DaveM&n; * Scaling of results. 020417--sigurdur@linpro.no&n; * Significant re-work of the module:&n; *   *  Updated to support generation over multiple interfaces at once&n; *       by creating 32 /proc/net/pg* files.  Each file can be manipulated&n; *       individually.&n; *   *  Converted many counters to __u64 to allow longer runs.&n; *   *  Allow configuration of ranges, like min/max IP address, MACs,&n; *       and UDP-ports, for both source and destination, and can&n; *       set to use a random distribution or sequentially walk the range.&n; *   *  Can now change some values after starting.&n; *   *  Place 12-byte packet in UDP payload with magic number,&n; *       sequence number, and timestamp.  Will write receiver next.&n; *   *  The new changes seem to have a performance impact of around 1%,&n; *       as far as I can tell.&n; *   --Ben Greear &lt;greearb@candelatech.com&gt;&n; * Integrated to 2.5.x 021029 --Lucio Maciel (luciomaciel@zipmail.com.br)&n; *&n; * Renamed multiskb to clone_skb and cleaned up sending core for two distinct &n; * skb modes. A clone_skb=0 mode for Ben &quot;ranges&quot; work and a clone_skb != 0 &n; * as a &quot;fastpath&quot; with a configurable number of clones after alloc&squot;s.&n; *&n; * clone_skb=0 means all packets are allocated this also means ranges time &n; * stamps etc can be used. clone_skb=100 means 1 malloc is followed by 100 &n; * clones.&n; *&n; * Also moved to /proc/net/pktgen/ &n; * --ro &n; *&n; * Fix refcount off by one if first packet fails, potential null deref, &n; * memleak 030710- KJP&n; *&n; * Fixed unaligned access on IA-64 Grant Grundler &lt;grundler@parisc-linux.org&gt;&n; *&n; * See Documentation/networking/pktgen.txt for how to use this.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,7 +32,7 @@ macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|cycles
 mdefine_line|#define cycles()&t;((u32)get_cycles())
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;pktgen version 1.31&quot;
+mdefine_line|#define VERSION &quot;pktgen version 1.32&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -321,10 +321,13 @@ DECL|member|seq_num
 id|__u32
 id|seq_num
 suffix:semicolon
-DECL|member|timestamp
-r_struct
-id|timeval
-id|timestamp
+DECL|member|tv_sec
+id|__u32
+id|tv_sec
+suffix:semicolon
+DECL|member|tv_usec
+id|__u32
+id|tv_usec
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2412,6 +2415,10 @@ c_cond
 id|pgh
 )paren
 (brace
+r_struct
+id|timeval
+id|timestamp
+suffix:semicolon
 id|pgh-&gt;pgh_magic
 op_assign
 id|htonl
@@ -2420,37 +2427,35 @@ c_func
 id|PKTGEN_MAGIC
 )paren
 suffix:semicolon
-id|do_gettimeofday
-c_func
-(paren
-op_amp
-(paren
-id|pgh-&gt;timestamp
-)paren
-)paren
-suffix:semicolon
-id|pgh-&gt;timestamp.tv_usec
-op_assign
-id|htonl
-c_func
-(paren
-id|pgh-&gt;timestamp.tv_usec
-)paren
-suffix:semicolon
-id|pgh-&gt;timestamp.tv_sec
-op_assign
-id|htonl
-c_func
-(paren
-id|pgh-&gt;timestamp.tv_sec
-)paren
-suffix:semicolon
 id|pgh-&gt;seq_num
 op_assign
 id|htonl
 c_func
 (paren
 id|info-&gt;seq_num
+)paren
+suffix:semicolon
+id|do_gettimeofday
+c_func
+(paren
+op_amp
+id|timestamp
+)paren
+suffix:semicolon
+id|pgh-&gt;tv_sec
+op_assign
+id|htonl
+c_func
+(paren
+id|timestamp.tv_sec
+)paren
+suffix:semicolon
+id|pgh-&gt;tv_usec
+op_assign
+id|htonl
+c_func
+(paren
+id|timestamp.tv_usec
 )paren
 suffix:semicolon
 )brace
