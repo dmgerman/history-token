@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  This program is free software; you can redistribute i
 macro_line|#ifndef __SOUND_AU88X0_H
 DECL|macro|__SOUND_AU88X0_H
 mdefine_line|#define __SOUND_AU88X0_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -12,6 +13,7 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
+macro_line|#endif
 macro_line|#ifndef CHIP_AU8820
 macro_line|#include &quot;au88x0_eq.h&quot;
 macro_line|#include &quot;au88x0_a3d.h&quot;
@@ -68,23 +70,23 @@ DECL|macro|IRQ_MODEM
 mdefine_line|#define IRQ_MODEM&t;0x4000
 multiline_comment|/* ADB Resource */
 DECL|macro|VORTEX_RESOURCE_DMA
-mdefine_line|#define VORTEX_RESOURCE_DMA&t;&t;0x00000000
+mdefine_line|#define VORTEX_RESOURCE_DMA&t;0x00000000
 DECL|macro|VORTEX_RESOURCE_SRC
-mdefine_line|#define VORTEX_RESOURCE_SRC&t;&t;0x00000001
+mdefine_line|#define VORTEX_RESOURCE_SRC&t;0x00000001
 DECL|macro|VORTEX_RESOURCE_MIXIN
 mdefine_line|#define VORTEX_RESOURCE_MIXIN&t;0x00000002
 DECL|macro|VORTEX_RESOURCE_MIXOUT
 mdefine_line|#define VORTEX_RESOURCE_MIXOUT&t;0x00000003
 DECL|macro|VORTEX_RESOURCE_A3D
-mdefine_line|#define VORTEX_RESOURCE_A3D&t;&t;0x00000004
+mdefine_line|#define VORTEX_RESOURCE_A3D&t;0x00000004
 DECL|macro|VORTEX_RESOURCE_LAST
 mdefine_line|#define VORTEX_RESOURCE_LAST&t;0x00000005
 multiline_comment|/* Check for SDAC bit in &quot;Extended audio ID&quot; AC97 register */
 DECL|macro|VORTEX_IS_QUAD
-mdefine_line|#define VORTEX_IS_QUAD(x) ((x-&gt;codec == NULL) ?  0 : (x-&gt;codec-&gt;ext_id|0x80))
+mdefine_line|#define VORTEX_IS_QUAD(x) ((x-&gt;codec == NULL) ?  0 : (x-&gt;codec-&gt;ext_id&amp;0x80))
 multiline_comment|/* Check if chip has bug. */
 DECL|macro|IS_BAD_CHIP
-mdefine_line|#define IS_BAD_CHIP(x) (&bslash;&n;&t;(x-&gt;rev &lt; 3 &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX_1) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX_2) || &bslash;&n;&t;(x-&gt;rev &lt; 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_ADVANTAGE))
+mdefine_line|#define IS_BAD_CHIP(x) (&bslash;&n;&t;(x-&gt;rev == 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX_2) || &bslash;&n;&t;(x-&gt;rev == 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_ADVANTAGE))
 multiline_comment|/* PCM devices */
 DECL|macro|VORTEX_PCM_ADB
 mdefine_line|#define VORTEX_PCM_ADB&t;&t;0
