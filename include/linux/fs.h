@@ -4922,7 +4922,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* fs/devices.c */
+multiline_comment|/* fs/char_dev.c */
 r_extern
 r_int
 id|register_chrdev
@@ -4967,6 +4967,7 @@ id|file
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* fs/block_dev.c */
 r_extern
 r_const
 r_char
@@ -5000,6 +5001,37 @@ id|bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|block_device
+op_star
+id|open_bdev_excl
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|close_bdev_excl
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 r_extern
 r_const
 r_char
