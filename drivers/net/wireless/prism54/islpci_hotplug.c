@@ -4,13 +4,14 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt; /* For __init, __exit */
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;islpci_dev.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;&t;&t;/* for pc_debug */
 macro_line|#include &quot;isl_oid.h&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;prism54&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.2&quot;
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -4,14 +4,6 @@ DECL|macro|_ISL_38XX_H
 mdefine_line|#define _ISL_38XX_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,75))
-macro_line|#include &lt;linux/device.h&gt;
-DECL|macro|_REQ_FW_DEV_T
-macro_line|# define _REQ_FW_DEV_T struct device *
-macro_line|#else
-DECL|macro|_REQ_FW_DEV_T
-macro_line|# define _REQ_FW_DEV_T char *
-macro_line|#endif
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|ISL38XX_CB_RX_QSIZE
 mdefine_line|#define ISL38XX_CB_RX_QSIZE                     8
@@ -355,21 +347,6 @@ r_void
 id|isl38xx_interface_reset
 c_func
 (paren
-r_void
-op_star
-comma
-id|dma_addr_t
-)paren
-suffix:semicolon
-r_int
-id|isl38xx_upload_firmware
-c_func
-(paren
-r_char
-op_star
-comma
-id|_REQ_FW_DEV_T
-comma
 r_void
 op_star
 comma

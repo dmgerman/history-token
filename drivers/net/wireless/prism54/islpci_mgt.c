@@ -3,10 +3,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &quot;prismcompat.h&quot;
 macro_line|#include &quot;isl_38xx.h&quot;
 macro_line|#include &quot;islpci_mgt.h&quot;
 macro_line|#include &quot;isl_oid.h&quot;&t;&t;/* additional types and defs for isl38xx fw */
@@ -439,7 +439,7 @@ suffix:semicolon
 id|curr
 op_increment
 suffix:semicolon
-multiline_comment|/* The fragment address in the control block must have&n;                 * been written before announcing the frame buffer to&n;                 * device */
+multiline_comment|/* The fragment address in the control block must have&n;&t;&t; * been written before announcing the frame buffer to&n;&t;&t; * device */
 id|wmb
 c_func
 (paren
@@ -950,7 +950,7 @@ l_string|&quot;islpci_mgt_receive &bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Only once per interrupt, determine fragment range to&n;         * process.  This avoids an endless loop (i.e. lockup) if&n;         * frames come in faster than we can process them. */
+multiline_comment|/* Only once per interrupt, determine fragment range to&n;&t; * process.  This avoids an endless loop (i.e. lockup) if&n;&t; * frames come in faster than we can process them. */
 id|curr_frag
 op_assign
 id|le32_to_cpu
@@ -1012,7 +1012,7 @@ id|islpci_mgmtframe
 op_star
 id|frame
 suffix:semicolon
-multiline_comment|/* I have no idea (and no documentation) if flags != 0&n;                 * is possible.  Drop the frame, reuse the buffer. */
+multiline_comment|/* I have no idea (and no documentation) if flags != 0&n;&t;&t; * is possible.  Drop the frame, reuse the buffer. */
 r_if
 c_cond
 (paren
@@ -1067,7 +1067,7 @@ dot
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                 * We appear to have no way to tell the device the&n;                 * size of a receive buffer.  Thus, if this check&n;                 * triggers, we likely have kernel heap corruption. */
+multiline_comment|/*&n;&t;&t; * We appear to have no way to tell the device the&n;&t;&t; * size of a receive buffer.  Thus, if this check&n;&t;&t; * triggers, we likely have kernel heap corruption. */
 r_if
 c_cond
 (paren
@@ -1080,7 +1080,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Bogus packet size of %d (%#x).&bslash;&n;n&quot;
+l_string|&quot;%s: Bogus packet size of %d (%#x).&bslash;n&quot;
 comma
 id|ndev-&gt;name
 comma
@@ -1596,23 +1596,12 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 id|DEFINE_WAIT
 c_func
 (paren
 id|wait
 )paren
 suffix:semicolon
-macro_line|#else
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1627,7 +1616,6 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 id|prepare_to_wait
 c_func
 (paren
@@ -1640,24 +1628,6 @@ comma
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
-macro_line|#else
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|priv-&gt;mgmt_wqueue
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-macro_line|#endif
 id|err
 op_assign
 id|islpci_mgt_transmit
@@ -1679,11 +1649,9 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -1730,6 +1698,14 @@ c_cond
 id|frame
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|frame-&gt;header-&gt;oid
+op_eq
+id|oid
+)paren
+(brace
 op_star
 id|recvframe
 op_assign
@@ -1743,6 +1719,37 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: expecting oid 0x%x, received 0x%x.&bslash;n&quot;
+comma
+id|ndev-&gt;name
+comma
+(paren
+r_int
+r_int
+)paren
+id|oid
+comma
+id|frame-&gt;header-&gt;oid
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|frame
+)paren
+suffix:semicolon
+id|frame
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -1755,7 +1762,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: timeout waiting for mgmt response %lu, trigging device&bslash;n&quot;
+l_string|&quot;%s: timeout waiting for mgmt response %lu, &quot;
+l_string|&quot;triggering device&bslash;n&quot;
 comma
 id|ndev-&gt;name
 comma
@@ -1788,7 +1796,6 @@ suffix:semicolon
 multiline_comment|/* TODO: we should reset the device here */
 id|out
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,6,0)
 id|finish_wait
 c_func
 (paren
@@ -1799,24 +1806,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-macro_line|#else
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|priv-&gt;mgmt_wqueue
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-macro_line|#endif
 id|up
 c_func
 (paren
