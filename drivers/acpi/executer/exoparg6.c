@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;exoparg6&quot;
 )paren
 multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (1 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_do_match&n; *&n; * PARAMETERS:  match_op        - The AML match operand&n; *              package_value   - Value from the target package&n; *              match_value     - Value to be matched&n; *&n; * RETURN:      TRUE if the match is successful, FALSE otherwise&n; *&n; * DESCRIPTION: Implements the low-level match for the ASL Match operator&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_do_match&n; *&n; * PARAMETERS:  match_op        - The AML match operand&n; *              package_obj     - Object from the target package&n; *              match_obj       - Object to be matched&n; *&n; * RETURN:      TRUE if the match is successful, FALSE otherwise&n; *&n; * DESCRIPTION: Implements the low-level match for the ASL Match operator.&n; *              Package elements will be implicitly converted to the type of&n; *              the match object (Integer/Buffer/String).&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ex_do_match
 id|acpi_ex_do_match
@@ -19,13 +19,26 @@ id|acpi_ex_do_match
 id|u32
 id|match_op
 comma
-id|acpi_integer
-id|package_value
+r_union
+id|acpi_operand_object
+op_star
+id|package_obj
 comma
-id|acpi_integer
-id|match_value
+r_union
+id|acpi_operand_object
+op_star
+id|match_obj
 )paren
 (brace
+id|u8
+id|logical_result
+op_assign
+id|TRUE
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
+multiline_comment|/*&n;&t; * Note: Since the package_obj/match_obj ordering is opposite to that of&n;&t; * the standard logical operators, we have to reverse them when we call&n;&t; * do_logical_op in order to make the implicit conversion rules work&n;&t; * correctly. However, this means we have to flip the entire equation&n;&t; * also. A bit ugly perhaps, but overall, better than fussing the&n;&t; * parameters around at runtime, over and over again.&n;&t; *&n;&t; * Below, P[i] refers to the package element, M refers to the Match object.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -35,19 +48,34 @@ id|match_op
 r_case
 id|MATCH_MTR
 suffix:colon
-multiline_comment|/* always true */
+multiline_comment|/* Always true */
 r_break
 suffix:semicolon
 r_case
 id|MATCH_MEQ
 suffix:colon
-multiline_comment|/* true if equal   */
+multiline_comment|/*&n;&t;&t; * True if equal: (P[i] == M)&n;&t;&t; * Change to:     (M == P[i])&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ex_do_logical_op
+(paren
+id|AML_LEQUAL_OP
+comma
+id|match_obj
+comma
+id|package_obj
+comma
+op_amp
+id|logical_result
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|package_value
-op_ne
-id|match_value
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
 r_return
@@ -61,13 +89,28 @@ suffix:semicolon
 r_case
 id|MATCH_MLE
 suffix:colon
-multiline_comment|/* true if less than or equal  */
+multiline_comment|/*&n;&t;&t; * True if less than or equal: (P[i] &lt;= M) (P[i] not_greater than M)&n;&t;&t; * Change to:                  (M &gt;= P[i]) (M not_less than P[i])&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ex_do_logical_op
+(paren
+id|AML_LLESS_OP
+comma
+id|match_obj
+comma
+id|package_obj
+comma
+op_amp
+id|logical_result
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|package_value
-OG
-id|match_value
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
 r_return
@@ -76,18 +119,41 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
+id|logical_result
+op_assign
+(paren
+id|u8
+)paren
+op_logical_neg
+id|logical_result
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|MATCH_MLT
 suffix:colon
-multiline_comment|/* true if less than   */
+multiline_comment|/*&n;&t;&t; * True if less than: (P[i] &lt; M)&n;&t;&t; * Change to:         (M &gt; P[i])&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ex_do_logical_op
+(paren
+id|AML_LGREATER_OP
+comma
+id|match_obj
+comma
+id|package_obj
+comma
+op_amp
+id|logical_result
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|package_value
-op_ge
-id|match_value
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
 r_return
@@ -101,13 +167,28 @@ suffix:semicolon
 r_case
 id|MATCH_MGE
 suffix:colon
-multiline_comment|/* true if greater than or equal   */
+multiline_comment|/*&n;&t;&t; * True if greater than or equal: (P[i] &gt;= M) (P[i] not_less than M)&n;&t;&t; * Change to:                     (M &lt;= P[i]) (M not_greater than P[i])&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ex_do_logical_op
+(paren
+id|AML_LGREATER_OP
+comma
+id|match_obj
+comma
+id|package_obj
+comma
+op_amp
+id|logical_result
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|package_value
-OL
-id|match_value
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
 r_return
@@ -116,18 +197,41 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
+id|logical_result
+op_assign
+(paren
+id|u8
+)paren
+op_logical_neg
+id|logical_result
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|MATCH_MGT
 suffix:colon
-multiline_comment|/* true if greater than    */
+multiline_comment|/*&n;&t;&t; * True if greater than: (P[i] &gt; M)&n;&t;&t; * Change to:            (M &lt; P[i])&n;&t;&t; */
+id|status
+op_assign
+id|acpi_ex_do_logical_op
+(paren
+id|AML_LLESS_OP
+comma
+id|match_obj
+comma
+id|package_obj
+comma
+op_amp
+id|logical_result
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|package_value
-op_le
-id|match_value
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
 )paren
 (brace
 r_return
@@ -140,7 +244,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* undefined   */
+multiline_comment|/* Undefined */
 r_return
 (paren
 id|FALSE
@@ -148,7 +252,7 @@ id|FALSE
 suffix:semicolon
 )brace
 r_return
-id|TRUE
+id|logical_result
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_6A_0T_1R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with 6 arguments, no target, and a return value&n; *&n; ******************************************************************************/
@@ -213,8 +317,8 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_MATCH_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Match (search_package[0], match_op1[1], match_object1[2],&n;&t;&t; *                          match_op2[3], match_object2[4], start_index[5])&n;&t;&t; */
-multiline_comment|/* Validate match comparison sub-opcodes */
+multiline_comment|/*&n;&t;&t; * Match (search_pkg[0], match_op1[1], match_obj1[2],&n;&t;&t; *                      match_op2[3], match_obj2[4], start_index[5])&n;&t;&t; */
+multiline_comment|/* Validate both Match Term Operators (MTR, MEQ, etc.) */
 r_if
 c_cond
 (paren
@@ -246,7 +350,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;operation encoding out of range&bslash;n&quot;
+l_string|&quot;Match operator out of range&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -258,6 +362,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Get the package start_index, validate against the package length */
 id|index
 op_assign
 (paren
@@ -303,6 +408,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Create an integer for the return value */
 id|return_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -330,7 +436,7 @@ id|return_desc-&gt;integer.value
 op_assign
 id|ACPI_INTEGER_MAX
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Examine each element until a match is found.  Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; *&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, match_value will be -1&n;&t;&t; * (its initial value) indicating that no match was found.  When&n;&t;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Examine each element until a match is found. Both match conditions&n;&t;&t; * must be satisfied for a match to occur. Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; *&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, match_value will be&n;&t;&t; * ACPI_INTEGER_MAX (Ones) (its initial value) indicating that no&n;&t;&t; * match was found.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -348,6 +454,7 @@ id|index
 op_increment
 )paren
 (brace
+multiline_comment|/* Get the current package element */
 id|this_element
 op_assign
 id|operand
@@ -360,25 +467,18 @@ id|package.elements
 id|index
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Treat any NULL or non-numeric elements as non-matching.&n;&t;&t;&t; */
+multiline_comment|/* Treat any uninitialized (NULL) elements as non-matching */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|this_element
-op_logical_or
-id|ACPI_GET_OBJECT_TYPE
-(paren
-id|this_element
-)paren
-op_ne
-id|ACPI_TYPE_INTEGER
 )paren
 (brace
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * &quot;continue&quot; (proceed to next iteration of enclosing&n;&t;&t;&t; * &quot;for&quot; loop) signifies a non-match.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Both match conditions must be satisfied. Execution of a continue&n;&t;&t;&t; * (proceed to next iteration of enclosing for loop) signifies a&n;&t;&t;&t; * non-match.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -395,14 +495,12 @@ l_int|1
 op_member_access_from_pointer
 id|integer.value
 comma
-id|this_element-&gt;integer.value
+id|this_element
 comma
 id|operand
 (braket
 l_int|2
 )braket
-op_member_access_from_pointer
-id|integer.value
 )paren
 )paren
 (brace
@@ -425,14 +523,12 @@ l_int|3
 op_member_access_from_pointer
 id|integer.value
 comma
-id|this_element-&gt;integer.value
+id|this_element
 comma
 id|operand
 (braket
 l_int|4
 )braket
-op_member_access_from_pointer
-id|integer.value
 )paren
 )paren
 (brace
