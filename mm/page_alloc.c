@@ -787,6 +787,10 @@ id|PG_reclaim
 op_or
 l_int|1
 op_lshift
+id|PG_slab
+op_or
+l_int|1
+op_lshift
 id|PG_writeback
 )paren
 )paren

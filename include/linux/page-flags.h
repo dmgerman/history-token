@@ -317,6 +317,10 @@ DECL|macro|SetPageSlab
 mdefine_line|#define SetPageSlab(page)&t;set_bit(PG_slab, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageSlab
 mdefine_line|#define ClearPageSlab(page)&t;clear_bit(PG_slab, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageSlab
+mdefine_line|#define TestClearPageSlab(page)&t;test_and_clear_bit(PG_slab, &amp;(page)-&gt;flags)
+DECL|macro|TestSetPageSlab
+mdefine_line|#define TestSetPageSlab(page)&t;test_and_set_bit(PG_slab, &amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|macro|PageHighMem
 mdefine_line|#define PageHighMem(page)&t;test_bit(PG_highmem, &amp;(page)-&gt;flags)
