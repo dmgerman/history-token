@@ -815,7 +815,7 @@ id|ipt_owner_info
 id|printk
 c_func
 (paren
-l_string|&quot;Matchsize %u != %u&bslash;n&quot;
+l_string|&quot;Matchsize %u != %Zu&bslash;n&quot;
 comma
 id|matchsize
 comma
