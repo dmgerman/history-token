@@ -218,6 +218,8 @@ DECL|macro|UART_USE_FIFO
 mdefine_line|#define UART_USE_FIFO&t;&t;0x02
 DECL|macro|UART_STARTECH
 mdefine_line|#define UART_STARTECH&t;&t;0x04
+DECL|macro|UART_NATSEMI
+mdefine_line|#define UART_NATSEMI&t;&t;0x08
 multiline_comment|/*&n; * Definitions for async_struct (and serial_struct) flags field&n; */
 DECL|macro|ASYNC_HUP_NOTIFY
 mdefine_line|#define ASYNC_HUP_NOTIFY 0x0001 /* Notify getty on hangups and closes &n;&t;&t;&t;&t;   on the callout port */

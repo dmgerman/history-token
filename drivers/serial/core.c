@@ -783,7 +783,7 @@ id|cflag
 comma
 r_int
 r_int
-id|quot
+id|baud
 )paren
 (brace
 r_int
@@ -872,15 +872,7 @@ op_star
 id|bits
 )paren
 op_div
-(paren
-id|port-&gt;uartclk
-op_div
-(paren
-l_int|16
-op_star
-id|quot
-)paren
-)paren
+id|baud
 op_plus
 id|HZ
 op_div
@@ -894,7 +886,7 @@ c_func
 id|uart_update_timeout
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;uart_get_baud_rate - return baud rate for a particular port&n; *&t;@port: uart_port structure describing the port in question.&n; *&t;@termios: desired termios settings.&n; *&t;@old: old termios (or NULL)&n; *&t;@min: minimum acceptable baud rate&n; *&t;@max: maximum acceptable baud rate&n; *&n; *&t;Decode the termios structure into a numeric baud rate,&n; *&t;taking account of the magic 38400 baud rate (with spd_*&n; *&t;flags), and mapping the %B0 rate to 9600 baud.&n; */
+multiline_comment|/**&n; *&t;uart_get_baud_rate - return baud rate for a particular port&n; *&t;@port: uart_port structure describing the port in question.&n; *&t;@termios: desired termios settings.&n; *&t;@old: old termios (or NULL)&n; *&t;@min: minimum acceptable baud rate&n; *&t;@max: maximum acceptable baud rate&n; *&n; *&t;Decode the termios structure into a numeric baud rate,&n; *&t;taking account of the magic 38400 baud rate (with spd_*&n; *&t;flags), and mapping the %B0 rate to 9600 baud.&n; *&n; *&t;If the new baud rate is invalid, try the old termios setting.&n; *&t;If it&squot;s still invalid, we try 9600 baud.&n; *&n; *&t;Update the @termios structure to reflect the baud rate&n; *&t;we&squot;re actually going to be using.&n; */
 r_int
 r_int
 DECL|function|uart_get_baud_rate
@@ -1090,7 +1082,7 @@ c_func
 id|uart_get_baud_rate
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;uart_get_divisor - return uart clock divisor&n; *&t;@port: uart_port structure describing the port.&n; *&t;@termios: desired termios settings&n; *&t;@old_termios: the original port settings, or NULL&n; *&n; *&t;Calculate the uart clock divisor for the port.  If the&n; *&t;divisor is invalid, try the old termios setting.  If&n; *&t;the divisor is still invalid, we try 9600 baud.&n; *&n; *&t;Update the @termios structure to reflect the baud rate&n; *&t;we&squot;re actually going to be using.&n; *&n; *&t;If 9600 baud fails, we return a zero divisor.&n; */
+multiline_comment|/**&n; *&t;uart_get_divisor - return uart clock divisor&n; *&t;@port: uart_port structure describing the port.&n; *&t;@baud: desired baud rate&n; *&n; *&t;Calculate the uart clock divisor for the port.&n; */
 r_int
 r_int
 DECL|function|uart_get_divisor
@@ -1102,45 +1094,14 @@ id|uart_port
 op_star
 id|port
 comma
-r_struct
-id|termios
-op_star
-id|termios
-comma
-r_struct
-id|termios
-op_star
-id|old_termios
+r_int
+r_int
+id|baud
 )paren
 (brace
 r_int
 r_int
 id|quot
-comma
-id|baud
-comma
-id|max
-op_assign
-id|port-&gt;uartclk
-op_div
-l_int|16
-suffix:semicolon
-multiline_comment|/* Determine divisor based on baud rate */
-id|baud
-op_assign
-id|uart_get_baud_rate
-c_func
-(paren
-id|port
-comma
-id|termios
-comma
-id|old_termios
-comma
-l_int|0
-comma
-id|max
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Old custom speed handling.&n;&t; */
 r_if
@@ -3007,6 +2968,30 @@ id|old_custom_divisor
 op_ne
 id|port-&gt;custom_divisor
 )paren
+(brace
+multiline_comment|/* If they&squot;re setting up a custom divisor or speed,&n;&t;&t;&t; * instead of clearing it, then bitch about it. No&n;&t;&t;&t; * need to rate-limit; it&squot;s CAP_SYS_ADMIN only. */
+r_if
+c_cond
+(paren
+id|port-&gt;flags
+op_amp
+id|UPF_SPD_MASK
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s sets custom speed on %s%d. This is deprecated.&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|info-&gt;tty-&gt;driver.name
+comma
+id|info-&gt;port-&gt;line
+)paren
+suffix:semicolon
+)brace
 id|uart_change_speed
 c_func
 (paren
@@ -3015,6 +3000,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 id|retval
