@@ -3387,7 +3387,7 @@ id|GFP_ZONEMASK
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 DECL|function|nr_free_highpages
 r_int
 r_int

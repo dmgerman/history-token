@@ -1159,7 +1159,6 @@ id|filename
 comma
 r_struct
 id|timeval
-id|__user
 op_star
 id|times
 )paren
