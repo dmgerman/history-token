@@ -8730,6 +8730,16 @@ op_star
 )paren
 id|raw_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s32-&gt;version
+op_ne
+id|SMB_MOUNT_OLDVERSION
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|s-&gt;version
 op_assign
 id|s32-&gt;version
@@ -8780,6 +8790,8 @@ id|smb_mount_data
 )paren
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|raw_data
 suffix:semicolon
