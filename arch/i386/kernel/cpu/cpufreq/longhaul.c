@@ -1704,7 +1704,7 @@ id|ezrat_eblcr
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;*/
+multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;&t;memcpy (clock_ratio, nehemiah_clock_ratio, sizeof(nehemiah_clock_ratio));&n;&t;&t;memcpy (eblcr_table, nehemiah_eblcr, sizeof(nehemiah_eblcr));&n;&t;*/
 r_default
 suffix:colon
 id|cpuname
