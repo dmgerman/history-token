@@ -416,5 +416,25 @@ r_void
 )paren
 (brace
 )brace
+DECL|function|phys_pkg_id
+r_static
+r_inline
+id|u32
+id|phys_pkg_id
+c_func
+(paren
+id|u32
+id|cpuid_apic
+comma
+r_int
+id|index_msb
+)paren
+(brace
+r_return
+id|cpuid_apic
+op_rshift
+id|index_msb
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

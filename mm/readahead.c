@@ -1283,14 +1283,14 @@ id|ra-&gt;size
 )paren
 )paren
 (brace
-multiline_comment|/* Heuristic:  If &squot;n&squot; pages were&n;&t;&t;&t;  * accessed in the current window, there&n;&t;&t;&t;  * is a high probability that around &squot;n&squot; pages&n;&t;&t;&t;  * shall be used in the next current window.&n;&t;&t;&t;  *&n;&t;&t;&t;  * To minimize lazy-readahead triggered&n;&t;&t;&t;  * in the next current window, read in&n;&t;&t;&t;  * an extra page.&n;&t;&t;&t;  */
+multiline_comment|/* Heuristic:  If &squot;n&squot; pages were&n;&t;&t;&t;  * accessed in the current window, there&n;&t;&t;&t;  * is a high probability that around &squot;n&squot; pages&n;&t;&t;&t;  * shall be used in the next current window.&n;&t;&t;&t;  */
 id|ra-&gt;next_size
 op_assign
 id|preoffset
 op_minus
 id|ra-&gt;start
 op_plus
-l_int|2
+l_int|1
 suffix:semicolon
 )brace
 id|ra-&gt;start
@@ -1348,23 +1348,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * This read request is within the current window.  It is time&n;&t;&t; * to submit I/O for the ahead window while the application is&n;&t;&t; * about to step into the ahead window.&n;&t;&t; * Heuristic: Defer reading the ahead window till we hit&n;&t;&t; * the last page in the current window. (lazy readahead)&n;&t;&t; * If we read in earlier we run the risk of wasting&n;&t;&t; * the ahead window.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This read request is within the current window.  It is time&n;&t;&t; * to submit I/O for the ahead window while the application is&n;&t;&t; * crunching through the current window.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|ra-&gt;ahead_start
 op_eq
 l_int|0
-op_logical_and
-id|offset
-op_eq
-(paren
-id|ra-&gt;start
-op_plus
-id|ra-&gt;size
-op_minus
-l_int|1
-)paren
 )paren
 (brace
 id|ra-&gt;ahead_start

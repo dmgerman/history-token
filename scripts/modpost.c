@@ -2071,6 +2071,14 @@ c_func
 (paren
 id|b
 comma
+l_string|&quot;__attribute_used__&bslash;n&quot;
+)paren
+suffix:semicolon
+id|buf_printf
+c_func
+(paren
+id|b
+comma
 l_string|&quot;__attribute__((section(&bslash;&quot;__versions&bslash;&quot;))) = {&bslash;n&quot;
 )paren
 suffix:semicolon

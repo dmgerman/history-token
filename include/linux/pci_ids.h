@@ -505,6 +505,8 @@ mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Ig&t;0x4967
 multiline_comment|/* Radeon RV280 (9200) */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Y_
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Y_&t;0x5960
+DECL|macro|PCI_DEVICE_ID_ATI_RADEON_Yd
+mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_Yd&t;0x5964
 multiline_comment|/* Radeon R300 (9500) */
 DECL|macro|PCI_DEVICE_ID_ATI_RADEON_AD
 mdefine_line|#define PCI_DEVICE_ID_ATI_RADEON_AD&t;0x4144

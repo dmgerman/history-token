@@ -125,11 +125,13 @@ op_star
 id|timer
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|oldserver
 suffix:semicolon
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 suffix:semicolon
@@ -140,7 +142,8 @@ c_func
 (paren
 id|timer
 comma
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 comma
 id|cb_timeout
 )paren
@@ -253,11 +256,13 @@ r_void
 id|afs_vnode_finalise_status_update
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -265,7 +270,8 @@ r_int
 id|ret
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|oldserver
 op_assign
@@ -353,7 +359,7 @@ op_amp
 id|afs_cb_hash_lock
 )paren
 suffix:semicolon
-multiline_comment|/* swap ref to old callback server with that for new callback server */
+multiline_comment|/* swap ref to old callback server with that for new callback&n;&t;&t; * server */
 id|oldserver
 op_assign
 id|xchg
@@ -519,12 +525,14 @@ r_int
 id|afs_vnode_fetch_status
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -684,7 +692,7 @@ id|AFS_VNODE_DELETED
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* it got updated and invalidated all before we saw it */
+multiline_comment|/* it got updated and invalidated all before we saw&n;&t;&t;&t; * it */
 r_if
 c_cond
 (paren
@@ -787,7 +795,7 @@ op_amp
 id|vnode-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* merge AFS status fetches and clear outstanding callback on this vnode */
+multiline_comment|/* merge AFS status fetches and clear outstanding callback on this&n;&t; * vnode */
 r_do
 (brace
 multiline_comment|/* pick a server to query */
@@ -883,7 +891,8 @@ r_int
 id|afs_vnode_fetch_data
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 comma
@@ -893,7 +902,8 @@ op_star
 id|desc
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -932,7 +942,7 @@ op_amp
 id|vnode-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* merge in AFS status fetches and clear outstanding callback on this vnode */
+multiline_comment|/* merge in AFS status fetches and clear outstanding callback on this&n;&t; * vnode */
 r_do
 (brace
 multiline_comment|/* pick a server to query */
@@ -1030,12 +1040,14 @@ r_int
 id|afs_vnode_give_up_callback
 c_func
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon

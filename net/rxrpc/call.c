@@ -3463,7 +3463,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end rxrpc_call_do_timeout() */
+multiline_comment|/* end rxrpc_call_do_stuff() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * send an abort message at call or connection level&n; * - must be called with call-&gt;lock held&n; * - the supplied error code is sent as the packet data&n; */
 DECL|function|__rxrpc_call_abort
@@ -8263,6 +8263,13 @@ op_and_assign
 op_complement
 id|RXRPC_MORE_PACKETS
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|call-&gt;app_call_state
+op_ne
+id|RXRPC_CSTATE_CLNT_SND_ARGS
+)paren
 id|msg-&gt;hdr.flags
 op_or_assign
 id|RXRPC_REQUEST_ACK

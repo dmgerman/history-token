@@ -259,8 +259,8 @@ op_star
 id|trans
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -270,10 +270,6 @@ id|trans-&gt;usage
 )paren
 op_le
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|atomic_inc

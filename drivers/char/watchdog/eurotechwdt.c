@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&t;(c) Copyright 2002 Rob Radez &lt;rob@osinvestor.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; */
+multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&t;(c) Copyright 2002 Rob Radez &lt;rob@osinvestor.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; */
 multiline_comment|/* Changelog:&n; *&n; * 2002/04/25 - Rob Radez&n; *&t;clean up #includes&n; *&t;clean up locking&n; *&t;make __setup param unique&n; *&t;proper options in watchdog_info&n; *&t;add WDIOC_GETSTATUS and WDIOC_SETOPTIONS ioctls&n; *&t;add expect_close support&n; *&n; * 2001 - Rodolfo Giometti&n; *&t;Initial release&n; *&n; * 2002.05.30 - Joel Becker &lt;joel.becker@oracle.com&gt;&n; * &t;Added Matt Domsch&squot;s nowayout module option.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -88,7 +88,7 @@ comma
 l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Some symbolic names &n; */
+multiline_comment|/*&n; * Some symbolic names&n; */
 DECL|macro|WDT_CTRL_REG
 mdefine_line|#define WDT_CTRL_REG&t;&t;0x30
 DECL|macro|WDT_OUTPIN_CFG
@@ -737,7 +737,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT
@@ -1152,6 +1152,7 @@ id|fops
 op_assign
 op_amp
 id|eurwdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The WDT card needs to learn about soft shutdowns in order to&n; * turn the timebomb registers off.&n; */
@@ -1216,7 +1217,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * eurwdt_init:&n; *&n; * Set up the WDT watchdog board. After grabbing the resources &n; * we require we need also to unlock the device.&n; * The open() function will actually kick the board off.&n; */
+multiline_comment|/**&n; * eurwdt_init:&n; *&n; * Set up the WDT watchdog board. After grabbing the resources&n; * we require we need also to unlock the device.&n; * The open() function will actually kick the board off.&n; */
 DECL|function|eurwdt_init
 r_static
 r_int

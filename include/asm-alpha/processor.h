@@ -137,6 +137,11 @@ DECL|macro|ARCH_HAS_PREFETCHW
 mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+macro_line|#ifndef CONFIG_SMP
+multiline_comment|/* Nothing to prefetch. */
+DECL|macro|spin_lock_prefetch
+mdefine_line|#define spin_lock_prefetch(lock)  &t;do { } while (0)
+macro_line|#endif
 macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 1)
 DECL|function|prefetch
 r_extern
@@ -186,6 +191,7 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 DECL|function|spin_lock_prefetch
 r_extern
 r_inline
@@ -210,6 +216,7 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#else
 DECL|function|prefetch
 r_extern
@@ -271,6 +278,7 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 DECL|function|spin_lock_prefetch
 r_extern
 r_inline
@@ -301,6 +309,7 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif /* GCC 3.1 */
 macro_line|#endif /* __ASM_ALPHA_PROCESSOR_H */
 eof

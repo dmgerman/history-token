@@ -220,16 +220,12 @@ r_int
 id|direction
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|direction
 op_eq
 id|PCI_DMA_NONE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* nothing to do */
@@ -258,16 +254,12 @@ r_int
 id|direction
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|direction
 op_eq
 id|PCI_DMA_NONE
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* nothing to do */
