@@ -234,6 +234,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_SMBUS
+comma
+dot
 id|name
 op_assign
 l_string|&quot;VIA i2c&quot;
