@@ -62,7 +62,7 @@ id|dma_list_lock
 suffix:semicolon
 DECL|function|dma_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|dma_irq_handler
 c_func
 (paren
@@ -180,6 +180,9 @@ id|dma-&gt;data
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;sa1100_request_dma - allocate one of the SA11x0&squot;s DMA chanels&n; *&t;@device: The SA11x0 peripheral targeted by this request&n; *&t;@device_id: An ascii name for the claiming device&n; *&t;@callback: Function to be called when the DMA completes&n; *&t;@data: A cookie passed back to the callback function&n; *&t;@dma_regs: Pointer to the location of the allocated channel&squot;s identifier&n; *&n; * &t;This function will search for a free DMA channel and returns the&n; * &t;address of the hardware registers for that channel as the channel&n; * &t;identifier. This identifier is written to the location pointed by&n; * &t;@dma_regs. The list of possible values for @device are listed into&n; * &t;linux/include/asm-arm/arch-sa1100/dma.h as a dma_device_t enum.&n; *&n; * &t;Note that reading from a port and writing to the same port are&n; * &t;actually considered as two different streams requiring separate&n; * &t;DMA registrations.&n; *&n; * &t;The @callback function is called from interrupt context when one&n; * &t;of the two possible DMA buffers in flight has terminated. That&n; * &t;function has to be small and efficient while posponing more complex&n; * &t;processing to a lower priority execution context.&n; *&n; * &t;If no channels are available, or if the desired @device is already in&n; * &t;use by another DMA channel, then an error code is returned.  This&n; * &t;function must be called before any other DMA calls.&n; **/
 DECL|function|sa1100_request_dma

@@ -1646,6 +1646,8 @@ id|resource
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_platform_device
+mdefine_line|#define to_platform_device(x) container_of((x), struct platform_device, dev)
 r_extern
 r_int
 id|platform_device_register
