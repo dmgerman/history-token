@@ -773,7 +773,6 @@ id|USB_REQ_SET_FEATURE
 suffix:colon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;no device features yet yet&bslash;n&quot;
@@ -947,7 +946,6 @@ suffix:colon
 singleline_comment|// wValue == urb-&gt;dev-&gt;devaddr
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;root hub device address %d&bslash;n&quot;
@@ -992,7 +990,6 @@ id|USB_REQ_SET_FEATURE
 suffix:colon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;no endpoint features yet&bslash;n&quot;
@@ -1033,7 +1030,6 @@ id|EPIPE
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;unsupported hub control message (maxchild %d)&bslash;n&quot;
@@ -1054,7 +1050,6 @@ l_int|0
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;CTRL: TypeReq=0x%x val=0x%x idx=0x%x len=%d ==&gt; %d&bslash;n&quot;
@@ -1177,7 +1172,6 @@ id|len
 (brace
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;not queuing status urb, stat %d&bslash;n&quot;
@@ -1880,7 +1874,6 @@ id|bus
 suffix:semicolon
 id|dev_info
 (paren
-op_star
 id|bus-&gt;controller
 comma
 l_string|&quot;new USB bus registered, assigned bus number %d&bslash;n&quot;
@@ -1908,7 +1901,6 @@ id|bus
 (brace
 id|dev_info
 (paren
-op_star
 id|bus-&gt;controller
 comma
 l_string|&quot;USB bus %d deregistered&bslash;n&quot;
@@ -2007,7 +1999,6 @@ id|retval
 )paren
 id|dev_err
 (paren
-op_star
 id|parent_dev
 comma
 l_string|&quot;can&squot;t register root hub for %s, %d&bslash;n&quot;
@@ -2377,6 +2368,7 @@ suffix:semicolon
 macro_line|#endif
 id|dev_dbg
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;usb_check_bandwidth %sFAILED: %d + %ld = %d usec&bslash;n&quot;
@@ -2455,6 +2447,7 @@ suffix:semicolon
 macro_line|#ifdef USB_BANDWIDTH_MESSAGES
 id|dev_dbg
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;bandwidth alloc increased by %d (%s) to %d for %d requesters&bslash;n&quot;
@@ -2521,6 +2514,7 @@ suffix:semicolon
 macro_line|#ifdef USB_BANDWIDTH_MESSAGES
 id|dev_dbg
 (paren
+op_amp
 id|dev-&gt;dev
 comma
 l_string|&quot;bandwidth alloc reduced by %d (%s) to %d for %d requesters&bslash;n&quot;
@@ -3323,7 +3317,6 @@ id|in_interrupt
 (brace
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;non-async unlink in_interrupt&quot;
@@ -3436,7 +3429,6 @@ id|retval
 (brace
 id|dev_dbg
 (paren
-op_star
 id|sys
 comma
 l_string|&quot;dequeue %p --&gt; %d&bslash;n&quot;
@@ -3535,7 +3527,6 @@ id|sys
 )paren
 id|dev_dbg
 (paren
-op_star
 id|sys
 comma
 l_string|&quot;hcd_unlink_urb %p fail %d&bslash;n&quot;
@@ -3628,7 +3619,6 @@ id|dev-&gt;urb_list
 (brace
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;free busy dev, %s devnum %d (bug!)&bslash;n&quot;
@@ -4034,7 +4024,6 @@ id|urb_list
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;shutdown %s urb %p pipe %x, current status %d&bslash;n&quot;

@@ -854,6 +854,7 @@ l_int|NULL
 (brace
 id|dev_err
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;IRDA class descriptor not found, device not bound&bslash;n&quot;
@@ -1142,6 +1143,7 @@ id|buffer
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -1185,6 +1187,7 @@ id|buffer
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - out of memory.&bslash;n&quot;
@@ -1257,6 +1260,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
@@ -1399,6 +1403,7 @@ id|port-&gt;tty
 (brace
 id|dev_err
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - no tty???&bslash;n&quot;
@@ -1548,6 +1553,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
@@ -1881,6 +1887,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
@@ -2231,6 +2238,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;

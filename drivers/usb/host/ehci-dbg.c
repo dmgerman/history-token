@@ -2,13 +2,13 @@ multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * T
 multiline_comment|/* this file is part of ehci-hcd.c */
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,50)
 DECL|macro|ehci_dbg
-mdefine_line|#define ehci_dbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
+mdefine_line|#define ehci_dbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg ((ehci)-&gt;hcd.controller, fmt, ## args )
 DECL|macro|ehci_err
-mdefine_line|#define ehci_err(ehci, fmt, args...) &bslash;&n;&t;dev_err (*(ehci)-&gt;hcd.controller, fmt, ## args )
+mdefine_line|#define ehci_err(ehci, fmt, args...) &bslash;&n;&t;dev_err ((ehci)-&gt;hcd.controller, fmt, ## args )
 DECL|macro|ehci_info
-mdefine_line|#define ehci_info(ehci, fmt, args...) &bslash;&n;&t;dev_info (*(ehci)-&gt;hcd.controller, fmt, ## args )
+mdefine_line|#define ehci_info(ehci, fmt, args...) &bslash;&n;&t;dev_info ((ehci)-&gt;hcd.controller, fmt, ## args )
 DECL|macro|ehci_warn
-mdefine_line|#define ehci_warn(ehci, fmt, args...) &bslash;&n;&t;dev_warn (*(ehci)-&gt;hcd.controller, fmt, ## args )
+mdefine_line|#define ehci_warn(ehci, fmt, args...) &bslash;&n;&t;dev_warn ((ehci)-&gt;hcd.controller, fmt, ## args )
 macro_line|#else
 macro_line|#ifdef DEBUG
 DECL|macro|ehci_dbg

@@ -530,6 +530,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
@@ -617,7 +618,7 @@ id|port-&gt;read_urb
 suffix:semicolon
 )brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
-multiline_comment|/* dev_info (port-&gt;dev, &quot;Bytes In = %d  Bytes Out = %d&bslash;n&quot;, bytes_in, bytes_out); */
+multiline_comment|/* dev_info (&amp;port-&gt;dev, &quot;Bytes In = %d  Bytes Out = %d&bslash;n&quot;, bytes_in, bytes_out); */
 )brace
 DECL|function|empeg_write
 r_static
@@ -818,6 +819,7 @@ l_int|NULL
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s no more kernel memory...&bslash;n&quot;
@@ -923,6 +925,7 @@ id|status
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&bslash;n&quot;
@@ -1479,6 +1482,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|urb-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
@@ -1564,6 +1568,7 @@ id|result
 id|dev_err
 c_func
 (paren
+op_amp
 id|port-&gt;dev
 comma
 l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;

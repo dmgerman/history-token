@@ -98,6 +98,7 @@ id|transfer_buffer
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
@@ -215,6 +216,7 @@ l_int|0
 id|dev_err
 c_func
 (paren
+op_amp
 id|serial-&gt;dev-&gt;dev
 comma
 l_string|&quot;%s- %d failed&bslash;n&quot;

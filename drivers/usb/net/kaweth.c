@@ -2527,7 +2527,7 @@ c_func
 id|kaweth-&gt;net
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
@@ -2587,7 +2587,7 @@ op_amp
 id|kaweth-&gt;device_lock
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
@@ -2648,7 +2648,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|dev_kfree_skb_any
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
@@ -2774,7 +2774,7 @@ c_func
 id|net
 )paren
 suffix:semicolon
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
