@@ -1595,6 +1595,12 @@ DECL|macro|R200_RE_POINTSIZE
 mdefine_line|#define R200_RE_POINTSIZE                 0x2648
 DECL|macro|R200_SE_TCL_INPUT_VTX_VECTOR_ADDR_0
 mdefine_line|#define R200_SE_TCL_INPUT_VTX_VECTOR_ADDR_0 0x2254
+DECL|macro|RADEON_PP_TEX_SIZE_0
+mdefine_line|#define RADEON_PP_TEX_SIZE_0                0x1d04  /* NPOT */
+DECL|macro|RADEON_PP_TEX_SIZE_1
+mdefine_line|#define RADEON_PP_TEX_SIZE_1                0x1d0c
+DECL|macro|RADEON_PP_TEX_SIZE_2
+mdefine_line|#define RADEON_PP_TEX_SIZE_2                0x1d14
 DECL|macro|SE_VAP_CNTL__TCL_ENA_MASK
 mdefine_line|#define SE_VAP_CNTL__TCL_ENA_MASK                          0x00000001
 DECL|macro|SE_VAP_CNTL__FORCE_W_TO_ONE_MASK
