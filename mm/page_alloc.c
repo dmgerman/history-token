@@ -4687,6 +4687,9 @@ id|i
 op_increment
 )paren
 (brace
+id|cpumask_t
+id|tmp
+suffix:semicolon
 multiline_comment|/* Start from local node */
 id|n
 op_assign
@@ -4724,6 +4727,14 @@ id|n
 )paren
 suffix:semicolon
 multiline_comment|/* Give preference to headless and unused nodes */
+id|tmp
+op_assign
+id|node_to_cpumask
+c_func
+(paren
+id|n
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4731,11 +4742,7 @@ op_logical_neg
 id|cpus_empty
 c_func
 (paren
-id|node_to_cpumask
-c_func
-(paren
-id|n
-)paren
+id|tmp
 )paren
 )paren
 id|val
