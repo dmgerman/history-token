@@ -2067,6 +2067,17 @@ c_func
 l_string|&quot;acpi_bus_init&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* enable workarounds, unless strict ACPI spec. compliance */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_strict
+)paren
+id|acpi_gbl_enable_interpreter_slack
+op_assign
+id|TRUE
+suffix:semicolon
 id|status
 op_assign
 id|acpi_initialize_subsystem
