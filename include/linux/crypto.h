@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Scatterlist Cryptographic API.&n; *&n; * Copyright (c)
 macro_line|#ifndef _LINUX_CRYPTO_H
 DECL|macro|_LINUX_CRYPTO_H
 mdefine_line|#define _LINUX_CRYPTO_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -403,6 +404,7 @@ id|alg
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Algorithm query interface.&n; */
+macro_line|#ifdef CONFIG_CRYPTO
 r_int
 id|crypto_alg_available
 c_func
@@ -416,6 +418,28 @@ id|u32
 id|flags
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|crypto_alg_available
+r_static
+r_inline
+r_int
+id|crypto_alg_available
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+id|u32
+id|flags
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Transforms: user-instantiated objects which encapsulate algorithms&n; * and core processing logic.  Managed via crypto_alloc_tfm() and&n; * crypto_free_tfm(), as well as the various helpers below.&n; */
 r_struct
 id|crypto_tfm

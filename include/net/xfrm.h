@@ -4313,6 +4313,9 @@ c_func
 r_char
 op_star
 id|name
+comma
+r_int
+id|probe
 )paren
 suffix:semicolon
 r_extern
@@ -4325,6 +4328,9 @@ c_func
 r_char
 op_star
 id|name
+comma
+r_int
+id|probe
 )paren
 suffix:semicolon
 r_extern
@@ -4337,6 +4343,9 @@ c_func
 r_char
 op_star
 id|name
+comma
+r_int
+id|probe
 )paren
 suffix:semicolon
 r_struct
