@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 id|MODULE_AUTHOR
 c_func
