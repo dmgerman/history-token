@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.23 2004/07/13 00:14:35 dbrown Exp $&n; */
+multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.25 2004/07/16 13:54:27 dbrown Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1991,6 +1991,12 @@ c_func
 id|docptr
 comma
 id|Mil_CDSN_IO
+op_plus
+(paren
+id|i
+op_amp
+l_int|0xff
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Terminate read pipeline */
@@ -3393,6 +3399,9 @@ c_func
 (paren
 id|end
 comma
+(paren
+r_int
+)paren
 id|mtd-&gt;size
 )paren
 suffix:semicolon
@@ -3725,6 +3734,9 @@ c_func
 (paren
 l_int|32768
 comma
+(paren
+r_int
+)paren
 id|mtd-&gt;erasesize
 op_minus
 id|psize
@@ -3832,6 +3844,9 @@ c_func
 (paren
 l_int|32768
 comma
+(paren
+r_int
+)paren
 id|mtd-&gt;erasesize
 op_minus
 id|psize
@@ -4740,45 +4755,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|mtd-&gt;size
-op_eq
-(paren
-l_int|8
-op_lshift
-l_int|20
-)paren
-)paren
-(brace
-macro_line|#if 0
-multiline_comment|/* This doesn&squot;t seem to work for me.  I get ECC errors on every page. */
-multiline_comment|/* The Millennium 8MiB is actually an NFTL device! */
-id|mtd-&gt;name
-op_assign
-l_string|&quot;DiskOnChip Millennium 8MiB (NFTL)&quot;
-suffix:semicolon
-r_return
-id|nftl_scan_bbt
-c_func
-(paren
-id|mtd
-)paren
-suffix:semicolon
-macro_line|#endif
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;DiskOnChip Millennium 8MiB is not supported.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|this-&gt;bbt_td-&gt;options
 op_assign
 id|NAND_BBT_LASTBLOCK
@@ -5078,10 +5054,6 @@ id|this-&gt;verify_buf
 op_assign
 id|doc2001_verifybuf
 suffix:semicolon
-id|this-&gt;scan_bbt
-op_assign
-id|inftl_scan_bbt
-suffix:semicolon
 id|ReadDOC
 c_func
 (paren
@@ -5131,6 +5103,10 @@ id|mtd-&gt;name
 op_assign
 l_string|&quot;DiskOnChip 2000 (INFTL Model)&quot;
 suffix:semicolon
+id|this-&gt;scan_bbt
+op_assign
+id|inftl_scan_bbt
+suffix:semicolon
 r_return
 (paren
 l_int|4
@@ -5149,6 +5125,10 @@ suffix:semicolon
 id|mtd-&gt;name
 op_assign
 l_string|&quot;DiskOnChip Millennium&quot;
+suffix:semicolon
+id|this-&gt;scan_bbt
+op_assign
+id|nftl_scan_bbt
 suffix:semicolon
 r_return
 l_int|1
@@ -5451,6 +5431,14 @@ op_assign
 id|doc-&gt;nextdoc
 )paren
 (brace
+r_int
+r_char
+id|oldval
+suffix:semicolon
+r_int
+r_char
+id|newval
+suffix:semicolon
 id|nand
 op_assign
 id|mtd-&gt;priv
@@ -5464,8 +5452,6 @@ op_star
 id|nand-&gt;priv
 suffix:semicolon
 multiline_comment|/* Use the alias resolution register to determine if this is&n;&t;&t;   in fact the same DOC aliased to a new address.  If writes&n;&t;&t;   to one chip&squot;s alias resolution register change the value on&n;&t;&t;   the other chip, they&squot;re the same chip. */
-r_int
-r_char
 id|oldval
 op_assign
 id|ReadDOC
@@ -5476,8 +5462,6 @@ comma
 id|AliasResolution
 )paren
 suffix:semicolon
-r_int
-r_char
 id|newval
 op_assign
 id|ReadDOC
