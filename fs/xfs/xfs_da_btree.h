@@ -404,30 +404,26 @@ suffix:semicolon
 multiline_comment|/* remote attr value block count */
 DECL|member|justcheck
 r_int
+r_char
 id|justcheck
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: check for ok with no space */
 DECL|member|rename
 r_int
+r_char
 id|rename
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: this is an atomic rename op */
 DECL|member|addname
 r_int
+r_char
 id|addname
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: this is an add operation */
 DECL|member|oknoent
 r_int
+r_char
 id|oknoent
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: ok to return ENOENT, else die */
 DECL|typedef|xfs_da_args_t
@@ -620,34 +616,26 @@ suffix:semicolon
 multiline_comment|/* alternate path for join */
 DECL|member|inleaf
 r_int
-r_int
+r_char
 id|inleaf
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* insert into 1-&gt;lf, 0-&gt;splf */
 DECL|member|holeok
 r_int
-r_int
+r_char
 id|holeok
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: can deal with a hole */
 DECL|member|extravalid
 r_int
-r_int
+r_char
 id|extravalid
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: extrablk is in use */
 DECL|member|extraafter
 r_int
-r_int
+r_char
 id|extraafter
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: extrablk is after new */
 DECL|member|extrablk

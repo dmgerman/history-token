@@ -12327,7 +12327,7 @@ r_else
 (brace
 id|idx
 op_assign
-id|BTOBB
+id|BTOBBT
 c_func
 (paren
 (paren
@@ -12345,7 +12345,7 @@ r_if
 c_cond
 (paren
 id|idx
-OG
+op_ge
 (paren
 id|XLOG_HEADER_CYCLE_SIZE
 op_div
@@ -12481,7 +12481,7 @@ r_else
 (brace
 id|idx
 op_assign
-id|BTOBB
+id|BTOBBT
 c_func
 (paren
 (paren
@@ -12500,7 +12500,7 @@ r_if
 c_cond
 (paren
 id|idx
-OG
+op_ge
 (paren
 id|XLOG_HEADER_CYCLE_SIZE
 op_div
