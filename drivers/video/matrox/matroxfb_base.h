@@ -1467,7 +1467,6 @@ DECL|struct|matrox_fb_info
 r_struct
 id|matrox_fb_info
 (brace
-multiline_comment|/* fb_info must be first */
 DECL|member|fbcon
 r_struct
 id|fb_info
@@ -2191,12 +2190,16 @@ id|p
 )paren
 (brace
 r_return
+id|container_of
+c_func
 (paren
+id|p-&gt;fb_info
+comma
 r_struct
 id|matrox_fb_info
-op_star
+comma
+id|fbcon
 )paren
-id|p-&gt;fb_info
 suffix:semicolon
 )brace
 DECL|macro|PMXINFO

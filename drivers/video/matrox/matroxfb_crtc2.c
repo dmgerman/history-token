@@ -62,7 +62,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_if
 c_cond
 (paren
@@ -147,7 +147,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_struct
 id|display
 op_star
@@ -920,8 +920,12 @@ r_int
 r_int
 id|pixelsize
 suffix:semicolon
-DECL|macro|minfo
-mdefine_line|#define minfo (m2info-&gt;primary_dev)
+id|MINFO_FROM
+c_func
+(paren
+id|m2info-&gt;primary_dev
+)paren
+suffix:semicolon
 id|pixelsize
 op_assign
 id|var-&gt;bits_per_pixel
@@ -986,8 +990,6 @@ id|pos
 )paren
 suffix:semicolon
 )brace
-DECL|macro|minfo
-macro_line|#undef minfo
 )brace
 DECL|function|matroxfb_dh_decode_var
 r_static
@@ -1421,7 +1423,7 @@ id|user
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 id|MINFO_FROM
 c_func
 (paren
@@ -1472,7 +1474,7 @@ id|user
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 id|MINFO_FROM
 c_func
 (paren
@@ -1513,7 +1515,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_struct
 id|display
 op_star
@@ -1636,7 +1638,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_if
 c_cond
 (paren
@@ -1687,7 +1689,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_struct
 id|display
 op_star
@@ -2385,7 +2387,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_struct
 id|display
 op_star
@@ -2501,7 +2503,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_struct
 id|display
 op_star
@@ -2620,7 +2622,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_if
 c_cond
 (paren
@@ -2818,7 +2820,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 id|MINFO_FROM
 c_func
 (paren
@@ -3461,7 +3463,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_switch
 c_cond
 (paren
@@ -3576,7 +3578,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 r_struct
 id|fb_cmap
 op_star
@@ -3683,7 +3685,7 @@ id|info
 )paren
 (brace
 DECL|macro|m2info
-mdefine_line|#define m2info ((struct matroxfb_dh_fb_info*)info)
+mdefine_line|#define m2info (container_of(info, struct matroxfb_dh_fb_info, fbcon))
 id|matroxfb_dh_pan_var
 c_func
 (paren

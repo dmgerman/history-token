@@ -713,7 +713,7 @@ id|user
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG_LOOP
 c_func
 (paren
@@ -763,7 +763,7 @@ id|user
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG_LOOP
 c_func
 (paren
@@ -824,7 +824,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG
 c_func
 (paren
@@ -988,7 +988,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG
 c_func
 (paren
@@ -2297,12 +2297,16 @@ id|matrox_fb_info
 op_star
 id|minfo
 op_assign
+id|container_of
+c_func
 (paren
+id|fb_info
+comma
 r_struct
 id|matrox_fb_info
-op_star
+comma
+id|fbcon
 )paren
-id|fb_info
 suffix:semicolon
 macro_line|#endif
 id|DBG
@@ -2664,7 +2668,7 @@ c_func
 l_string|&quot;matroxfb_get_fix&quot;
 )paren
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 r_if
 c_cond
 (paren
@@ -2832,7 +2836,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG
 c_func
 (paren
@@ -2896,7 +2900,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 r_int
 id|err
 suffix:semicolon
@@ -4123,7 +4127,7 @@ c_func
 l_string|&quot;matrox_getcolreg&quot;
 )paren
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 multiline_comment|/*&n;&t; *  Read a single color register and split it into colors/transparent.&n;&t; *  Return != 0 for invalid regno.&n;&t; */
 r_if
 c_cond
@@ -4225,7 +4229,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 r_struct
 id|display
 op_star
@@ -4395,7 +4399,7 @@ id|con
 )paren
 suffix:semicolon
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG
 c_func
 (paren
@@ -4663,7 +4667,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 id|DBG
 c_func
 (paren
@@ -5841,7 +5845,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 r_int
 id|seq
 suffix:semicolon
@@ -6084,7 +6088,7 @@ id|info
 )paren
 (brace
 DECL|macro|minfo
-mdefine_line|#define minfo ((struct matrox_fb_info*)info)
+mdefine_line|#define minfo (container_of(info, struct matrox_fb_info, fbcon))
 r_struct
 id|fb_cmap
 op_star
