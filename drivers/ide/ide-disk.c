@@ -9245,6 +9245,20 @@ l_int|0x3000
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|ide_dma_queued_on
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|idedisk_cleanup
 r_static
