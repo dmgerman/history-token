@@ -318,10 +318,10 @@ id|u8
 id|temp_hyst
 suffix:semicolon
 DECL|member|alarms
-id|u16
+id|u8
 id|alarms
 suffix:semicolon
-multiline_comment|/* bitvector, combined */
+multiline_comment|/* bitvector */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Internal variables&n; */
