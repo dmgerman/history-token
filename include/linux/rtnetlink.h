@@ -4,74 +4,208 @@ mdefine_line|#define __LINUX_RTNETLINK_H
 macro_line|#include &lt;linux/netlink.h&gt;
 multiline_comment|/****&n; *&t;&t;Routing/neighbour discovery messages.&n; ****/
 multiline_comment|/* Types of messages */
+r_enum
+(brace
+DECL|enumerator|RTM_BASE
+id|RTM_BASE
+op_assign
+l_int|16
+comma
 DECL|macro|RTM_BASE
-mdefine_line|#define RTM_BASE&t;0x10
+mdefine_line|#define RTM_BASE&t;RTM_BASE
+DECL|enumerator|RTM_NEWLINK
+id|RTM_NEWLINK
+op_assign
+l_int|16
+comma
 DECL|macro|RTM_NEWLINK
-mdefine_line|#define&t;RTM_NEWLINK&t;(RTM_BASE+0)
+mdefine_line|#define RTM_NEWLINK&t;RTM_NEWLINK
+DECL|enumerator|RTM_DELLINK
+id|RTM_DELLINK
+comma
 DECL|macro|RTM_DELLINK
-mdefine_line|#define&t;RTM_DELLINK&t;(RTM_BASE+1)
+mdefine_line|#define RTM_DELLINK&t;RTM_DELLINK
+DECL|enumerator|RTM_GETLINK
+id|RTM_GETLINK
+comma
 DECL|macro|RTM_GETLINK
-mdefine_line|#define&t;RTM_GETLINK&t;(RTM_BASE+2)
+mdefine_line|#define RTM_GETLINK&t;RTM_GETLINK
+DECL|enumerator|RTM_SETLINK
+id|RTM_SETLINK
+comma
 DECL|macro|RTM_SETLINK
-mdefine_line|#define&t;RTM_SETLINK&t;(RTM_BASE+3)
+mdefine_line|#define RTM_SETLINK&t;RTM_SETLINK
+DECL|enumerator|RTM_NEWADDR
+id|RTM_NEWADDR
+op_assign
+l_int|20
+comma
 DECL|macro|RTM_NEWADDR
-mdefine_line|#define&t;RTM_NEWADDR&t;(RTM_BASE+4)
+mdefine_line|#define RTM_NEWADDR&t;RTM_NEWADDR
+DECL|enumerator|RTM_DELADDR
+id|RTM_DELADDR
+comma
 DECL|macro|RTM_DELADDR
-mdefine_line|#define&t;RTM_DELADDR&t;(RTM_BASE+5)
+mdefine_line|#define RTM_DELADDR&t;RTM_DELADDR
+DECL|enumerator|RTM_GETADDR
+id|RTM_GETADDR
+comma
 DECL|macro|RTM_GETADDR
-mdefine_line|#define&t;RTM_GETADDR&t;(RTM_BASE+6)
+mdefine_line|#define RTM_GETADDR&t;RTM_GETADDR
+DECL|enumerator|RTM_NEWROUTE
+id|RTM_NEWROUTE
+op_assign
+l_int|24
+comma
 DECL|macro|RTM_NEWROUTE
-mdefine_line|#define&t;RTM_NEWROUTE&t;(RTM_BASE+8)
+mdefine_line|#define RTM_NEWROUTE&t;RTM_NEWROUTE
+DECL|enumerator|RTM_DELROUTE
+id|RTM_DELROUTE
+comma
 DECL|macro|RTM_DELROUTE
-mdefine_line|#define&t;RTM_DELROUTE&t;(RTM_BASE+9)
+mdefine_line|#define RTM_DELROUTE&t;RTM_DELROUTE
+DECL|enumerator|RTM_GETROUTE
+id|RTM_GETROUTE
+comma
 DECL|macro|RTM_GETROUTE
-mdefine_line|#define&t;RTM_GETROUTE&t;(RTM_BASE+10)
+mdefine_line|#define RTM_GETROUTE&t;RTM_GETROUTE
+DECL|enumerator|RTM_NEWNEIGH
+id|RTM_NEWNEIGH
+op_assign
+l_int|28
+comma
 DECL|macro|RTM_NEWNEIGH
-mdefine_line|#define&t;RTM_NEWNEIGH&t;(RTM_BASE+12)
+mdefine_line|#define RTM_NEWNEIGH&t;RTM_NEWNEIGH
+DECL|enumerator|RTM_DELNEIGH
+id|RTM_DELNEIGH
+comma
 DECL|macro|RTM_DELNEIGH
-mdefine_line|#define&t;RTM_DELNEIGH&t;(RTM_BASE+13)
+mdefine_line|#define RTM_DELNEIGH&t;RTM_DELNEIGH
+DECL|enumerator|RTM_GETNEIGH
+id|RTM_GETNEIGH
+comma
 DECL|macro|RTM_GETNEIGH
-mdefine_line|#define&t;RTM_GETNEIGH&t;(RTM_BASE+14)
+mdefine_line|#define RTM_GETNEIGH&t;RTM_GETNEIGH
+DECL|enumerator|RTM_NEWRULE
+id|RTM_NEWRULE
+op_assign
+l_int|32
+comma
 DECL|macro|RTM_NEWRULE
-mdefine_line|#define&t;RTM_NEWRULE&t;(RTM_BASE+16)
+mdefine_line|#define RTM_NEWRULE&t;RTM_NEWRULE
+DECL|enumerator|RTM_DELRULE
+id|RTM_DELRULE
+comma
 DECL|macro|RTM_DELRULE
-mdefine_line|#define&t;RTM_DELRULE&t;(RTM_BASE+17)
+mdefine_line|#define RTM_DELRULE&t;RTM_DELRULE
+DECL|enumerator|RTM_GETRULE
+id|RTM_GETRULE
+comma
 DECL|macro|RTM_GETRULE
-mdefine_line|#define&t;RTM_GETRULE&t;(RTM_BASE+18)
+mdefine_line|#define RTM_GETRULE&t;RTM_GETRULE
+DECL|enumerator|RTM_NEWQDISC
+id|RTM_NEWQDISC
+op_assign
+l_int|36
+comma
 DECL|macro|RTM_NEWQDISC
-mdefine_line|#define&t;RTM_NEWQDISC&t;(RTM_BASE+20)
+mdefine_line|#define RTM_NEWQDISC&t;RTM_NEWQDISC
+DECL|enumerator|RTM_DELQDISC
+id|RTM_DELQDISC
+comma
 DECL|macro|RTM_DELQDISC
-mdefine_line|#define&t;RTM_DELQDISC&t;(RTM_BASE+21)
+mdefine_line|#define RTM_DELQDISC&t;RTM_DELQDISC
+DECL|enumerator|RTM_GETQDISC
+id|RTM_GETQDISC
+comma
 DECL|macro|RTM_GETQDISC
-mdefine_line|#define&t;RTM_GETQDISC&t;(RTM_BASE+22)
+mdefine_line|#define RTM_GETQDISC&t;RTM_GETQDISC
+DECL|enumerator|RTM_NEWTCLASS
+id|RTM_NEWTCLASS
+op_assign
+l_int|40
+comma
 DECL|macro|RTM_NEWTCLASS
-mdefine_line|#define&t;RTM_NEWTCLASS&t;(RTM_BASE+24)
+mdefine_line|#define RTM_NEWTCLASS&t;RTM_NEWTCLASS
+DECL|enumerator|RTM_DELTCLASS
+id|RTM_DELTCLASS
+comma
 DECL|macro|RTM_DELTCLASS
-mdefine_line|#define&t;RTM_DELTCLASS&t;(RTM_BASE+25)
+mdefine_line|#define RTM_DELTCLASS&t;RTM_DELTCLASS
+DECL|enumerator|RTM_GETTCLASS
+id|RTM_GETTCLASS
+comma
 DECL|macro|RTM_GETTCLASS
-mdefine_line|#define&t;RTM_GETTCLASS&t;(RTM_BASE+26)
+mdefine_line|#define RTM_GETTCLASS&t;RTM_GETTCLASS
+DECL|enumerator|RTM_NEWTFILTER
+id|RTM_NEWTFILTER
+op_assign
+l_int|44
+comma
 DECL|macro|RTM_NEWTFILTER
-mdefine_line|#define&t;RTM_NEWTFILTER&t;(RTM_BASE+28)
+mdefine_line|#define RTM_NEWTFILTER&t;RTM_NEWTFILTER
+DECL|enumerator|RTM_DELTFILTER
+id|RTM_DELTFILTER
+comma
 DECL|macro|RTM_DELTFILTER
-mdefine_line|#define&t;RTM_DELTFILTER&t;(RTM_BASE+29)
+mdefine_line|#define RTM_DELTFILTER&t;RTM_DELTFILTER
+DECL|enumerator|RTM_GETTFILTER
+id|RTM_GETTFILTER
+comma
 DECL|macro|RTM_GETTFILTER
-mdefine_line|#define&t;RTM_GETTFILTER&t;(RTM_BASE+30)
+mdefine_line|#define RTM_GETTFILTER&t;RTM_GETTFILTER
+DECL|enumerator|RTM_NEWACTION
+id|RTM_NEWACTION
+op_assign
+l_int|48
+comma
 DECL|macro|RTM_NEWACTION
-mdefine_line|#define RTM_NEWACTION   (RTM_BASE+32)
+mdefine_line|#define RTM_NEWACTION   RTM_NEWACTION
+DECL|enumerator|RTM_DELACTION
+id|RTM_DELACTION
+comma
 DECL|macro|RTM_DELACTION
-mdefine_line|#define RTM_DELACTION   (RTM_BASE+33)
+mdefine_line|#define RTM_DELACTION   RTM_DELACTION
+DECL|enumerator|RTM_GETACTION
+id|RTM_GETACTION
+comma
 DECL|macro|RTM_GETACTION
-mdefine_line|#define RTM_GETACTION   (RTM_BASE+34)
+mdefine_line|#define RTM_GETACTION   RTM_GETACTION
+DECL|enumerator|RTM_NEWPREFIX
+id|RTM_NEWPREFIX
+op_assign
+l_int|52
+comma
 DECL|macro|RTM_NEWPREFIX
-mdefine_line|#define RTM_NEWPREFIX&t;(RTM_BASE+36)
+mdefine_line|#define RTM_NEWPREFIX&t;RTM_NEWPREFIX
+DECL|enumerator|RTM_GETPREFIX
+id|RTM_GETPREFIX
+op_assign
+l_int|54
+comma
 DECL|macro|RTM_GETPREFIX
-mdefine_line|#define RTM_GETPREFIX&t;(RTM_BASE+38)
+mdefine_line|#define RTM_GETPREFIX&t;RTM_GETPREFIX
+DECL|enumerator|RTM_GETMULTICAST
+id|RTM_GETMULTICAST
+op_assign
+l_int|58
+comma
 DECL|macro|RTM_GETMULTICAST
-mdefine_line|#define&t;RTM_GETMULTICAST (RTM_BASE+42)
+mdefine_line|#define RTM_GETMULTICAST RTM_GETMULTICAST
+DECL|enumerator|RTM_GETANYCAST
+id|RTM_GETANYCAST
+op_assign
+l_int|62
+comma
 DECL|macro|RTM_GETANYCAST
-mdefine_line|#define&t;RTM_GETANYCAST&t;(RTM_BASE+46)
+mdefine_line|#define RTM_GETANYCAST&t;RTM_GETANYCAST
+DECL|enumerator|RTM_MAX
+id|RTM_MAX
+comma
 DECL|macro|RTM_MAX
-mdefine_line|#define&t;RTM_MAX&t;&t;(RTM_BASE+47)
+mdefine_line|#define RTM_MAX&t;&t;RTM_MAX
+)brace
+suffix:semicolon
 multiline_comment|/* &n;   Generic structure for encapsulation of optional route information.&n;   It is reminiscent of sockaddr, but with sa_family replaced&n;   with attribute type.&n; */
 DECL|struct|rtattr
 r_struct
