@@ -4579,6 +4579,9 @@ id|oldstate
 r_case
 id|SDEV_RUNNING
 suffix:colon
+r_case
+id|SDEV_OFFLINE
+suffix:colon
 r_break
 suffix:semicolon
 r_default
@@ -4603,6 +4606,9 @@ id|SDEV_CREATED
 suffix:colon
 r_case
 id|SDEV_RUNNING
+suffix:colon
+r_case
+id|SDEV_QUIESCE
 suffix:colon
 r_break
 suffix:semicolon
