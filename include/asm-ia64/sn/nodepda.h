@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_IA64_SN_NODEPDA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
@@ -195,7 +196,7 @@ DECL|macro|cnodeid_to_vertex
 mdefine_line|#define cnodeid_to_vertex(cnodeid) (NODEPDA(cnodeid)-&gt;node_vertex)
 multiline_comment|/*&n; * Check if given a compact node id the corresponding node has all the&n; * cpus disabled. &n; */
 DECL|macro|is_headless_node
-mdefine_line|#define is_headless_node(cnode)&t;&t;(!test_bit(cnode, &amp;node_has_active_cpus))
+mdefine_line|#define is_headless_node(cnode)&t;&t;(!node_to_cpumask(cnode))
 multiline_comment|/*&n; * Check if given a node vertex handle the corresponding node has all the&n; * cpus disabled. &n; */
 DECL|macro|is_headless_node_vertex
 mdefine_line|#define is_headless_node_vertex(_nodevhdl) &bslash;&n;&t;&t;&t;is_headless_node(nodevertex_to_cnodeid(_nodevhdl))
