@@ -4,6 +4,78 @@ DECL|macro|__HIDP_H
 mdefine_line|#define __HIDP_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
+multiline_comment|/* HIDP header masks */
+DECL|macro|HIDP_HEADER_TRANS_MASK
+mdefine_line|#define HIDP_HEADER_TRANS_MASK&t;&t;&t;0xf0
+DECL|macro|HIDP_HEADER_PARAM_MASK
+mdefine_line|#define HIDP_HEADER_PARAM_MASK&t;&t;&t;0x0f
+multiline_comment|/* HIDP transaction types */
+DECL|macro|HIDP_TRANS_HANDSHAKE
+mdefine_line|#define HIDP_TRANS_HANDSHAKE&t;&t;&t;0x00
+DECL|macro|HIDP_TRANS_HID_CONTROL
+mdefine_line|#define HIDP_TRANS_HID_CONTROL&t;&t;&t;0x10
+DECL|macro|HIDP_TRANS_GET_REPORT
+mdefine_line|#define HIDP_TRANS_GET_REPORT&t;&t;&t;0x40
+DECL|macro|HIDP_TRANS_SET_REPORT
+mdefine_line|#define HIDP_TRANS_SET_REPORT&t;&t;&t;0x50
+DECL|macro|HIDP_TRANS_GET_PROTOCOL
+mdefine_line|#define HIDP_TRANS_GET_PROTOCOL&t;&t;&t;0x60
+DECL|macro|HIDP_TRANS_SET_PROTOCOL
+mdefine_line|#define HIDP_TRANS_SET_PROTOCOL&t;&t;&t;0x70
+DECL|macro|HIDP_TRANS_GET_IDLE
+mdefine_line|#define HIDP_TRANS_GET_IDLE&t;&t;&t;0x80
+DECL|macro|HIDP_TRANS_SET_IDLE
+mdefine_line|#define HIDP_TRANS_SET_IDLE&t;&t;&t;0x90
+DECL|macro|HIDP_TRANS_DATA
+mdefine_line|#define HIDP_TRANS_DATA&t;&t;&t;&t;0xa0
+DECL|macro|HIDP_TRANS_DATC
+mdefine_line|#define HIDP_TRANS_DATC&t;&t;&t;&t;0xb0
+multiline_comment|/* HIDP handshake results */
+DECL|macro|HIDP_HSHK_SUCCESSFUL
+mdefine_line|#define HIDP_HSHK_SUCCESSFUL&t;&t;&t;0x00
+DECL|macro|HIDP_HSHK_NOT_READY
+mdefine_line|#define HIDP_HSHK_NOT_READY&t;&t;&t;0x01
+DECL|macro|HIDP_HSHK_ERR_INVALID_REPORT_ID
+mdefine_line|#define HIDP_HSHK_ERR_INVALID_REPORT_ID&t;&t;0x02
+DECL|macro|HIDP_HSHK_ERR_UNSUPPORTED_REQUEST
+mdefine_line|#define HIDP_HSHK_ERR_UNSUPPORTED_REQUEST&t;0x03
+DECL|macro|HIDP_HSHK_ERR_INVALID_PARAMETER
+mdefine_line|#define HIDP_HSHK_ERR_INVALID_PARAMETER&t;&t;0x04
+DECL|macro|HIDP_HSHK_ERR_UNKNOWN
+mdefine_line|#define HIDP_HSHK_ERR_UNKNOWN&t;&t;&t;0x0e
+DECL|macro|HIDP_HSHK_ERR_FATAL
+mdefine_line|#define HIDP_HSHK_ERR_FATAL&t;&t;&t;0x0f
+multiline_comment|/* HIDP control operation parameters */
+DECL|macro|HIDP_CTRL_NOP
+mdefine_line|#define HIDP_CTRL_NOP&t;&t;&t;&t;0x00
+DECL|macro|HIDP_CTRL_HARD_RESET
+mdefine_line|#define HIDP_CTRL_HARD_RESET&t;&t;&t;0x01
+DECL|macro|HIDP_CTRL_SOFT_RESET
+mdefine_line|#define HIDP_CTRL_SOFT_RESET&t;&t;&t;0x02
+DECL|macro|HIDP_CTRL_SUSPEND
+mdefine_line|#define HIDP_CTRL_SUSPEND&t;&t;&t;0x03
+DECL|macro|HIDP_CTRL_EXIT_SUSPEND
+mdefine_line|#define HIDP_CTRL_EXIT_SUSPEND&t;&t;&t;0x04
+DECL|macro|HIDP_CTRL_VIRTUAL_CABLE_UNPLUG
+mdefine_line|#define HIDP_CTRL_VIRTUAL_CABLE_UNPLUG&t;&t;0x05
+multiline_comment|/* HIDP data transaction headers */
+DECL|macro|HIDP_DATA_RTYPE_MASK
+mdefine_line|#define HIDP_DATA_RTYPE_MASK&t;&t;&t;0x03
+DECL|macro|HIDP_DATA_RSRVD_MASK
+mdefine_line|#define HIDP_DATA_RSRVD_MASK&t;&t;&t;0x0c
+DECL|macro|HIDP_DATA_RTYPE_OTHER
+mdefine_line|#define HIDP_DATA_RTYPE_OTHER&t;&t;&t;0x00
+DECL|macro|HIDP_DATA_RTYPE_INPUT
+mdefine_line|#define HIDP_DATA_RTYPE_INPUT&t;&t;&t;0x01
+DECL|macro|HIDP_DATA_RTYPE_OUPUT
+mdefine_line|#define HIDP_DATA_RTYPE_OUPUT&t;&t;&t;0x02
+DECL|macro|HIDP_DATA_RTYPE_FEATURE
+mdefine_line|#define HIDP_DATA_RTYPE_FEATURE&t;&t;&t;0x03
+multiline_comment|/* HIDP protocol header parameters */
+DECL|macro|HIDP_PROTO_BOOT
+mdefine_line|#define HIDP_PROTO_BOOT&t;&t;&t;&t;0x00
+DECL|macro|HIDP_PROTO_REPORT
+mdefine_line|#define HIDP_PROTO_REPORT&t;&t;&t;0x01
 multiline_comment|/* HIDP ioctl defines */
 DECL|macro|HIDPCONNADD
 mdefine_line|#define HIDPCONNADD&t;_IOW(&squot;H&squot;, 200, int)
