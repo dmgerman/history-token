@@ -3,7 +3,6 @@ DECL|macro|__RIVAFB_H
 mdefine_line|#define __RIVAFB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &quot;riva_hw.h&quot;
 multiline_comment|/* GGI compatibility macros */
 DECL|macro|NUM_SEQ_REGS
@@ -57,6 +56,27 @@ id|ext
 suffix:semicolon
 )brace
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|red
+DECL|member|green
+DECL|member|blue
+DECL|member|transp
+r_int
+r_char
+id|red
+comma
+id|green
+comma
+id|blue
+comma
+id|transp
+suffix:semicolon
+DECL|typedef|riva_cfb8_cmap_t
+)brace
+id|riva_cfb8_cmap_t
+suffix:semicolon
 DECL|struct|riva_par
 r_struct
 id|riva_par
@@ -87,11 +107,35 @@ r_struct
 id|riva_regs
 id|current_state
 suffix:semicolon
-DECL|member|cursor
-r_struct
-id|riva_cursor
+DECL|member|cmap
+id|riva_cfb8_cmap_t
+id|cmap
+(braket
+l_int|256
+)braket
+suffix:semicolon
+multiline_comment|/* VGA DAC palette cache */
+DECL|member|riva_palette
+id|u32
+id|riva_palette
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|cursor_data
+id|u32
+id|cursor_data
+(braket
+l_int|32
 op_star
-id|cursor
+l_int|32
+op_div
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|cursor_reset
+r_int
+id|cursor_reset
 suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|vram
