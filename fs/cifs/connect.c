@@ -2550,10 +2550,6 @@ c_cond
 (paren
 op_logical_neg
 id|value
-op_logical_or
-op_logical_neg
-op_star
-id|value
 )paren
 (brace
 id|vol-&gt;password
@@ -2562,6 +2558,41 @@ l_int|NULL
 suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|value
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* check if string begins with double comma&n;&t;&t;&t;&t;   since that would mean the password really&n;&t;&t;&t;&t;   does start with a comma, and would not&n;&t;&t;&t;&t;   indicate an empty string */
+r_if
+c_cond
+(paren
+id|value
+(braket
+l_int|1
+)braket
+op_ne
+id|separator
+(braket
+l_int|0
+)braket
+)paren
+(brace
+id|vol-&gt;password
+op_assign
+l_int|NULL
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 )brace
 id|temp_len
 op_assign
@@ -2631,7 +2662,6 @@ l_int|0
 r_if
 c_cond
 (paren
-(paren
 id|value
 (braket
 id|temp_len
@@ -2642,7 +2672,9 @@ id|separator
 l_int|0
 )braket
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
 (paren
 id|value
 (braket
@@ -2650,17 +2682,24 @@ id|temp_len
 op_plus
 l_int|1
 )braket
-op_ne
+op_eq
 id|separator
 (braket
 l_int|0
 )braket
 )paren
-)paren
 (brace
-multiline_comment|/* single comma indicating start of next parm */
+id|temp_len
+op_increment
+suffix:semicolon
+multiline_comment|/* skip second comma */
+)brace
+r_else
+(brace
+multiline_comment|/* single comma indicating start&n;&t;&t;&t;&t;&t;&t;&t; of next parm */
 r_break
 suffix:semicolon
+)brace
 )brace
 id|temp_len
 op_increment
@@ -2691,7 +2730,7 @@ id|temp_len
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* move options to point to start of next parm */
+multiline_comment|/* point option to start of next parm */
 id|options
 op_assign
 id|value
@@ -2701,7 +2740,7 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* go from value to (value + temp_len) condensing double commas to singles */
+multiline_comment|/* go from value to value + temp_len condensing &n;&t;&t;&t;&t;double commas to singles. Note that this ends up&n;&t;&t;&t;&t;allocating a few bytes too many, which is ok */
 id|vol-&gt;password
 op_assign
 id|cifs_kcalloc
@@ -2776,7 +2815,13 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* value[temp_len] is zeroed above so&n;&t;&t;&t;&t;&t; vol-&gt;password[temp_len] guaranteed to be null */
+id|vol-&gt;password
+(braket
+id|j
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -6374,6 +6419,7 @@ c_cond
 id|volume_info.username
 )paren
 (brace
+multiline_comment|/* BB fixme parse for domain name here */
 id|cFYI
 c_func
 (paren
