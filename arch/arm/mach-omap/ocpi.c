@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-omap/ocpi.c&n; *&n; * Minimal OCP bus support for OMAP-1610&n; *&n; * Copyright (C) 2003 - 2004 Nokia Corporation&n; * Written by Tony Lindgren &lt;tony@atomide.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * linux/arch/arm/mach-omap/ocpi.c&n; *&n; * Minimal OCP bus support for OMAP-1610 and OMAP-5912&n; *&n; * Copyright (C) 2003 - 2004 Nokia Corporation&n; * Written by Tony Lindgren &lt;tony@atomide.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -48,12 +48,22 @@ r_int
 id|val
 suffix:semicolon
 multiline_comment|/* Make sure there&squot;s clock for OCPI */
-id|val
-op_assign
-id|__raw_readl
+macro_line|#ifdef CONFIG_ARCH_OMAP1610
+r_if
+c_cond
+(paren
+id|cpu_is_omap1610
 c_func
 (paren
-id|ARM_IDLECT3
+)paren
+)paren
+(brace
+id|val
+op_assign
+id|omap_readl
+c_func
+(paren
+id|OMAP1610_ARM_IDLECT3
 )paren
 suffix:semicolon
 id|val
@@ -65,18 +75,57 @@ op_and_assign
 op_complement
 id|IDLOCPI_ARM
 suffix:semicolon
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|val
 comma
-id|ARM_IDLECT3
+id|OMAP1610_ARM_IDLECT3
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP5912
+r_if
+c_cond
+(paren
+id|cpu_is_omap5912
+c_func
+(paren
+)paren
+)paren
+(brace
+id|val
+op_assign
+id|omap_readl
+c_func
+(paren
+id|OMAP5912_ARM_IDLECT3
+)paren
+suffix:semicolon
+id|val
+op_or_assign
+id|EN_OCPI_CK
+suffix:semicolon
+id|val
+op_and_assign
+op_complement
+id|IDLOCPI_ARM
+suffix:semicolon
+id|omap_writel
+c_func
+(paren
+id|val
+comma
+id|OMAP5912_ARM_IDLECT3
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Enable access for OHCI in OCPI */
 id|val
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|OCPI_PROT
@@ -88,7 +137,7 @@ op_complement
 l_int|0xff
 suffix:semicolon
 singleline_comment|//val &amp;= (1 &lt;&lt; 0);&t;/* Allow access only to EMIFS */
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|val
@@ -98,7 +147,7 @@ id|OCPI_PROT
 suffix:semicolon
 id|val
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|OCPI_SEC
@@ -109,7 +158,7 @@ op_and_assign
 op_complement
 l_int|0xff
 suffix:semicolon
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|val
@@ -119,7 +168,7 @@ id|OCPI_SEC
 suffix:semicolon
 id|val
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|OCPI_SEC
@@ -129,7 +178,7 @@ id|val
 op_or_assign
 l_int|0
 suffix:semicolon
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|val
@@ -139,7 +188,7 @@ id|OCPI_SEC
 suffix:semicolon
 id|val
 op_assign
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|OCPI_SINT0
@@ -149,7 +198,7 @@ id|val
 op_or_assign
 l_int|0
 suffix:semicolon
-id|__raw_writel
+id|omap_writel
 c_func
 (paren
 id|val
@@ -182,25 +231,25 @@ c_func
 l_string|&quot;OCPI: addr: 0x%08x cmd: 0x%08x&bslash;n&quot;
 l_string|&quot;      ohci-addr: 0x%08x ohci-status: 0x%08x&bslash;n&quot;
 comma
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|OCPI_FAULT
 )paren
 comma
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|OCPI_CMD_FAULT
 )paren
 comma
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|HOSTUEADDR
 )paren
 comma
-id|__raw_readl
+id|omap_readl
 c_func
 (paren
 id|HOSTUESTATUS
