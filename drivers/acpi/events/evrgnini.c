@@ -437,7 +437,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Could not install pci_config handler for Root Bridge %4.4s, %s&bslash;n&quot;
 comma
-id|pci_root_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|pci_root_node
+)paren
 comma
 id|acpi_format_exception
 (paren

@@ -126,7 +126,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_do_stall&n; *&n; * PARAMETERS:  how_long            - The amount of time to stall&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_do_stall&n; *&n; * PARAMETERS:  how_long            - The amount of time to stall,&n; *                                    in microseconds&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *              Note: ACPI specification requires that Stall() does not&n; *              relinquish the processor, and delays longer than 100 usec&n; *              should use Sleep() instead.  We allow stalls up to 255 usec&n; *              for compatibility with other interpreters and existing BIOSs.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_do_stall
 id|acpi_ex_system_do_stall
@@ -149,23 +149,23 @@ c_cond
 (paren
 id|how_long
 OG
-l_int|100
+l_int|255
 )paren
-multiline_comment|/* 100 microseconds */
+multiline_comment|/* 255 microseconds */
 (brace
-multiline_comment|/*&n;&t;&t; * Longer than 100 usec, use sleep instead&n;&t;&t; * (according to ACPI specification)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Longer than 255 usec, this is an error&n;&t;&t; *&n;&t;&t; * (ACPI specifies 100 usec as max, but this gives some slack in&n;&t;&t; * order to support existing BIOSs)&n;&t;&t; */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Stall: Time parameter is too large (%d)&bslash;n&quot;
+comma
+id|how_long
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
-id|acpi_ex_system_do_suspend
-(paren
-(paren
-id|how_long
-op_div
-l_int|1000
-)paren
-op_plus
-l_int|1
-)paren
+id|AE_AML_OPERAND_VALUE
 suffix:semicolon
 )brace
 r_else
@@ -182,7 +182,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_do_suspend&n; *&n; * PARAMETERS:  how_long            - The amount of time to suspend&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_system_do_suspend&n; *&n; * PARAMETERS:  how_long            - The amount of time to suspend,&n; *                                    in milliseconds&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Suspend running thread for specified amount of time.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_system_do_suspend
 id|acpi_ex_system_do_suspend

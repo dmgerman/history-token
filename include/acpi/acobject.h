@@ -756,35 +756,37 @@ suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * union acpi_descriptor - objects that share a common descriptor identifier&n; *&n; *****************************************************************************/
 multiline_comment|/* Object descriptor types */
 DECL|macro|ACPI_DESC_TYPE_CACHED
-mdefine_line|#define ACPI_DESC_TYPE_CACHED           0x11        /* Used only when object is cached */
+mdefine_line|#define ACPI_DESC_TYPE_CACHED           0x01        /* Used only when object is cached */
 DECL|macro|ACPI_DESC_TYPE_STATE
-mdefine_line|#define ACPI_DESC_TYPE_STATE            0x20
+mdefine_line|#define ACPI_DESC_TYPE_STATE            0x02
 DECL|macro|ACPI_DESC_TYPE_STATE_UPDATE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_UPDATE     0x21
+mdefine_line|#define ACPI_DESC_TYPE_STATE_UPDATE     0x03
 DECL|macro|ACPI_DESC_TYPE_STATE_PACKAGE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_PACKAGE    0x22
+mdefine_line|#define ACPI_DESC_TYPE_STATE_PACKAGE    0x04
 DECL|macro|ACPI_DESC_TYPE_STATE_CONTROL
-mdefine_line|#define ACPI_DESC_TYPE_STATE_CONTROL    0x23
+mdefine_line|#define ACPI_DESC_TYPE_STATE_CONTROL    0x05
 DECL|macro|ACPI_DESC_TYPE_STATE_RPSCOPE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_RPSCOPE    0x24
+mdefine_line|#define ACPI_DESC_TYPE_STATE_RPSCOPE    0x06
 DECL|macro|ACPI_DESC_TYPE_STATE_PSCOPE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_PSCOPE     0x25
+mdefine_line|#define ACPI_DESC_TYPE_STATE_PSCOPE     0x07
 DECL|macro|ACPI_DESC_TYPE_STATE_WSCOPE
-mdefine_line|#define ACPI_DESC_TYPE_STATE_WSCOPE     0x26
+mdefine_line|#define ACPI_DESC_TYPE_STATE_WSCOPE     0x08
 DECL|macro|ACPI_DESC_TYPE_STATE_RESULT
-mdefine_line|#define ACPI_DESC_TYPE_STATE_RESULT     0x27
+mdefine_line|#define ACPI_DESC_TYPE_STATE_RESULT     0x09
 DECL|macro|ACPI_DESC_TYPE_STATE_NOTIFY
-mdefine_line|#define ACPI_DESC_TYPE_STATE_NOTIFY     0x28
+mdefine_line|#define ACPI_DESC_TYPE_STATE_NOTIFY     0x0A
 DECL|macro|ACPI_DESC_TYPE_STATE_THREAD
-mdefine_line|#define ACPI_DESC_TYPE_STATE_THREAD     0x29
+mdefine_line|#define ACPI_DESC_TYPE_STATE_THREAD     0x0B
 DECL|macro|ACPI_DESC_TYPE_WALK
-mdefine_line|#define ACPI_DESC_TYPE_WALK             0x44
+mdefine_line|#define ACPI_DESC_TYPE_WALK             0x0C
 DECL|macro|ACPI_DESC_TYPE_PARSER
-mdefine_line|#define ACPI_DESC_TYPE_PARSER           0x66
+mdefine_line|#define ACPI_DESC_TYPE_PARSER           0x0D
 DECL|macro|ACPI_DESC_TYPE_OPERAND
-mdefine_line|#define ACPI_DESC_TYPE_OPERAND          0x88
+mdefine_line|#define ACPI_DESC_TYPE_OPERAND          0x0E
 DECL|macro|ACPI_DESC_TYPE_NAMED
-mdefine_line|#define ACPI_DESC_TYPE_NAMED            0xAA
+mdefine_line|#define ACPI_DESC_TYPE_NAMED            0x0F
+DECL|macro|ACPI_DESC_TYPE_MAX
+mdefine_line|#define ACPI_DESC_TYPE_MAX              0x0F
 DECL|union|acpi_descriptor
 r_union
 id|acpi_descriptor

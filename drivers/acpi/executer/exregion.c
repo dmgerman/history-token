@@ -278,12 +278,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not map memory at %8.8X%8.8X, size %X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address
 )paren
@@ -343,12 +338,7 @@ id|function
 comma
 id|bit_width
 comma
-id|ACPI_HIDWORD
-(paren
-id|address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address
 )paren
@@ -623,12 +613,7 @@ id|function
 comma
 id|bit_width
 comma
-id|ACPI_HIDWORD
-(paren
-id|address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address
 )paren

@@ -631,6 +631,20 @@ op_ne
 id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;acpi_ex_resolve_multiple: Not a NS node %p [%s]&bslash;n&quot;
+comma
+id|node
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|node
+)paren
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL
@@ -731,6 +745,20 @@ op_ne
 id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;acpi_ex_resolve_multiple: Not a NS node %p [%s]&bslash;n&quot;
+comma
+id|node
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|node
+)paren
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL

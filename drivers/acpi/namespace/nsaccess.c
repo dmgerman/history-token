@@ -666,9 +666,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;[%p] Not a namespace node&bslash;n&quot;
+l_string|&quot;%p Not a namespace node [%s]&bslash;n&quot;
 comma
 id|prefix_node
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|prefix_node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -790,7 +795,10 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;Searching relative to prefix scope [%4.4s] (%p)&bslash;n&quot;
 comma
-id|prefix_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|prefix_node
+)paren
 comma
 id|prefix_node
 )paren
@@ -874,7 +882,10 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;Search scope is [%4.4s], path has %d carat(s)&bslash;n&quot;
 comma
-id|this_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|this_node
+)paren
 comma
 id|num_carats
 )paren

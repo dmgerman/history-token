@@ -608,12 +608,7 @@ id|region_obj-&gt;region.address_space-&gt;address_space
 comma
 id|handler
 comma
-id|ACPI_HIDWORD
-(paren
-id|address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address
 )paren

@@ -460,7 +460,10 @@ id|space_id
 comma
 id|space_id
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|node
 comma

@@ -365,7 +365,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%4.4s %-12s %p &quot;
 comma
-id|this_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|this_node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -486,12 +489,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;= %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -658,12 +656,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot; Addr %8.8X%8.8X Len %.4X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;region.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;region.address
 )paren
@@ -712,7 +705,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Buf [%4.4s]&quot;
 comma
-id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.node
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -725,7 +721,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Rgn [%4.4s]&quot;
 comma
-id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;common_field.region_obj-&gt;region.node
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -737,9 +736,15 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Rgn [%4.4s] Bnk [%4.4s]&quot;
 comma
-id|obj_desc-&gt;common_field.region_obj-&gt;region.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;common_field.region_obj-&gt;region.node
+)paren
 comma
-id|obj_desc-&gt;bank_field.bank_obj-&gt;common_field.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;bank_field.bank_obj-&gt;common_field.node
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -751,9 +756,15 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Idx [%4.4s] Dat [%4.4s]&quot;
 comma
-id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;index_field.index_obj-&gt;common_field.node
+)paren
 comma
-id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;index_field.data_obj-&gt;common_field.node
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -765,16 +776,10 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Target %4.4s (%p)&bslash;n&quot;
 comma
+id|acpi_ut_get_node_name
 (paren
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
 id|obj_desc
 )paren
-op_member_access_from_pointer
-id|name.ascii
 comma
 id|obj_desc
 )paren
@@ -814,7 +819,7 @@ id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Off %.2X Len %.2X Acc %.2hd&bslash;n&quot;
+l_string|&quot; Off %.3X Len %.2X Acc %.2hd&bslash;n&quot;
 comma
 (paren
 id|obj_desc-&gt;common_field.base_byte_offset
@@ -900,16 +905,9 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; N:%X%X&bslash;n&quot;
+l_string|&quot; I:%8.8X8.8%X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-c_func
-(paren
-id|obj_desc-&gt;integer.value
-)paren
-comma
-id|ACPI_LODWORD
-c_func
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;integer.value
 )paren
@@ -1110,7 +1108,12 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;(String or Buffer ptr - not an object descriptor)&bslash;n&quot;
+l_string|&quot;(String or Buffer ptr - not an object descriptor) [%s]&bslash;n&quot;
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|obj_desc
+)paren
 )paren
 suffix:semicolon
 id|bytes_to_dump

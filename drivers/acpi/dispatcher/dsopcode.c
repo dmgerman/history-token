@@ -402,7 +402,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s] buffer_field Arg Init&bslash;n&quot;
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -714,7 +717,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s] op_region Arg Init at AML %p&bslash;n&quot;
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|extra_desc-&gt;extra.aml_start
 )paren
@@ -890,11 +896,16 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;(%s) destination must be a NS Node&bslash;n&quot;
+l_string|&quot;(%s) destination not a NS Node [%s]&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
 id|aml_opcode
+)paren
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|result_desc
 )paren
 )paren
 )paren
@@ -1088,22 +1099,19 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Field [%4.4s] size %d exceeds Buffer [%4.4s] size %d (bits)&bslash;n&quot;
 comma
+id|acpi_ut_get_node_name
 (paren
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
 id|result_desc
 )paren
-op_member_access_from_pointer
-id|name.ascii
 comma
 id|bit_offset
 op_plus
 id|bit_count
 comma
-id|buffer_desc-&gt;buffer.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|buffer_desc-&gt;buffer.node
+)paren
 comma
 l_int|8
 op_star
@@ -1658,12 +1666,7 @@ l_string|&quot;rgn_obj %p Addr %8.8X%8.8X Len %X&bslash;n&quot;
 comma
 id|obj_desc
 comma
-id|ACPI_HIDWORD
-(paren
-id|obj_desc-&gt;region.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|obj_desc-&gt;region.address
 )paren

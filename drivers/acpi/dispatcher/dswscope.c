@@ -213,7 +213,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s] (%s)&quot;
 comma
-id|old_scope_info-&gt;scope.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|old_scope_info-&gt;scope.node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -244,7 +247,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;, New scope -&gt; [%4.4s] (%s)&bslash;n&quot;
 comma
-id|scope_info-&gt;scope.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|scope_info-&gt;scope.node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -331,7 +337,10 @@ id|u32
 )paren
 id|walk_state-&gt;scope_depth
 comma
-id|scope_info-&gt;scope.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|scope_info-&gt;scope.node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -357,7 +366,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s] (%s)&bslash;n&quot;
 comma
-id|new_scope_info-&gt;scope.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|new_scope_info-&gt;scope.node
+)paren
 comma
 id|acpi_ut_get_type_name
 (paren

@@ -111,7 +111,14 @@ multiline_comment|/* Not a name handle */
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;ns_attach_object: Invalid handle&bslash;n&quot;
+l_string|&quot;ns_attach_object: Invalid handle %p [%s]&bslash;n&quot;
+comma
+id|node
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -249,7 +256,10 @@ id|obj_desc
 comma
 id|node
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -416,7 +426,10 @@ l_string|&quot;Node %p [%4.4s] Object %p&bslash;n&quot;
 comma
 id|node
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|obj_desc
 )paren

@@ -527,12 +527,7 @@ l_string|&quot;RSDP located at %p, points to RSDT physical=%8.8X%8.8X &bslash;n&
 comma
 id|acpi_gbl_RSDP
 comma
-id|ACPI_HIDWORD
-(paren
-id|address.pointer.value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address.pointer.value
 )paren

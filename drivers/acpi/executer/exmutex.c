@@ -183,7 +183,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Cannot acquire Mutex [%4.4s], null thread info&bslash;n&quot;
 comma
-id|obj_desc-&gt;mutex.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;mutex.node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -207,7 +210,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Cannot acquire Mutex [%4.4s], incorrect sync_level&bslash;n&quot;
 comma
-id|obj_desc-&gt;mutex.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;mutex.node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -345,7 +351,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Cannot release Mutex [%4.4s], not acquired&bslash;n&quot;
 comma
-id|obj_desc-&gt;mutex.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;mutex.node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -368,7 +377,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Cannot release Mutex [%4.4s], null thread info&bslash;n&quot;
 comma
-id|obj_desc-&gt;mutex.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;mutex.node
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -394,7 +406,10 @@ l_string|&quot;Thread %X cannot release Mutex [%4.4s] acquired by thread %X&bsla
 comma
 id|walk_state-&gt;thread-&gt;thread_id
 comma
-id|obj_desc-&gt;mutex.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;mutex.node
+)paren
 comma
 id|obj_desc-&gt;mutex.owner_thread-&gt;thread_id
 )paren
@@ -420,7 +435,10 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Cannot release Mutex [%4.4s], incorrect sync_level&bslash;n&quot;
 comma
-id|obj_desc-&gt;mutex.node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|obj_desc-&gt;mutex.node
+)paren
 )paren
 )paren
 suffix:semicolon

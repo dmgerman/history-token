@@ -1236,9 +1236,12 @@ id|ACPI_DESC_TYPE_OPERAND
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Invalid descriptor type while storing to method arg: %X&bslash;n&quot;
+l_string|&quot;Invalid descriptor type while storing to method arg: [%s]&bslash;n&quot;
 comma
-id|current_obj_desc-&gt;common.type
+id|acpi_ut_get_descriptor_name
+(paren
+id|current_obj_desc
+)paren
 )paren
 )paren
 suffix:semicolon

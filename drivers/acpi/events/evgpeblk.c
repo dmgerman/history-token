@@ -1653,12 +1653,7 @@ id|gpe_device-&gt;name.ascii
 comma
 id|gpe_block-&gt;register_count
 comma
-id|ACPI_HIDWORD
-(paren
-id|gpe_block-&gt;block_address.address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|gpe_block-&gt;block_address.address
 )paren

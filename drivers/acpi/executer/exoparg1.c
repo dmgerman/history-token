@@ -724,19 +724,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Integer too large to convert to BCD: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-c_func
-(paren
-id|operand
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|integer.value
-)paren
-comma
-id|ACPI_LODWORD
-c_func
+id|ACPI_FORMAT_UINT64
 (paren
 id|operand
 (braket

@@ -595,12 +595,7 @@ l_string|&quot;%s %8.8X%8.8X&bslash;n&quot;
 comma
 id|acpi_gbl_fn_exit_str
 comma
-id|ACPI_HIDWORD
-(paren
-id|value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|value
 )paren

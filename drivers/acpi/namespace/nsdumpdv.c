@@ -124,12 +124,7 @@ l_string|&quot;    HID: %s, ADR: %8.8X%8.8X, Status: %X&bslash;n&quot;
 comma
 id|info-&gt;hardware_id.value
 comma
-id|ACPI_HIDWORD
-(paren
-id|info-&gt;address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|info-&gt;address
 )paren

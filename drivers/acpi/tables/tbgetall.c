@@ -432,12 +432,7 @@ id|acpi_format_exception
 id|status
 )paren
 comma
-id|ACPI_HIDWORD
-(paren
-id|address.pointer.value
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address.pointer.value
 )paren

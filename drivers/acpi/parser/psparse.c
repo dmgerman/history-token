@@ -1031,6 +1031,9 @@ id|op
 multiline_comment|/* Get the next opcode from the AML stream */
 id|walk_state-&gt;aml_offset
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_PTR_DIFF
 (paren
 id|parser_state-&gt;aml
@@ -1620,6 +1623,9 @@ id|walk_state-&gt;arg_count
 (brace
 id|walk_state-&gt;aml_offset
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_PTR_DIFF
 (paren
 id|parser_state-&gt;aml

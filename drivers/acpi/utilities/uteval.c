@@ -88,7 +88,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s.%s] was not found&bslash;n&quot;
 comma
-id|prefix_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|prefix_node
+)paren
 comma
 id|path
 )paren
@@ -1027,7 +1030,10 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;_STA on %4.4s was not found, assuming device is present&bslash;n&quot;
 comma
-id|device_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|device_node
+)paren
 )paren
 )paren
 suffix:semicolon

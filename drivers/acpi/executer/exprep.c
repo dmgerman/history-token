@@ -614,6 +614,9 @@ id|field_bit_position
 suffix:semicolon
 id|obj_desc-&gt;common_field.base_byte_offset
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_ROUND_DOWN
 (paren
 id|nearest_byte_address
@@ -1075,7 +1078,10 @@ l_string|&quot;Set named_obj %p [%4.4s], obj_desc %p&bslash;n&quot;
 comma
 id|info-&gt;field_node
 comma
-id|info-&gt;field_node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|info-&gt;field_node
+)paren
 comma
 id|obj_desc
 )paren

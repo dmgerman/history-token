@@ -1269,7 +1269,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; *  so exit with an error&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; * exit with an error&n;&t;&t;&t; */
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_INVALID_RESOURCE_TYPE
@@ -1279,8 +1279,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Update the return value and counter&n;&t;&t; */
 id|buffer_size
 op_add_assign
+(paren
+id|u32
+)paren
 id|ACPI_ALIGN_RESOURCE_SIZE
-c_func
 (paren
 id|structure_size
 )paren

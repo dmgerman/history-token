@@ -359,7 +359,10 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;No notify handler for [%4.4s] node %p&bslash;n&quot;
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|node
 )paren

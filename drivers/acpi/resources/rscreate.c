@@ -733,6 +733,9 @@ suffix:semicolon
 multiline_comment|/* Now align the current length */
 id|user_prt-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_ROUND_UP_to_64_bITS
 (paren
 id|user_prt-&gt;length

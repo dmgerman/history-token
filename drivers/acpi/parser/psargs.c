@@ -961,6 +961,9 @@ id|parser_state
 id|u32
 id|aml_offset
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_PTR_DIFF
 (paren
 id|parser_state-&gt;aml
@@ -1381,6 +1384,9 @@ suffix:semicolon
 multiline_comment|/* Fill in bytelist data */
 id|arg-&gt;common.value.size
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_PTR_DIFF
 (paren
 id|parser_state-&gt;pkg_end

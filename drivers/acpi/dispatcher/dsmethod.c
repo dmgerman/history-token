@@ -75,16 +75,10 @@ id|ACPI_DB_PARSE
 comma
 l_string|&quot;**** Parsing [%4.4s] **** named_obj=%p&bslash;n&quot;
 comma
+id|acpi_ut_get_node_name
 (paren
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
 id|obj_handle
 )paren
-op_member_access_from_pointer
-id|name.ascii
 comma
 id|obj_handle
 )paren
@@ -307,16 +301,10 @@ id|ACPI_DB_PARSE
 comma
 l_string|&quot;**** [%4.4s] Parsed **** named_obj=%p Op=%p&bslash;n&quot;
 comma
+id|acpi_ut_get_node_name
 (paren
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
 id|obj_handle
 )paren
-op_member_access_from_pointer
-id|name.ascii
 comma
 id|obj_handle
 comma

@@ -336,66 +336,18 @@ r_return
 id|TRUE
 )paren
 suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_NAMED
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;**** Obj %p is a named obj, not ACPI obj&bslash;n&quot;
-comma
-id|object
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_PARSER
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;**** Obj %p is a parser obj, not ACPI obj&bslash;n&quot;
-comma
-id|object
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_DESC_TYPE_CACHED
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;**** Obj %p has already been released to internal cache&bslash;n&quot;
-comma
-id|object
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_ERROR
+id|ACPI_DB_INFO
 comma
-l_string|&quot;**** Obj %p has unknown descriptor type %X&bslash;n&quot;
+l_string|&quot;%p is not not an ACPI operand obj [%s]&bslash;n&quot;
 comma
 id|object
 comma
-id|ACPI_GET_DESCRIPTOR_TYPE
+id|acpi_ut_get_descriptor_name
 (paren
 id|object
 )paren
@@ -540,9 +492,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Obj %p is not an ACPI object&bslash;n&quot;
+l_string|&quot;%p is not an ACPI Operand object [%s]&bslash;n&quot;
 comma
 id|object
+comma
+id|acpi_ut_get_descriptor_name
+(paren
+id|object
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -210,12 +210,7 @@ id|ACPI_REPORT_ERROR
 (paren
 l_string|&quot;Could not map memory at %8.8X%8.8X for length %X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address-&gt;pointer.physical
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address-&gt;pointer.physical
 )paren
@@ -667,12 +662,7 @@ l_string|&quot;Could not map memory for table [%4.4s] at %8.8X%8.8X for length %
 comma
 id|header-&gt;signature
 comma
-id|ACPI_HIDWORD
-(paren
-id|address-&gt;pointer.physical
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address-&gt;pointer.physical
 )paren
@@ -772,12 +762,7 @@ l_string|&quot;Found table [%4.4s] at %8.8X%8.8X, mapped/copied to %p&bslash;n&q
 comma
 id|full_table-&gt;signature
 comma
-id|ACPI_HIDWORD
-(paren
-id|address-&gt;pointer.physical
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address-&gt;pointer.physical
 )paren

@@ -558,8 +558,10 @@ id|buffer
 suffix:semicolon
 id|resource-&gt;length
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_ALIGN_RESOURCE_SIZE
-c_func
 (paren
 id|resource-&gt;length
 )paren
@@ -567,7 +569,6 @@ suffix:semicolon
 id|buffer
 op_add_assign
 id|ACPI_ALIGN_RESOURCE_SIZE
-c_func
 (paren
 id|structure_size
 )paren

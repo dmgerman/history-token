@@ -463,7 +463,6 @@ c_loop
 (paren
 id|table_desc
 )paren
-suffix:semicolon
 (brace
 multiline_comment|/*&n;&t;&t; * Delete all namespace entries owned by this table.  Note that these&n;&t;&t; * entries can appear anywhere in the namespace by virtue of the AML&n;&t;&t; * &quot;Scope&quot; operator.  Thus, we need to track ownership by an ID, not&n;&t;&t; * simply a position within the hierarchy&n;&t;&t; */
 id|acpi_ns_delete_namespace_by_owner

@@ -373,7 +373,10 @@ id|ACPI_STRNCPY
 (paren
 id|buffer-&gt;pointer
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|ACPI_NAME_SIZE
 )paren

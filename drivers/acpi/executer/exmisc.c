@@ -140,14 +140,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Invalid descriptor type %X in %p&bslash;n&quot;
+l_string|&quot;%p has invalid descriptor [%s]&bslash;n&quot;
 comma
-id|ACPI_GET_DESCRIPTOR_TYPE
+id|obj_desc
+comma
+id|acpi_ut_get_descriptor_name
 (paren
 id|obj_desc
 )paren
-comma
-id|obj_desc
 )paren
 )paren
 suffix:semicolon

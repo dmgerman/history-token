@@ -1819,12 +1819,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Granularity: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address64_data-&gt;granularity
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address64_data-&gt;granularity
 )paren
@@ -1834,12 +1829,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Address range min: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address64_data-&gt;min_address_range
-)paren
-comma
-id|ACPI_HIDWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address64_data-&gt;min_address_range
 )paren
@@ -1849,12 +1839,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Address range max: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address64_data-&gt;max_address_range
-)paren
-comma
-id|ACPI_HIDWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address64_data-&gt;max_address_range
 )paren
@@ -1864,12 +1849,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Address translation offset: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address64_data-&gt;address_translation_offset
-)paren
-comma
-id|ACPI_HIDWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address64_data-&gt;address_translation_offset
 )paren
@@ -1879,12 +1859,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Address Length: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|address64_data-&gt;address_length
-)paren
-comma
-id|ACPI_HIDWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|address64_data-&gt;address_length
 )paren
@@ -2403,12 +2378,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;  Address: %8.8X%8.8X&bslash;n&quot;
 comma
-id|ACPI_HIDWORD
-(paren
-id|prt_element-&gt;address
-)paren
-comma
-id|ACPI_LODWORD
+id|ACPI_FORMAT_UINT64
 (paren
 id|prt_element-&gt;address
 )paren

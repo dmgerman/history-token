@@ -142,7 +142,10 @@ id|next_node-&gt;type
 comma
 id|next_node
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|node
 )paren
@@ -198,7 +201,10 @@ id|acpi_ut_get_type_name
 id|type
 )paren
 comma
-id|node-&gt;name.ascii
+id|acpi_ut_get_node_name
+(paren
+id|node
+)paren
 comma
 id|node
 comma
