@@ -341,6 +341,10 @@ DECL|member|encap_dport
 id|__u16
 id|encap_dport
 suffix:semicolon
+DECL|member|encap_oa
+id|xfrm_address_t
+id|encap_oa
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Netlink message attributes.  */
