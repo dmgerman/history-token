@@ -406,6 +406,8 @@ suffix:semicolon
 multiline_comment|/* flags */
 DECL|macro|SAA7146_EXT_SWAP_ODD_EVEN
 mdefine_line|#define SAA7146_EXT_SWAP_ODD_EVEN       0x1     /* needs odd/even fields swapped */
+DECL|macro|SAA7146_USE_PORT_B_FOR_VBI
+mdefine_line|#define SAA7146_USE_PORT_B_FOR_VBI&t;0x2     /* use input port b for vbi hardware bug workaround */
 DECL|struct|saa7146_ext_vv
 r_struct
 id|saa7146_ext_vv

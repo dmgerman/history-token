@@ -279,7 +279,36 @@ id|state
 )paren
 )paren
 suffix:semicolon
+id|DEB_EE
+c_func
+(paren
+(paren
+l_string|&quot;q-&gt;curr:%p&bslash;n&quot;
+comma
+id|q-&gt;curr
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* finish current buffer */
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|q-&gt;curr
+)paren
+(brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;aiii. no current buffer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|q-&gt;curr-&gt;vb.state
 op_assign
 id|state
@@ -984,7 +1013,23 @@ id|fh-&gt;type
 op_assign
 id|type
 suffix:semicolon
-id|saa7146_video_uops
+r_if
+c_cond
+(paren
+id|fh-&gt;type
+op_eq
+id|V4L2_BUF_TYPE_VBI_CAPTURE
+)paren
+(brace
+id|DEB_S
+c_func
+(paren
+(paren
+l_string|&quot;initializing vbi...&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|saa7146_vbi_uops
 dot
 id|open
 c_func
@@ -994,19 +1039,18 @@ comma
 id|fh
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-id|BOARD_CAN_DO_VBI
+)brace
+r_else
+(brace
+id|DEB_S
 c_func
 (paren
-id|dev
+(paren
+l_string|&quot;initializing video...&bslash;n&quot;
 )paren
 )paren
-(brace
-id|saa7146_vbi_uops
+suffix:semicolon
+id|saa7146_video_uops
 dot
 id|open
 c_func
@@ -1110,7 +1154,15 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-id|saa7146_video_uops
+r_if
+c_cond
+(paren
+id|fh-&gt;type
+op_eq
+id|V4L2_BUF_TYPE_VBI_CAPTURE
+)paren
+(brace
+id|saa7146_vbi_uops
 dot
 id|release
 c_func
@@ -1122,19 +1174,10 @@ comma
 id|file
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-id|BOARD_CAN_DO_VBI
-c_func
-(paren
-id|dev
-)paren
-)paren
+)brace
+r_else
 (brace
-id|saa7146_vbi_uops
+id|saa7146_video_uops
 dot
 id|release
 c_func
@@ -1577,24 +1620,7 @@ r_case
 id|V4L2_BUF_TYPE_VIDEO_CAPTURE
 suffix:colon
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;V4L2_BUF_TYPE_VIDEO_CAPTURE: file:%p, data:%p, count:%lun&quot;
-comma
-id|file
-comma
-id|data
-comma
-(paren
-r_int
-r_int
-)paren
-id|count
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;DEB_EE((&quot;V4L2_BUF_TYPE_VIDEO_CAPTURE: file:%p, data:%p, count:%lun&quot;, file, data, (unsigned long)count));
 r_return
 id|saa7146_video_uops
 dot
@@ -1615,24 +1641,7 @@ r_case
 id|V4L2_BUF_TYPE_VBI_CAPTURE
 suffix:colon
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;V4L2_BUF_TYPE_VBI_CAPTURE: file:%p, data:%p, count:%lu&bslash;n&quot;
-comma
-id|file
-comma
-id|data
-comma
-(paren
-r_int
-r_int
-)paren
-id|count
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;&t;DEB_EE((&quot;V4L2_BUF_TYPE_VBI_CAPTURE: file:%p, data:%p, count:%lu&bslash;n&quot;, file, data, (unsigned long)count));
 r_return
 id|saa7146_vbi_uops
 dot
@@ -2164,11 +2173,13 @@ id|DEB_EE
 c_func
 (paren
 (paren
-l_string|&quot;dev:%p, name:&squot;%s&squot;&bslash;n&quot;
+l_string|&quot;dev:%p, name:&squot;%s&squot;, type:%d&bslash;n&quot;
 comma
 id|dev
 comma
 id|name
+comma
+id|type
 )paren
 )paren
 suffix:semicolon
@@ -2216,7 +2227,7 @@ id|ERR
 c_func
 (paren
 (paren
-l_string|&quot;cannot register vbi v4l2 device. skipping.&bslash;n&quot;
+l_string|&quot;cannot register v4l2 device. skipping.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

@@ -200,7 +200,46 @@ c_func
 l_int|0xc000008c
 )paren
 suffix:semicolon
-multiline_comment|/* wait for vbi_a */
+multiline_comment|/* wait for vbi_a or vbi_b*/
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+(paren
+id|SAA7146_USE_PORT_B_FOR_VBI
+op_amp
+id|dev-&gt;ext_vv_data-&gt;flags
+)paren
+)paren
+(brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;...using port b&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|WRITE_RPS1
+c_func
+(paren
+id|CMD_PAUSE
+op_or
+id|MASK_09
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;...using port a&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|WRITE_RPS1
 c_func
 (paren
@@ -209,6 +248,7 @@ op_or
 id|MASK_10
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* upload brs */
 id|WRITE_RPS1
 c_func
@@ -579,7 +619,15 @@ id|DEB_VBI
 c_func
 (paren
 (paren
-l_string|&quot;aborted.&bslash;n&quot;
+l_string|&quot;aborted (rps:0x%08x).&bslash;n&quot;
+comma
+id|saa7146_read
+c_func
+(paren
+id|dev
+comma
+id|RPS_ADDR1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1534,6 +1582,28 @@ id|vv-&gt;vbi_streaming
 op_assign
 l_int|NULL
 suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|vv-&gt;vbi_q.timeout
+)paren
+suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|fh-&gt;vbi_read_timeout
+)paren
+suffix:semicolon
+id|DEB_VBI
+c_func
+(paren
+(paren
+l_string|&quot;out&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1802,12 +1872,8 @@ r_int
 )paren
 id|fh
 suffix:semicolon
-id|vbi_workaround
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
+multiline_comment|/* fixme: enable this again, if the dvb-c w/ analog module work properly */
+multiline_comment|/*&n;&t;vbi_workaround(dev);&n;*/
 )brace
 DECL|function|vbi_close
 r_static

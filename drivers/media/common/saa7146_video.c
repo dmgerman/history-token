@@ -5770,7 +5770,8 @@ comma
 op_amp
 id|buf-&gt;vb
 comma
-l_int|NULL
+op_amp
+id|vv-&gt;ov_fb
 )paren
 suffix:semicolon
 r_if
