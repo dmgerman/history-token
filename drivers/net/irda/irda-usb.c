@@ -3604,14 +3604,10 @@ suffix:semicolon
 multiline_comment|/* Create a network device for us */
 id|netdev
 op_assign
-id|alloc_netdev
+id|alloc_irdadev
 c_func
 (paren
 l_int|0
-comma
-l_string|&quot;irda%d&quot;
-comma
-id|irda_device_setup
 )paren
 suffix:semicolon
 r_if
