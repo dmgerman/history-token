@@ -4,6 +4,7 @@ DECL|macro|_LINUX_DS_H
 mdefine_line|#define _LINUX_DS_H
 macro_line|#include &lt;pcmcia/driver_ops.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|tuple_parse_t
 r_typedef
 r_struct
@@ -352,6 +353,77 @@ DECL|macro|register_pcmcia_driver
 mdefine_line|#define register_pcmcia_driver register_pccard_driver
 DECL|macro|unregister_pcmcia_driver
 mdefine_line|#define unregister_pcmcia_driver unregister_pccard_driver
+r_extern
+r_struct
+id|bus_type
+id|pcmcia_bus_type
+suffix:semicolon
+DECL|struct|pcmcia_driver
+r_struct
+id|pcmcia_driver
+(brace
+DECL|member|use_count
+DECL|member|status
+r_int
+id|use_count
+comma
+id|status
+suffix:semicolon
+DECL|member|attach
+id|dev_link_t
+op_star
+(paren
+op_star
+id|attach
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|detach
+r_void
+(paren
+op_star
+id|detach
+)paren
+(paren
+id|dev_link_t
+op_star
+)paren
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+DECL|member|drv
+r_struct
+id|device_driver
+id|drv
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|pcmcia_register_driver
+c_func
+(paren
+r_struct
+id|pcmcia_driver
+op_star
+id|driver
+)paren
+suffix:semicolon
+r_void
+id|pcmcia_unregister_driver
+c_func
+(paren
+r_struct
+id|pcmcia_driver
+op_star
+id|driver
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_DS_H */
 eof

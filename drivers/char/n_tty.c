@@ -5066,6 +5066,9 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+id|b
+op_decrement
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -5274,6 +5277,9 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+id|b
+op_decrement
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -5403,6 +5409,9 @@ id|retval
 op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+id|b
+op_decrement
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5568,9 +5577,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|retval
-op_logical_and
 id|size
 )paren
 (brace

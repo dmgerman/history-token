@@ -8850,6 +8850,20 @@ comma
 id|version
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|driver_register
+c_func
+(paren
+op_amp
+id|i82365_driver
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8860,13 +8874,6 @@ suffix:semicolon
 id|sockets
 op_assign
 l_int|0
-suffix:semicolon
-id|driver_register
-c_func
-(paren
-op_amp
-id|i82365_driver
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISA
 id|isa_probe

@@ -3334,7 +3334,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Determime highest Supported SPEC&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Determine highest Supported SPEC&n;&t;&t; */
 r_for
 c_loop
 (paren

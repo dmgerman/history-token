@@ -185,11 +185,6 @@ r_int
 id|dma_irq
 suffix:semicolon
 multiline_comment|/* Controller IRQ&t;&t;*/
-DECL|member|state
-r_int
-id|state
-suffix:semicolon
-multiline_comment|/* Controller state&t;&t;*/
 DECL|member|cur_sg
 r_struct
 id|scatterlist

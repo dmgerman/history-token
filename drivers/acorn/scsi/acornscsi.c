@@ -9596,7 +9596,7 @@ op_assign
 id|AS_Host
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -9611,7 +9611,7 @@ c_func
 (paren
 l_string|&quot;scsi%d: queuecommand called with NULL done function [cmd=%p]&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|host-&gt;host-&gt;host_no
 comma
 id|SCpnt
 )paren
@@ -9653,7 +9653,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;scsi%d.%c: WRITE attempted with NO_WRITE flag set&bslash;n&quot;
 comma
-id|SCpnt-&gt;host-&gt;host_no
+id|host-&gt;host-&gt;host_no
 comma
 l_char|&squot;0&squot;
 op_plus
@@ -10113,7 +10113,7 @@ op_assign
 id|AS_Host
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|result
@@ -10333,7 +10333,7 @@ op_assign
 id|AS_Host
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|Scsi_Cmnd
 op_star

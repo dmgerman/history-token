@@ -844,8 +844,8 @@ comma
 id|c
 comma
 id|c
-OL
-l_int|2
+op_eq
+l_int|1
 ques
 c_cond
 l_string|&quot;&quot;

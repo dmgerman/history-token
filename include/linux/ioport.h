@@ -267,6 +267,8 @@ DECL|macro|request_region
 mdefine_line|#define request_region(start,n,name)&t;__request_region(&amp;ioport_resource, (start), (n), (name))
 DECL|macro|request_mem_region
 mdefine_line|#define request_mem_region(start,n,name) __request_region(&amp;iomem_resource, (start), (n), (name))
+DECL|macro|rename_region
+mdefine_line|#define rename_region(region, newname) do { (region)-&gt;name = (newname); } while (0)
 r_extern
 r_struct
 id|resource
