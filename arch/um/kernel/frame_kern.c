@@ -5,6 +5,8 @@ macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;frame_kern.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
+macro_line|#include &quot;choose-mode.h&quot;
+macro_line|#include &quot;mode.h&quot;
 DECL|function|copy_restorer
 r_static
 r_int
@@ -90,6 +92,52 @@ comma
 r_sizeof
 (paren
 id|restorer
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|copy_sc_to_user
+r_static
+r_int
+id|copy_sc_to_user
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_struct
+id|pt_regs
+op_star
+id|from
+)paren
+(brace
+r_return
+id|CHOOSE_MODE
+c_func
+(paren
+id|copy_sc_to_user_tt
+c_func
+(paren
+id|to
+comma
+id|from-&gt;regs.mode.tt
+comma
+op_amp
+id|signal_frame_sc_sr.arch
+)paren
+comma
+id|copy_sc_to_user_skas
+c_func
+(paren
+id|to
+comma
+op_amp
+id|from-&gt;regs
+comma
+id|current-&gt;thread.cr2
+comma
+id|current-&gt;thread.err
 )paren
 )paren
 suffix:semicolon
@@ -227,10 +275,7 @@ op_star
 )paren
 id|sc
 comma
-id|regs-&gt;regs.mode.tt
-comma
-op_amp
-id|signal_frame_sc.arch
+id|regs
 )paren
 op_logical_or
 id|copy_to_user
@@ -557,10 +602,7 @@ c_func
 (paren
 id|user_sc
 comma
-id|regs-&gt;regs.mode.tt
-comma
-op_amp
-id|signal_frame_sc.arch
+id|regs
 )paren
 op_logical_or
 id|copy_to_user
