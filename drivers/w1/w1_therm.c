@@ -480,6 +480,11 @@ op_amp
 id|sl-&gt;refcnt
 )paren
 suffix:semicolon
+id|smp_mb__after_atomic_inc
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -920,6 +925,11 @@ id|dev-&gt;mutex
 suffix:semicolon
 id|out_dec
 suffix:colon
+id|smp_mb__before_atomic_inc
+c_func
+(paren
+)paren
+suffix:semicolon
 id|atomic_dec
 c_func
 (paren
