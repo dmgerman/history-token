@@ -47,7 +47,8 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon
@@ -1217,7 +1218,8 @@ id|sctp_chunk_t
 op_star
 id|repl
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon
@@ -1628,7 +1630,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon
@@ -3577,7 +3580,8 @@ id|sctp_init_chunk_t
 op_star
 id|peer_init
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon
@@ -3799,7 +3803,8 @@ id|sctp_init_chunk_t
 op_star
 id|peer_init
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon
@@ -4057,7 +4062,8 @@ op_star
 id|new_asoc
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 op_assign
@@ -7362,7 +7368,8 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon
@@ -7475,7 +7482,8 @@ id|sctp_chunk_t
 op_star
 id|reply
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ev
 suffix:semicolon

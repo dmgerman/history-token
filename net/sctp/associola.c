@@ -525,14 +525,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Create an input queue.  */
-id|sctp_inqueue_init
+id|sctp_inq_init
 c_func
 (paren
 op_amp
 id|asoc-&gt;base.inqueue
 )paren
 suffix:semicolon
-id|sctp_inqueue_set_th_handler
+id|sctp_inq_set_th_handler
 c_func
 (paren
 op_amp
@@ -737,7 +737,7 @@ id|asoc-&gt;ulpq
 )paren
 suffix:semicolon
 multiline_comment|/* Dispose of any pending chunks on the inqueue. */
-id|sctp_inqueue_free
+id|sctp_inq_free
 c_func
 (paren
 op_amp
@@ -1329,7 +1329,8 @@ id|sctp_transport
 op_star
 id|second
 suffix:semicolon
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -2091,7 +2092,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|inqueue
 suffix:semicolon
@@ -2136,7 +2138,7 @@ op_ne
 (paren
 id|chunk
 op_assign
-id|sctp_pop_inqueue
+id|sctp_inq_pop
 c_func
 (paren
 id|inqueue

@@ -1567,7 +1567,8 @@ r_void
 id|sctp_inet6_event_msgname
 c_func
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 comma

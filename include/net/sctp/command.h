@@ -265,7 +265,8 @@ op_star
 id|init
 suffix:semicolon
 DECL|member|ulpevent
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|ulpevent
 suffix:semicolon
@@ -487,7 +488,8 @@ c_func
 (paren
 id|ULPEVENT
 comma
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 comma
 id|ulpevent

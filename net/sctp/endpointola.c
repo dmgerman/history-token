@@ -181,7 +181,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Create an input queue.  */
-id|sctp_inqueue_init
+id|sctp_inq_init
 c_func
 (paren
 op_amp
@@ -189,7 +189,7 @@ id|ep-&gt;base.inqueue
 )paren
 suffix:semicolon
 multiline_comment|/* Set its top-half handler */
-id|sctp_inqueue_set_th_handler
+id|sctp_inq_set_th_handler
 c_func
 (paren
 op_amp
@@ -447,7 +447,7 @@ id|ep
 )paren
 suffix:semicolon
 multiline_comment|/* Cleanup the inqueue. */
-id|sctp_inqueue_free
+id|sctp_inq_free
 c_func
 (paren
 op_amp
@@ -938,7 +938,8 @@ id|sctp_chunk_t
 op_star
 id|chunk
 suffix:semicolon
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 id|inqueue
 suffix:semicolon
@@ -981,7 +982,7 @@ op_ne
 (paren
 id|chunk
 op_assign
-id|sctp_pop_inqueue
+id|sctp_inq_pop
 c_func
 (paren
 id|inqueue

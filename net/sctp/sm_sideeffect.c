@@ -2934,7 +2934,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon
@@ -3018,7 +3019,8 @@ op_star
 id|chunk
 )paren
 (brace
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 suffix:semicolon

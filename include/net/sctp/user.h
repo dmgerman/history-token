@@ -204,6 +204,10 @@ DECL|member|sinfo_tsn
 id|__u32
 id|sinfo_tsn
 suffix:semicolon
+DECL|member|sinfo_cumtsn
+id|__u32
+id|sinfo_cumtsn
+suffix:semicolon
 DECL|member|sinfo_assoc_id
 id|sctp_assoc_t
 id|sinfo_assoc_id
