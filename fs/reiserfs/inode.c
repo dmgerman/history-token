@@ -1869,6 +1869,8 @@ id|reiserfs_new_unf_blocknrs
 (paren
 id|th
 comma
+id|inode
+comma
 id|allocated_block_nr
 comma
 id|path
