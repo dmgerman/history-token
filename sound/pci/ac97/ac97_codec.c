@@ -74,16 +74,6 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
-r_static
-r_void
-id|snd_ac97_proc_done
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-)paren
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -1374,6 +1364,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_write - write a value on the given register&n; * @ac97: the ac97 instance&n; * @reg: the register to change&n; * @value: the value to set&n; *&n; * Writes a value on the given register.  This will invoke the write&n; * callback directly after the register check.&n; * This function doesn&squot;t change the register cache unlike&n; * #snd_ca97_write_cache(), so use this only when you don&squot;t want to&n; * reflect the change to the suspend/resume state.&n; */
 DECL|function|snd_ac97_write
 r_void
 id|snd_ac97_write
@@ -1419,6 +1410,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_read - read a value from the given register&n; * &n; * @ac97: the ac97 instance&n; * @reg: the register to read&n; *&n; * Reads a value from the given register.  This will invoke the read&n; * callback directly after the register check.&n; *&n; * Returns the read value.&n; */
 DECL|function|snd_ac97_read
 r_int
 r_int
@@ -1461,6 +1453,7 @@ id|reg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_write_cache - write a value on the given register and update the cache&n; * @ac97: the ac97 instance&n; * @reg: the register to change&n; * @value: the value to set&n; *&n; * Writes a value on the given register and updates the register&n; * cache.  The cached values are used for the cached-read and the&n; * suspend/resume.&n; */
 DECL|function|snd_ac97_write_cache
 r_void
 id|snd_ac97_write_cache
@@ -1645,6 +1638,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_update - update the value on the given register&n; * @ac97: the ac97 instance&n; * @reg: the register to change&n; * @value: the value to set&n; *&n; * Compares the value with the register cache and updates the value&n; * only when the value is changed.&n; *&n; * Retruns 1 if the value is changed, 0 if no change, or a negative&n; * code on failure.&n; */
 DECL|function|snd_ac97_update
 r_int
 id|snd_ac97_update
@@ -1736,6 +1730,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|function|snd_ac97_update_bits_nolock
+r_static
 r_int
 id|snd_ac97_update_bits_nolock
 c_func
@@ -1836,6 +1831,7 @@ r_return
 id|change
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_update_bits - update the bits on the given register&n; * @ac97: the ac97 instance&n; * @reg: the register to change&n; * @mask: the bit-mask to change&n; * @value: the value to set&n; *&n; * Updates the masked-bits on the given register onle when the value&n; * is changed.&n; *&n; * Returns 1 if the bits are changed, 0 if no change, or a negative&n; * code on failure.&n; */
 DECL|function|snd_ac97_update_bits
 r_int
 id|snd_ac97_update_bits
@@ -1894,6 +1890,7 @@ id|change
 suffix:semicolon
 )brace
 DECL|function|snd_ac97_ad18xx_update_pcm_bits
+r_static
 r_int
 id|snd_ac97_ad18xx_update_pcm_bits
 c_func
@@ -5893,6 +5890,11 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* 4: Analog Input To Surround */
+multiline_comment|/* 5: Analog Input To Center/LFE */
+multiline_comment|/* 6: Indepedent Master Volume Right */
+multiline_comment|/* 7: Indepedent Master Volume Left */
+multiline_comment|/* 8: reserved */
 id|AC97_SINGLE
 c_func
 (paren
@@ -5993,6 +5995,66 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+id|AC97_SINGLE
+c_func
+(paren
+l_string|&quot;Surround DAC Switch&quot;
+comma
+id|AC97_ALC650_SURR_DAC_VOL
+comma
+l_int|15
+comma
+l_int|1
+comma
+l_int|1
+)paren
+comma
+id|AC97_DOUBLE
+c_func
+(paren
+l_string|&quot;Surround DAC Volume&quot;
+comma
+id|AC97_ALC650_SURR_DAC_VOL
+comma
+l_int|8
+comma
+l_int|0
+comma
+l_int|31
+comma
+l_int|1
+)paren
+comma
+id|AC97_SINGLE
+c_func
+(paren
+l_string|&quot;Center/LFE DAC Switch&quot;
+comma
+id|AC97_ALC650_LFE_DAC_VOL
+comma
+l_int|15
+comma
+l_int|1
+comma
+l_int|1
+)paren
+comma
+id|AC97_DOUBLE
+c_func
+(paren
+l_string|&quot;Center/LFE DAC Volume&quot;
+comma
+id|AC97_ALC650_LFE_DAC_VOL
+comma
+l_int|8
+comma
+l_int|0
+comma
+l_int|31
+comma
+l_int|1
+)paren
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* The following snd_ac97_ymf753_... items added by David Shust (dshust@shustring.com) */
@@ -6755,12 +6817,6 @@ c_cond
 id|ac97
 )paren
 (brace
-id|snd_ac97_proc_done
-c_func
-(paren
-id|ac97
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11301,6 +11357,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_mixer - create an AC97 codec component&n; * @card: the card instance&n; * @_ac97: the template of ac97, including index, callbacks and&n; *         the private data.&n; * @rac97: the pointer to store the new ac97 instance.&n; *&n; * Creates an AC97 codec component.  An ac97_t instance is newly&n; * allocated and initialized from the template (_ac97).  The codec&n; * is then initialized by the standard procedure.&n; *&n; * The template must include the valid callbacks (at least read and&n; * write), the codec number (num) and address (addr), and the private&n; * data (private_data).  The other callbacks, wait and reset, are not&n; * mandantory.&n; * &n; * The clock is set to 48000.  If another clock is needed, reset&n; * ac97-&gt;clock manually afterwards.&n; *&n; * The ac97 instance is registered as a low-level device, so you don&squot;t&n; * have to release it manually.&n; *&n; * Returns zero if sucessful, or a negative error code on failure.&n; */
 DECL|function|snd_ac97_mixer
 r_int
 id|snd_ac97_mixer
@@ -12396,7 +12453,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&n; */
+multiline_comment|/*&n; * proc interface&n; */
 DECL|function|snd_ac97_proc_read_main
 r_static
 r_void
@@ -14022,74 +14079,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|card
 comma
 id|name
 comma
-id|card-&gt;proc_root
+op_amp
+id|entry
 )paren
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|ac97
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|512
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_ac97_proc_read
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
 )paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
-)paren
-suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|ac97-&gt;proc_entry
-op_assign
-id|entry
 suffix:semicolon
 r_if
 c_cond
@@ -14122,121 +14132,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|card
 comma
 id|name
 comma
-id|card-&gt;proc_root
+op_amp
+id|entry
 )paren
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|ac97
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|1024
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_ac97_proc_regs_read
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|ac97-&gt;proc_regs_entry
-op_assign
-id|entry
-suffix:semicolon
-)brace
-DECL|function|snd_ac97_proc_done
-r_static
-r_void
-id|snd_ac97_proc_done
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ac97-&gt;proc_regs_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|ac97-&gt;proc_regs_entry
-)paren
-suffix:semicolon
-id|ac97-&gt;proc_regs_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ac97-&gt;proc_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|ac97-&gt;proc_entry
-)paren
-suffix:semicolon
-id|ac97-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *  PCM support&n; */
 DECL|function|set_spdif_rate
@@ -14468,6 +14385,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_ac97_set_rate - change the rate of the given input/output.&n; * @ac97: the ac97 instance&n; * @reg: the register to change&n; * @rate: the sample rate to set&n; *&n; * Changes the rate of the given input/output on the codec.&n; * If the codec doesn&squot;t support VAR, the rate must be 48000 (except&n; * for SPDIF).&n; *&n; * The valid registers are AC97_PMC_MIC_ADC_RATE,&n; * AC97_PCM_FRONT_DAC_RATE, AC97_PCM_LR_ADC_RATE and AC97_SPDIF.&n; * The SPDIF register is a pseudo-register to change the rate of SPDIF&n; * (only if supported).&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_ac97_set_rate
 r_int
 id|snd_ac97_set_rate
@@ -14673,7 +14591,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/*&n; * general suspend procedure&n; */
+multiline_comment|/**&n; * snd_ac97_suspend - General suspend function for AC97 codec&n; * @ac97: the ac97 instance&n; *&n; * Suspends the codec, power down the chip.&n; */
 DECL|function|snd_ac97_suspend
 r_void
 id|snd_ac97_suspend
@@ -14764,7 +14682,7 @@ id|power
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * general resume procedure&n; */
+multiline_comment|/**&n; * snd_ac97_resume - General resume function for AC97 codec&n; * @ac97: the ac97 instance&n; *&n; * Do the standard resume procedure, power up and restoring the&n; * old register values.&n; */
 DECL|function|snd_ac97_resume
 r_void
 id|snd_ac97_resume

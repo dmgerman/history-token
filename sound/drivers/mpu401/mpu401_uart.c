@@ -183,6 +183,7 @@ id|mpu
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_mpu401_uart_interrupt - generic MPU401-UART interrupt handler&n; * @irq: the irq number&n; * @dev_id: mpu401 instance&n; * @regs: the reigster&n; *&n; * Processes the interrupt for MPU401-UART i/o.&n; */
 DECL|function|snd_mpu401_uart_interrupt
 r_void
 id|snd_mpu401_uart_interrupt
@@ -1788,6 +1789,7 @@ id|mpu
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_mpu401_uart_new - create an MPU401-UART instance&n; * @card: the card instance&n; * @device: the device index, zero-based&n; * @hardware: the hardware type, MPU401_HW_XXXX&n; * @port: the base address of MPU401 port&n; * @integrated: non-zero if the port was already reserved by the chip&n; * @irq: the irq number, -1 if no interrupt for mpu&n; * @irq_flags: the irq request flags (SA_XXX), 0 if irq was already reserved.&n; * @rrawmidi: the pointer to store the new rawmidi instance&n; *&n; * Creates a new MPU-401 instance.&n; *&n; * Note that the rawmidi instance is returned on the rrawmidi argument,&n; * not the mpu401 instance itself.  To access to the mpu401 instance,&n; * cast from rawmidi-&gt;private_data (with mpu401_t magic-cast).&n; *&n; * Returns zero if successful, or a negative error code.&n; */
 DECL|function|snd_mpu401_uart_new
 r_int
 id|snd_mpu401_uart_new
@@ -2069,6 +2071,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+)brace
 id|mpu-&gt;irq
 op_assign
 id|irq
@@ -2077,7 +2080,6 @@ id|mpu-&gt;irq_flags
 op_assign
 id|irq_flags
 suffix:semicolon
-)brace
 id|strcpy
 c_func
 (paren

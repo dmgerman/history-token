@@ -2357,11 +2357,6 @@ id|resource
 op_star
 id|resource
 suffix:semicolon
-DECL|member|proc_entry
-r_void
-op_star
-id|proc_entry
-suffix:semicolon
 DECL|typedef|snd_cs46xx_region_t
 )brace
 id|snd_cs46xx_region_t
@@ -2565,11 +2560,6 @@ DECL|member|uartm
 r_int
 r_int
 id|uartm
-suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
 suffix:semicolon
 DECL|member|amplifier
 r_int

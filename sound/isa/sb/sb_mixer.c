@@ -158,7 +158,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Single channel mixer element&n; */
 DECL|macro|SB_SINGLE
-mdefine_line|#define SB_SINGLE(xname, reg, shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sbmixer_info_single, &bslash;&n;  .get = snd_sbmixer_get_single, put: snd_sbmixer_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 16) | (mask &lt;&lt; 24) }
+mdefine_line|#define SB_SINGLE(xname, reg, shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sbmixer_info_single, &bslash;&n;  .get = snd_sbmixer_get_single, &bslash;&n;  .put = snd_sbmixer_put_single, &bslash;&n;  .private_value = reg | (shift &lt;&lt; 16) | (mask &lt;&lt; 24) }
 DECL|function|snd_sbmixer_info_single
 r_static
 r_int
@@ -469,7 +469,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Double channel mixer element&n; */
 DECL|macro|SB_DOUBLE
-mdefine_line|#define SB_DOUBLE(xname, left_reg, right_reg, left_shift, right_shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sbmixer_info_double, &bslash;&n;  .get = snd_sbmixer_get_double, put: snd_sbmixer_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 19) | (mask &lt;&lt; 24) }
+mdefine_line|#define SB_DOUBLE(xname, left_reg, right_reg, left_shift, right_shift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sbmixer_info_double, &bslash;&n;  .get = snd_sbmixer_get_double, &bslash;&n;  .put = snd_sbmixer_put_double, &bslash;&n;  .private_value = left_reg | (right_reg &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 19) | (mask &lt;&lt; 24) }
 DECL|function|snd_sbmixer_info_double
 r_static
 r_int
@@ -1685,7 +1685,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SB16 input switch&n; */
 DECL|macro|SB16_INPUT_SW
-mdefine_line|#define SB16_INPUT_SW(xname, reg1, reg2, left_shift, right_shift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sb16mixer_info_input_sw, &bslash;&n;  .get = snd_sb16mixer_get_input_sw, put: snd_sb16mixer_put_input_sw, &bslash;&n;  .private_value = reg1 | (reg2 &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 24) }
+mdefine_line|#define SB16_INPUT_SW(xname, reg1, reg2, left_shift, right_shift) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, &bslash;&n;  .name = xname, &bslash;&n;  .info = snd_sb16mixer_info_input_sw, &bslash;&n;  .get = snd_sb16mixer_get_input_sw, &bslash;&n;  .put = snd_sb16mixer_put_input_sw, &bslash;&n;  .private_value = reg1 | (reg2 &lt;&lt; 8) | (left_shift &lt;&lt; 16) | (right_shift &lt;&lt; 24) }
 DECL|function|snd_sb16mixer_info_input_sw
 r_static
 r_int

@@ -2081,12 +2081,7 @@ c_func
 (paren
 id|emu
 comma
-(paren
-r_struct
-id|snd_sg_buf
-op_star
-)paren
-id|substream-&gt;dma_private
+id|substream
 )paren
 suffix:semicolon
 r_if

@@ -3,12 +3,11 @@ DECL|macro|__SOUND_EMU10K1_H
 mdefine_line|#define __SOUND_EMU10K1_H
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;,&n; *&t;&t;     Creative Labs, Inc.&n; *  Definitions for EMU10K1 (SB Live!) chips&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#include &quot;pcm.h&quot;
-macro_line|#include &quot;pcm_sgbuf.h&quot;
-macro_line|#include &quot;rawmidi.h&quot;
-macro_line|#include &quot;hwdep.h&quot;
-macro_line|#include &quot;ac97_codec.h&quot;
-macro_line|#include &quot;util_mem.h&quot;
+macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;sound/rawmidi.h&gt;
+macro_line|#include &lt;sound/hwdep.h&gt;
+macro_line|#include &lt;sound/ac97_codec.h&gt;
+macro_line|#include &lt;sound/util_mem.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_CREATIVE
 DECL|macro|PCI_VENDOR_ID_CREATIVE
@@ -2221,36 +2220,6 @@ id|efx_voices_mask
 l_int|2
 )braket
 suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
-DECL|member|proc_entry_fx8010_gpr
-id|snd_info_entry_t
-op_star
-id|proc_entry_fx8010_gpr
-suffix:semicolon
-DECL|member|proc_entry_fx8010_tram_data
-id|snd_info_entry_t
-op_star
-id|proc_entry_fx8010_tram_data
-suffix:semicolon
-DECL|member|proc_entry_fx8010_tram_addr
-id|snd_info_entry_t
-op_star
-id|proc_entry_fx8010_tram_addr
-suffix:semicolon
-DECL|member|proc_entry_fx8010_code
-id|snd_info_entry_t
-op_star
-id|proc_entry_fx8010_code
-suffix:semicolon
-DECL|member|proc_entry_fx8010_iblocks
-id|snd_info_entry_t
-op_star
-id|proc_entry_fx8010_iblocks
-suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -2705,10 +2674,9 @@ id|emu10k1_t
 op_star
 id|emu
 comma
-r_struct
-id|snd_sg_buf
+id|snd_pcm_substream_t
 op_star
-id|sgbuf
+id|substream
 )paren
 suffix:semicolon
 r_int
@@ -2863,15 +2831,6 @@ suffix:semicolon
 multiline_comment|/* proc interface */
 r_int
 id|snd_emu10k1_proc_init
-c_func
-(paren
-id|emu10k1_t
-op_star
-id|emu
-)paren
-suffix:semicolon
-r_int
-id|snd_emu10k1_proc_done
 c_func
 (paren
 id|emu10k1_t

@@ -88,11 +88,6 @@ r_int
 id|val
 )paren
 suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
 DECL|member|private_data
 r_void
 op_star

@@ -420,11 +420,6 @@ id|pci_dev
 op_star
 id|pci
 suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
 DECL|member|spdif_ctl
 id|snd_kcontrol_t
 op_star
@@ -1854,6 +1849,7 @@ id|mode
 r_case
 id|RME32_CLOCKMODE_SLAVE
 suffix:colon
+multiline_comment|/* AutoSync */
 id|rme32-&gt;wcreg
 op_assign
 (paren
@@ -1871,6 +1867,7 @@ suffix:semicolon
 r_case
 id|RME32_CLOCKMODE_MASTER_32
 suffix:colon
+multiline_comment|/* Internal 32.0kHz */
 id|rme32-&gt;wcreg
 op_assign
 (paren
@@ -1887,6 +1884,7 @@ suffix:semicolon
 r_case
 id|RME32_CLOCKMODE_MASTER_44
 suffix:colon
+multiline_comment|/* Internal 44.1kHz */
 id|rme32-&gt;wcreg
 op_assign
 (paren
@@ -1903,6 +1901,7 @@ suffix:semicolon
 r_case
 id|RME32_CLOCKMODE_MASTER_48
 suffix:colon
+multiline_comment|/* Internal 48.0kHz */
 id|rme32-&gt;wcreg
 op_assign
 (paren
@@ -4964,12 +4963,6 @@ c_func
 id|rme32
 )paren
 suffix:semicolon
-id|snd_rme32_proc_done
-c_func
-(paren
-id|rme32
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -6000,7 +5993,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: slave&bslash;n&quot;
+l_string|&quot;  sample clock source: AutoSync&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6011,7 +6004,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;  clock mode: master&bslash;n&quot;
+l_string|&quot;  sample clock source: Internal&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6091,104 +6084,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|rme32-&gt;card
 comma
 l_string|&quot;rme32&quot;
 comma
-id|rme32-&gt;card-&gt;proc_root
+op_amp
+id|entry
 )paren
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|rme32
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|256
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_rme32_proc_read
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|rme32-&gt;proc_entry
-op_assign
-id|entry
-suffix:semicolon
-)brace
-DECL|function|snd_rme32_proc_done
-r_static
-r_void
-id|snd_rme32_proc_done
-c_func
-(paren
-id|rme32_t
-op_star
-id|rme32
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|rme32-&gt;proc_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|rme32-&gt;proc_entry
-)paren
-suffix:semicolon
-id|rme32-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * control interface&n; */
 r_static
@@ -6785,13 +6702,13 @@ l_int|4
 )braket
 op_assign
 (brace
-l_string|&quot;Slave&quot;
+l_string|&quot;AutoSync&quot;
 comma
-l_string|&quot;Master (32.0 kHz)&quot;
+l_string|&quot;Internal 32.0kHz&quot;
 comma
-l_string|&quot;Master (44.1 kHz)&quot;
+l_string|&quot;Internal 44.1kHz&quot;
 comma
-l_string|&quot;Master (48.0 kHz)&quot;
+l_string|&quot;Internal 48.0kHz&quot;
 )brace
 suffix:semicolon
 id|uinfo-&gt;type

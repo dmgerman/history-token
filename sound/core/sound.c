@@ -228,6 +228,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_KMOD
+multiline_comment|/**&n; * snd_request_card - try to load the card module&n; * @card: the card number&n; *&n; * Tries to load the module &quot;snd-card-X&quot; for the given card number&n; * via KMOD.  Returns immediately if already loaded.&n; */
 DECL|function|snd_request_card
 r_void
 id|snd_request_card
@@ -786,6 +787,7 @@ r_return
 id|minor
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_register_device - Register the ALSA device file for the card&n; * @type: the device type, SNDRV_DEVICE_TYPE_XXX&n; * @card: the card instance&n; * @dev: the device index&n; * @reg: the snd_minor_t record&n; * @name: the device file name&n; *&n; * Registers an ALSA device file for the given card.&n; * The operators have to be set in reg parameter.&n; *&n; * Retrurns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_register_device
 r_int
 id|snd_register_device
@@ -964,6 +966,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_unregister_device - unregister the device on the given card&n; * @type: the device type, SNDRV_DEVICE_TYPE_XXX&n; * @card: the card instance&n; * @dev: the device index&n; *&n; * Unregisters the device file already registered via&n; * snd_register_device().&n; *&n; * Returns zero if sucecessful, or a negative error code on failure&n; */
 DECL|function|snd_unregister_device
 r_int
 id|snd_unregister_device
@@ -1856,6 +1859,13 @@ c_func
 id|snd_malloc_pci_pages_fallback
 )paren
 suffix:semicolon
+DECL|variable|snd_malloc_pci_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_malloc_pci_page
+)paren
+suffix:semicolon
 DECL|variable|snd_free_pci_pages
 id|EXPORT_SYMBOL
 c_func
@@ -2134,6 +2144,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_info_unregister
+)paren
+suffix:semicolon
+DECL|variable|snd_card_proc_new
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_card_proc_new
 )paren
 suffix:semicolon
 macro_line|#endif

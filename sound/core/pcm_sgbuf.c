@@ -52,12 +52,10 @@ id|pages
 id|sgbuf-&gt;pages
 op_decrement
 suffix:semicolon
-id|snd_free_pci_pages
+id|snd_free_pci_page
 c_func
 (paren
 id|sgbuf-&gt;pci
-comma
-id|PAGE_SIZE
 comma
 id|sgbuf-&gt;table
 (braket
@@ -76,7 +74,7 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * initialize the sg buffer&n; * assigned to substream-&gt;dma_private.&n; * initialize the table with the given size.&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_init - initialize the sg buffer&n; * @substream: the pcm substream instance&n; * @pci: pci device pointer&n; * @tblsize: the default table size&n; *&n; * Initializes the SG-buffer instance and assigns it to&n; * substream-&gt;dma_private.  The SG-table is initialized with the&n; * given size.&n; * &n; * Call this function in the open callback.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_sgbuf_init
 r_int
 id|snd_pcm_sgbuf_init
@@ -200,7 +198,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * release all pages and free the sgbuf instance&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_delete - release all pages and free the sgbuf instance&n; * @substream: the pcm substream instance&n; *&n; * Releaes all pages and free the sgbuf instance.&n; *&n; * Call this function in the close callback.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_sgbuf_delete
 r_int
 id|snd_pcm_sgbuf_delete
@@ -275,182 +273,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * snd_pci_alloc_page - allocate a page in the valid pci dma mask&n; *&n; * returns the virtual address and stores the physical address on&n; * addrp.  this function cannot be called from interrupt handlers or&n; * within spinlocks.&n; */
-macro_line|#ifdef __i386__
-multiline_comment|/*&n; * on ix86, we allocate a page with GFP_KERNEL to assure the&n; * allocation.  the code is almost same with kernel/i386/pci-dma.c but&n; * it allocates only a single page and checkes the validity of the&n; * page address with the given pci dma mask.&n; */
-DECL|function|snd_pci_alloc_page
-r_inline
-r_static
-r_void
-op_star
-id|snd_pci_alloc_page
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci
-comma
-id|dma_addr_t
-op_star
-id|addrp
-)paren
-(brace
-r_void
-op_star
-id|ptr
-suffix:semicolon
-id|dma_addr_t
-id|addr
-suffix:semicolon
-r_int
-r_int
-id|rmask
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci
-)paren
-id|rmask
-op_assign
-op_complement
-(paren
-r_int
-r_int
-)paren
-id|pci-&gt;dma_mask
-suffix:semicolon
-r_else
-id|rmask
-op_assign
-l_int|0
-suffix:semicolon
-id|ptr
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|__get_free_page
-c_func
-(paren
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-(brace
-id|addr
-op_assign
-id|virt_to_phys
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|addr
-op_plus
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-op_amp
-id|rmask
-)paren
-(brace
-multiline_comment|/* try to reallocate with the GFP_DMA */
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ptr
-)paren
-suffix:semicolon
-id|ptr
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|__get_free_page
-c_func
-(paren
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-multiline_comment|/* ok, the address must be within lower 16MB... */
-id|addr
-op_assign
-id|virt_to_phys
-c_func
-(paren
-id|ptr
-)paren
-suffix:semicolon
-r_else
-id|addr
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_else
-id|addr
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ptr
-)paren
-id|memset
-c_func
-(paren
-id|ptr
-comma
-l_int|0
-comma
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-op_star
-id|addrp
-op_assign
-id|addr
-suffix:semicolon
-r_return
-id|ptr
-suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/* on other architectures, call snd_malloc_pci_pages() helper function&n; * which uses pci_alloc_consistent().&n; */
-DECL|macro|snd_pci_alloc_page
-mdefine_line|#define snd_pci_alloc_page(pci, addrp) snd_malloc_pci_pages(pci, PAGE_SIZE, addrp)
-macro_line|#endif
-multiline_comment|/*&n; * allocate sg buffer table with the given byte size.&n; * if the buffer table already exists, try to resize it.&n; * call this from hw_params callback.&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_alloc - allocate the pages for the SG buffer&n; * @substream: the pcm substream instance&n; * @size: the requested buffer size in bytes&n; *&n; * Allocates the buffer pages for the given size and updates the&n; * sg buffer table.  If the buffer table already exists, try to resize&n; * it.&n; *&n; * Call this function from hw_params callback.&n; *&n; * Returns 1 if the buffer is changed, 0 if not changed, or a negative&n; * code on failure.&n; */
 DECL|function|snd_pcm_sgbuf_alloc
 r_int
 id|snd_pcm_sgbuf_alloc
@@ -633,7 +456,7 @@ id|addr
 suffix:semicolon
 id|ptr
 op_assign
-id|snd_pci_alloc_page
+id|snd_malloc_pci_page
 c_func
 (paren
 id|sgbuf-&gt;pci
@@ -695,7 +518,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * free the sg buffer&n; * the table is kept.&n; * call this from hw_free callback.&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_free - free the sg buffer&n; * @substream: the pcm substream instance&n; *&n; * Releases the pages.  The SG-table itself is still kept.&n; *&n; * Call this function from hw_free callback.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_sgbuf_free
 r_int
 id|snd_pcm_sgbuf_free
@@ -801,7 +624,7 @@ dot
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get the page struct at the given offset&n; * used as the page callback of pcm ops&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_ops_page - get the page struct at the given offset&n; * @substream: the pcm substream instance&n; * @offset: the buffer offset&n; *&n; * Returns the page struct at the given buffer offset.&n; * Used as the page callback of PCM ops.&n; */
 DECL|function|snd_pcm_sgbuf_ops_page
 r_struct
 id|page
@@ -1279,7 +1102,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * copy callback for playback pcm ops&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_ops_copy_playback - copy callback for playback pcm ops&n; *&n; * copy callback for playback pcm ops&n; */
 DECL|function|snd_pcm_sgbuf_ops_copy_playback
 r_int
 id|snd_pcm_sgbuf_ops_copy_playback
@@ -1390,7 +1213,7 @@ id|count
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * copy callback for capture pcm ops&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_ops_copy_capture - copy callback for capture pcm ops&n; *&n; * copy callback for capture pcm ops&n; */
 DECL|function|snd_pcm_sgbuf_ops_copy_capture
 r_int
 id|snd_pcm_sgbuf_ops_copy_capture
@@ -1501,7 +1324,7 @@ id|count
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * silence callback for pcm ops&n; */
+multiline_comment|/**&n; * snd_pcm_sgbuf_ops_silence - silence callback for pcm ops&n; * &n; * silence callback for pcm ops&n; */
 DECL|function|snd_pcm_sgbuf_ops_silence
 r_int
 id|snd_pcm_sgbuf_ops_silence

@@ -136,7 +136,7 @@ id|sndrv_mask
 id|snd_mask_t
 suffix:semicolon
 DECL|macro|_snd_pcm_substream_chip
-mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;pcm-&gt;private_data)
+mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
 DECL|macro|snd_pcm_substream_chip
 mdefine_line|#define snd_pcm_substream_chip(substream) snd_magic_cast1(chip_t, _snd_pcm_substream_chip(substream), return -ENXIO)
 DECL|macro|_snd_pcm_chip
@@ -452,14 +452,16 @@ DECL|macro|SNDRV_PCM_TRIGGER_SUSPEND
 mdefine_line|#define SNDRV_PCM_TRIGGER_SUSPEND&t;5
 DECL|macro|SNDRV_PCM_TRIGGER_RESUME
 mdefine_line|#define SNDRV_PCM_TRIGGER_RESUME&t;6
+DECL|macro|SNDRV_PCM_DMA_TYPE_UNKNOWN
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_UNKNOWN&t;0&t;/* not defined */
 DECL|macro|SNDRV_PCM_DMA_TYPE_CONTINUOUS
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_CONTINUOUS&t;0&t;/* continuous no-DMA memory */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_CONTINUOUS&t;1&t;/* continuous no-DMA memory */
 DECL|macro|SNDRV_PCM_DMA_TYPE_ISA
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;1&t;/* ISA continuous */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_ISA&t;&t;2&t;/* ISA continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_PCI
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;2&t;/* PCI continuous */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_PCI&t;&t;3&t;/* PCI continuous */
 DECL|macro|SNDRV_PCM_DMA_TYPE_SBUS
-mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;3&t;/* SBUS continuous */
+mdefine_line|#define SNDRV_PCM_DMA_TYPE_SBUS&t;&t;4&t;/* SBUS continuous */
 multiline_comment|/* If you change this don&squot;t forget to change rates[] table in pcm_native.c */
 DECL|macro|SNDRV_PCM_RATE_5512
 mdefine_line|#define SNDRV_PCM_RATE_5512&t;&t;(1&lt;&lt;0)&t;&t;/* 5512Hz */
@@ -1198,6 +1200,12 @@ id|snd_pcm_str_t
 op_star
 id|pstr
 suffix:semicolon
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+multiline_comment|/* copied from pcm-&gt;private_data */
 DECL|member|number
 r_int
 id|number

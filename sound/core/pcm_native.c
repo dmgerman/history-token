@@ -3142,6 +3142,7 @@ id|substream
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_sart&n; */
 DECL|function|snd_pcm_start
 r_int
 id|snd_pcm_start
@@ -3281,6 +3282,7 @@ id|runtime-&gt;sleep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_stop&n; */
 DECL|function|snd_pcm_stop
 r_int
 id|snd_pcm_stop
@@ -3643,6 +3645,7 @@ id|runtime-&gt;sleep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_suspend&n; */
 DECL|function|snd_pcm_suspend
 r_int
 id|snd_pcm_suspend
@@ -3664,6 +3667,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_suspend_all&n; */
 DECL|function|snd_pcm_suspend_all
 r_int
 id|snd_pcm_suspend_all
@@ -4510,6 +4514,7 @@ op_assign
 id|SNDRV_PCM_STATE_PREPARED
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_prepare&n; */
 DECL|function|snd_pcm_prepare
 r_int
 id|snd_pcm_prepare

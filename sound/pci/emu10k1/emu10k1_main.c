@@ -2178,12 +2178,6 @@ op_star
 id|emu
 )paren
 (brace
-id|snd_emu10k1_proc_done
-c_func
-(paren
-id|emu
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

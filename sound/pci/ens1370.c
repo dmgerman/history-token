@@ -861,11 +861,6 @@ r_int
 r_int
 id|spdif_stream
 suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
 macro_line|#ifdef CHIP1370
 DECL|member|bugbuf
 r_int
@@ -6073,6 +6068,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Mixer section&n; */
+multiline_comment|/*&n; * ENS1371 mixer (including SPDIF interface)&n; */
 macro_line|#ifdef CHIP1371
 DECL|function|snd_ens1373_spdif_info
 r_static
@@ -7405,6 +7401,8 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CHIP1371 */
+multiline_comment|/* generic control callbacks for ens1370 and for joystick */
+macro_line|#if defined(CHIP1370) || defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|macro|ENSONIQ_CONTROL
 mdefine_line|#define ENSONIQ_CONTROL(xname, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_CARD, .name = xname, .info = snd_ensoniq_control_info, &bslash;&n;  .get = snd_ensoniq_control_get, .put = snd_ensoniq_control_put, &bslash;&n;  .private_value = mask }
 DECL|function|snd_ensoniq_control_info
@@ -7621,8 +7619,10 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|ES1370_CONTROLS
-mdefine_line|#define ES1370_CONTROLS 2
+macro_line|#endif /* CHIP1370 */
+macro_line|#endif /* CHIP1370 || GAMEPORT */
+multiline_comment|/*&n; * ENS1370 mixer&n; */
+macro_line|#ifdef CHIP1370
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -7650,6 +7650,8 @@ id|ES_1370_XCTL1
 )paren
 )brace
 suffix:semicolon
+DECL|macro|ES1370_CONTROLS
+mdefine_line|#define ES1370_CONTROLS ARRAY_SIZE(snd_es1370_controls)
 DECL|function|snd_ensoniq_mixer_free_ak4531
 r_static
 r_void
@@ -8583,104 +8585,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|entry
-op_assign
-id|snd_info_create_card_entry
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|ensoniq-&gt;card
 comma
 l_string|&quot;audiopci&quot;
 comma
-id|ensoniq-&gt;card-&gt;proc_root
+op_amp
+id|entry
 )paren
 )paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
-id|entry-&gt;private_data
-op_assign
+id|snd_info_set_text_ops
+c_func
+(paren
+id|entry
+comma
 id|ensoniq
-suffix:semicolon
-id|entry-&gt;mode
-op_assign
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-suffix:semicolon
-id|entry-&gt;c.text.read_size
-op_assign
-l_int|256
-suffix:semicolon
-id|entry-&gt;c.text.read
-op_assign
+comma
 id|snd_ensoniq_proc_read
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_free_entry
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-id|ensoniq-&gt;proc_entry
-op_assign
-id|entry
-suffix:semicolon
-)brace
-DECL|function|snd_ensoniq_proc_done
-r_static
-r_void
-id|snd_ensoniq_proc_done
-c_func
-(paren
-id|ensoniq_t
-op_star
-id|ensoniq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ensoniq-&gt;proc_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|ensoniq-&gt;proc_entry
-)paren
-suffix:semicolon
-id|ensoniq-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&n; */
 DECL|function|snd_ensoniq_free
@@ -8709,12 +8635,6 @@ id|ensoniq
 )paren
 suffix:semicolon
 macro_line|#endif
-id|snd_ensoniq_proc_done
-c_func
-(paren
-id|ensoniq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

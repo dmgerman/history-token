@@ -95,6 +95,9 @@ comma
 DECL|enumerator|SNDRV_DEV_HWDEP
 id|SNDRV_DEV_HWDEP
 comma
+DECL|enumerator|SNDRV_DEV_INFO
+id|SNDRV_DEV_INFO
+comma
 DECL|enumerator|SNDRV_DEV_LOWLEVEL
 id|SNDRV_DEV_LOWLEVEL
 op_assign
@@ -1126,6 +1129,23 @@ id|dma_addr_t
 id|dma_addr
 )paren
 suffix:semicolon
+r_void
+op_star
+id|snd_malloc_pci_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+)paren
+suffix:semicolon
+DECL|macro|snd_free_pci_page
+mdefine_line|#define snd_free_pci_page(pci,ptr,addr) snd_free_pci_pages(pci,PAGE_SIZE,ptr,addr)
 macro_line|#endif
 macro_line|#ifdef CONFIG_SBUS
 r_void

@@ -238,5 +238,9 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+DECL|macro|_snd_pcm_substream_sgbuf
+mdefine_line|#define _snd_pcm_substream_sgbuf(substream) ((substream)-&gt;dma_private)
+DECL|macro|snd_pcm_substream_sgbuf
+mdefine_line|#define snd_pcm_substream_sgbuf(substream) snd_magic_cast(snd_pcm_sgbuf_t, _snd_pcm_substream_sgbuf(substream), return -ENXIO)
 macro_line|#endif /* __SOUND_PCM_SGBUF_H */
 eof

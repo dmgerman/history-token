@@ -15,6 +15,7 @@ DECL|macro|snd_enum_to_int
 mdefine_line|#define snd_enum_to_int(v) (v)
 DECL|macro|snd_int_to_enum
 mdefine_line|#define snd_int_to_enum(v) (v)
+multiline_comment|/**&n; * snd_pcm_format_signed - Check the PCM format is signed linear&n; * @format: the format to check&n; *&n; * Returns 1 if the given PCM format is signed linear, 0 if unsigned&n; * linear, and a negative error code for non-linear formats.&n; */
 DECL|function|snd_pcm_format_signed
 r_int
 id|snd_pcm_format_signed
@@ -126,6 +127,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * snd_pcm_format_unsigned - Check the PCM format is unsigned linear&n; * @format: the format to check&n; *&n; * Returns 1 if the given PCM format is unsigned linear, 0 if signed&n; * linear, and a negative error code for non-linear formats.&n; */
 DECL|function|snd_pcm_format_unsigned
 r_int
 id|snd_pcm_format_unsigned
@@ -161,6 +163,7 @@ op_logical_neg
 id|val
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_format_linear - Check the PCM format is linear&n; * @format: the format to check&n; *&n; * Returns 1 if the given PCM format is linear, 0 if not.&n; */
 DECL|function|snd_pcm_format_linear
 r_int
 id|snd_pcm_format_linear
@@ -180,6 +183,7 @@ op_ge
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_format_little_endian - Check the PCM format is little-endian&n; * @format: the format to check&n; *&n; * Returns 1 if the given PCM format is little-endian, 0 if&n; * big-endian, or a negative error code if endian not specified.&n; */
 DECL|function|snd_pcm_format_little_endian
 r_int
 id|snd_pcm_format_little_endian
@@ -303,6 +307,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * snd_pcm_format_big_endian - Check the PCM format is big-endian&n; * @format: the format to check&n; *&n; * Returns 1 if the given PCM format is big-endian, 0 if&n; * little-endian, or a negative error code if endian not specified.&n; */
 DECL|function|snd_pcm_format_big_endian
 r_int
 id|snd_pcm_format_big_endian
@@ -338,6 +343,7 @@ op_logical_neg
 id|val
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_format_cpu_endian - Check the PCM format is CPU-endian&n; * @format: the format to check&n; *&n; * Returns 1 if the given PCM format is CPU-endian, 0 if&n; * opposite, or a negative error code if endian not specified.&n; */
 DECL|function|snd_pcm_format_cpu_endian
 r_int
 id|snd_pcm_format_cpu_endian
@@ -365,6 +371,7 @@ id|format
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/**&n; * snd_pcm_format_width - return the bit-width of the format&n; * @format: the format to check&n; *&n; * Returns the bit-width of the format, or a negative error code&n; * if unknown format.&n; */
 DECL|function|snd_pcm_format_width
 r_int
 id|snd_pcm_format_width
@@ -527,6 +534,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * snd_pcm_format_physical_width - return the physical bit-width of the format&n; * @format: the format to check&n; *&n; * Returns the physical bit-width of the format, or a negative error code&n; * if unknown format.&n; */
 DECL|function|snd_pcm_format_physical_width
 r_int
 id|snd_pcm_format_physical_width
@@ -680,6 +688,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * snd_pcm_format_size - return the byte size of samples on the given format&n; * @format: the format to check&n; *&n; * Returns the byte size of the given samples for the format, or a&n; * negative error code if unknown format.&n; */
 DECL|function|snd_pcm_format_size
 id|ssize_t
 id|snd_pcm_format_size
@@ -862,6 +871,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * snd_pcm_format_silence_64 - return the silent data in 64bit integer&n; * @format: the format to check&n; *&n; * Returns the silent data in 64bit integer for the given format.&n; */
 DECL|function|snd_pcm_format_silence_64
 id|u_int64_t
 id|snd_pcm_format_silence_64
@@ -1316,6 +1326,7 @@ id|format
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_format_set_silence - set the silence data on the buffer&n; * @format: the PCM format&n; * @data: the buffer pointer&n; * @samples: the number of samples to set silence&n; *&n; * Sets the silence data on the buffer for the given samples.&n; *&n; * Returns zero if sucessful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_format_set_silence
 r_int
 id|snd_pcm_format_set_silence
@@ -1790,6 +1801,7 @@ comma
 id|SNDRV_PCM_FORMAT_U32_BE
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * snd_pcm_build_linear_format - return the suitable linear format for the given condition&n; * @width: the bit-width&n; * @unsignd: 1 if unsigned, 0 if signed.&n; * @big_endian: 1 if big-endian, 0 if little-endian&n; *&n; * Returns the suitable linear format for the given condition.&n; */
 DECL|function|snd_pcm_build_linear_format
 id|snd_pcm_format_t
 id|snd_pcm_build_linear_format

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *                   Cirrus Logic, Inc.&n; *  Routines for control of Cirrus Logic CS461x chips&n; *&n; *  KNOWN BUGS:&n; *    - Sometimes the SPDIF input DSP tasks get&squot;s unsynchronized&n; *      and the SPDIF get somewhat &quot;distorcionated&quot;, or/and left right channel&n; *      are swapped. To get around this problem when it happens, mute and unmute &n; *      the SPDIF input mixer controll.&n; *    - On the Hercules Game Theater XP the amplifier are sometimes turned&n; *      off on inadecuate moments which causes distorcions on sound.&n; *&n; *  TODO:&n; *    - Secondary CODEC on some soundcards&n; *    - SPDIF input support for other sample rates then 48khz&n; *    - Posibility to mix the SPDIF output with analog sources.&n; *    - PCM channels for Center and LFE on secondary codec&n; *&n; *  NOTE: with CONFIG_SND_CS46XX_NEW_DSP unset uses old DSP image (which&n; *        is default configuration), no SPDIF, no secondary codec, no&n; *        multi channel PCM.  But known to work.&n; *&n; *  FINALLY: A credit to the developers Tom and Jordan &n; *           at Cirrus for have helping me out with the DSP, however we&n; *           still dont have sufficient documentation and technical&n; *           references to be able to implement all fancy feutures&n; *           supported by the cs46xx DPS&squot;s. &n; *           Benny &lt;benny@hostmobility.com&gt;&n; *                &n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Abramo Bagnara &lt;abramo@alsa-project.org&gt;&n; *                   Cirrus Logic, Inc.&n; *  Routines for control of Cirrus Logic CS461x chips&n; *&n; *  KNOWN BUGS:&n; *    - Sometimes the SPDIF input DSP tasks get&squot;s unsynchronized&n; *      and the SPDIF get somewhat &quot;distorcionated&quot;, or/and left right channel&n; *      are swapped. To get around this problem when it happens, mute and unmute &n; *      the SPDIF input mixer controll.&n; *    - On the Hercules Game Theater XP the amplifier are sometimes turned&n; *      off on inadecuate moments which causes distorcions on sound.&n; *&n; *  TODO:&n; *    - Secondary CODEC on some soundcards&n; *    - SPDIF input support for other sample rates then 48khz&n; *    - Posibility to mix the SPDIF output with analog sources.&n; *    - PCM channels for Center and LFE on secondary codec&n; *&n; *  NOTE: with CONFIG_SND_CS46XX_NEW_DSP unset uses old DSP image (which&n; *        is default configuration), no SPDIF, no secondary codec, no&n; *        multi channel PCM.  But known to work.&n; *&n; *  FINALLY: A credit to the developers Tom and Jordan &n; *           at Cirrus for have helping me out with the DSP, however we&n; *           still dont have sufficient documentation and technical&n; *           references to be able to implement all fancy feutures&n; *           supported by the cs46xx DSP&squot;s. &n; *           Benny &lt;benny@hostmobility.com&gt;&n; *                &n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
+macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;sound/pcm_params.h&gt;
 macro_line|#include &lt;sound/cs46xx.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;cs46xx_lib.h&quot;
@@ -2411,12 +2413,6 @@ id|cpcm
 suffix:semicolon
 r_int
 id|buffer_size
-op_assign
-id|runtime-&gt;period_size
-op_star
-id|CS46XX_FRAGS
-op_star
-l_int|4
 suffix:semicolon
 id|cpcm
 op_assign
@@ -2431,6 +2427,14 @@ r_return
 op_minus
 id|ENXIO
 )paren
+suffix:semicolon
+id|buffer_size
+op_assign
+id|runtime-&gt;period_size
+op_star
+id|CS46XX_FRAGS
+op_lshift
+id|cpcm-&gt;shift
 suffix:semicolon
 id|diff
 op_assign
@@ -2644,8 +2648,8 @@ op_assign
 id|runtime-&gt;period_size
 op_star
 id|CS46XX_FRAGS
-op_star
-l_int|4
+op_lshift
+id|chip-&gt;capt.shift
 suffix:semicolon
 r_if
 c_cond
@@ -2951,8 +2955,8 @@ op_assign
 id|substream-&gt;runtime-&gt;period_size
 op_star
 id|CS46XX_FRAGS
-op_star
-l_int|4
+op_lshift
+id|cpcm-&gt;shift
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|snd_assert
@@ -3137,8 +3141,8 @@ op_assign
 id|substream-&gt;runtime-&gt;period_size
 op_star
 id|CS46XX_FRAGS
-op_star
-l_int|4
+op_lshift
+id|chip-&gt;capt.shift
 suffix:semicolon
 r_if
 c_cond
@@ -4026,7 +4030,7 @@ suffix:semicolon
 r_int
 id|period_size
 op_assign
-id|params_period_size
+id|params_period_bytes
 c_func
 (paren
 id|hw_params
@@ -4123,8 +4127,6 @@ comma
 id|cpcm-&gt;pcm_channel
 comma
 id|period_size
-op_star
-l_int|4
 )paren
 )paren
 (brace
@@ -4141,11 +4143,17 @@ suffix:semicolon
 )brace
 id|snd_printdd
 (paren
-l_string|&quot;period_size (%d), periods (%d)&bslash;n&quot;
+l_string|&quot;period_size (%d), periods (%d) buffer_size(%d)&bslash;n&quot;
 comma
 id|period_size
 comma
 id|params_periods
+c_func
+(paren
+id|hw_params
+)paren
+comma
+id|params_buffer_bytes
 c_func
 (paren
 id|hw_params
@@ -4845,27 +4853,18 @@ suffix:semicolon
 r_int
 id|period_size
 op_assign
-id|params_period_size
+id|params_period_bytes
 c_func
 (paren
 id|hw_params
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
-id|snd_printdd
-(paren
-l_string|&quot;capture period size (%d)&bslash;n&quot;
-comma
-id|period_size
-)paren
-suffix:semicolon
 id|cs46xx_dsp_pcm_ostream_set_period
 (paren
 id|chip
 comma
 id|period_size
-op_star
-l_int|4
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5809,10 +5808,6 @@ id|period_sizes
 )braket
 op_assign
 (brace
-l_int|8
-comma
-l_int|16
-comma
 l_int|32
 comma
 l_int|64
@@ -5822,6 +5817,10 @@ comma
 l_int|256
 comma
 l_int|512
+comma
+l_int|1024
+comma
+l_int|2048
 )brace
 suffix:semicolon
 DECL|macro|PERIOD_SIZES
@@ -6015,7 +6014,7 @@ id|runtime
 comma
 l_int|0
 comma
-id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
+id|SNDRV_PCM_HW_PARAM_PERIOD_BYTES
 comma
 op_amp
 id|hw_constraints_period_sizes
@@ -6336,7 +6335,7 @@ id|substream-&gt;runtime
 comma
 l_int|0
 comma
-id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
+id|SNDRV_PCM_HW_PARAM_PERIOD_BYTES
 comma
 op_amp
 id|hw_constraints_period_sizes
@@ -12535,22 +12534,20 @@ id|chip-&gt;region.idx
 id|idx
 )braket
 suffix:semicolon
-id|entry
-op_assign
-id|snd_info_create_card_entry
+r_if
+c_cond
+(paren
+op_logical_neg
+id|snd_card_proc_new
 c_func
 (paren
 id|card
 comma
 id|region-&gt;name
 comma
-id|card-&gt;proc_root
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_amp
 id|entry
+)paren
 )paren
 (brace
 id|entry-&gt;content
@@ -12576,34 +12573,7 @@ id|S_IFREG
 op_or
 id|S_IRUSR
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|snd_info_register
-c_func
-(paren
-id|entry
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-id|entry
-)paren
-suffix:semicolon
-id|entry
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
-)brace
-id|region-&gt;proc_entry
-op_assign
-id|entry
-suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|cs46xx_dsp_proc_init
@@ -12630,56 +12600,6 @@ op_star
 id|chip
 )paren
 (brace
-r_int
-id|idx
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|idx
-op_assign
-l_int|0
-suffix:semicolon
-id|idx
-OL
-l_int|5
-suffix:semicolon
-id|idx
-op_increment
-)paren
-(brace
-id|snd_cs46xx_region_t
-op_star
-id|region
-op_assign
-op_amp
-id|chip-&gt;region.idx
-(braket
-id|idx
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|region-&gt;proc_entry
-)paren
-(brace
-id|snd_info_unregister
-c_func
-(paren
-(paren
-id|snd_info_entry_t
-op_star
-)paren
-id|region-&gt;proc_entry
-)paren
-suffix:semicolon
-id|region-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
 id|cs46xx_dsp_proc_done
 c_func
@@ -15581,12 +15501,6 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15594,8 +15508,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D3hot
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -15619,14 +15532,6 @@ comma
 id|SNDRV_CTL_POWER_D3hot
 )paren
 suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 )brace
 DECL|function|snd_cs46xx_resume
 r_void
@@ -15647,12 +15552,6 @@ suffix:semicolon
 r_int
 id|amp_saved
 suffix:semicolon
-id|snd_power_lock
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15660,8 +15559,7 @@ id|card-&gt;power_state
 op_eq
 id|SNDRV_CTL_POWER_D0
 )paren
-r_goto
-id|__skip
+r_return
 suffix:semicolon
 id|pci_enable_device
 c_func
@@ -15794,14 +15692,6 @@ c_func
 id|card
 comma
 id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
-id|__skip
-suffix:colon
-id|snd_power_unlock
-c_func
-(paren
-id|card
 )paren
 suffix:semicolon
 )brace

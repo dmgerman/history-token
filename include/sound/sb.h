@@ -835,6 +835,16 @@ op_star
 id|rpcm
 )paren
 suffix:semicolon
+r_const
+id|snd_pcm_ops_t
+op_star
+id|snd_sb16dsp_get_pcm_ops
+c_func
+(paren
+r_int
+id|direction
+)paren
+suffix:semicolon
 r_int
 id|snd_sb16dsp_configure
 c_func
