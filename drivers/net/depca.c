@@ -782,20 +782,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|autoprobed
 DECL|variable|loading_module
 r_static
