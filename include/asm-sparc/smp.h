@@ -8,78 +8,12 @@ macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/cpumask.h&gt;
-multiline_comment|/* PROM provided per-processor information we need&n; * to start them all up.&n; */
-DECL|struct|prom_cpuinfo
-r_struct
-id|prom_cpuinfo
-(brace
-DECL|member|prom_node
-r_int
-id|prom_node
-suffix:semicolon
-DECL|member|mid
-r_int
-id|mid
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_int
-id|linux_num_cpus
-suffix:semicolon
-multiline_comment|/* number of CPUs probed  */
-macro_line|#endif /* !(__ASSEMBLY__) */
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
-r_extern
-r_struct
-id|prom_cpuinfo
-id|linux_cpus
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-multiline_comment|/* Per processor Sparc parameters we need. */
-DECL|struct|cpuinfo_sparc
-r_struct
-id|cpuinfo_sparc
-(brace
-DECL|member|udelay_val
-r_int
-r_int
-id|udelay_val
-suffix:semicolon
-multiline_comment|/* that&squot;s it */
-DECL|member|next
-r_int
-r_int
-id|next
-suffix:semicolon
-DECL|member|mid
-r_int
-r_int
-id|mid
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|cpuinfo_sparc
-id|cpu_data
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|cpu_offset
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; *&t;Private routines/data&n; */
 r_extern
 r_int
@@ -87,12 +21,17 @@ r_char
 id|boot_cpu_id
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|cpu_present_map
+id|cpumask_t
+id|phys_cpu_present_map
 suffix:semicolon
-DECL|macro|cpu_online_map
-mdefine_line|#define cpu_online_map cpu_present_map
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map phys_cpu_present_map
+r_extern
+id|atomic_t
+id|sparc_num_cpus_possible
+suffix:semicolon
+DECL|macro|num_possible_cpus
+mdefine_line|#define num_possible_cpus()&t;(atomic_read(&amp;sparc_num_cpus_possible))
 DECL|typedef|smpfunc_t
 r_typedef
 r_void
@@ -157,7 +96,7 @@ r_struct
 id|seq_file
 suffix:semicolon
 r_void
-id|smp_bogo_info
+id|smp_bogo
 c_func
 (paren
 r_struct
@@ -529,14 +468,6 @@ id|__cpu_logical_map
 id|NR_CPUS
 )braket
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|smp_proc_in_lock
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 DECL|function|cpu_logical_map
 r_extern
 id|__inline__
@@ -725,7 +656,10 @@ DECL|macro|MBOX_IDLECPU2
 mdefine_line|#define MBOX_IDLECPU2         0xFD
 DECL|macro|MBOX_STOPCPU2
 mdefine_line|#define MBOX_STOPCPU2         0xFE
-macro_line|#endif /* !(CONFIG_SMP) */
+macro_line|#else /* SMP */
+DECL|macro|num_possible_cpus
+mdefine_line|#define num_possible_cpus()&t;(1)
+macro_line|#endif /* SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID            0xFF
 macro_line|#endif /* !(_SPARC_SMP_H) */

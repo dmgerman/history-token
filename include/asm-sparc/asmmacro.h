@@ -13,7 +13,7 @@ multiline_comment|/* Blackbox */
 DECL|macro|GET_PROCESSOR_ID
 mdefine_line|#define GET_PROCESSOR_ID(reg) &bslash;&n;&t;sethi&t;%hi(___b_smp_processor_id), %reg; &bslash;&n;&t;sethi&t;%hi(boot_cpu_id), %reg; &bslash;&n;&t;ldub&t;[%reg + %lo(boot_cpu_id)], %reg;
 DECL|macro|GET_PROCESSOR_MID
-mdefine_line|#define GET_PROCESSOR_MID(reg, tmp) &bslash;&n;&t;rd&t;%tbr, %reg; &bslash;&n;&t;sethi&t;%hi(mid_xlate), %tmp; &bslash;&n;&t;srl&t;%reg, 12, %reg; &bslash;&n;&t;or&t;%tmp, %lo(mid_xlate), %tmp; &bslash;&n;&t;and&t;%reg, 3, %reg; &bslash;&n;&t;ldub&t;[%tmp + %reg], %reg;
+mdefine_line|#define GET_PROCESSOR_MID(reg) &bslash;&n;&t;rd&t;%tbr, %reg; &bslash;&n;&t;srl&t;%reg, 12, %reg; &bslash;&n;&t;and&t;%reg, 3, %reg;
 DECL|macro|GET_PROCESSOR_OFFSET
 mdefine_line|#define GET_PROCESSOR_OFFSET(reg, tmp) &bslash;&n;&t;GET_PROCESSOR_ID(reg) &bslash;&n;&t;sethi&t;%hi(cpu_offset), %tmp; &bslash;&n;&t;sll&t;%reg, 2, %reg; &bslash;&n;&t;or&t;%tmp, %lo(cpu_offset), %tmp; &bslash;&n;&t;ld&t;[%tmp + %reg], %reg;
 multiline_comment|/* All trap entry points _must_ begin with this macro or else you&n; * lose.  It makes sure the kernel has a proper window so that&n; * c-code can be called.&n; */
