@@ -2556,6 +2556,11 @@ id|p
 comma
 l_string|&quot;OK: %llu(c%llu+d%lu) usec, %llu (%dbyte,%dfrags)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|total
 comma
 (paren
@@ -2571,6 +2576,11 @@ id|idle
 comma
 id|idle
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|info-&gt;sofar
 comma
 id|size
@@ -2642,12 +2652,32 @@ id|p
 comma
 l_string|&quot;  %llupps %lluMb/sec (%llubps) errors: %llu&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|pps
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|mbps
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bps
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|info-&gt;errors
 )paren
 suffix:semicolon
