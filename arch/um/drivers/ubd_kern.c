@@ -2861,6 +2861,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|ROUND_BLOCK
+mdefine_line|#define ROUND_BLOCK(n) ((n + ((1 &lt;&lt; 9) - 1)) &amp; (-1 &lt;&lt; 9))
 DECL|function|ubd_add
 r_static
 r_int
@@ -2934,6 +2936,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|dev-&gt;size
+op_assign
+id|ROUND_BLOCK
+c_func
+(paren
+id|dev-&gt;size
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|ubd_new_disk
