@@ -176,7 +176,7 @@ id|sec_per_clus
 suffix:semicolon
 multiline_comment|/* sectors/cluster */
 DECL|member|reserved
-id|__u16
+id|__le16
 id|reserved
 suffix:semicolon
 multiline_comment|/* reserved sectors */
@@ -207,38 +207,38 @@ id|media
 suffix:semicolon
 multiline_comment|/* media code */
 DECL|member|fat_length
-id|__u16
+id|__le16
 id|fat_length
 suffix:semicolon
 multiline_comment|/* sectors/FAT */
 DECL|member|secs_track
-id|__u16
+id|__le16
 id|secs_track
 suffix:semicolon
 multiline_comment|/* sectors per track */
 DECL|member|heads
-id|__u16
+id|__le16
 id|heads
 suffix:semicolon
 multiline_comment|/* number of heads */
 DECL|member|hidden
-id|__u32
+id|__le32
 id|hidden
 suffix:semicolon
 multiline_comment|/* hidden sectors (unused) */
 DECL|member|total_sect
-id|__u32
+id|__le32
 id|total_sect
 suffix:semicolon
 multiline_comment|/* number of sectors (if sectors == 0) */
 multiline_comment|/* The following fields are only used by FAT32 */
 DECL|member|fat32_length
-id|__u32
+id|__le32
 id|fat32_length
 suffix:semicolon
 multiline_comment|/* sectors/FAT */
 DECL|member|flags
-id|__u16
+id|__le16
 id|flags
 suffix:semicolon
 multiline_comment|/* bit 8: fat mirroring, low 4: active fat */
@@ -251,22 +251,22 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* major, minor filesystem version */
 DECL|member|root_cluster
-id|__u32
+id|__le32
 id|root_cluster
 suffix:semicolon
 multiline_comment|/* first cluster in root directory */
 DECL|member|info_sector
-id|__u16
+id|__le16
 id|info_sector
 suffix:semicolon
 multiline_comment|/* filesystem info sector */
 DECL|member|backup_boot
-id|__u16
+id|__le16
 id|backup_boot
 suffix:semicolon
 multiline_comment|/* backup boot sector */
 DECL|member|reserved2
-id|__u16
+id|__le16
 id|reserved2
 (braket
 l_int|6
@@ -280,12 +280,12 @@ r_struct
 id|fat_boot_fsinfo
 (brace
 DECL|member|signature1
-id|__u32
+id|__le32
 id|signature1
 suffix:semicolon
 multiline_comment|/* 0x41615252L */
 DECL|member|reserved1
-id|__u32
+id|__le32
 id|reserved1
 (braket
 l_int|120
@@ -293,22 +293,22 @@ l_int|120
 suffix:semicolon
 multiline_comment|/* Nothing as far as I can tell */
 DECL|member|signature2
-id|__u32
+id|__le32
 id|signature2
 suffix:semicolon
 multiline_comment|/* 0x61417272L */
 DECL|member|free_clusters
-id|__u32
+id|__le32
 id|free_clusters
 suffix:semicolon
 multiline_comment|/* Free cluster count.  -1 if unknown */
 DECL|member|next_cluster
-id|__u32
+id|__le32
 id|next_cluster
 suffix:semicolon
 multiline_comment|/* Most recently allocated cluster */
 DECL|member|reserved2
-id|__u32
+id|__le32
 id|reserved2
 (braket
 l_int|4
@@ -350,29 +350,29 @@ id|ctime_ms
 suffix:semicolon
 multiline_comment|/* Creation time, milliseconds */
 DECL|member|ctime
-id|__u16
+id|__le16
 id|ctime
 suffix:semicolon
 multiline_comment|/* Creation time */
 DECL|member|cdate
-id|__u16
+id|__le16
 id|cdate
 suffix:semicolon
 multiline_comment|/* Creation date */
 DECL|member|adate
-id|__u16
+id|__le16
 id|adate
 suffix:semicolon
 multiline_comment|/* Last access date */
 DECL|member|starthi
-id|__u16
+id|__le16
 id|starthi
 suffix:semicolon
 multiline_comment|/* High 16 bits of cluster in FAT32 */
 DECL|member|time
 DECL|member|date
 DECL|member|start
-id|__u16
+id|__le16
 id|time
 comma
 id|date
@@ -381,7 +381,7 @@ id|start
 suffix:semicolon
 multiline_comment|/* time, date and first cluster */
 DECL|member|size
-id|__u32
+id|__le32
 id|size
 suffix:semicolon
 multiline_comment|/* file size (in bytes) */
@@ -429,7 +429,7 @@ l_int|12
 suffix:semicolon
 multiline_comment|/* 6 more characters in name */
 DECL|member|start
-id|__u16
+id|__le16
 id|start
 suffix:semicolon
 multiline_comment|/* starting cluster number, 0 in long slots */
@@ -1292,13 +1292,11 @@ c_func
 r_int
 id|unix_date
 comma
-r_int
-r_int
+id|__le16
 op_star
 id|time
 comma
-r_int
-r_int
+id|__le16
 op_star
 id|date
 )paren
