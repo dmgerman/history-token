@@ -1208,11 +1208,11 @@ macro_line|#else
 DECL|macro|shmem_nopage
 mdefine_line|#define shmem_nopage filemap_nopage
 DECL|macro|shmem_lock
-mdefine_line|#define shmem_lock(a, b) /* always in memory, no need to lock */
+mdefine_line|#define shmem_lock(a, b, c) &t;({0;})&t;/* always in memory, no need to lock */
 DECL|macro|shmem_set_policy
-mdefine_line|#define shmem_set_policy(a, b) (0)
+mdefine_line|#define shmem_set_policy(a, b)&t;(0)
 DECL|macro|shmem_get_policy
-mdefine_line|#define shmem_get_policy(a, b) (NULL)
+mdefine_line|#define shmem_get_policy(a, b)&t;(NULL)
 macro_line|#endif
 r_struct
 id|file
