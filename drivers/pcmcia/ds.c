@@ -6100,7 +6100,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|ret
+id|err
 op_assign
 op_minus
 id|EINVAL
