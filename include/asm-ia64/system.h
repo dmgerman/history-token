@@ -33,7 +33,7 @@ id|pin
 suffix:semicolon
 multiline_comment|/* PCI PIN (0 = A, 1 = B, 2 = C, 3 = D) */
 DECL|member|irq
-id|__u8
+id|__u32
 id|irq
 suffix:semicolon
 multiline_comment|/* IRQ assigned */

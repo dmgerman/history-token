@@ -4013,6 +4013,11 @@ op_eq
 op_amp
 id|no_irq_type
 )paren
+op_logical_or
+id|irq_dir
+(braket
+id|irq
+)braket
 )paren
 r_return
 suffix:semicolon
