@@ -25,9 +25,6 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
-macro_line|#if defined(CONFIG_ARCH_S390)
-macro_line|#include &lt;asm/s390mach.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif

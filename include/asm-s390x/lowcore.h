@@ -22,10 +22,6 @@ DECL|macro|__LC_MCK_NEW_PSW
 mdefine_line|#define __LC_MCK_NEW_PSW                0x01e0
 DECL|macro|__LC_IO_NEW_PSW
 mdefine_line|#define __LC_IO_NEW_PSW                 0x01f0
-DECL|macro|__LC_RETURN_PSW
-mdefine_line|#define __LC_RETURN_PSW                 0x0200
-DECL|macro|__LC_SYNC_IO_WORD
-mdefine_line|#define __LC_SYNC_IO_WORD               0x0210
 DECL|macro|__LC_EXT_PARAMS
 mdefine_line|#define __LC_EXT_PARAMS                 0x080
 DECL|macro|__LC_CPU_ADDRESS
@@ -52,8 +48,12 @@ DECL|macro|__LC_IO_INT_WORD
 mdefine_line|#define __LC_IO_INT_WORD                0x0C0
 DECL|macro|__LC_MCCK_CODE
 mdefine_line|#define __LC_MCCK_CODE                  0x0E8
+DECL|macro|__LC_RETURN_PSW
+mdefine_line|#define __LC_RETURN_PSW                 0x200
+DECL|macro|__LC_IRB
+mdefine_line|#define __LC_IRB&t;&t;&t;0x210
 DECL|macro|__LC_DIAG44_OPCODE
-mdefine_line|#define __LC_DIAG44_OPCODE&t;&t;0x214
+mdefine_line|#define __LC_DIAG44_OPCODE&t;&t;0x250
 DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
 DECL|macro|__LC_KERNEL_STACK
@@ -408,26 +408,29 @@ id|psw_t
 id|return_psw
 suffix:semicolon
 multiline_comment|/* 0x200 */
-DECL|member|sync_io_word
-id|__u32
-id|sync_io_word
+DECL|member|irb
+id|__u8
+id|irb
+(braket
+l_int|64
+)braket
 suffix:semicolon
 multiline_comment|/* 0x210 */
 DECL|member|diag44_opcode
 id|__u32
 id|diag44_opcode
 suffix:semicolon
-multiline_comment|/* 0x214 */
+multiline_comment|/* 0x250 */
 DECL|member|pad8
 id|__u8
 id|pad8
 (braket
 l_int|0xc00
 op_minus
-l_int|0x218
+l_int|0x254
 )braket
 suffix:semicolon
-multiline_comment|/* 0x218 */
+multiline_comment|/* 0x254 */
 multiline_comment|/* System info area */
 DECL|member|save_area
 id|__u64
@@ -483,7 +486,7 @@ DECL|member|pad11
 id|__u32
 id|pad11
 suffix:semicolon
-multiline_comment|/* 0xdbc was lsw word of ipl_device until a bug was found DJB */
+multiline_comment|/* 0xdbc */
 multiline_comment|/* entry.S sensitive area end */
 multiline_comment|/* SMP info area: defined by DJB */
 DECL|member|jiffy_timer

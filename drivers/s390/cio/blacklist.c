@@ -1,37 +1,28 @@
-multiline_comment|/*&n; *  drivers/s390/cio/blacklist.c&n; *   S/390 common I/O routines -- blacklisting of specific devices&n; *   $Revision: 1.7 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; * &t;&t; 15/04/2002 Arnd Bergmann check ranges of user input&n; * &t;&t; 18/04/2002 Arnd Bergmann remove bogus optimization and&n; * &t;&t; &t;&t;&t;  now unnecessary locking&n; * &t;&t; 19/04/2002 Arnd Bergmann cleanup parameter parsing&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/blacklist.c&n; *   S/390 common I/O routines -- blacklisting of specific devices&n; *   $Revision: 1.22 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/s390dyn.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &quot;blacklist.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
-macro_line|#include &quot;ioinfo.h&quot;
-macro_line|#include &quot;proc.h&quot;
-macro_line|#include &quot;s390io.h&quot;
-multiline_comment|/* &n; * &quot;Blacklisting&quot; of certain devices:&n; * Device numbers given in the commandline as cio_ignore=... won&squot;t be known&n; * to Linux.&n; *&n; * These can be single devices or ranges of devices&n; */
-DECL|macro|max_devno
-mdefine_line|#define max_devno (0xffffUL)
+macro_line|#include &quot;css.h&quot;
+multiline_comment|/*&n; * &quot;Blacklisting&quot; of certain devices:&n; * Device numbers given in the commandline as cio_ignore=... won&squot;t be known&n; * to Linux.&n; *&n; * These can be single devices or ranges of devices&n; */
+multiline_comment|/* 65536 bits to indicate if a devno is blacklisted or not */
+DECL|macro|__BL_DEV_WORDS
+mdefine_line|#define __BL_DEV_WORDS (__MAX_SUBCHANNELS + (8*sizeof(long) - 1) / &bslash;&n;&t;&t;&t; (8*sizeof(long)))
 DECL|variable|bl_dev
 r_static
-r_uint32
+r_int
+r_int
 id|bl_dev
 (braket
-(paren
-id|max_devno
-op_plus
-l_int|1
-)paren
-op_div
-l_int|32
+id|__BL_DEV_WORDS
 )braket
 suffix:semicolon
-multiline_comment|/* 65536 bits to indicate if a&n;&t;&t;&t;&t;&t;       devno is blacklisted or not */
 DECL|enumerator|add
 DECL|enumerator|free
 DECL|typedef|range_action
@@ -44,7 +35,7 @@ id|free
 )brace
 id|range_action
 suffix:semicolon
-multiline_comment|/* &n; * Function: blacklist_range&n; * (Un-)blacklist the devices from-to&n; */
+multiline_comment|/*&n; * Function: blacklist_range&n; * (Un-)blacklist the devices from-to&n; */
 r_static
 r_inline
 r_void
@@ -76,17 +67,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|from
 OG
 id|to
-)paren
 op_logical_or
-(paren
 id|to
 OG
-id|max_devno
-)paren
+id|__MAX_SUBCHANNELS
 )paren
 (brace
 id|printk
@@ -115,32 +102,31 @@ id|from
 op_increment
 )paren
 (brace
+r_if
+c_cond
 (paren
 id|action
 op_eq
 id|add
 )paren
-ques
-c_cond
 id|set_bit
 (paren
 id|from
 comma
-op_amp
 id|bl_dev
 )paren
-suffix:colon
+suffix:semicolon
+r_else
 id|clear_bit
 (paren
 id|from
 comma
-op_amp
 id|bl_dev
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * function: blacklist_strtoul&n; * Strip leading &squot;0x&squot; and interpret the values as Hex&n; */
+multiline_comment|/*&n; * function: blacklist_strtoul&n; * Strip leading &squot;0x&squot; and interpret the values as Hex&n; */
 r_static
 r_inline
 r_int
@@ -288,9 +274,9 @@ id|str
 suffix:colon
 id|from
 suffix:semicolon
-id|printk
+id|pr_debug
+c_func
 (paren
-id|KERN_INFO
 l_string|&quot;blacklist_setup: adding range &quot;
 l_string|&quot;from 0x%04x to 0x%04x&bslash;n&quot;
 comma
@@ -361,7 +347,7 @@ id|blacklist_setup
 )paren
 suffix:semicolon
 multiline_comment|/* Checking if devices are blacklisted */
-multiline_comment|/*&n; * Function: is_blacklisted&n; * Returns 1 if the given devicenumber can be found in the blacklist, otherwise 0.&n; * Used by s390_validate_subchannel()&n; */
+multiline_comment|/*&n; * Function: is_blacklisted&n; * Returns 1 if the given devicenumber can be found in the blacklist,&n; * otherwise 0.&n; * Used by validate_subchannel()&n; */
 r_int
 DECL|function|is_blacklisted
 id|is_blacklisted
@@ -375,7 +361,6 @@ id|test_bit
 (paren
 id|devno
 comma
-op_amp
 id|bl_dev
 )paren
 suffix:semicolon
@@ -415,75 +400,12 @@ suffix:semicolon
 id|irq
 op_increment
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-op_ne
-id|INVALID_STORAGE_AREA
-op_logical_or
-id|s390_validate_subchannel
-(paren
-id|irq
-comma
-l_int|0
-)paren
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* this subchannel has just been unblacklisted, &n;&t;&t; * so now try to get it working */
-id|s390_device_recognition_irq
+id|css_probe_device
+c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-op_member_access_from_pointer
-id|ui.flags.oper
-)paren
-(brace
-id|devreg_t
-op_star
-id|pdevreg
-suffix:semicolon
-id|pdevreg
-op_assign
-id|s390_search_devreg
-(paren
-id|ioinfo
-(braket
-id|irq
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdevreg
-op_logical_and
-id|pdevreg-&gt;oper_func
-op_ne
-l_int|NULL
-)paren
-id|pdevreg-&gt;oper_func
-(paren
-id|irq
-comma
-id|pdevreg
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/*&n; * Function: blacklist_parse_proc_parameters&n; * parse the stuff which is piped to /proc/cio_ignore&n; */
 r_static
@@ -530,7 +452,7 @@ id|free
 comma
 l_int|0
 comma
-id|max_devno
+id|__MAX_SUBCHANNELS
 )paren
 suffix:semicolon
 r_else
@@ -560,7 +482,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* FIXME: the old code was checking if the new bl&squot;ed&n;&t;&t; * devices are already known to the system so&n;&t;&t; * s390_validate_subchannel would still give a working&n;&t;&t; * status. is that necessary? */
+multiline_comment|/* FIXME: the old code was checking if the new bl&squot;ed&n;&t;&t; * devices are already known to the system so&n;&t;&t; * validate_subchannel would still give a working&n;&t;&t; * status. is that necessary? */
 id|blacklist_parse_parameters
 (paren
 id|buf
@@ -622,11 +544,6 @@ op_star
 id|data
 )paren
 (brace
-r_int
-id|len
-op_assign
-l_int|0
-suffix:semicolon
 r_const
 r_int
 r_int
@@ -637,40 +554,50 @@ suffix:semicolon
 multiline_comment|/* &quot;0xABCD-0xEFGH&bslash;n&quot; */
 r_int
 id|devno
+suffix:semicolon
+r_int
+id|len
+suffix:semicolon
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|devno
 op_assign
 id|off
 suffix:semicolon
 multiline_comment|/* abuse the page variable&n;&t;&t;&t;   * as counter, see fs/proc/generic.c */
-r_while
-c_loop
-(paren
-(paren
 id|devno
 op_le
-id|max_devno
-)paren
+id|__MAX_SUBCHANNELS
 op_logical_and
-(paren
 id|len
 op_plus
 id|entry_size
 OL
 id|count
-)paren
+suffix:semicolon
+id|devno
+op_increment
 )paren
 (brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|test_bit
+c_func
 (paren
 id|devno
 comma
-op_amp
 id|bl_dev
 )paren
 )paren
-(brace
+r_continue
+suffix:semicolon
 id|len
 op_add_assign
 id|sprintf
@@ -685,39 +612,42 @@ comma
 id|devno
 )paren
 suffix:semicolon
-id|devno
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|test_bit
+c_func
 (paren
 id|devno
+op_plus
+l_int|1
 comma
-op_amp
 id|bl_dev
 )paren
 )paren
 (brace
 multiline_comment|/* print range */
-r_do
-(brace
-id|devno
-op_increment
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
+op_increment
+id|devno
+OL
+id|__MAX_SUBCHANNELS
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
 id|test_bit
+c_func
 (paren
 id|devno
 comma
-op_amp
 id|bl_dev
 )paren
 )paren
+r_break
 suffix:semicolon
 id|len
 op_add_assign
@@ -731,8 +661,6 @@ comma
 l_string|&quot;-0x%04lx&quot;
 comma
 id|devno
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -749,16 +677,12 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|devno
-op_increment
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|devno
 op_le
-id|max_devno
+id|__MAX_SUBCHANNELS
 )paren
 op_star
 id|eof
@@ -809,6 +733,19 @@ id|data
 (brace
 r_char
 op_star
+id|buf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|user_len
+OG
+l_int|65536
+)paren
+id|user_len
+op_assign
+l_int|65536
+suffix:semicolon
 id|buf
 op_assign
 id|vmalloc
@@ -862,20 +799,6 @@ id|user_len
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-macro_line|#if 0
-id|CIO_DEBUG
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_int|2
-comma
-l_string|&quot;/proc/cio_ignore: &squot;%s&squot;&bslash;n&quot;
-comma
-id|buf
-)paren
-suffix:semicolon
-macro_line|#endif
 id|blacklist_parse_proc_parameters
 (paren
 id|buf

@@ -1,12 +1,11 @@
-multiline_comment|/*&n; *  arch/s390/kernel/s390mach.h&n; *   S/390 data definitions for machine check processing&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/s390mach.h&n; *   S/390 data definitions for machine check processing&n; *&n; *  S390 version&n; *    Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; */
 macro_line|#ifndef __s390mach_h
 DECL|macro|__s390mach_h
 mdefine_line|#define __s390mach_h
 macro_line|#include &lt;asm/types.h&gt;
-DECL|struct|_mci
-r_typedef
+DECL|struct|mci
 r_struct
-id|_mci
+id|mci
 (brace
 DECL|member|sd
 id|__u32
@@ -127,53 +126,12 @@ suffix:colon
 l_int|31
 suffix:semicolon
 multiline_comment|/* 33-63 */
-DECL|typedef|mci_t
 )brace
-id|mci_t
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// machine-check-interruption code
-singleline_comment|//
-DECL|struct|_mcic
-r_typedef
+multiline_comment|/*&n; * Channel Report Word&n; */
+DECL|struct|crw
 r_struct
-id|_mcic
-(brace
-DECL|union|_mcc
-r_union
-id|_mcc
-(brace
-DECL|member|mcl
-id|__u64
-id|mcl
-suffix:semicolon
-multiline_comment|/* machine check int. code - long info */
-DECL|member|mcd
-id|mci_t
-id|mcd
-suffix:semicolon
-multiline_comment|/* machine check int. code - details   */
-DECL|member|mcc
-)brace
-id|mcc
-suffix:semicolon
-DECL|typedef|mcic_t
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|mcic_t
-suffix:semicolon
-singleline_comment|//
-singleline_comment|// Channel Report Word
-singleline_comment|//
-DECL|struct|_crw
-r_typedef
-r_struct
-id|_crw
+id|crw
 (brace
 DECL|member|res1
 id|__u32
@@ -238,7 +196,6 @@ suffix:colon
 l_int|16
 suffix:semicolon
 multiline_comment|/* reporting-source ID */
-DECL|typedef|crw_t
 )brace
 id|__attribute__
 (paren
@@ -246,7 +203,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|crw_t
 suffix:semicolon
 DECL|macro|CRW_RSC_MONITOR
 mdefine_line|#define CRW_RSC_MONITOR  0x2  /* monitoring facility */
@@ -276,113 +232,12 @@ DECL|macro|CRW_ERC_PERRI
 mdefine_line|#define CRW_ERC_PERRI    0x07 /* perm. error, facility init */
 DECL|macro|CRW_ERC_PMOD
 mdefine_line|#define CRW_ERC_PMOD     0x08 /* installed parameters modified */
-DECL|macro|MAX_CRW_PENDING
-mdefine_line|#define MAX_CRW_PENDING  1024
-DECL|macro|MAX_MACH_PENDING
-mdefine_line|#define MAX_MACH_PENDING 1024
-singleline_comment|//
-singleline_comment|// CRW Entry
-singleline_comment|//
-DECL|struct|_crwe
-r_typedef
-r_struct
-id|_crwe
-(brace
-DECL|member|crw
-id|crw_t
-id|crw
-suffix:semicolon
-DECL|member|crwe_next
-r_struct
-id|_crwe
-op_star
-id|crwe_next
-suffix:semicolon
-DECL|typedef|crwe_t
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|crwe_t
-suffix:semicolon
-DECL|struct|_mache
-r_typedef
-r_struct
-id|_mache
-(brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-DECL|member|status
-r_int
-r_int
-id|status
-suffix:semicolon
-DECL|member|mcic
-id|mcic_t
-id|mcic
-suffix:semicolon
-DECL|union|_mc
-r_union
-id|_mc
-(brace
-DECL|member|crwe
-id|crwe_t
-op_star
-id|crwe
-suffix:semicolon
-multiline_comment|/* CRW if applicable */
-DECL|member|mc
-)brace
-id|mc
-suffix:semicolon
-DECL|member|next
-r_struct
-id|_mache
-op_star
-id|next
-suffix:semicolon
-DECL|member|prev
-r_struct
-id|_mache
-op_star
-id|prev
-suffix:semicolon
-DECL|typedef|mache_t
-)brace
-id|mache_t
-suffix:semicolon
 DECL|macro|MCHCHK_STATUS_TO_PROCESS
 mdefine_line|#define MCHCHK_STATUS_TO_PROCESS    0x00000001
 DECL|macro|MCHCHK_STATUS_IN_PROGRESS
 mdefine_line|#define MCHCHK_STATUS_IN_PROGRESS   0x00000002
 DECL|macro|MCHCHK_STATUS_WAITING
 mdefine_line|#define MCHCHK_STATUS_WAITING       0x00000004
-r_void
-id|s390_init_machine_check
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|s390_do_machine_check
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|s390_do_crw_pending
-(paren
-id|crwe_t
-op_star
-id|pcrwe
-)paren
-suffix:semicolon
 DECL|function|stcrw
 r_extern
 id|__inline__
@@ -390,7 +245,8 @@ r_int
 id|stcrw
 c_func
 (paren
-id|__u32
+r_struct
+id|crw
 op_star
 id|pcrw
 )paren

@@ -4,9 +4,18 @@ DECL|macro|_S390_IDALS_H
 mdefine_line|#define _S390_IDALS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/cio.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef CONFIG_ARCH_S390X
 DECL|macro|IDA_SIZE_LOG
 mdefine_line|#define IDA_SIZE_LOG 12 /* 11 for 2k , 12 for 4k */
+macro_line|#else
+DECL|macro|IDA_SIZE_LOG
+mdefine_line|#define IDA_SIZE_LOG 11 /* 11 for 2k , 12 for 4k */
+macro_line|#endif
 DECL|macro|IDA_BLOCK_SIZE
 mdefine_line|#define IDA_BLOCK_SIZE (1L&lt;&lt;IDA_SIZE_LOG)
 multiline_comment|/*&n; * Test if an address/length pair needs an idal list.&n; */
@@ -221,7 +230,8 @@ DECL|function|set_normalized_cda
 id|set_normalized_cda
 c_func
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 op_star
 id|ccw
 comma
@@ -341,7 +351,8 @@ DECL|function|clear_normalized_cda
 id|clear_normalized_cda
 c_func
 (paren
-id|ccw1_t
+r_struct
+id|ccw1
 op_star
 id|ccw
 )paren
