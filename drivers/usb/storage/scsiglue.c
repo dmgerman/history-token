@@ -87,10 +87,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Devices using Genesys Logic chips cause a lot of trouble for&n;&t; * high-speed transfers; they die unpredictably when given more&n;&t; * than 64 KB of data at a time.  If we detect such a device,&n;&t; * reduce the maximum transfer size to 64 KB = 128 sectors. */
-DECL|macro|USB_VENDOR_ID_GENESYS
-mdefine_line|#define USB_VENDOR_ID_GENESYS&t;0x05e3&t;&t;
-singleline_comment|// Needs a standard location
+multiline_comment|/* According to the technical support people at Genesys Logic,&n;&t; * devices using their chips have problems transferring more than&n;&t; * 32 KB at a time.  In practice people have found that 64 KB&n;&t; * works okay and that&squot;s what Windows does.  But we&squot;ll be&n;&t; * conservative; people can always use the sysfs interface to&n;&t; * increase max_sectors. */
 r_if
 c_cond
 (paren
@@ -98,20 +95,16 @@ id|us-&gt;pusb_dev-&gt;descriptor.idVendor
 op_eq
 id|USB_VENDOR_ID_GENESYS
 op_logical_and
-id|us-&gt;pusb_dev-&gt;speed
-op_eq
-id|USB_SPEED_HIGH
-op_logical_and
 id|sdev-&gt;request_queue-&gt;max_sectors
 OG
-l_int|128
+l_int|64
 )paren
 id|blk_queue_max_sectors
 c_func
 (paren
 id|sdev-&gt;request_queue
 comma
-l_int|128
+l_int|64
 )paren
 suffix:semicolon
 multiline_comment|/* We can&squot;t put these settings in slave_alloc() because that gets&n;&t; * called before the device type is known.  Consequently these&n;&t; * settings can&squot;t be overridden via the scsi devinfo mechanism. */

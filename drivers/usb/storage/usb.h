@@ -416,5 +416,8 @@ DECL|macro|scsi_unlock
 mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(host-&gt;host_lock)
 DECL|macro|scsi_lock
 mdefine_line|#define scsi_lock(host)&t;&t;spin_lock_irq(host-&gt;host_lock)
+multiline_comment|/* Vendor ID list for devices that require special handling */
+DECL|macro|USB_VENDOR_ID_GENESYS
+mdefine_line|#define USB_VENDOR_ID_GENESYS&t;&t;0x05e3&t;/* Genesys Logic */
 macro_line|#endif
 eof
