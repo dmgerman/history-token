@@ -710,6 +710,12 @@ comma
 id|safe_for_write
 c_func
 (paren
+id|GPCMD_SEND_CUE_SHEET
+)paren
+comma
+id|safe_for_write
+c_func
+(paren
 id|GPCMD_SET_SPEED
 )paren
 comma
