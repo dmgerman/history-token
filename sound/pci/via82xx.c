@@ -6448,6 +6448,7 @@ op_star
 id|uinfo
 )paren
 (brace
+multiline_comment|/* formerly they were &quot;Line&quot; and &quot;Mic&quot;, but it looks like that they&n;&t; * have nothing to do with the actual physical connections...&n;&t; */
 r_static
 r_char
 op_star
@@ -6457,9 +6458,9 @@ l_int|2
 )braket
 op_assign
 (brace
-l_string|&quot;Line&quot;
+l_string|&quot;Input1&quot;
 comma
-l_string|&quot;Mic&quot;
+l_string|&quot;Input2&quot;
 )brace
 suffix:semicolon
 id|uinfo-&gt;type
