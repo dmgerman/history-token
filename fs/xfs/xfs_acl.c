@@ -292,7 +292,7 @@ id|POSIX_ACL_XATTR_VERSION
 )paren
 )paren
 r_return
-id|EINVAL
+id|EOPNOTSUPP
 suffix:semicolon
 id|memset
 c_func
