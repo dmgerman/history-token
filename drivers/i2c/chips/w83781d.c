@@ -6737,6 +6737,26 @@ id|w83781d
 )paren
 (brace
 multiline_comment|/* enable comparator mode for temp2 and temp3 so&n;&t;&t;&t;   alarm indication will work correctly */
+id|i
+op_assign
+id|w83781d_read_value
+c_func
+(paren
+id|client
+comma
+id|W83781D_REG_IRQ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|i
+op_amp
+l_int|0x40
+)paren
+)paren
 id|w83781d_write_value
 c_func
 (paren
@@ -6744,7 +6764,9 @@ id|client
 comma
 id|W83781D_REG_IRQ
 comma
-l_int|0x41
+id|i
+op_or
+l_int|0x40
 )paren
 suffix:semicolon
 r_for
