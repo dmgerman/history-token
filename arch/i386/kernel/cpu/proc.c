@@ -92,7 +92,7 @@ l_string|&quot;tm&quot;
 comma
 l_string|&quot;ia64&quot;
 comma
-l_int|NULL
+l_string|&quot;pbe&quot;
 comma
 multiline_comment|/* AMD-defined */
 l_int|NULL
