@@ -738,14 +738,13 @@ id|dev-&gt;bus_id
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
-id|strlcpy
+id|kobject_set_name
 c_func
 (paren
-id|dev-&gt;kobj.name
+op_amp
+id|dev-&gt;kobj
 comma
 id|dev-&gt;bus_id
-comma
-id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 r_if

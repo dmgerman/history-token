@@ -375,14 +375,13 @@ op_amp
 id|cls-&gt;interfaces
 )paren
 suffix:semicolon
-id|strlcpy
+id|kobject_set_name
 c_func
 (paren
-id|cls-&gt;subsys.kset.kobj.name
+op_amp
+id|cls-&gt;subsys.kset.kobj
 comma
 id|cls-&gt;name
-comma
-id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|subsys_set_kset
@@ -1245,14 +1244,13 @@ id|class_dev-&gt;class_id
 )paren
 suffix:semicolon
 multiline_comment|/* first, register with generic layer. */
-id|strlcpy
+id|kobject_set_name
 c_func
 (paren
-id|class_dev-&gt;kobj.name
+op_amp
+id|class_dev-&gt;kobj
 comma
 id|class_dev-&gt;class_id
-comma
-id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
 id|kobj_set_kset_s

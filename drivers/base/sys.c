@@ -280,7 +280,12 @@ c_func
 (paren
 l_string|&quot;Registering sysdev class &squot;%s&squot;&bslash;n&quot;
 comma
-id|cls-&gt;kset.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|cls-&gt;kset.kobj
+)paren
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -328,7 +333,12 @@ c_func
 (paren
 l_string|&quot;Unregistering sysdev class &squot;%s&squot;&bslash;n&quot;
 comma
-id|cls-&gt;kset.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|cls-&gt;kset.kobj
+)paren
 )paren
 suffix:semicolon
 id|kset_unregister
@@ -588,17 +598,20 @@ op_assign
 op_amp
 id|ktype_sysdev
 suffix:semicolon
-multiline_comment|/* set the kobject name */
-id|snprintf
+id|kobject_set_name
 c_func
 (paren
-id|sysdev-&gt;kobj.name
-comma
-id|KOBJ_NAME_LEN
+op_amp
+id|sysdev-&gt;kobj
 comma
 l_string|&quot;%s%d&quot;
 comma
-id|cls-&gt;kset.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|cls-&gt;kset.kobj
+)paren
 comma
 id|sysdev-&gt;id
 )paren
@@ -608,7 +621,12 @@ c_func
 (paren
 l_string|&quot;Registering sys device &squot;%s&squot;&bslash;n&quot;
 comma
-id|sysdev-&gt;kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|sysdev-&gt;kobj
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Register the object */
@@ -841,7 +859,12 @@ c_func
 (paren
 l_string|&quot;Shutting down type &squot;%s&squot;:&bslash;n&quot;
 comma
-id|cls-&gt;kset.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|cls-&gt;kset.kobj
+)paren
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -865,7 +888,12 @@ c_func
 (paren
 l_string|&quot; %s&bslash;n&quot;
 comma
-id|sysdev-&gt;kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|sysdev-&gt;kobj
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Call global drivers first. */
@@ -986,7 +1014,12 @@ c_func
 (paren
 l_string|&quot;Suspending type &squot;%s&squot;:&bslash;n&quot;
 comma
-id|cls-&gt;kset.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|cls-&gt;kset.kobj
+)paren
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -1010,7 +1043,12 @@ c_func
 (paren
 l_string|&quot; %s&bslash;n&quot;
 comma
-id|sysdev-&gt;kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|sysdev-&gt;kobj
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Call global drivers first. */
@@ -1132,7 +1170,12 @@ c_func
 (paren
 l_string|&quot;Resuming type &squot;%s&squot;:&bslash;n&quot;
 comma
-id|cls-&gt;kset.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|cls-&gt;kset.kobj
+)paren
 )paren
 suffix:semicolon
 id|list_for_each_entry
@@ -1156,7 +1199,12 @@ c_func
 (paren
 l_string|&quot; %s&bslash;n&quot;
 comma
-id|sysdev-&gt;kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|sysdev-&gt;kobj
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* First, call the class-specific one */

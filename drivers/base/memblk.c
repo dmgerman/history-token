@@ -86,7 +86,12 @@ comma
 op_amp
 id|memblk-&gt;sysdev.kobj
 comma
-id|memblk-&gt;sysdev.kobj.name
+id|kobject_name
+c_func
+(paren
+op_amp
+id|memblk-&gt;sysdev.kobj
+)paren
 )paren
 suffix:semicolon
 r_return
