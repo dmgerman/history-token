@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 DECL|macro|LP_STATS
 macro_line|#undef LP_STATS
@@ -307,6 +308,12 @@ r_int
 id|minor
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_int
 id|polling
 suffix:semicolon
@@ -348,7 +355,8 @@ id|minor
 )braket
 )paren
 suffix:semicolon
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
+c_func
 (paren
 op_amp
 id|lp_table
@@ -358,7 +366,31 @@ id|minor
 dot
 id|waitq
 comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|LP_TIMEOUT_POLLED
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|lp_table
+(braket
+id|minor
+)braket
+dot
+id|waitq
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 r_if
@@ -1300,6 +1332,12 @@ op_star
 id|ppos
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_int
 r_int
 id|minor
@@ -1558,7 +1596,9 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|interruptible_sleep_on_timeout
+(brace
+id|prepare_to_wait
+c_func
 (paren
 op_amp
 id|lp_table
@@ -1568,9 +1608,34 @@ id|minor
 dot
 id|waitq
 comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|LP_TIMEOUT_POLLED
 )paren
 suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|lp_table
+(braket
+id|minor
+)braket
+dot
+id|waitq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
