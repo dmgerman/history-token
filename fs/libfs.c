@@ -2220,6 +2220,7 @@ id|loff_t
 op_star
 id|ppos
 comma
+r_const
 r_void
 op_star
 id|from
