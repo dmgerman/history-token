@@ -953,18 +953,6 @@ r_int
 id|outgoing
 suffix:semicolon
 multiline_comment|/* Flag: outgoing call              */
-DECL|member|dialstarted
-r_int
-r_int
-id|dialstarted
-suffix:semicolon
-multiline_comment|/* first dialing-attempt           */
-DECL|member|dialwait_timer
-r_int
-r_int
-id|dialwait_timer
-suffix:semicolon
-multiline_comment|/* earliest next dialing-attempt   */
 DECL|member|dialretry
 r_int
 id|dialretry

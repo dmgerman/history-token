@@ -949,16 +949,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|idev-&gt;dialstarted
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Jiffies of last dial-start */
-id|idev-&gt;dialwait_timer
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Jiffies of earliest next dial-start */
 id|init_timer
 c_func
 (paren
@@ -1100,10 +1090,11 @@ suffix:semicolon
 multiline_comment|/* Wait 5 secs before Callback */
 id|mlp-&gt;dialtimeout
 op_assign
-op_minus
-l_int|1
+l_int|60
+op_star
+id|HZ
 suffix:semicolon
-multiline_comment|/* Infinite Dial-Timeout */
+multiline_comment|/* Wait 1 min for connection  */
 id|mlp-&gt;dialwait
 op_assign
 l_int|5

@@ -458,13 +458,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|idev-&gt;online
-)paren
-suffix:semicolon
+singleline_comment|//&t;list_del(&amp;idev-&gt;online); FIXME
 id|spin_unlock_irqrestore
 c_func
 (paren
