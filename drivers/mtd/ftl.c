@@ -5924,7 +5924,7 @@ id|FTL_MAJOR
 )paren
 )paren
 suffix:semicolon
-id|bklk_clear
+id|blk_clear
 c_func
 (paren
 id|FTL_MAJOR

@@ -10820,7 +10820,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;We have verfied that the board is actually present, so now we&n; *&t;can complete the setup.&n; */
+multiline_comment|/*&n; *&t;We have verified that the board is actually present, so now we&n; *&t;can complete the setup.&n; */
 id|panelp
 op_assign
 (paren

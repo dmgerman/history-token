@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/fs/hpfs/super.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  mouning, unmounting, error handling&n; */
+multiline_comment|/*&n; *  linux/fs/hpfs/super.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  mounting, unmounting, error handling&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 macro_line|#include &lt;linux/module.h&gt;

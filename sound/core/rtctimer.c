@@ -60,7 +60,7 @@ op_star
 id|t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The hardware dependent description for this timer.&n; */
+multiline_comment|/*&n; * The hardware dependant description for this timer.&n; */
 DECL|variable|rtc_hw
 r_static
 r_struct
