@@ -1374,6 +1374,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|ndev
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren

@@ -7236,7 +7236,7 @@ c_cond
 (paren
 id|link-&gt;priv
 )paren
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|link-&gt;priv

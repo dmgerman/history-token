@@ -2625,6 +2625,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|IOBASE
+comma
+l_int|0x20
+)paren
+suffix:semicolon
 id|free_netdev
 c_func
 (paren

@@ -682,7 +682,7 @@ id|dev
 suffix:semicolon
 id|out
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

@@ -6436,7 +6436,7 @@ id|pegasus
 suffix:semicolon
 id|out3
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|net
