@@ -12570,7 +12570,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/**&n; * snd_ac97_suspend - General suspend function for AC97 codec&n; * @ac97: the ac97 instance&n; *&n; * Suspends the codec, power down the chip.&n; */
+multiline_comment|/**&n; * snd_ac97_suspend - General suspend function for AC97 codec&n; * @ac97: the ac97 instance&n; *&n; * Suspends the codec, power down the chip.&n; * MASTER and HEADPHONE registers are muted but the register cache values&n; * are not changed, so that the values can be restored in snd_ac97_resume().&n; */
 DECL|function|snd_ac97_suspend
 r_void
 id|snd_ac97_suspend
@@ -12598,6 +12598,38 @@ op_complement
 l_int|0x8000
 suffix:semicolon
 multiline_comment|/* invert EAPD */
+r_if
+c_cond
+(paren
+id|ac97_is_audio
+c_func
+(paren
+id|ac97
+)paren
+)paren
+(brace
+multiline_comment|/* some codecs have stereo mute bits */
+id|snd_ac97_write
+c_func
+(paren
+id|ac97
+comma
+id|AC97_MASTER
+comma
+l_int|0x9f9f
+)paren
+suffix:semicolon
+id|snd_ac97_write
+c_func
+(paren
+id|ac97
+comma
+id|AC97_HEADPHONE
+comma
+l_int|0x9f9f
+)paren
+suffix:semicolon
+)brace
 id|power
 op_or_assign
 l_int|0x4000
@@ -14126,6 +14158,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_ac97_resume
+)paren
+suffix:semicolon
+DECL|variable|snd_ac97_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_ac97_suspend
 )paren
 suffix:semicolon
 macro_line|#endif
