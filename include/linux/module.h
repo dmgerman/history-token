@@ -1033,12 +1033,6 @@ macro_line|#endif
 )brace
 DECL|macro|EXPORT_NO_SYMBOLS
 mdefine_line|#define EXPORT_NO_SYMBOLS
-r_extern
-r_int
-id|module_dummy_usage
-suffix:semicolon
-DECL|macro|GET_USE_COUNT
-mdefine_line|#define GET_USE_COUNT(module) (module_dummy_usage)
 DECL|macro|MOD_IN_USE
 mdefine_line|#define MOD_IN_USE 0
 DECL|macro|__MODULE_STRING
