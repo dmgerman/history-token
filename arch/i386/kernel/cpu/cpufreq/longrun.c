@@ -1030,7 +1030,7 @@ l_string|&quot;Dominik Brodowski &lt;linux@brodo.de&gt;&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;LongRun driver for Transmeta Crusoe processors.&quot;
+l_string|&quot;LongRun driver for Transmeta Crusoe and Efficeon processors.&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
