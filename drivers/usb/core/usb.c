@@ -8956,6 +8956,18 @@ id|usb_bus_list
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|usb_bus_type
+r_struct
+id|bus_type
+id|usb_bus_type
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;usb&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Init&n; */
 DECL|function|usb_init
 r_static
@@ -8967,6 +8979,13 @@ c_func
 r_void
 )paren
 (brace
+id|bus_register
+c_func
+(paren
+op_amp
+id|usb_bus_type
+)paren
+suffix:semicolon
 id|usb_major_init
 c_func
 (paren
@@ -8997,6 +9016,13 @@ c_func
 r_void
 )paren
 (brace
+id|put_bus
+c_func
+(paren
+op_amp
+id|usb_bus_type
+)paren
+suffix:semicolon
 id|usb_major_cleanup
 c_func
 (paren
