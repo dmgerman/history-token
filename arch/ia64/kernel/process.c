@@ -257,6 +257,11 @@ id|regs
 op_member_access_from_pointer
 id|ri
 suffix:semicolon
+id|print_modules
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
