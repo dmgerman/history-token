@@ -1629,8 +1629,10 @@ r_int
 id|pcmcia_replace_cis
 c_func
 (paren
-id|client_handle_t
-id|handle
+r_struct
+id|pcmcia_socket
+op_star
+id|s
 comma
 id|cisdump_t
 op_star

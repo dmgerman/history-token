@@ -4208,7 +4208,7 @@ op_assign
 id|pcmcia_replace_cis
 c_func
 (paren
-id|s-&gt;handle
+id|s-&gt;parent
 comma
 op_amp
 id|buf.cisdump
