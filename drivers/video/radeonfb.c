@@ -13412,6 +13412,8 @@ suffix:colon
 id|rinfo-&gt;video_ram
 op_assign
 l_int|8192
+op_star
+l_int|1024
 suffix:semicolon
 r_break
 suffix:semicolon
