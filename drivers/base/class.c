@@ -163,7 +163,7 @@ op_assign
 id|cls-&gt;devnum
 op_increment
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
