@@ -191,8 +191,6 @@ DECL|macro|__devexit
 mdefine_line|#define __devexit
 DECL|macro|__devexitdata
 mdefine_line|#define __devexitdata
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x)  &amp;(x)
 macro_line|#else
 DECL|macro|__devinit
 mdefine_line|#define __devinit __init
@@ -202,8 +200,14 @@ DECL|macro|__devexit
 mdefine_line|#define __devexit __exit
 DECL|macro|__devexitdata
 mdefine_line|#define __devexitdata __exitdata
+macro_line|#endif
+multiline_comment|/* Functions marked as __devexit may be discarded at kernel link time, depending&n;   on config options.  Newer versions of binutils detect references from&n;   retained sections to discarded sections and flag an error.  Pointers to&n;   __devexit functions must use __devexit_p(function_name), the wrapper will&n;   insert either the function_name or NULL, depending on the config options.&n; */
+macro_line|#if defined(MODULE) || defined(CONFIG_HOTPLUG)
 DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x)  0
+mdefine_line|#define __devexit_p(x) x
+macro_line|#else
+DECL|macro|__devexit_p
+mdefine_line|#define __devexit_p(x) NULL
 macro_line|#endif
 macro_line|#endif /* _LINUX_INIT_H */
 eof

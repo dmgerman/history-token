@@ -1,11 +1,11 @@
 multiline_comment|/* epic100.c: A SMC 83c170 EPIC/100 Fast Ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written/copyright 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the SMC83c170/175 &quot;EPIC&quot; series, as used on the&n;&t;SMC EtherPower II 9432 PCI adapter, and several CardBus cards.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Information and updates available at&n;&t;http://www.scyld.com/network/epic100.html&n;&n;&t;---------------------------------------------------------------------&n;&t;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge becker version 1.09 (4/08/2000)&n;&n;&t;LK1.1.3:&n;&t;* Major bugfix to 1.09 driver (Francis Romieu)&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;* Merge becker test version 1.09 (5/29/2000)&n;&n;&t;LK1.1.5:&n;&t;* Fix locking (jgarzik)&n;&t;* Limit 83c175 probe to ethernet-class PCI devices (rgooch)&n;&n;&t;LK1.1.6:&n;&t;* Merge becker version 1.11&n;&t;* Move pci_enable_device before any PCI BAR len checks&n;&n;&t;LK1.1.7:&n;&t;* { fill me in }&n;&n;&t;LK1.1.8:&n;&t;* ethtool driver info support (jgarzik)&n;&n;&t;LK1.1.9:&n;&t;* ethtool media get/set support (jgarzik)&n;&n;&t;LK1.1.10:&n;&t;* revert MII transceiver init change (jgarzik)&n;&n;&t;LK1.1.11:&n;&t;* implement ETHTOOL_[GS]SET, _NWAY_RST, _[GS]MSGLVL, _GLINK (jgarzik)&n;&t;* replace some MII-related magic numbers with constants&n;&n;&t;LK1.1.12:&n;&t;* fix power-up sequence&n;&n;&t;LK1.1.13:&n;&t;* revert version 1.1.12, power-up sequence &quot;fix&quot;&n;&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the SMC83c170/175 &quot;EPIC&quot; series, as used on the&n;&t;SMC EtherPower II 9432 PCI adapter, and several CardBus cards.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Information and updates available at&n;&t;http://www.scyld.com/network/epic100.html&n;&n;&t;---------------------------------------------------------------------&n;&t;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge becker version 1.09 (4/08/2000)&n;&n;&t;LK1.1.3:&n;&t;* Major bugfix to 1.09 driver (Francis Romieu)&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;* Merge becker test version 1.09 (5/29/2000)&n;&n;&t;LK1.1.5:&n;&t;* Fix locking (jgarzik)&n;&t;* Limit 83c175 probe to ethernet-class PCI devices (rgooch)&n;&n;&t;LK1.1.6:&n;&t;* Merge becker version 1.11&n;&t;* Move pci_enable_device before any PCI BAR len checks&n;&n;&t;LK1.1.7:&n;&t;* { fill me in }&n;&n;&t;LK1.1.8:&n;&t;* ethtool driver info support (jgarzik)&n;&n;&t;LK1.1.9:&n;&t;* ethtool media get/set support (jgarzik)&n;&n;&t;LK1.1.10:&n;&t;* revert MII transceiver init change (jgarzik)&n;&n;&t;LK1.1.11:&n;&t;* implement ETHTOOL_[GS]SET, _NWAY_RST, _[GS]MSGLVL, _GLINK (jgarzik)&n;&t;* replace some MII-related magic numbers with constants&n;&n;&t;LK1.1.12:&n;&t;* fix power-up sequence&n;&n;&t;LK1.1.13:&n;&t;* revert version 1.1.12, power-up sequence &quot;fix&quot;&n;&n;&t;LK1.1.14 (Kryzsztof Halasa):&n;&t;* fix spurious bad initializations&n;&t;* pound phy a la SMSC&squot;s app note on the subject&n;&n;*/
 DECL|macro|DRV_NAME
-mdefine_line|#define DRV_NAME&t;&quot;epic100&quot;
+mdefine_line|#define DRV_NAME        &quot;epic100&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.11+LK1.1.13&quot;
+mdefine_line|#define DRV_VERSION     &quot;1.11+LK1.1.14&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Mar 20, 2002&quot;
+mdefine_line|#define DRV_RELDATE     &quot;Aug 4, 2002&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -1761,6 +1761,21 @@ id|GENCTL
 )paren
 suffix:semicolon
 multiline_comment|/* Magic?!  If we don&squot;t set this bit the MII interface won&squot;t work. */
+multiline_comment|/* This magic is documented in SMSC app note 7.15 */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|16
+suffix:semicolon
+id|i
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+)paren
 id|outl
 c_func
 (paren
@@ -2943,6 +2958,20 @@ id|GENCTL
 )paren
 suffix:semicolon
 multiline_comment|/* This magic is documented in SMSC app note 7.15 */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|16
+suffix:semicolon
+id|i
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+)paren
 id|outl
 c_func
 (paren
@@ -3086,6 +3115,13 @@ id|GENCTL
 )paren
 suffix:semicolon
 macro_line|#endif
+id|udelay
+c_func
+(paren
+l_int|20
+)paren
+suffix:semicolon
+multiline_comment|/* Looks like EPII needs that if you want reliable RX init. FIXME: pci posting bug? */
 r_for
 c_loop
 (paren

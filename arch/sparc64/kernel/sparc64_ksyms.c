@@ -45,6 +45,7 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
+macro_line|#include &lt;asm/ns87303.h&gt;
 DECL|struct|poll
 r_struct
 id|poll
@@ -1893,4 +1894,12 @@ id|do_BUG
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* for ns8703 */
+DECL|variable|ns87303_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ns87303_lock
+)paren
+suffix:semicolon
 eof

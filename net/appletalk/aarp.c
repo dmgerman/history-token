@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;AARP:&t;&t;An implementation of the AppleTalk AARP protocol for&n; *&t;&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;This doesn&squot;t fit cleanly with the IP arp. Potentially we can use&n; *&t;the generic neighbour discovery code to clean this up.&n; *&n; *&t;FIXME:&n; *&t;&t;We ought to handle the retransmits with a single list and a &n; *&t;separate fast timer for when it is needed.&n; *&t;&t;Use neighbour discovery code.&n; *&t;&t;Token Ring Support.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&n; *&t;References:&n; *&t;&t;Inside AppleTalk (2nd Ed).&n; *&t;Fixes:&n; *&t;&t;Jaume Grau&t;-&t;flush caches on AARP_PROBE&n; *&t;&t;Rob Newberry&t;-&t;Added proxy AARP and AARP proc fs, &n; *&t;&t;&t;&t;&t;moved probing from DDP module.&n; *&t;&t;Arnaldo C. Melo -&t;don&squot;t mangle rx packets&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_ATALK) || defined(CONFIG_ATALK_MODULE) 
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -81,7 +80,7 @@ id|expires_at
 suffix:semicolon
 DECL|member|target_addr
 r_struct
-id|at_addr
+id|atalk_addr
 id|target_addr
 suffix:semicolon
 DECL|member|dev
@@ -202,6 +201,7 @@ id|a
 )paren
 (brace
 r_static
+r_int
 r_char
 id|aarp_eth_multicast
 (braket
@@ -229,6 +229,11 @@ id|dev
 op_assign
 id|a-&gt;dev
 suffix:semicolon
+r_struct
+id|elapaarp
+op_star
+id|eah
+suffix:semicolon
 r_int
 id|len
 op_assign
@@ -236,8 +241,8 @@ id|dev-&gt;hard_header_len
 op_plus
 r_sizeof
 (paren
-r_struct
-id|elapaarp
+op_star
+id|eah
 )paren
 op_plus
 id|aarp_dl-&gt;header_length
@@ -256,7 +261,7 @@ id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sat
 op_assign
@@ -265,11 +270,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-r_struct
-id|elapaarp
-op_star
-id|eah
 suffix:semicolon
 r_if
 c_cond
@@ -306,13 +306,10 @@ op_plus
 id|aarp_dl-&gt;header_length
 )paren
 suffix:semicolon
-id|eah
+id|skb-&gt;nh.raw
 op_assign
-(paren
-r_struct
-id|elapaarp
-op_star
-)paren
+id|skb-&gt;h.raw
+op_assign
 id|skb_put
 c_func
 (paren
@@ -320,8 +317,8 @@ id|skb
 comma
 r_sizeof
 (paren
-r_struct
-id|elapaarp
+op_star
+id|eah
 )paren
 )paren
 suffix:semicolon
@@ -333,19 +330,17 @@ c_func
 id|ETH_P_ATALK
 )paren
 suffix:semicolon
-id|skb-&gt;nh.raw
-op_assign
-id|skb-&gt;h.raw
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|eah
-suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|eah
+op_assign
+id|aarp_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 multiline_comment|/* Set up the ARP */
 id|eah-&gt;hw_type
@@ -462,12 +457,12 @@ op_star
 id|dev
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|us
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|them
 comma
@@ -477,6 +472,11 @@ op_star
 id|sha
 )paren
 (brace
+r_struct
+id|elapaarp
+op_star
+id|eah
+suffix:semicolon
 r_int
 id|len
 op_assign
@@ -484,8 +484,8 @@ id|dev-&gt;hard_header_len
 op_plus
 r_sizeof
 (paren
-r_struct
-id|elapaarp
+op_star
+id|eah
 )paren
 op_plus
 id|aarp_dl-&gt;header_length
@@ -502,11 +502,6 @@ id|len
 comma
 id|GFP_ATOMIC
 )paren
-suffix:semicolon
-r_struct
-id|elapaarp
-op_star
-id|eah
 suffix:semicolon
 r_if
 c_cond
@@ -527,13 +522,10 @@ op_plus
 id|aarp_dl-&gt;header_length
 )paren
 suffix:semicolon
-id|eah
+id|skb-&gt;nh.raw
 op_assign
-(paren
-r_struct
-id|elapaarp
-op_star
-)paren
+id|skb-&gt;h.raw
+op_assign
 id|skb_put
 c_func
 (paren
@@ -541,8 +533,8 @@ id|skb
 comma
 r_sizeof
 (paren
-r_struct
-id|elapaarp
+op_star
+id|eah
 )paren
 )paren
 suffix:semicolon
@@ -554,19 +546,17 @@ c_func
 id|ETH_P_ATALK
 )paren
 suffix:semicolon
-id|skb-&gt;nh.raw
-op_assign
-id|skb-&gt;h.raw
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|eah
-suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|eah
+op_assign
+id|aarp_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 multiline_comment|/* Set up the ARP */
 id|eah-&gt;hw_type
@@ -695,11 +685,16 @@ op_star
 id|dev
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|us
 )paren
 (brace
+r_struct
+id|elapaarp
+op_star
+id|eah
+suffix:semicolon
 r_int
 id|len
 op_assign
@@ -707,8 +702,8 @@ id|dev-&gt;hard_header_len
 op_plus
 r_sizeof
 (paren
-r_struct
-id|elapaarp
+op_star
+id|eah
 )paren
 op_plus
 id|aarp_dl-&gt;header_length
@@ -727,6 +722,7 @@ id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_static
+r_int
 r_char
 id|aarp_eth_multicast
 (braket
@@ -747,11 +743,6 @@ comma
 l_int|0xFF
 )brace
 suffix:semicolon
-r_struct
-id|elapaarp
-op_star
-id|eah
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -771,13 +762,10 @@ op_plus
 id|aarp_dl-&gt;header_length
 )paren
 suffix:semicolon
-id|eah
+id|skb-&gt;nh.raw
 op_assign
-(paren
-r_struct
-id|elapaarp
-op_star
-)paren
+id|skb-&gt;h.raw
+op_assign
 id|skb_put
 c_func
 (paren
@@ -785,8 +773,8 @@ id|skb
 comma
 r_sizeof
 (paren
-r_struct
-id|elapaarp
+op_star
+id|eah
 )paren
 )paren
 suffix:semicolon
@@ -798,19 +786,17 @@ c_func
 id|ETH_P_ATALK
 )paren
 suffix:semicolon
-id|skb-&gt;nh.raw
-op_assign
-id|skb-&gt;h.raw
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|eah
-suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|eah
+op_assign
+id|aarp_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 multiline_comment|/* Set up the ARP */
 id|eah-&gt;hw_type
@@ -1424,7 +1410,7 @@ op_star
 id|dev
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sat
 )paren
@@ -1473,7 +1459,7 @@ op_star
 id|dev
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sa
 )paren
@@ -1539,7 +1525,7 @@ multiline_comment|/* This must run under aarp_lock. */
 DECL|function|__aarp_proxy_find
 r_static
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|__aarp_proxy_find
 c_func
@@ -1550,7 +1536,7 @@ op_star
 id|dev
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sa
 )paren
@@ -1798,7 +1784,7 @@ op_star
 id|atif
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sa
 )paren
@@ -2034,7 +2020,7 @@ op_star
 id|skb
 comma
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|sa
 comma
@@ -2086,7 +2072,7 @@ id|ARPHRD_LOCALTLK
 )paren
 (brace
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|at
 op_assign
@@ -2113,7 +2099,7 @@ id|ft
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Compressible ?&n;&t;&t; * &n;&t;&t; *&t;IFF: src_net==dest_net==device_net&n;&t;&t; *&t;(zero matches anything)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Compressible ?&n;&t;&t; * &n;&t;&t; * IFF: src_net == dest_net == device_net&n;&t;&t; * (zero matches anything)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2171,7 +2157,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *&t;Nice and easy. No AARP type protocols occur here&n;&t;&t; *&t;so we can just shovel it out with a 3 byte LLAP header&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Nice and easy. No AARP type protocols occur here so we can&n;&t;&t; * just shovel it out with a 3 byte LLAP header&n;&t;&t; */
 id|skb_push
 c_func
 (paren
@@ -2472,7 +2458,7 @@ c_func
 id|a
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Switch to fast timer if needed (That is if this is the&n;&t; *&t;first unresolved entry to get added)&n;&t; */
+multiline_comment|/*&n;&t; * Switch to fast timer if needed (That is if this is the first&n;&t; * unresolved entry to get added)&n;&t; */
 r_if
 c_cond
 (paren
@@ -2688,12 +2674,11 @@ id|elapaarp
 op_star
 id|ea
 op_assign
+id|aarp_hdr
+c_func
 (paren
-r_struct
-id|elapaarp
-op_star
+id|skb
 )paren
-id|skb-&gt;h.raw
 suffix:semicolon
 r_int
 id|hash
@@ -2711,7 +2696,7 @@ op_star
 id|a
 suffix:semicolon
 r_struct
-id|at_addr
+id|atalk_addr
 id|sa
 comma
 op_star
@@ -2997,7 +2982,7 @@ suffix:colon
 r_case
 id|AARP_PROBE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; *&t;If it is my address set ma to my address and&n;&t;&t;&t; *&t;reply. We can treat probe and request the&n;&t;&t;&t; *&t;same. Probe simply means we shouldn&squot;t cache&n;&t;&t;&t; *&t;the querying host, as in a probe they are&n;&t;&t;&t; *&t;proposing an address not using one.&n;&t;&t;&t; *&t;&n;&t;&t;&t; *&t;Support for proxy-AARP added. We check if the&n;&t;&t;&t; *&t;address is one of our proxies before we toss&n;&t;&t;&t; *&t;the packet out.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If it is my address set ma to my address and reply.&n;&t;&t;&t; * We can treat probe and request the same.  Probe&n;&t;&t;&t; * simply means we shouldn&squot;t cache the querying host,&n;&t;&t;&t; * as in a probe they are proposing an address not&n;&t;&t;&t; * using one.&n;&t;&t;&t; *&t;&n;&t;&t;&t; * Support for proxy-AARP added. We check if the&n;&t;&t;&t; * address is one of our proxies before we toss the&n;&t;&t;&t; * packet out.&n;&t;&t;&t; */
 id|sa.s_node
 op_assign
 id|ea-&gt;pa_dst_node
@@ -3054,7 +3039,7 @@ op_eq
 id|AARP_PROBE
 )paren
 (brace
-multiline_comment|/* A probe implies someone trying to get an&n;&t;&t;&t;&t; * address. So as a precaution flush any&n;&t;&t;&t;&t; * entries we have for this address. */
+multiline_comment|/*&n;&t;&t;&t;&t; * A probe implies someone trying to get an&n;&t;&t;&t;&t; * address. So as a precaution flush any&n;&t;&t;&t;&t; * entries we have for this address.&n;&t;&t;&t;&t; */
 r_struct
 id|aarp_entry
 op_star
@@ -3080,7 +3065,7 @@ op_amp
 id|sa
 )paren
 suffix:semicolon
-multiline_comment|/* Make it expire next tick - that avoids us&n;&t;&t;&t;&t; * getting into a probe/flush/learn/probe/&n;&t;&t;&t;&t; * flush/learn cycle during probing of a slow&n;&t;&t;&t;&t; * to respond host addr. */
+multiline_comment|/*&n;&t;&t;&t;&t; * Make it expire next tick - that avoids us&n;&t;&t;&t;&t; * getting into a probe/flush/learn/probe/&n;&t;&t;&t;&t; * flush/learn cycle during probing of a slow&n;&t;&t;&t;&t; * to respond host addr.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3196,6 +3181,7 @@ comma
 suffix:semicolon
 DECL|variable|aarp_snap_id
 r_static
+r_int
 r_char
 id|aarp_snap_id
 (braket
@@ -4150,7 +4136,6 @@ l_string|&quot;aarp&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#endif  /* CONFIG_ATALK || CONFIG_ATALK_MODULE */
 id|MODULE_LICENSE
 c_func
 (paren

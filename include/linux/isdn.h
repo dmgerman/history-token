@@ -459,8 +459,6 @@ DECL|macro|ISDN_TIMER_MODEMRING
 mdefine_line|#define ISDN_TIMER_MODEMRING   4
 DECL|macro|ISDN_TIMER_MODEMXMIT
 mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
-DECL|macro|ISDN_TIMER_NETDIAL
-mdefine_line|#define ISDN_TIMER_NETDIAL    16 
 DECL|macro|ISDN_TIMER_NETHANGUP
 mdefine_line|#define ISDN_TIMER_NETHANGUP  32
 DECL|macro|ISDN_TIMER_CARRIER
@@ -468,14 +466,7 @@ mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
 DECL|macro|ISDN_TIMER_FAST
 mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMPLUS | &bslash;&n;                              ISDN_TIMER_MODEMXMIT)
 DECL|macro|ISDN_TIMER_SLOW
-mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_NETDIAL | ISDN_TIMER_CARRIER)
-multiline_comment|/* Timeout-Values for isdn_net_dial() */
-DECL|macro|ISDN_TIMER_DTIMEOUT10
-mdefine_line|#define ISDN_TIMER_DTIMEOUT10 (10*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
-DECL|macro|ISDN_TIMER_DTIMEOUT15
-mdefine_line|#define ISDN_TIMER_DTIMEOUT15 (15*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
-DECL|macro|ISDN_TIMER_DTIMEOUT60
-mdefine_line|#define ISDN_TIMER_DTIMEOUT60 (60*HZ/(ISDN_TIMER_02SEC*(ISDN_TIMER_RES+1)))
+mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_CARRIER)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
@@ -532,22 +523,28 @@ l_int|10
 )braket
 suffix:semicolon
 multiline_comment|/* Name of device                   */
+DECL|member|dial_timer
+r_struct
+id|timer_list
+id|dial_timer
+suffix:semicolon
+multiline_comment|/* dial timeout                     */
+DECL|member|dial_event
+r_int
+id|dial_event
+suffix:semicolon
+multiline_comment|/* event in case of timer expiry    */
 DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
-DECL|member|isdn_device
+DECL|member|isdn_slot
 r_int
-id|isdn_device
+id|isdn_slot
 suffix:semicolon
-multiline_comment|/* Index to isdn-device             */
-DECL|member|isdn_channel
-r_int
-id|isdn_channel
-suffix:semicolon
-multiline_comment|/* Index to isdn-channel            */
+multiline_comment|/* Index to isdn device/channel     */
 DECL|member|ppp_slot
 r_int
 id|ppp_slot
@@ -588,11 +585,6 @@ r_int
 id|cbdelay
 suffix:semicolon
 multiline_comment|/* Delay before Callback starts     */
-DECL|member|dtimer
-r_int
-id|dtimer
-suffix:semicolon
-multiline_comment|/* Timeout-counter for dialing      */
 DECL|member|msn
 r_char
 id|msn
@@ -921,7 +913,6 @@ id|isdn_net_dev_s
 (brace
 DECL|member|local
 id|isdn_net_local
-op_star
 id|local
 suffix:semicolon
 DECL|member|queue
@@ -935,12 +926,12 @@ id|spinlock_t
 id|queue_lock
 suffix:semicolon
 multiline_comment|/* lock to protect queue            */
-DECL|member|next
-r_void
-op_star
-id|next
+DECL|member|global_list
+r_struct
+id|list_head
+id|global_list
 suffix:semicolon
-multiline_comment|/* Pointer to next isdn-interface   */
+multiline_comment|/* global list of all isdn_net_devs */
 DECL|member|dev
 r_struct
 id|net_device
@@ -1226,21 +1217,11 @@ r_int
 id|rcvsched
 suffix:semicolon
 multiline_comment|/* Receive needs schedule         */
-DECL|member|isdn_driver
+DECL|member|isdn_slot
 r_int
-id|isdn_driver
+id|isdn_slot
 suffix:semicolon
-multiline_comment|/* Index to isdn-driver           */
-DECL|member|isdn_channel
-r_int
-id|isdn_channel
-suffix:semicolon
-multiline_comment|/* Index to isdn-channel          */
-DECL|member|drv_index
-r_int
-id|drv_index
-suffix:semicolon
-multiline_comment|/* Index to dev-&gt;usage            */
+multiline_comment|/* Index to isdn-driver/channel   */
 DECL|member|ncarrier
 r_int
 id|ncarrier
@@ -1779,49 +1760,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Misc.-function Timer       */
-DECL|member|chanmap
-r_int
-id|chanmap
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Map minor-&gt;device-channel  */
-DECL|member|drvmap
-r_int
-id|drvmap
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Map minor-&gt;driver-index    */
-DECL|member|usage
-r_int
-id|usage
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Used by tty/ip/voice       */
-DECL|member|num
-r_char
-id|num
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-(braket
-id|ISDN_MSNLEN
-)braket
-suffix:semicolon
-multiline_comment|/* Remote number of active ch.*/
-DECL|member|m_idx
-r_int
-id|m_idx
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Index for mdm....          */
 DECL|member|drv
 id|driver
 op_star
@@ -1831,12 +1769,6 @@ id|ISDN_MAX_DRIVERS
 )braket
 suffix:semicolon
 multiline_comment|/* Array of drivers           */
-DECL|member|netdev
-id|isdn_net_dev
-op_star
-id|netdev
-suffix:semicolon
-multiline_comment|/* Linked list of net-if&squot;s    */
 DECL|member|drvid
 r_char
 id|drvid
@@ -1860,65 +1792,6 @@ id|modem
 id|mdm
 suffix:semicolon
 multiline_comment|/* tty-driver-data            */
-DECL|member|rx_netdev
-id|isdn_net_dev
-op_star
-id|rx_netdev
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* rx netdev-pointers     */
-DECL|member|st_netdev
-id|isdn_net_dev
-op_star
-id|st_netdev
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* stat netdev-pointers   */
-DECL|member|ibytes
-id|ulong
-id|ibytes
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Statistics incoming bytes  */
-DECL|member|obytes
-id|ulong
-id|obytes
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Statistics outgoing bytes  */
-DECL|member|v110emu
-r_int
-id|v110emu
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* V.110 emulator-mode 0=none */
-DECL|member|v110use
-id|atomic_t
-id|v110use
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Usage-Semaphore for stream */
-DECL|member|v110
-id|isdn_v110_stream
-op_star
-id|v110
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* V.110 private data         */
 DECL|member|sem
 r_struct
 id|semaphore

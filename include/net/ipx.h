@@ -5,8 +5,9 @@ mdefine_line|#define _NET_INET_IPX_H_
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/ipx.h&gt;
-r_typedef
+DECL|struct|ipx_address
 r_struct
+id|ipx_address
 (brace
 DECL|member|net
 id|__u32
@@ -23,9 +24,7 @@ DECL|member|sock
 id|__u16
 id|sock
 suffix:semicolon
-DECL|typedef|ipx_address
 )brace
-id|ipx_address
 suffix:semicolon
 DECL|macro|ipx_broadcast_node
 mdefine_line|#define ipx_broadcast_node&t;&quot;&bslash;377&bslash;377&bslash;377&bslash;377&bslash;377&bslash;377&quot;
@@ -80,6 +79,7 @@ mdefine_line|#define IPX_TYPE_NCP&t;&t;0x11&t;/* $lots for docs on this (SPIT) *
 DECL|macro|IPX_TYPE_PPROP
 mdefine_line|#define IPX_TYPE_PPROP&t;&t;0x14&t;/* complicated flood fill brdcast */
 DECL|member|ipx_dest
+r_struct
 id|ipx_address
 id|ipx_dest
 id|__attribute__
@@ -90,6 +90,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|ipx_source
+r_struct
 id|ipx_address
 id|ipx_source
 id|__attribute__
@@ -101,8 +102,31 @@ id|packed
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|ipx_hdr
+r_static
+id|__inline__
+r_struct
+id|ipxhdr
+op_star
+id|ipx_hdr
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ipxhdr
+op_star
+)paren
+id|skb-&gt;h.raw
+suffix:semicolon
+)brace
 DECL|struct|ipx_interface
-r_typedef
 r_struct
 id|ipx_interface
 (brace
@@ -178,12 +202,9 @@ id|ipx_interface
 op_star
 id|if_next
 suffix:semicolon
-DECL|typedef|ipx_interface
 )brace
-id|ipx_interface
 suffix:semicolon
 DECL|struct|ipx_route
-r_typedef
 r_struct
 id|ipx_route
 (brace
@@ -192,6 +213,7 @@ id|__u32
 id|ir_net
 suffix:semicolon
 DECL|member|ir_intrfc
+r_struct
 id|ipx_interface
 op_star
 id|ir_intrfc
@@ -219,9 +241,7 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
-DECL|typedef|ipx_route
 )brace
-id|ipx_route
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|struct|ipx_cb
@@ -261,10 +281,12 @@ r_struct
 id|ipx_opt
 (brace
 DECL|member|dest_addr
+r_struct
 id|ipx_address
 id|dest_addr
 suffix:semicolon
 DECL|member|intrfc
+r_struct
 id|ipx_interface
 op_star
 id|intrfc
@@ -306,28 +328,5 @@ DECL|macro|IPX_MIN_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MIN_EPHEMERAL_SOCKET&t;0x4000
 DECL|macro|IPX_MAX_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MAX_EPHEMERAL_SOCKET&t;0x7fff
-r_extern
-r_int
-id|ipx_register_spx
-c_func
-(paren
-r_struct
-id|proto_ops
-op_star
-op_star
-comma
-r_struct
-id|net_proto_family
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ipx_unregister_spx
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* def _NET_INET_IPX_H_ */
 eof

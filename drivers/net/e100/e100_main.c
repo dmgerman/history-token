@@ -3206,16 +3206,6 @@ id|resume
 op_assign
 id|e100_resume
 comma
-dot
-id|save_state
-op_assign
-id|e100_save_state
-comma
-dot
-id|enable_wake
-op_assign
-id|e100_enable_wake
-comma
 macro_line|#endif
 )brace
 suffix:semicolon

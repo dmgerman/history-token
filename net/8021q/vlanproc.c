@@ -417,8 +417,9 @@ id|printk
 c_func
 (paren
 id|VLAN_ERR
+l_string|&quot;%s: invalid argument: %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: invalid argument: %p&bslash;n&quot;
 comma
 id|vlandev
 )paren
@@ -443,8 +444,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: invalid argument, device: %s is not a VLAN device, priv_flags: 0x%4hX.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: invalid argument, device: %s is not a VLAN device, priv_flags: 0x%4hX.&bslash;n&quot;
 comma
 id|vlandev-&gt;name
 comma

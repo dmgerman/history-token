@@ -3082,7 +3082,14 @@ op_logical_neg
 id|target
 )paren
 (brace
-singleline_comment|//&t;&t;duprintf(&quot;check_entry: `%s&squot; not found&bslash;n&quot;, t-&gt;u.name);
+id|duprintf
+c_func
+(paren
+l_string|&quot;check_entry: `%s&squot; not found&bslash;n&quot;
+comma
+id|t-&gt;u.user.name
+)paren
+suffix:semicolon
 r_goto
 id|cleanup_matches
 suffix:semicolon
