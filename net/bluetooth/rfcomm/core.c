@@ -8245,7 +8245,7 @@ c_func
 (paren
 id|PF_BLUETOOTH
 comma
-id|SOCK_SEQPACKET
+id|sock-&gt;type
 comma
 id|BTPROTO_L2CAP
 comma

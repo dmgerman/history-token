@@ -1282,22 +1282,14 @@ id|fdb-&gt;is_local
 )paren
 )paren
 (brace
+multiline_comment|/* it is okay to have multiple ports with same &n;&t;&t;&t;&t; * address, just don&squot;t allow to be spoofed.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|is_local
 )paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: attempt to add&quot;
-l_string|&quot; interface with same source address.&bslash;n&quot;
-comma
-id|source-&gt;dev-&gt;name
-)paren
-suffix:semicolon
-r_else
+(brace
 r_if
 c_cond
 (paren
@@ -1321,6 +1313,7 @@ op_assign
 op_minus
 id|EEXIST
 suffix:semicolon
+)brace
 r_goto
 id|out
 suffix:semicolon
