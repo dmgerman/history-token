@@ -1750,6 +1750,13 @@ comma
 id|sibling
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|father
+op_eq
+id|p-&gt;real_parent
+)paren
 id|reparent_thread
 c_func
 (paren
@@ -1864,12 +1871,31 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Otherwise, if we were tracing this thread, untrace it.  */
+multiline_comment|/*&n;&t;&t; * Otherwise, if we were tracing this thread, untrace it.&n;&t;&t; * If we were only tracing the thread (i.e. not its real&n;&t;&t; * parent), stop here.&n;&t;&t; */
 id|ptrace_unlink
 (paren
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;parent
+op_ne
+id|father
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|p-&gt;parent
+op_ne
+id|p-&gt;real_parent
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|list_del_init
 c_func
 (paren

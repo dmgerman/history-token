@@ -3186,6 +3186,15 @@ id|p-&gt;user_tid
 op_assign
 id|user_tid
 suffix:semicolon
+multiline_comment|/*&n;&t; * Syscall tracing should be turned off in the child regardless&n;&t; * of CLONE_PTRACE.&n;&t; */
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|p
+comma
+id|TIF_SYSCALL_TRACE
+)paren
+suffix:semicolon
 multiline_comment|/* Our parent execution domain becomes current domain&n;&t;   These must match for thread signalling to apply */
 id|p-&gt;parent_exec_id
 op_assign
