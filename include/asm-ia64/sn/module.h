@@ -204,12 +204,6 @@ r_int
 id|shutdown
 suffix:semicolon
 multiline_comment|/* Shutdown in progress            */
-DECL|member|thdcnt
-r_struct
-id|semaphore
-id|thdcnt
-suffix:semicolon
-multiline_comment|/* Threads finished counter        */
 DECL|member|intrhist
 id|time_t
 id|intrhist
