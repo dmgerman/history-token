@@ -190,8 +190,9 @@ op_star
 id|menu_add_prop
 c_func
 (paren
-r_int
-id|token
+r_enum
+id|prop_type
+id|type
 comma
 r_char
 op_star
@@ -299,11 +300,7 @@ id|sym
 )paren
 (brace
 r_return
-id|S_TRI
-c_func
-(paren
-id|sym-&gt;curr
-)paren
+id|sym-&gt;curr.tri
 suffix:semicolon
 )brace
 DECL|function|sym_get_choice_value
@@ -327,11 +324,7 @@ r_struct
 id|symbol
 op_star
 )paren
-id|S_VAL
-c_func
-(paren
-id|sym-&gt;curr
-)paren
+id|sym-&gt;curr.val
 suffix:semicolon
 )brace
 DECL|function|sym_set_choice_value
@@ -447,7 +440,6 @@ op_star
 id|sym
 )paren
 (brace
-singleline_comment|//return S_VAL(sym-&gt;def) != NULL;
 r_return
 id|sym-&gt;flags
 op_amp

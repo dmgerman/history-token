@@ -4889,11 +4889,7 @@ id|e-&gt;left.sym
 )paren
 suffix:semicolon
 r_return
-id|S_TRI
-c_func
-(paren
-id|e-&gt;left.sym-&gt;curr
-)paren
+id|e-&gt;left.sym-&gt;curr.tri
 suffix:semicolon
 r_case
 id|E_AND

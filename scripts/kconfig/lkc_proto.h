@@ -192,7 +192,8 @@ r_char
 op_star
 comma
 (paren
-r_int
+r_enum
+id|symbol_type
 id|type
 )paren
 )paren
@@ -217,7 +218,8 @@ c_func
 (paren
 id|sym_get_type
 comma
-r_int
+r_enum
+id|symbol_type
 comma
 (paren
 r_struct

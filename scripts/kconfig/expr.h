@@ -27,20 +27,6 @@ id|file
 op_star
 id|parent
 suffix:semicolon
-macro_line|#ifdef CML1
-DECL|member|stmt
-r_struct
-id|statement
-op_star
-id|stmt
-suffix:semicolon
-DECL|member|last_stmt
-r_struct
-id|statement
-op_star
-id|last_stmt
-suffix:semicolon
-macro_line|#endif
 DECL|member|name
 r_char
 op_star
@@ -130,17 +116,11 @@ DECL|struct|expr
 r_struct
 id|expr
 (brace
-macro_line|#ifdef CML1
-DECL|member|token
-r_int
-id|token
-suffix:semicolon
-macro_line|#else
+DECL|member|type
 r_enum
 id|expr_type
 id|type
 suffix:semicolon
-macro_line|#endif
 DECL|member|left
 DECL|member|right
 r_union
@@ -151,12 +131,6 @@ id|right
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|E_TRI
-mdefine_line|#define E_TRI(ev)&t;((ev).tri)
-DECL|macro|E_EXPR
-mdefine_line|#define E_EXPR(ev)&t;((ev).expr)
-DECL|macro|E_CALC
-mdefine_line|#define E_CALC(ev)&t;(E_TRI(ev) = expr_calc_value(E_EXPR(ev)))
 DECL|macro|E_OR
 mdefine_line|#define E_OR(dep1, dep2)&t;(((dep1)&gt;(dep2))?(dep1):(dep2))
 DECL|macro|E_AND
@@ -179,20 +153,14 @@ id|tri
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|S_VAL
-mdefine_line|#define S_VAL(sv)&t;((sv).value)
-DECL|macro|S_TRI
-mdefine_line|#define S_TRI(sv)&t;((sv).tri)
-DECL|macro|S_EQ
-mdefine_line|#define S_EQ(sv1, sv2)&t;(S_VAL(sv1) == S_VAL(sv2) || !strcmp(S_VAL(sv1), S_VAL(sv2)))
 DECL|struct|symbol_value
 r_struct
 id|symbol_value
 (brace
-DECL|member|value
+DECL|member|val
 r_void
 op_star
-id|value
+id|val
 suffix:semicolon
 DECL|member|tri
 id|tristate
@@ -246,25 +214,18 @@ r_char
 op_star
 id|help
 suffix:semicolon
-macro_line|#ifdef CML1
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-macro_line|#else
 DECL|member|type
 r_enum
 id|symbol_type
 id|type
 suffix:semicolon
-macro_line|#endif
 DECL|member|curr
-DECL|member|def
+DECL|member|user
 r_struct
 id|symbol_value
 id|curr
 comma
-id|def
+id|user
 suffix:semicolon
 DECL|member|visible
 id|tristate
@@ -290,32 +251,10 @@ comma
 op_star
 id|dep2
 suffix:semicolon
-DECL|member|menu
-r_struct
-id|menu
-op_star
-id|menu
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|for_all_symbols
 mdefine_line|#define for_all_symbols(i, sym) for (i = 0; i &lt; 257; i++) for (sym = symbol_hash[i]; sym; sym = sym-&gt;next) if (sym-&gt;type != S_OTHER)
-macro_line|#ifdef CML1
-DECL|macro|SYMBOL_UNKNOWN
-mdefine_line|#define SYMBOL_UNKNOWN&t;&t;S_UNKNOWN
-DECL|macro|SYMBOL_BOOLEAN
-mdefine_line|#define SYMBOL_BOOLEAN&t;&t;S_BOOLEAN
-DECL|macro|SYMBOL_TRISTATE
-mdefine_line|#define SYMBOL_TRISTATE&t;&t;S_TRISTATE
-DECL|macro|SYMBOL_INT
-mdefine_line|#define SYMBOL_INT&t;&t;S_INT
-DECL|macro|SYMBOL_HEX
-mdefine_line|#define SYMBOL_HEX&t;&t;S_HEX
-DECL|macro|SYMBOL_STRING
-mdefine_line|#define SYMBOL_STRING&t;&t;S_STRING
-DECL|macro|SYMBOL_OTHER
-mdefine_line|#define SYMBOL_OTHER&t;&t;S_OTHER
-macro_line|#endif
 DECL|macro|SYMBOL_YES
 mdefine_line|#define SYMBOL_YES&t;&t;0x0001
 DECL|macro|SYMBOL_MOD
@@ -392,18 +331,11 @@ id|symbol
 op_star
 id|sym
 suffix:semicolon
-macro_line|#ifdef CML1
-DECL|member|token
-r_int
-id|token
-suffix:semicolon
-macro_line|#else
 DECL|member|type
 r_enum
 id|prop_type
 id|type
 suffix:semicolon
-macro_line|#endif
 DECL|member|text
 r_const
 r_char
@@ -421,17 +353,11 @@ r_struct
 id|expr_value
 id|visible
 suffix:semicolon
-DECL|member|dep
+DECL|member|expr
 r_struct
 id|expr
 op_star
-id|dep
-suffix:semicolon
-DECL|member|dep2
-r_struct
 id|expr
-op_star
-id|dep2
 suffix:semicolon
 DECL|member|menu
 r_struct
@@ -449,14 +375,6 @@ DECL|member|lineno
 r_int
 id|lineno
 suffix:semicolon
-macro_line|#ifdef CML1
-DECL|member|next_pos
-r_struct
-id|property
-op_star
-id|next_pos
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|for_all_properties
@@ -576,10 +494,6 @@ r_extern
 r_int
 id|cdebug
 suffix:semicolon
-r_extern
-r_int
-id|print_type
-suffix:semicolon
 r_struct
 id|expr
 op_star
@@ -592,63 +506,6 @@ op_star
 id|sym
 )paren
 suffix:semicolon
-macro_line|#ifdef CML1
-r_struct
-id|expr
-op_star
-id|expr_alloc_one
-c_func
-(paren
-r_int
-id|token
-comma
-r_struct
-id|expr
-op_star
-id|ce
-)paren
-suffix:semicolon
-r_struct
-id|expr
-op_star
-id|expr_alloc_two
-c_func
-(paren
-r_int
-id|token
-comma
-r_struct
-id|expr
-op_star
-id|e1
-comma
-r_struct
-id|expr
-op_star
-id|e2
-)paren
-suffix:semicolon
-r_struct
-id|expr
-op_star
-id|expr_alloc_comp
-c_func
-(paren
-r_int
-id|token
-comma
-r_struct
-id|symbol
-op_star
-id|s1
-comma
-r_struct
-id|symbol
-op_star
-id|s2
-)paren
-suffix:semicolon
-macro_line|#else
 r_struct
 id|expr
 op_star
@@ -707,7 +564,6 @@ op_star
 id|s2
 )paren
 suffix:semicolon
-macro_line|#endif
 r_struct
 id|expr
 op_star
@@ -983,65 +839,6 @@ r_int
 id|prevtoken
 )paren
 suffix:semicolon
-macro_line|#ifdef CML1
-DECL|function|expr_is_yes
-r_static
-r_inline
-r_int
-id|expr_is_yes
-c_func
-(paren
-r_struct
-id|expr
-op_star
-id|e
-)paren
-(brace
-r_return
-op_logical_neg
-id|e
-op_logical_or
-(paren
-id|e-&gt;token
-op_eq
-id|WORD
-op_logical_and
-id|e-&gt;left.sym
-op_eq
-op_amp
-id|symbol_yes
-)paren
-suffix:semicolon
-)brace
-DECL|function|expr_is_no
-r_static
-r_inline
-r_int
-id|expr_is_no
-c_func
-(paren
-r_struct
-id|expr
-op_star
-id|e
-)paren
-(brace
-r_return
-id|e
-op_logical_and
-(paren
-id|e-&gt;token
-op_eq
-id|WORD
-op_logical_and
-id|e-&gt;left.sym
-op_eq
-op_amp
-id|symbol_no
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
 DECL|function|expr_is_yes
 r_static
 r_inline
@@ -1099,7 +896,6 @@ id|symbol_no
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef __cplusplus
 )brace
