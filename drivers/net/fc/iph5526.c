@@ -199,7 +199,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|tachyon_interrupt
 c_func
 (paren
@@ -3457,7 +3457,7 @@ suffix:semicolon
 )brace
 DECL|function|tachyon_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|tachyon_interrupt
 c_func
 (paren
@@ -3530,6 +3530,9 @@ id|fi-&gt;fc_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|tachyon_interrupt_handler
@@ -21378,8 +21381,6 @@ id|no_of_hosts
 op_assign
 l_int|0
 comma
-id|timeout
-comma
 id|i
 comma
 id|j
@@ -21399,6 +21400,10 @@ op_star
 id|pdev
 op_assign
 l_int|NULL
+suffix:semicolon
+r_int
+r_int
+id|timeout
 suffix:semicolon
 id|tmpt-&gt;proc_name
 op_assign

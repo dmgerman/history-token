@@ -201,7 +201,7 @@ id|tx
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_isr
 c_func
 (paren
@@ -2068,7 +2068,7 @@ DECL|macro|SCC_IRQTIMEOUT
 mdefine_line|#define SCC_IRQTIMEOUT 30000
 DECL|function|scc_isr
 r_static
-r_void
+id|irqreturn_t
 id|scc_isr
 c_func
 (paren
@@ -2218,6 +2218,7 @@ l_string|&quot;z8530drv: endless loop in scc_isr()?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Find the SCC generating the interrupt by polling all attached SCCs&n;&t; * reading RR3A (the interrupt pending register)&n;&t; */
@@ -2368,6 +2369,9 @@ id|ctrl
 op_increment
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* ******************************************************************** */
 multiline_comment|/* *&t;&t;&t;Init Channel&t;&t;&t;&t;&t;*/

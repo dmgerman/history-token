@@ -724,7 +724,7 @@ op_star
 id|proto
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|arcnet_interrupt
 c_func
 (paren
