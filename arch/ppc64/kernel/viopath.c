@@ -6,7 +6,8 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;&t;/* for is_atomic */
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
@@ -18,7 +19,7 @@ macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/iSeries/vio.h&gt;
 r_extern
 r_struct
-id|pci_dev
+id|device
 op_star
 id|iSeries_vio_dev
 suffix:semicolon
@@ -466,7 +467,7 @@ suffix:semicolon
 id|dma_addr_t
 id|dmaa
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
 id|iSeries_vio_dev
@@ -475,7 +476,7 @@ id|buf
 comma
 id|PAGE_SIZE
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 r_int
@@ -588,7 +589,7 @@ op_amp
 id|Semaphore
 )paren
 suffix:semicolon
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
 id|iSeries_vio_dev
@@ -597,7 +598,7 @@ id|dmaa
 comma
 id|PAGE_SIZE
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|sprintf
