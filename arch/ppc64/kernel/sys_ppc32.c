@@ -10480,11 +10480,11 @@ r_int
 id|msg_qbytes
 suffix:semicolon
 DECL|member|msg_lspid
-id|__kernel_ipc_pid_t32
+id|compat_ipc_pid_t
 id|msg_lspid
 suffix:semicolon
 DECL|member|msg_lrpid
-id|__kernel_ipc_pid_t32
+id|compat_ipc_pid_t
 id|msg_lrpid
 suffix:semicolon
 )brace
@@ -10586,11 +10586,11 @@ id|compat_time_t
 id|shm_ctime
 suffix:semicolon
 DECL|member|shm_cpid
-id|__kernel_ipc_pid_t32
+id|compat_ipc_pid_t
 id|shm_cpid
 suffix:semicolon
 DECL|member|shm_lpid
-id|__kernel_ipc_pid_t32
+id|compat_ipc_pid_t
 id|shm_lpid
 suffix:semicolon
 DECL|member|shm_nattch
@@ -13803,7 +13803,7 @@ comma
 r_int
 id|in_fd
 comma
-id|__kernel_loff_t32
+id|compat_loff_t
 op_star
 id|offset
 comma
