@@ -1492,6 +1492,20 @@ id|ctsn
 )paren
 suffix:semicolon
 multiline_comment|/* Count the number of Gap Ack Blocks.  */
+id|num_gabs
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sctp_tsnmap_has_gap
+c_func
+(paren
+id|map
+)paren
+)paren
+(brace
 id|sctp_tsnmap_iter_init
 c_func
 (paren
@@ -1501,13 +1515,9 @@ op_amp
 id|iter
 )paren
 suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-id|num_gabs
-op_assign
-l_int|0
-suffix:semicolon
 id|sctp_tsnmap_next_gap_ack
 c_func
 (paren
@@ -1522,12 +1532,10 @@ comma
 op_amp
 id|gab.end
 )paren
-suffix:semicolon
+)paren
 id|num_gabs
 op_increment
-)paren
-(brace
-multiline_comment|/* Do nothing. */
+suffix:semicolon
 )brace
 id|num_dup_tsns
 op_assign
@@ -1637,6 +1645,12 @@ id|sack
 )paren
 suffix:semicolon
 multiline_comment|/* Put the Gap Ack Blocks into the chunk.  */
+r_if
+c_cond
+(paren
+id|num_gabs
+)paren
+(brace
 id|sctp_tsnmap_iter_init
 c_func
 (paren
@@ -1695,6 +1709,7 @@ op_amp
 id|gab
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Register the duplicates.  */
 id|sctp_addto_chunk
