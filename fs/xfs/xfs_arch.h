@@ -37,47 +37,11 @@ mdefine_line|#define INT_SWAP64(type,var) ((typeof(type))(__swab64((__u64)(var))
 macro_line|#endif
 DECL|macro|INT_SWAP
 mdefine_line|#define INT_SWAP(type, var) &bslash;&n;    ((sizeof(type) == 8) ? INT_SWAP64(type,var) : &bslash;&n;    ((sizeof(type) == 4) ? INT_SWAP32(type,var) : &bslash;&n;    ((sizeof(type) == 2) ? INT_SWAP16(type,var) : &bslash;&n;    (var))))
-DECL|macro|INT_SWAP_UNALIGNED_32
-mdefine_line|#define INT_SWAP_UNALIGNED_32(from,to) &bslash;&n;    { &bslash;&n;&t;((__u8*)(to))[0] = ((__u8*)(from))[3]; &bslash;&n;&t;((__u8*)(to))[1] = ((__u8*)(from))[2]; &bslash;&n;&t;((__u8*)(to))[2] = ((__u8*)(from))[1]; &bslash;&n;&t;((__u8*)(to))[3] = ((__u8*)(from))[0]; &bslash;&n;    }
-DECL|macro|INT_SWAP_UNALIGNED_64
-mdefine_line|#define INT_SWAP_UNALIGNED_64(from,to) &bslash;&n;    { &bslash;&n;&t;INT_SWAP_UNALIGNED_32( ((__u8*)(from)) + 4, ((__u8*)(to))); &bslash;&n;&t;INT_SWAP_UNALIGNED_32( ((__u8*)(from)), ((__u8*)(to)) + 4); &bslash;&n;    }
 multiline_comment|/*&n; * get and set integers from potentially unaligned locations&n; */
-DECL|macro|INT_GET_UNALIGNED_16_LE
-mdefine_line|#define INT_GET_UNALIGNED_16_LE(pointer) &bslash;&n;   ((__u16)((((__u8*)(pointer))[0]&t;) | (((__u8*)(pointer))[1] &lt;&lt; 8 )))
 DECL|macro|INT_GET_UNALIGNED_16_BE
 mdefine_line|#define INT_GET_UNALIGNED_16_BE(pointer) &bslash;&n;   ((__u16)((((__u8*)(pointer))[0] &lt;&lt; 8) | (((__u8*)(pointer))[1])))
-DECL|macro|INT_SET_UNALIGNED_16_LE
-mdefine_line|#define INT_SET_UNALIGNED_16_LE(pointer,value) &bslash;&n;    { &bslash;&n;&t;((__u8*)(pointer))[0] = (((value)     ) &amp; 0xff); &bslash;&n;&t;((__u8*)(pointer))[1] = (((value) &gt;&gt; 8) &amp; 0xff); &bslash;&n;    }
 DECL|macro|INT_SET_UNALIGNED_16_BE
 mdefine_line|#define INT_SET_UNALIGNED_16_BE(pointer,value) &bslash;&n;    { &bslash;&n;&t;((__u8*)(pointer))[0] = (((value) &gt;&gt; 8) &amp; 0xff); &bslash;&n;&t;((__u8*)(pointer))[1] = (((value)     ) &amp; 0xff); &bslash;&n;    }
-DECL|macro|INT_GET_UNALIGNED_32_LE
-mdefine_line|#define INT_GET_UNALIGNED_32_LE(pointer) &bslash;&n;   ((__u32)((((__u8*)(pointer))[0]&t;) | (((__u8*)(pointer))[1] &lt;&lt; 8 ) &bslash;&n;&t;   |(((__u8*)(pointer))[2] &lt;&lt; 16) | (((__u8*)(pointer))[3] &lt;&lt; 24)))
-DECL|macro|INT_GET_UNALIGNED_32_BE
-mdefine_line|#define INT_GET_UNALIGNED_32_BE(pointer) &bslash;&n;   ((__u32)((((__u8*)(pointer))[0] &lt;&lt; 24) | (((__u8*)(pointer))[1] &lt;&lt; 16) &bslash;&n;&t;   |(((__u8*)(pointer))[2] &lt;&lt; 8)  | (((__u8*)(pointer))[3]&t;)))
-DECL|macro|INT_GET_UNALIGNED_64_LE
-mdefine_line|#define INT_GET_UNALIGNED_64_LE(pointer) &bslash;&n;   (((__u64)(INT_GET_UNALIGNED_32_LE(((__u8*)(pointer))+4)) &lt;&lt; 32 ) &bslash;&n;   |((__u64)(INT_GET_UNALIGNED_32_LE(((__u8*)(pointer))&t; ))&t;  ))
-DECL|macro|INT_GET_UNALIGNED_64_BE
-mdefine_line|#define INT_GET_UNALIGNED_64_BE(pointer) &bslash;&n;   (((__u64)(INT_GET_UNALIGNED_32_BE(((__u8*)(pointer))&t; )) &lt;&lt; 32  ) &bslash;&n;   |((__u64)(INT_GET_UNALIGNED_32_BE(((__u8*)(pointer))+4))&t;   ))
-multiline_comment|/*&n; * now pick the right ones for our MACHINE ARCHITECTURE&n; */
-macro_line|#if __BYTE_ORDER == __LITTLE_ENDIAN
-DECL|macro|INT_GET_UNALIGNED_16
-mdefine_line|#define INT_GET_UNALIGNED_16(pointer)&t;    INT_GET_UNALIGNED_16_LE(pointer)
-DECL|macro|INT_SET_UNALIGNED_16
-mdefine_line|#define INT_SET_UNALIGNED_16(pointer,value) INT_SET_UNALIGNED_16_LE(pointer,value)
-DECL|macro|INT_GET_UNALIGNED_32
-mdefine_line|#define INT_GET_UNALIGNED_32(pointer)&t;    INT_GET_UNALIGNED_32_LE(pointer)
-DECL|macro|INT_GET_UNALIGNED_64
-mdefine_line|#define INT_GET_UNALIGNED_64(pointer)&t;    INT_GET_UNALIGNED_64_LE(pointer)
-macro_line|#else
-DECL|macro|INT_GET_UNALIGNED_16
-mdefine_line|#define INT_GET_UNALIGNED_16(pointer)&t;    INT_GET_UNALIGNED_16_BE(pointer)
-DECL|macro|INT_SET_UNALIGNED_16
-mdefine_line|#define INT_SET_UNALIGNED_16(pointer,value) INT_SET_UNALIGNED_16_BE(pointer,value)
-DECL|macro|INT_GET_UNALIGNED_32
-mdefine_line|#define INT_GET_UNALIGNED_32(pointer)&t;    INT_GET_UNALIGNED_32_BE(pointer)
-DECL|macro|INT_GET_UNALIGNED_64
-mdefine_line|#define INT_GET_UNALIGNED_64(pointer)&t;    INT_GET_UNALIGNED_64_BE(pointer)
-macro_line|#endif
 multiline_comment|/* define generic INT_ macros */
 DECL|macro|INT_GET
 mdefine_line|#define INT_GET(reference,arch) &bslash;&n;    (((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (reference) &bslash;&n;&t;: &bslash;&n;&t;    INT_SWAP((reference),(reference)) &bslash;&n;    )
@@ -98,32 +62,18 @@ multiline_comment|/*&n; * INT_XLATE - copy a value in either direction between t
 multiline_comment|/* does not return a value */
 DECL|macro|INT_XLATE
 mdefine_line|#define INT_XLATE(buf,mem,dir,arch) {&bslash;&n;    ASSERT(dir); &bslash;&n;    if (dir&gt;0) { &bslash;&n;&t;(mem)=INT_GET(buf, arch); &bslash;&n;    } else { &bslash;&n;&t;INT_SET(buf, arch, mem); &bslash;&n;    } &bslash;&n;}
-DECL|macro|INT_ISZERO
-mdefine_line|#define INT_ISZERO(reference,arch) &bslash;&n;    ((reference) == 0)
-DECL|macro|INT_ZERO
-mdefine_line|#define INT_ZERO(reference,arch) &bslash;&n;    ((reference) = 0)
-DECL|macro|INT_GET_UNALIGNED_16_ARCH
-mdefine_line|#define INT_GET_UNALIGNED_16_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_16(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_16_BE(pointer)) &bslash;&n;    )
-DECL|macro|INT_SET_UNALIGNED_16_ARCH
-mdefine_line|#define INT_SET_UNALIGNED_16_ARCH(pointer,value,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;INT_SET_UNALIGNED_16(pointer,value); &bslash;&n;    } else { &bslash;&n;&t;INT_SET_UNALIGNED_16_BE(pointer,value); &bslash;&n;    }
-DECL|macro|DIRINO4_GET_ARCH
-mdefine_line|#define DIRINO4_GET_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_32(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_32_BE(pointer)) &bslash;&n;    )
-macro_line|#if XFS_BIG_INUMS
-DECL|macro|DIRINO_GET_ARCH
-mdefine_line|#define DIRINO_GET_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_64(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_64_BE(pointer)) &bslash;&n;    )
-macro_line|#else
-multiline_comment|/* MACHINE ARCHITECTURE dependent */
-macro_line|#if __BYTE_ORDER == __LITTLE_ENDIAN
-DECL|macro|DIRINO_GET_ARCH
-mdefine_line|#define DIRINO_GET_ARCH(pointer,arch) &bslash;&n;    DIRINO4_GET_ARCH((((__u8*)pointer)+4),arch)
-macro_line|#else
-DECL|macro|DIRINO_GET_ARCH
-mdefine_line|#define DIRINO_GET_ARCH(pointer,arch) &bslash;&n;    DIRINO4_GET_ARCH(pointer,arch)
-macro_line|#endif
-macro_line|#endif
-DECL|macro|DIRINO_COPY_ARCH
-mdefine_line|#define DIRINO_COPY_ARCH(from,to,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;memcpy(to,from,sizeof(xfs_ino_t)); &bslash;&n;    } else { &bslash;&n;&t;INT_SWAP_UNALIGNED_64(from,to); &bslash;&n;    }
-DECL|macro|DIRINO4_COPY_ARCH
-mdefine_line|#define DIRINO4_COPY_ARCH(from,to,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;memcpy(to,(((__u8*)from+4)),sizeof(xfs_dir2_ino4_t)); &bslash;&n;    } else { &bslash;&n;&t;INT_SWAP_UNALIGNED_32(from,to); &bslash;&n;    }
+multiline_comment|/*&n; * In directories inode numbers are stored as unaligned arrays of unsigned&n; * 8bit integers on disk.&n; *&n; * For v1 directories or v2 directories that contain inode numbers that&n; * do not fit into 32bit the array has eight members, but the first member&n; * is always zero:&n; *&n; *  |unused|48-55|40-47|32-39|24-31|16-23| 8-15| 0- 7|&n; *&n; * For v2 directories that only contain entries with inode numbers that fit&n; * into 32bits a four-member array is used:&n; *&n; *  |24-31|16-23| 8-15| 0- 7|&n; */
+DECL|macro|XFS_GET_DIR_INO4
+mdefine_line|#define XFS_GET_DIR_INO4(di) &bslash;&n;&t;(((u32)(di).i[0] &lt;&lt; 24) | ((di).i[1] &lt;&lt; 16) | ((di).i[2] &lt;&lt; 8) | ((di).i[3]))
+DECL|macro|XFS_PUT_DIR_INO4
+mdefine_line|#define XFS_PUT_DIR_INO4(from, di) &bslash;&n;do { &bslash;&n;&t;(di).i[0] = (((from) &amp; 0xff000000ULL) &gt;&gt; 24); &bslash;&n;&t;(di).i[1] = (((from) &amp; 0x00ff0000ULL) &gt;&gt; 16); &bslash;&n;&t;(di).i[2] = (((from) &amp; 0x0000ff00ULL) &gt;&gt; 8); &bslash;&n;&t;(di).i[3] = ((from) &amp; 0x000000ffULL); &bslash;&n;} while (0)
+DECL|macro|XFS_DI_HI
+mdefine_line|#define XFS_DI_HI(di) &bslash;&n;&t;(((u32)(di).i[1] &lt;&lt; 16) | ((di).i[2] &lt;&lt; 8) | ((di).i[3]))
+DECL|macro|XFS_DI_LO
+mdefine_line|#define XFS_DI_LO(di) &bslash;&n;&t;(((u32)(di).i[4] &lt;&lt; 24) | ((di).i[5] &lt;&lt; 16) | ((di).i[6] &lt;&lt; 8) | ((di).i[7]))
+DECL|macro|XFS_GET_DIR_INO8
+mdefine_line|#define XFS_GET_DIR_INO8(di)        &bslash;&n;&t;(((xfs_ino_t)XFS_DI_LO(di) &amp; 0xffffffffULL) | &bslash;&n;&t; ((xfs_ino_t)XFS_DI_HI(di) &lt;&lt; 32))
+DECL|macro|XFS_PUT_DIR_INO8
+mdefine_line|#define XFS_PUT_DIR_INO8(from, di) &bslash;&n;do { &bslash;&n;&t;(di).i[0] = 0; &bslash;&n;&t;(di).i[1] = (((from) &amp; 0x00ff000000000000ULL) &gt;&gt; 48); &bslash;&n;&t;(di).i[2] = (((from) &amp; 0x0000ff0000000000ULL) &gt;&gt; 40); &bslash;&n;&t;(di).i[3] = (((from) &amp; 0x000000ff00000000ULL) &gt;&gt; 32); &bslash;&n;&t;(di).i[4] = (((from) &amp; 0x00000000ff000000ULL) &gt;&gt; 24); &bslash;&n;&t;(di).i[5] = (((from) &amp; 0x0000000000ff0000ULL) &gt;&gt; 16); &bslash;&n;&t;(di).i[6] = (((from) &amp; 0x000000000000ff00ULL) &gt;&gt; 8); &bslash;&n;&t;(di).i[7] = ((from) &amp; 0x00000000000000ffULL); &bslash;&n;} while (0)
 macro_line|#endif&t;/* __XFS_ARCH_H__ */
 eof

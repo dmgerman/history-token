@@ -999,7 +999,7 @@ op_star
 id|r
 )paren
 suffix:semicolon
-macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+macro_line|#if __BYTE_ORDER != __BIG_ENDIAN
 r_void
 id|xfs_bmbt_disk_get_all
 c_func
@@ -1278,7 +1278,7 @@ id|xfs_exntst_t
 id|v
 )paren
 suffix:semicolon
-macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+macro_line|#if __BYTE_ORDER != __BIG_ENDIAN
 r_void
 id|xfs_bmbt_disk_set_all
 c_func

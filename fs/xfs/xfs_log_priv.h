@@ -59,14 +59,12 @@ mdefine_line|#define XLOG_REC_SHIFT(log) &bslash;&n;&t;BTOBB(1 &lt;&lt; (XFS_SB_
 DECL|macro|XLOG_TOTAL_REC_SHIFT
 mdefine_line|#define XLOG_TOTAL_REC_SHIFT(log) &bslash;&n;&t;BTOBB(XLOG_MAX_ICLOGS &lt;&lt; (XFS_SB_VERSION_HASLOGV2(&amp;log-&gt;l_mp-&gt;m_sb) ? &bslash;&n;&t; XLOG_MAX_RECORD_BSHIFT : XLOG_BIG_RECORD_BSHIFT))
 multiline_comment|/*&n; *  set lsns&n; */
-DECL|macro|ASSIGN_LSN_CYCLE
-mdefine_line|#define ASSIGN_LSN_CYCLE(lsn,cycle,arch) &bslash;&n;    INT_SET(((uint *)&amp;(lsn))[LSN_FIELD_CYCLE(arch)], arch, (cycle));
-DECL|macro|ASSIGN_LSN_BLOCK
-mdefine_line|#define ASSIGN_LSN_BLOCK(lsn,block,arch) &bslash;&n;    INT_SET(((uint *)&amp;(lsn))[LSN_FIELD_BLOCK(arch)], arch, (block));
-DECL|macro|ASSIGN_ANY_LSN
-mdefine_line|#define ASSIGN_ANY_LSN(lsn,cycle,block,arch)  &bslash;&n;    { &bslash;&n;&t;ASSIGN_LSN_CYCLE(lsn,cycle,arch); &bslash;&n;&t;ASSIGN_LSN_BLOCK(lsn,block,arch); &bslash;&n;    }
+DECL|macro|ASSIGN_ANY_LSN_HOST
+mdefine_line|#define ASSIGN_ANY_LSN_HOST(lsn,cycle,block)  &bslash;&n;    { &bslash;&n;&t;(lsn) = ((xfs_lsn_t)(cycle)&lt;&lt;32)|(block); &bslash;&n;    }
+DECL|macro|ASSIGN_ANY_LSN_DISK
+mdefine_line|#define ASSIGN_ANY_LSN_DISK(lsn,cycle,block)  &bslash;&n;    { &bslash;&n;&t;INT_SET(((uint *)&amp;(lsn))[0], ARCH_CONVERT, (cycle)); &bslash;&n;&t;INT_SET(((uint *)&amp;(lsn))[1], ARCH_CONVERT, (block)); &bslash;&n;    }
 DECL|macro|ASSIGN_LSN
-mdefine_line|#define ASSIGN_LSN(lsn,log,arch) &bslash;&n;    ASSIGN_ANY_LSN(lsn,(log)-&gt;l_curr_cycle,(log)-&gt;l_curr_block,arch);
+mdefine_line|#define ASSIGN_LSN(lsn,log) &bslash;&n;    ASSIGN_ANY_LSN_DISK(lsn,(log)-&gt;l_curr_cycle,(log)-&gt;l_curr_block);
 DECL|macro|XLOG_SET
 mdefine_line|#define XLOG_SET(f,b)&t;&t;(((f) &amp; (b)) == (b))
 DECL|macro|GET_CYCLE

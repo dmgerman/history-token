@@ -222,22 +222,19 @@ multiline_comment|/*&n; * Pointer to a freespace&squot;s tag word.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_DATA_UNUSED_TAG_P)
 id|xfs_dir2_data_off_t
 op_star
-id|xfs_dir2_data_unused_tag_p_arch
+id|xfs_dir2_data_unused_tag_p
 c_func
 (paren
 id|xfs_dir2_data_unused_t
 op_star
 id|dup
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_DATA_UNUSED_TAG_P_ARCH
-mdefine_line|#define&t;XFS_DIR2_DATA_UNUSED_TAG_P_ARCH(dup,arch) &bslash;&n;&t;xfs_dir2_data_unused_tag_p_arch(dup,arch)
+DECL|macro|XFS_DIR2_DATA_UNUSED_TAG_P
+mdefine_line|#define&t;XFS_DIR2_DATA_UNUSED_TAG_P(dup) &bslash;&n;&t;xfs_dir2_data_unused_tag_p(dup)
 macro_line|#else
-DECL|macro|XFS_DIR2_DATA_UNUSED_TAG_P_ARCH
-mdefine_line|#define&t;XFS_DIR2_DATA_UNUSED_TAG_P_ARCH(dup,arch)&t;&bslash;&n;&t;((xfs_dir2_data_off_t *)&bslash;&n;&t; ((char *)(dup) + INT_GET((dup)-&gt;length, arch) &bslash;&n;&t;&t;&t;- (uint)sizeof(xfs_dir2_data_off_t)))
+DECL|macro|XFS_DIR2_DATA_UNUSED_TAG_P
+mdefine_line|#define&t;XFS_DIR2_DATA_UNUSED_TAG_P(dup)&t;&bslash;&n;&t;((xfs_dir2_data_off_t *)&bslash;&n;&t; ((char *)(dup) + INT_GET((dup)-&gt;length, ARCH_CONVERT) &bslash;&n;&t;&t;&t;- (uint)sizeof(xfs_dir2_data_off_t)))
 macro_line|#endif
 multiline_comment|/*&n; * Function declarations.&n; */
 macro_line|#ifdef DEBUG

@@ -11668,7 +11668,7 @@ id|ext_flag
 )paren
 suffix:semicolon
 )brace
-macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+macro_line|#if __BYTE_ORDER != __BIG_ENDIAN
 multiline_comment|/* Endian flipping versions of the bmbt extraction functions */
 r_void
 DECL|function|xfs_bmbt_disk_get_all
@@ -14511,7 +14511,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* XFS_BIG_BLKNOS */
 )brace
-macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
+macro_line|#if __BYTE_ORDER != __BIG_ENDIAN
 multiline_comment|/*&n; * Set all the fields in a bmap extent record from the uncompressed form.&n; */
 r_void
 DECL|function|xfs_bmbt_disk_set_all

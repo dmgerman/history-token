@@ -247,10 +247,6 @@ id|xfs_dircook_t
 suffix:semicolon
 DECL|macro|XFS_PUT_COOKIE
 mdefine_line|#define&t;XFS_PUT_COOKIE(c,mp,bno,entry,hash)&t;&bslash;&n;&t;((c).s.be = XFS_DA_MAKE_BNOENTRY(mp, bno, entry), (c).s.h = (hash))
-DECL|macro|XFS_GET_DIR_INO_ARCH
-mdefine_line|#define&t;XFS_GET_DIR_INO_ARCH(mp,di,arch) &bslash;&n;    DIRINO_GET_ARCH(&amp;(di),arch)
-DECL|macro|XFS_GET_DIR_INO
-mdefine_line|#define&t;XFS_GET_DIR_INO(mp,di) &bslash;&n;    XFS_GET_DIR_INO_ARCH(mp,di,ARCH_NOCONVERT)
 DECL|struct|xfs_dir_put_args
 r_typedef
 r_struct

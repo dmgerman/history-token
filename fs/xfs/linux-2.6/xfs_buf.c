@@ -3347,7 +3347,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
+macro_line|#if defined(DEBUG) || defined(XFS_BLI_TRACE)
 multiline_comment|/*&n; *&t;pagebuf_lock_value&n; *&n; *&t;Return lock value for a pagebuf&n; */
 r_int
 DECL|function|pagebuf_lock_value

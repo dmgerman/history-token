@@ -226,12 +226,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Iterate over the block&squot;s data entries by using the leaf pointers.&n;&t; */
@@ -469,7 +467,7 @@ id|sfhp-&gt;i8count
 op_assign
 id|i8count
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 (paren
@@ -483,8 +481,6 @@ id|parent
 comma
 op_amp
 id|sfhp-&gt;parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_return
@@ -742,12 +738,10 @@ op_assign
 r_char
 op_star
 )paren
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sfep
@@ -874,15 +868,13 @@ comma
 id|ARCH_CONVERT
 )paren
 op_eq
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
@@ -893,7 +885,7 @@ id|sfep-&gt;namelen
 op_assign
 id|dep-&gt;namelen
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_OFFSET_ARCH
+id|XFS_DIR2_SF_PUT_OFFSET
 c_func
 (paren
 id|sfep
@@ -914,8 +906,6 @@ op_star
 )paren
 id|block
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|memcpy
@@ -938,7 +928,7 @@ comma
 id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -951,8 +941,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sfep
@@ -1553,14 +1541,12 @@ id|sfep-&gt;namelen
 op_assign
 id|args-&gt;namelen
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_OFFSET_ARCH
+id|XFS_DIR2_SF_PUT_OFFSET
 c_func
 (paren
 id|sfep
 comma
 id|offset
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|memcpy
@@ -1573,7 +1559,7 @@ comma
 id|sfep-&gt;namelen
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -1586,8 +1572,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Update the header and inode.&n;&t; */
@@ -1819,12 +1803,10 @@ id|old_isize
 (brace
 id|new_offset
 op_assign
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|oldsfep
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_if
@@ -1921,14 +1903,12 @@ id|sfep-&gt;namelen
 op_assign
 id|args-&gt;namelen
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_OFFSET_ARCH
+id|XFS_DIR2_SF_PUT_OFFSET
 c_func
 (paren
 id|sfep
 comma
 id|offset
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|memcpy
@@ -1941,7 +1921,7 @@ comma
 id|sfep-&gt;namelen
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -1954,8 +1934,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sfp-&gt;hdr.count
@@ -2164,22 +2142,18 @@ id|offset
 op_plus
 id|size
 op_le
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|offset
 op_assign
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 op_plus
 id|XFS_DIR2_DATA_ENTSIZE
@@ -2359,15 +2333,13 @@ id|XFS_DIR2_DATA_FIRST_OFFSET
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|i8count
@@ -2412,12 +2384,10 @@ id|sfep
 id|ASSERT
 c_func
 (paren
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 op_ge
 id|offset
@@ -2425,7 +2395,7 @@ id|offset
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
@@ -2435,8 +2405,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|i8count
@@ -2447,12 +2415,10 @@ id|XFS_DIR2_MAX_SHORT_INUM
 suffix:semicolon
 id|offset
 op_assign
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 op_plus
 id|XFS_DIR2_DATA_ENTSIZE
@@ -2684,7 +2650,7 @@ op_assign
 id|i8count
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now can put in the inode number, since i8count is set.&n;&t; */
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -2694,8 +2660,6 @@ id|pino
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sfp-&gt;hdr.count
@@ -3027,15 +2991,13 @@ id|XFS_DIR2_DATA_FIRST_OFFSET
 suffix:semicolon
 id|p.ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 macro_line|#if XFS_BIG_INUMS
@@ -3130,12 +3092,10 @@ id|mp
 comma
 id|mp-&gt;m_dirdatablk
 comma
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
@@ -3161,12 +3121,10 @@ id|mp
 comma
 id|mp-&gt;m_dirdatablk
 comma
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 op_plus
 id|XFS_DIR2_DATA_ENTSIZE
@@ -3178,7 +3136,7 @@ id|p.namelen
 suffix:semicolon
 id|p.ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
@@ -3188,8 +3146,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 macro_line|#if XFS_BIG_INUMS
@@ -3436,15 +3392,13 @@ l_char|&squot;.&squot;
 (brace
 id|args-&gt;inumber
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_return
@@ -3521,7 +3475,7 @@ l_int|0
 (brace
 id|args-&gt;inumber
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
@@ -3531,8 +3485,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_return
@@ -3768,7 +3720,7 @@ l_int|0
 id|ASSERT
 c_func
 (paren
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
@@ -3778,8 +3730,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 op_eq
 id|args-&gt;inumber
@@ -4252,15 +4202,13 @@ l_char|&squot;.&squot;
 macro_line|#if XFS_BIG_INUMS || defined(DEBUG)
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4272,7 +4220,7 @@ id|ino
 )paren
 suffix:semicolon
 macro_line|#endif
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -4282,8 +4230,6 @@ id|args-&gt;inumber
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 )brace
@@ -4356,7 +4302,7 @@ l_int|0
 macro_line|#if XFS_BIG_INUMS || defined(DEBUG)
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
@@ -4366,8 +4312,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4379,7 +4323,7 @@ id|ino
 )paren
 suffix:semicolon
 macro_line|#endif
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -4392,8 +4336,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_break
@@ -4714,18 +4656,16 @@ l_int|0
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|oldsfp
 comma
 op_amp
 id|oldsfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -4735,8 +4675,6 @@ id|ino
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the entries field by field.&n;&t; */
@@ -4811,7 +4749,7 @@ id|sfep-&gt;namelen
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|oldsfp
@@ -4821,11 +4759,9 @@ c_func
 (paren
 id|oldsfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -4838,8 +4774,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 )brace
@@ -5059,18 +4993,16 @@ l_int|1
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|oldsfp
 comma
 op_amp
 id|oldsfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -5080,8 +5012,6 @@ id|ino
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Copy the entries field by field.&n;&t; */
@@ -5156,7 +5086,7 @@ id|sfep-&gt;namelen
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|oldsfp
@@ -5166,11 +5096,9 @@ c_func
 (paren
 id|oldsfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|XFS_DIR2_SF_PUT_INUMBER_ARCH
+id|XFS_DIR2_SF_PUT_INUMBER
 c_func
 (paren
 id|sfp
@@ -5183,8 +5111,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 )brace

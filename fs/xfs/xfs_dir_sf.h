@@ -134,22 +134,6 @@ id|xfs_dir_sf_sort_t
 suffix:semicolon
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR_SF_GET_DIRINO)
 r_void
-id|xfs_dir_sf_get_dirino_arch
-c_func
-(paren
-id|xfs_dir_ino_t
-op_star
-id|from
-comma
-id|xfs_ino_t
-op_star
-id|to
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
-r_void
 id|xfs_dir_sf_get_dirino
 c_func
 (paren
@@ -162,33 +146,13 @@ op_star
 id|to
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR_SF_GET_DIRINO_ARCH
-mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO_ARCH(from,to,arch)    xfs_dir_sf_get_dirino_arch(from, to, arch)
 DECL|macro|XFS_DIR_SF_GET_DIRINO
 mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO(from,to)&t;&t;    xfs_dir_sf_get_dirino(from, to)
 macro_line|#else
-DECL|macro|XFS_DIR_SF_GET_DIRINO_ARCH
-mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO_ARCH(from,to,arch)    DIRINO_COPY_ARCH(from,to,arch)
 DECL|macro|XFS_DIR_SF_GET_DIRINO
-mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO(from,to)&t;            DIRINO_COPY_ARCH(from,to,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO(from,to)&t;&t;    (*(to) = XFS_GET_DIR_INO8(*from))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR_SF_PUT_DIRINO)
-r_void
-id|xfs_dir_sf_put_dirino_arch
-c_func
-(paren
-id|xfs_ino_t
-op_star
-id|from
-comma
-id|xfs_dir_ino_t
-op_star
-id|to
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_void
 id|xfs_dir_sf_put_dirino
 c_func
@@ -202,15 +166,11 @@ op_star
 id|to
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR_SF_PUT_DIRINO_ARCH
-mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO_ARCH(from,to,arch)    xfs_dir_sf_put_dirino_arch(from, to, arch)
 DECL|macro|XFS_DIR_SF_PUT_DIRINO
-mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)&t;&t;    xfs_dir_sf_put_dirino(from, to)
+mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)    xfs_dir_sf_put_dirino(from, to)
 macro_line|#else
-DECL|macro|XFS_DIR_SF_PUT_DIRINO_ARCH
-mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO_ARCH(from,to,arch)    DIRINO_COPY_ARCH(from,to,arch)
 DECL|macro|XFS_DIR_SF_PUT_DIRINO
-mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)&t;            DIRINO_COPY_ARCH(from,to,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)    XFS_PUT_DIR_INO8(*(from), *(to))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR_SF_ENTSIZE_BYNAME)
 r_int

@@ -420,15 +420,12 @@ mdefine_line|#define&t;XFS_ATTR_FORK&t;1
 multiline_comment|/*&n; * Inode data &amp; attribute fork sizes, per inode.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_Q)
 r_int
-id|xfs_cfork_q_arch
+id|xfs_cfork_q_disk
 c_func
 (paren
 id|xfs_dinode_core_t
 op_star
 id|dcp
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 r_int
@@ -440,27 +437,24 @@ op_star
 id|dcp
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_Q_ARCH
-mdefine_line|#define&t;XFS_CFORK_Q_ARCH(dcp,arch)          xfs_cfork_q_arch(dcp,arch)
+DECL|macro|XFS_CFORK_Q_DISK
+mdefine_line|#define&t;XFS_CFORK_Q_DISK(dcp)               xfs_cfork_q_disk(dcp)
 DECL|macro|XFS_CFORK_Q
 mdefine_line|#define&t;XFS_CFORK_Q(dcp)                    xfs_cfork_q(dcp)
 macro_line|#else
-DECL|macro|XFS_CFORK_Q_ARCH
-mdefine_line|#define&t;XFS_CFORK_Q_ARCH(dcp,arch)&t;    (!INT_ISZERO((dcp)-&gt;di_forkoff, arch))
+DECL|macro|XFS_CFORK_Q_DISK
+mdefine_line|#define&t;XFS_CFORK_Q_DISK(dcp)&t;&t;    ((dcp)-&gt;di_forkoff != 0)
 DECL|macro|XFS_CFORK_Q
 mdefine_line|#define XFS_CFORK_Q(dcp)                    ((dcp)-&gt;di_forkoff != 0)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_BOFF)
 r_int
-id|xfs_cfork_boff_arch
+id|xfs_cfork_boff_disk
 c_func
 (paren
 id|xfs_dinode_core_t
 op_star
 id|dcp
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 r_int
@@ -472,19 +466,19 @@ op_star
 id|dcp
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_BOFF_ARCH
-mdefine_line|#define&t;XFS_CFORK_BOFF_ARCH(dcp,arch)&t;    xfs_cfork_boff_arch(dcp,arch)
+DECL|macro|XFS_CFORK_BOFF_DISK
+mdefine_line|#define&t;XFS_CFORK_BOFF_DISK(dcp)&t;    xfs_cfork_boff_disk(dcp)
 DECL|macro|XFS_CFORK_BOFF
 mdefine_line|#define&t;XFS_CFORK_BOFF(dcp)&t;            xfs_cfork_boff(dcp)
 macro_line|#else
-DECL|macro|XFS_CFORK_BOFF_ARCH
-mdefine_line|#define&t;XFS_CFORK_BOFF_ARCH(dcp,arch)&t;    ((int)(INT_GET((dcp)-&gt;di_forkoff, arch) &lt;&lt; 3))
+DECL|macro|XFS_CFORK_BOFF_DISK
+mdefine_line|#define&t;XFS_CFORK_BOFF_DISK(dcp)&t;    ((int)(INT_GET((dcp)-&gt;di_forkoff, ARCH_CONVERT) &lt;&lt; 3))
 DECL|macro|XFS_CFORK_BOFF
 mdefine_line|#define XFS_CFORK_BOFF(dcp)                 ((int)((dcp)-&gt;di_forkoff &lt;&lt; 3))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_DSIZE)
 r_int
-id|xfs_cfork_dsize_arch
+id|xfs_cfork_dsize_disk
 c_func
 (paren
 id|xfs_dinode_core_t
@@ -495,9 +489,6 @@ r_struct
 id|xfs_mount
 op_star
 id|mp
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 r_int
@@ -514,19 +505,19 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_DSIZE_ARCH
-mdefine_line|#define&t;XFS_CFORK_DSIZE_ARCH(dcp,mp,arch)   xfs_cfork_dsize_arch(dcp,mp,arch)
+DECL|macro|XFS_CFORK_DSIZE_DISK
+mdefine_line|#define&t;XFS_CFORK_DSIZE_DISK(dcp,mp)        xfs_cfork_dsize_disk(dcp,mp)
 DECL|macro|XFS_CFORK_DSIZE
 mdefine_line|#define&t;XFS_CFORK_DSIZE(dcp,mp)             xfs_cfork_dsize(dcp,mp)
 macro_line|#else
-DECL|macro|XFS_CFORK_DSIZE_ARCH
-mdefine_line|#define&t;XFS_CFORK_DSIZE_ARCH(dcp,mp,arch) &bslash;&n;&t;(XFS_CFORK_Q_ARCH(dcp, arch) ? XFS_CFORK_BOFF_ARCH(dcp, arch) : XFS_LITINO(mp))
+DECL|macro|XFS_CFORK_DSIZE_DISK
+mdefine_line|#define&t;XFS_CFORK_DSIZE_DISK(dcp,mp) &bslash;&n;&t;(XFS_CFORK_Q_DISK(dcp) ? XFS_CFORK_BOFF_DISK(dcp) : XFS_LITINO(mp))
 DECL|macro|XFS_CFORK_DSIZE
 mdefine_line|#define XFS_CFORK_DSIZE(dcp,mp) &bslash;&n;&t;(XFS_CFORK_Q(dcp) ? XFS_CFORK_BOFF(dcp) : XFS_LITINO(mp))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_ASIZE)
 r_int
-id|xfs_cfork_asize_arch
+id|xfs_cfork_asize_disk
 c_func
 (paren
 id|xfs_dinode_core_t
@@ -537,9 +528,6 @@ r_struct
 id|xfs_mount
 op_star
 id|mp
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 r_int
@@ -556,19 +544,19 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_ASIZE_ARCH
-mdefine_line|#define&t;XFS_CFORK_ASIZE_ARCH(dcp,mp,arch)   xfs_cfork_asize_arch(dcp,mp,arch)
+DECL|macro|XFS_CFORK_ASIZE_DISK
+mdefine_line|#define&t;XFS_CFORK_ASIZE_DISK(dcp,mp)        xfs_cfork_asize_disk(dcp,mp)
 DECL|macro|XFS_CFORK_ASIZE
 mdefine_line|#define&t;XFS_CFORK_ASIZE(dcp,mp)             xfs_cfork_asize(dcp,mp)
 macro_line|#else
-DECL|macro|XFS_CFORK_ASIZE_ARCH
-mdefine_line|#define&t;XFS_CFORK_ASIZE_ARCH(dcp,mp,arch) &bslash;&n;&t;(XFS_CFORK_Q_ARCH(dcp, arch) ? XFS_LITINO(mp) - XFS_CFORK_BOFF_ARCH(dcp, arch) : 0)
+DECL|macro|XFS_CFORK_ASIZE_DISK
+mdefine_line|#define&t;XFS_CFORK_ASIZE_DISK(dcp,mp) &bslash;&n;&t;(XFS_CFORK_Q_DISK(dcp) ? XFS_LITINO(mp) - XFS_CFORK_BOFF_DISK(dcp) : 0)
 DECL|macro|XFS_CFORK_ASIZE
 mdefine_line|#define XFS_CFORK_ASIZE(dcp,mp) &bslash;&n;&t;(XFS_CFORK_Q(dcp) ? XFS_LITINO(mp) - XFS_CFORK_BOFF(dcp) : 0)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_SIZE)
 r_int
-id|xfs_cfork_size_arch
+id|xfs_cfork_size_disk
 c_func
 (paren
 id|xfs_dinode_core_t
@@ -582,9 +570,6 @@ id|mp
 comma
 r_int
 id|w
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 r_int
@@ -604,34 +589,17 @@ r_int
 id|w
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_SIZE_ARCH
-mdefine_line|#define&t;XFS_CFORK_SIZE_ARCH(dcp,mp,w,arch)  xfs_cfork_size_arch(dcp,mp,w,arch)
+DECL|macro|XFS_CFORK_SIZE_DISK
+mdefine_line|#define&t;XFS_CFORK_SIZE_DISK(dcp,mp,w)       xfs_cfork_size_disk(dcp,mp,w)
 DECL|macro|XFS_CFORK_SIZE
 mdefine_line|#define&t;XFS_CFORK_SIZE(dcp,mp,w)            xfs_cfork_size(dcp,mp,w)
 macro_line|#else
-DECL|macro|XFS_CFORK_SIZE_ARCH
-mdefine_line|#define&t;XFS_CFORK_SIZE_ARCH(dcp,mp,w,arch) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;XFS_CFORK_DSIZE_ARCH(dcp, mp, arch) : XFS_CFORK_ASIZE_ARCH(dcp, mp, arch))
+DECL|macro|XFS_CFORK_SIZE_DISK
+mdefine_line|#define&t;XFS_CFORK_SIZE_DISK(dcp,mp,w) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;XFS_CFORK_DSIZE_DISK(dcp, mp) : &bslash;&n;&t; &t;XFS_CFORK_ASIZE_DISK(dcp, mp))
 DECL|macro|XFS_CFORK_SIZE
 mdefine_line|#define XFS_CFORK_SIZE(dcp,mp,w) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;XFS_CFORK_DSIZE(dcp, mp) : XFS_CFORK_ASIZE(dcp, mp))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_DSIZE)
-r_int
-id|xfs_dfork_dsize_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_struct
-id|xfs_mount
-op_star
-id|mp
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_dfork_dsize
 c_func
@@ -646,34 +614,13 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_DSIZE_ARCH
-mdefine_line|#define&t;XFS_DFORK_DSIZE_ARCH(dip,mp,arch)   xfs_dfork_dsize_arch(dip,mp,arch)
 DECL|macro|XFS_DFORK_DSIZE
 mdefine_line|#define&t;XFS_DFORK_DSIZE(dip,mp)             xfs_dfork_dsize(dip,mp)
 macro_line|#else
-DECL|macro|XFS_DFORK_DSIZE_ARCH
-mdefine_line|#define&t;XFS_DFORK_DSIZE_ARCH(dip,mp,arch)   XFS_CFORK_DSIZE_ARCH(&amp;(dip)-&gt;di_core, mp, arch)
 DECL|macro|XFS_DFORK_DSIZE
-mdefine_line|#define XFS_DFORK_DSIZE(dip,mp)             XFS_DFORK_DSIZE_ARCH(dip,mp,ARCH_NOCONVERT)
+mdefine_line|#define XFS_DFORK_DSIZE(dip,mp)             XFS_CFORK_DSIZE_DISK(&amp;(dip)-&gt;di_core, mp)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_ASIZE)
-r_int
-id|xfs_dfork_asize_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_struct
-id|xfs_mount
-op_star
-id|mp
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_dfork_asize
 c_func
@@ -688,37 +635,13 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_ASIZE_ARCH
-mdefine_line|#define&t;XFS_DFORK_ASIZE_ARCH(dip,mp,arch)   xfs_dfork_asize_arch(dip,mp,arch)
 DECL|macro|XFS_DFORK_ASIZE
 mdefine_line|#define&t;XFS_DFORK_ASIZE(dip,mp)             xfs_dfork_asize(dip,mp)
 macro_line|#else
-DECL|macro|XFS_DFORK_ASIZE_ARCH
-mdefine_line|#define&t;XFS_DFORK_ASIZE_ARCH(dip,mp,arch)   XFS_CFORK_ASIZE_ARCH(&amp;(dip)-&gt;di_core, mp, arch)
 DECL|macro|XFS_DFORK_ASIZE
-mdefine_line|#define XFS_DFORK_ASIZE(dip,mp)             XFS_DFORK_ASIZE_ARCH(dip,mp,ARCH_NOCONVERT)
+mdefine_line|#define XFS_DFORK_ASIZE(dip,mp)             XFS_CFORK_ASIZE_DISK(&amp;(dip)-&gt;di_core, mp)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_SIZE)
-r_int
-id|xfs_dfork_size_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_struct
-id|xfs_mount
-op_star
-id|mp
-comma
-r_int
-id|w
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_dfork_size
 c_func
@@ -736,30 +659,14 @@ r_int
 id|w
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_SIZE_ARCH
-mdefine_line|#define&t;XFS_DFORK_SIZE_ARCH(dip,mp,w,arch)  xfs_dfork_size_arch(dip,mp,w,arch)
 DECL|macro|XFS_DFORK_SIZE
 mdefine_line|#define&t;XFS_DFORK_SIZE(dip,mp,w)            xfs_dfork_size(dip,mp,w)
 macro_line|#else
-DECL|macro|XFS_DFORK_SIZE_ARCH
-mdefine_line|#define&t;XFS_DFORK_SIZE_ARCH(dip,mp,w,arch)  XFS_CFORK_SIZE_ARCH(&amp;(dip)-&gt;di_core, mp, w, arch)
 DECL|macro|XFS_DFORK_SIZE
-mdefine_line|#define XFS_DFORK_SIZE(dip,mp,w)            XFS_DFORK_SIZE_ARCH(dip,mp,w,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_SIZE(dip,mp,w)&t;    XFS_CFORK_SIZE_DISK(&amp;(dip)-&gt;di_core, mp, w)
 macro_line|#endif
 multiline_comment|/*&n; * Macros for accessing per-fork disk inode information.&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_Q)
-r_int
-id|xfs_dfork_q_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_dfork_q
 c_func
@@ -769,29 +676,13 @@ op_star
 id|dip
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_Q_ARCH
-mdefine_line|#define&t;XFS_DFORK_Q_ARCH(dip,arch)&t;    xfs_dfork_q_arch(dip,arch)
 DECL|macro|XFS_DFORK_Q
 mdefine_line|#define&t;XFS_DFORK_Q(dip)&t;            xfs_dfork_q(dip)
 macro_line|#else
-DECL|macro|XFS_DFORK_Q_ARCH
-mdefine_line|#define&t;XFS_DFORK_Q_ARCH(dip,arch)&t;    XFS_CFORK_Q_ARCH(&amp;(dip)-&gt;di_core, arch)
 DECL|macro|XFS_DFORK_Q
-mdefine_line|#define XFS_DFORK_Q(dip)                    XFS_DFORK_Q_ARCH(dip,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_Q(dip)                    XFS_CFORK_Q_DISK(&amp;(dip)-&gt;di_core)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_BOFF)
-r_int
-id|xfs_dfork_boff_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_dfork_boff
 c_func
@@ -801,30 +692,13 @@ op_star
 id|dip
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_BOFF_ARCH
-mdefine_line|#define&t;XFS_DFORK_BOFF_ARCH(dip,arch)&t;    xfs_dfork_boff_arch(dip,arch)
 DECL|macro|XFS_DFORK_BOFF
-mdefine_line|#define&t;XFS_DFORK_BOFF(dip)&t;            xfs_dfork_boff(dip)
+mdefine_line|#define&t;XFS_DFORK_BOFF(dip)&t;&t;    xfs_dfork_boff(dip)
 macro_line|#else
-DECL|macro|XFS_DFORK_BOFF_ARCH
-mdefine_line|#define&t;XFS_DFORK_BOFF_ARCH(dip,arch)&t;    XFS_CFORK_BOFF_ARCH(&amp;(dip)-&gt;di_core, arch)
 DECL|macro|XFS_DFORK_BOFF
-mdefine_line|#define XFS_DFORK_BOFF(dip)                 XFS_DFORK_BOFF_ARCH(dip,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_BOFF(dip)&t;&t;    XFS_CFORK_BOFF_DISK(&amp;(dip)-&gt;di_core)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_DPTR)
-r_char
-op_star
-id|xfs_dfork_dptr_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_char
 op_star
 id|xfs_dfork_dptr
@@ -835,30 +709,13 @@ op_star
 id|dip
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_DPTR_ARCH
-mdefine_line|#define&t;XFS_DFORK_DPTR_ARCH(dip,arch)&t;    xfs_dfork_dptr_arch(dip,arch)
 DECL|macro|XFS_DFORK_DPTR
 mdefine_line|#define&t;XFS_DFORK_DPTR(dip)&t;            xfs_dfork_dptr(dip)
 macro_line|#else
-DECL|macro|XFS_DFORK_DPTR_ARCH
-mdefine_line|#define&t;XFS_DFORK_DPTR_ARCH(dip,arch)&t;    ((dip)-&gt;di_u.di_c)
 DECL|macro|XFS_DFORK_DPTR
-mdefine_line|#define XFS_DFORK_DPTR(dip)                 XFS_DFORK_DPTR_ARCH(dip,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_DPTR(dip)&t;&t;    ((dip)-&gt;di_u.di_c)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_APTR)
-r_char
-op_star
-id|xfs_dfork_aptr_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_char
 op_star
 id|xfs_dfork_aptr
@@ -869,33 +726,13 @@ op_star
 id|dip
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_APTR_ARCH
-mdefine_line|#define&t;XFS_DFORK_APTR_ARCH(dip,arch)       xfs_dfork_aptr_arch(dip,arch)
 DECL|macro|XFS_DFORK_APTR
 mdefine_line|#define&t;XFS_DFORK_APTR(dip)                 xfs_dfork_aptr(dip)
 macro_line|#else
-DECL|macro|XFS_DFORK_APTR_ARCH
-mdefine_line|#define&t;XFS_DFORK_APTR_ARCH(dip,arch)&t;    ((dip)-&gt;di_u.di_c + XFS_DFORK_BOFF_ARCH(dip, arch))
 DECL|macro|XFS_DFORK_APTR
-mdefine_line|#define XFS_DFORK_APTR(dip)                 XFS_DFORK_APTR_ARCH(dip,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_APTR(dip)&t;&t;    ((dip)-&gt;di_u.di_c + XFS_DFORK_BOFF(dip))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_PTR)
-r_char
-op_star
-id|xfs_dfork_ptr_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_char
 op_star
 id|xfs_dfork_ptr
@@ -909,32 +746,13 @@ r_int
 id|w
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_PTR_ARCH
-mdefine_line|#define&t;XFS_DFORK_PTR_ARCH(dip,w,arch)      xfs_dfork_ptr_arch(dip,w,arch)
 DECL|macro|XFS_DFORK_PTR
 mdefine_line|#define&t;XFS_DFORK_PTR(dip,w)                xfs_dfork_ptr(dip,w)
 macro_line|#else
-DECL|macro|XFS_DFORK_PTR_ARCH
-mdefine_line|#define&t;XFS_DFORK_PTR_ARCH(dip,w,arch)&t;&bslash;&n;&t;((w) == XFS_DATA_FORK ? XFS_DFORK_DPTR_ARCH(dip, arch) : XFS_DFORK_APTR_ARCH(dip, arch))
 DECL|macro|XFS_DFORK_PTR
-mdefine_line|#define XFS_DFORK_PTR(dip,w)                XFS_DFORK_PTR_ARCH(dip,w,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_PTR(dip,w)&t;&bslash;&n;&t;((w) == XFS_DATA_FORK ? XFS_DFORK_DPTR(dip) : XFS_DFORK_APTR(dip))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_FORMAT)
-r_int
-id|xfs_cfork_format_arch
-c_func
-(paren
-id|xfs_dinode_core_t
-op_star
-id|dcp
-comma
-r_int
-id|w
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_cfork_format
 c_func
@@ -947,35 +765,13 @@ r_int
 id|w
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_FORMAT_ARCH
-mdefine_line|#define&t;XFS_CFORK_FORMAT_ARCH(dcp,w,arch)   xfs_cfork_format_arch(dcp,w,arch)
 DECL|macro|XFS_CFORK_FORMAT
 mdefine_line|#define&t;XFS_CFORK_FORMAT(dcp,w)             xfs_cfork_format(dcp,w)
 macro_line|#else
-DECL|macro|XFS_CFORK_FORMAT_ARCH
-mdefine_line|#define&t;XFS_CFORK_FORMAT_ARCH(dcp,w,arch) &bslash;&n;&t;((w) == XFS_DATA_FORK ? INT_GET((dcp)-&gt;di_format, arch) : INT_GET((dcp)-&gt;di_aformat, arch))
 DECL|macro|XFS_CFORK_FORMAT
-mdefine_line|#define XFS_CFORK_FORMAT(dcp,w)             XFS_CFORK_FORMAT_ARCH(dcp,w,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_CFORK_FORMAT(dcp,w) &bslash;&n;&t;((w) == XFS_DATA_FORK ? (dcp)-&gt;di_format : (dcp)-&gt;di_aformat)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_FMT_SET)
-r_void
-id|xfs_cfork_fmt_set_arch
-c_func
-(paren
-id|xfs_dinode_core_t
-op_star
-id|dcp
-comma
-r_int
-id|w
-comma
-r_int
-id|n
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_void
 id|xfs_cfork_fmt_set
 c_func
@@ -991,19 +787,15 @@ r_int
 id|n
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_FMT_SET_ARCH
-mdefine_line|#define&t;XFS_CFORK_FMT_SET_ARCH(dcp,w,n,arch) xfs_cfork_fmt_set_arch(dcp,w,n,arch)
 DECL|macro|XFS_CFORK_FMT_SET
 mdefine_line|#define&t;XFS_CFORK_FMT_SET(dcp,w,n)           xfs_cfork_fmt_set(dcp,w,n)
 macro_line|#else
-DECL|macro|XFS_CFORK_FMT_SET_ARCH
-mdefine_line|#define&t;XFS_CFORK_FMT_SET_ARCH(dcp,w,n,arch) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;(INT_SET((dcp)-&gt;di_format, arch, (n))) : &bslash;&n;&t;&t;(INT_SET((dcp)-&gt;di_aformat, arch, (n))))
 DECL|macro|XFS_CFORK_FMT_SET
-mdefine_line|#define XFS_CFORK_FMT_SET(dcp,w,n)           XFS_CFORK_FMT_SET_ARCH(dcp,w,n,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_CFORK_FMT_SET(dcp,w,n) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;((dcp)-&gt;di_format = (n)) : &bslash;&n;&t;&t;((dcp)-&gt;di_aformat = (n)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_NEXTENTS)
 r_int
-id|xfs_cfork_nextents_arch
+id|xfs_cfork_nextents_disk
 c_func
 (paren
 id|xfs_dinode_core_t
@@ -1012,9 +804,6 @@ id|dcp
 comma
 r_int
 id|w
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
 r_int
@@ -1029,35 +818,17 @@ r_int
 id|w
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_NEXTENTS_ARCH
-mdefine_line|#define&t;XFS_CFORK_NEXTENTS_ARCH(dcp,w,arch)  xfs_cfork_nextents_arch(dcp,w,arch)
+DECL|macro|XFS_CFORK_NEXTENTS_DISK
+mdefine_line|#define&t;XFS_CFORK_NEXTENTS_DISK(dcp,w)       xfs_cfork_nextents_disk(dcp,w)
 DECL|macro|XFS_CFORK_NEXTENTS
 mdefine_line|#define&t;XFS_CFORK_NEXTENTS(dcp,w)            xfs_cfork_nextents(dcp,w)
 macro_line|#else
-DECL|macro|XFS_CFORK_NEXTENTS_ARCH
-mdefine_line|#define&t;XFS_CFORK_NEXTENTS_ARCH(dcp,w,arch) &bslash;&n;&t;((w) == XFS_DATA_FORK ? INT_GET((dcp)-&gt;di_nextents, arch) : INT_GET((dcp)-&gt;di_anextents, arch))
+DECL|macro|XFS_CFORK_NEXTENTS_DISK
+mdefine_line|#define&t;XFS_CFORK_NEXTENTS_DISK(dcp,w) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t; &t;INT_GET((dcp)-&gt;di_nextents, ARCH_CONVERT) : &bslash;&n;&t; &t;INT_GET((dcp)-&gt;di_anextents, ARCH_CONVERT))
 DECL|macro|XFS_CFORK_NEXTENTS
-mdefine_line|#define XFS_CFORK_NEXTENTS(dcp,w)            XFS_CFORK_NEXTENTS_ARCH(dcp,w,ARCH_NOCONVERT)
+mdefine_line|#define XFS_CFORK_NEXTENTS(dcp,w) &bslash;&n;&t;((w) == XFS_DATA_FORK ? (dcp)-&gt;di_nextents : (dcp)-&gt;di_anextents)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_CFORK_NEXT_SET)
-r_void
-id|xfs_cfork_next_set_arch
-c_func
-(paren
-id|xfs_dinode_core_t
-op_star
-id|dcp
-comma
-r_int
-id|w
-comma
-r_int
-id|n
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_void
 id|xfs_cfork_next_set
 c_func
@@ -1073,114 +844,13 @@ r_int
 id|n
 )paren
 suffix:semicolon
-DECL|macro|XFS_CFORK_NEXT_SET_ARCH
-mdefine_line|#define&t;XFS_CFORK_NEXT_SET_ARCH(dcp,w,n,arch)&t;xfs_cfork_next_set_arch(dcp,w,n,arch)
 DECL|macro|XFS_CFORK_NEXT_SET
 mdefine_line|#define&t;XFS_CFORK_NEXT_SET(dcp,w,n)&t;        xfs_cfork_next_set(dcp,w,n)
 macro_line|#else
-DECL|macro|XFS_CFORK_NEXT_SET_ARCH
-mdefine_line|#define&t;XFS_CFORK_NEXT_SET_ARCH(dcp,w,n,arch) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;(INT_SET((dcp)-&gt;di_nextents, arch, (n))) : &bslash;&n;&t;&t;(INT_SET((dcp)-&gt;di_anextents, arch, (n))))
 DECL|macro|XFS_CFORK_NEXT_SET
-mdefine_line|#define XFS_CFORK_NEXT_SET(dcp,w,n)             XFS_CFORK_NEXT_SET_ARCH(dcp,w,n,ARCH_NOCONVERT)
-macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_FORMAT)
-r_int
-id|xfs_dfork_format_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
-r_int
-id|xfs_dfork_format
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-)paren
-suffix:semicolon
-DECL|macro|XFS_DFORK_FORMAT_ARCH
-mdefine_line|#define&t;XFS_DFORK_FORMAT_ARCH(dip,w,arch)   xfs_dfork_format_arch(dip,w,arch)
-DECL|macro|XFS_DFORK_FORMAT
-mdefine_line|#define&t;XFS_DFORK_FORMAT(dip,w)             xfs_dfork_format(dip,w)
-macro_line|#else
-DECL|macro|XFS_DFORK_FORMAT_ARCH
-mdefine_line|#define&t;XFS_DFORK_FORMAT_ARCH(dip,w,arch)   XFS_CFORK_FORMAT_ARCH(&amp;(dip)-&gt;di_core, w, arch)
-DECL|macro|XFS_DFORK_FORMAT
-mdefine_line|#define XFS_DFORK_FORMAT(dip,w)             XFS_DFORK_FORMAT_ARCH(dip,w,ARCH_NOCONVERT)
-macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_FMT_SET)
-r_void
-id|xfs_dfork_fmt_set_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-r_int
-id|n
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
-r_void
-id|xfs_dfork_fmt_set
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-r_int
-id|n
-)paren
-suffix:semicolon
-DECL|macro|XFS_DFORK_FMT_SET_ARCH
-mdefine_line|#define&t;XFS_DFORK_FMT_SET_ARCH(dip,w,n,arch)    xfs_dfork_fmt_set_arch(dip,w,n,arch)
-DECL|macro|XFS_DFORK_FMT_SET
-mdefine_line|#define&t;XFS_DFORK_FMT_SET(dip,w,n)              xfs_dfork_fmt_set(dip,w,n)
-macro_line|#else
-DECL|macro|XFS_DFORK_FMT_SET_ARCH
-mdefine_line|#define&t;XFS_DFORK_FMT_SET_ARCH(dip,w,n,arch)&t;XFS_CFORK_FMT_SET_ARCH(&amp;(dip)-&gt;di_core, w, n, arch)
-DECL|macro|XFS_DFORK_FMT_SET
-mdefine_line|#define XFS_DFORK_FMT_SET(dip,w,n)              XFS_DFORK_FMT_SET_ARCH(dip,w,n,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_CFORK_NEXT_SET(dcp,w,n) &bslash;&n;&t;((w) == XFS_DATA_FORK ? &bslash;&n;&t;&t;((dcp)-&gt;di_nextents = (n)) : &bslash;&n;&t;&t;((dcp)-&gt;di_anextents = (n)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_NEXTENTS)
-r_int
-id|xfs_dfork_nextents_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
 r_int
 id|xfs_dfork_nextents
 c_func
@@ -1193,59 +863,11 @@ r_int
 id|w
 )paren
 suffix:semicolon
-DECL|macro|XFS_DFORK_NEXTENTS_ARCH
-mdefine_line|#define&t;XFS_DFORK_NEXTENTS_ARCH(dip,w,arch) xfs_dfork_nextents_arch(dip,w,arch)
 DECL|macro|XFS_DFORK_NEXTENTS
-mdefine_line|#define&t;XFS_DFORK_NEXTENTS(dip,w)           xfs_dfork_nextents(dip,w)
+mdefine_line|#define&t;XFS_DFORK_NEXTENTS(dip,w) xfs_dfork_nextents(dip,w)
 macro_line|#else
-DECL|macro|XFS_DFORK_NEXTENTS_ARCH
-mdefine_line|#define&t;XFS_DFORK_NEXTENTS_ARCH(dip,w,arch) XFS_CFORK_NEXTENTS_ARCH(&amp;(dip)-&gt;di_core, w, arch)
 DECL|macro|XFS_DFORK_NEXTENTS
-mdefine_line|#define XFS_DFORK_NEXTENTS(dip,w)           XFS_DFORK_NEXTENTS_ARCH(dip,w,ARCH_NOCONVERT)
-macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DFORK_NEXT_SET)
-r_void
-id|xfs_dfork_next_set_arch
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-r_int
-id|n
-comma
-id|xfs_arch_t
-id|arch
-)paren
-suffix:semicolon
-r_void
-id|xfs_dfork_next_set
-c_func
-(paren
-id|xfs_dinode_t
-op_star
-id|dip
-comma
-r_int
-id|w
-comma
-r_int
-id|n
-)paren
-suffix:semicolon
-DECL|macro|XFS_DFORK_NEXT_SET_ARCH
-mdefine_line|#define&t;XFS_DFORK_NEXT_SET_ARCH(dip,w,n,arch)   xfs_dfork_next_set_arch(dip,w,n,arch)
-DECL|macro|XFS_DFORK_NEXT_SET
-mdefine_line|#define&t;XFS_DFORK_NEXT_SET(dip,w,n)             xfs_dfork_next_set(dip,w,n)
-macro_line|#else
-DECL|macro|XFS_DFORK_NEXT_SET_ARCH
-mdefine_line|#define&t;XFS_DFORK_NEXT_SET_ARCH(dip,w,n,arch)&t;XFS_CFORK_NEXT_SET_ARCH(&amp;(dip)-&gt;di_core, w, n, arch)
-DECL|macro|XFS_DFORK_NEXT_SET
-mdefine_line|#define XFS_DFORK_NEXT_SET(dip,w,n)             XFS_DFORK_NEXT_SET_ARCH(dip,w,n,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_DFORK_NEXTENTS(dip,w) XFS_CFORK_NEXTENTS_DISK(&amp;(dip)-&gt;di_core, w)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_DINODE)
 id|xfs_dinode_t

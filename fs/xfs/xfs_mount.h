@@ -2084,8 +2084,6 @@ op_star
 comma
 r_int
 comma
-id|xfs_arch_t
-comma
 id|__int64_t
 )paren
 suffix:semicolon
