@@ -2253,6 +2253,16 @@ r_if
 c_cond
 (paren
 id|write_combine
+op_logical_and
+id|efi_range_is_wc
+c_func
+(paren
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+)paren
 )paren
 id|vma-&gt;vm_page_prot
 op_assign

@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
@@ -4755,10 +4756,41 @@ id|vma-&gt;vm_page_prot
 op_or_assign
 id|_PAGE_NO_CACHE
 suffix:semicolon
-macro_line|#elif defined(__ia64__) || defined(__arm__) || defined(__sh__) || &bslash;&n;      defined(__m32r__)
+macro_line|#elif defined(__arm__) || defined(__sh__) || defined(__m32r__)
 id|vma-&gt;vm_page_prot
 op_assign
 id|pgprot_writecombine
+c_func
+(paren
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
+macro_line|#elif defined(__ia64__)
+r_if
+c_cond
+(paren
+id|efi_range_is_wc
+c_func
+(paren
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+)paren
+)paren
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_writecombine
+c_func
+(paren
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
+r_else
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_noncached
 c_func
 (paren
 id|vma-&gt;vm_page_prot
