@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Inline routines shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx_inline.h#44 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Inline routines shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic79xx_inline.h#48 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC79XX_INLINE_H_
 DECL|macro|_AIC79XX_INLINE_H_
 mdefine_line|#define _AIC79XX_INLINE_H_
@@ -828,11 +828,7 @@ id|INTSTAT
 )paren
 op_amp
 op_complement
-(paren
-id|SWTMINT
-op_or
 id|CMDCMPLT
-)paren
 )paren
 op_eq
 l_int|0
@@ -1240,6 +1236,10 @@ id|ahd_dma_seg
 op_star
 id|sg
 suffix:semicolon
+r_uint32
+op_star
+id|dataptr_words
+suffix:semicolon
 id|sg
 op_assign
 (paren
@@ -1249,9 +1249,28 @@ op_star
 )paren
 id|scb-&gt;sg_list
 suffix:semicolon
+id|dataptr_words
+op_assign
+(paren
+r_uint32
+op_star
+)paren
+op_amp
 id|scb-&gt;hscb-&gt;dataptr
+suffix:semicolon
+id|dataptr_words
+(braket
+l_int|0
+)braket
 op_assign
 id|sg-&gt;addr
+suffix:semicolon
+id|dataptr_words
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3929,6 +3948,17 @@ op_ne
 l_int|0
 )paren
 (brace
+r_uint64
+id|host_dataptr
+suffix:semicolon
+id|host_dataptr
+op_assign
+id|ahd_le64toh
+c_func
+(paren
+id|scb-&gt;hscb-&gt;dataptr
+)paren
+suffix:semicolon
 id|printf
 c_func
 (paren
@@ -3946,14 +3976,18 @@ c_func
 id|scb
 )paren
 comma
+id|ahd_le32toh
+c_func
+(paren
 id|scb-&gt;hscb-&gt;hscb_busaddr
+)paren
 comma
 (paren
 id|u_int
 )paren
 (paren
 (paren
-id|scb-&gt;hscb-&gt;dataptr
+id|host_dataptr
 op_rshift
 l_int|32
 )paren
@@ -3965,12 +3999,16 @@ comma
 id|u_int
 )paren
 (paren
-id|scb-&gt;hscb-&gt;dataptr
+id|host_dataptr
 op_amp
 l_int|0xFFFFFFFF
 )paren
 comma
+id|ahd_le32toh
+c_func
+(paren
 id|scb-&gt;hscb-&gt;datacnt
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4079,7 +4117,7 @@ id|ahd
 suffix:semicolon
 r_static
 id|__inline
-r_void
+r_int
 id|ahd_intr
 c_func
 (paren
@@ -4325,7 +4363,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Catch an interrupt from the adapter&n; */
 r_static
 id|__inline
-r_void
+r_int
 DECL|function|ahd_intr
 id|ahd_intr
 c_func
@@ -4353,6 +4391,9 @@ l_int|0
 (brace
 multiline_comment|/*&n;&t;&t; * Our interrupt is not enabled on the chip&n;&t;&t; * and may be disabled for re-entrancy reasons,&n;&t;&t; * so just return.  This is likely just a shared&n;&t;&t; * interrupt.&n;&t;&t; */
 r_return
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Instead of directly reading the interrupt status register,&n;&t; * infer the cause of the interrupt by checking our in-core&n;&t; * completion queues.  This avoids a costly PCI bus read in&n;&t; * most cases.&n;&t; */
@@ -4390,6 +4431,22 @@ c_func
 id|ahd
 comma
 id|INTSTAT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|intstat
+op_amp
+id|INT_PEND
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+(paren
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -4500,6 +4557,7 @@ id|FALSE
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/*&n;&t; * Handle statuses that may invalidate our cached&n;&t; * copy of INTSTAT separately.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4515,22 +4573,10 @@ id|AHD_REMOVABLE
 op_ne
 l_int|0
 )paren
-multiline_comment|/* Hot eject */
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|intstat
-op_amp
-id|INT_PEND
-)paren
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
+(brace
+multiline_comment|/* Hot eject.  Do nothing */
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -4545,9 +4591,8 @@ c_func
 id|ahd
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -4572,9 +4617,9 @@ c_func
 id|ahd
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -4611,6 +4656,12 @@ c_func
 id|ahd
 comma
 id|intstat
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
