@@ -1557,15 +1557,16 @@ id|ixp2000_GPIO_irq_handler
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Enable PCI irq&n;&t; */
-op_star
+id|ixp2000_reg_write
+c_func
 (paren
 id|IXP2000_IRQ_ENABLE_SET
-)paren
-op_assign
+comma
 (paren
 l_int|1
 op_lshift
 id|IRQ_IXP2000_PCI
+)paren
 )paren
 suffix:semicolon
 r_for
