@@ -306,13 +306,6 @@ c_func
 id|scsi_io_completion
 )paren
 suffix:semicolon
-DECL|variable|scsi_end_request
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_end_request
-)paren
-suffix:semicolon
 DECL|variable|scsi_register_blocked_host
 id|EXPORT_SYMBOL
 c_func

@@ -251,8 +251,6 @@ c_func
 id|sdev
 comma
 l_int|1
-comma
-id|FALSE
 )paren
 suffix:semicolon
 r_if
@@ -4252,8 +4250,6 @@ c_func
 id|sdev
 comma
 l_int|1
-comma
-id|FALSE
 )paren
 suffix:semicolon
 r_if
