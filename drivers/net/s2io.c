@@ -5550,6 +5550,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * fix_mac_address -  Fix for Mac addr problem on Alpha platforms&n; * @sp: Pointer to device specifc structure&n; * Description : &n; * New procedure to clear mac address reading  problems on Alpha platforms&n; *&n; */
 DECL|function|fix_mac_address
+r_static
 r_void
 id|fix_mac_address
 c_func
@@ -6119,6 +6120,7 @@ suffix:semicolon
 )brace
 multiline_comment|/** &n; *  free_tx_buffers - Free all queued Tx buffers &n; *  @nic : device private variable.&n; *  Description: &n; *  Free all queued Tx buffers.&n; *  Return Value: void &n;*/
 DECL|function|free_tx_buffers
+r_static
 r_void
 id|free_tx_buffers
 c_func
@@ -6450,6 +6452,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**  &n; *  fill_rx_buffers - Allocates the Rx side skbs &n; *  @nic:  device private variable&n; *  @ring_no: ring number &n; *  Description: &n; *  The function allocates Rx side skbs and puts the physical&n; *  address of these buffers into the RxD buffer pointers, so that the NIC&n; *  can DMA the received frame into these locations.&n; *  The NIC supports 3 receive modes, viz&n; *  1. single buffer,&n; *  2. three buffer and&n; *  3. Five buffer modes.&n; *  Each mode defines how many fragments the received frame will be split &n; *  up into by the NIC. The frame is split into L3 header, L4 Header, &n; *  L4 payload in three buffer mode and in 5 buffer mode, L4 payload itself&n; *  is split into 3 fragments. As of now only single buffer mode is&n; *  supported.&n; *   Return Value:&n; *  SUCCESS on success or an appropriate -ve value on failure.&n; */
 DECL|function|fill_rx_buffers
+r_static
 r_int
 id|fill_rx_buffers
 c_func
@@ -10273,6 +10276,7 @@ multiline_comment|/* Other type of interrupts are not being handled now,  TODO *
 )brace
 multiline_comment|/** &n; *  wait_for_cmd_complete - waits for a command to complete.&n; *  @sp : private member of the device structure, which is a pointer to the &n; *  s2io_nic structure.&n; *  Description: Function that waits for a command to Write into RMAC &n; *  ADDR DATA registers to be completed and returns either success or &n; *  error depending on whether the command was complete or not. &n; *  Return value:&n; *   SUCCESS on success and FAILURE on failure.&n; */
 DECL|function|wait_for_cmd_complete
+r_static
 r_int
 id|wait_for_cmd_complete
 c_func
@@ -10365,6 +10369,7 @@ suffix:semicolon
 )brace
 multiline_comment|/** &n; *  s2io_reset - Resets the card. &n; *  @sp : private member of the device structure.&n; *  Description: Function to Reset the card. This function then also&n; *  restores the previously saved PCI configuration space registers as &n; *  the card reset also resets the configuration space.&n; *  Return value:&n; *  void.&n; */
 DECL|function|s2io_reset
+r_static
 r_void
 id|s2io_reset
 c_func
@@ -10508,6 +10513,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_set_swapper - to set the swapper controle on the card &n; *  @sp : private member of the device structure, &n; *  pointer to the s2io_nic structure.&n; *  Description: Function to set the swapper control on the card &n; *  correctly depending on the &squot;endianness&squot; of the system.&n; *  Return value:&n; *  SUCCESS on success and FAILURE on failure.&n; */
 DECL|function|s2io_set_swapper
+r_static
 r_int
 id|s2io_set_swapper
 c_func
@@ -10711,6 +10717,7 @@ suffix:semicolon
 multiline_comment|/* ********************************************************* *&n; * Functions defined below concern the OS part of the driver *&n; * ********************************************************* */
 multiline_comment|/**  &n; *  s2io_open - open entry point of the driver&n; *  @dev : pointer to the device structure.&n; *  Description:&n; *  This function is the open entry point of the driver. It mainly calls a&n; *  function to allocate Rx buffers and inserts them into the buffer&n; *  descriptors and then enables the Rx part of the NIC. &n; *  Return value:&n; *  0 on success and an appropriate (-)ve integer as defined in errno.h&n; *   file on failure.&n; */
 DECL|function|s2io_open
+r_static
 r_int
 id|s2io_open
 c_func
@@ -10860,6 +10867,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_close -close entry point of the driver&n; *  @dev : device pointer.&n; *  Description:&n; *  This is the stop entry point of the driver. It needs to undo exactly&n; *  whatever was done by the open entry point,thus it&squot;s usually referred to&n; *  as the close function.Among other things this function mainly stops the&n; *  Rx side of the NIC and frees all the Rx buffers in the Rx rings.&n; *  Return value:&n; *  0 on success and an appropriate (-)ve integer as defined in errno.h&n; *  file on failure.&n; */
 DECL|function|s2io_close
+r_static
 r_int
 id|s2io_close
 c_func
@@ -10913,6 +10921,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_xmit - Tx entry point of te driver&n; *  @skb : the socket buffer containing the Tx data.&n; *  @dev : device pointer.&n; *  Description :&n; *  This function is the Tx entry point of the driver. S2IO NIC supports&n; *  certain protocol assist features on Tx side, namely  CSO, S/G, LSO.&n; *  NOTE: when device cant queue the pkt,just the trans_start variable will&n; *  not be upadted.&n; *  Return value:&n; *  0 on success &amp; 1 on failure.&n; */
 DECL|function|s2io_xmit
+r_static
 r_int
 id|s2io_xmit
 c_func
@@ -11832,6 +11841,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_get_stats - Updates the device statistics structure. &n; *  @dev : pointer to the device structure.&n; *  Description:&n; *  This function updates the device statistics structure in the s2io_nic &n; *  structure and returns a pointer to the same.&n; *  Return value:&n; *  pointer to the updated net_device_stats structure.&n; */
 DECL|function|s2io_get_stats
+r_static
 r_struct
 id|net_device_stats
 op_star
@@ -12846,6 +12856,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * s2io_ethtol_gset - Return link specific information. &n; * @sp : private member of the device structure, pointer to the&n; *      s2io_nic structure.&n; * @info : pointer to the structure with parameters given by ethtool&n; * to return link information.&n; * Description:&n; * Returns link specific information like speed, duplex etc.. to ethtool.&n; * Return value :&n; * return 0 on success.&n; */
 DECL|function|s2io_ethtool_gset
+r_static
 r_int
 id|s2io_ethtool_gset
 c_func
@@ -13497,6 +13508,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * s2io_ethtool_setpause_data -  set/reset pause frame generation.&n; * @sp : private member of the device structure, which is a pointer to the &n; *      s2io_nic structure.&n; * @ep : pointer to the structure with pause parameters given by ethtool.&n; * Description:&n; * It can be used to set or reset Pause frame generation or reception&n; * support of the NIC.&n; * Return value:&n; * int, returns 0 on Success&n; */
 DECL|function|s2io_ethtool_setpause_data
+r_static
 r_int
 id|s2io_ethtool_setpause_data
 c_func
@@ -13870,6 +13882,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_ethtool_geeprom  - reads the value stored in the Eeprom.&n; *  @sp : private member of the device structure, which is a pointer to the *       s2io_nic structure.&n; *  @eeprom : pointer to the user level structure provided by ethtool, &n; *  containing all relevant information.&n; *  @data_buf : user defined value to be written into Eeprom.&n; *  Description: Reads the values stored in the Eeprom at given offset&n; *  for a given length. Stores these values int the input argument data&n; *  buffer &squot;data_buf&squot; and returns these to the caller (ethtool.)&n; *  Return value:&n; *  int  0 on success&n; */
 DECL|function|s2io_ethtool_geeprom
+r_static
 r_int
 id|s2io_ethtool_geeprom
 c_func
@@ -15984,6 +15997,7 @@ id|stat_info-&gt;rmac_err_tcp
 suffix:semicolon
 )brace
 DECL|function|s2io_ethtool_get_regs_len
+r_static
 r_int
 id|s2io_ethtool_get_regs_len
 c_func
@@ -16001,6 +16015,7 @@ id|XENA_REG_SPACE
 suffix:semicolon
 )brace
 DECL|function|s2io_ethtool_get_rx_csum
+r_static
 id|u32
 id|s2io_ethtool_get_rx_csum
 c_func
@@ -16024,6 +16039,7 @@ id|sp-&gt;rx_csum
 suffix:semicolon
 )brace
 DECL|function|s2io_ethtool_set_rx_csum
+r_static
 r_int
 id|s2io_ethtool_set_rx_csum
 c_func
@@ -16062,6 +16078,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|s2io_get_eeprom_len
+r_static
 r_int
 id|s2io_get_eeprom_len
 c_func
@@ -16079,6 +16096,7 @@ id|XENA_EEPROM_SPACE
 suffix:semicolon
 )brace
 DECL|function|s2io_ethtool_self_test_count
+r_static
 r_int
 id|s2io_ethtool_self_test_count
 c_func
@@ -16096,6 +16114,7 @@ id|S2IO_TEST_LEN
 suffix:semicolon
 )brace
 DECL|function|s2io_ethtool_get_strings
+r_static
 r_void
 id|s2io_ethtool_get_strings
 c_func
@@ -16172,6 +16191,7 @@ id|S2IO_STAT_LEN
 suffix:semicolon
 )brace
 DECL|function|s2io_ethtool_op_set_tx_csum
+r_static
 r_int
 id|s2io_ethtool_op_set_tx_csum
 c_func
@@ -16341,6 +16361,7 @@ id|s2io_get_ethtool_stats
 suffix:semicolon
 multiline_comment|/**&n; *  s2io_ioctl - Entry point for the Ioctl &n; *  @dev :  Device pointer.&n; *  @ifr :  An IOCTL specefic structure, that can contain a pointer to&n; *  a proprietary structure used to pass information to the driver.&n; *  @cmd :  This is used to distinguish between the different commands that&n; *  can be passed to the IOCTL functions.&n; *  Description:&n; *  This function has support for ethtool, adding multiple MAC addresses on &n; *  the NIC and some DBG commands for the util tool.&n; *  Return value:&n; *  Currently the IOCTL supports no operations, hence by default this&n; *  function returns OP NOT SUPPORTED value.&n; */
 DECL|function|s2io_ioctl
+r_static
 r_int
 id|s2io_ioctl
 c_func
@@ -16366,6 +16387,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_change_mtu - entry point to change MTU size for the device.&n; *   @dev : device pointer.&n; *   @new_mtu : the new MTU size for the device.&n; *   Description: A driver entry point to change MTU size for the device.&n; *   Before changing the MTU the device must be stopped.&n; *  Return value:&n; *   0 on success and an appropriate (-)ve integer as defined in errno.h&n; *   file on failure.&n; */
 DECL|function|s2io_change_mtu
+r_static
 r_int
 id|s2io_change_mtu
 c_func
@@ -17924,6 +17946,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_link - stops/starts the Tx queue.&n; *  @sp : private member of the device structure, which is a pointer to the&n; *  s2io_nic structure.&n; *  @link : inidicates whether link is UP/DOWN.&n; *  Description:&n; *  This function stops/starts the Tx queue depending on whether the link&n; *  status of the NIC is is down or up. This is called by the Alarm &n; *  interrupt handler whenever a link change interrupt comes up. &n; *  Return value:&n; *  void.&n; */
 DECL|function|s2io_link
+r_static
 r_void
 id|s2io_link
 c_func
@@ -18004,47 +18027,6 @@ suffix:semicolon
 id|sp-&gt;last_link_state
 op_assign
 id|link
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *  get_xena_rev_id - to identify revision ID of xena. &n; *  @pdev : PCI Dev structure&n; *  Description:&n; *  Function to identify the Revision ID of xena.&n; *  Return value:&n; *  returns the revision ID of the device.&n; */
-DECL|function|get_xena_rev_id
-r_int
-id|get_xena_rev_id
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-id|u8
-id|id
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|ret
-op_assign
-id|pci_read_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_REVISION_ID
-comma
-(paren
-id|u8
-op_star
-)paren
-op_amp
-id|id
-)paren
-suffix:semicolon
-r_return
-id|id
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *  s2io_init_pci -Initialization of PCI and PCI-X configuration registers . &n; *  @sp : private member of the device structure, which is a pointer to the &n; *  s2io_nic structure.&n; *  Description:&n; *  This function initializes a few of the PCI and PCI-X configuration registers&n; *  with recommended values.&n; *  Return value:&n; *  void&n; */
@@ -20004,6 +19986,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * s2io_closer - Cleanup routine for the driver &n; * Description: This function is the cleanup routine for the driver. It unregist * ers the driver.&n; */
 DECL|function|s2io_closer
+r_static
 r_void
 id|s2io_closer
 c_func

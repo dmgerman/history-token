@@ -702,6 +702,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_EISA
 DECL|variable|el3_eisa_ids
+r_static
 r_struct
 id|eisa_device_id
 id|el3_eisa_ids
@@ -733,6 +734,7 @@ id|device
 )paren
 suffix:semicolon
 DECL|variable|el3_eisa_driver
+r_static
 r_struct
 id|eisa_driver
 id|el3_eisa_driver

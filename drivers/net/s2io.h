@@ -2284,6 +2284,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_void
 id|s2io_closer
 c_func
@@ -2367,6 +2368,7 @@ id|ba
 )paren
 suffix:semicolon
 macro_line|#endif
+r_static
 r_void
 id|s2io_link
 c_func
@@ -2379,6 +2381,7 @@ r_int
 id|link
 )paren
 suffix:semicolon
+r_static
 r_void
 id|s2io_reset
 c_func
@@ -2415,6 +2418,7 @@ op_star
 id|sp
 )paren
 suffix:semicolon
+r_static
 r_int
 id|s2io_set_mac_addr
 c_func

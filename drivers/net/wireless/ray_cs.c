@@ -5904,6 +5904,15 @@ op_star
 id|ifr
 suffix:semicolon
 macro_line|#endif&t;/* WIRELESS_EXT &gt; 7 */
+macro_line|#ifdef WIRELESS_SPY
+r_struct
+id|sockaddr
+id|address
+(braket
+id|IW_MAX_SPY
+)braket
+suffix:semicolon
+macro_line|#endif&t;/* WIRELESS_SPY */
 r_if
 c_cond
 (paren
@@ -6858,13 +6867,6 @@ OG
 l_int|0
 )paren
 (brace
-r_struct
-id|sockaddr
-id|address
-(braket
-id|IW_MAX_SPY
-)braket
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -7060,13 +7062,6 @@ l_int|0
 )paren
 )paren
 (brace
-r_struct
-id|sockaddr
-id|address
-(braket
-id|IW_MAX_SPY
-)braket
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon

@@ -116,7 +116,9 @@ op_assign
 l_int|7
 )brace
 suffix:semicolon
-DECL|variable|CUcmdnames
+macro_line|#if 0
+r_static
+r_const
 r_char
 op_star
 id|CUcmdnames
@@ -142,6 +144,7 @@ comma
 l_string|&quot;Diagnose&quot;
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Status word bits */
 DECL|macro|STAT_CX
 mdefine_line|#define&t;STAT_CX&t;&t;0x8000&t;/* The CU finished executing a command&n;&t;&t;&t;&t;   with the Interrupt bit set */
@@ -3658,6 +3661,7 @@ l_int|13
 suffix:semicolon
 )brace
 DECL|function|lp486e_probe
+r_static
 r_int
 id|__init
 id|lp486e_probe
