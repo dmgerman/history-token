@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef _H_JFS_INCORE
 DECL|macro|_H_JFS_INCORE
 mdefine_line|#define _H_JFS_INCORE
@@ -312,72 +312,72 @@ r_int
 r_int
 id|mntflag
 suffix:semicolon
-multiline_comment|/* 4: aggregate attributes&t;*/
+multiline_comment|/* aggregate attributes&t;*/
 DECL|member|ipbmap
 r_struct
 id|inode
 op_star
 id|ipbmap
 suffix:semicolon
-multiline_comment|/* 4: block map inode&t;&t;*/
+multiline_comment|/* block map inode&t;&t;*/
 DECL|member|ipaimap
 r_struct
 id|inode
 op_star
 id|ipaimap
 suffix:semicolon
-multiline_comment|/* 4: aggregate inode map inode&t;*/
+multiline_comment|/* aggregate inode map inode&t;*/
 DECL|member|ipaimap2
 r_struct
 id|inode
 op_star
 id|ipaimap2
 suffix:semicolon
-multiline_comment|/* 4: secondary aimap inode&t;*/
+multiline_comment|/* secondary aimap inode&t;*/
 DECL|member|ipimap
 r_struct
 id|inode
 op_star
 id|ipimap
 suffix:semicolon
-multiline_comment|/* 4: aggregate inode map inode&t;*/
+multiline_comment|/* aggregate inode map inode&t;*/
 DECL|member|log
 r_struct
 id|jfs_log
 op_star
 id|log
 suffix:semicolon
-multiline_comment|/* 4: log&t;&t;&t;*/
+multiline_comment|/* log&t;&t;&t;*/
 DECL|member|bsize
 r_int
 id|bsize
 suffix:semicolon
-multiline_comment|/* 2: logical block size&t;*/
+multiline_comment|/* logical block size&t;*/
 DECL|member|l2bsize
 r_int
 id|l2bsize
 suffix:semicolon
-multiline_comment|/* 2: log2 logical block size&t;*/
+multiline_comment|/* log2 logical block size&t;*/
 DECL|member|nbperpage
 r_int
 id|nbperpage
 suffix:semicolon
-multiline_comment|/* 2: blocks per page&t;&t;*/
+multiline_comment|/* blocks per page&t;&t;*/
 DECL|member|l2nbperpage
 r_int
 id|l2nbperpage
 suffix:semicolon
-multiline_comment|/* 2: log2 blocks per page&t;*/
+multiline_comment|/* log2 blocks per page&t;*/
 DECL|member|l2niperblk
 r_int
 id|l2niperblk
 suffix:semicolon
-multiline_comment|/* 2: log2 inodes per page&t;*/
+multiline_comment|/* log2 inodes per page&t;*/
 DECL|member|logdev
 id|u32
 id|logdev
 suffix:semicolon
-multiline_comment|/* 2: external log device&t;*/
+multiline_comment|/* external log device&t;*/
 DECL|member|aggregate
 id|uint
 id|aggregate
@@ -387,17 +387,17 @@ DECL|member|logpxd
 id|pxd_t
 id|logpxd
 suffix:semicolon
-multiline_comment|/* 8: pxd describing log&t;*/
+multiline_comment|/* pxd describing log&t;*/
 DECL|member|fsckpxd
 id|pxd_t
 id|fsckpxd
 suffix:semicolon
-multiline_comment|/* 8: pxd describing fsck wkspc */
+multiline_comment|/* pxd describing fsck wkspc */
 DECL|member|ait2
 id|pxd_t
 id|ait2
 suffix:semicolon
-multiline_comment|/* 8: pxd describing AIT copy&t;*/
+multiline_comment|/* pxd describing AIT copy&t;*/
 DECL|member|uuid
 r_char
 id|uuid
@@ -405,7 +405,7 @@ id|uuid
 l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* 16: 128-bit uuid for volume&t;*/
+multiline_comment|/* 128-bit uuid for volume&t;*/
 DECL|member|loguuid
 r_char
 id|loguuid
@@ -413,18 +413,18 @@ id|loguuid
 l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* 16: 128-bit uuid for log&t;*/
+multiline_comment|/* 128-bit uuid for log&t;*/
 multiline_comment|/* Formerly in ipimap */
 DECL|member|gengen
 id|uint
 id|gengen
 suffix:semicolon
-multiline_comment|/* 4: inode generation generator*/
+multiline_comment|/* inode generation generator*/
 DECL|member|inostamp
 id|uint
 id|inostamp
 suffix:semicolon
-multiline_comment|/* 4: shows inode belongs to fileset*/
+multiline_comment|/* shows inode belongs to fileset*/
 multiline_comment|/* Formerly in ipbmap */
 DECL|member|bmap
 r_struct
@@ -432,19 +432,30 @@ id|bmap
 op_star
 id|bmap
 suffix:semicolon
-multiline_comment|/* 4: incore bmap descriptor&t;*/
+multiline_comment|/* incore bmap descriptor&t;*/
 DECL|member|nls_tab
 r_struct
 id|nls_table
 op_star
 id|nls_tab
 suffix:semicolon
-multiline_comment|/* 4: current codepage&t;&t;*/
+multiline_comment|/* current codepage&t;&t;*/
 DECL|member|state
 id|uint
 id|state
 suffix:semicolon
-multiline_comment|/* 4: mount/recovery state&t;*/
+multiline_comment|/* mount/recovery state&t;*/
+DECL|member|flag
+r_int
+r_int
+id|flag
+suffix:semicolon
+multiline_comment|/* mount time flags */
+DECL|member|p_state
+id|uint
+id|p_state
+suffix:semicolon
+multiline_comment|/* state prior to going no integrity */
 )brace
 suffix:semicolon
 DECL|function|JFS_IP

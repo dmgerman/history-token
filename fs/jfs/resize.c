@@ -504,6 +504,7 @@ id|bmp-&gt;db_mapsize
 (brace
 id|rc
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -825,6 +826,7 @@ id|t64
 suffix:semicolon
 id|rc
 op_assign
+op_minus
 id|EIO
 suffix:semicolon
 r_goto
