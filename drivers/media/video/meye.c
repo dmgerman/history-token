@@ -3266,56 +3266,6 @@ suffix:semicolon
 multiline_comment|/****************************************************************************/
 multiline_comment|/* MCHIP low-level functions                                                */
 multiline_comment|/****************************************************************************/
-multiline_comment|/* waits for the specified miliseconds */
-DECL|function|wait_ms
-r_static
-r_inline
-r_void
-id|wait_ms
-c_func
-(paren
-r_int
-r_int
-id|ms
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-op_plus
-id|ms
-op_star
-id|HZ
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-r_else
-id|mdelay
-c_func
-(paren
-id|ms
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* returns the horizontal capture size */
 DECL|function|mchip_hsize
 r_static
@@ -4184,7 +4134,7 @@ id|MCHIP_HIC_STATUS_IDLE
 )paren
 r_return
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -4206,7 +4156,7 @@ comma
 id|MCHIP_HIC_CTL_SOFT_RESET
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|250
@@ -4601,7 +4551,7 @@ id|MCHIP_HIC_STATUS_IDLE
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -4682,7 +4632,7 @@ id|MCHIP_HIC_STATUS_IDLE
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -4889,7 +4839,7 @@ id|MCHIP_HIC_STATUS_IDLE
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7078,7 +7028,7 @@ comma
 id|MCHIP_HIC_STATUS_IDLE
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7092,7 +7042,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7106,7 +7056,7 @@ comma
 l_int|5
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7505,7 +7455,7 @@ comma
 id|MCHIP_HIC_STATUS_IDLE
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7519,7 +7469,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -7533,7 +7483,7 @@ comma
 l_int|5
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
