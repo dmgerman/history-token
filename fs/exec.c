@@ -1021,6 +1021,7 @@ r_return
 id|r
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MMU
 multiline_comment|/*&n; * This routine is used to map in a page into an address space: needed by&n; * execve() for the initial stack and environment pages.&n; *&n; * tsk-&gt;mmap_sem is held for writing.&n; */
 DECL|function|put_dirty_page
 r_void
@@ -1753,6 +1754,71 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|free_arg_pages
+mdefine_line|#define free_arg_pages(bprm) do { } while (0)
+macro_line|#else
+DECL|macro|put_dirty_page
+mdefine_line|#define put_dirty_page(tsk, page, address)
+DECL|macro|setup_arg_pages
+mdefine_line|#define setup_arg_pages(bprm)&t;&t;&t;(0)
+DECL|function|free_arg_pages
+r_static
+r_inline
+r_void
+id|free_arg_pages
+c_func
+(paren
+r_struct
+id|linux_binprm
+op_star
+id|bprm
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_ARG_PAGES
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|bprm-&gt;page
+(braket
+id|i
+)braket
+)paren
+id|__free_page
+c_func
+(paren
+id|bprm-&gt;page
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|bprm-&gt;page
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_MMU */
 DECL|function|open_exec
 r_struct
 id|file
@@ -4497,6 +4563,13 @@ op_ge
 l_int|0
 )paren
 (brace
+id|free_arg_pages
+c_func
+(paren
+op_amp
+id|bprm
+)paren
+suffix:semicolon
 multiline_comment|/* execve success */
 id|security_ops
 op_member_access_from_pointer

@@ -1297,6 +1297,16 @@ id|NET_IPV4_CONF_MEDIUM_ID
 op_assign
 l_int|14
 comma
+DECL|enumerator|NET_IPV4_CONF_NOXFRM
+id|NET_IPV4_CONF_NOXFRM
+op_assign
+l_int|15
+comma
+DECL|enumerator|NET_IPV4_CONF_NOPOLICY
+id|NET_IPV4_CONF_NOPOLICY
+op_assign
+l_int|16
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6 */

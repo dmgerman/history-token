@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -489,6 +488,10 @@ op_minus
 l_int|1
 suffix:semicolon
 id|asoc-&gt;highest_sacked
+op_assign
+id|asoc-&gt;ctsn_ack_point
+suffix:semicolon
+id|asoc-&gt;last_cwr_tsn
 op_assign
 id|asoc-&gt;ctsn_ack_point
 suffix:semicolon
@@ -1060,6 +1063,15 @@ c_func
 id|peer
 comma
 id|asoc
+)paren
+suffix:semicolon
+multiline_comment|/* Cache a route for the transport. */
+id|sctp_transport_route
+c_func
+(paren
+id|peer
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* If this is the first transport addr on this association,&n;&t; * initialize the association PMTU to the peer&squot;s PMTU.&n;&t; * If not and the current association PMTU is higher than the new&n;&t; * peer&squot;s PMTU, reset the association PMTU to the new peer&squot;s PMTU.&n;&t; */

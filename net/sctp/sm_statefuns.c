@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2002      Nokia Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This is part of the SCTP Linux Kernel Reference Implementation.&n; *&n; * These are the state functions for the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Mathew Kotowsky       &lt;kotowsky@sctp.org&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang &t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2002      Nokia Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This is part of the SCTP Linux Kernel Reference Implementation.&n; *&n; * These are the state functions for the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Mathew Kotowsky       &lt;kotowsky@sctp.org&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang &t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -2386,12 +2386,12 @@ c_func
 suffix:semicolon
 id|out
 suffix:colon
-multiline_comment|/* Even if there is no memory, treat as a failure so&n;&t; * the packet will get dropped. &n;&t; */
+multiline_comment|/* Even if there is no memory, treat as a failure so&n;&t; * the packet will get dropped.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* A restart is occuring, check to make sure no new addresses &n; * are being added as we may be under a takeover attack.&n; */
+multiline_comment|/* A restart is occuring, check to make sure no new addresses&n; * are being added as we may be under a takeover attack.&n; */
 DECL|function|sctp_sf_check_restart_addrs
 r_static
 r_int
@@ -3039,7 +3039,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure no new addresses are being added during the&n;&t; * restart.   Do not do this check for COOKIE-WAIT state,&n;&t; * since there are no peer addresses to check against.&n;&t; * Upon return an ABORT will have been sent if needed.  &n;&t; */
+multiline_comment|/* Make sure no new addresses are being added during the&n;&t; * restart.   Do not do this check for COOKIE-WAIT state,&n;&t; * since there are no peer addresses to check against.&n;&t; * Upon return an ABORT will have been sent if needed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5626,28 +5626,7 @@ id|sctp_ecnehdr_t
 )paren
 )paren
 suffix:semicolon
-id|ecne-&gt;lowest_tsn
-op_assign
-id|ntohl
-c_func
-(paren
-id|ecne-&gt;lowest_tsn
-)paren
-suffix:semicolon
-multiline_comment|/* Casting away the const, as we are just modifying the spinlock,&n;&t; * not the association itself.   This should go away in the near&n;&t; * future when we move to an endpoint based lock.&n;&t; */
 multiline_comment|/* If this is a newer ECNE than the last CWR packet we sent out */
-r_if
-c_cond
-(paren
-id|TSN_lt
-c_func
-(paren
-id|asoc-&gt;last_cwr_tsn
-comma
-id|ecne-&gt;lowest_tsn
-)paren
-)paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -5658,11 +5637,14 @@ comma
 id|SCTP_U32
 c_func
 (paren
+id|ntohl
+c_func
+(paren
 id|ecne-&gt;lowest_tsn
 )paren
 )paren
+)paren
 suffix:semicolon
-)brace
 r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
@@ -8529,6 +8511,13 @@ id|commands
 )paren
 (brace
 multiline_comment|/* From 9.1 Abort of an Association&n;&t; * Upon receipt of the ABORT primitive from its upper&n;&t; * layer, the endpoint enters CLOSED state and&n;&t; * discard all outstanding data has been&n;&t; * acknowledged by its peer. The endpoint accepts no new data&n;&t; * from its upper layer, but retransmits data to the far end&n;&t; * if necessary to fill gaps.&n;&t; */
+r_struct
+id|msghdr
+op_star
+id|msg
+op_assign
+id|arg
+suffix:semicolon
 id|sctp_chunk_t
 op_star
 m_abort
@@ -8543,14 +8532,14 @@ suffix:semicolon
 multiline_comment|/* Generate ABORT chunk to send the peer.  */
 m_abort
 op_assign
-id|sctp_make_abort
+id|sctp_make_abort_user
 c_func
 (paren
 id|asoc
 comma
 l_int|NULL
 comma
-l_int|0
+id|msg
 )paren
 suffix:semicolon
 r_if
@@ -8842,6 +8831,13 @@ op_star
 id|commands
 )paren
 (brace
+r_struct
+id|msghdr
+op_star
+id|msg
+op_assign
+id|arg
+suffix:semicolon
 id|sctp_chunk_t
 op_star
 m_abort
@@ -8871,14 +8867,14 @@ suffix:semicolon
 multiline_comment|/* Generate ABORT chunk to send the peer */
 m_abort
 op_assign
-id|sctp_make_abort
+id|sctp_make_abort_user
 c_func
 (paren
 id|asoc
 comma
 l_int|NULL
 comma
-l_int|0
+id|msg
 )paren
 suffix:semicolon
 r_if
@@ -10738,6 +10734,20 @@ id|packet
 )paren
 r_goto
 id|nomem_packet
+suffix:semicolon
+multiline_comment|/* Cache a route for the transport with the chunk&squot;s destination as&n;&t; * the source address.&n;&t; */
+id|sctp_transport_route
+c_func
+(paren
+id|transport
+comma
+(paren
+id|sockaddr_storage_t
+op_star
+)paren
+op_amp
+id|chunk-&gt;dest
+)paren
 suffix:semicolon
 id|packet
 op_assign

@@ -2249,16 +2249,14 @@ c_cond
 (paren
 id|req-&gt;flags
 op_amp
-id|REQ_BARRIER
+id|REQ_HARDBARRIER
 )paren
-(brace
 op_star
 id|msg
 op_increment
 op_assign
 id|MSG_ORDERED_TAG
 suffix:semicolon
-)brace
 r_else
 op_star
 id|msg

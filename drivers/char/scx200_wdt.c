@@ -412,8 +412,9 @@ id|notifier_block
 id|scx200_wdt_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|scx200_wdt_notify_sys
 )brace
 suffix:semicolon

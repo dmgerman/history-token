@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &quot;cpu.h&quot;
 macro_line|#ifdef CONFIG_X86_OOSTORE
 DECL|function|power2

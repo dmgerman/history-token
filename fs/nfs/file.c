@@ -624,6 +624,11 @@ op_assign
 id|nfs_writepage
 comma
 dot
+id|writepages
+op_assign
+id|nfs_writepages
+comma
+dot
 id|prepare_write
 op_assign
 id|nfs_prepare_write

@@ -206,6 +206,17 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+r_int
+id|ksize
+c_func
+(paren
+r_const
+r_void
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|FASTCALL
 c_func
 (paren

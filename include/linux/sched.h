@@ -1246,9 +1246,6 @@ DECL|macro|PT_TRACE_CLONE
 mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
 DECL|macro|PT_TRACE_EXEC
 mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
-multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
-DECL|macro|_STK_LIM
-mdefine_line|#define _STK_LIM&t;(8*1024*1024)
 macro_line|#if CONFIG_SMP
 r_extern
 r_void

@@ -65,6 +65,9 @@ mdefine_line|#define EP_HENTRY_X_PAGE (PAGE_SIZE / sizeof(struct list_head))
 multiline_comment|/* Maximum size of the hash in pages */
 DECL|macro|EP_MAX_HPAGES
 mdefine_line|#define EP_MAX_HPAGES ((1 &lt;&lt; EP_MAX_HASH_BITS) / EP_HENTRY_X_PAGE + 1)
+multiline_comment|/* Number of pages allocated for an &quot;hbits&quot; sized hash table */
+DECL|macro|EP_HASH_PAGES
+mdefine_line|#define EP_HASH_PAGES(hbits) ((int) ((1 &lt;&lt; (hbits)) / EP_HENTRY_X_PAGE + &bslash;&n;&t;&t;&t;&t;     ((1 &lt;&lt; (hbits)) % EP_HENTRY_X_PAGE ? 1: 0)))
 multiline_comment|/* Macro to allocate a &quot;struct epitem&quot; from the slab cache */
 DECL|macro|DPI_MEM_ALLOC
 mdefine_line|#define DPI_MEM_ALLOC()&t;(struct epitem *) kmem_cache_alloc(dpi_cache, SLAB_KERNEL)
@@ -120,11 +123,6 @@ DECL|member|hashbits
 r_int
 r_int
 id|hashbits
-suffix:semicolon
-multiline_comment|/* Number of pages currently allocated for the hash */
-DECL|member|nhpages
-r_int
-id|nhpages
 suffix:semicolon
 multiline_comment|/* Pages for the &quot;struct epitem&quot; hash */
 DECL|member|hpages
@@ -739,12 +737,7 @@ id|hintsize
 op_logical_and
 id|i
 OL
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-)paren
+id|EP_MAX_HASH_BITS
 suffix:semicolon
 id|i
 op_increment
@@ -762,16 +755,7 @@ ques
 c_cond
 id|EP_MIN_HASH_BITS
 suffix:colon
-(paren
 id|i
-OG
-id|EP_MAX_HASH_BITS
-ques
-c_cond
-id|EP_MAX_HASH_BITS
-suffix:colon
-id|i
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from inside fs/file_table.c:__fput() to unlink files&n; * from the eventpoll interface. We need to have this facility to cleanup&n; * correctly files that are closed without being removed from the eventpoll&n; * interface.&n; */
@@ -2327,37 +2311,9 @@ id|ep-&gt;rdllist
 )paren
 suffix:semicolon
 multiline_comment|/* Hash allocation and setup */
-id|hsize
-op_assign
-l_int|1
-op_lshift
-id|hashbits
-suffix:semicolon
 id|ep-&gt;hashbits
 op_assign
 id|hashbits
-suffix:semicolon
-id|ep-&gt;nhpages
-op_assign
-(paren
-r_int
-)paren
-(paren
-id|hsize
-op_div
-id|EP_HENTRY_X_PAGE
-op_plus
-(paren
-id|hsize
-op_mod
-id|EP_HENTRY_X_PAGE
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-)paren
 suffix:semicolon
 id|error
 op_assign
@@ -2366,7 +2322,11 @@ c_func
 (paren
 id|ep-&gt;hpages
 comma
-id|ep-&gt;nhpages
+id|EP_HASH_PAGES
+c_func
+(paren
+id|ep-&gt;hashbits
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -2384,6 +2344,12 @@ c_loop
 id|i
 op_assign
 l_int|0
+comma
+id|hsize
+op_assign
+l_int|1
+op_lshift
+id|hashbits
 suffix:semicolon
 id|i
 OL
@@ -2587,7 +2553,11 @@ c_func
 (paren
 id|ep-&gt;hpages
 comma
-id|ep-&gt;nhpages
+id|EP_HASH_PAGES
+c_func
+(paren
+id|ep-&gt;hashbits
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3068,7 +3038,8 @@ op_amp
 id|dpi-&gt;rdllink
 )paren
 )paren
-id|list_add
+(brace
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -3078,6 +3049,42 @@ op_amp
 id|ep-&gt;rdllist
 )paren
 suffix:semicolon
+multiline_comment|/* Notify waiting tasks that events are available */
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|ep-&gt;wq
+)paren
+)paren
+id|wake_up
+c_func
+(paren
+op_amp
+id|ep-&gt;wq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|ep-&gt;poll_wait
+)paren
+)paren
+id|wake_up
+c_func
+(paren
+op_amp
+id|ep-&gt;poll_wait
+)paren
+suffix:semicolon
+)brace
 id|write_unlock_irqrestore
 c_func
 (paren
@@ -3220,7 +3227,8 @@ op_amp
 id|dpi-&gt;rdllink
 )paren
 )paren
-id|list_add
+(brace
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -3230,6 +3238,42 @@ op_amp
 id|ep-&gt;rdllist
 )paren
 suffix:semicolon
+multiline_comment|/* Notify waiting tasks that events are available */
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|ep-&gt;wq
+)paren
+)paren
+id|wake_up
+c_func
+(paren
+op_amp
+id|ep-&gt;wq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|ep-&gt;poll_wait
+)paren
+)paren
+id|wake_up
+c_func
+(paren
+op_amp
+id|ep-&gt;poll_wait
+)paren
+suffix:semicolon
+)brace
 id|write_unlock_irqrestore
 c_func
 (paren
@@ -3548,7 +3592,7 @@ id|dpi-&gt;rdllink
 r_goto
 id|is_linked
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -3881,7 +3925,7 @@ op_amp
 id|dpi-&gt;rdllink
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the item is not linked to the main has table this means that&n;&t;&t; * it&squot;s on the way to be removed and we don&squot;t want to send events&n;&t;&t; * to such file descriptor.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the item is not linked to the main hash table this means that&n;&t;&t; * it&squot;s on the way to be removed and we don&squot;t want to send events&n;&t;&t; * for such file descriptor.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4104,8 +4148,6 @@ id|timeout
 (brace
 r_int
 id|res
-op_assign
-l_int|0
 comma
 id|eavail
 suffix:semicolon

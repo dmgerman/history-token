@@ -510,12 +510,14 @@ id|file_operations
 id|button_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|button_read
 comma
 )brace

@@ -2,6 +2,7 @@ macro_line|#ifndef _NFS_FS_SB
 DECL|macro|_NFS_FS_SB
 mdefine_line|#define _NFS_FS_SB
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 multiline_comment|/*&n; * NFS client parameters stored in the superblock.&n; */
 DECL|struct|nfs_server
 r_struct
@@ -21,6 +22,11 @@ op_star
 id|rpc_ops
 suffix:semicolon
 multiline_comment|/* NFS protocol vector */
+DECL|member|backing_dev_info
+r_struct
+id|backing_dev_info
+id|backing_dev_info
+suffix:semicolon
 DECL|member|flags
 r_int
 id|flags

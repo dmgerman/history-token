@@ -1324,6 +1324,8 @@ c_cond
 (paren
 id|part_attr-&gt;show
 )paren
+id|ret
+op_assign
 id|part_attr
 op_member_access_from_pointer
 id|show

@@ -609,16 +609,16 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|CTL_CPU_VARS_SPEED_MAX
-mdefine_line|#define CTL_CPU_VARS_SPEED_MAX { &bslash;&n;                ctl_name: CPU_NR_FREQ_MAX, &bslash;&n;                data: &amp;cpu_max_freq, &bslash;&n;                procname: &quot;speed-max&quot;, &bslash;&n;                maxlen:&t;sizeof(cpu_max_freq),&bslash;&n;                mode: 0444, &bslash;&n;                proc_handler: proc_dointvec, }
+mdefine_line|#define CTL_CPU_VARS_SPEED_MAX { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MAX, &bslash;&n;                .data&t;&t;= &amp;cpu_max_freq, &bslash;&n;                .procname&t;= &quot;speed-max&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_max_freq),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
 DECL|macro|CTL_CPU_VARS_SPEED_MIN
-mdefine_line|#define CTL_CPU_VARS_SPEED_MIN { &bslash;&n;                ctl_name: CPU_NR_FREQ_MIN, &bslash;&n;                data: &amp;cpu_min_freq, &bslash;&n;                procname: &quot;speed-min&quot;, &bslash;&n;                maxlen:&t;sizeof(cpu_min_freq),&bslash;&n;                mode: 0444, &bslash;&n;                proc_handler: proc_dointvec, }
+mdefine_line|#define CTL_CPU_VARS_SPEED_MIN { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ_MIN, &bslash;&n;                .data&t;&t;= &amp;cpu_min_freq, &bslash;&n;                .procname&t;= &quot;speed-min&quot;, &bslash;&n;                .maxlen&t;&t;= sizeof(cpu_min_freq),&bslash;&n;                .mode&t;&t;= 0444, &bslash;&n;                .proc_handler&t;= proc_dointvec, }
 DECL|macro|CTL_CPU_VARS_SPEED
-mdefine_line|#define CTL_CPU_VARS_SPEED(cpunr) { &bslash;&n;                ctl_name: CPU_NR_FREQ, &bslash;&n;                procname: &quot;speed&quot;, &bslash;&n;                mode: 0644, &bslash;&n;                proc_handler: cpufreq_procctl, &bslash;&n;                strategy: cpufreq_sysctl, &bslash;&n;                extra1: (void*) (cpunr), }
+mdefine_line|#define CTL_CPU_VARS_SPEED(cpunr) { &bslash;&n;                .ctl_name&t;= CPU_NR_FREQ, &bslash;&n;                .procname&t;= &quot;speed&quot;, &bslash;&n;                .mode&t;&t;= 0644, &bslash;&n;                .proc_handler&t;= cpufreq_procctl, &bslash;&n;                .strategy&t;= cpufreq_sysctl, &bslash;&n;                .extra1&t;&t;= (void*) (cpunr), }
 DECL|macro|CTL_TABLE_CPU_VARS
-mdefine_line|#define CTL_TABLE_CPU_VARS(cpunr) static ctl_table ctl_cpu_vars_##cpunr[] = {&bslash;&n;                CTL_CPU_VARS_SPEED_MAX, &bslash;&n;                CTL_CPU_VARS_SPEED_MIN, &bslash;&n;                CTL_CPU_VARS_SPEED(cpunr),  &bslash;&n;                { ctl_name: 0, }, }
+mdefine_line|#define CTL_TABLE_CPU_VARS(cpunr) static ctl_table ctl_cpu_vars_##cpunr[] = {&bslash;&n;                CTL_CPU_VARS_SPEED_MAX, &bslash;&n;                CTL_CPU_VARS_SPEED_MIN, &bslash;&n;                CTL_CPU_VARS_SPEED(cpunr),  &bslash;&n;                { .ctl_name = 0, }, }
 multiline_comment|/* the ctl_table entry for each CPU */
 DECL|macro|CPU_ENUM
-mdefine_line|#define CPU_ENUM(s) { &bslash;&n;                ctl_name: (CPU_NR + s), &bslash;&n;                procname: #s, &bslash;&n;                mode: 0555, &bslash;&n;                child: ctl_cpu_vars_##s }
+mdefine_line|#define CPU_ENUM(s) { &bslash;&n;                .ctl_name&t;= (CPU_NR + s), &bslash;&n;                .procname&t;= #s, &bslash;&n;                .mode&t;&t;= 0555, &bslash;&n;                .child&t;&t;= ctl_cpu_vars_##s }
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
 macro_line|#endif /* _LINUX_CPUFREQ_H */
 eof

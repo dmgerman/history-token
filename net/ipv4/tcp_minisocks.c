@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|macro|SYNC_INIT
 mdefine_line|#define SYNC_INIT 0 /* let the user enable it */
@@ -2633,6 +2634,35 @@ id|filter
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|xfrm_sk_clone_policy
+c_func
+(paren
+id|newsk
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* It is still raw copy of parent, so invalidate&n;&t;&t;&t; * destructor and make plain sk_free() */
+id|newsk-&gt;destruct
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sk_free
+c_func
+(paren
+id|newsk
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* Now setup tcp_opt */
 id|newtp
 op_assign

@@ -4904,7 +4904,7 @@ suffix:colon
 id|printk
 (paren
 l_string|&quot;%s: cdrom_pc_intr: The drive &quot;
-l_string|&quot;appears confused (ireason = 0x%2x)&bslash;n&quot;
+l_string|&quot;appears confused (ireason = 0x%02x)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -5900,6 +5900,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|ptr
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: confused, missing data&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|blen
 OG
 id|thislen
@@ -5958,16 +5976,6 @@ c_cond
 id|len
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: padding %u bytes&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|len
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren

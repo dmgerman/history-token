@@ -1230,6 +1230,9 @@ id|x-&gt;curlft.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
+id|x-&gt;curlft.packets
+op_increment
+suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren

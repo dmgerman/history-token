@@ -124,6 +124,9 @@ DECL|macro|PRIO_PGRP
 mdefine_line|#define&t;PRIO_PGRP&t;1
 DECL|macro|PRIO_USER
 mdefine_line|#define&t;PRIO_USER&t;2
+multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
+DECL|macro|_STK_LIM
+mdefine_line|#define _STK_LIM&t;(8*1024*1024)
 multiline_comment|/*&n; * Due to binary compatibility, the actual resource numbers&n; * may be different for different linux versions..&n; */
 macro_line|#include &lt;asm/resource.h&gt;
 macro_line|#endif

@@ -1,4 +1,5 @@
 multiline_comment|/* defines for inline arch setup functions */
+macro_line|#include &lt;asm/apic.h&gt;
 multiline_comment|/**&n; * do_timer_interrupt_hook - hook into timer tick&n; * @regs:&t;standard registers from interrupt&n; *&n; * Description:&n; *&t;This hook is called immediately after the timer interrupt is ack&squot;d.&n; *&t;It&squot;s primary purpose is to allow architectures that don&squot;t possess&n; *&t;individual per CPU clocks (like the CPU APICs supply) to broadcast the&n; *&t;timer interrupt as a means of triggering reschedules etc.&n; **/
 DECL|function|do_timer_interrupt_hook
 r_static

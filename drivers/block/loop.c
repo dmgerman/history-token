@@ -4790,14 +4790,14 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|out_mem
-suffix:colon
 id|kfree
 c_func
 (paren
 id|disks
 )paren
 suffix:semicolon
+id|out_mem
+suffix:colon
 id|kfree
 c_func
 (paren

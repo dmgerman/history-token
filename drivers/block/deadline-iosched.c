@@ -27,9 +27,8 @@ r_static
 r_int
 id|fifo_batch
 op_assign
-l_int|32
+l_int|16
 suffix:semicolon
-multiline_comment|/* 4 seeks, or 64 contig */
 DECL|variable|seek_cost
 r_static
 r_int
@@ -700,7 +699,11 @@ c_cond
 (paren
 id|__rq-&gt;flags
 op_amp
-id|REQ_BARRIER
+(paren
+id|REQ_SOFTBARRIER
+op_or
+id|REQ_HARDBARRIER
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -1533,7 +1536,7 @@ c_func
 (paren
 id|rq-&gt;flags
 op_amp
-id|REQ_BARRIER
+id|REQ_HARDBARRIER
 )paren
 )paren
 (brace
