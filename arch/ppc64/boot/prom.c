@@ -3,6 +3,8 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 32
 macro_line|#include &lt;asm/div64.h&gt;
 DECL|variable|prom
 r_int
