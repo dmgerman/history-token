@@ -360,6 +360,20 @@ op_star
 id|rw
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|_do_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+comma
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_read_lock(lock, &quot;read_lock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_read_unlock
@@ -368,6 +382,8 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
+DECL|macro|_raw_write_trylock
+mdefine_line|#define _raw_write_trylock(lock) &bslash;&n;({&t;unsigned long flags; &bslash;&n;&t;int val; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;val = _do_write_trylock(lock, &quot;write_trylock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;val; &bslash;&n;})
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_SPINLOCK_H) */

@@ -1272,5 +1272,186 @@ id|wlock_again
 suffix:semicolon
 )brace
 )brace
+DECL|function|_do_write_trylock
+r_int
+id|_do_write_trylock
+(paren
+id|rwlock_t
+op_star
+id|rw
+comma
+r_char
+op_star
+id|str
+)paren
+(brace
+r_int
+r_int
+id|caller
+comma
+id|val
+suffix:semicolon
+r_int
+id|stuck
+op_assign
+id|INIT_STUCK
+suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+r_int
+id|shown
+op_assign
+l_int|0
+suffix:semicolon
+id|GET_CALLER
+c_func
+(paren
+id|caller
+)paren
+suffix:semicolon
+multiline_comment|/* Try to acuire the write bit.  */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
+l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;brlz,pn&t;%%g5, 1f&bslash;n&quot;
+l_string|&quot;&t; or&t;%%g5, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 2f&bslash;n&quot;
+l_string|&quot;&t; sub&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;1:&t;mov&t;1, %0&bslash;n&quot;
+l_string|&quot;2:&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|val
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+op_amp
+(paren
+id|rw-&gt;lock
+)paren
+)paren
+suffix:colon
+l_string|&quot;g3&quot;
+comma
+l_string|&quot;g5&quot;
+comma
+l_string|&quot;g7&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rw-&gt;lock
+op_amp
+(paren
+(paren
+l_int|1UL
+op_lshift
+l_int|63
+)paren
+op_minus
+l_int|1UL
+)paren
+)paren
+op_ne
+l_int|0UL
+)paren
+(brace
+multiline_comment|/* Readers still around, drop the write&n;&t;&t; * lock, return failure.&n;&t;&t; */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;&t;mov&t;1, %%g3&bslash;n&quot;
+l_string|&quot;&t;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
+l_string|&quot;1:&t;&t;ldx&t;[%0], %%g5&bslash;n&quot;
+l_string|&quot;&t;&t;andn&t;%%g5, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;bne,pn&t;%%xcc, 1b&bslash;n&quot;
+l_string|&quot;&t;&t; membar&t;#StoreLoad | #StoreStore&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+op_amp
+(paren
+id|rw-&gt;lock
+)paren
+)paren
+suffix:colon
+l_string|&quot;g3&quot;
+comma
+l_string|&quot;g5&quot;
+comma
+l_string|&quot;g7&quot;
+comma
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* We have it, say who we are. */
+id|rw-&gt;writer_pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|caller
+)paren
+suffix:semicolon
+id|rw-&gt;writer_cpu
+op_assign
+id|cpu
+suffix:semicolon
+id|current-&gt;thread.smp_lock_count
+op_increment
+suffix:semicolon
+id|current-&gt;thread.smp_lock_pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|caller
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_SMP */
 eof
