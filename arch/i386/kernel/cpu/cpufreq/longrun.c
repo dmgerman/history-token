@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: longrun.c,v 1.10 2002/09/22 09:01:41 db Exp $&n; *&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: longrun.c,v 1.12 2002/09/29 23:43:10 db Exp $&n; *&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -812,11 +812,7 @@ op_star
 (paren
 id|driver
 op_plus
-r_sizeof
-(paren
-r_struct
-id|cpufreq_driver
-)paren
+l_int|1
 )paren
 suffix:semicolon
 r_if

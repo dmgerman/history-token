@@ -964,11 +964,7 @@ op_star
 (paren
 id|driver
 op_plus
-r_sizeof
-(paren
-r_struct
-id|cpufreq_driver
-)paren
+l_int|1
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: speedstep.c,v 1.50 2002/09/22 08:16:25 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: speedstep.c,v 1.53 2002/09/29 23:43:11 db Exp $&n; *&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 multiline_comment|/*********************************************************************&n; *                        SPEEDSTEP - DEFINITIONS                    *&n; *********************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
@@ -84,6 +84,10 @@ op_star
 id|state
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u32
 id|pmbase
 suffix:semicolon
@@ -156,9 +160,10 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* read state */
-id|local_irq_disable
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|value
@@ -171,9 +176,10 @@ op_plus
 l_int|0x50
 )paren
 suffix:semicolon
-id|local_irq_enable
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|dprintk
@@ -218,6 +224,9 @@ id|speedstep_set_state
 r_int
 r_int
 id|state
+comma
+r_int
+id|notify
 )paren
 (brace
 id|u32
@@ -309,6 +318,11 @@ op_assign
 id|CPUFREQ_ALL_CPUS
 suffix:semicolon
 multiline_comment|/* speedstep.c is UP only driver */
+r_if
+c_cond
+(paren
+id|notify
+)paren
 id|cpufreq_notify_transition
 c_func
 (paren
@@ -384,12 +398,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* read state */
-id|local_irq_disable
+multiline_comment|/* Disable IRQs */
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* read state */
 id|value
 op_assign
 id|inb
@@ -398,11 +414,6 @@ c_func
 id|pmbase
 op_plus
 l_int|0x50
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dprintk
@@ -434,18 +445,6 @@ comma
 id|value
 comma
 id|pmbase
-)paren
-suffix:semicolon
-multiline_comment|/* Disable IRQs */
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Disable bus master arbitration */
@@ -505,24 +504,7 @@ l_int|0x20
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Enable IRQs */
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* check if transition was sucessful */
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|value
 op_assign
 id|inb
@@ -533,9 +515,11 @@ op_plus
 l_int|0x50
 )paren
 suffix:semicolon
-id|local_irq_enable
+multiline_comment|/* Enable IRQs */
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|dprintk
@@ -596,6 +580,11 @@ l_string|&quot;cpufreq: setting CPU frequency on this chipset unsupported.&bslas
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|notify
+)paren
 id|cpufreq_notify_transition
 c_func
 (paren
@@ -1541,22 +1530,23 @@ r_void
 (brace
 r_int
 r_int
-id|state
+id|flags
 suffix:semicolon
 r_int
 r_int
-id|low
-op_assign
-l_int|0
-comma
-id|high
-op_assign
-l_int|0
+id|state
 suffix:semicolon
 r_int
 id|i
 comma
 id|result
+suffix:semicolon
+multiline_comment|/* Disable irqs for entire detection process */
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1612,7 +1602,7 @@ suffix:colon
 r_case
 id|SPEEDSTEP_PROCESSOR_PIII_T
 suffix:colon
-id|low
+id|speedstep_low_freq
 op_assign
 id|pentium3_get_frequency
 c_func
@@ -1624,7 +1614,7 @@ suffix:semicolon
 r_case
 id|SPEEDSTEP_PROCESSOR_P4M
 suffix:colon
-id|low
+id|speedstep_low_freq
 op_assign
 id|pentium4_get_frequency
 c_func
@@ -1636,6 +1626,8 @@ id|speedstep_set_state
 c_func
 (paren
 id|SPEEDSTEP_HIGH
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1653,7 +1645,7 @@ suffix:colon
 r_case
 id|SPEEDSTEP_PROCESSOR_PIII_T
 suffix:colon
-id|high
+id|speedstep_high_freq
 op_assign
 id|pentium3_get_frequency
 c_func
@@ -1665,7 +1657,7 @@ suffix:semicolon
 r_case
 id|SPEEDSTEP_PROCESSOR_P4M
 suffix:colon
-id|high
+id|speedstep_high_freq
 op_assign
 id|pentium4_get_frequency
 c_func
@@ -1677,17 +1669,26 @@ id|speedstep_set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
+)brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|low
+id|speedstep_low_freq
 op_logical_or
 op_logical_neg
-id|high
+id|speedstep_high_freq
 op_logical_or
 (paren
 id|speedstep_low_freq
@@ -1698,15 +1699,6 @@ id|speedstep_high_freq
 r_return
 op_minus
 id|EIO
-suffix:semicolon
-)brace
-id|speedstep_low_freq
-op_assign
-id|low
-suffix:semicolon
-id|speedstep_high_freq
-op_assign
-id|high
 suffix:semicolon
 r_return
 l_int|0
@@ -1746,6 +1738,8 @@ id|speedstep_set_state
 c_func
 (paren
 id|SPEEDSTEP_HIGH
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -1761,6 +1755,8 @@ id|speedstep_set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -1777,6 +1773,8 @@ id|speedstep_set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_else
@@ -1784,6 +1782,8 @@ id|speedstep_set_state
 c_func
 (paren
 id|SPEEDSTEP_HIGH
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1936,7 +1936,7 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.50 $&bslash;n&quot;
+l_string|&quot;cpufreq: Intel(R) SpeedStep(TM) support $Revision: 1.53 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dprintk
@@ -1967,14 +1967,6 @@ r_return
 id|result
 suffix:semicolon
 multiline_comment|/* detect low and high frequency */
-id|speedstep_low_freq
-op_assign
-l_int|100000
-suffix:semicolon
-id|speedstep_high_freq
-op_assign
-l_int|200000
-suffix:semicolon
 id|result
 op_assign
 id|speedstep_detect_speeds
@@ -2088,11 +2080,7 @@ op_star
 (paren
 id|driver
 op_plus
-r_sizeof
-(paren
-r_struct
-id|cpufreq_driver
-)paren
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API

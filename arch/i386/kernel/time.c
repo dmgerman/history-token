@@ -1842,6 +1842,11 @@ op_assign
 id|cpufreq_scale
 c_func
 (paren
+id|cpu_data
+(braket
+id|i
+)braket
+dot
 id|loops_per_jiffy
 comma
 id|freq-&gt;old
@@ -1950,6 +1955,11 @@ op_assign
 id|cpufreq_scale
 c_func
 (paren
+id|cpu_data
+(braket
+id|i
+)braket
+dot
 id|loops_per_jiffy
 comma
 id|freq-&gt;old
