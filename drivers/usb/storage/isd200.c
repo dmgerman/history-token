@@ -1662,8 +1662,9 @@ id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
