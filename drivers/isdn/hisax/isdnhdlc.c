@@ -1421,8 +1421,9 @@ singleline_comment|// good byte received
 r_if
 c_cond
 (paren
+id|hdlc-&gt;dstpos
+OL
 id|dsize
-op_decrement
 )paren
 (brace
 id|dst
