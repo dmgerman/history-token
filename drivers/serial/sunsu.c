@@ -3069,7 +3069,9 @@ id|retval
 id|printk
 c_func
 (paren
-l_string|&quot;su: Cannot register IRQ&bslash;n&quot;
+l_string|&quot;su: Cannot register IRQ %d&bslash;n&quot;
+comma
+id|up-&gt;irq
 )paren
 suffix:semicolon
 r_return
@@ -3390,6 +3392,14 @@ c_func
 id|up
 comma
 id|UART_RX
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|up-&gt;irq
+comma
+id|up
 )paren
 suffix:semicolon
 )brace
