@@ -1839,7 +1839,7 @@ r_goto
 id|out_unmap
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Don&squot;t pull an anonymous page out from under get_user_pages.&n;&t; * GUP carefully breaks COW and raises page count (while holding&n;&t; * page_table_lock, as we have here) to make sure that the page&n;&t; * cannot be freed.  If we unmap that page here, a user write&n;&t; * access to the virtual address will bring back the page, but&n;&t; * its raised count will (ironically) be taken to mean it&squot;s not&n;&t; * an exclusive swap page, do_wp_page will replace it by a copy&n;&t; * page, and the user never get to see the data GUP was holding&n;&t; * the original page for.&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t pull an anonymous page out from under get_user_pages.&n;&t; * GUP carefully breaks COW and raises page count (while holding&n;&t; * page_table_lock, as we have here) to make sure that the page&n;&t; * cannot be freed.  If we unmap that page here, a user write&n;&t; * access to the virtual address will bring back the page, but&n;&t; * its raised count will (ironically) be taken to mean it&squot;s not&n;&t; * an exclusive swap page, do_wp_page will replace it by a copy&n;&t; * page, and the user never get to see the data GUP was holding&n;&t; * the original page for.&n;&t; *&n;&t; * This test is also useful for when swapoff (unuse_process) has&n;&t; * to drop page lock: its reference to the page stops existing&n;&t; * ptes from being unmapped, so swapoff can make progress.&n;&t; */
 r_if
 c_cond
 (paren
