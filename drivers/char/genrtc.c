@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *&t;Real Time Clock interface for q40 and other m68k machines&n; *      emulate some RTC irq capabilities in software&n; *&n; *      Copyright (C) 1999 Richard Zidlicky&n; *&n; *&t;based on Paul Gortmaker&squot;s rtc.c device and&n; *           Sam Creasey Generic rtc driver&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the /proc/dev/rtc&n; *&t;pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour where&n; *  supported.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The&n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n;&n; *      1.01 fix for 2.3.X                    rz@linux-m68k.org&n; *      1.02 merged with code from genrtc.c   rz@linux-m68k.org&n; *      1.03 make it more portable            zippel@linux-m68k.org&n; *      1.04 removed useless timer code       rz@linux-m68k.org&n; *      1.05 portable RTC_UIE emulation       rz@linux-m68k.org&n; */
+multiline_comment|/*&n; *&t;Real Time Clock interface for q40 and other m68k machines&n; *      emulate some RTC irq capabilities in software&n; *&n; *      Copyright (C) 1999 Richard Zidlicky&n; *&n; *&t;based on Paul Gortmaker&squot;s rtc.c device and&n; *           Sam Creasey Generic rtc driver&n; *&n; *&t;This driver allows use of the real time clock (built into&n; *&t;nearly all computers) from user space. It exports the /dev/rtc&n; *&t;interface supporting various ioctl() and also the /proc/dev/rtc&n; *&t;pseudo-file for status information.&n; *&n; *&t;The ioctls can be used to set the interrupt behaviour where&n; *  supported.&n; *&n; *&t;The /dev/rtc interface will block on reads until an interrupt&n; *&t;has been received. If a RTC interrupt has already happened,&n; *&t;it will output an unsigned long and then block. The output value&n; *&t;contains the interrupt status in the low byte and the number of&n; *&t;interrupts since the last read in the remaining high bytes. The&n; *&t;/dev/rtc interface can also be used with the select(2) call.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n;&n; *      1.01 fix for 2.3.X                    rz@linux-m68k.org&n; *      1.02 merged with code from genrtc.c   rz@linux-m68k.org&n; *      1.03 make it more portable            zippel@linux-m68k.org&n; *      1.04 removed useless timer code       rz@linux-m68k.org&n; *      1.05 portable RTC_UIE emulation       rz@linux-m68k.org&n; *      1.06 set_rtc_time can return an error trini@kernel.crashing.org&n; */
 DECL|macro|RTC_VERSION
-mdefine_line|#define RTC_VERSION&t;&quot;1.05&quot;
+mdefine_line|#define RTC_VERSION&t;&quot;1.06&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -304,15 +304,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|tt_exp
-OG
-l_int|1
+)paren
 )paren
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;genrtc: timer task delayed by %ld jiffies&bslash;n&quot;
 comma
 id|jiffies
@@ -453,7 +456,15 @@ r_if
 c_cond
 (paren
 id|count
-OL
+op_ne
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_logical_and
+id|count
+op_ne
 r_sizeof
 (paren
 r_int
@@ -541,6 +552,53 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* first test allows optimizer to nuke this case for 32-bit machines */
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+r_int
+)paren
+op_ne
+r_sizeof
+(paren
+r_int
+)paren
+op_logical_and
+id|count
+op_eq
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+(brace
+r_int
+r_int
+id|uidata
+op_assign
+id|data
+suffix:semicolon
+id|retval
+op_assign
+id|put_user
+c_func
+(paren
+id|uidata
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+id|buf
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|retval
 op_assign
 id|put_user
@@ -556,6 +614,7 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1169,15 +1228,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_return
 id|set_rtc_time
 c_func
 (paren
 op_amp
 id|wtime
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 )brace

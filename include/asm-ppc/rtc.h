@@ -134,7 +134,15 @@ id|ppc_md.set_rtc_time
 id|nowtime
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+r_else
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 DECL|function|get_rtc_ss
 r_static
