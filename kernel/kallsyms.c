@@ -757,7 +757,7 @@ id|iter
 r_int
 id|stemlen
 suffix:semicolon
-multiline_comment|/* First char of each symbol name indicates prefix length&n;&t;   shared with previous name (stem compresion). */
+multiline_comment|/* First char of each symbol name indicates prefix length&n;&t;   shared with previous name (stem compression). */
 id|stemlen
 op_assign
 id|kallsyms_names
