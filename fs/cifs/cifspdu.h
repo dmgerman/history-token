@@ -4371,7 +4371,7 @@ mdefine_line|#define CIFS_UNIX_XATTR_CAP             0x00000004 /*support for ne
 r_typedef
 r_struct
 (brace
-multiline_comment|/* For undefined values return -1 in that field */
+multiline_comment|/* For undefined recommended transfer size return -1 in that field */
 DECL|member|OptimalTransferSize
 id|__le32
 id|OptimalTransferSize
@@ -4381,21 +4381,22 @@ DECL|member|BlockSize
 id|__le32
 id|BlockSize
 suffix:semicolon
+multiline_comment|/* The next three fields are in terms of the block size.&n;&t;(above). If block size is unknown, 4096 would be a&n;&t;reasonable block size for a server to report. &n;&t;Note that returning the blocks/blocksavail removes need&n;&t;to make a second call (to QFSInfo level 0x103 to get this info.&n;&t;UserBlockAvail is typically less than or equal to BlocksAvail,&n;&t;if no distinction is made return the same value in each */
 DECL|member|TotalBlocks
 id|__le64
 id|TotalBlocks
 suffix:semicolon
-multiline_comment|/* redundant but easy to return */
 DECL|member|BlocksAvail
 id|__le64
 id|BlocksAvail
 suffix:semicolon
-multiline_comment|/* redundant but easy to return */
+multiline_comment|/* bfree */
 DECL|member|UserBlocksAvail
 id|__le64
 id|UserBlocksAvail
 suffix:semicolon
 multiline_comment|/* bavail */
+multiline_comment|/* For undefined Node fields or FSID return -1 */
 DECL|member|TotalFileNodes
 id|__le64
 id|TotalFileNodes

@@ -662,6 +662,8 @@ r_int
 id|xid
 comma
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|cifs_sb_info
@@ -712,6 +714,37 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* unlimited */
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL
+multiline_comment|/* BB we could add a second check for a QFS Unix capability bit */
+r_if
+c_cond
+(paren
+id|pTcon-&gt;ses-&gt;capabilities
+op_amp
+id|CAP_UNIX
+)paren
+id|rc
+op_assign
+id|CIFSSMBQFSPosixInfo
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|buf
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+multiline_comment|/* Only need to call the old QFSInfo if failed&n;    on newer one */
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+macro_line|#endif /* CIFS_EXPERIMENTAL */
 id|rc
 op_assign
 id|CIFSSMBQFSInfo
@@ -726,6 +759,7 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*     &n;&t;   int f_type;&n;&t;   __fsid_t f_fsid;&n;&t;   int f_namelen;  */
 multiline_comment|/* BB get from info put in tcon struct at mount time with call to QFSAttrInfo */
 id|FreeXid
