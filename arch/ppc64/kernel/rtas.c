@@ -1486,4 +1486,11 @@ c_func
 id|rtas_data_buf_lock
 )paren
 suffix:semicolon
+DECL|variable|rtas_extended_busy_delay_time
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas_extended_busy_delay_time
+)paren
+suffix:semicolon
 eof
