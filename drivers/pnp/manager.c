@@ -907,13 +907,6 @@ id|table
 r_int
 id|idx
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|pnp_res_mutex
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1126,13 +1119,6 @@ op_assign
 id|IORESOURCE_AUTO
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|pnp_res_mutex
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_clean_resources - clears resources that were not manually set&n; * @res - the resources to clean&n; *&n; */
 DECL|function|pnp_clean_resource_table
