@@ -2971,7 +2971,7 @@ id|fs_info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;devfs_register - Register a device entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@name: The name of the entry.&n; *&t;@flags: Must be 0&n; *&t;@major: The major number. Not needed for regular files.&n; *&t;@minor: The minor number. Not needed for regular files.&n; *&t;@mode: The default file mode.&n; *&t;@ops: The &amp;file_operations or &amp;block_device_operations structure.&n; *&t;&t;This must not be externally deallocated.&n; *&t;@info: An arbitrary pointer which will be written to the @private_data&n; *&t;&t;field of the &amp;file structure passed to the device driver. You can set&n; *&t;&t;this to whatever you like, and change it once the file is opened (the next&n; *&t;&t;file opened will not see this change).&n; *&n; *&t;Returns a handle which may later be used in a call to devfs_unregister().&n; *&t;On failure %NULL is returned.&n; */
+multiline_comment|/**&n; *&t;devfs_register - Register a device entry.&n; *&t;@dir: The handle to the parent devfs directory entry. If this is %NULL the&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@name: The name of the entry.&n; *&t;@flags: Must be 0&n; *&t;@major: The major number. Not needed for regular files.&n; *&t;@minor: The minor number. Not needed for regular files.&n; *&t;@mode: The default file mode.&n; *&t;@ops: The &amp;file_operations or &amp;block_device_operations structure.&n; *&t;&t;This must not be externally deallocated.&n; *&t;@info: An arbitrary pointer which will be written to the @private_data&n; *&t;&t;field of the &amp;file structure passed to the device driver. You can set&n; *&t;&t;this to whatever you like, and change it once the file is opened (the next&n; *&t;&t;file opened will not see this change).&n; *&n; *&t;On failure %NULL is returned.&n; */
 DECL|function|devfs_register
 id|devfs_handle_t
 id|devfs_register
@@ -3036,6 +3036,12 @@ id|WARN_ON
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|dir
 )paren
 suffix:semicolon
 r_if
@@ -3553,74 +3559,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*  End Function _devfs_unregister  */
-multiline_comment|/**&n; *&t;devfs_unregister - Unregister a device entry.&n; *&t;@de: A handle previously created by devfs_register() or returned from&n; *&t;&t;devfs_get_handle(). If this is %NULL the routine does nothing.&n; */
-DECL|function|devfs_unregister
-r_void
-id|devfs_unregister
-(paren
-id|devfs_handle_t
-id|de
-)paren
-(brace
-id|VERIFY_ENTRY
-(paren
-id|de
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|de
-op_eq
-l_int|NULL
-)paren
-op_logical_or
-(paren
-id|de-&gt;parent
-op_eq
-l_int|NULL
-)paren
-)paren
-r_return
-suffix:semicolon
-id|DPRINTK
-(paren
-id|DEBUG_UNREGISTER
-comma
-l_string|&quot;(%s): de: %p  refcount: %d&bslash;n&quot;
-comma
-id|de-&gt;name
-comma
-id|de
-comma
-id|atomic_read
-(paren
-op_amp
-id|de-&gt;refcount
-)paren
-)paren
-suffix:semicolon
-id|write_lock
-(paren
-op_amp
-id|de-&gt;parent-&gt;u.dir.lock
-)paren
-suffix:semicolon
-id|_devfs_unregister
-(paren
-id|de-&gt;parent
-comma
-id|de
-)paren
-suffix:semicolon
-id|devfs_put
-(paren
-id|de
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*  End Function devfs_unregister  */
 DECL|function|devfs_do_symlink
 r_static
 r_int
@@ -3949,7 +3887,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;devfs_mk_dir - Create a directory in the devfs namespace.&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@fmt: The name of the entry.&n; *&n; *&t;Use of this function is optional. The devfs_register() function&n; *&t;will automatically create intermediate directories as needed. This function&n; *&t;is provided for efficiency reasons, as it provides a handle to a directory.&n; *&t;Returns a handle which may later be used in a call to devfs_unregister().&n; *&t;On failure %NULL is returned.&n; */
+multiline_comment|/**&n; *&t;devfs_mk_dir - Create a directory in the devfs namespace.&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@fmt: The name of the entry.&n; *&n; *&t;Use of this function is optional. The devfs_register() function&n; *&t;will automatically create intermediate directories as needed. This function&n; *&t;is provided for efficiency reasons, as it provides a handle to a directory.&n; *&t;On failure %NULL is returned.&n; */
 DECL|function|devfs_mk_dir
 id|devfs_handle_t
 id|devfs_mk_dir
@@ -4225,7 +4163,22 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|write_lock
+c_func
+(paren
+op_amp
+id|de-&gt;parent-&gt;u.dir.lock
+)paren
+suffix:semicolon
+id|_devfs_unregister
+c_func
+(paren
+id|de-&gt;parent
+comma
+id|de
+)paren
+suffix:semicolon
+id|devfs_put
 c_func
 (paren
 id|de
@@ -4848,13 +4801,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_register
-)paren
-suffix:semicolon
-DECL|variable|devfs_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_unregister
 )paren
 suffix:semicolon
 DECL|variable|devfs_mk_symlink
