@@ -2918,7 +2918,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_AMD8111E_NAPI 
+macro_line|#ifdef CONFIG_AMD8111E_NAPI
 multiline_comment|/* This function handles the driver receive operation in polling mode */
 DECL|function|amd8111e_rx_poll
 r_static
