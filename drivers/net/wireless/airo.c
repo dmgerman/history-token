@@ -3426,6 +3426,8 @@ DECL|macro|FLAG_PENDING_XMIT
 mdefine_line|#define FLAG_PENDING_XMIT   0x400
 DECL|macro|FLAG_PENDING_XMIT11
 mdefine_line|#define FLAG_PENDING_XMIT11 0x800
+DECL|macro|FLAG_PCI
+mdefine_line|#define FLAG_PCI    0x1000
 DECL|member|bap_read
 r_int
 (paren
@@ -21200,6 +21202,19 @@ comma
 id|dev
 )paren
 suffix:semicolon
+(paren
+(paren
+r_struct
+id|airo_info
+op_star
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|flags
+op_or_assign
+id|FLAG_PCI
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -21380,6 +21395,11 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|is_pci
+op_assign
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -21395,6 +21415,28 @@ comma
 id|airo_devices-&gt;dev-&gt;name
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_struct
+id|airo_info
+op_star
+)paren
+id|airo_devices-&gt;dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|flags
+op_amp
+id|FLAG_PCI
+)paren
+id|is_pci
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|stop_airo_card
 c_func
 (paren
@@ -21410,6 +21452,18 @@ c_func
 l_string|&quot;aironet&quot;
 comma
 id|proc_root_driver
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_pci
+)paren
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|airo_driver
 )paren
 suffix:semicolon
 )brace
@@ -27549,7 +27603,7 @@ op_star
 )paren
 id|airo_private_args
 comma
-macro_line|#if 0 &amp;&amp; WIRELESS_EXT &gt; 15
+macro_line|#if WIRELESS_EXT &gt; 15
 dot
 id|spy_offset
 op_assign

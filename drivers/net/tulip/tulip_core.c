@@ -1074,6 +1074,23 @@ id|DM910X
 comma
 multiline_comment|/* ALi 1563 integrated ethernet */
 (brace
+l_int|0x10b7
+comma
+l_int|0x9300
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|COMET
+)brace
+comma
+multiline_comment|/* 3Com 3CSOHO100B-TX */
+(brace
 )brace
 multiline_comment|/* terminate list */
 )brace

@@ -210,6 +210,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|i
+op_logical_or
 id|i-&gt;LogicalDeviceState
 op_eq
 id|DAC960_V2_LogicalDevice_Offline
