@@ -1221,6 +1221,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|backing_file
+)paren
+(brace
+id|backing_file
+op_assign
+id|strchr
+c_func
+(paren
+id|str
+comma
+l_char|&squot;:&squot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|backing_file
 )paren
 (brace
@@ -1312,13 +1330,22 @@ c_func
 (paren
 id|ubd_setup
 comma
-l_string|&quot;ubd&lt;n&gt;=&lt;filename&gt;&bslash;n&quot;
+l_string|&quot;ubd&lt;n&gt;&lt;flags&gt;=&lt;filename&gt;[(:|,)&lt;filename2&gt;]&bslash;n&quot;
 l_string|&quot;    This is used to associate a device with a file in the underlying&bslash;n&quot;
-l_string|&quot;    filesystem. Usually, there is a filesystem in the file, but &bslash;n&quot;
+l_string|&quot;    filesystem. When specifying two filenames, the first one is the&bslash;n&quot;
+l_string|&quot;    COW name and the second is the backing file name. As separator you can&bslash;n&quot;
+l_string|&quot;    use either a &squot;:&squot; or a &squot;,&squot;: the first one allows writing things like;&bslash;n&quot;
+l_string|&quot;&t;ubd0=~/Uml/root_cow:~/Uml/root_backing_file&bslash;n&quot;
+l_string|&quot;    while with a &squot;,&squot; the shell would not expand the 2nd &squot;~&squot;.&bslash;n&quot;
+l_string|&quot;    When using only one filename, UML will detect whether to thread it like&bslash;n&quot;
+l_string|&quot;    a COW file or a backing file. To override this detection, add the &squot;d&squot;&bslash;n&quot;
+l_string|&quot;    flag:&bslash;n&quot;
+l_string|&quot;&t;ubd0d=BackingFile&bslash;n&quot;
+l_string|&quot;    Usually, there is a filesystem in the file, but &bslash;n&quot;
 l_string|&quot;    that&squot;s not required. Swap devices containing swap files can be&bslash;n&quot;
 l_string|&quot;    specified like this. Also, a file which doesn&squot;t contain a&bslash;n&quot;
 l_string|&quot;    filesystem can have its contents read in the virtual &bslash;n&quot;
-l_string|&quot;    machine by running dd on the device. n must be in the range&bslash;n&quot;
+l_string|&quot;    machine by running &squot;dd&squot; on the device. &lt;n&gt; must be in the range&bslash;n&quot;
 l_string|&quot;    0 to 7. Appending an &squot;r&squot; to the number will cause that device&bslash;n&quot;
 l_string|&quot;    to be mounted read-only. For example ubd1r=./ext_fs. Appending&bslash;n&quot;
 l_string|&quot;    an &squot;s&squot; (has to be _after_ &squot;r&squot;, if there is one) will cause data&bslash;n&quot;
