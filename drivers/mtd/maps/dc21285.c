@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.6 2001/10/02 15:05:14 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * MTD map driver for flash on the DC21285 (the StrongARM-110 companion chip)&n; *&n; * (C) 2000  Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; * &n; * $Id: dc21285.c,v 1.9 2002/10/14 12:22:10 rmk Exp $&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -161,6 +162,8 @@ op_star
 id|CSR_ROMWRITEREG
 op_assign
 id|adr
+op_amp
+l_int|3
 suffix:semicolon
 id|adr
 op_and_assign
@@ -203,11 +206,13 @@ op_star
 id|CSR_ROMWRITEREG
 op_assign
 id|adr
+op_amp
+l_int|3
 suffix:semicolon
 id|adr
 op_and_assign
 op_complement
-l_int|1
+l_int|3
 suffix:semicolon
 op_star
 (paren
@@ -573,7 +578,7 @@ op_assign
 r_int
 r_int
 )paren
-id|__ioremap
+id|ioremap
 c_func
 (paren
 id|DC21285_FLASH
@@ -583,8 +588,6 @@ op_star
 l_int|1024
 op_star
 l_int|1024
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -624,12 +627,15 @@ id|mymtd
 (brace
 r_int
 id|nrparts
+op_assign
+l_int|0
 suffix:semicolon
 id|mymtd-&gt;module
 op_assign
 id|THIS_MODULE
 suffix:semicolon
 multiline_comment|/* partition fixup */
+macro_line|#ifdef CONFIG_MTD_REDBOOT_PARTS
 id|nrparts
 op_assign
 id|parse_redboot_partitions
@@ -641,36 +647,15 @@ op_amp
 id|dc21285_parts
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|nrparts
-op_le
+OG
 l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;RedBoot partition table failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|iounmap
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|dc21285_map.map_priv_1
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 id|add_mtd_partitions
 c_func
 (paren
@@ -681,6 +666,30 @@ comma
 id|nrparts
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|nrparts
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;RedBoot partition table failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|add_mtd_device
+c_func
+(paren
+id|mymtd
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t; * Flash timing is determined with bits 19-16 of the&n;&t;&t; * CSR_SA110_CNTL.  The value is the number of wait cycles, or&n;&t;&t; * 0 for 16 cycles (the default).  Cycles are 20 ns.&n;&t;&t; * Here we use 7 for 140 ns flash chips.&n;&t;&t; */
 multiline_comment|/* access time */
 op_star
