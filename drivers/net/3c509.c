@@ -3221,7 +3221,7 @@ id|TX_FIFO
 suffix:semicolon
 multiline_comment|/* ... and the packet rounded to a doubleword. */
 macro_line|#ifdef  __powerpc__
-id|outsl_unswapped
+id|outsl_ns
 c_func
 (paren
 id|ioaddr
@@ -4408,7 +4408,7 @@ suffix:semicolon
 multiline_comment|/* Align IP on 16 byte */
 multiline_comment|/* &squot;skb-&gt;data&squot; points to the start of sk_buff data area. */
 macro_line|#ifdef  __powerpc__
-id|insl_unswapped
+id|insl_ns
 c_func
 (paren
 id|ioaddr
