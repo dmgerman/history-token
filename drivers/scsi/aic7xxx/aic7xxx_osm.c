@@ -4507,6 +4507,12 @@ id|KERN_WARNING
 l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
 r_return
 (paren
 id|ENODEV
@@ -4551,6 +4557,12 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;aic7xxx: No suitable DMA available.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|map
 )paren
 suffix:semicolon
 r_return
