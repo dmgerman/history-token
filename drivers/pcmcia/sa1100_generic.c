@@ -4024,22 +4024,8 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_ADSBITSY
-id|pcmcia_adsbitsy_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_ASSABET
 id|pcmcia_assabet_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_BADGE4
-id|pcmcia_badge4_init
 c_func
 (paren
 )paren
@@ -4073,43 +4059,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
-id|pcmcia_graphicsmaster_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_JORNADA720
-id|pcmcia_jornada720_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ASSABET_NEPONSET
-id|pcmcia_neponset_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
 id|pcmcia_pangolin_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PFS168
-id|pcmcia_pfs_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PT_SYSTEM3
-id|pcmcia_system3_init
 c_func
 (paren
 )paren
@@ -4143,13 +4094,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_XP860
-id|pcmcia_xp860_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_YOPY
 id|pcmcia_yopy_init
 c_func
@@ -4172,22 +4116,8 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SA1100_ADSBITSY
-id|pcmcia_adsbitsy_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_ASSABET
 id|pcmcia_assabet_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_BADGE4
-id|pcmcia_badge4_exit
 c_func
 (paren
 )paren
@@ -4221,36 +4151,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_GRAPHICSMASTER
-id|pcmcia_graphicsmaster_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_JORNADA720
-id|pcmcia_jornada720_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ASSABET_NEPONSET
-id|pcmcia_neponset_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
 id|pcmcia_pangolin_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PFS168
-id|pcmcia_pfs_exit
 c_func
 (paren
 )paren
@@ -4272,13 +4174,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_STORK
 id|pcmcia_stork_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_XP860
-id|pcmcia_xp860_exit
 c_func
 (paren
 )paren
