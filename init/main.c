@@ -1153,7 +1153,8 @@ r_void
 r_int
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|j
 op_assign
 l_int|0
@@ -1203,14 +1204,6 @@ id|i
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;Bringing up %i&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
 id|cpu_up
 c_func
 (paren
@@ -1226,7 +1219,7 @@ multiline_comment|/* Any cleanup work */
 id|printk
 c_func
 (paren
-l_string|&quot;CPUS done %u&bslash;n&quot;
+l_string|&quot;Brought up %u CPUs&bslash;n&quot;
 comma
 id|j
 )paren

@@ -206,14 +206,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Now call notifier in preparation. */
-id|printk
-c_func
-(paren
-l_string|&quot;CPU %u IS NOW UP!&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|notifier_call_chain
 c_func
 (paren

@@ -4606,14 +4606,6 @@ id|local_node
 op_assign
 id|pgdat-&gt;node_id
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Building zonelist for node : %d&bslash;n&quot;
-comma
-id|local_node
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4813,6 +4805,14 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;Built %i zonelists&bslash;n&quot;
+comma
+id|numnodes
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Helper functions to size the waitqueue hash table.&n; * Essentially these want to choose hash table sizes sufficiently&n; * large so that collisions trying to wait on pages are rare.&n; * But in fact, the number of active page waitqueues on typical&n; * systems is ridiculously low, less than 200. So this is even&n; * conservative, even though it seems large.&n; *&n; * The constant PAGES_PER_WAITQUEUE specifies the ratio of pages to&n; * waitqueues, i.e. the size of the waitq table given the number of pages.&n; */
 DECL|macro|PAGES_PER_WAITQUEUE
