@@ -4271,15 +4271,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
-id|addr_type
-op_assign
-id|ipv6_addr_type
-c_func
-(paren
-id|saddr
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

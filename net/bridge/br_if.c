@@ -334,7 +334,7 @@ id|ETH_ALEN
 suffix:semicolon
 id|br-&gt;stp_enabled
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|br-&gt;designated_root
 op_assign

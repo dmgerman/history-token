@@ -1184,9 +1184,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fdb-&gt;is_local
-op_logical_and
-op_logical_neg
 id|memcmp
 c_func
 (paren
@@ -1198,6 +1195,55 @@ id|ETH_ALEN
 )paren
 )paren
 (brace
+multiline_comment|/* attempt to update an entry for a local interface */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|fdb-&gt;is_local
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|is_local
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: attempt to add&quot;
+l_string|&quot; interface with same source address.&bslash;n&quot;
+comma
+id|source-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: received packet with &quot;
+l_string|&quot; own address as source address&bslash;n&quot;
+comma
+id|source-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
