@@ -1642,13 +1642,13 @@ r_if
 c_cond
 (paren
 (paren
-id|cmd-&gt;request.cmd
+id|cmd-&gt;request-&gt;cmd
 op_eq
 l_int|0
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;request.cmd
+id|cmd-&gt;request-&gt;cmd
 op_eq
 l_int|1
 )paren

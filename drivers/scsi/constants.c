@@ -10414,7 +10414,7 @@ id|devclass
 comma
 id|SCpnt-&gt;sense_buffer
 comma
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 )brace
@@ -10440,7 +10440,7 @@ id|devclass
 comma
 id|SRpnt-&gt;sr_sense_buffer
 comma
-id|SRpnt-&gt;sr_request.rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_dev
 )paren
 suffix:semicolon
 )brace

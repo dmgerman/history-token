@@ -3074,7 +3074,7 @@ c_cond
 id|major
 c_func
 (paren
-id|cmd-&gt;request.rq_dev
+id|cmd-&gt;request-&gt;rq_dev
 )paren
 op_eq
 id|SCSI_GENERIC_MAJOR

@@ -1019,7 +1019,7 @@ op_assign
 id|TAPE_NR
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|OS_Scsi_Tape
@@ -1115,7 +1115,7 @@ id|midlevel_result
 op_assign
 id|SCpnt-&gt;result
 suffix:semicolon
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_DONE
 suffix:semicolon
@@ -1136,7 +1136,7 @@ macro_line|#endif
 id|complete
 c_func
 (paren
-id|SCpnt-&gt;request.waiting
+id|SCpnt-&gt;request-&gt;waiting
 )paren
 suffix:semicolon
 )brace
@@ -1242,7 +1242,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Can&squot;t get SCSI request.&bslash;n&quot;
+l_string|&quot;osst%d:E: Can&squot;t get SCSI request-&gt;&bslash;n&quot;
 comma
 id|TAPE_NR
 c_func
@@ -1390,18 +1390,18 @@ id|SRpnt-&gt;sr_cmd_len
 op_assign
 l_int|0
 suffix:semicolon
-id|SRpnt-&gt;sr_request.waiting
+id|SRpnt-&gt;sr_request-&gt;waiting
 op_assign
 op_amp
 (paren
 id|STp-&gt;wait
 )paren
 suffix:semicolon
-id|SRpnt-&gt;sr_request.rq_status
+id|SRpnt-&gt;sr_request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
-id|SRpnt-&gt;sr_request.rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_dev
 op_assign
 id|STp-&gt;devt
 suffix:semicolon
@@ -1436,10 +1436,10 @@ id|do_wait
 id|wait_for_completion
 c_func
 (paren
-id|SRpnt-&gt;sr_request.waiting
+id|SRpnt-&gt;sr_request-&gt;waiting
 )paren
 suffix:semicolon
-id|SRpnt-&gt;sr_request.waiting
+id|SRpnt-&gt;sr_request-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1568,7 +1568,7 @@ suffix:semicolon
 id|STp-&gt;buffer
 )paren
 op_member_access_from_pointer
-id|last_SRpnt-&gt;sr_request.waiting
+id|last_SRpnt-&gt;sr_request-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon

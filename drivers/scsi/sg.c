@@ -3690,7 +3690,7 @@ op_assign
 op_amp
 id|SRpnt-&gt;sr_device-&gt;request_queue
 suffix:semicolon
-id|SRpnt-&gt;sr_request.rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_dev
 op_assign
 id|sdp-&gt;i_rdev
 suffix:semicolon
@@ -6919,7 +6919,7 @@ id|SRpnt-&gt;sr_underflow
 op_assign
 l_int|0
 suffix:semicolon
-id|SRpnt-&gt;sr_request.rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_dev
 op_assign
 id|mk_kdev
 c_func

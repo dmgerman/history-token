@@ -71,20 +71,6 @@ id|rq-&gt;special
 op_assign
 id|data
 suffix:semicolon
-id|rq-&gt;q
-op_assign
-l_int|NULL
-suffix:semicolon
-id|rq-&gt;bio
-op_assign
-id|rq-&gt;biotail
-op_assign
-l_int|NULL
-suffix:semicolon
-id|rq-&gt;nr_phys_segments
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * We have the option of inserting the head or the tail of the queue.&n;&t; * Typically we use the tail for new ioctls and so forth.  We use the&n;&t; * head of the queue for things like a QUEUE_FULL message from a&n;&t; * device, or a host that is unable to accept a particular command.&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -150,7 +136,6 @@ c_func
 (paren
 id|q
 comma
-op_amp
 id|SCpnt-&gt;request
 comma
 id|SCpnt
@@ -188,7 +173,6 @@ c_func
 (paren
 id|q
 comma
-op_amp
 id|SRpnt-&gt;sr_request
 comma
 id|SRpnt
@@ -391,7 +375,7 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * For some reason, we are not done with this request.&n;&t;&t; * This happens for I/O errors in the middle of the request,&n;&t;&t; * in which case we need to request the blocks that come after&n;&t;&t; * the bad sector.&n;&t;&t; */
-id|SCpnt-&gt;request.special
+id|SCpnt-&gt;request-&gt;special
 op_assign
 (paren
 r_void
@@ -404,7 +388,6 @@ c_func
 (paren
 id|q
 comma
-op_amp
 id|SCpnt-&gt;request
 comma
 l_int|0
@@ -665,8 +648,10 @@ id|request
 op_star
 id|req
 op_assign
-op_amp
 id|SCpnt-&gt;request
+suffix:semicolon
+r_int
+id|flags
 suffix:semicolon
 id|ASSERT_LOCK
 c_func
@@ -674,6 +659,14 @@ c_func
 id|q-&gt;queue_lock
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are blocks left over at the end, set up the command&n;&t; * to queue the remainder of them.&n;&t; */
@@ -691,6 +684,14 @@ id|sectors
 )paren
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -713,18 +714,6 @@ r_return
 id|SCpnt
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * This request is done.  If there is someone blocked waiting for this&n;&t; * request, wake them up.&n;&t; */
-r_if
-c_cond
-(paren
-id|req-&gt;waiting
-)paren
-id|complete
-c_func
-(paren
-id|req-&gt;waiting
-)paren
-suffix:semicolon
 id|add_blkdev_randomness
 c_func
 (paren
@@ -733,6 +722,20 @@ c_func
 (paren
 id|req-&gt;rq_dev
 )paren
+)paren
+suffix:semicolon
+id|end_that_request_last
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This will goose the queue request function at the end, so we don&squot;t&n;&t; * need to worry about launching another command.&n;&t; */
@@ -810,7 +813,6 @@ id|request
 op_star
 id|req
 op_assign
-op_amp
 id|SCpnt-&gt;request
 suffix:semicolon
 id|ASSERT_LOCK
@@ -926,7 +928,6 @@ id|request
 op_star
 id|req
 op_assign
-op_amp
 id|SCpnt-&gt;request
 suffix:semicolon
 multiline_comment|/*&n;&t; * We must do one of several things here:&n;&t; *&n;&t; *&t;Call scsi_end_request.  This will finish off the specified&n;&t; *&t;number of sectors.  If we are done, the command block will&n;&t; *&t;be released, and the queue function will be goosed.  If we&n;&t; *&t;are not done, then scsi_end_request will directly goose&n;&t; *&t;the queue.&n;&t; *&n;&t; *&t;We can just use scsi_queue_next_request() here.  This&n;&t; *&t;would be used if we just wanted to retry, for example.&n;&t; *&n;&t; */
@@ -1465,7 +1466,6 @@ op_assign
 id|scsi_get_request_dev
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 suffix:semicolon
@@ -1850,7 +1850,7 @@ c_func
 id|q
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Find the actual device driver associated with this command.&n;&t;&t; * The SPECIAL requests are things like character device or&n;&t;&t; * ioctls, which did not originate from ll_rw_blk.  Note that&n;&t;&t; * the special field is also used to indicate the SCpnt for&n;&t;&t; * the remainder of a partially fulfilled request that can &n;&t;&t; * come up when there is a medium error.  We have to treat&n;&t;&t; * these two cases differently.  We differentiate by looking&n;&t;&t; * at request.cmd, as this tells us the real story.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Find the actual device driver associated with this command.&n;&t;&t; * The SPECIAL requests are things like character device or&n;&t;&t; * ioctls, which did not originate from ll_rw_blk.  Note that&n;&t;&t; * the special field is also used to indicate the SCpnt for&n;&t;&t; * the remainder of a partially fulfilled request that can &n;&t;&t; * come up when there is a medium error.  We have to treat&n;&t;&t; * these two cases differently.  We differentiate by looking&n;&t;&t; * at request-&gt;cmd, as this tells us the real story.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1992,6 +1992,11 @@ id|SCpnt
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* pull a tag out of the request if we have one */
+id|SCpnt-&gt;tag
+op_assign
+id|req-&gt;tag
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2020,43 +2025,10 @@ c_func
 id|req
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|req
-op_ne
-op_amp
 id|SCpnt-&gt;request
-op_logical_and
+op_assign
 id|req
-op_ne
-op_amp
-id|SRpnt-&gt;sr_request
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-op_amp
-id|SCpnt-&gt;request
-comma
-id|req
-comma
-r_sizeof
-(paren
-r_struct
-id|request
-)paren
-)paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We have copied the data out of the request block -&n;&t;&t;&t; * it is now in a field in SCpnt.  Release the request&n;&t;&t;&t; * block.&n;&t;&t;&t; */
-id|blkdev_release_request
-c_func
-(paren
-id|req
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * Now it is finally safe to release the lock.  We are&n;&t;&t; * not going to noodle the request list until this&n;&t;&t; * request has been queued and we loop back to queue&n;&t;&t; * another.  &n;&t;&t; */
 id|req
 op_assign
@@ -2071,7 +2043,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;request.flags
+id|SCpnt-&gt;request-&gt;flags
 op_amp
 id|REQ_CMD
 )paren
@@ -2089,7 +2061,6 @@ op_assign
 id|scsi_get_request_dev
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 suffix:semicolon
@@ -2134,11 +2105,11 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|SCpnt-&gt;request.special
+id|SCpnt-&gt;request-&gt;special
 op_assign
 id|SCpnt
 suffix:semicolon
-id|SCpnt-&gt;request.flags
+id|SCpnt-&gt;request-&gt;flags
 op_or_assign
 id|REQ_SPECIAL
 suffix:semicolon
@@ -2147,7 +2118,6 @@ c_func
 (paren
 id|q
 comma
-op_amp
 id|SCpnt-&gt;request
 comma
 l_int|0
@@ -2187,7 +2157,7 @@ id|SCpnt
 comma
 l_int|0
 comma
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 comma
 l_int|0
 comma

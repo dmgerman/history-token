@@ -3486,7 +3486,7 @@ c_cond
 id|sun3scsi_dma_finish
 c_func
 (paren
-id|hostdata-&gt;connected-&gt;request.cmd
+id|hostdata-&gt;connected-&gt;request-&gt;cmd
 )paren
 )paren
 )paren
@@ -6136,13 +6136,13 @@ r_if
 c_cond
 (paren
 (paren
-id|cmd-&gt;request.cmd
+id|cmd-&gt;request-&gt;cmd
 op_eq
 l_int|0
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;request.cmd
+id|cmd-&gt;request-&gt;cmd
 op_eq
 l_int|1
 )paren
@@ -6155,7 +6155,7 @@ id|d
 comma
 id|count
 comma
-id|cmd-&gt;request.cmd
+id|cmd-&gt;request-&gt;cmd
 )paren
 suffix:semicolon
 id|sun3_dma_setup_done
@@ -8244,7 +8244,7 @@ id|d
 comma
 id|count
 comma
-id|tmp-&gt;request.cmd
+id|tmp-&gt;request-&gt;cmd
 )paren
 suffix:semicolon
 id|sun3_dma_setup_done

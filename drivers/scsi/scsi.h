@@ -1572,6 +1572,7 @@ suffix:semicolon
 DECL|member|sr_request
 r_struct
 id|request
+op_star
 id|sr_request
 suffix:semicolon
 multiline_comment|/* A copy of the command we are&n;&t;&t;&t;&t;   working on */
@@ -1888,9 +1889,10 @@ multiline_comment|/* Number of bytes requested to be&n;&t;&t;&t;&t;   transferre
 DECL|member|request
 r_struct
 id|request
+op_star
 id|request
 suffix:semicolon
-multiline_comment|/* A copy of the command we are&n;&t;&t;&t;&t;   working on */
+multiline_comment|/* The command we are&n;&t;&t;&t;&t;   &t;   working on */
 DECL|member|sense_buffer
 r_int
 r_char

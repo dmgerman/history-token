@@ -520,7 +520,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|Scsi_CD
@@ -541,7 +541,7 @@ l_string|&quot;sr.c done: %x %p&bslash;n&quot;
 comma
 id|result
 comma
-id|SCpnt-&gt;request.bh-&gt;b_data
+id|SCpnt-&gt;request-&gt;bh-&gt;b_data
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -628,7 +628,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;request.bio
+id|SCpnt-&gt;request-&gt;bio
 op_ne
 l_int|NULL
 )paren
@@ -637,7 +637,7 @@ op_assign
 id|bio_sectors
 c_func
 (paren
-id|SCpnt-&gt;request.bio
+id|SCpnt-&gt;request-&gt;bio
 )paren
 suffix:semicolon
 r_if
@@ -675,7 +675,7 @@ id|good_sectors
 op_assign
 id|error_sector
 op_minus
-id|SCpnt-&gt;request.sector
+id|SCpnt-&gt;request-&gt;sector
 suffix:semicolon
 r_if
 c_cond
@@ -825,7 +825,7 @@ op_assign
 id|minor
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|dev
@@ -833,7 +833,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|SCpnt-&gt;request.rq_dev
+id|SCpnt-&gt;request-&gt;rq_dev
 )paren
 suffix:semicolon
 id|SCp
@@ -884,7 +884,7 @@ c_func
 (paren
 l_string|&quot;Finishing %ld sectors&bslash;n&quot;
 comma
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 )paren
 )paren
 suffix:semicolon
@@ -922,7 +922,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|SCpnt-&gt;request.flags
+id|SCpnt-&gt;request-&gt;flags
 op_amp
 id|REQ_CMD
 )paren
@@ -931,7 +931,6 @@ id|REQ_CMD
 id|blk_dump_rq_flags
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 comma
 l_string|&quot;sr unsup command&quot;
@@ -1017,7 +1016,6 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 op_eq
@@ -1052,7 +1050,6 @@ c_cond
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 op_eq
@@ -1076,7 +1073,6 @@ r_else
 id|blk_dump_rq_flags
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 comma
 l_string|&quot;Unknown sr command&quot;
@@ -1091,7 +1087,7 @@ r_if
 c_cond
 (paren
 (paren
-id|SCpnt-&gt;request.sector
+id|SCpnt-&gt;request-&gt;sector
 op_mod
 (paren
 id|s_size
@@ -1147,7 +1143,6 @@ comma
 id|rq_data_dir
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;request
 )paren
 op_eq
@@ -1161,7 +1156,7 @@ l_string|&quot;reading&quot;
 comma
 id|this_count
 comma
-id|SCpnt-&gt;request.nr_sectors
+id|SCpnt-&gt;request-&gt;nr_sectors
 )paren
 )paren
 suffix:semicolon
@@ -1191,7 +1186,7 @@ l_int|0
 suffix:semicolon
 id|block
 op_assign
-id|SCpnt-&gt;request.sector
+id|SCpnt-&gt;request-&gt;sector
 op_div
 (paren
 id|s_size
@@ -1853,7 +1848,7 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-id|SRpnt-&gt;sr_request.rq_status
+id|SRpnt-&gt;sr_request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon

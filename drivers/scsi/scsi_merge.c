@@ -40,7 +40,6 @@ id|request
 op_star
 id|req
 op_assign
-op_amp
 id|SCpnt-&gt;request
 suffix:semicolon
 r_struct
