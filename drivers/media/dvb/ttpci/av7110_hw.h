@@ -509,6 +509,22 @@ DECL|enumerator|__Continue
 id|__Continue
 )brace
 suffix:semicolon
+DECL|enum|av7110_fw_cmd_misc
+r_enum
+id|av7110_fw_cmd_misc
+(brace
+DECL|enumerator|AV7110_FW_VIDEO_ZOOM
+id|AV7110_FW_VIDEO_ZOOM
+op_assign
+l_int|1
+comma
+DECL|enumerator|AV7110_FW_VIDEO_COMMAND
+id|AV7110_FW_VIDEO_COMMAND
+comma
+DECL|enumerator|AV7110_FW_AUDIO_COMMAND
+id|AV7110_FW_AUDIO_COMMAND
+)brace
+suffix:semicolon
 DECL|enum|av7110_command_type
 r_enum
 id|av7110_command_type
@@ -564,6 +580,10 @@ comma
 DECL|enumerator|COMTYPE_CI_LL
 id|COMTYPE_CI_LL
 comma
+DECL|enumerator|COMTYPE_MISC
+id|COMTYPE_MISC
+op_assign
+l_int|0x80
 )brace
 suffix:semicolon
 DECL|macro|VID_NONE_PREF
@@ -576,6 +596,34 @@ DECL|macro|VID_VC_AND_PS_PREF
 mdefine_line|#define VID_VC_AND_PS_PREF&t;0x03&t;/* PanScan and vertical Compression if allowed */
 DECL|macro|VID_CENTRE_CUT_PREF
 mdefine_line|#define VID_CENTRE_CUT_PREF&t;0x05&t;/* PanScan with zero vector */
+multiline_comment|/* MPEG video decoder commands */
+DECL|macro|VIDEO_CMD_STOP
+mdefine_line|#define VIDEO_CMD_STOP&t;&t;0x000e
+DECL|macro|VIDEO_CMD_PLAY
+mdefine_line|#define VIDEO_CMD_PLAY&t;&t;0x000d
+DECL|macro|VIDEO_CMD_FREEZE
+mdefine_line|#define VIDEO_CMD_FREEZE&t;0x0102
+DECL|macro|VIDEO_CMD_FFWD
+mdefine_line|#define VIDEO_CMD_FFWD&t;&t;0x0016
+DECL|macro|VIDEO_CMD_SLOW
+mdefine_line|#define VIDEO_CMD_SLOW&t;&t;0x0022
+multiline_comment|/* MPEG audio decoder commands */
+DECL|macro|AUDIO_CMD_MUTE
+mdefine_line|#define AUDIO_CMD_MUTE&t;&t;0x0001
+DECL|macro|AUDIO_CMD_UNMUTE
+mdefine_line|#define AUDIO_CMD_UNMUTE&t;0x0002
+DECL|macro|AUDIO_CMD_PCM16
+mdefine_line|#define AUDIO_CMD_PCM16&t;&t;0x0010
+DECL|macro|AUDIO_CMD_STEREO
+mdefine_line|#define AUDIO_CMD_STEREO&t;0x0080
+DECL|macro|AUDIO_CMD_MONO_L
+mdefine_line|#define AUDIO_CMD_MONO_L&t;0x0100
+DECL|macro|AUDIO_CMD_MONO_R
+mdefine_line|#define AUDIO_CMD_MONO_R&t;0x0200
+DECL|macro|AUDIO_CMD_SYNC_OFF
+mdefine_line|#define AUDIO_CMD_SYNC_OFF&t;0x000e
+DECL|macro|AUDIO_CMD_SYNC_ON
+mdefine_line|#define AUDIO_CMD_SYNC_ON&t;0x000f
 multiline_comment|/* firmware data interface codes */
 DECL|macro|DATA_NONE
 mdefine_line|#define DATA_NONE&t;&t; 0x00
@@ -1433,11 +1481,11 @@ id|data
 )paren
 suffix:semicolon
 )brace
-DECL|function|VidMode
+DECL|function|av7710_set_video_mode
 r_static
 r_inline
 r_void
-id|VidMode
+id|av7710_set_video_mode
 c_func
 (paren
 r_struct
@@ -1489,9 +1537,9 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x80
+id|COMTYPE_MISC
 comma
-l_int|0x02
+id|AV7110_FW_VIDEO_COMMAND
 comma
 l_int|4
 comma
@@ -1543,9 +1591,9 @@ c_func
 (paren
 id|av7110
 comma
-l_int|0x80
+id|COMTYPE_MISC
 comma
-l_int|0x03
+id|AV7110_FW_AUDIO_COMMAND
 comma
 l_int|4
 comma
