@@ -1028,6 +1028,12 @@ l_int|7
 )paren
 )paren
 (brace
+multiline_comment|/* if (!acpi_force) */
+id|disable_acpi
+c_func
+(paren
+)paren
+suffix:semicolon
 id|acpi_ht
 op_assign
 l_int|1
@@ -2277,12 +2283,6 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;        * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;        * Must do this after paging_init (due to reliance on fixmap, and thus&n;        * the bootmem allocator) but before get_smp_config (to allow parsing&n;        * of MADT).&n;        */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_disabled
-)paren
 id|acpi_boot_init
 c_func
 (paren
