@@ -1479,7 +1479,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 id|ea_buf-&gt;flag
-op_or_assign
+op_assign
 id|EA_MALLOC
 suffix:semicolon
 id|ea_buf-&gt;max_size
