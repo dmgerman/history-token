@@ -2908,5 +2908,12 @@ c_func
 id|pci_scan_slot
 )paren
 suffix:semicolon
+DECL|variable|pci_scan_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_scan_bus
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
