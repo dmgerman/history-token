@@ -2447,11 +2447,9 @@ op_amp
 id|info-&gt;dev
 )paren
 suffix:semicolon
-id|CardServices
+id|pcmcia_release_configuration
 c_func
 (paren
-id|ReleaseConfiguration
-comma
 id|link-&gt;handle
 )paren
 suffix:semicolon
