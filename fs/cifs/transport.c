@@ -1044,6 +1044,10 @@ c_func
 id|midQ
 )paren
 suffix:semicolon
+id|ses-&gt;server-&gt;tcpStatus
+op_assign
+id|CifsNeedReconnect
+suffix:semicolon
 r_return
 op_minus
 id|EIO

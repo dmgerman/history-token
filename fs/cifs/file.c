@@ -507,6 +507,10 @@ id|pCifsFile-&gt;invalidHandle
 op_assign
 id|FALSE
 suffix:semicolon
+id|pCifsFile-&gt;closePend
+op_assign
+id|FALSE
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -1383,9 +1387,17 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|open_file-&gt;invalidHandle
 op_eq
 id|FALSE
+)paren
+op_logical_and
+(paren
+id|open_file-&gt;closePend
+op_eq
+id|FALSE
+)paren
 )paren
 (brace
 id|list_move
@@ -1602,6 +1614,39 @@ c_cond
 id|pSMBFile
 )paren
 (brace
+id|pSMBFile-&gt;closePend
+op_assign
+id|TRUE
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|file-&gt;f_owner.lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pTcon
+)paren
+(brace
+multiline_comment|/* no sense reconnecting to close a file that is&n;&t;&t;&t;&t;already closed */
+r_if
+c_cond
+(paren
+id|pTcon-&gt;tidStatus
+op_ne
+id|CifsNeedReconnect
+)paren
+(brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|file-&gt;f_owner.lock
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|CIFSSMBClose
@@ -1621,6 +1666,8 @@ op_amp
 id|file-&gt;f_owner.lock
 )paren
 suffix:semicolon
+)brace
+)brace
 id|list_del
 c_func
 (paren
@@ -2923,7 +2970,6 @@ op_amp
 id|GlobalSMBSeslock
 )paren
 suffix:semicolon
-multiline_comment|/* BB switch to semaphore */
 id|list_for_each_safe
 c_func
 (paren
@@ -2971,6 +3017,13 @@ id|O_WRONLY
 )paren
 )paren
 (brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 id|bytes_written
 op_assign
 id|cifs_write
@@ -2986,6 +3039,13 @@ id|from
 comma
 op_amp
 id|offset
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
 )paren
 suffix:semicolon
 multiline_comment|/* Does mm or vfs already set times? */
@@ -3013,8 +3073,6 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3030,6 +3088,9 @@ op_assign
 id|bytes_written
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+multiline_comment|/* now that we found a valid file handle&n;&t;&t;&t;&t;and tried to write to it we are done, no&n;&t;&t;&t;&t;sense continuing to loop looking for another */
 )brace
 r_if
 c_cond

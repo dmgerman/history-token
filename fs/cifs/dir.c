@@ -979,6 +979,10 @@ id|pCifsFile-&gt;invalidHandle
 op_assign
 id|FALSE
 suffix:semicolon
+id|pCifsFile-&gt;closePend
+op_assign
+id|FALSE
+suffix:semicolon
 multiline_comment|/* pCifsFile-&gt;pfile = file; */
 multiline_comment|/* put in at open time */
 id|write_lock
