@@ -655,6 +655,12 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
+multiline_comment|/* POSIX.1b Interval Timers */
+DECL|member|posix_timers
+r_struct
+id|list_head
+id|posix_timers
+suffix:semicolon
 multiline_comment|/* job control IDs */
 DECL|member|pgrp
 id|pid_t
@@ -1177,12 +1183,6 @@ r_struct
 id|timer_list
 id|real_timer
 suffix:semicolon
-DECL|member|posix_timers
-r_struct
-id|list_head
-id|posix_timers
-suffix:semicolon
-multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|utime
 DECL|member|stime
 DECL|member|cutime
@@ -2763,7 +2763,7 @@ id|exit_itimers
 c_func
 (paren
 r_struct
-id|task_struct
+id|signal_struct
 op_star
 )paren
 suffix:semicolon

@@ -3593,12 +3593,6 @@ c_func
 id|current-&gt;files
 )paren
 suffix:semicolon
-id|exit_itimers
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

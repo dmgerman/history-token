@@ -1006,6 +1006,12 @@ id|tsk-&gt;signal
 op_assign
 l_int|NULL
 suffix:semicolon
+id|exit_itimers
+c_func
+(paren
+id|sig
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren

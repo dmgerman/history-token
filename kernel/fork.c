@@ -3143,6 +3143,13 @@ op_amp
 id|sig-&gt;shared_pending
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|sig-&gt;posix_timers
+)paren
+suffix:semicolon
 id|sig-&gt;tty
 op_assign
 id|current-&gt;signal-&gt;tty
@@ -3598,13 +3605,6 @@ c_func
 (paren
 op_amp
 id|p-&gt;sibling
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|p-&gt;posix_timers
 )paren
 suffix:semicolon
 id|init_waitqueue_head
