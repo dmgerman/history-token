@@ -595,7 +595,7 @@ id|buf
 id|dev_dbg
 c_func
 (paren
-id|dev_info-&gt;dev
+id|device_info-&gt;dev
 comma
 l_string|&quot;%s(buf=%p)&bslash;n&quot;
 comma
