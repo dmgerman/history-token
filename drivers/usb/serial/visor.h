@@ -95,7 +95,51 @@ mdefine_line|#define VISOR_FUNCTION_CONSOLE&t;&t;0x03
 DECL|macro|VISOR_FUNCTION_REMOTE_FILE_SYS
 mdefine_line|#define VISOR_FUNCTION_REMOTE_FILE_SYS&t;0x04
 multiline_comment|/****************************************************************************&n; * PALM_GET_SOME_UNKNOWN_INFORMATION is sent by the host during enumeration to&n; * get some information from the M series devices, that is currently unknown.&n; ****************************************************************************/
-DECL|macro|PALM_GET_SOME_UNKNOWN_INFORMATION
-mdefine_line|#define PALM_GET_SOME_UNKNOWN_INFORMATION&t;0x04
+DECL|macro|PALM_GET_EXT_CONNECTION_INFORMATION
+mdefine_line|#define PALM_GET_EXT_CONNECTION_INFORMATION&t;0x04
+multiline_comment|/**&n; * struct palm_ext_connection_info - return data from a PALM_GET_EXT_CONNECTION_INFORMATION request&n; * @num_ports: maximum number of functions/connections in use&n; * @endpoint_numbers_different: will be 1 if in and out endpoints numbers are&n; *&t;different, otherwise it is 0.  If value is 1, then&n; *&t;connections.end_point_info is non-zero.  If value is 0, then&n; *&t;connections.port contains the endpoint number, which is the same for in&n; *&t;and out.&n; * @port_function_id: contains the creator id of the applicaton that opened&n; *&t;this connection.&n; * @port: contains the in/out endpoint number.  Is 0 if in and out endpoint&n; *&t;numbers are different.&n; * @end_point_info: high nubbe is in endpoint and low nibble will indicate out&n; *&t;endpoint.  Is 0 if in and out endpoints are the same.&n; *&n; * The maximum number of connections currently supported is 2&n; */
+DECL|struct|palm_ext_connection_info
+r_struct
+id|palm_ext_connection_info
+(brace
+DECL|member|num_ports
+id|__u8
+id|num_ports
+suffix:semicolon
+DECL|member|endpoint_numbers_different
+id|__u8
+id|endpoint_numbers_different
+suffix:semicolon
+DECL|member|reserved1
+id|__u16
+id|reserved1
+suffix:semicolon
+r_struct
+(brace
+DECL|member|port_function_id
+id|__u32
+id|port_function_id
+suffix:semicolon
+DECL|member|port
+id|__u8
+id|port
+suffix:semicolon
+DECL|member|end_point_info
+id|__u8
+id|end_point_info
+suffix:semicolon
+DECL|member|reserved
+id|__u16
+id|reserved
+suffix:semicolon
+DECL|member|connections
+)brace
+id|connections
+(braket
+l_int|2
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif
 eof
