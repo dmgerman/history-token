@@ -1941,12 +1941,11 @@ c_func
 op_amp
 id|x-&gt;props.saddr
 comma
-op_amp
 id|saddr
 comma
 r_sizeof
 (paren
-id|x-&gt;sel.saddr
+id|x-&gt;props.saddr
 )paren
 )paren
 suffix:semicolon
