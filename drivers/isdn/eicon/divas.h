@@ -146,16 +146,12 @@ r_int
 id|bus_type
 suffix:semicolon
 multiline_comment|/* use DIA_BUS_TYPE_xxx above */
-DECL|member|bus_num
-r_int
-id|bus_num
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
 suffix:semicolon
-multiline_comment|/* bus number (instance number of bus type) */
-DECL|member|func_num
-r_int
-id|func_num
-suffix:semicolon
-multiline_comment|/* adapter function number (PCI register) */
 DECL|member|slot
 r_int
 id|slot

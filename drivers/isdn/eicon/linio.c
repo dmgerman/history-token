@@ -4,6 +4,7 @@ mdefine_line|#define N_DATA
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -200,13 +201,9 @@ id|cfg-&gt;bus_type
 r_case
 id|DIA_BUS_TYPE_PCI
 suffix:colon
-id|c-&gt;bus_num
+id|c-&gt;pdev
 op_assign
-id|cfg-&gt;bus_num
-suffix:semicolon
-id|c-&gt;func_num
-op_assign
-id|cfg-&gt;func_num
+id|cfg-&gt;pdev
 suffix:semicolon
 id|c-&gt;io_base
 op_assign
@@ -2714,12 +2711,10 @@ r_sizeof
 id|byte
 )paren
 suffix:colon
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|card-&gt;bus_num
-comma
-id|card-&gt;func_num
+id|card-&gt;pdev
 comma
 id|offset
 comma
@@ -2739,12 +2734,10 @@ r_sizeof
 id|word
 )paren
 suffix:colon
-id|pcibios_write_config_word
+id|pci_write_config_word
 c_func
 (paren
-id|card-&gt;bus_num
-comma
-id|card-&gt;func_num
+id|card-&gt;pdev
 comma
 id|offset
 comma
@@ -2764,12 +2757,10 @@ r_sizeof
 id|dword
 )paren
 suffix:colon
-id|pcibios_write_config_dword
+id|pci_write_config_dword
 c_func
 (paren
-id|card-&gt;bus_num
-comma
-id|card-&gt;func_num
+id|card-&gt;pdev
 comma
 id|offset
 comma
@@ -2826,12 +2817,10 @@ r_sizeof
 id|byte
 )paren
 suffix:colon
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|card-&gt;bus_num
-comma
-id|card-&gt;func_num
+id|card-&gt;pdev
 comma
 id|offset
 comma
@@ -2850,12 +2839,10 @@ r_sizeof
 id|word
 )paren
 suffix:colon
-id|pcibios_read_config_word
+id|pci_read_config_word
 c_func
 (paren
-id|card-&gt;bus_num
-comma
-id|card-&gt;func_num
+id|card-&gt;pdev
 comma
 id|offset
 comma
@@ -2874,12 +2861,10 @@ r_sizeof
 id|dword
 )paren
 suffix:colon
-id|pcibios_read_config_dword
+id|pci_read_config_dword
 c_func
 (paren
-id|card-&gt;bus_num
-comma
-id|card-&gt;func_num
+id|card-&gt;pdev
 comma
 id|offset
 comma
