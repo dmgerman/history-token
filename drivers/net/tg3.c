@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.10&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.11&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;September 14, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;October 20, 2004&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -154,6 +154,13 @@ c_func
 id|tg3_debug
 comma
 l_string|&quot;Tigon3 bitmapped debugging message enable value&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRV_MODULE_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_MODULE_VERSION
 )paren
 suffix:semicolon
 DECL|variable|tg3_debug
@@ -32998,7 +33005,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|__devinit
 id|tg3_nvram_read_using_eeprom
 c_func
 (paren
@@ -35480,7 +35486,6 @@ suffix:semicolon
 DECL|function|tg3_nvram_read_using_eeprom
 r_static
 r_int
-id|__devinit
 id|tg3_nvram_read_using_eeprom
 c_func
 (paren

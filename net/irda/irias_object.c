@@ -461,6 +461,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Remove from list */
 id|node
 op_assign
 id|hashbin_remove_this
@@ -481,14 +482,21 @@ c_cond
 op_logical_neg
 id|node
 )paren
-r_return
+id|IRDA_DEBUG
+c_func
+(paren
 l_int|0
+comma
+l_string|&quot;%s(), object already removed!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
-multiline_comment|/* Already removed */
+multiline_comment|/* Destroy */
 id|__irias_delete_object
 c_func
 (paren
-id|node
+id|obj
 )paren
 suffix:semicolon
 r_return
@@ -517,6 +525,9 @@ r_struct
 id|ias_attrib
 op_star
 id|attrib
+comma
+r_int
+id|cleanobject
 )paren
 (brace
 r_struct
@@ -595,7 +606,7 @@ c_func
 id|node
 )paren
 suffix:semicolon
-multiline_comment|/* Check if object has still some attributes */
+multiline_comment|/* Check if object has still some attributes, destroy it if none.&n;&t; * At first glance, this look dangerous, as the kernel reference&n;&t; * various IAS objects. However, we only use this function on&n;&t; * user attributes, not kernel attributes, so there is no risk&n;&t; * of deleting a kernel object this way. Jean II */
 id|node
 op_assign
 (paren
@@ -612,6 +623,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cleanobject
+op_logical_and
 op_logical_neg
 id|node
 )paren

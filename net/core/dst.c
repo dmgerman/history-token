@@ -11,16 +11,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
-DECL|variable|dst_underflow_bug_msg
-r_const
-r_char
-id|dst_underflow_bug_msg
-(braket
-)braket
-op_assign
-id|KERN_DEBUG
-l_string|&quot;BUG: dst underflow %d: %p at %p&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* Locking strategy:&n; * 1) Garbage collection state of dead destination cache&n; *    entries is protected by dst_lock.&n; * 2) GC is run only from BH context, and is the only remover&n; *    of entries.&n; * 3) Entries are added to the garbage list from both BH&n; *    and non-BH context, so local BH disabling is needed.&n; * 4) All operations modify state, so a spinlock is used.&n; */
 DECL|variable|dst_garbage_list
 r_static
@@ -1046,13 +1036,6 @@ id|dst_dev_notifier
 )paren
 suffix:semicolon
 )brace
-DECL|variable|dst_underflow_bug_msg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dst_underflow_bug_msg
-)paren
-suffix:semicolon
 DECL|variable|__dst_free
 id|EXPORT_SYMBOL
 c_func

@@ -222,7 +222,7 @@ multiline_comment|/* number of forced GC runs */
 )brace
 suffix:semicolon
 DECL|macro|NEIGH_CACHE_STAT_INC
-mdefine_line|#define NEIGH_CACHE_STAT_INC(tbl, field)&t;&t;&t;&t;&bslash;&n;&t;&t;(per_cpu_ptr((tbl)-&gt;stats, smp_processor_id())-&gt;field++)
+mdefine_line|#define NEIGH_CACHE_STAT_INC(tbl, field)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(per_cpu_ptr((tbl)-&gt;stats, smp_processor_id())-&gt;field)++; &bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|struct|neighbour
 r_struct
 id|neighbour

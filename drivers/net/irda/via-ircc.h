@@ -415,24 +415,6 @@ singleline_comment|// Sets bit to 1
 DECL|macro|ResetBit
 mdefine_line|#define ResetBit(val,bit) val= (unsigned char ) (val &amp; ~(0x1 &lt;&lt; bit))
 singleline_comment|// Sets bit to 0
-DECL|macro|PCI_CONFIG_ADDRESS
-mdefine_line|#define PCI_CONFIG_ADDRESS 0xcf8
-DECL|macro|PCI_CONFIG_DATA
-mdefine_line|#define PCI_CONFIG_DATA    0xcfc
-DECL|macro|VenderID
-mdefine_line|#define VenderID    0x1106
-DECL|macro|DeviceID1
-mdefine_line|#define DeviceID1   0x8231
-DECL|macro|DeviceID2
-mdefine_line|#define DeviceID2   0x3109
-DECL|macro|DeviceID3
-mdefine_line|#define DeviceID3   0x3074
-singleline_comment|//F01_S
-DECL|macro|DeviceID4
-mdefine_line|#define DeviceID4   0x3147
-DECL|macro|DeviceID5
-mdefine_line|#define DeviceID5   0x3177
-singleline_comment|//F01_E
 DECL|macro|OFF
 mdefine_line|#define OFF   0
 DECL|macro|ON
@@ -3384,14 +3366,10 @@ l_int|0x03
 )paren
 suffix:semicolon
 id|temp
-op_assign
-id|temp
-op_or
-(paren
+op_or_assign
 id|value
 op_lshift
 l_int|2
-)paren
 suffix:semicolon
 id|WriteReg
 c_func
@@ -3463,9 +3441,7 @@ op_lshift
 l_int|5
 suffix:semicolon
 id|temp
-op_assign
-id|temp
-op_or
+op_or_assign
 id|temp2
 suffix:semicolon
 id|temp2
@@ -3479,9 +3455,7 @@ op_rshift
 l_int|3
 suffix:semicolon
 id|temp1
-op_assign
-id|temp1
-op_or
+op_or_assign
 id|temp2
 suffix:semicolon
 id|WriteReg
@@ -3534,9 +3508,7 @@ op_amp
 l_int|0xe0
 suffix:semicolon
 id|temp
-op_assign
-id|temp
-op_or
+op_or_assign
 id|count
 suffix:semicolon
 id|WriteReg

@@ -1,4 +1,4 @@
-multiline_comment|/********************************************************************&n; Filename:      via-ircc.c&n; Version:       1.0 &n; Description:   Driver for the VIA VT8231/VT8233 IrDA chipsets&n; Author:        VIA Technologies,inc&n; Date  :&t;08/06/2003&n;&n;Copyright (c) 1998-2003 VIA Technologies, Inc.&n;&n;This program is free software; you can redistribute it and/or modify it under&n;the terms of the GNU General Public License as published by the Free Software&n;Foundation; either version 2, or (at your option) any later version.&n;&n;This program is distributed in the hope that it will be useful, but WITHOUT&n;ANY WARRANTIES OR REPRESENTATIONS; without even the implied warranty of&n;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n;See the GNU General Public License for more details.&n;&n;You should have received a copy of the GNU General Public License along with&n;this program; if not, write to the Free Software Foundation, Inc.,&n;59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n;&n;F01 Oct/02/02: Modify code for V0.11(move out back to back transfer)&n;F02 Oct/28/02: Add SB device ID for 3147 and 3177.&n; Comment :&n;       jul/09/2002 : only implement two kind of dongle currently.&n;       Oct/02/2002 : work on VT8231 and VT8233 .&n;       Aug/06/2003 : change driver format to pci driver .&n;       &n; ********************************************************************/
+multiline_comment|/********************************************************************&n; Filename:      via-ircc.c&n; Version:       1.0 &n; Description:   Driver for the VIA VT8231/VT8233 IrDA chipsets&n; Author:        VIA Technologies,inc&n; Date  :&t;08/06/2003&n;&n;Copyright (c) 1998-2003 VIA Technologies, Inc.&n;&n;This program is free software; you can redistribute it and/or modify it under&n;the terms of the GNU General Public License as published by the Free Software&n;Foundation; either version 2, or (at your option) any later version.&n;&n;This program is distributed in the hope that it will be useful, but WITHOUT&n;ANY WARRANTIES OR REPRESENTATIONS; without even the implied warranty of&n;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n;See the GNU General Public License for more details.&n;&n;You should have received a copy of the GNU General Public License along with&n;this program; if not, write to the Free Software Foundation, Inc.,&n;59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n;&n;F01 Oct/02/02: Modify code for V0.11(move out back to back transfer)&n;F02 Oct/28/02: Add SB device ID for 3147 and 3177.&n; Comment :&n;       jul/09/2002 : only implement two kind of dongle currently.&n;       Oct/02/2002 : work on VT8231 and VT8233 .&n;       Aug/06/2003 : change driver format to pci driver .&n;&n;2004-02-16: &lt;sda@bdit.de&gt;&n;- Removed unneeded &squot;legacy&squot; pci stuff.&n;- Make sure SIR mode is set (hw_init()) before calling mode-dependant stuff.&n;- On speed change from core, don&squot;t send SIR frame with new speed. &n;  Use current speed and change speeds later.&n;- Make module-param dongle_id actually work.&n;- New dongle_id 17 (0x11): TDFS4500. Single-ended SIR only. &n;  Tested with home-grown PCB on EPIA boards.&n;- Code cleanup.&n;       &n; ********************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -19,26 +19,17 @@ macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &quot;via-ircc.h&quot;
-singleline_comment|//#define DBG_IO&t;1
-singleline_comment|//#define   DBGMSG 1
-singleline_comment|//#define   DBGMSG_96 1
-singleline_comment|//#define   DBGMSG_76 1
-singleline_comment|//static int debug=0;
-DECL|macro|DBG
-mdefine_line|#define DBG(x) {if (debug) x;}
 DECL|macro|VIA_MODULE_NAME
-mdefine_line|#define   VIA_MODULE_NAME &quot;via-ircc&quot;
+mdefine_line|#define VIA_MODULE_NAME &quot;via-ircc&quot;
 DECL|macro|CHIP_IO_EXTENT
-mdefine_line|#define CHIP_IO_EXTENT 8
-DECL|macro|BROKEN_DONGLE_ID
-mdefine_line|#define BROKEN_DONGLE_ID
+mdefine_line|#define CHIP_IO_EXTENT 0x40
 DECL|variable|driver_name
 r_static
 r_char
 op_star
 id|driver_name
 op_assign
-l_string|&quot;via-ircc&quot;
+id|VIA_MODULE_NAME
 suffix:semicolon
 multiline_comment|/* Module parameters */
 DECL|variable|qos_mtt_bits
@@ -54,10 +45,10 @@ r_static
 r_int
 id|dongle_id
 op_assign
-l_int|9
+l_int|0
 suffix:semicolon
-singleline_comment|//defalut IBM type
-multiline_comment|/* Resource is allocate by BIOS user only need to supply dongle_id*/
+multiline_comment|/* default: probe */
+multiline_comment|/* We can&squot;t guess the type of connected dongle, user *must* supply it. */
 id|MODULE_PARM
 c_func
 (paren
@@ -118,20 +109,6 @@ id|self
 suffix:semicolon
 r_static
 r_int
-id|via_ircc_setup
-c_func
-(paren
-id|chipio_t
-op_star
-id|info
-comma
-r_int
-r_int
-id|id
-)paren
-suffix:semicolon
-r_static
-r_int
 id|via_ircc_dma_receive
 c_func
 (paren
@@ -185,6 +162,17 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|via_hw_init
+c_func
+(paren
+r_struct
+id|via_ircc_cb
+op_star
+id|self
 )paren
 suffix:semicolon
 r_static
@@ -389,7 +377,7 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/* Should use udelay() instead, even if we are x86 only - Jean II */
+multiline_comment|/* FIXME : Should use udelay() instead, even if we are x86 only - Jean II */
 DECL|function|iodelay
 r_static
 r_void
@@ -443,7 +431,7 @@ op_assign
 (brace
 id|PCI_VENDOR_ID_VIA
 comma
-id|DeviceID1
+l_int|0x8231
 comma
 id|PCI_ANY_ID
 comma
@@ -459,7 +447,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_VIA
 comma
-id|DeviceID2
+l_int|0x3109
 comma
 id|PCI_ANY_ID
 comma
@@ -475,7 +463,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_VIA
 comma
-id|DeviceID3
+l_int|0x3074
 comma
 id|PCI_ANY_ID
 comma
@@ -491,7 +479,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_VIA
 comma
-id|DeviceID4
+l_int|0x3147
 comma
 id|PCI_ANY_ID
 comma
@@ -507,7 +495,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_VIA
 comma
-id|DeviceID5
+l_int|0x3177
 comma
 id|PCI_ANY_ID
 comma
@@ -577,44 +565,65 @@ r_void
 r_int
 id|rc
 suffix:semicolon
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_ircc_init ......&bslash;n&quot;
-)paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rc
 op_assign
 id|pci_register_driver
+c_func
 (paren
 op_amp
 id|via_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|1
+)paren
+(brace
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_ircc_init :rc = %d......&bslash;n&quot;
+l_int|0
+comma
+l_string|&quot;%s(): error rc = %d, returning  -ENODEV...&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|rc
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+id|pci_unregister_driver
+(paren
+op_amp
+id|via_driver
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
-id|rc
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|via_init_one
@@ -663,66 +672,18 @@ suffix:semicolon
 id|chipio_t
 id|info
 suffix:semicolon
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_init_one : Device ID=(0X%X)&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): Device ID=(0X%X)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|id-&gt;device
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|id-&gt;device
-op_ne
-id|DeviceID1
-op_logical_and
-id|id-&gt;device
-op_ne
-id|DeviceID2
-op_logical_and
-id|id-&gt;device
-op_ne
-id|DeviceID3
-op_logical_and
-id|id-&gt;device
-op_ne
-id|DeviceID4
-op_logical_and
-id|id-&gt;device
-op_ne
-id|DeviceID5
-)paren
-(brace
-macro_line|#ifdef&t;HEADMSG
-id|DBG
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_init_one : Device ID(0X%X) not Supported&bslash;n&quot;
-comma
-id|id-&gt;device
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-singleline_comment|//South not exist !!!!!
-)brace
 id|rc
 op_assign
 id|pci_enable_device
@@ -730,31 +691,30 @@ id|pci_enable_device
 id|pcidev
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;HEADMSG
-id|DBG
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_init_one : rc=%d&bslash;n&quot;
-comma
-id|rc
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
 id|rc
 )paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s(): error rc = %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|rc
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-singleline_comment|//South Bridge exist
+)brace
+singleline_comment|// South Bridge exist
 r_if
 c_cond
 (paren
@@ -783,19 +743,16 @@ op_eq
 l_int|0x3076
 )paren
 (brace
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_init_one : 3076 ......&bslash;n&quot;
-)paren
+l_int|2
+comma
+l_string|&quot;%s(): Chipset = 3076&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|WriteLPCReg
 c_func
 (paren
@@ -1089,19 +1046,16 @@ singleline_comment|//IR not turn on&t;
 r_else
 (brace
 singleline_comment|//Not VT1211
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_init_one : 3096 ......&bslash;n&quot;
-)paren
+l_int|2
+comma
+l_string|&quot;%s(): Chipset = 3096&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pci_read_config_byte
 c_func
 (paren
@@ -1385,21 +1339,18 @@ suffix:semicolon
 singleline_comment|//IR not turn on !!!!!
 )brace
 singleline_comment|//Not VT1211
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_init_one End : rc=%d&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): End - rc = %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|rc
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|rc
 suffix:semicolon
@@ -1418,19 +1369,16 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_ircc_clean&bslash;n&quot;
-)paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1477,19 +1425,16 @@ op_star
 id|pdev
 )paren
 (brace
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_remove_one :  ......&bslash;n&quot;
-)paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|via_ircc_clean
 c_func
 (paren
@@ -1506,19 +1451,16 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef&t;HEADMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;via_ircc_cleanup ......&bslash;n&quot;
-)paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|via_ircc_clean
 c_func
 (paren
@@ -1564,25 +1506,15 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|via_ircc_setup
+id|IRDA_DEBUG
 c_func
 (paren
-id|info
+l_int|3
 comma
-id|id
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
-)paren
-op_eq
-op_minus
-l_int|1
-)paren
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 multiline_comment|/* Allocate new instance of the driver */
 id|dev
@@ -1692,7 +1624,18 @@ id|driver_name
 )paren
 )paren
 (brace
-singleline_comment|//              WARNING(&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;, __FUNCTION__, self-&gt;io.fir_base);
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|self-&gt;io.fir_base
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -1710,8 +1653,36 @@ op_amp
 id|self-&gt;qos
 )paren
 suffix:semicolon
+multiline_comment|/* Check if user has supplied the dongle id or not */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dongle_id
+)paren
+id|dongle_id
+op_assign
+id|via_ircc_read_dongle_id
+c_func
+(paren
+id|self-&gt;io.fir_base
+)paren
+suffix:semicolon
+id|self-&gt;io.dongle_id
+op_assign
+id|dongle_id
+suffix:semicolon
 multiline_comment|/* The only value we must override it the baudrate */
-singleline_comment|//      self-&gt;qos.baud_rate.bits = IR_9600;// May use this for testing
+multiline_comment|/* Maximum speeds and capabilities are dongle-dependant. */
+r_switch
+c_cond
+(paren
+id|self-&gt;io.dongle_id
+)paren
+(brace
+r_case
+l_int|0x0d
+suffix:colon
 id|self-&gt;qos.baud_rate.bits
 op_assign
 id|IR_9600
@@ -1734,6 +1705,26 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|self-&gt;qos.baud_rate.bits
+op_assign
+id|IR_9600
+op_or
+id|IR_19200
+op_or
+id|IR_38400
+op_or
+id|IR_57600
+op_or
+id|IR_115200
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Following was used for testing:&n;&t; *&n;&t; *   self-&gt;qos.baud_rate.bits = IR_9600;&n;&t; *&n;&t; * Is is no good, as it prohibits (error-prone) speed-changes.&n;&t; */
 id|self-&gt;qos.min_turn_time.bits
 op_assign
 id|qos_mtt_bits
@@ -1919,38 +1910,20 @@ suffix:semicolon
 id|MESSAGE
 c_func
 (paren
-l_string|&quot;IrDA: Registered device %s&bslash;n&quot;
+l_string|&quot;IrDA: Registered device %s (via-ircc)&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* Check if user has supplied the dongle id or not */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dongle_id
-)paren
-id|dongle_id
+multiline_comment|/* Initialise the hardware..&n;&t;*/
+id|self-&gt;io.speed
 op_assign
-id|via_ircc_read_dongle_id
-c_func
-(paren
-id|self-&gt;io.fir_base
-)paren
-suffix:semicolon
-id|self-&gt;io.dongle_id
-op_assign
-id|dongle_id
-suffix:semicolon
-id|via_ircc_change_dongle_speed
-c_func
-(paren
-id|self-&gt;io.fir_base
-comma
 l_int|9600
-comma
-id|self-&gt;io.dongle_id
+suffix:semicolon
+id|via_hw_init
+c_func
+(paren
+id|self
 )paren
 suffix:semicolon
 r_return
@@ -2033,7 +2006,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
@@ -2077,7 +2050,7 @@ multiline_comment|/* Release the PORT that this driver is using */
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|4
+l_int|2
 comma
 l_string|&quot;%s(), Releasing Region %03x&bslash;n&quot;
 comma
@@ -2145,26 +2118,33 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function via_ircc_setup (info)&n; *&n; *    Returns non-negative on success.&n; *&n; */
-DECL|function|via_ircc_setup
+multiline_comment|/*&n; * Function via_hw_init(self)&n; *&n; *    Returns non-negative on success.&n; *&n; * Formerly via_ircc_setup &n; */
+DECL|function|via_hw_init
 r_static
-r_int
-id|via_ircc_setup
+r_void
+id|via_hw_init
 c_func
 (paren
-id|chipio_t
+r_struct
+id|via_ircc_cb
 op_star
-id|info
-comma
-r_int
-r_int
-id|chip_id
+id|self
 )paren
 (brace
 r_int
 id|iobase
 op_assign
-id|info-&gt;fir_base
+id|self-&gt;io.fir_base
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|SetMaxRxPacketSize
 c_func
@@ -2252,53 +2232,7 @@ l_int|0
 )paren
 suffix:semicolon
 singleline_comment|// for VT1211
-r_if
-c_cond
-(paren
-id|IsSIROn
-c_func
-(paren
-id|iobase
-)paren
-)paren
-(brace
-id|SIRFilter
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-id|SIRRecvAny
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|SIRFilter
-c_func
-(paren
-id|iobase
-comma
-id|OFF
-)paren
-suffix:semicolon
-id|SIRRecvAny
-c_func
-(paren
-id|iobase
-comma
-id|OFF
-)paren
-suffix:semicolon
-)brace
-singleline_comment|//Int Init
+multiline_comment|/* Int Init */
 id|EnRXSpecInt
 c_func
 (paren
@@ -2307,7 +2241,168 @@ comma
 id|ON
 )paren
 suffix:semicolon
-singleline_comment|//DMA Init Later....
+multiline_comment|/* The following is basically hwreset */
+multiline_comment|/* If this is the case, why not just call hwreset() ? Jean II */
+id|ResetChip
+c_func
+(paren
+id|iobase
+comma
+l_int|5
+)paren
+suffix:semicolon
+id|EnableDMA
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|EnableTX
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|EnableRX
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|EnRXDMA
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|EnTXDMA
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|RXStart
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|TXStart
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|InitCard
+c_func
+(paren
+id|iobase
+)paren
+suffix:semicolon
+id|CommonInit
+c_func
+(paren
+id|iobase
+)paren
+suffix:semicolon
+id|SIRFilter
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+id|SetSIR
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+id|CRC16
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+id|EnTXCRC
+c_func
+(paren
+id|iobase
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|WriteReg
+c_func
+(paren
+id|iobase
+comma
+id|I_ST_CT_0
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+id|SetBaudRate
+c_func
+(paren
+id|iobase
+comma
+l_int|9600
+)paren
+suffix:semicolon
+id|SetPulseWidth
+c_func
+(paren
+id|iobase
+comma
+l_int|12
+)paren
+suffix:semicolon
+id|SetSendPreambleCount
+c_func
+(paren
+id|iobase
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|self-&gt;io.speed
+op_assign
+l_int|9600
+suffix:semicolon
+id|self-&gt;st_fifo.len
+op_assign
+l_int|0
+suffix:semicolon
+id|via_ircc_change_dongle_speed
+c_func
+(paren
+id|iobase
+comma
+id|self-&gt;io.speed
+comma
+id|self-&gt;io.dongle_id
+)paren
+suffix:semicolon
 id|WriteReg
 c_func
 (paren
@@ -2317,17 +2412,6 @@ id|I_ST_CT_0
 comma
 l_int|0x80
 )paren
-suffix:semicolon
-id|EnableDMA
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function via_ircc_read_dongle_id (void)&n; *&n; */
@@ -2345,6 +2429,13 @@ r_int
 id|dongle_id
 op_assign
 l_int|9
+suffix:semicolon
+multiline_comment|/* Default to IBM */
+id|ERROR
+c_func
+(paren
+l_string|&quot;via-ircc: dongle probing not supported, please specify dongle_id module parameter.&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 id|dongle_id
@@ -2372,14 +2463,25 @@ id|mode
 op_assign
 l_int|0
 suffix:semicolon
-id|WriteReg
+multiline_comment|/* speed is unused, as we use IsSIROn()/IsMIROn() */
+id|speed
+op_assign
+id|speed
+suffix:semicolon
+id|IRDA_DEBUG
 c_func
 (paren
+l_int|1
+comma
+l_string|&quot;%s(): change_dongle_speed to %d for 0x%x, %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|speed
+comma
 id|iobase
 comma
-id|I_ST_CT_0
-comma
-l_int|0x0
+id|dongle_id
 )paren
 suffix:semicolon
 r_switch
@@ -2388,51 +2490,7 @@ c_cond
 id|dongle_id
 )paren
 (brace
-singleline_comment|//HP1100
-r_case
-l_int|0x00
-suffix:colon
-multiline_comment|/* same as */
-r_case
-l_int|0x01
-suffix:colon
-multiline_comment|/* Differential serial interface */
-r_break
-suffix:semicolon
-r_case
-l_int|0x02
-suffix:colon
-multiline_comment|/* same as */
-r_case
-l_int|0x03
-suffix:colon
-multiline_comment|/* Reserved */
-r_break
-suffix:semicolon
-r_case
-l_int|0x04
-suffix:colon
-multiline_comment|/* Sharp RY5HD01 */
-r_break
-suffix:semicolon
-r_case
-l_int|0x05
-suffix:colon
-multiline_comment|/* Reserved, but this is what the Thinkpad reports */
-r_break
-suffix:semicolon
-r_case
-l_int|0x06
-suffix:colon
-multiline_comment|/* Single-ended serial interface */
-r_break
-suffix:semicolon
-r_case
-l_int|0x07
-suffix:colon
-multiline_comment|/* Consumer-IR only */
-r_break
-suffix:semicolon
+multiline_comment|/* Note: The dongle_id&squot;s listed here are derived from&n;&t;&t; * nsc-ircc.c */
 r_case
 l_int|0x08
 suffix:colon
@@ -2866,6 +2924,114 @@ singleline_comment|//fir to rx
 r_break
 suffix:semicolon
 r_case
+l_int|0x11
+suffix:colon
+multiline_comment|/* Temic TFDS4500 */
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s: Temic TFDS4500: One RX pin, TX normal, RX inverted.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|UseOneRX
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+singleline_comment|//use ONE RX....RX1
+id|InvertTX
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+id|InvertRX
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+singleline_comment|// invert RX pin
+id|EnRX2
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+singleline_comment|//sir to rx2
+id|EnGPIOtoRX2
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IsSIROn
+c_func
+(paren
+id|iobase
+)paren
+)paren
+(brace
+singleline_comment|//sir
+singleline_comment|// Mode select On
+id|SlowIRRXLowActive
+c_func
+(paren
+id|iobase
+comma
+id|ON
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|20
+)paren
+suffix:semicolon
+singleline_comment|// Mode select Off
+id|SlowIRRXLowActive
+c_func
+(paren
+id|iobase
+comma
+id|OFF
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s: Warning: TFDS4500 not running in SIR mode !&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
 l_int|0x0ff
 suffix:colon
 multiline_comment|/* Vishay */
@@ -2933,17 +3099,21 @@ comma
 id|mode
 )paren
 suffix:semicolon
-)brace
-id|WriteReg
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ERROR
 c_func
 (paren
-id|iobase
+l_string|&quot;%s: Error: dongle_id %d unsupported !&bslash;n&quot;
 comma
-id|I_ST_CT_0
+id|__FUNCTION__
 comma
-l_int|0x80
+id|dongle_id
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Function via_ircc_change_speed (self, baud)&n; *&n; *    Change the speed of the device&n; *&n; */
 DECL|function|via_ircc_change_speed
@@ -2987,47 +3157,28 @@ id|self-&gt;io.speed
 op_assign
 id|speed
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;change_speed =%x......&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;%s: change_speed to %d bps.&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|speed
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef&t;DBG_IO
-r_if
-c_cond
-(paren
-id|self-&gt;io.speed
-OG
-l_int|0x2580
-)paren
-id|outb
+id|WriteReg
 c_func
 (paren
-l_int|0xaa
+id|iobase
 comma
-l_int|0x90
+id|I_ST_CT_0
+comma
+l_int|0x0
 )paren
 suffix:semicolon
-r_else
-id|outb
-c_func
-(paren
-l_int|0xbb
-comma
-l_int|0x90
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Controller mode sellection */
 r_switch
 c_cond
@@ -3036,111 +3187,32 @@ id|speed
 )paren
 (brace
 r_case
+l_int|2400
+suffix:colon
+r_case
 l_int|9600
 suffix:colon
-id|value
-op_assign
-l_int|11
-suffix:semicolon
-id|SetSIR
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-id|CRC16
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 l_int|19200
 suffix:colon
-id|value
-op_assign
-l_int|5
-suffix:semicolon
-id|SetSIR
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-id|CRC16
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 l_int|38400
 suffix:colon
-id|value
-op_assign
-l_int|2
-suffix:semicolon
-id|SetSIR
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-id|CRC16
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 l_int|57600
 suffix:colon
-id|value
-op_assign
-l_int|1
-suffix:semicolon
-id|SetSIR
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-id|CRC16
-c_func
-(paren
-id|iobase
-comma
-id|ON
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 l_int|115200
 suffix:colon
 id|value
 op_assign
-l_int|0
+(paren
+l_int|115200
+op_div
+id|speed
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|SetSIR
 c_func
@@ -3163,6 +3235,7 @@ suffix:semicolon
 r_case
 l_int|576000
 suffix:colon
+multiline_comment|/* FIXME: this can&squot;t be right, as it&squot;s the same as 115200,&n;&t;&t; * and 576000 is MIR, not SIR. */
 id|value
 op_assign
 l_int|0
@@ -3200,6 +3273,7 @@ comma
 id|ON
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: CRC ??? */
 r_break
 suffix:semicolon
 r_case
@@ -3266,6 +3340,7 @@ comma
 id|ON
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: CRC ??? */
 r_break
 suffix:semicolon
 r_default
@@ -3293,14 +3368,10 @@ l_int|0x03
 )paren
 suffix:semicolon
 id|bTmp
-op_assign
-id|bTmp
-op_or
-(paren
+op_or_assign
 id|value
 op_lshift
 l_int|2
-)paren
 suffix:semicolon
 id|WriteReg
 c_func
@@ -3312,6 +3383,7 @@ comma
 id|bTmp
 )paren
 suffix:semicolon
+multiline_comment|/* Some dongles may need to be informed about speed changes. */
 id|via_ircc_change_dongle_speed
 c_func
 (paren
@@ -3322,7 +3394,6 @@ comma
 id|self-&gt;io.dongle_id
 )paren
 suffix:semicolon
-singleline_comment|// EnTXFIFOHalfLevelInt(iobase,ON);
 multiline_comment|/* Set FIFO size to 64 */
 id|SetFIFO
 c_func
@@ -3332,6 +3403,18 @@ comma
 l_int|64
 )paren
 suffix:semicolon
+multiline_comment|/* Enable IR */
+id|WriteReg
+c_func
+(paren
+id|iobase
+comma
+id|I_ST_CT_0
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+singleline_comment|// EnTXFIFOHalfLevelInt(iobase,ON);
 multiline_comment|/* Enable some interrupts so we can receive frames */
 singleline_comment|//EnAllInt(iobase,ON);
 r_if
@@ -3624,12 +3707,13 @@ id|self-&gt;stats.tx_bytes
 op_add_assign
 id|self-&gt;tx_buff.len
 suffix:semicolon
+multiline_comment|/* Send this frame with old speed */
 id|SetBaudRate
 c_func
 (paren
 id|iobase
 comma
-id|speed
+id|self-&gt;io.speed
 )paren
 suffix:semicolon
 id|SetPulseWidth
@@ -4041,8 +4125,6 @@ id|u16
 id|iobase
 )paren
 (brace
-singleline_comment|//      int i;
-singleline_comment|//      u8 *ch;
 id|EnTXDMA
 c_func
 (paren
@@ -4175,14 +4257,14 @@ comma
 id|DMA_TX_MODE
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;dma_xmit:tx_fifo.ptr=%x,len=%x,tx_fifo.len=%x..&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;%s: tx_fifo.ptr=%x,len=%x,tx_fifo.len=%x..&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|self-&gt;tx_fifo.ptr
 comma
@@ -4195,10 +4277,7 @@ id|len
 comma
 id|self-&gt;tx_fifo.len
 )paren
-)paren
 suffix:semicolon
-multiline_comment|/*   &n;&t;ch = self-&gt;tx_fifo.queue[self-&gt;tx_fifo.ptr].start;&n;&t;for(i=0 ; i &lt; self-&gt;tx_fifo.queue[self-&gt;tx_fifo.ptr].len ; i++) {&n;&t;    DBG(printk(KERN_INFO &quot;%x..&bslash;n&quot;,ch[i]));&n;&t;}&n;*/
-macro_line|#endif
 id|SetSendByte
 c_func
 (paren
@@ -4259,7 +4338,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|3
 comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
@@ -4371,14 +4450,14 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;via_ircc_dma_xmit_complete:tx_fifo.len=%x ,tx_fifo.ptr=%x,tx_fifo.free=%x...&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;%s: tx_fifo.len=%x ,tx_fifo.ptr=%x,tx_fifo.free=%x...&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|self-&gt;tx_fifo.len
 comma
@@ -4386,9 +4465,7 @@ id|self-&gt;tx_fifo.ptr
 comma
 id|self-&gt;tx_fifo.free
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* F01_S&n;&t;// Any frames to be sent back-to-back? &n;&t;if (self-&gt;tx_fifo.len) {&n;&t;&t;// Not finished yet! &n;&t;  &t;via_ircc_dma_xmit(self, iobase);&n;&t;&t;ret = FALSE;&n;&t;} else { &n;F01_E*/
 singleline_comment|// Reset Tx FIFO info 
 id|self-&gt;tx_fifo.len
@@ -4438,6 +4515,16 @@ suffix:semicolon
 id|iobase
 op_assign
 id|self-&gt;io.fir_base
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|self-&gt;tx_fifo.len
 op_assign
@@ -4859,14 +4946,14 @@ l_int|2048
 )paren
 )paren
 (brace
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;receive_comple:Trouble:len=%x,CurCount=%x,LastCount=%x..&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;%s(): Trouble:len=%x,CurCount=%x,LastCount=%x..&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|len
 comma
@@ -4880,9 +4967,7 @@ id|self
 comma
 id|self-&gt;RxLastCount
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|hwreset
 c_func
 (paren
@@ -4893,14 +4978,14 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;recv_comple:fifo.len=%x,len=%x,CurCount=%x..&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): fifo.len=%x,len=%x,CurCount=%x..&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|st_fifo-&gt;len
 comma
@@ -4916,9 +5001,7 @@ comma
 id|self
 )paren
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|st_fifo-&gt;entries
 (braket
 id|st_fifo-&gt;tail
@@ -5104,14 +5187,14 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;RxT:len=%x.rx_buff=%x&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): len=%x.rx_buff=%p&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|len
 op_minus
@@ -5119,10 +5202,7 @@ l_int|4
 comma
 id|self-&gt;rx_buff.data
 )paren
-)paren
 suffix:semicolon
-multiline_comment|/*&t;&t;for(i=0 ; i &lt; (len-4) ; i++) {&n;&t;&t;    DBG(printk(KERN_INFO &quot;%x..&bslash;n&quot;,self-&gt;rx_buff.data[i]));&n;&t;&t;}&n;*/
-macro_line|#endif
 singleline_comment|// Move to next frame 
 id|self-&gt;rx_buff.data
 op_add_assign
@@ -5208,21 +5288,18 @@ comma
 id|self
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;upload_rxdata: len=%x&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): len=%x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|len
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 id|skb
 op_assign
 id|dev_alloc_skb
@@ -5620,14 +5697,14 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;RxT:len=%x.head=%x&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): len=%x.head=%x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|len
 op_minus
@@ -5635,9 +5712,7 @@ l_int|4
 comma
 id|st_fifo-&gt;head
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 singleline_comment|// Move to next frame 
 id|self-&gt;rx_buff.data
 op_add_assign
@@ -5678,14 +5753,14 @@ id|self-&gt;RetryCount
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;RxT:End of upload HostStatus=%x,RxStatus=%x&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): End of upload HostStatus=%x,RxStatus=%x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|GetHostStatus
 c_func
@@ -5699,9 +5774,7 @@ c_func
 id|iobase
 )paren
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * if frame is receive complete at this routine ,then upload&n;&t;&t; * frame.&n;&t;&t; */
 r_if
 c_cond
@@ -5864,6 +5937,59 @@ c_func
 id|iobase
 )paren
 suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;%s(): iHostIntType %02x:  %s %s %s  %02x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|iHostIntType
+comma
+(paren
+id|iHostIntType
+op_amp
+l_int|0x40
+)paren
+ques
+c_cond
+l_string|&quot;Timer&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iHostIntType
+op_amp
+l_int|0x20
+)paren
+ques
+c_cond
+l_string|&quot;Tx&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iHostIntType
+op_amp
+l_int|0x10
+)paren
+ques
+c_cond
+l_string|&quot;Rx&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iHostIntType
+op_amp
+l_int|0x0e
+)paren
+op_rshift
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5932,6 +6058,7 @@ r_if
 c_cond
 (paren
 id|irda_device_txqueue_empty
+c_func
 (paren
 id|self-&gt;netdev
 )paren
@@ -5980,6 +6107,62 @@ id|GetTXStatus
 c_func
 (paren
 id|iobase
+)paren
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;%s(): iTxIntType %02x:  %s %s %s %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|iTxIntType
+comma
+(paren
+id|iTxIntType
+op_amp
+l_int|0x08
+)paren
+ques
+c_cond
+l_string|&quot;FIFO underr.&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iTxIntType
+op_amp
+l_int|0x04
+)paren
+ques
+c_cond
+l_string|&quot;EOM&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iTxIntType
+op_amp
+l_int|0x02
+)paren
+ques
+c_cond
+l_string|&quot;FIFO ready&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iTxIntType
+op_amp
+l_int|0x01
+)paren
+ques
+c_cond
+l_string|&quot;Early EOM&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6054,25 +6237,111 @@ c_func
 id|iobase
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;%s(): iRxIntType %02x:  %s %s %s %s %s %s %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|iRxIntType
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x80
+)paren
+ques
+c_cond
+l_string|&quot;PHY err.&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x40
+)paren
+ques
+c_cond
+l_string|&quot;CRC err&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x20
+)paren
+ques
+c_cond
+l_string|&quot;FIFO overr.&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x10
+)paren
+ques
+c_cond
+l_string|&quot;EOF&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x08
+)paren
+ques
+c_cond
+l_string|&quot;RxData&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x02
+)paren
+ques
+c_cond
+l_string|&quot;RxMaxLen&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|iRxIntType
+op_amp
+l_int|0x01
+)paren
+ques
+c_cond
+l_string|&quot;SIR bad&quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|iRxIntType
 )paren
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; RxIRQ =0&bslash;n&quot;
-)paren
+l_int|3
+comma
+l_string|&quot;%s(): RxIRQ =0&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6106,14 +6375,14 @@ singleline_comment|// No ERR
 r_else
 (brace
 singleline_comment|//ERR
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot; RxIRQ ERR:iRxIntType=%x,HostIntType=%x,CurCount=%x,RxLastCount=%x_____&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%s(): RxIRQ ERR:iRxIntType=%x,HostIntType=%x,CurCount=%x,RxLastCount=%x_____&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|iRxIntType
 comma
@@ -6129,9 +6398,7 @@ id|self
 comma
 id|self-&gt;RxLastCount
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6220,19 +6487,16 @@ id|iobase
 op_assign
 id|self-&gt;io.fir_base
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;hwreset  ....&bslash;n&quot;
-)paren
+l_int|3
+comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ResetChip
 c_func
 (paren
@@ -6385,6 +6649,7 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
+multiline_comment|/* Restore speed. */
 id|via_ircc_change_speed
 c_func
 (paren
@@ -6450,21 +6715,18 @@ id|status
 op_assign
 id|TRUE
 suffix:semicolon
-macro_line|#ifdef&t;DBGMSG
-id|DBG
+id|IRDA_DEBUG
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;is_receiving  status=%x....&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;%s(): status=%x....&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|status
 )paren
-)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|status
 suffix:semicolon
@@ -6499,7 +6761,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
@@ -6552,6 +6814,7 @@ r_if
 c_cond
 (paren
 id|request_irq
+c_func
 (paren
 id|self-&gt;io.irq
 comma
@@ -6685,6 +6948,13 @@ comma
 id|OFF
 )paren
 suffix:semicolon
+multiline_comment|/* */
+id|via_ircc_dma_receive
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
 multiline_comment|/* Ready to play! */
 id|netif_start_queue
 c_func
@@ -6698,10 +6968,11 @@ c_func
 (paren
 id|hwname
 comma
-l_string|&quot;VIA&quot;
+l_string|&quot;VIA @ 0x%x&quot;
+comma
+id|iobase
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * for different kernel ,irlap_open have different parameter.&n;&t; */
 id|self-&gt;irlap
 op_assign
 id|irlap_open
@@ -6715,7 +6986,6 @@ comma
 id|hwname
 )paren
 suffix:semicolon
-singleline_comment|//      self-&gt;irlap = irlap_open(dev, &amp;self-&gt;qos);
 id|self-&gt;RxLastCount
 op_assign
 l_int|0
@@ -6748,7 +7018,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|4
+l_int|3
 comma
 l_string|&quot;%s()&bslash;n&quot;
 comma
@@ -6789,24 +7059,6 @@ l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;DBG_IO
-id|outb
-c_func
-(paren
-l_int|0xff
-comma
-l_int|0x90
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-l_int|0xff
-comma
-l_int|0x94
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Stop device */
 id|netif_stop_queue
 c_func
@@ -6963,7 +7215,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|1
 comma
 l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
 comma

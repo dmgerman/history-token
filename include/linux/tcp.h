@@ -615,6 +615,10 @@ DECL|member|tcpi_rcv_space
 id|__u32
 id|tcpi_rcv_space
 suffix:semicolon
+DECL|member|tcpi_total_retrans
+id|__u32
+id|tcpi_total_retrans
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -1217,6 +1221,11 @@ id|__u32
 id|snd_up
 suffix:semicolon
 multiline_comment|/* Urgent pointer&t;&t;*/
+DECL|member|total_retrans
+id|__u32
+id|total_retrans
+suffix:semicolon
+multiline_comment|/* Total retransmits for entire connection */
 multiline_comment|/* The syn_wait_lock is necessary only to avoid proc interface having&n;&t; * to grab the main lock sock while browsing the listening hash&n;&t; * (otherwise it&squot;s deadlock prone).&n;&t; * This lock is acquired in read mode only from listening_get_next()&n;&t; * and it&squot;s acquired in write mode _only_ from code that is actively&n;&t; * changing the syn_wait_queue. All readers that are holding&n;&t; * the master sock lock don&squot;t need to grab this lock in read mode&n;&t; * too as the syn_wait_queue writes are always protected from&n;&t; * the main sock lock.&n;&t; */
 DECL|member|syn_wait_lock
 id|rwlock_t

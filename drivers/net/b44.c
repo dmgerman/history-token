@@ -94,6 +94,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRV_MODULE_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_MODULE_VERSION
+)paren
+suffix:semicolon
 DECL|variable|b44_debug
 r_static
 r_int

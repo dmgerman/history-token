@@ -450,12 +450,6 @@ op_star
 id|usbdev
 suffix:semicolon
 multiline_comment|/* init: probe_irda */
-DECL|member|usbintf
-r_struct
-id|usb_interface
-op_star
-id|usbintf
-suffix:semicolon
 DECL|member|netdev
 r_struct
 id|net_device
@@ -1846,9 +1840,6 @@ suffix:semicolon
 id|__u8
 id|mode
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1909,60 +1900,6 @@ id|stir-&gt;speed
 comma
 id|speed
 )paren
-suffix:semicolon
-multiline_comment|/* sometimes needed to get chip out of stuck state */
-id|rc
-op_assign
-id|usb_lock_device_for_reset
-c_func
-(paren
-id|stir-&gt;usbdev
-comma
-id|stir-&gt;usbintf
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-OL
-l_int|0
-)paren
-(brace
-id|err
-op_assign
-id|rc
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|err
-op_assign
-id|usb_reset_device
-c_func
-(paren
-id|stir-&gt;usbdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-id|usb_unlock_device
-c_func
-(paren
-id|stir-&gt;usbdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_goto
-id|out
 suffix:semicolon
 multiline_comment|/* Reset modulator */
 id|err
@@ -2196,7 +2133,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|netdev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 id|netif_stop_queue
 c_func
@@ -2934,13 +2875,18 @@ id|current
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* if suspending, then power off and wait */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|current-&gt;flags
 op_amp
 id|PF_FREEZE
+)paren
 )paren
 (brace
 r_if
@@ -2996,6 +2942,7 @@ id|stir-&gt;speed
 r_break
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* if something to send? */
 id|skb
 op_assign
@@ -3333,7 +3280,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|netdev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 r_int
 id|err
@@ -3575,7 +3526,7 @@ id|stir-&gt;irlap
 id|err
 c_func
 (paren
-l_string|&quot;irlap_open failed&quot;
+l_string|&quot;stir4200: irlap_open failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3612,7 +3563,7 @@ suffix:semicolon
 id|err
 c_func
 (paren
-l_string|&quot;unable to start kernel thread&quot;
+l_string|&quot;stir4200: unable to start kernel thread&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3692,7 +3643,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|netdev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 multiline_comment|/* Stop transmit processing */
 id|netif_stop_queue
@@ -3780,7 +3735,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|netdev
 comma
 r_struct
 id|ifreq
@@ -3808,7 +3763,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -3933,7 +3892,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|netdev
 )paren
 (brace
 r_struct
@@ -3941,7 +3900,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 r_return
 op_amp
@@ -4037,7 +4000,11 @@ id|intf-&gt;dev
 suffix:semicolon
 id|stir
 op_assign
-id|net-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|net
+)paren
 suffix:semicolon
 id|stir-&gt;netdev
 op_assign
@@ -4046,10 +4013,6 @@ suffix:semicolon
 id|stir-&gt;usbdev
 op_assign
 id|dev
-suffix:semicolon
-id|stir-&gt;usbintf
-op_assign
-id|intf
 suffix:semicolon
 id|ret
 op_assign
@@ -4070,7 +4033,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;usb reset configuration failed&quot;
+l_string|&quot;stir4200: usb reset configuration failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4182,10 +4145,10 @@ l_int|0
 r_goto
 id|err_out2
 suffix:semicolon
-id|MESSAGE
+id|info
 c_func
 (paren
-l_string|&quot;IrDA: Registered SigmaTel device %s&bslash;n&quot;
+l_string|&quot;IrDA: Registered SigmaTel device %s&quot;
 comma
 id|net-&gt;name
 )paren
@@ -4268,6 +4231,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* Power management suspend, so power off the transmitter/receiver */
 DECL|function|stir_suspend
 r_static
@@ -4340,6 +4304,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * USB device callbacks&n; */
 DECL|variable|irda_driver
 r_static
@@ -4373,6 +4338,7 @@ id|id_table
 op_assign
 id|dongles
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|suspend
 op_assign
@@ -4383,6 +4349,7 @@ id|resume
 op_assign
 id|stir_resume
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Module insertion&n; */
@@ -4396,30 +4363,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|usb_register
 c_func
 (paren
 op_amp
 id|irda_driver
 )paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|MESSAGE
-c_func
-(paren
-l_string|&quot;SigmaTel support registered&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|stir_init

@@ -2437,11 +2437,16 @@ id|family
 )paren
 suffix:semicolon
 r_return
+(paren
 op_logical_neg
 id|xfrm_policy_list
 (braket
 id|dir
 )braket
+op_logical_and
+op_logical_neg
+id|skb-&gt;sp
+)paren
 op_logical_or
 (paren
 id|skb-&gt;dst-&gt;flags

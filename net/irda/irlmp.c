@@ -253,9 +253,9 @@ op_amp
 id|irlmp-&gt;cachelog-&gt;hb_spinlock
 )paren
 suffix:semicolon
-id|irlmp-&gt;free_lsap_sel
+id|irlmp-&gt;last_lsap_sel
 op_assign
-l_int|0x10
+l_int|0x0f
 suffix:semicolon
 multiline_comment|/* Reserved 0x00-0x0f */
 id|strcpy
@@ -532,7 +532,7 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
-l_string|&quot;%s: can&squot;t allocate memory&quot;
+l_string|&quot;%s: can&squot;t allocate memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -5916,7 +5916,7 @@ c_func
 id|irlmp_unregister_client
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function irlmp_slsap_inuse (slsap)&n; *&n; *    Check if the given source LSAP selector is in use&n; */
+multiline_comment|/*&n; * Function irlmp_slsap_inuse (slsap)&n; *&n; *    Check if the given source LSAP selector is in use&n; *&n; * This function is clearly not very efficient. On the mitigating side, the&n; * stack make sure that in 99% of the cases, we are called only once&n; * for each socket allocation. We could probably keep a bitmap&n; * of the allocated LSAP, but I&squot;m not sure the complexity is worth it.&n; * Jean II&n; */
 DECL|function|irlmp_slsap_inuse
 r_int
 id|irlmp_slsap_inuse
@@ -5999,7 +5999,7 @@ r_return
 id|FALSE
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
-multiline_comment|/* Valid values are between 0 and 127 */
+multiline_comment|/* Valid values are between 0 and 127 (0x0-0x6F) */
 r_if
 c_cond
 (paren
@@ -6048,12 +6048,12 @@ id|lap-&gt;magic
 op_eq
 id|LMP_LAP_MAGIC
 comma
-r_return
-id|TRUE
+r_goto
+id|errlap
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * All other uses of attrib spinlock are independent of&n;&t;&t; * the object spinlock, so we are safe. Jean II */
+multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * irlmp-&gt;links is never taken while another IrDA&n;&t;&t; * spinlock is held, so we are safe. Jean II */
 id|spin_lock
 c_func
 (paren
@@ -6061,6 +6061,7 @@ op_amp
 id|lap-&gt;lsaps-&gt;hb_spinlock
 )paren
 suffix:semicolon
+multiline_comment|/* For this IrLAP, check all the LSAPs */
 id|self
 op_assign
 (paren
@@ -6089,8 +6090,8 @@ id|self-&gt;magic
 op_eq
 id|LMP_LSAP_MAGIC
 comma
-r_return
-id|TRUE
+r_goto
+id|errlsap
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -6114,8 +6115,8 @@ comma
 id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
-r_return
-id|TRUE
+r_goto
+id|errlsap
 suffix:semicolon
 )brace
 id|self
@@ -6163,8 +6164,137 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Server sockets are typically waiting for connections and&n;&t; * therefore reside in the unconnected list. We don&squot;t want&n;&t; * to give out their LSAPs for obvious reasons...&n;&t; * Jean II&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|irlmp-&gt;unconnected_lsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|self
+op_assign
+(paren
+r_struct
+id|lsap_cb
+op_star
+)paren
+id|hashbin_get_first
+c_func
+(paren
+id|irlmp-&gt;unconnected_lsaps
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|self
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ASSERT
+c_func
+(paren
+id|self-&gt;magic
+op_eq
+id|LMP_LSAP_MAGIC
+comma
+r_goto
+id|erruncon
+suffix:semicolon
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|self-&gt;slsap_sel
+op_eq
+id|slsap_sel
+)paren
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;Source LSAP selector=%02x in use (unconnected)&bslash;n&quot;
+comma
+id|self-&gt;slsap_sel
+)paren
+suffix:semicolon
+r_goto
+id|erruncon
+suffix:semicolon
+)brace
+id|self
+op_assign
+(paren
+r_struct
+id|lsap_cb
+op_star
+)paren
+id|hashbin_get_next
+c_func
+(paren
+id|irlmp-&gt;unconnected_lsaps
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irlmp-&gt;unconnected_lsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|FALSE
+suffix:semicolon
+multiline_comment|/* Error exit from within one of the two nested loops.&n;&t; * Make sure we release the right spinlock in the righ order.&n;&t; * Jean II */
+id|errlsap
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lap-&gt;lsaps-&gt;hb_spinlock
+)paren
+suffix:semicolon
+id|errlap
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irlmp-&gt;links-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|TRUE
+suffix:semicolon
+multiline_comment|/* Error exit from within the unconnected loop.&n;&t; * Just one spinlock to release... Jean II */
+id|erruncon
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irlmp-&gt;unconnected_lsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlmp_find_free_slsap ()&n; *&n; *    Find a free source LSAP to use. This function is called if the service&n; *    user has requested a source LSAP equal to LM_ANY&n; */
@@ -6210,37 +6340,26 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|lsap_sel
-op_assign
-id|irlmp-&gt;free_lsap_sel
-op_increment
-suffix:semicolon
-multiline_comment|/* Check if the new free lsap is really free */
-r_while
-c_loop
-(paren
-id|irlmp_slsap_inuse
-c_func
-(paren
-id|irlmp-&gt;free_lsap_sel
-)paren
-)paren
+multiline_comment|/* Most users don&squot;t really care which LSAPs they are given,&n;&t; * and therefore we automatically give them a free LSAP.&n;&t; * This function try to find a suitable LSAP, i.e. which is&n;&t; * not in use and is within the acceptable range. Jean II */
+r_do
 (brace
-id|irlmp-&gt;free_lsap_sel
+multiline_comment|/* Always increment to LSAP number before using it.&n;&t;&t; * In theory, we could reuse the last LSAP number, as long&n;&t;&t; * as it is no longer in use. Some IrDA stack do that.&n;&t;&t; * However, the previous socket may be half closed, i.e.&n;&t;&t; * we closed it, we think it&squot;s no longer in use, but the&n;&t;&t; * other side did not receive our close and think it&squot;s&n;&t;&t; * active and still send data on it.&n;&t;&t; * This is similar to what is done with PIDs and TCP ports.&n;&t;&t; * Also, this reduce the number of calls to irlmp_slsap_inuse()&n;&t;&t; * which is an expensive function to call.&n;&t;&t; * Jean II */
+id|irlmp-&gt;last_lsap_sel
 op_increment
 suffix:semicolon
 multiline_comment|/* Check if we need to wraparound (0x70-0x7f are reserved) */
 r_if
 c_cond
 (paren
-id|irlmp-&gt;free_lsap_sel
+id|irlmp-&gt;last_lsap_sel
 OG
 id|LSAP_MAX
 )paren
 (brace
-id|irlmp-&gt;free_lsap_sel
+multiline_comment|/* 0x00-0x10 are also reserved for well know ports */
+id|irlmp-&gt;last_lsap_sel
 op_assign
-l_int|10
+l_int|0x10
 suffix:semicolon
 multiline_comment|/* Make sure we terminate the loop */
 r_if
@@ -6249,17 +6368,43 @@ c_cond
 id|wrapped
 op_increment
 )paren
+(brace
+id|ERROR
+c_func
+(paren
+l_string|&quot;%s: no more free LSAPs !&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* If the LSAP is in use, try the next one.&n;&t;&t; * Despite the autoincrement, we need to check if the lsap&n;&t;&t; * is really in use or not, first because LSAP may be&n;&t;&t; * directly allocated in irlmp_open_lsap(), and also because&n;&t;&t; * we may wraparound on old sockets. Jean II */
+)brace
+r_while
+c_loop
+(paren
+id|irlmp_slsap_inuse
+c_func
+(paren
+id|irlmp-&gt;last_lsap_sel
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Got it ! */
+id|lsap_sel
+op_assign
+id|irlmp-&gt;last_lsap_sel
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
 l_int|4
 comma
-l_string|&quot;%s(), next free lsap_sel=%02x&bslash;n&quot;
+l_string|&quot;%s(), found free lsap_sel=%02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

@@ -1398,12 +1398,34 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* Check if user has supplied the dongle id or not */
+multiline_comment|/* Check if user has supplied a valid dongle id or not */
 r_if
 c_cond
 (paren
-op_logical_neg
+(paren
 id|dongle_id
+op_le
+l_int|0
+)paren
+op_logical_or
+(paren
+id|dongle_id
+op_ge
+(paren
+r_sizeof
+(paren
+id|dongle_types
+)paren
+op_div
+r_sizeof
+(paren
+id|dongle_types
+(braket
+l_int|0
+)braket
+)paren
+)paren
+)paren
 )paren
 (brace
 id|dongle_id

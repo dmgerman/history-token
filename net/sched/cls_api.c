@@ -45,6 +45,7 @@ id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Find classifier type by string name */
 DECL|function|tcf_proto_lookup_ops
+r_static
 r_struct
 id|tcf_proto_ops
 op_star

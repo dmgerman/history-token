@@ -104,7 +104,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|irda_debug
+id|debug
 comma
 l_string|&quot;IRDA debugging level&quot;
 )paren
