@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 macro_line|#include &quot;fs/fs.h&quot;
 multiline_comment|/*&n; * hotplugging invokes what /proc/sys/kernel/hotplug says (normally&n; * /sbin/hotplug) when devices or classes get added or removed.&n; *&n; * This invokes a user mode policy agent, typically helping to load driver&n; * or other modules, configure the device, and more.  Drivers can provide&n; * a MODULE_DEVICE_TABLE to help with module loading subtasks.&n; *&n; * See the documentation at http://linux-hotplug.sf.net for more info.&n; * &n; */
