@@ -1531,6 +1531,12 @@ op_lshift
 l_int|8
 suffix:semicolon
 multiline_comment|/* max speed */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpsb_disable_irm
+)paren
 id|lsid
 op_or_assign
 (paren
@@ -2208,7 +2214,7 @@ l_int|14
 op_or
 id|packet-&gt;header_size
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
+macro_line|#ifndef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
@@ -8034,7 +8040,7 @@ id|PCL_CMD_RCV
 op_or
 l_int|16
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
+macro_line|#ifndef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
@@ -8588,7 +8594,14 @@ op_logical_neg
 id|lynx-&gt;phyic.reg_1394a
 )paren
 (brace
-multiline_comment|/* attempt to enable contender bit -FIXME- would this work&n;                 * elsewhere? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hpsb_disable_irm
+)paren
+(brace
+multiline_comment|/* attempt to enable contender bit -FIXME- would this&n;&t;&t;&t; * work elsewhere? */
 id|reg_set_bits
 c_func
 (paren
@@ -8612,9 +8625,10 @@ l_int|0x1
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 (brace
-multiline_comment|/* set the contender and LCtrl bit in the extended PHY register&n;                 * set. (Should check that bis 0,1,2 (=0xE0) is set&n;                 * in register 2?)&n;                 */
+multiline_comment|/* set the contender (if appropriate) and LCtrl bit in the&n;&t;&t; * extended PHY register set. (Should check that PHY_02_EXTENDED&n;&t;&t; * is set in register 2?)&n;&t;&t; */
 id|i
 op_assign
 id|get_phy_reg
@@ -8624,6 +8638,25 @@ id|lynx
 comma
 l_int|4
 )paren
+suffix:semicolon
+id|i
+op_or_assign
+id|PHY_04_LCTRL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hpsb_disable_irm
+)paren
+id|i
+op_and_assign
+op_logical_neg
+id|PHY_04_CONTENDER
+suffix:semicolon
+r_else
+id|i
+op_or_assign
+id|PHY_04_CONTENDER
 suffix:semicolon
 r_if
 c_cond
@@ -8641,8 +8674,6 @@ comma
 l_int|4
 comma
 id|i
-op_or
-l_int|0xc0
 )paren
 suffix:semicolon
 )brace
