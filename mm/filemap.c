@@ -554,12 +554,6 @@ comma
 id|offset
 )paren
 suffix:semicolon
-id|ClearPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace

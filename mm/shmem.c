@@ -1779,12 +1779,6 @@ op_amp
 id|info-&gt;lock
 )paren
 suffix:semicolon
-id|SetPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement swap count even when the entry is left behind:&n;&t; * try_to_unuse will skip over mms, then reincrement count.&n;&t; */
 id|swap_free
 c_func
@@ -2106,18 +2100,6 @@ c_func
 (paren
 op_amp
 id|info-&gt;lock
-)paren
-suffix:semicolon
-id|SetPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|set_page_dirty
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|unlock_page
