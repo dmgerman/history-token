@@ -138,10 +138,11 @@ suffix:semicolon
 multiline_comment|/* slot&squot;s pci_dev in pci_devices */
 r_union
 (brace
-DECL|member|pci_funcs
+DECL|member|pci_devs
 r_struct
 id|list_head
-id|pci_funcs
+op_star
+id|pci_devs
 suffix:semicolon
 multiline_comment|/* pci_devs in PCI slot */
 DECL|member|vio_dev
