@@ -2446,10 +2446,6 @@ id|t
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|ret
 op_assign
 id|security_task_kill
@@ -2461,7 +2457,11 @@ id|info
 comma
 id|sig
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_goto
 id|out

@@ -287,10 +287,6 @@ id|msq-&gt;q_perm.security
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_msg_queue_alloc
@@ -298,7 +294,11 @@ c_func
 (paren
 id|msq
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 (brace
 id|ipc_rcu_free

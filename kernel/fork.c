@@ -2946,10 +2946,6 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_task_create
@@ -2957,7 +2953,11 @@ c_func
 (paren
 id|clone_flags
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_goto
 id|fork_out

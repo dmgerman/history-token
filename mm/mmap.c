@@ -2046,10 +2046,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|error
 op_assign
 id|security_file_mmap
@@ -2061,7 +2057,11 @@ id|prot
 comma
 id|flags
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_return
 id|error
