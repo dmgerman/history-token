@@ -569,6 +569,7 @@ id|mult
 op_assign
 l_int|2
 op_plus
+(paren
 id|CACHE_M
 c_func
 (paren
@@ -579,6 +580,7 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -2561,6 +2563,7 @@ id|mult
 op_assign
 l_int|2
 op_plus
+(paren
 id|CACHE_M
 c_func
 (paren
@@ -2571,6 +2574,7 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 id|seq_printf
 c_func
@@ -2984,9 +2988,9 @@ id|cache_info
 )paren
 ques
 c_cond
-l_string|&quot;separate I,D&quot;
+l_string|&quot;Harvard&quot;
 suffix:colon
-l_string|&quot;unified&quot;
+l_string|&quot;Unified&quot;
 )paren
 suffix:semicolon
 r_if

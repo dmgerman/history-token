@@ -21,7 +21,7 @@ DECL|macro|DBG
 mdefine_line|#define  DBG(x...) printk(x)
 macro_line|#else
 DECL|macro|DBG
-mdefine_line|#define  DBG(x...)
+mdefine_line|#define  DBG(x...) do { } while (0)
 macro_line|#endif
 r_extern
 r_int
@@ -819,7 +819,21 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//if (ret) printk(&quot;ERROR (%08lx %08lx)&quot;, usr, uisr);
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|DBG
+c_func
+(paren
+l_string|&quot;ERROR (%08lx %08lx)&quot;
+comma
+id|usr
+comma
+id|uisr
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -849,7 +863,28 @@ suffix:semicolon
 id|u8
 id|val
 suffix:semicolon
-singleline_comment|//printk(&quot;rdb: %d:%02x.%x %02x &quot;, dev-&gt;bus-&gt;number, PCI_SLOT(dev-&gt;devfn), PCI_FUNC(dev-&gt;devfn), where);
+id|DBG
+c_func
+(paren
+l_string|&quot;rdb: %d:%02x.%x %02x &quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|where
+)paren
+suffix:semicolon
 op_star
 id|IOP310_SOCCAR
 op_assign
@@ -885,7 +920,14 @@ c_func
 l_string|&quot;nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&gt;= %08lx &quot;, val);
+id|DBG
+c_func
+(paren
+l_string|&quot;&gt;= %08lx &quot;
+comma
+id|val
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|iop310_sec_pci_status
@@ -902,7 +944,12 @@ id|val
 op_assign
 l_int|0xff
 suffix:semicolon
-singleline_comment|//printk(&quot;&bslash;n&quot;);
+id|DBG
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 op_star
 id|p
 op_assign
@@ -937,7 +984,28 @@ suffix:semicolon
 id|u16
 id|val
 suffix:semicolon
-singleline_comment|//printk(&quot;rdw: %d:%02x.%x %02x &quot;, dev-&gt;bus-&gt;number, PCI_SLOT(dev-&gt;devfn), PCI_FUNC(dev-&gt;devfn), where);
+id|DBG
+c_func
+(paren
+l_string|&quot;rdw: %d:%02x.%x %02x &quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|where
+)paren
+suffix:semicolon
 op_star
 id|IOP310_SOCCAR
 op_assign
@@ -973,7 +1041,14 @@ c_func
 l_string|&quot;nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&gt;= %08lx &quot;, val);
+id|DBG
+c_func
+(paren
+l_string|&quot;&gt;= %08lx &quot;
+comma
+id|val
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|iop310_sec_pci_status
@@ -990,7 +1065,12 @@ id|val
 op_assign
 l_int|0xffff
 suffix:semicolon
-singleline_comment|//printk(&quot;&bslash;n&quot;);
+id|DBG
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 op_star
 id|p
 op_assign
@@ -1025,7 +1105,28 @@ suffix:semicolon
 id|u32
 id|val
 suffix:semicolon
-singleline_comment|//printk(&quot;rdl: %d:%02x.%x %02x &quot;, dev-&gt;bus-&gt;number, PCI_SLOT(dev-&gt;devfn), PCI_FUNC(dev-&gt;devfn), where);
+id|DBG
+c_func
+(paren
+l_string|&quot;rdl: %d:%02x.%x %02x &quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|where
+)paren
+suffix:semicolon
 op_star
 id|IOP310_SOCCAR
 op_assign
@@ -1049,7 +1150,14 @@ c_func
 l_string|&quot;nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&gt;= %08lx &quot;, val);
+id|DBG
+c_func
+(paren
+l_string|&quot;&gt;= %08lx &quot;
+comma
+id|val
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|iop310_sec_pci_status
@@ -1066,7 +1174,12 @@ id|val
 op_assign
 l_int|0xffffffff
 suffix:semicolon
-singleline_comment|//printk(&quot;&bslash;n&quot;);
+id|DBG
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 op_star
 id|p
 op_assign
@@ -1100,7 +1213,28 @@ suffix:semicolon
 id|u32
 id|val
 suffix:semicolon
-singleline_comment|//printk(&quot;wrb: %d:%02x.%x %02x &quot;, dev-&gt;bus-&gt;number, PCI_SLOT(dev-&gt;devfn), PCI_FUNC(dev-&gt;devfn), where);
+id|DBG
+c_func
+(paren
+l_string|&quot;wrb: %d:%02x.%x %02x &quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|where
+)paren
+suffix:semicolon
 op_star
 id|IOP310_SOCCAR
 op_assign
@@ -1124,7 +1258,14 @@ c_func
 l_string|&quot;nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&lt;= %08lx&quot;, v);
+id|DBG
+c_func
+(paren
+l_string|&quot;&lt;= %08lx&quot;
+comma
+id|v
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|iop310_sec_pci_status
@@ -1171,7 +1312,12 @@ op_assign
 id|val
 suffix:semicolon
 )brace
-singleline_comment|//printk(&quot;&bslash;n&quot;);
+id|DBG
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
@@ -1200,7 +1346,28 @@ suffix:semicolon
 id|u32
 id|val
 suffix:semicolon
-singleline_comment|//printk(&quot;wrw: %d:%02x.%x %02x &quot;, dev-&gt;bus-&gt;number, PCI_SLOT(dev-&gt;devfn), PCI_FUNC(dev-&gt;devfn), where);
+id|DBG
+c_func
+(paren
+l_string|&quot;wrw: %d:%02x.%x %02x &quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|where
+)paren
+suffix:semicolon
 op_star
 id|IOP310_SOCCAR
 op_assign
@@ -1224,7 +1391,14 @@ c_func
 l_string|&quot;nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&lt;= %08lx&quot;, v);
+id|DBG
+c_func
+(paren
+l_string|&quot;&lt;= %08lx&quot;
+comma
+id|v
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|iop310_sec_pci_status
@@ -1271,7 +1445,12 @@ op_assign
 id|val
 suffix:semicolon
 )brace
-singleline_comment|//printk(&quot;&bslash;n&quot;);
+id|DBG
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
@@ -1294,7 +1473,28 @@ id|u32
 id|v
 )paren
 (brace
-singleline_comment|//printk(&quot;wrl: %d:%02x.%x %02x &quot;, dev-&gt;bus-&gt;number, PCI_SLOT(dev-&gt;devfn), PCI_FUNC(dev-&gt;devfn), where);
+id|DBG
+c_func
+(paren
+l_string|&quot;wrl: %d:%02x.%x %02x &quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|dev-&gt;devfn
+)paren
+comma
+id|where
+)paren
+suffix:semicolon
 op_star
 id|IOP310_SOCCAR
 op_assign
@@ -1318,7 +1518,14 @@ c_func
 l_string|&quot;nop; nop; nop; nop&quot;
 )paren
 suffix:semicolon
-singleline_comment|//printk(&quot;&lt;= %08lx&bslash;n&quot;, v);
+id|DBG
+c_func
+(paren
+l_string|&quot;&lt;= %08lx&bslash;n&quot;
+comma
+id|v
+)paren
+suffix:semicolon
 r_return
 id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
@@ -1360,8 +1567,18 @@ op_star
 id|regs
 )paren
 (brace
-singleline_comment|//&t;printk(&quot;PCI abort: address = %08x PC = %08x LR = %08lx&bslash;n&quot;,
-singleline_comment|//&t;&t;addr, regs-&gt;ARM_pc, regs-&gt;ARM_lr);
+id|DBG
+c_func
+(paren
+l_string|&quot;PCI abort: address = %08x PC = %08x LR = %08lx&bslash;n&quot;
+comma
+id|addr
+comma
+id|regs-&gt;ARM_pc
+comma
+id|regs-&gt;ARM_lr
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1577,7 +1794,7 @@ l_int|0
 dot
 id|name
 op_assign
-l_string|&quot;PCI IO Primary&quot;
+l_string|&quot;PCI IO Secondary&quot;
 suffix:semicolon
 id|res
 (braket
@@ -1606,7 +1823,7 @@ l_int|1
 dot
 id|name
 op_assign
-l_string|&quot;PCI Memory Primary&quot;
+l_string|&quot;PCI Memory Secondary&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1691,7 +1908,16 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;  ATU secondary: IOP310_SOMWVR=0x%04x, IOP310_SOIOWVR=0x%04x&bslash;n&quot;
+l_string|&quot;  ATU secondary: ATUCR =0x%08x&bslash;n&quot;
+comma
+op_star
+id|IOP310_ATUCR
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;  ATU secondary: SOMWVR=0x%08x  SOIOWVR=0x%08x&bslash;n&quot;
 comma
 op_star
 id|IOP310_SOMWVR
@@ -1703,16 +1929,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;  ATU secondary: IOP310_ATUCR=0x%08x&bslash;n&quot;
-comma
-op_star
-id|IOP310_ATUCR
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;  ATU secondary: IOP310_SIABAR=0x%08x IOP310_SIALR=0x%08x IOP310_SIATVR=%08x&bslash;n&quot;
+l_string|&quot;  ATU secondary: SIABAR=0x%08x  SIALR  =0x%08x SIATVR=%08x&bslash;n&quot;
 comma
 op_star
 id|IOP310_SIABAR
@@ -1727,7 +1944,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;  ATU primary: IOP310_POMWVR=0x%04x, IOP310_POIOWVR=0x%04x&bslash;n&quot;
+l_string|&quot;  ATU primary:   POMWVR=0x%08x  POIOWVR=0x%08x&bslash;n&quot;
 comma
 op_star
 id|IOP310_POMWVR
@@ -1739,7 +1956,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;  ATU secondary: IOP310_PIABAR=0x%08x IOP310_PIALR=0x%08x IOP310_PIATVR=%08x&bslash;n&quot;
+l_string|&quot;  ATU primary:   PIABAR=0x%08x  PIALR  =0x%08x PIATVR=%08x&bslash;n&quot;
 comma
 op_star
 id|IOP310_PIABAR
@@ -1754,7 +1971,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;  P2P: IOP310_PCR=0x%04x IOP310_BCR=0x%04x IOP310_EBCR=0x%04x&bslash;n&quot;
+l_string|&quot;  P2P: PCR=0x%04x BCR=0x%04x EBCR=0x%04x&bslash;n&quot;
 comma
 op_star
 id|IOP310_PCR

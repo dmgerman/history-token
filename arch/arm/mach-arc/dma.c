@@ -32,6 +32,16 @@ c_func
 l_string|&quot;arc_floppy_data_enable_dma&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma-&gt;using_sg
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -112,7 +122,7 @@ c_func
 (paren
 id|dma-&gt;buf.length
 comma
-id|dma-&gt;buf.address
+id|dma-&gt;buf.__address
 )paren
 suffix:semicolon
 multiline_comment|/* Sets data pointer up */
@@ -205,7 +215,7 @@ c_func
 (paren
 id|dma-&gt;buf.length
 comma
-id|dma-&gt;buf.address
+id|dma-&gt;buf.__address
 )paren
 suffix:semicolon
 multiline_comment|/* Sets data pointer up */
@@ -550,6 +560,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dma-&gt;using_sg
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|dma-&gt;dma_mode
 op_eq
 id|DMA_MODE_READ
@@ -643,7 +663,7 @@ op_assign
 r_int
 r_int
 )paren
-id|dma-&gt;buf.address
+id|dma-&gt;buf.__address
 suffix:semicolon
 id|regs.ARM_fp
 op_assign

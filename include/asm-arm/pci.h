@@ -2,6 +2,7 @@ macro_line|#ifndef ASMARM_PCI_H
 DECL|macro|ASMARM_PCI_H
 mdefine_line|#define ASMARM_PCI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt; /* bah! */
 macro_line|#include &lt;asm/arch/hardware.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -318,54 +319,6 @@ r_char
 op_star
 id|virt
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sg-&gt;address
-op_logical_and
-id|sg-&gt;page
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sg-&gt;address
-op_logical_and
-op_logical_neg
-id|sg-&gt;page
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sg-&gt;address
-)paren
-(brace
-id|sg-&gt;dma_address
-op_assign
-id|virt_to_bus
-c_func
-(paren
-id|sg-&gt;address
-)paren
-suffix:semicolon
-id|virt
-op_assign
-id|sg-&gt;address
-suffix:semicolon
-)brace
-r_else
-(brace
 id|sg-&gt;dma_address
 op_assign
 id|page_to_bus
@@ -386,7 +339,6 @@ id|sg-&gt;page
 op_plus
 id|sg-&gt;offset
 suffix:semicolon
-)brace
 id|consistent_sync
 c_func
 (paren
@@ -515,18 +467,6 @@ op_increment
 (brace
 r_char
 op_star
-id|virt
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sg-&gt;address
-)paren
-id|virt
-op_assign
-id|sg-&gt;address
-suffix:semicolon
-r_else
 id|virt
 op_assign
 id|page_address
