@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcauth.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/hash.h&gt;
 DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;RPCDBG_AUTH
 multiline_comment|/*&n; * AUTHUNIX and AUTHNULL credentials are both handled here.&n; * AUTHNULL is treated just like AUTHUNIX except that the uid/gid&n; * are always nobody (-2).  i.e. we do the same IP address checks for&n; * AUTHNULL as for AUTHUNIX, and that is done here.&n; */
@@ -452,19 +453,25 @@ id|item
 )paren
 (brace
 r_return
-(paren
-id|name_hash
+id|hash_str
 c_func
 (paren
 id|item-&gt;m_class
 comma
-id|IP_HASHMAX
+id|IP_HASHBITS
 )paren
 op_xor
-id|item-&gt;m_addr.s_addr
+id|hash_long
+c_func
+(paren
+(paren
+r_int
+r_int
 )paren
-op_amp
-id|IP_HASHMASK
+id|item-&gt;m_addr.s_addr
+comma
+id|IP_HASHBITS
+)paren
 suffix:semicolon
 )brace
 DECL|function|ip_map_match
