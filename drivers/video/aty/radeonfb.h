@@ -1493,24 +1493,6 @@ l_string|&quot;radeonfb: Idle Timeout !&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|radeon_accel_disabled
-r_static
-r_inline
-r_int
-id|radeon_accel_disabled
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_int
-id|radeonfb_noaccel
-suffix:semicolon
-r_return
-id|radeonfb_noaccel
-suffix:semicolon
-)brace
 DECL|macro|radeon_engine_idle
 mdefine_line|#define radeon_engine_idle()&t;&t;_radeon_engine_idle(rinfo)
 DECL|macro|radeon_fifo_wait
