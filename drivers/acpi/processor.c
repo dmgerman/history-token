@@ -4648,6 +4648,14 @@ id|tx
 op_assign
 id|pr-&gt;limit.thermal.tx
 suffix:semicolon
+id|px
+op_assign
+id|pr-&gt;limit.thermal.px
+suffix:semicolon
+id|tx
+op_assign
+id|pr-&gt;limit.thermal.tx
+suffix:semicolon
 r_switch
 c_cond
 (paren
