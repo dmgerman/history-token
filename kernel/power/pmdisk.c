@@ -28,45 +28,6 @@ op_star
 id|pagedir_save
 suffix:semicolon
 multiline_comment|/*&n; * Saving part...&n; */
-multiline_comment|/**&n; *&t;pmdisk_free - Free memory allocated to hold snapshot.&n; */
-DECL|function|pmdisk_free
-r_int
-id|pmdisk_free
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_void
-id|free_suspend_pagedir
-c_func
-(paren
-r_int
-r_int
-id|this_pagedir
-)paren
-suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;Freeing prev allocated pagedir&bslash;n&quot;
-)paren
-suffix:semicolon
-id|free_suspend_pagedir
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|pagedir_save
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|pmdisk_setup
 r_static
 r_int

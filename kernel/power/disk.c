@@ -52,7 +52,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_free
+id|swsusp_free
 c_func
 (paren
 r_void
@@ -528,7 +528,7 @@ c_func
 l_string|&quot;PM: Image restored successfully.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pmdisk_free
+id|swsusp_free
 c_func
 (paren
 )paren
@@ -646,7 +646,7 @@ c_func
 suffix:semicolon
 id|Free
 suffix:colon
-id|pmdisk_free
+id|swsusp_free
 c_func
 (paren
 )paren
