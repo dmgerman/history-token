@@ -459,9 +459,13 @@ id|inode-&gt;i_generation
 op_assign
 id|ip-&gt;i_d.di_gen
 suffix:semicolon
-id|inode-&gt;i_size
-op_assign
+id|i_size_write
+c_func
+(paren
+id|inode
+comma
 id|ip-&gt;i_d.di_size
+)paren
 suffix:semicolon
 id|inode-&gt;i_blocks
 op_assign
