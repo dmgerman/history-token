@@ -8931,10 +8931,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* Helper function for writing quotas on sync - we need to start transaction before quota file&n; * is locked for write. Otherwise the are possible deadlocks:&n; * Process 1                         Process 2&n; * ext3_create()                     quota_sync()&n; *   journal_start()                   write_dquot()&n; *   DQUOT_INIT()                        down(dqio_sem)&n; *     down(dqio_sem)                    journal_start()&n; *&n; */
 macro_line|#ifdef CONFIG_QUOTA
+multiline_comment|/* Blocks: (2 data blocks) * (3 indirect + 1 descriptor + 1 bitmap) + superblock */
 DECL|macro|EXT3_OLD_QFMT_BLOCKS
-mdefine_line|#define EXT3_OLD_QFMT_BLOCKS 2
+mdefine_line|#define EXT3_OLD_QFMT_BLOCKS 11
+multiline_comment|/* Blocks: quota info + (4 pointer blocks + 1 entry block) * (3 indirect + 1 descriptor + 1 bitmap) + superblock */
 DECL|macro|EXT3_V0_QFMT_BLOCKS
-mdefine_line|#define EXT3_V0_QFMT_BLOCKS 6
+mdefine_line|#define EXT3_V0_QFMT_BLOCKS 27
 DECL|variable|old_sync_dquot
 r_static
 r_int
