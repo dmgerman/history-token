@@ -766,6 +766,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|flags
+op_amp
+id|MCL_CURRENT
+)paren
+op_logical_or
 (paren
 id|current-&gt;mm-&gt;total_vm
 op_le
