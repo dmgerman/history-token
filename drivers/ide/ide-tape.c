@@ -2895,7 +2895,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|idetape_update_buffers
 r_static
 r_void
@@ -3006,7 +3005,6 @@ op_assign
 id|bio
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; *&t;idetape_next_pc_storage returns a pointer to a place in which we can&n; *&t;safely store a packet command, even though we intend to leave the&n; *&t;driver. A storage space for a maximum of IDETAPE_PC_STACK packet&n; *&t;commands is allocated at initialization time.&n; */
 DECL|function|idetape_next_pc_storage
 r_static
@@ -3323,7 +3321,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n;&t; *&t;Correct pc-&gt;actually_transferred by asking the tape.&n;&t; */
 r_if
 c_cond
@@ -3362,7 +3359,6 @@ id|pc
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
@@ -4906,7 +4902,6 @@ c_func
 id|IDE_STATUS_REG
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -4983,7 +4978,6 @@ l_string|&quot;ide-tape: DMA finished&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif /* IDETAPE_DEBUG_LOG */
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/* No more interrupts */
 r_if
 c_cond
@@ -5268,7 +5262,6 @@ id|drive
 suffix:semicolon
 multiline_comment|/* Command finished - Call the callback function */
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -5320,7 +5313,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|bcount.b.high
 op_assign
 id|IN_BYTE
@@ -6152,7 +6144,6 @@ op_assign
 id|pc-&gt;request_transfer
 suffix:semicolon
 multiline_comment|/* Request to transfer the entire buffer at once */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -6249,7 +6240,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
@@ -6301,7 +6291,6 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -6336,7 +6325,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_if
 c_cond
 (paren
