@@ -686,6 +686,7 @@ id|data
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* generic device remove for all device types */
+macro_line|#if defined(CONFIG_EISA) || defined(CONFIG_MCA)
 r_static
 r_int
 id|el3_device_remove
@@ -696,6 +697,7 @@ op_star
 id|device
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_EISA
 DECL|variable|el3_eisa_ids
 r_struct
