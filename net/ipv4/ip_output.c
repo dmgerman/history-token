@@ -1991,19 +1991,6 @@ id|hlen
 r_goto
 id|slow_path
 suffix:semicolon
-multiline_comment|/* Correct socket ownership. */
-r_if
-c_cond
-(paren
-id|frag-&gt;sk
-op_eq
-l_int|NULL
-op_logical_and
-id|skb-&gt;sk
-)paren
-r_goto
-id|slow_path
-suffix:semicolon
 multiline_comment|/* Partially cloned skb? */
 r_if
 c_cond
@@ -4689,7 +4676,6 @@ id|skb-&gt;data_len
 op_add_assign
 id|tmp_skb-&gt;len
 suffix:semicolon
-macro_line|#if 0 /* Logically correct, but useless work, ip_fragment() will have to undo */
 id|skb-&gt;truesize
 op_add_assign
 id|tmp_skb-&gt;truesize
@@ -4708,7 +4694,6 @@ id|tmp_skb-&gt;sk
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* Unless user demanded real pmtu discovery (IP_PMTUDISC_DO), we allow&n;&t; * to fragment the frame generated here. No matter, what transforms&n;&t; * how transforms change size of the packet, it will come out.&n;&t; */
 r_if
