@@ -288,48 +288,48 @@ macro_line|#endif
 multiline_comment|/*&n; *  Access to the controller chip.&n; *&n; *  If the CPU and the NCR use same endian-ness addressing,&n; *  no byte reordering is needed for accessing chip io &n; *  registers. Functions suffixed by &squot;_raw&squot; are assumed &n; *  to access the chip over the PCI without doing byte &n; *  reordering. Functions suffixed by &squot;_l2b&squot; are &n; *  assumed to perform little-endian to big-endian byte &n; *  reordering, those suffixed by &squot;_b2l&squot; blah, blah,&n; *  blah, ...&n; */
 multiline_comment|/*&n; *  MEMORY mapped IO input / output&n; */
 DECL|macro|INB_OFF
-mdefine_line|#define INB_OFF(o)&t;&t;readb_raw((char *)np-&gt;reg + ncr_offb(o))
+mdefine_line|#define INB_OFF(o)&t;&t;readb_raw((char __iomem *)np-&gt;reg + ncr_offb(o))
 DECL|macro|OUTB_OFF
-mdefine_line|#define OUTB_OFF(o, val)&t;writeb_raw((val), (char *)np-&gt;reg + ncr_offb(o))
+mdefine_line|#define OUTB_OFF(o, val)&t;writeb_raw((val), (char __iomem *)np-&gt;reg + ncr_offb(o))
 macro_line|#if&t;defined(__BIG_ENDIAN) &amp;&amp; !defined(SCSI_NCR_BIG_ENDIAN)
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_l2b((char *)np-&gt;reg + ncr_offw(o))
+mdefine_line|#define INW_OFF(o)&t;&t;readw_l2b((char __iomem *)np-&gt;reg + ncr_offw(o))
 DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_l2b((char *)np-&gt;reg + (o))
+mdefine_line|#define INL_OFF(o)&t;&t;readl_l2b((char __iomem *)np-&gt;reg + (o))
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_b2l((val), (char *)np-&gt;reg + ncr_offw(o))
+mdefine_line|#define OUTW_OFF(o, val)&t;writew_b2l((val), (char __iomem *)np-&gt;reg + ncr_offw(o))
 DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_b2l((val), (char *)np-&gt;reg + (o))
+mdefine_line|#define OUTL_OFF(o, val)&t;writel_b2l((val), (char __iomem *)np-&gt;reg + (o))
 macro_line|#elif&t;defined(__LITTLE_ENDIAN) &amp;&amp; defined(SCSI_NCR_BIG_ENDIAN)
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_b2l((char *)np-&gt;reg + ncr_offw(o))
+mdefine_line|#define INW_OFF(o)&t;&t;readw_b2l((char __iomem *)np-&gt;reg + ncr_offw(o))
 DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_b2l((char *)np-&gt;reg + (o))
+mdefine_line|#define INL_OFF(o)&t;&t;readl_b2l((char __iomem *)np-&gt;reg + (o))
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_l2b((val), (char *)np-&gt;reg + ncr_offw(o))
+mdefine_line|#define OUTW_OFF(o, val)&t;writew_l2b((val), (char __iomem *)np-&gt;reg + ncr_offw(o))
 DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_l2b((val), (char *)np-&gt;reg + (o))
+mdefine_line|#define OUTL_OFF(o, val)&t;writel_l2b((val), (char __iomem *)np-&gt;reg + (o))
 macro_line|#else
 macro_line|#ifdef CONFIG_SCSI_NCR53C8XX_NO_WORD_TRANSFERS
 multiline_comment|/* Only 8 or 32 bit transfers allowed */
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;(readb((char *)np-&gt;reg + ncr_offw(o)) &lt;&lt; 8 | readb((char *)np-&gt;reg + ncr_offw(o) + 1))
+mdefine_line|#define INW_OFF(o)&t;&t;(readb((char __iomem *)np-&gt;reg + ncr_offw(o)) &lt;&lt; 8 | readb((char __iomem *)np-&gt;reg + ncr_offw(o) + 1))
 macro_line|#else
 DECL|macro|INW_OFF
-mdefine_line|#define INW_OFF(o)&t;&t;readw_raw((char *)np-&gt;reg + ncr_offw(o))
+mdefine_line|#define INW_OFF(o)&t;&t;readw_raw((char __iomem *)np-&gt;reg + ncr_offw(o))
 macro_line|#endif
 DECL|macro|INL_OFF
-mdefine_line|#define INL_OFF(o)&t;&t;readl_raw((char *)np-&gt;reg + (o))
+mdefine_line|#define INL_OFF(o)&t;&t;readl_raw((char __iomem *)np-&gt;reg + (o))
 macro_line|#ifdef CONFIG_SCSI_NCR53C8XX_NO_WORD_TRANSFERS
 multiline_comment|/* Only 8 or 32 bit transfers allowed */
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;do { writeb((char)((val) &gt;&gt; 8), (char *)np-&gt;reg + ncr_offw(o)); writeb((char)(val), (char *)np-&gt;reg + ncr_offw(o) + 1); } while (0)
+mdefine_line|#define OUTW_OFF(o, val)&t;do { writeb((char)((val) &gt;&gt; 8), (char __iomem *)np-&gt;reg + ncr_offw(o)); writeb((char)(val), (char __iomem *)np-&gt;reg + ncr_offw(o) + 1); } while (0)
 macro_line|#else
 DECL|macro|OUTW_OFF
-mdefine_line|#define OUTW_OFF(o, val)&t;writew_raw((val), (char *)np-&gt;reg + ncr_offw(o))
+mdefine_line|#define OUTW_OFF(o, val)&t;writew_raw((val), (char __iomem *)np-&gt;reg + ncr_offw(o))
 macro_line|#endif
 DECL|macro|OUTL_OFF
-mdefine_line|#define OUTL_OFF(o, val)&t;writel_raw((val), (char *)np-&gt;reg + (o))
+mdefine_line|#define OUTL_OFF(o, val)&t;writel_raw((val), (char __iomem *)np-&gt;reg + (o))
 macro_line|#endif
 DECL|macro|INB
 mdefine_line|#define INB(r)&t;&t;INB_OFF (offsetof(struct ncr_reg,r))
