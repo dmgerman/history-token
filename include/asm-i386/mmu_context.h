@@ -195,8 +195,8 @@ id|state
 op_assign
 id|TLBSTATE_OK
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|cpu_tlbstate
 (braket
@@ -206,10 +206,6 @@ dot
 id|active_mm
 op_ne
 id|next
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
