@@ -43,29 +43,6 @@ DECL|macro|C2_OVERHEAD
 mdefine_line|#define C2_OVERHEAD&t;&t;&t;4&t;/* 1us (3.579 ticks per us) */
 DECL|macro|C3_OVERHEAD
 mdefine_line|#define C3_OVERHEAD&t;&t;&t;4&t;/* 1us (3.579 ticks per us) */
-DECL|variable|POWER_OF_2
-r_const
-id|u32
-id|POWER_OF_2
-(braket
-)braket
-op_assign
-(brace
-l_int|1
-comma
-l_int|2
-comma
-l_int|4
-comma
-l_int|8
-comma
-l_int|16
-comma
-l_int|32
-comma
-l_int|64
-)brace
-suffix:semicolon
 DECL|macro|ACPI_PROCESSOR_LIMIT_USER
 mdefine_line|#define ACPI_PROCESSOR_LIMIT_USER&t;0
 DECL|macro|ACPI_PROCESSOR_LIMIT_THERMAL
@@ -4978,10 +4955,9 @@ suffix:semicolon
 )brace
 id|pr-&gt;throttling.state_count
 op_assign
-id|POWER_OF_2
-(braket
+l_int|1
+op_lshift
 id|acpi_fadt.duty_width
-)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Compute state values. Note that throttling displays a linear power/&n;&t; * performance relationship (at 50% performance the CPU will consume&n;&t; * 50% power).  Values are in 1/10th of a percent to preserve accuracy.&n;&t; */
 id|step
