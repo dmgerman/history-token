@@ -28,38 +28,6 @@ id|scsicmd
 )paren
 suffix:semicolon
 r_static
-r_void
-id|ata_scsi_simulate
-c_func
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-comma
-r_struct
-id|ata_device
-op_star
-id|dev
-comma
-r_struct
-id|scsi_cmnd
-op_star
-id|cmd
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
 r_struct
 id|ata_device
 op_star
@@ -1524,7 +1492,7 @@ op_logical_and
 id|ata_id_has_flush_ext
 c_func
 (paren
-id|qc-&gt;dev
+id|qc-&gt;dev-&gt;id
 )paren
 )paren
 )paren
@@ -2920,7 +2888,7 @@ id|KM_USER0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_rbuf_fill - wrapper for SCSI command simulators&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@actor: Callback hook for desired SCSI command simulator&n; *&n; *&t;Takes care of the hard work of simulating a SCSI command...&n; *&t;Mapping the response buffer, calling the command&squot;s handler,&n; *&t;and handling the handler&squot;s return value.  This return value&n; *&t;indicates whether the handler wishes the SCSI command to be&n; *&t;completed successfully, or not.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsi_rbuf_fill - wrapper for SCSI command simulators&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@actor: Callback hook for desired SCSI command simulator&n; *&n; *&t;Takes care of the hard work of simulating a SCSI command...&n; *&t;Mapping the response buffer, calling the command&squot;s handler,&n; *&t;and handling the handler&squot;s return value.  This return value&n; *&t;indicates whether the handler wishes the SCSI command to be&n; *&t;completed successfully, or not.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsi_rbuf_fill
 r_void
 id|ata_scsi_rbuf_fill
@@ -3038,7 +3006,7 @@ id|cmd
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_inq_std - Simulate INQUIRY command&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns standard device identification data associated&n; *&t;with non-EVPD INQUIRY command output.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_inq_std - Simulate INQUIRY command&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns standard device identification data associated&n; *&t;with non-EVPD INQUIRY command output.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_inq_std
 r_int
 r_int
@@ -3059,13 +3027,6 @@ r_int
 id|buflen
 )paren
 (brace
-r_struct
-id|ata_device
-op_star
-id|dev
-op_assign
-id|args-&gt;dev
-suffix:semicolon
 id|u8
 id|hdr
 (braket
@@ -3093,7 +3054,7 @@ c_cond
 id|ata_id_removeable
 c_func
 (paren
-id|dev
+id|args-&gt;id
 )paren
 )paren
 id|hdr
@@ -3151,7 +3112,7 @@ suffix:semicolon
 id|ata_dev_id_string
 c_func
 (paren
-id|dev
+id|args-&gt;id
 comma
 op_amp
 id|rbuf
@@ -3167,7 +3128,7 @@ suffix:semicolon
 id|ata_dev_id_string
 c_func
 (paren
-id|dev
+id|args-&gt;id
 comma
 op_amp
 id|rbuf
@@ -3261,7 +3222,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_inq_00 - Simulate INQUIRY EVPD page 0, list of pages&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns list of inquiry EVPD pages available.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_inq_00 - Simulate INQUIRY EVPD page 0, list of pages&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns list of inquiry EVPD pages available.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_inq_00
 r_int
 r_int
@@ -3336,7 +3297,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_inq_80 - Simulate INQUIRY EVPD page 80, device serial number&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns ATA device serial number.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_inq_80 - Simulate INQUIRY EVPD page 80, device serial number&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns ATA device serial number.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_inq_80
 r_int
 r_int
@@ -3403,7 +3364,7 @@ l_int|4
 id|ata_dev_id_string
 c_func
 (paren
-id|args-&gt;dev
+id|args-&gt;id
 comma
 (paren
 r_int
@@ -3434,7 +3395,7 @@ id|inq_83_str
 op_assign
 l_string|&quot;Linux ATA-SCSI simulator&quot;
 suffix:semicolon
-multiline_comment|/**&n; *&t;ata_scsiop_inq_83 - Simulate INQUIRY EVPD page 83, device identity&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns device identification.  Currently hardcoded to&n; *&t;return &quot;Linux ATA-SCSI simulator&quot;.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_inq_83 - Simulate INQUIRY EVPD page 83, device identity&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Returns device identification.  Currently hardcoded to&n; *&t;return &quot;Linux ATA-SCSI simulator&quot;.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_inq_83
 r_int
 r_int
@@ -3542,7 +3503,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_noop -&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;No operation.  Simply returns success to caller, to indicate&n; *&t;that the caller should successfully complete this SCSI command.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_noop -&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;No operation.  Simply returns success to caller, to indicate&n; *&t;that the caller should successfully complete this SCSI command.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_noop
 r_int
 r_int
@@ -3642,7 +3603,7 @@ op_assign
 id|ptr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_msense_caching - Simulate MODE SENSE caching info page&n; *&t;@dev: Device associated with this MODE SENSE command&n; *&t;@ptr_io: (input/output) Location to store more output data&n; *&t;@last: End of output data buffer&n; *&n; *&t;Generate a caching info page, which conditionally indicates&n; *&t;write caching to the SCSI layer, depending on device&n; *&t;capabilities.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
+multiline_comment|/**&n; *&t;ata_msense_caching - Simulate MODE SENSE caching info page&n; *&t;@id: device IDENTIFY data&n; *&t;@ptr_io: (input/output) Location to store more output data&n; *&t;@last: End of output data buffer&n; *&n; *&t;Generate a caching info page, which conditionally indicates&n; *&t;write caching to the SCSI layer, depending on device&n; *&t;capabilities.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
 DECL|function|ata_msense_caching
 r_static
 r_int
@@ -3650,10 +3611,9 @@ r_int
 id|ata_msense_caching
 c_func
 (paren
-r_struct
-id|ata_device
+id|u16
 op_star
-id|dev
+id|id
 comma
 id|u8
 op_star
@@ -3723,7 +3683,7 @@ c_cond
 id|ata_id_wcache_enabled
 c_func
 (paren
-id|dev
+id|id
 )paren
 )paren
 id|page
@@ -3745,7 +3705,7 @@ op_logical_neg
 id|ata_id_rahead_enabled
 c_func
 (paren
-id|dev
+id|id
 )paren
 )paren
 id|page
@@ -3942,7 +3902,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_mode_sense - Simulate MODE SENSE 6, 10 commands&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Simulate MODE SENSE commands.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_mode_sense - Simulate MODE SENSE 6, 10 commands&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Simulate MODE SENSE commands.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_mode_sense
 r_int
 r_int
@@ -3974,13 +3934,6 @@ id|p
 comma
 op_star
 id|last
-suffix:semicolon
-r_struct
-id|ata_device
-op_star
-id|dev
-op_assign
-id|args-&gt;dev
 suffix:semicolon
 r_int
 r_int
@@ -4100,7 +4053,7 @@ op_add_assign
 id|ata_msense_caching
 c_func
 (paren
-id|dev
+id|args-&gt;id
 comma
 op_amp
 id|p
@@ -4149,7 +4102,7 @@ op_add_assign
 id|ata_msense_caching
 c_func
 (paren
-id|dev
+id|args-&gt;id
 comma
 op_amp
 id|p
@@ -4221,7 +4174,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_read_cap - Simulate READ CAPACITY[ 16] commands&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Simulate READ CAPACITY commands.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_read_cap - Simulate READ CAPACITY[ 16] commands&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Simulate READ CAPACITY commands.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_read_cap
 r_int
 r_int
@@ -4244,8 +4197,6 @@ id|buflen
 (brace
 id|u64
 id|n_sectors
-op_assign
-id|args-&gt;dev-&gt;n_sectors
 suffix:semicolon
 id|u32
 id|tmp
@@ -4254,6 +4205,36 @@ id|VPRINTK
 c_func
 (paren
 l_string|&quot;ENTER&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ata_id_has_lba48
+c_func
+(paren
+id|args-&gt;id
+)paren
+)paren
+id|n_sectors
+op_assign
+id|ata_id_u64
+c_func
+(paren
+id|args-&gt;id
+comma
+l_int|100
+)paren
+suffix:semicolon
+r_else
+id|n_sectors
+op_assign
+id|ata_id_u32
+c_func
+(paren
+id|args-&gt;id
+comma
+l_int|60
 )paren
 suffix:semicolon
 id|n_sectors
@@ -4472,7 +4453,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsiop_report_luns - Simulate REPORT LUNS command&n; *&t;@args: Port / device / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Simulate REPORT LUNS command.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsiop_report_luns - Simulate REPORT LUNS command&n; *&t;@args: device IDENTIFY data / SCSI command of interest.&n; *&t;@rbuf: Response buffer, to which simulated SCSI cmd output is sent.&n; *&t;@buflen: Response buffer length.&n; *&n; *&t;Simulate REPORT LUNS command.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsiop_report_luns
 r_int
 r_int
@@ -5319,9 +5300,7 @@ r_else
 id|ata_scsi_simulate
 c_func
 (paren
-id|ap
-comma
-id|dev
+id|dev-&gt;id
 comma
 id|cmd
 comma
@@ -5350,22 +5329,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_simulate - simulate SCSI command on ATA device&n; *&t;@ap: Port to which ATA device is attached.&n; *&t;@dev: Target device for CDB.&n; *&t;@cmd: SCSI command being sent to device.&n; *&t;@done: SCSI command completion function.&n; *&n; *&t;Interprets and directly executes a select list of SCSI commands&n; *&t;that can be handled internally.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsi_simulate - simulate SCSI command on ATA device&n; *&t;@id: current IDENTIFY data for target device.&n; *&t;@cmd: SCSI command being sent to device.&n; *&t;@done: SCSI command completion function.&n; *&n; *&t;Interprets and directly executes a select list of SCSI commands&n; *&t;that can be handled internally.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsi_simulate
-r_static
 r_void
 id|ata_scsi_simulate
 c_func
 (paren
-r_struct
-id|ata_port
+id|u16
 op_star
-id|ap
-comma
-r_struct
-id|ata_device
-op_star
-id|dev
+id|id
 comma
 r_struct
 id|scsi_cmnd
@@ -5394,13 +5366,9 @@ id|scsicmd
 op_assign
 id|cmd-&gt;cmnd
 suffix:semicolon
-id|args.ap
+id|args.id
 op_assign
-id|ap
-suffix:semicolon
-id|args.dev
-op_assign
-id|dev
+id|id
 suffix:semicolon
 id|args.cmd
 op_assign
