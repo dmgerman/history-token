@@ -416,12 +416,12 @@ r_int
 id|uptodate
 )paren
 (brace
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 op_assign
 (paren
-id|page_buf_t
+id|xfs_buf_t
 op_star
 )paren
 id|bh-&gt;b_private
@@ -1108,7 +1108,7 @@ id|xfs_iomap_t
 op_star
 id|iomapp
 comma
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 comma
@@ -1891,7 +1891,7 @@ id|xfs_iomap_t
 op_star
 id|tmp
 suffix:semicolon
-id|page_buf_t
+id|xfs_buf_t
 op_star
 id|pb
 suffix:semicolon
