@@ -1972,6 +1972,18 @@ l_string|&quot;NCR53c406a: No interrupts detected&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;NCR53c406a driver no longer supports polling interface&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Please email linux-scsi@vger.kernel.org&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#if USE_DMA
 id|printk
 c_func
@@ -1979,10 +1991,10 @@ c_func
 l_string|&quot;NCR53c406a: No interrupts found and DMA mode defined. Giving up.&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 r_goto
 id|err_free_scsi
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 )brace
 r_else
 (brace
