@@ -1425,6 +1425,13 @@ c_func
 id|xfrm_policy_byid
 )paren
 suffix:semicolon
+DECL|variable|xfrm_policy_list
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_policy_list
+)paren
+suffix:semicolon
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 DECL|variable|inet_release
