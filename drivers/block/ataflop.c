@@ -6162,11 +6162,11 @@ multiline_comment|/* get the parameters from user space */
 r_if
 c_cond
 (paren
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 l_int|1
 op_logical_and
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 op_minus
 l_int|1
@@ -6353,7 +6353,7 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-id|p-&gt;disk
+id|floppy-&gt;disk
 comma
 id|UDT-&gt;blocks
 )paren
@@ -6537,7 +6537,7 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-id|p-&gt;disk
+id|floppy-&gt;disk
 comma
 id|UDT-&gt;blocks
 )paren
@@ -6585,11 +6585,11 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 l_int|1
 op_logical_and
-id|p-&gt;ref
+id|floppy-&gt;ref
 op_ne
 op_minus
 l_int|1
@@ -6655,7 +6655,7 @@ suffix:semicolon
 id|set_capacity
 c_func
 (paren
-id|p-&gt;disk
+id|floppy-&gt;disk
 comma
 id|MAX_DISK_SIZE
 op_star
