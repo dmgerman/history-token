@@ -1819,6 +1819,11 @@ id|get_sb
 op_assign
 id|futexfs_get_sb
 comma
+dot
+id|kill_sb
+op_assign
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|function|init
