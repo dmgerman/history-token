@@ -453,7 +453,7 @@ suffix:semicolon
 r_else
 (brace
 macro_line|#ifdef ACPI_ALPHABETIC_NAMESPACE
-multiline_comment|/*&n;&t;&t; * Walk the list whilst searching for the the correct&n;&t;&t; * alphabetic placement.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Walk the list whilst searching for the correct&n;&t;&t; * alphabetic placement.&n;&t;&t; */
 id|previous_child_node
 op_assign
 l_int|NULL

@@ -469,14 +469,6 @@ id|acpi_hw_get_bit_register_info
 id|ACPI_BITREG_SLEEP_ENABLE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sleep_state
-op_ne
-id|ACPI_STATE_S5
-)paren
-(brace
 multiline_comment|/* Clear wake status */
 id|status
 op_assign
@@ -504,6 +496,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Clear all fixed and general purpose status bits */
 id|status
 op_assign
 id|acpi_hw_clear_acpi_status
@@ -526,6 +519,14 @@ id|status
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sleep_state
+op_ne
+id|ACPI_STATE_S5
+)paren
+(brace
 multiline_comment|/* Disable BM arbitration */
 id|status
 op_assign
@@ -554,11 +555,38 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * 1) Disable all runtime GPEs&n;&t; * 2) Enable all wakeup GPEs&n;&t; */
+multiline_comment|/*&n;&t; * 1) Disable/Clear all GPEs&n;&t; * 2) Enable all wakeup GPEs&n;&t; */
 id|status
 op_assign
-id|acpi_hw_prepare_gpes_for_sleep
+id|acpi_hw_disable_all_gpes
 (paren
+id|ACPI_ISR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|acpi_gbl_system_awake_and_running
+op_assign
+id|FALSE
+suffix:semicolon
+id|status
+op_assign
+id|acpi_hw_enable_all_wakeup_gpes
+(paren
+id|ACPI_ISR
 )paren
 suffix:semicolon
 r_if
@@ -920,11 +948,38 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * 1) Disable all runtime GPEs&n;&t; * 2) Enable all wakeup GPEs&n;&t; */
+multiline_comment|/*&n;&t; * 1) Disable/Clear all GPEs&n;&t; * 2) Enable all wakeup GPEs&n;&t; */
 id|status
 op_assign
-id|acpi_hw_prepare_gpes_for_sleep
+id|acpi_hw_disable_all_gpes
 (paren
+id|ACPI_ISR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|acpi_gbl_system_awake_and_running
+op_assign
+id|FALSE
+suffix:semicolon
+id|status
+op_assign
+id|acpi_hw_enable_all_wakeup_gpes
+(paren
+id|ACPI_ISR
 )paren
 suffix:semicolon
 r_if
@@ -1009,7 +1064,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_leave_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_leave_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *              Called with interrupts ENABLED.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_leave_sleep_state
 id|acpi_leave_sleep_state
@@ -1316,11 +1371,38 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* TBD: _WAK &quot;sometimes&quot; returns stuff - do we want to look at it? */
-multiline_comment|/*&n;&t; * Restore the GPEs:&n;&t; * 1) Disable all wakeup GPEs&n;&t; * 2) Enable all runtime GPEs&n;&t; */
+multiline_comment|/*&n;&t; * Restore the GPEs:&n;&t; * 1) Disable/Clear all GPEs&n;&t; * 2) Enable all runtime GPEs&n;&t; */
 id|status
 op_assign
-id|acpi_hw_restore_gpes_on_wake
+id|acpi_hw_disable_all_gpes
 (paren
+id|ACPI_NOT_ISR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|acpi_gbl_system_awake_and_running
+op_assign
+id|TRUE
+suffix:semicolon
+id|status
+op_assign
+id|acpi_hw_enable_all_runtime_gpes
+(paren
+id|ACPI_NOT_ISR
 )paren
 suffix:semicolon
 r_if
@@ -1339,6 +1421,9 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Enable power button */
+(paren
+r_void
+)paren
 id|acpi_set_register
 c_func
 (paren
@@ -1354,6 +1439,9 @@ comma
 id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
+(paren
+r_void
+)paren
 id|acpi_set_register
 c_func
 (paren

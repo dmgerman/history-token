@@ -7,10 +7,13 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the debug facilities of the&n; *                        ACPI subsystem.  This includes the DEBUG_PRINT output&n; *                        statements.  When disabled, all DEBUG_PRINT&n; *                        statements are compiled out.&n; *&n; * ACPI_APPLICATION     - Use this switch if the subsystem is going to be run&n; *                        at the application level.&n; *&n; */
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20040326
+mdefine_line|#define ACPI_CA_VERSION                 0x20040715
+multiline_comment|/*&n; * OS name, used for the _OS object.  The _OS object is essentially obsolete,&n; * but there is a large base of ASL/AML code in existing machines that check&n; * for the string below.  The use of this string usually guarantees that&n; * the ASL will execute down the most tested code path.  Also, there is some&n; * code that will not execute the _OSI method unless _OS matches the string&n; * below.  Therefore, change this string at your own risk.&n; */
+DECL|macro|ACPI_OS_NAME
+mdefine_line|#define ACPI_OS_NAME                    &quot;Microsoft Windows NT&quot;
 multiline_comment|/* Maximum objects in the various object caches */
 DECL|macro|ACPI_MAX_STATE_CACHE_DEPTH
-mdefine_line|#define ACPI_MAX_STATE_CACHE_DEPTH      64          /* State objects for stacks */
+mdefine_line|#define ACPI_MAX_STATE_CACHE_DEPTH      64          /* State objects */
 DECL|macro|ACPI_MAX_PARSE_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_PARSE_CACHE_DEPTH      96          /* Parse tree objects */
 DECL|macro|ACPI_MAX_EXTPARSE_CACHE_DEPTH
@@ -76,14 +79,16 @@ mdefine_line|#define ACPI_PATH_SEGMENT_LENGTH        5           /* 4 chars for 
 DECL|macro|ACPI_PATH_SEPARATOR
 mdefine_line|#define ACPI_PATH_SEPARATOR             &squot;.&squot;
 multiline_comment|/* Constants used in searching for the RSDP in low memory */
-DECL|macro|ACPI_LO_RSDP_WINDOW_BASE
-mdefine_line|#define ACPI_LO_RSDP_WINDOW_BASE        0           /* Physical Address */
+DECL|macro|ACPI_EBDA_PTR_LOCATION
+mdefine_line|#define ACPI_EBDA_PTR_LOCATION          0x0000040E     /* Physical Address */
+DECL|macro|ACPI_EBDA_PTR_LENGTH
+mdefine_line|#define ACPI_EBDA_PTR_LENGTH            2
+DECL|macro|ACPI_EBDA_WINDOW_SIZE
+mdefine_line|#define ACPI_EBDA_WINDOW_SIZE           1024
 DECL|macro|ACPI_HI_RSDP_WINDOW_BASE
-mdefine_line|#define ACPI_HI_RSDP_WINDOW_BASE        0xE0000     /* Physical Address */
-DECL|macro|ACPI_LO_RSDP_WINDOW_SIZE
-mdefine_line|#define ACPI_LO_RSDP_WINDOW_SIZE        0x400
+mdefine_line|#define ACPI_HI_RSDP_WINDOW_BASE        0x000E0000     /* Physical Address */
 DECL|macro|ACPI_HI_RSDP_WINDOW_SIZE
-mdefine_line|#define ACPI_HI_RSDP_WINDOW_SIZE        0x20000
+mdefine_line|#define ACPI_HI_RSDP_WINDOW_SIZE        0x00020000
 DECL|macro|ACPI_RSDP_SCAN_STEP
 mdefine_line|#define ACPI_RSDP_SCAN_STEP             16
 multiline_comment|/* Operation regions */
@@ -117,7 +122,7 @@ DECL|macro|ACPI_SMBUS_BUFFER_SIZE
 mdefine_line|#define ACPI_SMBUS_BUFFER_SIZE          34
 multiline_comment|/* Number of strings associated with the _OSI reserved method */
 DECL|macro|ACPI_NUM_OSI_STRINGS
-mdefine_line|#define ACPI_NUM_OSI_STRINGS            4
+mdefine_line|#define ACPI_NUM_OSI_STRINGS            9
 multiline_comment|/******************************************************************************&n; *&n; * ACPI AML Debugger&n; *&n; *****************************************************************************/
 DECL|macro|ACPI_DEBUGGER_MAX_ARGS
 mdefine_line|#define ACPI_DEBUGGER_MAX_ARGS          8  /* Must be max method args + 1 */

@@ -225,7 +225,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Walk namespace for all objects of type Device or Processor */
+multiline_comment|/* Walk namespace for all objects */
 id|status
 op_assign
 id|acpi_ns_walk_namespace
@@ -646,17 +646,6 @@ op_star
 id|return_value
 )paren
 (brace
-id|acpi_status
-id|status
-suffix:semicolon
-r_struct
-id|acpi_namespace_node
-op_star
-id|node
-suffix:semicolon
-id|u32
-id|flags
-suffix:semicolon
 r_struct
 id|acpi_device_walk_info
 op_star
@@ -669,12 +658,30 @@ op_star
 )paren
 id|context
 suffix:semicolon
+r_struct
+id|acpi_parameter_info
+id|pinfo
+suffix:semicolon
+id|u32
+id|flags
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ns_init_one_device&quot;
 )paren
 suffix:semicolon
-id|node
+id|pinfo.parameters
+op_assign
+l_int|NULL
+suffix:semicolon
+id|pinfo.parameter_type
+op_assign
+id|ACPI_PARAM_ARGS
+suffix:semicolon
+id|pinfo.node
 op_assign
 id|acpi_ns_map_handle_to_node
 (paren
@@ -685,7 +692,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|node
+id|pinfo.node
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -694,20 +701,26 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We will run _STA/_INI on Devices and Processors only&n;&t; */
+multiline_comment|/*&n;&t; * We will run _STA/_INI on Devices, Processors and thermal_zones only&n;&t; */
 r_if
 c_cond
 (paren
 (paren
-id|node-&gt;type
+id|pinfo.node-&gt;type
 op_ne
 id|ACPI_TYPE_DEVICE
 )paren
 op_logical_and
 (paren
-id|node-&gt;type
+id|pinfo.node-&gt;type
 op_ne
 id|ACPI_TYPE_PROCESSOR
+)paren
+op_logical_and
+(paren
+id|pinfo.node-&gt;type
+op_ne
+id|ACPI_TYPE_THERMAL
 )paren
 )paren
 (brace
@@ -756,7 +769,7 @@ id|acpi_ut_display_init_pathname
 (paren
 id|ACPI_TYPE_METHOD
 comma
-id|node
+id|pinfo.node
 comma
 l_string|&quot;_STA&quot;
 )paren
@@ -766,7 +779,7 @@ id|status
 op_assign
 id|acpi_ut_execute_STA
 (paren
-id|node
+id|pinfo.node
 comma
 op_amp
 id|flags
@@ -784,7 +797,7 @@ id|status
 r_if
 c_cond
 (paren
-id|node-&gt;type
+id|pinfo.node-&gt;type
 op_eq
 id|ACPI_TYPE_DEVICE
 )paren
@@ -796,7 +809,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* _STA is not required for Processor objects */
+multiline_comment|/* _STA is not required for Processor or thermal_zone objects */
 )brace
 r_else
 (brace
@@ -830,7 +843,7 @@ id|acpi_ut_display_init_pathname
 (paren
 id|ACPI_TYPE_METHOD
 comma
-id|obj_handle
+id|pinfo.node
 comma
 l_string|&quot;_INI&quot;
 )paren
@@ -840,13 +853,10 @@ id|status
 op_assign
 id|acpi_ns_evaluate_relative
 (paren
-id|obj_handle
-comma
 l_string|&quot;_INI&quot;
 comma
-l_int|NULL
-comma
-l_int|NULL
+op_amp
+id|pinfo
 )paren
 suffix:semicolon
 r_if
@@ -875,7 +885,7 @@ id|scope_name
 op_assign
 id|acpi_ns_get_external_pathname
 (paren
-id|obj_handle
+id|pinfo.node
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -924,7 +934,7 @@ id|status
 op_assign
 id|acpi_gbl_init_handler
 (paren
-id|obj_handle
+id|pinfo.node
 comma
 id|ACPI_INIT_DEVICE_INI
 )paren

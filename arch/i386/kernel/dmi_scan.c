@@ -708,54 +708,6 @@ DECL|macro|NO_MATCH
 mdefine_line|#define NO_MATCH&t;{ DMI_NONE, NULL}
 DECL|macro|MATCH
 mdefine_line|#define MATCH&t;&t;DMI_MATCH
-multiline_comment|/*&n; * Some machines, usually laptops, can&squot;t handle an enabled local APIC.&n; * The symptoms include hangs or reboots when suspending or resuming,&n; * attaching or detaching the power cord, or entering BIOS setup screens&n; * through magic key sequences.&n; */
-DECL|function|local_apic_kills_bios
-r_static
-r_int
-id|__init
-id|local_apic_kills_bios
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-r_extern
-r_int
-id|enable_local_apic
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|enable_local_apic
-op_eq
-l_int|0
-)paren
-(brace
-id|enable_local_apic
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s with broken BIOS detected. &quot;
-l_string|&quot;Refusing to enable the local APIC.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Toshiba keyboard likes to repeat keys when they are not repeated.&n; */
 DECL|function|broken_toshiba_keyboard
 r_static

@@ -195,6 +195,20 @@ suffix:semicolon
 id|n_mappings
 op_increment
 suffix:semicolon
+macro_line|#if defined(ZX1_SUPPORT)
+multiline_comment|/* Pluto IOMMU IO Virt Address is not zero based */
+id|sg_dma_address
+c_func
+(paren
+id|dma_sg
+)paren
+op_assign
+id|pide
+op_or
+id|ioc-&gt;ibase
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* SBA, ccio, and dino are zero based.&n;&t;&t;&t; * Trying to save a few CPU cycles for most users.&n;&t;&t;&t; */
 id|sg_dma_address
 c_func
 (paren
@@ -203,6 +217,7 @@ id|dma_sg
 op_assign
 id|pide
 suffix:semicolon
+macro_line|#endif
 id|pdirp
 op_assign
 op_amp

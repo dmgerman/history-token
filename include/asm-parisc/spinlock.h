@@ -3,10 +3,13 @@ DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* Note that PA-RISC has to use `1&squot; to mean unlocked and `0&squot; to mean locked&n; * since it only has load-and-zero. Moreover, at least on some PA processors,&n; * the semaphore address has to be 16-byte aligned.&n; */
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
+DECL|macro|__SPIN_LOCK_UNLOCKED
+mdefine_line|#define __SPIN_LOCK_UNLOCKED&t;{ { 1, 1, 1, 1 } }
 DECL|macro|SPIN_LOCK_UNLOCKED
 macro_line|#undef SPIN_LOCK_UNLOCKED
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { { 1, 1, 1, 1 } }
+mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) __SPIN_LOCK_UNLOCKED
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 DECL|function|spin_is_locked
@@ -153,6 +156,87 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|spin_lock_own
+mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;((void)0)
+macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
+DECL|macro|SPINLOCK_MAGIC
+mdefine_line|#define SPINLOCK_MAGIC&t;0x1D244B3C
+DECL|macro|__SPIN_LOCK_UNLOCKED
+mdefine_line|#define __SPIN_LOCK_UNLOCKED&t;{ { 1, 1, 1, 1 }, SPINLOCK_MAGIC, 10, __FILE__ , NULL, 0, -1, NULL, NULL }
+DECL|macro|SPIN_LOCK_UNLOCKED
+macro_line|#undef SPIN_LOCK_UNLOCKED
+DECL|macro|SPIN_LOCK_UNLOCKED
+mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) __SPIN_LOCK_UNLOCKED
+DECL|macro|spin_lock_init
+mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
+DECL|macro|CHECK_LOCK
+mdefine_line|#define CHECK_LOCK(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;if (unlikely((x)-&gt;magic != SPINLOCK_MAGIC)) {&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;%s:%d: spin_is_locked&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot; on uninitialized spinlock %p.&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;&t;__FILE__, __LINE__, (x)); &t;&t;&bslash;&n;&t;&t;} &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+DECL|macro|spin_is_locked
+mdefine_line|#define spin_is_locked(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;CHECK_LOCK(x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;volatile unsigned int *a = __ldcw_align(x);&t;&t;&bslash;&n;&t;&t;if (unlikely((*a == 0) &amp;&amp; (x)-&gt;babble)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;(x)-&gt;babble--;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;KERN_WARNING&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;%s:%d: spin_is_locked(%s/%p) already&quot;&t;&bslash;&n;&t;&t;&t;&t;&quot; locked by %s:%d in %s at %p(%d)&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module,&t;(x),&t;&bslash;&n;&t;&t;&t;&t;(x)-&gt;bfile, (x)-&gt;bline, (x)-&gt;task-&gt;comm,&bslash;&n;&t;&t;&t;&t;(x)-&gt;previous, (x)-&gt;oncpu);&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*a == 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|spin_unlock_wait
+mdefine_line|#define spin_unlock_wait(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;CHECK_LOCK(x);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;volatile unsigned int *a = __ldcw_align(x);&t;&t;&bslash;&n;&t;&t;if (unlikely((*a == 0) &amp;&amp; (x)-&gt;babble)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;(x)-&gt;babble--;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;KERN_WARNING&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;%s:%d: spin_unlock_wait(%s/%p)&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;&quot; owned by %s:%d in %s at %p(%d)&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, (x),&t;&bslash;&n;&t;&t;&t;&t;(x)-&gt;bfile, (x)-&gt;bline, (x)-&gt;task-&gt;comm,&bslash;&n;&t;&t;&t;&t;(x)-&gt;previous, (x)-&gt;oncpu);&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;barrier();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (*((volatile unsigned char *)(__ldcw_align(x))) == 0)
+r_extern
+r_void
+id|_dbg_spin_lock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+comma
+r_const
+r_char
+op_star
+id|base_file
+comma
+r_int
+id|line_no
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|_dbg_spin_unlock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|_dbg_spin_trylock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+comma
+r_const
+r_char
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
+DECL|macro|_raw_spin_unlock
+mdefine_line|#define _raw_spin_unlock(lock)&t;_dbg_spin_unlock(lock, __FILE__, __LINE__)
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(lock) _dbg_spin_lock(lock, __FILE__, __LINE__)
+DECL|macro|_raw_spin_trylock
+mdefine_line|#define _raw_spin_trylock(lock) _dbg_spin_trylock(lock, __FILE__, __LINE__)
+multiline_comment|/* just in case we need it */
+DECL|macro|spin_lock_own
+mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;volatile unsigned int *a = __ldcw_align(LOCK);&t;&t;&t;&bslash;&n;&t;if (!((*a == 0) &amp;&amp; ((LOCK)-&gt;oncpu == smp_processor_id())))&t;&bslash;&n;&t;&t;printk(&quot;KERN_WARNING&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;%s: called on %d from %p but lock %s on %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;LOCATION, smp_processor_id(),&t;&t;&t;&bslash;&n;&t;&t;&t;__builtin_return_address(0),&t;&t;&t;&bslash;&n;&t;&t;&t;(*a == 0) ? &quot;taken&quot; : &quot;freed&quot;, (LOCK)-&gt;on_cpu);&t;&bslash;&n;} while (0)
+macro_line|#endif /* !(CONFIG_DEBUG_SPINLOCK) */
 multiline_comment|/*&n; * Read-write spinlocks, allowing multiple readers&n; * but only one writer.&n; */
 r_typedef
 r_struct
@@ -171,12 +255,34 @@ DECL|typedef|rwlock_t
 id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { { { 1, 1, 1, 1 } }, 0 }
+mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { __SPIN_LOCK_UNLOCKED, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp)&t;do { *(lp) = RW_LOCK_UNLOCKED; } while (0)
 DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(lp) ((lp)-&gt;counter != 0)
 multiline_comment|/* read_lock, read_unlock are pretty straightforward.  Of course it somehow&n; * sucks we end up saving/restoring flags twice for read_lock_irqsave aso. */
+macro_line|#ifdef CONFIG_DEBUG_RWLOCK
+r_extern
+r_void
+id|_dbg_read_lock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+comma
+r_const
+r_char
+op_star
+id|bfile
+comma
+r_int
+id|bline
+)paren
+suffix:semicolon
+DECL|macro|_raw_read_lock
+mdefine_line|#define _raw_read_lock(rw) _dbg_read_lock(rw, __FILE__, __LINE__)
+macro_line|#else
 DECL|function|_raw_read_lock
 r_static
 id|__inline__
@@ -223,6 +329,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_DEBUG_RWLOCK */
 DECL|function|_raw_read_unlock
 r_static
 id|__inline__
@@ -270,6 +377,28 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* write_lock is less trivial.  We optimistically grab the lock and check&n; * if we surprised any readers.  If so we release the lock and wait till&n; * they&squot;re all gone before trying again&n; *&n; * Also note that we don&squot;t use the _irqsave / _irqrestore suffixes here.&n; * If we&squot;re called with interrupts enabled and we&squot;ve got readers (or other&n; * writers) in interrupt handlers someone fucked up and we&squot;d dead-lock&n; * sooner or later anyway.   prumpf */
+macro_line|#ifdef CONFIG_DEBUG_RWLOCK
+r_extern
+r_void
+id|_dbg_write_lock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+comma
+r_const
+r_char
+op_star
+id|bfile
+comma
+r_int
+id|bline
+)paren
+suffix:semicolon
+DECL|macro|_raw_write_lock
+mdefine_line|#define _raw_write_lock(rw) _dbg_write_lock(rw, __FILE__, __LINE__)
+macro_line|#else
 DECL|function|_raw_write_lock
 r_static
 id|__inline__
@@ -329,6 +458,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* remember we are locked */
 )brace
+macro_line|#endif /* CONFIG_DEBUG_RWLOCK */
 multiline_comment|/* write_unlock is absolutely trivial - we don&squot;t have to wait for anything */
 DECL|function|_raw_write_unlock
 r_static

@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exmutex&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_unlink_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The mutex to be unlinked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a mutex from the &quot;acquired_mutex&quot; list&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_unlink_mutex&n; *&n; * PARAMETERS:  obj_desc            - The mutex to be unlinked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a mutex from the &quot;acquired_mutex&quot; list&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_unlink_mutex
 id|acpi_ex_unlink_mutex
@@ -36,6 +36,7 @@ id|thread
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Doubly linked list */
 r_if
 c_cond
 (paren
@@ -74,7 +75,7 @@ id|obj_desc-&gt;mutex.next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_link_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The mutex to be linked&n; *              *list_head          - head of the &quot;acquired_mutex&quot; list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Add a mutex to the &quot;acquired_mutex&quot; list for this walk&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_link_mutex&n; *&n; * PARAMETERS:  obj_desc            - The mutex to be linked&n; *              list_head           - head of the &quot;acquired_mutex&quot; list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Add a mutex to the &quot;acquired_mutex&quot; list for this walk&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_link_mutex
 id|acpi_ex_link_mutex
@@ -126,7 +127,7 @@ op_assign
 id|obj_desc
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_acquire_mutex&n; *&n; * PARAMETERS:  *time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire an AML mutex&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_acquire_mutex&n; *&n; * PARAMETERS:  time_desc           - The &squot;time to delay&squot; object descriptor&n; *              obj_desc            - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire an AML mutex&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_acquire_mutex
 id|acpi_ex_acquire_mutex
@@ -223,7 +224,7 @@ id|AE_AML_MUTEX_ORDER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Support for multiple acquires by the owning thread&n;&t; */
+multiline_comment|/* Support for multiple acquires by the owning thread */
 r_if
 c_cond
 (paren
@@ -284,7 +285,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Have the mutex, update mutex and walk info */
+multiline_comment|/* Have the mutex: update mutex and walk info and save the sync_level */
 id|obj_desc-&gt;mutex.owner_thread
 op_assign
 id|walk_state-&gt;thread
@@ -292,6 +293,10 @@ suffix:semicolon
 id|obj_desc-&gt;mutex.acquisition_depth
 op_assign
 l_int|1
+suffix:semicolon
+id|obj_desc-&gt;mutex.original_sync_level
+op_assign
+id|walk_state-&gt;thread-&gt;current_sync_level
 suffix:semicolon
 id|walk_state-&gt;thread-&gt;current_sync_level
 op_assign
@@ -311,7 +316,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release a previously acquired Mutex.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_mutex&n; *&n; * PARAMETERS:  obj_desc            - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release a previously acquired Mutex.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_release_mutex
 id|acpi_ex_release_mutex
@@ -466,7 +471,7 @@ id|AE_AML_MUTEX_ORDER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Match multiple Acquires with multiple Releases&n;&t; */
+multiline_comment|/* Match multiple Acquires with multiple Releases */
 id|obj_desc-&gt;mutex.acquisition_depth
 op_decrement
 suffix:semicolon
@@ -499,14 +504,14 @@ id|acpi_ex_system_release_mutex
 id|obj_desc
 )paren
 suffix:semicolon
-multiline_comment|/* Update the mutex and walk state */
+multiline_comment|/* Update the mutex and walk state, restore sync_level before acquire */
 id|obj_desc-&gt;mutex.owner_thread
 op_assign
 l_int|NULL
 suffix:semicolon
 id|walk_state-&gt;thread-&gt;current_sync_level
 op_assign
-id|obj_desc-&gt;mutex.sync_level
+id|obj_desc-&gt;mutex.original_sync_level
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -514,7 +519,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_all_mutexes&n; *&n; * PARAMETERS:  *mutex_list           - Head of the mutex list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release all mutexes in the list&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_all_mutexes&n; *&n; * PARAMETERS:  mutex_list            - Head of the mutex list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release all mutexes in the list&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_release_all_mutexes
 id|acpi_ex_release_all_mutexes
@@ -544,7 +549,7 @@ id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Traverse the list of owned mutexes, releasing each one.&n;&t; */
+multiline_comment|/* Traverse the list of owned mutexes, releasing each one */
 r_while
 c_loop
 (paren
@@ -595,6 +600,11 @@ multiline_comment|/* Mark mutex unowned */
 id|this-&gt;mutex.owner_thread
 op_assign
 l_int|NULL
+suffix:semicolon
+multiline_comment|/* Update Thread sync_level (Last mutex is the important one) */
+id|thread-&gt;current_sync_level
+op_assign
+id|this-&gt;mutex.original_sync_level
 suffix:semicolon
 )brace
 )brace

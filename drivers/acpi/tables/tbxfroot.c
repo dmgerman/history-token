@@ -169,7 +169,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - Physical/Virtual support&n; *              ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an out_buffer large enough to contain the entire ACPI&n; *              table.  Upon completion&n; *              the out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the out_buffer-&gt;buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - Physical/Virtual support&n; *              table_pointer   - Where a buffer containing the table is&n; *                                returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table. A buffer is&n; *              allocated for the table and returned in table_pointer.&n; *              This table will be a complete table including the header.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_firmware_table
 id|acpi_get_firmware_table
@@ -190,27 +190,30 @@ op_star
 id|table_pointer
 )paren
 (brace
-r_struct
-id|acpi_pointer
-id|rsdp_address
+id|acpi_status
+id|status
 suffix:semicolon
 r_struct
 id|acpi_pointer
 id|address
 suffix:semicolon
-id|acpi_status
-id|status
-suffix:semicolon
 r_struct
 id|acpi_table_header
+op_star
 id|header
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|acpi_table_desc
+op_star
 id|table_info
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|acpi_table_desc
+op_star
 id|rsdt_info
 suffix:semicolon
 id|u32
@@ -227,8 +230,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_get_firmware_table&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ensure that at least the table manager is initialized.  We don&squot;t&n;&t; * require that the entire ACPI subsystem is up for this interface&n;&t; */
-multiline_comment|/*&n;&t; *  If we have a buffer, we must have a length too&n;&t; */
+multiline_comment|/*&n;&t; * Ensure that at least the table manager is initialized.  We don&squot;t&n;&t; * require that the entire ACPI subsystem is up for this interface.&n;&t; * If we have a buffer, we must have a length too&n;&t; */
 r_if
 c_cond
 (paren
@@ -255,10 +257,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|rsdt_info.pointer
-op_assign
-l_int|NULL
-suffix:semicolon
+multiline_comment|/* Ensure that we have a RSDP */
 r_if
 c_cond
 (paren
@@ -274,7 +273,7 @@ id|acpi_os_get_root_pointer
 id|flags
 comma
 op_amp
-id|rsdp_address
+id|address
 )paren
 suffix:semicolon
 r_if
@@ -291,7 +290,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;RSDP  not found&bslash;n&quot;
+l_string|&quot;RSDP not found&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -318,7 +317,7 @@ id|status
 op_assign
 id|acpi_os_map_memory
 (paren
-id|rsdp_address.pointer.physical
+id|address.pointer.physical
 comma
 r_sizeof
 (paren
@@ -354,10 +353,10 @@ r_else
 (brace
 id|acpi_gbl_RSDP
 op_assign
-id|rsdp_address.pointer.logical
+id|address.pointer.logical
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *  The signature and checksum must both be correct&n;&t;&t; */
+multiline_comment|/* The signature and checksum must both be correct */
 r_if
 c_cond
 (paren
@@ -410,7 +409,7 @@ id|AE_BAD_CHECKSUM
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Get the RSDT and validate it */
+multiline_comment|/* Get the RSDT address via the RSDP */
 id|acpi_tb_get_rsdt_address
 (paren
 op_amp
@@ -438,6 +437,31 @@ id|address.pointer_type
 op_or_assign
 id|flags
 suffix:semicolon
+multiline_comment|/* Get and validate the RSDT */
+id|rsdt_info
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+r_sizeof
+(paren
+r_struct
+id|acpi_table_desc
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rsdt_info
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_tb_get_table
@@ -445,30 +469,7 @@ id|acpi_tb_get_table
 op_amp
 id|address
 comma
-op_amp
 id|rsdt_info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|acpi_tb_validate_rsdt
-(paren
-id|rsdt_info.pointer
 )paren
 suffix:semicolon
 r_if
@@ -484,6 +485,79 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+id|status
+op_assign
+id|acpi_tb_validate_rsdt
+(paren
+id|rsdt_info-&gt;pointer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+multiline_comment|/* Allocate a scratch table header and table descriptor */
+id|header
+op_assign
+id|ACPI_MEM_ALLOCATE
+(paren
+r_sizeof
+(paren
+r_struct
+id|acpi_table_header
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|header
+)paren
+(brace
+id|status
+op_assign
+id|AE_NO_MEMORY
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|table_info
+op_assign
+id|ACPI_MEM_ALLOCATE
+(paren
+r_sizeof
+(paren
+r_struct
+id|acpi_table_desc
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|table_info
+)paren
+(brace
+id|status
+op_assign
+id|AE_NO_MEMORY
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 multiline_comment|/* Get the number of table pointers within the RSDT */
 id|table_count
 op_assign
@@ -491,7 +565,7 @@ id|acpi_tb_get_table_count
 (paren
 id|acpi_gbl_RSDP
 comma
-id|rsdt_info.pointer
+id|rsdt_info-&gt;pointer
 )paren
 suffix:semicolon
 id|address.pointer_type
@@ -536,7 +610,7 @@ id|ACPI_CAST_PTR
 (paren
 id|RSDT_DESCRIPTOR
 comma
-id|rsdt_info.pointer
+id|rsdt_info-&gt;pointer
 )paren
 )paren
 op_member_access_from_pointer
@@ -555,7 +629,7 @@ id|ACPI_CAST_PTR
 (paren
 id|XSDT_DESCRIPTOR
 comma
-id|rsdt_info.pointer
+id|rsdt_info-&gt;pointer
 )paren
 )paren
 op_member_access_from_pointer
@@ -573,7 +647,6 @@ id|acpi_tb_get_table_header
 op_amp
 id|address
 comma
-op_amp
 id|header
 )paren
 suffix:semicolon
@@ -597,7 +670,7 @@ c_cond
 op_logical_neg
 id|ACPI_STRNCMP
 (paren
-id|header.signature
+id|header-&gt;signature
 comma
 id|signature
 comma
@@ -625,10 +698,8 @@ id|acpi_tb_get_table_body
 op_amp
 id|address
 comma
-op_amp
 id|header
 comma
-op_amp
 id|table_info
 )paren
 suffix:semicolon
@@ -648,7 +719,7 @@ suffix:semicolon
 op_star
 id|table_pointer
 op_assign
-id|table_info.pointer
+id|table_info-&gt;pointer
 suffix:semicolon
 r_goto
 id|cleanup
@@ -665,14 +736,43 @@ id|cleanup
 suffix:colon
 id|acpi_os_unmap_memory
 (paren
-id|rsdt_info.pointer
+id|rsdt_info-&gt;pointer
 comma
 (paren
 id|acpi_size
 )paren
-id|rsdt_info.pointer-&gt;length
+id|rsdt_info-&gt;pointer-&gt;length
 )paren
 suffix:semicolon
+id|ACPI_MEM_FREE
+(paren
+id|rsdt_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|header
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|header
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|table_info
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|table_info
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -883,7 +983,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE: The RSDp must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (ACPI 1.0 section&n; *              5.2.2; assertion #421).&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status, RSDP physical address&n; *&n; * DESCRIPTION: search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE1: The RSDp must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (From ACPI Spec.)&n; *              Only a 32-bit physical address is necessary.&n; *&n; *              NOTE2: This function is always available, regardless of the&n; *              initialization state of the rest of ACPI.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_find_rsdp
 id|acpi_tb_find_rsdp
@@ -905,13 +1005,11 @@ id|u8
 op_star
 id|mem_rover
 suffix:semicolon
-id|u64
-id|phys_addr
+id|u32
+id|physical_address
 suffix:semicolon
 id|acpi_status
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -931,17 +1029,17 @@ op_eq
 id|ACPI_LOGICAL_ADDRESSING
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * 1) Search EBDA (low memory) paragraphs&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 1a) Get the location of the EBDA&n;&t;&t; */
 id|status
 op_assign
 id|acpi_os_map_memory
 (paren
 (paren
-id|u64
+id|acpi_physical_address
 )paren
-id|ACPI_LO_RSDP_WINDOW_BASE
+id|ACPI_EBDA_PTR_LOCATION
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_PTR_LENGTH
 comma
 (paren
 r_void
@@ -965,11 +1063,88 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not map memory at %X for length %X&bslash;n&quot;
+l_string|&quot;Could not map memory at %8.8X for length %X&bslash;n&quot;
 comma
-id|ACPI_LO_RSDP_WINDOW_BASE
+id|ACPI_EBDA_PTR_LOCATION
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_PTR_LENGTH
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|ACPI_MOVE_16_TO_32
+(paren
+op_amp
+id|physical_address
+comma
+id|table_ptr
+)paren
+suffix:semicolon
+id|physical_address
+op_lshift_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Convert segment to physical address */
+id|acpi_os_unmap_memory
+(paren
+id|table_ptr
+comma
+id|ACPI_EBDA_PTR_LENGTH
+)paren
+suffix:semicolon
+multiline_comment|/* EBDA present? */
+r_if
+c_cond
+(paren
+id|physical_address
+OG
+l_int|0x400
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * 1b) Search EBDA paragraphs (EBDa is required to be a minimum of 1_k length)&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_os_map_memory
+(paren
+(paren
+id|acpi_physical_address
+)paren
+id|physical_address
+comma
+id|ACPI_EBDA_WINDOW_SIZE
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|table_ptr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not map memory at %8.8X for length %X&bslash;n&quot;
+comma
+id|physical_address
+comma
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 )paren
 suffix:semicolon
@@ -985,14 +1160,14 @@ id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|table_ptr
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 suffix:semicolon
 id|acpi_os_unmap_memory
 (paren
 id|table_ptr
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1002,11 +1177,7 @@ id|mem_rover
 )paren
 (brace
 multiline_comment|/* Found it, return the physical address */
-id|phys_addr
-op_assign
-id|ACPI_LO_RSDP_WINDOW_BASE
-suffix:semicolon
-id|phys_addr
+id|physical_address
 op_add_assign
 id|ACPI_PTR_DIFF
 (paren
@@ -1017,7 +1188,10 @@ id|table_ptr
 suffix:semicolon
 id|table_info-&gt;physical_address
 op_assign
-id|phys_addr
+(paren
+id|acpi_physical_address
+)paren
+id|physical_address
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -1025,13 +1199,14 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-F0000h&n;&t;&t; */
+)brace
+multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-FFFFFh&n;&t;&t; */
 id|status
 op_assign
 id|acpi_os_map_memory
 (paren
 (paren
-id|u64
+id|acpi_physical_address
 )paren
 id|ACPI_HI_RSDP_WINDOW_BASE
 comma
@@ -1059,7 +1234,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not map memory at %X for length %X&bslash;n&quot;
+l_string|&quot;Could not map memory at %8.8X for length %X&bslash;n&quot;
 comma
 id|ACPI_HI_RSDP_WINDOW_BASE
 comma
@@ -1096,12 +1271,10 @@ id|mem_rover
 )paren
 (brace
 multiline_comment|/* Found it, return the physical address */
-id|phys_addr
+id|physical_address
 op_assign
 id|ACPI_HI_RSDP_WINDOW_BASE
-suffix:semicolon
-id|phys_addr
-op_add_assign
+op_plus
 id|ACPI_PTR_DIFF
 (paren
 id|mem_rover
@@ -1111,7 +1284,10 @@ id|table_ptr
 suffix:semicolon
 id|table_info-&gt;physical_address
 op_assign
-id|phys_addr
+(paren
+id|acpi_physical_address
+)paren
+id|physical_address
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -1123,17 +1299,40 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Physical addressing&n;&t; */
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * 1) Search EBDA (low memory) paragraphs&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 1a) Get the location of the EBDA&n;&t;&t; */
+id|ACPI_MOVE_16_TO_32
+(paren
+op_amp
+id|physical_address
+comma
+id|ACPI_EBDA_PTR_LOCATION
+)paren
+suffix:semicolon
+id|physical_address
+op_lshift_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* Convert segment to physical address */
+multiline_comment|/* EBDA present? */
+r_if
+c_cond
+(paren
+id|physical_address
+OG
+l_int|0x400
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * 1b) Search EBDA paragraphs (EBDa is required to be a minimum of 1_k length)&n;&t;&t;&t; */
 id|mem_rover
 op_assign
 id|acpi_tb_scan_memory_for_rsdp
 (paren
 id|ACPI_PHYSADDR_TO_PTR
 (paren
-id|ACPI_LO_RSDP_WINDOW_BASE
+id|physical_address
 )paren
 comma
-id|ACPI_LO_RSDP_WINDOW_SIZE
+id|ACPI_EBDA_WINDOW_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -1156,7 +1355,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-F0000h&n;&t;&t; */
+)brace
+multiline_comment|/*&n;&t;&t; * 2) Search upper memory: 16-byte boundaries in E0000h-FFFFFh&n;&t;&t; */
 id|mem_rover
 op_assign
 id|acpi_tb_scan_memory_for_rsdp

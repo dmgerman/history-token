@@ -8,10 +8,10 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evevent&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize global data structures for events.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_initialize_events&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize global data structures for events.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ev_initialize
-id|acpi_ev_initialize
+DECL|function|acpi_ev_initialize_events
+id|acpi_ev_initialize_events
 (paren
 r_void
 )paren
@@ -21,7 +21,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;ev_initialize&quot;
+l_string|&quot;ev_initialize_events&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure we have ACPI tables */
@@ -120,10 +120,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_handler_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install interrupt handlers for the SCI and Global Lock&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_install_xrupt_handlers&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install interrupt handlers for the SCI and Global Lock&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ev_handler_initialize
-id|acpi_ev_handler_initialize
+DECL|function|acpi_ev_install_xrupt_handlers
+id|acpi_ev_install_xrupt_handlers
 (paren
 r_void
 )paren
@@ -133,7 +133,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;ev_handler_initialize&quot;
+l_string|&quot;ev_install_xrupt_handlers&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Install the SCI handler */

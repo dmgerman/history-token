@@ -2138,13 +2138,11 @@ id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
-macro_line|#ifdef CONFIG_CIFS_FCNTL
 dot
-id|fcntl
+id|dir_notify
 op_assign
-id|cifs_fcntl
+id|cifs_dir_notify
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|cifs_dir_ops
@@ -2168,13 +2166,11 @@ id|read
 op_assign
 id|generic_read_dir
 comma
-macro_line|#ifdef CONFIG_CIFS_FCNTL
 dot
-id|fcntl
+id|dir_notify
 op_assign
-id|cifs_fcntl
+id|cifs_dir_notify
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 r_static

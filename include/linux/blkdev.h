@@ -1612,6 +1612,10 @@ id|scsi_cmd_ioctl
 c_func
 (paren
 r_struct
+id|file
+op_star
+comma
+r_struct
 id|gendisk
 op_star
 comma

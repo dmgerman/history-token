@@ -142,6 +142,36 @@ macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_CMPXCHG
 macro_line|#warning ACPI uses CMPXCHG, i486 and later hardware
 macro_line|#endif
+DECL|macro|MAX_MADT_ENTRIES
+mdefine_line|#define MAX_MADT_ENTRIES&t;256
+DECL|variable|x86_acpiid_to_apicid
+id|u8
+id|x86_acpiid_to_apicid
+(braket
+id|MAX_MADT_ENTRIES
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|MAX_MADT_ENTRIES
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0xff
+)brace
+suffix:semicolon
+DECL|variable|x86_acpiid_to_apicid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|x86_acpiid_to_apicid
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * The default interrupt routing model is PIC (8259).  This gets&n; * overriden if IOAPICs are enumerated (below).&n; */
 DECL|variable|acpi_irq_model
@@ -609,6 +639,13 @@ l_int|0
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|x86_acpiid_to_apicid
+(braket
+id|processor-&gt;acpi_id
+)braket
+op_assign
+id|processor-&gt;id
 suffix:semicolon
 id|mp_register_lapic
 (paren

@@ -59,12 +59,52 @@ id|cpu_present_mask
 suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 macro_line|#endif /* CONFIG_SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 DECL|macro|ANY_PROC_ID
 mdefine_line|#define ANY_PROC_ID&t;&t;0xFF&t;&t;/* Any processor magic marker */
+DECL|function|__cpu_disable
+r_static
+r_inline
+r_int
+id|__cpu_disable
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|__cpu_die
+r_static
+r_inline
+r_void
+id|__cpu_die
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+suffix:semicolon
+)brace
+)brace
+r_extern
+r_int
+id|__cpu_up
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 macro_line|#endif /*  __ASM_SMP_H */
 eof

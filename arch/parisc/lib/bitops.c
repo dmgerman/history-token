@@ -124,7 +124,6 @@ r_int
 id|flags
 suffix:semicolon
 r_int
-r_int
 id|temp
 suffix:semicolon
 id|atomic_spin_lock_irqsave
@@ -139,9 +138,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-(paren
-r_int
-)paren
 id|temp
 op_assign
 (paren
@@ -169,6 +165,10 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+(paren
+r_int
+r_int
+)paren
 id|temp
 suffix:semicolon
 )brace
@@ -191,7 +191,6 @@ r_int
 id|flags
 suffix:semicolon
 r_int
-r_int
 id|temp
 suffix:semicolon
 id|atomic_spin_lock_irqsave
@@ -206,9 +205,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-(paren
-r_int
-)paren
 id|temp
 op_assign
 (paren
@@ -236,6 +232,10 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+(paren
+r_int
+r_int
+)paren
 id|temp
 suffix:semicolon
 )brace

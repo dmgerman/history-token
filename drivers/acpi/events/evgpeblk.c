@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evgpeblk&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_valid_gpe_event&n; *&n; * PARAMETERS:  gpe_event_info - Info for this GPE&n; *&n; * RETURN:      TRUE if the gpe_event is valid&n; *&n; * DESCRIPTION: Validate a GPE event.  DO NOT CALL FROM INTERRUPT LEVEL.&n; *              Should be called only when the GPE lists are semaphore locked&n; *              and not subject to change.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_valid_gpe_event&n; *&n; * PARAMETERS:  gpe_event_info              - Info for this GPE&n; *&n; * RETURN:      TRUE if the gpe_event is valid&n; *&n; * DESCRIPTION: Validate a GPE event.  DO NOT CALL FROM INTERRUPT LEVEL.&n; *              Should be called only when the GPE lists are semaphore locked&n; *              and not subject to change.&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ev_valid_gpe_event
 id|acpi_ev_valid_gpe_event
@@ -110,13 +110,16 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_walk_gpe_list&n; *&n; * PARAMETERS:  gpe_walk_callback   - Routine called for each GPE block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the GPE lists.&n; *              FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_walk_gpe_list&n; *&n; * PARAMETERS:  gpe_walk_callback   - Routine called for each GPE block&n; *              Flags               - ACPI_NOT_ISR or ACPI_ISR&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the GPE lists.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_walk_gpe_list
 id|acpi_ev_walk_gpe_list
 (paren
 id|ACPI_GPE_CALLBACK
 id|gpe_walk_callback
+comma
+id|u32
+id|flags
 )paren
 (brace
 r_struct
@@ -143,7 +146,7 @@ id|acpi_os_acquire_lock
 (paren
 id|acpi_gbl_gpe_lock
 comma
-id|ACPI_ISR
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Walk the interrupt level descriptor list */
@@ -207,12 +210,125 @@ id|acpi_os_release_lock
 (paren
 id|acpi_gbl_gpe_lock
 comma
-id|ACPI_ISR
+id|flags
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_delete_gpe_handlers&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete all Handler objects found in the GPE data structs.&n; *              Used only prior to termination.&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ev_delete_gpe_handlers
+id|acpi_ev_delete_gpe_handlers
+(paren
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|gpe_xrupt_info
+comma
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
+)paren
+(brace
+r_struct
+id|acpi_gpe_event_info
+op_star
+id|gpe_event_info
+suffix:semicolon
+id|acpi_native_uint
+id|i
+suffix:semicolon
+id|acpi_native_uint
+id|j
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;ev_delete_gpe_handlers&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Examine each GPE Register within the block */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|gpe_block-&gt;register_count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* Now look at the individual GPEs in this byte register */
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|ACPI_GPE_REGISTER_WIDTH
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+id|gpe_event_info
+op_assign
+op_amp
+id|gpe_block-&gt;event_info
+(braket
+(paren
+id|i
+op_star
+id|ACPI_GPE_REGISTER_WIDTH
+)paren
+op_plus
+id|j
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|gpe_event_info-&gt;flags
+op_amp
+id|ACPI_GPE_DISPATCH_MASK
+)paren
+op_eq
+id|ACPI_GPE_DISPATCH_HANDLER
+)paren
+(brace
+id|ACPI_MEM_FREE
+(paren
+id|gpe_event_info-&gt;dispatch.handler
+)paren
+suffix:semicolon
+id|gpe_event_info-&gt;dispatch.handler
+op_assign
+l_int|NULL
+suffix:semicolon
+id|gpe_event_info-&gt;flags
+op_and_assign
+op_complement
+id|ACPI_GPE_DISPATCH_MASK
+suffix:semicolon
+)brace
+)brace
+)brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -268,6 +384,9 @@ suffix:semicolon
 id|u8
 id|type
 suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ev_save_method_info&quot;
@@ -298,7 +417,7 @@ id|ACPI_NAME_SIZE
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * 2) Edge/Level determination is based on the 2nd character&n;&t; *    of the method name&n;&t; *&n;&t; * NOTE: Default GPE type is RUNTIME.  May be changed later to WAKE if a&n;&t; * _PRW object is found that points to this GPE.&n;&t; */
+multiline_comment|/*&n;&t; * 2) Edge/Level determination is based on the 2nd character&n;&t; *    of the method name&n;&t; *&n;&t; * NOTE: Default GPE type is RUNTIME.  May be changed later to WAKE&n;&t; * if a _PRW object is found that points to this GPE.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -314,8 +433,6 @@ suffix:colon
 id|type
 op_assign
 id|ACPI_GPE_LEVEL_TRIGGERED
-op_or
-id|ACPI_GPE_TYPE_RUNTIME
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -325,8 +442,6 @@ suffix:colon
 id|type
 op_assign
 id|ACPI_GPE_EDGE_TRIGGERED
-op_or
-id|ACPI_GPE_TYPE_RUNTIME
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -424,7 +539,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now we can add this information to the gpe_event_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
+multiline_comment|/*&n;&t; * Now we can add this information to the gpe_event_info block&n;&t; * for use during dispatch of this GPE.  Default type is RUNTIME, although&n;&t; * this may change when the _PRW methods are executed later.&n;&t; */
 id|gpe_event_info
 op_assign
 op_amp
@@ -437,9 +552,18 @@ id|gpe_block-&gt;block_base_number
 suffix:semicolon
 id|gpe_event_info-&gt;flags
 op_assign
+(paren
+id|u8
+)paren
+(paren
 id|type
+op_or
+id|ACPI_GPE_DISPATCH_METHOD
+op_or
+id|ACPI_GPE_TYPE_RUNTIME
+)paren
 suffix:semicolon
-id|gpe_event_info-&gt;method_node
+id|gpe_event_info-&gt;dispatch.method_node
 op_assign
 (paren
 r_struct
@@ -447,6 +571,16 @@ id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
+suffix:semicolon
+multiline_comment|/* Update enable mask, but don&squot;t enable the HW GPE as of yet */
+id|status
+op_assign
+id|acpi_ev_enable_gpe
+(paren
+id|gpe_event_info
+comma
+id|FALSE
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -463,15 +597,15 @@ id|gpe_number
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_type&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              Device.  Run the _PRW method.  If present, extract the GPE&n; *              number and mark the GPE as a WAKE GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_match_prw_and_gpe&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      Status.  NOTE: We ignore errors so that the _PRW walk is&n; *              not aborted on a single _PRW failure.&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              Device.  Run the _PRW method.  If present, extract the GPE&n; *              number and mark the GPE as a WAKE GPE.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
-DECL|function|acpi_ev_get_gpe_type
-id|acpi_ev_get_gpe_type
+DECL|function|acpi_ev_match_prw_and_gpe
+id|acpi_ev_match_prw_and_gpe
 (paren
 id|acpi_handle
 id|obj_handle
@@ -538,7 +672,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;ev_get_gpe_type&quot;
+l_string|&quot;ev_match_prw_and_gpe&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check for a _PRW method under this device */
@@ -559,30 +693,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|status
-op_eq
-id|AE_NOT_FOUND
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
 id|ACPI_FAILURE
 (paren
 id|status
 )paren
 )paren
 (brace
+multiline_comment|/* Ignore all errors from _PRW, we don&squot;t want to abort the subsystem */
 id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -751,7 +871,6 @@ l_int|8
 )paren
 )paren
 (brace
-multiline_comment|/* Mark GPE for WAKE but DISABLED (even for wake) */
 id|gpe_event_info
 op_assign
 op_amp
@@ -762,9 +881,46 @@ op_minus
 id|gpe_block-&gt;block_base_number
 )braket
 suffix:semicolon
+multiline_comment|/* Mark GPE for WAKE-ONLY but WAKE_DISABLED */
 id|gpe_event_info-&gt;flags
-op_or_assign
+op_and_assign
+op_complement
+(paren
+id|ACPI_GPE_WAKE_ENABLED
+op_or
+id|ACPI_GPE_RUN_ENABLED
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ev_set_gpe_type
+(paren
+id|gpe_event_info
+comma
 id|ACPI_GPE_TYPE_WAKE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_ev_update_gpe_enable_masks
+(paren
+id|gpe_event_info
+comma
+id|ACPI_GPE_DISABLE
+)paren
 suffix:semicolon
 )brace
 id|cleanup
@@ -776,7 +932,7 @@ id|pkg_desc
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -1643,7 +1799,7 @@ id|j
 op_increment
 )paren
 (brace
-id|this_event-&gt;bit_mask
+id|this_event-&gt;register_bit
 op_assign
 id|acpi_gbl_decode_to8bit
 (braket
@@ -1862,6 +2018,10 @@ id|gpe_block-&gt;block_base_number
 op_assign
 id|gpe_block_base_number
 suffix:semicolon
+id|gpe_block-&gt;node
+op_assign
+id|gpe_device
+suffix:semicolon
 id|ACPI_MEMCPY
 (paren
 op_amp
@@ -1934,46 +2094,6 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Dump info about this GPE block */
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INIT
-comma
-l_string|&quot;GPE %02d to %02d [%4.4s] %d regs at %8.8X%8.8X on int %d&bslash;n&quot;
-comma
-id|gpe_block-&gt;block_base_number
-comma
-(paren
-id|u32
-)paren
-(paren
-id|gpe_block-&gt;block_base_number
-op_plus
-(paren
-(paren
-id|gpe_block-&gt;register_count
-op_star
-id|ACPI_GPE_REGISTER_WIDTH
-)paren
-op_minus
-l_int|1
-)paren
-)paren
-comma
-id|gpe_device-&gt;name.ascii
-comma
-id|gpe_block-&gt;register_count
-comma
-id|ACPI_FORMAT_UINT64
-(paren
-id|gpe_block-&gt;block_address.address
-)paren
-comma
-id|interrupt_level
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Find all GPE methods (_Lxx, _Exx) for this block */
 id|status
 op_assign
@@ -1994,14 +2114,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Runtime option: Should Wake GPEs be enabled at runtime?  The default is&n;&t; * No,they should only be enabled just as the machine goes to sleep.&n;&t; */
+multiline_comment|/*&n;&t; * Runtime option: Should Wake GPEs be enabled at runtime?  The default&n;&t; * is No,they should only be enabled just as the machine goes to sleep.&n;&t; */
 r_if
 c_cond
 (paren
 id|acpi_gbl_leave_wake_gpes_disabled
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Differentiate RUNTIME vs WAKE GPEs, via the _PRW control methods. (Each&n;&t;&t; * GPE that has one or more _PRWs that reference it is by definition a&n;&t;&t; * WAKE GPE and will not be enabled while the machine is running.)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Differentiate RUNTIME vs WAKE GPEs, via the _PRW control methods.&n;&t;&t; * (Each GPE that has one or more _PRWs that reference it is by&n;&t;&t; * definition a WAKE GPE and will not be enabled while the machine&n;&t;&t; * is running.)&n;&t;&t; */
 id|gpe_info.gpe_block
 op_assign
 id|gpe_block
@@ -2022,7 +2142,7 @@ id|ACPI_UINT32_MAX
 comma
 id|ACPI_NS_WALK_UNLOCK
 comma
-id|acpi_ev_get_gpe_type
+id|acpi_ev_match_prw_and_gpe
 comma
 op_amp
 id|gpe_info
@@ -2031,7 +2151,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Enable all GPEs in this block that are 1) &quot;runtime&quot; GPEs, and 2) have&n;&t; * a corresponding _Lxx or _Exx method.  All other GPEs must be enabled via&n;&t; * the acpi_enable_gpe() external interface.&n;&t; */
+multiline_comment|/*&n;&t; * Enable all GPEs in this block that are 1) &quot;runtime&quot; or &quot;run/wake&quot; GPEs,&n;&t; * and 2) have a corresponding _Lxx or _Exx method.  All other GPEs must&n;&t; * be enabled via the acpi_enable_gpe() external interface.&n;&t; */
 id|wake_gpe_count
 op_assign
 l_int|0
@@ -2089,43 +2209,22 @@ r_if
 c_cond
 (paren
 (paren
-id|gpe_event_info-&gt;method_node
-)paren
-op_logical_and
-(paren
 (paren
 id|gpe_event_info-&gt;flags
 op_amp
-id|ACPI_GPE_TYPE_MASK
+id|ACPI_GPE_DISPATCH_MASK
 )paren
 op_eq
+id|ACPI_GPE_DISPATCH_METHOD
+)paren
+op_logical_and
+(paren
+id|gpe_event_info-&gt;flags
+op_amp
 id|ACPI_GPE_TYPE_RUNTIME
 )paren
 )paren
 (brace
-multiline_comment|/* Enable this GPE, it is 1) RUNTIME and 2) has an _Lxx or _Exx method */
-id|status
-op_assign
-id|acpi_hw_enable_gpe
-(paren
-id|gpe_event_info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 id|gpe_enabled_count
 op_increment
 suffix:semicolon
@@ -2133,12 +2232,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|gpe_event_info-&gt;flags
 op_amp
-id|ACPI_GPE_TYPE_MASK
-)paren
-op_eq
 id|ACPI_GPE_TYPE_WAKE
 )paren
 (brace
@@ -2148,6 +2243,59 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Dump info about this GPE block */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INIT
+comma
+l_string|&quot;GPE %02X to %02X [%4.4s] %u regs at %8.8X%8.8X on int 0x%X&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|gpe_block-&gt;block_base_number
+comma
+(paren
+id|u32
+)paren
+(paren
+id|gpe_block-&gt;block_base_number
+op_plus
+(paren
+(paren
+id|gpe_block-&gt;register_count
+op_star
+id|ACPI_GPE_REGISTER_WIDTH
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+comma
+id|gpe_device-&gt;name.ascii
+comma
+id|gpe_block-&gt;register_count
+comma
+id|ACPI_FORMAT_UINT64
+(paren
+id|gpe_block-&gt;block_address.address
+)paren
+comma
+id|interrupt_level
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Enable all valid GPEs found above */
+id|status
+op_assign
+id|acpi_hw_enable_runtime_gpe_block
+(paren
+l_int|NULL
+comma
+id|gpe_block
+)paren
+suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -2455,9 +2603,11 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* GPEs are not required by ACPI, this is OK */
-id|ACPI_REPORT_INFO
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
+id|ACPI_DB_INIT
+comma
 l_string|&quot;There are no GPE blocks defined in the FADT&bslash;n&quot;
 )paren
 )paren

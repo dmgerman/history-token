@@ -3,13 +3,17 @@ multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rig
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
 mdefine_line|#define __ACGLOBAL_H__
-multiline_comment|/*&n; * Ensure that the globals are actually defined only once.&n; *&n; * The use of these defines allows a single list of globals (here) in order&n; * to simplify maintenance of the code.&n; */
+multiline_comment|/*&n; * Ensure that the globals are actually defined and initialized only once.&n; *&n; * The use of these macros allows a single list of globals (here) in order&n; * to simplify maintenance of the code.&n; */
 macro_line|#ifdef DEFINE_ACPI_GLOBALS
 DECL|macro|ACPI_EXTERN
 mdefine_line|#define ACPI_EXTERN
+DECL|macro|ACPI_INIT_GLOBAL
+mdefine_line|#define ACPI_INIT_GLOBAL(a,b) a=b
 macro_line|#else
 DECL|macro|ACPI_EXTERN
 mdefine_line|#define ACPI_EXTERN extern
+DECL|macro|ACPI_INIT_GLOBAL
+mdefine_line|#define ACPI_INIT_GLOBAL(a,b) a
 macro_line|#endif
 multiline_comment|/*&n; * Keep local copies of these FADT-based registers.  NOTE: These globals&n; * are first in this file for alignment reasons on 64-bit systems.&n; */
 DECL|variable|acpi_gbl_xpm1a_enable
@@ -39,24 +43,49 @@ r_extern
 id|u32
 id|acpi_gbl_nesting_level
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; *&n; * Runtime configuration&n; *&n; ****************************************************************************/
-DECL|variable|acpi_gbl_create_osi_method
+multiline_comment|/*****************************************************************************&n; *&n; * Runtime configuration (static defaults that can be overriden at runtime)&n; *&n; ****************************************************************************/
+multiline_comment|/*&n; * Enable &quot;slack&quot; in the AML interpreter?  Default is FALSE, and the&n; * interpreter strictly follows the ACPI specification.  Setting to TRUE&n; * allows the interpreter to forgive certain bad AML constructs.&n; */
 id|ACPI_EXTERN
 id|u8
-id|acpi_gbl_create_osi_method
+id|ACPI_INIT_GLOBAL
+(paren
+id|acpi_gbl_enable_interpeter_slack
+comma
+id|FALSE
+)paren
 suffix:semicolon
-DECL|variable|acpi_gbl_all_methods_serialized
+multiline_comment|/*&n; * Automatically serialize ALL control methods? Default is FALSE, meaning&n; * to use the Serialized/not_serialized method flags on a per method basis.&n; * Only change this if the ASL code is poorly written and cannot handle&n; * reentrancy even though methods are marked &quot;not_serialized&quot;.&n; */
 id|ACPI_EXTERN
 id|u8
+id|ACPI_INIT_GLOBAL
+(paren
 id|acpi_gbl_all_methods_serialized
+comma
+id|FALSE
+)paren
 suffix:semicolon
-DECL|variable|acpi_gbl_leave_wake_gpes_disabled
+multiline_comment|/*&n; * Create the predefined _OSI method in the namespace? Default is TRUE&n; * because ACPI CA is fully compatible with other ACPI implementations.&n; * Changing this will revert ACPI CA (and machine ASL) to pre-OSI behavior.&n; */
 id|ACPI_EXTERN
 id|u8
+id|ACPI_INIT_GLOBAL
+(paren
+id|acpi_gbl_create_osi_method
+comma
+id|TRUE
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Disable wakeup GPEs during runtime? Default is TRUE because WAKE and&n; * RUNTIME GPEs should never be shared, and WAKE GPEs should typically only&n; * be enabled just before going to sleep.&n; */
+id|ACPI_EXTERN
+id|u8
+id|ACPI_INIT_GLOBAL
+(paren
 id|acpi_gbl_leave_wake_gpes_disabled
+comma
+id|TRUE
+)paren
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * ACPI Table globals&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
+multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; */
 DECL|variable|acpi_gbl_table_flags
 id|ACPI_EXTERN
 id|u32
@@ -262,6 +291,11 @@ DECL|variable|acpi_gbl_events_initialized
 id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_events_initialized
+suffix:semicolon
+DECL|variable|acpi_gbl_system_awake_and_running
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_system_awake_and_running
 suffix:semicolon
 r_extern
 id|u8

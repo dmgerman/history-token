@@ -1,8 +1,7 @@
 macro_line|#ifndef __PARISC_PATPDC_H
 DECL|macro|__PARISC_PATPDC_H
 mdefine_line|#define __PARISC_PATPDC_H
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) Hewlett Packard (Paul Bame &lt;bame@puffin.external.hp.com&gt;)&n; * Copyright 2000 (c) Grant Grundler &lt;grundler@puffin.external.hp.com&gt;&n; */
-multiline_comment|/* PDC PAT CELL */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright 2000 (c) Hewlett Packard (Paul Bame &lt;bame()spam.parisc-linux.org&gt;)&n; * Copyright 2000,2004 (c) Grant Grundler &lt;grundler()nahspam.parisc-linux.org&gt;&n; */
 DECL|macro|PDC_PAT_CELL
 mdefine_line|#define PDC_PAT_CELL           &t;64L   /* Interface for gaining and &n;                                         * manipulatin g cell state within PD */
 DECL|macro|PDC_PAT_CELL_GET_NUMBER
@@ -72,16 +71,16 @@ DECL|macro|PAT_UFO
 mdefine_line|#define PAT_UFO             6         /* HPA Space (UFO for Mariposa) */
 DECL|macro|PAT_GNIP
 mdefine_line|#define PAT_GNIP            7         /* GNI Reserved Space */
-multiline_comment|/* PDC PAT CHASSIS LOG */
+multiline_comment|/* PDC PAT CHASSIS LOG -- Platform logging &amp; forward progress functions */
 DECL|macro|PDC_PAT_CHASSIS_LOG
-mdefine_line|#define PDC_PAT_CHASSIS_LOG&t;&t;65L /* Platform logging &amp; forward&n;&t;&t;&t;&t;&t;    ** progress functions */
+mdefine_line|#define PDC_PAT_CHASSIS_LOG&t;&t;65L
 DECL|macro|PDC_PAT_CHASSIS_WRITE_LOG
 mdefine_line|#define PDC_PAT_CHASSIS_WRITE_LOG    &t;0L /* Write Log Entry */
 DECL|macro|PDC_PAT_CHASSIS_READ_LOG
 mdefine_line|#define PDC_PAT_CHASSIS_READ_LOG     &t;1L /* Read  Log Entry */
-multiline_comment|/* PDC PAT CPU  */
+multiline_comment|/* PDC PAT CPU  -- CPU configuration within the protection domain */
 DECL|macro|PDC_PAT_CPU
-mdefine_line|#define PDC_PAT_CPU                &t;67L /* Interface to CPU configuration&n;                                        &t;* within the protection domain */
+mdefine_line|#define PDC_PAT_CPU                &t;67L
 DECL|macro|PDC_PAT_CPU_INFO
 mdefine_line|#define PDC_PAT_CPU_INFO            &t;0L /* Return CPU config info */
 DECL|macro|PDC_PAT_CPU_DELETE
@@ -104,9 +103,9 @@ DECL|macro|PDC_PAT_CPU_PLUNGE_FABRIC
 mdefine_line|#define PDC_PAT_CPU_PLUNGE_FABRIC &t;128L /* Plunge Fabric */
 DECL|macro|PDC_PAT_CPU_UPDATE_CACHE_CLEANSING
 mdefine_line|#define PDC_PAT_CPU_UPDATE_CACHE_CLEANSING 129L /* Manipulate Cache &n;                                                 * Cleansing Mode */
-multiline_comment|/*  PDC PAT EVENT */
+multiline_comment|/*  PDC PAT EVENT -- Platform Events */
 DECL|macro|PDC_PAT_EVENT
-mdefine_line|#define PDC_PAT_EVENT              &t;68L /* Interface to Platform Events */
+mdefine_line|#define PDC_PAT_EVENT              &t;68L
 DECL|macro|PDC_PAT_EVENT_GET_CAPS
 mdefine_line|#define PDC_PAT_EVENT_GET_CAPS     &t;0L /* Get Capabilities */
 DECL|macro|PDC_PAT_EVENT_SET_MODE
@@ -117,21 +116,21 @@ DECL|macro|PDC_PAT_EVENT_HANDLE
 mdefine_line|#define PDC_PAT_EVENT_HANDLE       &t;3L /* Handle Event */
 DECL|macro|PDC_PAT_EVENT_GET_NB_CALL
 mdefine_line|#define PDC_PAT_EVENT_GET_NB_CALL  &t;4L /* Get Non-Blocking call Args */
-multiline_comment|/*  PDC PAT HPMC */
+multiline_comment|/*  PDC PAT HPMC -- Cause processor to go into spin loop, and wait&n; *  &t;&t;&t;for wake up from Monarch Processor.&n; */
 DECL|macro|PDC_PAT_HPMC
-mdefine_line|#define PDC_PAT_HPMC               70L /* Cause processor to go into spin&n;&t;&t;&t;&t;       ** loop, and wait for wake up from&n;&t;&t;&t;&t;       ** Monarch Processor */
+mdefine_line|#define PDC_PAT_HPMC               70L
 DECL|macro|PDC_PAT_HPMC_RENDEZ_CPU
 mdefine_line|#define PDC_PAT_HPMC_RENDEZ_CPU     0L /* go into spin loop */
 DECL|macro|PDC_PAT_HPMC_SET_PARAMS
-mdefine_line|#define PDC_PAT_HPMC_SET_PARAMS     1L /* Allows OS to specify intr which PDC &n;                                        * will use to interrupt OS during machine&n;                                        * check rendezvous */
+mdefine_line|#define PDC_PAT_HPMC_SET_PARAMS     1L /* Allows OS to specify intr which PDC &n;                                        * will use to interrupt OS during&n;                                        * machine check rendezvous */
 multiline_comment|/* parameters for PDC_PAT_HPMC_SET_PARAMS: */
 DECL|macro|HPMC_SET_PARAMS_INTR
 mdefine_line|#define HPMC_SET_PARAMS_INTR &t;    1L /* Rendezvous Interrupt */
 DECL|macro|HPMC_SET_PARAMS_WAKE
 mdefine_line|#define HPMC_SET_PARAMS_WAKE &t;    2L /* Wake up processor */
-multiline_comment|/*  PDC PAT IO */
+multiline_comment|/*  PDC PAT IO  -- On-line services for I/O modules */
 DECL|macro|PDC_PAT_IO
-mdefine_line|#define PDC_PAT_IO                  71L /* On-line services for I/O modules */
+mdefine_line|#define PDC_PAT_IO                  71L
 DECL|macro|PDC_PAT_IO_GET_SLOT_STATUS
 mdefine_line|#define PDC_PAT_IO_GET_SLOT_STATUS   &t;5L /* Get Slot Status Info*/
 DECL|macro|PDC_PAT_IO_GET_LOC_FROM_HARDWARE
@@ -170,9 +169,9 @@ DECL|macro|PDC_PAT_IO_GET_PROC_VIEW
 mdefine_line|#define PDC_PAT_IO_GET_PROC_VIEW        29L /* Get Processor view of IO address */
 DECL|macro|PDC_PAT_IO_PROG_SBA_DIR_RANGE
 mdefine_line|#define PDC_PAT_IO_PROG_SBA_DIR_RANGE   30L /* Program directed range */
-multiline_comment|/* PDC PAT MEM */
+multiline_comment|/* PDC PAT MEM  -- Manage memory page deallocation */
 DECL|macro|PDC_PAT_MEM
-mdefine_line|#define PDC_PAT_MEM             &t;72L /* Manage memory page deallocation */
+mdefine_line|#define PDC_PAT_MEM            72L
 DECL|macro|PDC_PAT_MEM_PD_INFO
 mdefine_line|#define PDC_PAT_MEM_PD_INFO     &t;0L /* Return PDT info for PD       */
 DECL|macro|PDC_PAT_MEM_PD_CLEAR
@@ -212,21 +211,177 @@ DECL|macro|PDC_PAT_MEM_GET_TBL_SIZE
 mdefine_line|#define PDC_PAT_MEM_GET_TBL_SIZE   &t;131L /* Get Memory Table Size     */
 DECL|macro|PDC_PAT_MEM_GET_TBL
 mdefine_line|#define PDC_PAT_MEM_GET_TBL        &t;132L /* Get Memory Table          */
-multiline_comment|/* PDC PAT NVOLATILE */
+multiline_comment|/* PDC PAT NVOLATILE  --  Access Non-Volatile Memory */
 DECL|macro|PDC_PAT_NVOLATILE
-mdefine_line|#define PDC_PAT_NVOLATILE          &t;73L /* Access Non-Volatile Memory */
+mdefine_line|#define PDC_PAT_NVOLATILE&t;73L
 DECL|macro|PDC_PAT_NVOLATILE_READ
-mdefine_line|#define PDC_PAT_NVOLATILE_READ      &t;0L /* Read Non-Volatile Memory   */
+mdefine_line|#define PDC_PAT_NVOLATILE_READ&t;&t;0L /* Read Non-Volatile Memory   */
 DECL|macro|PDC_PAT_NVOLATILE_WRITE
-mdefine_line|#define PDC_PAT_NVOLATILE_WRITE     &t;1L /* Write Non-Volatile Memory  */
+mdefine_line|#define PDC_PAT_NVOLATILE_WRITE&t;&t;1L /* Write Non-Volatile Memory  */
 DECL|macro|PDC_PAT_NVOLATILE_GET_SIZE
-mdefine_line|#define PDC_PAT_NVOLATILE_GET_SIZE  &t;2L /* Return size of NVM         */
+mdefine_line|#define PDC_PAT_NVOLATILE_GET_SIZE&t;2L /* Return size of NVM         */
 DECL|macro|PDC_PAT_NVOLATILE_VERIFY
-mdefine_line|#define PDC_PAT_NVOLATILE_VERIFY    &t;3L /* Verify contents of NVM     */
+mdefine_line|#define PDC_PAT_NVOLATILE_VERIFY&t;3L /* Verify contents of NVM     */
 DECL|macro|PDC_PAT_NVOLATILE_INIT
-mdefine_line|#define PDC_PAT_NVOLATILE_INIT      &t;4L /* Initialize NVM             */
+mdefine_line|#define PDC_PAT_NVOLATILE_INIT&t;&t;4L /* Initialize NVM             */
+multiline_comment|/* PDC PAT PD */
+DECL|macro|PDC_PAT_PD
+mdefine_line|#define PDC_PAT_PD&t;&t;74L         /* Protection Domain Info   */
+DECL|macro|PDC_PAT_PD_GET_ADDR_MAP
+mdefine_line|#define PDC_PAT_PD_GET_ADDR_MAP&t;&t;0L  /* Get Address Map          */
+multiline_comment|/* PDC_PAT_PD_GET_ADDR_MAP entry types */
+DECL|macro|PAT_MEMORY_DESCRIPTOR
+mdefine_line|#define PAT_MEMORY_DESCRIPTOR&t;&t;1   
+multiline_comment|/* PDC_PAT_PD_GET_ADDR_MAP memory types */
+DECL|macro|PAT_MEMTYPE_MEMORY
+mdefine_line|#define PAT_MEMTYPE_MEMORY&t;&t;0
+DECL|macro|PAT_MEMTYPE_FIRMWARE
+mdefine_line|#define PAT_MEMTYPE_FIRMWARE&t;&t;4
+multiline_comment|/* PDC_PAT_PD_GET_ADDR_MAP memory usage */
+DECL|macro|PAT_MEMUSE_GENERAL
+mdefine_line|#define PAT_MEMUSE_GENERAL&t;&t;0
+DECL|macro|PAT_MEMUSE_GI
+mdefine_line|#define PAT_MEMUSE_GI&t;&t;&t;128
+DECL|macro|PAT_MEMUSE_GNI
+mdefine_line|#define PAT_MEMUSE_GNI&t;&t;&t;129
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#ifdef CONFIG_PARISC64
+DECL|macro|is_pdc_pat
+mdefine_line|#define is_pdc_pat()&t;(PDC_TYPE_PAT == pdc_type)
+r_extern
+r_int
+id|pdc_pat_get_irt_size
+c_func
+(paren
+r_int
+r_int
+op_star
+id|num_entries
+comma
+r_int
+r_int
+id|cell_num
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pdc_pat_get_irt
+c_func
+(paren
+r_void
+op_star
+id|r_addr
+comma
+r_int
+r_int
+id|cell_num
+)paren
+suffix:semicolon
+macro_line|#else&t;/* ! CONFIG_PARISC64 */
+multiline_comment|/* No PAT support for 32-bit kernels...sorry */
+DECL|macro|is_pdc_pat
+mdefine_line|#define is_pdc_pat()&t;(0)
+DECL|macro|pdc_pat_get_irt_size
+mdefine_line|#define pdc_pat_get_irt_size(num_entries, cell_numn)&t;PDC_BAD_PROC
+DECL|macro|pdc_pat_get_irt
+mdefine_line|#define pdc_pat_get_irt(r_addr, cell_num)&t;&t;PDC_BAD_PROC
+macro_line|#endif&t;/* ! CONFIG_PARISC64 */
+DECL|struct|pdc_pat_cell_num
+r_struct
+id|pdc_pat_cell_num
+(brace
+DECL|member|cell_num
+r_int
+r_int
+id|cell_num
+suffix:semicolon
+DECL|member|cell_loc
+r_int
+r_int
+id|cell_loc
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pdc_pat_cpu_num
+r_struct
+id|pdc_pat_cpu_num
+(brace
+DECL|member|cpu_num
+r_int
+r_int
+id|cpu_num
+suffix:semicolon
+DECL|member|cpu_loc
+r_int
+r_int
+id|cpu_loc
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pdc_pat_pd_addr_map_entry
+r_struct
+id|pdc_pat_pd_addr_map_entry
+(brace
+DECL|member|entry_type
+r_int
+r_char
+id|entry_type
+suffix:semicolon
+multiline_comment|/* 1 = Memory Descriptor Entry Type */
+DECL|member|reserve1
+r_int
+r_char
+id|reserve1
+(braket
+l_int|5
+)braket
+suffix:semicolon
+DECL|member|memory_type
+r_int
+r_char
+id|memory_type
+suffix:semicolon
+DECL|member|memory_usage
+r_int
+r_char
+id|memory_usage
+suffix:semicolon
+DECL|member|paddr
+r_int
+r_int
+id|paddr
+suffix:semicolon
+DECL|member|pages
+r_int
+r_int
+id|pages
+suffix:semicolon
+multiline_comment|/* Length in 4K pages */
+DECL|member|reserve2
+r_int
+r_int
+id|reserve2
+suffix:semicolon
+DECL|member|cell_map
+r_int
+r_int
+id|cell_map
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/********************************************************************&n;* PDC_PAT_CELL[Return Cell Module] memaddr[0] conf_base_addr&n;* ----------------------------------------------------------&n;* Bit  0 to 51 - conf_base_addr&n;* Bit 52 to 62 - reserved&n;* Bit       63 - endianess bit&n;********************************************************************/
+DECL|macro|PAT_GET_CBA
+mdefine_line|#define PAT_GET_CBA(value) ((value) &amp; 0xfffffffffffff000UL)
+multiline_comment|/********************************************************************&n;* PDC_PAT_CELL[Return Cell Module] memaddr[1] mod_info&n;* ----------------------------------------------------&n;* Bit  0 to  7 - entity type&n;*    0 = central agent,            1 = processor,&n;*    2 = memory controller,        3 = system bus adapter,&n;*    4 = local bus adapter,        5 = processor bus converter,&n;*    6 = crossbar fabric connect,  7 = fabric interconnect,&n;*    8 to 254 reserved,            255 = unknown.&n;* Bit  8 to 15 - DVI&n;* Bit 16 to 23 - IOC functions&n;* Bit 24 to 39 - reserved&n;* Bit 40 to 63 - mod_pages&n;*    number of 4K pages a module occupies starting at conf_base_addr&n;********************************************************************/
+DECL|macro|PAT_GET_ENTITY
+mdefine_line|#define PAT_GET_ENTITY(value)&t;(((value) &gt;&gt; 56) &amp; 0xffUL)
+DECL|macro|PAT_GET_DVI
+mdefine_line|#define PAT_GET_DVI(value)&t;(((value) &gt;&gt; 48) &amp; 0xffUL)
+DECL|macro|PAT_GET_IOC
+mdefine_line|#define PAT_GET_IOC(value)&t;(((value) &gt;&gt; 40) &amp; 0xffUL)
+DECL|macro|PAT_GET_MOD_PAGES
+mdefine_line|#define PAT_GET_MOD_PAGES(value)(((value) &amp; 0xffffffUL)
 multiline_comment|/*&n;** PDC_PAT_CELL_GET_INFO return block&n;*/
 DECL|struct|pdc_pat_cell_info_rtn_block
 r_typedef
@@ -311,7 +466,7 @@ r_int
 r_int
 id|cba
 suffix:semicolon
-multiline_comment|/* function 0 configuration space address */
+multiline_comment|/* func 0 cfg space address */
 DECL|member|mod_info
 r_int
 r_int
@@ -325,8 +480,8 @@ id|mod_location
 suffix:semicolon
 multiline_comment|/* physical location of the module */
 DECL|member|mod_path
-r_int
-r_int
+r_struct
+id|hardware_path
 id|mod_path
 suffix:semicolon
 multiline_comment|/* module path (device path - layers) */
@@ -360,11 +515,27 @@ id|pdc_pat_cell_mod_maddr_block_t
 suffix:semicolon
 r_extern
 r_int
+id|pdc_pat_chassis_send_log
+c_func
+(paren
+r_int
+r_int
+id|status
+comma
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|pdc_pat_cell_get_number
 c_func
 (paren
-r_void
+r_struct
+id|pdc_pat_cell_num
 op_star
+id|cell_info
 )paren
 suffix:semicolon
 r_extern
@@ -372,20 +543,26 @@ r_int
 id|pdc_pat_cell_module
 c_func
 (paren
+r_int
+r_int
+op_star
+id|actcnt
+comma
+r_int
+r_int
+id|ploc
+comma
+r_int
+r_int
+id|mod
+comma
+r_int
+r_int
+id|view_type
+comma
 r_void
 op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_void
-op_star
+id|mem_addr
 )paren
 suffix:semicolon
 r_extern
@@ -400,14 +577,83 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|pdc_pat_cpu_get_number
+c_func
+(paren
+r_struct
+id|pdc_pat_cpu_num
+op_star
+id|cpu_info
+comma
+r_void
+op_star
+id|hpa
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pdc_pat_pd_get_addr_map
+c_func
+(paren
+r_int
+r_int
+op_star
+id|actual_len
+comma
+r_void
+op_star
+id|mem_addr
+comma
+r_int
+r_int
+id|count
+comma
+r_int
+r_int
+id|offset
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pdc_pat_io_pci_cfg_read
+c_func
+(paren
+r_int
+r_int
+id|pci_addr
+comma
+r_int
+id|pci_size
+comma
+id|u32
+op_star
+id|val
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pdc_pat_io_pci_cfg_write
+c_func
+(paren
+r_int
+r_int
+id|pci_addr
+comma
+r_int
+id|pci_size
+comma
+id|u32
+id|val
+)paren
+suffix:semicolon
 multiline_comment|/* Flag to indicate this is a PAT box...don&squot;t use this unless you&n;** really have to...it might go away some day.&n;*/
-macro_line|#ifdef __LP64__
 r_extern
 r_int
 id|pdc_pat
 suffix:semicolon
 multiline_comment|/* arch/parisc/kernel/inventory.c */
-macro_line|#endif
 multiline_comment|/********************************************************************&n;* PDC_PAT_CELL[Return Cell Module] memaddr[0] conf_base_addr&n;* ----------------------------------------------------------&n;* Bit  0 to 51 - conf_base_addr&n;* Bit 52 to 62 - reserved&n;* Bit       63 - endianess bit&n;********************************************************************/
 DECL|macro|PAT_GET_CBA
 mdefine_line|#define PAT_GET_CBA(value) ((value) &amp; 0xfffffffffffff000UL)

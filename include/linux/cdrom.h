@@ -2611,6 +2611,11 @@ id|cdrom_ioctl
 c_func
 (paren
 r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
 id|cdrom_device_info
 op_star
 id|cdi
