@@ -2126,7 +2126,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|prefix
+id|pfx-&gt;s6_addr
 comma
 id|addr
 comma
