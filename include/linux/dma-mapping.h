@@ -227,9 +227,11 @@ id|dev
 )paren
 (brace
 )brace
-DECL|function|dma_mark_declared_memory_occupied
+r_static
+r_inline
 r_void
 op_star
+DECL|function|dma_mark_declared_memory_occupied
 id|dma_mark_declared_memory_occupied
 c_func
 (paren
