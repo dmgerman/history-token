@@ -863,14 +863,6 @@ id|vt1724
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|ez8
-r_int
-r_int
-id|ez8
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* EZ8 support */
 DECL|member|num_total_dacs
 r_int
 r_int
@@ -1550,6 +1542,11 @@ DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|model
+r_char
+op_star
+id|model
 suffix:semicolon
 DECL|member|chip_init
 r_int

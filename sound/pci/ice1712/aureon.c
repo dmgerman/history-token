@@ -2043,6 +2043,11 @@ op_assign
 l_string|&quot;Terratec Aureon 5.1-Sky&quot;
 comma
 dot
+id|model
+op_assign
+l_string|&quot;aureon51&quot;
+comma
+dot
 id|chip_init
 op_assign
 id|aureon_init
@@ -2077,6 +2082,11 @@ dot
 id|name
 op_assign
 l_string|&quot;Terratec Aureon 7.1-Space&quot;
+comma
+dot
+id|model
+op_assign
+l_string|&quot;aureon71&quot;
 comma
 dot
 id|chip_init
