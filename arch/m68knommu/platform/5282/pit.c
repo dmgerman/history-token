@@ -52,7 +52,7 @@ r_void
 id|coldfire_pit_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
