@@ -115,6 +115,13 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Activate timer&n;&t; */
 id|mcmisc_regs
 op_assign

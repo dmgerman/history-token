@@ -12,6 +12,21 @@ mdefine_line|#define WAVERECORD_MIC&t;&t;0x02
 DECL|macro|WAVERECORD_FX
 mdefine_line|#define WAVERECORD_FX&t;&t;0x03
 r_void
+id|emu10k1_reset_record
+c_func
+(paren
+r_struct
+id|emu10k1_card
+op_star
+id|card
+comma
+r_struct
+id|wavein_buffer
+op_star
+id|buffer
+)paren
+suffix:semicolon
+r_void
 id|emu10k1_start_record
 c_func
 (paren

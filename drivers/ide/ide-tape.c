@@ -3,7 +3,7 @@ multiline_comment|/*&n; * IDE ATAPI streaming tape driver.&n; *&n; * This driver
 multiline_comment|/*&n; * An overview of the pipelined operation mode.&n; *&n; * In the pipelined write mode, we will usually just add requests to our&n; * pipeline and return immediately, before we even start to service them. The&n; * user program will then have enough time to prepare the next request while&n; * we are still busy servicing previous requests. In the pipelined read mode,&n; * the situation is similar - we add read-ahead requests into the pipeline,&n; * before the user even requested them.&n; *&n; * The pipeline can be viewed as a &quot;safety net&quot; which will be activated when&n; * the system load is high and prevents the user backup program from keeping up&n; * with the current tape speed. At this point, the pipeline will get&n; * shorter and shorter but the tape will still be streaming at the same speed.&n; * Assuming we have enough pipeline stages, the system load will hopefully&n; * decrease before the pipeline is completely empty, and the backup program&n; * will be able to &quot;catch up&quot; and refill the pipeline again.&n; * &n; * When using the pipelined mode, it would be best to disable any type of&n; * buffering done by the user program, as ide-tape already provides all the&n; * benefits in the kernel, where it can be done in a more efficient way.&n; * As we will usually not block the user program on a request, the most&n; * efficient user code will then be a simple read-write-read-... cycle.&n; * Any additional logic will usually just slow down the backup process.&n; *&n; * Using the pipelined mode, I get a constant over 400 KBps throughput,&n; * which seems to be the maximum throughput supported by my tape.&n; *&n; * However, there are some downfalls:&n; *&n; *&t;1.&t;We use memory (for data buffers) in proportional to the number&n; *&t;&t;of pipeline stages (each stage is about 26 KB with my tape).&n; *&t;2.&t;In the pipelined write mode, we cheat and postpone error codes&n; *&t;&t;to the user task. In read mode, the actual tape position&n; *&t;&t;will be a bit further than the last requested block.&n; *&n; * Concerning (1):&n; *&n; *&t;1.&t;We allocate stages dynamically only when we need them. When&n; *&t;&t;we don&squot;t need them, we don&squot;t consume additional memory. In&n; *&t;&t;case we can&squot;t allocate stages, we just manage without them&n; *&t;&t;(at the expense of decreased throughput) so when Linux is&n; *&t;&t;tight in memory, we will not pose additional difficulties.&n; *&n; *&t;2.&t;The maximum number of stages (which is, in fact, the maximum&n; *&t;&t;amount of memory) which we allocate is limited by the compile&n; *&t;&t;time parameter IDETAPE_MAX_PIPELINE_STAGES.&n; *&n; *&t;3.&t;The maximum number of stages is a controlled parameter - We&n; *&t;&t;don&squot;t start from the user defined maximum number of stages&n; *&t;&t;but from the lower IDETAPE_MIN_PIPELINE_STAGES (again, we&n; *&t;&t;will not even allocate this amount of stages if the user&n; *&t;&t;program can&squot;t handle the speed). We then implement a feedback&n; *&t;&t;loop which checks if the pipeline is empty, and if it is, we&n; *&t;&t;increase the maximum number of stages as necessary until we&n; *&t;&t;reach the optimum value which just manages to keep the tape&n; *&t;&t;busy with minimum allocated memory or until we reach&n; *&t;&t;IDETAPE_MAX_PIPELINE_STAGES.&n; *&n; * Concerning (2):&n; *&n; *&t;In pipelined write mode, ide-tape can not return accurate error codes&n; *&t;to the user program since we usually just add the request to the&n; *      pipeline without waiting for it to be serviced. In case an error&n; *      occurs, I will report it on the next user request.&n; *&n; *&t;In the pipelined read mode, subsequent read requests or forward&n; *&t;filemark spacing will perform correctly, as we preserve all blocks&n; *&t;and filemarks which we encountered during our excess read-ahead.&n; * &n; *&t;For accurate tape positioning and error reporting, disabling&n; *&t;pipelined mode might be the best option.&n; *&n; * You can enable/disable/tune the pipelined operation mode by adjusting&n; * the compile time parameters below.&n; */
 multiline_comment|/*&n; *&t;Possible improvements.&n; *&n; *&t;1.&t;Support for the ATAPI overlap protocol.&n; *&n; *&t;&t;In order to maximize bus throughput, we currently use the DSC&n; *&t;&t;overlap method which enables ide.c to service requests from the&n; *&t;&t;other device while the tape is busy executing a command. The&n; *&t;&t;DSC overlap method involves polling the tape&squot;s status register&n; *&t;&t;for the DSC bit, and servicing the other device while the tape&n; *&t;&t;isn&squot;t ready.&n; *&n; *&t;&t;In the current QIC development standard (December 1995),&n; *&t;&t;it is recommended that new tape drives will *in addition* &n; *&t;&t;implement the ATAPI overlap protocol, which is used for the&n; *&t;&t;same purpose - efficient use of the IDE bus, but is interrupt&n; *&t;&t;driven and thus has much less CPU overhead.&n; *&n; *&t;&t;ATAPI overlap is likely to be supported in most new ATAPI&n; *&t;&t;devices, including new ATAPI cdroms, and thus provides us&n; *&t;&t;a method by which we can achieve higher throughput when&n; *&t;&t;sharing a (fast) ATA-2 disk with any (slow) new ATAPI device.&n; */
 DECL|macro|IDETAPE_VERSION
-mdefine_line|#define IDETAPE_VERSION &quot;1.17b&quot;
+mdefine_line|#define IDETAPE_VERSION &quot;1.17b-ac1&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -5511,25 +5511,6 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-op_ne
-l_int|NULL
-)paren
-multiline_comment|/* paranoia check */
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ide_set_handler
 c_func
 (paren
@@ -5684,25 +5665,6 @@ id|bcount.all
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-op_ne
-l_int|NULL
-)paren
-multiline_comment|/* paranoia check */
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ide_set_handler
 c_func
 (paren
@@ -5884,25 +5846,6 @@ suffix:semicolon
 id|tape-&gt;cmd_start_time
 op_assign
 id|jiffies
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-op_ne
-l_int|NULL
-)paren
-multiline_comment|/* paranoia check */
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* Set the interrupt routine */
 id|ide_set_handler
@@ -6403,25 +6346,6 @@ id|tape-&gt;flags
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|handler
-op_ne
-l_int|NULL
-)paren
-multiline_comment|/* paranoia check */
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ide_set_handler
 c_func
 (paren
@@ -22390,16 +22314,18 @@ id|idetape_identify_device
 id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|hd_driveid
-op_star
-id|id
 )paren
 (brace
 r_struct
 id|idetape_id_gcw
 id|gcw
+suffix:semicolon
+r_struct
+id|hd_driveid
+op_star
+id|id
+op_assign
+id|drive-&gt;id
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_INFO
 r_int
@@ -22412,11 +22338,12 @@ macro_line|#endif /* IDETAPE_DEBUG_INFO */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|id
+id|drive-&gt;id_read
+op_eq
+l_int|0
 )paren
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 op_star
 (paren
@@ -26818,8 +26745,6 @@ op_logical_neg
 id|idetape_identify_device
 (paren
 id|drive
-comma
-id|drive-&gt;id
 )paren
 )paren
 (brace

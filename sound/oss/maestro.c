@@ -16124,9 +16124,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|w
 op_amp
 id|PCI_STATUS_CAP_LIST
+)paren
 )paren
 (brace
 r_return

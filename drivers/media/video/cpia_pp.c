@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * cpia_pp CPiA Parallel Port driver&n; *&n; * Supports CPiA based parallel port Video Camera&squot;s.&n; *&n; * (C) Copyright 1999 Bas Huisman &lt;bhuism@cs.utwente.nl&gt;&n; * (C) Copyright 1999-2000 Scott J. Bertin &lt;sbertin@securenym.net&gt;,&n; * (C) Copyright 1999-2000 Peter Pregler &lt;Peter_Pregler@email.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* define _CPIA_DEBUG_ for verbose debug output (see cpia.h) */
+multiline_comment|/* #define _CPIA_DEBUG_  1 */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,6 +11,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 multiline_comment|/* #define _CPIA_DEBUG_&t;&t;define for verbose debug output */
 macro_line|#include &quot;cpia.h&quot;
@@ -114,103 +117,8 @@ id|privdata
 suffix:semicolon
 DECL|macro|ABOUT
 mdefine_line|#define ABOUT &quot;Parallel port driver for Vision CPiA based cameras&quot;
-multiline_comment|/* IEEE 1284 Compatiblity Mode signal names &t;*/
-DECL|macro|nStrobe
-mdefine_line|#define nStrobe&t;&t;PARPORT_CONTROL_STROBE&t;  /* inverted */
-DECL|macro|nAutoFd
-mdefine_line|#define nAutoFd&t;&t;PARPORT_CONTROL_AUTOFD&t;  /* inverted */
-DECL|macro|nInit
-mdefine_line|#define nInit&t;&t;PARPORT_CONTROL_INIT
-DECL|macro|nSelectIn
-mdefine_line|#define nSelectIn&t;PARPORT_CONTROL_SELECT
-DECL|macro|IntrEnable
-mdefine_line|#define IntrEnable&t;PARPORT_CONTROL_INTEN&t;  /* normally zero for no IRQ */
-DECL|macro|DirBit
-mdefine_line|#define DirBit&t;&t;PARPORT_CONTROL_DIRECTION /* 0 = Forward, 1 = Reverse&t;*/
-DECL|macro|nFault
-mdefine_line|#define nFault&t;&t;PARPORT_STATUS_ERROR
-DECL|macro|Select
-mdefine_line|#define Select&t;&t;PARPORT_STATUS_SELECT
-DECL|macro|PError
-mdefine_line|#define PError&t;&t;PARPORT_STATUS_PAPEROUT
-DECL|macro|nAck
-mdefine_line|#define nAck&t;&t;PARPORT_STATUS_ACK
-DECL|macro|Busy
-mdefine_line|#define Busy&t;&t;PARPORT_STATUS_BUSY&t;  /* inverted */&t;
-multiline_comment|/* some more */
-DECL|macro|HostClk
-mdefine_line|#define HostClk&t;&t;nStrobe
-DECL|macro|HostAck
-mdefine_line|#define HostAck&t;&t;nAutoFd
-DECL|macro|nReverseRequest
-mdefine_line|#define nReverseRequest&t;nInit
-DECL|macro|Active_1284
-mdefine_line|#define Active_1284&t;nSelectIn
-DECL|macro|nPeriphRequest
-mdefine_line|#define nPeriphRequest&t;nFault
-DECL|macro|XFlag
-mdefine_line|#define XFlag&t;&t;Select
-DECL|macro|nAckReverse
-mdefine_line|#define nAckReverse&t;PError
-DECL|macro|PeriphClk
-mdefine_line|#define PeriphClk&t;nAck
-DECL|macro|PeriphAck
-mdefine_line|#define PeriphAck&t;Busy
-multiline_comment|/* these can be used to correct for the inversion on some bits */
-DECL|macro|STATUS_INVERSION_MASK
-mdefine_line|#define STATUS_INVERSION_MASK&t;(Busy)
-DECL|macro|CONTROL_INVERSION_MASK
-mdefine_line|#define CONTROL_INVERSION_MASK&t;(nStrobe|nAutoFd|nSelectIn)
-DECL|macro|ECR_empty
-mdefine_line|#define ECR_empty&t;0x01
-DECL|macro|ECR_full
-mdefine_line|#define ECR_full&t;0x02
-DECL|macro|ECR_serviceIntr
-mdefine_line|#define ECR_serviceIntr 0x04
-DECL|macro|ECR_dmaEn
-mdefine_line|#define ECR_dmaEn&t;0x08
-DECL|macro|ECR_nErrIntrEn
-mdefine_line|#define ECR_nErrIntrEn&t;0x10
-DECL|macro|ECR_mode_mask
-mdefine_line|#define ECR_mode_mask&t;0xE0
-DECL|macro|ECR_SPP_mode
-mdefine_line|#define ECR_SPP_mode&t;0x00
-DECL|macro|ECR_PS2_mode
-mdefine_line|#define ECR_PS2_mode&t;0x20
-DECL|macro|ECR_FIFO_mode
-mdefine_line|#define ECR_FIFO_mode&t;0x40
-DECL|macro|ECR_ECP_mode
-mdefine_line|#define ECR_ECP_mode&t;0x60
-DECL|macro|ECP_FIFO_SIZE
-mdefine_line|#define ECP_FIFO_SIZE&t;16
-DECL|macro|DMA_BUFFER_SIZE
-mdefine_line|#define DMA_BUFFER_SIZE               PAGE_SIZE
-multiline_comment|/* for 16bit DMA make sure DMA_BUFFER_SIZE is 16 bit aligned */
-DECL|macro|PARPORT_CHUNK_SIZE
-mdefine_line|#define PARPORT_CHUNK_SIZE&t;PAGE_SIZE/* &gt;=2.3.x */
-multiline_comment|/* we read this many bytes at once */
-DECL|macro|GetECRMasked
-mdefine_line|#define GetECRMasked(port,mask)&t;(parport_read_econtrol(port) &amp; (mask))
-DECL|macro|GetStatus
-mdefine_line|#define GetStatus(port)&t;&t;((parport_read_status(port)^STATUS_INVERSION_MASK)&amp;(0xf8))
-DECL|macro|SetStatus
-mdefine_line|#define SetStatus(port,val)&t;parport_write_status(port,(val)^STATUS_INVERSION_MASK)
-DECL|macro|GetControl
-mdefine_line|#define GetControl(port)&t;((parport_read_control(port)^CONTROL_INVERSION_MASK)&amp;(0x3f))
-DECL|macro|SetControl
-mdefine_line|#define SetControl(port,val)&t;parport_write_control(port,(val)^CONTROL_INVERSION_MASK)
-DECL|macro|GetStatusMasked
-mdefine_line|#define GetStatusMasked(port,mask)&t;(GetStatus(port) &amp; (mask))
-DECL|macro|GetControlMasked
-mdefine_line|#define GetControlMasked(port,mask)&t;(GetControl(port) &amp; (mask))
-DECL|macro|SetControlMasked
-mdefine_line|#define SetControlMasked(port,mask)&t;SetControl(port,GetControl(port) | (mask));
-DECL|macro|ClearControlMasked
-mdefine_line|#define ClearControlMasked(port,mask)&t;SetControl(port,GetControl(port)&amp;~(mask));
-DECL|macro|FrobControlBit
-mdefine_line|#define FrobControlBit(port,mask,value)&t;SetControl(port,(GetControl(port)&amp;~(mask))|((value)&amp;(mask)));
 DECL|macro|PACKET_LENGTH
-mdefine_line|#define PACKET_LENGTH &t;8
+mdefine_line|#define PACKET_LENGTH  8
 multiline_comment|/* Magic numbers for defining port-device mappings */
 DECL|macro|PPCPIA_PARPORT_UNSPEC
 mdefine_line|#define PPCPIA_PARPORT_UNSPEC -4
@@ -417,20 +325,7 @@ DECL|variable|cam_list_lock_pp
 r_static
 id|spinlock_t
 id|cam_list_lock_pp
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#ifdef _CPIA_DEBUG_
-DECL|macro|DEB_PORT
-mdefine_line|#define DEB_PORT(port) { &bslash;&n;u8 controll = GetControl(port); &bslash;&n;u8 statusss = GetStatus(port); &bslash;&n;DBG(&quot;nsel %c per %c naut %c nstrob %c nak %c busy %c nfaul %c sel %c init %c dir %c&bslash;n&quot;,&bslash;&n;((controll &amp; nSelectIn)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((statusss &amp; PError)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((controll &amp; nAutoFd)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((controll &amp; nStrobe)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((statusss &amp; nAck)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((statusss &amp; Busy)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((statusss &amp; nFault)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((statusss &amp; Select)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((controll &amp; nInit)&t;? &squot;U&squot; : &squot;D&squot;), &bslash;&n;((controll &amp; DirBit)&t;? &squot;R&squot; : &squot;F&squot;)  &bslash;&n;); }
-macro_line|#else
-DECL|macro|DEB_PORT
-mdefine_line|#define DEB_PORT(port) {}
-macro_line|#endif
-DECL|macro|WHILE_OUT_TIMEOUT
-mdefine_line|#define WHILE_OUT_TIMEOUT (HZ/10)
-DECL|macro|DMA_TIMEOUT
-mdefine_line|#define DMA_TIMEOUT 10*HZ
 multiline_comment|/* FIXME */
 DECL|function|cpia_parport_enable_irq
 r_static
@@ -486,6 +381,623 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Special CPiA PPC modes: These are invoked by using the 1284 Extensibility&n; * Link Flag during negotiation */
+DECL|macro|UPLOAD_FLAG
+mdefine_line|#define UPLOAD_FLAG  0x08
+DECL|macro|NIBBLE_TRANSFER
+mdefine_line|#define NIBBLE_TRANSFER 0x01
+DECL|macro|ECP_TRANSFER
+mdefine_line|#define ECP_TRANSFER 0x03
+DECL|macro|PARPORT_CHUNK_SIZE
+mdefine_line|#define PARPORT_CHUNK_SIZE&t;PAGE_SIZE
+multiline_comment|/****************************************************************************&n; *&n; *  CPiA-specific  low-level parport functions for nibble uploads&n; *&n; ***************************************************************************/
+multiline_comment|/*  CPiA nonstandard &quot;Nibble&quot; mode (no nDataAvail signal after each byte). */
+multiline_comment|/* The standard kernel parport_ieee1284_read_nibble() fails with the CPiA... */
+DECL|function|cpia_read_nibble
+r_static
+r_int
+id|cpia_read_nibble
+(paren
+r_struct
+id|parport
+op_star
+id|port
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+id|len
+comma
+r_int
+id|flags
+)paren
+(brace
+multiline_comment|/* adapted verbatim, with one change, from &n;&t;   parport_ieee1284_read_nibble() in drivers/parport/ieee1284-ops.c */
+r_int
+r_char
+op_star
+id|buf
+op_assign
+id|buffer
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+r_char
+id|byte
+op_assign
+l_int|0
+suffix:semicolon
+id|len
+op_mul_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* in nibbles */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+r_char
+id|nibble
+suffix:semicolon
+multiline_comment|/* The CPiA firmware suppresses the use of nDataAvail (nFault LO)&n;&t;&t; * after every second nibble to signal that more&n;&t;&t; * data is available.  (the total number of Bytes that&n;&t;&t; * should be sent is known; if too few are received, an error&n;&t;&t; * will be recorded after a timeout).  &n;&t;&t; * This is incompatible with parport_ieee1284_read_nibble(),&n;&t;&t; * which expects to find nFault LO after every second nibble.&n;&t;&t; */
+multiline_comment|/* Solution: modify cpia_read_nibble to only check for &n;&t;&t; * nDataAvail before the first nibble is sent.&n;&t;&t; */
+multiline_comment|/* Does the error line indicate end of data? */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|i
+multiline_comment|/*&amp; 1*/
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|parport_read_status
+c_func
+(paren
+id|port
+)paren
+op_amp
+id|PARPORT_STATUS_ERROR
+)paren
+)paren
+(brace
+id|port-&gt;physport-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_HBUSY_DNA
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;%s: No more nibble data (%d bytes)&bslash;n&quot;
+comma
+id|port-&gt;name
+comma
+id|i
+op_div
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Go to reverse idle phase. */
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+id|PARPORT_CONTROL_AUTOFD
+)paren
+suffix:semicolon
+id|port-&gt;physport-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_REV_IDLE
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Event 7: Set nAutoFd low. */
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+id|PARPORT_CONTROL_AUTOFD
+)paren
+suffix:semicolon
+multiline_comment|/* Event 9: nAck goes low. */
+id|port-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_REV_DATA
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|parport_wait_peripheral
+(paren
+id|port
+comma
+id|PARPORT_STATUS_ACK
+comma
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* Timeout -- no more data? */
+id|DBG
+c_func
+(paren
+l_string|&quot;%s: Nibble timeout at event 9 (%d bytes)&bslash;n&quot;
+comma
+id|port-&gt;name
+comma
+id|i
+op_div
+l_int|2
+)paren
+suffix:semicolon
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Read a nibble. */
+id|nibble
+op_assign
+id|parport_read_status
+(paren
+id|port
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+id|nibble
+op_and_assign
+op_complement
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|nibble
+op_amp
+l_int|0x10
+)paren
+op_eq
+l_int|0
+)paren
+id|nibble
+op_or_assign
+l_int|8
+suffix:semicolon
+id|nibble
+op_and_assign
+l_int|0xf
+suffix:semicolon
+multiline_comment|/* Event 10: Set nAutoFd high. */
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Event 11: nAck goes high. */
+r_if
+c_cond
+(paren
+id|parport_wait_peripheral
+(paren
+id|port
+comma
+id|PARPORT_STATUS_ACK
+comma
+id|PARPORT_STATUS_ACK
+)paren
+)paren
+(brace
+multiline_comment|/* Timeout -- no more data? */
+id|DBG
+c_func
+(paren
+l_string|&quot;%s: Nibble timeout at event 11&bslash;n&quot;
+comma
+id|port-&gt;name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_amp
+l_int|1
+)paren
+(brace
+multiline_comment|/* Second nibble */
+id|byte
+op_or_assign
+id|nibble
+op_lshift
+l_int|4
+suffix:semicolon
+op_star
+id|buf
+op_increment
+op_assign
+id|byte
+suffix:semicolon
+)brace
+r_else
+id|byte
+op_assign
+id|nibble
+suffix:semicolon
+)brace
+id|i
+op_div_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* i is now in bytes */
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|len
+)paren
+(brace
+multiline_comment|/* Read the last nibble without checking data avail. */
+id|port
+op_assign
+id|port-&gt;physport
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|parport_read_status
+(paren
+id|port
+)paren
+op_amp
+id|PARPORT_STATUS_ERROR
+)paren
+id|port-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_HBUSY_DNA
+suffix:semicolon
+r_else
+id|port-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_HBUSY_DAVAIL
+suffix:semicolon
+)brace
+r_return
+id|i
+suffix:semicolon
+)brace
+multiline_comment|/* CPiA nonstandard &quot;Nibble Stream&quot; mode (2 nibbles per cycle, instead of 1)&n; * (See CPiA Data sheet p. 31) &n; * &n; * &quot;Nibble Stream&quot; mode used by CPiA for uploads to non-ECP ports is a &n; * nonstandard variant of nibble mode which allows the same (mediocre) &n; * data flow of 8 bits per cycle as software-enabled ECP by TRISTATE-capable &n; * parallel ports, but works also for  non-TRISTATE-capable ports.&n; * (Standard nibble mode only send 4 bits per cycle)&n; *&n; */
+DECL|function|cpia_read_nibble_stream
+r_static
+r_int
+id|cpia_read_nibble_stream
+c_func
+(paren
+r_struct
+id|parport
+op_star
+id|port
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+id|len
+comma
+r_int
+id|flags
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buf
+op_assign
+id|buffer
+suffix:semicolon
+r_int
+id|endseen
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+r_char
+id|nibble
+(braket
+l_int|2
+)braket
+comma
+id|byte
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|j
+suffix:semicolon
+multiline_comment|/* Image Data is complete when 4 consecutive EOI bytes (0xff) are seen */
+r_if
+c_cond
+(paren
+id|endseen
+OG
+l_int|3
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* Event 7: Set nAutoFd low. */
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+id|PARPORT_CONTROL_AUTOFD
+)paren
+suffix:semicolon
+multiline_comment|/* Event 9: nAck goes low. */
+id|port-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_REV_DATA
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|parport_wait_peripheral
+(paren
+id|port
+comma
+id|PARPORT_STATUS_ACK
+comma
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* Timeout -- no more data? */
+id|DBG
+c_func
+(paren
+l_string|&quot;%s: Nibble timeout at event 9 (%d bytes)&bslash;n&quot;
+comma
+id|port-&gt;name
+comma
+id|i
+op_div
+l_int|2
+)paren
+suffix:semicolon
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Read lower nibble */
+id|nibble
+(braket
+l_int|0
+)braket
+op_assign
+id|parport_read_status
+(paren
+id|port
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* Event 10: Set nAutoFd high. */
+id|parport_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Event 11: nAck goes high. */
+r_if
+c_cond
+(paren
+id|parport_wait_peripheral
+(paren
+id|port
+comma
+id|PARPORT_STATUS_ACK
+comma
+id|PARPORT_STATUS_ACK
+)paren
+)paren
+(brace
+multiline_comment|/* Timeout -- no more data? */
+id|DBG
+c_func
+(paren
+l_string|&quot;%s: Nibble timeout at event 11&bslash;n&quot;
+comma
+id|port-&gt;name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Read upper nibble */
+id|nibble
+(braket
+l_int|1
+)braket
+op_assign
+id|parport_read_status
+(paren
+id|port
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* reassemble the byte */
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+l_int|2
+suffix:semicolon
+id|j
+op_increment
+)paren
+(brace
+id|nibble
+(braket
+id|j
+)braket
+op_and_assign
+op_complement
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|nibble
+(braket
+id|j
+)braket
+op_amp
+l_int|0x10
+)paren
+op_eq
+l_int|0
+)paren
+id|nibble
+(braket
+id|j
+)braket
+op_or_assign
+l_int|8
+suffix:semicolon
+id|nibble
+(braket
+id|j
+)braket
+op_and_assign
+l_int|0xf
+suffix:semicolon
+)brace
+id|byte
+op_assign
+(paren
+id|nibble
+(braket
+l_int|0
+)braket
+op_or
+(paren
+id|nibble
+(braket
+l_int|1
+)braket
+op_lshift
+l_int|4
+)paren
+)paren
+suffix:semicolon
+op_star
+id|buf
+op_increment
+op_assign
+id|byte
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|byte
+op_eq
+id|EOI
+)paren
+(brace
+id|endseen
+op_increment
+suffix:semicolon
+)brace
+r_else
+id|endseen
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|i
+suffix:semicolon
+)brace
 multiline_comment|/****************************************************************************&n; *&n; *  EndTransferMode&n; *&n; ***************************************************************************/
 DECL|function|EndTransferMode
 r_static
@@ -524,7 +1036,8 @@ id|cam
 r_int
 id|retry
 suffix:semicolon
-multiline_comment|/* After some commands the camera needs extra time before&n;&t; * it will respond again, so we try up to 3 times */
+multiline_comment|/* The CPiA uses ECP protocol for Downloads from the Host to the camera. &n;&t; * This will be software-emulated if ECP hardware is not present&n;&t; */
+multiline_comment|/* the usual camera maximum response time is 10ms, but after receiving&n;&t; * some commands, it needs up to 40ms. (Data Sheet p. 32)*/
 r_for
 c_loop
 (paren
@@ -534,7 +1047,7 @@ l_int|0
 suffix:semicolon
 id|retry
 OL
-l_int|3
+l_int|4
 suffix:semicolon
 op_increment
 id|retry
@@ -556,19 +1069,25 @@ id|IEEE1284_MODE_ECP
 r_break
 suffix:semicolon
 )brace
+id|mdelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
 id|retry
 op_eq
-l_int|3
+l_int|4
 )paren
 (brace
 id|DBG
 c_func
 (paren
-l_string|&quot;Unable to negotiate ECP mode&bslash;n&quot;
+l_string|&quot;Unable to negotiate IEEE1284 ECP Download mode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -600,9 +1119,47 @@ r_int
 id|retry
 suffix:semicolon
 r_int
+id|upload_mode
+comma
 id|mode
 op_assign
 id|IEEE1284_MODE_ECP
+suffix:semicolon
+r_int
+id|transfer_mode
+op_assign
+id|ECP_TRANSFER
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cam-&gt;port-&gt;modes
+op_amp
+id|PARPORT_MODE_ECP
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|cam-&gt;port-&gt;modes
+op_amp
+id|PARPORT_MODE_TRISTATE
+)paren
+)paren
+(brace
+id|mode
+op_assign
+id|IEEE1284_MODE_NIBBLE
+suffix:semicolon
+id|transfer_mode
+op_assign
+id|NIBBLE_TRANSFER
+suffix:semicolon
+)brace
+id|upload_mode
+op_assign
+id|mode
 suffix:semicolon
 r_if
 c_cond
@@ -612,14 +1169,14 @@ id|extensibility
 (brace
 id|mode
 op_assign
-l_int|8
+id|UPLOAD_FLAG
 op_or
-l_int|3
+id|transfer_mode
 op_or
 id|IEEE1284_EXT_LINK
 suffix:semicolon
 )brace
-multiline_comment|/* After some commands the camera needs extra time before&n;&t; * it will respond again, so we try up to 3 times */
+multiline_comment|/* the usual camera maximum response time is 10ms, but after &n;&t; * receiving some commands, it needs up to 40ms. */
 r_for
 c_loop
 (paren
@@ -629,7 +1186,7 @@ l_int|0
 suffix:semicolon
 id|retry
 OL
-l_int|3
+l_int|4
 suffix:semicolon
 op_increment
 id|retry
@@ -651,13 +1208,19 @@ id|mode
 r_break
 suffix:semicolon
 )brace
+id|mdelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
 id|retry
 op_eq
-l_int|3
+l_int|4
 )paren
 (brace
 r_if
@@ -669,7 +1232,7 @@ id|extensibility
 id|DBG
 c_func
 (paren
-l_string|&quot;Unable to negotiate extensibility mode&bslash;n&quot;
+l_string|&quot;Unable to negotiate upload extensibility mode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -677,7 +1240,7 @@ r_else
 id|DBG
 c_func
 (paren
-l_string|&quot;Unable to negotiate ECP mode&bslash;n&quot;
+l_string|&quot;Unable to negotiate upload mode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -693,7 +1256,7 @@ id|extensibility
 (brace
 id|cam-&gt;port-&gt;ieee1284.mode
 op_assign
-id|IEEE1284_MODE_ECP
+id|upload_mode
 suffix:semicolon
 )brace
 r_return
@@ -864,6 +1427,42 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+multiline_comment|/* support for CPiA variant nibble reads */
+r_if
+c_cond
+(paren
+id|cam-&gt;port-&gt;ieee1284.mode
+op_eq
+id|IEEE1284_MODE_NIBBLE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpia_read_nibble
+c_func
+(paren
+id|cam-&gt;port
+comma
+id|packet
+comma
+id|size
+comma
+l_int|0
+)paren
+op_ne
+id|size
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -885,6 +1484,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 )brace
 id|EndTransferMode
 c_func
@@ -988,6 +1588,106 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; *  cpia_pp_streamRead&n; *&n; ***************************************************************************/
+DECL|function|cpia_pp_read
+r_static
+r_int
+id|cpia_pp_read
+c_func
+(paren
+r_struct
+id|parport
+op_star
+id|port
+comma
+id|u8
+op_star
+id|buffer
+comma
+r_int
+id|len
+)paren
+(brace
+r_int
+id|bytes_read
+suffix:semicolon
+multiline_comment|/* support for CPiA variant &quot;nibble stream&quot; reads */
+r_if
+c_cond
+(paren
+id|port-&gt;ieee1284.mode
+op_eq
+id|IEEE1284_MODE_NIBBLE
+)paren
+(brace
+id|bytes_read
+op_assign
+id|cpia_read_nibble_stream
+c_func
+(paren
+id|port
+comma
+id|buffer
+comma
+id|len
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+id|new_bytes
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|bytes_read
+op_assign
+l_int|0
+suffix:semicolon
+id|bytes_read
+OL
+id|len
+suffix:semicolon
+id|bytes_read
+op_add_assign
+id|new_bytes
+)paren
+(brace
+id|new_bytes
+op_assign
+id|parport_read
+c_func
+(paren
+id|port
+comma
+id|buffer
+op_plus
+id|bytes_read
+comma
+id|len
+op_minus
+id|bytes_read
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_bytes
+OL
+l_int|0
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+)brace
+r_return
+id|bytes_read
+suffix:semicolon
+)brace
 DECL|function|cpia_pp_streamRead
 r_static
 r_int
@@ -1022,6 +1722,10 @@ r_int
 id|i
 comma
 id|endseen
+comma
+id|block_size
+comma
+id|new_bytes
 suffix:semicolon
 r_if
 c_cond
@@ -1167,66 +1871,65 @@ id|EIO
 suffix:semicolon
 )brace
 )brace
-id|read_bytes
+id|endseen
 op_assign
-id|parport_read
+l_int|0
+suffix:semicolon
+id|block_size
+op_assign
+id|PARPORT_CHUNK_SIZE
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cam-&gt;image_complete
+)paren
+(brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+id|new_bytes
+op_assign
+id|cpia_pp_read
 c_func
 (paren
 id|cam-&gt;port
 comma
 id|buffer
 comma
-id|CPIA_MAX_IMAGE_SIZE
-)paren
-suffix:semicolon
-id|EndTransferMode
-c_func
-(paren
-id|cam
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;read %d bytes&bslash;n&quot;
-comma
-id|read_bytes
+id|block_size
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|read_bytes
-OL
+id|new_bytes
+op_le
 l_int|0
 )paren
 (brace
-r_return
-op_minus
-id|EIO
+r_break
 suffix:semicolon
 )brace
-id|endseen
+id|i
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
+op_increment
 id|i
 OL
-id|read_bytes
+id|new_bytes
 op_logical_and
 id|endseen
 OL
 l_int|4
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 r_if
@@ -1253,27 +1956,49 @@ id|buffer
 op_increment
 suffix:semicolon
 )brace
+id|read_bytes
+op_add_assign
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|endseen
-OG
-l_int|3
+op_eq
+l_int|4
 )paren
 (brace
 id|cam-&gt;image_complete
 op_assign
 l_int|1
 suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;endseen at %d bytes&bslash;n&quot;
-comma
-id|i
-)paren
+r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|CPIA_MAX_IMAGE_SIZE
+op_minus
+id|read_bytes
+op_le
+id|PARPORT_CHUNK_SIZE
+)paren
+(brace
+id|block_size
+op_assign
+id|CPIA_MAX_IMAGE_SIZE
+op_minus
+id|read_bytes
+suffix:semicolon
+)brace
+)brace
+id|EndTransferMode
+c_func
+(paren
+id|cam
+)paren
+suffix:semicolon
 r_return
 id|cam-&gt;image_complete
 ques
@@ -1843,21 +2568,14 @@ op_logical_neg
 (paren
 id|port-&gt;modes
 op_amp
-id|PARPORT_MODE_ECP
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|port-&gt;modes
-op_amp
-id|PARPORT_MODE_TRISTATE
+id|PARPORT_MODE_PCSPP
 )paren
 )paren
 (brace
 id|LOG
 c_func
 (paren
-l_string|&quot;port is not ECP capable&bslash;n&quot;
+l_string|&quot;port is not supported by CPiA driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2069,6 +2787,8 @@ r_struct
 id|cam_data
 op_star
 id|cpia
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|pp_cam_entry
@@ -2105,6 +2825,11 @@ id|cam_data_list
 suffix:semicolon
 id|cam
 op_assign
+(paren
+r_struct
+id|pp_cam_entry
+op_star
+)paren
 id|cpia-&gt;lowlevel_data
 suffix:semicolon
 r_if
@@ -2123,6 +2848,46 @@ c_func
 op_amp
 id|cpia-&gt;cam_data_list
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|cpia
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|cam_list_lock_pp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpia
+)paren
+(brace
+id|DBG
+c_func
+(paren
+l_string|&quot;cpia_pp_detach failed to find cam_data in cam_list&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|cam
+op_assign
+(paren
+r_struct
+id|pp_cam_entry
+op_star
+)paren
+id|cpia-&gt;lowlevel_data
 suffix:semicolon
 id|cpia_unregister_camera
 c_func
@@ -2151,25 +2916,14 @@ c_func
 id|cam-&gt;pdev
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|cam
-)paren
-suffix:semicolon
 id|cpia-&gt;lowlevel_data
 op_assign
 l_int|NULL
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-id|spin_unlock
+id|kfree
 c_func
 (paren
-op_amp
-id|cam_list_lock_pp
+id|cam
 )paren
 suffix:semicolon
 )brace
@@ -2355,6 +3109,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|cam_list_lock_pp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

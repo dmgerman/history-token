@@ -1,8 +1,6 @@
-multiline_comment|/*&n; *  linux/drivers/ide/ide-proc.c&t;Version 1.03&t;January  2, 1998&n; *&n; *  Copyright (C) 1997-1998&t;Mark Lord&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/ide-proc.c&t;Version 1.05&t;Mar 05, 2003&n; *&n; *  Copyright (C) 1997-1998&t;Mark Lord&n; *  Copyright (C) 2003&t;&t;Red Hat &lt;alan@redhat.com&gt;&n; */
 multiline_comment|/*&n; * This is the /proc/ide/ filesystem implementation.&n; *&n; * The major reason this exists is to provide sufficient access&n; * to driver and config data, such that user-mode programs can&n; * be developed to handle chipset tuning for most PCI interfaces.&n; * This should provide better utilities, and less kernel bloat.&n; *&n; * The entire pci config space for a PCI interface chipset can be&n; * retrieved by just reading it.  e.g.    &quot;cat /proc/ide3/config&quot;&n; *&n; * To modify registers *safely*, do something like:&n; *   echo &quot;P40:88&quot; &gt;/proc/ide/ide3/config&n; * That expression writes 0x88 to pci config register 0x40&n; * on the chip which controls ide3.  Multiple tuples can be issued,&n; * and the writes will be completed as an atomic set:&n; *   echo &quot;P40:88 P41:35 P42:00 P43:00&quot; &gt;/proc/ide/ide3/config&n; *&n; * All numbers must be specified using pairs of ascii hex digits.&n; * It is important to note that these writes will be performed&n; * after waiting for the IDE controller (both interfaces)&n; * to be completely idle, to ensure no corruption of I/O in progress.&n; *&n; * Non-PCI registers can also be written, using &quot;R&quot; in place of &quot;P&quot;&n; * in the above examples.  The size of the port transfer is determined&n; * by the number of pairs of hex digits given for the data.  If a two&n; * digit value is given, the write will be a byte operation; if four&n; * digits are used, the write will be performed as a 16-bit operation;&n; * and if eight digits are specified, a 32-bit &quot;dword&quot; write will be&n; * performed.  Odd numbers of digits are not permitted.&n; *&n; * If there is an error *anywhere* in the string of registers/data&n; * then *none* of the writes will be performed.&n; *&n; * Drive/Driver settings can be retrieved by reading the drive&squot;s&n; * &quot;settings&quot; files.  e.g.    &quot;cat /proc/ide0/hda/settings&quot;&n; * To write a new value &quot;val&quot; into a specific setting &quot;name&quot;, use:&n; *   echo &quot;name:val&quot; &gt;/proc/ide/ide0/hda/settings&n; *&n; * Also useful, &quot;cat /proc/ide0/hda/[identify, smart_values,&n; * smart_thresholds, capabilities]&quot; will issue an IDENTIFY /&n; * PACKET_IDENTIFY / SMART_READ_VALUES / SMART_READ_THRESHOLDS /&n; * SENSE CAPABILITIES command to /dev/hda, and then dump out the&n; * returned data as 256 16-bit words.  The &quot;hdparm&quot; utility will&n; * be updated someday soon to use this mechanism.&n; *&n; * Feel free to develop and distribute fancy GUI configuration&n; * utilities for your favorite PCI chipsets.  I&squot;ll be working on&n; * one for the Promise 20246 someday soon.  -ml&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1556,6 +1554,15 @@ l_string|&quot;mac-io&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|ide_pc9800
+suffix:colon
+id|name
+op_assign
+l_string|&quot;pc9800&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|name
@@ -2725,36 +2732,9 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|ide_driver_t
-op_star
-id|driver
-op_assign
-(paren
-id|ide_driver_t
-op_star
-)paren
-id|drive-&gt;driver
-suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|driver
-)paren
-id|len
-op_assign
-id|sprintf
-c_func
-(paren
-id|page
-comma
-l_string|&quot;(none)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
 id|len
 op_assign
 id|sprintf
@@ -2769,17 +2749,17 @@ r_int
 r_int
 )paren
 (paren
+id|DRIVER
+c_func
 (paren
-id|ide_driver_t
-op_star
-)paren
-id|drive-&gt;driver
+id|drive
 )paren
 op_member_access_from_pointer
 id|capacity
 c_func
 (paren
 id|drive
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -3063,23 +3043,6 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|driver
-)paren
-id|len
-op_assign
-id|sprintf
-c_func
-(paren
-id|page
-comma
-l_string|&quot;(none)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
 id|len
 op_assign
 id|sprintf
@@ -3878,11 +3841,6 @@ c_cond
 id|drive-&gt;proc
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|driver
-)paren
 id|ide_remove_proc_entries
 c_func
 (paren

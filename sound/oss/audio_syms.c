@@ -1,6 +1,4 @@
-multiline_comment|/*&n; * Exported symbols for audio driver.&n; * __NO_VERSION__ because this is still part of sound.o.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
+multiline_comment|/*&n; * Exported symbols for audio driver.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|audio_syms_symbol
 r_char

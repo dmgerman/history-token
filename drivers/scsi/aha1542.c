@@ -4895,7 +4895,7 @@ id|str
 r_int
 id|ints
 (braket
-l_int|4
+l_int|5
 )braket
 suffix:semicolon
 r_int

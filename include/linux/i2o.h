@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__ /* This file to be included by kernel only */
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 multiline_comment|/* How many different OSM&squot;s are we allowing */
 DECL|macro|MAX_I2O_MODULES
-mdefine_line|#define MAX_I2O_MODULES&t;&t;64
+mdefine_line|#define MAX_I2O_MODULES&t;&t;4
 multiline_comment|/* How many OSMs can register themselves for device status updates? */
 DECL|macro|I2O_MAX_MANAGERS
 mdefine_line|#define I2O_MAX_MANAGERS&t;4
@@ -133,11 +133,37 @@ suffix:semicolon
 multiline_comment|/* linux /dev name if available */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;Resource data for each PCI I2O controller&n; */
-DECL|struct|i2o_pci
+multiline_comment|/*&n; * Each I2O controller has one of these objects&n; */
+DECL|struct|i2o_controller
 r_struct
-id|i2o_pci
+id|i2o_controller
 (brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|unit
+r_int
+id|unit
+suffix:semicolon
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+DECL|member|enabled
+r_int
+id|enabled
+suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+multiline_comment|/* PCI device */
 DECL|member|irq
 r_int
 id|irq
@@ -173,42 +199,6 @@ r_int
 id|mtrr_reg1
 suffix:semicolon
 macro_line|#endif
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Transport types supported by I2O stack&n; */
-DECL|macro|I2O_TYPE_PCI
-mdefine_line|#define I2O_TYPE_PCI&t;&t;0x01&t;&t;/* PCI I2O controller */
-multiline_comment|/*&n; * Each I2O controller has one of these objects&n; */
-DECL|struct|i2o_controller
-r_struct
-id|i2o_controller
-(brace
-DECL|member|pdev
-r_struct
-id|pci_dev
-op_star
-id|pdev
-suffix:semicolon
-multiline_comment|/* PCI device */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|unit
-r_int
-id|unit
-suffix:semicolon
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|member|enabled
-r_int
-id|enabled
-suffix:semicolon
 DECL|member|event_notifer
 r_struct
 id|notifier_block
@@ -362,90 +352,6 @@ op_star
 id|proc_entry
 suffix:semicolon
 multiline_comment|/* /proc dir */
-r_union
-(brace
-multiline_comment|/* Bus information */
-DECL|member|pci
-r_struct
-id|i2o_pci
-id|pci
-suffix:semicolon
-DECL|member|bus
-)brace
-id|bus
-suffix:semicolon
-multiline_comment|/* Bus specific destructor */
-DECL|member|destructor
-r_void
-(paren
-op_star
-id|destructor
-)paren
-(paren
-r_struct
-id|i2o_controller
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Bus specific attach/detach */
-DECL|member|bind
-r_int
-(paren
-op_star
-id|bind
-)paren
-(paren
-r_struct
-id|i2o_controller
-op_star
-comma
-r_struct
-id|i2o_device
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Bus specific initiator */
-DECL|member|unbind
-r_int
-(paren
-op_star
-id|unbind
-)paren
-(paren
-r_struct
-id|i2o_controller
-op_star
-comma
-r_struct
-id|i2o_device
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Bus specific enable/disable */
-DECL|member|bus_enable
-r_void
-(paren
-op_star
-id|bus_enable
-)paren
-(paren
-r_struct
-id|i2o_controller
-op_star
-)paren
-suffix:semicolon
-DECL|member|bus_disable
-r_void
-(paren
-op_star
-id|bus_disable
-)paren
-(paren
-r_struct
-id|i2o_controller
-op_star
-)paren
-suffix:semicolon
 DECL|member|page_frame
 r_void
 op_star

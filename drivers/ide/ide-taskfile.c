@@ -1,7 +1,5 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-taskfile.c&t;Version 0.33&t;April 11, 2002&n; *&n; *  Copyright (C) 2000-2002&t;Michael Cornwell &lt;cornwell@acm.org&gt;&n; *  Copyright (C) 2000-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 2001-2002&t;Klaus Smolin&n; *&t;&t;&t;&t;&t;IBM Storage Technology Division&n; *&n; *  The big the bad and the ugly.&n; *&n; *  Problems to be fixed because of BH interface or the lack therefore.&n; *&n; *  Fill me in stupid !!!&n; *&n; *  HOST:&n; *&t;General refers to the Controller and Driver &quot;pair&quot;.&n; *  DATA HANDLER:&n; *&t;Under the context of Linux it generally refers to an interrupt handler.&n; *&t;However, it correctly describes the &squot;HOST&squot;&n; *  DATA BLOCK:&n; *&t;The amount of data needed to be transfered as predefined in the&n; *&t;setup of the device.&n; *  STORAGE ATOMIC:&n; *&t;The &squot;DATA BLOCK&squot; associated to the &squot;DATA HANDLER&squot;, and can be as&n; *&t;small as a single sector or as large as the entire command block&n; *&t;request.&n; */
+multiline_comment|/*&n; * linux/drivers/ide/ide-taskfile.c&t;Version 0.38&t;March 05, 2003&n; *&n; *  Copyright (C) 2000-2002&t;Michael Cornwell &lt;cornwell@acm.org&gt;&n; *  Copyright (C) 2000-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 2001-2002&t;Klaus Smolin&n; *&t;&t;&t;&t;&t;IBM Storage Technology Division&n; *&n; *  The big the bad and the ugly.&n; *&n; *  Problems to be fixed because of BH interface or the lack therefore.&n; *&n; *  Fill me in stupid !!!&n; *&n; *  HOST:&n; *&t;General refers to the Controller and Driver &quot;pair&quot;.&n; *  DATA HANDLER:&n; *&t;Under the context of Linux it generally refers to an interrupt handler.&n; *&t;However, it correctly describes the &squot;HOST&squot;&n; *  DATA BLOCK:&n; *&t;The amount of data needed to be transfered as predefined in the&n; *&t;setup of the device.&n; *  STORAGE ATOMIC:&n; *&t;The &squot;DATA BLOCK&squot; associated to the &squot;DATA HANDLER&squot;, and can be as&n; *&t;small as a single sector or as large as the entire command block&n; *&t;request.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -3351,6 +3349,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: MULTI-READ assume all data &quot;
 "&bslash;"
 l_string|&quot;transfered is bad status=0x%02x&bslash;n&quot;
@@ -4190,26 +4189,6 @@ r_return
 id|ide_started
 suffix:semicolon
 macro_line|#else /* ! ALTERNATE_STATE_DIAGRAM_MULTI_OUT */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|wait_for_ready
-c_func
-(paren
-id|drive
-comma
-l_int|100
-)paren
-)paren
-id|IDE_DEBUG
-c_func
-(paren
-id|__LINE__
-)paren
-suffix:semicolon
-singleline_comment|//BUG();
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -4254,7 +4233,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * WARNING :: if the drive as not acked good status we may not&n;&t; * move the DATA-TRANSFER T-Bar as BSY != 0. &lt;andre@linux-ide.org&gt;&n;&t; */
 r_return
 id|args
@@ -4383,6 +4361,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: MULTI-WRITE assume all data &quot;
 "&bslash;"
 l_string|&quot;transfered is bad status=0x%02x&bslash;n&quot;
@@ -6836,6 +6815,7 @@ multiline_comment|/* (hs): give up if multcount is not set */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s Multimode Write &quot;
 "&bslash;"
 l_string|&quot;multcount is not set&bslash;n&quot;
@@ -6969,6 +6949,7 @@ multiline_comment|/* (hs): give up if multcount is not set */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s Multimode Read failure &quot;
 "&bslash;"
 l_string|&quot;multcount is not set&bslash;n&quot;

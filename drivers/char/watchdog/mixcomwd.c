@@ -202,9 +202,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|nowayout
 )paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
+r_else
 (brace
 r_if
 c_cond

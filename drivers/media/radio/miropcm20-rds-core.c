@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *  Many thanks to Fred Seidel &lt;seidel@metabox.de&gt;, the&n; *  designer of the RDS decoder hardware. With his help&n; *  I was able to code this driver.&n; *  Thanks also to Norberto Pellicci, Dominic Mounteney&n; *  &lt;DMounteney@pinnaclesys.com&gt; and www.teleauskunft.de&n; *  for good hints on finding Fred. It was somewhat hard&n; *  to locate him here in Germany... [:&n; *&n; * Revision history:&n; *&n; *   2000-08-09  Robert Siemer &lt;Robert.Siemer@gmx.de&gt;&n; *        RDS support for MiroSound PCM20 radio&n; */
-DECL|macro|_NO_VERSION_
-mdefine_line|#define _NO_VERSION_
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

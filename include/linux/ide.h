@@ -293,8 +293,6 @@ DECL|macro|WAIT_MIN_SLEEP
 mdefine_line|#define WAIT_MIN_SLEEP&t;(2*HZ/100)&t;/* 20msec - minimum sleep time */
 DECL|macro|HOST
 mdefine_line|#define HOST(hwif,chipset)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ((hwif)-&gt;chipset == chipset) ? 1 : 0;&t;&t;&bslash;&n;}
-DECL|macro|IDE_DEBUG
-mdefine_line|#define IDE_DEBUG(lineno) &bslash;&n;&t;printk(&quot;%s,%s,line=%d&bslash;n&quot;, __FILE__, __FUNCTION__, (lineno))
 multiline_comment|/*&n; * Check for an interrupt and acknowledge the interrupt status&n; */
 r_struct
 id|hwif_s
@@ -372,6 +370,9 @@ comma
 id|ide_etrax100
 comma
 id|ide_acorn
+comma
+DECL|enumerator|ide_pc9800
+id|ide_pc9800
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
@@ -1580,6 +1581,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* device ejected hint */
+DECL|member|id_read
+r_int
+id|id_read
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1=id read from disk 0 = synthetic */
 DECL|member|noprobe
 r_int
 id|noprobe
@@ -2276,7 +2284,7 @@ multiline_comment|/*&n; * taskfiles really should use hard_cur_sectors as well!&
 DECL|macro|task_rq_offset
 mdefine_line|#define task_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;nr_sectors - (rq)-&gt;current_nr_sectors) * SECTOR_SIZE)
 DECL|function|ide_map_buffer
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -2327,7 +2335,7 @@ id|rq
 suffix:semicolon
 )brace
 DECL|function|ide_unmap_buffer
-r_extern
+r_static
 r_inline
 r_void
 id|ide_unmap_buffer
@@ -3037,6 +3045,10 @@ op_star
 id|OUTBSYNC
 )paren
 (paren
+id|ide_drive_t
+op_star
+id|drive
+comma
 id|u8
 id|addr
 comma
@@ -4064,6 +4076,21 @@ comma
 id|u8
 )paren
 suffix:semicolon
+DECL|member|abort
+id|ide_startstop_t
+(paren
+op_star
+m_abort
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 DECL|member|ioctl
 r_int
 (paren
@@ -4426,6 +4453,20 @@ id|byte
 id|stat
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Abort a running command on the controller triggering the abort&n; * from a host side, non error situation&n; * (drive, msg)&n; */
+r_extern
+id|ide_startstop_t
+id|ide_abort
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; *&n; * (drive, command, nsector, handler)&n; */
 r_extern
 r_void
@@ -4525,19 +4566,6 @@ id|ide_startstop_t
 id|ide_do_reset
 (paren
 id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Re-Start an operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
-r_extern
-r_int
-id|restart_request
-(paren
-id|ide_drive_t
-op_star
-comma
-r_struct
-id|request
 op_star
 )paren
 suffix:semicolon
@@ -6428,6 +6456,12 @@ r_extern
 id|spinlock_t
 id|ide_lock
 suffix:semicolon
+r_extern
+r_struct
+id|semaphore
+id|ide_cfg_sem
+suffix:semicolon
+multiline_comment|/*&n; * Structure locking:&n; *&n; * ide_cfg_sem and ide_lock together protect changes to&n; * ide_hwif_t-&gt;{next,hwgroup}&n; * ide_drive_t-&gt;next&n; *&n; * ide_hwgroup_t-&gt;busy: ide_lock&n; * ide_hwgroup_t-&gt;hwif: ide_lock&n; * ide_hwif_t-&gt;mate: constant, no locking&n; * ide_drive_t-&gt;hwif: constant, no locking&n; */
 DECL|macro|local_irq_set
 mdefine_line|#define local_irq_set(flags)&t;do { local_save_flags((flags)); local_irq_enable(); } while (0)
 DECL|macro|IDE_MAX_TAG

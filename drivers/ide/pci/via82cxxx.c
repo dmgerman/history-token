@@ -531,6 +531,9 @@ id|u
 comma
 id|i
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 id|u16
 id|c
 comma
@@ -1674,10 +1677,32 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* hoping it is less than 4K... */
-r_return
+id|len
+op_assign
+(paren
 id|p
 op_minus
 id|buffer
+)paren
+op_minus
+id|offset
+suffix:semicolon
+op_star
+id|addr
+op_assign
+id|buffer
+op_plus
+id|offset
+suffix:semicolon
+r_return
+id|len
+OG
+id|count
+ques
+c_cond
+id|count
+suffix:colon
+id|len
 suffix:semicolon
 )brace
 macro_line|#endif /* DISPLAY_VIA_TIMINGS &amp;&amp; CONFIG_PROC_FS */
