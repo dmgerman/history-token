@@ -1006,14 +1006,13 @@ id|I2C_FUNC_SMBUS_WORD_DATA
 multiline_comment|/* |&n;&t;    I2C_FUNC_SMBUS_BLOCK_DATA */
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|nforce2_ids
 r_static
 r_struct
 id|pci_device_id
 id|nforce2_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
