@@ -10041,7 +10041,7 @@ suffix:colon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_break
 suffix:semicolon

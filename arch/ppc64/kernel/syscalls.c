@@ -101,7 +101,7 @@ suffix:semicolon
 id|ret
 op_assign
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 r_switch
 c_cond
