@@ -4095,14 +4095,6 @@ id|error
 r_goto
 id|cleanup
 suffix:semicolon
-id|ext3_xattr_update_super_block
-c_func
-(paren
-id|handle
-comma
-id|sb
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Update the inode. */
@@ -5045,6 +5037,14 @@ op_logical_neg
 id|error
 )paren
 (brace
+id|ext3_xattr_update_super_block
+c_func
+(paren
+id|handle
+comma
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME_SEC
