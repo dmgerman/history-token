@@ -356,8 +356,6 @@ r_struct
 id|processor
 id|sa110_processor_functions
 suffix:semicolon
-DECL|macro|cpu_data_abort
-mdefine_line|#define cpu_data_abort(pc)&t;&t;&t;processor._data_abort(pc)
 DECL|macro|cpu_check_bugs
 mdefine_line|#define cpu_check_bugs()&t;&t;&t;processor._check_bugs()
 DECL|macro|cpu_proc_init

@@ -10,8 +10,6 @@ macro_line|#endif
 DECL|macro|__cpu_fn
 mdefine_line|#define __cpu_fn(name,x)&t;__catify_fn(name,x)
 multiline_comment|/*&n; * If we are supporting multiple CPUs, then we must use a table of&n; * function pointers for this lot.  Otherwise, we can optimise the&n; * table away.&n; */
-DECL|macro|cpu_data_abort
-mdefine_line|#define cpu_data_abort&t;&t;&t;__cpu_fn(CPU_ABRT,_abort)
 DECL|macro|cpu_check_bugs
 mdefine_line|#define cpu_check_bugs&t;&t;&t;__cpu_fn(CPU_NAME,_check_bugs)
 DECL|macro|cpu_proc_init
