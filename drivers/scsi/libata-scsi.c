@@ -702,10 +702,6 @@ op_amp
 l_int|0x1f
 suffix:semicolon
 multiline_comment|/* mask out reserved bits */
-id|tf-&gt;device
-op_or_assign
-id|ATA_LBA
-suffix:semicolon
 id|VPRINTK
 c_func
 (paren
