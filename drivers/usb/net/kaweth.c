@@ -496,6 +496,17 @@ multiline_comment|/* Silicom U2E */
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x1485
+comma
+l_int|0x0002
+)paren
+)brace
+comma
+multiline_comment|/* Psion Dacom Gold Port Ethernet */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x1645
 comma
 l_int|0x0005
