@@ -9,6 +9,17 @@ macro_line|#include &quot;e100.h&quot;
 macro_line|#include &quot;e100_ucode.h&quot;
 macro_line|#include &quot;e100_config.h&quot;
 macro_line|#include &quot;e100_phy.h&quot;
+r_extern
+r_void
+id|e100_force_speed_duplex_to_phy
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
 DECL|variable|e100_gstrings_stats
 r_static
 r_char
@@ -6806,6 +6817,22 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* When changing to non-autoneg, device may lose  */
+multiline_comment|/* link with some switches. e100 will try to      */
+multiline_comment|/* revover link by sending command to PHY layer   */
+r_if
+c_cond
+(paren
+id|bdp-&gt;params.e100_speed_duplex
+op_ne
+id|E100_AUTONEG
+)paren
+id|e100_force_speed_duplex_to_phy
+c_func
+(paren
+id|bdp
+)paren
+suffix:semicolon
 )brace
 id|rmb
 c_func
@@ -11348,13 +11375,24 @@ op_star
 id|bdp
 )paren
 (brace
+r_int
+id|carrier_ok
+suffix:semicolon
+multiline_comment|/* Device may lose link with some siwtches when */
+multiline_comment|/* changing speed/duplex to non-autoneg. e100   */
+multiline_comment|/* needs to remember carrier state in order to  */
+multiline_comment|/* start watchdog timer for recovering link     */
 r_if
 c_cond
 (paren
+(paren
+id|carrier_ok
+op_assign
 id|netif_carrier_ok
 c_func
 (paren
 id|bdp-&gt;device
+)paren
 )paren
 )paren
 id|e100_isolate_driver
@@ -11387,11 +11425,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|netif_carrier_ok
-c_func
-(paren
-id|bdp-&gt;device
-)paren
+id|carrier_ok
 )paren
 id|e100_deisolate_driver
 c_func
