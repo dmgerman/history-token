@@ -1127,10 +1127,6 @@ r_struct
 id|cache_head
 op_star
 id|h
-comma
-r_char
-op_star
-id|pbuf
 )paren
 (brace
 r_struct

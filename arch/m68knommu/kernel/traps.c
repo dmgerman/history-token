@@ -272,6 +272,8 @@ suffix:semicolon
 id|show_stack
 c_func
 (paren
+l_int|NULL
+comma
 (paren
 r_int
 r_int
@@ -366,6 +368,11 @@ r_void
 id|show_stack
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
 r_int
 r_int
 op_star
