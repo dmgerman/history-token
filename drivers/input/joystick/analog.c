@@ -3537,7 +3537,7 @@ c_func
 id|gameport
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|ANALOG_MAX_TIME
@@ -3600,7 +3600,7 @@ id|port
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|ANALOG_MAX_TIME
@@ -3613,7 +3613,7 @@ id|v
 op_assign
 l_int|0
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|ANALOG_MAX_TIME

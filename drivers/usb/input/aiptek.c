@@ -3043,7 +3043,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|aiptek-&gt;curSetting.programmableDelay

@@ -2334,7 +2334,7 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|5

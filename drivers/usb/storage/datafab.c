@@ -1188,7 +1188,7 @@ r_goto
 id|leave
 suffix:semicolon
 )brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|20

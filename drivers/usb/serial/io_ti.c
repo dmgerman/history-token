@@ -2003,7 +2003,8 @@ l_int|0
 r_break
 suffix:semicolon
 multiline_comment|/* Block the thread for 10ms */
-id|wait_ms
+id|msleep
+c_func
 (paren
 l_int|10
 )paren
@@ -2119,7 +2120,8 @@ id|port
 )paren
 (brace
 multiline_comment|/* Delay a few char times */
-id|wait_ms
+id|msleep
+c_func
 (paren
 l_int|50
 )paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -280,7 +281,7 @@ op_plus
 id|VORTEX_GCR
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|VORTEX_DATA_WAIT

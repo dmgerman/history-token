@@ -957,35 +957,6 @@ mdefine_line|#define catchRadius&t;dmasound_catchRadius
 multiline_comment|/* define the value to be put in the byte-swap reg in mac-io&n;   when we want it to swap for us.&n;*/
 DECL|macro|BS_VAL
 mdefine_line|#define BS_VAL 1
-DECL|function|wait_ms
-r_static
-r_inline
-r_void
-id|wait_ms
-c_func
-(paren
-r_int
-r_int
-id|ms
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-op_plus
-id|ms
-op_star
-id|HZ
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-)brace
 DECL|macro|SW_INPUT_VOLUME_SCALE
 mdefine_line|#define SW_INPUT_VOLUME_SCALE&t;4
 DECL|macro|SW_INPUT_VOLUME_DEFAULT

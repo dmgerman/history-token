@@ -4209,7 +4209,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* unlinking that should always work.  variable delay tests more&n;&t; * hcd states and code paths, even with little other system load.&n;&t; */
-id|wait_ms
+id|msleep
 (paren
 id|jiffies
 op_mod

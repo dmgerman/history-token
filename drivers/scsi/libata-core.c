@@ -236,37 +236,6 @@ r_return
 l_string|&quot;&lt;invalid THR_xxx state&gt;&quot;
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;msleep - sleep for a number of milliseconds&n; *&t;@msecs: number of milliseconds to sleep&n; *&n; *&t;Issues schedule_timeout call for the specified number&n; *&t;of milliseconds.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
-DECL|function|msleep
-r_static
-r_void
-id|msleep
-c_func
-(paren
-r_int
-r_int
-id|msecs
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
-c_func
-(paren
-id|msecs
-)paren
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;ata_tf_load_pio - send taskfile registers to host controller&n; *&t;@ioaddr: set of IO ports to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller using PIO.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_load_pio
 r_void

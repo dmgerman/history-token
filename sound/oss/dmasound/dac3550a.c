@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Driver for the i2c/i2s based DAC3550a sound chip used&n; * on some Apple iBooks. Also known as &quot;DACA&quot;.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -286,7 +287,7 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Do a short sleep, just to make sure I2C bus is awake and paying&n;&t; * attention to us&n;&t; */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|20
@@ -316,7 +317,7 @@ l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Another short delay, just to make sure the other I2C bus writes&n;&t; * have taken...&n;&t; */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|20
