@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  Driver for generic MPU-401 boards (UART mode only)&n;
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_ACPI_BUS
-macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
@@ -326,10 +326,9 @@ OG
 l_int|0
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64
 id|resources-&gt;irq
 op_assign
-id|acpi_register_irq
+id|acpi_register_gsi
 c_func
 (paren
 id|res-&gt;data.irq.interrupts
@@ -337,20 +336,11 @@ id|res-&gt;data.irq.interrupts
 l_int|0
 )braket
 comma
-id|res-&gt;data.irq.active_high_low
-comma
 id|res-&gt;data.irq.edge_level
+comma
+id|res-&gt;data.irq.active_high_low
 )paren
 suffix:semicolon
-macro_line|#else
-id|resources-&gt;irq
-op_assign
-id|res-&gt;data.irq.interrupts
-(braket
-l_int|0
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_else
@@ -709,7 +699,7 @@ c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;, bus id &quot;
+l_string|&quot;, ACPI id &quot;
 )paren
 suffix:semicolon
 id|strlcat
