@@ -289,26 +289,40 @@ op_minus
 l_int|0x8
 )braket
 suffix:semicolon
-multiline_comment|/*=====================================================================================&n; * CACHE_LINE_31 0x0F00 - 0x0F7F Exception stack&n; *=====================================================================================&n; */
-DECL|member|exception_stack
-id|u8
-id|exception_stack
+multiline_comment|/*=====================================================================================&n; * CACHE_LINE_31-32 0x0F00 - 0x0FFF Exception register save areas&n; *=====================================================================================&n; */
+DECL|member|exgen
+id|u64
+id|exgen
 (braket
-id|N_EXC_STACK
-op_star
-id|EXC_FRAME_SIZE
+l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/*=====================================================================================&n; * CACHE_LINE_32 0x0F80 - 0x0FFF Reserved&n; *=====================================================================================&n; */
-DECL|member|rsvd7
-id|u8
-id|rsvd7
+multiline_comment|/* used for most interrupts/exceptions */
+DECL|member|exmc
+id|u64
+id|exmc
 (braket
-l_int|0x80
+l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* Give the stack some rope ... */
-multiline_comment|/*=====================================================================================&n; * Page 2 Reserved for guard page.  Also used as a stack early in SMP boots before&n; *        relocation is enabled.&n; *=====================================================================================&n; */
+multiline_comment|/* used for machine checks */
+DECL|member|exslb
+id|u64
+id|exslb
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* used for SLB/segment table misses&n;&t;&t;&t;&t; * on the linear mapping */
+DECL|member|exdsi
+id|u64
+id|exdsi
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* used for linear mapping hash table misses */
+multiline_comment|/*=====================================================================================&n; * Page 2 used as a stack when we detect a bad kernel stack pointer,&n; * and early in SMP boots before relocation is enabled.&n; *=====================================================================================&n; */
 DECL|member|guard
 id|u8
 id|guard
@@ -316,7 +330,6 @@ id|guard
 l_int|0x1000
 )braket
 suffix:semicolon
-multiline_comment|/* ... and then hang &squot;em         */
 )brace
 suffix:semicolon
 macro_line|#endif /* _PPC64_PACA_H */

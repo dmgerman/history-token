@@ -960,18 +960,15 @@ r_int
 id|fpexc_mode
 suffix:semicolon
 multiline_comment|/* Floating-point exception mode */
-DECL|member|saved_msr
+DECL|member|pad
 r_int
 r_int
-id|saved_msr
+id|pad
+(braket
+l_int|3
+)braket
 suffix:semicolon
-multiline_comment|/* Save MSR across signal handlers */
-DECL|member|saved_softe
-r_int
-r_int
-id|saved_softe
-suffix:semicolon
-multiline_comment|/* Ditto for Soft Enable/Disable */
+multiline_comment|/* was saved_msr, saved_softe */
 macro_line|#ifdef CONFIG_ALTIVEC
 multiline_comment|/* Complete AltiVec register set */
 id|vector128

@@ -23,6 +23,10 @@ DECL|macro|REST_8GPRS
 mdefine_line|#define REST_8GPRS(n, base)&t;REST_4GPRS(n, base); REST_4GPRS(n+4, base)
 DECL|macro|REST_10GPRS
 mdefine_line|#define REST_10GPRS(n, base)&t;REST_8GPRS(n, base); REST_2GPRS(n+8, base)
+DECL|macro|SAVE_NVGPRS
+mdefine_line|#define SAVE_NVGPRS(base)&t;SAVE_8GPRS(14, base); SAVE_10GPRS(22, base)
+DECL|macro|REST_NVGPRS
+mdefine_line|#define REST_NVGPRS(base)&t;REST_8GPRS(14, base); REST_10GPRS(22, base)
 DECL|macro|SAVE_FPR
 mdefine_line|#define SAVE_FPR(n, base)&t;stfd&t;n,THREAD_FPR0+8*(n)(base)
 DECL|macro|SAVE_2FPRS
@@ -71,8 +75,6 @@ DECL|macro|REST_16VRS
 mdefine_line|#define REST_16VRS(n,b,base)&t;REST_8VRS(n,b,base); REST_8VRS(n+8,b,base)
 DECL|macro|REST_32VRS
 mdefine_line|#define REST_32VRS(n,b,base)&t;REST_16VRS(n,b,base); REST_16VRS(n+16,b,base)
-DECL|macro|CHECKANYINT
-mdefine_line|#define CHECKANYINT(ra,rb)&t;&t;&t;&bslash;&n;&t;mfspr&t;rb,SPRG3;&t;&t;/* Get Paca address */&bslash;&n;&t;ld&t;ra,PACALPPACA+LPPACAANYINT(rb); /* Get pending interrupt flags */&bslash;&n;&t;cmpldi&t;0,ra,0;
 multiline_comment|/* Macros to adjust thread priority for Iseries hardware multithreading */
 DECL|macro|HMT_LOW
 mdefine_line|#define HMT_LOW&t;&t;or 1,1,1

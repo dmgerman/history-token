@@ -152,6 +152,15 @@ DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;nip)
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((((regs)-&gt;msr) &gt;&gt; MSR_PR_LG) &amp; 0x1)
+DECL|macro|force_successful_syscall_return
+mdefine_line|#define force_successful_syscall_return()   &bslash;&n;&t;&t;(current_thread_info()-&gt;syscall_noerror = 1)
+multiline_comment|/*&n; * We use the least-significant bit of the trap field to indicate&n; * whether we have saved the full set of registers, or only a&n; * partial set.  A 1 there means the partial set.&n; */
+DECL|macro|FULL_REGS
+mdefine_line|#define FULL_REGS(regs)&t;&t;(((regs)-&gt;trap &amp; 1) == 0)
+DECL|macro|TRAP
+mdefine_line|#define TRAP(regs)&t;&t;((regs)-&gt;trap &amp; ~0xF)
+DECL|macro|CHECK_FULL_REGS
+mdefine_line|#define CHECK_FULL_REGS(regs)&t;BUG_ON(regs-&gt;trap &amp; 1)
 multiline_comment|/*&n; * Offsets used by &squot;ptrace&squot; system call interface.&n; */
 DECL|macro|PT_R0
 mdefine_line|#define PT_R0&t;0

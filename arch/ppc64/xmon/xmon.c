@@ -53,10 +53,6 @@ r_int
 id|xmon_gate
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-DECL|macro|TRAP
-mdefine_line|#define TRAP(regs)&t;((regs)-&gt;trap)
-DECL|macro|FULL_REGS
-mdefine_line|#define FULL_REGS(regs)&t;1
 DECL|variable|in_xmon
 r_static
 r_int

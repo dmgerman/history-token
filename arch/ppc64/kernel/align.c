@@ -6,14 +6,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
-r_void
-id|disable_kernel_fp
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* asm function from head.S */
 DECL|struct|aligninfo
 r_struct
 id|aligninfo
@@ -1230,24 +1222,31 @@ multiline_comment|/* Force the fprs into the save area so we can reference them 
 r_if
 c_cond
 (paren
-(paren
 id|flags
 op_amp
 id|F
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
 (paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
 )paren
 )paren
-id|giveup_fpu
+r_return
+l_int|0
+suffix:semicolon
+id|flush_fp_to_thread
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* If we are loading, get the data from user space */
 r_if
 c_cond
@@ -1433,6 +1432,11 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* Doing stfs, have to convert to single */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|enable_kernel_fp
 c_func
 (paren
@@ -1462,6 +1466,11 @@ id|current-&gt;thread.fpscr
 )paren
 suffix:semicolon
 id|disable_kernel_fp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren
@@ -1601,6 +1610,11 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* Doing lfs, have to convert to double */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|enable_kernel_fp
 c_func
 (paren
@@ -1630,6 +1644,11 @@ id|current-&gt;thread.fpscr
 )paren
 suffix:semicolon
 id|disable_kernel_fp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
 c_func
 (paren
 )paren
