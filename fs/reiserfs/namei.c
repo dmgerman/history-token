@@ -1150,9 +1150,9 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;zam-7001: io error in &quot;
+l_string|&quot;zam-7001: io error in %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2013,10 +2013,10 @@ id|NAME_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;zam-7002:&quot;
-id|__FUNCTION__
-l_string|&quot;: &bslash;&quot;reiserfs_find_entry&bslash;&quot; has returned&quot;
+l_string|&quot;zam-7002:%s: &bslash;&quot;reiserfs_find_entry&bslash;&quot; has returned&quot;
 l_string|&quot; unexpected value (%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|retval
 )paren
