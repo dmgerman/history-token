@@ -25,7 +25,7 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|rtas
@@ -1495,7 +1495,7 @@ suffix:semicolon
 r_else
 id|f-&gt;next
 op_assign
-l_int|0LL
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* make num_blocks into the version/length field */
 id|f-&gt;num_blocks
