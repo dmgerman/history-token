@@ -598,6 +598,16 @@ id|ASUS_A600_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|ASUS_VENDOR_ID
+comma
+id|ASUS_A620_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
