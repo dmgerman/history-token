@@ -852,6 +852,7 @@ id|parser-&gt;local.usage_index
 comma
 id|parser-&gt;global.report_count
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
