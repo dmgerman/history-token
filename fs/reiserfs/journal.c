@@ -3674,7 +3674,7 @@ id|debug
 id|printk
 c_func
 (paren
-l_string|&quot;block %lu, bh is %d, state %d&bslash;n&quot;
+l_string|&quot;block %lu, bh is %d, state %ld&bslash;n&quot;
 comma
 id|cn-&gt;blocknr
 comma

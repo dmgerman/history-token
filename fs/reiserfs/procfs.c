@@ -2052,7 +2052,7 @@ l_string|&quot;jp_journal_max_commit_age: &bslash;t%i&bslash;n&quot;
 l_string|&quot;jp_journal_max_trans_age: &bslash;t%i&bslash;n&quot;
 multiline_comment|/* incore fields */
 l_string|&quot;j_1st_reserved_block: &bslash;t%i&bslash;n&quot;
-l_string|&quot;j_state: &bslash;t%i&bslash;n&quot;
+l_string|&quot;j_state: &bslash;t%li&bslash;n&quot;
 l_string|&quot;j_trans_id: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;j_mount_id: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;j_start: &bslash;t%lu&bslash;n&quot;
