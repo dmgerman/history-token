@@ -15,10 +15,10 @@ mdefine_line|#define MAX_UDELAY_MS&t;5
 macro_line|#endif
 macro_line|#ifdef notdef
 DECL|macro|mdelay
-mdefine_line|#define mdelay(n) (&bslash;&n;&t;{unsigned long msec=(n); while (msec--) udelay(1000);})
+mdefine_line|#define mdelay(n) (&bslash;&n;&t;{unsigned long __ms=(n); while (__ms--) udelay(1000);})
 macro_line|#else
 DECL|macro|mdelay
-mdefine_line|#define mdelay(n) (&bslash;&n;&t;(__builtin_constant_p(n) &amp;&amp; (n)&lt;=MAX_UDELAY_MS) ? udelay((n)*1000) : &bslash;&n;&t;({unsigned long msec=(n); while (msec--) udelay(1000);}))
+mdefine_line|#define mdelay(n) (&bslash;&n;&t;(__builtin_constant_p(n) &amp;&amp; (n)&lt;=MAX_UDELAY_MS) ? udelay((n)*1000) : &bslash;&n;&t;({unsigned long __ms=(n); while (__ms--) udelay(1000);}))
 macro_line|#endif
 macro_line|#ifndef ndelay
 DECL|macro|ndelay
