@@ -54,8 +54,6 @@ id|llc_sap
 op_star
 id|sap
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|sap
 op_assign
 id|llc_sap_find
@@ -76,7 +74,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_goto
-id|err
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* sap requested does not yet exist */
@@ -94,7 +92,7 @@ op_logical_neg
 id|sap
 )paren
 r_goto
-id|err
+id|out
 suffix:semicolon
 multiline_comment|/* allocated a SAP; initialize it and clear out its memory pool */
 id|sap-&gt;laddr.lsap
@@ -122,13 +120,6 @@ suffix:colon
 r_return
 id|sap
 suffix:semicolon
-id|err
-suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_sap_close - close interface for upper layers.&n; *&t;@sap: SAP to be closed.&n; *&n; *&t;Close interface function to upper layer. Each one who wants to&n; *&t;close an open SAP (for example NetBEUI) should call this function.&n; */
 DECL|function|llc_sap_close
@@ -147,8 +138,6 @@ c_func
 (paren
 id|sap
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_build_and_send_ui_pkt - unitdata request interface for upper layers&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@dmac: destination mac address&n; *&t;@dsap: destination sap&n; *&n; *&t;Upper layers calls this function when upper layer wants to send data&n; *&t;using connection-less mode communication (UI pdu).&n; *&n; *&t;Accept data frame from network layer to be sent using connection-&n; *&t;less mode communication; timeout/retries handled by network layer;&n; *&t;package primitive as an event and send to SAP event handler&n; */
