@@ -1106,7 +1106,6 @@ comma
 id|fa_list
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_ROUTE_TOS
 r_if
 c_cond
 (paren
@@ -1118,7 +1117,6 @@ id|flp-&gt;fl4_tos
 )paren
 r_continue
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1926,7 +1924,6 @@ comma
 id|fa_list
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_ROUTE_TOS
 r_if
 c_cond
 (paren
@@ -1936,7 +1933,6 @@ id|tos
 )paren
 r_continue
 suffix:semicolon
-macro_line|#endif
 id|prev_fa
 op_assign
 id|fa
@@ -2050,12 +2046,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#ifndef CONFIG_IP_ROUTE_TOS
-id|tos
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2694,12 +2684,6 @@ id|tos
 op_assign
 id|r-&gt;rtm_tos
 suffix:semicolon
-macro_line|#ifndef CONFIG_IP_ROUTE_TOS
-id|tos
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
