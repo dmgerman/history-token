@@ -9419,7 +9419,7 @@ suffix:semicolon
 DECL|function|de_init_one
 r_static
 r_int
-id|__devinit
+id|__init
 id|de_init_one
 (paren
 r_struct
