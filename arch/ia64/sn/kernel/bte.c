@@ -1,13 +1,12 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
+macro_line|#include &quot;shubio.h&quot;
 macro_line|#include &lt;asm/nodedata.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -20,11 +19,11 @@ macro_line|#endif
 multiline_comment|/* two interfaces on two btes */
 DECL|macro|MAX_INTERFACES_TO_TRY
 mdefine_line|#define MAX_INTERFACES_TO_TRY&t;&t;4
+DECL|function|bte_if_on_node
 r_static
 r_struct
 id|bteinfo_s
 op_star
-DECL|function|bte_if_on_node
 id|bte_if_on_node
 c_func
 (paren
@@ -61,8 +60,8 @@ suffix:semicolon
 )brace
 multiline_comment|/************************************************************************&n; * Block Transfer Engine copy related functions.&n; *&n; ***********************************************************************/
 multiline_comment|/*&n; * bte_copy(src, dest, len, mode, notification)&n; *&n; * Use the block transfer engine to move kernel memory from src to dest&n; * using the assigned mode.&n; *&n; * Paramaters:&n; *   src - physical address of the transfer source.&n; *   dest - physical address of the transfer destination.&n; *   len - number of bytes to transfer from source to dest.&n; *   mode - hardware defined.  See reference information&n; *          for IBCT0/1 in the SHUB Programmers Reference&n; *   notification - kernel virtual address of the notification cache&n; *                  line.  If NULL, the default is used and&n; *                  the bte_copy is synchronous.&n; *&n; * NOTE:  This function requires src, dest, and len to&n; * be cacheline aligned.&n; */
-id|bte_result_t
 DECL|function|bte_copy
+id|bte_result_t
 id|bte_copy
 c_func
 (paren
@@ -142,7 +141,7 @@ r_return
 id|BTE_SUCCESS
 suffix:semicolon
 )brace
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 op_logical_neg
@@ -167,7 +166,7 @@ id|L1_CACHE_MASK
 )paren
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|len
@@ -815,8 +814,8 @@ id|bte_copy
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * bte_unaligned_copy(src, dest, len, mode)&n; *&n; * use the block transfer engine to move kernel&n; * memory from src to dest using the assigned mode.&n; *&n; * Paramaters:&n; *   src - physical address of the transfer source.&n; *   dest - physical address of the transfer destination.&n; *   len - number of bytes to transfer from source to dest.&n; *   mode - hardware defined.  See reference information&n; *          for IBCT0/1 in the SGI documentation.&n; *&n; * NOTE: If the source, dest, and len are all cache line aligned,&n; * then it would be _FAR_ preferrable to use bte_copy instead.&n; */
-id|bte_result_t
 DECL|function|bte_unaligned_copy
+id|bte_result_t
 id|bte_unaligned_copy
 c_func
 (paren
@@ -1347,8 +1346,8 @@ id|bte_unaligned_copy
 suffix:semicolon
 multiline_comment|/************************************************************************&n; * Block Transfer Engine initialization functions.&n; *&n; ***********************************************************************/
 multiline_comment|/*&n; * bte_init_node(nodepda, cnode)&n; *&n; * Initialize the nodepda structure with BTE base addresses and&n; * spinlocks.&n; */
-r_void
 DECL|function|bte_init_node
+r_void
 id|bte_init_node
 c_func
 (paren

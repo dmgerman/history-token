@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -24,7 +23,7 @@ macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
+macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/rw_mmr.h&gt;
 r_void
@@ -54,11 +53,11 @@ r_int
 r_int
 id|sn2_ptc_deadlock_count
 suffix:semicolon
+DECL|function|wait_piowc
 r_static
 r_inline
 r_int
 r_int
-DECL|function|wait_piowc
 id|wait_piowc
 c_func
 (paren
@@ -108,8 +107,8 @@ r_return
 id|ws
 suffix:semicolon
 )brace
-r_void
 DECL|function|sn_tlb_migrate_finish
+r_void
 id|sn_tlb_migrate_finish
 c_func
 (paren
@@ -137,6 +136,7 @@ multiline_comment|/**&n; * sn2_global_tlb_purge - globally purge translation cac
 r_void
 DECL|function|sn2_global_tlb_purge
 id|sn2_global_tlb_purge
+c_func
 (paren
 r_int
 r_int
@@ -634,8 +634,8 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sn2_ptc_deadlock_recovery&n; *&n; * Recover from PTC deadlocks conditions. Recovery requires stepping thru each &n; * TLB flush transaction.  The recovery sequence is somewhat tricky &amp; is&n; * coded in assembly language.&n; */
-r_void
 DECL|function|sn2_ptc_deadlock_recovery
+r_void
 id|sn2_ptc_deadlock_recovery
 c_func
 (paren
@@ -805,8 +805,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**&n; * sn_send_IPI_phys - send an IPI to a Nasid and slice&n; * @physid: physical cpuid to receive the interrupt.&n; * @vector: command to send&n; * @delivery_mode: delivery mechanism&n; *&n; * Sends an IPI (interprocessor interrupt) to the processor specified by&n; * @physid&n; *&n; * @delivery_mode can be one of the following&n; *&n; * %IA64_IPI_DM_INT - pend an interrupt&n; * %IA64_IPI_DM_PMI - pend a PMI&n; * %IA64_IPI_DM_NMI - pend an NMI&n; * %IA64_IPI_DM_INIT - pend an INIT interrupt&n; */
-r_void
 DECL|function|sn_send_IPI_phys
+r_void
 id|sn_send_IPI_phys
 c_func
 (paren
@@ -971,8 +971,8 @@ id|sn_send_IPI_phys
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * sn2_send_IPI - send an IPI to a processor&n; * @cpuid: target of the IPI&n; * @vector: command to send&n; * @delivery_mode: delivery mechanism&n; * @redirect: redirect the IPI?&n; *&n; * Sends an IPI (InterProcessor Interrupt) to the processor specified by&n; * @cpuid.  @vector specifies the command to send, while @delivery_mode can &n; * be one of the following&n; *&n; * %IA64_IPI_DM_INT - pend an interrupt&n; * %IA64_IPI_DM_PMI - pend a PMI&n; * %IA64_IPI_DM_NMI - pend an NMI&n; * %IA64_IPI_DM_INIT - pend an INIT interrupt&n; */
-r_void
 DECL|function|sn2_send_IPI
+r_void
 id|sn2_send_IPI
 c_func
 (paren

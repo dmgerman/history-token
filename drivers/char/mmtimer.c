@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/clksupport.h&gt;
+macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren

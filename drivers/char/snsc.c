@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/module.h&gt;
+macro_line|#include &lt;asm/sn/geo.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &quot;snsc.h&quot;
 DECL|macro|SYSCTL_BASENAME
@@ -1383,11 +1385,8 @@ r_void
 id|geoid_t
 id|geoid
 suffix:semicolon
-id|cmoduleid_t
-id|cmod
-suffix:semicolon
-r_int
-id|i
+id|cnodeid_t
+id|cnode
 suffix:semicolon
 r_char
 id|devname
@@ -1398,10 +1397,6 @@ suffix:semicolon
 r_char
 op_star
 id|devnamep
-suffix:semicolon
-id|module_t
-op_star
-id|m
 suffix:semicolon
 r_struct
 id|sysctl_data_s
@@ -1433,11 +1428,7 @@ id|first_dev
 comma
 l_int|0
 comma
-(paren
-id|MAX_SLABS
-op_star
-id|nummodules
-)paren
+id|numionodes
 comma
 id|SYSCTL_BASENAME
 )paren
@@ -1471,62 +1462,25 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|cmod
+id|cnode
 op_assign
 l_int|0
 suffix:semicolon
-id|cmod
+id|cnode
 OL
-id|nummodules
+id|numionodes
 suffix:semicolon
-id|cmod
+id|cnode
 op_increment
 )paren
 (brace
-id|m
-op_assign
-id|sn_modules
-(braket
-id|cmod
-)braket
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_le
-id|MAX_SLABS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|m-&gt;nodes
-(braket
-id|i
-)braket
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* node is not alive in module */
-r_continue
-suffix:semicolon
-)brace
 id|geoid
 op_assign
-id|m-&gt;geoid
-(braket
-id|i
-)braket
+id|cnodeid_get_geoid
+c_func
+(paren
+id|cnode
+)paren
 suffix:semicolon
 id|devnamep
 op_assign
@@ -1628,10 +1582,7 @@ op_assign
 id|cnodeid_to_nasid
 c_func
 (paren
-id|m-&gt;nodes
-(braket
-id|i
-)braket
+id|cnode
 )paren
 suffix:semicolon
 r_if
@@ -1721,10 +1672,7 @@ id|dev
 op_assign
 id|first_dev
 op_plus
-id|m-&gt;nodes
-(braket
-id|i
-)braket
+id|cnode
 suffix:semicolon
 id|cdev_init
 c_func
@@ -1804,7 +1752,6 @@ comma
 id|SAL_IROUTER_INTR_RECV
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
