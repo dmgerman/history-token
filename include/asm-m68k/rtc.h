@@ -4,6 +4,7 @@ macro_line|#ifndef _ASM_RTC_H
 DECL|macro|_ASM_RTC_H
 mdefine_line|#define _ASM_RTC_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* a few implementation details for the emulation : */
 DECL|macro|RTC_PIE
@@ -75,6 +76,46 @@ comma
 id|time
 )paren
 suffix:semicolon
+)brace
+DECL|function|get_rtc_ss
+r_static
+r_inline
+r_int
+r_int
+id|get_rtc_ss
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mach_get_ss
+)paren
+r_return
+id|mach_get_ss
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+(brace
+r_struct
+id|rtc_time
+id|h
+suffix:semicolon
+id|get_rtc_time
+c_func
+(paren
+op_amp
+id|h
+)paren
+suffix:semicolon
+r_return
+id|h.tm_sec
+suffix:semicolon
+)brace
 )brace
 DECL|function|get_rtc_pll
 r_static

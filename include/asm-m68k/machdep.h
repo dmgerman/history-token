@@ -216,6 +216,17 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+r_int
+(paren
+op_star
+id|mach_get_ss
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 (paren
 op_star
 id|mach_get_rtc_pll
