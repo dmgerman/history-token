@@ -1110,7 +1110,7 @@ id|vnode_t
 op_star
 id|dvp
 suffix:semicolon
-multiline_comment|/* directory containing name to remove */
+multiline_comment|/* directory containing name of symlink */
 id|vnode_t
 op_star
 id|cvp

@@ -126,6 +126,8 @@ DECL|macro|xfs_buf_timer_centisecs
 mdefine_line|#define xfs_buf_timer_centisecs&t;xfs_params.xfs_buf_timer.val
 DECL|macro|xfs_buf_age_centisecs
 mdefine_line|#define xfs_buf_age_centisecs&t;xfs_params.xfs_buf_age.val
+DECL|macro|xfs_inherit_nosymlinks
+mdefine_line|#define xfs_inherit_nosymlinks&t;xfs_params.inherit_nosym.val
 DECL|macro|current_cpu
 mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
 DECL|macro|current_pid
