@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * linux/include/asm-i386/edd.h&n; *  Copyright (C) 2002, 2003 Dell Inc.&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&n; * structures and definitions for the int 13h, ax={41,48}h&n; * BIOS Enhanced Disk Drive Services&n; * This is based on the T13 group document D1572 Revision 0 (August 14 2002)&n; * available at http://www.t13.org/docs2002/d1572r0.pdf.  It is&n; * very similar to D1484 Revision 3 http://www.t13.org/docs2002/d1484r3.pdf&n; *&n; * In a nutshell, arch/i386/boot/setup.S populates a scratch table&n; * in the empty_zero_block that contains a list of BIOS-enumerated&n; * boot devices.&n; * In arch/i386/kernel/setup.c, this information is&n; * transferred into the edd structure, and in arch/i386/kernel/edd.c, that&n; * information is used to identify BIOS boot disk.  The code in setup.S&n; * is very sensitive to the size of these structures.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
-macro_line|#ifndef _ASM_I386_EDD_H
-DECL|macro|_ASM_I386_EDD_H
-mdefine_line|#define _ASM_I386_EDD_H
+multiline_comment|/*&n; * linux/include/linux/edd.h&n; *  Copyright (C) 2002, 2003 Dell Inc.&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&n; * structures and definitions for the int 13h, ax={41,48}h&n; * BIOS Enhanced Disk Drive Services&n; * This is based on the T13 group document D1572 Revision 0 (August 14 2002)&n; * available at http://www.t13.org/docs2002/d1572r0.pdf.  It is&n; * very similar to D1484 Revision 3 http://www.t13.org/docs2002/d1484r3.pdf&n; *&n; * In a nutshell, arch/{i386,x86_64}/boot/setup.S populates a scratch table&n; * in the empty_zero_block that contains a list of BIOS-enumerated&n; * boot devices.&n; * In arch/{i386,x86_64}/kernel/setup.c, this information is&n; * transferred into the edd structure, and in drivers/firmware/edd.c, that&n; * information is used to identify BIOS boot disk.  The code in setup.S&n; * is very sensitive to the size of these structures.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
+macro_line|#ifndef _LINUX_EDD_H
+DECL|macro|_LINUX_EDD_H
+mdefine_line|#define _LINUX_EDD_H
 DECL|macro|EDDNR
 mdefine_line|#define EDDNR 0x1e9&t;&t;/* addr of number of edd_info structs at EDDBUF&n;&t;&t;&t;&t;   in empty_zero_block - treat this as 1 byte  */
 DECL|macro|EDDBUF
@@ -583,5 +583,5 @@ r_int
 id|edd_disk80_sig
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/*!__ASSEMBLY__ */
-macro_line|#endif&t;&t;&t;&t;/* _ASM_I386_EDD_H */
+macro_line|#endif&t;&t;&t;&t;/* _LINUX_EDD_H */
 eof
