@@ -2335,23 +2335,6 @@ c_func
 id|vfsp
 )paren
 suffix:semicolon
-multiline_comment|/* Reset device block size */
-id|sector_size
-op_assign
-id|bdev_hardsect_size
-c_func
-(paren
-id|sb-&gt;s_bdev
-)paren
-suffix:semicolon
-id|set_blocksize
-c_func
-(paren
-id|sb-&gt;s_bdev
-comma
-id|sector_size
-)paren
-suffix:semicolon
 )brace
 r_void
 DECL|function|linvfs_write_super
