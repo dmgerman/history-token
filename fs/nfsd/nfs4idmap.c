@@ -2064,7 +2064,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|10
+l_int|1
 op_star
 id|HZ
 )paren
