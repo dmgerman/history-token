@@ -217,7 +217,6 @@ c_cond
 id|skb-&gt;nf_bridge
 )paren
 (brace
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 r_if
 c_cond
 (paren
@@ -252,7 +251,6 @@ l_int|4
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -285,7 +283,6 @@ id|header_size
 op_assign
 l_int|16
 suffix:semicolon
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 r_if
 c_cond
 (paren
@@ -301,7 +298,6 @@ id|header_size
 op_assign
 l_int|18
 suffix:semicolon
-macro_line|#endif
 id|memcpy
 c_func
 (paren
