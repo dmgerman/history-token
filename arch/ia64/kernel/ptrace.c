@@ -25,7 +25,7 @@ mdefine_line|#define IPSR_WRITE_MASK &bslash;&n;&t;(IA64_PSR_UM | IA64_PSR_DB | 
 DECL|macro|IPSR_READ_MASK
 mdefine_line|#define IPSR_READ_MASK&t;IPSR_WRITE_MASK
 DECL|macro|PTRACE_DEBUG
-mdefine_line|#define PTRACE_DEBUG&t;1
+mdefine_line|#define PTRACE_DEBUG&t;0
 macro_line|#if PTRACE_DEBUG
 DECL|macro|dprintk
 macro_line|# define dprintk(format...)&t;printk(format)

@@ -1,0 +1,14 @@
+DECL|variable|x
+r_int
+id|__attribute__
+(paren
+(paren
+id|__model__
+(paren
+id|__small__
+)paren
+)paren
+)paren
+id|x
+suffix:semicolon
+eof

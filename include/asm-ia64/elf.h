@@ -327,7 +327,7 @@ mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, el
 DECL|macro|GATE_EHDR
 mdefine_line|#define GATE_EHDR&t;((const struct elfhdr *) GATE_ADDR)
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern char __kernel_syscall_via_epc[];&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, __kernel_syscall_via_epc);&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, (unsigned long) GATE_EHDR);&t;&bslash;&n;} while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern char __kernel_syscall_via_epc[];&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, (unsigned long) __kernel_syscall_via_epc);&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, (unsigned long) GATE_EHDR);&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * These macros parameterize elf_core_dump in fs/binfmt_elf.c to write out extra segments&n; * containing the gate DSO contents.  Dumping its contents makes post-mortem fully&n; * interpretable later without matching up the same kernel and hardware config to see what&n; * IP values meant.  Dumping its extra ELF program headers includes all the other&n; * information a debugger needs to easily find how the gate DSO was being used.&n; */
 DECL|macro|ELF_CORE_EXTRA_PHDRS
 mdefine_line|#define ELF_CORE_EXTRA_PHDRS&t;&t;(GATE_EHDR-&gt;e_phnum)
