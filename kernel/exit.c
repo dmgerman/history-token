@@ -2344,7 +2344,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|preempt_count
+id|in_atomic
 c_func
 (paren
 )paren
