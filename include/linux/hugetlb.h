@@ -315,6 +315,10 @@ DECL|macro|follow_huge_pmd
 mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;0
 DECL|macro|pmd_huge
 mdefine_line|#define pmd_huge(x)&t;0
+macro_line|#ifndef HPAGE_MASK
+DECL|macro|HPAGE_MASK
+mdefine_line|#define HPAGE_MASK&t;0&t;&t;/* Keep the compiler happy */
+macro_line|#endif
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS
 r_extern
