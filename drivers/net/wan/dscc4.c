@@ -4701,6 +4701,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * DS1 p.137: &quot;There are a total of 13 different clocking modes...&quot;&n; *                                  ^^&n; * Design choices:&n; * - by default, assume a clock is provided on pin RxClk/TxClk (clock mode 0a).&n; *   Clock mode 3b _should_ work but the testing seems to make this point&n; *   dubious (DIY testing requires setting CCR0 at 0x00000033).&n; *   This is supposed to provide least surprise &quot;DTE like&quot; behavior.&n; * - if line rate is specified, clocks are assumed to be locally generated.&n; *   A quartz must be available (on pin XTAL1). Modes 6b/7b are used. Choosing&n; *   between these it automagically done according on the required frequency&n; *   scaling. Of course some rounding may take place.&n; * - no high speed mode (40Mb/s). May be trivial to do but I don&squot;t have an&n; *   appropriate external clocking device for testing.&n; * - no time-slot/clock mode 5: shameless lazyness.&n; *&n; * The clock signals wiring can be (is ?) manufacturer dependant. Good luck.&n; *&n; * BIG FAT WARNING: if the device isn&squot;t provided enough clocking signal, it&n; * won&squot;t pass the init sequence. For example, straight back-to-back DTE without&n; * external clock will fail when dscc4_open() (&lt;- &squot;ifconfig hdlcx xxx&squot;) is&n; * called.&n; *&n; * Typos lurk in datasheet (missing divier in clock mode 7a figure 51 p.153&n; * DS0 for example)&n; *&n; * Clock mode related bits of CCR0:&n; *     +------------ TOE: output TxClk (0b/2b/3a/3b/6b/7a/7b only)&n; *     | +---------- SSEL: sub-mode select 0 -&gt; a, 1 -&gt; b&n; *     | | +-------- High Speed: say 0&n; *     | | | +-+-+-- Clock Mode: 0..7&n; *     | | | | | |&n; * -+-+-+-+-+-+-+-+&n; * x|x|5|4|3|2|1|0| lower bits&n; *&n; * Division factor of BRR: k = (N+1)x2^M (total divider = 16xk in mode 6b)&n; *            +-+-+-+------------------ M (0..15)&n; *            | | | |     +-+-+-+-+-+-- N (0..63)&n; *    0 0 0 0 | | | | 0 0 | | | | | |&n; * ...-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    f|e|d|c|b|a|9|8|7|6|5|4|3|2|1|0| lower bits&n; *&n; */
 DECL|function|dscc4_set_clock
 r_static
 r_int
@@ -4921,7 +4922,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * External clock - DTE&n;&t;&t; * &quot;state&quot; already reflects Clock mode 0a.&n;&t;&t; * Nothing more to be done&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * External clock - DTE&n;&t;&t; * &quot;state&quot; already reflects Clock mode 0a (CCR0 = 0xzzzzzz00).&n;&t;&t; * Nothing more to be done&n;&t;&t; */
 id|brr
 op_assign
 l_int|0
@@ -5383,7 +5384,7 @@ r_else
 (brace
 multiline_comment|/* DTE */
 id|state
-op_assign
+op_or_assign
 l_int|0x80001000
 suffix:semicolon
 id|printk
