@@ -3093,6 +3093,16 @@ id|svsk-&gt;sk_tcplen
 op_add_assign
 id|len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+id|want
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|svsk-&gt;sk_reclen
 op_assign
 id|ntohl
