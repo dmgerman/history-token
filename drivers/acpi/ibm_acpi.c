@@ -5696,7 +5696,6 @@ mdefine_line|#define IBM_PARAM(feature) &bslash;&n;&t;module_param_call(feature,
 DECL|function|acpi_ibm_exit
 r_static
 r_void
-id|__exit
 id|acpi_ibm_exit
 c_func
 (paren
