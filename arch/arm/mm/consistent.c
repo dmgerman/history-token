@@ -489,6 +489,12 @@ comma
 id|mask
 )paren
 suffix:semicolon
+op_star
+id|handle
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
