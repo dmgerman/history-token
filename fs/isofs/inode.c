@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/fs/isofs/inode.c&n; *&n; *  (C) 1991  Linus Torvalds - minix filesystem&n; *      1992, 1993, 1994  Eric Youngdale Modified for ISO 9660 filesystem.&n; *      1994  Eberhard Moenkeberg - multi session handling.&n; *      1995  Mark Dobie - allow mounting of some weird VideoCDs and PhotoCDs.&n; *&t;1997  Gordon Chaffee - Joliet CDs&n; *&t;1998  Eric Lammerts - ISO 9660 Level 3&n; *&t;2004  Paul Serice - Comprehensive Inode Scheme&n; *&t;2004  Paul Serice - NFS Export Operations&n; */
+multiline_comment|/*&n; *  linux/fs/isofs/inode.c&n; *&n; *  (C) 1991  Linus Torvalds - minix filesystem&n; *      1992, 1993, 1994  Eric Youngdale Modified for ISO 9660 filesystem.&n; *      1994  Eberhard Moenkeberg - multi session handling.&n; *      1995  Mark Dobie - allow mounting of some weird VideoCDs and PhotoCDs.&n; *&t;1997  Gordon Chaffee - Joliet CDs&n; *&t;1998  Eric Lammerts - ISO 9660 Level 3&n; *&t;2004  Paul Serice - Inode Support pushed out from 4GB to 128GB&n; *&t;2004  Paul Serice - NFS Export Operations&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -5153,7 +5153,15 @@ op_assign
 id|isofs_get_ino
 c_func
 (paren
-id|de
+id|ei-&gt;i_iget5_block
+comma
+id|ei-&gt;i_iget5_offset
+comma
+id|ISOFS_BUFFER_BITS
+c_func
+(paren
+id|inode
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Assume it is a normal-format file unless told otherwise */
