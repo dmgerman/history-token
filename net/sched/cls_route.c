@@ -361,7 +361,7 @@ l_int|32
 suffix:semicolon
 )brace
 DECL|macro|ROUTE4_APPLY_RESULT
-mdefine_line|#define ROUTE4_APPLY_RESULT()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*res = f-&gt;res;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (tcf_exts_is_available(&amp;f-&gt;exts)) {&t;&t;&t;&bslash;&n;&t;&t;&t;int r = tcf_exts_exec(skb, &amp;f-&gt;exts, res);&t;&bslash;&n;&t;&t;&t;if (r &lt; 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;dont_cache = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;continue;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;return r;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;} else if (!dont_cache)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;route4_set_fastmap(head, id, iif, f);&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define ROUTE4_APPLY_RESULT()&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*res = f-&gt;res;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (tcf_exts_is_available(&amp;f-&gt;exts)) {&t;&t;&t;&bslash;&n;&t;&t;int r = tcf_exts_exec(skb, &amp;f-&gt;exts, res);&t;&bslash;&n;&t;&t;if (r &lt; 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dont_cache = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return r;&t;&t;&t;&t;&t;&bslash;&n;&t;} else if (!dont_cache)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;route4_set_fastmap(head, id, iif, f);&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|function|route4_classify
 r_static
 r_int
