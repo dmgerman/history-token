@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/06/25 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed signed/unsigned calculation errors that caused load sharing&n; *&t;  to collapse to one slave under very heavy UDP Tx stress.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; */
+multiline_comment|/*&n; * Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * The full GNU General Public License is included in this distribution in the&n; * file called LICENSE.&n; *&n; *&n; * Changes:&n; *&n; * 2003/06/25 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Fixed signed/unsigned calculation errors that caused load sharing&n; *&t;  to collapse to one slave under very heavy UDP Tx stress.&n; *&n; * 2003/08/06 - Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Add support for setting bond&squot;s MAC address with special&n; *&t;  handling required for ALB/TLB.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
 singleline_comment|//#define BONDING_DEBUG 1
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -20,15 +20,15 @@ macro_line|#include &quot;bond_alb.h&quot;
 DECL|macro|ALB_TIMER_TICKS_PER_SEC
 mdefine_line|#define ALB_TIMER_TICKS_PER_SEC&t;    10&t;/* should be a divisor of HZ */
 DECL|macro|BOND_TLB_REBALANCE_INTERVAL
-mdefine_line|#define BOND_TLB_REBALANCE_INTERVAL 10&t;/* in seconds, periodic re-balancing&n;&t;&t;&t;&t;&t; * used for division - never set&n;&t;&t;&t;&t;&t; * to zero !!!&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define BOND_TLB_REBALANCE_INTERVAL 10&t;/* In seconds, periodic re-balancing.&n;&t;&t;&t;&t;&t; * Used for division - never set&n;&t;&t;&t;&t;&t; * to zero !!!&n;&t;&t;&t;&t;&t; */
 DECL|macro|BOND_ALB_LP_INTERVAL
-mdefine_line|#define BOND_ALB_LP_INTERVAL&t;    1&t;/* in seconds periodic send of&n;&t;&t;&t;&t;&t; * learning packets to the switch&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define BOND_ALB_LP_INTERVAL&t;    1&t;/* In seconds, periodic send of&n;&t;&t;&t;&t;&t; * learning packets to the switch&n;&t;&t;&t;&t;&t; */
 DECL|macro|BOND_TLB_REBALANCE_TICKS
 mdefine_line|#define BOND_TLB_REBALANCE_TICKS (BOND_TLB_REBALANCE_INTERVAL &bslash;&n;&t;&t;&t;&t;  * ALB_TIMER_TICKS_PER_SEC)
 DECL|macro|BOND_ALB_LP_TICKS
 mdefine_line|#define BOND_ALB_LP_TICKS (BOND_ALB_LP_INTERVAL &bslash;&n;&t;&t;&t;   * ALB_TIMER_TICKS_PER_SEC)
 DECL|macro|TLB_HASH_TABLE_SIZE
-mdefine_line|#define TLB_HASH_TABLE_SIZE 256&t;/* The size of the clients hash table.&n;&t;&t;&t;&t; * Note that this value MUST NOT be smaller&n;&t;&t;&t;&t; * because the key hash table BYTE wide !&n;&t;&t;&t;&t; */
+mdefine_line|#define TLB_HASH_TABLE_SIZE 256&t;/* The size of the clients hash table.&n;&t;&t;&t;&t; * Note that this value MUST NOT be smaller&n;&t;&t;&t;&t; * because the key hash table is BYTE wide !&n;&t;&t;&t;&t; */
 DECL|macro|TLB_NULL_INDEX
 mdefine_line|#define TLB_NULL_INDEX&t;&t;0xffffffff
 DECL|macro|MAX_LP_RETRY
@@ -1393,34 +1393,41 @@ r_struct
 id|slave
 op_star
 id|rx_slave
-op_assign
-l_int|NULL
 comma
 op_star
 id|slave
+comma
+op_star
+id|start_at
 suffix:semicolon
 r_int
 id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|slave
-op_assign
-id|bond_info-&gt;next_rx_slave
-suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|slave
+id|bond_info-&gt;next_rx_slave
 )paren
 (brace
-id|slave
+id|start_at
+op_assign
+id|bond_info-&gt;next_rx_slave
+suffix:semicolon
+)brace
+r_else
+(brace
+id|start_at
 op_assign
 id|bond-&gt;first_slave
 suffix:semicolon
 )brace
-id|bond_for_each_slave
+id|rx_slave
+op_assign
+l_int|NULL
+suffix:semicolon
+id|bond_for_each_slave_from
 c_func
 (paren
 id|bond
@@ -1428,6 +1435,8 @@ comma
 id|slave
 comma
 id|i
+comma
+id|start_at
 )paren
 (brace
 r_if
@@ -3503,23 +3512,11 @@ op_star
 id|slave
 )paren
 (brace
-r_struct
-id|slave
-op_star
-id|tmp_slave
-suffix:semicolon
 r_int
 id|perm_curr_diff
 suffix:semicolon
 r_int
 id|perm_bond_diff
-suffix:semicolon
-r_int
-id|i
-comma
-id|found
-op_assign
-l_int|0
 suffix:semicolon
 id|perm_curr_diff
 op_assign
@@ -3553,6 +3550,18 @@ op_logical_and
 id|perm_bond_diff
 )paren
 (brace
+r_struct
+id|slave
+op_star
+id|tmp_slave
+suffix:semicolon
+r_int
+id|i
+comma
+id|found
+op_assign
+l_int|0
+suffix:semicolon
 id|bond_for_each_slave
 c_func
 (paren
@@ -3731,7 +3740,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* the slave&squot;s address is equal to the address of the bond&n;&t; * search for a spare address in the bond for this slave.&n;&t; */
+multiline_comment|/* The slave&squot;s address is equal to the address of the bond.&n;&t; * Search for a spare address in the bond for this slave.&n;&t; */
 id|free_mac_slave
 op_assign
 l_int|NULL
@@ -5280,10 +5289,6 @@ id|swap_slave
 suffix:semicolon
 r_int
 id|i
-comma
-id|found
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5354,13 +5359,18 @@ op_logical_neg
 id|swap_slave
 )paren
 (brace
+r_struct
+id|slave
+op_star
+id|tmp_slave
+suffix:semicolon
 multiline_comment|/* find slave that is holding the bond&squot;s mac address */
 id|bond_for_each_slave
 c_func
 (paren
 id|bond
 comma
-id|swap_slave
+id|tmp_slave
 comma
 id|i
 )paren
@@ -5372,7 +5382,7 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-id|swap_slave-&gt;dev-&gt;dev_addr
+id|tmp_slave-&gt;dev-&gt;dev_addr
 comma
 id|bond-&gt;dev-&gt;dev_addr
 comma
@@ -5380,9 +5390,9 @@ id|ETH_ALEN
 )paren
 )paren
 (brace
-id|found
+id|swap_slave
 op_assign
-l_int|1
+id|tmp_slave
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5393,7 +5403,7 @@ multiline_comment|/* curr_active_slave must be set before calling alb_swap_mac_a
 r_if
 c_cond
 (paren
-id|found
+id|swap_slave
 )paren
 (brace
 multiline_comment|/* swap mac address */
@@ -5469,6 +5479,9 @@ suffix:semicolon
 r_struct
 id|slave
 op_star
+id|slave
+comma
+op_star
 id|swap_slave
 suffix:semicolon
 r_int
@@ -5476,10 +5489,6 @@ id|res
 suffix:semicolon
 r_int
 id|i
-comma
-id|found
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -5539,12 +5548,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|swap_slave
+op_assign
+l_int|NULL
+suffix:semicolon
 id|bond_for_each_slave
 c_func
 (paren
 id|bond
 comma
-id|swap_slave
+id|slave
 comma
 id|i
 )paren
@@ -5556,7 +5569,7 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-id|swap_slave-&gt;dev-&gt;dev_addr
+id|slave-&gt;dev-&gt;dev_addr
 comma
 id|bond_dev-&gt;dev_addr
 comma
@@ -5564,9 +5577,9 @@ id|ETH_ALEN
 )paren
 )paren
 (brace
-id|found
+id|swap_slave
 op_assign
-l_int|1
+id|slave
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5575,7 +5588,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|found
+id|swap_slave
 )paren
 (brace
 id|alb_swap_mac_addr

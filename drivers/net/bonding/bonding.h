@@ -1,15 +1,16 @@
-multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; */
+multiline_comment|/*&n; * Bond several ethernet interfaces into a Cisco, running &squot;Etherchannel&squot;.&n; *&n; * Portions are (c) Copyright 1995 Simon &quot;Guru Aleph-Null&quot; Janes&n; * NCM: Network and Communications Management, Inc.&n; *&n; * BUT, I&squot;m the one who modified it for ethernet, so:&n; * (c) Copyright 1999, Thomas Davis, tadavis@lbl.gov&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU Public License, incorporated herein by reference.&n; *&n; *&n; * 2003/03/18 - Amir Noam &lt;amir.noam at intel dot com&gt;,&n; *&t;&t;Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for IEEE 802.3ad Dynamic link aggregation mode.&n; *&n; * 2003/05/01 - Tsippy Mendelson &lt;tsippy.mendelson at intel dot com&gt; and&n; *&t;&t;Amir Noam &lt;amir.noam at intel dot com&gt;&n; *&t;- Code beautification and style changes (mainly in comments).&n; *&n; * 2003/05/01 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Added support for Transmit load balancing mode.&n; *&n; * 2003/09/24 - Shmulik Hen &lt;shmulik.hen at intel dot com&gt;&n; *&t;- Code cleanup and style changes&n; */
 macro_line|#ifndef _LINUX_BONDING_H
 DECL|macro|_LINUX_BONDING_H
 mdefine_line|#define _LINUX_BONDING_H
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2.4.1&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;2.5.0&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;September 15, 2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;December 1, 2003&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
 DECL|macro|DRV_DESCRIPTION
@@ -29,6 +30,20 @@ mdefine_line|#define BOND_IS_OK(bond)&t;&t;&t;     &bslash;&n;&t;&t;   (((bond)-
 multiline_comment|/*&n; * Checks whether slave is ready for transmit.&n; */
 DECL|macro|SLAVE_IS_OK
 mdefine_line|#define SLAVE_IS_OK(slave)&t;&t;&t;        &bslash;&n;&t;&t;    (((slave)-&gt;dev-&gt;flags &amp; IFF_UP)  &amp;&amp; &bslash;&n;&t;&t;     netif_running((slave)-&gt;dev)     &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;link == BOND_LINK_UP) &amp;&amp; &bslash;&n;&t;&t;     ((slave)-&gt;state == BOND_STATE_ACTIVE))
+DECL|macro|USES_PRIMARY
+mdefine_line|#define USES_PRIMARY(mode)&t;&t;&t;&t;&bslash;&n;&t;&t;(((mode) == BOND_MODE_ACTIVEBACKUP) ||&t;&bslash;&n;&t;&t; ((mode) == BOND_MODE_TLB)          ||&t;&bslash;&n;&t;&t; ((mode) == BOND_MODE_ALB))
+multiline_comment|/*&n; * Less bad way to call ioctl from within the kernel; this needs to be&n; * done some other way to get the call out of interrupt context.&n; * Needs &quot;ioctl&quot; variable to be supplied by calling context.&n; */
+DECL|macro|IOCTL
+mdefine_line|#define IOCTL(dev, arg, cmd) ({&t;&t;&bslash;&n;&t;int res = 0;&t;&t;&t;&bslash;&n;&t;mm_segment_t fs = get_fs();&t;&bslash;&n;&t;set_fs(get_ds());&t;&t;&bslash;&n;&t;res = ioctl(dev, arg, cmd);&t;&bslash;&n;&t;set_fs(fs);&t;&t;&t;&bslash;&n;&t;res; })
+multiline_comment|/**&n; * bond_for_each_slave_from - iterate the slaves list from a starting point&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; * @start:&t;starting point.&n; *&n; * Caller must hold bond-&gt;lock&n; */
+DECL|macro|bond_for_each_slave_from
+mdefine_line|#define bond_for_each_slave_from(bond, pos, cnt, start)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&t;&bslash;&n;&t;     cnt &lt; (bond)-&gt;slave_cnt;&t;&t;&t;&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
+multiline_comment|/**&n; * bond_for_each_slave_from_to - iterate the slaves list from start point to stop point&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for number max of moves&n; * @start:&t;start point.&n; * @stop:&t;stop point.&n; *&n; * Caller must hold bond-&gt;lock&n; */
+DECL|macro|bond_for_each_slave_from_to
+mdefine_line|#define bond_for_each_slave_from_to(bond, pos, cnt, start, stop)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&t;&t;&bslash;&n;&t;     ((cnt &lt; (bond)-&gt;slave_cnt) &amp;&amp; (pos != (stop)-&gt;next));&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
+multiline_comment|/**&n; * bond_for_each_slave - iterate the slaves list from head&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; *&n; * Caller must hold bond-&gt;lock&n; */
+DECL|macro|bond_for_each_slave
+mdefine_line|#define bond_for_each_slave(bond, pos, cnt)&t;&bslash;&n;&t;&t;bond_for_each_slave_from(bond, pos, cnt, (bond)-&gt;first_slave)
 DECL|struct|slave
 r_struct
 id|slave
@@ -216,15 +231,6 @@ id|alb_info
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * bond_for_each_slave_from - iterate the slaves list from a starting point&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; * @start:&t;starting point.&n; *&n; * Caller must hold bond-&gt;lock&n; */
-DECL|macro|bond_for_each_slave_from
-mdefine_line|#define bond_for_each_slave_from(bond, pos, cnt, start)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&t;&bslash;&n;&t;     cnt &lt; (bond)-&gt;slave_cnt;&t;&t;&t;&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
-multiline_comment|/**&n; * bond_for_each_slave_from_to - iterate the slaves list from start point to stop point&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for number max of moves&n; * @start:&t;start point.&n; * @stop:&t;stop point.&n; *&n; * Caller must hold bond-&gt;lock&n; */
-DECL|macro|bond_for_each_slave_from_to
-mdefine_line|#define bond_for_each_slave_from_to(bond, pos, cnt, start, stop)&t;&bslash;&n;&t;for (cnt = 0, pos = start;&t;&t;&t;&t;&t;&bslash;&n;&t;     ((cnt &lt; (bond)-&gt;slave_cnt) &amp;&amp; (pos != (stop)-&gt;next));&t;&bslash;&n;             cnt++, pos = (pos)-&gt;next)
-multiline_comment|/**&n; * bond_for_each_slave - iterate the slaves list from head&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; *&n; * Caller must hold bond-&gt;lock&n; */
-DECL|macro|bond_for_each_slave
-mdefine_line|#define bond_for_each_slave(bond, pos, cnt)&t;&bslash;&n;&t;&t;bond_for_each_slave_from(bond, pos, cnt, (bond)-&gt;first_slave)
 multiline_comment|/**&n; * Returns NULL if the net_device does not belong to any of the bond&squot;s slaves&n; *&n; * Caller must hold bond lock for read&n; */
 DECL|function|bond_get_slave_by_dev
 r_extern
@@ -320,17 +326,9 @@ op_star
 id|slave-&gt;dev-&gt;master-&gt;priv
 suffix:semicolon
 )brace
-multiline_comment|/* Forward declarations */
-r_void
-id|bond_set_slave_active_flags
-c_func
-(paren
-r_struct
-id|slave
-op_star
-id|slave
-)paren
-suffix:semicolon
+DECL|function|bond_set_slave_inactive_flags
+r_extern
+r_inline
 r_void
 id|bond_set_slave_inactive_flags
 c_func
@@ -340,6 +338,38 @@ id|slave
 op_star
 id|slave
 )paren
+(brace
+id|slave-&gt;state
+op_assign
+id|BOND_STATE_BACKUP
 suffix:semicolon
+id|slave-&gt;dev-&gt;flags
+op_or_assign
+id|IFF_NOARP
+suffix:semicolon
+)brace
+DECL|function|bond_set_slave_active_flags
+r_extern
+r_inline
+r_void
+id|bond_set_slave_active_flags
+c_func
+(paren
+r_struct
+id|slave
+op_star
+id|slave
+)paren
+(brace
+id|slave-&gt;state
+op_assign
+id|BOND_STATE_ACTIVE
+suffix:semicolon
+id|slave-&gt;dev-&gt;flags
+op_and_assign
+op_complement
+id|IFF_NOARP
+suffix:semicolon
+)brace
 macro_line|#endif /* _LINUX_BONDING_H */
 eof
