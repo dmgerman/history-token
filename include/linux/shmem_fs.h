@@ -17,11 +17,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
-suffix:semicolon
 DECL|member|next_index
 r_int
 r_int
