@@ -1090,7 +1090,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from driver_probe_device(),&n; *&t;since it&squot;s perfectly valid for a driver not to bind to any devices.&n; */
+multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to&n; *&t;match the driver with each one.  If driver_probe_device()&n; *&t;returns 0 and the @dev-&gt;driver is set, we&squot;ve found a&n; *&t;compatible pair.&n; *&n; *&t;Note that we ignore the -ENODEV error from driver_probe_device(),&n; *&t;since it&squot;s perfectly valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
 r_void
 id|driver_attach
