@@ -342,6 +342,15 @@ comma
 id|HP100_BUS_ISA
 )brace
 comma
+multiline_comment|/* 10/100 EISA card with AT&amp;T chip */
+(brace
+l_int|0x9019f022
+comma
+l_string|&quot;HP J2577&quot;
+comma
+id|HP100_BUS_EISA
+)brace
+comma
 multiline_comment|/* 10/100 PCI card - old J2585A */
 (brace
 l_int|0x1030103c
@@ -7763,6 +7772,8 @@ id|dev_alloc_skb
 c_func
 (paren
 id|pkt_len
+op_plus
+l_int|2
 )paren
 suffix:semicolon
 r_if
@@ -7797,17 +7808,19 @@ id|u_char
 op_star
 id|ptr
 suffix:semicolon
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
 multiline_comment|/* ptr to start of the sk_buff data area */
-id|ptr
-op_assign
-(paren
-id|u_char
-op_star
-)paren
 id|skb_put
 c_func
 (paren
@@ -7815,6 +7828,10 @@ id|skb
 comma
 id|pkt_len
 )paren
+suffix:semicolon
+id|ptr
+op_assign
+id|skb-&gt;data
 suffix:semicolon
 multiline_comment|/* Now transfer the data from the card into that area */
 r_if
