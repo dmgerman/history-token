@@ -13,8 +13,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifdef CONFIG_SND_FM801_TEA575X
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if defined(CONFIG_SND_FM801_TEA575X) &amp;&amp; (defined(CONFIG_VIDEO_DEV) || defined(CONFIG_VIDEO_DEV_MODULE))
 macro_line|#include &lt;sound/tea575x-tuner.h&gt;
@@ -6303,7 +6301,7 @@ id|IRQ_MASK
 suffix:semicolon
 id|__end_hw
 suffix:colon
-macro_line|#ifdef CONFIG_SND_FM801_TEA575X
+macro_line|#ifdef TEA575X_RADIO
 id|snd_tea575x_exit
 c_func
 (paren
