@@ -64,7 +64,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Define the type of behavior head used by vnodes.&n; */
 DECL|macro|vn_bhv_head_t
 mdefine_line|#define vn_bhv_head_t&t;bhv_head_t
-multiline_comment|/*&n; * MP locking protocols:&n; *&t;v_flag, v_count&t;&t;&t;&t;VN_LOCK/VN_UNLOCK&n; *&t;v_vfsp&t;&t;&t;&t;&t;VN_LOCK/VN_UNLOCK&n; *&t;v_type&t;&t;&t;&t;&t;read-only or fs-dependent&n; *&t;v_list, v_hashp, v_hashn&t;&t;freelist lock&n; */
+multiline_comment|/*&n; * MP locking protocols:&n; *&t;v_flag, v_vfsp&t;&t;&t;&t;VN_LOCK/VN_UNLOCK&n; *&t;v_type&t;&t;&t;&t;&t;read-only or fs-dependent&n; */
 DECL|struct|vnode
 r_typedef
 r_struct
@@ -109,7 +109,7 @@ id|inode
 id|v_inode
 suffix:semicolon
 multiline_comment|/* linux inode */
-macro_line|#ifdef&t;CONFIG_XFS_VNODE_TRACING
+macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
 DECL|member|v_trace
 r_struct
 id|ktrace
@@ -117,7 +117,7 @@ op_star
 id|v_trace
 suffix:semicolon
 multiline_comment|/* trace header structure    */
-macro_line|#endif&t;/* CONFIG_XFS_VNODE_TRACING */
+macro_line|#endif
 DECL|typedef|vnode_t
 )brace
 id|vnode_t
@@ -281,9 +281,6 @@ DECL|macro|v_fbhv
 mdefine_line|#define v_fbhv&t;&t;v_bh.bh_first&t;       /* first behavior */
 DECL|macro|v_fops
 mdefine_line|#define v_fops&t;&t;v_bh.bh_first-&gt;bd_ops  /* ops for first behavior */
-r_union
-id|rval
-suffix:semicolon
 r_struct
 id|uio
 suffix:semicolon
@@ -1238,7 +1235,6 @@ suffix:semicolon
 multiline_comment|/*&n; * VOP&squot;s.&n; */
 DECL|macro|_VOP_
 mdefine_line|#define _VOP_(op, vp)&t;(*((vnodeops_t *)(vp)-&gt;v_fops)-&gt;op)
-multiline_comment|/*&n; * Be careful with VOP_OPEN, since we&squot;re holding the chain lock on the&n; * original vnode and VOP_OPEN semantic allows the new vnode to be returned&n; * in vpp. The practice of passing &amp;vp for vpp just doesn&squot;t work.&n; */
 DECL|macro|VOP_READ
 mdefine_line|#define VOP_READ(vp,file,buf,size,offset,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,buf,size,offset,cr); &bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_WRITE
