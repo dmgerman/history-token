@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: um_idi.c,v 1.9 2003/09/09 06:00:47 schindler Exp $ */
+multiline_comment|/* $Id: um_idi.c,v 1.12 2004/01/12 18:00:09 armin Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -1089,7 +1089,10 @@ c_func
 op_amp
 id|e-&gt;rc
 comma
-l_int|64
+r_sizeof
+(paren
+id|diva_um_idi_ind_hdr_t
+)paren
 comma
 l_int|2
 )paren
