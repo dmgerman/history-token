@@ -4897,6 +4897,16 @@ op_star
 id|bdp
 )paren
 (brace
+id|u32
+id|st_timeout
+op_assign
+l_int|0
+suffix:semicolon
+id|u32
+id|st_result
+op_assign
+l_int|0
+suffix:semicolon
 id|e100_sw_init
 c_func
 (paren
@@ -4912,23 +4922,52 @@ c_func
 (paren
 id|bdp
 comma
-l_int|NULL
+op_amp
+id|st_timeout
 comma
-l_int|NULL
+op_amp
+id|st_result
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|st_timeout
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100: selftest failed&bslash;n&quot;
+l_string|&quot;e100: selftest timeout&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: selftest failed. Results: %x&bslash;n&quot;
+comma
+id|st_result
+)paren
+suffix:semicolon
+)brace
 r_return
 l_bool|false
 suffix:semicolon
 )brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;e100: selftest OK.&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* read the MAC address from the eprom */
 id|e100_rd_eaddr
 c_func
@@ -10732,22 +10771,6 @@ comma
 l_int|0
 comma
 l_string|&quot;N/A&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Auto negotiation failed so we should display an error */
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;  Failed to detect cable link&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;  Speed and duplex will be determined &quot;
-l_string|&quot;at time of connection&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
