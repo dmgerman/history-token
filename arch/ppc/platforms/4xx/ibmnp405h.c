@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;platforms/ibmnp405h.h&gt;
+macro_line|#include &lt;platforms/4xx/ibmnp405h.h&gt;
 DECL|variable|COM_PORTS
 r_const
 r_struct

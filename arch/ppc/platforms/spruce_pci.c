@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;platforms/spruce.h&gt;
-macro_line|#include &quot;cpc700.h&quot;
+macro_line|#include &lt;syslib/cpc700.h&gt;
 r_static
 r_inline
 r_int

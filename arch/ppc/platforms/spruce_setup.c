@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;platforms/spruce.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &quot;cpc700.h&quot;
+macro_line|#include &lt;syslib/cpc700.h&gt;
 r_extern
 r_void
 id|spruce_init_IRQ
@@ -519,10 +519,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|boot_mem_size
-suffix:semicolon
 r_static
 r_void
 id|__init

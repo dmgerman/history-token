@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_EP405_H__
 DECL|macro|__ASM_EP405_H__
 mdefine_line|#define __ASM_EP405_H__
 multiline_comment|/* We have a 405GP core */
-macro_line|#include &lt;platforms/ibm405gp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm405gp.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|board_info
 r_typedef
