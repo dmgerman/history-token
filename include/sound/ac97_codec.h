@@ -607,6 +607,12 @@ r_struct
 id|_snd_ac97_bus_ops
 id|ac97_bus_ops_t
 suffix:semicolon
+DECL|typedef|ac97_template_t
+r_typedef
+r_struct
+id|_snd_ac97_template
+id|ac97_template_t
+suffix:semicolon
 DECL|typedef|ac97_t
 r_typedef
 r_struct
@@ -986,6 +992,69 @@ id|proc
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|_snd_ac97_template
+r_struct
+id|_snd_ac97_template
+(brace
+DECL|member|private_data
+r_void
+op_star
+id|private_data
+suffix:semicolon
+DECL|member|private_free
+r_void
+(paren
+op_star
+id|private_free
+)paren
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
+multiline_comment|/* assigned PCI device - used for quirks */
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
+multiline_comment|/* number of codec: 0 = primary, 1 = secondary */
+DECL|member|addr
+r_int
+r_int
+id|addr
+suffix:semicolon
+multiline_comment|/* physical address of codec [0-3] */
+DECL|member|scaps
+r_int
+r_int
+id|scaps
+suffix:semicolon
+multiline_comment|/* driver capabilities */
+DECL|member|limited_regs
+r_int
+r_int
+id|limited_regs
+suffix:semicolon
+multiline_comment|/* allow limited registers only */
+id|DECLARE_BITMAP
+c_func
+(paren
+id|reg_accessed
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+multiline_comment|/* bit flags */
+)brace
+suffix:semicolon
 DECL|struct|_snd_ac97
 r_struct
 id|_snd_ac97
@@ -1351,9 +1420,9 @@ id|ac97_bus_t
 op_star
 id|bus
 comma
-id|ac97_t
+id|ac97_template_t
 op_star
-id|_ac97
+r_template
 comma
 id|ac97_t
 op_star

@@ -9125,7 +9125,7 @@ op_star
 id|codec
 )paren
 (brace
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
 r_int

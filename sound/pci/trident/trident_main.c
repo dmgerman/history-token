@@ -12632,7 +12632,7 @@ r_int
 id|pcm_spdif_device
 )paren
 (brace
-id|ac97_t
+id|ac97_template_t
 id|_ac97
 suffix:semicolon
 id|snd_card_t

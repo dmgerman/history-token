@@ -8184,7 +8184,7 @@ id|bus_num
 op_assign
 l_int|0
 suffix:semicolon
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
 id|ac97_bus_t

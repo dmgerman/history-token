@@ -3880,7 +3880,7 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
 r_int

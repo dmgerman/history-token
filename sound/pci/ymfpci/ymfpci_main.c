@@ -8938,7 +8938,7 @@ r_int
 id|rear_switch
 )paren
 (brace
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
 id|snd_kcontrol_t

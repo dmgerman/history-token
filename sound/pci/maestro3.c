@@ -6601,7 +6601,7 @@ id|ac97_bus_t
 op_star
 id|pbus
 suffix:semicolon
-id|ac97_t
+id|ac97_template_t
 id|ac97
 suffix:semicolon
 r_int
