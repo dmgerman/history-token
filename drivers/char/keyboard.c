@@ -4871,6 +4871,13 @@ op_lshift
 l_int|7
 )paren
 )paren
+r_if
+c_cond
+(paren
+id|keycode
+OL
+id|BTN_MISC
+)paren
 id|printk
 c_func
 (paren
