@@ -6022,7 +6022,7 @@ c_func
 (paren
 id|info-&gt;driver
 comma
-l_string|&quot;DL2K&quot;
+l_string|&quot;dl2k&quot;
 )paren
 suffix:semicolon
 id|strcpy
