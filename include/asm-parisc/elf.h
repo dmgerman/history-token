@@ -283,7 +283,7 @@ DECL|macro|PF_HP_LAZYSWAP
 mdefine_line|#define PF_HP_LAZYSWAP&t;&t;0x04000000
 DECL|macro|PF_HP_SBP
 mdefine_line|#define PF_HP_SBP&t;&t;0x08000000
-multiline_comment|/*&n; * The following definitions are those for 32-bit ELF binaries on a 32-bit kernel&n; * and for 64-bit binaries on a 64-bit kernel.  To run 32-bit binaries on a 64-bit&n; * kernel, arch/parisc64/kernel/binfmt_elf32.c defines these macros appropriately&n; * and then #includes binfmt_elf.c, which then includes this file.&n; */
+multiline_comment|/*&n; * The following definitions are those for 32-bit ELF binaries on a 32-bit&n; * kernel and for 64-bit binaries on a 64-bit kernel.  To run 32-bit binaries&n; * on a 64-bit kernel, arch/parisc64/kernel/binfmt_elf32.c defines these&n; * macros appropriately and then #includes binfmt_elf.c, which then includes&n; * this file.&n; */
 macro_line|#ifndef ELF_CLASS
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; *&n; * Note that this header file is used by default in fs/binfmt_elf.c. So&n; * the following macros are for the default case. However, for the 64&n; * bit kernel we also support 32 bit parisc binaries. To do that&n; * arch/parisc64/kernel/binfmt_elf32.c defines its own set of these&n; * macros, and then it includes fs/binfmt_elf.c to provide an alternate&n; * elf binary handler for 32 bit binaries (on the 64 bit kernel).&n; */
 macro_line|#ifdef __LP64__
@@ -334,6 +334,9 @@ id|elf_fpregset_t
 (braket
 id|ELF_NFPREG
 )braket
+suffix:semicolon
+r_struct
+id|task_struct
 suffix:semicolon
 r_extern
 r_int

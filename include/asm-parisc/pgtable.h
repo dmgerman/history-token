@@ -89,8 +89,9 @@ DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START   ((unsigned long)vmalloc_start)
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
+multiline_comment|/* this is a fixmap remnant, see fixmap.h */
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;(FIXADDR_START)
+mdefine_line|#define VMALLOC_END&t;(TMPALIAS_MAP_START)
 macro_line|#endif
 multiline_comment|/* NB: The tlb miss handlers make certain assumptions about the order */
 multiline_comment|/*     of the following bits, so be careful (One example, bits 25-31  */
@@ -107,6 +108,8 @@ DECL|macro|_PAGE_DMB_BIT
 mdefine_line|#define _PAGE_DMB_BIT      27   /* (0x010) Data Memory Break enable (B bit) */
 DECL|macro|_PAGE_DIRTY_BIT
 mdefine_line|#define _PAGE_DIRTY_BIT    26   /* (0x020) Page Dirty (D bit) */
+DECL|macro|_PAGE_FILE_BIT
+mdefine_line|#define _PAGE_FILE_BIT&t;_PAGE_DIRTY_BIT&t;/* overload this bit */
 DECL|macro|_PAGE_REFTRAP_BIT
 mdefine_line|#define _PAGE_REFTRAP_BIT  25   /* (0x040) Page Ref. Trap enable (T bit) */
 DECL|macro|_PAGE_NO_CACHE_BIT
@@ -124,6 +127,16 @@ multiline_comment|/* N.B. The bits are defined in terms of a 32 bit word above, 
 multiline_comment|/*      following macro is ok for both 32 and 64 bit.                */
 DECL|macro|xlate_pabit
 mdefine_line|#define xlate_pabit(x) (31 - x)
+multiline_comment|/* this defines the shift to the usable bits in the PTE it is set so&n; * that the valid bits _PAGE_PRESENT_BIT and _PAGE_USER_BIT are set&n; * to zero */
+DECL|macro|PTE_SHIFT
+mdefine_line|#define PTE_SHIFT&t;   &t;xlate_pabit(_PAGE_USER_BIT)
+multiline_comment|/* this is how many bits may be used by the file functions */
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;(BITS_PER_LONG - PTE_SHIFT)
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte) (pte_val(pte) &gt;&gt; PTE_SHIFT)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) ((pte_t) { ((off) &lt;&lt; PTE_SHIFT) | _PAGE_FILE })
 DECL|macro|_PAGE_READ
 mdefine_line|#define _PAGE_READ     (1 &lt;&lt; xlate_pabit(_PAGE_READ_BIT))
 DECL|macro|_PAGE_WRITE
@@ -150,6 +163,8 @@ DECL|macro|_PAGE_FLUSH
 mdefine_line|#define _PAGE_FLUSH    (1 &lt;&lt; xlate_pabit(_PAGE_FLUSH_BIT))
 DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER     (1 &lt;&lt; xlate_pabit(_PAGE_USER_BIT))
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE     (1 &lt;&lt; xlate_pabit(_PAGE_FILE_BIT))
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_PRESENT | _PAGE_READ | _PAGE_WRITE |  _PAGE_DIRTY | _PAGE_ACCESSED)
 DECL|macro|_PAGE_CHG_MASK
@@ -411,6 +426,48 @@ id|pte
 )paren
 op_amp
 id|_PAGE_WRITE
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_extern
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
+suffix:semicolon
+)brace
+DECL|function|pte_user
+r_extern
+r_inline
+r_int
+id|pte_user
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_USER
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect

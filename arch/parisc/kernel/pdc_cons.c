@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -107,9 +108,53 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PDC_CONSOLE) || defined(CONFIG_SERIAL_MUX)
+macro_line|#if defined(CONFIG_PDC_CONSOLE)
 DECL|macro|PDC_CONSOLE_DEVICE
 mdefine_line|#define PDC_CONSOLE_DEVICE pdc_console_device
+DECL|function|pdc_console_device
+r_static
+r_struct
+id|tty_driver
+op_star
+id|pdc_console_device
+(paren
+r_struct
+id|console
+op_star
+id|c
+comma
+r_int
+op_star
+id|index
+)paren
+(brace
+r_extern
+r_struct
+id|tty_driver
+id|console_driver
+suffix:semicolon
+op_star
+id|index
+op_assign
+id|c-&gt;index
+ques
+c_cond
+id|c-&gt;index
+op_minus
+l_int|1
+suffix:colon
+id|fg_console
+suffix:semicolon
+r_return
+op_amp
+id|console_driver
+suffix:semicolon
+)brace
+macro_line|#elif defined(CONFIG_SERIAL_MUX)
+macro_line|#warning CONFIG_SERIAL_MUX
+DECL|macro|PDC_CONSOLE_DEVICE
+mdefine_line|#define PDC_CONSOLE_DEVICE pdc_console_device
+macro_line|#warning &quot;FIXME - should be: static struct tty_driver * pdc_console_device (struct console *c, int *index)&quot;
 DECL|function|pdc_console_device
 r_static
 id|kdev_t
@@ -119,6 +164,10 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
 r_return

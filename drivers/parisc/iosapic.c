@@ -1077,7 +1077,7 @@ id|intr_pin
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|iosapic_interrupt
 id|iosapic_interrupt
 c_func
@@ -1168,6 +1168,9 @@ id|vi-&gt;vi_eoi_addr
 comma
 id|vi-&gt;vi_eoi_data
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_int

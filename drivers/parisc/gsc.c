@@ -187,7 +187,7 @@ DECL|macro|GSC_MASK_IRQ
 mdefine_line|#define GSC_MASK_IRQ(x)&t;(1&lt;&lt;(GSC_FIX_IRQ(x)))
 multiline_comment|/* Common interrupt demultiplexer used by Asp, Lasi &amp; Wax.  */
 DECL|function|busdev_barked
-r_void
+id|irqreturn_t
 id|busdev_barked
 c_func
 (paren
@@ -285,6 +285,9 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void
