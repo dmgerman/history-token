@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler &n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; * (C) 2001  Dave Jones, Arjan van de ven.&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon reverse engineered information, and on Intel documentation&n; *  for chipsets ICH2-M and ICH3-M.&n; *&n; *  Many thanks to Ducrot Bruno for finding and fixing the last&n; *  &quot;missing link&quot; for ICH2-M/ICH3-M support, and to Thomas Winkler&n; *  for extensive testing.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 multiline_comment|/*********************************************************************&n; *                        SPEEDSTEP - DEFINITIONS                    *&n; *********************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
-multiline_comment|/* speedstep_chipset:&n; *   It is necessary to know which chipset is used. As accesses to &n; * this device occur at various places in this module, we need a &n; * static struct pci_dev * pointing to that device.&n; */
+multiline_comment|/* speedstep_chipset:&n; *   It is necessary to know which chipset is used. As accesses to&n; * this device occur at various places in this module, we need a&n; * static struct pci_dev * pointing to that device.&n; */
 DECL|variable|speedstep_chipset_dev
 r_static
 r_struct
@@ -24,7 +24,7 @@ id|speedstep_processor
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n; *   There are only two frequency states for each processor. Values&n; * are in kHz for the time being.&n; */
+multiline_comment|/*&n; *   There are only two frequency states for each processor. Values&n; * are in kHz for the time being.&n; */
 DECL|variable|speedstep_freqs
 r_static
 r_struct
@@ -63,7 +63,7 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
-multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; *   Tries to change the SpeedStep state. &n; */
+multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; *   Tries to change the SpeedStep state.&n; */
 DECL|function|speedstep_set_state
 r_static
 r_void
@@ -403,7 +403,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_detect_chipset - detect the Southbridge which contains SpeedStep logic&n; *&n; *   Detects ICH2-M, ICH3-M and ICH4-M so far. The pci_dev points to &n; * the LPC bridge / PM module which contains all power-management &n; * functions. Returns the SPEEDSTEP_CHIPSET_-number for the detected&n; * chipset, or zero on failure.&n; */
+multiline_comment|/**&n; * speedstep_detect_chipset - detect the Southbridge which contains SpeedStep logic&n; *&n; *   Detects ICH2-M, ICH3-M and ICH4-M so far. The pci_dev points to&n; * the LPC bridge / PM module which contains all power-management&n; * functions. Returns the SPEEDSTEP_CHIPSET_-number for the detected&n; * chipset, or zero on failure.&n; */
 DECL|function|speedstep_detect_chipset
 r_static
 r_int
@@ -485,7 +485,7 @@ c_cond
 id|speedstep_chipset_dev
 )paren
 (brace
-multiline_comment|/* speedstep.c causes lockups on Dell Inspirons 8000 and&n;&t;&t; * 8100 which use a pretty old revision of the 82815 &n;&t;&t; * host brige. Abort on these systems.&n;&t;&t; */
+multiline_comment|/* speedstep.c causes lockups on Dell Inspirons 8000 and&n;&t;&t; * 8100 which use a pretty old revision of the 82815&n;&t;&t; * host brige. Abort on these systems.&n;&t;&t; */
 r_static
 r_struct
 id|pci_dev
@@ -970,11 +970,9 @@ c_cond
 (paren
 id|result
 )paren
-(brace
 r_return
 id|result
 suffix:semicolon
-)brace
 multiline_comment|/* get current speed setting */
 id|speed
 op_assign
