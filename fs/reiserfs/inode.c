@@ -3827,8 +3827,6 @@ comma
 id|ih
 )paren
 suffix:semicolon
-multiline_comment|/* both old and new directories have old keys */
-singleline_comment|//version = (S_ISDIR (sd-&gt;sd_mode) ? ITEM_VERSION_1 : ITEM_VERSION_2);
 id|inode-&gt;i_mode
 op_assign
 id|sd_v2_mode
@@ -3988,6 +3986,13 @@ op_member_access_from_pointer
 id|i_first_direct_byte
 op_assign
 l_int|0
+suffix:semicolon
+id|set_inode_sd_version
+(paren
+id|inode
+comma
+id|STAT_DATA_V2
+)paren
 suffix:semicolon
 )brace
 id|pathrelse
