@@ -586,23 +586,6 @@ DECL|macro|B44_MII_TLEDCTRL
 mdefine_line|#define B44_MII_TLEDCTRL&t;27&t;/* Traffic Meter LED */
 DECL|macro|MII_TLEDCTRL_ENABLE
 mdefine_line|#define  MII_TLEDCTRL_ENABLE&t;0x0040
-multiline_comment|/* XXX Add this to mii.h */
-macro_line|#ifndef ADVERTISE_PAUSE
-DECL|macro|ADVERTISE_PAUSE_CAP
-mdefine_line|#define ADVERTISE_PAUSE_CAP&t;&t;0x0400
-macro_line|#endif
-macro_line|#ifndef ADVERTISE_PAUSE_ASYM
-DECL|macro|ADVERTISE_PAUSE_ASYM
-mdefine_line|#define ADVERTISE_PAUSE_ASYM&t;&t;0x0800
-macro_line|#endif
-macro_line|#ifndef LPA_PAUSE
-DECL|macro|LPA_PAUSE_CAP
-mdefine_line|#define LPA_PAUSE_CAP&t;&t;&t;0x0400
-macro_line|#endif
-macro_line|#ifndef LPA_PAUSE_ASYM
-DECL|macro|LPA_PAUSE_ASYM
-mdefine_line|#define LPA_PAUSE_ASYM&t;&t;&t;0x0800
-macro_line|#endif
 DECL|struct|dma_desc
 r_struct
 id|dma_desc

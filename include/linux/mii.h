@@ -104,6 +104,10 @@ DECL|macro|ADVERTISE_100FULL
 mdefine_line|#define ADVERTISE_100FULL       0x0100  /* Try for 100mbps full-duplex */
 DECL|macro|ADVERTISE_100BASE4
 mdefine_line|#define ADVERTISE_100BASE4      0x0200  /* Try for 100mbps 4k packets  */
+DECL|macro|ADVERTISE_PAUSE_CAP
+mdefine_line|#define ADVERTISE_PAUSE_CAP&t;0x0400  /* Try for pause               */
+DECL|macro|ADVERTISE_PAUSE_ASYM
+mdefine_line|#define ADVERTISE_PAUSE_ASYM&t;0x0800  /* Try for asymetric pause     */
 DECL|macro|ADVERTISE_RESV
 mdefine_line|#define ADVERTISE_RESV          0x1c00  /* Unused...                   */
 DECL|macro|ADVERTISE_RFAULT
@@ -129,6 +133,10 @@ DECL|macro|LPA_100FULL
 mdefine_line|#define LPA_100FULL             0x0100  /* Can do 100mbps full-duplex  */
 DECL|macro|LPA_100BASE4
 mdefine_line|#define LPA_100BASE4            0x0200  /* Can do 100mbps 4k packets   */
+DECL|macro|LPA_PAUSE_CAP
+mdefine_line|#define LPA_PAUSE_CAP&t;&t;0x0400  /* Can pause                   */
+DECL|macro|LPA_PAUSE_ASYM
+mdefine_line|#define LPA_PAUSE_ASYM&t;&t;0x0800&t;/* Can pause asymetrically     */
 DECL|macro|LPA_RESV
 mdefine_line|#define LPA_RESV                0x1c00  /* Unused...                   */
 DECL|macro|LPA_RFAULT
