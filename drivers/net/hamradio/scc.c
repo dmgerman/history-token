@@ -6126,7 +6126,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev-&gt;last_rx
+id|scc-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
@@ -8650,6 +8650,12 @@ id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;Z8530 based SCC cards for Amateur Radio&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|scc_init_driver

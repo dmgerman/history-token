@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines  Corp., 2000&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef&t;_H_JFS_LOGMGR
 DECL|macro|_H_JFS_LOGMGR
 mdefine_line|#define _H_JFS_LOGMGR
@@ -22,6 +22,8 @@ DECL|macro|LOGMAGIC
 mdefine_line|#define&t;LOGMAGIC&t;0x87654321
 DECL|macro|LOGVERSION
 mdefine_line|#define&t;LOGVERSION&t;1
+DECL|macro|MAX_ACTIVE
+mdefine_line|#define MAX_ACTIVE&t;512&t;/* Max active file systems sharing log */
 r_typedef
 r_struct
 (brace
@@ -70,25 +72,19 @@ id|s32
 id|end
 suffix:semicolon
 multiline_comment|/* 4: addr of last log record set by logredo */
+DECL|member|device
+id|u32
+id|device
+suffix:semicolon
+multiline_comment|/* 4: save device in case location changes */
 DECL|member|active
 id|u32
 id|active
 (braket
-l_int|8
+id|MAX_ACTIVE
 )braket
 suffix:semicolon
-multiline_comment|/* 32: active file systems bit vector */
-DECL|member|rsrvd
-id|s32
-id|rsrvd
-(braket
-id|LOGPSIZE
-op_div
-l_int|4
-op_minus
-l_int|17
-)braket
-suffix:semicolon
+multiline_comment|/* 2048: active file systems list */
 DECL|typedef|logsuper_t
 )brace
 id|logsuper_t
@@ -256,7 +252,7 @@ id|length
 suffix:semicolon
 multiline_comment|/* 2: length of data in record (in byte) */
 DECL|member|aggregate
-id|s32
+id|u32
 id|aggregate
 suffix:semicolon
 multiline_comment|/* 4: file system lv/aggregate */
@@ -513,13 +509,13 @@ id|kdev_t
 id|dev
 suffix:semicolon
 multiline_comment|/* 4: log lv number */
-DECL|member|devfp
+DECL|member|bdev
 r_struct
-id|file
+id|block_device
 op_star
-id|devfp
+id|bdev
 suffix:semicolon
-multiline_comment|/* 4: log device file */
+multiline_comment|/* 4: log lv pointer */
 DECL|member|serial
 id|s32
 id|serial

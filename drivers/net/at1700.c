@@ -1882,7 +1882,7 @@ DECL|macro|EE_DATA_READ
 mdefine_line|#define EE_DATA_READ&t;0x80&t;/* EEPROM chip data out, in reg. 17. */
 multiline_comment|/* Delay between EEPROM clock transitions. */
 DECL|macro|eeprom_delay
-mdefine_line|#define eeprom_delay()&t;do {} while (0);
+mdefine_line|#define eeprom_delay()&t;do { } while (0)
 multiline_comment|/* The EEPROM commands include the alway-set leading bit. */
 DECL|macro|EE_WRITE_CMD
 mdefine_line|#define EE_WRITE_CMD&t;(5 &lt;&lt; 6)

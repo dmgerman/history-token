@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -335,10 +336,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ioctl helper function -- handles userspace copying&n; */
+multiline_comment|/*&n; * helper function -- handles userspace copying for ioctl arguments&n; */
 r_int
-DECL|function|video_generic_ioctl
-id|video_generic_ioctl
+DECL|function|video_usercopy
+id|video_usercopy
 c_func
 (paren
 r_struct
@@ -358,19 +359,33 @@ comma
 r_int
 r_int
 id|arg
+comma
+r_int
+(paren
+op_star
+id|func
+)paren
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|arg
+)paren
 )paren
 (brace
-r_struct
-id|video_device
-op_star
-id|vfl
-op_assign
-id|video_devdata
-c_func
-(paren
-id|file
-)paren
-suffix:semicolon
 r_char
 id|sbuf
 (braket
@@ -392,17 +407,6 @@ suffix:semicolon
 r_int
 id|err
 op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vfl-&gt;kernel_ioctl
-op_eq
-l_int|NULL
-)paren
-r_return
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -532,9 +536,7 @@ suffix:semicolon
 multiline_comment|/* call driver */
 id|err
 op_assign
-id|vfl
-op_member_access_from_pointer
-id|kernel_ioctl
+id|func
 c_func
 (paren
 id|inode
@@ -1914,11 +1916,11 @@ c_func
 id|video_devdata
 )paren
 suffix:semicolon
-DECL|variable|video_generic_ioctl
+DECL|variable|video_usercopy
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|video_generic_ioctl
+id|video_usercopy
 )paren
 suffix:semicolon
 DECL|variable|video_exclusive_open

@@ -1377,8 +1377,6 @@ id|psr
 r_static
 r_int
 id|calls
-op_assign
-l_int|0
 suffix:semicolon
 id|siginfo_t
 id|info

@@ -36,6 +36,11 @@ id|ia_valid
 op_assign
 id|attr-&gt;ia_valid
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* If force is set do it anyway. */
 r_if
 c_cond
@@ -210,6 +215,11 @@ l_int|0
 suffix:semicolon
 id|error
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -240,6 +250,11 @@ r_int
 id|error
 op_assign
 l_int|0
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -366,6 +381,11 @@ id|inode
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -563,9 +583,11 @@ id|attr-&gt;ia_mtime
 op_assign
 id|now
 suffix:semicolon
-id|lock_kernel
+id|down
 c_func
 (paren
+op_amp
+id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -663,9 +685,11 @@ id|attr
 suffix:semicolon
 )brace
 )brace
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if

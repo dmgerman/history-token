@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;ad1848.h&quot;
 macro_line|#include &quot;sb.h&quot;
@@ -15,6 +16,12 @@ DECL|variable|mad16_cdsel
 r_static
 r_int
 id|mad16_cdsel
+suffix:semicolon
+DECL|variable|gameport
+r_static
+r_struct
+id|gameport
+id|gameport
 suffix:semicolon
 DECL|variable|already_initialized
 r_static
@@ -2649,7 +2656,7 @@ op_assign
 id|ad1848_init
 c_func
 (paren
-l_string|&quot;MAD16 WSS&quot;
+l_string|&quot;mad16 WSS&quot;
 comma
 id|hw_config-&gt;io_base
 op_plus
@@ -2675,7 +2682,7 @@ id|hw_config-&gt;io_base
 comma
 l_int|4
 comma
-l_string|&quot;MAD16 WSS config&quot;
+l_string|&quot;mad16 WSS config&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4067,39 +4074,6 @@ c_func
 l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Joystick port &quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|joystick
-op_eq
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;enabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-(brace
-id|joystick
-op_assign
-l_int|0
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;disabled.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|cfg.io_base
 op_assign
 id|io
@@ -4186,6 +4160,66 @@ op_amp
 id|cfg_mpu
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|joystick
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* register gameport */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+l_int|0x201
+comma
+l_int|1
+comma
+l_string|&quot;mad16 gameport&quot;
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mad16: gameport address 0x201 already in use&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mad16: gameport enabled at 0x201&bslash;n&quot;
+)paren
+suffix:semicolon
+id|gameport.io
+op_assign
+l_int|0x201
+suffix:semicolon
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|gameport
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mad16: gameport disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4251,7 +4285,7 @@ multiline_comment|/* io, irq */
 r_int
 id|ints
 (braket
-l_int|7
+l_int|8
 )braket
 suffix:semicolon
 id|str
@@ -4310,6 +4344,13 @@ op_assign
 id|ints
 (braket
 l_int|6
+)braket
+suffix:semicolon
+id|joystick
+op_assign
+id|ints
+(braket
+l_int|7
 )braket
 suffix:semicolon
 r_return

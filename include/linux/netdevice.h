@@ -473,18 +473,6 @@ id|IFNAMSIZ
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;I/O specific fields&n;&t; *&t;FIXME: Merge these and struct ifmap into one&n;&t; */
-DECL|member|rmem_end
-r_int
-r_int
-id|rmem_end
-suffix:semicolon
-multiline_comment|/* shmem &quot;recv&quot; end&t;*/
-DECL|member|rmem_start
-r_int
-r_int
-id|rmem_start
-suffix:semicolon
-multiline_comment|/* shmem &quot;recv&quot; start&t;*/
 DECL|member|mem_end
 r_int
 r_int

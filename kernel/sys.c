@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * this is where the system-wide overflow UID and GID are defined, for&n; * architectures that now have 32-bit UID/GID but didn&squot;t in the past&n; */
@@ -370,6 +371,24 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on sparc64, so we just do it by hand&n; */
+DECL|macro|cond_syscall
+mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t&quot; #x &quot;,sys_ni_syscall&quot;);
+id|cond_syscall
+c_func
+(paren
+id|sys_nfsservctl
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_quotactl
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_acct
+)paren
 DECL|function|proc_sel
 r_static
 r_int
@@ -842,6 +861,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -889,6 +913,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|device_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -921,6 +950,11 @@ comma
 id|SYS_POWER_OFF
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|device_shutdown
+c_func
+(paren
 )paren
 suffix:semicolon
 id|printk
@@ -1006,6 +1040,11 @@ comma
 id|SYS_RESTART
 comma
 id|buffer
+)paren
+suffix:semicolon
+id|device_shutdown
+c_func
+(paren
 )paren
 suffix:semicolon
 id|printk

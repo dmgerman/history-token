@@ -1,9 +1,10 @@
-multiline_comment|/*&n; *&n; *   Copyright (c) International Business Machines  Corp., 2000&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_txnmgr.c: transaction manager&n; *&n; * notes:&n; * transaction starts with txBegin() and ends with txCommit()&n; * or txAbort().&n; *&n; * tlock is acquired at the time of update;&n; * (obviate scan at commit time for xtree and dtree)&n; * tlock and mp points to each other;&n; * (no hashlist for mp -&gt; tlock).&n; *&n; * special cases:&n; * tlock on in-memory inode:&n; * in-place tlock in the in-memory inode itself;&n; * converted to page lock by iWrite() at commit time.&n; *&n; * tlock during write()/mmap() under anonymous transaction (tid = 0):&n; * transferred (?) to transaction at commit time.&n; *&n; * use the page itself to update allocation maps&n; * (obviate intermediate replication of allocation/deallocation data)&n; * hold on to mp+lock thru update of maps&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -102,7 +103,7 @@ r_static
 r_int
 id|nTxLock
 op_assign
-l_int|2048
+l_int|4096
 suffix:semicolon
 multiline_comment|/* number of transaction locks */
 DECL|variable|TxLockLWM
@@ -110,7 +111,7 @@ r_static
 r_int
 id|TxLockLWM
 op_assign
-l_int|2048
+l_int|4096
 op_star
 dot
 l_int|4
@@ -121,7 +122,7 @@ r_static
 r_int
 id|TxLockHWM
 op_assign
-l_int|2048
+l_int|4096
 op_star
 dot
 l_int|8
@@ -9056,6 +9057,12 @@ id|jfsIOwait
 suffix:semicolon
 r_do
 (brace
+id|LAZY_LOCK
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|restart
 suffix:colon
 id|WorkDone
@@ -9076,12 +9083,6 @@ multiline_comment|/*&n;&t;&t;&t; * We can&squot;t get ahead of user thread.  Spi
 id|WorkDone
 op_assign
 l_int|1
-suffix:semicolon
-id|LAZY_LOCK
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Remove first transaction from queue&n;&t;&t;&t; */
 id|TxAnchor.unlock_queue
@@ -9135,6 +9136,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|LAZY_LOCK
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -9143,6 +9150,12 @@ id|WorkDone
 )paren
 r_goto
 id|restart
+suffix:semicolon
+id|LAZY_UNLOCK
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 id|set_current_state
 c_func

@@ -1149,7 +1149,7 @@ id|bio
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ll_rw_kio - submit a &amp;struct kiobuf for I/O&n; * @rw:   %READ or %WRITE&n; * @kio:   the kiobuf to do I/O on&n; * @dev:   target device&n; * @sector:   start location on disk&n; *&n; * Description:&n; *   ll_rw_kio will map the page list inside the &amp;struct kiobuf to&n; *   &amp;struct bio and queue them for I/O. The kiobuf given must describe&n; *   a continous range of data, and must be fully prepared for I/O.&n; **/
+multiline_comment|/**&n; * ll_rw_kio - submit a &amp;struct kiobuf for I/O&n; * @rw:   %READ or %WRITE&n; * @kio:   the kiobuf to do I/O on&n; * @bdev:   target device&n; * @sector:   start location on disk&n; *&n; * Description:&n; *   ll_rw_kio will map the page list inside the &amp;struct kiobuf to&n; *   &amp;struct bio and queue them for I/O. The kiobuf given must describe&n; *   a continous range of data, and must be fully prepared for I/O.&n; **/
 DECL|function|ll_rw_kio
 r_void
 id|ll_rw_kio
@@ -1163,8 +1163,10 @@ id|kiobuf
 op_star
 id|kio
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 id|sector_t
 id|sector
@@ -1194,6 +1196,15 @@ r_struct
 id|bio
 op_star
 id|bio
+suffix:semicolon
+id|kdev_t
+id|dev
+op_assign
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 id|err
 op_assign

@@ -1440,6 +1440,7 @@ id|ds1620_fops
 )brace
 suffix:semicolon
 DECL|function|ds1620_init
+r_static
 r_int
 id|__init
 id|ds1620_init
@@ -1675,6 +1676,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ds1620_exit
+r_static
 r_void
 id|__exit
 id|ds1620_exit

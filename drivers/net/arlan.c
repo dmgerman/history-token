@@ -754,7 +754,7 @@ id|arlan_command
 )paren
 suffix:semicolon
 DECL|function|arlan_time
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -824,7 +824,7 @@ mdefine_line|#define ARLAN_TOGGLE_END(dev)&bslash;&n; &t;{((struct arlan_private
 DECL|macro|ARLAN_UNDER_TOGGLE
 mdefine_line|#define ARLAN_UNDER_TOGGLE(dev)&bslash;&n; &t;(((struct arlan_private *) dev-&gt;priv)-&gt;under_toggle)
 DECL|function|arlan_drop_tx
-r_extern
+r_static
 r_inline
 r_int
 id|arlan_drop_tx
@@ -2519,7 +2519,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|arlan_command_process
-r_extern
+r_static
 r_inline
 r_void
 id|arlan_command_process
@@ -2600,7 +2600,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|arlan_retransmit_now
-r_extern
+r_static
 r_inline
 r_void
 id|arlan_retransmit_now
@@ -3089,9 +3089,13 @@ c_func
 id|dev
 )paren
 op_logical_and
-id|priv-&gt;tx_done_delayed
-OL
+id|time_after
+c_func
+(paren
 id|jiffies
+comma
+id|priv-&gt;tx_done_delayed
+)paren
 op_logical_and
 id|priv-&gt;tx_done_delayed
 op_ne
@@ -7035,7 +7039,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|DoNotReTransmitCrap
-r_extern
+r_static
 r_inline
 r_int
 id|DoNotReTransmitCrap
@@ -7082,7 +7086,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|DoNotWaitReTransmitCrap
-r_extern
+r_static
 r_inline
 r_int
 id|DoNotWaitReTransmitCrap
@@ -7129,7 +7133,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|arlan_queue_retransmit
-r_extern
+r_static
 r_inline
 r_void
 id|arlan_queue_retransmit

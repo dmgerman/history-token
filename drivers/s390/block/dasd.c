@@ -9916,9 +9916,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|invalidate_buffers
+id|invalidate_bdev
 (paren
-id|inp-&gt;i_rdev
+id|inp-&gt;i_bdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -6219,11 +6219,11 @@ id|SI_USER
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|info.si_uid
 op_assign
-id|current-&gt;p_pptr-&gt;uid
+id|current-&gt;parent-&gt;uid
 suffix:semicolon
 )brace
 multiline_comment|/* If the (new) signal is now blocked, requeue it.  */
@@ -6398,7 +6398,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|current-&gt;p_pptr-&gt;sig-&gt;action
+id|current-&gt;parent-&gt;sig-&gt;action
 (braket
 id|SIGCHLD
 op_minus
@@ -6627,15 +6627,29 @@ macro_line|#endif
 multiline_comment|/* fall through */
 r_default
 suffix:colon
-id|sig_exit
+id|sigaddset
 c_func
 (paren
-id|signr
-comma
-id|exit_code
-comma
 op_amp
-id|info
+id|current-&gt;pending.signal
+comma
+id|signr
+)paren
+suffix:semicolon
+id|recalc_sigpending
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SIGNALED
+suffix:semicolon
+id|do_exit
+c_func
+(paren
+id|exit_code
 )paren
 suffix:semicolon
 multiline_comment|/* NOT REACHED */

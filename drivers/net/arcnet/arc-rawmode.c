@@ -190,6 +190,12 @@ id|rawmode_proto
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
 multiline_comment|/* packet receiver */
 DECL|function|rx

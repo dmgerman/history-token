@@ -3016,18 +3016,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Knuth recommends primes in approximately golden ratio to the maximum&n; * integer representable by a machine word for multiplicative hashing.&n; * Chuck Lever verified the effectiveness of this technique:&n; * http://www.citi.umich.edu/techreports/reports/citi-tr-00-1.pdf&n; *&n; * These primes are chosen to be bit-sparse, that is operations on&n; * them can use shifts and additions instead of multiplications for&n; * machines where multiplications are slow.&n; */
-macro_line|#if BITS_PER_LONG == 32
-multiline_comment|/* 2^31 + 2^29 - 2^25 + 2^22 - 2^19 - 2^16 + 1 */
-DECL|macro|GOLDEN_RATIO_PRIME
-mdefine_line|#define GOLDEN_RATIO_PRIME 0x9e370001UL
-macro_line|#elif BITS_PER_LONG == 64
-multiline_comment|/*  2^63 + 2^61 - 2^57 + 2^54 - 2^51 - 2^18 + 1 */
-DECL|macro|GOLDEN_RATIO_PRIME
-mdefine_line|#define GOLDEN_RATIO_PRIME 0x9e37fffffffc0001UL
-macro_line|#else
-macro_line|#error Define GOLDEN_RATIO_PRIME for your wordsize.
-macro_line|#endif
 multiline_comment|/*&n; * In order to wait for pages to become available there must be&n; * waitqueues associated with pages. By using a hash table of&n; * waitqueues where the bucket discipline is to maintain all&n; * waiters on the same queue and wake all when any of the pages&n; * become available, and for the woken contexts to check to be&n; * sure the appropriate page became available, this saves space&n; * at a cost of &quot;thundering herd&quot; phenomena during rare hash&n; * collisions.&n; */
 DECL|function|page_waitqueue
 r_static

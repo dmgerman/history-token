@@ -445,9 +445,13 @@ id|jiffies
 op_plus
 id|delay
 suffix:semicolon
-id|i
-OG
+id|time_before
+c_func
+(paren
 id|jiffies
+comma
+id|i
+)paren
 suffix:semicolon
 )paren
 suffix:semicolon

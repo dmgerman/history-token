@@ -394,7 +394,7 @@ c_func
 (paren
 l_string|&quot;i2c-dev.o: i2c-%d lseek to %ld bytes relative to %d.&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -493,7 +493,7 @@ c_func
 (paren
 l_string|&quot;i2c-dev.o: i2c-%d reading %d bytes.&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -653,7 +653,7 @@ c_func
 (paren
 l_string|&quot;i2c-dev.o: i2c-%d writing %d bytes.&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -754,7 +754,7 @@ c_func
 (paren
 l_string|&quot;i2c-dev.o: i2c-%d ioctl, cmd: 0x%x, arg: %lx.&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

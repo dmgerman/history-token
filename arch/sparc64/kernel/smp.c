@@ -94,15 +94,11 @@ r_static
 r_int
 r_char
 id|boot_cpu_id
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|smp_activated
 r_static
 r_int
 id|smp_activated
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Kernel spinlock */
 DECL|variable|__cacheline_aligned_in_smp
@@ -3782,8 +3778,6 @@ r_static
 r_int
 r_int
 id|penguins_are_doing_time
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|smp_capture
 r_void

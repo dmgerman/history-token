@@ -1560,6 +1560,12 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Force an expiry of the discovery log.&n;&t;&t; * Now that the LAP is free, the system may attempt to&n;&t;&t; * connect to another device. Unfortunately, our entries&n;&t;&t; * are stale. There is a small window (&lt;3s) before the&n;&t;&t; * normal discovery will run and where irlmp_connect_request()&n;&t;&t; * can get the wrong info, so make sure things get&n;&t;&t; * cleaned *NOW* ;-) - Jean II */
+id|irlmp_do_expiry
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default

@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; *  include/linux/reiser_fs.h&n; *&n; *  Reiser File System constants and structures&n; *&n; */
 multiline_comment|/* in reading the #defines, it may help to understand that they employ&n;   the following abbreviations:&n;&n;   B = Buffer&n;   I = Item header&n;   H = Height within the tree (should be changed to LEV)&n;   N = Number of the item in the node&n;   STAT = stat data&n;   DEH = Directory Entry Header&n;   EC = Entry Count&n;   E = Entry number&n;   UL = Unsigned Long&n;   BLKH = BLocK Header&n;   UNFM = UNForMatted node&n;   DC = Disk Child&n;   P = Path&n;&n;   These #defines are named by concatenating these abbreviations,&n;   where first comes the arguments, and last comes the return value,&n;   of the macro.&n;&n;*/
@@ -49,7 +50,7 @@ multiline_comment|/*&n; * Disk Data Structures&n; */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                             SUPER BLOCK                                 */
 multiline_comment|/***************************************************************************/
-multiline_comment|/*&n; * Structure of super block on disk, a version of which in RAM is often accessed as s-&gt;u.reiserfs_sb.s_rs&n; * the version in RAM is part of a larger structure containing fields never written to disk.&n; */
+multiline_comment|/*&n; * Structure of super block on disk, a version of which in RAM is often accessed as REISERFS_SB(s)-&gt;s_rs&n; * the version in RAM is part of a larger structure containing fields never written to disk.&n; */
 DECL|macro|UNSET_HASH
 mdefine_line|#define UNSET_HASH 0 
 singleline_comment|// read_super will guess about, what hash names
@@ -262,7 +263,7 @@ DECL|macro|REISERFS_VERSION_2
 mdefine_line|#define REISERFS_VERSION_2 2
 singleline_comment|// on-disk super block fields converted to cpu form
 DECL|macro|SB_DISK_SUPER_BLOCK
-mdefine_line|#define SB_DISK_SUPER_BLOCK(s) ((s)-&gt;u.reiserfs_sb.s_rs)
+mdefine_line|#define SB_DISK_SUPER_BLOCK(s) (REISERFS_SB(s)-&gt;s_rs)
 DECL|macro|SB_V1_DISK_SUPER_BLOCK
 mdefine_line|#define SB_V1_DISK_SUPER_BLOCK(s) (&amp;(SB_DISK_SUPER_BLOCK(s)-&gt;s_v1))
 DECL|macro|SB_BLOCKSIZE
@@ -452,6 +453,26 @@ id|reiserfs_inode_info
 comma
 id|vfs_inode
 )paren
+suffix:semicolon
+)brace
+DECL|function|REISERFS_SB
+r_static
+r_inline
+r_struct
+id|reiserfs_sb_info
+op_star
+id|REISERFS_SB
+c_func
+(paren
+r_const
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
 suffix:semicolon
 )brace
 multiline_comment|/** this says about version of key of all items (but stat data) the&n;    object consists of */
@@ -2596,7 +2617,7 @@ mdefine_line|#define REISERFS_KERNEL_MEM&t;&t;0&t;/* reiserfs kernel memory mode
 DECL|macro|REISERFS_USER_MEM
 mdefine_line|#define REISERFS_USER_MEM&t;&t;1&t;/* reiserfs user memory mode&t;&t;*/
 DECL|macro|fs_generation
-mdefine_line|#define fs_generation(s) ((s)-&gt;u.reiserfs_sb.s_generation_counter)
+mdefine_line|#define fs_generation(s) (REISERFS_SB(s)-&gt;s_generation_counter)
 DECL|macro|get_generation
 mdefine_line|#define get_generation(s) atomic_read (&amp;fs_generation(s))
 DECL|macro|FILESYSTEM_CHANGED_TB
@@ -5302,9 +5323,9 @@ mdefine_line|#define PROC_EXP( e )   e
 DECL|macro|MAX
 mdefine_line|#define MAX( a, b ) ( ( ( a ) &gt; ( b ) ) ? ( a ) : ( b ) )
 DECL|macro|__PINFO
-mdefine_line|#define __PINFO( sb ) ( sb ) -&gt; u.reiserfs_sb.s_proc_info_data
+mdefine_line|#define __PINFO( sb ) REISERFS_SB(sb) -&gt; s_proc_info_data
 DECL|macro|PROC_INFO_MAX
-mdefine_line|#define PROC_INFO_MAX( sb, field, value )&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __PINFO( sb ).field =&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        MAX( ( sb ) -&gt; u.reiserfs_sb.s_proc_info_data.field, value )
+mdefine_line|#define PROC_INFO_MAX( sb, field, value )&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __PINFO( sb ).field =&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        MAX( REISERFS_SB( sb ) -&gt; s_proc_info_data.field, value )
 DECL|macro|PROC_INFO_INC
 mdefine_line|#define PROC_INFO_INC( sb, field ) ( ++ ( __PINFO( sb ).field ) )
 DECL|macro|PROC_INFO_ADD

@@ -1670,7 +1670,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev-&gt;last_rx
+id|tmp_ax-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
@@ -4491,6 +4491,12 @@ c_func
 id|ax25_maxdev
 comma
 l_string|&quot;number of MKISS devices&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|mkiss_init_driver

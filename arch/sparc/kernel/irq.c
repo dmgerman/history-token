@@ -123,8 +123,6 @@ suffix:semicolon
 DECL|variable|static_irq_count
 r_int
 id|static_irq_count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|irq_action
 r_struct

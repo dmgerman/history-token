@@ -81,7 +81,11 @@ id|i82092aa_pci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|i82092aa_pci_remove
+)paren
 comma
 id|suspend
 suffix:colon
@@ -639,7 +643,7 @@ suffix:semicolon
 DECL|function|i82092aa_pci_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|i82092aa_pci_remove
 c_func
 (paren

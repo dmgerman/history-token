@@ -1,4 +1,3 @@
-multiline_comment|/*&n; *&t;opl3.h&n; *&n; * Copyright:&t;Christoph Hellwig &lt;chhellwig@gmx.net&gt;&n; *&n; */
 r_int
 id|opl3_detect
 (paren

@@ -4652,10 +4652,12 @@ l_int|0
 op_logical_and
 id|pCh-&gt;BookmarkTimer.expires
 op_logical_and
+id|time_before
+c_func
 (paren
-id|pCh-&gt;BookmarkTimer.expires
-OG
 id|jiffies
+comma
+id|pCh-&gt;BookmarkTimer.expires
 )paren
 )paren
 (brace

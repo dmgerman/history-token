@@ -990,7 +990,7 @@ l_int|0x0f78
 suffix:semicolon
 multiline_comment|/*---------------------------------------------------------------------------*/
 macro_line|#if 0
-r_extern
+r_static
 r_inline
 r_void
 id|append_crc_ccitt
@@ -1065,7 +1065,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*---------------------------------------------------------------------------*/
 DECL|function|check_crc_ccitt
-r_extern
+r_static
 r_inline
 r_int
 id|check_crc_ccitt
@@ -1131,7 +1131,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------*/
 DECL|function|calc_crc_ccitt
-r_extern
+r_static
 r_inline
 r_int
 id|calc_crc_ccitt
@@ -6432,6 +6432,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Baycom epp amateur radio modem driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */

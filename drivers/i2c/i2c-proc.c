@@ -490,6 +490,25 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|name
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;i2c_create_name: not enough memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|strcpy
 c_func
 (paren

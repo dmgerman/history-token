@@ -1041,6 +1041,11 @@ DECL|enumerator|NET_IPV4_ICMP_RATEMASK
 id|NET_IPV4_ICMP_RATEMASK
 op_assign
 l_int|90
+comma
+DECL|enumerator|NET_TCP_TW_REUSE
+id|NET_TCP_TW_REUSE
+op_assign
+l_int|91
 )brace
 suffix:semicolon
 r_enum
@@ -1213,6 +1218,12 @@ DECL|enumerator|NET_IPV4_CONF_ARPFILTER
 id|NET_IPV4_CONF_ARPFILTER
 op_assign
 l_int|13
+comma
+DECL|enumerator|NET_IPV4_CONF_MEDIUM_ID
+id|NET_IPV4_CONF_MEDIUM_ID
+op_assign
+l_int|14
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6 */

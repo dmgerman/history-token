@@ -692,6 +692,32 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+l_int|0x1385
+comma
+l_int|0x4100
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* Netgear MA301 */
+macro_line|#if 0
+(brace
+l_int|0x15e8
+comma
+l_int|0x0130
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* Correga */
+macro_line|#endif
+(brace
 l_int|0x1638
 comma
 l_int|0x1100
@@ -702,6 +728,67 @@ id|PCI_ANY_ID
 comma
 )brace
 comma
+multiline_comment|/* SMC EZConnect SMC2602W,&n;&t;&t;&t;&t;&t;&t;&t;   Eumitcom PCI WL11000,&n;&t;&t;&t;&t;&t;&t;&t;   Addtron AWA-100*/
+(brace
+l_int|0x16ab
+comma
+l_int|0x1100
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* Global Sun Tech GL24110P */
+(brace
+l_int|0x16ab
+comma
+l_int|0x1101
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* Reported working, but unknown */
+(brace
+l_int|0x16ab
+comma
+l_int|0x1102
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* Linksys WDT11 */
+(brace
+l_int|0x16ec
+comma
+l_int|0x3685
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* USR 2415 */
+(brace
+l_int|0xec80
+comma
+l_int|0xec00
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+multiline_comment|/* Belkin F5D6000 */
 (brace
 l_int|0
 comma
@@ -744,13 +831,6 @@ c_func
 id|orinoco_plx_remove_one
 )paren
 comma
-id|suspend
-suffix:colon
-l_int|0
-comma
-id|resume
-suffix:colon
-l_int|0
 )brace
 suffix:semicolon
 DECL|function|orinoco_plx_init

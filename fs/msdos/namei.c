@@ -100,7 +100,7 @@ id|fat_mount_options
 op_star
 id|opts
 )paren
-multiline_comment|/* conv is relaxed/normal/strict, name is proposed name,&n;&t; * len is the length of the proposed name, res is the result name,&n;&t; * dotsOK is if hidden files get dots.&n;&t; */
+multiline_comment|/* name is the proposed name, len is its length, res is&n;&t; * the resulting name, opts-&gt;name_check is either (r)elaxed,&n;&t; * (n)ormal or (s)trict, opts-&gt;dotsOK allows dots at the&n;&t; * beginning of name (for hidden files)&n;&t; */
 (brace
 r_char
 op_star
@@ -198,7 +198,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_ne
 l_char|&squot;r&squot;
 op_logical_and
@@ -217,7 +217,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 op_logical_and
@@ -248,7 +248,7 @@ id|c
 op_le
 l_char|&squot;Z&squot;
 op_logical_and
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 )paren
@@ -353,7 +353,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 op_logical_and
@@ -450,7 +450,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_ne
 l_char|&squot;r&squot;
 op_logical_and
@@ -469,7 +469,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 op_logical_and
@@ -519,7 +519,7 @@ l_char|&squot;.&squot;
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 )paren
@@ -541,7 +541,7 @@ id|c
 op_le
 l_char|&squot;Z&squot;
 op_logical_and
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 )paren
@@ -592,7 +592,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opts-&gt;conversion
+id|opts-&gt;name_check
 op_eq
 l_char|&squot;s&squot;
 op_logical_and

@@ -704,6 +704,11 @@ comma
 l_string|&quot;Journal thread exiting.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2749,14 +2754,10 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|journal-&gt;j_dev-&gt;bd_dev
-)paren
+id|journal-&gt;j_dev
 )paren
 suffix:semicolon
 id|jbd_debug

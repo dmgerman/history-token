@@ -160,11 +160,11 @@ c_func
 id|strstr
 )paren
 suffix:semicolon
-DECL|variable|strtok
+DECL|variable|strsep
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|strtok
+id|strsep
 )paren
 suffix:semicolon
 DECL|variable|strpbrk

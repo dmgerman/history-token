@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
@@ -1922,6 +1921,15 @@ id|last_dev
 op_assign
 id|dev
 suffix:semicolon
+multiline_comment|/* Stop the Lance */
+id|ll-&gt;rap
+op_assign
+id|LE_CSR0
+suffix:semicolon
+id|ll-&gt;rdp
+op_assign
+id|LE_C0_STOP
+suffix:semicolon
 multiline_comment|/* Install the Interrupt handler */
 id|ret
 op_assign
@@ -1946,15 +1954,6 @@ id|ret
 )paren
 r_return
 id|ret
-suffix:semicolon
-multiline_comment|/* Stop the Lance */
-id|ll-&gt;rap
-op_assign
-id|LE_CSR0
-suffix:semicolon
-id|ll-&gt;rdp
-op_assign
-id|LE_C0_STOP
 suffix:semicolon
 id|load_csrs
 (paren

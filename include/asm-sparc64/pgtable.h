@@ -51,6 +51,9 @@ r_int
 suffix:semicolon
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, page) &bslash;&n;&t;flush_cache_mm((vma)-&gt;vm_mm)
+r_struct
+id|page
+suffix:semicolon
 multiline_comment|/* &n; * On spitfire, the icache doesn&squot;t snoop local stores and we don&squot;t&n; * use block commit stores (which invalidate icache lines) during&n; * module load, so we need this.&n; */
 r_extern
 r_void

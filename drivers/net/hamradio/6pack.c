@@ -900,7 +900,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev-&gt;last_rx
+id|sp-&gt;dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
@@ -2781,17 +2781,6 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
-id|msg_invparm
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_ERR
-l_string|&quot;6pack: sixpack_maxdev parameter too large.&bslash;n&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
 id|msg_nomem
 (braket
 )braket
@@ -4624,6 +4613,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;6pack driver for AX.25&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|sixpack_init_driver

@@ -135,11 +135,14 @@ l_string|&quot;Overwrote bad sector during rebuild: Port #&quot;
 comma
 singleline_comment|//0x2C
 l_string|&quot;Encountered bad sector during rebuild: Port #&quot;
+comma
 singleline_comment|//0x2D
+l_string|&quot;Replacement drive is too small: Port #&quot;
+singleline_comment|//0x2E
 )brace
 suffix:semicolon
 DECL|macro|TW_AEN_STRING_MAX
-mdefine_line|#define TW_AEN_STRING_MAX                      0x02E
+mdefine_line|#define TW_AEN_STRING_MAX                      0x02F
 multiline_comment|/*&n;   Sense key lookup table&n;   Format: ESDC/flags,SenseKey,AdditionalSenseCode,AdditionalSenseCodeQualifier&n;*/
 DECL|variable|tw_sense_table
 r_static
@@ -304,8 +307,12 @@ DECL|macro|TW_CONTROL_ISSUE_HOST_INTERRUPT
 mdefine_line|#define TW_CONTROL_ISSUE_HOST_INTERRUPT&t;       0x00000020
 DECL|macro|TW_CONTROL_CLEAR_PARITY_ERROR
 mdefine_line|#define TW_CONTROL_CLEAR_PARITY_ERROR          0x00800000
+DECL|macro|TW_CONTROL_CLEAR_QUEUE_ERROR
+mdefine_line|#define TW_CONTROL_CLEAR_QUEUE_ERROR           0x00400000
 DECL|macro|TW_CONTROL_CLEAR_PCI_ABORT
 mdefine_line|#define TW_CONTROL_CLEAR_PCI_ABORT             0x00100000
+DECL|macro|TW_CONTROL_CLEAR_SBUF_WRITE_ERROR
+mdefine_line|#define TW_CONTROL_CLEAR_SBUF_WRITE_ERROR      0x00000008
 multiline_comment|/* Status register bit definitions */
 DECL|macro|TW_STATUS_MAJOR_VERSION_MASK
 mdefine_line|#define TW_STATUS_MAJOR_VERSION_MASK&t;       0xF0000000
@@ -342,7 +349,11 @@ mdefine_line|#define TW_STATUS_CLEARABLE_BITS&t;       0x00D00000
 DECL|macro|TW_STATUS_EXPECTED_BITS
 mdefine_line|#define TW_STATUS_EXPECTED_BITS&t;&t;       0x00002000
 DECL|macro|TW_STATUS_UNEXPECTED_BITS
-mdefine_line|#define TW_STATUS_UNEXPECTED_BITS&t;       0x00F80000
+mdefine_line|#define TW_STATUS_UNEXPECTED_BITS&t;       0x00F00008
+DECL|macro|TW_STATUS_SBUF_WRITE_ERROR
+mdefine_line|#define TW_STATUS_SBUF_WRITE_ERROR             0x00000008
+DECL|macro|TW_STATUS_VALID_INTERRUPT
+mdefine_line|#define TW_STATUS_VALID_INTERRUPT              0x00DF0008
 multiline_comment|/* RESPONSE QUEUE BIT DEFINITIONS */
 DECL|macro|TW_RESPONSE_ID_MASK
 mdefine_line|#define TW_RESPONSE_ID_MASK&t;&t;       0x00000FF0
@@ -447,7 +458,7 @@ mdefine_line|#define TW_MAX_RESET_TRIES&t;&t;      3
 DECL|macro|TW_UNIT_INFORMATION_TABLE_BASE
 mdefine_line|#define TW_UNIT_INFORMATION_TABLE_BASE&t;      0x300
 DECL|macro|TW_MAX_CMDS_PER_LUN
-mdefine_line|#define TW_MAX_CMDS_PER_LUN&t;&t;      (TW_Q_LENGTH-2)/TW_MAX_UNITS
+mdefine_line|#define TW_MAX_CMDS_PER_LUN&t;&t;      255
 DECL|macro|TW_BLOCK_SIZE
 mdefine_line|#define TW_BLOCK_SIZE&t;&t;&t;      0x200 /* 512-byte blocks */
 DECL|macro|TW_IOCTL
@@ -464,6 +475,10 @@ DECL|macro|TW_AEN_WAIT_TIME
 mdefine_line|#define TW_AEN_WAIT_TIME                      1000
 DECL|macro|TW_IOCTL_WAIT_TIME
 mdefine_line|#define TW_IOCTL_WAIT_TIME                    (1 * HZ) /* 1 second */
+DECL|macro|TW_ISR_DONT_COMPLETE
+mdefine_line|#define TW_ISR_DONT_COMPLETE                  2
+DECL|macro|TW_ISR_DONT_RESULT
+mdefine_line|#define TW_ISR_DONT_RESULT                    3
 multiline_comment|/* Macros */
 DECL|macro|TW_STATUS_ERRORS
 mdefine_line|#define TW_STATUS_ERRORS(x) &bslash;&n;&t;(((x &amp; TW_STATUS_PCI_ABORT) || &bslash;&n;&t;(x &amp; TW_STATUS_PCI_PARITY_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_QUEUE_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_ERROR)) &amp;&amp; &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_READY))
@@ -472,7 +487,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)
 macro_line|#else
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0);
+mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 multiline_comment|/* Scatter Gather List Entry */
 DECL|struct|TAG_TW_SG_Entry
@@ -1189,6 +1204,7 @@ r_char
 id|aen_tail
 suffix:semicolon
 DECL|member|flags
+r_volatile
 r_int
 id|flags
 suffix:semicolon
@@ -1200,6 +1216,10 @@ id|ioctl_data
 (braket
 id|TW_Q_LENGTH
 )braket
+suffix:semicolon
+DECL|member|reset_print
+r_int
+id|reset_print
 suffix:semicolon
 DECL|typedef|TW_Device_Extension
 )brace
@@ -1272,6 +1292,15 @@ id|tw_dev
 )paren
 suffix:semicolon
 r_void
+id|tw_clear_all_interrupts
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+)paren
+suffix:semicolon
+r_void
 id|tw_clear_attention_interrupt
 c_func
 (paren
@@ -1289,7 +1318,7 @@ op_star
 id|tw_dev
 )paren
 suffix:semicolon
-r_void
+r_int
 id|tw_decode_bits
 c_func
 (paren
@@ -1299,9 +1328,12 @@ id|tw_dev
 comma
 id|u32
 id|status_reg_value
+comma
+r_int
+id|print_host
 )paren
 suffix:semicolon
-r_void
+r_int
 id|tw_decode_sense
 c_func
 (paren
@@ -1325,7 +1357,7 @@ op_star
 id|tw_dev
 )paren
 suffix:semicolon
-r_int
+r_void
 id|tw_empty_response_que
 c_func
 (paren
@@ -1744,6 +1776,6 @@ id|tw_dev
 suffix:semicolon
 multiline_comment|/* Scsi_Host_Template Initializer */
 DECL|macro|TWXXXX
-mdefine_line|#define TWXXXX {&t;&t;&t;&t;&t;&bslash;&n;&t;next : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;module : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name : &quot;3w-xxxx&quot;,&t;&t;&t;&t;&bslash;&n;&t;proc_info : tw_scsi_proc_info,&t;&t;&t;&bslash;&n;&t;name : &quot;3ware Storage Controller&quot;,&t;&t;&bslash;&n;&t;detect : tw_scsi_detect,&t;&t;&t;&bslash;&n;&t;release : tw_scsi_release,&t;&t;&t;&bslash;&n;&t;info : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;ioctl : NULL,                  &t;&t;&t;&bslash;&n;&t;command : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;queuecommand : tw_scsi_queue,&t;&t;&t;&bslash;&n;&t;eh_strategy_handler : NULL,&t;&t;&t;&bslash;&n;&t;eh_abort_handler : tw_scsi_eh_abort,&t;&t;&bslash;&n;&t;eh_device_reset_handler : NULL,&t;&t;&t;&bslash;&n;&t;eh_bus_reset_handler : NULL,&t;&t;&t;&bslash;&n;&t;eh_host_reset_handler : tw_scsi_eh_reset,&t;&bslash;&n;&t;abort : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;reset : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;slave_attach : NULL,&t;&t;&t;&t;&bslash;&n;&t;bios_param : tw_scsi_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue : TW_Q_LENGTH,&t;&t;&t;&bslash;&n;&t;this_id: -1,&t;&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize : TW_MAX_SGL_LENGTH,&t;&t;&bslash;&n;&t;cmd_per_lun: TW_MAX_CMDS_PER_LUN,&t;&t;&bslash;&n;&t;present : 0,&t;&t;&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma : 0,&t;&t;&t;&t;&bslash;&n;&t;use_clustering : ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;emulated : 1&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define TWXXXX {&t;&t;&t;&t;&t;&bslash;&n;&t;next : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;module : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name : &quot;3w-xxxx&quot;,&t;&t;&t;&t;&bslash;&n;&t;proc_info : tw_scsi_proc_info,&t;&t;&t;&bslash;&n;&t;name : &quot;3ware Storage Controller&quot;,&t;&t;&bslash;&n;&t;detect : tw_scsi_detect,&t;&t;&t;&bslash;&n;&t;release : tw_scsi_release,&t;&t;&t;&bslash;&n;&t;info : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;ioctl : NULL,                  &t;&t;&t;&bslash;&n;&t;command : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;queuecommand : tw_scsi_queue,&t;&t;&t;&bslash;&n;&t;eh_strategy_handler : NULL,&t;&t;&t;&bslash;&n;&t;eh_abort_handler : tw_scsi_eh_abort,&t;&t;&bslash;&n;&t;eh_device_reset_handler : NULL,&t;&t;&t;&bslash;&n;&t;eh_bus_reset_handler : NULL,&t;&t;&t;&bslash;&n;&t;eh_host_reset_handler : tw_scsi_eh_reset,&t;&bslash;&n;&t;abort : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;reset : NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;slave_attach : NULL,&t;&t;&t;&t;&bslash;&n;&t;bios_param : tw_scsi_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue : TW_Q_LENGTH-1,&t;&t;&t;&bslash;&n;&t;this_id: -1,&t;&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize : TW_MAX_SGL_LENGTH,&t;&t;&bslash;&n;&t;cmd_per_lun: TW_MAX_CMDS_PER_LUN,&t;&t;&bslash;&n;&t;present : 0,&t;&t;&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma : 0,&t;&t;&t;&t;&bslash;&n;&t;use_clustering : ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;emulated : 1&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* _3W_XXXX_H */
 eof

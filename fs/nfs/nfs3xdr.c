@@ -5270,8 +5270,12 @@ id|rpc_version
 id|nfs_version3
 op_assign
 (brace
+id|number
+suffix:colon
 l_int|3
 comma
+id|nrprocs
+suffix:colon
 r_sizeof
 (paren
 id|nfs3_procedures
@@ -5285,6 +5289,8 @@ l_int|0
 )braket
 )paren
 comma
+id|procs
+suffix:colon
 id|nfs3_procedures
 )brace
 suffix:semicolon

@@ -7877,7 +7877,13 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* reiserfs_free_block is no longer schedule safe.  So, we need to&n;    ** put the buffers we want freed on the thrown list during do_balance,&n;    ** and then free them now&n;    */
-id|tb-&gt;tb_sb-&gt;u.reiserfs_sb.s_do_balance
+id|REISERFS_SB
+c_func
+(paren
+id|tb-&gt;tb_sb
+)paren
+op_member_access_from_pointer
+id|s_do_balance
 op_increment
 suffix:semicolon
 multiline_comment|/* release all nodes hold to perform the balancing */

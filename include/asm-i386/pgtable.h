@@ -25,50 +25,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Caches aren&squot;t brain-dead on the intel. */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
-DECL|macro|flush_icache_range
-mdefine_line|#define flush_icache_range(start, end)&t;&t;do { } while (0)
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
-DECL|macro|__flush_tlb
-mdefine_line|#define __flush_tlb()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int tmpreg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movl %%cr3, %0;  # flush TLB &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movl %0, %%cr3;              &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (tmpreg)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;:: &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Global pages have to be flushed a bit differently. Not a real&n; * performance problem because this does not happen often.&n; */
-DECL|macro|__flush_tlb_global
-mdefine_line|#define __flush_tlb_global()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int tmpreg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movl %1, %%cr4;  # turn off PGE     &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;movl %%cr3, %0;  # flush TLB        &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;movl %0, %%cr3;                     &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;movl %2, %%cr4;  # turn PGE back on &bslash;n&quot;&t;&bslash;&n;&t;&t;&t;: &quot;=&amp;r&quot; (tmpreg)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;r&quot; (mmu_cr4_features &amp; ~X86_CR4_PGE),&t;&bslash;&n;&t;&t;&t;  &quot;r&quot; (mmu_cr4_features)&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-r_extern
-r_int
-r_int
-id|pgkern_mask
-suffix:semicolon
-multiline_comment|/*&n; * Do not check the PGE bit unnecesserily if this is a PPro+ kernel.&n; */
-macro_line|#ifdef CONFIG_X86_PGE
-DECL|macro|__flush_tlb_all
-macro_line|# define __flush_tlb_all() __flush_tlb_global()
-macro_line|#else
-DECL|macro|__flush_tlb_all
-macro_line|# define __flush_tlb_all()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpu_has_pge)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb_global();&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb();&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#endif
-macro_line|#ifndef CONFIG_X86_INVLPG
-DECL|macro|__flush_tlb_one
-mdefine_line|#define __flush_tlb_one(addr) __flush_tlb()
-macro_line|#else
-DECL|macro|__flush_tlb_one
-mdefine_line|#define __flush_tlb_one(addr) &bslash;&n;__asm__ __volatile__(&quot;invlpg %0&quot;: :&quot;m&quot; (*(char *) addr))
-macro_line|#endif
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int

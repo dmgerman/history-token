@@ -2686,7 +2686,7 @@ id|lap_cb
 op_star
 id|lap
 suffix:semicolon
-multiline_comment|/*&n;&t; * Expire discovery on all links which are *not* connected.&n;&t; * On links which are connected, we can&squot;t do discovery&n;&t; * anymore and can&squot;t refresh the log, so we freeze the&n;&t; * discovery log to keep info about the device we are&n;&t; * connected to. - Jean II&n;&t; */
+multiline_comment|/*&n;&t; * Expire discovery on all links which are *not* connected.&n;&t; * On links which are connected, we can&squot;t do discovery&n;&t; * anymore and can&squot;t refresh the log, so we freeze the&n;&t; * discovery log to keep info about the device we are&n;&t; * connected to.&n;&t; * This info is mandatory if we want irlmp_connect_request()&n;&t; * to work properly. - Jean II&n;&t; */
 id|lap
 op_assign
 (paren
@@ -2927,6 +2927,8 @@ id|irlmp_discovery_confirm
 c_func
 (paren
 id|irlmp-&gt;cachelog
+comma
+id|DISCOVERY_LOG
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * Start a single discovery operation if discovery is not already&n;         * running &n;&t; */
@@ -3183,6 +3185,9 @@ comma
 id|hashbin_t
 op_star
 id|log
+comma
+id|DISCOVERY_MODE
+id|mode
 )paren
 (brace
 id|discovery_t
@@ -3255,6 +3260,8 @@ c_func
 (paren
 id|discovery
 comma
+id|mode
+comma
 id|client-&gt;priv
 )paren
 suffix:semicolon
@@ -3281,6 +3288,9 @@ c_func
 id|hashbin_t
 op_star
 id|log
+comma
+id|DISCOVERY_MODE
+id|mode
 )paren
 (brace
 id|irlmp_client_t
@@ -3348,6 +3358,8 @@ c_func
 id|client
 comma
 id|log
+comma
+id|mode
 )paren
 suffix:semicolon
 id|client
@@ -3441,6 +3453,8 @@ id|expir_callback
 c_func
 (paren
 id|expiry
+comma
+id|EXPIRY_TIMEOUT
 comma
 id|client-&gt;priv
 )paren

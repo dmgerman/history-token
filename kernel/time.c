@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  This file contains the interface functions for the various&n; *  time related system calls: time, stime, gettimeofday, settimeofday,&n; *&t;&t;&t;       adjtime&n; */
 multiline_comment|/*&n; * Modification history kernel/time.c&n; * &n; * 1993-09-02    Philip Gladstone&n; *      Created file with time related functions from sched.c and adjtimex() &n; * 1993-10-08    Torsten Duwe&n; *      adjtime interface update and CMOS clock write code&n; * 1995-08-13    Torsten Duwe&n; *      kernel PLL updated to 1994-12-13 specs (rfc-1589)&n; * 1999-01-16    Ulrich Windl&n; *&t;Introduced error checking for many cases in adjtimex().&n; *&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&t;Allow time_constant larger than MAXTC(6) for NTP v4 (MAXTC == 10)&n; *&t;(Even though the technical memorandum forbids it)&n; */
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* &n; * The timezone where the local system is located.  Used as a default by some&n; * programs who obtain this value by using gettimeofday.&n; */

@@ -1820,8 +1820,6 @@ id|regs
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Don&squot;t make the system unusable, if someone goes stuck */
 r_if
@@ -2087,8 +2085,6 @@ id|regs
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 id|regs-&gt;tpc
 op_assign
@@ -2168,8 +2164,6 @@ id|regs
 r_static
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 id|regs-&gt;tpc
 op_assign

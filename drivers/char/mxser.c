@@ -1,6 +1,6 @@
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *          mxser.c  -- MOXA Smartio family multiport serial driver.&n; *&n; *      Copyright (C) 1999-2000  Moxa Technologies (support@moxa.com.tw).&n; *&n; *      This code is loosely based on the Linux serial driver, written by&n; *      Linus Torvalds, Theodore T&squot;so and others.&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X, 2.4.X&n; *      date            : 2001/05/01&n; *      version         : 1.2 &n; *      &n; *    Fixes for C104H/PCI by Tim Hockin &lt;thockin@sun.com&gt;&n; */
+multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X, 2.4.X&n; *      date            : 2001/05/01&n; *      version         : 1.2 &n; *      &n; *    Fixes for C104H/PCI by Tim Hockin &lt;thockin@sun.com&gt;&n; *    Added support for: C102, CI-132, CI-134, CP-132, CP-114, CT-114 cards&n; *                        by Damian Wrobel &lt;dwrobel@ertel.com.pl&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -27,7 +27,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MXSER_VERSION
-mdefine_line|#define&t;&t;MXSER_VERSION&t;&t;&t;&quot;1.2&quot;
+mdefine_line|#define&t;&t;MXSER_VERSION&t;&t;&t;&quot;1.2.1&quot;
 DECL|macro|MXSERMAJOR
 mdefine_line|#define&t;&t;MXSERMAJOR&t; &t;174
 DECL|macro|MXSERCUMAJOR
@@ -87,12 +87,30 @@ macro_line|#ifndef PCI_DEVICE_ID_C104
 DECL|macro|PCI_DEVICE_ID_C104
 mdefine_line|#define PCI_DEVICE_ID_C104&t;0x1040
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_CP132
+DECL|macro|PCI_DEVICE_ID_CP132
+mdefine_line|#define PCI_DEVICE_ID_CP132&t;0x1320
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_CP114
+DECL|macro|PCI_DEVICE_ID_CP114
+mdefine_line|#define PCI_DEVICE_ID_CP114&t;0x1141
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_CT114
+DECL|macro|PCI_DEVICE_ID_CT114
+mdefine_line|#define PCI_DEVICE_ID_CT114&t;0x1140
+macro_line|#endif
 DECL|macro|C168_ASIC_ID
 mdefine_line|#define C168_ASIC_ID    1
 DECL|macro|C104_ASIC_ID
 mdefine_line|#define C104_ASIC_ID    2
+DECL|macro|CI134_ASIC_ID
+mdefine_line|#define CI134_ASIC_ID   3
+DECL|macro|CI132_ASIC_ID
+mdefine_line|#define CI132_ASIC_ID   4
 DECL|macro|CI104J_ASIC_ID
 mdefine_line|#define CI104J_ASIC_ID  5
+DECL|macro|C102_ASIC_ID
+mdefine_line|#define C102_ASIC_ID&t;0xB
 r_enum
 (brace
 DECL|enumerator|MXSER_BOARD_C168_ISA
@@ -112,6 +130,23 @@ comma
 DECL|enumerator|MXSER_BOARD_C104_PCI
 id|MXSER_BOARD_C104_PCI
 comma
+DECL|enumerator|MXSER_BOARD_C102_ISA
+id|MXSER_BOARD_C102_ISA
+comma
+DECL|enumerator|MXSER_BOARD_CI132
+id|MXSER_BOARD_CI132
+comma
+DECL|enumerator|MXSER_BOARD_CI134
+id|MXSER_BOARD_CI134
+comma
+DECL|enumerator|MXSER_BOARD_CP132_PCI
+id|MXSER_BOARD_CP132_PCI
+comma
+DECL|enumerator|MXSER_BOARD_CP114_PCI
+id|MXSER_BOARD_CP114_PCI
+comma
+DECL|enumerator|MXSER_BOARD_CT114_PCI
+id|MXSER_BOARD_CT114_PCI
 )brace
 suffix:semicolon
 DECL|variable|mxser_brdname
@@ -133,6 +168,17 @@ l_string|&quot;C168H/PCI series&quot;
 comma
 l_string|&quot;C104H/PCI series&quot;
 comma
+l_string|&quot;C102 series&quot;
+comma
+l_string|&quot;CI-132 series&quot;
+comma
+l_string|&quot;CI-134 series&quot;
+comma
+l_string|&quot;CP-132 series&quot;
+comma
+l_string|&quot;CP-114 series&quot;
+comma
+l_string|&quot;CT-114 series&quot;
 )brace
 suffix:semicolon
 DECL|variable|mxser_numports
@@ -153,6 +199,17 @@ l_int|8
 comma
 l_int|4
 comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|4
+comma
+l_int|2
+comma
+l_int|4
+comma
+l_int|4
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *    MOXA ioctls&n; */
@@ -213,6 +270,54 @@ comma
 l_int|0
 comma
 id|MXSER_BOARD_C104_PCI
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MOXA
+comma
+id|PCI_DEVICE_ID_CP132
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|MXSER_BOARD_CP132_PCI
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MOXA
+comma
+id|PCI_DEVICE_ID_CP114
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|MXSER_BOARD_CP114_PCI
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MOXA
+comma
+id|PCI_DEVICE_ID_CT114
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|MXSER_BOARD_CT114_PCI
 )brace
 comma
 (brace
@@ -2530,6 +2635,9 @@ id|b
 op_increment
 )paren
 (brace
+r_while
+c_loop
+(paren
 id|pdev
 op_assign
 id|pci_find_device
@@ -2551,13 +2659,11 @@ id|device
 comma
 id|pdev
 )paren
-suffix:semicolon
+)paren
+(brace
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pdev
-op_logical_or
 id|pci_enable_device
 c_func
 (paren
@@ -2725,6 +2831,7 @@ suffix:semicolon
 id|m
 op_increment
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -10590,6 +10697,42 @@ c_cond
 (paren
 id|id
 op_eq
+id|C102_ASIC_ID
+)paren
+id|hwconf-&gt;board_type
+op_assign
+id|MXSER_BOARD_C102_ISA
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|id
+op_eq
+id|CI132_ASIC_ID
+)paren
+id|hwconf-&gt;board_type
+op_assign
+id|MXSER_BOARD_CI132
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|id
+op_eq
+id|CI134_ASIC_ID
+)paren
+id|hwconf-&gt;board_type
+op_assign
+id|MXSER_BOARD_CI134
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|id
+op_eq
 id|CI104J_ASIC_ID
 )paren
 id|hwconf-&gt;board_type
@@ -11331,6 +11474,24 @@ op_logical_and
 id|id
 op_ne
 id|CI104J_ASIC_ID
+)paren
+op_logical_and
+(paren
+id|id
+op_ne
+id|C102_ASIC_ID
+)paren
+op_logical_and
+(paren
+id|id
+op_ne
+id|CI132_ASIC_ID
+)paren
+op_logical_and
+(paren
+id|id
+op_ne
+id|CI134_ASIC_ID
 )paren
 )paren
 r_return

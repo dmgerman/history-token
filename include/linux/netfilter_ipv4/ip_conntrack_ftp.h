@@ -14,6 +14,8 @@ c_func
 id|ip_ftp_lock
 )paren
 suffix:semicolon
+DECL|macro|FTP_PORT
+mdefine_line|#define FTP_PORT&t;21
 DECL|enum|ip_ct_ftp_type
 r_enum
 id|ip_ct_ftp_type
@@ -36,35 +38,36 @@ id|IP_CT_FTP_EPSV
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* We record seq number and length of ftp ip/port text here: all in&n;   host order. */
-DECL|struct|ip_ct_ftp
+multiline_comment|/* This structure is per expected connection */
+DECL|struct|ip_ct_ftp_expect
 r_struct
-id|ip_ct_ftp
+id|ip_ct_ftp_expect
 (brace
-multiline_comment|/* This tells NAT that this is an ftp connection */
-DECL|member|is_ftp
-r_int
-id|is_ftp
-suffix:semicolon
-DECL|member|seq
-id|u_int32_t
-id|seq
-suffix:semicolon
-multiline_comment|/* 0 means not found yet */
+multiline_comment|/* We record seq number and length of ftp ip/port text here: all in&n;&t; * host order. */
+multiline_comment|/* sequence number of IP address in packet is in ip_conntrack_expect */
 DECL|member|len
 id|u_int32_t
 id|len
 suffix:semicolon
+multiline_comment|/* length of IP address */
 DECL|member|ftptype
 r_enum
 id|ip_ct_ftp_type
 id|ftptype
 suffix:semicolon
-multiline_comment|/* Port that was to be used */
+multiline_comment|/* PORT or PASV ? */
 DECL|member|port
 id|u_int16_t
 id|port
 suffix:semicolon
+multiline_comment|/* TCP port that was to be used */
+)brace
+suffix:semicolon
+multiline_comment|/* This structure exists only once per master */
+DECL|struct|ip_ct_ftp_master
+r_struct
+id|ip_ct_ftp_master
+(brace
 multiline_comment|/* Next valid seq position for cmd matching after newline */
 DECL|member|seq_aft_nl
 id|u_int32_t

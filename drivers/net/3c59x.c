@@ -1,12 +1,12 @@
 multiline_comment|/* EtherLinkXL.c: A 3Com EtherLink PCI III/XL ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1996-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com &quot;Vortex&quot; and &quot;Boomerang&quot; series ethercards.&n;&t;Members of the series include Fast EtherLink 3c590/3c592/3c595/3c597&n;&t;and the EtherLink XL 3c900 and 3c905 cards.&n;&n;&t;Problem reports and questions should be directed to&n;&t;vortex@scyld.com&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Linux Kernel Additions:&n;&t;&n; &t;0.99H+lk0.9 - David S. Miller - softnet, PCI DMA updates&n; &t;0.99H+lk1.0 - Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;Remove compatibility defines for kernel versions &lt; 2.2.x.&n;&t;&t;Update for new 2.3.x module interface&n;&t;LK1.1.2 (March 19, 2000)&n;&t;* New PCI interface (jgarzik)&n;&n;    LK1.1.3 25 April 2000, Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;    - Merged with 3c575_cb.c&n;    - Don&squot;t set RxComplete in boomerang interrupt enable reg&n;    - spinlock in vortex_timer to protect mdio functions&n;    - disable local interrupts around call to vortex_interrupt in&n;      vortex_tx_timeout() (So vortex_interrupt can use spin_lock())&n;    - Select window 3 in vortex_timer()&squot;s write to Wn3_MAC_Ctrl&n;    - In vortex_start_xmit(), move the lock to _after_ we&squot;ve altered&n;      vp-&gt;cur_tx and vp-&gt;tx_full.  This defeats the race between&n;      vortex_start_xmit() and vortex_interrupt which was identified&n;      by Bogdan Costescu.&n;    - Merged back support for six new cards from various sources&n;    - Set vortex_have_pci if pci_module_init returns zero (fixes cardbus&n;      insertion oops)&n;    - Tell it that 3c905C has NWAY for 100bT autoneg&n;    - Fix handling of SetStatusEnd in &squot;Too much work..&squot; code, as&n;      per 2.3.99&squot;s 3c575_cb (Dave Hinds).&n;    - Split ISR into two for vortex &amp; boomerang&n;    - Fix MOD_INC/DEC races&n;    - Handle resource allocation failures.&n;    - Fix 3CCFE575CT LED polarity&n;    - Make tx_interrupt_mitigation the default&n;&n;    LK1.1.4 25 April 2000, Andrew Morton &lt;andrewm@uow.edu.au&gt;    &n;    - Add extra TxReset to vortex_up() to fix 575_cb hotplug initialisation probs.&n;    - Put vortex_info_tbl into __devinitdata&n;    - In the vortex_error StatsFull HACK, disable stats in vp-&gt;intr_enable as well&n;      as in the hardware.&n;    - Increased the loop counter in issue_and_wait from 2,000 to 4,000.&n;&n;    LK1.1.5 28 April 2000, andrewm&n;    - Added powerpc defines (John Daniel &lt;jdaniel@etresoft.com&gt; said these work...)&n;    - Some extra diagnostics&n;    - In vortex_error(), reset the Tx on maxCollisions.  Otherwise most&n;      chips usually get a Tx timeout.&n;    - Added extra_reset module parm&n;    - Replaced some inline timer manip with mod_timer&n;      (Franois romieu &lt;Francois.Romieu@nic.fr&gt;)&n;    - In vortex_up(), don&squot;t make Wn3_config initialisation dependent upon has_nway&n;      (this came across from 3c575_cb).&n;&n;    LK1.1.6 06 Jun 2000, andrewm&n;    - Backed out the PPC defines.&n;    - Use del_timer_sync(), mod_timer().&n;    - Fix wrapped ulong comparison in boomerang_rx()&n;    - Add IS_TORNADO, use it to suppress 3c905C checksum error msg&n;      (Donald Becker, I Lee Hetherington &lt;ilh@sls.lcs.mit.edu&gt;)&n;    - Replace union wn3_config with BFINS/BFEXT manipulation for&n;      sparc64 (Pete Zaitcev, Peter Jones)&n;    - In vortex_error, do_tx_reset and vortex_tx_timeout(Vortex):&n;      do a netif_wake_queue() to better recover from errors. (Anders Pedersen,&n;      Donald Becker)&n;    - Print a warning on out-of-memory (rate limited to 1 per 10 secs)&n;    - Added two more Cardbus 575 NICs: 5b57 and 6564 (Paul Wagland)&n;&n;    LK1.1.7 2 Jul 2000 andrewm&n;    - Better handling of shared IRQs&n;    - Reset the transmitter on a Tx reclaim error&n;    - Fixed crash under OOM during vortex_open() (Mark Hemment)&n;    - Fix Rx cessation problem during OOM (help from Mark Hemment)&n;    - The spinlocks around the mdio access were blocking interrupts for 300uS.&n;      Fix all this to use spin_lock_bh() within mdio_read/write&n;    - Only write to TxFreeThreshold if it&squot;s a boomerang - other NICs don&squot;t&n;      have one.&n;    - Added 802.3x MAC-layer flow control support&n;&n;   LK1.1.8 13 Aug 2000 andrewm&n;    - Ignore request_region() return value - already reserved if Cardbus.&n;    - Merged some additional Cardbus flags from Don&squot;s 0.99Qk&n;    - Some fixes for 3c556 (Fred Maciel)&n;    - Fix for EISA initialisation (Jan Rekorajski)&n;    - Renamed MII_XCVR_PWR and EEPROM_230 to align with 3c575_cb and D. Becker&squot;s drivers&n;    - Fixed MII_XCVR_PWR for 3CCFE575CT&n;    - Added INVERT_LED_PWR, used it.&n;    - Backed out the extra_reset stuff&n;&n;   LK1.1.9 12 Sep 2000 andrewm&n;    - Backed out the tx_reset_resume flags.  It was a no-op.&n;    - In vortex_error, don&squot;t reset the Tx on txReclaim errors&n;    - In vortex_error, don&squot;t reset the Tx on maxCollisions errors.&n;      Hence backed out all the DownListPtr logic here.&n;    - In vortex_error, give Tornado cards a partial TxReset on&n;      maxCollisions (David Hinds).  Defined MAX_COLLISION_RESET for this.&n;    - Redid some driver flags and device names based on pcmcia_cs-3.1.20.&n;    - Fixed a bug where, if vp-&gt;tx_full is set when the interface&n;      is downed, it remains set when the interface is upped.  Bad&n;      things happen.&n;&n;   LK1.1.10 17 Sep 2000 andrewm&n;    - Added EEPROM_8BIT for 3c555 (Fred Maciel)&n;    - Added experimental support for the 3c556B Laptop Hurricane (Louis Gerbarg)&n;    - Add HAS_NWAY to &quot;3c900 Cyclone 10Mbps TPO&quot;&n;&n;   LK1.1.11 13 Nov 2000 andrewm&n;    - Dump MOD_INC/DEC_USE_COUNT, use SET_MODULE_OWNER&n;&n;   LK1.1.12 1 Jan 2001 andrewm (2.4.0-pre1)&n;    - Call pci_enable_device before we request our IRQ (Tobias Ringstrom)&n;    - Add 3c590 PCI latency timer hack to vortex_probe1 (from 0.99Ra)&n;    - Added extended issue_and_wait for the 3c905CX.&n;    - Look for an MII on PHY index 24 first (3c905CX oddity).&n;    - Add HAS_NWAY to 3cSOHO100-TX (Brett Frankenberger)&n;    - Don&squot;t free skbs we don&squot;t own on oom path in vortex_open().&n;&n;   LK1.1.13 27 Jan 2001&n;    - Added explicit `medialock&squot; flag so we can truly&n;      lock the media type down with `options&squot;.&n;    - &quot;check ioremap return and some tidbits&quot; (Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;)&n;    - Added and used EEPROM_NORESET for 3c556B PM resumes.&n;    - Fixed leakage of vp-&gt;rx_ring.&n;    - Break out separate HAS_HWCKSM device capability flag.&n;    - Kill vp-&gt;tx_full (ANK)&n;    - Merge zerocopy fragment handling (ANK?)&n;&n;   LK1.1.14 15 Feb 2001&n;    - Enable WOL.  Can be turned on with `enable_wol&squot; module option.&n;    - EISA and PCI initialisation fixes (jgarzik, Manfred Spraul)&n;    - If a device&squot;s internalconfig register reports it has NWAY,&n;      use it, even if autoselect is enabled.&n;&n;   LK1.1.15 6 June 2001 akpm&n;    - Prevent double counting of received bytes (Lars Christensen)&n;    - Add ethtool support (jgarzik)&n;    - Add module parm descriptions (Andrzej M. Krzysztofowicz)&n;    - Implemented alloc_etherdev() API&n;    - Special-case the &squot;Tx error 82&squot; message.&n;&n;   LK1.1.16 18 July 2001 akpm&n;    - Make NETIF_F_SG dependent upon nr_free_highpages(), not on CONFIG_HIGHMEM&n;    - Lessen verbosity of bootup messages&n;    - Fix WOL - use new PM API functions.&n;    - Use netif_running() instead of vp-&gt;open in suspend/resume.&n;    - Don&squot;t reset the interface logic on open/close/rmmod.  It upsets&n;      autonegotiation, and hence DHCP (from 0.99T).&n;    - Back out EEPROM_NORESET flag because of the above (we do it for all&n;      NICs).&n;    - Correct 3c982 identification string&n;    - Rename wait_for_completion() to issue_and_wait() to avoid completion.h&n;      clash.&n;&n;    - See http://www.uow.edu.au/~andrewm/linux/#3c59x-2.3 for more details.&n;    - Also see Documentation/networking/vortex.txt&n;*/
+multiline_comment|/*&n;&t;Written 1996-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the 3Com &quot;Vortex&quot; and &quot;Boomerang&quot; series ethercards.&n;&t;Members of the series include Fast EtherLink 3c590/3c592/3c595/3c597&n;&t;and the EtherLink XL 3c900 and 3c905 cards.&n;&n;&t;Problem reports and questions should be directed to&n;&t;vortex@scyld.com&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Linux Kernel Additions:&n;&t;&n; &t;0.99H+lk0.9 - David S. Miller - softnet, PCI DMA updates&n; &t;0.99H+lk1.0 - Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;Remove compatibility defines for kernel versions &lt; 2.2.x.&n;&t;&t;Update for new 2.3.x module interface&n;&t;LK1.1.2 (March 19, 2000)&n;&t;* New PCI interface (jgarzik)&n;&n;    LK1.1.3 25 April 2000, Andrew Morton &lt;andrewm@uow.edu.au&gt;&n;    - Merged with 3c575_cb.c&n;    - Don&squot;t set RxComplete in boomerang interrupt enable reg&n;    - spinlock in vortex_timer to protect mdio functions&n;    - disable local interrupts around call to vortex_interrupt in&n;      vortex_tx_timeout() (So vortex_interrupt can use spin_lock())&n;    - Select window 3 in vortex_timer()&squot;s write to Wn3_MAC_Ctrl&n;    - In vortex_start_xmit(), move the lock to _after_ we&squot;ve altered&n;      vp-&gt;cur_tx and vp-&gt;tx_full.  This defeats the race between&n;      vortex_start_xmit() and vortex_interrupt which was identified&n;      by Bogdan Costescu.&n;    - Merged back support for six new cards from various sources&n;    - Set vortex_have_pci if pci_module_init returns zero (fixes cardbus&n;      insertion oops)&n;    - Tell it that 3c905C has NWAY for 100bT autoneg&n;    - Fix handling of SetStatusEnd in &squot;Too much work..&squot; code, as&n;      per 2.3.99&squot;s 3c575_cb (Dave Hinds).&n;    - Split ISR into two for vortex &amp; boomerang&n;    - Fix MOD_INC/DEC races&n;    - Handle resource allocation failures.&n;    - Fix 3CCFE575CT LED polarity&n;    - Make tx_interrupt_mitigation the default&n;&n;    LK1.1.4 25 April 2000, Andrew Morton &lt;andrewm@uow.edu.au&gt;    &n;    - Add extra TxReset to vortex_up() to fix 575_cb hotplug initialisation probs.&n;    - Put vortex_info_tbl into __devinitdata&n;    - In the vortex_error StatsFull HACK, disable stats in vp-&gt;intr_enable as well&n;      as in the hardware.&n;    - Increased the loop counter in issue_and_wait from 2,000 to 4,000.&n;&n;    LK1.1.5 28 April 2000, andrewm&n;    - Added powerpc defines (John Daniel &lt;jdaniel@etresoft.com&gt; said these work...)&n;    - Some extra diagnostics&n;    - In vortex_error(), reset the Tx on maxCollisions.  Otherwise most&n;      chips usually get a Tx timeout.&n;    - Added extra_reset module parm&n;    - Replaced some inline timer manip with mod_timer&n;      (Franois romieu &lt;Francois.Romieu@nic.fr&gt;)&n;    - In vortex_up(), don&squot;t make Wn3_config initialisation dependent upon has_nway&n;      (this came across from 3c575_cb).&n;&n;    LK1.1.6 06 Jun 2000, andrewm&n;    - Backed out the PPC defines.&n;    - Use del_timer_sync(), mod_timer().&n;    - Fix wrapped ulong comparison in boomerang_rx()&n;    - Add IS_TORNADO, use it to suppress 3c905C checksum error msg&n;      (Donald Becker, I Lee Hetherington &lt;ilh@sls.lcs.mit.edu&gt;)&n;    - Replace union wn3_config with BFINS/BFEXT manipulation for&n;      sparc64 (Pete Zaitcev, Peter Jones)&n;    - In vortex_error, do_tx_reset and vortex_tx_timeout(Vortex):&n;      do a netif_wake_queue() to better recover from errors. (Anders Pedersen,&n;      Donald Becker)&n;    - Print a warning on out-of-memory (rate limited to 1 per 10 secs)&n;    - Added two more Cardbus 575 NICs: 5b57 and 6564 (Paul Wagland)&n;&n;    LK1.1.7 2 Jul 2000 andrewm&n;    - Better handling of shared IRQs&n;    - Reset the transmitter on a Tx reclaim error&n;    - Fixed crash under OOM during vortex_open() (Mark Hemment)&n;    - Fix Rx cessation problem during OOM (help from Mark Hemment)&n;    - The spinlocks around the mdio access were blocking interrupts for 300uS.&n;      Fix all this to use spin_lock_bh() within mdio_read/write&n;    - Only write to TxFreeThreshold if it&squot;s a boomerang - other NICs don&squot;t&n;      have one.&n;    - Added 802.3x MAC-layer flow control support&n;&n;   LK1.1.8 13 Aug 2000 andrewm&n;    - Ignore request_region() return value - already reserved if Cardbus.&n;    - Merged some additional Cardbus flags from Don&squot;s 0.99Qk&n;    - Some fixes for 3c556 (Fred Maciel)&n;    - Fix for EISA initialisation (Jan Rekorajski)&n;    - Renamed MII_XCVR_PWR and EEPROM_230 to align with 3c575_cb and D. Becker&squot;s drivers&n;    - Fixed MII_XCVR_PWR for 3CCFE575CT&n;    - Added INVERT_LED_PWR, used it.&n;    - Backed out the extra_reset stuff&n;&n;   LK1.1.9 12 Sep 2000 andrewm&n;    - Backed out the tx_reset_resume flags.  It was a no-op.&n;    - In vortex_error, don&squot;t reset the Tx on txReclaim errors&n;    - In vortex_error, don&squot;t reset the Tx on maxCollisions errors.&n;      Hence backed out all the DownListPtr logic here.&n;    - In vortex_error, give Tornado cards a partial TxReset on&n;      maxCollisions (David Hinds).  Defined MAX_COLLISION_RESET for this.&n;    - Redid some driver flags and device names based on pcmcia_cs-3.1.20.&n;    - Fixed a bug where, if vp-&gt;tx_full is set when the interface&n;      is downed, it remains set when the interface is upped.  Bad&n;      things happen.&n;&n;   LK1.1.10 17 Sep 2000 andrewm&n;    - Added EEPROM_8BIT for 3c555 (Fred Maciel)&n;    - Added experimental support for the 3c556B Laptop Hurricane (Louis Gerbarg)&n;    - Add HAS_NWAY to &quot;3c900 Cyclone 10Mbps TPO&quot;&n;&n;   LK1.1.11 13 Nov 2000 andrewm&n;    - Dump MOD_INC/DEC_USE_COUNT, use SET_MODULE_OWNER&n;&n;   LK1.1.12 1 Jan 2001 andrewm (2.4.0-pre1)&n;    - Call pci_enable_device before we request our IRQ (Tobias Ringstrom)&n;    - Add 3c590 PCI latency timer hack to vortex_probe1 (from 0.99Ra)&n;    - Added extended issue_and_wait for the 3c905CX.&n;    - Look for an MII on PHY index 24 first (3c905CX oddity).&n;    - Add HAS_NWAY to 3cSOHO100-TX (Brett Frankenberger)&n;    - Don&squot;t free skbs we don&squot;t own on oom path in vortex_open().&n;&n;   LK1.1.13 27 Jan 2001&n;    - Added explicit `medialock&squot; flag so we can truly&n;      lock the media type down with `options&squot;.&n;    - &quot;check ioremap return and some tidbits&quot; (Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;)&n;    - Added and used EEPROM_NORESET for 3c556B PM resumes.&n;    - Fixed leakage of vp-&gt;rx_ring.&n;    - Break out separate HAS_HWCKSM device capability flag.&n;    - Kill vp-&gt;tx_full (ANK)&n;    - Merge zerocopy fragment handling (ANK?)&n;&n;   LK1.1.14 15 Feb 2001&n;    - Enable WOL.  Can be turned on with `enable_wol&squot; module option.&n;    - EISA and PCI initialisation fixes (jgarzik, Manfred Spraul)&n;    - If a device&squot;s internalconfig register reports it has NWAY,&n;      use it, even if autoselect is enabled.&n;&n;   LK1.1.15 6 June 2001 akpm&n;    - Prevent double counting of received bytes (Lars Christensen)&n;    - Add ethtool support (jgarzik)&n;    - Add module parm descriptions (Andrzej M. Krzysztofowicz)&n;    - Implemented alloc_etherdev() API&n;    - Special-case the &squot;Tx error 82&squot; message.&n;&n;   LK1.1.16 18 July 2001 akpm&n;    - Make NETIF_F_SG dependent upon nr_free_highpages(), not on CONFIG_HIGHMEM&n;    - Lessen verbosity of bootup messages&n;    - Fix WOL - use new PM API functions.&n;    - Use netif_running() instead of vp-&gt;open in suspend/resume.&n;    - Don&squot;t reset the interface logic on open/close/rmmod.  It upsets&n;      autonegotiation, and hence DHCP (from 0.99T).&n;    - Back out EEPROM_NORESET flag because of the above (we do it for all&n;      NICs).&n;    - Correct 3c982 identification string&n;    - Rename wait_for_completion() to issue_and_wait() to avoid completion.h&n;      clash.&n;&n;   LK1.1.17 18Dec01 akpm&n;    - PCI ID 9805 is a Python-T, not a dual-port Cyclone.  Apparently.&n;      And it has NWAY.&n;    - Mask our advertised modes (vp-&gt;advertising) with our capabilities&n;&t;  (MII reg5) when deciding which duplex mode to use.&n;    - Add `global_options&squot; as default for options[].  Ditto global_enable_wol,&n;      global_full_duplex.&n;&n;    - See http://www.zip.com.au/~akpm/linux/#3c59x-2.3 for more details.&n;    - Also see Documentation/networking/vortex.txt&n;*/
 multiline_comment|/*&n; * FIXME: This driver _could_ support MTU changing, but doesn&squot;t.  See Don&squot;s hamachi.c implementation&n; * as well as other drivers&n; *&n; * NOTE: If you make &squot;vortex_debug&squot; a constant (#define vortex_debug 0) the driver shrinks by 2k&n; * due to dead code elimination.  There will be some performance benefits from this due to&n; * elimination of all the tests and reduced cache footprint.&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;3c59x&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;LK1.1.16&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;LK1.1.17&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;19 July 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;18 Dec 2001&quot;
 multiline_comment|/* A few values that may be tweaked. */
 multiline_comment|/* Keep the ring sizes a power of two for efficiency. */
 DECL|macro|TX_RING_SIZE
@@ -160,6 +160,14 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
+id|global_options
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
 id|options
 comma
 l_string|&quot;1-&quot;
@@ -168,6 +176,14 @@ c_func
 (paren
 l_int|8
 )paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|global_full_duplex
+comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
@@ -210,6 +226,14 @@ c_func
 (paren
 l_int|8
 )paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|global_enable_wol
+comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
@@ -294,9 +318,25 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
+id|global_options
+comma
+l_string|&quot;3c59x: same as options, but applies to all NICs if options is unset&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
 id|full_duplex
 comma
 l_string|&quot;3c59x full duplex setting(s) (1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|global_full_duplex
+comma
+l_string|&quot;3c59x: same as full_duplex, but applies to all NICs if options is unset&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -321,6 +361,14 @@ c_func
 id|enable_wol
 comma
 l_string|&quot;3c59x: Turn on Wake-on-LAN for adapter(s) (0-1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|global_enable_wol
+comma
+l_string|&quot;3c59x: same as enable_wol, but applies to all NICs if options is unset&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -764,8 +812,6 @@ id|PCI_USES_MASTER
 comma
 id|IS_CYCLONE
 op_or
-id|HAS_NWAY
-op_or
 id|HAS_HWCKSM
 comma
 l_int|128
@@ -930,13 +976,15 @@ comma
 )brace
 comma
 (brace
-l_string|&quot;3c982 Dual Port Server Cyclone&quot;
+l_string|&quot;3c980C Python-T&quot;
 comma
 id|PCI_USES_IO
 op_or
 id|PCI_USES_MASTER
 comma
 id|IS_CYCLONE
+op_or
+id|HAS_NWAY
 op_or
 id|HAS_HWCKSM
 comma
@@ -3664,6 +3712,30 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+DECL|variable|global_options
+r_static
+r_int
+id|global_options
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|global_full_duplex
+r_static
+r_int
+id|global_full_duplex
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|global_enable_wol
+r_static
+r_int
+id|global_enable_wol
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* #define dev_alloc_skb dev_alloc_skb_debug */
 multiline_comment|/* A list of all installed Vortex EISA devices, for removing the driver module. */
 DECL|variable|root_vortex_eisa_dev
@@ -4249,6 +4321,10 @@ id|vp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|option
+op_assign
+id|global_options
+suffix:semicolon
 multiline_comment|/* The lower four bits are the media type. */
 r_if
 c_cond
@@ -4270,6 +4346,17 @@ id|card_idx
 OL
 id|MAX_UNITS
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|options
+(braket
+id|card_idx
+)braket
+op_ge
+l_int|0
+)paren
 id|option
 op_assign
 id|options
@@ -4277,12 +4364,7 @@ id|options
 id|card_idx
 )braket
 suffix:semicolon
-r_else
-id|option
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4694,6 +4776,28 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|global_full_duplex
+OG
+l_int|0
+)paren
+id|vp-&gt;full_duplex
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|global_enable_wol
+OG
+l_int|0
+)paren
+id|vp-&gt;enable_wol
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5627,6 +5731,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|vp-&gt;available_media
+op_amp
+l_int|0x4b
+)paren
+op_logical_or
+(paren
+id|vci-&gt;drv_flags
+op_amp
+id|HAS_NWAY
+)paren
+op_logical_or
 id|dev-&gt;if_port
 op_eq
 id|XCVR_MII
@@ -5652,8 +5768,13 @@ suffix:semicolon
 id|mii_preamble_required
 op_increment
 suffix:semicolon
-id|mii_preamble_required
-op_increment
+id|mdio_sync
+c_func
+(paren
+id|ioaddr
+comma
+l_int|32
+)paren
 suffix:semicolon
 id|mdio_read
 c_func
@@ -5730,6 +5851,18 @@ comma
 id|phyx
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;phy=%d, phyx=%d, mii_status=0x%04x&bslash;n&quot;
+comma
+id|phy
+comma
+id|phyx
+comma
+id|mii_status
 )paren
 suffix:semicolon
 r_if
@@ -6725,9 +6858,16 @@ id|mii_reg5
 op_eq
 l_int|0x0000
 )paren
+(brace
 suffix:semicolon
 multiline_comment|/* No MII device or no link partner report */
+)brace
 r_else
+(brace
+id|mii_reg5
+op_and_assign
+id|vp-&gt;advertising
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6753,6 +6893,7 @@ id|vp-&gt;full_duplex
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 id|vp-&gt;partner_flow_ctrl
 op_assign
 (paren
@@ -8193,6 +8334,12 @@ l_int|0xffff
 (brace
 r_int
 id|duplex
+suffix:semicolon
+id|mii_reg5
+op_and_assign
+id|vp-&gt;advertising
+suffix:semicolon
+id|duplex
 op_assign
 (paren
 id|mii_reg5
@@ -8696,7 +8843,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;  diagnostics: net %04x media %04x dma %8.8x.&bslash;n&quot;
+l_string|&quot;  diagnostics: net %04x media %04x dma %08x fifo %04x&bslash;n&quot;
 comma
 id|inw
 c_func
@@ -8720,6 +8867,14 @@ c_func
 id|ioaddr
 op_plus
 id|PktStatus
+)paren
+comma
+id|inw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|Wn4_FIFODiag
 )paren
 )paren
 suffix:semicolon
@@ -13262,13 +13417,6 @@ id|KERN_WARNING
 l_string|&quot;%s supports hardware checksums, and we&squot;re not using them!&bslash;n&quot;
 comma
 id|dev-&gt;name
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Please see http://www.uow.edu.au/~andrewm/zerocopy.html&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

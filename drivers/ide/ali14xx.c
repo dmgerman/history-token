@@ -540,13 +540,7 @@ multiline_comment|/* stuff timing parameters into controller registers */
 id|driveNum
 op_assign
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|index
+id|drive-&gt;channel-&gt;index
 op_lshift
 l_int|1
 )paren
@@ -1021,7 +1015,7 @@ id|ide_hwifs
 l_int|1
 )braket
 dot
-id|channel
+id|unit
 op_assign
 l_int|1
 suffix:semicolon

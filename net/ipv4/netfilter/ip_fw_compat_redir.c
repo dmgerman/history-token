@@ -33,7 +33,7 @@ mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 DECL|macro|IP_NF_ASSERT
-mdefine_line|#define IP_NF_ASSERT(x)&t;&t;&t;&t;&t;&t;&t; &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;if (!(x))&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;/* Wooah!  I&squot;m tripping my conntrack in a frenzy of&t; &bslash;&n;&t;&t;   netplay... */&t;&t;&t;&t;&t; &bslash;&n;&t;&t;printk(&quot;ASSERT: %s:%i(%s)&bslash;n&quot;,&t;&t;&t;&t; &bslash;&n;&t;&t;       __FILE__, __LINE__, __FUNCTION__);&t;&t; &bslash;&n;} while(0);
+mdefine_line|#define IP_NF_ASSERT(x)&t;&t;&t;&t;&t;&t;&t; &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;if (!(x))&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;&t;/* Wooah!  I&squot;m tripping my conntrack in a frenzy of&t; &bslash;&n;&t;&t;   netplay... */&t;&t;&t;&t;&t; &bslash;&n;&t;&t;printk(&quot;ASSERT: %s:%i(%s)&bslash;n&quot;,&t;&t;&t;&t; &bslash;&n;&t;&t;       __FILE__, __LINE__, __FUNCTION__);&t;&t; &bslash;&n;} while(0)
 macro_line|#else
 DECL|macro|IP_NF_ASSERT
 mdefine_line|#define IP_NF_ASSERT(x)

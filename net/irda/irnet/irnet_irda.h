@@ -399,6 +399,8 @@ c_func
 id|discovery_t
 op_star
 comma
+id|DISCOVERY_MODE
+comma
 r_void
 op_star
 )paren
@@ -410,6 +412,8 @@ c_func
 (paren
 id|discovery_t
 op_star
+comma
+id|DISCOVERY_MODE
 comma
 r_void
 op_star

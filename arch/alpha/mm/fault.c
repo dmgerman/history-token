@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|__EXTERN_INLINE
 mdefine_line|#define __EXTERN_INLINE inline
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef  __EXTERN_INLINE
 macro_line|#include &lt;linux/signal.h&gt;

@@ -327,13 +327,6 @@ c_func
 id|__put_user_4
 )paren
 suffix:semicolon
-DECL|variable|strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|strtok
-)paren
-suffix:semicolon
 DECL|variable|strpbrk
 id|EXPORT_SYMBOL
 c_func

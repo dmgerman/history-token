@@ -1047,6 +1047,52 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Work around broken HP Pavilion Notebooks which assign USB to&n; * IRQ 9 even though it is actually wired to IRQ 11&n; */
+DECL|function|fix_broken_hp_bios_irq9
+r_static
+id|__init
+r_int
+id|fix_broken_hp_bios_irq9
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_PCI
+r_extern
+r_int
+id|broken_hp_bios_irq9
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|broken_hp_bios_irq9
+op_eq
+l_int|0
+)paren
+(brace
+id|broken_hp_bios_irq9
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s detected - fixing broken IRQ routing&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  Check for clue free BIOS implementations who use&n; *  the following QA technique&n; *&n; *      [ Write BIOS Code ]&lt;------&n; *               |                ^&n; *      &lt; Does it Compile &gt;----N--&n; *               |Y               ^&n; *&t;&lt; Does it Boot Win98 &gt;-N--&n; *               |Y&n; *           [Ship It]&n; *&n; *&t;Phoenix A04  08/24/2000 is known bad (Dell Inspiron 5000e)&n; *&t;Phoenix A07  09/29/2000 is known good (Dell Inspiron 5000)&n; */
 DECL|function|broken_apm_power
 r_static
@@ -1355,6 +1401,54 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|dont_enable_local_apic
+)paren
+(brace
+id|dont_enable_local_apic
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s with broken BIOS detected. &quot;
+l_string|&quot;Refusing to enable the local APIC.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * The Microstar 6163-2 (a.k.a Pro) mainboard will hang shortly after&n; * resumes, and also at what appears to be asynchronous APM events,&n; * if the local APIC is enabled.&n; */
+DECL|function|apm_kills_local_apic
+r_static
+r_int
+id|__init
+id|apm_kills_local_apic
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+r_extern
+r_int
+id|dont_enable_local_apic
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apm_info.bios.version
+op_logical_and
 op_logical_neg
 id|dont_enable_local_apic
 )paren

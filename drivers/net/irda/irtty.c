@@ -2600,9 +2600,6 @@ id|self-&gt;tx_buff.len
 op_sub_assign
 id|actual
 suffix:semicolon
-id|self-&gt;stats.tx_packets
-op_increment
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -2615,6 +2612,9 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), finished with frame!&bslash;n&quot;
 )paren
+suffix:semicolon
+id|self-&gt;stats.tx_packets
+op_increment
 suffix:semicolon
 id|tty-&gt;flags
 op_and_assign

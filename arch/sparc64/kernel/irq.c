@@ -120,8 +120,6 @@ DECL|variable|static_irq_count
 r_static
 r_int
 id|static_irq_count
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* This is exported so that fast IRQ handlers can get at it... -DaveM */
 DECL|variable|irq_action

@@ -2299,6 +2299,12 @@ c_func
 l_string|&quot;Transmit and receive AX.25 packets over Ethernet&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|bpq_init_driver
 id|module_init
 c_func

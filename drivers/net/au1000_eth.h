@@ -17,7 +17,7 @@ DECL|macro|ETH_TX_TIMEOUT
 mdefine_line|#define ETH_TX_TIMEOUT HZ/4
 DECL|macro|MAC_MIN_PKT_SIZE
 mdefine_line|#define MAC_MIN_PKT_SIZE 64
-macro_line|#ifdef CONFIG_MIPS_PB1000
+macro_line|#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_PB1500)
 DECL|macro|PHY_ADDRESS
 mdefine_line|#define PHY_ADDRESS              0
 DECL|macro|PHY_CONTROL_DEFAULT
@@ -45,8 +45,12 @@ DECL|macro|MII_AEXP
 mdefine_line|#define MII_AEXP    0x0006
 DECL|macro|MII_ANEXT
 mdefine_line|#define MII_ANEXT   0x0007
+DECL|macro|MII_LSI_CONFIG
+mdefine_line|#define MII_LSI_CONFIG 0x0011
+DECL|macro|MII_LSI_STAT
+mdefine_line|#define MII_LSI_STAT   0x0012
 DECL|macro|MII_AUX_CNTRL
-mdefine_line|#define MII_AUX_CNTRL 0x18
+mdefine_line|#define MII_AUX_CNTRL  0x0018
 multiline_comment|/* mii registers specific to AMD 79C901 */
 DECL|macro|MII_STATUS_SUMMARY
 mdefine_line|#define&t;MII_STATUS_SUMMARY = 0x0018
@@ -142,6 +146,11 @@ DECL|macro|MII_STSSUM_AUTO
 mdefine_line|#define&t;MII_STSSUM_AUTO  0x0002
 DECL|macro|MII_STSSUM_SPD
 mdefine_line|#define MII_STSSUM_SPD   0x0001
+multiline_comment|/* lsi status register */
+DECL|macro|MII_LSI_STAT_FDX
+mdefine_line|#define MII_LSI_STAT_FDX&t;0x0008
+DECL|macro|MII_LSI_STAT_SPD
+mdefine_line|#define MII_LSI_STAT_SPD&t;0x0010
 multiline_comment|/* Auxilliary Control/Status Register */
 DECL|macro|MII_AUX_FDX
 mdefine_line|#define MII_AUX_FDX      0x0001

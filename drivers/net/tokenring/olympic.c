@@ -10319,6 +10319,7 @@ c_func
 (paren
 id|olympic_remove_one
 )paren
+comma
 )brace
 suffix:semicolon
 DECL|function|olympic_pci_init

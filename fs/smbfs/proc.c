@@ -8264,11 +8264,14 @@ id|qstr
 id|mask
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;*.*&quot;
 comma
+id|len
+suffix:colon
 l_int|3
 comma
-l_int|0
 )brace
 suffix:semicolon
 r_int
@@ -9495,11 +9498,14 @@ id|qstr
 id|star
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;*&quot;
 comma
+id|len
+suffix:colon
 l_int|1
 comma
-l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n;&t; * use info level 1 for older servers that don&squot;t do 260&n;&t; */

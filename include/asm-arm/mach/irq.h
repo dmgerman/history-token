@@ -279,18 +279,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_int
-id|setup_irq
-c_func
-(paren
-r_int
-r_int
-comma
-r_struct
-id|irqaction
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * External stuff.&n; */
 DECL|macro|set_irq_handler
 mdefine_line|#define set_irq_handler(irq,handler)&t;&t;__set_irq_handler(irq,handler,0)

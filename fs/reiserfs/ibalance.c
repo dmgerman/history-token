@@ -3062,7 +3062,7 @@ comma
 id|new_root-&gt;b_blocknr
 )paren
 suffix:semicolon
-singleline_comment|//tb-&gt;tb_sb-&gt;u.reiserfs_sb.s_rs-&gt;s_tree_height --;
+singleline_comment|//REISERFS_SB(tb-&gt;tb_sb)-&gt;s_rs-&gt;s_tree_height --;
 id|PUT_SB_TREE_HEIGHT
 c_func
 (paren
@@ -3081,7 +3081,13 @@ id|do_balance_mark_sb_dirty
 (paren
 id|tb
 comma
-id|tb-&gt;tb_sb-&gt;u.reiserfs_sb.s_sbh
+id|REISERFS_SB
+c_func
+(paren
+id|tb-&gt;tb_sb
+)paren
+op_member_access_from_pointer
+id|s_sbh
 comma
 l_int|1
 )paren
@@ -4782,7 +4788,13 @@ id|do_balance_mark_sb_dirty
 (paren
 id|tb
 comma
-id|tb-&gt;tb_sb-&gt;u.reiserfs_sb.s_sbh
+id|REISERFS_SB
+c_func
+(paren
+id|tb-&gt;tb_sb
+)paren
+op_member_access_from_pointer
+id|s_sbh
 comma
 l_int|1
 )paren
