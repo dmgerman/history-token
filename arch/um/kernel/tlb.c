@@ -2,33 +2,9 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/pgalloc.h&quot;
+macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#include &quot;mode_kern.h&quot;
-DECL|function|flush_tlb_kernel_range
-r_void
-id|flush_tlb_kernel_range
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-(brace
-id|flush_kernel_range
-c_func
-(paren
-id|start
-comma
-id|end
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 DECL|function|flush_tlb_page
 r_void
 id|flush_tlb_page
@@ -51,7 +27,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|vma-&gt;vm_mm
+id|vma
 comma
 id|address
 comma
@@ -126,9 +102,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -146,7 +122,7 @@ id|flush_tlb_range_tt
 comma
 id|flush_tlb_range_skas
 comma
-id|mm
+id|vma
 comma
 id|start
 comma

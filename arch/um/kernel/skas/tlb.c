@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
+macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/mmu.h&quot;
@@ -119,7 +120,7 @@ id|npmd
 (brace
 id|npte
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|npmd
@@ -481,7 +482,7 @@ id|pmd
 (brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_kernel
 c_func
 (paren
 id|pmd
@@ -719,9 +720,9 @@ id|flush_tlb_range_skas
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -735,7 +736,7 @@ id|end
 r_if
 c_cond
 (paren
-id|mm
+id|vma-&gt;vm_mm
 op_eq
 l_int|NULL
 )paren
@@ -753,7 +754,7 @@ r_else
 id|fix_range
 c_func
 (paren
-id|mm
+id|vma-&gt;vm_mm
 comma
 id|start
 comma

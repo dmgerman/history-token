@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/sched.h&quot;
+macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
@@ -736,6 +737,31 @@ id|vmchange_seq
 suffix:semicolon
 )brace
 )brace
+DECL|function|flush_tlb_kernel_range
+r_void
+id|flush_tlb_kernel_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+id|flush_kernel_range
+c_func
+(paren
+id|start
+comma
+id|end
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 DECL|function|protect_vm_page
 r_static
 r_void
@@ -966,7 +992,7 @@ c_func
 r_void
 )paren
 (brace
-id|flush_tlb_kernel_vm_range
+id|flush_tlb_kernel_range
 c_func
 (paren
 id|start_vm
@@ -985,7 +1011,7 @@ r_int
 id|addr
 )paren
 (brace
-id|flush_tlb_kernel_vm_range
+id|flush_tlb_kernel_range
 c_func
 (paren
 id|addr
@@ -1002,9 +1028,9 @@ id|flush_tlb_range_tt
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -1018,7 +1044,7 @@ id|end
 r_if
 c_cond
 (paren
-id|mm
+id|vma-&gt;vm_mm
 op_ne
 id|current-&gt;mm
 )paren
@@ -1043,7 +1069,7 @@ id|end_vm
 )paren
 )paren
 (brace
-id|flush_kernel_vm_range
+id|flush_kernel_range
 c_func
 (paren
 id|start
@@ -1058,7 +1084,7 @@ r_else
 id|fix_range
 c_func
 (paren
-id|mm
+id|vma-&gt;vm_mm
 comma
 id|start
 comma
@@ -1130,7 +1156,7 @@ id|current-&gt;thread.mode.tt.vm_seq
 op_assign
 id|seq
 suffix:semicolon
-id|flush_kernel_vm_range
+id|flush_kernel_range
 c_func
 (paren
 id|start_vm
@@ -1161,7 +1187,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|flush_kernel_vm_range
+id|flush_kernel_range
 c_func
 (paren
 id|start_vm
