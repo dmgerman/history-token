@@ -292,6 +292,31 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* Is an i_ino of zero legal? */
+multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_SERVER_INUM
+)paren
+(brace
+(paren
+op_star
+id|pinode
+)paren
+op_member_access_from_pointer
+id|i_ino
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|findData.UniqueId
+suffix:semicolon
+)brace
+multiline_comment|/* note ino incremented to unique num in new_inode */
 id|insert_inode_hash
 c_func
 (paren
@@ -1127,6 +1152,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* Is an i_ino of zero legal? */
+multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;the server is really filling in that field? */
+multiline_comment|/* We can not use the IndexNumber from either&n;&t;&t;&t;Windows or Samba as it is frequently set to zero */
+multiline_comment|/* There may be higher info levels that work but&n;&t;&t;&t;Are there Windows server or network appliances&n;&t;&t;&t;for which IndexNumber field is not guaranteed unique? */
+multiline_comment|/* if(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM) {&n;&t;&t;&t;&t;(*pinode)-&gt;i_ino = &n;&t;&t;&t;&t;&t;(unsigned long)pfindData-&gt;IndexNumber;&n;&t;&t;&t;} */
+multiline_comment|/*NB: ino incremented to unique num in new_inode*/
 id|insert_inode_hash
 c_func
 (paren

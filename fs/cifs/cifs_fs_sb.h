@@ -3,9 +3,11 @@ macro_line|#ifndef _CIFS_FS_SB_H
 DECL|macro|_CIFS_FS_SB_H
 mdefine_line|#define _CIFS_FS_SB_H
 DECL|macro|CIFS_MOUNT_NO_PERM
-mdefine_line|#define CIFS_MOUNT_NO_PERM&t;1 /* do not do client vfs_perm check */
+mdefine_line|#define CIFS_MOUNT_NO_PERM      1 /* do not do client vfs_perm check */
 DECL|macro|CIFS_MOUNT_SET_UID
 mdefine_line|#define CIFS_MOUNT_SET_UID      2 /* set current-&gt;euid in create etc. */
+DECL|macro|CIFS_MOUNT_SERVER_INUM
+mdefine_line|#define CIFS_MOUNT_SERVER_INUM  4 /* inode numbers from uniqueid from server */
 DECL|struct|cifs_sb_info
 r_struct
 id|cifs_sb_info
