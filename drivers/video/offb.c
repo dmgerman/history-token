@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -19,7 +18,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/macmodes.h&gt;
 multiline_comment|/* Supported palette hacks */
 r_enum
@@ -206,21 +204,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -1920,12 +1903,6 @@ id|fb_info
 op_plus
 r_sizeof
 (paren
-r_struct
-id|display
-)paren
-op_plus
-r_sizeof
-(paren
 id|u32
 )paren
 op_star
@@ -2576,14 +2553,6 @@ id|fix-&gt;id
 )paren
 )paren
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-id|fix-&gt;id
-)paren
-suffix:semicolon
 id|info-&gt;node
 op_assign
 id|NODEV
@@ -2607,11 +2576,10 @@ id|info-&gt;par
 op_assign
 id|par
 suffix:semicolon
-id|info-&gt;disp
+id|info-&gt;pseudo_palette
 op_assign
 (paren
-r_struct
-id|display
+r_void
 op_star
 )paren
 (paren
@@ -2620,41 +2588,12 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|info-&gt;pseudo_palette
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|info-&gt;disp
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;fontname
 (braket
 l_int|0
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|info-&gt;flags
 op_assign
@@ -2669,15 +2608,6 @@ comma
 l_int|256
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-id|info
 )paren
 suffix:semicolon
 r_if
