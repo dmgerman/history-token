@@ -4020,7 +4020,8 @@ op_assign
 id|fb_get_color_depth
 c_func
 (paren
-id|info
+op_amp
+id|info-&gt;var
 )paren
 suffix:semicolon
 r_int

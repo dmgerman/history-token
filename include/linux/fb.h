@@ -1304,6 +1304,9 @@ mdefine_line|#define FB_EVENT_SET_CONSOLE_MAP        0x07
 multiline_comment|/*      A display blank is requested       */
 DECL|macro|FB_EVENT_BLANK
 mdefine_line|#define FB_EVENT_BLANK                  0x08
+multiline_comment|/*      Private modelist is to be replaced */
+DECL|macro|FB_EVENT_NEW_MODELIST
+mdefine_line|#define FB_EVENT_NEW_MODELIST           0x09
 DECL|struct|fb_event
 r_struct
 id|fb_event
@@ -2737,9 +2740,9 @@ id|fb_get_color_depth
 c_func
 (paren
 r_struct
-id|fb_info
+id|fb_var_screeninfo
 op_star
-id|info
+id|var
 )paren
 suffix:semicolon
 r_extern
@@ -2755,6 +2758,17 @@ r_char
 op_star
 op_star
 id|option
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_new_modelist
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
 )paren
 suffix:semicolon
 r_extern
@@ -3115,6 +3129,24 @@ r_struct
 id|fb_videomode
 op_star
 id|fb_find_best_mode
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|fb_videomode
+op_star
+id|fb_find_nearest_mode
 c_func
 (paren
 r_struct

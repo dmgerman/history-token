@@ -79,7 +79,8 @@ c_cond
 id|fb_get_color_depth
 c_func
 (paren
-id|info
+op_amp
+id|info-&gt;var
 )paren
 op_eq
 l_int|1
