@@ -7211,16 +7211,6 @@ r_int
 r_int
 id|f
 suffix:semicolon
-id|nr_frags
-op_assign
-id|skb_shinfo
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|nr_frags
-suffix:semicolon
 id|len
 op_sub_assign
 id|skb-&gt;data_len
