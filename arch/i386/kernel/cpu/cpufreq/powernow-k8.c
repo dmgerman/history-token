@@ -2810,12 +2810,12 @@ c_func
 (paren
 l_string|&quot;numpst: 0x%x&bslash;n&quot;
 comma
-id|psb-&gt;numps
+id|psb-&gt;num_tables
 )paren
 suffix:semicolon
 id|cpst
 op_assign
-id|psb-&gt;numps
+id|psb-&gt;num_tables
 suffix:semicolon
 r_if
 c_cond
