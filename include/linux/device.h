@@ -568,6 +568,24 @@ op_star
 id|drv
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|device_driver
+op_star
+id|driver_find
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+comma
+r_struct
+id|bus_type
+op_star
+id|bus
+)paren
+suffix:semicolon
 multiline_comment|/* driverfs interface for exporting driver attributes */
 DECL|struct|driver_attribute
 r_struct
