@@ -595,7 +595,7 @@ id|printk
 (paren
 id|badinfo
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device
@@ -620,7 +620,7 @@ id|printk
 (paren
 id|badmagic
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device

@@ -3058,7 +3058,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device
@@ -3084,7 +3084,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|device

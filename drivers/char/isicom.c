@@ -1806,7 +1806,7 @@ c_func
 (paren
 id|badport
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|dev
@@ -1832,7 +1832,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|dev
