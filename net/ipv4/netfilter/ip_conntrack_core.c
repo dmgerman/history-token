@@ -3495,12 +3495,11 @@ r_if
 c_cond
 (paren
 id|ret
-op_eq
-op_minus
-l_int|1
+OL
+l_int|0
 )paren
 (brace
-multiline_comment|/* Invalid */
+multiline_comment|/* Invalid: inverse of the return code tells&n;&t;&t; * the netfilter core what to do*/
 id|nf_conntrack_put
 c_func
 (paren
@@ -3531,7 +3530,8 @@ id|invalid
 op_increment
 suffix:semicolon
 r_return
-id|NF_ACCEPT
+op_minus
+id|ret
 suffix:semicolon
 )brace
 r_if

@@ -576,6 +576,26 @@ id|extra_jiffies
 )paren
 suffix:semicolon
 multiline_comment|/* These are for NAT.  Icky. */
+multiline_comment|/* Update TCP window tracking data when NAT mangles the packet */
+r_extern
+r_int
+id|ip_conntrack_tcp_update
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|ip_conntrack
+op_star
+id|conntrack
+comma
+r_int
+id|dir
+)paren
+suffix:semicolon
 multiline_comment|/* Call me when a conntrack is destroyed. */
 r_extern
 r_void
