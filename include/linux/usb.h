@@ -120,7 +120,7 @@ id|extralen
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct usb_interface - what usb device drivers talk to&n; * @altsetting: array of interface descriptors, one for each alternate&n; * &t;setting that may be selected.  Each one includes a set of&n; * &t;endpoint configurations and will be in numberic order,&n; * &t;0..num_altsetting.&n; * @num_altsetting: number of altsettings defined.&n; * @act_altsetting: index of current altsetting.  this number is always&n; *&t;less than num_altsetting.  after the device is configured, each&n; *&t;interface uses its default setting of zero.&n; * @max_altsetting:&n; * @minor: the minor number assigned to this interface, if this&n; *&t;interface is bound to a driver that uses the USB major number.&n; *&t;If this interface does not use the USB major, this field should&n; *&t;be unused.  The driver should set this value in the probe()&n; *&t;function of the driver, after it has been assigned a minor&n; *&t;number from the USB core by calling usb_register_dev().&n; * @dev: driver model&squot;s view of this device&n; *&n; * USB device drivers attach to interfaces on a physical device.  Each&n; * interface encapsulates a single high level function, such as feeding&n; * an audio stream to a speaker or reporting a change in a volume control.&n; * Many USB devices only have one interface.  The protocol used to talk to&n; * an interface&squot;s endpoints can be defined in a usb &quot;class&quot; specification,&n; * or by a product&squot;s vendor.  The (default) control endpoint is part of&n; * every interface, but is never listed among the interface&squot;s descriptors.&n; *&n; * The driver that is bound to the interface can use standard driver model&n; * calls such as dev_get_drvdata() on the dev member of this structure.&n; *&n; * Each interface may have alternate settings.  The initial configuration&n; * of a device sets the first of these, but the device driver can change&n; * that setting using usb_set_interface().  Alternate settings are often&n; * used to control the the use of periodic endpoints, such as by having&n; * different endpoints use different amounts of reserved USB bandwidth.&n; * All standards-conformant USB devices that use isochronous endpoints&n; * will use them in non-default settings.&n; */
+multiline_comment|/**&n; * struct usb_interface - what usb device drivers talk to&n; * @altsetting: array of interface descriptors, one for each alternate&n; * &t;setting that may be selected.  Each one includes a set of&n; * &t;endpoint configurations and will be in numberic order,&n; * &t;0..num_altsetting.&n; * @num_altsetting: number of altsettings defined.&n; * @act_altsetting: index of current altsetting.  this number is always&n; *&t;less than num_altsetting.  after the device is configured, each&n; *&t;interface uses its default setting of zero.&n; * @max_altsetting:&n; * @minor: the minor number assigned to this interface, if this&n; *&t;interface is bound to a driver that uses the USB major number.&n; *&t;If this interface does not use the USB major, this field should&n; *&t;be unused.  The driver should set this value in the probe()&n; *&t;function of the driver, after it has been assigned a minor&n; *&t;number from the USB core by calling usb_register_dev().&n; * @dev: driver model&squot;s view of this device&n; * @class_dev: driver model&squot;s class view of this device.&n; *&n; * USB device drivers attach to interfaces on a physical device.  Each&n; * interface encapsulates a single high level function, such as feeding&n; * an audio stream to a speaker or reporting a change in a volume control.&n; * Many USB devices only have one interface.  The protocol used to talk to&n; * an interface&squot;s endpoints can be defined in a usb &quot;class&quot; specification,&n; * or by a product&squot;s vendor.  The (default) control endpoint is part of&n; * every interface, but is never listed among the interface&squot;s descriptors.&n; *&n; * The driver that is bound to the interface can use standard driver model&n; * calls such as dev_get_drvdata() on the dev member of this structure.&n; *&n; * Each interface may have alternate settings.  The initial configuration&n; * of a device sets the first of these, but the device driver can change&n; * that setting using usb_set_interface().  Alternate settings are often&n; * used to control the the use of periodic endpoints, such as by having&n; * different endpoints use different amounts of reserved USB bandwidth.&n; * All standards-conformant USB devices that use isochronous endpoints&n; * will use them in non-default settings.&n; */
 DECL|struct|usb_interface
 r_struct
 id|usb_interface
@@ -165,10 +165,17 @@ id|device
 id|dev
 suffix:semicolon
 multiline_comment|/* interface specific device info */
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_usb_interface
 mdefine_line|#define&t;to_usb_interface(d) container_of(d, struct usb_interface, dev)
+DECL|macro|class_dev_to_usb_interface
+mdefine_line|#define class_dev_to_usb_interface(d) container_of(d, struct usb_interface, class_dev)
 DECL|macro|interface_to_usbdev
 mdefine_line|#define&t;interface_to_usbdev(intf) &bslash;&n;&t;container_of(intf-&gt;dev.parent, struct usb_device, dev)
 DECL|function|usb_get_intfdata
@@ -937,6 +944,32 @@ r_struct
 id|bus_type
 id|usb_bus_type
 suffix:semicolon
+multiline_comment|/**&n; * struct usb_class_driver - identifies a USB driver that wants to use the USB major number&n; * @name: devfs name for this driver.  Will also be used by the driver&n; *&t;class code to create a usb class device.&n; * @fops: pointer to the struct file_operations of this driver.&n; * @mode: the mode for the devfs file to be created for this driver.&n; * @minor_base: the start of the minor range for this driver.&n; *&n; * This structure is used for the usb_register_dev() and&n; * usb_unregister_dev() functions, to consolodate a number of the&n; * paramaters used for them.&n; */
+DECL|struct|usb_class_driver
+r_struct
+id|usb_class_driver
+(brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|fops
+r_struct
+id|file_operations
+op_star
+id|fops
+suffix:semicolon
+DECL|member|mode
+id|mode_t
+id|mode
+suffix:semicolon
+DECL|member|minor_base
+r_int
+id|minor_base
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * use these in module_init()/module_exit()&n; * and don&squot;t forget MODULE_DEVICE_TABLE(usb, ...)&n; */
 r_extern
 r_int
@@ -964,19 +997,14 @@ id|usb_register_dev
 c_func
 (paren
 r_struct
-id|file_operations
+id|usb_interface
 op_star
-id|fops
+id|intf
 comma
-r_int
-id|minor
-comma
-r_int
-id|num_minors
-comma
-r_int
+r_struct
+id|usb_class_driver
 op_star
-id|start_minor
+id|class_driver
 )paren
 suffix:semicolon
 r_extern
@@ -984,11 +1012,15 @@ r_void
 id|usb_deregister_dev
 c_func
 (paren
-r_int
-id|num_minors
+r_struct
+id|usb_interface
+op_star
+id|intf
 comma
-r_int
-id|start_minor
+r_struct
+id|usb_class_driver
+op_star
+id|class_driver
 )paren
 suffix:semicolon
 r_extern
