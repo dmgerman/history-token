@@ -1086,6 +1086,15 @@ id|jbd_revoke_table_s
 op_star
 id|j_revoke
 suffix:semicolon
+DECL|member|j_revoke_table
+r_struct
+id|jbd_revoke_table_s
+op_star
+id|j_revoke_table
+(braket
+l_int|2
+)braket
+suffix:semicolon
 multiline_comment|/*&n;&t; * An opaque pointer to fs-private information.  ext3 puts its&n;&t; * superblock pointer here&n;&t; */
 DECL|member|j_private
 r_void
@@ -2052,6 +2061,16 @@ id|b
 comma
 r_int
 id|n
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|journal_switch_revoke_table
+c_func
+(paren
+id|journal_t
+op_star
+id|journal
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The log thread user interface:&n; *&n; * Request space in the current transaction, and force transaction commit&n; * transitions on demand.&n; */

@@ -374,15 +374,13 @@ comma
 l_string|&quot;JBD: commit phase 1&bslash;n&quot;
 )paren
 suffix:semicolon
-id|journal_write_revoke_records
+multiline_comment|/*&n;&t; * Switch to a new revoke table.&n;&t; */
+id|journal_switch_revoke_table
 c_func
 (paren
 id|journal
-comma
-id|commit_transaction
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now that we have built the revoke records, we can start&n;&t; * reusing the revoke list for a new running transaction.  We&n;&t; * can now safely start committing the old transaction: time to&n;&t; * get a new running transaction for incoming filesystem updates&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -875,6 +873,22 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
+id|journal_write_revoke_records
+c_func
+(paren
+id|journal
+comma
+id|commit_transaction
+)paren
+suffix:semicolon
+id|jbd_debug
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;JBD: commit phase 2&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we found any dirty or locked buffers, then we should have&n;&t; * looped back up to the write_out_data label.  If there weren&squot;t&n;&t; * any then journal_clean_data_list should have wiped the list&n;&t; * clean by now, so check that it is in fact empty.&n;&t; */
