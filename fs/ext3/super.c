@@ -5792,6 +5792,14 @@ c_func
 id|es-&gt;s_def_resgid
 )paren
 suffix:semicolon
+id|set_opt
+c_func
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|RESERVATION
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
