@@ -29,6 +29,8 @@ DECL|macro|EBADTYPE
 mdefine_line|#define EBADTYPE&t;527&t;/* Type not supported by server */
 DECL|macro|EJUKEBOX
 mdefine_line|#define EJUKEBOX&t;528&t;/* Request initiated, but will not complete before timeout */
+DECL|macro|EIOCBQUEUED
+mdefine_line|#define EIOCBQUEUED&t;529&t;/* iocb queued, will get completion event */
 macro_line|#endif
 macro_line|#endif
 eof
