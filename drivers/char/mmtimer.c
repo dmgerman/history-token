@@ -349,7 +349,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * mmtimer_mmap - maps the clock&squot;s registers into userspace&n; * @file: file structure for the device&n; * @vma: VMA to map the registers into&n; *&n; * Calls remap_page_range() to map the clock&squot;s registers into&n; * the calling process&squot; address space.&n; */
+multiline_comment|/**&n; * mmtimer_mmap - maps the clock&squot;s registers into userspace&n; * @file: file structure for the device&n; * @vma: VMA to map the registers into&n; *&n; * Calls remap_pfn_range() to map the clock&squot;s registers into&n; * the calling process&squot; address space.&n; */
 DECL|function|mmtimer_mmap
 r_static
 r_int
@@ -452,7 +452,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 id|vma
@@ -460,6 +460,8 @@ comma
 id|vma-&gt;vm_start
 comma
 id|mmtimer_addr
+op_rshift
+id|PAGE_SHIFT
 comma
 id|PAGE_SIZE
 comma
@@ -471,7 +473,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;remap_page_range failed in mmtimer.c&bslash;n&quot;
+l_string|&quot;remap_pfn_range failed in mmtimer.c&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
