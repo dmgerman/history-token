@@ -2232,6 +2232,17 @@ comma
 id|skb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MSG_TRUNC
+)paren
+id|copied
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|done
 suffix:colon
 id|skb_free_datagram
@@ -2248,6 +2259,7 @@ r_return
 id|err
 ques
 c_cond
+id|err
 suffix:colon
 id|copied
 suffix:semicolon

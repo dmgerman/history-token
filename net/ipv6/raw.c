@@ -1746,6 +1746,17 @@ id|err
 op_assign
 id|copied
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MSG_TRUNC
+)paren
+id|err
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|out_free
 suffix:colon
 id|skb_free_datagram
