@@ -1278,6 +1278,12 @@ id|rsslim
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|it_real_value
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -1589,6 +1595,10 @@ id|task-&gt;signal-&gt;stime
 )paren
 suffix:semicolon
 )brace
+id|it_real_value
+op_assign
+id|task-&gt;signal-&gt;it_real_value
+suffix:semicolon
 )brace
 id|ppid
 op_assign
@@ -1762,7 +1772,7 @@ comma
 id|jiffies_to_clock_t
 c_func
 (paren
-id|task-&gt;it_real_value
+id|it_real_value
 )paren
 comma
 id|start_time

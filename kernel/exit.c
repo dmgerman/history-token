@@ -3088,13 +3088,6 @@ id|tsk-&gt;flags
 op_or_assign
 id|PF_EXITING
 suffix:semicolon
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|tsk-&gt;real_timer
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure we don&squot;t try to process any timer firings&n;&t; * while we are already exiting.&n;&t; */
 id|tsk-&gt;it_virt_expires
 op_assign
@@ -3162,12 +3155,21 @@ c_cond
 (paren
 id|group_dead
 )paren
+(brace
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|tsk-&gt;signal-&gt;real_timer
+)paren
+suffix:semicolon
 id|acct_process
 c_func
 (paren
 id|code
 )paren
 suffix:semicolon
+)brace
 id|exit_mm
 c_func
 (paren

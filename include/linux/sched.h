@@ -810,6 +810,20 @@ r_struct
 id|list_head
 id|posix_timers
 suffix:semicolon
+multiline_comment|/* ITIMER_REAL timer for the process */
+DECL|member|real_timer
+r_struct
+id|timer_list
+id|real_timer
+suffix:semicolon
+DECL|member|it_real_value
+DECL|member|it_real_incr
+r_int
+r_int
+id|it_real_value
+comma
+id|it_real_incr
+suffix:semicolon
 multiline_comment|/* job control IDs */
 DECL|member|pgrp
 id|pid_t
@@ -1652,14 +1666,6 @@ r_int
 r_int
 id|rt_priority
 suffix:semicolon
-DECL|member|it_real_value
-DECL|member|it_real_incr
-r_int
-r_int
-id|it_real_value
-comma
-id|it_real_incr
-suffix:semicolon
 DECL|member|it_virt_value
 DECL|member|it_virt_incr
 id|cputime_t
@@ -1673,11 +1679,6 @@ id|cputime_t
 id|it_prof_value
 comma
 id|it_prof_incr
-suffix:semicolon
-DECL|member|real_timer
-r_struct
-id|timer_list
-id|real_timer
 suffix:semicolon
 DECL|member|utime
 DECL|member|stime
