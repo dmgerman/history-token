@@ -244,7 +244,7 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 DECL|variable|numcards
 r_static
 r_int
