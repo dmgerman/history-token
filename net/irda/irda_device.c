@@ -1170,10 +1170,6 @@ id|dev-&gt;addr_len
 op_assign
 l_int|0
 suffix:semicolon
-id|dev-&gt;destructor
-op_assign
-id|free_netdev
-suffix:semicolon
 id|dev-&gt;type
 op_assign
 id|ARPHRD_IRDA
