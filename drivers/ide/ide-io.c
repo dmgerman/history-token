@@ -1190,7 +1190,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;ide_end_taskfile(drive, stat, err);
 r_return
 id|ide_stopped
 suffix:semicolon
@@ -1570,7 +1569,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;ide_end_taskfile(drive, BUSY_STAT, 0);
 r_return
 id|ide_stopped
 suffix:semicolon

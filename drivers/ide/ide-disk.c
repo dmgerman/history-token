@@ -4551,35 +4551,6 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_else
-r_if
-c_cond
-(paren
-id|rq-&gt;flags
-op_amp
-id|REQ_DRIVE_TASKFILE
-)paren
-(brace
-id|rq-&gt;errors
-op_assign
-l_int|1
-suffix:semicolon
-id|ide_end_taskfile
-c_func
-(paren
-id|drive
-comma
-id|stat
-comma
-id|err
-)paren
-suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
 multiline_comment|/* make rq completion pointers new submission pointers */
 id|blk_rq_prep_restart

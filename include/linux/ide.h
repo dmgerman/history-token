@@ -4732,20 +4732,6 @@ id|ide_task_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* (ide_drive_t *drive, u8 stat, u8 err) */
-r_extern
-r_void
-id|ide_end_taskfile
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-id|u8
-comma
-id|u8
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
 r_extern
 id|ide_startstop_t
