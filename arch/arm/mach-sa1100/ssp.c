@@ -56,7 +56,7 @@ op_assign
 id|SSSR_ROR
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ssp_write_word - write a word to the SSP port&n; * @data: 16-bit, MSB justified data to write.&n; *&n; * Wait for a free entry in the SSP transmit FIFO, and write a data&n; * word to the SSP port.&n; *&n; * The caller is expected to perform the necessary locking.&n; *&n; * Returns:&n; *   %-ETIMEDOUT&t;timeout occurred (for future)&n; *   0&t;&t;&t;success&n; */
+multiline_comment|/**&n; * ssp_write_word - write a word to the SSP port&n; * @data: 16-bit, MSB justified data to write.&n; *&n; * Wait for a free entry in the SSP transmit FIFO, and write a data&n; * word to the SSP port.  Wait for the SSP port to start sending&n; * the data.&n; *&n; * The caller is expected to perform the necessary locking.&n; *&n; * Returns:&n; *   %-ETIMEDOUT&t;timeout occurred (for future)&n; *   0&t;&t;&t;success&n; */
 DECL|function|ssp_write_word
 r_int
 id|ssp_write_word
@@ -84,6 +84,21 @@ suffix:semicolon
 id|Ser4SSDR
 op_assign
 id|data
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|Ser4SSSR
+op_amp
+id|SSSR_BSY
+)paren
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

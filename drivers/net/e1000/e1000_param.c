@@ -24,7 +24,7 @@ comma
 l_string|&quot;Number of transmit descriptors&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544&n; *&n; * Default Value: 80&n; */
+multiline_comment|/* Receive Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544&n; *&n; * Default Value: 256&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -138,7 +138,7 @@ mdefine_line|#define MIN_TXD                       80
 DECL|macro|MAX_82544_TXD
 mdefine_line|#define MAX_82544_TXD               4096
 DECL|macro|DEFAULT_RXD
-mdefine_line|#define DEFAULT_RXD                   80
+mdefine_line|#define DEFAULT_RXD                  256
 DECL|macro|MAX_RXD
 mdefine_line|#define MAX_RXD                      256
 DECL|macro|MIN_RXD

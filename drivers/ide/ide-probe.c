@@ -851,7 +851,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;actual_try_to_identify&t;-&t;send ata/atapi identify&n; *&t;@drive: drive to identify&n; *&t;@cmd: comamnd to use&n; *&n; *&t;try_to_identify() sends an ATA(PI) IDENTIFY request to a drive&n; *&t;and waits for a response.  It also monitors irqs while this is&n; *&t;happening, in hope of automatically determining which one is&n; *&t;being used by the interface.&n; *&n; *&t;Returns:&t;0  device was identified&n; *&t;&t;&t;1  device timed-out (no response to identify request)&n; *&t;&t;&t;2  device aborted the command (refused to identify itself)&n; */
+multiline_comment|/**&n; *&t;actual_try_to_identify&t;-&t;send ata/atapi identify&n; *&t;@drive: drive to identify&n; *&t;@cmd: command to use&n; *&n; *&t;try_to_identify() sends an ATA(PI) IDENTIFY request to a drive&n; *&t;and waits for a response.  It also monitors irqs while this is&n; *&t;happening, in hope of automatically determining which one is&n; *&t;being used by the interface.&n; *&n; *&t;Returns:&t;0  device was identified&n; *&t;&t;&t;1  device timed-out (no response to identify request)&n; *&t;&t;&t;2  device aborted the command (refused to identify itself)&n; */
 DECL|function|actual_try_to_identify
 r_static
 r_int
@@ -1186,7 +1186,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;try_to_identify&t;-&t;try to identify a drive&n; *&t;@drive: drive to probe&n; *&t;@cmd: comamnd to use&n; *&n; *&t;Issue the identify command and then do IRQ probing to&n; *&t;complete the identification when needed by finding the&n; *&t;IRQ the drive is attached to&n; */
+multiline_comment|/**&n; *&t;try_to_identify&t;-&t;try to identify a drive&n; *&t;@drive: drive to probe&n; *&t;@cmd: command to use&n; *&n; *&t;Issue the identify command and then do IRQ probing to&n; *&t;complete the identification when needed by finding the&n; *&t;IRQ the drive is attached to&n; */
 DECL|function|try_to_identify
 r_static
 r_int

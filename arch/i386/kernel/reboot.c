@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;mach_reboot.h&quot;
 multiline_comment|/*&n; * Power off function, if any&n; */
 DECL|variable|pm_power_off
 r_void
@@ -437,51 +438,6 @@ l_int|0xff
 multiline_comment|/*    ljmp  $0xffff,$0x0000  */
 )brace
 suffix:semicolon
-DECL|function|kb_wait
-r_static
-r_inline
-r_void
-id|kb_wait
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|0x10000
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-(paren
-id|inb_p
-c_func
-(paren
-l_int|0x64
-)paren
-op_amp
-l_int|0x02
-)paren
-op_eq
-l_int|0
-)paren
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Switch to real mode and then execute the code&n; * specified by the code and length parameters.&n; * We assume that length will aways be less that 100!&n; */
 DECL|function|machine_real_restart
 r_void
@@ -857,51 +813,11 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|100
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|kb_wait
+id|mach_reboot
 c_func
 (paren
 )paren
 suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-l_int|0xfe
-comma
-l_int|0x64
-)paren
-suffix:semicolon
-multiline_comment|/* pulse reset low */
-id|udelay
-c_func
-(paren
-l_int|50
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* That didn&squot;t work - force a triple fault.. */
 id|__asm__
 id|__volatile__

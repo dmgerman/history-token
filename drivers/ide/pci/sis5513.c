@@ -22,7 +22,7 @@ multiline_comment|/* When DEBUG is defined it outputs initial PCI config registe
 singleline_comment|// #define DEBUG
 multiline_comment|/* When BROKEN_LEVEL is defined it limits the DMA mode&n;   at boot time to its value */
 singleline_comment|// #define BROKEN_LEVEL XFER_SW_DMA_0
-multiline_comment|/* Miscellaneaous flags */
+multiline_comment|/* Miscellaneous flags */
 DECL|macro|SIS5513_LATENCY
 mdefine_line|#define SIS5513_LATENCY&t;&t;0x01
 multiline_comment|/* registers layout and init values are chipset family dependant */
@@ -642,7 +642,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Cycle time bits and values vary accross chip dma capabilities&n;   These three arrays hold the register layout and the values to set.&n;   Indexed by chipset_family and (dma_mode - XFER_UDMA_0) */
+multiline_comment|/* Cycle time bits and values vary across chip dma capabilities&n;   These three arrays hold the register layout and the values to set.&n;   Indexed by chipset_family and (dma_mode - XFER_UDMA_0) */
 multiline_comment|/* {ATA_00, ATA_16, ATA_33, ATA_66, ATA_100a, ATA_100, ATA_133} */
 DECL|variable|cycle_time_offset
 r_static
@@ -843,7 +843,7 @@ comma
 multiline_comment|/* ATA_133 */
 )brace
 suffix:semicolon
-multiline_comment|/* CRC Valid Setup Time vary accross IDE clock setting 33/66/100/133&n;   See SiS962 data sheet for more detail */
+multiline_comment|/* CRC Valid Setup Time vary across IDE clock setting 33/66/100/133&n;   See SiS962 data sheet for more detail */
 DECL|variable|cvs_time_value
 r_static
 id|u8
@@ -991,7 +991,7 @@ l_int|2
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Initialize time, Active time, Recovery time vary accross&n;   IDE clock settings. These 3 arrays hold the register value&n;   for PIO0/1/2/3/4 and DMA0/1/2 mode in order */
+multiline_comment|/* Initialize time, Active time, Recovery time vary across&n;   IDE clock settings. These 3 arrays hold the register value&n;   for PIO0/1/2/3/4 and DMA0/1/2 mode in order */
 DECL|variable|ini_time_value
 r_static
 id|u8
@@ -5391,7 +5391,7 @@ id|latency
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Make general config ops here&n;&t;   1/ tell IDE channels to operate in Compabitility mode only&n;&t;   2/ tell old chips to allow per drive IDE timings */
+multiline_comment|/* Make general config ops here&n;&t;   1/ tell IDE channels to operate in Compatibility mode only&n;&t;   2/ tell old chips to allow per drive IDE timings */
 r_if
 c_cond
 (paren

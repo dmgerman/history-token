@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/bios32.c&n; *&n; *  PCI bios-type initialisation for PCI machines&n; *&n; *  Bits taken from various places.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -122,7 +123,7 @@ multiline_comment|/*&n; * We don&squot;t use this to fix the device, but initial
 DECL|function|pci_fixup_83c553
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_83c553
 c_func
 (paren
@@ -264,7 +265,7 @@ suffix:semicolon
 DECL|function|pci_fixup_unassign
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_unassign
 c_func
 (paren
@@ -302,7 +303,7 @@ multiline_comment|/*&n; * Prevent the PCI layer from seeing the resources alloca
 DECL|function|pci_fixup_dec21285
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_dec21285
 c_func
 (paren
@@ -386,7 +387,7 @@ multiline_comment|/*&n; * PCI IDE controllers use non-standard I/O port decoding
 DECL|function|pci_fixup_ide_bases
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_ide_bases
 c_func
 (paren
@@ -468,7 +469,7 @@ multiline_comment|/*&n; * Put the DEC21142 to sleep&n; */
 DECL|function|pci_fixup_dec21142
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_dec21142
 c_func
 (paren
@@ -493,7 +494,7 @@ multiline_comment|/*&n; * The CY82C693 needs some rather major fixups to ensure 
 DECL|function|pci_fixup_cy82c693
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_cy82c693
 c_func
 (paren
@@ -1714,6 +1715,16 @@ id|sys-&gt;bus-&gt;subordinate
 op_plus
 l_int|1
 suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|sys-&gt;node
+comma
+op_amp
+id|hw-&gt;buses
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1746,6 +1757,18 @@ op_star
 id|hw
 )paren
 (brace
+r_struct
+id|pci_sys_data
+op_star
+id|sys
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|hw-&gt;buses
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1776,12 +1799,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Assign any unassigned resources.&n;&t; */
-id|pci_assign_unassigned_resources
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pci_fixup_irqs
 c_func
 (paren
@@ -1790,6 +1807,46 @@ comma
 id|pcibios_map_irq
 )paren
 suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|sys
+comma
+op_amp
+id|hw-&gt;buses
+comma
+id|node
+)paren
+(brace
+r_struct
+id|pci_bus
+op_star
+id|bus
+op_assign
+id|sys-&gt;bus
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Size the bridge windows.&n;&t;&t; */
+id|pci_bus_size_bridges
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Assign resources.&n;&t;&t; */
+id|pci_bus_assign_resources
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Tell drivers about devices found.&n;&t;&t; */
+id|pci_bus_add_devices
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
+)brace
 )brace
 r_char
 op_star

@@ -1225,6 +1225,11 @@ DECL|member|tw_lock
 id|spinlock_t
 id|tw_lock
 suffix:semicolon
+DECL|member|ioctl_sem
+r_struct
+id|semaphore
+id|ioctl_sem
+suffix:semicolon
 DECL|member|ioctl_size
 r_int
 id|ioctl_size

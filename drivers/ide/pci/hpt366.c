@@ -2422,7 +2422,7 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This allows the configuration of ide_pci chipset registers&n; * for cards that learn about the drive&squot;s UDMA, DMA, PIO capabilities&n; * after the drive is reported by the OS.  Initally for designed for&n; * HPT366 UDMA chipset by HighPoint|Triones Technologies, Inc.&n; *&n; * check_in_drive_lists(drive, bad_ata66_4)&n; * check_in_drive_lists(drive, bad_ata66_3)&n; * check_in_drive_lists(drive, bad_ata33)&n; *&n; */
+multiline_comment|/*&n; * This allows the configuration of ide_pci chipset registers&n; * for cards that learn about the drive&squot;s UDMA, DMA, PIO capabilities&n; * after the drive is reported by the OS.  Initially for designed for&n; * HPT366 UDMA chipset by HighPoint|Triones Technologies, Inc.&n; *&n; * check_in_drive_lists(drive, bad_ata66_4)&n; * check_in_drive_lists(drive, bad_ata66_3)&n; * check_in_drive_lists(drive, bad_ata33)&n; *&n; */
 DECL|function|config_chipset_for_dma
 r_static
 r_int

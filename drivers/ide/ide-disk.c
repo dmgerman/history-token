@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/ide-disk.c&t;Version 1.18&t;Mar 05, 2003&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; *  Copyright (C) 1998-2002  Linux ATA Developemt&n; *&t;&t;&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 2003&t;     Red Hat &lt;alan@redhat.com&gt;&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/ide-disk.c&t;Version 1.18&t;Mar 05, 2003&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; *  Copyright (C) 1998-2002  Linux ATA Development&n; *&t;&t;&t;&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *  Copyright (C) 2003&t;     Red Hat &lt;alan@redhat.com&gt;&n; */
 multiline_comment|/*&n; *  Mostly written by Mark Lord &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; * This is the IDE/ATA disk driver, as evolved from hd.c and ide.c.&n; *&n; * Version 1.00&t;&t;move disk only code from ide.c to ide-disk.c&n; *&t;&t;&t;support optional byte-swapping of all data&n; * Version 1.01&t;&t;fix previous byte-swapping code&n; * Version 1.02&t;&t;remove &quot;, LBA&quot; from drive identification msgs&n; * Version 1.03&t;&t;fix display of id-&gt;buf_size for big-endian&n; * Version 1.04&t;&t;add /proc configurable settings and S.M.A.R.T support&n; * Version 1.05&t;&t;add capacity support for ATA3 &gt;= 8GB&n; * Version 1.06&t;&t;get boot-up messages to show full cyl count&n; * Version 1.07&t;&t;disable door-locking if it fails&n; * Version 1.08&t;&t;fixed CHS/LBA translations for ATA4 &gt; 8GB,&n; *&t;&t;&t;process of adding new ATA4 compliance.&n; *&t;&t;&t;fixed problems in allowing fdisk to see&n; *&t;&t;&t;the entire disk.&n; * Version 1.09&t;&t;added increment of rq-&gt;sector in ide_multwrite&n; *&t;&t;&t;added UDMA 3/4 reporting&n; * Version 1.10&t;&t;request queue changes, Ultra DMA 100&n; * Version 1.11&t;&t;added 48-bit lba&n; * Version 1.12&t;&t;adding taskfile io access method&n; * Version 1.13&t;&t;added standby and flush-cache for notifier&n; * Version 1.14&t;&t;added acoustic-wcache&n; * Version 1.15&t;&t;convert all calls to ide_raw_taskfile&n; *&t;&t;&t;&t;since args will return register content.&n; * Version 1.16&t;&t;added suspend-resume-checkpower&n; * Version 1.17&t;&t;do flush on standy, do flush on ATA &lt; ATA6&n; *&t;&t;&t;fix wcache setup.&n; */
 DECL|macro|IDEDISK_VERSION
 mdefine_line|#define IDEDISK_VERSION&t;&quot;1.18&quot;
@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* FIXME: some day we shouldnt need to look in here! */
+multiline_comment|/* FIXME: some day we shouldn&squot;t need to look in here! */
 macro_line|#include &quot;legacy/pdc4030.h&quot;
 DECL|variable|driver_blocked
 r_static
@@ -567,7 +567,7 @@ comma
 id|rq-&gt;hard_cur_sectors
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Another BH Page walker and DATA INTERGRITY Questioned on ERROR.&n;&t; * If passed back up on multimode read, BAD DATA could be ACKED&n;&t; * to FILE SYSTEMS above ...&n;&t; */
+multiline_comment|/*&n;&t; * Another BH Page walker and DATA INTEGRITY Questioned on ERROR.&n;&t; * If passed back up on multimode read, BAD DATA could be ACKED&n;&t; * to FILE SYSTEMS above ...&n;&t; */
 r_if
 c_cond
 (paren

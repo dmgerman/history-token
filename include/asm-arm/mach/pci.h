@@ -9,6 +9,11 @@ DECL|struct|hw_pci
 r_struct
 id|hw_pci
 (brace
+DECL|member|buses
+r_struct
+id|list_head
+id|buses
+suffix:semicolon
 DECL|member|nr_controllers
 r_int
 id|nr_controllers
@@ -108,6 +113,11 @@ DECL|struct|pci_sys_data
 r_struct
 id|pci_sys_data
 (brace
+DECL|member|node
+r_struct
+id|list_head
+id|node
+suffix:semicolon
 DECL|member|busnr
 r_int
 id|busnr

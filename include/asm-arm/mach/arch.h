@@ -6,6 +6,9 @@ macro_line|#ifndef __ASSEMBLY__
 r_struct
 id|tag
 suffix:semicolon
+r_struct
+id|meminfo
+suffix:semicolon
 DECL|struct|machine_desc
 r_struct
 id|machine_desc

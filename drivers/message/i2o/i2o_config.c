@@ -1754,7 +1754,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-id|cmd-&gt;resbuf
+id|kcmd.resbuf
 comma
 id|res
 comma

@@ -221,7 +221,11 @@ comma
 id|PC9800_IDE_BANKSELECT
 )paren
 suffix:semicolon
-multiline_comment|/* These ports are probably used by IDE I/F.  */
+multiline_comment|/* These ports are reseved by IDE I/F.  */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -231,7 +235,8 @@ l_int|1
 comma
 l_string|&quot;ide&quot;
 )paren
-suffix:semicolon
+op_logical_or
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -241,7 +246,17 @@ l_int|1
 comma
 l_string|&quot;ide&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ide: IO port 0x430 and 0x435 are reserved for IDE&quot;
+l_string|&quot; the card using these ports may not work&bslash;n&quot;
+)paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
