@@ -605,6 +605,30 @@ id|__TCA_TCINDEX_MAX
 suffix:semicolon
 DECL|macro|TCA_TCINDEX_MAX
 mdefine_line|#define TCA_TCINDEX_MAX     (__TCA_TCINDEX_MAX - 1)
+multiline_comment|/* Basic filter */
+r_enum
+(brace
+DECL|enumerator|TCA_BASIC_UNSPEC
+id|TCA_BASIC_UNSPEC
+comma
+DECL|enumerator|TCA_BASIC_CLASSID
+id|TCA_BASIC_CLASSID
+comma
+DECL|enumerator|TCA_BASIC_EMATCHES
+id|TCA_BASIC_EMATCHES
+comma
+DECL|enumerator|TCA_BASIC_ACT
+id|TCA_BASIC_ACT
+comma
+DECL|enumerator|TCA_BASIC_POLICE
+id|TCA_BASIC_POLICE
+comma
+DECL|enumerator|__TCA_BASIC_MAX
+id|__TCA_BASIC_MAX
+)brace
+suffix:semicolon
+DECL|macro|TCA_BASIC_MAX
+mdefine_line|#define TCA_BASIC_MAX (__TCA_BASIC_MAX - 1)
 multiline_comment|/* Extended Matches */
 DECL|struct|tcf_ematch_tree_hdr
 r_struct
