@@ -76,6 +76,20 @@ id|fb_info
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|cg14_pan_display
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+comma
+r_struct
+id|fb_info
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Frame buffer operations&n; */
 DECL|variable|cg14_ops
 r_static
@@ -93,6 +107,11 @@ dot
 id|fb_setcolreg
 op_assign
 id|cg14_setcolreg
+comma
+dot
+id|fb_pan_display
+op_assign
+id|cg14_pan_display
 comma
 dot
 id|fb_fillrect
