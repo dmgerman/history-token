@@ -4951,6 +4951,18 @@ DECL|macro|destroy_buffers
 mdefine_line|#define destroy_buffers(dev)&t;__invalidate_buffers((dev), 1)
 r_extern
 r_void
+id|invalidate_bdev
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__invalidate_buffers
 c_func
 (paren

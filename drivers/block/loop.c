@@ -2995,8 +2995,10 @@ id|loop_device
 op_star
 id|lo
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 (brace
 r_struct
@@ -3152,10 +3154,12 @@ id|lo-&gt;lo_number
 op_assign
 l_int|0
 suffix:semicolon
-id|invalidate_buffers
+id|invalidate_bdev
 c_func
 (paren
-id|dev
+id|bdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;gfp_mask
@@ -3731,7 +3735,7 @@ c_func
 (paren
 id|lo
 comma
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_break

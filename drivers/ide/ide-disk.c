@@ -2020,10 +2020,12 @@ op_logical_neg
 id|drive-&gt;usage
 )paren
 (brace
-id|invalidate_buffers
+id|invalidate_bdev
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -769,6 +769,13 @@ c_func
 id|__invalidate_buffers
 )paren
 suffix:semicolon
+DECL|variable|invalidate_bdev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|invalidate_bdev
+)paren
+suffix:semicolon
 DECL|variable|invalidate_inodes
 id|EXPORT_SYMBOL
 c_func

@@ -6708,9 +6708,11 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|invalidate_buffers
+id|invalidate_bdev
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* IOMEGA Clik! drives do not support lock/unlock commands */
