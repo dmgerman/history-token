@@ -2953,17 +2953,6 @@ op_and_assign
 op_complement
 id|PT_DTRACE
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tsk-&gt;ptrace
-op_amp
-id|PT_DTRACE
-)paren
-r_goto
-id|clear_TF
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Ok, finally something we can handle */
