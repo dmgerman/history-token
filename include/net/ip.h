@@ -573,7 +573,6 @@ id|len
 )paren
 suffix:semicolon
 r_extern
-id|__inline__
 r_int
 id|ip_finish_output
 c_func
