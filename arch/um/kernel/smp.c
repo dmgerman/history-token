@@ -77,6 +77,16 @@ id|cache_decay_ticks
 op_assign
 l_int|5
 suffix:semicolon
+multiline_comment|/* Not changed after boot */
+DECL|variable|idle_threads
+r_struct
+id|task_struct
+op_star
+id|idle_threads
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|function|smp_send_reschedule
 r_void
 id|smp_send_reschedule
@@ -543,6 +553,13 @@ op_assign
 id|new_task
 )brace
 )paren
+suffix:semicolon
+id|idle_threads
+(braket
+id|cpu
+)braket
+op_assign
+id|new_task
 suffix:semicolon
 id|write
 c_func

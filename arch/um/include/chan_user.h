@@ -36,6 +36,10 @@ r_int
 r_int
 id|tramp_stack
 suffix:semicolon
+DECL|member|in_kernel
+r_int
+id|in_kernel
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|enum|chan_init_pri
