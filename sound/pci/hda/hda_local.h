@@ -10,7 +10,7 @@ mdefine_line|#define HDA_CODEC_VOLUME_MONO_IDX(xname, xcidx, nid, channel, xinde
 DECL|macro|HDA_CODEC_VOLUME_IDX
 mdefine_line|#define HDA_CODEC_VOLUME_IDX(xname, xcidx, nid, xindex, direction) &bslash;&n;&t;HDA_CODEC_VOLUME_MONO_IDX(xname, xcidx, nid, 3, xindex, direction)
 DECL|macro|HDA_CODEC_VOLUME_MONO
-mdefine_line|#define HDA_CODEC_VOLUME_MONO(xname, nid, channel, xindex, direction) &bslash;&n;&t;HDA_CODEC_VOLUME_MONO_IDX(xname, 0, nid, 3, xindex, direction)
+mdefine_line|#define HDA_CODEC_VOLUME_MONO(xname, nid, channel, xindex, direction) &bslash;&n;&t;HDA_CODEC_VOLUME_MONO_IDX(xname, 0, nid, channel, xindex, direction)
 DECL|macro|HDA_CODEC_VOLUME
 mdefine_line|#define HDA_CODEC_VOLUME(xname, nid, xindex, direction) &bslash;&n;&t;HDA_CODEC_VOLUME_MONO(xname, nid, 3, xindex, direction)
 DECL|macro|HDA_CODEC_MUTE_MONO_IDX
@@ -18,7 +18,7 @@ mdefine_line|#define HDA_CODEC_MUTE_MONO_IDX(xname, xcidx, nid, channel, xindex,
 DECL|macro|HDA_CODEC_MUTE_IDX
 mdefine_line|#define HDA_CODEC_MUTE_IDX(xname, xcidx, nid, xindex, direction) &bslash;&n;&t;HDA_CODEC_MUTE_MONO_IDX(xname, xcidx, nid, 3, xindex, direction)
 DECL|macro|HDA_CODEC_MUTE_MONO
-mdefine_line|#define HDA_CODEC_MUTE_MONO(xname, nid, channel, xindex, direction) &bslash;&n;&t;HDA_CODEC_MUTE_MONO_IDX(xname, 0, nid, 3, xindex, direction)
+mdefine_line|#define HDA_CODEC_MUTE_MONO(xname, nid, channel, xindex, direction) &bslash;&n;&t;HDA_CODEC_MUTE_MONO_IDX(xname, 0, nid, channel, xindex, direction)
 DECL|macro|HDA_CODEC_MUTE
 mdefine_line|#define HDA_CODEC_MUTE(xname, nid, xindex, direction) &bslash;&n;&t;HDA_CODEC_MUTE_MONO(xname, nid, 3, xindex, direction)
 r_int
