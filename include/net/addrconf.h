@@ -121,6 +121,7 @@ id|addrconf_add_ifaddr
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -131,6 +132,7 @@ id|addrconf_del_ifaddr
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -141,6 +143,7 @@ id|addrconf_set_dstaddr
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|arg
 )paren

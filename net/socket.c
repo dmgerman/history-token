@@ -2941,6 +2941,7 @@ id|pid
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2977,6 +2978,7 @@ id|sock-&gt;file-&gt;f_owner.pid
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
