@@ -2846,7 +2846,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_irq
+id|s390_request_console_irq
 c_func
 (paren
 id|raw-&gt;irq
@@ -2881,12 +2881,6 @@ c_func
 id|raw-&gt;irq
 comma
 id|flags
-)paren
-suffix:semicolon
-id|set_cons_dev
-c_func
-(paren
-id|raw-&gt;irq
 )paren
 suffix:semicolon
 id|raw3215_try_io
@@ -4302,14 +4296,6 @@ id|CONSOLE_IS_3215
 )paren
 r_return
 suffix:semicolon
-id|irq
-op_assign
-id|raw3215_find_dev
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Set the console mode for VM */
 r_if
 c_cond
@@ -4336,6 +4322,55 @@ l_int|NULL
 comma
 l_int|0
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|console_device
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* use the device number that was specified on the&n;&t;&t; * command line */
+id|irq
+op_assign
+id|raw3215_find_dev
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|MACHINE_IS_VM
+)paren
+(brace
+multiline_comment|/* under VM, the console is at device number 0009&n;&t;&t; * by default, so try that */
+id|irq
+op_assign
+id|get_irq_by_devno
+c_func
+(paren
+l_int|0x0009
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* unlike in 2.4, we cannot autoprobe here, since&n;&t;&t; * the channel subsystem is not fully initialized.&n;&t;&t; * With some luck, the HWC console can take over */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3215 console not found&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* allocate 3215 request structures */

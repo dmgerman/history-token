@@ -173,7 +173,7 @@ suffix:semicolon
 multiline_comment|/*&n; * cpu_init() initializes state that is per-CPU.&n; */
 DECL|function|cpu_init
 r_void
-id|__init
+id|__devinit
 id|cpu_init
 (paren
 r_void

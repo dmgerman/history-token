@@ -2311,6 +2311,43 @@ id|dev_id
 suffix:semicolon
 r_extern
 r_int
+id|s390_request_console_irq
+(paren
+r_int
+id|irq
+comma
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_int
+r_int
+id|irqflags
+comma
+r_const
+r_char
+op_star
+id|devname
+comma
+r_void
+op_star
+id|dev_id
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|set_cons_dev
 c_func
 (paren
@@ -3040,23 +3077,7 @@ l_int|4
 )paren
 id|diag210_t
 suffix:semicolon
-r_void
-id|VM_virtual_device_info
-c_func
-(paren
-id|__u16
-id|devno
-comma
-multiline_comment|/* device number */
-id|senseid_t
-op_star
-id|ps
-)paren
-suffix:semicolon
-multiline_comment|/* ptr to senseID data */
-DECL|function|diag210
 r_extern
-id|__inline__
 r_int
 id|diag210
 c_func
@@ -3065,41 +3086,7 @@ id|diag210_t
 op_star
 id|addr
 )paren
-(brace
-r_int
-id|ccode
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-macro_line|#ifdef CONFIG_ARCH_S390X
-l_string|&quot;   sam31&bslash;n&quot;
-l_string|&quot;   diag  %1,0,0x210&bslash;n&quot;
-l_string|&quot;   sam64&bslash;n&quot;
-macro_line|#else
-l_string|&quot;   diag  %1,0,0x210&bslash;n&quot;
-macro_line|#endif
-l_string|&quot;   ipm   %0&bslash;n&quot;
-l_string|&quot;   srl   %0,28&quot;
-suffix:colon
-l_string|&quot;=d&quot;
-(paren
-id|ccode
-)paren
-suffix:colon
-l_string|&quot;a&quot;
-(paren
-id|addr
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-r_return
-id|ccode
-suffix:semicolon
-)brace
 DECL|function|chsc
 r_extern
 id|__inline__

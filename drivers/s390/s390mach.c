@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif
@@ -141,6 +142,13 @@ r_static
 r_struct
 id|semaphore
 id|s_sem
+suffix:semicolon
+r_static
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|mchchk_thread_active
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MACHCHK_WARNING
 DECL|variable|mchchk_wng_posted
@@ -344,6 +352,13 @@ op_or
 id|CLONE_FILES
 )paren
 suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|mchchk_thread_active
+)paren
+suffix:semicolon
 id|ctl_clear_bit
 c_func
 (paren
@@ -371,16 +386,7 @@ l_int|27
 )paren
 suffix:semicolon
 multiline_comment|/* enable system recovery MCH */
-id|ctl_set_bit
-c_func
-(paren
-l_int|14
-comma
-l_int|28
-)paren
-suffix:semicolon
-multiline_comment|/* enable channel report MCH */
-macro_line|#ifdef CONFIG_MACHCK_WARNING
+macro_line|#ifdef CONFIG_MACHCHK_WARNING
 id|ctl_set_bit
 c_func
 (paren
@@ -453,6 +459,61 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * initialize the machine check handler really early to be able to&n; * catch all machine checks that happen during boot&n; */
+r_static
+r_int
+id|__init
+DECL|function|machine_check_init
+id|machine_check_init
+(paren
+r_void
+)paren
+(brace
+id|s390_init_machine_check
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|machine_check_init
+id|arch_initcall
+c_func
+(paren
+id|machine_check_init
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Machine checks for the channel subsystem must be enabled&n; * after the channel subsystem is initialized&n; */
+r_static
+r_int
+id|__init
+DECL|function|machine_check_crw_init
+id|machine_check_crw_init
+(paren
+r_void
+)paren
+(brace
+id|ctl_set_bit
+c_func
+(paren
+l_int|14
+comma
+l_int|28
+)paren
+suffix:semicolon
+multiline_comment|/* enable channel report MCH */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|machine_check_crw_init
+id|device_initcall
+(paren
+id|machine_check_crw_init
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|s390_handle_damage
@@ -750,6 +811,13 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;mach_handler : ready&bslash;n&quot;
+)paren
+suffix:semicolon
+id|complete
+c_func
+(paren
+op_amp
+id|mchchk_thread_active
 )paren
 suffix:semicolon
 r_do

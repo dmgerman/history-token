@@ -1633,7 +1633,7 @@ r_void
 suffix:semicolon
 DECL|function|start_secondary
 r_int
-id|__init
+id|__devinit
 id|start_secondary
 c_func
 (paren
@@ -1703,7 +1703,7 @@ r_static
 r_struct
 id|task_struct
 op_star
-id|__init
+id|__devinit
 id|fork_by_hand
 c_func
 (paren
