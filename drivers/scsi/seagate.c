@@ -3309,8 +3309,8 @@ multiline_comment|/* Test for any data here at all. */
 l_string|&quot;orl %%ecx, %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;jz 2f&bslash;n&bslash;t&quot;
 l_string|&quot;cld&bslash;n&bslash;t&quot;
-multiline_comment|/*                    &quot;movl &quot; SYMBOL_NAME_STR(st0x_cr_sr) &quot;, %%ebx&bslash;n&bslash;t&quot;  */
-multiline_comment|/*                    &quot;movl &quot; SYMBOL_NAME_STR(st0x_dr) &quot;, %%edi&bslash;n&bslash;t&quot;  */
+multiline_comment|/*                    &quot;movl st0x_cr_sr, %%ebx&bslash;n&bslash;t&quot;  */
+multiline_comment|/*                    &quot;movl st0x_dr, %%edi&bslash;n&bslash;t&quot;  */
 l_string|&quot;1:&bslash;t&quot;
 l_string|&quot;movb (%%ebx), %%al&bslash;n&bslash;t&quot;
 multiline_comment|/* Test for BSY */
@@ -3788,8 +3788,8 @@ multiline_comment|/* Test for room to read */
 l_string|&quot;orl %%ecx, %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;jz 2f&bslash;n&bslash;t&quot;
 l_string|&quot;cld&bslash;n&bslash;t&quot;
-multiline_comment|/*                &quot;movl &quot; SYMBOL_NAME_STR(st0x_cr_sr) &quot;, %%esi&bslash;n&bslash;t&quot;  */
-multiline_comment|/*                &quot;movl &quot; SYMBOL_NAME_STR(st0x_dr) &quot;, %%ebx&bslash;n&bslash;t&quot;  */
+multiline_comment|/*                &quot;movl st0x_cr_sr, %%esi&bslash;n&bslash;t&quot;  */
+multiline_comment|/*                &quot;movl st0x_dr, %%ebx&bslash;n&bslash;t&quot;  */
 l_string|&quot;1:&bslash;t&quot;
 l_string|&quot;movb (%%esi), %%al&bslash;n&bslash;t&quot;
 multiline_comment|/* Test for BSY */
