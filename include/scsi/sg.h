@@ -181,8 +181,8 @@ mdefine_line|#define SG_DXFER_UNKNOWN (-5)   /* Unknown data direction */
 multiline_comment|/* following flag values can be &quot;or&quot;-ed together */
 DECL|macro|SG_FLAG_DIRECT_IO
 mdefine_line|#define SG_FLAG_DIRECT_IO 1     /* default is indirect IO */
-DECL|macro|SG_FLAG_LUN_INHIBIT
-mdefine_line|#define SG_FLAG_LUN_INHIBIT 2   /* default is overwrite lun in SCSI */
+DECL|macro|SG_FLAG_UNUSED_LUN_INHIBIT
+mdefine_line|#define SG_FLAG_UNUSED_LUN_INHIBIT 2   /* default is overwrite lun in SCSI */
 multiline_comment|/* command block (when &lt;= SCSI_2) */
 DECL|macro|SG_FLAG_MMAP_IO
 mdefine_line|#define SG_FLAG_MMAP_IO 4       /* request memory mapped IO */
