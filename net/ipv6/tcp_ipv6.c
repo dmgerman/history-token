@@ -5805,7 +5805,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_acceptq_is_full
+id|sk_acceptq_is_full
 c_func
 (paren
 id|sk
@@ -6323,7 +6323,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_acceptq_is_full
+id|sk_acceptq_is_full
 c_func
 (paren
 id|sk
