@@ -1435,6 +1435,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|swap_token_default_timeout
+)paren
+id|ignore_token
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|page_test_and_clear_young
 c_func
 (paren

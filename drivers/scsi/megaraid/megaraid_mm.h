@@ -14,9 +14,9 @@ macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &quot;mbox_defs.h&quot;
 macro_line|#include &quot;megaraid_ioctl.h&quot;
 DECL|macro|LSI_COMMON_MOD_VERSION
-mdefine_line|#define LSI_COMMON_MOD_VERSION&t;&quot;2.20.2.2&quot;
+mdefine_line|#define LSI_COMMON_MOD_VERSION&t;&quot;2.20.2.3&quot;
 DECL|macro|LSI_COMMON_MOD_EXT_VERSION
-mdefine_line|#define LSI_COMMON_MOD_EXT_VERSION&t;&bslash;&n;&t;&t;&quot;(Release Date: Thu Nov  4 17:46:29 EST 2004)&quot;
+mdefine_line|#define LSI_COMMON_MOD_EXT_VERSION&t;&bslash;&n;&t;&t;&quot;(Release Date: Thu Dec  9 19:02:14 EST 2004)&quot;
 DECL|macro|LSI_DBGLVL
 mdefine_line|#define LSI_DBGLVL&t;&t;&t;dbglevel
 singleline_comment|// The smallest dma pool

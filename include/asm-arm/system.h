@@ -243,11 +243,11 @@ r_int
 id|user_debug
 suffix:semicolon
 macro_line|#if __LINUX_ARM_ARCH__ &gt;= 4
-DECL|macro|vectors_base
-mdefine_line|#define vectors_base()&t;((cr_alignment &amp; CR_V) ? 0xffff0000 : 0)
+DECL|macro|vectors_high
+mdefine_line|#define vectors_high()&t;(cr_alignment &amp; CR_V)
 macro_line|#else
-DECL|macro|vectors_base
-mdefine_line|#define vectors_base()&t;(0)
+DECL|macro|vectors_high
+mdefine_line|#define vectors_high()&t;(0)
 macro_line|#endif
 DECL|macro|mb
 mdefine_line|#define mb() __asm__ __volatile__ (&quot;&quot; : : : &quot;memory&quot;)

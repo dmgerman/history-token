@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.2 (Nov 04 2004)&n; *&n; * Common management module&n; */
+multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.3 (Dec 09 2004)&n; *&n; * Common management module&n; */
 macro_line|#include &quot;megaraid_mm.h&quot;
 singleline_comment|// Entry points for char node driver
 r_static
@@ -2012,6 +2012,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|kioc-&gt;pool_index
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
 id|pool
 op_assign
 op_amp
@@ -2030,7 +2039,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * While attaching the dma buffer, if we didn&squot;t get the required&n;&t; * buffer from the pool, we would have allocated it at the run time&n;&t; * and set the free_buf flag. We must free that buffer. Otherwise,&n;&t; * just mark that the buffer is not in use&n;&t; */
+multiline_comment|/*&n;&t;&t; * While attaching the dma buffer, if we didn&squot;t get the &n;&t;&t; * required buffer from the pool, we would have allocated &n;&t;&t; * it at the run time and set the free_buf flag. We must &n;&t;&t; * free that buffer. Otherwise, just mark that the buffer is &n;&t;&t; * not in use&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2062,6 +2071,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Return the kioc to the free pool */
 id|spin_lock_irqsave
 c_func

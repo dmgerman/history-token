@@ -3299,6 +3299,13 @@ c_func
 id|aac-&gt;fibs
 )paren
 suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|aac-&gt;entry
+)paren
+suffix:semicolon
 id|scsi_host_put
 c_func
 (paren
@@ -3309,13 +3316,6 @@ id|pci_disable_device
 c_func
 (paren
 id|pdev
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|aac-&gt;entry
 )paren
 suffix:semicolon
 )brace

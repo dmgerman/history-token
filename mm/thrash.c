@@ -33,7 +33,8 @@ suffix:semicolon
 DECL|macro|SWAP_TOKEN_CHECK_INTERVAL
 mdefine_line|#define SWAP_TOKEN_CHECK_INTERVAL (HZ * 2)
 DECL|macro|SWAP_TOKEN_TIMEOUT
-mdefine_line|#define SWAP_TOKEN_TIMEOUT (HZ * 300)
+mdefine_line|#define SWAP_TOKEN_TIMEOUT&t;0
+multiline_comment|/*&n; * Currently disabled; Needs further code to work at HZ * 300.&n; */
 DECL|variable|swap_token_default_timeout
 r_int
 r_int
