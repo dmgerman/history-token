@@ -2612,6 +2612,11 @@ id|nr_segs
 op_assign
 id|seg
 suffix:semicolon
+id|count
+op_sub_assign
+id|iv-&gt;iov_len
+suffix:semicolon
+multiline_comment|/* This segment is no good */
 r_break
 suffix:semicolon
 )brace
@@ -5919,6 +5924,11 @@ id|nr_segs
 op_assign
 id|seg
 suffix:semicolon
+id|ocount
+op_sub_assign
+id|iv-&gt;iov_len
+suffix:semicolon
+multiline_comment|/* This segment is no good */
 r_break
 suffix:semicolon
 )brace
