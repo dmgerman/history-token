@@ -4326,6 +4326,15 @@ id|netdev-&gt;change_mtu
 op_assign
 id|ibmveth_change_mtu
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|netdev
+comma
+op_amp
+id|dev-&gt;dev
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
