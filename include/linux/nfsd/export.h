@@ -258,10 +258,6 @@ r_struct
 id|svc_client
 op_star
 comma
-id|kdev_t
-comma
-id|ino_t
-comma
 r_char
 op_star
 id|path

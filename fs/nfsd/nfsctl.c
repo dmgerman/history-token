@@ -453,10 +453,6 @@ c_func
 (paren
 id|clp
 comma
-id|NODEV
-comma
-l_int|0
-comma
 id|data-&gt;gd_path
 comma
 id|res
@@ -572,10 +568,6 @@ id|exp_rootfh
 c_func
 (paren
 id|clp
-comma
-id|NODEV
-comma
-l_int|0
 comma
 id|data-&gt;gd_path
 comma
