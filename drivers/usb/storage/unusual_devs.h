@@ -2,6 +2,33 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; *&n; * If you want to add an entry for this file, please send the following&n; * to greg@kroah.com:&n; *&t;- patch that adds the entry for your device which includes your&n; *&t;  email address right above the entry.&n; *&t;- a copy of /proc/bus/usb/devices with your device plugged in&n; *&t;  running with this patch.&n; *&n; */
+multiline_comment|/* Patch submitted by Martin Berentsen &lt;berentsen at sent5 dot uni-duisburg dot de&gt; */
+DECL|macro|US_FL_START_STOP
+mdefine_line|#define US_FL_START_STOP  0x00000004   /* ignore START_STOP commands     */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4014
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;Dimage S414&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
