@@ -827,16 +827,15 @@ op_star
 id|netdev
 suffix:semicolon
 multiline_comment|/* Ptr to netdev                    */
-DECL|member|queue
+DECL|member|online
 r_struct
-id|isdn_net_dev_s
-op_star
-id|queue
+id|list_head
+id|online
 suffix:semicolon
 multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           */
-DECL|member|queue_lock
+DECL|member|online_lock
 id|spinlock_t
-id|queue_lock
+id|online_lock
 suffix:semicolon
 multiline_comment|/* lock to protect queue            */
 macro_line|#ifdef CONFIG_ISDN_X25
@@ -1078,20 +1077,12 @@ op_star
 id|slave
 suffix:semicolon
 multiline_comment|/* Ptr to Slave device for masters  */
-DECL|member|next
+DECL|member|online
 r_struct
-id|isdn_net_dev_s
-op_star
-id|next
+id|list_head
+id|online
 suffix:semicolon
-multiline_comment|/* Ptr to next link in bundle       */
-DECL|member|last
-r_struct
-id|isdn_net_dev_s
-op_star
-id|last
-suffix:semicolon
-multiline_comment|/* Ptr to last link in bundle       */
+multiline_comment|/* Members of local-&gt;online         */
 DECL|member|name
 r_char
 id|name
