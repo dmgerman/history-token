@@ -926,16 +926,6 @@ suffix:semicolon
 r_struct
 id|ip_vs_app
 suffix:semicolon
-DECL|macro|CONFIG_IP_VS_PROTO_UDP
-mdefine_line|#define&t;CONFIG_IP_VS_PROTO_UDP
-DECL|macro|CONFIG_IP_VS_PROTO_TCP
-mdefine_line|#define&t;CONFIG_IP_VS_PROTO_TCP
-DECL|macro|CONFIG_IP_VS_PROTO_ICMP
-mdefine_line|#define&t;CONFIG_IP_VS_PROTO_ICMP
-DECL|macro|CONFIG_IP_VS_PROTO_ESP
-mdefine_line|#define&t;CONFIG_IP_VS_PROTO_ESP
-DECL|macro|CONFIG_IP_VS_PROTO_AH
-mdefine_line|#define&t;CONFIG_IP_VS_PROTO_AH
 DECL|struct|ip_vs_protocol
 r_struct
 id|ip_vs_protocol
