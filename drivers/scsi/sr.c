@@ -3184,14 +3184,11 @@ l_int|0x20
 op_eq
 l_int|0
 )paren
-(brace
 multiline_comment|/* can&squot;t write DVD-RAM media */
 id|cd-&gt;cdi.mask
 op_or_assign
 id|CDC_DVD_RAM
 suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
