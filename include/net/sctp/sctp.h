@@ -1199,7 +1199,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
 DECL|macro|sctp_walk_params
-mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), ntohs((chunk)-&gt;chunk_hdr.length), member)
+mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), ntohs(WORD_ROUND((chunk)-&gt;chunk_hdr.length)), member)
 DECL|macro|_sctp_walk_params
 mdefine_line|#define _sctp_walk_params(pos, chunk, end, member)&bslash;&n;for (pos.v = chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + end - sizeof(sctp_paramhdr_t) &amp;&amp;&bslash;&n;     pos.v &lt;= (void *)chunk + end - WORD_ROUND(ntohs(pos.p-&gt;length)); &bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
 DECL|macro|sctp_walk_errors

@@ -5503,7 +5503,7 @@ id|errp
 )paren
 )paren
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* for (loop through all parameters) */

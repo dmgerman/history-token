@@ -2692,6 +2692,11 @@ id|sctp_init_chunk_t
 op_star
 id|init
 suffix:semicolon
+r_struct
+id|sctp_transport
+op_star
+id|transport
+suffix:semicolon
 id|ch
 op_assign
 (paren
@@ -2785,7 +2790,8 @@ id|laddr
 comma
 id|paddr
 comma
-id|transportp
+op_amp
+id|transport
 )paren
 suffix:semicolon
 r_if
