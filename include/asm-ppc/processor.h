@@ -2,6 +2,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_PPC_PROCESSOR_H
 DECL|macro|__ASM_PPC_PROCESSOR_H
 mdefine_line|#define __ASM_PPC_PROCESSOR_H
+multiline_comment|/*&n; * The Book E definitions are hacked into here for 440 right&n; * now.  This whole thing needs regorganized (maybe two files)&n; * so that it becomes readable. -Matt&n; */
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
@@ -63,6 +64,12 @@ DECL|macro|MSR_RI
 mdefine_line|#define MSR_RI&t;&t;(1&lt;&lt;1)&t;&t;/* Recoverable Exception */
 DECL|macro|MSR_LE
 mdefine_line|#define MSR_LE&t;&t;(1&lt;&lt;0) &t;&t;/* Little Endian */
+macro_line|#ifdef CONFIG_BOOKE
+DECL|macro|MSR_IS
+mdefine_line|#define MSR_IS&t;&t;MSR_IR&t;&t;/* Instruction Space */
+DECL|macro|MSR_DS
+mdefine_line|#define MSR_DS&t;&t;MSR_DR&t;&t;/* Data Space */
+macro_line|#endif
 macro_line|#ifdef CONFIG_APUS_FAST_EXCEPT
 DECL|macro|MSR_
 mdefine_line|#define MSR_&t;&t;(MSR_ME|MSR_IP|MSR_RI)
@@ -143,10 +150,17 @@ DECL|macro|SPRN_CTR
 mdefine_line|#define&t;SPRN_CTR&t;0x009&t;/* Count Register */
 DECL|macro|SPRN_DABR
 mdefine_line|#define&t;SPRN_DABR&t;0x3F5&t;/* Data Address Breakpoint Register */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_DAC1
 mdefine_line|#define&t;SPRN_DAC1&t;0x3F6&t;/* Data Address Compare 1 */
 DECL|macro|SPRN_DAC2
 mdefine_line|#define&t;SPRN_DAC2&t;0x3F7&t;/* Data Address Compare 2 */
+macro_line|#else
+DECL|macro|SPRN_DAC1
+mdefine_line|#define&t;SPRN_DAC1&t;0x13C&t;/* Book E Data Address Compare 1 */
+DECL|macro|SPRN_DAC2
+mdefine_line|#define&t;SPRN_DAC2&t;0x13D&t;/* Book E Data Address Compare 2 */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|SPRN_DAR
 mdefine_line|#define&t;SPRN_DAR&t;0x013&t;/* Data Address Register */
 DECL|macro|SPRN_DBAT0L
@@ -247,8 +261,13 @@ DECL|macro|DBCR_JOI
 mdefine_line|#define&t;  DBCR_JOI&t;0x00000002&t;/* JTAG Serial Outbound Int. Enable */
 DECL|macro|DBCR_JII
 mdefine_line|#define&t;  DBCR_JII&t;0x00000001&t;/* JTAG Serial Inbound Int. Enable */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_DBCR0
 mdefine_line|#define&t;SPRN_DBCR0&t;0x3F2&t;/* Debug Control Register 0 */
+macro_line|#else
+DECL|macro|SPRN_DBCR0
+mdefine_line|#define&t;SPRN_DBCR0&t;0x134&t;&t;/* Book E Debug Control Register 0 */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|DBCR0_EDM
 mdefine_line|#define   DBCR0_EDM         0x80000000  /* External Debug Mode             */
 DECL|macro|DBCR0_IDM
@@ -293,6 +312,7 @@ DECL|macro|DBCR0_IA34T
 mdefine_line|#define   DBCR0_IA34T       0x00004000  /* Instr Addr 3-4 range Toggle     */
 DECL|macro|DBCR0_FT
 mdefine_line|#define   DBCR0_FT          0x00000001  /* Freeze Timers on debug event    */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_DBCR1
 mdefine_line|#define&t;SPRN_DBCR1&t;0x3BD&t;/* Debug Control Register 1 */&t;&t;  
 DECL|macro|SPRN_DBSR
@@ -303,6 +323,16 @@ DECL|macro|DBSR_BT
 mdefine_line|#define   DBSR_BT&t;    0x40000000&t;/* Branch taken */
 DECL|macro|DBSR_TIE
 mdefine_line|#define   DBSR_TIE&t;    0x10000000&t;/* Trap Instruction debug Event    */
+macro_line|#else
+DECL|macro|SPRN_DBCR1
+mdefine_line|#define&t;SPRN_DBCR1&t;0x135&t;&t;/* Book E Debug Control Register 1 */
+DECL|macro|SPRN_DBSR
+mdefine_line|#define&t;SPRN_DBSR&t;0x130&t;&t;/* Book E Debug Status Register */
+DECL|macro|DBSR_IC
+mdefine_line|#define   DBSR_IC&t;    0x08000000&t;/* Book E Instruction Completion  */
+DECL|macro|DBSR_TIE
+mdefine_line|#define   DBSR_TIE&t;    0x01000000&t;/* Book E Trap Instruction Event */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|SPRN_DCCR
 mdefine_line|#define&t;SPRN_DCCR&t;0x3FA&t;/* Data Cache Cacheability Register */
 DECL|macro|DCCR_NOCACHE
@@ -317,8 +347,13 @@ DECL|macro|DCWR_COPY
 mdefine_line|#define&t;  DCWR_COPY&t;&t;0&t;/* Copy-back */
 DECL|macro|DCWR_WRITE
 mdefine_line|#define&t;  DCWR_WRITE&t;&t;1&t;/* Write-through */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_DEAR
 mdefine_line|#define&t;SPRN_DEAR&t;0x3D5&t;/* Data Error Address Register */
+macro_line|#else
+DECL|macro|SPRN_DEAR
+mdefine_line|#define SPRN_DEAR&t;0x03D&t;/* Book E Data Error Address Register */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|SPRN_DEC
 mdefine_line|#define&t;SPRN_DEC&t;0x016&t;/* Decrement Register */
 DECL|macro|SPRN_DER
@@ -367,18 +402,23 @@ DECL|macro|SPRN_DSISR
 mdefine_line|#define&t;SPRN_DSISR&t;0x012&t;/* Data Storage Interrupt Status Register */
 DECL|macro|SPRN_EAR
 mdefine_line|#define&t;SPRN_EAR&t;0x11A&t;/* External Address Register */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_ESR
 mdefine_line|#define&t;SPRN_ESR&t;0x3D4&t;/* Exception Syndrome Register */
+macro_line|#else
+DECL|macro|SPRN_ESR
+mdefine_line|#define SPRN_ESR&t;0x03E&t;&t;/* Book E Exception Syndrome Register */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|ESR_MCI
 mdefine_line|#define&t;  ESR_MCI&t;0x80000000&t;/* 405 Machine Check - Instruction */
 DECL|macro|ESR_IMCP
-mdefine_line|#define&t;  ESR_IMCP&t;0x80000000&t;/* 403 Inst. Mach. Check - Protection */
+mdefine_line|#define&t;  ESR_IMCP&t;0x80000000&t;/* Instr. Machine Check - Protection */
 DECL|macro|ESR_IMCN
-mdefine_line|#define&t;  ESR_IMCN&t;0x40000000&t;/* 403 Inst. Mach. Check - Non-config */
+mdefine_line|#define&t;  ESR_IMCN&t;0x40000000&t;/* Instr. Machine Check - Non-config */
 DECL|macro|ESR_IMCB
-mdefine_line|#define&t;  ESR_IMCB&t;0x20000000&t;/* 403 Inst. Mach. Check - Bus error */
+mdefine_line|#define&t;  ESR_IMCB&t;0x20000000&t;/* Instr. Machine Check - Bus error */
 DECL|macro|ESR_IMCT
-mdefine_line|#define&t;  ESR_IMCT&t;0x10000000&t;/* 403 Inst. Mach. Check - Timeout */
+mdefine_line|#define&t;  ESR_IMCT&t;0x10000000&t;/* Instr. Machine Check - Timeout */
 DECL|macro|ESR_PIL
 mdefine_line|#define&t;  ESR_PIL&t;0x08000000&t;/* Program Exception - Illegal */
 DECL|macro|ESR_PPR
@@ -485,10 +525,17 @@ DECL|macro|HID1_ABE
 mdefine_line|#define&t;  HID1_ABE&t;(1&lt;&lt;10)&t;&t;/* 7450 Address Broadcast Enable */
 DECL|macro|SPRN_IABR
 mdefine_line|#define&t;SPRN_IABR&t;0x3F2&t;/* Instruction Address Breakpoint Register */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_IAC1
 mdefine_line|#define&t;SPRN_IAC1&t;0x3F4&t;/* Instruction Address Compare 1 */
 DECL|macro|SPRN_IAC2
 mdefine_line|#define&t;SPRN_IAC2&t;0x3F5&t;/* Instruction Address Compare 2 */
+macro_line|#else
+DECL|macro|SPRN_IAC1
+mdefine_line|#define&t;SPRN_IAC1&t;0x138&t;/* Book E Instruction Address Compare 1 */
+DECL|macro|SPRN_IAC2
+mdefine_line|#define&t;SPRN_IAC2&t;0x139&t;/* Book E Instruction Address Compare 2 */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|SPRN_IBAT0L
 mdefine_line|#define&t;SPRN_IBAT0L&t;0x211&t;/* Instruction BAT 0 Lower Register */
 DECL|macro|SPRN_IBAT0U
@@ -669,10 +716,17 @@ DECL|macro|SPRN_PBU1
 mdefine_line|#define&t;SPRN_PBU1&t;0x3FD&t;/* Protection Bound Upper 1 */
 DECL|macro|SPRN_PBU2
 mdefine_line|#define&t;SPRN_PBU2&t;0x3FF&t;/* Protection Bound Upper 2 */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_PID
 mdefine_line|#define&t;SPRN_PID&t;0x3B1&t;/* Process ID */
 DECL|macro|SPRN_PIR
 mdefine_line|#define&t;SPRN_PIR&t;0x3FF&t;/* Processor Identification Register */
+macro_line|#else
+DECL|macro|SPRN_PID
+mdefine_line|#define&t;SPRN_PID&t;0x030&t;/* Book E Process ID */
+DECL|macro|SPRN_PIR
+mdefine_line|#define&t;SPRN_PIR&t;0x11E&t;/* Book E Processor Identification Register */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|SPRN_PIT
 mdefine_line|#define&t;SPRN_PIT&t;0x3DB&t;/* Programmable Interval Timer */
 DECL|macro|SPRN_PMC1
@@ -703,6 +757,8 @@ DECL|macro|SGR_GUARDED
 mdefine_line|#define&t;  SGR_GUARDED&t;&t;1
 DECL|macro|SPRN_SIA
 mdefine_line|#define&t;SPRN_SIA&t;0x3BB&t;/* Sampled Instruction Address Register */
+DECL|macro|SPRN_SLER
+mdefine_line|#define&t;SPRN_SLER&t;0x3BB&t;/* Little-endian real mode */
 DECL|macro|SPRN_SPRG0
 mdefine_line|#define&t;SPRN_SPRG0&t;0x110&t;/* Special Purpose Register General 0 */
 DECL|macro|SPRN_SPRG1
@@ -727,6 +783,8 @@ DECL|macro|SPRN_SRR2
 mdefine_line|#define&t;SPRN_SRR2&t;0x3DE&t;/* Save/Restore Register 2 */
 DECL|macro|SPRN_SRR3
 mdefine_line|#define&t;SPRN_SRR3 &t;0x3DF&t;/* Save/Restore Register 3 */
+DECL|macro|SPRN_SU0R
+mdefine_line|#define&t;SPRN_SU0R&t;0x3BC&t;/* &quot;User 0&quot; real mode */
 DECL|macro|SPRN_TBHI
 mdefine_line|#define&t;SPRN_TBHI&t;0x3DC&t;/* Time Base High (4xx) */
 DECL|macro|SPRN_TBHU
@@ -743,8 +801,13 @@ DECL|macro|SPRN_TBWL
 mdefine_line|#define&t;SPRN_TBWL&t;0x11C&t;/* Time Base Lower Register (super, R/W) */
 DECL|macro|SPRN_TBWU
 mdefine_line|#define&t;SPRN_TBWU&t;0x11D&t;/* Time Base Upper Register (super, R/W) */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_TCR
 mdefine_line|#define&t;SPRN_TCR&t;0x3DA&t;/* Timer Control Register */
+macro_line|#else
+DECL|macro|SPRN_TCR
+mdefine_line|#define&t;SPRN_TCR&t;0x154&t;/* Book E Timer Control Register */
+macro_line|#endif
 DECL|macro|TCR_WP
 mdefine_line|#define&t;  TCR_WP(x)&t;&t;(((x)&amp;0x3)&lt;&lt;30)&t;/* WDT Period */
 DECL|macro|TCR_WP_MASK
@@ -773,6 +836,8 @@ DECL|macro|TCR_WIE
 mdefine_line|#define&t;  TCR_WIE&t;&t;0x08000000&t;/* WDT Interrupt Enable */
 DECL|macro|TCR_PIE
 mdefine_line|#define&t;  TCR_PIE&t;&t;0x04000000&t;/* PIT Interrupt Enable */
+DECL|macro|TCR_DIE
+mdefine_line|#define&t;  TCR_DIE&t;&t;TCR_PIE&t;&t;/* DEC Interrupt Enable */
 DECL|macro|TCR_FP
 mdefine_line|#define&t;  TCR_FP(x)&t;&t;(((x)&amp;0x3)&lt;&lt;24)&t;/* FIT Period */
 DECL|macro|TCR_FP_MASK
@@ -814,8 +879,13 @@ DECL|macro|THRM3_E
 mdefine_line|#define&t;  THRM3_E&t;&t;(1&lt;&lt;0)
 DECL|macro|SPRN_TLBMISS
 mdefine_line|#define&t;SPRN_TLBMISS&t;0x3D4&t;/* 980 7450 TLB Miss Register */
+macro_line|#ifndef CONFIG_BOOKE
 DECL|macro|SPRN_TSR
 mdefine_line|#define&t;SPRN_TSR&t;0x3D8&t;/* Timer Status Register */
+macro_line|#else
+DECL|macro|SPRN_TSR
+mdefine_line|#define&t;SPRN_TSR&t;0x150&t;/* Book E Timer Status Register */
+macro_line|#endif /* CONFIG_BOOKE */
 DECL|macro|TSR_ENW
 mdefine_line|#define&t;  TSR_ENW&t;&t;0x80000000&t;/* Enable Next Watchdog */
 DECL|macro|TSR_WIS
@@ -832,6 +902,8 @@ DECL|macro|WRS_SYSTEM
 mdefine_line|#define&t;    WRS_SYSTEM&t;&t;3&t;&t;/* WDT forced system reset */
 DECL|macro|TSR_PIS
 mdefine_line|#define&t;  TSR_PIS&t;&t;0x08000000&t;/* PIT Interrupt Status */
+DECL|macro|TSR_DIS
+mdefine_line|#define&t;  TSR_DIS&t;&t;TSR_PIS&t;&t;/* DEC Interrupt Status */
 DECL|macro|TSR_FIS
 mdefine_line|#define&t;  TSR_FIS&t;&t;0x04000000&t;/* FIT Interrupt Status */
 DECL|macro|SPRN_UMMCR0
@@ -854,6 +926,79 @@ DECL|macro|SPRN_XER
 mdefine_line|#define&t;SPRN_XER&t;0x001&t;/* Fixed Point Exception Register */
 DECL|macro|SPRN_ZPR
 mdefine_line|#define&t;SPRN_ZPR&t;0x3B0&t;/* Zone Protection Register */
+multiline_comment|/* Book E definitions */
+DECL|macro|SPRN_DECAR
+mdefine_line|#define SPRN_DECAR&t;0x036&t;/* Decrementer Auto Reload Register */
+DECL|macro|SPRN_CSRR0
+mdefine_line|#define SPRN_CSRR0&t;0x03A&t;/* Critical Save and Restore Register 0 */
+DECL|macro|SPRN_CSRR1
+mdefine_line|#define SPRN_CSRR1&t;0x03B&t;/* Critical Save and Restore Register 1 */
+DECL|macro|SPRN_IVPR
+mdefine_line|#define&t;SPRN_IVPR&t;0x03F&t;/* Interrupt Vector Prefix Register */
+DECL|macro|SPRN_USPRG0
+mdefine_line|#define SPRN_USPRG0&t;0x100&t;/* User Special Purpose Register General 0 */
+DECL|macro|SPRN_SPRG4R
+mdefine_line|#define&t;SPRN_SPRG4R&t;0x104&t;/* Special Purpose Register General 4 Read */
+DECL|macro|SPRN_SPRG5R
+mdefine_line|#define&t;SPRN_SPRG5R&t;0x105&t;/* Special Purpose Register General 5 Read */
+DECL|macro|SPRN_SPRG6R
+mdefine_line|#define&t;SPRN_SPRG6R&t;0x106&t;/* Special Purpose Register General 6 Read */
+DECL|macro|SPRN_SPRG7R
+mdefine_line|#define&t;SPRN_SPRG7R&t;0x107&t;/* Special Purpose Register General 7 Read */
+DECL|macro|SPRN_SPRG4W
+mdefine_line|#define&t;SPRN_SPRG4W&t;0x114&t;/* Special Purpose Register General 4 Write */
+DECL|macro|SPRN_SPRG5W
+mdefine_line|#define&t;SPRN_SPRG5W&t;0x115&t;/* Special Purpose Register General 5 Write */
+DECL|macro|SPRN_SPRG6W
+mdefine_line|#define&t;SPRN_SPRG6W&t;0x116&t;/* Special Purpose Register General 6 Write */
+DECL|macro|SPRN_SPRG7W
+mdefine_line|#define&t;SPRN_SPRG7W&t;0x117&t;/* Special Purpose Register General 7 Write */
+DECL|macro|SPRN_DBCR2
+mdefine_line|#define SPRN_DBCR2&t;0x136&t;/* Debug Control Register 2 */
+DECL|macro|SPRN_IAC3
+mdefine_line|#define&t;SPRN_IAC3&t;0x13A&t;/* Instruction Address Compare 3 */
+DECL|macro|SPRN_IAC4
+mdefine_line|#define&t;SPRN_IAC4&t;0x13B&t;/* Instruction Address Compare 4 */
+DECL|macro|SPRN_DVC1
+mdefine_line|#define SPRN_DVC1&t;0x13E&t;/* */
+DECL|macro|SPRN_DVC2
+mdefine_line|#define SPRN_DVC2&t;0x13F&t;/* */
+DECL|macro|SPRN_IVOR0
+mdefine_line|#define SPRN_IVOR0&t;0x190&t;/* Interrupt Vector Offset Register 0 */
+DECL|macro|SPRN_IVOR1
+mdefine_line|#define SPRN_IVOR1&t;0x191&t;/* Interrupt Vector Offset Register 1 */
+DECL|macro|SPRN_IVOR2
+mdefine_line|#define SPRN_IVOR2&t;0x192&t;/* Interrupt Vector Offset Register 2 */
+DECL|macro|SPRN_IVOR3
+mdefine_line|#define SPRN_IVOR3&t;0x193&t;/* Interrupt Vector Offset Register 3 */
+DECL|macro|SPRN_IVOR4
+mdefine_line|#define SPRN_IVOR4&t;0x194&t;/* Interrupt Vector Offset Register 4 */
+DECL|macro|SPRN_IVOR5
+mdefine_line|#define SPRN_IVOR5&t;0x195&t;/* Interrupt Vector Offset Register 5 */
+DECL|macro|SPRN_IVOR6
+mdefine_line|#define SPRN_IVOR6&t;0x196&t;/* Interrupt Vector Offset Register 6 */
+DECL|macro|SPRN_IVOR7
+mdefine_line|#define SPRN_IVOR7&t;0x197&t;/* Interrupt Vector Offset Register 7 */
+DECL|macro|SPRN_IVOR8
+mdefine_line|#define SPRN_IVOR8&t;0x198&t;/* Interrupt Vector Offset Register 8 */
+DECL|macro|SPRN_IVOR9
+mdefine_line|#define SPRN_IVOR9&t;0x199&t;/* Interrupt Vector Offset Register 9 */
+DECL|macro|SPRN_IVOR10
+mdefine_line|#define SPRN_IVOR10&t;0x19a&t;/* Interrupt Vector Offset Register 10 */
+DECL|macro|SPRN_IVOR11
+mdefine_line|#define SPRN_IVOR11&t;0x19b&t;/* Interrupt Vector Offset Register 11 */
+DECL|macro|SPRN_IVOR12
+mdefine_line|#define SPRN_IVOR12&t;0x19c&t;/* Interrupt Vector Offset Register 12 */
+DECL|macro|SPRN_IVOR13
+mdefine_line|#define SPRN_IVOR13&t;0x19d&t;/* Interrupt Vector Offset Register 13 */
+DECL|macro|SPRN_IVOR14
+mdefine_line|#define SPRN_IVOR14&t;0x19e&t;/* Interrupt Vector Offset Register 14 */
+DECL|macro|SPRN_IVOR15
+mdefine_line|#define SPRN_IVOR15&t;0x19f&t;/* Interrupt Vector Offset Register 15 */
+DECL|macro|SPRN_MMUCR
+mdefine_line|#define SPRN_MMUCR&t;0x3b2&t;/* MMU Control Register */
+DECL|macro|ESR_ST
+mdefine_line|#define ESR_ST&t;&t;0x00800000&t;/* Store Operation */
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */
 DECL|macro|CTR
 mdefine_line|#define&t;CTR&t;SPRN_CTR&t;/* Counter Register */
@@ -995,6 +1140,26 @@ DECL|macro|SPRG6
 mdefine_line|#define&t;SPRG6   SPRN_SPRG6
 DECL|macro|SPRG7
 mdefine_line|#define&t;SPRG7   SPRN_SPRG7
+DECL|macro|SPRG4R
+mdefine_line|#define SPRG4R  SPRN_SPRG4R     /* Book E Supervisor Private Registers */
+DECL|macro|SPRG5R
+mdefine_line|#define SPRG5R  SPRN_SPRG5R
+DECL|macro|SPRG6R
+mdefine_line|#define SPRG6R  SPRN_SPRG6R
+DECL|macro|SPRG7R
+mdefine_line|#define SPRG7R  SPRN_SPRG7R
+DECL|macro|SPRG4W
+mdefine_line|#define SPRG4W  SPRN_SPRG4W
+DECL|macro|SPRG5W
+mdefine_line|#define SPRG5W  SPRN_SPRG5W
+DECL|macro|SPRG6W
+mdefine_line|#define SPRG6W  SPRN_SPRG6W
+DECL|macro|SPRG7W
+mdefine_line|#define SPRG7W  SPRN_SPRG7W
+DECL|macro|CSRR0
+mdefine_line|#define CSRR0&t;SPRN_CSRR0&t;/* Critical Save and Restore Register 0 */
+DECL|macro|CSRR1
+mdefine_line|#define CSRR1&t;SPRN_CSRR1&t;/* Critical Save and Restore Register 1 */
 DECL|macro|SRR0
 mdefine_line|#define&t;SRR0&t;SPRN_SRR0&t;/* Save and Restore Register 0 */
 DECL|macro|SRR1
@@ -1040,6 +1205,80 @@ DECL|macro|PVR_MAJ
 mdefine_line|#define&t;PVR_MAJ(pvr)&t;(((pvr) &gt;&gt;  4) &amp; 0xF)&t;/* Major revision field */
 DECL|macro|PVR_MIN
 mdefine_line|#define&t;PVR_MIN(pvr)&t;(((pvr) &gt;&gt;  0) &amp; 0xF)&t;/* Minor revision field */
+multiline_comment|/* Processor Version Numbers */
+DECL|macro|PVR_403GA
+mdefine_line|#define&t;PVR_403GA&t;0x00200000
+DECL|macro|PVR_403GB
+mdefine_line|#define&t;PVR_403GB&t;0x00200100
+DECL|macro|PVR_403GC
+mdefine_line|#define&t;PVR_403GC&t;0x00200200
+DECL|macro|PVR_403GCX
+mdefine_line|#define&t;PVR_403GCX&t;0x00201400
+DECL|macro|PVR_405GP
+mdefine_line|#define&t;PVR_405GP&t;0x40110000
+DECL|macro|PVR_STB03XXX
+mdefine_line|#define&t;PVR_STB03XXX&t;0x40310000
+DECL|macro|PVR_NP405H
+mdefine_line|#define&t;PVR_NP405H&t;0x41410000
+DECL|macro|PVR_NP405L
+mdefine_line|#define&t;PVR_NP405L&t;0x41610000
+DECL|macro|PVR_440GP_RB
+mdefine_line|#define PVR_440GP_RB&t;0x40120440
+DECL|macro|PVR_440GP_RC1
+mdefine_line|#define PVR_440GP_RC1&t;0x40120481
+DECL|macro|PVR_440GP_RC2
+mdefine_line|#define PVR_440GP_RC2&t;0x40200481
+DECL|macro|PVR_440GX_RC1
+mdefine_line|#define PVR_440GX_RC1&t;0x51b21850
+DECL|macro|PVR_601
+mdefine_line|#define&t;PVR_601&t;&t;0x00010000
+DECL|macro|PVR_602
+mdefine_line|#define&t;PVR_602&t;&t;0x00050000
+DECL|macro|PVR_603
+mdefine_line|#define&t;PVR_603&t;&t;0x00030000
+DECL|macro|PVR_603e
+mdefine_line|#define&t;PVR_603e&t;0x00060000
+DECL|macro|PVR_603ev
+mdefine_line|#define&t;PVR_603ev&t;0x00070000
+DECL|macro|PVR_603r
+mdefine_line|#define&t;PVR_603r&t;0x00071000
+DECL|macro|PVR_604
+mdefine_line|#define&t;PVR_604&t;&t;0x00040000
+DECL|macro|PVR_604e
+mdefine_line|#define&t;PVR_604e&t;0x00090000
+DECL|macro|PVR_604r
+mdefine_line|#define&t;PVR_604r&t;0x000A0000
+DECL|macro|PVR_620
+mdefine_line|#define&t;PVR_620&t;&t;0x00140000
+DECL|macro|PVR_740
+mdefine_line|#define&t;PVR_740&t;&t;0x00080000
+DECL|macro|PVR_750
+mdefine_line|#define&t;PVR_750&t;&t;PVR_740
+DECL|macro|PVR_740P
+mdefine_line|#define&t;PVR_740P&t;0x10080000
+DECL|macro|PVR_750P
+mdefine_line|#define&t;PVR_750P&t;PVR_740P
+DECL|macro|PVR_7400
+mdefine_line|#define&t;PVR_7400&t;0x000C0000
+DECL|macro|PVR_7410
+mdefine_line|#define&t;PVR_7410&t;0x800C0000
+DECL|macro|PVR_7450
+mdefine_line|#define&t;PVR_7450&t;0x80000000
+multiline_comment|/*&n; * For the 8xx processors, all of them report the same PVR family for&n; * the PowerPC core. The various versions of these processors must be&n; * differentiated by the version number in the Communication Processor&n; * Module (CPM).&n; */
+DECL|macro|PVR_821
+mdefine_line|#define&t;PVR_821&t;&t;0x00500000
+DECL|macro|PVR_823
+mdefine_line|#define&t;PVR_823&t;&t;PVR_821
+DECL|macro|PVR_850
+mdefine_line|#define&t;PVR_850&t;&t;PVR_821
+DECL|macro|PVR_860
+mdefine_line|#define&t;PVR_860&t;&t;PVR_821
+DECL|macro|PVR_8240
+mdefine_line|#define&t;PVR_8240&t;0x00810100
+DECL|macro|PVR_8245
+mdefine_line|#define&t;PVR_8245&t;0x80811014
+DECL|macro|PVR_8260
+mdefine_line|#define&t;PVR_8260&t;PVR_8240
 multiline_comment|/* We only need to define a new _MACH_xxx for machines which are part of&n; * a configuration which supports more than one type of different machine.&n; * This is currently limited to CONFIG_PPC_MULTIPLATFORM and CHRP/PReP/PMac. -- Tom&n; */
 DECL|macro|_MACH_prep
 mdefine_line|#define _MACH_prep&t;0x00000001

@@ -101,18 +101,18 @@ macro_line|#if !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_8xx)
 DECL|macro|tlbia
 mdefine_line|#define tlbia&t;&t;&t;&t;&t;&bslash;&n;&t;li&t;r4,1024;&t;&t;&t;&bslash;&n;&t;mtctr&t;r4;&t;&t;&t;&t;&bslash;&n;&t;lis&t;r4,KERNELBASE@h;&t;&t;&bslash;&n;0:&t;tlbie&t;r4;&t;&t;&t;&t;&bslash;&n;&t;addi&t;r4,r4,0x1000;&t;&t;&t;&bslash;&n;&t;bdnz&t;0b
 macro_line|#endif
-macro_line|#if !defined(CONFIG_440)
+macro_line|#if !defined(CONFIG_44x)
 multiline_comment|/*&n; * On APUS (Amiga PowerPC cpu upgrade board), we don&squot;t know the&n; * physical base address of RAM at compile time.&n; */
 DECL|macro|tophys
 mdefine_line|#define tophys(rd,rs)&t;&t;&t;&t;&bslash;&n;0:&t;addis&t;rd,rs,-KERNELBASE@h;&t;&t;&bslash;&n;&t;.section &quot;.vtop_fixup&quot;,&quot;aw&quot;;&t;&t;&bslash;&n;&t;.align  1;&t;&t;&t;&t;&bslash;&n;&t;.long   0b;&t;&t;&t;&t;&bslash;&n;&t;.previous
 DECL|macro|tovirt
 mdefine_line|#define tovirt(rd,rs)&t;&t;&t;&t;&bslash;&n;0:&t;addis&t;rd,rs,KERNELBASE@h;&t;&t;&bslash;&n;&t;.section &quot;.ptov_fixup&quot;,&quot;aw&quot;;&t;&t;&bslash;&n;&t;.align  1;&t;&t;&t;&t;&bslash;&n;&t;.long   0b;&t;&t;&t;&t;&bslash;&n;&t;.previous
-macro_line|#else  /* CONFIG_440 */
+macro_line|#else  /* CONFIG_44x */
 DECL|macro|tophys
 mdefine_line|#define tophys(rd,rs)&t;&t;&t;&t;&bslash;&n;&t;mr&t;rd,rs
 DECL|macro|tovirt
 mdefine_line|#define tovirt(rd,rs)&t;&t;&t;&t;&bslash;&n;&t;mr&t;rd,rs
-macro_line|#endif /* CONFIG_440 */
+macro_line|#endif /* CONFIG_44x */
 multiline_comment|/*&n; * On 64-bit cpus, we use the rfid instruction instead of rfi, but&n; * we then have to make sure we preserve the top 32 bits except for&n; * the 64-bit mode bit, which we clear.&n; */
 macro_line|#ifdef CONFIG_PPC64BRIDGE
 DECL|macro|FIX_SRR1
