@@ -1974,6 +1974,8 @@ c_func
 id|handler
 comma
 id|dev
+comma
+id|id
 )paren
 )paren
 )paren
