@@ -600,7 +600,7 @@ comma
 l_int|0x2001
 )paren
 comma
-multiline_comment|/* --- */
+multiline_comment|/* Aztech Sound Galaxy 16 */
 id|ISAPNP_AZT2320
 c_func
 (paren

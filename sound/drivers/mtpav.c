@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID

@@ -598,8 +598,9 @@ l_int|0
 suffix:semicolon
 id|legacy_ctrl2
 op_assign
-l_int|0
+l_int|0x0800
 suffix:semicolon
+multiline_comment|/* SMOD = 01 */
 r_if
 c_cond
 (paren
