@@ -1367,6 +1367,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* BB add code to lock SMB sessions while releasing */
+id|server-&gt;tsk
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5498,17 +5502,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_else
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Can not wake captive thread on cleanup of failed mount&quot;
-)paren
-)paren
-suffix:semicolon
 id|set_current_state
 c_func
 (paren

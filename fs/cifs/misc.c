@@ -5,6 +5,8 @@ macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#include &quot;smberr.h&quot;
+macro_line|#include &quot;nterr.h&quot;
 r_extern
 id|kmem_cache_t
 op_star
@@ -1541,11 +1543,60 @@ op_amp
 id|SMBFLG_RESPONSE
 )paren
 (brace
+multiline_comment|/* no sense logging error on invalid handle on oplock&n;&t;&t;   break - harmless race between close request and oplock&n;&t;&t;   break response is expected from time to time writing out&n;&t;&t;   large dirty files cached on the client */
+r_if
+c_cond
+(paren
+(paren
+id|NT_STATUS_INVALID_HANDLE
+)paren
+op_eq
+id|le32_to_cpu
+c_func
+(paren
+id|pSMB-&gt;hdr.Status.CifsError
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;invalid handle on oplock break&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ERRbadfid
+op_eq
+id|le16_to_cpu
+c_func
+(paren
+id|pSMB-&gt;hdr.Status.DosError.Error
+)paren
+)paren
+(brace
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+r_else
+(brace
 r_return
 id|FALSE
 suffix:semicolon
+multiline_comment|/* on valid oplock brk we get &quot;request&quot; */
 )brace
-multiline_comment|/* server sends us &quot;request&quot; here */
+)brace
 r_if
 c_cond
 (paren
