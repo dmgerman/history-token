@@ -68,9 +68,9 @@ DECL|variable|sysctl_overcommit_memory
 r_int
 id|sysctl_overcommit_memory
 op_assign
-l_int|0
+id|OVERCOMMIT_GUESS
 suffix:semicolon
-multiline_comment|/* default is heuristic overcommit */
+multiline_comment|/* heuristic overcommit */
 DECL|variable|sysctl_overcommit_ratio
 r_int
 id|sysctl_overcommit_ratio
@@ -3600,8 +3600,8 @@ id|MAP_NORESERVE
 )paren
 op_logical_or
 id|sysctl_overcommit_memory
-OG
-l_int|1
+op_eq
+id|OVERCOMMIT_NEVER
 )paren
 )paren
 (brace

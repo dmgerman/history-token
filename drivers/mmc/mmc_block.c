@@ -18,10 +18,10 @@ macro_line|#include &quot;mmc_queue.h&quot;
 multiline_comment|/*&n; * max 8 partitions per card&n; */
 DECL|macro|MMC_SHIFT
 mdefine_line|#define MMC_SHIFT&t;3
-DECL|variable|mmc_major
+DECL|variable|major
 r_static
 r_int
-id|mmc_major
+id|major
 suffix:semicolon
 multiline_comment|/*&n; * There is one mmc_blk_data per slot.&n; */
 DECL|struct|mmc_blk_data
@@ -1241,7 +1241,7 @@ id|md
 suffix:semicolon
 id|md-&gt;disk-&gt;major
 op_assign
-id|mmc_major
+id|major
 suffix:semicolon
 id|md-&gt;disk-&gt;first_minor
 op_assign
@@ -1803,7 +1803,7 @@ op_assign
 id|register_blkdev
 c_func
 (paren
-id|mmc_major
+id|major
 comma
 l_string|&quot;mmc&quot;
 )paren
@@ -1822,7 +1822,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Unable to get major %d for MMC media: %d&bslash;n&quot;
 comma
-id|mmc_major
+id|major
 comma
 id|res
 )paren
@@ -1834,11 +1834,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mmc_major
+id|major
 op_eq
 l_int|0
 )paren
-id|mmc_major
+id|major
 op_assign
 id|res
 suffix:semicolon
@@ -1888,7 +1888,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|mmc_major
+id|major
 comma
 l_string|&quot;mmc&quot;
 )paren
@@ -1918,6 +1918,24 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Multimedia Card (MMC) block device driver&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|major
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|major
+comma
+l_string|&quot;specify the major device number for MMC block driver&quot;
 )paren
 suffix:semicolon
 eof

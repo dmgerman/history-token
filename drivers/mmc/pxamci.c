@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sizes.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/mmc.h&gt;
 macro_line|#include &quot;pxamci.h&quot;
 macro_line|#ifdef CONFIG_MMC_DEBUG

@@ -3,51 +3,6 @@ macro_line|#ifndef __PXA_REGS_H
 DECL|macro|__PXA_REGS_H
 mdefine_line|#define __PXA_REGS_H
 macro_line|#include &lt;linux/config.h&gt;
-singleline_comment|// FIXME hack so that SA-1111.h will work [cb]
-macro_line|#ifndef __ASSEMBLY__
-DECL|typedef|Word16
-r_typedef
-r_int
-r_int
-id|Word16
-suffix:semicolon
-DECL|typedef|Word32
-r_typedef
-r_int
-r_int
-id|Word32
-suffix:semicolon
-DECL|typedef|Word
-r_typedef
-id|Word32
-id|Word
-suffix:semicolon
-DECL|typedef|Quad
-r_typedef
-id|Word
-id|Quad
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|typedef|Address
-r_typedef
-r_void
-op_star
-id|Address
-suffix:semicolon
-DECL|typedef|ExcpHndlr
-r_typedef
-r_void
-(paren
-op_star
-id|ExcpHndlr
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * PXA Chip selects&n; */
 DECL|macro|PXA_CS0_PHYS
 mdefine_line|#define PXA_CS0_PHYS&t;0x00000000
@@ -1585,7 +1540,7 @@ DECL|macro|ICCR0_LBM
 mdefine_line|#define ICCR0_LBM&t;(1 &lt;&lt; 1)&t;/* Loopback mode */
 DECL|macro|ICCR0_ITR
 mdefine_line|#define ICCR0_ITR&t;(1 &lt;&lt; 0)&t;/* IrDA transmission */
-macro_line|#ifdef CONFIG_CPU_BULVERDE
+macro_line|#ifdef CONFIG_PXA27x
 DECL|macro|ICCR2_RXP
 mdefine_line|#define ICCR2_RXP       (1 &lt;&lt; 3)&t;/* Receive Pin Polarity select */
 DECL|macro|ICCR2_TXP
@@ -1599,7 +1554,7 @@ mdefine_line|#define ICCR2_TRIG_16   (1 &lt;&lt; 0)&t;/*&t;&gt;= 16 bytes */
 DECL|macro|ICCR2_TRIG_32
 mdefine_line|#define ICCR2_TRIG_32   (2 &lt;&lt; 0)&t;/*&t;&gt;= 32 bytes */
 macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_BULVERDE
+macro_line|#ifdef CONFIG_PXA27x
 DECL|macro|ICSR0_EOC
 mdefine_line|#define ICSR0_EOC&t;(1 &lt;&lt; 6)&t;/* DMA End of Descriptor Chain */
 macro_line|#endif
@@ -1910,6 +1865,8 @@ DECL|macro|GPIO31_SYNC
 mdefine_line|#define GPIO31_SYNC&t;&t;31&t;/* AC97/I2S sync */
 DECL|macro|GPIO32_SDATA_IN1
 mdefine_line|#define GPIO32_SDATA_IN1&t;32&t;/* AC97 Sdata_in1 */
+DECL|macro|GPIO32_MMCCLK
+mdefine_line|#define GPIO32_MMCCLK&t;&t;32&t;/* MMC Clock (PXA270) */
 DECL|macro|GPIO33_nCS_5
 mdefine_line|#define GPIO33_nCS_5&t;&t;33&t;/* chip select 5 */
 DECL|macro|GPIO34_FFRXD
@@ -1966,6 +1923,8 @@ DECL|macro|GPIO54_MMCCLK
 mdefine_line|#define GPIO54_MMCCLK&t;&t;54&t;/* MMC Clock */
 DECL|macro|GPIO54_pSKTSEL
 mdefine_line|#define GPIO54_pSKTSEL&t;&t;54&t;/* Socket Select for Card Space */
+DECL|macro|GPIO54_nPCE_2
+mdefine_line|#define GPIO54_nPCE_2&t;&t;54&t;/* Card Enable for Card Space (PXA27x) */
 DECL|macro|GPIO55_nPREG
 mdefine_line|#define GPIO55_nPREG&t;&t;55&t;/* Card Address bit 26 */
 DECL|macro|GPIO56_nPWAIT
@@ -2034,6 +1993,24 @@ DECL|macro|GPIO79_nCS_3
 mdefine_line|#define GPIO79_nCS_3&t;&t;79&t;/* chip select 3 */
 DECL|macro|GPIO80_nCS_4
 mdefine_line|#define GPIO80_nCS_4&t;&t;80&t;/* chip select 4 */
+DECL|macro|GPIO85_nPCE_1
+mdefine_line|#define GPIO85_nPCE_1&t;&t;85&t;/* Card Enable for Card Space (PXA27x) */
+DECL|macro|GPIO92_MMCDAT0
+mdefine_line|#define GPIO92_MMCDAT0&t;&t;92&t;/* MMC DAT0 (PXA27x) */
+DECL|macro|GPIO109_MMCDAT1
+mdefine_line|#define GPIO109_MMCDAT1&t;&t;109&t;/* MMC DAT1 (PXA27x) */
+DECL|macro|GPIO110_MMCDAT2
+mdefine_line|#define GPIO110_MMCDAT2&t;&t;110&t;/* MMC DAT2 (PXA27x) */
+DECL|macro|GPIO110_MMCCS0
+mdefine_line|#define GPIO110_MMCCS0&t;&t;110&t;/* MMC Chip Select 0 (PXA27x) */
+DECL|macro|GPIO111_MMCDAT3
+mdefine_line|#define GPIO111_MMCDAT3&t;&t;111&t;/* MMC DAT3 (PXA27x) */
+DECL|macro|GPIO111_MMCCS1
+mdefine_line|#define GPIO111_MMCCS1&t;&t;111&t;/* MMC Chip Select 1 (PXA27x) */
+DECL|macro|GPIO112_MMCCMD
+mdefine_line|#define GPIO112_MMCCMD&t;&t;112&t;/* MMC CMD (PXA27x) */
+DECL|macro|GPIO113_AC97_RESET_N
+mdefine_line|#define GPIO113_AC97_RESET_N&t;113&t;/* AC97 NRESET on (PXA27x) */
 multiline_comment|/* GPIO alternate function mode &amp; direction */
 DECL|macro|GPIO_IN
 mdefine_line|#define GPIO_IN&t;&t;&t;0x000
@@ -2117,6 +2094,8 @@ DECL|macro|GPIO31_SYNC_I2S_MD
 mdefine_line|#define GPIO31_SYNC_I2S_MD&t;(31 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO32_SDATA_IN1_AC97_MD
 mdefine_line|#define GPIO32_SDATA_IN1_AC97_MD&t;(32 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO32_MMCCLK_MD
+mdefine_line|#define GPIO32_MMCCLK_MD&t;&t;( 32 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO33_nCS_5_MD
 mdefine_line|#define GPIO33_nCS_5_MD&t;&t;(33 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO34_FFRXD_MD
@@ -2171,6 +2150,8 @@ DECL|macro|GPIO53_MMCCLK_MD
 mdefine_line|#define GPIO53_MMCCLK_MD&t;(53 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO54_MMCCLK_MD
 mdefine_line|#define GPIO54_MMCCLK_MD&t;(54 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO54_nPCE_2_MD
+mdefine_line|#define GPIO54_nPCE_2_MD&t;(54 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO54_pSKTSEL_MD
 mdefine_line|#define GPIO54_pSKTSEL_MD&t;(54 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO55_nPREG_MD
@@ -2239,8 +2220,28 @@ DECL|macro|GPIO78_nCS_2_MD
 mdefine_line|#define GPIO78_nCS_2_MD&t;&t;(78 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO79_nCS_3_MD
 mdefine_line|#define GPIO79_nCS_3_MD&t;&t;(79 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO79_pSKTSEL_MD
+mdefine_line|#define GPIO79_pSKTSEL_MD&t;(79 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO80_nCS_4_MD
 mdefine_line|#define GPIO80_nCS_4_MD&t;&t;(80 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO85_nPCE_1_MD
+mdefine_line|#define GPIO85_nPCE_1_MD&t;(85 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO92_MMCDAT0_MD
+mdefine_line|#define GPIO92_MMCDAT0_MD&t;(92 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO109_MMCDAT1_MD
+mdefine_line|#define GPIO109_MMCDAT1_MD&t;(109 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO110_MMCDAT2_MD
+mdefine_line|#define GPIO110_MMCDAT2_MD&t;(110 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO110_MMCCS0_MD
+mdefine_line|#define GPIO110_MMCCS0_MD&t;(110 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO111_MMCDAT3_MD
+mdefine_line|#define GPIO111_MMCDAT3_MD&t;(111 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO110_MMCCS1_MD
+mdefine_line|#define GPIO110_MMCCS1_MD&t;(111 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO112_MMCCMD_MD
+mdefine_line|#define GPIO112_MMCCMD_MD&t;(112 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO113_AC97_RESET_N_MD
+mdefine_line|#define GPIO113_AC97_RESET_N_MD&t;(113 | GPIO_ALT_FN_2_OUT)
 multiline_comment|/*&n; * Power Manager&n; */
 DECL|macro|PMCR
 mdefine_line|#define PMCR&t;&t;__REG(0x40F00000)  /* Power Manager Control Register */

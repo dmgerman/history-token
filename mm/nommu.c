@@ -54,8 +54,10 @@ suffix:semicolon
 DECL|variable|sysctl_overcommit_memory
 r_int
 id|sysctl_overcommit_memory
+op_assign
+id|OVERCOMMIT_GUESS
 suffix:semicolon
-multiline_comment|/* default is heuristic overcommit */
+multiline_comment|/* heuristic overcommit */
 DECL|variable|sysctl_overcommit_ratio
 r_int
 id|sysctl_overcommit_ratio

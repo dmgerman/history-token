@@ -11791,7 +11791,7 @@ suffix:semicolon
 id|tty_ldisc_flush
 c_func
 (paren
-id|tty
+id|info-&gt;tty
 )paren
 suffix:semicolon
 r_if
