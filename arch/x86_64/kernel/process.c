@@ -57,6 +57,20 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+DECL|variable|boot_option_idle_override
+r_int
+r_int
+id|boot_option_idle_override
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|boot_option_idle_override
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|boot_option_idle_override
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Powermanagement idle function, if any..&n; */
 DECL|variable|pm_idle
 r_void
@@ -497,6 +511,10 @@ op_assign
 id|poll_idle
 suffix:semicolon
 )brace
+id|boot_option_idle_override
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

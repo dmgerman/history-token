@@ -3365,6 +3365,20 @@ l_int|0x400
 )paren
 suffix:semicolon
 )brace
+DECL|variable|platform_rename_gsi
+r_int
+(paren
+op_star
+id|platform_rename_gsi
+)paren
+(paren
+r_int
+id|ioapic
+comma
+r_int
+id|gsi
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                            ACPI-based MP Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|function|mp_register_lapic_address
@@ -4109,6 +4123,14 @@ comma
 id|MP_ISA_BUS
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * ES7000 has no legacy identity mappings&n;&t; */
+r_if
+c_cond
+(paren
+id|es7000_plat
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* &n;&t; * Locate the IOAPIC that manages the ISA IRQs (0-15). &n;&t; */
 id|ioapic
 op_assign
@@ -4311,20 +4333,6 @@ l_string|&quot;Max # of irq sources exceeded!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-DECL|variable|platform_rename_gsi
-r_int
-(paren
-op_star
-id|platform_rename_gsi
-)paren
-(paren
-r_int
-id|ioapic
-comma
-r_int
-id|gsi
-)paren
-suffix:semicolon
 DECL|function|mp_register_gsi
 r_void
 id|mp_register_gsi

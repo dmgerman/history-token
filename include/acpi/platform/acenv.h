@@ -131,6 +131,8 @@ DECL|macro|ACPI_STRNCAT
 mdefine_line|#define ACPI_STRNCAT(d,s,n)     strncat((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRTOUL
 mdefine_line|#define ACPI_STRTOUL(d,s,n)     strtoul((d), (s), (acpi_size)(n))
+DECL|macro|ACPI_MEMCMP
+mdefine_line|#define ACPI_MEMCMP(s1,s2,n)    memcmp((s1), (s2), (acpi_size)(n))
 DECL|macro|ACPI_MEMCPY
 mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) memcpy((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_MEMSET
@@ -202,6 +204,8 @@ DECL|macro|ACPI_STRNCAT
 mdefine_line|#define ACPI_STRNCAT(d,s,n)     acpi_ut_strncat ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_STRTOUL
 mdefine_line|#define ACPI_STRTOUL(d,s,n)     acpi_ut_strtoul ((d), (s), (acpi_size)(n))
+DECL|macro|ACPI_MEMCMP
+mdefine_line|#define ACPI_MEMCMP(s1,s2,n)    acpi_ut_memcmp((s1), (s2), (acpi_size)(n))
 DECL|macro|ACPI_MEMCPY
 mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) acpi_ut_memcpy ((d), (s), (acpi_size)(n))
 DECL|macro|ACPI_MEMSET

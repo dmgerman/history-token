@@ -110,14 +110,19 @@ suffix:semicolon
 multiline_comment|/* next port */
 )brace
 suffix:semicolon
+DECL|macro|PNP_IRQ_NR
+mdefine_line|#define PNP_IRQ_NR 256
 DECL|struct|pnp_irq
 r_struct
 id|pnp_irq
 (brace
-DECL|member|map
-r_int
-r_int
+id|DECLARE_BITMAP
+c_func
+(paren
 id|map
+comma
+id|PNP_IRQ_NR
+)paren
 suffix:semicolon
 multiline_comment|/* bitmaks for IRQ lines */
 DECL|member|flags
@@ -593,6 +598,11 @@ op_star
 id|procent
 suffix:semicolon
 multiline_comment|/* device entry in /proc/bus/isapnp */
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|global_to_pnp_dev

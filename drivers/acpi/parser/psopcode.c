@@ -246,6 +246,8 @@ DECL|macro|ARGP_SUBTRACT_OP
 mdefine_line|#define ARGP_SUBTRACT_OP                ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_TARGET)
 DECL|macro|ARGP_THERMAL_ZONE_OP
 mdefine_line|#define ARGP_THERMAL_ZONE_OP            ARGP_LIST3 (ARGP_PKGLENGTH,  ARGP_NAME,          ARGP_OBJLIST)
+DECL|macro|ARGP_TIMER_OP
+mdefine_line|#define ARGP_TIMER_OP                   ARG_NONE
 DECL|macro|ARGP_TO_BCD_OP
 mdefine_line|#define ARGP_TO_BCD_OP                  ARGP_LIST2 (ARGP_TERMARG,    ARGP_TARGET)
 DECL|macro|ARGP_TO_BUFFER_OP
@@ -474,7 +476,7 @@ mdefine_line|#define ARGI_SHIFT_RIGHT_OP             ARGI_LIST3 (ARGI_INTEGER,  
 DECL|macro|ARGI_SIGNAL_OP
 mdefine_line|#define ARGI_SIGNAL_OP                  ARGI_LIST1 (ARGI_EVENT)
 DECL|macro|ARGI_SIZE_OF_OP
-mdefine_line|#define ARGI_SIZE_OF_OP                 ARGI_LIST1 (ARGI_DATAOBJECT)
+mdefine_line|#define ARGI_SIZE_OF_OP                 ARGI_LIST1 (ARGI_REFERENCE) /* Force delay of operand resolution */
 DECL|macro|ARGI_SLEEP_OP
 mdefine_line|#define ARGI_SLEEP_OP                   ARGI_LIST1 (ARGI_INTEGER)
 DECL|macro|ARGI_STALL_OP
@@ -489,6 +491,8 @@ DECL|macro|ARGI_SUBTRACT_OP
 mdefine_line|#define ARGI_SUBTRACT_OP                ARGI_LIST3 (ARGI_INTEGER,    ARGI_INTEGER,       ARGI_TARGETREF)
 DECL|macro|ARGI_THERMAL_ZONE_OP
 mdefine_line|#define ARGI_THERMAL_ZONE_OP            ARGI_INVALID_OPCODE
+DECL|macro|ARGI_TIMER_OP
+mdefine_line|#define ARGI_TIMER_OP                   ARG_NONE
 DECL|macro|ARGI_TO_BCD_OP
 mdefine_line|#define ARGI_TO_BCD_OP                  ARGI_LIST2 (ARGI_INTEGER,    ARGI_FIXED_TARGET)
 DECL|macro|ARGI_TO_BUFFER_OP
@@ -502,7 +506,7 @@ mdefine_line|#define ARGI_TO_INTEGER_OP              ARGI_LIST2 (ARGI_COMPUTEDAT
 DECL|macro|ARGI_TO_STRING_OP
 mdefine_line|#define ARGI_TO_STRING_OP               ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_FIXED_TARGET)
 DECL|macro|ARGI_TYPE_OP
-mdefine_line|#define ARGI_TYPE_OP                    ARGI_LIST1 (ARGI_ANYTYPE)
+mdefine_line|#define ARGI_TYPE_OP                    ARGI_LIST1 (ARGI_REFERENCE) /* Force delay of operand resolution */
 DECL|macro|ARGI_UNLOAD_OP
 mdefine_line|#define ARGI_UNLOAD_OP                  ARGI_LIST1 (ARGI_DDBHANDLE)
 DECL|macro|ARGI_VAR_PACKAGE_OP
@@ -1687,7 +1691,7 @@ id|AML_TYPE_EXEC_2A_0T_1R
 comma
 id|AML_FLAGS_EXEC_2A_0T_1R
 op_or
-id|AML_LOGICAL
+id|AML_LOGICAL_NUMERIC
 op_or
 id|AML_CONSTANT
 )paren
@@ -1709,7 +1713,7 @@ id|AML_TYPE_EXEC_2A_0T_1R
 comma
 id|AML_FLAGS_EXEC_2A_0T_1R
 op_or
-id|AML_LOGICAL
+id|AML_LOGICAL_NUMERIC
 op_or
 id|AML_CONSTANT
 )paren
@@ -3102,6 +3106,25 @@ id|AML_NSOPCODE
 op_or
 id|AML_NSNODE
 )paren
+comma
+multiline_comment|/* ACPI 3.0 opcodes */
+multiline_comment|/* 7E */
+id|ACPI_OP
+(paren
+l_string|&quot;Timer&quot;
+comma
+id|ARGP_TIMER_OP
+comma
+id|ARGI_TIMER_OP
+comma
+id|ACPI_TYPE_ANY
+comma
+id|AML_CLASS_EXECUTE
+comma
+id|AML_TYPE_EXEC_0A_0T_1R
+comma
+id|AML_FLAGS_EXEC_0A_0T_1R
+)paren
 multiline_comment|/*! [End] no source code translation !*/
 )brace
 suffix:semicolon
@@ -3664,6 +3687,7 @@ l_int|0x45
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This table is indexed by the second opcode of the extended opcode&n; * pair.  It returns an index into the opcode table (acpi_gbl_aml_op_info)&n; */
 DECL|variable|acpi_gbl_long_op_index
 r_static
 r_const
@@ -3785,7 +3809,7 @@ l_int|0x56
 comma
 l_int|0x57
 comma
-id|_UNK
+l_int|0x7e
 comma
 id|_UNK
 comma
@@ -4062,7 +4086,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown extended opcode [%X]&bslash;n&quot;
+l_string|&quot;Unknown AML opcode [%4.4X]&bslash;n&quot;
 comma
 id|opcode
 )paren

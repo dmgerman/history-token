@@ -81,10 +81,8 @@ op_star
 op_star
 id|result_desc
 comma
-r_struct
-id|acpi_walk_state
-op_star
-id|walk_state
+id|u32
+id|flags
 )paren
 suffix:semicolon
 id|acpi_status
@@ -100,11 +98,6 @@ id|acpi_operand_object
 op_star
 op_star
 id|result_desc
-comma
-r_struct
-id|acpi_walk_state
-op_star
-id|walk_state
 )paren
 suffix:semicolon
 id|acpi_status
@@ -122,17 +115,18 @@ op_star
 id|result_desc
 comma
 id|u32
-id|base
-comma
-id|u32
-id|max_length
-comma
-r_struct
-id|acpi_walk_state
-op_star
-id|walk_state
+id|type
 )paren
 suffix:semicolon
+multiline_comment|/* Types for -&gt;String conversion */
+DECL|macro|ACPI_EXPLICIT_BYTE_COPY
+mdefine_line|#define ACPI_EXPLICIT_BYTE_COPY         0x00000000
+DECL|macro|ACPI_EXPLICIT_CONVERT_HEX
+mdefine_line|#define ACPI_EXPLICIT_CONVERT_HEX       0x00000001
+DECL|macro|ACPI_IMPLICIT_CONVERT_HEX
+mdefine_line|#define ACPI_IMPLICIT_CONVERT_HEX       0x00000002
+DECL|macro|ACPI_EXPLICIT_CONVERT_DECIMAL
+mdefine_line|#define ACPI_EXPLICIT_CONVERT_DECIMAL   0x00000003
 id|acpi_status
 id|acpi_ex_convert_to_target_type
 (paren
@@ -162,7 +156,7 @@ id|acpi_ex_convert_to_ascii
 id|acpi_integer
 id|integer
 comma
-id|u32
+id|u16
 id|base
 comma
 id|u8
@@ -519,7 +513,24 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_ex_do_logical_numeric_op
+(paren
+id|u16
+id|opcode
+comma
+id|acpi_integer
+id|integer0
+comma
+id|acpi_integer
+id|integer1
+comma
 id|u8
+op_star
+id|logical_result
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ex_do_logical_op
 (paren
 id|u16
@@ -528,12 +539,16 @@ comma
 r_union
 id|acpi_operand_object
 op_star
-id|obj_desc
+id|operand0
 comma
 r_union
 id|acpi_operand_object
 op_star
-id|obj_desc2
+id|operand1
+comma
+id|u8
+op_star
+id|logical_result
 )paren
 suffix:semicolon
 id|acpi_integer
@@ -818,7 +833,7 @@ id|acpi_status
 id|acpi_ex_system_do_suspend
 c_func
 (paren
-id|u32
+id|acpi_integer
 id|time
 )paren
 suffix:semicolon
@@ -900,6 +915,15 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * exmonadic - ACPI AML (p-code) execution, monadic operators&n; */
+id|acpi_status
+id|acpi_ex_opcode_0A_0T_1R
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
 id|acpi_status
 id|acpi_ex_opcode_1A_0T_0R
 (paren
@@ -1019,14 +1043,17 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * exdump - Scanner debug output routines&n; */
+multiline_comment|/*&n; * exdump - Interpreter debug output routines&n; */
 r_void
 id|acpi_ex_dump_operand
 (paren
 r_union
 id|acpi_operand_object
 op_star
-id|entry_desc
+id|obj_desc
+comma
+id|u32
+id|depth
 )paren
 suffix:semicolon
 r_void

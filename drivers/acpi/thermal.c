@@ -42,8 +42,8 @@ DECL|macro|ACPI_THERMAL_MODE_ACTIVE
 mdefine_line|#define ACPI_THERMAL_MODE_ACTIVE&t;0x00
 DECL|macro|ACPI_THERMAL_MODE_PASSIVE
 mdefine_line|#define ACPI_THERMAL_MODE_PASSIVE&t;0x01
-DECL|macro|ACPI_THERMAL_MODE_CRT
-mdefine_line|#define ACPI_THERMAL_MODE_CRT   &t;0xff
+DECL|macro|ACPI_THERMAL_MODE_CRITICAL
+mdefine_line|#define ACPI_THERMAL_MODE_CRITICAL   &t;0xff
 DECL|macro|ACPI_THERMAL_PATH_POWEROFF
 mdefine_line|#define ACPI_THERMAL_PATH_POWEROFF&t;&quot;/sbin/poweroff&quot;
 DECL|macro|ACPI_THERMAL_MAX_ACTIVE
@@ -794,9 +794,12 @@ c_func
 id|status
 )paren
 )paren
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 c_func
@@ -1207,9 +1210,12 @@ l_string|&quot;No critical threshold&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_VALUE
+c_func
+(paren
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3231,8 +3237,11 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_thermal_state_open_fs
@@ -3352,8 +3361,11 @@ id|tz-&gt;temperature
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_thermal_temp_open_fs
@@ -3647,8 +3659,11 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_thermal_trip_open_fs
@@ -4109,7 +4124,7 @@ c_cond
 (paren
 id|tz-&gt;cooling_mode
 op_eq
-id|ACPI_THERMAL_MODE_CRT
+id|ACPI_THERMAL_MODE_CRITICAL
 )paren
 id|seq_printf
 c_func
@@ -4137,8 +4152,11 @@ l_string|&quot;active&quot;
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_thermal_cooling_open_fs
@@ -4433,8 +4451,11 @@ l_int|10
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_thermal_polling_open_fs
@@ -5472,7 +5493,7 @@ r_else
 multiline_comment|/* _ACx and _PSV are optional, but _CRT is required */
 id|tz-&gt;cooling_mode
 op_assign
-id|ACPI_THERMAL_MODE_CRT
+id|ACPI_THERMAL_MODE_CRITICAL
 suffix:semicolon
 )brace
 )brace

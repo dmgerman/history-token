@@ -89,6 +89,41 @@ id|AE_AML_STRING_LIMIT
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACPI_STRNCMP
+(paren
+id|signature
+comma
+id|DSDT_SIG
+comma
+id|ACPI_NAME_SIZE
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The DSDT pointer is contained in the FADT, not the RSDT.&n;&t;&t; * This code should suffice, because the only code that would perform&n;&t;&t; * a &quot;find&quot; on the DSDT is the data_table_region() AML opcode -- in&n;&t;&t; * which case, the DSDT is guaranteed to be already loaded.&n;&t;&t; * If this becomes insufficient, the FADT will have to be found first.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_DSDT
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_ACPI_TABLES
+)paren
+suffix:semicolon
+)brace
+id|table
+op_assign
+id|acpi_gbl_DSDT
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* Find the table */
 id|status
 op_assign
@@ -118,6 +153,7 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Check oem_id and oem_table_id */
 r_if
@@ -158,6 +194,17 @@ id|AE_AML_NAME_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_TABLES
+comma
+l_string|&quot;Found table [%4.4s]&bslash;n&quot;
+comma
+id|table-&gt;signature
+)paren
+)paren
+suffix:semicolon
 op_star
 id|table_ptr
 op_assign

@@ -288,7 +288,7 @@ op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
 macro_line|#if defined (_ACPI_ASL_COMPILER) || defined (_ACPI_DUMP_App)
-multiline_comment|/* i_aSL Compiler cheats by putting parameter count in the owner_iD */
+multiline_comment|/*&n;&t;&t;&t;&t; * i_aSL Compiler cheats by putting parameter count&n;&t;&t;&t;&t; * in the owner_iD&n;&t;&t;&t;&t; */
 id|new_node-&gt;owner_id
 op_assign
 id|obj_desc-&gt;method.param_count
@@ -405,6 +405,11 @@ id|status
 )paren
 )paren
 (brace
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
 r_goto
 id|unlock_and_exit
 suffix:semicolon
@@ -439,6 +444,11 @@ id|status
 )paren
 )paren
 (brace
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
 r_goto
 id|unlock_and_exit
 suffix:semicolon

@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;asm/percpu.h&gt;
 multiline_comment|/* flag for disabling the tsc */
 r_extern
 r_int
@@ -185,16 +184,15 @@ suffix:semicolon
 r_extern
 r_struct
 id|tss_struct
-id|doublefault_tss
+id|init_tss
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
-id|DECLARE_PER_CPU
-c_func
-(paren
+r_extern
 r_struct
 id|tss_struct
-comma
-id|init_tss
-)paren
+id|doublefault_tss
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
@@ -776,8 +774,6 @@ mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
-DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
-mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 multiline_comment|/*&n; * Size of io_bitmap.&n; */
 DECL|macro|IO_BITMAP_BITS
 mdefine_line|#define IO_BITMAP_BITS  65536
@@ -789,8 +785,6 @@ DECL|macro|IO_BITMAP_OFFSET
 mdefine_line|#define IO_BITMAP_OFFSET offsetof(struct tss_struct,io_bitmap)
 DECL|macro|INVALID_IO_BITMAP_OFFSET
 mdefine_line|#define INVALID_IO_BITMAP_OFFSET 0x8000
-DECL|macro|INVALID_IO_BITMAP_OFFSET_LAZY
-mdefine_line|#define INVALID_IO_BITMAP_OFFSET_LAZY 0x9000
 DECL|struct|i387_fsave_struct
 r_struct
 id|i387_fsave_struct
@@ -1026,9 +1020,6 @@ DECL|typedef|mm_segment_t
 )brace
 id|mm_segment_t
 suffix:semicolon
-r_struct
-id|thread_struct
-suffix:semicolon
 DECL|struct|tss_struct
 r_struct
 id|tss_struct
@@ -1205,25 +1196,13 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * Cache the current maximum and the last task that used the bitmap:&n;&t; */
-DECL|member|io_bitmap_max
-r_int
-r_int
-id|io_bitmap_max
-suffix:semicolon
-DECL|member|io_bitmap_owner
-r_struct
-id|thread_struct
-op_star
-id|io_bitmap_owner
-suffix:semicolon
 multiline_comment|/*&n;&t; * pads the TSS to be cacheline-aligned (size is 0x100)&n;&t; */
 DECL|member|__cacheline_filler
 r_int
 r_int
 id|__cacheline_filler
 (braket
-l_int|35
+l_int|37
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * .. and then another 0x100 bytes for emergency kernel stack&n;&t; */
@@ -1356,19 +1335,13 @@ r_int
 op_star
 id|io_bitmap_ptr
 suffix:semicolon
-multiline_comment|/* max allowed port in the bitmap, in bytes: */
-DECL|member|io_bitmap_max
-r_int
-r_int
-id|io_bitmap_max
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.vm86_info = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.sysenter_cs = __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_ptr = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Note that the .io_bitmap member must be extra-big. This is because&n; * the CPU will access an additional byte beyond the end of the IO&n; * permission bitmap. The extra byte must be all 1 bits, and must&n; * be within the limit.&n; */
 DECL|macro|INIT_TSS
-mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.esp1&t;&t;= sizeof(init_tss[0]) + (long)&amp;init_tss[0],&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
 DECL|function|load_esp0
 r_static
 r_inline
@@ -1888,5 +1861,16 @@ id|c
 suffix:semicolon
 DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
+macro_line|#ifdef CONFIG_SCHED_SMT
+DECL|macro|ARCH_HAS_SCHED_DOMAIN
+mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
+DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
+mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
+macro_line|#endif
+r_extern
+r_int
+r_int
+id|boot_option_idle_override
+suffix:semicolon
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

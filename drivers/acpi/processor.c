@@ -8,6 +8,8 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -213,6 +215,22 @@ comma
 comma
 )brace
 suffix:semicolon
+DECL|variable|c2
+r_static
+r_int
+id|c2
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|c3
+r_static
+r_int
+id|c3
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|struct|acpi_processor_errata
 r_struct
 id|acpi_processor_errata
@@ -382,6 +400,30 @@ r_static
 r_struct
 id|acpi_processor_errata
 id|errata
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|c2
+comma
+id|c2
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|c3
+comma
+id|c3
+comma
+r_bool
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|pm_idle_save
 r_static
@@ -1128,7 +1170,18 @@ id|pr-&gt;power.state
 r_case
 id|ACPI_STATE_C1
 suffix:colon
-multiline_comment|/* Invoke C1. */
+multiline_comment|/*&n;&t;&t; * Invoke C1.&n;&t;&t; * Use the appropriate idle routine, the one that would&n;&t;&t; * be used without acpi C-states.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|pm_idle_save
+)paren
+id|pm_idle_save
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
 id|safe_halt
 c_func
 (paren
@@ -1307,11 +1360,17 @@ id|next_state
 op_assign
 id|pr-&gt;power.state
 suffix:semicolon
-multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; */
+multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; * Do not promote above acpi_cstate_limit.&n;&t; */
 r_if
 c_cond
 (paren
 id|cx-&gt;promotion.state
+op_logical_and
+(paren
+id|cx-&gt;promotion.state
+op_le
+id|acpi_cstate_limit
+)paren
 )paren
 (brace
 r_if
@@ -1418,6 +1477,20 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
+multiline_comment|/*&n;&t; * Demote if current state exceeds acpi_cstate_limit&n;&t; */
+r_if
+c_cond
+(paren
+id|pr-&gt;power.state
+OG
+id|acpi_cstate_limit
+)paren
+(brace
+id|next_state
+op_assign
+id|acpi_cstate_limit
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * New Cx State?&n;&t; * -------------&n;&t; * If we&squot;re going to start using a new Cx state we must clean up&n;&t; * from the previous and prepare to use the new.&n;&t; */
 r_if
 c_cond
@@ -1804,6 +1877,20 @@ l_string|&quot;C2 not supported in SMP mode&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|c2
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;C2 disabled&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C2 requirements.&n;&t;&t; * Normalize the C2 latency to expidite policy.&n;&t;&t; */
 r_else
 (brace
@@ -1926,6 +2013,20 @@ l_string|&quot;C3 not supported on PIIX4 with Type-F DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|c3
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;C3 disabled&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Otherwise we&squot;ve met all of our C3 requirements.  &n;&t;&t; * Normalize the C2 latency to expidite policy.  Enable&n;&t;&t; * checking of bus mastering status (bm_check) so we can &n;&t;&t; * use this in our C3 policy.&n;&t;&t; */
 r_else
 (brace
@@ -3580,8 +3681,11 @@ id|transition_latency
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_perf_open_fs
@@ -6179,8 +6283,11 @@ l_string|&quot;no&quot;
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_info_open_fs
@@ -6444,8 +6551,11 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_power_open_fs
@@ -6666,8 +6776,11 @@ l_int|0
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_throttling_open_fs
@@ -6951,8 +7064,11 @@ id|pr-&gt;limit.thermal.tx
 suffix:semicolon
 id|end
 suffix:colon
-r_return
+id|return_VALUE
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_limit_open_fs
@@ -8470,30 +8586,20 @@ id|pr-&gt;id
 op_assign
 id|pr
 suffix:semicolon
-multiline_comment|/*&n;&t; * Install the idle handler if processor power management is supported.&n;&t; * Note that the default idle handler (default_idle) will be used on &n;&t; * platforms that only support C1.&n;&t; */
+multiline_comment|/*&n;&t; * Install the idle handler if processor power management is supported.&n;&t; * Note that we use previously set idle handler will be used on &n;&t; * platforms that only support C1.&n;&t; */
 r_if
 c_cond
 (paren
 (paren
-id|pr-&gt;id
-op_eq
-l_int|0
+id|pr-&gt;flags.power
 )paren
 op_logical_and
 (paren
-id|pr-&gt;flags.power
+op_logical_neg
+id|boot_option_idle_override
 )paren
 )paren
 (brace
-id|pm_idle_save
-op_assign
-id|pm_idle
-suffix:semicolon
-id|pm_idle
-op_assign
-id|acpi_processor_idle
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -8546,15 +8652,60 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pr-&gt;id
+op_eq
+l_int|0
+)paren
+(brace
+id|pm_idle_save
+op_assign
+id|pm_idle
+suffix:semicolon
+id|pm_idle
+op_assign
+id|acpi_processor_idle
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
 id|pr-&gt;flags.throttling
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;, %d throttling states&quot;
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;%s [%s] (supports&quot;
+comma
+id|acpi_device_name
+c_func
+(paren
+id|device
+)paren
+comma
+id|acpi_device_bid
+c_func
+(paren
+id|device
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; %d throttling states&quot;
 comma
 id|pr-&gt;throttling.state_count
 )paren
@@ -8565,6 +8716,7 @@ c_func
 l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 id|end
 suffix:colon
 r_if
@@ -8737,6 +8889,120 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* IBM ThinkPad R40e crashes mysteriously when going into C2 or C3. &n;   For now disable this. Probably a bug somewhere else. */
+DECL|function|no_c2c3
+r_static
+r_int
+id|no_c2c3
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|id
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s detected - C2,C3 disabled. Overwrite with &bslash;&quot;processor.c2=1 processor.c3=1&bslash;n&bslash;&quot;&quot;
+comma
+id|id-&gt;ident
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c2
+op_eq
+op_minus
+l_int|1
+)paren
+id|c2
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c3
+op_eq
+op_minus
+l_int|1
+)paren
+id|c3
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|processor_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|processor_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|no_c2c3
+comma
+l_string|&quot;IBM ThinkPad R40e&quot;
+comma
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VENDOR
+comma
+l_string|&quot;IBM&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;1SET60WW&quot;
+)paren
+)brace
+)brace
+comma
+(brace
+id|no_c2c3
+comma
+l_string|&quot;Medion 41700&quot;
+comma
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VENDOR
+comma
+l_string|&quot;Phoenix Technologies LTD&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;R01-A1J&quot;
+)paren
+)brace
+)brace
+comma
+(brace
+)brace
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* We keep the driver loaded even when ACPI is not running. &n;   This is needed for the powernow-k8 driver, that works even without&n;   ACPI, but needs symbols from this driver */
 r_static
 r_int
 id|__init
@@ -8804,8 +9070,7 @@ id|acpi_processor_dir
 id|return_VALUE
 c_func
 (paren
-op_minus
-id|ENODEV
+l_int|0
 )paren
 suffix:semicolon
 id|acpi_processor_dir-&gt;owner
@@ -8840,8 +9105,7 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-op_minus
-id|ENODEV
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -8853,6 +9117,12 @@ suffix:semicolon
 id|acpi_processor_ppc_init
 c_func
 (paren
+)paren
+suffix:semicolon
+id|dmi_check_system
+c_func
+(paren
+id|processor_dmi_table
 )paren
 suffix:semicolon
 id|return_VALUE
@@ -8917,6 +9187,18 @@ id|module_exit
 c_func
 (paren
 id|acpi_processor_exit
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|acpi_cstate_limit
+comma
+id|acpi_cstate_limit
+comma
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|acpi_processor_set_thermal_limit
