@@ -1202,6 +1202,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|RTL8169_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|RTL8169_VERSION
+)paren
+suffix:semicolon
 r_static
 r_int
 id|rtl8169_open
