@@ -94,11 +94,6 @@ id|timer_irq.handler
 op_assign
 id|timer_interrupt
 suffix:semicolon
-id|timer_irq.flags
-op_assign
-id|SA_INTERRUPT
-suffix:semicolon
-multiline_comment|/* FIXME: really? */
 id|setup_irq
 c_func
 (paren

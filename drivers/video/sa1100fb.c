@@ -5961,14 +5961,18 @@ id|policy
 op_assign
 id|data
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|val
-op_eq
-id|CPUFREQ_INCOMPATIBLE
 )paren
 (brace
+r_case
+id|CPUFREQ_ADJUST
+suffix:colon
+r_case
+id|CPUFREQ_INCOMPATIBLE
+suffix:colon
 id|printk
 c_func
 (paren
@@ -5986,6 +5990,25 @@ id|policy-&gt;max
 )paren
 suffix:semicolon
 multiline_comment|/* todo: fill in min/max values */
+r_break
+suffix:semicolon
+r_case
+id|CPUFREQ_NOTIFY
+suffix:colon
+r_do
+(brace
+)brace
+r_while
+c_loop
+(paren
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+multiline_comment|/* todo: panic if min/max values aren&squot;t fulfilled &n;&t;&t; * [can&squot;t really happen unless there&squot;s a bug in the&n;&t;&t; * CPU policy verififcation process *&n;&t;&t; */
+r_break
+suffix:semicolon
 )brace
 r_return
 l_int|0
