@@ -2318,6 +2318,17 @@ DECL|member|last_sense
 id|__u8
 id|last_sense
 suffix:semicolon
+DECL|member|media_written
+id|__u8
+id|media_written
+suffix:semicolon
+multiline_comment|/* dirty flag, DVD+RW bookkeeping */
+DECL|member|mmc3_profile
+r_int
+r_int
+id|mmc3_profile
+suffix:semicolon
+multiline_comment|/* current MMC3 profile */
 DECL|member|for_data
 r_int
 id|for_data

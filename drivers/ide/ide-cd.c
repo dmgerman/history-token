@@ -6620,6 +6620,10 @@ id|info-&gt;cmd
 op_assign
 id|WRITE
 suffix:semicolon
+id|info-&gt;devinfo.media_written
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Start sending the write request to the drive. */
 r_return
 id|cdrom_start_packet_command

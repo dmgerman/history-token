@@ -1214,6 +1214,10 @@ id|SCpnt-&gt;sc_data_direction
 op_assign
 id|DMA_TO_DEVICE
 suffix:semicolon
+id|cd-&gt;cdi.media_written
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 r_if
