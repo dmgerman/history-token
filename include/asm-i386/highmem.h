@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* declarations for highmem.c */
 r_extern
 r_int
