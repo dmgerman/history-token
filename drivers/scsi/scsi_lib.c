@@ -373,7 +373,7 @@ id|SCpnt-&gt;request
 )paren
 suffix:semicolon
 )brace
-id|_elv_add_request
+id|__elv_add_request
 c_func
 (paren
 id|q

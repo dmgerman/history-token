@@ -632,6 +632,11 @@ r_int
 r_int
 id|seg_boundary_mask
 suffix:semicolon
+DECL|member|dma_alignment
+r_int
+r_int
+id|dma_alignment
+suffix:semicolon
 DECL|member|queue_wait
 id|wait_queue_head_t
 id|queue_wait
@@ -680,6 +685,13 @@ mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; (R
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)
+multiline_comment|/*&n; * q-&gt;prep_rq_fn return values&n; */
+DECL|macro|BLKPREP_OK
+mdefine_line|#define BLKPREP_OK&t;&t;0&t;/* serve it */
+DECL|macro|BLKPREP_KILL
+mdefine_line|#define BLKPREP_KILL&t;&t;1&t;/* fatal error, kill */
+DECL|macro|BLKPREP_DEFER
+mdefine_line|#define BLKPREP_DEFER&t;&t;2&t;/* leave on queue */
 r_extern
 r_int
 r_int
@@ -702,6 +714,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_inline
 r_void
 id|blk_queue_bounce
 c_func
@@ -1177,6 +1190,17 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|backing_dev_info
 op_star
@@ -1394,6 +1418,63 @@ id|bdev
 (brace
 r_return
 id|queue_hardsect_size
+c_func
+(paren
+id|bdev_get_queue
+c_func
+(paren
+id|bdev
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|queue_dma_alignment
+r_static
+r_inline
+r_int
+id|queue_dma_alignment
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+(brace
+r_int
+id|retval
+op_assign
+l_int|511
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|q
+op_logical_and
+id|q-&gt;dma_alignment
+)paren
+id|retval
+op_assign
+id|q-&gt;dma_alignment
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
+)brace
+DECL|function|bdev_dma_aligment
+r_static
+r_inline
+r_int
+id|bdev_dma_aligment
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+)paren
+(brace
+r_return
+id|queue_dma_alignment
 c_func
 (paren
 id|bdev_get_queue

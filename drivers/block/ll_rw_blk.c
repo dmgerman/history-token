@@ -533,6 +533,14 @@ comma
 l_int|512
 )paren
 suffix:semicolon
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|q
+comma
+l_int|511
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * by default assume old behaviour and bounce for any highmem page&n;&t; */
 id|blk_queue_bounce_limit
 c_func
@@ -928,6 +936,25 @@ id|mask
 suffix:semicolon
 )brace
 id|q-&gt;seg_boundary_mask
+op_assign
+id|mask
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * blk_queue_dma_alignment - set dma length and memory alignment&n; * @q:  the request queue for the device&n; * @dma_mask:  alignment mask&n; *&n; * description:&n; *    set required memory and length aligment for direct dma transactions.&n; *    this is used when buiding direct io requests for the queue.&n; *&n; **/
+DECL|function|blk_queue_dma_alignment
+r_void
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_int
+id|mask
+)paren
+(brace
+id|q-&gt;dma_alignment
 op_assign
 id|mask
 suffix:semicolon
@@ -1725,12 +1752,14 @@ op_and_assign
 op_complement
 id|REQ_STARTED
 suffix:semicolon
-id|elv_add_request
+id|__elv_add_request
 c_func
 (paren
 id|q
 comma
 id|rq
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -1768,7 +1797,17 @@ l_string|&quot;REQ_BLOCK_PC&quot;
 comma
 l_string|&quot;REQ_SENSE&quot;
 comma
+l_string|&quot;REQ_FAILED&quot;
+comma
+l_string|&quot;REQ_QUIET&quot;
+comma
 l_string|&quot;REQ_SPECIAL&quot;
+l_string|&quot;REQ_DRIVE_CMD&quot;
+comma
+l_string|&quot;REQ_DRIVE_TASK&quot;
+comma
+l_string|&quot;REQ_DRIVE_TASKFILE&quot;
+comma
 )brace
 suffix:semicolon
 DECL|function|blk_dump_rq_flags
@@ -1792,7 +1831,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: dev %02x:%02x: &quot;
+l_string|&quot;%s: dev %02x:%02x: flags = &quot;
 comma
 id|msg
 comma
@@ -1852,7 +1891,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sector %llu, nr/cnr %lu/%u&bslash;n&quot;
+l_string|&quot;&bslash;nsector %llu, nr/cnr %lu/%u&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1869,13 +1908,72 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;bio %p, biotail %p&bslash;n&quot;
+l_string|&quot;bio %p, biotail %p, buffer %p, data %p, len %u&bslash;n&quot;
 comma
 id|rq-&gt;bio
 comma
 id|rq-&gt;biotail
+comma
+id|rq-&gt;buffer
+comma
+id|rq-&gt;data
+comma
+id|rq-&gt;data_len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rq-&gt;flags
+op_amp
+(paren
+id|REQ_BLOCK_PC
+op_or
+id|REQ_PC
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;cdb: &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|bit
+op_assign
+l_int|0
+suffix:semicolon
+id|bit
+OL
+r_sizeof
+(paren
+id|rq-&gt;cmd
+)paren
+suffix:semicolon
+id|bit
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+id|rq-&gt;cmd
+(braket
+id|bit
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|blk_recount_segments
 r_void
@@ -4838,7 +4936,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * elevator indicated where it wants this request to be&n;&t; * inserted at elevator_merge time&n;&t; */
-id|__elv_add_request
+id|__elv_add_request_pos
 c_func
 (paren
 id|q
@@ -4886,25 +4984,6 @@ id|req-&gt;rl
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|q
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|q-&gt;last_merge
-op_eq
-op_amp
-id|req-&gt;queuelist
-)paren
-id|q-&gt;last_merge
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Request may not have originated from ll_rw_blk. if not,&n;&t; * it didn&squot;t come out of our reserved rq pools&n;&t; */
 r_if
 c_cond
@@ -7260,6 +7339,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_queue_segment_boundary
+)paren
+suffix:semicolon
+DECL|variable|blk_queue_dma_alignment
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_dma_alignment
 )paren
 suffix:semicolon
 DECL|variable|blk_rq_map_sg

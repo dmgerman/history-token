@@ -137,12 +137,6 @@ id|req
 )paren
 suffix:semicolon
 )brace
-DECL|macro|_elv_add_request_core
-mdefine_line|#define _elv_add_request_core(q, rq, where, plug)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((plug))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;blk_plug_device((q));&t;&t;&t;&t;&bslash;&n;&t;&t;(q)-&gt;elevator.elevator_add_req_fn((q), (rq), (where));&t;&bslash;&n;&t;} while (0)
-DECL|macro|_elv_add_request
-mdefine_line|#define _elv_add_request(q, rq, back, p) do {&t;&t;&t;&t;      &bslash;&n;&t;if ((back))&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;_elv_add_request_core((q), (rq), (q)-&gt;queue_head.prev, (p));  &bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;_elv_add_request_core((q), (rq), &amp;(q)-&gt;queue_head, (p));      &bslash;&n;} while (0)
-DECL|macro|elv_add_request
-mdefine_line|#define elv_add_request(q, rq, back) _elv_add_request((q), (rq), (back), 1)
 macro_line|#if defined(MAJOR_NR) || defined(IDE_DRIVER)
 macro_line|#if (MAJOR_NR != SCSI_TAPE_MAJOR) &amp;&amp; (MAJOR_NR != OSST_MAJOR)
 macro_line|#if !defined(IDE_DRIVER)

@@ -191,6 +191,8 @@ DECL|macro|BIO_SEG_VALID
 mdefine_line|#define BIO_SEG_VALID&t;3&t;/* nr_hw_seg valid */
 DECL|macro|BIO_CLONED
 mdefine_line|#define BIO_CLONED&t;4&t;/* doesn&squot;t own data */
+DECL|macro|BIO_BOUNCED
+mdefine_line|#define BIO_BOUNCED&t;5&t;/* bio is a bounce bio */
 DECL|macro|bio_flagged
 mdefine_line|#define bio_flagged(bio, flag)&t;((bio)-&gt;bi_flags &amp; (1 &lt;&lt; (flag)))
 multiline_comment|/*&n; * top 4 bits of bio flags indicate the pool this bio came from&n; */
