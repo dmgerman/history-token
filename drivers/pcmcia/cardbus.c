@@ -967,10 +967,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|res-&gt;start
-op_logical_and
-id|res-&gt;end
+id|res-&gt;flags
 )paren
 id|pci_assign_resource
 c_func
