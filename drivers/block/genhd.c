@@ -645,14 +645,6 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_int
-id|net_dev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|soc_probe
 c_func
 (paren
@@ -733,13 +725,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_CPQ_DA
 id|cpqarray_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET
-id|net_dev_init
 c_func
 (paren
 )paren
