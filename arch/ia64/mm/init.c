@@ -416,13 +416,7 @@ l_int|0x7
 suffix:semicolon
 id|vma-&gt;vm_flags
 op_assign
-id|VM_READ
-op_or
-id|VM_WRITE
-op_or
-id|VM_MAYREAD
-op_or
-id|VM_MAYWRITE
+id|VM_DATA_DEFAULT_FLAGS
 op_or
 id|VM_GROWSUP
 suffix:semicolon
