@@ -254,7 +254,12 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|atomic_set
 c_func

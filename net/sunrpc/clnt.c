@@ -1776,14 +1776,12 @@ id|task-&gt;tk_msg.rpc_cred
 op_ne
 l_int|NULL
 )paren
-(brace
 id|rpcauth_holdcred
 c_func
 (paren
 id|task
 )paren
 suffix:semicolon
-)brace
 r_else
 id|rpcauth_bindcred
 c_func

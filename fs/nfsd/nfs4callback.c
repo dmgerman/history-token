@@ -1517,9 +1517,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|msg.rpc_cred
-op_eq
-l_int|NULL
+)paren
 )paren
 r_goto
 id|out_rpciod
@@ -1820,9 +1822,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|msg.rpc_cred
-op_eq
-l_int|NULL
+)paren
 )paren
 r_goto
 id|out
