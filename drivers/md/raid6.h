@@ -8,6 +8,7 @@ DECL|macro|RAID6_USE_EMPTY_ZERO_PAGE
 mdefine_line|#define RAID6_USE_EMPTY_ZERO_PAGE 0
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -41,11 +42,15 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#else /* ! __KERNEL__ */
 multiline_comment|/* Used for testing in user space */
-macro_line|#include &lt;stddef.h&gt;
-macro_line|#include &lt;sys/types.h&gt;
-macro_line|#include &lt;inttypes.h&gt;
 macro_line|#include &lt;errno.h&gt;
+macro_line|#include &lt;inttypes.h&gt;
+macro_line|#include &lt;limits.h&gt;
+macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;sys/mman.h&gt;
+macro_line|#include &lt;sys/types.h&gt;
+multiline_comment|/* Not standard, but glibc defines it */
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG __WORDSIZE
 DECL|typedef|u8
 r_typedef
 r_uint8
@@ -82,41 +87,13 @@ DECL|macro|__init
 mdefine_line|#define __init
 DECL|macro|__exit
 mdefine_line|#define __exit
+DECL|macro|__attribute_const__
+mdefine_line|#define __attribute_const__ __attribute__((const))
 DECL|macro|preempt_enable
 mdefine_line|#define preempt_enable()
 DECL|macro|preempt_disable
 mdefine_line|#define preempt_disable()
 macro_line|#endif /* __KERNEL__ */
-multiline_comment|/* Change this from BITS_PER_LONG if there is something better... */
-macro_line|#if BITS_PER_LONG == 64
-DECL|macro|NBYTES
-macro_line|# define NBYTES(x) ((x) * 0x0101010101010101UL)
-DECL|macro|NSIZE
-macro_line|# define NSIZE  8
-DECL|macro|NSHIFT
-macro_line|# define NSHIFT 3
-DECL|macro|NSTRING
-macro_line|# define NSTRING &quot;64&quot;
-DECL|typedef|unative_t
-r_typedef
-id|u64
-id|unative_t
-suffix:semicolon
-macro_line|#else
-DECL|macro|NBYTES
-macro_line|# define NBYTES(x) ((x) * 0x01010101U)
-DECL|macro|NSIZE
-macro_line|# define NSIZE  4
-DECL|macro|NSHIFT
-macro_line|# define NSHIFT 2
-DECL|macro|NSTRING
-macro_line|# define NSTRING &quot;32&quot;
-DECL|typedef|unative_t
-r_typedef
-id|u32
-id|unative_t
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Routine choices */
 DECL|struct|raid6_calls
 r_struct
