@@ -3355,19 +3355,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 multiline_comment|/* Sleep for up to 1 second to wait for the LED to change. */
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|remove_wait_queue
