@@ -283,8 +283,8 @@ DECL|macro|MIDI_CTL_SUSTAIN
 mdefine_line|#define MIDI_CTL_SUSTAIN              &t;0x40
 DECL|macro|MIDI_CTL_PORTAMENTO
 mdefine_line|#define MIDI_CTL_PORTAMENTO           &t;0x41
-DECL|macro|MIDI_CTL_SUSTENUTO
-mdefine_line|#define MIDI_CTL_SUSTENUTO            &t;0x42
+DECL|macro|MIDI_CTL_SOSTENUTO
+mdefine_line|#define MIDI_CTL_SOSTENUTO            &t;0x42
 DECL|macro|MIDI_CTL_SOFT_PEDAL
 mdefine_line|#define MIDI_CTL_SOFT_PEDAL           &t;0x43
 DECL|macro|MIDI_CTL_LEGATO_FOOTSWITCH

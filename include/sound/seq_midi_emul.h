@@ -401,8 +401,8 @@ DECL|macro|gm_hold
 mdefine_line|#define gm_hold&t;&t;&t;gm_sustain
 DECL|macro|gm_portamento
 mdefine_line|#define gm_portamento&t;&t;control[MIDI_CTL_PORTAMENTO]
-DECL|macro|gm_sustenuto
-mdefine_line|#define gm_sustenuto&t;&t;control[MIDI_CTL_SUSTENUTO]
+DECL|macro|gm_sostenuto
+mdefine_line|#define gm_sostenuto&t;&t;control[MIDI_CTL_SOSTENUTO]
 multiline_comment|/*&n; * These macros give the complete value of the controls that consist&n; * of coarse and fine pairs.  Of course the fine controls are seldom used&n; * but there is no harm in being complete.&n; */
 DECL|macro|SNDRV_GM_BANK_SELECT
 mdefine_line|#define SNDRV_GM_BANK_SELECT(cp)&t;&t;(((cp)-&gt;control[0]&lt;&lt;7)|((cp)-&gt;control[32]))
@@ -442,8 +442,8 @@ DECL|macro|SNDRV_MIDI_NOTE_ON
 mdefine_line|#define SNDRV_MIDI_NOTE_ON&t;&t;0x01
 DECL|macro|SNDRV_MIDI_NOTE_RELEASED
 mdefine_line|#define SNDRV_MIDI_NOTE_RELEASED&t;&t;0x02
-DECL|macro|SNDRV_MIDI_NOTE_SUSTENUTO
-mdefine_line|#define SNDRV_MIDI_NOTE_SUSTENUTO&t;&t;0x04
+DECL|macro|SNDRV_MIDI_NOTE_SOSTENUTO
+mdefine_line|#define SNDRV_MIDI_NOTE_SOSTENUTO&t;&t;0x04
 DECL|macro|SNDRV_MIDI_PARAM_TYPE_REGISTERED
 mdefine_line|#define SNDRV_MIDI_PARAM_TYPE_REGISTERED&t;&t;0
 DECL|macro|SNDRV_MIDI_PARAM_TYPE_NONREGISTERED
