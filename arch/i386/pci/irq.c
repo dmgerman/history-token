@@ -4540,7 +4540,7 @@ id|pin
 suffix:semicolon
 r_extern
 r_int
-id|interrupt_line_quirk
+id|via_interrupt_line_quirk
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -4837,7 +4837,7 @@ r_else
 r_if
 c_cond
 (paren
-id|interrupt_line_quirk
+id|via_interrupt_line_quirk
 )paren
 id|pci_write_config_byte
 c_func
