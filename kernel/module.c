@@ -3047,6 +3047,11 @@ id|show_refcnt
 c_func
 (paren
 r_struct
+id|module_attribute
+op_star
+id|mattr
+comma
+r_struct
 id|module
 op_star
 id|mod

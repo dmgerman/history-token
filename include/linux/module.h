@@ -81,6 +81,10 @@ id|show
 )paren
 (paren
 r_struct
+id|module_attribute
+op_star
+comma
+r_struct
 id|module
 op_star
 comma
@@ -95,6 +99,10 @@ op_star
 id|store
 )paren
 (paren
+r_struct
+id|module_attribute
+op_star
+comma
 r_struct
 id|module
 op_star

@@ -2874,6 +2874,8 @@ op_member_access_from_pointer
 id|show
 c_func
 (paren
+id|attribute
+comma
 id|mk-&gt;mod
 comma
 id|buf
