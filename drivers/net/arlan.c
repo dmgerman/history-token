@@ -9930,19 +9930,10 @@ id|systemId
 op_ne
 id|systemIdUNKNOWN
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;arlan: wrong module params for multiple devices&bslash;n &quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
-)brace
 id|numDevices
 op_assign
 id|arlan_find_devices
@@ -9957,19 +9948,10 @@ id|numDevices
 op_eq
 l_int|0
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;arlan: no devices found &bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENODEV
 suffix:semicolon
-)brace
 id|siteName
 op_assign
 id|kmalloc
@@ -9988,16 +9970,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;arlan: No memory for site name.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 r_for
@@ -10033,7 +10008,7 @@ l_int|NULL
 )paren
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
@@ -10045,19 +10020,10 @@ id|i
 op_eq
 l_int|NULL
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_CRIT
-l_string|&quot;arlan: Not Enough memory &bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
