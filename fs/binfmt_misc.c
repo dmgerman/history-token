@@ -40,6 +40,8 @@ comma
 id|Magic
 )brace
 suffix:semicolon
+DECL|macro|MISC_FMT_PRESERVE_ARGV0
+mdefine_line|#define MISC_FMT_PRESERVE_ARGV0 (1&lt;&lt;31)
 r_typedef
 r_struct
 (brace
@@ -466,12 +468,24 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Build args for interpreter */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|fmt-&gt;flags
+op_amp
+id|MISC_FMT_PRESERVE_ARGV0
+)paren
+)paren
+(brace
 id|remove_arg_zero
 c_func
 (paren
 id|bprm
 )paren
 suffix:semicolon
+)brace
 id|retval
 op_assign
 id|copy_strings_kernel
@@ -1430,6 +1444,23 @@ l_int|0
 r_goto
 id|Einval
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|p
+op_eq
+l_char|&squot;P&squot;
+)paren
+(brace
+id|p
+op_increment
+suffix:semicolon
+id|e-&gt;flags
+op_or_assign
+id|MISC_FMT_PRESERVE_ARGV0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
