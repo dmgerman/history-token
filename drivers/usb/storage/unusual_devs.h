@@ -1951,11 +1951,11 @@ l_int|0x9009
 comma
 l_string|&quot;Pentax&quot;
 comma
-l_string|&quot;Optio S&quot;
+l_string|&quot;Optio S/S4&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
