@@ -639,8 +639,7 @@ DECL|macro|DBAT7L
 mdefine_line|#define DBAT7L&t;SPRN_DBAT7L&t;/* Data BAT 7 Lower Register */
 DECL|macro|DBAT7U
 mdefine_line|#define DBAT7U&t;SPRN_DBAT7U&t;/* Data BAT 7 Upper Register */
-DECL|macro|DEC
-mdefine_line|#define DEC&t;SPRN_DEC&t;/* Decrement Register */
+singleline_comment|//#define DEC&t;SPRN_DEC&t;/* Decrement Register */
 DECL|macro|DMISS
 mdefine_line|#define DMISS&t;SPRN_DMISS&t;/* Data TLB Miss Register */
 DECL|macro|DSISR
@@ -699,12 +698,10 @@ DECL|macro|L2CR
 mdefine_line|#define L2CR&t;SPRN_L2CR&t;/* Classic PPC L2 cache control register */
 DECL|macro|L3CR
 mdefine_line|#define L3CR&t;SPRN_L3CR&t;/* PPC 745x L3 cache control register */
-DECL|macro|LR
-mdefine_line|#define LR&t;SPRN_LR
+singleline_comment|//#define LR&t;SPRN_LR
 DECL|macro|PVR
 mdefine_line|#define PVR&t;SPRN_PVR&t;/* Processor Version */
-DECL|macro|RPA
-mdefine_line|#define RPA&t;SPRN_RPA&t;/* Required Physical Address Register */
+singleline_comment|//#define RPA&t;SPRN_RPA&t;/* Required Physical Address Register */
 DECL|macro|SDR1
 mdefine_line|#define SDR1&t;SPRN_SDR1&t;/* MMU hash base register */
 DECL|macro|SPR0
@@ -877,39 +874,25 @@ DECL|macro|SVR_8555E
 mdefine_line|#define SVR_8555E&t;0x80790000
 DECL|macro|SVR_8560
 mdefine_line|#define SVR_8560&t;0x80700000
+macro_line|#if 0
 multiline_comment|/* Segment Registers */
-DECL|macro|SR0
 mdefine_line|#define SR0&t;0
-DECL|macro|SR1
 mdefine_line|#define SR1&t;1
-DECL|macro|SR2
 mdefine_line|#define SR2&t;2
-DECL|macro|SR3
 mdefine_line|#define SR3&t;3
-DECL|macro|SR4
 mdefine_line|#define SR4&t;4
-DECL|macro|SR5
 mdefine_line|#define SR5&t;5
-DECL|macro|SR6
 mdefine_line|#define SR6&t;6
-DECL|macro|SR7
 mdefine_line|#define SR7&t;7
-DECL|macro|SR8
 mdefine_line|#define SR8&t;8
-DECL|macro|SR9
 mdefine_line|#define SR9&t;9
-DECL|macro|SR10
 mdefine_line|#define SR10&t;10
-DECL|macro|SR11
 mdefine_line|#define SR11&t;11
-DECL|macro|SR12
 mdefine_line|#define SR12&t;12
-DECL|macro|SR13
 mdefine_line|#define SR13&t;13
-DECL|macro|SR14
 mdefine_line|#define SR14&t;14
-DECL|macro|SR15
 mdefine_line|#define SR15&t;15
+macro_line|#endif
 multiline_comment|/* Macros for setting and retrieving special purpose registers */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|mfmsr

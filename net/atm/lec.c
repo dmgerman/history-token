@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * lec.c: Lan Emulation driver &n; * Marko Kiiskila carnil@cs.tut.fi&n; *&n; */
+multiline_comment|/*&n; * lec.c: Lan Emulation driver &n; * Marko Kiiskila mkiiskila@yahoo.com&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;

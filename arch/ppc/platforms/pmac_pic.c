@@ -2066,7 +2066,7 @@ l_int|0
 comma
 l_string|&quot;NMI - XMON&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2582,7 +2582,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;cascade&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2622,7 +2622,7 @@ l_int|0
 comma
 l_string|&quot;NMI - XMON&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_XMON */

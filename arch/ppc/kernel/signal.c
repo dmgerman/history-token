@@ -648,6 +648,7 @@ id|regs
 comma
 r_struct
 id|mcontext
+id|__user
 op_star
 id|frame
 comma
@@ -825,6 +826,7 @@ id|current-&gt;thread.vrsave
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -1206,6 +1208,7 @@ id|current-&gt;thread.vrsave
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -1741,6 +1744,7 @@ id|set
 suffix:semicolon
 r_struct
 id|mcontext
+id|__user
 op_star
 id|mcp
 suffix:semicolon
@@ -1958,6 +1962,7 @@ id|tmp
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 id|new_ctx
@@ -1970,6 +1975,7 @@ id|tmp
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 (paren
@@ -2261,6 +2267,7 @@ id|VERIFY_WRITE
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|newsp
@@ -2593,6 +2600,7 @@ op_assign
 (paren
 r_struct
 id|mcontext
+id|__user
 op_star
 )paren
 id|sigctx.regs

@@ -2895,7 +2895,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* set up reply iovec&n;&t; *    toplevel_status + taglen + rescount + OP_PUTFH + status&n;&t; *      + OP_READDIR + status + verifer(2)  = 9&n;&t; */
+multiline_comment|/* set up reply kvec&n;&t; *    toplevel_status + taglen + rescount + OP_PUTFH + status&n;&t; *      + OP_READDIR + status + verifer(2)  = 9&n;&t; */
 id|replen
 op_assign
 (paren
@@ -2985,7 +2985,7 @@ c_func
 id|OP_READLINK
 )paren
 suffix:semicolon
-multiline_comment|/* set up reply iovec&n;&t; *    toplevel_status + taglen + rescount + OP_PUTFH + status&n;&t; *      + OP_READLINK + status  = 7&n;&t; */
+multiline_comment|/* set up reply kvec&n;&t; *    toplevel_status + taglen + rescount + OP_PUTFH + status&n;&t; *      + OP_READLINK + status  = 7&n;&t; */
 id|replen
 op_assign
 (paren
@@ -5781,7 +5781,7 @@ id|status
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* set up reply iovec&n;&t; *    toplevel status + taglen=0 + rescount + OP_PUTFH + status&n;&t; *       + OP_READ + status + eof + datalen = 9&n;&t; */
+multiline_comment|/* set up reply kvec&n;&t; *    toplevel status + taglen=0 + rescount + OP_PUTFH + status&n;&t; *       + OP_READ + status + eof + datalen = 9&n;&t; */
 id|replen
 op_assign
 (paren
@@ -13440,7 +13440,7 @@ id|res
 )paren
 (brace
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 op_assign
@@ -13606,7 +13606,7 @@ op_star
 id|rcvbuf-&gt;pages
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 op_assign
@@ -14133,7 +14133,7 @@ op_amp
 id|req-&gt;rq_rcv_buf
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 op_assign

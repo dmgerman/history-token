@@ -441,6 +441,26 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* datagram.c */
+r_extern
+r_int
+id|ip4_datagram_connect
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sockaddr
+op_star
+id|uaddr
+comma
+r_int
+id|addr_len
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Map a multicast IP onto multicast MAC for type Token Ring.&n; *      This conforms to RFC1469 Option 2 Multicasting i.e.&n; *      using a functional address to transmit / receive &n; *      multicast packets.&n; */
 DECL|function|ip_tr_mc_map
 r_static
@@ -506,7 +526,7 @@ id|ip_reply_arg
 (brace
 DECL|member|iov
 r_struct
-id|iovec
+id|kvec
 id|iov
 (braket
 l_int|1

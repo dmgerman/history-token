@@ -4637,7 +4637,7 @@ l_int|0
 suffix:semicolon
 id|script_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|script_name
 op_assign
@@ -5649,7 +5649,7 @@ id|chip
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#if SYM_CONF_DMA_ADDRESSING_MODE == 2
@@ -9371,7 +9371,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  try to find the interrupted script command,&n;&t; *  and the address at which to continue.&n;&t; */
 id|vdsp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|nxtdsp
 op_assign
@@ -12312,7 +12312,7 @@ l_int|0
 suffix:semicolon
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|FOR_EACH_QUEUED_ELEMENT
 c_func
@@ -12683,7 +12683,7 @@ l_int|0
 suffix:semicolon
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|FOR_EACH_QUEUED_ELEMENT
 c_func
@@ -13176,7 +13176,7 @@ suffix:semicolon
 r_else
 id|pm
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -17281,7 +17281,7 @@ id|tp-&gt;nego_cp
 )paren
 id|tp-&gt;nego_cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef SYM_CONF_IARB_SUPPORT
 multiline_comment|/*&n;&t; *  If we just complete the last queued CCB,&n;&t; *  clear this info that is no longer relevant.&n;&t; */
@@ -17309,7 +17309,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  Make this CCB available.&n;&t; */
 id|cp-&gt;cam_ccb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cp-&gt;host_status
 op_assign
@@ -17409,7 +17409,7 @@ id|np
 id|ccb_p
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|hcode
@@ -17423,7 +17423,7 @@ op_ge
 id|SYM_CONF_MAX_START
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Allocate memory for this CCB.&n;&t; */
 id|cp
@@ -17643,7 +17643,7 @@ l_string|&quot;CCB&quot;
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Look up a CCB from a DSA value.&n; */
@@ -17836,7 +17836,7 @@ id|ln
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Initialize the target control block if not yet.&n;&t; */
 id|sym_init_tcb
@@ -18238,7 +18238,7 @@ l_string|&quot;ITLQ_TBL&quot;
 suffix:semicolon
 id|lp-&gt;itlq_tbl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_goto
 id|fail
@@ -18895,7 +18895,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  Look up our CCB control block.&n;&t; */
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|FOR_EACH_QUEUED_ELEMENT
 c_func

@@ -5406,7 +5406,7 @@ r_void
 op_star
 )paren
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|substream-&gt;number
@@ -9420,7 +9420,7 @@ id|snd_vt1724_amp_cards
 comma
 id|snd_vt1724_aureon_cards
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon

@@ -92,6 +92,7 @@ suffix:semicolon
 DECL|member|packet_sizes
 r_int
 r_int
+id|__user
 op_star
 id|packet_sizes
 suffix:semicolon

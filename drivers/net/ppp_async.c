@@ -682,7 +682,7 @@ id|tty-&gt;disc_data
 suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|write_unlock_irq
 c_func
@@ -2357,7 +2357,7 @@ id|ap-&gt;tpkt
 suffix:semicolon
 id|ap-&gt;tpkt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|1
@@ -2712,7 +2712,7 @@ id|ap-&gt;tpkt
 suffix:semicolon
 id|ap-&gt;tpkt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clear_bit
 c_func
@@ -2788,7 +2788,7 @@ id|ap-&gt;tpkt
 suffix:semicolon
 id|ap-&gt;tpkt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clear_bit
 c_func
@@ -3177,7 +3177,7 @@ id|skb
 suffix:semicolon
 id|ap-&gt;rpkt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ap-&gt;state
 op_assign

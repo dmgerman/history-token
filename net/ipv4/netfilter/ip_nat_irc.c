@@ -49,7 +49,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -72,7 +71,6 @@ comma
 l_string|&quot;port numbers of IRC servers&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* protects irc part of conntracks */
 DECL|variable|ip_irc_lock
 id|DECLARE_LOCK_EXTERN

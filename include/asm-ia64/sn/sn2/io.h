@@ -2,6 +2,8 @@ multiline_comment|/* &n; * This file is subject to the terms and conditions of t
 macro_line|#ifndef _ASM_SN_SN2_IO_H
 DECL|macro|_ASM_SN_SN2_IO_H
 mdefine_line|#define _ASM_SN_SN2_IO_H
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 r_extern
 r_void
 op_star
@@ -12,6 +14,7 @@ r_int
 r_int
 id|port
 )paren
+id|__attribute_const__
 suffix:semicolon
 multiline_comment|/* Forward definition */
 r_extern
@@ -23,7 +26,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Forward definition */
-macro_line|#include &lt;asm/intrinsics.h&gt;
 DECL|macro|__sn_mf_a
 mdefine_line|#define __sn_mf_a()   ia64_mfa()
 r_extern

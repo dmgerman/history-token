@@ -628,7 +628,7 @@ id|buf_priv
 op_member_access_from_pointer
 r_virtual
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|up_write
@@ -718,7 +718,7 @@ id|buf_priv
 op_member_access_from_pointer
 r_virtual
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retcode
@@ -1892,6 +1892,7 @@ id|init
 comma
 (paren
 id|drm_i810_pre12_init_t
+id|__user
 op_star
 )paren
 id|arg
@@ -1940,6 +1941,7 @@ id|init
 comma
 (paren
 id|drm_i810_init_t
+id|__user
 op_star
 )paren
 id|arg
@@ -2055,6 +2057,7 @@ id|init
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2162,6 +2165,7 @@ id|init
 comma
 (paren
 id|drm_i810_init_t
+id|__user
 op_star
 )paren
 id|arg
@@ -3721,6 +3725,7 @@ l_int|2
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|buf_priv
@@ -3743,6 +3748,7 @@ l_int|0
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -4680,6 +4686,7 @@ id|vertex
 comma
 (paren
 id|drm_i810_vertex_t
+id|__user
 op_star
 )paren
 id|arg
@@ -4846,6 +4853,7 @@ id|clear
 comma
 (paren
 id|drm_i810_clear_t
+id|__user
 op_star
 )paren
 id|arg
@@ -5142,6 +5150,7 @@ id|d
 comma
 (paren
 id|drm_i810_dma_t
+id|__user
 op_star
 )paren
 id|arg
@@ -5215,6 +5224,7 @@ c_func
 (paren
 (paren
 id|drm_dma_t
+id|__user
 op_star
 )paren
 id|arg
@@ -5701,6 +5711,7 @@ id|mc
 comma
 (paren
 id|drm_i810_mc_t
+id|__user
 op_star
 )paren
 id|arg
@@ -5940,6 +5951,7 @@ c_func
 (paren
 (paren
 id|drm_i810_overlay_t
+id|__user
 op_star
 )paren
 id|arg

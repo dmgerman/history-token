@@ -20880,7 +20880,7 @@ id|scsi_tapes
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|st_nr_dev
 op_decrement

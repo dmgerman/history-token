@@ -3102,7 +3102,7 @@ multiline_comment|/* If we have a Raven PCI bridge or a Hawk PCI bridge / Memory
 id|early_read_config_dword
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

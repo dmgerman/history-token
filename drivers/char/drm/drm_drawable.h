@@ -53,6 +53,7 @@ c_func
 (paren
 (paren
 id|drm_draw_t
+id|__user
 op_star
 )paren
 id|arg

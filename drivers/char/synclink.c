@@ -6218,7 +6218,7 @@ id|info-&gt;xmit_buf
 suffix:semicolon
 id|info-&gt;xmit_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -11965,7 +11965,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -12409,7 +12409,7 @@ id|ASYNC_NORMAL_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -13252,7 +13252,7 @@ l_int|1
 )paren
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* tty layer will release tty struct */
 r_if
@@ -15916,7 +15916,7 @@ id|info-&gt;memory_base
 suffix:semicolon
 id|info-&gt;memory_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -15935,7 +15935,7 @@ id|info-&gt;lcr_offset
 suffix:semicolon
 id|info-&gt;lcr_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if

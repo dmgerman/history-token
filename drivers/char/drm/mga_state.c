@@ -3508,6 +3508,7 @@ id|clear
 comma
 (paren
 id|drm_mga_clear_t
+id|__user
 op_star
 )paren
 id|data
@@ -3663,6 +3664,7 @@ id|vertex
 comma
 (paren
 id|drm_mga_vertex_t
+id|__user
 op_star
 )paren
 id|data
@@ -3825,6 +3827,7 @@ id|indices
 comma
 (paren
 id|drm_mga_indices_t
+id|__user
 op_star
 )paren
 id|data
@@ -3993,6 +3996,7 @@ id|iload
 comma
 (paren
 id|drm_mga_iload_t
+id|__user
 op_star
 )paren
 id|data
@@ -4168,6 +4172,7 @@ id|blit
 comma
 (paren
 id|drm_mga_blit_t
+id|__user
 op_star
 )paren
 id|data
@@ -4285,6 +4290,7 @@ id|param
 comma
 (paren
 id|drm_mga_getparam_t
+id|__user
 op_star
 )paren
 id|data

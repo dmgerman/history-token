@@ -2209,7 +2209,6 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 r_int
 id|ipv6_advmss
@@ -5229,7 +5228,7 @@ id|skb
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 id|icmpv6_send

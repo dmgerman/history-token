@@ -907,6 +907,7 @@ id|alloc
 comma
 (paren
 id|drm_radeon_mem_alloc_t
+id|__user
 op_star
 )paren
 id|data
@@ -1078,6 +1079,7 @@ id|memfree
 comma
 (paren
 id|drm_radeon_mem_free_t
+id|__user
 op_star
 )paren
 id|data
@@ -1218,6 +1220,7 @@ id|initheap
 comma
 (paren
 id|drm_radeon_mem_init_heap_t
+id|__user
 op_star
 )paren
 id|data

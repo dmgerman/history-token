@@ -160,7 +160,7 @@ id|FB_MAX
 id|__initdata
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -184,7 +184,7 @@ r_char
 op_star
 id|of_stdout_device
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|iommu_force_on
 r_static
@@ -227,14 +227,14 @@ r_char
 op_star
 id|bootpath
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|bootdevice
 r_char
 op_star
 id|bootdevice
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|boot_cpuid
 r_int
@@ -250,7 +250,7 @@ id|device_node
 op_star
 id|allnodes
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* use when traversing tree through the allnext, child, sibling,&n; * or parent members of struct device_node.&n; */
 DECL|variable|devtree_lock
@@ -8335,7 +8335,7 @@ c_func
 (paren
 id|root
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|mem_start
@@ -8350,7 +8350,7 @@ suffix:semicolon
 op_star
 id|allnextp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|mem_start
@@ -12068,7 +12068,7 @@ id|np
 comma
 l_string|&quot;name&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|np-&gt;type
@@ -12080,7 +12080,7 @@ id|np
 comma
 l_string|&quot;device_type&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -12153,7 +12153,7 @@ id|np
 comma
 l_string|&quot;#address-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -12181,7 +12181,7 @@ id|np
 comma
 l_string|&quot;#size-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -12218,7 +12218,7 @@ id|np
 comma
 l_string|&quot;compatible&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -12577,7 +12577,7 @@ id|np
 comma
 l_string|&quot;#address-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -12642,7 +12642,7 @@ id|np
 comma
 l_string|&quot;#size-cells&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -12858,7 +12858,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -12944,7 +12944,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -13008,7 +13008,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -13283,7 +13283,7 @@ suffix:semicolon
 op_star
 id|prevp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|head
@@ -14879,7 +14879,7 @@ id|node
 comma
 l_string|&quot;name&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|node-&gt;type
@@ -14891,7 +14891,7 @@ id|node
 comma
 l_string|&quot;device_type&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -15142,7 +15142,7 @@ id|node
 comma
 l_string|&quot;interrupts&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -15181,7 +15181,7 @@ id|node
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -15751,7 +15751,7 @@ id|pp-&gt;value
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Add a property to a node&n; */

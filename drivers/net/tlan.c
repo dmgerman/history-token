@@ -257,7 +257,7 @@ l_string|&quot;100baseTx-FD&quot;
 comma
 l_string|&quot;100baseT4&quot;
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|media_map

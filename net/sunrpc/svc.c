@@ -1044,7 +1044,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|argv
 op_assign
@@ -1055,7 +1055,7 @@ l_int|0
 )braket
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|resv
 op_assign

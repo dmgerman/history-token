@@ -63,7 +63,7 @@ id|dn
 comma
 l_string|&quot;device_type&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_char
@@ -96,7 +96,7 @@ id|dn
 comma
 l_string|&quot;class-code&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 op_eq
 l_int|0
@@ -116,7 +116,7 @@ id|dn
 comma
 l_string|&quot;bus-range&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|dn-&gt;busno
@@ -180,7 +180,7 @@ id|dn
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -309,7 +309,7 @@ id|dn
 comma
 l_string|&quot;class-code&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace

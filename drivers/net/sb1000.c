@@ -5126,7 +5126,7 @@ id|skb
 suffix:semicolon
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|good_frame
@@ -5604,7 +5604,7 @@ id|lp-&gt;rx_skb
 id|ns
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lp-&gt;rx_session_id
 (braket
@@ -5717,7 +5717,7 @@ id|lp-&gt;rx_skb
 id|ns
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|lp-&gt;rx_session_id

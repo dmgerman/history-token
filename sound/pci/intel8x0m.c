@@ -6521,8 +6521,6 @@ comma
 macro_line|#endif
 (brace
 l_int|0
-comma
-l_int|0
 )brace
 comma
 )brace

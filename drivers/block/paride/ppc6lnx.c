@@ -134,9 +134,9 @@ id|u8
 id|cur_ctrl
 suffix:semicolon
 singleline_comment|// current control port contents
-DECL|typedef|PPC
+DECL|typedef|Interface
 )brace
-id|PPC
+id|Interface
 suffix:semicolon
 singleline_comment|//***************************************************************************
 singleline_comment|// ppc_flags
@@ -164,7 +164,7 @@ r_int
 id|ppc6_select
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -174,7 +174,7 @@ r_void
 id|ppc6_deselect
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -184,7 +184,7 @@ r_void
 id|ppc6_send_cmd
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -197,7 +197,7 @@ r_void
 id|ppc6_wr_data_byte
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -210,7 +210,7 @@ id|u8
 id|ppc6_rd_data_byte
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -220,7 +220,7 @@ id|u8
 id|ppc6_rd_port
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -233,7 +233,7 @@ r_void
 id|ppc6_wr_port
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -249,7 +249,7 @@ r_void
 id|ppc6_rd_data_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -266,7 +266,7 @@ r_void
 id|ppc6_wait_for_fifo
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -276,7 +276,7 @@ r_void
 id|ppc6_wr_data_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -293,7 +293,7 @@ r_void
 id|ppc6_rd_port16_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -313,7 +313,7 @@ r_void
 id|ppc6_wr_port16_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -333,7 +333,7 @@ r_void
 id|ppc6_wr_extout
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -346,7 +346,7 @@ r_int
 id|ppc6_open
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -356,7 +356,7 @@ r_void
 id|ppc6_close
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -368,7 +368,7 @@ r_int
 id|ppc6_select
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -739,7 +739,7 @@ r_void
 id|ppc6_deselect
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -812,7 +812,7 @@ r_void
 id|ppc6_send_cmd
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -896,7 +896,7 @@ r_void
 id|ppc6_wr_data_byte
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -980,7 +980,7 @@ id|u8
 id|ppc6_rd_data_byte
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -1228,7 +1228,7 @@ id|u8
 id|ppc6_rd_port
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -1268,7 +1268,7 @@ r_void
 id|ppc6_wr_port
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -1312,7 +1312,7 @@ r_void
 id|ppc6_rd_data_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -1771,7 +1771,7 @@ r_void
 id|ppc6_wait_for_fifo
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -1820,7 +1820,7 @@ r_void
 id|ppc6_wr_data_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -2197,7 +2197,7 @@ r_void
 id|ppc6_rd_port16_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -2329,7 +2329,7 @@ r_void
 id|ppc6_wr_port16_blk
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -2461,7 +2461,7 @@ r_void
 id|ppc6_wr_extout
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 comma
@@ -2510,7 +2510,7 @@ r_int
 id|ppc6_open
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren
@@ -2607,7 +2607,7 @@ r_void
 id|ppc6_close
 c_func
 (paren
-id|PPC
+id|Interface
 op_star
 id|ppc
 )paren

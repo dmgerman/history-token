@@ -395,7 +395,7 @@ comma
 id|loff_t
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 comma
 r_int
@@ -420,7 +420,7 @@ comma
 id|loff_t
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 comma
 r_int

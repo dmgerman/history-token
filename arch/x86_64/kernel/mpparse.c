@@ -85,11 +85,11 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|mp_bus_to_cpumask
+DECL|variable|pci_bus_to_cpumask
 id|cpumask_t
-id|mp_bus_to_cpumask
+id|pci_bus_to_cpumask
 (braket
-id|MAX_MP_BUSSES
+l_int|256
 )braket
 op_assign
 (brace
@@ -98,9 +98,7 @@ l_int|0
 dot
 dot
 dot
-id|MAX_MP_BUSSES
-op_minus
-l_int|1
+l_int|255
 )braket
 op_assign
 id|CPU_MASK_ALL

@@ -381,7 +381,7 @@ c_func
 (paren
 id|s
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -404,7 +404,7 @@ c_func
 op_increment
 id|s
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -445,7 +445,7 @@ c_func
 op_increment
 id|s
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren

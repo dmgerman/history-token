@@ -1884,7 +1884,7 @@ id|current
 )paren
 id|last_task_used_math
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1895,7 +1895,7 @@ id|current
 )paren
 id|last_task_used_altivec
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -2142,6 +2142,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|adr

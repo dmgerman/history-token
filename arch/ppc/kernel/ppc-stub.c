@@ -616,7 +616,7 @@ multiline_comment|/* error condition */
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 id|buf
@@ -981,7 +981,7 @@ multiline_comment|/* error condition */
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|mem
@@ -1093,7 +1093,7 @@ multiline_comment|/* error condition */
 )brace
 id|debugger_fault_handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 (paren

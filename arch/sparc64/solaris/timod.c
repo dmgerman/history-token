@@ -958,6 +958,7 @@ r_int
 id|flag
 comma
 r_char
+id|__user
 op_star
 id|opt_buf
 comma
@@ -1721,6 +1722,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|ctl_buf
 comma
@@ -1728,6 +1730,7 @@ r_int
 id|ctl_len
 comma
 r_char
+id|__user
 op_star
 id|data_buf
 comma
@@ -1788,6 +1791,7 @@ r_int
 comma
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_assign
@@ -1801,6 +1805,7 @@ r_int
 comma
 r_int
 r_int
+id|__user
 op_star
 )paren
 )paren
@@ -1819,6 +1824,7 @@ id|sys_sendto
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -1827,6 +1833,7 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
@@ -1841,6 +1848,7 @@ op_star
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -1849,6 +1857,7 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
@@ -1896,6 +1905,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -3302,6 +3312,7 @@ c_cond
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 (paren
@@ -3389,6 +3400,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|ctl_buf
 comma
@@ -3396,10 +3408,12 @@ r_int
 id|ctl_maxlen
 comma
 id|s32
+id|__user
 op_star
 id|ctl_len
 comma
 r_char
+id|__user
 op_star
 id|data_buf
 comma
@@ -3407,6 +3421,7 @@ r_int
 id|data_maxlen
 comma
 id|s32
+id|__user
 op_star
 id|data_len
 comma
@@ -3455,6 +3470,7 @@ l_int|6
 )braket
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|tmpbuf
 suffix:semicolon
@@ -3471,6 +3487,7 @@ r_int
 comma
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_assign
@@ -3484,6 +3501,7 @@ r_int
 comma
 r_int
 r_int
+id|__user
 op_star
 )paren
 )paren
@@ -3502,6 +3520,7 @@ id|sys_recvfrom
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -3510,9 +3529,11 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -4631,6 +4652,7 @@ op_star
 r_int
 comma
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -4639,9 +4661,11 @@ r_int
 comma
 r_struct
 id|sockaddr
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 )paren
@@ -4667,6 +4691,7 @@ comma
 (paren
 r_struct
 id|sockaddr
+id|__user
 op_star
 )paren
 id|tmpbuf
@@ -4858,9 +4883,13 @@ id|ino
 suffix:semicolon
 r_struct
 id|strbuf
+id|__user
 op_star
 id|ctlptr
-comma
+suffix:semicolon
+r_struct
+id|strbuf
+id|__user
 op_star
 id|datptr
 suffix:semicolon
@@ -4871,6 +4900,7 @@ comma
 id|dat
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|flgptr
 suffix:semicolon
@@ -4951,6 +4981,7 @@ op_assign
 (paren
 r_struct
 id|strbuf
+id|__user
 op_star
 )paren
 id|A
@@ -4964,6 +4995,7 @@ op_assign
 (paren
 r_struct
 id|strbuf
+id|__user
 op_star
 )paren
 id|A
@@ -4976,6 +5008,7 @@ id|flgptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -5129,10 +5162,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5144,10 +5173,6 @@ comma
 op_amp
 id|ctlptr-&gt;len
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5231,9 +5256,13 @@ id|ino
 suffix:semicolon
 r_struct
 id|strbuf
+id|__user
 op_star
 id|ctlptr
-comma
+suffix:semicolon
+r_struct
+id|strbuf
+id|__user
 op_star
 id|datptr
 suffix:semicolon
@@ -5340,11 +5369,6 @@ id|out
 suffix:semicolon
 id|ctlptr
 op_assign
-(paren
-r_struct
-id|strbuf
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5353,11 +5377,6 @@ id|arg1
 suffix:semicolon
 id|datptr
 op_assign
-(paren
-r_struct
-id|strbuf
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5471,10 +5490,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5483,10 +5498,6 @@ id|ctl.buf
 comma
 id|ctl.len
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren

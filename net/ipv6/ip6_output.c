@@ -217,7 +217,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -432,7 +432,7 @@ l_int|0
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -449,7 +449,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutMcastPkts
+id|IPSTATS_MIB_OUTMCASTPKTS
 )paren
 suffix:semicolon
 )brace
@@ -617,7 +617,7 @@ id|dst-&gt;error
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 id|LIMIT_NETDEBUG
@@ -875,7 +875,7 @@ l_int|NULL
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_return
@@ -1059,7 +1059,7 @@ id|ipfragok
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 r_return
@@ -1116,7 +1116,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -1507,7 +1507,7 @@ id|skb
 id|IP6_INC_STATS
 c_func
 (paren
-id|InDiscards
+id|IPSTATS_MIB_INDISCARDS
 )paren
 suffix:semicolon
 r_goto
@@ -1613,7 +1613,7 @@ id|skb
 id|IP6_INC_STATS
 c_func
 (paren
-id|InDiscards
+id|IPSTATS_MIB_INDISCARDS
 )paren
 suffix:semicolon
 r_goto
@@ -1777,13 +1777,13 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InTooBigErrors
+id|IPSTATS_MIB_INTOOBIGERRORS
 )paren
 suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -1812,7 +1812,7 @@ id|dst-&gt;dev-&gt;hard_header_len
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_goto
@@ -1830,7 +1830,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|OutForwDatagrams
+id|IPSTATS_MIB_OUTFORWDATAGRAMS
 )paren
 suffix:semicolon
 r_return
@@ -1855,7 +1855,7 @@ suffix:colon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InAddrErrors
+id|IPSTATS_MIB_INADDRERRORS
 )paren
 suffix:semicolon
 id|drop
@@ -2424,7 +2424,7 @@ id|tmp_hdr
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 r_return
@@ -2739,7 +2739,7 @@ l_int|0
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragOKs
+id|IPSTATS_MIB_FRAGOKS
 )paren
 suffix:semicolon
 r_return
@@ -2770,7 +2770,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 r_return
@@ -2884,7 +2884,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 id|err
@@ -3094,7 +3094,7 @@ multiline_comment|/*&n;&t;&t; *&t;Put this fragment into the sending queue.&n;&t
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragCreates
+id|IPSTATS_MIB_FRAGCREATES
 )paren
 suffix:semicolon
 id|err
@@ -3124,7 +3124,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragOKs
+id|IPSTATS_MIB_FRAGOKS
 )paren
 suffix:semicolon
 r_return
@@ -3141,7 +3141,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|FragFails
+id|IPSTATS_MIB_FRAGFAILS
 )paren
 suffix:semicolon
 r_return
@@ -4604,7 +4604,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_return
@@ -4989,7 +4989,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|err
@@ -5168,7 +5168,7 @@ l_int|NULL
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 id|kfree_skb

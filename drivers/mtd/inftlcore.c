@@ -509,12 +509,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_findfreeblock(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_findfreeblock(inftl=%p,&quot;
 l_string|&quot;desperate=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|desperate
@@ -678,12 +675,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_foldchain(inftl=0x%x,thisVUC=%d,&quot;
+l_string|&quot;INFTL: INFTL_foldchain(inftl=%p,thisVUC=%d,&quot;
 l_string|&quot;pending=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|thisVUC
@@ -1307,12 +1301,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_makefreeblock(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_makefreeblock(inftl=%p,&quot;
 l_string|&quot;pending=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|pendingblock
@@ -1587,12 +1578,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_findwriteunit(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_findwriteunit(inftl=%p,&quot;
 l_string|&quot;block=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|block
@@ -2209,12 +2197,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_trydeletechain(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_trydeletechain(inftl=%p,&quot;
 l_string|&quot;thisVUC=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|thisVUC
@@ -2702,12 +2687,9 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: INFTL_deleteblock(inftl=0x%x,&quot;
+l_string|&quot;INFTL: INFTL_deleteblock(inftl=%p,&quot;
 l_string|&quot;block=%d)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|block
@@ -3022,19 +3004,13 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: inftl_writeblock(inftl=0x%x,block=%ld,&quot;
-l_string|&quot;buffer=0x%x)&bslash;n&quot;
+l_string|&quot;INFTL: inftl_writeblock(inftl=%p,block=%ld,&quot;
+l_string|&quot;buffer=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|block
 comma
-(paren
-r_int
-)paren
 id|buffer
 )paren
 suffix:semicolon
@@ -3259,19 +3235,13 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: inftl_readblock(inftl=0x%x,block=%ld,&quot;
-l_string|&quot;buffer=0x%x)&bslash;n&quot;
+l_string|&quot;INFTL: inftl_readblock(inftl=%p,block=%ld,&quot;
+l_string|&quot;buffer=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|inftl
 comma
 id|block
 comma
-(paren
-r_int
-)paren
 id|buffer
 )paren
 suffix:semicolon

@@ -1890,6 +1890,7 @@ op_star
 id|msg
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
@@ -1987,6 +1988,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -3216,7 +3218,7 @@ id|xdr_netobj
 id|mic
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|iov
 suffix:semicolon
 r_struct
@@ -3627,7 +3629,7 @@ comma
 id|qop_state
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|iov
 suffix:semicolon
 r_struct
@@ -3923,7 +3925,7 @@ op_star
 id|q
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 suffix:semicolon

@@ -852,6 +852,7 @@ id|param
 suffix:semicolon
 DECL|member|value
 r_void
+id|__user
 op_star
 id|value
 suffix:semicolon

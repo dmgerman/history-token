@@ -161,7 +161,7 @@ comma
 id|CTRL0
 )paren
 suffix:semicolon
-macro_line|#if DBG
+macro_line|#ifdef DBG
 multiline_comment|/* Make sure the self-clearing global reset bit did self clear */
 id|ASSERT
 c_func

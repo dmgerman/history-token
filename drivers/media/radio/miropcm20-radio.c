@@ -247,7 +247,7 @@ l_int|0
 r_return
 id|i
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -401,7 +401,7 @@ l_int|0
 r_return
 id|i
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -703,7 +703,7 @@ comma
 id|pcm20-&gt;freq
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren

@@ -2682,7 +2682,7 @@ comma
 id|L1_MODE_HDLC
 )paren
 suffix:semicolon
-macro_line|#if LOOPBACK
+macro_line|#ifdef LOOPBACK
 singleline_comment|// Turn loopback on (data sent on B and D looped back)
 id|st5481_usb_device_ctrl_msg
 c_func

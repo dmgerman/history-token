@@ -1401,6 +1401,26 @@ op_star
 id|err_chunk
 )paren
 suffix:semicolon
+r_int
+id|sctp_eat_data
+c_func
+(paren
+r_const
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+)paren
+suffix:semicolon
 multiline_comment|/* 3rd level prototypes */
 id|__u32
 id|sctp_generate_tag

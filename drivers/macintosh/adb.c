@@ -2221,7 +2221,7 @@ id|index
 dot
 id|handler
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|write_unlock_irq

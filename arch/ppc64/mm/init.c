@@ -2121,6 +2121,10 @@ comma
 id|total_pages
 )paren
 suffix:semicolon
+id|max_pfn
+op_assign
+id|max_low_pfn
+suffix:semicolon
 multiline_comment|/* add all physical memory to the bootmem map. Also find the first */
 r_for
 c_loop
@@ -2536,10 +2540,6 @@ id|max_low_pfn
 op_star
 id|PAGE_SIZE
 )paren
-suffix:semicolon
-id|max_pfn
-op_assign
-id|max_low_pfn
 suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 (brace

@@ -4906,7 +4906,7 @@ l_int|0
 suffix:semicolon
 id|last_devc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
