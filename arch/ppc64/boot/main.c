@@ -238,7 +238,7 @@ id|heap_max
 suffix:semicolon
 r_extern
 r_char
-id|_end
+id|_start
 (braket
 )braket
 suffix:semicolon
@@ -451,10 +451,6 @@ id|claim_addr
 comma
 id|claim_size
 suffix:semicolon
-r_extern
-r_char
-id|_start
-suffix:semicolon
 r_struct
 id|bi_record
 op_star
@@ -571,7 +567,6 @@ comma
 (paren
 r_int
 )paren
-op_amp
 id|_start
 )paren
 suffix:semicolon
