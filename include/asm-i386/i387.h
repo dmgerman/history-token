@@ -238,6 +238,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
@@ -249,6 +250,7 @@ c_func
 (paren
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 )paren
