@@ -855,9 +855,11 @@ mdefine_line|#define pte_unmap(pte) do { } while (0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
 macro_line|#endif
-multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
+multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; *&n; * Also, we only update the dirty/accessed state if we set&n; * the dirty bit by hand in the kernel, since the hardware&n; * will do the accessed bit for us, and we don&squot;t want to&n; * race with other CPU&squot;s that might be updating the dirty&n; * bit at the same time.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
+DECL|macro|ptep_update_dirty_accessed
+mdefine_line|#define ptep_update_dirty_accessed(__ptep, __entry, __dirty)&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (__dirty) set_pte(__ptep, __entry);&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
 mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x1f)
