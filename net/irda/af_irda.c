@@ -279,23 +279,18 @@ multiline_comment|/* Prevent race conditions with irda_release() and irda_shutdo
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
-)paren
+id|SOCK_DEAD
 )paren
 op_logical_and
-(paren
 id|sk-&gt;state
 op_ne
 id|TCP_CLOSE
-)paren
 )paren
 (brace
 id|sk-&gt;state
@@ -318,16 +313,15 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+multiline_comment|/* Uh-oh... Should use sock_orphan ? */
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
-multiline_comment|/* Uh-oh... Should use sock_orphan ? */
 multiline_comment|/* Close our TSAP.&n;&t;&t; * If we leave it open, IrLMP put it back into the list of&n;&t;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t;&t; * can then be matched to this socket (and it will be, because&n;&t;&t; * it is at the head of the list). This would prevent any&n;&t;&t; * listening socket waiting on the same TSAP to get those&n;&t;&t; * requests. Some apps forget to close sockets, or hang to it&n;&t;&t; * a bit too long, so we may stay in this dead state long&n;&t;&t; * enough to be noticed...&n;&t;&t; * Note : all socket function do check sk-&gt;state, so we are&n;&t;&t; * safe...&n;&t;&t; * Jean II&n;&t;&t; */
 r_if
 c_cond

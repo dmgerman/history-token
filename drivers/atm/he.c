@@ -105,10 +105,10 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|HPRINTK
-mdefine_line|#define HPRINTK(fmt,args...)&t;hprintk(fmt,args)
+mdefine_line|#define HPRINTK(fmt,args...)&t;printk(KERN_DEBUG DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number , ##args)
 macro_line|#else
 DECL|macro|HPRINTK
-mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while(0)
+mdefine_line|#define HPRINTK(fmt,args...)&t;do { } while (0)
 macro_line|#endif /* DEBUG */
 multiline_comment|/* version definition */
 DECL|variable|version
@@ -408,11 +408,9 @@ id|proc_read
 suffix:colon
 id|he_proc_read
 comma
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,1)
 id|owner
 suffix:colon
 id|THIS_MODULE
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* see the comments in he.h about global_lock */
@@ -421,7 +419,7 @@ mdefine_line|#define HE_SPIN_LOCK(dev, flags)&t;spin_lock_irqsave(&amp;(dev)-&gt
 DECL|macro|HE_SPIN_UNLOCK
 mdefine_line|#define HE_SPIN_UNLOCK(dev, flags)&t;spin_unlock_irqrestore(&amp;(dev)-&gt;global_lock, flags)
 DECL|macro|he_writel
-mdefine_line|#define he_writel(dev, val, reg)&t;do { writel(val, (dev)-&gt;membase + (reg)); wmb(); } while(0)
+mdefine_line|#define he_writel(dev, val, reg)&t;do { writel(val, (dev)-&gt;membase + (reg)); wmb(); } while (0)
 DECL|macro|he_readl
 mdefine_line|#define he_readl(dev, reg)&t;&t;readl((dev)-&gt;membase + (reg))
 multiline_comment|/* section 2.12 connection memory access */
@@ -501,9 +499,7 @@ id|CON_CTL
 op_amp
 id|CON_CTL_BUSY
 )paren
-(brace
 suffix:semicolon
-)brace
 )brace
 DECL|macro|he_writel_rcm
 mdefine_line|#define he_writel_rcm(dev, val, reg) &t;&t;&t;&t;&bslash;&n;&t;&t;&t;he_writel_internal(dev, val, reg, CON_CTL_RCM)
@@ -560,9 +556,7 @@ id|CON_CTL
 op_amp
 id|CON_CTL_BUSY
 )paren
-(brace
 suffix:semicolon
-)brace
 r_return
 id|he_readl
 c_func
@@ -1853,7 +1847,6 @@ suffix:semicolon
 op_increment
 id|reg
 )paren
-(brace
 id|he_writel_mbox
 c_func
 (paren
@@ -1866,7 +1859,6 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* rate grid timer reload values */
 id|clock
 op_assign
@@ -2379,7 +2371,6 @@ suffix:semicolon
 op_increment
 id|reg
 )paren
-(brace
 id|he_writel_mbox
 c_func
 (paren
@@ -2393,9 +2384,8 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-)brace
 r_static
-r_void
+r_int
 id|__init
 DECL|function|he_init_cs_block_rcm
 id|he_init_cs_block_rcm
@@ -2408,7 +2398,10 @@ id|he_dev
 )paren
 (brace
 r_int
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 l_int|16
 )braket
@@ -2448,6 +2441,33 @@ comma
 id|buf_limit
 op_assign
 l_int|4
+suffix:semicolon
+id|rategrid
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_int
+)paren
+op_star
+l_int|16
+op_star
+l_int|16
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rategrid
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* initialize rate grid group table */
 r_for
@@ -2532,7 +2552,10 @@ id|j
 op_increment
 )paren
 (brace
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 l_int|0
 )braket
@@ -2582,7 +2605,10 @@ id|i
 OG
 l_int|14
 )paren
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 id|i
 )braket
@@ -2590,7 +2616,10 @@ id|i
 id|j
 )braket
 op_assign
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 id|i
 op_minus
@@ -2603,7 +2632,10 @@ op_div
 l_int|4
 suffix:semicolon
 r_else
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 id|i
 )braket
@@ -2611,7 +2643,10 @@ id|i
 id|j
 )braket
 op_assign
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 id|i
 op_minus
@@ -2703,7 +2738,10 @@ op_decrement
 r_if
 c_cond
 (paren
+(paren
+op_star
 id|rategrid
+)paren
 (braket
 id|i
 op_div
@@ -2867,6 +2905,15 @@ op_increment
 id|rate_atmf
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|rategrid
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_int
@@ -4066,7 +4113,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_dev-&gt;irq_base
 (braket
 id|i
@@ -4076,7 +4122,6 @@ id|isw
 op_assign
 id|ITYPE_INVALID
 suffix:semicolon
-)brace
 id|he_writel
 c_func
 (paren
@@ -4878,7 +4923,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_dev-&gt;prod_id
 (braket
 id|i
@@ -4894,7 +4938,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-)brace
 id|he_dev-&gt;media
 op_assign
 id|read_prom_byte
@@ -4919,7 +4962,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|dev-&gt;esi
 (braket
 id|i
@@ -4935,7 +4977,6 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-)brace
 id|hprintk
 c_func
 (paren
@@ -5790,7 +5831,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_writel_tcm
 c_func
 (paren
@@ -5801,7 +5841,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -5816,7 +5855,6 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|he_writel_rcm
 c_func
 (paren
@@ -5827,7 +5865,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *&t;transmit connection memory map&n;&t; *&n;&t; *                  tx memory&n;&t; *          0x0 ___________________&n;&t; *             |                   |&n;&t; *             |                   |&n;&t; *             |       TSRa        |&n;&t; *             |                   |&n;&t; *             |                   |&n;&t; *       0x8000|___________________|&n;&t; *             |                   |&n;&t; *             |       TSRb        |&n;&t; *       0xc000|___________________|&n;&t; *             |                   |&n;&t; *             |       TSRc        |&n;&t; *       0xe000|___________________|&n;&t; *             |       TSRd        |&n;&t; *       0xf000|___________________|&n;&t; *             |       tmABR       |&n;&t; *      0x10000|___________________|&n;&t; *             |                   |&n;&t; *             |       tmTPD       |&n;&t; *             |___________________|&n;&t; *             |                   |&n;&t; *                      ....&n;&t; *      0x1ffff|___________________|&n;&t; *&n;&t; *&n;&t; */
 id|he_writel
 c_func
@@ -6384,11 +6421,20 @@ id|he_dev
 )paren
 suffix:semicolon
 multiline_comment|/* 5.1.8 cs block connection memory initialization */
+r_if
+c_cond
+(paren
 id|he_init_cs_block_rcm
 c_func
 (paren
 id|he_dev
 )paren
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* 5.1.10 initialize host structures */
 id|he_init_tpdrq
@@ -9322,8 +9368,8 @@ c_cond
 (paren
 id|tpd-&gt;skb
 )paren
-multiline_comment|/* &amp;&amp; !TBRQ_MULTIPLE(he_dev-&gt;tbrq_head) */
 (brace
+multiline_comment|/* &amp;&amp; !TBRQ_MULTIPLE(he_dev-&gt;tbrq_head) */
 r_if
 c_cond
 (paren
@@ -9855,7 +9901,7 @@ id|type
 r_case
 id|ITYPE_RBRQ_THRESH
 suffix:colon
-id|hprintk
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;rbrq%d threshold&bslash;n&quot;
@@ -9863,6 +9909,7 @@ comma
 id|group
 )paren
 suffix:semicolon
+multiline_comment|/* fall through */
 r_case
 id|ITYPE_RBRQ_TIMER
 suffix:colon
@@ -9902,7 +9949,7 @@ suffix:semicolon
 r_case
 id|ITYPE_TBRQ_THRESH
 suffix:colon
-id|hprintk
+id|HPRINTK
 c_func
 (paren
 l_string|&quot;tbrq%d threshold&bslash;n&quot;
@@ -9910,6 +9957,7 @@ comma
 id|group
 )paren
 suffix:semicolon
+multiline_comment|/* fall through */
 r_case
 id|ITYPE_TPD_COMPLETE
 suffix:colon
@@ -9954,6 +10002,12 @@ suffix:semicolon
 r_case
 id|ITYPE_PHY
 suffix:colon
+id|HPRINTK
+c_func
+(paren
+l_string|&quot;phy interrupt&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ATM_HE_USE_SUNI
 id|HE_SPIN_UNLOCK
 c_func
@@ -9987,12 +10041,6 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HPRINTK
-c_func
-(paren
-l_string|&quot;phy interrupt&bslash;n&quot;
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -10039,18 +10087,13 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-(brace
-)brace
-r_if
-c_cond
+r_case
+id|ITYPE_TYPE
+c_func
 (paren
-id|he_dev-&gt;irq_head-&gt;isw
-op_eq
 id|ITYPE_INVALID
 )paren
-(brace
+suffix:colon
 multiline_comment|/* see 8.1.1 -- check all queues */
 id|HPRINTK
 c_func
@@ -10094,12 +10137,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|hprintk
 c_func
 (paren
-l_string|&quot;bad isw = 0x%x?&bslash;n&quot;
+l_string|&quot;bad isw 0x%x?&bslash;n&quot;
 comma
 id|he_dev-&gt;irq_head-&gt;isw
 )paren
@@ -13033,8 +13078,8 @@ id|slot
 op_eq
 id|TPD_MAXIOV
 )paren
-multiline_comment|/* send tpd; start new tpd */
 (brace
+multiline_comment|/* queue tpd; start new tpd */
 id|tpd-&gt;vcc
 op_assign
 id|vcc
@@ -13492,7 +13537,8 @@ id|arg
 )paren
 suffix:semicolon
 macro_line|#else /* CONFIG_ATM_HE_USE_SUNI */
-r_return
+id|err
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon

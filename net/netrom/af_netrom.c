@@ -983,16 +983,15 @@ id|sk
 )paren
 (brace
 multiline_comment|/* A pending connection */
-id|__set_bit
+multiline_comment|/* Queue the unaccepted socket for death */
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|skb-&gt;sk
 comma
-op_amp
-id|skb-&gt;sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
-multiline_comment|/* Queue the unaccepted socket for death */
 id|nr_start_heartbeat
 c_func
 (paren
@@ -2080,22 +2079,20 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 suffix:semicolon
-id|__set_bit
+id|sock_set_flag
 c_func
 (paren
-id|SOCK_DESTROY
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DESTROY
 )paren
 suffix:semicolon
 id|sk-&gt;socket
@@ -3813,13 +3810,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|sock_flag
 c_func
 (paren
-id|SOCK_DEAD
+id|sk
 comma
-op_amp
-id|sk-&gt;flags
+id|SOCK_DEAD
 )paren
 )paren
 id|sk

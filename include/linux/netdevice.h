@@ -240,14 +240,6 @@ id|IF_PORT_100BASEFX
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-r_extern
-r_const
-r_char
-op_star
-id|if_port_text
-(braket
-)braket
-suffix:semicolon
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 r_struct

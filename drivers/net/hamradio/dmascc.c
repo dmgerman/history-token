@@ -1063,13 +1063,7 @@ id|i
 dot
 id|name
 )paren
-(brace
-id|rtnl_lock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unregister_netdevice
+id|unregister_netdev
 c_func
 (paren
 op_amp
@@ -1079,12 +1073,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Reset board */
 r_if
