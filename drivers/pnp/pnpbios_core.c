@@ -164,7 +164,7 @@ l_string|&quot;&t;pushl %edx&t;&bslash;n&quot;
 l_string|&quot;&t;pushl %ecx&t;&bslash;n&quot;
 l_string|&quot;&t;pushl %ebx&t;&bslash;n&quot;
 l_string|&quot;&t;pushl %eax&t;&bslash;n&quot;
-l_string|&quot;&t;lcallw pnp_bios_callpoint&bslash;n&quot;
+l_string|&quot;&t;lcallw *pnp_bios_callpoint&bslash;n&quot;
 l_string|&quot;&t;addl $16, %esp&t;&bslash;n&quot;
 l_string|&quot;&t;lret&t;&t;&bslash;n&quot;
 l_string|&quot;.previous&t;&t;&bslash;n&quot;

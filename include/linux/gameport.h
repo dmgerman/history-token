@@ -283,8 +283,9 @@ id|gameport
 suffix:semicolon
 macro_line|#else
 DECL|function|gameport_register_port
+r_static
+r_inline
 r_void
-id|__inline__
 id|gameport_register_port
 c_func
 (paren
@@ -298,8 +299,9 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|gameport_unregister_port
+r_static
+r_inline
 r_void
-id|__inline__
 id|gameport_unregister_port
 c_func
 (paren
