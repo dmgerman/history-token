@@ -2264,11 +2264,7 @@ id|purb
 op_member_access_from_pointer
 id|complete
 op_assign
-id|snd_usb_complete_callback
-c_func
-(paren
 id|i_usX2Y_subs_startup
-)paren
 suffix:semicolon
 )brace
 r_return
