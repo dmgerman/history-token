@@ -709,7 +709,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;clusters badly computed (%d != %ld)&quot;
+l_string|&quot;clusters badly computed (%d != %lu)&quot;
 comma
 id|new_fclus
 comma
