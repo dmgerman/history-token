@@ -930,33 +930,28 @@ id|s
 comma
 id|f
 suffix:semicolon
-macro_line|#ifdef HAVE_BATS
-r_if
-c_cond
-(paren
-op_logical_neg
-id|__map_without_bats
-)paren
-id|bat_mapin_ram
+id|s
+op_assign
+id|mmu_mapin_ram
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* HAVE_BATS */
 id|v
 op_assign
 id|KERNELBASE
+op_plus
+id|s
 suffix:semicolon
 id|p
 op_assign
 id|PPC_MEMSTART
+op_plus
+id|s
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|s
-op_assign
-l_int|0
 suffix:semicolon
 id|s
 OL
@@ -967,24 +962,6 @@ op_add_assign
 id|PAGE_SIZE
 )paren
 (brace
-multiline_comment|/* On the MPC8xx, we want the page shared so we&n;&t;&t; * don&squot;t get ASID compares on kernel space.&n;&t;&t; */
-id|f
-op_assign
-id|_PAGE_PRESENT
-op_or
-id|_PAGE_ACCESSED
-op_or
-id|_PAGE_SHARED
-op_or
-id|_PAGE_HWEXEC
-suffix:semicolon
-macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_XMON)
-multiline_comment|/* Allows stub to set breakpoints everywhere */
-id|f
-op_or_assign
-id|_PAGE_WRENABLE
-suffix:semicolon
-macro_line|#else&t;/* !CONFIG_KGDB &amp;&amp; !CONFIG_XMON */
 r_if
 c_cond
 (paren
@@ -993,30 +970,26 @@ r_char
 op_star
 )paren
 id|v
-OL
+op_ge
 id|_stext
-op_logical_or
+op_logical_and
 (paren
 r_char
 op_star
 )paren
 id|v
-op_ge
+OL
 id|etext
 )paren
 id|f
-op_or_assign
-id|_PAGE_WRENABLE
+op_assign
+id|_PAGE_RAM_TEXT
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_STD_MMU
 r_else
-multiline_comment|/* On the powerpc (not all), no user access&n;&t;&t;&t;   forces R/W kernel access */
 id|f
-op_or_assign
-id|_PAGE_USER
+op_assign
+id|_PAGE_RAM
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_STD_MMU */
-macro_line|#endif /* CONFIG_KGDB || CONFIG_XMON */
 id|map_page
 c_func
 (paren
