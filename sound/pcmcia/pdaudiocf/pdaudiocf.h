@@ -3,11 +3,12 @@ macro_line|#ifndef __PDAUDIOCF_H
 DECL|macro|__PDAUDIOCF_H
 mdefine_line|#define __PDAUDIOCF_H
 macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
-macro_line|#include &quot;ak4117.h&quot;
+macro_line|#include &lt;sound/ak4117.h&gt;
 multiline_comment|/* PDAUDIOCF registers */
 DECL|macro|PDAUDIOCF_REG_MD
 mdefine_line|#define PDAUDIOCF_REG_MD&t;0x00&t;/* music data, R/O */

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
-macro_line|#include &quot;ak4117.h&quot;
+macro_line|#include &lt;sound/ak4117.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 id|MODULE_AUTHOR
 c_func
