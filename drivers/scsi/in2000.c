@@ -8687,7 +8687,6 @@ id|stop
 op_assign
 l_int|1
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

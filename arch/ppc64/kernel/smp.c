@@ -2301,11 +2301,7 @@ id|cpu
 dot
 id|xStab_data.real
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|__v2a
+id|virt_to_abs
 c_func
 (paren
 id|tmp

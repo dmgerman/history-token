@@ -343,7 +343,6 @@ id|a
 r_goto
 id|out
 suffix:semicolon
-suffix:semicolon
 id|error
 op_assign
 op_minus

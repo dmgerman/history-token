@@ -5419,7 +5419,6 @@ op_star
 )paren
 id|tp-&gt;shared-&gt;resp
 suffix:semicolon
-suffix:semicolon
 id|tp-&gt;txLoRing.writeRegister
 op_assign
 id|TYPHOON_REG_TX_LO_READY

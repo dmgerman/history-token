@@ -5918,7 +5918,7 @@ c_cond
 id|ssptr
 )paren
 (brace
-r_void
+r_char
 op_star
 id|ss_sp
 suffix:semicolon
@@ -5928,9 +5928,6 @@ c_cond
 id|get_user
 c_func
 (paren
-(paren
-r_int
-)paren
 id|ss_sp
 comma
 op_amp

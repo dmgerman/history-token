@@ -4735,7 +4735,6 @@ suffix:semicolon
 r_return
 id|return_status
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|isp1020_biosparam
 r_int

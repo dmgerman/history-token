@@ -640,7 +640,6 @@ id|result
 op_amp
 l_int|0xffff
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|wrcodec
 r_static

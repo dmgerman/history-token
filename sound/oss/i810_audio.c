@@ -10525,7 +10525,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -10604,7 +10603,6 @@ id|i
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
 suffix:semicolon
 r_return
 op_minus

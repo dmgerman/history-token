@@ -1502,6 +1502,11 @@ id|F
 op_plus
 id|S
 suffix:colon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|enable_kernel_fp
 c_func
 (paren
@@ -1524,6 +1529,11 @@ id|current-&gt;thread.fpscr
 )paren
 suffix:semicolon
 multiline_comment|/* current-&gt;thread.fpr[reg] = data.f; */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1533,6 +1543,11 @@ id|F
 op_plus
 id|S
 suffix:colon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|enable_kernel_fp
 c_func
 (paren
@@ -1555,6 +1570,11 @@ id|current-&gt;thread.fpscr
 )paren
 suffix:semicolon
 multiline_comment|/* data.f = current-&gt;thread.fpr[reg]; */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default

@@ -593,6 +593,12 @@ op_assign
 l_int|21
 comma
 multiline_comment|/* Minimum free kilobytes to maintain */
+DECL|enumerator|VM_MAX_MAP_COUNT
+id|VM_MAX_MAP_COUNT
+op_assign
+l_int|22
+comma
+multiline_comment|/* int: Maximum number of mmaps/address-space */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

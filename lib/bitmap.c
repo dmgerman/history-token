@@ -222,7 +222,6 @@ id|bits
 op_div
 id|BITS_PER_LONG
 suffix:semicolon
-suffix:semicolon
 r_for
 c_loop
 (paren

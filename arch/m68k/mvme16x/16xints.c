@@ -427,7 +427,6 @@ id|handler
 op_assign
 id|mvme16x_defhand
 suffix:semicolon
-suffix:semicolon
 id|irq_tab
 (braket
 id|irq

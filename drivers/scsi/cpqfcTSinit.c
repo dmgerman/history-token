@@ -481,7 +481,6 @@ id|cpqfcHBAdata-&gt;fcChip.InitializeFrameManager
 op_assign
 id|CpqTsInitializeFrameManager
 suffix:semicolon
-suffix:semicolon
 id|cpqfcHBAdata-&gt;fcChip.ReadWriteWWN
 op_assign
 id|CpqTsReadWriteWWN

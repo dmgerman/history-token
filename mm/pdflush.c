@@ -410,6 +410,15 @@ r_struct
 id|pdflush_work
 id|my_work
 suffix:semicolon
+multiline_comment|/*&n;&t; * pdflush can spend a lot of time doing encryption via dm-crypt.  We&n;&t; * don&squot;t want to do that at keventd&squot;s priority.&n;&t; */
+id|set_user_nice
+c_func
+(paren
+id|current
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
 id|__pdflush
 c_func

@@ -435,7 +435,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|DMA_TODEVICE
+id|DMA_TO_DEVICE
 suffix:colon
 multiline_comment|/* writeback only */
 id|clean_dcache_range

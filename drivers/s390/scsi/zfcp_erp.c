@@ -8894,7 +8894,6 @@ id|retval
 op_assign
 id|ZFCP_ERP_FAILED
 suffix:semicolon
-suffix:semicolon
 )brace
 r_return
 id|retval

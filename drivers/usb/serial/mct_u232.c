@@ -1872,7 +1872,6 @@ id|serial-&gt;num_bulk_out
 r_return
 l_int|0
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/* another write is still pending? */
 r_if
 c_cond

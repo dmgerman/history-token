@@ -1493,7 +1493,7 @@ DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte) do { } while (0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
-multiline_comment|/*&n; * 31 bit swap entry format:&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 0, 20 and bit 23 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 21 and bit 22 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 31 is used as the software page present bit. If a page is&n; * swapped this obviously has to be zero.&n; * This leaves the bits 1-19 and bits 24-30 to store type and offset.&n; * We use the 7 bits from 24-30 for the type and the 19 bits from 1-19&n; * for the offset.&n; * 0|     offset      |0110|type |0&n; * 00000000001111111111222222222233&n; * 01234567890123456789012345678901&n; *&n; * 64 bit swap entry format:&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 52 and bit 55 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 53 and bit 54 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 63 is used as the software page present bit. If a page is&n; * swapped this obviously has to be zero.&n; * This leaves the bits 0-51 and bits 56-62 to store type and offset.&n; * We use the 7 bits from 56-62 for the type and the 52 bits from 0-51&n; * for the offset.&n; * |                     offset                       |0110|type |0&n; * 0000000000111111111122222222223333333333444444444455555555556666&n; * 0123456789012345678901234567890123456789012345678901234567890123&n; */
+multiline_comment|/*&n; * 31 bit swap entry format:&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 0, 20 and bit 23 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 21 and bit 22 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 30 and 31 are used to distinguish the different page types. For&n; * a swapped page these bits need to be zero.&n; * This leaves the bits 1-19 and bits 24-29 to store type and offset.&n; * We use the 5 bits from 25-29 for the type and the 20 bits from 1-19&n; * plus 24 for the offset.&n; * 0|     offset        |0110|o|type |00|&n; * 0 0000000001111111111 2222 2 22222 33&n; * 0 1234567890123456789 0123 4 56789 01&n; *&n; * 64 bit swap entry format:&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 52 and bit 55 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 53 and bit 54 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 62 and 63 are used to distinguish the different page types. For&n; * a swapped page these bits need to be zero.&n; * This leaves the bits 0-51 and bits 56-61 to store type and offset.&n; * We use the 5 bits from 57-61 for the type and the 53 bits from 0-51&n; * plus 56 for the offset.&n; * |                      offset                        |0110|o|type |00|&n; *  0000000000111111111122222222223333333333444444444455 5555 5 55566 66&n; *  0123456789012345678901234567890123456789012345678901 2345 6 78901 23&n; */
 DECL|function|mk_swap_pte
 r_extern
 r_inline
@@ -1519,63 +1519,46 @@ c_func
 id|pte
 )paren
 op_assign
+id|_PAGE_INVALID_SWAP
+op_or
+(paren
 (paren
 id|type
+op_amp
+l_int|0x1f
+)paren
 op_lshift
-l_int|1
+l_int|2
 )paren
 op_or
+(paren
 (paren
 id|offset
+op_amp
+l_int|1
+)paren
 op_lshift
-l_int|12
+l_int|7
 )paren
 op_or
-id|_PAGE_INVALID_SWAP
-suffix:semicolon
-macro_line|#ifndef __s390x__
-id|BUG_ON
-c_func
 (paren
 (paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
+id|offset
 op_amp
-l_int|0x80000901
+l_int|0xffffe
 )paren
-op_ne
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#else /* __s390x__ */
-id|BUG_ON
-c_func
-(paren
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-l_int|0x901
-)paren
-op_ne
-l_int|0
+op_lshift
+l_int|11
 )paren
 suffix:semicolon
-macro_line|#endif /* __s390x__ */
 r_return
 id|pte
 suffix:semicolon
 )brace
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(entry)&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)
+mdefine_line|#define __swp_type(entry)&t;(((entry).val &gt;&gt; 2) &amp; 0x1f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(entry)&t;((entry).val &gt;&gt; 12)
+mdefine_line|#define __swp_offset(entry)&t;(((entry).val &gt;&gt; 11) | (((entry).val &gt;&gt; 7) &amp; 1))
 DECL|macro|__swp_entry
 mdefine_line|#define __swp_entry(type,offset) ((swp_entry_t) { pte_val(mk_swap_pte((type),(offset))) })
 DECL|macro|__pte_to_swp_entry

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * XFS filesystem operations.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * XFS filesystem operations.&n; *&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -661,13 +661,15 @@ c_cond
 (paren
 id|ap-&gt;logbufs
 op_ne
-l_int|0
-op_logical_and
-id|ap-&gt;logbufs
-op_ne
 op_minus
 l_int|1
 op_logical_and
+macro_line|#if defined(DEBUG) || defined(XLOG_NOLOG)
+id|ap-&gt;logbufs
+op_ne
+l_int|0
+op_logical_and
+macro_line|#endif
 (paren
 id|ap-&gt;logbufs
 template_param
@@ -4700,20 +4702,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|flags
 op_amp
 id|SYNC_WAIT
 )paren
-)paren
-id|XFS_BUF_BFLAGS
+id|XFS_BUF_UNASYNC
 c_func
 (paren
 id|bp
 )paren
-op_or_assign
-id|XFS_B_ASYNC
+suffix:semicolon
+r_else
+id|XFS_BUF_ASYNC
+c_func
+(paren
+id|bp
+)paren
 suffix:semicolon
 id|error
 op_assign

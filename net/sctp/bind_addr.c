@@ -981,7 +981,6 @@ id|bp
 suffix:semicolon
 r_break
 suffix:semicolon
-suffix:semicolon
 )brace
 id|len
 op_assign

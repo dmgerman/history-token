@@ -4690,7 +4690,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/*&n; * Report a missing mandatory parameter.&n; */
 DECL|function|sctp_process_missing_param
 r_static

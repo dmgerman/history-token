@@ -1461,7 +1461,6 @@ id|se401-&gt;scratch_next
 op_assign
 l_int|0
 suffix:semicolon
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace

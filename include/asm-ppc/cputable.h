@@ -152,11 +152,16 @@ DECL|macro|BEGIN_FTR_SECTION
 mdefine_line|#define BEGIN_FTR_SECTION&t;&t;98:
 DECL|macro|END_FTR_SECTION
 mdefine_line|#define END_FTR_SECTION(msk, val)&t;&t;&bslash;&n;99:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.section __ftr_fixup,&quot;a&quot;;&t;&t;&bslash;&n;&t;.align 2;&t;&t;&t;&t;&bslash;&n;&t;.long msk;&t;&t;&t;&t;&bslash;&n;&t;.long val;&t;&t;&t;&t;&bslash;&n;&t;.long 98b;&t;&t;&t;&t;&bslash;&n;&t;.long 99b;&t;&t;&t;&t;&bslash;&n;&t;.previous
+macro_line|#else
+DECL|macro|BEGIN_FTR_SECTION
+mdefine_line|#define BEGIN_FTR_SECTION&t;&t;&quot;98:&bslash;n&quot;
+DECL|macro|END_FTR_SECTION
+mdefine_line|#define END_FTR_SECTION(msk, val)&t;&t;&bslash;&n;&quot;99:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;.section __ftr_fixup,&bslash;&quot;a&bslash;&quot;;&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;.align 2;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&quot;&t;.long &quot;#msk&quot;;&bslash;n&quot;&t;&t;&t;&bslash;&n;&quot;&t;.long &quot;#val&quot;;&bslash;n&quot;&t;&t;&t;&bslash;&n;&quot;&t;.long 98b;&bslash;n&quot;&t;&t;&t;        &bslash;&n;&quot;&t;.long 99b;&bslash;n&quot;&t; &t;&t;        &bslash;&n;&quot;&t;.previous&bslash;n&quot;
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|END_FTR_SECTION_IFSET
 mdefine_line|#define END_FTR_SECTION_IFSET(msk)&t;END_FTR_SECTION((msk), (msk))
 DECL|macro|END_FTR_SECTION_IFCLR
 mdefine_line|#define END_FTR_SECTION_IFCLR(msk)&t;END_FTR_SECTION((msk), 0)
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_PPC_CPUTABLE_H */
 macro_line|#endif /* __KERNEL__ */
 eof

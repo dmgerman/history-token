@@ -3000,7 +3000,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-suffix:semicolon
 id|status
 op_assign
 id|request_resource

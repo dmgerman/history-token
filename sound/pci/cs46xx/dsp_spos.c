@@ -4228,7 +4228,6 @@ id|entry-&gt;c.text.read
 op_assign
 id|cs46xx_dsp_proc_task_tree_read
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4300,7 +4299,6 @@ suffix:semicolon
 id|entry-&gt;c.text.read
 op_assign
 id|cs46xx_dsp_proc_scb_read
-suffix:semicolon
 suffix:semicolon
 r_if
 c_cond

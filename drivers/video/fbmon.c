@@ -4567,7 +4567,6 @@ id|h_period
 comma
 id|hblank
 suffix:semicolon
-suffix:semicolon
 id|dclk
 op_div_assign
 l_int|1000

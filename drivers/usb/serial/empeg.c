@@ -451,7 +451,6 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

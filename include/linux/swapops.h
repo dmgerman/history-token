@@ -12,6 +12,7 @@ id|swp_entry
 c_func
 (paren
 r_int
+r_int
 id|type
 comma
 id|pgoff_t
@@ -24,10 +25,6 @@ suffix:semicolon
 id|ret.val
 op_assign
 (paren
-(paren
-r_int
-r_int
-)paren
 id|type
 op_lshift
 id|SWP_TYPE_SHIFT

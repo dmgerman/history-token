@@ -1761,7 +1761,6 @@ id|harmony-&gt;cap_stopped
 op_assign
 l_int|1
 suffix:semicolon
-suffix:semicolon
 id|snd_harmony_disable_interrupts
 c_func
 (paren

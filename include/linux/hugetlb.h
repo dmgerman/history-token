@@ -161,6 +161,14 @@ c_func
 r_int
 )paren
 suffix:semicolon
+r_int
+r_int
+id|hugetlb_total_pages
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_struct
 id|page
 op_star
@@ -287,6 +295,24 @@ mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables(tlb, prev, start, end) do { } while (0)
 macro_line|#endif
+macro_line|#ifndef ARCH_HAS_PREPARE_HUGEPAGE_RANGE
+DECL|macro|prepare_hugepage_range
+mdefine_line|#define prepare_hugepage_range(addr, len)&t;&bslash;&n;&t;is_aligned_hugepage_range(addr, len)
+macro_line|#else
+r_int
+id|prepare_hugepage_range
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|function|is_vm_hugetlb_page
 r_static
@@ -299,6 +325,21 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|hugetlb_total_pages
+r_static
+r_inline
+r_int
+r_int
+id|hugetlb_total_pages
+c_func
+(paren
+r_void
 )paren
 (brace
 r_return
@@ -331,6 +372,8 @@ DECL|macro|follow_huge_pmd
 mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;0
 DECL|macro|is_aligned_hugepage_range
 mdefine_line|#define is_aligned_hugepage_range(addr, len)&t;0
+DECL|macro|prepare_hugepage_range
+mdefine_line|#define prepare_hugepage_range(addr, len)&t;(-EINVAL)
 DECL|macro|pmd_huge
 mdefine_line|#define pmd_huge(x)&t;0
 DECL|macro|is_hugepage_only_range

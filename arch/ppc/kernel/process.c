@@ -569,9 +569,23 @@ c_func
 r_void
 )paren
 (brace
-id|preempt_disable
+id|WARN_ON
 c_func
 (paren
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|preempt_count
+op_eq
+l_int|0
+op_logical_and
+op_logical_neg
+id|irqs_disabled
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -608,12 +622,14 @@ id|last_task_used_altivec
 )paren
 suffix:semicolon
 macro_line|#endif /* __SMP __ */
-id|preempt_enable
+)brace
+DECL|variable|enable_kernel_altivec
+id|EXPORT_SYMBOL
 c_func
 (paren
+id|enable_kernel_altivec
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_ALTIVEC */
 r_void
 DECL|function|enable_kernel_fp
@@ -623,9 +639,23 @@ c_func
 r_void
 )paren
 (brace
-id|preempt_disable
+id|WARN_ON
 c_func
 (paren
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|preempt_count
+op_eq
+l_int|0
+op_logical_and
+op_logical_neg
+id|irqs_disabled
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -662,12 +692,14 @@ id|last_task_used_math
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-id|preempt_enable
+)brace
+DECL|variable|enable_kernel_fp
+id|EXPORT_SYMBOL
 c_func
 (paren
+id|enable_kernel_fp
 )paren
 suffix:semicolon
-)brace
 r_int
 DECL|function|dump_task_fpu
 id|dump_task_fpu

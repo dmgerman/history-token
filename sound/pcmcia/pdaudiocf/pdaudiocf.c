@@ -6,8 +6,6 @@ macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &quot;pdaudiocf.h&quot;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; */
 DECL|macro|CARD_NAME

@@ -125,7 +125,6 @@ l_int|8
 op_amp
 l_int|0xff
 suffix:semicolon
-suffix:semicolon
 )brace
 r_else
 (brace

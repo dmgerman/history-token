@@ -187,12 +187,10 @@ l_int|0
 suffix:semicolon
 id|tce.te_bits.tb_rpn
 op_assign
-(paren
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
 id|uaddr
-)paren
 )paren
 op_rshift
 id|PAGE_SHIFT
@@ -392,13 +390,9 @@ suffix:semicolon
 multiline_comment|/* Ask for virtual bus */
 id|cbp
 op_assign
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 op_amp
 id|cb
 )paren
@@ -701,7 +695,7 @@ suffix:semicolon
 id|HvCallXm_getTceTableParms
 c_func
 (paren
-id|REALADDR
+id|ISERIES_HV_ADDR
 c_func
 (paren
 id|parms

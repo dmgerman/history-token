@@ -372,12 +372,10 @@ op_decrement
 (brace
 id|rpn
 op_assign
-(paren
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
 id|uaddr
-)paren
 )paren
 op_rshift
 id|PAGE_SHIFT
@@ -565,7 +563,7 @@ id|DARTMAP_VALID
 op_or
 (paren
 (paren
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
 id|tmp
@@ -643,7 +641,7 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|virt_to_absolute
+id|virt_to_abs
 c_func
 (paren
 id|dart_tablebase

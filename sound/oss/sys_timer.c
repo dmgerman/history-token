@@ -389,7 +389,6 @@ op_amp
 id|def_tmr
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 r_static
 r_int

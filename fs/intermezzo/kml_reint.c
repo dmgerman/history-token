@@ -647,6 +647,11 @@ id|info.uuid
 comma
 id|info.recno
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|info.kml_offset
 )paren
 suffix:semicolon
@@ -2357,9 +2362,16 @@ c_func
 (paren
 l_string|&quot;KML record number %Lu expected, not %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
+(paren
 id|lr_rec.lr_remote_recno
 op_plus
 l_int|1
+)paren
 comma
 id|rec.suffix-&gt;recno
 )paren
@@ -2826,8 +2838,18 @@ l_string|&quot;%s ino %Lx, gen %Lx&bslash;n&quot;
 comma
 id|rec.path
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|data-&gt;ioc_ino
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|data-&gt;ioc_generation
 )paren
 suffix:semicolon

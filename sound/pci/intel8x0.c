@@ -320,7 +320,7 @@ c_func
 id|ac97_quirk
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,3}},dialog:list,default:-1&quot;
+l_string|&quot;,allows:{{-1,4}},dialog:list,default:-1&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -3633,12 +3633,6 @@ op_eq
 l_int|0
 )paren
 (brace
-r_static
-r_int
-id|err_count
-op_assign
-l_int|10
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3656,6 +3650,7 @@ comma
 id|status
 )paren
 suffix:semicolon
+multiline_comment|/* some Nforce[2] boards have problems when&n;&t;&t;&t;   IRQ_NONE is returned here.&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -3664,14 +3659,8 @@ op_ne
 id|DEVICE_NFORCE
 )paren
 id|status
-op_xor_assign
-id|igetdword
-c_func
-(paren
-id|chip
-comma
-id|chip-&gt;int_sta_reg
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|spin_unlock
@@ -3681,32 +3670,6 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;device_type
-op_ne
-id|DEVICE_NFORCE
-op_logical_and
-id|status
-op_logical_and
-id|err_count
-)paren
-(brace
-id|err_count
-op_decrement
-suffix:semicolon
-id|snd_printd
-c_func
-(paren
-l_string|&quot;intel8x0: unknown IRQ bits 0x%x (sta_mask=0x%x)&bslash;n&quot;
-comma
-id|status
-comma
-id|chip-&gt;int_sta_mask
-)paren
-suffix:semicolon
-)brace
 r_return
 id|IRQ_RETVAL
 c_func
@@ -7835,6 +7798,28 @@ id|ac97_quirks
 id|__devinitdata
 op_assign
 (brace
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x0e11
+comma
+dot
+id|device
+op_assign
+l_int|0x00b8
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Compaq Evo D510C&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
 (brace
 dot
 id|vendor
@@ -13687,6 +13672,11 @@ id|val
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
+id|val
+op_and_assign
+op_complement
+l_int|0x100
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13749,6 +13739,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef SUPPORT_MIDI
+id|val
+op_and_assign
+op_complement
+l_int|0x20
+suffix:semicolon
 r_if
 c_cond
 (paren

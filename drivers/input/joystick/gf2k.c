@@ -552,7 +552,6 @@ c_func
 id|gameport
 )paren
 suffix:semicolon
-suffix:semicolon
 r_while
 c_loop
 (paren

@@ -455,7 +455,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-suffix:semicolon
 r_return
 id|ioremap64
 c_func

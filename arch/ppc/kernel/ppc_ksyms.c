@@ -830,13 +830,6 @@ c_func
 id|giveup_fpu
 )paren
 suffix:semicolon
-DECL|variable|enable_kernel_fp
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|enable_kernel_fp
-)paren
-suffix:semicolon
 DECL|variable|flush_icache_range
 id|EXPORT_SYMBOL
 c_func

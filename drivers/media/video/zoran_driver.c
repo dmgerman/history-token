@@ -10424,7 +10424,6 @@ op_member_access_from_pointer
 id|jpg_settings
 )paren
 suffix:semicolon
-suffix:semicolon
 id|fmt-&gt;fmt.pix.pixelformat
 op_assign
 id|V4L2_PIX_FMT_MJPEG

@@ -4461,7 +4461,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;Active:%lu inactive:%lu dirty:%lu writeback:%lu &quot;
-l_string|&quot;unstable:%lu free:%u&bslash;n&quot;
+l_string|&quot;unstable:%lu free:%u slab:%lu mapped:%lu pagetables:%lu&bslash;n&quot;
 comma
 id|active
 comma
@@ -4477,6 +4477,12 @@ id|nr_free_pages
 c_func
 (paren
 )paren
+comma
+id|ps.nr_slab
+comma
+id|ps.nr_mapped
+comma
+id|ps.nr_page_table_pages
 )paren
 suffix:semicolon
 id|for_each_zone

@@ -682,7 +682,6 @@ c_func
 id|cir
 )paren
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

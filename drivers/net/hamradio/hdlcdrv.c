@@ -3324,7 +3324,6 @@ id|s
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/*&n;&t; * initialize the hdlcdrv_state struct&n;&t; */
 id|s-&gt;ch_params
 op_assign

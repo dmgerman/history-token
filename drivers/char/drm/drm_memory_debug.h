@@ -2168,7 +2168,6 @@ suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-suffix:semicolon
 )brace
 r_if
 c_cond

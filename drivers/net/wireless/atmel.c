@@ -2389,7 +2389,6 @@ DECL|member|auto_tx_rate
 r_int
 id|auto_tx_rate
 suffix:semicolon
-suffix:semicolon
 DECL|member|rts_threshold
 r_int
 id|rts_threshold

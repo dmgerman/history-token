@@ -27,11 +27,15 @@ r_int
 id|xfs_pflags_t
 suffix:semicolon
 DECL|macro|PFLAGS_TEST_FSTRANS
-mdefine_line|#define PFLAGS_TEST_FSTRANS()&t;&t;(current-&gt;flags &amp; PF_FSTRANS)
+mdefine_line|#define PFLAGS_TEST_FSTRANS()           (current-&gt;flags &amp; PF_FSTRANS)
+multiline_comment|/* these could be nested, so we save state */
 DECL|macro|PFLAGS_SET_FSTRANS
 mdefine_line|#define PFLAGS_SET_FSTRANS(STATEP) do {&t;&bslash;&n;&t;*(STATEP) = current-&gt;flags;&t;&bslash;&n;&t;current-&gt;flags |= PF_FSTRANS;&t;&bslash;&n;} while (0)
-DECL|macro|PFLAGS_RESTORE
-mdefine_line|#define PFLAGS_RESTORE(STATEP) do {&t;&bslash;&n;&t;current-&gt;flags = *(STATEP);&t;&bslash;&n;} while (0)
+DECL|macro|PFLAGS_CLEAR_FSTRANS
+mdefine_line|#define PFLAGS_CLEAR_FSTRANS(STATEP) do { &bslash;&n;&t;*(STATEP) = current-&gt;flags;&t;&bslash;&n;&t;current-&gt;flags &amp;= ~PF_FSTRANS;&t;&bslash;&n;} while (0)
+multiline_comment|/* Restore the PF_FSTRANS state to what was saved in STATEP */
+DECL|macro|PFLAGS_RESTORE_FSTRANS
+mdefine_line|#define PFLAGS_RESTORE_FSTRANS(STATEP) do {     &t;&t;&bslash;&n;&t;current-&gt;flags = ((current-&gt;flags &amp; ~PF_FSTRANS) |&t;&bslash;&n;&t;&t;&t;  (*(STATEP) &amp; PF_FSTRANS));&t;&t;&bslash;&n;} while (0)
 DECL|macro|PFLAGS_DUP
 mdefine_line|#define PFLAGS_DUP(OSTATEP, NSTATEP) do { &bslash;&n;&t;*(NSTATEP) = *(OSTATEP);&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * XXX get rid of the unconditional  __GFP_NOFAIL by adding&n; * a KM_FAIL flag and using it where we&squot;re allowed to fail.&n; */

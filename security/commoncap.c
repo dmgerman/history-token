@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/xattr.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 DECL|function|cap_capable
 r_int
 id|cap_capable
@@ -1111,7 +1112,14 @@ suffix:semicolon
 )brace
 id|allowed
 op_assign
+(paren
 id|totalram_pages
+op_minus
+id|hugetlb_total_pages
+c_func
+(paren
+)paren
+)paren
 op_star
 id|sysctl_overcommit_ratio
 op_div
