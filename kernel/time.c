@@ -166,11 +166,13 @@ c_func
 (paren
 r_struct
 id|timeval
+id|__user
 op_star
 id|tv
 comma
 r_struct
 id|timezone
+id|__user
 op_star
 id|tz
 )paren
@@ -392,11 +394,13 @@ c_func
 (paren
 r_struct
 id|timeval
+id|__user
 op_star
 id|tv
 comma
 r_struct
 id|timezone
+id|__user
 op_star
 id|tz
 )paren
@@ -1388,6 +1392,7 @@ c_func
 (paren
 r_struct
 id|timex
+id|__user
 op_star
 id|txc_p
 )paren

@@ -798,6 +798,7 @@ r_int
 id|src
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
@@ -932,6 +933,7 @@ op_star
 id|tsk
 comma
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -1182,7 +1184,9 @@ id|task_struct
 op_star
 id|child
 comma
-r_int
+id|siginfo_t
+id|__user
+op_star
 id|data
 )paren
 (brace
@@ -1199,11 +1203,8 @@ id|EINVAL
 suffix:semicolon
 r_return
 id|copy_siginfo_to_user
+c_func
 (paren
-(paren
-id|siginfo_t
-op_star
-)paren
 id|data
 comma
 id|child-&gt;last_siginfo
@@ -1221,7 +1222,9 @@ id|task_struct
 op_star
 id|child
 comma
-r_int
+id|siginfo_t
+id|__user
+op_star
 id|data
 )paren
 (brace
@@ -1240,13 +1243,10 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 id|child-&gt;last_siginfo
 comma
-(paren
-id|siginfo_t
-op_star
-)paren
 id|data
 comma
 r_sizeof
@@ -1330,6 +1330,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1347,6 +1348,11 @@ c_func
 (paren
 id|child
 comma
+(paren
+id|siginfo_t
+id|__user
+op_star
+)paren
 id|data
 )paren
 suffix:semicolon
@@ -1362,6 +1368,11 @@ c_func
 (paren
 id|child
 comma
+(paren
+id|siginfo_t
+id|__user
+op_star
+)paren
 id|data
 )paren
 suffix:semicolon

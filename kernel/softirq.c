@@ -71,6 +71,7 @@ r_void
 id|do_softirq
 c_func
 (paren
+r_void
 )paren
 (brace
 id|__u32
@@ -1154,6 +1155,7 @@ id|__init
 id|softirq_init
 c_func
 (paren
+r_void
 )paren
 (brace
 id|open_softirq
