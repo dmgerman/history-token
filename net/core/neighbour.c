@@ -1197,6 +1197,18 @@ op_amp
 id|tbl-&gt;lock
 )paren
 suffix:semicolon
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|tbl-&gt;hash_rnd
+comma
+r_sizeof
+(paren
+id|tbl-&gt;hash_rnd
+)paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5866,7 +5878,7 @@ l_string|&quot;cannot create neighbour cache&quot;
 suffix:semicolon
 id|tbl-&gt;hash_mask
 op_assign
-l_int|0x1f
+l_int|1
 suffix:semicolon
 id|tbl-&gt;hash_buckets
 op_assign
