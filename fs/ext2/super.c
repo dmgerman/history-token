@@ -1920,6 +1920,26 @@ comma
 id|OLDALLOC
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+(paren
+id|this_char
+comma
+l_string|&quot;nobh&quot;
+)paren
+)paren
+id|set_opt
+c_func
+(paren
+id|sbi-&gt;s_mount_opt
+comma
+id|NOBH
+)paren
+suffix:semicolon
 multiline_comment|/* Silently ignore the quota options */
 r_else
 r_if

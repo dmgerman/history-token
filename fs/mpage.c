@@ -484,6 +484,11 @@ suffix:semicolon
 r_int
 id|length
 suffix:semicolon
+r_int
+id|fully_mapped
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -580,6 +585,10 @@ id|bh
 )paren
 )paren
 (brace
+id|fully_mapped
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -717,6 +726,20 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|fully_mapped
+)paren
+(brace
+id|SetPageMappedToDisk
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * This page will go to BIO.  Do we need to send this BIO off first?&n;&t; */
 r_if

@@ -1091,6 +1091,10 @@ op_or
 l_int|1
 op_lshift
 id|PG_checked
+op_or
+l_int|1
+op_lshift
+id|PG_mappedtodisk
 )paren
 suffix:semicolon
 id|set_page_refs

@@ -163,6 +163,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|ClearPageMappedToDisk
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|remove_from_page_cache
 c_func
 (paren
