@@ -1202,6 +1202,7 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* set up files for this cpu device */
 id|drv_attr
 op_assign
 id|cpufreq_driver-&gt;attr
@@ -1240,7 +1241,6 @@ id|drv_attr
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* set up files for this cpu device */
 multiline_comment|/* set default policy */
 id|ret
 op_assign

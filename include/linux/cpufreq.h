@@ -1010,12 +1010,5 @@ id|cpu
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CPU_FREQ_TABLE */
-multiline_comment|/* Currently exported only for the proc interface, remove when that goes */
-r_extern
-r_struct
-id|cpufreq_driver
-op_star
-id|cpufreq_driver
-suffix:semicolon
 macro_line|#endif /* _LINUX_CPUFREQ_H */
 eof
