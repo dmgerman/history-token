@@ -163,7 +163,7 @@ id|u8
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -183,7 +183,7 @@ id|u8
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|dy
 op_star
@@ -1070,7 +1070,7 @@ id|u8
 op_star
 )paren
 (paren
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|sy
 op_star
@@ -2018,7 +2018,7 @@ op_rshift
 l_int|3
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2063,7 +2063,7 @@ op_rshift
 l_int|2
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2112,7 +2112,7 @@ op_rshift
 l_int|1
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2157,7 +2157,7 @@ op_star
 (paren
 id|pixel_x
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2197,7 +2197,7 @@ op_star
 l_int|2
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2272,7 +2272,7 @@ op_star
 l_int|4
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2392,7 +2392,7 @@ op_div
 l_int|8
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2434,7 +2434,7 @@ op_div
 l_int|4
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2476,7 +2476,7 @@ op_div
 l_int|2
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2514,7 +2514,7 @@ op_star
 (paren
 id|pixel_x
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2544,7 +2544,7 @@ op_star
 l_int|2
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star
@@ -2579,7 +2579,7 @@ op_star
 l_int|4
 )paren
 op_plus
-id|p-&gt;screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|pixel_y
 op_star

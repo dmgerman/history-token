@@ -2453,10 +2453,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
-op_assign
-id|ivideo.video_vbase
-suffix:semicolon
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -11922,6 +11918,10 @@ id|fb_info.fbops
 op_assign
 op_amp
 id|sisfb_ops
+suffix:semicolon
+id|fb_info.screen_base
+op_assign
+id|ivideo.video_vbase
 suffix:semicolon
 id|fb_info.disp
 op_assign
