@@ -33,8 +33,6 @@ macro_line|#include &lt;net/ip_fib.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
@@ -4086,23 +4084,18 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|tcp_get_info
+id|tcp_proc_init
 c_func
 (paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tcp_proc_exit
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
@@ -4149,15 +4142,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|proc_net_create
+id|tcp_proc_init
 c_func
 (paren
-l_string|&quot;tcp&quot;
-comma
-l_int|0
-comma
-id|tcp_get_info
 )paren
 )paren
 r_goto
@@ -4217,10 +4204,9 @@ c_func
 suffix:semicolon
 id|out_udp
 suffix:colon
-id|proc_net_remove
+id|tcp_proc_exit
 c_func
 (paren
-l_string|&quot;tcp&quot;
 )paren
 suffix:semicolon
 id|out_tcp
