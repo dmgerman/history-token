@@ -538,11 +538,8 @@ id|card
 )paren
 suffix:semicolon
 )brace
-id|snd_seq_device_load_drivers
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: may cause blocking when called from&n;&t;&t;&t;&t; * module_init(), so disable this feature&n;&t;&t;&t;&t; */
+multiline_comment|/* snd_seq_device_load_drivers(); */
 )brace
 )brace
 id|spin_lock_irqsave
