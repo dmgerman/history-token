@@ -16,12 +16,6 @@ DECL|macro|IA32_PAGE_ALIGN
 mdefine_line|#define IA32_PAGE_ALIGN(addr)&t;(((addr) + IA32_PAGE_SIZE - 1) &amp; IA32_PAGE_MASK)
 DECL|macro|IA32_CLOCKS_PER_SEC
 mdefine_line|#define IA32_CLOCKS_PER_SEC&t;100&t;/* Cast in stone for IA32 Linux */
-DECL|macro|F_GETLK64
-mdefine_line|#define F_GETLK64&t;12
-DECL|macro|F_SETLK64
-mdefine_line|#define F_SETLK64&t;13
-DECL|macro|F_SETLKW64
-mdefine_line|#define F_SETLKW64&t;14
 multiline_comment|/* sigcontext.h */
 multiline_comment|/*&n; * As documented in the iBCS2 standard..&n; *&n; * The first part of &quot;struct _fpstate&quot; is just the&n; * normal i387 hardware setup, the extra &quot;status&quot;&n; * word is used to save the coprocessor status word&n; * before entering the handler.&n; */
 DECL|struct|_fpreg_ia32
