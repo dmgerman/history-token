@@ -311,6 +311,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|prev_state
 comma
 id|next_state
@@ -347,6 +348,7 @@ suffix:semicolon
 id|next_state
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|data

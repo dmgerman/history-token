@@ -190,9 +190,11 @@ id|flags
 suffix:semicolon
 DECL|member|state
 r_int
+r_int
 id|state
 suffix:semicolon
 DECL|member|prev_state
+r_int
 r_int
 id|prev_state
 suffix:semicolon
