@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/hardware/clock.h&gt;
-macro_line|#include &lt;asm/hardware/icst525.h&gt;
+macro_line|#include &lt;asm/hardware/icst307.h&gt;
 macro_line|#include &quot;clock.h&quot;
 r_static
 id|LIST_HEAD
@@ -296,8 +296,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-macro_line|#if 0 
-singleline_comment|// Not yet
 r_if
 c_cond
 (paren
@@ -305,12 +303,12 @@ id|clk-&gt;setvco
 )paren
 (brace
 r_struct
-id|icst525_vco
+id|icst307_vco
 id|vco
 suffix:semicolon
 id|vco
 op_assign
-id|icst525_khz_to_vco
+id|icst307_khz_to_vco
 c_func
 (paren
 id|clk-&gt;params
@@ -322,7 +320,7 @@ l_int|1000
 suffix:semicolon
 id|clk-&gt;rate
 op_assign
-id|icst525_khz
+id|icst307_khz
 c_func
 (paren
 id|clk-&gt;params
@@ -361,7 +359,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
