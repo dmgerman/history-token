@@ -4357,8 +4357,6 @@ c_func
 (paren
 id|vp
 comma
-id|ip
-comma
 id|vmap
 )paren
 suffix:semicolon

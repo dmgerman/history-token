@@ -148,7 +148,7 @@ mdefine_line|#define XFS_QM_DQP_TO_DQACCT(tp, dqp)&t;(XFS_QM_ISUDQ(dqp) ? &bslas
 DECL|macro|XFS_IS_SUSER_DQUOT
 mdefine_line|#define XFS_IS_SUSER_DQUOT(dqp)&t;&t;&bslash;&n;&t;(INT_ISZERO((dqp)-&gt;q_core.d_id, ARCH_CONVERT))
 DECL|macro|XFS_PURGE_INODE
-mdefine_line|#define XFS_PURGE_INODE(ip)&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&bslash;&n;&t;  vmap_t dqvmap;&t;&t;&bslash;&n;&t;  vnode_t *dqvp;&t;&t;&bslash;&n;&t;  dqvp = XFS_ITOV(ip);&t;&t;&bslash;&n;&t;  VMAP(dqvp, ip, dqvmap);&t;&bslash;&n;&t;  VN_RELE(dqvp);&t;&t;&bslash;&n;&t;}
+mdefine_line|#define XFS_PURGE_INODE(ip)&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&bslash;&n;&t;  vmap_t dqvmap;&t;&t;&bslash;&n;&t;  vnode_t *dqvp;&t;&t;&bslash;&n;&t;  dqvp = XFS_ITOV(ip);&t;&t;&bslash;&n;&t;  VMAP(dqvp, dqvmap);&t;&t;&bslash;&n;&t;  VN_RELE(dqvp);&t;&t;&bslash;&n;&t;}
 DECL|macro|DQFLAGTO_TYPESTR
 mdefine_line|#define DQFLAGTO_TYPESTR(d)&t;(((d)-&gt;dq_flags &amp; XFS_DQ_USER) ? &quot;USR&quot; : &bslash;&n;&t;&t;&t;&t; (((d)-&gt;dq_flags &amp; XFS_DQ_GROUP) ? &quot;GRP&quot; : &quot;???&quot;))
 DECL|macro|DQFLAGTO_DIRTYSTR

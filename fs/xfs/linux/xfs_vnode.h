@@ -1550,7 +1550,7 @@ DECL|typedef|vmap_t
 id|vmap_t
 suffix:semicolon
 DECL|macro|VMAP
-mdefine_line|#define VMAP(vp, ip, vmap)&t;{(vmap).v_vfsp&t; = (vp)-&gt;v_vfsp,&t;&bslash;&n;&t;&t;&t;&t; (vmap).v_number = (vp)-&gt;v_number,&t;&bslash;&n;&t;&t;&t;&t; (vmap).v_ino&t; = (ip)-&gt;i_ino; }
+mdefine_line|#define VMAP(vp, vmap)&t;{(vmap).v_vfsp&t; = (vp)-&gt;v_vfsp,&t;&bslash;&n;&t;&t;&t; (vmap).v_number = (vp)-&gt;v_number,&t;&bslash;&n;&t;&t;&t; (vmap).v_ino&t; = (vp)-&gt;v_inode.i_ino; }
 r_extern
 r_void
 id|vn_purge

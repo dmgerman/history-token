@@ -3827,8 +3827,6 @@ c_func
 (paren
 id|rvp
 comma
-id|rip
-comma
 id|vmap
 )paren
 suffix:semicolon
@@ -4031,8 +4029,6 @@ id|VMAP
 c_func
 (paren
 id|rvp
-comma
-id|rip
 comma
 id|vmap
 )paren

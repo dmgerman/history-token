@@ -8718,8 +8718,6 @@ c_func
 (paren
 id|rbmvp
 comma
-id|mp-&gt;m_rbmip
-comma
 id|vmap
 )paren
 suffix:semicolon

@@ -1229,12 +1229,6 @@ c_func
 (paren
 id|vp
 comma
-id|XFS_BHVTOI
-c_func
-(paren
-id|vp-&gt;v_fbhv
-)paren
-comma
 id|vmap
 )paren
 suffix:semicolon
