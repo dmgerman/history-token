@@ -496,6 +496,14 @@ id|wdt_is_open
 )paren
 )paren
 (brace
+multiline_comment|/* Davej: Is this unlock bogus? */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|wdt_spinlock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -577,9 +585,14 @@ l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;
 suffix:semicolon
 )brace
 )brace
-id|wdt_is_open
-op_assign
+id|clear_bit
+c_func
+(paren
 l_int|0
+comma
+op_amp
+id|wdt_is_open
+)paren
 suffix:semicolon
 r_return
 l_int|0
