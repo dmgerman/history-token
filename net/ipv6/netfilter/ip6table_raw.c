@@ -255,6 +255,7 @@ id|ip6t_entry
 comma
 dot
 id|next_offset
+op_assign
 r_sizeof
 (paren
 r_struct
