@@ -8401,6 +8401,10 @@ op_or
 id|CAP_NT_SMBS
 op_or
 id|CAP_LEVEL_II_OPLOCKS
+op_or
+id|CAP_LARGE_WRITE_X
+op_or
+id|CAP_LARGE_READ_X
 suffix:semicolon
 r_if
 c_cond
