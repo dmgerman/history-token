@@ -753,12 +753,14 @@ op_amp
 l_int|0x0F
 )paren
 op_or
+(paren
 id|nb-&gt;extended
 ques
 c_cond
 id|X25_GFI_EXTSEQ
 suffix:colon
 id|X25_GFI_STDSEQ
+)paren
 suffix:semicolon
 op_star
 id|dptr
