@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#if defined(CONFIG_KOBJECT_UEVENT) || defined(CONFIG_HOTPLUG)
 DECL|function|action_to_string
 r_static
 r_char
@@ -68,6 +69,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_KOBJECT_UEVENT
 DECL|variable|uevent_sock
 r_static
