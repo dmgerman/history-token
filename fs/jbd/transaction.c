@@ -3080,6 +3080,11 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_int
+id|console_loglevel_saved
+op_assign
+id|console_loglevel
+suffix:semicolon
 id|jbd_debug
 c_func
 (paren
@@ -3318,6 +3323,10 @@ id|jh
 comma
 l_string|&quot;exit&quot;
 )paren
+suffix:semicolon
+id|console_loglevel
+op_assign
+id|console_loglevel_saved
 suffix:semicolon
 r_return
 l_int|0
