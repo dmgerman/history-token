@@ -50,6 +50,13 @@ c_func
 id|addr
 )paren
 suffix:semicolon
+DECL|variable|ssnmap
+id|SCTP_DBG_OBJCNT
+c_func
+(paren
+id|ssnmap
+)paren
+suffix:semicolon
 multiline_comment|/* An array to make it easy to pretty print the debug information&n; * to the proc fs.&n; */
 DECL|variable|sctp_dbg_objcnt
 id|sctp_dbg_objcnt_entry_t
@@ -98,6 +105,12 @@ id|SCTP_DBG_OBJCNT_ENTRY
 c_func
 (paren
 id|addr
+)paren
+comma
+id|SCTP_DBG_OBJCNT_ENTRY
+c_func
+(paren
+id|ssnmap
 )paren
 comma
 )brace

@@ -554,7 +554,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* All packets are sent to the network through this function from&n; * sctp_push_outqueue().&n; *&n; * The return value is a normal kernel error return value.&n; */
+multiline_comment|/* All packets are sent to the network through this function from&n; * sctp_outq_tail().&n; *&n; * The return value is a normal kernel error return value.&n; */
 DECL|function|sctp_packet_transmit
 r_int
 id|sctp_packet_transmit

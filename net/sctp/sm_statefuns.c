@@ -255,7 +255,7 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, responding with an ABORT.&n;&t; */
+multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, respond with an ABORT.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1214,7 +1214,7 @@ id|sctp_chunk_t
 op_star
 id|err_chk_p
 suffix:semicolon
-multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, responding with an ABORT.&n;&t; */
+multiline_comment|/* If the packet is an OOTB packet which is temporarily on the&n;&t; * control endpoint, respond with an ABORT.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3503,7 +3503,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Unexpected COOKIE-ECHO handlerfor peer restart (Table 2, action &squot;A&squot;)&n; *&n; * Section 5.2.4&n; *  A)  In this case, the peer may have restarted.&n; */
+multiline_comment|/* Unexpected COOKIE-ECHO handler for peer restart (Table 2, action &squot;A&squot;)&n; *&n; * Section 5.2.4&n; *  A)  In this case, the peer may have restarted.&n; */
 DECL|function|sctp_sf_do_dupcook_a
 r_static
 id|sctp_disposition_t
@@ -5586,7 +5586,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 op_amp
@@ -8785,7 +8785,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 op_amp
@@ -10636,7 +10636,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_outqueue_is_empty
+id|sctp_outq_is_empty
 c_func
 (paren
 op_amp

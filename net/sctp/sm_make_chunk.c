@@ -30,7 +30,7 @@ comma
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* gcc 3.2 doesn&squot;t allow initialization of zero-length arrays. So the above&n; * structure is split and the address types array is initialized using a&n; * fixed length array. &n; */
+multiline_comment|/* gcc 3.2 doesn&squot;t allow initialization of zero-length arrays. So the above&n; * structure is split and the address types array is initialized using a&n; * fixed length array.&n; */
 DECL|variable|sat_addr_types
 r_static
 r_const
@@ -1446,32 +1446,15 @@ op_assign
 id|SCTP_DATA_NOT_FRAG
 suffix:semicolon
 multiline_comment|/* Sockets API Extensions for SCTP 5.2.2&n;&t; *  MSG_UNORDERED - This flag requests the un-ordered delivery of the&n;&t; *  message.  If this flag is clear, the datagram is considered an&n;&t; *  ordered send and a new ssn is generated.  The flags field is set&n;&t; *  in the inner routine - sctp_make_datafrag_empty().&n;&t; */
-r_if
-c_cond
-(paren
-id|sinfo-&gt;sinfo_flags
-op_amp
-id|MSG_UNORDERED
-)paren
-(brace
+singleline_comment|//&t;if (sinfo-&gt;sinfo_flags &amp; MSG_UNORDERED) {
 id|ssn
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-r_else
-(brace
-id|ssn
-op_assign
-id|__sctp_association_get_next_ssn
-c_func
-(paren
-id|asoc
-comma
-id|sinfo-&gt;sinfo_stream
-)paren
-suffix:semicolon
-)brace
+singleline_comment|//&t;} else {
+singleline_comment|//&t;&t;ssn = __sctp_association_get_next_ssn(asoc,
+singleline_comment|//&t;&t;&t;&t;&t;&t;      sinfo-&gt;sinfo_stream);
+singleline_comment|//&t;}
 r_return
 id|sctp_make_datafrag_empty
 c_func
@@ -2748,6 +2731,10 @@ id|retval-&gt;has_tsn
 op_assign
 l_int|0
 suffix:semicolon
+id|retval-&gt;has_ssn
+op_assign
+l_int|0
+suffix:semicolon
 id|retval-&gt;rtt_in_progress
 op_assign
 l_int|0
@@ -3536,6 +3523,78 @@ id|out
 suffix:colon
 r_return
 id|err
+suffix:semicolon
+)brace
+multiline_comment|/* Helper function to assign a TSN if needed.  This assumes that both&n; * the data_hdr and association have already been assigned.&n; */
+DECL|function|sctp_chunk_assign_ssn
+r_void
+id|sctp_chunk_assign_ssn
+c_func
+(paren
+id|sctp_chunk_t
+op_star
+id|chunk
+)paren
+(brace
+id|__u16
+id|ssn
+suffix:semicolon
+id|__u16
+id|sid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chunk-&gt;has_ssn
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* This is the last possible instant to assign a SSN. */
+r_if
+c_cond
+(paren
+id|chunk-&gt;chunk_hdr-&gt;flags
+op_amp
+id|SCTP_DATA_UNORDERED
+)paren
+(brace
+id|ssn
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sid
+op_assign
+id|htons
+c_func
+(paren
+id|chunk-&gt;subh.data_hdr-&gt;stream
+)paren
+suffix:semicolon
+id|ssn
+op_assign
+id|htons
+c_func
+(paren
+id|__sctp_association_get_next_ssn
+c_func
+(paren
+id|chunk-&gt;asoc
+comma
+id|sid
+)paren
+)paren
+suffix:semicolon
+)brace
+id|chunk-&gt;subh.data_hdr-&gt;ssn
+op_assign
+id|ssn
+suffix:semicolon
+id|chunk-&gt;has_ssn
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Helper function to assign a TSN if needed.  This assumes that both&n; * the data_hdr and association have already been assigned.&n; */
@@ -4958,7 +5017,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Unpack the parameters in an INIT packet into an association.&n; * Returns 0 on failure, else success.&n; */
+multiline_comment|/* Unpack the parameters in an INIT packet into an association.&n; * Returns 0 on failure, else success.&n; * FIXME:  This is an association method. &n; */
 DECL|function|sctp_process_init
 r_int
 id|sctp_process_init
@@ -5125,6 +5184,27 @@ id|peer_init-&gt;init_hdr.num_inbound_streams
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|asoc-&gt;c.sinit_max_instreams
+OG
+id|ntohs
+c_func
+(paren
+id|peer_init-&gt;init_hdr.num_outbound_streams
+)paren
+)paren
+(brace
+id|asoc-&gt;c.sinit_max_instreams
+op_assign
+id|ntohs
+c_func
+(paren
+id|peer_init-&gt;init_hdr.num_outbound_streams
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Copy Initiation tag from INIT to VT_peer in cookie.   */
 id|asoc-&gt;c.peer_vtag
 op_assign
@@ -5215,6 +5295,29 @@ comma
 id|asoc-&gt;peer.i.initial_tsn
 )paren
 suffix:semicolon
+multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * The stream sequence number in all the streams shall start&n;&t; * from 0 when the association is established.  Also, when the&n;&t; * stream sequence number reaches the value 65535 the next&n;&t; * stream sequence number shall be set to 0.&n;&t; */
+multiline_comment|/* Allocate storage for the negotiated streams. */
+id|asoc-&gt;ssnmap
+op_assign
+id|sctp_ssnmap_new
+c_func
+(paren
+id|asoc-&gt;peer.i.num_outbound_streams
+comma
+id|asoc-&gt;c.sinit_num_ostreams
+comma
+id|priority
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;ssnmap
+)paren
+r_goto
+id|nomem_ssnmap
+suffix:semicolon
 multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) A serial number should be assigned to the Chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the Initial TSN.&n;&t; */
 id|asoc-&gt;peer.addip_serial
 op_assign
@@ -5225,6 +5328,8 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+id|nomem_ssnmap
+suffix:colon
 id|clean_up
 suffix:colon
 multiline_comment|/* Release the transport structures. */

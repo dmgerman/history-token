@@ -139,7 +139,7 @@ op_assign
 op_amp
 id|rt6-&gt;rt6i_dst.addr
 suffix:semicolon
-multiline_comment|/* FIXME: Currently, ip6_route_output() doesn&squot;t fill in the source&n;&t; * address in the returned route entry. So we call ipv6_get_saddr()&n;&t; * to get an appropriate source address. It is possible that this address&n;&t; * may not be part of the bind address list of the association.&n;&t; * Once ip6_route_ouput() is fixed so that it returns a route entry&n;&t; * with an appropriate source address, the following if condition can&n;&t; * be removed. With ip6_route_output() returning a source address filled&n;&t; * route entry, sctp_transport_route() can do real source address &n;&t; * selection for v6.&n;&t; */
+multiline_comment|/* FIXME: Currently, ip6_route_output() doesn&squot;t fill in the source&n;&t; * address in the returned route entry. So we call ipv6_get_saddr()&n;&t; * to get an appropriate source address. It is possible that this&n;&t; * address may not be part of the bind address list of the association.&n;&t; * Once ip6_route_ouput() is fixed so that it returns a route entry&n;&t; * with an appropriate source address, the following if condition can&n;&t; * be removed. With ip6_route_output() returning a source address&n;&t; * filled route entry, sctp_transport_route() can do real source&n;&t; * address selection for v6.&n;&t; */
 r_if
 c_cond
 (paren

@@ -576,6 +576,10 @@ r_extern
 id|atomic_t
 id|sctp_dbg_objcnt_addr
 suffix:semicolon
+r_extern
+id|atomic_t
+id|sctp_dbg_objcnt_ssnmap
+suffix:semicolon
 multiline_comment|/* Macros to atomically increment/decrement objcnt counters.  */
 DECL|macro|SCTP_DBG_OBJCNT_INC
 mdefine_line|#define SCTP_DBG_OBJCNT_INC(name) &bslash;&n;atomic_inc(&amp;sctp_dbg_objcnt_## name)
