@@ -581,15 +581,6 @@ mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GEN
 multiline_comment|/* Export a symbol either from the kernel or a module.&n;&n;   In the kernel, the symbol is added to the kernel&squot;s global symbol table.&n;&n;   In a module, it controls which variables are exported.  If no&n;   variables are explicitly exported, the action is controled by the&n;   insmod -[xX] flags.  Otherwise, only the variables listed are exported.&n;   This obviates the need for the old register_symtab() function.  */
 macro_line|#if defined(__GENKSYMS__)
 multiline_comment|/* We want the EXPORT_SYMBOL tag left intact for recognition.  */
-macro_line|#elif !defined(AUTOCONF_INCLUDED)
-DECL|macro|__EXPORT_SYMBOL
-mdefine_line|#define __EXPORT_SYMBOL(sym,str)   error config_must_be_included_before_module
-DECL|macro|EXPORT_SYMBOL
-mdefine_line|#define EXPORT_SYMBOL(var)&t;   error config_must_be_included_before_module
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error config_must_be_included_before_module
-DECL|macro|EXPORT_SYMBOL_GPL
-mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error config_must_be_included_before_module
 macro_line|#elif !defined(CONFIG_MODULES)
 DECL|macro|__EXPORT_SYMBOL
 mdefine_line|#define __EXPORT_SYMBOL(sym,str)
@@ -608,12 +599,6 @@ DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(var)  error this_object_must_be_defined_as_export_objs_in_the_Makefile
-id|__asm__
-c_func
-(paren
-l_string|&quot;.section __ksymtab,&bslash;&quot;a&bslash;&quot;&bslash;n.previous&quot;
-)paren
-suffix:semicolon
 macro_line|#else
 DECL|macro|__EXPORT_SYMBOL
 mdefine_line|#define __EXPORT_SYMBOL(sym, str)&t;&t;&t;&bslash;&n;const char __kstrtab_##sym[]&t;&t;&t;&t;&bslash;&n;__attribute__((section(&quot;.kstrtab&quot;))) = str;&t;&t;&bslash;&n;const struct module_symbol __ksymtab_##sym &t;&t;&bslash;&n;__attribute__((section(&quot;__ksymtab&quot;))) =&t;&t;&t;&bslash;&n;{ (unsigned long)&amp;sym, __kstrtab_##sym }
@@ -633,14 +618,18 @@ macro_line|#endif
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(var)  __EXPORT_SYMBOL(var, __MODULE_STRING(var))
 macro_line|#endif /* __GENKSYMS__ */
-macro_line|#ifdef MODULE
-multiline_comment|/* Force a module to export no symbols.  */
-DECL|macro|EXPORT_NO_SYMBOLS
-mdefine_line|#define EXPORT_NO_SYMBOLS  __asm__(&quot;.section __ksymtab&bslash;n.previous&quot;)
-macro_line|#else
+multiline_comment|/* &n; * Force a module to export no symbols.&n; * EXPORT_NO_SYMBOLS is default now, leave the define around for sources&n; * which still have it&n; */
 DECL|macro|EXPORT_NO_SYMBOLS
 mdefine_line|#define EXPORT_NO_SYMBOLS
-macro_line|#endif /* MODULE */
+macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* &n; * Always allocate a section &quot;__ksymtab&quot;. If we encounter EXPORT_SYMBOL,&n; * the exported symbol will be added to it.&n; * If it remains empty, that tells modutils that we do not want to&n; * export any symbols (as opposed to it not being present, which means&n; * &quot;export all symbols&quot; to modutils)&n; */
+id|__asm__
+c_func
+(paren
+l_string|&quot;.section __ksymtab,&bslash;&quot;a&bslash;&quot;&bslash;n.previous&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_MODULES
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(some_struct) do { (some_struct)-&gt;owner = THIS_MODULE; } while (0)

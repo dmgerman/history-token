@@ -1977,8 +1977,6 @@ id|tmp
 suffix:semicolon
 )brace
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|parport_gsc_init_module
 id|module_init
 c_func

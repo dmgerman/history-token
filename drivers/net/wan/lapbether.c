@@ -1993,8 +1993,6 @@ c_func
 id|lapbeth_cleanup_driver
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

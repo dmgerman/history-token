@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; * ialloc.c contains the inodes allocation and deallocation routines&n; */
@@ -2089,6 +2090,22 @@ op_or
 id|EXT3_APPEND_FL
 )paren
 suffix:semicolon
+multiline_comment|/* dirsync only applies to directories */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|S_ISDIR
+c_func
+(paren
+id|mode
+)paren
+)paren
+id|ei-&gt;i_flags
+op_and_assign
+op_complement
+id|EXT3_DIRSYNC_FL
+suffix:semicolon
 macro_line|#ifdef EXT3_FRAGMENTS
 id|ei-&gt;i_faddr
 op_assign
@@ -2143,7 +2160,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|ei-&gt;i_flags
+op_amp
+id|EXT3_DIRSYNC_FL
+)paren
+id|inode-&gt;i_flags
+op_or_assign
+id|S_DIRSYNC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_DIRSYNC
 c_func
 (paren
 id|inode

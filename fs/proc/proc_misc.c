@@ -576,8 +576,8 @@ l_string|&quot;MemFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;MemShared:    %8lu kB&bslash;n&quot;
 l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
 l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
-l_string|&quot;Active:       %8u kB&bslash;n&quot;
-l_string|&quot;Inactive:     %8u kB&bslash;n&quot;
+l_string|&quot;Active:       %8lu kB&bslash;n&quot;
+l_string|&quot;Inactive:     %8lu kB&bslash;n&quot;
 l_string|&quot;HighTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;HighFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;LowTotal:     %8lu kB&bslash;n&quot;
@@ -622,13 +622,13 @@ comma
 id|K
 c_func
 (paren
-id|nr_active_pages
+id|ps.nr_active
 )paren
 comma
 id|K
 c_func
 (paren
-id|nr_inactive_pages
+id|ps.nr_inactive
 )paren
 comma
 id|K

@@ -45,7 +45,7 @@ c_func
 (paren
 r_int
 r_int
-id|unused
+id|_min_pages
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are&n; * generating dirty data.  It looks at the number of dirty pages&n; * in the machine and either:&n; *&n; * - Starts background writeback or&n; * - Causes the caller to perform async writeback or&n; * - Causes the caller to perform synchronous writeback, then&n; *   tells a pdflush thread to perform more writeback or&n; * - Does nothing at all.&n; *&n; * balance_dirty_pages() can sleep.&n; *&n; * FIXME: WB_SYNC_LAST doesn&squot;t actually work.  It waits on the last dirty&n; * inode on the superblock list.  It should wait when nr_to_write is&n; * exhausted.  Doesn&squot;t seem to matter.&n; */
@@ -391,11 +391,9 @@ op_le
 l_int|0
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 )brace
@@ -521,11 +519,9 @@ op_amp
 id|oldest_jif
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|yield
@@ -691,7 +687,7 @@ c_cond
 id|inode
 )paren
 (brace
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 id|inode-&gt;i_mapping
@@ -775,10 +771,10 @@ c_func
 id|generic_vm_writeback
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * generic_writeback_mapping - walk the list of dirty pages of the given&n; * address space and writepage() all of them.&n; * &n; * @mapping: address space structure to write&n; * @nr_to_write: subtract the number of written pages from *@nr_to_write&n; *&n; * This is a library function, which implements the writeback_mapping()&n; * address_space_operation.&n; *&n; * (The next two paragraphs refer to code which isn&squot;t here yet, but they&n; *  explain the presence of address_space.io_pages)&n; *&n; * Pages can be moved from clean_pages or locked_pages onto dirty_pages&n; * at any time - it&squot;s not possible to lock against that.  So pages which&n; * have already been added to a BIO may magically reappear on the dirty_pages&n; * list.  And generic_writeback_mapping() will again try to lock those pages.&n; * But I/O has not yet been started against the page.  Thus deadlock.&n; *&n; * To avoid this, the entire contents of the dirty_pages list are moved&n; * onto io_pages up-front.  We then walk io_pages, locking the&n; * pages and submitting them for I/O, moving them to locked_pages.&n; *&n; * This has the added benefit of preventing a livelock which would otherwise&n; * occur if pages are being dirtied faster than we can write them out.&n; *&n; * If a page is already under I/O, generic_writeback_mapping() skips it, even&n; * if it&squot;s dirty.  This is desirable behaviour for memory-cleaning writeback,&n; * but it is INCORRECT for data-integrity system calls such as fsync().  fsync()&n; * and msync() need to guarentee that all the data which was dirty at the time&n; * the call was made get new I/O started against them.  The way to do this is&n; * to run filemap_fdatawait() before calling filemap_fdatawrite().&n; *&n; * It&squot;s fairly rare for PageWriteback pages to be on -&gt;dirty_pages.  It&n; * means that someone redirtied the page while it was under I/O.&n; */
-DECL|function|generic_writeback_mapping
+multiline_comment|/**&n; * generic_writepages - walk the list of dirty pages of the given&n; * address space and writepage() all of them.&n; * &n; * @mapping: address space structure to write&n; * @nr_to_write: subtract the number of written pages from *@nr_to_write&n; *&n; * This is a library function, which implements the writepages()&n; * address_space_operation.&n; *&n; * (The next two paragraphs refer to code which isn&squot;t here yet, but they&n; *  explain the presence of address_space.io_pages)&n; *&n; * Pages can be moved from clean_pages or locked_pages onto dirty_pages&n; * at any time - it&squot;s not possible to lock against that.  So pages which&n; * have already been added to a BIO may magically reappear on the dirty_pages&n; * list.  And generic_writepages() will again try to lock those pages.&n; * But I/O has not yet been started against the page.  Thus deadlock.&n; *&n; * To avoid this, the entire contents of the dirty_pages list are moved&n; * onto io_pages up-front.  We then walk io_pages, locking the&n; * pages and submitting them for I/O, moving them to locked_pages.&n; *&n; * This has the added benefit of preventing a livelock which would otherwise&n; * occur if pages are being dirtied faster than we can write them out.&n; *&n; * If a page is already under I/O, generic_writepages() skips it, even&n; * if it&squot;s dirty.  This is desirable behaviour for memory-cleaning writeback,&n; * but it is INCORRECT for data-integrity system calls such as fsync().  fsync()&n; * and msync() need to guarentee that all the data which was dirty at the time&n; * the call was made get new I/O started against them.  The way to do this is&n; * to run filemap_fdatawait() before calling filemap_fdatawrite().&n; *&n; * It&squot;s fairly rare for PageWriteback pages to be on -&gt;dirty_pages.  It&n; * means that someone redirtied the page while it was under I/O.&n; */
+DECL|function|generic_writepages
 r_int
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 r_struct
@@ -1166,16 +1162,16 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|generic_writeback_mapping
+DECL|variable|generic_writepages
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|generic_writeback_mapping
+id|generic_writepages
 )paren
 suffix:semicolon
-DECL|function|writeback_mapping
+DECL|function|do_writepages
 r_int
-id|writeback_mapping
+id|do_writepages
 c_func
 (paren
 r_struct
@@ -1191,12 +1187,12 @@ id|nr_to_write
 r_if
 c_cond
 (paren
-id|mapping-&gt;a_ops-&gt;writeback_mapping
+id|mapping-&gt;a_ops-&gt;writepages
 )paren
 r_return
 id|mapping-&gt;a_ops
 op_member_access_from_pointer
-id|writeback_mapping
+id|writepages
 c_func
 (paren
 id|mapping
@@ -1205,7 +1201,7 @@ id|nr_to_write
 )paren
 suffix:semicolon
 r_return
-id|generic_writeback_mapping
+id|generic_writepages
 c_func
 (paren
 id|mapping
@@ -1401,7 +1397,8 @@ c_func
 id|write_one_page
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * There is also a small window where the page is dirty, and not on dirty_pages.&n; * Also a possibility that by the time the page is added to dirty_pages, it has&n; * been set clean.  The page lists are somewhat approximate in this regard.&n; * It&squot;s better to have clean pages accidentally attached to dirty_pages than to&n; * leave dirty pages attached to clean_pages.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; *&n; * For now, we treat swapper_space specially.  It doesn&squot;t use the normal&n; * block a_ops.&n; */
+multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * There is also a small window where the page is dirty, and not on dirty_pages.&n; * Also a possibility that by the time the page is added to dirty_pages, it has&n; * been set clean.  The page lists are somewhat approximate in this regard.&n; * It&squot;s better to have clean pages accidentally attached to dirty_pages than to&n; * leave dirty pages attached to clean_pages.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; *&n; * For now, we treat swapper_space specially.  It doesn&squot;t use the normal&n; * block a_ops.&n; *&n; * FIXME: this should move over to fs/buffer.c - buffer_heads have no business in mm/&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|function|__set_page_dirty_buffers
 r_int
 id|__set_page_dirty_buffers
@@ -1444,6 +1441,21 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+id|buffer_error
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *              $Revision: 9 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg3 - AML execution - opcodes with 3 arguments&n; *              $Revision: 13 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -66,7 +66,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Fatal_op: Type %x Code %x Arg %x &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&bslash;n&quot;
+l_string|&quot;Fatal_op: Type %X Code %X Arg %X &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -154,6 +154,8 @@ id|integer.value
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Always signal the OS!&n;&t;&t; */
+id|status
+op_assign
 id|acpi_os_signal
 (paren
 id|ACPI_SIGNAL_FATAL
@@ -232,10 +234,10 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|u32
+id|NATIVE_UINT
 id|index
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
@@ -290,7 +292,7 @@ multiline_comment|/* Get the Integer values from the objects */
 id|index
 op_assign
 (paren
-id|u32
+id|NATIVE_UINT
 )paren
 id|operand
 (braket
@@ -302,7 +304,7 @@ suffix:semicolon
 id|length
 op_assign
 (paren
-id|u32
+id|ACPI_SIZE
 )paren
 id|operand
 (braket
@@ -353,6 +355,9 @@ id|string.length
 (brace
 id|length
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|operand
 (braket
 l_int|0
@@ -368,6 +373,9 @@ id|buffer
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|length
 op_plus
 l_int|1
@@ -412,6 +420,9 @@ id|buffer
 suffix:semicolon
 id|return_desc-&gt;string.length
 op_assign
+(paren
+id|u32
+)paren
 id|length
 suffix:semicolon
 )brace

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Copyright (C) 1996  Gertjan van Wingerde    (gertjan@cs.vu.nl)&n; *&t;Minix V2 fs support.&n; *&n; *  Modified for 680x0 by Andreas Schwab&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;minix.h&quot;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
@@ -2901,8 +2902,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

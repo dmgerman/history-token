@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
+multiline_comment|/*&n; * This is needed for the following functions:&n; *  - inode_has_buffers&n; *  - invalidate_inode_buffers&n; *  - fsync_bdev&n; *  - invalidate_bdev&n; *&n; * FIXME: remove all knowledge of the buffer layer from this file&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * New inode.c implementation.&n; *&n; * This implementation has the basic premise of trying&n; * to be extremely low-overhead and SMP-safe, yet be&n; * simple enough to be &quot;obviously correct&quot;.&n; *&n; * Famous last words.&n; */
 multiline_comment|/* inode dynamic allocation 1999, Andrea Arcangeli &lt;andrea@suse.de&gt; */
 multiline_comment|/* #define INODE_PARANOIA 1 */
@@ -3601,6 +3603,58 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function update_atime  */
+DECL|function|inode_needs_sync
+r_int
+id|inode_needs_sync
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|IS_SYNC
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_and
+id|IS_DIRSYNC
+c_func
+(paren
+id|inode
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|inode_needs_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_needs_sync
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Quota functions that want to walk the inode lists..&n; */
 macro_line|#ifdef CONFIG_QUOTA
 multiline_comment|/* Functions back in dquot.c */

@@ -1197,8 +1197,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|terratec_cleanup_module
 r_static
 r_void

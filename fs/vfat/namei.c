@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|macro|DEBUG_LEVEL
 mdefine_line|#define DEBUG_LEVEL 0
 macro_line|#if (DEBUG_LEVEL &gt;= 1)
@@ -5327,12 +5328,6 @@ id|dentry-&gt;d_time
 op_assign
 id|dentry-&gt;d_parent-&gt;d_inode-&gt;i_version
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|inode
-)paren
-(brace
 id|dentry
 op_assign
 id|d_splice_alias
@@ -5364,18 +5359,6 @@ suffix:semicolon
 )brace
 r_return
 id|dentry
-suffix:semicolon
-)brace
-id|d_add
-c_func
-(paren
-id|dentry
-comma
-id|inode
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|vfat_create

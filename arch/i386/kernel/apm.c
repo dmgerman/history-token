@@ -6653,6 +6653,4 @@ comma
 l_string|&quot;Period (in sec/100) over which to caculate the idle percentage&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 macro_line|#include &lt;linux/ide.h&gt;&t;/* IDE xlate */
 macro_line|#elif defined(CONFIG_BLK_DEV_IDE_MODULE)

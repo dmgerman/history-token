@@ -1990,6 +1990,4 @@ op_assign
 id|FCAL
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

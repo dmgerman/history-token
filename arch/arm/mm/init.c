@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#ifndef CONFIG_DISCONTIGMEM
@@ -39,6 +40,13 @@ mdefine_line|#define TABLE_OFFSET&t;0
 macro_line|#endif
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE&t;((TABLE_OFFSET + PTRS_PER_PTE) * sizeof(pte_t))
+DECL|variable|mmu_gathers
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -840,6 +848,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * This doesn&squot;t seem to be used by the Linux memory&n;&t; * manager any more.  If we can get rid of it, we&n;&t; * also get rid of some of the stuff above as well.&n;&t; */
 id|max_low_pfn
+op_assign
+id|memend_pfn
+op_minus
+id|O_PFN_DOWN
+c_func
+(paren
+id|PHYS_OFFSET
+)paren
+suffix:semicolon
+id|max_pfn
 op_assign
 id|memend_pfn
 op_minus

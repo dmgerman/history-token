@@ -4393,8 +4393,6 @@ id|s-&gt;req_dvma
 suffix:semicolon
 )brace
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|soc_probe
 id|module_init
 c_func

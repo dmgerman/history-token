@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 74 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -7,14 +7,13 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsopcode&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_execute_arguments&n; *&n; * PARAMETERS:  Node                - Parent NS node&n; *              Extra_desc          - Has AML pointer and length&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Late execution of region or field arguments&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_execute_arguments&n; *&n; * PARAMETERS:  Node                - Parent NS node&n; *              Aml_length          - Length of executable AML&n; *              Aml_start           - Pointer to the AML&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Late execution of region or field arguments&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_execute_arguments
 id|acpi_ds_execute_arguments
@@ -77,7 +76,7 @@ id|AE_NO_MEMORY
 suffix:semicolon
 )brace
 multiline_comment|/* Save the Node for use in Acpi_ps_parse_aml */
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|scope_node
 suffix:semicolon
@@ -184,13 +183,13 @@ suffix:semicolon
 multiline_comment|/* Get and init the Op created above */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
-id|arg-&gt;node
+id|arg-&gt;common.node
 op_assign
 id|node
 suffix:semicolon
@@ -220,7 +219,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 id|scope_node
 suffix:semicolon
@@ -382,12 +381,7 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s] Buffer_field JIT Init&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 )paren
 suffix:semicolon
@@ -691,12 +685,7 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;[%4.4s] Op_region Init at AML %p&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 comma
 id|extra_desc-&gt;extra.aml_start
 )paren
@@ -724,7 +713,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_initialize_region&n; *&n; * PARAMETERS:  Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_initialize_region&n; *&n; * PARAMETERS:  Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Front end to Ev_initialize_region&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_initialize_region
 id|acpi_ds_initialize_region
@@ -763,35 +752,35 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_buffer_field_operands&n; *&n; * PARAMETERS:  Op              - A valid Buffer_field Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get Buffer_field Buffer and Index&n; *              Called from Acpi_ds_exec_end_op during Buffer_field parse tree walk&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_buffer_field&n; *&n; * PARAMETERS:  Aml_opcode      - Create_xxx_field&n; *              Obj_desc        - Buffer_field object&n; *              Buffer_desc     - Host Buffer&n; *              Offset_desc     - Offset into buffer&n; *              Length          - Length of field (CREATE_FIELD_OP only)&n; *              Result          - Where to store the result&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform actual initialization of a buffer field&n; *&n; ****************************************************************************/
 id|acpi_status
-DECL|function|acpi_ds_eval_buffer_field_operands
-id|acpi_ds_eval_buffer_field_operands
+DECL|function|acpi_ds_init_buffer_field
+id|acpi_ds_init_buffer_field
 (paren
-id|acpi_walk_state
-op_star
-id|walk_state
+id|u16
+id|aml_opcode
 comma
-id|acpi_parse_object
-op_star
-id|op
-)paren
-(brace
-id|acpi_status
-id|status
-suffix:semicolon
 id|acpi_operand_object
 op_star
 id|obj_desc
-suffix:semicolon
-id|acpi_namespace_node
+comma
+id|acpi_operand_object
 op_star
-id|node
-suffix:semicolon
-id|acpi_parse_object
+id|buffer_desc
+comma
+id|acpi_operand_object
 op_star
-id|next_op
-suffix:semicolon
+id|offset_desc
+comma
+id|acpi_operand_object
+op_star
+id|length_desc
+comma
+id|acpi_operand_object
+op_star
+id|result_desc
+)paren
+(brace
 id|u32
 id|offset
 suffix:semicolon
@@ -804,127 +793,23 @@ suffix:semicolon
 id|u8
 id|field_flags
 suffix:semicolon
-id|acpi_operand_object
-op_star
-id|res_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-id|acpi_operand_object
-op_star
-id|cnt_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-id|acpi_operand_object
-op_star
-id|off_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-id|acpi_operand_object
-op_star
-id|src_desc
-op_assign
-l_int|NULL
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_eval_buffer_field_operands&quot;
+l_string|&quot;Ds_init_buffer_field&quot;
 comma
-id|op
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the&n;&t; * Create_xxx_field declaration&n;&t; */
-id|node
-op_assign
-id|op-&gt;node
-suffix:semicolon
-multiline_comment|/* Next_op points to the op that holds the Buffer */
-id|next_op
-op_assign
-id|op-&gt;value.arg
-suffix:semicolon
-multiline_comment|/* Evaluate/create the address and length operands */
-id|status
-op_assign
-id|acpi_ds_create_operands
-(paren
-id|walk_state
-comma
-id|next_op
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-id|obj_desc
-op_assign
-id|acpi_ns_get_attached_object
-(paren
-id|node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|obj_desc
 )paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NOT_EXIST
-)paren
 suffix:semicolon
-)brace
-multiline_comment|/* Resolve the operands */
-id|status
-op_assign
-id|acpi_ex_resolve_operands
-(paren
-id|op-&gt;opcode
-comma
-id|ACPI_WALK_OPERANDS
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|ACPI_DUMP_OPERANDS
-(paren
-id|ACPI_WALK_OPERANDS
-comma
-id|ACPI_IMODE_EXECUTE
-comma
-id|acpi_ps_get_opcode_name
-(paren
-id|op-&gt;opcode
-)paren
-comma
-id|walk_state-&gt;num_operands
-comma
-l_string|&quot;after Acpi_ex_resolve_operands&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* Host object must be a Buffer */
 r_if
 c_cond
 (paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
+id|buffer_desc-&gt;common.type
+op_ne
+id|ACPI_TYPE_BUFFER
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -932,83 +817,30 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;(%s) bad operand(s) (%X)&bslash;n&quot;
+l_string|&quot;Target of Create Field is not a Buffer object - %s&bslash;n&quot;
 comma
-id|acpi_ps_get_opcode_name
+id|acpi_ut_get_type_name
 (paren
-id|op-&gt;opcode
+id|buffer_desc-&gt;common.type
 )paren
-comma
+)paren
+)paren
+suffix:semicolon
 id|status
-)paren
-)paren
+op_assign
+id|AE_AML_OPERAND_TYPE
 suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Get the operands */
-r_if
-c_cond
-(paren
-id|AML_CREATE_FIELD_OP
-op_eq
-id|op-&gt;opcode
-)paren
-(brace
-id|res_desc
-op_assign
-id|walk_state-&gt;operands
-(braket
-l_int|3
-)braket
-suffix:semicolon
-id|cnt_desc
-op_assign
-id|walk_state-&gt;operands
-(braket
-l_int|2
-)braket
-suffix:semicolon
-)brace
-r_else
-(brace
-id|res_desc
-op_assign
-id|walk_state-&gt;operands
-(braket
-l_int|2
-)braket
-suffix:semicolon
-)brace
-id|off_desc
-op_assign
-id|walk_state-&gt;operands
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|src_desc
-op_assign
-id|walk_state-&gt;operands
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|offset
-op_assign
-(paren
-id|u32
-)paren
-id|off_desc-&gt;integer.value
-suffix:semicolon
-multiline_comment|/*&n;&t; * If Res_desc is a Name, it will be a direct name pointer after&n;&t; * Acpi_ex_resolve_operands()&n;&t; */
+multiline_comment|/*&n;&t; * The last parameter to all of these opcodes (Result_desc) started&n;&t; * out as a Name_string, and should therefore now be a NS node&n;&t; * after resolution in Acpi_ex_resolve_operands().&n;&t; */
 r_if
 c_cond
 (paren
 id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
-id|res_desc
+id|result_desc
 )paren
 op_ne
 id|ACPI_DESC_TYPE_NAMED
@@ -1023,7 +855,7 @@ l_string|&quot;(%s) destination must be a NS Node&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;opcode
+id|aml_opcode
 )paren
 )paren
 )paren
@@ -1036,11 +868,18 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+id|offset
+op_assign
+(paren
+id|u32
+)paren
+id|offset_desc-&gt;integer.value
+suffix:semicolon
 multiline_comment|/*&n;&t; * Setup the Bit offsets and counts, according to the opcode&n;&t; */
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|aml_opcode
 )paren
 (brace
 r_case
@@ -1056,7 +895,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|cnt_desc-&gt;integer.value
+id|length_desc-&gt;integer.value
 suffix:semicolon
 id|field_flags
 op_assign
@@ -1169,9 +1008,9 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Internal error - unknown field creation opcode %02x&bslash;n&quot;
+l_string|&quot;Unknown field creation opcode %02x&bslash;n&quot;
 comma
-id|op-&gt;opcode
+id|aml_opcode
 )paren
 )paren
 suffix:semicolon
@@ -1183,17 +1022,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Setup field according to the object type&n;&t; */
-r_switch
-c_cond
-(paren
-id|src_desc-&gt;common.type
-)paren
-(brace
-multiline_comment|/* Source_buff :=  Term_arg=&gt;Buffer */
-r_case
-id|ACPI_TYPE_BUFFER
-suffix:colon
+multiline_comment|/* Entire field must fit within the current length of the buffer */
 r_if
 c_cond
 (paren
@@ -1209,7 +1038,7 @@ op_star
 (paren
 id|u32
 )paren
-id|src_desc-&gt;buffer.length
+id|buffer_desc-&gt;buffer.length
 )paren
 )paren
 (brace
@@ -1229,7 +1058,7 @@ op_star
 (paren
 id|u32
 )paren
-id|src_desc-&gt;buffer.length
+id|buffer_desc-&gt;buffer.length
 )paren
 )paren
 suffix:semicolon
@@ -1241,7 +1070,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Initialize areas of the field object that are common to all fields&n;&t;&t; * For Field_flags, use LOCK_RULE = 0 (NO_LOCK), UPDATE_RULE = 0 (UPDATE_PRESERVE)&n;&t;&t; */
+multiline_comment|/*&n;&t; * Initialize areas of the field object that are common to all fields&n;&t; * For Field_flags, use LOCK_RULE = 0 (NO_LOCK), UPDATE_RULE = 0 (UPDATE_PRESERVE)&n;&t; */
 id|status
 op_assign
 id|acpi_ex_prep_common_field_object
@@ -1266,135 +1095,50 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 id|obj_desc-&gt;buffer_field.buffer_obj
 op_assign
-id|src_desc
+id|buffer_desc
 suffix:semicolon
-multiline_comment|/* Reference count for Src_desc inherits Obj_desc count */
-id|src_desc-&gt;common.reference_count
+multiline_comment|/* Reference count for Buffer_desc inherits Obj_desc count */
+id|buffer_desc-&gt;common.reference_count
 op_assign
 (paren
 id|u16
 )paren
 (paren
-id|src_desc-&gt;common.reference_count
+id|buffer_desc-&gt;common.reference_count
 op_plus
 id|obj_desc-&gt;common.reference_count
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* Improper object type */
-r_default
-suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|src_desc-&gt;common.type
-OG
-(paren
-id|u8
-)paren
-id|INTERNAL_TYPE_REFERENCE
-)paren
-op_logical_or
-op_logical_neg
-id|acpi_ut_valid_object_type
-(paren
-id|src_desc-&gt;common.type
-)paren
-)paren
-multiline_comment|/* This line MUST be a single line until Acpi_src can handle it (block deletion) */
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Tried to create field in invalid object type %X&bslash;n&quot;
-comma
-id|src_desc-&gt;common.type
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Tried to create field in improper object type - %s&bslash;n&quot;
-comma
-id|acpi_ut_get_type_name
-(paren
-id|src_desc-&gt;common.type
-)paren
-)paren
-)paren
-suffix:semicolon
-)brace
-id|status
-op_assign
-id|AE_AML_OPERAND_TYPE
-suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|AML_CREATE_FIELD_OP
-op_eq
-id|op-&gt;opcode
-)paren
-(brace
-multiline_comment|/* Delete object descriptor unique to Create_field */
-id|acpi_ut_remove_reference
-(paren
-id|cnt_desc
-)paren
-suffix:semicolon
-id|cnt_desc
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 id|cleanup
 suffix:colon
 multiline_comment|/* Always delete the operands */
 id|acpi_ut_remove_reference
 (paren
-id|off_desc
+id|offset_desc
 )paren
 suffix:semicolon
 id|acpi_ut_remove_reference
 (paren
-id|src_desc
+id|buffer_desc
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|AML_CREATE_FIELD_OP
+id|aml_opcode
 op_eq
-id|op-&gt;opcode
+id|AML_CREATE_FIELD_OP
 )paren
 (brace
 id|acpi_ut_remove_reference
 (paren
-id|cnt_desc
+id|length_desc
 )paren
 suffix:semicolon
 )brace
@@ -1410,7 +1154,7 @@ id|status
 (brace
 id|acpi_ut_remove_reference
 (paren
-id|res_desc
+id|result_desc
 )paren
 suffix:semicolon
 multiline_comment|/* Result descriptor */
@@ -1429,7 +1173,233 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_region_operands&n; *&n; * PARAMETERS:  Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get region address and length&n; *              Called from Acpi_ds_exec_end_op during Op_region parse tree walk&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_buffer_field_operands&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - A valid Buffer_field Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get Buffer_field Buffer and Index&n; *              Called from Acpi_ds_exec_end_op during Buffer_field parse tree walk&n; *&n; ****************************************************************************/
+id|acpi_status
+DECL|function|acpi_ds_eval_buffer_field_operands
+id|acpi_ds_eval_buffer_field_operands
+(paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
+id|acpi_parse_object
+op_star
+id|op
+)paren
+(brace
+id|acpi_status
+id|status
+suffix:semicolon
+id|acpi_operand_object
+op_star
+id|obj_desc
+suffix:semicolon
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
+id|acpi_parse_object
+op_star
+id|next_op
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_eval_buffer_field_operands&quot;
+comma
+id|op
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the&n;&t; * Create_xxx_field declaration&n;&t; */
+id|node
+op_assign
+id|op-&gt;common.node
+suffix:semicolon
+multiline_comment|/* Next_op points to the op that holds the Buffer */
+id|next_op
+op_assign
+id|op-&gt;common.value.arg
+suffix:semicolon
+multiline_comment|/* Evaluate/create the address and length operands */
+id|status
+op_assign
+id|acpi_ds_create_operands
+(paren
+id|walk_state
+comma
+id|next_op
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|obj_desc
+op_assign
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|obj_desc
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NOT_EXIST
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Resolve the operands */
+id|status
+op_assign
+id|acpi_ex_resolve_operands
+(paren
+id|op-&gt;common.aml_opcode
+comma
+id|ACPI_WALK_OPERANDS
+comma
+id|walk_state
+)paren
+suffix:semicolon
+id|ACPI_DUMP_OPERANDS
+(paren
+id|ACPI_WALK_OPERANDS
+comma
+id|ACPI_IMODE_EXECUTE
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|op-&gt;common.aml_opcode
+)paren
+comma
+id|walk_state-&gt;num_operands
+comma
+l_string|&quot;after Acpi_ex_resolve_operands&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;(%s) bad operand(s) (%X)&bslash;n&quot;
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|op-&gt;common.aml_opcode
+)paren
+comma
+id|status
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Initialize the Buffer Field */
+r_if
+c_cond
+(paren
+id|op-&gt;common.aml_opcode
+op_eq
+id|AML_CREATE_FIELD_OP
+)paren
+(brace
+multiline_comment|/* NOTE: Slightly different operands for this opcode */
+id|status
+op_assign
+id|acpi_ds_init_buffer_field
+(paren
+id|op-&gt;common.aml_opcode
+comma
+id|obj_desc
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|1
+)braket
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|2
+)braket
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|3
+)braket
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* All other, Create_xxx_field opcodes */
+id|status
+op_assign
+id|acpi_ds_init_buffer_field
+(paren
+id|op-&gt;common.aml_opcode
+comma
+id|obj_desc
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|1
+)braket
+comma
+l_int|NULL
+comma
+id|walk_state-&gt;operands
+(braket
+l_int|2
+)braket
+)paren
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_region_operands&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - A valid region Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get region address and length&n; *              Called from Acpi_ds_exec_end_op during Op_region parse tree walk&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_eval_region_operands
 id|acpi_ds_eval_region_operands
@@ -1472,17 +1442,17 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the Op_region declaration&n;&t; */
 id|node
 op_assign
-id|op-&gt;node
+id|op-&gt;common.node
 suffix:semicolon
 multiline_comment|/* Next_op points to the op that holds the Space_iD */
 id|next_op
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 multiline_comment|/* Next_op points to address op */
 id|next_op
 op_assign
-id|next_op-&gt;next
+id|next_op-&gt;common.next
 suffix:semicolon
 multiline_comment|/* Evaluate/create the address and length operands */
 id|status
@@ -1514,7 +1484,7 @@ id|status
 op_assign
 id|acpi_ex_resolve_operands
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 comma
 id|ACPI_WALK_OPERANDS
 comma
@@ -1544,7 +1514,7 @@ id|ACPI_IMODE_EXECUTE
 comma
 id|acpi_ps_get_opcode_name
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 comma
 l_int|1
@@ -1650,7 +1620,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_data_object_operands&n; *&n; * PARAMETERS:  Op              - A valid Data_object Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the operands and complete the following data objec types:&n; *              Buffer&n; *              Package&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_data_object_operands&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - A valid Data_object Op object&n; *              Obj_desc        - Data_object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the operands and complete the following data objec types:&n; *              Buffer&n; *              Package&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_eval_data_object_operands
 id|acpi_ds_eval_data_object_operands
@@ -1690,7 +1660,7 @@ id|acpi_ds_create_operand
 (paren
 id|walk_state
 comma
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 comma
 l_int|1
 )paren
@@ -1762,6 +1732,8 @@ id|u32
 id|arg_desc-&gt;integer.value
 suffix:semicolon
 multiline_comment|/* Cleanup for length operand */
+id|status
+op_assign
 id|acpi_ds_obj_stack_pop
 (paren
 l_int|1
@@ -1769,6 +1741,21 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|acpi_ut_remove_reference
 (paren
 id|arg_desc
@@ -1778,7 +1765,7 @@ multiline_comment|/*&n;&t; * Create the actual data object&n;&t; */
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1845,24 +1832,24 @@ c_cond
 (paren
 (paren
 op_logical_neg
-id|op-&gt;parent
+id|op-&gt;common.parent
 )paren
 op_logical_or
 (paren
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_ne
 id|AML_PACKAGE_OP
 )paren
 op_logical_and
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_ne
 id|AML_VAR_PACKAGE_OP
 )paren
 op_logical_and
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 op_ne
 id|AML_NAME_OP
 )paren
@@ -1918,7 +1905,7 @@ l_string|&quot;Op=%p Opcode=%2.2X State=%p&bslash;n&quot;
 comma
 id|op
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 comma
 id|walk_state
 )paren
@@ -1927,7 +1914,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1970,7 +1957,7 @@ id|walk_state-&gt;parser_state.pkg_end
 suffix:semicolon
 id|control_state-&gt;control.opcode
 op_assign
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 suffix:semicolon
 multiline_comment|/* Push the control state on this walk&squot;s control stack */
 id|acpi_ut_push_generic_state
@@ -2048,7 +2035,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -2163,7 +2150,7 @@ l_string|&quot;[RETURN_OP] Op=%p Arg=%p&bslash;n&quot;
 comma
 id|op
 comma
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 )paren
 suffix:semicolon
@@ -2171,7 +2158,7 @@ multiline_comment|/*&n;&t;&t; * One optional operand -- the return value&n;&t;&t
 r_if
 c_cond
 (paren
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 (brace
 multiline_comment|/* Return statement has an immediate operand */
@@ -2181,7 +2168,7 @@ id|acpi_ds_create_operands
 (paren
 id|walk_state
 comma
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 suffix:semicolon
 r_if
@@ -2265,7 +2252,7 @@ l_int|0
 )braket
 )paren
 op_eq
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 op_logical_and
 (paren
@@ -2396,6 +2383,8 @@ r_case
 id|AML_BREAK_POINT_OP
 suffix:colon
 multiline_comment|/* Call up to the OS service layer to handle this */
+id|status
+op_assign
 id|acpi_os_signal
 (paren
 id|ACPI_SIGNAL_BREAKPOINT
@@ -2463,7 +2452,7 @@ multiline_comment|/* Return status depending on opcode */
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_BREAK_OP
 )paren
@@ -2491,7 +2480,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Unknown control opcode=%X Op=%p&bslash;n&quot;
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 comma
 id|op
 )paren

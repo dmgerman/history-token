@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * define how far ahead to read directories while searching them.&n; */
 DECL|macro|NAMEI_RA_CHUNKS
@@ -2151,7 +2152,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -2321,7 +2322,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -2505,7 +2506,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4017,7 +4018,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4277,7 +4278,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4568,7 +4569,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -4864,7 +4865,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|dir
@@ -5046,13 +5047,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|old_dir
 )paren
 op_logical_or
-id|IS_SYNC
+id|IS_DIRSYNC
 c_func
 (paren
 id|new_dir

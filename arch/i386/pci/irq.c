@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
@@ -16,12 +15,6 @@ DECL|macro|PIRQ_SIGNATURE
 mdefine_line|#define PIRQ_SIGNATURE&t;((&squot;$&squot; &lt;&lt; 0) + (&squot;P&squot; &lt;&lt; 8) + (&squot;I&squot; &lt;&lt; 16) + (&squot;R&squot; &lt;&lt; 24))
 DECL|macro|PIRQ_VERSION
 mdefine_line|#define PIRQ_VERSION 0x0100
-DECL|variable|pci_use_acpi_routing
-r_int
-id|pci_use_acpi_routing
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|broken_hp_bios_irq9
 r_int
 id|broken_hp_bios_irq9
@@ -146,20 +139,17 @@ r_new
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|pci_lookup_irq
+DECL|variable|pcibios_enable_irq
 r_int
 (paren
 op_star
-id|pci_lookup_irq
+id|pcibios_enable_irq
 )paren
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_int
-id|assign
 )paren
 op_assign
 l_int|NULL
@@ -3390,7 +3380,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_lookup_irq
+id|pcibios_enable_irq
 )paren
 r_return
 l_int|0
@@ -3495,9 +3485,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|pci_lookup_irq
+id|pcibios_enable_irq
 op_assign
-id|pcibios_lookup_irq
+id|pirq_enable_irq
 suffix:semicolon
 id|pcibios_fixup_irqs
 c_func
@@ -3774,7 +3764,7 @@ op_logical_and
 op_logical_neg
 id|dev-&gt;irq
 )paren
-id|pci_lookup_irq
+id|pcibios_lookup_irq
 c_func
 (paren
 id|dev
@@ -3802,9 +3792,9 @@ op_add_assign
 l_int|100
 suffix:semicolon
 )brace
-DECL|function|pcibios_enable_irq
-r_void
-id|pcibios_enable_irq
+DECL|function|pirq_enable_irq
+r_int
+id|pirq_enable_irq
 c_func
 (paren
 r_struct
@@ -3833,7 +3823,7 @@ c_cond
 id|pin
 op_logical_and
 op_logical_neg
-id|pci_lookup_irq
+id|pcibios_lookup_irq
 c_func
 (paren
 id|dev
@@ -3893,5 +3883,8 @@ id|msg
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

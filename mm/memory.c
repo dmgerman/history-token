@@ -94,7 +94,8 @@ id|address
 suffix:semicolon
 )brace
 DECL|variable|mem_map
-id|mem_map_t
+r_struct
+id|page
 op_star
 id|mem_map
 suffix:semicolon
@@ -1679,12 +1680,6 @@ r_int
 id|end
 )paren
 (brace
-r_int
-r_int
-id|start
-op_assign
-id|address
-suffix:semicolon
 id|pgd_t
 op_star
 id|dir
@@ -1717,10 +1712,6 @@ c_func
 id|tlb
 comma
 id|vma
-comma
-id|start
-comma
-id|end
 )paren
 suffix:semicolon
 r_do
@@ -1771,10 +1762,6 @@ c_func
 id|tlb
 comma
 id|vma
-comma
-id|start
-comma
-id|end
 )paren
 suffix:semicolon
 )brace

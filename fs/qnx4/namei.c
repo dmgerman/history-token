@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * check if the filename is correct. For some obscure reason, qnx writes a&n; * new file twice in the directory entry, first with all possible options at 0&n; * and for a second time the way it is, they want us not to access the qnx&n; * filesystem when whe are using linux.&n; */
 DECL|function|qnx4_match
 r_static

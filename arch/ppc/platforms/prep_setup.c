@@ -328,11 +328,6 @@ suffix:semicolon
 r_int
 id|cachew
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif
 id|seq_printf
 c_func
 (paren
@@ -674,6 +669,9 @@ op_ne
 l_int|0
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* print info about SIMMs */
 id|seq_printf
 c_func
@@ -2947,10 +2945,10 @@ id|_PAGE_IO
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 id|__init
-DECL|function|prep_init2
-id|prep_init2
+DECL|function|prep_request_io
+id|prep_request_io
 c_func
 (paren
 r_void
@@ -3008,7 +3006,17 @@ comma
 l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|prep_request_io
+id|device_initcall
+c_func
+(paren
+id|prep_request_io
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|prep_init
@@ -3162,10 +3170,6 @@ multiline_comment|/* this gets changed later on if we have an OpenPIC -- Cort */
 id|ppc_md.get_irq
 op_assign
 id|i8259_irq
-suffix:semicolon
-id|ppc_md.init
-op_assign
-id|prep_init2
 suffix:semicolon
 id|ppc_md.restart
 op_assign

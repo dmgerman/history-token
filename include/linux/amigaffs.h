@@ -2,6 +2,7 @@ macro_line|#ifndef AMIGAFFS_H
 DECL|macro|AMIGAFFS_H
 mdefine_line|#define AMIGAFFS_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* AmigaOS allows file names with up to 30 characters length.&n; * Names longer than that will be silently truncated. If you&n; * want to disallow this, comment out the following #define.&n; * Creating filesystem objects with longer names will then&n; * result in an error (ENAMETOOLONG).&n; */
 multiline_comment|/*#define AFFS_NO_TRUNCATE */

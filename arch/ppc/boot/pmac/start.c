@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.start.c 1.10 07/25/01 18:13:07 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 r_extern
@@ -35,6 +35,8 @@ op_star
 id|prom
 )paren
 (paren
+r_void
+op_star
 )paren
 suffix:semicolon
 DECL|variable|chosen_handle
@@ -132,6 +134,8 @@ r_int
 op_star
 )paren
 (paren
+r_void
+op_star
 )paren
 )paren
 id|promptr

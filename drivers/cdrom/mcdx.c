@@ -4022,8 +4022,6 @@ id|st
 suffix:semicolon
 )brace
 multiline_comment|/* MODULE STUFF ***********************************************************/
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|__mcdx_init
 r_int
 id|__mcdx_init

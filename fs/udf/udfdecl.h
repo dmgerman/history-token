@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/udf_fs_i.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif

@@ -2020,8 +2020,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: OOM for frozen_buffer&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;OOM for frozen_buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 id|JBUFFER_TRACE
@@ -2709,8 +2710,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
+l_string|&quot;%s: No memory for committed data!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: No memory for committed data!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err

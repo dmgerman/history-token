@@ -669,8 +669,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|nwbutton_init
 id|module_init
 c_func

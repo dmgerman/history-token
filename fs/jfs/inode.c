@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_imap.h&quot;
@@ -46,52 +47,50 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-DECL|function|jfs_put_inode
-r_void
-id|jfs_put_inode
+DECL|function|jfs_iget
+r_struct
+id|inode
+op_star
+id|jfs_iget
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+id|ino_t
+id|ino
+)paren
+(brace
 r_struct
 id|inode
 op_star
 id|inode
-)paren
-(brace
-id|jFYI
+op_assign
+id|iget_locked
 c_func
 (paren
-l_int|1
+id|sb
 comma
-(paren
-l_string|&quot;In jfs_put_inode, inode = 0x%p&bslash;n&quot;
-comma
-id|inode
-)paren
+id|ino
 )paren
 suffix:semicolon
-)brace
-DECL|function|jfs_read_inode
-r_void
-id|jfs_read_inode
-c_func
+r_if
+c_cond
 (paren
-r_struct
+op_logical_neg
 id|inode
-op_star
-id|inode
-)paren
-(brace
-id|jFYI
-c_func
+op_logical_or
+op_logical_neg
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;In jfs_read_inode, inode = 0x%p&bslash;n&quot;
-comma
-id|inode
+id|inode-&gt;i_state
+op_amp
+id|I_NEW
 )paren
 )paren
+r_return
+id|inode
 suffix:semicolon
 r_if
 c_cond
@@ -102,9 +101,23 @@ c_func
 id|inode
 )paren
 )paren
-r_goto
-id|bad_inode
+(brace
+id|make_bad_inode
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
+id|unlock_new_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -216,15 +229,14 @@ id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
-id|bad_inode
-suffix:colon
-id|make_bad_inode
+id|unlock_new_inode
 c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+r_return
+id|inode
 suffix:semicolon
 )brace
 multiline_comment|/* This define is from fs/open.c */

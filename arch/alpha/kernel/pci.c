@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
@@ -403,10 +404,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|macro|MAX
-mdefine_line|#define MAX(val1, val2)&t;&t;((val1) &gt; (val2) ? (val1) : (val2))
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN(val,align)&t;(((val) + ((align) - 1)) &amp; ~((align) - 1))
 DECL|macro|KB
 mdefine_line|#define KB&t;&t;&t;1024
 DECL|macro|MB
@@ -533,10 +530,10 @@ multiline_comment|/*&n;&t;&t; * The following holds at least for the Low Cost&n;
 multiline_comment|/* Align to multiple of size of minimum base.  */
 id|alignto
 op_assign
-id|MAX
+id|max
 c_func
 (paren
-l_int|0x1000
+l_int|0x1000UL
 comma
 id|align
 )paren
@@ -678,10 +675,6 @@ op_assign
 id|start
 suffix:semicolon
 )brace
-DECL|macro|MAX
-macro_line|#undef MAX
-DECL|macro|ALIGN
-macro_line|#undef ALIGN
 DECL|macro|KB
 macro_line|#undef KB
 DECL|macro|MB

@@ -6,11 +6,35 @@ macro_line|#ifndef _LINUX
 DECL|macro|_LINUX
 mdefine_line|#define _LINUX
 macro_line|#endif
-multiline_comment|/*&n; * YES this is ugly.&n; * But, moving all of ACPI&squot;s private headers to include/acpi isn&squot;t the right&n; * answer either.&n; * Please just ignore it for now.&n; */
+macro_line|#include &lt;linux/list.h&gt;
+multiline_comment|/*&n; * Yes this is ugly, but moving all of ACPI&squot;s private headers to include/acpi &n; * isn&squot;t the right answer either.  Please just ignore it for now.&n; */
 macro_line|#include &quot;../../drivers/acpi/include/acpi.h&quot;
 macro_line|#include &lt;asm/acpi.h&gt;
-multiline_comment|/* --------------------------------------------------------------------------&n;                             Boot-Time Table Parsing&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
+DECL|enum|acpi_irq_model_id
+r_enum
+id|acpi_irq_model_id
+(brace
+DECL|enumerator|ACPI_IRQ_MODEL_PIC
+id|ACPI_IRQ_MODEL_PIC
+op_assign
+l_int|0
+comma
+DECL|enumerator|ACPI_IRQ_MODEL_IOAPIC
+id|ACPI_IRQ_MODEL_IOAPIC
+comma
+DECL|enumerator|ACPI_IRQ_MODEL_IOSAPIC
+id|ACPI_IRQ_MODEL_IOSAPIC
+comma
+DECL|enumerator|ACPI_IRQ_MODEL_COUNT
+id|ACPI_IRQ_MODEL_COUNT
+)brace
+suffix:semicolon
+r_extern
+r_enum
+id|acpi_irq_model_id
+id|acpi_irq_model
+suffix:semicolon
 multiline_comment|/* Root System Description Pointer (RSDP) */
 DECL|struct|acpi_table_rsdp
 r_struct
@@ -1081,23 +1105,33 @@ op_star
 id|header
 )paren
 suffix:semicolon
-DECL|struct|acpi_boot_flags
-r_struct
-id|acpi_boot_flags
-(brace
-DECL|member|madt
-id|u8
-id|madt
-suffix:colon
-l_int|1
+r_char
+op_star
+id|__acpi_map_table
+(paren
+r_int
+r_int
+id|phys_addr
+comma
+r_int
+r_int
+id|size
+)paren
 suffix:semicolon
-DECL|member|reserved
-id|u8
-id|reserved
-suffix:colon
-l_int|7
+r_int
+r_int
+id|acpi_find_rsdp
+(paren
+r_void
+)paren
 suffix:semicolon
-)brace
+r_int
+id|acpi_boot_init
+(paren
+r_char
+op_star
+id|cmdline
+)paren
 suffix:semicolon
 r_int
 id|acpi_table_init
@@ -1143,15 +1177,15 @@ id|acpi_table_entry_header
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|acpi_mp_config
+suffix:semicolon
+macro_line|#else /*!CONFIG_ACPI_BOOT*/
+DECL|macro|acpi_mp_config
+mdefine_line|#define acpi_mp_config&t;0
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
-multiline_comment|/* --------------------------------------------------------------------------&n;                           PCI Interrupt Routing (PRT)&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_PCI
-DECL|macro|ACPI_INT_MODEL_PIC
-mdefine_line|#define ACPI_INT_MODEL_PIC&t;0
-DECL|macro|ACPI_INT_MODEL_IOAPIC
-mdefine_line|#define ACPI_INT_MODEL_IOAPIC&t;1
-DECL|macro|ACPI_INT_MODEL_IOSAPIC
-mdefine_line|#define ACPI_INT_MODEL_IOSAPIC&t;2
 DECL|struct|acpi_prt_entry
 r_struct
 id|acpi_prt_entry
@@ -1161,27 +1195,13 @@ r_struct
 id|list_head
 id|node
 suffix:semicolon
-r_struct
-(brace
-DECL|member|seg
-id|u8
-id|seg
-suffix:semicolon
-DECL|member|bus
-id|u8
-id|bus
-suffix:semicolon
-DECL|member|dev
-id|u8
-id|dev
+DECL|member|id
+id|acpi_pci_id
+id|id
 suffix:semicolon
 DECL|member|pin
 id|u8
 id|pin
-suffix:semicolon
-DECL|member|id
-)brace
-id|id
 suffix:semicolon
 r_struct
 (brace
@@ -1193,9 +1213,13 @@ DECL|member|index
 id|u32
 id|index
 suffix:semicolon
-DECL|member|source
+DECL|member|link
 )brace
-id|source
+id|link
+suffix:semicolon
+DECL|member|irq
+id|u32
+id|irq
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1217,45 +1241,28 @@ suffix:semicolon
 r_extern
 r_struct
 id|acpi_prt_list
-id|acpi_prts
+id|acpi_prt
 suffix:semicolon
 r_struct
 id|pci_dev
 suffix:semicolon
 r_int
-id|acpi_prt_get_irq
+id|acpi_pci_irq_enable
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-id|u8
-id|pin
-comma
-r_int
-op_star
-id|irq
 )paren
 suffix:semicolon
 r_int
-id|acpi_prt_set_irq
+id|acpi_pci_irq_init
 (paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-id|u8
-id|pin
-comma
-r_int
-id|irq
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_PCI*/
-multiline_comment|/* --------------------------------------------------------------------------&n;                            ACPI Interpreter (Core)&n;   -------------------------------------------------------------------------- */
-macro_line|#ifdef CONFIG_ACPI_INTERPRETER
+macro_line|#ifdef CONFIG_ACPI
 r_int
 id|acpi_init
 c_func
@@ -1263,6 +1270,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /*CONFIG_ACPI_INTERPRETER*/
+macro_line|#endif /*CONFIG_ACPI*/
 macro_line|#endif /*_LINUX_ACPI_H*/
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_ksyms.c - ACPI Kernel Symbols ($Revision: 13 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_ksyms.c - ACPI Kernel Symbols ($Revision: 15 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;include/acpi.h&quot;
 macro_line|#include &quot;acpi_bus.h&quot;
@@ -265,25 +265,25 @@ c_func
 id|acpi_get_timer
 )paren
 suffix:semicolon
-DECL|variable|acpi_hw_get_sleep_type_data
+DECL|variable|acpi_get_sleep_type_data
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|acpi_hw_get_sleep_type_data
+id|acpi_get_sleep_type_data
 )paren
 suffix:semicolon
-DECL|variable|acpi_hw_bit_register_read
+DECL|variable|acpi_get_register
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|acpi_hw_bit_register_read
+id|acpi_get_register
 )paren
 suffix:semicolon
-DECL|variable|acpi_hw_bit_register_write
+DECL|variable|acpi_set_register
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|acpi_hw_bit_register_write
+id|acpi_set_register
 )paren
 suffix:semicolon
 DECL|variable|acpi_enter_sleep_state

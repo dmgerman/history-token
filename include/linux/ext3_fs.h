@@ -277,12 +277,16 @@ DECL|macro|EXT3_IMAGIC_FL
 mdefine_line|#define EXT3_IMAGIC_FL&t;&t;&t;0x00002000 /* AFS directory */
 DECL|macro|EXT3_JOURNAL_DATA_FL
 mdefine_line|#define EXT3_JOURNAL_DATA_FL&t;&t;0x00004000 /* file data should be journaled */
+DECL|macro|EXT3_NOTAIL_FL
+mdefine_line|#define EXT3_NOTAIL_FL&t;&t;&t;0x00008000 /* file tail should not be merged */
+DECL|macro|EXT3_DIRSYNC_FL
+mdefine_line|#define EXT3_DIRSYNC_FL&t;&t;&t;0x00010000 /* dirsync behaviour (directories only) */
 DECL|macro|EXT3_RESERVED_FL
 mdefine_line|#define EXT3_RESERVED_FL&t;&t;0x80000000 /* reserved for ext3 lib */
 DECL|macro|EXT3_FL_USER_VISIBLE
-mdefine_line|#define EXT3_FL_USER_VISIBLE&t;&t;0x00005FFF /* User visible flags */
+mdefine_line|#define EXT3_FL_USER_VISIBLE&t;&t;0x00015FFF /* User visible flags */
 DECL|macro|EXT3_FL_USER_MODIFIABLE
-mdefine_line|#define EXT3_FL_USER_MODIFIABLE&t;&t;0x000000FF /* User modifiable flags */
+mdefine_line|#define EXT3_FL_USER_MODIFIABLE&t;&t;0x000100FF /* User modifiable flags */
 multiline_comment|/*&n; * Inode dynamic state flags&n; */
 DECL|macro|EXT3_STATE_JDATA
 mdefine_line|#define EXT3_STATE_JDATA&t;&t;0x00000001 /* journaled data exists */

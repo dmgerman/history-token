@@ -10,8 +10,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for try_to_release_page() */
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 6 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/64th of the queues (&quot;queue_length &gt;&gt; 6&quot;)&n; * during a normal aging round.&n; */
@@ -1426,31 +1426,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|FASTCALL
-c_func
-(paren
-id|shrink_cache
-c_func
-(paren
-r_int
-id|nr_pages
-comma
-id|zone_t
-op_star
-id|classzone
-comma
-r_int
-r_int
-id|gfp_mask
-comma
-r_int
-id|priority
-)paren
-)paren
-suffix:semicolon
 DECL|function|shrink_cache
-r_static
-r_int
 id|shrink_cache
 c_func
 (paren
@@ -1467,6 +1443,9 @@ id|gfp_mask
 comma
 r_int
 id|priority
+comma
+r_int
+id|max_scan
 )paren
 (brace
 r_struct
@@ -1478,13 +1457,6 @@ r_struct
 id|address_space
 op_star
 id|mapping
-suffix:semicolon
-r_int
-id|max_scan
-op_assign
-id|nr_inactive_pages
-op_div
-id|priority
 suffix:semicolon
 r_int
 id|max_mapped
@@ -2398,6 +2370,13 @@ r_int
 r_int
 id|ratio
 suffix:semicolon
+r_struct
+id|page_state
+id|ps
+suffix:semicolon
+r_int
+id|max_scan
+suffix:semicolon
 id|nr_pages
 op_sub_assign
 id|kmem_cache_reap
@@ -2420,7 +2399,14 @@ id|nr_pages
 op_assign
 id|chunk_size
 suffix:semicolon
-multiline_comment|/* try to keep the active list 2/3 of the size of the cache */
+multiline_comment|/*&n;&t; * Try to keep the active list 2/3 of the size of the cache&n;&t; */
+id|get_page_state
+c_func
+(paren
+op_amp
+id|ps
+)paren
+suffix:semicolon
 id|ratio
 op_assign
 (paren
@@ -2429,12 +2415,12 @@ r_int
 )paren
 id|nr_pages
 op_star
-id|nr_active_pages
+id|ps.nr_active
 op_div
 (paren
 (paren
-id|nr_inactive_pages
-op_plus
+id|ps.nr_inactive
+op_or
 l_int|1
 )paren
 op_star
@@ -2446,6 +2432,12 @@ c_func
 (paren
 id|ratio
 )paren
+suffix:semicolon
+id|max_scan
+op_assign
+id|ps.nr_inactive
+op_div
+id|priority
 suffix:semicolon
 id|nr_pages
 op_assign
@@ -2459,6 +2451,8 @@ comma
 id|gfp_mask
 comma
 id|priority
+comma
+id|max_scan
 )paren
 suffix:semicolon
 r_if
@@ -2954,8 +2948,6 @@ multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot
 id|tsk-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
-op_or
-id|PF_KERNTHREAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Kswapd main loop.&n;&t; */
 r_for
@@ -3007,13 +2999,11 @@ c_func
 (paren
 )paren
 )paren
-(brace
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|__set_current_state
 c_func
 (paren
@@ -3036,11 +3026,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 )brace

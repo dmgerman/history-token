@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|function|shark_map_irq
 r_static
 r_int
@@ -61,6 +62,7 @@ id|sysdata
 )paren
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|hw_pci
 id|shark_pci
@@ -91,5 +93,41 @@ id|preinit
 suffix:colon
 id|via82c505_preinit
 )brace
+suffix:semicolon
+DECL|function|shark_pci_init
+r_static
+r_int
+id|__init
+id|shark_pci_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_shark
+c_func
+(paren
+)paren
+)paren
+id|pci_common_init
+c_func
+(paren
+op_amp
+id|shark_pci
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|shark_pci_init
+id|subsys_initcall
+c_func
+(paren
+id|shark_pci_init
+)paren
 suffix:semicolon
 eof

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 singleline_comment|//#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 r_extern
@@ -4364,13 +4365,11 @@ comma
 id|sbi-&gt;nls_disk-&gt;charset
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: utf8 is using iocharset for upper/lower conversion */
 r_if
 c_cond
 (paren
 id|sbi-&gt;options.isvfat
-op_logical_and
-op_logical_neg
-id|sbi-&gt;options.utf8
 )paren
 (brace
 r_if

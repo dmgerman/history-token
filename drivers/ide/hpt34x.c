@@ -307,21 +307,14 @@ id|hpt34x_proc
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 DECL|function|hpt34x_clear_chipset
 r_static
 r_void
 id|hpt34x_clear_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -435,8 +428,10 @@ DECL|function|hpt34x_tune_chipset
 r_static
 r_int
 id|hpt34x_tune_chipset
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -599,17 +594,13 @@ macro_line|#if HPT343_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %s drive%d (0x%04x 0x%04x) (0x%04x 0x%04x)&quot;
+l_string|&quot;%s: %02x drive%d (0x%04x 0x%04x) (0x%04x 0x%04x)&quot;
 "&bslash;"
 l_string|&quot; (0x%02x 0x%02x) 0x%04x&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|speed
-)paren
 comma
 id|drive-&gt;dn
 comma
@@ -628,17 +619,7 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif /* HPT343_DEBUG_DRIVE_INFO */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;init_speed
-)paren
-id|drive-&gt;init_speed
-op_assign
-id|speed
-suffix:semicolon
+macro_line|#endif
 id|drive-&gt;current_speed
 op_assign
 id|speed
@@ -659,7 +640,8 @@ r_void
 id|config_chipset_for_pio
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -876,8 +858,10 @@ DECL|function|hpt34x_tune_drive
 r_static
 r_void
 id|hpt34x_tune_drive
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

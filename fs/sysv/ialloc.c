@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;sysv.h&quot;
 multiline_comment|/* We don&squot;t trust the value of&n;   sb-&gt;sv_sbd2-&gt;s_tinode = *sb-&gt;sv_sb_total_free_inodes&n;   but we nevertheless keep it up to date. */
 multiline_comment|/* An inode on disk is considered free if both i_mode == 0 and i_nlink == 0. */

@@ -1,8 +1,7 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 72 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 74 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|ACPI_MODULE_NAME
@@ -339,12 +338,7 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;[%4.4s] is a forward reference&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 )paren
 suffix:semicolon
@@ -409,12 +403,7 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;%4.4s added to %p at %p&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 comma
 id|parent_node
 comma
@@ -593,7 +582,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_namespace_subtree&n; *&n; * PARAMETERS:  Parent_node     - Root of the subtree to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete a subtree of the namespace.  This includes all objects&n; *              stored within the subtree.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ns_delete_namespace_subtree
 id|acpi_ns_delete_namespace_subtree
 (paren
@@ -625,10 +614,7 @@ op_logical_neg
 id|parent_node
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Traverse the tree of objects until we bubble back up&n;&t; * to where we started.&n;&t; */
@@ -719,10 +705,7 @@ id|parent_node
 suffix:semicolon
 )brace
 )brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_remove_reference&n; *&n; * PARAMETERS:  Node           - Named node whose reference count is to be&n; *                               decremented&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Remove a Node reference.  Decrements the reference count&n; *              of all parent Nodes up to the root.  Any node along&n; *              the way that reaches zero references is freed.&n; *&n; ******************************************************************************/
@@ -798,7 +781,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_namespace_by_owner&n; *&n; * PARAMETERS:  Owner_id    - All nodes with this owner will be deleted&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete entries within the namespace that are owned by a&n; *              specific ID.  Used to delete entire ACPI tables.  All&n; *              reference counts are updated.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ns_delete_namespace_by_owner
 id|acpi_ns_delete_namespace_by_owner
 (paren
@@ -987,10 +970,7 @@ id|parent_node
 suffix:semicolon
 )brace
 )brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 eof

@@ -1,7 +1,11 @@
 multiline_comment|/*&n; * include/linux/buffer_head.h&n; *&n; * Everything to do with buffer_heads.&n; */
-macro_line|#ifndef BUFFER_FLAGS_H
-DECL|macro|BUFFER_FLAGS_H
-mdefine_line|#define BUFFER_FLAGS_H
+macro_line|#ifndef _LINUX_BUFFER_HEAD_H
+DECL|macro|_LINUX_BUFFER_HEAD_H
+mdefine_line|#define _LINUX_BUFFER_HEAD_H
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|bh_state_bits
 r_enum
 id|bh_state_bits
@@ -38,10 +42,10 @@ DECL|enumerator|BH_Async_Write
 id|BH_Async_Write
 comma
 multiline_comment|/* Is under end_buffer_async_write I/O */
-DECL|enumerator|BH_JBD
-id|BH_JBD
+DECL|enumerator|BH_Boundary
+id|BH_Boundary
 comma
-multiline_comment|/* Has an attached ext3 journal_head */
+multiline_comment|/* Block is followed by a discontiguity */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -228,6 +232,13 @@ id|Async_Write
 comma
 id|async_write
 )paren
+id|BUFFER_FNS
+c_func
+(paren
+id|Boundary
+comma
+id|boundary
+)paren
 multiline_comment|/*&n; * FIXME: this is used only by bh_kmap, which is used only by RAID5.&n; * Move all that stuff into raid5.c&n; */
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
@@ -262,14 +273,6 @@ id|bh
 )paren
 suffix:semicolon
 r_void
-id|buffer_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|init_buffer
-r_void
 id|init_buffer
 c_func
 (paren
@@ -284,6 +287,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|variable|set_bh_page
 r_void
 id|set_bh_page
 c_func
@@ -423,6 +427,19 @@ r_struct
 id|address_space
 op_star
 id|mapping
+)paren
+suffix:semicolon
+r_void
+id|unmap_underlying_metadata
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+comma
+id|sector_t
+id|block
 )paren
 suffix:semicolon
 r_void
@@ -1242,5 +1259,5 @@ id|line
 suffix:semicolon
 DECL|macro|buffer_error
 mdefine_line|#define buffer_error() __buffer_error(__FILE__, __LINE__)
-macro_line|#endif&t;&t;/* BUFFER_FLAGS_H */
+macro_line|#endif /* _LINUX_BUFFER_HEAD_H */
 eof

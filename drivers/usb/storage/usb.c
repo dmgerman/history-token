@@ -1,5 +1,7 @@
 multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id: usb.c,v 1.75 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * usb_device_id support by Adam J. Richter (adam@yggdrasil.com):&n; *   (c) 2000 Yggdrasil Computing, Inc.&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;transport.h&quot;
@@ -63,12 +65,6 @@ suffix:semicolon
 multiline_comment|/*&n; * kernel thread actions&n; */
 DECL|macro|US_ACT_COMMAND
 mdefine_line|#define US_ACT_COMMAND&t;&t;1
-DECL|macro|US_ACT_DEVICE_RESET
-mdefine_line|#define US_ACT_DEVICE_RESET&t;2
-DECL|macro|US_ACT_BUS_RESET
-mdefine_line|#define US_ACT_BUS_RESET&t;3
-DECL|macro|US_ACT_HOST_RESET
-mdefine_line|#define US_ACT_HOST_RESET&t;4
 DECL|macro|US_ACT_EXIT
 mdefine_line|#define US_ACT_EXIT&t;&t;5
 multiline_comment|/* The list of structures and the protective lock for them */
@@ -1099,6 +1095,15 @@ c_func
 l_string|&quot;*** thread sleeping.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_IDLE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1117,6 +1122,15 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;*** thread awakened.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_RUNNING
 )paren
 suffix:semicolon
 multiline_comment|/* lock access to the queue element */
@@ -1152,16 +1166,33 @@ op_amp
 id|us-&gt;queue_exclusion
 )paren
 suffix:semicolon
-r_switch
+multiline_comment|/* exit if we get a signal to exit */
+r_if
 c_cond
 (paren
 id|action
+op_eq
+id|US_ACT_EXIT
 )paren
 (brace
-r_case
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- US_ACT_EXIT command received&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|BUG_ON
+c_func
+(paren
+id|action
+op_ne
 id|US_ACT_COMMAND
-suffix:colon
-multiline_comment|/* reject the command if the direction indicator &n;&t;&t;&t; * is UNKNOWN&n;&t;&t;&t; */
+)paren
+suffix:semicolon
+multiline_comment|/* reject the command if the direction indicator &n;&t;&t; * is UNKNOWN&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1206,10 +1237,10 @@ c_func
 id|host
 )paren
 suffix:semicolon
-r_break
+r_continue
 suffix:semicolon
 )brace
-multiline_comment|/* reject if target != 0 or if LUN is higher than&n;&t;&t;&t; * the maximum known LUN&n;&t;&t;&t; */
+multiline_comment|/* reject if target != 0 or if LUN is higher than&n;&t;&t; * the maximum known LUN&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1263,7 +1294,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-r_break
+r_continue
 suffix:semicolon
 )brace
 r_if
@@ -1314,7 +1345,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-r_break
+r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* handle those devices which can&squot;t do a START_STOP */
@@ -1373,7 +1404,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-r_break
+r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* lock the device pointers */
@@ -1394,7 +1425,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|us-&gt;sm_state
+id|us-&gt;device_state
 )paren
 op_eq
 id|US_STATE_DETACHED
@@ -1406,7 +1437,7 @@ c_func
 l_string|&quot;Request is for removed device&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* For REQUEST_SENSE, it&squot;s the data.  But&n;&t;&t;&t;&t; * for anything else, it should look like&n;&t;&t;&t;&t; * we auto-sensed for it.&n;&t;&t;&t;&t; */
+multiline_comment|/* For REQUEST_SENSE, it&squot;s the data.  But&n;&t;&t;&t; * for anything else, it should look like&n;&t;&t;&t; * we auto-sensed for it.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1523,8 +1554,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* atomic_read(&amp;us-&gt;sm_state) == STATE_DETACHED */
-multiline_comment|/* Handle those devices which need us to fake &n;&t;&t;&t;&t; * their inquiry data */
+multiline_comment|/* atomic_read(&amp;us-&gt;device_state) == STATE_DETACHED */
+multiline_comment|/* Handle those devices which need us to fake &n;&t;&t;&t; * their inquiry data */
 r_if
 c_cond
 (paren
@@ -1605,15 +1636,6 @@ id|us-&gt;srb
 )paren
 )paren
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-comma
-id|US_STATE_RUNNING
-)paren
-suffix:semicolon
 id|us
 op_member_access_from_pointer
 id|proto_handler
@@ -1622,15 +1644,6 @@ c_func
 id|us-&gt;srb
 comma
 id|us
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-comma
-id|US_STATE_IDLE
 )paren
 suffix:semicolon
 )brace
@@ -1709,43 +1722,6 @@ op_amp
 id|us-&gt;notify
 )paren
 )paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|US_ACT_DEVICE_RESET
-suffix:colon
-r_break
-suffix:semicolon
-r_case
-id|US_ACT_BUS_RESET
-suffix:colon
-r_break
-suffix:semicolon
-r_case
-id|US_ACT_HOST_RESET
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* end switch on action */
-multiline_comment|/* exit if we get a signal to exit */
-r_if
-c_cond
-(paren
-id|action
-op_eq
-id|US_ACT_EXIT
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- US_ACT_EXIT command received&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
@@ -2696,9 +2672,9 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|ss-&gt;sm_state
+id|ss-&gt;device_state
 comma
-id|US_STATE_IDLE
+id|US_STATE_ATTACHED
 )paren
 suffix:semicolon
 multiline_comment|/* copy over the endpoint data */
@@ -3701,6 +3677,15 @@ op_amp
 id|ss-&gt;sm_state
 comma
 id|US_STATE_IDLE
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|ss-&gt;device_state
+comma
+id|US_STATE_ATTACHED
 )paren
 suffix:semicolon
 id|ss-&gt;pid

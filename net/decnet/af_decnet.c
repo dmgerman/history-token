@@ -9491,8 +9491,6 @@ r_void
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef MODULE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|struct|romfs_inode_info
 r_struct
@@ -2645,8 +2646,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Yes, works even as a module... :) */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

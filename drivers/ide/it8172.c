@@ -18,7 +18,8 @@ r_static
 r_void
 id|it8172_tune_drive
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -39,7 +40,8 @@ r_static
 r_int
 id|it8172_tune_chipset
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -51,7 +53,8 @@ r_static
 r_int
 id|it8172_config_chipset_for_dma
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -64,7 +67,8 @@ c_func
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -86,7 +90,8 @@ r_static
 r_void
 id|it8172_tune_drive
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -341,7 +346,8 @@ r_static
 r_int
 id|it8172_tune_chipset
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -557,16 +563,6 @@ id|speed
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;init_speed
-)paren
-id|drive-&gt;init_speed
-op_assign
-id|speed
-suffix:semicolon
 id|err
 op_assign
 id|ide_config_drive_speed
@@ -591,7 +587,8 @@ r_int
 id|it8172_config_chipset_for_dma
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -705,7 +702,8 @@ c_func
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren

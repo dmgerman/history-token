@@ -145,6 +145,8 @@ DECL|macro|pci_dma_sync_sg
 mdefine_line|#define pci_dma_sync_sg&t;&t;&t;platform_pci_dma_sync_sg
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address&t;&t;&t;platform_pci_dma_address
+DECL|macro|pci_dma_supported
+mdefine_line|#define pci_dma_supported&t;&t;platform_pci_dma_supported
 multiline_comment|/* pci_unmap_{single,page} is not a nop, thus... */
 DECL|macro|DECLARE_PCI_UNMAP_ADDR
 mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)&t;&bslash;&n;&t;dma_addr_t ADDR_NAME;
@@ -158,26 +160,6 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
-multiline_comment|/*&n; * Return whether the given PCI device DMA address mask can be supported properly.  For&n; * example, if your device can only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
-r_static
-r_inline
-r_int
-DECL|function|pci_dma_supported
-id|pci_dma_supported
-(paren
-r_struct
-id|pci_dev
-op_star
-id|hwdev
-comma
-id|u64
-id|mask
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 DECL|macro|pci_map_page
 mdefine_line|#define pci_map_page(dev,pg,off,size,dir)&t;&t;&t;&t;&bslash;&n;&t;pci_map_single((dev), page_address(pg) + (off), (size), (dir))
 DECL|macro|pci_unmap_page

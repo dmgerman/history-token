@@ -115,8 +115,10 @@ DECL|function|tune_dtc2278
 r_static
 r_void
 id|tune_dtc2278
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

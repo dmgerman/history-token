@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * linux/drivers/pcmcia/sa1100_neponset.c&n; *&n; * Neponset PCMCIA specific routines&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
@@ -419,10 +421,7 @@ c_func
 (paren
 )paren
 op_logical_and
-id|machine_has_neponset
-c_func
-(paren
-)paren
+id|sa1111
 )paren
 id|ret
 op_assign

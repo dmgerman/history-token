@@ -11,6 +11,10 @@ mdefine_line|#define __HAVE_MTRR&t;&t;&t;1
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;&t;1
+DECL|macro|__HAVE_AGP
+mdefine_line|#define __HAVE_AGP&t;&t;&t;1
+DECL|macro|__MUST_HAVE_AGP
+mdefine_line|#define __MUST_HAVE_AGP&t;&t;&t;0
 DECL|macro|__HAVE_OLD_DMA
 mdefine_line|#define __HAVE_OLD_DMA&t;&t;&t;1
 DECL|macro|__HAVE_PCI_DMA
@@ -34,16 +38,25 @@ mdefine_line|#define DRIVER_DMA_READY() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;gamm
 DECL|macro|__HAVE_DMA_QUIESCENT
 mdefine_line|#define __HAVE_DMA_QUIESCENT&t;&t;1
 DECL|macro|DRIVER_DMA_QUIESCENT
-mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;/* FIXME ! */ &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;gamma_dma_quiescent_dual(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;/* FIXME ! */ &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;gamma_dma_quiescent_single(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__HAVE_DMA_IRQ
 mdefine_line|#define __HAVE_DMA_IRQ&t;&t;&t;1
 DECL|macro|__HAVE_DMA_IRQ_BH
 mdefine_line|#define __HAVE_DMA_IRQ_BH&t;&t;1
+macro_line|#if 1
 DECL|macro|DRIVER_PREINSTALL
-mdefine_line|#define DRIVER_PREINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GCOMMANDMODE,&t;0x00000000 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDMACONTROL,&t;&t;0x00000000 );&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_PREINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GCOMMANDMODE,&t;0x00000004 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDMACONTROL,&t;&t;0x00000000 );&t;&t;&bslash;&n;} while (0)
 DECL|macro|DRIVER_POSTINSTALL
-mdefine_line|#define DRIVER_POSTINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GINTENABLE,&t;&t;0x00002001 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_COMMANDINTENABLE,&t;0x00000008 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDELAYTIMER,&t;&t;0x00039090 );&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_POSTINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 3);&t;&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GINTENABLE,&t;&t;0x00002001 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_COMMANDINTENABLE,&t;0x00000008 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDELAYTIMER,&t;&t;0x00039090 );&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|DRIVER_POSTINSTALL
+mdefine_line|#define DRIVER_POSTINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GINTENABLE,&t;&t;0x00002000 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_COMMANDINTENABLE,&t;0x00000004 );&t;&t;&bslash;&n;} while (0)
+DECL|macro|DRIVER_PREINSTALL
+mdefine_line|#define DRIVER_PREINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GCOMMANDMODE,&t;GAMMA_QUEUED_DMA_MODE );&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDMACONTROL,&t;&t;0x00000000 );&bslash;&n;} while (0)
+macro_line|#endif
 DECL|macro|DRIVER_UNINSTALL
-mdefine_line|#define DRIVER_UNINSTALL() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDELAYTIMER,&t;&t;0x00000000 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_COMMANDINTENABLE,&t;0x00000000 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GINTENABLE,&t;&t;0x00000000 );&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_UNINSTALL() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 2);&t;&t;&t;&bslash;&n;&t;while(GAMMA_READ(GAMMA_INFIFOSPACE) &lt; 3);&t;&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GDELAYTIMER,&t;&t;0x00000000 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_COMMANDINTENABLE,&t;0x00000000 );&t;&t;&bslash;&n;&t;GAMMA_WRITE( GAMMA_GINTENABLE,&t;&t;0x00000000 );&t;&t;&bslash;&n;} while (0)
+DECL|macro|DRIVER_AGP_BUFFERS_MAP
+mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&t;&bslash;&n;&t;((drm_gamma_private_t *)((dev)-&gt;dev_private))-&gt;buffers
 macro_line|#endif /* __GAMMA_H__ */
 eof

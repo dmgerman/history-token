@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -17,6 +18,7 @@ macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -4403,6 +4405,19 @@ r_do
 id|usb_hub_events
 c_func
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 id|wait_event_interruptible

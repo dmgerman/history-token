@@ -18,8 +18,6 @@ macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#ifndef LINUX_2_2
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#endif
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -72,7 +72,7 @@ mdefine_line|#define LOCAL_BASE_ADDR(kaddr)&t;((unsigned long)(kaddr) &amp; ~(NO
 DECL|macro|LOCAL_MAP_NR
 mdefine_line|#define LOCAL_MAP_NR(kvaddr) &bslash;&n;&t;(((unsigned long)(kvaddr)-LOCAL_BASE_ADDR((kvaddr))) &gt;&gt; PAGE_SHIFT)
 DECL|macro|MIPS64_NR
-mdefine_line|#define MIPS64_NR(kaddr) (((unsigned long)(kaddr) &gt; (unsigned long)high_memory)&bslash;&n;&t;&t;? (max_mapnr + 1) : (LOCAL_MAP_NR((kaddr)) + &bslash;&n;&t;&t;(((unsigned long)ADDR_TO_MAPBASE((kaddr)) - PAGE_OFFSET) / &bslash;&n;&t;&t;sizeof(mem_map_t))))
+mdefine_line|#define MIPS64_NR(kaddr) (((unsigned long)(kaddr) &gt; (unsigned long)high_memory)&bslash;&n;&t;&t;? (max_mapnr + 1) : (LOCAL_MAP_NR((kaddr)) + &bslash;&n;&t;&t;(((unsigned long)ADDR_TO_MAPBASE((kaddr)) - PAGE_OFFSET) / &bslash;&n;&t;&t;sizeof(struct page))))
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;((KVADDR_TO_NID((unsigned long)addr) &gt; &bslash;&n;&t;-1) ? 0 : (test_bit(LOCAL_MAP_NR((addr)), &bslash;&n;&t;NODE_DATA(KVADDR_TO_NID((unsigned long)addr))-&gt;valid_addr_bitmap)))
 DECL|macro|virt_to_page

@@ -1,8 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwgpe - Low level GPE enable/disable/clear functions&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwgpe - Low level GPE enable/disable/clear functions&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;achware.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_HARDWARE
@@ -11,7 +9,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;hwgpe&quot;
 )paren
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_gpe_bit_mask&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      Gpe register bitmask for this gpe level&n; *&n; * DESCRIPTION: Get the bitmask for this GPE&n; *&n; ******************************************************************************/
-id|u32
+id|u8
 DECL|function|acpi_hw_get_gpe_bit_mask
 id|acpi_hw_get_gpe_bit_mask
 (paren
@@ -34,7 +32,7 @@ id|bit_mask
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_enable_gpe&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_hw_enable_gpe
 id|acpi_hw_enable_gpe
 (paren
@@ -48,8 +46,11 @@ suffix:semicolon
 id|u32
 id|register_index
 suffix:semicolon
-id|u32
+id|u8
 id|bit_mask
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -72,11 +73,14 @@ id|gpe_number
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read the current value of the register, set the appropriate bit&n;&t; * to enable the GPE, and write out the new register.&n;&t; */
-id|in_byte
+id|status
 op_assign
 id|acpi_hw_low_level_read
 (paren
 l_int|8
+comma
+op_amp
+id|in_byte
 comma
 op_amp
 id|acpi_gbl_gpe_register_info
@@ -89,6 +93,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_hw_low_level_write
 (paren
 l_int|8
@@ -110,6 +131,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_enable_gpe_for_wakeup&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Keep track of which GPEs the OS has requested not be&n; *              disabled when going to sleep.&n; *&n; ******************************************************************************/
 r_void
@@ -123,7 +149,7 @@ id|gpe_number
 id|u32
 id|register_index
 suffix:semicolon
-id|u32
+id|u8
 id|bit_mask
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
@@ -158,7 +184,7 @@ id|bit_mask
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_disable_gpe&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable a single GPE.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_hw_disable_gpe
 id|acpi_hw_disable_gpe
 (paren
@@ -172,8 +198,11 @@ suffix:semicolon
 id|u32
 id|register_index
 suffix:semicolon
-id|u32
+id|u8
 id|bit_mask
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -196,11 +225,14 @@ id|gpe_number
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read the current value of the register, clear the appropriate bit,&n;&t; * and write out the new register value to disable the GPE.&n;&t; */
-id|in_byte
+id|status
 op_assign
 id|acpi_hw_low_level_read
 (paren
 l_int|8
+comma
+op_amp
+id|in_byte
 comma
 op_amp
 id|acpi_gbl_gpe_register_info
@@ -213,6 +245,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_hw_low_level_write
 (paren
 l_int|8
@@ -235,10 +284,30 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|acpi_hw_disable_gpe_for_wakeup
 c_func
 (paren
 id|gpe_number
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
@@ -254,7 +323,7 @@ id|gpe_number
 id|u32
 id|register_index
 suffix:semicolon
-id|u32
+id|u8
 id|bit_mask
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
@@ -290,7 +359,7 @@ id|bit_mask
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_clear_gpe&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Clear a single GPE.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_hw_clear_gpe
 id|acpi_hw_clear_gpe
 (paren
@@ -301,8 +370,11 @@ id|gpe_number
 id|u32
 id|register_index
 suffix:semicolon
-id|u32
+id|u8
 id|bit_mask
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -325,6 +397,8 @@ id|gpe_number
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Write a one to the appropriate bit in the status register to&n;&t; * clear this GPE.&n;&t; */
+id|status
+op_assign
 id|acpi_hw_low_level_write
 (paren
 l_int|8
@@ -342,9 +416,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_gpe_status&n; *&n; * PARAMETERS:  Gpe_number      - The GPE&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Return the status of a single GPE.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_hw_get_gpe_status
 id|acpi_hw_get_gpe_status
 (paren
@@ -366,7 +445,7 @@ id|register_index
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|u8
 id|bit_mask
 op_assign
 l_int|0
@@ -374,6 +453,9 @@ suffix:semicolon
 id|ACPI_GPE_REGISTER_INFO
 op_star
 id|gpe_register_info
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -387,6 +469,9 @@ id|event_status
 )paren
 (brace
 r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 (paren
@@ -421,11 +506,14 @@ id|gpe_number
 )paren
 suffix:semicolon
 multiline_comment|/* GPE Enabled? */
-id|in_byte
+id|status
 op_assign
 id|acpi_hw_low_level_read
 (paren
 l_int|8
+comma
+op_amp
+id|in_byte
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
@@ -433,6 +521,21 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -467,11 +570,14 @@ id|ACPI_EVENT_FLAG_WAKE_ENABLED
 suffix:semicolon
 )brace
 multiline_comment|/* GPE active (set)? */
-id|in_byte
+id|status
 op_assign
 id|acpi_hw_low_level_read
 (paren
 l_int|8
+comma
+op_amp
+id|in_byte
 comma
 op_amp
 id|gpe_register_info-&gt;status_address
@@ -479,6 +585,21 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -495,9 +616,14 @@ op_or_assign
 id|ACPI_EVENT_FLAG_SET
 suffix:semicolon
 )brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_disable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Disable all non-wakeup GPEs&n; *              Call with interrupts disabled. The interrupt handler also&n; *              modifies Acpi_gbl_Gpe_register_info[i].Enable, so it should not be&n; *              given the chance to run until after non-wake GPEs are&n; *              re-enabled.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_hw_disable_non_wakeup_gpes
 id|acpi_hw_disable_non_wakeup_gpes
 (paren
@@ -510,6 +636,12 @@ suffix:semicolon
 id|ACPI_GPE_REGISTER_INFO
 op_star
 id|gpe_register_info
+suffix:semicolon
+id|u32
+id|in_value
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -539,14 +671,14 @@ id|i
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Read the enabled status of all GPEs. We&n;&t;&t; * will be using it to restore all the GPEs later.&n;&t;&t; */
-id|gpe_register_info-&gt;enable
+id|status
 op_assign
-(paren
-id|u8
-)paren
 id|acpi_hw_low_level_read
 (paren
 l_int|8
+comma
+op_amp
+id|in_value
 comma
 op_amp
 id|gpe_register_info-&gt;enable_address
@@ -554,7 +686,31 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|gpe_register_info-&gt;enable
+op_assign
+(paren
+id|u8
+)paren
+id|in_value
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Disable all GPEs except wakeup GPEs.&n;&t;&t; */
+id|status
+op_assign
 id|acpi_hw_low_level_write
 (paren
 l_int|8
@@ -567,10 +723,30 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
+)brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_enable_non_wakeup_gpes&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Enable all non-wakeup GPEs we previously enabled.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_hw_enable_non_wakeup_gpes
 id|acpi_hw_enable_non_wakeup_gpes
 (paren
@@ -583,6 +759,9 @@ suffix:semicolon
 id|ACPI_GPE_REGISTER_INFO
 op_star
 id|gpe_register_info
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -612,6 +791,8 @@ id|i
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We previously stored the enabled status of all GPEs.&n;&t;&t; * Blast them back in.&n;&t;&t; */
+id|status
+op_assign
 id|acpi_hw_low_level_write
 (paren
 l_int|8
@@ -624,6 +805,26 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
+)brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
 )brace
 eof

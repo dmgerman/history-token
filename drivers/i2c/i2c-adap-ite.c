@@ -826,8 +826,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* If modules is NOT defined when this file is compiled, then the MODULE_*&n; * macros will resolve to nothing&n; */
 id|MODULE_AUTHOR
 c_func

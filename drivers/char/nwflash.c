@@ -2440,8 +2440,6 @@ id|FLASH_BASE
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

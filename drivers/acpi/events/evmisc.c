@@ -1,10 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 48 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;achware.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
@@ -254,7 +253,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get the notify object attached to the device Node&n;&t; */
+multiline_comment|/*&n;&t; * Get the notify object attached to the NS Node&n;&t; */
 id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
@@ -278,30 +277,14 @@ id|node-&gt;type
 r_case
 id|ACPI_TYPE_DEVICE
 suffix:colon
-r_if
-c_cond
-(paren
-id|notify_value
-op_le
-id|ACPI_MAX_SYS_NOTIFY
-)paren
-(brace
-id|handler_obj
-op_assign
-id|obj_desc-&gt;device.sys_handler
-suffix:semicolon
-)brace
-r_else
-(brace
-id|handler_obj
-op_assign
-id|obj_desc-&gt;device.drv_handler
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
 r_case
 id|ACPI_TYPE_THERMAL
+suffix:colon
+r_case
+id|ACPI_TYPE_PROCESSOR
+suffix:colon
+r_case
+id|ACPI_TYPE_POWER
 suffix:colon
 r_if
 c_cond
@@ -313,17 +296,25 @@ id|ACPI_MAX_SYS_NOTIFY
 (brace
 id|handler_obj
 op_assign
-id|obj_desc-&gt;thermal_zone.sys_handler
+id|obj_desc-&gt;common_notify.sys_handler
 suffix:semicolon
 )brace
 r_else
 (brace
 id|handler_obj
 op_assign
-id|obj_desc-&gt;thermal_zone.drv_handler
+id|obj_desc-&gt;common_notify.drv_handler
 suffix:semicolon
 )brace
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All other types are not supported */
+r_return
+(paren
+id|AE_TYPE
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -587,6 +578,9 @@ op_star
 id|context
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 multiline_comment|/* Signal threads that are waiting for the lock */
 r_if
 c_cond
@@ -595,6 +589,8 @@ id|acpi_gbl_global_lock_thread_count
 )paren
 (brace
 multiline_comment|/* Send sufficient units to the semaphore */
+id|status
+op_assign
 id|acpi_os_signal_semaphore
 (paren
 id|acpi_gbl_global_lock_semaphore
@@ -602,6 +598,23 @@ comma
 id|acpi_gbl_global_lock_thread_count
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not signal Global Lock semaphore&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Invoked directly from the SCI handler when a global lock&n; *              release interrupt occurs.  Grab the global lock and queue&n; *              the global lock thread for execution&n; *&n; ******************************************************************************/
@@ -619,6 +632,9 @@ id|u8
 id|acquired
 op_assign
 id|FALSE
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to get the lock&n;&t; * If we don&squot;t get it now, it will be marked pending and we will&n;&t; * take another interrupt when it becomes free.&n;&t; */
 id|ACPI_ACQUIRE_GLOBAL_LOCK
@@ -640,6 +656,8 @@ op_assign
 id|TRUE
 suffix:semicolon
 multiline_comment|/* Run the Global Lock thread which will signal all waiting threads */
+id|status
+op_assign
 id|acpi_os_queue_for_execution
 (paren
 id|OSD_PRIORITY_HIGH
@@ -649,6 +667,33 @@ comma
 id|context
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not queue Global Lock thread, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+id|ACPI_INTERRUPT_NOT_HANDLED
+)paren
+suffix:semicolon
+)brace
 )brace
 r_return
 (paren
@@ -827,7 +872,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_release_global_lock&n; *&n; * DESCRIPTION: Releases ownership of the Global Lock.&n; *&n; ******************************************************************************/
-r_void
+id|acpi_status
 DECL|function|acpi_ev_release_global_lock
 id|acpi_ev_release_global_lock
 (paren
@@ -838,6 +883,11 @@ id|u8
 id|pending
 op_assign
 id|FALSE
+suffix:semicolon
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -859,7 +909,10 @@ l_string|&quot;Cannot release HW Global Lock, it has not been acquired&bslash;n&
 )paren
 )paren
 suffix:semicolon
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|AE_NOT_ACQUIRED
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* One fewer thread has the global lock */
@@ -873,7 +926,10 @@ id|acpi_gbl_global_lock_thread_count
 )paren
 (brace
 multiline_comment|/* There are still some threads holding the lock, cannot release */
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * No more threads holding lock, we can do the actual hardware&n;&t; * release&n;&t; */
@@ -895,7 +951,9 @@ c_cond
 id|pending
 )paren
 (brace
-id|acpi_hw_bit_register_write
+id|status
+op_assign
+id|acpi_set_register
 (paren
 id|ACPI_BITREG_GLOBAL_LOCK_RELEASE
 comma
@@ -905,7 +963,10 @@ id|ACPI_MTX_LOCK
 )paren
 suffix:semicolon
 )brace
-id|return_VOID
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#include &quot;udf_sb.h&quot;
@@ -776,8 +777,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/ufs/util.h&n; *&n; * Copyright (C) 1998 &n; * Daniel Pirkl &lt;daniel.pirkl@email.cz&gt;&n; * Charles University, Faculty of Mathematics and Physics&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;swab.h&quot;
 multiline_comment|/*&n; * some useful macros&n; */

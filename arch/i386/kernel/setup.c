@@ -237,6 +237,11 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|saved_videomode
+r_int
+r_int
+id|saved_videomode
+suffix:semicolon
 r_extern
 r_int
 r_int
@@ -2460,7 +2465,6 @@ id|apm_info.bios
 op_assign
 id|APM_BIOS_INFO
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_SLEEP
 id|saved_videomode
 op_assign
 id|VIDEO_MODE
@@ -2473,7 +2477,6 @@ comma
 id|saved_videomode
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3363,7 +3366,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
-multiline_comment|/*&n;&t; * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;&t; * Must do this after paging_init (due to reliance on fixmap, and thus&n;&t; * the bootmem allocator) but before get_smp_config (to allow parsing&n;&t; * of MADT).&n;&t; */
+multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
 id|acpi_boot_init
 c_func
 (paren
@@ -3373,7 +3376,6 @@ id|cmdline_p
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-multiline_comment|/*&n;&t; * get boot-time SMP configuration:&n;&t; */
 r_if
 c_cond
 (paren

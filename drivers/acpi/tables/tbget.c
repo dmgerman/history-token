@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 77 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,6 +8,261 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbget&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_table_override&n; *&n; * PARAMETERS:  *Table_info         - Info for current table&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Attempts override of current table with a new one if provided&n; *              by the host OS.&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_tb_table_override
+id|acpi_tb_table_override
+(paren
+id|acpi_table_desc
+op_star
+id|table_info
+)paren
+(brace
+id|acpi_table_header
+op_star
+id|new_table
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_POINTER
+id|address
+suffix:semicolon
+id|acpi_table_desc
+id|new_table_info
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_tb_table_override&quot;
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_os_table_override
+(paren
+id|table_info-&gt;pointer
+comma
+op_amp
+id|new_table
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* Some severe error from the OSL, but we basically ignore it */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not override ACPI table, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_table
+)paren
+(brace
+multiline_comment|/* No table override */
+id|return_VOID
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * We have a new table to override the old one.  Get a copy of&n;&t; * the new one.  We know that the new table has a logical pointer.&n;&t; */
+id|address.pointer_type
+op_assign
+id|ACPI_LOGICAL_POINTER
+suffix:semicolon
+id|address.pointer.logical
+op_assign
+id|new_table
+suffix:semicolon
+id|status
+op_assign
+id|acpi_tb_get_table
+(paren
+op_amp
+id|address
+comma
+op_amp
+id|new_table_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not copy ACPI table override&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Delete the original table&n;&t; */
+id|acpi_tb_delete_single_table
+(paren
+id|table_info
+)paren
+suffix:semicolon
+multiline_comment|/* Copy the table info */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Successful table override [%4.4s]&bslash;n&quot;
+comma
+(paren
+(paren
+id|acpi_table_header
+op_star
+)paren
+id|new_table_info.pointer
+)paren
+op_member_access_from_pointer
+id|signature
+)paren
+)paren
+suffix:semicolon
+id|ACPI_MEMCPY
+(paren
+id|table_info
+comma
+op_amp
+id|new_table_info
+comma
+r_sizeof
+(paren
+id|acpi_table_desc
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_with_override&n; *&n; * PARAMETERS:  Address             - Physical or logical address of table&n; *              *Table_info         - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Gets and installs the table with possible table override by OS.&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_tb_get_table_with_override
+id|acpi_tb_get_table_with_override
+(paren
+id|ACPI_POINTER
+op_star
+id|address
+comma
+id|acpi_table_desc
+op_star
+id|table_info
+)paren
+(brace
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_tb_get_table_with_override&quot;
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_tb_get_table
+(paren
+id|address
+comma
+id|table_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not get ACPI table, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Attempt override.  It either happens or it doesn&squot;t, no status&n;&t; */
+id|acpi_tb_table_override
+(paren
+id|table_info
+)paren
+suffix:semicolon
+multiline_comment|/* Install the table */
+id|status
+op_assign
+id|acpi_tb_install_table
+(paren
+id|table_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not install ACPI table, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_ptr&n; *&n; * PARAMETERS:  Table_type      - one of the defined table types&n; *              Instance        - Which table of this type&n; *              Table_ptr_loc   - pointer to location to place the pointer for&n; *                                return&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the pointer to an ACPI table.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table_ptr
@@ -152,7 +407,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table&n; *&n; * PARAMETERS:  Physical_address        - Physical address of table to retrieve&n; *              *Buffer_ptr             - If Buffer_ptr is valid, read data from&n; *                                         buffer rather than searching memory&n; *              *Table_info             - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table&n; *&n; * PARAMETERS:  Address             - Physical address of table to retrieve&n; *              *Table_info         - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table
 id|acpi_tb_get_table
@@ -178,7 +433,7 @@ id|full_table
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|size
 suffix:semicolon
 id|u8
@@ -248,6 +503,9 @@ suffix:semicolon
 multiline_comment|/* Copy the entire table (including header) to the local buffer */
 id|size
 op_assign
+(paren
+id|ACPI_SIZE
+)paren
 id|table_header-&gt;length
 suffix:semicolon
 id|ACPI_MEMCPY
@@ -363,17 +621,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_all_tables&n; *&n; * PARAMETERS:  Number_of_tables    - Number of tables to get&n; *              Table_ptr           - Input buffer pointer, optional&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *&n; *              Get the minimum set of ACPI tables, namely:&n; *&n; *              1) FADT (via RSDT in loop below)&n; *              2) FACS (via FADT)&n; *              3) DSDT (via FADT)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_all_tables&n; *&n; * PARAMETERS:  Number_of_tables    - Number of tables to get&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *&n; *              Get the minimum set of ACPI tables, namely:&n; *&n; *              1) FADT (via RSDT in loop below)&n; *              2) FACS (via FADT)&n; *              3) DSDT (via FADT)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_all_tables
 id|acpi_tb_get_all_tables
 (paren
 id|u32
 id|number_of_tables
-comma
-id|acpi_table_header
-op_star
-id|table_ptr
 )paren
 (brace
 id|acpi_status
@@ -482,8 +736,6 @@ id|status
 op_assign
 id|acpi_tb_install_table
 (paren
-id|table_ptr
-comma
 op_amp
 id|table_info
 )paren
@@ -498,6 +750,9 @@ id|status
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Unrecognized or unsupported table, delete it and ignore the&n;&t;&t;&t; * error.  Just get as many tables as we can, later we will&n;&t;&t;&t; * determine if there are enough tables to continue.&n;&t;&t;&t; */
+(paren
+r_void
+)paren
 id|acpi_tb_uninstall_table
 (paren
 op_amp
@@ -509,6 +764,26 @@ op_assign
 id|AE_OK
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_gbl_FADT
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;No FADT present in R/XSDT&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_ACPI_TABLES
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Convert the FADT to a common format.  This allows earlier revisions of the&n;&t; * table to coexist with newer versions, using common access code.&n;&t; */
 id|status
@@ -574,7 +849,12 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Could not get the FACS&bslash;n&quot;
+l_string|&quot;Could not get the FACS, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -589,8 +869,6 @@ id|status
 op_assign
 id|acpi_tb_install_table
 (paren
-id|table_ptr
-comma
 op_amp
 id|table_info
 )paren
@@ -607,7 +885,12 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Could not install the FACS&bslash;n&quot;
+l_string|&quot;Could not install the FACS, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -635,20 +918,13 @@ id|status
 )paren
 )paren
 (brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Could not convert FACS to common internal format&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get the DSDT (We know that the FADT is valid now)&n;&t; */
+multiline_comment|/*&n;&t; * Get/install the DSDT (We know that the FADT is valid now)&n;&t; */
 id|address.pointer_type
 op_assign
 id|acpi_gbl_table_flags
@@ -662,7 +938,7 @@ id|acpi_gbl_FADT-&gt;Xdsdt
 suffix:semicolon
 id|status
 op_assign
-id|acpi_tb_get_table
+id|acpi_tb_get_table_with_override
 (paren
 op_amp
 id|address
@@ -693,50 +969,25 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Install the DSDT */
-id|status
-op_assign
-id|acpi_tb_install_table
+multiline_comment|/* Set Integer Width (32/64) based upon DSDT revision */
+id|acpi_ut_set_integer_width
 (paren
-id|table_ptr
-comma
-op_amp
-id|table_info
+id|acpi_gbl_DSDT-&gt;revision
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Could not install the DSDT&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Dump the entire DSDT */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_TABLES
 comma
-l_string|&quot;Hex dump of entire DSDT, size %d (0x%X)&bslash;n&quot;
+l_string|&quot;Hex dump of entire DSDT, size %d (0x%X), Integer width = %d&bslash;n&quot;
 comma
 id|acpi_gbl_DSDT-&gt;length
 comma
 id|acpi_gbl_DSDT-&gt;length
+comma
+id|acpi_gbl_integer_bit_width
 )paren
 )paren
 suffix:semicolon
@@ -942,11 +1193,12 @@ suffix:semicolon
 multiline_comment|/* The RSDP supplied is OK */
 id|table_info.pointer
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_table_header
-op_star
-)paren
+comma
 id|rsdp
+)paren
 suffix:semicolon
 id|table_info.length
 op_assign
@@ -990,11 +1242,12 @@ suffix:semicolon
 multiline_comment|/* Save the RSDP in a global for easy access */
 id|acpi_gbl_RSDP
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|RSDP_DESCRIPTOR
-op_star
-)paren
+comma
 id|table_info.pointer
+)paren
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -1082,7 +1335,7 @@ op_star
 id|table_ptr
 )paren
 (brace
-id|u32
+r_int
 id|no_match
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
@@ -1169,8 +1422,17 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;RSDT/XSDT signature at %X is invalid&bslash;n&quot;
+l_string|&quot;RSDT/XSDT signature at %X (%p) is invalid&bslash;n&quot;
 comma
+id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+id|NATIVE_UINT
+)paren
 id|acpi_gbl_RSDP-&gt;rsdt_physical_address
 )paren
 )paren
@@ -1199,7 +1461,7 @@ comma
 id|u32
 id|flags
 comma
-id|u32
+id|ACPI_SIZE
 op_star
 id|size
 comma
@@ -1274,6 +1536,13 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -1309,6 +1578,13 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
 )brace
 )brace
 r_return
@@ -1341,29 +1617,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Tb_get_table_rsdt&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get the RSDT from the RSDP&n;&t; */
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;RSDP located at %p, RSDT physical=%8.8X%8.8X &bslash;n&quot;
-comma
-id|acpi_gbl_RSDP
-comma
-id|ACPI_HIDWORD
-(paren
-id|acpi_gbl_RSDP-&gt;rsdt_physical_address
-)paren
-comma
-id|ACPI_LODWORD
-(paren
-id|acpi_gbl_RSDP-&gt;rsdt_physical_address
-)paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Get the RSDT/XSDT */
+multiline_comment|/* Get the RSDT/XSDT from the RSDP */
 id|acpi_tb_get_rsdt_address
 (paren
 op_amp
@@ -1395,7 +1649,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not get the RSDT, %s&bslash;n&quot;
+l_string|&quot;Could not get the R/XSDT, %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -1410,6 +1664,27 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;RSDP located at %p, RSDT physical=%8.8X%8.8X &bslash;n&quot;
+comma
+id|acpi_gbl_RSDP
+comma
+id|ACPI_HIDWORD
+(paren
+id|address.pointer.value
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|address.pointer.value
+)paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Check the RSDT or XSDT signature */
 id|status
 op_assign

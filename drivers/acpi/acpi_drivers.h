@@ -1,11 +1,9 @@
-multiline_comment|/*&n; *  acpi_drivers.h  ($Revision: 23 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_drivers.h  ($Revision: 29 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#ifndef __ACPI_DRIVERS_H__
 DECL|macro|__ACPI_DRIVERS_H__
 mdefine_line|#define __ACPI_DRIVERS_H__
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
-DECL|macro|ACPI_DRIVER_VERSION
-mdefine_line|#define ACPI_DRIVER_VERSION&t;&t;0x20020404
 DECL|macro|ACPI_MAX_STRING
 mdefine_line|#define ACPI_MAX_STRING&t;&t;&t;80
 multiline_comment|/* --------------------------------------------------------------------------&n;                                    ACPI Bus&n;   -------------------------------------------------------------------------- */
@@ -157,10 +155,33 @@ mdefine_line|#define ACPI_FAN_FILE_STATE&t;&t;&quot;state&quot;
 DECL|macro|ACPI_FAN_NOTIFY_STATUS
 mdefine_line|#define ACPI_FAN_NOTIFY_STATUS&t;&t;0x80
 multiline_comment|/* --------------------------------------------------------------------------&n;                                       PCI&n;   -------------------------------------------------------------------------- */
-DECL|macro|ACPI_PCI_LINK_COMPONENT
-mdefine_line|#define ACPI_PCI_LINK_COMPONENT&t;&t;0x00400000
+macro_line|#ifdef CONFIG_ACPI_PCI
+DECL|macro|ACPI_PCI_COMPONENT
+mdefine_line|#define ACPI_PCI_COMPONENT&t;&t;0x00400000
+multiline_comment|/* ACPI PCI Root Bridge (pci_root.c) */
+DECL|macro|ACPI_PCI_ROOT_CLASS
+mdefine_line|#define ACPI_PCI_ROOT_CLASS&t;&t;&quot;pci_bridge&quot;
+DECL|macro|ACPI_PCI_ROOT_HID
+mdefine_line|#define ACPI_PCI_ROOT_HID&t;&t;&quot;PNP0A03&quot;
+DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
+mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
+DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
+mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
+r_int
+id|acpi_pci_root_init
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|acpi_pci_root_exit
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* ACPI PCI Interrupt Link (pci_link.c) */
 DECL|macro|ACPI_PCI_LINK_CLASS
-mdefine_line|#define ACPI_PCI_LINK_CLASS&t;&t;&quot;irq_routing&quot;
+mdefine_line|#define ACPI_PCI_LINK_CLASS&t;&t;&quot;pci_irq_routing&quot;
 DECL|macro|ACPI_PCI_LINK_HID
 mdefine_line|#define ACPI_PCI_LINK_HID&t;&t;&quot;PNP0C0F&quot;
 DECL|macro|ACPI_PCI_LINK_DRIVER_NAME
@@ -171,42 +192,20 @@ DECL|macro|ACPI_PCI_LINK_FILE_INFO
 mdefine_line|#define ACPI_PCI_LINK_FILE_INFO&t;&t;&quot;info&quot;
 DECL|macro|ACPI_PCI_LINK_FILE_STATUS
 mdefine_line|#define ACPI_PCI_LINK_FILE_STATUS&t;&quot;state&quot;
-DECL|macro|ACPI_PCI_ROOT_COMPONENT
-mdefine_line|#define ACPI_PCI_ROOT_COMPONENT&t;&t;0x00800000
-DECL|macro|ACPI_PCI_ROOT_CLASS
-mdefine_line|#define ACPI_PCI_ROOT_CLASS&t;&t;&quot;bridge&quot;
-DECL|macro|ACPI_PCI_ROOT_HID
-mdefine_line|#define ACPI_PCI_ROOT_HID&t;&t;&quot;PNP0A03&quot;
-DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
-mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
-DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
-mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
-DECL|macro|ACPI_PCI_PRT_DEVICE_NAME
-mdefine_line|#define ACPI_PCI_PRT_DEVICE_NAME&t;&quot;PCI Interrupt Routing Table&quot;
-macro_line|#ifdef CONFIG_ACPI_PCI
 r_int
-id|acpi_pci_link_get_irq
+id|acpi_pci_link_check
 (paren
-r_struct
-id|acpi_prt_entry
-op_star
-id|entry
-comma
-r_int
-op_star
-id|irq
+r_void
 )paren
 suffix:semicolon
 r_int
-id|acpi_pci_link_set_irq
+id|acpi_pci_link_get_irq
 (paren
-r_struct
-id|acpi_prt_entry
-op_star
-id|entry
+id|acpi_handle
+id|handle
 comma
 r_int
-id|irq
+id|index
 )paren
 suffix:semicolon
 r_int
@@ -221,22 +220,55 @@ id|acpi_pci_link_exit
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* ACPI PCI Interrupt Routing (pci_irq.c) */
 r_int
-id|acpi_pci_root_init
+id|acpi_pci_irq_add_prt
 (paren
-r_void
+id|acpi_handle
+id|handle
+comma
+r_int
+id|segment
+comma
+r_int
+id|bus
 )paren
 suffix:semicolon
-r_void
-id|acpi_pci_root_exit
+multiline_comment|/* ACPI PCI Device Binding (pci_bind.c) */
+r_struct
+id|pci_bus
+suffix:semicolon
+r_int
+id|acpi_pci_bind
 (paren
-r_void
+r_struct
+id|acpi_device
+op_star
+id|device
 )paren
 suffix:semicolon
-macro_line|#endif
+r_int
+id|acpi_pci_bind_root
+(paren
+r_struct
+id|acpi_device
+op_star
+id|device
+comma
+id|acpi_pci_id
+op_star
+id|id
+comma
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+macro_line|#endif /*CONFIG_ACPI_PCI*/
 multiline_comment|/* --------------------------------------------------------------------------&n;                                  Power Resource&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_POWER_COMPONENT
-mdefine_line|#define ACPI_POWER_COMPONENT&t;&t;0x01000000
+mdefine_line|#define ACPI_POWER_COMPONENT&t;&t;0x00800000
 DECL|macro|ACPI_POWER_CLASS
 mdefine_line|#define ACPI_POWER_CLASS&t;&t;&quot;power_resource&quot;
 DECL|macro|ACPI_POWER_HID
@@ -292,7 +324,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                    Processor&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_PROCESSOR_COMPONENT
-mdefine_line|#define ACPI_PROCESSOR_COMPONENT&t;0x02000000
+mdefine_line|#define ACPI_PROCESSOR_COMPONENT&t;0x01000000
 DECL|macro|ACPI_PROCESSOR_CLASS
 mdefine_line|#define ACPI_PROCESSOR_CLASS&t;&t;&quot;processor&quot;
 DECL|macro|ACPI_PROCESSOR_HID
@@ -334,7 +366,7 @@ id|type
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                                     System&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_SYSTEM_COMPONENT
-mdefine_line|#define ACPI_SYSTEM_COMPONENT&t;&t;0x04000000
+mdefine_line|#define ACPI_SYSTEM_COMPONENT&t;&t;0x02000000
 DECL|macro|ACPI_SYSTEM_CLASS
 mdefine_line|#define ACPI_SYSTEM_CLASS&t;&t;&quot;system&quot;
 DECL|macro|ACPI_SYSTEM_HID
@@ -375,7 +407,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Thermal Zone&n;   -------------------------------------------------------------------------- */
 DECL|macro|ACPI_THERMAL_COMPONENT
-mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x08000000
+mdefine_line|#define ACPI_THERMAL_COMPONENT&t;&t;0x04000000
 DECL|macro|ACPI_THERMAL_CLASS
 mdefine_line|#define ACPI_THERMAL_CLASS&t;&t;&quot;thermal_zone&quot;
 DECL|macro|ACPI_THERMAL_HID

@@ -20,14 +20,68 @@ r_int
 r_int
 id|mm_segment_t
 suffix:semicolon
-multiline_comment|/* domain register&t;*/
-multiline_comment|/*&n; * low level task data that entry.S needs immediate access to.&n; */
+DECL|struct|cpu_context_save
+r_struct
+id|cpu_context_save
+(brace
+DECL|member|r4
+id|__u32
+id|r4
+suffix:semicolon
+DECL|member|r5
+id|__u32
+id|r5
+suffix:semicolon
+DECL|member|r6
+id|__u32
+id|r6
+suffix:semicolon
+DECL|member|r7
+id|__u32
+id|r7
+suffix:semicolon
+DECL|member|r8
+id|__u32
+id|r8
+suffix:semicolon
+DECL|member|r9
+id|__u32
+id|r9
+suffix:semicolon
+DECL|member|sl
+id|__u32
+id|sl
+suffix:semicolon
+DECL|member|fp
+id|__u32
+id|fp
+suffix:semicolon
+DECL|member|sp
+id|__u32
+id|sp
+suffix:semicolon
+DECL|member|pc
+id|__u32
+id|pc
+suffix:semicolon
+DECL|member|extra
+id|__u32
+id|extra
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* Xscale &squot;acc&squot; register, etc */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * low level task data that entry.S needs immediate access to.&n; * We assume cpu_context follows immedately after cpu_domain.&n; */
 DECL|struct|thread_info
 r_struct
 id|thread_info
 (brace
 DECL|member|flags
-id|__u32
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* low level flags */
@@ -41,23 +95,6 @@ id|mm_segment_t
 id|addr_limit
 suffix:semicolon
 multiline_comment|/* address limit */
-DECL|member|cpu
-id|__u32
-id|cpu
-suffix:semicolon
-multiline_comment|/* cpu */
-DECL|member|cpu_context
-r_struct
-id|cpu_context_save
-op_star
-id|cpu_context
-suffix:semicolon
-multiline_comment|/* cpu context */
-DECL|member|cpu_domain
-id|__u32
-id|cpu_domain
-suffix:semicolon
-multiline_comment|/* cpu domain */
 DECL|member|task
 r_struct
 id|task_struct
@@ -72,6 +109,22 @@ op_star
 id|exec_domain
 suffix:semicolon
 multiline_comment|/* execution domain */
+DECL|member|cpu
+id|__u32
+id|cpu
+suffix:semicolon
+multiline_comment|/* cpu */
+DECL|member|cpu_domain
+id|__u32
+id|cpu_domain
+suffix:semicolon
+multiline_comment|/* cpu domain */
+DECL|member|cpu_context
+r_struct
+id|cpu_context_save
+id|cpu_context
+suffix:semicolon
+multiline_comment|/* cpu context */
 DECL|member|fpstate
 r_union
 id|fp_state
@@ -164,74 +217,10 @@ DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti)&t;get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti)&t;put_task_struct((ti)-&gt;task)
-DECL|function|__thread_saved_pc
-r_static
-r_inline
-r_int
-r_int
-id|__thread_saved_pc
-c_func
-(paren
-r_struct
-id|thread_info
-op_star
-id|thread
-)paren
-(brace
-r_struct
-id|cpu_context_save
-op_star
-id|context
-op_assign
-id|thread-&gt;cpu_context
-suffix:semicolon
-r_return
-id|context
-ques
-c_cond
-id|pc_pointer
-c_func
-(paren
-id|context-&gt;pc
-)paren
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|__thread_saved_fp
-r_static
-r_inline
-r_int
-r_int
-id|__thread_saved_fp
-c_func
-(paren
-r_struct
-id|thread_info
-op_star
-id|thread
-)paren
-(brace
-r_struct
-id|cpu_context_save
-op_star
-id|context
-op_assign
-id|thread-&gt;cpu_context
-suffix:semicolon
-r_return
-id|context
-ques
-c_cond
-id|context-&gt;fp
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|thread_saved_pc
-mdefine_line|#define thread_saved_pc(tsk)&t;__thread_saved_pc((tsk)-&gt;thread_info)
+mdefine_line|#define thread_saved_pc(tsk)&t;(pc_pointer((tsk)-&gt;thread_info-&gt;cpu_context.pc))
 DECL|macro|thread_saved_fp
-mdefine_line|#define thread_saved_fp(tsk)&t;__thread_saved_fp((tsk)-&gt;thread_info)
+mdefine_line|#define thread_saved_fp(tsk)&t;((tsk)-&gt;thread_info-&gt;cpu_context.fp)
 macro_line|#else /* !__ASSEMBLY__ */
 DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;0
@@ -239,18 +228,18 @@ DECL|macro|TI_PREEMPT
 mdefine_line|#define TI_PREEMPT&t;4
 DECL|macro|TI_ADDR_LIMIT
 mdefine_line|#define TI_ADDR_LIMIT&t;8
-DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;12
-DECL|macro|TI_CPU_SAVE
-mdefine_line|#define TI_CPU_SAVE&t;16
-DECL|macro|TI_CPU_DOMAIN
-mdefine_line|#define TI_CPU_DOMAIN&t;20
 DECL|macro|TI_TASK
-mdefine_line|#define TI_TASK&t;&t;24
+mdefine_line|#define TI_TASK&t;&t;12
 DECL|macro|TI_EXEC_DOMAIN
-mdefine_line|#define TI_EXEC_DOMAIN&t;28
+mdefine_line|#define TI_EXEC_DOMAIN&t;16
+DECL|macro|TI_CPU
+mdefine_line|#define TI_CPU&t;&t;20
+DECL|macro|TI_CPU_DOMAIN
+mdefine_line|#define TI_CPU_DOMAIN&t;24
+DECL|macro|TI_CPU_SAVE
+mdefine_line|#define TI_CPU_SAVE&t;28
 DECL|macro|TI_FPSTATE
-mdefine_line|#define TI_FPSTATE&t;32
+mdefine_line|#define TI_FPSTATE&t;76
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;0x04000000

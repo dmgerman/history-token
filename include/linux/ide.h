@@ -55,28 +55,64 @@ multiline_comment|/*&n; * state flags&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
-DECL|macro|IDE_NR_PORTS
-mdefine_line|#define IDE_NR_PORTS&t;&t;(10)
-DECL|macro|IDE_DATA_OFFSET
-mdefine_line|#define IDE_DATA_OFFSET&t;&t;(0)
-DECL|macro|IDE_ERROR_OFFSET
-mdefine_line|#define IDE_ERROR_OFFSET&t;(1)
-DECL|macro|IDE_NSECTOR_OFFSET
-mdefine_line|#define IDE_NSECTOR_OFFSET&t;(2)
-DECL|macro|IDE_SECTOR_OFFSET
-mdefine_line|#define IDE_SECTOR_OFFSET&t;(3)
-DECL|macro|IDE_LCYL_OFFSET
-mdefine_line|#define IDE_LCYL_OFFSET&t;&t;(4)
-DECL|macro|IDE_HCYL_OFFSET
-mdefine_line|#define IDE_HCYL_OFFSET&t;&t;(5)
-DECL|macro|IDE_SELECT_OFFSET
-mdefine_line|#define IDE_SELECT_OFFSET&t;(6)
-DECL|macro|IDE_STATUS_OFFSET
-mdefine_line|#define IDE_STATUS_OFFSET&t;(7)
-DECL|macro|IDE_CONTROL_OFFSET
-mdefine_line|#define IDE_CONTROL_OFFSET&t;(8)
-DECL|macro|IDE_IRQ_OFFSET
-mdefine_line|#define IDE_IRQ_OFFSET&t;&t;(9)
+r_enum
+(brace
+DECL|enumerator|IDE_DATA_OFFSET
+id|IDE_DATA_OFFSET
+op_assign
+l_int|0
+comma
+DECL|enumerator|IDE_ERROR_OFFSET
+id|IDE_ERROR_OFFSET
+op_assign
+l_int|1
+comma
+DECL|enumerator|IDE_NSECTOR_OFFSET
+id|IDE_NSECTOR_OFFSET
+op_assign
+l_int|2
+comma
+DECL|enumerator|IDE_SECTOR_OFFSET
+id|IDE_SECTOR_OFFSET
+op_assign
+l_int|3
+comma
+DECL|enumerator|IDE_LCYL_OFFSET
+id|IDE_LCYL_OFFSET
+op_assign
+l_int|4
+comma
+DECL|enumerator|IDE_HCYL_OFFSET
+id|IDE_HCYL_OFFSET
+op_assign
+l_int|5
+comma
+DECL|enumerator|IDE_SELECT_OFFSET
+id|IDE_SELECT_OFFSET
+op_assign
+l_int|6
+comma
+DECL|enumerator|IDE_STATUS_OFFSET
+id|IDE_STATUS_OFFSET
+op_assign
+l_int|7
+comma
+DECL|enumerator|IDE_CONTROL_OFFSET
+id|IDE_CONTROL_OFFSET
+op_assign
+l_int|8
+comma
+DECL|enumerator|IDE_IRQ_OFFSET
+id|IDE_IRQ_OFFSET
+op_assign
+l_int|9
+comma
+DECL|enumerator|IDE_NR_PORTS
+id|IDE_NR_PORTS
+op_assign
+l_int|10
+)brace
+suffix:semicolon
 DECL|macro|IDE_FEATURE_OFFSET
 mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
 DECL|macro|IDE_COMMAND_OFFSET
@@ -541,7 +577,6 @@ DECL|typedef|control_t
 id|control_t
 suffix:semicolon
 multiline_comment|/*&n; * ATA/ATAPI device structure :&n; */
-r_typedef
 DECL|struct|ata_device
 r_struct
 id|ata_device
@@ -881,11 +916,6 @@ id|byte
 id|suspend_reset
 suffix:semicolon
 multiline_comment|/* drive suspend mode flag, soft-reset recovers */
-DECL|member|init_speed
-id|byte
-id|init_speed
-suffix:semicolon
-multiline_comment|/* transfer rate set at boot */
 DECL|member|current_speed
 id|byte
 id|current_speed
@@ -948,9 +978,7 @@ DECL|member|max_depth
 r_int
 id|max_depth
 suffix:semicolon
-DECL|typedef|ide_drive_t
 )brace
-id|ide_drive_t
 suffix:semicolon
 multiline_comment|/*&n; * Status returned by various functions.&n; */
 r_typedef
@@ -1674,12 +1702,6 @@ c_func
 id|hw_regs_t
 op_star
 id|hw
-comma
-r_struct
-id|ata_channel
-op_star
-op_star
-id|hwifp
 )paren
 suffix:semicolon
 r_extern
@@ -1778,6 +1800,18 @@ r_struct
 id|module
 op_star
 id|owner
+suffix:semicolon
+DECL|member|attach
+r_void
+(paren
+op_star
+id|attach
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+)paren
 suffix:semicolon
 DECL|member|cleanup
 r_int
@@ -1941,6 +1975,13 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* linked list of rgistered device type drivers */
+DECL|member|next
+r_struct
+id|ata_operations
+op_star
+id|next
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
@@ -1959,16 +2000,11 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Actually implement and use them as soon as possible!  to make the&n; * ide_scan_devices() go away! */
 r_extern
-r_int
+r_void
 id|unregister_ata_driver
 c_func
 (paren
-r_int
-r_int
-id|type
-comma
 r_struct
 id|ata_operations
 op_star
@@ -1980,16 +2016,61 @@ r_int
 id|register_ata_driver
 c_func
 (paren
-r_int
-r_int
-id|type
-comma
 r_struct
 id|ata_operations
 op_star
 id|driver
 )paren
 suffix:semicolon
+DECL|function|ata_driver_module
+r_static
+r_inline
+r_int
+id|ata_driver_module
+c_func
+(paren
+r_struct
+id|ata_operations
+op_star
+id|driver
+)paren
+(brace
+macro_line|#ifdef MODULE
+r_if
+c_cond
+(paren
+id|register_ata_driver
+c_func
+(paren
+id|driver
+)paren
+op_le
+l_int|0
+)paren
+(brace
+id|unregister_ata_driver
+c_func
+(paren
+id|driver
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+macro_line|#else
+id|register_ata_driver
+c_func
+(paren
+id|driver
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|ata_ops
 mdefine_line|#define ata_ops(drive)&t;&t;((drive)-&gt;driver)
 r_extern
@@ -2363,38 +2444,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|atapi_read
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|atapi_write
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
 id|ide_startstop_t
 id|ata_taskfile
 c_func
@@ -2482,13 +2531,6 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-r_void
-id|ide_delay_50ms
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|ide_fix_driveid
@@ -2498,16 +2540,6 @@ r_struct
 id|hd_driveid
 op_star
 id|id
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_driveid_update
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -2671,26 +2703,6 @@ r_void
 suffix:semicolon
 macro_line|#endif
 r_extern
-r_struct
-id|ata_device
-op_star
-id|ide_scan_devices
-c_func
-(paren
-id|byte
-comma
-r_const
-r_char
-op_star
-comma
-r_struct
-id|ata_operations
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|ide_register_subdriver
 c_func
@@ -2713,6 +2725,23 @@ r_struct
 id|ata_device
 op_star
 id|drive
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_revalidate
+c_func
+(paren
+id|kdev_t
+id|i_rdev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ide_driver_module
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
@@ -3230,11 +3259,21 @@ id|__init
 suffix:semicolon
 macro_line|#endif
 r_extern
+r_void
+id|ata_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+)paren
+suffix:semicolon
+r_extern
 id|spinlock_t
 id|ide_lock
 suffix:semicolon
 DECL|macro|DRIVE_LOCK
-mdefine_line|#define DRIVE_LOCK(drive)&t;&t;((drive)-&gt;queue.queue_lock)
+mdefine_line|#define DRIVE_LOCK(drive)&t;((drive)-&gt;queue.queue_lock)
 r_extern
 r_int
 id|drive_is_ready
@@ -3244,14 +3283,6 @@ r_struct
 id|ata_device
 op_star
 id|drive
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|revalidate_drives
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif

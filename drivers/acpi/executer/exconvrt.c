@@ -1,12 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -42,20 +38,15 @@ suffix:semicolon
 id|u32
 id|count
 suffix:semicolon
-r_char
+id|u8
 op_star
 id|pointer
 suffix:semicolon
 id|acpi_integer
 id|result
 suffix:semicolon
-id|u32
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|acpi_integer
-)paren
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
@@ -88,6 +79,10 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|pointer
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|obj_desc-&gt;string.pointer
 suffix:semicolon
 id|count
@@ -101,10 +96,6 @@ id|ACPI_TYPE_BUFFER
 suffix:colon
 id|pointer
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|obj_desc-&gt;buffer.pointer
 suffix:semicolon
 id|count
@@ -121,45 +112,6 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Create a new integer&n;&t; */
-id|ret_desc
-op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|ACPI_TYPE_INTEGER
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret_desc
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Handle both ACPI 1.0 and ACPI 2.0 Integer widths */
-r_if
-c_cond
-(paren
-id|walk_state-&gt;method_node-&gt;flags
-op_amp
-id|ANOBJ_DATA_WIDTH_32
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t; * Truncate the value to 32 bits by zeroing out the upper 32-bit field&n;&t;&t; */
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|u32
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Convert the buffer/string to an integer.  Note that both buffers and&n;&t; * strings are treated as raw data - we don&squot;t convert ascii to hex for&n;&t; * strings.&n;&t; *&n;&t; * There are two terminating conditions for the loop:&n;&t; * 1) The size of an integer has been reached, or&n;&t; * 2) The end of the buffer or string has been reached&n;&t; */
 id|result
 op_assign
@@ -171,12 +123,12 @@ c_cond
 (paren
 id|count
 OG
-id|integer_size
+id|acpi_gbl_integer_byte_width
 )paren
 (brace
 id|count
 op_assign
-id|integer_size
+id|acpi_gbl_integer_byte_width
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * String conversion is different than Buffer conversion&n;&t; */
@@ -189,19 +141,38 @@ id|obj_desc-&gt;common.type
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
-multiline_comment|/* TBD: Need to use 64-bit ACPI_STRTOUL */
 multiline_comment|/*&n;&t;&t; * Convert string to an integer&n;&t;&t; * String must be hexadecimal as per the ACPI specification&n;&t;&t; */
-id|result
+id|status
 op_assign
-id|ACPI_STRTOUL
+id|acpi_ut_strtoul64
 (paren
+(paren
+r_char
+op_star
+)paren
 id|pointer
 comma
-l_int|NULL
-comma
 l_int|16
+comma
+op_amp
+id|result
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -246,6 +217,32 @@ l_int|8
 suffix:semicolon
 )brace
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No other types can get here */
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Create a new integer&n;&t; */
+id|ret_desc
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|ACPI_TYPE_INTEGER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret_desc
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Save the Result, delete original descriptor, store new descriptor */
@@ -314,14 +311,6 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|u32
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|acpi_integer
-)paren
-suffix:semicolon
 id|u8
 op_star
 id|new_buf
@@ -363,34 +352,16 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Handle both ACPI 1.0 and ACPI 2.0 Integer widths */
-r_if
-c_cond
-(paren
-id|walk_state-&gt;method_node-&gt;flags
-op_amp
-id|ANOBJ_DATA_WIDTH_32
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Use only 32 bits of the Integer for conversion.&n;&t;&t;&t; */
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|u32
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Need enough space for one integer */
 id|ret_desc-&gt;buffer.length
 op_assign
-id|integer_size
+id|acpi_gbl_integer_byte_width
 suffix:semicolon
 id|new_buf
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
-id|integer_size
+id|acpi_gbl_integer_byte_width
 )paren
 suffix:semicolon
 r_if
@@ -428,7 +399,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|integer_size
+id|acpi_gbl_integer_byte_width
 suffix:semicolon
 id|i
 op_increment
@@ -536,7 +507,7 @@ id|k
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+r_char
 id|hex_digit
 suffix:semicolon
 id|acpi_integer
@@ -610,6 +581,9 @@ id|j
 op_increment
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_short_divide
 (paren
 op_amp
@@ -743,6 +717,9 @@ id|string
 id|k
 )braket
 op_assign
+(paren
+id|u8
+)paren
 id|hex_digit
 suffix:semicolon
 id|k
@@ -828,14 +805,6 @@ suffix:semicolon
 id|u32
 id|string_length
 suffix:semicolon
-id|u32
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|acpi_integer
-)paren
-suffix:semicolon
 id|u8
 op_star
 id|new_buf
@@ -860,27 +829,9 @@ id|obj_desc-&gt;common.type
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
-multiline_comment|/* Handle both ACPI 1.0 and ACPI 2.0 Integer widths */
-r_if
-c_cond
-(paren
-id|walk_state-&gt;method_node-&gt;flags
-op_amp
-id|ANOBJ_DATA_WIDTH_32
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t;&t; * Use only 32 bits of the Integer&n;&t;&t;&t; */
-id|integer_size
-op_assign
-r_sizeof
-(paren
-id|u32
-)paren
-suffix:semicolon
-)brace
 id|string_length
 op_assign
-id|integer_size
+id|acpi_gbl_integer_byte_width
 op_star
 l_int|2
 suffix:semicolon
@@ -923,6 +874,9 @@ id|new_buf
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|string_length
 op_plus
 l_int|1
@@ -1122,6 +1076,9 @@ id|new_buf
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|string_length
 op_plus
 l_int|1
@@ -1184,6 +1141,9 @@ id|index
 op_assign
 id|acpi_ex_convert_to_ascii
 (paren
+(paren
+id|acpi_integer
+)paren
 id|pointer
 (braket
 id|i
@@ -1492,6 +1452,14 @@ id|result_desc
 comma
 id|walk_state
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|status
+op_assign
+id|AE_AML_INTERNAL
 suffix:semicolon
 r_break
 suffix:semicolon

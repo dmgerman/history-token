@@ -1,10 +1,6 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbinput - user front-end to the AML debugger&n; *              $Revision: 81 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbinput - user front-end to the AML debugger&n; *              $Revision: 86 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;actables.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
@@ -86,6 +82,9 @@ comma
 DECL|enumerator|CMD_INFORMATION
 id|CMD_INFORMATION
 comma
+DECL|enumerator|CMD_INTEGRITY
+id|CMD_INTEGRITY
+comma
 DECL|enumerator|CMD_INTO
 id|CMD_INTO
 comma
@@ -165,6 +164,7 @@ suffix:semicolon
 DECL|macro|CMD_FIRST_VALID
 mdefine_line|#define CMD_FIRST_VALID     2
 DECL|variable|acpi_gbl_db_commands
+r_static
 r_const
 id|COMMAND_INFO
 id|acpi_gbl_db_commands
@@ -300,6 +300,12 @@ l_int|0
 comma
 (brace
 l_string|&quot;INFORMATION&quot;
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;INTEGRITY&quot;
 comma
 l_int|0
 )brace
@@ -532,7 +538,7 @@ l_char|&squot;G&squot;
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_general-Purpose Commands&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nGeneral-Purpose Commands&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -617,7 +623,7 @@ l_char|&squot;N&squot;
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_namespace Access Commands&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nNamespace Access Commands&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -697,7 +703,7 @@ l_char|&squot;M&squot;
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_control Method Execution Commands&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nControl Method Execution Commands&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -772,7 +778,7 @@ l_char|&squot;F&squot;
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_file I/O Commands&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;nFile I/O Commands&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpi_os_printf
@@ -796,7 +802,7 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Unrecognized Command Class: %x&bslash;n&quot;
+l_string|&quot;Unrecognized Command Class: %X&bslash;n&quot;
 comma
 id|help_type
 )paren
@@ -1478,6 +1484,8 @@ suffix:semicolon
 r_case
 id|CMD_FIND
 suffix:colon
+id|status
+op_assign
 id|acpi_db_find_name_in_namespace
 (paren
 id|acpi_gbl_db_args
@@ -1640,6 +1648,15 @@ suffix:colon
 id|acpi_db_display_method_info
 (paren
 id|op
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CMD_INTEGRITY
+suffix:colon
+id|acpi_db_check_integrity
+(paren
 )paren
 suffix:semicolon
 r_break
@@ -1826,6 +1843,8 @@ suffix:semicolon
 r_case
 id|CMD_METHODS
 suffix:colon
+id|status
+op_assign
 id|acpi_db_display_objects
 (paren
 l_string|&quot;METHOD&quot;
@@ -1888,8 +1907,6 @@ suffix:semicolon
 r_case
 id|CMD_OBJECT
 suffix:colon
-id|acpi_db_display_objects
-(paren
 id|ACPI_STRUPR
 (paren
 id|acpi_gbl_db_args
@@ -1897,6 +1914,15 @@ id|acpi_gbl_db_args
 l_int|1
 )braket
 )paren
+suffix:semicolon
+id|status
+op_assign
+id|acpi_db_display_objects
+(paren
+id|acpi_gbl_db_args
+(braket
+l_int|1
+)braket
 comma
 id|acpi_gbl_db_args
 (braket
@@ -2011,6 +2037,8 @@ suffix:semicolon
 r_case
 id|CMD_STATS
 suffix:colon
+id|status
+op_assign
 id|acpi_db_display_statistics
 (paren
 id|acpi_gbl_db_args
@@ -2026,7 +2054,7 @@ id|CMD_STOP
 suffix:colon
 r_return
 (paren
-id|AE_AML_ERROR
+id|AE_NOT_IMPLEMENTED
 )paren
 suffix:semicolon
 r_case
@@ -2161,6 +2189,8 @@ suffix:semicolon
 r_case
 id|CMD_NOT_FOUND
 suffix:colon
+r_default
+suffix:colon
 id|acpi_os_printf
 (paren
 l_string|&quot;Unknown Command&bslash;n&quot;
@@ -2278,9 +2308,6 @@ id|acpi_db_single_thread
 r_void
 )paren
 (brace
-id|acpi_status
-id|status
-suffix:semicolon
 id|acpi_gbl_method_executing
 op_assign
 id|FALSE
@@ -2289,8 +2316,9 @@ id|acpi_gbl_step_to_next_call
 op_assign
 id|FALSE
 suffix:semicolon
-id|status
-op_assign
+(paren
+r_void
+)paren
 id|acpi_db_command_dispatch
 (paren
 id|acpi_gbl_db_line_buf
@@ -2360,6 +2388,9 @@ id|ACPI_DEBUGGER_EXECUTE_PROMPT
 suffix:semicolon
 )brace
 multiline_comment|/* Get the user input line */
+(paren
+r_void
+)paren
 id|acpi_os_get_line
 (paren
 id|acpi_gbl_db_line_buf
@@ -2430,6 +2461,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Only this thread (the original thread) should actually terminate the subsystem,&n;&t; * because all the semaphores are deleted during termination&n;&t; */
+id|status
+op_assign
 id|acpi_terminate
 (paren
 )paren

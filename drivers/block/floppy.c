@@ -63,6 +63,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
 multiline_comment|/*&n; * PS/2 floppies have much slower step rates than regular floppies.&n; * It&squot;s been recommended that take about 1/4 of the default speed&n; * in some more extreme cases.&n; */
 DECL|variable|slow_floppy
 r_static
@@ -12282,37 +12283,21 @@ c_func
 id|current_drive
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|QUEUE_EMPTY
-op_logical_and
-id|CURRENT-&gt;rq_status
-op_eq
-id|RQ_INACTIVE
-)paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
-id|unlock_fdc
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_while
+r_for
 c_loop
 (paren
-l_int|1
+suffix:semicolon
+suffix:semicolon
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 (brace
 id|CLEAR_INTR
@@ -16285,6 +16270,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* umm, invalidate_buffers() in -&gt;open??  --hch */
 id|invalidate_buffers
 c_func
 (paren
@@ -16743,11 +16729,14 @@ op_amp
 id|bio
 )paren
 suffix:semicolon
-id|run_task_queue
+id|generic_unplug_device
 c_func
 (paren
-op_amp
-id|tq_disk
+id|bdev_get_queue
+c_func
+(paren
+id|bdev
+)paren
 )paren
 suffix:semicolon
 id|process_fd_request
@@ -18420,6 +18409,17 @@ r_static
 r_struct
 id|device
 id|device_floppy
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;floppy&quot;
+comma
+id|bus_id
+suffix:colon
+l_string|&quot;03?0&quot;
+comma
+)brace
 suffix:semicolon
 DECL|function|floppy_init
 r_int
@@ -18436,22 +18436,6 @@ comma
 id|unit
 comma
 id|drive
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|device_floppy.name
-comma
-l_string|&quot;floppy&quot;
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|device_floppy.bus_id
-comma
-l_string|&quot;03?0&quot;
-)paren
 suffix:semicolon
 id|register_sys_device
 c_func

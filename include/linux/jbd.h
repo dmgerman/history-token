@@ -11,6 +11,7 @@ mdefine_line|#define JFS_DEBUG
 DECL|macro|jfs_debug
 mdefine_line|#define jfs_debug jbd_debug
 macro_line|#else
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/journal-head.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -327,28 +328,32 @@ DECL|enum|jbd_state_bits
 r_enum
 id|jbd_state_bits
 (brace
-DECL|enumerator|BH_JWrite
-id|BH_JWrite
+DECL|enumerator|BH_JBD
+id|BH_JBD
+multiline_comment|/* Has an attached ext3 journal_head */
 op_assign
 id|BH_PrivateStart
 comma
-multiline_comment|/* 1 if being written to log (@@@ DEBUGGING) */
+DECL|enumerator|BH_JWrite
+id|BH_JWrite
+comma
+multiline_comment|/* Being written to log (@@@ DEBUGGING) */
 DECL|enumerator|BH_Freed
 id|BH_Freed
 comma
-multiline_comment|/* 1 if buffer has been freed (truncated) */
+multiline_comment|/* Has been freed (truncated) */
 DECL|enumerator|BH_Revoked
 id|BH_Revoked
 comma
-multiline_comment|/* 1 if buffer has been revoked from the log */
+multiline_comment|/* Has been revoked from the log */
 DECL|enumerator|BH_RevokeValid
 id|BH_RevokeValid
 comma
-multiline_comment|/* 1 if buffer revoked flag is valid */
+multiline_comment|/* Revoked flag is valid */
 DECL|enumerator|BH_JBDDirty
 id|BH_JBDDirty
 comma
-multiline_comment|/* 1 if buffer is dirty but journaled */
+multiline_comment|/* Is dirty but journaled */
 )brace
 suffix:semicolon
 id|BUFFER_FNS

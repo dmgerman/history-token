@@ -23,8 +23,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; *&n; */
 DECL|function|snd_gus_synth_free_voices
 r_static

@@ -1,20 +1,19 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 128 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evregion - ACPI Address_space (Op_region) handler dispatch&n; *              $Revision: 133 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evregion&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_install_default_address_space_handlers&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Installs the core subsystem address space handlers.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_address_spaces&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Installs the core subsystem address space handlers.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ev_install_default_address_space_handlers
-id|acpi_ev_install_default_address_space_handlers
+DECL|function|acpi_ev_init_address_spaces
+id|acpi_ev_init_address_spaces
 (paren
 r_void
 )paren
@@ -24,7 +23,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_install_default_address_space_handlers&quot;
+l_string|&quot;Ev_init_address_spaces&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * All address spaces (PCI Config, EC, SMBus) are scope dependent&n;&t; * and registration must occur for a specific device.  In the case&n;&t; * system memory and IO address spaces there is currently no device&n;&t; * associated with the address space.  For these we use the root.&n;&t; * We install the default PCI config space handler at the root so&n;&t; * that this space is immediately available even though the we have&n;&t; * not enumerated all the PCI Root Buses yet.  This is to conform&n;&t; * to the ACPI specification which states that the PCI config&n;&t; * space must be always available -- even though we are nowhere&n;&t; * near ready to find the PCI root buses at this point.&n;&t; *&n;&t; * NOTE: We ignore AE_ALREADY_EXISTS because this means that a handler&n;&t; * has already been installed (via Acpi_install_address_space_handler)&n;&t; */
@@ -411,13 +410,16 @@ comma
 id|u32
 id|bit_width
 comma
-id|acpi_integer
+r_void
 op_star
 id|value
 )paren
 (brace
 id|acpi_status
 id|status
+suffix:semicolon
+id|acpi_status
+id|status2
 suffix:semicolon
 id|acpi_adr_space_handler
 id|handler
@@ -565,10 +567,27 @@ id|region_context
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enter the interpreter */
+id|status2
+op_assign
 id|acpi_ex_enter_interpreter
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status2
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status2
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; *  Init routine may fail&n;&t;&t; */
 r_if
 c_cond
@@ -718,10 +737,27 @@ id|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We just returned from a non-default handler, we must re-enter the&n;&t;&t; * interpreter&n;&t;&t; */
+id|status2
+op_assign
 id|acpi_ex_enter_interpreter
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status2
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status2
+)paren
+suffix:semicolon
+)brace
 )brace
 id|return_ACPI_STATUS
 (paren
@@ -729,10 +765,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_disassociate_region_from_handler&n; *&n; * PARAMETERS:  Region_obj      - Region Object&n; *              Acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Break the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_detach_region&n; *&n; * PARAMETERS:  Region_obj      - Region Object&n; *              Acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Break the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
 r_void
-DECL|function|acpi_ev_disassociate_region_from_handler
-id|acpi_ev_disassociate_region_from_handler
+DECL|function|acpi_ev_detach_region
+id|acpi_ev_detach_region
 c_func
 (paren
 id|acpi_operand_object
@@ -772,7 +808,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_disassociate_region_from_handler&quot;
+l_string|&quot;Ev_detach_region&quot;
 )paren
 suffix:semicolon
 id|region_obj2
@@ -789,7 +825,7 @@ op_logical_neg
 id|region_obj2
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 id|region_context
@@ -888,6 +924,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t;&t;&t; *  Now stop region accesses by executing the _REG method&n;&t;&t;&t; */
+id|status
+op_assign
 id|acpi_ev_execute_reg_method
 (paren
 id|region_obj
@@ -895,6 +933,35 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;%s from region _REG, [%s]&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+comma
+id|acpi_ut_get_region_name
+(paren
+id|region_obj-&gt;region.space_id
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1014,10 +1081,10 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_associate_region_and_handler&n; *&n; * PARAMETERS:  Handler_obj     - Handler Object&n; *              Region_obj      - Region Object&n; *              Acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_attach_region&n; *&n; * PARAMETERS:  Handler_obj     - Handler Object&n; *              Region_obj      - Region Object&n; *              Acpi_ns_is_locked - Namespace Region Already Locked?&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create the association between the handler and the region&n; *              this is a two way association.&n; *&n; ******************************************************************************/
 id|acpi_status
-DECL|function|acpi_ev_associate_region_and_handler
-id|acpi_ev_associate_region_and_handler
+DECL|function|acpi_ev_attach_region
+id|acpi_ev_attach_region
 (paren
 id|acpi_operand_object
 op_star
@@ -1034,9 +1101,12 @@ id|acpi_ns_is_locked
 id|acpi_status
 id|status
 suffix:semicolon
+id|acpi_status
+id|status2
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_associate_region_and_handler&quot;
+l_string|&quot;Ev_attach_region&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -1078,11 +1148,28 @@ c_cond
 id|acpi_ns_is_locked
 )paren
 (brace
+id|status2
+op_assign
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status2
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status2
+)paren
+suffix:semicolon
+)brace
 )brace
 id|status
 op_assign
@@ -1099,14 +1186,28 @@ c_cond
 id|acpi_ns_is_locked
 )paren
 (brace
-(paren
-r_void
-)paren
+id|status2
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status2
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status2
+)paren
+suffix:semicolon
+)brace
 )brace
 id|return_ACPI_STATUS
 (paren
@@ -1340,7 +1441,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Now we have a region and it is for the handler&squot;s address&n;&t; *  space type.&n;&t; *&n;&t; *  First disconnect region for any previous handler (if any)&n;&t; */
-id|acpi_ev_disassociate_region_from_handler
+id|acpi_ev_detach_region
 (paren
 id|obj_desc
 comma
@@ -1350,7 +1451,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  Then connect the region to the new handler&n;&t; */
 id|status
 op_assign
-id|acpi_ev_associate_region_and_handler
+id|acpi_ev_attach_region
 (paren
 id|handler_obj
 comma

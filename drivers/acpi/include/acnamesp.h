@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 123 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 125 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
@@ -140,7 +140,7 @@ op_star
 id|child
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ns_delete_namespace_by_owner
 (paren
 id|u16
@@ -244,7 +244,7 @@ op_star
 id|node
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ns_delete_namespace_subtree
 (paren
 id|acpi_namespace_node
@@ -332,10 +332,48 @@ op_star
 id|pathname
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_ns_dump_one_device
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|u32
+id|level
+comma
+r_void
+op_star
+id|context
+comma
+r_void
+op_star
+op_star
+id|return_value
+)paren
+suffix:semicolon
 r_void
 id|acpi_ns_dump_root_devices
 (paren
 r_void
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ns_dump_one_object
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|u32
+id|level
+comma
+r_void
+op_star
+id|context
+comma
+r_void
+op_star
+op_star
+id|return_value
 )paren
 suffix:semicolon
 r_void
@@ -470,6 +508,21 @@ id|acpi_ns_opens_scope
 (paren
 id|acpi_object_type
 id|type
+)paren
+suffix:semicolon
+r_void
+id|acpi_ns_build_external_path
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+comma
+id|ACPI_SIZE
+id|size
+comma
+id|NATIVE_CHAR
+op_star
+id|name_buffer
 )paren
 suffix:semicolon
 id|NATIVE_CHAR
@@ -725,7 +778,7 @@ op_star
 id|info
 )paren
 suffix:semicolon
-id|acpi_status
+r_void
 id|acpi_ns_get_internal_name_length
 (paren
 id|acpi_namestring_info

@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -359,7 +359,6 @@ c_cond
 (paren
 id|fhc-&gt;num_fhc_ranges
 )paren
-(brace
 id|adjust_regs
 c_func
 (paren
@@ -372,7 +371,6 @@ comma
 id|fhc-&gt;num_fhc_ranges
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Apply probed central ranges to registers passed, if no ranges return. */
 DECL|function|apply_central_ranges
@@ -399,7 +397,6 @@ c_cond
 (paren
 id|central-&gt;num_central_ranges
 )paren
-(brace
 id|adjust_regs
 c_func
 (paren
@@ -412,7 +409,6 @@ comma
 id|central-&gt;num_central_ranges
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|central_alloc_bootmem
 r_void
@@ -765,12 +761,10 @@ id|FHC_JTAG_CTRL_MENAB
 op_ne
 l_int|0
 )paren
-(brace
 id|fhc-&gt;jtag_master
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_else
 id|fhc-&gt;jtag_master
 op_assign
@@ -868,10 +862,8 @@ id|node
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|node
 op_assign
 id|prom_searchsiblings
@@ -889,10 +881,8 @@ id|node
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|probe_clock_board
@@ -1130,12 +1120,10 @@ id|nregs
 op_eq
 l_int|2
 )paren
-(brace
 id|central-&gt;clkver
 op_assign
 l_int|0UL
 suffix:semicolon
-)brace
 r_else
 id|central-&gt;clkver
 op_assign
@@ -1243,12 +1231,10 @@ l_int|0x80
 op_ne
 l_int|0
 )paren
-(brace
 id|nslots
 op_assign
 l_int|4
 suffix:semicolon
-)brace
 r_else
 id|nslots
 op_assign
@@ -1407,12 +1393,10 @@ c_func
 id|fhc
 )paren
 )paren
-(brace
 id|tmp
 op_or_assign
 id|FHC_CONTROL_IXIST
 suffix:semicolon
-)brace
 multiline_comment|/* For all FHCs, clear the firmware synchronization&n;&t;&t; * line and both low power mode enables.&n;&t;&t; */
 id|tmp
 op_and_assign
@@ -2198,7 +2182,6 @@ c_cond
 (paren
 id|on
 )paren
-(brace
 id|tmp
 op_and_assign
 op_complement
@@ -2206,7 +2189,6 @@ op_complement
 id|CLOCK_CTRL_RLED
 )paren
 suffix:semicolon
-)brace
 r_else
 id|tmp
 op_or_assign
@@ -2291,7 +2273,6 @@ c_func
 id|fhc
 )paren
 )paren
-(brace
 id|fhc_ledblink
 c_func
 (paren
@@ -2300,7 +2281,6 @@ comma
 id|led_state
 )paren
 suffix:semicolon
-)brace
 id|led_state
 op_assign
 op_logical_neg

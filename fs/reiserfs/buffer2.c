@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; *  wait_buffer_until_released&n; *  reiserfs_bread&n; */
 multiline_comment|/* when we allocate a new block (get_new_buffer, get_empty_nodes) and&n;   get buffer for it, it is possible that it is held by someone else&n;   or even by this process. In this function we wait until all other&n;   holders release buffer. To make sure, that current process does not&n;   hold we did free all buffers in tree balance structure&n;   (get_empty_nodes and get_nodes_for_preserving) or in path structure&n;   only (get_new_buffer) just before calling this */
 DECL|function|wait_buffer_until_released
@@ -80,11 +81,9 @@ l_char|&squot;!&squot;
 )paren
 suffix:semicolon
 )brace
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|yield

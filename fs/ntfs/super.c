@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;&t;/* For bdev_hardsect_size(). */
 macro_line|#include &lt;linux/backing-dev.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 multiline_comment|/* Number of mounted file systems which have compression enabled. */
@@ -7706,8 +7707,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -720,7 +720,7 @@ comma
 suffix:semicolon
 DECL|function|init_8259A_devicefs
 r_static
-r_void
+r_int
 id|__init
 id|init_8259A_devicefs
 c_func
@@ -728,6 +728,7 @@ c_func
 r_void
 )paren
 (brace
+r_return
 id|register_sys_device
 c_func
 (paren
@@ -1271,7 +1272,7 @@ c_func
 (paren
 id|THERMAL_APIC_VECTOR
 comma
-id|smp_thermal_interrupt
+id|thermal_interrupt
 )paren
 suffix:semicolon
 macro_line|#endif

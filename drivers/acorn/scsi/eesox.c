@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;fas216.h&quot;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/* Configuration */
 DECL|macro|EESOX_XTALFREQ
@@ -413,65 +414,26 @@ l_int|512
 (brace
 r_int
 id|bufs
-op_assign
-id|SCp-&gt;buffers_residual
-suffix:semicolon
-r_int
+comma
 id|pci_dir
 comma
 id|dma_dir
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|bufs
-)paren
-id|memcpy
+op_assign
+id|copy_SCp_to_sg
 c_func
 (paren
+op_amp
 id|info-&gt;sg
-op_plus
-l_int|1
+(braket
+l_int|0
+)braket
 comma
-id|SCp-&gt;buffer
-op_plus
-l_int|1
+id|SCp
 comma
-r_sizeof
-(paren
-r_struct
-id|scatterlist
+id|NR_SG
 )paren
-op_star
-id|bufs
-)paren
-suffix:semicolon
-id|info-&gt;sg
-(braket
-l_int|0
-)braket
-dot
-id|address
-op_assign
-id|SCp-&gt;ptr
-suffix:semicolon
-id|info-&gt;sg
-(braket
-l_int|0
-)braket
-dot
-id|page
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;sg
-(braket
-l_int|0
-)braket
-dot
-id|length
-op_assign
-id|SCp-&gt;this_residual
 suffix:semicolon
 r_if
 c_cond
@@ -2325,7 +2287,5 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

@@ -1,18 +1,15 @@
 multiline_comment|/*&n; * Belkin USB Serial Adapter Driver&n; *&n; *  Copyright (C) 2000&t;&t;William Greathouse (wgreathouse@smva.com)&n; *  Copyright (C) 2000-2001 &t;Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *  This program is largely derived from work by the linux-usb group&n; *  and associated source files.  Please see the usb/serial files for&n; *  individual credits and copyrights.&n; *  &n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * TODO:&n; * -- Add true modem contol line query capability.  Currently we track the&n; *    states reported by the interrupt and the states we request.&n; * -- Add error reporting back to application for UART error conditions.&n; *    Just point me at how to implement this and I&squot;ll do it. I&squot;ve put the&n; *    framework in, but haven&squot;t analyzed the &quot;tty_flip&quot; interface yet.&n; * -- Add support for flush commands&n; * -- Add everything that is missing :)&n; *&n; * 27-Nov-2001 gkh&n; * &t;compressed all the differnent device entries into 1.&n; *&n; * 30-May-2001 gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * 08-Apr-2001 gb&n; *&t;- Identify version on module load.&n; *&n; * 12-Mar-2001 gkh&n; *&t;- Added support for the GoHubs GO-COM232 device which is the same as the&n; *&t;  Peracom device.&n; *&n; * 06-Nov-2000 gkh&n; *&t;- Added support for the old Belkin and Peracom devices.&n; *&t;- Made the port able to be opened multiple times.&n; *&t;- Added some defaults incase the line settings are things these devices&n; *&t;  can&squot;t support. &n; *&n; * 18-Oct-2000 William Greathouse&n; *    Released into the wild (linux-usb-devel)&n; *&n; * 17-Oct-2000 William Greathouse&n; *    Add code to recognize firmware version and set hardware flow control&n; *    appropriately.  Belkin states that firmware prior to 3.05 does not&n; *    operate correctly in hardware handshake mode.  I have verified this&n; *    on firmware 2.05 -- for both RTS and DTR input flow control, the control&n; *    line is not reset.  The test performed by the Belkin Win* driver is&n; *    to enable hardware flow control for firmware 2.06 or greater and&n; *    for 1.00 or prior.  I am only enabling for 2.06 or greater.&n; *&n; * 12-Oct-2000 William Greathouse&n; *    First cut at supporting Belkin USB Serial Adapter F5U103&n; *    I did not have a copy of the original work to support this&n; *    adapter, so pardon any stupid mistakes.  All of the information&n; *    I am using to write this driver was acquired by using a modified&n; *    UsbSnoop on Windows2000 and from examining the other USB drivers.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug

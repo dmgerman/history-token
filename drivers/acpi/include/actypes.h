@@ -1,11 +1,25 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 227 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 237 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
 mdefine_line|#define __ACTYPES_H__
 multiline_comment|/*! [Begin] no source code translation (keep the typedefs) */
-multiline_comment|/*&n; * Data types - Fixed across all compilation models&n; *&n; * BOOLEAN      Logical Boolean.&n; *              1 byte value containing a 0 for FALSE or a 1 for TRUE.&n; *              Other values are undefined.&n; *&n; * INT8         8-bit  (1 byte) signed value&n; * UINT8        8-bit  (1 byte) unsigned value&n; * INT16        16-bit (2 byte) signed value&n; * UINT16       16-bit (2 byte) unsigned value&n; * INT32        32-bit (4 byte) signed value&n; * UINT32       32-bit (4 byte) unsigned value&n; * INT64        64-bit (8 byte) signed value&n; * UINT64       64-bit (8 byte) unsigned value&n; * NATIVE_INT   32-bit on IA-32, 64-bit on IA-64 signed value&n; * NATIVE_UINT  32-bit on IA-32, 64-bit on IA-64 unsigned value&n; */
-macro_line|#ifdef _IA64
+multiline_comment|/*&n; * Data type ranges&n; */
+DECL|macro|ACPI_UINT8_MAX
+mdefine_line|#define ACPI_UINT8_MAX                  (UINT8)  0xFF
+DECL|macro|ACPI_UINT16_MAX
+mdefine_line|#define ACPI_UINT16_MAX                 (UINT16) 0xFFFF
+DECL|macro|ACPI_UINT32_MAX
+mdefine_line|#define ACPI_UINT32_MAX                 (UINT32) 0xFFFFFFFF
+DECL|macro|ACPI_UINT64_MAX
+mdefine_line|#define ACPI_UINT64_MAX                 (UINT64) 0xFFFFFFFFFFFFFFFF
+DECL|macro|ACPI_ASCII_MAX
+mdefine_line|#define ACPI_ASCII_MAX                  0x7F
+multiline_comment|/*&n; * Data types - Fixed across all compilation models&n; *&n; * BOOLEAN      Logical Boolean.&n; * INT8         8-bit  (1 byte) signed value&n; * UINT8        8-bit  (1 byte) unsigned value&n; * INT16        16-bit (2 byte) signed value&n; * UINT16       16-bit (2 byte) unsigned value&n; * INT32        32-bit (4 byte) signed value&n; * UINT32       32-bit (4 byte) unsigned value&n; * INT64        64-bit (8 byte) signed value&n; * UINT64       64-bit (8 byte) unsigned value&n; * NATIVE_INT   32-bit on IA-32, 64-bit on IA-64 signed value&n; * NATIVE_UINT  32-bit on IA-32, 64-bit on IA-64 unsigned value&n; */
+macro_line|#ifndef ACPI_MACHINE_WIDTH
+macro_line|#error ACPI_MACHINE_WIDTH not defined
+macro_line|#endif
+macro_line|#if ACPI_MACHINE_WIDTH == 64
 multiline_comment|/*&n; * 64-bit type definitions&n; */
 DECL|typedef|UINT8
 r_typedef
@@ -46,15 +60,25 @@ r_typedef
 id|COMPILER_DEPENDENT_UINT64
 id|UINT64
 suffix:semicolon
+DECL|typedef|NATIVE_INT
+r_typedef
+id|INT64
+id|NATIVE_INT
+suffix:semicolon
 DECL|typedef|NATIVE_UINT
 r_typedef
 id|UINT64
 id|NATIVE_UINT
 suffix:semicolon
-DECL|typedef|NATIVE_INT
+DECL|typedef|NATIVE_UINT_MAX32
+r_typedef
+id|UINT32
+id|NATIVE_UINT_MAX32
+suffix:semicolon
+DECL|typedef|NATIVE_UINT_MIN32
 r_typedef
 id|UINT64
-id|NATIVE_INT
+id|NATIVE_UINT_MIN32
 suffix:semicolon
 DECL|typedef|ACPI_TBLPTR
 r_typedef
@@ -81,8 +105,10 @@ mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000008      /* No hardw
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE                          /* Native 64-bit integer support */
 DECL|macro|ACPI_MAX_PTR
-mdefine_line|#define ACPI_MAX_PTR                    0xFFFFFFFFFFFFFFFF
-macro_line|#elif _IA16
+mdefine_line|#define ACPI_MAX_PTR                    ACPI_UINT64_MAX
+DECL|macro|ACPI_SIZE_MAX
+mdefine_line|#define ACPI_SIZE_MAX                   ACPI_UINT64_MAX
+macro_line|#elif ACPI_MACHINE_WIDTH == 16
 multiline_comment|/*&n; * 16-bit type definitions&n; */
 DECL|typedef|UINT8
 r_typedef
@@ -143,6 +169,16 @@ r_typedef
 id|INT16
 id|NATIVE_INT
 suffix:semicolon
+DECL|typedef|NATIVE_UINT_MAX32
+r_typedef
+id|UINT16
+id|NATIVE_UINT_MAX32
+suffix:semicolon
+DECL|typedef|NATIVE_UINT_MIN32
+r_typedef
+id|UINT32
+id|NATIVE_UINT_MIN32
+suffix:semicolon
 DECL|typedef|ACPI_TBLPTR
 r_typedef
 id|UINT32
@@ -161,7 +197,7 @@ id|ACPI_PHYSICAL_ADDRESS
 suffix:semicolon
 DECL|typedef|ACPI_SIZE
 r_typedef
-id|UINT32
+id|UINT16
 id|ACPI_SIZE
 suffix:semicolon
 DECL|macro|ALIGNED_ADDRESS_BOUNDARY
@@ -171,11 +207,13 @@ mdefine_line|#define _HW_ALIGNMENT_SUPPORT
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE                          /* No 64-bit integers, ok to use native divide */
 DECL|macro|ACPI_MAX_PTR
-mdefine_line|#define ACPI_MAX_PTR                    0xFFFF
+mdefine_line|#define ACPI_MAX_PTR                    ACPI_UINT16_MAX
+DECL|macro|ACPI_SIZE_MAX
+mdefine_line|#define ACPI_SIZE_MAX                   ACPI_UINT16_MAX
 multiline_comment|/*&n; * (16-bit only) internal integers must be 32-bits, so&n; * 64-bit integers cannot be supported&n; */
 DECL|macro|ACPI_NO_INTEGER64_SUPPORT
 mdefine_line|#define ACPI_NO_INTEGER64_SUPPORT
-macro_line|#else
+macro_line|#elif ACPI_MACHINE_WIDTH == 32
 multiline_comment|/*&n; * 32-bit type definitions (default)&n; */
 DECL|typedef|UINT8
 r_typedef
@@ -216,15 +254,25 @@ r_typedef
 id|COMPILER_DEPENDENT_UINT64
 id|UINT64
 suffix:semicolon
+DECL|typedef|NATIVE_INT
+r_typedef
+id|INT32
+id|NATIVE_INT
+suffix:semicolon
 DECL|typedef|NATIVE_UINT
 r_typedef
 id|UINT32
 id|NATIVE_UINT
 suffix:semicolon
-DECL|typedef|NATIVE_INT
+DECL|typedef|NATIVE_UINT_MAX32
 r_typedef
-id|INT32
-id|NATIVE_INT
+id|UINT32
+id|NATIVE_UINT_MAX32
+suffix:semicolon
+DECL|typedef|NATIVE_UINT_MIN32
+r_typedef
+id|UINT32
+id|NATIVE_UINT_MIN32
 suffix:semicolon
 DECL|typedef|ACPI_TBLPTR
 r_typedef
@@ -251,7 +299,11 @@ mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000004
 DECL|macro|_HW_ALIGNMENT_SUPPORT
 mdefine_line|#define _HW_ALIGNMENT_SUPPORT
 DECL|macro|ACPI_MAX_PTR
-mdefine_line|#define ACPI_MAX_PTR                    0xFFFFFFFF
+mdefine_line|#define ACPI_MAX_PTR                    ACPI_UINT32_MAX
+DECL|macro|ACPI_SIZE_MAX
+mdefine_line|#define ACPI_SIZE_MAX                   ACPI_UINT32_MAX
+macro_line|#else
+macro_line|#error unknown ACPI_MACHINE_WIDTH
 macro_line|#endif
 multiline_comment|/*&n; * Miscellaneous common types&n; */
 DECL|typedef|UINT32_BIT
@@ -269,17 +321,6 @@ r_typedef
 r_char
 id|NATIVE_CHAR
 suffix:semicolon
-multiline_comment|/*&n; * Data type ranges&n; */
-DECL|macro|ACPI_UINT8_MAX
-mdefine_line|#define ACPI_UINT8_MAX                  (UINT8)  0xFF
-DECL|macro|ACPI_UINT16_MAX
-mdefine_line|#define ACPI_UINT16_MAX                 (UINT16) 0xFFFF
-DECL|macro|ACPI_UINT32_MAX
-mdefine_line|#define ACPI_UINT32_MAX                 (UINT32) 0xFFFFFFFF
-DECL|macro|ACPI_UINT64_MAX
-mdefine_line|#define ACPI_UINT64_MAX                 (UINT64) 0xFFFFFFFFFFFFFFFF
-DECL|macro|ACPI_ASCII_MAX
-mdefine_line|#define ACPI_ASCII_MAX                  0x7F
 macro_line|#ifdef DEFINE_ALTERNATE_TYPES
 multiline_comment|/*&n; * Types used only in translated source, defined here to enable&n; * cross-platform compilation only.&n; */
 DECL|typedef|s32
@@ -310,10 +351,10 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*! [End] no source code translation !*/
 multiline_comment|/*&n; * Pointer overlays to avoid lots of typecasting for&n; * code that accepts both physical and logical pointers.&n; */
-DECL|union|acpi_pointers
+DECL|union|acpi_ptrs
 r_typedef
 r_union
-id|acpi_pointers
+id|acpi_ptrs
 (brace
 DECL|member|physical
 id|ACPI_PHYSICAL_ADDRESS
@@ -342,7 +383,8 @@ id|u32
 id|pointer_type
 suffix:semicolon
 DECL|member|pointer
-id|ACPI_POINTERS
+r_union
+id|acpi_ptrs
 id|pointer
 suffix:semicolon
 DECL|typedef|ACPI_POINTER
@@ -428,6 +470,21 @@ DECL|typedef|uint64_overlay
 )brace
 id|uint64_overlay
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|lo
+id|u32
+id|lo
+suffix:semicolon
+DECL|member|hi
+id|u32
+id|hi
+suffix:semicolon
+DECL|typedef|UINT32_STRUCT
+)brace
+id|UINT32_STRUCT
+suffix:semicolon
 multiline_comment|/*&n; * Acpi integer width. In ACPI version 1, integers are&n; * 32 bits.  In ACPI version 2, integers are 64 bits.&n; * Note that this pertains to the ACPI integer type only, not&n; * other integers used in the implementation of the ACPI CA&n; * subsystem.&n; */
 macro_line|#ifdef ACPI_NO_INTEGER64_SUPPORT
 multiline_comment|/* 32-bit integers only, no 64-bit support */
@@ -465,14 +522,14 @@ DECL|macro|ACPI_MAX_BCD_DIGITS
 mdefine_line|#define ACPI_MAX_BCD_DIGITS             16
 DECL|macro|ACPI_MAX_DECIMAL_DIGITS
 mdefine_line|#define ACPI_MAX_DECIMAL_DIGITS         19
-macro_line|#ifdef _IA64
+macro_line|#if ACPI_MACHINE_WIDTH == 64
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE          /* Use compiler native 64-bit divide */
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Constants with special meanings&n; */
 DECL|macro|ACPI_ROOT_OBJECT
-mdefine_line|#define ACPI_ROOT_OBJECT                (acpi_handle) ACPI_PTR_ADD (char, NULL, ACPI_UINT32_MAX)
+mdefine_line|#define ACPI_ROOT_OBJECT                (acpi_handle) ACPI_PTR_ADD (char, NULL, ACPI_MAX_PTR)
 multiline_comment|/*&n; * Initialization sequence&n; */
 DECL|macro|ACPI_FULL_INITIALIZATION
 mdefine_line|#define ACPI_FULL_INITIALIZATION        0x00
@@ -815,6 +872,51 @@ DECL|macro|ACPI_ADR_SPACE_PCI_BAR_TARGET
 mdefine_line|#define ACPI_ADR_SPACE_PCI_BAR_TARGET   (ACPI_ADR_SPACE_TYPE) 6
 DECL|macro|ACPI_ADR_SPACE_DATA_TABLE
 mdefine_line|#define ACPI_ADR_SPACE_DATA_TABLE       (ACPI_ADR_SPACE_TYPE) 7
+multiline_comment|/*&n; * Bit_register IDs&n; * These are bitfields defined within the full ACPI registers&n; */
+DECL|macro|ACPI_BITREG_TIMER_STATUS
+mdefine_line|#define ACPI_BITREG_TIMER_STATUS                0x00
+DECL|macro|ACPI_BITREG_BUS_MASTER_STATUS
+mdefine_line|#define ACPI_BITREG_BUS_MASTER_STATUS           0x01
+DECL|macro|ACPI_BITREG_GLOBAL_LOCK_STATUS
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_STATUS          0x02
+DECL|macro|ACPI_BITREG_POWER_BUTTON_STATUS
+mdefine_line|#define ACPI_BITREG_POWER_BUTTON_STATUS         0x03
+DECL|macro|ACPI_BITREG_SLEEP_BUTTON_STATUS
+mdefine_line|#define ACPI_BITREG_SLEEP_BUTTON_STATUS         0x04
+DECL|macro|ACPI_BITREG_RT_CLOCK_STATUS
+mdefine_line|#define ACPI_BITREG_RT_CLOCK_STATUS             0x05
+DECL|macro|ACPI_BITREG_WAKE_STATUS
+mdefine_line|#define ACPI_BITREG_WAKE_STATUS                 0x06
+DECL|macro|ACPI_BITREG_TIMER_ENABLE
+mdefine_line|#define ACPI_BITREG_TIMER_ENABLE                0x07
+DECL|macro|ACPI_BITREG_GLOBAL_LOCK_ENABLE
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_ENABLE          0x08
+DECL|macro|ACPI_BITREG_POWER_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITREG_POWER_BUTTON_ENABLE         0x09
+DECL|macro|ACPI_BITREG_SLEEP_BUTTON_ENABLE
+mdefine_line|#define ACPI_BITREG_SLEEP_BUTTON_ENABLE         0x0A
+DECL|macro|ACPI_BITREG_RT_CLOCK_ENABLE
+mdefine_line|#define ACPI_BITREG_RT_CLOCK_ENABLE             0x0B
+DECL|macro|ACPI_BITREG_WAKE_ENABLE
+mdefine_line|#define ACPI_BITREG_WAKE_ENABLE                 0x0C
+DECL|macro|ACPI_BITREG_SCI_ENABLE
+mdefine_line|#define ACPI_BITREG_SCI_ENABLE                  0x0D
+DECL|macro|ACPI_BITREG_BUS_MASTER_RLD
+mdefine_line|#define ACPI_BITREG_BUS_MASTER_RLD              0x0E
+DECL|macro|ACPI_BITREG_GLOBAL_LOCK_RELEASE
+mdefine_line|#define ACPI_BITREG_GLOBAL_LOCK_RELEASE         0x0F
+DECL|macro|ACPI_BITREG_SLEEP_TYPE_A
+mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_A                0x10
+DECL|macro|ACPI_BITREG_SLEEP_TYPE_B
+mdefine_line|#define ACPI_BITREG_SLEEP_TYPE_B                0x11
+DECL|macro|ACPI_BITREG_SLEEP_ENABLE
+mdefine_line|#define ACPI_BITREG_SLEEP_ENABLE                0x12
+DECL|macro|ACPI_BITREG_ARB_DISABLE
+mdefine_line|#define ACPI_BITREG_ARB_DISABLE                 0x13
+DECL|macro|ACPI_BITREG_MAX
+mdefine_line|#define ACPI_BITREG_MAX                         0x13
+DECL|macro|ACPI_NUM_BITREG
+mdefine_line|#define ACPI_NUM_BITREG                         ACPI_BITREG_MAX + 1
 multiline_comment|/*&n; * External ACPI object definition&n; */
 DECL|union|acpi_obj
 r_typedef
@@ -1156,6 +1258,23 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_typedef
+DECL|typedef|ACPI_INIT_HANDLER
+id|acpi_status
+(paren
+op_star
+id|ACPI_INIT_HANDLER
+)paren
+(paren
+id|acpi_handle
+id|object
+comma
+id|u32
+id|function
+)paren
+suffix:semicolon
+DECL|macro|ACPI_INIT_DEVICE_INI
+mdefine_line|#define ACPI_INIT_DEVICE_INI        1
 multiline_comment|/* Address Spaces (Operation Regions */
 r_typedef
 DECL|typedef|acpi_adr_space_handler
@@ -1188,7 +1307,7 @@ id|region_context
 )paren
 suffix:semicolon
 DECL|macro|ACPI_DEFAULT_HANDLER
-mdefine_line|#define ACPI_DEFAULT_HANDLER        ((acpi_adr_space_handler) NULL)
+mdefine_line|#define ACPI_DEFAULT_HANDLER        NULL
 r_typedef
 DECL|typedef|acpi_adr_space_setup
 id|acpi_status
@@ -1353,7 +1472,7 @@ op_star
 id|mapped_logical_address
 suffix:semicolon
 DECL|member|mapped_length
-id|u32
+id|ACPI_SIZE
 id|mapped_length
 suffix:semicolon
 DECL|typedef|acpi_mem_space_context

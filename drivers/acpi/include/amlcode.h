@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 68 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -409,6 +409,8 @@ DECL|macro|AML_MATH
 mdefine_line|#define AML_MATH                    0x0002
 DECL|macro|AML_LOGICAL
 mdefine_line|#define AML_LOGICAL                 0x0001
+DECL|macro|AML_CONSTANT
+mdefine_line|#define AML_CONSTANT                0x1000
 multiline_comment|/* Convenient flag groupings */
 DECL|macro|AML_FLAGS_EXEC_1A_0T_0R
 mdefine_line|#define AML_FLAGS_EXEC_1A_0T_0R     AML_HAS_ARGS                                   /* Monadic1  */

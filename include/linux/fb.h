@@ -157,6 +157,10 @@ DECL|macro|FB_ACCEL_IGS_CYBER5000
 mdefine_line|#define FB_ACCEL_IGS_CYBER5000&t;35&t;/* CyberPro 5000&t;&t;*/
 DECL|macro|FB_ACCEL_SIS_GLAMOUR
 mdefine_line|#define FB_ACCEL_SIS_GLAMOUR    36&t;/* SiS 300/630/540              */
+DECL|macro|FB_ACCEL_3DLABS_PERMEDIA3
+mdefine_line|#define FB_ACCEL_3DLABS_PERMEDIA3 37&t;/* 3Dlabs Permedia 3&t;&t;*/
+DECL|macro|FB_ACCEL_ATI_RADEON
+mdefine_line|#define FB_ACCEL_ATI_RADEON&t;38&t;/* ATI Radeon family&t;&t;*/
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
@@ -331,6 +335,10 @@ DECL|macro|FB_VMODE_SMOOTH_XPAN
 mdefine_line|#define FB_VMODE_SMOOTH_XPAN&t;512&t;/* smooth xpan possible (internally used) */
 DECL|macro|FB_VMODE_CONUPDATE
 mdefine_line|#define FB_VMODE_CONUPDATE&t;512&t;/* don&squot;t update x/yoffset&t;*/
+DECL|macro|PICOS2KHZ
+mdefine_line|#define PICOS2KHZ(a) (1000000000UL/(a))
+DECL|macro|KHZ2PICOS
+mdefine_line|#define KHZ2PICOS(a) (1000000000UL/(a))
 DECL|struct|fb_var_screeninfo
 r_struct
 id|fb_var_screeninfo

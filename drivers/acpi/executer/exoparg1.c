@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 135 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg1 - AML execution - opcodes with 1 argument&n; *              $Revision: 137 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -342,7 +342,7 @@ id|walk_state-&gt;opcode
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Create a return object of type Integer for most opcodes */
+multiline_comment|/* Examine the AML opcode */
 r_switch
 c_cond
 (paren
@@ -367,6 +367,7 @@ suffix:colon
 r_case
 id|AML_COND_REF_OF_OP
 suffix:colon
+multiline_comment|/* Create a return object of type Integer for these opcodes */
 id|return_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -389,10 +390,6 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* Examine the AML opcode */
 r_switch
 c_cond
 (paren
@@ -428,7 +425,7 @@ l_int|0
 op_member_access_from_pointer
 id|integer.value
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Acpi specification describes Integer type as a little&n;&t;&t; * endian unsigned value, so this boundary condition is valid.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Acpi specification describes Integer type as a little&n;&t;&t;&t; * endian unsigned value, so this boundary condition is valid.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -470,7 +467,7 @@ l_int|0
 op_member_access_from_pointer
 id|integer.value
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The Acpi specification describes Integer type as a little&n;&t;&t; * endian unsigned value, so this boundary condition is valid.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The Acpi specification describes Integer type as a little&n;&t;&t;&t; * endian unsigned value, so this boundary condition is valid.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -517,7 +514,7 @@ r_case
 id|AML_FROM_BCD_OP
 suffix:colon
 multiline_comment|/* From_bcd (BCDValue, Result) */
-multiline_comment|/*&n;&t;&t; * The 64-bit ACPI integer can hold 16 4-bit BCD integers&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The 64-bit ACPI integer can hold 16 4-bit BCD integers&n;&t;&t;&t; */
 id|return_desc-&gt;integer.value
 op_assign
 l_int|0
@@ -734,6 +731,9 @@ id|j
 op_increment
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_short_divide
 (paren
 op_amp
@@ -781,7 +781,7 @@ r_case
 id|AML_COND_REF_OF_OP
 suffix:colon
 multiline_comment|/* Cond_ref_of (Source_object, Result) */
-multiline_comment|/*&n;&t;&t; * This op is a little strange because the internal return value is&n;&t;&t; * different than the return value stored in the result descriptor&n;&t;&t; * (There are really two return values)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This op is a little strange because the internal return value is&n;&t;&t;&t; * different than the return value stored in the result descriptor&n;&t;&t;&t; * (There are really two return values)&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -797,12 +797,12 @@ op_eq
 id|acpi_gbl_root_node
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * This means that the object does not exist in the namespace,&n;&t;&t;&t; * return FALSE&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * This means that the object does not exist in the namespace,&n;&t;&t;&t;&t; * return FALSE&n;&t;&t;&t;&t; */
 id|return_desc-&gt;integer.value
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Must delete the result descriptor since there is no reference&n;&t;&t;&t; * being returned&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Must delete the result descriptor since there is no reference&n;&t;&t;&t;&t; * being returned&n;&t;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|operand
@@ -865,6 +865,14 @@ id|ACPI_INTEGER_MAX
 suffix:semicolon
 r_goto
 id|cleanup
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No other opcodes get here */
+r_break
+suffix:semicolon
+)brace
+r_break
 suffix:semicolon
 r_case
 id|AML_STORE_OP
@@ -1255,7 +1263,7 @@ l_int|0
 )braket
 )paren
 op_eq
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 (brace
 multiline_comment|/* Internal reference object - prevent deletion */
@@ -1537,6 +1545,13 @@ id|type
 op_assign
 id|ACPI_TYPE_FIELD_UNIT
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No change to Type required */
+r_break
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Allocate a descriptor to hold the type. */
@@ -1797,6 +1812,8 @@ r_case
 id|AML_ARG_OP
 suffix:colon
 multiline_comment|/* Set Operand[0] to the value of the local/arg */
+id|status
+op_assign
 id|acpi_ds_method_data_get_value
 (paren
 id|operand
@@ -1819,6 +1836,19 @@ op_amp
 id|temp_desc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Delete our reference to the input object and&n;&t;&t;&t;&t;&t; * point to the object just retrieved&n;&t;&t;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
@@ -1864,13 +1894,13 @@ id|walk_state-&gt;scope_info-&gt;scope.node
 comma
 id|ACPI_NS_SEARCH_PARENT
 comma
+id|ACPI_CAST_INDIRECT_PTR
 (paren
 id|acpi_namespace_node
-op_star
-op_star
-)paren
+comma
 op_amp
 id|return_desc
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1890,13 +1920,13 @@ id|status
 op_assign
 id|acpi_ex_resolve_node_to_value
 (paren
+id|ACPI_CAST_INDIRECT_PTR
 (paren
 id|acpi_namespace_node
-op_star
-op_star
-)paren
+comma
 op_amp
 id|return_desc
+)paren
 comma
 id|walk_state
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 43 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -94,9 +94,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Walk_namespace failed! %x&bslash;n&quot;
+l_string|&quot;Walk_namespace failed! %s&bslash;n&quot;
 comma
+id|acpi_format_exception
+(paren
 id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -106,7 +109,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;&bslash;n Initialized %d/%d Regions %d/%d Fields %d/%d Buffers %d/%d Packages (%d nodes)&bslash;n&quot;
+l_string|&quot;&bslash;nInitialized %hd/%hd Regions %hd/%hd Fields %hd/%hd Buffers %hd/%hd Packages (%hd nodes)&bslash;n&quot;
 comma
 id|info.op_region_init
 comma
@@ -133,7 +136,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;%d Control Methods found&bslash;n&quot;
+l_string|&quot;%hd Control Methods found&bslash;n&quot;
 comma
 id|info.method_count
 )paren
@@ -144,7 +147,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;%d Op Regions found&bslash;n&quot;
+l_string|&quot;%hd Op Regions found&bslash;n&quot;
 comma
 id|info.op_region_count
 )paren
@@ -232,9 +235,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Walk_namespace failed! %x&bslash;n&quot;
+l_string|&quot;Walk_namespace failed! %s&bslash;n&quot;
 comma
+id|acpi_format_exception
+(paren
 id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -244,7 +250,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;&bslash;n%d Devices found containing: %d _STA, %d _INI methods&bslash;n&quot;
+l_string|&quot;&bslash;n%hd Devices found containing: %hd _STA, %hd _INI methods&bslash;n&quot;
 comma
 id|info.device_count
 comma
@@ -499,6 +505,11 @@ id|obj_desc
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* No other types can get here */
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -525,12 +536,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not execute arguments for [%4.4s] (%s), %s&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -805,25 +811,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|AE_NOT_FOUND
-op_eq
-id|status
-)paren
-(brace
-multiline_comment|/* No _INI means device requires no initialization */
-id|status
-op_assign
-id|AE_OK
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
 id|ACPI_FAILURE
 (paren
 id|status
 )paren
+)paren
+(brace
+multiline_comment|/* No _INI (AE_NOT_FOUND) means device requires no initialization */
+r_if
+c_cond
+(paren
+id|status
+op_ne
+id|AE_NOT_FOUND
 )paren
 (brace
 multiline_comment|/* Ignore error and move on to next device */
@@ -860,6 +860,11 @@ id|scope_name
 suffix:semicolon
 macro_line|#endif
 )brace
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
 r_else
 (brace
 multiline_comment|/* Count of successful INIs */
@@ -867,9 +872,26 @@ id|info-&gt;num_INI
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_init_handler
+)paren
+(brace
+multiline_comment|/* External initialization handler is present, call it */
+id|status
+op_assign
+id|acpi_gbl_init_handler
+(paren
+id|obj_handle
+comma
+id|ACPI_INIT_DEVICE_INI
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

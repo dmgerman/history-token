@@ -332,6 +332,8 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
+DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 macro_line|#endif
 macro_line|#endif
 eof

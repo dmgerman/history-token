@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 86 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acenv.h - Generation environment specific items&n; *       $Revision: 94 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACENV_H__
 DECL|macro|__ACENV_H__
@@ -35,14 +35,13 @@ DECL|macro|ACPI_DEBUG
 mdefine_line|#define ACPI_DEBUG
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
-DECL|macro|ENABLE_DEBUGGER
-mdefine_line|#define ENABLE_DEBUGGER
+multiline_comment|/* #define ENABLE_DEBUGGER */
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
 macro_line|#endif
 multiline_comment|/*&n; * Memory allocation tracking.  Used only if&n; * 1) This is the debug version&n; * 2) This is NOT a 16-bit version of the code (not enough real-mode memory)&n; */
 macro_line|#ifdef ACPI_DEBUG
-macro_line|#ifndef _IA16
+macro_line|#if ACPI_MACHINE_WIDTH != 16
 DECL|macro|ACPI_DBG_TRACK_ALLOCATIONS
 mdefine_line|#define ACPI_DBG_TRACK_ALLOCATIONS
 macro_line|#endif
@@ -53,12 +52,12 @@ macro_line|#if defined(_LINUX)
 macro_line|#include &quot;aclinux.h&quot;
 macro_line|#elif defined(_AED_EFI)
 macro_line|#include &quot;acefi.h&quot;
-macro_line|#elif defined(MSDOS)
-macro_line|#include &quot;acdos16.h&quot;
 macro_line|#elif defined(WIN32)
 macro_line|#include &quot;acwin.h&quot;
 macro_line|#elif defined(WIN64)
 macro_line|#include &quot;acwin64.h&quot;
+macro_line|#elif defined(MSDOS)        /* Must appear after WIN32 and WIN64 check */
+macro_line|#include &quot;acdos16.h&quot;
 macro_line|#elif defined(__FreeBSD__)
 macro_line|#include &quot;acfreebsd.h&quot;
 macro_line|#elif defined(MODESTO)
@@ -69,6 +68,10 @@ macro_line|#else
 multiline_comment|/* All other environments */
 DECL|macro|ACPI_USE_STANDARD_HEADERS
 mdefine_line|#define ACPI_USE_STANDARD_HEADERS
+DECL|macro|COMPILER_DEPENDENT_INT64
+mdefine_line|#define COMPILER_DEPENDENT_INT64   long long
+DECL|macro|COMPILER_DEPENDENT_UINT64
+mdefine_line|#define COMPILER_DEPENDENT_UINT64  unsigned long long
 multiline_comment|/* Name of host operating system (returned by the _OS_ namespace object) */
 DECL|macro|ACPI_OS_NAME
 mdefine_line|#define ACPI_OS_NAME         &quot;Intel ACPI/CA Core Subsystem&quot;
@@ -91,33 +94,39 @@ multiline_comment|/*&n; * We will be linking to the standard Clib functions&n; *
 DECL|macro|ACPI_STRSTR
 mdefine_line|#define ACPI_STRSTR(s1,s2)      strstr((s1), (s2))
 DECL|macro|ACPI_STRUPR
-mdefine_line|#define ACPI_STRUPR(s)          acpi_ut_strupr ((s))
+mdefine_line|#define ACPI_STRUPR(s)          (void) acpi_ut_strupr ((s))
 DECL|macro|ACPI_STRLEN
-mdefine_line|#define ACPI_STRLEN(s)          (u32) strlen((s))
+mdefine_line|#define ACPI_STRLEN(s)          (ACPI_SIZE) strlen((s))
 DECL|macro|ACPI_STRCPY
-mdefine_line|#define ACPI_STRCPY(d,s)        strcpy((d), (s))
+mdefine_line|#define ACPI_STRCPY(d,s)        (void) strcpy((d), (s))
 DECL|macro|ACPI_STRNCPY
-mdefine_line|#define ACPI_STRNCPY(d,s,n)     strncpy((d), (s), (NATIVE_INT)(n))
+mdefine_line|#define ACPI_STRNCPY(d,s,n)     (void) strncpy((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_STRNCMP
-mdefine_line|#define ACPI_STRNCMP(d,s,n)     strncmp((d), (s), (NATIVE_INT)(n))
+mdefine_line|#define ACPI_STRNCMP(d,s,n)     strncmp((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_STRCMP
 mdefine_line|#define ACPI_STRCMP(d,s)        strcmp((d), (s))
 DECL|macro|ACPI_STRCAT
-mdefine_line|#define ACPI_STRCAT(d,s)        strcat((d), (s))
+mdefine_line|#define ACPI_STRCAT(d,s)        (void) strcat((d), (s))
 DECL|macro|ACPI_STRNCAT
-mdefine_line|#define ACPI_STRNCAT(d,s,n)     strncat((d), (s), (NATIVE_INT)(n))
+mdefine_line|#define ACPI_STRNCAT(d,s,n)     strncat((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_STRTOUL
-mdefine_line|#define ACPI_STRTOUL(d,s,n)     strtoul((d), (s), (NATIVE_INT)(n))
+mdefine_line|#define ACPI_STRTOUL(d,s,n)     strtoul((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_MEMCPY
-mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) memcpy((d), (s), (NATIVE_INT)(n))
+mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) memcpy((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_MEMSET
-mdefine_line|#define ACPI_MEMSET(d,s,n)      (void) memset((d), (s), (NATIVE_INT)(n))
+mdefine_line|#define ACPI_MEMSET(d,s,n)      (void) memset((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_TOUPPER
 mdefine_line|#define ACPI_TOUPPER            toupper
 DECL|macro|ACPI_TOLOWER
 mdefine_line|#define ACPI_TOLOWER            tolower
 DECL|macro|ACPI_IS_XDIGIT
 mdefine_line|#define ACPI_IS_XDIGIT          isxdigit
+DECL|macro|ACPI_IS_DIGIT
+mdefine_line|#define ACPI_IS_DIGIT           isdigit
+DECL|macro|ACPI_IS_SPACE
+mdefine_line|#define ACPI_IS_SPACE           isspace
+DECL|macro|ACPI_IS_UPPER
+mdefine_line|#define ACPI_IS_UPPER           isupper
 multiline_comment|/******************************************************************************&n; *&n; * Not using native C library, use local implementations&n; *&n; *****************************************************************************/
 macro_line|#else
 multiline_comment|/*&n; * Use local definitions of C library macros and functions&n; * NOTE: The function implementations may not be as efficient&n; * as an inline or assembly code implementation provided by a&n; * native C library.&n; */
@@ -150,27 +159,27 @@ macro_line|#endif /* va_arg */
 DECL|macro|ACPI_STRSTR
 mdefine_line|#define ACPI_STRSTR(s1,s2)      acpi_ut_strstr ((s1), (s2))
 DECL|macro|ACPI_STRUPR
-mdefine_line|#define ACPI_STRUPR(s)          acpi_ut_strupr ((s))
+mdefine_line|#define ACPI_STRUPR(s)          (void) acpi_ut_strupr ((s))
 DECL|macro|ACPI_STRLEN
-mdefine_line|#define ACPI_STRLEN(s)          acpi_ut_strlen ((s))
+mdefine_line|#define ACPI_STRLEN(s)          (ACPI_SIZE) acpi_ut_strlen ((s))
 DECL|macro|ACPI_STRCPY
-mdefine_line|#define ACPI_STRCPY(d,s)        acpi_ut_strcpy ((d), (s))
+mdefine_line|#define ACPI_STRCPY(d,s)        (void) acpi_ut_strcpy ((d), (s))
 DECL|macro|ACPI_STRNCPY
-mdefine_line|#define ACPI_STRNCPY(d,s,n)     acpi_ut_strncpy ((d), (s), (n))
+mdefine_line|#define ACPI_STRNCPY(d,s,n)     (void) acpi_ut_strncpy ((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_STRNCMP
-mdefine_line|#define ACPI_STRNCMP(d,s,n)     acpi_ut_strncmp ((d), (s), (n))
+mdefine_line|#define ACPI_STRNCMP(d,s,n)     acpi_ut_strncmp ((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_STRCMP
 mdefine_line|#define ACPI_STRCMP(d,s)        acpi_ut_strcmp ((d), (s))
 DECL|macro|ACPI_STRCAT
-mdefine_line|#define ACPI_STRCAT(d,s)        acpi_ut_strcat ((d), (s))
+mdefine_line|#define ACPI_STRCAT(d,s)        (void) acpi_ut_strcat ((d), (s))
 DECL|macro|ACPI_STRNCAT
-mdefine_line|#define ACPI_STRNCAT(d,s,n)     acpi_ut_strncat ((d), (s), (n))
+mdefine_line|#define ACPI_STRNCAT(d,s,n)     acpi_ut_strncat ((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_STRTOUL
-mdefine_line|#define ACPI_STRTOUL(d,s,n)     acpi_ut_strtoul ((d), (s),(n))
+mdefine_line|#define ACPI_STRTOUL(d,s,n)     acpi_ut_strtoul ((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_MEMCPY
-mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) acpi_ut_memcpy ((d), (s), (n))
+mdefine_line|#define ACPI_MEMCPY(d,s,n)      (void) acpi_ut_memcpy ((d), (s), (ACPI_SIZE)(n))
 DECL|macro|ACPI_MEMSET
-mdefine_line|#define ACPI_MEMSET(d,v,n)      (void) acpi_ut_memset ((d), (v), (n))
+mdefine_line|#define ACPI_MEMSET(d,v,n)      (void) acpi_ut_memset ((d), (v), (ACPI_SIZE)(n))
 DECL|macro|ACPI_TOUPPER
 mdefine_line|#define ACPI_TOUPPER            acpi_ut_to_upper
 DECL|macro|ACPI_TOLOWER

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/msdos/namei.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *  Hidden files 1995 by Albert Cahalan &lt;albert@ccs.neu.edu&gt; &lt;adc@coe.neu.edu&gt;&n; *  Rewritten for constant inumbers 1999 by Al Viro&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|MSDOS_DEBUG
@@ -1206,12 +1207,10 @@ id|out
 suffix:semicolon
 id|add
 suffix:colon
-r_if
-c_cond
-(paren
-id|inode
-)paren
-(brace
+id|res
+op_assign
+l_int|0
+suffix:semicolon
 id|dentry
 op_assign
 id|d_splice_alias
@@ -1222,30 +1221,15 @@ comma
 id|dentry
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dentry
+)paren
 id|dentry-&gt;d_op
 op_assign
 op_amp
 id|msdos_dentry_operations
-suffix:semicolon
-)brace
-r_else
-(brace
-id|d_add
-c_func
-(paren
-id|dentry
-comma
-id|inode
-)paren
-suffix:semicolon
-id|dentry
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-id|res
-op_assign
-l_int|0
 suffix:semicolon
 id|out
 suffix:colon
@@ -1270,18 +1254,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|res
 )paren
+r_return
+id|dentry
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
 (paren
 id|res
 )paren
-suffix:semicolon
-r_else
-r_return
-id|dentry
 suffix:semicolon
 )brace
 multiline_comment|/***** Creates a directory entry (name is already formatted). */

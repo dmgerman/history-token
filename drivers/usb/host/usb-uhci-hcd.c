@@ -1,4 +1,4 @@
-multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, main part for HCD frame&n;   &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net &n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at    &n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-hcd.c,v 1.1 2002/05/14 20:36:57 acher Exp $&n; */
+multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, main part for HCD frame&n;   &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net &n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at    &n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-hcd.c,v 1.3 2002/05/25 16:42:41 acher Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -19,8 +19,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-DECL|macro|CONFIG_USB_DEBUG
-mdefine_line|#define CONFIG_USB_DEBUG
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -31,24 +29,14 @@ macro_line|#endif
 macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &quot;usb-uhci-hcd.h&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;$Revision: 1.1 $&quot;
+mdefine_line|#define DRIVER_VERSION &quot;$Revision: 1.3 $&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Georg Acher, Deti Fliegl, Thomas Sailer&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 1.1 Universal Host Controller Interface driver (HCD)&quot;
 multiline_comment|/*--------------------------------------------------------------------------*/
-singleline_comment|// Values you may tweak
-multiline_comment|/* CONFIG_USB_UHCI_HIGH_BANDWITH turns on Full Speed Bandwidth&n; * Reclamation: feature that puts loop on descriptor loop when&n; * there&squot;s some transfer going on. With FSBR, USB performance&n; * is optimal, but PCI can be slowed down up-to 5 times, slowing down&n; * system performance (eg. framebuffer devices).&n; */
-DECL|macro|CONFIG_USB_UHCI_HIGH_BANDWIDTH
-mdefine_line|#define CONFIG_USB_UHCI_HIGH_BANDWIDTH 
-multiline_comment|/* *_DEPTH_FIRST puts descriptor in depth-first mode. This has&n; * somehow similar effect to FSBR (higher speed), but does not&n; * slow PCI down. OTOH USB performace is slightly slower than&n; * in FSBR case and single device could hog whole USB, starving&n; * other devices.&n; */
-DECL|macro|USE_CTRL_DEPTH_FIRST
-mdefine_line|#define USE_CTRL_DEPTH_FIRST 0  
-singleline_comment|// 0: Breadth first, 1: Depth first
-DECL|macro|USE_BULK_DEPTH_FIRST
-mdefine_line|#define USE_BULK_DEPTH_FIRST 0  
-singleline_comment|// 0: Breadth first, 1: Depth first
-multiline_comment|/* Turning off both CONFIG_USB_UHCI_HIGH_BANDWITH and *_DEPTH_FIRST&n; * will lead to &lt;64KB/sec performance over USB for bulk transfers targeting&n; * one device&squot;s endpoint. You probably do not want to do that.&n; */
+multiline_comment|/* Values you may tweak with module parameters&n; *  &n; * high_bw: 1=on (default), 0=off&n; * Turns on Full Speed Bandwidth Reclamation: &n; * Feature that puts a loop on the descriptor chain when&n; * there&squot;s some transfer going on. With FSBR, USB performance&n; * is optimal, but PCI can be slowed down up-to 5 times, slowing down&n; * system performance (eg. framebuffer devices).&n; *&n; * bulk_depth/ctrl_depth: 0=off (default), 1:on&n; * Puts descriptors for bulk/control transfers in depth-first mode. &n; * This has somehow similar effect to FSBR (higher speed), but does not&n; * slow PCI down. OTOH USB performace is slightly slower than&n; * in FSBR case and single device could hog whole USB, starving&n; * other devices. Some devices (e.g. STV680-based cameras) NEED this depth &n; * first search to work properly.&n; *&n; * Turning off both high_bw and bulk_depth/ctrl_depth&n; * will lead to &lt;64KB/sec performance over USB for bulk transfers targeting&n; * one device&squot;s endpoint. You probably do not want to do that.&n; */
+singleline_comment|// Other constants, there&squot;s usually no need to change them.
 singleline_comment|// stop bandwidth reclamation after (roughly) 50ms
 DECL|macro|IDLE_TIMEOUT
 mdefine_line|#define IDLE_TIMEOUT  (HZ/20)
@@ -77,6 +65,33 @@ mdefine_line|#define init_dbg dbg
 multiline_comment|/*--------------------------------------------------------------------------*/
 singleline_comment|//                   NO serviceable parts below!
 multiline_comment|/*--------------------------------------------------------------------------*/
+multiline_comment|/* Can be set by module parameters */
+DECL|variable|high_bw
+r_static
+r_int
+id|high_bw
+op_assign
+l_int|1
+suffix:semicolon
+DECL|variable|ctrl_depth
+r_static
+r_int
+id|ctrl_depth
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* 0: Breadth first, 1: Depth first */
+DECL|variable|bulk_depth
+r_static
+r_int
+id|bulk_depth
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* 0: Breadth first, 1: Depth first */
+singleline_comment|// How much URBs with -&gt;next are walked
+DECL|macro|MAX_NEXT_COUNT
+mdefine_line|#define MAX_NEXT_COUNT 2048
 DECL|variable|devs
 r_static
 r_struct
@@ -450,7 +465,7 @@ suffix:semicolon
 id|err
 c_func
 (paren
-l_string|&quot;ENXIO (%s)  %08x, flags %x, urb %p, burb %p, propably device driver bug...&quot;
+l_string|&quot;ENXIO (%s)  %08x, flags %x, urb %p, burb %p, probably device driver bug...&quot;
 comma
 id|PIPESTRING
 c_func
@@ -570,7 +585,7 @@ id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
 singleline_comment|// for bulk queuing it is essential that interrupts are disabled until submission
-singleline_comment|// all other type enable interrupts again
+singleline_comment|// all other types enable interrupts again
 r_switch
 c_cond
 (paren
@@ -1049,6 +1064,7 @@ id|io_addr
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|uhci-&gt;hcd.regs
 suffix:semicolon
@@ -1111,6 +1127,7 @@ r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|uhci-&gt;hcd.regs
@@ -1201,6 +1218,7 @@ r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|uhci-&gt;hcd.regs
@@ -1304,7 +1322,6 @@ id|uhci-&gt;running
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// FIXME cleanup
 r_return
 op_minus
 id|ENOMEM
@@ -1342,7 +1359,6 @@ id|uhci-&gt;running
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// FIXME cleanup
 r_return
 op_minus
 id|ENODEV
@@ -1380,9 +1396,11 @@ r_int
 id|ret
 suffix:semicolon
 r_int
+r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|hcd-&gt;regs
@@ -1391,7 +1409,6 @@ id|io_size
 op_assign
 l_int|0x20
 suffix:semicolon
-singleline_comment|// FIXME
 id|init_dbg
 c_func
 (paren
@@ -1733,6 +1750,7 @@ r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|hcd-&gt;regs
@@ -2161,8 +2179,6 @@ comma
 suffix:semicolon
 DECL|macro|DRIVER_INFO
 mdefine_line|#define DRIVER_INFO DRIVER_VERSION &quot; &quot; DRIVER_DESC
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 (paren
@@ -2178,6 +2194,48 @@ suffix:semicolon
 id|MODULE_LICENSE
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|high_bw
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|high_bw
+comma
+l_string|&quot;high_hw: Enable high bandwidth mode, 1=on (default), 0=off&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|bulk_depth
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|bulk_depth
+comma
+l_string|&quot;bulk_depth: Depth first processing for bulk transfers, 0=off (default), 1=on&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|ctrl_depth
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|ctrl_depth
+comma
+l_string|&quot;ctrl_depth: Depth first processing for control transfers, 0=off (default), 1=on&quot;
 )paren
 suffix:semicolon
 DECL|variable|pci_ids
@@ -2318,6 +2376,33 @@ r_sizeof
 r_struct
 id|td
 )paren
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;High bandwidth mode %s.%s%s&quot;
+comma
+id|high_bw
+ques
+c_cond
+l_string|&quot;enabled&quot;
+suffix:colon
+l_string|&quot;disabled&quot;
+comma
+id|ctrl_depth
+ques
+c_cond
+l_string|&quot;CTRL depth first enabled&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|bulk_depth
+ques
+c_cond
+l_string|&quot;BULK depth first enabled&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_return

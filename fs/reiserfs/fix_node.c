@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* To make any changes in the tree we find a node, that contains item&n;   to be changed/deleted or position in the node we insert a new item&n;   to. We call this node S. To do balancing we need to decide what we&n;   will shift to left/right neighbor, or to a new node, where new item&n;   will be etc. To make this analysis simpler we build virtual&n;   node. Virtual node is an array of items, that will replace items of&n;   node S. (For instance if we are going to delete an item, virtual&n;   node does not contain it). Virtual node keeps information about&n;   item sizes and types, mergeability of first and last items, sizes&n;   of all entries in directory item. We use this array of items when&n;   calculating what we can shift to neighbors and how many nodes we&n;   have to have if we do not any shiftings, if we shift to left/right&n;   neighbor or to both. */
 multiline_comment|/* taking item number in virtual node, returns number of item, that it has in source buffer */
 DECL|function|old_item_num

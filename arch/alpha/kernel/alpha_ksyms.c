@@ -174,7 +174,6 @@ c_func
 id|perf_irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALPHA_SRM
 DECL|variable|callback_getenv
 id|EXPORT_SYMBOL
 c_func
@@ -196,7 +195,15 @@ c_func
 id|callback_save_env
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALPHA_SRM */
+macro_line|#ifdef CONFIG_ALPHA_GENERIC
+DECL|variable|alpha_using_srm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|alpha_using_srm
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALPHA_GENERIC */
 multiline_comment|/* platform dependent support */
 DECL|variable|_inb
 id|EXPORT_SYMBOL

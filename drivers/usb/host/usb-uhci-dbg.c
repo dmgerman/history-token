@@ -1,4 +1,4 @@
-multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, debugging calls&n;   &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;  &n;    $Id: usb-uhci-dbg.c,v 1.1 2002/05/14 20:36:57 acher Exp $&n;*/
+multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB, debugging calls&n;   &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;  &n;    $Id: usb-uhci-dbg.c,v 1.2 2002/05/21 21:40:16 acher Exp $&n;*/
 macro_line|#ifdef DEBUG
 DECL|function|uhci_show_qh
 r_static
@@ -537,6 +537,7 @@ r_int
 id|io_addr
 op_assign
 (paren
+r_int
 r_int
 )paren
 id|uhci-&gt;hcd.regs

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_JBD_DEBUG
 DECL|variable|ext3_ro_after
@@ -4013,8 +4014,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s: truncating inode %ld to %Ld bytes&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: truncating inode %ld to %Ld bytes&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
@@ -4049,8 +4051,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s: deleting unreferenced inode %ld&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: deleting unreferenced inode %ld&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 )paren
@@ -8017,8 +8020,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

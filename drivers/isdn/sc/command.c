@@ -543,9 +543,6 @@ suffix:semicolon
 id|scs_ioctl
 id|ioc
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 id|memcpy
 c_func
 (paren

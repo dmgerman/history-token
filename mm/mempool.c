@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for wakeup_bdflush() */
 DECL|function|add_element
 r_static
 r_void
@@ -788,11 +789,9 @@ id|gfp_nowait
 r_return
 l_int|NULL
 suffix:semicolon
-id|run_task_queue
+id|blk_run_queues
 c_func
 (paren
-op_amp
-id|tq_disk
 )paren
 suffix:semicolon
 id|add_wait_queue_exclusive

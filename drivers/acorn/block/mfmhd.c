@@ -2744,7 +2744,11 @@ multiline_comment|/* Turns Drive LEDs off - may slow it down? */
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
 )paren
 id|issue_command
 c_func
@@ -6108,8 +6112,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

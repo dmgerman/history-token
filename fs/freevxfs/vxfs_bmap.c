@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ident &quot;$Id: vxfs_bmap.c,v 1.25 2002/01/02 23:36:55 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - filesystem to disk block mapping.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &quot;vxfs.h&quot;
 macro_line|#include &quot;vxfs_inode.h&quot;

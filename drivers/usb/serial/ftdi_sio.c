@@ -5,18 +5,15 @@ multiline_comment|/*   to talk to the device */
 multiline_comment|/* Thanx to gkh and the rest of the usb dev group for all code I have assimilated :-) */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 DECL|variable|debug

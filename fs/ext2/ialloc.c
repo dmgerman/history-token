@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/*&n; * ialloc.c contains the inodes allocation and deallocation routines&n; */
 multiline_comment|/*&n; * The free inodes are managed by bitmaps.  A file system contains several&n; * blocks groups.  Each group contains 1 bitmap block for blocks, 1 bitmap&n; * block for inodes, N blocks for the inode table and data blocks.&n; *&n; * The file system contains group descriptors which are located after the&n; * super block.  Each descriptor contains the number of the bitmap block and&n; * the free blocks count in the block.  The descriptors are loaded in memory&n; * when a file system is mounted (see ext2_read_super).&n; */
 multiline_comment|/*&n; * Read the inode allocation bitmap for a given block_group, reading&n; * into the specified slot in the superblock&squot;s bitmap cache.&n; *&n; * Return buffer_head of bitmap on success or NULL.&n; */
@@ -1781,6 +1782,22 @@ op_or
 id|EXT2_APPEND_FL
 )paren
 suffix:semicolon
+multiline_comment|/* dirsync is only applied to directories */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|S_ISDIR
+c_func
+(paren
+id|mode
+)paren
+)paren
+id|ei-&gt;i_flags
+op_and_assign
+op_complement
+id|EXT2_DIRSYNC_FL
+suffix:semicolon
 id|ei-&gt;i_faddr
 op_assign
 l_int|0
@@ -1839,6 +1856,17 @@ id|EXT2_SYNC_FL
 id|inode-&gt;i_flags
 op_or_assign
 id|S_SYNC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ei-&gt;i_flags
+op_amp
+id|EXT2_DIRSYNC_FL
+)paren
+id|inode-&gt;i_flags
+op_or_assign
+id|S_DIRSYNC
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign

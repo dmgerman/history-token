@@ -330,8 +330,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; *  INIT part&n; */
 DECL|function|alsa_emu10k1_synth_init
 r_static

@@ -2982,8 +2982,6 @@ comma
 suffix:semicolon
 DECL|macro|DRIVER_INFO
 mdefine_line|#define DRIVER_INFO DRIVER_VERSION &quot; &quot; DRIVER_DESC
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 (paren

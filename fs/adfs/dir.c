@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for file_fsync() */
 macro_line|#include &quot;adfs.h&quot;
 multiline_comment|/*&n; * For future.  This should probably be per-directory.&n; */
 DECL|variable|adfs_dir_lock

@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 multiline_comment|/* these are used in do_balance.c */
 multiline_comment|/* leaf_move_items&n;   leaf_shift_left&n;   leaf_shift_right&n;   leaf_delete_items&n;   leaf_insert_into_buf&n;   leaf_paste_in_buffer&n;   leaf_cut_from_buffer&n;   leaf_paste_entries&n;   */
 multiline_comment|/* copy copy_count entries from source directory item to dest buffer (creating new item if needed) */

@@ -114,5 +114,7 @@ DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)(((x).pte_low &gt;&gt; PAGE_SHIFT)))
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+DECL|macro|pfn_pmd
+mdefine_line|#define pfn_pmd(pfn, prot)&t;__pmd(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 macro_line|#endif /* _I386_PGTABLE_2LEVEL_H */
 eof

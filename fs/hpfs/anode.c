@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/anode.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  handling HPFS anode tree that contains file allocation info&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 multiline_comment|/* Find a sector in allocation tree */
 DECL|function|hpfs_bplus_lookup

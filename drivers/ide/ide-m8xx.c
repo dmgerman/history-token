@@ -83,7 +83,8 @@ r_void
 id|m8xx_ide_tuneproc
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -1434,7 +1435,8 @@ DECL|function|m8xx_ide_tuneproc
 id|m8xx_ide_tuneproc
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

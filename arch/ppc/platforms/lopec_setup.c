@@ -1,32 +1,21 @@
 multiline_comment|/*&n; * arch/ppc/platforms/lopec_setup.c&n; * &n; * Setup routines for the Motorola LoPEC.&n; *&n; * Author: Dan Cox&n; *         danc@mvista.com&n; *&n; * Copyright 2001-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pci_ids.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
-macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
+macro_line|#include &lt;asm/hw_irq.h&gt;
 r_extern
 r_void
 id|lopec_find_bridges
@@ -774,7 +763,8 @@ l_int|0xfef00000
 )paren
 suffix:semicolon
 )brace
-r_void
+r_static
+r_int
 id|__init
 DECL|function|lopec_request_io
 id|lopec_request_io
@@ -859,9 +849,12 @@ comma
 l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|lopec_request_io
-id|arch_initcall
+id|device_initcall
 c_func
 (paren
 id|lopec_request_io

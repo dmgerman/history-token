@@ -15600,8 +15600,6 @@ op_assign
 id|DPT_I2O
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

@@ -13,15 +13,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
-r_extern
-r_char
-op_star
-id|ide_xfer_verbose
-(paren
-id|byte
-id|xfer_rate
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * SL82C105 PCI config register 0x40 bits.&n; */
 DECL|macro|CTRL_IDE_IRQB
 mdefine_line|#define CTRL_IDE_IRQB&t;(1 &lt;&lt; 30)
@@ -163,7 +154,8 @@ r_void
 id|config_for_pio
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -326,15 +318,11 @@ id|report
 id|printk
 c_func
 (paren
-l_string|&quot;%s: selected %s (%dns) (%04X)&bslash;n&quot;
+l_string|&quot;%s: selected %02x (%dns) (%04X)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|ide_xfer_verbose
-c_func
-(paren
 id|xfer_mode
-)paren
 comma
 id|t-&gt;cycle
 comma
@@ -351,7 +339,8 @@ r_int
 id|config_for_dma
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -438,7 +427,8 @@ r_int
 id|sl82c105_check_drive
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -824,7 +814,8 @@ r_void
 id|sl82c105_lostirq
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -941,7 +932,8 @@ r_void
 id|tune_sl82c105
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

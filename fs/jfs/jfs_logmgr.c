@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for sync_blockdev() */
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -2845,6 +2846,11 @@ id|log_t
 )paren
 )paren
 suffix:semicolon
+id|log-&gt;sb
+op_assign
+id|sb
+suffix:semicolon
+multiline_comment|/* This should be a list */
 r_if
 c_cond
 (paren
@@ -2865,11 +2871,6 @@ r_goto
 id|externalLog
 suffix:semicolon
 multiline_comment|/*&n;&t; *      in-line log in host file system&n;&t; *&n;&t; * file system to log have 1-to-1 relationship;&n;&t; */
-id|log-&gt;sb
-op_assign
-id|sb
-suffix:semicolon
-multiline_comment|/* This should be a list */
 id|log-&gt;bdev
 op_assign
 id|sb-&gt;s_bdev
@@ -3014,11 +3015,6 @@ r_goto
 id|errout10
 suffix:semicolon
 )brace
-id|log-&gt;sb
-op_assign
-id|sb
-suffix:semicolon
-multiline_comment|/* This should be a list */
 id|log-&gt;bdev
 op_assign
 id|bdev

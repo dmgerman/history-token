@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|macro|REISERFS_OLD_BLOCKSIZE
 mdefine_line|#define REISERFS_OLD_BLOCKSIZE 4096
 DECL|macro|REISERFS_SUPER_MAGIC_STRING_OFFSET_NJ
@@ -6082,8 +6083,6 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 singleline_comment|//
 singleline_comment|// this is exactly what 2.3.99-pre9&squot;s init_ext2_fs is

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/sysv/itree.c&n; *&n; *  Handling of indirect blocks&squot; trees.&n; *  AV, Sep--Dec 2000&n; */
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;sysv.h&quot;
 DECL|enumerator|DIRECT
 DECL|enumerator|DEPTH

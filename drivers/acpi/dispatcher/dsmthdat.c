@@ -1,9 +1,7 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 61 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -13,7 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;dsmthdat&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_init&n; *&n; * PARAMETERS:  Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the data structures that hold the method&squot;s arguments&n; *              and locals.  The data struct is an array of NTEs for each.&n; *              This allows Ref_of and De_ref_of to work properly for these&n; *              special data types.&n; *&n; * NOTES:       Walk_state fields are initialized to zero by the&n; *              ACPI_MEM_CALLOCATE().&n; *&n; *              A pseudo-Namespace Node is assigned to each argument and local&n; *              so that Ref_of() can return a pointer to the Node.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ds_method_data_init
 id|acpi_ds_method_data_init
 (paren
@@ -174,14 +172,11 @@ op_or
 id|ANOBJ_METHOD_LOCAL
 suffix:semicolon
 )brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_delete_all&n; *&n; * PARAMETERS:  Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete method locals and arguments.  Arguments are only&n; *              deleted if this method was called from another method.&n; *&n; ******************************************************************************/
-id|acpi_status
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_delete_all&n; *&n; * PARAMETERS:  Walk_state          - Current walk state object&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Delete method locals and arguments.  Arguments are only&n; *              deleted if this method was called from another method.&n; *&n; ******************************************************************************/
+r_void
 DECL|function|acpi_ds_method_data_delete_all
 id|acpi_ds_method_data_delete_all
 (paren
@@ -312,10 +307,7 @@ id|index
 suffix:semicolon
 )brace
 )brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_init_args&n; *&n; * PARAMETERS:  *Params         - Pointer to a parameter list for the method&n; *              Max_param_count - The arg count for this method&n; *              Walk_state      - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize arguments for a method.  The parameter list is a list&n; *              of ACPI operand objects, either null terminated or whose length&n; *              is defined by Max_param_count.&n; *&n; ******************************************************************************/
@@ -914,6 +906,13 @@ id|return_ACPI_STATUS
 id|AE_AML_UNINITIALIZED_LOCAL
 )paren
 suffix:semicolon
+r_default
+suffix:colon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_INTERNAL
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * The Index points to an initialized and valid object.&n;&t; * Return an additional reference to the object&n;&t; */
@@ -933,8 +932,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_delete_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to delete&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete the entry at Opcode:Index on the method stack.  Inserts&n; *              a null into the stack slot after the object is deleted.&n; *&n; ******************************************************************************/
-id|acpi_status
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_delete_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to delete&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Delete the entry at Opcode:Index on the method stack.  Inserts&n; *              a null into the stack slot after the object is deleted.&n; *&n; ******************************************************************************/
+r_void
 DECL|function|acpi_ds_method_data_delete_value
 id|acpi_ds_method_data_delete_value
 (paren
@@ -989,10 +988,7 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* Get the associated object */
@@ -1021,7 +1017,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|object
 )paren
 op_eq
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 )paren
 (brace
@@ -1032,10 +1028,7 @@ id|object
 )paren
 suffix:semicolon
 )brace
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_store_object_to_local&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to set&n; *              Obj_desc            - Value to be stored&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store a value in an Arg or Local.  The Obj_desc is installed&n; *              as the new value for the Arg or Local and the reference count&n; *              for Obj_desc is incremented.&n; *&n; ******************************************************************************/

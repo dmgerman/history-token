@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * end_buffer_read_file_async -&n; *&n; * Async io completion handler for accessing files. Adapted from&n; * end_buffer_read_mst_async().&n; */
 DECL|function|end_buffer_read_file_async

@@ -1,18 +1,14 @@
 multiline_comment|/*&n; * USB Skeleton driver - 0.7&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; *&n; *&n; * This driver is to be used as a skeleton driver to be able to create a&n; * USB driver quickly.  The design of it is based on the usb-serial and&n; * dc2xx drivers.&n; *&n; * Thanks to Oliver Neukum and David Brownell for their help in debugging&n; * this driver.&n; *&n; * TODO:&n; *&t;- fix urb-&gt;status race condition in write sequence&n; *&t;- move minor_table to a dynamic list.&n; *&n; * History:&n; *&n; * 2002_02_12 - 0.7 - zero out dev in probe function for devices that do&n; *&t;&t;&t;not have both a bulk in and bulk out endpoint.&n; *&t;&t;&t;Thanks to Holger Waechtler for the fix.&n; * 2001_11_05 - 0.6 - fix minor locking problem in skel_disconnect.&n; *&t;&t;&t;Thanks to Pete Zaitcev for the fix.&n; * 2001_09_04 - 0.5 - fix devfs bug in skel_disconnect. Thanks to wim delvaux&n; * 2001_08_21 - 0.4 - more small bug fixes.&n; * 2001_05_29 - 0.3 - more bug fixes based on review from linux-usb-devel&n; * 2001_05_24 - 0.2 - bug fixes based on review from linux-usb-devel people&n; * 2001_05_01 - 0.1 - first version&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|variable|debug

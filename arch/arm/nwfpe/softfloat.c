@@ -350,34 +350,7 @@ suffix:semicolon
 id|__asm__
 c_func
 (paren
-"&quot;@"
-id|packFloat32
-suffix:semicolon
-id|mov
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-id|asl
-macro_line|#31;
-id|orr
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-id|asl
-macro_line|#23;
-id|orr
-op_mod
-l_int|0
-comma
-op_mod
-l_int|3
-"&quot;"
+l_string|&quot;@ packFloat32;&t;&t;&bslash;n&bslash;&n;   &t;    mov %0, %1, asl #31;&t;&bslash;n&bslash;&n;   &t;    orr %0, %2, asl #23;&t;&bslash;n&bslash;&n;   &t;    orr %0, %3&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

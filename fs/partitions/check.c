@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for invalidate_bdev() */
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;acorn.h&quot;
 macro_line|#include &quot;amiga.h&quot;
@@ -905,12 +906,6 @@ id|de
 op_assign
 l_int|NULL
 suffix:semicolon
-r_static
-r_int
-id|first_time
-op_assign
-l_int|1
-suffix:semicolon
 r_int
 r_int
 id|first_sector
@@ -928,22 +923,6 @@ l_int|64
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|first_time
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Partition check:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|first_time
-op_assign
-l_int|0
 suffix:semicolon
 id|first_sector
 op_assign
@@ -1098,6 +1077,19 @@ op_logical_neg
 id|bdev-&gt;bd_openers
 )paren
 (brace
+r_struct
+id|blk_dev_struct
+op_star
+id|p
+op_assign
+id|blk_dev
+op_plus
+id|major
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 id|bsize
 op_assign
@@ -1129,6 +1121,27 @@ op_lshift_assign
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|p-&gt;queue
+)paren
+id|bdev-&gt;bd_queue
+op_assign
+id|p
+op_member_access_from_pointer
+id|queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_else
+id|bdev-&gt;bd_queue
+op_assign
+op_amp
+id|p-&gt;request_queue
+suffix:semicolon
 id|bdev-&gt;bd_block_size
 op_assign
 id|bsize

@@ -22,8 +22,6 @@ DECL|macro|chip_t
 mdefine_line|#define chip_t sb_t
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;als100: &quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB&n;    UHCI memory allocation and basic descriptor handling&n;   &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net&n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at    &n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-mem.c,v 1.1 2002/05/14 20:36:57 acher Exp $&n; */
+multiline_comment|/*  &n;    UHCI HCD (Host Controller Driver) for USB&n;    UHCI memory allocation and basic descriptor handling&n;   &n;    (c) 1999-2002 &n;    Georg Acher      +    Deti Fliegl    +    Thomas Sailer&n;    georg@acher.org      deti@fliegl.de   sailer@ife.ee.ethz.ch&n;   &n;    with the help of&n;    David Brownell, david-b@pacbell.net&n;    Adam Richter, adam@yggdrasil.com&n;    Roman Weissgaerber, weissg@vienna.at    &n;    &n;    HW-initalization based on material of&n;    Randy Dunlap + Johannes Erdfelt + Gregory P. Smith + Linus Torvalds &n;&n;    $Id: usb-uhci-mem.c,v 1.3 2002/05/25 16:42:41 acher Exp $&n; */
 multiline_comment|/*###########################################################################*/
 singleline_comment|//                        UHCI STRUCTURE
 multiline_comment|/*###########################################################################*/
@@ -1827,7 +1827,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------*/
-macro_line|#ifdef CONFIG_USB_UHCI_HIGH_BANDWIDTH
 DECL|function|enable_desc_loop
 r_static
 r_void
@@ -1845,6 +1844,7 @@ op_star
 id|urb
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -1921,6 +1921,7 @@ op_star
 id|urb
 )paren
 (brace
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -2001,7 +2002,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------*/
 DECL|function|queue_urb_unlocked
 r_static
@@ -2029,7 +2029,6 @@ op_star
 )paren
 id|urb-&gt;hcpriv
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_UHCI_HIGH_BANDWIDTH
 r_int
 id|type
 suffix:semicolon
@@ -2043,6 +2042,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|high_bw
+op_logical_and
+(paren
 (paren
 id|type
 op_eq
@@ -2055,6 +2057,7 @@ op_eq
 id|PIPE_CONTROL
 )paren
 )paren
+)paren
 id|enable_desc_loop
 c_func
 (paren
@@ -2063,7 +2066,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-macro_line|#endif
 id|urb-&gt;status
 op_assign
 op_minus
@@ -2172,7 +2174,6 @@ op_star
 )paren
 id|urb-&gt;hcpriv
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_UHCI_HIGH_BANDWIDTH
 r_int
 id|type
 suffix:semicolon
@@ -2194,6 +2195,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|high_bw
+op_logical_and
+(paren
 (paren
 id|type
 op_eq
@@ -2206,6 +2210,7 @@ op_eq
 id|PIPE_CONTROL
 )paren
 )paren
+)paren
 id|disable_desc_loop
 c_func
 (paren
@@ -2214,7 +2219,6 @@ comma
 id|urb
 )paren
 suffix:semicolon
-macro_line|#endif
 id|list_del
 (paren
 op_amp
@@ -2976,8 +2980,12 @@ id|uhci-&gt;control_chain
 op_assign
 id|qh
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_USB_UHCI_HIGH_BANDWIDTH
 singleline_comment|// disabled reclamation loop
+r_if
+c_cond
+(paren
+id|high_bw
+)paren
 id|set_qh_head
 c_func
 (paren
@@ -2990,7 +2998,6 @@ op_or
 id|UHCI_PTR_TERM
 )paren
 suffix:semicolon
-macro_line|#endif
 id|init_dbg
 c_func
 (paren

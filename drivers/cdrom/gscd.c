@@ -904,8 +904,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|QUEUE_EMPTY
-op_logical_or
 id|CURRENT-&gt;sector
 op_eq
 op_minus
@@ -3763,7 +3761,5 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:semicolon
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

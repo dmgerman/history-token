@@ -232,12 +232,14 @@ DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
-multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
+multiline_comment|/*&n; * Conversion functions: convert page frame number (pfn) and a protection value to a page&n; * table entry (pte).&n; */
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = ((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot); __pte; })
+multiline_comment|/* Extract pfn from pte.  */
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(_pte)&t;&t;((pte_val(_pte) &amp; _PFN_MASK) &gt;&gt; PAGE_SHIFT)
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = (page_to_phys(page)) | pgprot_val(pgprot);&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
-multiline_comment|/* This takes a physical page address that is used by the remapping functions */
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = physpage + pgprot_val(pgprot); __pte; })
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
 DECL|macro|pte_modify
 mdefine_line|#define pte_modify(_pte, newprot) &bslash;&n;&t;(__pte((pte_val(_pte) &amp; _PAGE_CHG_MASK) | pgprot_val(newprot)))
 DECL|macro|page_pte_prot

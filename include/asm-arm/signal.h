@@ -348,6 +348,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
 DECL|macro|sigmask
 mdefine_line|#define sigmask(sig)&t;(1UL &lt;&lt; ((sig) - 1))
+DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 macro_line|#endif
 macro_line|#endif
 eof

@@ -1,9 +1,4 @@
-macro_line|#ifndef __ASM_I386_SUSPEND_H
-DECL|macro|__ASM_I386_SUSPEND_H
-mdefine_line|#define __ASM_I386_SUSPEND_H
-macro_line|#endif
 multiline_comment|/*&n; * Copyright 2001-2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; * Based on code&n; * Copyright 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; */
-macro_line|#if defined(SUSPEND_C) || defined(ACPI_C)
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 r_static
@@ -762,7 +757,7 @@ id|saved_context.edi
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * now restore the descriptor tables to their proper values&n;&t; */
+multiline_comment|/*&n;&t; * now restore the descriptor tables to their proper values&n;&t; * ltr is done i fix_processor_context().&n;&t; */
 id|asm
 r_volatile
 (paren
@@ -796,19 +791,6 @@ id|saved_context.ldt
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|asm
-r_volatile
-(paren
-l_string|&quot;ltr (%0)&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|saved_context.tr
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|fix_processor_context
 c_func
 (paren
@@ -832,9 +814,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef SUSPEND_C
-macro_line|#if 1
 multiline_comment|/* Local variables for do_magic */
 DECL|variable|__nosavedata
 r_static
@@ -907,14 +887,12 @@ id|swapper_pg_dir
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Final function for resuming: after copying the pages to their original&n; * position, it restores the register state.&n; */
+multiline_comment|/*&n; * Final function for resuming: after copying the pages to their original&n; * position, it restores the register state.&n; *&n; * What about page tables? Writing data pages may toggle&n; * accessed/dirty bits in our page tables. That should be no problems&n; * with 4MB page tables. That&squot;s why we require have_pse.  &n; *&n; * This loops destroys stack from under itself, so it better should&n; * not use any stack space, itself. When this function is entered at&n; * resume time, we move stack to _old_ place.  This is means that this&n; * function must use no stack and no local variables in registers,&n; * until calling restore_processor_context();&n; *&n; * Critical section here: noone should touch saved memory after&n; * do_magic_resume_1; copying works, because nr_copy_pages,&n; * pagedir_nosave, loop and loop2 are nosavedata.&n; */
 id|do_magic_resume_1
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Critical section here: noone should touch memory from now */
-multiline_comment|/* This works, because nr_copy_pages, pagedir_nosave, loop and loop2 are nosavedata */
 r_for
 c_loop
 (paren
@@ -930,7 +908,7 @@ id|loop
 op_increment
 )paren
 (brace
-multiline_comment|/* You may not call something (like copy_page) here:&n;&t;&t;   We may absolutely not use stack at this point */
+multiline_comment|/* You may not call something (like copy_page) here: see above */
 r_for
 c_loop
 (paren
@@ -995,20 +973,17 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME: What about page tables? Writing data pages may toggle&n;   accessed/dirty bits in our page tables. That should be no problems&n;   with 4MB page tables. That&squot;s why we require have_pse. */
-multiline_comment|/* Danger: previous loop probably destroyed our current stack. Better hope it did not use&n;   any stack space, itself.&n;&n;   When this function is entered at resume time, we move stack to _old_ place.&n;   This is means that this function must use no stack and no local variables in registers.&n;*/
 id|restore_processor_context
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Ahah, we now run with our old stack, and with registers copied from suspend time */
+multiline_comment|/* Ahah, we now run with our old stack, and with registers copied from&n;   suspend time */
 id|do_magic_resume_2
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif 
 eof

@@ -145,6 +145,16 @@ id|dmach_t
 id|channel
 )paren
 suffix:semicolon
+multiline_comment|/* Test whether the specified channel has an active DMA transfer&n; */
+r_extern
+r_int
+id|dma_channel_active
+c_func
+(paren
+id|dmach_t
+id|channel
+)paren
+suffix:semicolon
 multiline_comment|/* Set the DMA scatter gather list for this channel&n; *&n; * This should not be called if a DMA channel is enabled,&n; * especially since some DMA architectures don&squot;t update the&n; * DMA address immediately, but defer it to the enable_dma().&n; */
 r_extern
 r_void

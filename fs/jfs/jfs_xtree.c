@@ -11939,6 +11939,10 @@ l_int|1
 op_minus
 id|xtlck-&gt;lwm.offset
 suffix:semicolon
+id|xtlck-&gt;twm.offset
+op_assign
+id|index
+suffix:semicolon
 id|pxdlock
 op_assign
 (paren
@@ -12379,10 +12383,6 @@ op_star
 op_amp
 id|tlck-&gt;lock
 suffix:semicolon
-id|xtlck-&gt;twm.offset
-op_assign
-id|index
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12647,10 +12647,6 @@ op_star
 )paren
 op_amp
 id|tlck-&gt;lock
-suffix:semicolon
-id|xtlck-&gt;twm.offset
-op_assign
-id|index
 suffix:semicolon
 id|xtlck-&gt;hwm.offset
 op_assign
@@ -13248,7 +13244,7 @@ id|tlck-&gt;type
 op_assign
 id|tlckXTREE
 op_or
-id|tlckTRUNCATE
+id|tlckFREE
 suffix:semicolon
 id|xtlck
 op_assign
@@ -13262,12 +13258,6 @@ suffix:semicolon
 id|xtlck-&gt;hwm.offset
 op_assign
 id|index
-suffix:semicolon
-id|tlck-&gt;type
-op_assign
-id|tlckXTREE
-op_or
-id|tlckFREE
 suffix:semicolon
 id|XT_PUTPAGE
 c_func
@@ -13365,10 +13355,6 @@ op_star
 )paren
 op_amp
 id|tlck-&gt;lock
-suffix:semicolon
-id|xtlck-&gt;twm.offset
-op_assign
-id|index
 suffix:semicolon
 id|xtlck-&gt;hwm.offset
 op_assign

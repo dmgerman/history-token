@@ -1,12 +1,9 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 52 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 55 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
@@ -68,7 +65,7 @@ id|address
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_location %X:&bslash;n&quot;
+l_string|&quot;&bslash;nLocation %X:&bslash;n&quot;
 comma
 id|address
 )paren
@@ -444,7 +441,7 @@ id|op
 op_assign
 id|root
 suffix:semicolon
-id|acpi_parse2_object
+id|acpi_parse_object
 op_star
 id|method
 suffix:semicolon
@@ -486,19 +483,16 @@ id|op
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_METHOD_OP
 )paren
 (brace
 id|method
 op_assign
-(paren
-id|acpi_parse2_object
-op_star
-)paren
 id|op
 suffix:semicolon
+multiline_comment|/* Create a new walk state for the parse */
 id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
@@ -525,19 +519,20 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Init the Walk State */
 id|walk_state-&gt;parser_state.aml
 op_assign
 id|walk_state-&gt;parser_state.aml_start
 op_assign
-id|method-&gt;data
+id|method-&gt;named.data
 suffix:semicolon
 id|walk_state-&gt;parser_state.aml_end
 op_assign
 id|walk_state-&gt;parser_state.pkg_end
 op_assign
-id|method-&gt;data
+id|method-&gt;named.data
 op_plus
-id|method-&gt;length
+id|method-&gt;named.length
 suffix:semicolon
 id|walk_state-&gt;parser_state.start_scope
 op_assign
@@ -551,6 +546,7 @@ id|walk_state-&gt;ascending_callback
 op_assign
 id|acpi_ds_load1_end_op
 suffix:semicolon
+multiline_comment|/* Perform the AML parse */
 id|status
 op_assign
 id|acpi_ps_parse_aml
@@ -561,20 +557,20 @@ suffix:semicolon
 id|base_aml_offset
 op_assign
 (paren
-id|method-&gt;value.arg
+id|method-&gt;common.value.arg
 )paren
 op_member_access_from_pointer
-id|aml_offset
+id|common.aml_offset
 op_plus
 l_int|1
 suffix:semicolon
 id|start_op
 op_assign
 (paren
-id|method-&gt;value.arg
+id|method-&gt;common.value.arg
 )paren
 op_member_access_from_pointer
-id|next
+id|common.next
 suffix:semicolon
 id|search_op
 op_assign
@@ -586,7 +582,7 @@ c_loop
 id|search_op
 )paren
 (brace
-id|search_op-&gt;aml_offset
+id|search_op-&gt;common.aml_offset
 op_add_assign
 id|base_aml_offset
 suffix:semicolon
@@ -604,7 +600,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_REGION_OP
 )paren

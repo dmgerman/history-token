@@ -13074,8 +13074,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 macro_line|#if 0
 multiline_comment|/*&n; * register_serial and unregister_serial allows for serial ports to be&n; * configured at run-time, to support PCMCIA modems.&n; */
 multiline_comment|/* PowerMac: Unused at this time, just here to make things link. */
