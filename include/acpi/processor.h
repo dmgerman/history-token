@@ -62,6 +62,10 @@ DECL|member|valid
 id|u8
 id|valid
 suffix:semicolon
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
 DECL|member|address
 id|u32
 id|address

@@ -160,6 +160,14 @@ r_int
 id|state
 )paren
 (brace
+r_struct
+id|acpi_processor_cx
+op_star
+id|old
+comma
+op_star
+r_new
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -168,20 +176,28 @@ id|pr
 )paren
 r_return
 suffix:semicolon
+id|old
+op_assign
+op_amp
 id|pr-&gt;power.states
 (braket
 id|pr-&gt;power.state
 )braket
-dot
-id|promotion.count
+suffix:semicolon
+r_new
+op_assign
+op_amp
+id|pr-&gt;power.states
+(braket
+id|state
+)braket
+suffix:semicolon
+id|old-&gt;promotion.count
 op_assign
 l_int|0
 suffix:semicolon
-id|pr-&gt;power.states
-(braket
-id|pr-&gt;power.state
-)braket
-dot
+r_new
+op_member_access_from_pointer
 id|demotion.count
 op_assign
 l_int|0
@@ -190,13 +206,22 @@ multiline_comment|/* Cleanup from old state. */
 r_switch
 c_cond
 (paren
-id|pr-&gt;power.state
+id|old-&gt;type
 )paren
 (brace
 r_case
 id|ACPI_STATE_C3
 suffix:colon
 multiline_comment|/* Disable bus master reload */
+r_if
+c_cond
+(paren
+r_new
+op_member_access_from_pointer
+id|type
+op_ne
+id|ACPI_STATE_C3
+)paren
 id|acpi_set_register
 c_func
 (paren
@@ -214,13 +239,22 @@ multiline_comment|/* Prepare to use new state. */
 r_switch
 c_cond
 (paren
-id|state
+r_new
+op_member_access_from_pointer
+id|type
 )paren
 (brace
 r_case
 id|ACPI_STATE_C3
 suffix:colon
 multiline_comment|/* Enable bus master reload */
+r_if
+c_cond
+(paren
+id|old-&gt;type
+op_ne
+id|ACPI_STATE_C3
+)paren
 id|acpi_set_register
 c_func
 (paren
@@ -451,7 +485,7 @@ multiline_comment|/*&n;&t; * Sleep:&n;&t; * ------&n;&t; * Invoke the current Cx
 r_switch
 c_cond
 (paren
-id|pr-&gt;power.state
+id|cx-&gt;type
 )paren
 (brace
 r_case
@@ -497,12 +531,7 @@ multiline_comment|/* Invoke C2 */
 id|inb
 c_func
 (paren
-id|pr-&gt;power.states
-(braket
-id|ACPI_STATE_C2
-)braket
-dot
-id|address
+id|cx-&gt;address
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy op - must do something useless after P_LVL2 read */
@@ -573,12 +602,7 @@ multiline_comment|/* Invoke C3 */
 id|inb
 c_func
 (paren
-id|pr-&gt;power.states
-(braket
-id|ACPI_STATE_C3
-)braket
-dot
-id|address
+id|cx-&gt;address
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy op - must do something useless after P_LVL3 read */
@@ -1106,6 +1130,15 @@ id|valid
 op_assign
 l_int|1
 suffix:semicolon
+id|pr-&gt;power.states
+(braket
+id|ACPI_STATE_C1
+)braket
+dot
+id|type
+op_assign
+id|ACPI_STATE_C1
+suffix:semicolon
 multiline_comment|/*&n;&t; * C2&n;&t; * --&n;&t; * We&squot;re (currently) only supporting C2 on UP systems.&n;&t; *&n;&t; * TBD: Support for C2 on MP (P_LVL2_UP).&n;&t; */
 r_if
 c_cond
@@ -1175,6 +1208,15 @@ dot
 id|valid
 op_assign
 l_int|1
+suffix:semicolon
+id|pr-&gt;power.states
+(braket
+id|ACPI_STATE_C2
+)braket
+dot
+id|type
+op_assign
+id|ACPI_STATE_C2
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
@@ -1303,6 +1345,15 @@ id|pr-&gt;power.states
 id|ACPI_STATE_C3
 )braket
 dot
+id|type
+op_assign
+id|ACPI_STATE_C3
+suffix:semicolon
+id|pr-&gt;power.states
+(braket
+id|ACPI_STATE_C3
+)braket
+dot
 id|latency_ticks
 op_assign
 id|US_TO_PM_TIMER_TICKS
@@ -1421,9 +1472,9 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;active state:            C%d&bslash;n&quot;
-l_string|&quot;default state:           C%d&bslash;n&quot;
-l_string|&quot;max_cstate:              C%d&bslash;n&quot;
+l_string|&quot;active state:            %d&bslash;n&quot;
+l_string|&quot;default state:           %d&bslash;n&quot;
+l_string|&quot;max_cstate:              %d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
 comma
 id|pr-&gt;power.state
@@ -1463,7 +1514,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;   %cC%d:                  &quot;
+l_string|&quot;   %c%d:                  &quot;
 comma
 (paren
 id|i
@@ -1502,6 +1553,69 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+r_switch
+c_cond
+(paren
+id|pr-&gt;power.states
+(braket
+id|i
+)braket
+dot
+id|type
+)paren
+(brace
+r_case
+id|ACPI_STATE_C1
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;type[C1] &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_C2
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;type[C2] &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_C3
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;type[C3] &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|seq_printf
+c_func
+(paren
+id|seq
+comma
+l_string|&quot;type[--] &quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1517,7 +1631,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;promotion[C%d] &quot;
+l_string|&quot;promotion[%d] &quot;
 comma
 id|pr-&gt;power.states
 (braket
@@ -1533,7 +1647,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;promotion[--] &quot;
+l_string|&quot;promotion[-] &quot;
 )paren
 suffix:semicolon
 r_if
@@ -1551,7 +1665,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;demotion[C%d] &quot;
+l_string|&quot;demotion[%d] &quot;
 comma
 id|pr-&gt;power.states
 (braket
@@ -1567,7 +1681,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;demotion[--] &quot;
+l_string|&quot;demotion[-] &quot;
 )paren
 suffix:semicolon
 id|seq_printf
