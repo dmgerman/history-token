@@ -22,12 +22,8 @@ mdefine_line|#define ERAM_SIZE&t;&t;0x07f00000 /* 127MB (max) */
 multiline_comment|/* Dynamic RAM; uses memory controller.  */
 DECL|macro|SDRAM_ADDR
 mdefine_line|#define SDRAM_ADDR&t;&t;0x10000000
-macro_line|#if 0
-mdefine_line|#define SDRAM_SIZE&t;&t;0x01000000 /* 16MB */
-macro_line|#else
 DECL|macro|SDRAM_SIZE
-mdefine_line|#define SDRAM_SIZE&t;&t;0x00200000 /* Only use 2MB for testing */
-macro_line|#endif
+mdefine_line|#define SDRAM_SIZE&t;&t;0x01000000 /* 16MB */
 multiline_comment|/* Simulator specific control registers.  */
 multiline_comment|/* NOTHAL controls whether the simulator will stop at a `halt&squot; insn.  */
 DECL|macro|SIM85E2_NOTHAL_ADDR

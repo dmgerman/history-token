@@ -1817,6 +1817,13 @@ c_func
 id|memchr
 )paren
 suffix:semicolon
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 DECL|variable|csum_partial_copy_sparc64
 id|EXPORT_SYMBOL
 c_func

@@ -1643,6 +1643,17 @@ id|count
 op_decrement
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|buf
+(braket
+l_int|0
+)braket
+op_eq
+l_int|0x47
+)paren
+(brace
 id|dvb_dmx_swfilter_packet
 c_func
 (paren
@@ -1651,6 +1662,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
+)brace
 id|buf
 op_add_assign
 l_int|188

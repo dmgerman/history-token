@@ -27,6 +27,32 @@ id|jiffies_64
 suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE&t;(tick_nsec / 1000)
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
 DECL|function|do_profile
 r_static
 r_inline

@@ -11079,6 +11079,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MMU
 r_do
 (brace
 id|pgd_t
@@ -11200,6 +11201,7 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
+macro_line|#endif
 id|page
 op_assign
 id|virt_to_page

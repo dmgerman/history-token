@@ -4674,6 +4674,18 @@ id|tuner_type
 suffix:semicolon
 id|u8
 id|id
+suffix:semicolon
+id|stv0299_writereg
+(paren
+id|i2c
+comma
+l_int|0x02
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+multiline_comment|/* standby off */
+id|id
 op_assign
 id|stv0299_readreg
 (paren

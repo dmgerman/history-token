@@ -556,7 +556,7 @@ op_star
 id|list
 comma
 r_int
-id|length
+id|sglen
 )paren
 (brace
 id|u32
@@ -566,11 +566,23 @@ comma
 id|fill
 suffix:semicolon
 r_int
+id|nr_pages
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|i
 comma
 id|p
 suffix:semicolon
-singleline_comment|//fm&t;DEB_EE((&quot;pci:%p, pt:%p, sl:%p, len:%d&bslash;n&quot;,pci,pt,list,length));
+id|BUG_ON
+c_func
+(paren
+l_int|0
+op_eq
+id|sglen
+)paren
+suffix:semicolon
 multiline_comment|/* if we have a user buffer, the first page may not be&n;&t;   aligned to a page boundary. */
 id|pt-&gt;offset
 op_assign
@@ -589,7 +601,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|length
+id|sglen
 suffix:semicolon
 id|i
 op_increment
@@ -598,6 +610,7 @@ id|list
 op_increment
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;printk(&quot;i:%d, adr:0x%08x, len:%d, offset:%d&bslash;n&quot;, i,sg_dma_address(list), sg_dma_len(list), list-&gt;offset);&n;*/
 r_for
 c_loop
 (paren
@@ -626,8 +639,13 @@ c_func
 (paren
 id|list
 )paren
-op_minus
-id|list-&gt;offset
+op_plus
+id|p
+op_star
+l_int|4096
+suffix:semicolon
+id|nr_pages
+op_increment
 suffix:semicolon
 )brace
 )brace
@@ -644,6 +662,9 @@ suffix:semicolon
 r_for
 c_loop
 (paren
+id|i
+op_assign
+id|nr_pages
 suffix:semicolon
 id|i
 OL
@@ -660,7 +681,7 @@ op_assign
 id|fill
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;ptr = pt-&gt;cpu;&n;&t;for(j=0;j&lt;60;j++) {&n;&t;&t;printk(&quot;ptr1 %d: 0x%08x&bslash;n&quot;,j,ptr[j]);&n;&t;}&n;*/
+multiline_comment|/*&n;&t;ptr = pt-&gt;cpu;&n;&t;printk(&quot;offset: %d&bslash;n&quot;,pt-&gt;offset);&n;&t;for(i=0;i&lt;5;i++) {&n;&t;&t;printk(&quot;ptr1 %d: 0x%08x&bslash;n&quot;,i,ptr[i]);&n;&t;}&n;*/
 )brace
 multiline_comment|/********************************************************************************/
 multiline_comment|/* gpio functions */

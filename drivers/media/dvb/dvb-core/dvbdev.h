@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * dvbdev.h&n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;                      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Lesser Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/* &n; * dvbdev.h&n; *&n; * Copyright (C) 2000 Ralph Metzler &amp; Marcus Metzler&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Lesser Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#ifndef _DVBDEV_H_
 DECL|macro|_DVBDEV_H_
 mdefine_line|#define _DVBDEV_H_
@@ -89,13 +89,18 @@ DECL|member|id
 id|u32
 id|id
 suffix:semicolon
-DECL|member|users
+multiline_comment|/* in theory, &squot;users&squot; can vanish now,&n;&t;   but I don&squot;t want to change too much now... */
+DECL|member|readers
 r_int
-id|users
+id|readers
 suffix:semicolon
 DECL|member|writers
 r_int
 id|writers
+suffix:semicolon
+DECL|member|users
+r_int
+id|users
 suffix:semicolon
 multiline_comment|/* don&squot;t really need those !? -- FIXME: use video_usercopy  */
 DECL|member|kernel_ioctl
