@@ -474,59 +474,60 @@ op_star
 id|buffer
 )paren
 (brace
+multiline_comment|/* FIXME - output names are in emufx.c too */
 r_static
 r_char
 op_star
-id|outputs
+id|creative_outs
 (braket
 l_int|32
 )braket
 op_assign
 (brace
 multiline_comment|/* 00 */
-l_string|&quot;PCM Left&quot;
+l_string|&quot;AC97 Left&quot;
 comma
 multiline_comment|/* 01 */
-l_string|&quot;PCM Right&quot;
+l_string|&quot;AC97 Right&quot;
 comma
 multiline_comment|/* 02 */
-l_string|&quot;PCM Surround Left&quot;
+l_string|&quot;Optical IEC958 Left&quot;
 comma
 multiline_comment|/* 03 */
-l_string|&quot;PCM Surround Right&quot;
+l_string|&quot;Optical IEC958 Right&quot;
 comma
 multiline_comment|/* 04 */
-l_string|&quot;MIDI Left&quot;
+l_string|&quot;Center&quot;
 comma
 multiline_comment|/* 05 */
-l_string|&quot;MIDI Right&quot;
+l_string|&quot;LFE&quot;
 comma
 multiline_comment|/* 06 */
-l_string|&quot;PCM Center&quot;
+l_string|&quot;Headphone Left&quot;
 comma
 multiline_comment|/* 07 */
-l_string|&quot;PCM LFE&quot;
+l_string|&quot;Headphone Right&quot;
 comma
 multiline_comment|/* 08 */
-l_string|&quot;???&quot;
+l_string|&quot;Surround Left&quot;
 comma
 multiline_comment|/* 09 */
-l_string|&quot;???&quot;
+l_string|&quot;Surround Right&quot;
 comma
 multiline_comment|/* 10 */
-l_string|&quot;???&quot;
+l_string|&quot;PCM Capture Left&quot;
 comma
 multiline_comment|/* 11 */
-l_string|&quot;???&quot;
+l_string|&quot;PCM Capture Right&quot;
 comma
 multiline_comment|/* 12 */
-l_string|&quot;MIDI Reverb&quot;
+l_string|&quot;MIC Capture&quot;
 comma
 multiline_comment|/* 13 */
-l_string|&quot;MIDI Chorus&quot;
+l_string|&quot;AC97 Surround Left&quot;
 comma
 multiline_comment|/* 14 */
-l_string|&quot;???&quot;
+l_string|&quot;AC97 Surround Right&quot;
 comma
 multiline_comment|/* 15 */
 l_string|&quot;???&quot;
@@ -535,25 +536,25 @@ multiline_comment|/* 16 */
 l_string|&quot;???&quot;
 comma
 multiline_comment|/* 17 */
-l_string|&quot;???&quot;
+l_string|&quot;Analog Center&quot;
 comma
 multiline_comment|/* 18 */
-l_string|&quot;ADC Left / CDROM S/PDIF Left&quot;
+l_string|&quot;Analog LFE&quot;
 comma
 multiline_comment|/* 19 */
-l_string|&quot;ADC Right / CDROM S/PDIF Right&quot;
+l_string|&quot;???&quot;
 comma
 multiline_comment|/* 20 */
-l_string|&quot;MIC / Zoom Video Left&quot;
+l_string|&quot;???&quot;
 comma
 multiline_comment|/* 21 */
-l_string|&quot;Zoom Video Right&quot;
+l_string|&quot;???&quot;
 comma
 multiline_comment|/* 22 */
-l_string|&quot;S/PDIF Left&quot;
+l_string|&quot;???&quot;
 comma
 multiline_comment|/* 23 */
-l_string|&quot;S/PDIF Right&quot;
+l_string|&quot;???&quot;
 comma
 multiline_comment|/* 24 */
 l_string|&quot;???&quot;
@@ -577,6 +578,208 @@ multiline_comment|/* 30 */
 l_string|&quot;???&quot;
 comma
 multiline_comment|/* 31 */
+l_string|&quot;???&quot;
+)brace
+suffix:semicolon
+r_static
+r_char
+op_star
+id|audigy_outs
+(braket
+l_int|64
+)braket
+op_assign
+(brace
+multiline_comment|/* 00 */
+l_string|&quot;Digital Front Left&quot;
+comma
+multiline_comment|/* 01 */
+l_string|&quot;Digital Front Right&quot;
+comma
+multiline_comment|/* 02 */
+l_string|&quot;Digital Center&quot;
+comma
+multiline_comment|/* 03 */
+l_string|&quot;Digital LEF&quot;
+comma
+multiline_comment|/* 04 */
+l_string|&quot;Headphone Left&quot;
+comma
+multiline_comment|/* 05 */
+l_string|&quot;Headphone Right&quot;
+comma
+multiline_comment|/* 06 */
+l_string|&quot;Digital Rear Left&quot;
+comma
+multiline_comment|/* 07 */
+l_string|&quot;Digital Rear Right&quot;
+comma
+multiline_comment|/* 08 */
+l_string|&quot;Front Left&quot;
+comma
+multiline_comment|/* 09 */
+l_string|&quot;Front Right&quot;
+comma
+multiline_comment|/* 10 */
+l_string|&quot;Center&quot;
+comma
+multiline_comment|/* 11 */
+l_string|&quot;LFE&quot;
+comma
+multiline_comment|/* 12 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 13 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 14 */
+l_string|&quot;Rear Left&quot;
+comma
+multiline_comment|/* 15 */
+l_string|&quot;Rear Right&quot;
+comma
+multiline_comment|/* 16 */
+l_string|&quot;AC97 Front Left&quot;
+comma
+multiline_comment|/* 17 */
+l_string|&quot;AC97 Front Right&quot;
+comma
+multiline_comment|/* 18 */
+l_string|&quot;ADC Caputre Left&quot;
+comma
+multiline_comment|/* 19 */
+l_string|&quot;ADC Capture Right&quot;
+comma
+multiline_comment|/* 20 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 21 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 22 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 23 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 24 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 25 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 26 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 27 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 28 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 29 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 30 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 31 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 32 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 33 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 34 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 35 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 36 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 37 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 38 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 39 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 40 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 41 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 42 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 43 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 44 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 45 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 46 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 47 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 48 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 49 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 50 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 51 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 52 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 53 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 54 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 55 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 56 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 57 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 58 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 59 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 60 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 61 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 62 */
+l_string|&quot;???&quot;
+comma
+multiline_comment|/* 33 */
 l_string|&quot;???&quot;
 )brace
 suffix:semicolon
@@ -607,6 +810,18 @@ c_cond
 l_int|64
 suffix:colon
 l_int|32
+suffix:semicolon
+r_char
+op_star
+op_star
+id|outputs
+op_assign
+id|emu-&gt;audigy
+ques
+c_cond
+id|audigy_outs
+suffix:colon
+id|creative_outs
 suffix:semicolon
 r_int
 id|idx
@@ -835,8 +1050,6 @@ comma
 id|outputs
 (braket
 id|idx
-op_mod
-l_int|32
 )braket
 )paren
 suffix:semicolon
