@@ -1867,5 +1867,10 @@ mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
 DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
 mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
 macro_line|#endif
+r_extern
+r_int
+r_int
+id|boot_option_idle_override
+suffix:semicolon
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof
