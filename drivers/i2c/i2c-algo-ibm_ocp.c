@@ -3157,9 +3157,9 @@ multiline_comment|/* &n; * registering functions to load algorithms at runtime &
 singleline_comment|//
 singleline_comment|// Description: Register bus structure
 singleline_comment|//
-DECL|function|i2c_iic_add_bus
+DECL|function|i2c_ocp_add_bus
 r_int
-id|i2c_iic_add_bus
+id|i2c_ocp_add_bus
 c_func
 (paren
 r_struct
@@ -3249,9 +3249,9 @@ suffix:semicolon
 singleline_comment|//
 singleline_comment|// Done
 singleline_comment|//
-DECL|function|i2c_iic_del_bus
+DECL|function|i2c_ocp_del_bus
 r_int
-id|i2c_iic_del_bus
+id|i2c_ocp_del_bus
 c_func
 (paren
 r_struct
@@ -3335,18 +3335,18 @@ r_void
 r_return
 suffix:semicolon
 )brace
-DECL|variable|i2c_iic_add_bus
+DECL|variable|i2c_ocp_add_bus
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|i2c_iic_add_bus
+id|i2c_ocp_add_bus
 )paren
 suffix:semicolon
-DECL|variable|i2c_iic_del_bus
+DECL|variable|i2c_ocp_del_bus
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|i2c_iic_del_bus
+id|i2c_ocp_del_bus
 )paren
 suffix:semicolon
 singleline_comment|//

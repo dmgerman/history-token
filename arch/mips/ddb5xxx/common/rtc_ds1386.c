@@ -2,19 +2,12 @@ multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: j
 multiline_comment|/*&n; * This file exports a function, rtc_ds1386_init(), which expects an&n; * uncached base address as the argument.  It will set the two function&n; * pointers expected by the MIPS generic timer code.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
 DECL|macro|EPOCH
 mdefine_line|#define&t;EPOCH&t;&t;2000
-DECL|macro|BCD_TO_BIN
-macro_line|#undef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) (((val)&amp;15) + ((val)&gt;&gt;4)*10)
-DECL|macro|BIN_TO_BCD
-macro_line|#undef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) ((((val)/10)&lt;&lt;4) + (val)%10)
 DECL|macro|READ_RTC
 mdefine_line|#define&t;READ_RTC(x)&t;*(volatile unsigned char*)(rtc_base+x)
 DECL|macro|WRITE_RTC
@@ -79,7 +72,7 @@ suffix:semicolon
 multiline_comment|/* read time data */
 id|year
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|READ_RTC
@@ -93,7 +86,7 @@ id|EPOCH
 suffix:semicolon
 id|month
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|READ_RTC
@@ -107,7 +100,7 @@ l_int|0x1f
 suffix:semicolon
 id|day
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|READ_RTC
@@ -119,7 +112,7 @@ l_int|0x8
 suffix:semicolon
 id|minute
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|READ_RTC
@@ -131,7 +124,7 @@ l_int|0x2
 suffix:semicolon
 id|second
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|READ_RTC
@@ -175,7 +168,7 @@ l_int|0x40
 multiline_comment|/* 12 hour format */
 id|hour
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|temp
@@ -201,7 +194,7 @@ r_else
 multiline_comment|/* 24 hour format */
 id|hour
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|temp
@@ -296,7 +289,7 @@ suffix:semicolon
 multiline_comment|/* check each field one by one */
 id|year
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_year
@@ -335,7 +328,7 @@ l_int|0x9
 suffix:semicolon
 id|month
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_mon
@@ -375,7 +368,7 @@ suffix:semicolon
 )brace
 id|day
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_mday
@@ -436,7 +429,7 @@ op_or_assign
 l_int|0x20
 op_or
 (paren
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|hour
@@ -452,7 +445,7 @@ r_else
 (brace
 id|hour
 op_or_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_hour
@@ -465,7 +458,7 @@ r_else
 multiline_comment|/* 24 hour format */
 id|hour
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_hour
@@ -491,7 +484,7 @@ id|hour
 suffix:semicolon
 id|minute
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_min
@@ -520,7 +513,7 @@ suffix:semicolon
 )brace
 id|second
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|tm.tm_sec

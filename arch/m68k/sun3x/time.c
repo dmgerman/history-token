@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -38,10 +39,6 @@ DECL|macro|C_SIGN
 mdefine_line|#define C_SIGN    0x20
 DECL|macro|C_CALIB
 mdefine_line|#define C_CALIB   0x1f
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(val) (((val)&amp;15) + ((val)&gt;&gt;4)*10)
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(val) (((val/10) &lt;&lt; 4) | (val % 10))
 DECL|function|sun3x_hwclk
 r_int
 id|sun3x_hwclk
@@ -95,7 +92,7 @@ id|C_WRITE
 suffix:semicolon
 id|h-&gt;sec
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_sec
@@ -103,7 +100,7 @@ id|t-&gt;tm_sec
 suffix:semicolon
 id|h-&gt;min
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_min
@@ -111,7 +108,7 @@ id|t-&gt;tm_min
 suffix:semicolon
 id|h-&gt;hour
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_hour
@@ -119,7 +116,7 @@ id|t-&gt;tm_hour
 suffix:semicolon
 id|h-&gt;wday
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_wday
@@ -127,7 +124,7 @@ id|t-&gt;tm_wday
 suffix:semicolon
 id|h-&gt;mday
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_mday
@@ -135,7 +132,7 @@ id|t-&gt;tm_mday
 suffix:semicolon
 id|h-&gt;month
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_mon
@@ -143,7 +140,7 @@ id|t-&gt;tm_mon
 suffix:semicolon
 id|h-&gt;year
 op_assign
-id|BIN_TO_BCD
+id|BIN2BCD
 c_func
 (paren
 id|t-&gt;tm_year
@@ -163,7 +160,7 @@ id|C_READ
 suffix:semicolon
 id|t-&gt;tm_sec
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;sec
@@ -171,7 +168,7 @@ id|h-&gt;sec
 suffix:semicolon
 id|t-&gt;tm_min
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;min
@@ -179,7 +176,7 @@ id|h-&gt;min
 suffix:semicolon
 id|t-&gt;tm_hour
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;hour
@@ -187,7 +184,7 @@ id|h-&gt;hour
 suffix:semicolon
 id|t-&gt;tm_wday
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;wday
@@ -195,7 +192,7 @@ id|h-&gt;wday
 suffix:semicolon
 id|t-&gt;tm_mday
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;mday
@@ -203,7 +200,7 @@ id|h-&gt;mday
 suffix:semicolon
 id|t-&gt;tm_mon
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;month
@@ -211,7 +208,7 @@ id|h-&gt;month
 suffix:semicolon
 id|t-&gt;tm_year
 op_assign
-id|BCD_TO_BIN
+id|BCD2BIN
 c_func
 (paren
 id|h-&gt;year

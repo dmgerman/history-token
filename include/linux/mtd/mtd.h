@@ -841,10 +841,8 @@ c_cond
 (paren
 id|ret
 op_logical_and
-id|ret-&gt;module
-op_logical_and
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|ret-&gt;module

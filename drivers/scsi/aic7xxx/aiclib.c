@@ -3414,9 +3414,7 @@ l_int|0x3A
 comma
 l_int|0x00
 comma
-id|SS_FATAL
-op_or
-id|ENXIO
+id|SS_NOP
 comma
 l_string|&quot;Medium not present&quot;
 )paren
@@ -3431,9 +3429,7 @@ l_int|0x3A
 comma
 l_int|0x01
 comma
-id|SS_FATAL
-op_or
-id|ENXIO
+id|SS_NOP
 comma
 l_string|&quot;Medium not present - tray closed&quot;
 )paren
@@ -3446,16 +3442,61 @@ c_func
 (paren
 l_int|0x3A
 comma
-l_int|0x02
+l_int|0x01
 comma
-id|SS_FATAL
-op_or
-id|ENXIO
+id|SS_NOP
 comma
 l_string|&quot;Medium not present - tray open&quot;
 )paren
 )brace
 comma
+multiline_comment|/* DT  WR OM    */
+(brace
+id|SST
+c_func
+(paren
+l_int|0x3A
+comma
+l_int|0x03
+comma
+id|SS_NOP
+comma
+l_string|&quot;Medium not present - Loadable&quot;
+)paren
+)brace
+comma
+multiline_comment|/* DT  WR OM    */
+(brace
+id|SST
+c_func
+(paren
+l_int|0x3A
+comma
+l_int|0x04
+comma
+id|SS_NOP
+comma
+l_string|&quot;Medium not present - medium auxiliary &quot;
+l_string|&quot;memory accessible&quot;
+)paren
+)brace
+comma
+multiline_comment|/* DT  WR OM    */
+(brace
+id|SST
+c_func
+(paren
+l_int|0x3A
+comma
+l_int|0xFF
+comma
+id|SS_NOP
+comma
+l_int|NULL
+)paren
+)brace
+comma
+multiline_comment|/* Range 0x05-&gt;0xFF */
 multiline_comment|/*  TL          */
 (brace
 id|SST

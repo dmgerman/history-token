@@ -504,10 +504,6 @@ DECL|macro|__NR_ia32_io_submit
 mdefine_line|#define __NR_ia32_io_submit&t;&t;248
 DECL|macro|__NR_ia32_io_cancel
 mdefine_line|#define __NR_ia32_io_cancel&t;&t;249
-DECL|macro|__NR_ia32_alloc_hugepages
-mdefine_line|#define __NR_ia32_alloc_hugepages&t;&t;250
-DECL|macro|__NR_ia32_free_hugepages
-mdefine_line|#define __NR_ia32_free_hugepages&t;&t;251
 DECL|macro|__NR_ia32_exit_group
 mdefine_line|#define __NR_ia32_exit_group&t;&t;252
 DECL|macro|__NR_ia32_lookup_dcookie

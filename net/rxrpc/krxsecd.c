@@ -797,7 +797,7 @@ id|srv-&gt;service_id
 op_eq
 id|sid
 op_logical_and
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|srv-&gt;owner

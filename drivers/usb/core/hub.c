@@ -1014,10 +1014,21 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Enable power to the ports */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;enabling power on all ports&quot;
+op_star
+id|hubdev
+c_func
+(paren
+id|interface_to_usbdev
+c_func
+(paren
+id|hub-&gt;intf
+)paren
+)paren
+comma
+l_string|&quot;enabling power on all ports&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev
@@ -1090,6 +1101,11 @@ id|interface_to_usbdev
 (paren
 id|hub-&gt;intf
 )paren
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|hub_dev
 suffix:semicolon
 r_struct
 id|usb_hub_status
@@ -1197,6 +1213,14 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+id|hub_dev
+op_assign
+id|hubdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;maxchild
 op_assign
 id|hub-&gt;descriptor-&gt;bNbrPorts
@@ -1204,10 +1228,7 @@ suffix:semicolon
 id|dev_info
 (paren
 op_star
-id|hubdev
-(paren
-id|dev
-)paren
+id|hub_dev
 comma
 l_string|&quot;%d port%s detected&bslash;n&quot;
 comma
@@ -1309,20 +1330,26 @@ id|dev-&gt;maxchild
 op_assign
 l_int|0
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;compound device; port removable status: %s&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;compound device; port removable status: %s&bslash;n&quot;
 comma
 id|portstr
 )paren
 suffix:semicolon
 )brace
 r_else
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;standalone hub&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;standalone hub&bslash;n&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -1336,10 +1363,13 @@ id|HUB_CHAR_LPSM
 r_case
 l_int|0x00
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;ganged power switching&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;ganged power switching&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1347,10 +1377,13 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;individual port power switching&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;individual port power switching&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1361,10 +1394,13 @@ suffix:colon
 r_case
 l_int|0x03
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;unknown reserved power switching mode&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;unknown reserved power switching mode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1381,10 +1417,13 @@ id|HUB_CHAR_OCPM
 r_case
 l_int|0x00
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;global over-current protection&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;global over-current protection&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1392,10 +1431,13 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;individual port over-current protection&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;individual port over-current protection&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1406,10 +1448,13 @@ suffix:colon
 r_case
 l_int|0x18
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;no over-current protection&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;no over-current protection&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1451,10 +1496,13 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Single TT&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;Single TT&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hub-&gt;tt.hub
@@ -1466,10 +1514,13 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;TT per port&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;TT per port&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hub-&gt;tt.hub
@@ -1484,10 +1535,13 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Unrecognized hub protocol %d&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;Unrecognized hub protocol %d&bslash;n&quot;
 comma
 id|dev-&gt;descriptor.bDeviceProtocol
 )paren
@@ -1513,10 +1567,13 @@ id|dev-&gt;descriptor.bDeviceProtocol
 op_ne
 l_int|0
 )paren
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;TT requires at most 8 FS bit times&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;TT requires at most 8 FS bit times&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1524,10 +1581,13 @@ suffix:semicolon
 r_case
 l_int|0x20
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;TT requires at most 16 FS bit times&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;TT requires at most 16 FS bit times&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1535,10 +1595,13 @@ suffix:semicolon
 r_case
 l_int|0x40
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;TT requires at most 24 FS bit times&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;TT requires at most 24 FS bit times&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1546,19 +1609,25 @@ suffix:semicolon
 r_case
 l_int|0x60
 suffix:colon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;TT requires at most 32 FS bit times&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;TT requires at most 32 FS bit times&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;Port indicators are %s supported&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;Port indicators are %s supported&bslash;n&quot;
 comma
 (paren
 id|hub-&gt;descriptor-&gt;wHubCharacteristics
@@ -1572,20 +1641,26 @@ suffix:colon
 l_string|&quot;not&quot;
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;power on to power good time: %dms&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;power on to power good time: %dms&bslash;n&quot;
 comma
 id|hub-&gt;descriptor-&gt;bPwrOn2PwrGood
 op_star
 l_int|2
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;hub controller current requirement: %dmA&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;hub controller current requirement: %dmA&bslash;n&quot;
 comma
 id|hub-&gt;descriptor-&gt;bHubContrCurrent
 )paren
@@ -1624,10 +1699,13 @@ op_amp
 id|hubstatus.wHubStatus
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;local power source is %s&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;local power source is %s&bslash;n&quot;
 comma
 (paren
 id|hubstatus.wHubStatus
@@ -1641,10 +1719,13 @@ suffix:colon
 l_string|&quot;good&quot;
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%sover-current condition exists&quot;
+op_star
+id|hub_dev
+comma
+l_string|&quot;%sover-current condition exists&bslash;n&quot;
 comma
 (paren
 id|hubstatus.wHubStatus

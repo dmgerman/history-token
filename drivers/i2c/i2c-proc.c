@@ -1,6 +1,5 @@
 multiline_comment|/*&n;    i2c-proc.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    This driver puts entries in /proc/sys/dev/sensors for each I2C device&n;*/
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -8,14 +7,10 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifndef THIS_MODULE
-DECL|macro|THIS_MODULE
-mdefine_line|#define THIS_MODULE NULL
-macro_line|#endif
+macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
 r_int
 id|i2c_create_name
@@ -159,15 +154,6 @@ r_struct
 id|ctl_table_header
 op_star
 id|i2c_entries
-(braket
-id|SENSORS_ENTRY_MAX
-)braket
-suffix:semicolon
-DECL|variable|i2c_inodes
-r_static
-r_int
-r_int
-id|i2c_inodes
 (braket
 id|SENSORS_ENTRY_MAX
 )braket
@@ -367,6 +353,10 @@ l_int|50
 suffix:semicolon
 r_int
 id|id
+comma
+id|i
+comma
+id|end
 suffix:semicolon
 r_if
 c_cond
@@ -389,6 +379,101 @@ comma
 id|addr
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|adapter-&gt;algo-&gt;smbus_xfer
+op_logical_and
+op_logical_neg
+id|adapter-&gt;algo-&gt;master_xfer
+)paren
+(brace
+multiline_comment|/* dummy adapter, generate prefix */
+id|sprintf
+c_func
+(paren
+id|name_buffer
+comma
+l_string|&quot;%s-&quot;
+comma
+id|prefix
+)paren
+suffix:semicolon
+id|end
+op_assign
+id|strlen
+c_func
+(paren
+id|name_buffer
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|32
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|adapter-&gt;algo-&gt;name
+(braket
+id|i
+)braket
+op_eq
+l_char|&squot; &squot;
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+id|name_buffer
+(braket
+id|end
+op_increment
+)braket
+op_assign
+id|tolower
+c_func
+(paren
+id|adapter-&gt;algo-&gt;name
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+id|name_buffer
+(braket
+id|end
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|name_buffer
+op_plus
+id|end
+comma
+l_string|&quot;-%04x&quot;
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 r_if
@@ -855,15 +940,6 @@ id|id
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* DEBUG */
-id|i2c_inodes
-(braket
-id|id
-op_minus
-l_int|256
-)braket
-op_assign
-id|new_header-&gt;ctl_table-&gt;child-&gt;child-&gt;de-&gt;low_ino
-suffix:semicolon
 id|new_header-&gt;ctl_table-&gt;child-&gt;child-&gt;de-&gt;owner
 op_assign
 id|controlling_mod
@@ -962,158 +1038,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Monitor access for /proc/sys/dev/sensors; make unloading i2c-proc.o &n;   impossible if some process still uses it or some file in it */
-DECL|function|i2c_fill_inode
-r_void
-id|i2c_fill_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fill
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_else
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-multiline_comment|/* Monitor access for /proc/sys/dev/sensors/ directories; make unloading&n;   the corresponding module impossible if some process still uses it or&n;   some file in it */
-DECL|function|i2c_dir_fill_inode
-r_void
-id|i2c_dir_fill_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_struct
-id|i2c_client
-op_star
-id|client
-suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-proc.o: Warning: inode NULL in fill_inode()&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;&t;&t;/* def DEBUG */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|SENSORS_ENTRY_MAX
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|i2c_clients
-(braket
-id|i
-)braket
-op_logical_and
-(paren
-id|i2c_inodes
-(braket
-id|i
-)braket
-op_eq
-id|inode-&gt;i_ino
-)paren
-)paren
-r_break
-suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|i
-op_eq
-id|SENSORS_ENTRY_MAX
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-proc.o: Warning: inode (%ld) not found in fill_inode()&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;&t;&t;/* def DEBUG */
-id|client
-op_assign
-id|i2c_clients
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fill
-)paren
-id|client-&gt;driver
-op_member_access_from_pointer
-id|inc_use
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
-r_else
-id|client-&gt;driver
-op_member_access_from_pointer
-id|dec_use
-c_func
-(paren
-id|client
-)paren
-suffix:semicolon
 )brace
 DECL|function|i2c_proc_chips
 r_int

@@ -160,6 +160,14 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Mark the boot cpu &quot;online&quot; so that it can call console drivers in&n; * printk() and can access its per-cpu storage.&n; */
+r_void
+id|smp_prepare_boot_cpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else /* !SMP */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
 DECL|macro|smp_processor_id
@@ -202,7 +210,9 @@ mdefine_line|#define num_online_cpus()&t;&t;&t;1
 DECL|macro|num_booting_cpus
 mdefine_line|#define num_booting_cpus()&t;&t;&t;1
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;&t;&t;&t;({ BUG_ON((cpu) != 0); 1; })
+mdefine_line|#define cpu_possible(cpu)&t;&t;&t;({ BUG_ON((cpu) != 0); 1; })
+DECL|macro|smp_prepare_boot_cpu
+mdefine_line|#define smp_prepare_boot_cpu()&t;&t;&t;do {} while (0)
 r_struct
 id|notifier_block
 suffix:semicolon

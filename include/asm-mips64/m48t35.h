@@ -63,13 +63,5 @@ DECL|macro|M48T35_RTC_STOPPED
 mdefine_line|#define M48T35_RTC_STOPPED  0x80
 DECL|macro|M48T35_RTC_READ
 mdefine_line|#define M48T35_RTC_READ     0x40
-macro_line|#ifndef BCD_TO_BIN
-DECL|macro|BCD_TO_BIN
-mdefine_line|#define BCD_TO_BIN(x)   ((x)=((x)&amp;15) + ((x)&gt;&gt;4)*10)
-macro_line|#endif
-macro_line|#ifndef BIN_TO_BCD
-DECL|macro|BIN_TO_BCD
-mdefine_line|#define BIN_TO_BCD(x)   ((x)=(((x)/10)&lt;&lt;4) + (x)%10)
-macro_line|#endif
 macro_line|#endif
 eof

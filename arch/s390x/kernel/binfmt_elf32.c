@@ -89,6 +89,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 r_int
 id|setup_arg_pages32
 c_func
@@ -98,19 +99,6 @@ id|linux_binprm
 op_star
 id|bprm
 )paren
-suffix:semicolon
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-DECL|member|tv_usec
-r_int
-id|tv_sec
-comma
-id|tv_usec
-suffix:semicolon
-)brace
 suffix:semicolon
 DECL|macro|elf_prstatus
 mdefine_line|#define elf_prstatus elf_prstatus32
@@ -157,25 +145,25 @@ id|pr_sid
 suffix:semicolon
 DECL|member|pr_utime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_utime
 suffix:semicolon
 multiline_comment|/* User time */
 DECL|member|pr_stime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_stime
 suffix:semicolon
 multiline_comment|/* System time */
 DECL|member|pr_cutime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cutime
 suffix:semicolon
 multiline_comment|/* Cumulative user time */
 DECL|member|pr_cstime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cstime
 suffix:semicolon
 multiline_comment|/* Cumulative system time */
