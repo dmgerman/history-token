@@ -269,47 +269,6 @@ l_int|7
 )paren
 comma
 multiline_comment|/* use COMRESET */
-multiline_comment|/* struct ata_taskfile flags */
-DECL|enumerator|ATA_TFLAG_LBA48
-id|ATA_TFLAG_LBA48
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-comma
-multiline_comment|/* enable 48-bit LBA and &quot;HOB&quot; */
-DECL|enumerator|ATA_TFLAG_ISADDR
-id|ATA_TFLAG_ISADDR
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-comma
-multiline_comment|/* enable r/w to nsect/lba regs */
-DECL|enumerator|ATA_TFLAG_DEVICE
-id|ATA_TFLAG_DEVICE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* enable r/w to device reg */
-DECL|enumerator|ATA_TFLAG_WRITE
-id|ATA_TFLAG_WRITE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|3
-)paren
-comma
-multiline_comment|/* data dir: host-&gt;dev==1 (write) */
 DECL|enumerator|ATA_QCFLAG_ACTIVE
 id|ATA_QCFLAG_ACTIVE
 op_assign
@@ -852,79 +811,6 @@ id|ports
 l_int|0
 )braket
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ata_taskfile
-r_struct
-id|ata_taskfile
-(brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* ATA_TFLAG_xxx */
-DECL|member|protocol
-id|u8
-id|protocol
-suffix:semicolon
-multiline_comment|/* ATA_PROT_xxx */
-DECL|member|ctl
-id|u8
-id|ctl
-suffix:semicolon
-multiline_comment|/* control reg */
-DECL|member|hob_feature
-id|u8
-id|hob_feature
-suffix:semicolon
-multiline_comment|/* additional data */
-DECL|member|hob_nsect
-id|u8
-id|hob_nsect
-suffix:semicolon
-multiline_comment|/* to support LBA48 */
-DECL|member|hob_lbal
-id|u8
-id|hob_lbal
-suffix:semicolon
-DECL|member|hob_lbam
-id|u8
-id|hob_lbam
-suffix:semicolon
-DECL|member|hob_lbah
-id|u8
-id|hob_lbah
-suffix:semicolon
-DECL|member|feature
-id|u8
-id|feature
-suffix:semicolon
-DECL|member|nsect
-id|u8
-id|nsect
-suffix:semicolon
-DECL|member|lbal
-id|u8
-id|lbal
-suffix:semicolon
-DECL|member|lbam
-id|u8
-id|lbam
-suffix:semicolon
-DECL|member|lbah
-id|u8
-id|lbah
-suffix:semicolon
-DECL|member|device
-id|u8
-id|device
-suffix:semicolon
-DECL|member|command
-id|u8
-id|command
-suffix:semicolon
-multiline_comment|/* IO operation */
 )brace
 suffix:semicolon
 DECL|struct|ata_queued_cmd
