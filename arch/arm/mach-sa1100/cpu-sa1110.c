@@ -865,6 +865,7 @@ op_assign
 id|sa11x0_getspeed
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|freqs
@@ -1149,6 +1150,7 @@ op_assign
 id|sa11x0_getspeed
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 id|policy-&gt;governor
@@ -1179,6 +1181,15 @@ id|sa1110_driver
 op_assign
 (brace
 dot
+id|flags
+op_assign
+(paren
+id|CPUFREQ_PANIC_OUTOFSYNC
+op_or
+id|CPUFREQ_PANIC_RESUME_OUTOFSYNC
+)paren
+comma
+dot
 id|verify
 op_assign
 id|sa11x0_verify_speed
@@ -1187,6 +1198,11 @@ dot
 id|target
 op_assign
 id|sa1110_target
+comma
+dot
+id|get
+op_assign
+id|sa11x0_getspeed
 comma
 dot
 id|init
@@ -1280,11 +1296,6 @@ comma
 id|sdram-&gt;refresh
 comma
 id|sdram-&gt;cas_latency
-)paren
-suffix:semicolon
-id|cpufreq_gov_userspace_init
-c_func
-(paren
 )paren
 suffix:semicolon
 id|memcpy
