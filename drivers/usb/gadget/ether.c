@@ -461,6 +461,10 @@ multiline_comment|/* use non-CDC for backwards compatibility */
 DECL|macro|DEV_CONFIG_SUBSET
 mdefine_line|#define&t;DEV_CONFIG_SUBSET
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_S3C2410
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|DEFAULT_QLEN
 mdefine_line|#define DEFAULT_QLEN&t;2&t;/* double buffering by default */
@@ -7937,6 +7941,25 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 l_int|0x0211
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_s3c2410
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0212
 )paren
 suffix:semicolon
 )brace
