@@ -1207,15 +1207,6 @@ id|reg
 )paren
 suffix:semicolon
 r_int
-id|pcmcia_bind_mtd
-c_func
-(paren
-id|mtd_bind_t
-op_star
-id|req
-)paren
-suffix:semicolon
-r_int
 id|pcmcia_deregister_client
 c_func
 (paren
