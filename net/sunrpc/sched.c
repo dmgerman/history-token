@@ -1,12 +1,9 @@
 multiline_comment|/*&n; * linux/net/sunrpc/sched.c&n; *&n; * Scheduling for synchronous and asynchronous RPC requests.&n; *&n; * Copyright (C) 1996 Olaf Kirch, &lt;okir@monad.swb.de&gt;&n; * &n; * TCP NFS related read + write fixes&n; * (C) 1999 Dave Airlie, University of Limerick, Ireland &lt;airlied@linux.ie&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
