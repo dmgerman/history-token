@@ -299,18 +299,10 @@ r_int
 id|flag
 )paren
 suffix:semicolon
+DECL|variable|lbmIODone
 r_static
-r_int
+id|bio_end_io_t
 id|lbmIODone
-c_func
-(paren
-r_struct
-id|bio
-op_star
-id|bio
-comma
-r_int
-)paren
 suffix:semicolon
 macro_line|#ifdef _STILL_TO_PORT
 r_static
@@ -5851,7 +5843,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;lbmIODone()&n; *&n; * executed at INTIODONE level&n; */
 DECL|function|lbmIODone
 r_static
-r_int
+r_void
 id|lbmIODone
 c_func
 (paren
@@ -5859,9 +5851,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 id|lbuf_t
@@ -5976,7 +5965,6 @@ id|bp-&gt;l_ioevent
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *      pageout completion&n;&t; *&n;&t; * the bp at the head of write queue has completed pageout.&n;&t; *&n;&t; * if single-commit/full-page pageout, remove the current buffer&n;&t; * from head of pageout queue, and redrive pageout with&n;&t; * the new buffer at head of pageout queue;&n;&t; * otherwise, the partial-page pageout buffer stays at&n;&t; * the head of pageout queue to be redriven for pageout&n;&t; * by lmGroupCommit() until full-page pageout is completed.&n;&t; */
@@ -6028,7 +6016,6 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 id|tail
@@ -6184,7 +6171,6 @@ suffix:semicolon
 multiline_comment|/* unlock+enable */
 )brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|jfsIOWait
