@@ -212,6 +212,7 @@ r_int
 r_int
 id|pte_freelist_forced_free
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|function|pte_free_smp_sync
 r_static
 r_void
@@ -225,6 +226,7 @@ id|arg
 (brace
 multiline_comment|/* Do nothing, just ensure we sync with all CPUs */
 )brace
+macro_line|#endif
 multiline_comment|/* This is only called when we are critically out of memory&n; * (and fail to get a page in pte_free_tlb).&n; */
 DECL|function|pte_free_now
 r_void

@@ -4693,17 +4693,6 @@ id|__secondary_hold
 )paren
 suffix:semicolon
 r_struct
-id|naca_struct
-op_star
-id|_naca
-op_assign
-id|RELOC
-c_func
-(paren
-id|naca
-)paren
-suffix:semicolon
-r_struct
 id|systemcfg
 op_star
 id|_systemcfg
@@ -4741,6 +4730,19 @@ op_amp
 id|prom
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_struct
+id|naca_struct
+op_star
+id|_naca
+op_assign
+id|RELOC
+c_func
+(paren
+id|naca
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* On pmac, we just fill out the various global bitmasks and&n;&t; * arrays indicating our CPUs are here, they are actually started&n;&t; * later on from pmac_smp&n;&t; */
 r_if
 c_cond
@@ -5767,8 +5769,10 @@ id|cpu_present_at_boot
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|next
 suffix:colon
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Init paca for secondary threads.   They start later. */
 r_for
 c_loop
