@@ -8,6 +8,7 @@ macro_line|#include&t;&lt;linux/init.h&gt;
 macro_line|#include&t;&lt;linux/compiler.h&gt;
 macro_line|#include&t;&lt;linux/seq_file.h&gt;
 macro_line|#include&t;&lt;linux/notifier.h&gt;
+macro_line|#include&t;&lt;linux/kallsyms.h&gt;
 macro_line|#include&t;&lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * DEBUG&t;- 1 for kmem_cache_create() to honour; SLAB_DEBUG_INITIAL,&n; *&t;&t;  SLAB_RED_ZONE &amp; SLAB_POISON.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * STATS&t;- 1 to collect stats for /proc/slabinfo.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * FORCED_DEBUG&t;- 1 enables SLAB_RED_ZONE and SLAB_POISON (if possible)&n; */
 macro_line|#ifdef CONFIG_DEBUG_SLAB
@@ -2399,6 +2400,10 @@ op_amp
 id|SLAB_STORE_USER
 )paren
 (brace
+r_void
+op_star
+id|pc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2406,12 +2411,8 @@ id|cachep-&gt;flags
 op_amp
 id|SLAB_RED_ZONE
 )paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Last user: [&lt;%p&gt;]&bslash;n&quot;
-comma
+id|pc
+op_assign
 op_star
 (paren
 r_void
@@ -2425,15 +2426,10 @@ id|size
 op_plus
 id|BYTES_PER_WORD
 )paren
-)paren
 suffix:semicolon
 r_else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Last user: [&lt;%p&gt;]&bslash;n&quot;
-comma
+id|pc
+op_assign
 op_star
 (paren
 r_void
@@ -2445,6 +2441,32 @@ id|addr
 op_plus
 id|size
 )paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Last user: [&lt;%p&gt;]&quot;
+comma
+id|pc
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;(%s)&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|pc
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
