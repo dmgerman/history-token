@@ -38,9 +38,6 @@ comma
 DECL|enumerator|SOCK_BROADCAST
 id|SOCK_BROADCAST
 comma
-DECL|enumerator|SOCK_BSDISM
-id|SOCK_BSDISM
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* Define this to get the sk-&gt;debug debugging facility. */
