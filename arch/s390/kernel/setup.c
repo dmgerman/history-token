@@ -621,7 +621,7 @@ c_cond
 id|MACHINE_IS_VM
 )paren
 (brace
-id|cpcmd
+id|__cpcmd
 c_func
 (paren
 l_string|&quot;QUERY CONSOLE&quot;
@@ -669,7 +669,7 @@ comma
 l_int|16
 )paren
 suffix:semicolon
-id|cpcmd
+id|__cpcmd
 c_func
 (paren
 l_string|&quot;QUERY TERM&quot;
@@ -690,7 +690,7 @@ l_string|&quot;CONMODE&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set the conmode to 3215 so that the device recognition &n;&t;&t; * will set the cu_type of the console to 3215. If the&n;&t;&t; * conmode is 3270 and we don&squot;t set it back then both&n;&t;&t; * 3215 and the 3270 driver will try to access the console&n;&t;&t; * device (3215 as console and 3270 as normal tty).&n;&t;&t; */
-id|cpcmd
+id|__cpcmd
 c_func
 (paren
 l_string|&quot;TERM CONMODE 3215&quot;

@@ -2242,7 +2242,7 @@ id|cmd1
 comma
 l_int|NULL
 comma
-l_int|80
+l_int|0
 )paren
 suffix:semicolon
 id|cpcmd
@@ -2252,7 +2252,7 @@ id|cmd2
 comma
 l_int|NULL
 comma
-l_int|80
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock

@@ -1,9 +1,11 @@
-multiline_comment|/*&n; *  arch/s390/kernel/cpcmd.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; */
-macro_line|#include &lt;linux/stddef.h&gt;
+multiline_comment|/*&n; *  arch/s390/kernel/cpcmd.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; *               Christian Borntraeger (cborntra@de.ibm.com),&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 r_static
@@ -21,9 +23,10 @@ id|cpcmd_buf
 l_int|240
 )braket
 suffix:semicolon
-DECL|function|cpcmd
+multiline_comment|/*&n; * the caller of __cpcmd has to ensure that the response buffer is below 2 GB&n; */
+DECL|function|__cpcmd
 r_void
-id|cpcmd
+id|__cpcmd
 c_func
 (paren
 r_char
@@ -104,6 +107,16 @@ OG
 l_int|0
 )paren
 (brace
+id|memset
+c_func
+(paren
+id|response
+comma
+l_int|0
+comma
+id|rlen
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_ARCH_S390X
 id|asm
 r_volatile
@@ -280,4 +293,136 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__cpcmd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__cpcmd
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ARCH_S390X
+DECL|function|cpcmd
+r_void
+id|cpcmd
+c_func
+(paren
+r_char
+op_star
+id|cmd
+comma
+r_char
+op_star
+id|response
+comma
+r_int
+id|rlen
+)paren
+(brace
+r_char
+op_star
+id|lowbuf
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rlen
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|response
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+op_logical_neg
+(paren
+(paren
+r_int
+r_int
+)paren
+id|response
+op_rshift
+l_int|31
+)paren
+)paren
+id|__cpcmd
+c_func
+(paren
+id|cmd
+comma
+id|response
+comma
+id|rlen
+)paren
+suffix:semicolon
+r_else
+(brace
+id|lowbuf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|rlen
+comma
+id|GFP_KERNEL
+op_or
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lowbuf
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpcmd: could not allocate response buffer&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|__cpcmd
+c_func
+(paren
+id|cmd
+comma
+id|lowbuf
+comma
+id|rlen
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|response
+comma
+id|lowbuf
+comma
+id|rlen
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|lowbuf
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|variable|cpcmd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpcmd
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;/* CONFIG_ARCH_S390X */
 eof

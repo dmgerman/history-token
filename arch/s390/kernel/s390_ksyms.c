@@ -222,11 +222,4 @@ c_func
 id|sys_wait4
 )paren
 suffix:semicolon
-DECL|variable|cpcmd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cpcmd
-)paren
-suffix:semicolon
 eof
