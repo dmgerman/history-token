@@ -8471,13 +8471,15 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&t;  if (aztSendCmd(ACMD_SET_MODE)) RETURN(&quot;azt_poll 3&quot;);&n;&t;  outb(0x01, DATA_PORT);          &n;&t;  PA_OK;&n;&t;  STEN_LOW;&n;*/
+multiline_comment|/*&t;  if (aztSendCmd(ACMD_SET_MODE)) RETURN(&quot;azt_poll 3&quot;);&n;&t;  outb(0x01, DATA_PORT);&n;&t;  PA_OK;&n;&t;  STEN_LOW;&n;*/
 r_if
 c_cond
 (paren
@@ -8679,6 +8681,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -9056,6 +9060,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
