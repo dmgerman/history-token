@@ -476,7 +476,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_initialize_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer to be validated&n; *              required_length     - Length needed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate that the buffer is of the required length or&n; *              allocate a new buffer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_initialize_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer to be validated&n; *              required_length     - Length needed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate that the buffer is of the required length or&n; *              allocate a new buffer.  Returned buffer is always zeroed.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_initialize_buffer
 id|acpi_ut_initialize_buffer
@@ -553,7 +553,7 @@ suffix:colon
 multiline_comment|/* Allocate a new buffer with local interface to allow tracking */
 id|buffer-&gt;pointer
 op_assign
-id|ACPI_MEM_ALLOCATE
+id|ACPI_MEM_CALLOCATE
 (paren
 id|required_length
 )paren
@@ -571,23 +571,13 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear the buffer */
-id|ACPI_MEMSET
-(paren
-id|buffer-&gt;pointer
-comma
-l_int|0
-comma
-id|required_length
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
 (brace
 )brace
-multiline_comment|/* Validate the size of the buffer */
+multiline_comment|/* Existing buffer: Validate the size of the buffer */
 r_if
 c_cond
 (paren
@@ -600,7 +590,19 @@ id|status
 op_assign
 id|AE_BUFFER_OVERFLOW
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+multiline_comment|/* Clear the buffer */
+id|ACPI_MEMSET
+(paren
+id|buffer-&gt;pointer
+comma
+l_int|0
+comma
+id|required_length
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

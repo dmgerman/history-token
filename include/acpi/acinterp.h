@@ -839,7 +839,7 @@ id|acpi_status
 id|acpi_ex_system_do_suspend
 c_func
 (paren
-id|u32
+id|acpi_integer
 id|time
 )paren
 suffix:semicolon

@@ -1297,6 +1297,18 @@ id|function
 suffix:semicolon
 DECL|macro|ACPI_INIT_DEVICE_INI
 mdefine_line|#define ACPI_INIT_DEVICE_INI        1
+r_typedef
+DECL|typedef|acpi_exception_handler
+id|acpi_status
+(paren
+op_star
+id|acpi_exception_handler
+)paren
+(paren
+id|acpi_status
+id|status
+)paren
+suffix:semicolon
 multiline_comment|/* Address Spaces (For Operation Regions) */
 r_typedef
 DECL|typedef|acpi_adr_space_handler

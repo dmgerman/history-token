@@ -299,6 +299,31 @@ id|source_desc
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
+r_if
+c_cond
+(paren
+id|acpi_gbl_integer_byte_width
+op_eq
+l_int|4
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_DEBUG_OBJECT
+comma
+l_string|&quot;0x%8.8X&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|source_desc-&gt;integer.value
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ACPI_DEBUG_PRINT_RAW
 (paren
 (paren
@@ -313,6 +338,7 @@ id|source_desc-&gt;integer.value
 )paren
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -323,7 +349,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Length 0x%.2X&quot;
+l_string|&quot;[0x%.2X]&quot;
 comma
 (paren
 id|u32
@@ -358,7 +384,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Length 0x%.2X, &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;[0x%.2X] &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|source_desc-&gt;string.length
 comma
@@ -376,7 +402,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_DEBUG_OBJECT
 comma
-l_string|&quot;Size 0x%.2X Elements Ptr - %p&bslash;n&quot;
+l_string|&quot;[0x%.2X] Elements Ptr - %p&bslash;n&quot;
 comma
 id|source_desc-&gt;package.count
 comma

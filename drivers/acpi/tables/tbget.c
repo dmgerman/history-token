@@ -273,6 +273,18 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_TABLES
+comma
+l_string|&quot;Table Signature: [%4.4s]&bslash;n&quot;
+comma
+op_amp
+id|return_header-&gt;signature
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_OK

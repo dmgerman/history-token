@@ -116,9 +116,6 @@ id|status
 op_assign
 id|acpi_ex_system_do_suspend
 (paren
-(paren
-id|u32
-)paren
 id|operand
 (braket
 l_int|0
@@ -1206,8 +1203,10 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|return_desc-&gt;integer.value
-op_assign
+multiline_comment|/*&n;&t;&t; * Set result to ONES (TRUE) if Value == 0.  Note:&n;&t;&t; * return_desc-&gt;Integer.Value is initially == 0 (FALSE) from above.&n;&t;&t; */
+r_if
+c_cond
+(paren
 op_logical_neg
 id|operand
 (braket
@@ -1215,7 +1214,13 @@ l_int|0
 )braket
 op_member_access_from_pointer
 id|integer.value
+)paren
+(brace
+id|return_desc-&gt;integer.value
+op_assign
+id|ACPI_INTEGER_MAX
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
