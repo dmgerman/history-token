@@ -474,6 +474,7 @@ id|isa_cascade_irqaction
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_ALPHA_PC164
 r_static
 r_void
 id|__init
@@ -491,6 +492,7 @@ id|srm_device_interrupt
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_PC164)
 multiline_comment|/* In theory, the PC164 has the same interrupt hardware as the other&n;   Cabriolet based systems.  However, something got screwed up late&n;   in the development cycle which broke the interrupt masking hardware.&n;   Repeat, it is not possible to mask and ack interrupts.  At all.&n;&n;   In an attempt to work around this, while processing interrupts,&n;   we do not allow the IPL to drop below what it is currently.  This&n;   prevents the possibility of recursion.  &n;&n;   ??? Another option might be to force all PCI devices to use edge&n;   triggered rather than level triggered interrupts.  That might be&n;   too invasive though.  */
 r_static

@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_UIO_H
 DECL|macro|__LINUX_UIO_H
 mdefine_line|#define __LINUX_UIO_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; *&t;Berkeley style UIO structures&t;-&t;Alan Cox 1994.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* A word of warning: Our uio structure will clash with the C library one (which is now obsolete). Remove the C&n;   library one from sys/uio.h if you have a very old library set */
@@ -10,6 +11,7 @@ id|iovec
 (brace
 DECL|member|iov_base
 r_void
+id|__user
 op_star
 id|iov_base
 suffix:semicolon

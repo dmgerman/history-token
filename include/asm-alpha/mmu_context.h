@@ -533,6 +533,13 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk
+op_ne
+id|current
+)paren
 id|tsk-&gt;thread_info-&gt;pcb.ptbr
 op_assign
 (paren

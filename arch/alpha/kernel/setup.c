@@ -348,6 +348,13 @@ c_func
 id|lx164_mv
 )paren
 suffix:semicolon
+DECL|variable|lynx_mv
+id|WEAK
+c_func
+(paren
+id|lynx_mv
+)paren
+suffix:semicolon
 DECL|variable|marvel_ev7_mv
 id|WEAK
 c_func
@@ -882,7 +889,11 @@ op_assign
 id|__alloc_bootmem
 c_func
 (paren
+id|PAGE_ALIGN
+c_func
+(paren
 id|size
+)paren
 comma
 id|PAGE_SIZE
 comma
@@ -3063,10 +3074,9 @@ comma
 l_int|NULL
 comma
 multiline_comment|/* Mustang */
-op_amp
-id|alcor_mv
+l_int|NULL
 comma
-multiline_comment|/* Alcor, Bret, Maverick.  */
+multiline_comment|/* Alcor, Bret, Maverick. HWRPB inaccurate? */
 l_int|NULL
 comma
 multiline_comment|/* Tradewind */
@@ -3091,7 +3101,8 @@ comma
 l_int|NULL
 comma
 multiline_comment|/* K2 */
-l_int|NULL
+op_amp
+id|lynx_mv
 comma
 multiline_comment|/* Lynx */
 op_amp
@@ -3852,6 +3863,9 @@ id|jensen_mv
 comma
 op_amp
 id|lx164_mv
+comma
+op_amp
+id|lynx_mv
 comma
 op_amp
 id|miata_mv

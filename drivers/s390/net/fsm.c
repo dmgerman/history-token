@@ -1,6 +1,5 @@
-multiline_comment|/**&n; * $Id: fsm.c,v 1.3 2002/10/08 16:53:45 mschwide Exp $&n; *&n; * A generic FSM based on fsm used in isdn4linux&n; *&n; */
+multiline_comment|/**&n; * $Id: fsm.c,v 1.4 2003/03/28 08:54:40 mschwide Exp $&n; *&n; * A generic FSM based on fsm used in isdn4linux&n; *&n; */
 macro_line|#include &quot;fsm.h&quot;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;

@@ -2116,6 +2116,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* The cast to a user pointer is valid due to the set_fs() */
 id|result
 op_assign
 id|vfs_read
@@ -2123,6 +2124,11 @@ c_func
 (paren
 id|file
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|addr
 comma
 id|count

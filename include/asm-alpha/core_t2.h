@@ -3,11 +3,14 @@ DECL|macro|__ALPHA_T2__H__
 mdefine_line|#define __ALPHA_T2__H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/compiler.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * T2 is the internal name for the core logic chipset which provides&n; * memory controller and PCI access for the SABLE-based systems.&n; *&n; * This file is based on:&n; *&n; * SABLE I/O Specification&n; * Revision/Update Information: 1.3&n; *&n; * jestabro@amt.tay1.dec.com Initial Version.&n; *&n; */
 DECL|macro|T2_MEM_R1_MASK
 mdefine_line|#define T2_MEM_R1_MASK 0x07ffffff  /* Mem sparse region 1 mask is 26 bits */
 multiline_comment|/* GAMMA-SABLE is a SABLE with EV5-based CPUs */
+multiline_comment|/* All LYNX machines, EV4 or EV5, use the GAMMA bias also */
 DECL|macro|_GAMMA_BIAS
 mdefine_line|#define _GAMMA_BIAS&t;&t;0x8000000000UL
 macro_line|#if defined(CONFIG_ALPHA_GENERIC)
@@ -63,10 +66,49 @@ DECL|macro|T2_TBASE2
 mdefine_line|#define T2_TBASE2&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0001e0UL)
 DECL|macro|T2_TLBBR
 mdefine_line|#define T2_TLBBR&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000200UL)
+DECL|macro|T2_IVR
+mdefine_line|#define T2_IVR&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000220UL)
 DECL|macro|T2_HAE_3
 mdefine_line|#define T2_HAE_3&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000240UL)
 DECL|macro|T2_HAE_4
 mdefine_line|#define T2_HAE_4&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000260UL)
+multiline_comment|/* The CSRs below are T3/T4 only */
+DECL|macro|T2_WBASE3
+mdefine_line|#define T2_WBASE3&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000280UL)
+DECL|macro|T2_WMASK3
+mdefine_line|#define T2_WMASK3&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0002a0UL)
+DECL|macro|T2_TBASE3
+mdefine_line|#define T2_TBASE3&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0002c0UL)
+DECL|macro|T2_TDR0
+mdefine_line|#define T2_TDR0&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000300UL)
+DECL|macro|T2_TDR1
+mdefine_line|#define T2_TDR1&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000320UL)
+DECL|macro|T2_TDR2
+mdefine_line|#define T2_TDR2&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000340UL)
+DECL|macro|T2_TDR3
+mdefine_line|#define T2_TDR3&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000360UL)
+DECL|macro|T2_TDR4
+mdefine_line|#define T2_TDR4&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000380UL)
+DECL|macro|T2_TDR5
+mdefine_line|#define T2_TDR5&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0003a0UL)
+DECL|macro|T2_TDR6
+mdefine_line|#define T2_TDR6&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0003c0UL)
+DECL|macro|T2_TDR7
+mdefine_line|#define T2_TDR7&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0003e0UL)
+DECL|macro|T2_WBASE4
+mdefine_line|#define T2_WBASE4&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000400UL)
+DECL|macro|T2_WMASK4
+mdefine_line|#define T2_WMASK4&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000420UL)
+DECL|macro|T2_TBASE4
+mdefine_line|#define T2_TBASE4&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000440UL)
+DECL|macro|T2_AIR
+mdefine_line|#define T2_AIR&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000460UL)
+DECL|macro|T2_VAR
+mdefine_line|#define T2_VAR&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e000480UL)
+DECL|macro|T2_DIR
+mdefine_line|#define T2_DIR&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0004a0UL)
+DECL|macro|T2_ICE
+mdefine_line|#define T2_ICE&t;&t;&t;(IDENT_ADDR + GAMMA_BIAS + 0x38e0004c0UL)
 DECL|macro|T2_HAE_ADDRESS
 mdefine_line|#define T2_HAE_ADDRESS&t;&t;T2_HAE_1
 multiline_comment|/*  T2 CSRs are in the non-cachable primary IO space from 3.8000.0000 to&n; 3.8fff.ffff&n; *&n; *  +--------------+ 3 8000 0000&n; *  | CPU 0 CSRs   |&n; *  +--------------+ 3 8100 0000&n; *  | CPU 1 CSRs   |&n; *  +--------------+ 3 8200 0000&n; *  | CPU 2 CSRs   |&n; *  +--------------+ 3 8300 0000&n; *  | CPU 3 CSRs   |&n; *  +--------------+ 3 8400 0000&n; *  | CPU Reserved |&n; *  +--------------+ 3 8700 0000&n; *  | Mem Reserved |&n; *  +--------------+ 3 8800 0000&n; *  | Mem 0 CSRs   |&n; *  +--------------+ 3 8900 0000&n; *  | Mem 1 CSRs   |&n; *  +--------------+ 3 8a00 0000&n; *  | Mem 2 CSRs   |&n; *  +--------------+ 3 8b00 0000&n; *  | Mem 3 CSRs   |&n; *  +--------------+ 3 8c00 0000&n; *  | Mem Reserved |&n; *  +--------------+ 3 8e00 0000&n; *  | PCI Bridge   |&n; *  +--------------+ 3 8f00 0000&n; *  | Expansion IO |&n; *  +--------------+ 3 9000 0000&n; *&n; *&n; */
@@ -78,6 +120,8 @@ DECL|macro|T2_CPU2_BASE
 mdefine_line|#define T2_CPU2_BASE            (IDENT_ADDR + GAMMA_BIAS + 0x382000000L)
 DECL|macro|T2_CPU3_BASE
 mdefine_line|#define T2_CPU3_BASE            (IDENT_ADDR + GAMMA_BIAS + 0x383000000L)
+DECL|macro|T2_CPUn_BASE
+mdefine_line|#define T2_CPUn_BASE(n)&t;&t;(T2_CPU0_BASE + (((n)&amp;3) * 0x001000000L))
 DECL|macro|T2_MEM0_BASE
 mdefine_line|#define T2_MEM0_BASE            (IDENT_ADDR + GAMMA_BIAS + 0x388000000L)
 DECL|macro|T2_MEM1_BASE
@@ -1337,6 +1381,13 @@ suffix:semicolon
 multiline_comment|/*&n; * Memory functions.&n; *&n; * For reading and writing 8 and 16 bit quantities we need to&n; * go through one of the three sparse address mapping regions&n; * and use the HAE_MEM CSR to provide some bits of the address.&n; * The following few routines use only sparse address region 1&n; * which gives 1Gbyte of accessible space which relates exactly&n; * to the amount of PCI memory mapping *into* system address space.&n; * See p 6-17 of the specification but it looks something like this:&n; *&n; * 21164 Address:&n; *&n; *          3         2         1&n; * 9876543210987654321098765432109876543210&n; * 1ZZZZ0.PCI.QW.Address............BBLL&n; *&n; * ZZ = SBZ&n; * BB = Byte offset&n; * LL = Transfer length&n; *&n; * PCI Address:&n; *&n; * 3         2         1&n; * 10987654321098765432109876543210&n; * HHH....PCI.QW.Address........ 00&n; *&n; * HHH = 31:29 HAE_MEM CSR&n; *&n; */
 DECL|macro|t2_set_hae
 mdefine_line|#define t2_set_hae { &bslash;&n;&t;msb = addr  &gt;&gt; 27; &bslash;&n;&t;addr &amp;= T2_MEM_R1_MASK; &bslash;&n;&t;set_hae(msb); &bslash;&n;}
+DECL|variable|t2_hae_lock
+r_static
+id|spinlock_t
+id|t2_hae_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|t2_readb
 id|__EXTERN_INLINE
 id|u8
@@ -1353,6 +1404,19 @@ r_int
 id|result
 comma
 id|msb
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
@@ -1372,6 +1436,15 @@ op_plus
 id|T2_SPARSE_MEM
 op_plus
 l_int|0x00
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1403,6 +1476,19 @@ id|result
 comma
 id|msb
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
 id|result
@@ -1423,6 +1509,15 @@ op_plus
 l_int|0x08
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|__kernel_extwl
 c_func
@@ -1435,7 +1530,7 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* On SABLE with T2, we must use SPARSE memory even for 32-bit access. */
+multiline_comment|/*&n; * On SABLE with T2, we must use SPARSE memory even for 32-bit access,&n; * because we cannot access all of DENSE without changing its HAE.&n; */
 DECL|function|t2_readl
 id|__EXTERN_INLINE
 id|u32
@@ -1449,11 +1544,27 @@ id|addr
 (brace
 r_int
 r_int
+id|result
+comma
 id|msb
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
-r_return
+id|result
+op_assign
 op_star
 (paren
 id|vuip
@@ -1469,6 +1580,20 @@ id|T2_SPARSE_MEM
 op_plus
 l_int|0x18
 )paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|result
+op_amp
+l_int|0xffffffffUL
 suffix:semicolon
 )brace
 DECL|function|t2_readq
@@ -1491,6 +1616,19 @@ comma
 id|work
 comma
 id|msb
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
@@ -1532,6 +1670,15 @@ l_int|5
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|r1
 op_lshift
@@ -1559,6 +1706,19 @@ r_int
 id|msb
 comma
 id|w
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
@@ -1592,6 +1752,15 @@ l_int|0x00
 op_assign
 id|w
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|t2_writew
 id|__EXTERN_INLINE
@@ -1612,6 +1781,19 @@ r_int
 id|msb
 comma
 id|w
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
@@ -1645,8 +1827,17 @@ l_int|0x08
 op_assign
 id|w
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* On SABLE with T2, we must use SPARSE memory even for 32-bit access. */
+multiline_comment|/*&n; * On SABLE with T2, we must use SPARSE memory even for 32-bit access,&n; * because we cannot access all of DENSE without changing its HAE.&n; */
 DECL|function|t2_writel
 id|__EXTERN_INLINE
 r_void
@@ -1664,6 +1855,19 @@ id|addr
 r_int
 r_int
 id|msb
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
@@ -1685,6 +1889,15 @@ l_int|0x18
 op_assign
 id|b
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|t2_writeq
 id|__EXTERN_INLINE
@@ -1705,6 +1918,19 @@ r_int
 id|msb
 comma
 id|work
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|t2_set_hae
 suffix:semicolon
@@ -1745,6 +1971,15 @@ op_assign
 id|b
 op_rshift
 l_int|32
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|t2_hae_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 )brace
 DECL|function|t2_ioremap
