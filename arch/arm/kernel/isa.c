@@ -112,7 +112,7 @@ l_int|2
 op_assign
 (brace
 (brace
-id|BUS_ISA
+id|CTL_BUS_ISA
 comma
 l_string|&quot;isa&quot;
 comma
