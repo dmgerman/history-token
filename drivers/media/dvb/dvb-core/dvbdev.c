@@ -1655,11 +1655,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|mbuf
-)paren
 id|kfree
 c_func
 (paren

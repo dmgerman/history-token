@@ -7204,13 +7204,6 @@ c_func
 id|ca-&gt;dvbdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ca-&gt;slot_info
-op_ne
-l_int|NULL
-)paren
 id|kfree
 c_func
 (paren

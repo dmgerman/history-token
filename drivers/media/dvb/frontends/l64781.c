@@ -2557,11 +2557,6 @@ id|reg0x3e
 )paren
 suffix:semicolon
 multiline_comment|/* restore reg 0x3e */
-r_if
-c_cond
-(paren
-id|state
-)paren
 id|kfree
 c_func
 (paren
