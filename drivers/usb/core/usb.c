@@ -319,6 +319,32 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|new_driver-&gt;fops
+)paren
+op_logical_and
+(paren
+id|new_driver-&gt;num_minors
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;%s driver must specify num_minors&quot;
+comma
+id|new_driver-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 macro_line|#ifndef CONFIG_USB_DYNAMIC_MINORS
 r_if
 c_cond
