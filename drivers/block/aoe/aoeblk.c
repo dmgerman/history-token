@@ -7,33 +7,7 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &quot;aoe.h&quot;
-multiline_comment|/* add attributes for our block devices in sysfs&n; * (see drivers/block/genhd.c:disk_attr_show, etc.)&n; */
-DECL|struct|disk_attribute
-r_struct
-id|disk_attribute
-(brace
-DECL|member|attr
-r_struct
-id|attribute
-id|attr
-suffix:semicolon
-DECL|member|show
-id|ssize_t
-(paren
-op_star
-id|show
-)paren
-(paren
-r_struct
-id|gendisk
-op_star
-comma
-r_char
-op_star
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
+multiline_comment|/* add attributes for our block devices in sysfs */
 DECL|function|aoedisk_show_state
 r_static
 id|ssize_t
