@@ -272,6 +272,11 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|queue
+r_struct
+id|request_queue
+id|queue
+suffix:semicolon
 singleline_comment|//* pointers to command and error info pool */ 
 DECL|member|cmd_pool
 id|CommandList_struct
@@ -762,6 +767,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CCISS_LOCK
-mdefine_line|#define CCISS_LOCK(i)&t;((BLK_DEFAULT_QUEUE(MAJOR_NR + i))-&gt;queue_lock)
+mdefine_line|#define CCISS_LOCK(i)&t;(hba[i]-&gt;queue.queue_lock)
 macro_line|#endif /* CCISS_H */
 eof

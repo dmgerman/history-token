@@ -1078,6 +1078,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;PCI: Setting latency timer of device %s to %d&bslash;n&quot;
 comma
 id|dev-&gt;slot_name

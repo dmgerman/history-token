@@ -492,7 +492,7 @@ id|devs
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
-r_extern
+r_static
 r_inline
 r_int
 id|ld2
@@ -1472,7 +1472,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|stop_adc
-r_extern
+r_static
 r_inline
 r_void
 id|stop_adc
@@ -1581,7 +1581,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|stop_dac
-r_extern
+r_static
 r_inline
 r_void
 id|stop_dac
@@ -2031,7 +2031,7 @@ mdefine_line|#define DMABUF_DEFAULTORDER (17-PAGE_SHIFT)
 DECL|macro|DMABUF_MINORDER
 mdefine_line|#define DMABUF_MINORDER 1
 DECL|function|dealloc_dmabuf
-r_extern
+r_static
 r_inline
 r_void
 id|dealloc_dmabuf
@@ -2477,7 +2477,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_adc
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_adc
@@ -2519,7 +2519,7 @@ id|IT_AC_CAPCC
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_dac
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_dac

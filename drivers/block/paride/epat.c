@@ -2146,12 +2146,6 @@ id|pi
 (brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;epat_init_proto&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|epat_release_proto
 r_static
