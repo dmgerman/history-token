@@ -25,9 +25,9 @@ macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.4)&quot;
+mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.6)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,4)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,6)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
@@ -38,14 +38,14 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.4&quot;
+l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.6&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;HP SA5i SA5i+ SA532 SA5300 SA5312 SA641 SA642 SA6400&quot;
-l_string|&quot; SA6i P600&quot;
+l_string|&quot; SA6i P600 P800 E400&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -228,6 +228,38 @@ l_int|0
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_CISSB
+comma
+l_int|0x103c
+comma
+l_int|0x3223
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_HP
+comma
+id|PCI_DEVICE_ID_HP_CISSB
+comma
+l_int|0x103c
+comma
+l_int|0x3231
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
 l_int|0
 comma
 )brace
@@ -338,6 +370,24 @@ comma
 l_int|0x3225103C
 comma
 l_string|&quot;Smart Array P600&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x3223103C
+comma
+l_string|&quot;Smart Array P800&quot;
+comma
+op_amp
+id|SA5_access
+)brace
+comma
+(brace
+l_int|0x3231103C
+comma
+l_string|&quot;Smart Array E400&quot;
 comma
 op_amp
 id|SA5_access
