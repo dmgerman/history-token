@@ -5573,6 +5573,8 @@ op_assign
 id|min_t
 c_func
 (paren
+r_int
+comma
 id|c
 comma
 id|min
