@@ -8,7 +8,7 @@ macro_line|#include &quot;layout.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;attrib.h&quot;
 macro_line|#include &quot;mft.h&quot;
-multiline_comment|/**&n; * @idx_ni:&t;index inode containing the @entry described by this context&n; * @entry:&t;index entry (points into @ir or @ia)&n; * @data:&t;index entry data (points into @entry)&n; * @data_len:&t;length in bytes of @data&n; * @is_in_root:&t;TRUE if @entry is in @ir and FALSE if it is in @ia&n; * @ir:&t;&t;index root if @is_in_root and NULL otherwise&n; * @actx:&t;attribute search context if @is_in_root and NULL otherwise&n; * @base_ni:&t;base inode if @is_in_root and NULL otherwise&n; * @ia:&t;&t;index block if @is_in_root is FALSE and NULL otherwise&n; * @page:&t;page if @is_in_root is FALSE and NULL otherwise&n; *&n; * @idx_ni is the index inode this context belongs to.&n; *&n; * @entry is the index entry described by this context.  @data and @data_len&n; * are the index entry data and its length in bytes, respectively.  @data&n; * simply points into @entry.  This is probably what the user is interested in.&n; *&n; * If @is_in_root is TRUE, @entry is in the index root attribute @ir described&n; * by the attribute search context @actx and the base inode @base_ni.  @ia and&n; * @page are NULL in this case.&n; *&n; * If @is_in_root is FALSE, @entry is in the index allocation attribute and @ia&n; * and @page point to the index allocation block and the locked page it is in,&n; * respectively.  @ir, @actx and @base_ni are NULL in this case.&n; *&n; * To obtain a context call ntfs_index_ctx_get().&n; *&n; * We use this context to allow ntfs_index_lookup() to return the found index&n; * @entry and its @data without having to allocate a buffer and copy the @entry&n; * and/or its @data into it.&n; *&n; * When finished with the @entry and its @data, call ntfs_index_ctx_put() to&n; * free the context and other associated resources.&n; *&n; * If the index entry was modified, call flush_dcache_index_entry_page()&n; * immediately after the modification and either ntfs_index_entry_mark_dirty()&n; * or ntfs_index_entry_write() before the call to ntfs_index_ctx_put() to&n; * ensure that the changes are written to disk.&n; */
+multiline_comment|/**&n; * @idx_ni:&t;index inode containing the @entry described by this context&n; * @entry:&t;index entry (points into @ir or @ia)&n; * @data:&t;index entry data (points into @entry)&n; * @data_len:&t;length in bytes of @data&n; * @is_in_root:&t;TRUE if @entry is in @ir and FALSE if it is in @ia&n; * @ir:&t;&t;index root if @is_in_root and NULL otherwise&n; * @actx:&t;attribute search context if @is_in_root and NULL otherwise&n; * @base_ni:&t;base inode if @is_in_root and NULL otherwise&n; * @ia:&t;&t;index block if @is_in_root is FALSE and NULL otherwise&n; * @page:&t;page if @is_in_root is FALSE and NULL otherwise&n; *&n; * @idx_ni is the index inode this context belongs to.&n; *&n; * @entry is the index entry described by this context.  @data and @data_len&n; * are the index entry data and its length in bytes, respectively.  @data&n; * simply points into @entry.  This is probably what the user is interested in.&n; *&n; * If @is_in_root is TRUE, @entry is in the index root attribute @ir described&n; * by the attribute search context @actx and the base inode @base_ni.  @ia and&n; * @page are NULL in this case.&n; *&n; * If @is_in_root is FALSE, @entry is in the index allocation attribute and @ia&n; * and @page point to the index allocation block and the mapped, locked page it&n; * is in, respectively.  @ir, @actx and @base_ni are NULL in this case.&n; *&n; * To obtain a context call ntfs_index_ctx_get().&n; *&n; * We use this context to allow ntfs_index_lookup() to return the found index&n; * @entry and its @data without having to allocate a buffer and copy the @entry&n; * and/or its @data into it.&n; *&n; * When finished with the @entry and its @data, call ntfs_index_ctx_put() to&n; * free the context and other associated resources.&n; *&n; * If the index entry was modified, call flush_dcache_index_entry_page()&n; * immediately after the modification and either ntfs_index_entry_mark_dirty()&n; * or ntfs_index_entry_write() before the call to ntfs_index_ctx_put() to&n; * ensure that the changes are written to disk.&n; */
 r_typedef
 r_struct
 (brace
@@ -138,7 +138,17 @@ id|ictx-&gt;page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_index_entry_mark_dirty - mark an index entry dirty&n; * @ictx:&t;ntfs index context describing the index entry&n; *&n; * Mark the index entry described by the index entry context @ictx dirty.&n; *&n; * If the index entry is in the index root attribute, simply mark the mft&n; * record containing the index root attribute dirty.  This ensures the mft&n; * record, and hence the index root attribute, will be written out to disk&n; * later.&n; *&n; * If the index entry is in an index block belonging to the index allocation&n; * attribute, simply mark the page cache page the index block is in dirty.&n; * This automatically marks the VFS inode of the ntfs index inode to which the&n; * index entry belongs dirty, too (I_DIRTY_PAGES) and this in turn ensures the&n; * page, and hence the dirty index block, will be written out to disk later.&n; *&n; * Note, that if an index block is smaller than PAGE_CACHE_SIZE, i.e. if there&n; * are multiple index blocks in each page cache page, dirtying an index entry&n; * in one index block will cause all index blocks located in the same page&n; * cache page to be written out, too but this is a small price to pay&n; * considering how much more complicated the code would have to be to keep&n; * track of which index block inside a page is dirty and which is not.  And&n; * anyway, on ia32 architectures index blocks are usually 4kiB in size which is&n; * the PAGE_CACHE_SIZE and hence this problem does not exist in the majority of&n; * cases.&n; */
+r_extern
+r_void
+id|__ntfs_index_entry_mark_dirty
+c_func
+(paren
+id|ntfs_index_context
+op_star
+id|ictx
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * ntfs_index_entry_mark_dirty - mark an index entry dirty&n; * @ictx:&t;ntfs index context describing the index entry&n; *&n; * Mark the index entry described by the index entry context @ictx dirty.&n; *&n; * If the index entry is in the index root attribute, simply mark the mft&n; * record containing the index root attribute dirty.  This ensures the mft&n; * record, and hence the index root attribute, will be written out to disk&n; * later.&n; *&n; * If the index entry is in an index block belonging to the index allocation&n; * attribute, mark the buffers belonging to the index record as well as the&n; * page cache page the index block is in dirty.  This automatically marks the&n; * VFS inode of the ntfs index inode to which the index entry belongs dirty,&n; * too (I_DIRTY_PAGES) and this in turn ensures the page buffers, and hence the&n; * dirty index block, will be written out to disk later.&n; */
 DECL|function|ntfs_index_entry_mark_dirty
 r_static
 r_inline
@@ -163,10 +173,10 @@ id|ictx-&gt;actx-&gt;ntfs_ino
 )paren
 suffix:semicolon
 r_else
-id|__set_page_dirty_nobuffers
+id|__ntfs_index_entry_mark_dirty
 c_func
 (paren
-id|ictx-&gt;page
+id|ictx
 )paren
 suffix:semicolon
 )brace
