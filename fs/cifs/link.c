@@ -1281,19 +1281,6 @@ c_func
 id|tmp_path
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|referrals
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|referrals
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* BB add code like else decode referrals then memcpy to&n;&t;&t;&t;&t;  tmpbuffer and free referrals string array BB */
 )brace

@@ -3110,6 +3110,11 @@ op_logical_neg
 id|rc
 )paren
 (brace
+id|rc
+op_assign
+(paren
+r_int
+)paren
 id|kernel_thread
 c_func
 (paren
@@ -3124,12 +3129,32 @@ op_or
 id|CLONE_VM
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|rc
+OG
+l_int|0
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
-multiline_comment|/* Success */
 )brace
 r_else
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;error %d create oplock thread&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+)brace
 id|cifs_destroy_request_bufs
 c_func
 (paren
