@@ -4,6 +4,7 @@ DECL|macro|_LINUX_WORKQUEUE_H
 mdefine_line|#define _LINUX_WORKQUEUE_H
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 r_struct
 id|workqueue_struct
 suffix:semicolon
@@ -229,13 +230,34 @@ op_star
 id|work
 )paren
 (brace
-r_return
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|del_timer_sync
 c_func
 (paren
 op_amp
 id|work-&gt;timer
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|work-&gt;pending
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#endif
