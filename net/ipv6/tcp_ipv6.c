@@ -29,6 +29,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
+macro_line|#include &lt;net/dsfield.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -7945,7 +7946,7 @@ id|skb
 op_member_access_from_pointer
 id|flags
 op_assign
-id|ip6_get_dsfield
+id|ipv6_get_dsfield
 c_func
 (paren
 id|skb-&gt;nh.ipv6h

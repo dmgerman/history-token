@@ -24,6 +24,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/dsfield.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#ifdef CONFIG_IPV6
@@ -2025,7 +2026,7 @@ id|ETH_P_IPV6
 )paren
 id|inner
 op_assign
-id|ip6_get_dsfield
+id|ipv6_get_dsfield
 c_func
 (paren
 (paren

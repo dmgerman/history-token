@@ -29,6 +29,7 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#include &lt;net/dsfield.h&gt;
 multiline_comment|/*&n;   This version of net/ipv6/sit.c is cloned of net/ipv4/ip_gre.c&n;&n;   For comments look at net/ipv4/ip_gre.c --ANK&n; */
 DECL|macro|HASH_SIZE
 mdefine_line|#define HASH_SIZE  16
@@ -2443,7 +2444,7 @@ c_func
 (paren
 id|tos
 comma
-id|ip6_get_dsfield
+id|ipv6_get_dsfield
 c_func
 (paren
 id|iph6

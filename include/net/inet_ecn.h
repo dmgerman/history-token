@@ -227,8 +227,6 @@ op_complement
 id|INET_ECN_MASK
 suffix:semicolon
 )brace
-DECL|macro|ip6_get_dsfield
-mdefine_line|#define ip6_get_dsfield(iph) ((ntohs(*(u16*)(iph)) &gt;&gt; 4) &amp; 0xFF)
 r_struct
 id|ipv6hdr
 suffix:semicolon
@@ -251,7 +249,7 @@ c_cond
 id|INET_ECN_is_not_ect
 c_func
 (paren
-id|ip6_get_dsfield
+id|ipv6_get_dsfield
 c_func
 (paren
 id|iph
