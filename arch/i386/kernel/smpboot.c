@@ -4342,7 +4342,7 @@ c_func
 (paren
 id|THERMAL_APIC_VECTOR
 comma
-id|smp_thermal_interrupt
+id|thermal_interrupt
 )paren
 suffix:semicolon
 macro_line|#endif

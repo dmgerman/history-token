@@ -45,5 +45,14 @@ id|spurious_interrupt
 comma
 id|SPURIOUS_APIC_VECTOR
 )paren
+macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
+id|BUILD_INTERRUPT
+c_func
+(paren
+id|thermal_interrupt
+comma
+id|THERMAL_APIC_VECTOR
+)paren
+macro_line|#endif
 macro_line|#endif
 eof
