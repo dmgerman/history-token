@@ -5234,7 +5234,8 @@ id|cmd
 l_int|2
 )braket
 suffix:semicolon
-id|ScsiLun
+r_struct
+id|scsi_lun
 op_star
 id|one_lun
 suffix:semicolon
@@ -5338,7 +5339,8 @@ op_assign
 (paren
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 op_star
 id|lun_cnt
@@ -5357,7 +5359,8 @@ op_assign
 (paren
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 op_star
 id|lun_cnt
@@ -5382,7 +5385,8 @@ l_int|8
 op_div
 r_sizeof
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 )paren
 )paren
 comma
@@ -5392,7 +5396,8 @@ suffix:semicolon
 id|one_lun
 op_assign
 (paren
-id|ScsiLun
+r_struct
+id|scsi_lun
 op_star
 )paren
 op_amp
