@@ -2861,13 +2861,7 @@ op_logical_neg
 id|unlikely
 c_func
 (paren
-id|p-&gt;state
-op_amp
-(paren
-id|EXIT_DEAD
-op_or
-id|EXIT_ZOMBIE
-)paren
+id|p-&gt;exit_state
 )paren
 op_logical_and
 id|psecs

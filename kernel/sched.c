@@ -8137,15 +8137,7 @@ id|likely
 c_func
 (paren
 op_logical_neg
-(paren
 id|current-&gt;exit_state
-op_amp
-(paren
-id|EXIT_DEAD
-op_or
-id|EXIT_ZOMBIE
-)paren
-)paren
 )paren
 )paren
 (brace

@@ -552,8 +552,6 @@ op_eq
 id|ignored_task
 op_logical_or
 id|p-&gt;exit_state
-op_ge
-id|EXIT_ZOMBIE
 op_logical_or
 id|p-&gt;real_parent-&gt;pid
 op_eq
@@ -1967,10 +1965,6 @@ id|p
 op_eq
 id|reaper
 op_logical_or
-id|reaper-&gt;state
-op_ge
-id|EXIT_ZOMBIE
-op_logical_or
 id|reaper-&gt;exit_state
 op_ge
 id|EXIT_ZOMBIE
@@ -2303,8 +2297,6 @@ r_while
 c_loop
 (paren
 id|reaper-&gt;exit_state
-op_ge
-id|EXIT_ZOMBIE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * There are only two places where our children can be:&n;&t; *&n;&t; * - in our child list&n;&t; * - in our ptraced child list&n;&t; *&n;&t; * Search them and reparent children.&n;&t; */
@@ -4756,8 +4748,6 @@ id|unlikely
 c_func
 (paren
 id|p-&gt;exit_state
-op_ge
-id|EXIT_ZOMBIE
 )paren
 )paren
 (brace
