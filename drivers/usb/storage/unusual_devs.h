@@ -2014,7 +2014,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; */
+multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * - Some cameras with idProduct=0x1001 and bcdDevice=0x1000 have&n; *   bInterfaceProtocol=0x00 (US_PR_CBI) while others have 0x01 (US_PR_CB).&n; *   So don&squot;t remove the US_PR_CB override!&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
