@@ -465,8 +465,8 @@ macro_line|#else
 DECL|macro|in_lock_functions
 mdefine_line|#define in_lock_functions(ADDR) 0
 macro_line|#if !defined(CONFIG_PREEMPT) &amp;&amp; !defined(CONFIG_DEBUG_SPINLOCK)
-DECL|macro|atomic_dec_and_lock
-macro_line|# define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
+DECL|macro|_atomic_dec_and_lock
+macro_line|# define _atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
 DECL|macro|ATOMIC_DEC_AND_LOCK
 macro_line|# define ATOMIC_DEC_AND_LOCK
 macro_line|#endif
@@ -812,7 +812,7 @@ macro_line|#ifndef ATOMIC_DEC_AND_LOCK
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
 r_int
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 c_func
 (paren
 id|atomic_t
@@ -825,6 +825,8 @@ id|lock
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|macro|atomic_dec_and_lock
+mdefine_line|#define atomic_dec_and_lock(atomic,lock) _atomic_dec_and_lock(atomic,lock)
 multiline_comment|/*&n; *  bit-based spin_lock()&n; *&n; * Don&squot;t use this unless you really need to: spin_lock() and spin_unlock()&n; * are significantly faster.&n; */
 DECL|function|bit_spin_lock
 r_static

@@ -847,11 +847,11 @@ c_func
 id|smp_call_function_on_cpu
 )paren
 suffix:semicolon
-DECL|variable|atomic_dec_and_lock
+DECL|variable|_atomic_dec_and_lock
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|atomic_dec_and_lock
+id|_atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
