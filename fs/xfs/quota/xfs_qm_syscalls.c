@@ -4244,7 +4244,7 @@ mdefine_line|#define DQTEST_HASHVAL(mp, id) (((__psunsigned_t)(mp) + &bslash;&n;
 DECL|macro|DQTEST_HASH
 mdefine_line|#define DQTEST_HASH(mp, id, type)   ((type &amp; XFS_DQ_USER) ? &bslash;&n;&t;&t;&t;&t;     (qmtest_udqtab + &bslash;&n;&t;&t;&t;&t;      DQTEST_HASHVAL(mp, id)) : &bslash;&n;&t;&t;&t;&t;     (qmtest_gdqtab + &bslash;&n;&t;&t;&t;&t;      DQTEST_HASHVAL(mp, id)))
 DECL|macro|DQTEST_LIST_PRINT
-mdefine_line|#define DQTEST_LIST_PRINT(l, NXT, title) &bslash;&n;{ &bslash;&n;&t;  xfs_dqtest_t&t;*dqp; int i = 0;&bslash;&n;&t;  cmn_err(CE_DEBUG, &quot;%s (#%d)&quot;, title, (int) (l)-&gt;qh_nelems); &bslash;&n;&t;  for (dqp = (xfs_dqtest_t *)(l)-&gt;qh_next; dqp != NULL; &bslash;&n;&t;       dqp = (xfs_dqtest_t *)dqp-&gt;NXT) { &bslash;&n;&t;&t;cmn_err(CE_DEBUG, &quot;  %d&bslash;. &bslash;&quot;%d (%s)&bslash;&quot;  bcnt = %d, icnt = %d&quot;, &bslash;&n;&t;&t;&t; ++i, dqp-&gt;d_id, DQFLAGTO_TYPESTR(dqp),&t;     &bslash;&n;&t;&t;&t; dqp-&gt;d_bcount, dqp-&gt;d_icount); } &bslash;&n;}
+mdefine_line|#define DQTEST_LIST_PRINT(l, NXT, title) &bslash;&n;{ &bslash;&n;&t;  xfs_dqtest_t&t;*dqp; int i = 0;&bslash;&n;&t;  cmn_err(CE_DEBUG, &quot;%s (#%d)&quot;, title, (int) (l)-&gt;qh_nelems); &bslash;&n;&t;  for (dqp = (xfs_dqtest_t *)(l)-&gt;qh_next; dqp != NULL; &bslash;&n;&t;       dqp = (xfs_dqtest_t *)dqp-&gt;NXT) { &bslash;&n;&t;&t;cmn_err(CE_DEBUG, &quot;  %d. &bslash;&quot;%d (%s)&bslash;&quot;  bcnt = %d, icnt = %d&quot;, &bslash;&n;&t;&t;&t; ++i, dqp-&gt;d_id, DQFLAGTO_TYPESTR(dqp),&t;     &bslash;&n;&t;&t;&t; dqp-&gt;d_bcount, dqp-&gt;d_icount); } &bslash;&n;}
 DECL|struct|dqtest
 r_typedef
 r_struct
