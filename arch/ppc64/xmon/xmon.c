@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;privinst.h&quot;
 DECL|macro|scanhex
@@ -1812,9 +1813,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_dabr
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_DABR
 )paren
 op_logical_and
 id|dabr.enabled
@@ -1828,9 +1830,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_iabr
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_IABR
 )paren
 op_logical_and
 id|iabr.enabled
@@ -1873,9 +1876,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_dabr
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_DABR
 )paren
 )paren
 id|set_dabr
@@ -1887,9 +1891,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_iabr
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_IABR
 )paren
 )paren
 id|set_iabr
@@ -3463,9 +3468,11 @@ multiline_comment|/* bd - hardware data breakpoint */
 r_if
 c_cond
 (paren
-id|cpu_has_dabr
-c_func
+op_logical_neg
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_DABR
 )paren
 )paren
 (brace
@@ -3566,9 +3573,11 @@ multiline_comment|/* bi - hardware instr breakpoint */
 r_if
 c_cond
 (paren
-id|cpu_has_iabr
-c_func
+op_logical_neg
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_IABR
 )paren
 )paren
 (brace
