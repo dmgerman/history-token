@@ -1706,10 +1706,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|midi_input_info
 op_star
@@ -1793,17 +1789,7 @@ id|orig_dev
 op_member_access_from_pointer
 id|in_info
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* save_flags(flags);&n;&t;cli(); &n;&t;don&squot;t know against what irqhandler to protect*/
 id|inc-&gt;m_busy
 op_assign
 l_int|0
@@ -1824,12 +1810,7 @@ id|inc-&gt;m_prev_status
 op_assign
 l_int|0x00
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/* restore_flags(flags); */
 r_return
 l_int|1
 suffix:semicolon
