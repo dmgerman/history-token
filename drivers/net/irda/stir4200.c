@@ -2133,7 +2133,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|netdev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 id|netif_stop_queue
 c_func
@@ -3276,7 +3280,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|netdev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 r_int
 id|err
@@ -3518,7 +3526,7 @@ id|stir-&gt;irlap
 id|err
 c_func
 (paren
-l_string|&quot;irlap_open failed&quot;
+l_string|&quot;stir4200: irlap_open failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3555,7 +3563,7 @@ suffix:semicolon
 id|err
 c_func
 (paren
-l_string|&quot;unable to start kernel thread&quot;
+l_string|&quot;stir4200: unable to start kernel thread&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3635,7 +3643,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|netdev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 multiline_comment|/* Stop transmit processing */
 id|netif_stop_queue
@@ -3723,7 +3735,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|netdev
 comma
 r_struct
 id|ifreq
@@ -3751,7 +3763,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -3876,7 +3892,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|netdev
 )paren
 (brace
 r_struct
@@ -3884,7 +3900,11 @@ id|stir_cb
 op_star
 id|stir
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|netdev
+)paren
 suffix:semicolon
 r_return
 op_amp
@@ -3980,7 +4000,11 @@ id|intf-&gt;dev
 suffix:semicolon
 id|stir
 op_assign
-id|net-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|net
+)paren
 suffix:semicolon
 id|stir-&gt;netdev
 op_assign
@@ -4009,7 +4033,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;usb reset configuration failed&quot;
+l_string|&quot;stir4200: usb reset configuration failed&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4121,10 +4145,10 @@ l_int|0
 r_goto
 id|err_out2
 suffix:semicolon
-id|MESSAGE
+id|info
 c_func
 (paren
-l_string|&quot;IrDA: Registered SigmaTel device %s&bslash;n&quot;
+l_string|&quot;IrDA: Registered SigmaTel device %s&quot;
 comma
 id|net-&gt;name
 )paren
@@ -4339,30 +4363,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|usb_register
 c_func
 (paren
 op_amp
 id|irda_driver
 )paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|MESSAGE
-c_func
-(paren
-l_string|&quot;SigmaTel support registered&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|stir_init
