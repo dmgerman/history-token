@@ -910,9 +910,10 @@ id|__u16
 id|fid
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_extern
 r_int
-id|CIFSSMBSetTimesLegacy
+id|CIFSSMBSetAttrLegacy
 c_func
 (paren
 r_int
@@ -927,9 +928,8 @@ r_char
 op_star
 id|fileName
 comma
-id|FILE_BASIC_INFO
-op_star
-id|data
+id|__u16
+id|dos_attributes
 comma
 r_const
 r_struct
@@ -938,6 +938,7 @@ op_star
 id|nls_codepage
 )paren
 suffix:semicolon
+macro_line|#endif /* possibly unneeded function */
 r_extern
 r_int
 id|CIFSSMBSetEOF

@@ -1369,16 +1369,6 @@ id|smb_hdr
 )paren
 )paren
 (brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;Length less than 2 + sizeof smb_hdr &quot;
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1404,10 +1394,29 @@ op_ne
 l_int|0
 )paren
 )paren
+(brace
+id|smb-&gt;WordCount
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* some error cases do not return wct and bcc */
+)brace
+r_else
+(brace
+id|cERROR
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Length less than smb header size&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

@@ -19,6 +19,8 @@ DECL|macro|SMB_COM_DELETE
 mdefine_line|#define SMB_COM_DELETE                0x06 /* trivial response */
 DECL|macro|SMB_COM_RENAME
 mdefine_line|#define SMB_COM_RENAME                0x07 /* trivial response */
+DECL|macro|SMB_COM_SETATTR
+mdefine_line|#define SMB_COM_SETATTR               0x09 /* trivial response */
 DECL|macro|SMB_COM_LOCKING_ANDX
 mdefine_line|#define SMB_COM_LOCKING_ANDX          0x24 /* trivial response */
 DECL|macro|SMB_COM_COPY
@@ -2268,6 +2270,79 @@ DECL|typedef|CREATE_DIRECTORY_RSP
 )brace
 id|CREATE_DIRECTORY_RSP
 suffix:semicolon
+DECL|struct|smb_com_setattr_req
+r_typedef
+r_struct
+id|smb_com_setattr_req
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 8 */
+DECL|member|attr
+id|__le16
+id|attr
+suffix:semicolon
+DECL|member|time_low
+id|__le16
+id|time_low
+suffix:semicolon
+DECL|member|time_high
+id|__le16
+id|time_high
+suffix:semicolon
+DECL|member|reserved
+id|__le16
+id|reserved
+(braket
+l_int|5
+)braket
+suffix:semicolon
+multiline_comment|/* must be zero */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+DECL|member|BufferFormat
+id|__u8
+id|BufferFormat
+suffix:semicolon
+multiline_comment|/* 4 = ASCII */
+DECL|member|fileName
+r_int
+r_char
+id|fileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+DECL|typedef|SETATTR_REQ
+)brace
+id|SETATTR_REQ
+suffix:semicolon
+DECL|struct|smb_com_setattr_rsp
+r_typedef
+r_struct
+id|smb_com_setattr_rsp
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 0 */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+multiline_comment|/* bct = 0 */
+DECL|typedef|SETATTR_RSP
+)brace
+id|SETATTR_RSP
+suffix:semicolon
+multiline_comment|/* empty wct response to setattr */
 multiline_comment|/***************************************************/
 multiline_comment|/* NT Transact structure defintions follow         */
 multiline_comment|/* Currently only ioctl and notify are implemented */
