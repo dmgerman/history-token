@@ -420,8 +420,7 @@ id|kiobuf
 op_star
 id|iobuf
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 op_star
 id|blocks
 suffix:semicolon
@@ -714,8 +713,8 @@ id|KIO_MAX_SECTORS
 op_star
 r_sizeof
 (paren
-r_int
-r_int
+op_star
+id|blocks
 )paren
 )paren
 suffix:semicolon
@@ -1110,8 +1109,7 @@ id|kiobuf
 op_star
 id|iobuf
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 op_star
 id|blocks
 suffix:semicolon

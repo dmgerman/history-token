@@ -3138,7 +3138,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;NFTL %s request, from sector 0x%04lx for %d sectors&bslash;n&quot;
+l_string|&quot;NFTL %s request, from sector 0x%04llx for %d sectors&bslash;n&quot;
 comma
 (paren
 id|req-&gt;cmd
@@ -3151,6 +3151,11 @@ l_string|&quot;Read &quot;
 suffix:colon
 l_string|&quot;Write&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|req-&gt;sector
 comma
 id|req-&gt;current_nr_sectors

@@ -7902,6 +7902,10 @@ suffix:semicolon
 )brace
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren

@@ -8886,7 +8886,7 @@ suffix:semicolon
 )brace
 DECL|function|reiserfs_aop_bmap
 r_static
-r_int
+id|sector_t
 id|reiserfs_aop_bmap
 c_func
 (paren
@@ -8895,7 +8895,7 @@ id|address_space
 op_star
 id|as
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

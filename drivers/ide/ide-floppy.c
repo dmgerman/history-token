@@ -4545,9 +4545,8 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
-id|block
+id|sector_t
+id|block_s
 )paren
 (brace
 id|idefloppy_floppy_t
@@ -4559,6 +4558,16 @@ suffix:semicolon
 id|idefloppy_pc_t
 op_star
 id|pc
+suffix:semicolon
+r_int
+r_int
+id|block
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|block_s
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
 id|printk
@@ -4587,6 +4596,9 @@ id|KERN_INFO
 l_string|&quot;sector: %ld, nr_sectors: %ld, &quot;
 l_string|&quot;current_nr_sectors: %ld&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|rq-&gt;sector
 comma
 id|rq-&gt;nr_sectors
@@ -4667,6 +4679,9 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+)paren
 id|rq-&gt;sector
 op_mod
 id|floppy-&gt;bs_factor

@@ -675,7 +675,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;cciss/c%dd%d: blksz=%d nr_blocks=%d&bslash;n&quot;
+l_string|&quot;cciss/c%dd%d: blksz=%d nr_blocks=%llu&bslash;n&quot;
 comma
 id|ctlr
 comma
@@ -683,6 +683,11 @@ id|i
 comma
 id|drv-&gt;block_size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|drv-&gt;nr_blocks
 )paren
 suffix:semicolon
@@ -1778,6 +1783,9 @@ l_int|0x3f
 suffix:semicolon
 id|driver_geo.cylinders
 op_assign
+(paren
+r_int
+)paren
 id|hba
 (braket
 id|ctlr
@@ -5642,7 +5650,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;      blocks= %d block_size= %d&bslash;n&quot;
+l_string|&quot;      blocks= %u block_size= %d&bslash;n&quot;
 comma
 id|total_size
 comma

@@ -2868,7 +2868,7 @@ id|linvfs_get_blocks_direct
 suffix:semicolon
 )brace
 id|STATIC
-r_int
+id|sector_t
 DECL|function|linvfs_bmap
 id|linvfs_bmap
 c_func
@@ -2878,7 +2878,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

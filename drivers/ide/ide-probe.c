@@ -4052,6 +4052,16 @@ op_assign
 op_amp
 id|ide_bus_type
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;drives
+(braket
+id|unit
+)braket
+dot
+id|present
+)paren
 id|device_register
 c_func
 (paren

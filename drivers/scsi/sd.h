@@ -14,7 +14,7 @@ r_struct
 id|scsi_disk
 (brace
 DECL|member|capacity
-r_int
+id|sector_t
 id|capacity
 suffix:semicolon
 multiline_comment|/* size in 512-byte sectors */

@@ -27,8 +27,7 @@ id|c
 comma
 id|j
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|current_offset
 comma
 id|curr_zone_offset
@@ -116,7 +115,7 @@ id|tmp2
 id|printk
 c_func
 (paren
-l_string|&quot;raid0:   comparing %s(%ld) with %s(%ld)&bslash;n&quot;
+l_string|&quot;raid0:   comparing %s(%llu) with %s(%llu)&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -124,6 +123,11 @@ c_func
 id|rdev1-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev1-&gt;size
 comma
 id|bdev_partition_name
@@ -132,6 +136,11 @@ c_func
 id|rdev2-&gt;bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev2-&gt;size
 )paren
 suffix:semicolon
@@ -533,8 +542,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;  (%ld) is smallest!.&bslash;n&quot;
+l_string|&quot;  (%llu) is smallest!.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|rdev-&gt;size
 )paren
 suffix:semicolon
@@ -565,10 +579,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0: zone-&gt;nb_dev: %d, size: %ld&bslash;n&quot;
+l_string|&quot;raid0: zone-&gt;nb_dev: %d, size: %llu&bslash;n&quot;
 comma
 id|zone-&gt;nb_dev
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|zone-&gt;size
 )paren
 suffix:semicolon
@@ -603,8 +622,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0: current zone offset: %ld&bslash;n&quot;
+l_string|&quot;raid0: current zone offset: %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|current_offset
 )paren
 suffix:semicolon
@@ -641,7 +665,6 @@ id|mddev
 )paren
 (brace
 r_int
-r_int
 id|cur
 op_assign
 l_int|0
@@ -650,11 +673,13 @@ id|i
 op_assign
 l_int|0
 comma
-id|size
-comma
-id|zone0_size
-comma
 id|nb_zone
+suffix:semicolon
+id|sector_t
+id|zone0_size
+suffix:semicolon
+id|s64
+id|size
 suffix:semicolon
 id|raid0_conf_t
 op_star
@@ -706,8 +731,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0 : md_size is %d blocks.&bslash;n&quot;
+l_string|&quot;raid0 : md_size is %llu blocks.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|md_size
 (braket
 id|mdidx
@@ -721,12 +751,22 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0 : conf-&gt;smallest-&gt;size is %ld blocks.&bslash;n&quot;
+l_string|&quot;raid0 : conf-&gt;smallest-&gt;size is %llu blocks.&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|conf-&gt;smallest-&gt;size
 )paren
 suffix:semicolon
-id|nb_zone
+(brace
+macro_line|#if __GNUC__ &lt; 3
+r_volatile
+macro_line|#endif
+id|sector_t
+id|s
 op_assign
 id|md_size
 (braket
@@ -736,31 +776,38 @@ c_func
 id|mddev
 )paren
 )braket
-op_div
-id|conf-&gt;smallest-&gt;size
-op_plus
-(paren
-id|md_size
-(braket
-id|mdidx
+suffix:semicolon
+r_int
+id|round
+op_assign
+id|sector_div
 c_func
 (paren
-id|mddev
+id|s
+comma
+(paren
+r_int
+r_int
 )paren
-)braket
-op_mod
 id|conf-&gt;smallest-&gt;size
+)paren
 ques
 c_cond
 l_int|1
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
+id|nb_zone
+op_assign
+id|s
+op_plus
+id|round
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
-l_string|&quot;raid0 : nb_zone is %ld.&bslash;n&quot;
+l_string|&quot;raid0 : nb_zone is %d.&bslash;n&quot;
 comma
 id|nb_zone
 )paren
@@ -772,7 +819,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0 : Allocating %ld bytes for hash.&bslash;n&quot;
+l_string|&quot;raid0 : Allocating %d bytes for hash.&bslash;n&quot;
 comma
 id|nb_zone
 op_star
@@ -1096,7 +1143,8 @@ suffix:semicolon
 r_int
 r_int
 id|chunk
-comma
+suffix:semicolon
+id|sector_t
 id|block
 comma
 id|rsect
@@ -1122,14 +1170,31 @@ id|bio-&gt;bi_sector
 op_rshift
 l_int|1
 suffix:semicolon
+(brace
+id|sector_t
+id|x
+op_assign
+id|block
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|x
+comma
+(paren
+r_int
+r_int
+)paren
+id|conf-&gt;smallest-&gt;size
+)paren
+suffix:semicolon
 id|hash
 op_assign
 id|conf-&gt;hash_table
 op_plus
-id|block
-op_div
-id|conf-&gt;smallest-&gt;size
+id|x
 suffix:semicolon
+)brace
 multiline_comment|/* Sanity check */
 r_if
 c_cond
@@ -1138,8 +1203,12 @@ id|chunk_size
 OL
 (paren
 id|block
-op_mod
+op_amp
+(paren
 id|chunk_size
+op_minus
+l_int|1
+)paren
 )paren
 op_plus
 (paren
@@ -1214,33 +1283,61 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|chunk
+(brace
+id|sector_t
+id|x
 op_assign
-(paren
 id|block
 op_minus
 id|zone-&gt;zone_offset
-)paren
-op_div
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|x
+comma
 (paren
 id|zone-&gt;nb_dev
 op_lshift
 id|chunksize_bits
 )paren
+)paren
+suffix:semicolon
+id|chunk
+op_assign
+id|x
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|x
+op_ne
+(paren
+id|sector_t
+)paren
+id|chunk
+)paren
+suffix:semicolon
+id|x
+op_assign
+id|block
+op_rshift
+id|chunksize_bits
 suffix:semicolon
 id|tmp_dev
 op_assign
 id|zone-&gt;dev
 (braket
+id|sector_div
+c_func
 (paren
-id|block
-op_rshift
-id|chunksize_bits
-)paren
-op_mod
+id|x
+comma
 id|zone-&gt;nb_dev
+)paren
 )braket
 suffix:semicolon
+)brace
 id|rsect
 op_assign
 (paren
@@ -1276,10 +1373,15 @@ id|bad_map
 suffix:colon
 id|printk
 (paren
-l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks or bigger than %dk %ld %d&bslash;n&quot;
+l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks or bigger than %dk %llu %d&bslash;n&quot;
 comma
 id|chunk_size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bio-&gt;bi_sector
 comma
 id|bio-&gt;bi_size
@@ -1295,8 +1397,13 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;raid0_make_request bug: hash==NULL for block %ld&bslash;n&quot;
+l_string|&quot;raid0_make_request bug: hash==NULL for block %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|block
 )paren
 suffix:semicolon
@@ -1307,8 +1414,13 @@ id|bad_zone0
 suffix:colon
 id|printk
 (paren
-l_string|&quot;raid0_make_request bug: hash-&gt;zone0==NULL for block %ld&bslash;n&quot;
+l_string|&quot;raid0_make_request bug: hash-&gt;zone0==NULL for block %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|block
 )paren
 suffix:semicolon
@@ -1319,8 +1431,13 @@ id|bad_zone1
 suffix:colon
 id|printk
 (paren
-l_string|&quot;raid0_make_request bug: hash-&gt;zone1==NULL for block %ld&bslash;n&quot;
+l_string|&quot;raid0_make_request bug: hash-&gt;zone1==NULL for block %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|block
 )paren
 suffix:semicolon

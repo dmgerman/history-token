@@ -327,15 +327,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
-)paren
-(brace
 id|get_device
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
+)paren
+(brace
 id|error
 op_assign
 id|driverfs_create_file

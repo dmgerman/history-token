@@ -469,8 +469,7 @@ id|same_set
 suffix:semicolon
 multiline_comment|/* RAID devices within the same set */
 DECL|member|size
-r_int
-r_int
+id|sector_t
 id|size
 suffix:semicolon
 multiline_comment|/* Device size (in blocks) */
@@ -505,8 +504,7 @@ op_star
 id|sb
 suffix:semicolon
 DECL|member|sb_offset
-r_int
-r_int
+id|sector_t
 id|sb_offset
 suffix:semicolon
 multiline_comment|/* A device can be in one of three states based on two flags:&n;&t; * Not working:   faulty==1 in_sync==0&n;&t; * Fully working: faulty==0 in_sync==1&n;&t; * Working, but not&n;&t; * in sync with array&n;&t; *                faulty==0 in_sync==0&n;&t; *&n;&t; * It can never have faulty==1, in_sync==1&n;&t; * This reduces the burden of testing multiple flags in many cases&n;&t; */
@@ -980,5 +978,5 @@ DECL|macro|__wait_disk_event
 mdefine_line|#define __wait_disk_event(wq, condition) &t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE);&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;blk_run_queues();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;schedule();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|wait_disk_event
 mdefine_line|#define wait_disk_event(wq, condition) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (condition)&t; &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__wait_disk_event(wq, condition);&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#endif 
+macro_line|#endif
 eof

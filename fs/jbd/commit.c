@@ -1032,8 +1032,13 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;JBD: got buffer %ld (%p)&bslash;n&quot;
+l_string|&quot;JBD: got buffer %llu (%p)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 comma
 id|bh-&gt;b_data

@@ -1076,6 +1076,10 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|SCpnt-&gt;request-&gt;sector
 op_mod
 (paren
@@ -1175,6 +1179,10 @@ l_int|0
 suffix:semicolon
 id|block
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|SCpnt-&gt;request-&gt;sector
 op_div
 (paren

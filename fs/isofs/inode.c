@@ -3953,7 +3953,7 @@ op_star
 id|inode
 comma
 id|sector_t
-id|iblock
+id|iblock_s
 comma
 r_struct
 id|buffer_head
@@ -3982,6 +3982,14 @@ suffix:semicolon
 r_int
 r_int
 id|nextino
+suffix:semicolon
+r_int
+id|iblock
+op_assign
+(paren
+r_int
+)paren
+id|iblock_s
 suffix:semicolon
 r_int
 id|section
@@ -4014,12 +4022,16 @@ c_cond
 id|iblock
 OL
 l_int|0
+op_logical_or
+id|iblock
+op_ne
+id|iblock_s
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;isofs_get_blocks: block &lt; 0&bslash;n&quot;
+l_string|&quot;isofs_get_blocks: block number too large&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4445,13 +4457,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|blknr
 op_assign
 id|isofs_bmap
@@ -4510,7 +4520,7 @@ suffix:semicolon
 )brace
 DECL|function|_isofs_bmap
 r_static
-r_int
+id|sector_t
 id|_isofs_bmap
 c_func
 (paren
@@ -4519,7 +4529,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

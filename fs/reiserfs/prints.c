@@ -755,7 +755,7 @@ id|sprintf
 (paren
 id|buf
 comma
-l_string|&quot;dev %s, size %d, blocknr %ld, count %d, state 0x%lx, page %p, (%s, %s, %s)&quot;
+l_string|&quot;dev %s, size %d, blocknr %llu, count %d, state 0x%lx, page %p, (%s, %s, %s)&quot;
 comma
 id|bdevname
 (paren
@@ -764,6 +764,11 @@ id|bh-&gt;b_bdev
 comma
 id|bh-&gt;b_size
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 comma
 id|atomic_read
@@ -1561,14 +1566,19 @@ id|h
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;block %lu (level=%d), position %d&bslash;n&quot;
+l_string|&quot;block %llu (level=%d), position %d&bslash;n&quot;
 comma
 id|bh
 ques
 c_cond
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 suffix:colon
-l_int|0
+l_int|0LL
 comma
 id|bh
 ques
@@ -1629,7 +1639,7 @@ id|offset
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%6d %10p (%9lu, %7d) %8d %7d&bslash;n&quot;
+l_string|&quot;%6d %10p (%9llu, %7d) %8d %7d&bslash;n&quot;
 comma
 id|offset
 comma
@@ -1638,9 +1648,14 @@ comma
 id|bh
 ques
 c_cond
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 suffix:colon
-l_int|0
+l_int|0LL
 comma
 id|bh
 ques
@@ -2270,13 +2285,18 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;%s&bslash;&squot;s super block is in block %ld&bslash;n&quot;
+l_string|&quot;%s&bslash;&squot;s super block is in block %llu&bslash;n&quot;
 comma
 id|bdevname
 (paren
 id|bh-&gt;b_bdev
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon
@@ -2547,8 +2567,13 @@ l_int|1
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;Desc block %lu (j_trans_id %d, j_mount_id %d, j_len %d)&quot;
+l_string|&quot;Desc block %llu (j_trans_id %d, j_mount_id %d, j_len %d)&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 comma
 id|desc-&gt;j_trans_id
@@ -2681,8 +2706,13 @@ id|bh
 )paren
 id|printk
 (paren
-l_string|&quot;Block %ld contains unformatted data&bslash;n&quot;
+l_string|&quot;Block %llu contains unformatted data&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon
@@ -2844,7 +2874,7 @@ id|strlen
 id|print_tb_buf
 )paren
 comma
-l_string|&quot;* %d * %3ld(%2d) * %3ld(%2d) * %3ld(%2d) * %5ld * %5ld * %5ld * %5ld * %5ld *&bslash;n&quot;
+l_string|&quot;* %d * %3lld(%2d) * %3lld(%2d) * %3lld(%2d) * %5lld * %5lld * %5lld * %5lld * %5lld *&bslash;n&quot;
 comma
 id|h
 comma
@@ -2854,12 +2884,16 @@ id|tbSh
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tbSh-&gt;b_blocknr
 )paren
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -2887,6 +2921,10 @@ id|h
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tb-&gt;L
 (braket
 id|h
@@ -2897,7 +2935,7 @@ id|b_blocknr
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -2933,6 +2971,10 @@ id|h
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tb-&gt;R
 (braket
 id|h
@@ -2943,7 +2985,7 @@ id|b_blocknr
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -2976,12 +3018,16 @@ id|tbFh
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tbFh-&gt;b_blocknr
 )paren
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -2993,6 +3039,10 @@ id|h
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tb-&gt;FL
 (braket
 id|h
@@ -3003,7 +3053,7 @@ id|b_blocknr
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -3015,6 +3065,10 @@ id|h
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tb-&gt;FR
 (braket
 id|h
@@ -3025,7 +3079,7 @@ id|b_blocknr
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -3037,6 +3091,10 @@ id|h
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tb-&gt;CFL
 (braket
 id|h
@@ -3047,7 +3105,7 @@ id|b_blocknr
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 comma
 (paren
@@ -3059,6 +3117,10 @@ id|h
 ques
 c_cond
 (paren
+r_int
+r_int
+)paren
+(paren
 id|tb-&gt;CFR
 (braket
 id|h
@@ -3069,7 +3131,7 @@ id|b_blocknr
 suffix:colon
 (paren
 op_minus
-l_int|1
+l_int|1LL
 )paren
 )paren
 suffix:semicolon
@@ -3240,7 +3302,7 @@ id|strlen
 id|print_tb_buf
 )paren
 comma
-l_string|&quot;%p (%lu %d)%s&quot;
+l_string|&quot;%p (%llu %d)%s&quot;
 comma
 id|tb-&gt;FEB
 (braket
@@ -3253,6 +3315,11 @@ id|i
 )braket
 ques
 c_cond
+(paren
+r_int
+r_int
+r_int
+)paren
 id|tb-&gt;FEB
 (braket
 id|i
@@ -3260,7 +3327,7 @@ id|i
 op_member_access_from_pointer
 id|b_blocknr
 suffix:colon
-l_int|0
+l_int|0ULL
 comma
 id|tb-&gt;FEB
 (braket

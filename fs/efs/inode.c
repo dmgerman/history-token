@@ -51,7 +51,7 @@ suffix:semicolon
 )brace
 DECL|function|_efs_bmap
 r_static
-r_int
+id|sector_t
 id|_efs_bmap
 c_func
 (paren
@@ -60,7 +60,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

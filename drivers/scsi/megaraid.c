@@ -13601,6 +13601,10 @@ l_int|32
 suffix:semicolon
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren
@@ -13628,6 +13632,10 @@ l_int|63
 suffix:semicolon
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren
@@ -13703,12 +13711,8 @@ suffix:semicolon
 id|cylinders
 op_assign
 id|disk-&gt;capacity
-op_div
-(paren
-id|heads
-op_star
-id|sectors
-)paren
+op_rshift
+l_int|11
 suffix:semicolon
 multiline_comment|/* Handle extended translation size for logical drives &gt; 1Gb */
 r_if
@@ -13729,6 +13733,10 @@ l_int|63
 suffix:semicolon
 id|cylinders
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|disk-&gt;capacity
 op_div
 (paren
