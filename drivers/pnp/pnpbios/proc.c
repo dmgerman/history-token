@@ -1,7 +1,5 @@
 multiline_comment|/*&n; * /proc/bus/pnp interface for Plug and Play devices&n; *&n; * Written by David Hinds, dahinds@users.sourceforge.net&n; * Modified by Thomas Hood, jdthood@mail.com&n; *&n; * The .../devices and .../&lt;node&gt; and .../boot/&lt;node&gt; files are&n; * utilized by the lspnp and setpnp utilities, supplied with the&n; * pcmcia-cs package.&n; *     http://pcmcia-cs.sourceforge.net&n; *&n; * The .../escd file is utilized by the lsescd utility written by&n; * Gunther Mayer.&n; *     http://home.t-online.de/home/gunther.mayer/lsescd&n; *&n; * The .../legacy_device_resources file is not used yet.&n; *&n; * The other files are human-readable.&n; */
 singleline_comment|//#include &lt;pcmcia/config.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 singleline_comment|//#include &lt;pcmcia/k_compat.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
