@@ -2,21 +2,6 @@ DECL|macro|ASC_VERSION
 mdefine_line|#define ASC_VERSION &quot;3.3GJ&quot;    /* AdvanSys Driver Version */
 multiline_comment|/*&n; * advansys.c - Linux Host Driver for AdvanSys SCSI Adapters&n; *&n; * Copyright (c) 1995-2000 Advanced System Products, Inc.&n; * Copyright (c) 2000-2001 ConnectCom Solutions, Inc.&n; * All Rights Reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that redistributions of source&n; * code retain the above copyright notice and this comment without&n; * modification.&n; *&n; * As of March 8, 2000 Advanced System Products, Inc. (AdvanSys)&n; * changed its name to ConnectCom Solutions, Inc.&n; *&n; * There is an AdvanSys Linux WWW page at:&n; *  http://www.connectcom.net/downloads/software/os/linux.html&n; *  http://www.advansys.com/linux.html&n; *&n; * The latest released version of the AdvanSys driver is available at:&n; *  ftp://ftp.advansys.com/pub/linux/linux.tgz&n; *  ftp://ftp.connectcom.net/pub/linux/linux.tgz&n; *&n; * Please send questions, comments, bug reports to:&n; *  support@connectcom.net&n; */
 multiline_comment|/*&n;&n;  Documentation for the AdvanSys Driver&n;&n;  A. Linux Kernels Supported by this Driver&n;  B. Adapters Supported by this Driver&n;  C. Linux source files modified by AdvanSys Driver&n;  D. Source Comments&n;  E. Driver Compile Time Options and Debugging&n;  F. Driver LILO Option&n;  G. Tests to run before releasing new driver&n;  H. Release History&n;  I. Known Problems/Fix List&n;  J. Credits (Chronological Order)&n;  K. ConnectCom (AdvanSys) Contact Information&n;&n;  A. Linux Kernels Supported by this Driver&n;&n;     This driver has been tested in the following Linux kernels: v2.2.18&n;     v2.4.0. The driver is supported on v2.2 and v2.4 kernels and on x86,&n;     alpha, and PowerPC platforms.&n;&n;  B. Adapters Supported by this Driver&n;&n;     AdvanSys (Advanced System Products, Inc.) manufactures the following&n;     RISC-based, Bus-Mastering, Fast (10 Mhz) and Ultra (20 Mhz) Narrow&n;     (8-bit transfer) SCSI Host Adapters for the ISA, EISA, VL, and PCI&n;     buses and RISC-based, Bus-Mastering, Ultra (20 Mhz) Wide (16-bit&n;     transfer) SCSI Host Adapters for the PCI bus.&n;&n;     The CDB counts below indicate the number of SCSI CDB (Command&n;     Descriptor Block) requests that can be stored in the RISC chip&n;     cache and board LRAM. A CDB is a single SCSI command. The driver&n;     detect routine will display the number of CDBs available for each&n;     adapter detected. The number of CDBs used by the driver can be&n;     lowered in the BIOS by changing the &squot;Host Queue Size&squot; adapter setting.&n;&n;     Laptop Products:&n;        ABP-480 - Bus-Master CardBus (16 CDB) (2.4 kernel and greater)&n;&n;     Connectivity Products:&n;        ABP510/5150 - Bus-Master ISA (240 CDB)&n;        ABP5140 - Bus-Master ISA PnP (16 CDB)&n;        ABP5142 - Bus-Master ISA PnP with floppy (16 CDB)&n;        ABP902/3902 - Bus-Master PCI (16 CDB)&n;        ABP3905 - Bus-Master PCI (16 CDB)&n;        ABP915 - Bus-Master PCI (16 CDB)&n;        ABP920 - Bus-Master PCI (16 CDB)&n;        ABP3922 - Bus-Master PCI (16 CDB)&n;        ABP3925 - Bus-Master PCI (16 CDB)&n;        ABP930 - Bus-Master PCI (16 CDB)&n;        ABP930U - Bus-Master PCI Ultra (16 CDB)&n;        ABP930UA - Bus-Master PCI Ultra (16 CDB)&n;        ABP960 - Bus-Master PCI MAC/PC (16 CDB)&n;        ABP960U - Bus-Master PCI MAC/PC Ultra (16 CDB)&n;&n;     Single Channel Products:&n;        ABP542 - Bus-Master ISA with floppy (240 CDB)&n;        ABP742 - Bus-Master EISA (240 CDB)&n;        ABP842 - Bus-Master VL (240 CDB)&n;        ABP940 - Bus-Master PCI (240 CDB)&n;        ABP940U - Bus-Master PCI Ultra (240 CDB)&n;        ABP940UA/3940UA - Bus-Master PCI Ultra (240 CDB)&n;        ABP970 - Bus-Master PCI MAC/PC (240 CDB)&n;        ABP970U - Bus-Master PCI MAC/PC Ultra (240 CDB)&n;        ABP3960UA - Bus-Master PCI MAC/PC Ultra (240 CDB)&n;        ABP940UW/3940UW - Bus-Master PCI Ultra-Wide (253 CDB)&n;        ABP970UW - Bus-Master PCI MAC/PC Ultra-Wide (253 CDB)&n;        ABP3940U2W - Bus-Master PCI LVD/Ultra2-Wide (253 CDB)&n;&n;     Multi-Channel Products:&n;        ABP752 - Dual Channel Bus-Master EISA (240 CDB Per Channel)&n;        ABP852 - Dual Channel Bus-Master VL (240 CDB Per Channel)&n;        ABP950 - Dual Channel Bus-Master PCI (240 CDB Per Channel)&n;        ABP950UW - Dual Channel Bus-Master PCI Ultra-Wide (253 CDB Per Channel)&n;        ABP980 - Four Channel Bus-Master PCI (240 CDB Per Channel)&n;        ABP980U - Four Channel Bus-Master PCI Ultra (240 CDB Per Channel)&n;        ABP980UA/3980UA - Four Channel Bus-Master PCI Ultra (16 CDB Per Chan.)&n;        ABP3950U2W - Bus-Master PCI LVD/Ultra2-Wide and Ultra-Wide (253 CDB)&n;        ABP3950U3W - Bus-Master PCI Dual LVD2/Ultra3-Wide (253 CDB)&n;&n;  C. Linux source files modified by AdvanSys Driver&n;&n;     This section for historical purposes documents the changes&n;     originally made to the Linux kernel source to add the advansys&n;     driver. As Linux has changed some of these files have also&n;     been modified.&n;&n;     1. linux/arch/i386/config.in:&n;&n;          bool &squot;AdvanSys SCSI support&squot; CONFIG_SCSI_ADVANSYS y&n;&n;     2. linux/drivers/scsi/hosts.c:&n;&n;          #ifdef CONFIG_SCSI_ADVANSYS&n;          #include &quot;advansys.h&quot;&n;          #endif&n;&n;        and after &quot;static Scsi_Host_Template builtin_scsi_hosts[] =&quot;:&n;&n;          #ifdef CONFIG_SCSI_ADVANSYS&n;          ADVANSYS,&n;          #endif&n;&n;     3. linux/drivers/scsi/Makefile:&n;&n;          ifdef CONFIG_SCSI_ADVANSYS&n;          SCSI_SRCS := $(SCSI_SRCS) advansys.c&n;          SCSI_OBJS := $(SCSI_OBJS) advansys.o&n;          else&n;          SCSI_MODULE_OBJS := $(SCSI_MODULE_OBJS) advansys.o&n;          endif&n;&n;     4. linux/init/main.c:&n;&n;          extern void advansys_setup(char *str, int *ints);&n;&n;        and add the following lines to the bootsetups[] array.&n;&n;          #ifdef CONFIG_SCSI_ADVANSYS&n;             { &quot;advansys=&quot;, advansys_setup },&n;          #endif&n;&n;  D. Source Comments&n;&n;     1. Use tab stops set to 4 for the source files. For vi use &squot;se tabstops=4&squot;.&n;&n;     2. This driver should be maintained in multiple files. But to make&n;        it easier to include with Linux and to follow Linux conventions,&n;        the whole driver is maintained in the source files advansys.h and&n;        advansys.c. In this file logical sections of the driver begin with&n;        a comment that contains &squot;---&squot;. The following are the logical sections&n;        of the driver below.&n;&n;           --- Linux Version&n;           --- Linux Include File&n;           --- Driver Options&n;           --- Debugging Header&n;           --- Asc Library Constants and Macros&n;           --- Adv Library Constants and Macros&n;           --- Driver Constants and Macros&n;           --- Driver Structures&n;           --- Driver Data&n;           --- Driver Function Prototypes&n;           --- Linux &squot;Scsi_Host_Template&squot; and advansys_setup() Functions&n;           --- Loadable Driver Support&n;           --- Miscellaneous Driver Functions&n;           --- Functions Required by the Asc Library&n;           --- Functions Required by the Adv Library&n;           --- Tracing and Debugging Functions&n;           --- Asc Library Functions&n;           --- Adv Library Functions&n;&n;     3. The string &squot;XXX&squot; is used to flag code that needs to be re-written&n;        or that contains a problem that needs to be addressed.&n;&n;     4. I have stripped comments from and reformatted the source for the&n;        Asc Library and Adv Library to reduce the size of this file. This&n;        source can be found under the following headings. The Asc Library&n;        is used to support Narrow Boards. The Adv Library is used to&n;        support Wide Boards.&n;&n;           --- Asc Library Constants and Macros&n;           --- Adv Library Constants and Macros&n;           --- Asc Library Functions&n;           --- Adv Library Functions&n;&n;  E. Driver Compile Time Options and Debugging&n;&n;     In this source file the following constants can be defined. They are&n;     defined in the source below. Both of these options are enabled by&n;     default.&n;&n;     1. ADVANSYS_ASSERT - Enable driver assertions (Def: Enabled)&n;&n;        Enabling this option adds assertion logic statements to the&n;        driver. If an assertion fails a message will be displayed to&n;        the console, but the system will continue to operate. Any&n;        assertions encountered should be reported to the person&n;        responsible for the driver. Assertion statements may proactively&n;        detect problems with the driver and facilitate fixing these&n;        problems. Enabling assertions will add a small overhead to the&n;        execution of the driver.&n;&n;     2. ADVANSYS_DEBUG - Enable driver debugging (Def: Disabled)&n;&n;        Enabling this option adds tracing functions to the driver and&n;        the ability to set a driver tracing level at boot time. This&n;        option will also export symbols not required outside the driver to&n;        the kernel name space. This option is very useful for debugging&n;        the driver, but it will add to the size of the driver execution&n;        image and add overhead to the execution of the driver.&n;&n;        The amount of debugging output can be controlled with the global&n;        variable &squot;asc_dbglvl&squot;. The higher the number the more output. By&n;        default the debug level is 0.&n;&n;        If the driver is loaded at boot time and the LILO Driver Option&n;        is included in the system, the debug level can be changed by&n;        specifying a 5th (ASC_NUM_IOPORT_PROBE + 1) I/O Port. The&n;        first three hex digits of the pseudo I/O Port must be set to&n;        &squot;deb&squot; and the fourth hex digit specifies the debug level: 0 - F.&n;        The following command line will look for an adapter at 0x330&n;        and set the debug level to 2.&n;&n;           linux advansys=0x330,0,0,0,0xdeb2&n;&n;        If the driver is built as a loadable module this variable can be&n;        defined when the driver is loaded. The following insmod command&n;        will set the debug level to one.&n;&n;           insmod advansys.o asc_dbglvl=1&n;&n;        Debugging Message Levels:&n;           0: Errors Only&n;           1: High-Level Tracing&n;           2-N: Verbose Tracing&n;&n;        To enable debug output to console, please make sure that:&n;&n;        a. System and kernel logging is enabled (syslogd, klogd running).&n;        b. Kernel messages are routed to console output. Check&n;           /etc/syslog.conf for an entry similar to this:&n;&n;                kern.*                  /dev/console&n;&n;        c. klogd is started with the appropriate -c parameter&n;           (e.g. klogd -c 8)&n;&n;        This will cause printk() messages to be be displayed on the&n;        current console. Refer to the klogd(8) and syslogd(8) man pages&n;        for details.&n;&n;        Alternatively you can enable printk() to console with this&n;        program. However, this is not the &squot;official&squot; way to do this.&n;        Debug output is logged in /var/log/messages.&n;&n;          main()&n;          {&n;                  syscall(103, 7, 0, 0);&n;          }&n;&n;        Increasing LOG_BUF_LEN in kernel/printk.c to something like&n;        40960 allows more debug messages to be buffered in the kernel&n;        and written to the console or log file.&n;&n;     3. ADVANSYS_STATS - Enable statistics (Def: Enabled &gt;= v1.3.0)&n;&n;        Enabling this option adds statistics collection and display&n;        through /proc to the driver. The information is useful for&n;        monitoring driver and device performance. It will add to the&n;        size of the driver execution image and add minor overhead to&n;        the execution of the driver.&n;&n;        Statistics are maintained on a per adapter basis. Driver entry&n;        point call counts and transfer size counts are maintained.&n;        Statistics are only available for kernels greater than or equal&n;        to v1.3.0 with the CONFIG_PROC_FS (/proc) file system configured.&n;&n;        AdvanSys SCSI adapter files have the following path name format:&n;&n;           /proc/scsi/advansys/[0-(ASC_NUM_BOARD_SUPPORTED-1)]&n;&n;        This information can be displayed with cat. For example:&n;&n;           cat /proc/scsi/advansys/0&n;&n;        When ADVANSYS_STATS is not defined the AdvanSys /proc files only&n;        contain adapter and device configuration information.&n;&n;  F. Driver LILO Option&n;&n;     If init/main.c is modified as described in the &squot;Directions for Adding&n;     the AdvanSys Driver to Linux&squot; section (B.4.) above, the driver will&n;     recognize the &squot;advansys&squot; LILO command line and /etc/lilo.conf option.&n;     This option can be used to either disable I/O port scanning or to limit&n;     scanning to 1 - 4 I/O ports. Regardless of the option setting EISA and&n;     PCI boards will still be searched for and detected. This option only&n;     affects searching for ISA and VL boards.&n;&n;     Examples:&n;       1. Eliminate I/O port scanning:&n;            boot: linux advansys=&n;              or&n;            boot: linux advansys=0x0&n;       2. Limit I/O port scanning to one I/O port:&n;            boot: linux advansys=0x110&n;       3. Limit I/O port scanning to four I/O ports:&n;            boot: linux advansys=0x110,0x210,0x230,0x330&n;&n;     For a loadable module the same effect can be achieved by setting&n;     the &squot;asc_iopflag&squot; variable and &squot;asc_ioport&squot; array when loading&n;     the driver, e.g.&n;&n;           insmod advansys.o asc_iopflag=1 asc_ioport=0x110,0x330&n;&n;     If ADVANSYS_DEBUG is defined a 5th (ASC_NUM_IOPORT_PROBE + 1)&n;     I/O Port may be added to specify the driver debug level. Refer to&n;     the &squot;Driver Compile Time Options and Debugging&squot; section above for&n;     more information.&n;&n;  G. Tests to run before releasing new driver&n;&n;     1. In the supported kernels verify there are no warning or compile&n;        errors when the kernel is built as both a driver and as a module&n;        and with the following options:&n;&n;        ADVANSYS_DEBUG - enabled and disabled&n;        CONFIG_SMP - enabled and disabled&n;        CONFIG_PROC_FS - enabled and disabled&n;&n;     2. Run tests on an x86, alpha, and PowerPC with at least one narrow&n;        card and one wide card attached to a hard disk and CD-ROM drive:&n;        fdisk, mkfs, fsck, bonnie, copy/compare test from the&n;        CD-ROM to the hard drive.&n;&n;  H. Release History&n;&n;     BETA-1.0 (12/23/95):&n;         First Release&n;&n;     BETA-1.1 (12/28/95):&n;         1. Prevent advansys_detect() from being called twice.&n;         2. Add LILO 0xdeb[0-f] option to set &squot;asc_dbglvl&squot;.&n;&n;     1.2 (1/12/96):&n;         1. Prevent re-entrancy in the interrupt handler which&n;            resulted in the driver hanging Linux.&n;         2. Fix problem that prevented ABP-940 cards from being&n;            recognized on some PCI motherboards.&n;         3. Add support for the ABP-5140 PnP ISA card.&n;         4. Fix check condition return status.&n;         5. Add conditionally compiled code for Linux v1.3.X.&n;&n;     1.3 (2/23/96):&n;         1. Fix problem in advansys_biosparam() that resulted in the&n;            wrong drive geometry being returned for drives &gt; 1GB with&n;            extended translation enabled.&n;         2. Add additional tracing during device initialization.&n;         3. Change code that only applies to ISA PnP adapter.&n;         4. Eliminate &squot;make dep&squot; warning.&n;         5. Try to fix problem with handling resets by increasing their&n;            timeout value.&n;&n;     1.4 (5/8/96):&n;         1. Change definitions to eliminate conflicts with other subsystems.&n;         2. Add versioning code for the shared interrupt changes.&n;         3. Eliminate problem in asc_rmqueue() with iterating after removing&n;            a request.&n;         4. Remove reset request loop problem from the &quot;Known Problems or&n;            Issues&quot; section. This problem was isolated and fixed in the&n;            mid-level SCSI driver.&n;&n;     1.5 (8/8/96):&n;         1. Add support for ABP-940U (PCI Ultra) adapter.&n;         2. Add support for IRQ sharing by setting the SA_SHIRQ flag for&n;            request_irq and supplying a dev_id pointer to both request_irq()&n;            and free_irq().&n;         3. In AscSearchIOPortAddr11() restore a call to check_region() which&n;            should be used before I/O port probing.&n;         4. Fix bug in asc_prt_hex() which resulted in the displaying&n;            the wrong data.&n;         5. Incorporate miscellaneous Asc Library bug fixes and new microcode.&n;         6. Change driver versioning to be specific to each Linux sub-level.&n;         7. Change statistics gathering to be per adapter instead of global&n;            to the driver.&n;         8. Add more information and statistics to the adapter /proc file:&n;            /proc/scsi/advansys[0...].&n;         9. Remove &squot;cmd_per_lun&squot; from the &quot;Known Problems or Issues&quot; list.&n;            This problem has been addressed with the SCSI mid-level changes&n;            made in v1.3.89. The advansys_select_queue_depths() function&n;            was added for the v1.3.89 changes.&n;&n;     1.6 (9/10/96):&n;         1. Incorporate miscellaneous Asc Library bug fixes and new microcode.&n;&n;     1.7 (9/25/96):&n;         1. Enable clustering and optimize the setting of the maximum number&n;            of scatter gather elements for any particular board. Clustering&n;            increases CPU utilization, but results in a relatively larger&n;            increase in I/O throughput.&n;         2. Improve the performance of the request queuing functions by&n;            adding a last pointer to the queue structure.&n;         3. Correct problems with reset and abort request handling that&n;            could have hung or crashed Linux.&n;         4. Add more information to the adapter /proc file:&n;            /proc/scsi/advansys[0...].&n;         5. Remove the request timeout issue form the driver issues list.&n;         6. Miscellaneous documentation additions and changes.&n;&n;     1.8 (10/4/96):&n;         1. Make changes to handle the new v2.1.0 kernel memory mapping&n;            in which a kernel virtual address may not be equivalent to its&n;            bus or DMA memory address.&n;         2. Change abort and reset request handling to make it yet even&n;            more robust.&n;         3. Try to mitigate request starvation by sending ordered requests&n;            to heavily loaded, tag queuing enabled devices.&n;         4. Maintain statistics on request response time.&n;         5. Add request response time statistics and other information to&n;            the adapter /proc file: /proc/scsi/advansys[0...].&n;&n;     1.9 (10/21/96):&n;         1. Add conditionally compiled code (ASC_QUEUE_FLOW_CONTROL) to&n;            make use of mid-level SCSI driver device queue depth flow&n;            control mechanism. This will eliminate aborts caused by a&n;            device being unable to keep up with requests and eliminate&n;            repeat busy or QUEUE FULL status returned by a device.&n;         2. Incorporate miscellaneous Asc Library bug fixes.&n;         3. To allow the driver to work in kernels with broken module&n;            support set &squot;cmd_per_lun&squot; if the driver is compiled as a&n;            module. This change affects kernels v1.3.89 to present.&n;         4. Remove PCI BIOS address from the driver banner. The PCI BIOS&n;            is relocated by the motherboard BIOS and its new address can&n;            not be determined by the driver.&n;         5. Add mid-level SCSI queue depth information to the adapter&n;            /proc file: /proc/scsi/advansys[0...].&n;&n;     2.0 (11/14/96):&n;         1. Change allocation of global structures used for device&n;            initialization to guarantee they are in DMA-able memory.&n;            Previously when the driver was loaded as a module these&n;            structures might not have been in DMA-able memory, causing&n;            device initialization to fail.&n;&n;     2.1 (12/30/96):&n;         1. In advansys_reset(), if the request is a synchronous reset&n;            request, even if the request serial number has changed, then&n;            complete the request.&n;         2. Add Asc Library bug fixes including new microcode.&n;         3. Clear inquiry buffer before using it.&n;         4. Correct ifdef typo.&n;&n;     2.2 (1/15/97):&n;         1. Add Asc Library bug fixes including new microcode.&n;         2. Add synchronous data transfer rate information to the&n;            adapter /proc file: /proc/scsi/advansys[0...].&n;         3. Change ADVANSYS_DEBUG to be disabled by default. This&n;            will reduce the size of the driver image, eliminate execution&n;            overhead, and remove unneeded symbols from the kernel symbol&n;            space that were previously added by the driver.&n;         4. Add new compile-time option ADVANSYS_ASSERT for assertion&n;            code that used to be defined within ADVANSYS_DEBUG. This&n;            option is enabled by default.&n;&n;     2.8 (5/26/97):&n;         1. Change version number to 2.8 to synchronize the Linux driver&n;            version numbering with other AdvanSys drivers.&n;         2. Reformat source files without tabs to present the same view&n;            of the file to everyone regardless of the editor tab setting&n;            being used.&n;         3. Add Asc Library bug fixes.&n;&n;     3.1A (1/8/98):&n;         1. Change version number to 3.1 to indicate that support for&n;            Ultra-Wide adapters (ABP-940UW) is included in this release.&n;         2. Add Asc Library (Narrow Board) bug fixes.&n;         3. Report an underrun condition with the host status byte set&n;            to DID_UNDERRUN. Currently DID_UNDERRUN is defined to 0 which&n;            causes the underrun condition to be ignored. When Linux defines&n;            its own DID_UNDERRUN the constant defined in this file can be&n;            removed.&n;         4. Add patch to AscWaitTixISRDone().&n;         5. Add support for up to 16 different AdvanSys host adapter SCSI&n;            channels in one system. This allows four cards with four channels&n;            to be used in one system.&n;&n;     3.1B (1/9/98):&n;         1. Handle that PCI register base addresses are not always page&n;            aligned even though ioremap() requires that the address argument&n;            be page aligned.&n;&n;     3.1C (1/10/98):&n;         1. Update latest BIOS version checked for from the /proc file.&n;         2. Don&squot;t set microcode SDTR variable at initialization. Instead&n;            wait until device capabilities have been detected from an Inquiry&n;            command.&n;&n;     3.1D (1/21/98):&n;         1. Improve performance when the driver is compiled as module by&n;            allowing up to 64 scatter-gather elements instead of 8.&n;&n;     3.1E (5/1/98):&n;         1. Set time delay in AscWaitTixISRDone() to 1000 ms.&n;         2. Include SMP locking changes.&n;         3. For v2.1.93 and newer kernels use CONFIG_PCI and new PCI BIOS&n;            access functions.&n;         4. Update board serial number printing.&n;         5. Try allocating an IRQ both with and without the SA_INTERRUPT&n;            flag set to allow IRQ sharing with drivers that do not set&n;            the SA_INTERRUPT flag. Also display a more descriptive error&n;            message if request_irq() fails.&n;         6. Update to latest Asc and Adv Libraries.&n;&n;     3.2A (7/22/99):&n;         1. Update Adv Library to 4.16 which includes support for&n;            the ASC38C0800 (Ultra2/LVD) IC.&n;&n;     3.2B (8/23/99):&n;         1. Correct PCI compile time option for v2.1.93 and greater&n;            kernels, advansys_info() string, and debug compile time&n;            option.&n;         2. Correct DvcSleepMilliSecond() for v2.1.0 and greater&n;            kernels. This caused an LVD detection/BIST problem problem&n;            among other things.&n;         3. Sort PCI cards by PCI Bus, Slot, Function ascending order&n;            to be consistent with the BIOS.&n;         4. Update to Asc Library S121 and Adv Library 5.2.&n;&n;     3.2C (8/24/99):&n;         1. Correct PCI card detection bug introduced in 3.2B that&n;            prevented PCI cards from being detected in kernels older&n;            than v2.1.93.&n;&n;     3.2D (8/26/99):&n;         1. Correct /proc device synchronous speed information display.&n;            Also when re-negotiation is pending for a target device&n;            note this condition with an * and footnote.&n;         2. Correct initialization problem with Ultra-Wide cards that&n;            have a pre-3.2 BIOS. A microcode variable changed locations&n;            in 3.2 and greater BIOSes which caused WDTR to be attempted&n;            erroneously with drives that don&squot;t support WDTR.&n;&n;     3.2E (8/30/99):&n;         1. Fix compile error caused by v2.3.13 PCI structure change.&n;         2. Remove field from ASCEEP_CONFIG that resulted in an EEPROM&n;            checksum error for ISA cards.&n;         3. Remove ASC_QUEUE_FLOW_CONTROL conditional code. The mid-level&n;            SCSI changes that it depended on were never included in Linux.&n;&n;     3.2F (9/3/99):&n;         1. Handle new initial function code added in v2.3.16 for all&n;            driver versions.&n;&n;     3.2G (9/8/99):&n;         1. Fix PCI board detection in v2.3.13 and greater kernels.&n;         2. Fix comiple errors in v2.3.X with debugging enabled.&n;&n;     3.2H (9/13/99):&n;         1. Add 64-bit address, long support for Alpha and UltraSPARC.&n;            The driver has been verified to work on an Alpha system.&n;         2. Add partial byte order handling support for Power PC and&n;            other big-endian platforms. This support has not yet been&n;            completed or verified.&n;         3. For wide boards replace block zeroing of request and&n;            scatter-gather structures with individual field initialization&n;            to improve performance.&n;         4. Correct and clarify ROM BIOS version detection.&n;&n;     3.2I (10/8/99):&n;         1. Update to Adv Library 5.4.&n;         2. Add v2.3.19 underrun reporting to asc_isr_callback() and&n;            adv_isr_callback().  Remove DID_UNDERRUN constant and other&n;            no longer needed code that previously documented the lack&n;            of underrun handling.&n;&n;     3.2J (10/14/99):&n;         1. Eliminate compile errors for v2.0 and earlier kernels.&n;&n;     3.2K (11/15/99):&n;         1. Correct debug compile error in asc_prt_adv_scsi_req_q().&n;         2. Update Adv Library to 5.5.&n;         3. Add ifdef handling for /proc changes added in v2.3.28.&n;         4. Increase Wide board scatter-gather list maximum length to&n;            255 when the driver is compiled into the kernel.&n;&n;     3.2L (11/18/99):&n;         1. Fix bug in adv_get_sglist() that caused an assertion failure&n;            at line 7475. The reqp-&gt;sgblkp pointer must be initialized&n;            to NULL in adv_get_sglist().&n;&n;     3.2M (11/29/99):&n;         1. Really fix bug in adv_get_sglist().&n;         2. Incorporate v2.3.29 changes into driver.&n;&n;     3.2N (4/1/00):&n;         1. Add CONFIG_ISA ifdef code.&n;         2. Include advansys_interrupts_enabled name change patch.&n;         3. For &gt;= v2.3.28 use new SCSI error handling with new function&n;            advansys_eh_bus_reset(). Don&squot;t include an abort function&n;            because of base library limitations.&n;         4. For &gt;= v2.3.28 use per board lock instead of io_request_lock.&n;         5. For &gt;= v2.3.28 eliminate advansys_command() and&n;            advansys_command_done().&n;         6. Add some changes for PowerPC (Big Endian) support, but it isn&squot;t&n;            working yet.&n;         7. Fix &quot;nonexistent resource free&quot; problem that occurred on a module&n;            unload for boards with an I/O space &gt;= 255. The &squot;n_io_port&squot; field&n;            is only one byte and can not be used to hold an ioport length more&n;            than 255.&n;&n;     3.3A (4/4/00):&n;         1. Update to Adv Library 5.8.&n;         2. For wide cards add support for CDBs up to 16 bytes.&n;         3. Eliminate warnings when CONFIG_PROC_FS is not defined.&n;&n;     3.3B (5/1/00):&n;         1. Support for PowerPC (Big Endian) wide cards. Narrow cards&n;            still need work.&n;         2. Change bitfields to shift and mask access for endian&n;            portability.&n;&n;     3.3C (10/13/00):&n;         1. Update for latest 2.4 kernel.&n;         2. Test ABP-480 CardBus support in 2.4 kernel - works!&n;         3. Update to Asc Library S123.&n;         4. Update to Adv Library 5.12.&n;&n;     3.3D (11/22/00):&n;         1. Update for latest 2.4 kernel.&n;         2. Create patches for 2.2 and 2.4 kernels.&n;&n;     3.3E (1/9/01):&n;         1. Now that 2.4 is released remove ifdef code for kernel versions&n;            less than 2.2. The driver is now only supported in kernels 2.2,&n;            2.4, and greater.&n;         2. Add code to release and acquire the io_request_lock in&n;            the driver entrypoint functions: advansys_detect and&n;            advansys_queuecommand. In kernel 2.4 the SCSI mid-level driver&n;            still holds the io_request_lock on entry to SCSI low-level drivers.&n;            This was supposed to be removed before 2.4 was released but never&n;            happened. When the mid-level SCSI driver is changed all references&n;            to the io_request_lock should be removed from the driver.&n;         3. Simplify error handling by removing advansys_abort(),&n;            AscAbortSRB(), AscResetDevice(). SCSI bus reset requests are&n;            now handled by resetting the SCSI bus and fully re-initializing&n;            the chip. This simple method of error recovery has proven to work&n;            most reliably after attempts at different methods. Also now only&n;            support the &quot;new&quot; error handling method and remove the obsolete&n;            error handling interface.&n;         4. Fix debug build errors.&n;&n;     3.3F (1/24/01):&n;         1. Merge with ConnectCom version from Andy Kellner which&n;            updates Adv Library to 5.14.&n;         2. Make PowerPC (Big Endian) work for narrow cards and&n;            fix problems writing EEPROM for wide cards.&n;         3. Remove interrupts_enabled assertion function.&n;&n;     3.3G (2/16/01):&n;         1. Return an error from narrow boards if passed a 16 byte&n;            CDB. The wide board can already handle 16 byte CDBs.&n;&n;     3.3GJ (4/15/02):&n;&t; 1. hacks for lk 2.5 series (D. Gilbert)&n;&n;     3.3GJD (10/14/02):&n;         1. change select_queue_depths to slave_configure&n;&t; 2. make cmd_per_lun be sane again&n;&n;  I. Known Problems/Fix List (XXX)&n;&n;     1. Need to add memory mapping workaround. Test the memory mapping.&n;        If it doesn&squot;t work revert to I/O port access. Can a test be done&n;        safely?&n;     2. Handle an interrupt not working. Keep an interrupt counter in&n;        the interrupt handler. In the timeout function if the interrupt&n;        has not occurred then print a message and run in polled mode.&n;     3. Allow bus type scanning order to be changed.&n;     4. Need to add support for target mode commands, cf. CAM XPT.&n;&n;  J. Credits (Chronological Order)&n;&n;     Bob Frey &lt;bfrey@turbolinux.com.cn&gt; wrote the AdvanSys SCSI driver&n;     and maintained it up to 3.3F. He continues to answer questions&n;     and help maintain the driver.&n;&n;     Nathan Hartwell &lt;mage@cdc3.cdc.net&gt; provided the directions and&n;     basis for the Linux v1.3.X changes which were included in the&n;     1.2 release.&n;&n;     Thomas E Zerucha &lt;zerucha@shell.portal.com&gt; pointed out a bug&n;     in advansys_biosparam() which was fixed in the 1.3 release.&n;&n;     Erik Ratcliffe &lt;erik@caldera.com&gt; has done testing of the&n;     AdvanSys driver in the Caldera releases.&n;&n;     Rik van Riel &lt;H.H.vanRiel@fys.ruu.nl&gt; provided a patch to&n;     AscWaitTixISRDone() which he found necessary to make the&n;     driver work with a SCSI-1 disk.&n;&n;     Mark Moran &lt;mmoran@mmoran.com&gt; has helped test Ultra-Wide&n;     support in the 3.1A driver.&n;&n;     Doug Gilbert &lt;dgilbert@interlog.com&gt; has made changes and&n;     suggestions to improve the driver and done a lot of testing.&n;&n;     Ken Mort &lt;ken@mort.net&gt; reported a DEBUG compile bug fixed&n;     in 3.2K.&n;&n;     Tom Rini &lt;trini@kernel.crashing.org&gt; provided the CONFIG_ISA&n;     patch and helped with PowerPC wide and narrow board support.&n;&n;     Philip Blundell &lt;philip.blundell@pobox.com&gt; provided an&n;     advansys_interrupts_enabled patch.&n;&n;     Dave Jones &lt;dave@denial.force9.co.uk&gt; reported the compiler&n;     warnings generated when CONFIG_PROC_FS was not defined in&n;     the 3.2M driver.&n;&n;     Jerry Quinn &lt;jlquinn@us.ibm.com&gt; fixed PowerPC support (endian&n;     problems) for wide cards.&n;&n;     Bryan Henderson &lt;bryanh@giraffe-data.com&gt; helped debug narrow&n;     card error handling.&n;&n;     Manuel Veloso &lt;veloso@pobox.com&gt; worked hard on PowerPC narrow&n;     board support and fixed a bug in AscGetEEPConfig().&n;&n;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; made&n;     save_flags/restore_flags changes.&n;&n;     Andy Kellner &lt;AKellner@connectcom.net&gt; continues the Advansys SCSI&n;     driver development for ConnectCom (Version &gt; 3.3F).&n;&n;  K. ConnectCom (AdvanSys) Contact Information&n;&n;     Mail:                   ConnectCom Solutions, Inc.&n;                             1150 Ringwood Court&n;                             San Jose, CA 95131&n;     Operator/Sales:         1-408-383-9400&n;     FAX:                    1-408-383-9612&n;     Tech Support:           1-408-467-2930&n;     Tech Support E-Mail:    linux@connectcom.net&n;     FTP Site:               ftp.connectcom.net (login: anonymous)&n;     Web Site:               http://www.connectcom.net&n;&n;*/
-multiline_comment|/*&n; * --- Linux Version&n; */
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif /* LINUX_VERSION_CODE */
-multiline_comment|/* Convert Linux Version, Patch-level, Sub-level to LINUX_VERSION_CODE. */
-DECL|macro|ASC_LINUX_VERSION
-mdefine_line|#define ASC_LINUX_VERSION(V, P, S)    (((V) * 65536) + ((P) * 256) + (S))
-DECL|macro|ASC_LINUX_KERNEL22
-mdefine_line|#define ASC_LINUX_KERNEL22 (LINUX_VERSION_CODE &lt; ASC_LINUX_VERSION(2,4,0))
-DECL|macro|ASC_LINUX_KERNEL24
-mdefine_line|#define ASC_LINUX_KERNEL24 (LINUX_VERSION_CODE &gt;= ASC_LINUX_VERSION(2,4,0))
-multiline_comment|/* Driver supported only in version 2.2 and version &gt;= 2.4. */
-macro_line|#if LINUX_VERSION_CODE &lt; ASC_LINUX_VERSION(2,2,0) || &bslash;&n;    (LINUX_VERSION_CODE &gt; ASC_LINUX_VERSION(2,3,0) &amp;&amp; &bslash;&n;     LINUX_VERSION_CODE &lt; ASC_LINUX_VERSION(2,4,0))
-macro_line|#error &quot;AdvanSys driver supported only in 2.2 and 2.4 or greater kernels.&quot;
-macro_line|#endif
 multiline_comment|/*&n; * --- Linux Include Files&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -91,10 +76,6 @@ r_int
 r_char
 id|uchar
 suffix:semicolon
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL     (0)
-macro_line|#endif
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 mdefine_line|#define TRUE     (1)
@@ -280,89 +261,6 @@ DECL|macro|ASC_MAX_CDB_LEN
 mdefine_line|#define ASC_MAX_CDB_LEN     12
 DECL|macro|ASC_SCSI_RESET_HOLD_TIME_US
 mdefine_line|#define ASC_SCSI_RESET_HOLD_TIME_US  60
-DECL|macro|SCSICMD_TestUnitReady
-mdefine_line|#define SCSICMD_TestUnitReady     0x00
-DECL|macro|SCSICMD_Rewind
-mdefine_line|#define SCSICMD_Rewind            0x01
-DECL|macro|SCSICMD_Rezero
-mdefine_line|#define SCSICMD_Rezero            0x01
-DECL|macro|SCSICMD_RequestSense
-mdefine_line|#define SCSICMD_RequestSense      0x03
-DECL|macro|SCSICMD_Format
-mdefine_line|#define SCSICMD_Format            0x04
-DECL|macro|SCSICMD_FormatUnit
-mdefine_line|#define SCSICMD_FormatUnit        0x04
-DECL|macro|SCSICMD_Read6
-mdefine_line|#define SCSICMD_Read6             0x08
-DECL|macro|SCSICMD_Write6
-mdefine_line|#define SCSICMD_Write6            0x0A
-DECL|macro|SCSICMD_Seek6
-mdefine_line|#define SCSICMD_Seek6             0x0B
-DECL|macro|SCSICMD_Inquiry
-mdefine_line|#define SCSICMD_Inquiry           0x12
-DECL|macro|SCSICMD_Verify6
-mdefine_line|#define SCSICMD_Verify6           0x13
-DECL|macro|SCSICMD_ModeSelect6
-mdefine_line|#define SCSICMD_ModeSelect6       0x15
-DECL|macro|SCSICMD_ModeSense6
-mdefine_line|#define SCSICMD_ModeSense6        0x1A
-DECL|macro|SCSICMD_StartStopUnit
-mdefine_line|#define SCSICMD_StartStopUnit     0x1B
-DECL|macro|SCSICMD_LoadUnloadTape
-mdefine_line|#define SCSICMD_LoadUnloadTape    0x1B
-DECL|macro|SCSICMD_ReadCapacity
-mdefine_line|#define SCSICMD_ReadCapacity      0x25
-DECL|macro|SCSICMD_Read10
-mdefine_line|#define SCSICMD_Read10            0x28
-DECL|macro|SCSICMD_Write10
-mdefine_line|#define SCSICMD_Write10           0x2A
-DECL|macro|SCSICMD_Seek10
-mdefine_line|#define SCSICMD_Seek10            0x2B
-DECL|macro|SCSICMD_Erase10
-mdefine_line|#define SCSICMD_Erase10           0x2C
-DECL|macro|SCSICMD_WriteAndVerify10
-mdefine_line|#define SCSICMD_WriteAndVerify10  0x2E
-DECL|macro|SCSICMD_Verify10
-mdefine_line|#define SCSICMD_Verify10          0x2F
-DECL|macro|SCSICMD_WriteBuffer
-mdefine_line|#define SCSICMD_WriteBuffer       0x3B
-DECL|macro|SCSICMD_ReadBuffer
-mdefine_line|#define SCSICMD_ReadBuffer        0x3C
-DECL|macro|SCSICMD_ReadLong
-mdefine_line|#define SCSICMD_ReadLong          0x3E
-DECL|macro|SCSICMD_WriteLong
-mdefine_line|#define SCSICMD_WriteLong         0x3F
-DECL|macro|SCSICMD_ReadTOC
-mdefine_line|#define SCSICMD_ReadTOC           0x43
-DECL|macro|SCSICMD_ReadHeader
-mdefine_line|#define SCSICMD_ReadHeader        0x44
-DECL|macro|SCSICMD_ModeSelect10
-mdefine_line|#define SCSICMD_ModeSelect10      0x55
-DECL|macro|SCSICMD_ModeSense10
-mdefine_line|#define SCSICMD_ModeSense10       0x5A
-multiline_comment|/* Inquiry Data Peripheral Device Types */
-DECL|macro|SCSI_TYPE_DASD
-mdefine_line|#define SCSI_TYPE_DASD     0x00
-DECL|macro|SCSI_TYPE_SASD
-mdefine_line|#define SCSI_TYPE_SASD     0x01
-DECL|macro|SCSI_TYPE_PRN
-mdefine_line|#define SCSI_TYPE_PRN      0x02
-DECL|macro|SCSI_TYPE_PROC
-mdefine_line|#define SCSI_TYPE_PROC     0x03
-DECL|macro|SCSI_TYPE_WORM
-mdefine_line|#define SCSI_TYPE_WORM     0x04
-DECL|macro|SCSI_TYPE_CDROM
-mdefine_line|#define SCSI_TYPE_CDROM    0x05
-DECL|macro|SCSI_TYPE_SCANNER
-mdefine_line|#define SCSI_TYPE_SCANNER  0x06
-DECL|macro|SCSI_TYPE_OPTMEM
-mdefine_line|#define SCSI_TYPE_OPTMEM   0x07
-DECL|macro|SCSI_TYPE_MED_CHG
-mdefine_line|#define SCSI_TYPE_MED_CHG  0x08
-DECL|macro|SCSI_TYPE_COMM
-mdefine_line|#define SCSI_TYPE_COMM     0x09
-DECL|macro|SCSI_TYPE_UNKNOWN
-mdefine_line|#define SCSI_TYPE_UNKNOWN  0x1F
 DECL|macro|ADV_INQ_CLOCKING_ST_ONLY
 mdefine_line|#define ADV_INQ_CLOCKING_ST_ONLY    0x0
 DECL|macro|ADV_INQ_CLOCKING_DT_ONLY
@@ -386,38 +284,6 @@ DECL|macro|ASC_SCSIDIR_H2T
 mdefine_line|#define ASC_SCSIDIR_H2T      0x10
 DECL|macro|ASC_SCSIDIR_NODATA
 mdefine_line|#define ASC_SCSIDIR_NODATA   0x18
-DECL|macro|SCSI_SENKEY_NO_SENSE
-mdefine_line|#define SCSI_SENKEY_NO_SENSE      0x00
-DECL|macro|SCSI_SENKEY_UNDEFINED
-mdefine_line|#define SCSI_SENKEY_UNDEFINED     0x01
-DECL|macro|SCSI_SENKEY_NOT_READY
-mdefine_line|#define SCSI_SENKEY_NOT_READY     0x02
-DECL|macro|SCSI_SENKEY_MEDIUM_ERR
-mdefine_line|#define SCSI_SENKEY_MEDIUM_ERR    0x03
-DECL|macro|SCSI_SENKEY_HW_ERR
-mdefine_line|#define SCSI_SENKEY_HW_ERR        0x04
-DECL|macro|SCSI_SENKEY_ILLEGAL
-mdefine_line|#define SCSI_SENKEY_ILLEGAL       0x05
-DECL|macro|SCSI_SENKEY_ATTENTION
-mdefine_line|#define SCSI_SENKEY_ATTENTION     0x06
-DECL|macro|SCSI_SENKEY_PROTECTED
-mdefine_line|#define SCSI_SENKEY_PROTECTED     0x07
-DECL|macro|SCSI_SENKEY_BLANK
-mdefine_line|#define SCSI_SENKEY_BLANK         0x08
-DECL|macro|SCSI_SENKEY_V_UNIQUE
-mdefine_line|#define SCSI_SENKEY_V_UNIQUE      0x09
-DECL|macro|SCSI_SENKEY_CPY_ABORT
-mdefine_line|#define SCSI_SENKEY_CPY_ABORT     0x0A
-DECL|macro|SCSI_SENKEY_ABORT
-mdefine_line|#define SCSI_SENKEY_ABORT         0x0B
-DECL|macro|SCSI_SENKEY_EQUAL
-mdefine_line|#define SCSI_SENKEY_EQUAL         0x0C
-DECL|macro|SCSI_SENKEY_VOL_OVERFLOW
-mdefine_line|#define SCSI_SENKEY_VOL_OVERFLOW  0x0D
-DECL|macro|SCSI_SENKEY_MISCOMP
-mdefine_line|#define SCSI_SENKEY_MISCOMP       0x0E
-DECL|macro|SCSI_SENKEY_RESERVED
-mdefine_line|#define SCSI_SENKEY_RESERVED      0x0F
 DECL|macro|SCSI_ASC_NOMEDIA
 mdefine_line|#define SCSI_ASC_NOMEDIA          0x3A
 DECL|macro|ASC_SRB_HOST
@@ -428,24 +294,6 @@ DECL|macro|ASC_SRB_LUN
 mdefine_line|#define ASC_SRB_LUN(x)   ((uchar)((uint)(x) &gt;&gt; 13))
 DECL|macro|PUT_CDB1
 mdefine_line|#define PUT_CDB1(x)   ((uchar)((uint)(x) &gt;&gt; 8))
-DECL|macro|SS_GOOD
-mdefine_line|#define SS_GOOD              0x00
-DECL|macro|SS_CHK_CONDITION
-mdefine_line|#define SS_CHK_CONDITION     0x02
-DECL|macro|SS_CONDITION_MET
-mdefine_line|#define SS_CONDITION_MET     0x04
-DECL|macro|SS_TARGET_BUSY
-mdefine_line|#define SS_TARGET_BUSY       0x08
-DECL|macro|SS_INTERMID
-mdefine_line|#define SS_INTERMID          0x10
-DECL|macro|SS_INTERMID_COND_MET
-mdefine_line|#define SS_INTERMID_COND_MET 0x14
-DECL|macro|SS_RSERV_CONFLICT
-mdefine_line|#define SS_RSERV_CONFLICT    0x18
-DECL|macro|SS_CMD_TERMINATED
-mdefine_line|#define SS_CMD_TERMINATED    0x22
-DECL|macro|SS_QUEUE_FULL
-mdefine_line|#define SS_QUEUE_FULL        0x28
 DECL|macro|MS_CMD_DONE
 mdefine_line|#define MS_CMD_DONE    0x00
 DECL|macro|MS_EXTEND
@@ -462,46 +310,6 @@ DECL|macro|MS_MDP_LEN
 mdefine_line|#define MS_MDP_LEN    0x05
 DECL|macro|MS_MDP_CODE
 mdefine_line|#define MS_MDP_CODE   0x00
-DECL|macro|M1_SAVE_DATA_PTR
-mdefine_line|#define M1_SAVE_DATA_PTR        0x02
-DECL|macro|M1_RESTORE_PTRS
-mdefine_line|#define M1_RESTORE_PTRS         0x03
-DECL|macro|M1_DISCONNECT
-mdefine_line|#define M1_DISCONNECT           0x04
-DECL|macro|M1_INIT_DETECTED_ERR
-mdefine_line|#define M1_INIT_DETECTED_ERR    0x05
-DECL|macro|M1_ABORT
-mdefine_line|#define M1_ABORT                0x06
-DECL|macro|M1_MSG_REJECT
-mdefine_line|#define M1_MSG_REJECT           0x07
-DECL|macro|M1_NO_OP
-mdefine_line|#define M1_NO_OP                0x08
-DECL|macro|M1_MSG_PARITY_ERR
-mdefine_line|#define M1_MSG_PARITY_ERR       0x09
-DECL|macro|M1_LINK_CMD_DONE
-mdefine_line|#define M1_LINK_CMD_DONE        0x0A
-DECL|macro|M1_LINK_CMD_DONE_WFLAG
-mdefine_line|#define M1_LINK_CMD_DONE_WFLAG  0x0B
-DECL|macro|M1_BUS_DVC_RESET
-mdefine_line|#define M1_BUS_DVC_RESET        0x0C
-DECL|macro|M1_ABORT_TAG
-mdefine_line|#define M1_ABORT_TAG            0x0D
-DECL|macro|M1_CLR_QUEUE
-mdefine_line|#define M1_CLR_QUEUE            0x0E
-DECL|macro|M1_INIT_RECOVERY
-mdefine_line|#define M1_INIT_RECOVERY        0x0F
-DECL|macro|M1_RELEASE_RECOVERY
-mdefine_line|#define M1_RELEASE_RECOVERY     0x10
-DECL|macro|M1_KILL_IO_PROC
-mdefine_line|#define M1_KILL_IO_PROC         0x11
-DECL|macro|M2_QTAG_MSG_SIMPLE
-mdefine_line|#define M2_QTAG_MSG_SIMPLE      0x20
-DECL|macro|M2_QTAG_MSG_HEAD
-mdefine_line|#define M2_QTAG_MSG_HEAD        0x21
-DECL|macro|M2_QTAG_MSG_ORDERED
-mdefine_line|#define M2_QTAG_MSG_ORDERED     0x22
-DECL|macro|M2_IGNORE_WIDE_RESIDUE
-mdefine_line|#define M2_IGNORE_WIDE_RESIDUE  0x23
 multiline_comment|/*&n; * Inquiry data structure and bitfield macros&n; *&n; * Only quantities of more than 1 bit are shifted, since the others are&n; * just tested for true or false. C bitfields aren&squot;t portable between big&n; * and little-endian platforms so they are not used.&n; */
 DECL|macro|ASC_INQ_DVC_TYPE
 mdefine_line|#define ASC_INQ_DVC_TYPE(inq)       ((inq)-&gt;periph &amp; 0x1f)
@@ -6751,18 +6559,6 @@ DECL|macro|ASC_WIDE_BOARD
 mdefine_line|#define ASC_WIDE_BOARD(boardp)   ((boardp)-&gt;flags &amp; ASC_IS_WIDE_BOARD)
 DECL|macro|NO_ISA_DMA
 mdefine_line|#define NO_ISA_DMA              0xff        /* No ISA DMA Channel Used */
-multiline_comment|/*&n; * If the Linux kernel version supports freeing initialization code&n; * and data after loading, define macros for this purpose. These macros&n; * are not used when the driver is built as a module, cf. linux/init.h.&n; */
-macro_line|#if ASC_LINUX_KERNEL24
-DECL|macro|ASC_INITFUNC
-mdefine_line|#define ASC_INITFUNC(type, func)        type __init func
-macro_line|#elif ASC_LINUX_KERNEL22
-DECL|macro|ASC_INITFUNC
-mdefine_line|#define ASC_INITFUNC(type, func)        __initfunc(type func)
-macro_line|#endif
-DECL|macro|ASC_INITDATA
-mdefine_line|#define ASC_INITDATA                    __initdata
-DECL|macro|ASC_INIT
-mdefine_line|#define ASC_INIT                        __init
 DECL|macro|ASC_INFO_SIZE
 mdefine_line|#define ASC_INFO_SIZE           128            /* advansys_info() line size */
 macro_line|#ifdef CONFIG_PROC_FS
@@ -6773,8 +6569,6 @@ DECL|macro|ASC_PRTLINE_SIZE
 mdefine_line|#define ASC_PRTLINE_SIZE        160
 DECL|macro|ASC_PRT_NEXT
 mdefine_line|#define ASC_PRT_NEXT() &bslash;&n;    if (cp) { &bslash;&n;        totlen += len; &bslash;&n;        leftlen -= len; &bslash;&n;        if (leftlen == 0) { &bslash;&n;            return totlen; &bslash;&n;        } &bslash;&n;        cp += len; &bslash;&n;    }
-DECL|macro|ASC_MIN
-mdefine_line|#define ASC_MIN(a, b) (((a) &lt; (b)) ? (a) : (b))
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* Asc Library return codes */
 DECL|macro|ASC_TRUE
@@ -6829,77 +6623,6 @@ mdefine_line|#define ASC_TID_ALL        (-1)
 multiline_comment|/* Return non-zero, if the queue is empty. */
 DECL|macro|ASC_QUEUE_EMPTY
 mdefine_line|#define ASC_QUEUE_EMPTY(ascq)    ((ascq)-&gt;q_tidmask == 0)
-multiline_comment|/* PCI configuration declarations */
-DECL|macro|PCI_BASE_CLASS_PREDEFINED
-mdefine_line|#define PCI_BASE_CLASS_PREDEFINED               0x00
-DECL|macro|PCI_BASE_CLASS_MASS_STORAGE
-mdefine_line|#define PCI_BASE_CLASS_MASS_STORAGE             0x01
-DECL|macro|PCI_BASE_CLASS_NETWORK
-mdefine_line|#define PCI_BASE_CLASS_NETWORK                  0x02
-DECL|macro|PCI_BASE_CLASS_DISPLAY
-mdefine_line|#define PCI_BASE_CLASS_DISPLAY                  0x03
-DECL|macro|PCI_BASE_CLASS_MULTIMEDIA
-mdefine_line|#define PCI_BASE_CLASS_MULTIMEDIA               0x04
-DECL|macro|PCI_BASE_CLASS_MEMORY_CONTROLLER
-mdefine_line|#define PCI_BASE_CLASS_MEMORY_CONTROLLER        0x05
-DECL|macro|PCI_BASE_CLASS_BRIDGE_DEVICE
-mdefine_line|#define PCI_BASE_CLASS_BRIDGE_DEVICE            0x06
-multiline_comment|/* MASS STORAGE */
-DECL|macro|PCI_SUB_CLASS_SCSI_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_SCSI_CONTROLLER           0x00
-DECL|macro|PCI_SUB_CLASS_IDE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_IDE_CONTROLLER            0x01
-DECL|macro|PCI_SUB_CLASS_FLOPPY_DISK_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_FLOPPY_DISK_CONTROLLER    0x02
-DECL|macro|PCI_SUB_CLASS_IPI_BUS_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_IPI_BUS_CONTROLLER        0x03
-DECL|macro|PCI_SUB_CLASS_OTHER_MASS_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_OTHER_MASS_CONTROLLER     0x80
-multiline_comment|/* NETWORK CONTROLLER */
-DECL|macro|PCI_SUB_CLASS_ETHERNET_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_ETHERNET_CONTROLLER       0x00
-DECL|macro|PCI_SUB_CLASS_TOKEN_RING_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_TOKEN_RING_CONTROLLER     0x01
-DECL|macro|PCI_SUB_CLASS_FDDI_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_FDDI_CONTROLLER           0x02
-DECL|macro|PCI_SUB_CLASS_OTHER_NETWORK_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_OTHER_NETWORK_CONTROLLER  0x80
-multiline_comment|/* DISPLAY CONTROLLER */
-DECL|macro|PCI_SUB_CLASS_VGA_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_VGA_CONTROLLER            0x00
-DECL|macro|PCI_SUB_CLASS_XGA_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_XGA_CONTROLLER            0x01
-DECL|macro|PCI_SUB_CLASS_OTHER_DISPLAY_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_OTHER_DISPLAY_CONTROLLER  0x80
-multiline_comment|/* MULTIMEDIA CONTROLLER */
-DECL|macro|PCI_SUB_CLASS_VIDEO_DEVICE
-mdefine_line|#define PCI_SUB_CLASS_VIDEO_DEVICE              0x00
-DECL|macro|PCI_SUB_CLASS_AUDIO_DEVICE
-mdefine_line|#define PCI_SUB_CLASS_AUDIO_DEVICE              0x01
-DECL|macro|PCI_SUB_CLASS_OTHER_MULTIMEDIA_DEVICE
-mdefine_line|#define PCI_SUB_CLASS_OTHER_MULTIMEDIA_DEVICE   0x80
-multiline_comment|/* MEMORY CONTROLLER */
-DECL|macro|PCI_SUB_CLASS_RAM_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_RAM_CONTROLLER            0x00
-DECL|macro|PCI_SUB_CLASS_FLASH_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_FLASH_CONTROLLER          0x01
-DECL|macro|PCI_SUB_CLASS_OTHER_MEMORY_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_OTHER_MEMORY_CONTROLLER   0x80
-multiline_comment|/* BRIDGE CONTROLLER */
-DECL|macro|PCI_SUB_CLASS_HOST_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_HOST_BRIDGE_CONTROLLER    0x00
-DECL|macro|PCI_SUB_CLASS_ISA_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_ISA_BRIDGE_CONTROLLER     0x01
-DECL|macro|PCI_SUB_CLASS_EISA_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_EISA_BRIDGE_CONTROLLER    0x02
-DECL|macro|PCI_SUB_CLASS_MC_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_MC_BRIDGE_CONTROLLER      0x03
-DECL|macro|PCI_SUB_CLASS_PCI_TO_PCI_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_PCI_TO_PCI_BRIDGE_CONTROLLER    0x04
-DECL|macro|PCI_SUB_CLASS_PCMCIA_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_PCMCIA_BRIDGE_CONTROLLER  0x05
-DECL|macro|PCI_SUB_CLASS_OTHER_BRIDGE_CONTROLLER
-mdefine_line|#define PCI_SUB_CLASS_OTHER_BRIDGE_CONTROLLER   0x80
 DECL|macro|PCI_MAX_SLOT
 mdefine_line|#define PCI_MAX_SLOT            0x1F
 DECL|macro|PCI_MAX_BUS
@@ -6922,31 +6645,6 @@ DECL|macro|ASC_PCI_DEVICE_ID_2500
 mdefine_line|#define ASC_PCI_DEVICE_ID_2500  0x2500  /* ASC-38C0800 */
 DECL|macro|ASC_PCI_DEVICE_ID_2700
 mdefine_line|#define ASC_PCI_DEVICE_ID_2700  0x2700  /* ASC-38C1600 */
-multiline_comment|/* PCI IO Port Addresses to generate special cycle */
-DECL|macro|PCI_CONFIG_ADDRESS_MECH1
-mdefine_line|#define PCI_CONFIG_ADDRESS_MECH1          0x0CF8
-DECL|macro|PCI_CONFIG_DATA_MECH1
-mdefine_line|#define PCI_CONFIG_DATA_MECH1             0x0CFC
-DECL|macro|PCI_CONFIG_FORWARD_REGISTER
-mdefine_line|#define PCI_CONFIG_FORWARD_REGISTER       0x0CFA    /* 0=type 0; 1=type 1; */
-DECL|macro|PCI_CONFIG_BUS_NUMBER_MASK
-mdefine_line|#define PCI_CONFIG_BUS_NUMBER_MASK        0x00FF0000
-DECL|macro|PCI_CONFIG_DEVICE_FUNCTION_MASK
-mdefine_line|#define PCI_CONFIG_DEVICE_FUNCTION_MASK   0x0000FF00
-DECL|macro|PCI_CONFIG_REGISTER_NUMBER_MASK
-mdefine_line|#define PCI_CONFIG_REGISTER_NUMBER_MASK   0x000000F8
-DECL|macro|PCI_DEVICE_FOUND
-mdefine_line|#define PCI_DEVICE_FOUND                0x0000
-DECL|macro|PCI_DEVICE_NOT_FOUND
-mdefine_line|#define PCI_DEVICE_NOT_FOUND            0xffff
-DECL|macro|SUBCLASS_OFFSET
-mdefine_line|#define SUBCLASS_OFFSET         0x0A
-DECL|macro|CLASSCODE_OFFSET
-mdefine_line|#define CLASSCODE_OFFSET        0x0B
-DECL|macro|VENDORID_OFFSET
-mdefine_line|#define VENDORID_OFFSET         0x00
-DECL|macro|DEVICEID_OFFSET
-mdefine_line|#define DEVICEID_OFFSET         0x02
 macro_line|#ifndef ADVANSYS_STATS
 DECL|macro|ASC_STATS
 mdefine_line|#define ASC_STATS(shp, counter)
@@ -7738,36 +7436,6 @@ id|PCI_CONFIG_SPACE
 suffix:semicolon
 multiline_comment|/*&n; * --- Driver Data&n; */
 multiline_comment|/* Note: All driver global data should be initialized. */
-macro_line|#if ASC_LINUX_KERNEL22
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|proc_scsi_advansys
-r_struct
-id|proc_dir_entry
-id|proc_scsi_advansys
-op_assign
-(brace
-id|PROC_SCSI_ADVANSYS
-comma
-multiline_comment|/* unsigned short low_ino */
-l_int|8
-comma
-multiline_comment|/* unsigned short namelen */
-l_string|&quot;advansys&quot;
-comma
-multiline_comment|/* const char *name */
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-multiline_comment|/* mode_t mode */
-l_int|2
-multiline_comment|/* nlink_t nlink */
-)brace
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#endif /* ASC_LINUX_KERNEL22 */
 multiline_comment|/* Number of boards detected in system. */
 DECL|variable|asc_board_count
 id|STATIC
@@ -7825,14 +7493,14 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* List of supported bus types. */
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|STATIC
 id|ushort
 id|asc_bus
 (braket
 id|ASC_NUM_BUS
 )braket
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 id|ASC_IS_ISA
@@ -9349,19 +9017,15 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * advansys_detect()&n; *&n; * Detect function for AdvanSys adapters.&n; *&n; * Argument is a pointer to the host driver&squot;s scsi_hosts entry.&n; *&n; * Return number of adapters found.&n; *&n; * Note: Because this function is called during system initialization&n; * it must not call SCSI mid-level functions including scsi_malloc()&n; * and scsi_free().&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 r_int
-comma
+id|__init
+DECL|function|advansys_detect
 id|advansys_detect
 c_func
 (paren
 id|Scsi_Host_Template
 op_star
 id|tpnt
-)paren
 )paren
 (brace
 r_static
@@ -9531,18 +9195,6 @@ comma
 l_string|&quot;advansys_detect: begin&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
-id|tpnt-&gt;proc_name
-op_assign
-l_string|&quot;advansys&quot;
-suffix:semicolon
-macro_line|#elif ASC_LINUX_KERNEL22
-id|tpnt-&gt;proc_dir
-op_assign
-op_amp
-id|proc_scsi_advansys
-suffix:semicolon
-macro_line|#endif
 id|asc_board_count
 op_assign
 l_int|0
@@ -10015,7 +9667,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if ASC_LINUX_KERNEL24
 r_if
 c_cond
 (paren
@@ -10037,16 +9688,6 @@ op_assign
 id|pci_devp
 suffix:semicolon
 )brace
-macro_line|#elif ASC_LINUX_KERNEL22
-id|pci_devicep
-(braket
-id|pci_card_cnt_max
-op_increment
-)braket
-op_assign
-id|pci_devp
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/*&n;                     * Sort PCI cards in ascending order by PCI Bus, Slot,&n;                     * and Device Number.&n;                     */
@@ -10210,7 +9851,6 @@ comma
 id|pci_devp-&gt;bus-&gt;number
 )paren
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
 id|iop
 op_assign
 id|pci_resource_start
@@ -10221,17 +9861,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#elif ASC_LINUX_KERNEL22
-id|iop
-op_assign
-id|pci_devp-&gt;base_address
-(braket
-l_int|0
-)braket
-op_amp
-id|PCI_IOADDRESS_MASK
-suffix:semicolon
-macro_line|#endif
 id|ASC_DBG2
 c_func
 (paren
@@ -10610,7 +10239,6 @@ id|ADV_38C1600_IOLEN
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
-macro_line|#if ASC_LINUX_KERNEL24
 id|pci_memory_address
 op_assign
 id|pci_resource_start
@@ -10621,15 +10249,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#elif ASC_LINUX_KERNEL22
-id|pci_memory_address
-op_assign
-id|pci_devp-&gt;base_address
-(braket
-l_int|1
-)braket
-suffix:semicolon
-macro_line|#endif
 id|ASC_DBG1
 c_func
 (paren
@@ -11962,17 +11581,8 @@ id|boardp
 )paren
 )paren
 (brace
-macro_line|#if ASC_LINUX_KERNEL24
 id|shp-&gt;base
 op_assign
-macro_line|#elif ASC_LINUX_KERNEL22
-id|shp-&gt;base
-op_assign
-(paren
-r_char
-op_star
-)paren
-macro_line|#endif
 (paren
 (paren
 id|ulong
@@ -12066,12 +11676,6 @@ l_int|0x55AA
 multiline_comment|/*&n;                     * Convert x86 realmode code segment to a linear&n;                     * address by shifting left 4.&n;                     */
 id|shp-&gt;base
 op_assign
-macro_line|#if ASC_LINUX_KERNEL22
-(paren
-r_char
-op_star
-)paren
-macro_line|#endif
 (paren
 (paren
 id|ulong
@@ -12107,7 +11711,6 @@ comma
 id|boardp-&gt;asc_n_io_port
 )paren
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
 r_if
 c_cond
 (paren
@@ -12159,18 +11762,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#elif ASC_LINUX_KERNEL22
-id|request_region
-c_func
-(paren
-id|shp-&gt;io_port
-comma
-id|boardp-&gt;asc_n_io_port
-comma
-l_string|&quot;advansys&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Register DMA Channel for Narrow boards. */
 id|shp-&gt;dma_channel
 op_assign
@@ -14811,12 +14402,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * advansys_setup()&n; *&n; * This function is called from init/main.c at boot time.&n; * It it passed LILO parameters that can be set from the&n; * LILO command line or in /etc/lilo.conf.&n; *&n; * It is used by the AdvanSys driver to either disable I/O&n; * port scanning or to limit scanning to 1 - 4 I/O ports.&n; * Regardless of the option setting EISA and PCI boards&n; * will still be searched for and detected. This option&n; * only affects searching for ISA and VL boards.&n; *&n; * If ADVANSYS_DEBUG is defined the driver debug level may&n; * be set using the 5th (ASC_NUM_IOPORT_PROBE + 1) I/O Port.&n; *&n; * Examples:&n; * 1. Eliminate I/O port scanning:&n; *         boot: linux advansys=&n; *       or&n; *         boot: linux advansys=0x0&n; * 2. Limit I/O port scanning to one I/O port:&n; *        boot: linux advansys=0x110&n; * 3. Limit I/O port scanning to four I/O ports:&n; *        boot: linux advansys=0x110,0x210,0x230,0x330&n; * 4. If ADVANSYS_DEBUG, limit I/O port scanning to four I/O ports and&n; *    set the driver debug level to 2.&n; *        boot: linux advansys=0x110,0x210,0x230,0x330,0xdeb2&n; *&n; * ints[0] - number of arguments&n; * ints[1] - first argument&n; * ints[2] - second argument&n; * ...&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 r_void
-comma
+id|__init
+DECL|function|advansys_setup
 id|advansys_setup
 c_func
 (paren
@@ -14827,7 +14415,6 @@ comma
 r_int
 op_star
 id|ints
-)paren
 )paren
 (brace
 r_int
@@ -16451,14 +16038,14 @@ l_int|0
 (brace
 id|asc_scsi_q.q2.tag_code
 op_assign
-id|M2_QTAG_MSG_ORDERED
+id|MSG_ORDERED_TAG
 suffix:semicolon
 )brace
 r_else
 (brace
 id|asc_scsi_q.q2.tag_code
 op_assign
-id|M2_QTAG_MSG_SIMPLE
+id|MSG_SIMPLE_TAG
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * Build ASC_SCSI_Q for a contiguous buffer or a scatter-gather&n;     * buffer command.&n;     */
@@ -17965,7 +17552,7 @@ id|scp-&gt;cmnd
 l_int|0
 )braket
 op_eq
-id|SCSICMD_Inquiry
+id|INQUIRY
 op_logical_and
 id|scp-&gt;device-&gt;lun
 op_eq
@@ -17997,7 +17584,6 @@ id|scp-&gt;request_buffer
 )paren
 suffix:semicolon
 )brace
-macro_line|#if ASC_LINUX_KERNEL24
 multiline_comment|/*&n;         * Check for an underrun condition.&n;         *&n;         * If there was no error and an underrun condition, then&n;         * then return the number of underrun bytes.&n;         */
 r_if
 c_cond
@@ -18033,7 +17619,6 @@ op_assign
 id|qdonep-&gt;remain_bytes
 suffix:semicolon
 )brace
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -18061,7 +17646,7 @@ c_cond
 (paren
 id|qdonep-&gt;d3.scsi_stat
 op_eq
-id|SS_CHK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 )paren
 (brace
 id|ASC_DBG
@@ -18069,7 +17654,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;asc_isr_callback: SS_CHK_CONDITION&bslash;n&quot;
+l_string|&quot;asc_isr_callback: SAM_STAT_CHECK_CONDITION&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASC_DBG_PRT_SENSE
@@ -18297,11 +17882,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
 id|ADV_DCNT
 id|resid_cnt
 suffix:semicolon
-macro_line|#endif
 id|ASC_DBG2
 c_func
 (paren
@@ -18571,7 +18154,6 @@ id|scp-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
 multiline_comment|/*&n;         * Check for an underrun condition.&n;         *&n;         * If there was no error and an underrun condition, then&n;         * then return the number of underrun bytes.&n;         */
 id|resid_cnt
 op_assign
@@ -18615,7 +18197,6 @@ op_assign
 id|resid_cnt
 suffix:semicolon
 )brace
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -18643,7 +18224,7 @@ c_cond
 (paren
 id|scsiqp-&gt;scsi_status
 op_eq
-id|SS_CHK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 )paren
 (brace
 id|ASC_DBG
@@ -18651,7 +18232,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;adv_isr_callback: SS_CHK_CONDITION&bslash;n&quot;
+l_string|&quot;adv_isr_callback: SAM_STAT_CHECK_CONDITION&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASC_DBG_PRT_SENSE
@@ -25843,7 +25424,7 @@ id|advoffset
 multiline_comment|/* Read offset below current offset, copy everything. */
 id|cnt
 op_assign
-id|ASC_MIN
+id|min
 c_func
 (paren
 id|cplen
@@ -25916,7 +25497,7 @@ id|cnt
 suffix:semicolon
 id|cnt
 op_assign
-id|ASC_MIN
+id|min
 c_func
 (paren
 id|cnt
@@ -26048,7 +25629,7 @@ r_else
 (brace
 id|ret
 op_assign
-id|ASC_MIN
+id|min
 c_func
 (paren
 id|buflen
@@ -26363,13 +25944,10 @@ id|words
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read a PCI configuration byte.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|DvcReadPCIConfigByte
 id|DvcReadPCIConfigByte
 c_func
 (paren
@@ -26379,7 +25957,6 @@ id|asc_dvc
 comma
 id|ushort
 id|offset
-)paren
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
@@ -26411,13 +25988,10 @@ suffix:semicolon
 macro_line|#endif /* !defined(CONFIG_PCI) */
 )brace
 multiline_comment|/*&n; * Write a PCI configuration byte.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|DvcWritePCIConfigByte
 id|DvcWritePCIConfigByte
 c_func
 (paren
@@ -26430,7 +26004,6 @@ id|offset
 comma
 id|uchar
 id|byte_data
-)paren
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
@@ -26451,13 +26024,10 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 )brace
 multiline_comment|/*&n; * Return the BIOS address of the adapter at the specified&n; * I/O port and with the specified bus type.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscGetChipBiosAddress
 id|AscGetChipBiosAddress
 c_func
 (paren
@@ -26466,7 +26036,6 @@ id|iop_base
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 id|ushort
@@ -26658,13 +26227,10 @@ id|paddr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read a PCI configuration byte.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|DvcAdvReadPCIConfigByte
 id|DvcAdvReadPCIConfigByte
 c_func
 (paren
@@ -26674,7 +26240,6 @@ id|asc_dvc
 comma
 id|ushort
 id|offset
-)paren
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
@@ -26706,13 +26271,10 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 )brace
 multiline_comment|/*&n; * Write a PCI configuration byte.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|DvcAdvWritePCIConfigByte
 id|DvcAdvWritePCIConfigByte
 c_func
 (paren
@@ -26725,7 +26287,6 @@ id|offset
 comma
 id|uchar
 id|byte_data
-)paren
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
@@ -27628,41 +27189,6 @@ r_int
 id|s-&gt;last_reset
 )paren
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
-id|printk
-c_func
-(paren
-l_string|&quot; hostt 0x%lx&bslash;n&quot;
-comma
-(paren
-id|ulong
-)paren
-id|s-&gt;hostt
-)paren
-suffix:semicolon
-macro_line|#elif ASC_LINUX_KERNEL22
-id|printk
-c_func
-(paren
-l_string|&quot; host_queue 0x%lx, hostt 0x%lx, block 0x%lx,&bslash;n&quot;
-comma
-(paren
-id|ulong
-)paren
-id|s-&gt;host_queue
-comma
-(paren
-id|ulong
-)paren
-id|s-&gt;hostt
-comma
-(paren
-id|ulong
-)paren
-id|s-&gt;block
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -27829,7 +27355,6 @@ comma
 id|s-&gt;cmd_len
 )paren
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
 id|printk
 (paren
 l_string|&quot;sc_data_direction %u, resid %d&bslash;n&quot;
@@ -27839,7 +27364,6 @@ comma
 id|s-&gt;resid
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -27884,7 +27408,6 @@ comma
 id|s-&gt;timeout
 )paren
 suffix:semicolon
-macro_line|#if ASC_LINUX_KERNEL24
 id|printk
 c_func
 (paren
@@ -27895,20 +27418,6 @@ comma
 id|s-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#elif ASC_LINUX_KERNEL22
-id|printk
-c_func
-(paren
-l_string|&quot; internal_timeout %u, flags %u, this_count %d&bslash;n&quot;
-comma
-id|s-&gt;internal_timeout
-comma
-id|s-&gt;flags
-comma
-id|s-&gt;this_count
-)paren
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -29344,19 +28853,15 @@ suffix:semicolon
 )brace
 macro_line|#endif /* ADVANSYS_DEBUG */
 multiline_comment|/*&n; * --- Asc Library Functions&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscGetEisaChipCfg
 id|AscGetEisaChipCfg
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|PortAddr
@@ -29390,13 +28895,10 @@ id|eisa_cfg_iop
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscSetChipScsiID
 id|AscSetChipScsiID
 c_func
 (paren
@@ -29405,7 +28907,6 @@ id|iop_base
 comma
 id|uchar
 id|new_host_id
-)paren
 )paren
 (brace
 id|ushort
@@ -29474,19 +28975,15 @@ id|iop_base
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscGetChipScsiCtrl
 id|AscGetChipScsiCtrl
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|uchar
@@ -29524,13 +29021,10 @@ id|sc
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscGetChipVersion
 id|AscGetChipVersion
 c_func
 (paren
@@ -29539,7 +29033,6 @@ id|iop_base
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 r_if
@@ -29611,19 +29104,15 @@ id|iop_base
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscGetChipBusType
 id|AscGetChipBusType
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|ushort
@@ -30020,14 +29509,14 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|STATIC
 id|PortAddr
 id|_asc_def_iop_base
 (braket
 id|ASC_IOADR_TABLE_MAX_IX
 )braket
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 l_int|0x100
@@ -30054,21 +29543,18 @@ id|ASC_IOADR_8
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISA
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|STATIC
 id|uchar
 id|_isa_pnp_inited
-id|ASC_INITDATA
+id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|PortAddr
-comma
+id|__init
+DECL|function|AscSearchIOPortAddr
 id|AscSearchIOPortAddr
 c_func
 (paren
@@ -30077,7 +29563,6 @@ id|iop_beg
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 r_if
@@ -30245,19 +29730,15 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|PortAddr
-comma
+id|__init
+DECL|function|AscSearchIOPortAddr11
 id|AscSearchIOPortAddr11
 c_func
 (paren
 id|PortAddr
 id|s_addr
-)paren
 )paren
 (brace
 r_int
@@ -30375,18 +29856,14 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|AscSetISAPNPWaitForKey
 id|AscSetISAPNPWaitForKey
 c_func
 (paren
 r_void
-)paren
 )paren
 (brace
 id|outp
@@ -30409,19 +29886,15 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ISA */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|AscToggleIRQAct
 id|AscToggleIRQAct
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|AscSetChipStatus
@@ -30443,13 +29916,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscGetChipIRQ
 id|AscGetChipIRQ
 c_func
 (paren
@@ -30458,7 +29928,6 @@ id|iop_base
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 id|ushort
@@ -30668,13 +30137,10 @@ id|ASC_MIN_IRQ_NO
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscSetChipIRQ
 id|AscSetChipIRQ
 c_func
 (paren
@@ -30686,7 +30152,6 @@ id|irq_no
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 id|ushort
@@ -30934,19 +30399,15 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISA
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|AscEnableIsaDma
 id|AscEnableIsaDma
 c_func
 (paren
 id|uchar
 id|dma_channel
-)paren
 )paren
 (brace
 r_if
@@ -31765,7 +31226,7 @@ r_else
 (brace
 id|ext_msg.msg_type
 op_assign
-id|M1_MSG_REJECT
+id|MESSAGE_REJECT
 suffix:semicolon
 id|AscMemWordCopyPtrToLram
 c_func
@@ -32331,7 +31792,7 @@ c_cond
 (paren
 id|scsi_status
 op_eq
-id|SS_QUEUE_FULL
+id|SAM_STAT_TASK_SET_FULL
 )paren
 (brace
 r_if
@@ -33790,7 +33251,7 @@ id|ASC_SCSIQ_CDB_BEG
 )paren
 )paren
 op_eq
-id|SCSICMD_StartStopUnit
+id|START_STOP
 )paren
 )paren
 (brace
@@ -39042,21 +38503,21 @@ id|ASC_SYN_OFFSET_ONE_DISABLE_LIST
 )braket
 op_assign
 (brace
-id|SCSICMD_Inquiry
+id|INQUIRY
 comma
-id|SCSICMD_RequestSense
+id|REQUEST_SENSE
 comma
-id|SCSICMD_ReadCapacity
+id|READ_CAPACITY
 comma
-id|SCSICMD_ReadTOC
+id|READ_TOC
 comma
-id|SCSICMD_ModeSelect6
+id|MODE_SELECT
 comma
-id|SCSICMD_ModeSense6
+id|MODE_SENSE
 comma
-id|SCSICMD_ModeSelect10
+id|MODE_SELECT_10
 comma
-id|SCSICMD_ModeSense10
+id|MODE_SENSE_10
 comma
 l_int|0xFF
 comma
@@ -39248,7 +38709,7 @@ id|scsiq-&gt;cdbptr
 l_int|0
 )braket
 op_eq
-id|SCSICMD_RequestSense
+id|REQUEST_SENSE
 )paren
 (brace
 r_if
@@ -39641,7 +39102,7 @@ id|disable_syn_offset_one_fix
 id|scsiq-&gt;q2.tag_code
 op_and_assign
 op_complement
-id|M2_QTAG_MSG_SIMPLE
+id|MSG_SIMPLE_TAG
 suffix:semicolon
 id|scsiq-&gt;q2.tag_code
 op_or_assign
@@ -39691,13 +39152,13 @@ c_cond
 (paren
 id|scsi_cmd
 op_eq
-id|SCSICMD_Read6
+id|READ_6
 )paren
 op_logical_or
 (paren
 id|scsi_cmd
 op_eq
-id|SCSICMD_Read10
+id|READ_10
 )paren
 )paren
 (brace
@@ -39947,13 +39408,13 @@ c_cond
 (paren
 id|scsi_cmd
 op_eq
-id|SCSICMD_Read6
+id|READ_6
 )paren
 op_logical_or
 (paren
 id|scsi_cmd
 op_eq
-id|SCSICMD_Read10
+id|READ_10
 )paren
 )paren
 (brace
@@ -40804,7 +40265,7 @@ l_int|0
 id|scsiq-&gt;q2.tag_code
 op_and_assign
 op_complement
-id|M2_QTAG_MSG_SIMPLE
+id|MSG_SIMPLE_TAG
 suffix:semicolon
 )brace
 id|scsiq-&gt;q1.status
@@ -43000,19 +42461,15 @@ l_int|1000
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISA
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ASC_DCNT
-comma
+id|__init
+DECL|function|AscGetEisaProductID
 id|AscGetEisaProductID
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|PortAddr
@@ -43076,19 +42533,15 @@ id|product_id
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|PortAddr
-comma
+id|__init
+DECL|function|AscSearchIOPortAddrEISA
 id|AscSearchIOPortAddrEISA
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|ASC_DCNT
@@ -43930,19 +43383,15 @@ id|iop_base
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ASC_DCNT
-comma
+id|__init
+DECL|function|AscGetMaxDmaCount
 id|AscGetMaxDmaCount
 c_func
 (paren
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 r_if
@@ -43981,19 +43430,15 @@ id|ASC_MAX_PCI_DMA_COUNT
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISA
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscGetIsaDmaChannel
 id|AscGetIsaDmaChannel
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|ushort
@@ -44042,13 +43487,10 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscSetIsaDmaChannel
 id|AscSetIsaDmaChannel
 c_func
 (paren
@@ -44057,7 +43499,6 @@ id|iop_base
 comma
 id|ushort
 id|dma_channel
-)paren
 )paren
 (brace
 id|ushort
@@ -44138,13 +43579,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscSetIsaDmaSpeed
 id|AscSetIsaDmaSpeed
 c_func
 (paren
@@ -44153,7 +43591,6 @@ id|iop_base
 comma
 id|uchar
 id|speed_value
-)paren
 )paren
 (brace
 id|speed_value
@@ -44194,19 +43631,15 @@ id|iop_base
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|uchar
-comma
+id|__init
+DECL|function|AscGetIsaDmaSpeed
 id|AscGetIsaDmaSpeed
 c_func
 (paren
 id|PortAddr
 id|iop_base
-)paren
 )paren
 (brace
 id|uchar
@@ -44247,13 +43680,10 @@ id|speed_value
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ISA */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscReadPCIConfigWord
 id|AscReadPCIConfigWord
 c_func
 (paren
@@ -44263,7 +43693,6 @@ id|asc_dvc
 comma
 id|ushort
 id|pci_config_offset
-)paren
 )paren
 (brace
 id|uchar
@@ -44310,20 +43739,16 @@ id|lsb
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscInitGetConfig
 id|AscInitGetConfig
 c_func
 (paren
 id|ASC_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|ushort
@@ -44637,20 +44062,16 @@ r_return
 id|warn_code
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscInitSetConfig
 id|AscInitSetConfig
 c_func
 (paren
 id|ASC_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|ushort
@@ -44710,20 +44131,16 @@ id|warn_code
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscInitFromAscDvcVar
 id|AscInitFromAscDvcVar
 c_func
 (paren
 id|ASC_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|PortAddr
@@ -45210,20 +44627,16 @@ id|warn_code
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscInitAscDvcVar
 id|AscInitAscDvcVar
 c_func
 (paren
 id|ASC_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 r_int
@@ -45809,20 +45222,16 @@ id|warn_code
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscInitFromEEP
 id|AscInitFromEEP
 c_func
 (paren
 id|ASC_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|ASCEEP_CONFIG
@@ -46956,20 +46365,16 @@ id|warn_code
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AscTestExternalLram
 id|AscTestExternalLram
 c_func
 (paren
 id|ASC_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|PortAddr
@@ -47073,13 +46478,10 @@ id|sta
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AscWriteEEPCmdReg
 id|AscWriteEEPCmdReg
 c_func
 (paren
@@ -47088,7 +46490,6 @@ id|iop_base
 comma
 id|uchar
 id|cmd_reg
-)paren
 )paren
 (brace
 id|uchar
@@ -47160,13 +46561,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AscWriteEEPDataReg
 id|AscWriteEEPDataReg
 c_func
 (paren
@@ -47175,7 +46573,6 @@ id|iop_base
 comma
 id|ushort
 id|data_reg
-)paren
 )paren
 (brace
 id|ushort
@@ -47247,18 +46644,14 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|AscWaitEEPRead
 id|AscWaitEEPRead
 c_func
 (paren
 r_void
-)paren
 )paren
 (brace
 id|DvcSleepMilliSecond
@@ -47270,18 +46663,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|AscWaitEEPWrite
 id|AscWaitEEPWrite
 c_func
 (paren
 r_void
-)paren
 )paren
 (brace
 id|DvcSleepMilliSecond
@@ -47293,13 +46682,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscReadEEPWord
 id|AscReadEEPWord
 c_func
 (paren
@@ -47308,7 +46694,6 @@ id|iop_base
 comma
 id|uchar
 id|addr
-)paren
 )paren
 (brace
 id|ushort
@@ -47368,13 +46753,10 @@ id|read_wval
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscWriteEEPWord
 id|AscWriteEEPWord
 c_func
 (paren
@@ -47386,7 +46768,6 @@ id|addr
 comma
 id|ushort
 id|word_val
-)paren
 )paren
 (brace
 id|ushort
@@ -47490,13 +46871,10 @@ id|read_wval
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AscGetEEPConfig
 id|AscGetEEPConfig
 c_func
 (paren
@@ -47509,7 +46887,6 @@ id|cfg_buf
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 id|ushort
@@ -47707,13 +47084,10 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AscSetEEPConfigOnce
 id|AscSetEEPConfigOnce
 c_func
 (paren
@@ -47726,7 +47100,6 @@ id|cfg_buf
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 r_int
@@ -48168,13 +47541,10 @@ id|n_error
 )paren
 suffix:semicolon
 )brace
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AscSetEEPConfig
 id|AscSetEEPConfig
 c_func
 (paren
@@ -48187,7 +47557,6 @@ id|cfg_buf
 comma
 id|ushort
 id|bus_type
-)paren
 )paren
 (brace
 r_int
@@ -48313,7 +47682,7 @@ c_cond
 (paren
 id|dvc_type
 op_eq
-id|SCSI_TYPE_CDROM
+id|TYPE_ROM
 )paren
 op_logical_and
 (paren
@@ -48354,25 +47723,25 @@ c_cond
 (paren
 id|dvc_type
 op_eq
-id|SCSI_TYPE_PROC
+id|TYPE_PROCESSOR
 )paren
 op_logical_or
 (paren
 id|dvc_type
 op_eq
-id|SCSI_TYPE_SCANNER
+id|TYPE_SCANNER
 )paren
 op_logical_or
 (paren
 id|dvc_type
 op_eq
-id|SCSI_TYPE_CDROM
+id|TYPE_ROM
 )paren
 op_logical_or
 (paren
 id|dvc_type
 op_eq
-id|SCSI_TYPE_SASD
+id|TYPE_TAPE
 )paren
 )paren
 (brace
@@ -83004,9 +82373,9 @@ multiline_comment|/* a_init.c */
 multiline_comment|/*&n; * EEPROM Configuration.&n; *&n; * All drivers should use this structure to set the default EEPROM&n; * configuration. The BIOS now uses this structure when it is built.&n; * Additional structure information can be found in a_condor.h where&n; * the structure is defined.&n; *&n; * The *_Field_IsChar structs are needed to correct for endianness.&n; * These values are read from the board 16 bits at a time directly&n; * into the structs. Because some fields are char, the values will be&n; * in the wrong order. The *_Field_IsChar tells when to flip the&n; * bytes. Data read and written to PCI memory is automatically swapped&n; * on big-endian platforms so char fields read as words are actually being&n; * unswapped on big-endian platforms.&n; */
 id|STATIC
 id|ADVEEP_3550_CONFIG
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|Default_3550_EEPROM_Config
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 id|ADV_EEPROM_BIOS_ENABLE
@@ -83146,9 +82515,9 @@ multiline_comment|/* num_of_err */
 suffix:semicolon
 id|STATIC
 id|ADVEEP_3550_CONFIG
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|ADVEEP_3550_Config_Field_IsChar
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 l_int|0
@@ -83288,9 +82657,9 @@ multiline_comment|/* num_of_err */
 suffix:semicolon
 id|STATIC
 id|ADVEEP_38C0800_CONFIG
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|Default_38C0800_EEPROM_Config
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 id|ADV_EEPROM_BIOS_ENABLE
@@ -83511,9 +82880,9 @@ multiline_comment|/* 63 reserved */
 suffix:semicolon
 id|STATIC
 id|ADVEEP_38C0800_CONFIG
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|ADVEEP_38C0800_Config_Field_IsChar
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 l_int|0
@@ -83734,9 +83103,9 @@ multiline_comment|/* 63 reserved */
 suffix:semicolon
 id|STATIC
 id|ADVEEP_38C1600_CONFIG
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|Default_38C1600_EEPROM_Config
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 id|ADV_EEPROM_BIOS_ENABLE
@@ -83957,9 +83326,9 @@ multiline_comment|/* 63 reserved */
 suffix:semicolon
 id|STATIC
 id|ADVEEP_38C1600_CONFIG
-DECL|variable|ASC_INITDATA
+DECL|variable|__initdata
 id|ADVEEP_38C1600_Config_Field_IsChar
-id|ASC_INITDATA
+id|__initdata
 op_assign
 (brace
 l_int|0
@@ -84179,20 +83548,16 @@ multiline_comment|/* 63 reserved */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Initialize the ADV_DVC_VAR structure.&n; *&n; * On failure set the ADV_DVC_VAR field &squot;err_code&squot; and return ADV_ERROR.&n; *&n; * For a non-fatal error return a warning code. If there are no warnings&n; * then 0 is returned.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AdvInitGetConfig
 id|AdvInitGetConfig
 c_func
 (paren
 id|ADV_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|ushort
@@ -89723,20 +89088,16 @@ id|warn_code
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the board&squot;s EEPROM configuration. Set fields in ADV_DVC_VAR and&n; * ADV_DVC_CFG based on the EEPROM settings. The chip is stopped while&n; * all of this is done.&n; *&n; * On failure set the ADV_DVC_VAR field &squot;err_code&squot; and return ADV_ERROR.&n; *&n; * For a non-fatal error return a warning code. If there are no warnings&n; * then 0 is returned.&n; *&n; * Note: Chip is stopped on entry.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AdvInitFrom3550EEP
 id|AdvInitFrom3550EEP
 c_func
 (paren
 id|ADV_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|AdvPortAddr
@@ -90132,20 +89493,16 @@ id|warn_code
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the board&squot;s EEPROM configuration. Set fields in ADV_DVC_VAR and&n; * ADV_DVC_CFG based on the EEPROM settings. The chip is stopped while&n; * all of this is done.&n; *&n; * On failure set the ADV_DVC_VAR field &squot;err_code&squot; and return ADV_ERROR.&n; *&n; * For a non-fatal error return a warning code. If there are no warnings&n; * then 0 is returned.&n; *&n; * Note: Chip is stopped on entry.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AdvInitFrom38C0800EEP
 id|AdvInitFrom38C0800EEP
 c_func
 (paren
 id|ADV_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|AdvPortAddr
@@ -90727,20 +90084,16 @@ id|warn_code
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the board&squot;s EEPROM configuration. Set fields in ASC_DVC_VAR and&n; * ASC_DVC_CFG based on the EEPROM settings. The chip is stopped while&n; * all of this is done.&n; *&n; * On failure set the ASC_DVC_VAR field &squot;err_code&squot; and return ADV_ERROR.&n; *&n; * For a non-fatal error return a warning code. If there are no warnings&n; * then 0 is returned.&n; *&n; * Note: Chip is stopped on entry.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_int
-comma
+id|__init
+DECL|function|AdvInitFrom38C1600EEP
 id|AdvInitFrom38C1600EEP
 c_func
 (paren
 id|ADV_DVC_VAR
 op_star
 id|asc_dvc
-)paren
 )paren
 (brace
 id|AdvPortAddr
@@ -91429,13 +90782,10 @@ id|warn_code
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read EEPROM configuration into the specified buffer.&n; *&n; * Return a checksum based on the EEPROM configuration read.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AdvGet3550EEPConfig
 id|AdvGet3550EEPConfig
 c_func
 (paren
@@ -91445,7 +90795,6 @@ comma
 id|ADVEEP_3550_CONFIG
 op_star
 id|cfg_buf
-)paren
 )paren
 (brace
 id|ushort
@@ -91618,13 +90967,10 @@ id|chksum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read EEPROM configuration into the specified buffer.&n; *&n; * Return a checksum based on the EEPROM configuration read.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AdvGet38C0800EEPConfig
 id|AdvGet38C0800EEPConfig
 c_func
 (paren
@@ -91634,7 +90980,6 @@ comma
 id|ADVEEP_38C0800_CONFIG
 op_star
 id|cfg_buf
-)paren
 )paren
 (brace
 id|ushort
@@ -91807,13 +91152,10 @@ id|chksum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read EEPROM configuration into the specified buffer.&n; *&n; * Return a checksum based on the EEPROM configuration read.&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AdvGet38C1600EEPConfig
 id|AdvGet38C1600EEPConfig
 c_func
 (paren
@@ -91823,7 +91165,6 @@ comma
 id|ADVEEP_38C1600_CONFIG
 op_star
 id|cfg_buf
-)paren
 )paren
 (brace
 id|ushort
@@ -91996,13 +91337,10 @@ id|chksum
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the EEPROM from specified location&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 id|ushort
-comma
+id|__init
+DECL|function|AdvReadEEPWord
 id|AdvReadEEPWord
 c_func
 (paren
@@ -92011,7 +91349,6 @@ id|iop_base
 comma
 r_int
 id|eep_word_addr
-)paren
 )paren
 (brace
 id|AdvWriteWordRegister
@@ -92043,19 +91380,15 @@ id|IOPW_EE_DATA
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for EEPROM command to complete&n; */
-DECL|function|ASC_INITFUNC
-id|ASC_INITFUNC
-c_func
-(paren
 id|STATIC
 r_void
-comma
+id|__init
+DECL|function|AdvWaitEEPCmd
 id|AdvWaitEEPCmd
 c_func
 (paren
 id|AdvPortAddr
 id|iop_base
-)paren
 )paren
 (brace
 r_int
@@ -94077,7 +93410,7 @@ id|scsiq-&gt;cdb
 l_int|0
 )braket
 op_eq
-id|SCSICMD_Inquiry
+id|INQUIRY
 op_logical_and
 id|scsiq-&gt;target_lun
 op_eq
