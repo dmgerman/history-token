@@ -143,12 +143,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|SetPageLocked
-c_func
-(paren
-id|pl-&gt;page
-)paren
-suffix:semicolon
 r_return
 id|pl
 suffix:semicolon
@@ -165,12 +159,6 @@ op_star
 id|pl
 )paren
 (brace
-id|ClearPageLocked
-c_func
-(paren
-id|pl-&gt;page
-)paren
-suffix:semicolon
 id|__free_page
 c_func
 (paren
