@@ -969,7 +969,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;%s: &bslash;&bslash;&bslash;n&quot;
+l_string|&quot;deps_%s := &bslash;&bslash;&bslash;n&quot;
 comma
 id|target
 )paren
@@ -1133,7 +1133,19 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;n%s: $(deps_%s)&bslash;n&bslash;n&quot;
+comma
+id|target
+comma
+id|target
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;$(deps_%s):&bslash;n&quot;
+comma
+id|target
 )paren
 suffix:semicolon
 )brace
