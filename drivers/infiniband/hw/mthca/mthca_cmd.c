@@ -6173,6 +6173,23 @@ op_star
 id|status
 )paren
 (brace
+id|mthca_dbg
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;Unmapping %d pages at %llx from ICM.&bslash;n&quot;
+comma
+id|page_count
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|virt
+)paren
+suffix:semicolon
 r_return
 id|mthca_cmd
 c_func
@@ -7321,7 +7338,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; %08x&bslash;n&quot;
+l_string|&quot;  opt param mask: %08x&bslash;n&quot;
 comma
 id|be32_to_cpup
 c_func
@@ -7359,7 +7376,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;[%02x] &quot;
+l_string|&quot;  [%02x] &quot;
 comma
 id|i
 op_star
