@@ -671,6 +671,11 @@ id|hdr
 op_assign
 (brace
 dot
+id|ident
+op_assign
+id|args-&gt;cbr_ident
+comma
+dot
 id|nops
 op_assign
 l_int|1
