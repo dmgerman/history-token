@@ -6218,7 +6218,7 @@ c_func
 (paren
 id|disk
 comma
-id|current_capacity
+id|idedisk_capacity
 c_func
 (paren
 id|drive
@@ -6445,7 +6445,7 @@ c_func
 (paren
 id|g
 comma
-id|current_capacity
+id|idedisk_capacity
 c_func
 (paren
 id|drive

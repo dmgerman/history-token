@@ -3957,16 +3957,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
-r_extern
-id|sector_t
-id|current_capacity
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Start a reset operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
 r_extern
 id|ide_startstop_t
