@@ -2437,6 +2437,15 @@ op_add_assign
 id|len
 suffix:semicolon
 multiline_comment|/* Any change of skb-&gt;len requires recalculation of tso&n;&t; * factor and mss.&n;&t; */
+r_if
+c_cond
+(paren
+id|tcp_skb_mss
+c_func
+(paren
+id|skb
+)paren
+)paren
 id|tcp_set_skb_tso_segs
 c_func
 (paren
