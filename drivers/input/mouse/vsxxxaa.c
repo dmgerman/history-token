@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * DEC VSXXX-AA and VSXXX-GA mouse driver.&n; *&n; * Copyright (C) 2003-2004 by Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; *&n; * The packet format was taken from a patch to GPM which is (C) 2001&n; * by&t;Karsten Merker &lt;merker@linuxtag.org&gt;&n; * and&t;Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&n; */
+multiline_comment|/*&n; * Driver for&t;DEC VSXXX-AA mouse (hockey-puck mouse, ball or two rollers)&n; * &t;&t;DEC VSXXX-GA mouse (rectangular mouse, with ball)&n; * &t;&t;DEC VSXXX-AB tablet (digitizer with hair cross or stylus)&n; *&n; * Copyright (C) 2003-2004 by Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; *&n; * The packet format was initially taken from a patch to GPM which is (C) 2001&n; * by&t;Karsten Merker &lt;merker@linuxtag.org&gt;&n; * and&t;Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&n; * Later on, I had access to the device&squot;s documentation (referenced below).&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
-multiline_comment|/*&n; * Building an adaptor to DB9 / DB25 RS232&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * DISCLAIMER: Use this description AT YOUR OWN RISK! I&squot;ll not pay for&n; * anything if you break your mouse, your computer or whatever!&n; *&n; * In theory, this mouse is a simple RS232 device. In practice, it has got&n; * a quite uncommon plug and the requirement to additionally get a power&n; * supply at +5V and -12V.&n; *&n; * If you look at the socket/jack (_not_ at the plug), we use this pin&n; * numbering:&n; *    _______&n; *   / 7 6 5 &bslash;&n; *  | 4 --- 3 |&n; *   &bslash;  2 1  /&n; *    -------&n; * &n; *&t;DEC socket&t;DB9&t;DB25&t;Note&n; *&t;1 (GND)&t;&t;5&t;7&t;-&n; *&t;2 (RxD)&t;&t;2&t;3&t;-&n; *&t;3 (TxD)&t;&t;3&t;2&t;-&n; *&t;4 (-12V)&t;-&t;-&t;Somewhere from the PSU. At ATX, it&squot;s&n; *&t;&t;&t;&t;&t;the thin blue wire at pin 12 of the&n; *&t;&t;&t;&t;&t;ATX power connector. Only required for&n; *&t;&t;&t;&t;&t;VSXXX-AA/-GA mice.&n; *&t;5 (+5V)&t;&t;-&t;-&t;PSU (red wires of ATX power connector&n; *&t;&t;&t;&t;&t;on pin 4, 6, 19 or 20) or HDD power&n; *&t;&t;&t;&t;&t;connector (also red wire).&n; *&t;6 (+12V)&t;-&t;-&t;HDD power connector, yellow wire. Only&n; *&t;&t;&t;&t;&t;required for VSXXX-AB digitizer.&n; *&t;7 (dev. avail.)&t;-&t;-&t;The mouse shorts this one to pin 1.&n; *&t;&t;&t;&t;&t;This way, the host computer can detect&n; *&t;&t;&t;&t;&t;the mouse. To use it with the adaptor,&n; *&t;&t;&t;&t;&t;simply don&squot;t connect this pin.&n; *&n; * So to get a working adaptor, you need to connect the mouse with three&n; * wires to a RS232 port and two or three additional wires for +5V, +12V and&n; * -12V to the PSU.&n; *&n; * Flow specification for the link is 4800, 8o1.&n; *&n; * The mice and tablet are described in &quot;VCB02 Video Subsystem - Technical&n; * Manual&quot;, DEC EK-104AA-TM-001. You&squot;ll find it at MANX, a search engine&n; * specific for DEC documentation. Try&n; * http://www.vt100.net/manx/details?pn=EK-104AA-TM-001;id=21;cp=1&n; */
+multiline_comment|/*&n; * Building an adaptor to DE9 / DB25 RS232&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * DISCLAIMER: Use this description AT YOUR OWN RISK! I&squot;ll not pay for&n; * anything if you break your mouse, your computer or whatever!&n; *&n; * In theory, this mouse is a simple RS232 device. In practice, it has got&n; * a quite uncommon plug and the requirement to additionally get a power&n; * supply at +5V and -12V.&n; *&n; * If you look at the socket/jack (_not_ at the plug), we use this pin&n; * numbering:&n; *    _______&n; *   / 7 6 5 &bslash;&n; *  | 4 --- 3 |&n; *   &bslash;  2 1  /&n; *    -------&n; * &n; *&t;DEC socket&t;DE9&t;DB25&t;Note&n; *&t;1 (GND)&t;&t;5&t;7&t;-&n; *&t;2 (RxD)&t;&t;2&t;3&t;-&n; *&t;3 (TxD)&t;&t;3&t;2&t;-&n; *&t;4 (-12V)&t;-&t;-&t;Somewhere from the PSU. At ATX, it&squot;s&n; *&t;&t;&t;&t;&t;the thin blue wire at pin 12 of the&n; *&t;&t;&t;&t;&t;ATX power connector. Only required for&n; *&t;&t;&t;&t;&t;VSXXX-AA/-GA mice.&n; *&t;5 (+5V)&t;&t;-&t;-&t;PSU (red wires of ATX power connector&n; *&t;&t;&t;&t;&t;on pin 4, 6, 19 or 20) or HDD power&n; *&t;&t;&t;&t;&t;connector (also red wire).&n; *&t;6 (+12V)&t;-&t;-&t;HDD power connector, yellow wire. Only&n; *&t;&t;&t;&t;&t;required for VSXXX-AB digitizer.&n; *&t;7 (dev. avail.)&t;-&t;-&t;The mouse shorts this one to pin 1.&n; *&t;&t;&t;&t;&t;This way, the host computer can detect&n; *&t;&t;&t;&t;&t;the mouse. To use it with the adaptor,&n; *&t;&t;&t;&t;&t;simply don&squot;t connect this pin.&n; *&n; * So to get a working adaptor, you need to connect the mouse with three&n; * wires to a RS232 port and two or three additional wires for +5V, +12V and&n; * -12V to the PSU.&n; *&n; * Flow specification for the link is 4800, 8o1.&n; *&n; * The mice and tablet are described in &quot;VCB02 Video Subsystem - Technical&n; * Manual&quot;, DEC EK-104AA-TM-001. You&squot;ll find it at MANX, a search engine&n; * specific for DEC documentation. Try&n; * http://www.vt100.net/manx/details?pn=EK-104AA-TM-001;id=21;cp=1&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&quot;Serial DEC VSXXX-AA/GA mouse / DEC tablet driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;Driver for DEC VSXXX-AA and -GA mice and VSXXX-AB tablet&quot;
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&quot;
@@ -51,7 +51,7 @@ mdefine_line|#define VSXXXAA_PACKET_ABS&t;0xc0
 DECL|macro|VSXXXAA_PACKET_POR
 mdefine_line|#define VSXXXAA_PACKET_POR&t;0xa0
 DECL|macro|MATCH_PACKET_TYPE
-mdefine_line|#define MATCH_PACKET_TYPE(data, type)&t;(((data) &amp; VSXXXAA_PACKET_MASK) == type)
+mdefine_line|#define MATCH_PACKET_TYPE(data, type)&t;(((data) &amp; VSXXXAA_PACKET_MASK) == (type))
 DECL|struct|vsxxxaa
 r_struct
 id|vsxxxaa
@@ -243,7 +243,7 @@ id|sprintf
 (paren
 id|mouse-&gt;name
 comma
-l_string|&quot;DEC VSXXX-AA/GA mouse&quot;
+l_string|&quot;DEC VSXXX-AA/-GA mouse&quot;
 )paren
 suffix:semicolon
 r_break
@@ -266,7 +266,10 @@ id|sprintf
 (paren
 id|mouse-&gt;name
 comma
-l_string|&quot;unknown DEC pointer device&quot;
+l_string|&quot;unknown DEC pointer device &quot;
+l_string|&quot;(type = 0x%02x)&quot;
+comma
+id|mouse-&gt;type
 )paren
 suffix:semicolon
 r_break
@@ -1037,7 +1040,7 @@ r_int
 r_char
 id|error
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check for Power-On-Reset packets. These are sent out&n;&t; * after plugging the mouse in, or when explicitely&n;&t; * requested by sending &squot;T&squot;.&n;&t; *&n;&t; * [0]:&t;1&t;0&t;1&t;0&t;R3&t;R2&t;R1&t;R0&n;&t; * [1]:&t;0&t;M2&t;M1&t;M0&t;D3&t;D2&t;D1&t;D0&n;&t; * [2]:&t;0&t;E6&t;E5&t;E4&t;E3&t;E2&t;E1&t;E0&n;&t; * [3]:&t;0&t;0&t;0&t;0&t;0&t;Left&t;Middle&t;Right&n;&t; *&n;&t; * M: manufacturer location code&n;&t; * R: revision code&n;&t; * E: Error code. I&squot;m not sure about these, but gpm&squot;s sources,&n;&t; *    which support this mouse, too, tell about them:&n;&t; *&t;E = [0x00 .. 0x1f]: no error, byte #3 is button state&n;&t; *&t;E = 0x3d: button error, byte #3 tells which one.&n;&t; *&t;E = &lt;else&gt;: other error&n;&t; * D: &lt;0010&gt; == mouse, &lt;0100&gt; == tablet&n;&t; *&n;&t; */
+multiline_comment|/*&n;&t; * Check for Power-On-Reset packets. These are sent out&n;&t; * after plugging the mouse in, or when explicitely&n;&t; * requested by sending &squot;T&squot;.&n;&t; *&n;&t; * [0]:&t;1&t;0&t;1&t;0&t;R3&t;R2&t;R1&t;R0&n;&t; * [1]:&t;0&t;M2&t;M1&t;M0&t;D3&t;D2&t;D1&t;D0&n;&t; * [2]:&t;0&t;E6&t;E5&t;E4&t;E3&t;E2&t;E1&t;E0&n;&t; * [3]:&t;0&t;0&t;0&t;0&t;0&t;Left&t;Middle&t;Right&n;&t; *&n;&t; * M: manufacturer location code&n;&t; * R: revision code&n;&t; * E: Error code. If it&squot;s in the range of 0x00..0x1f, only some&n;&t; *    minor problem occured. Errors &gt;= 0x20 are considered bad&n;&t; *    and the device may not work properly...&n;&t; * D: &lt;0010&gt; == mouse, &lt;0100&gt; == tablet&n;&t; */
 id|mouse-&gt;version
 op_assign
 id|buf
@@ -1147,7 +1150,7 @@ op_le
 l_int|0x1f
 )paren
 (brace
-multiline_comment|/* No error. Report buttons */
+multiline_comment|/* No (serious) error. Report buttons */
 id|input_regs
 (paren
 id|dev
@@ -1196,18 +1199,23 @@ id|input_sync
 id|dev
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_if
+c_cond
+(paren
+id|error
+op_ne
+l_int|0
+)paren
 id|printk
 (paren
-id|KERN_ERR
-l_string|&quot;Your %s on %s reports an undefined error, &quot;
-l_string|&quot;please check it...&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Your %s on %s reports error=0x%02x&bslash;n&quot;
 comma
 id|mouse-&gt;name
 comma
 id|mouse-&gt;phys
+comma
+id|error
 )paren
 suffix:semicolon
 )brace
@@ -1215,8 +1223,8 @@ multiline_comment|/*&n;&t; * If the mouse was hot-plugged, we need to force diff
 id|printk
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s on %s: Forceing standard packet format and &quot;
-l_string|&quot;streaming mode&bslash;n&quot;
+l_string|&quot;%s on %s: Forceing standard packet format, &quot;
+l_string|&quot;incremental streaming mode and 72 samples/sec&bslash;n&quot;
 comma
 id|mouse-&gt;name
 comma
@@ -1230,6 +1238,7 @@ comma
 l_char|&squot;S&squot;
 )paren
 suffix:semicolon
+multiline_comment|/* Standard format */
 id|mdelay
 (paren
 l_int|50
@@ -1242,6 +1251,20 @@ comma
 l_char|&squot;R&squot;
 )paren
 suffix:semicolon
+multiline_comment|/* Incremental */
+id|mdelay
+(paren
+l_int|50
+)paren
+suffix:semicolon
+id|mouse-&gt;serio-&gt;write
+(paren
+id|mouse-&gt;serio
+comma
+l_char|&squot;L&squot;
+)paren
+suffix:semicolon
+multiline_comment|/* 72 samples/sec */
 )brace
 r_static
 r_void
@@ -1801,7 +1824,7 @@ id|sprintf
 (paren
 id|mouse-&gt;name
 comma
-l_string|&quot;DEC VSXXX-AA/GA mouse or VSXXX-AB digitizer&quot;
+l_string|&quot;DEC VSXXX-AA/-GA mouse or VSXXX-AB digitizer&quot;
 )paren
 suffix:semicolon
 id|sprintf
