@@ -1608,6 +1608,11 @@ DECL|member|size
 id|s16
 id|size
 suffix:semicolon
+DECL|member|unique
+id|u32
+id|unique
+suffix:semicolon
+singleline_comment|// unique value representing this context
 DECL|member|jiffies
 id|ulong
 id|jiffies
@@ -2964,12 +2969,11 @@ r_struct
 id|fib_ioctl
 (brace
 DECL|member|fibctx
-r_char
-op_star
+id|u32
 id|fibctx
 suffix:semicolon
 DECL|member|wait
-r_int
+id|s32
 id|wait
 suffix:semicolon
 DECL|member|fib
@@ -3026,6 +3030,8 @@ DECL|macro|FSACTL_GET_PCI_INFO
 mdefine_line|#define FSACTL_GET_PCI_INFO               &t;CTL_CODE(2119, METHOD_BUFFERED)
 DECL|macro|FSACTL_FORCE_DELETE_DISK
 mdefine_line|#define FSACTL_FORCE_DELETE_DISK&t;&t;CTL_CODE(2120, METHOD_NEITHER)
+DECL|macro|FSACTL_GET_CONTAINERS
+mdefine_line|#define FSACTL_GET_CONTAINERS&t;&t;&t;2131
 DECL|struct|aac_common
 r_struct
 id|aac_common
