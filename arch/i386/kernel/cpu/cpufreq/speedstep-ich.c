@@ -870,7 +870,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;speedstep&quot;
+l_string|&quot;speedstep-ich&quot;
 comma
 dot
 id|verify
