@@ -13,12 +13,12 @@ macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;asm/console.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|srmcons_callback_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|srmcons_callback_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|srm_is_registered_console
 r_static
@@ -595,10 +595,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|srmconsp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_int
 r_int

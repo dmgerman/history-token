@@ -57,10 +57,11 @@ id|titan_cached_irq_mask
 suffix:semicolon
 multiline_comment|/*&n; * Need SMP-safe access to interrupt CSRs&n; */
 DECL|variable|titan_irq_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|titan_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void
