@@ -74,10 +74,6 @@ DECL|macro|inl_le
 mdefine_line|#define inl_le(addr)  le32_to_cpu(inl(addr))
 DECL|macro|inw_le
 mdefine_line|#define inw_le(addr)  le16_to_cpu(inw(addr))
-DECL|macro|insl
-mdefine_line|#define insl insl_ns
-DECL|macro|outsl
-mdefine_line|#define outsl outsl_ns
 macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_NAME &quot;: &quot;
