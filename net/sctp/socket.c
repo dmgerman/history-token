@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 Intel Corp.&n; * Copyright (c) 2001-2002 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; *&n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer&t;    &lt;rmlayer@us.ibm.com&gt;&n; *    Anup Pemmaiah         &lt;pemmaiah@cc.usu.edu&gt;&n; *    Kevin Gao             &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 Intel Corp.&n; * Copyright (c) 2001-2002 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions interface with the sockets layer to implement the&n; * SCTP Extensions for the Sockets API.&n; *&n; * Note that the descriptions from the specification are USER level&n; * functions--this file is the functions which populate the struct proto&n; * for SCTP which is the BOTTOM of the sockets interface.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Narasimha Budihal     &lt;narsi@refcode.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Inaky Perez-Gonzalez  &lt;inaky.gonzalez@intel.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer&t;    &lt;rmlayer@us.ibm.com&gt;&n; *    Anup Pemmaiah         &lt;pemmaiah@cc.usu.edu&gt;&n; *    Kevin Gao             &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1686,22 +1686,6 @@ comma
 id|chunk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-id|sctp_chunk_free
-c_func
-(paren
-id|chunk
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 multiline_comment|/* FIXME: After sending the add address ASCONF chunk, we&n;&t;&t; * cannot append the address to the association&squot;s binding&n;&t;&t; * address list, because the new address may be used as the&n;&t;&t; * source of a message sent to the peer before the ASCONF&n;&t;&t; * chunk is received by the peer.  So we should wait until&n;&t;&t; * ASCONF_ACK is received.&n;&t;&t; */
 )brace
 id|out
@@ -2321,22 +2305,6 @@ comma
 id|chunk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-id|sctp_chunk_free
-c_func
-(paren
-id|chunk
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 multiline_comment|/* FIXME: After sending the delete address ASCONF chunk, we&n;&t;&t; * cannot remove the addresses from the association&squot;s bind&n;&t;&t; * address list, because there maybe some packet send to&n;&t;&t; * the delete addresses, so we should wait until ASCONF_ACK&n;&t;&t; * packet is received.&n;&t;&t; */
 )brace
 id|out
@@ -6562,22 +6530,6 @@ comma
 id|chunk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-(brace
-id|sctp_chunk_free
-c_func
-(paren
-id|chunk
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
@@ -6585,7 +6537,7 @@ l_string|&quot;We set peer primary addr primitively.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* API 6.2 setsockopt(), getsockopt()&n; *&n; * Applications use setsockopt() and getsockopt() to set or retrieve&n; * socket options.  Socket options are used to change the default&n; * behavior of sockets calls.  They are described in Section 7.&n; *&n; * The syntax is:&n; *&n; *   ret = getsockopt(int sd, int level, int optname, void *optval,&n; *                    int *optlen);&n; *   ret = setsockopt(int sd, int level, int optname, const void *optval,&n; *                    int optlen);&n; *&n; *   sd      - the socket descript.&n; *   level   - set to IPPROTO_SCTP for all SCTP options.&n; *   optname - the option name.&n; *   optval  - the buffer to store the value of the option.&n; *   optlen  - the size of the buffer.&n; */
