@@ -8545,6 +8545,16 @@ r_int
 r_int
 id|SegmentCount
 suffix:semicolon
+DECL|member|DmaDirection
+r_int
+id|DmaDirection
+suffix:semicolon
+DECL|member|cmd_sglist
+r_struct
+id|scatterlist
+op_star
+id|cmd_sglist
+suffix:semicolon
 DECL|member|Request
 id|IO_Request_T
 op_star
