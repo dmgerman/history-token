@@ -1140,12 +1140,77 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-multiline_comment|/* Is an i_ino of zero legal? */
-multiline_comment|/* Are there sanity checks we can use to ensure that&n;&t;&t;&t;   the server is really filling in that field? */
-multiline_comment|/* We can not use the IndexNumber from either Windows&n;&t;&t;&t;   or Samba as it is frequently set to zero */
+multiline_comment|/* Is an i_ino of zero legal? Can we use that to check&n;&t;&t;&t;   if the server supports returning inode numbers?  Are&n;&t;&t;&t;   there other sanity checks we can use to ensure that&n;&t;&t;&t;   the server is really filling in that field? */
+multiline_comment|/* We can not use the IndexNumber field by default from&n;&t;&t;&t;   Windows or Samba (in ALL_INFO buf) but we can request&n;&t;&t;&t;   it explicitly.  It may not be unique presumably if&n;&t;&t;&t;   the server has multiple devices mounted under one&n;&t;&t;&t;   share */
 multiline_comment|/* There may be higher info levels that work but are&n;&t;&t;&t;   there Windows server or network appliances for which&n;&t;&t;&t;   IndexNumber field is not guaranteed unique? */
-multiline_comment|/* if(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM){&n;&t;&t;&t;&t;(*pinode)-&gt;i_ino = &n;&t;&t;&t;&t;&t;(unsigned long)pfindData-&gt;IndexNumber;&n;&t;&t;&t;} */
-multiline_comment|/*NB: ino incremented to unique num in new_inode*/
+macro_line|#ifdef CONFIG_CIFS_EXPERIMENTAL&t;&t;
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_SERVER_INUM
+)paren
+(brace
+r_int
+id|rc1
+op_assign
+l_int|0
+suffix:semicolon
+id|__u64
+id|inode_num
+suffix:semicolon
+id|rc1
+op_assign
+id|CIFSGetSrvInodeNumber
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|search_path
+comma
+op_amp
+id|inode_num
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc1
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;GetSrvInodeNum rc %d&quot;
+comma
+id|rc1
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB EOPNOSUPP disable SERVER_INUM? */
+)brace
+r_else
+multiline_comment|/* do we need cast or hash to ino? */
+(paren
+op_star
+id|pinode
+)paren
+op_member_access_from_pointer
+id|i_ino
+op_assign
+id|inode_num
+suffix:semicolon
+)brace
+multiline_comment|/* else ino incremented to unique num in new_inode*/
+macro_line|#endif /* CIFS_EXPERIMENTAL */
 id|insert_inode_hash
 c_func
 (paren
@@ -3036,7 +3101,6 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 )brace
 r_if
 c_cond

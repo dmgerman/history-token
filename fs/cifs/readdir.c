@@ -2603,9 +2603,9 @@ r_int
 id|unicode
 comma
 r_struct
-id|nls_table
+id|cifs_sb_info
 op_star
-id|nlt
+id|cifs_sb
 comma
 id|ino_t
 op_star
@@ -2626,6 +2626,13 @@ suffix:semicolon
 r_char
 op_star
 id|filename
+suffix:semicolon
+r_struct
+id|nls_table
+op_star
+id|nlt
+op_assign
+id|cifs_sb-&gt;local_nls
 suffix:semicolon
 op_star
 id|pinum
@@ -2688,11 +2695,20 @@ id|PATH_MAX
 suffix:semicolon
 )brace
 multiline_comment|/* BB fixme - hash low and high 32 bits if not 64 bit arch BB fixme */
+r_if
+c_cond
+(paren
+id|cifs_sb-&gt;mnt_cifs_flags
+op_amp
+id|CIFS_MOUNT_SERVER_INUM
+)paren
+(brace
 op_star
 id|pinum
 op_assign
 id|pFindData-&gt;UniqueId
 suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -3077,7 +3093,7 @@ id|pCifsF-&gt;srch_inf.info_level
 comma
 id|pCifsF-&gt;srch_inf.unicode
 comma
-id|cifs_sb-&gt;local_nls
+id|cifs_sb
 comma
 op_amp
 id|inum
