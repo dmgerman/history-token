@@ -505,6 +505,8 @@ comma
 l_string|&quot;ipv4&quot;
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4390,6 +4392,8 @@ comma
 id|NET_IPV4_NEIGH
 comma
 l_string|&quot;ipv4&quot;
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren

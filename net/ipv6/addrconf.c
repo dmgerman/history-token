@@ -1514,6 +1514,8 @@ l_string|&quot;ipv6&quot;
 comma
 op_amp
 id|ndisc_ifinfo_sysctl_change
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|addrconf_sysctl_register
@@ -8902,6 +8904,8 @@ l_string|&quot;ipv6&quot;
 comma
 op_amp
 id|ndisc_ifinfo_sysctl_change
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|addrconf_sysctl_register

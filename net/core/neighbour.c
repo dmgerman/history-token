@@ -10427,6 +10427,10 @@ comma
 id|proc_handler
 op_star
 id|handler
+comma
+id|ctl_handler
+op_star
+id|strategy
 )paren
 (brace
 r_struct
@@ -10533,6 +10537,8 @@ r_if
 c_cond
 (paren
 id|handler
+op_logical_or
+id|strategy
 )paren
 (brace
 id|t-&gt;neigh_vars
@@ -10543,6 +10549,15 @@ dot
 id|proc_handler
 op_assign
 id|handler
+suffix:semicolon
+id|t-&gt;neigh_vars
+(braket
+l_int|3
+)braket
+dot
+id|strategy
+op_assign
+id|strategy
 suffix:semicolon
 id|t-&gt;neigh_vars
 (braket

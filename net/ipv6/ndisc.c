@@ -7144,6 +7144,8 @@ l_string|&quot;ipv6&quot;
 comma
 op_amp
 id|ndisc_ifinfo_sysctl_change
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
