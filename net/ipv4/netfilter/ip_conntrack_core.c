@@ -2873,12 +2873,16 @@ op_amp
 id|ip_conntrack_expect_tuple_lock
 )paren
 suffix:semicolon
-multiline_comment|/* If master is not in hash table yet (ie. packet hasn&squot;t left&n;&t;   this machine yet), how can other end know about expected?&n;&t;   Hence these are not the droids you are looking for (if&n;&t;   master ct never got confirmed, we&squot;d hold a reference to it&n;&t;   and weird things would happen to future packets). */
 r_if
 c_cond
 (paren
 id|expected
-op_logical_and
+)paren
+(brace
+multiline_comment|/* If master is not in hash table yet (ie. packet hasn&squot;t left&n;&t;&t;   this machine yet), how can other end know about expected?&n;&t;&t;   Hence these are not the droids you are looking for (if&n;&t;&t;   master ct never got confirmed, we&squot;d hold a reference to it&n;&t;&t;   and weird things would happen to future packets). */
+r_if
+c_cond
+(paren
 op_logical_neg
 id|is_confirmed
 c_func
@@ -2886,17 +2890,7 @@ c_func
 id|expected-&gt;expectant
 )paren
 )paren
-id|expected
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Look up the conntrack helper for master connections only */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|expected
-)paren
+(brace
 id|conntrack-&gt;helper
 op_assign
 id|ip_ct_find_helper
@@ -2906,12 +2900,14 @@ op_amp
 id|repl_tuple
 )paren
 suffix:semicolon
-multiline_comment|/* If the expectation is dying, then this is a loser. */
+r_goto
+id|end
+suffix:semicolon
+)brace
+multiline_comment|/* Expectation is dying... */
 r_if
 c_cond
 (paren
-id|expected
-op_logical_and
 id|expected-&gt;expectant-&gt;helper-&gt;timeout
 op_logical_and
 op_logical_neg
@@ -2922,16 +2918,9 @@ op_amp
 id|expected-&gt;timeout
 )paren
 )paren
-id|expected
-op_assign
-l_int|NULL
+r_goto
+id|end
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|expected
-)paren
-(brace
 id|DEBUGP
 c_func
 (paren
@@ -2943,6 +2932,16 @@ id|expected
 )paren
 suffix:semicolon
 multiline_comment|/* Welcome, Mr. Bond.  We&squot;ve been expecting you... */
+id|IP_NF_ASSERT
+c_func
+(paren
+id|master_ct
+c_func
+(paren
+id|conntrack
+)paren
+)paren
+suffix:semicolon
 id|__set_bit
 c_func
 (paren
@@ -2988,7 +2987,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* this is a braindead... --pablo */
 id|atomic_inc
 c_func
 (paren
@@ -3006,8 +3005,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|expected
-op_logical_and
 id|expected-&gt;expectfn
 )paren
 id|expected
@@ -3018,6 +3015,38 @@ c_func
 id|conntrack
 )paren
 suffix:semicolon
+r_goto
+id|ret
+suffix:semicolon
+)brace
+r_else
+id|conntrack-&gt;helper
+op_assign
+id|ip_ct_find_helper
+c_func
+(paren
+op_amp
+id|repl_tuple
+)paren
+suffix:semicolon
+id|end
+suffix:colon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ip_conntrack_count
+)paren
+suffix:semicolon
+id|WRITE_UNLOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
+id|ret
+suffix:colon
 r_return
 op_amp
 id|conntrack-&gt;tuplehash
