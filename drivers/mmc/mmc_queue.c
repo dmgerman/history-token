@@ -497,6 +497,13 @@ op_amp
 id|mq-&gt;thread_wq
 )paren
 suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|mq-&gt;thread_sem
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|kernel_thread
