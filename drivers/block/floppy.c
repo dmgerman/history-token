@@ -2202,6 +2202,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * Debugging&n; * =========&n; */
 macro_line|#ifdef DEBUGT
 DECL|variable|debugtimer
 r_static
@@ -2209,8 +2210,6 @@ r_int
 r_int
 id|debugtimer
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * Debugging&n; * =========&n; */
 DECL|function|set_debugt
 r_static
 r_inline
@@ -2221,12 +2220,10 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef DEBUGT
 id|debugtimer
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|debugt
 r_static
@@ -2241,7 +2238,6 @@ op_star
 id|message
 )paren
 (brace
-macro_line|#ifdef DEBUGT
 r_if
 c_cond
 (paren
@@ -2261,8 +2257,34 @@ op_minus
 id|debugtimer
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+macro_line|#else
+DECL|function|set_debugt
+r_static
+r_inline
+r_void
+id|set_debugt
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|debugt
+r_static
+r_inline
+r_void
+id|debugt
+c_func
+(paren
+r_const
+r_char
+op_star
+id|message
+)paren
+(brace
+)brace
+macro_line|#endif /* DEBUGT */
 DECL|typedef|timeout_fn
 r_typedef
 r_void
@@ -6308,14 +6330,12 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;rw_command: &quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6392,14 +6412,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;seek interrupt:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6863,14 +6881,12 @@ c_func
 id|track
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;seek command:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|recal_interrupt
 r_static
@@ -6881,14 +6897,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;recal interrupt:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6918,14 +6932,12 @@ id|DRS-&gt;track
 r_case
 id|NEED_1_RECAL
 suffix:colon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;recal interrupt need 1 recal:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* after a second recalibrate, we still haven&squot;t&n;&t;&t;&t; * reached track 0. Probably no drive. Raise an&n;&t;&t;&t; * error, as failing immediately might upset&n;&t;&t;&t; * computers possessed by the Devil :-) */
 id|cont
 op_member_access_from_pointer
@@ -6946,14 +6958,12 @@ suffix:semicolon
 r_case
 id|NEED_2_RECAL
 suffix:colon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;recal interrupt need 2 recal:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* If we already did a recalibrate,&n;&t;&t;&t; * and we are not at track 0, this&n;&t;&t;&t; * means we have moved. (The only way&n;&t;&t;&t; * not to move at recalibration is to&n;&t;&t;&t; * be already at track 0.) Clear the&n;&t;&t;&t; * new change flag */
 macro_line|#ifdef DCL_DEBUG
 r_if
@@ -6984,14 +6994,12 @@ suffix:semicolon
 multiline_comment|/* fall through */
 r_default
 suffix:colon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;recal interrupt default:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Recalibrate moves the head by at&n;&t;&t;&t; * most 80 steps. If after one&n;&t;&t;&t; * recalibrate we don&squot;t have reached&n;&t;&t;&t; * track 0, this might mean that we&n;&t;&t;&t; * started beyond track 80.  Try&n;&t;&t;&t; * again.  */
 id|DRS-&gt;track
 op_assign
@@ -7342,14 +7350,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;recalibrate floppy:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|do_floppy
 op_assign
 id|recal_interrupt
@@ -7381,14 +7387,12 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;reset interrupt:&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|result
 c_func
 (paren
@@ -9325,14 +9329,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;queue format request&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|format_cont
 r_static
@@ -12659,14 +12661,12 @@ c_func
 id|floppy_start
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUGT
 id|debugt
 c_func
 (paren
 l_string|&quot;queue fd request&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
