@@ -31,15 +31,6 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 DECL|variable|__cacheline_aligned_in_smp
 id|u64
 id|jiffies_64
@@ -701,7 +692,6 @@ c_func
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t;&t; * We cannot disable the decrementer, so in the period&n;&t;&t; * between this cpu&squot;s being marked offline in cpu_online_map&n;&t;&t; * and calling stop-self, it is taking timer interrupts.&n;&t;&t; * Avoid calling into the scheduler rebalancing code if this&n;&t;&t; * is the case.&n;&t;&t; */
 r_if
 c_cond
@@ -713,13 +703,16 @@ c_func
 id|cpu
 )paren
 )paren
-id|smp_local_timer_interrupt
+id|update_process_times
+c_func
+(paren
+id|user_mode
 c_func
 (paren
 id|regs
 )paren
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * No need to check whether cpu is offline here; boot_cpuid&n;&t;&t; * should have been fixed up by now.&n;&t;&t; */
 r_if
 c_cond
@@ -746,18 +739,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|update_process_times
-c_func
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|timer_sync_xtime
 c_func
 (paren
