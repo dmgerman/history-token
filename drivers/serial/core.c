@@ -1990,7 +1990,7 @@ c_func
 (paren
 l_string|&quot;uart_flush_buffer(%d) called&bslash;n&quot;
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|tty-&gt;device
