@@ -8724,13 +8724,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* TODO: isn&squot;t this code racy? we synchronize the IRQ and then free it, */
-multiline_comment|/* but another IRQ could&squot;ve happened in between the sync and free */
 id|synchronize_irq
 (paren
 id|dev-&gt;irq
 )paren
 suffix:semicolon
+multiline_comment|/* racy, but that&squot;s ok here */
 id|free_irq
 (paren
 id|dev-&gt;irq
