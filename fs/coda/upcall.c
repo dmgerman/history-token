@@ -220,18 +220,6 @@ id|ViceFid
 )paren
 id|outp-&gt;coda_root.VFid
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_SUPER
-comma
-l_string|&quot;VolumeId: %lx, VnodeId: %lx.&bslash;n&quot;
-comma
-id|fidp-&gt;Volume
-comma
-id|fidp-&gt;Vnode
-)paren
-suffix:semicolon
 )brace
 id|CODA_FREE
 c_func
@@ -417,16 +405,6 @@ op_amp
 id|outsize
 comma
 id|inp
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_SUPER
-comma
-l_string|&quot; result %d&bslash;n&quot;
-comma
-id|error
 )paren
 suffix:semicolon
 id|CODA_FREE
@@ -1448,25 +1426,6 @@ id|new_length
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot;destname in packet: %s&bslash;n&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-id|inp
-op_plus
-(paren
-r_int
-)paren
-id|inp-&gt;coda_rename.destname
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|coda_upcall
@@ -2167,16 +2126,6 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot; result %d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
 id|CODA_FREE
 c_func
 (paren
@@ -2338,16 +2287,6 @@ op_amp
 id|outsize
 comma
 id|inp
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot; result %d&bslash;n&quot;
-comma
-id|error
 )paren
 suffix:semicolon
 id|CODA_FREE
@@ -2578,16 +2517,6 @@ op_amp
 id|outsize
 comma
 id|inp
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot; result %d&bslash;n&quot;
-comma
-id|error
 )paren
 suffix:semicolon
 id|CODA_FREE
@@ -3014,18 +2943,6 @@ OG
 id|data-&gt;vi.out_size
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;return len %d &lt;= request len %d&bslash;n&quot;
-comma
-id|outp-&gt;coda_ioctl.len
-comma
-id|data-&gt;vi.out_size
-)paren
-suffix:semicolon
 id|error
 op_assign
 op_minus
@@ -3219,16 +3136,6 @@ id|error
 )paren
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot; result %d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
 id|CODA_FREE
 c_func
 (paren
@@ -3490,30 +3397,6 @@ op_sub_assign
 id|begin.tv_usec
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_SPECIAL
-comma
-l_string|&quot;begin: %ld.%06ld, elapsed: %ld.%06ld&bslash;n&quot;
-comma
-id|begin.tv_sec
-comma
-(paren
-r_int
-r_int
-)paren
-id|begin.tv_usec
-comma
-id|end.tv_sec
-comma
-(paren
-r_int
-r_int
-)paren
-id|end.tv_usec
-)paren
-suffix:semicolon
 r_return
 (paren
 (paren
@@ -3703,22 +3586,6 @@ comma
 id|vcommp-&gt;vc_pending.prev
 )paren
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_UPCALL
-comma
-l_string|&quot;Proc %d wake Venus for(opc,uniq) =(%d,%d) msg at %p.zzz.&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|req-&gt;uc_opcode
-comma
-id|req-&gt;uc_unique
-comma
-id|req
-)paren
-suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
@@ -3755,38 +3622,6 @@ comma
 id|runtime
 )paren
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_TIMING
-comma
-l_string|&quot;opc: %d time: %ld uniq: %d size: %d&bslash;n&quot;
-comma
-id|req-&gt;uc_opcode
-comma
-id|jiffies
-op_minus
-id|req-&gt;uc_posttime
-comma
-id|req-&gt;uc_unique
-comma
-id|req-&gt;uc_outSize
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_UPCALL
-comma
-l_string|&quot;..process %d woken up by Venus for req at %p, data at %p&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|req
-comma
-id|req-&gt;uc_data
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3818,22 +3653,6 @@ op_assign
 op_minus
 id|out-&gt;oh.result
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_UPCALL
-comma
-l_string|&quot;upcall: (u,o,r) (%ld, %ld, %ld) out at %p&bslash;n&quot;
-comma
-id|out-&gt;oh.unique
-comma
-id|out-&gt;oh.opcode
-comma
-id|out-&gt;oh.result
-comma
-id|out
-)paren
-suffix:semicolon
 op_star
 id|outSize
 op_assign
@@ -3861,20 +3680,6 @@ id|current
 )paren
 (brace
 multiline_comment|/* Interrupted before venus read it. */
-id|CDEBUG
-c_func
-(paren
-id|D_UPCALL
-comma
-l_string|&quot;Interrupted before read:(op,un) (%d.%d), flags = %x&bslash;n&quot;
-comma
-id|req-&gt;uc_opcode
-comma
-id|req-&gt;uc_unique
-comma
-id|req-&gt;uc_flags
-)paren
-suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -3920,20 +3725,6 @@ r_struct
 id|upc_req
 op_star
 id|sig_req
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_UPCALL
-comma
-l_string|&quot;Sending Venus a signal: op = %d.%d, flags = %x&bslash;n&quot;
-comma
-id|req-&gt;uc_opcode
-comma
-id|req-&gt;uc_unique
-comma
-id|req-&gt;uc_flags
-)paren
 suffix:semicolon
 id|list_del
 c_func
@@ -4049,18 +3840,6 @@ r_struct
 id|coda_in_hdr
 )paren
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_UPCALL
-comma
-l_string|&quot;coda_upcall: enqueing signal msg (%d, %d)&bslash;n&quot;
-comma
-id|sig_req-&gt;uc_opcode
-comma
-id|sig_req-&gt;uc_unique
-)paren
-suffix:semicolon
 multiline_comment|/* insert at head of queue! */
 id|list_add
 c_func
@@ -4174,21 +3953,9 @@ op_logical_or
 op_logical_neg
 id|sb-&gt;s_root-&gt;d_inode
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;coda_downcall: opcode %d, no sb!&bslash;n&quot;
-comma
-id|opcode
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -4203,14 +3970,6 @@ id|clstats
 c_func
 (paren
 id|CODA_FLUSH
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;CODA_FLUSH&bslash;n&quot;
 )paren
 suffix:semicolon
 id|coda_cache_clear_all
@@ -4250,14 +4009,6 @@ id|cred
 op_assign
 op_amp
 id|out-&gt;coda_purgeuser.cred
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;CODA_PURGEUSER&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4310,20 +4061,6 @@ op_assign
 op_amp
 id|out-&gt;coda_zapdir.CodaFid
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapdir: fid = %s...&bslash;n&quot;
-comma
-id|coda_f2s
-c_func
-(paren
-id|fid
-)paren
-)paren
-suffix:semicolon
 id|clstats
 c_func
 (paren
@@ -4346,32 +4083,12 @@ c_cond
 id|inode
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapdir: inode = %ld children flagged&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
 id|coda_flag_inode_children
 c_func
 (paren
 id|inode
 comma
 id|C_PURGE
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapdir: inode = %ld cache cleared&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 id|coda_flag_inode
@@ -4389,15 +4106,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-r_else
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapdir: no inode&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4425,20 +4133,6 @@ c_func
 id|CODA_ZAPFILE
 )paren
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapfile: fid = %s&bslash;n&quot;
-comma
-id|coda_f2s
-c_func
-(paren
-id|fid
-)paren
-)paren
-suffix:semicolon
 id|inode
 op_assign
 id|coda_fid_to_inode
@@ -4455,16 +4149,6 @@ c_cond
 id|inode
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapfile: inode = %ld&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
 id|coda_flag_inode
 c_func
 (paren
@@ -4480,15 +4164,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-r_else
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;zapfile: no inode&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4508,20 +4183,6 @@ id|fid
 op_assign
 op_amp
 id|out-&gt;coda_purgefid.CodaFid
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;purgefid: fid = %s&bslash;n&quot;
-comma
-id|coda_f2s
-c_func
-(paren
-id|fid
-)paren
-)paren
 suffix:semicolon
 id|clstats
 c_func
@@ -4545,16 +4206,6 @@ c_cond
 id|inode
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;purgefid: inode = %ld&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
 id|coda_flag_inode_children
 c_func
 (paren
@@ -4585,15 +4236,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-r_else
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;purgefid: no inode&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4627,14 +4269,6 @@ c_func
 id|CODA_REPLACE
 )paren
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;CODA_REPLACE&bslash;n&quot;
-)paren
-suffix:semicolon
 id|inode
 op_assign
 id|coda_fid_to_inode
@@ -4651,16 +4285,6 @@ c_cond
 id|inode
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;replacefid: inode = %ld&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
 id|coda_replace_fid
 c_func
 (paren
@@ -4675,17 +4299,6 @@ id|iput
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;purgefid: no inode&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

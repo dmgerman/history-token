@@ -1002,35 +1002,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_SUPER
-comma
-l_string|&quot; inode-&gt;ino: %ld, count: %d&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|inode-&gt;i_count
-)paren
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;clearing inode: %ld, %x&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-comma
-id|cii-&gt;c_flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1104,6 +1075,10 @@ id|vattr
 )paren
 )paren
 suffix:semicolon
+id|inode-&gt;i_ctime
+op_assign
+id|CURRENT_TIME
+suffix:semicolon
 id|coda_iattr_to_vattr
 c_func
 (paren
@@ -1118,16 +1093,6 @@ op_assign
 id|C_VNON
 suffix:semicolon
 multiline_comment|/* cannot set type */
-id|CDEBUG
-c_func
-(paren
-id|D_SUPER
-comma
-l_string|&quot;vattr.va_mode %o&bslash;n&quot;
-comma
-id|vattr.va_mode
-)paren
-suffix:semicolon
 multiline_comment|/* Venus is responsible for truncating the container-file!!! */
 id|error
 op_assign
@@ -1169,18 +1134,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_SUPER
-comma
-l_string|&quot;inode.i_mode %o, error %d&bslash;n&quot;
-comma
-id|inode-&gt;i_mode
-comma
-id|error
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon

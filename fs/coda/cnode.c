@@ -6,14 +6,6 @@ macro_line|#include &lt;linux/coda.h&gt;
 macro_line|#include &lt;linux/coda_linux.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/coda_psdev.h&gt;
-r_extern
-r_int
-id|coda_debug
-suffix:semicolon
-r_extern
-r_int
-id|coda_print_entry
-suffix:semicolon
 DECL|function|coda_fideq
 r_inline
 r_int
@@ -174,29 +166,6 @@ op_star
 id|attr
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_SUPER
-comma
-l_string|&quot;ino: %ld&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|coda_debug
-op_amp
-id|D_SUPER
-)paren
-id|print_vattr
-c_func
-(paren
-id|attr
-)paren
-suffix:semicolon
 id|coda_vattr_to_iattr
 c_func
 (paren
@@ -348,15 +317,6 @@ c_cond
 op_logical_neg
 id|inode
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_CNODE
-comma
-l_string|&quot;coda_iget: no inode&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
@@ -365,7 +325,6 @@ op_minus
 id|ENOMEM
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* check if the inode is already initialized */
 id|cii
 op_assign
@@ -472,22 +431,6 @@ c_cond
 id|error
 )paren
 (brace
-id|CDEBUG
-c_func
-(paren
-id|D_CNODE
-comma
-l_string|&quot;coda_cnode_make: coda_getvattr returned %d for %s.&bslash;n&quot;
-comma
-id|error
-comma
-id|coda_f2s
-c_func
-(paren
-id|fid
-)paren
-)paren
-suffix:semicolon
 op_star
 id|inode
 op_assign
@@ -537,47 +480,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_DOWNCALL
-comma
-l_string|&quot;Done making inode: ino %ld, count %d with %s&bslash;n&quot;
-comma
-(paren
-op_star
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_ino
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-(paren
-op_star
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_count
-)paren
-comma
-id|coda_f2s
-c_func
-(paren
-op_amp
-id|ITOC
-c_func
-(paren
-op_star
-id|inode
-)paren
-op_member_access_from_pointer
-id|c_fid
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -710,20 +612,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|coda_f2s
-c_func
-(paren
-id|fid
-)paren
-)paren
-suffix:semicolon
 id|nr
 op_assign
 id|coda_f2i
@@ -821,16 +709,6 @@ id|cii-&gt;c_fid
 id|BUG
 c_func
 (paren
-)paren
-suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_INODE
-comma
-l_string|&quot;found %ld&bslash;n&quot;
-comma
-id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_return
