@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_IBM405GP_H__
 DECL|macro|__ASM_IBM405GP_H__
 mdefine_line|#define __ASM_IBM405GP_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 multiline_comment|/* ibm405.h at bottom of this file */
 multiline_comment|/* PCI&n; * PCI Bridge config reg definitions&n; * see 17-19 of manual&n; */
 DECL|macro|PPC405_PCI_CONFIG_ADDR
@@ -208,7 +208,7 @@ DECL|macro|DCRN_UIC0_BASE
 mdefine_line|#define DCRN_UIC0_BASE&t;&t;0x0C0
 DECL|macro|UIC0
 mdefine_line|#define UIC0 DCRN_UIC0_BASE
-macro_line|#include &lt;platforms/ibm405.h&gt;
+macro_line|#include &lt;asm/ibm405.h&gt;
 macro_line|#endif&t;&t;&t;&t;/* __ASM_IBM405GP_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof

@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 macro_line|#ifdef  CONFIG_DEBUG_BRINGUP
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) printk(x)

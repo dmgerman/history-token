@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_WALNUT_H__
 DECL|macro|__ASM_WALNUT_H__
 mdefine_line|#define __ASM_WALNUT_H__
 multiline_comment|/* We have a 405GP core */
-macro_line|#include &lt;platforms/ibm405gp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm405gp.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Walnut&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
 DECL|struct|board_info
