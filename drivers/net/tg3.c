@@ -48,7 +48,7 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.0&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.1&quot;
 DECL|macro|DRV_MODULE_RELDATE
 mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 23, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
