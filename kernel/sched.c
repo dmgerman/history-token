@@ -14489,6 +14489,84 @@ id|cpu
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#if defined(CONFIG_SCHED_SMT) &amp;&amp; defined(CONFIG_NUMA)
+multiline_comment|/*&n; * The domains setup code relies on siblings not spanning&n; * multiple nodes. Make sure the architecture has a proper&n; * siblings map:&n; */
+DECL|function|check_sibling_maps
+r_static
+r_void
+id|check_sibling_maps
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+comma
+id|j
+suffix:semicolon
+id|for_each_online_cpu
+c_func
+(paren
+id|i
+)paren
+(brace
+id|for_each_cpu_mask
+c_func
+(paren
+id|j
+comma
+id|cpu_sibling_map
+(braket
+id|i
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_to_node
+c_func
+(paren
+id|i
+)paren
+op_ne
+id|cpu_to_node
+c_func
+(paren
+id|j
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;warning: CPU %d siblings map &quot;
+l_string|&quot;to different node - isolating &quot;
+l_string|&quot;them.&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|cpu_sibling_map
+(braket
+id|i
+)braket
+op_assign
+id|cpumask_of_cpu
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Set up scheduler domains and groups.  Callers must hold the hotplug lock.&n; */
 DECL|function|arch_init_sched_domains
 r_static
@@ -14506,6 +14584,13 @@ suffix:semicolon
 id|cpumask_t
 id|cpu_default_map
 suffix:semicolon
+macro_line|#if defined(CONFIG_SCHED_SMT) &amp;&amp; defined(CONFIG_NUMA)
+id|check_sibling_maps
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Setup mask for cpus without special case scheduling requirements.&n;&t; * For now this just excludes isolated cpus, but could be used to&n;&t; * exclude other special cases in the future.&n;&t; */
 id|cpus_complement
 c_func
@@ -15002,7 +15087,7 @@ multiline_comment|/* Do nothing: everything is statically allocated. */
 macro_line|#endif
 macro_line|#endif /* ARCH_HAS_SCHED_DOMAIN */
 DECL|macro|SCHED_DOMAIN_DEBUG
-macro_line|#undef SCHED_DOMAIN_DEBUG
+mdefine_line|#define SCHED_DOMAIN_DEBUG
 macro_line|#ifdef SCHED_DOMAIN_DEBUG
 DECL|function|sched_domain_debug
 r_static
