@@ -152,11 +152,13 @@ id|align
 suffix:semicolon
 DECL|member|free
 r_int
+r_int
 id|free
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|reserved
+r_int
 r_int
 id|reserved
 suffix:colon
