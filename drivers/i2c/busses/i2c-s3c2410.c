@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &lt;asm/arch/regs-iic.h&gt;
@@ -1650,11 +1651,6 @@ op_assign
 l_string|&quot;S3C2410-I2C-Algorithm&quot;
 comma
 dot
-id|id
-op_assign
-id|I2C_ALGO_S3C2410
-comma
-dot
 id|master_xfer
 op_assign
 id|s3c24xx_i2c_xfer
@@ -1690,11 +1686,6 @@ dot
 id|name
 op_assign
 l_string|&quot;s3c2410-i2c&quot;
-comma
-dot
-id|id
-op_assign
-id|I2C_ALGO_S3C2410
 comma
 dot
 id|algo
