@@ -24,14 +24,15 @@ macro_line|#else
 DECL|macro|DRIVERNAPI
 mdefine_line|#define DRIVERNAPI &quot;-NAPI&quot;
 macro_line|#endif
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION &quot;5.7.6-k2&quot;DRIVERNAPI
 DECL|variable|e1000_driver_version
 r_char
 id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.7.6-k2&quot;
-id|DRIVERNAPI
+id|DRV_VERSION
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -1016,6 +1017,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|debug
