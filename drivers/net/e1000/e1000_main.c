@@ -1618,13 +1618,28 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|e1000_init_hw
 c_func
 (paren
 op_amp
 id|adapter-&gt;hw
 )paren
+)paren
+(brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Hardware Error&bslash;n&quot;
+)paren
 suffix:semicolon
+)brace
 multiline_comment|/* Enable h/w to recognize an 802.1Q VLAN Ethernet packet */
 id|E1000_WRITE_REG
 c_func
@@ -2288,11 +2303,24 @@ id|err_eeprom
 suffix:semicolon
 )brace
 multiline_comment|/* copy the MAC address out of the EEPROM */
+r_if
+c_cond
+(paren
 id|e1000_read_mac_addr
 c_func
 (paren
 op_amp
 id|adapter-&gt;hw
+)paren
+)paren
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;EEPROM Read Error&bslash;n&quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -2316,6 +2344,16 @@ id|netdev-&gt;dev_addr
 )paren
 )paren
 (brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Invalid MAC Address&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -3169,6 +3207,16 @@ op_logical_neg
 id|txdr-&gt;buffer_info
 )paren
 (brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Unble to Allocate Memory for the Transmit descriptor ring&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -3223,6 +3271,16 @@ op_logical_neg
 id|txdr-&gt;desc
 )paren
 (brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Unble to Allocate Memory for the Transmit descriptor ring&bslash;n&quot;
+)paren
+suffix:semicolon
 id|vfree
 c_func
 (paren
@@ -3615,6 +3673,16 @@ op_logical_neg
 id|rxdr-&gt;buffer_info
 )paren
 (brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Unble to Allocate Memory for the Recieve descriptor ring&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -3669,6 +3737,16 @@ op_logical_neg
 id|rxdr-&gt;desc
 )paren
 (brace
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Unble to Allocate Memory for the Recieve descriptor ring&bslash;n&quot;
+)paren
+suffix:semicolon
 id|vfree
 c_func
 (paren
@@ -11538,6 +11616,16 @@ suffix:colon
 multiline_comment|/* not supported */
 r_default
 suffix:colon
+id|DPRINTK
+c_func
+(paren
+id|PROBE
+comma
+id|ERR
+comma
+l_string|&quot;Unsupported Speed/Duplexity configuration&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
