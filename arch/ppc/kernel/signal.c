@@ -91,7 +91,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -116,7 +116,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;result
@@ -255,7 +255,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -275,7 +275,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;result
@@ -583,7 +583,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
+multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;a sigcontext struct&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
 DECL|struct|sigregs
 r_struct
 id|sigregs
@@ -688,7 +688,7 @@ op_star
 id|rt_sf
 suffix:semicolon
 r_struct
-id|sigcontext_struct
+id|sigcontext
 id|sigctx
 suffix:semicolon
 r_struct
@@ -787,7 +787,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -803,7 +803,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -1266,7 +1266,7 @@ id|regs
 )paren
 (brace
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|sc
 comma
@@ -1288,7 +1288,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 (paren
@@ -1353,7 +1353,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1369,7 +1369,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -1508,13 +1508,13 @@ id|newsp
 )paren
 (brace
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 id|newsp
@@ -1780,7 +1780,7 @@ id|frame
 )paren
 (brace
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|sc
 suffix:semicolon
@@ -2066,7 +2066,7 @@ id|sc
 op_assign
 (paren
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 )paren
 op_star
@@ -2190,7 +2190,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -2224,7 +2224,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 )brace

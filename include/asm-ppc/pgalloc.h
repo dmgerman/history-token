@@ -47,9 +47,9 @@ mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
 DECL|macro|pmd_populate_kernel
-mdefine_line|#define pmd_populate_kernel(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = __pa(pte))
+mdefine_line|#define pmd_populate_kernel(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = __pa(pte) | _PMD_PRESENT)
 DECL|macro|pmd_populate
-mdefine_line|#define pmd_populate(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = (page_to_pfn(pte) &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define pmd_populate(mm, pmd, pte)&t;&bslash;&n;&t;&t;(pmd_val(*(pmd)) = (page_to_pfn(pte) &lt;&lt; PAGE_SHIFT) | _PMD_PRESENT)
 r_extern
 id|pte_t
 op_star
