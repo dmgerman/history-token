@@ -1971,7 +1971,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|log_wait_commit
 (paren
 id|journal_t

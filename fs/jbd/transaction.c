@@ -3891,6 +3891,8 @@ op_amp
 id|PF_MEMALLOC
 )paren
 )paren
+id|err
+op_assign
 id|log_wait_commit
 c_func
 (paren
@@ -3927,8 +3929,6 @@ id|handle
 suffix:semicolon
 r_int
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -3971,6 +3971,8 @@ id|handle-&gt;h_sync
 op_assign
 l_int|1
 suffix:semicolon
+id|ret
+op_assign
 id|journal_stop
 c_func
 (paren

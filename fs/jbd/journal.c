@@ -1614,7 +1614,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for a specified commit to complete.&n; * The caller may not hold the journal lock.&n; */
 DECL|function|log_wait_commit
-r_void
+r_int
 id|log_wait_commit
 (paren
 id|journal_t
@@ -1625,6 +1625,11 @@ id|tid_t
 id|tid
 )paren
 (brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -1710,10 +1715,40 @@ id|journal-&gt;j_wait_done_commit
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|is_journal_aborted
+c_func
+(paren
+id|journal
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;journal commit I/O error&bslash;n&quot;
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|unlock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Log buffer allocation routines:&n; */
