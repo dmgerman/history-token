@@ -2090,7 +2090,7 @@ r_if
 c_cond
 (paren
 id|asoc-&gt;overall_error_count
-op_ge
+OG
 id|asoc-&gt;overall_error_threshold
 )paren
 (brace

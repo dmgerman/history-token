@@ -651,6 +651,10 @@ id|sctp_dbg_objcnt_bind_addr
 suffix:semicolon
 r_extern
 id|atomic_t
+id|sctp_dbg_objcnt_bind_bucket
+suffix:semicolon
+r_extern
+id|atomic_t
 id|sctp_dbg_objcnt_addr
 suffix:semicolon
 r_extern

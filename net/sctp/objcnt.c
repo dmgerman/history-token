@@ -36,6 +36,13 @@ c_func
 id|bind_addr
 )paren
 suffix:semicolon
+DECL|variable|bind_bucket
+id|SCTP_DBG_OBJCNT
+c_func
+(paren
+id|bind_bucket
+)paren
+suffix:semicolon
 DECL|variable|chunk
 id|SCTP_DBG_OBJCNT
 c_func
@@ -106,6 +113,12 @@ id|SCTP_DBG_OBJCNT_ENTRY
 c_func
 (paren
 id|bind_addr
+)paren
+comma
+id|SCTP_DBG_OBJCNT_ENTRY
+c_func
+(paren
+id|bind_bucket
 )paren
 comma
 id|SCTP_DBG_OBJCNT_ENTRY

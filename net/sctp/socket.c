@@ -10950,6 +10950,12 @@ comma
 id|SLAB_ATOMIC
 )paren
 suffix:semicolon
+id|SCTP_DBG_OBJCNT_INC
+c_func
+(paren
+id|bind_bucket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11014,6 +11020,7 @@ id|pp
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pp-&gt;sk
 )paren
 (brace
@@ -11039,6 +11046,12 @@ c_func
 id|sctp_bucket_cachep
 comma
 id|pp
+)paren
+suffix:semicolon
+id|SCTP_DBG_OBJCNT_DEC
+c_func
+(paren
+id|bind_bucket
 )paren
 suffix:semicolon
 )brace
