@@ -1781,11 +1781,6 @@ DECL|member|slab_obj_size
 r_int
 id|slab_obj_size
 suffix:semicolon
-DECL|member|af_specific
-r_void
-op_star
-id|af_specific
-suffix:semicolon
 DECL|member|name
 r_char
 id|name
