@@ -6837,8 +6837,6 @@ r_if
 c_cond
 (paren
 id|pdev
-op_logical_and
-id|vp-&gt;enable_wol
 )paren
 (brace
 id|vp-&gt;pm_state_valid
@@ -7135,8 +7133,6 @@ c_func
 (paren
 id|vp
 )paren
-op_logical_and
-id|vp-&gt;enable_wol
 )paren
 (brace
 id|pci_set_power_state
@@ -7153,6 +7149,16 @@ id|PCI_D0
 suffix:semicolon
 multiline_comment|/* Go active */
 id|pci_restore_state
+c_func
+(paren
+id|VORTEX_PCI
+c_func
+(paren
+id|vp
+)paren
+)paren
+suffix:semicolon
+id|pci_enable_device
 c_func
 (paren
 id|VORTEX_PCI
@@ -14088,8 +14094,6 @@ c_func
 (paren
 id|vp
 )paren
-op_logical_and
-id|vp-&gt;enable_wol
 )paren
 (brace
 id|pci_save_state
@@ -16268,6 +16272,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vp-&gt;enable_wol
+)paren
+(brace
 multiline_comment|/* Power up on: 1==Downloaded Filter, 2==Magic Packets, 4==Link Status. */
 id|EL3WINDOW
 c_func
@@ -16312,7 +16322,6 @@ op_plus
 id|EL3_CMD
 )paren
 suffix:semicolon
-multiline_comment|/* Change the power state to D3; RxEnable doesn&squot;t take effect. */
 id|pci_enable_wake
 c_func
 (paren
@@ -16327,6 +16336,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Change the power state to D3; RxEnable doesn&squot;t take effect. */
 id|pci_set_power_state
 c_func
 (paren
@@ -16410,8 +16421,6 @@ c_func
 (paren
 id|vp
 )paren
-op_logical_and
-id|vp-&gt;enable_wol
 )paren
 (brace
 id|pci_set_power_state
