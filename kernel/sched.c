@@ -1972,11 +1972,7 @@ id|need_resched
 comma
 id|nrpolling
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|spin_is_locked
+id|assert_spin_locked
 c_func
 (paren
 op_amp
@@ -1987,7 +1983,6 @@ id|p
 )paren
 op_member_access_from_pointer
 id|lock
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* minimise the chance of sending an interrupt to poll_idle() */

@@ -22,6 +22,8 @@ DECL|macro|__lockfunc
 mdefine_line|#define __lockfunc fastcall __attribute__((section(&quot;.spinlock.text&quot;)))
 multiline_comment|/*&n; * If CONFIG_SMP is set, pull in the _raw_* definitions&n; */
 macro_line|#ifdef CONFIG_SMP
+DECL|macro|assert_spin_locked
+mdefine_line|#define assert_spin_locked(x)&t;BUG_ON(!spin_is_locked(x))
 macro_line|#include &lt;asm/spinlock.h&gt;
 r_int
 id|__lockfunc
@@ -543,6 +545,9 @@ mdefine_line|#define _raw_spin_lock(x)&t;&t;&bslash;&n;&t;do { &bslash;&n;&t; &t
 multiline_comment|/* without debugging, spin_is_locked on UP always says&n; * FALSE. --&gt; printk if already locked. */
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x) &bslash;&n;&t;({ &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_is_locked(%s:%p) already locked by %s/%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, &bslash;&n;&t;&t;&t;&t;&t;(x), (x)-&gt;owner, (x)-&gt;oline); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;0; &bslash;&n;&t;})
+multiline_comment|/* with debugging, assert_spin_locked() on UP does check&n; * the lock value properly */
+DECL|macro|assert_spin_locked
+mdefine_line|#define assert_spin_locked(x) &bslash;&n;&t;({ &bslash;&n;&t;&t;CHECK_LOCK(x); &bslash;&n;&t;&t;BUG_ON(!(x)-&gt;lock); &bslash;&n;&t;})
 multiline_comment|/* without debugging, spin_trylock on UP always says&n; * TRUE. --&gt; printk if already locked. */
 DECL|macro|_raw_spin_trylock
 mdefine_line|#define _raw_spin_trylock(x) &bslash;&n;&t;({ &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_trylock(%s:%p) already locked by %s/%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, &bslash;&n;&t;&t;&t;&t;&t;(x), (x)-&gt;owner, (x)-&gt;oline); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;(x)-&gt;lock = 1; &bslash;&n;&t;&t;(x)-&gt;owner = __FILE__; &bslash;&n;&t;&t;(x)-&gt;oline = __LINE__; &bslash;&n;&t;&t;1; &bslash;&n;&t;})
@@ -584,6 +589,8 @@ DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(lock)&t;((void)(lock), 0)
+DECL|macro|assert_spin_locked
+mdefine_line|#define assert_spin_locked(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_spin_trylock
 mdefine_line|#define _raw_spin_trylock(lock)&t;(((void)(lock), 1))
 DECL|macro|spin_unlock_wait
