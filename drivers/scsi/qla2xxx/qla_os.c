@@ -506,7 +506,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_uint8
+r_int
 id|qla2x00_loop_reset
 c_func
 (paren
@@ -5791,6 +5791,8 @@ c_func
 (paren
 id|ha
 )paren
+op_eq
+id|QLA_SUCCESS
 )paren
 id|rval
 op_assign
@@ -6091,7 +6093,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;* qla2x00_loop_reset&n;*      Issue loop reset.&n;*&n;* Input:&n;*      ha = adapter block pointer.&n;*&n;* Returns:&n;*      0 = success&n;*/
 r_static
-r_uint8
+r_int
 DECL|function|qla2x00_loop_reset
 id|qla2x00_loop_reset
 c_func
@@ -6101,7 +6103,7 @@ op_star
 id|ha
 )paren
 (brace
-r_uint8
+r_int
 id|status
 op_assign
 id|QLA_SUCCESS
