@@ -161,21 +161,6 @@ suffix:semicolon
 multiline_comment|/* associated with another mapping */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Debug&n; */
-r_void
-id|__buffer_error
-c_func
-(paren
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
-)paren
-suffix:semicolon
-DECL|macro|buffer_error
-mdefine_line|#define buffer_error() __buffer_error(__FILE__, __LINE__)
 multiline_comment|/*&n; * macro tricks to expand the set_buffer_foo(), clear_buffer_foo()&n; * and buffer_foo() functions.&n; */
 DECL|macro|BUFFER_FNS
 mdefine_line|#define BUFFER_FNS(bit, name)&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void set_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void clear_buffer_##name(struct buffer_head *bh)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline int buffer_##name(struct buffer_head *bh)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(BH_##bit, &amp;(bh)-&gt;b_state);&t;&t;&t;&bslash;&n;}
