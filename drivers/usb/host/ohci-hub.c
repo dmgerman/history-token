@@ -35,6 +35,16 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|ohci_restart
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+suffix:semicolon
 DECL|function|ohci_hub_suspend
 r_static
 r_int

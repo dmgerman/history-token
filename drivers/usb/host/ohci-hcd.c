@@ -90,16 +90,6 @@ id|ohci
 )paren
 suffix:semicolon
 r_static
-r_int
-id|ohci_restart
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-)paren
-suffix:semicolon
-r_static
 r_void
 id|ohci_stop
 (paren
