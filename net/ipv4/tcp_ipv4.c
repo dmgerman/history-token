@@ -2124,7 +2124,7 @@ id|sk-&gt;next
 r_if
 c_cond
 (paren
-id|TCP_IPV4_MATCH
+id|TCP_IPV4_TW_MATCH
 c_func
 (paren
 id|sk
@@ -2479,7 +2479,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TCP_IPV4_MATCH
+id|TCP_IPV4_TW_MATCH
 c_func
 (paren
 id|sk2

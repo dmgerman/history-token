@@ -1140,6 +1140,12 @@ DECL|enumerator|NET_TCP_LOW_LATENCY
 id|NET_TCP_LOW_LATENCY
 op_assign
 l_int|93
+comma
+DECL|enumerator|NET_IPV4_IPFRAG_SECRET_INTERVAL
+id|NET_IPV4_IPFRAG_SECRET_INTERVAL
+op_assign
+l_int|94
+comma
 )brace
 suffix:semicolon
 r_enum

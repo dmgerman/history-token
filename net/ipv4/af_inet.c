@@ -4236,6 +4236,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ipfrag_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|inet_init
 r_static
 r_int
@@ -4609,6 +4617,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 id|ipv4_proc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ipfrag_init
 c_func
 (paren
 )paren
