@@ -1278,6 +1278,12 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
+DECL|member|ud
+r_struct
+id|unit_directory
+op_star
+id|ud
+suffix:semicolon
 multiline_comment|/* A backlink to our host_info */
 DECL|member|hi
 r_struct
