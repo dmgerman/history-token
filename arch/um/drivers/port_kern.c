@@ -1131,6 +1131,14 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* This is done here because freeing an IRQ can&squot;t be done&n;&t;&t; * within the IRQ handler.  So, pipe_interrupt always ups&n;&t;&t; * the semaphore regardless of whether it got a successful&n;&t;&t; * connection.  Then we loop here throwing out failed &n;&t;&t; * connections until a good one is found.&n;&t;&t; */
+id|free_irq_by_irq_and_dev
+c_func
+(paren
+id|TELNETD_IRQ
+comma
+id|conn
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
