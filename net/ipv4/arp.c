@@ -2514,12 +2514,12 @@ op_star
 id|skb
 )paren
 (brace
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
-id|skb-&gt;nf_debug
-op_assign
-l_int|0
+id|nf_reset
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
-macro_line|#endif
 id|arp_rcv
 c_func
 (paren
