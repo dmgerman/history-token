@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_hashlimit.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 multiline_comment|/* FIXME: this is just for IP_NF_ASSERRT */
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
 DECL|macro|MS2JIFFIES
