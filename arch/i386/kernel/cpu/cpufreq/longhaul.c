@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  (C) 2001-2004  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  (C) 2001-2004  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1 (C5A), Samuel 2 (C5B) stepping 0.&n; *  Version 2 of longhaul is the same as v1, but adds voltage scaling.&n; *   Present in Samuel 2 (steppings 1-7 only) (C5B), and Ezra (C5C)&n; *   voltage scaling support has currently been disabled in this driver&n; *   until we have code that gets it right.&n; *  Version 3 of longhaul got renamed to Powersaver and redesigned&n; *   to use the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T (C5M), Nehemiah (C5X) and above.&n; *   It&squot;s pretty much the same feature wise to longhaul v2, though&n; *   there is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice so we don&squot;t even try to use this.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -445,6 +445,7 @@ c_cond
 id|longhaul_version
 )paren
 (brace
+multiline_comment|/*&n;&t; * Longhaul v1. (Samuel[C5A] and Samuel2 stepping 0[C5B])&n;&t; * Software controlled multipliers only.&n;&t; */
 r_case
 l_int|1
 suffix:colon
