@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.30.1-k1&quot;
+l_string|&quot;5.2.30.1-k2&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -2519,12 +2519,24 @@ comma
 id|netdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|register_netdev
 c_func
 (paren
 id|netdev
 )paren
+)paren
+)paren
+(brace
+r_goto
+id|err_register
 suffix:semicolon
+)brace
 multiline_comment|/* we&squot;re going to reset, so assume we have no link for now */
 id|netif_carrier_off
 c_func
@@ -2663,6 +2675,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_register
+suffix:colon
 id|err_sw_init
 suffix:colon
 id|err_eeprom
