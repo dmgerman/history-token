@@ -612,7 +612,7 @@ c_cond
 id|packet_empty
 )paren
 (brace
-multiline_comment|/* We no longer do refragmentation at all.  &n;&t;&t;&t; * Just fragment at the IP layer, if we &n;&t;&t;&t; * actually hit this condition&n;&t;&t;&t; */
+multiline_comment|/* We no longer do refragmentation at all.&n;&t;&t;&t; * Just fragment at the IP layer, if we&n;&t;&t;&t; * actually hit this condition&n;&t;&t;&t; */
 id|packet-&gt;ipfragok
 op_assign
 l_int|1
@@ -1168,29 +1168,13 @@ c_func
 id|crc32
 )paren
 suffix:semicolon
-multiline_comment|/* IP layer ECN support&n;&t; * From RFC 2481&n;&t; *  &quot;The ECN-Capable Transport (ECT) bit would be set by the&n;&t; *   data sender to indicate that the end-points of the&n;&t; *   transport protocol are ECN-capable.&quot;&n;&t; *&n;&t; * If ECN capable &amp;&amp; negotiated &amp;&amp; it makes sense for&n;&t; * this packet to support it (e.g. post ECN negotiation)&n;&t; * then lets set the ECT bit&n;&t; *&n;&t; * FIXME:  Need to do something else for IPv6&n;&t; */
-r_if
-c_cond
-(paren
-id|packet-&gt;ecn_capable
-)paren
-(brace
+multiline_comment|/* IP layer ECN support&n;&t; * From RFC 2481&n;&t; *  &quot;The ECN-Capable Transport (ECT) bit would be set by the&n;&t; *   data sender to indicate that the end-points of the&n;&t; *   transport protocol are ECN-capable.&quot;&n;&t; *&n;&t; * Now setting the ECT bit all the time, as it should not cause&n;&t; * any problems protocol-wise even if our peer ignores it.&n;&t; *&n;&t; * Note: The works for IPv6 layer checks this bit too later&n;&t; * in transmission.  See IP6_ECN_flow_xmit().&n;&t; */
 id|INET_ECN_xmit
 c_func
 (paren
 id|nskb-&gt;sk
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|INET_ECN_dontxmit
-c_func
-(paren
-id|nskb-&gt;sk
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Set up the IP options.  */
 multiline_comment|/* BUG: not implemented&n;&t; * For v4 this all lives somewhere in sk-&gt;opt...&n;&t; */
 multiline_comment|/* Dump that on IP!  */

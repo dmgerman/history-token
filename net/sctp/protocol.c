@@ -9,6 +9,7 @@ macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 multiline_comment|/* Global data structures. */
 DECL|variable|sctp_proto
 r_struct
@@ -1703,6 +1704,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* What interface did this skb arrive on? */
 DECL|function|sctp_v4_skb_iif
+r_static
 r_int
 id|sctp_v4_skb_iif
 c_func
@@ -1725,6 +1727,28 @@ id|skb-&gt;dst
 )paren
 op_member_access_from_pointer
 id|rt_iif
+suffix:semicolon
+)brace
+multiline_comment|/* Was this packet marked by Explicit Congestion Notification? */
+DECL|function|sctp_v4_is_ce
+r_static
+r_int
+id|sctp_v4_is_ce
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+id|INET_ECN_is_ce
+c_func
+(paren
+id|skb-&gt;nh.iph-&gt;tos
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a new sk for the socket returned by accept(). */
@@ -3034,6 +3058,11 @@ dot
 id|skb_iif
 op_assign
 id|sctp_v4_skb_iif
+comma
+dot
+id|is_ce
+op_assign
+id|sctp_v4_is_ce
 comma
 dot
 id|net_header_len
