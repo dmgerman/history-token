@@ -349,7 +349,7 @@ op_amp
 id|th
 )paren
 suffix:semicolon
-id|journal_end
+id|journal_end_sync
 c_func
 (paren
 op_amp
