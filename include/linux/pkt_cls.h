@@ -707,6 +707,9 @@ comma
 DECL|enumerator|TCF_EM_U32
 id|TCF_EM_U32
 comma
+DECL|enumerator|TCF_EM_META
+id|TCF_EM_META
+comma
 DECL|enumerator|__TCF_EM_MAX
 id|__TCF_EM_MAX
 )brace
