@@ -1915,8 +1915,7 @@ id|from
 )paren
 (brace
 r_return
-op_minus
-id|ENODEV
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|pnp_release_card_device

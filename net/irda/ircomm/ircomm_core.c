@@ -322,9 +322,17 @@ id|ret
 OL
 l_int|0
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 id|self-&gt;service_type
 op_assign
 id|service_type
