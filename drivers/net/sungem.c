@@ -8488,6 +8488,8 @@ multiline_comment|/* If Infinite Burst didn&squot;t stick, then use different&n;
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|readl
 c_func
 (paren
@@ -8497,6 +8499,7 @@ id|GREG_CFG
 )paren
 op_amp
 id|GREG_CFG_IBURST
+)paren
 )paren
 (brace
 id|cfg
@@ -8512,7 +8515,7 @@ id|GREG_CFG_TXDMALIM
 )paren
 suffix:semicolon
 id|cfg
-op_assign
+op_or_assign
 (paren
 (paren
 l_int|8
