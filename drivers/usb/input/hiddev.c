@@ -3367,19 +3367,14 @@ multiline_comment|/* Currently this driver is a USB driver.  It&squot;s not a co
 multiline_comment|/* We never attach in this manner, and rely on HID to connect us.  This&n; * is why there is no disconnect routine defined in the usb_driver either.&n; */
 DECL|function|hiddev_usbd_probe
 r_static
-r_void
-op_star
+r_int
 id|hiddev_usbd_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -3389,7 +3384,8 @@ id|hiddev_info
 )paren
 (brace
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|variable|hiddev_driver

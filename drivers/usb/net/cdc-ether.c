@@ -3807,19 +3807,14 @@ singleline_comment|// claims interfaces if they are for an Ethernet CDC ////////
 singleline_comment|//////////////////////////////////////////////////////////////////////////////
 DECL|function|CDCEther_probe
 r_static
-r_void
-op_star
+r_int
 id|CDCEther_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|usb
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -3828,6 +3823,17 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|usb
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|net_device
 op_star
@@ -3855,7 +3861,8 @@ id|usb-&gt;actconfig
 singleline_comment|// Someone has already put there grubby paws on this device.
 singleline_comment|// We don&squot;t want it now...
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 singleline_comment|// We might be finding a device we can use.
@@ -3889,7 +3896,8 @@ l_string|&quot;out of memory allocating device structure&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 singleline_comment|// Zero everything out.
@@ -3930,7 +3938,8 @@ id|ether_dev
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|ether_dev-&gt;tx_urb
@@ -3963,7 +3972,8 @@ id|ether_dev
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|ether_dev-&gt;intr_urb
@@ -4002,7 +4012,8 @@ id|ether_dev
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 singleline_comment|// Let&squot;s see if we can find a configuration we can use.
@@ -4306,9 +4317,10 @@ id|ether_dev-&gt;comm_ep_in
 op_assign
 l_int|5
 suffix:semicolon
+multiline_comment|/* FIXME!!! This driver needs to be fixed to work with the new USB interface logic&n; * this is not the correct thing to be doing here, we need to set the interface&n; * driver specific data field.&n; */
 singleline_comment|// Okay, we are finally done...
 r_return
-l_int|NULL
+l_int|0
 suffix:semicolon
 singleline_comment|// bailing out with our tail between our knees
 id|error_all
@@ -4338,7 +4350,8 @@ id|ether_dev
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 singleline_comment|//////////////////////////////////////////////////////////////////////////////
@@ -4353,20 +4366,33 @@ id|CDCEther_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|usb
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 (brace
 id|ether_dev_t
 op_star
 id|ether_dev
 op_assign
-id|ptr
+id|dev_get_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|usb
+suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 singleline_comment|// Sanity check!!!
 r_if
@@ -4393,6 +4419,14 @@ singleline_comment|// Make sure we fail the sanity check if we try this again.
 id|ether_dev-&gt;usb
 op_assign
 l_int|NULL
+suffix:semicolon
+id|usb
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
 suffix:semicolon
 singleline_comment|// It is possible that this function is called before
 singleline_comment|// the &quot;close&quot; function.

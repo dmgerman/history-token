@@ -290,6 +290,12 @@ op_amp
 id|keyspan_4port_device
 )paren
 suffix:semicolon
+id|usb_register
+(paren
+op_amp
+id|keyspan_driver
+)paren
+suffix:semicolon
 id|info
 c_func
 (paren
@@ -311,6 +317,12 @@ id|keyspan_exit
 r_void
 )paren
 (brace
+id|usb_deregister
+(paren
+op_amp
+id|keyspan_driver
+)paren
+suffix:semicolon
 id|usb_serial_deregister
 (paren
 op_amp

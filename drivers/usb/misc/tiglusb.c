@@ -1170,19 +1170,14 @@ comma
 suffix:semicolon
 multiline_comment|/* --- initialisation code ------------------------------------- */
 r_static
-r_void
-op_star
+r_int
 DECL|function|tiglusb_probe
 id|tiglusb_probe
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -1191,6 +1186,17 @@ op_star
 id|id
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_int
 id|minor
 op_assign
@@ -1211,13 +1217,11 @@ l_int|8
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;probing vendor id 0x%x, device id 0x%x ifnum:%d&quot;
+l_string|&quot;probing vendor id 0x%x, device id 0x%x&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
 id|dev-&gt;descriptor.idProduct
-comma
-id|ifnum
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t handle multiple configurations. As of version 0x0103 of&n;&t; * the TIGL hardware, there&squot;s only 1 configuration.&n;&t; */
@@ -1229,7 +1233,8 @@ op_ne
 l_int|1
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -1247,7 +1252,8 @@ l_int|0x451
 )paren
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -1273,7 +1279,8 @@ l_string|&quot;tiglusb_probe: set_configuration failed&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Find a tiglusb struct&n;&t; */
@@ -1325,7 +1332,8 @@ op_minus
 l_int|1
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 id|s
 op_assign
@@ -1357,9 +1365,7 @@ id|s-&gt;mutex
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;bound to interface: %d&quot;
-comma
-id|ifnum
+l_string|&quot;bound to interface&quot;
 )paren
 suffix:semicolon
 id|sprintf
@@ -1428,8 +1434,16 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-r_return
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
 id|s
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -1438,22 +1452,27 @@ DECL|function|tiglusb_disconnect
 id|tiglusb_disconnect
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|drv_context
+id|intf
 )paren
 (brace
 id|ptiglusb_t
 id|s
 op_assign
+id|dev_get_drvdata
 (paren
-id|ptiglusb_t
+op_amp
+id|intf-&gt;dev
 )paren
-id|drv_context
+suffix:semicolon
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1464,11 +1483,15 @@ op_logical_or
 op_logical_neg
 id|s-&gt;dev
 )paren
+(brace
 id|info
 (paren
 l_string|&quot;bogus disconnect&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|s-&gt;remove_pending
 op_assign
 l_int|1

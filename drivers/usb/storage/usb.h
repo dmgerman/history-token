@@ -218,6 +218,8 @@ DECL|macro|US_FL_DEV_ATTACHED
 mdefine_line|#define US_FL_DEV_ATTACHED    0x00010000 /* is the device attached?&t;    */
 DECL|macro|US_FLIDX_IP_WANTED
 mdefine_line|#define US_FLIDX_IP_WANTED   17  /* 0x00020000&t;is an IRQ expected?&t;    */
+DECL|macro|US_FLIDX_CAN_CANCEL
+mdefine_line|#define US_FLIDX_CAN_CANCEL  18  /* 0x00040000  okay to cancel current_urb? */
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1
@@ -489,12 +491,6 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* data from USB IRQ&t; */
 multiline_comment|/* control and bulk communications data */
-DECL|member|current_urb_sem
-r_struct
-id|semaphore
-id|current_urb_sem
-suffix:semicolon
-multiline_comment|/* protect current_urb  */
 DECL|member|current_urb
 r_struct
 id|urb
@@ -588,6 +584,6 @@ mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(host-&gt;host_lock)
 DECL|macro|scsi_lock
 mdefine_line|#define scsi_lock(host)&t;&t;spin_lock_irq(host-&gt;host_lock)
 DECL|macro|sg_address
-mdefine_line|#define sg_address(psg)&t;&t;(page_address((psg)-&gt;page) + (psg)-&gt;offset)
+mdefine_line|#define sg_address(psg)&t;&t;(page_address((psg).page) + (psg).offset)
 macro_line|#endif
 eof

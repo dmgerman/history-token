@@ -3796,19 +3796,14 @@ suffix:semicolon
 )brace
 DECL|function|konicawc_probe
 r_static
-r_void
-op_star
+r_int
 id|konicawc_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|ifnum
+id|intf
 comma
 r_const
 r_struct
@@ -3817,6 +3812,17 @@ op_star
 id|devid
 )paren
 (brace
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+c_func
+(paren
+id|intf
+)paren
+suffix:semicolon
 r_struct
 id|uvd
 op_star
@@ -3855,11 +3861,9 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;konicawc_probe(%p,%u.)&quot;
+l_string|&quot;konicawc_probe(%p)&quot;
 comma
-id|dev
-comma
-id|ifnum
+id|intf
 )paren
 suffix:semicolon
 multiline_comment|/* We don&squot;t handle multi-config cameras */
@@ -3871,7 +3875,8 @@ op_ne
 l_int|1
 )paren
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 id|info
 c_func
@@ -3894,12 +3899,7 @@ suffix:semicolon
 multiline_comment|/* Validate found interface: must have one ISO endpoint */
 id|nas
 op_assign
-id|dev-&gt;actconfig-&gt;interface
-(braket
-id|ifnum
-)braket
-dot
-id|num_altsetting
+id|intf-&gt;num_altsetting
 suffix:semicolon
 r_if
 c_cond
@@ -3918,7 +3918,8 @@ id|nas
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Validate all alternate settings */
@@ -3952,12 +3953,7 @@ suffix:semicolon
 id|interface
 op_assign
 op_amp
-id|dev-&gt;actconfig-&gt;interface
-(braket
-id|ifnum
-)braket
-dot
-id|altsetting
+id|intf-&gt;altsetting
 (braket
 id|i
 )braket
@@ -3975,7 +3971,7 @@ c_func
 (paren
 l_string|&quot;Interface %d. has %u. endpoints!&quot;
 comma
-id|ifnum
+id|interface-&gt;bInterfaceNumber
 comma
 (paren
 r_int
@@ -3986,7 +3982,8 @@ id|interface-&gt;bNumEndpoints
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|endpoint
@@ -4036,7 +4033,8 @@ l_string|&quot;Alternate settings have different endpoint addresses!&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -4056,11 +4054,12 @@ c_func
 (paren
 l_string|&quot;Interface %d. has non-ISO endpoint!&quot;
 comma
-id|ifnum
+id|interface-&gt;bInterfaceNumber
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -4080,11 +4079,12 @@ c_func
 (paren
 l_string|&quot;Interface %d. has ISO OUT endpoint!&quot;
 comma
-id|ifnum
+id|interface-&gt;bInterfaceNumber
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_if
@@ -4115,7 +4115,8 @@ l_string|&quot;More than one inactive alt. setting!&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 )brace
@@ -4169,7 +4170,8 @@ l_string|&quot;Cant find required endpoint&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|DEBUG
@@ -4281,7 +4283,8 @@ l_string|&quot;cant allocate urbs&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 )brace
@@ -4335,7 +4338,7 @@ id|dev
 suffix:semicolon
 id|uvd-&gt;iface
 op_assign
-id|ifnum
+id|intf-&gt;altsetting-&gt;bInterfaceNumber
 suffix:semicolon
 id|uvd-&gt;ifaceAltInactive
 op_assign
@@ -4541,8 +4544,27 @@ macro_line|#endif
 )brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|uvd
+)paren
+(brace
+id|dev_set_drvdata
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+id|uvd
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 DECL|function|konicawc_free_uvd
