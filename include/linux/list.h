@@ -187,6 +187,14 @@ comma
 id|entry-&gt;next
 )paren
 suffix:semicolon
+id|entry-&gt;next
+op_assign
+l_int|NULL
+suffix:semicolon
+id|entry-&gt;prev
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * list_del_init - deletes entry from list and reinitialize it.&n; * @entry: the element to delete from the list.&n; */
 DECL|function|list_del_init
