@@ -1141,7 +1141,6 @@ multiline_comment|/**&n; *&t;apm_driver_version&t;-&t;APM driver version&n; *&t;
 DECL|function|apm_driver_version
 r_static
 r_int
-id|__init
 id|apm_driver_version
 c_func
 (paren
