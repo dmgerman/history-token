@@ -332,6 +332,11 @@ DECL|member|busy_configuring
 r_int
 id|busy_configuring
 suffix:semicolon
+multiline_comment|/* This element holds the zero based queue number of the last&n;&t; * queue to be started.  It is used for fairness.&n;&t;*/
+DECL|member|next_to_run
+r_int
+id|next_to_run
+suffix:semicolon
 singleline_comment|// Disk structures we need to pass back
 DECL|member|gendisk
 r_struct
