@@ -6283,7 +6283,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;ip_conntrack version %s (%u buckets, %d max)&quot;
-l_string|&quot; - %d bytes per conntrack&bslash;n&quot;
+l_string|&quot; - %Zd bytes per conntrack&bslash;n&quot;
 comma
 id|IP_CONNTRACK_VERSION
 comma

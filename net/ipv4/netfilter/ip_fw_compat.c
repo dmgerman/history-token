@@ -1046,6 +1046,11 @@ op_assign
 id|fw_in
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET
@@ -1073,6 +1078,11 @@ dot
 id|hook
 op_assign
 id|fw_in
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf
@@ -1104,6 +1114,11 @@ op_assign
 id|fw_in
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET
@@ -1131,6 +1146,11 @@ dot
 id|hook
 op_assign
 id|fw_confirm
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

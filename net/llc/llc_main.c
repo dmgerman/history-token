@@ -764,8 +764,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -773,7 +771,7 @@ op_logical_neg
 id|sk
 )paren
 r_goto
-id|decmod
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -838,10 +836,6 @@ suffix:semicolon
 id|sk
 op_assign
 l_int|NULL
-suffix:semicolon
-id|decmod
-suffix:colon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_goto
 id|out
@@ -1010,8 +1004,6 @@ c_func
 (paren
 id|sk
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_sk_reset - resets a connection&n; *&t;@sk: LLC socket to reset&n; *&n; *&t;Resets a connection to the out of service state. Stops its timers&n; *&t;and frees any frames in the queues of the connection.&n; */

@@ -799,6 +799,8 @@ l_int|NULL
 comma
 id|ing_hook
 comma
+id|THIS_MODULE
+comma
 id|PF_INET
 comma
 id|NF_IP_PRE_ROUTING

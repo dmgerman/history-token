@@ -293,7 +293,7 @@ id|ebt_vlan_info
 (brace
 id|DEBUG_MSG
 (paren
-l_string|&quot;passed size %d is not eq to ebt_vlan_info (%d)&bslash;n&quot;
+l_string|&quot;passed size %d is not eq to ebt_vlan_info (%Zd)&bslash;n&quot;
 comma
 id|datalen
 comma

@@ -35,6 +35,8 @@ DECL|macro|BRNF_BRIDGED_DNAT
 mdefine_line|#define BRNF_BRIDGED_DNAT&t;&t;0x02
 DECL|macro|BRNF_DONT_TAKE_PARENT
 mdefine_line|#define BRNF_DONT_TAKE_PARENT&t;&t;0x04
+DECL|macro|BRNF_BRIDGED
+mdefine_line|#define BRNF_BRIDGED&t;&t;&t;0x08
 DECL|enum|nf_br_hook_priorities
 r_enum
 id|nf_br_hook_priorities

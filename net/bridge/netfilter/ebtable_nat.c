@@ -332,6 +332,11 @@ op_assign
 id|ebt_nat_dst
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_BRIDGE
@@ -355,6 +360,11 @@ op_assign
 id|ebt_nat_src
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_BRIDGE
@@ -376,6 +386,11 @@ dot
 id|hook
 op_assign
 id|ebt_nat_dst
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

@@ -1102,6 +1102,11 @@ id|nf_bridge-&gt;mask
 op_or_assign
 id|BRNF_PKT_TYPE
 suffix:semicolon
+multiline_comment|/* The physdev module checks on this */
+id|nf_bridge-&gt;mask
+op_or_assign
+id|BRNF_BRIDGED
+suffix:semicolon
 )brace
 id|nf_bridge-&gt;physoutdev
 op_assign
@@ -1892,6 +1897,8 @@ l_int|NULL
 comma
 id|br_nf_pre_routing
 comma
+id|THIS_MODULE
+comma
 id|PF_BRIDGE
 comma
 id|NF_BR_PRE_ROUTING
@@ -1907,6 +1914,8 @@ l_int|NULL
 )brace
 comma
 id|br_nf_local_in
+comma
+id|THIS_MODULE
 comma
 id|PF_BRIDGE
 comma
@@ -1924,6 +1933,8 @@ l_int|NULL
 comma
 id|br_nf_forward
 comma
+id|THIS_MODULE
+comma
 id|PF_BRIDGE
 comma
 id|NF_BR_FORWARD
@@ -1939,6 +1950,8 @@ l_int|NULL
 )brace
 comma
 id|br_nf_local_out
+comma
+id|THIS_MODULE
 comma
 id|PF_BRIDGE
 comma
@@ -1956,6 +1969,8 @@ l_int|NULL
 comma
 id|br_nf_post_routing
 comma
+id|THIS_MODULE
+comma
 id|PF_BRIDGE
 comma
 id|NF_BR_POST_ROUTING
@@ -1971,6 +1986,8 @@ l_int|NULL
 )brace
 comma
 id|ipv4_sabotage_in
+comma
+id|THIS_MODULE
 comma
 id|PF_INET
 comma
@@ -1988,6 +2005,8 @@ l_int|NULL
 comma
 id|ipv4_sabotage_out
 comma
+id|THIS_MODULE
+comma
 id|PF_INET
 comma
 id|NF_IP_FORWARD
@@ -2004,6 +2023,8 @@ l_int|NULL
 comma
 id|ipv4_sabotage_out
 comma
+id|THIS_MODULE
+comma
 id|PF_INET
 comma
 id|NF_IP_LOCAL_OUT
@@ -2019,6 +2040,8 @@ l_int|NULL
 )brace
 comma
 id|ipv4_sabotage_out
+comma
+id|THIS_MODULE
 comma
 id|PF_INET
 comma

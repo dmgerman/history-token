@@ -8,9 +8,6 @@ macro_line|#include &lt;linux/icmp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-r_struct
-id|in_device
-suffix:semicolon
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_REJECT.h&gt;
@@ -255,14 +252,10 @@ comma
 dot
 id|tos
 op_assign
-(paren
 id|RT_TOS
 c_func
 (paren
 id|oldskb-&gt;nh.iph-&gt;tos
-)paren
-op_or
-id|RTO_CONN
 )paren
 )brace
 )brace
@@ -321,8 +314,17 @@ c_cond
 op_logical_neg
 id|nskb
 )paren
+(brace
+id|dst_release
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|dst_release
 c_func
 (paren
