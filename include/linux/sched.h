@@ -2230,44 +2230,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This has now become a routine instead of a macro, it sets a flag if&n; * it returns true (to do BSD-style accounting where the process is flagged&n; * if it uses root privs). The implication of this is that you should do&n; * normal permissions checks first, and check suser() last.&n; *&n; * [Dec 1997 -- Chris Evans]&n; * For correctness, the above considerations need to be extended to&n; * fsuser(). This is done, along with moving fsuser() checks to be&n; * last.&n; *&n; * These will be removed, but in the mean time, when the SECURE_NOROOT &n; * flag is set, uids don&squot;t grant privilege.&n; */
-DECL|function|suser
-r_static
-r_inline
-r_int
-id|suser
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|issecure
-c_func
-(paren
-id|SECURE_NOROOT
-)paren
-op_logical_and
-id|current-&gt;euid
-op_eq
-l_int|0
-)paren
-(brace
-id|current-&gt;flags
-op_or_assign
-id|PF_SUPERPRIV
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * This has now become a routine instead of a macro, it sets a flag if&n; * it returns true (to do BSD-style accounting where the process is flagged&n; * if it uses root privs). The implication of this is that you should do&n; * normal permissions checks first, and check fsuser() last.&n; *&n; * suser() is gone, fsuser() should go soon too...&n; */
 DECL|function|fsuser
 r_static
 r_inline
@@ -2305,7 +2268,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * capable() checks for a particular capability.  &n; * New privilege checks should use this interface, rather than suser() or&n; * fsuser(). See include/linux/capability.h for defined capabilities.&n; */
+multiline_comment|/*&n; * capable() checks for a particular capability.&n; * See include/linux/capability.h for defined capabilities.&n; */
 DECL|function|capable
 r_static
 r_inline
@@ -2317,7 +2280,6 @@ r_int
 id|cap
 )paren
 (brace
-macro_line|#if 1 /* ok now */
 r_if
 c_cond
 (paren
@@ -2329,26 +2291,6 @@ comma
 id|cap
 )paren
 )paren
-macro_line|#else
-r_if
-c_cond
-(paren
-id|cap_is_fs_cap
-c_func
-(paren
-id|cap
-)paren
-ques
-c_cond
-id|current-&gt;fsuid
-op_eq
-l_int|0
-suffix:colon
-id|current-&gt;euid
-op_eq
-l_int|0
-)paren
-macro_line|#endif
 (brace
 id|current-&gt;flags
 op_or_assign
