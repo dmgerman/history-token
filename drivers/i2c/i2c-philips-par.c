@@ -4,7 +4,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-philips-par.c,v 1.23 2002/02/06 08:50:58 simon Exp $ */
+multiline_comment|/* $Id: i2c-philips-par.c,v 1.29 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,10 +13,6 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
-macro_line|#ifndef __exit
-DECL|macro|__exit
-mdefine_line|#define __exit __init
-macro_line|#endif
 DECL|variable|type
 r_static
 r_int
@@ -446,23 +442,40 @@ id|i2c_algo_bit_data
 id|bit_lp_data
 op_assign
 (brace
-l_int|NULL
-comma
+dot
+id|setsda
+op_assign
 id|bit_lp_setsda
 comma
+dot
+id|setscl
+op_assign
 id|bit_lp_setscl
 comma
+dot
+id|getsda
+op_assign
 id|bit_lp_getsda
 comma
+dot
+id|getscl
+op_assign
 id|bit_lp_getscl
 comma
+dot
+id|udelay
+op_assign
 l_int|80
 comma
+dot
+id|mdelay
+op_assign
 l_int|80
 comma
-l_int|100
-comma
-multiline_comment|/*&t;waits, timeout */
+dot
+id|timeout
+op_assign
+id|HZ
 )brace
 suffix:semicolon
 DECL|variable|bit_lp_data2
@@ -472,23 +485,35 @@ id|i2c_algo_bit_data
 id|bit_lp_data2
 op_assign
 (brace
-l_int|NULL
-comma
+dot
+id|setsda
+op_assign
 id|bit_lp_setsda2
 comma
+dot
+id|setscl
+op_assign
 id|bit_lp_setscl2
 comma
+dot
+id|getsda
+op_assign
 id|bit_lp_getsda2
 comma
-l_int|NULL
-comma
+dot
+id|udelay
+op_assign
 l_int|80
 comma
+dot
+id|mdelay
+op_assign
 l_int|80
 comma
-l_int|100
-comma
-multiline_comment|/*&t;waits, timeout */
+dot
+id|timeout
+op_assign
+id|HZ
 )brace
 suffix:semicolon
 DECL|variable|bit_lp_ops

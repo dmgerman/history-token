@@ -1,10 +1,9 @@
 multiline_comment|/*&n;    adm1021.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* Registers */
 DECL|macro|ADM1021_SYSCTL_TEMP
 mdefine_line|#define ADM1021_SYSCTL_TEMP&t;&t;1200
@@ -309,25 +308,6 @@ id|client
 suffix:semicolon
 r_static
 r_int
-id|adm1021_command
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
-suffix:semicolon
-r_static
-r_int
 id|adm1021_read_value
 c_func
 (paren
@@ -513,11 +493,6 @@ dot
 id|detach_client
 op_assign
 id|adm1021_detach_client
-comma
-dot
-id|command
-op_assign
-id|adm1021_command
 comma
 )brace
 suffix:semicolon
@@ -732,6 +707,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|adm1021_attach_adapter
+r_static
 r_int
 id|adm1021_attach_adapter
 c_func
@@ -1365,6 +1341,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|adm1021_init_client
+r_static
 r_void
 id|adm1021_init_client
 c_func
@@ -1456,6 +1433,7 @@ l_int|0x04
 suffix:semicolon
 )brace
 DECL|function|adm1021_detach_client
+r_static
 r_int
 id|adm1021_detach_client
 c_func
@@ -1519,32 +1497,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* No commands defined yet */
-DECL|function|adm1021_command
-r_int
-id|adm1021_command
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* All registers are byte-sized */
 DECL|function|adm1021_read_value
+r_static
 r_int
 id|adm1021_read_value
 c_func
@@ -1569,6 +1524,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|function|adm1021_write_value
+r_static
 r_int
 id|adm1021_write_value
 c_func
@@ -1588,13 +1544,9 @@ id|value
 r_if
 c_cond
 (paren
+op_logical_neg
 id|read_only
-OG
-l_int|0
 )paren
-r_return
-l_int|0
-suffix:semicolon
 r_return
 id|i2c_smbus_write_byte_data
 c_func
@@ -1606,8 +1558,12 @@ comma
 id|value
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|adm1021_update_client
+r_static
 r_void
 id|adm1021_update_client
 c_func
@@ -1831,6 +1787,7 @@ id|data-&gt;update_lock
 suffix:semicolon
 )brace
 DECL|function|adm1021_temp
+r_static
 r_void
 id|adm1021_temp
 c_func
@@ -2002,6 +1959,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|adm1021_remote_temp
+r_static
 r_void
 id|adm1021_remote_temp
 c_func
@@ -2520,6 +2478,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|adm1021_die_code
+r_static
 r_void
 id|adm1021_die_code
 c_func
@@ -2604,6 +2563,7 @@ multiline_comment|/* Can&squot;t write to it */
 )brace
 )brace
 DECL|function|adm1021_alarms
+r_static
 r_void
 id|adm1021_alarms
 c_func

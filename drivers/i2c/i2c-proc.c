@@ -6,10 +6,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
 r_int
@@ -322,6 +322,7 @@ id|i2c_proc_header
 suffix:semicolon
 multiline_comment|/* This returns a nice name for a new directory; for example lm78-isa-0310&n;   (for a LM78 chip on the ISA bus at port 0x310), or lm75-i2c-3-4e (for&n;   a LM75 chip on the third i2c bus at address 0x4e).  &n;   name is allocated first. */
 DECL|function|i2c_create_name
+r_static
 r_int
 id|i2c_create_name
 c_func
@@ -1040,6 +1041,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|i2c_proc_chips
+r_static
 r_int
 id|i2c_proc_chips
 c_func
@@ -1231,6 +1233,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2c_sysctl_chips
+r_static
 r_int
 id|i2c_sysctl_chips
 c_func
@@ -1925,6 +1928,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* nrels contains initially the maximum number of elements which can be&n;   put in results, and finally the number of elements actually put there.&n;   A magnitude of 1 will multiply everything with 10; etc.&n;   buffer, bufsize is the character buffer we read from and its length.&n;   results will finally contain the parsed integers. &n;&n;   Buffer should contain several reals, separated by whitespace. A real&n;   has the following syntax:&n;     [ Minus ] Digit* [ Dot Digit* ] &n;   (everything between [] is optional; * means zero or more).&n;   When the next character is unparsable, everything is skipped until the&n;   next whitespace.&n;&n;   WARNING! This is tricky code. I have tested it, but there may still be&n;            hidden bugs in it, even leading to crashes and things!&n;*/
 DECL|function|i2c_parse_reals
+r_static
 r_int
 id|i2c_parse_reals
 c_func
@@ -3898,18 +3902,18 @@ id|i2c_proc_header
 )paren
 suffix:semicolon
 )brace
+DECL|variable|i2c_register_entry
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|i2c_register_entry
+)paren
+suffix:semicolon
 DECL|variable|i2c_deregister_entry
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|i2c_deregister_entry
-)paren
-suffix:semicolon
-DECL|variable|i2c_detect
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|i2c_detect
 )paren
 suffix:semicolon
 DECL|variable|i2c_proc_real
@@ -3919,18 +3923,18 @@ c_func
 id|i2c_proc_real
 )paren
 suffix:semicolon
-DECL|variable|i2c_register_entry
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|i2c_register_entry
-)paren
-suffix:semicolon
 DECL|variable|i2c_sysctl_real
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|i2c_sysctl_real
+)paren
+suffix:semicolon
+DECL|variable|i2c_detect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|i2c_detect
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
