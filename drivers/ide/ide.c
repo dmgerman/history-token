@@ -7535,8 +7535,8 @@ id|__initdata
 id|probe_ht6560b
 suffix:semicolon
 r_extern
-r_void
-id|init_ht6560b
+r_int
+id|ht6560b_init
 c_func
 (paren
 r_void
@@ -10713,7 +10713,10 @@ c_cond
 (paren
 id|probe_ht6560b
 )paren
-id|init_ht6560b
+(paren
+r_void
+)paren
+id|ht6560b_init
 c_func
 (paren
 )paren
