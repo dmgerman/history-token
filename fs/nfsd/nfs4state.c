@@ -1728,17 +1728,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cmp_clid
-c_func
-(paren
-op_amp
-id|conf-&gt;cl_clientid
-comma
-op_amp
-id|unconf-&gt;cl_clientid
-)paren
-op_logical_and
-op_logical_neg
 id|cmp_verf
 c_func
 (paren
@@ -1750,7 +1739,7 @@ id|unconf-&gt;cl_confirm
 )paren
 )paren
 (brace
-multiline_comment|/*&t;&n;&t;&t; * CASE3:&n;&t;&t; * confirmed found (name, principal match)&n;&t;&t; * confirmed verifier does not match input clverifier&n;&t;&t; *&n;&t;&t; * unconfirmed found (name match)&n;&t;&t; * confirmed-&gt;cl_clientid != unconfirmed-&gt;cl_clientid and&n;&t;&t; * confirmed-&gt;cl_confirm != unconfirmed-&gt;cl_confirm&n;&t;&t; *&n;&t;&t; * remove unconfirmed.&n;&t;&t; *&n;&t;&t; * create an unconfirmed nfs4_client &n;&t;&t; * with same cl_name as existing confirmed nfs4_client, &n;&t;&t; * but with new callback info, new cl_clientid,&n;&t;&t; * new cl_verifier and a new cl_confirm&n;&t;&t; */
+multiline_comment|/*&t;&n;&t;&t; * CASE3:&n;&t;&t; * confirmed found (name, principal match)&n;&t;&t; * confirmed verifier does not match input clverifier&n;&t;&t; *&n;&t;&t; * unconfirmed found (name match)&n;&t;&t; * confirmed-&gt;cl_confirm != unconfirmed-&gt;cl_confirm&n;&t;&t; *&n;&t;&t; * remove unconfirmed.&n;&t;&t; *&n;&t;&t; * create an unconfirmed nfs4_client &n;&t;&t; * with same cl_name as existing confirmed nfs4_client, &n;&t;&t; * but with new callback info, new cl_clientid,&n;&t;&t; * new cl_verifier and a new cl_confirm&n;&t;&t; */
 id|expire_client
 c_func
 (paren
