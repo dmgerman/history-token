@@ -2208,7 +2208,7 @@ c_func
 id|acpi_processor_register_performance
 )paren
 suffix:semicolon
-multiline_comment|/* for the rest of it, check processor_perf.c */
+multiline_comment|/* for the rest of it, check cpufreq/acpi.c */
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Throttling Control&n;   -------------------------------------------------------------------------- */
 r_static
 r_int
@@ -4251,10 +4251,9 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
 id|data
 )paren
@@ -4530,10 +4529,9 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
 id|data
 )paren
@@ -5026,7 +5024,7 @@ op_assign
 op_amp
 id|acpi_processor_throttling_fops
 suffix:semicolon
-id|entry-&gt;write_proc
+id|entry-&gt;proc_fops-&gt;write
 op_assign
 id|acpi_processor_write_throttling
 suffix:semicolon
@@ -5085,7 +5083,7 @@ op_assign
 op_amp
 id|acpi_processor_limit_fops
 suffix:semicolon
-id|entry-&gt;write_proc
+id|entry-&gt;proc_fops-&gt;write
 op_assign
 id|acpi_processor_write_limit
 suffix:semicolon
