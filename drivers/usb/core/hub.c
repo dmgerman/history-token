@@ -4712,6 +4712,8 @@ id|i
 op_increment
 )paren
 (brace
+id|status
+op_assign
 id|set_port_feature
 c_func
 (paren
@@ -4724,7 +4726,26 @@ comma
 id|USB_PORT_FEAT_RESET
 )paren
 suffix:semicolon
-multiline_comment|/* return on disconnect or reset */
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|dev_err
+c_func
+(paren
+id|hub_dev
+comma
+l_string|&quot;cannot reset port %d (err = %d)&bslash;n&quot;
+comma
+id|port
+op_plus
+l_int|1
+comma
+id|status
+)paren
+suffix:semicolon
+r_else
 id|status
 op_assign
 id|hub_port_wait_reset
@@ -4739,6 +4760,7 @@ comma
 id|delay
 )paren
 suffix:semicolon
+multiline_comment|/* return on disconnect or reset */
 r_if
 c_cond
 (paren
