@@ -106,7 +106,7 @@ comma
 dot
 id|name
 op_assign
-l_int|NULL
+l_string|&quot;&quot;
 comma
 dot
 id|uc
@@ -6123,6 +6123,7 @@ id|sym_start
 r_if
 c_cond
 (paren
+op_star
 id|mod_name
 )paren
 id|snprintf
