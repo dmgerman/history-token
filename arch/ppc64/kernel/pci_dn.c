@@ -11,7 +11,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;

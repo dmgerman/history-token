@@ -113,34 +113,5 @@ r_int
 id|local
 )paren
 suffix:semicolon
-multiline_comment|/* TLB flush batching */
-DECL|macro|MAX_BATCH_FLUSH
-mdefine_line|#define MAX_BATCH_FLUSH 128
-DECL|struct|tlb_batch_data
-r_struct
-id|tlb_batch_data
-(brace
-DECL|member|pte
-id|pte_t
-id|pte
-suffix:semicolon
-DECL|member|addr
-r_int
-r_int
-id|addr
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|tlb_batch_data
-id|tlb_batch_array
-(braket
-id|NR_CPUS
-)braket
-(braket
-id|MAX_BATCH_FLUSH
-)braket
-suffix:semicolon
 macro_line|#endif /* _PPC64_TLBFLUSH_H */
 eof

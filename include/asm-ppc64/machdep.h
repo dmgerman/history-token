@@ -247,7 +247,7 @@ id|wait
 )paren
 suffix:semicolon
 DECL|member|smp_probe
-r_int
+r_void
 (paren
 op_star
 id|smp_probe

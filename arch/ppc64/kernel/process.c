@@ -25,20 +25,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
-r_int
-id|dump_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-id|elf_fpregset_t
-op_star
-id|fpregs
-)paren
-suffix:semicolon
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
@@ -1271,12 +1257,24 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* Carve out storage for the hardware interrupt stack */
 id|stack
 op_assign
@@ -1363,12 +1361,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_possible
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* set page at the top of stack to be protected - prevent overflow */
 id|end_of_stack
 op_assign

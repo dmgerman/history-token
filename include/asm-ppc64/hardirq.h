@@ -6,6 +6,7 @@ multiline_comment|/*&n; * Use a brlock for the global irq lock, based on sparc64
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 r_typedef
 r_struct
 (brace
@@ -109,7 +110,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -120,11 +121,7 @@ c_cond
 id|local_irq_count
 c_func
 (paren
-id|cpu_logical_map
-c_func
-(paren
 id|i
-)paren
 )paren
 )paren
 r_return

@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -40,16 +39,6 @@ r_extern
 r_int
 r_int
 id|loops_per_jiffy
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|embedded_sysmap_start
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|embedded_sysmap_end
 suffix:semicolon
 DECL|variable|have_of
 r_int
@@ -81,14 +70,6 @@ comma
 r_int
 r_int
 id|r7
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|chrp_init_map_io_space
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
@@ -472,24 +453,6 @@ r_int
 r_int
 )paren
 id|naca
-)paren
-suffix:semicolon
-id|udbg_putc
-c_func
-(paren
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-id|udbg_puts
-c_func
-(paren
-l_string|&quot;naca-&gt;processorCount       = 0x&quot;
-)paren
-suffix:semicolon
-id|udbg_puthex
-c_func
-(paren
-id|naca-&gt;processorCount
 )paren
 suffix:semicolon
 id|udbg_putc
@@ -1191,7 +1154,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;revision&bslash;t: %hd.%hd&bslash;n&quot;
+l_string|&quot;revision&bslash;t: %hd.%hd&bslash;n&bslash;n&quot;
 comma
 id|maj
 comma
@@ -1983,6 +1946,14 @@ r_void
 op_star
 id|calibrate_delay
 )paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sort_exception_table
+c_func
 (paren
 r_void
 )paren
