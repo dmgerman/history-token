@@ -231,15 +231,6 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|aha1542_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|aha1542_queuecommand
 c_func
 (paren

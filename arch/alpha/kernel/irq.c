@@ -2468,7 +2468,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;device_interrupt: illegal interrupt %d&bslash;n&quot;
+l_string|&quot;device_interrupt: invalid interrupt %d&bslash;n&quot;
 comma
 id|irq
 )paren

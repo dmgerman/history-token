@@ -318,7 +318,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Encode/decode time.&n; * Since the VFS doesn&squot;t care for fractional times, we ignore the&n; * nanosecond field.&n; */
+multiline_comment|/*&n; * Encode/decode time.&n; */
 r_static
 r_inline
 id|u32

@@ -17,6 +17,11 @@ macro_line|#else
 DECL|macro|FT_FMT_SEGS_PER_BUF
 mdefine_line|#define FT_FMT_SEGS_PER_BUF (FT_BUFF_SIZE/(4*FT_SECTORS_PER_SEGMENT))
 macro_line|#endif
+DECL|variable|ftape_format_lock
+r_static
+id|spinlock_t
+id|ftape_format_lock
+suffix:semicolon
 multiline_comment|/*&n; *  first segment of the new buffer&n; */
 DECL|variable|switch_segment
 r_static
@@ -365,15 +370,13 @@ id|QIC_LOGICAL_FORWARD
 comma
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ftape_format_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|TRACE_CATCH
@@ -392,9 +395,12 @@ id|flags
 )paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ftape_format_lock
+comma
 id|flags
 )paren
 suffix:semicolon

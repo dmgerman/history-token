@@ -451,8 +451,6 @@ id|pci_bus0
 suffix:semicolon
 id|raw_pci_ops
 op_assign
-l_int|3
-id|D
 op_amp
 id|pci_direct_conf1
 suffix:semicolon

@@ -485,6 +485,10 @@ DECL|member|features
 r_int
 id|features
 suffix:semicolon
+DECL|member|ring_lock
+id|spinlock_t
+id|ring_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -913,7 +917,9 @@ id|irqval
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: unable to get IRQ %d (irqval=%d).&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1510,9 +1516,17 @@ id|p-&gt;cardno
 op_assign
 id|i
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|p-&gt;ring_lock
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: %s found at %#3x, &quot;
 comma
 id|dev-&gt;name
@@ -1563,8 +1577,16 @@ l_int|0x4
 id|printk
 c_func
 (paren
+l_string|&quot;failed.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 id|KERN_ERR
-l_string|&quot;can&squot;t RESET card: %04x&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t RESET card: %04x&bslash;n&quot;
+comma
+id|dev-&gt;name
 comma
 id|j
 )paren
@@ -1927,7 +1949,16 @@ l_int|5
 id|printk
 c_func
 (paren
-l_string|&quot;Can&squot;t detect DMA channel!&bslash;n&quot;
+l_string|&quot;failed.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Can&squot;t detect DMA channel!&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|ni65_free_buffer
@@ -1990,8 +2021,6 @@ l_int|2
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 id|ni65_init_lance
 c_func
@@ -2023,24 +2052,18 @@ id|CSR0
 )paren
 suffix:semicolon
 multiline_comment|/* trigger interrupt */
-id|delay
-op_assign
-id|jiffies
-op_plus
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
 op_div
 l_int|50
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|delay
-)paren
 )paren
 suffix:semicolon
 id|dev-&gt;irq
@@ -2129,6 +2152,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Can&squot;t request dma-channel %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2502,6 +2526,7 @@ id|skb
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: unable to allocate %s memory.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2567,6 +2592,7 @@ id|ret
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: unable to allocate %s memory.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2599,6 +2625,7 @@ l_int|0x1000000
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: unable to allocate %s memory in lower 16MB!&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3095,6 +3122,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;ni65_stop_start&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3952,6 +3980,13 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|p-&gt;ring_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4083,6 +4118,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: general error: %04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4172,6 +4208,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Ooops .. memory error: %04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4492,6 +4529,7 @@ id|CSR0_TXON
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: RX or TX was offline -&gt; restart&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4511,6 +4549,13 @@ id|writedatareg
 c_func
 (paren
 id|CSR0_INEA
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|p-&gt;ring_lock
 )paren
 suffix:semicolon
 r_return
@@ -5637,15 +5682,13 @@ id|dev_kfree_skb
 id|skb
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|p-&gt;ring_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmdp
@@ -5686,15 +5729,13 @@ macro_line|#ifdef XMT_VIA_SKB
 )brace
 r_else
 (brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|p-&gt;ring_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|tmdp
@@ -5786,9 +5827,12 @@ id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|p-&gt;ring_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6090,13 +6134,10 @@ op_logical_neg
 id|p
 )paren
 (brace
-id|printk
+id|BUG
 c_func
 (paren
-l_string|&quot;Ooops .. no private struct&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 id|disable_dma

@@ -3304,7 +3304,7 @@ id|SEEQ_CMD
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * wait_for_buffer&n; *&n; * This routine waits for the SEEQ chip to assert that the FIFO is ready&n; * by checking for a window interrupt, and then clearing it&n; */
+multiline_comment|/*&n; * wait_for_buffer&n; *&n; * This routine waits for the SEEQ chip to assert that the FIFO is ready&n; * by checking for a window interrupt, and then clearing it. This has to&n; * occur in the interrupt handler!&n; */
 DECL|function|wait_for_buffer
 r_inline
 r_void
@@ -3363,7 +3363,7 @@ comma
 id|tmp
 )paren
 )paren
-id|mb
+id|cpu_relax
 c_func
 (paren
 )paren
