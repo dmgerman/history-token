@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 DECL|macro|DOUBLEFAULT_STACKSIZE
 mdefine_line|#define DOUBLEFAULT_STACKSIZE (1024)
@@ -248,8 +249,11 @@ comma
 dot
 id|eflags
 op_assign
-l_int|0x00000082
+id|X86_EFLAGS_SF
+op_or
+l_int|0x2
 comma
+multiline_comment|/* 0x2 bit is always set */
 dot
 id|esp
 op_assign

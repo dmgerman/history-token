@@ -884,7 +884,13 @@ id|__KERNEL_CS
 suffix:semicolon
 id|regs.eflags
 op_assign
-l_int|0x286
+id|X86_EFLAGS_IF
+op_or
+id|X86_EFLAGS_SF
+op_or
+id|X86_EFLAGS_PF
+op_or
+l_int|0x2
 suffix:semicolon
 multiline_comment|/* Ok, create the new process.. */
 r_return
