@@ -2154,11 +2154,9 @@ id|tp-&gt;send_head
 op_logical_and
 (paren
 id|mss_now
-op_minus
+OG
 id|skb-&gt;len
 )paren
-OG
-l_int|0
 )paren
 (brace
 id|copy

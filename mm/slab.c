@@ -5759,7 +5759,7 @@ id|cache_chain_sem
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; * kmem_cache_reap - Reclaim memory from caches.&n; * @gfp_mask: the type of memory required.&n; *&n; * Called from try_to_free_page().&n; */
+multiline_comment|/**&n; * kmem_cache_reap - Reclaim memory from caches.&n; * @gfp_mask: the type of memory required.&n; *&n; * Called from do_try_to_free_pages() and __alloc_pages()&n; */
 DECL|function|kmem_cache_reap
 r_void
 id|kmem_cache_reap

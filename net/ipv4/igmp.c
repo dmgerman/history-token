@@ -1677,11 +1677,11 @@ id|im-&gt;reporter
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 id|im-&gt;loaded
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 id|write_lock_bh
 c_func
 (paren

@@ -6072,7 +6072,13 @@ id|sk
 comma
 id|TCP_TIME_RETRANS
 comma
+id|min
+c_func
+(paren
 id|when
+comma
+id|TCP_RTO_MAX
+)paren
 )paren
 suffix:semicolon
 )brace

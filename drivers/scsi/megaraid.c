@@ -7,7 +7,6 @@ DECL|macro|MEGARAID_VERSION
 mdefine_line|#define MEGARAID_VERSION &quot;v107 (December 22, 1999)&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef MODULE
-macro_line|#include &lt;linux/modversions.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|kernel_version
 r_char

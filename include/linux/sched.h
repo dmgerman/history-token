@@ -478,12 +478,6 @@ r_int
 r_int
 id|cpu_vm_mask
 suffix:semicolon
-DECL|member|swap_cnt
-r_int
-r_int
-id|swap_cnt
-suffix:semicolon
-multiline_comment|/* number of pages to swap on next pass */
 DECL|member|swap_address
 r_int
 r_int

@@ -461,7 +461,7 @@ r_void
 id|wakeup_kswapd
 c_func
 (paren
-r_int
+r_void
 )paren
 suffix:semicolon
 r_extern

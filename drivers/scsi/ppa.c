@@ -837,15 +837,15 @@ c_func
 l_string|&quot;  happened.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|io_request_lock
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|try_again

@@ -1127,7 +1127,6 @@ c_func
 id|wakeup_kswapd
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 id|not_found
@@ -6993,6 +6992,11 @@ id|n-&gt;vm_raend
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|n-&gt;vm_file
+)paren
 id|get_file
 c_func
 (paren
@@ -7142,6 +7146,11 @@ id|n-&gt;vm_raend
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|n-&gt;vm_file
+)paren
 id|get_file
 c_func
 (paren
@@ -7324,6 +7333,11 @@ id|right-&gt;vm_raend
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vma-&gt;vm_file
+)paren
 id|atomic_add
 c_func
 (paren

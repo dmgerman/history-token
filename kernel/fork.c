@@ -504,10 +504,6 @@ id|mm-&gt;cpu_vm_mask
 op_assign
 l_int|0
 suffix:semicolon
-id|mm-&gt;swap_cnt
-op_assign
-l_int|0
-suffix:semicolon
 id|mm-&gt;swap_address
 op_assign
 l_int|0

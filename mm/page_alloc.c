@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|variable|nr_swap_pages
 r_int
 id|nr_swap_pages
@@ -1198,7 +1199,6 @@ c_func
 id|wakeup_kswapd
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we are about to get low on free pages and cleaning&n;&t; * the inactive_dirty pages would fix the situation,&n;&t; * wake up bdflush.&n;&t; */
@@ -1373,7 +1373,6 @@ multiline_comment|/*&n;&t; * OK, none of the zones on our zonelist has lots&n;&t
 id|wakeup_kswapd
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1423,7 +1422,7 @@ id|page
 r_return
 id|page
 suffix:semicolon
-multiline_comment|/*&n;&t; * Damn, we didn&squot;t succeed.&n;&t; *&n;&t; * This can be due to 2 reasons:&n;&t; * - we&squot;re doing a higher-order allocation&n;&t; * &t;--&gt; move pages to the free list until we succeed&n;&t; * - we&squot;re /really/ tight on memory&n;&t; * &t;--&gt; wait on the kswapd waitqueue until memory is freed&n;&t; */
+multiline_comment|/*&n;&t; * Damn, we didn&squot;t succeed.&n;&t; *&n;&t; * This can be due to 2 reasons:&n;&t; * - we&squot;re doing a higher-order allocation&n;&t; * &t;--&gt; move pages to the free list until we succeed&n;&t; * - we&squot;re /really/ tight on memory&n;&t; * &t;--&gt; try to free pages ourselves with page_launder&n;&t; */
 r_if
 c_cond
 (paren
@@ -1561,64 +1560,44 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * When we arrive here, we are really tight on memory.&n;&t;&t; *&n;&t;&t; * We wake up kswapd and sleep until kswapd wakes us&n;&t;&t; * up again. After that we loop back to the start.&n;&t;&t; *&n;&t;&t; * We have to do this because something else might eat&n;&t;&t; * the memory kswapd frees for us and we need to be&n;&t;&t; * reliable. Note that we don&squot;t loop back for higher&n;&t;&t; * order allocations since it is possible that kswapd&n;&t;&t; * simply cannot free a large enough contiguous area&n;&t;&t; * of memory *ever*.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * When we arrive here, we are really tight on memory.&n;&t;&t; *&n;&t;&t; * We try to free pages ourselves by:&n;&t;&t; * &t;- shrinking the i/d caches.&n;&t;&t; * &t;- reclaiming unused memory from the slab caches.&n;&t;&t; * &t;- swapping/syncing pages to disk (done by page_launder)&n;&t;&t; * &t;- moving clean pages from the inactive dirty list to&n;&t;&t; * &t;  the inactive clean list. (done by page_launder)&n;&t;&t; */
 r_if
 c_cond
 (paren
-(paren
 id|gfp_mask
 op_amp
-(paren
 id|__GFP_WAIT
-op_or
-id|__GFP_IO
-)paren
-)paren
-op_eq
-(paren
-id|__GFP_WAIT
-op_or
-id|__GFP_IO
-)paren
 )paren
 (brace
-id|wakeup_kswapd
+id|shrink_icache_memory
 c_func
 (paren
+l_int|6
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+id|shrink_dcache_memory
+c_func
+(paren
+l_int|6
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+id|kmem_cache_reap
+c_func
+(paren
+id|gfp_mask
+)paren
+suffix:semicolon
+id|page_launder
+c_func
+(paren
+id|gfp_mask
+comma
 l_int|1
 )paren
-suffix:semicolon
-id|memory_pressure
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|order
-)paren
-r_goto
-id|try_again
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If __GFP_IO isn&squot;t set, we can&squot;t wait on kswapd because&n;&t;&t; * kswapd just might need some IO locks /we/ are holding ...&n;&t;&t; *&n;&t;&t; * SUBTLE: The scheduling point above makes sure that&n;&t;&t; * kswapd does get the chance to free memory we can&squot;t&n;&t;&t; * free ourselves...&n;&t;&t; */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_WAIT
-)paren
-(brace
-id|try_to_free_pages
-c_func
-(paren
-id|gfp_mask
-)paren
-suffix:semicolon
-id|memory_pressure
-op_increment
 suffix:semicolon
 r_if
 c_cond
