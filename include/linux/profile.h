@@ -38,15 +38,6 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|create_prof_cpu_mask
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-suffix:semicolon
-r_void
 id|profile_tick
 c_func
 (paren
@@ -67,6 +58,20 @@ r_void
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+r_void
+id|create_prof_cpu_mask
+c_func
+(paren
+r_struct
+id|proc_dir_entry
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|create_prof_cpu_mask
+mdefine_line|#define create_prof_cpu_mask(x)&t;&t;&t;do { (void)(x); } while (0)
+macro_line|#endif
 r_extern
 r_int
 r_int
