@@ -2572,8 +2572,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|current-&gt;time_slice
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This case is rare, it happens when the parent has only&n;&t;&t; * a single jiffy left from its timeslice. Taking the&n;&t;&t; * runqueue lock is not a problem.&n;&t;&t; */
@@ -2946,9 +2950,15 @@ id|runqueue_t
 op_star
 id|rq
 suffix:semicolon
-id|local_irq_save
+multiline_comment|/*&n;&t; * If the child was a (relative-) CPU hog then decrease&n;&t; * the sleep_avg of the parent as well.&n;&t; */
+id|rq
+op_assign
+id|task_rq_lock
 c_func
 (paren
+id|p-&gt;parent
+comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -2978,24 +2988,6 @@ op_assign
 id|MAX_TIMESLICE
 suffix:semicolon
 )brace
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * If the child was a (relative-) CPU hog then decrease&n;&t; * the sleep_avg of the parent as well.&n;&t; */
-id|rq
-op_assign
-id|task_rq_lock
-c_func
-(paren
-id|p-&gt;parent
-comma
-op_amp
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3280,7 +3272,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -7547,10 +7539,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|test_thread_flag
 c_func
 (paren
 id|TIF_NEED_RESCHED
+)paren
 )paren
 )paren
 r_goto
