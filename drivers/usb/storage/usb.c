@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id: usb.c,v 1.61 2001/01/13 00:10:59 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * usb_device_id support by Adam J. Richter (adam@yggdrasil.com):&n; *   (c) 2000 Yggdrasil Computing, Inc.&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id: usb.c,v 1.67 2001/07/29 23:41:52 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * usb_device_id support by Adam J. Richter (adam@yggdrasil.com):&n; *   (c) 2000 Yggdrasil Computing, Inc.&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
@@ -18,11 +18,20 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_FREECOM
 macro_line|#include &quot;freecom.h&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
+macro_line|#include &quot;isd200.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
+macro_line|#include &quot;datafab.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
+macro_line|#include &quot;jumpshot.h&quot;
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/malloc.h&gt;
 multiline_comment|/* Some informational data */
 id|MODULE_AUTHOR
 c_func
@@ -349,7 +358,7 @@ id|storage_usb_ids
 )paren
 suffix:semicolon
 multiline_comment|/* This is the list of devices we recognize, along with their flag data */
-multiline_comment|/* The vendor name should be kept at eight characters or less, and&n; * the product name should be kept at 16 characters or less. If a device&n; * has the US_FL_DUMMY_INQUIRY flag, then the vendor and product names&n; * normally generated by a device thorugh the INQUIRY response will be&n; * taken from this list, and this is the reason for the above size&n; * restriction. However, if the flag is not present, then you&n; * are free to use as many characters as you like.&n; */
+multiline_comment|/* The vendor name should be kept at eight characters or less, and&n; * the product name should be kept at 16 characters or less. If a device&n; * has the US_FL_FIX_INQUIRY flag, then the vendor and product names&n; * normally generated by a device thorugh the INQUIRY response will be&n; * taken from this list, and this is the reason for the above size&n; * restriction. However, if the flag is not present, then you&n; * are free to use as many characters as you like.&n; */
 DECL|macro|UNUSUAL_DEV
 macro_line|#undef UNUSUAL_DEV
 DECL|macro|UNUSUAL_DEV
@@ -911,9 +920,6 @@ op_star
 id|__us
 )paren
 (brace
-id|wait_queue_t
-id|wait
-suffix:semicolon
 r_struct
 id|us_data
 op_star
@@ -974,38 +980,15 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* set up for wakeups by new commands */
-id|init_waitqueue_entry
+id|init_MUTEX_LOCKED
 c_func
 (paren
 op_amp
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;wqh
-)paren
-)paren
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;wqh
-)paren
-comma
-op_amp
-id|wait
+id|us-&gt;sema
 )paren
 suffix:semicolon
 multiline_comment|/* signal that we&squot;ve started the thread */
-id|up
+id|complete
 c_func
 (paren
 op_amp
@@ -1033,11 +1016,20 @@ c_func
 l_string|&quot;*** thread sleeping.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|schedule
+r_if
+c_cond
+(paren
+id|down_interruptible
 c_func
 (paren
+op_amp
+id|us-&gt;sema
 )paren
+)paren
+(brace
+r_break
 suffix:semicolon
+)brace
 id|US_DEBUGP
 c_func
 (paren
@@ -1277,6 +1269,94 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Handle those devices which need us to fake their&n;&t;&t;&t; * inquiry data */
+r_if
+c_cond
+(paren
+(paren
+id|us-&gt;srb-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|INQUIRY
+)paren
+op_logical_and
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_FIX_INQUIRY
+)paren
+)paren
+(brace
+r_int
+r_char
+id|data_ptr
+(braket
+l_int|36
+)braket
+op_assign
+(brace
+l_int|0x00
+comma
+l_int|0x80
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x1F
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Faking INQUIRY command&bslash;n&quot;
+)paren
+suffix:semicolon
+id|fill_inquiry_response
+c_func
+(paren
+id|us
+comma
+id|data_ptr
+comma
+l_int|36
+)paren
+suffix:semicolon
+id|us-&gt;srb-&gt;result
+op_assign
+id|GOOD
+op_lshift
+l_int|1
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|us-&gt;srb
+op_member_access_from_pointer
+id|scsi_done
+c_func
+(paren
+id|us-&gt;srb
+)paren
+suffix:semicolon
+id|us-&gt;srb
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* lock the device pointers */
 id|down
 c_func
@@ -1439,7 +1519,7 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
 op_amp
@@ -1484,7 +1564,7 @@ id|US_ACT_EXIT
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- US_ACT_EXIT command recieved&bslash;n&quot;
+l_string|&quot;-- US_ACT_EXIT command received&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1499,20 +1579,8 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;wqh
-)paren
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 multiline_comment|/* notify the exit routine that we&squot;re actually exiting now */
-id|up
+id|complete
 c_func
 (paren
 op_amp
@@ -2664,7 +2732,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the mutexes only when the struct is new */
-id|init_MUTEX_LOCKED
+id|init_completion
 c_func
 (paren
 op_amp
@@ -3081,6 +3149,52 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
+r_case
+id|US_PR_DATAFAB
+suffix:colon
+id|ss-&gt;transport_name
+op_assign
+l_string|&quot;Datafab Bulk-Only&quot;
+suffix:semicolon
+id|ss-&gt;transport
+op_assign
+id|datafab_transport
+suffix:semicolon
+id|ss-&gt;transport_reset
+op_assign
+id|usb_stor_Bulk_reset
+suffix:semicolon
+id|ss-&gt;max_lun
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
+r_case
+id|US_PR_JUMPSHOT
+suffix:colon
+id|ss-&gt;transport_name
+op_assign
+l_string|&quot;Lexar Jumpshot Control/Bulk&quot;
+suffix:semicolon
+id|ss-&gt;transport
+op_assign
+id|jumpshot_transport
+suffix:semicolon
+id|ss-&gt;transport_reset
+op_assign
+id|usb_stor_Bulk_reset
+suffix:semicolon
+id|ss-&gt;max_lun
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|ss-&gt;transport_name
@@ -3227,6 +3341,21 @@ id|usb_stor_ufi_command
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
+r_case
+id|US_SC_ISD200
+suffix:colon
+id|ss-&gt;protocol_name
+op_assign
+l_string|&quot;ISD200 ATA/ATAPI&quot;
+suffix:semicolon
+id|ss-&gt;proto_handler
+op_assign
+id|isd200_ata_command
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|ss-&gt;protocol_name
@@ -3311,7 +3440,7 @@ op_assign
 id|my_host_number
 op_increment
 suffix:semicolon
-multiline_comment|/* We abuse this pointer so we can pass the ss pointer to &n;&t;&t; * the host controler thread in us_detect.  But how else are&n;&t;&t; * we to do it?&n;&t;&t; */
+multiline_comment|/* We abuse this pointer so we can pass the ss pointer to &n;&t;&t; * the host controller thread in us_detect.  But how else are&n;&t;&t; * we to do it?&n;&t;&t; */
 (paren
 r_struct
 id|us_data
@@ -3389,7 +3518,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* wait for the thread to start */
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * ohci1394.c - driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Gord Peters &lt;GordPeters@smarttech.com&gt;&n; *              2001      Ben Collins &lt;bcollins@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * &n; * Things not implemented:&n; * . Async Stream Packets&n; * . DMA error recovery&n; *&n; * Things to be fixed:&n; * . Latency problems on UltraSPARC&n; *&n; * Known bugs:&n; * . SelfID are sometimes not received properly &n; *   if card is initialized with no other nodes &n; *   on the bus&n; * . Apple PowerBook detected but not working yet&n; */
+multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * &n; * Things not implemented:&n; * . Async Stream Packets&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . Apple PowerBook detected but not working yet (still true?)&n; */
 multiline_comment|/* &n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Andreas Tobler &lt;toa@pop.agri.ch&gt;&n; *  . Updated proc_fs calls&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Removed procfs support since it trashes random mem&n; *  . Config ROM generation&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -619,7 +619,12 @@ id|q0
 comma
 id|q1
 suffix:semicolon
-multiline_comment|/* SelfID handling seems much easier than for the aic5800 chip.&n;&t;   All the self-id packets, including this devices own self-id,&n;&t;   should be correctly arranged in the selfid buffer at this&n;&t;   stage */
+id|mdelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 multiline_comment|/* Check status of self-id reception */
 r_if
 c_cond
@@ -803,11 +808,8 @@ op_complement
 id|q1
 )paren
 (brace
-id|PRINT
-c_func
+id|DBGMSG
 (paren
-id|KERN_DEBUG
-comma
 id|ohci-&gt;id
 comma
 l_string|&quot;SelfID packet 0x%x received&quot;
@@ -878,11 +880,9 @@ op_sub_assign
 l_int|2
 suffix:semicolon
 )brace
-id|PRINT
+id|DBGMSG
 c_func
 (paren
-id|KERN_DEBUG
-comma
 id|ohci-&gt;id
 comma
 l_string|&quot;SelfID complete&quot;
@@ -960,15 +960,12 @@ suffix:semicolon
 id|mdelay
 c_func
 (paren
-l_int|10
+l_int|1
 )paren
 suffix:semicolon
 )brace
-id|PRINT
-c_func
+id|DBGMSG
 (paren
-id|KERN_DEBUG
-comma
 id|ohci-&gt;id
 comma
 l_string|&quot;Soft reset finished&quot;
@@ -1484,6 +1481,17 @@ r_return
 id|ctx
 suffix:semicolon
 )brace
+r_static
+r_void
+id|ohci_init_config_rom
+c_func
+(paren
+r_struct
+id|ti_ohci
+op_star
+id|ohci
+)paren
+suffix:semicolon
 multiline_comment|/* Global initialization */
 DECL|function|ohci_initialize
 r_static
@@ -1509,6 +1517,9 @@ id|retval
 comma
 id|i
 suffix:semicolon
+id|quadlet_t
+id|buf
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -1523,7 +1534,6 @@ op_amp
 id|ohci-&gt;event_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tip by James Goodwin &lt;jamesg@Filanet.com&gt;:&n;&t; * We need to add delays after the soft reset, setting LPS, and&n;&t; * enabling our link. This might fixes the self-id reception &n;&t; * problem at initialization.&n;&t; */
 multiline_comment|/* Soft reset */
 r_if
 c_cond
@@ -1543,11 +1553,42 @@ l_int|0
 r_return
 id|retval
 suffix:semicolon
-multiline_comment|/* &n;&t; * Delay after soft reset to make sure everything has settled&n;&t; * down (sanity)&n;&t; */
-id|mdelay
+multiline_comment|/* Put some defaults to these undefined bus options */
+id|buf
+op_assign
+id|reg_read
 c_func
 (paren
-l_int|10
+id|ohci
+comma
+id|OHCI1394_BusOptions
+)paren
+suffix:semicolon
+id|buf
+op_or_assign
+l_int|0x60000000
+suffix:semicolon
+multiline_comment|/* Enable CMC and ISC */
+id|buf
+op_and_assign
+op_complement
+l_int|0x00ff0000
+suffix:semicolon
+multiline_comment|/* XXX: Set cyc_clk_acc to zero for now */
+id|buf
+op_and_assign
+op_complement
+l_int|0x98000000
+suffix:semicolon
+multiline_comment|/* Disable PMC, IRMC and BMC */
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_BusOptions
+comma
+id|buf
 )paren
 suffix:semicolon
 multiline_comment|/* Set Link Power Status (LPS) */
@@ -1559,13 +1600,6 @@ comma
 id|OHCI1394_HCControlSet
 comma
 l_int|0x00080000
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Delay after setting LPS in order to make sure link/phy&n;&t; * communication is established&n;&t; */
-id|mdelay
-c_func
-(paren
-l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Set the bus number */
@@ -1655,7 +1689,7 @@ comma
 l_int|0x00000200
 )paren
 suffix:semicolon
-multiline_comment|/* Set the configuration ROM mapping register */
+multiline_comment|/* Set the Config ROM mapping register */
 id|reg_write
 c_func
 (paren
@@ -1666,6 +1700,14 @@ comma
 id|ohci-&gt;csr_config_rom_bus
 )paren
 suffix:semicolon
+multiline_comment|/* Initialize the Config ROM */
+id|ohci_init_config_rom
+c_func
+(paren
+id|ohci
+)paren
+suffix:semicolon
+multiline_comment|/* Now get our max packet size */
 id|ohci-&gt;max_packet_size
 op_assign
 l_int|1
@@ -1688,18 +1730,6 @@ l_int|0xf
 )paren
 op_plus
 l_int|1
-)paren
-suffix:semicolon
-id|PRINT
-c_func
-(paren
-id|KERN_DEBUG
-comma
-id|ohci-&gt;id
-comma
-l_string|&quot;Max packet size = %d bytes&quot;
-comma
-id|ohci-&gt;max_packet_size
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t accept phy packets into AR request context */
@@ -2089,6 +2119,107 @@ comma
 id|OHCI1394_HCControlSet
 comma
 l_int|0x00020000
+)paren
+suffix:semicolon
+id|buf
+op_assign
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_Version
+)paren
+suffix:semicolon
+id|PRINT
+c_func
+(paren
+id|KERN_INFO
+comma
+id|ohci-&gt;id
+comma
+l_string|&quot;OHCI-1394 %d.%d (PCI): IRQ=[%d]  MMIO=[%lx-%lx]&quot;
+l_string|&quot;  Max Packet=[%d]&quot;
+comma
+(paren
+(paren
+(paren
+(paren
+id|buf
+)paren
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xf
+)paren
+op_plus
+(paren
+(paren
+(paren
+id|buf
+)paren
+op_rshift
+l_int|20
+)paren
+op_amp
+l_int|0xf
+)paren
+op_star
+l_int|10
+)paren
+comma
+(paren
+(paren
+(paren
+(paren
+id|buf
+)paren
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0xf
+)paren
+op_plus
+(paren
+(paren
+id|buf
+)paren
+op_amp
+l_int|0xf
+)paren
+op_star
+l_int|10
+)paren
+comma
+id|ohci-&gt;dev-&gt;irq
+comma
+id|pci_resource_start
+c_func
+(paren
+id|ohci-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|pci_resource_start
+c_func
+(paren
+id|ohci-&gt;dev
+comma
+l_int|0
+)paren
+op_plus
+id|pci_resource_len
+c_func
+(paren
+id|ohci-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|ohci-&gt;max_packet_size
 )paren
 suffix:semicolon
 r_return
@@ -3482,13 +3613,12 @@ id|cmd
 r_case
 id|RESET_BUS
 suffix:colon
-id|PRINT
+id|DBGMSG
+c_func
 (paren
-id|KERN_DEBUG
-comma
 id|ohci-&gt;id
 comma
-l_string|&quot;Resetting bus on request%s&quot;
+l_string|&quot;Bus reset requested%s&quot;
 comma
 (paren
 (paren
@@ -4254,7 +4384,7 @@ l_int|0
 comma
 id|flags
 suffix:semicolon
-multiline_comment|/* Read the interrupt event register */
+multiline_comment|/* Read the interrupt event register. We don&squot;t clear the bus reset&n;&t; * here. We wait till we get a selfid complete interrupt and clear&n;&t; * it then, and _only_ then.  */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4282,6 +4412,13 @@ comma
 id|OHCI1394_IntEventClear
 comma
 id|event
+op_amp
+op_complement
+(paren
+id|OHCI1394_selfIDComplete
+op_or
+id|OHCI1394_busReset
+)paren
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -4339,7 +4476,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Someone wants a bus reset. Better watch what you wish for...&n;&t; *&n;&t; * XXX: Read 6.1.1 of the OHCI1394 spec. We need to take special&n;&t; * care with the BusReset Interrupt, before and until the SelfID&n;&t; * phase is over. This is why the SelfID phase sometimes fails for&n;&t; * this driver.  */
+multiline_comment|/* Someone wants a bus reset. Better watch what you wish for... */
 r_if
 c_cond
 (paren
@@ -4355,14 +4492,25 @@ op_logical_neg
 id|host-&gt;in_bus_reset
 )paren
 (brace
-id|PRINT
+id|DBGMSG
 c_func
 (paren
-id|KERN_DEBUG
-comma
 id|ohci-&gt;id
 comma
-l_string|&quot;Bus reset requested&quot;
+l_string|&quot;Bus reset requested%s&quot;
+comma
+(paren
+(paren
+id|host-&gt;attempt_root
+op_logical_or
+id|attempt_root
+)paren
+ques
+c_cond
+l_string|&quot; and attempting to become root&quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for the AT fifo to be flushed */
@@ -4389,10 +4537,10 @@ id|ohci-&gt;NumBusResets
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Mask out everything except selfid */
 id|event
 op_and_assign
-op_complement
-id|OHCI1394_busReset
+id|OHCI1394_selfIDComplete
 suffix:semicolon
 )brace
 multiline_comment|/* XXX: We need a way to also queue the OHCI1394_reqTxComplete,&n;&t; * but for right now we simply run it upon reception, to make sure&n;&t; * we get sent acks before response packets. This sucks mainly&n;&t; * because it halts the interrupt handler.  */
@@ -4990,11 +5138,9 @@ l_int|0x40000000
 op_ne
 l_int|0
 suffix:semicolon
-id|PRINT
+id|DBGMSG
 c_func
 (paren
-id|KERN_DEBUG
-comma
 id|ohci-&gt;id
 comma
 l_string|&quot;SelfID interrupt received &quot;
@@ -5103,6 +5249,35 @@ comma
 l_string|&quot;SelfID received outside of bus reset sequence&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Clear everything, it&squot;s a new day */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ohci-&gt;event_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IntEventClear
+comma
+l_int|0xffffffff
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ohci-&gt;event_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|event
 op_and_assign
 op_complement
@@ -5156,6 +5331,7 @@ op_complement
 id|OHCI1394_phyRegRcvd
 suffix:semicolon
 )brace
+multiline_comment|/* Make sure we handle everything, just in case we accidentally&n;&t; * enabled an interrupt that we didn&squot;t write a handler for.  */
 r_if
 c_cond
 (paren
@@ -5868,7 +6044,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -5923,7 +6098,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 id|split_left
 op_assign
 id|length
@@ -6328,7 +6502,7 @@ id|ack
 )paren
 suffix:semicolon
 )brace
-macro_line|#if OHCI1394_DEBUG
+macro_line|#ifdef OHCI1394_DEBUG
 r_else
 id|PRINT
 (paren
@@ -8551,14 +8725,238 @@ DECL|macro|cf_put_4bytes
 mdefine_line|#define cf_put_4bytes(cr, b1, b2, b3, b4) &bslash;&n;&t;(((cr)-&gt;data++)[0] = cpu_to_be32(((b1) &lt;&lt; 24) | ((b2) &lt;&lt; 16) | ((b3) &lt;&lt; 8) | (b4)))
 DECL|macro|cf_put_keyval
 mdefine_line|#define cf_put_keyval(cr, key, val) (((cr)-&gt;data++)[0] = cpu_to_be32((key) &lt;&lt; 24) | (val))
-DECL|macro|cf_put_crc16
-mdefine_line|#define cf_put_crc16(cr, unit) &bslash;&n;&t;(*(cr)-&gt;unitdir[unit].start = cpu_to_be32(((cr)-&gt;unitdir[unit].length &lt;&lt; 16) | &bslash;&n;&t; ohci_crc16((cr)-&gt;unitdir[unit].start + 1, (cr)-&gt;unitdir[unit].length)))
-DECL|macro|cf_unit_begin
-mdefine_line|#define cf_unit_begin(cr, unit)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((cr)-&gt;unitdir[unit].refer != NULL) {&t;&t;&bslash;&n;&t;&t;*(cr)-&gt;unitdir[unit].refer |=&t;&t;&t;&bslash;&n;&t;&t;&t;(cr)-&gt;data - (cr)-&gt;unitdir[unit].refer;&t;&bslash;&n;&t;&t;cf_put_crc16(cr, (cr)-&gt;unitdir[unit].refunit);&t;&bslash;&n;        }&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        (cr)-&gt;unitnum = (unit);&t;&t;&t;&t;&t;&bslash;&n;        (cr)-&gt;unitdir[unit].start = (cr)-&gt;data++;&t;&t;&bslash;&n;} while (0)
-DECL|macro|cf_put_refer
-mdefine_line|#define cf_put_refer(cr, key, unit)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(cr)-&gt;unitdir[unit].refer = (cr)-&gt;data;&t;&t;&bslash;&n;&t;(cr)-&gt;unitdir[unit].refunit = (cr)-&gt;unitnum;&t;&bslash;&n;&t;((cr)-&gt;data++)[0] = cpu_to_be32((key) &lt;&lt; 24);&t;&t;&bslash;&n;} while(0)
-DECL|macro|cf_unit_end
-mdefine_line|#define cf_unit_end(cr)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(cr)-&gt;unitdir[(cr)-&gt;unitnum].length = (cr)-&gt;data -&t;&bslash;&n;&t;&t;((cr)-&gt;unitdir[(cr)-&gt;unitnum].start + 1);&t;&bslash;&n;&t;cf_put_crc16((cr), (cr)-&gt;unitnum);&t;&t;&t;&bslash;&n;} while(0)
+DECL|function|cf_put_crc16
+r_static
+r_inline
+r_void
+id|cf_put_crc16
+c_func
+(paren
+r_struct
+id|config_rom_ptr
+op_star
+id|cr
+comma
+r_int
+id|unit
+)paren
+(brace
+op_star
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|start
+op_assign
+id|cpu_to_be32
+c_func
+(paren
+(paren
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|length
+op_lshift
+l_int|16
+)paren
+op_or
+id|ohci_crc16
+c_func
+(paren
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|start
+op_plus
+l_int|1
+comma
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|length
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|cf_unit_begin
+r_static
+r_inline
+r_void
+id|cf_unit_begin
+c_func
+(paren
+r_struct
+id|config_rom_ptr
+op_star
+id|cr
+comma
+r_int
+id|unit
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|refer
+op_ne
+l_int|NULL
+)paren
+(brace
+op_star
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|refer
+op_or_assign
+id|cr-&gt;data
+op_minus
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|refer
+suffix:semicolon
+id|cf_put_crc16
+c_func
+(paren
+id|cr
+comma
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|refunit
+)paren
+suffix:semicolon
+)brace
+id|cr-&gt;unitnum
+op_assign
+id|unit
+suffix:semicolon
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|start
+op_assign
+id|cr-&gt;data
+op_increment
+suffix:semicolon
+)brace
+DECL|function|cf_put_refer
+r_static
+r_inline
+r_void
+id|cf_put_refer
+c_func
+(paren
+r_struct
+id|config_rom_ptr
+op_star
+id|cr
+comma
+r_char
+id|key
+comma
+r_int
+id|unit
+)paren
+(brace
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|refer
+op_assign
+id|cr-&gt;data
+suffix:semicolon
+id|cr-&gt;unitdir
+(braket
+id|unit
+)braket
+dot
+id|refunit
+op_assign
+id|cr-&gt;unitnum
+suffix:semicolon
+(paren
+id|cr-&gt;data
+op_increment
+)paren
+(braket
+l_int|0
+)braket
+op_assign
+id|cpu_to_be32
+c_func
+(paren
+id|key
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
+)brace
+DECL|function|cf_unit_end
+r_static
+r_inline
+r_void
+id|cf_unit_end
+c_func
+(paren
+r_struct
+id|config_rom_ptr
+op_star
+id|cr
+)paren
+(brace
+id|cr-&gt;unitdir
+(braket
+id|cr-&gt;unitnum
+)braket
+dot
+id|length
+op_assign
+id|cr-&gt;data
+op_minus
+(paren
+id|cr-&gt;unitdir
+(braket
+id|cr-&gt;unitnum
+)braket
+dot
+id|start
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+id|cf_put_crc16
+c_func
+(paren
+id|cr
+comma
+id|cr-&gt;unitnum
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* End of NetBSD derived code.  */
 DECL|function|ohci_init_config_rom
 r_static
 r_void
@@ -8590,6 +8988,7 @@ id|cr
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|ohci-&gt;csr_config_rom_cpu
 comma
@@ -8706,7 +9105,7 @@ id|OHCI1394_GUIDLo
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* IEEE P1212 suggests the initial ROM header CRC should only&n;&t; * cover the header itself (and not the entire ROM). Since we use&n;&t; * this, then we can make our bus_info_len the same as the CRC&n;&t; * length.  */
+multiline_comment|/* IEEE P1212 suggests the initial ROM header CRC should only&n;&t; * cover the header itself (and not the entire ROM). Since we do&n;&t; * this, then we can make our bus_info_len the same as the CRC&n;&t; * length.  */
 id|ohci-&gt;csr_config_rom_cpu
 (braket
 l_int|0
@@ -9382,7 +9781,7 @@ suffix:semicolon
 id|mdelay
 c_func
 (paren
-l_int|10
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -9445,87 +9844,43 @@ r_return
 id|data
 suffix:semicolon
 )brace
-DECL|function|get_ohci_template
-r_struct
-id|hpsb_host_template
-op_star
-id|get_ohci_template
-c_func
-(paren
-r_void
-)paren
-(brace
+DECL|variable|ohci_template
 r_static
 r_struct
 id|hpsb_host_template
-id|tmpl
-suffix:semicolon
-r_static
-r_int
-id|initialized
+id|ohci_template
 op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|initialized
-)paren
 (brace
-id|memset
-(paren
-op_amp
-id|tmpl
+id|name
+suffix:colon
+id|OHCI1394_DRIVER_NAME
 comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|hpsb_host_template
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize by field names so that a template structure&n;&t;&t; * reorganization does not influence this code. */
-id|tmpl.name
-op_assign
-l_string|&quot;ohci1394&quot;
-suffix:semicolon
-id|tmpl.initialize_host
-op_assign
+id|initialize_host
+suffix:colon
 id|ohci_initialize
-suffix:semicolon
-id|tmpl.release_host
-op_assign
+comma
+id|release_host
+suffix:colon
 id|ohci_remove
-suffix:semicolon
-id|tmpl.get_rom
-op_assign
+comma
+id|get_rom
+suffix:colon
 id|get_ohci_rom
-suffix:semicolon
-id|tmpl.transmit_packet
-op_assign
+comma
+id|transmit_packet
+suffix:colon
 id|ohci_transmit
-suffix:semicolon
-id|tmpl.devctl
-op_assign
+comma
+id|devctl
+suffix:colon
 id|ohci_devctl
-suffix:semicolon
-id|tmpl.hw_csr_reg
-op_assign
+comma
+id|hw_csr_reg
+suffix:colon
 id|ohci_hw_csr_reg
-suffix:semicolon
-id|initialized
-op_assign
-l_int|1
-suffix:semicolon
+comma
 )brace
-r_return
-op_amp
-id|tmpl
 suffix:semicolon
-)brace
 DECL|function|ohci1394_add_one
 r_static
 r_int
@@ -9624,10 +9979,8 @@ op_assign
 id|hpsb_get_host
 c_func
 (paren
-id|get_ohci_template
-c_func
-(paren
-)paren
+op_amp
+id|ohci_template
 comma
 r_sizeof
 (paren
@@ -9694,16 +10047,6 @@ c_func
 id|dev
 comma
 id|ohci
-)paren
-suffix:semicolon
-id|PRINT
-c_func
-(paren
-id|KERN_INFO
-comma
-id|ohci-&gt;id
-comma
-l_string|&quot;OHCI (PCI) IEEE-1394 Controller&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* We don&squot;t want hardware swapping */
@@ -10132,7 +10475,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|request_irq
 c_func
 (paren
@@ -10147,31 +10489,12 @@ comma
 id|ohci
 )paren
 )paren
-id|PRINT
-c_func
-(paren
-id|KERN_DEBUG
-comma
-id|ohci-&gt;id
-comma
-l_string|&quot;Allocated interrupt %d&quot;
-comma
-id|dev-&gt;irq
-)paren
-suffix:semicolon
-r_else
 id|FAIL
 c_func
 (paren
 l_string|&quot;Failed to allocate shared interrupt %d&quot;
 comma
 id|dev-&gt;irq
-)paren
-suffix:semicolon
-id|ohci_init_config_rom
-c_func
-(paren
-id|ohci
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the highlevel this host is ready */
@@ -10198,7 +10521,10 @@ op_star
 id|ohci
 )paren
 (brace
-multiline_comment|/* Reset the board properly before leaving */
+id|quadlet_t
+id|buf
+suffix:semicolon
+multiline_comment|/* Soft reset before we start */
 id|ohci_soft_reset
 c_func
 (paren
@@ -10249,6 +10575,25 @@ c_func
 (paren
 op_amp
 id|ohci-&gt;it_context
+)paren
+suffix:semicolon
+multiline_comment|/* Disable all interrupts */
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_IntMaskClear
+comma
+l_int|0x80000000
+)paren
+suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|ohci-&gt;dev-&gt;irq
+comma
+id|ohci
 )paren
 suffix:semicolon
 multiline_comment|/* Free self-id buffer */
@@ -10303,13 +10648,45 @@ l_string|&quot;consistent csr_config_rom&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Free the IRQ */
-id|free_irq
+multiline_comment|/* Disable our bus options */
+id|buf
+op_assign
+id|reg_read
 c_func
 (paren
-id|ohci-&gt;dev-&gt;irq
-comma
 id|ohci
+comma
+id|OHCI1394_BusOptions
+)paren
+suffix:semicolon
+id|buf
+op_and_assign
+op_complement
+l_int|0xf8000000
+suffix:semicolon
+id|buf
+op_or_assign
+l_int|0x00ff0000
+suffix:semicolon
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_BusOptions
+comma
+id|buf
+)paren
+suffix:semicolon
+multiline_comment|/* Clear LinkEnable and LPS */
+id|reg_write
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_HCControlClear
+comma
+l_int|0x000a0000
 )paren
 suffix:semicolon
 r_if
@@ -11035,7 +11412,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;ohci1394&quot;
+id|OHCI1394_DRIVER_NAME
 comma
 id|id_table
 suffix:colon
@@ -11063,10 +11440,8 @@ r_void
 id|hpsb_unregister_lowlevel
 c_func
 (paren
-id|get_ohci_template
-c_func
-(paren
-)paren
+op_amp
+id|ohci_template
 )paren
 suffix:semicolon
 id|pci_unregister_driver
@@ -11096,10 +11471,8 @@ c_cond
 id|hpsb_register_lowlevel
 c_func
 (paren
-id|get_ohci_template
-c_func
-(paren
-)paren
+op_amp
+id|ohci_template
 )paren
 )paren
 (brace
@@ -11142,10 +11515,8 @@ suffix:semicolon
 id|hpsb_unregister_lowlevel
 c_func
 (paren
-id|get_ohci_template
-c_func
-(paren
-)paren
+op_amp
+id|ohci_template
 )paren
 suffix:semicolon
 r_return

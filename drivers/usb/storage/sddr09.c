@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.14 2000/11/21 02:58:26 mdharm Exp $&n; *&n; * SDDR09 driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Robert Baruch (autophile@dol.net)&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands. This&n; * driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.18 2001/06/11 02:54:25 mdharm Exp $&n; *&n; * SDDR09 driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands. This&n; * driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
@@ -2090,6 +2090,18 @@ suffix:semicolon
 r_return
 l_int|0x04000000
 suffix:semicolon
+r_case
+l_int|0x79
+suffix:colon
+singleline_comment|// 128MB
+op_star
+id|blocksize
+op_assign
+l_int|32
+suffix:semicolon
+r_return
+l_int|0x08000000
+suffix:semicolon
 r_default
 suffix:colon
 singleline_comment|// unknown
@@ -2757,8 +2769,49 @@ l_int|5
 op_ne
 l_int|0xFF
 )paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;PBA %04X has no logical mapping: reserved area = &quot;
+l_string|&quot;%02X%02X%02X%02X data status %02X block status %02X&bslash;n&quot;
+comma
+id|i
+comma
+id|ptr
+(braket
+l_int|0
+)braket
+comma
+id|ptr
+(braket
+l_int|1
+)braket
+comma
+id|ptr
+(braket
+l_int|2
+)braket
+comma
+id|ptr
+(braket
+l_int|3
+)braket
+comma
+id|ptr
+(braket
+l_int|4
+)braket
+comma
+id|ptr
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2773,8 +2826,38 @@ l_int|4
 op_ne
 l_int|0x01
 )paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;PBA %04X has invalid address field %02X%02X/%02X%02X&bslash;n&quot;
+comma
+id|i
+comma
+id|ptr
+(braket
+l_int|6
+)braket
+comma
+id|ptr
+(braket
+l_int|7
+)braket
+comma
+id|ptr
+(braket
+l_int|11
+)braket
+comma
+id|ptr
+(braket
+l_int|12
+)braket
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 multiline_comment|/* ensure even parity */
 id|lba
 op_assign
@@ -2860,14 +2943,15 @@ l_int|0x07FF
 op_rshift
 l_int|1
 suffix:semicolon
-multiline_comment|/* Every 1024 physical blocks, the LBA numbers&n;&t;&t;&t; * go back to zero, but are within a higher&n;&t;&t;&t; * block of LBA&squot;s. In other words, in blocks&n;&t;&t;&t; * 1024-2047 you will find LBA 0-1023 which are&n;&t;&t;&t; * really LBA 1024-2047.&n;&t;&t;&t; */
+multiline_comment|/* Every 1024 physical blocks (&quot;zone&quot;), the LBA numbers&n;&t;&t;&t; * go back to zero, but are within a higher&n;&t;&t;&t; * block of LBA&squot;s. Also, there is a maximum of&n;&t;&t;&t; * 1000 LBA&squot;s per zone. In other words, in PBA&n;&t;&t;&t; * 1024-2047 you will find LBA 0-999 which are&n;&t;&t;&t; * really LBA 1000-1999. Yes, this wastes 24&n;&t;&t;&t; * physical blocks per zone. Go figure.&n;&t;&t;&t; */
 id|lba
 op_add_assign
+l_int|1000
+op_star
 (paren
 id|i
-op_amp
-op_complement
-l_int|0x3FF
+op_div
+l_int|0x400
 )paren
 suffix:semicolon
 r_if
@@ -2897,6 +2981,16 @@ c_cond
 id|lba
 OL
 l_int|0x10
+op_logical_or
+(paren
+id|lba
+op_ge
+l_int|0x3E0
+op_logical_and
+id|lba
+OL
+l_int|0x3EF
+)paren
 )paren
 id|US_DEBUGP
 c_func
@@ -3069,7 +3163,7 @@ r_int
 r_char
 id|mode_page_01
 (braket
-l_int|4
+l_int|16
 )braket
 op_assign
 (brace
@@ -3079,6 +3173,30 @@ comma
 l_int|0x00
 comma
 l_int|0x80
+comma
+l_int|0x00
+comma
+l_int|0x01
+comma
+l_int|0x0A
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
 comma
 l_int|0x00
 )brace
@@ -3457,6 +3575,12 @@ op_eq
 l_int|0x01
 )paren
 (brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;SDDR09: Dummy up request for mode page 1&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3466,7 +3590,66 @@ l_int|NULL
 op_logical_or
 id|srb-&gt;request_bufflen
 OL
-l_int|4
+r_sizeof
+(paren
+id|mode_page_01
+)paren
+)paren
+r_return
+id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|ptr
+comma
+id|mode_page_01
+comma
+r_sizeof
+(paren
+id|mode_page_01
+)paren
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_TRANSPORT_GOOD
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|srb-&gt;cmnd
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x3F
+)paren
+op_eq
+l_int|0x3F
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;SDDR09: Dummy up request for all mode pages&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+op_eq
+l_int|NULL
+op_logical_or
+id|srb-&gt;request_bufflen
+OL
+r_sizeof
+(paren
+id|mode_page_01
+)paren
 )paren
 r_return
 id|USB_STOR_TRANSPORT_ERROR
@@ -3491,6 +3674,42 @@ suffix:semicolon
 singleline_comment|// FIXME: sense buffer?
 r_return
 id|USB_STOR_TRANSPORT_ERROR
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|srb-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|ALLOW_MEDIUM_REMOVAL
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;SDDR09: %s medium removal. Not that I can do&quot;
+l_string|&quot; anything about it...&bslash;n&quot;
+comma
+(paren
+id|srb-&gt;cmnd
+(braket
+l_int|4
+)braket
+op_amp
+l_int|0x03
+)paren
+ques
+c_cond
+l_string|&quot;Prevent&quot;
+suffix:colon
+l_string|&quot;Allow&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
 r_if
@@ -3586,6 +3805,27 @@ id|info-&gt;blockshift
 )paren
 )paren
 (brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Error: Requested LBA %04X exceeds maximum &quot;
+l_string|&quot;block %04X&bslash;n&quot;
+comma
+id|lba
+comma
+(paren
+id|info-&gt;capacity
+op_rshift
+(paren
+id|info-&gt;pageshift
+op_plus
+id|info-&gt;blockshift
+)paren
+)paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 singleline_comment|// FIXME: sense buffer?
 r_return
 id|USB_STOR_TRANSPORT_ERROR
@@ -3617,6 +3857,15 @@ id|lba
 )paren
 (brace
 singleline_comment|// FIXME: sense buffer?
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Error: Requested LBA %04X has no physical block &quot;
+l_string|&quot;mapping.&bslash;n&quot;
+comma
+id|lba
+)paren
+suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon

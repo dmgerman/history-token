@@ -550,16 +550,6 @@ id|hpsb_host
 op_star
 id|host
 suffix:semicolon
-multiline_comment|/* PCI cards should register one host at a time */
-r_if
-c_cond
-(paren
-id|tmpl-&gt;detect_hosts
-op_eq
-l_int|NULL
-)paren
-r_return
-suffix:semicolon
 id|count
 op_assign
 id|tmpl
@@ -988,6 +978,15 @@ c_func
 id|tmpl
 )paren
 suffix:semicolon
+multiline_comment|/* PCI cards should be smart and use the PCI detection layer, and&n;&t; * not this one shot deal. detect_hosts() will be obsoleted soon. */
+r_if
+c_cond
+(paren
+id|tmpl-&gt;detect_hosts
+op_ne
+l_int|NULL
+)paren
+(brace
 id|HPSB_DEBUG
 c_func
 (paren
@@ -1002,6 +1001,7 @@ c_func
 id|tmpl
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

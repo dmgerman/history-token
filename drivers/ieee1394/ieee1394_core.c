@@ -1335,7 +1335,8 @@ c_cond
 id|host-&gt;in_bus_reset
 )paren
 (brace
-id|HPSB_DEBUG
+macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
+id|HPSB_INFO
 c_func
 (paren
 l_string|&quot;Including SelfID 0x%x&quot;
@@ -1343,6 +1344,7 @@ comma
 id|sid
 )paren
 suffix:semicolon
+macro_line|#endif
 id|host-&gt;topology_map
 (braket
 id|host-&gt;selfid_count
@@ -1354,19 +1356,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* FIXME - info on which host */
 id|HPSB_NOTICE
 c_func
 (paren
-l_string|&quot;Spurious SelfID packet (0x%08x) received from %s&quot;
+l_string|&quot;Spurious SelfID packet (0x%08x) received from bus %d&quot;
 comma
 id|sid
 comma
-id|host
-op_member_access_from_pointer
-r_template
-op_member_access_from_pointer
-id|name
+(paren
+id|host-&gt;node_id
+op_amp
+id|BUS_MASK
+)paren
+op_rshift
+l_int|6
 )paren
 suffix:semicolon
 )brace

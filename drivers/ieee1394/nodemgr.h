@@ -26,7 +26,7 @@ multiline_comment|/*&n; * If the handle refers to a local host, this function wi
 r_struct
 id|hpsb_host
 op_star
-id|hpsb_get_host_by_ge
+id|hpsb_get_host_by_ne
 c_func
 (paren
 id|hpsb_guid_t

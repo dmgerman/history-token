@@ -379,11 +379,11 @@ c_func
 id|hpsb_guid_get_handle
 )paren
 suffix:semicolon
-DECL|variable|hpsb_get_host_by_ge
+DECL|variable|hpsb_get_host_by_ne
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_get_host_by_ge
+id|hpsb_get_host_by_ne
 )paren
 suffix:semicolon
 DECL|variable|hpsb_guid_fill_packet

@@ -4140,8 +4140,6 @@ r_struct
 id|ti_ohci
 op_star
 id|ohci
-op_assign
-id|video-&gt;ohci
 suffix:semicolon
 r_int
 r_int
@@ -4215,6 +4213,10 @@ id|inode-&gt;i_rdev
 id|video
 op_assign
 id|p
+suffix:semicolon
+id|ohci
+op_assign
+id|video-&gt;ohci
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8090,10 +8092,11 @@ c_func
 l_string|&quot;driver for digital video on OHCI board&quot;
 )paren
 suffix:semicolon
+DECL|variable|VIDEO1394_DRIVER_NAME
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
-l_string|&quot;video1394&quot;
+id|VIDEO1394_DRIVER_NAME
 )paren
 suffix:semicolon
 DECL|function|video1394_exit_module

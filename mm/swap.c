@@ -92,48 +92,6 @@ comma
 multiline_comment|/* do swap I/O in clusters of this size */
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * age_page_{up,down} -&t;page aging helper functions&n; * @page - the page we want to age&n; * @nolock - are we already holding the pagelist_lru_lock?&n; *&n; * If the page is on one of the lists (active, inactive_dirty or&n; * inactive_clean), we will grab the pagelist_lru_lock as needed.&n; * If you&squot;re already holding the lock, call this function with the&n; * nolock argument non-zero.&n; */
-DECL|function|age_page_up_nolock
-r_void
-id|age_page_up_nolock
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-multiline_comment|/*&n;&t; * We&squot;re dealing with an inactive page, move the page&n;&t; * to the active list.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page-&gt;age
-)paren
-id|activate_page_nolock
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* The actual page aging bit */
-id|page-&gt;age
-op_add_assign
-id|PAGE_AGE_ADV
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page-&gt;age
-OG
-id|PAGE_AGE_MAX
-)paren
-id|page-&gt;age
-op_assign
-id|PAGE_AGE_MAX
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * We use this (minimal) function in the case where we&n; * know we can&squot;t deactivate the page (yet).&n; */
 DECL|function|age_page_down_ageonly
 r_void
@@ -179,47 +137,6 @@ c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-)brace
-DECL|function|age_page_up
-r_void
-id|age_page_up
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-(brace
-multiline_comment|/*&n;&t; * We&squot;re dealing with an inactive page, move the page&n;&t; * to the active list.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page-&gt;age
-)paren
-id|activate_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* The actual page aging bit */
-id|page-&gt;age
-op_add_assign
-id|PAGE_AGE_ADV
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page-&gt;age
-OG
-id|PAGE_AGE_MAX
-)paren
-id|page-&gt;age
-op_assign
-id|PAGE_AGE_MAX
 suffix:semicolon
 )brace
 DECL|function|age_page_down

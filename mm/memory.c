@@ -2486,23 +2486,24 @@ id|j
 op_decrement
 )paren
 (brace
+r_struct
 id|page
+op_star
+id|tmp
 op_assign
 op_star
-(paren
 op_decrement
 id|ppage
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|page
+id|tmp
 )paren
 id|UnlockPage
 c_func
 (paren
-id|page
+id|tmp
 )paren
 suffix:semicolon
 )brace
@@ -3682,11 +3683,6 @@ comma
 r_struct
 id|page
 op_star
-id|old_page
-comma
-r_struct
-id|page
-op_star
 id|new_page
 comma
 r_int
@@ -3925,6 +3921,12 @@ suffix:semicolon
 multiline_comment|/* Minor fault */
 )brace
 multiline_comment|/*&n;&t; * Ok, we need to copy. Oh, well..&n;&t; */
+id|page_cache_get
+c_func
+(paren
+id|old_page
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -3957,6 +3959,12 @@ comma
 id|new_page
 comma
 id|address
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|old_page
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Re-check the pte - we dropped the lock&n;&t; */
@@ -3996,8 +4004,6 @@ id|break_cow
 c_func
 (paren
 id|vma
-comma
-id|old_page
 comma
 id|new_page
 comma
@@ -4044,6 +4050,12 @@ l_int|1
 suffix:semicolon
 id|no_mem
 suffix:colon
+id|page_cache_release
+c_func
+(paren
+id|old_page
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
