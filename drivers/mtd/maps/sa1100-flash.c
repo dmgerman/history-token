@@ -4215,6 +4215,7 @@ c_func
 id|mtd
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_CONCAT
 r_if
 c_cond
 (paren
@@ -4233,6 +4234,7 @@ c_func
 id|mtd
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
