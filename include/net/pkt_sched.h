@@ -526,8 +526,8 @@ DECL|macro|TCQ_F_BUILTIN
 mdefine_line|#define TCQ_F_BUILTIN&t;1
 DECL|macro|TCQ_F_THROTTLED
 mdefine_line|#define TCQ_F_THROTTLED&t;2
-DECL|macro|TCQ_F_INGRES
-mdefine_line|#define TCQ_F_INGRES&t;4
+DECL|macro|TCQ_F_INGRESS
+mdefine_line|#define TCQ_F_INGRESS&t;4
 DECL|member|padded
 r_int
 id|padded
