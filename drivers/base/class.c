@@ -1486,12 +1486,6 @@ id|parent-&gt;subsys.rwsem
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|class_dev-&gt;dev
-)paren
-(brace
 id|class_device_dev_unlink
 c_func
 (paren
@@ -1504,13 +1498,6 @@ c_func
 id|class_dev
 )paren
 suffix:semicolon
-id|put_device
-c_func
-(paren
-id|class_dev-&gt;dev
-)paren
-suffix:semicolon
-)brace
 id|kobject_del
 c_func
 (paren
