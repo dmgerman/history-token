@@ -1937,7 +1937,7 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_5 */
-multiline_comment|/*&n; * DASD_3990_HANDLE_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Enviromental data present&squot;.&n; *   Does a analysis of the sense data (message Format)&n; *   and prints the error messages.&n; *&n; * PARAMETER&n; *   sense              current sense data&n; *   &n; * RETURN VALUES&n; *   void&n; */
+multiline_comment|/*&n; * DASD_3990_HANDLE_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Environmental data present&squot;.&n; *   Does a analysis of the sense data (message Format)&n; *   and prints the error messages.&n; *&n; * PARAMETER&n; *   sense              current sense data&n; *   &n; * RETURN VALUES&n; *   void&n; */
 r_void
 DECL|function|dasd_3990_handle_env_data
 id|dasd_3990_handle_env_data

@@ -5369,4 +5369,10 @@ id|saved_flags
 suffix:semicolon
 )brace
 multiline_comment|/* end of pf.c */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -70,7 +70,7 @@ mdefine_line|#define CONF_TIMEOUT_MULT&t;*7/4&t;/* Rate of timeout growth */
 DECL|macro|CONF_TIMEOUT_MAX
 mdefine_line|#define CONF_TIMEOUT_MAX&t;(HZ*30)&t;/* Maximum allowed timeout */
 multiline_comment|/*&n; * Public IP configuration&n; */
-multiline_comment|/* This is used by platforms which might be able to set the ipconfig&n; * variabled using firmware environment vars.  If this is set, it will&n; * ignore such firmware variables.&n; */
+multiline_comment|/* This is used by platforms which might be able to set the ipconfig&n; * variables using firmware environment vars.  If this is set, it will&n; * ignore such firmware variables.&n; */
 DECL|variable|__initdata
 r_int
 id|ic_set_manually

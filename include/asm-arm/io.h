@@ -144,7 +144,7 @@ DECL|macro|__raw_base_readl
 mdefine_line|#define __raw_base_readl(base,off)&t;__arch_base_getl(base,off)
 multiline_comment|/*&n; * Now, pick up the machine-defined IO definitions&n; */
 macro_line|#include &lt;asm/arch/io.h&gt;
-multiline_comment|/*&n; * IO definitions.  We define {out,in,outs,ins}[bwl] if __io is&n; * defined by the machine.  Otherwise, these definitions are left&n; * for the machine specific header files to pick up.&n; */
+multiline_comment|/*&n; * IO definitions.  We define {out,in,outs,ins}[bwl] if __io is defined&n; * by the machine.  Otherwise, these definitions are left for the machine&n; * specific header files to pick up.&n; *&n; * Note that we prevent GCC re-ordering or caching values in expressions&n; * by introducing sequence points into the in*() definitions.  Note that&n; * __raw_* do not guarantee this behaviour.&n; */
 macro_line|#ifdef __io
 DECL|macro|outb
 mdefine_line|#define outb(v,p)&t;&t;&t;__raw_writeb(v,__io(p))
@@ -153,11 +153,11 @@ mdefine_line|#define outw(v,p)&t;&t;&t;__raw_writew(v,__io(p))
 DECL|macro|outl
 mdefine_line|#define outl(v,p)&t;&t;&t;__raw_writel(v,__io(p))
 DECL|macro|inb
-mdefine_line|#define inb(p)&t;&t;&t;&t;__raw_readb(__io(p))
+mdefine_line|#define inb(p)&t;&t;({ unsigned int __v = __raw_readb(__io(p)); __v; })
 DECL|macro|inw
-mdefine_line|#define inw(p)&t;&t;&t;&t;__raw_readw(__io(p))
+mdefine_line|#define inw(p)&t;&t;({ unsigned int __v = __raw_readw(__io(p)); __v; })
 DECL|macro|inl
-mdefine_line|#define inl(p)&t;&t;&t;&t;__raw_readl(__io(p))
+mdefine_line|#define inl(p)&t;&t;({ unsigned int __v = __raw_readl(__io(p)); __v; })
 DECL|macro|outsb
 mdefine_line|#define outsb(p,d,l)&t;&t;&t;__raw_writesb(__io(p),d,l)
 DECL|macro|outsw
@@ -344,11 +344,11 @@ suffix:semicolon
 multiline_comment|/*&n; * If this architecture has PCI memory IO, then define the read/write&n; * macros.  These should only be used with the cookie passed from&n; * ioremap.&n; */
 macro_line|#ifdef __mem_pci
 DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;&t;__raw_readb(__mem_pci(addr))
+mdefine_line|#define readb(addr) ({ unsigned int __v = __raw_readb(__mem_pci(addr)); __v; })
 DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;&t;__raw_readw(__mem_pci(addr))
+mdefine_line|#define readw(addr) ({ unsigned int __v = __raw_readw(__mem_pci(addr)); __v; })
 DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;&t;__raw_readl(__mem_pci(addr))
+mdefine_line|#define readl(addr) ({ unsigned int __v = __raw_readl(__mem_pci(addr)); __v; })
 DECL|macro|writeb
 mdefine_line|#define writeb(val,addr)&t;&t;__raw_writeb(val,__mem_pci(addr))
 DECL|macro|writew

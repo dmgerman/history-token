@@ -372,21 +372,22 @@ id|error_code
 )paren
 (brace
 r_int
-r_int
-id|flags
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irq_enter
+c_func
+(paren
+id|cpu
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*&n;         * reset timer to 10ms minus time already elapsed&n;         * since timer-interrupt pending&n;         */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -484,10 +485,12 @@ id|xtime_lock
 suffix:semicolon
 macro_line|#endif
 )brace
-id|restore_flags
+id|irq_exit
 c_func
 (paren
-id|flags
+id|cpu
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -707,6 +710,11 @@ comma
 op_amp
 id|xtime
 )paren
+suffix:semicolon
+multiline_comment|/* Set do_get_fast_time function pointer.  */
+id|do_get_fast_time
+op_assign
+id|do_gettimeofday
 suffix:semicolon
 )brace
 eof

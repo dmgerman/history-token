@@ -1,6 +1,7 @@
 macro_line|#ifndef __ARM_A_OUT_H__
 DECL|macro|__ARM_A_OUT_H__
 mdefine_line|#define __ARM_A_OUT_H__
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|exec
 r_struct

@@ -637,9 +637,7 @@ op_star
 id|dma
 )paren
 (brace
-r_int
-id|dmac_found
-suffix:semicolon
+multiline_comment|/*&n;&t; * Try to autodetect presence of an ISA DMA controller.&n;&t; * We do some minimal initialisation, and check that&n;&t; * channel 0&squot;s DMA address registers are writeable.&n;&t; */
 id|outb
 c_func
 (paren
@@ -656,6 +654,7 @@ comma
 l_int|0xda
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Write high and low address, and then read them back&n;&t; * in the same order.&n;&t; */
 id|outb
 c_func
 (paren
@@ -672,12 +671,13 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|dmac_found
-op_assign
+r_if
+c_cond
+(paren
 id|inb
 c_func
 (paren
-l_int|0x00
+l_int|0
 )paren
 op_eq
 l_int|0x55
@@ -685,15 +685,10 @@ op_logical_and
 id|inb
 c_func
 (paren
-l_int|0x00
+l_int|0
 )paren
 op_eq
 l_int|0xaa
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dmac_found
 )paren
 (brace
 r_int

@@ -21,18 +21,15 @@ DECL|member|uc_stack
 id|stack_t
 id|uc_stack
 suffix:semicolon
+DECL|member|uc_mcontext
+id|_sigregs
+id|uc_mcontext
+suffix:semicolon
 DECL|member|uc_sigmask
 id|sigset_t
 id|uc_sigmask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
-DECL|member|sc
-r_struct
-id|sigcontext
-op_star
-id|sc
-suffix:semicolon
-multiline_comment|/* Added for pthread support */
 )brace
 suffix:semicolon
 macro_line|#endif /* !_ASM_S390_UCONTEXT_H */

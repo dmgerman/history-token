@@ -4697,17 +4697,11 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;    write_wait=%.8x read_wait=%.8x&bslash;n&quot;
+l_string|&quot;    write_wait=%p read_wait=%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 op_amp
 id|tty-&gt;write_wait
 comma
-(paren
-r_int
-)paren
 op_amp
 id|tty-&gt;read_wait
 )paren

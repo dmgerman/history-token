@@ -7,10 +7,6 @@ mdefine_line|#define AIC7XXX_STRICT_PCI_SETUP
 multiline_comment|/*&n; * AIC7XXX_VERBOSE_DEBUGGING&n; *   This option enables a lot of extra printk();s in the code, surrounded&n; *   by if (aic7xxx_verbose ...) statements.  Executing all of those if&n; *   statements and the extra checks can get to where it actually does have&n; *   an impact on CPU usage and such, as well as code size.  Disabling this&n; *   define will keep some of those from becoming part of the code.&n; *&n; *   NOTE:  Currently, this option has no real effect, I will be adding the&n; *   various #ifdef&squot;s in the code later when I&squot;ve decided a section is&n; *   complete and no longer needs debugging.  OK...a lot of things are now&n; *   surrounded by this define, so turning this off does have an impact.&n; */
 multiline_comment|/*&n; * #define AIC7XXX_VERBOSE_DEBUGGING&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#if defined(PCMCIA)
-DECL|macro|MODULE
-macro_line|#  undef MODULE
-macro_line|#endif
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/cpu-sa1110.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; *  $Id: cpu-sa1110.c,v 1.3 2001/08/12 15:41:53 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Note: there are two erratas that apply to the SA1110 here:&n; *  7 - SDRAM auto-power-up failure (rev A0)&n; * 13 - Corruption of internal register reads/writes following&n; *      SDRAM reads (rev A0, B0, B1)&n; *&n; * We ignore rev. A0 and B0 devices; I don&squot;t think they&squot;re worth supporting.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-sa1100/cpu-sa1110.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; *  $Id: cpu-sa1110.c,v 1.5 2001/09/10 13:25:58 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Note: there are two erratas that apply to the SA1110 here:&n; *  7 - SDRAM auto-power-up failure (rev A0)&n; * 13 - Corruption of internal register reads/writes following&n; *      SDRAM reads (rev A0, B0, B1)&n; *&n; * We ignore rev. A0 and B0 devices; I don&squot;t think they&squot;re worth supporting.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -930,12 +930,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-r_int
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -960,7 +954,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;SDRAM: tck: %d trcd: %d trp: %d&quot;
-l_string|&quot; twr: %d refresh: %d cas_latency: %d&quot;
+l_string|&quot; twr: %d refresh: %d cas_latency: %d&bslash;n&quot;
 comma
 id|sdram-&gt;tck
 comma

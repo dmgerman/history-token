@@ -748,16 +748,15 @@ DECL|member|uc_stack
 id|stack_t32
 id|uc_stack
 suffix:semicolon
+DECL|member|uc_mcontext
+id|_sigregs32
+id|uc_mcontext
+suffix:semicolon
 DECL|member|uc_sigmask
 id|sigset_t32
 id|uc_sigmask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
-DECL|member|sc
-id|__u32
-id|sc
-suffix:semicolon
-multiline_comment|/* pointer */
 )brace
 suffix:semicolon
 macro_line|#endif /* !CONFIG_S390_SUPPORT */

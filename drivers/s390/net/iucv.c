@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -18,10 +18,6 @@ macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
-macro_line|#ifndef min
-DECL|macro|min
-mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
-macro_line|#endif
 multiline_comment|/* FLAGS:&n; * All flags are defined in the field IPFLAGS1 of each function&n; * and can be found in CP Programming Services.&n; * IPSRCCLS - Indicates you have specified a source class&n; * IPFGMCL  - Indicates you have specified a target class&n; * IPFGPID  - Indicates you have specified a pathid&n; * IPFGMID  - Indicates you have specified a message ID&n; * IPANSLST - Indicates that you are using an address list for&n; *            reply data&n; * IPBUFLST - Indicates that you are using an address list for&n; *            message data&n; */
 DECL|macro|IPSRCCLS
 mdefine_line|#define IPSRCCLS &t;0x01
@@ -3410,6 +3406,9 @@ op_assign
 (paren
 id|__u32
 )paren
+(paren
+id|addr_t
+)paren
 id|buffer
 suffix:semicolon
 id|parm-&gt;ipbfln1f
@@ -3542,8 +3541,11 @@ r_else
 (brace
 id|moved
 op_assign
-id|min
+id|min_t
 (paren
+r_int
+r_int
+comma
 id|buflen
 comma
 l_int|8
@@ -3867,8 +3869,11 @@ id|buflen
 (brace
 id|dyn_len
 op_assign
-id|min
+id|min_t
 (paren
+r_int
+r_int
+comma
 (paren
 id|buffer
 op_plus

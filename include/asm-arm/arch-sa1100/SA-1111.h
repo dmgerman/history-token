@@ -17,19 +17,19 @@ multiline_comment|/*&n; * Don&squot;t ask the (SAC) DMA engines to move less tha
 DECL|macro|SA1111_SAC_DMA_MIN_XFER
 mdefine_line|#define SA1111_SAC_DMA_MIN_XFER&t;(0x800)
 multiline_comment|/* System Bus Interface (SBI)&n; *&n; * Registers&n; *    SKCR&t;Control Register&n; *    SMCR&t;Shared Memory Controller Register&n; *    SKID&t;ID Register&n; */
-DECL|macro|_SKCR
-mdefine_line|#define _SKCR&t;&t;_SA1111( 0x0000 )
-DECL|macro|_SMCR
-mdefine_line|#define _SMCR&t;&t;_SA1111( 0x0004 )
-DECL|macro|_SKID
-mdefine_line|#define _SKID&t;&t;_SA1111( 0x0008 )
+DECL|macro|_SBI_SKCR
+mdefine_line|#define _SBI_SKCR&t;_SA1111( 0x0000 )
+DECL|macro|_SBI_SMCR
+mdefine_line|#define _SBI_SMCR&t;_SA1111( 0x0004 )
+DECL|macro|_SBI_SKID
+mdefine_line|#define _SBI_SKID&t;_SA1111( 0x0008 )
 macro_line|#if LANGUAGE == C
-DECL|macro|SKCR
-mdefine_line|#define SKCR&t;&t;(*((volatile Word *) SA1111_p2v (_SKCR)))
-DECL|macro|SMCR
-mdefine_line|#define SMCR&t;&t;(*((volatile Word *) SA1111_p2v (_SMCR)))
-DECL|macro|SKID
-mdefine_line|#define SKID&t;&t;(*((volatile Word *) SA1111_p2v (_SKID)))
+DECL|macro|SBI_SKCR
+mdefine_line|#define SBI_SKCR&t;(*((volatile Word *) SA1111_p2v (_SBI_SKCR)))
+DECL|macro|SBI_SMCR
+mdefine_line|#define SBI_SMCR&t;(*((volatile Word *) SA1111_p2v (_SBI_SMCR)))
+DECL|macro|SBI_SKID
+mdefine_line|#define SBI_SKID&t;(*((volatile Word *) SA1111_p2v (_SBI_SKID)))
 macro_line|#endif  /* LANGUAGE == C */
 DECL|macro|SKCR_PLL_BYPASS
 mdefine_line|#define SKCR_PLL_BYPASS&t;(1&lt;&lt;0)
@@ -55,6 +55,7 @@ DECL|macro|SKCR_PLLTSTEN
 mdefine_line|#define SKCR_PLLTSTEN&t;(1&lt;&lt;10)
 DECL|macro|SKCR_USBIOTSTEN
 mdefine_line|#define SKCR_USBIOTSTEN&t;(1&lt;&lt;11)
+multiline_comment|/*&n; * Don&squot;t believe the specs!  Take them, throw them outside.  Leave them&n; * there for a week.  Spit on them.  Walk on them.  Stamp on them.&n; * Pour gasoline over them and finally burn them.  Now think about coding.&n; *  - The October 1999 errata (278260-007) says its bit 13, 1 to enable.&n; *  - The Feb 2001 errata (278260-010) says that the previous errata&n; *    (278260-009) is wrong, and its bit actually 12, fixed in spec&n; *    278242-003.&n; *  - The SA1111 manual (278242) says bit 12, but 0 to enable.&n; *  - Reality is bit 13, 1 to enable.&n; *      -- rmk&n; */
 DECL|macro|SKCR_OE_EN
 mdefine_line|#define SKCR_OE_EN&t;(1&lt;&lt;13)
 DECL|macro|SMCR_DTIM
@@ -136,6 +137,43 @@ DECL|macro|SKPCR_DCLKEN
 mdefine_line|#define SKPCR_DCLKEN&t;(1&lt;&lt;7)
 DECL|macro|SKPCR_PWMCLKEN
 mdefine_line|#define SKPCR_PWMCLKEN&t;(1&lt;&lt;8)
+multiline_comment|/*&n; * USB Host controller&n; */
+DECL|macro|_USB_OHCI_OP_BASE
+mdefine_line|#define _USB_OHCI_OP_BASE&t;_SA1111( 0x400 )
+DECL|macro|_USB_STATUS
+mdefine_line|#define _USB_STATUS&t;&t;_SA1111( 0x518 )
+DECL|macro|_USB_RESET
+mdefine_line|#define _USB_RESET&t;&t;_SA1111( 0x51c )
+DECL|macro|_USB_INTERRUPTEST
+mdefine_line|#define _USB_INTERRUPTEST&t;_SA1111( 0x520 )
+DECL|macro|_USB_EXTENT
+mdefine_line|#define _USB_EXTENT&t;&t;(_USB_INTERRUPTEST - _USB_OHCI_OP_BASE + 4)
+macro_line|#if LANGUAGE == C
+DECL|macro|USB_OHCI_OP_BASE
+mdefine_line|#define USB_OHCI_OP_BASE&t;(*((volatile Word *) SA1111_p2v (_USB_OHCI_OP_BASE)))
+DECL|macro|USB_STATUS
+mdefine_line|#define USB_STATUS&t;&t;(*((volatile Word *) SA1111_p2v (_USB_STATUS)))
+DECL|macro|USB_RESET
+mdefine_line|#define USB_RESET&t;&t;(*((volatile Word *) SA1111_p2v (_USB_RESET)))
+DECL|macro|USB_INTERRUPTEST
+mdefine_line|#define USB_INTERRUPTEST&t;(*((volatile Word *) SA1111_p2v (_USB_INTERRUPTEST)))
+macro_line|#endif  /* LANGUAGE == C */
+DECL|macro|USB_RESET_FORCEIFRESET
+mdefine_line|#define USB_RESET_FORCEIFRESET&t;(1 &lt;&lt; 0)
+DECL|macro|USB_RESET_FORCEHCRESET
+mdefine_line|#define USB_RESET_FORCEHCRESET&t;(1 &lt;&lt; 1)
+DECL|macro|USB_RESET_CLKGENRESET
+mdefine_line|#define USB_RESET_CLKGENRESET&t;(1 &lt;&lt; 2)
+DECL|macro|USB_RESET_SIMSCALEDOWN
+mdefine_line|#define USB_RESET_SIMSCALEDOWN&t;(1 &lt;&lt; 3)
+DECL|macro|USB_RESET_USBINTTEST
+mdefine_line|#define USB_RESET_USBINTTEST&t;(1 &lt;&lt; 4)
+DECL|macro|USB_RESET_SLEEPSTBYEN
+mdefine_line|#define USB_RESET_SLEEPSTBYEN&t;(1 &lt;&lt; 5)
+DECL|macro|USB_RESET_PWRSENSELOW
+mdefine_line|#define USB_RESET_PWRSENSELOW&t;(1 &lt;&lt; 6)
+DECL|macro|USB_RESET_PWRCTRLLOW
+mdefine_line|#define USB_RESET_PWRCTRLLOW&t;(1 &lt;&lt; 7)
 multiline_comment|/*&n; * Serial Audio Controller&n; *&n; * Registers&n; *    SACR0             Serial Audio Common Control Register&n; *    SACR1             Serial Audio Alternate Mode (I2C/MSB) Control Register&n; *    SACR2             Serial Audio AC-link Control Register&n; *    SASR0             Serial Audio I2S/MSB Interface &amp; FIFO Status Register&n; *    SASR1             Serial Audio AC-link Interface &amp; FIFO Status Register&n; *    SASCR             Serial Audio Status Clear Register&n; *    L3_CAR            L3 Control Bus Address Register&n; *    L3_CDR            L3 Control Bus Data Register&n; *    ACCAR             AC-link Command Address Register&n; *    ACCDR             AC-link Command Data Register&n; *    ACSAR             AC-link Status Address Register&n; *    ACSDR             AC-link Status Data Register&n; *    SADTCS            Serial Audio DMA Transmit Control/Status Register&n; *    SADTSA            Serial Audio DMA Transmit Buffer Start Address A&n; *    SADTCA            Serial Audio DMA Transmit Buffer Count Register A&n; *    SADTSB            Serial Audio DMA Transmit Buffer Start Address B&n; *    SADTCB            Serial Audio DMA Transmit Buffer Count Register B&n; *    SADRCS            Serial Audio DMA Receive Control/Status Register&n; *    SADRSA            Serial Audio DMA Receive Buffer Start Address A&n; *    SADRCA            Serial Audio DMA Receive Buffer Count Register A&n; *    SADRSB            Serial Audio DMA Receive Buffer Start Address B&n; *    SADRCB            Serial Audio DMA Receive Buffer Count Register B&n; *    SAITR             Serial Audio Interrupt Test Register&n; *    SADR              Serial Audio Data Register (16 x 32-bit)&n; */
 DECL|macro|_SACR0
 mdefine_line|#define _SACR0          _SA1111( 0x0600 )

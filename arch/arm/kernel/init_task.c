@@ -5,6 +5,14 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+DECL|variable|init_mmap
+r_static
+r_struct
+id|vm_area_struct
+id|init_mmap
+op_assign
+id|INIT_MMAP
+suffix:semicolon
 DECL|variable|init_fs
 r_static
 r_struct

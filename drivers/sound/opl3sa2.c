@@ -3468,17 +3468,30 @@ id|start
 suffix:semicolon
 id|hw_cfg-&gt;irq
 op_assign
+id|dev-&gt;irq_resource
+(braket
 l_int|0
+)braket
+dot
+id|start
 suffix:semicolon
 id|hw_cfg-&gt;dma
 op_assign
-op_minus
-l_int|1
+id|dev-&gt;dma_resource
+(braket
+l_int|0
+)braket
+dot
+id|start
 suffix:semicolon
 id|hw_cfg-&gt;dma2
 op_assign
-op_minus
+id|dev-&gt;dma_resource
+(braket
 l_int|1
+)braket
+dot
+id|start
 suffix:semicolon
 multiline_comment|/* The MSS config: */
 id|mss_cfg-&gt;io_base
@@ -3801,7 +3814,7 @@ id|card
 dot
 id|irq
 op_assign
-l_int|0
+id|irq
 suffix:semicolon
 id|cfg
 (braket
@@ -3810,8 +3823,7 @@ id|card
 dot
 id|dma
 op_assign
-op_minus
-l_int|1
+id|dma
 suffix:semicolon
 id|cfg
 (braket
@@ -3820,8 +3832,7 @@ id|card
 dot
 id|dma2
 op_assign
-op_minus
-l_int|1
+id|dma2
 suffix:semicolon
 multiline_comment|/* The MSS config: */
 id|cfg_mss

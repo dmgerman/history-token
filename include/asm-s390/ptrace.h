@@ -383,6 +383,10 @@ DECL|member|fp_regs
 id|s390_fp_regs
 id|fp_regs
 suffix:semicolon
+DECL|member|old_ilc
+id|__u32
+id|old_ilc
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

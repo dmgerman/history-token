@@ -6,11 +6,11 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t;1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;5
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;6
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;linux/sonypi.h&quot;
-multiline_comment|/* Normal models use those */
+multiline_comment|/* type1 models use those */
 DECL|macro|SONYPI_IRQ_PORT
 mdefine_line|#define SONYPI_IRQ_PORT&t;&t;&t;0x8034
 DECL|macro|SONYPI_IRQ_SHIFT
@@ -19,18 +19,18 @@ DECL|macro|SONYPI_BASE
 mdefine_line|#define SONYPI_BASE&t;&t;&t;0x50
 DECL|macro|SONYPI_G10A
 mdefine_line|#define SONYPI_G10A&t;&t;&t;(SONYPI_BASE+0x14)
-DECL|macro|SONYPI_NORMAL_REGION_SIZE
-mdefine_line|#define SONYPI_NORMAL_REGION_SIZE&t;0x08
-multiline_comment|/* R505 series specifics */
+DECL|macro|SONYPI_TYPE1_REGION_SIZE
+mdefine_line|#define SONYPI_TYPE1_REGION_SIZE&t;0x08
+multiline_comment|/* type2 series specifics */
 DECL|macro|SONYPI_SIRQ
-mdefine_line|#define SONYPI_SIRQ&t;&t;0x9b
+mdefine_line|#define SONYPI_SIRQ&t;&t;&t;0x9b
 DECL|macro|SONYPI_SLOB
-mdefine_line|#define SONYPI_SLOB&t;&t;0x9c
+mdefine_line|#define SONYPI_SLOB&t;&t;&t;0x9c
 DECL|macro|SONYPI_SHIB
-mdefine_line|#define SONYPI_SHIB&t;&t;0x9d
-DECL|macro|SONYPI_R505_REGION_SIZE
-mdefine_line|#define SONYPI_R505_REGION_SIZE&t;0x20
-multiline_comment|/* ioports used for brightness and R505 events */
+mdefine_line|#define SONYPI_SHIB&t;&t;&t;0x9d
+DECL|macro|SONYPI_TYPE2_REGION_SIZE
+mdefine_line|#define SONYPI_TYPE2_REGION_SIZE&t;0x20
+multiline_comment|/* ioports used for brightness and type2 events */
 DECL|macro|SONYPI_DATA_IOPORT
 mdefine_line|#define SONYPI_DATA_IOPORT&t;0x62
 DECL|macro|SONYPI_CST_IOPORT
@@ -50,11 +50,11 @@ id|port2
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|sonypi_normal_ioport_list
+DECL|variable|sonypi_type1_ioport_list
 r_static
 r_struct
 id|sonypi_ioport_list
-id|sonypi_normal_ioport_list
+id|sonypi_type1_ioport_list
 (braket
 )braket
 op_assign
@@ -97,11 +97,11 @@ l_int|0x0
 )brace
 )brace
 suffix:semicolon
-DECL|variable|sonypi_r505_ioport_list
+DECL|variable|sonypi_type2_ioport_list
 r_static
 r_struct
 id|sonypi_ioport_list
-id|sonypi_r505_ioport_list
+id|sonypi_type2_ioport_list
 (braket
 )braket
 op_assign
@@ -152,11 +152,11 @@ id|bits
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|sonypi_normal_irq_list
+DECL|variable|sonypi_type1_irq_list
 r_static
 r_struct
 id|sonypi_irq_list
-id|sonypi_normal_irq_list
+id|sonypi_type1_irq_list
 (braket
 )braket
 op_assign
@@ -190,11 +190,11 @@ l_int|0x3
 multiline_comment|/* no IRQ, GO22=1,GO23=1 in AML */
 )brace
 suffix:semicolon
-DECL|variable|sonypi_r505_irq_list
+DECL|variable|sonypi_type2_irq_list
 r_static
 r_struct
 id|sonypi_irq_list
-id|sonypi_r505_irq_list
+id|sonypi_type2_irq_list
 (braket
 )braket
 op_assign
@@ -279,20 +279,24 @@ mdefine_line|#define SONYPI_CAMERA_REVISION &t;&t;&t;8
 DECL|macro|SONYPI_CAMERA_ROMVERSION
 mdefine_line|#define SONYPI_CAMERA_ROMVERSION &t;&t;9
 multiline_comment|/* key press event data (ioport2) */
-DECL|macro|SONYPI_NORMAL_JOGGER_EV
-mdefine_line|#define SONYPI_NORMAL_JOGGER_EV&t;0x10
-DECL|macro|SONYPI_R505_JOGGER_EV
-mdefine_line|#define SONYPI_R505_JOGGER_EV&t;0x08
+DECL|macro|SONYPI_TYPE1_JOGGER_EV
+mdefine_line|#define SONYPI_TYPE1_JOGGER_EV&t;0x10
+DECL|macro|SONYPI_TYPE2_JOGGER_EV
+mdefine_line|#define SONYPI_TYPE2_JOGGER_EV&t;0x08
 DECL|macro|SONYPI_CAPTURE_EV
 mdefine_line|#define SONYPI_CAPTURE_EV&t;0x60
-DECL|macro|SONYPI_NORMAL_FNKEY_EV
-mdefine_line|#define SONYPI_NORMAL_FNKEY_EV&t;0x20
-DECL|macro|SONYPI_R505_FNKEY_EV
-mdefine_line|#define SONYPI_R505_FNKEY_EV&t;0x08
+DECL|macro|SONYPI_TYPE1_FNKEY_EV
+mdefine_line|#define SONYPI_TYPE1_FNKEY_EV&t;0x20
+DECL|macro|SONYPI_TYPE2_FNKEY_EV
+mdefine_line|#define SONYPI_TYPE2_FNKEY_EV&t;0x08
 DECL|macro|SONYPI_BLUETOOTH_EV
 mdefine_line|#define SONYPI_BLUETOOTH_EV&t;0x30
-DECL|macro|SONYPI_NORMAL_PKEY_EV
-mdefine_line|#define SONYPI_NORMAL_PKEY_EV&t;0x40
+DECL|macro|SONYPI_TYPE1_PKEY_EV
+mdefine_line|#define SONYPI_TYPE1_PKEY_EV&t;0x40
+DECL|macro|SONYPI_BACK_EV
+mdefine_line|#define SONYPI_BACK_EV&t;&t;0x08
+DECL|macro|SONYPI_LID_EV
+mdefine_line|#define SONYPI_LID_EV&t;&t;0x38
 DECL|struct|sonypi_event
 r_struct
 id|sonypi_event
@@ -596,6 +600,58 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* The set of possible back button events */
+DECL|variable|sonypi_backev
+r_static
+r_struct
+id|sonypi_event
+id|sonypi_backev
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x20
+comma
+id|SONYPI_EVENT_BACK_PRESSED
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/* The set of possible lid events */
+DECL|variable|sonypi_lidev
+r_static
+r_struct
+id|sonypi_event
+id|sonypi_lidev
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x51
+comma
+id|SONYPI_EVENT_LID_CLOSED
+)brace
+comma
+(brace
+l_int|0x50
+comma
+id|SONYPI_EVENT_LID_OPENED
+)brace
+comma
+(brace
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+suffix:semicolon
 DECL|macro|SONYPI_BUF_SIZE
 mdefine_line|#define SONYPI_BUF_SIZE&t;128
 DECL|struct|sonypi_queue
@@ -641,10 +697,10 @@ id|SONYPI_BUF_SIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SONYPI_DEVICE_MODEL_NORMAL
-mdefine_line|#define SONYPI_DEVICE_MODEL_NORMAL&t;1
-DECL|macro|SONYPI_DEVICE_MODEL_R505
-mdefine_line|#define SONYPI_DEVICE_MODEL_R505&t;2
+DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
+mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
+DECL|macro|SONYPI_DEVICE_MODEL_TYPE2
+mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE2&t;2
 DECL|struct|sonypi_device
 r_struct
 id|sonypi_device
@@ -700,7 +756,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|wait_on_command
-mdefine_line|#define wait_on_command(command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at &quot; __FILE__ &quot; : &quot; __FUNCTION__ &quot;(line %d)&bslash;n&quot;, __LINE__); &bslash;&n;}
+mdefine_line|#define wait_on_command(quiet, command) { &bslash;&n;&t;unsigned int n = 10000; &bslash;&n;&t;while (--n &amp;&amp; (command)) &bslash;&n;&t;&t;udelay(1); &bslash;&n;&t;if (!n &amp;&amp; (verbose || !quiet)) &bslash;&n;&t;&t;printk(KERN_WARNING &quot;sonypi command failed at &quot; __FILE__ &quot; : &quot; __FUNCTION__ &quot;(line %d)&bslash;n&quot;, __LINE__); &bslash;&n;}
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _SONYPI_PRIV_H_ */
 eof

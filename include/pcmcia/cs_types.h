@@ -7,15 +7,23 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#endif
-DECL|typedef|socket_t
+macro_line|#ifdef __arm__
+DECL|typedef|ioaddr_t
 r_typedef
-id|u_short
-id|socket_t
+id|u_int
+id|ioaddr_t
 suffix:semicolon
+macro_line|#else
 DECL|typedef|ioaddr_t
 r_typedef
 id|u_short
 id|ioaddr_t
+suffix:semicolon
+macro_line|#endif
+DECL|typedef|socket_t
+r_typedef
+id|u_short
+id|socket_t
 suffix:semicolon
 DECL|typedef|event_t
 r_typedef

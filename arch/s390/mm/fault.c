@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/s390/mm/fault.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; */
+multiline_comment|/*&n; *  arch/s390/mm/fault.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *               Ulrich Weigand (uweigand@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -39,6 +40,89 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
+r_void
+id|force_sigsegv
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+id|code
+comma
+r_void
+op_star
+id|address
+)paren
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|timerlist_lock
+suffix:semicolon
+multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
+DECL|function|bust_spinlocks
+r_void
+id|bust_spinlocks
+c_func
+(paren
+r_int
+id|yes
+)paren
+(brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|timerlist_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|yes
+)paren
+(brace
+id|oops_in_progress
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+id|loglevel_save
+op_assign
+id|console_loglevel
+suffix:semicolon
+id|oops_in_progress
+op_assign
+l_int|0
+suffix:semicolon
+id|console_unblank
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * OK, the message is on the console.  Now we call printk()&n;&t;&t; * without oops_in_progress set so that printk will give klogd&n;&t;&t; * a poke.  Hold onto your hats...&n;&t;&t; */
+id|console_loglevel
+op_assign
+l_int|15
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
+id|console_loglevel
+op_assign
+id|loglevel_save
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * error_code:&n; *             ****0004       Protection           -&gt;  Write-Protection  (suprression)&n; *             ****0010       Segment translation  -&gt;  Not present       (nullification)&n; *             ****0011       Page translation     -&gt;  Not present       (nullification)&n; */
 DECL|function|do_page_fault
 id|asmlinkage
@@ -92,13 +176,6 @@ id|kernel_address
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;         * get the failing address &n;         * more specific the segment and page table portion of &n;         * the address &n;         */
-id|address
-op_assign
-id|S390_lowcore.trans_exc_code
-op_amp
-l_int|0x7ffff000
-suffix:semicolon
 id|tsk
 op_assign
 id|current
@@ -107,19 +184,73 @@ id|mm
 op_assign
 id|tsk-&gt;mm
 suffix:semicolon
+multiline_comment|/* &n;         * Check for low-address protection.  This needs to be treated&n;&t; * as a special case because the translation exception code &n;&t; * field is not guaranteed to contain valid data in this case.&n;&t; */
 r_if
 c_cond
 (paren
-id|in_interrupt
-c_func
 (paren
+id|error_code
+op_amp
+l_int|0xff
 )paren
-op_logical_or
+op_eq
+l_int|4
+op_logical_and
 op_logical_neg
-id|mm
+(paren
+id|S390_lowcore.trans_exc_code
+op_amp
+l_int|4
 )paren
+)paren
+(brace
+multiline_comment|/* Low-address protection hit in kernel mode means &n;&t;&t;   NULL pointer write access in kernel mode.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|regs-&gt;psw.mask
+op_amp
+id|PSW_PROBLEM_STATE
+)paren
+)paren
+(brace
+id|address
+op_assign
+l_int|0
+suffix:semicolon
+id|kernel_address
+op_assign
+l_int|1
+suffix:semicolon
 r_goto
 id|no_context
+suffix:semicolon
+)brace
+multiline_comment|/* Low-address protection hit in user mode &squot;cannot happen&squot;.  */
+id|die
+(paren
+l_string|&quot;Low-address protection&quot;
+comma
+id|regs
+comma
+id|error_code
+)paren
+suffix:semicolon
+id|do_exit
+c_func
+(paren
+id|SIGKILL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* &n;         * get the failing address &n;         * more specific the segment and page table portion of &n;         * the address &n;         */
+id|address
+op_assign
+id|S390_lowcore.trans_exc_code
+op_amp
+l_int|0x7ffff000
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check which address space the address belongs to&n;&t; */
 r_switch
@@ -216,6 +347,12 @@ comma
 id|error_code
 )paren
 suffix:semicolon
+id|do_exit
+c_func
+(paren
+id|SIGKILL
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -230,6 +367,21 @@ multiline_comment|/* user space address */
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Check whether we have a user MM in the first place.&n;&t; */
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+op_logical_or
+op_logical_neg
+id|mm
+)paren
+r_goto
+id|no_context
+suffix:semicolon
 multiline_comment|/*&n;&t; * When we get here, the fault happened in the current&n;&t; * task&squot;s user address space, so we search the VMAs&n;&t; */
 id|down_read
 c_func
@@ -368,6 +520,8 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+id|survive
+suffix:colon
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
 r_switch
 c_cond
@@ -441,10 +595,6 @@ op_amp
 id|PSW_PROBLEM_STATE
 )paren
 (brace
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
 id|tsk-&gt;thread.prot_addr
 op_assign
 id|address
@@ -509,31 +659,18 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif
-id|si.si_signo
-op_assign
-id|SIGSEGV
-suffix:semicolon
-id|si.si_code
-op_assign
+id|force_sigsegv
+c_func
+(paren
+id|tsk
+comma
 id|si_code
-suffix:semicolon
-id|si.si_addr
-op_assign
+comma
 (paren
 r_void
 op_star
 )paren
 id|address
-suffix:semicolon
-id|force_sig_info
-c_func
-(paren
-id|SIGSEGV
-comma
-op_amp
-id|si
-comma
-id|tsk
 )paren
 suffix:semicolon
 r_return
@@ -592,7 +729,6 @@ comma
 id|address
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * need to define, which information is useful here&n; */
 id|die
 c_func
 (paren
@@ -619,6 +755,34 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|tsk-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -682,6 +846,54 @@ id|PSW_PROBLEM_STATE
 )paren
 r_goto
 id|no_context
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Send SIGSEGV to task.  This is an external routine&n; * to keep the stack usage of do_page_fault small.&n; */
+DECL|function|force_sigsegv
+r_static
+r_void
+id|force_sigsegv
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+id|code
+comma
+r_void
+op_star
+id|address
+)paren
+(brace
+r_struct
+id|siginfo
+id|si
+suffix:semicolon
+id|si.si_signo
+op_assign
+id|SIGSEGV
+suffix:semicolon
+id|si.si_code
+op_assign
+id|code
+suffix:semicolon
+id|si.si_addr
+op_assign
+id|address
+suffix:semicolon
+id|force_sig_info
+c_func
+(paren
+id|SIGSEGV
+comma
+op_amp
+id|si
+comma
+id|tsk
+)paren
 suffix:semicolon
 )brace
 DECL|struct|_pseudo_wait_t
@@ -1276,14 +1488,6 @@ id|__u16
 id|error_code
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -1313,7 +1517,7 @@ op_amp
 l_int|0xff00
 )paren
 op_ne
-l_int|0x06
+l_int|0x0600
 )paren
 r_return
 suffix:semicolon

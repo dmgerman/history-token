@@ -425,11 +425,13 @@ multiline_comment|/* next */
 )brace
 suffix:semicolon
 DECL|variable|tub3270_con_bcb
+r_static
 id|bcb_t
 id|tub3270_con_bcb
 suffix:semicolon
 multiline_comment|/* Buffer that receives con writes */
 DECL|variable|tub3270_con_bcblock
+r_static
 id|spinlock_t
 id|tub3270_con_bcblock
 suffix:semicolon

@@ -23,6 +23,24 @@ macro_line|#ifndef __exit
 DECL|macro|__exit
 mdefine_line|#define __exit
 macro_line|#endif
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;3780i Advanced Communications Processor (Mwave) driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Mike Sullivan and Paul Schroeder&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_static
 r_int

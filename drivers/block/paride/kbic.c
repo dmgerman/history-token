@@ -2038,4 +2038,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* end of kbic.c */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

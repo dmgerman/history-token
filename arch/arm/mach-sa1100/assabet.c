@@ -74,6 +74,10 @@ id|BCR_value
 op_assign
 id|BCR_DB1111
 suffix:semicolon
+id|NCR_0
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifndef CONFIG_ASSABET_NEPONSET
 id|printk
 c_func
@@ -251,6 +255,20 @@ op_assign
 id|scr
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|convert_to_tag_list
+c_func
+(paren
+r_struct
+id|param_struct
+op_star
+id|params
+comma
+r_int
+id|mem_init
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__init
@@ -314,6 +332,22 @@ id|printk
 c_func
 (paren
 l_string|&quot;Neponset expansion board detected&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Apparantly bootldr uses a param_struct.  Groan.&n;&t; */
+r_if
+c_cond
+(paren
+id|t-&gt;hdr.tag
+op_ne
+id|ATAG_CORE
+)paren
+id|convert_to_tag_list
+c_func
+(paren
+id|params
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -906,14 +940,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|sa1100_register_uart
-c_func
-(paren
-l_int|1
-comma
-l_int|2
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -984,7 +1010,7 @@ op_or
 id|GPIO_SSP_SFRM
 suffix:semicolon
 id|GPCR
-op_or_assign
+op_assign
 id|GPIO_SSP_TXD
 op_or
 id|GPIO_SSP_SCLK

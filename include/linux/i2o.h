@@ -2,7 +2,7 @@ multiline_comment|/*&n; * I2O kernel space accessible structures/APIs&n; * &n; *
 macro_line|#ifndef _I2O_H
 DECL|macro|_I2O_H
 mdefine_line|#define _I2O_H
-macro_line|#ifdef __KERNEL__&t;/* This file to be included by kernel only */
+macro_line|#ifdef __KERNEL__ /* This file to be included by kernel only */
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 multiline_comment|/* How many different OSM&squot;s are we allowing */
 DECL|macro|MAX_I2O_MODULES
@@ -10,12 +10,11 @@ mdefine_line|#define MAX_I2O_MODULES&t;&t;64
 multiline_comment|/* How many OSMs can register themselves for device status updates? */
 DECL|macro|I2O_MAX_MANAGERS
 mdefine_line|#define I2O_MAX_MANAGERS&t;4
-macro_line|#include &lt;asm/semaphore.h&gt; /* Needed for MUTEX init macros */
+macro_line|#include &lt;asm/semaphore.h&gt;&t;/* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-multiline_comment|/*&n; * message structures&n; */
+multiline_comment|/*&n; *&t;Message structures&n; */
 DECL|struct|i2o_message
 r_struct
 id|i2o_message
@@ -75,7 +74,7 @@ DECL|member|i2oversion
 r_int
 id|i2oversion
 suffix:semicolon
-multiline_comment|/* I2O version supported. Actually there&n;&t;&t;&t;&t; * should be high and low version */
+multiline_comment|/* I2O version supported. Actually&n;&t;&t;&t;&t;&t; * there should be high and low&n;&t;&t;&t;&t;&t; * version */
 DECL|member|proc_entry
 r_struct
 id|proc_dir_entry
@@ -139,13 +138,6 @@ DECL|struct|i2o_pci
 r_struct
 id|i2o_pci
 (brace
-DECL|member|pdev
-r_struct
-id|pci_dev
-op_star
-id|pdev
-suffix:semicolon
-multiline_comment|/* PCI device */
 DECL|member|irq
 r_int
 id|irq
@@ -163,14 +155,14 @@ id|short_req
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Use small block sizes&t;*/
+multiline_comment|/* Use small block sizes        */
 DECL|member|dpt
 r_int
 id|dpt
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Don&squot;t quiesce&t;&t;*/
+multiline_comment|/* Don&squot;t quiesce                */
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|mtrr_reg0
 r_int
@@ -185,12 +177,19 @@ macro_line|#endif
 suffix:semicolon
 multiline_comment|/*&n; * Transport types supported by I2O stack&n; */
 DECL|macro|I2O_TYPE_PCI
-mdefine_line|#define I2O_TYPE_PCI&t;&t;0x01&t;&t;/* PCI I2O controller */&t;
+mdefine_line|#define I2O_TYPE_PCI&t;&t;0x01&t;&t;/* PCI I2O controller */
 multiline_comment|/*&n; * Each I2O controller has one of these objects&n; */
 DECL|struct|i2o_controller
 r_struct
 id|i2o_controller
 (brace
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+multiline_comment|/* PCI device */
 DECL|member|name
 r_char
 id|name
@@ -414,7 +413,6 @@ id|bus_enable
 r_struct
 id|i2o_controller
 op_star
-id|c
 )paren
 suffix:semicolon
 DECL|member|bus_disable
@@ -427,7 +425,6 @@ id|bus_disable
 r_struct
 id|i2o_controller
 op_star
-id|c
 )paren
 suffix:semicolon
 DECL|member|page_frame
@@ -436,6 +433,11 @@ op_star
 id|page_frame
 suffix:semicolon
 multiline_comment|/* Message buffers */
+DECL|member|page_frame_map
+id|dma_addr_t
+id|page_frame_map
+suffix:semicolon
+multiline_comment|/* Cache map */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * OSM resgistration block&n; *&n; * Each OSM creates at least one of these and registers it with the&n; * I2O core through i2o_register_handler.  An OSM may want to&n; * register more than one if it wants a fast path to a reply&n; * handler by having a separate initiator context for each &n; * class function.&n; */
@@ -609,8 +611,7 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif 
-singleline_comment|// MODULE
+macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * I2O System table entry&n; *&n; * The system table contains information about all the IOPs in the&n; * system.  It is sent to all IOPs so that they can create peer2peer&n; * connections between them.&n; */
 DECL|struct|i2o_sys_tbl_entry
 r_struct

@@ -375,10 +375,10 @@ r_int
 r_int
 id|vc_tab_stop
 (braket
-l_int|5
+l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* Tab stops. 160 columns. */
+multiline_comment|/* Tab stops. 256 columns. */
 DECL|member|vc_palette
 r_int
 r_char

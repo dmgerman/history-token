@@ -58,8 +58,8 @@ DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xC40
-DECL|macro|__LC_KERNEL_LEVEL
-mdefine_line|#define __LC_KERNEL_LEVEL               0xC44
+DECL|macro|__LC_ASYNC_STACK
+mdefine_line|#define __LC_ASYNC_STACK                0xC44
 DECL|macro|__LC_CPUID
 mdefine_line|#define __LC_CPUID                      0xC60
 DECL|macro|__LC_CPUADDR
@@ -120,6 +120,48 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/sigp.h&gt;
+r_void
+id|restart_int_handler
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|ext_int_handler
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|system_call
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|pgm_check_handler
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|mcck_int_handler
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|io_int_handler
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|struct|_lowcore
 r_struct
 id|_lowcore
@@ -218,9 +260,9 @@ id|__u16
 id|svc_ilc
 suffix:semicolon
 multiline_comment|/* 0x088 */
-DECL|member|scv_code
+DECL|member|svc_code
 id|__u16
-id|scv_code
+id|svc_code
 suffix:semicolon
 multiline_comment|/* 0x08a */
 DECL|member|pgm_ilc
@@ -456,9 +498,9 @@ id|__u32
 id|kernel_stack
 suffix:semicolon
 multiline_comment|/* 0xc40 */
-DECL|member|kernel_level
+DECL|member|async_stack
 id|__u32
-id|kernel_level
+id|async_stack
 suffix:semicolon
 multiline_comment|/* 0xc44 */
 multiline_comment|/* entry.S sensitive area start */
@@ -495,26 +537,16 @@ id|atomic_t
 id|ext_call_fast
 suffix:semicolon
 multiline_comment|/* 0xc88 */
-DECL|member|ext_call_queue
-id|atomic_t
-id|ext_call_queue
-suffix:semicolon
-multiline_comment|/* 0xc8c */
-DECL|member|ext_call_count
-id|atomic_t
-id|ext_call_count
-suffix:semicolon
-multiline_comment|/* 0xc90 */
 DECL|member|pad11
 id|__u8
 id|pad11
 (braket
 l_int|0xe00
 op_minus
-l_int|0xc94
+l_int|0xc8c
 )braket
 suffix:semicolon
-multiline_comment|/* 0xc94 */
+multiline_comment|/* 0xc8c */
 multiline_comment|/* 0xe00 is used as indicator for dump tools */
 multiline_comment|/* whether the kernel died with panic() or not */
 DECL|member|panic_magic

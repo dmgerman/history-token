@@ -1077,7 +1077,7 @@ id|port-&gt;name
 suffix:semicolon
 id|port-&gt;ieee1284.phase
 op_assign
-id|IEEE1284_PH_DIR_UNKNOWN
+id|IEEE1284_PH_ECP_DIR_UNKNOWN
 suffix:semicolon
 )brace
 r_return
@@ -1162,7 +1162,7 @@ id|port-&gt;name
 suffix:semicolon
 id|port-&gt;ieee1284.phase
 op_assign
-id|IEEE1284_PH_DIR_UNKNOWN
+id|IEEE1284_PH_ECP_DIR_UNKNOWN
 suffix:semicolon
 )brace
 r_return

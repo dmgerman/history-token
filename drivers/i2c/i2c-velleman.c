@@ -318,6 +318,7 @@ suffix:semicolon
 DECL|function|bit_velle_exit
 r_static
 r_void
+id|__exit
 id|bit_velle_exit
 c_func
 (paren

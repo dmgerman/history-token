@@ -58,8 +58,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|macro|DPMOD
 mdefine_line|#define DPMOD   1   /* per module load */
@@ -624,8 +622,6 @@ r_struct
 id|m3_card
 op_star
 id|devs
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * I&squot;m not very good at laying out functions in a file :)&n; */
 r_static
@@ -4937,9 +4933,11 @@ id|s-&gt;dma_dac.ready
 r_return
 l_int|0
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -5016,9 +5014,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 r_return
 op_minus
@@ -5087,9 +5087,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10178,9 +10180,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -10250,9 +10254,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -13423,9 +13429,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule
 c_func
@@ -13442,9 +13450,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 )brace
 eof

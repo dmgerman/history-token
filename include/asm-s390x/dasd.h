@@ -89,6 +89,15 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* histogram of time from irq to end */
+DECL|member|dasd_io_nr_req
+r_int
+r_int
+id|dasd_io_nr_req
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* histogram of # of requests in chanq */
 DECL|typedef|dasd_profile_info_t
 )brace
 id|dasd_profile_info_t

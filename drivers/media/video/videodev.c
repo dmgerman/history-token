@@ -92,52 +92,6 @@ id|videodev_proc_list
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS &amp;&amp; CONFIG_VIDEO_PROC_FS */
-macro_line|#ifdef CONFIG_VIDEO_BWQCAM
-r_extern
-r_int
-id|init_bw_qcams
-c_func
-(paren
-r_struct
-id|video_init
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_CPIA
-r_extern
-r_int
-id|cpia_init
-c_func
-(paren
-r_struct
-id|video_init
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_PLANB
-r_extern
-r_int
-id|init_planbs
-c_func
-(paren
-r_struct
-id|video_init
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|variable|video_init_list
-r_static
-r_struct
-id|video_init
-id|video_init_list
-(braket
-)braket
-op_assign
-initialization_block
-suffix:semicolon
 multiline_comment|/*&n; *&t;Read will do some smarts later on. Buffer pin etc.&n; */
 DECL|function|video_read
 r_static
@@ -274,7 +228,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Poll to see if we&squot;re readable, can probably be used for timing on incoming&n; *  frames, etc..&n; */
+multiline_comment|/*&n; *&t;Poll to see if we&squot;re readable, can probably be used for timing on incoming&n; *&t;frames, etc..&n; */
 DECL|function|video_poll
 r_static
 r_int
@@ -1935,13 +1889,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|video_init
-op_star
-id|vfli
-op_assign
-id|video_init_list
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1977,33 +1924,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *&t;Init kernel installed video drivers&n;&t; */
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 id|videodev_proc_create
 (paren
 )paren
 suffix:semicolon
 macro_line|#endif
-r_while
-c_loop
-(paren
-id|vfli-&gt;init
-op_ne
-l_int|NULL
-)paren
-(brace
-id|vfli
-op_member_access_from_pointer
-id|init
-c_func
-(paren
-id|vfli
-)paren
-suffix:semicolon
-id|vfli
-op_increment
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -4191,7 +4191,7 @@ suffix:semicolon
 r_case
 id|MTRR_IF_INTEL
 suffix:colon
-multiline_comment|/*  For Intel PPro stepping &lt;= 7, must be 4 MiB aligned  */
+multiline_comment|/*  For Intel PPro stepping &lt;= 7, must be 4 MiB aligned &n;&t;    and not touch 0x70000000-&gt;0x7003FFFF */
 r_if
 c_cond
 (paren
@@ -4238,6 +4238,40 @@ id|KERN_WARNING
 l_string|&quot;mtrr: base(0x%lx000) is not 4 MiB aligned&bslash;n&quot;
 comma
 id|base
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|base
+op_plus
+id|size
+template_param
+l_int|0x7003FFFF
+)paren
+op_logical_and
+(paren
+id|type
+op_eq
+id|MTRR_TYPE_WRCOMB
+op_logical_or
+id|type
+op_eq
+id|MTRR_TYPE_WRBACK
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;mtrr: writable mtrr between 0x70000000 and 0x7003FFFF may hang the CPU.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

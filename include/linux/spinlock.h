@@ -39,6 +39,8 @@ DECL|macro|write_unlock_irq
 mdefine_line|#define write_unlock_irq(lock)&t;&t;&t;do { write_unlock(lock); local_irq_enable();       } while (0)
 DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;do { write_unlock(lock); local_bh_enable();        } while (0)
+DECL|macro|spin_trylock_bh
+mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;({ int __r; local_bh_disable();&bslash;&n;&t;&t;&t;&t;&t;&t;__r = spin_trylock(lock);      &bslash;&n;&t;&t;&t;&t;&t;&t;if (!__r) local_bh_enable();   &bslash;&n;&t;&t;&t;&t;&t;&t;__r; })
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#elif !defined(spin_lock_init) /* !SMP and spin_lock_init not previously&n;                                  defined (e.g. by including asm/spinlock.h */

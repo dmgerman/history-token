@@ -216,6 +216,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* This is currently broken&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * #define PG_skip&t;10&n; * #define PageSkip(page) (machine_is_riscpc() &amp;&amp; test_bit(PG_skip, &amp;(page)-&gt;flags))&n; *&t;&t;&t;if (PageSkip(page)) {&n; *&t;&t;&t;&t;page = page-&gt;next_hash;&n; *&t;&t;&t;&t;if (page == NULL)&n; *&t;&t;&t;&t;&t;break;&n; *&t;&t;&t;}&n; */
 DECL|function|show_mem
 r_void
 id|show_mem
@@ -243,6 +244,10 @@ op_assign
 l_int|0
 comma
 id|cached
+op_assign
+l_int|0
+comma
+id|slab
 op_assign
 l_int|0
 comma
@@ -318,7 +323,6 @@ id|node_size
 suffix:semicolon
 r_do
 (brace
-multiline_comment|/* This is currently broken&n; * PG_skip is used on sparc/sparc64 architectures to &quot;skip&quot; certain&n; * parts of the address space.&n; *&n; * #define PG_skip&t;10&n; * #define PageSkip(page) (machine_is_riscpc() &amp;&amp; test_bit(PG_skip, &amp;(page)-&gt;flags))&n; *&t;&t;&t;if (PageSkip(page)) {&n; *&t;&t;&t;&t;page = page-&gt;next_hash;&n; *&t;&t;&t;&t;if (page == NULL)&n; *&t;&t;&t;&t;&t;break;&n; *&t;&t;&t;}&n; */
 id|total
 op_increment
 suffix:semicolon
@@ -345,6 +349,19 @@ id|page
 )paren
 )paren
 id|cached
+op_increment
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|PageSlab
+c_func
+(paren
+id|page
+)paren
+)paren
+id|slab
 op_increment
 suffix:semicolon
 r_else
@@ -408,6 +425,14 @@ c_func
 l_string|&quot;%d reserved pages&bslash;n&quot;
 comma
 id|reserved
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%d slab pages&bslash;n&quot;
+comma
+id|slab
 )paren
 suffix:semicolon
 id|printk
@@ -1269,6 +1294,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|machine_is_edb7211
+c_func
+(paren
+)paren
+)paren
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+l_int|0xc0000000
+comma
+l_int|0x00020000
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|machine_is_p720t
 c_func
 (paren
@@ -1765,6 +1808,18 @@ op_rshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If this zone has zero size, skip it.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|zone_size
+(braket
+l_int|0
+)braket
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * For each bank in this node, calculate the size of the&n;&t;&t; * holes.  holes = node_size - sum(bank_sizes_in_node)&n;&t;&t; */
 id|zhole_size
 (braket
@@ -2069,18 +2124,33 @@ suffix:semicolon
 id|node
 op_increment
 )paren
-id|totalram_pages
-op_add_assign
-id|free_all_bootmem_node
-c_func
-(paren
+(brace
+id|pg_data_t
+op_star
+id|pgdat
+op_assign
 id|NODE_DATA
 c_func
 (paren
 id|node
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pgdat-&gt;node_size
+op_ne
+l_int|0
+)paren
+id|totalram_pages
+op_add_assign
+id|free_all_bootmem_node
+c_func
+(paren
+id|pgdat
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SA1111
 multiline_comment|/* now that our DMA memory is actually so designated, we can free it */
 id|free_area

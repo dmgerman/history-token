@@ -2,7 +2,7 @@ multiline_comment|/*  devfs (Device FileSystem) utilities.&n;&n;    Copyright (C
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*  Private functions follow  */

@@ -6,6 +6,7 @@ macro_line|#endif
 macro_line|#ifndef&t;LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &quot;sd.h&quot;
 r_extern
 r_int
@@ -116,13 +117,8 @@ DECL|macro|UWORD
 mdefine_line|#define UWORD   unsigned short
 DECL|macro|UDWORD
 mdefine_line|#define UDWORD  unsigned long
-macro_line|#ifdef ALPHA
 DECL|macro|U32
-mdefine_line|#define U32     unsigned int
-macro_line|#else
-DECL|macro|U32
-mdefine_line|#define U32     unsigned long
-macro_line|#endif
+mdefine_line|#define U32     u32
 macro_line|#ifndef NULL
 DECL|macro|NULL
 mdefine_line|#define NULL     0&t;&t;/* zero          */

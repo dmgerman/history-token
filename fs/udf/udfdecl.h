@@ -465,7 +465,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|inode_bmap
 c_func
 (paren
@@ -497,7 +497,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|udf_add_aext
 c_func
 (paren
@@ -524,7 +524,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|udf_write_aext
 c_func
 (paren
@@ -549,7 +549,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|udf_insert_aext
 c_func
 (paren
@@ -571,7 +571,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|udf_delete_aext
 c_func
 (paren
@@ -593,7 +593,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|udf_next_aext
 c_func
 (paren
@@ -622,7 +622,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|Sint8
 id|udf_current_aext
 c_func
 (paren
@@ -989,6 +989,10 @@ id|udf_free_blocks
 c_func
 (paren
 r_struct
+id|super_block
+op_star
+comma
+r_struct
 id|inode
 op_star
 comma
@@ -1005,6 +1009,10 @@ id|udf_prealloc_blocks
 c_func
 (paren
 r_struct
+id|super_block
+op_star
+comma
+r_struct
 id|inode
 op_star
 comma
@@ -1020,6 +1028,10 @@ r_int
 id|udf_new_block
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+comma
 r_struct
 id|inode
 op_star

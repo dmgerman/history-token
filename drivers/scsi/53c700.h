@@ -37,6 +37,22 @@ multiline_comment|/* WARNING: Leave this in for now: the dependency preprocessor
 macro_line|#if !defined(CONFIG_53C700_IO_MAPPED) &amp;&amp; !defined(CONFIG_53C700_MEM_MAPPED)
 macro_line|#error &quot;Config.in must define either CONFIG_53C700_IO_MAPPED or CONFIG_53C700_MEM_MAPPED to use this scsi core.&quot;
 macro_line|#endif
+multiline_comment|/* macros for consistent memory allocation */
+macro_line|#ifdef CONFIG_53C700_USE_CONSISTENT
+DECL|macro|NCR_700_dma_cache_wback
+mdefine_line|#define NCR_700_dma_cache_wback(mem, size) &bslash;&n;&t;if(!hostdata-&gt;consistent) &bslash;&n;&t;&t;dma_cache_wback(mem, size)
+DECL|macro|NCR_700_dma_cache_inv
+mdefine_line|#define NCR_700_dma_cache_inv(mem, size) &bslash;&n;&t;if(!hostdata-&gt;consistent) &bslash;&n;&t;&t;dma_cache_inv(mem, size)
+DECL|macro|NCR_700_dma_cache_wback_inv
+mdefine_line|#define NCR_700_dma_cache_wback_inv(mem, size) &bslash;&n;&t;if(!hostdata-&gt;consistent) &bslash;&n;&t;&t;dma_cache_wback_inv(mem, size)
+macro_line|#else
+DECL|macro|NCR_700_dma_cache_wback
+mdefine_line|#define NCR_700_dma_cache_wback(mem, size) dma_cache_wback(mem,size)
+DECL|macro|NCR_700_dma_cache_inv
+mdefine_line|#define NCR_700_dma_cache_inv(mem, size) dma_cache_inv(mem,size)
+DECL|macro|NCR_700_dma_cache_wback_inv
+mdefine_line|#define NCR_700_dma_cache_wback_inv(mem, size) dma_cache_wback_inv(mem,size)
+macro_line|#endif
 r_struct
 id|NCR_700_Host_Parameters
 suffix:semicolon
@@ -121,6 +137,8 @@ DECL|macro|NCR_700_DEV_BEGIN_SYNC_NEGOTIATION
 mdefine_line|#define NCR_700_DEV_BEGIN_SYNC_NEGOTIATION&t;(1&lt;&lt;17)
 DECL|macro|NCR_700_DEV_BEGIN_TAG_QUEUEING
 mdefine_line|#define NCR_700_DEV_BEGIN_TAG_QUEUEING&t;(1&lt;&lt;18)
+DECL|macro|NCR_700_DEV_TAG_STARVATION_WARNED
+mdefine_line|#define NCR_700_DEV_TAG_STARVATION_WARNED (1&lt;&lt;19)
 r_static
 r_inline
 r_void
@@ -501,6 +519,11 @@ id|Scsi_Cmnd
 op_star
 id|cmnd
 suffix:semicolon
+multiline_comment|/* The pci_mapped address of the actual command in cmnd */
+DECL|member|pCmd
+id|dma_addr_t
+id|pCmd
+suffix:semicolon
 DECL|member|temp
 id|__u32
 id|temp
@@ -559,12 +582,12 @@ op_star
 id|pci_dev
 suffix:semicolon
 DECL|member|dmode_extra
-id|__u8
+id|__u32
 id|dmode_extra
 suffix:semicolon
 multiline_comment|/* adjustable bus settings */
 DECL|member|differential
-id|__u8
+id|__u32
 id|differential
 suffix:colon
 l_int|1
@@ -573,21 +596,21 @@ multiline_comment|/* if we are differential */
 macro_line|#ifdef CONFIG_53C700_LE_ON_BE
 multiline_comment|/* This option is for HP only.  Set it if your chip is wired for&n;&t; * little endian on this platform (which is big endian) */
 DECL|member|force_le_on_be
-id|__u8
+id|__u32
 id|force_le_on_be
 suffix:colon
 l_int|1
 suffix:semicolon
 macro_line|#endif
 DECL|member|chip710
-id|__u8
+id|__u32
 id|chip710
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* set if really a 710 not 700 */
 DECL|member|burst_disable
-id|__u8
+id|__u32
 id|burst_disable
 suffix:colon
 l_int|1
@@ -595,12 +618,20 @@ suffix:semicolon
 multiline_comment|/* set to 1 to disable 710 bursting */
 multiline_comment|/* NOTHING BELOW HERE NEEDS ALTERING */
 DECL|member|fast
-id|__u8
+id|__u32
 id|fast
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* if we can alter the SCSI bus clock&n;                                   speed (so can negiotiate sync) */
+macro_line|#ifdef CONFIG_53C700_USE_CONSISTENT
+DECL|member|consistent
+id|__u32
+id|consistent
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#endif
 DECL|member|sync_clock
 r_int
 id|sync_clock
@@ -633,33 +664,40 @@ id|Scsi_Cmnd
 op_star
 id|cmd
 suffix:semicolon
+multiline_comment|/* Note: pScript contains the single consistent block of&n;&t; * memory.  All the msgin, msgout and status are allocated in&n;&t; * this memory too (at separate cache lines).  TOTAL_MEM_SIZE&n;&t; * represents the total size of this area */
+DECL|macro|MSG_ARRAY_SIZE
+mdefine_line|#define&t;MSG_ARRAY_SIZE&t;8
+DECL|macro|MSGOUT_OFFSET
+mdefine_line|#define&t;MSGOUT_OFFSET&t;(L1_CACHE_ALIGN(sizeof(SCRIPT)))
 DECL|member|msgout
 id|__u8
 op_star
 id|msgout
 suffix:semicolon
-DECL|macro|MSG_ARRAY_SIZE
-mdefine_line|#define&t;MSG_ARRAY_SIZE&t;16
-DECL|member|tag_negotiated
-id|__u8
-id|tag_negotiated
-suffix:semicolon
-DECL|member|status
-id|__u8
-op_star
-id|status
-suffix:semicolon
+DECL|macro|MSGIN_OFFSET
+mdefine_line|#define MSGIN_OFFSET&t;(MSGOUT_OFFSET + L1_CACHE_ALIGN(MSG_ARRAY_SIZE))
 DECL|member|msgin
 id|__u8
 op_star
 id|msgin
 suffix:semicolon
+DECL|macro|STATUS_OFFSET
+mdefine_line|#define STATUS_OFFSET&t;(MSGIN_OFFSET + L1_CACHE_ALIGN(MSG_ARRAY_SIZE))
+DECL|member|status
+id|__u8
+op_star
+id|status
+suffix:semicolon
+DECL|macro|SLOTS_OFFSET
+mdefine_line|#define SLOTS_OFFSET&t;(STATUS_OFFSET + L1_CACHE_ALIGN(MSG_ARRAY_SIZE))
 DECL|member|slots
 r_struct
 id|NCR_700_command_slot
 op_star
 id|slots
 suffix:semicolon
+DECL|macro|TOTAL_MEM_SIZE
+mdefine_line|#define&t;TOTAL_MEM_SIZE&t;(SLOTS_OFFSET + L1_CACHE_ALIGN(sizeof(struct NCR_700_command_slot) * NCR_700_COMMAND_SLOTS_PER_HOST))
 DECL|member|saved_slot_position
 r_int
 id|saved_slot_position
@@ -669,6 +707,10 @@ r_int
 id|command_slot_count
 suffix:semicolon
 multiline_comment|/* protected by state lock */
+DECL|member|tag_negotiated
+id|__u8
+id|tag_negotiated
+suffix:semicolon
 DECL|member|rev
 id|__u8
 id|rev

@@ -1,5 +1,5 @@
-multiline_comment|/*&n;  NinjaSCSI I/O funtions &n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n; &n;  This software may be used and distributed according to the terms of&n;  the GNU Public License.&n;&n;  */
-multiline_comment|/* $Id: nsp_io.h,v 1.8 2001/01/30 05:16:02 elca Exp $ */
+multiline_comment|/*&n;  NinjaSCSI I/O funtions &n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n; &n;  This software may be used and distributed according to the terms of&n;  the GNU General Public License.&n;&n;  */
+multiline_comment|/* $Id: nsp_io.h,v 1.9 2001/09/07 04:32:42 elca Exp $ */
 macro_line|#ifndef __NSP_IO_H__
 DECL|macro|__NSP_IO_H__
 mdefine_line|#define __NSP_IO_H__

@@ -3,7 +3,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-core.c,v 1.58 2000/10/29 22:57:38 frodo Exp $ */
+multiline_comment|/* $Id: i2c-core.c,v 1.64 2001/08/13 01:35:56 mds Exp $ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -728,7 +728,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;i2c-core.o: adapter %s not &quot;
-l_string|&quot;unregisted, because client at &quot;
+l_string|&quot;unregistered, because client at &quot;
 l_string|&quot;address %02x can&squot;t be detached. &quot;
 comma
 id|adap-&gt;name
@@ -2095,6 +2095,10 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|i
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -2508,8 +2512,8 @@ r_if
 c_cond
 (paren
 id|count
-OL
-l_int|0
+OG
+l_int|4000
 )paren
 r_return
 op_minus
@@ -5634,6 +5638,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
+macro_line|#ifdef CONFIG_I2C_CHARDEV
 r_extern
 r_int
 id|i2c_dev_init
@@ -5642,6 +5647,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_ALGOBIT
 r_extern
 r_int
 id|i2c_algo_bit_init
@@ -5650,6 +5657,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_CONFIG_I2C_PHILIPSPAR
 r_extern
 r_int
 id|i2c_bitlp_init
@@ -5658,6 +5667,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_ELV
 r_extern
 r_int
 id|i2c_bitelv_init
@@ -5666,6 +5677,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_VELLEMAN
 r_extern
 r_int
 id|i2c_bitvelle_init
@@ -5674,6 +5687,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_BITVIA
 r_extern
 r_int
 id|i2c_bitvia_init
@@ -5682,6 +5697,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_ALGOPCF
 r_extern
 r_int
 id|i2c_algo_pcf_init
@@ -5690,6 +5707,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_ELEKTOR
 r_extern
 r_int
 id|i2c_pcfisa_init
@@ -5698,6 +5717,37 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_ALGO8XX
+r_extern
+r_int
+id|i2c_algo_8xx_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_RPXLITE
+r_extern
+r_int
+id|i2c_rpx_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_PROC
+r_extern
+r_int
+id|sensors_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* This is needed for automatic patch generation: sensors code starts here */
 multiline_comment|/* This is needed for automatic patch generation: sensors code ends here   */
 DECL|function|i2c_init_all
@@ -5761,6 +5811,29 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_I2C_ELEKTOR
 id|i2c_pcfisa_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* --------------------- 8xx -------- */
+macro_line|#ifdef CONFIG_I2C_ALGO8XX
+id|i2c_algo_8xx_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_I2C_RPXLITE
+id|i2c_rpx_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* -------------- proc interface ---- */
+macro_line|#ifdef CONFIG_I2C_PROC
+id|sensors_init
 c_func
 (paren
 )paren

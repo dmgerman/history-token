@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/cpu-multi32.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* forward-declare task_struct */
 r_struct
@@ -407,5 +408,7 @@ DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte(ptep, pte)&t;&t;&t;processor.pgtable.set_pte(ptep, pte)
 DECL|macro|cpu_switch_mm
 mdefine_line|#define cpu_switch_mm(pgd,tsk)&t;&t;&t;cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)))
+DECL|macro|cpu_get_pgd
+mdefine_line|#define cpu_get_pgd()&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long pg;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;mrc p15, 0, %0, c2, c0, 0&quot;&t;&bslash;&n;&t;&t;&t; : &quot;=r&quot; (pg));&t;&t;&t;&bslash;&n;&t;&t;pg &amp;= ~0x3fff;&t;&t;&t;&t;&bslash;&n;&t;&t;(pgd_t *)phys_to_virt(pg);&t;&t;&bslash;&n;&t;})
 macro_line|#endif
 eof

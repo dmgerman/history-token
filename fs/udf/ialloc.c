@@ -156,7 +156,9 @@ suffix:semicolon
 id|udf_free_blocks
 c_func
 (paren
-id|inode
+id|sb
+comma
+l_int|NULL
 comma
 id|UDF_I_LOCATION
 c_func
@@ -253,7 +255,9 @@ op_assign
 id|udf_new_block
 c_func
 (paren
-id|dir
+id|dir-&gt;i_sb
+comma
+l_int|NULL
 comma
 id|UDF_I_LOCATION
 c_func

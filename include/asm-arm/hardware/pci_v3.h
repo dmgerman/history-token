@@ -126,6 +126,14 @@ mdefine_line|#define V3_SYSTEM_M_RST_OUT             (1 &lt;&lt; 15)
 DECL|macro|V3_SYSTEM_M_LOCK
 mdefine_line|#define V3_SYSTEM_M_LOCK                (1 &lt;&lt; 14)
 multiline_comment|/*  PCI_CFG bits&n; */
+DECL|macro|V3_PCI_CFG_M_I2O_EN
+mdefine_line|#define V3_PCI_CFG_M_I2O_EN&t;&t;(1 &lt;&lt; 15)
+DECL|macro|V3_PCI_CFG_M_IO_REG_DIS
+mdefine_line|#define V3_PCI_CFG_M_IO_REG_DIS&t;&t;(1 &lt;&lt; 14)
+DECL|macro|V3_PCI_CFG_M_IO_DIS
+mdefine_line|#define V3_PCI_CFG_M_IO_DIS&t;&t;(1 &lt;&lt; 13)
+DECL|macro|V3_PCI_CFG_M_EN3V
+mdefine_line|#define V3_PCI_CFG_M_EN3V&t;&t;(1 &lt;&lt; 12)
 DECL|macro|V3_PCI_CFG_M_RETRY_EN
 mdefine_line|#define V3_PCI_CFG_M_RETRY_EN           (1 &lt;&lt; 10)
 DECL|macro|V3_PCI_CFG_M_AD_LOW1

@@ -25,7 +25,7 @@ mdefine_line|#define BCR (*(volatile unsigned int *)(BCR_BASE))
 DECL|macro|BCR_DB1110
 mdefine_line|#define BCR_DB1110 &bslash;&n;&t;(BCR_SPK_OFF  | BCR_QMUTE     | BCR_LED_GREEN  | BCR_LED_RED   | &bslash;&n;&t; BCR_RS232EN  | BCR_LCD_12RGB | BCR_IRDA_MD0)
 DECL|macro|BCR_DB1111
-mdefine_line|#define BCR_DB1111 &bslash;&n;&t;(BCR_SPK_OFF  | BCR_QMUTE     | BCR_LED_GREEN  | BCR_LED_RED   | &bslash;&n;&t; BCR_RS232EN  | BCR_LCD_12RGB | BCR_CF_BUS_OFF | BCR_STEREO_LB | &bslash;&n;&t; BCR_IRDA_MD1 | BCR_CF_RST)
+mdefine_line|#define BCR_DB1111 &bslash;&n;&t;(BCR_SPK_OFF  | BCR_QMUTE     | BCR_LED_GREEN  | BCR_LED_RED   | &bslash;&n;&t; BCR_RS232EN  | BCR_LCD_12RGB | BCR_CF_BUS_OFF | BCR_STEREO_LB | &bslash;&n;&t; BCR_IRDA_MD0 | BCR_CF_RST)
 DECL|macro|BCR_CF_PWR
 mdefine_line|#define BCR_CF_PWR&t;(1&lt;&lt;0)&t;/* Compact Flash Power (1 = 3.3v, 0 = off) */
 DECL|macro|BCR_CF_RST
@@ -261,7 +261,12 @@ mdefine_line|#define NCR_A0VPP&t;&t;(1&lt;&lt;5)
 DECL|macro|NCR_A1VPP
 mdefine_line|#define NCR_A1VPP&t;&t;(1&lt;&lt;6)
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_ASSABET_NEPONSET
 DECL|macro|machine_has_neponset
 mdefine_line|#define machine_has_neponset()  ((SCR_value &amp; SCR_SA1111) == 0)
+macro_line|#else
+DECL|macro|machine_has_neponset
+mdefine_line|#define machine_has_neponset()&t;(0)
+macro_line|#endif
 macro_line|#endif
 eof

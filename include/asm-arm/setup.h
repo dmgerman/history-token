@@ -344,7 +344,7 @@ DECL|member|size
 id|u32
 id|size
 suffix:semicolon
-multiline_comment|/* decompressed ramdisk size */
+multiline_comment|/* decompressed ramdisk size in _kilo_ bytes */
 DECL|member|start
 id|u32
 id|start
@@ -368,7 +368,7 @@ DECL|member|size
 id|u32
 id|size
 suffix:semicolon
-multiline_comment|/* size of compressed ramdisk image */
+multiline_comment|/* size of compressed ramdisk image in bytes */
 )brace
 suffix:semicolon
 multiline_comment|/* board serial number. &quot;64 bits should be enough for everybody&quot; */

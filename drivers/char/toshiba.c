@@ -1,6 +1,6 @@
-multiline_comment|/* toshiba.c -- Linux driver for accessing the SMM on Toshiba laptops&n; *&n; * Copyright (c) 1996-2001  Jonathan A. Buzzard (jonathan@buzzard.org.uk)&n; *&n; * Valuable assistance and patches from:&n; *     Tom May &lt;tom@you-bastards.com&gt;&n; *     Rob Napier &lt;rnapier@employees.org&gt;&n; *&n; * Fn status port numbers for machine ID&squot;s courtesy of&n; *     0xfc02: Scott Eisert &lt;scott.e@sky-eye.com&gt;&n; *     0xfc04: Steve VanDevender &lt;stevev@efn.org&gt;&n; *     0xfc08: Garth Berry &lt;garth@itsbruce.net&gt;&n; *     0xfc0a: Egbert Eich &lt;eich@xfree86.org&gt;&n; *     0xfc10: Andrew Lofthouse &lt;Andrew.Lofthouse@robins.af.mil&gt;&n; *     0xfc11: Spencer Olson &lt;solson@novell.com&gt;&n; *     0xfc13: Claudius Frankewitz &lt;kryp@gmx.de&gt;&n; *     0xfc15: Tom May &lt;tom@you-bastards.com&gt;&n; *     0xfc17: Dave Konrad &lt;konrad@xenia.it&gt;&n; *     0xfc1a: George Betzos &lt;betzos@engr.colostate.edu&gt;&n; *     0xfc1d: Arthur Liu &lt;armie@slap.mine.nu&gt;&n; *     0xfcd1: Mr. Dave Konrad &lt;konrad@xenia.it&gt;&n; *&n; * WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING&n; *&n; *   This code is covered by the GNU GPL and you are free to make any&n; *   changes you wish to it under the terms of the license. However the&n; *   code has the potential to render your computer and/or someone else&squot;s&n; *   unusable. Please proceed with care when modifying the code.&n; *&n; * Note: Unfortunately the laptop hardware can close the System Configuration&n; *       Interface on it&squot;s own accord. It is therefore necessary for *all*&n; *       programs using this driver to be aware that *any* SCI call can fail at&n; *       *any* time. It is up to any program to be aware of this eventuality&n; *       and take appropriate steps.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * The information used to write this driver has been obtained by reverse&n; * engineering the software supplied by Toshiba for their portable computers in&n; * strict accordance with the European Council Directive 92/250/EEC on the legal&n; * protection of computer programs, and it&squot;s implementation into English Law by&n; * the Copyright (Computer Programs) Regulations 1992 (S.I. 1992 No.3233).&n; *&n; */
+multiline_comment|/* toshiba.c -- Linux driver for accessing the SMM on Toshiba laptops&n; *&n; * Copyright (c) 1996-2001  Jonathan A. Buzzard (jonathan@buzzard.org.uk)&n; *&n; * Valuable assistance and patches from:&n; *     Tom May &lt;tom@you-bastards.com&gt;&n; *     Rob Napier &lt;rnapier@employees.org&gt;&n; *&n; * Fn status port numbers for machine ID&squot;s courtesy of&n; *     0xfc02: Scott Eisert &lt;scott.e@sky-eye.com&gt;&n; *     0xfc04: Steve VanDevender &lt;stevev@efn.org&gt;&n; *     0xfc08: Garth Berry &lt;garth@itsbruce.net&gt;&n; *     0xfc0a: Egbert Eich &lt;eich@xfree86.org&gt;&n; *     0xfc10: Andrew Lofthouse &lt;Andrew.Lofthouse@robins.af.mil&gt;&n; *     0xfc11: Spencer Olson &lt;solson@novell.com&gt;&n; *     0xfc13: Claudius Frankewitz &lt;kryp@gmx.de&gt;&n; *     0xfc15: Tom May &lt;tom@you-bastards.com&gt;&n; *     0xfc17: Dave Konrad &lt;konrad@xenia.it&gt;&n; *     0xfc1a: George Betzos &lt;betzos@engr.colostate.edu&gt;&n; *     0xfc1b: Munemasa Wada &lt;munemasa@jnovel.co.jp&gt;&n; *     0xfc1d: Arthur Liu &lt;armie@slap.mine.nu&gt;&n; *     0xfc5a: Jacques L&squot;helgoualc&squot;h &lt;lhh@free.fr&gt;&n; *     0xfcd1: Mr. Dave Konrad &lt;konrad@xenia.it&gt;&n; *&n; * WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING&n; *&n; *   This code is covered by the GNU GPL and you are free to make any&n; *   changes you wish to it under the terms of the license. However the&n; *   code has the potential to render your computer and/or someone else&squot;s&n; *   unusable. Please proceed with care when modifying the code.&n; *&n; * Note: Unfortunately the laptop hardware can close the System Configuration&n; *       Interface on it&squot;s own accord. It is therefore necessary for *all*&n; *       programs using this driver to be aware that *any* SCI call can fail at&n; *       *any* time. It is up to any program to be aware of this eventuality&n; *       and take appropriate steps.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * The information used to write this driver has been obtained by reverse&n; * engineering the software supplied by Toshiba for their portable computers in&n; * strict accordance with the European Council Directive 92/250/EEC on the legal&n; * protection of computer programs, and it&squot;s implementation into English Law by&n; * the Copyright (Computer Programs) Regulations 1992 (S.I. 1992 No.3233).&n; *&n; */
 DECL|macro|TOSH_VERSION
-mdefine_line|#define TOSH_VERSION &quot;1.9 22/3/2001&quot;
+mdefine_line|#define TOSH_VERSION &quot;1.11 26/9/2001&quot;
 DECL|macro|TOSH_DEBUG
 mdefine_line|#define TOSH_DEBUG 0
 macro_line|#include &lt;linux/module.h&gt;
@@ -862,12 +862,10 @@ id|SMMRegisters
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -1002,12 +1000,10 @@ id|SMMRegisters
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 (paren
 id|err
@@ -1151,6 +1147,12 @@ l_int|0xfc15
 suffix:colon
 r_case
 l_int|0xfc1a
+suffix:colon
+r_case
+l_int|0xfc1b
+suffix:colon
+r_case
+l_int|0xfc5a
 suffix:colon
 id|tosh_fn
 op_assign
@@ -1385,6 +1387,8 @@ r_void
 )paren
 (brace
 r_int
+id|i
+comma
 id|major
 comma
 id|minor
@@ -1397,9 +1401,77 @@ id|month
 comma
 id|flag
 suffix:semicolon
+r_int
+r_char
+id|signature
+(braket
+l_int|7
+)braket
+op_assign
+(brace
+l_int|0x54
+comma
+l_int|0x4f
+comma
+l_int|0x53
+comma
+l_int|0x48
+comma
+l_int|0x49
+comma
+l_int|0x42
+comma
+l_int|0x41
+)brace
+suffix:semicolon
 id|SMMRegisters
 id|regs
 suffix:semicolon
+multiline_comment|/* extra sanity check for the string &quot;TOSHIBA&quot; in the BIOS because&n;&t;   some machines that are not Toshiba&squot;s pass the next test */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|7
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|isa_readb
+c_func
+(paren
+l_int|0xfe010
+op_plus
+id|i
+)paren
+op_ne
+id|signature
+(braket
+id|i
+)braket
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;toshiba: not a supported Toshiba laptop&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* call the Toshiba SCI support check routine */
 id|regs.eax
 op_assign

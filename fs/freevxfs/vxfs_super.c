@@ -24,6 +24,12 @@ c_func
 l_string|&quot;Veritas Filesystem (VxFS) driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_void
 id|vxfs_put_super

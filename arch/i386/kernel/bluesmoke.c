@@ -4,6 +4,14 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/msr.h&gt;
+DECL|variable|__initdata
+r_static
+r_int
+id|mce_disabled
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n; *&t;Machine Check Handler For PII/PIII&n; */
 DECL|variable|banks
 r_static
@@ -535,6 +543,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Set up machine check reporting for Intel processors&n; */
 DECL|function|intel_mcheck_init
+r_static
 r_void
 id|__init
 id|intel_mcheck_init
@@ -585,6 +594,19 @@ op_eq
 l_int|5
 )paren
 (brace
+multiline_comment|/* Default P5 to off as its often misconnected */
+r_if
+c_cond
+(paren
+id|mce_disabled
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|machine_check_vector
 op_assign
 id|pentium_machine_check
@@ -632,16 +654,10 @@ l_string|&quot;Intel old style machine check architecture supported.&bslash;n&qu
 suffix:semicolon
 )brace
 multiline_comment|/* Enable MCE */
-id|__asm__
-id|__volatile__
+id|set_in_cr4
+c_func
 (paren
-l_string|&quot;movl %%cr4, %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;orl $0x40, %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;movl %%eax, %%cr4&bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;eax&quot;
+id|X86_CR4_MCE
 )paren
 suffix:semicolon
 id|printk
@@ -905,16 +921,10 @@ comma
 id|hi
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
+id|set_in_cr4
+c_func
 (paren
-l_string|&quot;movl %%cr4, %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;orl $0x40, %%eax&bslash;n&bslash;t&quot;
-l_string|&quot;movl %%eax, %%cr4&bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;eax&quot;
+id|X86_CR4_MCE
 )paren
 suffix:semicolon
 id|printk
@@ -931,13 +941,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This has to be run for each processor&n; */
-DECL|variable|mce_disabled
-r_static
-r_int
-id|mce_disabled
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|mcheck_init
 r_void
 id|__init
@@ -954,6 +957,8 @@ r_if
 c_cond
 (paren
 id|mce_disabled
+op_eq
+l_int|1
 )paren
 (brace
 r_return
@@ -1008,6 +1013,10 @@ id|c
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 )brace
 DECL|function|mcheck_disable
@@ -1030,12 +1039,41 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|mcheck_enable
+r_static
+r_int
+id|__init
+id|mcheck_enable
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|mce_disabled
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|__setup
 c_func
 (paren
 l_string|&quot;nomce&quot;
 comma
 id|mcheck_disable
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;mce&quot;
+comma
+id|mcheck_enable
 )paren
 suffix:semicolon
 eof

@@ -1022,12 +1022,24 @@ c_func
 id|ecoscsi_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Russell King&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Econet-SCSI driver for Acorn machines&quot;
+)paren
 suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

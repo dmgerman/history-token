@@ -397,7 +397,7 @@ id|chandev_msck_status
 id|newstatus
 )paren
 suffix:semicolon
-multiline_comment|/* A driver should call chandev_register_and_probe when ready to be probed,&n; * after registeration the drivers probefunction will be called asynchronously&n; * when more devices become available at normal task time.&n; * The shutdownfunc parameter is used so that the channel layer&n; * can request a driver to close unregister itself &amp; release its interrupts.&n; * repoper func is used when a device becomes operational again after being temporarily&n; * not operational the previous status is sent in the prevstatus variable.&n; * This can be used in cases when the default handling isn&squot;t quite adequete&n; * e.g. if a ssch is needed to reinitialize long running channel programs.&n; */
+multiline_comment|/* A driver should call chandev_register_and_probe when ready to be probed,&n; * after registeration the drivers probefunction will be called asynchronously&n; * when more devices become available at normal task time.&n; * The shutdownfunc parameter is used so that the channel layer&n; * can request a driver to close unregister itself &amp; release its interrupts.&n; * repoper func is used when a device becomes operational again after being temporarily&n; * not operational the previous status is sent in the prevstatus variable.&n; * This can be used in cases when the default handling isn&squot;t quite adequete&n; * e.g. if a ssch is needed to reinitialize long running channel programs.&n; *&n; * This returns the number of devices found or -ENOMEM if the code didn&squot;t&n; * have enough memory to allocate the chandev control block&n; * or -EPERM if a duplicate entry is found.&n; */
 r_int
 id|chandev_register_and_probe
 c_func

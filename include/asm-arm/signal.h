@@ -123,13 +123,17 @@ DECL|macro|SIGRTMAX
 mdefine_line|#define SIGRTMAX&t;(_NSIG-1)
 DECL|macro|SIGSWI
 mdefine_line|#define SIGSWI&t;&t;32
-multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_ONSTACK is not currently supported, but will allow sigaltstack(2).&n; * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_NOCLDSTOP flag to turn off SIGCHLD when children stop.&n; * SA_RESETHAND clears the handler when the signal is delivered.&n; * SA_NOCLDWAIT flag on SIGCHLD to inhibit zombies.&n; * SA_NODEFER prevents the current signal from being masked in the handler.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */
+multiline_comment|/*&n; * SA_FLAGS values:&n; *&n; * SA_NOCLDSTOP&t;&t;flag to turn off SIGCHLD when children stop.&n; * SA_NOCLDWAIT&t;&t;flag on SIGCHLD to inhibit zombies.&n; * SA_SIGINFO&t;&t;deliver the signal with SIGINFO structs&n; * SA_THIRTYTWO&t;&t;delivers the signal in 32-bit mode, even if the task &n; *&t;&t;&t;is running in 26-bit.&n; * SA_ONSTACK&t;&t;allows alternate signal stacks (see sigaltstack(2)).&n; * SA_RESTART&t;&t;flag to get restarting signals (which were the default long ago)&n; * SA_INTERRUPT&t;&t;is a no-op, but left due to historical reasons. Use the&n; * SA_NODEFER&t;&t;prevents the current signal from being masked in the handler.&n; * SA_RESETHAND&t;&t;clears the handler when the signal is delivered.&n; *&n; * SA_ONESHOT and SA_NOMASK are the historical Linux names for the Single&n; * Unix names RESETHAND and NODEFER respectively.&n; */
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;0x00000001
 DECL|macro|SA_NOCLDWAIT
 mdefine_line|#define SA_NOCLDWAIT&t;0x00000002 /* not supported yet */
 DECL|macro|SA_SIGINFO
 mdefine_line|#define SA_SIGINFO&t;0x00000004
+DECL|macro|SA_THIRTYTWO
+mdefine_line|#define SA_THIRTYTWO&t;0x02000000
+DECL|macro|SA_RESTORER
+mdefine_line|#define SA_RESTORER&t;0x04000000
 DECL|macro|SA_ONSTACK
 mdefine_line|#define SA_ONSTACK&t;0x08000000
 DECL|macro|SA_RESTART
@@ -144,10 +148,6 @@ DECL|macro|SA_ONESHOT
 mdefine_line|#define SA_ONESHOT&t;SA_RESETHAND
 DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x20000000 /* dummy -- ignored */
-DECL|macro|SA_RESTORER
-mdefine_line|#define SA_RESTORER&t;0x04000000
-DECL|macro|SA_THIRTYTWO
-mdefine_line|#define SA_THIRTYTWO&t;0x02000000 /* deliver signal in 32-bit mode even if&n;&t;&t;&t;&t;      task is running 26 bits. */
 multiline_comment|/* &n; * sigaltstack controls&n; */
 DECL|macro|SS_ONSTACK
 mdefine_line|#define SS_ONSTACK&t;1

@@ -8261,10 +8261,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined __alpha__ 
-DECL|function|adpt_sparc_info
+DECL|function|adpt_alpha_info
 r_static
 r_void
-id|adpt_sparc_info
+id|adpt_alpha_info
 c_func
 (paren
 id|sysInfo_S
@@ -15621,7 +15621,7 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;BSD without advertising clause&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

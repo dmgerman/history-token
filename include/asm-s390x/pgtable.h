@@ -60,9 +60,6 @@ suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
 macro_line|#endif /* !__ASSEMBLY__ */
-multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
-DECL|macro|set_pte
-mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
 multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a second-level page&n; * table can map&n; */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT       21
@@ -113,6 +110,8 @@ multiline_comment|/*&n; * A pagetable entry of S390 has following format:&n; * |
 multiline_comment|/* Bits in the page table entry */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT   0x001          /* Software                         */
+DECL|macro|_PAGE_MKCLEAR
+mdefine_line|#define _PAGE_MKCLEAR   0x002          /* Software                         */
 DECL|macro|_PAGE_RO
 mdefine_line|#define _PAGE_RO        0x200          /* HW read-only                     */
 DECL|macro|_PAGE_INVALID
@@ -133,7 +132,9 @@ mdefine_line|#define _REGION_THIRD       0x4
 DECL|macro|_REGION_THIRD_LEN
 mdefine_line|#define _REGION_THIRD_LEN   0x3 
 DECL|macro|_REGION_TABLE
-mdefine_line|#define _REGION_TABLE       (_REGION_THIRD|_REGION_THIRD_LEN|0x40)
+mdefine_line|#define _REGION_TABLE       (_REGION_THIRD|_REGION_THIRD_LEN|0x40|0x100)
+DECL|macro|_KERN_REGION_TABLE
+mdefine_line|#define _KERN_REGION_TABLE  (_REGION_THIRD|_REGION_THIRD_LEN)
 multiline_comment|/* Bits in the storage key */
 DECL|macro|_PAGE_CHANGED
 mdefine_line|#define _PAGE_CHANGED    0x02          /* HW changed bit                   */
@@ -185,6 +186,79 @@ DECL|macro|__S110
 mdefine_line|#define __S110  PAGE_SHARED
 DECL|macro|__S111
 mdefine_line|#define __S111  PAGE_SHARED
+multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
+DECL|function|set_pte
+r_extern
+r_inline
+r_void
+id|set_pte
+c_func
+(paren
+id|pte_t
+op_star
+id|pteptr
+comma
+id|pte_t
+id|pteval
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|pte_val
+c_func
+(paren
+id|pteval
+)paren
+op_amp
+(paren
+id|_PAGE_MKCLEAR
+op_or
+id|_PAGE_INVALID
+)paren
+)paren
+op_eq
+id|_PAGE_MKCLEAR
+)paren
+(brace
+id|pte_val
+c_func
+(paren
+id|pteval
+)paren
+op_and_assign
+op_complement
+id|_PAGE_MKCLEAR
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;sske %0,%1&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;d&quot;
+(paren
+l_int|0
+)paren
+comma
+l_string|&quot;a&quot;
+(paren
+id|pte_val
+c_func
+(paren
+id|pteval
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+op_star
+id|pteptr
+op_assign
+id|pteval
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Permanent address of a page.&n; */
 DECL|macro|page_address
 mdefine_line|#define page_address(page) ((page)-&gt;virtual)
@@ -692,28 +766,7 @@ id|pte_t
 id|pte
 )paren
 (brace
-multiline_comment|/* We can&squot;t clear the changed bit atomically. The iske/and/sske&n;         * sequence has a race condition with the page referenced bit.&n;         * At the moment pte_mkclean is always followed by a pte_mkold.&n;         * So its safe to ignore the problem for now. Hope this will&n;         * never change ... */
-id|asm
-r_volatile
-(paren
-l_string|&quot;sske %0,%1&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-l_int|0
-)paren
-comma
-l_string|&quot;a&quot;
-(paren
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* The only user of pte_mkclean is the fork() code.&n;&t;   We must *not* clear the *physical* page dirty bit&n;&t;   just because fork() wants to clear the dirty bit in&n;&t;   *one* of the page&squot;s mappings.  So we just do nothing. */
 r_return
 id|pte
 suffix:semicolon
@@ -752,6 +805,15 @@ id|pte
 )paren
 )paren
 )paren
+suffix:semicolon
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_and_assign
+op_complement
+id|_PAGE_MKCLEAR
 suffix:semicolon
 r_return
 id|pte
@@ -1058,7 +1120,7 @@ id|__pte
 suffix:semicolon
 )brace
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page,pgprot) mk_pte_phys(__pa(((page)-mem_map)&lt;&lt;PAGE_SHIFT),pgprot)
+mdefine_line|#define mk_pte(pg, pgprot)                                                &bslash;&n;({                                                                        &bslash;&n;&t;struct page *__page = (pg);                                       &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;pte_t __pte = mk_pte_phys(__physpage, (pgprot));                  &bslash;&n;&t;                                                                  &bslash;&n;&t;if (__page != ZERO_PAGE(__physpage)) {                            &bslash;&n;&t;&t;int __users = page_count(__page);                         &bslash;&n;&t;&t;__users -= !!__page-&gt;buffers + !!__page-&gt;mapping;         &bslash;&n;&t;                                                                  &bslash;&n;&t;&t;if (__users == 1)                                         &bslash;&n;&t;&t;&t;pte_val(__pte) |= _PAGE_MKCLEAR;                  &bslash;&n;        }                                                                 &bslash;&n;&t;                                                                  &bslash;&n;&t;__pte;                                                            &bslash;&n;})
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x) (mem_map+(unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
 DECL|macro|pmd_page
@@ -1150,5 +1212,8 @@ DECL|macro|PageSkip
 mdefine_line|#define PageSkip(page)          (0)
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)   (1)
+multiline_comment|/*&n; * No page table caches to initialise&n; */
+DECL|macro|pgtable_cache_init
+mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 macro_line|#endif /* _S390_PAGE_H */
 eof

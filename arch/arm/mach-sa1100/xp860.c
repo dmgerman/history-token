@@ -47,6 +47,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Note: I replaced the sa1111_init() without the full SA1111 initialisation&n; * because this machine doesn&squot;t appear to use the DMA features.  If this is&n; * wrong, please look at neponset.c to fix it properly.&n; */
 DECL|function|xp860_init
 r_static
 r_int
@@ -61,7 +62,26 @@ id|pm_power_off
 op_assign
 id|xp860_power_off
 suffix:semicolon
-id|sa1111_init
+multiline_comment|/*&n;&t; * Probe for SA1111.&n;&t; */
+id|ret
+op_assign
+id|sa1111_probe
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
+multiline_comment|/*&n;&t; * We found it.  Wake the chip up.&n;&t; */
+id|sa1111_wake
 c_func
 (paren
 )paren

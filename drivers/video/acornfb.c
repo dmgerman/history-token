@@ -7253,10 +7253,24 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Russell King&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;VIDC 1/1a/20 framebuffer driver&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

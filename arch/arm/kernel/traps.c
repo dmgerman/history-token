@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -768,6 +769,11 @@ c_func
 (paren
 id|regs
 )paren
+op_logical_or
+id|in_interrupt
+c_func
+(paren
+)paren
 )paren
 (brace
 id|mm_segment_t
@@ -899,7 +905,8 @@ id|mode
 (brace
 r_int
 r_int
-id|addr
+op_star
+id|pc
 suffix:semicolon
 id|siginfo_t
 id|info
@@ -918,8 +925,13 @@ l_int|2
 suffix:colon
 l_int|4
 suffix:semicolon
-id|addr
+id|pc
 op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
 id|instruction_pointer
 c_func
 (paren
@@ -931,13 +943,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s (%d): undefined instruction: pc=%08lx&bslash;n&quot;
+l_string|&quot;%s (%d): undefined instruction: pc=%p&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
-id|addr
+id|pc
 )paren
 suffix:semicolon
 id|dump_instr
@@ -969,11 +981,7 @@ id|ILL_ILLOPC
 suffix:semicolon
 id|info.si_addr
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|addr
+id|pc
 suffix:semicolon
 id|force_sig_info
 c_func

@@ -87,6 +87,8 @@ DECL|macro|DEBUG_MAX_LEVEL
 mdefine_line|#define DEBUG_MAX_LEVEL            6  /* debug levels range from 0 to 6 */
 DECL|macro|DEBUG_OFF_LEVEL
 mdefine_line|#define DEBUG_OFF_LEVEL            -1 /* level where debug is switched off */
+DECL|macro|DEBUG_FLUSH_ALL
+mdefine_line|#define DEBUG_FLUSH_ALL            -1 /* parameter to flush all areas */
 DECL|macro|DEBUG_MAX_VIEWS
 mdefine_line|#define DEBUG_MAX_VIEWS            10 /* max number of views in proc fs */
 DECL|macro|DEBUG_MAX_PROCF_LEN

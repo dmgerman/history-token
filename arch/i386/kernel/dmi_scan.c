@@ -9,6 +9,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
+DECL|variable|is_sony_vaio_laptop
+r_int
+id|is_sony_vaio_laptop
+suffix:semicolon
 DECL|struct|dmi_header
 r_struct
 id|dmi_header
@@ -1064,10 +1068,6 @@ suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SONYPI) || defined(CONFIG_SONYPI_MODULE)
 multiline_comment|/*&n; * Check for a Sony Vaio system in order to enable the use of&n; * the sonypi driver (we don&squot;t want this driver to be used on&n; * other systems, even if they have the good PCI IDs).&n; *&n; * This one isn&squot;t a bug detect for those who asked, we simply want to&n; * activate Sony specific goodies like the camera and jogdial..&n; */
-DECL|variable|is_sony_vaio_laptop
-r_int
-id|is_sony_vaio_laptop
-suffix:semicolon
 DECL|function|sony_vaio_laptop
 r_static
 id|__init

@@ -298,6 +298,7 @@ c_func
 id|buffer
 comma
 l_string|&quot;State:&bslash;t%s&bslash;n&quot;
+l_string|&quot;Tgid:&bslash;t%d&bslash;n&quot;
 l_string|&quot;Pid:&bslash;t%d&bslash;n&quot;
 l_string|&quot;PPid:&bslash;t%d&bslash;n&quot;
 l_string|&quot;TracerPid:&bslash;t%d&bslash;n&quot;
@@ -309,6 +310,8 @@ c_func
 (paren
 id|p
 )paren
+comma
+id|p-&gt;tgid
 comma
 id|p-&gt;pid
 comma

@@ -625,6 +625,9 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
+r_int
+id|pg_size
+suffix:semicolon
 multiline_comment|/*&n; * display in kilobytes.&n; */
 DECL|macro|K
 mdefine_line|#define K(x) ((x) &lt;&lt; (PAGE_SHIFT - 10))
@@ -643,6 +646,17 @@ c_func
 op_amp
 id|i
 )paren
+suffix:semicolon
+id|pg_size
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|page_cache_size
+)paren
+op_minus
+id|i.bufferram
 suffix:semicolon
 id|len
 op_assign
@@ -690,12 +704,7 @@ comma
 id|B
 c_func
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|page_cache_size
-)paren
+id|pg_size
 )paren
 comma
 id|B
@@ -771,12 +780,7 @@ comma
 id|K
 c_func
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|page_cache_size
-)paren
+id|pg_size
 op_minus
 id|swapper_space.nrpages
 )paren

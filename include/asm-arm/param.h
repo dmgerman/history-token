@@ -8,6 +8,10 @@ macro_line|#ifndef HZ
 DECL|macro|HZ
 mdefine_line|#define HZ 100
 macro_line|#endif
+macro_line|#if defined(__KERNEL__) &amp;&amp; (HZ == 100)
+DECL|macro|hz_to_std
+mdefine_line|#define hz_to_std(a) (a)
+macro_line|#endif
 macro_line|#ifndef NGROUPS
 DECL|macro|NGROUPS
 mdefine_line|#define NGROUPS         32

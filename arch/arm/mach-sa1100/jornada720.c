@@ -110,10 +110,26 @@ op_or
 id|PPC_LDD4
 suffix:semicolon
 multiline_comment|/* initialize extra IRQs */
-id|sa1111_init_irq
+id|set_GPIO_IRQ_edge
+c_func
+(paren
+id|GPIO_GPIO
 c_func
 (paren
 l_int|1
+)paren
+comma
+id|GPIO_RISING_EDGE
+)paren
+suffix:semicolon
+id|sa1111_init_irq
+c_func
+(paren
+id|SA1100_GPIO_TO_IRQ
+c_func
+(paren
+l_int|1
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* chained on GPIO 1 */

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  arch/s390/mm/extable.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Hartmut Penner (hp@de.ibm.com)&n; *&n; *  Derived from &quot;arch/i386/mm/extable.c&quot;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_const
@@ -114,6 +115,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
 r_int
 r_int
 DECL|function|search_exception_table
@@ -128,6 +133,12 @@ id|addr
 r_int
 r_int
 id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 macro_line|#ifndef CONFIG_MODULES
 id|addr
@@ -155,12 +166,16 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
+id|ret
+op_assign
 id|FIX_PSW
 c_func
 (paren
 id|ret
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */
@@ -174,6 +189,15 @@ op_and_assign
 l_int|0x7fffffff
 suffix:semicolon
 multiline_comment|/* remove amode bit from address */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -196,6 +220,17 @@ c_cond
 id|mp-&gt;ex_table_start
 op_eq
 l_int|NULL
+op_logical_or
+op_logical_neg
+(paren
+id|mp-&gt;flags
+op_amp
+(paren
+id|MOD_RUNNING
+op_or
+id|MOD_INITIALIZING
+)paren
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -218,17 +253,31 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
+(brace
+id|ret
+op_assign
 id|FIX_PSW
 c_func
 (paren
 id|ret
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
-r_return
-l_int|0
+r_break
 suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|modlist_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

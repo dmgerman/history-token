@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/mathemu.h&gt;
 macro_line|#if CONFIG_REMOTE_DEBUG
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#endif
@@ -111,6 +110,8 @@ macro_line|#endif
 DECL|variable|die_lock
 id|spinlock_t
 id|die_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|die
 r_void
@@ -143,6 +144,12 @@ op_amp
 id|die_lock
 )paren
 suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -159,6 +166,12 @@ id|show_regs
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irq

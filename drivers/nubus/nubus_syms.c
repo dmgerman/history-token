@@ -19,6 +19,12 @@ id|nubus_proc_detach_device
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|nubus_find_device
 id|EXPORT_SYMBOL
 c_func

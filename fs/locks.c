@@ -1683,6 +1683,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;locks_conflict(): impossible lock type - %d&bslash;n&quot;
 comma
 id|caller_fl-&gt;fl_type
@@ -2114,7 +2115,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function tests for deadlock condition before putting a process to&n; * sleep. The detection scheme is no longer recursive. Recursive was neat,&n; * but dangerous - we risked stack corruption if the lock data was bad, or&n; * if the recursion was too deep for any other reason.&n; *&n; * We rely on the fact that a task can only be on one lock&squot;s wait queue&n; * at a time. When we find blocked_task on a wait queue we can re-search&n; * with blocked_task equal to that queue&squot;s owner, until either blocked_task&n; * isn&squot;t found, or blocked_task is found on a queue owned by my_task.&n; *&n; * Note: the above assumption may not be true when handling lock requests&n; * from a broken NFS client. But broken NFS clients have a lot more to&n; * worry about than proper deadlock detection anyway... --okir&n; */
 DECL|function|posix_locks_deadlock
-r_static
 r_int
 id|posix_locks_deadlock
 c_func
@@ -2363,6 +2363,17 @@ l_int|0
 suffix:semicolon
 r_int
 id|error
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_fl
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|new_fl-&gt;fl_owner
 op_assign
@@ -5123,6 +5134,17 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|file_lock
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOLCK
+suffix:semicolon
 multiline_comment|/*&n;&t; * This might block, so we do it before checking the inode.&n;&t; */
 id|error
 op_assign
@@ -5780,6 +5802,17 @@ id|inode
 suffix:semicolon
 r_int
 id|error
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|file_lock
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOLCK
 suffix:semicolon
 multiline_comment|/*&n;&t; * This might block, so we do it before checking the inode.&n;&t; */
 id|error

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * ss.h 1.28 2000/06/12 21:55:40&n; *&n; * The contents o
 macro_line|#ifndef _LINUX_SS_H
 DECL|macro|_LINUX_SS_H
 mdefine_line|#define _LINUX_SS_H
+macro_line|#include &lt;pcmcia/cs_types.h&gt;
 multiline_comment|/* Definitions for card status flags for GetStatus */
 DECL|macro|SS_WRPROT
 mdefine_line|#define SS_WRPROT&t;0x0001
@@ -50,6 +51,10 @@ suffix:semicolon
 DECL|member|map_size
 id|u_int
 id|map_size
+suffix:semicolon
+DECL|member|io_offset
+id|ioaddr_t
+id|io_offset
 suffix:semicolon
 DECL|member|pci_irq
 id|u_char
@@ -171,7 +176,7 @@ id|speed
 suffix:semicolon
 DECL|member|start
 DECL|member|stop
-id|u_short
+id|ioaddr_t
 id|start
 comma
 id|stop

@@ -1,10 +1,10 @@
-multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU Public License.&n;&n;=========================================================*/
-multiline_comment|/* $Id: nsp_cs.h,v 1.21 2001/07/04 14:45:31 elca Exp $ */
+multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;=========================================================*/
+multiline_comment|/* $Id: nsp_cs.h,v 1.27 2001/09/10 10:31:13 elca Exp $ */
 macro_line|#ifndef  __nsp_cs__
 DECL|macro|__nsp_cs__
 mdefine_line|#define  __nsp_cs__
 multiline_comment|/* for debugging */
-multiline_comment|/*&n;#define DBG&n;#define DBG_PRINT&n;#define DBG_SHOWCOMMAND&n;#define PCMCIA_DEBUG 9&n;*/
+multiline_comment|/*#define PCMCIA_DEBUG 9*/
 multiline_comment|/*&n;#define static&n;#define inline&n;*/
 multiline_comment|/************************************&n; * Some useful macros...&n; */
 DECL|macro|Number
@@ -429,6 +429,49 @@ DECL|typedef|nsp_hw_data
 id|nsp_hw_data
 suffix:semicolon
 r_static
+r_void
+id|nsp_cs_release
+c_func
+(paren
+id|u_long
+id|arg
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_cs_event
+c_func
+(paren
+id|event_t
+id|event
+comma
+r_int
+id|priority
+comma
+id|event_callback_args_t
+op_star
+id|args
+)paren
+suffix:semicolon
+r_static
+id|dev_link_t
+op_star
+id|nsp_cs_attach
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_void
+id|nsp_cs_detach
+c_func
+(paren
+id|dev_link_t
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 r_int
 id|nsphw_start_selection
@@ -458,6 +501,79 @@ id|data
 comma
 r_int
 id|time
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_detect
+c_func
+(paren
+id|Scsi_Host_Template
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_release
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shpnt
+)paren
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|nsp_info
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shpnt
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_queuecommand
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+comma
+r_void
+(paren
+op_star
+id|done
+)paren
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_static
@@ -539,7 +655,6 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#ifdef PCMCIA_DEBUG
-macro_line|# ifdef DBG_SHOWCOMMAND
 r_static
 r_void
 id|show_command
@@ -580,7 +695,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-macro_line|# endif /* DBG_SHOWCOMMAND */
 macro_line|#else
 DECL|macro|show_command
 macro_line|# define show_command(ptr)   /* */

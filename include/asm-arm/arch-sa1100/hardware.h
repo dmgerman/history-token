@@ -92,8 +92,8 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_EMPEG
 macro_line|#include &quot;empeg.h&quot;
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_BITSY
-macro_line|#include &quot;bitsy.h&quot;
+macro_line|#ifdef CONFIG_SA1100_H3600
+macro_line|#include &quot;h3600.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_ITSY
 macro_line|#include &quot;itsy.h&quot;
@@ -115,6 +115,12 @@ macro_line|#include &quot;lart.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_SIMPAD
 macro_line|#include &quot;simpad.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_GRAPHICSMASTER)
+macro_line|#include &quot;graphicsmaster.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_ADSBITSY)
+macro_line|#include &quot;adsbitsy.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1101
 multiline_comment|/*&n; * We have mapped the sa1101 depending on the value of SA1101_BASE.&n; * It then appears from 0xf4000000.&n; */

@@ -682,7 +682,6 @@ id|do_BUG
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SONYPI) || defined(CONFIG_SONYPI_MODULE)
 r_extern
 r_int
 id|is_sony_vaio_laptop
@@ -694,5 +693,4 @@ c_func
 id|is_sony_vaio_laptop
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

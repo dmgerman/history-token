@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/compat.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * We keep the old params compatibility cruft in one place (here)&n; * so we don&squot;t end up with lots of &n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/compat.c&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * We keep the old params compatibility cruft in one place (here)&n; * so we don&squot;t end up with lots of mess around other places.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -4,24 +4,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;msgqueue.h&quot;
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Russell King&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;SCSI message queue handling&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Function: struct msgqueue_entry *mqe_alloc(MsgQueue_t *msgq)&n; * Purpose : Allocate a message queue entry&n; * Params  : msgq - message queue to claim entry for&n; * Returns : message queue entry or NULL.&n; */
 DECL|function|mqe_alloc
 r_static
@@ -493,29 +475,22 @@ c_func
 id|msgqueue_flush
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|__init
-id|init_module
+id|MODULE_AUTHOR
 c_func
 (paren
-r_void
+l_string|&quot;Russell King&quot;
 )paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|__exit
-id|cleanup_module
+id|MODULE_DESCRIPTION
 c_func
 (paren
-r_void
+l_string|&quot;SCSI message queue handling&quot;
 )paren
-(brace
-)brace
-macro_line|#endif
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

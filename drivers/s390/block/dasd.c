@@ -4180,13 +4180,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|DASD_MESSAGE
+id|DASD_DRIVER_DEBUG_EVENT
 (paren
-id|KERN_WARNING
+l_int|2
 comma
-id|device
+id|dasd_alloc_request
 comma
-l_string|&quot;Low memory! Using emergency request %p&quot;
+l_string|&quot;(%04x) Low memory! Using emergency request %p.&quot;
+comma
+id|device-&gt;devinfo.devno
 comma
 id|device-&gt;lowmem_ccws
 )paren
@@ -4284,14 +4286,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DASD_MESSAGE
+id|DASD_DRIVER_DEBUG_EVENT
 (paren
-id|KERN_WARNING
+l_int|2
 comma
-id|device
+id|dasd_alloc_request
 comma
-l_string|&quot;Refusing emergency mem for request &quot;
+l_string|&quot;(%04x) Refusing emergency mem for request &quot;
 l_string|&quot;NULL, already in use at %p.&quot;
+comma
+id|device-&gt;devinfo.devno
 comma
 id|device-&gt;lowmem_ccws
 )paren
@@ -4718,6 +4722,7 @@ comma
 id|CQR_STATUS_QUEUED
 )paren
 suffix:semicolon
+macro_line|#ifdef DASD_PROFILE
 multiline_comment|/* save profile information for non erp cqr */
 r_if
 c_cond
@@ -4781,6 +4786,7 @@ id|counter
 op_increment
 suffix:semicolon
 )brace
+macro_line|#endif 
 )brace
 multiline_comment|/*&n; * function dasd_chanq_enq_head&n; * chains the cqr given as argument to the queue head&n; * has to be called with the queue lock (namely the s390_irq_lock) acquired&n; */
 r_inline
@@ -6379,13 +6385,15 @@ op_eq
 id|WRITE
 )paren
 (brace
-id|DASD_MESSAGE
+id|DASD_DRIVER_DEBUG_EVENT
 (paren
-id|KERN_WARNING
+l_int|3
 comma
-id|device
+id|dasd_int_handler
 comma
-l_string|&quot;rejecting write request %p&bslash;n&quot;
+l_string|&quot;(%04x) Rejecting write request %p&bslash;n&quot;
+comma
+id|device-&gt;devinfo.devno
 comma
 id|req
 )paren
@@ -6439,13 +6447,16 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|DASD_MESSAGE
+id|DASD_DRIVER_DEBUG_EVENT
 (paren
-id|KERN_WARNING
+l_int|3
 comma
-id|device
+id|dasd_int_handler
 comma
-l_string|&quot;CCW creation failed on request %p&bslash;n&quot;
+l_string|&quot;(%04x) CCW creation failed &quot;
+l_string|&quot;on request %p&bslash;n&quot;
+comma
+id|device-&gt;devinfo.devno
 comma
 id|req
 )paren
@@ -7558,8 +7569,7 @@ op_assign
 id|__u32
 )paren
 (paren
-r_void
-op_star
+id|addr_t
 )paren
 id|cqr-&gt;cpaddr
 suffix:semicolon
@@ -8261,47 +8271,19 @@ id|major
 op_assign
 id|device-&gt;major_info-&gt;gendisk.major
 suffix:semicolon
-r_int
-id|minor
-op_assign
-id|start
-op_plus
-id|i
-suffix:semicolon
-id|kdev_t
-id|devi
-op_assign
+id|invalidate_device
+c_func
+(paren
 id|MKDEV
 (paren
 id|major
 comma
-id|minor
+id|start
+op_plus
+id|i
 )paren
-suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|get_super
-(paren
-id|devi
-)paren
-suffix:semicolon
-singleline_comment|//sync_dev (devi);
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|invalidate_inodes
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|invalidate_buffers
-(paren
-id|devi
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -8528,32 +8510,17 @@ id|DASD_API_VERSION
 suffix:semicolon
 id|rc
 op_assign
-id|copy_to_user
+id|put_user
+c_func
 (paren
+id|ver
+comma
 (paren
 r_int
 op_star
 )paren
 id|data
-comma
-op_amp
-id|ver
-comma
-r_sizeof
-(paren
-r_int
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-id|rc
-op_assign
-op_minus
-id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8578,32 +8545,51 @@ l_int|1
 suffix:semicolon
 id|rc
 op_assign
-id|copy_to_user
+id|put_user
+c_func
 (paren
+id|blocks
+comma
 (paren
 r_int
 op_star
 )paren
 id|data
-comma
-op_amp
-id|blocks
-comma
-r_sizeof
-(paren
-r_int
-)paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_break
+suffix:semicolon
+)brace
+r_case
+id|BLKGETSIZE64
+suffix:colon
+(brace
+id|u64
+id|blocks
+op_assign
+id|major_info-&gt;gendisk.sizes
+(braket
+id|MINOR
 (paren
-id|rc
+id|inp-&gt;i_rdev
 )paren
+)braket
+suffix:semicolon
 id|rc
 op_assign
-op_minus
-id|EFAULT
+id|put_user
+c_func
+(paren
+id|blocks
+op_lshift
+l_int|10
+comma
+(paren
+id|u64
+op_star
+)paren
+id|data
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -12899,15 +12885,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|printk
-(paren
-id|KERN_ERR
-id|PRINTK_HEADER
-l_string|&quot;called dasd_state_accept_to_init for device %02x&bslash;n&quot;
-comma
-id|device-&gt;devinfo.devno
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13074,6 +13051,8 @@ c_cond
 id|device-&gt;init_cqr
 )paren
 (brace
+multiline_comment|/* This pointer is no longer needed, BUT dont&squot;t free the       */
+multiline_comment|/* memory, because this is done in bh for finished request!!!! */
 id|atomic_dec
 c_func
 (paren
@@ -13085,7 +13064,6 @@ id|device-&gt;init_cqr
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* This one is no longer needed */
 )brace
 id|device-&gt;level
 op_assign
@@ -13459,15 +13437,6 @@ id|device
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-id|major
-op_assign
-id|MAJOR
-c_func
-(paren
-id|device-&gt;kdev
-)paren
 suffix:semicolon
 r_int
 id|minor
@@ -15163,13 +15132,40 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+multiline_comment|/* replace LF with &squot;&bslash;0&squot; */
+r_if
+c_cond
+(paren
+id|buffer
+(braket
+id|user_len
+op_minus
+l_int|1
+)braket
+op_eq
+l_char|&squot;&bslash;n&squot;
+)paren
+(brace
+id|buffer
+(braket
+id|user_len
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+)brace
+r_else
+(brace
 id|buffer
 (braket
 id|user_len
 )braket
 op_assign
-l_int|0
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
+)brace
 id|printk
 (paren
 id|KERN_INFO
@@ -15398,7 +15394,7 @@ id|printk
 (paren
 id|KERN_WARNING
 id|PRINTK_HEADER
-l_string|&quot;/proc/dasd/devices: parse error in &squot;%s&squot;&quot;
+l_string|&quot;/proc/dasd/devices: range parse error in &squot;%s&squot;&bslash;n&quot;
 comma
 id|buffer
 )paren
@@ -15546,7 +15542,7 @@ id|printk
 (paren
 id|KERN_WARNING
 id|PRINTK_HEADER
-l_string|&quot;/proc/dasd/devices: parse error in &squot;%s&squot;&quot;
+l_string|&quot;/proc/dasd/devices: parse error in &squot;%s&squot;&bslash;n&quot;
 comma
 id|buffer
 )paren

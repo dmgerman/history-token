@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/cpu.c&n; *&n; *  Copyright (C) 2001 Deep Blue Solutions Ltd.&n; *&n; *  $Id: cpu.c,v 1.1 2001/06/17 10:12:37 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * CPU support functions&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/cpu.c&n; *&n; *  Copyright (C) 2001 Deep Blue Solutions Ltd.&n; *&n; *  $Id: cpu.c,v 1.2 2001/09/22 12:11:17 rmk Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * CPU support functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -215,10 +215,10 @@ id|vco
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Validate the speed in khz.  If it is outside our&n; * range, then return the lowest.&n; */
-DECL|function|cpufreq_validatespeed
+DECL|function|integrator_validatespeed
 r_int
 r_int
-id|cpufreq_validatespeed
+id|integrator_validatespeed
 c_func
 (paren
 r_int
@@ -283,9 +283,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|cpufreq_setspeed
+DECL|function|integrator_setspeed
 r_void
-id|cpufreq_setspeed
+id|integrator_setspeed
 c_func
 (paren
 r_int
@@ -461,6 +461,14 @@ id|cpufreq_init
 c_func
 (paren
 id|cpu_freq_khz
+)paren
+suffix:semicolon
+id|cpufreq_setfunctions
+c_func
+(paren
+id|integrator_validatespeed
+comma
+id|integrator_setspeed
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -264,6 +264,10 @@ DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm,address)       ({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)                     do { } while (0)
+DECL|macro|pmd_free_slow
+mdefine_line|#define pmd_free_slow(x)&t;&t;do { } while (0)
+DECL|macro|pmd_free_fast
+mdefine_line|#define pmd_free_fast(x)                do { } while (0)
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)      BUG()
 DECL|function|pmd_populate

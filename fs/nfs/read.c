@@ -110,7 +110,7 @@ c_func
 (paren
 id|nfs_rdata_cachep
 comma
-id|SLAB_NFS
+id|SLAB_NOFS
 )paren
 suffix:semicolon
 r_if

@@ -11,6 +11,13 @@ macro_line|#include &lt;linux/lockd/nlm.h&gt;
 macro_line|#include &lt;linux/lockd/lockd.h&gt;
 DECL|macro|NLMDBG_FACILITY
 mdefine_line|#define NLMDBG_FACILITY&t;&t;NLMDBG_SVCLOCK
+macro_line|#ifdef CONFIG_LOCKD_V4
+DECL|macro|nlm_deadlock
+mdefine_line|#define nlm_deadlock&t;nlm4_deadlock
+macro_line|#else
+DECL|macro|nlm_deadlock
+mdefine_line|#define nlm_deadlock&t;nlm_lck_denied
+macro_line|#endif
 r_static
 r_void
 id|nlmsvc_insert_block
@@ -1246,14 +1253,9 @@ suffix:semicolon
 r_case
 id|EDEADLK
 suffix:colon
-macro_line|#ifdef CONFIG_LOCKD_V4
 r_return
-id|nlm4_deadlock
+id|nlm_deadlock
 suffix:semicolon
-multiline_comment|/* will be downgraded to lck_deined if this&n;&t;&t;&t;&t;&t;       * is a NLMv1,3 request */
-macro_line|#else
-multiline_comment|/* no applicable NLM status */
-macro_line|#endif
 r_case
 id|EAGAIN
 suffix:colon
@@ -1284,6 +1286,30 @@ id|file-&gt;f_sema
 suffix:semicolon
 r_return
 id|nlm_lck_denied
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|posix_locks_deadlock
+c_func
+(paren
+op_amp
+id|lock-&gt;fl
+comma
+id|conflock
+)paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|file-&gt;f_sema
+)paren
+suffix:semicolon
+r_return
+id|nlm_deadlock
 suffix:semicolon
 )brace
 multiline_comment|/* If we don&squot;t have a block, create and initialize it. Then&n;&t; * retry because we may have slept in kmalloc. */

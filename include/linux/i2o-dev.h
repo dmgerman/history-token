@@ -20,15 +20,15 @@ mdefine_line|#define I2OPARMSET&t;&t;_IOWR(I2O_MAGIC_NUMBER,3,struct i2o_cmd_pse
 DECL|macro|I2OPARMGET
 mdefine_line|#define I2OPARMGET&t;&t;_IOWR(I2O_MAGIC_NUMBER,4,struct i2o_cmd_psetget)
 DECL|macro|I2OSWDL
-mdefine_line|#define I2OSWDL&t;&t;&t;_IOWR(I2O_MAGIC_NUMBER,5,struct i2o_sw_xfer)
+mdefine_line|#define I2OSWDL &t;&t;_IOWR(I2O_MAGIC_NUMBER,5,struct i2o_sw_xfer)
 DECL|macro|I2OSWUL
-mdefine_line|#define I2OSWUL&t;&t;&t;_IOWR(I2O_MAGIC_NUMBER,6,struct i2o_sw_xfer)
+mdefine_line|#define I2OSWUL &t;&t;_IOWR(I2O_MAGIC_NUMBER,6,struct i2o_sw_xfer)
 DECL|macro|I2OSWDEL
 mdefine_line|#define I2OSWDEL&t;&t;_IOWR(I2O_MAGIC_NUMBER,7,struct i2o_sw_xfer)
 DECL|macro|I2OVALIDATE
 mdefine_line|#define I2OVALIDATE&t;&t;_IOR(I2O_MAGIC_NUMBER,8,u32)
 DECL|macro|I2OHTML
-mdefine_line|#define I2OHTML&t;&t;&t;_IOWR(I2O_MAGIC_NUMBER,9,struct i2o_html)
+mdefine_line|#define I2OHTML &t;&t;_IOWR(I2O_MAGIC_NUMBER,9,struct i2o_html)
 DECL|macro|I2OEVTREG
 mdefine_line|#define I2OEVTREG&t;&t;_IOW(I2O_MAGIC_NUMBER,10,struct i2o_evt_id)
 DECL|macro|I2OEVTGET
@@ -292,9 +292,9 @@ mdefine_line|#define I2O_BUS_PCMCIA&t;5
 DECL|macro|I2O_BUS_NUBUS
 mdefine_line|#define I2O_BUS_NUBUS&t;6
 DECL|macro|I2O_BUS_CARDBUS
-mdefine_line|#define I2O_BUS_CARDBUS&t;7
+mdefine_line|#define I2O_BUS_CARDBUS 7
 DECL|macro|I2O_BUS_UNKNOWN
-mdefine_line|#define I2O_BUS_UNKNOWN&t;0x80
+mdefine_line|#define I2O_BUS_UNKNOWN 0x80
 macro_line|#ifndef __KERNEL__
 DECL|typedef|u8
 r_typedef
@@ -480,9 +480,9 @@ id|parent_tid
 suffix:colon
 l_int|12
 suffix:semicolon
-DECL|member|state
+DECL|member|tate
 id|u32
-id|state
+id|tate
 suffix:colon
 l_int|4
 suffix:semicolon
@@ -853,7 +853,7 @@ mdefine_line|#define I2O_EVT_IND_EXEC_POWER_FAIL&t;&t;0x00000008
 DECL|macro|I2O_EVT_IND_EXEC_RESET_PENDING
 mdefine_line|#define I2O_EVT_IND_EXEC_RESET_PENDING&t;&t;0x00000010
 DECL|macro|I2O_EVT_IND_EXEC_RESET_IMMINENT
-mdefine_line|#define I2O_EVT_IND_EXEC_RESET_IMMINENT&t;&t;0x00000020
+mdefine_line|#define I2O_EVT_IND_EXEC_RESET_IMMINENT &t;0x00000020
 DECL|macro|I2O_EVT_IND_EXEC_HW_FAIL
 mdefine_line|#define I2O_EVT_IND_EXEC_HW_FAIL&t;&t;0x00000040
 DECL|macro|I2O_EVT_IND_EXEC_XCT_CHANGE
@@ -872,7 +872,7 @@ mdefine_line|#define I2O_EVT_IND_BSA_VOLUME_UNLOAD&t;&t;0x00000002
 DECL|macro|I2O_EVT_IND_BSA_VOLUME_UNLOAD_REQ
 mdefine_line|#define I2O_EVT_IND_BSA_VOLUME_UNLOAD_REQ&t;0x00000004
 DECL|macro|I2O_EVT_IND_BSA_CAPACITY_CHANGE
-mdefine_line|#define I2O_EVT_IND_BSA_CAPACITY_CHANGE&t;&t;0x00000008
+mdefine_line|#define I2O_EVT_IND_BSA_CAPACITY_CHANGE &t;0x00000008
 DECL|macro|I2O_EVT_IND_BSA_SCSI_SMART
 mdefine_line|#define I2O_EVT_IND_BSA_SCSI_SMART&t;&t;0x00000010
 multiline_comment|/* Event data for generic events */
@@ -883,7 +883,7 @@ mdefine_line|#define I2O_EVT_STATE_CHANGE_SUSPENDED&t;&t;0x01
 DECL|macro|I2O_EVT_STATE_CHANGE_RESTART
 mdefine_line|#define I2O_EVT_STATE_CHANGE_RESTART&t;&t;0x02
 DECL|macro|I2O_EVT_STATE_CHANGE_NA_RECOVER
-mdefine_line|#define I2O_EVT_STATE_CHANGE_NA_RECOVER&t;&t;0x03
+mdefine_line|#define I2O_EVT_STATE_CHANGE_NA_RECOVER &t;0x03
 DECL|macro|I2O_EVT_STATE_CHANGE_NA_NO_RECOVER
 mdefine_line|#define I2O_EVT_STATE_CHANGE_NA_NO_RECOVER&t;0x04
 DECL|macro|I2O_EVT_STATE_CHANGE_QUIESCE_REQUEST
@@ -897,7 +897,7 @@ mdefine_line|#define I2O_EVT_GEN_WARNING_NORMAL&t;&t;0x00
 DECL|macro|I2O_EVT_GEN_WARNING_ERROR_THRESHOLD
 mdefine_line|#define I2O_EVT_GEN_WARNING_ERROR_THRESHOLD&t;0x01
 DECL|macro|I2O_EVT_GEN_WARNING_MEDIA_FAULT
-mdefine_line|#define I2O_EVT_GEN_WARNING_MEDIA_FAULT&t;&t;0x02
+mdefine_line|#define I2O_EVT_GEN_WARNING_MEDIA_FAULT &t;0x02
 DECL|macro|I2O_EVT_CAPABILITY_OTHER
 mdefine_line|#define I2O_EVT_CAPABILITY_OTHER&t;&t;0x01
 DECL|macro|I2O_EVT_CAPABILITY_CHANGED
@@ -907,111 +907,111 @@ mdefine_line|#define I2O_EVT_SENSOR_STATE_CHANGED&t;&t;0x01
 multiline_comment|/*&n; *&t;I2O classes / subclasses&n; */
 multiline_comment|/*  Class ID and Code Assignments&n; *  (LCT.ClassID.Version field)&n; */
 DECL|macro|I2O_CLASS_VERSION_10
-mdefine_line|#define    I2O_CLASS_VERSION_10                        0x00
+mdefine_line|#define I2O_CLASS_VERSION_10&t;&t;&t;0x00
 DECL|macro|I2O_CLASS_VERSION_11
-mdefine_line|#define    I2O_CLASS_VERSION_11                        0x01
+mdefine_line|#define I2O_CLASS_VERSION_11&t;&t;&t;0x01
 multiline_comment|/*  Class code names&n; *  (from v1.5 Table 6-1 Class Code Assignments.)&n; */
 DECL|macro|I2O_CLASS_EXECUTIVE
-mdefine_line|#define    I2O_CLASS_EXECUTIVE                         0x000
+mdefine_line|#define I2O_CLASS_EXECUTIVE&t;&t;&t;0x000
 DECL|macro|I2O_CLASS_DDM
-mdefine_line|#define    I2O_CLASS_DDM                               0x001
+mdefine_line|#define I2O_CLASS_DDM&t;&t;&t;&t;0x001
 DECL|macro|I2O_CLASS_RANDOM_BLOCK_STORAGE
-mdefine_line|#define    I2O_CLASS_RANDOM_BLOCK_STORAGE              0x010
+mdefine_line|#define I2O_CLASS_RANDOM_BLOCK_STORAGE&t;&t;0x010
 DECL|macro|I2O_CLASS_SEQUENTIAL_STORAGE
-mdefine_line|#define    I2O_CLASS_SEQUENTIAL_STORAGE                0x011
+mdefine_line|#define I2O_CLASS_SEQUENTIAL_STORAGE&t;&t;0x011
 DECL|macro|I2O_CLASS_LAN
-mdefine_line|#define    I2O_CLASS_LAN                               0x020
+mdefine_line|#define I2O_CLASS_LAN&t;&t;&t;&t;0x020
 DECL|macro|I2O_CLASS_WAN
-mdefine_line|#define    I2O_CLASS_WAN                               0x030
+mdefine_line|#define I2O_CLASS_WAN&t;&t;&t;&t;0x030
 DECL|macro|I2O_CLASS_FIBRE_CHANNEL_PORT
-mdefine_line|#define    I2O_CLASS_FIBRE_CHANNEL_PORT                0x040
+mdefine_line|#define I2O_CLASS_FIBRE_CHANNEL_PORT&t;&t;0x040
 DECL|macro|I2O_CLASS_FIBRE_CHANNEL_PERIPHERAL
-mdefine_line|#define    I2O_CLASS_FIBRE_CHANNEL_PERIPHERAL          0x041
+mdefine_line|#define I2O_CLASS_FIBRE_CHANNEL_PERIPHERAL&t;0x041
 DECL|macro|I2O_CLASS_SCSI_PERIPHERAL
-mdefine_line|#define    I2O_CLASS_SCSI_PERIPHERAL                   0x051
+mdefine_line|#define I2O_CLASS_SCSI_PERIPHERAL&t;&t;0x051
 DECL|macro|I2O_CLASS_ATE_PORT
-mdefine_line|#define    I2O_CLASS_ATE_PORT                          0x060
+mdefine_line|#define I2O_CLASS_ATE_PORT&t;&t;&t;0x060
 DECL|macro|I2O_CLASS_ATE_PERIPHERAL
-mdefine_line|#define    I2O_CLASS_ATE_PERIPHERAL                    0x061
+mdefine_line|#define I2O_CLASS_ATE_PERIPHERAL&t;&t;0x061
 DECL|macro|I2O_CLASS_FLOPPY_CONTROLLER
-mdefine_line|#define    I2O_CLASS_FLOPPY_CONTROLLER                 0x070
+mdefine_line|#define I2O_CLASS_FLOPPY_CONTROLLER&t;&t;0x070
 DECL|macro|I2O_CLASS_FLOPPY_DEVICE
-mdefine_line|#define    I2O_CLASS_FLOPPY_DEVICE                     0x071
+mdefine_line|#define I2O_CLASS_FLOPPY_DEVICE &t;&t;0x071
 DECL|macro|I2O_CLASS_BUS_ADAPTER_PORT
-mdefine_line|#define    I2O_CLASS_BUS_ADAPTER_PORT                  0x080
+mdefine_line|#define I2O_CLASS_BUS_ADAPTER_PORT&t;&t;0x080
 DECL|macro|I2O_CLASS_PEER_TRANSPORT_AGENT
-mdefine_line|#define    I2O_CLASS_PEER_TRANSPORT_AGENT              0x090
+mdefine_line|#define I2O_CLASS_PEER_TRANSPORT_AGENT&t;&t;0x090
 DECL|macro|I2O_CLASS_PEER_TRANSPORT
-mdefine_line|#define    I2O_CLASS_PEER_TRANSPORT                    0x091
+mdefine_line|#define I2O_CLASS_PEER_TRANSPORT&t;&t;0x091
 multiline_comment|/* &n; *  Rest of 0x092 - 0x09f reserved for peer-to-peer classes&n; */
 DECL|macro|I2O_CLASS_MATCH_ANYCLASS
-mdefine_line|#define    I2O_CLASS_MATCH_ANYCLASS                    0xffffffff
+mdefine_line|#define I2O_CLASS_MATCH_ANYCLASS&t;&t;0xffffffff
 multiline_comment|/* &n; *  Subclasses&n; */
 DECL|macro|I2O_SUBCLASS_i960
-mdefine_line|#define    I2O_SUBCLASS_i960                           0x001
+mdefine_line|#define I2O_SUBCLASS_i960&t;&t;&t;0x001
 DECL|macro|I2O_SUBCLASS_HDM
-mdefine_line|#define    I2O_SUBCLASS_HDM                            0x020
+mdefine_line|#define I2O_SUBCLASS_HDM&t;&t;&t;0x020
 DECL|macro|I2O_SUBCLASS_ISM
-mdefine_line|#define    I2O_SUBCLASS_ISM                            0x021
+mdefine_line|#define I2O_SUBCLASS_ISM&t;&t;&t;0x021
 multiline_comment|/* Operation functions */
 DECL|macro|I2O_PARAMS_FIELD_GET
-mdefine_line|#define I2O_PARAMS_FIELD_GET&t;0x0001
+mdefine_line|#define I2O_PARAMS_FIELD_GET&t;&t;&t;0x0001
 DECL|macro|I2O_PARAMS_LIST_GET
-mdefine_line|#define I2O_PARAMS_LIST_GET&t;0x0002
+mdefine_line|#define I2O_PARAMS_LIST_GET&t;&t;&t;0x0002
 DECL|macro|I2O_PARAMS_MORE_GET
-mdefine_line|#define I2O_PARAMS_MORE_GET&t;0x0003
+mdefine_line|#define I2O_PARAMS_MORE_GET&t;&t;&t;0x0003
 DECL|macro|I2O_PARAMS_SIZE_GET
-mdefine_line|#define I2O_PARAMS_SIZE_GET&t;0x0004
+mdefine_line|#define I2O_PARAMS_SIZE_GET&t;&t;&t;0x0004
 DECL|macro|I2O_PARAMS_TABLE_GET
-mdefine_line|#define I2O_PARAMS_TABLE_GET&t;0x0005
+mdefine_line|#define I2O_PARAMS_TABLE_GET&t;&t;&t;0x0005
 DECL|macro|I2O_PARAMS_FIELD_SET
-mdefine_line|#define I2O_PARAMS_FIELD_SET&t;0x0006
+mdefine_line|#define I2O_PARAMS_FIELD_SET&t;&t;&t;0x0006
 DECL|macro|I2O_PARAMS_LIST_SET
-mdefine_line|#define I2O_PARAMS_LIST_SET&t;0x0007
+mdefine_line|#define I2O_PARAMS_LIST_SET&t;&t;&t;0x0007
 DECL|macro|I2O_PARAMS_ROW_ADD
-mdefine_line|#define I2O_PARAMS_ROW_ADD&t;0x0008
+mdefine_line|#define I2O_PARAMS_ROW_ADD&t;&t;&t;0x0008
 DECL|macro|I2O_PARAMS_ROW_DELETE
-mdefine_line|#define I2O_PARAMS_ROW_DELETE&t;0x0009
+mdefine_line|#define I2O_PARAMS_ROW_DELETE&t;&t;&t;0x0009
 DECL|macro|I2O_PARAMS_TABLE_CLEAR
-mdefine_line|#define I2O_PARAMS_TABLE_CLEAR&t;0x000A
+mdefine_line|#define I2O_PARAMS_TABLE_CLEAR&t;&t;&t;0x000A
 multiline_comment|/*&n; * I2O serial number conventions / formats &n; * (circa v1.5)&n; */
 DECL|macro|I2O_SNFORMAT_UNKNOWN
-mdefine_line|#define    I2O_SNFORMAT_UNKNOWN                        0
+mdefine_line|#define I2O_SNFORMAT_UNKNOWN&t;&t;&t;0
 DECL|macro|I2O_SNFORMAT_BINARY
-mdefine_line|#define    I2O_SNFORMAT_BINARY                         1
+mdefine_line|#define I2O_SNFORMAT_BINARY&t;&t;&t;1
 DECL|macro|I2O_SNFORMAT_ASCII
-mdefine_line|#define    I2O_SNFORMAT_ASCII                          2
+mdefine_line|#define I2O_SNFORMAT_ASCII&t;&t;&t;2
 DECL|macro|I2O_SNFORMAT_UNICODE
-mdefine_line|#define    I2O_SNFORMAT_UNICODE                        3
+mdefine_line|#define I2O_SNFORMAT_UNICODE&t;&t;&t;3
 DECL|macro|I2O_SNFORMAT_LAN48_MAC
-mdefine_line|#define    I2O_SNFORMAT_LAN48_MAC                      4
+mdefine_line|#define I2O_SNFORMAT_LAN48_MAC&t;&t;&t;4
 DECL|macro|I2O_SNFORMAT_WAN
-mdefine_line|#define    I2O_SNFORMAT_WAN                            5
+mdefine_line|#define I2O_SNFORMAT_WAN&t;&t;&t;5
 multiline_comment|/* &n; * Plus new in v2.0 (Yellowstone pdf doc)&n; */
 DECL|macro|I2O_SNFORMAT_LAN64_MAC
-mdefine_line|#define    I2O_SNFORMAT_LAN64_MAC                      6
+mdefine_line|#define I2O_SNFORMAT_LAN64_MAC&t;&t;&t;6
 DECL|macro|I2O_SNFORMAT_DDM
-mdefine_line|#define    I2O_SNFORMAT_DDM                            7
+mdefine_line|#define I2O_SNFORMAT_DDM&t;&t;&t;7
 DECL|macro|I2O_SNFORMAT_IEEE_REG64
-mdefine_line|#define    I2O_SNFORMAT_IEEE_REG64                     8
+mdefine_line|#define I2O_SNFORMAT_IEEE_REG64 &t;&t;8
 DECL|macro|I2O_SNFORMAT_IEEE_REG128
-mdefine_line|#define    I2O_SNFORMAT_IEEE_REG128                    9
+mdefine_line|#define I2O_SNFORMAT_IEEE_REG128&t;&t;9
 DECL|macro|I2O_SNFORMAT_UNKNOWN2
-mdefine_line|#define    I2O_SNFORMAT_UNKNOWN2                       0xff
+mdefine_line|#define I2O_SNFORMAT_UNKNOWN2&t;&t;&t;0xff
 multiline_comment|/*&n; *&t;I2O Get Status State values &n; */
 DECL|macro|ADAPTER_STATE_INITIALIZING
-mdefine_line|#define&t;ADAPTER_STATE_INITIALIZING&t;&t;0x01
+mdefine_line|#define ADAPTER_STATE_INITIALIZING&t;&t;0x01
 DECL|macro|ADAPTER_STATE_RESET
-mdefine_line|#define&t;ADAPTER_STATE_RESET&t;&t;&t;0x02
+mdefine_line|#define ADAPTER_STATE_RESET&t;&t;&t;0x02
 DECL|macro|ADAPTER_STATE_HOLD
-mdefine_line|#define&t;ADAPTER_STATE_HOLD&t;&t;&t;0x04
+mdefine_line|#define ADAPTER_STATE_HOLD&t;&t;&t;0x04
 DECL|macro|ADAPTER_STATE_READY
-mdefine_line|#define &t;ADAPTER_STATE_READY&t;&t;&t;0x05
+mdefine_line|#define ADAPTER_STATE_READY&t;&t;&t;0x05
 DECL|macro|ADAPTER_STATE_OPERATIONAL
-mdefine_line|#define&t;ADAPTER_STATE_OPERATIONAL&t;&t;0x08
+mdefine_line|#define ADAPTER_STATE_OPERATIONAL&t;&t;0x08
 DECL|macro|ADAPTER_STATE_FAILED
-mdefine_line|#define&t;ADAPTER_STATE_FAILED&t;&t;&t;0x10
+mdefine_line|#define ADAPTER_STATE_FAILED&t;&t;&t;0x10
 DECL|macro|ADAPTER_STATE_FAULTED
-mdefine_line|#define&t;ADAPTER_STATE_FAULTED&t;&t;&t;0x11
+mdefine_line|#define ADAPTER_STATE_FAULTED&t;&t;&t;0x11
 macro_line|#endif /* _I2O_DEV_H */
 eof

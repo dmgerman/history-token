@@ -2260,12 +2260,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|gendisk
-op_star
-op_star
-id|gdp
-suffix:semicolon
 r_int
 id|unit
 suffix:semicolon
@@ -5033,4 +5027,10 @@ id|saved_flags
 suffix:semicolon
 )brace
 multiline_comment|/* end of pd.c */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

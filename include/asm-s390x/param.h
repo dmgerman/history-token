@@ -5,6 +5,10 @@ mdefine_line|#define _ASMS390_PARAM_H
 macro_line|#ifndef HZ
 DECL|macro|HZ
 mdefine_line|#define HZ 100
+macro_line|#ifdef __KERNEL__
+DECL|macro|hz_to_std
+mdefine_line|#define hz_to_std(a) (a)
+macro_line|#endif
 macro_line|#endif
 DECL|macro|EXEC_PAGESIZE
 mdefine_line|#define EXEC_PAGESIZE&t;4096

@@ -83,40 +83,6 @@ id|ecs
 id|MAX_ECARDS
 )braket
 suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Russell King&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Cumana SCSI II driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|term
-comma
-l_string|&quot;1-8i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|term
-comma
-l_string|&quot;SCSI bus termination&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Use term=0,1,0,0,0 to turn terminators on/off&n; */
 DECL|variable|term
 r_static
@@ -2200,5 +2166,41 @@ c_func
 (paren
 id|cumanascsi2_exit
 )paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Russell King&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Cumana SCSI-2 driver for Acorn machines&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|term
+comma
+l_string|&quot;1-8i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|term
+comma
+l_string|&quot;SCSI bus termination&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

@@ -578,7 +578,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|4096
+l_int|8192
 )paren
 suffix:semicolon
 id|setup_initrd
@@ -614,7 +614,7 @@ l_int|0xe8000000
 comma
 l_int|0x08000000
 comma
-l_int|0x01000000
+l_int|0x02000000
 comma
 id|DOMAIN_IO
 comma
@@ -647,6 +647,25 @@ l_int|0
 )brace
 comma
 multiline_comment|/* CPLD */
+(brace
+l_int|0xf1000000
+comma
+l_int|0x18000000
+comma
+l_int|0x00400000
+comma
+id|DOMAIN_IO
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* CAN */
 id|LAST_DESC
 )brace
 suffix:semicolon

@@ -6523,6 +6523,12 @@ c_func
 id|amd7930_exit
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*************************************************************/
 multiline_comment|/*                 Audio format conversion                   */
 multiline_comment|/*************************************************************/

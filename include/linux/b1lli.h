@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: b1lli.h,v 1.8.8.2 2001/05/17 20:41:52 kai Exp $&n; *&n; * ISDN lowlevel-module for AVM B1-card.&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; */
+multiline_comment|/* $Id: b1lli.h,v 1.8.8.3 2001/09/23 22:25:05 kai Exp $&n; *&n; * ISDN lowlevel-module for AVM B1-card.&n; *&n; * Copyright 1996 by Carsten Paeth (calle@calle.in-berlin.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef _B1LLI_H_
 DECL|macro|_B1LLI_H_
 mdefine_line|#define _B1LLI_H_

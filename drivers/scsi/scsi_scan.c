@@ -2235,6 +2235,24 @@ op_increment
 id|lun
 )paren
 (brace
+multiline_comment|/* don&squot;t probe further for luns &gt; 7 for targets &lt;= SCSI_2 */
+r_if
+c_cond
+(paren
+(paren
+id|lun0_sl
+OL
+id|SCSI_3
+)paren
+op_logical_and
+(paren
+id|lun
+OG
+l_int|7
+)paren
+)paren
+r_break
+suffix:semicolon
 r_if
 c_cond
 (paren

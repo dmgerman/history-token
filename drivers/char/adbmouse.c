@@ -639,5 +639,5 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:colon
+suffix:semicolon
 eof

@@ -13,6 +13,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|TC_DEBUG
 mdefine_line|#define TC_DEBUG
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|tc_bus
 id|slot_info
 id|tc_bus

@@ -4942,4 +4942,10 @@ id|t
 suffix:semicolon
 )brace
 multiline_comment|/* end of pt.c */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

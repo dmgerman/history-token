@@ -6,10 +6,14 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c.h,v 1.42 2000/09/06 20:14:06 frodo Exp $ */
+multiline_comment|/* $Id: i2c.h,v 1.46 2001/08/31 00:04:07 phil Exp $ */
 macro_line|#ifndef I2C_H
 DECL|macro|I2C_H
 mdefine_line|#define I2C_H
+DECL|macro|I2C_DATE
+mdefine_line|#define I2C_DATE &quot;20010830&quot;
+DECL|macro|I2C_VERSION
+mdefine_line|#define I2C_VERSION &quot;2.6.1&quot;
 macro_line|#include &lt;linux/i2c-id.h&gt;&t;/* id values of adapters et. al. &t;*/
 macro_line|#include &lt;linux/types.h&gt;
 r_struct
@@ -530,7 +534,7 @@ r_int
 r_int
 id|id
 suffix:semicolon
-multiline_comment|/* If a adapter algorithm can&squot;t to I2C-level access, set master_xfer&n;&t;   to NULL. If an adapter algorithm can do SMBus access, set &n;&t;   smbus_xfer. If set to NULL, the SMBus protocol is simulated&n;&t;   using common I2C messages */
+multiline_comment|/* If an adapter algorithm can&squot;t to I2C-level access, set master_xfer&n;&t;   to NULL. If an adapter algorithm can do SMBus access, set &n;&t;   smbus_xfer. If set to NULL, the SMBus protocol is simulated&n;&t;   using common I2C messages */
 DECL|member|master_xfer
 r_int
 (paren
@@ -1009,7 +1013,7 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* Detect function. It itterates over all possible addresses itself.&n; * It will only call found_proc if some client is connected at the&n; * specific address (unless a &squot;force&squot; matched);&n; */
+multiline_comment|/* Detect function. It iterates over all possible addresses itself.&n; * It will only call found_proc if some client is connected at the&n; * specific address (unless a &squot;force&squot; matched);&n; */
 DECL|typedef|i2c_client_found_addr_proc
 r_typedef
 r_int
@@ -1068,7 +1072,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* This call returns a unique low identifier for each registered adapter,&n; * or -1 if the adapter was not regisitered. &n; */
+multiline_comment|/* This call returns a unique low identifier for each registered adapter,&n; * or -1 if the adapter was not registered. &n; */
 r_extern
 r_int
 id|i2c_adapter_id
@@ -1231,8 +1235,9 @@ mdefine_line|#define I2C_SMBUS_I2C_BLOCK_DATA    6
 multiline_comment|/* ----- commands for the ioctl like i2c_command call:&n; * note that additional calls are defined in the algorithm and hw &n; *&t;dependent layers - these can be listed here, or see the &n; *&t;corresponding header files.&n; */
 multiline_comment|/* -&gt; bit-adapter specific ioctls&t;*/
 DECL|macro|I2C_RETRIES
-mdefine_line|#define I2C_RETRIES&t;0x0701&t;/* number times a device address should&t;*/
-multiline_comment|/* be polled when not acknowledging &t;*/
+mdefine_line|#define I2C_RETRIES&t;0x0701&t;/* number of times a device address      */
+multiline_comment|/* should be polled when not            */
+multiline_comment|/* acknowledging &t;&t;&t;*/
 DECL|macro|I2C_TIMEOUT
 mdefine_line|#define I2C_TIMEOUT&t;0x0702&t;/* set timeout - call with int &t;&t;*/
 multiline_comment|/* this is for i2c-dev.c&t;*/
@@ -1289,6 +1294,11 @@ mdefine_line|#define I2C_CLIENT_MODULE_PARM(var,desc) &bslash;&n;  static unsign
 multiline_comment|/* This is the one you want to use in your own modules */
 DECL|macro|I2C_CLIENT_INSMOD
 mdefine_line|#define I2C_CLIENT_INSMOD &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe, &bslash;&n;                      &quot;List of adapter,address pairs to scan additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples to scan &quot; &bslash;&n;                      &quot;additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore, &bslash;&n;                      &quot;List of adapter,address pairs not to scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples not to &quot; &bslash;&n;                      &quot;scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(force, &bslash;&n;                      &quot;List of adapter,address pairs to boldly assume &quot; &bslash;&n;                      &quot;to be present&quot;); &bslash;&n;  static struct i2c_client_address_data addr_data = &bslash;&n;                                       {normal_i2c, normal_i2c_range, &bslash;&n;                                        probe, probe_range, &bslash;&n;                                        ignore, ignore_range, &bslash;&n;                                        force}
+multiline_comment|/* Detect whether we are on the isa bus. If this returns true, all i2c&n;   access will fail! */
+DECL|macro|i2c_is_isa_client
+mdefine_line|#define i2c_is_isa_client(clientptr) &bslash;&n;        ((clientptr)-&gt;adapter-&gt;algo-&gt;id == I2C_ALGO_ISA)
+DECL|macro|i2c_is_isa_adapter
+mdefine_line|#define i2c_is_isa_adapter(adapptr) &bslash;&n;        ((adapptr)-&gt;algo-&gt;id == I2C_ALGO_ISA)
 macro_line|#endif /* def __KERNEL__ */
 macro_line|#endif /* I2C_H */
 eof

@@ -59,40 +59,6 @@ DECL|macro|VER_MINOR
 mdefine_line|#define VER_MINOR&t;0
 DECL|macro|VER_PATCH
 mdefine_line|#define VER_PATCH&t;5
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Russell King&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Powertec SCSI driver&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|term
-comma
-l_string|&quot;1-8i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|term
-comma
-l_string|&quot;SCSI bus termination&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|variable|ecs
 r_static
 r_struct
@@ -1765,5 +1731,41 @@ c_func
 (paren
 id|powertecscsi_exit
 )paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Russell King&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Powertec SCSI driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|term
+comma
+l_string|&quot;1-8i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|term
+comma
+l_string|&quot;SCSI bus termination&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

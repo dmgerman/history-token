@@ -333,6 +333,10 @@ DECL|macro|__NR_sigaltstack
 mdefine_line|#define __NR_sigaltstack        186
 DECL|macro|__NR_sendfile
 mdefine_line|#define __NR_sendfile           187
+DECL|macro|__NR_getpmsg
+mdefine_line|#define __NR_getpmsg&t;&t;188
+DECL|macro|__NR_putpmsg
+mdefine_line|#define __NR_putpmsg&t;&t;189
 DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork&t;&t;190
 DECL|macro|__NR_ugetrlimit

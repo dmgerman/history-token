@@ -21,7 +21,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * We give RPC the same get_free_pages priority as NFS&n; */
 DECL|macro|GFP_RPC
-mdefine_line|#define GFP_RPC&t;&t;&t;GFP_NFS
+mdefine_line|#define GFP_RPC&t;&t;&t;GFP_NOFS
 r_static
 r_void
 id|__rpc_default_timer
@@ -2349,7 +2349,7 @@ l_string|&quot;RPC:      rpc_schedule leave&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allocate memory for RPC purpose.&n; *&n; * This is yet another tricky issue: For sync requests issued by&n; * a user process, we want to make kmalloc sleep if there isn&squot;t&n; * enough memory. Async requests should not sleep too excessively&n; * because that will block rpciod (but that&squot;s not dramatic when&n; * it&squot;s starved of memory anyway). Finally, swapout requests should&n; * never sleep at all, and should not trigger another swap_out&n; * request through kmalloc which would just increase memory contention.&n; *&n; * I hope the following gets it right, which gives async requests&n; * a slight advantage over sync requests (good for writeback, debatable&n; * for readahead):&n; *&n; *   sync user requests:&t;GFP_KERNEL&n; *   async requests:&t;&t;GFP_RPC&t;&t;(== GFP_NFS)&n; *   swap requests:&t;&t;GFP_ATOMIC&t;(or new GFP_SWAPPER)&n; */
+multiline_comment|/*&n; * Allocate memory for RPC purpose.&n; *&n; * This is yet another tricky issue: For sync requests issued by&n; * a user process, we want to make kmalloc sleep if there isn&squot;t&n; * enough memory. Async requests should not sleep too excessively&n; * because that will block rpciod (but that&squot;s not dramatic when&n; * it&squot;s starved of memory anyway). Finally, swapout requests should&n; * never sleep at all, and should not trigger another swap_out&n; * request through kmalloc which would just increase memory contention.&n; *&n; * I hope the following gets it right, which gives async requests&n; * a slight advantage over sync requests (good for writeback, debatable&n; * for readahead):&n; *&n; *   sync user requests:&t;GFP_KERNEL&n; *   async requests:&t;&t;GFP_RPC&t;&t;(== GFP_NOFS)&n; *   swap requests:&t;&t;GFP_ATOMIC&t;(or new GFP_SWAPPER)&n; */
 r_void
 op_star
 DECL|function|rpc_allocate
@@ -3576,10 +3576,6 @@ id|current-&gt;comm
 comma
 l_string|&quot;rpciod&quot;
 )paren
-suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_MEMALLOC
 suffix:semicolon
 id|dprintk
 c_func

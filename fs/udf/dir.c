@@ -741,8 +741,7 @@ id|bh
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOENT
+l_int|0
 suffix:semicolon
 )brace
 id|liu

@@ -5,7 +5,7 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.25 2000/10/12 07:27:29 simon Exp $ */
+multiline_comment|/* $Id: i2c-id.h,v 1.35 2001/08/12 17:22:20 mds Exp $ */
 macro_line|#ifndef I2C_ID_H
 DECL|macro|I2C_ID_H
 mdefine_line|#define I2C_ID_H
@@ -54,7 +54,7 @@ mdefine_line|#define I2C_DRIVERID_TDA9850&t;20&t;/* audio mixer&t;&t;&t;*/
 DECL|macro|I2C_DRIVERID_TDA9855
 mdefine_line|#define I2C_DRIVERID_TDA9855&t;21&t;/* audio mixer&t;&t;&t;*/
 DECL|macro|I2C_DRIVERID_SAA7110
-mdefine_line|#define I2C_DRIVERID_SAA7110&t;22&t;/* &t;&t;&t;&t;*/
+mdefine_line|#define I2C_DRIVERID_SAA7110&t;22&t;/* video decoder&t;&t;*/
 DECL|macro|I2C_DRIVERID_MGATVO
 mdefine_line|#define I2C_DRIVERID_MGATVO&t;23&t;/* Matrox TVOut&t;&t;&t;*/
 DECL|macro|I2C_DRIVERID_SAA5249
@@ -89,6 +89,18 @@ DECL|macro|I2C_DRIVERID_SAA7113
 mdefine_line|#define I2C_DRIVERID_SAA7113&t;38     /* video decoder&t;&t;&t;*/
 DECL|macro|I2C_DRIVERID_TDA8444
 mdefine_line|#define I2C_DRIVERID_TDA8444&t;39     /* octuple 6-bit DAC             */
+DECL|macro|I2C_DRIVERID_BT819
+mdefine_line|#define I2C_DRIVERID_BT819&t;40     /* video decoder&t;&t;&t;*/
+DECL|macro|I2C_DRIVERID_BT856
+mdefine_line|#define I2C_DRIVERID_BT856&t;41     /* video encoder&t;&t;&t;*/
+DECL|macro|I2C_DRIVERID_VPX32XX
+mdefine_line|#define I2C_DRIVERID_VPX32XX&t;42     /* video decoder+vbi/vtxt&t;*/
+DECL|macro|I2C_DRIVERID_DRP3510
+mdefine_line|#define I2C_DRIVERID_DRP3510&t;43     /* ADR decoder (Astra Radio)&t;*/
+DECL|macro|I2C_DRIVERID_SP5055
+mdefine_line|#define I2C_DRIVERID_SP5055&t;44     /* Satellite tuner&t;&t;*/
+DECL|macro|I2C_DRIVERID_STV0030
+mdefine_line|#define I2C_DRIVERID_STV0030&t;45     /* Multipurpose switch&t;&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -101,6 +113,59 @@ DECL|macro|I2C_DRIVERID_I2CDEV
 mdefine_line|#define I2C_DRIVERID_I2CDEV&t;900
 DECL|macro|I2C_DRIVERID_I2CPROC
 mdefine_line|#define I2C_DRIVERID_I2CPROC&t;901
+multiline_comment|/* IDs --   Use DRIVERIDs 1000-1999 for sensors. &n;   These were originally in sensors.h in the lm_sensors package */
+DECL|macro|I2C_DRIVERID_LM78
+mdefine_line|#define I2C_DRIVERID_LM78 1002
+DECL|macro|I2C_DRIVERID_LM75
+mdefine_line|#define I2C_DRIVERID_LM75 1003
+DECL|macro|I2C_DRIVERID_GL518
+mdefine_line|#define I2C_DRIVERID_GL518 1004
+DECL|macro|I2C_DRIVERID_EEPROM
+mdefine_line|#define I2C_DRIVERID_EEPROM 1005
+DECL|macro|I2C_DRIVERID_W83781D
+mdefine_line|#define I2C_DRIVERID_W83781D 1006
+DECL|macro|I2C_DRIVERID_LM80
+mdefine_line|#define I2C_DRIVERID_LM80 1007
+DECL|macro|I2C_DRIVERID_ADM1021
+mdefine_line|#define I2C_DRIVERID_ADM1021 1008
+DECL|macro|I2C_DRIVERID_ADM9240
+mdefine_line|#define I2C_DRIVERID_ADM9240 1009
+DECL|macro|I2C_DRIVERID_LTC1710
+mdefine_line|#define I2C_DRIVERID_LTC1710 1010
+DECL|macro|I2C_DRIVERID_SIS5595
+mdefine_line|#define I2C_DRIVERID_SIS5595 1011
+DECL|macro|I2C_DRIVERID_ICSPLL
+mdefine_line|#define I2C_DRIVERID_ICSPLL 1012
+DECL|macro|I2C_DRIVERID_BT869
+mdefine_line|#define I2C_DRIVERID_BT869 1013
+DECL|macro|I2C_DRIVERID_MAXILIFE
+mdefine_line|#define I2C_DRIVERID_MAXILIFE 1014
+DECL|macro|I2C_DRIVERID_MATORB
+mdefine_line|#define I2C_DRIVERID_MATORB 1015
+DECL|macro|I2C_DRIVERID_GL520
+mdefine_line|#define I2C_DRIVERID_GL520 1016
+DECL|macro|I2C_DRIVERID_THMC50
+mdefine_line|#define I2C_DRIVERID_THMC50 1017
+DECL|macro|I2C_DRIVERID_DDCMON
+mdefine_line|#define I2C_DRIVERID_DDCMON 1018
+DECL|macro|I2C_DRIVERID_VIA686A
+mdefine_line|#define I2C_DRIVERID_VIA686A 1019
+DECL|macro|I2C_DRIVERID_ADM1025
+mdefine_line|#define I2C_DRIVERID_ADM1025 1020
+DECL|macro|I2C_DRIVERID_LM87
+mdefine_line|#define I2C_DRIVERID_LM87 1021
+DECL|macro|I2C_DRIVERID_PCF8574
+mdefine_line|#define I2C_DRIVERID_PCF8574 1022
+DECL|macro|I2C_DRIVERID_MTP008
+mdefine_line|#define I2C_DRIVERID_MTP008 1023
+DECL|macro|I2C_DRIVERID_DS1621
+mdefine_line|#define I2C_DRIVERID_DS1621 1024
+DECL|macro|I2C_DRIVERID_ADM1024
+mdefine_line|#define I2C_DRIVERID_ADM1024 1025
+DECL|macro|I2C_DRIVERID_IT87
+mdefine_line|#define I2C_DRIVERID_IT87 1026
+DECL|macro|I2C_DRIVERID_CH700X
+mdefine_line|#define I2C_DRIVERID_CH700X 1027 /* single driver for CH7003-7009 digital pc to tv encoders */
 multiline_comment|/*&n; * ---- Adapter types ----------------------------------------------------&n; *&n; * First, we distinguish between several algorithms to access the hardware&n; * interface types, as a PCF 8584 needs other care than a bit adapter.&n; */
 DECL|macro|I2C_ALGO_NONE
 mdefine_line|#define I2C_ALGO_NONE&t;0x000000
@@ -118,8 +183,6 @@ DECL|macro|I2C_ALGO_SAA7146
 mdefine_line|#define I2C_ALGO_SAA7146 0x060000&t;/* SAA 7146 video decoder bus&t;*/
 DECL|macro|I2C_ALGO_ACB
 mdefine_line|#define I2C_ALGO_ACB &t;0x070000&t;/* ACCESS.bus algorithm         */
-DECL|macro|I2C_ALGO_IIC
-mdefine_line|#define I2C_ALGO_IIC    0x080000 &t;/* ITE IIC bus */
 DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
@@ -160,10 +223,14 @@ DECL|macro|I2C_HW_B_I810
 mdefine_line|#define I2C_HW_B_I810&t;0x0a&t;/* Intel I810 &t;&t;&t;&t;*/
 DECL|macro|I2C_HW_B_VOO
 mdefine_line|#define I2C_HW_B_VOO&t;0x0b&t;/* 3dfx Voodoo 3 / Banshee      &t;*/
+DECL|macro|I2C_HW_B_PPORT
+mdefine_line|#define I2C_HW_B_PPORT  0x0c&t;/* Primitive parallel port adapter&t;*/
 DECL|macro|I2C_HW_B_RIVA
 mdefine_line|#define I2C_HW_B_RIVA&t;0x10&t;/* Riva based graphics cards&t;&t;*/
 DECL|macro|I2C_HW_B_IOC
 mdefine_line|#define I2C_HW_B_IOC&t;0x11&t;/* IOC bit-wiggling&t;&t;&t;*/
+DECL|macro|I2C_HW_B_TSUNA
+mdefine_line|#define I2C_HW_B_TSUNA  0x12&t;/* DEC Tsunami chipset&t;&t;&t;*/
 multiline_comment|/* --- PCF 8584 based algorithms&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_P_LP
 mdefine_line|#define I2C_HW_P_LP&t;0x00&t;/* Parallel port interface&t;&t;*/
@@ -177,9 +244,6 @@ mdefine_line|#define I2C_HW_ACPI_EC          0x00
 multiline_comment|/* --- MPC8xx PowerPC adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_MPC8XX_EPON
 mdefine_line|#define I2C_HW_MPC8XX_EPON 0x00&t;/* Eponymous MPC8xx I2C adapter &t;*/
-multiline_comment|/* --- ITE based algorithms&t;&t;&t;&t;&t;&t;*/
-DECL|macro|I2C_HW_I_IIC
-mdefine_line|#define I2C_HW_I_IIC&t;0x00&t;/* controller on the ITE */
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00

@@ -6,6 +6,25 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Remy Card and others&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Second Extended Filesystem&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|ext2_update_inode
@@ -2133,7 +2152,6 @@ comma
 id|bmap
 suffix:colon
 id|ext2_bmap
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Probably it should be a library function... search for first non-zero word&n; * or memcmp with zero_page, whatever is better for particular architecture.&n; * Linus?&n; */

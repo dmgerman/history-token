@@ -286,6 +286,14 @@ multiline_comment|/* FIXME: this is not correct */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+r_extern
+r_void
+id|pgtable_cache_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASMARM_PGTABLE_H */
 eof

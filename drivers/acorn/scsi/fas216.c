@@ -19,18 +19,6 @@ mdefine_line|#define FAS216_C
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;fas216.h&quot;
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Russell King&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Generic FAS216/NCR53C9x driver&quot;
-)paren
-suffix:semicolon
 DECL|macro|VER_MAJOR
 mdefine_line|#define VER_MAJOR&t;0
 DECL|macro|VER_MINOR
@@ -10521,31 +10509,18 @@ c_func
 id|fas216_print_device
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|__init
-id|init_module
+id|MODULE_AUTHOR
 c_func
 (paren
-r_void
+l_string|&quot;Russell King&quot;
 )paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|__exit
-id|cleanup_module
+id|MODULE_DESCRIPTION
 c_func
 (paren
-r_void
+l_string|&quot;Generic FAS216/NCR53C9x driver core&quot;
 )paren
-(brace
-)brace
-macro_line|#endif
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

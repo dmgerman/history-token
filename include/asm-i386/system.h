@@ -648,13 +648,18 @@ mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxch
 macro_line|#else
 multiline_comment|/* Compiling for a 386 proper.&t;Is it worth implementing via cli/sti?  */
 macro_line|#endif
-multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; *&n; * For now, &quot;wmb()&quot; doesn&squot;t actually do anything, as all&n; * Intel CPU&squot;s follow what Intel calls a *Processor Order*,&n; * in which all writes are seen in the program order even&n; * outside the CPU.&n; *&n; * I expect future Intel CPU&squot;s to have a weaker ordering,&n; * but I&squot;d also expect them to finally get their act together&n; * and add some real memory barriers if so.&n; */
+multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; *&n; * For now, &quot;wmb()&quot; doesn&squot;t actually do anything, as all&n; * Intel CPU&squot;s follow what Intel calls a *Processor Order*,&n; * in which all writes are seen in the program order even&n; * outside the CPU.&n; *&n; * I expect future Intel CPU&squot;s to have a weaker ordering,&n; * but I&squot;d also expect them to finally get their act together&n; * and add some real memory barriers if so.&n; *&n; * Some non intel clones support out of order store. wmb() ceases to be a&n; * nop for these.&n; */
 DECL|macro|mb
 mdefine_line|#define mb() &t;__asm__ __volatile__ (&quot;lock; addl $0,0(%%esp)&quot;: : :&quot;memory&quot;)
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;mb()
+macro_line|#ifdef CONFIG_X86_OOSTORE
+DECL|macro|wmb
+mdefine_line|#define wmb() &t;__asm__ __volatile__ (&quot;lock; addl $0,0(%%esp)&quot;: : :&quot;memory&quot;)
+macro_line|#else
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;__asm__ __volatile__ (&quot;&quot;: : :&quot;memory&quot;)
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;mb()

@@ -980,6 +980,12 @@ c_func
 l_string|&quot;Intel i8xx chipset Random Number Generator (RNG) driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * rng_init - initialize RNG module&n; */
 DECL|function|rng_init
 r_static

@@ -3076,7 +3076,7 @@ l_int|0
 suffix:semicolon
 id|SRpnt-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|SCSI_DATA_NONE
 suffix:semicolon
 id|scsi_wait_req
 (paren

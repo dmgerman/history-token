@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
+macro_line|#include &lt;asm/sockios.h&gt;
 macro_line|#include &quot;linux32.h&quot;
 r_int
 id|sys_ioctl
@@ -2395,6 +2396,12 @@ id|IOCTL32_DEFAULT
 c_func
 (paren
 id|VT_UNLOCKSWITCH
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|SIOCGSTAMP
 )paren
 comma
 id|IOCTL32_HANDLER

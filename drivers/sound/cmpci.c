@@ -1,5 +1,5 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; *      cmpci.c  --  C-Media PCI audio driver.&n; *&n; *      Copyright (C) 1999  ChenLi Tien (cltien@cmedia.com.tw)&n; *      &t;&t;    C-media support (support@cmedia.com.tw)&n; *&n; *      Based on the PCI drivers by Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; * &t;For update, visit:&n; * &t;&t;http://members.home.net/puresoft/cmedia.html&n; * &t;&t;http://www.cmedia.com.tw&n; * &t;&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Special thanks to David C. Niemi, Jan Pfeifer&n; *&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  The card has both an FM and a Wavetable synth, but I have to figure&n; *  out first how to drive them...&n; *&n; *  Revision history&n; *    06.05.98   0.1   Initial release&n; *    10.05.98   0.2   Fixed many bugs, esp. ADC rate calculation&n; *                     First stab at a simple midi interface (no bells&amp;whistles)&n; *    13.05.98   0.3   Fix stupid cut&amp;paste error: set_adc_rate was called instead of&n; *                     set_dac_rate in the FMODE_WRITE case in cm_open&n; *                     Fix hwptr out of bounds (now mpg123 works)&n; *    14.05.98   0.4   Don&squot;t allow excessive interrupt rates&n; *    08.06.98   0.5   First release using Alan Cox&squot; soundcore instead of miscdevice&n; *    03.08.98   0.6   Do not include modversions.h&n; *                     Now mixer behaviour can basically be selected between&n; *                     &quot;OSS documented&quot; and &quot;OSS actual&quot; behaviour&n; *    31.08.98   0.7   Fix realplayer problems - dac.count issues&n; *    10.12.98   0.8   Fix drain_dac trying to wait on not yet initialized DMA&n; *    16.12.98   0.9   Fix a few f_file &amp; FMODE_ bugs&n; *    06.01.99   0.10  remove the silly SA_INTERRUPT flag.&n; *                     hopefully killed the egcs section type conflict&n; *    12.03.99   0.11  cinfo.blocks should be reset after GETxPTR ioctl.&n; *                     reported by Johan Maes &lt;joma@telindus.be&gt;&n; *    22.03.99   0.12  return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                     read/write cannot be executed&n; *    18.08.99   1.5   Only deallocate DMA buffer when unloading.&n; *    02.09.99   1.6   Enable SPDIF LOOP&n; *                     Change the mixer read back&n; *    21.09.99   2.33  Use RCS version as driver version.&n; *                     Add support for modem, S/PDIF loop and 4 channels.&n; *                     (8738 only)&n; *                     Fix bug cause x11amp cannot play.&n; *&n; *    Fixes:&n; *    Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *    18/05/2001 - .bss nitpicks, fix a bug in set_dac_channels where it&n; *    &t;&t;   was calling prog_dmabuf with s-&gt;lock held, call missing&n; *    &t;&t;   unlock_kernel in cm_midi_release&n; *&n; *&t;Carlos Eduardo Gorges &lt;carlos@techlinux.com.br&gt;&n; *&t;Fri May 25 2001 &n; *&t;- SMP support ( spin[un]lock* revision )&n; *&t;- speaker mixer support &n; *&t;Mon Aug 13 2001&n; *&t;- optimizations and cleanups&n; *&n; */
+multiline_comment|/*&n; *      cmpci.c  --  C-Media PCI audio driver.&n; *&n; *      Copyright (C) 1999  ChenLi Tien (cltien@cmedia.com.tw)&n; *      &t;&t;    C-media support (support@cmedia.com.tw)&n; *&n; *      Based on the PCI drivers by Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; * &t;For update, visit:&n; * &t;&t;http://members.home.net/puresoft/cmedia.html&n; * &t;&t;http://www.cmedia.com.tw&n; * &t;&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Special thanks to David C. Niemi, Jan Pfeifer&n; *&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  The card has both an FM and a Wavetable synth, but I have to figure&n; *  out first how to drive them...&n; *&n; *  Revision history&n; *    06.05.98   0.1   Initial release&n; *    10.05.98   0.2   Fixed many bugs, esp. ADC rate calculation&n; *                     First stab at a simple midi interface (no bells&amp;whistles)&n; *    13.05.98   0.3   Fix stupid cut&amp;paste error: set_adc_rate was called instead of&n; *                     set_dac_rate in the FMODE_WRITE case in cm_open&n; *                     Fix hwptr out of bounds (now mpg123 works)&n; *    14.05.98   0.4   Don&squot;t allow excessive interrupt rates&n; *    08.06.98   0.5   First release using Alan Cox&squot; soundcore instead of miscdevice&n; *    03.08.98   0.6   Do not include modversions.h&n; *                     Now mixer behaviour can basically be selected between&n; *                     &quot;OSS documented&quot; and &quot;OSS actual&quot; behaviour&n; *    31.08.98   0.7   Fix realplayer problems - dac.count issues&n; *    10.12.98   0.8   Fix drain_dac trying to wait on not yet initialized DMA&n; *    16.12.98   0.9   Fix a few f_file &amp; FMODE_ bugs&n; *    06.01.99   0.10  remove the silly SA_INTERRUPT flag.&n; *                     hopefully killed the egcs section type conflict&n; *    12.03.99   0.11  cinfo.blocks should be reset after GETxPTR ioctl.&n; *                     reported by Johan Maes &lt;joma@telindus.be&gt;&n; *    22.03.99   0.12  return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                     read/write cannot be executed&n; *    18.08.99   1.5   Only deallocate DMA buffer when unloading.&n; *    02.09.99   1.6   Enable SPDIF LOOP&n; *                     Change the mixer read back&n; *    21.09.99   2.33  Use RCS version as driver version.&n; *                     Add support for modem, S/PDIF loop and 4 channels.&n; *                     (8738 only)&n; *                     Fix bug cause x11amp cannot play.&n; *&n; *    Fixes:&n; *    Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *    18/05/2001 - .bss nitpicks, fix a bug in set_dac_channels where it&n; *    &t;&t;   was calling prog_dmabuf with s-&gt;lock held, call missing&n; *    &t;&t;   unlock_kernel in cm_midi_release&n; *    08/10/2001 - use set_current_state in some more places&n; *&n; *&t;Carlos Eduardo Gorges &lt;carlos@techlinux.com.br&gt;&n; *&t;Fri May 25 2001 &n; *&t;- SMP support ( spin[un]lock* revision )&n; *&t;- speaker mixer support &n; *&t;Mon Aug 13 2001&n; *&t;- optimizations and cleanups&n; *&n; */
 multiline_comment|/*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -7835,9 +7835,11 @@ id|s-&gt;dma_dac.ready
 r_return
 l_int|0
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -7914,9 +7916,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 r_return
 op_minus
@@ -7982,9 +7986,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 r_if
 c_cond

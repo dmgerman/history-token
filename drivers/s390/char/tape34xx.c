@@ -7985,7 +7985,7 @@ id|ti-&gt;wanna_wakeup
 op_assign
 l_int|1
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 (paren
 op_amp
 id|ti-&gt;wq
@@ -10335,6 +10335,12 @@ id|ti
 (brace
 r_case
 id|TS_REW_RELEASE_INIT
+suffix:colon
+r_case
+id|TS_RFO_INIT
+suffix:colon
+r_case
+id|TS_RBA_INIT
 suffix:colon
 id|tapestate_set
 c_func

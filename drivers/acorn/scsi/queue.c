@@ -8,24 +8,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Russell King&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;SCSI command queueing&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 DECL|struct|queue_entry
@@ -981,27 +963,22 @@ c_func
 id|queue_probetgtlun
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|__init
-id|init_module
+id|MODULE_AUTHOR
+c_func
 (paren
-r_void
+l_string|&quot;Russell King&quot;
 )paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|__exit
-id|cleanup_module
+id|MODULE_DESCRIPTION
+c_func
 (paren
-r_void
+l_string|&quot;SCSI command queueing&quot;
 )paren
-(brace
-)brace
-macro_line|#endif
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

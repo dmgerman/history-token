@@ -1212,6 +1212,12 @@ l_string|&quot;Too many cards found on the system&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

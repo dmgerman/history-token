@@ -27,12 +27,18 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;planb.h&quot;
 macro_line|#include &quot;saa7196.h&quot;
 multiline_comment|/* Would you mind for some ugly debugging? */
-singleline_comment|//#define DEBUG(x...) printk(KERN_DEBUG ## x) /* Debug driver */
+macro_line|#if 0
+mdefine_line|#define DEBUG(x...) printk(KERN_DEBUG ## x) /* Debug driver */
+macro_line|#else
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(x...) &t;&t;/* Don&squot;t debug driver */&t;
-singleline_comment|//#define IDEBUG(x...) printk(KERN_DEBUG ## x) /* Debug interrupt part */
+mdefine_line|#define DEBUG(x...) &t;&t;/* Don&squot;t debug driver */
+macro_line|#endif
+macro_line|#if 0
+mdefine_line|#define IDEBUG(x...) printk(KERN_DEBUG ## x) /* Debug interrupt part */
+macro_line|#endif
 DECL|macro|IDEBUG
 mdefine_line|#define IDEBUG(x...) &t;&t;/* Don&squot;t debug interrupt part */
+macro_line|#endif
 multiline_comment|/* Ever seen a Mac with more than 1 of these? */
 DECL|macro|PLANB_MAX
 mdefine_line|#define PLANB_MAX 1
@@ -12507,28 +12513,16 @@ id|pb-&gt;planb_base
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#else
+DECL|function|init_planbs
+r_static
 r_int
 id|__init
 id|init_planbs
 c_func
 (paren
-r_struct
-id|video_init
-op_star
-id|unused
+r_void
 )paren
 (brace
-macro_line|#endif
 r_int
 id|i
 suffix:semicolon
@@ -12611,10 +12605,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|exit_planbs
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|exit_planbs
 c_func
 (paren
 r_void
@@ -12626,5 +12621,18 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|init_planbs
+id|module_init
+c_func
+(paren
+id|init_planbs
+)paren
+suffix:semicolon
+DECL|variable|exit_planbs
+id|module_exit
+c_func
+(paren
+id|exit_planbs
+)paren
+suffix:semicolon
 eof

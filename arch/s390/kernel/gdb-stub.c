@@ -1,5 +1,9 @@
 multiline_comment|/*&n; *  arch/s390/kernel/gdb-stub.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *&n; *  Originally written by Glenn Engel, Lake Stevens Instrument Division&n; *&n; *  Contributed by HP Systems&n; *&n; *  Modified for SPARC by Stu Grossman, Cygnus Support.&n; *&n; *  Modified for Linux/MIPS (and MIPS in general) by Andreas Busse&n; *  Send complaints, suggestions etc. to &lt;andy@waldorf-gmbh.de&gt;&n; *&n; *  Copyright (C) 1995 Andreas Busse&n; */
 multiline_comment|/*&n; *  To enable debugger support, two things need to happen.  One, a&n; *  call to set_debug_traps() is necessary in order to allow any breakpoints&n; *  or error conditions to be properly intercepted and reported to gdb.&n; *  Two, a breakpoint needs to be generated to begin communication.  This&n; *  is most easily accomplished by a call to breakpoint().  Breakpoint()&n; *  simulates a breakpoint by executing a BREAK instruction.&n; *&n; *&n; *    The following gdb commands are supported:&n; *&n; * command          function                               Return value&n; *&n; *    g             return the value of the CPU registers  hex data or ENN&n; *    G             set the value of the CPU registers     OK or ENN&n; *&n; *    mAA..AA,LLLL  Read LLLL bytes at address AA..AA      hex data or ENN&n; *    MAA..AA,LLLL: Write LLLL bytes at address AA.AA      OK or ENN&n; *&n; *    c             Resume at current address              SNN   ( signal NN)&n; *    cAA..AA       Continue at address AA..AA             SNN&n; *&n; *    s             Step one instruction                   SNN&n; *    sAA..AA       Step one instruction from AA..AA       SNN&n; *&n; *    k             kill&n; *&n; *    ?             What was the last sigval ?             SNN   (signal NN)&n; *&n; *&n; * All commands and responses are sent with a packet which includes a&n; * checksum.  A packet consists of&n; *&n; * $&lt;packet info&gt;#&lt;checksum&gt;.&n; *&n; * where&n; * &lt;packet info&gt; :: &lt;characters representing the command or response&gt;&n; * &lt;checksum&gt;    :: &lt; two hex digits computed as modulo 256 sum of &lt;packetinfo&gt;&gt;&n; *&n; * When a packet is received, it is first acknowledged with either &squot;+&squot; or &squot;-&squot;.&n; * &squot;+&squot; indicates a successful transfer.  &squot;-&squot; indicates a failed transfer.&n; *&n; * Example:&n; *&n; * Host:                  Reply:&n; * $m0,10#2a               +$00010203040506070809101112131415#42&n; *&n; */
+DECL|macro|TRUE
+mdefine_line|#define TRUE 1
+DECL|macro|FALSE
+mdefine_line|#define FALSE 0
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,26 +12,10 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
+DECL|macro|S390_REGS_COMMON_SIZE
+mdefine_line|#define S390_REGS_COMMON_SIZE offsetof(struct gdb_pt_regs,orig_gpr2)
 multiline_comment|/*&n; * external low-level support routines&n; */
-r_extern
-r_int
-id|putDebugChar
-c_func
-(paren
-r_char
-id|c
-)paren
-suffix:semicolon
-multiline_comment|/* write a single character      */
-r_extern
-r_char
-id|getDebugChar
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* read and return a single char */
 r_extern
 r_void
 id|fltr_set_mem_err
@@ -667,6 +655,7 @@ id|mem
 op_increment
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -675,6 +664,7 @@ id|mem_err
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 op_star
 id|buf
 op_increment
@@ -784,6 +774,7 @@ op_increment
 op_assign
 id|ch
 suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -792,6 +783,7 @@ id|mem_err
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&t;set_mem_fault_trap(0); */
 r_return
@@ -979,6 +971,7 @@ r_void
 id|gdb_stub_get_non_pt_regs
 c_func
 (paren
+r_struct
 id|gdb_pt_regs
 op_star
 id|regs
@@ -1069,6 +1062,7 @@ r_void
 id|gdb_stub_set_non_pt_regs
 c_func
 (paren
+r_struct
 id|gdb_pt_regs
 op_star
 id|regs
@@ -1148,6 +1142,7 @@ r_void
 id|gdb_stub_handle_exception
 c_func
 (paren
+r_struct
 id|gdb_pt_regs
 op_star
 id|regs
@@ -1176,12 +1171,14 @@ op_star
 id|stack
 suffix:semicolon
 multiline_comment|/*&n;&t; * reply to host that an exception has occurred&n;&t; */
+macro_line|#if 0
 id|send_signal
 c_func
 (paren
 id|sigval
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Wait for input from remote GDB&n;&t; */
 r_while
 c_loop
@@ -1214,12 +1211,14 @@ l_int|0
 r_case
 l_char|&squot;?&squot;
 suffix:colon
+macro_line|#if 0
 id|send_signal
 c_func
 (paren
 id|sigval
 )paren
 suffix:semicolon
+macro_line|#endif
 r_continue
 suffix:semicolon
 r_case
@@ -1255,10 +1254,7 @@ id|regs
 comma
 id|ptr
 comma
-r_sizeof
-(paren
-id|s390_regs_common
-)paren
+id|S390_REGS_COMMON_SIZE
 comma
 id|FALSE
 )paren
@@ -1305,6 +1301,8 @@ r_sizeof
 (paren
 id|s390_fp_regs
 )paren
+comma
+id|FALSE
 )paren
 suffix:semicolon
 r_break
@@ -1327,20 +1325,14 @@ op_star
 )paren
 id|regs
 comma
-r_sizeof
-(paren
-id|s390_regs_common
-)paren
+id|S390_REGS_COMMON_SIZE
 comma
 id|FALSE
 )paren
 suffix:semicolon
 id|ptr
 op_add_assign
-r_sizeof
-(paren
-id|s390_regs_common
-)paren
+id|S390_REGS_COMMON_SIZE
 op_star
 l_int|2
 suffix:semicolon
@@ -1380,6 +1372,7 @@ comma
 r_char
 op_star
 )paren
+op_amp
 id|regs-&gt;fp_regs
 comma
 r_sizeof
@@ -1610,7 +1603,7 @@ op_amp
 id|addr
 )paren
 )paren
-id|regs-&gt;cp0_epc
+id|regs-&gt;psw.addr
 op_assign
 id|addr
 suffix:semicolon
@@ -1643,12 +1636,14 @@ r_case
 l_char|&squot;s&squot;
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * There is no single step insn in the MIPS ISA, so we&n;&t;&t;&t; * use breakpoints and continue, instead.&n;&t;&t;&t; */
+macro_line|#if 0
 id|single_step
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|flush_cache_all
 c_func
 (paren
@@ -1657,12 +1652,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
-)brace
 r_break
 suffix:semicolon
 )brace
 multiline_comment|/* switch */
-multiline_comment|/*&n;&t;&t; * reply to the request&n;&t;&t; */
+multiline_comment|/*&n;&t; * reply to the request&n;&t; */
 id|putpacket
 c_func
 (paren
@@ -1673,6 +1667,7 @@ suffix:semicolon
 multiline_comment|/* while */
 )brace
 multiline_comment|/*&n; * This function will generate a breakpoint exception.  It is used at the&n; * beginning of a program to sync up with a debugger and can be used&n; * otherwise as a quick means to stop program execution and &quot;break&quot; into&n; * the debugger.&n; */
+DECL|function|breakpoint
 r_void
 id|breakpoint
 c_func
@@ -1688,19 +1683,17 @@ id|gdb_stub_initialised
 )paren
 r_return
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
+id|asm
+r_volatile
 (paren
 l_string|&quot;.globl&t;breakinst&bslash;n&quot;
-l_string|&quot;breakinst:&bslash;t.word   %0&bslash;n&bslash;t&quot;
+l_string|&quot;breakinst:&bslash;t.word   %0&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;i&quot;
 (paren
 id|S390_BREAKPOINT_U16
 )paren
-suffix:colon
 )paren
 suffix:semicolon
 )brace

@@ -4746,4 +4746,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* end of pcd.c */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

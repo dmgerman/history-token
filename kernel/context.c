@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 r_static
 id|DECLARE_TASK_QUEUE
 c_func
@@ -157,7 +158,7 @@ c_func
 (paren
 r_void
 op_star
-id|dummy
+id|startup
 )paren
 (brace
 r_struct
@@ -231,6 +232,17 @@ c_func
 (paren
 op_amp
 id|curtask-&gt;sigmask_lock
+)paren
+suffix:semicolon
+id|complete
+c_func
+(paren
+(paren
+r_struct
+id|completion
+op_star
+)paren
+id|startup
 )paren
 suffix:semicolon
 multiline_comment|/* Install a handler so SIGCLD is delivered */
@@ -498,16 +510,36 @@ c_func
 r_void
 )paren
 (brace
+r_static
+r_struct
+id|completion
+id|startup
+id|__initdata
+op_assign
+id|COMPLETION_INITIALIZER
+c_func
+(paren
+id|startup
+)paren
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren
 id|context_thread
 comma
-l_int|NULL
+op_amp
+id|startup
 comma
 id|CLONE_FS
 op_or
 id|CLONE_FILES
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|startup
 )paren
 suffix:semicolon
 r_return

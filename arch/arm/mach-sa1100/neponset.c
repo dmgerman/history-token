@@ -239,7 +239,10 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* only on assabet */
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/*&n;&t; * The Neponset is only present on the Assabet machine type.&n;&t; */
 r_if
 c_cond
 (paren
@@ -250,46 +253,92 @@ c_func
 )paren
 )paren
 r_return
-l_int|0
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/*&n;&t; * Ensure that the memory bus request/grant signals are setup,&n;&t; * and the grant is held in its inactive state, whether or not&n;&t; * we actually have a Neponset attached.&n;&t; */
+id|sa1110_mb_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|machine_has_neponset
 c_func
 (paren
 )paren
 )paren
 (brace
-id|LEDS
-op_assign
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Neponset expansion board not present&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|WHOAMI
+op_ne
+l_int|0x11
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Neponset board detected, but &quot;
+l_string|&quot;wrong ID: %02x&bslash;n&quot;
+comma
+id|WHOAMI
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Neponset has SA1111 connected to CS4.  We know that after&n;&t; * reset the chip will be configured for variable latency IO.&n;&t; */
+multiline_comment|/* FIXME: setup MSC2 */
+multiline_comment|/*&n;&t; * Probe for a SA1111.&n;&t; */
+id|ret
+op_assign
+id|sa1111_probe
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sa1111_init
-c_func
-(paren
-)paren
+id|ret
 OL
 l_int|0
 )paren
 r_return
-op_minus
-id|EINVAL
+id|ret
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Assabet is populated by default with two Samsung&n;&t;&t; * KM416S8030T-G8&n;&t;&t; * 128Mb SDRAMs, which are organized as 12-bit (row addr) x&n;&t;&t; * 9-bit&n;&t;&t; * (column addr), according to the data sheet. Apparently, the&n;&t;&t; * bank selects factor into the row address, as Angel sets up&n;&t;&t; * the&n;&t;&t; * SA-1110 to use 14x9 addresses. The SDRAM datasheet specifies&n;&t;&t; * that when running at 100-125MHz, the CAS latency for -8&n;&t;&t; * parts&n;&t;&t; * is 3 cycles, which is consistent with Angel.&n;&t;&t; */
-id|SMCR
-op_assign
-(paren
-id|SMCR_DTIM
-op_or
-id|SMCR_MBGE
-op_or
-id|FInsrt
+multiline_comment|/*&n;&t; * We found it.  Wake the chip up.&n;&t; */
+id|sa1111_wake
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * The SDRAM configuration of the SA1110 and the SA1111 must&n;&t; * match.  This is very important to ensure that SA1111 accesses&n;&t; * don&squot;t corrupt the SDRAM.  Note that this ungates the SA1111&squot;s&n;&t; * MBGNT signal, so we must have called sa1110_mb_disable()&n;&t; * beforehand.&n;&t; */
+id|sa1111_configure_smc
+c_func
+(paren
+l_int|1
+comma
 id|FExtr
 c_func
 (paren
@@ -298,11 +347,6 @@ comma
 id|MDCNFG_SA1110_DRAC0
 )paren
 comma
-id|SMCR_DRAC
-)paren
-op_or
-(paren
-(paren
 id|FExtr
 c_func
 (paren
@@ -310,32 +354,22 @@ id|MDCNFG
 comma
 id|MDCNFG_SA1110_TDL0
 )paren
-op_eq
-l_int|3
-)paren
-ques
-c_cond
-id|SMCR_CLAT
-suffix:colon
-l_int|0
-)paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We only need to turn on DCLK whenever we want to use the&n;&t; * DMA.  It can otherwise be held firmly in the off position.&n;&t; */
 id|SKPCR
 op_or_assign
 id|SKPCR_DCLKEN
 suffix:semicolon
-id|neponset_init_irq
+multiline_comment|/*&n;&t; * Enable the SA1110 memory bus request and grant signals.&n;&t; */
+id|sa1110_mb_enable
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-r_else
-id|printk
+id|neponset_init_irq
 c_func
 (paren
-l_string|&quot;Neponset expansion board not present&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

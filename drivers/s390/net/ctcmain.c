@@ -1,10 +1,10 @@
-multiline_comment|/*&n; * $Id: ctcmain.c,v 1.49 2001/08/31 14:50:05 felfert Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.49 $&n; *&n; */
+multiline_comment|/*&n; * $Id: ctcmain.c,v 1.51 2001/09/24 10:38:02 mschwide Exp $&n; *&n; * CTC / ESCON network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; * Fixes by : Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *            Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * Documentation used:&n; *  - Principles of Operation (IBM doc#: SA22-7201-06)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SA22-7204-02)&n; *  - Common IO/-Device Commands and Self Description (IBM doc#: SN22-5535)&n; *  - ESCON Channel-to-Channel Adapter (IBM doc#: SA22-7203-00)&n; *  - ESCON I/O Interface (IBM doc#: SA22-7202-029&n; *&n; * and the source of the original CTC driver by:&n; *  Dieter Wellerdiek (wel@de.ibm.com)&n; *  Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *  Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *  Jochen R&#xfffd;hrig (roehrig@de.ibm.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: CTC/ESCON network driver $Revision: 1.51 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -66,6 +66,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux for S/390 CTC/Escon Driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef CTC_CHANDEV
@@ -384,6 +390,12 @@ DECL|member|prof
 id|ctc_profile
 id|prof
 suffix:semicolon
+DECL|member|trans_skb_data
+r_int
+r_char
+op_star
+id|trans_skb_data
+suffix:semicolon
 DECL|typedef|channel
 )brace
 id|channel
@@ -665,7 +677,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.49 $&quot;
+l_string|&quot;$Revision: 1.51 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -2479,6 +2491,10 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
+id|ch-&gt;trans_skb_data
+op_assign
+id|ch-&gt;trans_skb-&gt;data
+suffix:semicolon
 id|ch-&gt;flags
 op_and_assign
 op_complement
@@ -2729,6 +2745,8 @@ suffix:semicolon
 id|ch-&gt;trans_skb-&gt;tail
 op_assign
 id|ch-&gt;trans_skb-&gt;data
+op_assign
+id|ch-&gt;trans_skb_data
 suffix:semicolon
 id|ch-&gt;trans_skb-&gt;len
 op_assign
@@ -3112,12 +3130,6 @@ op_star
 id|skb-&gt;data
 )paren
 suffix:semicolon
-r_char
-op_star
-id|saved_data
-op_assign
-id|skb-&gt;data
-suffix:semicolon
 r_int
 id|check_len
 suffix:semicolon
@@ -3319,7 +3331,7 @@ id|skb-&gt;data
 op_assign
 id|skb-&gt;tail
 op_assign
-id|saved_data
+id|ch-&gt;trans_skb_data
 suffix:semicolon
 id|skb-&gt;len
 op_assign
@@ -5430,6 +5442,13 @@ op_star
 id|dev
 op_assign
 id|ch-&gt;netdev
+suffix:semicolon
+id|fsm_deltimer
+c_func
+(paren
+op_amp
+id|ch-&gt;timer
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -10070,6 +10089,13 @@ comma
 id|rc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ccw_idx
+op_eq
+l_int|3
+)paren
 id|skb_dequeue_tail
 c_func
 (paren

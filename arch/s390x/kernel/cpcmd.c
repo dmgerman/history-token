@@ -1,9 +1,24 @@
 multiline_comment|/*&n; *  arch/s390/kernel/cpcmd.c&n; *&n; *  S390 version&n; *    Copyright (C) 1999,2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com),&n; */
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/ebcdic.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
+macro_line|#include &lt;asm/ebcdic.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+DECL|variable|cpcmd_lock
+r_static
+id|spinlock_t
+id|cpcmd_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|cpcmd_buf
+r_static
+r_char
+id|cpcmd_buf
+(braket
+l_int|128
+)braket
+suffix:semicolon
 DECL|function|cpcmd
 r_void
 id|cpcmd
@@ -27,16 +42,23 @@ id|mask
 op_assign
 l_int|0x40000000L
 suffix:semicolon
-r_char
-id|obuffer
-(braket
-l_int|128
-)braket
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_int
-id|olen
+id|cmdlen
 suffix:semicolon
-id|olen
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|cpcmd_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|cmdlen
 op_assign
 id|strlen
 c_func
@@ -47,7 +69,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|obuffer
+id|cpcmd_buf
 comma
 id|cmd
 )paren
@@ -55,9 +77,9 @@ suffix:semicolon
 id|ASCEBC
 c_func
 (paren
-id|obuffer
+id|cpcmd_buf
 comma
-id|olen
+id|cmdlen
 )paren
 suffix:semicolon
 r_if
@@ -88,12 +110,12 @@ multiline_comment|/* no output */
 suffix:colon
 l_string|&quot;a&quot;
 (paren
-id|obuffer
+id|cpcmd_buf
 )paren
 comma
 l_string|&quot;d&quot;
 (paren
-id|olen
+id|cmdlen
 )paren
 comma
 l_string|&quot;a&quot;
@@ -144,12 +166,12 @@ multiline_comment|/* no output */
 suffix:colon
 l_string|&quot;a&quot;
 (paren
-id|obuffer
+id|cpcmd_buf
 )paren
 comma
 l_string|&quot;d&quot;
 (paren
-id|olen
+id|cmdlen
 )paren
 suffix:colon
 l_string|&quot;2&quot;
@@ -158,5 +180,14 @@ l_string|&quot;3&quot;
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|cpcmd_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 eof

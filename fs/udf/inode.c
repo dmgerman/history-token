@@ -972,6 +972,8 @@ op_assign
 id|udf_new_block
 c_func
 (paren
+id|inode-&gt;i_sb
+comma
 id|inode
 comma
 id|UDF_I_LOCATION
@@ -1414,12 +1416,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* UniqueID stuff */
-id|inode-&gt;i_blocks
-op_assign
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_div
-l_int|512
-suffix:semicolon
 id|mark_buffer_dirty
 c_func
 (paren
@@ -1934,7 +1930,7 @@ id|c
 op_assign
 l_int|1
 suffix:semicolon
-r_int
+id|Uint64
 id|lbcount
 op_assign
 l_int|0
@@ -1942,17 +1938,17 @@ comma
 id|b_off
 op_assign
 l_int|0
-comma
-id|offset
-op_assign
-l_int|0
 suffix:semicolon
 id|Uint32
 id|newblocknum
 comma
 id|newblock
+comma
+id|offset
+op_assign
+l_int|0
 suffix:semicolon
-r_char
+id|Sint8
 id|etype
 suffix:semicolon
 r_int
@@ -1989,6 +1985,9 @@ id|inode
 suffix:semicolon
 id|b_off
 op_assign
+(paren
+id|Uint64
+)paren
 id|block
 op_lshift
 id|inode-&gt;i_sb-&gt;s_blocksize_bits
@@ -2735,6 +2734,8 @@ op_assign
 id|udf_new_block
 c_func
 (paren
+id|inode-&gt;i_sb
+comma
 id|inode
 comma
 id|UDF_I_LOCATION
@@ -2925,12 +2926,6 @@ id|inode
 )paren
 op_assign
 id|CURRENT_UTIME
-suffix:semicolon
-id|inode-&gt;i_blocks
-op_add_assign
-id|inode-&gt;i_sb-&gt;s_blocksize
-op_div
-l_int|512
 suffix:semicolon
 r_if
 c_cond
@@ -3560,6 +3555,8 @@ op_assign
 id|udf_prealloc_blocks
 c_func
 (paren
+id|inode-&gt;i_sb
+comma
 id|inode
 comma
 id|laarr
@@ -4518,13 +4515,6 @@ op_star
 id|bh
 op_assign
 l_int|NULL
-suffix:semicolon
-r_int
-id|prev_blocks
-suffix:semicolon
-id|prev_blocks
-op_assign
-id|inode-&gt;i_blocks
 suffix:semicolon
 id|bh
 op_assign
@@ -8415,7 +8405,7 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|udf_add_aext
-r_int
+id|Sint8
 id|udf_add_aext
 c_func
 (paren
@@ -8623,6 +8613,8 @@ op_assign
 id|udf_new_block
 c_func
 (paren
+id|inode-&gt;i_sb
+comma
 id|inode
 comma
 id|obloc.partitionReferenceNum
@@ -9273,7 +9265,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|udf_write_aext
-r_int
+id|Sint8
 id|udf_write_aext
 c_func
 (paren
@@ -9663,7 +9655,7 @@ l_int|30
 suffix:semicolon
 )brace
 DECL|function|udf_next_aext
-r_int
+id|Sint8
 id|udf_next_aext
 c_func
 (paren
@@ -9706,7 +9698,7 @@ id|pos
 comma
 id|alen
 suffix:semicolon
-id|Uint8
+id|Sint8
 id|etype
 suffix:semicolon
 r_if
@@ -10363,7 +10355,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|udf_current_aext
-r_int
+id|Sint8
 id|udf_current_aext
 c_func
 (paren
@@ -10403,7 +10395,7 @@ id|pos
 comma
 id|alen
 suffix:semicolon
-id|Uint8
+id|Sint8
 id|etype
 suffix:semicolon
 r_if
@@ -10837,7 +10829,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|udf_insert_aext
-r_int
+id|Sint8
 id|udf_insert_aext
 c_func
 (paren
@@ -10870,8 +10862,8 @@ suffix:semicolon
 id|Uint32
 id|oelen
 suffix:semicolon
-r_int
-id|type
+id|Sint8
+id|etype
 suffix:semicolon
 r_if
 c_cond
@@ -10941,7 +10933,7 @@ r_while
 c_loop
 (paren
 (paren
-id|type
+id|etype
 op_assign
 id|udf_next_aext
 c_func
@@ -10997,7 +10989,7 @@ suffix:semicolon
 id|nelen
 op_assign
 (paren
-id|type
+id|etype
 op_lshift
 l_int|30
 )paren
@@ -11041,7 +11033,7 @@ l_int|30
 suffix:semicolon
 )brace
 DECL|function|udf_delete_aext
-r_int
+id|Sint8
 id|udf_delete_aext
 c_func
 (paren
@@ -11081,8 +11073,8 @@ id|oextoffset
 comma
 id|adsize
 suffix:semicolon
-r_char
-id|type
+id|Sint8
+id|etype
 suffix:semicolon
 r_struct
 id|AllocExtDesc
@@ -11253,7 +11245,7 @@ r_while
 c_loop
 (paren
 (paren
-id|type
+id|etype
 op_assign
 id|udf_next_aext
 c_func
@@ -11296,7 +11288,7 @@ comma
 id|eloc
 comma
 (paren
-id|type
+id|etype
 op_lshift
 l_int|30
 )paren
@@ -11396,6 +11388,8 @@ id|lb_addr
 id|udf_free_blocks
 c_func
 (paren
+id|inode-&gt;i_sb
+comma
 id|inode
 comma
 id|nbloc
@@ -11755,7 +11749,7 @@ l_int|30
 suffix:semicolon
 )brace
 DECL|function|inode_bmap
-r_int
+id|Sint8
 id|inode_bmap
 c_func
 (paren
@@ -11801,11 +11795,14 @@ l_int|0
 comma
 id|bcount
 op_assign
+(paren
+id|Uint64
+)paren
 id|block
 op_lshift
 id|inode-&gt;i_sb-&gt;s_blocksize_bits
 suffix:semicolon
-r_char
+id|Sint8
 id|etype
 suffix:semicolon
 r_if

@@ -2,6 +2,7 @@ macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
 mdefine_line|#define __ASM_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 multiline_comment|/* softirq.h is sensitive to the offsets of these fields */
 r_typedef

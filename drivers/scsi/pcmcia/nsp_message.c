@@ -1,5 +1,5 @@
 multiline_comment|/*==========================================================================&n;  NinjaSCSI-3 message handler&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;   This software may be used and distributed according to the terms of&n;   the GNU General Public License.&n; */
-multiline_comment|/* $Id: nsp_message.c,v 1.6 2001/07/05 10:56:37 elca Exp $ */
+multiline_comment|/* $Id: nsp_message.c,v 1.7 2001/09/07 04:33:01 elca Exp $ */
 DECL|function|nsp_message_in
 r_static
 r_void

@@ -918,6 +918,18 @@ c_func
 id|oakscsi_exit
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Russell King&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Oak SCSI driver&quot;
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

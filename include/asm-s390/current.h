@@ -27,7 +27,7 @@ id|__asm__
 c_func
 (paren
 l_string|&quot;lhi   %0,-8192&bslash;n&bslash;t&quot;
-l_string|&quot;nr    %0,15&quot;
+l_string|&quot;al    %0,0xc40&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

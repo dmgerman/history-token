@@ -435,6 +435,16 @@ comma
 id|lino
 )paren
 suffix:semicolon
+id|fprintf
+c_func
+(paren
+id|stderr
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|c
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

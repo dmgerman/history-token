@@ -4,7 +4,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-97 Simon G. Vogl&n;                   1998-99 Hans Berglund&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-elektor.c,v 1.19 2000/07/25 23:52:17 frodo Exp $ */
+multiline_comment|/* Partialy rewriten by Oleg I. Vdovikin for mmapped support of &n;   for Alpha Processor Inc. UP-2000(+) boards */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -19,13 +20,7 @@ macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
 macro_line|#include &lt;linux/i2c-elektor.h&gt;
 macro_line|#include &quot;i2c-pcf8584.h&quot;
 DECL|macro|DEFAULT_BASE
-mdefine_line|#define DEFAULT_BASE 0x300
-DECL|macro|DEFAULT_IRQ
-mdefine_line|#define DEFAULT_IRQ      0
-DECL|macro|DEFAULT_CLOCK
-mdefine_line|#define DEFAULT_CLOCK 0x1c
-DECL|macro|DEFAULT_OWN
-mdefine_line|#define DEFAULT_OWN   0x55
+mdefine_line|#define DEFAULT_BASE 0x330
 DECL|variable|base
 r_static
 r_int
@@ -45,12 +40,19 @@ r_static
 r_int
 id|clock
 op_assign
-l_int|0
+l_int|0x1c
 suffix:semicolon
 DECL|variable|own
 r_static
 r_int
 id|own
+op_assign
+l_int|0x55
+suffix:semicolon
+DECL|variable|mmapped
+r_static
+r_int
+id|mmapped
 op_assign
 l_int|0
 suffix:semicolon
@@ -61,12 +63,7 @@ id|i2c_debug
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|gpi
-r_static
-r_struct
-id|i2c_pcf_isa
-id|gpi
-suffix:semicolon
+multiline_comment|/* vdovikin: removed static struct i2c_pcf_isa gpi; code - &n;  this module in real supports only one device, due to missing arguments&n;  in some functions, called from the algo-pcf module. Sometimes it&squot;s&n;  need to be rewriten - but for now just remove this for simpler reading */
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x020301)
 DECL|variable|pcf_wait
 r_static
@@ -98,13 +95,6 @@ DECL|macro|DEB3
 mdefine_line|#define DEB3(x) if (i2c_debug&gt;=3) x
 DECL|macro|DEBE
 mdefine_line|#define DEBE(x)&t;x&t;/* error messages &t;&t;&t;&t;*/
-multiline_comment|/* --- Convenience defines for the i2c port:&t;&t;&t;*/
-DECL|macro|BASE
-mdefine_line|#define BASE&t;((struct i2c_pcf_isa *)(data))-&gt;pi_base
-DECL|macro|DATA
-mdefine_line|#define DATA&t;BASE&t;&t;&t;/* Adapter data port&t;&t;*/
-DECL|macro|CTRL
-mdefine_line|#define CTRL&t;(BASE+1)&t;&t;/* Adapter control port&t;        */
 multiline_comment|/* ----- local functions ----------------------------------------------&t;*/
 DECL|function|pcf_isa_setbyte
 r_static
@@ -124,154 +114,94 @@ id|val
 )paren
 (brace
 r_int
-r_int
-id|j
+id|address
 op_assign
-id|jiffies
+id|ctl
+ques
+c_cond
+(paren
+id|base
 op_plus
-l_int|10
+l_int|1
+)paren
+suffix:colon
+id|base
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|ctl
+op_logical_and
+id|irq
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|gpi.pi_irq
-OG
-l_int|0
-)paren
-(brace
+id|val
+op_or_assign
+id|I2C_PCF_ENI
+suffix:semicolon
+)brace
 id|DEB3
 c_func
 (paren
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-elektor.o: Write Ctrl 0x%02X&bslash;n&quot;
+l_string|&quot;i2c-elektor.o: Write 0x%X 0x%02X&bslash;n&quot;
 comma
-id|val
-op_or
-id|I2C_PCF_ENI
-)paren
-)paren
-suffix:semicolon
-id|DEB3
-c_func
-(paren
-(brace
-r_while
-(paren
-id|jiffies
-OL
-id|j
-)paren
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)paren
-id|outb
-c_func
-(paren
-id|val
-op_or
-id|I2C_PCF_ENI
-comma
-id|CTRL
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|DEB3
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;i2c-elektor.o: Write Ctrl 0x%02X&bslash;n&quot;
-comma
-id|val
-op_or
-id|I2C_PCF_ENI
-)paren
-)paren
-suffix:semicolon
-id|DEB3
-c_func
-(paren
-(brace
-r_while
-(paren
-id|jiffies
-OL
-id|j
-)paren
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)paren
-id|outb
-c_func
-(paren
-id|val
-op_or
-id|I2C_PCF_ENI
-comma
-id|CTRL
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|DEB3
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;i2c-elektor.o: Write Data 0x%02X&bslash;n&quot;
+id|address
 comma
 id|val
 op_amp
-l_int|0xff
+l_int|255
 )paren
 )paren
 suffix:semicolon
-id|DEB3
-c_func
+r_switch
+c_cond
 (paren
+id|mmapped
+)paren
 (brace
-r_while
-(paren
-id|jiffies
-OL
-id|j
-)paren
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)paren
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* regular I/O */
 id|outb
 c_func
 (paren
 id|val
 comma
-id|DATA
+id|address
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+multiline_comment|/* double mapped I/O needed for UP2000 board,&n;                   I don&squot;t know why this... */
+id|writeb
+c_func
+(paren
+id|val
+comma
+id|address
+)paren
+suffix:semicolon
+multiline_comment|/* fall */
+r_case
+l_int|1
+suffix:colon
+multiline_comment|/* memory mapped I/O */
+id|writeb
+c_func
+(paren
+id|val
+comma
+id|address
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -290,20 +220,35 @@ id|ctl
 )paren
 (brace
 r_int
-id|val
-suffix:semicolon
-r_if
+id|address
+op_assign
+id|ctl
+ques
 c_cond
 (paren
-id|ctl
+id|base
+op_plus
+l_int|1
 )paren
-(brace
+suffix:colon
+id|base
+suffix:semicolon
+r_int
 id|val
 op_assign
+id|mmapped
+ques
+c_cond
+id|readb
+c_func
+(paren
+id|address
+)paren
+suffix:colon
 id|inb
 c_func
 (paren
-id|CTRL
+id|address
 )paren
 suffix:semicolon
 id|DEB3
@@ -312,36 +257,14 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-elektor.o: Read Ctrl 0x%02X&bslash;n&quot;
+l_string|&quot;i2c-elektor.o: Read 0x%X 0x%02X&bslash;n&quot;
+comma
+id|address
 comma
 id|val
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|val
-op_assign
-id|inb
-c_func
-(paren
-id|DATA
-)paren
-suffix:semicolon
-id|DEB3
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;i2c-elektor.o: Read Data 0x%02X&bslash;n&quot;
-comma
-id|val
-)paren
-)paren
-suffix:semicolon
-)brace
 r_return
 (paren
 id|val
@@ -361,7 +284,7 @@ id|data
 (brace
 r_return
 (paren
-id|gpi.pi_own
+id|own
 )paren
 suffix:semicolon
 )brace
@@ -378,31 +301,10 @@ id|data
 (brace
 r_return
 (paren
-id|gpi.pi_clock
+id|clock
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_static
-r_void
-id|pcf_isa_sleep
-c_func
-(paren
-r_int
-r_int
-id|timeout
-)paren
-(brace
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-op_star
-id|HZ
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|pcf_isa_waitforpin
 r_static
 r_void
@@ -420,7 +322,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpi.pi_irq
+id|irq
 OG
 l_int|0
 )paren
@@ -514,10 +416,17 @@ r_void
 r_if
 c_cond
 (paren
+op_logical_neg
+id|mmapped
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|check_region
 c_func
 (paren
-id|gpi.pi_base
+id|base
 comma
 l_int|2
 )paren
@@ -525,6 +434,14 @@ OL
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;i2c-elektor.o: requested I/O region (0x%X:2) is in use.&bslash;n&quot;
+comma
+id|base
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -535,7 +452,7 @@ r_else
 id|request_region
 c_func
 (paren
-id|gpi.pi_base
+id|base
 comma
 l_int|2
 comma
@@ -543,10 +460,11 @@ l_string|&quot;i2c (isa bus adapter)&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
 r_if
 c_cond
 (paren
-id|gpi.pi_irq
+id|irq
 OG
 l_int|0
 )paren
@@ -557,7 +475,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|gpi.pi_irq
+id|irq
 comma
 id|pcf_isa_handler
 comma
@@ -576,10 +494,10 @@ c_func
 (paren
 l_string|&quot;i2c-elektor.o: Request irq%d failed&bslash;n&quot;
 comma
-id|gpi.pi_irq
+id|irq
 )paren
 suffix:semicolon
-id|gpi.pi_irq
+id|irq
 op_assign
 l_int|0
 suffix:semicolon
@@ -588,7 +506,7 @@ r_else
 id|enable_irq
 c_func
 (paren
-id|gpi.pi_irq
+id|irq
 )paren
 suffix:semicolon
 )brace
@@ -599,6 +517,7 @@ suffix:semicolon
 DECL|function|pcf_isa_exit
 r_static
 r_void
+id|__exit
 id|pcf_isa_exit
 c_func
 (paren
@@ -608,7 +527,7 @@ r_void
 r_if
 c_cond
 (paren
-id|gpi.pi_irq
+id|irq
 OG
 l_int|0
 )paren
@@ -616,26 +535,34 @@ l_int|0
 id|disable_irq
 c_func
 (paren
-id|gpi.pi_irq
+id|irq
 )paren
 suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|gpi.pi_irq
+id|irq
 comma
 l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mmapped
+)paren
+(brace
 id|release_region
 c_func
 (paren
-id|gpi.pi_base
+id|base
 comma
 l_int|2
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|pcf_isa_reg
 r_static
@@ -723,9 +650,9 @@ id|pcf_isa_getclock
 comma
 id|pcf_isa_waitforpin
 comma
-l_int|80
+l_int|10
 comma
-l_int|80
+l_int|10
 comma
 l_int|100
 comma
@@ -767,14 +694,142 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef __alpha__
+multiline_comment|/* check to see we have memory mapped PCF8584 connected to the &n;&t;Cypress cy82c693 PCI-ISA bridge as on UP2000 board */
+r_if
+c_cond
+(paren
+(paren
+id|base
+op_eq
+l_int|0
+)paren
+op_logical_and
+id|pci_present
+c_func
+(paren
+)paren
+)paren
+(brace
 r_struct
-id|i2c_pcf_isa
+id|pci_dev
 op_star
-id|pisa
+id|cy693_dev
 op_assign
-op_amp
-id|gpi
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_CONTAQ
+comma
+id|PCI_DEVICE_ID_CONTAQ_82C693
+comma
+l_int|NULL
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cy693_dev
+)paren
+(brace
+r_char
+id|config
+suffix:semicolon
+multiline_comment|/* yeap, we&squot;ve found cypress, let&squot;s check config */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_read_config_byte
+c_func
+(paren
+id|cy693_dev
+comma
+l_int|0x47
+comma
+op_amp
+id|config
+)paren
+)paren
+(brace
+id|DEB3
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;i2c-elektor.o: found cy82c693, config register 0x47 = 0x%02x.&bslash;n&quot;
+comma
+id|config
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* UP2000 board has this register set to 0xe1,&n;                                   but the most significant bit as seems can be &n;&t;&t;&t;&t;   reset during the proper initialisation&n;                                   sequence if guys from API decides to do that&n;                                   (so, we can even enable Tsunami Pchip&n;                                   window for the upper 1 Gb) */
+multiline_comment|/* so just check for ROMCS at 0xe0000,&n;                                   ROMCS enabled for writes&n;&t;&t;&t;&t;   and external XD Bus buffer in use. */
+r_if
+c_cond
+(paren
+(paren
+id|config
+op_amp
+l_int|0x7f
+)paren
+op_eq
+l_int|0x61
+)paren
+(brace
+multiline_comment|/* seems to be UP2000 like board */
+id|base
+op_assign
+l_int|0xe0000
+suffix:semicolon
+multiline_comment|/* I don&squot;t know why we need to&n;                                           write twice */
+id|mmapped
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* UP2000 drives ISA with&n;&t;&t;&t;&t;&t;   8.25 MHz (PCI/4) clock&n;&t;&t;&t;&t;&t;   (this can be read from cypress) */
+id|clock
+op_assign
+id|I2C_PCF_CLK
+op_or
+id|I2C_PCF_TRNS90
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;i2c-elektor.o: found API UP2000 like board, will probe PCF8584 later.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+)brace
+macro_line|#endif
+multiline_comment|/* sanity checks for mmapped I/O */
+r_if
+c_cond
+(paren
+id|mmapped
+op_logical_and
+id|base
+OL
+l_int|0xc8000
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;i2c-elektor.o: incorrect base address (0x%0X) specified for mmapped I/O.&bslash;n&quot;
+comma
+id|base
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -788,71 +843,12 @@ id|base
 op_eq
 l_int|0
 )paren
-id|pisa-&gt;pi_base
+(brace
+id|base
 op_assign
 id|DEFAULT_BASE
 suffix:semicolon
-r_else
-id|pisa-&gt;pi_base
-op_assign
-id|base
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-l_int|0
-)paren
-id|pisa-&gt;pi_irq
-op_assign
-id|DEFAULT_IRQ
-suffix:semicolon
-r_else
-id|pisa-&gt;pi_irq
-op_assign
-id|irq
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|clock
-op_eq
-l_int|0
-)paren
-id|pisa-&gt;pi_clock
-op_assign
-id|DEFAULT_CLOCK
-suffix:semicolon
-r_else
-id|pisa-&gt;pi_clock
-op_assign
-id|clock
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|own
-op_eq
-l_int|0
-)paren
-id|pisa-&gt;pi_own
-op_assign
-id|DEFAULT_OWN
-suffix:semicolon
-r_else
-id|pisa-&gt;pi_own
-op_assign
-id|own
-suffix:semicolon
-id|pcf_isa_data.data
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|pisa
-suffix:semicolon
+)brace
 macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020301)
 id|init_waitqueue_head
 c_func
@@ -902,7 +898,7 @@ c_func
 (paren
 l_string|&quot;i2c-elektor.o: found device at %#x.&bslash;n&quot;
 comma
-id|pisa-&gt;pi_base
+id|base
 )paren
 suffix:semicolon
 r_return
@@ -958,6 +954,14 @@ id|MODULE_PARM
 c_func
 (paren
 id|own
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|mmapped
 comma
 l_string|&quot;i&quot;
 )paren

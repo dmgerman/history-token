@@ -59,12 +59,12 @@ r_int
 id|phys_io
 suffix:semicolon
 multiline_comment|/* start of physical io&t;*/
-DECL|member|virt_io
+DECL|member|io_pg_offst
 r_int
 r_int
-id|virt_io
+id|io_pg_offst
 suffix:semicolon
-multiline_comment|/* start of virtual io&t;*/
+multiline_comment|/* byte offset for io &n;&t;&t;&t;&t;&t;&t; * page tabe entry&t;*/
 DECL|member|name
 r_const
 r_char
@@ -175,7 +175,7 @@ mdefine_line|#define MACHINE_START(_type,_name)&t;&t;&bslash;&n;const struct mac
 DECL|macro|MAINTAINER
 mdefine_line|#define MAINTAINER(n)
 DECL|macro|BOOT_MEM
-mdefine_line|#define BOOT_MEM(_pram,_pio,_vio)&t;&t;&bslash;&n;&t;phys_ram:&t;_pram,&t;&t;&t;&bslash;&n;&t;phys_io:&t;_pio,&t;&t;&t;&bslash;&n;&t;virt_io:&t;_vio,
+mdefine_line|#define BOOT_MEM(_pram,_pio,_vio)&t;&t;&bslash;&n;&t;phys_ram:&t;_pram,&t;                &bslash;&n;&t;phys_io:&t;_pio,  &t;                &bslash;&n;&t;io_pg_offst:&t;((_vio)&gt;&gt;18)&amp;0xfffc,
 DECL|macro|BOOT_PARAMS
 mdefine_line|#define BOOT_PARAMS(_params)&t;&t;&t;&bslash;&n;&t;param_offset:&t;_params,
 DECL|macro|VIDEO

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/fs/lockd/clntproc.c&n; *&n; * RPC procedures for the client side NLM implementation&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -2668,6 +2669,43 @@ r_return
 op_minus
 id|ENOLCK
 suffix:semicolon
+macro_line|#ifdef CONFIG_LOCKD_V4
+r_case
+id|NLM_DEADLCK
+suffix:colon
+r_return
+op_minus
+id|EDEADLK
+suffix:semicolon
+r_case
+id|NLM_ROFS
+suffix:colon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+r_case
+id|NLM_STALE_FH
+suffix:colon
+r_return
+op_minus
+id|ESTALE
+suffix:semicolon
+r_case
+id|NLM_FBIG
+suffix:colon
+r_return
+op_minus
+id|EOVERFLOW
+suffix:semicolon
+r_case
+id|NLM_FAILED
+suffix:colon
+r_return
+op_minus
+id|ENOLCK
+suffix:semicolon
+macro_line|#endif
 )brace
 id|printk
 c_func

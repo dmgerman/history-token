@@ -92,6 +92,86 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; */
+DECL|function|__put_user_asm_8
+r_extern
+r_inline
+r_int
+id|__put_user_asm_8
+c_func
+(paren
+id|__u64
+id|x
+comma
+r_void
+op_star
+id|ptr
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;   sr    %1,%1&bslash;n&quot;
+l_string|&quot;   la    2,%2&bslash;n&quot;
+l_string|&quot;   la    4,%0&bslash;n&quot;
+l_string|&quot;   sacf  512&bslash;n&quot;
+l_string|&quot;0: mvc   0(8,4),0(2)&bslash;n&quot;
+l_string|&quot;   sacf  0&bslash;n&quot;
+l_string|&quot;1:&bslash;n&quot;
+l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+l_string|&quot;2: sacf  0&bslash;n&quot;
+l_string|&quot;   lhi   %1,%h3&bslash;n&quot;
+l_string|&quot;   bras  4,3f&bslash;n&quot;
+l_string|&quot;   .long 1b&bslash;n&quot;
+l_string|&quot;3: l     4,0(4)&bslash;n&quot;
+l_string|&quot;   br    4&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;   .align 4&bslash;n&quot;
+l_string|&quot;   .long  0b,2b&bslash;n&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+(paren
+(paren
+id|__u32
+op_star
+)paren
+id|ptr
+)paren
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|err
+)paren
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+id|x
+)paren
+comma
+l_string|&quot;K&quot;
+(paren
+op_minus
+id|EFAULT
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;2&quot;
+comma
+l_string|&quot;4&quot;
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 DECL|function|__put_user_asm_4
 r_extern
 r_inline
@@ -325,7 +405,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * (u8)(u32) ... autsch, but that the only way we can suppress the&n; * warnings when compiling binfmt_elf.c&n; */
 DECL|macro|__put_user
-mdefine_line|#define __put_user(x, ptr)                                      &bslash;&n;({                                                              &bslash;&n;        int __pu_err;                                           &bslash;&n;        switch (sizeof (*(ptr))) {                              &bslash;&n;                case 1:                                         &bslash;&n;                        __pu_err = __put_user_asm_1((__u8)(__u32)x,(ptr));&bslash;&n;                        break;                                  &bslash;&n;                case 2:                                         &bslash;&n;                        __pu_err = __put_user_asm_2((__u16)(__u32)x,(ptr));&bslash;&n;                        break;                                  &bslash;&n;                case 4:                                         &bslash;&n;                        __pu_err = __put_user_asm_4((__u32) x,(ptr));&bslash;&n;                        break;                                  &bslash;&n;                default:                                        &bslash;&n;                __pu_err = __put_user_bad();                    &bslash;&n;                break;                                          &bslash;&n;         }                                                      &bslash;&n;        __pu_err;                                               &bslash;&n;})
+mdefine_line|#define __put_user(x, ptr)                                      &bslash;&n;({                                                              &bslash;&n;        int __pu_err;                                           &bslash;&n;        switch (sizeof (*(ptr))) {                              &bslash;&n;                case 1:                                         &bslash;&n;                        __pu_err = __put_user_asm_1((__u8)(__u32)x,(ptr));&bslash;&n;                        break;                                  &bslash;&n;                case 2:                                         &bslash;&n;                        __pu_err = __put_user_asm_2((__u16)(__u32)x,(ptr));&bslash;&n;                        break;                                  &bslash;&n;                case 4:                                         &bslash;&n;                        __pu_err = __put_user_asm_4((__u32) x,(ptr));&bslash;&n;                        break;                                  &bslash;&n;&t;&t;case 8:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__pu_err = __put_user_asm_8((__u64) x,(ptr));&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;                default:                                        &bslash;&n;                __pu_err = __put_user_bad();                    &bslash;&n;                break;                                          &bslash;&n;         }                                                      &bslash;&n;        __pu_err;                                               &bslash;&n;})
 DECL|macro|put_user
 mdefine_line|#define put_user(x, ptr)                                        &bslash;&n;({                                                              &bslash;&n;        long __pu_err = -EFAULT;                                &bslash;&n;        __typeof__(*(ptr)) *__pu_addr = (ptr);                  &bslash;&n;        __typeof__(*(ptr)) __x = (x);                           &bslash;&n;        if (__access_ok((long)__pu_addr,sizeof(*(ptr)))) {      &bslash;&n;                __pu_err = 0;                                   &bslash;&n;                __put_user((__x), (__pu_addr));                 &bslash;&n;        }                                                       &bslash;&n;        __pu_err;                                               &bslash;&n;})
 r_extern
@@ -336,6 +416,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|__get_user_asm_8
+mdefine_line|#define __get_user_asm_8(x, ptr, err)                                      &bslash;&n;({                                                                         &bslash;&n;        __asm__ __volatile__ (  &quot;   sr    %1,%1&bslash;n&quot;                         &bslash;&n;&t;&t;&t;&t;&quot;   la    2,%0&bslash;n&quot;&t;&t;&t;   &bslash;&n;                                &quot;   la    4,%2&bslash;n&quot;                          &bslash;&n;                                &quot;   sacf  512&bslash;n&quot;                           &bslash;&n;                                &quot;0: mvc   0(8,2),0(4)&bslash;n&quot;                   &bslash;&n;                                &quot;   sacf  0&bslash;n&quot;                             &bslash;&n;                                &quot;1:&bslash;n&quot;                                     &bslash;&n;                                &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;                 &bslash;&n;                                &quot;2: sacf  0&bslash;n&quot;                             &bslash;&n;                                &quot;   lhi   %1,%h3&bslash;n&quot;                        &bslash;&n;                                &quot;   bras  4,3f&bslash;n&quot;                          &bslash;&n;                                &quot;   .long 1b&bslash;n&quot;                            &bslash;&n;                                &quot;3: l     4,0(4)&bslash;n&quot;                        &bslash;&n;                                &quot;   br    4&bslash;n&quot;                             &bslash;&n;                                &quot;.previous&bslash;n&quot;                              &bslash;&n;                                &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;              &bslash;&n;                                &quot;   .align 4&bslash;n&quot;                            &bslash;&n;                                &quot;   .long 0b,2b&bslash;n&quot;                         &bslash;&n;                                &quot;.previous&quot;                                &bslash;&n;                                : &quot;=m&quot; (x) , &quot;=&amp;d&quot; (err)                   &bslash;&n;                                : &quot;m&quot; (*(const __u64*)(ptr)),&quot;K&quot; (-EFAULT) &bslash;&n;                                : &quot;cc&quot;, &quot;2&quot;, &quot;4&quot; );                        &bslash;&n;})
 DECL|macro|__get_user_asm_4
 mdefine_line|#define __get_user_asm_4(x, ptr, err)                                      &bslash;&n;({                                                                         &bslash;&n;        __asm__ __volatile__ (  &quot;   sr    %1,%1&bslash;n&quot;                         &bslash;&n;                                &quot;   la    4,%2&bslash;n&quot;                          &bslash;&n;                                &quot;   sacf  512&bslash;n&quot;                           &bslash;&n;                                &quot;0: l     %0,0(4)&bslash;n&quot;                       &bslash;&n;                                &quot;   sacf  0&bslash;n&quot;                             &bslash;&n;                                &quot;1:&bslash;n&quot;                                     &bslash;&n;                                &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;                 &bslash;&n;                                &quot;2: sacf  0&bslash;n&quot;                             &bslash;&n;                                &quot;   lhi   %1,%h3&bslash;n&quot;                        &bslash;&n;                                &quot;   bras  4,3f&bslash;n&quot;                          &bslash;&n;                                &quot;   .long 1b&bslash;n&quot;                            &bslash;&n;                                &quot;3: l     4,0(4)&bslash;n&quot;                        &bslash;&n;                                &quot;   br    4&bslash;n&quot;                             &bslash;&n;                                &quot;.previous&bslash;n&quot;                              &bslash;&n;                                &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;              &bslash;&n;                                &quot;   .align 4&bslash;n&quot;                            &bslash;&n;                                &quot;   .long 0b,2b&bslash;n&quot;                         &bslash;&n;                                &quot;.previous&quot;                                &bslash;&n;                                : &quot;=d&quot; (x) , &quot;=&amp;d&quot; (err)                   &bslash;&n;                                : &quot;m&quot; (*(const __u32*)(ptr)),&quot;K&quot; (-EFAULT) &bslash;&n;                                : &quot;cc&quot;, &quot;4&quot; );                             &bslash;&n;})
 DECL|macro|__get_user_asm_2
@@ -343,7 +425,7 @@ mdefine_line|#define __get_user_asm_2(x, ptr, err)                              
 DECL|macro|__get_user_asm_1
 mdefine_line|#define __get_user_asm_1(x, ptr, err)                                     &bslash;&n;({                                                                        &bslash;&n;        __asm__ __volatile__ (  &quot;   sr    %1,%1&bslash;n&quot;                        &bslash;&n;                                &quot;   la    4,%2&bslash;n&quot;                         &bslash;&n;                                &quot;   sr    %0,%0&bslash;n&quot;                        &bslash;&n;                                &quot;   sacf  512&bslash;n&quot;                          &bslash;&n;                                &quot;0: ic    %0,0(4)&bslash;n&quot;                      &bslash;&n;                                &quot;   sacf  0&bslash;n&quot;                            &bslash;&n;                                &quot;1:&bslash;n&quot;                                    &bslash;&n;                                &quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;                &bslash;&n;                                &quot;2: sacf  0&bslash;n&quot;                            &bslash;&n;                                &quot;   lhi   %1,%h3&bslash;n&quot;                       &bslash;&n;                                &quot;   bras  4,3f&bslash;n&quot;                         &bslash;&n;                                &quot;   .long 1b&bslash;n&quot;                           &bslash;&n;                                &quot;3: l     4,0(4)&bslash;n&quot;                       &bslash;&n;                                &quot;   br    4&bslash;n&quot;                            &bslash;&n;                                &quot;.previous&bslash;n&quot;                             &bslash;&n;                                &quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;             &bslash;&n;                                &quot;   .align 4&bslash;n&quot;                           &bslash;&n;                                &quot;   .long 0b,2b&bslash;n&quot;                        &bslash;&n;                                &quot;.previous&quot;                               &bslash;&n;                                : &quot;=d&quot; (x) , &quot;=&amp;d&quot; (err)                  &bslash;&n;                                : &quot;m&quot; (*(const __u8*)(ptr)),&quot;K&quot; (-EFAULT) &bslash;&n;                                : &quot;cc&quot;, &quot;4&quot; );                            &bslash;&n;})
 DECL|macro|__get_user
-mdefine_line|#define __get_user(x, ptr)                                      &bslash;&n;({                                                              &bslash;&n;        int __gu_err;                                           &bslash;&n;        switch (sizeof(*(ptr))) {                               &bslash;&n;                case 1:                                         &bslash;&n;                        __get_user_asm_1(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                case 2:                                         &bslash;&n;                        __get_user_asm_2(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                case 4:                                         &bslash;&n;                        __get_user_asm_4(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                default:                                        &bslash;&n;                        (x) = 0;                                &bslash;&n;                        __gu_err = __get_user_bad();            &bslash;&n;                break;                                          &bslash;&n;        }                                                       &bslash;&n;        __gu_err;                                               &bslash;&n;})
+mdefine_line|#define __get_user(x, ptr)                                      &bslash;&n;({                                                              &bslash;&n;        int __gu_err;                                           &bslash;&n;        switch (sizeof(*(ptr))) {                               &bslash;&n;                case 1:                                         &bslash;&n;                        __get_user_asm_1(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                case 2:                                         &bslash;&n;                        __get_user_asm_2(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                case 4:                                         &bslash;&n;                        __get_user_asm_4(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                case 8:                                         &bslash;&n;                        __get_user_asm_8(x,ptr,__gu_err);       &bslash;&n;                        break;                                  &bslash;&n;                default:                                        &bslash;&n;                        (x) = 0;                                &bslash;&n;                        __gu_err = __get_user_bad();            &bslash;&n;                break;                                          &bslash;&n;        }                                                       &bslash;&n;        __gu_err;                                               &bslash;&n;})
 DECL|macro|get_user
 mdefine_line|#define get_user(x, ptr)                                        &bslash;&n;({                                                              &bslash;&n;        long __gu_err = -EFAULT;                                &bslash;&n;        __typeof__(ptr) __gu_addr = (ptr);                      &bslash;&n;        __typeof__(*(ptr)) __x;                                 &bslash;&n;        if (__access_ok((long)__gu_addr,sizeof(*(ptr)))) {      &bslash;&n;                __gu_err = 0;                                   &bslash;&n;                __get_user((__x), (__gu_addr));                 &bslash;&n;                (x) = __x;                                      &bslash;&n;        }                                                       &bslash;&n;        else                                                    &bslash;&n;                (x) = 0;                                        &bslash;&n;        __gu_err;                                               &bslash;&n;})
 r_extern
@@ -477,7 +559,7 @@ l_string|&quot;   sacf  512&bslash;n&quot;
 l_string|&quot;0: mvcle 2,4,0&bslash;n&quot;
 l_string|&quot;   jo    0b&bslash;n&quot;
 l_string|&quot;   sacf  0&bslash;n&quot;
-l_string|&quot;   lr    %0,3&bslash;n&quot;
+l_string|&quot;   lr    %0,5&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 4&bslash;n&quot;
 l_string|&quot;   .long  0b,__copy_from_user_fixup&bslash;n&quot;

@@ -650,7 +650,7 @@ DECL|member|decimation
 id|__u16
 id|decimation
 suffix:semicolon
-multiline_comment|/* Decimation divder */
+multiline_comment|/* Decimation divider */
 DECL|member|flags
 id|__u16
 id|flags
@@ -1103,29 +1103,5 @@ DECL|macro|VID_HARDWARE_MEYE
 mdefine_line|#define VID_HARDWARE_MEYE&t;32&t;/* Sony Vaio MotionEye cameras */
 DECL|macro|VID_HARDWARE_CPIA2
 mdefine_line|#define VID_HARDWARE_CPIA2&t;33
-multiline_comment|/*&n; *&t;Initialiser list&n; */
-DECL|struct|video_init
-r_struct
-id|video_init
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
-r_struct
-id|video_init
-op_star
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif
 eof

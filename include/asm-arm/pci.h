@@ -91,7 +91,6 @@ id|dma_handle
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_SA1111)
 multiline_comment|/* Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
 r_static
 r_inline
@@ -116,6 +115,46 @@ r_int
 id|direction
 )paren
 (brace
+macro_line|#ifdef CONFIG_SA1111
+r_extern
+id|dma_addr_t
+id|sa1111_map_single
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * for SA1111 these functions are &quot;magic&quot; and relocate buffers.  We&n;&t; * only need to do these if hwdev is non-null; otherwise we expect&n;&t; * the buffer to already be suitable for DMA.&n;&t; */
+r_if
+c_cond
+(paren
+id|hwdev
+op_ne
+l_int|NULL
+)paren
+r_return
+id|sa1111_map_single
+c_func
+(paren
+id|hwdev
+comma
+id|ptr
+comma
+id|size
+comma
+id|direction
+)paren
+suffix:semicolon
+macro_line|#endif
 id|consistent_sync
 c_func
 (paren
@@ -157,52 +196,45 @@ r_int
 id|direction
 )paren
 (brace
-multiline_comment|/* nothing to do */
-)brace
-macro_line|#else
-multiline_comment|/* for SA1111 these functions are &quot;magic&quot; and relocate buffers */
+macro_line|#ifdef CONFIG_SA1111
 r_extern
-id|dma_addr_t
-id|pci_map_single
+r_void
+id|sa1111_unmap_single
 c_func
 (paren
 r_struct
 id|pci_dev
 op_star
-id|hwdev
 comma
-r_void
-op_star
-id|ptr
+id|dma_addr_t
 comma
 r_int
-id|size
 comma
 r_int
-id|direction
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|pci_unmap_single
+r_if
+c_cond
+(paren
+id|hwdev
+op_ne
+l_int|NULL
+)paren
+id|sa1111_unmap_single
 c_func
 (paren
-r_struct
-id|pci_dev
-op_star
 id|hwdev
 comma
-id|dma_addr_t
 id|dma_addr
 comma
-r_int
 id|size
 comma
-r_int
 id|direction
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* nothing to do */
+)brace
 multiline_comment|/* Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 r_static
 r_inline

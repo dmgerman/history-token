@@ -10,10 +10,6 @@ macro_line|#include &lt;linux/if_ppp.h&gt;
 macro_line|#include &lt;linux/ppp_channel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifndef spin_trylock_bh
-DECL|macro|spin_trylock_bh
-mdefine_line|#define spin_trylock_bh(lock)&t;({ int __r; local_bh_disable();&t;&bslash;&n;&t;&t;&t;&t;   __r = spin_trylock(lock);&t;&bslash;&n;&t;&t;&t;&t;   if (!__r) local_bh_enable();&t;&bslash;&n;&t;&t;&t;&t;   __r; })
-macro_line|#endif
 DECL|macro|PPP_VERSION
 mdefine_line|#define PPP_VERSION&t;&quot;2.4.1&quot;
 multiline_comment|/* Structure for storing local state. */
@@ -2882,6 +2878,12 @@ id|module_exit
 c_func
 (paren
 id|ppp_sync_cleanup
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

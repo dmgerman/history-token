@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#error SMP not supported
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_CO285
 DECL|member|counter
 DECL|typedef|atomic_t
 r_typedef
@@ -19,19 +18,6 @@ suffix:semicolon
 )brace
 id|atomic_t
 suffix:semicolon
-macro_line|#else
-DECL|member|counter
-DECL|typedef|atomic_t
-r_typedef
-r_struct
-(brace
-r_int
-id|counter
-suffix:semicolon
-)brace
-id|atomic_t
-suffix:semicolon
-macro_line|#endif
 DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)&t;{ (i) }
 macro_line|#ifdef __KERNEL__

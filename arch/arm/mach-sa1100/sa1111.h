@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/sa1111.h&n; */
+multiline_comment|/*&n; * These two don&squot;t really belong in here.&n; */
 r_extern
-r_int
-id|__init
-id|sa1111_init
+r_void
+id|sa1110_mb_enable
 c_func
 (paren
 r_void
@@ -10,12 +10,64 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__init
+id|sa1110_mb_disable
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Probe for a SA1111 chip.&n; */
+r_extern
+r_int
+id|sa1111_probe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Wake up a SA1111 chip.&n; */
+r_extern
+r_void
+id|sa1111_wake
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Doze the SA1111 chip.&n; */
+r_extern
+r_void
+id|sa1111_doze
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Configure the SA1111 shared memory controller.&n; */
+r_extern
+r_void
+id|sa1111_configure_smc
+c_func
+(paren
+r_int
+id|sdram
+comma
+r_int
+r_int
+id|drac
+comma
+r_int
+r_int
+id|cas_latency
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|sa1111_init_irq
 c_func
 (paren
 r_int
-id|gpio_nr
+id|irq_nr
 )paren
 suffix:semicolon
 r_extern

@@ -43,7 +43,7 @@ l_int|0
 comma
 l_int|0xc0000000
 comma
-l_int|64
+l_int|128
 op_star
 l_int|1024
 op_star

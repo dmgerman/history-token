@@ -7,9 +7,9 @@ mdefine_line|#define UDF_PREALLOCATE
 DECL|macro|UDF_DEFAULT_PREALLOC_BLOCKS
 mdefine_line|#define UDF_DEFAULT_PREALLOC_BLOCKS&t;8
 DECL|macro|UDFFS_DATE
-mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2001/06/13&quot;
+mdefine_line|#define UDFFS_DATE&t;&t;&t;&quot;2001/10/10&quot;
 DECL|macro|UDFFS_VERSION
-mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.4.1&quot;
+mdefine_line|#define UDFFS_VERSION&t;&t;&t;&quot;0.9.5&quot;
 macro_line|#if !defined(UDFFS_RW)
 macro_line|#if defined(CONFIG_UDF_RW)
 DECL|macro|UDFFS_RW

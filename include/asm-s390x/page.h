@@ -300,7 +300,6 @@ macro_line|#endif                                 /* !__ASSEMBLY__              
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)        (((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-multiline_comment|/*&n; *&n; *&n; */
 DECL|macro|__PAGE_OFFSET
 mdefine_line|#define __PAGE_OFFSET           0x0UL
 DECL|macro|PAGE_OFFSET

@@ -115,6 +115,8 @@ macro_line|#endif
 DECL|variable|die_lock
 id|spinlock_t
 id|die_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|die
 r_void
@@ -147,6 +149,12 @@ op_amp
 id|die_lock
 )paren
 suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -163,6 +171,12 @@ id|show_regs
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -385,6 +399,7 @@ id|gdb_stub_handle_exception
 c_func
 (paren
 (paren
+r_struct
 id|gdb_pt_regs
 op_star
 )paren
@@ -936,6 +951,8 @@ suffix:semicolon
 id|__u16
 op_star
 id|location
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|signal

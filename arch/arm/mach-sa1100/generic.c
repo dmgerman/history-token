@@ -102,10 +102,10 @@ id|get_cclk_frequency
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ
 multiline_comment|/*&n; * Validate the speed in khz.  If we can&squot;t generate the precise&n; * frequency requested, round it down (to be on the safe side).&n; */
-DECL|function|cpufreq_validatespeed
+DECL|function|sa1100_validatespeed
 r_int
 r_int
-id|cpufreq_validatespeed
+id|sa1100_validatespeed
 c_func
 (paren
 r_int
@@ -158,9 +158,9 @@ l_int|100
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ok, set the CPU frequency.  Since we&squot;ve done the validation&n; * above, we can match for an exact frequency.  If we don&squot;t find&n; * an exact match, we will to set the lowest frequency to be safe.&n; */
-DECL|function|cpufreq_setspeed
+DECL|function|sa1100_setspeed
 r_void
-id|cpufreq_setspeed
+id|sa1100_setspeed
 c_func
 (paren
 r_int
@@ -228,6 +228,14 @@ c_func
 )paren
 op_star
 l_int|100
+)paren
+suffix:semicolon
+id|cpufreq_setfunctions
+c_func
+(paren
+id|sa1100_validatespeed
+comma
+id|sa1100_setspeed
 )paren
 suffix:semicolon
 r_return

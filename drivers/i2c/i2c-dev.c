@@ -2,7 +2,7 @@ multiline_comment|/*&n;    i2c-dev.c - i2c-bus driver, char device interface  &n
 multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s i2c-dev module.&n;   But I have used so much of his original code and ideas that it seems&n;   only fair to recognize him as co-author -- Frodo */
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
-multiline_comment|/* $Id: i2c-dev.c,v 1.36 2000/09/22 02:19:35 mds Exp $ */
+multiline_comment|/* $Id: i2c-dev.c,v 1.40 2001/08/25 01:28:01 mds Exp $ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -40,6 +40,24 @@ r_void
 suffix:semicolon
 macro_line|#endif /* def MODULE */
 multiline_comment|/* struct file_operations changed too often in the 2.1 series for nice code */
+macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,9)
+r_static
+id|loff_t
+id|i2cdev_lseek
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+id|loff_t
+id|offset
+comma
+r_int
+id|origin
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 id|ssize_t
 id|i2cdev_read
@@ -211,10 +229,17 @@ suffix:colon
 id|THIS_MODULE
 comma
 macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
+macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,9)
+id|llseek
+suffix:colon
+id|i2cdev_lseek
+comma
+macro_line|#else
 id|llseek
 suffix:colon
 id|no_llseek
 comma
+macro_line|#endif
 id|read
 suffix:colon
 id|i2cdev_read
@@ -338,6 +363,58 @@ r_static
 r_int
 id|i2cdev_initialized
 suffix:semicolon
+macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,9)
+multiline_comment|/* Note that the lseek function is called llseek in 2.1 kernels. But things&n;   are complicated enough as is. */
+DECL|function|i2cdev_lseek
+id|loff_t
+id|i2cdev_lseek
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+id|loff_t
+id|offset
+comma
+r_int
+id|origin
+)paren
+(brace
+macro_line|#ifdef DEBUG
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;i2c-dev.o: i2c-%d lseek to %ld bytes relative to %d.&bslash;n&quot;
+comma
+id|MINOR
+c_func
+(paren
+id|inode-&gt;i_rdev
+)paren
+comma
+(paren
+r_int
+)paren
+id|offset
+comma
+id|origin
+)paren
+suffix:semicolon
+macro_line|#endif /* DEBUG */
+r_return
+op_minus
+id|ESPIPE
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|i2cdev_read
 r_static
 id|ssize_t
@@ -847,19 +924,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rdwr_arg.nmsgs
-OG
-l_int|2048
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|rdwr_pa
 op_assign
 (paren
@@ -2134,7 +2198,7 @@ id|res
 suffix:semicolon
 )brace
 id|i2cdev_initialized
-op_increment
+op_decrement
 suffix:semicolon
 )brace
 r_if

@@ -67,11 +67,17 @@ mdefine_line|#define SONYPI_EVENT_FNKEY_B&t;&t;&t;30
 DECL|macro|SONYPI_EVENT_BLUETOOTH_PRESSED
 mdefine_line|#define SONYPI_EVENT_BLUETOOTH_PRESSED&t;&t;31
 DECL|macro|SONYPI_EVENT_PKEY_P1
-mdefine_line|#define SONYPI_EVENT_PKEY_P1                    32
+mdefine_line|#define SONYPI_EVENT_PKEY_P1&t;&t;&t;32
 DECL|macro|SONYPI_EVENT_PKEY_P2
-mdefine_line|#define SONYPI_EVENT_PKEY_P2                    33
+mdefine_line|#define SONYPI_EVENT_PKEY_P2&t;&t;&t;33
 DECL|macro|SONYPI_EVENT_PKEY_P3
-mdefine_line|#define SONYPI_EVENT_PKEY_P3                    34
+mdefine_line|#define SONYPI_EVENT_PKEY_P3&t;&t;&t;34
+DECL|macro|SONYPI_EVENT_BACK_PRESSED
+mdefine_line|#define SONYPI_EVENT_BACK_PRESSED&t;&t;35
+DECL|macro|SONYPI_EVENT_LID_CLOSED
+mdefine_line|#define SONYPI_EVENT_LID_CLOSED&t;&t;&t;36
+DECL|macro|SONYPI_EVENT_LID_OPENED
+mdefine_line|#define SONYPI_EVENT_LID_OPENED&t;&t;&t;37
 multiline_comment|/* brightness etc. ioctls */
 DECL|macro|SONYPI_IOCGBRT
 mdefine_line|#define SONYPI_IOCGBRT&t;_IOR(&squot;v&squot;, 0, __u8)

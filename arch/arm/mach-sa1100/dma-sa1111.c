@@ -1103,7 +1103,7 @@ c_cond
 id|FExtr
 c_func
 (paren
-id|SMCR
+id|SBI_SMCR
 comma
 id|SMCR_DRAC
 )paren
@@ -1260,7 +1260,7 @@ comma
 id|FExtr
 c_func
 (paren
-id|SMCR
+id|SBI_SMCR
 comma
 id|SMCR_DRAC
 )paren

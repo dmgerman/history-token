@@ -1,6 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    NinjaSCSI-3 / NinjaSCSI-32Bi PCMCIA SCSI hostadapter card driver&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.2.0   Support 32bit PIO mode&n;    Ver.1.1.2 Fix for scatter list buffer exceeds&n;    Ver.1.1   Support scatter list&n;    Ver.0.1   Initial version&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;======================================================================*/
 multiline_comment|/***********************************************************************&n;    This driver is for these PCcards.&n;&n;&t;I-O DATA PCSC-F&t; (Workbit NinjaSCSI-3)&n;&t;&t;&t;&quot;WBT&quot;, &quot;NinjaSCSI-3&quot;, &quot;R1.0&quot;&n;&t;I-O DATA CBSC-II (Workbit NinjaSCSI-32Bi in 16bit mode)&n;&t;&t;&t;&quot;IO DATA&quot;, &quot;CBSC16&t; &quot;, &quot;1&quot;&n;&n;***********************************************************************/
-multiline_comment|/* $Id: nsp_cs.c,v 1.35 2001/07/05 16:58:24 elca Exp $ */
+multiline_comment|/* $Id: nsp_cs.c,v 1.42 2001/09/10 10:30:58 elca Exp $ */
 macro_line|#ifdef NSP_KERNEL_2_2
 macro_line|#include &lt;pcmcia/config.h&gt;
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -45,16 +45,16 @@ c_func
 l_string|&quot;WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;sd,sr,sg,st&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef PCMCIA_DEBUG
@@ -87,7 +87,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;$Id: nsp_cs.c,v 1.35 2001/07/05 16:58:24 elca Exp $&quot;
+l_string|&quot;$Id: nsp_cs.c,v 1.42 2001/09/10 10:30:58 elca Exp $&quot;
 suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
@@ -136,122 +136,6 @@ suffix:semicolon
 DECL|typedef|scsi_info_t
 )brace
 id|scsi_info_t
-suffix:semicolon
-r_static
-r_void
-id|nsp_cs_release
-c_func
-(paren
-id|u_long
-id|arg
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_cs_event
-c_func
-(paren
-id|event_t
-id|event
-comma
-r_int
-id|priority
-comma
-id|event_callback_args_t
-op_star
-id|args
-)paren
-suffix:semicolon
-r_static
-id|dev_link_t
-op_star
-id|nsp_cs_attach
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|nsp_cs_detach
-c_func
-(paren
-id|dev_link_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|shpnt
-)paren
-suffix:semicolon
-r_static
-r_const
-r_char
-op_star
-id|nsp_info
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|shpnt
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_queuecommand
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------*/
 macro_line|#if (KERNEL_VERSION(2,4,0) &gt; LINUX_VERSION_CODE)
@@ -563,7 +447,8 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|show_command
@@ -699,12 +584,13 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|FALSE
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() out&bslash;n&quot;);
 r_return
-id|TRUE
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * setup PIO FIFO transfer mode and enable/disable to data out&n; */
@@ -4652,7 +4538,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef DBG_SHOWCOMMAND
+macro_line|#ifdef PCMCIA_DEBUG
 macro_line|#include &quot;nsp_debug.c&quot;
 macro_line|#endif&t;/* DBG_SHOWCOMMAND */
 multiline_comment|/*----------------------------------------------------------------*/
@@ -4731,9 +4617,9 @@ id|data-&gt;IrqNumber
 suffix:semicolon
 id|host-&gt;dma_channel
 op_assign
-op_minus
-l_int|1
+l_int|0xff
 suffix:semicolon
+multiline_comment|/* not use dms */
 id|sprintf
 c_func
 (paren
@@ -4742,7 +4628,7 @@ comma
 multiline_comment|/* Buffer size is 100 bytes */
 multiline_comment|/*  0         1         2         3         4         5         6         7         8         9         0*/
 multiline_comment|/*  01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890*/
-l_string|&quot;NinjaSCSI-3/32Bi Driver version 2.7, I/O 0x%04lx-0x%04lx IRQ %2d&quot;
+l_string|&quot;NinjaSCSI-3/32Bi Driver $Revision: 1.42 $, I/O 0x%04lx-0x%04lx IRQ %2d&quot;
 comma
 id|host-&gt;io_port
 comma
@@ -4771,6 +4657,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* detect done. */
 )brace
+multiline_comment|/* nsp_cs requires own release handler because its uses dev_id (=data) */
 DECL|function|nsp_release
 r_static
 r_int
@@ -4809,6 +4696,8 @@ r_if
 c_cond
 (paren
 id|shpnt-&gt;io_port
+op_logical_and
+id|shpnt-&gt;n_io_port
 )paren
 (brace
 id|release_region
@@ -4876,12 +4765,14 @@ comma
 id|why
 )paren
 suffix:semicolon
-r_return
 id|nsp_eh_bus_reset
 c_func
 (paren
 id|SCpnt
 )paren
+suffix:semicolon
+r_return
+id|SCSI_RESET_SUCCESS
 suffix:semicolon
 )brace
 DECL|function|nsp_abort
@@ -4913,7 +4804,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_return
-id|SUCCESS
+id|SCSI_ABORT_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*static int nsp_eh_strategy(struct Scsi_Host *Shost)&n;{&n;&t;return FAILED;&n;}*/
@@ -5117,14 +5008,12 @@ c_func
 id|data
 )paren
 suffix:semicolon
+r_return
 id|nsp_eh_bus_reset
 c_func
 (paren
 id|SCpnt
 )paren
-suffix:semicolon
-r_return
-id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/**********************************************************************&n;  PCMCIA functions&n;  *********************************************************************/

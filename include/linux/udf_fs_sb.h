@@ -2,9 +2,6 @@ multiline_comment|/*&n; * udf_fs_sb.h&n; * &n; * This include file is for the Li
 macro_line|#if !defined(_LINUX_UDF_FS_SB_H)
 DECL|macro|_LINUX_UDF_FS_SB_H
 mdefine_line|#define _LINUX_UDF_FS_SB_H
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#pragma pack(1)
 DECL|macro|UDF_MAX_BLOCK_LOADED
 mdefine_line|#define UDF_MAX_BLOCK_LOADED&t;8
@@ -203,7 +200,7 @@ id|s_partition
 suffix:semicolon
 multiline_comment|/* Sector headers */
 DECL|member|s_session
-id|__u32
+id|__s32
 id|s_session
 suffix:semicolon
 DECL|member|s_anchor
