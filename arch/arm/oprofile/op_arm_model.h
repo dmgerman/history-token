@@ -67,12 +67,12 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_int
+id|__init
 id|pmu_init
 c_func
 (paren
 r_struct
 id|oprofile_operations
-op_star
 op_star
 id|ops
 comma
