@@ -3314,7 +3314,7 @@ op_assign
 id|netdev_priv
 c_func
 (paren
-id|dev
+id|netdev
 )paren
 suffix:semicolon
 id|kaweth-&gt;dev
