@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Ri
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &quot;time.h&quot;
 macro_line|#include &quot;kmem.h&quot;
