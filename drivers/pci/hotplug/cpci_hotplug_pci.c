@@ -280,7 +280,7 @@ r_return
 id|hs_csr
 suffix:semicolon
 )brace
-DECL|function|cpci_set_hs_csr
+macro_line|#if 0
 id|u16
 id|cpci_set_hs_csr
 c_func
@@ -374,6 +374,7 @@ r_return
 id|new_hs_csr
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|cpci_check_and_clear_ins
 r_int
 id|cpci_check_and_clear_ins

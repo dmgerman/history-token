@@ -13,8 +13,6 @@ DECL|macro|info
 mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format, MY_NAME , ## arg)
-DECL|macro|SLOT_MAGIC
-mdefine_line|#define SLOT_MAGIC&t;0x67267322
 multiline_comment|/* name size which is used for entries in pcihpfs */
 DECL|macro|SLOT_NAME_SIZE
 mdefine_line|#define SLOT_NAME_SIZE&t;KOBJ_NAME_LEN&t;&t;/* {_SUN} */
@@ -32,10 +30,6 @@ DECL|struct|slot
 r_struct
 id|slot
 (brace
-DECL|member|magic
-id|u32
-id|magic
-suffix:semicolon
 DECL|member|number
 id|u8
 id|number
@@ -425,28 +419,6 @@ id|data
 suffix:semicolon
 r_extern
 r_int
-id|acpiphp_for_each_slot
-(paren
-id|acpiphp_callback
-id|fn
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|acpiphp_check_bridge
-(paren
-r_struct
-id|acpiphp_bridge
-op_star
-id|bridge
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|acpiphp_enable_slot
 (paren
 r_struct
@@ -590,22 +562,6 @@ r_struct
 id|pci_resource
 op_star
 id|acpiphp_get_io_resource
-(paren
-r_struct
-id|pci_resource
-op_star
-op_star
-id|head
-comma
-id|u32
-id|size
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|pci_resource
-op_star
-id|acpiphp_get_max_resource
 (paren
 r_struct
 id|pci_resource
