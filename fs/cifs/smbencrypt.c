@@ -804,6 +804,7 @@ id|passwd
 suffix:semicolon
 )brace
 multiline_comment|/* Does the NTLMv2 owfs of a user&squot;s password */
+r_static
 r_void
 DECL|function|ntv2_owf_gen
 id|ntv2_owf_gen

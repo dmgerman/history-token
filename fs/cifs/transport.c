@@ -20,6 +20,7 @@ id|kmem_cache_t
 op_star
 id|cifs_oplock_cachep
 suffix:semicolon
+r_static
 r_struct
 id|mid_q_entry
 op_star
@@ -210,6 +211,7 @@ r_return
 id|temp
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|DeleteMidQEntry
 id|DeleteMidQEntry

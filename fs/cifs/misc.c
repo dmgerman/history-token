@@ -25,6 +25,7 @@ op_star
 id|oplockThread
 suffix:semicolon
 DECL|variable|GlobalMid
+r_static
 id|__u16
 id|GlobalMid
 suffix:semicolon

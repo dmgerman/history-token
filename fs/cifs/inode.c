@@ -10,16 +10,6 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
-r_extern
-r_int
-id|is_size_safe_to_change
-c_func
-(paren
-r_struct
-id|cifsInodeInfo
-op_star
-)paren
-suffix:semicolon
 r_int
 DECL|function|cifs_get_inode_info_unix
 id|cifs_get_inode_info_unix

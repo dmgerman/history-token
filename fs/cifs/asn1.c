@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+macro_line|#include &quot;cifsproto.h&quot;
 multiline_comment|/*****************************************************************************&n; *&n; * Basic ASN.1 decoding routines (gxsnmp author Dirk Wisse)&n; *&n; *****************************************************************************/
 multiline_comment|/* Class */
 DECL|macro|ASN1_UNI
@@ -82,6 +83,7 @@ mdefine_line|#define SPNEGO_OID_LEN 7
 DECL|macro|NTLMSSP_OID_LEN
 mdefine_line|#define NTLMSSP_OID_LEN  10
 DECL|variable|SPNEGO_OID
+r_static
 r_int
 r_int
 id|SPNEGO_OID
@@ -106,6 +108,7 @@ l_int|2
 )brace
 suffix:semicolon
 DECL|variable|NTLMSSP_OID
+r_static
 r_int
 r_int
 id|NTLMSSP_OID
