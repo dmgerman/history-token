@@ -1767,6 +1767,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1780,7 +1783,16 @@ r_sizeof
 id|snd_seq_event_t
 )paren
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|count
 op_sub_assign
 r_sizeof
