@@ -276,6 +276,7 @@ op_star
 id|p
 comma
 id|snd_sb_csp_microcode_t
+id|__user
 op_star
 id|code
 )paren
@@ -302,6 +303,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -921,6 +923,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -968,6 +971,7 @@ id|p
 comma
 (paren
 id|snd_sb_csp_microcode_t
+id|__user
 op_star
 )paren
 id|arg
@@ -1014,6 +1018,7 @@ id|start_info
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1237,6 +1242,7 @@ op_star
 id|p
 comma
 id|snd_sb_csp_microcode_t
+id|__user
 op_star
 id|mcode
 )paren
@@ -1246,9 +1252,13 @@ id|info
 suffix:semicolon
 r_int
 r_char
+id|__user
 op_star
 id|data_ptr
-comma
+suffix:semicolon
+r_int
+r_char
+id|__user
 op_star
 id|data_end
 suffix:semicolon
@@ -2825,13 +2835,6 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* send microcode sequence */
-r_if
-c_cond
-(paren
-id|load_flags
-op_amp
-id|SNDRV_SB_CSP_LOAD_FROMUSER
-)paren
 multiline_comment|/* load from kernel space */
 r_while
 c_loop
@@ -3081,6 +3084,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
