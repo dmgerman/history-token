@@ -3600,10 +3600,12 @@ suffix:semicolon
 id|cleanup_proc_stat
 suffix:colon
 macro_line|#ifdef CONFIG_PROC_FS
-id|proc_net_remove
+id|remove_proc_entry
 c_func
 (paren
-l_string|&quot;ip_conntrack_stat&quot;
+l_string|&quot;ip_conntrack&quot;
+comma
+id|proc_net_stat
 )paren
 suffix:semicolon
 id|cleanup_proc_exp
