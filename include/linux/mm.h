@@ -1104,6 +1104,16 @@ op_star
 id|page
 )paren
 suffix:semicolon
+r_int
+id|set_page_dirty_lock
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Prototype to add a shrinker callback for ageable caches.&n; * &n; * These functions are passed a count `nr_to_scan&squot; and a gfpmask.  They should&n; * scan `nr_to_scan&squot; objects, attempting to free them.&n; *&n; * The callback must the number of objects which remain in the cache.&n; *&n; * The callback will be passes nr_to_scan == 0 when the VM is querying the&n; * cache size, so a fastpath for that case is appropriate.&n; */
 DECL|typedef|shrinker_t
 r_typedef
