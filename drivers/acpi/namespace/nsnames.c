@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 63 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -16,7 +16,7 @@ op_star
 DECL|function|acpi_ns_get_table_pathname
 id|acpi_ns_get_table_pathname
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 )paren
@@ -28,16 +28,23 @@ suffix:semicolon
 id|u32
 id|size
 suffix:semicolon
-id|ACPI_NAME
+id|acpi_name
 id|name
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|parent_node
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ns_get_table_pathname&quot;
+comma
+id|node
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -50,7 +57,7 @@ id|node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If the name space has not been initialized,&n;&t;&t; * this function should not have been called.&n;&t;&t; */
-r_return
+id|return_PTR
 (paren
 l_int|NULL
 )paren
@@ -97,7 +104,7 @@ suffix:semicolon
 multiline_comment|/* Allocate a buffer to be returned to caller */
 id|name_buffer
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 id|size
 op_plus
@@ -118,7 +125,7 @@ l_string|&quot;Ns_get_table_pathname: allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_PTR
 (paren
 l_int|NULL
 )paren
@@ -187,7 +194,27 @@ id|size
 op_assign
 id|AML_ROOT_PREFIX
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+id|size
+op_ne
+l_int|0
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Bad pointer returned; size=%X&bslash;n&quot;
+comma
+id|size
+)paren
+)paren
+suffix:semicolon
+)brace
+id|return_PTR
 (paren
 id|name_buffer
 )paren
@@ -198,7 +225,7 @@ id|u32
 DECL|function|acpi_ns_get_pathname_length
 id|acpi_ns_get_pathname_length
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 )paren
@@ -206,9 +233,13 @@ id|node
 id|u32
 id|size
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|next_node
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Compute length of pathname as 5 * number of name segments.&n;&t; * Go back up the parent tree to the root&n;&t; */
 r_for
@@ -262,11 +293,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_handle_to_pathname&n; *&n; * PARAMETERS:  Target_handle           - Handle of named object whose name is&n; *                                        to be found&n; *              Buf_size                - Size of the buffer provided&n; *              User_buffer             - Where the pathname is returned&n; *&n; * RETURN:      Status, Buffer is filled with pathname if status is AE_OK&n; *&n; * DESCRIPTION: Build and return a full namespace pathname&n; *&n; * MUTEX:       Locks Namespace&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ns_handle_to_pathname
 id|acpi_ns_handle_to_pathname
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|target_handle
 comma
 id|u32
@@ -278,12 +309,12 @@ op_star
 id|user_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -293,11 +324,18 @@ suffix:semicolon
 id|u32
 id|user_buf_size
 suffix:semicolon
-id|ACPI_NAME
+id|acpi_name
 id|name
 suffix:semicolon
 id|u32
 id|size
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ns_handle_to_pathname&quot;
+comma
+id|target_handle
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -307,7 +345,7 @@ id|acpi_gbl_root_node
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If the name space has not been initialized,&n;&t;&t; * this function should not have been called.&n;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_NAMESPACE
 )paren
@@ -327,7 +365,7 @@ op_logical_neg
 id|node
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -467,9 +505,22 @@ id|size
 op_assign
 l_char|&squot;&bslash;&bslash;&squot;
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Len=%X, %s &bslash;n&quot;
+comma
+id|path_length
+comma
+id|user_buffer
+)paren
+)paren
+suffix:semicolon
 m_exit
 suffix:colon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

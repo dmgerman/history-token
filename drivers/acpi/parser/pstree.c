@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pstree - Parser op tree manipulation/traversal/search&n; *              $Revision: 30 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pstree - Parser op tree manipulation/traversal/search&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -10,12 +10,12 @@ id|MODULE_NAME
 l_string|&quot;pstree&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_arg&n; *&n; * PARAMETERS:  Op              - Get an argument for this op&n; *              Argn            - Nth argument to get&n; *&n; * RETURN:      The argument (as an Op object).  NULL if argument does not exist&n; *&n; * DESCRIPTION: Get the specified op&squot;s argument.&n; *&n; ******************************************************************************/
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_get_arg
 id|acpi_ps_get_arg
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
@@ -23,15 +23,20 @@ id|u32
 id|argn
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Get the info structure for this opcode */
 id|op_info
@@ -111,22 +116,27 @@ r_void
 DECL|function|acpi_ps_append_arg
 id|acpi_ps_append_arg
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|prev_arg
 suffix:semicolon
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -232,21 +242,25 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_child&n; *&n; * PARAMETERS:  Op              - Get the child of this Op&n; *&n; * RETURN:      Child Op, Null if none is found.&n; *&n; * DESCRIPTION: Get op&squot;s children or NULL if none&n; *&n; ******************************************************************************/
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_get_child
 id|acpi_ps_get_child
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|child
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -351,33 +365,37 @@ id|child
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_depth_next&n; *&n; * PARAMETERS:  Origin          - Root of subtree to search&n; *              Op              - Last (previous) Op that was found&n; *&n; * RETURN:      Next Op found in the search.&n; *&n; * DESCRIPTION: Get next op in tree (walking the tree in depth-first order)&n; *              Return NULL when reaching &quot;origin&quot; or when walking up from root&n; *&n; ******************************************************************************/
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_get_depth_next
 id|acpi_ps_get_depth_next
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|origin
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|next
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|parent
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

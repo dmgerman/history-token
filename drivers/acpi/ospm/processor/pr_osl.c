@@ -1,10 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pr_osl.c&n; *   $Revision: 14 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pr_osl.c&n; *   $Revision: 18 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;bm.h&gt;
 macro_line|#include &quot;pr.h&quot;
@@ -47,7 +48,12 @@ id|pr_proc_root
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/****************************************************************************&n; * &n; * FUNCTION:&t;pr_osl_proc_read_status&n; *&n; ****************************************************************************/
+r_extern
+r_int
+r_int
+id|acpi_piix4_bmisx
+suffix:semicolon
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;pr_osl_proc_read_status&n; *&n; ****************************************************************************/
 r_static
 r_int
 DECL|function|pr_osl_proc_read_status
@@ -223,7 +229,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; * &n; * FUNCTION:&t;pr_osl_proc_read_info&n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;pr_osl_proc_read_info&n; *&n; ****************************************************************************/
 r_static
 r_int
 DECL|function|pr_osl_proc_read_info
@@ -367,7 +373,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;pr_osl_add_device&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_osl_add_device
 id|pr_osl_add_device
 c_func
@@ -467,6 +473,17 @@ id|processor-&gt;performance.state_count
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|acpi_piix4_bmisx
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;, PIIX workaround active&quot;
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -549,7 +566,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;pr_osl_remove_device&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_osl_remove_device
 id|pr_osl_remove_device
 (paren
@@ -638,7 +655,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;pr_osl_generate_event&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_osl_generate_event
 id|pr_osl_generate_event
 (paren
@@ -650,7 +667,7 @@ op_star
 id|processor
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -724,6 +741,98 @@ r_return
 id|status
 suffix:semicolon
 )brace
+multiline_comment|/****************************************************************************&n; *                              Errata Handling&n; ****************************************************************************/
+DECL|function|acpi_pr_errata
+r_void
+id|acpi_pr_errata
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|dev
+op_assign
+l_int|NULL
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|dev
+op_assign
+id|pci_find_subsys
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|dev
+)paren
+)paren
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|dev-&gt;device
+)paren
+(brace
+r_case
+id|PCI_DEVICE_ID_INTEL_82801BA_8
+suffix:colon
+multiline_comment|/* PIIX4U4 */
+r_case
+id|PCI_DEVICE_ID_INTEL_82801BA_9
+suffix:colon
+multiline_comment|/* PIIX4U3 */
+r_case
+id|PCI_DEVICE_ID_INTEL_82451NX
+suffix:colon
+multiline_comment|/* PIIX4NX */
+r_case
+id|PCI_DEVICE_ID_INTEL_82372FB_1
+suffix:colon
+multiline_comment|/* PIIX4U2 */
+r_case
+id|PCI_DEVICE_ID_INTEL_82801AA_1
+suffix:colon
+multiline_comment|/* PIIX4U */
+r_case
+id|PCI_DEVICE_ID_INTEL_82443MX_1
+suffix:colon
+multiline_comment|/* PIIX4E2 */
+r_case
+id|PCI_DEVICE_ID_INTEL_82801AB_1
+suffix:colon
+multiline_comment|/* PIIX4E */
+r_case
+id|PCI_DEVICE_ID_INTEL_82371AB
+suffix:colon
+multiline_comment|/* PIIX4 */
+id|acpi_piix4_bmisx
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|dev
+comma
+l_int|4
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;pr_osl_init&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;0: Success&n; *&n; * DESCRIPTION: Module initialization.&n; *&n; ****************************************************************************/
 r_static
 r_int
@@ -734,10 +843,26 @@ id|pr_osl_init
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+multiline_comment|/* abort if no busmgr */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bm_proc_root
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|acpi_pr_errata
+c_func
+(paren
+)paren
 suffix:semicolon
 id|pr_proc_root
 op_assign

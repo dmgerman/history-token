@@ -7,25 +7,25 @@ multiline_comment|/* PM Timer ticks per second (HZ) */
 DECL|macro|PM_TIMER_FREQUENCY
 mdefine_line|#define PM_TIMER_FREQUENCY  3579545
 multiline_comment|/* Prototypes */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_hw_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_hw_shutdown
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_hw_initialize_system_info
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_hw_set_mode
 (paren
 id|u32
@@ -92,7 +92,7 @@ id|acpi_hw_low_level_read
 id|u32
 id|width
 comma
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 op_star
 id|reg
 comma
@@ -109,7 +109,7 @@ comma
 id|u32
 id|value
 comma
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 op_star
 id|reg
 comma
@@ -158,13 +158,13 @@ id|acpi_hw_get_gpe_status
 id|u32
 id|gpe_number
 comma
-id|ACPI_EVENT_STATUS
+id|acpi_event_status
 op_star
 id|event_status
 )paren
 suffix:semicolon
 multiline_comment|/* Sleep Prototypes */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_hw_obtain_sleep_type_register_data
 (paren
 id|u8
@@ -180,7 +180,7 @@ id|slp_typ_b
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI Timer prototypes */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_get_timer_resolution
 (paren
 id|u32
@@ -188,7 +188,7 @@ op_star
 id|resolution
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_get_timer
 (paren
 id|u32
@@ -196,7 +196,7 @@ op_star
 id|ticks
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_get_timer_duration
 (paren
 id|u32

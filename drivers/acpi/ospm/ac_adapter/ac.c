@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ac.c&n; *   $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ac.c&n; *   $Revision: 22 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;ac.h&quot;
@@ -19,11 +19,106 @@ op_star
 id|ac_adapter
 )paren
 (brace
+macro_line|#ifdef ACPI_DEBUG
+id|acpi_buffer
+id|buffer
+suffix:semicolon
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;ac_print&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ac_adapter
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+id|buffer.length
+op_assign
+l_int|256
+suffix:semicolon
+id|buffer.pointer
+op_assign
+id|acpi_os_callocate
+c_func
+(paren
+id|buffer.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer.pointer
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Get the full pathname for this ACPI object.&n;&t; */
+id|acpi_get_name
+c_func
+(paren
+id|ac_adapter-&gt;acpi_handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Print out basic adapter information.&n;&t; */
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;| AC Adapter[%02x]:[%p] %s&bslash;n&quot;
+comma
+id|ac_adapter-&gt;device_handle
+comma
+id|ac_adapter-&gt;acpi_handle
+comma
+id|buffer.pointer
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_free
+c_func
+(paren
+id|buffer.pointer
+)paren
+suffix:semicolon
+macro_line|#endif /*ACPI_DEBUG*/
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_add_device&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_add_device
 id|ac_add_device
 c_func
@@ -37,7 +132,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -54,8 +149,25 @@ id|ac_adapter
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_DEVICE_INFO
+id|acpi_device_info
 id|info
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ac_add_device&quot;
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Adding ac_adapter device [%02x].&bslash;n&quot;
+comma
+id|device_handle
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -67,8 +179,20 @@ op_star
 id|context
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid (NULL) context.&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get information on this device.&n;&t; */
@@ -93,8 +217,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Allocate a new AC_CONTEXT structure.&n;&t; */
@@ -116,8 +243,11 @@ op_logical_neg
 id|ac_adapter
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|ac_adapter-&gt;device_handle
@@ -150,6 +280,15 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unable to get object info for ac_adapter device.&quot;
+)paren
+)paren
+suffix:semicolon
 r_goto
 id|end
 suffix:semicolon
@@ -205,6 +344,15 @@ id|ACPI_VALID_STA
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Must have valid _STA.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_ERROR
@@ -265,12 +413,15 @@ id|ac_adapter
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_remove_device&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_remove_device
 id|ac_remove_device
 (paren
@@ -280,7 +431,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -290,6 +441,12 @@ op_star
 id|ac_adapter
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ac_remove_device&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -302,8 +459,11 @@ op_star
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|ac_adapter
@@ -314,6 +474,17 @@ op_star
 )paren
 op_star
 id|context
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Removing ac_adapter device [%02x].&bslash;n&quot;
+comma
+id|ac_adapter-&gt;device_handle
+)paren
+)paren
 suffix:semicolon
 id|ac_osl_remove_device
 c_func
@@ -332,20 +503,23 @@ id|context
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                             External Functions&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_initialize&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_initialize
 id|ac_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -355,6 +529,12 @@ id|criteria
 suffix:semicolon
 id|BM_DRIVER
 id|driver
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ac_initialize&quot;
+)paren
 suffix:semicolon
 id|MEMSET
 c_func
@@ -420,19 +600,22 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_terminate&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_terminate
 id|ac_terminate
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -442,6 +625,12 @@ id|criteria
 suffix:semicolon
 id|BM_DRIVER
 id|driver
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ac_terminate&quot;
+)paren
 suffix:semicolon
 id|MEMSET
 c_func
@@ -507,12 +696,15 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:&t;ac_notify&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_notify
 id|ac_notify
 (paren
@@ -528,10 +720,16 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ac_notify&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -540,8 +738,11 @@ op_logical_neg
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_switch
@@ -581,6 +782,15 @@ suffix:semicolon
 r_case
 id|AC_NOTIFY_STATUS_CHANGE
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Status change event detected.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|ac_osl_generate_event
@@ -609,12 +819,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_request&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_request
 id|ac_request
 (paren
@@ -627,10 +840,16 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ac_request&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Must have a valid request structure and context.&n;&t; */
 r_if
@@ -643,8 +862,11 @@ op_logical_neg
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Handle Request:&n;&t; * ---------------&n;&t; */
@@ -667,8 +889,11 @@ id|request-&gt;status
 op_assign
 id|status
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

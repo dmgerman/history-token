@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmnotify.c&n; *   $Revision: 17 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmnotify.c&n; *   $Revision: 21 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -9,8 +9,8 @@ id|MODULE_NAME
 l_string|&quot;bmnotify&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                            Internal Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_generate_notify&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_generate_notify&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_generate_notify
 id|bm_generate_notify
 (paren
@@ -22,7 +22,7 @@ id|u32
 id|notify_type
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -60,12 +60,11 @@ op_amp
 id|node-&gt;device
 )paren
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Sending notify [%02x] to device [%02x].&bslash;n&quot;
 comma
 id|notify_type
@@ -85,12 +84,11 @@ id|device
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;No driver installed for device [%02x].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -128,8 +126,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_device_check&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_device_check&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_device_check
 id|bm_device_check
 (paren
@@ -142,7 +140,7 @@ op_star
 id|status_change
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -341,8 +339,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_bus_check&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_bus_check&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_bus_check
 id|bm_bus_check
 (paren
@@ -351,7 +349,7 @@ op_star
 id|parent_node
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -422,12 +420,12 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                            External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_notify&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_notify&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 r_void
 DECL|function|bm_notify
 id|bm_notify
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
 id|u32
@@ -438,7 +436,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -479,12 +477,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Recieved notify [%02x] for unknown device [%p].&bslash;n&quot;
 comma
 id|notify_value
@@ -496,7 +493,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Device-Specific or Standard?&n;&t; * ----------------------------&n;&t; * Device-specific notifies are forwarded to the control module&squot;s &n;&t; * notify() function for processing.  Standard notifies are handled&n;&t; * internally.&n;&t; */
+multiline_comment|/*&n;&t; * Device-Specific or Standard?&n;&t; * ----------------------------&n;&t; * Device-specific notifies are forwarded to the control module&squot;s&n;&t; * notify() function for processing.  Standard notifies are handled&n;&t; * internally.&n;&t; */
 r_if
 c_cond
 (paren
@@ -527,12 +524,11 @@ id|notify_value
 r_case
 id|BM_NOTIFY_BUS_CHECK
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received BUS CHECK notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -552,12 +548,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_DEVICE_CHECK
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received DEVICE CHECK notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -579,12 +574,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_DEVICE_WAKE
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received DEVICE WAKE notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -597,12 +591,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_EJECT_REQUEST
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received EJECT REQUEST notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -615,12 +608,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_DEVICE_CHECK_LIGHT
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received DEVICE CHECK LIGHT notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -643,12 +635,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_FREQUENCY_MISMATCH
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received FREQUENCY MISMATCH notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -661,12 +652,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_BUS_MODE_MISMATCH
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received BUS MODE MISMATCH notification for device [%02x].&bslash;n&quot;
 comma
 id|node-&gt;device.handle
@@ -679,12 +669,11 @@ suffix:semicolon
 r_case
 id|BM_NOTIFY_POWER_FAULT
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received POWER FAULT notification.&bslash;n&quot;
 )paren
 )paren
@@ -694,12 +683,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received unknown/unsupported notification.&bslash;n&quot;
 )paren
 )paren

@@ -937,10 +937,6 @@ DECL|member|bd_openers
 r_int
 id|bd_openers
 suffix:semicolon
-DECL|member|bd_cache_openers
-r_int
-id|bd_cache_openers
-suffix:semicolon
 DECL|member|bd_op
 r_const
 r_struct
@@ -1103,10 +1099,6 @@ DECL|member|i_data
 r_struct
 id|address_space
 id|i_data
-suffix:semicolon
-DECL|member|i_mapping_overload
-r_int
-id|i_mapping_overload
 suffix:semicolon
 DECL|member|i_dquot
 r_struct

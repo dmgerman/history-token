@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbcmds - debug commands and output routines&n; *              $Revision: 60 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbcmds - debug commands and output routines&n; *              $Revision: 65 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -97,11 +97,11 @@ multiline_comment|/* Must be null terminated */
 )brace
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_walk_for_references&n; *&n; * PARAMETERS:  Callback from Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check if this namespace object refers to the target object&n; *              that is passed in as the context value.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_walk_for_references
 id|acpi_db_walk_for_references
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|obj_handle
 comma
 id|u32
@@ -117,22 +117,22 @@ op_star
 id|return_value
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 op_assign
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 id|context
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 op_assign
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
@@ -220,7 +220,7 @@ op_star
 id|object_arg
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
@@ -228,7 +228,7 @@ multiline_comment|/* Convert string to object pointer */
 id|obj_desc
 op_assign
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 id|STRTOUL
@@ -398,7 +398,7 @@ id|instance_arg
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 multiline_comment|/* Search all tables for the target type */
@@ -472,7 +472,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%s, while unloading [%s]&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
@@ -502,11 +502,11 @@ id|NATIVE_CHAR
 op_star
 id|location
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
@@ -577,7 +577,7 @@ r_void
 DECL|function|acpi_db_set_method_call_breakpoint
 id|acpi_db_set_method_call_breakpoint
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
@@ -611,7 +611,7 @@ id|NATIVE_CHAR
 op_star
 id|statements
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
@@ -678,7 +678,7 @@ op_star
 id|depth_arg
 )paren
 (brace
-id|ACPI_HANDLE
+id|acpi_handle
 id|subtree_entry
 op_assign
 id|acpi_gbl_root_node
@@ -721,7 +721,7 @@ l_int|0x39
 id|subtree_entry
 op_assign
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 )paren
 id|STRTOUL
 (paren
@@ -742,7 +742,7 @@ id|subtree_entry
 comma
 r_sizeof
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 )paren
 )paren
 )paren
@@ -875,7 +875,7 @@ op_star
 id|depth_arg
 )paren
 (brace
-id|ACPI_HANDLE
+id|acpi_handle
 id|subtree_entry
 op_assign
 id|acpi_gbl_root_node
@@ -969,7 +969,7 @@ id|u32
 id|value
 )paren
 (brace
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -1052,11 +1052,11 @@ suffix:semicolon
 id|u32
 id|value
 suffix:semicolon
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
@@ -1301,11 +1301,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_walk_for_specific_objects&n; *&n; * PARAMETERS:  Callback from Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Display short info about objects in the namespace&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_walk_for_specific_objects
 id|acpi_db_walk_for_specific_objects
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|obj_handle
 comma
 id|u32
@@ -1321,11 +1321,11 @@ op_star
 id|return_value
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -1341,7 +1341,7 @@ id|obj_desc
 op_assign
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
@@ -1509,7 +1509,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_display_objects&n; *&n; * PARAMETERS:  Obj_type_arg        - Type of object to display&n; *              Display_count_arg   - Max depth to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Display objects in the namespace of the requested type&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_display_objects
 id|acpi_db_display_objects
 (paren
@@ -1522,7 +1522,7 @@ op_star
 id|display_count_arg
 )paren
 (brace
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|type
 suffix:semicolon
 multiline_comment|/* Get the object type */
@@ -1607,11 +1607,11 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_walk_and_match_name&n; *&n; * PARAMETERS:  Callback from Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find a particular name/names within the namespace.  Wildcards&n; *              are supported -- &squot;?&squot; matches any character.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_walk_and_match_name
 id|acpi_db_walk_and_match_name
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|obj_handle
 comma
 id|u32
@@ -1627,7 +1627,7 @@ op_star
 id|return_value
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|NATIVE_CHAR
@@ -1696,7 +1696,7 @@ op_star
 op_amp
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
@@ -1776,7 +1776,7 @@ id|acpi_ut_get_type_name
 (paren
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
@@ -1794,7 +1794,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_find_name_in_namespace&n; *&n; * PARAMETERS:  Name_arg        - The 4-character ACPI name to find.&n; *                                wildcards are supported.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Search the namespace for a given name (with wildcards)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_find_name_in_namespace
 id|acpi_db_find_name_in_namespace
 (paren
@@ -1880,7 +1880,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Current scope: %s&bslash;n&quot;
 comma
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 )paren
 suffix:semicolon
 r_return
@@ -1905,14 +1905,14 @@ l_char|&squot;&bslash;&bslash;&squot;
 (brace
 id|STRCPY
 (paren
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 comma
 id|name
 )paren
 suffix:semicolon
 id|STRCAT
 (paren
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 comma
 l_string|&quot;&bslash;&bslash;&quot;
 )paren
@@ -1922,14 +1922,14 @@ r_else
 (brace
 id|STRCAT
 (paren
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 comma
 id|name
 )paren
 suffix:semicolon
 id|STRCAT
 (paren
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 comma
 l_string|&quot;&bslash;&bslash;&quot;
 )paren
@@ -1939,7 +1939,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;New scope: %s&bslash;n&quot;
 comma
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 )paren
 suffix:semicolon
 )brace
@@ -1954,14 +1954,14 @@ id|object_arg
 )paren
 (brace
 macro_line|#ifndef _IA16
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|return_obj
 suffix:semicolon
 id|acpi_db_set_output_destination
@@ -1973,7 +1973,7 @@ multiline_comment|/* Convert string to object pointer */
 id|obj_desc
 op_assign
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 id|STRTOUL
@@ -1988,11 +1988,11 @@ suffix:semicolon
 multiline_comment|/* Prepare for a return object of arbitrary size */
 id|return_obj.pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj.length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 multiline_comment|/* _PRT */
 id|acpi_os_printf
@@ -2027,23 +2027,23 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Could not obtain _PRT: %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
 r_goto
-id|go_cRS
+id|get_crs
 suffix:semicolon
 )brace
 id|return_obj.pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj.length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 id|status
 op_assign
@@ -2068,28 +2068,27 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Get_irq_routing_table failed: %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
-r_goto
-id|go_cRS
-suffix:semicolon
 )brace
+r_else
+(brace
 id|acpi_rs_dump_irq_list
-c_func
 (paren
 (paren
 id|u8
 op_star
 )paren
-id|buffer
+id|acpi_gbl_db_buffer
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* _CRS */
-id|go_cRS
+id|get_crs
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -2098,11 +2097,11 @@ l_string|&quot;Evaluating _CRS&bslash;n&quot;
 suffix:semicolon
 id|return_obj.pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj.length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 id|status
 op_assign
@@ -2131,23 +2130,23 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Could not obtain _CRS: %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
 r_goto
-id|go_pRS
+id|get_prs
 suffix:semicolon
 )brace
 id|return_obj.pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj.length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 id|status
 op_assign
@@ -2172,27 +2171,27 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Acpi_get_current_resources failed: %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
-r_goto
-id|go_pRS
-suffix:semicolon
 )brace
+r_else
+(brace
 id|acpi_rs_dump_resource_list
 (paren
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 )paren
-id|buffer
+id|acpi_gbl_db_buffer
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* _PRS */
-id|go_pRS
+id|get_prs
 suffix:colon
 id|acpi_os_printf
 (paren
@@ -2201,11 +2200,11 @@ l_string|&quot;Evaluating _PRS&bslash;n&quot;
 suffix:semicolon
 id|return_obj.pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj.length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 id|status
 op_assign
@@ -2234,7 +2233,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Could not obtain _PRS: %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
@@ -2246,11 +2245,11 @@ suffix:semicolon
 )brace
 id|return_obj.pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj.length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 id|status
 op_assign
@@ -2275,25 +2274,25 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Acpi_get_possible_resources failed: %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
 )brace
+r_else
+(brace
 id|acpi_rs_dump_resource_list
 (paren
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 )paren
-id|buffer
+id|acpi_gbl_db_buffer
 )paren
 suffix:semicolon
+)brace
 id|cleanup
 suffix:colon
 id|acpi_db_set_output_destination

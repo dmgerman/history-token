@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -11,21 +11,29 @@ l_string|&quot;tbxfroot&quot;
 )paren
 DECL|macro|RSDP_CHECKSUM_LENGTH
 mdefine_line|#define RSDP_CHECKSUM_LENGTH 20
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_find_root_pointer&n; *&n; * PARAMETERS:  **Rsdp_physical_address     - Where to place the RSDP address&n; *&n; * RETURN:      Status, Physical address of the RSDP&n; *&n; * DESCRIPTION: Find the RSDP&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_find_root_pointer&n; *&n; * PARAMETERS:  **Rsdp_physical_address     - Where to place the RSDP address&n; *              Flags                       - Logical/Physical addressing&n; *&n; * RETURN:      Status, Physical address of the RSDP&n; *&n; * DESCRIPTION: Find the RSDP&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_find_root_pointer
 id|acpi_find_root_pointer
 (paren
+id|u32
+id|flags
+comma
 id|ACPI_PHYSICAL_ADDRESS
 op_star
 id|rsdp_physical_address
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_find_root_pointer&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Get the RSDP */
 id|status
@@ -35,7 +43,7 @@ id|acpi_tb_find_rsdp
 op_amp
 id|table_info
 comma
-id|ACPI_LOGICAL_ADDRESSING
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -47,7 +55,16 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;RSDP structure not found&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
@@ -58,7 +75,7 @@ id|rsdp_physical_address
 op_assign
 id|table_info.physical_address
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -84,6 +101,11 @@ suffix:semicolon
 id|u8
 op_star
 id|mem_rover
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_scan_memory_for_rsdp&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Search from given start addr for the requested length  */
 r_for
@@ -145,7 +167,18 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* If so, we have found the RSDP */
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;RSDP located at physical address %p&bslash;n&quot;
+comma
+id|mem_rover
+)paren
+)paren
+suffix:semicolon
+id|return_PTR
 (paren
 id|mem_rover
 )paren
@@ -153,18 +186,27 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Searched entire block, no RSDP was found */
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Searched entire block, no RSDP was found.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_PTR
 (paren
 l_int|NULL
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_find_rsdp&n; *&n; * PARAMETERS:  *Table_info             - Where the table info is returned&n; *              Flags                   - Current memory mode (logical vs.&n; *                                        physical addressing)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Search lower 1_mbyte of memory for the root system descriptor&n; *              pointer structure.  If it is found, set *RSDP to point to it.&n; *&n; *              NOTE: The RSDP must be either in the first 1_k of the Extended&n; *              BIOS Data Area or between E0000 and FFFFF (ACPI 1.0 section&n; *              5.2.2; assertion #421).&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_find_rsdp
 id|acpi_tb_find_rsdp
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 comma
@@ -183,10 +225,15 @@ suffix:semicolon
 id|UINT64
 id|phys_addr
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_find_rsdp&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Scan supports either 1) Logical addressing or 2) Physical addressing&n;&t; */
 r_if
@@ -228,7 +275,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -273,7 +320,7 @@ id|table_info-&gt;physical_address
 op_assign
 id|phys_addr
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -306,7 +353,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -351,7 +398,7 @@ id|table_info-&gt;physical_address
 op_assign
 id|phys_addr
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -389,7 +436,7 @@ id|ACPI_TBLPTR
 )paren
 id|mem_rover
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -423,7 +470,7 @@ id|ACPI_TBLPTR
 )paren
 id|mem_rover
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -431,18 +478,18 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* RSDP signature was not found */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_firmware_table&n; *&n; * PARAMETERS:  Signature       - Any ACPI table signature&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *              Flags           - 0: Physical/Virtual support&n; *              Ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an Out_buffer large enough to contain the entire ACPI&n; *              table.  Upon completion&n; *              the Out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the Out_buffer-&gt;Buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_firmware_table
 id|acpi_get_firmware_table
 (paren
-id|ACPI_STRING
+id|acpi_string
 id|signature
 comma
 id|u32
@@ -451,7 +498,7 @@ comma
 id|u32
 id|flags
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 op_star
 id|table_pointer
@@ -460,18 +507,15 @@ id|table_pointer
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 suffix:semicolon
-id|ACPI_TABLE_DESC
-id|table_info
-suffix:semicolon
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|rsdt_ptr
 suffix:semicolon
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -488,6 +532,11 @@ id|i
 suffix:semicolon
 id|u32
 id|j
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_firmware_table&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that at least the table manager is initialized.  We don&squot;t&n;&t; * require that the entire ACPI subsystem is up for this interface&n;&t; */
 multiline_comment|/*&n;&t; *  If we have a buffer, we must have a length too&n;&t; */
@@ -511,21 +560,21 @@ id|table_pointer
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the RSDP by scanning low memory */
+multiline_comment|/* Get the RSDP */
 id|status
 op_assign
-id|acpi_tb_find_rsdp
+id|acpi_os_get_root_pointer
 (paren
-op_amp
-id|table_info
-comma
 id|flags
+comma
+op_amp
+id|physical_address
 )paren
 suffix:semicolon
 r_if
@@ -537,7 +586,16 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;RSDP  not found&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
@@ -549,7 +607,33 @@ op_assign
 id|RSDP_DESCRIPTOR
 op_star
 )paren
-id|table_info.pointer
+(paren
+id|ACPI_TBLPTR
+)paren
+id|physical_address
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;RSDP located at %p, RSDT physical=%8.8lX%8.8lX &bslash;n&quot;
+comma
+id|acpi_gbl_RSDP
+comma
+id|HIDWORD
+c_func
+(paren
+id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Get the RSDT and validate it */
 id|physical_address
@@ -582,7 +666,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -674,7 +758,7 @@ id|ACPI_GET_ADDRESS
 (paren
 (paren
 (paren
-id|XSDT_DESCRIPTOR
+id|xsdt_descriptor
 op_star
 )paren
 id|rsdt_ptr
@@ -798,7 +882,7 @@ id|rsdt_size
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

@@ -3,14 +3,14 @@ multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  Th
 macro_line|#ifndef __ACEVENTS_H__
 DECL|macro|__ACEVENTS_H__
 mdefine_line|#define __ACEVENTS_H__
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evfixed - Fixed event handling&n; */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_fixed_event_initialize
 (paren
 r_void
@@ -30,7 +30,7 @@ id|acpi_event
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evglock - Global Lock support&n; */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_acquire_global_lock
 c_func
 (paren
@@ -44,20 +44,20 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_init_global_lock_handler
 (paren
 r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evgpe - GPE handling and dispatch&n; */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_gpe_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_init_gpe_control_methods
 (paren
 r_void
@@ -77,10 +77,10 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evnotify - Device Notify handling and dispatch&n; */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_queue_notify_request
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 comma
@@ -97,16 +97,16 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evregion - Address Space handling&n; */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_install_default_address_space_handlers
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_address_space_dispatch
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|region_obj
 comma
@@ -124,10 +124,10 @@ op_star
 id|value
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_addr_handler_helper
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|obj_handle
 comma
 id|u32
@@ -147,7 +147,7 @@ r_void
 id|acpi_ev_disassociate_region_from_handler
 c_func
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|region_obj
 comma
@@ -155,14 +155,14 @@ id|u8
 id|acpi_ns_is_locked
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_associate_region_and_handler
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|handler_obj
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|region_obj
 comma
@@ -171,10 +171,10 @@ id|acpi_ns_is_locked
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evregini - Region initialization and setup&n; */
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_system_memory_region_setup
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|handle
 comma
 id|u32
@@ -190,10 +190,10 @@ op_star
 id|region_context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_io_space_region_setup
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|handle
 comma
 id|u32
@@ -209,10 +209,10 @@ op_star
 id|region_context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_pci_config_region_setup
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|handle
 comma
 id|u32
@@ -228,10 +228,10 @@ op_star
 id|region_context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_default_region_setup
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|handle
 comma
 id|u32
@@ -247,10 +247,10 @@ op_star
 id|region_context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_initialize_region
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|region_obj
 comma
@@ -265,7 +265,7 @@ id|acpi_ev_install_sci_handler
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|acpi_ev_remove_sci_handler
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 3 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 5 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
@@ -24,10 +24,10 @@ DECL|member|data_type
 id|u8
 id|data_type
 suffix:semicolon
-multiline_comment|/* To differentiate various internal objs */
+multiline_comment|/* To differentiate various internal objs MUST BE FIRST!*/
 "&bslash;"
 DECL|member|owner_id
-id|ACPI_OWNER_ID
+id|acpi_owner_id
 id|owner_id
 suffix:semicolon
 multiline_comment|/* Owner of objects created during the walk */
@@ -59,44 +59,44 @@ id|next
 suffix:semicolon
 multiline_comment|/* Next Walk_state in list */
 DECL|member|origin
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|origin
 suffix:semicolon
 multiline_comment|/* Start of walk [Obsolete] */
 multiline_comment|/* TBD: Obsolete with removal of WALK procedure ? */
 DECL|member|prev_op
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|prev_op
 suffix:semicolon
 multiline_comment|/* Last op that was processed */
 DECL|member|next_op
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|next_op
 suffix:semicolon
 multiline_comment|/* next op to be processed */
 DECL|member|results
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|results
 suffix:semicolon
 multiline_comment|/* Stack of accumulated results */
 DECL|member|control_state
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|control_state
 suffix:semicolon
 multiline_comment|/* List of control states (nested IFs) */
 DECL|member|scope_info
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|scope_info
 suffix:semicolon
 multiline_comment|/* Stack of nested scopes */
 DECL|member|parser_state
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 suffix:semicolon
@@ -107,17 +107,18 @@ op_star
 id|aml_last_while
 suffix:semicolon
 DECL|member|op_info
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
 multiline_comment|/* Info on current opcode */
 DECL|member|descending_callback
-id|ACPI_PARSE_DOWNWARDS
+id|acpi_parse_downwards
 id|descending_callback
 suffix:semicolon
 DECL|member|ascending_callback
-id|ACPI_PARSE_UPWARDS
+id|acpi_parse_upwards
 id|ascending_callback
 suffix:semicolon
 DECL|member|return_desc
@@ -142,7 +143,7 @@ id|method_node
 suffix:semicolon
 multiline_comment|/* Method Node if running a method */
 DECL|member|method_call_op
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|method_call_op
 suffix:semicolon
@@ -219,9 +220,9 @@ DECL|member|method_breakpoint
 id|u32
 id|method_breakpoint
 suffix:semicolon
-DECL|typedef|ACPI_WALK_STATE
+DECL|typedef|acpi_walk_state
 )brace
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 suffix:semicolon
 multiline_comment|/*&n; * Walk list - head of a tree of walk states.  Multiple walk states are created when there&n; * are nested control methods executing.&n; */
 DECL|struct|acpi_walk_list
@@ -230,7 +231,7 @@ r_struct
 id|acpi_walk_list
 (brace
 DECL|member|walk_state
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
@@ -239,9 +240,9 @@ id|ACPI_OBJECT_MUTEX
 id|acquired_mutex_list
 suffix:semicolon
 multiline_comment|/* List of all currently acquired mutexes */
-DECL|typedef|ACPI_WALK_LIST
+DECL|typedef|acpi_walk_list
 )brace
-id|ACPI_WALK_LIST
+id|acpi_walk_list
 suffix:semicolon
 multiline_comment|/* Info used by Acpi_ps_init_objects */
 DECL|struct|acpi_init_walk_info
@@ -274,7 +275,7 @@ id|u16
 id|object_count
 suffix:semicolon
 DECL|member|table_desc
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
@@ -301,7 +302,7 @@ id|u16
 id|num_INI
 suffix:semicolon
 DECL|member|table_desc
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: bmrequest.c&n; *   $Revision: 12 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: bmrequest.c&n; *   $Revision: 16 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -9,8 +9,8 @@ id|MODULE_NAME
 l_string|&quot;bmrequest&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                            External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_generate_request&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_generate_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_generate_request
 id|bm_generate_request
 (paren
@@ -23,7 +23,7 @@ op_star
 id|request
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -75,12 +75,11 @@ id|device
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;No driver installed for device [%02x].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -113,8 +112,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_request&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_request
 id|bm_request
 (paren
@@ -123,7 +122,7 @@ op_star
 id|request
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -161,12 +160,11 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Received request for device [%02x] command [%02x].&bslash;n&quot;
 comma
 id|request-&gt;handle

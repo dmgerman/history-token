@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bt.c&n; *   $Revision: 24 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bt.c&n; *   $Revision: 27 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bt.h&quot;
@@ -19,11 +19,121 @@ op_star
 id|battery
 )paren
 (brace
+macro_line|#ifdef ACPI_DEBUG
+id|acpi_buffer
+id|buffer
+suffix:semicolon
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;bt_print&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|battery
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+id|buffer.length
+op_assign
+l_int|256
+suffix:semicolon
+id|buffer.pointer
+op_assign
+id|acpi_os_callocate
+c_func
+(paren
+id|buffer.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer.pointer
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Get the full pathname for this ACPI object.&n;&t; */
+id|acpi_get_name
+c_func
+(paren
+id|battery-&gt;acpi_handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Print out basic battery information.&n;&t; */
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;| Battery[%02x]:[%p] %s&bslash;n&quot;
+comma
+id|battery-&gt;device_handle
+comma
+id|battery-&gt;acpi_handle
+comma
+id|buffer.pointer
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;|   uid[%s] is_present[%d] power_units[%s]&bslash;n&quot;
+comma
+id|battery-&gt;uid
+comma
+id|battery-&gt;is_present
+comma
+id|battery-&gt;power_units
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_free
+c_func
+(paren
+id|buffer.pointer
+)paren
+suffix:semicolon
+macro_line|#endif /*ACPI_DEBUG*/
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bt_get_info&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; * NOTES:&t;Allocates battery_info - which must be freed by the caller.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_get_info
 id|bt_get_info
 (paren
@@ -37,23 +147,29 @@ op_star
 id|battery_info
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|bif_buffer
 comma
 id|package_format
 comma
 id|package_data
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|package
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_get_info&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -68,8 +184,11 @@ op_star
 id|battery_info
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|MEMSET
@@ -82,7 +201,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 )paren
 )paren
 suffix:semicolon
@@ -112,8 +231,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Extract Package Data:&n;&t; * ---------------------&n;&t; * Type-cast this bif_buffer to a package and use helper&n;&t; * functions to convert results into BT_BATTERY_INFO structure.&n;&t; * The first attempt is just to get the size of the package&n;&t; * data; the second gets the data (once we know the required&n;&t; * bif_buffer size).&n;&t; */
@@ -135,7 +257,7 @@ id|package
 comma
 r_sizeof
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 )paren
 )paren
 suffix:semicolon
@@ -174,7 +296,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 )paren
 )paren
 suffix:semicolon
@@ -232,8 +354,11 @@ op_logical_neg
 id|package_data.pointer
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -283,12 +408,15 @@ c_func
 id|bif_buffer.pointer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bt_get_status&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_get_status
 id|bt_get_status
 (paren
@@ -302,23 +430,29 @@ op_star
 id|battery_status
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|bst_buffer
 comma
 id|package_format
 comma
 id|package_data
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|package
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_get_status&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -333,8 +467,11 @@ op_star
 id|battery_status
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|MEMSET
@@ -347,7 +484,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 )paren
 )paren
 suffix:semicolon
@@ -377,8 +514,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Extract Package Data:&n;&t; * ---------------------&n;&t; * Type-cast this bst_buffer to a package and use helper&n;&t; * functions to convert results into BT_BATTERY_STATUS structure.&n;&t; * The first attempt is just to get the size of the package data;&n;&t; * the second gets the data (once we know the required bst_buffer&n;&t; * size).&n;&t; */
@@ -400,7 +540,7 @@ id|package
 comma
 r_sizeof
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 )paren
 )paren
 suffix:semicolon
@@ -439,7 +579,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 )paren
 )paren
 suffix:semicolon
@@ -497,8 +637,11 @@ op_logical_neg
 id|package_data.pointer
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -548,12 +691,15 @@ c_func
 id|bst_buffer.pointer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bt_check_device&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_check_device
 id|bt_check_device
 (paren
@@ -562,7 +708,7 @@ op_star
 id|battery
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -583,6 +729,12 @@ id|battery_info
 op_assign
 l_int|NULL
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_check_device&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -590,8 +742,11 @@ op_logical_neg
 id|battery
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|was_present
@@ -620,8 +775,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Unable to get battery status.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -632,6 +799,15 @@ op_amp
 id|BM_STATUS_BATTERY_PRESENT
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Battery socket occupied.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|battery-&gt;is_present
 op_assign
 id|TRUE
@@ -639,6 +815,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Battery socket not occupied.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|battery-&gt;is_present
 op_assign
 id|FALSE
@@ -654,6 +839,15 @@ op_logical_and
 id|battery-&gt;is_present
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Battery insertion detected.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Units of Power?&n;&t;&t; * ---------------&n;&t;&t; * Get the &squot;units of power&squot;, as we&squot;ll need this to report&n;&t;&t; * status information.&n;&t;&t; */
 id|status
 op_assign
@@ -706,17 +900,29 @@ op_logical_neg
 id|battery-&gt;is_present
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Battery removal detected.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|battery-&gt;power_units
 op_assign
 id|BT_POWER_UNITS_DEFAULT
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:&t;bt_add_device&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_add_device
 id|bt_add_device
 (paren
@@ -729,7 +935,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -746,6 +952,23 @@ id|battery
 op_assign
 l_int|NULL
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_add_device&quot;
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Adding battery device [%02x].&bslash;n&quot;
+comma
+id|device_handle
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -756,8 +979,11 @@ op_star
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get information on this device.&n;&t; */
@@ -782,8 +1008,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Allocate a new BT_CONTEXT structure.&n;&t; */
@@ -805,8 +1034,11 @@ op_logical_neg
 id|battery
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|battery-&gt;device_handle
@@ -913,12 +1145,15 @@ id|battery
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:&t;bt_remove_device&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_remove_device
 id|bt_remove_device
 (paren
@@ -928,7 +1163,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -938,6 +1173,12 @@ op_star
 id|battery
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_remove_device&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -950,8 +1191,11 @@ op_star
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|battery
@@ -962,6 +1206,17 @@ op_star
 )paren
 op_star
 id|context
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Removing battery device [%02x].&bslash;n&quot;
+comma
+id|battery-&gt;device_handle
+)paren
+)paren
 suffix:semicolon
 id|bt_osl_remove_device
 c_func
@@ -980,20 +1235,23 @@ id|context
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *                               External Functions&n; *****************************************************************************/
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:&t;bt_initialize&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_initialize
 id|bt_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1003,6 +1261,12 @@ id|criteria
 suffix:semicolon
 id|BM_DRIVER
 id|driver
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_initialize&quot;
+)paren
 suffix:semicolon
 id|MEMSET
 c_func
@@ -1068,19 +1332,22 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bt_terminate&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_terminate
 id|bt_terminate
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1090,6 +1357,12 @@ id|criteria
 suffix:semicolon
 id|BM_DRIVER
 id|driver
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_terminate&quot;
+)paren
 suffix:semicolon
 id|MEMSET
 c_func
@@ -1155,12 +1428,15 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bt_notify&n; *&n; * PARAMETERS:&t;&lt;none&gt;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_notify
 id|bt_notify
 (paren
@@ -1176,10 +1452,16 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_notify&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1188,8 +1470,11 @@ op_logical_neg
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_switch
@@ -1229,6 +1514,15 @@ suffix:semicolon
 r_case
 id|BT_NOTIFY_STATUS_CHANGE
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Status change (_BST) event detected.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|bt_osl_generate_event
@@ -1251,6 +1545,15 @@ suffix:semicolon
 r_case
 id|BT_NOTIFY_INFORMATION_CHANGE
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Information change (_BIF) event detected.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|bt_check_device
@@ -1303,12 +1606,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bt_request&n; *&n; * PARAMETERS:&t;&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bt_request
 id|bt_request
 (paren
@@ -1321,10 +1627,16 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;bt_request&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Must have a valid request structure and context.&n;&t; */
 r_if
@@ -1336,8 +1648,11 @@ op_logical_or
 op_logical_neg
 id|context
 )paren
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Handle request:&n;&t; * ---------------&n;&t; */
 r_switch
@@ -1359,8 +1674,11 @@ id|request-&gt;status
 op_assign
 id|status
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

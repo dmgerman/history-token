@@ -19,11 +19,9 @@ op_star
 id|version
 op_assign
 id|__FILE__
-l_string|&quot;: v0.98.4 4 July 2001 Brad Hards and another&quot;
+l_string|&quot;: v0.98.5 22 Sep 2001 Brad Hards and another&quot;
 suffix:semicolon
-singleline_comment|// We will attempt to probe anything that is in the
-singleline_comment|// communication device class...
-singleline_comment|// We will sort through them later.
+multiline_comment|/* We need to be selective about what we try to match on, to avoiding loading for a CDC&n; * ACM (ISDN or PSTN) modem */
 DECL|variable|CDCEther_ids
 r_static
 r_struct
@@ -34,20 +32,35 @@ id|CDCEther_ids
 op_assign
 (brace
 (brace
-id|USB_DEVICE_INFO
-c_func
+id|match_flags
+suffix:colon
 (paren
-l_int|2
-comma
-l_int|0
-comma
-l_int|0
+id|USB_DEVICE_ID_MATCH_INT_CLASS
+op_or
+id|USB_DEVICE_ID_MATCH_INT_SUBCLASS
 )paren
+comma
+id|bInterfaceClass
+suffix:colon
+id|USB_CLASS_COMM
+comma
+id|bInterfaceSubClass
+suffix:colon
+l_int|6
 )brace
 comma
 (brace
 )brace
+multiline_comment|/* Terminating null entry */
 )brace
+suffix:semicolon
+multiline_comment|/* &n; * module parameter that provides an alternate upper limit on the &n; * number of multicast filters we use, with a default to use all&n; * the filters available to us. Note that the actual number used&n; * is the lesser of this parameter and the number returned in the&n; * descriptor for the particular device. See Table 41 of the CDC&n; * spec for more info on the descriptor limit.&n; */
+DECL|variable|multicast_filter_limit
+r_static
+r_int
+id|multicast_filter_limit
+op_assign
+l_int|32767
 suffix:semicolon
 singleline_comment|//////////////////////////////////////////////////////////////////////////////
 singleline_comment|// Callback routines from USB device /////////////////////////////////////////
@@ -1140,6 +1153,66 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
+DECL|function|CDC_SetEthernetPacketFilter
+r_static
+r_void
+id|CDC_SetEthernetPacketFilter
+(paren
+id|ether_dev_t
+op_star
+id|ether_dev
+)paren
+(brace
+id|usb_control_msg
+c_func
+(paren
+id|ether_dev-&gt;usb
+comma
+id|usb_sndctrlpipe
+c_func
+(paren
+id|ether_dev-&gt;usb
+comma
+l_int|0
+)paren
+comma
+id|SET_ETHERNET_PACKET_FILTER
+comma
+multiline_comment|/* request */
+id|USB_TYPE_CLASS
+op_or
+id|USB_DIR_OUT
+op_or
+id|USB_RECIP_INTERFACE
+comma
+multiline_comment|/* request type */
+id|cpu_to_le16
+c_func
+(paren
+id|ether_dev-&gt;mode_flags
+)paren
+comma
+multiline_comment|/* value */
+id|cpu_to_le16
+c_func
+(paren
+(paren
+id|u16
+)paren
+id|ether_dev-&gt;comm_interface
+)paren
+comma
+multiline_comment|/* index */
+l_int|NULL
+comma
+l_int|0
+comma
+multiline_comment|/* size */
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* timeout */
+)brace
 DECL|function|CDCEther_set_multicast
 r_static
 r_void
@@ -1158,6 +1231,13 @@ id|ether_dev
 op_assign
 id|net-&gt;priv
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|__u8
+op_star
+id|buff
+suffix:semicolon
 singleline_comment|// Tell the kernel to stop sending us frames while we get this
 singleline_comment|// all set up.
 id|netif_stop_queue
@@ -1166,7 +1246,7 @@ c_func
 id|net
 )paren
 suffix:semicolon
-singleline_comment|// Do what we are told.
+multiline_comment|/* Note: do not reorder, GCC is clever about common statements. */
 r_if
 c_cond
 (paren
@@ -1175,7 +1255,7 @@ op_amp
 id|IFF_PROMISC
 )paren
 (brace
-singleline_comment|// TODO - Turn on promiscuous mode
+multiline_comment|/* Unconditionally log net taps. */
 id|info
 c_func
 (paren
@@ -1184,24 +1264,17 @@ comma
 id|net-&gt;name
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|net-&gt;flags
-op_amp
-id|IFF_ALLMULTI
-)paren
-(brace
-singleline_comment|// TODO - Here we need to tell the device to block ALL multicast traffic.
-id|info
-c_func
-(paren
-l_string|&quot;%s: set allmulti&quot;
-comma
-id|net-&gt;name
-)paren
+id|ether_dev-&gt;mode_flags
+op_assign
+id|MODE_FLAG_PROMISCUOUS
+op_or
+id|MODE_FLAG_ALL_MULTICAST
+op_or
+id|MODE_FLAG_DIRECTED
+op_or
+id|MODE_FLAG_BROADCAST
+op_or
+id|MODE_FLAG_MULTICAST
 suffix:semicolon
 )brace
 r_else
@@ -1213,23 +1286,210 @@ OG
 id|ether_dev-&gt;wNumberMCFilters
 )paren
 (brace
-singleline_comment|// TODO - Here we need to set multicast filters, but
-singleline_comment|// There are more than our limit...  Hmm...
+multiline_comment|/* Too many to filter perfectly -- accept all multicasts. */
 id|info
 c_func
 (paren
-l_string|&quot;%s: set too many MC filters&quot;
+l_string|&quot;%s: set too many MC filters, using allmulti&quot;
 comma
 id|net-&gt;name
 )paren
 suffix:semicolon
+id|ether_dev-&gt;mode_flags
+op_assign
+id|MODE_FLAG_ALL_MULTICAST
+op_or
+id|MODE_FLAG_DIRECTED
+op_or
+id|MODE_FLAG_BROADCAST
+op_or
+id|MODE_FLAG_MULTICAST
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|net-&gt;flags
+op_amp
+id|IFF_ALLMULTI
+)paren
+(brace
+multiline_comment|/* Filter in software */
+id|info
+c_func
+(paren
+l_string|&quot;%s: using allmulti&quot;
+comma
+id|net-&gt;name
+)paren
+suffix:semicolon
+id|ether_dev-&gt;mode_flags
+op_assign
+id|MODE_FLAG_ALL_MULTICAST
+op_or
+id|MODE_FLAG_DIRECTED
+op_or
+id|MODE_FLAG_BROADCAST
+op_or
+id|MODE_FLAG_MULTICAST
+suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// TODO - Here we are supposed to set SOME of the multicast filters.
-singleline_comment|// I must learn how to do this...
-singleline_comment|//info(&quot;%s: set Rx mode&quot;, net-&gt;name);
+multiline_comment|/* do multicast filtering in hardware */
+r_struct
+id|dev_mc_list
+op_star
+id|mclist
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;%s: set multicast filters&quot;
+comma
+id|net-&gt;name
+)paren
+suffix:semicolon
+id|ether_dev-&gt;mode_flags
+op_assign
+id|MODE_FLAG_ALL_MULTICAST
+op_or
+id|MODE_FLAG_DIRECTED
+op_or
+id|MODE_FLAG_BROADCAST
+op_or
+id|MODE_FLAG_MULTICAST
+suffix:semicolon
+id|buff
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|6
+op_star
+id|net-&gt;mc_count
+comma
+id|in_interrupt
+c_func
+(paren
+)paren
+ques
+c_cond
+id|GFP_ATOMIC
+suffix:colon
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+comma
+id|mclist
+op_assign
+id|net-&gt;mc_list
+suffix:semicolon
+id|mclist
+op_logical_and
+id|i
+OL
+id|net-&gt;mc_count
+suffix:semicolon
+id|i
+op_increment
+comma
+id|mclist
+op_assign
+id|mclist-&gt;next
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+op_amp
+id|mclist-&gt;dmi_addr
+comma
+op_amp
+id|buff
+(braket
+id|i
+op_star
+l_int|6
+)braket
+comma
+l_int|6
+)paren
+suffix:semicolon
 )brace
+id|usb_control_msg
+c_func
+(paren
+id|ether_dev-&gt;usb
+comma
+id|usb_sndctrlpipe
+c_func
+(paren
+id|ether_dev-&gt;usb
+comma
+l_int|0
+)paren
+comma
+id|SET_ETHERNET_MULTICAST_FILTER
+comma
+multiline_comment|/* request */
+id|USB_TYPE_CLASS
+op_or
+id|USB_DIR_OUT
+op_or
+id|USB_RECIP_INTERFACE
+comma
+multiline_comment|/* request type */
+id|cpu_to_le16
+c_func
+(paren
+id|net-&gt;mc_count
+)paren
+comma
+multiline_comment|/* value */
+id|cpu_to_le16
+c_func
+(paren
+(paren
+id|u16
+)paren
+id|ether_dev-&gt;comm_interface
+)paren
+comma
+multiline_comment|/* index */
+id|buff
+comma
+(paren
+l_int|6
+op_star
+id|net-&gt;mc_count
+)paren
+comma
+multiline_comment|/* size */
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* timeout */
+id|kfree
+c_func
+(paren
+id|buff
+)paren
+suffix:semicolon
+)brace
+id|CDC_SetEthernetPacketFilter
+c_func
+(paren
+id|ether_dev
+)paren
+suffix:semicolon
 singleline_comment|// Tell the kernel to start giving frames to us again.
 id|netif_wake_queue
 c_func
@@ -1666,6 +1926,19 @@ l_int|8
 op_amp
 l_int|0x00007FFF
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ether_dev-&gt;wNumberMCFilters
+OG
+id|multicast_filter_limit
+)paren
+(brace
+id|ether_dev-&gt;wNumberMCFilters
+op_assign
+id|multicast_filter_limit
+suffix:semicolon
+)brace
 id|ether_dev-&gt;bNumberPowerFilters
 op_assign
 id|data
@@ -4233,6 +4506,20 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|multicast_filter_limit
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|multicast_filter_limit
+comma
+l_string|&quot;CDCEther maximum number of filtered multicast addresses&quot;
 )paren
 suffix:semicolon
 id|MODULE_DEVICE_TABLE

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acconfig.h - Global configuration constants&n; *       $Revision: 65 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acconfig.h - Global configuration constants&n; *       $Revision: 69 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACCONFIG_H
 DECL|macro|_ACCONFIG_H
@@ -8,7 +8,7 @@ multiline_comment|/*&n; * ACPI_DEBUG           - This switch enables all the deb
 multiline_comment|/******************************************************************************&n; *&n; * Subsystem Constants&n; *&n; *****************************************************************************/
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION             0x20010615
+mdefine_line|#define ACPI_CA_VERSION             0x20010831
 multiline_comment|/* Maximum objects in the various object caches */
 DECL|macro|MAX_STATE_CACHE_DEPTH
 mdefine_line|#define MAX_STATE_CACHE_DEPTH       64         /* State objects for stacks */
@@ -19,7 +19,7 @@ mdefine_line|#define MAX_EXTPARSE_CACHE_DEPTH    64          /* Parse tree objec
 DECL|macro|MAX_OBJECT_CACHE_DEPTH
 mdefine_line|#define MAX_OBJECT_CACHE_DEPTH      64          /* Interpreter operand objects */
 DECL|macro|MAX_WALK_CACHE_DEPTH
-mdefine_line|#define MAX_WALK_CACHE_DEPTH        2           /* Objects for parse tree walks (method execution) */
+mdefine_line|#define MAX_WALK_CACHE_DEPTH        4           /* Objects for parse tree walks (method execution) */
 multiline_comment|/* String size constants */
 DECL|macro|MAX_STRING_LENGTH
 mdefine_line|#define MAX_STRING_LENGTH           512

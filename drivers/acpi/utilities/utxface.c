@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 72 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 80 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -7,6 +7,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
+macro_line|#include &quot;acexcep.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|MODULE_NAME
@@ -14,15 +15,28 @@ id|MODULE_NAME
 l_string|&quot;utxface&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_initialize_subsystem&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initializes all global variables.  This is the first function&n; *              called, so any early initialization belongs here.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_initialize_subsystem
 id|acpi_initialize_subsystem
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_initialize_subsystem&quot;
+)paren
+suffix:semicolon
+id|DEBUG_EXEC
+c_func
+(paren
+id|acpi_ut_init_stack_ptr_trace
+(paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize all globals used by the subsystem */
 id|acpi_ut_init_globals
@@ -50,14 +64,14 @@ id|REPORT_ERROR
 (paren
 l_string|&quot;OSD failed to initialize, %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -84,14 +98,14 @@ id|REPORT_ERROR
 (paren
 l_string|&quot;Global mutex creation failure, %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -118,14 +132,14 @@ id|REPORT_ERROR
 (paren
 l_string|&quot;Namespace initialization failure, %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -139,14 +153,14 @@ id|acpi_db_initialize
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_subsystem&n; *&n; * PARAMETERS:  Flags           - Init/enable Options&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Completes the subsystem initialization including hardware.&n; *              Puts system into ACPI mode if it isn&squot;t already.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_enable_subsystem
 id|acpi_enable_subsystem
 (paren
@@ -154,10 +168,15 @@ id|u32
 id|flags
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_enable_subsystem&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Sanity check the FADT for valid values */
 id|status
@@ -175,7 +194,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -193,6 +212,15 @@ id|ACPI_NO_ADDRESS_SPACE_INIT
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Installing default address space handlers&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ev_install_default_address_space_handlers
@@ -208,7 +236,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -227,6 +255,15 @@ id|ACPI_NO_HARDWARE_INIT
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Initializing ACPI hardware&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_hw_initialize
@@ -242,7 +279,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -261,6 +298,15 @@ id|ACPI_NO_ACPI_ENABLE
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Going into ACPI mode&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_enable
@@ -276,7 +322,16 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Acpi_enable failed.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -295,6 +350,15 @@ id|ACPI_NO_EVENT_INIT
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Initializing ACPI events&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ev_initialize
@@ -310,7 +374,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -329,6 +393,15 @@ id|ACPI_NO_DEVICE_INIT
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Initializing ACPI Devices&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ns_initialize_devices
@@ -344,7 +417,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -363,6 +436,15 @@ id|ACPI_NO_OBJECT_INIT
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;[Init] Initializing ACPI Objects&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ns_initialize_objects
@@ -378,29 +460,38 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 )brace
-r_return
+id|acpi_gbl_startup_flags
+op_or_assign
+id|ACPI_INITIALIZED_OK
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_terminate&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Shutdown the ACPI subsystem.  Release all resources.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_terminate
 id|acpi_terminate
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_terminate&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -417,7 +508,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -449,31 +540,67 @@ id|acpi_os_terminate
 (paren
 )paren
 suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_subsystem_status&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status of the ACPI subsystem&n; *&n; * DESCRIPTION: Other drivers that use the ACPI subsystem should call this&n; *              before making any other calls, to ensure the subsystem initial-&n; *              ized successfully.&n; *&n; ****************************************************************************/
+id|acpi_status
+DECL|function|acpi_subsystem_status
+id|acpi_subsystem_status
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_startup_flags
+op_amp
+id|ACPI_INITIALIZED_OK
+)paren
+(brace
 r_return
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+r_return
+(paren
+id|AE_ERROR
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_system_info&n; *&n; * PARAMETERS:  Out_buffer      - a pointer to a buffer to receive the&n; *                                resources for the device&n; *              Buffer_length   - the number of bytes available in the buffer&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function is called to get information about the current&n; *              state of the ACPI subsystem.  It will return system information&n; *              in the Out_buffer.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of Out_buffer is undefined.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_system_info
 id|acpi_get_system_info
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|out_buffer
 )paren
 (brace
-id|ACPI_SYSTEM_INFO
+id|acpi_system_info
 op_star
 id|info_ptr
 suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_system_info&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -490,7 +617,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -511,7 +638,7 @@ id|out_buffer-&gt;pointer
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -524,7 +651,7 @@ id|out_buffer-&gt;length
 OL
 r_sizeof
 (paren
-id|ACPI_SYSTEM_INFO
+id|acpi_system_info
 )paren
 )paren
 (brace
@@ -533,10 +660,10 @@ id|out_buffer-&gt;length
 op_assign
 r_sizeof
 (paren
-id|ACPI_SYSTEM_INFO
+id|acpi_system_info
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BUFFER_OVERFLOW
 )paren
@@ -547,13 +674,13 @@ id|out_buffer-&gt;length
 op_assign
 r_sizeof
 (paren
-id|ACPI_SYSTEM_INFO
+id|acpi_system_info
 )paren
 suffix:semicolon
 id|info_ptr
 op_assign
 (paren
-id|ACPI_SYSTEM_INFO
+id|acpi_system_info
 op_star
 )paren
 id|out_buffer-&gt;pointer
@@ -654,152 +781,9 @@ dot
 id|count
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_format_exception&n; *&n; * PARAMETERS:  Out_buffer      - a pointer to a buffer to receive the&n; *                                exception name&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function translates an ACPI exception into an ASCII string.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
-DECL|function|acpi_format_exception
-id|acpi_format_exception
-(paren
-id|ACPI_STATUS
-id|exception
-comma
-id|ACPI_BUFFER
-op_star
-id|out_buffer
-)paren
-(brace
-id|u32
-id|length
-suffix:semicolon
-id|NATIVE_CHAR
-op_star
-id|formatted_exception
-suffix:semicolon
-multiline_comment|/*&n;&t; *  Must have a valid buffer&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|out_buffer
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|out_buffer-&gt;pointer
-)paren
-)paren
-(brace
-r_return
-(paren
-id|AE_BAD_PARAMETER
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Convert the exception code (Handles bad exception codes) */
-id|formatted_exception
-op_assign
-id|acpi_ut_format_exception
-(paren
-id|exception
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Get length of string and check if it will fit in caller&squot;s buffer&n;&t; */
-id|length
-op_assign
-id|STRLEN
-(paren
-id|formatted_exception
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|out_buffer-&gt;length
-OL
-id|length
-)paren
-(brace
-id|out_buffer-&gt;length
-op_assign
-id|length
-suffix:semicolon
-r_return
-(paren
-id|AE_BUFFER_OVERFLOW
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Copy the string, all done */
-id|STRCPY
-(paren
-id|out_buffer-&gt;pointer
-comma
-id|formatted_exception
-)paren
-suffix:semicolon
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_allocate&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: The subsystem&squot;s equivalent of malloc.&n; *              External front-end to the Ut* memory manager&n; *&n; ****************************************************************************/
-r_void
-op_star
-DECL|function|acpi_allocate
-id|acpi_allocate
-(paren
-id|u32
-id|size
-)paren
-(brace
-r_return
-(paren
-id|acpi_ut_allocate
-(paren
-id|size
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_callocate&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: The subsystem&squot;s equivalent of calloc.&n; *              External front-end to the Ut* memory manager&n; *&n; ****************************************************************************/
-r_void
-op_star
-DECL|function|acpi_callocate
-id|acpi_callocate
-(paren
-id|u32
-id|size
-)paren
-(brace
-r_return
-(paren
-id|acpi_ut_callocate
-(paren
-id|size
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_free&n; *&n; * PARAMETERS:  Address             - Address of the memory to deallocate&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Frees the memory at Address&n; *              External front-end to the Ut* memory manager&n; *&n; ****************************************************************************/
-r_void
-DECL|function|acpi_free
-id|acpi_free
-(paren
-r_void
-op_star
-id|address
-)paren
-(brace
-id|acpi_ut_free
-(paren
-id|address
 )paren
 suffix:semicolon
 )brace

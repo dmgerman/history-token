@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 48 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbget - ACPI Table get* routines&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -12,28 +12,33 @@ l_string|&quot;tbget&quot;
 DECL|macro|RSDP_CHECKSUM_LENGTH
 mdefine_line|#define RSDP_CHECKSUM_LENGTH 20
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_ptr&n; *&n; * PARAMETERS:  Table_type      - one of the defined table types&n; *              Instance        - Which table of this type&n; *              Table_ptr_loc   - pointer to location to place the pointer for&n; *                                return&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the pointer to an ACPI table.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_get_table_ptr
 id|acpi_tb_get_table_ptr
 (paren
-id|ACPI_TABLE_TYPE
+id|acpi_table_type
 id|table_type
 comma
 id|u32
 id|instance
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 op_star
 id|table_ptr_loc
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
 id|u32
 id|i
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_get_table_ptr&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -42,7 +47,7 @@ op_logical_neg
 id|acpi_gbl_DSDT
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
@@ -56,7 +61,7 @@ OG
 id|ACPI_TABLE_MAX
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -82,7 +87,7 @@ id|table_type
 dot
 id|pointer
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -102,7 +107,7 @@ dot
 id|count
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NOT_EXIST
 )paren
@@ -144,36 +149,36 @@ id|table_ptr_loc
 op_assign
 id|table_desc-&gt;pointer
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table&n; *&n; * PARAMETERS:  Physical_address        - Physical address of table to retrieve&n; *              *Buffer_ptr             - If Buffer_ptr is valid, read data from&n; *                                         buffer rather than searching memory&n; *              *Table_info             - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_get_table
 id|acpi_tb_get_table
 (paren
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|buffer_ptr
 comma
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_header
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|full_table
 op_assign
@@ -185,10 +190,15 @@ suffix:semicolon
 id|u8
 id|allocation
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_get_table&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -197,7 +207,7 @@ op_logical_neg
 id|table_info
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -231,7 +241,7 @@ id|status
 )paren
 (brace
 multiline_comment|/* Table failed verification, map all errors to BAD_DATA */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_DATA
 )paren
@@ -240,7 +250,7 @@ suffix:semicolon
 multiline_comment|/* Allocate buffer for the entire table */
 id|full_table
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|table_header-&gt;length
 )paren
@@ -252,7 +262,7 @@ op_logical_neg
 id|full_table
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -307,7 +317,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -336,26 +346,26 @@ id|table_info-&gt;base_pointer
 op_assign
 id|full_table
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_all_tables&n; *&n; * PARAMETERS:  Number_of_tables    - Number of tables to get&n; *              Table_ptr           - Input buffer pointer, optional&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate all tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_get_all_tables
 id|acpi_tb_get_all_tables
 (paren
 id|u32
 id|number_of_tables
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -363,8 +373,24 @@ suffix:semicolon
 id|u32
 id|index
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 id|table_info
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_get_all_tables&quot;
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Number of tables: %d&bslash;n&quot;
+comma
+id|number_of_tables
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Loop through all table pointers found in RSDT.&n;&t; * This will NOT include the FACS and DSDT - we must get&n;&t; * them after the loop&n;&t; */
 r_for
@@ -392,7 +418,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 )paren
 )paren
 suffix:semicolon
@@ -440,7 +466,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -491,7 +517,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -518,7 +544,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -544,7 +570,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -568,7 +594,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -602,7 +628,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -628,14 +654,65 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Dump the DSDT Header */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_TABLES
+comma
+l_string|&quot;Hex dump of DSDT Header:&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|DUMP_BUFFER
+(paren
+(paren
+id|u8
+op_star
+)paren
+id|acpi_gbl_DSDT
+comma
+r_sizeof
+(paren
+id|acpi_table_header
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Dump the entire DSDT */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_TABLES
+comma
+l_string|&quot;Hex dump of DSDT (After header), size %d (%x)&bslash;n&quot;
+comma
+id|acpi_gbl_DSDT-&gt;length
+comma
+id|acpi_gbl_DSDT-&gt;length
+)paren
+)paren
+suffix:semicolon
+id|DUMP_BUFFER
+(paren
+(paren
+id|u8
+op_star
+)paren
+(paren
+id|acpi_gbl_DSDT
+op_plus
+l_int|1
+)paren
+comma
+id|acpi_gbl_DSDT-&gt;length
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the capabilities flags.&n;&t; * Assumes that platform supports ACPI_MODE since we have tables!&n;&t; */
 id|acpi_gbl_system_flags
 op_or_assign
@@ -649,14 +726,14 @@ id|acpi_tb_delete_acpi_table
 id|ACPI_TABLE_RSDP
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_verify_rsdp&n; *&n; * PARAMETERS:  Number_of_tables    - Where the table count is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate the RSDP (ptr) and RSDT (table)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_verify_rsdp
 id|acpi_tb_verify_rsdp
 (paren
@@ -664,15 +741,20 @@ id|ACPI_PHYSICAL_ADDRESS
 id|rsdp_physical_address
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u8
 op_star
 id|table_ptr
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_verify_rsdp&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Obtain access to the RSDP structure&n;&t; */
 id|status
@@ -704,7 +786,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -771,7 +853,7 @@ multiline_comment|/* The RSDP supplied is OK */
 id|table_info.pointer
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 id|table_ptr
@@ -824,7 +906,7 @@ op_star
 )paren
 id|table_info.pointer
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -842,7 +924,7 @@ id|RSDP_DESCRIPTOR
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -858,6 +940,10 @@ r_void
 (brace
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For RSDP revision 0 or 1, we use the RSDT.&n;&t; * For RSDP revision 2 (and above), we use the XSDT&n;&t; */
 r_if
@@ -912,17 +998,22 @@ id|physical_address
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_rsdt&n; *&n; * PARAMETERS:  Table_ptr       - Addressable pointer to the RSDT.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate signature for the RSDT or XSDT&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_validate_rsdt
 id|acpi_tb_validate_rsdt
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 )paren
 (brace
 id|u32
 id|no_match
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Tb_validate_rsdt&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For RSDP revision 0 or 1, we use the RSDT.&n;&t; * For RSDP revision 2 (and above), we use the XSDT&n;&t; */
 r_if
@@ -991,6 +1082,24 @@ l_string|&quot;Invalid signature where RSDP indicates RSDT/XSDT should be locate
 )paren
 )paren
 suffix:semicolon
+id|DUMP_BUFFER
+(paren
+id|acpi_gbl_RSDP
+comma
+l_int|20
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;RSDT/XSDT signature at %X is invalid&bslash;n&quot;
+comma
+id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_BAD_SIGNATURE
@@ -1004,7 +1113,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_pointer&n; *&n; * PARAMETERS:  Physical_address    - Address from RSDT&n; *              Flags               - virtual or physical addressing&n; *              Table_ptr           - Addressable address (output)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create an addressable pointer to an ACPI table&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_get_table_pointer
 id|acpi_tb_get_table_pointer
 (paren
@@ -1018,14 +1127,18 @@ id|u32
 op_star
 id|size
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 op_star
 id|table_ptr
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1067,7 +1180,7 @@ op_star
 id|table_ptr
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 (paren
@@ -1087,7 +1200,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_rsdt&n; *&n; * PARAMETERS:  Number_of_tables    - Where the table count is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate the RSDP (ptr) and RSDT (table)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_get_table_rsdt
 id|acpi_tb_get_table_rsdt
 (paren
@@ -1096,16 +1209,44 @@ op_star
 id|number_of_tables
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_get_table_rsdt&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Get the RSDT from the RSDP&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;RSDP located at %p, RSDT physical=%8.8lX%8.8lX &bslash;n&quot;
+comma
+id|acpi_gbl_RSDP
+comma
+id|HIDWORD
+c_func
+(paren
+id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+)paren
+comma
+id|LODWORD
+c_func
+(paren
+id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+)paren
+)paren
+)paren
+suffix:semicolon
 id|physical_address
 op_assign
 id|acpi_tb_get_rsdt_address
@@ -1134,7 +1275,21 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not get the RSDT, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1157,7 +1312,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1191,7 +1346,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1217,7 +1372,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1226,32 +1381,43 @@ suffix:semicolon
 id|acpi_gbl_XSDT
 op_assign
 (paren
-id|XSDT_DESCRIPTOR
+id|xsdt_descriptor
 op_star
 )paren
 id|table_info.pointer
 suffix:semicolon
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;XSDT located at %p&bslash;n&quot;
+comma
+id|acpi_gbl_XSDT
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_facs&n; *&n; * PARAMETERS:  *Buffer_ptr             - If Buffer_ptr is valid, read data from&n; *                                        buffer rather than searching memory&n; *              *Table_info             - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns a pointer to the FACS as defined in FADT.  This&n; *              function assumes the global variable FADT has been&n; *              correctly initialized.  The value of FADT-&gt;Firmware_ctrl&n; *              into a far pointer which is returned.&n; *&n; *****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_get_table_facs
 id|acpi_tb_get_table_facs
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|buffer_ptr
 comma
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 op_assign
@@ -1263,10 +1429,15 @@ suffix:semicolon
 id|u8
 id|allocation
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_get_table_facs&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Must have a valid FADT pointer */
 r_if
@@ -1276,7 +1447,7 @@ op_logical_neg
 id|acpi_gbl_FADT
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
@@ -1298,7 +1469,7 @@ id|buffer_ptr
 multiline_comment|/*&n;&t;&t; * Getting table from a file -- allocate a buffer and&n;&t;&t; * read the table.&n;&t;&t; */
 id|table_ptr
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|size
 )paren
@@ -1310,7 +1481,7 @@ op_logical_neg
 id|table_ptr
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -1362,7 +1533,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1391,7 +1562,7 @@ id|table_info-&gt;base_pointer
 op_assign
 id|table_ptr
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

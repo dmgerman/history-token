@@ -1,6 +1,6 @@
-multiline_comment|/****************************************************************************&n; *&n; * Module Name: bmpower.c - Driver for ACPI Power Resource &squot;devices&squot;&n; *   $Revision: 14 $&n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * Module Name: bmpower.c - Driver for ACPI Power Resource &squot;devices&squot;&n; *   $Revision: 19 $&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-multiline_comment|/*&n; * TBD: 1. Sequencing of power resource list transitions.&n; *&t;2. Global serialization of power resource transtions (see ACPI &n; *         spec section 7.1.2/7.1.3).&n; *      3. Better error handling.&n; */
+multiline_comment|/*&n; * TBD: 1. Sequencing of power resource list transitions.&n; *&t;2. Global serialization of power resource transtions (see ACPI&n; *         spec section 7.1.2/7.1.3).&n; *      3. Better error handling.&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
 macro_line|#include &quot;bmpower.h&quot;
@@ -11,7 +11,7 @@ id|MODULE_NAME
 l_string|&quot;bmpower&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                             Function Prototypes&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 id|bm_pr_notify
 (paren
 id|BM_NOTIFY
@@ -26,7 +26,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_pr_request
 (paren
 id|BM_REQUEST
@@ -39,8 +39,8 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                             Internal Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_print&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_print&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_print
 id|bm_pr_print
 (paren
@@ -49,8 +49,14 @@ op_star
 id|pr
 )paren
 (brace
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
+suffix:semicolon
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;bm_pr_print&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -103,23 +109,21 @@ c_func
 l_string|&quot;Power Resource: found&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
-l_string|&quot;| PowerResource[%02x]:[%p] %s&bslash;n&quot;
+l_string|&quot;| Power_resource[%02x]:[%p] %s&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
 comma
@@ -129,12 +133,11 @@ id|buffer.pointer
 )paren
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|   system_level[S%d] resource_order[%d]&bslash;n&quot;
 comma
 id|pr-&gt;system_level
@@ -143,12 +146,11 @@ id|pr-&gt;resource_order
 )paren
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|   state[D%d] reference_count[%d]&bslash;n&quot;
 comma
 id|pr-&gt;state
@@ -157,12 +159,11 @@ id|pr-&gt;reference_count
 )paren
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
 )paren
 )paren
@@ -177,8 +178,8 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_get_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_get_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_get_state
 id|bm_pr_get_state
 (paren
@@ -187,7 +188,7 @@ op_star
 id|pr
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -221,7 +222,7 @@ id|pr-&gt;state
 op_assign
 id|ACPI_STATE_UNKNOWN
 suffix:semicolon
-multiline_comment|/* &n;&t; * Evaluate _STA:&n;&t; * --------------&n;&t; * Evalute _STA to determine whether the power resource is ON or OFF.&n;&t; * Note that if the power resource isn&squot;t present we&squot;ll get AE_OK but&n;&t; * an unknown status.&n;&t; */
+multiline_comment|/*&n;&t; * Evaluate _STA:&n;&t; * --------------&n;&t; * Evalute _STA to determine whether the power resource is ON or OFF.&n;&t; * Note that if the power resource isn&squot;t present we&squot;ll get AE_OK but&n;&t; * an unknown status.&n;&t; */
 id|status
 op_assign
 id|bm_get_device_status
@@ -243,12 +244,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Error reading status for power resource [%02x].&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -262,7 +262,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Mask off all bits but the first as some systems return non-standard &n;&t; * values (e.g. 0x51).&n;&t; */
+multiline_comment|/*&n;&t; * Mask off all bits but the first as some systems return non-standard&n;&t; * values (e.g. 0x51).&n;&t; */
 r_switch
 c_cond
 (paren
@@ -274,12 +274,11 @@ l_int|0x01
 r_case
 l_int|0
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Power resource [%02x] is OFF.&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -295,12 +294,11 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Power resource [%02x] is ON.&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -321,8 +319,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_set_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_set_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_set_state
 id|bm_pr_set_state
 (paren
@@ -334,7 +332,7 @@ id|BM_POWER_STATE
 id|target_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -392,12 +390,11 @@ op_eq
 id|pr-&gt;state
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Power resource [%02x] already at target power state [D%d].&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -422,12 +419,11 @@ id|target_state
 r_case
 id|ACPI_STATE_D0
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Turning power resource [%02x] ON.&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -453,12 +449,11 @@ suffix:semicolon
 r_case
 id|ACPI_STATE_D3
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Turning power resource [%02x] OFF.&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -522,8 +517,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_list_get_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_list_get_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_list_get_state
 id|bm_pr_list_get_state
 (paren
@@ -536,7 +531,7 @@ op_star
 id|power_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -601,7 +596,7 @@ id|power_state
 op_assign
 id|ACPI_STATE_D0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate Current power_state:&n;&t; * -----------------------------&n;&t; * The current state of a list of power resources is ON if all&n;&t; * power resources are currently in the ON state.  In other words,&n;&t; * if any power resource in the list is OFF then the collection &n;&t; * isn&squot;t fully ON.&n;&t; */
+multiline_comment|/*&n;&t; * Calculate Current power_state:&n;&t; * -----------------------------&n;&t; * The current state of a list of power resources is ON if all&n;&t; * power resources are currently in the ON state.  In other words,&n;&t; * if any power resource in the list is OFF then the collection&n;&t; * isn&squot;t fully ON.&n;&t; */
 r_for
 c_loop
 (paren
@@ -647,12 +642,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Invalid reference to power resource [%02x].&bslash;n&quot;
 comma
 id|pr_list-&gt;handles
@@ -726,8 +720,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_list_transition&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_list_transition&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_list_transition
 id|bm_pr_list_transition
 (paren
@@ -740,7 +734,7 @@ op_star
 id|target_list
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -779,7 +773,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Reference Target:&n;&t; * -----------------&n;&t; * Reference all resources for the target power state first (so &n;&t; * the device doesn&squot;t get turned off while transitioning).  Power &n;&t; * resources that aren&squot;t on (new reference count of 1) are turned on.&n;&t; */
+multiline_comment|/*&n;&t; * Reference Target:&n;&t; * -----------------&n;&t; * Reference all resources for the target power state first (so&n;&t; * the device doesn&squot;t get turned off while transitioning).  Power&n;&t; * resources that aren&squot;t on (new reference count of 1) are turned on.&n;&t; */
 r_for
 c_loop
 (paren
@@ -825,12 +819,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Invalid reference to power resource [%02x].&bslash;n&quot;
 comma
 id|target_list-&gt;handles
@@ -874,12 +867,11 @@ id|status
 )paren
 (brace
 multiline_comment|/* TBD: How do we handle this? */
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Unable to change power state for power resource [%02x].&bslash;n&quot;
 comma
 id|target_list-&gt;handles
@@ -892,7 +884,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;&t; * Dereference Current:&n;&t; * --------------------&n;&t; * Dereference all resources for the current power state.  Power&n;&t; * resources no longer referenced (new reference count of 0) are &n;&t; * turned off.&n;&t; */
+multiline_comment|/*&n;&t; * Dereference Current:&n;&t; * --------------------&n;&t; * Dereference all resources for the current power state.  Power&n;&t; * resources no longer referenced (new reference count of 0) are&n;&t; * turned off.&n;&t; */
 r_for
 c_loop
 (paren
@@ -938,12 +930,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Invalid reference to power resource [%02x].&bslash;n&quot;
 comma
 id|target_list-&gt;handles
@@ -987,12 +978,11 @@ id|status
 )paren
 (brace
 multiline_comment|/* TBD: How do we handle this? */
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Unable to change power state for power resource [%02x].&bslash;n&quot;
 comma
 id|current_list-&gt;handles
@@ -1012,8 +1002,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_add_device&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_add_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_add_device
 id|bm_pr_add_device
 (paren
@@ -1026,7 +1016,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1043,10 +1033,10 @@ id|device
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 id|acpi_object
 suffix:semicolon
 id|FUNCTION_TRACE
@@ -1055,12 +1045,11 @@ c_func
 l_string|&quot;bm_pr_add_device&quot;
 )paren
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Adding power resource [%02x].&bslash;n&quot;
 comma
 id|device_handle
@@ -1088,7 +1077,7 @@ id|buffer.length
 op_assign
 r_sizeof
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 )paren
 suffix:semicolon
 id|buffer.pointer
@@ -1159,7 +1148,7 @@ id|pr-&gt;acpi_handle
 op_assign
 id|device-&gt;acpi_handle
 suffix:semicolon
-multiline_comment|/* &n;&t; * Get information on this power resource.&n;&t; */
+multiline_comment|/*&n;&t; * Get information on this power resource.&n;&t; */
 id|status
 op_assign
 id|acpi_evaluate_object
@@ -1254,8 +1243,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_remove_device&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_remove_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_remove_device
 id|bm_pr_remove_device
 (paren
@@ -1265,7 +1254,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1309,12 +1298,11 @@ op_star
 op_star
 id|context
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Removing power resource [%02x].&bslash;n&quot;
 comma
 id|pr-&gt;device_handle
@@ -1335,15 +1323,15 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                             External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_initialize&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_initialize&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_initialize
 id|bm_pr_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1421,15 +1409,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_terminate&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_terminate&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_terminate
 id|bm_pr_terminate
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1507,8 +1495,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_notify&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_notify&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_notify
 id|bm_pr_notify
 (paren
@@ -1524,7 +1512,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1585,8 +1573,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_request&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_pr_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_pr_request
 id|bm_pr_request
 (paren
@@ -1599,7 +1587,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK

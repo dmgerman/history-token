@@ -3434,6 +3434,10 @@ id|jl-&gt;j_commit_wait
 )paren
 )paren
 suffix:semicolon
+id|s-&gt;s_dirt
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -12021,11 +12025,6 @@ suffix:semicolon
 id|time_t
 id|now
 suffix:semicolon
-r_int
-id|keep_dirty
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
 id|th
@@ -12057,28 +12056,6 @@ l_int|0
 (brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;kupdate&quot;
-)paren
-)paren
-(brace
-id|immediate
-op_assign
-l_int|0
-suffix:semicolon
-id|keep_dirty
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* starting with oldest, loop until we get to the start */
@@ -12299,10 +12276,6 @@ comma
 id|COMMIT_NOW
 )paren
 suffix:semicolon
-id|keep_dirty
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -12368,8 +12341,6 @@ id|WAIT
 )paren
 suffix:semicolon
 )brace
-id|keep_dirty
-op_or_assign
 id|reiserfs_journal_kupdate
 c_func
 (paren
@@ -12377,7 +12348,7 @@ id|p_s_sb
 )paren
 suffix:semicolon
 r_return
-id|keep_dirty
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** returns 0 if do_journal_end should return right away, returns 1 if do_journal_end should finish the commit&n;** &n;** if the current transaction is too old, but still has writers, this will wait on j_join_wait until all &n;** the writers are done.  By the time it wakes up, the transaction it was called has already ended, so it just&n;** flushes the commit list and returns 0.&n;**&n;** Won&squot;t batch when flush or commit_now is set.  Also won&squot;t batch when others are waiting on j_join_wait.&n;** &n;** Note, we can&squot;t allow the journal_end to proceed while there are still writers in the log.&n;*/

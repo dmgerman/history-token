@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 41 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbfileio - Debugger file I/O commands.  These can&squot;t usually&n; *              be used when running the debugger in Ring 0 (Kernel mode)&n; *              $Revision: 48 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
@@ -13,24 +13,19 @@ id|MODULE_NAME
 (paren
 l_string|&quot;dbfileio&quot;
 )paren
-DECL|variable|root
-id|ACPI_PARSE_OBJECT
-op_star
-id|root
-suffix:semicolon
 macro_line|#ifdef ACPI_APPLICATION
 macro_line|#include &lt;stdio.h&gt;
-DECL|variable|debug_file
+DECL|variable|acpi_gbl_debug_file
 id|FILE
 op_star
-id|debug_file
+id|acpi_gbl_debug_file
 op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * NOTE: this is here for lack of a better place.  It is used in all&n; *  flavors of the debugger, need LCD file&n; */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_match_argument&n; *&n; * PARAMETERS:  User_argument           - User command line&n; *              Arguments               - Array of commands to match against&n; *&n; * RETURN:      Index into command array or ACPI_TYPE_NOT_FOUND if not found&n; *&n; * DESCRIPTION: Search command array for a command match&n; *&n; ******************************************************************************/
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 DECL|function|acpi_db_match_argument
 id|acpi_db_match_argument
 (paren
@@ -110,7 +105,7 @@ id|name
 r_return
 (paren
 (paren
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 )paren
 id|i
 )paren
@@ -136,19 +131,19 @@ macro_line|#ifdef ACPI_APPLICATION
 r_if
 c_cond
 (paren
-id|debug_file
+id|acpi_gbl_debug_file
 )paren
 (brace
 id|fclose
 (paren
-id|debug_file
+id|acpi_gbl_debug_file
 )paren
 suffix:semicolon
-id|debug_file
+id|acpi_gbl_debug_file
 op_assign
 l_int|NULL
 suffix:semicolon
-id|output_to_file
+id|acpi_gbl_db_output_to_file
 op_assign
 id|FALSE
 suffix:semicolon
@@ -156,7 +151,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Debug output file %s closed&bslash;n&quot;
 comma
-id|debug_filename
+id|acpi_gbl_db_debug_filename
 )paren
 suffix:semicolon
 )brace
@@ -177,7 +172,7 @@ id|acpi_db_close_debug_file
 (paren
 )paren
 suffix:semicolon
-id|debug_file
+id|acpi_gbl_debug_file
 op_assign
 id|fopen
 (paren
@@ -189,7 +184,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug_file
+id|acpi_gbl_debug_file
 )paren
 (brace
 id|acpi_os_printf
@@ -201,12 +196,12 @@ id|name
 suffix:semicolon
 id|STRCPY
 (paren
-id|debug_filename
+id|acpi_gbl_db_debug_filename
 comma
 id|name
 )paren
 suffix:semicolon
-id|output_to_file
+id|acpi_gbl_db_output_to_file
 op_assign
 id|TRUE
 suffix:semicolon
@@ -225,7 +220,7 @@ macro_line|#endif
 )brace
 macro_line|#ifdef ACPI_APPLICATION
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_load_table&n; *&n; * PARAMETERS:  fp              - File that contains table&n; *              Table_ptr       - Return value, buffer with table&n; *              Table_lenght    - Return value, length of table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the DSDT from the file pointer&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_load_table
 id|acpi_db_load_table
 c_func
@@ -234,7 +229,7 @@ id|FILE
 op_star
 id|fp
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 op_star
 id|table_ptr
@@ -244,7 +239,7 @@ op_star
 id|table_length
 )paren
 (brace
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|table_header
 suffix:semicolon
 id|u8
@@ -257,7 +252,7 @@ suffix:semicolon
 id|u32
 id|actual
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 multiline_comment|/* Read the table header */
@@ -281,7 +276,7 @@ id|fp
 op_ne
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 (brace
@@ -383,6 +378,17 @@ id|acpi_os_printf
 l_string|&quot;Table signature is invalid&bslash;n&quot;
 )paren
 suffix:semicolon
+id|DUMP_BUFFER
+(paren
+op_amp
+id|table_header
+comma
+r_sizeof
+(paren
+id|acpi_table_header
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_ERROR
@@ -398,11 +404,7 @@ suffix:semicolon
 op_star
 id|table_ptr
 op_assign
-(paren
-id|ACPI_TABLE_HEADER
-op_star
-)paren
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 (paren
 r_int
@@ -421,7 +423,9 @@ id|table_ptr
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Could not allocate memory for the table (size=%X)&bslash;n&quot;
+l_string|&quot;Could not allocate memory for ACPI table %4.4s (size=%X)&bslash;n&quot;
+comma
+id|table_header.signature
 comma
 id|table_header.length
 )paren
@@ -530,7 +534,7 @@ id|acpi_os_printf
 l_string|&quot;Error - could not read the table file&bslash;n&quot;
 )paren
 suffix:semicolon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 op_star
 id|table_ptr
@@ -554,20 +558,25 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Ae_local_load_table&n; *&n; * PARAMETERS:  Table_ptr       - pointer to a buffer containing the entire&n; *                                table to be loaded&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to load a table from the caller&squot;s&n; *              buffer.  The buffer must contain an entire ACPI Table including&n; *              a valid header.  The header fields will be verified, and if it&n; *              is determined that the table is invalid, the call will fail.&n; *&n; *              If the call fails an appropriate status will be returned.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ae_local_load_table
 id|ae_local_load_table
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 id|table_info
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ae_local_load_table&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -576,7 +585,7 @@ op_logical_neg
 id|table_ptr
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -613,7 +622,7 @@ op_amp
 id|table_info
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -639,26 +648,26 @@ id|status
 )paren
 (brace
 multiline_comment|/* Uninstall table and free the buffer */
-id|acpi_tb_uninstall_table
+id|acpi_tb_delete_acpi_table
 (paren
-id|table_info.installed_desc
+id|ACPI_TABLE_DSDT
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_load_acpi_table&n; *&n; * PARAMETERS:  Filname         - File where table is located&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table from a file&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_load_acpi_table
 id|acpi_db_load_acpi_table
 (paren
@@ -672,10 +681,10 @@ id|FILE
 op_star
 id|fp
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 suffix:semicolon
@@ -799,14 +808,14 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Could not install table, %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
 )brace
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|table_ptr
 )paren

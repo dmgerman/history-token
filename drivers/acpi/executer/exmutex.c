@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 5 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 7 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -16,7 +16,7 @@ r_void
 DECL|function|acpi_ex_unlink_mutex
 id|acpi_ex_unlink_mutex
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
@@ -57,11 +57,11 @@ r_void
 DECL|function|acpi_ex_link_mutex
 id|acpi_ex_link_mutex
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|list_head
 )paren
@@ -98,25 +98,32 @@ id|obj_desc
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_acquire_mutex&n; *&n; * PARAMETERS:  *Time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire an AML mutex&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_acquire_mutex
 id|acpi_ex_acquire_mutex
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|time_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_acquire_mutex&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -125,7 +132,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -140,7 +147,7 @@ OG
 id|obj_desc-&gt;mutex.sync_level
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_MUTEX_ORDER
 )paren
@@ -158,7 +165,7 @@ id|walk_state
 id|obj_desc-&gt;mutex.acquisition_depth
 op_increment
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -184,7 +191,7 @@ id|status
 )paren
 (brace
 multiline_comment|/* Includes failure from a timeout on Time_desc */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -209,7 +216,7 @@ id|acpi_ex_link_mutex
 id|obj_desc
 comma
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 op_amp
@@ -218,28 +225,33 @@ id|walk_state-&gt;walk_list-&gt;acquired_mutex_list
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release a previously acquired Mutex.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_release_mutex
 id|acpi_ex_release_mutex
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_release_mutex&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -248,13 +260,13 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  The mutex must have been previously acquired in order to release it */
+multiline_comment|/* The mutex must have been previously acquired in order to release it */
 r_if
 c_cond
 (paren
@@ -262,7 +274,7 @@ op_logical_neg
 id|obj_desc-&gt;mutex.owner
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_MUTEX_NOT_ACQUIRED
 )paren
@@ -277,7 +289,7 @@ op_ne
 id|walk_state
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NOT_OWNER
 )paren
@@ -292,7 +304,7 @@ OG
 id|walk_state-&gt;current_sync_level
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_MUTEX_ORDER
 )paren
@@ -311,7 +323,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Just decrement the depth and return */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -340,31 +352,35 @@ id|acpi_ex_unlink_mutex
 id|obj_desc
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_all_mutexes&n; *&n; * PARAMETERS:  *Mutex_list           - Head of the mutex list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release all mutexes in the list&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_release_all_mutexes
 id|acpi_ex_release_all_mutexes
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|list_head
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|next
 op_assign
 id|list_head-&gt;mutex.next
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|this
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Traverse the list of owned mutexes, releasing each one.&n;&t; */
 r_while

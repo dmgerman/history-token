@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 83 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -42,6 +42,11 @@ id|name_string
 suffix:semicolon
 id|u32
 id|size_needed
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_allocate_name_string&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allow room for all &bslash; and ^ prefixes, all segments, and a Multi_name_prefix.&n;&t; * Also, one byte for the null terminator.&n;&t; * This may actually be somewhat longer than needed.&n;&t; */
 r_if
@@ -92,7 +97,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate a buffer for the name.&n;&t; * This buffer must be deleted by the caller!&n;&t; */
 id|name_string
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|size_needed
 )paren
@@ -107,11 +112,13 @@ id|name_string
 id|REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_allocate_name_string: name allocation failure&bslash;n&quot;
+l_string|&quot;Ex_allocate_name_string: Could not allocate size %d&bslash;n&quot;
+comma
+id|size_needed
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_PTR
 (paren
 l_int|NULL
 )paren
@@ -207,14 +214,14 @@ id|temp_ptr
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_PTR
 (paren
 id|name_string
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_name_segment&n; *&n; * PARAMETERS:  Interpreter_mode    - Current running mode (load1/Load2/Exec)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a name segment (4 bytes)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_name_segment
 id|acpi_ex_name_segment
 (paren
@@ -235,7 +242,7 @@ op_assign
 op_star
 id|in_aml_address
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -248,6 +255,11 @@ id|char_buf
 (braket
 l_int|5
 )braket
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_name_segment&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If first character is a digit, then we know that we aren&squot;t looking at a&n;&t; * valid name segment&n;&t; */
 id|char_buf
@@ -276,12 +288,35 @@ op_le
 l_char|&squot;9&squot;
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;leading digit: %c&bslash;n&quot;
+comma
+id|char_buf
+(braket
+l_int|0
+)braket
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_CTRL_PENDING
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_LOAD
+comma
+l_string|&quot;Bytes from stream:&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -318,6 +353,22 @@ op_star
 id|aml_address
 op_increment
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_LOAD
+comma
+l_string|&quot;%c&bslash;n&quot;
+comma
+id|char_buf
+(braket
+l_int|4
+op_minus
+id|index
+)braket
+)paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Valid name segment  */
 r_if
@@ -349,6 +400,31 @@ comma
 id|char_buf
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Appended to - %s &bslash;n&quot;
+comma
+id|name_string
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;No Name string - %s &bslash;n&quot;
+comma
+id|char_buf
+)paren
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -361,6 +437,20 @@ id|index
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * First character was not a valid name character,&n;&t;&t; * so we are looking at something other than a name.&n;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Leading character is not alpha: %02Xh (not a name)&bslash;n&quot;
+comma
+id|char_buf
+(braket
+l_int|0
+)braket
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_CTRL_PENDING
@@ -373,24 +463,38 @@ id|status
 op_assign
 id|AE_AML_BAD_NAME
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Bad character %02x in name, at %p&bslash;n&quot;
+comma
+op_star
+id|aml_address
+comma
+id|aml_address
+)paren
+)paren
+suffix:semicolon
 )brace
 op_star
 id|in_aml_address
 op_assign
 id|aml_address
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_name_string&n; *&n; * PARAMETERS:  Data_type           - Data type to be associated with this name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get a name, including any prefixes.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_get_name_string
 id|acpi_ex_get_name_string
 (paren
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|data_type
 comma
 id|u8
@@ -407,7 +511,7 @@ op_star
 id|out_name_length
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -441,6 +545,13 @@ id|u8
 id|has_prefix
 op_assign
 id|FALSE
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_get_name_string&quot;
+comma
+id|aml_address
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -513,6 +624,17 @@ op_star
 id|aml_address
 op_increment
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_LOAD
+comma
+l_string|&quot;Root_prefix: %x&bslash;n&quot;
+comma
+id|prefix
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Remember that we have a Root_prefix --&n;&t;&t;&t; * see comment in Acpi_ex_allocate_name_string()&n;&t;&t;&t; */
 id|prefix_count
 op_assign
@@ -539,6 +661,17 @@ op_assign
 op_star
 id|aml_address
 op_increment
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_LOAD
+comma
+l_string|&quot;Parent_prefix: %x&bslash;n&quot;
+comma
+id|prefix
+)paren
+)paren
 suffix:semicolon
 op_increment
 id|prefix_count
@@ -580,6 +713,17 @@ op_assign
 op_star
 id|aml_address
 op_increment
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_LOAD
+comma
+l_string|&quot;Dual_name_prefix: %x&bslash;n&quot;
+comma
+id|prefix
+)paren
+)paren
 suffix:semicolon
 id|name_string
 op_assign
@@ -650,6 +794,17 @@ op_star
 id|aml_address
 op_increment
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_LOAD
+comma
+l_string|&quot;Multi_name_prefix: %x&bslash;n&quot;
+comma
+id|prefix
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Fetch count of segments remaining in name path */
 id|num_segments
 op_assign
@@ -715,6 +870,25 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* Null_name valid as of 8-12-98 ASL/AML Grammar Update */
+r_if
+c_cond
+(paren
+op_minus
+l_int|1
+op_eq
+id|prefix_count
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Name_seg is &bslash;&quot;&bslash;&bslash;&bslash;&quot; followed by NULL&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Consume the NULL byte */
 id|aml_address
 op_increment
@@ -827,7 +1001,7 @@ op_minus
 id|in_aml_address
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

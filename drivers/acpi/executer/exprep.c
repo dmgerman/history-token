@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exprep - ACPI AML (p-code) execution - field prep utilities&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exprep - ACPI AML (p-code) execution - field prep utilities&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -11,7 +11,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;exprep&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_decode_field_access_type&n; *&n; * PARAMETERS:  Access          - Encoded field access bits&n; *              Length          - Field length.&n; *&n; * RETURN:      Field granularity (8, 16, or 32)&n; *&n; * DESCRIPTION: Decode the Access_type bits of a field definition.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_decode_field_access_type&n; *&n; * PARAMETERS:  Access          - Encoded field access bits&n; *              Length          - Field length.&n; *&n; * RETURN:      Field granularity (8, 16, 32 or 64)&n; *&n; * DESCRIPTION: Decode the Access_type bits of a field definition.&n; *&n; ******************************************************************************/
 r_static
 id|u32
 DECL|function|acpi_ex_decode_field_access_type
@@ -22,8 +22,17 @@ id|access
 comma
 id|u16
 id|length
+comma
+id|u32
+op_star
+id|alignment
 )paren
 (brace
+id|PROC_NAME
+(paren
+l_string|&quot;Ex_decode_field_access_type&quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -33,6 +42,11 @@ id|access
 r_case
 id|ACCESS_ANY_ACC
 suffix:colon
+op_star
+id|alignment
+op_assign
+l_int|8
+suffix:semicolon
 multiline_comment|/* Use the length to set the access type */
 r_if
 c_cond
@@ -104,6 +118,11 @@ suffix:semicolon
 r_case
 id|ACCESS_BYTE_ACC
 suffix:colon
+op_star
+id|alignment
+op_assign
+l_int|8
+suffix:semicolon
 r_return
 (paren
 l_int|8
@@ -114,6 +133,11 @@ suffix:semicolon
 r_case
 id|ACCESS_WORD_ACC
 suffix:colon
+op_star
+id|alignment
+op_assign
+l_int|16
+suffix:semicolon
 r_return
 (paren
 l_int|16
@@ -124,6 +148,11 @@ suffix:semicolon
 r_case
 id|ACCESS_DWORD_ACC
 suffix:colon
+op_star
+id|alignment
+op_assign
+l_int|32
+suffix:semicolon
 r_return
 (paren
 l_int|32
@@ -135,6 +164,11 @@ r_case
 id|ACCESS_QWORD_ACC
 suffix:colon
 multiline_comment|/* ACPI 2.0 */
+op_star
+id|alignment
+op_assign
+l_int|64
+suffix:semicolon
 r_return
 (paren
 l_int|64
@@ -145,6 +179,17 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Invalid field access type */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown field access type %x&bslash;n&quot;
+comma
+id|access
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -153,11 +198,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_common_field_object&n; *&n; * PARAMETERS:  Obj_desc            - The field object&n; *              Field_flags         - Access, Lock_rule, and Update_rule.&n; *                                    The format of a Field_flag is described&n; *                                    in the ACPI specification&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the areas of the field object that are common&n; *              to the various types of fields.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_prep_common_field_object
 id|acpi_ex_prep_common_field_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
@@ -175,7 +220,15 @@ id|u32
 id|access_bit_width
 suffix:semicolon
 id|u32
+id|alignment
+suffix:semicolon
+id|u32
 id|nearest_byte_address
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_prep_common_field_object&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Note: the structure being initialized is the&n;&t; * ACPI_COMMON_FIELD_INFO;  No structure fields outside of the common area&n;&t; * are initialized by this procedure.&n;&t; */
 multiline_comment|/* Demultiplex the Field_flags byte */
@@ -217,7 +270,7 @@ id|u16
 )paren
 id|field_bit_length
 suffix:semicolon
-multiline_comment|/* Decode the access type so we can compute offsets */
+multiline_comment|/*&n;&t; * Decode the access type so we can compute offsets.  The access type gives&n;&t; * two pieces of information - the width of each field access and the&n;&t; * necessary alignment of the access.  For Any_acc, the width used is the&n;&t; * largest necessary/possible in an attempt to access the whole field in one&n;&t; * I/O operation.  However, for Any_acc, the alignment is 8. For all other&n;&t; * access types (Byte, Word, Dword, Qword), the width is the same as the&n;&t; * alignment.&n;&t; */
 id|access_bit_width
 op_assign
 id|acpi_ex_decode_field_access_type
@@ -233,6 +286,9 @@ id|ACCESS_TYPE_SHIFT
 )paren
 comma
 id|obj_desc-&gt;field.bit_length
+comma
+op_amp
+id|alignment
 )paren
 suffix:semicolon
 r_if
@@ -242,7 +298,7 @@ op_logical_neg
 id|access_bit_width
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_VALUE
 )paren
@@ -276,8 +332,8 @@ op_eq
 id|ACPI_TYPE_BUFFER_FIELD
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Buffer_field access can be on any byte boundary, so the&n;&t;&t; * granularity is always 8&n;&t;&t; */
-id|access_bit_width
+multiline_comment|/*&n;&t;&t; * Buffer_field access can be on any byte boundary, so the&n;&t;&t; * alignment is always 8 (regardless of any alignment implied by the&n;&t;&t; * field access type.)&n;&t;&t; */
+id|alignment
 op_assign
 l_int|8
 suffix:semicolon
@@ -298,7 +354,7 @@ id|nearest_byte_address
 comma
 id|DIV_8
 (paren
-id|access_bit_width
+id|alignment
 )paren
 )paren
 suffix:semicolon
@@ -376,22 +432,22 @@ op_or_assign
 id|AFIELD_SINGLE_DATUM
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_region_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              Region_node         - Region in which field is being defined&n; *              Field_flags         - Access, Lock_rule, and Update_rule.&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an ACPI_OPERAND_OBJECT  of type Def_field and&n; *              connect it to the parent Node.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_region_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              Region_node         - Region in which field is being defined&n; *              Field_flags         - Access, Lock_rule, and Update_rule.&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an acpi_operand_object  of type Def_field and&n; *              connect it to the parent Node.&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ex_prep_region_field_value
 id|acpi_ex_prep_region_field_value
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 comma
-id|ACPI_HANDLE
+id|acpi_handle
 id|region_node
 comma
 id|u8
@@ -404,15 +460,20 @@ id|u32
 id|field_bit_length
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
 id|u32
 id|type
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_prep_region_field_value&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
 r_if
@@ -422,7 +483,16 @@ op_logical_neg
 id|region_node
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Null Region_node&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
@@ -443,7 +513,23 @@ op_ne
 id|ACPI_TYPE_REGION
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed Region, found type %X %s&bslash;n&quot;
+comma
+id|type
+comma
+id|acpi_ut_get_type_name
+(paren
+id|type
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_TYPE
 )paren
@@ -464,13 +550,51 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Obj_desc and Region valid */
+id|DUMP_OPERANDS
+(paren
+(paren
+id|acpi_operand_object
+op_star
+op_star
+)paren
+op_amp
+id|node
+comma
+id|IMODE_EXECUTE
+comma
+l_string|&quot;Ex_prep_region_field_value&quot;
+comma
+l_int|1
+comma
+l_string|&quot;case Region_field&quot;
+)paren
+suffix:semicolon
+id|DUMP_OPERANDS
+(paren
+(paren
+id|acpi_operand_object
+op_star
+op_star
+)paren
+op_amp
+id|region_node
+comma
+id|IMODE_EXECUTE
+comma
+l_string|&quot;Ex_prep_region_field_value&quot;
+comma
+l_int|1
+comma
+l_string|&quot;case Region_field&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize areas of the object that are common to all fields */
 id|status
 op_assign
@@ -494,7 +618,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -515,6 +639,41 @@ id|obj_desc-&gt;field.region_obj
 )paren
 suffix:semicolon
 multiline_comment|/* Debug info */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Bitoff=%X Off=%X Gran=%X Region %p&bslash;n&quot;
+comma
+id|obj_desc-&gt;field.start_field_bit_offset
+comma
+id|obj_desc-&gt;field.base_byte_offset
+comma
+id|obj_desc-&gt;field.access_bit_width
+comma
+id|obj_desc-&gt;field.region_obj
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;set Named_obj %p (%4.4s) val = %p&bslash;n&quot;
+comma
+id|node
+comma
+op_amp
+(paren
+id|node-&gt;name
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Store the constructed descriptor (Obj_desc) into the parent Node,&n;&t; * preserving the current type of that Named_obj.&n;&t; */
 id|status
 op_assign
@@ -533,26 +692,26 @@ id|node
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_bank_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              Region_node         - Region in which field is being defined&n; *              Bank_register_node  - Bank selection register node&n; *              Bank_val            - Value to store in selection register&n; *              Field_flags         - Access, Lock_rule, and Update_rule&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an object of type Bank_field and attach it to the&n; *              parent Node.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_prep_bank_field_value
 id|acpi_ex_prep_bank_field_value
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|region_node
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|bank_register_node
 comma
@@ -569,15 +728,20 @@ id|u32
 id|field_bit_length
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
 id|u32
 id|type
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_prep_bank_field_value&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
 r_if
@@ -587,7 +751,16 @@ op_logical_neg
 id|region_node
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Null Region_node&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
@@ -608,7 +781,23 @@ op_ne
 id|ACPI_TYPE_REGION
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed Region, found type %X %s&bslash;n&quot;
+comma
+id|type
+comma
+id|acpi_ut_get_type_name
+(paren
+id|type
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_TYPE
 )paren
@@ -629,13 +818,51 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*  Obj_desc and Region valid   */
+id|DUMP_OPERANDS
+(paren
+(paren
+id|acpi_operand_object
+op_star
+op_star
+)paren
+op_amp
+id|node
+comma
+id|IMODE_EXECUTE
+comma
+l_string|&quot;Ex_prep_bank_field_value&quot;
+comma
+l_int|1
+comma
+l_string|&quot;case Bank_field&quot;
+)paren
+suffix:semicolon
+id|DUMP_OPERANDS
+(paren
+(paren
+id|acpi_operand_object
+op_star
+op_star
+)paren
+op_amp
+id|region_node
+comma
+id|IMODE_EXECUTE
+comma
+l_string|&quot;Ex_prep_bank_field_value&quot;
+comma
+l_int|1
+comma
+l_string|&quot;case Bank_field&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize areas of the object that are common to all fields */
 id|status
 op_assign
@@ -659,7 +886,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -696,6 +923,43 @@ id|obj_desc-&gt;bank_field.bank_register_obj
 )paren
 suffix:semicolon
 multiline_comment|/* Debug info */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Bit_off=%X Off=%X Gran=%X Region %p Bank_reg %p&bslash;n&quot;
+comma
+id|obj_desc-&gt;bank_field.start_field_bit_offset
+comma
+id|obj_desc-&gt;bank_field.base_byte_offset
+comma
+id|obj_desc-&gt;field.access_bit_width
+comma
+id|obj_desc-&gt;bank_field.region_obj
+comma
+id|obj_desc-&gt;bank_field.bank_register_obj
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Set Named_obj %p (%4.4s) val=%p&bslash;n&quot;
+comma
+id|node
+comma
+op_amp
+(paren
+id|node-&gt;name
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Store the constructed descriptor (Obj_desc) into the parent Node,&n;&t; * preserving the current type of that Named_obj.&n;&t; */
 id|status
 op_assign
@@ -714,26 +978,26 @@ id|node
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_index_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              Index_reg           - Index register&n; *              Data_reg            - Data register&n; *              Field_flags         - Access, Lock_rule, and Update_rule&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an ACPI_OPERAND_OBJECT  of type Index_field and&n; *              connect it to the parent Node.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_prep_index_field_value&n; *&n; * PARAMETERS:  Node                - Owning Node&n; *              Index_reg           - Index register&n; *              Data_reg            - Data register&n; *              Field_flags         - Access, Lock_rule, and Update_rule&n; *              Field_bit_position  - Field start position&n; *              Field_bit_length    - Field length in number of bits&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct an acpi_operand_object  of type Index_field and&n; *              connect it to the parent Node.&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ex_prep_index_field_value
 id|acpi_ex_prep_index_field_value
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|index_reg
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|data_reg
 comma
@@ -747,12 +1011,17 @@ id|u32
 id|field_bit_length
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_prep_index_field_value&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
 r_if
@@ -765,7 +1034,16 @@ op_logical_neg
 id|data_reg
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Null handle&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
@@ -786,7 +1064,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -815,7 +1093,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -859,6 +1137,43 @@ id|obj_desc-&gt;index_field.index_obj
 )paren
 suffix:semicolon
 multiline_comment|/* Debug info */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;bitoff=%X off=%X gran=%X Index %p Data %p&bslash;n&quot;
+comma
+id|obj_desc-&gt;index_field.start_field_bit_offset
+comma
+id|obj_desc-&gt;index_field.base_byte_offset
+comma
+id|obj_desc-&gt;field.access_bit_width
+comma
+id|obj_desc-&gt;index_field.index_obj
+comma
+id|obj_desc-&gt;index_field.data_obj
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;set Named_obj %p (%4.4s) val = %p&bslash;n&quot;
+comma
+id|node
+comma
+op_amp
+(paren
+id|node-&gt;name
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Store the constructed descriptor (Obj_desc) into the parent Node,&n;&t; * preserving the current type of that Named_obj.&n;&t; */
 id|status
 op_assign
@@ -877,7 +1192,7 @@ id|node
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

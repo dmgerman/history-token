@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ac_osl.c&n; *   $Revision: 7 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ac_osl.c&n; *   $Revision: 9 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -78,7 +78,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -265,7 +265,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_osl_add_device&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_osl_add_device
 id|ac_osl_add_device
 c_func
@@ -346,7 +346,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_osl_remove_device&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_osl_remove_device
 id|ac_osl_remove_device
 (paren
@@ -415,7 +415,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;ac_osl_generate_event&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ac_osl_generate_event
 id|ac_osl_generate_event
 (paren
@@ -427,7 +427,7 @@ op_star
 id|ac_adapter
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -492,7 +492,7 @@ id|ac_osl_init
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK

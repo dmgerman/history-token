@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rslist - Linked list utilities&n; *              $Revision: 17 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rslist - Linked list utilities&n; *              $Revision: 19 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -17,6 +17,10 @@ id|u8
 id|resource_start_byte
 )paren
 (brace
+id|FUNCTION_ENTRY
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Determine if this is a small or large resource&n;&t; */
 r_switch
 c_cond
@@ -63,7 +67,7 @@ l_int|0xFF
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_byte_stream_to_list&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Byte_stream_buffer_length - Length of Byte_stream_buffer&n; *              Output_buffer           - Pointer to the buffer that will&n; *                                        contain the output structures&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it, creating a&n; *              linked list of resources in the caller&squot;s output buffer&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_byte_stream_to_list
 id|acpi_rs_byte_stream_to_list
 (paren
@@ -80,7 +84,7 @@ op_star
 id|output_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -114,6 +118,11 @@ id|u8
 id|end_tag_processed
 op_assign
 id|FALSE
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_byte_stream_to_list&quot;
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -503,7 +512,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -536,24 +545,24 @@ op_ne
 id|end_tag_processed
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_ERROR
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_list_to_byte_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Byte_steam_size_needed  - Calculated size of the byte stream&n; *                                        needed from calling&n; *                                        Acpi_rs_calculate_byte_stream_length()&n; *                                        The size of the Output_buffer is&n; *                                        guaranteed to be &gt;=&n; *                                        Byte_stream_size_needed&n; *              Output_buffer           - Pointer to the buffer that will&n; *                                        contain the byte stream&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource linked list and parses it, creating a&n; *              byte stream of resources in the caller&squot;s output buffer&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_list_to_byte_stream
 id|acpi_rs_list_to_byte_stream
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|linked_list
 comma
@@ -566,7 +575,7 @@ op_star
 id|output_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u8
@@ -585,6 +594,11 @@ id|u8
 id|done
 op_assign
 id|FALSE
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_list_to_byte_stream&quot;
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -911,7 +925,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -927,7 +941,7 @@ id|linked_list
 op_assign
 id|POINTER_ADD
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 comma
 id|linked_list
 comma
@@ -935,7 +949,7 @@ id|linked_list-&gt;length
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

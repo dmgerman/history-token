@@ -232,7 +232,7 @@ id|BM_HANDLE
 id|device_handle
 suffix:semicolon
 DECL|member|acpi_handle
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 suffix:semicolon
 DECL|member|uid
@@ -252,19 +252,19 @@ id|TZ_CONTEXT
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                             Function Prototypes&n; *****************************************************************************/
 multiline_comment|/* thermal_zone.c */
-id|ACPI_STATUS
+id|acpi_status
 id|tz_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_terminate
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_notify
 (paren
 id|BM_NOTIFY
@@ -278,7 +278,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_request
 (paren
 id|BM_REQUEST
@@ -289,7 +289,7 @@ id|BM_DRIVER_CONTEXT
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_get_temperature
 (paren
 id|TZ_CONTEXT
@@ -301,7 +301,7 @@ op_star
 id|temperature
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_get_thresholds
 (paren
 id|TZ_CONTEXT
@@ -322,7 +322,7 @@ id|thermal_zone
 )paren
 suffix:semicolon
 multiline_comment|/* tzpolicy.c */
-id|ACPI_STATUS
+id|acpi_status
 id|tz_policy_add_device
 (paren
 id|TZ_CONTEXT
@@ -330,7 +330,7 @@ op_star
 id|thermal_zone
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_policy_remove_device
 (paren
 id|TZ_CONTEXT
@@ -347,7 +347,7 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/* Thermal Zone Driver OSL */
-id|ACPI_STATUS
+id|acpi_status
 id|tz_osl_add_device
 (paren
 id|TZ_CONTEXT
@@ -355,7 +355,7 @@ op_star
 id|thermal_zone
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_osl_remove_device
 (paren
 id|TZ_CONTEXT
@@ -363,7 +363,7 @@ op_star
 id|thermal_zone
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|tz_osl_generate_event
 (paren
 id|u32

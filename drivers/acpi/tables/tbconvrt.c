@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 23 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -10,7 +10,7 @@ id|MODULE_NAME
 (paren
 l_string|&quot;tbconvrt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_count&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_count&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Calculate the number of tables&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_tb_get_table_count
 id|acpi_tb_get_table_count
@@ -19,13 +19,17 @@ id|RSDP_DESCRIPTOR
 op_star
 id|RSDP
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|RSDT
 )paren
 (brace
 id|u32
 id|pointer_size
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 macro_line|#ifndef _IA64
 r_if
@@ -63,7 +67,7 @@ id|RSDT-&gt;length
 op_minus
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 op_div
@@ -71,12 +75,12 @@ id|pointer_size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Convert an RSDT to an XSDT (internal common format)&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_tb_convert_to_xsdt
 id|acpi_tb_convert_to_xsdt
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 comma
@@ -91,9 +95,13 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|XSDT_DESCRIPTOR
+id|xsdt_descriptor
 op_star
 id|new_table
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 op_star
 id|number_of_tables
@@ -120,13 +128,13 @@ id|UINT64
 op_plus
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate an XSDT */
 id|new_table
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 id|table_size
 )paren
@@ -153,7 +161,7 @@ id|table_info-&gt;pointer
 comma
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
@@ -238,7 +246,7 @@ id|i
 op_assign
 (paren
 (paren
-id|XSDT_DESCRIPTOR
+id|xsdt_descriptor
 op_star
 )paren
 id|table_info-&gt;pointer
@@ -261,7 +269,7 @@ multiline_comment|/* Point the table descriptor to the new table */
 id|table_info-&gt;pointer
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 id|new_table
@@ -269,7 +277,7 @@ suffix:semicolon
 id|table_info-&gt;base_pointer
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 id|new_table
@@ -289,7 +297,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_table_fadt&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *    Converts BIOS supplied 1.0 and 0.71 ACPI FADT to an intermediate&n; *    ACPI 2.0 FADT. If the BIOS supplied a 2.0 FADT then it is simply&n; *    copied to the intermediate FADT.  The ACPI CA software uses this&n; *    intermediate FADT. Thus a significant amount of special #ifdef&n; *    type codeing is saved. This intermediate FADT will need to be&n; *    freed at some point.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_convert_table_fadt
 id|acpi_tb_convert_table_fadt
 (paren
@@ -297,7 +305,7 @@ r_void
 )paren
 (brace
 macro_line|#ifdef _IA64
-id|FADT_DESCRIPTOR_REV071
+id|fadt_descriptor_rev071
 op_star
 id|FADT71
 suffix:semicolon
@@ -317,28 +325,33 @@ id|u8
 id|gpe1_address_space
 suffix:semicolon
 macro_line|#else
-id|FADT_DESCRIPTOR_REV1
+id|fadt_descriptor_rev1
 op_star
 id|FADT1
 suffix:semicolon
 macro_line|#endif
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 op_star
 id|FADT2
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_convert_table_fadt&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Acpi_gbl_FADT is valid */
 multiline_comment|/* Allocate and zero the 2.0 buffer */
 id|FADT2
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 )paren
 )paren
 suffix:semicolon
@@ -350,7 +363,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -373,7 +386,7 @@ op_assign
 op_star
 (paren
 (paren
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 op_star
 )paren
 id|acpi_gbl_FADT
@@ -388,7 +401,7 @@ multiline_comment|/* The BIOS stored FADT should agree with Revision 0.71 */
 id|FADT71
 op_assign
 (paren
-id|FADT_DESCRIPTOR_REV071
+id|fadt_descriptor_rev071
 op_star
 )paren
 id|acpi_gbl_FADT
@@ -744,7 +757,7 @@ multiline_comment|/* The BIOS stored FADT should agree with Revision 1.0 */
 id|FADT1
 op_assign
 (paren
-id|FADT_DESCRIPTOR_REV1
+id|fadt_descriptor_rev1
 op_star
 )paren
 id|acpi_gbl_FADT
@@ -758,7 +771,7 @@ id|FADT1
 comma
 r_sizeof
 (paren
-id|FADT_DESCRIPTOR_REV1
+id|fadt_descriptor_rev1
 )paren
 )paren
 suffix:semicolon
@@ -912,7 +925,7 @@ multiline_comment|/* Install the new table */
 id|table_desc-&gt;pointer
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 id|acpi_gbl_FADT
@@ -929,53 +942,84 @@ id|table_desc-&gt;length
 op_assign
 r_sizeof
 (paren
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 )paren
 suffix:semicolon
 multiline_comment|/* Dump the entire FADT */
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_TABLES
+comma
+l_string|&quot;Hex dump of common internal FADT, size %ld (%lX)&bslash;n&quot;
+comma
+id|acpi_gbl_FADT-&gt;header.length
+comma
+id|acpi_gbl_FADT-&gt;header.length
+)paren
+)paren
+suffix:semicolon
+id|DUMP_BUFFER
+(paren
+(paren
+id|u8
+op_star
+)paren
+(paren
+id|acpi_gbl_FADT
+)paren
+comma
+id|acpi_gbl_FADT-&gt;header.length
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_table_facs&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_build_common_facs
 id|acpi_tb_build_common_facs
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
-id|ACPI_COMMON_FACS
+id|acpi_common_facs
 op_star
 id|common_facs
 suffix:semicolon
 macro_line|#ifdef _IA64
-id|FACS_DESCRIPTOR_REV071
+id|facs_descriptor_rev071
 op_star
 id|FACS71
 suffix:semicolon
 macro_line|#else
-id|FACS_DESCRIPTOR_REV1
+id|facs_descriptor_rev1
 op_star
 id|FACS1
 suffix:semicolon
 macro_line|#endif
-id|FACS_DESCRIPTOR_REV2
+id|facs_descriptor_rev2
 op_star
 id|FACS2
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_build_common_facs&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate a common FACS */
 id|common_facs
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
-id|ACPI_COMMON_FACS
+id|acpi_common_facs
 )paren
 )paren
 suffix:semicolon
@@ -986,7 +1030,7 @@ op_logical_neg
 id|common_facs
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -1006,7 +1050,7 @@ multiline_comment|/* 0.71 FACS */
 id|FACS71
 op_assign
 (paren
-id|FACS_DESCRIPTOR_REV071
+id|facs_descriptor_rev071
 op_star
 )paren
 id|acpi_gbl_FACS
@@ -1036,7 +1080,7 @@ multiline_comment|/* ACPI 1.0 FACS */
 id|FACS1
 op_assign
 (paren
-id|FACS_DESCRIPTOR_REV1
+id|facs_descriptor_rev1
 op_star
 )paren
 id|acpi_gbl_FACS
@@ -1069,7 +1113,7 @@ multiline_comment|/* ACPI 2.0 FACS */
 id|FACS2
 op_assign
 (paren
-id|FACS_DESCRIPTOR_REV2
+id|facs_descriptor_rev2
 op_star
 )paren
 id|acpi_gbl_FACS
@@ -1096,7 +1140,7 @@ id|acpi_gbl_FACS
 op_assign
 id|common_facs
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

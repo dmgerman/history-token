@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 85 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 96 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Parse the AML and build an operation tree as most interpreters,&n; * like Perl, do.  Parsing is done by hand rather than with a YACC&n; * generated parser to tightly constrain stack and dynamic memory&n; * usage.  At the same time, parsing is kept flexible and the code&n; * fairly compact by parsing based on a list of AML opcode&n; * templates in Aml_op_info[]&n; */
 macro_line|#include &quot;acpi.h&quot;
@@ -24,7 +24,7 @@ r_extern
 id|u32
 id|acpi_gbl_scope_depth
 suffix:semicolon
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_peek_opcode&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get next AML opcode (without incrementing AML pointer)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_opcode_size&n; *&n; * PARAMETERS:  Opcode          - An AML opcode&n; *&n; * RETURN:      Size of the opcode, in bytes (1 or 2)&n; *&n; * DESCRIPTION: Get the size of the current opcode.&n; *&n; ******************************************************************************/
 r_static
 id|u32
 DECL|function|acpi_ps_get_opcode_size
@@ -61,7 +61,7 @@ id|u16
 DECL|function|acpi_ps_peek_opcode
 id|acpi_ps_peek_opcode
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 )paren
@@ -130,7 +130,7 @@ id|opcode
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_create_state&n; *&n; * PARAMETERS:  Aml             - Aml code pointer&n; *              Aml_size        - Length of AML code&n; *&n; * RETURN:      A new parser state object&n; *&n; * DESCRIPTION: Create and initialize a new parser state object&n; *&n; ******************************************************************************/
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 DECL|function|acpi_ps_create_state
 id|acpi_ps_create_state
@@ -143,17 +143,22 @@ id|u32
 id|aml_size
 )paren
 (brace
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ps_create_state&quot;
+)paren
+suffix:semicolon
 id|parser_state
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 )paren
 )paren
 suffix:semicolon
@@ -164,7 +169,7 @@ op_logical_neg
 id|parser_state
 )paren
 (brace
-r_return
+id|return_PTR
 (paren
 l_int|NULL
 )paren
@@ -188,7 +193,7 @@ id|parser_state-&gt;aml_start
 op_assign
 id|aml
 suffix:semicolon
-r_return
+id|return_PTR
 (paren
 id|parser_state
 )paren
@@ -196,22 +201,22 @@ suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_find_object&n; *&n; * PARAMETERS:  Opcode          - Current opcode&n; *              Parser_state    - Current state&n; *              Walk_state      - Current state&n; *              *Op             - Where found/new op is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find a named object.  Two versions - one to search the parse&n; *              tree (for parser-only applications such as acpidump), another&n; *              to search the ACPI internal namespace (the parse tree may no&n; *              longer exist)&n; *&n; ******************************************************************************/
 macro_line|#ifdef PARSER_ONLY
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_find_object
 id|acpi_ps_find_object
 (paren
 id|u16
 id|opcode
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 op_star
 id|out_op
@@ -221,14 +226,27 @@ id|NATIVE_CHAR
 op_star
 id|path
 suffix:semicolon
+r_const
+id|acpi_opcode_info
+op_star
+id|op_info
+suffix:semicolon
 multiline_comment|/* We are only interested in opcodes that have an associated name */
+id|op_info
+op_assign
+id|acpi_ps_get_opcode_info
+(paren
+id|opcode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_ps_is_named_op
 (paren
-id|opcode
+id|op_info-&gt;flags
+op_amp
+id|AML_NAMED
 )paren
 )paren
 (brace
@@ -297,40 +315,49 @@ id|u8
 DECL|function|acpi_ps_complete_this_op
 id|acpi_ps_complete_this_op
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
 (brace
 macro_line|#ifndef PARSER_ONLY
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|prev
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|next
 suffix:semicolon
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|parent_info
 suffix:semicolon
 id|u32
 id|opcode_class
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|replacement_op
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_complete_this_op&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 id|op_info
 op_assign
@@ -492,7 +519,7 @@ op_logical_neg
 id|replacement_op
 )paren
 (brace
-r_return
+id|return_VALUE
 (paren
 id|FALSE
 )paren
@@ -517,7 +544,7 @@ op_logical_neg
 id|replacement_op
 )paren
 (brace
-r_return
+id|return_VALUE
 (paren
 id|FALSE
 )paren
@@ -641,13 +668,13 @@ id|acpi_ps_delete_parse_tree
 id|op
 )paren
 suffix:semicolon
-r_return
+id|return_VALUE
 (paren
 id|TRUE
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_VALUE
 (paren
 id|FALSE
 )paren
@@ -662,29 +689,29 @@ macro_line|#endif
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_next_parse_state&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
 r_static
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_next_parse_state
 id|acpi_ps_next_parse_state
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_STATUS
+id|acpi_status
 id|callback_status
 )paren
 (brace
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 op_assign
 id|walk_state-&gt;parser_state
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_CTRL_PENDING
@@ -695,6 +722,13 @@ id|start
 suffix:semicolon
 id|u32
 id|package_length
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_next_parse_state&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -719,8 +753,7 @@ suffix:semicolon
 r_case
 id|AE_CTRL_PENDING
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Predicate of a WHILE was true and the loop just completed an&n;&t;&t;&t; * execution.  Go back to the start of the loop and reevaluate the&n;&t;&t;&t; * predicate.&n;&t;&t;&t; */
-multiline_comment|/*            Walk_state-&gt;Control_state-&gt;Common.State =&n;&t;&t;&t;&t;&t;CONTROL_PREDICATE_EXECUTING;*/
+multiline_comment|/*&n;&t;&t; * Predicate of a WHILE was true and the loop just completed an&n;&t;&t; * execution.  Go back to the start of the loop and reevaluate the&n;&t;&t; * predicate.&n;&t;&t; */
 multiline_comment|/* TBD: How to handle a break within a while. */
 multiline_comment|/* This code attempts it */
 id|parser_state-&gt;aml
@@ -732,7 +765,7 @@ suffix:semicolon
 r_case
 id|AE_CTRL_TRUE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Predicate of an IF was true, and we are at the matching ELSE.&n;&t;&t;&t; * Just close out this package&n;&t;&t;&t; *&n;&t;&t;&t; * Note: Parser_state-&gt;Aml is modified by the package length procedure&n;&t;&t;&t; * TBD: [Investigate] perhaps it shouldn&squot;t, too much trouble&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Predicate of an IF was true, and we are at the matching ELSE.&n;&t;&t; * Just close out this package&n;&t;&t; *&n;&t;&t; * Note: Parser_state-&gt;Aml is modified by the package length procedure&n;&t;&t; * TBD: [Investigate] perhaps it shouldn&squot;t, too much trouble&n;&t;&t; */
 id|start
 op_assign
 id|parser_state-&gt;aml
@@ -833,45 +866,46 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_parse_loop&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Parse AML (pointed to by the current parser state) and return&n; *              a tree of ops.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_parse_loop
 id|acpi_ps_parse_loop
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* current op */
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 id|deferred_op
 suffix:semicolon
@@ -890,16 +924,23 @@ suffix:semicolon
 id|u16
 id|opcode
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 id|pre_op
 suffix:semicolon
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 suffix:semicolon
 id|u8
 op_star
 id|aml_op_start
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_parse_loop&quot;
+comma
+id|walk_state
+)paren
 suffix:semicolon
 id|parser_state
 op_assign
@@ -988,7 +1029,44 @@ id|AE_CODE_CONTROL
 )paren
 )paren
 (brace
-r_return
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_AML_NO_RETURN_VALUE
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invoked method did not return a value, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Get_predicate Failed, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1018,6 +1096,17 @@ id|arg_types
 comma
 op_amp
 id|arg_count
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Popped scope, Op=%p&bslash;n&quot;
+comma
+id|op
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1135,6 +1224,26 @@ r_case
 id|ACPI_OP_TYPE_UNKNOWN
 suffix:colon
 multiline_comment|/* The opcode is unrecognized.  Just skip unknown opcodes */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Found unknown opcode %lX at AML offset %X, ignoring&bslash;n&quot;
+comma
+id|opcode
+comma
+id|aml_offset
+)paren
+)paren
+suffix:semicolon
+id|DUMP_BUFFER
+(paren
+id|parser_state-&gt;aml
+comma
+l_int|128
+)paren
+suffix:semicolon
 multiline_comment|/* Assume one-byte bad opcode */
 id|parser_state-&gt;aml
 op_increment
@@ -1146,10 +1255,9 @@ multiline_comment|/* Create Op structure and append to parent&squot;s argument l
 r_if
 c_cond
 (paren
-id|acpi_ps_is_named_op
-(paren
-id|opcode
-)paren
+id|op_info-&gt;flags
+op_amp
+id|AML_NAMED
 )paren
 (brace
 id|pre_op.value.arg
@@ -1301,18 +1409,13 @@ id|AML_REGION_OP
 (brace
 id|deferred_op
 op_assign
-id|acpi_ps_to_extended_op
 (paren
+id|acpi_parse2_object
+op_star
+)paren
 id|op
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|deferred_op
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Defer final parsing of an Operation_region body,&n;&t;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t;&t; * to parse it correctly (i.e., there may be method&n;&t;&t;&t;&t;&t;&t; * calls within the Term_arg elements of the body.&n;&t;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t;&t; * However, we must continue parsing because&n;&t;&t;&t;&t;&t;&t; * the opregion is not a standalone package --&n;&t;&t;&t;&t;&t;&t; * we don&squot;t know where the end is at this point.&n;&t;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t;&t; * (Length is unknown until parse of the body complete)&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Defer final parsing of an Operation_region body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse it correctly (i.e., there may be method&n;&t;&t;&t;&t;&t; * calls within the Term_arg elements of the body.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * However, we must continue parsing because&n;&t;&t;&t;&t;&t; * the opregion is not a standalone package --&n;&t;&t;&t;&t;&t; * we don&squot;t know where the end is at this point.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * (Length is unknown until parse of the body complete)&n;&t;&t;&t;&t;&t; */
 id|deferred_op-&gt;data
 op_assign
 id|aml_op_start
@@ -1323,10 +1426,16 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-)brace
 r_else
 (brace
 multiline_comment|/* Not a named opcode, just allocate Op and append to parent */
+id|op_info
+op_assign
+id|acpi_ps_get_opcode_info
+(paren
+id|opcode
+)paren
+suffix:semicolon
 id|op
 op_assign
 id|acpi_ps_alloc_op
@@ -1341,7 +1450,7 @@ op_logical_neg
 id|op
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -1350,48 +1459,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_BIT_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_BYTE_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_WORD_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_DWORD_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_QWORD_FIELD_OP
-)paren
+id|op_info-&gt;flags
+op_amp
+id|AML_CREATE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Backup to beginning of Create_xXXfield declaration&n;&t;&t;&t;&t;&t; * Body_length is unknown until we parse the body&n;&t;&t;&t;&t;&t; */
 id|deferred_op
 op_assign
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 )paren
 id|op
@@ -1486,6 +1563,30 @@ id|op-&gt;aml_offset
 op_assign
 id|aml_offset
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|op_info
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Op=%p Opcode=%4.4lX Aml %p Oft=%5.5lX&bslash;n&quot;
+comma
+id|op
+comma
+id|op-&gt;opcode
+comma
+id|parser_state-&gt;aml
+comma
+id|op-&gt;aml_offset
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Start Arg_count at zero because we don&squot;t know if there are any args yet */
 id|arg_count
@@ -1518,6 +1619,10 @@ r_case
 id|AML_DWORD_OP
 suffix:colon
 multiline_comment|/* AML_DWORDATA_ARG */
+r_case
+id|AML_QWORD_OP
+suffix:colon
+multiline_comment|/* AML_QWORDATA_ARG */
 r_case
 id|AML_STRING_OP
 suffix:colon
@@ -1632,18 +1737,13 @@ id|AML_METHOD_OP
 (brace
 id|deferred_op
 op_assign
-id|acpi_ps_to_extended_op
 (paren
+id|acpi_parse2_object
+op_star
+)paren
 id|op
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|deferred_op
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t; */
 id|deferred_op-&gt;data
 op_assign
 id|parser_state-&gt;aml
@@ -1659,7 +1759,7 @@ op_minus
 id|parser_state-&gt;aml
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip body of method.  For Op_regions, we must continue&n;&t;&t;&t;&t;&t;&t; * parsing because the opregion is not a standalone&n;&t;&t;&t;&t;&t;&t; * package (We don&squot;t know where the end is).&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip body of method.  For Op_regions, we must continue&n;&t;&t;&t;&t;&t; * parsing because the opregion is not a standalone&n;&t;&t;&t;&t;&t; * package (We don&squot;t know where the end is).&n;&t;&t;&t;&t;&t; */
 id|parser_state-&gt;aml
 op_assign
 id|parser_state-&gt;pkg_end
@@ -1668,7 +1768,6 @@ id|arg_count
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -1683,13 +1782,19 @@ id|arg_count
 )paren
 (brace
 multiline_comment|/* completed Op, prepare for next */
-r_if
-c_cond
-(paren
-id|acpi_ps_is_named_op
+id|op_info
+op_assign
+id|acpi_ps_get_opcode_info
 (paren
 id|op-&gt;opcode
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|op_info-&gt;flags
+op_amp
+id|AML_NAMED
 )paren
 (brace
 r_if
@@ -1712,18 +1817,13 @@ id|AML_REGION_OP
 (brace
 id|deferred_op
 op_assign
-id|acpi_ps_to_extended_op
 (paren
+id|acpi_parse2_object
+op_star
+)paren
 id|op
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|deferred_op
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t;&t; * Completed parsing an Op_region declaration, we now&n;&t;&t;&t;&t;&t;&t; * know the length.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * Completed parsing an Op_region declaration, we now&n;&t;&t;&t;&t;&t; * know the length.&n;&t;&t;&t;&t;&t; */
 id|deferred_op-&gt;length
 op_assign
 (paren
@@ -1737,52 +1837,19 @@ id|deferred_op-&gt;data
 suffix:semicolon
 )brace
 )brace
-)brace
 r_if
 c_cond
 (paren
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_BIT_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_BYTE_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_WORD_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_DWORD_FIELD_OP
-)paren
-op_logical_or
-(paren
-id|op-&gt;opcode
-op_eq
-id|AML_CREATE_QWORD_FIELD_OP
-)paren
+id|op_info-&gt;flags
+op_amp
+id|AML_CREATE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Backup to beginning of Create_xXXfield declaration (1 for&n;&t;&t;&t;&t; * Opcode)&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Body_length is unknown until we parse the body&n;&t;&t;&t;&t; */
 id|deferred_op
 op_assign
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 )paren
 id|op
@@ -1891,7 +1958,7 @@ id|walk_state-&gt;prev_arg_types
 op_assign
 id|arg_types
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1997,7 +2064,7 @@ c_loop
 id|op
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -2041,7 +2108,7 @@ op_assign
 id|arg_types
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * TEMP:&n;&t;&t;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -2071,6 +2138,17 @@ id|arg_types
 comma
 op_amp
 id|arg_count
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Popped scope, Op=%p&bslash;n&quot;
+comma
+id|op
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2105,6 +2183,17 @@ suffix:semicolon
 )brace
 multiline_comment|/* while Parser_state-&gt;Aml */
 multiline_comment|/*&n;&t; * Complete the last Op (if not completed), and clear the scope stack.&n;&t; * It is easily possible to end an AML &quot;package&quot; with an unbounded number&n;&t; * of open scopes (such as when several AML blocks are closed with&n;&t; * sequential closing braces).  We want to terminate each one cleanly.&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Package complete at Op %p&bslash;n&quot;
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 r_do
 (brace
 r_if
@@ -2207,7 +2296,7 @@ c_loop
 id|op
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -2230,7 +2319,7 @@ comma
 id|op
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -2266,18 +2355,18 @@ c_loop
 id|op
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_parse_aml&n; *&n; * PARAMETERS:  Start_scope     - The starting point of the parse.  Becomes the&n; *                                root of the parsed op tree.&n; *              Aml             - Pointer to the raw AML code to parse&n; *              Aml_size        - Length of the AML to parse&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Parse raw AML and return a tree of ops&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_parse_aml&n; *&n; * PARAMETERS:  Start_scope     - The starting point of the parse.  Becomes the&n; *                                root of the parsed op tree.&n; *              Aml             - Pointer to the raw AML code to parse&n; *              Aml_size        - Length of the AML to parse&n; *&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Parse raw AML and return a tree of ops&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ps_parse_aml
 id|acpi_ps_parse_aml
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|start_scope
 comma
@@ -2291,62 +2380,76 @@ comma
 id|u32
 id|parse_flags
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|method_node
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|caller_return_desc
 comma
-id|ACPI_PARSE_DOWNWARDS
+id|acpi_parse_downwards
 id|descending_callback
 comma
-id|ACPI_PARSE_UPWARDS
+id|acpi_parse_upwards
 id|ascending_callback
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 suffix:semicolon
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_WALK_LIST
+id|acpi_walk_list
 id|walk_list
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
-op_star
-id|node
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ACPI_WALK_LIST
+id|acpi_walk_list
 op_star
 id|prev_walk_list
 op_assign
 id|acpi_gbl_current_walk_list
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|return_desc
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|mth_desc
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ps_parse_aml&quot;
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Entered with Scope=%p Aml=%p size=%lX&bslash;n&quot;
+comma
+id|start_scope
+comma
+id|aml
+comma
+id|aml_size
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Create and initialize a new parser state */
 id|parser_state
@@ -2365,7 +2468,7 @@ op_logical_neg
 id|parser_state
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -2495,7 +2598,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -2516,18 +2619,14 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Setup the current scope */
-id|node
-op_assign
-id|parser_state-&gt;start_op-&gt;node
-suffix:semicolon
 id|parser_state-&gt;start_node
 op_assign
-id|node
+id|parser_state-&gt;start_op-&gt;node
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|node
+id|parser_state-&gt;start_node
 )paren
 (brace
 multiline_comment|/* Push start scope on scope stack and make it current  */
@@ -2535,9 +2634,9 @@ id|status
 op_assign
 id|acpi_ds_scope_stack_push
 (paren
-id|node
+id|parser_state-&gt;start_node
 comma
-id|node-&gt;type
+id|parser_state-&gt;start_node-&gt;type
 comma
 id|walk_state
 )paren
@@ -2557,11 +2656,22 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/*&n;&t; * Execute the walk loop as long as there is a valid Walk State.  This&n;&t; * handles nested control method invocations without recursion.&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;State=%p&bslash;n&quot;
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-multiline_comment|/*&n;&t; * Execute the walk loop as long as there is a valid Walk State.  This&n;&t; * handles nested control method invocations without recursion.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2585,6 +2695,17 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Completed one call to walk loop, State=%p&bslash;n&quot;
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2646,6 +2767,19 @@ id|return_desc
 op_assign
 id|walk_state-&gt;return_desc
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Return_value=%p, State=%p&bslash;n&quot;
+comma
+id|walk_state-&gt;return_desc
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Reset the current scope to the beginning of scope stack */
 id|acpi_ds_scope_stack_clear
 (paren
@@ -2677,7 +2811,7 @@ id|acpi_ps_cleanup_scope
 id|walk_state-&gt;parser_state
 )paren
 suffix:semicolon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|walk_state-&gt;parser_state
 )paren
@@ -2755,7 +2889,7 @@ multiline_comment|/* Normal exit */
 id|acpi_ex_release_all_mutexes
 (paren
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 op_amp
@@ -2766,7 +2900,7 @@ id|acpi_gbl_current_walk_list
 op_assign
 id|prev_walk_list
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -2784,7 +2918,7 @@ id|acpi_ps_cleanup_scope
 id|parser_state
 )paren
 suffix:semicolon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|parser_state
 )paren
@@ -2792,7 +2926,7 @@ suffix:semicolon
 id|acpi_ex_release_all_mutexes
 (paren
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 op_amp
@@ -2803,7 +2937,7 @@ id|acpi_gbl_current_walk_list
 op_assign
 id|prev_walk_list
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 40 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbstats - Generation and display of ACPI table statistics&n; *              $Revision: 47 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;acdebug.h&gt;
@@ -45,6 +45,10 @@ l_string|&quot;SIZES&quot;
 )brace
 comma
 (brace
+l_string|&quot;STACK&quot;
+)brace
+comma
+(brace
 l_int|NULL
 )brace
 multiline_comment|/* Must be null terminated */
@@ -62,63 +66,14 @@ DECL|macro|CMD_TABLES
 mdefine_line|#define CMD_TABLES          4
 DECL|macro|CMD_SIZES
 mdefine_line|#define CMD_SIZES           5
-multiline_comment|/*&n; * Statistic globals&n; */
-DECL|variable|acpi_gbl_obj_type_count
-id|u16
-id|acpi_gbl_obj_type_count
-(braket
-id|INTERNAL_TYPE_NODE_MAX
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-DECL|variable|acpi_gbl_node_type_count
-id|u16
-id|acpi_gbl_node_type_count
-(braket
-id|INTERNAL_TYPE_NODE_MAX
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-DECL|variable|acpi_gbl_obj_type_count_misc
-id|u16
-id|acpi_gbl_obj_type_count_misc
-suffix:semicolon
-DECL|variable|acpi_gbl_node_type_count_misc
-id|u16
-id|acpi_gbl_node_type_count_misc
-suffix:semicolon
-DECL|variable|num_nodes
-id|u32
-id|num_nodes
-suffix:semicolon
-DECL|variable|num_objects
-id|u32
-id|num_objects
-suffix:semicolon
-DECL|variable|size_of_parse_tree
-id|u32
-id|size_of_parse_tree
-suffix:semicolon
-DECL|variable|size_of_method_trees
-id|u32
-id|size_of_method_trees
-suffix:semicolon
-DECL|variable|size_of_node_entries
-id|u32
-id|size_of_node_entries
-suffix:semicolon
-DECL|variable|size_of_acpi_objects
-id|u32
-id|size_of_acpi_objects
-suffix:semicolon
+DECL|macro|CMD_STACK
+mdefine_line|#define CMD_STACK           6
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_enumerate_object&n; *&n; * PARAMETERS:  Obj_desc            - Object to be counted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Add this object to the global counts, by object type.&n; *              Recursively handles subobjects and packages.&n; *&n; *              [TBD] Restructure - remove recursion.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_db_enumerate_object
 id|acpi_db_enumerate_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
@@ -140,7 +95,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Enumerate this object first */
-id|num_objects
+id|acpi_gbl_num_objects
 op_increment
 suffix:semicolon
 id|type
@@ -293,11 +248,11 @@ suffix:semicolon
 )brace
 macro_line|#ifndef PARSER_ONLY
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_classify_one_object&n; *&n; * PARAMETERS:  Callback for Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enumerate both the object descriptor (including subobjects) and&n; *              the parent namespace node.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_classify_one_object
 id|acpi_db_classify_one_object
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|obj_handle
 comma
 id|u32
@@ -313,24 +268,24 @@ op_star
 id|return_value
 )paren
 (brace
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
 id|u32
 id|type
 suffix:semicolon
-id|num_nodes
+id|acpi_gbl_num_nodes
 op_increment
 suffix:semicolon
 id|node
 op_assign
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
@@ -339,7 +294,7 @@ id|obj_desc
 op_assign
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
@@ -361,7 +316,7 @@ c_cond
 (paren
 id|type
 OG
-id|INTERNAL_TYPE_INVALID
+id|INTERNAL_TYPE_NODE_MAX
 )paren
 (brace
 id|acpi_gbl_node_type_count_misc
@@ -381,10 +336,10 @@ r_return
 id|AE_OK
 suffix:semicolon
 multiline_comment|/* TBD: These need to be counted during the initial parsing phase */
-multiline_comment|/*&n;&t;if (Acpi_ps_is_named_op (Op-&gt;Opcode))&n;&t;{&n;&t;&t;Num_nodes++;&n;&t;}&n;&n;&t;if (Is_method)&n;&t;{&n;&t;&t;Num_method_elements++;&n;&t;}&n;&n;&t;Num_grammar_elements++;&n;&t;Op = Acpi_ps_get_depth_next (Root, Op);&n;&n;&t;Size_of_parse_tree          = (Num_grammar_elements - Num_method_elements) * (u32) sizeof (ACPI_PARSE_OBJECT);&n;&t;Size_of_method_trees        = Num_method_elements * (u32) sizeof (ACPI_PARSE_OBJECT);&n;&t;Size_of_node_entries        = Num_nodes * (u32) sizeof (ACPI_NAMESPACE_NODE);&n;&t;Size_of_acpi_objects        = Num_nodes * (u32) sizeof (ACPI_OPERAND_OBJECT);&n;&n;&t;*/
+multiline_comment|/*&n;&t;if (Acpi_ps_is_named_op (Op-&gt;Opcode))&n;&t;{&n;&t;&t;Num_nodes++;&n;&t;}&n;&n;&t;if (Is_method)&n;&t;{&n;&t;&t;Num_method_elements++;&n;&t;}&n;&n;&t;Num_grammar_elements++;&n;&t;Op = Acpi_ps_get_depth_next (Root, Op);&n;&n;&t;Size_of_parse_tree          = (Num_grammar_elements - Num_method_elements) * (u32) sizeof (acpi_parse_object);&n;&t;Size_of_method_trees        = Num_method_elements * (u32) sizeof (acpi_parse_object);&n;&t;Size_of_node_entries        = Num_nodes * (u32) sizeof (acpi_namespace_node);&n;&t;Size_of_acpi_objects        = Num_nodes * (u32) sizeof (acpi_operand_object);&n;&n;&t;*/
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_count_namespace_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Count and classify the entire namespace, including all&n; *              namespace nodes and attached objects.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_count_namespace_objects
 id|acpi_db_count_namespace_objects
 (paren
@@ -394,11 +349,11 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|num_nodes
+id|acpi_gbl_num_nodes
 op_assign
 l_int|0
 suffix:semicolon
-id|num_objects
+id|acpi_gbl_num_objects
 op_assign
 l_int|0
 suffix:semicolon
@@ -415,7 +370,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|INTERNAL_TYPE_INVALID
+(paren
+id|INTERNAL_TYPE_NODE_MAX
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -461,7 +420,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_display_statistics&n; *&n; * PARAMETERS:  Type_arg        - Subcommand&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Display various statistics&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_display_statistics
 id|acpi_db_display_statistics
 (paren
@@ -475,6 +434,12 @@ id|i
 suffix:semicolon
 id|u32
 id|type
+suffix:semicolon
+id|u32
+id|outstanding
+suffix:semicolon
+id|u32
+id|size
 suffix:semicolon
 r_if
 c_cond
@@ -544,12 +509,6 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef PARSER_ONLY
-id|acpi_db_count_namespace_objects
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -560,10 +519,12 @@ macro_line|#ifndef PARSER_ONLY
 r_case
 id|CMD_ALLOCATIONS
 suffix:colon
+macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
 id|acpi_ut_dump_allocation_info
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 macro_line|#endif
@@ -596,6 +557,11 @@ suffix:semicolon
 r_case
 id|CMD_OBJECTS
 suffix:colon
+macro_line|#ifndef PARSER_ONLY
+id|acpi_db_count_namespace_objects
+(paren
+)paren
+suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;n_objects defined in the current namespace:&bslash;n&bslash;n&quot;
@@ -665,240 +631,242 @@ l_string|&quot;%16.16s % 10ld% 10ld&bslash;n&quot;
 comma
 l_string|&quot;TOTALS:&quot;
 comma
-id|num_nodes
+id|acpi_gbl_num_nodes
 comma
-id|num_objects
+id|acpi_gbl_num_objects
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;Acpi_os_printf (&quot;&bslash;n&quot;);&n;&n;&t;&t;Acpi_os_printf (&quot;ASL/AML Grammar Usage:&bslash;n&bslash;n&quot;);&n;&t;&t;Acpi_os_printf (&quot;Elements Inside Methods:....% 7ld&bslash;n&quot;, Num_method_elements);&n;&t;&t;Acpi_os_printf (&quot;Elements Outside Methods:...% 7ld&bslash;n&quot;, Num_grammar_elements - Num_method_elements);&n;&t;&t;Acpi_os_printf (&quot;Total Grammar Elements:.....% 7ld&bslash;n&quot;, Num_grammar_elements);&n;*/
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 id|CMD_MEMORY
 suffix:colon
+macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_dynamic Memory Estimates:&bslash;n&bslash;n&quot;
+l_string|&quot;&bslash;n----Object and Cache Statistics---------------------------------------------&bslash;n&quot;
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ACPI_NUM_MEM_LISTS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Parse Tree without Methods:.% 7ld&bslash;n&quot;
+l_string|&quot;&bslash;n%s&bslash;n&quot;
 comma
-id|size_of_parse_tree
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|list_name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|max_cache_depth
+OG
+l_int|0
+)paren
+(brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Control Method Parse Trees:.% 7ld (If parsed simultaneously)&bslash;n&quot;
+l_string|&quot;  Cache: [Depth Max Avail Size]         % 7d % 7d % 7d % 7d B&bslash;n&quot;
 comma
-id|size_of_method_trees
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Namespace Nodes:............% 7ld (%d nodes)&bslash;n&quot;
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_depth
 comma
-r_sizeof
-(paren
-id|ACPI_NAMESPACE_NODE
-)paren
-op_star
-id|num_nodes
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|max_cache_depth
 comma
-id|num_nodes
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Named Internal Objects......% 7ld&bslash;n&quot;
-comma
-id|size_of_acpi_objects
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;State Cache size............% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_generic_state_cache_depth
-op_star
-r_sizeof
-(paren
-id|ACPI_GENERIC_STATE
-)paren
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Parse Cache size............% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_parse_cache_depth
-op_star
-r_sizeof
-(paren
-id|ACPI_PARSE_OBJECT
-)paren
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Object Cache size...........% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_object_cache_depth
-op_star
-r_sizeof
-(paren
-id|ACPI_OPERAND_OBJECT
-)paren
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Walk_state Cache size........% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_walk_state_cache_depth
-op_star
-r_sizeof
-(paren
-id|ACPI_WALK_STATE
-)paren
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Cache Statistics:&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;State Cache requests........% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_state_cache_requests
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;State Cache hits............% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_state_cache_hits
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;State Cache depth...........% 7ld (%d remaining entries)&bslash;n&quot;
-comma
-id|acpi_gbl_generic_state_cache_depth
-comma
-id|MAX_STATE_CACHE_DEPTH
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|max_cache_depth
 op_minus
-id|acpi_gbl_generic_state_cache_depth
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_depth
+comma
+(paren
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_depth
+op_star
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|object_size
+)paren
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;Parse Cache requests........% 7ld&bslash;n&quot;
+l_string|&quot;  Cache: [Requests Hits Misses Obj_size] % 7d % 7d % 7d % 7d B&bslash;n&quot;
 comma
-id|acpi_gbl_parse_cache_requests
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Parse Cache hits............% 7ld&bslash;n&quot;
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_requests
 comma
-id|acpi_gbl_parse_cache_hits
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Parse Cache depth...........% 7ld (%d remaining entries)&bslash;n&quot;
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_hits
 comma
-id|acpi_gbl_parse_cache_depth
-comma
-id|MAX_PARSE_CACHE_DEPTH
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_requests
 op_minus
-id|acpi_gbl_parse_cache_depth
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_hits
+comma
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|object_size
 )paren
 suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Ext Parse Cache requests....% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_ext_parse_cache_requests
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Ext Parse Cache hits........% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_ext_parse_cache_hits
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Ext Parse Cache depth.......% 7ld (%d remaining entries)&bslash;n&quot;
-comma
-id|acpi_gbl_ext_parse_cache_depth
-comma
-id|MAX_EXTPARSE_CACHE_DEPTH
+)brace
+id|outstanding
+op_assign
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|total_allocated
 op_minus
-id|acpi_gbl_ext_parse_cache_depth
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Object Cache requests.......% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_object_cache_requests
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Object Cache hits...........% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_object_cache_hits
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Object Cache depth..........% 7ld (%d remaining entries)&bslash;n&quot;
-comma
-id|acpi_gbl_object_cache_depth
-comma
-id|MAX_OBJECT_CACHE_DEPTH
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|total_freed
 op_minus
-id|acpi_gbl_object_cache_depth
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_depth
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|object_size
+)paren
+(brace
+id|size
+op_assign
+id|ROUND_UP_TO_1_k
+(paren
+id|outstanding
+op_star
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|object_size
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|size
+op_assign
+id|ROUND_UP_TO_1_k
+(paren
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|current_total_size
+)paren
+suffix:semicolon
+)brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Walk_state Cache requests....% 7ld&bslash;n&quot;
+l_string|&quot;  Mem:   [Alloc Free Outstanding Size]  % 7d % 7d % 7d % 7d Kb&bslash;n&quot;
 comma
-id|acpi_gbl_walk_state_cache_requests
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|total_allocated
+comma
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|total_freed
+comma
+id|outstanding
+comma
+id|size
 )paren
 suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Walk_state Cache hits........% 7ld&bslash;n&quot;
-comma
-id|acpi_gbl_walk_state_cache_hits
-)paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;Walk_state Cache depth.......% 7ld (%d remaining entries)&bslash;n&quot;
-comma
-id|acpi_gbl_walk_state_cache_depth
-comma
-id|MAX_WALK_CACHE_DEPTH
-op_minus
-id|acpi_gbl_walk_state_cache_depth
-)paren
-suffix:semicolon
+)brace
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -1197,7 +1165,7 @@ l_string|&quot;Parse_object   %3d&bslash;n&quot;
 comma
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 )paren
 )paren
 suffix:semicolon
@@ -1207,7 +1175,7 @@ l_string|&quot;Parse2_object  %3d&bslash;n&quot;
 comma
 r_sizeof
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 )paren
 )paren
 suffix:semicolon
@@ -1217,7 +1185,7 @@ l_string|&quot;Operand_object %3d&bslash;n&quot;
 comma
 r_sizeof
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 )paren
 )paren
 suffix:semicolon
@@ -1227,8 +1195,54 @@ l_string|&quot;Namespace_node %3d&bslash;n&quot;
 comma
 r_sizeof
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 )paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CMD_STACK
+suffix:colon
+id|size
+op_assign
+id|acpi_gbl_entry_stack_pointer
+op_minus
+id|acpi_gbl_lowest_stack_pointer
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;&bslash;n_subsystem Stack Usage:&bslash;n&bslash;n&quot;
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Entry Stack Pointer        %X&bslash;n&quot;
+comma
+id|acpi_gbl_entry_stack_pointer
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Lowest Stack Pointer       %X&bslash;n&quot;
+comma
+id|acpi_gbl_lowest_stack_pointer
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Stack Use                  %X (%d)&bslash;n&quot;
+comma
+id|size
+comma
+id|size
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Deepest Procedure Nesting  %d&bslash;n&quot;
+comma
+id|acpi_gbl_deepest_nesting
 )paren
 suffix:semicolon
 r_break

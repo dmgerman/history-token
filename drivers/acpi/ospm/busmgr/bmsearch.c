@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: bmsearch.c&n; *   $Revision: 13 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: bmsearch.c&n; *   $Revision: 16 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -9,8 +9,8 @@ id|MODULE_NAME
 l_string|&quot;bmsearch&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                            External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_compare&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_compare&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_compare
 id|bm_compare
 (paren
@@ -37,7 +37,7 @@ r_return
 id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Present?&n;&t; * --------&n;&t; * We&squot;re only going to match on devices that are present.&n;&t; * TBD: Optimize in bm_search (don&squot;t have to call here).&n;&t; */
+multiline_comment|/*&n;&t; * Present?&n;&t; * --------&n;&t; * We&squot;re only going to match on devices that are present.&n;&t; * TBD: Optimize in bm_search (don&squot;t have to call here).&n;&t; */
 r_if
 c_cond
 (paren
@@ -53,7 +53,7 @@ r_return
 id|AE_NOT_FOUND
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Type?&n;&t; */
+multiline_comment|/*&n;&t; * Type?&n;&t; */
 r_if
 c_cond
 (paren
@@ -70,7 +70,7 @@ r_return
 id|AE_NOT_FOUND
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * HID?&n;&t; */
+multiline_comment|/*&n;&t; * HID?&n;&t; */
 r_if
 c_cond
 (paren
@@ -103,7 +103,7 @@ r_return
 id|AE_NOT_FOUND
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * ADR?&n;&t; */
+multiline_comment|/*&n;&t; * ADR?&n;&t; */
 r_if
 c_cond
 (paren
@@ -126,8 +126,8 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_search&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      AE_BAD_PARAMETER- invalid input parameter&n; *              AE_NOT_EXIST    - start_device_handle doesn&squot;t exist&n; *              AE_NOT_FOUND    - no matches to Search_info.criteria found&n; *              AE_OK           - success&n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_search&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      AE_BAD_PARAMETER- invalid input parameter&n; *              AE_NOT_EXIST    - start_device_handle doesn&squot;t exist&n; *              AE_NOT_FOUND    - no matches to Search_info.criteria found&n; *              AE_OK           - success&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_search
 id|bm_search
 c_func
@@ -144,7 +144,7 @@ op_star
 id|results
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -305,7 +305,7 @@ op_assign
 id|node-&gt;device.handle
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Locate Next Device:&n;&t;&t;&t; * -------------------&n;&t;&t;&t; * The next node is either a peer at this level &n;&t;&t;&t; * (node-&gt;next is valid), or we work are way back &n;&t;&t;&t; * up the tree until we either find a non-parsed &n;&t;&t;&t; * peer or hit the top (node-&gt;parent is NULL).&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Locate Next Device:&n;&t;&t;&t; * -------------------&n;&t;&t;&t; * The next node is either a peer at this level&n;&t;&t;&t; * (node-&gt;next is valid), or we work are way back&n;&t;&t;&t; * up the tree until we either find a non-parsed&n;&t;&t;&t; * peer or hit the top (node-&gt;parent is NULL).&n;&t;&t;&t; */
 r_while
 c_loop
 (paren

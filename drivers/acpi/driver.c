@@ -13,11 +13,6 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;driver.h&quot;
-macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
-macro_line|#include &lt;asm/efi.h&gt;
-DECL|macro|ACPI_USE_EFI
-mdefine_line|#define ACPI_USE_EFI
-macro_line|#endif
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;OS_DEPENDENT
 id|MODULE_NAME
@@ -44,13 +39,10 @@ c_func
 r_void
 )paren
 (brace
-id|ACPI_PHYSICAL_ADDRESS
-id|rsdp_phys
-suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
-id|ACPI_SYSTEM_INFO
+id|acpi_system_info
 id|sys_info
 suffix:semicolon
 r_if
@@ -118,41 +110,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifndef ACPI_USE_EFI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ACPI_SUCCESS
-c_func
-(paren
-id|acpi_find_root_pointer
-c_func
-(paren
-op_amp
-id|rsdp_phys
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ACPI: System description tables not found&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#else
-id|rsdp_phys
-op_assign
-id|efi.acpi
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* from this point on, on error we must call acpi_terminate() */
 r_if
 c_cond
@@ -164,7 +121,6 @@ c_func
 id|acpi_load_tables
 c_func
 (paren
-id|rsdp_phys
 )paren
 )paren
 )paren

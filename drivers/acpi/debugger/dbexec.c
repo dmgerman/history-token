@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 26 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 34 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -17,31 +17,31 @@ id|MODULE_NAME
 (paren
 l_string|&quot;dbexec&quot;
 )paren
-DECL|variable|info
-id|DB_METHOD_INFO
-id|info
+DECL|variable|acpi_gbl_db_method_info
+id|db_method_info
+id|acpi_gbl_db_method_info
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_execute_method&n; *&n; * PARAMETERS:  Info            - Valid info segment&n; *              Return_obj      - Where to put return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_execute_method
 id|acpi_db_execute_method
 (paren
-id|DB_METHOD_INFO
+id|db_method_info
 op_star
 id|info
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|return_obj
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_OBJECT_LIST
+id|acpi_object_list
 id|param_objects
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 id|params
 (braket
 id|MTH_NUM_ARGS
@@ -53,7 +53,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|output_to_file
+id|acpi_gbl_db_output_to_file
 op_logical_and
 op_logical_neg
 id|acpi_dbg_level
@@ -195,11 +195,11 @@ suffix:semicolon
 multiline_comment|/* Prepare for a return object of arbitrary size */
 id|return_obj-&gt;pointer
 op_assign
-id|buffer
+id|acpi_gbl_db_buffer
 suffix:semicolon
 id|return_obj-&gt;length
 op_assign
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 suffix:semicolon
 multiline_comment|/* Do the actual method execution */
 id|status
@@ -235,7 +235,7 @@ r_void
 DECL|function|acpi_db_execute_setup
 id|acpi_db_execute_setup
 (paren
-id|DB_METHOD_INFO
+id|db_method_info
 op_star
 id|info
 )paren
@@ -274,7 +274,7 @@ id|STRCAT
 (paren
 id|info-&gt;pathname
 comma
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 )paren
 suffix:semicolon
 )brace
@@ -330,6 +330,71 @@ id|DB_REDIRECTABLE_OUTPUT
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_get_outstanding_allocations&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Current global allocation count minus cache entries&n; *&n; * DESCRIPTION: Determine the current number of &quot;outstanding&quot; allocations --&n; *              those allocations that have not been freed and also are not&n; *              in one of the various object caches.&n; *&n; ******************************************************************************/
+id|u32
+DECL|function|acpi_db_get_outstanding_allocations
+id|acpi_db_get_outstanding_allocations
+(paren
+r_void
+)paren
+(brace
+id|u32
+id|i
+suffix:semicolon
+id|u32
+id|outstanding
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|ACPI_MEM_LIST_FIRST_CACHE_LIST
+suffix:semicolon
+id|i
+OL
+id|ACPI_NUM_MEM_LISTS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|outstanding
+op_add_assign
+(paren
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|total_allocated
+op_minus
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|total_freed
+op_minus
+id|acpi_gbl_memory_lists
+(braket
+id|i
+)braket
+dot
+id|cache_depth
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+(paren
+id|outstanding
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_execute&n; *&n; * PARAMETERS:  Name                - Name of method to execute&n; *              Args                - Parameters to the method&n; *              Flags               - single step/no single step&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method.  Name is relative to the current&n; *              scope.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_db_execute
@@ -348,28 +413,43 @@ id|u32
 id|flags
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|return_obj
 suffix:semicolon
-id|info.name
+macro_line|#ifdef ACPI_DEBUG
+id|u32
+id|previous_allocations
+suffix:semicolon
+id|u32
+id|allocations
+suffix:semicolon
+multiline_comment|/* Memory allocation tracking */
+id|previous_allocations
+op_assign
+id|acpi_db_get_outstanding_allocations
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|acpi_gbl_db_method_info.name
 op_assign
 id|name
 suffix:semicolon
-id|info.args
+id|acpi_gbl_db_method_info.args
 op_assign
 id|args
 suffix:semicolon
-id|info.flags
+id|acpi_gbl_db_method_info.flags
 op_assign
 id|flags
 suffix:semicolon
 id|acpi_db_execute_setup
 (paren
 op_amp
-id|info
+id|acpi_gbl_db_method_info
 )paren
 suffix:semicolon
 id|status
@@ -377,12 +457,52 @@ op_assign
 id|acpi_db_execute_method
 (paren
 op_amp
-id|info
+id|acpi_gbl_db_method_info
 comma
 op_amp
 id|return_obj
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Allow any handlers in separate threads to complete.&n;&t; * (Such as Notify handlers invoked from AML executed above).&n;&t; */
+id|acpi_os_sleep
+(paren
+l_int|0
+comma
+l_int|10
+)paren
+suffix:semicolon
+macro_line|#ifdef ACPI_DEBUG
+multiline_comment|/* Memory allocation tracking */
+id|allocations
+op_assign
+id|acpi_db_get_outstanding_allocations
+(paren
+)paren
+op_minus
+id|previous_allocations
+suffix:semicolon
+id|acpi_db_set_output_destination
+(paren
+id|DB_DUPLICATE_OUTPUT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|allocations
+OG
+l_int|0
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Outstanding: %ld allocations after execution&bslash;n&quot;
+comma
+id|allocations
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -396,9 +516,9 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Execution of %s failed with status %s&bslash;n&quot;
 comma
-id|info.pathname
+id|acpi_gbl_db_method_info.pathname
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
@@ -418,7 +538,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Execution of %s returned object %p Buflen %X&bslash;n&quot;
 comma
-id|info.pathname
+id|acpi_gbl_db_method_info.pathname
 comma
 id|return_obj.pointer
 comma
@@ -450,10 +570,10 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|DB_METHOD_INFO
+id|db_method_info
 op_star
 id|info
 op_assign
@@ -462,7 +582,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|return_obj
 suffix:semicolon
 r_for
@@ -553,7 +673,7 @@ op_star
 id|method_name_arg
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -565,7 +685,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_HANDLE
+id|acpi_handle
 id|thread_gate
 suffix:semicolon
 multiline_comment|/* Get the arguments */
@@ -639,7 +759,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Could not create semaphore, %s&bslash;n&quot;
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
@@ -649,30 +769,30 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Setup the context to be passed to each thread */
-id|info.name
+id|acpi_gbl_db_method_info.name
 op_assign
 id|method_name_arg
 suffix:semicolon
-id|info.args
+id|acpi_gbl_db_method_info.args
 op_assign
 l_int|NULL
 suffix:semicolon
-id|info.flags
+id|acpi_gbl_db_method_info.flags
 op_assign
 l_int|0
 suffix:semicolon
-id|info.num_loops
+id|acpi_gbl_db_method_info.num_loops
 op_assign
 id|num_loops
 suffix:semicolon
-id|info.thread_gate
+id|acpi_gbl_db_method_info.thread_gate
 op_assign
 id|thread_gate
 suffix:semicolon
 id|acpi_db_execute_setup
 (paren
 op_amp
-id|info
+id|acpi_gbl_db_method_info
 )paren
 suffix:semicolon
 multiline_comment|/* Create the threads */
@@ -709,7 +829,7 @@ comma
 id|acpi_db_method_thread
 comma
 op_amp
-id|info
+id|acpi_gbl_db_method_info
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ecspace.c&n; *   $Revision: 20 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ecspace.c&n; *   $Revision: 22 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;ec.h&quot;
@@ -9,11 +9,11 @@ id|MODULE_NAME
 l_string|&quot;ecspace&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_space_setup&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_space_setup
 id|ec_space_setup
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|region_handle
 comma
 id|u32
@@ -39,8 +39,8 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_space_handler&n; *&n; * PARAMETERS:  function            - Read or Write operation&n; *              address             - Where in the space to read or write&n; *              bit_width           - Field width in bits (8, 16, or 32)&n; *              value               - Pointer to in or out value&n; *              context             - context pointer&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Handler for the Embedded Controller (EC) address space&n; *              (Op Region)&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_space_handler&n; *&n; * PARAMETERS:  function            - Read or Write operation&n; *              address             - Where in the space to read or write&n; *              bit_width           - Field width in bits (should be 8)&n; *              value               - Pointer to in or out value&n; *              context             - context pointer&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Handler for the Embedded Controller (EC) address space&n; *              (Op Region)&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|ec_space_handler
 id|ec_space_handler
 (paren
@@ -66,7 +66,7 @@ op_star
 id|region_context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -79,6 +79,12 @@ l_int|NULL
 suffix:semicolon
 id|EC_REQUEST
 id|ec_request
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_space_handler&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -98,8 +104,11 @@ op_logical_neg
 id|handler_context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|ec
@@ -158,8 +167,22 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Received request with invalid function [%p].&bslash;n&quot;
+comma
+id|function
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -197,12 +220,15 @@ id|u32
 id|ec_request.data
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_install_space_handler&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_install_space_handler
 id|ec_install_space_handler
 (paren
@@ -211,10 +237,16 @@ op_star
 id|ec
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_install_space_handler&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -223,8 +255,11 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -244,12 +279,15 @@ comma
 id|ec
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_remove_space_handler&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_remove_space_handler
 id|ec_remove_space_handler
 (paren
@@ -258,10 +296,16 @@ op_star
 id|ec
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_remove_space_handler&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -270,8 +314,11 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -287,8 +334,11 @@ op_amp
 id|ec_space_handler
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

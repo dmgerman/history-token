@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 52 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 53 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -407,18 +407,19 @@ DECL|macro|OPTYPE_DYADIC2_r
 mdefine_line|#define OPTYPE_DYADIC2_r             11
 DECL|macro|OPTYPE_DYADIC2_s
 mdefine_line|#define OPTYPE_DYADIC2_s             12
-DECL|macro|OPTYPE_INDEX
-mdefine_line|#define OPTYPE_INDEX                13
-DECL|macro|OPTYPE_MATCH
-mdefine_line|#define OPTYPE_MATCH                14
+multiline_comment|/* Multi-operand (&gt;=3) opcodes */
+DECL|macro|OPTYPE_TRIADIC
+mdefine_line|#define OPTYPE_TRIADIC              13
+DECL|macro|OPTYPE_QUADRADIC
+mdefine_line|#define OPTYPE_QUADRADIC            14
+DECL|macro|OPTYPE_HEXADIC
+mdefine_line|#define OPTYPE_HEXADIC              15
 multiline_comment|/* Generic for an op that returns a value */
 DECL|macro|OPTYPE_METHOD_CALL
-mdefine_line|#define OPTYPE_METHOD_CALL          15
+mdefine_line|#define OPTYPE_METHOD_CALL          16
 multiline_comment|/* Misc */
 DECL|macro|OPTYPE_CREATE_FIELD
-mdefine_line|#define OPTYPE_CREATE_FIELD         16
-DECL|macro|OPTYPE_FATAL
-mdefine_line|#define OPTYPE_FATAL                17
+mdefine_line|#define OPTYPE_CREATE_FIELD         17
 DECL|macro|OPTYPE_CONTROL
 mdefine_line|#define OPTYPE_CONTROL              18
 DECL|macro|OPTYPE_RECONFIGURATION

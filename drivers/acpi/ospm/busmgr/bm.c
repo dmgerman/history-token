@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: bm.c&n; *   $Revision: 42 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: bm.c&n; *   $Revision: 47 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,7 +13,7 @@ l_string|&quot;bm&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                                  Globals&n; ****************************************************************************/
 r_extern
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 id|acpi_fadt
 suffix:semicolon
 multiline_comment|/* TBD: Make dynamically sizeable. */
@@ -22,22 +22,22 @@ id|BM_NODE_LIST
 id|node_list
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                            Internal Functions&n; ****************************************************************************/
-multiline_comment|/*****************************************************************************&n; * &n; * FUNCTION:    bm_print_object&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    bm_print_object&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 r_void
 DECL|function|bm_print_object
 id|bm_print_object
 (paren
-id|ACPI_HANDLE
 id|acpi_handle
+id|handle
 )paren
 (brace
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
-id|ACPI_HANDLE
+id|acpi_handle
 id|parent
 suffix:semicolon
-id|ACPI_OBJECT_TYPE
+id|acpi_object_type
 id|type
 suffix:semicolon
 id|buffer.length
@@ -65,7 +65,7 @@ suffix:semicolon
 id|acpi_get_name
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|ACPI_FULL_PATHNAME
 comma
@@ -76,7 +76,7 @@ suffix:semicolon
 id|acpi_get_parent
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 op_amp
 id|parent
@@ -85,7 +85,7 @@ suffix:semicolon
 id|acpi_get_type
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 op_amp
 id|type
@@ -111,7 +111,7 @@ c_func
 (paren
 id|ACPI_TYPE_ANY
 comma
-id|acpi_handle
+id|handle
 comma
 l_int|0
 comma
@@ -326,7 +326,7 @@ c_func
 (paren
 l_string|&quot;Object[%p][%s] parent[%p].&bslash;n&quot;
 comma
-id|acpi_handle
+id|handle
 comma
 (paren
 r_char
@@ -344,7 +344,7 @@ id|buffer.pointer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_print_node&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_print_node&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 r_void
 DECL|function|bm_print_node
 id|bm_print_node
@@ -358,7 +358,7 @@ id|flags
 )paren
 (brace
 macro_line|#ifdef ACPI_DEBUG
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
 id|BM_DEVICE
@@ -372,6 +372,12 @@ op_star
 id|type_string
 op_assign
 l_int|NULL
+suffix:semicolon
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;bm_print_node&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -535,23 +541,21 @@ id|BM_PRINT_GROUP
 )paren
 )paren
 (brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;+-------------------------------------------------------------------------------&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 )brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;| %s[%02x]:[%p] flags[%02x] hid[%s] %s&bslash;n&quot;
 comma
 id|type_string
@@ -586,12 +590,11 @@ op_amp
 id|BM_PRINT_IDENTIFICATION
 )paren
 (brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|   identification: uid[%s] adr[%08x]&bslash;n&quot;
 comma
 id|device-&gt;id.uid
@@ -609,12 +612,11 @@ op_amp
 id|BM_PRINT_LINKAGE
 )paren
 (brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|   linkage: this[%p] parent[%p] next[%p]&bslash;n&quot;
 comma
 id|node
@@ -625,12 +627,11 @@ id|node-&gt;next
 )paren
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|     scope.head[%p] scope.tail[%p]&bslash;n&quot;
 comma
 id|node-&gt;scope.head
@@ -648,12 +649,11 @@ op_amp
 id|BM_PRINT_POWER
 )paren
 (brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|   power: state[D%d] flags[%08x]&bslash;n&quot;
 comma
 id|device-&gt;power.state
@@ -662,12 +662,11 @@ id|device-&gt;power.flags
 )paren
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;|     S0[%02x] S1[%02x] S2[%02x] S3[%02x] S4[%02x] S5[%02x]&bslash;n&quot;
 comma
 id|device-&gt;power.dx_supported
@@ -714,12 +713,11 @@ id|BM_PRINT_GROUP
 )paren
 )paren
 (brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;+-------------------------------------------------------------------------------&bslash;n&quot;
 )paren
 )paren
@@ -735,7 +733,7 @@ macro_line|#endif /*ACPI_DEBUG*/
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_print_hierarchy&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_print_hierarchy&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 r_void
 DECL|function|bm_print_hierarchy
 id|bm_print_hierarchy
@@ -755,12 +753,11 @@ c_func
 l_string|&quot;bm_print_hierarchy&quot;
 )paren
 suffix:semicolon
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
 )paren
 )paren
@@ -794,12 +791,11 @@ id|BM_PRINT_PRESENT
 )paren
 suffix:semicolon
 )brace
-id|DEBUG_PRINT_RAW
-c_func
+id|ACPI_DEBUG_PRINT_RAW
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
 )paren
 )paren
@@ -808,8 +804,8 @@ macro_line|#endif /*ACPI_DEBUG*/
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_status&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_status&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_status
 id|bm_get_status
 (paren
@@ -818,7 +814,7 @@ op_star
 id|device
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -878,8 +874,8 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_identification&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_identification&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_identification
 id|bm_get_identification
 (paren
@@ -888,12 +884,12 @@ op_star
 id|device
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_DEVICE_INFO
+id|acpi_device_info
 id|info
 suffix:semicolon
 r_if
@@ -1043,8 +1039,8 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_flags&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_flags&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_flags
 id|bm_get_flags
 (paren
@@ -1053,7 +1049,7 @@ op_star
 id|device
 )paren
 (brace
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 op_assign
 l_int|NULL
@@ -1279,15 +1275,15 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_add_namespace_device&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_add_namespace_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_add_namespace_device
 id|bm_add_namespace_device
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
-id|ACPI_OBJECT_TYPE
+id|acpi_object_type
 id|acpi_type
 comma
 id|BM_NODE
@@ -1300,7 +1296,7 @@ op_star
 id|child
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1544,7 +1540,7 @@ r_goto
 id|end
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Power Management:&n;&t;&t; * -----------------&n;&t;&t; * If this node doesn&squot;t provide direct power control  &n;&t;&t; * then we inherit PM capabilities from its parent.&n;&t;&t; *&n;&t;&t; * TBD: Inherit!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Power Management:&n;&t;&t; * -----------------&n;&t;&t; * If this node doesn&squot;t provide direct power control&n;&t;&t; * then we inherit PM capabilities from its parent.&n;&t;&t; *&n;&t;&t; * TBD: Inherit!&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1671,25 +1667,25 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_enumerate_namespace&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_enumerate_namespace&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_enumerate_namespace
 id|bm_enumerate_namespace
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_HANDLE
+id|acpi_handle
 id|parent_handle
 op_assign
 id|ACPI_ROOT_OBJECT
 suffix:semicolon
-id|ACPI_HANDLE
+id|acpi_handle
 id|child_handle
 op_assign
 l_int|NULL
@@ -1706,7 +1702,7 @@ id|child
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OBJECT_TYPE
+id|acpi_object_type
 id|acpi_type
 op_assign
 l_int|0
@@ -1764,7 +1760,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * TBD: This is a hack to get around the problem &n;&t;&t;&t; *       identifying scope objects.  Scopes &n;&t;&t;&t; *       somehow need to be uniquely identified.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * TBD: This is a hack to get around the problem&n;&t;&t;&t; *       identifying scope objects.  Scopes&n;&t;&t;&t; *       somehow need to be uniquely identified.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_get_type
@@ -1962,8 +1958,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_add_fixed_feature_device&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_add_fixed_feature_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_add_fixed_feature_device
 id|bm_add_fixed_feature_device
 (paren
@@ -1979,7 +1975,7 @@ op_star
 id|device_hid
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -2175,8 +2171,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_enumerate_fixed_features&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_enumerate_fixed_features&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_enumerate_fixed_features
 id|bm_enumerate_fixed_features
 (paren
@@ -2325,12 +2321,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_handle&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_handle&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_handle
 id|bm_get_handle
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
 id|BM_HANDLE
@@ -2338,7 +2334,7 @@ op_star
 id|device_handle
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_NOT_FOUND
@@ -2399,12 +2395,11 @@ id|i
 )braket
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Invalid (NULL) node entry [%02x] detected.&bslash;n&quot;
 comma
 id|device_handle
@@ -2456,15 +2451,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_node&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_node&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_node
 id|bm_get_node
 (paren
 id|BM_HANDLE
 id|device_handle
 comma
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
 id|BM_NODE
@@ -2473,7 +2468,7 @@ op_star
 id|node
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -2560,12 +2555,11 @@ OG
 id|BM_HANDLES_MAX
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Invalid node handle [%02x] detected.&bslash;n&quot;
 comma
 id|device_handle
@@ -2598,12 +2592,11 @@ id|node
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Invalid (NULL) node entry [%02x] detected.&bslash;n&quot;
 comma
 id|device_handle
@@ -2625,15 +2618,15 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                            External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_initialize&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:      Exception code.&n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_initialize&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:      Exception code.&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_initialize
 id|bm_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -2699,12 +2692,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Building device hierarchy.&bslash;n&quot;
 )paren
 )paren
@@ -2777,12 +2769,11 @@ op_amp
 id|elapsed
 )paren
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Building device hierarchy took [%d] microseconds.&bslash;n&quot;
 comma
 id|elapsed
@@ -2796,12 +2787,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Register for all standard and device-specific notifications.&n;&t; */
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Registering for all device notifications.&bslash;n&quot;
 )paren
 )paren
@@ -2831,12 +2821,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Unable to register for standard notifications.&bslash;n&quot;
 )paren
 )paren
@@ -2873,12 +2862,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Unable to register for device-specific notifications.&bslash;n&quot;
 )paren
 )paren
@@ -2890,12 +2878,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;ACPI Bus Manager enabled.&bslash;n&quot;
 )paren
 )paren
@@ -2913,15 +2900,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_terminate&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:      Exception code.&n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_terminate&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:      Exception code.&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_terminate
 id|bm_terminate
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -2944,12 +2931,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unregister for all notifications.&n;&t; */
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Unregistering for device notifications.&bslash;n&quot;
 )paren
 )paren
@@ -2977,12 +2963,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Unable to un-register for standard notifications.&bslash;n&quot;
 )paren
 )paren
@@ -3011,24 +2996,22 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_ERROR
+(paren
+id|ACPI_DB_ERROR
 comma
-(paren
 l_string|&quot;Unable to un-register for device-specific notifications.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Parse through the device array, freeing all entries.&n;&t; */
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Removing device hierarchy.&bslash;n&quot;
 )paren
 )paren
@@ -3068,12 +3051,11 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;ACPI Bus Manager disabled.&bslash;n&quot;
 )paren
 )paren

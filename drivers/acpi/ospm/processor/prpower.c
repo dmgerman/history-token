@@ -1,8 +1,9 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prpower.c&n; *   $Revision: 25 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prpower.c&n; *   $Revision: 30 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/* TBD: Linux specific */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;bm.h&gt;
 macro_line|#include &quot;pr.h&quot;
@@ -14,7 +15,7 @@ l_string|&quot;prpower&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                                  Globals&n; ****************************************************************************/
 r_extern
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 id|acpi_fadt
 suffix:semicolon
 DECL|variable|last_idle_jiffies
@@ -46,6 +47,21 @@ r_void
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|bm_control
+r_static
+id|u8
+id|bm_control
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Used for PIIX4 errata handling. */
+DECL|variable|acpi_piix4_bmisx
+r_int
+r_int
+id|acpi_piix4_bmisx
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                             External Functions&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_power_activate_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 r_void
@@ -60,6 +76,12 @@ id|u32
 id|next_state
 )paren
 (brace
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;pr_power_activate_state&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -67,6 +89,15 @@ op_logical_neg
 id|processor
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid (NULL) context.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -179,6 +210,12 @@ id|processor
 op_assign
 l_int|NULL
 suffix:semicolon
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;pr_power_idle&quot;
+)paren
+suffix:semicolon
 id|processor
 op_assign
 id|processor_list
@@ -207,42 +244,6 @@ id|next_state
 op_assign
 id|processor-&gt;power.active_state
 suffix:semicolon
-multiline_comment|/*&n;&t; * Log BM Activity:&n;&t; * ----------------&n;&t; * Read BM_STS and record its value for later use by C3 policy.&n;&t; * Note that we save the BM_STS values for the last 32 call to&n;&t; * this function (cycles).  Also note that we must clear BM_STS&n;&t; * if set (sticky).&n;&t; */
-id|processor-&gt;power.bm_activity
-op_lshift_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|acpi_hw_register_bit_access
-c_func
-(paren
-id|ACPI_READ
-comma
-id|ACPI_MTX_DO_NOT_LOCK
-comma
-id|BM_STS
-)paren
-)paren
-(brace
-id|processor-&gt;power.bm_activity
-op_or_assign
-l_int|1
-suffix:semicolon
-id|acpi_hw_register_bit_access
-c_func
-(paren
-id|ACPI_WRITE
-comma
-id|ACPI_MTX_DO_NOT_LOCK
-comma
-id|BM_STS
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Check OS Idleness:&n;&t; * ------------------&n;&t; * If the OS has been busy (hasn&squot;t called the idle handler in a while)&n;&t; * then automatically demote to the default power state (e.g. C1).&n;&t; *&n;&t; * TBD: Optimize by having scheduler determine business instead&n;&t; *      of having us try to calculate it.&n;&t; */
 r_if
 c_cond
@@ -287,6 +288,94 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|disable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Log BM Activity:&n;&t; * ----------------&n;&t; * Read BM_STS and record its value for later use by C3 policy.&n;&t; * (Note that we save the BM_STS values for the last 32 cycles).&n;&t; */
+r_if
+c_cond
+(paren
+id|bm_control
+)paren
+(brace
+id|processor-&gt;power.bm_activity
+op_lshift_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_hw_register_bit_access
+c_func
+(paren
+id|ACPI_READ
+comma
+id|ACPI_MTX_DO_NOT_LOCK
+comma
+id|BM_STS
+)paren
+)paren
+(brace
+id|processor-&gt;power.bm_activity
+op_or_assign
+l_int|1
+suffix:semicolon
+id|acpi_hw_register_bit_access
+c_func
+(paren
+id|ACPI_WRITE
+comma
+id|ACPI_MTX_DO_NOT_LOCK
+comma
+id|BM_STS
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|acpi_piix4_bmisx
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * PIIX4 Errata:&n;&t;&t;&t; * -------------&n;&t;&t;&t; * This code is a workaround for errata #18 &quot;C3 Power State/&n;&t;&t;&t; * BMIDE and Type-F DMA Livelock&quot; from the July &squot;01 PIIX4&n;&t;&t;&t; * specification update.  Note that BM_STS doesn&squot;t always&n;&t;&t;&t; * reflect the true state of bus mastering activity; forcing&n;&t;&t;&t; * us to manually check the BMIDEA bit of each IDE channel.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|inb_p
+c_func
+(paren
+id|acpi_piix4_bmisx
+op_plus
+l_int|0x02
+)paren
+op_amp
+l_int|0x01
+)paren
+op_logical_or
+(paren
+id|inb_p
+c_func
+(paren
+id|acpi_piix4_bmisx
+op_plus
+l_int|0x0A
+)paren
+op_amp
+l_int|0x01
+)paren
+)paren
+id|processor-&gt;power.bm_activity
+op_or_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
 id|c_state
 op_assign
 op_amp
@@ -310,14 +399,6 @@ id|processor-&gt;power.active_state
 r_case
 id|PR_C1
 suffix:colon
-multiline_comment|/* See how long we&squot;re asleep for */
-id|acpi_get_timer
-c_func
-(paren
-op_amp
-id|start_ticks
-)paren
-suffix:semicolon
 multiline_comment|/* Invoke C1 */
 id|enable
 c_func
@@ -329,25 +410,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Compute time elapsed */
-id|acpi_get_timer
-c_func
-(paren
-op_amp
-id|end_ticks
-)paren
+multiline_comment|/* no C1 time measurement, so just enter some number of times */
+id|time_elapsed
+op_assign
+l_int|0xFFFFFFFF
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PR_C2
 suffix:colon
-multiline_comment|/* Interrupts must be disabled during C2 transitions */
-id|disable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* See how long we&squot;re asleep for */
 id|acpi_get_timer
 c_func
@@ -357,10 +429,14 @@ id|start_ticks
 )paren
 suffix:semicolon
 multiline_comment|/* Invoke C2 */
-id|acpi_os_in8
+id|acpi_os_read_port
 c_func
 (paren
 id|processor-&gt;power.p_lvl2
+comma
+l_int|NULL
+comma
+l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy op - must do something useless after P_LVL2 read */
@@ -388,17 +464,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|acpi_get_timer_duration
+c_func
+(paren
+id|start_ticks
+comma
+id|end_ticks
+comma
+op_amp
+id|time_elapsed
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|PR_C3
 suffix:colon
-multiline_comment|/* Interrupts must be disabled during C3 transitions */
-id|disable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Disable bus master arbitration */
 id|acpi_hw_register_bit_access
 c_func
@@ -420,11 +501,15 @@ op_amp
 id|start_ticks
 )paren
 suffix:semicolon
-multiline_comment|/* Invoke C2 */
-id|acpi_os_in8
+multiline_comment|/* Invoke C3 */
+id|acpi_os_read_port
 c_func
 (paren
 id|processor-&gt;power.p_lvl3
+comma
+l_int|NULL
+comma
+l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy op - must do something useless after P_LVL3 read */
@@ -465,14 +550,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Compute the amount of time asleep (in the Cx state).&n;&t; *&n;&t; * TBD: Convert time_threshold to PM timer ticks initially to&n;&t; *      avoid having to do the math (acpi_get_timer_duration).&n;&t; */
 id|acpi_get_timer_duration
 c_func
 (paren
@@ -484,7 +561,30 @@ op_amp
 id|time_elapsed
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of successful sleeps (time asleep is greater&n;&t; * than time_threshold) and promote when count_threashold is&n;&t; * reached.&n;&t; */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Attempt to use unsupported power state C%d.&bslash;n&quot;
+comma
+id|processor-&gt;power.active_state
+)paren
+)paren
+suffix:semicolon
+id|enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of successful sleeps (time asleep is greater&n;&t; * than time_threshold) and promote when count_threshold is&n;&t; * reached.&n;&t; */
 r_if
 c_cond
 (paren
@@ -518,6 +618,8 @@ multiline_comment|/*&n;&t;&t;&t; * Bus Mastering Activity, if active and used&n;
 r_if
 c_cond
 (paren
+id|bm_control
+op_logical_and
 op_logical_neg
 (paren
 id|processor-&gt;power.bm_activity
@@ -573,9 +675,13 @@ multiline_comment|/*&n;&t;&t; * Bus Mastering Activity, if active and used by th
 r_if
 c_cond
 (paren
+id|bm_control
+op_logical_and
+(paren
 id|processor-&gt;power.bm_activity
 op_amp
 id|c_state-&gt;demotion.bm_threshold
+)paren
 )paren
 (brace
 id|next_state
@@ -615,7 +721,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    pr_power_set_default_policy&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION: Sets the default Cx state policy (OS idle handler).  Our&n; *              scheme is to promote quickly to C2 but more conservatively&n; *              to C3.  We&squot;re favoring C2 for its characteristics of low&n; *              latency (quick response), good power savings, and ability&n; *              to allow bus mastering activity.&n; *&n; *              Note that Cx state policy is completely customizable, with&n; *              the goal of having heuristics to alter policy dynamically.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_power_set_default_policy
 id|pr_power_set_default_policy
 (paren
@@ -624,6 +730,12 @@ op_star
 id|processor
 )paren
 (brace
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_power_set_default_policy&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -631,8 +743,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Busy Metric:&n;&t; * ------------&n;&t; * Used to determine when the OS has been busy and thus when&n;&t; * policy should return to using the default Cx state (e.g. C1).&n;&t; * On Linux we use the number of jiffies (scheduler quantums)&n;&t; * that transpire between calls to the idle handler.&n;&t; *&n;&t; * TBD: Linux-specific.&n;&t; */
@@ -667,8 +782,11 @@ id|processor-&gt;power.default_state
 op_assign
 id|PR_C0
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * C2:&n;&t; * ---&n;&t; * Set default C1 promotion and C2 demotion policies.&n;&t; */
@@ -691,7 +809,7 @@ id|PR_C1
 dot
 id|promotion.count_threshold
 op_assign
-l_int|1
+l_int|10
 suffix:semicolon
 id|processor-&gt;power.state
 (braket
@@ -864,13 +982,16 @@ op_assign
 id|PR_C2
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    pr_power_add_device&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * TBD: 1. PROC_C1 support.&n; *      2. Symmetric Cx state support (different Cx states supported&n; *         by different CPUs results in lowest common denominator).&n; */
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_power_add_device
 id|pr_power_add_device
 (paren
@@ -879,6 +1000,12 @@ op_star
 id|processor
 )paren
 (brace
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_power_add_device&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -886,8 +1013,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * State Count:&n;&t; * ------------&n;&t; * Fixed at four (C0-C3).  We use is_valid to determine whether or&n;&t; * not a state actually gets used.&n;&t; */
@@ -991,14 +1121,9 @@ op_le
 id|PR_MAX_C3_LATENCY
 )paren
 op_logical_and
-(paren
-id|acpi_fadt.V1_pm2_cnt_blk
-op_logical_and
-id|acpi_fadt.pm2_cnt_len
-)paren
+id|bm_control
 )paren
 (brace
-multiline_comment|/* TBD: Resolve issue with C3 and HDD corruption. */
 id|processor-&gt;power.state
 (braket
 id|PR_C3
@@ -1006,9 +1131,8 @@ id|PR_C3
 dot
 id|is_valid
 op_assign
-id|FALSE
+id|TRUE
 suffix:semicolon
-multiline_comment|/* processor-&gt;power.state[PR_C3].is_valid = TRUE;*/
 id|processor-&gt;power.p_lvl3
 op_assign
 id|processor-&gt;pblk.address
@@ -1034,12 +1158,15 @@ id|processor-&gt;uid
 op_assign
 id|processor
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_power_remove_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_power_remove_device
 id|pr_power_remove_device
 (paren
@@ -1048,10 +1175,16 @@ op_star
 id|processor
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_power_remove_device&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1060,8 +1193,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|MEMSET
@@ -1087,12 +1223,15 @@ id|processor-&gt;uid
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_power_initialize&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_power_initialize
 id|pr_power_initialize
 (paren
@@ -1103,6 +1242,12 @@ id|u32
 id|i
 op_assign
 l_int|0
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_power_initialize&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* TBD: Linux-specific. */
 r_for
@@ -1128,6 +1273,34 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Max CPUs[%d], this CPU[%d].&bslash;n&quot;
+comma
+id|NR_CPUS
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* only use C3 if we can control busmastering */
+r_if
+c_cond
+(paren
+id|acpi_fadt.V1_pm2_cnt_blk
+op_logical_and
+id|acpi_fadt.pm2_cnt_len
+)paren
+id|bm_control
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * Install idle handler.&n;&t; *&n;&t; * TBD: Linux-specific (need OSL function).&n;&t; */
 id|pr_pm_idle_save
 op_assign
@@ -1137,25 +1310,37 @@ id|pm_idle
 op_assign
 id|pr_power_idle
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_power_terminate&n; *&n; * PARAMETERS:  &lt;none&gt;&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_power_terminate
 id|pr_power_terminate
 (paren
 r_void
 )paren
 (brace
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_power_terminate&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Remove idle handler.&n;&t; *&n;&t; * TBD: Linux-specific (need OSL function).&n;&t; */
 id|pm_idle
 op_assign
 id|pr_pm_idle_save
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 eof

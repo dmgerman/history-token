@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *              $Revision: 12 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *              $Revision: 21 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,7 +10,7 @@ id|MODULE_NAME
 l_string|&quot;hwsleep&quot;
 )paren
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_set_firmware_waking_vector&n; *&n; * PARAMETERS:  Physical_address    - Physical address of ACPI real mode&n; *                                    entry point.&n; *&n; * RETURN:      AE_OK or AE_ERROR&n; *&n; * DESCRIPTION: Access function for d_firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_set_firmware_waking_vector
 id|acpi_set_firmware_waking_vector
 (paren
@@ -18,6 +18,11 @@ id|ACPI_PHYSICAL_ADDRESS
 id|physical_address
 )paren
 (brace
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_set_firmware_waking_vector&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Make sure that we have an FACS */
 r_if
 c_cond
@@ -26,7 +31,7 @@ op_logical_neg
 id|acpi_gbl_FACS
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
@@ -62,14 +67,14 @@ op_assign
 id|physical_address
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_firmware_waking_vector&n; *&n; * PARAMETERS:  *Physical_address   - Output buffer where contents of&n; *                                    the Firmware_waking_vector field of&n; *                                    the FACS will be stored.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Access function for d_firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_firmware_waking_vector
 id|acpi_get_firmware_waking_vector
 (paren
@@ -78,6 +83,11 @@ op_star
 id|physical_address
 )paren
 (brace
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_firmware_waking_vector&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -85,7 +95,7 @@ op_logical_neg
 id|physical_address
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -99,7 +109,7 @@ op_logical_neg
 id|acpi_gbl_FACS
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
@@ -134,14 +144,14 @@ op_star
 id|acpi_gbl_FACS-&gt;firmware_waking_vector
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_enter_sleep_state&n; *&n; * PARAMETERS:  Sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enter a system sleep state (see ACPI 2.0 spec p 231)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_enter_sleep_state
 id|acpi_enter_sleep_state
 (paren
@@ -149,13 +159,13 @@ id|u8
 id|sleep_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_OBJECT_LIST
+id|acpi_object_list
 id|arg_list
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 id|arg
 suffix:semicolon
 id|u8
@@ -169,6 +179,11 @@ id|PM1_acontrol
 suffix:semicolon
 id|u16
 id|PM1_bcontrol
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_enter_sleep_state&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * _PSW methods could be run here to enable wake-on keyboard, LAN, etc.&n;&t; */
 id|status
@@ -245,7 +260,6 @@ op_assign
 id|sleep_state
 suffix:semicolon
 id|acpi_evaluate_object
-c_func
 (paren
 l_int|NULL
 comma
@@ -258,7 +272,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|acpi_evaluate_object
-c_func
 (paren
 l_int|NULL
 comma
@@ -272,7 +285,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* clear wake status */
 id|acpi_hw_register_bit_access
-c_func
 (paren
 id|ACPI_WRITE
 comma
@@ -284,27 +296,42 @@ l_int|1
 )paren
 suffix:semicolon
 id|disable
-c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* TODO: disable all non-wake GPEs here */
 id|PM1_acontrol
 op_assign
 (paren
 id|u16
 )paren
 id|acpi_hw_register_read
-c_func
 (paren
 id|ACPI_MTX_LOCK
 comma
 id|PM1_CONTROL
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_OK
+comma
+l_string|&quot;Entering S%d&bslash;n&quot;
+comma
+id|sleep_state
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* mask off SLP_EN and SLP_TYP fields */
 id|PM1_acontrol
 op_and_assign
-l_int|0xC3FF
+op_complement
+(paren
+id|SLP_TYPE_X_MASK
+op_or
+id|SLP_EN_MASK
+)paren
 suffix:semicolon
 id|PM1_bcontrol
 op_assign
@@ -333,9 +360,8 @@ id|SLP_TYPE_X_MASK
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* write #1: fill in SLP_TYPE data */
+multiline_comment|/* write #1: fill in SLP_TYP data */
 id|acpi_hw_register_write
-c_func
 (paren
 id|ACPI_MTX_LOCK
 comma
@@ -345,7 +371,6 @@ id|PM1_acontrol
 )paren
 suffix:semicolon
 id|acpi_hw_register_write
-c_func
 (paren
 id|ACPI_MTX_LOCK
 comma
@@ -377,9 +402,14 @@ id|SLP_EN_MASK
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* write #2: the whole tamale */
-id|acpi_hw_register_write
+multiline_comment|/* flush caches */
+id|wbinvd
 c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* write #2: SLP_TYP + SLP_EN */
+id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_LOCK
 comma
@@ -389,7 +419,6 @@ id|PM1_acontrol
 )paren
 suffix:semicolon
 id|acpi_hw_register_write
-c_func
 (paren
 id|ACPI_MTX_LOCK
 comma
@@ -398,12 +427,162 @@ comma
 id|PM1_bcontrol
 )paren
 suffix:semicolon
-id|enable
+multiline_comment|/*&n;&t; * Wait a second, then try again. This is to get S4/5 to work on all machines.&n;&t; */
+r_if
+c_cond
+(paren
+id|sleep_state
+OG
+id|ACPI_STATE_S3
+)paren
+(brace
+id|acpi_os_stall
 c_func
+(paren
+l_int|1000000
+)paren
+suffix:semicolon
+id|acpi_hw_register_write
+(paren
+id|ACPI_MTX_LOCK
+comma
+id|PM1_CONTROL
+comma
+(paren
+l_int|1
+op_lshift
+id|acpi_hw_get_bit_shift
+(paren
+id|SLP_EN_MASK
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* wait until we enter sleep state */
+r_do
+(brace
+id|acpi_os_stall
+c_func
+(paren
+l_int|10000
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_logical_neg
+id|acpi_hw_register_bit_access
+(paren
+id|ACPI_READ
+comma
+id|ACPI_MTX_LOCK
+comma
+id|WAK_STS
+)paren
+)paren
+suffix:semicolon
+id|enable
 (paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_leave_sleep_state&n; *&n; * PARAMETERS:  Sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_leave_sleep_state
+id|acpi_leave_sleep_state
+(paren
+id|u8
+id|sleep_state
+)paren
+(brace
+id|acpi_object_list
+id|arg_list
+suffix:semicolon
+id|acpi_object
+id|arg
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_leave_sleep_state&quot;
+)paren
+suffix:semicolon
+id|MEMSET
+(paren
+op_amp
+id|arg_list
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|arg_list
+)paren
+)paren
+suffix:semicolon
+id|arg_list.count
+op_assign
+l_int|1
+suffix:semicolon
+id|arg_list.pointer
+op_assign
+op_amp
+id|arg
+suffix:semicolon
+id|MEMSET
+(paren
+op_amp
+id|arg
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|arg
+)paren
+)paren
+suffix:semicolon
+id|arg.type
+op_assign
+id|ACPI_TYPE_INTEGER
+suffix:semicolon
+id|arg.integer.value
+op_assign
+id|sleep_state
+suffix:semicolon
+id|acpi_evaluate_object
+(paren
+l_int|NULL
+comma
+l_string|&quot;&bslash;&bslash;_BFS&quot;
+comma
+op_amp
+id|arg_list
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|acpi_evaluate_object
+(paren
+l_int|NULL
+comma
+l_string|&quot;&bslash;&bslash;_WAK&quot;
+comma
+op_amp
+id|arg_list
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* _WAK returns stuff - do we want to look at it? */
+multiline_comment|/* Re-enable GPEs */
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

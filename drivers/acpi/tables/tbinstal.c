@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 42 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -10,21 +10,26 @@ id|MODULE_NAME
 l_string|&quot;tbinstal&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_install_table&n; *&n; * PARAMETERS:  Table_ptr           - Input buffer pointer, optional&n; *              Table_info          - Return value from Acpi_tb_get_table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate all tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *              Install the table into the global data structs.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_install_table
 id|acpi_tb_install_table
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 comma
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_install_table&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check the table signature and make sure it is recognized&n;&t; * Also checks the header checksum&n;&t; */
 id|status
@@ -45,7 +50,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -67,39 +72,57 @@ comma
 id|table_info
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;%s located at %p&bslash;n&quot;
+comma
+id|acpi_gbl_acpi_table_data
+(braket
+id|table_info-&gt;type
+)braket
+dot
+id|name
+comma
+id|table_info-&gt;pointer
+)paren
+)paren
+suffix:semicolon
 id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_recognize_table&n; *&n; * PARAMETERS:  Table_ptr           - Input buffer pointer, optional&n; *              Table_info          - Return value from Acpi_tb_get_table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check a table signature for a match against known table types&n; *&n; * NOTE:  All table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *             which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_recognize_table
 id|acpi_tb_recognize_table
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_ptr
 comma
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_header
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_TABLE_TYPE
+id|acpi_table_type
 id|table_type
 op_assign
 l_int|0
@@ -107,11 +130,16 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_recognize_table&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Ensure that we have a valid table pointer */
 id|table_header
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 id|table_info-&gt;pointer
@@ -123,7 +151,7 @@ op_logical_neg
 id|table_header
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -187,6 +215,22 @@ id|i
 dot
 id|status
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Found %4.4s&bslash;n&quot;
+comma
+id|acpi_gbl_acpi_table_data
+(braket
+id|i
+)braket
+dot
+id|signature
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -221,32 +265,66 @@ id|table_header
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * An AE_SUPPORT means that the table was not recognized.&n;&t; * We basically ignore this;  just print a debug message&n;&t; */
-r_return
+r_if
+c_cond
+(paren
+id|status
+op_eq
+id|AE_SUPPORT
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Unsupported table %s (Type %X) was found and discarded&bslash;n&quot;
+comma
+id|acpi_gbl_acpi_table_data
+(braket
+id|table_type
+)braket
+dot
+id|name
+comma
+id|table_type
+)paren
+)paren
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_init_table_descriptor&n; *&n; * PARAMETERS:  Table_type          - The type of the table&n; *              Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Install a table into the global data structs.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_init_table_descriptor
 id|acpi_tb_init_table_descriptor
 (paren
-id|ACPI_TABLE_TYPE
+id|acpi_table_type
 id|table_type
 comma
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|list_head
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
+suffix:semicolon
+id|FUNCTION_TRACE_U32
+(paren
+l_string|&quot;Tb_init_table_descriptor&quot;
+comma
+id|table_type
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Install the table into the global data structure&n;&t; */
 id|list_head
@@ -283,7 +361,7 @@ c_cond
 id|list_head-&gt;pointer
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_EXIST
 )paren
@@ -305,11 +383,11 @@ id|list_head-&gt;pointer
 (brace
 id|table_desc
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 )paren
 )paren
 suffix:semicolon
@@ -320,7 +398,7 @@ op_logical_neg
 id|table_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -399,7 +477,7 @@ id|u32
 )paren
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
@@ -448,7 +526,7 @@ id|table_info-&gt;installed_desc
 op_assign
 id|table_desc
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -462,7 +540,7 @@ id|acpi_tb_delete_acpi_tables
 r_void
 )paren
 (brace
-id|ACPI_TABLE_TYPE
+id|acpi_table_type
 id|type
 suffix:semicolon
 multiline_comment|/*&n;&t; * Free memory allocated for ACPI tables&n;&t; * Memory can either be mapped or allocated&n;&t; */
@@ -493,10 +571,17 @@ r_void
 DECL|function|acpi_tb_delete_acpi_table
 id|acpi_tb_delete_acpi_table
 (paren
-id|ACPI_TABLE_TYPE
+id|acpi_table_type
 id|type
 )paren
 (brace
+id|FUNCTION_TRACE_U32
+(paren
+l_string|&quot;Tb_delete_acpi_table&quot;
+comma
+id|type
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -505,7 +590,7 @@ OG
 id|ACPI_TABLE_MAX
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 id|acpi_ut_acquire_mutex
@@ -591,7 +676,7 @@ id|acpi_ut_release_mutex
 id|ACPI_MTX_TABLES
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_free_acpi_tables_of_type&n; *&n; * PARAMETERS:  Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
@@ -599,12 +684,12 @@ r_void
 DECL|function|acpi_tb_free_acpi_tables_of_type
 id|acpi_tb_free_acpi_tables_of_type
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|list_head
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
@@ -613,6 +698,13 @@ id|count
 suffix:semicolon
 id|u32
 id|i
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Tb_free_acpi_tables_of_type&quot;
+comma
+id|list_head
+)paren
 suffix:semicolon
 multiline_comment|/* Get the head of the list */
 id|table_desc
@@ -647,7 +739,7 @@ id|table_desc
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_delete_single_table&n; *&n; * PARAMETERS:  Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Low-level free for a single ACPI table.  Handles cases where&n; *              the table was allocated a buffer or was mapped.&n; *&n; ******************************************************************************/
@@ -655,7 +747,7 @@ r_void
 DECL|function|acpi_tb_delete_single_table
 id|acpi_tb_delete_single_table
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 )paren
@@ -691,7 +783,7 @@ suffix:semicolon
 r_case
 id|ACPI_MEM_ALLOCATED
 suffix:colon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|table_desc-&gt;base_pointer
 )paren
@@ -714,19 +806,26 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_uninstall_table&n; *&n; * PARAMETERS:  Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table that&n; *              is either installed or has never been installed.&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 DECL|function|acpi_tb_uninstall_table
 id|acpi_tb_uninstall_table
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 )paren
 (brace
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|next_desc
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Tb_delete_single_table&quot;
+comma
+id|table_desc
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -735,7 +834,7 @@ op_logical_neg
 id|table_desc
 )paren
 (brace
-r_return
+id|return_PTR
 (paren
 l_int|NULL
 )paren
@@ -808,13 +907,13 @@ id|next_desc
 op_assign
 id|table_desc-&gt;next
 suffix:semicolon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|table_desc
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_PTR
 (paren
 id|next_desc
 )paren

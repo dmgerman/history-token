@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ec.h&n; *   $Revision: 15 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ec.h&n; *   $Revision: 19 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __EC_H__
 DECL|macro|__EC_H__
@@ -34,7 +34,7 @@ mdefine_line|#define EC_COMMAND_QUERY&t;((EC_COMMAND) 0x84)
 multiline_comment|/*&n; * EC_STATUS:&n; * ----------&n; * The encoding of the EC status register is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the output buffer is full).&n; * +-+-+-+-+-+-+-+-+&n; * |7|6|5|4|3|2|1|0|&n; * +-+-+-+-+-+-+-+-+&n; *  | | | | | | | |&n; *  | | | | | | | +- Output Buffer Full (OBF)?&n; *  | | | | | | +--- Input Buffer Full (IBF)?&n; *  | | | | | +----- &lt;reserved&gt;&n; *  | | | | +------- data Register is command Byte?&n; *  | | | +--------- Burst Mode Enabled?&n; *  | | +----------- SCI event?&n; *  | +------------- SMI event?&n; *  +--------------- &lt;Reserved&gt;&n; *&n; */
 DECL|typedef|EC_STATUS
 r_typedef
-id|u8
+id|u32
 id|EC_STATUS
 suffix:semicolon
 DECL|macro|EC_FLAG_OUTPUT_BUFFER
@@ -48,7 +48,7 @@ mdefine_line|#define EC_FLAG_SCI&t;&t;((EC_STATUS) 0x20)
 multiline_comment|/*&n; * EC_EVENT:&n; * ---------&n; */
 DECL|typedef|EC_EVENT
 r_typedef
-id|u8
+id|u32
 id|EC_EVENT
 suffix:semicolon
 DECL|macro|EC_EVENT_UNKNOWN
@@ -93,7 +93,7 @@ id|BM_HANDLE
 id|device_handle
 suffix:semicolon
 DECL|member|acpi_handle
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 suffix:semicolon
 DECL|member|gpe_bit
@@ -121,7 +121,7 @@ id|u8
 id|query_data
 suffix:semicolon
 DECL|member|mutex
-id|ACPI_HANDLE
+id|acpi_handle
 id|mutex
 suffix:semicolon
 DECL|typedef|EC_CONTEXT
@@ -130,21 +130,21 @@ id|EC_CONTEXT
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                             Function Prototypes&n; *****************************************************************************/
 multiline_comment|/* ec.c */
-id|ACPI_STATUS
+id|acpi_status
 id|ec_initialize
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_terminate
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_notify
 (paren
 id|u32
@@ -159,7 +159,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_request
 c_func
 (paren
@@ -173,7 +173,7 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/* ectransx.c */
-id|ACPI_STATUS
+id|acpi_status
 id|ec_transaction
 (paren
 id|EC_CONTEXT
@@ -185,7 +185,7 @@ op_star
 id|ec_request
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_io_read
 (paren
 id|EC_CONTEXT
@@ -203,7 +203,7 @@ id|EC_EVENT
 id|wait_event
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_io_write
 (paren
 id|EC_CONTEXT
@@ -221,7 +221,7 @@ id|wait_event
 )paren
 suffix:semicolon
 multiline_comment|/* ecgpe.c */
-id|ACPI_STATUS
+id|acpi_status
 id|ec_install_gpe_handler
 (paren
 id|EC_CONTEXT
@@ -229,7 +229,7 @@ op_star
 id|ec
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_remove_gpe_handler
 (paren
 id|EC_CONTEXT
@@ -238,7 +238,7 @@ id|ec
 )paren
 suffix:semicolon
 multiline_comment|/* ecspace.c */
-id|ACPI_STATUS
+id|acpi_status
 id|ec_install_space_handler
 (paren
 id|EC_CONTEXT
@@ -246,7 +246,7 @@ op_star
 id|ec
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ec_remove_space_handler
 (paren
 id|EC_CONTEXT

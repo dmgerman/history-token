@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -14,15 +14,15 @@ id|MODULE_NAME
 l_string|&quot;exstorob&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_copy_buffer_to_buffer&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_copy_buffer_to_buffer
 id|acpi_ex_copy_buffer_to_buffer
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|source_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|target_desc
 )paren
@@ -33,6 +33,11 @@ suffix:semicolon
 id|u8
 op_star
 id|buffer
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ex_copy_buffer_to_buffer&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We know that Source_desc is a buffer by now&n;&t; */
 id|buffer
@@ -58,7 +63,7 @@ l_int|0
 (brace
 id|target_desc-&gt;buffer.pointer
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|length
 )paren
@@ -92,7 +97,6 @@ id|target_desc-&gt;buffer.length
 (brace
 multiline_comment|/* Clear existing buffer and copy in the new one */
 id|MEMSET
-c_func
 (paren
 id|target_desc-&gt;buffer.pointer
 comma
@@ -102,7 +106,6 @@ id|target_desc-&gt;buffer.length
 )paren
 suffix:semicolon
 id|MEMCPY
-c_func
 (paren
 id|target_desc-&gt;buffer.pointer
 comma
@@ -116,13 +119,25 @@ r_else
 (brace
 multiline_comment|/*&n;&t;&t; * Truncate the source, copy only what will fit&n;&t;&t; */
 id|MEMCPY
-c_func
 (paren
 id|target_desc-&gt;buffer.pointer
 comma
 id|buffer
 comma
 id|target_desc-&gt;buffer.length
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Truncating src buffer from %X to %X&bslash;n&quot;
+comma
+id|length
+comma
+id|target_desc-&gt;buffer.length
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -133,15 +148,15 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_copy_string_to_string&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_copy_string_to_string
 id|acpi_ex_copy_string_to_string
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|source_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|target_desc
 )paren
@@ -152,6 +167,10 @@ suffix:semicolon
 id|u8
 op_star
 id|buffer
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We know that Source_desc is a string by now.&n;&t; */
 id|buffer
@@ -177,7 +196,6 @@ id|target_desc-&gt;string.length
 (brace
 multiline_comment|/* Clear old string and copy in the new one */
 id|MEMSET
-c_func
 (paren
 id|target_desc-&gt;string.pointer
 comma
@@ -187,7 +205,6 @@ id|target_desc-&gt;string.length
 )paren
 suffix:semicolon
 id|MEMCPY
-c_func
 (paren
 id|target_desc-&gt;string.pointer
 comma
@@ -205,16 +222,18 @@ c_cond
 (paren
 id|target_desc-&gt;string.pointer
 op_logical_and
-op_logical_neg
-id|acpi_tb_system_table_pointer
 (paren
-id|target_desc-&gt;string.pointer
+op_logical_neg
+(paren
+id|target_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_POINTER
+)paren
 )paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Only free if not a pointer into the DSDT&n;&t;&t;&t; */
-id|acpi_ut_free
-c_func
+id|ACPI_MEM_FREE
 (paren
 id|target_desc-&gt;string.pointer
 )paren
@@ -222,7 +241,7 @@ suffix:semicolon
 )brace
 id|target_desc-&gt;string.pointer
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|length
 op_plus
@@ -247,7 +266,6 @@ op_assign
 id|length
 suffix:semicolon
 id|MEMCPY
-c_func
 (paren
 id|target_desc-&gt;string.pointer
 comma

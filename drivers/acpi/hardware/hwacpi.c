@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -9,20 +9,25 @@ id|MODULE_NAME
 l_string|&quot;hwacpi&quot;
 )paren
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize and validate various ACPI registers&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_hw_initialize
 id|acpi_hw_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
 id|u32
 id|index
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Hw_initialize&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* We must have the ACPI tables by the time we get here */
 r_if
@@ -36,14 +41,22 @@ id|acpi_gbl_restore_acpi_chipset
 op_assign
 id|FALSE
 suffix:semicolon
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;No FADT!&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_ACPI_TABLES
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Must support *some* mode! */
-multiline_comment|/*&n;&t;if (!(System_flags &amp; SYS_MODES_MASK))&n;&t;{&n;&t;&t;Restore_acpi_chipset = FALSE;&n;&n;&t;&t;return (AE_ERROR);&n;&t;}&n;&n;*/
+multiline_comment|/* Identify current ACPI/legacy mode   */
 r_switch
 c_cond
 (paren
@@ -52,7 +65,6 @@ op_amp
 id|SYS_MODES_MASK
 )paren
 (brace
-multiline_comment|/* Identify current ACPI/legacy mode   */
 r_case
 (paren
 id|SYS_MODE_ACPI
@@ -61,6 +73,15 @@ suffix:colon
 id|acpi_gbl_original_mode
 op_assign
 id|SYS_MODE_ACPI
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;System supports ACPI mode only.&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -72,6 +93,15 @@ suffix:colon
 id|acpi_gbl_original_mode
 op_assign
 id|SYS_MODE_LEGACY
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Tables loaded from buffer, hardware assumed to support LEGACY mode only.&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -104,6 +134,35 @@ op_assign
 id|SYS_MODE_LEGACY
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;System supports both ACPI and LEGACY modes.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;System is currently in %s mode.&bslash;n&quot;
+comma
+(paren
+id|acpi_gbl_original_mode
+op_eq
+id|SYS_MODE_ACPI
+)paren
+ques
+c_cond
+l_string|&quot;ACPI&quot;
+suffix:colon
+l_string|&quot;LEGACY&quot;
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -144,7 +203,7 @@ id|acpi_gbl_FADT-&gt;gpe0blk_len
 multiline_comment|/* GPE0 specified in FADT  */
 id|acpi_gbl_gpe0enable_register_save
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|DIV_2
 (paren
@@ -159,7 +218,7 @@ op_logical_neg
 id|acpi_gbl_gpe0enable_register_save
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -224,7 +283,7 @@ id|acpi_gbl_FADT-&gt;gpe1_blk_len
 multiline_comment|/* GPE1 defined */
 id|acpi_gbl_gpe1_enable_register_save
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|DIV_2
 (paren
@@ -239,7 +298,7 @@ op_logical_neg
 id|acpi_gbl_gpe1_enable_register_save
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -291,14 +350,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_set_mode&n; *&n; * PARAMETERS:  Mode            - SYS_MODE_ACPI or SYS_MODE_LEGACY&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transitions the system into the requested mode or does nothing&n; *              if the system is already in that mode.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_hw_set_mode
 id|acpi_hw_set_mode
 (paren
@@ -306,10 +365,15 @@ id|u32
 id|mode
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_NO_HARDWARE_RESPONSE
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Hw_set_mode&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -320,11 +384,22 @@ id|SYS_MODE_ACPI
 )paren
 (brace
 multiline_comment|/* BIOS should have disabled ALL fixed and GP events */
-id|acpi_os_out8
+id|acpi_os_write_port
 (paren
 id|acpi_gbl_FADT-&gt;smi_cmd
 comma
 id|acpi_gbl_FADT-&gt;acpi_enable
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Attempting to enable ACPI mode&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -338,14 +413,31 @@ id|SYS_MODE_LEGACY
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * BIOS should clear all fixed status bits and restore fixed event&n;&t;&t; * enable bits to default&n;&t;&t; */
-id|acpi_os_out8
+id|acpi_os_write_port
 (paren
 id|acpi_gbl_FADT-&gt;smi_cmd
 comma
 id|acpi_gbl_FADT-&gt;acpi_disable
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Attempting to enable Legacy (non-ACPI) mode&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Give the platform some time to react */
+id|acpi_os_stall
+(paren
+l_int|5000
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -356,12 +448,23 @@ op_eq
 id|mode
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Mode %X successfully enabled&bslash;n&quot;
+comma
+id|mode
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -375,6 +478,11 @@ id|acpi_hw_get_mode
 r_void
 )paren
 (brace
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Hw_get_mode&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -388,7 +496,7 @@ id|SCI_EN
 )paren
 )paren
 (brace
-r_return
+id|return_VALUE
 (paren
 id|SYS_MODE_ACPI
 )paren
@@ -396,7 +504,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_return
+id|return_VALUE
 (paren
 id|SYS_MODE_LEGACY
 )paren
@@ -411,6 +519,11 @@ id|acpi_hw_get_mode_capabilities
 r_void
 )paren
 (brace
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Hw_get_mode_capabilities&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -486,7 +599,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_return
+id|return_VALUE
 (paren
 id|acpi_gbl_system_flags
 op_amp

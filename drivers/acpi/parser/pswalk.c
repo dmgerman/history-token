@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -13,36 +13,43 @@ id|MODULE_NAME
 l_string|&quot;pswalk&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_walk_op&n; *&n; * PARAMETERS:  Walk_state          - Current state of the walk&n; *              Op                  - Current Op to be walked&n; *              Ascending_callback  - Procedure called when Op is complete&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the next Op in a walk of the parse tree.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_get_next_walk_op
 id|acpi_ps_get_next_walk_op
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_PARSE_UPWARDS
+id|acpi_parse_upwards
 id|ascending_callback
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|next
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|parent
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|grand_parent
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_get_next_walk_op&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 multiline_comment|/* Check for a argument only if we are descending in the tree */
 r_if
@@ -82,7 +89,7 @@ id|walk_state-&gt;next_op_info
 op_assign
 id|NEXT_OP_DOWNWARD
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -124,7 +131,7 @@ id|walk_state-&gt;next_op
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -151,7 +158,7 @@ op_assign
 id|NEXT_OP_DOWNWARD
 suffix:semicolon
 multiline_comment|/* Continue downward */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -210,7 +217,7 @@ id|walk_state-&gt;next_op
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -236,7 +243,7 @@ id|walk_state-&gt;next_op_info
 op_assign
 id|NEXT_OP_DOWNWARD
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -262,7 +269,7 @@ id|walk_state-&gt;next_op
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -270,15 +277,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_delete_completed_op&n; *&n; * PARAMETERS:  State           - Walk state&n; *              Op              - Completed op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Callback function for Acpi_ps_get_next_walk_op(). Used during&n; *              Acpi_ps_delete_parse tree to delete Op objects when all sub-objects&n; *              have been visited (and deleted.)&n; *&n; ******************************************************************************/
 r_static
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_delete_completed_op
 id|acpi_ps_delete_completed_op
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
@@ -299,17 +306,24 @@ r_void
 DECL|function|acpi_ps_delete_parse_tree
 id|acpi_ps_delete_parse_tree
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|subtree_root
 )paren
 (brace
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_WALK_LIST
+id|acpi_walk_list
 id|walk_list
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_delete_parse_tree&quot;
+comma
+id|subtree_root
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -318,7 +332,7 @@ op_logical_neg
 id|subtree_root
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* Create and initialize a new walk list */
@@ -355,7 +369,7 @@ op_logical_neg
 id|walk_state
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 id|walk_state-&gt;parser_state
@@ -408,7 +422,7 @@ multiline_comment|/* We are done with this walk */
 id|acpi_ex_release_all_mutexes
 (paren
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 op_amp
@@ -420,7 +434,7 @@ id|acpi_ds_delete_walk_state
 id|walk_state
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 71 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *              $Revision: 76 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -16,7 +16,7 @@ r_void
 DECL|function|acpi_ut_delete_internal_obj
 id|acpi_ut_delete_internal_obj
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|object
 )paren
@@ -27,9 +27,16 @@ id|obj_pointer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|handler_desc
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ut_delete_internal_obj&quot;
+comma
+id|object
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -38,7 +45,7 @@ op_logical_neg
 id|object
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Must delete or free any pointers within the object that are not&n;&t; * actual ACPI objects (for example, a raw buffer pointer).&n;&t; */
@@ -51,16 +58,54 @@ id|object-&gt;common.type
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;**** String %p, ptr %p&bslash;n&quot;
+comma
+id|object
+comma
+id|object-&gt;string.pointer
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Free the actual string buffer */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|object-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_POINTER
+)paren
+)paren
+(brace
 id|obj_pointer
 op_assign
 id|object-&gt;string.pointer
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;**** Buffer %p, ptr %p&bslash;n&quot;
+comma
+id|object
+comma
+id|object-&gt;buffer.pointer
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Free the actual buffer */
 id|obj_pointer
 op_assign
@@ -71,6 +116,17 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot; **** Package of count %X&bslash;n&quot;
+comma
+id|object-&gt;package.count
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Elements of the package are not handled here, they are deleted&n;&t;&t; * separately&n;&t;&t; */
 multiline_comment|/* Free the (variable length) element pointer array */
 id|obj_pointer
@@ -82,6 +138,19 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_MUTEX
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;***** Mutex %p, Semaphore %p&bslash;n&quot;
+comma
+id|object
+comma
+id|object-&gt;mutex.semaphore
+)paren
+)paren
+suffix:semicolon
 id|acpi_ex_unlink_mutex
 (paren
 id|object
@@ -97,6 +166,19 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_EVENT
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;***** Event %p, Semaphore %p&bslash;n&quot;
+comma
+id|object
+comma
+id|object-&gt;event.semaphore
+)paren
+)paren
+suffix:semicolon
 id|acpi_os_delete_semaphore
 (paren
 id|object-&gt;event.semaphore
@@ -111,6 +193,17 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_METHOD
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;***** Method %p&bslash;n&quot;
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Delete the method semaphore if it exists */
 r_if
 c_cond
@@ -133,6 +226,17 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_REGION
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;***** Region %p&bslash;n&quot;
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -175,6 +279,17 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;***** Buffer Field %p&bslash;n&quot;
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -211,7 +326,18 @@ id|obj_pointer
 )paren
 )paren
 (brace
-id|acpi_ut_free
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Deleting Obj Ptr %p &bslash;n&quot;
+comma
+id|obj_pointer
+)paren
+)paren
+suffix:semicolon
+id|ACPI_MEM_FREE
 (paren
 id|obj_pointer
 )paren
@@ -219,6 +345,31 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Only delete the object if it was dynamically allocated */
+r_if
+c_cond
+(paren
+id|object-&gt;common.flags
+op_amp
+id|AOPOBJ_STATIC_ALLOCATION
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Object %p [%s] static allocation, no delete&bslash;n&quot;
+comma
+id|object
+comma
+id|acpi_ut_get_type_name
+(paren
+id|object-&gt;common.type
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -230,30 +381,51 @@ id|AOPOBJ_STATIC_ALLOCATION
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Deleting object %p [%s]&bslash;n&quot;
+comma
+id|object
+comma
+id|acpi_ut_get_type_name
+(paren
+id|object-&gt;common.type
+)paren
+)paren
+)paren
+suffix:semicolon
 id|acpi_ut_delete_object_desc
 (paren
 id|object
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_internal_object_list&n; *&n; * PARAMETERS:  *Obj_list       - Pointer to the list to be deleted&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function deletes an internal object list, including both&n; *              simple objects and package objects&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ut_delete_internal_object_list
 id|acpi_ut_delete_internal_object_list
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|obj_list
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|internal_obj
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ut_delete_internal_object_list&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Walk the null-terminated internal list */
 r_for
@@ -270,38 +442,20 @@ id|internal_obj
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Check for a package&n;&t;&t; * Simple objects are simply stored in the array and do not&n;&t;&t; * need to be deleted separately.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|IS_THIS_OBJECT_TYPE
-(paren
-(paren
-op_star
-id|internal_obj
-)paren
-comma
-id|ACPI_TYPE_PACKAGE
-)paren
-)paren
-(brace
-multiline_comment|/* Delete the package */
-multiline_comment|/*&n;&t;&t;&t; * TBD: [Investigate] This might not be the right thing to do,&n;&t;&t;&t; * depending on how the internal package object was allocated!!!&n;&t;&t;&t; */
-id|acpi_ut_delete_internal_obj
+id|acpi_ut_remove_reference
 (paren
 op_star
 id|internal_obj
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/* Free the combined parameter pointer list and object array */
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|obj_list
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -313,7 +467,7 @@ r_void
 DECL|function|acpi_ut_update_ref_count
 id|acpi_ut_update_ref_count
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|object
 comma
@@ -367,6 +521,19 @@ id|object-&gt;common.reference_count
 op_assign
 id|new_count
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Obj %p Refs=%X, [Incremented]&bslash;n&quot;
+comma
+id|object
+comma
+id|new_count
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -380,6 +547,19 @@ OL
 l_int|1
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Obj %p Refs=%X, can&squot;t decrement! (Set to 0)&bslash;n&quot;
+comma
+id|object
+comma
+id|new_count
+)paren
+)paren
+suffix:semicolon
 id|new_count
 op_assign
 l_int|0
@@ -389,6 +569,41 @@ r_else
 (brace
 id|new_count
 op_decrement
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Obj %p Refs=%X, [Decremented]&bslash;n&quot;
+comma
+id|object
+comma
+id|new_count
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|object-&gt;common.type
+op_eq
+id|ACPI_TYPE_METHOD
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Method Obj %p Refs=%X, [Decremented]&bslash;n&quot;
+comma
+id|object
+comma
+id|new_count
+)paren
+)paren
 suffix:semicolon
 )brace
 id|object-&gt;common.reference_count
@@ -414,6 +629,19 @@ suffix:semicolon
 r_case
 id|REF_FORCE_DELETE
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Obj %p Refs=%X, Force delete! (Set to 0)&bslash;n&quot;
+comma
+id|object
+comma
+id|count
+)paren
+)paren
+suffix:semicolon
 id|new_count
 op_assign
 l_int|0
@@ -431,19 +659,52 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown action (%X)&bslash;n&quot;
+comma
+id|action
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Sanity check the reference count, for debug purposes only.&n;&t; * (A deleted object will have a huge reference count)&n;&t; */
+r_if
+c_cond
+(paren
+id|count
+OG
+id|MAX_REFERENCE_COUNT
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;**** AE_ERROR **** Invalid Reference Count (%X) in object %p&bslash;n&bslash;n&quot;
+comma
+id|count
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_update_object_reference&n; *&n; * PARAMETERS:  *Object             - Increment ref count for this object&n; *                                    and all sub-objects&n; *              Action              - Either REF_INCREMENT or REF_DECREMENT or&n; *                                    REF_FORCE_DELETE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Increment the object reference count&n; *&n; * Object references are incremented when:&n; * 1) An object is attached to a Node (namespace object)&n; * 2) An object is copied (all subobjects must be incremented)&n; *&n; * Object references are decremented when:&n; * 1) An object is detached from an Node&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ut_update_object_reference
 id|acpi_ut_update_object_reference
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|object
 comma
@@ -451,29 +712,36 @@ id|u16
 id|action
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|next
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 r_new
 suffix:semicolon
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|state_list
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|state
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ut_update_object_reference&quot;
+comma
+id|object
+)paren
 suffix:semicolon
 multiline_comment|/* Ignore a null object ptr */
 r_if
@@ -483,7 +751,7 @@ op_logical_neg
 id|object
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -501,7 +769,18 @@ id|ACPI_DESC_TYPE_NAMED
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Object %p is NS handle&bslash;n&quot;
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -516,7 +795,18 @@ id|object
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;**** Object %p is Pcode Ptr&bslash;n&quot;
+comma
+id|object
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -581,7 +871,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -679,7 +969,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -712,7 +1002,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -744,7 +1034,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -776,7 +1066,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -803,7 +1093,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -835,7 +1125,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -862,7 +1152,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -874,7 +1164,7 @@ r_case
 id|ACPI_TYPE_REGION
 suffix:colon
 multiline_comment|/* TBD: [Investigate]&n;&t;&t;&t;Acpi_ut_update_ref_count (Object-&gt;Region.Addr_handler, Action);&n;&t;*/
-multiline_comment|/*&n;&t;&t;&t;Status =&n;&t;&t;&t;&t;Acpi_ut_create_update_state_and_push (Object-&gt;Region.Addr_handler,&n;&t;&t;&t;&t;&t;&t;   Action, &amp;State_list);&n;&t;&t;&t;if (ACPI_FAILURE (Status))&n;&t;&t;&t;{&n;&t;&t;&t;&t;return (Status);&n;&t;&t;&t;}&n;*/
+multiline_comment|/*&n;&t;&t;&t;Status =&n;&t;&t;&t;&t;Acpi_ut_create_update_state_and_push (Object-&gt;Region.Addr_handler,&n;&t;&t;&t;&t;&t;&t;   Action, &amp;State_list);&n;&t;&t;&t;if (ACPI_FAILURE (Status))&n;&t;&t;&t;{&n;&t;&t;&t;&t;return_ACPI_STATUS (Status);&n;&t;&t;&t;}&n;*/
 r_break
 suffix:semicolon
 r_case
@@ -901,7 +1191,7 @@ id|state_list
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -912,11 +1202,18 @@ r_void
 DECL|function|acpi_ut_add_reference
 id|acpi_ut_add_reference
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|object
 )paren
 (brace
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ut_add_reference&quot;
+comma
+id|object
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that we have a valid object&n;&t; */
 r_if
 c_cond
@@ -928,7 +1225,7 @@ id|object
 )paren
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * We have a valid ACPI internal object, now increment the reference count&n;&t; */
@@ -939,7 +1236,7 @@ comma
 id|REF_INCREMENT
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_remove_reference&n; *&n; * PARAMETERS:  *Object        - Object whose ref count will be decremented&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Decrement the reference count of an ACPI internal object&n; *&n; ******************************************************************************/
@@ -947,11 +1244,18 @@ r_void
 DECL|function|acpi_ut_remove_reference
 id|acpi_ut_remove_reference
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|object
 )paren
 (brace
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ut_remove_reference&quot;
+comma
+id|object
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that we have a valid object&n;&t; */
 r_if
 c_cond
@@ -963,9 +1267,22 @@ id|object
 )paren
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Obj %p Refs=%X&bslash;n&quot;
+comma
+id|object
+comma
+id|object-&gt;common.reference_count
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement the reference count, and only actually delete the object&n;&t; * if the reference count becomes 0.  (Must also decrement the ref count&n;&t; * of all subobjects!)&n;&t; */
 id|acpi_ut_update_object_reference
 (paren
@@ -974,7 +1291,7 @@ comma
 id|REF_DECREMENT
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: evsci - System Control Interrupt configuration and&n; *                      legacy to ACPI mode state transition functions&n; *              $Revision: 72 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: evsci - System Control Interrupt configuration and&n; *                      legacy to ACPI mode state transition functions&n; *              $Revision: 74 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -27,6 +27,12 @@ id|interrupt_handled
 op_assign
 id|INTERRUPT_NOT_HANDLED
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;Ev_sci_handler&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure that ACPI is enabled by checking SCI_EN.  Note that we are&n;&t; * required to treat the SCI interrupt as sharable, level, active low.&n;&t; */
 r_if
 c_cond
@@ -43,7 +49,7 @@ id|SCI_EN
 )paren
 (brace
 multiline_comment|/* ACPI is not enabled;  this interrupt cannot be for us */
-r_return
+id|return_VALUE
 (paren
 id|INTERRUPT_NOT_HANDLED
 )paren
@@ -63,7 +69,7 @@ id|acpi_ev_gpe_detect
 (paren
 )paren
 suffix:semicolon
-r_return
+id|return_VALUE
 (paren
 id|interrupt_handled
 )paren
@@ -78,11 +84,16 @@ r_void
 )paren
 (brace
 id|u32
-id|except
+id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|except
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_install_sci_handler&quot;
+)paren
+suffix:semicolon
+id|status
 op_assign
 id|acpi_os_install_interrupt_handler
 (paren
@@ -96,20 +107,25 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
-id|except
+id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n;&n; *&n; * FUNCTION:    Acpi_ev_remove_sci_handler&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      E_OK if handler uninstalled OK, E_ERROR if handler was not&n; *              installed to begin with&n; *&n; * DESCRIPTION: Restores original status of all fixed event enable bits and&n; *              removes SCI handler.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ev_remove_sci_handler
 id|acpi_ev_remove_sci_handler
 (paren
 r_void
 )paren
 (brace
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_remove_sci_handler&quot;
+)paren
+suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* TBD:[Investigate] Figure this out!!  Disable all events first ???  */
 r_if
@@ -222,7 +238,7 @@ comma
 id|acpi_ev_sci_handler
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -238,6 +254,11 @@ r_void
 (brace
 id|u32
 id|index
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_restore_acpi_state&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Restore the state of the chipset enable bits. */
 r_if
@@ -408,7 +429,7 @@ id|acpi_gbl_original_mode
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
@@ -419,6 +440,11 @@ id|acpi_ev_terminate
 r_void
 )paren
 (brace
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_terminate&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Free global tables, etc.&n;&t; */
 r_if
 c_cond
@@ -426,7 +452,7 @@ c_cond
 id|acpi_gbl_gpe_registers
 )paren
 (brace
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|acpi_gbl_gpe_registers
 )paren
@@ -438,13 +464,13 @@ c_cond
 id|acpi_gbl_gpe_info
 )paren
 (brace
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|acpi_gbl_gpe_info
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 eof

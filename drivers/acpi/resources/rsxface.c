@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsxface - Public interfaces to the resource manager&n; *              $Revision: 13 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsxface - Public interfaces to the resource manager&n; *              $Revision: 14 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -11,20 +11,25 @@ id|MODULE_NAME
 l_string|&quot;rsxface&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_irq_routing_table&n; *&n; * PARAMETERS:  Device_handle   - a handle to the Bus device we are querying&n; *              Ret_buffer      - a pointer to a buffer to receive the&n; *                                current resources for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the IRQ routing table for a&n; *              specific bus.  The caller must first acquire a handle for the&n; *              desired bus.  The routine table is placed in the buffer pointed&n; *              to by the Ret_buffer variable parameter.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of Ret_buffer is undefined.&n; *&n; *              This function attempts to execute the _PRT method contained in&n; *              the object indicated by the passed Device_handle.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_irq_routing_table
 id|acpi_get_irq_routing_table
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|device_handle
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|ret_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_irq_routing_table &quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -41,7 +46,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -73,7 +78,7 @@ id|ret_buffer-&gt;length
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -88,27 +93,32 @@ comma
 id|ret_buffer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_current_resources&n; *&n; * PARAMETERS:  Device_handle   - a handle to the device object for the&n; *                                device we are querying&n; *              Ret_buffer      - a pointer to a buffer to receive the&n; *                                current resources for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the current resources for a&n; *              specific device.  The caller must first acquire a handle for&n; *              the desired device.  The resource data is placed in the buffer&n; *              pointed to by the Ret_buffer variable parameter.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of Ret_buffer is undefined.&n; *&n; *              This function attempts to execute the _CRS method contained in&n; *              the object indicated by the passed Device_handle.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_current_resources
 id|acpi_get_current_resources
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|device_handle
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|ret_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_current_resources&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -125,7 +135,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -157,7 +167,7 @@ id|ret_buffer-&gt;pointer
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -172,27 +182,32 @@ comma
 id|ret_buffer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_possible_resources&n; *&n; * PARAMETERS:  Device_handle   - a handle to the device object for the&n; *                                device we are querying&n; *              Ret_buffer      - a pointer to a buffer to receive the&n; *                                resources for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get a list of the possible resources&n; *              for a specific device.  The caller must first acquire a handle&n; *              for the desired device.  The resource data is placed in the&n; *              buffer pointed to by the Ret_buffer variable.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of Ret_buffer is undefined.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_possible_resources
 id|acpi_get_possible_resources
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|device_handle
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|ret_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_possible_resources&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -209,7 +224,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -241,7 +256,7 @@ id|ret_buffer-&gt;pointer
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -256,27 +271,32 @@ comma
 id|ret_buffer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_set_current_resources&n; *&n; * PARAMETERS:  Device_handle   - a handle to the device object for the&n; *                                device we are changing the resources of&n; *              In_buffer       - a pointer to a buffer containing the&n; *                                resources to be set for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to set the current resources for a&n; *              specific device.  The caller must first acquire a handle for&n; *              the desired device.  The resource data is passed to the routine&n; *              the buffer pointed to by the In_buffer variable.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_set_current_resources
 id|acpi_set_current_resources
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|device_handle
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|in_buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_set_current_resources&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -293,7 +313,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -324,7 +344,7 @@ id|in_buffer-&gt;length
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -339,7 +359,7 @@ comma
 id|in_buffer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

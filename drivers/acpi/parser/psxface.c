@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psxface - Parser external interfaces&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -12,39 +12,44 @@ id|MODULE_NAME
 (paren
 l_string|&quot;psxface&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_psx_execute&n; *&n; * PARAMETERS:  Method_node         - A method object containing both the AML&n; *                                    address and length.&n; *              **Params            - List of parameters to pass to method,&n; *                                    terminated by NULL. Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **Return_obj_desc   - Return object from execution of the&n; *                                    method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_psx_execute&n; *&n; * PARAMETERS:  Method_node         - A method object containing both the AML&n; *                                    address and length.&n; *              **Params            - List of parameters to pass to method,&n; *                                    terminated by NULL. Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **Return_obj_desc   - Return object from execution of the&n; *                                    method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_psx_execute
 id|acpi_psx_execute
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|method_node
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|params
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|return_obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Psx_execute&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Validate the Node and get the attached object */
 r_if
@@ -54,7 +59,7 @@ op_logical_neg
 id|method_node
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NULL_ENTRY
 )paren
@@ -74,7 +79,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NULL_OBJECT
 )paren
@@ -101,7 +106,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -141,6 +146,19 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Perform the first pass parse of the method to enter any&n;&t; * named objects that it creates into the namespace&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;**** Begin Method Execution **** Entry=%p obj=%p&bslash;n&quot;
+comma
+id|method_node
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Create and init a Root Node */
 id|op
 op_assign
@@ -156,7 +174,7 @@ op_logical_neg
 id|op
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -207,7 +225,7 @@ op_logical_neg
 id|op
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -291,7 +309,7 @@ id|REF_DECREMENT
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Normal exit is with Status == AE_RETURN_VALUE when a Return_op has been&n;&t; * executed, or with Status == AE_PENDING at end of AML block (end of&n;&t; * Method code)&n;&t; */
+multiline_comment|/*&n;&t; * If the method has returned an object, signal this to the caller with&n;&t; * a control exception code&n;&t; */
 r_if
 c_cond
 (paren
@@ -299,12 +317,30 @@ op_star
 id|return_obj_desc
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Method returned Obj_desc=%X&bslash;n&quot;
+comma
+op_star
+id|return_obj_desc
+)paren
+)paren
+suffix:semicolon
+id|DUMP_STACK_ENTRY
+(paren
+op_star
+id|return_obj_desc
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_CTRL_RETURN_VALUE
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

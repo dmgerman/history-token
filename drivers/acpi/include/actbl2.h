@@ -31,7 +31,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 multiline_comment|/* Table header */
@@ -53,7 +53,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 multiline_comment|/* Table header */
@@ -134,9 +134,9 @@ l_int|31
 )braket
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
-DECL|typedef|FACS_DESCRIPTOR_REV2
+DECL|typedef|facs_descriptor_rev2
 )brace
-id|FACS_DESCRIPTOR_REV2
+id|facs_descriptor_rev2
 suffix:semicolon
 multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Generic Address Structure (GAS)&n; */
 r_typedef
@@ -167,16 +167,16 @@ id|UINT64
 id|address
 suffix:semicolon
 multiline_comment|/* 64-bit address of struct or register */
-DECL|typedef|ACPI_GENERIC_ADDRESS
+DECL|typedef|acpi_generic_address
 )brace
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 suffix:semicolon
 multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Fixed ACPI Description Table&n; */
 r_typedef
 r_struct
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 multiline_comment|/* table header */
@@ -472,7 +472,7 @@ l_int|18
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
 DECL|member|reset_register
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|reset_register
 suffix:semicolon
 multiline_comment|/* Reset register address in GAS format */
@@ -500,48 +500,48 @@ id|Xdsdt
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of DSDT */
 DECL|member|Xpm1a_evt_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xpm1a_evt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a Acpi_event Reg Blk address */
 DECL|member|Xpm1b_evt_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xpm1b_evt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b Acpi_event Reg Blk address */
 DECL|member|Xpm1a_cnt_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xpm1a_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a Control Reg Blk address */
 DECL|member|Xpm1b_cnt_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xpm1b_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b Control Reg Blk address */
 DECL|member|Xpm2_cnt_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xpm2_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 2 Control Reg Blk address */
 DECL|member|Xpm_tmr_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xpm_tmr_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt Timer Ctrl Reg Blk address */
 DECL|member|Xgpe0blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xgpe0blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose Acpi_event 0 Reg Blk address */
 DECL|member|Xgpe1_blk
-id|ACPI_GENERIC_ADDRESS
+id|acpi_generic_address
 id|Xgpe1_blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose Acpi_event 1 Reg Blk address */
-DECL|typedef|FADT_DESCRIPTOR_REV2
+DECL|typedef|fadt_descriptor_rev2
 )brace
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 suffix:semicolon
 macro_line|#pragma pack()
 macro_line|#endif /* __ACTBL2_H__ */

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prperf.c&n; *              $Revision: 16 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: prperf.c&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * TBD: 1. Support ACPI 2.0 processor performance states (not just throttling).&n; *      2. Fully implement thermal -vs- power management limit control.&n; */
 macro_line|#include &lt;acpi.h&gt;
@@ -12,7 +12,7 @@ l_string|&quot;prperf&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                                  Globals&n; ****************************************************************************/
 r_extern
-id|FADT_DESCRIPTOR_REV2
+id|fadt_descriptor_rev2
 id|acpi_fadt
 suffix:semicolon
 DECL|variable|POWER_OF_2
@@ -45,7 +45,7 @@ l_int|512
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_perf_get_frequency&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_perf_get_frequency
 id|pr_perf_get_frequency
 (paren
@@ -58,10 +58,16 @@ op_star
 id|frequency
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_perf_get_frequency&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -73,18 +79,24 @@ op_logical_neg
 id|frequency
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* TBD: Generic method to calculate processor frequency. */
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_perf_get_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 multiline_comment|/* TBD:&t;Include support for _real_ performance states (not just throttling). */
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_perf_get_state
 id|pr_perf_get_state
 (paren
@@ -112,6 +124,12 @@ id|duty_cycle
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_perf_get_state&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -122,8 +140,11 @@ op_logical_neg
 id|state
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -139,16 +160,22 @@ id|state
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
-id|pblk_value
-op_assign
-id|acpi_os_in32
+id|acpi_os_read_port
 c_func
 (paren
 id|processor-&gt;pblk.address
+comma
+op_amp
+id|pblk_value
+comma
+l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Throttling Enabled?&n;&t; * -------------------&n;&t; * If so, calculate the current throttling state, otherwise return&n;&t; * &squot;100% performance&squot; (state 0).&n;&t; */
@@ -213,13 +240,35 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Processor [%02x] is at performance state [%d%%].&bslash;n&quot;
+comma
+id|processor-&gt;device_handle
+comma
+id|processor-&gt;performance.state
+(braket
+op_star
+id|state
+)braket
+dot
+id|performance
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_perf_set_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      AE_OK&n; *              AE_BAD_PARAMETER&n; *              AE_BAD_DATA         Invalid target throttling state.&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 multiline_comment|/* TBD: Includes support for _real_ performance states (not just throttling). */
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_perf_set_state
 id|pr_perf_set_state
 (paren
@@ -251,6 +300,11 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;pr_perf_set_state&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -258,8 +312,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -274,8 +331,11 @@ l_int|1
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_DATA
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -286,8 +346,11 @@ op_eq
 l_int|1
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Calculate Duty Cycle/Mask:&n;&t; * --------------------------&n;&t; * Note that we don&squot;t support duty_cycle values that span bit 4.&n;&t; */
@@ -354,12 +417,15 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Disable Throttling:&n;&t; * -------------------&n;&t; * Got to turn it off before you can change the duty_cycle value.&n;&t; * Throttling is disabled by writing a 0 to bit 4.&n;&t; */
-id|pblk_value
-op_assign
-id|acpi_os_in32
+id|acpi_os_read_port
 c_func
 (paren
 id|processor-&gt;pblk.address
+comma
+op_amp
+id|pblk_value
+comma
+l_int|32
 )paren
 suffix:semicolon
 r_if
@@ -374,12 +440,14 @@ id|pblk_value
 op_and_assign
 l_int|0xFFFFFFEF
 suffix:semicolon
-id|acpi_os_out32
+id|acpi_os_write_port
 c_func
 (paren
 id|processor-&gt;pblk.address
 comma
 id|pblk_value
+comma
+l_int|32
 )paren
 suffix:semicolon
 )brace
@@ -392,12 +460,14 @@ id|pblk_value
 op_or_assign
 id|duty_cycle
 suffix:semicolon
-id|acpi_os_out32
+id|acpi_os_write_port
 c_func
 (paren
 id|processor-&gt;pblk.address
 comma
 id|pblk_value
+comma
+l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Enable Throttling:&n;&t; * ------------------&n;&t; * But only for non-zero (non-100% performance) states.&n;&t; */
@@ -411,21 +481,44 @@ id|pblk_value
 op_or_assign
 l_int|0x00000010
 suffix:semicolon
-id|acpi_os_out32
+id|acpi_os_write_port
 c_func
 (paren
 id|processor-&gt;pblk.address
 comma
 id|pblk_value
+comma
+l_int|32
 )paren
 suffix:semicolon
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Processor [%02x] set to performance state [%d%%].&bslash;n&quot;
+comma
+id|processor-&gt;device_handle
+comma
+id|processor-&gt;performance.state
+(braket
+id|state
+)braket
+dot
+id|performance
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_perf_set_limit&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_perf_set_limit
 id|pr_perf_set_limit
 (paren
@@ -437,7 +530,7 @@ id|u32
 id|limit
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -448,6 +541,11 @@ id|performance
 op_assign
 l_int|NULL
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;pr_perf_set_limit&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -455,8 +553,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|performance
@@ -559,8 +660,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_DATA
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -580,14 +684,35 @@ op_assign
 id|limit
 suffix:semicolon
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Processor [%02x] thermal performance limit set to [%d%%].&bslash;n&quot;
+comma
+id|processor-&gt;device_handle
+comma
+id|processor-&gt;performance.state
+(braket
+id|performance-&gt;active_state
+)braket
+dot
+id|performance
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                             External Functions&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_perf_add_device&n; *&n; * PARAMETERS:  processor&t;&t;Our processor-specific context.&n; *&n; * RETURN:      AE_OK&n; *              AE_BAD_PARAMETER&n; *&n; * DESCRIPTION: Calculates the number of throttling states and the state&n; *              performance/power values.&n; *&n; ****************************************************************************/
 multiline_comment|/* TBD: Support duty_cycle values that span bit 4. */
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_perf_add_device
 id|pr_perf_add_device
 (paren
@@ -596,7 +721,7 @@ op_star
 id|processor
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -616,6 +741,12 @@ id|percentage
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_perf_add_device&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -623,8 +754,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Valid PBLK?&n;&t; * -----------&n;&t; * For SMP it is common to have the first (boot) processor have a&n;&t; * valid PBLK while all others do not -- which implies that&n;&t; * throttling has system-wide effects (duty_cycle programmed into&n;&t; * the chipset effects all processors).&n;&t; */
@@ -760,12 +894,15 @@ id|processor-&gt;performance.active_state
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    pr_perf_remove_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|pr_perf_remove_device
 id|pr_perf_remove_device
 (paren
@@ -774,10 +911,16 @@ op_star
 id|processor
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;pr_perf_remove_device&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -786,8 +929,11 @@ op_logical_neg
 id|processor
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|MEMSET
@@ -806,8 +952,11 @@ id|PR_PERFORMANCE
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ecmain.c&n; *   $Revision: 26 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ecmain.c&n; *   $Revision: 28 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;ec.h&quot;
@@ -19,6 +19,17 @@ op_star
 id|ec
 )paren
 (brace
+macro_line|#ifdef ACPI_DEBUG
+id|acpi_buffer
+id|buffer
+suffix:semicolon
+macro_line|#endif /*ACPI_DEBUG*/
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;ec_print&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -37,11 +48,102 @@ comma
 id|ec-&gt;gpe_bit
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_DEBUG
+id|buffer.length
+op_assign
+l_int|256
+suffix:semicolon
+id|buffer.pointer
+op_assign
+id|acpi_os_callocate
+c_func
+(paren
+id|buffer.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buffer.pointer
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Get the full pathname for this ACPI object.&n;&t; */
+id|acpi_get_name
+c_func
+(paren
+id|ec-&gt;acpi_handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Print out basic thermal zone information.&n;&t; */
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;| Embedded_controller[%02x]:[%p] %s&bslash;n&quot;
+comma
+id|ec-&gt;device_handle
+comma
+id|ec-&gt;acpi_handle
+comma
+id|buffer.pointer
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;|   gpe_bit[%02x] status/command_port[%02x] data_port[%02x]&bslash;n&quot;
+comma
+id|ec-&gt;gpe_bit
+comma
+id|ec-&gt;status_port
+comma
+id|ec-&gt;data_port
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;+------------------------------------------------------------&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_free
+c_func
+(paren
+id|buffer.pointer
+)paren
+suffix:semicolon
+macro_line|#endif /*ACPI_DEBUG*/
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_get_port_values&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Evaluate _CRS to get the current resources (I/O port&n; *              addresses) for this EC.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_get_port_values
 id|ec_get_port_values
 c_func
@@ -51,19 +153,25 @@ op_star
 id|ec
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|resource
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_get_port_values&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -72,8 +180,11 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|buffer.length
@@ -103,8 +214,11 @@ op_ne
 id|AE_BUFFER_OVERFLOW
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 id|buffer.pointer
@@ -122,8 +236,11 @@ op_logical_neg
 id|buffer.pointer
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -154,7 +271,7 @@ suffix:semicolon
 id|resource
 op_assign
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 )paren
 id|buffer.pointer
@@ -185,12 +302,15 @@ c_func
 id|buffer.pointer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_add_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_add_device
 id|ec_add_device
 c_func
@@ -204,7 +324,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -231,6 +351,23 @@ id|space_handler
 op_assign
 id|FALSE
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_add_device&quot;
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Adding EC device [%02x].&bslash;n&quot;
+comma
+id|device_handle
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -241,8 +378,11 @@ op_star
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get information on this device.&n;&t; */
@@ -267,8 +407,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Allocate a new EC_CONTEXT structure.&n;&t; */
@@ -290,8 +433,11 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|ec-&gt;device_handle
@@ -363,6 +509,15 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;EC _GLK failed&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_goto
 id|end
 suffix:semicolon
@@ -527,12 +682,15 @@ id|ec
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_remove_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_remove_device
 id|ec_remove_device
 c_func
@@ -543,7 +701,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -553,6 +711,12 @@ op_star
 id|ec
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_remove_device&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -565,8 +729,11 @@ op_star
 id|context
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|ec
@@ -577,6 +744,17 @@ op_star
 )paren
 op_star
 id|context
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Removing EC device [%02x].&bslash;n&quot;
+comma
+id|ec-&gt;device_handle
+)paren
+)paren
 suffix:semicolon
 id|ec_remove_space_handler
 c_func
@@ -614,20 +792,23 @@ id|context
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                             External Functions&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_initialize&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_initialize
 id|ec_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -637,6 +818,12 @@ id|criteria
 suffix:semicolon
 id|BM_DRIVER
 id|driver
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_initialize&quot;
+)paren
 suffix:semicolon
 id|MEMSET
 c_func
@@ -702,12 +889,15 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_terminate&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_terminate
 id|ec_terminate
 c_func
@@ -715,7 +905,7 @@ c_func
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -725,6 +915,12 @@ id|criteria
 suffix:semicolon
 id|BM_DRIVER
 id|driver
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_terminate&quot;
+)paren
 suffix:semicolon
 id|MEMSET
 c_func
@@ -790,12 +986,15 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_notify&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_notify
 id|ec_notify
 (paren
@@ -811,10 +1010,16 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_notify&quot;
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -859,12 +1064,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_request
 id|ec_request
 (paren
@@ -877,7 +1085,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -894,6 +1102,12 @@ id|ec
 op_assign
 l_int|NULL
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_request&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Must have a valid request structure and context.&n;&t; */
 r_if
 c_cond
@@ -904,8 +1118,11 @@ op_logical_or
 op_logical_neg
 id|context
 )paren
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * buffer must contain a valid EC_REQUEST structure.&n;&t; */
 id|status
@@ -941,8 +1158,11 @@ c_func
 id|status
 )paren
 )paren
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * context contains information specific to this EC.&n;&t; */
 id|ec
@@ -964,8 +1184,11 @@ comma
 id|ec_request
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

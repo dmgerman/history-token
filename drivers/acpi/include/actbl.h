@@ -45,12 +45,12 @@ mdefine_line|#define APIC_IO                 1
 multiline_comment|/*&n; * Common table types.  The base code can remain&n; * constant if the underlying tables are changed&n; */
 DECL|macro|RSDT_DESCRIPTOR
 mdefine_line|#define RSDT_DESCRIPTOR         RSDT_DESCRIPTOR_REV2
-DECL|macro|XSDT_DESCRIPTOR
-mdefine_line|#define XSDT_DESCRIPTOR         XSDT_DESCRIPTOR_REV2
+DECL|macro|xsdt_descriptor
+mdefine_line|#define xsdt_descriptor         XSDT_DESCRIPTOR_REV2
 DECL|macro|FACS_DESCRIPTOR
-mdefine_line|#define FACS_DESCRIPTOR         FACS_DESCRIPTOR_REV2
+mdefine_line|#define FACS_DESCRIPTOR         facs_descriptor_rev2
 DECL|macro|FADT_DESCRIPTOR
-mdefine_line|#define FADT_DESCRIPTOR         FADT_DESCRIPTOR_REV2
+mdefine_line|#define FADT_DESCRIPTOR         fadt_descriptor_rev2
 macro_line|#pragma pack(1)
 multiline_comment|/*&n; * Architecture-independent tables&n; * The architecture dependent tables are in separate files&n; */
 r_typedef
@@ -176,9 +176,9 @@ id|u32
 id|asl_compiler_revision
 suffix:semicolon
 multiline_comment|/* ASL compiler revision number */
-DECL|typedef|ACPI_TABLE_HEADER
+DECL|typedef|acpi_table_header
 )brace
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 suffix:semicolon
 r_typedef
 r_struct
@@ -198,16 +198,16 @@ DECL|member|vector_width
 id|u8
 id|vector_width
 suffix:semicolon
-DECL|typedef|ACPI_COMMON_FACS
+DECL|typedef|acpi_common_facs
 )brace
-id|ACPI_COMMON_FACS
+id|acpi_common_facs
 suffix:semicolon
 r_typedef
 r_struct
 multiline_comment|/* APIC Table */
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 multiline_comment|/* table header */
@@ -325,7 +325,7 @@ r_struct
 multiline_comment|/* Smart Battery Description Table */
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 DECL|member|warning_level

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 37 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbutils - AML debugger utilities&n; *              $Revision: 43 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -43,7 +43,7 @@ id|DB_REDIRECTABLE_OUTPUT
 r_if
 c_cond
 (paren
-id|output_to_file
+id|acpi_gbl_db_output_to_file
 )paren
 (brace
 id|acpi_dbg_level
@@ -78,7 +78,7 @@ id|address
 suffix:semicolon
 id|acpi_dbg_level
 op_or_assign
-id|TRACE_TABLES
+id|ACPI_LV_TABLES
 suffix:semicolon
 id|acpi_ut_dump_buffer
 (paren
@@ -101,7 +101,7 @@ r_void
 DECL|function|acpi_db_dump_object
 id|acpi_db_dump_object
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|obj_desc
 comma
@@ -159,7 +159,7 @@ id|ACPI_TYPE_ANY
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Object Reference] Value: %p&bslash;n&quot;
+l_string|&quot;[Object Reference] = %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.handle
 )paren
@@ -171,11 +171,17 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Number] Value: %ld (%lX)&bslash;n&quot;
+l_string|&quot;[Integer] = %X%8.8X&bslash;n&quot;
 comma
+id|HIDWORD
+(paren
 id|obj_desc-&gt;integer.value
+)paren
 comma
+id|LODWORD
+(paren
 id|obj_desc-&gt;integer.value
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -226,7 +232,7 @@ id|ACPI_TYPE_BUFFER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Buffer] Value: &quot;
+l_string|&quot;[Buffer] = &quot;
 )paren
 suffix:semicolon
 id|acpi_ut_dump_buffer
@@ -292,7 +298,7 @@ id|INTERNAL_TYPE_REFERENCE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Object Reference] Value: %p&bslash;n&quot;
+l_string|&quot;[Object Reference] = %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.handle
 )paren
@@ -425,34 +431,34 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_second_pass_parse&n; *&n; * PARAMETERS:  Root            - Root of the parse tree&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Second pass parse of the ACPI tables.  We need to wait until&n; *              second pass to parse the control methods&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_second_pass_parse
 id|acpi_db_second_pass_parse
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|root
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 op_assign
 id|root
 suffix:semicolon
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 id|method
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|search_op
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|start_op
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -482,7 +488,7 @@ id|AML_METHOD_OP
 id|method
 op_assign
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 )paren
 id|op
@@ -596,7 +602,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_local_ns_lookup&n; *&n; * PARAMETERS:  Name            - Name to lookup&n; *&n; * RETURN:      Pointer to a namespace node&n; *&n; * DESCRIPTION: Lookup a name in the ACPI namespace&n; *&n; ******************************************************************************/
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 DECL|function|acpi_db_local_ns_lookup
 id|acpi_db_local_ns_lookup
@@ -610,10 +616,10 @@ id|NATIVE_CHAR
 op_star
 id|internal_path
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 op_assign
@@ -697,14 +703,14 @@ l_string|&quot;Could not locate name: %s %s&bslash;n&quot;
 comma
 id|name
 comma
-id|acpi_ut_format_exception
+id|acpi_format_exception
 (paren
 id|status
 )paren
 )paren
 suffix:semicolon
 )brace
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|internal_path
 )paren

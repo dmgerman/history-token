@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbxface - AML Debugger external interfaces&n; *              $Revision: 37 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbxface - AML Debugger external interfaces&n; *              $Revision: 41 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -16,15 +16,15 @@ id|MODULE_NAME
 l_string|&quot;dbxface&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_single_step&n; *&n; * PARAMETERS:  Walk_state      - Current walk&n; *              Op              - Current executing op&n; *              Op_type         - Type of the current AML Opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called just before execution of an AML opcode.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_db_single_step
 id|acpi_db_single_step
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
@@ -32,11 +32,11 @@ id|u8
 id|op_type
 )paren
 (brace
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|next
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -44,9 +44,13 @@ suffix:semicolon
 id|u32
 id|original_debug_level
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|display_op
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Is there a breakpoint set? */
 r_if
@@ -163,7 +167,7 @@ r_if
 c_cond
 (paren
 (paren
-id|output_to_file
+id|acpi_gbl_db_output_to_file
 )paren
 op_logical_or
 (paren
@@ -173,7 +177,7 @@ op_logical_or
 (paren
 id|acpi_dbg_level
 op_amp
-id|TRACE_PARSE
+id|ACPI_LV_PARSE
 )paren
 )paren
 (brace
@@ -181,13 +185,13 @@ r_if
 c_cond
 (paren
 (paren
-id|output_to_file
+id|acpi_gbl_db_output_to_file
 )paren
 op_logical_or
 (paren
 id|acpi_dbg_level
 op_amp
-id|TRACE_PARSE
+id|ACPI_LV_PARSE
 )paren
 )paren
 (brace
@@ -206,9 +210,9 @@ id|acpi_dbg_level
 op_and_assign
 op_complement
 (paren
-id|TRACE_PARSE
+id|ACPI_LV_PARSE
 op_or
-id|TRACE_FUNCTIONS
+id|ACPI_LV_FUNCTIONS
 )paren
 suffix:semicolon
 id|next
@@ -466,7 +470,7 @@ suffix:semicolon
 multiline_comment|/* Get the user input line */
 id|acpi_os_get_line
 (paren
-id|line_buf
+id|acpi_gbl_db_line_buf
 )paren
 suffix:semicolon
 )brace
@@ -474,7 +478,7 @@ id|status
 op_assign
 id|acpi_db_command_dispatch
 (paren
-id|line_buf
+id|acpi_gbl_db_line_buf
 comma
 id|walk_state
 comma
@@ -499,22 +503,22 @@ r_void
 )paren
 (brace
 multiline_comment|/* Init globals */
-id|buffer
+id|acpi_gbl_db_buffer
 op_assign
 id|acpi_os_allocate
 (paren
-id|BUFFER_SIZE
+id|ACPI_DEBUG_BUFFER_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Initial scope is the root */
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 (braket
 l_int|0
 )braket
 op_assign
 l_char|&squot;&bslash;&bslash;&squot;
 suffix:semicolon
-id|scope_buf
+id|acpi_gbl_db_scope_buf
 (braket
 l_int|1
 )braket
@@ -556,18 +560,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|opt_verbose
+id|acpi_gbl_db_opt_verbose
 )paren
 (brace
-id|INDENT_STRING
+id|acpi_gbl_db_disasm_indent
 op_assign
-l_string|&quot;    &quot;
+l_string|&quot; &quot;
 suffix:semicolon
-id|opt_disasm
+id|acpi_gbl_db_opt_disasm
 op_assign
 id|TRUE
 suffix:semicolon
-id|opt_stats
+id|acpi_gbl_db_opt_stats
 op_assign
 id|FALSE
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 99 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -15,20 +15,20 @@ id|MODULE_NAME
 l_string|&quot;exresolv&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_buffer_field_value&n; *&n; * PARAMETERS:  *Obj_desc           - Pointer to a Buffer_field&n; *              *Result_desc        - Pointer to an empty descriptor which will&n; *                                    become an Integer with the field&squot;s value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value from a Buffer_field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_get_buffer_field_value
 id|acpi_ex_get_buffer_field_value
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|result_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -38,6 +38,11 @@ id|u8
 op_star
 id|location
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_get_buffer_field_value&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Parameter validation&n;&t; */
 r_if
 c_cond
@@ -46,7 +51,16 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Internal - null field pointer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
@@ -79,7 +93,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -93,7 +107,16 @@ op_logical_neg
 id|obj_desc-&gt;buffer_field.buffer_obj
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Internal - null container pointer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL
 )paren
@@ -107,7 +130,16 @@ op_ne
 id|obj_desc-&gt;buffer_field.buffer_obj-&gt;common.type
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Internal - container is not a Buffer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_TYPE
 )paren
@@ -120,7 +152,16 @@ op_logical_neg
 id|result_desc
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Internal - null result pointer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL
 )paren
@@ -193,29 +234,59 @@ id|obj_desc-&gt;buffer_field.start_field_bit_offset
 op_amp
 id|mask
 suffix:semicolon
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;** Read from buffer %p byte %ld bit %d width %d addr %p mask %08lx val %08lx&bslash;n&quot;
+comma
+id|obj_desc-&gt;buffer_field.buffer_obj-&gt;buffer.pointer
+comma
+id|obj_desc-&gt;buffer_field.base_byte_offset
+comma
+id|obj_desc-&gt;buffer_field.start_field_bit_offset
+comma
+id|obj_desc-&gt;buffer_field.bit_length
+comma
+id|location
+comma
+id|mask
+comma
+id|result_desc-&gt;integer.value
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_to_value&n; *&n; * PARAMETERS:  **Stack_ptr         - Points to entry on Obj_stack, which can&n; *                                    be either an (ACPI_OPERAND_OBJECT *)&n; *                                    or an ACPI_HANDLE.&n; *              Walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_to_value&n; *&n; * PARAMETERS:  **Stack_ptr         - Points to entry on Obj_stack, which can&n; *                                    be either an (acpi_operand_object *)&n; *                                    or an acpi_handle.&n; *              Walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ex_resolve_to_value
 id|acpi_ex_resolve_to_value
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|stack_ptr
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_resolve_to_value&quot;
+comma
+id|stack_ptr
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -228,13 +299,22 @@ op_star
 id|stack_ptr
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Internal - null pointer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The entity pointed to by the Stack_ptr can be either&n;&t; * 1) A valid ACPI_OPERAND_OBJECT, or&n;&t; * 2) A ACPI_NAMESPACE_NODE (Named_obj)&n;&t; */
+multiline_comment|/*&n;&t; * The entity pointed to by the Stack_ptr can be either&n;&t; * 1) A valid acpi_operand_object, or&n;&t; * 2) A acpi_namespace_node (Named_obj)&n;&t; */
 r_if
 c_cond
 (paren
@@ -265,7 +345,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -290,7 +370,7 @@ op_assign
 id|acpi_ex_resolve_node_to_value
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 op_star
 )paren
@@ -308,40 +388,52 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Resolved object %p&bslash;n&quot;
+comma
+op_star
+id|stack_ptr
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_object_to_value&n; *&n; * PARAMETERS:  Stack_ptr       - Pointer to a stack location that contains a&n; *                                ptr to an internal object.&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value from an internal object.  The Reference type&n; *              uses the associated AML opcode to determine the value.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_resolve_object_to_value
 id|acpi_ex_resolve_object_to_value
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|stack_ptr
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|stack_desc
 suffix:semicolon
@@ -349,19 +441,24 @@ r_void
 op_star
 id|temp_node
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
 id|u16
 id|opcode
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_resolve_object_to_value&quot;
+)paren
+suffix:semicolon
 id|stack_desc
 op_assign
 op_star
 id|stack_ptr
 suffix:semicolon
-multiline_comment|/* This is an ACPI_OPERAND_OBJECT  */
+multiline_comment|/* This is an acpi_operand_object  */
 r_switch
 c_cond
 (paren
@@ -435,7 +532,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -452,20 +549,65 @@ id|stack_ptr
 op_assign
 id|obj_desc
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;[Arg/Local %d] Value_obj is %p&bslash;n&quot;
+comma
+id|stack_desc-&gt;reference.offset
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * TBD: [Restructure] These next three opcodes change the type of&n;&t;&t; * the object, which is actually a no-no.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For constants, we must change the reference/constant object&n;&t;&t; * to a real integer object&n;&t;&t; */
 r_case
 id|AML_ZERO_OP
 suffix:colon
-id|stack_desc-&gt;common.type
+r_case
+id|AML_ONE_OP
+suffix:colon
+r_case
+id|AML_ONES_OP
+suffix:colon
+r_case
+id|AML_REVISION_OP
+suffix:colon
+multiline_comment|/* Create a new integer object */
+id|obj_desc
 op_assign
+id|acpi_ut_create_internal_object
 (paren
-id|u8
-)paren
 id|ACPI_TYPE_INTEGER
+)paren
 suffix:semicolon
-id|stack_desc-&gt;integer.value
+r_if
+c_cond
+(paren
+op_logical_neg
+id|obj_desc
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|opcode
+)paren
+(brace
+r_case
+id|AML_ZERO_OP
+suffix:colon
+id|obj_desc-&gt;integer.value
 op_assign
 l_int|0
 suffix:semicolon
@@ -474,14 +616,7 @@ suffix:semicolon
 r_case
 id|AML_ONE_OP
 suffix:colon
-id|stack_desc-&gt;common.type
-op_assign
-(paren
-id|u8
-)paren
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-id|stack_desc-&gt;integer.value
+id|obj_desc-&gt;integer.value
 op_assign
 l_int|1
 suffix:semicolon
@@ -490,24 +625,40 @@ suffix:semicolon
 r_case
 id|AML_ONES_OP
 suffix:colon
-id|stack_desc-&gt;common.type
-op_assign
-(paren
-id|u8
-)paren
-id|ACPI_TYPE_INTEGER
-suffix:semicolon
-id|stack_desc-&gt;integer.value
+id|obj_desc-&gt;integer.value
 op_assign
 id|ACPI_INTEGER_MAX
 suffix:semicolon
 multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table */
 id|acpi_ex_truncate_for32bit_table
 (paren
-id|stack_desc
+id|obj_desc
 comma
 id|walk_state
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_REVISION_OP
+suffix:colon
+id|obj_desc-&gt;integer.value
+op_assign
+id|ACPI_CA_VERSION
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * Remove a reference from the original reference object&n;&t;&t;&t; * and put the new object in its place&n;&t;&t;&t; */
+id|acpi_ut_remove_reference
+(paren
+id|stack_desc
+)paren
+suffix:semicolon
+op_star
+id|stack_ptr
+op_assign
+id|obj_desc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -560,6 +711,17 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * A NULL object descriptor means an unitialized element of&n;&t;&t;&t;&t;&t; * the package, can&squot;t dereference it&n;&t;&t;&t;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Attempt to deref an Index to NULL pkg element Idx=%p&bslash;n&quot;
+comma
+id|stack_desc
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_UNINITIALIZED_ELEMENT
@@ -570,6 +732,19 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Invalid reference object */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown Target_type %X in Index/Reference obj %p&bslash;n&quot;
+comma
+id|stack_desc-&gt;reference.target_type
+comma
+id|stack_desc
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_INTERNAL
@@ -587,6 +762,19 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown Reference object subtype %02X in %p&bslash;n&quot;
+comma
+id|opcode
+comma
+id|stack_desc
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_INTERNAL
@@ -615,7 +803,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -677,7 +865,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -730,7 +918,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* switch (Stack_desc-&gt;Common.Type) */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

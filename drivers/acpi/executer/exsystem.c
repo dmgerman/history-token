@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exsystem - Interface to OS services&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exsystem - Interface to OS services&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -12,19 +12,24 @@ id|MODULE_NAME
 l_string|&quot;exsystem&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_wait_semaphore&n; *&n; * PARAMETERS:  Semaphore           - OSD semaphore to wait on&n; *              Timeout             - Max time to wait&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements a semaphore wait with a check to see if the&n; *              semaphore is available immediately.  If it is not, the&n; *              interpreter is released.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_system_wait_semaphore
 id|acpi_ex_system_wait_semaphore
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|semaphore
 comma
 id|u32
 id|timeout
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_system_wait_semaphore&quot;
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -46,7 +51,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -76,6 +81,20 @@ comma
 id|timeout
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;*** Thread awake after blocking, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Reacquire the interpreter */
 id|status
 op_assign
@@ -99,7 +118,7 @@ id|AE_TIME
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -114,6 +133,10 @@ id|u32
 id|how_long
 )paren
 (brace
+id|FUNCTION_ENTRY
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -128,7 +151,7 @@ id|acpi_ex_exit_interpreter
 (paren
 )paren
 suffix:semicolon
-id|acpi_os_sleep_usec
+id|acpi_os_stall
 (paren
 id|how_long
 )paren
@@ -141,9 +164,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|acpi_os_sleep_usec
+id|acpi_os_sleep
+(paren
+l_int|0
+comma
 (paren
 id|how_long
+op_div
+l_int|1000
+)paren
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -157,6 +188,10 @@ id|u32
 id|how_long
 )paren
 (brace
+id|FUNCTION_ENTRY
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Since this thread will sleep, we must release the interpreter */
 id|acpi_ex_exit_interpreter
 (paren
@@ -196,23 +231,30 @@ id|acpi_ex_enter_interpreter
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_acquire_mutex&n; *&n; * PARAMETERS:  *Time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This function will cause a lock to be generated&n; *              for the Mutex pointed to by Obj_desc.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_system_acquire_mutex
 id|acpi_ex_system_acquire_mutex
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|time_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_system_acquire_mutex&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -221,7 +263,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -242,7 +284,7 @@ id|acpi_ev_acquire_global_lock
 (paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -260,26 +302,31 @@ id|u32
 id|time_desc-&gt;integer.value
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_release_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This operation is a request to release a&n; *              previously acquired Mutex.  If the Mutex variable is set then&n; *              it will be decremented.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_system_release_mutex
 id|acpi_ex_system_release_mutex
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_system_release_mutex&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -288,7 +335,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -307,7 +354,7 @@ id|acpi_ev_release_global_lock
 (paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -322,26 +369,31 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_signal_event&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_system_signal_event
 id|acpi_ex_system_signal_event
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_system_signal_event&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -359,30 +411,35 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_wait_event&n; *&n; * PARAMETERS:  *Time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Provides an access point to perform synchronization operations&n; *              within the AML.  This operation is a request to wait for an&n; *              event.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_system_wait_event
 id|acpi_ex_system_wait_event
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|time_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_system_wait_event&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -403,23 +460,23 @@ id|time_desc-&gt;integer.value
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_system_reset_event&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Reset an event to a known state.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_system_reset_event
 id|acpi_ex_system_reset_event
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -427,6 +484,10 @@ suffix:semicolon
 r_void
 op_star
 id|temp_semaphore
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are going to simply delete the existing semaphore and&n;&t; * create a new one!&n;&t; */
 id|status

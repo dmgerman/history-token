@@ -8,12 +8,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#endif /* __KERNEL__ */
-DECL|typedef|acpi_sstate_t
-r_typedef
-r_int
-id|acpi_sstate_t
-suffix:semicolon
 multiline_comment|/*&n; * Device states&n; */
+r_typedef
 r_enum
 (brace
 DECL|enumerator|ACPI_D0
@@ -32,12 +28,40 @@ DECL|enumerator|ACPI_D3
 id|ACPI_D3
 comma
 multiline_comment|/* fully-off */
-)brace
-suffix:semicolon
 DECL|typedef|acpi_dstate_t
-r_typedef
-r_int
+)brace
 id|acpi_dstate_t
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|ACPI_S0
+id|ACPI_S0
+comma
+multiline_comment|/* working state */
+DECL|enumerator|ACPI_S1
+id|ACPI_S1
+comma
+multiline_comment|/* power-on suspend */
+DECL|enumerator|ACPI_S2
+id|ACPI_S2
+comma
+multiline_comment|/* suspend to ram, with devices */
+DECL|enumerator|ACPI_S3
+id|ACPI_S3
+comma
+multiline_comment|/* suspend to ram */
+DECL|enumerator|ACPI_S4
+id|ACPI_S4
+comma
+multiline_comment|/* suspend to disk */
+DECL|enumerator|ACPI_S5
+id|ACPI_S5
+comma
+multiline_comment|/* soft-off */
+DECL|typedef|acpi_sstate_t
+)brace
+id|acpi_sstate_t
 suffix:semicolon
 multiline_comment|/* RSDP location */
 DECL|macro|ACPI_BIOS_ROM_BASE
@@ -244,5 +268,57 @@ comma
 suffix:semicolon
 DECL|macro|ACPI_SLP_TYP_DISABLED
 mdefine_line|#define ACPI_SLP_TYP_DISABLED&t;(~0UL)
+macro_line|#ifdef __KERNEL__
+multiline_comment|/* routines for saving/restoring kernel state */
+id|FASTCALL
+c_func
+(paren
+r_extern
+r_int
+r_int
+id|acpi_save_state_mem
+c_func
+(paren
+r_int
+r_int
+id|return_point
+)paren
+)paren
+suffix:semicolon
+id|FASTCALL
+c_func
+(paren
+r_extern
+r_int
+id|acpi_save_state_disk
+c_func
+(paren
+r_int
+r_int
+id|return_point
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|acpi_restore_state
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|acpi_wakeup_address
+suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
+r_int
+id|acpi_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_ACPI_H */
 eof

@@ -42,6 +42,20 @@ DECL|macro|CDC_ETHER_REQ_SET_REG
 mdefine_line|#define&t;CDC_ETHER_REQ_SET_REG&t;PIPERIDER_REQ_SET_REGS
 DECL|macro|ALIGN
 mdefine_line|#define&t;ALIGN(x)&t;&t;x __attribute__((aligned(L1_CACHE_BYTES)))
+DECL|macro|MODE_FLAG_PROMISCUOUS
+mdefine_line|#define MODE_FLAG_PROMISCUOUS   (1&lt;&lt;0)
+DECL|macro|MODE_FLAG_ALL_MULTICAST
+mdefine_line|#define MODE_FLAG_ALL_MULTICAST (1&lt;&lt;1)
+DECL|macro|MODE_FLAG_DIRECTED
+mdefine_line|#define MODE_FLAG_DIRECTED      (1&lt;&lt;2)
+DECL|macro|MODE_FLAG_BROADCAST
+mdefine_line|#define MODE_FLAG_BROADCAST     (1&lt;&lt;3)
+DECL|macro|MODE_FLAG_MULTICAST
+mdefine_line|#define MODE_FLAG_MULTICAST     (1&lt;&lt;4)
+DECL|macro|SET_ETHERNET_MULTICAST_FILTER
+mdefine_line|#define SET_ETHERNET_MULTICAST_FILTER    0x40
+DECL|macro|SET_ETHERNET_PACKET_FILTER
+mdefine_line|#define SET_ETHERNET_PACKET_FILTER       0x43
 DECL|struct|_ether_dev_t
 r_typedef
 r_struct
@@ -147,6 +161,10 @@ suffix:semicolon
 DECL|member|wMaxSegmentSize
 id|__u16
 id|wMaxSegmentSize
+suffix:semicolon
+DECL|member|mode_flags
+id|__u16
+id|mode_flags
 suffix:semicolon
 DECL|member|wNumberMCFilters
 id|__u16

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsirq - IRQ resource descriptors&n; *              $Revision: 17 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsirq - IRQ resource descriptors&n; *              $Revision: 18 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -9,7 +9,7 @@ id|MODULE_NAME
 l_string|&quot;rsirq&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_irq_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_irq_resource
 id|acpi_rs_irq_resource
 (paren
@@ -37,12 +37,12 @@ id|buffer
 op_assign
 id|byte_stream_buffer
 suffix:semicolon
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|output_struct
 op_assign
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 )paren
 op_star
@@ -69,7 +69,12 @@ id|struct_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_IRQ
+id|acpi_resource_irq
+)paren
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_irq_resource&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The number of bytes consumed are contained in the descriptor&n;&t; *  (Bits:0-1)&n;&t; */
@@ -228,7 +233,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Only _LL and _HE polarity/trigger interrupts&n;&t;&t;&t;&t; * are allowed (ACPI spec v1.0b ection 6.4.2.1),&n;&t;&t;&t;&t; * so an error will occur if we reach this point&n;&t;&t;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_DATA
 )paren
@@ -274,18 +279,18 @@ id|structure_size
 op_assign
 id|struct_size
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_irq_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_irq_stream
 id|acpi_rs_irq_stream
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|linked_list
 comma
@@ -321,6 +326,11 @@ id|index
 suffix:semicolon
 id|u8
 id|IRQinfo_byte_needed
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_irq_stream&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The descriptor field is set based upon whether a third byte is&n;&t; * needed to contain the IRQ Information.&n;&t; */
 r_if
@@ -486,14 +496,14 @@ op_star
 id|output_buffer
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_extended_irq_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_extended_irq_resource
 id|acpi_rs_extended_irq_resource
 (paren
@@ -521,12 +531,12 @@ id|buffer
 op_assign
 id|byte_stream_buffer
 suffix:semicolon
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|output_struct
 op_assign
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 )paren
 op_star
@@ -554,7 +564,12 @@ id|struct_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_EXT_IRQ
+id|acpi_resource_ext_irq
+)paren
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_extended_irq_resource&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Point past the Descriptor to get the number of bytes consumed&n;&t; */
@@ -637,7 +652,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Only _LL and _HE polarity/trigger interrupts&n;&t;&t;&t; * are allowed (ACPI spec v1.0b ection 6.4.2.1),&n;&t;&t;&t; * so an error will occur if we reach this point&n;&t;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_DATA
 )paren
@@ -863,18 +878,18 @@ id|structure_size
 op_assign
 id|struct_size
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_extended_irq_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_extended_irq_stream
 id|acpi_rs_extended_irq_stream
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|linked_list
 comma
@@ -912,6 +927,11 @@ op_star
 id|temp_pointer
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_extended_irq_stream&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The descriptor field is static&n;&t; */
 op_star
@@ -1117,7 +1137,7 @@ op_minus
 l_int|3
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

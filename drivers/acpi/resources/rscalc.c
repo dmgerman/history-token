@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *              $Revision: 30 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *              $Revision: 32 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -11,11 +11,11 @@ id|MODULE_NAME
 l_string|&quot;rscalc&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_byte_stream_length&n; *&n; * PARAMETERS:  Linked_list         - Pointer to the resource linked list&n; *              Size_needed         - u32 pointer of the size buffer needed&n; *                                    to properly return the parsed data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it once, calculating&n; *              the size buffer needed to hold the linked list that conveys&n; *              the resource data.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_calculate_byte_stream_length
 id|acpi_rs_calculate_byte_stream_length
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 op_star
 id|linked_list
 comma
@@ -32,7 +32,7 @@ suffix:semicolon
 id|u32
 id|segment_size
 suffix:semicolon
-id|ACPI_RESOURCE_EXT_IRQ
+id|acpi_resource_ext_irq
 op_star
 id|ex_irq
 op_assign
@@ -42,6 +42,11 @@ id|u8
 id|done
 op_assign
 id|FALSE
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_calculate_byte_stream_length&quot;
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -316,7 +321,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; * so exit with an error&n;&t;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_INVALID_RESOURCE_TYPE
 )paren
@@ -335,7 +340,7 @@ id|linked_list
 op_assign
 id|POINTER_ADD
 (paren
-id|ACPI_RESOURCE
+id|acpi_resource
 comma
 id|linked_list
 comma
@@ -349,14 +354,14 @@ id|size_needed
 op_assign
 id|byte_stream_size_needed
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_list_length&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Byte_stream_buffer_length - Size of Byte_stream_buffer&n; *              Size_needed             - u32 pointer of the size buffer&n; *                                        needed to properly return the&n; *                                        parsed data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it once, calculating&n; *              the size buffer needed to hold the linked list that conveys&n; *              the resource data.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_calculate_list_length
 id|acpi_rs_calculate_list_length
 (paren
@@ -417,6 +422,11 @@ suffix:semicolon
 id|u8
 id|additional_bytes
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_calculate_list_length&quot;
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -452,7 +462,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_MEM24
+id|acpi_resource_mem24
 )paren
 suffix:semicolon
 r_break
@@ -497,7 +507,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_VENDOR
+id|acpi_resource_vendor
 )paren
 op_plus
 (paren
@@ -523,7 +533,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_MEM32
+id|acpi_resource_mem32
 )paren
 suffix:semicolon
 r_break
@@ -540,7 +550,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_FIXED_MEM32
+id|acpi_resource_fixed_mem32
 )paren
 suffix:semicolon
 r_break
@@ -613,7 +623,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_ADDRESS64
+id|acpi_resource_address64
 )paren
 op_plus
 (paren
@@ -695,7 +705,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_ADDRESS32
+id|acpi_resource_address32
 )paren
 op_plus
 (paren
@@ -777,7 +787,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_ADDRESS16
+id|acpi_resource_address16
 )paren
 op_plus
 (paren
@@ -891,7 +901,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_EXT_IRQ
+id|acpi_resource_ext_irq
 )paren
 op_plus
 (paren
@@ -996,7 +1006,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_IO
+id|acpi_resource_io
 )paren
 op_plus
 (paren
@@ -1068,7 +1078,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_DMA
+id|acpi_resource_dma
 )paren
 op_plus
 (paren
@@ -1119,7 +1129,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_START_DPF
+id|acpi_resource_start_dpf
 )paren
 suffix:semicolon
 r_break
@@ -1150,7 +1160,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_IO
+id|acpi_resource_io
 )paren
 suffix:semicolon
 r_break
@@ -1167,7 +1177,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_FIXED_IO
+id|acpi_resource_fixed_io
 )paren
 suffix:semicolon
 r_break
@@ -1217,7 +1227,7 @@ id|structure_size
 op_assign
 id|SIZEOF_RESOURCE
 (paren
-id|ACPI_RESOURCE_VENDOR
+id|acpi_resource_vendor
 )paren
 op_plus
 (paren
@@ -1252,7 +1262,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; *  so exit with an error&n;&t;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_INVALID_RESOURCE_TYPE
 )paren
@@ -1281,18 +1291,18 @@ id|size_needed
 op_assign
 id|buffer_size
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_pci_routing_table_length&n; *&n; * PARAMETERS:  Package_object          - Pointer to the package object&n; *              Buffer_size_needed      - u32 pointer of the size buffer&n; *                                        needed to properly return the&n; *                                        parsed data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Given a package representing a PCI routing table, this&n; *              calculates the size of the corresponding linked list of&n; *              descriptions.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_rs_calculate_pci_routing_table_length
 id|acpi_rs_calculate_pci_routing_table_length
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|package_object
 comma
@@ -1309,7 +1319,7 @@ id|temp_size_needed
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|top_object_list
@@ -1317,11 +1327,11 @@ suffix:semicolon
 id|u32
 id|index
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|package_element
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|sub_object_list
@@ -1331,6 +1341,11 @@ id|name_found
 suffix:semicolon
 id|u32
 id|table_index
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Rs_calculate_pci_routing_table_length&quot;
+)paren
 suffix:semicolon
 id|number_of_elements
 op_assign
@@ -1447,7 +1462,7 @@ op_add_assign
 (paren
 r_sizeof
 (paren
-id|PCI_ROUTING_TABLE
+id|pci_routing_table
 )paren
 op_minus
 l_int|4
@@ -1521,7 +1536,7 @@ id|ROUND_UP_TO_64_bITS
 id|temp_size_needed
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Point to the next ACPI_OPERAND_OBJECT&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Point to the next acpi_operand_object&n;&t;&t; */
 id|top_object_list
 op_increment
 suffix:semicolon
@@ -1534,10 +1549,10 @@ id|temp_size_needed
 op_plus
 r_sizeof
 (paren
-id|PCI_ROUTING_TABLE
+id|pci_routing_table
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

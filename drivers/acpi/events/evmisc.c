@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - ACPI device notification handler dispatch&n; *                       and ACPI Global Lock support&n; *              $Revision: 31 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - ACPI device notification handler dispatch&n; *                       and ACPI Global Lock support&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -12,11 +12,11 @@ id|MODULE_NAME
 l_string|&quot;evmisc&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ev_queue_notify_request
 id|acpi_ev_queue_notify_request
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 comma
@@ -24,21 +24,21 @@ id|u32
 id|notify_value
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|handler_obj
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|notify_info
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -49,6 +49,19 @@ l_string|&quot;Ev_queue_notify_request&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For value 1 (Ejection Request), some device method may need to be run.&n;&t; * For value 2 (Device Wake) if _PRW exists, the _PS0 method may need to be run.&n;&t; * For value 0x80 (Status Change) on the power button or sleep button,&n;&t; * initiate soft-off or sleep operation?&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Dispatching Notify(%X) on node %p&bslash;n&quot;
+comma
+id|notify_value
+comma
+id|node
+)paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -58,25 +71,72 @@ id|notify_value
 r_case
 l_int|0
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Notify value: Re-enumerate Devices&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Notify value: Ejection Request&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Notify value: Device Wake&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|0x80
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Notify value: Status Change&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Unknown Notify Value: %lx &bslash;n&quot;
+comma
+id|notify_value
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -249,6 +309,17 @@ id|handler_obj
 )paren
 (brace
 multiline_comment|/* There is no per-device notify handler for this device */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;No notify handler for node %p &bslash;n&quot;
+comma
+id|node
+)paren
+)paren
+suffix:semicolon
 )brace
 r_return
 (paren
@@ -266,12 +337,12 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|notify_info
 op_assign
 (paren
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 )paren
 id|context
@@ -287,9 +358,13 @@ id|global_context
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|handler_obj
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We will invoke a global notify handler if installed.&n;&t; * This is done _before_ we invoke the per-device handler attached to the device.&n;&t; */
 r_if
@@ -470,15 +545,20 @@ id|INTERRUPT_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for the global lock release event&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ev_init_global_lock_handler
 id|acpi_ev_init_global_lock_handler
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_init_global_lock_handler&quot;
+)paren
 suffix:semicolon
 id|acpi_gbl_global_lock_present
 op_assign
@@ -513,14 +593,14 @@ op_assign
 id|AE_OK
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attempt to gain ownership of the Global Lock.&n; *&n; *****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ev_acquire_global_lock
 id|acpi_ev_acquire_global_lock
 c_func
@@ -528,7 +608,7 @@ c_func
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -542,6 +622,11 @@ r_void
 op_star
 id|global_lock
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_acquire_global_lock&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Make sure that we actually have a global lock */
 r_if
 c_cond
@@ -550,7 +635,7 @@ op_logical_neg
 id|acpi_gbl_global_lock_present
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_GLOBAL_LOCK
 )paren
@@ -567,7 +652,7 @@ c_cond
 id|acpi_gbl_global_lock_acquired
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -581,7 +666,7 @@ op_logical_neg
 id|acpi_gbl_FACS
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -606,17 +691,35 @@ id|acquired
 )paren
 (brace
 multiline_comment|/* We got the lock */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Acquired the Global Lock&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|acpi_gbl_global_lock_acquired
 op_assign
 id|TRUE
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Did not get the lock.  The pending bit was set above, and we must now&n;&t; * wait until we get the global lock released interrupt.&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Waiting for the HW Global Lock&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;  * Acquire the global lock semaphore first.&n;&t;  * Since this wait will block, we must release the interpreter&n;&t;  */
 id|status
 op_assign
@@ -627,7 +730,7 @@ comma
 id|ACPI_UINT32_MAX
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -650,6 +753,11 @@ r_void
 op_star
 id|global_lock
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ev_release_global_lock&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -665,7 +773,7 @@ l_string|&quot;Global Lock has not be acquired, cannot release&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* One fewer thread has the global lock */
@@ -716,7 +824,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 eof

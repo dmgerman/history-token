@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ecgpe.c&n; *   $Revision: 26 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ecgpe.c&n; *   $Revision: 28 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;ec.h&quot;
@@ -87,6 +87,12 @@ comma
 l_char|&squot;F&squot;
 )brace
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_query_handler&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -94,7 +100,16 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid (NULL) context.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Evaluate _Qxx:&n;&t; * --------------&n;&t; * Evaluate corresponding _Qxx method.  Note that a zero query value&n;&t; * indicates a spurious EC_SCI (no such thing as _Q00).&n;&t; */
@@ -130,6 +145,19 @@ l_int|0x0F
 )paren
 )braket
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Evaluating [%s] for ec [%02x].&bslash;n&quot;
+comma
+id|object_name
+comma
+id|ec-&gt;device_handle
+)paren
+)paren
+suffix:semicolon
 id|bm_evaluate_object
 c_func
 (paren
@@ -142,7 +170,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_gpe_handler&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
@@ -155,7 +183,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -175,6 +203,12 @@ id|ec_status
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_gpe_handler&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -182,17 +216,29 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid (NULL) context.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* TBD: synchronize w/ transaction (ectransx). */
 multiline_comment|/*&n;&t; * EC_SCI?&n;&t; * -------&n;&t; * Check the EC_SCI bit to see if this is an EC_SCI event.  If not (e.g.&n;&t; * OBF/IBE) just return, as we already poll to detect these events.&n;&t; */
-id|ec_status
-op_assign
-id|acpi_os_in8
+id|acpi_os_read_port
 c_func
 (paren
 id|ec-&gt;status_port
+comma
+op_amp
+id|ec_status
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -206,9 +252,20 @@ id|EC_FLAG_SCI
 )paren
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;EC_SCI event detected on ec [%02x] - running query.&bslash;n&quot;
+comma
+id|ec-&gt;device_handle
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Run Query:&n;&t; * ----------&n;&t; * Query the EC to find out which _Qxx method we need to evaluate.&n;&t; * Note that successful completion of the query causes the EC_SCI&n;&t; * bit to be cleared (and thus clearing the interrupt source).&n;&t; */
 id|status
 op_assign
@@ -234,7 +291,16 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to send &squot;query command&squot; to EC.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 id|status
@@ -264,7 +330,16 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Error reading query data.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* TBD: un-synchronize w/ transaction (ectransx). */
@@ -276,7 +351,16 @@ op_logical_neg
 id|ec-&gt;query_data
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Spurious EC SCI detected.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Defer _Qxx Execution:&n;&t; * ---------------------&n;&t; * Can&squot;t evaluate this method now &squot;cause we&squot;re at interrupt-level.&n;&t; */
@@ -302,14 +386,23 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to defer _Qxx method evaluation.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_install_gpe_handler&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_install_gpe_handler
 id|ec_install_gpe_handler
 (paren
@@ -318,10 +411,16 @@ op_star
 id|ec
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_install_gpe_handler&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -330,8 +429,11 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Evaluate _GPE:&n;&t; * --------------&n;&t; * Evaluate the &quot;_GPE&quot; object (required) to find out which GPE bit&n;&t; * is used by this EC to signal events (SCIs).&n;&t; */
@@ -360,8 +462,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Install GPE Handler:&n;&t; * --------------------&n;&t; * Install a handler for this EC&squot;s GPE bit.&n;&t; */
@@ -390,20 +495,39 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;acpi_install_gpe_handler() failed for GPE bit [%02x] with status [%08x].&bslash;n&quot;
+comma
+id|ec-&gt;gpe_bit
+comma
+id|status
+)paren
+)paren
+suffix:semicolon
 id|ec-&gt;gpe_bit
 op_assign
 id|EC_GPE_UNKNOWN
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_remove_gpe_handler&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_remove_gpe_handler
 id|ec_remove_gpe_handler
 (paren
@@ -412,10 +536,16 @@ op_star
 id|ec
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_remove_gpe_handler&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -424,8 +554,11 @@ op_logical_neg
 id|ec
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -439,8 +572,11 @@ op_amp
 id|ec_gpe_handler
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

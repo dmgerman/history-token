@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -14,15 +14,15 @@ id|MODULE_NAME
 l_string|&quot;dswexec&quot;
 )paren
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_predicate_value&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the result of a predicate evaluation&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ds_get_predicate_value
 id|acpi_ds_get_predicate_value
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
@@ -30,14 +30,21 @@ id|u32
 id|has_result_obj
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_get_predicate_value&quot;
+comma
+id|walk_state
+)paren
 suffix:semicolon
 id|walk_state-&gt;control_state-&gt;common.state
 op_assign
@@ -68,7 +75,21 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not get result from predicate evaluation, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -97,7 +118,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -125,7 +146,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -146,7 +167,20 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;No predicate Obj_desc=%X State=%X&bslash;n&quot;
+comma
+id|obj_desc
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
@@ -161,6 +195,21 @@ op_ne
 id|ACPI_TYPE_INTEGER
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Bad predicate (not a number) Obj_desc=%X State=%X Type=%X&bslash;n&quot;
+comma
+id|obj_desc
+comma
+id|walk_state
+comma
+id|obj_desc-&gt;common.type
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
@@ -203,6 +252,19 @@ suffix:semicolon
 )brace
 id|cleanup
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Completed a predicate eval=%X Op=%X&bslash;n&quot;
+comma
+id|walk_state-&gt;control_state-&gt;common.value
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Break to debugger to display result */
 id|DEBUGGER_EXEC
 (paren
@@ -224,42 +286,53 @@ id|walk_state-&gt;control_state-&gt;common.state
 op_assign
 id|CONTROL_NORMAL
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_exec_begin_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been reached in the&n; *                                walk;  Arguments have not been evaluated yet.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the execution of control&n; *              methods.  This is where most operators and operands are&n; *              dispatched to the interpreter.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ds_exec_begin_op
 id|acpi_ds_exec_begin_op
 (paren
 id|u16
 id|opcode
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 op_star
 id|out_op
 )paren
 (brace
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|u8
+id|opcode_class
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_exec_begin_op&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -290,7 +363,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -322,7 +395,7 @@ op_assign
 id|op
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -343,6 +416,19 @@ id|CONTROL_CONDITIONAL_EXECUTING
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Exec predicate Op=%X State=%X&bslash;n&quot;
+comma
+id|op
+comma
+id|walk_state
+)paren
+)paren
+suffix:semicolon
 id|walk_state-&gt;control_state-&gt;common.state
 op_assign
 id|CONTROL_PREDICATE_EXECUTING
@@ -360,6 +446,16 @@ id|acpi_ps_get_opcode_info
 id|op-&gt;opcode
 )paren
 suffix:semicolon
+id|opcode_class
+op_assign
+(paren
+id|u8
+)paren
+id|ACPI_GET_OP_CLASS
+(paren
+id|op_info
+)paren
+suffix:semicolon
 multiline_comment|/* We want to send namepaths to the load code */
 r_if
 c_cond
@@ -369,7 +465,7 @@ op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
 (brace
-id|op_info-&gt;flags
+id|opcode_class
 op_assign
 id|OPTYPE_NAMED_OBJECT
 suffix:semicolon
@@ -378,10 +474,7 @@ multiline_comment|/*&n;&t; * Handle the opcode based upon the opcode type&n;&t; 
 r_switch
 c_cond
 (paren
-id|ACPI_GET_OP_CLASS
-(paren
-id|op_info
-)paren
+id|opcode_class
 )paren
 (brace
 r_case
@@ -403,7 +496,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -490,13 +583,13 @@ r_case
 id|OPTYPE_RECONFIGURATION
 suffix:colon
 r_case
-id|OPTYPE_INDEX
+id|OPTYPE_TRIADIC
 suffix:colon
 r_case
-id|OPTYPE_MATCH
+id|OPTYPE_QUADRADIC
 suffix:colon
 r_case
-id|OPTYPE_FATAL
+id|OPTYPE_HEXADIC
 suffix:colon
 r_case
 id|OPTYPE_CREATE_FIELD
@@ -517,27 +610,27 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Nothing to do here during method execution */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_exec_end_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the execution of control&n; *              methods.  The only thing we really need to do here is to&n; *              notice the beginning of IF, ELSE, and WHILE blocks.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ds_exec_end_op
 id|acpi_ds_exec_end_op
 (paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -548,23 +641,34 @@ suffix:semicolon
 id|u8
 id|optype
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|next_op
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|first_arg
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|result_obj
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
+suffix:semicolon
+id|u32
+id|i
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_exec_end_op&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 id|opcode
 op_assign
@@ -591,7 +695,18 @@ op_ne
 id|ACPI_OP_TYPE_OPCODE
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown opcode %X&bslash;n&quot;
+comma
+id|op-&gt;opcode
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_NOT_IMPLEMENTED
 )paren
@@ -653,7 +768,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -671,7 +786,18 @@ id|optype
 r_case
 id|OPTYPE_UNDEFINED
 suffix:colon
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Undefined opcode type Op=%X&bslash;n&quot;
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_NOT_IMPLEMENTED
 )paren
@@ -681,6 +807,19 @@ suffix:semicolon
 r_case
 id|OPTYPE_BOGUS
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Internal opcode=%X type Op=%X&bslash;n&quot;
+comma
+id|opcode
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -731,13 +870,13 @@ r_case
 id|OPTYPE_RECONFIGURATION
 suffix:colon
 r_case
-id|OPTYPE_INDEX
+id|OPTYPE_TRIADIC
 suffix:colon
 r_case
-id|OPTYPE_MATCH
+id|OPTYPE_QUADRADIC
 suffix:colon
 r_case
-id|OPTYPE_FATAL
+id|OPTYPE_HEXADIC
 suffix:colon
 multiline_comment|/* Build resolved operand stack */
 id|status
@@ -783,6 +922,111 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Resolve all operands */
+id|status
+op_assign
+id|acpi_ex_resolve_operands
+(paren
+id|opcode
+comma
+op_amp
+(paren
+id|walk_state-&gt;operands
+(braket
+id|walk_state-&gt;num_operands
+op_minus
+l_int|1
+)braket
+)paren
+comma
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* TBD: must pop and delete operands */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;[%s]: Could not resolve operands, %s&bslash;n&quot;
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|opcode
+)paren
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * On error, we must delete all the operands and clear the&n;&t;&t;&t; * operand stack&n;&t;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|walk_state-&gt;num_operands
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|acpi_ut_remove_reference
+(paren
+id|walk_state-&gt;operands
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|walk_state-&gt;operands
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|walk_state-&gt;num_operands
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|DUMP_OPERANDS
+(paren
+id|WALK_OPERANDS
+comma
+id|IMODE_EXECUTE
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|opcode
+)paren
+comma
+id|walk_state-&gt;num_operands
+comma
+l_string|&quot;after Ex_resolve_operands&quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -911,14 +1155,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_INDEX
+id|OPTYPE_TRIADIC
 suffix:colon
-multiline_comment|/* Type 2 opcode with 3 operands */
+multiline_comment|/* Opcode with 3 operands */
 multiline_comment|/* 3 Operands, 1 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_ex_index
+id|acpi_ex_triadic
 (paren
+id|opcode
+comma
 id|walk_state
 comma
 op_amp
@@ -928,14 +1174,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|OPTYPE_MATCH
+id|OPTYPE_QUADRADIC
 suffix:colon
-multiline_comment|/* Type 2 opcode with 6 operands */
+multiline_comment|/* Opcode with 4 operands */
+r_break
+suffix:semicolon
+r_case
+id|OPTYPE_HEXADIC
+suffix:colon
+multiline_comment|/* Opcode with 6 operands */
 multiline_comment|/* 6 Operands, 0 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_ex_match
+id|acpi_ex_hexadic
 (paren
+id|opcode
+comma
 id|walk_state
 comma
 op_amp
@@ -959,20 +1213,35 @@ id|walk_state
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|OPTYPE_FATAL
-suffix:colon
-multiline_comment|/* 3 Operands, 0 External_result, 0 Internal_result */
-id|status
-op_assign
-id|acpi_ex_fatal
+)brace
+multiline_comment|/* Clear the operand stack */
+r_for
+c_loop
 (paren
-id|walk_state
-)paren
+id|i
+op_assign
+l_int|0
 suffix:semicolon
-r_break
+id|i
+OL
+id|walk_state-&gt;num_operands
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|walk_state-&gt;operands
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
+id|walk_state-&gt;num_operands
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If a result object was returned from above, push it on the&n;&t;&t; * current result stack&n;&t;&t; */
 r_if
 c_cond
@@ -1021,6 +1290,17 @@ suffix:semicolon
 r_case
 id|OPTYPE_METHOD_CALL
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_DISPATCH
+comma
+l_string|&quot;Method invocation, Op=%X&bslash;n&quot;
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * (AML_METHODCALL) Op-&gt;Value-&gt;Arg-&gt;Node contains&n;&t;&t; * the method Node pointer&n;&t;&t; */
 multiline_comment|/* Next_op points to the op that holds the method name */
 id|next_op
@@ -1080,7 +1360,7 @@ op_assign
 id|AE_CTRL_TRANSFER
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Return now; we don&squot;t want to disturb anything,&n;&t;&t; * especially the operand count!&n;&t;&t; */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -1090,6 +1370,17 @@ suffix:semicolon
 r_case
 id|OPTYPE_CREATE_FIELD
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Executing Create_field Buffer/Index Op=%X&bslash;n&quot;
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ds_load2_end_op
@@ -1155,6 +1446,17 @@ id|op-&gt;opcode
 r_case
 id|AML_REGION_OP
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Executing Op_region Address/Length Op=%X&bslash;n&quot;
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_ds_eval_region_operands
@@ -1210,6 +1512,21 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unimplemented opcode, type=%X Opcode=%X Op=%X&bslash;n&quot;
+comma
+id|optype
+comma
+id|op-&gt;opcode
+comma
+id|op
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_NOT_IMPLEMENTED
@@ -1301,7 +1618,7 @@ id|walk_state-&gt;num_operands
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

@@ -3334,15 +3334,13 @@ id|toshoboe_init
 r_void
 )paren
 (brace
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|toshoboe_pci_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_void

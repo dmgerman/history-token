@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ectransx.c&n; *   $Revision: 21 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: ectransx.c&n; *   $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;ec.h&quot;
@@ -9,7 +9,7 @@ id|MODULE_NAME
 l_string|&quot;ectransx&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_io_wait&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_io_wait
 id|ec_io_wait
 (paren
@@ -68,12 +68,15 @@ id|EC_EVENT_OUTPUT_BUFFER_FULL
 suffix:colon
 r_do
 (brace
-id|ec_status
-op_assign
-id|acpi_os_in8
+id|acpi_os_read_port
 c_func
 (paren
 id|ec-&gt;status_port
+comma
+op_amp
+id|ec_status
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -88,7 +91,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-id|acpi_os_sleep_usec
+id|acpi_os_stall
 c_func
 (paren
 l_int|10
@@ -111,12 +114,15 @@ id|EC_EVENT_INPUT_BUFFER_EMPTY
 suffix:colon
 r_do
 (brace
-id|ec_status
-op_assign
-id|acpi_os_in8
+id|acpi_os_read_port
 c_func
 (paren
 id|ec-&gt;status_port
+comma
+op_amp
+id|ec_status
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -134,7 +140,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
-id|acpi_os_sleep_usec
+id|acpi_os_stall
 c_func
 (paren
 l_int|10
@@ -158,7 +164,7 @@ id|AE_TIME
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_io_read&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_io_read
 id|ec_io_read
 (paren
@@ -177,7 +183,7 @@ id|EC_EVENT
 id|wait_event
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -196,13 +202,18 @@ r_return
 id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
-op_star
-id|data
-op_assign
-id|acpi_os_in8
+id|acpi_os_read_port
 c_func
 (paren
 id|io_port
+comma
+(paren
+id|u32
+op_star
+)paren
+id|data
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -227,7 +238,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_io_write&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_io_write
 id|ec_io_write
 (paren
@@ -245,7 +256,7 @@ id|EC_EVENT
 id|wait_event
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -261,12 +272,14 @@ r_return
 id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
-id|acpi_os_out8
+id|acpi_os_write_port
 c_func
 (paren
 id|io_port
 comma
 id|data
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -291,7 +304,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_read&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_read
 id|ec_read
 (paren
@@ -307,10 +320,16 @@ op_star
 id|data
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_read&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -322,8 +341,11 @@ op_logical_neg
 id|data
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -349,8 +371,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Could not acquire Global Lock&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -378,8 +412,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to send &squot;read command&squot; to EC.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -406,8 +452,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to send &squot;read address&squot; to EC.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -436,12 +494,33 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Read data [%02x] from address [%02x] on ec [%02x].&bslash;n&quot;
+comma
+(paren
+op_star
+id|data
+)paren
+comma
+id|address
+comma
+id|ec-&gt;device_handle
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_write&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_write
 id|ec_write
 (paren
@@ -456,10 +535,16 @@ id|u8
 id|data
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_write&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -467,8 +552,11 @@ c_cond
 op_logical_neg
 id|ec
 )paren
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -493,8 +581,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Could not acquire Global Lock&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -522,8 +622,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to send &squot;write command&squot; to EC.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -550,8 +662,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to send &squot;write address&squot; to EC.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 id|status
@@ -578,8 +702,20 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to send &squot;write data&squot; to EC.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -594,12 +730,30 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Wrote data [%02x] to address [%02x] on ec [%02x].&bslash;n&quot;
+comma
+id|data
+comma
+id|address
+comma
+id|ec-&gt;device_handle
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    ec_transaction&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|ec_transaction
 id|ec_transaction
 (paren
@@ -612,10 +766,16 @@ op_star
 id|request
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ec_transaction&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -627,8 +787,11 @@ op_logical_neg
 id|request
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Obtain mutex to serialize all EC transactions.&n;&t; */
@@ -654,8 +817,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Perform the transaction.&n;&t; */
@@ -720,8 +886,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 eof

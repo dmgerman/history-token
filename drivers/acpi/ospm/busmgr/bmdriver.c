@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmdriver.c&n; *   $Revision: 17 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmdriver.c&n; *   $Revision: 21 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -9,8 +9,8 @@ id|MODULE_NAME
 l_string|&quot;bmdriver&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                            External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_power_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_power_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_device_power_state
 id|bm_get_device_power_state
 (paren
@@ -22,7 +22,7 @@ op_star
 id|state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -127,8 +127,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_set_device_power_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_set_device_power_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_set_device_power_state
 id|bm_set_device_power_state
 (paren
@@ -139,7 +139,7 @@ id|BM_POWER_STATE
 id|state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -222,8 +222,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_status&n; *&n; * PARAMETERS:  &n; *    device_handle is really an index number into the array of BM_DEVICE&n; *                  structures in info_list.  This data item is passed to&n; *                  the registered program&squot;s &quot;notify&quot; callback.  It is used&n; *                  to retrieve the specific BM_DEVICE structure instance&n; *                  associated with the callback.  &n; *    device_status is a pointer that receives the result of processing&n; *                  the device&squot;s associated ACPI _STA.&n; *&n; * RETURN:&n; *    The ACPI_STATUS value indicates success AE_OK or failure of the function&n; *&n; * DESCRIPTION: Evaluates the device&squot;s ACPI _STA, if it is present.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_status&n; *&n; * PARAMETERS:&n; *    device_handle is really an index number into the array of BM_DEVICE&n; *                  structures in info_list.  This data item is passed to&n; *                  the registered program&squot;s &quot;notify&quot; callback.  It is used&n; *                  to retrieve the specific BM_DEVICE structure instance&n; *                  associated with the callback.&n; *    device_status is a pointer that receives the result of processing&n; *                  the device&squot;s associated ACPI _STA.&n; *&n; * RETURN:&n; *    The acpi_status value indicates success AE_OK or failure of the function&n; *&n; * DESCRIPTION: Evaluates the device&squot;s ACPI _STA, if it is present.&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_device_status
 id|bm_get_device_status
 (paren
@@ -235,7 +235,7 @@ op_star
 id|device_status
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -384,8 +384,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_info&n; *&n; * PARAMETERS:&n; *    device_handle An index used to retrieve the associated BM_DEVICE info.&n; *    device        A pointer to a BM_DEVICE structure instance pointer.&n; *                  This pointed to BM_DEVICE structure will contain the&n; *                  this device&squot;s information.&n; *&n; * RETURN:&n; *    The ACPI_STATUS value indicates success AE_OK or failure of the function&n; *&n; * DESCRIPTION:&n; *    Using the device_handle this function retrieves this device&squot;s&n; *    BM_DEVICE structure instance and save&squot;s it in device.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_info&n; *&n; * PARAMETERS:&n; *    device_handle An index used to retrieve the associated BM_DEVICE info.&n; *    device        A pointer to a BM_DEVICE structure instance pointer.&n; *                  This pointed to BM_DEVICE structure will contain the&n; *                  this device&squot;s information.&n; *&n; * RETURN:&n; *    The acpi_status value indicates success AE_OK or failure of the function&n; *&n; * DESCRIPTION:&n; *    Using the device_handle this function retrieves this device&squot;s&n; *    BM_DEVICE structure instance and save&squot;s it in device.&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_device_info
 id|bm_get_device_info
 (paren
@@ -398,7 +398,7 @@ op_star
 id|device
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -475,8 +475,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_context&n; *&n; *    device_handle An index used to retrieve the associated BM_DEVICE info.&n; *    context       A pointer to a BM_DRIVER_CONTEXT structure instance.&n; *&n; * RETURN:&n; *    The ACPI_STATUS value indicates success AE_OK or failure of the function&n; *&n; * DESCRIPTION:&n; *    Using the device_handle this function retrieves this device&squot;s&n; *    BM_DRIVER_CONTEXT structure instance and save&squot;s it in context.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_device_context&n; *&n; *    device_handle An index used to retrieve the associated BM_DEVICE info.&n; *    context       A pointer to a BM_DRIVER_CONTEXT structure instance.&n; *&n; * RETURN:&n; *    The acpi_status value indicates success AE_OK or failure of the function&n; *&n; * DESCRIPTION:&n; *    Using the device_handle this function retrieves this device&squot;s&n; *    BM_DRIVER_CONTEXT structure instance and save&squot;s it in context.&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_device_context
 id|bm_get_device_context
 (paren
@@ -488,7 +488,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -581,8 +581,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_register_driver&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_register_driver&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_register_driver
 id|bm_register_driver
 (paren
@@ -595,7 +595,7 @@ op_star
 id|driver
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_NOT_FOUND
@@ -694,7 +694,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Install driver:&n;&t; * ----------------&n;&t; * For each match, record the driver information and execute the &n;&t; * driver&squot;s Notify() funciton (if present) to notify the driver&n;&t; * of the device&squot;s presence.&n;&t; */
+multiline_comment|/*&n;&t; * Install driver:&n;&t; * ----------------&n;&t; * For each match, record the driver information and execute the&n;&t; * driver&squot;s Notify() funciton (if present) to notify the driver&n;&t; * of the device&squot;s presence.&n;&t; */
 r_for
 c_loop
 (paren
@@ -747,7 +747,7 @@ op_amp
 id|node-&gt;device
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Make sure another driver hasn&squot;t already registered for &n;&t;&t; * this device. &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure another driver hasn&squot;t already registered for&n;&t;&t; * this device.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -758,12 +758,11 @@ id|device
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Another driver has already registered for device [%02x].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -773,12 +772,11 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Registering driver for device [%02x].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -834,8 +832,8 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_unregister_driver&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_unregister_driver&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_unregister_driver
 id|bm_unregister_driver
 (paren
@@ -848,7 +846,7 @@ op_star
 id|driver
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_NOT_FOUND
@@ -1000,7 +998,7 @@ op_amp
 id|node-&gt;device
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Make sure driver has really registered for this device. &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure driver has really registered for this device.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1012,12 +1010,11 @@ id|device
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Driver hasn&squot;t registered for device [%02x].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -1027,12 +1024,11 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Unregistering driver for device [%02x].&bslash;n&quot;
 comma
 id|device-&gt;handle

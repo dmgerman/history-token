@@ -7710,6 +7710,14 @@ c_func
 id|atm_dev
 )paren
 suffix:semicolon
+id|err_out_free_fs_dev
+suffix:colon
+id|kfree
+c_func
+(paren
+id|fs_dev
+)paren
+suffix:semicolon
 id|err_out
 suffix:colon
 r_return

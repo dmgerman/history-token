@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 45 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbdisply - debug display commands&n; *              $Revision: 52 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -91,12 +91,13 @@ r_void
 DECL|function|acpi_db_dump_parser_descriptor
 id|acpi_db_dump_parser_descriptor
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 )paren
 (brace
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|info
 suffix:semicolon
@@ -179,7 +180,7 @@ r_void
 op_star
 id|obj_ptr
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -194,10 +195,10 @@ id|buffer
 l_int|80
 )braket
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|ret_buf
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -364,7 +365,7 @@ id|obj_ptr
 comma
 r_sizeof
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 )paren
 )paren
 )paren
@@ -412,7 +413,7 @@ id|obj_ptr
 comma
 r_sizeof
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 )paren
 )paren
 )paren
@@ -433,7 +434,7 @@ id|obj_ptr
 comma
 r_sizeof
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 )paren
 comma
 id|display
@@ -474,7 +475,7 @@ id|obj_ptr
 comma
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 )paren
 )paren
 )paren
@@ -495,7 +496,7 @@ id|obj_ptr
 comma
 r_sizeof
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 )paren
 comma
 id|display
@@ -506,7 +507,7 @@ suffix:semicolon
 id|acpi_db_dump_parser_descriptor
 (paren
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 )paren
 id|obj_ptr
@@ -619,7 +620,7 @@ id|node
 comma
 r_sizeof
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 )paren
 )paren
 )paren
@@ -644,7 +645,7 @@ id|node
 comma
 r_sizeof
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 )paren
 comma
 id|display
@@ -682,7 +683,7 @@ id|node-&gt;object
 comma
 r_sizeof
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 )paren
 )paren
 )paren
@@ -703,7 +704,7 @@ id|node-&gt;object
 comma
 r_sizeof
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 )paren
 comma
 id|display
@@ -725,7 +726,7 @@ r_void
 DECL|function|acpi_db_decode_internal_object
 id|acpi_db_decode_internal_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
@@ -764,9 +765,17 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; %.8X&quot;
+l_string|&quot; %.8X%.8X&quot;
 comma
+id|HIDWORD
+(paren
 id|obj_desc-&gt;integer.value
+)paren
+comma
+id|LODWORD
+(paren
+id|obj_desc-&gt;integer.value
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -776,13 +785,35 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;(%d) &bslash;&quot;%.16s&bslash;&quot;...&quot;
+l_string|&quot;(%d) &bslash;&quot;%.24s&quot;
 comma
 id|obj_desc-&gt;string.length
 comma
 id|obj_desc-&gt;string.pointer
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;string.length
+OG
+l_int|24
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;...&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;&bslash;&quot;&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -838,11 +869,11 @@ r_void
 DECL|function|acpi_db_display_internal_object
 id|acpi_db_display_internal_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
@@ -910,7 +941,7 @@ comma
 op_amp
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_desc
@@ -922,7 +953,7 @@ id|acpi_ut_get_type_name
 (paren
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_desc
@@ -937,7 +968,7 @@ c_cond
 (paren
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_desc
@@ -959,7 +990,7 @@ c_cond
 (paren
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|obj_desc
@@ -989,11 +1020,6 @@ id|ACPI_DESC_TYPE_INTERNAL
 )paren
 )paren
 (brace
-id|acpi_os_printf
-(paren
-l_string|&quot;&lt;Obj&gt; &quot;
-)paren
-suffix:semicolon
 id|type
 op_assign
 id|obj_desc-&gt;common.type
@@ -1037,7 +1063,7 @@ id|AML_ZERO_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Const]   Number %.8X&quot;
+l_string|&quot;[Const]         Zero (0) [Null Target]&quot;
 comma
 l_int|0
 )paren
@@ -1049,9 +1075,7 @@ id|AML_ONES_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Const]   Number %.8X&quot;
-comma
-id|ACPI_UINT32_MAX
+l_string|&quot;[Const]         Ones (0xFFFFFFFFFFFFFFFF) [No Limit]&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1061,9 +1085,19 @@ id|AML_ONE_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Const]   Number %.8X&quot;
+l_string|&quot;[Const]         One (1)&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_REVISION_OP
+suffix:colon
+id|acpi_os_printf
+(paren
+l_string|&quot;[Const]         Revision (%X)&quot;
 comma
-l_int|1
+id|ACPI_CA_VERSION
 )paren
 suffix:semicolon
 r_break
@@ -1073,7 +1107,7 @@ id|AML_LOCAL_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Local%d] &quot;
+l_string|&quot;[Local%d]&quot;
 comma
 id|obj_desc-&gt;reference.offset
 )paren
@@ -1093,6 +1127,13 @@ id|obj_desc-&gt;reference.offset
 dot
 id|object
 suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot; %p&quot;
+comma
+id|obj_desc
+)paren
+suffix:semicolon
 id|acpi_db_decode_internal_object
 (paren
 id|obj_desc
@@ -1106,7 +1147,7 @@ id|AML_ARG_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;[Arg%d]   &quot;
+l_string|&quot;[Arg%d] &quot;
 comma
 id|obj_desc-&gt;reference.offset
 )paren
@@ -1125,6 +1166,13 @@ id|obj_desc-&gt;reference.offset
 )braket
 dot
 id|object
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot; %p&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 id|acpi_db_decode_internal_object
 (paren
@@ -1170,6 +1218,11 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
+l_string|&quot;&lt;Obj&gt; &quot;
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
 l_string|&quot;         &quot;
 )paren
 suffix:semicolon
@@ -1201,32 +1254,33 @@ r_void
 DECL|function|acpi_db_display_method_info
 id|acpi_db_display_method_info
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|start_op
 )paren
 (brace
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|root_op
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 suffix:semicolon
-id|ACPI_OPCODE_INFO
+r_const
+id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
@@ -1508,15 +1562,15 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -1609,11 +1663,11 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
@@ -1623,7 +1677,7 @@ suffix:semicolon
 id|u32
 id|concurrency
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -1728,11 +1782,11 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
@@ -1741,7 +1795,7 @@ id|num_results
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -1845,11 +1899,11 @@ r_void
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -1920,11 +1974,11 @@ r_void
 DECL|function|acpi_db_display_result_object
 id|acpi_db_display_result_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
@@ -1963,11 +2017,11 @@ r_void
 DECL|function|acpi_db_display_argument_object
 id|acpi_db_display_argument_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren

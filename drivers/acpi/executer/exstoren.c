@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -14,34 +14,39 @@ id|MODULE_NAME
 l_string|&quot;exstoren&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_object&n; *&n; * PARAMETERS:  Source_desc_ptr     - Pointer to the source object&n; *              Target_type         - Current type of the target&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status, resolved object in Source_desc_ptr.&n; *&n; * DESCRIPTION: Resolve an object.  If the object is a reference, dereference&n; *              it and return the actual object in the Source_desc_ptr.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_resolve_object
 id|acpi_ex_resolve_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|source_desc_ptr
 comma
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|target_type
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|source_desc
 op_assign
 op_star
 id|source_desc_ptr
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_resolve_object&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure we have a Source that can be stored in the target&n;&t; */
 r_switch
@@ -136,6 +141,30 @@ id|ACPI_TYPE_STRING
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * Conversion successful but still not a valid type&n;&t;&t;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Cannot assign type %s to %s (must be type Int/Str/Buf)&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+(paren
+op_star
+id|source_desc_ptr
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+comma
+id|acpi_ut_get_type_name
+(paren
+id|target_type
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
@@ -148,6 +177,15 @@ r_case
 id|INTERNAL_TYPE_ALIAS
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Aliases are resolved by Acpi_ex_prep_operands&n;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Store into Alias - should never happen&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_INTERNAL
@@ -163,45 +201,50 @@ multiline_comment|/*&n;&t;&t; * All other types than Alias and the various Field
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object&n; *&n; * PARAMETERS:  Source_desc         - Object to store&n; *              Target_type         - Current type of the target&n; *              Target_desc_ptr     - Pointer to the target&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: &quot;Store&quot; an object to another object.  This may include&n; *              converting the source type to the target type (implicit&n; *              conversion), and a copy of the value of the source to&n; *              the target.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_store_object
 id|acpi_ex_store_object
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|source_desc
 comma
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|target_type
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|target_desc_ptr
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|target_desc
 op_assign
 op_star
 id|target_desc_ptr
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_store_object&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Perform the &quot;implicit conversion&quot; of the source to the current type&n;&t; * of the target - As per the ACPI specification.&n;&t; *&n;&t; * If no conversion performed, Source_desc is left alone, otherwise it&n;&t; * is updated with a new object.&n;&t; */
 id|status
@@ -225,7 +268,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -310,6 +353,20 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t; * All other types come here.&n;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Store into type %s not implemented&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|target_type
+)paren
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_NOT_IMPLEMENTED
@@ -317,7 +374,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

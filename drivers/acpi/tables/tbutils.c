@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -10,14 +10,14 @@ id|MODULE_NAME
 l_string|&quot;tbutils&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_handle_to_object&n; *&n; * PARAMETERS:  Table_id            - Id for which the function is searching&n; *              Table_desc          - Pointer to return the matching table&n; *                                      descriptor.&n; *&n; * RETURN:      Search the tables to find one with a matching Table_id and&n; *              return a pointer to that table descriptor.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_handle_to_object
 id|acpi_tb_handle_to_object
 (paren
 id|u16
 id|table_id
 comma
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 op_star
 id|table_desc
@@ -26,9 +26,14 @@ id|table_desc
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|list_head
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Tb_handle_to_object&quot;
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -92,6 +97,17 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Table_id=%X does not exist&bslash;n&quot;
+comma
+id|table_id
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_BAD_PARAMETER
@@ -111,11 +127,11 @@ id|where
 id|u32
 id|i
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_desc
 suffix:semicolon
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table
 suffix:semicolon
@@ -276,16 +292,16 @@ id|FALSE
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  Table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_validate_table_header
 id|acpi_tb_validate_table_header
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_header
 )paren
 (brace
-id|ACPI_NAME
+id|acpi_name
 id|signature
 suffix:semicolon
 id|PROC_NAME
@@ -304,11 +320,22 @@ id|table_header
 comma
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Cannot read table header at %p&bslash;n&quot;
+comma
+id|table_header
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_BAD_ADDRESS
@@ -335,6 +362,20 @@ id|signature
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Table signature at %p [%X] has invalid characters&bslash;n&quot;
+comma
+id|table_header
+comma
+op_amp
+id|signature
+)paren
+)paren
+suffix:semicolon
 id|REPORT_WARNING
 (paren
 (paren
@@ -342,6 +383,16 @@ l_string|&quot;Invalid table signature %4.4s found&bslash;n&quot;
 comma
 op_amp
 id|signature
+)paren
+)paren
+suffix:semicolon
+id|DUMP_BUFFER
+(paren
+id|table_header
+comma
+r_sizeof
+(paren
+id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
@@ -359,14 +410,38 @@ id|table_header-&gt;length
 OL
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid length in table header %p name %4.4s&bslash;n&quot;
+comma
+id|table_header
+comma
+op_amp
+id|signature
+)paren
+)paren
+suffix:semicolon
 id|REPORT_WARNING
 (paren
 (paren
 l_string|&quot;Invalid table header length found&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|DUMP_BUFFER
+(paren
+id|table_header
+comma
+r_sizeof
+(paren
+id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
@@ -383,7 +458,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_map_acpi_table&n; *&n; * PARAMETERS:  Physical_address        - Physical address of table to map&n; *              *Size                   - Size of the table.  If zero, the size&n; *                                        from the table header is used.&n; *                                        Actual size is returned here.&n; *              **Logical_address       - Logical address of mapped table&n; *&n; * RETURN:      Logical address of the mapped table.&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_map_acpi_table
 id|acpi_tb_map_acpi_table
 (paren
@@ -394,13 +469,13 @@ id|u32
 op_star
 id|size
 comma
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 op_star
 id|logical_address
 )paren
 (brace
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table
 suffix:semicolon
@@ -410,10 +485,15 @@ op_assign
 op_star
 id|size
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Tb_map_acpi_table&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* If size is zero, look at the table header to get the actual size */
 r_if
@@ -436,7 +516,7 @@ id|physical_address
 comma
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 comma
 (paren
@@ -483,7 +563,7 @@ id|table
 comma
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
@@ -537,6 +617,21 @@ id|status
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Mapped memory for ACPI table, length=%d(%X) at %p&bslash;n&quot;
+comma
+id|table_size
+comma
+id|table_size
+comma
+id|table
+)paren
+)paren
+suffix:semicolon
 op_star
 id|size
 op_assign
@@ -554,11 +649,11 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_verify_table_checksum&n; *&n; * PARAMETERS:  *Table_header           - ACPI table to verify&n; *&n; * RETURN:      8 bit checksum of table&n; *&n; * DESCRIPTION: Does an 8 bit checksum of table and returns status.  A correct&n; *              table should have a checksum of 0.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_tb_verify_table_checksum
 id|acpi_tb_verify_table_checksum
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 id|table_header
 )paren
@@ -566,10 +661,15 @@ id|table_header
 id|u8
 id|checksum
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Tb_verify_table_checksum&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Compute the checksum on the table */
 id|checksum
@@ -605,7 +705,7 @@ op_assign
 id|AE_BAD_CHECKSUM
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

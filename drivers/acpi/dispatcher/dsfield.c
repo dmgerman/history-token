@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -19,33 +19,33 @@ mdefine_line|#define FIELD_LOCK_RULE_MASK        0x10
 DECL|macro|FIELD_UPDATE_RULE_MASK
 mdefine_line|#define FIELD_UPDATE_RULE_MASK      0x60
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new field in the specified operation region&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ds_create_field
 id|acpi_ds_create_field
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|region_node
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_AML_ERROR
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -56,6 +56,13 @@ id|u32
 id|field_bit_position
 op_assign
 l_int|0
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_create_field&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 multiline_comment|/* First arg is the name of the parent Op_region */
 id|arg
@@ -98,7 +105,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -189,7 +196,7 @@ op_star
 op_amp
 (paren
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 )paren
 id|arg
@@ -220,7 +227,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -251,7 +258,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -270,44 +277,44 @@ op_assign
 id|arg-&gt;next
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_bank_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new bank field in the specified operation region&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ds_create_bank_field
 id|acpi_ds_create_bank_field
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|region_node
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_AML_ERROR
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|register_node
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -321,6 +328,13 @@ id|u32
 id|field_bit_position
 op_assign
 l_int|0
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_create_bank_field&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 multiline_comment|/* First arg is the name of the parent Op_region */
 id|arg
@@ -363,7 +377,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -406,7 +420,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -419,7 +433,7 @@ id|arg-&gt;next
 suffix:semicolon
 id|bank_value
 op_assign
-id|arg-&gt;value.integer
+id|arg-&gt;value.integer32
 suffix:semicolon
 multiline_comment|/* Next arg is the field flags */
 id|arg
@@ -428,10 +442,7 @@ id|arg-&gt;next
 suffix:semicolon
 id|field_flags
 op_assign
-(paren
-id|u8
-)paren
-id|arg-&gt;value.integer
+id|arg-&gt;value.integer8
 suffix:semicolon
 multiline_comment|/* Each remaining arg is a Named Field */
 id|arg
@@ -505,7 +516,7 @@ op_star
 op_amp
 (paren
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 )paren
 id|arg
@@ -536,7 +547,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -571,7 +582,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -590,46 +601,46 @@ op_assign
 id|arg-&gt;next
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_index_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new index field in the specified operation region&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ds_create_index_field
 id|acpi_ds_create_index_field
 (paren
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|region_node
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|index_register_node
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|data_register_node
 suffix:semicolon
@@ -640,6 +651,13 @@ id|u32
 id|field_bit_position
 op_assign
 l_int|0
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ds_create_index_field&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 id|arg
 op_assign
@@ -677,7 +695,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -719,7 +737,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -809,7 +827,7 @@ op_star
 op_amp
 (paren
 (paren
-id|ACPI_PARSE2_OBJECT
+id|acpi_parse2_object
 op_star
 )paren
 id|arg
@@ -840,7 +858,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -873,7 +891,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -888,6 +906,17 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid opcode in field list: %X&bslash;n&quot;
+comma
+id|arg-&gt;opcode
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_ERROR
@@ -900,7 +929,7 @@ op_assign
 id|arg-&gt;next
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module name: bm.h&n; *   $Revision: 39 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module name: bm.h&n; *   $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __BM_H__
 DECL|macro|__BM_H__
@@ -55,7 +55,7 @@ DECL|macro|BM_NOTIFY_BUS_MODE_MISMATCH
 mdefine_line|#define BM_NOTIFY_BUS_MODE_MISMATCH ((BM_NOTIFY) 0x06)
 DECL|macro|BM_NOTIFY_POWER_FAULT
 mdefine_line|#define BM_NOTIFY_POWER_FAULT&t;((BM_NOTIFY) 0x07)
-multiline_comment|/*&n; * These are a higher-level abstraction of ACPI notifications, intended&n; * for consumption by driver modules to facilitate PnP.&n; */
+multiline_comment|/*&n; * These are a higher-level abstraction of ACPI notifications, intended&n; * for consumption by driver modules to facilitate Pn_p.&n; */
 DECL|macro|BM_NOTIFY_UNKNOWN
 mdefine_line|#define BM_NOTIFY_UNKNOWN&t;((BM_NOTIFY) 0x00)
 DECL|macro|BM_NOTIFY_DEVICE_ADDED
@@ -270,7 +270,7 @@ id|BM_HANDLE
 id|handle
 suffix:semicolon
 DECL|member|acpi_handle
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 suffix:semicolon
 DECL|member|flags
@@ -314,7 +314,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|status
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 DECL|member|command
@@ -326,7 +326,7 @@ id|BM_HANDLE
 id|handle
 suffix:semicolon
 DECL|member|buffer
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
 DECL|typedef|BM_REQUEST
@@ -344,7 +344,7 @@ suffix:semicolon
 multiline_comment|/* Notification Callback Function */
 r_typedef
 DECL|typedef|BM_DRIVER_NOTIFY
-id|ACPI_STATUS
+id|acpi_status
 (paren
 op_star
 id|BM_DRIVER_NOTIFY
@@ -364,7 +364,7 @@ suffix:semicolon
 multiline_comment|/* Request Callback Function */
 r_typedef
 DECL|typedef|BM_DRIVER_REQUEST
-id|ACPI_STATUS
+id|acpi_status
 (paren
 op_star
 id|BM_DRIVER_REQUEST
@@ -482,19 +482,19 @@ DECL|macro|BM_IS_POWER_STATE
 mdefine_line|#define BM_IS_POWER_STATE(d)&t;(d-&gt;power.flags &amp; BM_FLAGS_POWER_STATE)
 multiline_comment|/*****************************************************************************&n; *                             Function Prototypes&n; *****************************************************************************/
 multiline_comment|/* bm.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_terminate
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_status
 (paren
 id|BM_DEVICE
@@ -502,10 +502,10 @@ op_star
 id|device
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_handle
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
 id|BM_HANDLE
@@ -513,13 +513,13 @@ op_star
 id|device_handle
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_node
 (paren
 id|BM_HANDLE
 id|device_handle
 comma
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
 id|BM_NODE
@@ -529,7 +529,7 @@ id|node
 )paren
 suffix:semicolon
 multiline_comment|/* bmsearch.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_search
 c_func
 (paren
@@ -549,7 +549,7 @@ multiline_comment|/* bmnotify.c */
 r_void
 id|bm_notify
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
 id|u32
@@ -561,7 +561,7 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/* bm_request.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_request
 (paren
 id|BM_REQUEST
@@ -570,7 +570,7 @@ id|request_info
 )paren
 suffix:semicolon
 multiline_comment|/* bmdriver.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_device_power_state
 (paren
 id|BM_HANDLE
@@ -581,7 +581,7 @@ op_star
 id|state
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_set_device_power_state
 (paren
 id|BM_HANDLE
@@ -591,7 +591,7 @@ id|BM_POWER_STATE
 id|state
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_device_status
 (paren
 id|BM_HANDLE
@@ -602,7 +602,7 @@ op_star
 id|device_status
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_device_info
 (paren
 id|BM_HANDLE
@@ -614,7 +614,7 @@ op_star
 id|device_info
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_device_context
 (paren
 id|BM_HANDLE
@@ -625,7 +625,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_register_driver
 (paren
 id|BM_DEVICE_ID
@@ -637,7 +637,7 @@ op_star
 id|driver
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_unregister_driver
 (paren
 id|BM_DEVICE_ID
@@ -650,7 +650,7 @@ id|driver
 )paren
 suffix:semicolon
 multiline_comment|/* bmpm.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_pm_capabilities
 (paren
 id|BM_NODE
@@ -658,7 +658,7 @@ op_star
 id|node
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_get_power_state
 (paren
 id|BM_NODE
@@ -666,7 +666,7 @@ op_star
 id|node
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_set_power_state
 (paren
 id|BM_NODE
@@ -678,23 +678,23 @@ id|target_state
 )paren
 suffix:semicolon
 multiline_comment|/* bmpower.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_pr_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_pr_terminate
 (paren
 r_void
 )paren
 suffix:semicolon
 multiline_comment|/* bmutils.c */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_cast_buffer
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 comma
@@ -707,10 +707,10 @@ id|u32
 id|length
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_copy_to_buffer
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 comma
@@ -722,47 +722,47 @@ id|u32
 id|length
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_extract_package_data
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|package
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|format
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_evaluate_object
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
-id|ACPI_OBJECT_LIST
+id|acpi_object_list
 op_star
 id|arguments
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_evaluate_simple_integer
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
 id|u32
@@ -770,13 +770,13 @@ op_star
 id|data
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bm_evaluate_reference_list
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
 id|BM_HANDLE_LIST
@@ -785,7 +785,7 @@ id|reference_list
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI Bus Driver OSL */
-id|ACPI_STATUS
+id|acpi_status
 id|bm_osl_generate_event
 (paren
 id|BM_HANDLE

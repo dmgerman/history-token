@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmpm.c&n; *   $Revision: 10 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmpm.c&n; *   $Revision: 14 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -10,8 +10,8 @@ id|MODULE_NAME
 l_string|&quot;bmpm&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *                             Internal Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_inferred_power_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_inferred_power_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_inferred_power_state
 id|bm_get_inferred_power_state
 (paren
@@ -20,7 +20,7 @@ op_star
 id|device
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -94,7 +94,7 @@ id|device-&gt;power.state
 op_assign
 id|ACPI_STATE_D3
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate Power State:&n;&t; * ----------------------&n;&t; * Try to infer the devices&squot;s power state by checking the state of &n;&t; * the devices&squot;s power resources.  We start by evaluating _PR0&n;&t; * (resource requirements at D0) and work through _PR1 and _PR2.&n;&t; * We know the current devices power state when all resources (for &n;&t; * a give Dx state) are ON.  If no power resources are on then the &n;&t; * device is assumed to be off (D3).&n;&t; */
+multiline_comment|/*&n;&t; * Calculate Power State:&n;&t; * ----------------------&n;&t; * Try to infer the devices&squot;s power state by checking the state of&n;&t; * the devices&squot;s power resources.  We start by evaluating _PR0&n;&t; * (resource requirements at D0) and work through _PR1 and _PR2.&n;&t; * We know the current devices power state when all resources (for&n;&t; * a give Dx state) are ON.  If no power resources are on then the&n;&t; * device is assumed to be off (D3).&n;&t; */
 r_for
 c_loop
 (paren
@@ -190,8 +190,8 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *                             External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_power_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_power_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_power_state
 id|bm_get_power_state
 (paren
@@ -200,7 +200,7 @@ op_star
 id|node
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -245,7 +245,7 @@ id|device-&gt;power.state
 op_assign
 id|ACPI_STATE_UNKNOWN
 suffix:semicolon
-multiline_comment|/*&n;&t; * Power Control?&n;&t; * --------------&n;&t; * If this device isn&squot;t directly power manageable (e.g. doesn&squot;t &n;&t; * include _PR0/_PS0) then there&squot;s nothing to do (state is static).&n;&t; */
+multiline_comment|/*&n;&t; * Power Control?&n;&t; * --------------&n;&t; * If this device isn&squot;t directly power manageable (e.g. doesn&squot;t&n;&t; * include _PR0/_PS0) then there&squot;s nothing to do (state is static).&n;&t; */
 r_if
 c_cond
 (paren
@@ -331,12 +331,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Device [%02x] is at power state [D%d].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -348,12 +347,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Error getting power state for device [%02x]&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -368,8 +366,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_set_power_state&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_set_power_state&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_set_power_state
 id|bm_set_power_state
 (paren
@@ -381,7 +379,7 @@ id|BM_POWER_STATE
 id|state
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -493,7 +491,7 @@ op_amp
 id|node-&gt;parent-&gt;device
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Power Control?&n;&t; * --------------&n;&t; * If this device isn&squot;t directly power manageable (e.g. doesn&squot;t &n;&t; * include _PR0/_PS0) then return an error (can&squot;t set state).&n;&t; */
+multiline_comment|/*&n;&t; * Power Control?&n;&t; * --------------&n;&t; * If this device isn&squot;t directly power manageable (e.g. doesn&squot;t&n;&t; * include _PR0/_PS0) then return an error (can&squot;t set state).&n;&t; */
 r_if
 c_cond
 (paren
@@ -540,12 +538,11 @@ OL
 id|parent_device-&gt;power.state
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Cannot set device [%02x] to a higher-powered state than parent_device.&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -559,7 +556,7 @@ id|AE_ERROR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get Resources:&n;&t; * --------------&n;&t; * Get the power resources associated with the device&squot;s current &n;&t; * and target power states.&n;&t; */
+multiline_comment|/*&n;&t; * Get Resources:&n;&t; * --------------&n;&t; * Get the power resources associated with the device&squot;s current&n;&t; * and target power states.&n;&t; */
 r_if
 c_cond
 (paren
@@ -609,7 +606,7 @@ op_amp
 id|target_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Transition Resources:&n;&t; * ---------------------&n;&t; * Transition all power resources referenced by this device to &n;&t; * the correct power state (taking into consideration sequencing &n;&t; * and dependencies to other devices).&n;&t; */
+multiline_comment|/*&n;&t; * Transition Resources:&n;&t; * ---------------------&n;&t; * Transition all power resources referenced by this device to&n;&t; * the correct power state (taking into consideration sequencing&n;&t; * and dependencies to other devices).&n;&t; */
 r_if
 c_cond
 (paren
@@ -648,7 +645,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Execute _PSx:&n;&t; * -------------&n;&t; * Execute the _PSx method corresponding to the target Dx state, &n;&t; * if it exists.&n;&t; */
+multiline_comment|/*&n;&t; * Execute _PSx:&n;&t; * -------------&n;&t; * Execute the _PSx method corresponding to the target Dx state,&n;&t; * if it exists.&n;&t; */
 id|object_name
 (braket
 l_int|2
@@ -687,12 +684,11 @@ id|status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Device [%02x] is now at [D%d].&bslash;n&quot;
 comma
 id|device-&gt;handle
@@ -713,8 +709,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_pm_capabilities&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_get_pm_capabilities&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_get_pm_capabilities
 id|bm_get_pm_capabilities
 (paren
@@ -723,7 +719,7 @@ op_star
 id|node
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -740,7 +736,7 @@ id|parent_device
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 op_assign
 l_int|NULL
@@ -1014,7 +1010,7 @@ id|i
 op_assign
 id|BM_FLAGS_D3_SUPPORT
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Evalute _SxD:&n;&t;&t; * -------------&n;&t;&t; * Which returns the highest (power) Dx state supported in &n;&t;&t; * this system (Sx) state.  We convert this value to a bit &n;&t;&t; * mask of supported states (conceptually simpler).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Evalute _Sx_d:&n;&t;&t; * -------------&n;&t;&t; * Which returns the highest (power) Dx state supported in&n;&t;&t; * this system (Sx) state.  We convert this value to a bit&n;&t;&t; * mask of supported states (conceptually simpler).&n;&t;&t; */
 id|status
 op_assign
 id|bm_evaluate_simple_integer
@@ -1090,7 +1086,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Validate:&n;&t;&t;&t; * ---------&n;&t;&t;&t; * Mask of any states that _Sx_d falsely advertises &n;&t;&t;&t; * (e.g.claims D1 support but neither _PR2 or _PS2 &n;&t;&t;&t; * exist).  In other words, S1-S5 can&squot;t offer a Dx &n;&t;&t;&t; * state that isn&squot;t supported by S0.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Validate:&n;&t;&t;&t; * ---------&n;&t;&t;&t; * Mask of any states that _Sx_d falsely advertises&n;&t;&t;&t; * (e.g.claims D1 support but neither _PR2 or _PS2&n;&t;&t;&t; * exist).  In other words, S1-S5 can&squot;t offer a Dx&n;&t;&t;&t; * state that isn&squot;t supported by S0.&n;&t;&t;&t; */
 id|device-&gt;power.dx_supported
 (braket
 id|i

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 77 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 83 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -11,220 +11,164 @@ id|MODULE_NAME
 (paren
 l_string|&quot;exmisc&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_fatal&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Status.  If the OS returns from the OSD call, we just keep&n; *              on going.&n; *&n; * DESCRIPTION: Execute Fatal operator&n; *&n; * ACPI SPECIFICATION REFERENCES:&n; *  Def_fatal   :=  Fatal_op Fatal_type Fatal_code  Fatal_arg&n; *  Fatal_type  :=  Byte_data&n; *  Fatal_code  :=  DWord_data&n; *  Fatal_arg   :=  Term_arg=&gt;Integer&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
-DECL|function|acpi_ex_fatal
-id|acpi_ex_fatal
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_triadic&n; *&n; * PARAMETERS:  Opcode              - The opcode to be executed&n; *              Walk_state          - Current walk state&n; *              Return_desc         - Where to store the return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Triadic operator (3 operands)&n; *&n; * ALLOCATION:  Deletes one operand descriptor -- other remains on stack&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ex_triadic
+id|acpi_ex_triadic
 (paren
-id|ACPI_WALK_STATE
-op_star
-id|walk_state
-)paren
-(brace
-id|ACPI_OPERAND_OBJECT
-op_star
-id|type_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|code_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|arg_desc
-suffix:semicolon
-id|ACPI_STATUS
-id|status
-suffix:semicolon
-multiline_comment|/* Resolve operands */
-id|status
-op_assign
-id|acpi_ex_resolve_operands
-(paren
-id|AML_FATAL_OP
+id|u16
+id|opcode
 comma
-id|WALK_OPERANDS
-comma
-id|walk_state
-)paren
-suffix:semicolon
-multiline_comment|/* Get operands */
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|arg_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|code_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|type_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-multiline_comment|/* Invalid parameters on object stack  */
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
-multiline_comment|/* Def_fatal   :=  Fatal_op Fatal_type Fatal_code  Fatal_arg   */
-multiline_comment|/*&n;&t; * TBD: [Unhandled] call OSD interface to notify OS of fatal error&n;&t; * requiring shutdown!&n;&t; */
-id|cleanup
-suffix:colon
-multiline_comment|/* Free the operands */
-id|acpi_ut_remove_reference
-(paren
-id|arg_desc
-)paren
-suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
-id|code_desc
-)paren
-suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
-id|type_desc
-)paren
-suffix:semicolon
-multiline_comment|/* If we get back from the OS call, we might as well keep going. */
-id|REPORT_WARNING
-(paren
-(paren
-l_string|&quot;An AML &bslash;&quot;fatal&bslash;&quot; Opcode (Fatal_op) was executed&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_index&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Index operator&n; *&n; * ALLOCATION:  Deletes one operand descriptor -- other remains on stack&n; *&n; *  ACPI SPECIFICATION REFERENCES:&n; *  Def_index   :=  Index_op Buff_pkg_obj Index_value Result&n; *  Index_value :=  Term_arg=&gt;Integer&n; *  Name_string :=  &lt;Root_char Name_path&gt; | &lt;Prefix_path Name_path&gt;&n; *  Result      :=  Super_name&n; *  Super_name  :=  Name_string | Arg_obj | Local_obj | Debug_obj | Def_index&n; *                             Local4_op | Local5_op | Local6_op | Local7_op&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
-DECL|function|acpi_ex_index
-id|acpi_ex_index
-(paren
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|return_desc
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
-id|obj_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
 op_star
-id|idx_desc
+id|operand
+op_assign
+op_amp
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|res_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|ret_desc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|tmp_desc
 suffix:semicolon
-id|ACPI_STATUS
-id|status
+id|ACPI_SIGNAL_FATAL_INFO
+op_star
+id|fatal
 suffix:semicolon
-multiline_comment|/* Resolve operands */
-multiline_comment|/* First operand can be either a package or a buffer */
+id|acpi_status
 id|status
 op_assign
-id|acpi_ex_resolve_operands
+id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
 (paren
-id|AML_INDEX_OP
-comma
-id|WALK_OPERANDS
-comma
-id|walk_state
+l_string|&quot;Ex_triadic&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Get all operands */
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
+DECL|macro|obj_desc1
+mdefine_line|#define obj_desc1           operand[0]
+DECL|macro|obj_desc2
+mdefine_line|#define obj_desc2           operand[1]
+DECL|macro|res_desc
+mdefine_line|#define res_desc            operand[2]
+r_switch
+c_cond
 (paren
-op_amp
-id|res_desc
+id|opcode
+)paren
+(brace
+r_case
+id|AML_FATAL_OP
+suffix:colon
+multiline_comment|/* Def_fatal   :=  Fatal_op Fatal_type  Fatal_code  Fatal_arg   */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
 comma
-id|walk_state
+l_string|&quot;Fatal_op: Type %x Code %x Arg %x &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&bslash;n&quot;
+comma
+(paren
+id|u32
+)paren
+id|obj_desc1-&gt;integer.value
+comma
+(paren
+id|u32
+)paren
+id|obj_desc2-&gt;integer.value
+comma
+(paren
+id|u32
+)paren
+id|res_desc-&gt;integer.value
+)paren
 )paren
 suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
+id|fatal
+op_assign
+id|ACPI_MEM_ALLOCATE
 (paren
-op_amp
-id|idx_desc
-comma
-id|walk_state
+r_sizeof
+(paren
+id|ACPI_SIGNAL_FATAL_INFO
 )paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|obj_desc
-comma
-id|walk_state
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
+id|fatal
 )paren
 (brace
-multiline_comment|/* Invalid parameters on object stack  */
-r_goto
-id|cleanup
+id|fatal-&gt;type
+op_assign
+(paren
+id|u32
+)paren
+id|obj_desc1-&gt;integer.value
+suffix:semicolon
+id|fatal-&gt;code
+op_assign
+(paren
+id|u32
+)paren
+id|obj_desc2-&gt;integer.value
+suffix:semicolon
+id|fatal-&gt;argument
+op_assign
+(paren
+id|u32
+)paren
+id|res_desc-&gt;integer.value
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * Signal the OS&n;&t;&t; */
+id|acpi_os_signal
+(paren
+id|ACPI_SIGNAL_FATAL
+comma
+id|fatal
+)paren
+suffix:semicolon
+multiline_comment|/* Might return while OS is shutting down */
+id|ACPI_MEM_FREE
+(paren
+id|fatal
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_MID_OP
+suffix:colon
+multiline_comment|/* Def_mid      := Mid_op Source Index Length Result */
+multiline_comment|/* Create the internal return object (string or buffer) */
+r_break
+suffix:semicolon
+r_case
+id|AML_INDEX_OP
+suffix:colon
+multiline_comment|/* Def_index    := Index_op Source Index Destination */
 multiline_comment|/* Create the internal return object */
 id|ret_desc
 op_assign
@@ -248,11 +192,11 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * At this point, the Obj_desc operand is either a Package or a Buffer&n;&t; */
+multiline_comment|/*&n;&t;&t; * At this point, the Obj_desc1 operand is either a Package or a Buffer&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|obj_desc1-&gt;common.type
 op_eq
 id|ACPI_TYPE_PACKAGE
 )paren
@@ -261,11 +205,20 @@ multiline_comment|/* Object to be indexed is a Package */
 r_if
 c_cond
 (paren
-id|idx_desc-&gt;integer.value
+id|obj_desc2-&gt;integer.value
 op_ge
-id|obj_desc-&gt;package.count
+id|obj_desc1-&gt;package.count
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Index value beyond package end&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_PACKAGE_LIMIT
@@ -290,7 +243,7 @@ id|AML_ZERO_OP
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * There is no actual result descriptor (the Zero_op Result&n;&t;&t;&t; * descriptor is a placeholder), so just delete the placeholder and&n;&t;&t;&t; * return a reference to the package element&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * There is no actual result descriptor (the Zero_op Result&n;&t;&t;&t;&t; * descriptor is a placeholder), so just delete the placeholder and&n;&t;&t;&t;&t; * return a reference to the package element&n;&t;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|res_desc
@@ -299,12 +252,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Each element of the package is an internal object.  Get the one&n;&t;&t;&t; * we are after.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Each element of the package is an internal object.  Get the one&n;&t;&t;&t;&t; * we are after.&n;&t;&t;&t;&t; */
 id|tmp_desc
 op_assign
-id|obj_desc-&gt;package.elements
+id|obj_desc1-&gt;package.elements
 (braket
-id|idx_desc-&gt;integer.value
+id|obj_desc2-&gt;integer.value
 )braket
 suffix:semicolon
 id|ret_desc-&gt;reference.opcode
@@ -335,7 +288,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * The local return object must always be a reference to the package element,&n;&t;&t; * not the element itself.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The local return object must always be a reference to the package element,&n;&t;&t;&t; * not the element itself.&n;&t;&t;&t; */
 id|ret_desc-&gt;reference.opcode
 op_assign
 id|AML_INDEX_OP
@@ -347,9 +300,9 @@ suffix:semicolon
 id|ret_desc-&gt;reference.where
 op_assign
 op_amp
-id|obj_desc-&gt;package.elements
+id|obj_desc1-&gt;package.elements
 (braket
-id|idx_desc-&gt;integer.value
+id|obj_desc2-&gt;integer.value
 )braket
 suffix:semicolon
 )brace
@@ -359,11 +312,20 @@ multiline_comment|/* Object to be indexed is a Buffer */
 r_if
 c_cond
 (paren
-id|idx_desc-&gt;integer.value
+id|obj_desc2-&gt;integer.value
 op_ge
-id|obj_desc-&gt;buffer.length
+id|obj_desc1-&gt;buffer.length
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Index value beyond end of buffer&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_BUFFER_LIMIT
@@ -382,14 +344,14 @@ id|ACPI_TYPE_BUFFER_FIELD
 suffix:semicolon
 id|ret_desc-&gt;reference.object
 op_assign
-id|obj_desc
+id|obj_desc1
 suffix:semicolon
 id|ret_desc-&gt;reference.offset
 op_assign
 (paren
 id|u32
 )paren
-id|idx_desc-&gt;integer.value
+id|obj_desc2-&gt;integer.value
 suffix:semicolon
 id|status
 op_assign
@@ -403,17 +365,20 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+)brace
 id|cleanup
 suffix:colon
 multiline_comment|/* Always delete operands */
 id|acpi_ut_remove_reference
 (paren
-id|obj_desc
+id|obj_desc1
 )paren
 suffix:semicolon
 id|acpi_ut_remove_reference
 (paren
-id|idx_desc
+id|obj_desc2
 )paren
 suffix:semicolon
 multiline_comment|/* Delete return object on error */
@@ -454,59 +419,51 @@ id|return_desc
 op_assign
 id|ret_desc
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_match&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Match operator&n; *&n; * ACPI SPECIFICATION REFERENCES:&n; *  Def_match   :=  Match_op Search_pkg Opcode1     Operand1&n; *                              Opcode2 Operand2    Start_index&n; *  Opcode1     :=  Byte_data: MTR, MEQ, MLE, MLT, MGE, or MGT&n; *  Opcode2     :=  Byte_data: MTR, MEQ, MLE, MLT, MGE, or MGT&n; *  Operand1    :=  Term_arg=&gt;Integer&n; *  Operand2    :=  Term_arg=&gt;Integer&n; *  Search_pkg  :=  Term_arg=&gt;Package_object&n; *  Start_index :=  Term_arg=&gt;Integer&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
-DECL|function|acpi_ex_match
-id|acpi_ex_match
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_hexadic&n; *&n; * PARAMETERS:  Opcode              - The opcode to be executed&n; *              Walk_state          - Current walk state&n; *              Return_desc         - Where to store the return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Match operator&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ex_hexadic
+id|acpi_ex_hexadic
 (paren
-id|ACPI_WALK_STATE
+id|u16
+id|opcode
+comma
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|return_desc
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
-id|pkg_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
 op_star
-id|op1_desc
+id|operand
+op_assign
+op_amp
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|V1_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|op2_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|V2_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
-op_star
-id|start_desc
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|ret_desc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
+op_assign
+id|AE_OK
 suffix:semicolon
 id|u32
 id|index
@@ -520,93 +477,32 @@ id|u32
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Resolve all operands */
-id|status
-op_assign
-id|acpi_ex_resolve_operands
+id|FUNCTION_TRACE
 (paren
-id|AML_MATCH_OP
-comma
-id|WALK_OPERANDS
-comma
-id|walk_state
+l_string|&quot;Ex_hexadic&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Get all operands */
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|start_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|V2_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|op2_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|V1_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|op1_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|pkg_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-r_if
+DECL|macro|pkg_desc
+mdefine_line|#define pkg_desc            operand[0]
+DECL|macro|op1_desc
+mdefine_line|#define op1_desc            operand[1]
+DECL|macro|V1_desc
+mdefine_line|#define V1_desc             operand[2]
+DECL|macro|op2_desc
+mdefine_line|#define op2_desc            operand[3]
+DECL|macro|V2_desc
+mdefine_line|#define V2_desc             operand[4]
+DECL|macro|start_desc
+mdefine_line|#define start_desc          operand[5]
+r_switch
 c_cond
 (paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
+id|opcode
 )paren
 (brace
-multiline_comment|/* Invalid parameters on object stack  */
-r_goto
-id|cleanup
-suffix:semicolon
-)brace
+r_case
+id|AML_MATCH_OP
+suffix:colon
 multiline_comment|/* Validate match comparison sub-opcodes */
 r_if
 c_cond
@@ -624,6 +520,15 @@ id|MAX_MATCH_OPERATOR
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;operation encoding out of range&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_OPERAND_VALUE
@@ -650,6 +555,15 @@ id|u32
 id|pkg_desc-&gt;package.count
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Start position value out of range&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_PACKAGE_LIMIT
@@ -680,7 +594,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Examine each element until a match is found.  Within the loop,&n;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t; * and the next should be examined.&n;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t; * the bottom.  If it terminates &quot;normally&quot;, Match_value will be -1&n;&t; * (its initial value) indicating that no match was found.  When&n;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Examine each element until a match is found.  Within the loop,&n;&t;&t; * &quot;continue&quot; signifies that the current element does not match&n;&t;&t; * and the next should be examined.&n;&t;&t; * Upon finding a match, the loop will terminate via &quot;break&quot; at&n;&t;&t; * the bottom.  If it terminates &quot;normally&quot;, Match_value will be -1&n;&t;&t; * (its initial value) indicating that no match was found.  When&n;&t;&t; * returned as a Number, this will produce the Ones value as specified.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -693,7 +607,7 @@ op_increment
 id|index
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Treat any NULL or non-numeric elements as non-matching.&n;&t;&t; * TBD [Unhandled] - if an element is a Name,&n;&t;&t; *      should we examine its value?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Treat any NULL or non-numeric elements as non-matching.&n;&t;&t;&t; * TBD [Unhandled] - if an element is a Name,&n;&t;&t;&t; *      should we examine its value?&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -716,7 +630,7 @@ id|common.type
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Within these switch statements:&n;&t;&t; *      &quot;break&quot; (exit from the switch) signifies a match;&n;&t;&t; *      &quot;continue&quot; (proceed to next iteration of enclosing&n;&t;&t; *          &quot;for&quot; loop) signifies a non-match.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Within these switch statements:&n;&t;&t;&t; *      &quot;break&quot; (exit from the switch) signifies a match;&n;&t;&t;&t; *      &quot;continue&quot; (proceed to next iteration of enclosing&n;&t;&t;&t; *          &quot;for&quot; loop) signifies a non-match.&n;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -979,6 +893,9 @@ id|ret_desc-&gt;integer.value
 op_assign
 id|match_value
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|cleanup
 suffix:colon
 multiline_comment|/* Free the operands */
@@ -1042,7 +959,7 @@ id|return_desc
 op_assign
 id|ret_desc
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmutils.c&n; *   $Revision: 28 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bmutils.c&n; *   $Revision: 38 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -15,7 +15,7 @@ macro_line|#else
 mdefine_line|#define DEBUG_EVAL_ERROR(l,h,p,s)
 macro_line|#endif
 multiline_comment|/****************************************************************************&n; *                            External Functions&n; ****************************************************************************/
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_print_eval_error&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_print_eval_error&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 r_void
 DECL|function|bm_print_eval_error
 id|bm_print_eval_error
@@ -23,23 +23,27 @@ id|bm_print_eval_error
 id|u32
 id|debug_level
 comma
-id|ACPI_HANDLE
 id|acpi_handle
+id|handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
-id|ACPI_STATUS
+id|acpi_status
 id|status
 )paren
 (brace
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
-id|ACPI_STRING
-id|status_string
-op_assign
-l_int|NULL
+id|acpi_status
+id|local_status
+suffix:semicolon
+id|PROC_NAME
+c_func
+(paren
+l_string|&quot;bm_print_eval_error&quot;
+)paren
 suffix:semicolon
 id|buffer.length
 op_assign
@@ -63,20 +67,12 @@ id|buffer.pointer
 r_return
 suffix:semicolon
 )brace
-id|status_string
-op_assign
-id|acpi_ut_format_exception
-c_func
-(paren
-id|status
-)paren
-suffix:semicolon
-id|status
+id|local_status
 op_assign
 id|acpi_get_name
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|ACPI_FULL_PATHNAME
 comma
@@ -90,21 +86,29 @@ c_cond
 id|ACPI_FAILURE
 c_func
 (paren
-id|status
+id|local_status
 )paren
 )paren
 (brace
-id|DEBUG_PRINT
+id|ACPI_DEBUG_PRINT
+c_func
+(paren
+(paren
+id|ACPI_DEBUG_LEVEL
 c_func
 (paren
 id|debug_level
+)paren
 comma
-(paren
 l_string|&quot;Evaluate object [%p], %s&bslash;n&quot;
 comma
-id|acpi_handle
+id|handle
 comma
-id|status_string
+id|acpi_format_exception
+c_func
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -117,36 +121,42 @@ c_cond
 id|pathname
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Evaluate object [%s.%s], %s&bslash;n&quot;
 comma
 id|buffer.pointer
 comma
 id|pathname
 comma
-id|status_string
+id|acpi_format_exception
+c_func
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Evaluate object [%s], %s&bslash;n&quot;
 comma
 id|buffer.pointer
 comma
-id|status_string
+id|acpi_format_exception
+c_func
+(paren
+id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -158,12 +168,12 @@ id|buffer.pointer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_copy_to_buffer&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_copy_to_buffer&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_copy_to_buffer
 id|bm_copy_to_buffer
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 comma
@@ -249,12 +259,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_cast_buffer&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_cast_buffer&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_cast_buffer
 id|bm_cast_buffer
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 comma
@@ -324,26 +334,26 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_extract_package_data&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_extract_package_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * TBD: Don&squot;t assume numbers (in ASL) are 32-bit values!!!!  (IA64)&n; * TBD: Issue with &squot;assumed&squot; types coming out of interpreter...&n; *       (e.g. toshiba _BIF)&n; */
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bm_extract_package_data
 id|bm_extract_package_data
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|package
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|package_format
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -372,7 +382,7 @@ id|tail_offset
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|element
 op_assign
@@ -462,12 +472,11 @@ OG
 id|package-&gt;package.count
 )paren
 (brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Format specifies more objects [%d] than exist in package [%d].&quot;
 comma
 id|format_count
@@ -542,14 +551,14 @@ id|size_required
 op_add_assign
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 suffix:semicolon
 id|tail_offset
 op_add_assign
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 suffix:semicolon
 r_break
@@ -567,7 +576,7 @@ op_star
 op_plus
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 op_plus
 l_int|1
@@ -576,19 +585,18 @@ id|tail_offset
 op_add_assign
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Invalid package element [%d]: got number, expecing [%c].&bslash;n&quot;
 comma
 id|i
@@ -676,12 +684,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Invalid package element [%d] got string/buffer, expecing [%c].&bslash;n&quot;
 comma
 id|i
@@ -817,7 +824,7 @@ suffix:colon
 op_star
 (paren
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 op_star
 )paren
 id|head
@@ -829,7 +836,7 @@ id|head
 op_add_assign
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 suffix:semicolon
 r_break
@@ -854,7 +861,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 op_star
 )paren
 id|tail
@@ -866,7 +873,7 @@ id|head
 op_add_assign
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 op_star
 )paren
 suffix:semicolon
@@ -874,7 +881,7 @@ id|tail
 op_add_assign
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 suffix:semicolon
 multiline_comment|/* NULL terminate string */
@@ -1028,27 +1035,27 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_evaluate_object&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      AE_OK&n; *              AE_BUFFER_OVERFLOW  Evaluated object returned data, but &n; *                                  caller did not provide buffer.&n; *&n; * DESCRIPTION: Helper for acpi_evaluate_object that handles buffer&n; *              allocation.  Note that the caller is responsible for &n; *              freeing buffer-&gt;pointer!&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_evaluate_object&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      AE_OK&n; *              AE_BUFFER_OVERFLOW  Evaluated object returned data, but&n; *                                  caller did not provide buffer.&n; *&n; * DESCRIPTION: Helper for acpi_evaluate_object that handles buffer&n; *              allocation.  Note that the caller is responsible for&n; *              freeing buffer-&gt;pointer!&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_evaluate_object
 id|bm_evaluate_object
 (paren
-id|ACPI_HANDLE
 id|acpi_handle
+id|handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
-id|ACPI_OBJECT_LIST
+id|acpi_object_list
 op_star
 id|arguments
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|buffer
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1083,13 +1090,13 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Evalute Object:&n;&t; * ---------------&n;&t; * The first attempt is just to get the size of the object data &n;&t; * (that is unless there&squot;s no return data, e.g. _INI); the second &n;&t; * gets the data.&n;&t; */
+multiline_comment|/*&n;&t; * Evalute Object:&n;&t; * ---------------&n;&t; * The first attempt is just to get the size of the object data&n;&t; * (that is unless there&squot;s no return data, e.g. _INI); the second&n;&t; * gets the data.&n;&t; */
 id|status
 op_assign
 id|acpi_evaluate_object
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1159,7 +1166,7 @@ op_assign
 id|acpi_evaluate_object
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1190,9 +1197,9 @@ id|AE_NOT_FOUND
 id|DEBUG_EVAL_ERROR
 c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1231,15 +1238,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_evaluate_simple_integer&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_evaluate_simple_integer&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_evaluate_simple_integer
 id|bm_evaluate_simple_integer
 (paren
-id|ACPI_HANDLE
 id|acpi_handle
+id|handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
 id|u32
@@ -1247,18 +1254,18 @@ op_star
 id|data
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|element
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
 id|FUNCTION_TRACE
@@ -1291,7 +1298,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 )paren
 )paren
 suffix:semicolon
@@ -1301,7 +1308,7 @@ op_assign
 id|bm_evaluate_object
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1321,6 +1328,21 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;failed to evaluate object (%s)&bslash;n&quot;
+comma
+id|acpi_format_exception
+c_func
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
 r_goto
 id|end
 suffix:semicolon
@@ -1344,7 +1366,7 @@ id|element
 comma
 r_sizeof
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 )paren
 )paren
 suffix:semicolon
@@ -1361,9 +1383,9 @@ id|status
 id|DEBUG_EVAL_ERROR
 c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1389,9 +1411,9 @@ suffix:semicolon
 id|DEBUG_EVAL_ERROR
 c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1422,15 +1444,15 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_evaluate_reference_list&n; *&n; * PARAMETERS:  &n; *&n; * RETURN:      &n; *&n; * DESCRIPTION: &n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_evaluate_reference_list&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+id|acpi_status
 DECL|function|bm_evaluate_reference_list
 id|bm_evaluate_reference_list
 (paren
-id|ACPI_HANDLE
 id|acpi_handle
+id|handle
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
 id|BM_HANDLE_LIST
@@ -1438,29 +1460,29 @@ op_star
 id|reference_list
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|package
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_OBJECT
+id|acpi_object
 op_star
 id|element
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_HANDLE
+id|acpi_handle
 id|reference_handle
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_BUFFER
+id|acpi_buffer
 id|buffer
 suffix:semicolon
 id|u32
@@ -1498,7 +1520,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|ACPI_BUFFER
+id|acpi_buffer
 )paren
 )paren
 suffix:semicolon
@@ -1508,7 +1530,7 @@ op_assign
 id|bm_evaluate_object
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1551,7 +1573,7 @@ id|package
 comma
 r_sizeof
 (paren
-id|ACPI_OBJECT
+id|acpi_object
 )paren
 )paren
 suffix:semicolon
@@ -1568,9 +1590,9 @@ id|status
 id|DEBUG_EVAL_ERROR
 c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1596,9 +1618,9 @@ suffix:semicolon
 id|DEBUG_EVAL_ERROR
 c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1665,22 +1687,20 @@ id|status
 op_assign
 id|AE_BAD_DATA
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Invalid element in package (not a device reference).&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 id|DEBUG_EVAL_ERROR
-c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1690,13 +1710,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Resolve reference string (e.g. &quot;&bslash;_PR_.CPU_&quot;) to an&n;&t;&t; * ACPI_HANDLE.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Resolve reference string (e.g. &quot;&bslash;_PR_.CPU_&quot;) to an&n;&t;&t; * acpi_handle.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_get_handle
 c_func
 (paren
-id|acpi_handle
+id|handle
 comma
 id|element-&gt;string.pointer
 comma
@@ -1718,12 +1738,11 @@ id|status
 op_assign
 id|AE_BAD_DATA
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Unable to resolve device reference [%s].&bslash;n&quot;
 comma
 id|element-&gt;string.pointer
@@ -1731,11 +1750,10 @@ id|element-&gt;string.pointer
 )paren
 suffix:semicolon
 id|DEBUG_EVAL_ERROR
-c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1745,7 +1763,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Resolve ACPI_HANDLE to BM_HANDLE.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Resolve acpi_handle to BM_HANDLE.&n;&t;&t; */
 id|status
 op_assign
 id|bm_get_handle
@@ -1776,12 +1794,11 @@ id|status
 op_assign
 id|AE_BAD_DATA
 suffix:semicolon
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_WARN
+(paren
+id|ACPI_DB_WARN
 comma
-(paren
 l_string|&quot;Unable to resolve device reference for [%p].&bslash;n&quot;
 comma
 id|reference_handle
@@ -1789,11 +1806,10 @@ id|reference_handle
 )paren
 suffix:semicolon
 id|DEBUG_EVAL_ERROR
-c_func
 (paren
-id|ACPI_WARN
+id|ACPI_LV_WARN
 comma
-id|acpi_handle
+id|handle
 comma
 id|pathname
 comma
@@ -1803,12 +1819,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DEBUG_PRINT
-c_func
+id|ACPI_DEBUG_PRINT
 (paren
-id|ACPI_INFO
+(paren
+id|ACPI_DB_INFO
 comma
-(paren
 l_string|&quot;Resolved reference [%s]-&gt;[%p]-&gt;[%02x]&bslash;n&quot;
 comma
 id|element-&gt;string.pointer

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bm_osl.c&n; *   $Revision: 11 $&n; *&n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * Module Name: bm_osl.c&n; *   $Revision: 16 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &quot;bm.h&quot;
@@ -182,7 +183,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                                 Functions&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bm_osl_generate_event&n; *&n; * DESCRIPTION: Generates an event for user-space consumption by writing&n; *              the event data to the &squot;event&squot; file.&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bm_osl_generate_event
 id|bm_osl_generate_event
 (paren
@@ -494,7 +495,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bm_osl_read_event&n; *&n; * DESCRIPTION: Handles reads to the &squot;event&squot; file by blocking user-mode &n; *              threads until data (an event) is generated.&n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bm_osl_read_event&n; *&n; * DESCRIPTION: Handles reads to the &squot;event&squot; file by blocking user-mode&n; *              threads until data (an event) is generated.&n; *&n; ****************************************************************************/
 r_static
 id|ssize_t
 DECL|function|bm_osl_read_event
@@ -518,15 +519,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_char
-id|str
-(braket
-id|BM_MAX_STRING_LENGTH
-)braket
-suffix:semicolon
-r_int
-id|size
-suffix:semicolon
 id|BM_OSL_EVENT
 op_star
 id|event
@@ -539,6 +531,31 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
+r_static
+r_char
+id|str
+(braket
+id|BM_MAX_STRING_LENGTH
+)braket
+suffix:semicolon
+r_static
+r_int
+id|chars_remaining
+op_assign
+l_int|0
+suffix:semicolon
+r_static
+r_char
+op_star
+id|ptr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chars_remaining
+)paren
+(brace
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -550,18 +567,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|count
-OL
-id|BM_MAX_STRING_LENGTH
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|list_empty
 c_func
 (paren
@@ -570,6 +575,17 @@ id|bm_event_list
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_NONBLOCK
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -672,8 +688,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* BUG: buffer overrun? */
-id|size
+id|chars_remaining
 op_assign
 id|sprintf
 c_func
@@ -690,6 +705,10 @@ id|event-&gt;event_type
 comma
 id|event-&gt;event_data
 )paren
+suffix:semicolon
+id|ptr
+op_assign
+id|str
 suffix:semicolon
 id|acpi_os_free
 c_func
@@ -709,6 +728,18 @@ c_func
 id|event
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|chars_remaining
+OL
+id|count
+)paren
+id|count
+op_assign
+id|chars_remaining
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -717,9 +748,9 @@ c_func
 (paren
 id|buf
 comma
-id|str
+id|ptr
 comma
-id|size
+id|count
 )paren
 )paren
 r_return
@@ -729,10 +760,67 @@ suffix:semicolon
 op_star
 id|ppos
 op_add_assign
-id|size
+id|count
+suffix:semicolon
+id|chars_remaining
+op_sub_assign
+id|count
+suffix:semicolon
+id|ptr
+op_add_assign
+id|count
 suffix:semicolon
 r_return
-id|size
+id|count
+suffix:semicolon
+)brace
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bm_osl_poll_event&n; *&n; * DESCRIPTION: Handles poll() of the &squot;event&squot; file by blocking user-mode &n; *              threads until data (an event) is generated.&n; *&n; ****************************************************************************/
+r_static
+r_int
+r_int
+DECL|function|bm_osl_poll_event
+id|bm_osl_poll_event
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+id|poll_table
+op_star
+id|wait
+)paren
+(brace
+id|poll_wait
+c_func
+(paren
+id|file
+comma
+op_amp
+id|bm_event_wait_queue
+comma
+id|wait
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|bm_event_list
+)paren
+)paren
+r_return
+id|POLLIN
+op_or
+id|POLLRDNORM
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|proc_event_operations
@@ -753,6 +841,10 @@ id|release
 suffix:colon
 id|bm_osl_close_event
 comma
+id|poll
+suffix:colon
+id|bm_osl_poll_event
+comma
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    bm_osl_init&n; *&n; ****************************************************************************/
@@ -764,10 +856,30 @@ c_func
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|status
+op_assign
+id|acpi_subsystem_status
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 macro_line|#ifdef ACPI_DEBUG
 id|save_dbg_layer

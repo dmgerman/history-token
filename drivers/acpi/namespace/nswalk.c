@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nswalk - Functions for walking the APCI namespace&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nswalk - Functions for walking the ACPI namespace&n; *              $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -9,29 +9,33 @@ id|MODULE_NAME
 (paren
 l_string|&quot;nswalk&quot;
 )paren
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_next_object&n; *&n; * PARAMETERS:  Type                - Type of object to be searched for&n; *              Parent              - Parent object whose children we are&n; *                                      getting&n; *              Last_child          - Previous child that was found.&n; *                                    The NEXT child will be returned&n; *&n; * RETURN:      ACPI_NAMESPACE_NODE - Pointer to the NEXT child or NULL if&n; *                                      none is found.&n; *&n; * DESCRIPTION: Return the next peer object within the namespace.  If Handle&n; *              is valid, Scope is ignored.  Otherwise, the first object&n; *              within Scope is returned.&n; *&n; ****************************************************************************/
-id|ACPI_NAMESPACE_NODE
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_next_object&n; *&n; * PARAMETERS:  Type                - Type of object to be searched for&n; *              Parent              - Parent object whose children we are&n; *                                      getting&n; *              Last_child          - Previous child that was found.&n; *                                    The NEXT child will be returned&n; *&n; * RETURN:      acpi_namespace_node - Pointer to the NEXT child or NULL if&n; *                                      none is found.&n; *&n; * DESCRIPTION: Return the next peer object within the namespace.  If Handle&n; *              is valid, Scope is ignored.  Otherwise, the first object&n; *              within Scope is returned.&n; *&n; ****************************************************************************/
+id|acpi_namespace_node
 op_star
 DECL|function|acpi_ns_get_next_object
 id|acpi_ns_get_next_object
 (paren
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|type
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|parent_node
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|child_node
 )paren
 (brace
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|next_node
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -118,15 +122,15 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_walk_namespace&n; *&n; * PARAMETERS:  Type                - ACPI_OBJECT_TYPE to search for&n; *              Start_node          - Handle in namespace where search begins&n; *              Max_depth           - Depth to which search is to reach&n; *              Unlock_before_callback- Whether to unlock the NS before invoking&n; *                                    the callback routine&n; *              User_function       - Called when an object of &quot;Type&quot; is found&n; *              Context             - Passed to user function&n; *&n; * RETURNS      Return value from the User_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by Start_handle.&n; *              The User_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              The point of this procedure is to provide a generic namespace&n; *              walk routine that can be called from multiple places to&n; *              provide multiple services;  the User Function can be tailored&n; *              to each task, whether it is a print function, a compare&n; *              function, etc.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_walk_namespace&n; *&n; * PARAMETERS:  Type                - acpi_object_type to search for&n; *              Start_node          - Handle in namespace where search begins&n; *              Max_depth           - Depth to which search is to reach&n; *              Unlock_before_callback- Whether to unlock the NS before invoking&n; *                                    the callback routine&n; *              User_function       - Called when an object of &quot;Type&quot; is found&n; *              Context             - Passed to user function&n; *&n; * RETURNS      Return value from the User_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by Start_handle.&n; *              The User_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              The point of this procedure is to provide a generic namespace&n; *              walk routine that can be called from multiple places to&n; *              provide multiple services;  the User Function can be tailored&n; *              to each task, whether it is a print function, a compare&n; *              function, etc.&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ns_walk_namespace
 id|acpi_ns_walk_namespace
 (paren
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|type
 comma
-id|ACPI_HANDLE
+id|acpi_handle
 id|start_node
 comma
 id|u32
@@ -148,22 +152,27 @@ op_star
 id|return_value
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|child_type
 suffix:semicolon
 id|u32
 id|level
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ns_walk_namespace&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Special case for the namespace Root Node */
 r_if
@@ -306,7 +315,7 @@ r_case
 id|AE_CTRL_TERMINATE
 suffix:colon
 multiline_comment|/* Exit now, with OK status */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -316,7 +325,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* All others are valid exceptions */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -390,7 +399,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Complete walk, not terminated by user function */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 80 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -14,35 +14,39 @@ id|MODULE_NAME
 l_string|&quot;nsxfname&quot;
 )paren
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_handle&n; *&n; * PARAMETERS:  Parent          - Object to search under (search scope).&n; *              Path_name       - Pointer to an asciiz string containing the&n; *                                  name&n; *              Ret_handle      - Where the return handle is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine will search for a caller specified name in the&n; *              name space.  The caller can restrict the search region by&n; *              specifying a non NULL parent.  The parent value is itself a&n; *              namespace handle.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_handle
 id|acpi_get_handle
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|parent
 comma
-id|ACPI_STRING
+id|acpi_string
 id|pathname
 comma
-id|ACPI_HANDLE
+id|acpi_handle
 op_star
 id|ret_handle
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|prefix_node
 op_assign
 l_int|NULL
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -195,26 +199,26 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_pathname&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              Name_type       - Full pathname or single segment&n; *              Ret_path_ptr    - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the Acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_name&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              Name_type       - Full pathname or single segment&n; *              Ret_path_ptr    - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the Acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_get_name
 id|acpi_get_name
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|handle
 comma
 id|u32
 id|name_type
 comma
-id|ACPI_BUFFER
+id|acpi_buffer
 op_star
 id|ret_path_ptr
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -401,14 +405,14 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_object_info&n; *&n; * PARAMETERS:  Handle          - Object Handle&n; *              Info            - Where the info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns information about an object as gleaned from the&n; *              namespace node and possibly by running several standard&n; *              control methods (Such as in the case of a device.)&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_object_info
 id|acpi_get_object_info
 (paren
-id|ACPI_HANDLE
+id|acpi_handle
 id|handle
 comma
-id|ACPI_DEVICE_INFO
+id|acpi_device_info
 op_star
 id|info
 )paren
@@ -419,7 +423,7 @@ suffix:semicolon
 id|ACPI_DEVICE_ID
 id|uid
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -427,12 +431,12 @@ id|device_status
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_INTEGER
+id|acpi_integer
 id|address
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/****************************************************************************&n; *&n; * Module Name: tzpolicy.c -&n; *   $Revision: 27 $&n; *&n; ****************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * Module Name: tzpolicy.c -&n; *   $Revision: 28 $&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * TBD: 1. Move to user-space!&n; *&t;2. Support ACPI 2.0 items (e.g. _TZD, _HOT).&n; *      3. Support performance-limit control for non-processor devices&n; *         (those listed in _TZD, e.g. graphics).&n; */
 multiline_comment|/* TBD: Linux specific */
@@ -28,7 +28,7 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *                              Internal Functions&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|set_performance_limit
 id|set_performance_limit
 (paren
@@ -39,7 +39,7 @@ id|u32
 id|flag
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|BM_REQUEST
@@ -100,7 +100,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    tz_policy_critical&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|tz_policy_critical
 id|tz_policy_critical
 c_func
@@ -110,6 +110,12 @@ op_star
 id|tz
 )paren
 (brace
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_policy_critical&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -120,8 +126,11 @@ op_logical_neg
 id|tz-&gt;policy.critical.threshold
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -132,14 +141,26 @@ op_ge
 id|tz-&gt;policy.critical.threshold-&gt;temperature
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Critical threshold reached - shutting down system.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* TBD:&t;Need method for calling &squot;halt&squot; - OSL function? */
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    tz_policy_passive&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|tz_policy_passive
 id|tz_policy_passive
 c_func
@@ -171,6 +192,12 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_policy_passive&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -181,8 +208,11 @@ op_logical_neg
 id|tz-&gt;policy.passive.threshold
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 id|passive
@@ -217,6 +247,29 @@ op_star
 id|tz-&gt;policy.temperature
 op_minus
 id|passive-&gt;threshold-&gt;temperature
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;trend[%d] = TC1[%d]*(temp[%d]-last[%d]) + TC2[%d]*(temp[%d]-passive[%d])&bslash;n&quot;
+comma
+id|trend
+comma
+id|passive-&gt;tc1
+comma
+id|tz-&gt;policy.temperature
+comma
+id|last_temperature
+comma
+id|passive-&gt;tc2
+comma
+id|tz-&gt;policy.temperature
+comma
+id|passive-&gt;threshold-&gt;temperature
+)paren
 )paren
 suffix:semicolon
 id|last_temperature
@@ -299,12 +352,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    tz_policy_active&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|tz_policy_active
 id|tz_policy_active
 c_func
@@ -314,7 +370,7 @@ op_star
 id|tz
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -332,6 +388,12 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_policy_active&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -342,8 +404,11 @@ op_logical_neg
 id|tz-&gt;policy.active.threshold
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 r_for
@@ -433,9 +498,37 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Cooling device [%02x] now ON.&bslash;n&quot;
+comma
+id|active-&gt;cooling_devices.handles
+(braket
+id|j
+)braket
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Unable to turn ON cooling device [%02x].&bslash;n&quot;
+comma
+id|active-&gt;cooling_devices.handles
+(braket
+id|j
+)braket
+)paren
+)paren
+suffix:semicolon
 )brace
 )brace
 id|active-&gt;cooling_state
@@ -491,9 +584,37 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Cooling device [%02x] now OFF.&bslash;n&quot;
+comma
+id|active-&gt;cooling_devices.handles
+(braket
+id|j
+)braket
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Unable to turn OFF cooling device [%02x].&bslash;n&quot;
+comma
+id|active-&gt;cooling_devices.handles
+(braket
+id|j
+)braket
+)paren
+)paren
+suffix:semicolon
 )brace
 )brace
 id|active-&gt;cooling_state
@@ -502,8 +623,11 @@ id|TZ_COOLING_DISABLED
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    tz_policy_check&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Note that this function will get called whenever:&n; *                1. A thermal event occurs.&n; *                2. The polling/sampling time period expires.&n; *&n; ****************************************************************************/
@@ -516,7 +640,7 @@ op_star
 id|context
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -552,6 +676,12 @@ id|sleep_time
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_policy_check&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -559,7 +689,16 @@ op_logical_neg
 id|context
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid (NULL) context.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 id|tz
@@ -603,7 +742,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Calculate State:&n;&t; * ----------------&n;&t; */
@@ -833,6 +972,34 @@ op_assign
 id|WAIT_FOREVER
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_DEBUG
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Thermal_zone[%02x]: temperature[%d] state[%08x]&bslash;n&quot;
+comma
+id|tz-&gt;device_handle
+comma
+id|tz-&gt;policy.temperature
+comma
+id|tz-&gt;policy.state
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Scheduling next poll in [%d]ms.&bslash;n&quot;
+comma
+id|sleep_time
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /*ACPI_DEBUG*/
 multiline_comment|/*&n;&t; * Schedule Next Poll:&n;&t; * -------------------&n;&t; */
 r_if
 c_cond
@@ -935,7 +1102,7 @@ id|tz-&gt;policy.timer
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    tz_policy_run&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
@@ -948,10 +1115,16 @@ r_int
 id|data
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_policy_run&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -960,7 +1133,16 @@ op_logical_neg
 id|data
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Invalid (NULL) context.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Defer to Non-Interrupt Level:&n;&t; * -----------------------------&n;&t; * Note that all Linux kernel timers run at interrupt-level (ack!).&n;&t; */
@@ -990,12 +1172,21 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Error invoking thermal policy.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    tz_policy_add_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|tz_policy_add_device
 id|tz_policy_add_device
 (paren
@@ -1004,7 +1195,7 @@ op_star
 id|tz
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -1022,6 +1213,12 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_policy_add_device&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1029,10 +1226,24 @@ op_logical_neg
 id|tz
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Adding policy for thermal zone [%02x].&bslash;n&quot;
+comma
+id|tz-&gt;device_handle
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Temperature:&n;&t; * ------------&n;&t; * Make sure we can read the zone&squot;s current temperature (_TMP).&n;&t; * If we can&squot;t, there&squot;s no use in doing any policy (abort).&n;&t; */
 id|status
 op_assign
@@ -1057,8 +1268,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Polling Frequency:&n;&t; * ------------------&n;&t; * If a _TZP object doesn&squot;t exist, use the OS default polling&n;&t; * frequency.&n;&t; */
@@ -1120,8 +1334,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Initialize Policies:&n;&t; * --------------------&n;&t; */
@@ -1323,8 +1540,11 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Initialize Policy Timer:&n;&t; * ------------------------&n;&t; * TBD: Linux-specific - remove when policy moves to user-space.&n;&t; */
@@ -1344,12 +1564,15 @@ c_func
 id|tz
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|status
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    tz_policy_remove_device&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&t;&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|tz_policy_remove_device
 id|tz_policy_remove_device
 c_func
@@ -1364,6 +1587,12 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;tz_remove_device&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1371,10 +1600,24 @@ op_logical_neg
 id|tz
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Removing policy for thermal zone [%02x].&bslash;n&quot;
+comma
+id|tz-&gt;device_handle
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Delete the thermal zone policy timer entry, if exists.&n;&t; */
 r_if
 c_cond
@@ -1434,8 +1677,11 @@ id|PR_PERF_MAX
 suffix:semicolon
 )brace
 )brace
-r_return
+id|return_ACPI_STATUS
+c_func
+(paren
 id|AE_OK
+)paren
 suffix:semicolon
 )brace
 eof

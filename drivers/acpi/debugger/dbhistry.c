@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dbhistry - debugger HISTORY command&n; *              $Revision: 18 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dbhistry - debugger HISTORY command&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -43,34 +43,34 @@ DECL|typedef|HISTORY_INFO
 )brace
 id|HISTORY_INFO
 suffix:semicolon
-DECL|variable|history_buffer
+DECL|variable|acpi_gbl_history_buffer
 id|HISTORY_INFO
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
 id|HISTORY_SIZE
 )braket
 suffix:semicolon
-DECL|variable|lo_history
+DECL|variable|acpi_gbl_lo_history
 id|u16
-id|lo_history
+id|acpi_gbl_lo_history
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|num_history
+DECL|variable|acpi_gbl_num_history
 id|u16
-id|num_history
+id|acpi_gbl_num_history
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|next_history_index
+DECL|variable|acpi_gbl_next_history_index
 id|u16
-id|next_history_index
+id|acpi_gbl_next_history_index
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|next_cmd_num
+DECL|variable|acpi_gbl_next_cmd_num
 id|u32
-id|next_cmd_num
+id|acpi_gbl_next_cmd_num
 op_assign
 l_int|1
 suffix:semicolon
@@ -87,9 +87,9 @@ id|command_line
 multiline_comment|/* Put command into the next available slot */
 id|STRCPY
 (paren
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
-id|next_history_index
+id|acpi_gbl_next_history_index
 )braket
 dot
 id|command
@@ -97,77 +97,77 @@ comma
 id|command_line
 )paren
 suffix:semicolon
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
-id|next_history_index
+id|acpi_gbl_next_history_index
 )braket
 dot
 id|cmd_num
 op_assign
-id|next_cmd_num
+id|acpi_gbl_next_cmd_num
 suffix:semicolon
 multiline_comment|/* Adjust indexes */
 r_if
 c_cond
 (paren
 (paren
-id|num_history
+id|acpi_gbl_num_history
 op_eq
 id|HISTORY_SIZE
 )paren
 op_logical_and
 (paren
-id|next_history_index
+id|acpi_gbl_next_history_index
 op_eq
-id|lo_history
+id|acpi_gbl_lo_history
 )paren
 )paren
 (brace
-id|lo_history
+id|acpi_gbl_lo_history
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|lo_history
+id|acpi_gbl_lo_history
 op_ge
 id|HISTORY_SIZE
 )paren
 (brace
-id|lo_history
+id|acpi_gbl_lo_history
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 )brace
-id|next_history_index
+id|acpi_gbl_next_history_index
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|next_history_index
+id|acpi_gbl_next_history_index
 op_ge
 id|HISTORY_SIZE
 )paren
 (brace
-id|next_history_index
+id|acpi_gbl_next_history_index
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|next_cmd_num
+id|acpi_gbl_next_cmd_num
 op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|num_history
+id|acpi_gbl_num_history
 OL
 id|HISTORY_SIZE
 )paren
 (brace
-id|num_history
+id|acpi_gbl_num_history
 op_increment
 suffix:semicolon
 )brace
@@ -188,7 +188,7 @@ id|history_index
 suffix:semicolon
 id|history_index
 op_assign
-id|lo_history
+id|acpi_gbl_lo_history
 suffix:semicolon
 multiline_comment|/* Dump entire history buffer */
 r_for
@@ -200,7 +200,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_history
+id|acpi_gbl_num_history
 suffix:semicolon
 id|i
 op_increment
@@ -210,14 +210,14 @@ id|acpi_os_printf
 (paren
 l_string|&quot;%ld %s&bslash;n&quot;
 comma
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
 id|history_index
 )braket
 dot
 id|cmd_num
 comma
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
 id|history_index
 )braket
@@ -273,7 +273,7 @@ l_int|NULL
 (brace
 id|cmd_num
 op_assign
-id|next_cmd_num
+id|acpi_gbl_next_cmd_num
 op_minus
 l_int|1
 suffix:semicolon
@@ -295,7 +295,7 @@ suffix:semicolon
 multiline_comment|/* Search history buffer */
 id|history_index
 op_assign
-id|lo_history
+id|acpi_gbl_lo_history
 suffix:semicolon
 r_for
 c_loop
@@ -306,7 +306,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_history
+id|acpi_gbl_num_history
 suffix:semicolon
 id|i
 op_increment
@@ -315,7 +315,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
 id|history_index
 )braket
@@ -328,7 +328,7 @@ id|cmd_num
 multiline_comment|/* Found the commnad, return it */
 r_return
 (paren
-id|history_buffer
+id|acpi_gbl_history_buffer
 (braket
 id|history_index
 )braket

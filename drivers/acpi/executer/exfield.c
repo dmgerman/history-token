@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 95 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -14,24 +14,24 @@ id|MODULE_NAME
 l_string|&quot;exfield&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_read_data_from_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Number of bytes to transfer&n; *&n; * RETURN:      Status3&n; *&n; * DESCRIPTION: Read or write a named field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_read_data_from_field
 id|acpi_ex_read_data_from_field
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 op_star
 id|ret_buffer_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|buffer_desc
 suffix:semicolon
@@ -42,6 +42,13 @@ r_void
 op_star
 id|buffer
 suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_read_data_from_field&quot;
+comma
+id|obj_desc
+)paren
+suffix:semicolon
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -50,13 +57,13 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Allocate a buffer for the contents of the field.&n;&t; *&n;&t; * If the field is larger than the size of an ACPI_INTEGER, create&n;&t; * a BUFFER to hold it.  Otherwise, use an INTEGER.  This allows&n;&t; * the use of arithmetic operators on the returned value if the&n;&t; * field size is equal or smaller than an Integer.&n;&t; *&n;&t; * Note: Field.length is in bits.&n;&t; */
+multiline_comment|/*&n;&t; * Allocate a buffer for the contents of the field.&n;&t; *&n;&t; * If the field is larger than the size of an acpi_integer, create&n;&t; * a BUFFER to hold it.  Otherwise, use an INTEGER.  This allows&n;&t; * the use of arithmetic operators on the returned value if the&n;&t; * field size is equal or smaller than an Integer.&n;&t; *&n;&t; * Note: Field.length is in bits.&n;&t; */
 id|length
 op_assign
 id|ROUND_BITS_UP_TO_BYTES
@@ -71,7 +78,7 @@ id|length
 OG
 r_sizeof
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 )paren
 (brace
@@ -90,7 +97,7 @@ op_logical_neg
 id|buffer_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -99,7 +106,7 @@ suffix:semicolon
 multiline_comment|/* Create the actual read buffer */
 id|buffer_desc-&gt;buffer.pointer
 op_assign
-id|acpi_ut_callocate
+id|ACPI_MEM_CALLOCATE
 (paren
 id|length
 )paren
@@ -116,7 +123,7 @@ id|acpi_ut_remove_reference
 id|buffer_desc
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -148,7 +155,7 @@ op_logical_neg
 id|buffer_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -281,27 +288,27 @@ op_assign
 id|buffer_desc
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_write_data_to_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Number of bytes to transfer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or write a named field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_write_data_to_field
 id|acpi_ex_write_data_to_field
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|source_desc
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u32
@@ -310,6 +317,13 @@ suffix:semicolon
 r_void
 op_star
 id|buffer
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_write_data_to_field&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
 r_if
@@ -322,7 +336,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_NO_OPERAND
 )paren
@@ -380,7 +394,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_TYPE
 )paren
@@ -467,27 +481,27 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_buffer_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Number of bytes to transfer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or write a named field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_access_buffer_field
 id|acpi_ex_access_buffer_field
 (paren
 id|u32
 id|mode
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
@@ -499,8 +513,15 @@ id|u32
 id|buffer_length
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_access_buffer_field&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the Buffer_field arguments have not been previously evaluated,&n;&t; * evaluate them now and save the results.&n;&t; */
 r_if
@@ -530,7 +551,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -550,21 +571,21 @@ comma
 id|buffer_length
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_region_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Number of bytes to transfer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or write a named field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_access_region_field
 id|acpi_ex_access_region_field
 (paren
 id|u32
 id|mode
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
@@ -576,11 +597,18 @@ id|u32
 id|buffer_length
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u8
 id|locked
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_access_region_field&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the global lock if needed&n;&t; */
 id|locked
@@ -609,21 +637,21 @@ id|acpi_ex_release_global_lock
 id|locked
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_bank_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Number of bytes to transfer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or write a Bank Field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_access_bank_field
 id|acpi_ex_access_bank_field
 (paren
 id|u32
 id|mode
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
@@ -635,11 +663,18 @@ id|u32
 id|buffer_length
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u8
 id|locked
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_access_bank_field&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the global lock if needed&n;&t; */
 id|locked
@@ -702,21 +737,21 @@ id|acpi_ex_release_global_lock
 id|locked
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_index_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Number of bytes to transfer&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or write a Index Field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_access_index_field
 id|acpi_ex_access_index_field
 (paren
 id|u32
 id|mode
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
@@ -728,11 +763,18 @@ id|u32
 id|buffer_length
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
 id|u8
 id|locked
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_access_index_field&quot;
+comma
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the global lock if needed&n;&t; */
 id|locked
@@ -795,21 +837,21 @@ id|acpi_ex_release_global_lock
 id|locked
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_common_access_field&n; *&n; * PARAMETERS:  Mode                - ACPI_READ or ACPI_WRITE&n; *              *Field_node         - Parent node for field to be accessed&n; *              *Buffer             - Value(s) to be read or written&n; *              Buffer_length       - Size of buffer, in bytes.  Must be large&n; *                                    enough for all bits of the field.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or write a named field&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_common_access_field
 id|acpi_ex_common_access_field
 (paren
 id|u32
 id|mode
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 comma
@@ -821,8 +863,49 @@ id|u32
 id|buffer_length
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ex_common_access_field&quot;
+comma
+id|obj_desc
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
+comma
+id|obj_desc
+comma
+id|obj_desc-&gt;common.type
+comma
+id|buffer
+comma
+id|buffer_length
+)paren
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Mode=%d Bit_len=%X Bit_off=%X Byte_off=%X&bslash;n&quot;
+comma
+id|mode
+comma
+id|obj_desc-&gt;common_field.bit_length
+comma
+id|obj_desc-&gt;common_field.start_field_bit_offset
+comma
+id|obj_desc-&gt;common_field.base_byte_offset
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Perform the actual read or write of the field */
 r_switch
@@ -865,6 +948,17 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown I/O Mode: %X&bslash;n&quot;
+comma
+id|mode
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_BAD_PARAMETER
@@ -872,7 +966,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

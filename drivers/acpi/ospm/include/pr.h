@@ -224,7 +224,7 @@ id|BM_HANDLE
 id|device_handle
 suffix:semicolon
 DECL|member|acpi_handle
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 suffix:semicolon
 DECL|member|uid
@@ -249,21 +249,21 @@ id|PR_CONTEXT
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *                             Function Prototypes&n; *****************************************************************************/
 multiline_comment|/* processor.c */
-id|ACPI_STATUS
+id|acpi_status
 id|pr_initialize
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_terminate
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_notify
 (paren
 id|BM_NOTIFY
@@ -278,7 +278,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_request
 c_func
 (paren
@@ -298,7 +298,7 @@ id|pr_power_idle
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_power_add_device
 (paren
 id|PR_CONTEXT
@@ -306,7 +306,7 @@ op_star
 id|processor
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_power_remove_device
 (paren
 id|PR_CONTEXT
@@ -314,20 +314,20 @@ op_star
 id|processor
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_power_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_power_terminate
 (paren
 r_void
 )paren
 suffix:semicolon
 multiline_comment|/* prperf.c */
-id|ACPI_STATUS
+id|acpi_status
 id|pr_perf_get_state
 (paren
 id|PR_CONTEXT
@@ -339,7 +339,7 @@ op_star
 id|state
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_perf_set_state
 (paren
 id|PR_CONTEXT
@@ -350,7 +350,7 @@ id|u32
 id|state
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_perf_set_limit
 (paren
 id|PR_CONTEXT
@@ -361,7 +361,7 @@ id|u32
 id|limit
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_perf_add_device
 (paren
 id|PR_CONTEXT
@@ -369,7 +369,7 @@ op_star
 id|processor
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_perf_remove_device
 (paren
 id|PR_CONTEXT
@@ -378,7 +378,7 @@ id|processor
 )paren
 suffix:semicolon
 multiline_comment|/* Processor Driver OSL */
-id|ACPI_STATUS
+id|acpi_status
 id|pr_osl_add_device
 (paren
 id|PR_CONTEXT
@@ -386,7 +386,7 @@ op_star
 id|processor
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_osl_remove_device
 (paren
 id|PR_CONTEXT
@@ -394,7 +394,7 @@ op_star
 id|processor
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|pr_osl_generate_event
 (paren
 id|u32

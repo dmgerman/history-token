@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: bn_osl.c&n; *   $Revision: 10 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: bn_osl.c&n; *   $Revision: 14 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -49,7 +49,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bn_osl_add_device&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bn_osl_add_device
 id|bn_osl_add_device
 c_func
@@ -59,7 +59,7 @@ op_star
 id|button
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -183,7 +183,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bn_osl_remove_device&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bn_osl_remove_device
 id|bn_osl_remove_device
 (paren
@@ -260,7 +260,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:&t;bn_osl_generate_event&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|bn_osl_generate_event
 id|bn_osl_generate_event
 (paren
@@ -272,7 +272,7 @@ op_star
 id|button
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
@@ -405,10 +405,21 @@ id|bn_osl_init
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
+suffix:semicolon
+multiline_comment|/* abort if no busmgr */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bm_proc_root
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|bn_proc_root
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwgpe - Low level GPE enable/disable/clear functions&n; *              $Revision: 29 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwgpe - Low level GPE enable/disable/clear functions&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -19,14 +19,18 @@ id|u32
 id|gpe_number
 )paren
 (brace
-id|u8
+id|u32
 id|in_byte
 suffix:semicolon
 id|u32
 id|register_index
 suffix:semicolon
-id|u8
+id|u32
 id|bit_mask
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
 id|register_index
@@ -50,7 +54,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Read the current value of the register, set the appropriate bit&n;&t; * to enable the GPE, and write out the new register.&n;&t; */
 id|in_byte
 op_assign
-id|acpi_os_in8
+l_int|0
+suffix:semicolon
+id|acpi_os_read_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -58,9 +64,14 @@ id|register_index
 )braket
 dot
 id|enable_addr
+comma
+op_amp
+id|in_byte
+comma
+l_int|8
 )paren
 suffix:semicolon
-id|acpi_os_out8
+id|acpi_os_write_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -70,13 +81,12 @@ dot
 id|enable_addr
 comma
 (paren
-id|u8
-)paren
-(paren
 id|in_byte
 op_or
 id|bit_mask
 )paren
+comma
+l_int|8
 )paren
 suffix:semicolon
 )brace
@@ -89,14 +99,18 @@ id|u32
 id|gpe_number
 )paren
 (brace
-id|u8
+id|u32
 id|in_byte
 suffix:semicolon
 id|u32
 id|register_index
 suffix:semicolon
-id|u8
+id|u32
 id|bit_mask
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
 id|register_index
@@ -120,7 +134,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Read the current value of the register, clear the appropriate bit,&n;&t; * and write out the new register value to disable the GPE.&n;&t; */
 id|in_byte
 op_assign
-id|acpi_os_in8
+l_int|0
+suffix:semicolon
+id|acpi_os_read_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -128,9 +144,14 @@ id|register_index
 )braket
 dot
 id|enable_addr
+comma
+op_amp
+id|in_byte
+comma
+l_int|8
 )paren
 suffix:semicolon
-id|acpi_os_out8
+id|acpi_os_write_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -140,14 +161,13 @@ dot
 id|enable_addr
 comma
 (paren
-id|u8
-)paren
-(paren
 id|in_byte
 op_amp
 op_complement
 id|bit_mask
 )paren
+comma
+l_int|8
 )paren
 suffix:semicolon
 )brace
@@ -163,8 +183,12 @@ id|gpe_number
 id|u32
 id|register_index
 suffix:semicolon
-id|u8
+id|u32
 id|bit_mask
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Translate GPE number to index into global registers array.&n;&t; */
 id|register_index
@@ -186,7 +210,7 @@ id|gpe_number
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Write a one to the appropriate bit in the status register to&n;&t; * clear this GPE.&n;&t; */
-id|acpi_os_out8
+id|acpi_os_write_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -196,6 +220,8 @@ dot
 id|status_addr
 comma
 id|bit_mask
+comma
+l_int|8
 )paren
 suffix:semicolon
 )brace
@@ -207,12 +233,12 @@ id|acpi_hw_get_gpe_status
 id|u32
 id|gpe_number
 comma
-id|ACPI_EVENT_STATUS
+id|acpi_event_status
 op_star
 id|event_status
 )paren
 (brace
-id|u8
+id|u32
 id|in_byte
 op_assign
 l_int|0
@@ -222,10 +248,14 @@ id|register_index
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u32
 id|bit_mask
 op_assign
 l_int|0
+suffix:semicolon
+id|FUNCTION_ENTRY
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -266,7 +296,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Enabled?:&n;&t; */
 id|in_byte
 op_assign
-id|acpi_os_in8
+l_int|0
+suffix:semicolon
+id|acpi_os_read_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -274,6 +306,11 @@ id|register_index
 )braket
 dot
 id|enable_addr
+comma
+op_amp
+id|in_byte
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if
@@ -295,7 +332,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Set?&n;&t; */
 id|in_byte
 op_assign
-id|acpi_os_in8
+l_int|0
+suffix:semicolon
+id|acpi_os_read_port
 (paren
 id|acpi_gbl_gpe_registers
 (braket
@@ -303,6 +342,11 @@ id|register_index
 )braket
 dot
 id|status_addr
+comma
+op_amp
+id|in_byte
+comma
+l_int|8
 )paren
 suffix:semicolon
 r_if

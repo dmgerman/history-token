@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 34 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -16,23 +16,24 @@ l_string|&quot;exconfig&quot;
 )paren
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_load_table_op&n; *&n; * PARAMETERS:  Rgn_desc        - Op region where the table will be obtained&n; *              Ddb_handle      - Where a handle to the table will be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table&n; *&n; ****************************************************************************/
 r_static
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_load_table_op
 id|acpi_ex_load_table_op
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|rgn_desc
 comma
-id|ACPI_HANDLE
+id|acpi_operand_object
+op_star
 op_star
 id|ddb_handle
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|table_desc
 op_assign
@@ -46,14 +47,19 @@ id|u8
 op_star
 id|table_data_ptr
 suffix:semicolon
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|table_header
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 id|table_info
 suffix:semicolon
 id|u32
 id|i
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_load_table&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* TBD: [Unhandled] Object can be either a field or an opregion */
 multiline_comment|/* Get the table header */
@@ -72,7 +78,7 @@ id|i
 OL
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 suffix:semicolon
 id|i
@@ -119,7 +125,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -129,7 +135,7 @@ suffix:semicolon
 multiline_comment|/* Allocate a buffer for the entire table */
 id|table_ptr
 op_assign
-id|acpi_ut_allocate
+id|ACPI_MEM_ALLOCATE
 (paren
 id|table_header.length
 )paren
@@ -141,7 +147,7 @@ op_logical_neg
 id|table_ptr
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -157,7 +163,7 @@ id|table_header
 comma
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
@@ -167,7 +173,7 @@ id|table_ptr
 op_plus
 r_sizeof
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 )paren
 suffix:semicolon
 multiline_comment|/* Get the table from the op region */
@@ -275,6 +281,17 @@ id|sig_length
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Table has invalid signature [%4.4s], must be SSDT or PSDT&bslash;n&quot;
+comma
+id|table_header.signature
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_BAD_SIGNATURE
@@ -310,7 +327,7 @@ multiline_comment|/* Install the new table into the local data structures */
 id|table_info.pointer
 op_assign
 (paren
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 op_star
 )paren
 id|table_ptr
@@ -370,24 +387,24 @@ id|ddb_handle
 op_assign
 id|table_desc
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 id|cleanup
 suffix:colon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|table_desc
 )paren
 suffix:semicolon
-id|acpi_ut_free
+id|ACPI_MEM_FREE
 (paren
 id|table_ptr
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -395,35 +412,36 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_unload_table&n; *&n; * PARAMETERS:  Ddb_handle          - Handle to a previously loaded table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Unload an ACPI table&n; *&n; ****************************************************************************/
 r_static
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_unload_table
 id|acpi_ex_unload_table
 (paren
-id|ACPI_HANDLE
+id|acpi_operand_object
+op_star
 id|ddb_handle
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_NOT_IMPLEMENTED
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|table_desc
 op_assign
-(paren
-id|ACPI_OPERAND_OBJECT
-op_star
-)paren
 id|ddb_handle
 suffix:semicolon
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 id|table_info
 suffix:semicolon
-multiline_comment|/* Validate the handle */
-multiline_comment|/* Although the handle is partially validated in Acpi_ex_reconfiguration(),&n;&t; *  when it calls Acpi_ex_resolve_operands(), the handle is more completely&n;&t; *  validated here.&n;&t; */
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_unload_table&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Validate the handle&n;&t; * Although the handle is partially validated in Acpi_ex_reconfiguration(),&n;&t; * when it calls Acpi_ex_resolve_operands(), the handle is more completely&n;&t; * validated here.&n;&t; */
 r_if
 c_cond
 (paren
@@ -445,7 +463,7 @@ op_logical_or
 (paren
 (paren
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 id|ddb_handle
@@ -457,7 +475,7 @@ id|INTERNAL_TYPE_REFERENCE
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -467,7 +485,7 @@ multiline_comment|/* Get the actual table descriptor from the Ddb_handle */
 id|table_info
 op_assign
 (paren
-id|ACPI_TABLE_DESC
+id|acpi_table_desc
 op_star
 )paren
 id|table_desc-&gt;reference.object
@@ -489,7 +507,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -507,66 +525,48 @@ id|acpi_ut_remove_reference
 id|table_desc
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_reconfiguration&n; *&n; * PARAMETERS:  Opcode              - The opcode to be executed&n; *              Walk_state          - Current state of the parse tree walk&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Reconfiguration opcodes such as LOAD and UNLOAD&n; *&n; ****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ex_reconfiguration
 id|acpi_ex_reconfiguration
 (paren
 id|u16
 id|opcode
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
-id|status
-suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
-id|region_desc
+op_star
+id|operand
 op_assign
-l_int|NULL
-suffix:semicolon
-id|ACPI_HANDLE
-op_star
-id|ddb_handle
-suffix:semicolon
-multiline_comment|/* Resolve the operands */
-id|status
-op_assign
-id|acpi_ex_resolve_operands
-(paren
-id|opcode
-comma
-id|WALK_OPERANDS
-comma
-id|walk_state
-)paren
-suffix:semicolon
-multiline_comment|/* Get the table handle, common for both opcodes */
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-(paren
-id|ACPI_OPERAND_OBJECT
-op_star
-op_star
-)paren
 op_amp
-id|ddb_handle
-comma
-id|walk_state
+id|walk_state-&gt;operands
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ex_reconfiguration&quot;
 )paren
 suffix:semicolon
+DECL|macro|ddb_handle
+mdefine_line|#define ddb_handle          operand[0]
+DECL|macro|region_desc
+mdefine_line|#define region_desc         operand[1]
 r_switch
 c_cond
 (paren
@@ -576,43 +576,13 @@ id|opcode
 r_case
 id|AML_LOAD_OP
 suffix:colon
-multiline_comment|/* Get the region or field descriptor */
-id|status
-op_or_assign
-id|acpi_ds_obj_stack_pop_object
-(paren
-op_amp
-id|region_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|region_desc
-)paren
-suffix:semicolon
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_ex_load_table_op
 (paren
 id|region_desc
 comma
+op_amp
 id|ddb_handle
 )paren
 suffix:semicolon
@@ -621,21 +591,6 @@ suffix:semicolon
 r_case
 id|AML_UNLOAD_OP
 suffix:colon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|acpi_ex_unload_table
@@ -647,6 +602,17 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;bad opcode=%X&bslash;n&quot;
+comma
+id|opcode
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_BAD_OPCODE
@@ -654,7 +620,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren

@@ -22,7 +22,7 @@ id|BM_HANDLE
 id|device_handle
 suffix:semicolon
 DECL|member|acpi_handle
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 suffix:semicolon
 DECL|member|uid
@@ -41,19 +41,19 @@ DECL|typedef|AC_CONTEXT
 id|AC_CONTEXT
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                              Function Prototypes&n; *****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 id|ac_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ac_terminate
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ac_notify
 (paren
 id|u32
@@ -68,7 +68,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ac_request
 c_func
 (paren
@@ -82,7 +82,7 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/* AC Adapter Driver OSL */
-id|ACPI_STATUS
+id|acpi_status
 id|ac_osl_add_device
 (paren
 id|AC_CONTEXT
@@ -90,7 +90,7 @@ op_star
 id|ac_adapter
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ac_osl_remove_device
 (paren
 id|AC_CONTEXT
@@ -98,7 +98,7 @@ op_star
 id|ac_adapter
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|ac_osl_generate_event
 (paren
 id|u32

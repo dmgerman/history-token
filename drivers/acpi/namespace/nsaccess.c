@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 126 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 133 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -12,31 +12,37 @@ id|MODULE_NAME
 l_string|&quot;nsaccess&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_root_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate and initialize the default root named objects&n; *&n; * MUTEX:       Locks namespace for entire execution&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ns_root_initialize
 id|acpi_ns_root_initialize
 (paren
 r_void
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|PREDEFINED_NAMES
+r_const
+id|predefined_names
 op_star
 id|init_val
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|new_node
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ns_root_initialize&quot;
+)paren
 suffix:semicolon
 id|acpi_ut_acquire_mutex
 (paren
@@ -65,6 +71,15 @@ op_amp
 id|acpi_gbl_root_node_struct
 suffix:semicolon
 multiline_comment|/* Enter the pre-defined names in the name table */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Entering predefined entries into namespace&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -98,6 +113,38 @@ op_amp
 id|new_node
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|new_node
+)paren
+)paren
+multiline_comment|/* Must be on same line for code converter */
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Could not create predefined name %s, %s&bslash;n&quot;
+comma
+id|init_val-&gt;name
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Name entered successfully.&n;&t;&t; * If entry in Pre_defined_names[] specifies an&n;&t;&t; * initial value, create the initial value.&n;&t;&t; */
 r_if
 c_cond
@@ -141,7 +188,7 @@ suffix:colon
 id|obj_desc-&gt;integer.value
 op_assign
 (paren
-id|ACPI_INTEGER
+id|acpi_integer
 )paren
 id|STRTOUL
 (paren
@@ -157,6 +204,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * Build an object around the static string&n;&t;&t;&t;&t; */
 id|obj_desc-&gt;string.length
 op_assign
 id|STRLEN
@@ -164,44 +212,13 @@ id|STRLEN
 id|init_val-&gt;val
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Allocate a buffer for the string.  All&n;&t;&t;&t;&t; * String.Pointers must be allocated buffers!&n;&t;&t;&t;&t; * (makes deletion simpler)&n;&t;&t;&t;&t; */
 id|obj_desc-&gt;string.pointer
 op_assign
-id|acpi_ut_allocate
-(paren
-(paren
-id|obj_desc-&gt;string.length
-op_plus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|obj_desc-&gt;string.pointer
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-id|status
-op_assign
-id|AE_NO_MEMORY
-suffix:semicolon
-r_goto
-id|unlock_and_exit
-suffix:semicolon
-)brace
-id|STRCPY
-(paren
-id|obj_desc-&gt;string.pointer
-comma
 id|init_val-&gt;val
-)paren
+suffix:semicolon
+id|obj_desc-&gt;common.flags
+op_or_assign
+id|AOPOBJ_STATIC_POINTER
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -340,18 +357,18 @@ id|acpi_ut_release_mutex
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_lookup&n; *&n; * PARAMETERS:  Prefix_node     - Search scope if name is not fully qualified&n; *              Pathname        - Search pathname, in internal format&n; *                                (as represented in the AML stream)&n; *              Type            - Type associated with name&n; *              Interpreter_mode - IMODE_LOAD_PASS2 =&gt; add name if not found&n; *              Flags           - Flags describing the search restrictions&n; *              Walk_state      - Current state of the walk&n; *              Return_node     - Where the Node is placed (if found&n; *                                or created successfully)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find or enter the passed name in the name space.&n; *              Log an error if name not found in Exec mode.&n; *&n; * MUTEX:       Assumes namespace is locked.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ns_lookup
 id|acpi_ns_lookup
 (paren
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|scope_info
 comma
@@ -359,45 +376,45 @@ id|NATIVE_CHAR
 op_star
 id|pathname
 comma
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|type
 comma
-id|OPERATING_MODE
+id|operating_mode
 id|interpreter_mode
 comma
 id|u32
 id|flags
 comma
-id|ACPI_WALK_STATE
+id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 op_star
 id|return_node
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|prefix_node
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|current_node
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|scope_to_push
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|this_node
 op_assign
@@ -406,7 +423,7 @@ suffix:semicolon
 id|u32
 id|num_segments
 suffix:semicolon
-id|ACPI_NAME
+id|acpi_name
 id|simple_name
 suffix:semicolon
 id|u8
@@ -414,10 +431,10 @@ id|null_name_path
 op_assign
 id|FALSE
 suffix:semicolon
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|type_to_check_for
 suffix:semicolon
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|this_search_type
 suffix:semicolon
 id|u32
@@ -428,6 +445,17 @@ op_amp
 op_complement
 id|NS_ERROR_IF_FOUND
 suffix:semicolon
+id|DEBUG_EXEC
+(paren
+id|u32
+id|i
+suffix:semicolon
+)paren
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ns_lookup&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -435,7 +463,7 @@ op_logical_neg
 id|return_node
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -477,6 +505,17 @@ id|scope_info-&gt;scope.node
 )paren
 )paren
 (brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Null scope prefix, using root node (%p)&bslash;n&quot;
+comma
+id|acpi_gbl_root_node
+)paren
+)paren
+suffix:semicolon
 id|prefix_node
 op_assign
 id|acpi_gbl_root_node
@@ -548,6 +587,17 @@ id|this_node
 op_assign
 id|acpi_gbl_root_node
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Null Pathname (Zero segments),  Flags=%x&bslash;n&quot;
+comma
+id|flags
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -569,6 +619,17 @@ suffix:semicolon
 multiline_comment|/* point to segment part */
 id|pathname
 op_increment
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Searching from root [%p]&bslash;n&quot;
+comma
+id|current_node
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Direct reference to root, &quot;&bslash;&quot; */
 r_if
@@ -596,6 +657,17 @@ multiline_comment|/* Pathname is relative to current scope, start there */
 id|current_node
 op_assign
 id|prefix_node
+suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Searching relative to pfx scope [%p]&bslash;n&quot;
+comma
+id|prefix_node
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Handle up-prefix (carat).  More than one prefix&n;&t;&t;&t; * is supported&n;&t;&t;&t; */
 r_while
@@ -634,7 +706,7 @@ l_string|&quot;Too many parent prefixes (^) - reached root&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NOT_FOUND
 )paren
@@ -664,6 +736,17 @@ multiline_comment|/* point to first segment */
 id|pathname
 op_increment
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Dual Pathname (2 segments, Flags=%X)&bslash;n&quot;
+comma
+id|flags
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -692,6 +775,19 @@ multiline_comment|/* point to first segment */
 id|pathname
 op_increment
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Multi Pathname (%d Segments, Flags=%X) &bslash;n&quot;
+comma
+id|num_segments
+comma
+id|flags
+)paren
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -700,7 +796,73 @@ id|num_segments
 op_assign
 l_int|1
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Simple Pathname (1 segment, Flags=%X)&bslash;n&quot;
+comma
+id|flags
+)paren
+)paren
+suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_DEBUG
+multiline_comment|/* TBD: [Restructure] Make this a procedure */
+multiline_comment|/* Debug only: print the entire name that we are about to lookup */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;[&quot;
+)paren
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_segments
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;%4.4s/&quot;
+comma
+op_amp
+id|pathname
+(braket
+id|i
+op_star
+l_int|4
+)braket
+)paren
+)paren
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;]&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; * Search namespace for each segment of the name.&n;&t; * Loop through and verify/add each name segment.&n;&t; */
 r_while
@@ -781,8 +943,22 @@ id|AE_NOT_FOUND
 )paren
 (brace
 multiline_comment|/* Name not found in ACPI namespace  */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_NAMES
+comma
+l_string|&quot;Name [%4.4s] not found in scope %X&bslash;n&quot;
+comma
+op_amp
+id|simple_name
+comma
+id|current_node
+)paren
+)paren
+suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -899,6 +1075,19 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * More segments or the type implies enclosed scope,&n;&t;&t;&t; * and the next scope has not been allocated.&n;&t;&t;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Load mode=%X  This_node=%X&bslash;n&quot;
+comma
+id|interpreter_mode
+comma
+id|this_node
+)paren
+)paren
+suffix:semicolon
 )brace
 id|current_node
 op_assign
@@ -978,12 +1167,23 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Set global scope to %p&bslash;n&quot;
+comma
+id|scope_to_push
+)paren
+)paren
+suffix:semicolon
 )brace
 )brace
 op_star
@@ -991,7 +1191,7 @@ id|return_node
 op_assign
 id|this_node
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

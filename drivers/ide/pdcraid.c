@@ -1549,12 +1549,6 @@ id|nr_sects
 op_assign
 l_int|0
 suffix:semicolon
-id|put_gendisk
-c_func
-(paren
-id|gd
-)paren
-suffix:semicolon
 )brace
 )brace
 id|raid

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psscope - Parser scope stack management routines&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psscope - Parser scope stack management routines&n; *              $Revision: 29 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -9,12 +9,12 @@ id|MODULE_NAME
 l_string|&quot;psscope&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_parent_scope&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      Pointer to an Op object&n; *&n; * DESCRIPTION: Get parent of current op being parsed&n; *&n; ******************************************************************************/
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_get_parent_scope
 id|acpi_ps_get_parent_scope
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 )paren
@@ -30,7 +30,7 @@ id|u8
 DECL|function|acpi_ps_has_completed_scope
 id|acpi_ps_has_completed_scope
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 )paren
@@ -54,22 +54,29 @@ id|parser_state-&gt;scope-&gt;parse_scope.arg_count
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_init_scope&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Root                - the Root Node of this new scope&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate and init a new scope object&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_init_scope
 id|acpi_ps_init_scope
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|root_op
 )paren
 (brace
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|scope
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_init_scope&quot;
+comma
+id|root_op
+)paren
 suffix:semicolon
 id|scope
 op_assign
@@ -84,7 +91,7 @@ op_logical_neg
 id|scope
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -114,22 +121,22 @@ id|parser_state-&gt;start_op
 op_assign
 id|root_op
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_push_scope&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Op                  - Current op to be pushed&n; *              Remaining_args      - List of args remaining&n; *              Arg_count           - Fixed or variable number of args&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push current op to begin parsing its argument&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_ps_push_scope
 id|acpi_ps_push_scope
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 id|op
 comma
@@ -140,9 +147,16 @@ id|u32
 id|arg_count
 )paren
 (brace
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|scope
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_push_scope&quot;
+comma
+id|op
+)paren
 suffix:semicolon
 id|scope
 op_assign
@@ -210,7 +224,7 @@ op_assign
 id|ACPI_MAX_AML
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -221,11 +235,11 @@ r_void
 DECL|function|acpi_ps_pop_scope
 id|acpi_ps_pop_scope
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 comma
-id|ACPI_PARSE_OBJECT
+id|acpi_parse_object
 op_star
 op_star
 id|op
@@ -239,11 +253,16 @@ op_star
 id|arg_count
 )paren
 (brace
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|scope
 op_assign
 id|parser_state-&gt;scope
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ps_pop_scope&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only pop the scope if there is in fact a next scope&n;&t; */
 r_if
@@ -306,7 +325,22 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_PARSE
+comma
+l_string|&quot;Popped Op %p Args %X&bslash;n&quot;
+comma
+op_star
+id|op
+comma
+op_star
+id|arg_count
+)paren
+)paren
+suffix:semicolon
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_cleanup_scope&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Destroy available list, remaining stack levels, and return&n; *              root scope&n; *&n; ******************************************************************************/
@@ -314,14 +348,21 @@ r_void
 DECL|function|acpi_ps_cleanup_scope
 id|acpi_ps_cleanup_scope
 (paren
-id|ACPI_PARSE_STATE
+id|acpi_parse_state
 op_star
 id|parser_state
 )paren
 (brace
-id|ACPI_GENERIC_STATE
+id|acpi_generic_state
 op_star
 id|scope
+suffix:semicolon
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ps_cleanup_scope&quot;
+comma
+id|parser_state
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -354,7 +395,7 @@ id|scope
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 eof

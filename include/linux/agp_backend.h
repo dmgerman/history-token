@@ -78,6 +78,9 @@ comma
 DECL|enumerator|AMD_761
 id|AMD_761
 comma
+DECL|enumerator|AMD_762
+id|AMD_762
+comma
 DECL|enumerator|ALI_M1541
 id|ALI_M1541
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 10 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 12 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -9,7 +9,7 @@ id|MODULE_NAME
 l_string|&quot;hwtimer&quot;
 )paren
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_timer_resolution&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Number of bits of resolution in the PM Timer (24 or 32).&n; *&n; * DESCRIPTION: Obtains resolution of the ACPI PM Timer.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_timer_resolution
 id|acpi_get_timer_resolution
 (paren
@@ -18,8 +18,13 @@ op_star
 id|resolution
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_timer_resolution&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -36,7 +41,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -49,7 +54,7 @@ op_logical_neg
 id|resolution
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -77,14 +82,14 @@ op_assign
 l_int|32
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_timer&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      Current value of the ACPI PM Timer (in ticks).&n; *&n; * DESCRIPTION: Obtains current value of ACPI PM Timer.&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_timer
 id|acpi_get_timer
 (paren
@@ -93,8 +98,13 @@ op_star
 id|ticks
 )paren
 (brace
-id|ACPI_STATUS
+id|acpi_status
 id|status
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_timer&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Ensure that ACPI has been initialized */
 id|ACPI_IS_INITIALIZATION_COMPLETE
@@ -111,7 +121,7 @@ id|status
 )paren
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|status
 )paren
@@ -124,16 +134,13 @@ op_logical_neg
 id|ticks
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-op_star
-id|ticks
-op_assign
-id|acpi_os_in32
+id|acpi_os_read_port
 (paren
 (paren
 id|ACPI_IO_ADDRESS
@@ -142,16 +149,20 @@ id|ACPI_GET_ADDRESS
 (paren
 id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
 )paren
+comma
+id|ticks
+comma
+l_int|32
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_timer_duration&n; *&n; * PARAMETERS:  Start_ticks&n; *              End_ticks&n; *              Time_elapsed&n; *&n; * RETURN:      Time_elapsed&n; *&n; * DESCRIPTION: Computes the time elapsed (in microseconds) between two&n; *              PM Timer time stamps, taking into account the possibility of&n; *              rollovers, the timer resolution, and timer frequency.&n; *&n; *              The PM Timer&squot;s clock ticks at roughly 3.6 times per&n; *              _microsecond_, and its clock continues through Cx state&n; *              transitions (unlike many CPU timestamp counters) -- making it&n; *              a versatile and accurate timer.&n; *&n; *              Note that this function accomodates only a single timer&n; *              rollover.  Thus for 24-bit timers, this function should only&n; *              be used for calculating durations less than ~4.6 seconds&n; *              (~20 hours for 32-bit timers).&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 DECL|function|acpi_get_timer_duration
 id|acpi_get_timer_duration
 (paren
@@ -191,6 +202,11 @@ id|remainder
 op_assign
 l_int|0
 suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_get_timer_duration&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -198,7 +214,7 @@ op_logical_neg
 id|time_elapsed
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -277,7 +293,7 @@ id|time_elapsed
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -349,7 +365,7 @@ id|time_elapsed
 op_add_assign
 id|microseconds
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

@@ -12,7 +12,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 multiline_comment|/* Table header */
@@ -86,9 +86,9 @@ l_int|40
 )braket
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
-DECL|typedef|FACS_DESCRIPTOR_REV1
+DECL|typedef|facs_descriptor_rev1
 )brace
-id|FACS_DESCRIPTOR_REV1
+id|facs_descriptor_rev1
 suffix:semicolon
 multiline_comment|/************************************/
 multiline_comment|/* ACPI Specification Rev 1.0 for   */
@@ -98,7 +98,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|header
-id|ACPI_TABLE_HEADER
+id|acpi_table_header
 id|header
 suffix:semicolon
 multiline_comment|/* table header */
@@ -362,9 +362,9 @@ suffix:colon
 l_int|23
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
-DECL|typedef|FADT_DESCRIPTOR_REV1
+DECL|typedef|fadt_descriptor_rev1
 )brace
-id|FADT_DESCRIPTOR_REV1
+id|fadt_descriptor_rev1
 suffix:semicolon
 macro_line|#pragma pack()
 macro_line|#endif /* __ACTBL1_H__ */

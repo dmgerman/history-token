@@ -37,7 +37,7 @@ id|BM_HANDLE
 id|device_handle
 suffix:semicolon
 DECL|member|acpi_handle
-id|ACPI_HANDLE
+id|acpi_handle
 id|acpi_handle
 suffix:semicolon
 DECL|member|type
@@ -49,19 +49,19 @@ DECL|typedef|BN_CONTEXT
 id|BN_CONTEXT
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *                              Function Prototypes&n; *****************************************************************************/
-id|ACPI_STATUS
+id|acpi_status
 id|bn_initialize
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bn_terminate
 (paren
 r_void
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bn_notify_fixed
 (paren
 r_void
@@ -69,7 +69,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bn_notify
 (paren
 id|u32
@@ -84,7 +84,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bn_request
 c_func
 (paren
@@ -98,7 +98,7 @@ id|context
 )paren
 suffix:semicolon
 multiline_comment|/* Button OSL */
-id|ACPI_STATUS
+id|acpi_status
 id|bn_osl_add_device
 (paren
 id|BN_CONTEXT
@@ -106,7 +106,7 @@ op_star
 id|button
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bn_osl_remove_device
 (paren
 id|BN_CONTEXT
@@ -114,7 +114,7 @@ op_star
 id|button
 )paren
 suffix:semicolon
-id|ACPI_STATUS
+id|acpi_status
 id|bn_osl_generate_event
 (paren
 id|u32

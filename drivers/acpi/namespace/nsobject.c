@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 55 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 65 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -11,32 +11,32 @@ id|MODULE_NAME
 (paren
 l_string|&quot;nsobject&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_attach_object&n; *&n; * PARAMETERS:  Node            - Parent Node&n; *              Object              - Object to be attached&n; *              Type                - Type of object, or ACPI_TYPE_ANY if not&n; *                                      known&n; *&n; * DESCRIPTION: Record the given object as the value associated with the&n; *              name whose ACPI_HANDLE is passed.  If Object is NULL&n; *              and Type is ACPI_TYPE_ANY, set the name as having no value.&n; *&n; * MUTEX:       Assumes namespace is locked&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_attach_object&n; *&n; * PARAMETERS:  Node                - Parent Node&n; *              Object              - Object to be attached&n; *              Type                - Type of object, or ACPI_TYPE_ANY if not&n; *                                    known&n; *&n; * DESCRIPTION: Record the given object as the value associated with the&n; *              name whose acpi_handle is passed.  If Object is NULL&n; *              and Type is ACPI_TYPE_ANY, set the name as having no value.&n; *&n; * MUTEX:       Assumes namespace is locked&n; *&n; ******************************************************************************/
+id|acpi_status
 DECL|function|acpi_ns_attach_object
 id|acpi_ns_attach_object
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 comma
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|object
 comma
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|type
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|previous_obj_desc
 suffix:semicolon
-id|ACPI_OBJECT_TYPE8
+id|acpi_object_type8
 id|obj_type
 op_assign
 id|ACPI_TYPE_ANY
@@ -46,6 +46,11 @@ id|flags
 suffix:semicolon
 id|u16
 id|opcode
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ns_attach_object&quot;
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Parameter validation&n;&t; */
 r_if
@@ -63,7 +68,7 @@ l_string|&quot;Ns_attach_object: Namespace not initialized&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_NAMESPACE
 )paren
@@ -84,7 +89,7 @@ l_string|&quot;Ns_attach_object: Null Named_obj handle&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -111,7 +116,7 @@ l_string|&quot;Ns_attach_object: Null object, but type not ACPI_TYPE_ANY&bslash;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -137,7 +142,7 @@ l_string|&quot;Ns_attach_object: Invalid handle&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_BAD_PARAMETER
 )paren
@@ -152,7 +157,20 @@ op_eq
 id|object
 )paren
 (brace
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Obj %p already installed in Name_obj %p&bslash;n&quot;
+comma
+id|object
+comma
+id|node
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -185,7 +203,7 @@ op_assign
 id|ACPI_TYPE_ANY
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the object is an Node with an attached object,&n;&t; * we will use that (attached) object&n;&t; */
+multiline_comment|/*&n;&t; * If the source object is a namespace Node with an attached object,&n;&t; * we will use that (attached) object&n;&t; */
 r_else
 r_if
 c_cond
@@ -199,7 +217,7 @@ id|ACPI_DESC_TYPE_NAMED
 op_logical_and
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|object
@@ -213,7 +231,7 @@ id|obj_desc
 op_assign
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|object
@@ -225,7 +243,7 @@ id|obj_type
 op_assign
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|object
@@ -239,7 +257,7 @@ c_cond
 (paren
 (paren
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 )paren
 id|object
@@ -262,7 +280,7 @@ r_else
 id|obj_desc
 op_assign
 (paren
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 )paren
 id|object
@@ -281,8 +299,7 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Type is TYPE_Any, we must try to determinte the&n;&t;&t; * actual type of the object&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * Check if value points into the AML code&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Type is TYPE_Any, we must try to determinte the&n;&t;&t; * actual type of the object.&n;&t;&t; * Check if value points into the AML code&n;&t;&t; */
 r_else
 r_if
 c_cond
@@ -332,7 +349,7 @@ multiline_comment|/*&n;&t;&t;&t;&t;&t; * Op_prefix is unrecognized unless part&n
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Else fall through to set type as Number */
+multiline_comment|/* case AML_REVISION_OP: fall through and set the type to Integer */
 r_case
 id|AML_ZERO_OP
 suffix:colon
@@ -350,6 +367,9 @@ id|AML_WORD_OP
 suffix:colon
 r_case
 id|AML_DWORD_OP
+suffix:colon
+r_case
+id|AML_QWORD_OP
 suffix:colon
 id|obj_type
 op_assign
@@ -395,7 +415,21 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;AML Opcode/Type [%x] not supported in attach&bslash;n&quot;
+comma
+(paren
+id|u8
+)paren
+id|opcode
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
 (paren
 id|AE_TYPE
 )paren
@@ -407,12 +441,117 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Cannot figure out the type -- set to Def_any which&n;&t;&t;&t; * will print as an error in the name table dump&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|acpi_dbg_level
+OG
+l_int|0
+)paren
+(brace
+id|DUMP_PATHNAME
+(paren
+id|node
+comma
+l_string|&quot;Ns_attach_object confused: setting bogus type for &quot;
+comma
+id|ACPI_LV_INFO
+comma
+id|_COMPONENT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_tb_system_table_pointer
+(paren
+id|object
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;AML-stream code %02x&bslash;n&quot;
+comma
+op_star
+(paren
+id|u8
+op_star
+)paren
+id|object
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|VALID_DESCRIPTOR_TYPE
+(paren
+id|object
+comma
+id|ACPI_DESC_TYPE_NAMED
+)paren
+)paren
+(brace
+id|DUMP_PATHNAME
+(paren
+id|object
+comma
+l_string|&quot;name &quot;
+comma
+id|ACPI_LV_INFO
+comma
+id|_COMPONENT
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DUMP_PATHNAME
+(paren
+id|object
+comma
+l_string|&quot;object &quot;
+comma
+id|ACPI_LV_INFO
+comma
+id|_COMPONENT
+)paren
+suffix:semicolon
+id|DUMP_STACK_ENTRY
+(paren
+id|object
+)paren
+suffix:semicolon
+)brace
+)brace
 id|obj_type
 op_assign
 id|INTERNAL_TYPE_DEF_ANY
 suffix:semicolon
 )brace
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_EXEC
+comma
+l_string|&quot;Installing %p into Node %p [%4.4s]&bslash;n&quot;
+comma
+id|obj_desc
+comma
+id|node
+comma
+op_amp
+id|node-&gt;name
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Must increment the new value&squot;s reference count&n;&t; * (if it is an internal object)&n;&t; */
 id|acpi_ut_add_reference
 (paren
@@ -460,7 +599,7 @@ id|previous_obj_desc
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -471,14 +610,19 @@ r_void
 DECL|function|acpi_ns_detach_object
 id|acpi_ns_detach_object
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 )paren
 (brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 op_star
 id|obj_desc
+suffix:semicolon
+id|FUNCTION_TRACE
+(paren
+l_string|&quot;Ns_detach_object&quot;
+)paren
 suffix:semicolon
 id|obj_desc
 op_assign
@@ -491,7 +635,7 @@ op_logical_neg
 id|obj_desc
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* Clear the entry in all cases */
@@ -500,7 +644,23 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Found a valid value */
-multiline_comment|/*&n;&t; * Not every value is an object allocated via Acpi_ut_callocate,&n;&t; * - must check&n;&t; */
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_INFO
+comma
+l_string|&quot;Object=%p Value=%p Name %4.4s&bslash;n&quot;
+comma
+id|node
+comma
+id|obj_desc
+comma
+op_amp
+id|node-&gt;name
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Not every value is an object allocated via ACPI_MEM_CALLOCATE,&n;&t; * - must check&n;&t; */
 r_if
 c_cond
 (paren
@@ -518,7 +678,7 @@ id|obj_desc
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; ******************************************************************************/
@@ -527,11 +687,18 @@ op_star
 DECL|function|acpi_ns_get_attached_object
 id|acpi_ns_get_attached_object
 (paren
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 )paren
 (brace
+id|FUNCTION_TRACE_PTR
+(paren
+l_string|&quot;Ns_get_attached_object&quot;
+comma
+id|node
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -540,13 +707,22 @@ id|node
 )paren
 (brace
 multiline_comment|/* handle invalid */
-r_return
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_WARN
+comma
+l_string|&quot;Null Node ptr&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_PTR
 (paren
 l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_return
+id|return_PTR
 (paren
 id|node-&gt;object
 )paren

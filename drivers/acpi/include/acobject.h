@@ -1,20 +1,24 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of ACPI_OPERAND_OBJECT  (Internal object only)&n; *       $Revision: 89 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 90 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
 mdefine_line|#define _ACOBJECT_H
-multiline_comment|/*&n; * The ACPI_OPERAND_OBJECT  is used to pass AML operands from the dispatcher&n; * to the interpreter, and to keep track of the various handlers such as&n; * address space handlers and notify handlers.  The object is a constant&n; * size in order to allow them to be cached and reused.&n; *&n; * All variants of the ACPI_OPERAND_OBJECT  are defined with the same&n; * sequence of field types, with fields that are not used in a particular&n; * variant being named &quot;Reserved&quot;.  This is not strictly necessary, but&n; * may in some circumstances simplify understanding if these structures&n; * need to be displayed in a debugger having limited (or no) support for&n; * union types.  It also simplifies some debug code in Dump_table() which&n; * dumps multi-level values: fetching Buffer.Pointer suffices to pick up&n; * the value or next level for any of several types.&n; */
+multiline_comment|/*&n; * The acpi_operand_object  is used to pass AML operands from the dispatcher&n; * to the interpreter, and to keep track of the various handlers such as&n; * address space handlers and notify handlers.  The object is a constant&n; * size in order to allow them to be cached and reused.&n; *&n; * All variants of the acpi_operand_object  are defined with the same&n; * sequence of field types, with fields that are not used in a particular&n; * variant being named &quot;Reserved&quot;.  This is not strictly necessary, but&n; * may in some circumstances simplify understanding if these structures&n; * need to be displayed in a debugger having limited (or no) support for&n; * union types.  It also simplifies some debug code in Dump_table() which&n; * dumps multi-level values: fetching Buffer.Pointer suffices to pick up&n; * the value or next level for any of several types.&n; */
 multiline_comment|/******************************************************************************&n; *&n; * Common Descriptors&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Common area for all objects.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|macro|ACPI_OBJECT_COMMON_HEADER
-mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32-bits plus trailing 8-bit flag */&bslash;&n;&t;u8                          data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* ACPI_OBJECT_TYPE */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;u8                          flags; &bslash;&n;
+mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32-bits plus trailing 8-bit flag */&bslash;&n;&t;u8                          data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* acpi_object_type */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;u8                          flags; &bslash;&n;
 multiline_comment|/* Defines for flag byte above */
 DECL|macro|AOPOBJ_STATIC_ALLOCATION
 mdefine_line|#define AOPOBJ_STATIC_ALLOCATION    0x1
+DECL|macro|AOPOBJ_STATIC_POINTER
+mdefine_line|#define AOPOBJ_STATIC_POINTER       0x2
 DECL|macro|AOPOBJ_DATA_VALID
-mdefine_line|#define AOPOBJ_DATA_VALID           0x2
+mdefine_line|#define AOPOBJ_DATA_VALID           0x4
+DECL|macro|AOPOBJ_ZERO_CONST
+mdefine_line|#define AOPOBJ_ZERO_CONST           0x4
 DECL|macro|AOPOBJ_INITIALIZED
-mdefine_line|#define AOPOBJ_INITIALIZED          0x4
+mdefine_line|#define AOPOBJ_INITIALIZED          0x8
 multiline_comment|/*&n; * Common bitfield for the field objects&n; * &quot;Field Datum&quot;    -- a datum from the actual field object&n; * &quot;Buffer Datum&quot;   -- a datum from a user buffer, read from or to be written to the field&n; */
 DECL|macro|ACPI_COMMON_FIELD_INFO
 mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* SIZE/ALIGNMENT: 24 bits + three 32-bit values */&bslash;&n;&t;u8                          access_flags;&bslash;&n;&t;u16                         bit_length;         /* Length of field in bits */&bslash;&n;&t;u32                         base_byte_offset;   /* Byte offset within containing object */&bslash;&n;&t;u8                          access_bit_width;   /* Read/Write size in bits (from ASL Access_type)*/&bslash;&n;&t;u8                          access_byte_width;  /* Read/Write size in bytes */&bslash;&n;&t;u8                          update_rule;        /* How neighboring field bits are handled */&bslash;&n;&t;u8                          lock_rule;          /* Global Lock: 1 = &quot;Must Lock&quot; */&bslash;&n;&t;u8                          start_field_bit_offset;/* Bit offset within first field datum (0-63) */&bslash;&n;&t;u8                          datum_valid_bits;   /* Valid bit in first &quot;Field datum&quot; */&bslash;&n;&t;u8                          end_field_valid_bits; /* Valid bits in the last &quot;field datum&quot; */&bslash;&n;&t;u8                          end_buffer_valid_bits; /* Valid bits in the last &quot;buffer datum&quot; */&bslash;&n;&t;u32                         value;              /* Value to store into the Bank or Index register */
@@ -53,7 +57,7 @@ multiline_comment|/* NUMBER - has value */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|value
-id|ACPI_INTEGER
+id|acpi_integer
 id|value
 suffix:semicolon
 DECL|typedef|ACPI_OBJECT_INTEGER
@@ -210,7 +214,7 @@ id|u8
 id|thread_count
 suffix:semicolon
 DECL|member|owning_id
-id|ACPI_OWNER_ID
+id|acpi_owner_id
 id|owning_id
 suffix:semicolon
 DECL|typedef|ACPI_OBJECT_METHOD
@@ -292,7 +296,7 @@ id|addr_handler
 suffix:semicolon
 multiline_comment|/* Handler for system notifies */
 DECL|member|node
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -510,7 +514,7 @@ id|extra
 suffix:semicolon
 multiline_comment|/* Pointer to executable AML (in field definition) */
 DECL|member|node
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -533,7 +537,7 @@ multiline_comment|/* NOTIFY HANDLER */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|node
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -572,7 +576,7 @@ id|ACPI_ADR_SPACE_HANDLER
 id|handler
 suffix:semicolon
 DECL|member|node
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -628,9 +632,9 @@ r_void
 op_star
 id|object
 suffix:semicolon
-multiline_comment|/* Name_op=&gt;HANDLE to obj, Index_op=&gt;ACPI_OPERAND_OBJECT */
+multiline_comment|/* Name_op=&gt;HANDLE to obj, Index_op=&gt;acpi_operand_object */
 DECL|member|node
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
@@ -669,7 +673,7 @@ op_star
 id|pcode
 suffix:semicolon
 DECL|member|method_REG
-id|ACPI_NAMESPACE_NODE
+id|acpi_namespace_node
 op_star
 id|method_REG
 suffix:semicolon
@@ -684,7 +688,7 @@ DECL|typedef|ACPI_OBJECT_EXTRA
 )brace
 id|ACPI_OBJECT_EXTRA
 suffix:semicolon
-multiline_comment|/******************************************************************************&n; *&n; * ACPI_OPERAND_OBJECT  Descriptor - a giant union of all of the above&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * acpi_operand_object  Descriptor - a giant union of all of the above&n; *&n; *****************************************************************************/
 DECL|union|acpi_operand_obj
 r_typedef
 r_union
@@ -782,9 +786,9 @@ DECL|member|extra
 id|ACPI_OBJECT_EXTRA
 id|extra
 suffix:semicolon
-DECL|typedef|ACPI_OPERAND_OBJECT
+DECL|typedef|acpi_operand_object
 )brace
-id|ACPI_OPERAND_OBJECT
+id|acpi_operand_object
 suffix:semicolon
 macro_line|#endif /* _ACOBJECT_H */
 eof
