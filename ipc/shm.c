@@ -255,8 +255,6 @@ op_amp
 id|shp-&gt;shm_perm
 comma
 id|shm_ctlmni
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 )brace
