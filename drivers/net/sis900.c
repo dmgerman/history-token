@@ -53,13 +53,17 @@ id|multicast_filter_limit
 op_assign
 l_int|128
 suffix:semicolon
-DECL|macro|sis900_debug
-mdefine_line|#define sis900_debug debug
 DECL|variable|sis900_debug
 r_static
 r_int
 id|sis900_debug
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
+multiline_comment|/* Use SIS900_DEF_MSG as value */
+DECL|macro|SIS900_DEF_MSG
+mdefine_line|#define SIS900_DEF_MSG &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (4*HZ)
@@ -410,6 +414,10 @@ id|u8
 id|autong_complete
 suffix:semicolon
 multiline_comment|/* 1: auto-negotiate complete  */
+DECL|member|msg_enable
+id|u32
+id|msg_enable
+suffix:semicolon
 DECL|member|cur_rx
 DECL|member|dirty_rx
 r_int
@@ -517,7 +525,7 @@ suffix:semicolon
 id|module_param
 c_func
 (paren
-id|debug
+id|sis900_debug
 comma
 r_int
 comma
@@ -543,9 +551,9 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|debug
+id|sis900_debug
 comma
-l_string|&quot;SiS 900/7016 debug level (2-4)&quot;
+l_string|&quot;SiS 900/7016 bitmapped debugging message level&quot;
 )paren
 suffix:semicolon
 r_static
@@ -1863,6 +1871,22 @@ id|net_dev-&gt;ethtool_ops
 op_assign
 op_amp
 id|sis900_ethtool_ops
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sis900_debug
+OG
+l_int|0
+)paren
+id|sis_priv-&gt;msg_enable
+op_assign
+id|sis900_debug
+suffix:semicolon
+r_else
+id|sis_priv-&gt;msg_enable
+op_assign
+id|SIS900_DEF_MSG
 suffix:semicolon
 id|ret
 op_assign
@@ -8039,6 +8063,56 @@ id|sis_priv-&gt;pci_dev
 )paren
 suffix:semicolon
 )brace
+DECL|function|sis900_get_msglevel
+r_static
+id|u32
+id|sis900_get_msglevel
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|net_dev
+)paren
+(brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
+r_return
+id|sis_priv-&gt;msg_enable
+suffix:semicolon
+)brace
+DECL|function|sis900_set_msglevel
+r_static
+r_void
+id|sis900_set_msglevel
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|net_dev
+comma
+id|u32
+id|value
+)paren
+(brace
+r_struct
+id|sis900_private
+op_star
+id|sis_priv
+op_assign
+id|net_dev-&gt;priv
+suffix:semicolon
+id|sis_priv-&gt;msg_enable
+op_assign
+id|value
+suffix:semicolon
+)brace
 DECL|variable|sis900_ethtool_ops
 r_static
 r_struct
@@ -8050,6 +8124,16 @@ dot
 id|get_drvinfo
 op_assign
 id|sis900_get_drvinfo
+comma
+dot
+id|get_msglevel
+op_assign
+id|sis900_get_msglevel
+comma
+dot
+id|set_msglevel
+op_assign
+id|sis900_set_msglevel
 comma
 )brace
 suffix:semicolon
