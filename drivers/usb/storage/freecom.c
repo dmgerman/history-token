@@ -561,7 +561,7 @@ l_string|&quot;freecom_readdata(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_return
@@ -747,7 +747,7 @@ l_string|&quot;freecom_writedata(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_return
@@ -984,7 +984,7 @@ l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_return
@@ -1039,7 +1039,7 @@ l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 id|US_DEBUG
@@ -1169,7 +1169,7 @@ l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_return
@@ -1224,7 +1224,7 @@ l_string|&quot;freecom_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 id|US_DEBUG
@@ -1488,7 +1488,7 @@ l_string|&quot;freecom_transport: transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_if
@@ -1628,7 +1628,7 @@ l_string|&quot;freecom_transport: transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_if

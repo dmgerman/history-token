@@ -693,8 +693,7 @@ multiline_comment|/*------------------------------------------------------------
 singleline_comment|// FIXME microframe periods not yet handled
 DECL|function|intr_deschedule
 r_static
-r_int
-r_int
+r_void
 id|intr_deschedule
 (paren
 r_struct
@@ -709,10 +708,6 @@ id|qh
 comma
 r_int
 id|wait
-comma
-r_int
-r_int
-id|flags
 )paren
 (brace
 r_int
@@ -818,14 +813,6 @@ c_cond
 id|wait
 )paren
 (brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|udelay
 (paren
 l_int|125
@@ -834,14 +821,6 @@ suffix:semicolon
 id|qh-&gt;hw_next
 op_assign
 id|EHCI_LIST_END
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -880,9 +859,9 @@ id|qh-&gt;c_usecs
 op_div
 id|qh-&gt;period
 suffix:semicolon
-id|vdbg
+id|dbg
 (paren
-l_string|&quot;descheduled qh %p, per = %d frame = %d count = %d, urbs = %d&quot;
+l_string|&quot;descheduled qh %p, period = %d frame = %d count = %d, urbs = %d&quot;
 comma
 id|qh
 comma
@@ -898,9 +877,6 @@ id|qh-&gt;refcount
 comma
 id|ehci-&gt;periodic_sched
 )paren
-suffix:semicolon
-r_return
-id|flags
 suffix:semicolon
 )brace
 DECL|function|check_period
@@ -1359,7 +1335,7 @@ id|QH_STATE_LINKED
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;qh %p usecs %d/%d period %d.0 starting %d.%d (gap %d)&quot;
+l_string|&quot;scheduled qh %p usecs %d/%d period %d.0 starting %d.%d (gap %d)&quot;
 comma
 id|qh
 comma
@@ -1715,7 +1691,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-r_int
 DECL|function|intr_complete
 id|intr_complete
 (paren
@@ -1731,13 +1706,11 @@ r_struct
 id|ehci_qh
 op_star
 id|qh
-comma
-r_int
-r_int
-id|flags
-multiline_comment|/* caller owns ehci-&gt;lock ... */
 )paren
 (brace
+r_int
+id|count
+suffix:semicolon
 multiline_comment|/* nothing to report? */
 r_if
 c_cond
@@ -1757,7 +1730,7 @@ l_int|0
 )paren
 )paren
 r_return
-id|flags
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1780,19 +1753,17 @@ id|qh
 )paren
 suffix:semicolon
 r_return
-id|flags
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* handle any completions */
-id|flags
+id|count
 op_assign
 id|qh_completions
 (paren
 id|ehci
 comma
 id|qh
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1807,8 +1778,6 @@ id|qh-&gt;qtd_list
 )paren
 )paren
 )paren
-id|flags
-op_assign
 id|intr_deschedule
 (paren
 id|ehci
@@ -1816,12 +1785,10 @@ comma
 id|qh
 comma
 l_int|0
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
-id|flags
+id|count
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -3281,7 +3248,6 @@ DECL|macro|ISO_ERRS
 mdefine_line|#define&t;ISO_ERRS (EHCI_ISOC_BUF_ERR | EHCI_ISOC_BABBLE | EHCI_ISOC_XACTERR)
 r_static
 r_int
-r_int
 DECL|function|itd_complete
 id|itd_complete
 (paren
@@ -3297,10 +3263,6 @@ id|itd
 comma
 r_int
 id|uframe
-comma
-r_int
-r_int
-id|flags
 )paren
 (brace
 r_struct
@@ -3475,7 +3437,7 @@ op_ne
 id|urb-&gt;number_of_packets
 )paren
 r_return
-id|flags
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Always give the urb back to the driver ... expect it to submit&n;&t; * a new urb (or resubmit this), and to have another already queued&n;&t; * when un-interrupted transfers are needed.&n;&t; *&n;&t; * NOTE that for now we don&squot;t accelerate ISO unlinks; they just&n;&t; * happen according to the current schedule.  Means a delay of&n;&t; * up to about a second (max).&n;&t; */
 id|itd_free_list
@@ -3497,12 +3459,11 @@ id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
+multiline_comment|/* complete() can reenter this HCD */
+id|spin_unlock
 (paren
 op_amp
 id|ehci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|usb_hcd_giveback_urb
@@ -3513,12 +3474,10 @@ comma
 id|urb
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|ehci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* defer stopping schedule; completion can submit */
@@ -3540,7 +3499,7 @@ id|ehci
 )paren
 suffix:semicolon
 r_return
-id|flags
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -3576,23 +3535,6 @@ l_string|&quot;itd_submit urb %p&quot;
 comma
 id|urb
 )paren
-suffix:semicolon
-multiline_comment|/* NOTE DMA mapping assumes this ... */
-r_if
-c_cond
-(paren
-id|urb-&gt;iso_frame_desc
-(braket
-l_int|0
-)braket
-dot
-id|offset
-op_ne
-l_int|0
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 multiline_comment|/* allocate ITDs w/o locking anything */
 id|status
@@ -3666,8 +3608,7 @@ multiline_comment|/*&n; * &quot;Split ISO TDs&quot; ... used for USB 1.1 devices
 macro_line|#endif /* have_split_iso */
 multiline_comment|/*-------------------------------------------------------------------------*/
 r_static
-r_int
-r_int
+r_void
 DECL|function|scan_periodic
 id|scan_periodic
 (paren
@@ -3675,10 +3616,6 @@ r_struct
 id|ehci_hcd
 op_star
 id|ehci
-comma
-r_int
-r_int
-id|flags
 )paren
 (brace
 r_int
@@ -3689,6 +3626,11 @@ comma
 id|now_uframe
 comma
 id|mod
+suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
 suffix:semicolon
 id|mod
 op_assign
@@ -3763,6 +3705,36 @@ suffix:semicolon
 r_int
 id|uframes
 suffix:semicolon
+multiline_comment|/* keep latencies down: let any irqs in */
+r_if
+c_cond
+(paren
+id|count
+OG
+id|max_completions
+)paren
+(brace
+id|spin_unlock_irq
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+id|cpu_relax
+(paren
+)paren
+suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_lock_irq
+(paren
+op_amp
+id|ehci-&gt;lock
+)paren
+suffix:semicolon
+)brace
 id|restart
 suffix:colon
 multiline_comment|/* scan schedule to _before_ current frame index */
@@ -3859,8 +3831,8 @@ id|Q_NEXT_TYPE
 id|q.qh-&gt;hw_next
 )paren
 suffix:semicolon
-id|flags
-op_assign
+id|count
+op_add_assign
 id|intr_complete
 (paren
 id|ehci
@@ -3871,8 +3843,6 @@ id|qh_get
 (paren
 id|q.qh
 )paren
-comma
-id|flags
 )paren
 suffix:semicolon
 id|qh_put
@@ -3988,8 +3958,8 @@ id|hw_p
 )paren
 suffix:semicolon
 multiline_comment|/* might free q.itd ... */
-id|flags
-op_assign
+id|count
+op_add_assign
 id|itd_complete
 (paren
 id|ehci
@@ -3997,8 +3967,6 @@ comma
 id|temp.itd
 comma
 id|uf
-comma
-id|flags
 )paren
 suffix:semicolon
 r_break
@@ -4051,15 +4019,11 @@ op_eq
 id|EHCI_LIST_END
 )paren
 suffix:semicolon
-id|flags
-op_assign
 id|sitd_complete
 (paren
 id|ehci
 comma
 id|q.sitd
-comma
-id|flags
 )paren
 suffix:semicolon
 id|type
@@ -4194,8 +4158,5 @@ op_mod
 id|ehci-&gt;periodic_size
 suffix:semicolon
 )brace
-r_return
-id|flags
-suffix:semicolon
 )brace
 eof

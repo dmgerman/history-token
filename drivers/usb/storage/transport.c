@@ -1343,7 +1343,10 @@ OL
 l_int|0
 )paren
 r_return
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_STALLED
 suffix:semicolon
 )brace
 multiline_comment|/* did we abort this command? */
@@ -1367,26 +1370,7 @@ l_string|&quot;usb_stor_transfer_partial(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
-suffix:semicolon
-)brace
-multiline_comment|/* did we send all the data? */
-r_if
-c_cond
-(paren
-id|partial
-op_eq
-id|length
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_transfer_partial(): transfer complete&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* NAK - that means we&squot;ve retried a few times already */
@@ -1406,7 +1390,7 @@ l_string|&quot;usb_stor_transfer_partial(): device NAKed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
 )brace
 multiline_comment|/* the catch-all error case */
@@ -1423,12 +1407,31 @@ l_string|&quot;usb_stor_transfer_partial(): unknown error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* did we send all the data? */
+r_if
+c_cond
+(paren
+id|partial
+op_eq
+id|length
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_transfer_partial(): transfer complete&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/* no error code, so we must have transferred some data, &n;&t; * just not all of it */
 r_return
-id|US_BULK_TRANSFER_SHORT
+id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_transfer_partial to achieve its goals -- this&n; * function simply determines if we&squot;re going to use scatter-gather or not,&n; * and acts appropriately.  For now, it also re-interprets the error codes.&n; */
@@ -1814,7 +1817,7 @@ c_cond
 (paren
 id|srb-&gt;result
 op_eq
-id|US_BULK_TRANSFER_SHORT
+id|USB_STOR_XFER_SHORT
 )paren
 op_logical_and
 op_logical_neg
@@ -2792,7 +2795,7 @@ l_string|&quot;usb_stor_control_msg(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* a stall indicates a protocol error */
@@ -2812,7 +2815,7 @@ l_string|&quot;-- Stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_FAILED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 r_if
@@ -2866,7 +2869,7 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_XFER_ABORTED
 )paren
 (brace
 id|clear_bit
@@ -2887,7 +2890,7 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
 )paren
 (brace
 id|clear_bit
@@ -2900,7 +2903,7 @@ id|us-&gt;flags
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_FAILED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 )brace
@@ -3151,7 +3154,7 @@ l_string|&quot;usb_stor_CB_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* a stall indicates a protocol error */
@@ -3171,7 +3174,7 @@ l_string|&quot;-- Stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_FAILED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 multiline_comment|/* Uh oh... serious problem here */
@@ -3217,7 +3220,7 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_XFER_ABORTED
 )paren
 (brace
 r_return
@@ -3229,11 +3232,11 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
 )paren
 (brace
 r_return
-id|USB_STOR_TRANSPORT_FAILED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 )brace
@@ -3546,7 +3549,7 @@ l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* if we stall, we need to clear it before we go on */
@@ -3598,7 +3601,7 @@ l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_if
@@ -3671,7 +3674,7 @@ c_cond
 (paren
 id|result
 op_eq
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_XFER_ABORTED
 )paren
 r_return
 id|USB_STOR_TRANSPORT_ABORTED
@@ -3736,7 +3739,7 @@ l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* did the attempt to read the CSW fail? */
@@ -3788,7 +3791,7 @@ l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_if
@@ -3847,7 +3850,7 @@ l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* if it fails again, we need a reset and return an error*/
@@ -3899,7 +3902,7 @@ l_string|&quot;usb_stor_Bulk_transport(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 r_return
