@@ -4,6 +4,9 @@ mdefine_line|#define _NFS_FS_I
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
+r_struct
+id|nlm_lockowner
+suffix:semicolon
 multiline_comment|/*&n; * NFS lock info&n; */
 DECL|struct|nfs_lock_info
 r_struct
@@ -17,11 +20,11 @@ DECL|member|flags
 id|u32
 id|flags
 suffix:semicolon
-DECL|member|host
+DECL|member|owner
 r_struct
-id|nlm_host
+id|nlm_lockowner
 op_star
-id|host
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon
