@@ -2992,12 +2992,6 @@ id|iface-&gt;cur_altsetting
 op_assign
 id|alt
 suffix:semicolon
-id|iface-&gt;act_altsetting
-op_assign
-id|alt
-op_minus
-id|iface-&gt;altsetting
-suffix:semicolon
 multiline_comment|/* If the interface only has one altsetting and the device didn&squot;t&n;&t; * accept the request, we attempt to carry out the equivalent action&n;&t; * by manually clearing the HALT feature for each endpoint in the&n;&t; * new altsetting.&n;&t; */
 r_if
 c_cond
@@ -3277,12 +3271,6 @@ id|intf-&gt;cur_altsetting
 op_assign
 id|alt
 suffix:semicolon
-id|intf-&gt;act_altsetting
-op_assign
-id|alt
-op_minus
-id|intf-&gt;altsetting
-suffix:semicolon
 id|usb_enable_interface
 c_func
 (paren
@@ -3549,12 +3537,6 @@ suffix:semicolon
 id|intf-&gt;cur_altsetting
 op_assign
 id|alt
-suffix:semicolon
-id|intf-&gt;act_altsetting
-op_assign
-id|alt
-op_minus
-id|intf-&gt;altsetting
 suffix:semicolon
 id|usb_enable_interface
 c_func
