@@ -1,5 +1,5 @@
 multiline_comment|/***************************************************************************/
-multiline_comment|/*&n; *&t;pit.c -- Motorola ColdFire PIT timer. Currently this type of&n; *&t;         hardware timer only exists in the Motorola ColdFire&n; *&t;&t; 5282 CPU.&n; *&n; *&t;Copyright (C) 1999-2003, Greg Ungerer (gerg@snapgear.com)&n; *&t;Copyright (C) 2001-2003, SnapGear Inc. (www.snapgear.com)&n; *&n; */
+multiline_comment|/*&n; *&t;pit.c -- Motorola ColdFire PIT timer. Currently this type of&n; *&t;         hardware timer only exists in the Motorola ColdFire&n; *&t;&t; 5270/5271 and 5282 CPUs.&n; *&n; *&t;Copyright (C) 1999-2004, Greg Ungerer (gerg@snapgear.com)&n; *&t;Copyright (C) 2001-2004, SnapGear Inc. (www.snapgear.com)&n; *&n; */
 multiline_comment|/***************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -90,9 +90,9 @@ suffix:semicolon
 id|request_irq
 c_func
 (paren
-l_int|64
+id|MCFINT_VECBASE
 op_plus
-l_int|55
+id|MCFINT_PIT1
 comma
 id|handler
 comma
@@ -151,7 +151,7 @@ op_complement
 l_int|1
 op_lshift
 (paren
-l_int|55
+id|MCFINT_PIT1
 op_minus
 l_int|32
 )paren
@@ -265,18 +265,29 @@ id|MCFINTC_IPRH
 suffix:semicolon
 id|pmr
 op_assign
+op_star
+(paren
+op_amp
 id|tp-&gt;pmr
+)paren
 suffix:semicolon
 id|pcntr
 op_assign
+op_star
+(paren
+op_amp
 id|tp-&gt;pcntr
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we are still in the first half of the upcount and a&n;&t; * timer interupt is pending, then add on a ticks worth of time.&n;&t; */
 id|offset
 op_assign
 (paren
 (paren
+id|pmr
+op_minus
 id|pcntr
+)paren
 op_star
 (paren
 l_int|1000000
@@ -286,7 +297,6 @@ id|HZ
 )paren
 op_div
 id|pmr
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -311,7 +321,7 @@ op_amp
 l_int|1
 op_lshift
 (paren
-l_int|55
+id|MCFINT_PIT1
 op_minus
 l_int|32
 )paren
