@@ -7095,22 +7095,9 @@ id|cyberpro_pci_table
 id|__devinitdata
 op_assign
 (brace
-(brace
-id|PCI_VENDOR_ID_INTERG
-comma
-id|PCI_DEVICE_ID_INTERG_1682
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|ID_IGA_1682
-)brace
-comma
+singleline_comment|//&t;Not yet
+singleline_comment|//&t;{ PCI_VENDOR_ID_INTERG, PCI_DEVICE_ID_INTERG_1682,
+singleline_comment|//&t;&t;PCI_ANY_ID, PCI_ANY_ID, 0, 0, ID_IGA_1682 },
 (brace
 id|PCI_VENDOR_ID_INTERG
 comma
