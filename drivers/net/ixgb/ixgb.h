@@ -285,10 +285,6 @@ DECL|member|rx_int_delay
 r_uint32
 id|rx_int_delay
 suffix:semicolon
-DECL|member|raidc
-id|boolean_t
-id|raidc
-suffix:semicolon
 DECL|member|rx_csum
 id|boolean_t
 id|rx_csum

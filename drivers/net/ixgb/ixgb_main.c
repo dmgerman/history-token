@@ -3124,79 +3124,6 @@ comma
 id|rxdctl
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|adapter-&gt;raidc
-)paren
-(brace
-r_uint32
-id|raidc
-suffix:semicolon
-r_uint8
-id|poll_threshold
-suffix:semicolon
-multiline_comment|/* Poll every rx_int_delay period, if RBD exists&n;&t;&t; * Receive Backlog Detection is set to &lt;threshold&gt; &n;&t;&t; * Rx Descriptors&n;&t;&t; * max is 0x3F == set to poll when 504 RxDesc left &n;&t;&t; * min is 0 */
-multiline_comment|/* polling times are 1 == 0.8192us&n;&t;&t;   2 == 1.6384us&n;&t;&t;   3 == 3.2768us etc&n;&t;&t;   ...&n;&t;&t;   511 == 418 us&n;&t;&t; */
-DECL|macro|IXGB_RAIDC_POLL_DEFAULT
-mdefine_line|#define IXGB_RAIDC_POLL_DEFAULT 122&t;/* set to poll every ~100 us under load &n;&t;&t;&t;&t;&t;   also known as 10000 interrupts / sec */
-multiline_comment|/* divide this by 2^3 (8) to get a register size count */
-id|poll_threshold
-op_assign
-(paren
-(paren
-id|adapter-&gt;rx_ring.count
-op_minus
-l_int|1
-)paren
-op_rshift
-l_int|3
-)paren
-suffix:semicolon
-multiline_comment|/* poll at half of that size */
-id|poll_threshold
-op_rshift_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* make sure its not bigger than our max */
-id|poll_threshold
-op_and_assign
-l_int|0x3F
-suffix:semicolon
-id|raidc
-op_assign
-id|IXGB_RAIDC_EN
-op_or
-multiline_comment|/* turn on raidc style moderation */
-id|IXGB_RAIDC_RXT_GATE
-op_or
-multiline_comment|/* don&squot;t interrupt with rxt0 while&n;&t;&t;&t;&t;&t;&t;   in RBD mode (polling) */
-(paren
-id|IXGB_RAIDC_POLL_DEFAULT
-op_lshift
-id|IXGB_RAIDC_POLL_SHIFT
-)paren
-op_or
-multiline_comment|/* this sets the regular &quot;min interrupt delay&quot; */
-(paren
-id|adapter-&gt;rx_int_delay
-op_lshift
-id|IXGB_RAIDC_DELAY_SHIFT
-)paren
-op_or
-id|poll_threshold
-suffix:semicolon
-id|IXGB_WRITE_REG
-c_func
-(paren
-id|hw
-comma
-id|RAIDC
-comma
-id|raidc
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Enable Receive Checksum Offload for TCP and UDP */
 r_if
 c_cond
@@ -6456,8 +6383,7 @@ op_assign
 id|IXGB_READ_REG
 c_func
 (paren
-op_amp
-id|adapter-&gt;hw
+id|hw
 comma
 id|ICR
 )paren
@@ -6530,7 +6456,8 @@ suffix:semicolon
 id|IXGB_WRITE_REG
 c_func
 (paren
-id|hw
+op_amp
+id|adapter-&gt;hw
 comma
 id|IMC
 comma
@@ -6582,43 +6509,7 @@ id|adapter
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* if RAIDC:EN == 1 and ICR:RXDMT0 == 1, we need to&n;&t; * set IMS:RXDMT0 to 1 to restart the RBD timer (POLL)&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|icr
-op_amp
-id|IXGB_INT_RXDMT0
-)paren
-op_logical_and
-id|adapter-&gt;raidc
-)paren
-(brace
-multiline_comment|/* ready the timer by writing the clear reg */
-id|IXGB_WRITE_REG
-c_func
-(paren
-id|hw
-comma
-id|IMC
-comma
-id|IXGB_INT_RXDMT0
-)paren
-suffix:semicolon
-multiline_comment|/* now restart it, h/w will decide if its necessary */
-id|IXGB_WRITE_REG
-c_func
-(paren
-id|hw
-comma
-id|IMS
-comma
-id|IXGB_INT_RXDMT0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|#endif 
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -7700,14 +7591,8 @@ c_func
 id|rx_ring
 )paren
 suffix:semicolon
-multiline_comment|/* lessen this to 4 if we&squot;re&n;&t; * in the midst of raidc and rbd is occuring&n;&t; * because we don&squot;t want to delay returning buffers when low&n;&t; */
 id|num_group_tail_writes
 op_assign
-id|adapter-&gt;raidc
-ques
-c_cond
-l_int|4
-suffix:colon
 id|IXGB_RX_BUFFER_WRITE
 suffix:semicolon
 multiline_comment|/* leave one descriptor unused */

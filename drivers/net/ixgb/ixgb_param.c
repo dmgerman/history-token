@@ -69,15 +69,6 @@ comma
 l_string|&quot;Receive Interrupt Delay&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Interrupt Moderation enable (uses RxIntDelay too)&n; *&n; * Valid Range: 0,1&n; *&n; * Default Value: 1&n; */
-id|IXGB_PARAM
-c_func
-(paren
-id|RAIDC
-comma
-l_string|&quot;Disable or enable Receive Interrupt Moderation&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Receive Flow control high threshold (when we send a pause frame)&n; * (FCRTH)&n; *&n; * Valid Range: 1,536 - 262,136 (0x600 - 0x3FFF8, 8 byte granularity)&n; *&n; * Default Value: 196,608 (0x30000)&n; */
 id|IXGB_PARAM
 c_func
@@ -1228,57 +1219,6 @@ comma
 op_amp
 id|opt
 )paren
-suffix:semicolon
-)brace
-(brace
-multiline_comment|/* Receive Interrupt Moderation */
-r_struct
-id|ixgb_option
-id|opt
-op_assign
-(brace
-dot
-id|type
-op_assign
-id|enable_option
-comma
-dot
-id|name
-op_assign
-l_string|&quot;Advanced Receive Interrupt Moderation&quot;
-comma
-dot
-id|err
-op_assign
-l_string|&quot;defaulting to Enabled&quot;
-comma
-dot
-id|def
-op_assign
-id|OPTION_ENABLED
-)brace
-suffix:semicolon
-r_int
-id|raidc
-op_assign
-id|RAIDC
-(braket
-id|bd
-)braket
-suffix:semicolon
-id|ixgb_validate_option
-c_func
-(paren
-op_amp
-id|raidc
-comma
-op_amp
-id|opt
-)paren
-suffix:semicolon
-id|adapter-&gt;raidc
-op_assign
-id|raidc
 suffix:semicolon
 )brace
 (brace
