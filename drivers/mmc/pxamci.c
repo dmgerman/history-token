@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/mmc/pxa.c - PXA MMCI driver&n; *&n; *  Copyright (C) 2003 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This hardware is really sick.  No way to clear interrupts.  Have&n; *  to turn off the clock whenever we touch the device.  Yuck!&n; *&n; *&t;1 and 3 byte data transfers not supported&n; *&t;max block length up to 1023&n; */
+multiline_comment|/*&n; *  linux/drivers/mmc/pxa.c - PXA MMCI driver&n; *&n; *  Copyright (C) 2003 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  This hardware is really sick:&n; *   - No way to clear interrupts.&n; *   - Have to turn off the clock whenever we touch the device.&n; *   - Doesn&squot;t tell you how many data blocks were transferred.&n; *  Yuck!&n; *&n; *&t;1 and 3 byte data transfers not supported&n; *&t;max block length up to 1023&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -178,7 +178,9 @@ id|STAT_CLK_EN
 (brace
 r_int
 r_int
-id|flags
+id|timeout
+op_assign
+l_int|10000
 suffix:semicolon
 r_int
 r_int
@@ -194,29 +196,6 @@ op_plus
 id|MMC_STRPCL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Wait for the &quot;clock has stopped&quot; interrupt.&n;&t;&t; * We need to unmask the interrupt to receive&n;&t;&t; * the notification.  Sigh.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|host-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|writel
-c_func
-(paren
-id|host-&gt;imask
-op_amp
-op_complement
-id|CLK_IS_OFF
-comma
-id|host-&gt;base
-op_plus
-id|MMC_I_MASK
-)paren
-suffix:semicolon
 r_do
 (brace
 id|v
@@ -226,38 +205,52 @@ c_func
 (paren
 id|host-&gt;base
 op_plus
-id|MMC_I_REG
+id|MMC_STAT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|v
+op_amp
+id|STAT_CLK_EN
+)paren
+)paren
+r_break
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
 r_while
 c_loop
 (paren
-op_logical_neg
+id|timeout
+op_decrement
+)paren
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|v
 op_amp
-id|CLK_IS_OFF
+id|STAT_CLK_EN
 )paren
-)paren
-suffix:semicolon
-id|writel
+id|dev_err
 c_func
 (paren
-id|host-&gt;imask
-comma
-id|host-&gt;base
-op_plus
-id|MMC_I_MASK
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
+id|mmc_dev
 c_func
 (paren
-op_amp
-id|host-&gt;lock
+id|host-&gt;mmc
+)paren
 comma
-id|flags
+l_string|&quot;unable to stop clock&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1206,19 +1199,10 @@ id|data-&gt;error
 op_assign
 id|MMC_ERR_BADCRC
 suffix:semicolon
+multiline_comment|/*&n;&t; * There appears to be a hardware design bug here.  There seems to&n;&t; * be no way to find out how much data was transferred to the card.&n;&t; * This means that if there was an error on any block, we mark all&n;&t; * data blocks as being in error.&n;&t; */
 id|data-&gt;bytes_xfered
 op_assign
-(paren
 id|data-&gt;blocks
-op_minus
-id|readl
-c_func
-(paren
-id|host-&gt;base
-op_plus
-id|MMC_NOB
-)paren
-)paren
 op_lshift
 id|data-&gt;blksz_bits
 suffix:semicolon
@@ -2211,7 +2195,7 @@ c_func
 (paren
 id|dev
 comma
-id|host
+id|mmc
 )paren
 suffix:semicolon
 id|mmc_add_host
