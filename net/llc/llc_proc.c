@@ -998,6 +998,11 @@ id|llc_seq_socket_fops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|open
 op_assign
 id|llc_seq_socket_open
@@ -1026,6 +1031,11 @@ id|file_operations
 id|llc_seq_core_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|open
 op_assign

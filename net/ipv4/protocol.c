@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
@@ -29,6 +28,13 @@ id|inet_protos
 (braket
 id|MAX_INET_PROTOS
 )braket
+suffix:semicolon
+DECL|variable|inet_proto_lock
+r_static
+id|spinlock_t
+id|inet_proto_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; *&t;Add a protocol handler to the hash tables&n; */
 DECL|function|inet_add_protocol
@@ -61,10 +67,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet_proto_lock
 )paren
 suffix:semicolon
 r_if
@@ -96,10 +103,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet_proto_lock
 )paren
 suffix:semicolon
 r_return
@@ -137,10 +145,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet_proto_lock
 )paren
 suffix:semicolon
 r_if
@@ -174,10 +183,11 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet_proto_lock
 )paren
 suffix:semicolon
 r_return

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/**&n; * The &quot;cpufreq driver&quot; - the arch- or hardware-dependend low&n; * level driver of CPUFreq support, and its locking mutex. &n; * cpu_max_freq is in kHz.&n; */
 DECL|variable|cpufreq_driver
 r_static
@@ -359,6 +360,12 @@ id|class_interface
 id|cpufreq_interface
 op_assign
 (brace
+dot
+r_class
+op_assign
+op_amp
+id|cpu_class
+comma
 dot
 id|add
 op_assign

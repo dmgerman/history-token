@@ -342,10 +342,13 @@ comma
 DECL|enumerator|RTA_SESSION
 id|RTA_SESSION
 comma
+DECL|enumerator|RTA_HOPLIMIT
+id|RTA_HOPLIMIT
+comma
 )brace
 suffix:semicolon
 DECL|macro|RTA_MAX
-mdefine_line|#define RTA_MAX RTA_SESSION
+mdefine_line|#define RTA_MAX RTA_HOPLIMIT
 DECL|macro|RTM_RTA
 mdefine_line|#define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
 DECL|macro|RTM_PAYLOAD

@@ -381,7 +381,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 (brace
 r_enum
@@ -398,7 +399,8 @@ op_assign
 id|ip_conntrack_get
 c_func
 (paren
-id|skb
+op_star
+id|pskb
 comma
 op_amp
 id|ctinfo
@@ -422,7 +424,7 @@ id|IP_CT_RELATED
 id|icmp_reply_translation
 c_func
 (paren
-id|skb
+id|pskb
 comma
 id|ct
 comma
@@ -438,7 +440,7 @@ suffix:semicolon
 id|icmp_reply_translation
 c_func
 (paren
-id|skb
+id|pskb
 comma
 id|ct
 comma
@@ -584,7 +586,6 @@ suffix:semicolon
 id|icmp_reply_translation
 c_func
 (paren
-op_star
 id|pskb
 comma
 id|ct
@@ -601,7 +602,6 @@ suffix:semicolon
 id|icmp_reply_translation
 c_func
 (paren
-op_star
 id|pskb
 comma
 id|ct

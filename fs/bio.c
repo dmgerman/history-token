@@ -2387,6 +2387,14 @@ id|bio-&gt;bi_size
 op_sub_assign
 id|bytes_done
 suffix:semicolon
+id|bio-&gt;bi_sector
+op_add_assign
+(paren
+id|bytes_done
+op_rshift
+l_int|9
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1251,7 +1251,13 @@ id|policy
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|policy
+op_ne
+l_int|NULL
+)paren
 )paren
 id|atomic_inc
 c_func

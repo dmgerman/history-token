@@ -3305,6 +3305,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|manip_pkt
 c_func
 (paren
@@ -3329,8 +3330,6 @@ id|i
 dot
 id|maniptype
 )paren
-OL
-l_int|0
 )paren
 (brace
 id|READ_UNLOCK
@@ -4025,6 +4024,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|manip_pkt
 c_func
 (paren
@@ -4062,8 +4062,6 @@ id|i
 dot
 id|maniptype
 )paren
-OL
-l_int|0
 )paren
 r_goto
 id|unlock_fail
@@ -4104,6 +4102,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|manip_pkt
 c_func
 (paren
@@ -4128,8 +4127,6 @@ id|i
 dot
 id|maniptype
 )paren
-OL
-l_int|0
 )paren
 r_goto
 id|unlock_fail

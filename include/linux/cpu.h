@@ -37,6 +37,11 @@ id|node
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+r_class
+id|cpu_class
+suffix:semicolon
 multiline_comment|/* Stop CPUs going up and down. */
 r_extern
 r_struct

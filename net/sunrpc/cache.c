@@ -3110,6 +3110,11 @@ id|cache_file_operations
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|llseek
 op_assign
 id|no_llseek
