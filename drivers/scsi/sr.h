@@ -4,6 +4,7 @@ DECL|macro|_SR_H
 mdefine_line|#define _SR_H
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;linux/genhd.h&gt;
+macro_line|#include &lt;linux/kref.h&gt;
 multiline_comment|/* The CDROM is fairly slow, so we need a little extra time */
 multiline_comment|/* In fact, it is very slow if it has to spin up first */
 DECL|macro|IOCTL_TIMEOUT
@@ -81,11 +82,11 @@ r_struct
 id|cdrom_device_info
 id|cdi
 suffix:semicolon
-multiline_comment|/* We hold gendisk and scsi_device references on probe and use&n;&t; * the refs on this kobj to decide when to release them */
-DECL|member|kobj
+multiline_comment|/* We hold gendisk and scsi_device references on probe and use&n;&t; * the refs on this kref to decide when to release them */
+DECL|member|kref
 r_struct
-id|kobject
-id|kobj
+id|kref
+id|kref
 suffix:semicolon
 DECL|member|disk
 r_struct
