@@ -144,12 +144,12 @@ id|apm_suspend_waitqueue
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is a list of everyone who has opened /dev/apm_bios&n; */
-DECL|variable|user_list_lock
 r_static
-id|spinlock_t
+id|DECLARE_RWSEM
+c_func
+(paren
 id|user_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -432,7 +432,7 @@ id|apm_user
 op_star
 id|as
 suffix:semicolon
-id|spin_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -468,7 +468,7 @@ id|event
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|up_read
 c_func
 (paren
 op_amp
@@ -516,7 +516,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Finally, wake up anyone who is sleeping on the suspend.&n;&t; */
-id|spin_lock
+id|down_read
 c_func
 (paren
 op_amp
@@ -543,7 +543,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock
+id|up_read
 c_func
 (paren
 op_amp
@@ -996,7 +996,7 @@ id|filp-&gt;private_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -1010,7 +1010,7 @@ op_amp
 id|as-&gt;list
 )paren
 suffix:semicolon
-id|spin_unlock
+id|up_write
 c_func
 (paren
 op_amp
@@ -1158,7 +1158,7 @@ id|FMODE_READ
 op_eq
 id|FMODE_READ
 suffix:semicolon
-id|spin_lock
+id|down_write
 c_func
 (paren
 op_amp
@@ -1175,7 +1175,7 @@ op_amp
 id|apm_user_list
 )paren
 suffix:semicolon
-id|spin_unlock
+id|up_write
 c_func
 (paren
 op_amp
