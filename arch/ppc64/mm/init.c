@@ -2077,10 +2077,6 @@ suffix:semicolon
 r_int
 id|boot_mapsize
 suffix:semicolon
-id|max_pfn
-op_assign
-id|max_low_pfn
-suffix:semicolon
 multiline_comment|/*&n;&t; * Find an area to use for the bootmem bitmap.  Calculate the size of&n;&t; * bitmap required as (Total Memory) / PAGE_SIZE / BITS_PER_BYTE.&n;&t; * Add 1 additional page in case the address isn&squot;t page-aligned.&n;&t; */
 id|bootmap_pages
 op_assign
@@ -2124,6 +2120,10 @@ id|PAGE_SHIFT
 comma
 id|total_pages
 )paren
+suffix:semicolon
+id|max_pfn
+op_assign
+id|max_low_pfn
 suffix:semicolon
 multiline_comment|/* add all physical memory to the bootmem map. Also find the first */
 r_for
