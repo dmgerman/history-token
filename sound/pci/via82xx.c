@@ -1998,6 +1998,11 @@ comma
 id|xval
 )paren
 suffix:semicolon
+id|udelay
+(paren
+l_int|20
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9348,10 +9353,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_ENABLE
+id|VIA_DXS_NO_VRA
 )brace
 comma
-multiline_comment|/* ASUS A7V600 */
+multiline_comment|/* ASUS A7V600 &amp; K8V*/
 (brace
 dot
 id|vendor
