@@ -985,13 +985,11 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 op_amp
 id|sport-&gt;port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 r_if

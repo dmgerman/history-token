@@ -67,18 +67,15 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule processing in&n; * the software interrupt portion of the driver.&n; */
-DECL|function|uart_event
+DECL|function|uart_write_wakeup
 r_void
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 r_struct
 id|uart_port
 op_star
 id|port
-comma
-r_int
-id|event
 )paren
 (brace
 r_struct
@@ -9162,11 +9159,11 @@ id|port_sem
 )paren
 suffix:semicolon
 )brace
-DECL|variable|uart_event
+DECL|variable|uart_write_wakeup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|uart_event
+id|uart_write_wakeup
 )paren
 suffix:semicolon
 DECL|variable|uart_register_driver

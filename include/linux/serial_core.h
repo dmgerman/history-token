@@ -754,8 +754,6 @@ suffix:semicolon
 multiline_comment|/* number of characters left in xmit buffer before we ask for more */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS&t;&t;256
-DECL|macro|EVT_WRITE_WAKEUP
-mdefine_line|#define EVT_WRITE_WAKEUP&t;0
 r_struct
 id|module
 suffix:semicolon
@@ -818,16 +816,13 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_void
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 r_struct
 id|uart_port
 op_star
 id|port
-comma
-r_int
-id|event
 )paren
 suffix:semicolon
 r_struct
@@ -1288,12 +1283,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 id|port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 )brace
