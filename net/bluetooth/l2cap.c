@@ -39,6 +39,7 @@ id|proto_ops
 id|l2cap_sock_ops
 suffix:semicolon
 DECL|variable|l2cap_sk_list
+r_static
 r_struct
 id|bt_sock_list
 id|l2cap_sk_list
