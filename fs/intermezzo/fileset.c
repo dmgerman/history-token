@@ -1729,9 +1729,13 @@ suffix:semicolon
 multiline_comment|/* XXX where can we get the groups from? */
 r_new
 dot
-id|ngroups
+id|group_info
 op_assign
+id|groups_alloc
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|push_ctxt
 c_func

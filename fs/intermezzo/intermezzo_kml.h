@@ -96,7 +96,7 @@ DECL|member|groups
 id|u32
 id|groups
 (braket
-id|NGROUPS_MAX
+id|NGROUPS_SMALL
 )braket
 suffix:semicolon
 )brace
