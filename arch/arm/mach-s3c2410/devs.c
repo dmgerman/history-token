@@ -91,7 +91,8 @@ comma
 dot
 id|id
 op_assign
-l_int|0
+op_minus
+l_int|1
 comma
 dot
 id|num_resources
