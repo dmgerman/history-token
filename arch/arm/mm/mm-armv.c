@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
@@ -529,6 +530,12 @@ id|pmd_clear
 c_func
 (paren
 id|pmd
+)paren
+suffix:semicolon
+id|pgtable_remove_rmap
+c_func
+(paren
+id|pte
 )paren
 suffix:semicolon
 id|pte_free
