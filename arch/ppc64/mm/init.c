@@ -2234,10 +2234,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|numa_node_exists
+id|node_data
 (braket
 id|nid
 )braket
+dot
+id|node_size
+op_ne
+l_int|0
 )paren
 (brace
 id|printk
