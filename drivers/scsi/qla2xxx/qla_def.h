@@ -262,6 +262,8 @@ DECL|macro|REQUEST_ENTRY_CNT_2100
 mdefine_line|#define REQUEST_ENTRY_CNT_2100&t;&t;128&t;/* Number of request entries. */
 DECL|macro|REQUEST_ENTRY_CNT_2200
 mdefine_line|#define REQUEST_ENTRY_CNT_2200&t;&t;2048&t;/* Number of request entries. */
+DECL|macro|REQUEST_ENTRY_CNT_2XXX_EXT_MEM
+mdefine_line|#define REQUEST_ENTRY_CNT_2XXX_EXT_MEM&t;4096&t;/* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT_2100
 mdefine_line|#define RESPONSE_ENTRY_CNT_2100&t;&t;64&t;/* Number of response entries.*/
 DECL|macro|RESPONSE_ENTRY_CNT_2300
