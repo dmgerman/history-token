@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
@@ -28,7 +29,7 @@ r_void
 id|coldfire_timer_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -110,6 +111,14 @@ op_plus
 id|MCFDMA_BASE3
 comma
 )brace
+suffix:semicolon
+DECL|variable|dma_device_address
+r_int
+r_int
+id|dma_device_address
+(braket
+id|MAX_M68K_DMA_CHANNELS
+)braket
 suffix:semicolon
 multiline_comment|/***************************************************************************/
 DECL|function|mcf_autovector
