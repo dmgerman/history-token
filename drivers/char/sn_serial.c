@@ -268,8 +268,7 @@ op_star
 id|sn_func
 suffix:semicolon
 multiline_comment|/* Prototypes */
-r_static
-r_void
+r_int
 id|__init
 id|sn_sal_serial_console_init
 c_func
@@ -3509,13 +3508,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SGI_L1_SERIAL_CONSOLE
-id|sn_sal_serial_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_SGI_L1_SERIAL_CONSOLE */
 r_return
 l_int|0
 suffix:semicolon
@@ -3949,8 +3941,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-r_static
-r_void
+r_int
 id|__init
 DECL|function|sn_sal_serial_console_init
 id|sn_sal_serial_console_init
@@ -3988,6 +3979,16 @@ id|sal_console
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|sn_sal_serial_console_init
+id|console_initcall
+c_func
+(paren
+id|sn_sal_serial_console_init
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_SGI_L1_SERIAL_CONSOLE */
 eof
