@@ -7,7 +7,6 @@ macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 multiline_comment|/* PMD_SHIFT determines what a second-level page table entry can map */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + PAGE_SHIFT - 3)
@@ -111,9 +110,9 @@ multiline_comment|/* preserving _PAGE_SECONDARY | _PAGE_GROUP_IX */
 DECL|macro|_PAGE_CHG_MASK
 mdefine_line|#define _PAGE_CHG_MASK&t;(PAGE_MASK | _PAGE_ACCESSED | _PAGE_DIRTY | _PAGE_HPTEFLAGS)
 DECL|macro|_PAGE_BASE
-mdefine_line|#define _PAGE_BASE&t;_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_COHERENT
+mdefine_line|#define _PAGE_BASE&t;(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_COHERENT)
 DECL|macro|_PAGE_WRENABLE
-mdefine_line|#define _PAGE_WRENABLE&t;_PAGE_RW | _PAGE_DIRTY 
+mdefine_line|#define _PAGE_WRENABLE&t;(_PAGE_RW | _PAGE_DIRTY)
 multiline_comment|/* __pgprot defined in asm-ppc64/page.h */
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED)
@@ -924,28 +923,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|va_to_phys
-c_func
-(paren
-r_int
-r_int
-id|address
-)paren
-suffix:semicolon
-r_extern
-id|pte_t
-op_star
-id|va_to_pte
-c_func
-(paren
-r_int
-r_int
-id|address
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|ioremap_bot
 comma
 id|ioremap_base
@@ -983,6 +960,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
+r_struct
+id|vm_area_struct
+suffix:semicolon
 r_extern
 r_void
 id|update_mmu_cache
@@ -1019,20 +999,6 @@ DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 r_extern
 r_void
-id|updateBoltedHptePP
-c_func
-(paren
-r_int
-r_int
-id|newpp
-comma
-r_int
-r_int
-id|ea
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|hpte_init_pSeries
 c_func
 (paren
@@ -1045,34 +1011,6 @@ id|hpte_init_iSeries
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|make_pte
-c_func
-(paren
-id|HPTE
-op_star
-id|htab
-comma
-r_int
-r_int
-id|va
-comma
-r_int
-r_int
-id|pa
-comma
-r_int
-id|mode
-comma
-r_int
-r_int
-id|hash_mask
-comma
-r_int
-id|large
 )paren
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */

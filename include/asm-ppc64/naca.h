@@ -34,11 +34,6 @@ id|u64
 id|debug_switch
 suffix:semicolon
 multiline_comment|/* Bits to control debug printing */
-DECL|member|processorCount
-id|u16
-id|processorCount
-suffix:semicolon
-multiline_comment|/* # of physical processors */
 DECL|member|dCacheL1LineSize
 id|u16
 id|dCacheL1LineSize

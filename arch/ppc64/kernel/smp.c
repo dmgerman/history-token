@@ -11,7 +11,6 @@ DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/* #include &lt;linux/openpic.h&gt; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -22,7 +21,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -47,12 +45,6 @@ r_int
 id|smp_commenced
 op_assign
 l_int|0
-suffix:semicolon
-DECL|variable|smp_num_cpus
-r_int
-id|smp_num_cpus
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|smp_tb_synchronized
 r_int
@@ -80,10 +72,25 @@ id|__initdata
 op_assign
 id|NR_CPUS
 suffix:semicolon
+multiline_comment|/* initialised so it doesnt end up in bss */
 DECL|variable|cpu_online_map
 r_int
 r_int
 id|cpu_online_map
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|boot_cpuid
+r_int
+id|boot_cpuid
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|ppc64_is_smp
+r_int
+id|ppc64_is_smp
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_volatile
@@ -98,26 +105,6 @@ op_assign
 l_int|0
 comma
 )brace
-suffix:semicolon
-DECL|macro|TB_SYNC_PASSES
-mdefine_line|#define TB_SYNC_PASSES 4
-DECL|variable|tb_sync_flag
-r_volatile
-r_int
-r_int
-id|__initdata
-id|tb_sync_flag
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|tb_offset
-r_volatile
-r_int
-r_int
-id|__initdata
-id|tb_offset
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_int
@@ -285,7 +272,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OL
 l_int|2
 )paren
@@ -361,12 +351,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -493,7 +495,7 @@ suffix:semicolon
 )brace
 DECL|function|smp_iSeries_probe
 r_static
-r_int
+r_void
 id|smp_iSeries_probe
 c_func
 (paren
@@ -569,9 +571,6 @@ suffix:semicolon
 id|smp_tb_synchronized
 op_assign
 l_int|1
-suffix:semicolon
-r_return
-id|np
 suffix:semicolon
 )brace
 DECL|function|smp_iSeries_kick_cpu
@@ -679,6 +678,8 @@ id|ppc_md.smp_setup_cpu
 op_assign
 id|smp_iSeries_setup_cpu
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+macro_line|#warning fix for iseries
 id|naca-&gt;processorCount
 op_assign
 id|smp_iSeries_numProcs
@@ -686,6 +687,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_void
@@ -790,9 +792,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_static
-r_int
 DECL|function|smp_chrp_probe
+r_static
+r_void
 id|smp_chrp_probe
 c_func
 (paren
@@ -802,17 +804,12 @@ r_void
 r_if
 c_cond
 (paren
-id|naca-&gt;processorCount
-OG
-l_int|1
+id|ppc64_is_smp
 )paren
 id|openpic_request_IPIs
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-id|naca-&gt;processorCount
 suffix:semicolon
 )brace
 r_static
@@ -871,21 +868,18 @@ r_void
 id|smp_space_timers
 c_func
 (paren
-r_int
-id|nr
 )paren
 (brace
 r_int
-r_int
-id|offset
-comma
 id|i
 suffix:semicolon
+r_int
+r_int
 id|offset
 op_assign
 id|tb_ticks_per_jiffy
 op_div
-id|nr
+id|NR_CPUS
 suffix:semicolon
 r_for
 c_loop
@@ -896,12 +890,11 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|nr
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 id|paca
 (braket
 id|i
@@ -920,7 +913,6 @@ id|next_jiffy_update_tb
 op_plus
 id|offset
 suffix:semicolon
-)brace
 )brace
 r_static
 r_void
@@ -977,7 +969,7 @@ c_cond
 (paren
 id|cpu_nr
 op_eq
-l_int|0
+id|boot_cpuid
 )paren
 (brace
 id|do_gtod.tb_orig_stamp
@@ -998,7 +990,7 @@ c_cond
 (paren
 id|cpu_nr
 op_eq
-l_int|0
+id|boot_cpuid
 )paren
 (brace
 multiline_comment|/* wait for all the others */
@@ -1012,7 +1004,10 @@ op_amp
 id|ready
 )paren
 OL
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 id|barrier
 c_func
@@ -1064,7 +1059,7 @@ l_int|0
 suffix:semicolon
 id|paca
 (braket
-l_int|0
+id|boot_cpuid
 )braket
 dot
 id|next_jiffy_update_tb
@@ -1074,7 +1069,6 @@ suffix:semicolon
 id|smp_space_timers
 c_func
 (paren
-id|smp_num_cpus
 )paren
 suffix:semicolon
 r_while
@@ -1087,7 +1081,10 @@ op_amp
 id|ready
 )paren
 OL
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 id|barrier
 c_func
@@ -1206,8 +1203,8 @@ r_if
 c_cond
 (paren
 id|cpu_nr
-OG
-l_int|0
+op_ne
+id|boot_cpuid
 )paren
 id|xics_setup_cpu
 c_func
@@ -1248,12 +1245,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1307,18 +1316,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_static
-r_int
 DECL|function|smp_xics_probe
+r_static
+r_void
 id|smp_xics_probe
 c_func
 (paren
 r_void
 )paren
 (brace
-r_return
-id|naca-&gt;processorCount
-suffix:semicolon
 )brace
 multiline_comment|/* This is called very early */
 DECL|function|smp_init_pSeries
@@ -1620,10 +1626,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise&n; * static memory requirements. It also looks cleaner.&n; * Stolen from the i386 version.&n; */
 DECL|variable|__cacheline_aligned_in_smp
@@ -1712,7 +1714,10 @@ l_int|1
 comma
 id|cpus
 op_assign
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -2073,6 +2078,8 @@ r_int
 id|i
 comma
 id|cpu_nr
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|task_struct
@@ -2085,24 +2092,15 @@ c_func
 l_string|&quot;Entering SMP Mode...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|smp_num_cpus
-op_assign
-l_int|1
-suffix:semicolon
 id|smp_store_cpu_info
 c_func
 (paren
-l_int|0
+id|boot_cpuid
 )paren
 suffix:semicolon
-id|cpu_online_map
-op_assign
-l_int|1UL
-suffix:semicolon
-multiline_comment|/*&n;&t; * assume for now that the first cpu booted is&n;&t; * cpu 0, the master -- Cort&n;&t; */
 id|cpu_callin_map
 (braket
-l_int|0
+id|boot_cpuid
 )braket
 op_assign
 l_int|1
@@ -2155,10 +2153,10 @@ c_cond
 (paren
 id|i
 op_ne
-l_int|0
+id|boot_cpuid
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Processor 0&squot;s segment table is statically &n;&t;&t;&t; * initialized to real address 0x5000.  The&n;&t;&t;&t; * Other processor&squot;s tables are created and&n;&t;&t;&t; * initialized here.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * the boot cpu segment table is statically &n;&t;&t;&t; * initialized to real address 0x5000.  The&n;&t;&t;&t; * Other processor&squot;s tables are created and&n;&t;&t;&t; * initialized here.&n;&t;&t;&t; */
 id|paca
 (braket
 id|i
@@ -2232,32 +2230,13 @@ id|decr_overclock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * XXX very rough. On POWER4 we optimise tlb flushes for&n;&t; * tasks that only run on one cpu so we increase decay ticks.&n;&t; */
-r_if
-c_cond
-(paren
-id|__is_processor
-c_func
-(paren
-id|PV_POWER4
-)paren
-)paren
-id|cache_decay_ticks
-op_assign
-id|HZ
-op_div
-l_int|50
-suffix:semicolon
-r_else
+multiline_comment|/*&n;&t; * XXX very rough. &n;&t; */
 id|cache_decay_ticks
 op_assign
 id|HZ
 op_div
 l_int|100
 suffix:semicolon
-multiline_comment|/* Probe arch for CPUs */
-id|cpu_nr
-op_assign
 id|ppc_md
 dot
 id|smp_probe
@@ -2265,6 +2244,35 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|paca
+(braket
+id|i
+)braket
+dot
+id|active
+)paren
+id|cpu_nr
+op_increment
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2273,23 +2281,10 @@ comma
 id|cpu_nr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * only check for cpus we know exist.  We keep the callin map&n;&t; * with cpus at the bottom -- Cort&n;&t; */
-r_if
-c_cond
-(paren
-id|cpu_nr
-OG
-id|max_cpus
-)paren
-id|cpu_nr
-op_assign
-id|max_cpus
-suffix:semicolon
 macro_line|#ifdef CONFIG_ISERIES
 id|smp_space_timers
 c_func
 (paren
-id|cpu_nr
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2312,7 +2307,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|cpu_nr
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -2324,6 +2319,40 @@ suffix:semicolon
 r_struct
 id|pt_regs
 id|regs
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|paca
+(braket
+id|i
+)braket
+dot
+id|active
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|boot_cpuid
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_ge
+id|max_cpus
+)paren
+r_break
 suffix:semicolon
 multiline_comment|/* create a process for the processor */
 multiline_comment|/* we don&squot;t care about the values in regs since we&squot;ll&n;&t;&t;   never reschedule the forked task. */
@@ -2464,9 +2493,6 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* this sync&squot;s the decr&squot;s -- Cort */
-id|smp_num_cpus
-op_increment
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -2480,19 +2506,22 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Setup CPU 0 last (important) */
+multiline_comment|/* Setup boot cpu last (important) */
 id|ppc_md
 dot
 id|smp_setup_cpu
 c_func
 (paren
-l_int|0
+id|boot_cpuid
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 OL
 l_int|2
 )paren
@@ -2572,13 +2601,6 @@ dot
 id|default_decr
 )paren
 suffix:semicolon
-id|cpu_callin_map
-(braket
-id|cpu
-)braket
-op_assign
-l_int|1
-suffix:semicolon
 id|set_bit
 c_func
 (paren
@@ -2590,6 +2612,18 @@ comma
 op_amp
 id|cpu_online_map
 )paren
+suffix:semicolon
+id|smp_mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu_callin_map
+(braket
+id|cpu
+)braket
+op_assign
+l_int|1
 suffix:semicolon
 id|ppc_md
 dot
@@ -2683,7 +2717,6 @@ id|ints
 )brace
 DECL|function|setup_profiling_timer
 r_int
-id|__init
 id|setup_profiling_timer
 c_func
 (paren

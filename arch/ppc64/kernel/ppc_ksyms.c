@@ -322,13 +322,6 @@ c_func
 id|synchronize_irq
 )paren
 suffix:semicolon
-DECL|variable|smp_num_cpus
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_num_cpus
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 DECL|variable|register_ioctl32_conversion
 id|EXPORT_SYMBOL
