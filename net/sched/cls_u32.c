@@ -4211,6 +4211,8 @@ id|skb
 comma
 op_amp
 id|n-&gt;police-&gt;stats
+comma
+id|n-&gt;police-&gt;stats_lock
 )paren
 )paren
 r_goto
