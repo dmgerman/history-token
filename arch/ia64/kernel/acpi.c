@@ -546,12 +546,31 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|lsapic-&gt;flags.enabled
 )paren
-(brace
-id|available_cpus
-op_increment
+id|printk
+c_func
+(paren
+l_string|&quot; disabled&quot;
+)paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|available_cpus
+op_ge
+id|NR_CPUS
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; ignored (increase NR_CPUS)&quot;
+)paren
+suffix:semicolon
+r_else
+(brace
 id|printk
 c_func
 (paren
@@ -561,7 +580,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_boot_data.cpu_phys_id
 (braket
-id|total_cpus
+id|available_cpus
 )braket
 op_assign
 (paren
@@ -586,7 +605,7 @@ r_int
 )paren
 id|smp_boot_data.cpu_phys_id
 (braket
-id|total_cpus
+id|available_cpus
 )braket
 )paren
 id|printk
@@ -596,25 +615,9 @@ l_string|&quot; (BSP)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; disabled&quot;
-)paren
+op_increment
+id|available_cpus
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|smp_boot_data.cpu_phys_id
-(braket
-id|total_cpus
-)braket
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 )brace
 id|printk
 c_func
@@ -2522,6 +2525,10 @@ id|acpi_parse_spcr
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
+id|smp_boot_data.cpu_count
+op_assign
+id|available_cpus
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2543,10 +2550,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* We&squot;ve got at least one of these, no? */
 )brace
-id|smp_boot_data.cpu_count
-op_assign
-id|total_cpus
-suffix:semicolon
 id|smp_build_cpu_map
 c_func
 (paren

@@ -1461,11 +1461,6 @@ c_cond
 (paren
 id|sapicid
 op_eq
-op_minus
-l_int|1
-op_logical_or
-id|sapicid
-op_eq
 id|boot_cpu_id
 )paren
 r_continue
