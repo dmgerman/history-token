@@ -7,11 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-DECL|macro|PCI_DEBUG
-macro_line|#undef PCI_DEBUG&t;&t;/* for ASSERT */
 macro_line|#include &lt;linux/pci.h&gt;
-DECL|macro|PCI_DEBUG
-macro_line|#undef PCI_DEBUG
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;&t;&t;/* for DMA_CHUNK_SIZE */
@@ -19,7 +15,15 @@ macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stu
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/runway.h&gt;&t;&t;/* for proc_runway_root */
 macro_line|#include &lt;asm/pdc.h&gt;&t;&t;/* for PDC_MODEL_* */
+macro_line|#include &lt;asm/pdcpat.h&gt;&t;&t;/* for is_pdc_pat() */
 macro_line|#include &lt;asm/parisc-device.h&gt;
+multiline_comment|/* declared in arch/parisc/kernel/setup.c */
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_mckinley_root
+suffix:semicolon
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;SBA&quot;
 macro_line|#ifdef CONFIG_PROC_FS
@@ -28,6 +32,8 @@ DECL|macro|SBA_COLLECT_STATS
 macro_line|#undef SBA_COLLECT_STATS
 macro_line|#endif
 multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;** Don&squot;t even think about messing with it unless you have&n;** plenty of 710&squot;s to sacrifice to the computer gods. :^)&n;*/
+DECL|macro|DEBUG_SBA_ASSERT
+macro_line|#undef DEBUG_SBA_ASSERT
 DECL|macro|DEBUG_SBA_INIT
 macro_line|#undef DEBUG_SBA_INIT
 DECL|macro|DEBUG_SBA_RUN
@@ -42,8 +48,6 @@ DECL|macro|DEBUG_LARGE_SG_ENTRIES
 macro_line|#undef DEBUG_LARGE_SG_ENTRIES
 DECL|macro|DEBUG_DMB_TRAP
 macro_line|#undef DEBUG_DMB_TRAP
-DECL|macro|SBA_INLINE
-mdefine_line|#define SBA_INLINE&t;__inline__
 macro_line|#ifdef DEBUG_SBA_INIT
 DECL|macro|DBG_INIT
 mdefine_line|#define DBG_INIT(x...)&t;printk(x)
@@ -72,6 +76,22 @@ macro_line|#else
 DECL|macro|DBG_RES
 mdefine_line|#define DBG_RES(x...)
 macro_line|#endif
+macro_line|#ifdef DEBUG_SBA_ASSERT
+DECL|macro|ASSERT
+macro_line|#undef ASSERT
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk(&quot;&bslash;n%s:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;__FILE__, __LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
+macro_line|#else
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(expr)
+macro_line|#endif
+macro_line|#if defined(__LP64__) &amp;&amp; !defined(CONFIG_PDC_NARROW)
+multiline_comment|/* &quot;low end&quot; PA8800 machines use ZX1 chipset */
+DECL|macro|ZX1_SUPPORT
+mdefine_line|#define ZX1_SUPPORT
+macro_line|#endif
+DECL|macro|SBA_INLINE
+mdefine_line|#define SBA_INLINE&t;__inline__
 multiline_comment|/*&n;** The number of pdir entries to &quot;free&quot; before issueing&n;** a read to PCOM register to flush out PCOM writes.&n;** Interacts with allocation granularity (ie 4 or 8 entries&n;** allocated and free&squot;d/purged at a time might make this&n;** less interesting).&n;*/
 DECL|macro|DELAYED_RESOURCE_CNT
 mdefine_line|#define DELAYED_RESOURCE_CNT&t;16
@@ -93,6 +113,10 @@ DECL|macro|REOG_MERCED_PORT
 mdefine_line|#define REOG_MERCED_PORT&t;0x805
 DECL|macro|REOG_ROPES_PORT
 mdefine_line|#define REOG_ROPES_PORT&t;&t;0x783
+DECL|macro|PLUTO_MCKINLEY_PORT
+mdefine_line|#define PLUTO_MCKINLEY_PORT&t;0x880
+DECL|macro|PLUTO_ROPES_PORT
+mdefine_line|#define PLUTO_ROPES_PORT&t;0x784
 DECL|macro|SBA_FUNC_ID
 mdefine_line|#define SBA_FUNC_ID&t;0x0000&t;/* function id */
 DECL|macro|SBA_FCLASS
@@ -101,6 +125,8 @@ DECL|macro|IS_ASTRO
 mdefine_line|#define IS_ASTRO(id) &bslash;&n;(((id)-&gt;hversion == ASTRO_RUNWAY_PORT) || ((id)-&gt;hversion == ASTRO_ROPES_PORT))
 DECL|macro|IS_IKE
 mdefine_line|#define IS_IKE(id) &bslash;&n;(((id)-&gt;hversion == IKE_MERCED_PORT) || ((id)-&gt;hversion == IKE_ROPES_PORT))
+DECL|macro|IS_PLUTO
+mdefine_line|#define IS_PLUTO(id) &bslash;&n;(((id)-&gt;hversion == PLUTO_MCKINLEY_PORT) || ((id)-&gt;hversion == PLUTO_ROPES_PORT))
 DECL|macro|SBA_FUNC_SIZE
 mdefine_line|#define SBA_FUNC_SIZE 4096   /* SBA configuration function reg set */
 DECL|macro|ASTRO_IOC_OFFSET
@@ -108,6 +134,8 @@ mdefine_line|#define ASTRO_IOC_OFFSET 0x20000
 multiline_comment|/* Ike&squot;s IOC&squot;s occupy functions 2 and 3 (not 0 and 1) */
 DECL|macro|IKE_IOC_OFFSET
 mdefine_line|#define IKE_IOC_OFFSET(p) ((p+2)*SBA_FUNC_SIZE)
+DECL|macro|PLUTO_IOC_OFFSET
+mdefine_line|#define PLUTO_IOC_OFFSET 0x1000
 DECL|macro|IOC_CTRL
 mdefine_line|#define IOC_CTRL          0x8&t;/* IOC_CTRL offset */
 DECL|macro|IOC_CTRL_TC
@@ -121,7 +149,7 @@ mdefine_line|#define IOC_CTRL_RM       (1 &lt;&lt; 8) /* Real Mode */
 DECL|macro|IOC_CTRL_NC
 mdefine_line|#define IOC_CTRL_NC       (1 &lt;&lt; 9) /* Non Coherent Mode */
 DECL|macro|MAX_IOC
-mdefine_line|#define MAX_IOC&t;&t;2&t;/* per Ike. Astro only has 1 */
+mdefine_line|#define MAX_IOC&t;&t;2&t;/* per Ike. Pluto/Astro only have 1. */
 multiline_comment|/*&n;** Offsets into MBIB (Function 0 on Ike and hopefully Astro)&n;** Firmware programs this stuff. Don&squot;t touch it.&n;*/
 DECL|macro|IOS_DIST_BASE
 mdefine_line|#define IOS_DIST_BASE&t;0x390
@@ -164,9 +192,10 @@ DECL|macro|IOC_TCNFG
 mdefine_line|#define IOC_TCNFG&t;0x318
 DECL|macro|IOC_PDIR_BASE
 mdefine_line|#define IOC_PDIR_BASE&t;0x320
-DECL|macro|IOC_IOVA_SPACE_BASE
-mdefine_line|#define IOC_IOVA_SPACE_BASE&t;0&t;/* IOVA ranges start at 0 */
-multiline_comment|/*&n;** IOC supports 4/8/16/64KB page sizes (see TCNFG register)&n;** It&squot;s safer (avoid memory corruption) to keep DMA page mappings&n;** equivalently sized to VM PAGE_SIZE.&n;**&n;** We really can&squot;t avoid generating a new mapping for each&n;** page since the Virtual Coherence Index has to be generated&n;** and updated for each page.&n;**&n;** IOVP_SIZE could only be greater than PAGE_SIZE if we are&n;** confident the drivers really only touch the next physical&n;** page iff that driver instance owns it.&n;*/
+multiline_comment|/* AGP GART driver looks for this */
+DECL|macro|SBA_IOMMU_COOKIE
+mdefine_line|#define SBA_IOMMU_COOKIE    0x0000badbadc0ffeeUL
+multiline_comment|/*&n;** IOC supports 4/8/16/64KB page sizes (see TCNFG register)&n;** It&squot;s safer (avoid memory corruption) to keep DMA page mappings&n;** equivalently sized to VM PAGE_SIZE.&n;**&n;** We really can&squot;t avoid generating a new mapping for each&n;** page since the Virtual Coherence Index has to be generated&n;** and updated for each page.&n;**&n;** PAGE_SIZE could be greater than IOVP_SIZE. But not the inverse.&n;*/
 DECL|macro|IOVP_SIZE
 mdefine_line|#define IOVP_SIZE&t;PAGE_SIZE
 DECL|macro|IOVP_SHIFT
@@ -208,6 +237,26 @@ op_star
 id|pdir_base
 suffix:semicolon
 multiline_comment|/* physical base address */
+DECL|member|ibase
+r_int
+r_int
+id|ibase
+suffix:semicolon
+multiline_comment|/* pdir IOV Space base - shared w/lba_pci */
+DECL|member|imask
+r_int
+r_int
+id|imask
+suffix:semicolon
+multiline_comment|/* pdir IOV Space mask - shared w/lba_pci */
+macro_line|#ifdef ZX1_SUPPORT
+DECL|member|iovp_mask
+r_int
+r_int
+id|iovp_mask
+suffix:semicolon
+multiline_comment|/* help convert IOVA to IOVP */
+macro_line|#endif
 DECL|member|res_hint
 r_int
 r_int
@@ -219,12 +268,6 @@ DECL|member|res_lock
 id|spinlock_t
 id|res_lock
 suffix:semicolon
-DECL|member|hint_mask_pdir
-r_int
-r_int
-id|hint_mask_pdir
-suffix:semicolon
-multiline_comment|/* bits used for DMA hints */
 DECL|member|res_bitshift
 r_int
 r_int
@@ -237,11 +280,20 @@ r_int
 id|res_size
 suffix:semicolon
 multiline_comment|/* size of resource map in bytes */
+macro_line|#if SBA_HINT_SUPPORT
+multiline_comment|/* FIXME : DMA HINTs not used */
+DECL|member|hint_mask_pdir
+r_int
+r_int
+id|hint_mask_pdir
+suffix:semicolon
+multiline_comment|/* bits used for DMA hints */
 DECL|member|hint_shift_pdir
 r_int
 r_int
 id|hint_shift_pdir
 suffix:semicolon
+macro_line|#endif
 macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
 DECL|member|saved_cnt
 r_int
@@ -337,18 +389,6 @@ r_int
 id|pdir_size
 suffix:semicolon
 multiline_comment|/* in bytes, determined by IOV Space size */
-DECL|member|ibase
-r_int
-r_int
-id|ibase
-suffix:semicolon
-multiline_comment|/* pdir IOV Space base - shared w/lba_pci */
-DECL|member|imask
-r_int
-r_int
-id|imask
-suffix:semicolon
-multiline_comment|/* pdir IOV Space mask - shared w/lba_pci */
 )brace
 suffix:semicolon
 DECL|struct|sba_device
@@ -465,6 +505,15 @@ suffix:semicolon
 multiline_comment|/* Looks nice and keeps the compiler happy */
 DECL|macro|SBA_DEV
 mdefine_line|#define SBA_DEV(d) ((struct sba_device *) (d))
+macro_line|#if SBA_AGP_SUPPORT
+DECL|variable|reserve_sba_gart
+r_static
+r_int
+id|reserve_sba_gart
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 DECL|macro|ROUNDUP
 mdefine_line|#define ROUNDUP(x,y) ((x + ((y)-1)) &amp; ~((y)-1))
 multiline_comment|/************************************&n;** SBA register read and write support&n;**&n;** BE WARNED: register writes are posted.&n;**  (ie follow writes which must reach HW with a read)&n;**&n;** Superdome (in particular, REO) allows only 64-bit CSR accesses.&n;*/
@@ -623,7 +672,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_IBASE    : %Lx&bslash;n&quot;
+l_string|&quot;IOC_IBASE    : 0x%Lx&bslash;n&quot;
 comma
 id|READ_REG64
 c_func
@@ -637,7 +686,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_IMASK    : %Lx&bslash;n&quot;
+l_string|&quot;IOC_IMASK    : 0x%Lx&bslash;n&quot;
 comma
 id|READ_REG64
 c_func
@@ -651,7 +700,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_TCNFG    : %Lx&bslash;n&quot;
+l_string|&quot;IOC_TCNFG    : 0x%Lx&bslash;n&quot;
 comma
 id|READ_REG64
 c_func
@@ -665,7 +714,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;IOC_PDIR_BASE: %Lx&bslash;n&quot;
+l_string|&quot;IOC_PDIR_BASE: 0x%Lx&bslash;n&quot;
 comma
 id|READ_REG64
 c_func
@@ -683,6 +732,11 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|sba_dump_ranges
+mdefine_line|#define sba_dump_ranges(x)
+DECL|macro|sba_dump_tlb
+mdefine_line|#define sba_dump_tlb(x)
 macro_line|#endif
 macro_line|#ifdef ASSERT_PDIR_SANITY
 multiline_comment|/**&n; * sba_dump_pdir_entry - debugging only - print one IOMMU PDIR entry&n; * @ioc: IO MMU structure which owns the pdir we are interested in.&n; * @msg: text to print ont the output line.&n; * @pide: pdir index.&n; *&n; * Print one entry of the IO MMU PDIR in human readable form.&n; */
@@ -1076,17 +1130,21 @@ multiline_comment|/*************************************************************
 DECL|macro|PAGES_PER_RANGE
 mdefine_line|#define PAGES_PER_RANGE 1&t;/* could increase this to 4 or 8 if needed */
 multiline_comment|/* Convert from IOVP to IOVA and vice versa. */
+macro_line|#ifdef ZX1_SUPPORT
+multiline_comment|/* Pluto (aka ZX1) boxes need to set or clear the ibase bits appropriately */
 DECL|macro|SBA_IOVA
-mdefine_line|#define SBA_IOVA(ioc,iovp,offset,hint_reg) ((iovp) | (offset) | ((hint_reg)&lt;&lt;(ioc-&gt;hint_shift_pdir)))
+mdefine_line|#define SBA_IOVA(ioc,iovp,offset,hint_reg) ((ioc-&gt;ibase) | (iovp) | (offset))
 DECL|macro|SBA_IOVP
-mdefine_line|#define SBA_IOVP(ioc,iova) ((iova) &amp; ioc-&gt;hint_mask_pdir)
-multiline_comment|/* FIXME : review these macros to verify correctness and usage */
+mdefine_line|#define SBA_IOVP(ioc,iova) ((iova) &amp; (ioc)-&gt;iovp_mask)
+macro_line|#else
+multiline_comment|/* only support Astro and ancestors. Saves a few cycles in key places */
+DECL|macro|SBA_IOVA
+mdefine_line|#define SBA_IOVA(ioc,iovp,offset,hint_reg) ((iovp) | (offset))
+DECL|macro|SBA_IOVP
+mdefine_line|#define SBA_IOVP(ioc,iova) (iova)
+macro_line|#endif
 DECL|macro|PDIR_INDEX
 mdefine_line|#define PDIR_INDEX(iovp)   ((iovp)&gt;&gt;IOVP_SHIFT)
-DECL|macro|MKIOVP
-mdefine_line|#define MKIOVP(dma_hint,pide)  (dma_addr_t)((long)(dma_hint) | ((long)(pide) &lt;&lt; IOVP_SHIFT))
-DECL|macro|MKIOVA
-mdefine_line|#define MKIOVA(iovp,offset) (dma_addr_t)((long)iovp | (long)offset)
 DECL|macro|RESMAP_MASK
 mdefine_line|#define RESMAP_MASK(n)    (~0UL &lt;&lt; (BITS_PER_LONG - (n)))
 DECL|macro|RESMAP_IDX_MASK
@@ -1938,8 +1996,10 @@ id|m
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************&n;*&n;*   &quot;Dynamic DMA Mapping&quot; support (aka &quot;Coherent I/O&quot;)&n;*&n;***************************************************************/
+macro_line|#if SBA_HINT_SUPPORT
 DECL|macro|SBA_DMA_HINT
 mdefine_line|#define SBA_DMA_HINT(ioc, val) ((val) &lt;&lt; (ioc)-&gt;hint_shift_pdir)
+macro_line|#endif
 DECL|typedef|space_t
 r_typedef
 r_int
@@ -1948,7 +2008,7 @@ id|space_t
 suffix:semicolon
 DECL|macro|KERNEL_SPACE
 mdefine_line|#define KERNEL_SPACE 0
-multiline_comment|/**&n; * sba_io_pdir_entry - fill in one IO PDIR entry&n; * @pdir_ptr:  pointer to IO PDIR entry&n; * @sid: process Space ID&n; * @vba: Virtual CPU address of buffer to map&n; *&n; * SBA Mapping Routine&n; *&n; * Given a virtual address (vba, arg2) and space id, (sid, arg1)&n; * sba_io_pdir_entry() loads the I/O PDIR entry pointed to by&n; * pdir_ptr (arg0). Each IO Pdir entry consists of 8 bytes as&n; * shown below (MSB == bit 0):&n; *&n; *  0                    19                                 51   55       63&n; * +-+---------------------+----------------------------------+----+--------+&n; * |V|        U            |            PPN[43:12]            | U  |   VI   |&n; * +-+---------------------+----------------------------------+----+--------+&n; *&n; *  V  == Valid Bit&n; *  U  == Unused&n; * PPN == Physical Page Number&n; * VI  == Virtual Index (aka Coherent Index)&n; *&n; * The physical address fields are filled with the results of the LPA&n; * instruction.  The virtual index field is filled with the results of&n; * of the LCI (Load Coherence Index) instruction.  The 8 bits used for&n; * the virtual index are bits 12:19 of the value returned by LCI.&n; *&n; * We need to pre-swap the bytes since PCX-W is Big Endian.&n; */
+multiline_comment|/**&n; * sba_io_pdir_entry - fill in one IO PDIR entry&n; * @pdir_ptr:  pointer to IO PDIR entry&n; * @sid: process Space ID&n; * @vba: Virtual CPU address of buffer to map&n; *&n; * SBA Mapping Routine&n; *&n; * Given a virtual address (vba, arg2) and space id, (sid, arg1)&n; * sba_io_pdir_entry() loads the I/O PDIR entry pointed to by&n; * pdir_ptr (arg0). &n; * Using the bass-ackwards HP bit numbering, Each IO Pdir entry&n; * for Astro/Ike looks like:&n; *&n; *&n; *  0                    19                                 51   55       63&n; * +-+---------------------+----------------------------------+----+--------+&n; * |V|        U            |            PPN[43:12]            | U  |   VI   |&n; * +-+---------------------+----------------------------------+----+--------+&n; *&n; * Pluto is basically identical, supports fewer physical address bits:&n; *&n; *  0                       23                              51   55       63&n; * +-+------------------------+-------------------------------+----+--------+&n; * |V|        U               |         PPN[39:12]            | U  |   VI   |&n; * +-+------------------------+-------------------------------+----+--------+&n; *&n; *  V  == Valid Bit  (Most Significant Bit is bit 0)&n; *  U  == Unused&n; * PPN == Physical Page Number&n; * VI  == Virtual Index (aka Coherent Index)&n; *&n; * LPA instruction output is put into PPN field.&n; * LCI (Load Coherence Index) instruction provides the &quot;VI&quot; bits.&n; *&n; * We pre-swap the bytes since PCX-W is Big Endian and the&n; * IOMMU uses little endian for the pdir.&n; */
 r_void
 id|SBA_INLINE
 DECL|function|sba_io_pdir_entry
@@ -1999,10 +2059,8 @@ id|vba
 suffix:semicolon
 id|pa
 op_and_assign
-op_complement
-l_int|4095ULL
+id|IOVP_MASK
 suffix:semicolon
-multiline_comment|/* clear out offset bits */
 id|mtsp
 c_func
 (paren
@@ -2312,7 +2370,17 @@ suffix:semicolon
 id|WRITE_REG
 c_func
 (paren
+id|SBA_IOVA
+c_func
+(paren
+id|ioc
+comma
 id|iovp
+comma
+l_int|0
+comma
+l_int|0
+)paren
 comma
 id|ioc-&gt;ioc_hpa
 op_plus
@@ -2531,7 +2599,7 @@ suffix:semicolon
 id|DBG_RUN
 c_func
 (paren
-l_string|&quot;%s() 0x%p -&gt; 0x%lx&quot;
+l_string|&quot;%s() 0x%p -&gt; 0x%lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2600,7 +2668,7 @@ suffix:semicolon
 id|DBG_RUN
 c_func
 (paren
-l_string|&quot; pdir 0x%p %02x%02x%02x%02x%02x%02x%02x%02x&bslash;n&quot;
+l_string|&quot;&t;pdir 0x%p %02x%02x%02x%02x%02x%02x%02x%02x&bslash;n&quot;
 comma
 id|pdir_start
 comma
@@ -2896,7 +2964,18 @@ op_rshift
 id|IOVP_SHIFT
 suffix:semicolon
 macro_line|#endif
+id|sba_mark_invalid
+c_func
+(paren
+id|ioc
+comma
+id|iova
+comma
+id|size
+)paren
+suffix:semicolon
 macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
+multiline_comment|/* Delaying when we re-use a IO Pdir entry reduces the number&n;&t; * of MMIO reads needed to flush writes to the PCOM register.&n;&t; */
 id|d
 op_assign
 op_amp
@@ -2938,16 +3017,6 @@ id|cnt
 op_decrement
 )paren
 (brace
-id|sba_mark_invalid
-c_func
-(paren
-id|ioc
-comma
-id|d-&gt;iova
-comma
-id|d-&gt;size
-)paren
-suffix:semicolon
 id|sba_free_range
 c_func
 (paren
@@ -2977,16 +3046,6 @@ suffix:semicolon
 multiline_comment|/* flush purges */
 )brace
 macro_line|#else /* DELAYED_RESOURCE_CNT == 0 */
-id|sba_mark_invalid
-c_func
-(paren
-id|ioc
-comma
-id|iova
-comma
-id|size
-)paren
-suffix:semicolon
 id|sba_free_range
 c_func
 (paren
@@ -4124,6 +4183,569 @@ suffix:semicolon
 )brace
 r_static
 r_void
+DECL|function|sba_ioc_init_pluto
+id|sba_ioc_init_pluto
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+id|sba
+comma
+r_struct
+id|ioc
+op_star
+id|ioc
+comma
+r_int
+id|ioc_num
+)paren
+(brace
+multiline_comment|/* lba_set_iregs() is in arch/parisc/kernel/lba_pci.c */
+r_extern
+r_void
+id|lba_set_iregs
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+comma
+id|u32
+comma
+id|u32
+)paren
+suffix:semicolon
+id|u32
+id|iova_space_mask
+suffix:semicolon
+id|u32
+id|iova_space_size
+suffix:semicolon
+r_int
+id|iov_order
+comma
+id|tcnfg
+suffix:semicolon
+r_struct
+id|parisc_device
+op_star
+id|lba
+suffix:semicolon
+macro_line|#if SBA_AGP_SUPPORT
+r_int
+id|agp_found
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;&t;** Firmware programs the base and size of a &quot;safe IOVA space&quot;&n;&t;** (one that doesn&squot;t overlap memory or LMMIO space) in the&n;&t;** IBASE and IMASK registers.&n;&t;*/
+id|ioc-&gt;ibase
+op_assign
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_IBASE
+)paren
+suffix:semicolon
+id|iova_space_size
+op_assign
+op_complement
+(paren
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_IMASK
+)paren
+op_amp
+l_int|0xFFFFFFFFUL
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ioc-&gt;ibase
+OL
+l_int|0xfed00000UL
+)paren
+op_logical_and
+(paren
+(paren
+id|ioc-&gt;ibase
+op_plus
+id|iova_space_size
+)paren
+OG
+l_int|0xfee00000UL
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING: IOV space overlaps local config and interrupt message, truncating&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iova_space_size
+op_div_assign
+l_int|2
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;** iov_order is always based on a 1GB IOVA space since we want to&n;&t;** turn on the other half for AGP GART.&n;&t;*/
+id|iov_order
+op_assign
+id|get_order
+c_func
+(paren
+id|iova_space_size
+op_rshift
+(paren
+id|IOVP_SHIFT
+op_minus
+id|PAGE_SHIFT
+)paren
+)paren
+suffix:semicolon
+id|ioc-&gt;pdir_size
+op_assign
+(paren
+id|iova_space_size
+op_div
+id|IOVP_SIZE
+)paren
+op_star
+r_sizeof
+(paren
+id|u64
+)paren
+suffix:semicolon
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;%s() hpa 0x%lx IOV %dMB (%d bits)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ioc-&gt;ioc_hpa
+comma
+id|iova_space_size
+op_rshift
+l_int|20
+comma
+id|iov_order
+op_plus
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|ioc-&gt;pdir_base
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+comma
+id|get_order
+c_func
+(paren
+id|ioc-&gt;pdir_size
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioc-&gt;pdir_base
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Couldn&squot;t allocate I/O Page Table&bslash;n&quot;
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|ioc-&gt;pdir_base
+comma
+l_int|0
+comma
+id|ioc-&gt;pdir_size
+)paren
+suffix:semicolon
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;%s() pdir %p size %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ioc-&gt;pdir_base
+comma
+id|ioc-&gt;pdir_size
+)paren
+suffix:semicolon
+macro_line|#if SBA_HINT_SUPPORT
+id|ioc-&gt;hint_shift_pdir
+op_assign
+id|iov_order
+op_plus
+id|PAGE_SHIFT
+suffix:semicolon
+id|ioc-&gt;hint_mask_pdir
+op_assign
+op_complement
+(paren
+l_int|0x3
+op_lshift
+(paren
+id|iov_order
+op_plus
+id|PAGE_SHIFT
+)paren
+)paren
+suffix:semicolon
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;&t;hint_shift_pdir %x hint_mask_pdir %lx&bslash;n&quot;
+comma
+id|ioc-&gt;hint_shift_pdir
+comma
+id|ioc-&gt;hint_mask_pdir
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ASSERT
+c_func
+(paren
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|ioc-&gt;pdir_base
+)paren
+op_amp
+id|PAGE_MASK
+)paren
+op_eq
+(paren
+r_int
+r_int
+)paren
+id|ioc-&gt;pdir_base
+)paren
+suffix:semicolon
+id|WRITE_REG
+c_func
+(paren
+id|virt_to_phys
+c_func
+(paren
+id|ioc-&gt;pdir_base
+)paren
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_PDIR_BASE
+)paren
+suffix:semicolon
+multiline_comment|/* build IMASK for IOC and Elroy */
+id|iova_space_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+id|iova_space_mask
+op_lshift_assign
+(paren
+id|iov_order
+op_plus
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|ioc-&gt;imask
+op_assign
+id|iova_space_mask
+suffix:semicolon
+macro_line|#ifdef ZX1_SUPPORT
+id|ioc-&gt;iovp_mask
+op_assign
+op_complement
+(paren
+id|iova_space_mask
+op_plus
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+id|sba_dump_tlb
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;** setup Mercury IBASE/IMASK registers as well.&n;&t;*/
+r_for
+c_loop
+(paren
+id|lba
+op_assign
+id|sba-&gt;child
+suffix:semicolon
+id|lba
+suffix:semicolon
+id|lba
+op_assign
+id|lba-&gt;sibling
+)paren
+(brace
+r_int
+id|rope_num
+op_assign
+(paren
+id|lba-&gt;hpa
+op_rshift
+l_int|13
+)paren
+op_amp
+l_int|0xf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rope_num
+op_rshift
+l_int|3
+op_eq
+id|ioc_num
+)paren
+id|lba_set_iregs
+c_func
+(paren
+id|lba
+comma
+id|ioc-&gt;ibase
+comma
+id|ioc-&gt;imask
+)paren
+suffix:semicolon
+)brace
+id|WRITE_REG
+c_func
+(paren
+id|ioc-&gt;imask
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_IMASK
+)paren
+suffix:semicolon
+macro_line|#ifdef __LP64__
+multiline_comment|/*&n;&t;** Setting the upper bits makes checking for bypass addresses&n;&t;** a little faster later on.&n;&t;*/
+id|ioc-&gt;imask
+op_or_assign
+l_int|0xFFFFFFFF00000000UL
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Set I/O PDIR Page size to system page size */
+r_switch
+c_cond
+(paren
+id|PAGE_SHIFT
+)paren
+(brace
+r_case
+l_int|12
+suffix:colon
+id|tcnfg
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/*  4K */
+r_case
+l_int|13
+suffix:colon
+id|tcnfg
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/*  8K */
+r_case
+l_int|14
+suffix:colon
+id|tcnfg
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 16K */
+r_case
+l_int|16
+suffix:colon
+id|tcnfg
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 64K */
+r_default
+suffix:colon
+id|panic
+c_func
+(paren
+id|__FILE__
+l_string|&quot;Unsupported system page size %d&quot;
+comma
+l_int|1
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|WRITE_REG
+c_func
+(paren
+id|tcnfg
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_TCNFG
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;** Program the IOC&squot;s ibase and enable IOVA translation&n;&t;** Bit zero == enable bit.&n;&t;*/
+id|WRITE_REG
+c_func
+(paren
+id|ioc-&gt;ibase
+op_or
+l_int|1
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_IBASE
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;** Clear I/O TLB of any possible entries.&n;&t;** (Yes. This is a bit paranoid...but so what)&n;&t;*/
+id|WRITE_REG
+c_func
+(paren
+id|ioc-&gt;ibase
+op_or
+l_int|31
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_PCOM
+)paren
+suffix:semicolon
+macro_line|#if SBA_AGP_SUPPORT
+multiline_comment|/*&n;&t;** If an AGP device is present, only use half of the IOV space&n;&t;** for PCI DMA.  Unfortunately we can&squot;t know ahead of time&n;&t;** whether GART support will actually be used, for now we&n;&t;** can just key on any AGP device found in the system.&n;&t;** We program the next pdir index after we stop w/ a key for&n;&t;** the GART code to handshake on.&n;&t;*/
+id|device
+op_assign
+l_int|NULL
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|lba
+op_assign
+id|sba-&gt;child
+suffix:semicolon
+id|lba
+suffix:semicolon
+id|lba
+op_assign
+id|lba-&gt;sibling
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|IS_QUICKSILVER
+c_func
+(paren
+id|lba
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lba
+)paren
+(brace
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;%s: Reserving half of IOVA space for AGP GART support&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|ioc-&gt;pdir_size
+op_div_assign
+l_int|2
+suffix:semicolon
+(paren
+(paren
+id|u64
+op_star
+)paren
+id|ioc-&gt;pdir_base
+)paren
+(braket
+id|PDIR_INDEX
+c_func
+(paren
+id|iova_space_size
+op_div
+l_int|2
+)paren
+)braket
+op_assign
+id|SBA_IOMMU_COOKIE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;%s: No GART needed - no AGP controller found&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* 0 */
+)brace
+r_static
+r_void
 DECL|function|sba_ioc_init
 id|sba_ioc_init
 c_func
@@ -4369,6 +4991,27 @@ comma
 id|pdir_size
 )paren
 suffix:semicolon
+id|ioc-&gt;pdir_base
+op_assign
+id|sba_alloc_pdir
+c_func
+(paren
+id|pdir_size
+)paren
+suffix:semicolon
+id|DBG_INIT
+c_func
+(paren
+l_string|&quot;%s() pdir %p size %x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ioc-&gt;pdir_base
+comma
+id|pdir_size
+)paren
+suffix:semicolon
+macro_line|#if SBA_HINT_SUPPORT
 multiline_comment|/* FIXME : DMA HINTs not used */
 id|ioc-&gt;hint_shift_pdir
 op_assign
@@ -4389,30 +5032,17 @@ id|PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
-id|ioc-&gt;pdir_base
-op_assign
-id|sba_alloc_pdir
-c_func
-(paren
-id|pdir_size
-)paren
-suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;%s() pdir %p size %x hint_shift_pdir %x hint_mask_pdir %lx&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|ioc-&gt;pdir_base
-comma
-id|pdir_size
+l_string|&quot;&t;hint_shift_pdir %x hint_mask_pdir %lx&bslash;n&quot;
 comma
 id|ioc-&gt;hint_shift_pdir
 comma
 id|ioc-&gt;hint_mask_pdir
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -4465,16 +5095,26 @@ suffix:semicolon
 multiline_comment|/*&n;&t;** On C3000 w/512MB mem, HP-UX 10.20 reports:&n;&t;**     ibase=0, imask=0xFE000000, size=0x2000000.&n;&t;*/
 id|ioc-&gt;ibase
 op_assign
-id|IOC_IOVA_SPACE_BASE
-op_or
-l_int|1
+l_int|0
 suffix:semicolon
-multiline_comment|/* bit 0 == enable bit */
 id|ioc-&gt;imask
 op_assign
 id|iova_space_mask
 suffix:semicolon
 multiline_comment|/* save it */
+macro_line|#ifdef ZX1_SUPPORT
+id|ioc-&gt;iovp_mask
+op_assign
+op_complement
+(paren
+id|iova_space_mask
+op_plus
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 id|DBG_INIT
 c_func
 (paren
@@ -4539,6 +5179,8 @@ id|WRITE_REG
 c_func
 (paren
 id|ioc-&gt;ibase
+op_or
+l_int|1
 comma
 id|ioc-&gt;ioc_hpa
 op_plus
@@ -4579,6 +5221,11 @@ op_plus
 id|IOC_PCOM
 )paren
 suffix:semicolon
+id|ioc-&gt;ibase
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* used by SBA_IOVA and related macros */
 id|DBG_INIT
 c_func
 (paren
@@ -4628,6 +5275,17 @@ c_func
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;** XXX May need something more sophisticated to deal&n;&t;&t;**     with DMA from LAN. Maybe use page zero boot device&n;&t;&t;**     as a handle to talk to PDC about which device to&n;&t;&t;**     shutdown. This also needs to work for is_pdc_pat(). &n;&t;&t;*/
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_PLUTO
+c_func
+(paren
+id|sba_dev-&gt;iodc
+)paren
+)paren
+(brace
 id|ioc_ctl
 op_assign
 id|READ_REG
@@ -4696,6 +5354,8 @@ id|ioc_ctl
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
+multiline_comment|/* if !PLUTO */
 r_if
 c_cond
 (paren
@@ -4715,6 +5375,33 @@ dot
 id|ioc_hpa
 op_assign
 id|ASTRO_IOC_OFFSET
+suffix:semicolon
+id|num_ioc
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|IS_PLUTO
+c_func
+(paren
+id|sba_dev-&gt;iodc
+)paren
+)paren
+(brace
+multiline_comment|/* We use a negative value for IOC HPA so it gets &n;                 * corrected when we add it with IKE&squot;s IOC offset.&n;&t;&t; * Doesnt look clean, but fewer code. &n;                 */
+id|sba_dev-&gt;ioc
+(braket
+l_int|0
+)braket
+dot
+id|ioc_hpa
+op_assign
+op_minus
+id|PLUTO_IOC_OFFSET
 suffix:semicolon
 id|num_ioc
 op_assign
@@ -4913,6 +5600,35 @@ op_plus
 id|ROPE7_CTL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_PLUTO
+c_func
+(paren
+id|sba_dev-&gt;iodc
+)paren
+)paren
+(brace
+id|sba_ioc_init_pluto
+c_func
+(paren
+id|sba_dev-&gt;dev
+comma
+op_amp
+(paren
+id|sba_dev-&gt;ioc
+(braket
+id|i
+)braket
+)paren
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|sba_ioc_init
 c_func
 (paren
@@ -4929,6 +5645,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 r_static
@@ -5984,7 +6701,18 @@ comma
 l_int|0xc
 )brace
 comma
+(brace
+id|HPHW_IOA
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|PLUTO_MCKINLEY_PORT
+comma
+l_int|0xc
+)brace
+comma
 multiline_comment|/* These two entries commented out because we don&squot;t find them in a&n; * buswalk yet.  If/when we do, they would cause us to think we had&n; * many more SBAs then we really do.&n; *&t;{ HPHW_BCPORT, HVERSION_REV_ANY_ID, ASTRO_ROPES_PORT, 0xc },&n; *&t;{ HPHW_BCPORT, HVERSION_REV_ANY_ID, IKE_ROPES_PORT, 0xc },&n; */
+multiline_comment|/* We shall also comment out Pluto Ropes Port since bus walk doesnt&n; * report it yet. &n; *&t;{ HPHW_BCPORT, HVERSION_REV_ANY_ID, PLUTO_ROPES_PORT, 0xc },&n; */
 (brace
 l_int|0
 comma
@@ -6051,14 +6779,12 @@ r_char
 op_star
 id|version
 suffix:semicolon
-macro_line|#ifdef DEBUG_SBA_INIT
 id|sba_dump_ranges
 c_func
 (paren
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Read HW Rev First */
 id|func_class
 op_assign
@@ -6185,6 +6911,67 @@ id|ike_rev
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|IS_PLUTO
+c_func
+(paren
+op_amp
+id|dev-&gt;id
+)paren
+)paren
+(brace
+r_static
+r_char
+id|pluto_rev
+(braket
+)braket
+op_assign
+l_string|&quot;Pluto ?.?&quot;
+suffix:semicolon
+id|pluto_rev
+(braket
+l_int|6
+)braket
+op_assign
+l_char|&squot;0&squot;
+op_plus
+(paren
+r_char
+)paren
+(paren
+(paren
+id|func_class
+op_amp
+l_int|0xf0
+)paren
+op_rshift
+l_int|4
+)paren
+suffix:semicolon
+id|pluto_rev
+(braket
+l_int|8
+)braket
+op_assign
+l_char|&squot;0&squot;
+op_plus
+(paren
+r_char
+)paren
+(paren
+id|func_class
+op_amp
+l_int|0x0f
+)paren
+suffix:semicolon
+id|version
+op_assign
+id|pluto_rev
+suffix:semicolon
+)brace
+r_else
 (brace
 r_static
 r_char
@@ -6231,9 +7018,10 @@ op_amp
 id|sba_driver
 )paren
 suffix:semicolon
-multiline_comment|/* Only Astro has one IOC per SBA */
+multiline_comment|/* Astro and Pluto have one IOC per SBA */
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 id|IS_ASTRO
@@ -6241,6 +7029,17 @@ c_func
 (paren
 op_amp
 id|dev-&gt;id
+)paren
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|IS_PLUTO
+c_func
+(paren
+op_amp
+id|dev-&gt;id
+)paren
 )paren
 )paren
 id|global_ioc_cnt
@@ -6261,14 +7060,6 @@ comma
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_SBA_INIT
-id|sba_dump_tlb
-c_func
-(paren
-id|dev-&gt;hpa
-)paren
-suffix:semicolon
-macro_line|#endif
 id|sba_dev
 op_assign
 id|kmalloc
@@ -6445,6 +7236,31 @@ comma
 l_int|0
 comma
 id|proc_runway_root
+comma
+id|sba_proc_info
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|IS_PLUTO
+c_func
+(paren
+op_amp
+id|dev-&gt;id
+)paren
+)paren
+(brace
+id|create_proc_info_entry
+c_func
+(paren
+l_string|&quot;Pluto&quot;
+comma
+l_int|0
+comma
+id|proc_mckinley_root
 comma
 id|sba_proc_info
 )paren

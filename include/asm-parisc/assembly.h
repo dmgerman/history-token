@@ -7,6 +7,8 @@ DECL|macro|LDREG
 mdefine_line|#define LDREG&t;ldd
 DECL|macro|STREG
 mdefine_line|#define STREG&t;std
+DECL|macro|LDREGX
+mdefine_line|#define LDREGX  ldd,s
 DECL|macro|LDREGM
 mdefine_line|#define LDREGM&t;ldd,mb
 DECL|macro|STREGM
@@ -20,6 +22,8 @@ DECL|macro|LDREG
 mdefine_line|#define LDREG&t;ldw
 DECL|macro|STREG
 mdefine_line|#define STREG&t;stw
+DECL|macro|LDREGX
+mdefine_line|#define LDREGX  ldwx,s
 DECL|macro|LDREGM
 mdefine_line|#define LDREGM&t;ldwm
 DECL|macro|STREGM
@@ -28,6 +32,13 @@ DECL|macro|RP_OFFSET
 mdefine_line|#define RP_OFFSET&t;20
 DECL|macro|FRAME_SIZE
 mdefine_line|#define FRAME_SIZE&t;64
+macro_line|#endif
+macro_line|#ifdef CONFIG_PA20
+DECL|macro|BL
+mdefine_line|#define BL&t;&t;b,l
+macro_line|#else
+DECL|macro|BL
+mdefine_line|#define BL&t;&t;bl
 macro_line|#endif
 macro_line|#ifdef __ASSEMBLY__
 macro_line|#ifdef __LP64__
@@ -292,6 +303,67 @@ DECL|variable|r
 id|depd
 comma
 id|z
+"&bslash;"
+id|r
+comma
+l_int|63
+op_minus
+"&bslash;"
+id|sa
+comma
+l_int|64
+op_minus
+"&bslash;"
+id|sa
+comma
+"&bslash;"
+id|t
+dot
+id|endm
+multiline_comment|/* Shift Right - note the r and t can NOT be the same! */
+DECL|variable|sa
+dot
+id|macro
+id|shr
+id|r
+comma
+id|sa
+comma
+id|t
+DECL|variable|r
+id|extru
+"&bslash;"
+id|r
+comma
+l_int|31
+op_minus
+"&bslash;"
+id|sa
+comma
+l_int|32
+op_minus
+"&bslash;"
+id|sa
+comma
+"&bslash;"
+id|t
+dot
+id|endm
+multiline_comment|/* pa20w version of shift right */
+DECL|variable|sa
+dot
+id|macro
+id|shrd
+id|r
+comma
+id|sa
+comma
+id|t
+DECL|variable|extrd
+DECL|variable|r
+id|extrd
+comma
+id|u
 "&bslash;"
 id|r
 comma

@@ -31,9 +31,6 @@ DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
-multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
-DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 multiline_comment|/* Memory mapped IO */
 r_extern
 r_void

@@ -3207,6 +3207,12 @@ op_assign
 l_int|32
 suffix:semicolon
 r_char
+id|hw_path
+(braket
+l_int|64
+)braket
+suffix:semicolon
+r_char
 op_star
 id|name
 suffix:semicolon
@@ -3236,6 +3242,14 @@ c_cond
 id|name
 )paren
 (brace
+id|print_pa_hwpath
+c_func
+(paren
+id|dev
+comma
+id|hw_path
+)paren
+suffix:semicolon
 id|snprintf
 c_func
 (paren
@@ -3243,9 +3257,9 @@ id|name
 comma
 id|name_len
 comma
-l_string|&quot;Dino %s&quot;
+l_string|&quot;Dino [%s]&quot;
 comma
-id|dev-&gt;dev.bus_id
+id|hw_path
 )paren
 suffix:semicolon
 )brace

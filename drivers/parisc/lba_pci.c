@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* for __init and __devinit */
-multiline_comment|/* #define PCI_DEBUG&t;enable ASSERT */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -12,6 +11,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;&t;&t;/* for struct irq_region support */
 macro_line|#include &lt;asm/pdc.h&gt;
+macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -62,6 +62,15 @@ mdefine_line|#define DBG_PAT(x...)&t;printk(x)
 macro_line|#else
 DECL|macro|DBG_PAT
 mdefine_line|#define DBG_PAT(x...)
+macro_line|#endif
+macro_line|#ifdef DEBUG_LBA
+DECL|macro|ASSERT
+macro_line|#undef ASSERT
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk(&quot;&bslash;n%s:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;__FILE__, __LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
+macro_line|#else
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(expr)
 macro_line|#endif
 multiline_comment|/*&n;** Config accessor functions only pass in the 8-bit bus number and not&n;** the 8-bit &quot;PCI Segment&quot; number. Each LBA will be assigned a PCI bus&n;** number based on what firmware wrote into the scratch register.&n;**&n;** The &quot;secondary&quot; bus number is set to this before calling&n;** pci_register_ops(). If any PPB&squot;s are present, the scan will&n;** discover them and update the &quot;secondary&quot; and &quot;subordinate&quot;&n;** fields in the pci_bus structure.&n;**&n;** Changes in the configuration *may* result in a different&n;** bus number for each LBA depending on what firmware does.&n;*/
 DECL|macro|MODULE_NAME
@@ -141,6 +150,8 @@ DECL|macro|LBA_HINT_CFG
 mdefine_line|#define LBA_HINT_CFG&t;0x0310
 DECL|macro|LBA_HINT_BASE
 mdefine_line|#define LBA_HINT_BASE&t;0x0380&t;/* 14 registers at every 8 bytes. */
+DECL|macro|LBA_BUS_MODE
+mdefine_line|#define LBA_BUS_MODE&t;0x0620
 multiline_comment|/* ERROR regs are needed for config cycle kluges */
 DECL|macro|LBA_ERROR_CONFIG
 mdefine_line|#define LBA_ERROR_CONFIG 0x0680
@@ -153,13 +164,82 @@ mdefine_line|#define LBA_ROPE_CTL     0x06A0
 DECL|macro|LBA_IOSAPIC_BASE
 mdefine_line|#define LBA_IOSAPIC_BASE&t;0x800 /* Offset of IRQ logic */
 multiline_comment|/* non-postable I/O port space, densely packed */
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 DECL|macro|LBA_ASTRO_PORT_BASE
 mdefine_line|#define LBA_ASTRO_PORT_BASE&t;(0xfffffffffee00000UL)
 macro_line|#else
 DECL|macro|LBA_ASTRO_PORT_BASE
 mdefine_line|#define LBA_ASTRO_PORT_BASE&t;(0xfee00000UL)
 macro_line|#endif
+DECL|macro|ELROY_HVERS
+mdefine_line|#define ELROY_HVERS&t;0x782
+DECL|macro|MERCURY_HVERS
+mdefine_line|#define MERCURY_HVERS&t;0x783
+DECL|macro|QUICKSILVER_HVERS
+mdefine_line|#define QUICKSILVER_HVERS&t;0x784
+DECL|function|IS_ELROY
+r_static
+r_inline
+r_int
+id|IS_ELROY
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+id|d
+)paren
+(brace
+r_return
+(paren
+id|d-&gt;id.hversion
+op_eq
+id|ELROY_HVERS
+)paren
+suffix:semicolon
+)brace
+DECL|function|IS_MERCURY
+r_static
+r_inline
+r_int
+id|IS_MERCURY
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+id|d
+)paren
+(brace
+r_return
+(paren
+id|d-&gt;id.hversion
+op_eq
+id|MERCURY_HVERS
+)paren
+suffix:semicolon
+)brace
+DECL|function|IS_QUICKSILVER
+r_static
+r_inline
+r_int
+id|IS_QUICKSILVER
+c_func
+(paren
+r_struct
+id|parisc_device
+op_star
+id|d
+)paren
+(brace
+r_return
+(paren
+id|d-&gt;id.hversion
+op_eq
+id|QUICKSILVER_HVERS
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;** lba_device: Per instance Elroy data structure&n;*/
 DECL|struct|lba_device
 r_struct
@@ -179,7 +259,7 @@ r_void
 op_star
 id|iosapic_obj
 suffix:semicolon
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 DECL|member|iop_base
 r_int
 r_int
@@ -382,27 +462,6 @@ id|last_sub_bus
 op_assign
 id|d-&gt;hba.hba_bus-&gt;subordinate
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* FIXME - see below in this function */
-id|u8
-id|dev
-op_assign
-id|PCI_SLOT
-c_func
-(paren
-id|dfn
-)paren
-suffix:semicolon
-id|u8
-id|func
-op_assign
-id|PCI_FUNC
-c_func
-(paren
-id|dfn
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -462,36 +521,9 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/*&n;** FIXME: Need to implement code to fill the devices bitmap based&n;** on contents of the local pci_bus tree &quot;data base&quot;.&n;** pci_register_ops() walks the bus for us and builds the tree.&n;** For now, always do the config cycle.&n;*/
-id|bus
-op_sub_assign
-id|first_bus
-suffix:semicolon
-r_return
-(paren
-(paren
-(paren
-id|d-&gt;devices
-(braket
-id|bus
-)braket
-(braket
-id|dev
-)braket
-)paren
-op_rshift
-id|func
-)paren
-op_amp
-l_int|0x1
-)paren
-suffix:semicolon
-macro_line|#else
 r_return
 id|TRUE
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|macro|LBA_CFG_SETUP
 mdefine_line|#define LBA_CFG_SETUP(d, tok) {&t;&t;&t;&t;&bslash;&n;    /* Save contents of error config register.  */&t;&t;&t;&bslash;&n;    error_config = READ_REG32(d-&gt;hba.base_addr + LBA_ERROR_CONFIG);&t;&t;&bslash;&n;&bslash;&n;    /* Save contents of status control register.  */&t;&t;&t;&bslash;&n;    status_control = READ_REG32(d-&gt;hba.base_addr + LBA_STAT_CTL);&t;&t;&bslash;&n;&bslash;&n;    /* For LBA rev 2.0, 2.1, 2.2, and 3.0, we must disable DMA&t;&t;&bslash;&n;    ** arbitration for full bus walks.&t;&t;&t;&t;&t;&bslash;&n;    */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (LBA_DMA_DURING_CFG_DISABLED(d)) {&t;&t;&t;&t;&bslash;&n;&t;/* Save contents of arb mask register. */&t;&t;&t;&bslash;&n;&t;arb_mask = READ_REG32(d-&gt;hba.base_addr + LBA_ARB_MASK);&t;&t;&bslash;&n;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Turn off all device arbitration bits (i.e. everything&t;&bslash;&n;&t; * except arbitration enable bit).&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;WRITE_REG32(0x1, d-&gt;hba.base_addr + LBA_ARB_MASK);&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&bslash;&n;    /*&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;     * Set the smart mode bit so that master aborts don&squot;t cause&t;&t;&bslash;&n;     * LBA to go into PCI fatal mode (required).&t;&t;&t;&bslash;&n;     */&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    WRITE_REG32(error_config | LBA_SMART_MODE, d-&gt;hba.base_addr + LBA_ERROR_CONFIG);&t;&bslash;&n;}
@@ -769,6 +801,287 @@ r_return
 id|data
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PARISC64
+DECL|macro|pat_cfg_addr
+mdefine_line|#define pat_cfg_addr(bus, devfn, addr) (((bus) &lt;&lt; 16) | ((devfn) &lt;&lt; 8) | (addr))
+DECL|function|pat_cfg_read
+r_static
+r_int
+id|pat_cfg_read
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+r_int
+id|devfn
+comma
+r_int
+id|pos
+comma
+r_int
+id|size
+comma
+id|u32
+op_star
+id|data
+)paren
+(brace
+r_int
+id|tok
+op_assign
+id|pat_cfg_addr
+c_func
+(paren
+id|bus-&gt;number
+comma
+id|devfn
+comma
+id|pos
+)paren
+suffix:semicolon
+id|u32
+id|tmp
+suffix:semicolon
+r_int
+id|ret
+op_assign
+id|pdc_pat_io_pci_cfg_read
+c_func
+(paren
+id|tok
+comma
+id|size
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%d:%d.%d+0x%02x) -&gt; 0x%x %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|devfn
+)paren
+comma
+id|pos
+comma
+id|tmp
+comma
+id|ret
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|size
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+op_star
+id|data
+op_assign
+(paren
+id|u8
+)paren
+id|tmp
+suffix:semicolon
+r_return
+(paren
+id|tmp
+op_eq
+(paren
+id|u8
+)paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+op_star
+id|data
+op_assign
+(paren
+id|u16
+)paren
+id|tmp
+suffix:semicolon
+r_return
+(paren
+id|tmp
+op_eq
+(paren
+id|u16
+)paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+op_star
+id|data
+op_assign
+(paren
+id|u32
+)paren
+id|tmp
+suffix:semicolon
+r_return
+(paren
+id|tmp
+op_eq
+(paren
+id|u32
+)paren
+op_complement
+l_int|0
+)paren
+suffix:semicolon
+)brace
+op_star
+id|data
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
+r_return
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+DECL|function|pat_cfg_write
+r_static
+r_int
+id|pat_cfg_write
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+r_int
+id|devfn
+comma
+r_int
+id|pos
+comma
+r_int
+id|size
+comma
+id|u32
+id|data
+)paren
+(brace
+r_int
+id|tok
+op_assign
+id|pat_cfg_addr
+c_func
+(paren
+id|bus-&gt;number
+comma
+id|devfn
+comma
+id|pos
+)paren
+suffix:semicolon
+r_int
+id|ret
+op_assign
+id|pdc_pat_io_pci_cfg_write
+c_func
+(paren
+id|tok
+comma
+id|size
+comma
+id|data
+)paren
+suffix:semicolon
+id|DBG_CFG
+c_func
+(paren
+l_string|&quot;%s(%d:%d.%d+0x%02x, 0x%lx/%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|bus-&gt;number
+comma
+id|PCI_SLOT
+c_func
+(paren
+id|devfn
+)paren
+comma
+id|PCI_FUNC
+c_func
+(paren
+id|devfn
+)paren
+comma
+id|pos
+comma
+id|data
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+DECL|variable|pat_cfg_ops
+r_static
+r_struct
+id|pci_ops
+id|pat_cfg_ops
+op_assign
+(brace
+dot
+id|read
+op_assign
+id|pat_cfg_read
+comma
+dot
+id|write
+op_assign
+id|pat_cfg_write
+comma
+)brace
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* keep the compiler from complaining about undeclared variables */
+DECL|macro|pat_cfg_ops
+mdefine_line|#define pat_cfg_ops lba_cfg_ops
+macro_line|#endif
 DECL|function|lba_cfg_read
 r_static
 r_int
@@ -1588,7 +1901,7 @@ l_string|&quot;: lba_bios_init&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 multiline_comment|/*&n;** Determine if a device is already configured.&n;** If so, reserve it resources.&n;**&n;** Read PCI cfg command register and see if I/O or MMIO is enabled.&n;** PAT has to enable the devices it&squot;s using.&n;**&n;** Note: resources are fixed up before we try to claim them.&n;*/
 r_static
 r_void
@@ -1733,6 +2046,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#else
+DECL|macro|lba_claim_dev_resources
+mdefine_line|#define lba_claim_dev_resources(dev)
 macro_line|#endif
 multiline_comment|/*&n;** The algorithm is generic code.&n;** But it needs to access local data structures to get the IRQ base.&n;** Could make this a &quot;pci_fixup_irq(bus, region)&quot; but not sure&n;** it&squot;s worth it.&n;**&n;** Called by do_pci_scan_bus() immediately after each PCI bus is walked.&n;** Resources aren&squot;t allocated until recursive buswalk below HBA is completed.&n;*/
 r_static
@@ -1922,7 +2238,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 r_if
 c_cond
 (paren
@@ -2194,7 +2510,6 @@ id|PCI_STATUS_FAST_BACK
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
@@ -2212,7 +2527,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;** P2PB&squot;s have no IRQs. ignore them.&n;&t;&t;*/
 r_if
 c_cond
@@ -2448,7 +2762,7 @@ op_assign
 id|lba_astro_out32
 )brace
 suffix:semicolon
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 DECL|macro|PIOP_TO_GMMIO
 mdefine_line|#define PIOP_TO_GMMIO(lba, addr) &bslash;&n;&t;((lba)-&gt;iop_base + (((addr)&amp;0xFFFC)&lt;&lt;10) + ((addr)&amp;3))
 multiline_comment|/*******************************************************&n;**&n;** LBA PAT &quot;I/O Port&quot; Space Accessor Functions&n;**&n;** This set of accessor functions is intended for use with&n;** &quot;PAT PDC&quot; firmware (ie Prelude/Rhapsody/Piranha boxes).&n;**&n;** This uses the PIOP space located in the first 64MB of GMMIO.&n;** Each rope gets a full 64*KB* (ie 4 bytes per page) this way.&n;** bits 1:0 stay the same.  bits 15:2 become 25:12.&n;** Then add the base and we can generate an I/O Port cycle.&n;********************************************************/
@@ -2937,7 +3251,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif&t;/* __LP64__ */
+macro_line|#else
+multiline_comment|/* keep compiler from complaining about missing declarations */
+DECL|macro|lba_pat_port_ops
+mdefine_line|#define lba_pat_port_ops lba_astro_port_ops
+DECL|macro|lba_pat_resources
+mdefine_line|#define lba_pat_resources(pa_dev, lba_dev)
+macro_line|#endif&t;/* CONFIG_PARISC64 */
 r_static
 r_void
 DECL|function|lba_legacy_resources
@@ -2967,7 +3287,7 @@ suffix:semicolon
 r_int
 id|lba_num
 suffix:semicolon
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 multiline_comment|/*&n;&t;** Sign extend all BAR values on &quot;legacy&quot; platforms.&n;&t;** &quot;Sprockets&quot; PDC (Forte/Allegro) initializes everything&n;&t;** for &quot;legacy&quot; 32-bit OS (HPUX 10.20).&n;&t;** Upper 32-bits of 64-bit BAR will be zero too.&n;&t;*/
 id|lba_dev-&gt;hba.lmmio_space_offset
 op_assign
@@ -3409,7 +3729,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* DEBUG_LBA_PAT */
-macro_line|#ifdef __LP64__
+macro_line|#ifdef CONFIG_PARISC64
 multiline_comment|/*&n; * FIXME add support for PDC_PAT_IO &quot;Get slot status&quot; - OLAR support&n; * Only N-Class and up can really make use of Get slot status.&n; * maybe L-class too but I&squot;ve never played with it there.&n; */
 macro_line|#endif
 multiline_comment|/* PDC_PAT_BUG: exhibited in rev 40.48  on L2000 */
@@ -3609,8 +3929,8 @@ multiline_comment|/*&n;** Determine if lba should claim this chip (return 0) or 
 r_static
 r_int
 id|__init
-DECL|function|lba_driver_callback
-id|lba_driver_callback
+DECL|function|lba_driver_probe
+id|lba_driver_probe
 c_func
 (paren
 r_struct
@@ -3651,6 +3971,16 @@ op_plus
 id|LBA_FCLASS
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ELROY
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 id|func_class
 op_and_assign
 l_int|0xf
@@ -3740,6 +4070,77 @@ id|dev-&gt;hpa
 )paren
 suffix:semicolon
 multiline_comment|/* Just in case we find some prototypes... */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|IS_MERCURY
+c_func
+(paren
+id|dev
+)paren
+op_logical_or
+id|IS_QUICKSILVER
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|func_class
+op_and_assign
+l_int|0xff
+suffix:semicolon
+id|version
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|6
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|version
+comma
+l_string|&quot;TR%d.%d&quot;
+comma
+(paren
+id|func_class
+op_rshift
+l_int|4
+)paren
+comma
+(paren
+id|func_class
+op_amp
+l_int|0xf
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* We could use one printk for both and have it outside,&n;                 * but for the mask for func_class.&n;                 */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s version %s (0x%x) found at 0x%lx&bslash;n&quot;
+comma
+id|MODULE_NAME
+comma
+id|version
+comma
+id|func_class
+op_amp
+l_int|0xff
+comma
+id|dev-&gt;hpa
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3752,8 +4153,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Can&squot;t support LBA older than TR2.1 &quot;
-l_string|&quot;- continuing under adversity.&bslash;n&quot;
+l_string|&quot;Can&squot;t support LBA older than TR2.1&quot;
+l_string|&quot; - continuing under adversity.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3865,7 +4266,6 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* ---------- Third : setup I/O Port and MMIO resources  --------- */
-macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
@@ -3892,7 +4292,6 @@ id|lba_dev
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 (brace
 multiline_comment|/* Sprockets PDC uses NPIOP region */
 id|pci_port
@@ -3927,13 +4326,21 @@ id|dev-&gt;dev
 comma
 id|lba_dev-&gt;hba.bus_num.start
 comma
+id|is_pdc_pat
+c_func
+(paren
+)paren
+ques
+c_cond
+op_amp
+id|pat_cfg_ops
+suffix:colon
 op_amp
 id|lba_cfg_ops
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#ifdef __LP64__
 r_if
 c_cond
 (paren
@@ -3989,7 +4396,6 @@ l_int|2
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t;** Once PCI register ops has walked the bus, access to config&n;&t;** space is restricted. Avoids master aborts on config cycles.&n;&t;** Early LBA revs go fatal on *any* master abort.&n;&t;*/
 r_if
 c_cond
@@ -4026,7 +4432,27 @@ id|HPHW_BRIDGE
 comma
 id|HVERSION_REV_ANY_ID
 comma
-l_int|0x782
+id|ELROY_HVERS
+comma
+l_int|0xa
+)brace
+comma
+(brace
+id|HPHW_BRIDGE
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|MERCURY_HVERS
+comma
+l_int|0xa
+)brace
+comma
+(brace
+id|HPHW_BRIDGE
+comma
+id|HVERSION_REV_ANY_ID
+comma
+id|QUICKSILVER_HVERS
 comma
 l_int|0xa
 )brace
@@ -4057,7 +4483,7 @@ comma
 dot
 id|probe
 op_assign
-id|lba_driver_callback
+id|lba_driver_probe
 comma
 )brace
 suffix:semicolon

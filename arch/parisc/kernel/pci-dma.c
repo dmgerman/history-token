@@ -12,6 +12,15 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;/* get_order */
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#ifdef DEBUG_PCI
+DECL|macro|ASSERT
+macro_line|#undef ASSERT
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;&t;printk(&quot;&bslash;n%s:%d: Assertion &quot; #expr &quot; failed!&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;__FILE__, __LINE__); &bslash;&n;&t;&t;panic(#expr); &bslash;&n;&t;}
+macro_line|#else
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(expr)
+macro_line|#endif
 DECL|variable|proc_gsc_root
 r_static
 r_struct
