@@ -1105,9 +1105,9 @@ id|mode
 ques
 c_cond
 op_logical_neg
-id|dev-&gt;active
+id|tdev-&gt;active
 suffix:colon
-id|dev-&gt;active
+id|tdev-&gt;active
 )paren
 )paren
 r_continue
@@ -1538,9 +1538,9 @@ id|mode
 ques
 c_cond
 op_logical_neg
-id|dev-&gt;active
+id|tdev-&gt;active
 suffix:colon
-id|dev-&gt;active
+id|tdev-&gt;active
 )paren
 )paren
 r_continue
@@ -1954,9 +1954,9 @@ id|mode
 ques
 c_cond
 op_logical_neg
-id|dev-&gt;active
+id|tdev-&gt;active
 suffix:colon
-id|dev-&gt;active
+id|tdev-&gt;active
 )paren
 )paren
 r_continue
@@ -2346,9 +2346,9 @@ id|mode
 ques
 c_cond
 op_logical_neg
-id|dev-&gt;active
+id|tdev-&gt;active
 suffix:colon
-id|dev-&gt;active
+id|tdev-&gt;active
 )paren
 )paren
 r_continue

@@ -3289,26 +3289,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|pnp_lock
-)paren
-suffix:semicolon
-multiline_comment|/* we lock just in case the device is being configured during this call */
-id|dev-&gt;active
-op_assign
-l_int|1
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|pnp_lock
-)paren
-suffix:semicolon
-multiline_comment|/* once the device is claimed active we know it won&squot;t be configured so we can unlock */
 multiline_comment|/* If this condition is true, advanced configuration failed, we need to get this device up and running&n;&t; * so we use the simple config engine which ignores cold conflicts, this of course may lead to new failures */
 r_if
 c_cond
@@ -3345,6 +3325,26 @@ id|fail
 suffix:semicolon
 )brace
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|pnp_lock
+)paren
+suffix:semicolon
+multiline_comment|/* we lock just in case the device is being configured during this call */
+id|dev-&gt;active
+op_assign
+l_int|1
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|pnp_lock
+)paren
+suffix:semicolon
+multiline_comment|/* once the device is claimed active we know it won&squot;t be configured so we can unlock */
 r_if
 c_cond
 (paren
