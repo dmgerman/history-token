@@ -7091,7 +7091,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|csr
+id|csr0
 op_eq
 l_int|0xffff
 )paren
