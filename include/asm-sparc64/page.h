@@ -291,7 +291,7 @@ mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long) (x) + PAGE_OFFSET
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + ((pfn)-(pfn_base)))
 DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - ((pfn)-(pfn_base)) - mem_map))
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long)(((page) - mem_map) + pfn_base))
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr)&gt;&gt;PAGE_SHIFT)
 DECL|macro|pfn_valid
