@@ -4208,7 +4208,13 @@ comma
 id|SOCK_DEAD
 )paren
 comma
-id|sk-&gt;sk_zapped
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_ZAPPED
+)paren
 )paren
 suffix:semicolon
 r_switch

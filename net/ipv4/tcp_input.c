@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|variable|sysctl_tcp_timestamps
 r_int
 id|sysctl_tcp_timestamps
@@ -3285,9 +3286,13 @@ op_and_assign
 op_complement
 id|NETIF_F_TSO
 suffix:semicolon
-id|sk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 id|tp-&gt;mss_cache
 op_assign
@@ -10734,12 +10739,15 @@ op_assign
 id|ntohs
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 id|__u16
 op_star
 )paren
 id|ptr
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -10790,11 +10798,8 @@ c_cond
 id|sysctl_tcp_window_scaling
 )paren
 (brace
-id|opt_rx-&gt;wscale_ok
-op_assign
-l_int|1
-suffix:semicolon
-id|opt_rx-&gt;snd_wscale
+id|__u8
+id|snd_wscale
 op_assign
 op_star
 (paren
@@ -10803,10 +10808,14 @@ op_star
 )paren
 id|ptr
 suffix:semicolon
+id|opt_rx-&gt;wscale_ok
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|opt_rx-&gt;snd_wscale
+id|snd_wscale
 OG
 l_int|14
 )paren
@@ -10827,15 +10836,19 @@ id|KERN_INFO
 l_string|&quot;tcp_parse_options: Illegal window &quot;
 l_string|&quot;scaling value %d &gt;14 received.&bslash;n&quot;
 comma
-id|opt_rx-&gt;snd_wscale
+id|snd_wscale
 )paren
 suffix:semicolon
 )brace
-id|opt_rx-&gt;snd_wscale
+id|snd_wscale
 op_assign
 l_int|14
 suffix:semicolon
 )brace
+id|opt_rx-&gt;snd_wscale
+op_assign
+id|snd_wscale
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -10876,12 +10889,15 @@ op_assign
 id|ntohl
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 id|__u32
 op_star
 )paren
 id|ptr
+)paren
 )paren
 suffix:semicolon
 id|opt_rx-&gt;rcv_tsecr
@@ -10889,7 +10905,9 @@ op_assign
 id|ntohl
 c_func
 (paren
-op_star
+id|get_unaligned
+c_func
+(paren
 (paren
 id|__u32
 op_star
@@ -10898,6 +10916,7 @@ op_star
 id|ptr
 op_plus
 l_int|4
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -15226,7 +15245,7 @@ op_assign
 id|tcp_time_stamp
 suffix:semicolon
 )brace
-multiline_comment|/* When incoming ACK allowed to free some skb from write_queue,&n; * we remember this event in flag sk-&gt;sk_queue_shrunk and wake up socket&n; * on the exit from tcp input handler.&n; *&n; * PROBLEM: sndbuf expansion does not work well with largesend.&n; */
+multiline_comment|/* When incoming ACK allowed to free some skb from write_queue,&n; * we remember this event in flag SOCK_QUEUE_SHRUNK and wake up socket&n; * on the exit from tcp input handler.&n; *&n; * PROBLEM: sndbuf expansion does not work well with largesend.&n; */
 DECL|function|tcp_new_space
 r_static
 r_void
@@ -15374,12 +15393,22 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_queue_shrunk
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 )paren
 (brace
-id|sk-&gt;sk_queue_shrunk
-op_assign
-l_int|0
+id|sock_reset_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_QUEUE_SHRUNK
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -17257,9 +17286,13 @@ id|tp-&gt;ecn_flags
 op_amp
 id|TCP_ECN_OK
 )paren
-id|sk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 id|tp-&gt;snd_wl1
 op_assign
@@ -17766,9 +17799,13 @@ id|tp-&gt;ecn_flags
 op_amp
 id|TCP_ECN_OK
 )paren
-id|sk-&gt;sk_no_largesend
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_NO_LARGESEND
+)paren
 suffix:semicolon
 id|tcp_sync_mss
 c_func

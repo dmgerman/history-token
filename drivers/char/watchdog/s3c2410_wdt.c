@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/char/watchdog/s3c2410_wdt.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Watchdog Timer Support&n; *&n; * Based on, softdog.c by Alan Cox,&n; *     (c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&t;05-Oct-2004&t;BJD&t;Added semaphore init to stop crashes on open&n; *&t;&t;&t;&t;Fixed tmr_count / wdt_count confusion&n; *&t;&t;&t;&t;Added configurable debug&n; *&n; *&t;10-Mar-2005&t;LCVR&t;Changed S3C2410_VA to S3C24XX_VA&n;*/
+multiline_comment|/* linux/drivers/char/watchdog/s3c2410_wdt.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 Watchdog Timer Support&n; *&n; * Based on, softdog.c by Alan Cox,&n; *     (c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&t;05-Oct-2004&t;BJD&t;Added semaphore init to stop crashes on open&n; *&t;&t;&t;&t;Fixed tmr_count / wdt_count confusion&n; *&t;&t;&t;&t;Added configurable debug&n; *&n; *&t;11-Jan-2004&t;BJD&t;Fixed divide-by-2 in timeout code&n; *&n; *&t;10-Mar-2005&t;LCVR&t;Changed S3C2410_VA to S3C24XX_VA&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -461,12 +461,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* I think someone must have missed a divide-by-2 in the 2410,&n;&t; * as a divisor of 128 gives half the calculated delay...&n;&t; */
 id|freq
 op_div_assign
 l_int|128
-op_div
-l_int|2
 suffix:semicolon
 id|count
 op_assign
