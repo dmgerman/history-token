@@ -383,9 +383,9 @@ l_int|2
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|NCR_D700_probe_one
 r_static
 r_int
+DECL|function|NCR_D700_probe_one
 id|NCR_D700_probe_one
 c_func
 (paren
@@ -395,7 +395,7 @@ op_star
 id|p
 comma
 r_int
-id|chan
+id|siop
 comma
 r_int
 id|irq
@@ -419,6 +419,9 @@ r_struct
 id|Scsi_Host
 op_star
 id|host
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|hostdata
 op_assign
@@ -445,10 +448,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NCR D700: Failed to allocate host data &quot;
-l_string|&quot;for channel %d, detatching&bslash;n&quot;
+l_string|&quot;NCR D700: SIOP%d: Failed to allocate host&quot;
+l_string|&quot;data, detatching&bslash;n&quot;
 comma
-id|chan
+id|siop
 )paren
 suffix:semicolon
 r_return
@@ -494,15 +497,13 @@ comma
 id|region
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|hostdata
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|region_failed
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the three required pieces of hostdata */
@@ -517,7 +518,7 @@ op_assign
 (paren
 l_int|1
 op_lshift
-id|chan
+id|siop
 )paren
 op_amp
 id|differential
@@ -530,7 +531,7 @@ id|hostdata-&gt;clock
 op_assign
 id|NCR_D700_CLOCK_MHZ
 suffix:semicolon
-multiline_comment|/* and register the chip */
+multiline_comment|/* and register the siop */
 id|host
 op_assign
 id|NCR_700_detect
@@ -549,23 +550,13 @@ op_logical_neg
 id|host
 )paren
 (brace
-id|kfree
-c_func
-(paren
-id|hostdata
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|host-&gt;base
-comma
-l_int|64
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|detect_failed
 suffix:semicolon
 )brace
 id|host-&gt;irq
@@ -581,7 +572,7 @@ id|slot
 op_star
 l_int|2
 op_plus
-id|chan
+id|siop
 )braket
 suffix:semicolon
 id|printk
@@ -590,7 +581,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;NCR D700: SIOP%d, SCSI id is %d&bslash;n&quot;
 comma
-id|chan
+id|siop
 comma
 id|host-&gt;this_id
 )paren
@@ -617,12 +608,45 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NCR D700, channel %d: irq problem, &quot;
+l_string|&quot;NCR D700: SIOP%d: irq problem, &quot;
 l_string|&quot;detatching&bslash;n&quot;
 comma
-id|chan
+id|siop
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|irq_failed
+suffix:semicolon
+)brace
+id|scsi_add_host
+c_func
+(paren
+id|host
+comma
+id|p-&gt;dev
+)paren
+suffix:semicolon
+id|p-&gt;hosts
+(braket
+id|siop
+)braket
+op_assign
+id|host
+suffix:semicolon
+id|hostdata-&gt;dev
+op_assign
+id|p-&gt;dev
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|irq_failed
+suffix:colon
 id|scsi_unregister
 c_func
 (paren
@@ -635,32 +659,26 @@ c_func
 id|host
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|scsi_add_host
+id|detect_failed
+suffix:colon
+id|release_region
 c_func
 (paren
-id|host
+id|host-&gt;base
 comma
-l_int|NULL
+l_int|64
 )paren
 suffix:semicolon
-id|p-&gt;hosts
-(braket
-id|chan
-)braket
-op_assign
-id|host
-suffix:semicolon
-id|hostdata-&gt;dev
-op_assign
-id|p-&gt;dev
+id|region_failed
+suffix:colon
+id|kfree
+c_func
+(paren
+id|hostdata
+)paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Detect a D700 card.  Note, because of the setup --- the chips are&n; * essentially connectecd to the MCA bus independently, it is easier&n; * to set them up as two separate host adapters, rather than one&n; * adapter with two channels */
@@ -1077,8 +1095,15 @@ id|i
 op_increment
 )paren
 (brace
-id|found
-op_or_assign
+r_int
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|NCR_D700_probe_one
 c_func
 (paren
@@ -1091,7 +1116,7 @@ comma
 id|slot
 comma
 id|offset_addr
-op_or
+op_plus
 (paren
 l_int|0x80
 op_star
@@ -1100,6 +1125,23 @@ id|i
 comma
 id|differential
 )paren
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;D700: SIOP%d: probe failed, error = %d&bslash;n&quot;
+comma
+id|i
+comma
+id|err
+)paren
+suffix:semicolon
+r_else
+id|found
+op_increment
 suffix:semicolon
 )brace
 r_if
