@@ -30,7 +30,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.3.19-k2&quot;
+l_string|&quot;5.5.4-k2&quot;
 id|DRIVERNAPI
 suffix:semicolon
 DECL|variable|e1000_copyright
