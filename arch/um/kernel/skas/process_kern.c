@@ -537,6 +537,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|default_idle
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_extern
 r_void
@@ -681,9 +686,9 @@ id|thread_pid_skas
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|thread
+id|task
 )paren
 (brace
 r_return

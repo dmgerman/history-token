@@ -131,7 +131,6 @@ id|pte
 r_if
 c_cond
 (paren
-op_logical_neg
 id|handle_page_fault
 c_func
 (paren

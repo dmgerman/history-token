@@ -5,6 +5,7 @@ macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;asm/system.h&quot;
 macro_line|#include &quot;asm/pgalloc.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
+macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -2061,13 +2062,13 @@ id|thread_pid_tt
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|thread
+id|task
 )paren
 (brace
 r_return
-id|thread-&gt;mode.tt.extern_pid
+id|task-&gt;thread.mode.tt.extern_pid
 suffix:semicolon
 )brace
 DECL|function|is_valid_pid

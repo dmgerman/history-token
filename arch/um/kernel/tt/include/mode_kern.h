@@ -266,9 +266,9 @@ id|thread_pid_tt
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|thread
+id|task
 )paren
 suffix:semicolon
 DECL|macro|kmem_end_tt

@@ -5,6 +5,7 @@ macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;asm/pgalloc.h&quot;
+macro_line|#include &quot;asm/tlbflush.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;irq_user.h&quot;

@@ -81,7 +81,7 @@ id|thread_pid_tt
 comma
 id|thread_pid_skas
 comma
-id|thread
+id|task
 )paren
 )paren
 suffix:semicolon
@@ -675,20 +675,8 @@ id|force_tt
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-id|defined
-c_func
-(paren
-id|CONFIG_MODE_TT
-)paren
-op_logical_and
-id|defined
-c_func
-(paren
-id|CONFIG_MODE_SKAS
-)paren
-op_plus
+macro_line|#if defined(CONFIG_MODE_TT) &amp;&amp; defined(CONFIG_MODE_SKAS)
+DECL|macro|DEFAULT_TT
 mdefine_line|#define DEFAULT_TT 0
 DECL|function|mode_tt_setup
 r_static
