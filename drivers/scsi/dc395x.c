@@ -12,6 +12,7 @@ macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* needed for scsicam_bios_param */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/*---------------------------------------------------------------------------&n;                                  Features&n; ---------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Set to disable parts of the driver&n; */
 multiline_comment|/*#define DC395x_NO_DISCONNECT*/

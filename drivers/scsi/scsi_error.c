@@ -1319,7 +1319,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|254
+l_int|252
 comma
 l_int|0
 )brace
@@ -1353,7 +1353,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-l_int|254
+l_int|252
 comma
 id|GFP_ATOMIC
 op_or
@@ -1412,7 +1412,7 @@ id|scsi_result
 comma
 l_int|0
 comma
-l_int|254
+l_int|252
 )paren
 suffix:semicolon
 id|saved_result
@@ -1425,7 +1425,7 @@ id|scsi_result
 suffix:semicolon
 id|scmd-&gt;request_bufflen
 op_assign
-l_int|254
+l_int|252
 suffix:semicolon
 id|scmd-&gt;use_sg
 op_assign
@@ -1444,7 +1444,7 @@ l_int|0
 suffix:semicolon
 id|scmd-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|scmd-&gt;underflow
 op_assign
@@ -1920,7 +1920,7 @@ l_int|0
 suffix:semicolon
 id|scmd-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|rtn
 op_assign
@@ -3658,7 +3658,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: request allocate failed,&quot;
-l_string|&quot;prevent media removal cmd not sent&quot;
+l_string|&quot;prevent media removal cmd not sent&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3710,7 +3710,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 id|sreq-&gt;sr_bufflen
 op_assign
@@ -4616,7 +4616,7 @@ l_int|0
 suffix:semicolon
 id|scmd-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:semicolon
 id|scmd-&gt;sc_request
 op_assign

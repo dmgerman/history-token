@@ -1,6 +1,7 @@
 macro_line|#ifndef _SCSI_SCSI_CMND_H
 DECL|macro|_SCSI_SCSI_CMND_H
 mdefine_line|#define _SCSI_SCSI_CMND_H
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 r_struct
@@ -188,13 +189,13 @@ r_char
 id|old_cmd_len
 suffix:semicolon
 DECL|member|sc_data_direction
-r_int
-r_char
+r_enum
+id|dma_data_direction
 id|sc_data_direction
 suffix:semicolon
 DECL|member|sc_old_data_direction
-r_int
-r_char
+r_enum
+id|dma_data_direction
 id|sc_old_data_direction
 suffix:semicolon
 multiline_comment|/* These elements define the operation we are about to perform */

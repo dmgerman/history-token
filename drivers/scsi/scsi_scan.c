@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;scsi_devinfo.h&quot;
@@ -189,7 +190,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|scsi_wait_req
 c_func
@@ -1001,7 +1002,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|memset
 c_func
@@ -1233,7 +1234,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * re-zero inq_result just to be safe.&n;&t;&t; */
 id|memset
@@ -2938,7 +2939,7 @@ l_int|0
 suffix:semicolon
 id|sreq-&gt;sr_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 multiline_comment|/*&n;&t; * We can get a UNIT ATTENTION, for example a power on/reset, so&n;&t; * retry a few times (like sd.c does for TEST UNIT READY).&n;&t; * Experience shows some combinations of adapter/devices get at&n;&t; * least two power on/resets.&n;&t; *&n;&t; * Illegal requests (for devices that do not support REPORT LUNS)&n;&t; * should come through as a check condition, and will not generate&n;&t; * a retry.&n;&t; */
 r_for
