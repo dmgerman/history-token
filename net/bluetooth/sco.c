@@ -2907,7 +2907,7 @@ id|sk
 op_member_access_from_pointer
 id|conn-&gt;mtu
 suffix:semicolon
-id|BT_INFO
+id|BT_DBG
 c_func
 (paren
 l_string|&quot;mtu %d&quot;
@@ -4036,6 +4036,10 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|p-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|p-&gt;proc_fops
 op_assign
 op_amp
@@ -4048,7 +4052,7 @@ suffix:semicolon
 DECL|function|sco_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|sco_proc_cleanup
 c_func
 (paren
@@ -4082,7 +4086,7 @@ suffix:semicolon
 DECL|function|sco_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|sco_proc_cleanup
 c_func
 (paren
@@ -4090,7 +4094,6 @@ r_void
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
@@ -4327,6 +4330,7 @@ suffix:semicolon
 )brace
 DECL|function|sco_cleanup
 r_void
+id|__exit
 id|sco_cleanup
 c_func
 (paren
