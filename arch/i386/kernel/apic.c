@@ -2183,13 +2183,9 @@ id|boot_cpu_data.x86
 op_eq
 l_int|6
 op_logical_or
-(paren
 id|boot_cpu_data.x86
 op_eq
 l_int|15
-op_logical_and
-id|cpu_has_apic
-)paren
 op_logical_or
 (paren
 id|boot_cpu_data.x86
