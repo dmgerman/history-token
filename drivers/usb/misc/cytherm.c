@@ -413,7 +413,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -448,7 +448,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -595,7 +595,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -637,7 +637,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -837,7 +837,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -1022,7 +1022,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -1199,7 +1199,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -1336,7 +1336,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
@@ -1513,7 +1513,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|led-&gt;udev-&gt;dev
+id|cytherm-&gt;udev-&gt;dev
 comma
 l_string|&quot;retval = %d&bslash;n&quot;
 comma
