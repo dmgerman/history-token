@@ -339,6 +339,10 @@ DECL|member|node
 id|phandle
 id|node
 suffix:semicolon
+DECL|member|linux_phandle
+id|phandle
+id|linux_phandle
+suffix:semicolon
 DECL|member|n_addrs
 r_int
 id|n_addrs
