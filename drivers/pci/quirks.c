@@ -1657,6 +1657,29 @@ id|reg
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* This was originally an Alpha specific thing, but it really fits here.&n; * The i82375 PCI/EISA bridge appears as non-classified. Fix that.&n; */
+DECL|function|quirk_eisa_bridge
+r_static
+r_void
+id|__init
+id|quirk_eisa_bridge
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+id|dev
+op_member_access_from_pointer
+r_class
+op_assign
+id|PCI_CLASS_BRIDGE_EISA
+op_lshift
+l_int|8
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  The main table of quirks.&n; */
 DECL|variable|__devinitdata
 r_static
@@ -2140,6 +2163,16 @@ comma
 id|PCI_DEVICE_ID_CYRIX_PCI_MASTER
 comma
 id|quirk_mediagx_master
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82375
+comma
+id|quirk_eisa_bridge
 )brace
 comma
 (brace

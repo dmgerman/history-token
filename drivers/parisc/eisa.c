@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -46,6 +47,11 @@ DECL|member|eeprom_addr
 r_int
 r_int
 id|eeprom_addr
+suffix:semicolon
+DECL|member|root
+r_struct
+id|eisa_root_device
+id|root
 suffix:semicolon
 DECL|variable|eisa_dev
 )brace
@@ -1766,6 +1772,52 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME : Get the number of slots from the enumerator, not a&n;&t; * hadcoded value. Also don&squot;t enumerate the bus twice. */
+id|eisa_dev.root.dev
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
+id|dev-&gt;dev.driver_data
+op_assign
+op_amp
+id|eisa_dev.root
+suffix:semicolon
+id|eisa_dev.root.bus_base_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|eisa_dev.root.res
+op_assign
+op_amp
+id|eisa_dev.hba.io_space
+suffix:semicolon
+id|eisa_dev.root.slots
+op_assign
+id|EISA_MAX_SLOTS
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|eisa_root_register
+(paren
+op_amp
+id|eisa_dev.root
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EISA: Failed to register EISA root&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
