@@ -1982,6 +1982,30 @@ l_int|0x03
 comma
 )brace
 comma
+multiline_comment|/* LEGEND ZhaoYang 3100CF */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;LEGEND ZhaoYang 3100CF&quot;
+comma
+dot
+id|vendor
+op_assign
+l_int|0x1509
+comma
+dot
+id|device
+op_assign
+l_int|0x1740
+comma
+dot
+id|amp_gpio
+op_assign
+l_int|0x03
+comma
+)brace
+comma
 multiline_comment|/* END */
 (brace
 l_int|NULL
