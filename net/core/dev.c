@@ -34,10 +34,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
-macro_line|#if defined(CONFIG_NET_RADIO) || defined(CONFIG_NET_PCMCIA_RADIO)
+macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#include &lt;net/iw_handler.h&gt;
-macro_line|#endif&t;/* CONFIG_NET_RADIO || CONFIG_NET_PCMCIA_RADIO */
+macro_line|#endif&t;/* CONFIG_NET_RADIO */
 macro_line|#ifdef CONFIG_PLIP
 r_extern
 r_int
