@@ -699,7 +699,6 @@ id|cs
 (brace
 r_int
 r_int
-r_int
 id|flags
 suffix:semicolon
 r_int
