@@ -17,4 +17,8 @@ DECL|macro|ELCOM_VENDOR_ID
 mdefine_line|#define ELCOM_VENDOR_ID&t;&t;0x056e
 DECL|macro|ELCOM_PRODUCT_ID
 mdefine_line|#define ELCOM_PRODUCT_ID&t;0x5003
+DECL|macro|ITEGNO_VENDOR_ID
+mdefine_line|#define ITEGNO_VENDOR_ID&t;0x0eba
+DECL|macro|ITEGNO_PRODUCT_ID
+mdefine_line|#define ITEGNO_PRODUCT_ID&t;0x1080
 eof

@@ -9104,6 +9104,10 @@ op_plus
 id|USBCMD
 )paren
 suffix:semicolon
+id|uhci-&gt;hcd.state
+op_assign
+id|USB_STATE_READY
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|uhci_num
@@ -10316,10 +10320,6 @@ id|USBLEGSUP
 comma
 id|USBLEGSUP_DEFAULT
 )paren
-suffix:semicolon
-id|hcd-&gt;state
-op_assign
-id|USB_STATE_READY
 suffix:semicolon
 id|usb_connect
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *      &n; * Copyright (C) 2001-2002: &n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt &n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; */
+multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tiglusb -- Texas Instruments&squot; USB GraphLink (aka SilverLink) driver.&n; * Target: Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; *&n; * Copyright (C) 2001-2002:&n; *   Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; *   Julien BLACHE &lt;jb@technologeek.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Based on dabusb.c, printer.c &amp; scanner.c&n; *&n; * Please see the file: linux/Documentation/usb/SilverLink.txt&n; * and the website at:  http://lpg.ticalc.org/prj_usb/&n; * for more info.&n; *&n; * History :&n; *  16/07/2002 : v1.04 -- Julien BLACHE &lt;jb@jblache.org&gt;&n; *    + removed useless usblp_cleanup()&n; *    + removed {un,}lock_kernel() as suggested on lkml&n; *    + inlined clear_pipes() (used once)&n; *    + inlined clear_device() (small, used twice)&n; *    + removed tiglusb_find_struct() (used once, simple code)&n; *    + replaced down() with down_interruptible() wherever possible&n; *    + fixed double unregistering wrt devfs, causing devfs&n; *      to force an oops when the device is deconnected&n; *    + removed unused fields from struct tiglusb_t&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -11,9 +11,13 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/ticable.h&gt;
 macro_line|#include &quot;tiglusb.h&quot;
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+DECL|macro|minor
+macro_line|# define minor(x) MINOR(x)
+macro_line|#endif
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.03&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.04&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@lpg.ticalc.org&gt; &amp; Julien Blache &lt;jb@jblache.org&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -43,35 +47,11 @@ id|devfs_handle_t
 id|devfs_handle
 suffix:semicolon
 multiline_comment|/*---------- misc functions ------------------------------------------- */
-multiline_comment|/* Unregister device */
-DECL|function|usblp_cleanup
+multiline_comment|/*&n; * Re-initialize device&n; */
 r_static
-r_void
-id|usblp_cleanup
-(paren
-id|tiglusb_t
-op_star
-id|s
-)paren
-(brace
-id|devfs_unregister
-(paren
-id|s-&gt;devfs
-)paren
-suffix:semicolon
-singleline_comment|//memset(tiglusb[s-&gt;minor], 0, sizeof(tiglusb_t));
-id|info
-(paren
-l_string|&quot;tiglusb%d removed&quot;
-comma
-id|s-&gt;minor
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Re-initialize device */
-DECL|function|clear_device
-r_static
+r_inline
 r_int
+DECL|function|clear_device
 id|clear_device
 (paren
 r_struct
@@ -100,7 +80,7 @@ l_int|0
 (brace
 id|err
 (paren
-l_string|&quot;tiglusb: clear_device failed&quot;
+l_string|&quot;clear_device failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -112,10 +92,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Clear input &amp; output pipes (endpoints) */
-DECL|function|clear_pipes
+multiline_comment|/* &n; * Clear input &amp; output pipes (endpoints)&n; */
 r_static
+r_inline
 r_int
+DECL|function|clear_pipes
 id|clear_pipes
 (paren
 r_struct
@@ -152,9 +133,8 @@ id|pipe
 )paren
 (brace
 id|err
-c_func
 (paren
-l_string|&quot;tiglusb: clear_pipe (r), request failed&quot;
+l_string|&quot;clear_pipe (r), request failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -187,7 +167,7 @@ id|pipe
 (brace
 id|err
 (paren
-l_string|&quot;tiglusb: clear_pipe (w), request failed&quot;
+l_string|&quot;clear_pipe (w), request failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -199,10 +179,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* ----- kernel module functions--------------------------------------- */
-DECL|function|tiglusb_open
+multiline_comment|/* ----- file operations functions--------------------------------------- */
 r_static
 r_int
+DECL|function|tiglusb_open
 id|tiglusb_open
 (paren
 r_struct
@@ -213,7 +193,7 @@ comma
 r_struct
 id|file
 op_star
-id|file
+id|filp
 )paren
 (brace
 r_int
@@ -256,12 +236,21 @@ op_minus
 id|TIUSB_MINOR
 )braket
 suffix:semicolon
-id|down
+r_if
+c_cond
+(paren
+id|down_interruptible
 (paren
 op_amp
 id|s-&gt;mutex
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -280,7 +269,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_flags
+id|filp-&gt;f_flags
 op_amp
 id|O_NONBLOCK
 )paren
@@ -311,12 +300,21 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|down
+r_if
+c_cond
+(paren
+id|down_interruptible
 (paren
 op_amp
 id|s-&gt;mutex
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
+)brace
 )brace
 id|s-&gt;opened
 op_assign
@@ -328,11 +326,11 @@ op_amp
 id|s-&gt;mutex
 )paren
 suffix:semicolon
-id|file-&gt;f_pos
+id|filp-&gt;f_pos
 op_assign
 l_int|0
 suffix:semicolon
-id|file-&gt;private_data
+id|filp-&gt;private_data
 op_assign
 id|s
 suffix:semicolon
@@ -340,9 +338,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tiglusb_release
 r_static
 r_int
+DECL|function|tiglusb_release
 id|tiglusb_release
 (paren
 r_struct
@@ -353,7 +351,7 @@ comma
 r_struct
 id|file
 op_star
-id|file
+id|filp
 )paren
 (brace
 id|ptiglusb_t
@@ -362,18 +360,23 @@ op_assign
 (paren
 id|ptiglusb_t
 )paren
-id|file-&gt;private_data
+id|filp-&gt;private_data
 suffix:semicolon
-id|lock_kernel
+r_if
+c_cond
 (paren
-)paren
-suffix:semicolon
-id|down
+id|down_interruptible
 (paren
 op_amp
 id|s-&gt;mutex
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
+)brace
 id|s-&gt;state
 op_assign
 id|_stopped
@@ -406,23 +409,19 @@ id|s-&gt;opened
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tiglusb_read
 r_static
 id|ssize_t
+DECL|function|tiglusb_read
 id|tiglusb_read
 (paren
 r_struct
 id|file
 op_star
-id|file
+id|filp
 comma
 r_char
 op_star
@@ -433,7 +432,7 @@ id|count
 comma
 id|loff_t
 op_star
-id|ppos
+id|f_pos
 )paren
 (brace
 id|ptiglusb_t
@@ -442,7 +441,7 @@ op_assign
 (paren
 id|ptiglusb_t
 )paren
-id|file-&gt;private_data
+id|filp-&gt;private_data
 suffix:semicolon
 id|ssize_t
 id|ret
@@ -478,7 +477,7 @@ r_if
 c_cond
 (paren
 op_star
-id|ppos
+id|f_pos
 )paren
 r_return
 op_minus
@@ -570,7 +569,7 @@ op_logical_neg
 id|bytes_read
 )paren
 (brace
-id|warn
+id|dbg
 (paren
 l_string|&quot;quirk !&quot;
 )paren
@@ -598,7 +597,7 @@ id|EPIPE
 multiline_comment|/* STALL -- shouldn&squot;t happen */
 id|warn
 (paren
-l_string|&quot;CLEAR_FEATURE request to remove STALL condition.&bslash;n&quot;
+l_string|&quot;clear_halt request to remove STALL condition.&quot;
 )paren
 suffix:semicolon
 r_if
@@ -614,12 +613,16 @@ id|pipe
 )paren
 )paren
 )paren
-id|warn
+id|err
 (paren
-l_string|&quot;send_packet, request failed&bslash;n&quot;
+l_string|&quot;clear_halt, request failed&quot;
 )paren
 suffix:semicolon
-singleline_comment|//clear_device(s-&gt;dev);
+id|clear_device
+(paren
+id|s-&gt;dev
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|result
@@ -638,7 +641,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* We should not get any I/O errors */
-id|warn
+id|err
 (paren
 l_string|&quot;funky result: %d. Please notify maintainer.&quot;
 comma
@@ -672,9 +675,6 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
 id|out
 suffix:colon
@@ -687,15 +687,15 @@ suffix:colon
 id|bytes_read
 suffix:semicolon
 )brace
-DECL|function|tiglusb_write
 r_static
 id|ssize_t
+DECL|function|tiglusb_write
 id|tiglusb_write
 (paren
 r_struct
 id|file
 op_star
-id|file
+id|filp
 comma
 r_const
 r_char
@@ -707,7 +707,7 @@ id|count
 comma
 id|loff_t
 op_star
-id|ppos
+id|f_pos
 )paren
 (brace
 id|ptiglusb_t
@@ -716,7 +716,7 @@ op_assign
 (paren
 id|ptiglusb_t
 )paren
-id|file-&gt;private_data
+id|filp-&gt;private_data
 suffix:semicolon
 id|ssize_t
 id|ret
@@ -752,7 +752,7 @@ r_if
 c_cond
 (paren
 op_star
-id|ppos
+id|f_pos
 )paren
 r_return
 op_minus
@@ -881,7 +881,7 @@ id|EPIPE
 multiline_comment|/* STALL -- shouldn&squot;t happen */
 id|warn
 (paren
-l_string|&quot;CLEAR_FEATURE request to remove STALL condition.&quot;
+l_string|&quot;clear_halt request to remove STALL condition.&quot;
 )paren
 suffix:semicolon
 r_if
@@ -897,12 +897,16 @@ id|pipe
 )paren
 )paren
 )paren
-id|warn
+id|err
 (paren
-l_string|&quot;send_packet, request failed&quot;
+l_string|&quot;clear_halt, request failed&quot;
 )paren
 suffix:semicolon
-singleline_comment|//clear_device(s-&gt;dev);
+id|clear_device
+(paren
+id|s-&gt;dev
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|result
@@ -950,9 +954,6 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
 )brace
 id|out
 suffix:colon
@@ -965,9 +966,9 @@ suffix:colon
 id|bytes_written
 suffix:semicolon
 )brace
-DECL|function|tiglusb_ioctl
 r_static
 r_int
+DECL|function|tiglusb_ioctl
 id|tiglusb_ioctl
 (paren
 r_struct
@@ -978,7 +979,7 @@ comma
 r_struct
 id|file
 op_star
-id|file
+id|filp
 comma
 r_int
 r_int
@@ -995,7 +996,7 @@ op_assign
 (paren
 id|ptiglusb_t
 )paren
-id|file-&gt;private_data
+id|filp-&gt;private_data
 suffix:semicolon
 r_int
 id|ret
@@ -1011,12 +1012,21 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|down
+r_if
+c_cond
+(paren
+id|down_interruptible
 (paren
 op_amp
 id|s-&gt;mutex
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|ERESTARTSYS
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1162,61 +1172,11 @@ id|tiglusb_release
 comma
 )brace
 suffix:semicolon
-DECL|function|tiglusb_find_struct
-r_static
-r_int
-id|tiglusb_find_struct
-(paren
-r_void
-)paren
-(brace
-r_int
-id|u
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|u
-op_assign
-l_int|0
-suffix:semicolon
-id|u
-OL
-id|MAXTIGL
-suffix:semicolon
-id|u
-op_increment
-)paren
-(brace
-id|ptiglusb_t
-id|s
-op_assign
-op_amp
-id|tiglusb
-(braket
-id|u
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|s-&gt;dev
-)paren
-r_return
-id|u
-suffix:semicolon
-)brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* --- initialisation code ------------------------------------- */
-DECL|function|tiglusb_probe
 r_static
 r_void
 op_star
+DECL|function|tiglusb_probe
 id|tiglusb_probe
 (paren
 r_struct
@@ -1237,6 +1197,12 @@ id|id
 (brace
 r_int
 id|minor
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|ptiglusb_t
 id|s
@@ -1249,7 +1215,7 @@ l_int|8
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;tiglusb: probing vendor id 0x%x, device id 0x%x ifnum:%d&quot;
+l_string|&quot;probing vendor id 0x%x, device id 0x%x ifnum:%d&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
@@ -1258,7 +1224,7 @@ comma
 id|ifnum
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * We don&squot;t handle multiple configurations. As of version 0x0103 of &n;&t; * the TIGL hardware, there&squot;s only 1 configuration. &n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t handle multiple configurations. As of version 0x0103 of&n;&t; * the TIGL hardware, there&squot;s only 1 configuration.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1314,12 +1280,46 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Find a tiglusb struct&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAXTIGL
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|ptiglusb_t
+id|s
+op_assign
+op_amp
+id|tiglusb
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|s-&gt;dev
+)paren
+(brace
 id|minor
 op_assign
-id|tiglusb_find_struct
-(paren
-)paren
+id|i
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -1375,9 +1375,9 @@ comma
 id|s-&gt;minor
 )paren
 suffix:semicolon
-id|info
+id|dbg
 (paren
-l_string|&quot;tiglusb: registering to devfs : major = %d, minor = %d, node = %s&quot;
+l_string|&quot;registering to devfs : major = %d, minor = %d, node = %s&quot;
 comma
 id|TIUSB_MAJOR
 comma
@@ -1421,7 +1421,7 @@ suffix:semicolon
 multiline_comment|/* Display firmware version */
 id|info
 (paren
-l_string|&quot;tiglusb: link cable version %i.%02x&quot;
+l_string|&quot;link cable version %i.%02x&quot;
 comma
 id|dev-&gt;descriptor.bcdDevice
 op_rshift
@@ -1436,9 +1436,9 @@ r_return
 id|s
 suffix:semicolon
 )brace
-DECL|function|tiglusb_disconnect
 r_static
 r_void
+DECL|function|tiglusb_disconnect
 id|tiglusb_disconnect
 (paren
 r_struct
@@ -1468,7 +1468,7 @@ op_logical_or
 op_logical_neg
 id|s-&gt;dev
 )paren
-id|warn
+id|info
 (paren
 l_string|&quot;bogus disconnect&quot;
 )paren
@@ -1510,26 +1510,6 @@ id|s-&gt;opened
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* cleanup now or later, on close */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|s-&gt;opened
-)paren
-id|usblp_cleanup
-(paren
-id|s
-)paren
-suffix:semicolon
-r_else
-id|up
-(paren
-op_amp
-id|s-&gt;mutex
-)paren
-suffix:semicolon
-multiline_comment|/* unregister device */
 id|devfs_unregister
 (paren
 id|s-&gt;devfs
@@ -1541,7 +1521,15 @@ l_int|NULL
 suffix:semicolon
 id|info
 (paren
-l_string|&quot;tiglusb: device disconnected&quot;
+l_string|&quot;device %d removed&quot;
+comma
+id|s-&gt;minor
+)paren
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|s-&gt;mutex
 )paren
 suffix:semicolon
 )brace
@@ -1610,11 +1598,11 @@ comma
 suffix:semicolon
 multiline_comment|/* --- initialisation code ------------------------------------- */
 macro_line|#ifndef MODULE
-multiline_comment|/*      You must set these - there is no sane way to probe for this cable.&n; *      You can use &squot;tipar=timeout,delay&squot; to set these now. */
-DECL|function|tiglusb_setup
+multiline_comment|/*&n; * You can use &squot;tiusb=timeout&squot;&n; */
 r_static
 r_int
 id|__init
+DECL|function|tiglusb_setup
 id|tiglusb_setup
 (paren
 r_char
@@ -1666,10 +1654,10 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|tiglusb_init
 r_static
 r_int
 id|__init
+DECL|function|tiglusb_init
 id|tiglusb_init
 (paren
 r_void
@@ -1766,7 +1754,7 @@ id|tiglusb_fops
 (brace
 id|err
 (paren
-l_string|&quot;tiglusb: unable to get major %d&quot;
+l_string|&quot;unable to get major %d&quot;
 comma
 id|TIUSB_MAJOR
 )paren
@@ -1828,10 +1816,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|tiglusb_cleanup
 r_static
 r_void
 id|__exit
+DECL|function|tiglusb_cleanup
 id|tiglusb_cleanup
 (paren
 r_void

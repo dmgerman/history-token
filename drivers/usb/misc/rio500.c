@@ -386,7 +386,7 @@ r_if
 c_cond
 (paren
 id|rio_cmd.length
-OG
+template_param
 id|PAGE_SIZE
 )paren
 (brace
@@ -698,7 +698,7 @@ r_if
 c_cond
 (paren
 id|rio_cmd.length
-OG
+template_param
 id|PAGE_SIZE
 )paren
 (brace
