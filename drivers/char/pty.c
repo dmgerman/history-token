@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/pty.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Added support for a Unix98-style ptmx device.&n; *    -- C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;, 14-Jan-1998&n; */
+multiline_comment|/*&n; *  linux/drivers/char/pty.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Added support for a Unix98-style ptmx device.&n; *    -- C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;, 14-Jan-1998&n; *  Added TTY_DO_WRITE_WAKEUP to enable n_tty to send POLL_OUT to&n; *      waiting writers -- Sapan Bhatia &lt;sapan@corewars.org&gt;&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;&t;/* For EXPORT_SYMBOL */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1340,6 +1340,15 @@ id|set_bit
 c_func
 (paren
 id|TTY_THROTTLED
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|TTY_DO_WRITE_WAKEUP
 comma
 op_amp
 id|tty-&gt;flags
