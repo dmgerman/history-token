@@ -1113,8 +1113,17 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
-DECL|macro|prepare_to_copy
-mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
+r_extern
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Create a new kernel thread.&n; */
 r_extern
 r_int
