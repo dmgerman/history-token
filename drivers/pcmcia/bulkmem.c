@@ -43,7 +43,8 @@ id|client_t
 op_star
 id|mtd
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -334,7 +335,8 @@ id|client_t
 op_star
 id|mtd
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -990,7 +992,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -1063,7 +1066,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -1750,7 +1754,8 @@ op_star
 id|rgn
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 op_assign
@@ -1905,7 +1910,8 @@ id|reg
 id|memory_handle_t
 id|list
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon

@@ -787,7 +787,8 @@ r_int
 id|register_callback
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -864,7 +865,8 @@ r_int
 id|get_socket_status
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -891,7 +893,8 @@ r_int
 id|set_socket
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -918,7 +921,8 @@ r_int
 id|set_io_map
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -946,7 +950,8 @@ r_int
 id|set_mem_map
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -974,7 +979,8 @@ r_int
 id|suspend_socket
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -999,7 +1005,8 @@ r_int
 id|init_socket
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -1050,7 +1057,8 @@ op_star
 id|data
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 op_assign
@@ -1112,7 +1120,8 @@ r_int
 id|socket_resume
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -1122,7 +1131,8 @@ r_int
 id|socket_suspend
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -2084,7 +2094,8 @@ r_int
 id|send_event
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -2101,7 +2112,8 @@ r_void
 id|shutdown_socket
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -2315,7 +2327,8 @@ r_int
 id|send_event
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -2430,7 +2443,8 @@ r_void
 id|pcmcia_error
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 comma
@@ -2515,7 +2529,8 @@ r_void
 id|socket_remove_drivers
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -2568,7 +2583,8 @@ r_void
 id|socket_shutdown
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -2613,7 +2629,8 @@ r_int
 id|socket_reset
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -2759,7 +2776,8 @@ r_int
 id|socket_setup
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 comma
@@ -3016,7 +3034,8 @@ r_int
 id|socket_insert
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -3096,7 +3115,8 @@ r_int
 id|socket_suspend
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -3142,7 +3162,8 @@ r_int
 id|socket_resume
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 )paren
@@ -3269,7 +3290,8 @@ op_star
 id|__skt
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 op_assign
@@ -3561,7 +3583,8 @@ id|u_int
 id|events
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 op_assign
@@ -3601,7 +3624,8 @@ r_int
 id|alloc_io_space
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -4103,7 +4127,8 @@ r_void
 id|release_io_space
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -4235,7 +4260,8 @@ op_star
 id|reg
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -4562,7 +4588,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -4685,7 +4712,8 @@ op_star
 op_star
 id|client
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -4984,7 +5012,8 @@ op_star
 id|config
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -5372,7 +5401,8 @@ id|req
 id|socket_t
 id|s
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|socket
 suffix:semicolon
@@ -5444,7 +5474,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -5549,7 +5580,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -5839,7 +5871,8 @@ id|client_handle_t
 id|handle
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -5902,7 +5935,8 @@ op_star
 id|status
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -6362,7 +6396,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -6438,7 +6473,8 @@ op_star
 id|mod
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -7119,7 +7155,8 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -7322,7 +7359,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -7481,7 +7519,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -7637,7 +7676,8 @@ id|window_handle_t
 id|win
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -7763,7 +7803,8 @@ suffix:semicolon
 id|u_int
 id|base
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -8473,7 +8514,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -8706,7 +8748,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -9102,7 +9145,8 @@ op_star
 id|wh
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 suffix:semicolon
@@ -9511,7 +9555,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 suffix:semicolon
@@ -9715,7 +9760,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 suffix:semicolon
@@ -9834,7 +9880,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 suffix:semicolon
@@ -9954,7 +10001,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 suffix:semicolon
@@ -10081,7 +10129,8 @@ op_star
 id|req
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|skt
 suffix:semicolon

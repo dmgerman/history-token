@@ -586,7 +586,6 @@ suffix:semicolon
 r_struct
 id|region_t
 suffix:semicolon
-multiline_comment|/* in parts of drivers/pcmcia/ this is still known as &n; * socket_info_t &n; */
 DECL|struct|pcmcia_socket
 r_struct
 id|pcmcia_socket

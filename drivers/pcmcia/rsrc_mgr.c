@@ -130,7 +130,7 @@ id|dyn_share
 suffix:semicolon
 DECL|member|Socket
 r_struct
-id|socket_info_t
+id|pcmcia_socket
 op_star
 id|Socket
 suffix:semicolon
@@ -1458,7 +1458,8 @@ r_int
 id|cis_readable
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -1612,7 +1613,8 @@ r_int
 id|checksum
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -1746,7 +1748,8 @@ r_int
 id|checksum_match
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -1806,7 +1809,8 @@ comma
 id|u_long
 id|num
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -2121,7 +2125,8 @@ id|resource_map_t
 op_star
 id|m
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -2205,7 +2210,8 @@ r_void
 id|validate_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -2477,7 +2483,8 @@ r_void
 id|validate_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -2580,7 +2587,8 @@ r_char
 op_star
 id|name
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -2753,7 +2761,8 @@ r_char
 op_star
 id|name
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren

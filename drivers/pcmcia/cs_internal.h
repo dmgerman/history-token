@@ -274,13 +274,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* deprecated - use struct pcmcia_socket instead */
-DECL|typedef|socket_info_t
-r_typedef
-r_struct
-id|pcmcia_socket
-id|socket_info_t
-suffix:semicolon
 multiline_comment|/* Flags in config state */
 DECL|macro|CONFIG_LOCKED
 mdefine_line|#define CONFIG_LOCKED&t;&t;0x01
@@ -328,7 +321,8 @@ r_int
 id|cb_alloc
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -337,7 +331,8 @@ r_void
 id|cb_free
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -346,7 +341,8 @@ r_int
 id|read_cb_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -369,7 +365,8 @@ r_int
 id|read_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -391,7 +388,8 @@ r_void
 id|write_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 comma
@@ -413,7 +411,8 @@ r_void
 id|release_cis_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -422,7 +421,8 @@ r_void
 id|destroy_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -431,7 +431,8 @@ r_int
 id|verify_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -440,7 +441,8 @@ r_void
 id|preload_cis_cache
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -683,7 +685,8 @@ r_void
 id|validate_mem
 c_func
 (paren
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -706,7 +709,8 @@ r_char
 op_star
 id|name
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
@@ -732,7 +736,8 @@ r_char
 op_star
 id|name
 comma
-id|socket_info_t
+r_struct
+id|pcmcia_socket
 op_star
 id|s
 )paren
