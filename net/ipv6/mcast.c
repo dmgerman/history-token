@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
@@ -10864,9 +10865,13 @@ id|MAF_TIMER_RUNNING
 )paren
 ques
 c_cond
+id|jiffies_to_clock_t
+c_func
+(paren
 id|im-&gt;mca_timer.expires
 op_minus
 id|jiffies
+)paren
 suffix:colon
 l_int|0
 )paren
