@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -281,6 +282,11 @@ DECL|member|mii
 r_struct
 id|mii_if_info
 id|mii
+suffix:semicolon
+DECL|member|phy_configure
+r_struct
+id|work_struct
+id|phy_configure
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -2857,27 +2863,9 @@ r_int
 id|phy
 )paren
 (brace
-r_struct
-id|smc_local
-op_star
-id|lp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_int
 r_int
 id|bmcr
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-)paren
 suffix:semicolon
 id|bmcr
 op_assign
@@ -2903,13 +2891,6 @@ comma
 id|bmcr
 op_or
 id|BMCR_PDOWN
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -3006,12 +2987,18 @@ r_void
 id|smc_phy_configure
 c_func
 (paren
+r_void
+op_star
+id|data
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
-)paren
-(brace
+op_assign
+id|data
+suffix:semicolon
 r_struct
 id|smc_local
 op_star
@@ -4201,8 +4188,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;&t; * Reconfiguring the PHY doesn&squot;t seem like a bad idea here, but&n;&t; * it introduced a problem.  Now that this is a timeout routine,&n;&t; * we are getting called from within an interrupt context.&n;&t; * smc_phy_configure() calls msleep() which calls&n;&t; * schedule_timeout() which calls schedule().  When schedule()&n;&t; * is called from an interrupt context, it prints out&n;&t; * &quot;Scheduling in interrupt&quot; and then calls BUG().  This is&n;&t; * obviously not desirable.  This was worked around by removing&n;&t; * the call to smc_phy_configure() here because it didn&squot;t seem&n;&t; * absolutely necessary.  Ultimately, if msleep() is&n;&t; * supposed to be usable from an interrupt context (which it&n;&t; * looks like it thinks it should handle), it should be fixed.&n;&t; */
+multiline_comment|/*&n;&t; * Reconfiguring the PHY doesn&squot;t seem like a bad idea here, but&n;&t; * smc_phy_configure() calls msleep() which calls schedule_timeout()&n;&t; * which calls schedule().  Ence we use a work queue.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4210,13 +4196,13 @@ id|lp-&gt;phy_type
 op_ne
 l_int|0
 )paren
-id|smc_phy_configure
+id|schedule_work
 c_func
 (paren
-id|dev
+op_amp
+id|lp-&gt;phy_configure
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* clear anything saved */
 r_if
 c_cond
@@ -4833,6 +4819,12 @@ id|lp-&gt;phy_type
 op_ne
 l_int|0
 )paren
+(brace
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smc_phy_powerdown
 c_func
 (paren
@@ -4841,6 +4833,7 @@ comma
 id|lp-&gt;mii.phy_id
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5987,6 +5980,17 @@ comma
 r_int
 r_int
 )paren
+id|dev
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|lp-&gt;phy_configure
+comma
+id|smc_phy_configure
+comma
 id|dev
 )paren
 suffix:semicolon
