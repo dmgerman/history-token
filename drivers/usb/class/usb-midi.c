@@ -304,14 +304,12 @@ c_func
 l_string|&quot;USB-MIDI driver&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE  &gt;= KERNEL_VERSION(2,4,14)
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/** MIDIStreaming Class-Specific Interface Descriptor Subtypes **/
 DECL|macro|MS_DESCRIPTOR_UNDEFINED
