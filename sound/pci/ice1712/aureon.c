@@ -3508,15 +3508,15 @@ op_assign
 l_int|0x0441
 comma
 multiline_comment|/* RUN */
-l_int|0x0100
+l_int|0x0180
 comma
-multiline_comment|/* no mute */
+multiline_comment|/* no mute, OMCK output on RMCK pin */
 l_int|0x0201
 comma
 multiline_comment|/* S/PDIF source on RXP1 */
-l_int|0x0600
+l_int|0x0605
 comma
-multiline_comment|/* slave, 24bit */
+multiline_comment|/* slave, 24bit, MSB on second OSCLK, SDOUT for right channel when OLRCK is high */
 (paren
 r_int
 r_int
