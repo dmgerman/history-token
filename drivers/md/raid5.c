@@ -2845,7 +2845,7 @@ r_return
 id|r_sector
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Copy data between a page in the stripe cache, and one or more bion&n; * The page could align with the middle of the bio, or there could be &n; * several bion, each with several bio_vecs, which cover part of the page&n; * Multiple bion are linked together on bi_next.  There may be extras&n; * at the end of this list.  We ignore them.&n; */
+multiline_comment|/*&n; * Copy data between a page in the stripe cache, and a bio.&n; * There are no alignment or size guarantees between the page or the&n; * bio except that there is some overlap.&n; * All iovecs in the bio must be considered.&n; */
 DECL|function|copy_data
 r_static
 r_void
@@ -2887,29 +2887,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-id|bio
-op_logical_and
-id|bio-&gt;bi_sector
-OL
-id|sector
-op_plus
-id|STRIPE_SECTORS
-suffix:semicolon
-id|bio
-op_assign
-id|r5_next_bio
-c_func
-(paren
-id|bio
-comma
-id|sector
-)paren
-)paren
-(brace
 r_int
 id|page_offset
 suffix:semicolon
@@ -3104,7 +3081,6 @@ id|page_offset
 op_add_assign
 id|len
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|macro|check_xor
