@@ -6509,14 +6509,15 @@ id|sk-&gt;sk_send_head
 op_assign
 l_int|NULL
 suffix:semicolon
-id|tp-&gt;saw_tstamp
+id|tp-&gt;rx_opt.saw_tstamp
 op_assign
 l_int|0
 suffix:semicolon
 id|tcp_sack_reset
 c_func
 (paren
-id|tp
+op_amp
+id|tp-&gt;rx_opt
 )paren
 suffix:semicolon
 id|__sk_dst_reset
@@ -7024,7 +7025,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|tp-&gt;user_mss
+id|tp-&gt;rx_opt.user_mss
 op_assign
 id|val
 suffix:semicolon
@@ -7555,7 +7556,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;tstamp_ok
+id|tp-&gt;rx_opt.tstamp_ok
 )paren
 id|info-&gt;tcpi_options
 op_or_assign
@@ -7564,7 +7565,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;sack_ok
+id|tp-&gt;rx_opt.sack_ok
 )paren
 id|info-&gt;tcpi_options
 op_or_assign
@@ -7573,7 +7574,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;wscale_ok
+id|tp-&gt;rx_opt.wscale_ok
 )paren
 (brace
 id|info-&gt;tcpi_options
@@ -7582,11 +7583,11 @@ id|TCPI_OPT_WSCALE
 suffix:semicolon
 id|info-&gt;tcpi_snd_wscale
 op_assign
-id|tp-&gt;snd_wscale
+id|tp-&gt;rx_opt.snd_wscale
 suffix:semicolon
 id|info-&gt;tcpi_rcv_wscale
 op_assign
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 suffix:semicolon
 )brace
 r_if
@@ -7888,7 +7889,7 @@ id|TCPF_LISTEN
 )paren
 id|val
 op_assign
-id|tp-&gt;user_mss
+id|tp-&gt;rx_opt.user_mss
 suffix:semicolon
 r_break
 suffix:semicolon

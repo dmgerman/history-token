@@ -1873,6 +1873,14 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|buffer_io_error
 c_func
 (paren
