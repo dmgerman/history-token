@@ -1571,7 +1571,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1762,7 +1761,6 @@ suffix:colon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1913,7 +1911,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1928,7 +1925,6 @@ id|QUEUE_PLUGGED
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -1974,7 +1970,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -2147,7 +2142,7 @@ suffix:semicolon
 id|invalidate_bdev
 c_func
 (paren
-id|inode-&gt;b_rdev
+id|inode-&gt;i_bdev
 comma
 l_int|0
 )paren
