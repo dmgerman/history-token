@@ -5022,7 +5022,7 @@ id|civ
 comma
 id|timeout
 op_assign
-l_int|10
+l_int|100
 suffix:semicolon
 r_int
 r_int
@@ -5072,12 +5072,16 @@ id|ptr1
 op_eq
 l_int|0
 )paren
+(brace
 id|udelay
 c_func
 (paren
-l_int|1
+l_int|10
 )paren
 suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
