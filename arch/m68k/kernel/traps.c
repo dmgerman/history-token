@@ -2885,7 +2885,7 @@ id|MMU_I
 )paren
 )paren
 (brace
-multiline_comment|/* propably a 020 cas fault */
+multiline_comment|/* probably a 020 cas fault */
 r_if
 c_cond
 (paren
