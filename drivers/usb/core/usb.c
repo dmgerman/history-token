@@ -796,9 +796,13 @@ id|iface-&gt;driver
 op_assign
 id|driver
 suffix:semicolon
-id|iface-&gt;private_data
-op_assign
+id|usb_set_intfdata
+c_func
+(paren
+id|iface
+comma
 id|priv
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_interface_claimed - returns true iff an interface is claimed&n; * @iface: the interface being checked&n; *&n; * This should be used by drivers to check other interfaces to see if&n; * they are available or not.  If another driver has claimed the interface,&n; * they may not claim it.  Otherwise it&squot;s OK to claim it using&n; * usb_driver_claim_interface().&n; *&n; * Returns true (nonzero) iff the interface is claimed, else false (zero).&n; */
@@ -865,9 +869,13 @@ id|iface-&gt;driver
 op_assign
 l_int|NULL
 suffix:semicolon
-id|iface-&gt;private_data
-op_assign
+id|usb_set_intfdata
+c_func
+(paren
+id|iface
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_match_id - find first usb_device_id matching device or interface&n; * @interface: the interface of interest&n; * @id: array of usb_device_id structures, terminated by zero entry&n; *&n; * usb_match_id searches an array of usb_device_id&squot;s and returns&n; * the first one matching the device or interface, or null.&n; * This is used when binding (or rebinding) a driver to an interface.&n; * Most USB device drivers will use this indirectly, through the usb core,&n; * but some layered driver frameworks use it directly.&n; * These device tables are exported with MODULE_DEVICE_TABLE, through&n; * modutils and &quot;modules.usbmap&quot;, to support the driver loading&n; * functionality of USB hotplugging.&n; *&n; * What Matches:&n; *&n; * The &quot;match_flags&quot; element in a usb_device_id controls which&n; * members are used.  If the corresponding bit is set, the&n; * value in the device_id must match its corresponding member&n; * in the device or interface descriptor, or else the device_id&n; * does not match.&n; *&n; * &quot;driver_info&quot; is normally used only by device drivers,&n; * but you can create a wildcard &quot;matches anything&quot; usb_device_id&n; * as a driver&squot;s &quot;modules.usbmap&quot; entry if you provide an id with&n; * only a nonzero &quot;driver_info&quot; field.  If you do this, the USB device&n; * driver&squot;s probe() routine should use additional intelligence to&n; * decide whether to bind to the specified interface.&n; * &n; * What Makes Good usb_device_id Tables:&n; *&n; * The match algorithm is very simple, so that intelligence in&n; * driver selection must come from smart driver id records.&n; * Unless you have good reasons to use another selection policy,&n; * provide match elements only in related groups, and order match&n; * specifiers from specific to general.  Use the macros provided&n; * for that purpose if you can.&n; *&n; * The most specific match specifiers use device descriptor&n; * data.  These are commonly used with product-specific matches;&n; * the USB_DEVICE macro lets you provide vendor and product IDs,&n; * and you can also match against ranges of product revisions.&n; * These are widely used for devices with application or vendor&n; * specific bDeviceClass values.&n; *&n; * Matches based on device class/subclass/protocol specifications&n; * are slightly more general; use the USB_DEVICE_INFO macro, or&n; * its siblings.  These are used with single-function devices&n; * where bDeviceClass doesn&squot;t specify that each interface has&n; * its own class. &n; *&n; * Matches based on interface class/subclass/protocol are the&n; * most general; they let drivers bind to any interface on a&n; * multiple-function device.  Use the USB_INTERFACE_INFO&n; * macro, or its siblings, to match class-per-interface style &n; * devices (as recorded in bDeviceClass).&n; *  &n; * Within those groups, remember that not all combinations are&n; * meaningful.  For example, don&squot;t give a product version range&n; * without vendor and product IDs; or specify a protocol without&n; * its associated class and subclass.&n; */

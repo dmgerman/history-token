@@ -3998,11 +3998,6 @@ comma
 id|dev-&gt;id
 )paren
 suffix:semicolon
-id|kfree
-(paren
-id|intf-&gt;private_data
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Basic testing only needs a device that can source or sink bulk traffic.&n; * Any device can test control transfers (default with GENERIC binding).&n; *&n; * Several entries work with the default EP0 implementation that&squot;s built&n; * into EZ-USB chips.  There&squot;s a default vendor ID which can be overridden&n; * by (very) small config EEPROMS, but otherwise all these devices act&n; * identically until firmware is loaded:  only EP0 works.  It turns out&n; * to be easy to make other endpoints work, without modifying that EP0&n; * behavior.  For now, we expect that kind of firmware.&n; */
 multiline_comment|/* an21xx or fx versions of ez-usb */
