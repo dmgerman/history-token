@@ -1064,6 +1064,11 @@ id|valid
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|resource_type
+op_assign
+l_int|0
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -1166,6 +1171,29 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* If IRQ&lt;=15, first try with a &quot;normal&quot; IRQ descriptor. If that fails, try with&n;&t; * an extended one */
+r_if
+c_cond
+(paren
+id|irq
+op_le
+l_int|15
+)paren
+(brace
+id|resource_type
+op_assign
+id|ACPI_RSTYPE_IRQ
+suffix:semicolon
+)brace
+r_else
+(brace
+id|resource_type
+op_assign
+id|ACPI_RSTYPE_EXT_IRQ
+suffix:semicolon
+)brace
+id|retry_programming
+suffix:colon
 id|memset
 c_func
 (paren
@@ -1181,14 +1209,15 @@ id|resource
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE: PCI interrupts are always level / active_low / shared. But not all&n;&t;   interrupts &gt; 15 are PCI interrupts. Rely on the ACPI IRQ definition for &n;&t;   parameters */
-r_if
+r_switch
 c_cond
 (paren
-id|irq
-op_le
-l_int|15
+id|resource_type
 )paren
 (brace
+r_case
+id|ACPI_RSTYPE_IRQ
+suffix:colon
 id|resource.res.id
 op_assign
 id|ACPI_RSTYPE_IRQ
@@ -1220,9 +1249,11 @@ l_int|0
 op_assign
 id|irq
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_RSTYPE_EXT_IRQ
+suffix:colon
 id|resource.res.id
 op_assign
 id|ACPI_RSTYPE_EXT_IRQ
@@ -1259,6 +1290,8 @@ op_assign
 id|irq
 suffix:semicolon
 multiline_comment|/* ignore resource_source, it&squot;s optional */
+r_break
+suffix:semicolon
 )brace
 id|resource.end.id
 op_assign
@@ -1276,6 +1309,39 @@ op_amp
 id|buffer
 )paren
 suffix:semicolon
+multiline_comment|/* if we failed and IRQ &lt;= 15, try again with an extended descriptor */
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+op_logical_and
+(paren
+id|resource_type
+op_eq
+id|ACPI_RSTYPE_IRQ
+)paren
+)paren
+(brace
+id|resource_type
+op_assign
+id|ACPI_RSTYPE_EXT_IRQ
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|PREFIX
+l_string|&quot;Retrying with extended IRQ descriptor&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|retry_programming
+suffix:semicolon
+)brace
+multiline_comment|/* check for total failure */
 r_if
 c_cond
 (paren
@@ -1700,7 +1766,7 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * Select the best IRQ.  This is done in reverse to promote &n;&t;&t; * the use of IRQs 9, 10, 11, and &gt;15.&n;&t;&t; */
+multiline_comment|/* &n;&t; * Select the best IRQ.  This is done in reverse to promote &n;&t; * the use of IRQs 9, 10, 11, and &gt;15.&n;&t; */
 r_for
 c_loop
 (paren
