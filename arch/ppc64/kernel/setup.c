@@ -4060,6 +4060,10 @@ id|__init
 id|generic_find_legacy_serial_ports
 c_func
 (paren
+id|u64
+op_star
+id|physport
+comma
 r_int
 r_int
 op_star
@@ -4110,7 +4114,8 @@ c_func
 l_string|&quot; -&gt; generic_find_legacy_serial_port()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|naca-&gt;serialPortAddr
+op_star
+id|physport
 op_assign
 l_int|0
 suffix:semicolon
@@ -4795,7 +4800,8 @@ op_ne
 l_int|0
 )paren
 (brace
-id|naca-&gt;serialPortAddr
+op_star
+id|physport
 op_assign
 id|io_base
 op_plus

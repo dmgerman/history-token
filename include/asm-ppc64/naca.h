@@ -41,11 +41,6 @@ id|u64
 id|log
 suffix:semicolon
 multiline_comment|/* Ptr to log buffer         0x30 */
-DECL|member|serialPortAddr
-id|u64
-id|serialPortAddr
-suffix:semicolon
-multiline_comment|/* Phy addr of serial port   0x38 */
 )brace
 suffix:semicolon
 r_extern
