@@ -774,11 +774,6 @@ r_void
 op_star
 id|shost_data
 suffix:semicolon
-DECL|member|transport_classdev
-r_struct
-id|class_device
-id|transport_classdev
-suffix:semicolon
 multiline_comment|/*&n;&t; * We should ensure that this is aligned, both for better performance&n;&t; * and also because some compilers (m68k) don&squot;t automatically force&n;&t; * alignment to a long boundary.&n;&t; */
 DECL|member|hostdata
 r_int
@@ -808,8 +803,6 @@ DECL|macro|dev_to_shost
 mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_gendev)
 DECL|macro|class_to_shost
 mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_classdev)
-DECL|macro|transport_class_to_shost
-mdefine_line|#define&t;&t;transport_class_to_shost(class_dev) &bslash;&n;&t;container_of(class_dev, struct Scsi_Host, transport_classdev)
 r_extern
 r_struct
 id|Scsi_Host
@@ -1013,6 +1006,9 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_struct
+id|class_container
+suffix:semicolon
 multiline_comment|/*&n; * These two functions are used to allocate and free a pseudo device&n; * which will connect to the host adapter itself rather than any&n; * physical device.  You must deallocate when you are done with the&n; * thing.  This physical pseudo-device isn&squot;t real and won&squot;t be available&n; * from any high-level drivers.&n; */
 r_extern
 r_void
@@ -1033,6 +1029,16 @@ c_func
 (paren
 r_struct
 id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_int
+id|scsi_is_host_device
+c_func
+(paren
+r_const
+r_struct
+id|device
 op_star
 )paren
 suffix:semicolon
