@@ -1323,6 +1323,9 @@ id|l
 OG
 l_int|0
 suffix:semicolon
+id|optptr
+op_increment
+comma
 id|l
 op_decrement
 )paren
