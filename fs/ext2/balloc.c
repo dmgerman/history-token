@@ -710,6 +710,8 @@ r_struct
 id|super_block
 op_star
 id|sb
+op_assign
+id|inode-&gt;i_sb
 suffix:semicolon
 r_struct
 id|ext2_group_desc
@@ -728,25 +730,6 @@ l_int|0
 comma
 id|group_freed
 suffix:semicolon
-id|sb
-op_assign
-id|inode-&gt;i_sb
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;ext2_free_blocks: nonexistent device&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|lock_super
 (paren
 id|sb
