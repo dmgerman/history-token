@@ -82,15 +82,6 @@ id|user
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|dump_fpu
-c_func
-(paren
-id|elf_fpregset_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* platform dependent support */
 DECL|variable|m68k_machtype
 id|EXPORT_SYMBOL
