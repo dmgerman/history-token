@@ -13,6 +13,14 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;agp.h&quot;
+singleline_comment|//#define DEBUG
+macro_line|#ifdef DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(x,y...) printk (KERN_DEBUG &quot;agpgart: %s: &quot; x &quot;&bslash;n&quot;, __FUNCTION__ , ## y)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(x,y...) do { } while (0)
+macro_line|#endif
 DECL|variable|agp_fe
 r_static
 r_struct
@@ -63,16 +71,25 @@ id|curr-&gt;key
 op_eq
 id|key
 )paren
-r_return
-id|curr
+r_break
 suffix:semicolon
 id|curr
 op_assign
 id|curr-&gt;next
 suffix:semicolon
 )brace
+id|DBG
+c_func
+(paren
+l_string|&quot;key=%d -&gt; mem=%p&quot;
+comma
+id|key
+comma
+id|curr
+)paren
+suffix:semicolon
 r_return
-l_int|NULL
+id|curr
 suffix:semicolon
 )brace
 DECL|function|agp_remove_from_pool
@@ -95,6 +112,14 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* Check to see if this is even in the memory pool */
+id|DBG
+c_func
+(paren
+l_string|&quot;mem=%p&quot;
+comma
+id|temp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -304,6 +329,14 @@ op_star
 id|client
 )paren
 (brace
+id|DBG
+c_func
+(paren
+l_string|&quot;client=%p&quot;
+comma
+id|client
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -322,6 +355,20 @@ id|client-&gt;segments
 op_ne
 l_int|NULL
 )paren
+(brace
+id|DBG
+c_func
+(paren
+l_string|&quot;Freeing %p from client&quot;
+comma
+op_star
+(paren
+id|client-&gt;segments
+)paren
+comma
+id|client
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -331,11 +378,26 @@ id|client-&gt;segments
 )paren
 )paren
 suffix:semicolon
+)brace
+id|DBG
+c_func
+(paren
+l_string|&quot;Freeing %p from client %p&quot;
+comma
+id|client-&gt;segments
+comma
+id|client
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
 id|client-&gt;segments
 )paren
+suffix:semicolon
+id|client-&gt;segments
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -377,6 +439,18 @@ l_int|NULL
 id|agp_remove_seg_from_client
 c_func
 (paren
+id|client
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;Adding seg %p (%d segments) to client %p&quot;
+comma
+id|seg
+comma
+id|num_segments
+comma
 id|client
 )paren
 suffix:semicolon
@@ -2061,6 +2135,18 @@ id|vma-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;%lx:%lx&quot;
+comma
+id|offset
+comma
+id|offset
+op_plus
+id|size
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2124,6 +2210,14 @@ id|vma-&gt;vm_page_prot
 )paren
 r_goto
 id|out_inval
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;client vm_ops=%p&quot;
+comma
+id|kerninfo.vm_ops
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2198,6 +2292,14 @@ id|current_size
 )paren
 r_goto
 id|out_inval
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;controller vm_ops=%p&quot;
+comma
+id|kerninfo.vm_ops
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2328,6 +2430,14 @@ id|agp_fe.agp_mutex
 )paren
 )paren
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;priv=%p&quot;
+comma
+id|priv
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2398,14 +2508,12 @@ op_amp
 id|priv-&gt;access_flags
 )paren
 )paren
-(brace
 id|agp_remove_client
 c_func
 (paren
 id|priv-&gt;my_pid
 )paren
 suffix:semicolon
-)brace
 id|agp_remove_file_private
 c_func
 (paren
@@ -2613,6 +2721,16 @@ id|agp_insert_file_private
 c_func
 (paren
 id|priv
+)paren
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;private=%p, client=%p&quot;
+comma
+id|priv
+comma
+id|client
 )paren
 suffix:semicolon
 id|up
@@ -2825,6 +2943,12 @@ id|agp_controller
 op_star
 id|controller
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2982,6 +3106,12 @@ r_int
 id|arg
 )paren
 (brace
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 id|agp_controller_release_current
 c_func
 (paren
@@ -3012,6 +3142,12 @@ id|arg
 id|agp_setup
 id|mode
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3033,12 +3169,10 @@ id|agp_setup
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|agp_enable
 c_func
 (paren
@@ -3074,6 +3208,12 @@ suffix:semicolon
 id|agp_file_private
 op_star
 id|client_priv
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3393,6 +3533,12 @@ r_int
 id|arg
 )paren
 (brace
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* This function is not currently implemented */
 r_return
 op_minus
@@ -3420,6 +3566,12 @@ id|memory
 suffix:semicolon
 id|agp_allocate
 id|alloc
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3531,6 +3683,12 @@ id|agp_memory
 op_star
 id|memory
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
 id|memory
 op_assign
 id|agp_find_mem_by_key
@@ -3584,6 +3742,12 @@ suffix:semicolon
 id|agp_memory
 op_star
 id|memory
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3660,6 +3824,12 @@ id|memory
 suffix:semicolon
 id|agp_unbind
 id|unbind
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3753,6 +3923,16 @@ id|ret_val
 op_assign
 op_minus
 id|ENOTTY
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;priv=%p, cmd=%x&quot;
+comma
+id|curr_priv
+comma
+id|cmd
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -4024,6 +4204,14 @@ suffix:semicolon
 )brace
 id|ioctl_out
 suffix:colon
+id|DBG
+c_func
+(paren
+l_string|&quot;ioctl returns %d&bslash;n&quot;
+comma
+id|ret_val
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
