@@ -48,7 +48,7 @@ r_int
 r_int
 id|oplockEnabled
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 DECL|variable|lookupCacheEnabled
 r_int
@@ -83,7 +83,7 @@ r_int
 r_int
 id|sign_CIFS_PDUs
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 DECL|variable|CIFSMaximumBufferSize
 r_int
@@ -1707,11 +1707,6 @@ op_star
 id|oplock_item
 suffix:semicolon
 r_struct
-id|file
-op_star
-id|pfile
-suffix:semicolon
-r_struct
 id|cifsTconInfo
 op_star
 id|pTcon
@@ -1793,21 +1788,6 @@ id|pTcon
 op_assign
 id|oplock_item-&gt;tcon
 suffix:semicolon
-id|pfile
-op_assign
-id|oplock_item-&gt;file_to_flush
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;process item on queue&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB remove */
 id|DeleteOplockQEntry
 c_func
 (paren
@@ -1826,7 +1806,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|pfile-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|oplock_item-&gt;pinode-&gt;i_mapping
 )paren
 suffix:semicolon
 r_if
@@ -1838,7 +1818,7 @@ id|rc
 id|CIFS_I
 c_func
 (paren
-id|pfile-&gt;f_dentry-&gt;d_inode
+id|oplock_item-&gt;pinode
 )paren
 op_member_access_from_pointer
 id|write_behind_rc
@@ -1852,20 +1832,14 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Oplock flush file %p rc %d&quot;
+l_string|&quot;Oplock flush inode %p rc %d&quot;
 comma
-id|pfile
+id|oplock_item-&gt;pinode
 comma
 id|rc
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pfile-&gt;private_data
-)paren
-(brace
 id|rc
 op_assign
 id|CIFSSMBLock
@@ -1875,16 +1849,7 @@ l_int|0
 comma
 id|pTcon
 comma
-(paren
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
-id|pfile-&gt;private_data
-)paren
-op_member_access_from_pointer
-id|netfid
+id|oplock_item-&gt;netfid
 comma
 l_int|0
 multiline_comment|/* len */
@@ -1914,7 +1879,6 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-)brace
 id|write_lock
 c_func
 (paren
