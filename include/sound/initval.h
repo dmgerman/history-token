@@ -219,6 +219,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef SNDRV_LEGACY_FIND_FREE_IRQ
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|function|snd_legacy_empty_irq_handler
 r_static
 r_void
