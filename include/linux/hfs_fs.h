@@ -1226,6 +1226,7 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/hfs_fs_i.h&gt;
+macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 DECL|function|HFS_I
 r_static
 r_inline
@@ -1254,8 +1255,25 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
-DECL|macro|HFS_SB
-mdefine_line|#define&t;HFS_SB(X)&t;(&amp;((X)-&gt;u.hfs_sb))
+DECL|function|HFS_SB
+r_static
+r_inline
+r_struct
+id|hfs_sb_info
+op_star
+id|HFS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|hfs_nameout
 r_static
 r_inline

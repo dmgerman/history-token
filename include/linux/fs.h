@@ -2023,7 +2023,6 @@ macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
@@ -2206,11 +2205,6 @@ DECL|member|romfs_sb
 r_struct
 id|romfs_sb_info
 id|romfs_sb
-suffix:semicolon
-DECL|member|hfs_sb
-r_struct
-id|hfs_sb_info
-id|hfs_sb
 suffix:semicolon
 DECL|member|adfs_sb
 r_struct
