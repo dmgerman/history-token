@@ -27,7 +27,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;&t;/* must follow &quot;hosts.h&quot; */
 macro_line|#include &lt;linux/genhd.h&gt;
 multiline_comment|/* static char sd_version_str[] = &quot;Version: 2.0.3 (20020417)&quot;; */
@@ -1905,7 +1904,7 @@ id|error_out
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * It is possible that the disk changing stuff resulted in the device&n;&t; * being taken offline.  If this is the case, report this to the user,&n;&t; * and don&squot;t pretend that&n;&t; * the open actually succeeded.&n;&t; */
+multiline_comment|/*&n;&t; * It is possible that the disk changing stuff resulted in the device&n;&t; * being taken offline.  If this is the case, report this to the user,&n;&t; * and don&squot;t pretend that the open actually succeeded.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2630,6 +2629,30 @@ id|block_sectors
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|sd_set_media_not_present
+id|sd_set_media_not_present
+c_func
+(paren
+id|Scsi_Disk
+op_star
+id|sdkp
+)paren
+(brace
+id|sdkp-&gt;media_present
+op_assign
+l_int|0
+suffix:semicolon
+id|sdkp-&gt;capacity
+op_assign
+l_int|0
+suffix:semicolon
+id|sdkp-&gt;device-&gt;changed
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;check_scsidisk_media_change - self descriptive&n; *&t;@full_dev: kernel device descriptor (kdev_t)&n; *&n; *&t;Returns 0 if not applicable or no change; 1 if change&n; *&n; *&t;Note: this function is invoked from the block subsystem.&n; **/
 DECL|function|check_scsidisk_media_change
 r_static
@@ -2819,30 +2842,6 @@ l_int|0
 suffix:semicolon
 r_return
 id|retval
-suffix:semicolon
-)brace
-r_static
-r_void
-DECL|function|sd_set_media_not_present
-id|sd_set_media_not_present
-c_func
-(paren
-id|Scsi_Disk
-op_star
-id|sdkp
-)paren
-(brace
-id|sdkp-&gt;media_present
-op_assign
-l_int|0
-suffix:semicolon
-id|sdkp-&gt;capacity
-op_assign
-l_int|0
-suffix:semicolon
-id|sdkp-&gt;device-&gt;changed
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 r_static
@@ -5003,7 +5002,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_finish- called during driver initialization, after all&n; *&t;the sd_attach() calls are finished.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is not called after driver initialization has completed.&n; *&t;Specifically later device attachments invoke sd_attach() but not&n; *&t;this function.&n; **/
+multiline_comment|/**&n; *&t;sd_finish - called during driver initialization, after all&n; *&t;the sd_attach() calls are finished.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is not called after driver initialization has completed.&n; *&t;Specifically later device attachments invoke sd_attach() but not&n; *&t;this function.&n; **/
 DECL|function|sd_finish
 r_static
 r_void
@@ -5169,7 +5168,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_detect- called at the start of driver initialization, once &n; *&t;for each scsi device (not just disks) present.&n; *&n; *&t;Returns 0 if not interested in this scsi device (e.g. scanner);&n; *&t;1 if this device is of interest (e.g. a disk).&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is called before sd_init() so very little is available.&n; **/
+multiline_comment|/**&n; *&t;sd_detect - called at the start of driver initialization, once &n; *&t;for each scsi device (not just disks) present.&n; *&n; *&t;Returns 0 if not interested in this scsi device (e.g. scanner);&n; *&t;1 if this device is of interest (e.g. a disk).&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function is called before sd_init() so very little is available.&n; **/
 DECL|function|sd_detect
 r_static
 r_int
@@ -5216,7 +5215,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_attach- called during driver initialization and whenever a&n; *&t;new scsi device is attached to the system. It is called once&n; *&t;for each scsi device (not just disks) present.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Returns 0 if successful (or not interested in this scsi device &n; *&t;(e.g. scanner)); 1 when there is an error.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function sets up the mapping between a given &n; *&t;&lt;host,channel,id,lun&gt; (found in sdp) and new device name &n; *&t;(e.g. /dev/sda). More precisely it is the block device major &n; *&t;and minor number that is chosen here.&n; **/
+multiline_comment|/**&n; *&t;sd_attach - called during driver initialization and whenever a&n; *&t;new scsi device is attached to the system. It is called once&n; *&t;for each scsi device (not just disks) present.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Returns 0 if successful (or not interested in this scsi device &n; *&t;(e.g. scanner)); 1 when there is an error.&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function sets up the mapping between a given &n; *&t;&lt;host,channel,id,lun&gt; (found in sdp) and new device name &n; *&t;(e.g. /dev/sda). More precisely it is the block device major &n; *&t;and minor number that is chosen here.&n; **/
 DECL|function|sd_attach
 r_static
 r_int
@@ -5493,7 +5492,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;revalidate_scsidisk- called to flush all partitions and partition &n; *&t;tables for a changed scsi disk. sd_init_onedisk() is then called&n; *&t;followed by re-reading the new partition table.&n; *      @dev: kernel device descriptor (kdev_t)&n; *      @maxusage: 0 when called from block level, 1 when called from&n; *      sd_ioctl().&n; *&n; *&t;Returns 0 if successful; negated errno value otherwise.&n; */
+multiline_comment|/**&n; *&t;revalidate_scsidisk - called to flush all partitions and partition &n; *&t;tables for a changed scsi disk. sd_init_onedisk() is then called&n; *&t;followed by re-reading the new partition table.&n; *      @dev: kernel device descriptor (kdev_t)&n; *      @maxusage: 0 when called from block level, 1 when called from&n; *      sd_ioctl().&n; *&n; *&t;Returns 0 if successful; negated errno value otherwise.&n; */
 DECL|function|revalidate_scsidisk
 r_int
 id|revalidate_scsidisk
@@ -5676,7 +5675,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sd_detach- called whenever a scsi disk (previously recognized by&n; *&t;sd_attach) is detached from the system. It is called (potentially&n; *&t;multiple times) during sd module unload.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function potentially frees up a device name (e.g. /dev/sdc)&n; *&t;that could be re-used by a subsequent sd_attach().&n; *&t;This function is not called when the built-in sd driver is &quot;exit-ed&quot;.&n; **/
+multiline_comment|/**&n; *&t;sd_detach - called whenever a scsi disk (previously recognized by&n; *&t;sd_attach) is detached from the system. It is called (potentially&n; *&t;multiple times) during sd module unload.&n; *&t;@sdp: pointer to mid level scsi device object&n; *&n; *&t;Note: this function is invoked from the scsi mid-level.&n; *&t;This function potentially frees up a device name (e.g. /dev/sdc)&n; *&t;that could be re-used by a subsequent sd_attach().&n; *&t;This function is not called when the built-in sd driver is &quot;exit-ed&quot;.&n; **/
 DECL|function|sd_detach
 r_static
 r_void
@@ -5893,7 +5892,7 @@ id|nr_real
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;init_sd- entry point for this driver (both when built in or when&n; *&t;a module).&n; *&n; *&t;Note: this function registers this driver with the scsi mid-level.&n; **/
+multiline_comment|/**&n; *&t;init_sd - entry point for this driver (both when built in or when&n; *&t;a module).&n; *&n; *&t;Note: this function registers this driver with the scsi mid-level.&n; **/
 DECL|function|init_sd
 r_static
 r_int
@@ -5929,7 +5928,7 @@ id|sd_template
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;exit_sd- exit point for this driver (when it is&t;a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
+multiline_comment|/**&n; *&t;exit_sd - exit point for this driver (when it is&t;a module).&n; *&n; *&t;Note: this function unregisters this driver from the scsi mid-level.&n; **/
 DECL|function|exit_sd
 r_static
 r_void
@@ -5942,10 +5941,6 @@ r_void
 (brace
 r_int
 id|k
-suffix:semicolon
-id|Scsi_Disk
-op_star
-id|sdkp
 suffix:semicolon
 id|SCSI_LOG_HLQUEUE
 c_func
@@ -6017,26 +6012,15 @@ suffix:semicolon
 op_increment
 id|k
 )paren
-(brace
-id|sdkp
-op_assign
+id|vfree
+c_func
+(paren
 id|sd_dsk_arr
 (braket
 id|k
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdkp
-)paren
-id|vfree
-c_func
-(paren
-id|sdkp
 )paren
 suffix:semicolon
-)brace
 id|vfree
 c_func
 (paren
@@ -6044,22 +6028,12 @@ id|sd_dsk_arr
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|sd_sizes
-)paren
 id|vfree
 c_func
 (paren
 id|sd_sizes
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sd
-)paren
 id|vfree
 c_func
 (paren

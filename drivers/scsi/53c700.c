@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;53c700.h&quot;
 multiline_comment|/* NOTE: For 64 bit drivers there are points in the code where we use&n; * a non dereferenceable pointer to point to a structure in dma-able&n; * memory (which is 32 bits) so that we can use all of the structure&n; * operations but take the address at the end.  This macro allows us&n; * to truncate the 64 bit pointer down to 32 bits without the compiler&n; * complaining */
 DECL|macro|to32bit

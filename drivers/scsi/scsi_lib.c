@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 multiline_comment|/*&n; * This entire source file deals with the new queueing code.&n; */
 multiline_comment|/*&n; * Function:&t;__scsi_insert_special()&n; *&n; * Purpose:&t;worker for scsi_insert_special_*()&n; *&n; * Arguments:&t;q - request queue where request should be inserted&n; *&t;&t;rq - request to be inserted&n; * &t;&t;data - private data&n; *&t;&t;at_head - insert request at head or tail of queue&n; *&n; * Lock status:&t;Assumed that queue lock is not held upon entry.&n; *&n; * Returns:&t;Nothing&n; */

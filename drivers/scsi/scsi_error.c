@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 multiline_comment|/*&n; * We must always allow SHUTDOWN_SIGS.  Even if we are not a module,&n; * the host drivers that we are using may be loaded as modules, and&n; * when we unload these,  we need to ensure that the error handler thread&n; * can be shut down.&n; *&n; * Note - when we unload a module, we send a SIGHUP.  We mustn&squot;t&n; * enable SIGTERM, as this is how the init shuts things down when you&n; * go to single-user mode.  For that matter, init also sends SIGKILL,&n; * so we mustn&squot;t enable that one either.  We use SIGHUP instead.  Other&n; * options would be SIGPWR, I suppose.&n; */
 DECL|macro|SHUTDOWN_SIGS
 mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGHUP))
@@ -5105,5 +5104,4 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof
