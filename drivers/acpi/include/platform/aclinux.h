@@ -45,9 +45,5 @@ macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Linux uses GCC */
 macro_line|#include &quot;acgcc.h&quot;
-DECL|macro|DEBUGGER_THREADING
-macro_line|#undef DEBUGGER_THREADING
-DECL|macro|DEBUGGER_THREADING
-mdefine_line|#define DEBUGGER_THREADING&t;DEBUGGER_SINGLE_THREADED
 macro_line|#endif /* __ACLINUX_H__ */
 eof
