@@ -29,10 +29,6 @@ id|memblk_devices
 id|MAX_NR_MEMBLKS
 )braket
 suffix:semicolon
-r_extern
-r_int
-id|numnodes
-suffix:semicolon
 DECL|function|topology_init
 r_static
 r_int
@@ -55,7 +51,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 suffix:semicolon
 id|i
 op_increment

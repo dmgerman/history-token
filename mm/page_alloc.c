@@ -17,6 +17,14 @@ macro_line|#include &lt;asm/topology.h&gt;
 id|DECLARE_BITMAP
 c_func
 (paren
+id|node_online_map
+comma
+id|MAX_NUMNODES
+)paren
+suffix:semicolon
+id|DECLARE_BITMAP
+c_func
+(paren
 id|memblk_online_map
 comma
 id|MAX_NR_MEMBLKS
