@@ -5342,13 +5342,9 @@ id|drive
 )paren
 suffix:semicolon
 r_else
-id|drive-&gt;driver
-op_member_access_from_pointer
-id|pre_reset
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;post_reset
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond

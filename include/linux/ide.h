@@ -1811,6 +1811,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=sleeping &amp; sleep field valid */
+DECL|member|post_reset
+r_int
+id|post_reset
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|quirk_list
 id|u8
 id|quirk_list
@@ -3633,17 +3639,6 @@ r_int
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-DECL|member|pre_reset
-r_void
-(paren
-op_star
-id|pre_reset
-)paren
-(paren
-id|ide_drive_t
-op_star
 )paren
 suffix:semicolon
 DECL|member|capacity
