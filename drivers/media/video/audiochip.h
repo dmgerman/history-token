@@ -48,5 +48,8 @@ mdefine_line|#define AUDC_SET_TREBLE       _IOW(&squot;m&squot;,14,__u16)
 mdefine_line|#define AUDC_GET_UNIT         _IOR(&squot;m&squot;,15,int) /* ??? - unimplemented in MSP3400 */
 mdefine_line|#define AUDC_SWITCH_MUTE      _IO(&squot;m&squot;,16)      /* turn on mute */
 macro_line|#endif
+multiline_comment|/* misc stuff to pass around config info to i2c chips */
+DECL|macro|AUDC_CONFIG_PINNACLE
+mdefine_line|#define AUDC_CONFIG_PINNACLE  _IOW(&squot;m&squot;,32,int)
 macro_line|#endif /* AUDIOCHIP_H */
 eof
