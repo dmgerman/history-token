@@ -987,6 +987,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Some hardware requires clearing the CPPR, while other hardware does not&n;&t; * it is safe either way&n;&t; */
+id|pSeriesLP_cppr_info
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|rtas_stop_self
 c_func
 (paren
