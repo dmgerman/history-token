@@ -30,14 +30,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 r_extern
-r_int
-id|swsusp_pagedir_relocate
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|semaphore
 id|pm_sem
