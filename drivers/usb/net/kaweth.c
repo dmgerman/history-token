@@ -208,6 +208,17 @@ multiline_comment|/* 3Com 3C19250 */
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x0506
+comma
+l_int|0x11f8
+)paren
+)brace
+comma
+multiline_comment|/* 3Com 3C460 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x0557
 comma
 l_int|0x2002
