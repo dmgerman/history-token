@@ -12579,6 +12579,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|err
+)paren
+r_goto
+id|out
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|recv_perm
 )paren
 (brace
