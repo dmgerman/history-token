@@ -82,9 +82,9 @@ id|normal_i2c
 )braket
 op_assign
 (brace
-l_int|34
-op_rshift
-l_int|1
+l_int|0x24
+comma
+l_int|0x25
 comma
 id|I2C_CLIENT_END
 )brace
