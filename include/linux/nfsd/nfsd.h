@@ -809,6 +809,8 @@ DECL|macro|nfserr_bad_xdr
 mdefine_line|#define&t;nfserr_bad_xdr&t;&t;__constant_htonl(NFSERR_BAD_XDR)
 DECL|macro|nfserr_openmode
 mdefine_line|#define&t;nfserr_openmode&t;&t;__constant_htonl(NFSERR_OPENMODE)
+DECL|macro|nfserr_locks_held
+mdefine_line|#define&t;nfserr_locks_held&t;__constant_htonl(NFSERR_LOCKS_HELD)
 multiline_comment|/* error codes for internal use */
 multiline_comment|/* if a request fails due to kmalloc failure, it gets dropped.&n; *  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit
