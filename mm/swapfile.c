@@ -957,11 +957,11 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the pagecache lock held.. */
-id|spin_lock
+id|read_lock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|swapper_space.page_lock
 )paren
 suffix:semicolon
 r_if
@@ -983,11 +983,11 @@ id|retval
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|read_unlock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|swapper_space.page_lock
 )paren
 suffix:semicolon
 )brace
@@ -1216,11 +1216,11 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the pagecache lock held.. */
-id|spin_lock
+id|read_lock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|swapper_space.page_lock
 )paren
 suffix:semicolon
 r_if
@@ -1256,11 +1256,11 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
+id|read_unlock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|swapper_space.page_lock
 )paren
 suffix:semicolon
 )brace

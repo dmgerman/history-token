@@ -121,6 +121,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|radix_tree_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|free_initmem
 c_func
 (paren
@@ -1358,10 +1366,9 @@ c_func
 id|mempages
 )paren
 suffix:semicolon
-id|page_cache_init
+id|radix_tree_init
 c_func
 (paren
-id|mempages
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ARCH_S390)

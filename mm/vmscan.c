@@ -298,7 +298,7 @@ id|entry.val
 r_break
 suffix:semicolon
 multiline_comment|/* Add it to the swap cache and mark it dirty&n;&t;&t; * (adding to the page cache will clear the dirty&n;&t;&t; * and uptodate bits, so we need to do it again)&n;&t;&t; */
-r_if
+r_switch
 c_cond
 (paren
 id|add_to_swap_cache
@@ -308,10 +308,12 @@ id|page
 comma
 id|entry
 )paren
-op_eq
-l_int|0
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* Success */
 id|SetPageUptodate
 c_func
 (paren
@@ -326,6 +328,25 @@ id|page
 suffix:semicolon
 r_goto
 id|set_swap_pte
+suffix:semicolon
+r_case
+op_minus
+id|ENOMEM
+suffix:colon
+multiline_comment|/* radix-tree allocation */
+id|swap_free
+c_func
+(paren
+id|entry
+)paren
+suffix:semicolon
+r_goto
+id|preserve
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* ENOENT: raced */
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Raced with &quot;speculative&quot; read_swap_cache_async */
@@ -1336,6 +1357,11 @@ id|list_head
 op_star
 id|entry
 suffix:semicolon
+r_struct
+id|address_space
+op_star
+id|mapping
+suffix:semicolon
 r_int
 id|max_scan
 op_assign
@@ -1611,6 +1637,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|mapping
+op_assign
+id|page-&gt;mapping
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1626,7 +1656,7 @@ c_func
 id|page
 )paren
 op_logical_and
-id|page-&gt;mapping
+id|mapping
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * It is not critical here to write it only if&n;&t;&t;&t; * the page is unmapped beause any direct writer&n;&t;&t;&t; * like O_DIRECT would set the PG_dirty bitflag&n;&t;&t;&t; * on the phisical page after having successfully&n;&t;&t;&t; * pinned it and after the I/O to the page is finished,&n;&t;&t;&t; * so the direct writes to the page cannot get lost.&n;&t;&t;&t; */
@@ -1643,7 +1673,7 @@ op_star
 suffix:semicolon
 id|writepage
 op_assign
-id|page-&gt;mapping-&gt;a_ops-&gt;writepage
+id|mapping-&gt;a_ops-&gt;writepage
 suffix:semicolon
 r_if
 c_cond
@@ -1742,7 +1772,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;mapping
+id|mapping
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * We must not allow an anon page&n;&t;&t;&t;&t;&t; * with no buffers to be visible on&n;&t;&t;&t;&t;&t; * the LRU, so we unlock the page after&n;&t;&t;&t;&t;&t; * taking the lru lock&n;&t;&t;&t;&t;&t; */
@@ -1827,35 +1857,40 @@ r_continue
 suffix:semicolon
 )brace
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|pagecache_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * this is the non-racy check for busy page.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is the non-racy check for busy page.&n;&t;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|page-&gt;mapping
-op_logical_or
-op_logical_neg
+id|mapping
+)paren
+(brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|is_page_cache_freeable
 c_func
 (paren
 id|page
 )paren
 )paren
-(brace
-id|spin_unlock
+r_goto
+id|page_freeable
+suffix:semicolon
+id|write_unlock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+)brace
 id|UnlockPage
 c_func
 (paren
@@ -1874,7 +1909,7 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Alert! We&squot;ve found too many mapped pages on the&n;&t;&t;&t; * inactive list, so we start swapping out now!&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Alert! We&squot;ve found too many mapped pages on the&n;&t;&t; * inactive list, so we start swapping out now!&n;&t;&t; */
 id|spin_unlock
 c_func
 (paren
@@ -1895,7 +1930,8 @@ suffix:semicolon
 r_return
 id|nr_pages
 suffix:semicolon
-)brace
+id|page_freeable
+suffix:colon
 multiline_comment|/*&n;&t;&t; * It is critical to check PageDirty _after_ we made sure&n;&t;&t; * the page is freeable* so not in use by anybody.&n;&t;&t; */
 r_if
 c_cond
@@ -1907,11 +1943,11 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 id|UnlockPage
@@ -1945,11 +1981,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
@@ -1968,11 +2004,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
-id|pagecache_lock
+id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 id|swap_free

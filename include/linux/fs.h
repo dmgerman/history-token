@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 r_struct
@@ -829,6 +830,17 @@ DECL|struct|address_space
 r_struct
 id|address_space
 (brace
+DECL|member|page_tree
+r_struct
+id|radix_tree_root
+id|page_tree
+suffix:semicolon
+multiline_comment|/* radix tree of all pages */
+DECL|member|page_lock
+id|rwlock_t
+id|page_lock
+suffix:semicolon
+multiline_comment|/* and rwlock protecting it */
 DECL|member|clean_pages
 r_struct
 id|list_head
