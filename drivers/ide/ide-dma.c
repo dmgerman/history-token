@@ -2874,18 +2874,15 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: -- Error, unable to allocate%s DMA table(s).&bslash;n&quot;
 comma
-(paren
+id|hwif-&gt;cds-&gt;name
+comma
+op_logical_neg
 id|hwif-&gt;dmatable_cpu
-op_eq
-l_int|NULL
-)paren
 ques
 c_cond
 l_string|&quot; CPU&quot;
 suffix:colon
 l_string|&quot;&quot;
-comma
-id|hwif-&gt;cds-&gt;name
 )paren
 suffix:semicolon
 id|ide_release_dma_engine
