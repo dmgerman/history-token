@@ -2209,6 +2209,29 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_disabled
+)paren
+(brace
+id|pnpbios_disabled
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PnPBIOS: Disabled by ACPI&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 multiline_comment|/* scan the system for pnpbios support */
 r_if
 c_cond
