@@ -4222,6 +4222,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_PT_SYSTEM3
+id|pcmcia_system3_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_SHANNON
 id|pcmcia_shannon_init
 c_func
