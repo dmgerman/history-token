@@ -642,12 +642,12 @@ id|tid
 op_assign
 id|dev-&gt;tid
 suffix:semicolon
-r_int
-r_int
+r_void
+op_star
 id|msg
 suffix:semicolon
-r_int
-r_int
+r_void
+op_star
 id|mptr
 suffix:semicolon
 id|u64
@@ -682,7 +682,7 @@ singleline_comment|// printk(KERN_INFO &quot;i2ob_send called&bslash;n&quot;);
 multiline_comment|/* Map the message to a virtual address */
 id|msg
 op_assign
-id|c-&gt;mem_offset
+id|c-&gt;msg_virt
 op_plus
 id|m
 suffix:semicolon
@@ -1537,14 +1537,16 @@ c_func
 id|c
 comma
 (paren
-(paren
 r_int
 r_int
 )paren
 id|m
-)paren
 op_minus
-id|c-&gt;mem_offset
+(paren
+r_int
+r_int
+)paren
+id|c-&gt;msg_virt
 )paren
 suffix:semicolon
 r_return

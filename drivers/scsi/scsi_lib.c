@@ -503,12 +503,6 @@ comma
 id|retries
 )paren
 suffix:semicolon
-id|generic_unplug_device
-c_func
-(paren
-id|sreq-&gt;sr_device-&gt;request_queue
-)paren
-suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
