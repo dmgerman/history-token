@@ -772,12 +772,6 @@ id|list_head
 id|locked_pages
 suffix:semicolon
 multiline_comment|/* list of locked pages */
-DECL|member|io_pages
-r_struct
-id|list_head
-id|io_pages
-suffix:semicolon
-multiline_comment|/* being prepared for I/O */
 DECL|member|nrpages
 r_int
 r_int
