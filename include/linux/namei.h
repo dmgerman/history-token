@@ -35,18 +35,6 @@ DECL|member|last_type
 r_int
 id|last_type
 suffix:semicolon
-DECL|member|old_dentry
-r_struct
-id|dentry
-op_star
-id|old_dentry
-suffix:semicolon
-DECL|member|old_mnt
-r_struct
-id|vfsmount
-op_star
-id|old_mnt
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Type of the last component on LOOKUP_PARENT&n; */
