@@ -1287,7 +1287,7 @@ op_amp
 id|workqueues
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1510,7 +1510,7 @@ op_amp
 id|wq-&gt;list
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
