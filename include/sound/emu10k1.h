@@ -2914,7 +2914,10 @@ mdefine_line|#define FXBUS(x)&t;(0x00 + (x))&t;/* x = 0x00 - 0x0f */
 DECL|macro|EXTIN
 mdefine_line|#define EXTIN(x)&t;(0x10 + (x))&t;/* x = 0x00 - 0x0f */
 DECL|macro|EXTOUT
-mdefine_line|#define EXTOUT(x)&t;(0x20 + (x))&t;/* x = 0x00 - 0x0f */
+mdefine_line|#define EXTOUT(x)&t;(0x20 + (x))&t;/* x = 0x00 - 0x0f physical outs -&gt; FXWC low 16 bits */
+DECL|macro|FXBUS2
+mdefine_line|#define FXBUS2(x)&t;(0x30 + (x))&t;/* x = 0x00 - 0x0f copies of fx buses for capture -&gt; FXWC high 16 bits */
+multiline_comment|/* NB: 0x31 and 0x32 are shared with Center/LFE on SB live 5.1 */
 DECL|macro|C_00000000
 mdefine_line|#define C_00000000&t;0x40
 DECL|macro|C_00000001
@@ -2994,11 +2997,19 @@ mdefine_line|#define A_ITRAM_CTL(x)&t;(A_TANKMEMCTLREGBASE + 0x00 + (x)) /* x = 
 DECL|macro|A_ETRAM_CTL
 mdefine_line|#define A_ETRAM_CTL(x)&t;(A_TANKMEMCTLREGBASE + 0xc0 + (x)) /* x = 0x00 - 0x3f */
 DECL|macro|A_FXBUS
-mdefine_line|#define A_FXBUS(x)&t;(0x00 + (x))&t;/* x = 0x00 - 0x3f? */
+mdefine_line|#define A_FXBUS(x)&t;(0x00 + (x))&t;/* x = 0x00 - 0x3f FX buses */
 DECL|macro|A_EXTIN
-mdefine_line|#define A_EXTIN(x)&t;(0x40 + (x))&t;/* x = 0x00 - 0x1f? */
+mdefine_line|#define A_EXTIN(x)&t;(0x40 + (x))&t;/* x = 0x00 - 0x0f physical ins */
+DECL|macro|A_P16VIN
+mdefine_line|#define A_P16VIN(x)&t;(0x50 + (x))&t;/* x = 0x00 - 0x0f p16v ins (A2 only) &quot;EMU32 inputs&quot; */
 DECL|macro|A_EXTOUT
-mdefine_line|#define A_EXTOUT(x)&t;(0x60 + (x))&t;/* x = 0x00 - 0x1f? */
+mdefine_line|#define A_EXTOUT(x)&t;(0x60 + (x))&t;/* x = 0x00 - 0x1f physical outs -&gt; A_FXWC1 0x79-7f unknown   */
+DECL|macro|A_FXBUS2
+mdefine_line|#define A_FXBUS2(x)&t;(0x80 + (x))&t;/* x = 0x00 - 0x1f extra outs used for EFX capture -&gt; A_FXWC2 */
+DECL|macro|A_EMU32OUTH
+mdefine_line|#define A_EMU32OUTH(x)&t;(0xa0 + (x))&t;/* x = 0x00 - 0x0f &quot;EMU32_OUT_10 - _1F&quot; - ??? */
+DECL|macro|A_EMU32OUTL
+mdefine_line|#define A_EMU32OUTL(x)&t;(0xb0 + (x))&t;/* x = 0x00 - 0x0f &quot;EMU32_OUT_1 - _F&quot; - ??? */
 DECL|macro|A_GPR
 mdefine_line|#define A_GPR(x)&t;(A_FXGPREGBASE + (x))
 multiline_comment|/* cc_reg constants */
