@@ -623,7 +623,20 @@ id|PAGE_SIZE
 op_div
 l_int|8
 suffix:semicolon
-multiline_comment|/*&n;&t; * we need to allow at least 10 threads to boot a system&n;&t; */
+multiline_comment|/*&n;&t; * we need to allow at least 20 threads to boot a system&n;&t; */
+r_if
+c_cond
+(paren
+id|max_threads
+OL
+l_int|20
+)paren
+(brace
+id|max_threads
+op_assign
+l_int|20
+suffix:semicolon
+)brace
 id|init_task.rlim
 (braket
 id|RLIMIT_NPROC
@@ -631,15 +644,9 @@ id|RLIMIT_NPROC
 dot
 id|rlim_cur
 op_assign
-id|max
-c_func
-(paren
-l_int|10
-comma
 id|max_threads
 op_div
 l_int|2
-)paren
 suffix:semicolon
 id|init_task.rlim
 (braket
@@ -648,15 +655,9 @@ id|RLIMIT_NPROC
 dot
 id|rlim_max
 op_assign
-id|max
-c_func
-(paren
-l_int|10
-comma
 id|max_threads
 op_div
 l_int|2
-)paren
 suffix:semicolon
 )brace
 DECL|function|dup_task_struct
