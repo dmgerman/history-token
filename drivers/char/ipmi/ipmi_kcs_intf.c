@@ -2981,9 +2981,10 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|kcs_size
-c_func
+r_sizeof
 (paren
+op_star
+id|new_kcs
 )paren
 comma
 id|GFP_KERNEL
