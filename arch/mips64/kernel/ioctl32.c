@@ -4234,7 +4234,6 @@ comma
 id|hdio_ioctl_trans
 )paren
 comma
-singleline_comment|// HDIO_OBSOLETE_IDENTITY
 id|IOCTL32_HANDLER
 c_func
 (paren
@@ -4281,8 +4280,6 @@ c_func
 id|HDIO_GET_IDENTITY
 )paren
 comma
-singleline_comment|// HDIO_TRISTATE_HWIF&t;&t;&t;&t;/* not implemented */
-singleline_comment|// HDIO_DRIVE_TASK&t;&t;&t;&t;/* To do, need specs */
 id|IOCTL32_DEFAULT
 c_func
 (paren

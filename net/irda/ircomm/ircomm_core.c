@@ -359,6 +359,13 @@ r_return
 id|self
 suffix:semicolon
 )brace
+DECL|variable|ircomm_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_open
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_close_instance (self)&n; *&n; *    Remove IrCOMM instance&n; *&n; */
 DECL|function|__ircomm_close
 r_static
@@ -529,6 +536,13 @@ id|self
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ircomm_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_close
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_connect_request (self, service_type)&n; *&n; *    Impl. of this function is differ from one of the reference. This&n; *    function does discovery as well as sending connect request&n; * &n; */
 DECL|function|ircomm_connect_request
 r_int
@@ -635,6 +649,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|ircomm_connect_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_connect_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_connect_indication (self, qos, skb)&n; *&n; *    Notify user layer about the incoming connection&n; *&n; */
 DECL|function|ircomm_connect_indication
 r_void
@@ -802,6 +823,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|ircomm_connect_response
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_connect_response
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function connect_confirm (self, skb)&n; *&n; *    Notify user layer that the link is now connected&n; *&n; */
 DECL|function|ircomm_connect_confirm
 r_void
@@ -961,6 +989,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|ircomm_data_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_data_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_data_indication (self, skb)&n; *&n; *    Data arrived, so deliver it to user&n; *&n; */
 DECL|function|ircomm_data_indication
 r_void
@@ -1219,6 +1254,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|ircomm_control_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_control_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_control_indication (self, skb)&n; *&n; *    Data has arrived on the control channel&n; *&n; */
 DECL|function|ircomm_control_indication
 r_static
@@ -1398,6 +1440,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|ircomm_disconnect_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_disconnect_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function disconnect_indication (self, skb)&n; *&n; *    Tell user that the link has been disconnected&n; *&n; */
 DECL|function|ircomm_disconnect_indication
 r_void
@@ -1544,6 +1593,13 @@ id|flow
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ircomm_flow_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ircomm_flow_request
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; * Function ircomm_proc_read (buf, start, offset, len, unused)&n; *&n; *    &n; *&n; */
 DECL|function|ircomm_proc_read

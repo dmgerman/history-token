@@ -421,9 +421,6 @@ id|kiobuf
 op_star
 id|iobuf
 suffix:semicolon
-id|kdev_t
-id|dev
-suffix:semicolon
 r_int
 r_int
 op_star
@@ -447,14 +444,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|rawdevice-&gt;binding-&gt;bd_dev
-)paren
-suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -465,7 +454,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|rawdevice-&gt;binding
 )paren
 comma
 id|page
@@ -1419,15 +1408,6 @@ op_minus
 l_int|9
 )paren
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|item-&gt;rawdevice-&gt;binding-&gt;bd_dev
-)paren
-suffix:semicolon
 multiline_comment|/* If we are writing to the last page on the device and it doesnt end&n;       * on a page boundary, subtract the number of sectors that dont exist.&n;       */
 r_if
 c_cond
@@ -2346,7 +2326,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|rawdevice-&gt;binding-&gt;bd_dev
+id|rawdevice-&gt;binding
 )paren
 comma
 id|from
@@ -2890,7 +2870,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|rawdevice-&gt;binding-&gt;bd_dev
+id|rawdevice-&gt;binding
 )paren
 comma
 (paren
@@ -3221,7 +3201,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|rawdevice-&gt;binding-&gt;bd_dev
+id|rawdevice-&gt;binding
 )paren
 comma
 (paren
@@ -5120,7 +5100,7 @@ l_int|1
 comma
 l_string|&quot;blkmtd: devname = %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|rdev

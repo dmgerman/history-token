@@ -4,10 +4,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 multiline_comment|/*&n; * The readahead logic manages two readahead windows.  The &quot;current&quot;&n; * and the &quot;ahead&quot; windows.&n; *&n; * VM_MAX_READAHEAD specifies, in kilobytes, the maximum size of&n; * each of the two windows.  So the amount of readahead which is&n; * in front of the file pointer varies between VM_MAX_READAHEAD and&n; * VM_MAX_READAHEAD * 2.&n; *&n; * VM_MAX_READAHEAD only applies if the underlying request queue&n; * has a zero value of ra_sectors.&n; */
-DECL|macro|VM_MAX_READAHEAD
-mdefine_line|#define VM_MAX_READAHEAD&t;128&t;/* kbytes */
-DECL|macro|VM_MIN_READAHEAD
-mdefine_line|#define VM_MIN_READAHEAD&t;16&t;/* kbytes (includes current page) */
 multiline_comment|/*&n; * Return max readahead size for this inode in number-of-pages.&n; */
 DECL|function|get_max_readahead
 r_static
@@ -26,27 +22,23 @@ id|blk_ra_kbytes
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_sb-&gt;s_bdev
+)paren
+(brace
 id|blk_ra_kbytes
 op_assign
 id|blk_get_readahead
 c_func
 (paren
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_bdev
 )paren
 op_div
 l_int|2
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|blk_ra_kbytes
-OL
-id|VM_MIN_READAHEAD
-)paren
-id|blk_ra_kbytes
-op_assign
-id|VM_MAX_READAHEAD
-suffix:semicolon
+)brace
 r_return
 id|blk_ra_kbytes
 op_rshift
@@ -91,8 +83,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Readahead design.&n; *&n; * The fields in struct file_ra_state represent the most-recently-executed&n; * readahead attempt:&n; *&n; * start:&t;Page index at which we started the readahead&n; * size:&t;Number of pages in that read&n; *              Together, these form the &quot;current window&quot;.&n; *              Together, start and size represent the `readahead window&squot;.&n; * next_size:   The number of pages to read when we get the next readahead miss.&n; * prev_page:   The page which the readahead algorithm most-recently inspected.&n; *              prev_page is mainly an optimisation: if page_cache_readahead sees&n; *              that it is again being called for a page which it just looked at,&n; *              it can return immediately without making any state changes.&n; * ahead_start,&n; * ahead_size:  Together, these form the &quot;ahead window&quot;.&n; *&n; * The readahead code manages two windows - the &quot;current&quot; and the &quot;ahead&quot;&n; * windows.  The intent is that while the application is walking the pages&n; * in the current window, I/O is underway on the ahead window.  When the&n; * current window is fully traversed, it is replaced by the ahead window&n; * and the ahead window is invalidated.  When this copying happens, the&n; * new current window&squot;s pages are probably still locked.  When I/O has&n; * completed, we submit a new batch of I/O, creating a new ahead window.&n; *&n; * So:&n; *&n; *   ----|----------------|----------------|-----&n; *       ^start           ^start+size&n; *                        ^ahead_start     ^ahead_start+ahead_size&n; *&n; *         ^ When this page is read, we submit I/O for the&n; *           ahead window.&n; *&n; * A `readahead hit&squot; occurs when a read request is made against a page which is&n; * inside the current window.  Hits are good, and the window size (next_size) is&n; * grown aggressively when hits occur.  Two pages are added to the next window&n; * size on each hit, which will end up doubling the next window size by the time&n; * I/O is submitted for it.&n; *&n; * If readahead hits are more sparse (say, the application is only reading every&n; * second page) then the window will build more slowly.&n; *&n; * On a readahead miss (the application seeked away) the readahead window is shrunk&n; * by 25%.  We don&squot;t want to drop it too aggressively, because it&squot;s a good assumption&n; * that an application which has built a good readahead window will continue to&n; * perform linear reads.  Either at the new file position, or at the old one after&n; * another seek.&n; *&n; * There is a special-case: if the first page which the application tries to read&n; * happens to be the first page of the file, it is assumed that a linear read is&n; * about to happen and the window is immediately set to half of the device maximum.&n; * &n; * A page request at (start + size) is not a miss at all - it&squot;s just a part of&n; * sequential file reading.&n; *&n; * This function is to be called for every page which is read, rather than when&n; * it is time to perform readahead.  This is so the readahead algorithm can centrally&n; * work out the access patterns.  This could be costly with many tiny read()s, so&n; * we specifically optimise for that case with prev_page.&n; */
-multiline_comment|/*&n; * do_page_cache_readahead actually reads a chunk of disk.  It allocates all the&n; * pages first, then submits them all for I/O. This avoids the very bad behaviour&n; * which would occur if page allocations are causing VM writeback.  We really don&squot;t&n; * want to intermingle reads and writes like that.&n; */
+multiline_comment|/*&n; * Readahead design.&n; *&n; * The fields in struct file_ra_state represent the most-recently-executed&n; * readahead attempt:&n; *&n; * start:&t;Page index at which we started the readahead&n; * size:&t;Number of pages in that read&n; *              Together, these form the &quot;current window&quot;.&n; *              Together, start and size represent the `readahead window&squot;.&n; * next_size:   The number of pages to read on the next readahead miss.&n; * prev_page:   The page which the readahead algorithm most-recently inspected.&n; *              prev_page is mainly an optimisation: if page_cache_readahead&n; *&t;&t;sees that it is again being called for a page which it just&n; *&t;&t;looked at, it can return immediately without making any state&n; *&t;&t;changes.&n; * ahead_start,&n; * ahead_size:  Together, these form the &quot;ahead window&quot;.&n; *&n; * The readahead code manages two windows - the &quot;current&quot; and the &quot;ahead&quot;&n; * windows.  The intent is that while the application is walking the pages&n; * in the current window, I/O is underway on the ahead window.  When the&n; * current window is fully traversed, it is replaced by the ahead window&n; * and the ahead window is invalidated.  When this copying happens, the&n; * new current window&squot;s pages are probably still locked.  When I/O has&n; * completed, we submit a new batch of I/O, creating a new ahead window.&n; *&n; * So:&n; *&n; *   ----|----------------|----------------|-----&n; *       ^start           ^start+size&n; *                        ^ahead_start     ^ahead_start+ahead_size&n; *&n; *         ^ When this page is read, we submit I/O for the&n; *           ahead window.&n; *&n; * A `readahead hit&squot; occurs when a read request is made against a page which is&n; * inside the current window.  Hits are good, and the window size (next_size)&n; * is grown aggressively when hits occur.  Two pages are added to the next&n; * window size on each hit, which will end up doubling the next window size by&n; * the time I/O is submitted for it.&n; *&n; * If readahead hits are more sparse (say, the application is only reading&n; * every second page) then the window will build more slowly.&n; *&n; * On a readahead miss (the application seeked away) the readahead window is&n; * shrunk by 25%.  We don&squot;t want to drop it too aggressively, because it is a&n; * good assumption that an application which has built a good readahead window&n; * will continue to perform linear reads.  Either at the new file position, or&n; * at the old one after another seek.&n; *&n; * There is a special-case: if the first page which the application tries to&n; * read happens to be the first page of the file, it is assumed that a linear&n; * read is about to happen and the window is immediately set to half of the&n; * device maximum.&n; * &n; * A page request at (start + size) is not a miss at all - it&squot;s just a part of&n; * sequential file reading.&n; *&n; * This function is to be called for every page which is read, rather than when&n; * it is time to perform readahead.  This is so the readahead algorithm can&n; * centrally work out the access patterns.  This could be costly with many tiny&n; * read()s, so we specifically optimise for that case with prev_page.&n; */
+multiline_comment|/*&n; * do_page_cache_readahead actually reads a chunk of disk.  It allocates all&n; * the pages first, then submits them all for I/O. This avoids the very bad&n; * behaviour which would occur if page allocations are causing VM writeback.&n; * We really don&squot;t want to intermingle reads and writes like that.&n; */
 DECL|function|do_page_cache_readahead
 r_void
 id|do_page_cache_readahead
@@ -438,17 +430,28 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|min
+id|max
 op_assign
-id|get_min_readahead
+id|get_max_readahead
 c_func
 (paren
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|max
+op_eq
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* No readahead */
+id|min
 op_assign
-id|get_max_readahead
+id|get_min_readahead
 c_func
 (paren
 id|inode
@@ -505,7 +508,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * A miss - lseek, pread, etc.  Shrink the readahead window by 25%.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * A miss - lseek, pread, etc.  Shrink the readahead&n;&t;&t; * window by 25%.&n;&t;&t; */
 id|ra-&gt;next_size
 op_sub_assign
 id|ra-&gt;next_size
@@ -749,7 +752,7 @@ id|target
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * handle_ra_thrashing() is called when it is known that a page which should&n; * have been present (it&squot;s inside the readahead window) was in fact evicted by&n; * the VM.&n; *&n; * We shrink the readahead window by three pages.  This is because we grow it&n; * by two pages on a readahead hit.  Theory being that the readahead window size&n; * will stabilise around the maximum level at which there isn&squot;t any thrashing.&n; */
+multiline_comment|/*&n; * handle_ra_thrashing() is called when it is known that a page which should&n; * have been present (it&squot;s inside the readahead window) was in fact evicted by&n; * the VM.&n; *&n; * We shrink the readahead window by three pages.  This is because we grow it&n; * by two pages on a readahead hit.  Theory being that the readahead window&n; * size will stabilise around the maximum level at which there isn&squot;t any&n; * thrashing.&n; */
 DECL|function|handle_ra_thrashing
 r_void
 id|handle_ra_thrashing
@@ -762,11 +765,11 @@ id|file
 )paren
 (brace
 r_struct
-id|inode
+id|address_space
 op_star
-id|inode
+id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
 suffix:semicolon
 r_const
 r_int
@@ -776,7 +779,7 @@ op_assign
 id|get_min_readahead
 c_func
 (paren
-id|inode
+id|mapping-&gt;host
 )paren
 suffix:semicolon
 id|file-&gt;f_ra.next_size

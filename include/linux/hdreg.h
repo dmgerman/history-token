@@ -1,7 +1,7 @@
 macro_line|#ifndef _LINUX_HDREG_H
 DECL|macro|_LINUX_HDREG_H
 mdefine_line|#define _LINUX_HDREG_H
-multiline_comment|/*&n; * This file contains some defines for the AT-hd-controller.&n; * Various sources.  &n; */
+multiline_comment|/*&n; * This file contains some defines for the AT-hd-controller.&n; * Various sources.&n; */
 DECL|macro|HD_IRQ
 mdefine_line|#define HD_IRQ 14&t;&t;&t;/* the standard disk interrupt */
 multiline_comment|/* ide.c has its own port definitions in &quot;ide.h&quot; */
@@ -44,8 +44,6 @@ DECL|macro|DRQ_STAT
 mdefine_line|#define DRQ_STAT&t;&t;0x08
 DECL|macro|SEEK_STAT
 mdefine_line|#define SEEK_STAT&t;&t;0x10
-DECL|macro|SERVICE_STAT
-mdefine_line|#define SERVICE_STAT&t;&t;SEEK_STAT
 DECL|macro|WRERR_STAT
 mdefine_line|#define WRERR_STAT&t;&t;0x20
 DECL|macro|READY_STAT
@@ -71,18 +69,9 @@ DECL|macro|BBD_ERR
 mdefine_line|#define BBD_ERR&t;&t;&t;0x80&t;/* pre-EIDE meaning:  block marked bad */
 DECL|macro|ICRC_ERR
 mdefine_line|#define ICRC_ERR&t;&t;0x80&t;/* new meaning:  CRC error during transfer */
-multiline_comment|/*&n; * bits of NSECTOR reg&n; */
-DECL|macro|NSEC_CD
-mdefine_line|#define NSEC_CD&t;&t;&t;0x1
-DECL|macro|NSEC_IO
-mdefine_line|#define NSEC_IO&t;&t;&t;0x2
-DECL|macro|NSEC_REL
-mdefine_line|#define NSEC_REL&t;&t;0x4
-multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; *&t;HDIO_DRIVE_CMD and HDIO_DRIVE_TASK&n; */
+multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; */
 DECL|macro|HDIO_DRIVE_CMD_HDR_SIZE
 mdefine_line|#define HDIO_DRIVE_CMD_HDR_SIZE&t;&t;(4 * sizeof(u8))
-DECL|macro|HDIO_DRIVE_TASK_HDR_SIZE
-mdefine_line|#define HDIO_DRIVE_TASK_HDR_SIZE&t;(8 * sizeof(u8))
 DECL|macro|HDIO_DRIVE_HOB_HDR_SIZE
 mdefine_line|#define HDIO_DRIVE_HOB_HDR_SIZE&t;&t;(8 * sizeof(u8))
 DECL|macro|IDE_DRIVE_TASK_INVALID
@@ -563,8 +552,6 @@ DECL|macro|HDIO_GET_MULTCOUNT
 mdefine_line|#define HDIO_GET_MULTCOUNT&t;0x0304&t;/* get current IDE blockmode setting */
 DECL|macro|HDIO_GET_QDMA
 mdefine_line|#define HDIO_GET_QDMA&t;&t;0x0305&t;/* get use-qdma flag */
-DECL|macro|HDIO_OBSOLETE_IDENTITY
-mdefine_line|#define HDIO_OBSOLETE_IDENTITY&t;0x0307&t;/* OBSOLETE, DO NOT USE: returns 142 bytes */
 DECL|macro|HDIO_GET_32BIT
 mdefine_line|#define HDIO_GET_32BIT&t;&t;0x0309&t;/* get current io_32bit setting */
 DECL|macro|HDIO_GET_NOWERR
@@ -583,14 +570,8 @@ DECL|macro|HDIO_GET_ADDRESS
 mdefine_line|#define&t;HDIO_GET_ADDRESS&t;0x0310&t;/* */
 DECL|macro|HDIO_GET_BUSSTATE
 mdefine_line|#define HDIO_GET_BUSSTATE&t;0x031a&t;/* get the bus state of the hwif */
-DECL|macro|HDIO_TRISTATE_HWIF
-mdefine_line|#define HDIO_TRISTATE_HWIF&t;0x031b&t;/* execute a channel tristate */
-DECL|macro|HDIO_DRIVE_TASK
-mdefine_line|#define HDIO_DRIVE_TASK&t;&t;0x031e&t;/* execute task and special drive command */
 DECL|macro|HDIO_DRIVE_CMD
 mdefine_line|#define HDIO_DRIVE_CMD&t;&t;0x031f&t;/* execute a special drive command */
-DECL|macro|HDIO_DRIVE_CMD_AEB
-mdefine_line|#define HDIO_DRIVE_CMD_AEB&t;HDIO_DRIVE_TASK
 multiline_comment|/* hd/ide ctl&squot;s that pass (arg) non-ptr values are numbered 0x032n/0x033n */
 DECL|macro|HDIO_SET_MULTCOUNT
 mdefine_line|#define HDIO_SET_MULTCOUNT&t;0x0321&t;/* change IDE blockmode */
@@ -1037,16 +1018,6 @@ l_int|5
 )braket
 suffix:semicolon
 multiline_comment|/* reserved words 95-99 */
-macro_line|#if 0
-r_int
-r_int
-id|words100_103
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* reserved words 100-103 */
-macro_line|#else
 DECL|member|lba_capacity_2
 r_int
 r_int
@@ -1054,7 +1025,6 @@ r_int
 id|lba_capacity_2
 suffix:semicolon
 multiline_comment|/* 48-bit total number of sectors */
-macro_line|#endif
 DECL|member|words104_125
 r_int
 r_int
@@ -1152,6 +1122,13 @@ id|integrity_word
 suffix:semicolon
 multiline_comment|/* (word 255)&n;&t;&t;&t;&t;&t; * 15:8 Checksum&n;&t;&t;&t;&t;&t; *  7:0 Signature&n;&t;&t;&t;&t;&t; */
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * IDE &quot;nice&quot; flags. These are used on a per drive basis to determine&n; * when to be nice and give more bandwidth to the other devices which&n; * share the same IDE bus.&n; */
 DECL|macro|IDE_NICE_DSC_OVERLAP

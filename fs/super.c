@@ -2252,7 +2252,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 r_sizeof

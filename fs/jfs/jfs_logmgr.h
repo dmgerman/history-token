@@ -504,11 +504,6 @@ op_star
 id|sb
 suffix:semicolon
 multiline_comment|/* 4: This is used to sync metadata&n;&t;&t;&t;&t; *    before writing syncpt.  Will&n;&t;&t;&t;&t; *    need to be a list if we share&n;&t;&t;&t;&t; *    the log between fs&squot;s&n;&t;&t;&t;&t; */
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
-multiline_comment|/* 4: log lv number */
 DECL|member|bdev
 r_struct
 id|block_device

@@ -88,11 +88,12 @@ op_star
 id|bi_next
 suffix:semicolon
 multiline_comment|/* request queue link */
-DECL|member|bi_dev
-id|kdev_t
-id|bi_dev
+DECL|member|bi_bdev
+r_struct
+id|block_device
+op_star
+id|bi_bdev
 suffix:semicolon
-multiline_comment|/* will be block device */
 DECL|member|bi_flags
 r_int
 r_int

@@ -71,14 +71,35 @@ DECL|macro|MSDOS_DOTDOT
 mdefine_line|#define MSDOS_DOTDOT &quot;..         &quot; /* &quot;..&quot;, padded to MSDOS_NAME chars */
 DECL|macro|MSDOS_FAT12
 mdefine_line|#define MSDOS_FAT12 4084 /* maximum number of clusters in a 12 bit FAT */
+multiline_comment|/* media of boot sector */
+DECL|macro|FAT_VALID_MEDIA
+mdefine_line|#define FAT_VALID_MEDIA(x)&t;((0xF8 &lt;= (x) &amp;&amp; (x) &lt;= 0xFF) || (x) == 0xF0)
+DECL|macro|FAT_FIRST_ENT
+mdefine_line|#define FAT_FIRST_ENT(s, x)&t;((MSDOS_SB(s)-&gt;fat_bits == 32 ? 0x0FFFFF00 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? 0xFF00 : 0xF00) | (x))
+multiline_comment|/* bad cluster mark */
+DECL|macro|BAD_FAT12
+mdefine_line|#define BAD_FAT12 0xFF7
+DECL|macro|BAD_FAT16
+mdefine_line|#define BAD_FAT16 0xFFF7
+DECL|macro|BAD_FAT32
+mdefine_line|#define BAD_FAT32 0xFFFFFF7
+DECL|macro|BAD_FAT
+mdefine_line|#define BAD_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? BAD_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? BAD_FAT16 : BAD_FAT12)
+multiline_comment|/* standard EOF */
 DECL|macro|EOF_FAT12
-mdefine_line|#define EOF_FAT12 0xFF8&t;&t;/* standard EOF */
+mdefine_line|#define EOF_FAT12 0xFF8
 DECL|macro|EOF_FAT16
 mdefine_line|#define EOF_FAT16 0xFFF8
 DECL|macro|EOF_FAT32
 mdefine_line|#define EOF_FAT32 0xFFFFFF8
 DECL|macro|EOF_FAT
 mdefine_line|#define EOF_FAT(s) (MSDOS_SB(s)-&gt;fat_bits == 32 ? EOF_FAT32 : &bslash;&n;&t;MSDOS_SB(s)-&gt;fat_bits == 16 ? EOF_FAT16 : EOF_FAT12)
+DECL|macro|FAT_ENT_FREE
+mdefine_line|#define FAT_ENT_FREE&t;(0)
+DECL|macro|FAT_ENT_BAD
+mdefine_line|#define FAT_ENT_BAD&t;(BAD_FAT32)
+DECL|macro|FAT_ENT_EOF
+mdefine_line|#define FAT_ENT_EOF&t;(EOF_FAT32)
 DECL|macro|FAT_FSINFO_SIG1
 mdefine_line|#define FAT_FSINFO_SIG1&t;&t;0x41615252
 DECL|macro|FAT_FSINFO_SIG2
@@ -173,7 +194,7 @@ DECL|member|media
 id|__u8
 id|media
 suffix:semicolon
-multiline_comment|/* media code (unused) */
+multiline_comment|/* media code */
 DECL|member|fat_length
 id|__u16
 id|fat_length
@@ -810,6 +831,23 @@ id|new_value
 suffix:semicolon
 r_extern
 r_int
+id|__fat_access
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|nr
+comma
+r_int
+id|new_value
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|fat_bmap
 c_func
 (paren
@@ -889,20 +927,6 @@ r_struct
 id|super_block
 op_star
 id|sb
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fat_get_cluster
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|cluster
 )paren
 suffix:semicolon
 r_extern

@@ -4532,6 +4532,7 @@ DECL|function|idefloppy_create_rw_cmd
 r_static
 r_void
 id|idefloppy_create_rw_cmd
+c_func
 (paren
 id|idefloppy_floppy_t
 op_star
@@ -4546,8 +4547,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|sector
 )paren
 (brace
@@ -4761,13 +4761,15 @@ id|pc-&gt;flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;idefloppy_do_request is our request handling function.&t;&n; */
+multiline_comment|/*&n; * This is our request handling function.&n; */
 DECL|function|idefloppy_do_request
 r_static
 id|ide_startstop_t
 id|idefloppy_do_request
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -4776,8 +4778,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
@@ -4822,7 +4823,7 @@ comma
 id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4920,6 +4921,7 @@ suffix:semicolon
 id|pc
 op_assign
 id|idefloppy_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
@@ -8320,17 +8322,9 @@ suffix:colon
 l_int|NULL
 comma
 multiline_comment|/* use default method */
-id|pre_reset
-suffix:colon
-l_int|NULL
-comma
 id|capacity
 suffix:colon
 id|idefloppy_capacity
-comma
-id|special
-suffix:colon
-l_int|NULL
 comma
 id|proc
 suffix:colon

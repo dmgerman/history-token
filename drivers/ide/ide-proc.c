@@ -613,6 +613,7 @@ DECL|function|proc_ide_read_channel
 r_static
 r_int
 id|proc_ide_read_channel
+c_func
 (paren
 r_char
 op_star

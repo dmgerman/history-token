@@ -441,13 +441,6 @@ id|end
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
@@ -456,6 +449,13 @@ comma
 id|beg
 comma
 id|end
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return

@@ -775,6 +775,22 @@ id|qstr
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|dentry
+op_star
+id|__d_lookup
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|qstr
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* validate &quot;insecure&quot; dentry pointer */
 r_extern
 r_int

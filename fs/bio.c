@@ -697,9 +697,9 @@ id|bio-&gt;bi_sector
 op_assign
 id|bio_src-&gt;bi_sector
 suffix:semicolon
-id|bio-&gt;bi_dev
+id|bio-&gt;bi_bdev
 op_assign
-id|bio_src-&gt;bi_dev
+id|bio_src-&gt;bi_bdev
 suffix:semicolon
 id|bio-&gt;bi_flags
 op_or_assign
@@ -1051,9 +1051,9 @@ id|b-&gt;bi_sector
 op_assign
 id|bio-&gt;bi_sector
 suffix:semicolon
-id|b-&gt;bi_dev
+id|b-&gt;bi_bdev
 op_assign
-id|bio-&gt;bi_dev
+id|bio-&gt;bi_bdev
 suffix:semicolon
 id|b-&gt;bi_rw
 op_assign
@@ -1354,9 +1354,9 @@ id|bio-&gt;bi_sector
 op_assign
 id|sector
 suffix:semicolon
-id|bio-&gt;bi_dev
+id|bio-&gt;bi_bdev
 op_assign
-id|dev
+id|bdev
 suffix:semicolon
 id|bio-&gt;bi_idx
 op_assign

@@ -207,7 +207,11 @@ c_func
 (paren
 id|rq-&gt;rq_dev
 comma
-id|bio-&gt;bi_dev
+id|to_kdev_t
+c_func
+(paren
+id|bio-&gt;bi_bdev-&gt;bd_dev
+)paren
 )paren
 op_logical_and
 op_logical_neg

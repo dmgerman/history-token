@@ -103,15 +103,6 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -173,7 +164,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 id|blk
@@ -293,7 +284,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 id|blk
@@ -378,7 +369,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 id|blk

@@ -393,11 +393,6 @@ r_int
 id|b_list
 suffix:semicolon
 multiline_comment|/* List that this buffer appears */
-DECL|member|b_dev
-id|kdev_t
-id|b_dev
-suffix:semicolon
-multiline_comment|/* device (B_FREE = free) */
 DECL|member|b_bdev
 r_struct
 id|block_device
@@ -994,6 +989,12 @@ suffix:semicolon
 DECL|member|bd_holders
 r_int
 id|bd_holders
+suffix:semicolon
+DECL|member|bd_contains
+r_struct
+id|block_device
+op_star
+id|bd_contains
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4965,12 +4966,39 @@ r_extern
 r_const
 r_char
 op_star
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|kdev_t
 )paren
 suffix:semicolon
+DECL|function|bdevname
+r_extern
+r_inline
+r_const
+r_char
+op_star
+id|bdevname
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+)paren
+(brace
+r_return
+id|__bdevname
+c_func
+(paren
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
+)paren
+suffix:semicolon
+)brace
 r_extern
 r_const
 r_char
@@ -6047,7 +6075,7 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/err.h&gt;
-multiline_comment|/*&n; * The bitmask for a lookup event:&n; *  - follow links at the end&n; *  - require a directory&n; *  - ending slashes ok even for nonexistent files&n; *  - internal &quot;there are more path compnents&quot; flag&n; */
+multiline_comment|/*&n; * The bitmask for a lookup event:&n; *  - follow links at the end&n; *  - require a directory&n; *  - ending slashes ok even for nonexistent files&n; *  - internal &quot;there are more path compnents&quot; flag&n; *  - locked when lookup done with dcache_lock held&n; */
 DECL|macro|LOOKUP_FOLLOW
 mdefine_line|#define LOOKUP_FOLLOW&t;&t;(1)
 DECL|macro|LOOKUP_DIRECTORY
@@ -6058,6 +6086,8 @@ DECL|macro|LOOKUP_PARENT
 mdefine_line|#define LOOKUP_PARENT&t;&t;(16)
 DECL|macro|LOOKUP_NOALT
 mdefine_line|#define LOOKUP_NOALT&t;&t;(32)
+DECL|macro|LOOKUP_LOCKED
+mdefine_line|#define LOOKUP_LOCKED&t;&t;(64)
 multiline_comment|/*&n; * Type of the last component on LOOKUP_PARENT&n; */
 DECL|enumerator|LAST_NORM
 DECL|enumerator|LAST_ROOT
@@ -6205,6 +6235,26 @@ r_int
 id|FASTCALL
 c_func
 (paren
+id|path_lookup
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+r_struct
+id|nameidata
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|FASTCALL
+c_func
+(paren
 id|link_path_walk
 c_func
 (paren
@@ -6218,59 +6268,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-DECL|function|path_lookup
-r_static
-r_inline
-r_int
-id|path_lookup
-c_func
-(paren
-r_const
-r_char
-op_star
-id|path
-comma
-r_int
-id|flags
-comma
-r_struct
-id|nameidata
-op_star
-id|nd
-)paren
-(brace
-r_int
-id|error
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|path_init
-c_func
-(paren
-id|path
-comma
-id|flags
-comma
-id|nd
-)paren
-)paren
-id|error
-op_assign
-id|path_walk
-c_func
-(paren
-id|path
-comma
-id|nd
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
 r_extern
 r_void
 id|path_release
@@ -6624,7 +6621,7 @@ c_func
 (paren
 l_string|&quot;No block device for %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -6729,7 +6726,7 @@ c_func
 (paren
 l_string|&quot;No block device for %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -6990,7 +6987,7 @@ c_func
 (paren
 l_string|&quot;No block device for %s&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -7146,10 +7143,6 @@ suffix:semicolon
 id|bh-&gt;b_bdev
 op_assign
 id|sb-&gt;s_bdev
-suffix:semicolon
-id|bh-&gt;b_dev
-op_assign
-id|sb-&gt;s_dev
 suffix:semicolon
 id|bh-&gt;b_blocknr
 op_assign

@@ -770,23 +770,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Common ioctl&squot;s for block devices&n; */
-r_extern
-r_int
-id|block_ioctl
-c_func
-(paren
-id|kdev_t
-id|dev
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 DECL|function|blk_ioctl
 r_int
 id|blk_ioctl
@@ -839,7 +822,7 @@ op_assign
 id|block_ioctl
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|cmd
 comma
@@ -968,7 +951,7 @@ r_return
 id|blk_set_readahead
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|arg
 )paren
@@ -996,7 +979,7 @@ c_func
 id|blk_get_readahead
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 (paren
@@ -1092,10 +1075,10 @@ suffix:colon
 multiline_comment|/* get block device hardware sector size */
 id|intval
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_return

@@ -2277,13 +2277,15 @@ id|drive
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;idescsi_do_request is our request handling function.&n; */
+multiline_comment|/*&n; * This is our request handling function.&n; */
 DECL|function|idescsi_do_request
 r_static
 id|ide_startstop_t
 id|idescsi_do_request
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2292,8 +2294,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
@@ -2339,6 +2340,7 @@ id|REQ_SPECIAL
 (brace
 r_return
 id|idescsi_issue_pc
+c_func
 (paren
 id|drive
 comma
@@ -2374,6 +2376,7 @@ DECL|function|idescsi_open
 r_static
 r_int
 id|idescsi_open
+c_func
 (paren
 r_struct
 id|inode
@@ -2385,7 +2388,8 @@ id|file
 op_star
 id|filp
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2400,6 +2404,7 @@ DECL|function|idescsi_ide_release
 r_static
 r_void
 id|idescsi_ide_release
+c_func
 (paren
 r_struct
 id|inode
@@ -2411,7 +2416,8 @@ id|file
 op_star
 id|filp
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2820,15 +2826,7 @@ id|revalidate
 suffix:colon
 id|idescsi_revalidate
 comma
-id|pre_reset
-suffix:colon
-l_int|NULL
-comma
 id|capacity
-suffix:colon
-l_int|NULL
-comma
-id|special
 suffix:colon
 l_int|NULL
 comma

@@ -90,8 +90,10 @@ r_int
 id|block_ioctl
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 r_int
@@ -123,7 +125,11 @@ op_assign
 id|blk_get_queue
 c_func
 (paren
-id|dev
+id|to_kdev_t
+c_func
+(paren
+id|bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 r_if

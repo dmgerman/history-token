@@ -1509,14 +1509,14 @@ id|to-&gt;bv_offset
 suffix:semicolon
 )brace
 )brace
-id|bio-&gt;bi_dev
+id|bio-&gt;bi_bdev
 op_assign
 (paren
 op_star
 id|bio_orig
 )paren
 op_member_access_from_pointer
-id|bi_dev
+id|bi_bdev
 suffix:semicolon
 id|bio-&gt;bi_sector
 op_assign
