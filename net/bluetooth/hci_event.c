@@ -3565,6 +3565,26 @@ id|hdev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Change Connection Link Key Complete */
+DECL|function|hci_change_conn_link_key_complete_evt
+r_static
+r_inline
+r_void
+id|hci_change_conn_link_key_complete_evt
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+)brace
 multiline_comment|/* Pin Code Request*/
 DECL|function|hci_pin_code_request_evt
 r_static
@@ -3815,6 +3835,19 @@ r_case
 id|HCI_EV_ENCRYPT_CHANGE
 suffix:colon
 id|hci_encrypt_change_evt
+c_func
+(paren
+id|hdev
+comma
+id|skb
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|HCI_EV_CHANGE_CONN_LINK_KEY_COMPLETE
+suffix:colon
+id|hci_change_conn_link_key_complete_evt
 c_func
 (paren
 id|hdev
