@@ -6898,8 +6898,18 @@ r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
+id|sensekey
+op_assign
+l_int|0x05
+suffix:semicolon
+multiline_comment|/* illegal request */
+id|sensecode
+op_assign
+l_int|0x24
+suffix:semicolon
+multiline_comment|/* invalid field in CDB */
 r_return
-id|USB_STOR_TRANSPORT_ERROR
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 r_if
@@ -7139,12 +7149,22 @@ op_ne
 id|REQUEST_SENSE
 )paren
 (brace
+id|sensekey
+op_assign
+l_int|0x05
+suffix:semicolon
+multiline_comment|/* illegal request */
+id|sensecode
+op_assign
+l_int|0x20
+suffix:semicolon
+multiline_comment|/* invalid command */
 id|havefakesense
 op_assign
 l_int|1
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_ERROR
+id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 r_for
