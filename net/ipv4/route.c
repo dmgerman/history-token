@@ -11483,7 +11483,6 @@ op_assign
 r_sizeof
 (paren
 r_int
-r_int
 )paren
 comma
 dot
@@ -11495,13 +11494,13 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_doulongvec_ms_jiffies_minmax
+id|proc_dointvec_ms_jiffies
 comma
 dot
 id|strategy
 op_assign
 op_amp
-id|sysctl_jiffies
+id|sysctl_ms_jiffies
 comma
 )brace
 comma
