@@ -169,6 +169,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else /* !SMP */
+macro_line|#include &lt;asm/page.h&gt; /* For BUG() */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;&t;&t;0
