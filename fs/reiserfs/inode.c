@@ -3766,7 +3766,7 @@ id|_ROUND_UP
 (paren
 id|blocks
 comma
-id|inode-&gt;i_blksize
+id|inode-&gt;i_sb-&gt;s_blocksize
 op_rshift
 l_int|9
 )paren
