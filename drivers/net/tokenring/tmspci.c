@@ -1043,7 +1043,7 @@ suffix:semicolon
 DECL|function|tms_pci_rmmod
 r_static
 r_void
-id|__devexit
+id|__exit
 id|tms_pci_rmmod
 (paren
 r_void
