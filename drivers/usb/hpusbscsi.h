@@ -251,6 +251,16 @@ id|u
 suffix:semicolon
 r_static
 r_void
+id|request_sense_callback
+(paren
+r_struct
+id|urb
+op_star
+id|u
+)paren
+suffix:semicolon
+r_static
+r_void
 id|control_interrupt_callback
 (paren
 r_struct
