@@ -3105,7 +3105,7 @@ id|transports
 suffix:semicolon
 id|found
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|list_for_each_safe
 c_func
@@ -3133,7 +3133,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|sctp_cmp_addr_exact
 c_func
 (paren
@@ -3147,7 +3146,7 @@ id|addr-&gt;ipaddr
 (brace
 id|found
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3288,6 +3287,20 @@ id|SCTP_CHUNK
 c_func
 (paren
 id|repl
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Discard the rest of the packet too. */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_DISCARD_PACKET
+comma
+id|SCTP_NULL
+c_func
+(paren
 )paren
 )paren
 suffix:semicolon
@@ -7574,8 +7587,8 @@ id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Discard the whole packet.&n; *&n; * Section: 8.4 2)&n; *&n; * 2) If the OOTB packet contains an ABORT chunk, the receiver MUST&n; *    silently discard the OOTB packet and take no further action.&n; *    Otherwise,&n; *&n; * Verification Tag: No verification necessary&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
 DECL|function|sctp_sf_pdiscard
+id|sctp_disposition_t
 id|sctp_sf_pdiscard
 c_func
 (paren
