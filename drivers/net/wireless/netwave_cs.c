@@ -26,6 +26,9 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#if WIRELESS_EXT &gt; 12
+macro_line|#include &lt;net/iw_handler.h&gt;
+macro_line|#endif&t;/* WIRELESS_EXT &gt; 12 */
 macro_line|#endif
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
@@ -664,14 +667,41 @@ op_star
 id|dev_list
 suffix:semicolon
 multiline_comment|/*&n;   A dev_link_t structure has fields for most things that are needed&n;   to keep track of a socket, but there will usually be some device&n;   specific information that also needs to be kept track of.  The&n;   &squot;priv&squot; pointer in a dev_link_t structure can be used to point to&n;   a device-specific private data structure, like this.&n;&n;   A driver needs to provide a dev_node_t structure for each device&n;   on a card.  In some cases, there is only one device per card (for&n;   example, ethernet cards, modems).  In other cases, there may be&n;   many actual or logical devices (SCSI adapters, memory cards with&n;   multiple partitions).  The dev_node_t structures need to be kept&n;   in a linked list starting at the &squot;dev&squot; field of a dev_link_t&n;   structure.  We allocate them in the card&squot;s private data structure,&n;   because they generally can&squot;t be allocated dynamically.&n;*/
+macro_line|#if WIRELESS_EXT &lt;= 12
+multiline_comment|/* Wireless extensions backward compatibility */
+multiline_comment|/* Part of iw_handler prototype we need */
+DECL|struct|iw_request_info
+r_struct
+id|iw_request_info
+(brace
+DECL|member|cmd
+id|__u16
+id|cmd
+suffix:semicolon
+multiline_comment|/* Wireless Extension command */
+DECL|member|flags
+id|__u16
+id|flags
+suffix:semicolon
+multiline_comment|/* More to come ;-) */
+)brace
+suffix:semicolon
 multiline_comment|/* Wireless Extension Backward compatibility - Jean II&n; * If the new wireless device private ioctl range is not defined,&n; * default to standard device private ioctl range */
 macro_line|#ifndef SIOCIWFIRSTPRIV
 DECL|macro|SIOCIWFIRSTPRIV
 mdefine_line|#define SIOCIWFIRSTPRIV&t;SIOCDEVPRIVATE
 macro_line|#endif /* SIOCIWFIRSTPRIV */
+macro_line|#else&t;/* WIRELESS_EXT &lt;= 12 */
+DECL|variable|netwave_handler_def
+r_static
+r_const
+r_struct
+id|iw_handler_def
+id|netwave_handler_def
+suffix:semicolon
+macro_line|#endif&t;/* WIRELESS_EXT &lt;= 12 */
 DECL|macro|SIOCGIPSNAP
-mdefine_line|#define SIOCGIPSNAP&t;SIOCIWFIRSTPRIV&t;&t;/* Site Survey Snapshot */
-multiline_comment|/*#define SIOCGIPQTHR&t;SIOCIWFIRSTPRIV + 1*/
+mdefine_line|#define SIOCGIPSNAP&t;SIOCIWFIRSTPRIV&t;+ 1&t;/* Site Survey Snapshot */
 DECL|macro|MAX_ESA
 mdefine_line|#define MAX_ESA 10
 DECL|struct|net_addr
@@ -1413,7 +1443,19 @@ op_assign
 op_amp
 id|netwave_get_wireless_stats
 suffix:semicolon
-macro_line|#endif
+macro_line|#if WIRELESS_EXT &gt; 12
+id|dev-&gt;wireless_handlers
+op_assign
+(paren
+r_struct
+id|iw_handler_def
+op_star
+)paren
+op_amp
+id|netwave_handler_def
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 12 */
+macro_line|#endif /* WIRELESS_EXT */
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
@@ -1789,11 +1831,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* netwave_flush_stale_links */
-multiline_comment|/*&n; * Function netwave_ioctl (dev, rq, cmd)&n; *&n; *     Perform ioctl : config &amp; info stuff&n; *     This is the stuff that are treated the wireless extensions (iwconfig)&n; *&n; */
-DECL|function|netwave_ioctl
+multiline_comment|/*&n; * Wireless Handler : get protocol name&n; */
+DECL|function|netwave_get_name
 r_static
 r_int
-id|netwave_ioctl
+id|netwave_get_name
 c_func
 (paren
 r_struct
@@ -1801,28 +1843,64 @@ id|net_device
 op_star
 id|dev
 comma
-multiline_comment|/* ioctl device */
 r_struct
-id|ifreq
+id|iw_request_info
 op_star
-id|rq
+id|info
 comma
-multiline_comment|/* Data passed */
-r_int
-id|cmd
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
 )paren
-multiline_comment|/* Ioctl number */
+(brace
+id|strcpy
+c_func
+(paren
+id|wrqu-&gt;name
+comma
+l_string|&quot;Netwave&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Wireless Handler : set Network ID&n; */
+DECL|function|netwave_set_nwid
+r_static
+r_int
+id|netwave_set_nwid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
 (brace
 r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef WIRELESS_EXT
 id|ioaddr_t
 id|iobase
 op_assign
@@ -1844,31 +1922,6 @@ id|ramBase
 op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
-r_struct
-id|iwreq
-op_star
-id|wrq
-op_assign
-(paren
-r_struct
-id|iwreq
-op_star
-)paren
-id|rq
-suffix:semicolon
-macro_line|#endif
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;%s: -&gt;netwave_ioctl(cmd=0x%X)&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|cmd
-)paren
-suffix:semicolon
 multiline_comment|/* Disable interrupts &amp; save flags */
 id|save_flags
 c_func
@@ -1881,55 +1934,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Look what is the request */
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-multiline_comment|/* --------------- WIRELESS EXTENSIONS --------------- */
-macro_line|#ifdef WIRELESS_EXT
-r_case
-id|SIOCGIWNAME
-suffix:colon
-multiline_comment|/* Get name */
-id|strcpy
-c_func
-(paren
-id|wrq-&gt;u.name
-comma
-l_string|&quot;Netwave&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIOCSIWNWID
-suffix:colon
-multiline_comment|/* Set domain */
 macro_line|#if WIRELESS_EXT &gt; 8
 r_if
 c_cond
 (paren
 op_logical_neg
-id|wrq-&gt;u.nwid.disabled
+id|wrqu-&gt;nwid.disabled
 )paren
 (brace
 id|domain
 op_assign
-id|wrq-&gt;u.nwid.value
+id|wrqu-&gt;nwid.value
 suffix:semicolon
 macro_line|#else&t;/* WIRELESS_EXT &gt; 8 */
 r_if
 c_cond
 (paren
-id|wrq-&gt;u.nwid.on
+id|wrqu-&gt;nwid.on
 )paren
 (brace
 id|domain
 op_assign
-id|wrq-&gt;u.nwid.nwid
+id|wrqu-&gt;nwid.nwid
 suffix:semicolon
 macro_line|#endif&t;/* WIRELESS_EXT &gt; 8 */
 id|printk
@@ -2014,155 +2040,135 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-r_break
+multiline_comment|/* ReEnable interrupts &amp; restore flags */
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
-r_case
-id|SIOCGIWNWID
-suffix:colon
-multiline_comment|/* Read domain*/
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Wireless Handler : get Network ID&n; */
+DECL|function|netwave_get_nwid
+r_static
+r_int
+id|netwave_get_nwid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+(brace
 macro_line|#if WIRELESS_EXT &gt; 8
-id|wrq-&gt;u.nwid.value
+id|wrqu-&gt;nwid.value
 op_assign
 id|domain
 suffix:semicolon
-id|wrq-&gt;u.nwid.disabled
+id|wrqu-&gt;nwid.disabled
 op_assign
 l_int|0
 suffix:semicolon
-id|wrq-&gt;u.nwid.fixed
+id|wrqu-&gt;nwid.fixed
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#else&t;/* WIRELESS_EXT &gt; 8 */
-id|wrq-&gt;u.nwid.nwid
+id|wrqu-&gt;nwid.nwid
 op_assign
 id|domain
 suffix:semicolon
-id|wrq-&gt;u.nwid.on
+id|wrqu-&gt;nwid.on
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif&t;/* WIRELESS_EXT &gt; 8 */
-r_break
-suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 8&t;/* Note : The API did change... */
-r_case
-id|SIOCGIWENCODE
-suffix:colon
-multiline_comment|/* Get scramble key */
-r_if
-c_cond
-(paren
-id|wrq-&gt;u.encoding.pointer
-op_ne
-(paren
-id|caddr_t
-)paren
+r_return
 l_int|0
-)paren
-(brace
-r_char
-id|key
-(braket
-l_int|2
-)braket
 suffix:semicolon
-id|key
-(braket
-l_int|1
-)braket
-op_assign
-id|scramble_key
-op_amp
-l_int|0xff
-suffix:semicolon
-id|key
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-id|scramble_key
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
-suffix:semicolon
-id|wrq-&gt;u.encoding.flags
-op_assign
-id|IW_ENCODE_ENABLED
-suffix:semicolon
-id|wrq-&gt;u.encoding.length
-op_assign
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_to_user
+)brace
+multiline_comment|/*&n; * Wireless Handler : set scramble key&n; */
+DECL|function|netwave_set_scramble
+r_static
+r_int
+id|netwave_set_scramble
 c_func
 (paren
-id|wrq-&gt;u.encoding.pointer
+r_struct
+id|net_device
+op_star
+id|dev
 comma
-id|key
+r_struct
+id|iw_request_info
+op_star
+id|info
 comma
-l_int|2
-)paren
-)paren
-(brace
-id|ret
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-)brace
-r_break
-suffix:semicolon
-r_case
-id|SIOCSIWENCODE
-suffix:colon
-multiline_comment|/* Set  scramble key */
-r_if
-c_cond
-(paren
-id|wrq-&gt;u.encoding.pointer
-op_ne
-(paren
-id|caddr_t
-)paren
-l_int|0
-)paren
-(brace
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
 r_char
+op_star
 id|key
-(braket
-l_int|2
-)braket
+)paren
+(brace
+r_int
+r_int
+id|flags
 suffix:semicolon
-r_if
-c_cond
+id|ioaddr_t
+id|iobase
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+id|netwave_private
+op_star
+id|priv
+op_assign
 (paren
-id|copy_from_user
+id|netwave_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|u_char
+op_star
+id|ramBase
+op_assign
+id|priv-&gt;ramBase
+suffix:semicolon
+multiline_comment|/* Disable interrupts &amp; save flags */
+id|save_flags
 c_func
 (paren
-id|key
-comma
-id|wrq-&gt;u.encoding.pointer
-comma
-l_int|2
+id|flags
 )paren
+suffix:semicolon
+id|cli
+c_func
+(paren
 )paren
-(brace
-id|ret
-op_assign
-op_minus
-id|EFAULT
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|scramble_key
 op_assign
 (paren
@@ -2241,13 +2247,113 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
-)brace
-r_break
+multiline_comment|/* ReEnable interrupts &amp; restore flags */
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
-r_case
-id|SIOCGIWMODE
-suffix:colon
-multiline_comment|/* Mode of operation */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Wireless Handler : get scramble key&n; */
+DECL|function|netwave_get_scramble
+r_static
+r_int
+id|netwave_get_scramble
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|key
+)paren
+(brace
+id|key
+(braket
+l_int|1
+)braket
+op_assign
+id|scramble_key
+op_amp
+l_int|0xff
+suffix:semicolon
+id|key
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|scramble_key
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 8
+id|wrqu-&gt;encoding.flags
+op_assign
+id|IW_ENCODE_ENABLED
+suffix:semicolon
+id|wrqu-&gt;encoding.length
+op_assign
+l_int|2
+suffix:semicolon
+macro_line|#else /* WIRELESS_EXT &gt; 8 */
+id|wrqu-&gt;encoding.method
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif&t;/* WIRELESS_EXT &gt; 8 */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#if WIRELESS_EXT &gt; 8
+multiline_comment|/*&n; * Wireless Handler : get mode&n; */
+DECL|function|netwave_get_mode
+r_static
+r_int
+id|netwave_get_mode
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2256,15 +2362,829 @@ op_amp
 l_int|0x100
 )paren
 (brace
-id|wrq-&gt;u.mode
+id|wrqu-&gt;mode
 op_assign
 id|IW_MODE_INFRA
 suffix:semicolon
 )brace
 r_else
-id|wrq-&gt;u.mode
+id|wrqu-&gt;mode
 op_assign
 id|IW_MODE_ADHOC
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* WIRELESS_EXT &gt; 8 */
+multiline_comment|/*&n; * Wireless Handler : get range info&n; */
+DECL|function|netwave_get_range
+r_static
+r_int
+id|netwave_get_range
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+(brace
+r_struct
+id|iw_range
+op_star
+id|range
+op_assign
+(paren
+r_struct
+id|iw_range
+op_star
+)paren
+id|extra
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Set the length (very important for backward compatibility) */
+id|wrqu-&gt;data.length
+op_assign
+r_sizeof
+(paren
+r_struct
+id|iw_range
+)paren
+suffix:semicolon
+multiline_comment|/* Set all the info we don&squot;t care or don&squot;t know about to zero */
+id|memset
+c_func
+(paren
+id|range
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|iw_range
+)paren
+)paren
+suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 10
+multiline_comment|/* Set the Wireless Extension versions */
+id|range-&gt;we_version_compiled
+op_assign
+id|WIRELESS_EXT
+suffix:semicolon
+id|range-&gt;we_version_source
+op_assign
+l_int|9
+suffix:semicolon
+multiline_comment|/* Nothing for us in v10 and v11 */
+macro_line|#endif /* WIRELESS_EXT &gt; 10 */
+multiline_comment|/* Set information in the range struct */
+id|range-&gt;throughput
+op_assign
+l_int|450
+op_star
+l_int|1000
+suffix:semicolon
+multiline_comment|/* don&squot;t argue on this ! */
+id|range-&gt;min_nwid
+op_assign
+l_int|0x0000
+suffix:semicolon
+id|range-&gt;max_nwid
+op_assign
+l_int|0x01FF
+suffix:semicolon
+id|range-&gt;num_channels
+op_assign
+id|range-&gt;num_frequency
+op_assign
+l_int|0
+suffix:semicolon
+id|range-&gt;sensitivity
+op_assign
+l_int|0x3F
+suffix:semicolon
+id|range-&gt;max_qual.qual
+op_assign
+l_int|255
+suffix:semicolon
+id|range-&gt;max_qual.level
+op_assign
+l_int|255
+suffix:semicolon
+id|range-&gt;max_qual.noise
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 7
+id|range-&gt;num_bitrates
+op_assign
+l_int|1
+suffix:semicolon
+id|range-&gt;bitrate
+(braket
+l_int|0
+)braket
+op_assign
+l_int|1000000
+suffix:semicolon
+multiline_comment|/* 1 Mb/s */
+macro_line|#endif /* WIRELESS_EXT &gt; 7 */
+macro_line|#if WIRELESS_EXT &gt; 8
+id|range-&gt;encoding_size
+(braket
+l_int|0
+)braket
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* 16 bits scrambling */
+id|range-&gt;num_encoding_sizes
+op_assign
+l_int|1
+suffix:semicolon
+id|range-&gt;max_encoding_tokens
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Only one key possible */
+macro_line|#endif /* WIRELESS_EXT &gt; 8 */
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Wireless Private Handler : get snapshot&n; */
+DECL|function|netwave_get_snap
+r_static
+r_int
+id|netwave_get_snap
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|iw_request_info
+op_star
+id|info
+comma
+r_union
+id|iwreq_data
+op_star
+id|wrqu
+comma
+r_char
+op_star
+id|extra
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|ioaddr_t
+id|iobase
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+id|netwave_private
+op_star
+id|priv
+op_assign
+(paren
+id|netwave_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|u_char
+op_star
+id|ramBase
+op_assign
+id|priv-&gt;ramBase
+suffix:semicolon
+multiline_comment|/* Disable interrupts &amp; save flags */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Take snapshot of environment */
+id|netwave_snapshot
+c_func
+(paren
+id|priv
+comma
+id|ramBase
+comma
+id|iobase
+)paren
+suffix:semicolon
+id|wrqu-&gt;data.length
+op_assign
+id|priv-&gt;nss.length
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|extra
+comma
+(paren
+id|u_char
+op_star
+)paren
+op_amp
+id|priv-&gt;nss
+comma
+r_sizeof
+(paren
+r_struct
+id|site_survey
+)paren
+)paren
+suffix:semicolon
+id|priv-&gt;lastExec
+op_assign
+id|jiffies
+suffix:semicolon
+multiline_comment|/* ReEnable interrupts &amp; restore flags */
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Structures to export the Wireless Handlers&n; *     This is the stuff that are treated the wireless extensions (iwconfig)&n; */
+DECL|variable|netwave_private_args
+r_static
+r_const
+r_struct
+id|iw_priv_args
+id|netwave_private_args
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/*{ cmd,         set_args,                            get_args, name } */
+(brace
+id|SIOCGIPSNAP
+comma
+l_int|0
+comma
+id|IW_PRIV_TYPE_BYTE
+op_or
+id|IW_PRIV_SIZE_FIXED
+op_or
+r_sizeof
+(paren
+r_struct
+id|site_survey
+)paren
+comma
+l_string|&quot;getsitesurvey&quot;
+)brace
+comma
+)brace
+suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 12
+DECL|variable|netwave_handler
+r_static
+r_const
+id|iw_handler
+id|netwave_handler
+(braket
+)braket
+op_assign
+(brace
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWNAME */
+id|netwave_get_name
+comma
+multiline_comment|/* SIOCGIWNAME */
+id|netwave_set_nwid
+comma
+multiline_comment|/* SIOCSIWNWID */
+id|netwave_get_nwid
+comma
+multiline_comment|/* SIOCGIWNWID */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWFREQ */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWFREQ */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWMODE */
+id|netwave_get_mode
+comma
+multiline_comment|/* SIOCGIWMODE */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWSENS */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWSENS */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWRANGE */
+id|netwave_get_range
+comma
+multiline_comment|/* SIOCGIWRANGE */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWPRIV */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWPRIV */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWSTATS */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWSTATS */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWSPY */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWSPY */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWAP */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWAP */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWAPLIST */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWESSID */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWESSID */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWNICKN */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWNICKN */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* -- hole -- */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWRATE */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWRATE */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWRTS */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWRTS */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWFRAG */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWFRAG */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWTXPOW */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWTXPOW */
+l_int|NULL
+comma
+multiline_comment|/* SIOCSIWRETRY */
+l_int|NULL
+comma
+multiline_comment|/* SIOCGIWRETRY */
+id|netwave_set_scramble
+comma
+multiline_comment|/* SIOCSIWENCODE */
+id|netwave_get_scramble
+comma
+multiline_comment|/* SIOCGIWENCODE */
+)brace
+suffix:semicolon
+DECL|variable|netwave_private_handler
+r_static
+r_const
+id|iw_handler
+id|netwave_private_handler
+(braket
+)braket
+op_assign
+(brace
+l_int|NULL
+comma
+multiline_comment|/* SIOCIWFIRSTPRIV */
+id|netwave_get_snap
+comma
+multiline_comment|/* SIOCIWFIRSTPRIV + 1 */
+)brace
+suffix:semicolon
+DECL|variable|netwave_handler_def
+r_static
+r_const
+r_struct
+id|iw_handler_def
+id|netwave_handler_def
+op_assign
+(brace
+id|num_standard
+suffix:colon
+r_sizeof
+(paren
+id|netwave_handler
+)paren
+op_div
+r_sizeof
+(paren
+id|iw_handler
+)paren
+comma
+id|num_private
+suffix:colon
+r_sizeof
+(paren
+id|netwave_private_handler
+)paren
+op_div
+r_sizeof
+(paren
+id|iw_handler
+)paren
+comma
+id|num_private_args
+suffix:colon
+r_sizeof
+(paren
+id|netwave_private_args
+)paren
+op_div
+r_sizeof
+(paren
+r_struct
+id|iw_priv_args
+)paren
+comma
+id|standard
+suffix:colon
+(paren
+id|iw_handler
+op_star
+)paren
+id|netwave_handler
+comma
+(paren
+id|iw_handler
+op_star
+)paren
+id|netwave_private_handler
+comma
+id|private_args
+suffix:colon
+(paren
+r_struct
+id|iw_priv_args
+op_star
+)paren
+id|netwave_private_args
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 12 */
+multiline_comment|/*&n; * Function netwave_ioctl (dev, rq, cmd)&n; *&n; *     Perform ioctl : config &amp; info stuff&n; *     This is the stuff that are treated the wireless extensions (iwconfig)&n; *&n; */
+DECL|function|netwave_ioctl
+r_static
+r_int
+id|netwave_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+multiline_comment|/* ioctl device */
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+multiline_comment|/* Data passed */
+r_int
+id|cmd
+)paren
+multiline_comment|/* Ioctl number */
+(brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef WIRELESS_EXT
+macro_line|#if WIRELESS_EXT &lt;= 12
+r_struct
+id|iwreq
+op_star
+id|wrq
+op_assign
+(paren
+r_struct
+id|iwreq
+op_star
+)paren
+id|rq
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s: -&gt;netwave_ioctl(cmd=0x%X)&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|cmd
+)paren
+suffix:semicolon
+multiline_comment|/* Look what is the request */
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+multiline_comment|/* --------------- WIRELESS EXTENSIONS --------------- */
+macro_line|#ifdef WIRELESS_EXT
+macro_line|#if WIRELESS_EXT &lt;= 12
+r_case
+id|SIOCGIWNAME
+suffix:colon
+id|netwave_get_name
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SIOCSIWNWID
+suffix:colon
+id|ret
+op_assign
+id|netwave_set_nwid
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SIOCGIWNWID
+suffix:colon
+id|ret
+op_assign
+id|netwave_get_nwid
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 8&t;/* Note : The API did change... */
+r_case
+id|SIOCGIWENCODE
+suffix:colon
+multiline_comment|/* Get scramble key */
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.encoding.pointer
+op_ne
+(paren
+id|caddr_t
+)paren
+l_int|0
+)paren
+(brace
+r_char
+id|key
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|ret
+op_assign
+id|netwave_get_scramble
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+id|key
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|wrq-&gt;u.encoding.pointer
+comma
+id|key
+comma
+l_int|2
+)paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+id|SIOCSIWENCODE
+suffix:colon
+multiline_comment|/* Set  scramble key */
+r_if
+c_cond
+(paren
+id|wrq-&gt;u.encoding.pointer
+op_ne
+(paren
+id|caddr_t
+)paren
+l_int|0
+)paren
+(brace
+r_char
+id|key
+(braket
+l_int|2
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+id|key
+comma
+id|wrq-&gt;u.encoding.pointer
+comma
+l_int|2
+)paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|ret
+op_assign
+id|netwave_set_scramble
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+id|key
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|SIOCGIWMODE
+suffix:colon
+multiline_comment|/* Mode of operation */
+id|ret
+op_assign
+id|netwave_get_mode
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2273,13 +3193,27 @@ r_case
 id|SIOCGIWENCODE
 suffix:colon
 multiline_comment|/* Get scramble key */
+id|ret
+op_assign
+id|netwave_get_scramble
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
 id|wrq-&gt;u.encoding.code
-op_assign
-id|scramble_key
-suffix:semicolon
-id|wrq-&gt;u.encoding.method
-op_assign
-l_int|1
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2287,70 +3221,26 @@ r_case
 id|SIOCSIWENCODE
 suffix:colon
 multiline_comment|/* Set  scramble key */
-id|scramble_key
+id|ret
 op_assign
+id|netwave_set_scramble
+c_func
+(paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+(paren
+r_char
+op_star
+)paren
+op_amp
 id|wrq-&gt;u.encoding.code
-suffix:semicolon
-id|wait_WOC
-c_func
-(paren
-id|iobase
-)paren
-suffix:semicolon
-id|writeb
-c_func
-(paren
-id|NETWAVE_CMD_SSK
-comma
-id|ramBase
-op_plus
-id|NETWAVE_EREG_CB
-op_plus
-l_int|0
-)paren
-suffix:semicolon
-id|writeb
-c_func
-(paren
-id|scramble_key
-op_amp
-l_int|0xff
-comma
-id|ramBase
-op_plus
-id|NETWAVE_EREG_CB
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-id|writeb
-c_func
-(paren
-(paren
-id|scramble_key
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
-comma
-id|ramBase
-op_plus
-id|NETWAVE_EREG_CB
-op_plus
-l_int|2
-)paren
-suffix:semicolon
-id|writeb
-c_func
-(paren
-id|NETWAVE_CMD_EOC
-comma
-id|ramBase
-op_plus
-id|NETWAVE_EREG_CB
-op_plus
-l_int|3
 )paren
 suffix:semicolon
 r_break
@@ -2375,114 +3265,28 @@ r_struct
 id|iw_range
 id|range
 suffix:semicolon
-multiline_comment|/* Set the length (very important for backward compatibility) */
-id|wrq-&gt;u.data.length
+id|ret
 op_assign
-r_sizeof
-(paren
-r_struct
-id|iw_range
-)paren
-suffix:semicolon
-multiline_comment|/* Set all the info we don&squot;t care or don&squot;t know about to zero */
-id|memset
+id|netwave_get_range
 c_func
 (paren
+id|dev
+comma
+l_int|NULL
+comma
+op_amp
+(paren
+id|wrq-&gt;u
+)paren
+comma
+(paren
+r_char
+op_star
+)paren
 op_amp
 id|range
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|range
-)paren
 )paren
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 10
-multiline_comment|/* Set the Wireless Extension versions */
-id|range.we_version_compiled
-op_assign
-id|WIRELESS_EXT
-suffix:semicolon
-id|range.we_version_source
-op_assign
-l_int|9
-suffix:semicolon
-multiline_comment|/* Nothing for us in v10 and v11 */
-macro_line|#endif /* WIRELESS_EXT &gt; 10 */
-multiline_comment|/* Set information in the range struct */
-id|range.throughput
-op_assign
-l_int|450
-op_star
-l_int|1000
-suffix:semicolon
-multiline_comment|/* don&squot;t argue on this ! */
-id|range.min_nwid
-op_assign
-l_int|0x0000
-suffix:semicolon
-id|range.max_nwid
-op_assign
-l_int|0x01FF
-suffix:semicolon
-id|range.num_channels
-op_assign
-id|range.num_frequency
-op_assign
-l_int|0
-suffix:semicolon
-id|range.sensitivity
-op_assign
-l_int|0x3F
-suffix:semicolon
-id|range.max_qual.qual
-op_assign
-l_int|255
-suffix:semicolon
-id|range.max_qual.level
-op_assign
-l_int|255
-suffix:semicolon
-id|range.max_qual.noise
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if WIRELESS_EXT &gt; 7
-id|range.num_bitrates
-op_assign
-l_int|1
-suffix:semicolon
-id|range.bitrate
-(braket
-l_int|0
-)braket
-op_assign
-l_int|1000000
-suffix:semicolon
-multiline_comment|/* 1 Mb/s */
-macro_line|#endif /* WIRELESS_EXT &gt; 7 */
-macro_line|#if WIRELESS_EXT &gt; 8
-id|range.encoding_size
-(braket
-l_int|0
-)braket
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* 16 bits scrambling */
-id|range.num_encoding_sizes
-op_assign
-l_int|1
-suffix:semicolon
-id|range.max_encoding_tokens
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Only one key possible */
-macro_line|#endif /* WIRELESS_EXT &gt; 8 */
-multiline_comment|/* Copy structure to the user buffer */
 r_if
 c_cond
 (paren
@@ -2501,13 +3305,11 @@ id|iw_range
 )paren
 )paren
 )paren
-(brace
 id|ret
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 )brace
 r_break
 suffix:semicolon
@@ -2526,38 +3328,21 @@ id|caddr_t
 l_int|0
 )paren
 (brace
-r_struct
-id|iw_priv_args
-id|priv
-(braket
-)braket
-op_assign
-(brace
-multiline_comment|/* cmd,&t;&t;set_args,&t;get_args,&t;name */
-(brace
-id|SIOCGIPSNAP
-comma
-id|IW_PRIV_TYPE_BYTE
-op_or
-id|IW_PRIV_SIZE_FIXED
-op_or
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|site_survey
-)paren
-comma
-l_string|&quot;getsitesurvey&quot;
-)brace
-comma
-)brace
-suffix:semicolon
 multiline_comment|/* Set the number of ioctl available */
 id|wrq-&gt;u.data.length
 op_assign
-l_int|1
+r_sizeof
+(paren
+id|netwave_private_args
+)paren
+op_div
+r_sizeof
+(paren
+id|netwave_private_args
+(braket
+l_int|0
+)braket
+)paren
 suffix:semicolon
 multiline_comment|/* Copy structure to the user buffer */
 r_if
@@ -2572,11 +3357,11 @@ comma
 id|u_char
 op_star
 )paren
-id|priv
+id|netwave_private_args
 comma
 r_sizeof
 (paren
-id|priv
+id|netwave_private_args
 )paren
 )paren
 )paren
@@ -2604,20 +3389,32 @@ id|caddr_t
 l_int|0
 )paren
 (brace
-multiline_comment|/* Take snapshot of environment */
-id|netwave_snapshot
+r_char
+id|buffer
+(braket
+r_sizeof
+(paren
+r_struct
+id|site_survey
+)paren
+)braket
+suffix:semicolon
+id|ret
+op_assign
+id|netwave_get_snap
 c_func
 (paren
-id|priv
+id|dev
 comma
-id|ramBase
+l_int|NULL
 comma
-id|iobase
+op_amp
+(paren
+id|wrq-&gt;u
 )paren
-suffix:semicolon
-id|wrq-&gt;u.data.length
-op_assign
-id|priv-&gt;nss.length
+comma
+id|buffer
+)paren
 suffix:semicolon
 multiline_comment|/* Copy structure to the user buffer */
 r_if
@@ -2628,12 +3425,7 @@ c_func
 (paren
 id|wrq-&gt;u.data.pointer
 comma
-(paren
-id|u_char
-op_star
-)paren
-op_amp
-id|priv-&gt;nss
+id|buffer
 comma
 r_sizeof
 (paren
@@ -2653,14 +3445,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|priv-&gt;lastExec
-op_assign
-id|jiffies
-suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* WIRELESS_EXT &lt;= 12 */
+macro_line|#endif /* WIRELESS_EXT */
 r_default
 suffix:colon
 id|ret
@@ -2669,13 +3458,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
