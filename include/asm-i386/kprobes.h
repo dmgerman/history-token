@@ -16,6 +16,10 @@ DECL|macro|BREAKPOINT_INSTRUCTION
 mdefine_line|#define BREAKPOINT_INSTRUCTION&t;0xcc
 DECL|macro|MAX_INSN_SIZE
 mdefine_line|#define MAX_INSN_SIZE 16
+DECL|macro|MAX_STACK_SIZE
+mdefine_line|#define MAX_STACK_SIZE 64
+DECL|macro|MIN_STACK_SIZE
+mdefine_line|#define MIN_STACK_SIZE(ADDR) (((MAX_STACK_SIZE) &lt; &bslash;&n;&t;(((unsigned long)current_thread_info()) + THREAD_SIZE - (ADDR))) &bslash;&n;&t;? (MAX_STACK_SIZE) &bslash;&n;&t;: (((unsigned long)current_thread_info()) + THREAD_SIZE - (ADDR)))
 multiline_comment|/* trap3/1 are intr gates for kprobes.  So, restore the status of IF,&n; * if necessary, before executing the original int3/1 (trap) handler.&n; */
 DECL|function|restore_interrupts
 r_static

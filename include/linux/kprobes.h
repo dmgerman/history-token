@@ -1,7 +1,7 @@
 macro_line|#ifndef _LINUX_KPROBES_H
 DECL|macro|_LINUX_KPROBES_H
 mdefine_line|#define _LINUX_KPROBES_H
-multiline_comment|/*&n; *  Kernel Probes (KProbes)&n; *  include/linux/kprobes.h&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; *&n; * Copyright (C) IBM Corporation, 2002&n; *&n; * 2002-Oct&t;Created by Vamsi Krishna S &lt;vamsi_krishna@in.ibm.com&gt; Kernel&n; *&t;&t;Probes initial implementation ( includes suggestions from&n; *&t;&t;Rusty Russell).&n; */
+multiline_comment|/*&n; *  Kernel Probes (KProbes)&n; *  include/linux/kprobes.h&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; *&n; * Copyright (C) IBM Corporation, 2002, 2004&n; *&n; * 2002-Oct&t;Created by Vamsi Krishna S &lt;vamsi_krishna@in.ibm.com&gt; Kernel&n; *&t;&t;Probes initial implementation ( includes suggestions from&n; *&t;&t;Rusty Russell).&n; * 2004-July&t;Suparna Bhattacharya &lt;suparna@in.ibm.com&gt; added jumper probes&n; *&t;&t;interface to access function arguments.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -15,10 +15,27 @@ id|pt_regs
 suffix:semicolon
 DECL|typedef|kprobe_pre_handler_t
 r_typedef
-r_void
+r_int
 (paren
 op_star
 id|kprobe_pre_handler_t
+)paren
+(paren
+r_struct
+id|kprobe
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|kprobe_break_handler_t
+r_typedef
+r_int
+(paren
+op_star
+id|kprobe_break_handler_t
 )paren
 (paren
 r_struct
@@ -101,6 +118,11 @@ DECL|member|fault_handler
 id|kprobe_fault_handler_t
 id|fault_handler
 suffix:semicolon
+multiline_comment|/* ... called if breakpoint trap occurs in probe handler.&n;&t; * Return 1 if it handled break, otherwise kernel will see it. */
+DECL|member|break_handler
+id|kprobe_break_handler_t
+id|break_handler
+suffix:semicolon
 multiline_comment|/* Saved opcode (which has been replaced with breakpoint) */
 DECL|member|opcode
 id|kprobe_opcode_t
@@ -114,6 +136,24 @@ id|insn
 id|MAX_INSN_SIZE
 )braket
 suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Special probe type that uses setjmp-longjmp type tricks to resume&n; * execution at a specified entry with a matching prototype corresponding&n; * to the probed function - a trick to enable arguments to become&n; * accessible seamlessly by probe handling logic.&n; * Note:&n; * Because of the way compilers allocate stack space for local variables&n; * etc upfront, regardless of sub-scopes within a function, this mirroring&n; * principle currently works only for probes placed on function entry points.&n; */
+DECL|struct|jprobe
+r_struct
+id|jprobe
+(brace
+DECL|member|kp
+r_struct
+id|kprobe
+id|kp
+suffix:semicolon
+DECL|member|entry
+id|kprobe_opcode_t
+op_star
+id|entry
+suffix:semicolon
+multiline_comment|/* probe handling code to jump to */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_KPROBES
@@ -168,6 +208,17 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|show_registers
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 multiline_comment|/* Get the kprobe at this addr (if any).  Must have called lock_kprobes */
 r_struct
 id|kprobe
@@ -198,6 +249,59 @@ r_struct
 id|kprobe
 op_star
 id|p
+)paren
+suffix:semicolon
+r_int
+id|setjmp_pre_handler
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_int
+id|longjmp_break_handler
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_int
+id|register_jprobe
+c_func
+(paren
+r_struct
+id|jprobe
+op_star
+id|p
+)paren
+suffix:semicolon
+r_void
+id|unregister_jprobe
+c_func
+(paren
+r_struct
+id|jprobe
+op_star
+id|p
+)paren
+suffix:semicolon
+r_void
+id|jprobe_return
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#else
@@ -244,6 +348,49 @@ r_struct
 id|kprobe
 op_star
 id|p
+)paren
+(brace
+)brace
+DECL|function|register_jprobe
+r_static
+r_inline
+r_int
+id|register_jprobe
+c_func
+(paren
+r_struct
+id|jprobe
+op_star
+id|p
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|unregister_jprobe
+r_static
+r_inline
+r_void
+id|unregister_jprobe
+c_func
+(paren
+r_struct
+id|jprobe
+op_star
+id|p
+)paren
+(brace
+)brace
+DECL|function|jprobe_return
+r_static
+r_inline
+r_void
+id|jprobe_return
+c_func
+(paren
+r_void
 )paren
 (brace
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Kernel Probes (KProbes)&n; *  kernel/kprobes.c&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; *&n; * Copyright (C) IBM Corporation, 2002, 2004&n; *&n; * 2002-Oct&t;Created by Vamsi Krishna S &lt;vamsi_krishna@in.ibm.com&gt; Kernel&n; *&t;&t;Probes initial implementation (includes suggestions from&n; *&t;&t;Rusty Russell).&n; * 2004-Aug&t;Updated by Prasanna S Panchamukhi &lt;prasanna@in.ibm.com&gt; with&n; *&t;&t;hlists and exceptions notifier as suggested by Andi Kleen.&n; */
+multiline_comment|/*&n; *  Kernel Probes (KProbes)&n; *  kernel/kprobes.c&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; *&n; * Copyright (C) IBM Corporation, 2002, 2004&n; *&n; * 2002-Oct&t;Created by Vamsi Krishna S &lt;vamsi_krishna@in.ibm.com&gt; Kernel&n; *&t;&t;Probes initial implementation (includes suggestions from&n; *&t;&t;Rusty Russell).&n; * 2004-Aug&t;Updated by Prasanna S Panchamukhi &lt;prasanna@in.ibm.com&gt; with&n; *&t;&t;hlists and exceptions notifier as suggested by Andi Kleen.&n; * 2004-July&t;Suparna Bhattacharya &lt;suparna@in.ibm.com&gt; added jumper probes&n; *&t;&t;interface to access function arguments.&n; */
 macro_line|#include &lt;linux/kprobes.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
@@ -345,6 +345,54 @@ id|kprobe_exceptions_notify
 comma
 )brace
 suffix:semicolon
+DECL|function|register_jprobe
+r_int
+id|register_jprobe
+c_func
+(paren
+r_struct
+id|jprobe
+op_star
+id|jp
+)paren
+(brace
+multiline_comment|/* Todo: Verify probepoint is a function entry point */
+id|jp-&gt;kp.pre_handler
+op_assign
+id|setjmp_pre_handler
+suffix:semicolon
+id|jp-&gt;kp.break_handler
+op_assign
+id|longjmp_break_handler
+suffix:semicolon
+r_return
+id|register_kprobe
+c_func
+(paren
+op_amp
+id|jp-&gt;kp
+)paren
+suffix:semicolon
+)brace
+DECL|function|unregister_jprobe
+r_void
+id|unregister_jprobe
+c_func
+(paren
+r_struct
+id|jprobe
+op_star
+id|jp
+)paren
+(brace
+id|unregister_kprobe
+c_func
+(paren
+op_amp
+id|jp-&gt;kp
+)paren
+suffix:semicolon
+)brace
 DECL|function|init_kprobes
 r_static
 r_int
@@ -420,6 +468,27 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|unregister_kprobe
+)paren
+suffix:semicolon
+DECL|variable|register_jprobe
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|register_jprobe
+)paren
+suffix:semicolon
+DECL|variable|unregister_jprobe
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unregister_jprobe
+)paren
+suffix:semicolon
+DECL|variable|jprobe_return
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|jprobe_return
 )paren
 suffix:semicolon
 eof
