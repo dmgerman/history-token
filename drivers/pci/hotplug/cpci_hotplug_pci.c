@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;cpci_hotplug.h&quot;
 macro_line|#if !defined(CONFIG_HOTPLUG_CPCI_MODULE)
