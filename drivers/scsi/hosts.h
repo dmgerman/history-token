@@ -638,13 +638,6 @@ r_int
 r_int
 id|max_host_blocked
 suffix:semicolon
-multiline_comment|/*&n;     * For SCSI hosts which are PCI devices, set pci_dev so that&n;     * we can do BIOS EDD 3.0 mappings&n;     */
-DECL|member|pci_dev
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-suffix:semicolon
 multiline_comment|/* &n;     * Support for driverfs filesystem&n;     */
 DECL|member|host_gendev
 r_struct
@@ -774,6 +767,29 @@ op_assign
 id|lock
 suffix:semicolon
 )brace
+DECL|function|scsi_set_device
+r_static
+r_inline
+r_void
+id|scsi_set_device
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+id|shost-&gt;host_gendev
+op_assign
+id|dev
+suffix:semicolon
+)brace
 DECL|function|scsi_set_pci_device
 r_static
 r_inline
@@ -792,14 +808,14 @@ op_star
 id|pdev
 )paren
 (brace
-id|shost-&gt;pci_dev
-op_assign
-id|pdev
-suffix:semicolon
-id|shost-&gt;host_gendev
-op_assign
+id|scsi_set_device
+c_func
+(paren
+id|shost
+comma
 op_amp
 id|pdev-&gt;dev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */

@@ -2209,6 +2209,11 @@ comma
 id|dev-&gt;slot_name
 )paren
 suffix:semicolon
+id|dev-&gt;dev.dma_mask
+op_assign
+op_amp
+id|dev-&gt;dma_mask
+suffix:semicolon
 id|device_register
 c_func
 (paren

@@ -1017,6 +1017,12 @@ op_star
 id|saved_state
 suffix:semicolon
 multiline_comment|/* saved device state */
+DECL|member|dma_mask
+id|u64
+op_star
+id|dma_mask
+suffix:semicolon
+multiline_comment|/* dma mask (if dma&squot;able device) */
 DECL|member|release
 r_void
 (paren
