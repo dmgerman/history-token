@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -2986,6 +2987,45 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+id|PF_FREEZE
+)paren
+suffix:semicolon
+id|signr
+op_assign
+l_int|0
+suffix:semicolon
+id|ret
+op_assign
+id|regs-&gt;gpr
+(braket
+l_int|3
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+r_goto
+id|no_signal
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|oldset
 )paren
@@ -3107,6 +3147,8 @@ multiline_comment|/* note that the cr0.SO bit is already set */
 )brace
 r_else
 (brace
+id|no_signal
+suffix:colon
 id|regs-&gt;nip
 op_sub_assign
 l_int|4

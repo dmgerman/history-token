@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -46,6 +47,7 @@ macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;pmac_pic.h&quot;
 macro_line|#include &quot;mem_pieces.h&quot;
 DECL|macro|SHOW_GATWICK_IRQS
@@ -1788,6 +1790,147 @@ id|initializing
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* TODO: Merge the suspend-to-ram with the common code !!!&n; * currently, this is a stub implementation for suspend-to-disk&n; * only&n; */
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+DECL|function|pmac_pm_prepare
+r_static
+r_int
+id|pmac_pm_prepare
+c_func
+(paren
+id|suspend_state_t
+id|state
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s(%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|state
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pmac_pm_enter
+r_static
+r_int
+id|pmac_pm_enter
+c_func
+(paren
+id|suspend_state_t
+id|state
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s(%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|state
+)paren
+suffix:semicolon
+multiline_comment|/* Giveup the lazy FPU &amp; vec so we don&squot;t have to back them&n;&t; * up from the low level code&n;&t; */
+id|enable_kernel_fp
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_ALTIVEC
+)paren
+id|enable_kernel_altivec
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|pmac_pm_finish
+r_static
+r_int
+id|pmac_pm_finish
+c_func
+(paren
+id|suspend_state_t
+id|state
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s(%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|state
+)paren
+suffix:semicolon
+multiline_comment|/* Restore userland MMU context */
+id|set_context
+c_func
+(paren
+id|current-&gt;active_mm-&gt;context
+comma
+id|current-&gt;active_mm-&gt;pgd
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|pmac_pm_ops
+r_static
+r_struct
+id|pm_ops
+id|pmac_pm_ops
+op_assign
+(brace
+dot
+id|pm_disk_mode
+op_assign
+id|PM_DISK_SHUTDOWN
+comma
+dot
+id|prepare
+op_assign
+id|pmac_pm_prepare
+comma
+dot
+id|enter
+op_assign
+id|pmac_pm_enter
+comma
+dot
+id|finish
+op_assign
+id|pmac_pm_finish
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|pmac_late_init
 r_static
 r_int
@@ -1801,6 +1944,15 @@ id|initializing
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+id|pm_set_ops
+c_func
+(paren
+op_amp
+id|pmac_pm_ops
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SOFTWARE_SUSPEND */
 r_return
 l_int|0
 suffix:semicolon

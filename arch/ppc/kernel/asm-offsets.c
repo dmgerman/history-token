@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1368,6 +1369,48 @@ r_struct
 id|thread_info
 comma
 id|preempt_count
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|pbe_address
+comma
+m_offsetof
+(paren
+r_struct
+id|pbe
+comma
+id|address
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|pbe_orig_address
+comma
+m_offsetof
+(paren
+r_struct
+id|pbe
+comma
+id|orig_address
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|pbe_next
+comma
+m_offsetof
+(paren
+r_struct
+id|pbe
+comma
+id|next
 )paren
 )paren
 suffix:semicolon
