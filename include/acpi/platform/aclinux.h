@@ -7,6 +7,8 @@ DECL|macro|ACPI_OS_NAME
 mdefine_line|#define ACPI_OS_NAME                &quot;Linux&quot;
 DECL|macro|ACPI_USE_SYSTEM_CLIBRARY
 mdefine_line|#define ACPI_USE_SYSTEM_CLIBRARY
+DECL|macro|ACPI_USE_DO_WHILE_0
+mdefine_line|#define ACPI_USE_DO_WHILE_0
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;acconfig.h&gt;
+macro_line|#include &lt;acpi/acconfig.h&gt;
 DECL|macro|OLD_ACPI_INTERFACE
 mdefine_line|#define OLD_ACPI_INTERFACE (ACPI_CA_VERSION &lt; 0x20020000)
 macro_line|#if OLD_ACPI_INTERFACE

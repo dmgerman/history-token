@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &quot;sleep.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_SYSTEM_COMPONENT
