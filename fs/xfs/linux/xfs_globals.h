@@ -14,10 +14,6 @@ r_int
 id|xfs_physmem
 suffix:semicolon
 r_extern
-id|spinlock_t
-id|xfs_atomic_spin
-suffix:semicolon
-r_extern
 r_struct
 id|cred
 op_star

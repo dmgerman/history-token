@@ -2238,6 +2238,15 @@ id|mp-&gt;m_agirotor
 op_assign
 l_int|0
 suffix:semicolon
+id|spinlock_init
+c_func
+(paren
+op_amp
+id|mp-&gt;m_agirotor_lock
+comma
+l_string|&quot;m_agirotor_lock&quot;
+)paren
+suffix:semicolon
 id|mp-&gt;m_maxagi
 op_assign
 id|mp-&gt;m_sb.sb_agcount

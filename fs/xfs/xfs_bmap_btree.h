@@ -885,6 +885,7 @@ macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_BMBT_TRACE
 macro_line|#undef XFS_BMBT_TRACE
 macro_line|#endif
+macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Prototypes for xfs_bmap.c to call.&n; */
 r_void
 id|xfs_bmdr_to_bmbt
@@ -1420,5 +1421,6 @@ id|xfs_bmbt_irec_t
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_BMAP_BTREE_H__ */
 eof
