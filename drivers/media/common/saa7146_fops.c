@@ -1735,6 +1735,8 @@ c_func
 (paren
 id|file
 comma
+id|file-&gt;private_data
+comma
 op_amp
 id|fh-&gt;vbi_q
 comma
