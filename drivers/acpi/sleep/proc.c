@@ -275,8 +275,6 @@ op_eq
 l_int|4
 )paren
 (brace
-id|error
-op_assign
 id|software_suspend
 c_func
 (paren
