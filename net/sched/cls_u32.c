@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * net/sched/cls_u32.c&t;Ugly (or Universal) 32bit key Packet Classifier.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;The filters are packed to hash tables of key nodes&n; *&t;with a set of 32bit key/mask pairs at every node.&n; *&t;Nodes reference next level hash tables etc.&n; *&n; *&t;This scheme is the best universal classifier I managed to&n; *&t;invent; it is not super-fast, but it is not slow (provided you&n; *&t;program it correctly), and general enough.  And its relative&n; *&t;speed grows as the number of rules becomes larger.&n; *&n; *&t;It seems that it represents the best middle point between&n; *&t;speed and manageability both by human and by machine.&n; *&n; *&t;It is especially useful for link sharing combined with QoS;&n; *&t;pure RSVP doesn&squot;t need such a general approach and can use&n; *&t;much simpler (and faster) schemes, sort of cls_rsvp.c.&n; *&n; *&t;JHS: We should remove the CONFIG_NET_CLS_IND from here&n; *&t;eventually when the meta match extension is made available&n; *&n; */
+multiline_comment|/*&n; * net/sched/cls_u32.c&t;Ugly (or Universal) 32bit key Packet Classifier.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;The filters are packed to hash tables of key nodes&n; *&t;with a set of 32bit key/mask pairs at every node.&n; *&t;Nodes reference next level hash tables etc.&n; *&n; *&t;This scheme is the best universal classifier I managed to&n; *&t;invent; it is not super-fast, but it is not slow (provided you&n; *&t;program it correctly), and general enough.  And its relative&n; *&t;speed grows as the number of rules becomes larger.&n; *&n; *&t;It seems that it represents the best middle point between&n; *&t;speed and manageability both by human and by machine.&n; *&n; *&t;It is especially useful for link sharing combined with QoS;&n; *&t;pure RSVP doesn&squot;t need such a general approach and can use&n; *&t;much simpler (and faster) schemes, sort of cls_rsvp.c.&n; *&n; *&t;JHS: We should remove the CONFIG_NET_CLS_IND from here&n; *&t;eventually when the meta match extension is made available&n; *&n; *&t;nfmark match added by Catalin(ux aka Dino) BOIE &lt;catab at umbrella.ro&gt;&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -26,6 +26,24 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/act_api.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
+DECL|struct|tc_u32_mark
+r_struct
+id|tc_u32_mark
+(brace
+DECL|member|val
+id|__u32
+id|val
+suffix:semicolon
+DECL|member|mask
+id|__u32
+id|mask
+suffix:semicolon
+DECL|member|success
+id|__u32
+id|success
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|tc_u_knode
 r_struct
 id|tc_u_knode
@@ -93,6 +111,13 @@ r_struct
 id|tc_u32_pcnt
 op_star
 id|pf
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_CLS_U32_MARK
+DECL|member|mark
+r_struct
+id|tc_u32_mark
+id|mark
 suffix:semicolon
 macro_line|#endif
 DECL|member|sel
@@ -332,6 +357,34 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_CLS_U32_MARK
+r_if
+c_cond
+(paren
+(paren
+id|skb-&gt;nfmark
+op_amp
+id|n-&gt;mark.mask
+)paren
+op_ne
+id|n-&gt;mark.val
+)paren
+(brace
+id|n
+op_assign
+id|n-&gt;next
+suffix:semicolon
+r_goto
+id|next_knode
+suffix:semicolon
+)brace
+r_else
+(brace
+id|n-&gt;mark.success
+op_increment
+suffix:semicolon
+)brace
 macro_line|#endif
 r_for
 c_loop
@@ -2431,6 +2484,11 @@ op_star
 id|s
 suffix:semicolon
 r_struct
+id|tc_u32_mark
+op_star
+id|mark
+suffix:semicolon
+r_struct
 id|rtattr
 op_star
 id|opt
@@ -3123,6 +3181,76 @@ op_assign
 id|i
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CLS_U32_MARK                                                                                                                                             
+r_if
+c_cond
+(paren
+id|tb
+(braket
+id|TCA_U32_MARK
+op_minus
+l_int|1
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|RTA_PAYLOAD
+c_func
+(paren
+id|tb
+(braket
+id|TCA_U32_MARK
+op_minus
+l_int|1
+)braket
+)paren
+OL
+r_sizeof
+(paren
+r_struct
+id|tc_u32_mark
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|mark
+op_assign
+id|RTA_DATA
+c_func
+(paren
+id|tb
+(braket
+id|TCA_U32_MARK
+op_minus
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|n-&gt;mark
+comma
+id|mark
+comma
+r_sizeof
+(paren
+r_struct
+id|tc_u32_mark
+)paren
+)paren
+suffix:semicolon
+id|n-&gt;mark.success
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif                                                                                                                                                                 
 id|err
 op_assign
 id|u32_set_parms
@@ -3667,6 +3795,31 @@ op_amp
 id|n-&gt;ht_down-&gt;handle
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CLS_U32_MARK
+r_if
+c_cond
+(paren
+id|n-&gt;mark.val
+op_logical_or
+id|n-&gt;mark.mask
+)paren
+id|RTA_PUT
+c_func
+(paren
+id|skb
+comma
+id|TCA_U32_MARK
+comma
+r_sizeof
+(paren
+id|n-&gt;mark
+)paren
+comma
+op_amp
+id|n-&gt;mark
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 r_if
 c_cond

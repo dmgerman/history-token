@@ -650,6 +650,10 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_int
+r_int
+id|hooknr
+comma
 r_const
 r_struct
 id|net_device

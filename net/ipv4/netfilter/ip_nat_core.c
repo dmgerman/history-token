@@ -665,7 +665,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* If it&squot;s really a local destination manip, it may need to do a&n;   source manip too. */
 r_static
 r_int
@@ -755,7 +754,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Simple way to iterate through all. */
 DECL|function|fake_cmp
 r_static
@@ -1210,7 +1208,6 @@ id|other_ipp
 op_assign
 id|saved_ip
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 r_if
 c_cond
 (paren
@@ -1253,7 +1250,6 @@ multiline_comment|/* Can&squot;t route?  This whole range part is&n;&t;&t;&t;&t;
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Count how many others map onto this. */
 id|score
 op_assign
@@ -1457,7 +1453,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Only do extra mangle when required (breaks&n;                           socket binding) */
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 r_if
 c_cond
 (paren
@@ -1492,7 +1487,6 @@ id|tuple-&gt;src.ip
 r_return
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 id|tuple-&gt;dst.ip
 op_assign
 id|mr-&gt;range
@@ -1939,7 +1933,6 @@ id|NF_IP_POST_ROUTING
 op_assign
 id|NF_IP_PRE_ROUTING
 comma
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 (braket
 id|NF_IP_LOCAL_OUT
 )braket
@@ -1952,7 +1945,6 @@ id|NF_IP_LOCAL_IN
 op_assign
 id|NF_IP_LOCAL_OUT
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 r_int
@@ -3500,6 +3492,79 @@ id|NF_ACCEPT
 suffix:semicolon
 multiline_comment|/* not reached */
 )brace
+DECL|function|tuple_src_equal_dst
+r_static
+r_inline
+r_int
+id|tuple_src_equal_dst
+c_func
+(paren
+r_const
+r_struct
+id|ip_conntrack_tuple
+op_star
+id|t1
+comma
+r_const
+r_struct
+id|ip_conntrack_tuple
+op_star
+id|t2
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|t1-&gt;dst.protonum
+op_ne
+id|t2-&gt;dst.protonum
+op_logical_or
+id|t1-&gt;src.ip
+op_ne
+id|t2-&gt;dst.ip
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t1-&gt;dst.protonum
+op_ne
+id|IPPROTO_ICMP
+)paren
+r_return
+id|t1-&gt;src.u.all
+op_eq
+id|t2-&gt;dst.u.all
+suffix:semicolon
+r_else
+(brace
+r_struct
+id|ip_conntrack_tuple
+id|inv
+suffix:semicolon
+multiline_comment|/* ICMP tuples are asymetric */
+id|invert_tuplepr
+c_func
+(paren
+op_amp
+id|inv
+comma
+id|t1
+)paren
+suffix:semicolon
+r_return
+id|inv.src.u.all
+op_eq
+id|t2-&gt;src.u.all
+op_logical_and
+id|inv.dst.u.all
+op_eq
+id|t2-&gt;dst.u.all
+suffix:semicolon
+)brace
+)brace
 r_int
 DECL|function|icmp_reply_translation
 id|icmp_reply_translation
@@ -3549,6 +3614,13 @@ id|info
 op_assign
 op_amp
 id|conntrack-&gt;nat.info
+suffix:semicolon
+r_struct
+id|ip_conntrack_tuple
+op_star
+id|cttuple
+comma
+id|innertuple
 suffix:semicolon
 r_int
 id|hdrlen
@@ -3745,6 +3817,61 @@ l_string|&quot;REPLY&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Note: May not be from a NAT&squot;d host, but probably safest to&n;&t;   do translation always as if it came from the host itself&n;&t;   (even though a &quot;host unreachable&quot; coming from the host&n;&t;   itself is a bit weird).&n;&n;&t;   More explanation: some people use NAT for anonymizing.&n;&t;   Also, CERT recommends dropping all packets from private IP&n;&t;   addresses (although ICMP errors from internal links with&n;&t;   such addresses are not too uncommon, as Alan Cox points&n;&t;   out) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ip_ct_get_tuple
+c_func
+(paren
+op_amp
+id|inside-&gt;ip
+comma
+op_star
+id|pskb
+comma
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nh.iph-&gt;ihl
+op_star
+l_int|4
+op_plus
+r_sizeof
+(paren
+r_struct
+id|icmphdr
+)paren
+op_plus
+id|inside-&gt;ip.ihl
+op_star
+l_int|4
+comma
+op_amp
+id|innertuple
+comma
+id|ip_ct_find_proto
+c_func
+(paren
+id|inside-&gt;ip.protocol
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|cttuple
+op_assign
+op_amp
+id|conntrack-&gt;tuplehash
+(braket
+id|dir
+)braket
+dot
+id|tuple
+suffix:semicolon
 id|READ_LOCK
 c_func
 (paren
@@ -3810,7 +3937,33 @@ id|dir
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Mapping the inner packet is just like a normal&n;&t;&t;   packet, except it was never src/dst reversed, so&n;&t;&t;   where we would normally apply a dst manip, we apply&n;&t;&t;   a src, and vice versa. */
+multiline_comment|/* Mapping the inner packet is just like a normal packet, except&n;&t;&t; * it was never src/dst reversed, so where we would normally&n;&t;&t; * apply a dst manip, we apply a src, and vice versa. */
+multiline_comment|/* Only true for forwarded packets, locally generated packets&n;&t;&t; * never hit PRE_ROUTING, we need to apply their PRE_ROUTING&n;&t;&t; * manips in LOCAL_OUT. */
+r_if
+c_cond
+(paren
+id|hooknum
+op_eq
+id|NF_IP_LOCAL_OUT
+op_logical_and
+id|info-&gt;manips
+(braket
+id|i
+)braket
+dot
+id|hooknum
+op_eq
+id|NF_IP_PRE_ROUTING
+)paren
+id|hooknum
+op_assign
+id|info-&gt;manips
+(braket
+id|i
+)braket
+dot
+id|hooknum
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3820,10 +3973,59 @@ id|i
 )braket
 dot
 id|hooknum
-op_eq
+op_ne
 id|hooknum
 )paren
+r_continue
+suffix:semicolon
+multiline_comment|/* ICMP errors may be generated locally for packets that&n;&t;&t; * don&squot;t have all NAT manips applied yet. Verify manips&n;&t;&t; * have been applied before reversing them */
+r_if
+c_cond
+(paren
+id|info-&gt;manips
+(braket
+id|i
+)braket
+dot
+id|maniptype
+op_eq
+id|IP_NAT_MANIP_SRC
+)paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tuple_src_equal_dst
+c_func
+(paren
+id|cttuple
+comma
+op_amp
+id|innertuple
+)paren
+)paren
+r_continue
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tuple_src_equal_dst
+c_func
+(paren
+op_amp
+id|innertuple
+comma
+id|cttuple
+)paren
+)paren
+r_continue
+suffix:semicolon
+)brace
 id|DEBUGP
 c_func
 (paren
@@ -3911,8 +4113,8 @@ id|maniptype
 r_goto
 id|unlock_fail
 suffix:semicolon
-multiline_comment|/* Outer packet needs to have IP header NATed like&n;&t;                   it&squot;s a reply. */
-multiline_comment|/* Use mapping to map outer packet: 0 give no&n;                           per-proto mapping */
+multiline_comment|/* Outer packet needs to have IP header NATed like&n;                   it&squot;s a reply. */
+multiline_comment|/* Use mapping to map outer packet: 0 give no&n;                          per-proto mapping */
 id|DEBUGP
 c_func
 (paren
@@ -3976,7 +4178,6 @@ id|maniptype
 r_goto
 id|unlock_fail
 suffix:semicolon
-)brace
 )brace
 id|READ_UNLOCK
 c_func

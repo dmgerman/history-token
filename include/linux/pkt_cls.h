@@ -326,6 +326,9 @@ comma
 DECL|enumerator|TCA_U32_PCNT
 id|TCA_U32_PCNT
 comma
+DECL|enumerator|TCA_U32_MARK
+id|TCA_U32_MARK
+comma
 DECL|enumerator|__TCA_U32_MAX
 id|__TCA_U32_MAX
 )brace

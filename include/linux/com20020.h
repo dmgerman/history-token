@@ -29,26 +29,33 @@ multiline_comment|/* The number of low I/O ports used by the card. */
 DECL|macro|ARCNET_TOTAL_SIZE
 mdefine_line|#define ARCNET_TOTAL_SIZE 8
 multiline_comment|/* various register addresses */
+macro_line|#ifdef CONFIG_SA1100_CT6001
+DECL|macro|BUS_ALIGN
+mdefine_line|#define BUS_ALIGN  2  /* 8 bit device on a 16 bit bus - needs padding */
+macro_line|#else
+DECL|macro|BUS_ALIGN
+mdefine_line|#define BUS_ALIGN  1
+macro_line|#endif
 DECL|macro|_INTMASK
-mdefine_line|#define _INTMASK  (ioaddr+0)&t;/* writable */
+mdefine_line|#define _INTMASK  (ioaddr+BUS_ALIGN*0)&t;/* writable */
 DECL|macro|_STATUS
-mdefine_line|#define _STATUS   (ioaddr+0)&t;/* readable */
+mdefine_line|#define _STATUS   (ioaddr+BUS_ALIGN*0)&t;/* readable */
 DECL|macro|_COMMAND
-mdefine_line|#define _COMMAND  (ioaddr+1)&t;/* standard arcnet commands */
+mdefine_line|#define _COMMAND  (ioaddr+BUS_ALIGN*1)&t;/* standard arcnet commands */
 DECL|macro|_DIAGSTAT
-mdefine_line|#define _DIAGSTAT (ioaddr+1)&t;/* diagnostic status register */
+mdefine_line|#define _DIAGSTAT (ioaddr+BUS_ALIGN*1)&t;/* diagnostic status register */
 DECL|macro|_ADDR_HI
-mdefine_line|#define _ADDR_HI  (ioaddr+2)&t;/* control registers for IO-mapped memory */
+mdefine_line|#define _ADDR_HI  (ioaddr+BUS_ALIGN*2)&t;/* control registers for IO-mapped memory */
 DECL|macro|_ADDR_LO
-mdefine_line|#define _ADDR_LO  (ioaddr+3)
+mdefine_line|#define _ADDR_LO  (ioaddr+BUS_ALIGN*3)
 DECL|macro|_MEMDATA
-mdefine_line|#define _MEMDATA  (ioaddr+4)&t;/* data port for IO-mapped memory */
+mdefine_line|#define _MEMDATA  (ioaddr+BUS_ALIGN*4)&t;/* data port for IO-mapped memory */
 DECL|macro|_SUBADR
-mdefine_line|#define _SUBADR   (ioaddr+5)&t;/* the extended port _XREG refers to */
+mdefine_line|#define _SUBADR   (ioaddr+BUS_ALIGN*5)&t;/* the extended port _XREG refers to */
 DECL|macro|_CONFIG
-mdefine_line|#define _CONFIG   (ioaddr+6)&t;/* configuration register */
+mdefine_line|#define _CONFIG   (ioaddr+BUS_ALIGN*6)&t;/* configuration register */
 DECL|macro|_XREG
-mdefine_line|#define _XREG     (ioaddr+7)&t;/* extra registers (indexed by _CONFIG &n;&t;&t;&t;&t;&t;or _SUBADR) */
+mdefine_line|#define _XREG     (ioaddr+BUS_ALIGN*7)&t;/* extra registers (indexed by _CONFIG&n;  &t;&t;&t;&t;&t;or _SUBADR) */
 multiline_comment|/* in the ADDR_HI register */
 DECL|macro|RDDATAflag
 mdefine_line|#define RDDATAflag&t;0x80&t;/* next access is a read (not a write) */
@@ -99,6 +106,8 @@ DECL|macro|ARCRESET0
 mdefine_line|#define ARCRESET0 { outb(0x18 | 0x80, _CONFIG);   &bslash;&n;&t;&t;    udelay(5);                       &bslash;&n;&t;&t;    outb(0x18 , _CONFIG);            &bslash;&n;                  }
 DECL|macro|ASTATUS
 mdefine_line|#define ASTATUS()&t;inb(_STATUS)
+DECL|macro|ADIAGSTATUS
+mdefine_line|#define ADIAGSTATUS()&t;inb(_DIAGSTAT)
 DECL|macro|ACOMMAND
 mdefine_line|#define ACOMMAND(cmd)&t;outb((cmd),_COMMAND)
 DECL|macro|AINTMASK
