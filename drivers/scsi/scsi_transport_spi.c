@@ -1467,9 +1467,6 @@ id|type
 op_ne
 id|SPI_SIGNAL_UNKNOWN
 )paren
-r_return
-id|count
-suffix:semicolon
 id|i-&gt;f
 op_member_access_from_pointer
 id|set_signalling
