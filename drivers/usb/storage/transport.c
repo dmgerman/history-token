@@ -1002,7 +1002,7 @@ c_func
 id|us
 )paren
 suffix:semicolon
-multiline_comment|/* return the actual length of the data transferred if no error*/
+multiline_comment|/* return the actual length of the data transferred if no error */
 r_if
 c_cond
 (paren
@@ -1219,6 +1219,197 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Interpret the results of a URB transfer&n; *&n; * This function prints appropriate debugging messages, clears halts on&n; * bulk endpoints, and translates the status to the corresponding&n; * USB_STOR_XFER_xxx return code.&n; */
+DECL|function|interpret_urb_result
+r_static
+r_int
+id|interpret_urb_result
+c_func
+(paren
+r_struct
+id|us_data
+op_star
+id|us
+comma
+r_int
+r_int
+id|pipe
+comma
+r_int
+r_int
+id|length
+comma
+r_int
+id|result
+comma
+r_int
+r_int
+id|partial
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Status code %d; transferred %u/%u&bslash;n&quot;
+comma
+id|result
+comma
+id|partial
+comma
+id|length
+)paren
+suffix:semicolon
+multiline_comment|/* stalled */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+op_minus
+id|EPIPE
+)paren
+(brace
+multiline_comment|/* for non-bulk (i.e., control) endpoints, a stall indicates&n;&t;&t; * a protocol error */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|usb_pipebulk
+c_func
+(paren
+id|pipe
+)paren
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- stall on control pipe&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* for a bulk endpoint, clear the stall */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;clearing endpoint halt for pipe 0x%x&bslash;n&quot;
+comma
+id|pipe
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|usb_stor_clear_halt
+c_func
+(paren
+id|us
+comma
+id|pipe
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_STALLED
+suffix:semicolon
+)brace
+multiline_comment|/* NAK - that means we&squot;ve retried this a few times already */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+op_minus
+id|ETIMEDOUT
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- device NAKed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* the transfer was cancelled, presumably by an abort */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+op_minus
+id|ENODEV
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transfer cancelled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* the catch-all error case */
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- unknown error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_ERROR
+suffix:semicolon
+)brace
+multiline_comment|/* no error code; did we send all the data? */
+r_if
+c_cond
+(paren
+id|partial
+op_ne
+id|length
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transferred only %u bytes&bslash;n&quot;
+comma
+id|partial
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_SHORT
+suffix:semicolon
+)brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- transfer complete&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|USB_STOR_XFER_GOOD
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Transfer one control message&n; *&n; * This function does basically the same thing as usb_stor_control_msg()&n; * above, except that return codes are USB_STOR_XFER_xxx rather than the&n; * urb status or transfer length.&n; */
 DECL|function|usb_stor_ctrl_transfer
 r_int
@@ -1256,6 +1447,12 @@ id|size
 (brace
 r_int
 id|result
+suffix:semicolon
+r_int
+r_int
+id|partial
+op_assign
+l_int|0
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -1296,82 +1493,38 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_control_msg returned %d&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-multiline_comment|/* a stall indicates a protocol error */
 r_if
 c_cond
 (paren
 id|result
-op_eq
-op_minus
-id|EPIPE
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- stall on control pipe&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-)brace
-multiline_comment|/* some other serious problem here */
-r_if
-c_cond
-(paren
-id|result
-OL
+OG
 l_int|0
 )paren
 (brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- unknown error&bslash;n&quot;
-)paren
+multiline_comment|/* Separate out the amount transferred */
+id|partial
+op_assign
+id|result
 suffix:semicolon
-r_return
-id|USB_STOR_XFER_ERROR
+id|result
+op_assign
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* was the entire command transferred? */
-r_if
-c_cond
-(paren
-id|result
-OL
-id|size
-)paren
-(brace
-id|US_DEBUGP
+r_return
+id|interpret_urb_result
 c_func
 (paren
-l_string|&quot;-- transferred only %d bytes&bslash;n&quot;
+id|us
+comma
+id|pipe
+comma
+id|size
 comma
 id|result
+comma
+id|partial
 )paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_SHORT
-suffix:semicolon
-)brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transfer completed successfully&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer one buffer via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_msg()&n; * above, except that:&n; *&n; *&t;1.  If the bulk pipe stalls during the transfer, the halt is&n; *&t;    automatically cleared;&n; *&t;2.  Return codes are USB_STOR_XFER_xxx rather than the&n; *&t;    urb status or transfer length.&n; */
@@ -1436,18 +1589,6 @@ op_amp
 id|partial
 )paren
 suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_stor_bulk_msg() returned %d xferred %u/%u&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
-comma
-id|length
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1458,114 +1599,20 @@ id|act_len
 op_assign
 id|partial
 suffix:semicolon
-multiline_comment|/* if we stall, we need to clear it before we go on */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|EPIPE
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;clearing endpoint halt for pipe 0x%x,&quot;
-l_string|&quot; stalled at %u bytes&bslash;n&quot;
-comma
-id|pipe
-comma
-id|partial
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usb_stor_clear_halt
+r_return
+id|interpret_urb_result
 c_func
 (paren
 id|us
 comma
 id|pipe
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_STALLED
-suffix:semicolon
-)brace
-multiline_comment|/* NAK - that means we&squot;ve retried a few times already */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|ETIMEDOUT
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- device NAKed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-)brace
-multiline_comment|/* the catch-all error case */
-r_if
-c_cond
-(paren
-id|result
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- unknown error&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-)brace
-multiline_comment|/* did we send all the data? */
-r_if
-c_cond
-(paren
-id|partial
-op_eq
+comma
 id|length
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transfer complete&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_GOOD
-suffix:semicolon
-)brace
-multiline_comment|/* no error code, so we must have transferred some data, &n;&t; * just not all of it */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transferred only %u bytes&bslash;n&quot;
+comma
+id|result
 comma
 id|partial
 )paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer a scatter-gather list via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_transfer_buf()&n; * above, but it uses the usbcore scatter-gather primitives&n; */
@@ -1604,6 +1651,7 @@ id|act_len
 r_int
 id|result
 suffix:semicolon
+r_int
 r_int
 id|partial
 suffix:semicolon
@@ -1735,18 +1783,6 @@ id|partial
 op_assign
 id|us-&gt;current_sg-&gt;bytes
 suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_sg_wait() returned %d xferred %u/%u&bslash;n&quot;
-comma
-id|result
-comma
-id|partial
-comma
-id|length
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1757,114 +1793,20 @@ id|act_len
 op_assign
 id|partial
 suffix:semicolon
-multiline_comment|/* if we stall, we need to clear it before we go on */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|EPIPE
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;clearing endpoint halt for pipe 0x%x, &quot;
-l_string|&quot;stalled at %u bytes&bslash;n&quot;
-comma
-id|pipe
-comma
-id|partial
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|usb_stor_clear_halt
+r_return
+id|interpret_urb_result
 c_func
 (paren
 id|us
 comma
 id|pipe
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_STALLED
-suffix:semicolon
-)brace
-multiline_comment|/* NAK - that means we&squot;ve retried this a few times already */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|ETIMEDOUT
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- device NAKed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-)brace
-multiline_comment|/* the catch-all error case */
-r_if
-c_cond
-(paren
-id|result
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- unknown error&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_ERROR
-suffix:semicolon
-)brace
-multiline_comment|/* did we send all the data? */
-r_if
-c_cond
-(paren
-id|partial
-op_eq
+comma
 id|length
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transfer complete&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_GOOD
-suffix:semicolon
-)brace
-multiline_comment|/* no error code, so we must have transferred some data,&n;&t; * just not all of it */
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- transferred only %u bytes&bslash;n&quot;
+comma
+id|result
 comma
 id|partial
 )paren
-suffix:semicolon
-r_return
-id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer an entire SCSI command&squot;s worth of data payload over the bulk&n; * pipe.&n; *&n; * Note that this uses usb_stor_bulk_transfer_buf() and&n; * usb_stor_bulk_transfer_sglist() to achieve its goals --&n; * this function simply determines whether we&squot;re going to use&n; * scatter-gather or not, and acts appropriately.&n; */
