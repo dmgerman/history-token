@@ -491,10 +491,34 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Event typedefs and structs&n; *&n; ****************************************************************************/
-multiline_comment|/* Information about a GPE, one per each GPE in an array */
-DECL|struct|acpi_gpe_event_info
+multiline_comment|/* Dispatch info for each GPE -- either a method or handler, cannot be both */
+DECL|struct|acpi_handler_info
 r_struct
-id|acpi_gpe_event_info
+id|acpi_handler_info
+(brace
+DECL|member|address
+id|acpi_event_handler
+id|address
+suffix:semicolon
+multiline_comment|/* Address of handler, if any */
+DECL|member|context
+r_void
+op_star
+id|context
+suffix:semicolon
+multiline_comment|/* Context to be passed to handler */
+DECL|member|method_node
+r_struct
+id|acpi_namespace_node
+op_star
+id|method_node
+suffix:semicolon
+multiline_comment|/* Method node for this GPE level (saved) */
+)brace
+suffix:semicolon
+DECL|union|acpi_gpe_dispatch_info
+r_union
+id|acpi_gpe_dispatch_info
 (brace
 DECL|member|method_node
 r_struct
@@ -504,16 +528,24 @@ id|method_node
 suffix:semicolon
 multiline_comment|/* Method node for this GPE level */
 DECL|member|handler
-id|acpi_gpe_handler
+r_struct
+id|acpi_handler_info
+op_star
 id|handler
 suffix:semicolon
-multiline_comment|/* Address of handler, if any */
-DECL|member|context
-r_void
-op_star
-id|context
+)brace
 suffix:semicolon
-multiline_comment|/* Context to be passed to handler */
+multiline_comment|/*&n; * Information about a GPE, one per each GPE in an array.&n; * NOTE: Important to keep this struct as small as possible.&n; */
+DECL|struct|acpi_gpe_event_info
+r_struct
+id|acpi_gpe_event_info
+(brace
+DECL|member|dispatch
+r_union
+id|acpi_gpe_dispatch_info
+id|dispatch
+suffix:semicolon
+multiline_comment|/* Either Method or Handler */
 DECL|member|register_info
 r_struct
 id|acpi_gpe_register_info
@@ -525,12 +557,12 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-multiline_comment|/* Level or Edge */
-DECL|member|bit_mask
+multiline_comment|/* Misc info about this GPE */
+DECL|member|register_bit
 id|u8
-id|bit_mask
+id|register_bit
 suffix:semicolon
-multiline_comment|/* This GPE within the register */
+multiline_comment|/* This GPE bit within the register */
 )brace
 suffix:semicolon
 multiline_comment|/* Information about a GPE register pair, one per each status/enable pair in an array */
@@ -550,21 +582,16 @@ id|acpi_generic_address
 id|enable_address
 suffix:semicolon
 multiline_comment|/* Address of enable reg */
-DECL|member|status
+DECL|member|enable_for_wake
 id|u8
-id|status
+id|enable_for_wake
 suffix:semicolon
-multiline_comment|/* Current value of status reg */
-DECL|member|enable
+multiline_comment|/* GPEs to keep enabled when sleeping */
+DECL|member|enable_for_run
 id|u8
-id|enable
+id|enable_for_run
 suffix:semicolon
-multiline_comment|/* Current value of enable reg */
-DECL|member|wake_enable
-id|u8
-id|wake_enable
-suffix:semicolon
-multiline_comment|/* Mask of bits to keep enabled when sleeping */
+multiline_comment|/* GPEs to keep enabled when running */
 DECL|member|base_gpe_number
 id|u8
 id|base_gpe_number
@@ -577,6 +604,12 @@ DECL|struct|acpi_gpe_block_info
 r_struct
 id|acpi_gpe_block_info
 (brace
+DECL|member|node
+r_struct
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
 DECL|member|previous
 r_struct
 id|acpi_gpe_block_info
@@ -944,7 +977,7 @@ id|thread_id
 suffix:semicolon
 multiline_comment|/* Running thread ID */
 DECL|member|current_sync_level
-id|u16
+id|u8
 id|current_sync_level
 suffix:semicolon
 multiline_comment|/* Mutex Sync (nested acquire) level */

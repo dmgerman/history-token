@@ -12,6 +12,9 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
@@ -3262,6 +3265,12 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+id|acpi_processor_set_pdc
+c_func
+(paren
+id|pr
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_get_handle
@@ -3303,12 +3312,6 @@ id|ENODEV
 )paren
 suffix:semicolon
 )brace
-id|acpi_processor_set_pdc
-c_func
-(paren
-id|pr
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|acpi_processor_get_performance_control
@@ -7672,6 +7675,95 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Use the acpiid in MADT to map cpus in case of SMP */
+macro_line|#ifndef CONFIG_SMP
+DECL|macro|convert_acpiid_to_cpu
+mdefine_line|#define convert_acpiid_to_cpu(acpi_id) (0xff)
+macro_line|#else
+macro_line|#ifdef CONFIG_IA64
+DECL|macro|arch_acpiid_to_apicid
+mdefine_line|#define arch_acpiid_to_apicid &t;ia64_acpiid_to_sapicid
+DECL|macro|arch_cpu_to_apicid
+mdefine_line|#define arch_cpu_to_apicid &t;ia64_cpu_to_sapicid
+DECL|macro|ARCH_BAD_APICID
+mdefine_line|#define ARCH_BAD_APICID&t;&t;(0xffff)
+macro_line|#else
+DECL|macro|arch_acpiid_to_apicid
+mdefine_line|#define arch_acpiid_to_apicid &t;x86_acpiid_to_apicid
+DECL|macro|arch_cpu_to_apicid
+mdefine_line|#define arch_cpu_to_apicid &t;x86_cpu_to_apicid
+DECL|macro|ARCH_BAD_APICID
+mdefine_line|#define ARCH_BAD_APICID&t;&t;(0xff)
+macro_line|#endif
+DECL|function|convert_acpiid_to_cpu
+r_static
+id|u8
+id|convert_acpiid_to_cpu
+c_func
+(paren
+id|u8
+id|acpi_id
+)paren
+(brace
+id|u16
+id|apic_id
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|apic_id
+op_assign
+id|arch_acpiid_to_apicid
+(braket
+id|acpi_id
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_id
+op_eq
+id|ARCH_BAD_APICID
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|arch_cpu_to_apicid
+(braket
+id|i
+)braket
+op_eq
+id|apic_id
+)paren
+r_return
+id|i
+suffix:semicolon
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* --------------------------------------------------------------------------&n;                                 Driver Interface&n;   -------------------------------------------------------------------------- */
 r_static
 r_int
@@ -7712,11 +7804,12 @@ op_amp
 id|object
 )brace
 suffix:semicolon
+id|u8
+id|cpu_index
+suffix:semicolon
 r_static
 r_int
-id|cpu_index
-op_assign
-l_int|0
+id|cpu0_initialized
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -7750,28 +7843,6 @@ l_int|1
 id|errata.smp
 op_assign
 id|TRUE
-suffix:semicolon
-multiline_comment|/*&n;&t; *  Extra Processor objects may be enumerated on MP systems with&n;&t; *  less than the max # of CPUs. They should be ignored.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|cpu_index
-op_plus
-l_int|1
-)paren
-OG
-id|num_online_cpus
-c_func
-(paren
-)paren
-)paren
-id|return_VALUE
-c_func
-(paren
-op_minus
-id|ENODEV
-)paren
 suffix:semicolon
 id|acpi_processor_errata
 c_func
@@ -7859,14 +7930,77 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * TBD: Synch processor ID (via LAPIC/LSAPIC structures) on SMP.&n;&t; *&t;&gt;&gt;&gt; &squot;acpi_get_processor_id(acpi_id, &amp;id)&squot; in arch/xxx/acpi.c&n;&t; */
-id|pr-&gt;id
-op_assign
-id|cpu_index
-op_increment
-suffix:semicolon
 id|pr-&gt;acpi_id
 op_assign
 id|object.processor.proc_id
+suffix:semicolon
+id|cpu_index
+op_assign
+id|convert_acpiid_to_cpu
+c_func
+(paren
+id|pr-&gt;acpi_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu0_initialized
+op_logical_and
+(paren
+id|cpu_index
+op_eq
+l_int|0xff
+)paren
+)paren
+(brace
+multiline_comment|/* Handle UP system running SMP kernel, with no LAPIC in MADT */
+id|cpu_index
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cpu_index
+OG
+id|num_online_cpus
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; *  Extra Processor objects may be enumerated on MP systems with&n;&t;&t; *  less than the max # of CPUs. They should be ignored.&n;&t;&t; */
+id|ACPI_DEBUG_PRINT
+c_func
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Error getting cpuindex for acpiid 0x%x&bslash;n&quot;
+comma
+id|pr-&gt;acpi_id
+)paren
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|ENODEV
+)paren
+suffix:semicolon
+)brace
+id|cpu0_initialized
+op_assign
+l_int|1
+suffix:semicolon
+id|pr-&gt;id
+op_assign
+id|cpu_index
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 c_func
@@ -7963,16 +8097,6 @@ comma
 l_int|6
 comma
 l_string|&quot;ACPI CPU throttle&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|acpi_fadt.xpm_tmr_blk.address
-comma
-l_int|4
-comma
-l_string|&quot;ACPI timer&quot;
 )paren
 suffix:semicolon
 )brace

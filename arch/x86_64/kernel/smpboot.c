@@ -44,6 +44,13 @@ id|x86_cpu_to_apicid
 id|NR_CPUS
 )braket
 suffix:semicolon
+DECL|variable|x86_cpu_to_apicid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|x86_cpu_to_apicid
+)paren
+suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static
 id|cpumask_t

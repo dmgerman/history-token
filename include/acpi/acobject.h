@@ -210,24 +210,28 @@ id|acpi_object_mutex
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|sync_level
-id|u16
+id|u8
 id|sync_level
 suffix:semicolon
+multiline_comment|/* 0-15, specified in Mutex() call */
 DECL|member|acquisition_depth
 id|u16
 id|acquisition_depth
 suffix:semicolon
+multiline_comment|/* Allow multiple Acquires, same thread */
 DECL|member|owner_thread
 r_struct
 id|acpi_thread_state
 op_star
 id|owner_thread
 suffix:semicolon
+multiline_comment|/* Current owner of the mutex */
 DECL|member|semaphore
 r_void
 op_star
 id|semaphore
 suffix:semicolon
+multiline_comment|/* Actual OS synchronization object */
 DECL|member|prev
 r_union
 id|acpi_operand_object
@@ -248,7 +252,12 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-multiline_comment|/* containing object */
+multiline_comment|/* Containing namespace node */
+DECL|member|original_sync_level
+id|u8
+id|original_sync_level
+suffix:semicolon
+multiline_comment|/* Owner&squot;s original sync level (0-15) */
 )brace
 suffix:semicolon
 DECL|struct|acpi_object_region
@@ -273,7 +282,7 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-multiline_comment|/* containing object */
+multiline_comment|/* Containing namespace node */
 DECL|member|next
 r_union
 id|acpi_operand_object

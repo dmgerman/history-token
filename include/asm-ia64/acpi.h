@@ -266,6 +266,12 @@ id|MAX_NUMNODES
 )braket
 suffix:semicolon
 macro_line|#endif
+r_extern
+id|u16
+id|ia64_acpiid_to_sapicid
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*_ASM_ACPI_H*/
 eof

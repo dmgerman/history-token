@@ -342,7 +342,7 @@ mdefine_line|#define ARGI_CREATE_QWORD_FIELD_OP      ARGI_LIST3 (ARGI_BUFFER,   
 DECL|macro|ARGI_CREATE_WORD_FIELD_OP
 mdefine_line|#define ARGI_CREATE_WORD_FIELD_OP       ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
 DECL|macro|ARGI_DATA_REGION_OP
-mdefine_line|#define ARGI_DATA_REGION_OP             ARGI_LIST3 (ARGI_STRING,     ARGI_STRING,       ARGI_STRING)
+mdefine_line|#define ARGI_DATA_REGION_OP             ARGI_LIST3 (ARGI_STRING,     ARGI_STRING,        ARGI_STRING)
 DECL|macro|ARGI_DEBUG_OP
 mdefine_line|#define ARGI_DEBUG_OP                   ARG_NONE
 DECL|macro|ARGI_DECREMENT_OP
@@ -380,13 +380,13 @@ mdefine_line|#define ARGI_INDEX_OP                   ARGI_LIST3 (ARGI_COMPLEXOBJ
 DECL|macro|ARGI_LAND_OP
 mdefine_line|#define ARGI_LAND_OP                    ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
 DECL|macro|ARGI_LEQUAL_OP
-mdefine_line|#define ARGI_LEQUAL_OP                  ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
+mdefine_line|#define ARGI_LEQUAL_OP                  ARGI_LIST2 (ARGI_COMPUTEDATA,ARGI_COMPUTEDATA)
 DECL|macro|ARGI_LGREATER_OP
-mdefine_line|#define ARGI_LGREATER_OP                ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
+mdefine_line|#define ARGI_LGREATER_OP                ARGI_LIST2 (ARGI_COMPUTEDATA,ARGI_COMPUTEDATA)
 DECL|macro|ARGI_LGREATEREQUAL_OP
 mdefine_line|#define ARGI_LGREATEREQUAL_OP           ARGI_INVALID_OPCODE
 DECL|macro|ARGI_LLESS_OP
-mdefine_line|#define ARGI_LLESS_OP                   ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
+mdefine_line|#define ARGI_LLESS_OP                   ARGI_LIST2 (ARGI_COMPUTEDATA,ARGI_COMPUTEDATA)
 DECL|macro|ARGI_LLESSEQUAL_OP
 mdefine_line|#define ARGI_LLESSEQUAL_OP              ARGI_INVALID_OPCODE
 DECL|macro|ARGI_LNOT_OP

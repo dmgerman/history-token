@@ -121,6 +121,24 @@ macro_line|#endif /*CONFIG_ACPI_PCI*/
 multiline_comment|/* --------------------------------------------------------------------------&n;                                  Power Resource&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_POWER
 r_int
+id|acpi_enable_wakeup_device_power
+(paren
+r_struct
+id|acpi_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
+id|acpi_disable_wakeup_device_power
+(paren
+r_struct
+id|acpi_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
 id|acpi_power_get_inferred_state
 (paren
 r_struct
