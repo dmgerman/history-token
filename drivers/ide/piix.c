@@ -234,6 +234,8 @@ l_string|&quot;UDMA33&quot;
 comma
 l_string|&quot;UDMA66&quot;
 comma
+l_string|&quot;UDMA100&quot;
+comma
 l_string|&quot;UDMA133&quot;
 )brace
 suffix:semicolon
