@@ -481,12 +481,12 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * init_etherdev - Register ethernet device&n; * @dev: An ethernet device structure to be filled in, or %NULL if a new&n; *&t;struct should be allocated.&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this ethernet device&n; *&n; * Fill in the fields of the device structure with ethernet-generic values.&n; *&n; * If no device structure is passed, a new one is constructed, complete with&n; * a private data area of size @sizeof_priv.  A 32-byte (not bit)&n; * alignment is enforced for this private data area.&n; *&n; * If an empty string area is passed as dev-&gt;name, or a new structure is made,&n; * a new name string is constructed.&n; */
-DECL|function|init_etherdev
+multiline_comment|/**&n; * init_etherdev - Register ethernet device&n; * @dev: An ethernet device structure to be filled in, or %NULL if a new&n; *&t;struct should be allocated.&n; * @sizeof_priv: Size of additional driver-private structure to be allocated&n; *&t;for this ethernet device&n; *&n; * Fill in the fields of the device structure with ethernet-generic values.&n; *&n; * If no device structure is passed, a new one is constructed, complete with&n; * a private data area of size @sizeof_priv.  A 32-byte (not bit)&n; * alignment is enforced for this private data area.&n; *&n; * If an empty string area is passed as dev-&gt;name, or a new structure is made,&n; * a new name string is constructed.&n; *&n; * Deprecated because of exposed window between device registration &n; * and interfaces pointers that need to be set by driver.&n; * Use alloc_etherdev and register_netdev instead.&n; */
+DECL|function|__init_etherdev
 r_struct
 id|net_device
 op_star
-id|init_etherdev
+id|__init_etherdev
 c_func
 (paren
 r_struct
@@ -536,11 +536,11 @@ id|ether_setup
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_etherdev
+DECL|variable|__init_etherdev
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|init_etherdev
+id|__init_etherdev
 )paren
 suffix:semicolon
 DECL|variable|alloc_etherdev
