@@ -1231,8 +1231,6 @@ op_star
 id|interface
 )paren
 suffix:semicolon
-DECL|macro|usb_endpoint_halt
-mdefine_line|#define usb_endpoint_halt(dev, ep, out) ((dev)-&gt;halted[out] |= (1 &lt;&lt; (ep)))
 DECL|macro|usb_endpoint_out
 mdefine_line|#define usb_endpoint_out(ep_dir)&t;(!((ep_dir) &amp; USB_DIR_IN))
 multiline_comment|/*&n; * USB device fs stuff&n; */

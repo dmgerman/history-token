@@ -7207,18 +7207,10 @@ id|cp-&gt;version
 )paren
 suffix:semicolon
 multiline_comment|/* allow some time to settle the device */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|3
+l_int|334
 )paren
 suffix:semicolon
 multiline_comment|/* Try to get a suitable textual description of the device */

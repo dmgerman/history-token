@@ -7663,6 +7663,9 @@ suffix:semicolon
 r_int
 id|pipe
 suffix:semicolon
+r_int
+id|interval
+suffix:semicolon
 id|endpoint
 op_assign
 op_amp
@@ -7686,6 +7689,28 @@ l_int|3
 )paren
 multiline_comment|/* Not an interrupt endpoint */
 r_continue
+suffix:semicolon
+multiline_comment|/* handle potential highspeed HID correctly */
+id|interval
+op_assign
+id|endpoint-&gt;bInterval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+)paren
+id|interval
+op_assign
+l_int|1
+op_lshift
+(paren
+id|interval
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7774,7 +7799,7 @@ id|hid_irq_in
 comma
 id|hid
 comma
-id|endpoint-&gt;bInterval
+id|interval
 )paren
 suffix:semicolon
 id|hid-&gt;urbin-&gt;transfer_dma
@@ -7841,7 +7866,7 @@ id|hid_irq_out
 comma
 id|hid
 comma
-l_int|1
+id|interval
 )paren
 suffix:semicolon
 id|hid-&gt;urbout-&gt;transfer_dma

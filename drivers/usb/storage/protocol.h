@@ -2,9 +2,12 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Protocol
 macro_line|#ifndef _PROTOCOL_H_
 DECL|macro|_PROTOCOL_H_
 mdefine_line|#define _PROTOCOL_H_
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;usb.h&quot;
+r_struct
+id|scsi_cmnd
+suffix:semicolon
+r_struct
+id|us_data
+suffix:semicolon
 multiline_comment|/* Sub Classes */
 DECL|macro|US_SC_RBC
 mdefine_line|#define US_SC_RBC&t;0x01&t;&t;/* Typically, flash devices */
@@ -32,7 +35,8 @@ r_void
 id|usb_stor_ATAPI_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -45,7 +49,8 @@ r_void
 id|usb_stor_qic157_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -58,7 +63,8 @@ r_void
 id|usb_stor_ufi_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -71,7 +77,8 @@ r_void
 id|usb_stor_transparent_scsi_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -79,7 +86,7 @@ id|us_data
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Scsi_Cmnd transfer buffer access utilities */
+multiline_comment|/* struct scsi_cmnd transfer buffer access utilities */
 DECL|enum|xfer_buf_dir
 DECL|enumerator|TO_XFER_BUF
 DECL|enumerator|FROM_XFER_BUF
@@ -106,7 +113,8 @@ r_int
 r_int
 id|buflen
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -139,7 +147,8 @@ r_int
 r_int
 id|buflen
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren

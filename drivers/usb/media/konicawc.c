@@ -111,8 +111,7 @@ macro_line|#endif
 multiline_comment|/* Some default values for initial camera settings,&n;   can be set by modprobe */
 DECL|variable|size
 r_static
-r_enum
-id|frame_sizes
+r_int
 id|size
 suffix:semicolon
 DECL|variable|speed
@@ -4841,12 +4840,14 @@ c_func
 id|DRIVER_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|speed
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4857,12 +4858,14 @@ comma
 l_string|&quot;Initial speed: 0 (slowest) - 6 (fastest)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4873,12 +4876,14 @@ comma
 l_string|&quot;Initial Size 0: 160x120 1: 160x136 2: 176x144 3: 320x240&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|brightness
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4889,12 +4894,14 @@ comma
 l_string|&quot;Initial brightness 0 - 108&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|contrast
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4905,12 +4912,14 @@ comma
 l_string|&quot;Initial contrast 0 - 108&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|saturation
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4921,12 +4930,14 @@ comma
 l_string|&quot;Initial saturation 0 - 108&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sharpness
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4937,12 +4948,14 @@ comma
 l_string|&quot;Initial brightness 0 - 108&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|whitebal
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4954,12 +4967,16 @@ l_string|&quot;Initial white balance 0 - 363&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_USB_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

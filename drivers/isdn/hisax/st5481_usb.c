@@ -533,25 +533,6 @@ op_amp
 id|ctrl_msg-&gt;dr.wIndex
 )paren
 suffix:semicolon
-id|usb_endpoint_running
-c_func
-(paren
-id|adapter-&gt;usb_dev
-comma
-id|ctrl_msg-&gt;dr.wIndex
-op_amp
-op_complement
-id|USB_DIR_IN
-comma
-(paren
-id|ctrl_msg-&gt;dr.wIndex
-op_amp
-id|USB_DIR_IN
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* toggle is reset on clear */
 id|usb_settoggle
 c_func

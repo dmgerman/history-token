@@ -4,8 +4,9 @@ DECL|macro|_DEBUG_H_
 mdefine_line|#define _DEBUG_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/cdrom.h&gt;
-macro_line|#include &quot;usb.h&quot;
+r_struct
+id|scsi_cmnd
+suffix:semicolon
 DECL|macro|USB_STORAGE
 mdefine_line|#define USB_STORAGE &quot;usb-storage: &quot;
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG
@@ -13,7 +14,8 @@ r_void
 id|usb_stor_show_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren

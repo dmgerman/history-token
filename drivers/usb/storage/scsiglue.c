@@ -1,13 +1,17 @@
 multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * SCSI layer glue code&n; *&n; * $Id: scsiglue.c,v 1.26 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *   (c) 2000 Stephen J. Gowdy (SGowdy@lbl.gov)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
 multiline_comment|/***********************************************************************&n; * Host functions &n; ***********************************************************************/
 DECL|function|host_info
 r_static
@@ -87,10 +91,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Devices using Genesys Logic chips cause a lot of trouble for&n;&t; * high-speed transfers; they die unpredictably when given more&n;&t; * than 64 KB of data at a time.  If we detect such a device,&n;&t; * reduce the maximum transfer size to 64 KB = 128 sectors. */
-DECL|macro|USB_VENDOR_ID_GENESYS
-mdefine_line|#define USB_VENDOR_ID_GENESYS&t;0x05e3&t;&t;
-singleline_comment|// Needs a standard location
+multiline_comment|/* According to the technical support people at Genesys Logic,&n;&t; * devices using their chips have problems transferring more than&n;&t; * 32 KB at a time.  In practice people have found that 64 KB&n;&t; * works okay and that&squot;s what Windows does.  But we&squot;ll be&n;&t; * conservative; people can always use the sysfs interface to&n;&t; * increase max_sectors. */
 r_if
 c_cond
 (paren
@@ -98,20 +99,16 @@ id|us-&gt;pusb_dev-&gt;descriptor.idVendor
 op_eq
 id|USB_VENDOR_ID_GENESYS
 op_logical_and
-id|us-&gt;pusb_dev-&gt;speed
-op_eq
-id|USB_SPEED_HIGH
-op_logical_and
 id|sdev-&gt;request_queue-&gt;max_sectors
 OG
-l_int|128
+l_int|64
 )paren
 id|blk_queue_max_sectors
 c_func
 (paren
 id|sdev-&gt;request_queue
 comma
-l_int|128
+l_int|64
 )paren
 suffix:semicolon
 multiline_comment|/* We can&squot;t put these settings in slave_alloc() because that gets&n;&t; * called before the device type is known.  Consequently these&n;&t; * settings can&squot;t be overridden via the scsi devinfo mechanism. */
@@ -174,7 +171,8 @@ r_int
 id|queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -184,7 +182,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -284,7 +283,8 @@ r_int
 id|command_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -444,7 +444,8 @@ r_int
 id|device_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -589,7 +590,8 @@ r_int
 id|bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -1294,13 +1296,13 @@ multiline_comment|/* merge commands... this seems to help performance, but&n;&t;
 dot
 id|use_clustering
 op_assign
-id|TRUE
+l_int|1
 comma
 multiline_comment|/* emulated HBA */
 dot
 id|emulated
 op_assign
-id|TRUE
+l_int|1
 comma
 multiline_comment|/* we do our own delay after a device or bus reset */
 dot

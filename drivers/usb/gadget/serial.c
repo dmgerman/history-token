@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
+macro_line|#include &quot;gadget_chips.h&quot;
 multiline_comment|/* Wait Cond */
 DECL|macro|__wait_cond_interruptible
 mdefine_line|#define __wait_cond_interruptible(wq, condition, lock, flags, ret)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_INTERRUPTIBLE);&t;&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!signal_pending(current)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;spin_unlock_irqrestore(lock, flags);&t;&t;&bslash;&n;&t;&t;&t;schedule();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;spin_lock_irqsave(lock, flags);&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = -ERESTARTSYS;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
@@ -38,9 +39,9 @@ DECL|macro|wait_cond_interruptible_timeout
 mdefine_line|#define wait_cond_interruptible_timeout(wq, condition, lock, flags,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;timeout)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_cond_interruptible_timeout(wq, condition, lock,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;flags, timeout, __ret);&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* Defines */
 DECL|macro|GS_VERSION_STR
-mdefine_line|#define GS_VERSION_STR&t;&t;&t;&quot;v0.1&quot;
+mdefine_line|#define GS_VERSION_STR&t;&t;&t;&quot;v1.0&quot;
 DECL|macro|GS_VERSION_NUM
-mdefine_line|#define GS_VERSION_NUM&t;&t;&t;0x0001
+mdefine_line|#define GS_VERSION_NUM&t;&t;&t;0x0100
 DECL|macro|GS_LONG_NAME
 mdefine_line|#define GS_LONG_NAME&t;&t;&t;&quot;Gadget Serial&quot;
 DECL|macro|GS_SHORT_NAME
@@ -96,283 +97,6 @@ mdefine_line|#define gs_debug(format, arg...) &bslash;&n;&t;do { } while(0)
 DECL|macro|gs_debug_level
 mdefine_line|#define gs_debug_level(level, format, arg...) &bslash;&n;&t;do { } while(0)
 macro_line|#endif /* G_SERIAL_DEBUG */
-multiline_comment|/* USB Controllers */
-multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * This has half a dozen configurable endpoints, four with dedicated&n; * DMA channels to manage their FIFOs.  It supports high speed.&n; * Those endpoints can be arranged in any desired configuration.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_NET2280
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&t;&quot;net2280&quot;
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;&t;64
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-a&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;&t;&t;2
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-b&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;&t;&t;2
-DECL|macro|HIGHSPEED
-mdefine_line|#define HIGHSPEED
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER&t;&t;&t;USB_CONFIG_ATT_SELFPOWER
-r_extern
-r_int
-id|net2280_set_fifo_mode
-c_func
-(paren
-r_struct
-id|usb_gadget
-op_star
-id|gadget
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
-DECL|function|hw_optimize
-r_static
-r_inline
-r_void
-id|hw_optimize
-c_func
-(paren
-r_struct
-id|usb_gadget
-op_star
-id|gadget
-)paren
-(brace
-multiline_comment|/* we can have bigger ep-a/ep-b fifos (2KB each, 4 packets&n;&t; * for highspeed bulk) because we&squot;re not using ep-c/ep-d.&n;&t; */
-id|net2280_set_fifo_mode
-(paren
-id|gadget
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n; * Dummy_hcd, software-based loopback controller.&n; *&n; * This imitates the abilities of the NetChip 2280, so we will use&n; * the same configuration.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_DUMMY_HCD
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&t;&quot;dummy&quot;
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;&t;64
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-a&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;&t;&t;2
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-b&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;&t;&t;2
-DECL|macro|HIGHSPEED
-mdefine_line|#define HIGHSPEED
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER&t;&t;&t;USB_CONFIG_ATT_SELFPOWER
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
-macro_line|#endif
-multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&t;&quot;pxa2xx&quot;
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;&t;16
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2out-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;&t;&t;2
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;&t;&t;1
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER &t;&t;&t;USB_CONFIG_ATT_SELFPOWER
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;omap&quot;
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;&t;64
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2out-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;2
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;1
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER &t;&t;&t;USB_CONFIG_ATT_SELFPOWER
-multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g) do {} while (0)
-macro_line|#endif
-multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * This has only two fixed function endpoints, which can only&n; * be used for bulk (or interrupt) transfers.  (Plus control.)&n; *&n; * Since it can&squot;t flush its TX fifos without disabling the UDC,&n; * the current configuration or altsettings can&squot;t change except&n; * in special situations.  So this is a case of &quot;choose it right&n; * during enumeration&quot; ...&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&t;&quot;sa1100&quot;
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;&t;8
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1out-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;&t;&t;1
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;&t;&t;2
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER&t;&t;&t;USB_CONFIG_ATT_SELFPOWER
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
-macro_line|#endif
-multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&t;&quot;goku&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;&t;0x0116
-DECL|macro|EP0_MAXPACKET
-mdefine_line|#define EP0_MAXPACKET&t;&t;&t;8
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;&t;&t;1
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;&t;&t;2
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER&t;&t;&t;USB_CONFIG_ATT_SELFPOWER
-multiline_comment|/* no hw optimizations to apply */
-DECL|macro|hw_optimize
-mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
-macro_line|#endif
-multiline_comment|/*&n; * USB Controller Defaults&n; */
-macro_line|#ifndef EP0_MAXPACKET
-macro_line|#error Configure some USB peripheral controller for g_serial!
-macro_line|#endif
-macro_line|#ifndef SELFPOWER
-multiline_comment|/* default: say we rely on bus power */
-DECL|macro|SELFPOWER
-mdefine_line|#define SELFPOWER   &t;&t;&t;0
-multiline_comment|/* else value must be USB_CONFIG_ATT_SELFPOWER */
-macro_line|#endif
-macro_line|#ifndef&t;MAX_USB_POWER
-multiline_comment|/* any hub supports this steady state bus power consumption */
-DECL|macro|MAX_USB_POWER
-mdefine_line|#define MAX_USB_POWER&t;&t;&t;100&t;/* mA */
-macro_line|#endif
-macro_line|#ifndef&t;WAKEUP
-multiline_comment|/* default: this driver won&squot;t do remote wakeup */
-DECL|macro|WAKEUP
-mdefine_line|#define WAKEUP&t;&t;&t;&t;0
-multiline_comment|/* else value must be USB_CONFIG_ATT_WAKEUP */
-macro_line|#endif
 multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with a protocol-incompatible driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
 DECL|macro|GS_VENDOR_ID
 mdefine_line|#define GS_VENDOR_ID&t;0x0525&t;&t;/* NetChip */
@@ -1135,6 +859,21 @@ r_int
 id|count
 )paren
 suffix:semicolon
+multiline_comment|/* external functions */
+r_extern
+r_int
+id|net2280_set_fifo_mode
+c_func
+(paren
+r_struct
+id|usb_gadget
+op_star
+id|gadget
+comma
+r_int
+id|mode
+)paren
+suffix:semicolon
 multiline_comment|/* Globals */
 DECL|variable|gs_device
 r_static
@@ -1142,6 +881,20 @@ r_struct
 id|gs_dev
 op_star
 id|gs_device
+suffix:semicolon
+DECL|variable|EP_IN_NAME
+r_static
+r_const
+r_char
+op_star
+id|EP_IN_NAME
+suffix:semicolon
+DECL|variable|EP_OUT_NAME
+r_static
+r_const
+r_char
+op_star
+id|EP_OUT_NAME
 suffix:semicolon
 DECL|variable|gs_open_close_sem
 r_static
@@ -1276,7 +1029,7 @@ id|usb_gadget_driver
 id|gs_gadget_driver
 op_assign
 (brace
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 dot
 id|speed
 op_assign
@@ -1340,6 +1093,14 @@ mdefine_line|#define GS_SERIAL_STR_ID&t;3
 DECL|macro|GS_CONFIG_STR_ID
 mdefine_line|#define GS_CONFIG_STR_ID&t;4
 multiline_comment|/* static strings, in iso 8859/1 */
+DECL|variable|manufacturer
+r_static
+r_char
+id|manufacturer
+(braket
+l_int|40
+)braket
+suffix:semicolon
 DECL|variable|gs_strings
 r_static
 r_struct
@@ -1352,11 +1113,7 @@ op_assign
 (brace
 id|GS_MANUFACTURER_STR_ID
 comma
-id|UTS_SYSNAME
-l_string|&quot; &quot;
-id|UTS_RELEASE
-l_string|&quot; with &quot;
-id|CHIP
+id|manufacturer
 )brace
 comma
 (brace
@@ -1404,7 +1161,6 @@ comma
 suffix:semicolon
 DECL|variable|gs_device_desc
 r_static
-r_const
 r_struct
 id|usb_device_descriptor
 id|gs_device_desc
@@ -1435,11 +1191,6 @@ op_assign
 id|USB_CLASS_VENDOR_SPEC
 comma
 dot
-id|bMaxPacketSize0
-op_assign
-id|EP0_MAXPACKET
-comma
-dot
 id|idVendor
 op_assign
 id|__constant_cpu_to_le16
@@ -1455,15 +1206,6 @@ id|__constant_cpu_to_le16
 c_func
 (paren
 id|GS_PRODUCT_ID
-)paren
-comma
-dot
-id|bcdDevice
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-id|GS_VERSION_NUM
 )paren
 comma
 dot
@@ -1527,20 +1269,12 @@ id|bmAttributes
 op_assign
 id|USB_CONFIG_ATT_ONE
 op_or
-id|SELFPOWER
-op_or
-id|WAKEUP
+id|USB_CONFIG_ATT_SELFPOWER
 comma
 dot
 id|bMaxPower
 op_assign
-(paren
-id|MAX_USB_POWER
-op_plus
 l_int|1
-)paren
-op_div
-l_int|2
 comma
 )brace
 suffix:semicolon
@@ -1581,7 +1315,6 @@ comma
 suffix:semicolon
 DECL|variable|gs_fullspeed_in_desc
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 id|gs_fullspeed_in_desc
@@ -1600,8 +1333,6 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_IN_NUM
-op_or
 id|USB_DIR_IN
 comma
 dot
@@ -1609,20 +1340,10 @@ id|bmAttributes
 op_assign
 id|USB_ENDPOINT_XFER_BULK
 comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-l_int|64
-)paren
-comma
 )brace
 suffix:semicolon
 DECL|variable|gs_fullspeed_out_desc
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 id|gs_fullspeed_out_desc
@@ -1641,8 +1362,6 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_OUT_NUM
-op_or
 id|USB_DIR_OUT
 comma
 dot
@@ -1650,20 +1369,10 @@ id|bmAttributes
 op_assign
 id|USB_ENDPOINT_XFER_BULK
 comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
-l_int|64
-)paren
-comma
 )brace
 suffix:semicolon
 DECL|variable|gs_highspeed_in_desc
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 id|gs_highspeed_in_desc
@@ -1678,13 +1387,6 @@ dot
 id|bDescriptorType
 op_assign
 id|USB_DT_ENDPOINT
-comma
-dot
-id|bEndpointAddress
-op_assign
-id|EP_IN_NUM
-op_or
-id|USB_DIR_IN
 comma
 dot
 id|bmAttributes
@@ -1704,7 +1406,6 @@ comma
 suffix:semicolon
 DECL|variable|gs_highspeed_out_desc
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 id|gs_highspeed_out_desc
@@ -1719,13 +1420,6 @@ dot
 id|bDescriptorType
 op_assign
 id|USB_DT_ENDPOINT
-comma
-dot
-id|bEndpointAddress
-op_assign
-id|EP_OUT_NUM
-op_or
-id|USB_DIR_OUT
 comma
 dot
 id|bmAttributes
@@ -1743,10 +1437,9 @@ l_int|512
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 DECL|variable|gs_qualifier_desc
 r_static
-r_const
 r_struct
 id|usb_qualifier_descriptor
 id|gs_qualifier_desc
@@ -1781,11 +1474,6 @@ id|USB_CLASS_VENDOR_SPEC
 comma
 multiline_comment|/* assumes ep0 uses the same value for both speeds ... */
 dot
-id|bMaxPacketSize0
-op_assign
-id|EP0_MAXPACKET
-comma
-dot
 id|bNumConfigurations
 op_assign
 id|GS_NUM_CONFIGS
@@ -1814,12 +1502,16 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#if G_SERIAL_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1827,16 +1519,18 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;Enable debugging, 0=off, 1=on&quot;
+l_string|&quot;Enable debugging, 0=off, 1=on, larger values for more messages&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|read_q_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1847,12 +1541,14 @@ comma
 l_string|&quot;Read request queue size, default=32&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|write_q_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1863,12 +1559,14 @@ comma
 l_string|&quot;Write request queue size, default=32&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|write_buf_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4869,9 +4567,281 @@ r_int
 id|ret
 suffix:semicolon
 r_struct
+id|usb_ep
+op_star
+id|ep
+suffix:semicolon
+r_struct
 id|gs_dev
 op_star
 id|dev
+suffix:semicolon
+id|usb_ep_autoconfig_reset
+c_func
+(paren
+id|gadget
+)paren
+suffix:semicolon
+id|ep
+op_assign
+id|usb_ep_autoconfig
+c_func
+(paren
+id|gadget
+comma
+op_amp
+id|gs_fullspeed_in_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_goto
+id|autoconf_fail
+suffix:semicolon
+id|EP_IN_NAME
+op_assign
+id|ep-&gt;name
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|ep
+suffix:semicolon
+multiline_comment|/* claim the endpoint */
+id|ep
+op_assign
+id|usb_ep_autoconfig
+c_func
+(paren
+id|gadget
+comma
+op_amp
+id|gs_fullspeed_out_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_goto
+id|autoconf_fail
+suffix:semicolon
+id|EP_OUT_NAME
+op_assign
+id|ep-&gt;name
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|ep
+suffix:semicolon
+multiline_comment|/* claim the endpoint */
+multiline_comment|/* device specific bcdDevice value in device descriptor */
+r_if
+c_cond
+(paren
+id|gadget_is_net2280
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0001
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_pxa
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0002
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_sh
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0003
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_sa1100
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0004
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_goku
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0005
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_mq11xx
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0006
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_omap
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0007
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;gs_bind: controller &squot;%s&squot; not recognized&bslash;n&quot;
+comma
+id|gadget-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* unrecognized, but safe unless bulk is REALLY quirky */
+id|gs_device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|GS_VERSION_NUM
+op_or
+l_int|0x0099
+)paren
+suffix:semicolon
+)brace
+id|gs_device_desc.bMaxPacketSize0
+op_assign
+id|gadget-&gt;ep0-&gt;maxpacket
+suffix:semicolon
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
+multiline_comment|/* assume ep0 uses the same packet size for both speeds */
+id|gs_qualifier_desc.bMaxPacketSize0
+op_assign
+id|gs_device_desc.bMaxPacketSize0
+suffix:semicolon
+multiline_comment|/* assume endpoints are dual-speed */
+id|gs_highspeed_in_desc.bEndpointAddress
+op_assign
+id|gs_fullspeed_in_desc.bEndpointAddress
+suffix:semicolon
+id|gs_highspeed_out_desc.bEndpointAddress
+op_assign
+id|gs_fullspeed_out_desc.bEndpointAddress
+suffix:semicolon
+macro_line|#endif /* CONFIG_USB_GADGET_DUALSPEED */
+id|usb_gadget_set_selfpowered
+c_func
+(paren
+id|gadget
+)paren
 suffix:semicolon
 id|gs_device
 op_assign
@@ -4900,12 +4870,21 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|set_gadget_data
-c_func
+id|snprintf
 (paren
-id|gadget
+id|manufacturer
 comma
-id|dev
+r_sizeof
+(paren
+id|manufacturer
+)paren
+comma
+id|UTS_SYSNAME
+l_string|&quot; &quot;
+id|UTS_RELEASE
+l_string|&quot; with %s&quot;
+comma
+id|gadget-&gt;name
 )paren
 suffix:semicolon
 id|memset
@@ -4938,6 +4917,14 @@ c_func
 (paren
 op_amp
 id|dev-&gt;dev_req_list
+)paren
+suffix:semicolon
+id|set_gadget_data
+c_func
+(paren
+id|gadget
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -5028,6 +5015,21 @@ id|GS_VERSION_STR
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|autoconf_fail
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;gs_bind: cannot autoconfigure on %s&bslash;n&quot;
+comma
+id|gadget-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * gs_unbind&n; *&n; * Called on module unload.  Frees the control request and device&n; * structure.&n; */
@@ -5221,10 +5223,18 @@ id|ret
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_case
 id|USB_DT_DEVICE_QUALIFIER
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;is_dualspeed
+)paren
+r_break
+suffix:semicolon
 id|ret
 op_assign
 id|min
@@ -5258,7 +5268,7 @@ suffix:semicolon
 r_case
 id|USB_DT_OTHER_SPEED_CONFIG
 suffix:colon
-macro_line|#endif /* HIGHSPEED */
+macro_line|#endif /* CONFIG_USB_GADGET_DUALSPEED */
 r_case
 id|USB_DT_CONFIG
 suffix:colon
@@ -5887,10 +5897,22 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|hw_optimize
+multiline_comment|/* device specific optimizations */
+r_if
+c_cond
+(paren
+id|gadget_is_net2280
 c_func
 (paren
 id|gadget
+)paren
+)paren
+id|net2280_set_fifo_mode
+c_func
+(paren
+id|gadget
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|gadget_for_each_ep

@@ -2,6 +2,9 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;transport.h&quot;
@@ -304,6 +307,7 @@ id|US_PR_BULK
 )paren
 )brace
 comma
+macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 (brace
 id|USB_INTERFACE_INFO
 c_func
@@ -316,6 +320,7 @@ id|US_PR_BULK
 )paren
 )brace
 comma
+macro_line|#endif
 multiline_comment|/* Terminating entry */
 (brace
 )brace
@@ -553,6 +558,7 @@ op_assign
 id|US_PR_BULK
 )brace
 comma
+macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 (brace
 dot
 id|useProtocol
@@ -565,6 +571,7 @@ op_assign
 id|US_PR_BULK
 )brace
 comma
+macro_line|#endif
 multiline_comment|/* Terminating entry */
 (brace
 l_int|NULL
@@ -992,7 +999,7 @@ c_cond
 (paren
 id|us-&gt;srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 )paren
 (brace
 id|US_DEBUGP
@@ -1306,6 +1313,28 @@ id|us-&gt;ifnum
 op_assign
 id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Vendor: 0x%04x, Product: 0x%04x, Revision: 0x%04x&bslash;n&quot;
+comma
+id|us-&gt;pusb_dev-&gt;descriptor.idVendor
+comma
+id|us-&gt;pusb_dev-&gt;descriptor.idProduct
+comma
+id|us-&gt;pusb_dev-&gt;descriptor.bcdDevice
+)paren
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Interface Subclass: 0x%02x, Protocol: 0x%02x&bslash;n&quot;
+comma
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceSubClass
+comma
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceProtocol
+)paren
+suffix:semicolon
 multiline_comment|/* Store our private data in the interface */
 id|usb_set_intfdata
 c_func
@@ -1442,32 +1471,6 @@ id|storage_usb_ids
 (braket
 id|id_index
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unusual_dev-&gt;vendorName
-)paren
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Vendor: %s&bslash;n&quot;
-comma
-id|unusual_dev-&gt;vendorName
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unusual_dev-&gt;productName
-)paren
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Product: %s&bslash;n&quot;
-comma
-id|unusual_dev-&gt;productName
-)paren
 suffix:semicolon
 multiline_comment|/* Store the entries */
 id|us-&gt;unusual_dev
@@ -1774,6 +1777,16 @@ c_func
 id|us-&gt;serial
 comma
 l_string|&quot;None&quot;
+)paren
+suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Vendor: %s,  Product: %s&bslash;n&quot;
+comma
+id|us-&gt;vendor
+comma
+id|us-&gt;product
 )paren
 suffix:semicolon
 )brace
@@ -2316,25 +2329,6 @@ id|ep
 suffix:semicolon
 )brace
 )brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Endpoints: In: 0x%p Out: 0x%p Int: 0x%p (Period %d)&bslash;n&quot;
-comma
-id|ep_in
-comma
-id|ep_out
-comma
-id|ep_int
-comma
-id|ep_int
-ques
-c_cond
-id|ep_int-&gt;bInterval
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2915,16 +2909,6 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;USB Mass Storage device detected&bslash;n&quot;
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;altsetting is %d, id_index is %d&bslash;n&quot;
-comma
-id|intf-&gt;cur_altsetting-&gt;desc.bAlternateSetting
-comma
-id|id_index
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate the us_data structure and initialize the mutexes */

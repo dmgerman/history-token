@@ -581,6 +581,16 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+id|HTC_VENDOR_ID
+comma
+id|HTC_HIMALAYA_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
 id|NEC_VENDOR_ID
 comma
 id|NEC_PRODUCT_ID
@@ -875,6 +885,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|priv-&gt;queue_len
+op_assign
+l_int|0
+suffix:semicolon
+id|priv-&gt;free_len
 op_assign
 l_int|0
 suffix:semicolon

@@ -2768,33 +2768,6 @@ id|TD_CC_GET
 id|tdINFO
 )paren
 suffix:semicolon
-multiline_comment|/* control endpoints only have soft stalls */
-r_if
-c_cond
-(paren
-id|type
-op_ne
-id|PIPE_CONTROL
-op_logical_and
-id|cc
-op_eq
-id|TD_CC_STALL
-)paren
-id|usb_endpoint_halt
-(paren
-id|urb-&gt;dev
-comma
-id|usb_pipeendpoint
-(paren
-id|urb-&gt;pipe
-)paren
-comma
-id|usb_pipeout
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* update packet status if needed (short is normally ok) */
 r_if
 c_cond

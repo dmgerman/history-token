@@ -138,11 +138,14 @@ id|sofWaitCnt
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|urb_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -152,11 +155,14 @@ comma
 l_string|&quot;debug urb messages, default is 0 (no)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|base_addr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -166,11 +172,14 @@ comma
 l_string|&quot;sl811 base address 0xd3800000&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|data_reg_addr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -180,11 +189,14 @@ comma
 l_string|&quot;sl811 data register address 0xd3810000&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -5,7 +5,9 @@ mdefine_line|#define _TRANSPORT_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;usb.h&quot;
-macro_line|#include &quot;scsi.h&quot;
+r_struct
+id|scsi_cmnd
+suffix:semicolon
 multiline_comment|/* Protocols */
 DECL|macro|US_PR_CBI
 mdefine_line|#define US_PR_CBI&t;0x00&t;&t;/* Control/Bulk/Interrupt */
@@ -176,7 +178,8 @@ r_int
 id|usb_stor_CBI_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -189,7 +192,8 @@ r_int
 id|usb_stor_CB_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -212,7 +216,8 @@ r_int
 id|usb_stor_Bulk_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -245,7 +250,8 @@ r_void
 id|usb_stor_invoke_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct

@@ -1,13 +1,16 @@
 multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id: transport.c,v 1.47 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *   (c) 2000 Stephen J. Gowdy (SGowdy@lbl.gov)&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
 multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function (usb_storage_command_abort() in scsiglue.c) first&n; * sets the machine state and the ABORTING bit in us-&gt;flags to prevent&n; * new URBs from being submitted.  It then calls usb_stor_stop_transport()&n; * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;flags&n; * to see if the current_urb needs to be stopped.  Likewise, the SG_ACTIVE&n; * bit is tested to see if the current_sg scatter-gather request needs to be&n; * stopped.  The timeout callback routine does much the same thing.&n; *&n; * When a disconnect occurs, the DISCONNECTING bit in us-&gt;flags is set to&n; * prevent new URBs from being submitted, and usb_stor_stop_transport() is&n; * called to stop any ongoing requests.&n; *&n; * The submit function first verifies that the submitting is allowed&n; * (neither ABORTING nor DISCONNECTING bits are set) and that the submit&n; * completes without errors, and only then sets the URB_ACTIVE bit.  This&n; * prevents the stop_transport() function from trying to cancel the URB&n; * while the submit call is underway.  Next, the submit function must test&n; * the flags to see if an abort or disconnect occurred during the submission&n; * or before the URB_ACTIVE bit was set.  If so, it&squot;s essential to cancel&n; * the URB if it hasn&squot;t been cancelled already (i.e., if the URB_ACTIVE bit&n; * is still set).  Either way, the function must then wait for the URB to&n; * finish.  Note that because the URB_ASYNC_UNLINK flag is set, the URB can&n; * still be in progress even after a call to usb_unlink_urb() returns.&n; *&n; * The idea is that (1) once the ABORTING or DISCONNECTING bit is set,&n; * either the stop_transport() function or the submitting function&n; * is guaranteed to call usb_unlink_urb() for an active URB,&n; * and (2) test_and_clear_bit() prevents usb_unlink_urb() from being&n; * called more than once or from being called during usb_submit_urb().&n; */
 multiline_comment|/* This is the completion handler which will wake us up when an URB&n; * completes.&n; */
@@ -547,25 +550,7 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-multiline_comment|/* reset the toggles and endpoint flags */
-id|usb_endpoint_running
-c_func
-(paren
-id|us-&gt;pusb_dev
-comma
-id|usb_pipeendpoint
-c_func
-(paren
-id|pipe
-)paren
-comma
-id|usb_pipeout
-c_func
-(paren
-id|pipe
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* reset the endpoint toggle */
 id|usb_settoggle
 c_func
 (paren
@@ -1490,7 +1475,8 @@ r_void
 id|usb_stor_invoke_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -1615,7 +1601,7 @@ id|US_PR_DPCM_USB
 op_logical_and
 id|srb-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|US_DEBUGP
@@ -1844,7 +1830,7 @@ id|srb-&gt;sc_data_direction
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 multiline_comment|/* use the new buffer we have */
 id|old_request_buffer
@@ -2252,7 +2238,8 @@ r_int
 id|usb_stor_CBI_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -2350,7 +2337,7 @@ id|pipe
 op_assign
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 ques
 c_cond
 id|us-&gt;recv_bulk_pipe
@@ -2568,7 +2555,8 @@ r_int
 id|usb_stor_CB_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -2662,7 +2650,7 @@ id|pipe
 op_assign
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 ques
 c_cond
 id|us-&gt;recv_bulk_pipe
@@ -2838,7 +2826,8 @@ r_int
 id|usb_stor_Bulk_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -2915,7 +2904,7 @@ id|bcb-&gt;Flags
 op_assign
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 ques
 c_cond
 l_int|1
@@ -3046,6 +3035,20 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 multiline_comment|/* DATA STAGE */
 multiline_comment|/* send/receive data payload, if there is any */
+multiline_comment|/* Genesys Logic interface chips need a 100us delay between the&n;&t; * command phase and the data phase */
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;descriptor.idVendor
+op_eq
+id|USB_VENDOR_ID_GENESYS
+)paren
+id|udelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3058,7 +3061,7 @@ id|pipe
 op_assign
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 ques
 c_cond
 id|us-&gt;recv_bulk_pipe
