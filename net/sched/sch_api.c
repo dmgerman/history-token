@@ -5580,4 +5580,6 @@ c_func
 id|unregister_qdisc
 )paren
 suffix:semicolon
+id|PSCHED_EXPORTLIST
+suffix:semicolon
 eof

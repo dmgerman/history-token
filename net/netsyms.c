@@ -1,26 +1,17 @@
 multiline_comment|/*&n; *  linux/net/netsyms.c&n; *&n; *  Symbol table for the linux networking subsystem. Moved here to&n; *  make life simpler in ksyms.c.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/fddidevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;net/snmp.h&gt;
-macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#ifdef CONFIG_HIPPI
 macro_line|#include &lt;linux/hippidevice.h&gt;
 macro_line|#endif
 macro_line|#include &lt;net/pkt_sched.h&gt;
-macro_line|#include &lt;linux/if_bridge.h&gt;
-macro_line|#include &lt;linux/if_vlan.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
 macro_line|#ifdef CONFIG_INET
-macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#if defined(CONFIG_INET_AH) || defined(CONFIG_INET_AH_MODULE) || defined(CONFIG_INET6_AH) || defined(CONFIG_INET6_AH_MODULE)
 macro_line|#include &lt;net/ah.h&gt;
 macro_line|#endif
@@ -70,9 +61,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ATALK_MODULE
-macro_line|#include &lt;net/sock.h&gt;
-macro_line|#endif
 multiline_comment|/* Needed by unix.o */
 DECL|variable|files_stat
 id|EXPORT_SYMBOL
@@ -112,13 +100,6 @@ id|destroy_EII_client
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_INET
-DECL|variable|inet_peer_idlock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_peer_idlock
-)paren
-suffix:semicolon
 multiline_comment|/* Route manipulation */
 multiline_comment|/* needed for ip_gre -cw */
 DECL|variable|ip_statistics
@@ -250,8 +231,6 @@ id|hippi_type_trans
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_SCHED
-id|PSCHED_EXPORTLIST
-suffix:semicolon
 DECL|variable|pfifo_qdisc_ops
 id|EXPORT_SYMBOL
 c_func
@@ -299,12 +278,5 @@ id|unregister_tcf_proto_ops
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|softnet_data
-id|EXPORT_PER_CPU_SYMBOL
-c_func
-(paren
-id|softnet_data
-)paren
-suffix:semicolon
 macro_line|#endif  /* CONFIG_NET */
 eof

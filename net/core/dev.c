@@ -10241,4 +10241,11 @@ id|netdev_fastroute_obstacles
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|softnet_data
+id|EXPORT_PER_CPU_SYMBOL
+c_func
+(paren
+id|softnet_data
+)paren
+suffix:semicolon
 eof
