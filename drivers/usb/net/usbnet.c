@@ -11379,23 +11379,13 @@ op_or_assign
 l_int|0x02
 suffix:semicolon
 singleline_comment|// set local assignment bit (IEEE802)
-r_if
-c_cond
-(paren
+r_return
 id|usb_register
+c_func
 (paren
 op_amp
 id|usbnet_driver
 )paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|usbnet_init
