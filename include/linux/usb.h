@@ -1834,6 +1834,24 @@ r_int
 id|alternate
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|usb_make_path
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * timeouts, in seconds, used for sending/receiving control messages&n; * they typically complete within a few frames (msec) after they&squot;re issued&n; */
 macro_line|#ifdef CONFIG_USB_LONG_TIMEOUT
 DECL|macro|USB_CTRL_GET_TIMEOUT
@@ -2569,8 +2587,7 @@ id|id
 )paren
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit)&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;(00 = 8, 01 = 16, 10 = 32, 11 = 64) [Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out], 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - speed:&t;&t;bit 26&t;&t;(0 = Full, 1 = Low Speed)&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt, 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; *&n; * NOTE:  there&squot;s no encoding (yet?) for a &quot;high speed&quot; endpoint; treat them&n; * like full speed devices.&n; */
-singleline_comment|// FIXME 2.5 get rid of usb_pipeslow(), just use dev-&gt;speed
+multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
 DECL|macro|PIPE_ISOCHRONOUS
 mdefine_line|#define PIPE_ISOCHRONOUS&t;&t;0
 DECL|macro|PIPE_INTERRUPT
@@ -2589,12 +2606,8 @@ DECL|macro|usb_pipein
 mdefine_line|#define usb_pipein(pipe)&t;(((pipe) &gt;&gt; 7) &amp; 1)
 DECL|macro|usb_pipedevice
 mdefine_line|#define usb_pipedevice(pipe)&t;(((pipe) &gt;&gt; 8) &amp; 0x7f)
-DECL|macro|usb_pipe_endpdev
-mdefine_line|#define usb_pipe_endpdev(pipe)&t;(((pipe) &gt;&gt; 8) &amp; 0x7ff)
 DECL|macro|usb_pipeendpoint
 mdefine_line|#define usb_pipeendpoint(pipe)&t;(((pipe) &gt;&gt; 15) &amp; 0xf)
-DECL|macro|usb_pipeslow
-mdefine_line|#define usb_pipeslow(pipe)&t;(((pipe) &gt;&gt; 26) &amp; 1)
 DECL|macro|usb_pipetype
 mdefine_line|#define usb_pipetype(pipe)&t;(((pipe) &gt;&gt; 30) &amp; 3)
 DECL|macro|usb_pipeisoc
@@ -2653,42 +2666,6 @@ id|endpoint
 op_lshift
 l_int|15
 )paren
-op_or
-(paren
-(paren
-id|dev-&gt;speed
-op_eq
-id|USB_SPEED_LOW
-)paren
-op_lshift
-l_int|26
-)paren
-suffix:semicolon
-)brace
-DECL|function|__default_pipe
-r_static
-r_inline
-r_int
-r_int
-id|__default_pipe
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-(paren
-(paren
-id|dev-&gt;speed
-op_eq
-id|USB_SPEED_LOW
-)paren
-op_lshift
-l_int|26
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Create various pipes... */
@@ -2709,9 +2686,9 @@ mdefine_line|#define usb_sndintpipe(dev,endpoint)&t;((PIPE_INTERRUPT &lt;&lt; 30
 DECL|macro|usb_rcvintpipe
 mdefine_line|#define usb_rcvintpipe(dev,endpoint)&t;((PIPE_INTERRUPT &lt;&lt; 30) | __create_pipe(dev,endpoint) | USB_DIR_IN)
 DECL|macro|usb_snddefctrl
-mdefine_line|#define usb_snddefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | __default_pipe(dev))
+mdefine_line|#define usb_snddefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30))
 DECL|macro|usb_rcvdefctrl
-mdefine_line|#define usb_rcvdefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | __default_pipe(dev) | USB_DIR_IN)
+mdefine_line|#define usb_rcvdefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | USB_DIR_IN)
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Debugging and troubleshooting/diagnostic helpers.&n; */
 r_void

@@ -42,7 +42,7 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 2.0 &squot;Enhanced&squot; Host Controller (EHCI) Driver&quot;
 singleline_comment|// #define EHCI_VERBOSE_DEBUG
 singleline_comment|// #define have_iso
-macro_line|#ifdef&t;DEBUG
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 DECL|macro|EHCI_SLAB_FLAGS
 macro_line|#&t;define&t;EHCI_SLAB_FLAGS&t;&t;(SLAB_POISON)
 macro_line|#else

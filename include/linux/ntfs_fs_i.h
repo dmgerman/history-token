@@ -212,5 +212,22 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* this is a kludge */
+DECL|struct|ntfs_i
+r_struct
+id|ntfs_i
+(brace
+DECL|member|n
+r_struct
+id|ntfs_inode_info
+id|n
+suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif
 eof

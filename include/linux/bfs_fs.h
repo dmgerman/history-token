@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;include/linux/bfs_fs.h - BFS data structures on disk
 macro_line|#ifndef _LINUX_BFS_FS_H
 DECL|macro|_LINUX_BFS_FS_H
 mdefine_line|#define _LINUX_BFS_FS_H
+macro_line|#include &lt;linux/bfs_fs_i.h&gt;
 DECL|macro|BFS_BSIZE_BITS
 mdefine_line|#define BFS_BSIZE_BITS&t;&t;9
 DECL|macro|BFS_BSIZE
@@ -202,6 +203,34 @@ r_struct
 id|file_operations
 id|bfs_dir_operations
 suffix:semicolon
+DECL|function|BFS_I
+r_static
+r_inline
+r_struct
+id|bfs_inode_info
+op_star
+id|BFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|bfs_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_BFS_FS_H */
 eof

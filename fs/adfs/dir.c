@@ -595,7 +595,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;u.adfs_i.parent_id
+id|ADFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|parent_id
 op_ne
 id|dir.parent_id
 )paren
@@ -607,7 +613,13 @@ id|sb
 comma
 l_string|&quot;parent directory changed under me! (%lx but got %lx)&bslash;n&quot;
 comma
-id|inode-&gt;u.adfs_i.parent_id
+id|ADFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|parent_id
 comma
 id|dir.parent_id
 )paren

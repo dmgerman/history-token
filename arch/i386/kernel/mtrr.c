@@ -233,10 +233,10 @@ r_int
 id|arr3_protected
 suffix:semicolon
 multiline_comment|/*  Put the processor into a state where MTRRs can be safely set  */
-DECL|function|set_mtrr_prepare
+DECL|function|set_mtrr_prepare_save
 r_static
 r_void
-id|set_mtrr_prepare
+id|set_mtrr_prepare_save
 (paren
 r_struct
 id|set_mtrr_context
@@ -244,10 +244,6 @@ op_star
 id|ctxt
 )paren
 (brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
 multiline_comment|/*  Disable interrupts locally  */
 id|__save_flags
 (paren
@@ -348,7 +344,7 @@ op_eq
 id|MTRR_IF_INTEL
 )paren
 (brace
-multiline_comment|/*  Disable MTRRs, and set the default type to uncached  */
+multiline_comment|/*  Save MTRR state */
 id|rdmsr
 (paren
 id|MTRRdefType_MSR
@@ -358,6 +354,53 @@ comma
 id|ctxt-&gt;deftype_hi
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Cyrix ARRs - everything else were excluded at the top */
+id|ctxt-&gt;ccr3
+op_assign
+id|getCx86
+(paren
+id|CX86_CCR3
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*  End Function set_mtrr_prepare_save  */
+DECL|function|set_mtrr_cache_disable
+r_static
+r_void
+id|set_mtrr_cache_disable
+(paren
+r_struct
+id|set_mtrr_context
+op_star
+id|ctxt
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mtrr_if
+op_ne
+id|MTRR_IF_INTEL
+op_logical_and
+id|mtrr_if
+op_ne
+id|MTRR_IF_CYRIX_ARR
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mtrr_if
+op_eq
+id|MTRR_IF_INTEL
+)paren
+(brace
+multiline_comment|/*  Disable MTRRs, and set the default type to uncached  */
 id|wrmsr
 (paren
 id|MTRRdefType_MSR
@@ -373,19 +416,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Cyrix ARRs - everything else were excluded at the top */
-id|tmp
-op_assign
-id|getCx86
-(paren
-id|CX86_CCR3
-)paren
-suffix:semicolon
 id|setCx86
 (paren
 id|CX86_CCR3
 comma
 (paren
-id|tmp
+id|ctxt-&gt;ccr3
 op_amp
 l_int|0x0f
 )paren
@@ -393,13 +429,9 @@ op_or
 l_int|0x10
 )paren
 suffix:semicolon
-id|ctxt-&gt;ccr3
-op_assign
-id|tmp
-suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  End Function set_mtrr_prepare  */
+multiline_comment|/*  End Function set_mtrr_cache_disable  */
 multiline_comment|/*  Restore the processor after a set_mtrr_prepare  */
 DECL|function|set_mtrr_done
 r_static
@@ -1583,12 +1615,20 @@ c_cond
 (paren
 id|do_safe
 )paren
-id|set_mtrr_prepare
+(brace
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
 )paren
 suffix:semicolon
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1867,12 +1907,20 @@ c_cond
 (paren
 id|do_safe
 )paren
-id|set_mtrr_prepare
+(brace
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
 )paren
 suffix:semicolon
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+)brace
 id|base
 op_lshift_assign
 id|PAGE_SHIFT
@@ -2005,12 +2053,20 @@ c_cond
 (paren
 id|do_safe
 )paren
-id|set_mtrr_prepare
+(brace
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
 )paren
 suffix:semicolon
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;     *&t;Low is MTRR0 , High MTRR 1&n;     */
 id|rdmsr
 (paren
@@ -2147,13 +2203,20 @@ c_cond
 (paren
 id|do_safe
 )paren
-id|set_mtrr_prepare
-c_func
+(brace
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
 )paren
 suffix:semicolon
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3219,6 +3282,14 @@ r_static
 id|atomic_t
 id|undone_count
 suffix:semicolon
+DECL|variable|wait_barrier_cache_disable
+r_static
+r_volatile
+r_int
+id|wait_barrier_cache_disable
+op_assign
+id|FALSE
+suffix:semicolon
 DECL|variable|wait_barrier_execute
 r_static
 r_volatile
@@ -3282,7 +3353,37 @@ r_struct
 id|set_mtrr_context
 id|ctxt
 suffix:semicolon
-id|set_mtrr_prepare
+id|set_mtrr_prepare_save
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+multiline_comment|/*  Notify master that I&squot;ve flushed and disabled my cache  */
+id|atomic_dec
+(paren
+op_amp
+id|undone_count
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|wait_barrier_cache_disable
+)paren
+(brace
+id|rep_nop
+c_func
+(paren
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|set_mtrr_cache_disable
 (paren
 op_amp
 id|ctxt
@@ -3300,10 +3401,18 @@ c_loop
 (paren
 id|wait_barrier_execute
 )paren
-id|barrier
+(brace
+id|rep_nop
+c_func
 (paren
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*  The master has cleared me to execute  */
 (paren
 op_star
@@ -3334,10 +3443,18 @@ c_loop
 (paren
 id|wait_barrier_cache_enable
 )paren
-id|barrier
+(brace
+id|rep_nop
+c_func
 (paren
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|set_mtrr_done
 (paren
 op_amp
@@ -3391,6 +3508,10 @@ id|data.smp_type
 op_assign
 id|type
 suffix:semicolon
+id|wait_barrier_cache_disable
+op_assign
+id|TRUE
+suffix:semicolon
 id|wait_barrier_execute
 op_assign
 id|TRUE
@@ -3433,7 +3554,7 @@ l_string|&quot;mtrr: timed out waiting for other CPUs&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Flush and disable the local CPU&squot;s cache */
-id|set_mtrr_prepare
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
@@ -3451,10 +3572,63 @@ id|undone_count
 OG
 l_int|0
 )paren
-id|barrier
+(brace
+id|rep_nop
+c_func
 (paren
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Set up for completion wait and then release other CPUs to change MTRRs*/
+id|atomic_set
+(paren
+op_amp
+id|undone_count
+comma
+id|smp_num_cpus
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|wait_barrier_cache_disable
+op_assign
+id|FALSE
+suffix:semicolon
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+multiline_comment|/*  Wait for all other CPUs to flush and disable their caches  */
+r_while
+c_loop
+(paren
+id|atomic_read
+(paren
+op_amp
+id|undone_count
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|rep_nop
+c_func
+(paren
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set up for completion wait and then release other CPUs to change MTRRs*/
 id|atomic_set
 (paren
@@ -3498,10 +3672,18 @@ id|undone_count
 OG
 l_int|0
 )paren
-id|barrier
+(brace
+id|rep_nop
+c_func
 (paren
 )paren
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*  Now all CPUs should have finished the function. Release the barrier to&n;&t;allow them to re-enable their caches and return from their interrupt,&n;&t;then enable the local cache and return  */
 id|wait_barrier_cache_enable
 op_assign
@@ -7386,13 +7568,19 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|set_mtrr_prepare
+multiline_comment|/* flush cache and enable MAPEN */
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
 )paren
 suffix:semicolon
-multiline_comment|/* flush cache and enable MAPEN */
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
 multiline_comment|/* the CCRs are not contiguous */
 r_for
 c_loop
@@ -7553,13 +7741,19 @@ r_int
 id|i
 suffix:semicolon
 macro_line|#endif
-id|set_mtrr_prepare
+multiline_comment|/* flush cache and enable MAPEN */
+id|set_mtrr_prepare_save
 (paren
 op_amp
 id|ctxt
 )paren
 suffix:semicolon
-multiline_comment|/* flush cache and enable MAPEN */
+id|set_mtrr_cache_disable
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
 multiline_comment|/* Save all CCRs locally */
 id|ccr
 (braket
@@ -8225,7 +8419,13 @@ r_struct
 id|set_mtrr_context
 id|ctxt
 suffix:semicolon
-id|set_mtrr_prepare
+id|set_mtrr_prepare_save
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+id|set_mtrr_cache_disable
 (paren
 op_amp
 id|ctxt
@@ -8668,7 +8868,13 @@ id|set_mtrr_context
 id|ctxt
 suffix:semicolon
 multiline_comment|/*  Note that this is not ideal, since the cache is only flushed/disabled&n;&t;for this CPU while the MTRRs are changed, but changing this requires&n;&t;more invasive changes to the way the kernel boots  */
-id|set_mtrr_prepare
+id|set_mtrr_prepare_save
+(paren
+op_amp
+id|ctxt
+)paren
+suffix:semicolon
+id|set_mtrr_cache_disable
 (paren
 op_amp
 id|ctxt

@@ -11573,7 +11573,14 @@ op_amp
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clear all 6 debug registers:&n;&t; */
+multiline_comment|/* Clear %fs and %gs. */
+id|asm
+r_volatile
+(paren
+l_string|&quot;xorl %eax, %eax; movl %eax, %fs; movl %eax, %gs&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Clear all 6 debug registers: */
 DECL|macro|CD
 mdefine_line|#define CD(register) __asm__(&quot;movl %0,%%db&quot; #register ::&quot;r&quot;(0) );
 id|CD

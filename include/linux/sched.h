@@ -182,15 +182,12 @@ r_void
 id|init_idle
 c_func
 (paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|idle_startup_done
-c_func
-(paren
-r_void
+id|task_t
+op_star
+id|idle
+comma
+r_int
+id|cpu
 )paren
 suffix:semicolon
 r_extern
@@ -281,6 +278,11 @@ id|task_t
 op_star
 id|task
 )paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|cache_decay_ticks
 suffix:semicolon
 DECL|macro|MAX_SCHEDULE_TIMEOUT
 mdefine_line|#define&t;MAX_SCHEDULE_TIMEOUT&t;LONG_MAX
@@ -638,8 +640,6 @@ r_int
 r_int
 id|time_slice
 suffix:semicolon
-DECL|macro|MAX_SLEEP_AVG
-mdefine_line|#define MAX_SLEEP_AVG (2*HZ)
 DECL|member|sleep_avg
 r_int
 r_int
@@ -1152,11 +1152,29 @@ DECL|macro|NICE_TO_PRIO
 mdefine_line|#define NICE_TO_PRIO(n)&t;&t;(MAX_RT_PRIO + (n) + 20)
 DECL|macro|DEF_USER_NICE
 mdefine_line|#define DEF_USER_NICE&t;&t;0
-multiline_comment|/*&n; * Default timeslice is 90 msecs, maximum is 180 msecs.&n; * Minimum timeslice is 10 msecs.&n; */
+multiline_comment|/*&n; * Default timeslice is 150 msecs, maximum is 300 msecs.&n; * Minimum timeslice is 10 msecs.&n; *&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; */
 DECL|macro|MIN_TIMESLICE
 mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
 DECL|macro|MAX_TIMESLICE
-mdefine_line|#define MAX_TIMESLICE&t;&t;(180 * HZ / 1000)
+mdefine_line|#define MAX_TIMESLICE&t;&t;(300 * HZ / 1000)
+DECL|macro|CHILD_FORK_PENALTY
+mdefine_line|#define CHILD_FORK_PENALTY&t;95
+DECL|macro|PARENT_FORK_PENALTY
+mdefine_line|#define PARENT_FORK_PENALTY&t;100
+DECL|macro|EXIT_WEIGHT
+mdefine_line|#define EXIT_WEIGHT&t;&t;3
+DECL|macro|PRIO_INTERACTIVE_RATIO
+mdefine_line|#define PRIO_INTERACTIVE_RATIO&t;20
+DECL|macro|PRIO_CPU_HOG_RATIO
+mdefine_line|#define PRIO_CPU_HOG_RATIO&t;60
+DECL|macro|PRIO_BONUS_RATIO
+mdefine_line|#define PRIO_BONUS_RATIO&t;70
+DECL|macro|INTERACTIVE_DELTA
+mdefine_line|#define INTERACTIVE_DELTA&t;3
+DECL|macro|MAX_SLEEP_AVG
+mdefine_line|#define MAX_SLEEP_AVG&t;&t;(2*HZ)
+DECL|macro|STARVATION_LIMIT
+mdefine_line|#define STARVATION_LIMIT&t;(2*HZ)
 DECL|macro|USER_PRIO
 mdefine_line|#define USER_PRIO(p)&t;&t;((p)-MAX_RT_PRIO)
 DECL|macro|MAX_USER_PRIO

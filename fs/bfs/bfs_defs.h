@@ -18,12 +18,6 @@ DECL|macro|su_sbh
 mdefine_line|#define su_sbh&t;&t;u.bfs_sb.si_sbh
 DECL|macro|su_bfs_sb
 mdefine_line|#define su_bfs_sb&t;u.bfs_sb.si_bfs_sb
-DECL|macro|iu_dsk_ino
-mdefine_line|#define iu_dsk_ino&t;u.bfs_i.i_dsk_ino
-DECL|macro|iu_sblock
-mdefine_line|#define iu_sblock&t;u.bfs_i.i_sblock
-DECL|macro|iu_eblock
-mdefine_line|#define iu_eblock&t;u.bfs_i.i_eblock
 DECL|macro|printf
-mdefine_line|#define printf(format, args...) &bslash;&n;&t;printk(KERN_ERR &quot;BFS-fs: &quot; __FUNCTION__ &quot;(): &quot; format, ## args)
+mdefine_line|#define printf(format, args...) &bslash;&n;&t;printk(KERN_ERR &quot;BFS-fs: %s(): &quot; format, __FUNCTION__, ## args)
 eof

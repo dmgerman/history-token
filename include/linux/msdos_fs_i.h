@@ -36,19 +36,17 @@ r_int
 id|i_location
 suffix:semicolon
 multiline_comment|/* on-disk position of directory entry or 0 */
-DECL|member|i_fat_inode
-r_struct
-id|inode
-op_star
-id|i_fat_inode
-suffix:semicolon
-multiline_comment|/* struct inode of this one */
 DECL|member|i_fat_hash
 r_struct
 id|list_head
 id|i_fat_hash
 suffix:semicolon
 multiline_comment|/* hash by i_location */
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -613,7 +613,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;reiserfs_inode_cache&quot;
+l_string|&quot;reiser_inode_cache&quot;
 comma
 r_sizeof
 (paren

@@ -69,14 +69,45 @@ DECL|member|usercompr
 id|__u8
 id|usercompr
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef JFFS2_OUT_OF_KERNEL
 DECL|macro|JFFS2_INODE_INFO
 mdefine_line|#define JFFS2_INODE_INFO(i) ((struct jffs2_inode_info *) &amp;(i)-&gt;u)
 macro_line|#else
-DECL|macro|JFFS2_INODE_INFO
-mdefine_line|#define JFFS2_INODE_INFO(i) (&amp;i-&gt;u.jffs2_i)
+DECL|function|JFFS2_INODE_INFO
+r_static
+r_inline
+r_struct
+id|jffs2_inode_info
+op_star
+id|JFFS2_INODE_INFO
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|jffs2_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif /* _JFFS2_FS_I */
 eof

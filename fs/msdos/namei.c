@@ -4,9 +4,6 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MSDOS_DEBUG
 mdefine_line|#define MSDOS_DEBUG 0
 DECL|macro|PRINTK

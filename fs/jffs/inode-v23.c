@@ -1292,7 +1292,7 @@ id|raw_inode-&gt;gid
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 id|inode-&gt;i_size
 op_assign

@@ -23,6 +23,11 @@ r_int
 r_int
 id|i_eblock
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* _LINUX_BFS_FS_I */

@@ -2281,7 +2281,23 @@ id|prev-&gt;gs
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Restore %fs and %gs.&n;&t; */
+multiline_comment|/*&n;&t; * Restore %fs and %gs if needed.&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|prev-&gt;fs
+op_or
+id|prev-&gt;gs
+op_or
+id|next-&gt;fs
+op_or
+id|next-&gt;gs
+)paren
+)paren
+(brace
 id|loadsegment
 c_func
 (paren
@@ -2298,14 +2314,19 @@ comma
 id|next-&gt;gs
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Now maybe reload the debug registers&n;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|next-&gt;debugreg
 (braket
 l_int|7
 )braket
+)paren
 )paren
 (brace
 id|loaddebug
@@ -2361,9 +2382,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|prev-&gt;ioperm
 op_logical_or
 id|next-&gt;ioperm
+)paren
 )paren
 (brace
 r_if

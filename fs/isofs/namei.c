@@ -195,7 +195,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dir-&gt;u.isofs_i.i_first_extent
+id|ISOFS_I
+c_func
+(paren
+id|dir
+)paren
+op_member_access_from_pointer
+id|i_first_extent
 )paren
 r_return
 l_int|0

@@ -2,9 +2,7 @@ macro_line|#ifndef _LINUX_MSDOS_FS_H
 DECL|macro|_LINUX_MSDOS_FS_H
 mdefine_line|#define _LINUX_MSDOS_FS_H
 multiline_comment|/*&n; * The MS-DOS filesystem constants/structures&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/fd.h&gt;
+macro_line|#include &lt;linux/msdos_fs_i.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|MSDOS_ROOT_INO
 mdefine_line|#define MSDOS_ROOT_INO  1 /* == MINIX_ROOT_INO */
@@ -68,8 +66,34 @@ mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S
 multiline_comment|/* valid file mode bits */
 DECL|macro|MSDOS_SB
 mdefine_line|#define MSDOS_SB(s) (&amp;((s)-&gt;u.msdos_sb))
-DECL|macro|MSDOS_I
-mdefine_line|#define MSDOS_I(i) (&amp;((i)-&gt;u.msdos_i))
+DECL|function|MSDOS_I
+r_static
+r_inline
+r_struct
+id|msdos_inode_info
+op_star
+id|MSDOS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|msdos_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|macro|MSDOS_NAME
 mdefine_line|#define MSDOS_NAME 11 /* maximum name length */
 DECL|macro|MSDOS_LONGNAME

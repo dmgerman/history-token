@@ -136,6 +136,7 @@ mdefine_line|#define ADFS_DR_SIZE_BITS&t;(ADFS_DR_SIZE &lt;&lt; 3)
 DECL|macro|ADFS_SUPER_MAGIC
 mdefine_line|#define ADFS_SUPER_MAGIC&t; 0xadf5
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/adfs_fs_i.h&gt;
 multiline_comment|/*&n; * Calculate the boot block checksum on an ADFS drive.  Note that this will&n; * appear to be correct if the sector contains all zeros, so also check that&n; * the disk size is non-zero!!!&n; */
 DECL|function|adfs_checkbblk
 r_static
@@ -209,6 +210,34 @@ id|ptr
 (braket
 l_int|511
 )braket
+suffix:semicolon
+)brace
+DECL|function|ADFS_I
+r_static
+r_inline
+r_struct
+id|adfs_inode_info
+op_star
+id|ADFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|adfs_inode_info
+comma
+id|vfs_inode
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif

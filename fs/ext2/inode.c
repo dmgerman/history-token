@@ -3853,6 +3853,10 @@ c_func
 id|raw_inode-&gt;i_file_acl
 )paren
 suffix:semicolon
+id|ei-&gt;i_dir_acl
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

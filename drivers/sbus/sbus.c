@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sbus.c,v 1.98 2002/01/05 01:13:43 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: sbus.c,v 1.100 2002/01/24 15:36:24 davem Exp $&n; * sbus.c:  SBus support routines.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -1271,7 +1271,8 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|sbus_init
-r_void
+r_static
+r_int
 id|__init
 id|sbus_init
 c_func
@@ -1318,11 +1319,13 @@ c_func
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN4
-r_return
 id|sun4_dvma_init
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 macro_line|#endif
 id|topnd
@@ -1398,6 +1401,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_return
+l_int|0
 suffix:semicolon
 macro_line|#else
 id|prom_printf
@@ -1562,6 +1566,7 @@ c_func
 suffix:semicolon
 )brace
 r_return
+l_int|0
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* No reason to run further - the data access trap will occur. */
@@ -2346,6 +2351,9 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|sbus_init
 id|subsys_initcall

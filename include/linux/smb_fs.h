@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_SMB_FS_H
 DECL|macro|_LINUX_SMB_FS_H
 mdefine_line|#define _LINUX_SMB_FS_H
 macro_line|#include &lt;linux/smb.h&gt;
+macro_line|#include &lt;linux/smb_fs_i.h&gt;
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|SMB_IOC_GETMOUNTUID
 mdefine_line|#define&t;SMB_IOC_GETMOUNTUID&t;&t;_IOR(&squot;u&squot;, 1, __kernel_old_uid_t)
@@ -16,6 +17,34 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+DECL|function|SMB_I
+r_static
+r_inline
+r_struct
+id|smb_inode_info
+op_star
+id|SMB_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|smb_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* macro names are short for word, double-word, long value (?) */
 DECL|macro|WVAL
 mdefine_line|#define WVAL(buf,pos) &bslash;&n;&t;(le16_to_cpu(get_unaligned((u16 *)((u8 *)(buf) + (pos)))))
@@ -333,7 +362,13 @@ id|i
 (brace
 r_return
 (paren
-id|i-&gt;u.smbfs_i.open
+id|SMB_I
+c_func
+(paren
+id|i
+)paren
+op_member_access_from_pointer
+id|open
 op_eq
 id|server_from_inode
 c_func

@@ -1,15 +1,8 @@
 multiline_comment|/*&n; *  linux/fs/fat/dir.c&n; *&n; *  directory handling functions for fat-based filesystems&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *&n; *  Hidden files 1995 by Albert Cahalan &lt;albert@ccs.neu.edu&gt; &lt;adc@coe.neu.edu&gt;&n; *&n; *  VFAT extensions by Gordon Chaffee &lt;chaffee@plateau.cs.berkeley.edu&gt;&n; *  Merged with msdos fs by Henrik Storner &lt;storner@osiris.ping.dk&gt;&n; *  Rewritten for constant inumbers. Plugged buffer overrun in readdir(). AV&n; *  Short name translation 1999, 2001 by Wolfram Pienkoss &lt;wp@bszh.de&gt;&n; */
-macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(X)

@@ -1444,6 +1444,35 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/* Number conversion inlines, named after the section in ISO 9660&n;   they correspond to. */
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;linux/iso_fs_i.h&gt;
+DECL|function|ISOFS_I
+r_static
+r_inline
+r_struct
+id|iso_inode_info
+op_star
+id|ISOFS_I
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_return
+id|list_entry
+c_func
+(paren
+id|inode
+comma
+r_struct
+id|iso_inode_info
+comma
+id|vfs_inode
+)paren
+suffix:semicolon
+)brace
 DECL|function|isonum_711
 r_static
 r_inline

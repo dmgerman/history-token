@@ -1249,6 +1249,11 @@ c_func
 id|cpuid
 )paren
 suffix:semicolon
+id|disable_APIC_timer
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|set_bit
 c_func
@@ -1301,11 +1306,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
 id|smp_callin
 c_func
 (paren
@@ -1327,13 +1327,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * low-memory mappings have been cleared, flush them from&n;&t; * the local TLBs too.&n;&t; */
-id|local_flush_tlb
+id|enable_APIC_timer
 c_func
 (paren
 )paren
 suffix:semicolon
-id|idle_startup_done
+multiline_comment|/*&n;&t; * low-memory mappings have been cleared, flush them from&n;&t; * the local TLBs too.&n;&t; */
+id|local_flush_tlb
 c_func
 (paren
 )paren
@@ -2602,9 +2602,13 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|idle-&gt;cpu
-op_assign
+id|init_idle
+c_func
+(paren
+id|idle
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|map_cpu_to_boot_apicid
 c_func
@@ -3130,6 +3134,11 @@ DECL|variable|cacheflush_time
 id|cycles_t
 id|cacheflush_time
 suffix:semicolon
+DECL|variable|cache_decay_ticks
+r_int
+r_int
+id|cache_decay_ticks
+suffix:semicolon
 DECL|function|smp_tune_scheduling
 r_static
 r_void
@@ -3208,6 +3217,19 @@ op_div
 id|bandwidth
 suffix:semicolon
 )brace
+id|cache_decay_ticks
+op_assign
+(paren
+r_int
+)paren
+id|cacheflush_time
+op_div
+id|cpu_khz
+op_star
+id|HZ
+op_div
+l_int|1000
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3240,6 +3262,22 @@ l_int|1000
 )paren
 op_mod
 l_int|100
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;task migration cache decay timeout: %ld msecs.&bslash;n&quot;
+comma
+(paren
+id|cache_decay_ticks
+op_plus
+l_int|1
+)paren
+op_star
+l_int|1000
+op_div
+id|HZ
 )paren
 suffix:semicolon
 )brace

@@ -128,7 +128,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

@@ -2,13 +2,7 @@ multiline_comment|/*&n; *  linux/fs/vfat/namei.c&n; *&n; *  Written 1992,1993 by
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|DEBUG_LEVEL
 mdefine_line|#define DEBUG_LEVEL 0

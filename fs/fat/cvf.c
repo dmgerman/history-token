@@ -1,13 +1,11 @@
 multiline_comment|/* &n; * CVF extensions for fat-based filesystems&n; *&n; * written 1997,1998 by Frank Gockel &lt;gockel@sent13.uni-duisburg.de&gt;&n; *&n; * please do not remove the next line, dmsdos needs it for verifying patches&n; * CVF-FAT-VERSION-ID: 1.2.0&n; *&n; */
-macro_line|#include&lt;linux/sched.h&gt;
-macro_line|#include&lt;linux/fs.h&gt;
-macro_line|#include&lt;linux/msdos_fs.h&gt;
-macro_line|#include&lt;linux/msdos_fs_sb.h&gt;
-macro_line|#include&lt;linux/string.h&gt;
-macro_line|#include&lt;linux/fat_cvf.h&gt;
-macro_line|#include&lt;linux/config.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/msdos_fs.h&gt;
+macro_line|#include &lt;linux/msdos_fs_sb.h&gt;
+macro_line|#include &lt;linux/fat_cvf.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_KMOD
-macro_line|#include&lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 DECL|macro|MAX_CVF_FORMATS
 mdefine_line|#define MAX_CVF_FORMATS 3

@@ -38,6 +38,11 @@ c_func
 id|pci_devices
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|device_driver
+id|pci_device_driver
+suffix:semicolon
 multiline_comment|/**&n; * pci_find_slot - locate PCI device from a given PCI slot&n; * @bus: number of PCI bus on which desired PCI device resides&n; * @devfn: encodes number of PCI slot in which the desired PCI &n; * device resides and the logical device number within that slot &n; * in case of multi-function devices.&n; *&n; * Given a PCI bus and slot/function number, the desired PCI device &n; * is located in system global list of PCI devices.  If the device&n; * is found, a pointer to its data structure is returned.  If no &n; * device is found, %NULL is returned.&n; */
 r_struct
 id|pci_dev
@@ -5305,6 +5310,11 @@ id|dev0.dev.parent
 op_assign
 op_amp
 id|bus-&gt;iobus
+suffix:semicolon
+id|dev0.dev.driver
+op_assign
+op_amp
+id|pci_device_driver
 suffix:semicolon
 multiline_comment|/* Go find them, Rover! */
 r_for

@@ -1,17 +1,8 @@
 multiline_comment|/*&n; * linux/fs/fat/buffer.c&n; *&n; *&n; */
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
-macro_line|#if 0
-macro_line|#  define PRINTK(x) printk x
-macro_line|#else
-DECL|macro|PRINTK
-macro_line|#  define PRINTK(x)
-macro_line|#endif
 DECL|function|fat_bread
 r_struct
 id|buffer_head

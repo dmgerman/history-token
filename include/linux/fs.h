@@ -569,17 +569,9 @@ suffix:semicolon
 DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
-macro_line|#include &lt;linux/ntfs_fs_i.h&gt;
-macro_line|#include &lt;linux/msdos_fs_i.h&gt;
 multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
-macro_line|#include &lt;linux/iso_fs_i.h&gt;
 macro_line|#include &lt;linux/romfs_fs_i.h&gt;
-macro_line|#include &lt;linux/smb_fs_i.h&gt;
-macro_line|#include &lt;linux/hfs_fs_i.h&gt;
-macro_line|#include &lt;linux/adfs_fs_i.h&gt;
-macro_line|#include &lt;linux/bfs_fs_i.h&gt;
 macro_line|#include &lt;linux/proc_fs_i.h&gt;
-macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
@@ -1197,46 +1189,11 @@ id|i_generation
 suffix:semicolon
 r_union
 (brace
-DECL|member|ntfs_i
-r_struct
-id|ntfs_inode_info
-id|ntfs_i
-suffix:semicolon
-DECL|member|msdos_i
-r_struct
-id|msdos_inode_info
-id|msdos_i
-suffix:semicolon
 multiline_comment|/* struct umsdos_inode_info&t;umsdos_i; */
-DECL|member|isofs_i
-r_struct
-id|iso_inode_info
-id|isofs_i
-suffix:semicolon
 DECL|member|romfs_i
 r_struct
 id|romfs_inode_info
 id|romfs_i
-suffix:semicolon
-DECL|member|smbfs_i
-r_struct
-id|smb_inode_info
-id|smbfs_i
-suffix:semicolon
-DECL|member|hfs_i
-r_struct
-id|hfs_inode_info
-id|hfs_i
-suffix:semicolon
-DECL|member|adfs_i
-r_struct
-id|adfs_inode_info
-id|adfs_i
-suffix:semicolon
-DECL|member|bfs_i
-r_struct
-id|bfs_inode_info
-id|bfs_i
 suffix:semicolon
 DECL|member|proc_i
 r_struct
@@ -1247,11 +1204,6 @@ DECL|member|socket_i
 r_struct
 id|socket
 id|socket_i
-suffix:semicolon
-DECL|member|jffs2_i
-r_struct
-id|jffs2_inode_info
-id|jffs2_i
 suffix:semicolon
 DECL|member|generic_ip
 r_void

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_int

@@ -257,6 +257,17 @@ op_assign
 id|inode-&gt;i_sb
 suffix:semicolon
 r_struct
+id|bfs_inode_info
+op_star
+id|bi
+op_assign
+id|BFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_struct
 id|buffer_head
 op_star
 id|sbh
@@ -276,7 +287,7 @@ id|EIO
 suffix:semicolon
 id|phys
 op_assign
-id|inode-&gt;iu_sblock
+id|bi-&gt;i_sblock
 op_plus
 id|block
 suffix:semicolon
@@ -292,7 +303,7 @@ c_cond
 (paren
 id|phys
 op_le
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 )paren
 (brace
 id|dprintf
@@ -330,7 +341,7 @@ id|inode-&gt;i_size
 op_logical_and
 id|phys
 op_le
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 )paren
 (brace
 id|dprintf
@@ -369,7 +380,7 @@ multiline_comment|/* if the last data block for this file is the last allocated 
 r_if
 c_cond
 (paren
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 op_eq
 id|sb-&gt;su_lf_eblk
 )paren
@@ -400,11 +411,11 @@ id|sb-&gt;su_freeb
 op_sub_assign
 id|phys
 op_minus
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 suffix:semicolon
 id|sb-&gt;su_lf_eblk
 op_assign
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 op_assign
 id|phys
 suffix:semicolon
@@ -438,7 +449,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;iu_sblock
+id|bi-&gt;i_sblock
 )paren
 (brace
 multiline_comment|/* if data starts on block 0 then there is no data */
@@ -449,9 +460,9 @@ c_func
 (paren
 id|inode-&gt;i_sb
 comma
-id|inode-&gt;iu_sblock
+id|bi-&gt;i_sblock
 comma
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 comma
 id|phys
 )paren
@@ -492,7 +503,7 @@ comma
 id|phys
 )paren
 suffix:semicolon
-id|inode-&gt;iu_sblock
+id|bi-&gt;i_sblock
 op_assign
 id|phys
 suffix:semicolon
@@ -502,16 +513,16 @@ id|block
 suffix:semicolon
 id|sb-&gt;su_lf_eblk
 op_assign
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 op_assign
 id|phys
 suffix:semicolon
 multiline_comment|/* this assumes nothing can write the inode back while we are here&n;&t; * and thus update inode-&gt;i_blocks! (XXX)*/
 id|sb-&gt;su_freeb
 op_sub_assign
-id|inode-&gt;iu_eblock
+id|bi-&gt;i_eblock
 op_minus
-id|inode-&gt;iu_sblock
+id|bi-&gt;i_sblock
 op_plus
 l_int|1
 op_minus

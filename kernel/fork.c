@@ -2611,13 +2611,6 @@ macro_line|#ifdef CONFIG_SMP
 r_int
 id|i
 suffix:semicolon
-id|p-&gt;cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* ?? should we just memset this ?? */
 r_for
 c_loop
@@ -2636,12 +2629,20 @@ op_increment
 (brace
 id|p-&gt;per_cpu_utime
 (braket
+id|cpu_logical_map
+c_func
+(paren
 id|i
+)paren
 )braket
 op_assign
 id|p-&gt;per_cpu_stime
 (braket
+id|cpu_logical_map
+c_func
+(paren
 id|i
+)paren
 )braket
 op_assign
 l_int|0

@@ -1939,13 +1939,6 @@ DECL|member|devfs_handle_isdnctrl
 id|devfs_handle_t
 id|devfs_handle_isdnctrl
 suffix:semicolon
-DECL|member|devfs_handle_isdnX
-id|devfs_handle_t
-id|devfs_handle_isdnX
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
 DECL|member|devfs_handle_isdnctrlX
 id|devfs_handle_t
 id|devfs_handle_isdnctrlX

@@ -5294,9 +5294,10 @@ l_int|0x1000
 )paren
 )paren
 op_or
-id|usb_pipeslow
 (paren
-id|pipe
+id|usb_dev-&gt;speed
+op_eq
+id|USB_SPEED_LOW
 )paren
 op_lshift
 l_int|13

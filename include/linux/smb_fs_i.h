@@ -52,6 +52,12 @@ r_int
 id|openers
 suffix:semicolon
 multiline_comment|/* number of fileid users */
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
+multiline_comment|/* must be at the end */
 )brace
 suffix:semicolon
 macro_line|#endif

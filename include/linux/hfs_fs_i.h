@@ -78,6 +78,11 @@ r_const
 id|ino_t
 )paren
 suffix:semicolon
+DECL|member|vfs_inode
+r_struct
+id|inode
+id|vfs_inode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

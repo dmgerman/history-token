@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* This is only called on sync() and umount(), when s_dirt=1. */
 DECL|function|sysv_write_super

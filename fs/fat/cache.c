@@ -1,9 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/fat/cache.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *&n; *  Mar 1999. AV. Changed cache, so that it uses the starting cluster instead&n; *&t;of inode number.&n; *  May 1999. AV. Fixed the bogosity with FAT32 (read &quot;FAT28&quot;). Fscking lusers.&n; */
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#if 0
 macro_line|#  define PRINTK(x) printk x
