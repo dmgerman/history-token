@@ -355,21 +355,6 @@ comma
 id|mbflags
 )paren
 suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;memory&bslash;t&bslash;t: %luMB&bslash;n&quot;
-comma
-id|lmb_phys_mem_size
-c_func
-(paren
-)paren
-op_rshift
-l_int|20
-)paren
-suffix:semicolon
 multiline_comment|/* Checks &quot;l2cr-value&quot; property in the registry */
 id|np
 op_assign
