@@ -2135,9 +2135,11 @@ id|TASK_TRACED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If it was at a trace stop, turn it into&n;&t;&t;&t; * a normal stop since it&squot;s no longer being&n;&t;&t;&t; * traced.&n;&t;&t;&t; */
-id|p-&gt;state
-op_assign
-id|TASK_STOPPED
+id|ptrace_untrace
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 )brace
 )brace

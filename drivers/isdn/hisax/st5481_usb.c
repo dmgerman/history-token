@@ -1032,7 +1032,11 @@ l_int|3
 dot
 id|desc.wMaxPacketSize
 op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
 l_int|32
+)paren
 suffix:semicolon
 id|altsetting-&gt;endpoint
 (braket
@@ -1041,7 +1045,11 @@ l_int|4
 dot
 id|desc.wMaxPacketSize
 op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
 l_int|32
+)paren
 suffix:semicolon
 singleline_comment|// Use alternative setting 3 on interface 0 to have 2B+D
 r_if

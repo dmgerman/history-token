@@ -1153,6 +1153,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|variable|quirk_pcie_aspm_ops
+r_static
 r_struct
 id|pci_ops
 id|quirk_pcie_aspm_ops
@@ -1172,6 +1173,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Prevents PCI Express ASPM (Active State Power Management) being enabled.&n; *&n; * Save the register offset, where the ASPM control bits are located,&n; * for each PCI Express device that is in the device list of&n; * the root port in an array for fast indexing. Replace the bus ops&n; * with the modified one.&n; */
 DECL|function|pcie_rootport_aspm_quirk
+r_static
 r_void
 id|pcie_rootport_aspm_quirk
 c_func

@@ -6646,7 +6646,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|id-&gt;idProduct
+)paren
 )paren
 (brace
 r_case
@@ -6732,7 +6736,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|id-&gt;idProduct
+)paren
 )paren
 (brace
 r_case
@@ -6780,9 +6788,17 @@ c_func
 (paren
 l_string|&quot;dvb-ttusb-dec: A frontend driver was not found for device %04x/%04x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dec-&gt;udev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dec-&gt;udev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 )brace

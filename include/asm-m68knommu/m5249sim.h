@@ -158,5 +158,271 @@ mdefine_line|#define&t;mcf_setimr(imr)&t;&t;&bslash;&n;&t;*((volatile unsigned l
 DECL|macro|mcf_getipr
 mdefine_line|#define&t;mcf_getipr()&t;&t;&bslash;&n;&t;*((volatile unsigned long *) (MCF_MBAR + MCFSIM_IPR))
 multiline_comment|/****************************************************************************/
+macro_line|#ifdef __ASSEMBLER__
+multiline_comment|/*&n; *&t;The M5249C3 board needs a little help getting all its SIM devices&n; *&t;initialized at kernel start time. dBUG doesn&squot;t set much up, so&n; *&t;we need to do it manually.&n; */
+dot
+id|macro
+id|m5249c3_setup
+multiline_comment|/*&n;&t; *&t;Set MBAR1 and MBAR2, just incase they are not set.&n;&t; */
+id|movel
+macro_line|#0x10000001,%a0
+DECL|variable|a0
+id|movec
+op_mod
+id|a0
+comma
+op_mod
+id|MBAR
+multiline_comment|/* map MBAR region */
+DECL|variable|subql
+id|subql
+macro_line|#1,%a0&t;&t;&t;&t;/* get MBAR address in a0 */
+DECL|variable|x80000001
+id|movel
+macro_line|#0x80000001,%a1
+DECL|variable|a1
+id|movec
+op_mod
+id|a1
+comma
+macro_line|#3086&t;&t;&t;/* map MBAR2 region */
+DECL|variable|subql
+id|subql
+macro_line|#1,%a1&t;&t;&t;&t;/* get MBAR2 address in a1 */
+multiline_comment|/*&n;&t; *      Move secondary interrupts to base at 128.&n;&t; */
+DECL|variable|x80
+id|moveb
+macro_line|#0x80,%d0
+DECL|variable|d0
+id|moveb
+op_mod
+id|d0
+comma
+l_int|0x16b
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* interrupt base register */
+multiline_comment|/*&n;&t; *      Work around broken CSMR0/DRAM vector problem.&n;&t; */
+DECL|variable|x001F0021
+id|movel
+macro_line|#0x001F0021,%d0&t;&t;&t;/* disable C/I bit */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x84
+(paren
+op_mod
+id|a0
+)paren
+multiline_comment|/* set CSMR0 */
+multiline_comment|/*&n;&t; *&t;Disable the PLL firstly. (Who knows what state it is&n;&t; *&t;in here!).&n;&t; */
+id|movel
+l_int|0x180
+(paren
+op_mod
+id|a1
+)paren
+comma
+op_mod
+id|d0
+multiline_comment|/* get current PLL value */
+DECL|variable|xfffffffe
+id|andl
+macro_line|#0xfffffffe,%d0&t;&t;&t;/* PLL bypass first */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x180
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* set PLL register */
+id|nop
+macro_line|#ifdef CONFIG_CLOCK_140MHz
+multiline_comment|/*&n;&t; *&t;Set initial clock frequency. This assumes M5249C3 board&n;&t; *&t;is fitted with 11.2896MHz crystal. It will program the&n;&t; *&t;PLL for 140MHz. Lets go fast :-)&n;&t; */
+DECL|variable|x125a40f0
+id|movel
+macro_line|#0x125a40f0,%d0&t;&t;&t;/* set for 140MHz */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x180
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* set PLL register */
+DECL|variable|x1
+id|orl
+macro_line|#0x1,%d0
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x180
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* set PLL register */
+macro_line|#endif
+multiline_comment|/*&n;&t; *&t;Setup CS1 for ethernet controller.&n;&t; *&t;(Setup as per M5249C3 doco).&n;&t; */
+DECL|variable|xe0000000
+id|movel
+macro_line|#0xe0000000,%d0&t;&t;&t;/* CS1 mapped at 0xe0000000 */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x8c
+(paren
+op_mod
+id|a0
+)paren
+DECL|variable|x001f0021
+id|movel
+macro_line|#0x001f0021,%d0&t;&t;&t;/* CS1 size of 1Mb */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x90
+(paren
+op_mod
+id|a0
+)paren
+DECL|variable|x0080
+id|movew
+macro_line|#0x0080,%d0&t;&t;&t;/* CS1 = 16bit port, AA */
+DECL|variable|d0
+id|movew
+op_mod
+id|d0
+comma
+l_int|0x96
+(paren
+op_mod
+id|a0
+)paren
+multiline_comment|/*&n;&t; *&t;Setup CS2 for IDE interface.&n;&t; */
+DECL|variable|x50000000
+id|movel
+macro_line|#0x50000000,%d0&t;&t;&t;/* CS2 mapped at 0x50000000 */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x98
+(paren
+op_mod
+id|a0
+)paren
+DECL|variable|x001f0001
+id|movel
+macro_line|#0x001f0001,%d0&t;&t;&t;/* CS2 size of 1MB */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x9c
+(paren
+op_mod
+id|a0
+)paren
+DECL|variable|x0080
+id|movew
+macro_line|#0x0080,%d0&t;&t;&t;/* CS2 = 16bit, TA */
+DECL|variable|d0
+id|movew
+op_mod
+id|d0
+comma
+l_int|0xa2
+(paren
+op_mod
+id|a0
+)paren
+DECL|variable|x00107000
+id|movel
+macro_line|#0x00107000,%d0&t;&t;&t;/* IDEconfig1 */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x18c
+(paren
+op_mod
+id|a1
+)paren
+DECL|variable|x000c0400
+id|movel
+macro_line|#0x000c0400,%d0&t;&t;&t;/* IDEconfig2 */
+DECL|variable|d0
+id|movel
+op_mod
+id|d0
+comma
+l_int|0x190
+(paren
+op_mod
+id|a1
+)paren
+DECL|variable|x00080000
+id|movel
+macro_line|#0x00080000,%d0&t;&t;&t;/* GPIO19, IDE reset bit */
+DECL|variable|d0
+id|orl
+op_mod
+id|d0
+comma
+l_int|0xc
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* function GPIO19 */
+DECL|variable|d0
+id|orl
+op_mod
+id|d0
+comma
+l_int|0x8
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* enable GPIO19 as output */
+DECL|variable|d0
+id|orl
+op_mod
+id|d0
+comma
+l_int|0x4
+(paren
+op_mod
+id|a1
+)paren
+multiline_comment|/* de-assert IDE reset */
+dot
+id|endm
+DECL|macro|PLATFORM_SETUP
+mdefine_line|#define&t;PLATFORM_SETUP&t;m5249c3_setup
+macro_line|#endif /* __ASSEMBLER__ */
+multiline_comment|/****************************************************************************/
 macro_line|#endif&t;/* m5249sim_h */
 eof

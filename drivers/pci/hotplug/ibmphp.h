@@ -7,7 +7,7 @@ r_extern
 r_int
 id|ibmphp_debug
 suffix:semicolon
-macro_line|#if !defined(CONFIG_HOTPLUG_PCI_IBM_MODULE)
+macro_line|#if !defined(MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME &quot;ibmphpd&quot;
 macro_line|#else
