@@ -1636,7 +1636,6 @@ op_logical_and
 op_decrement
 id|boguscnt
 )paren
-suffix:semicolon
 id|udelay
 c_func
 (paren
