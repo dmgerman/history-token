@@ -2913,7 +2913,7 @@ suffix:semicolon
 id|md-&gt;event_nr
 op_increment
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
