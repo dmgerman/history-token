@@ -170,9 +170,6 @@ DECL|macro|VM_HUGETLB
 mdefine_line|#define VM_HUGETLB&t;0x00400000&t;/* Huge TLB Page VM */
 DECL|macro|VM_NONLINEAR
 mdefine_line|#define VM_NONLINEAR&t;0x00800000&t;/* Is non-linear (remap_file_pages) */
-multiline_comment|/* It makes sense to apply VM_ACCOUNT to this vma. */
-DECL|macro|VM_MAYACCT
-mdefine_line|#define VM_MAYACCT(vma) (!!((vma)-&gt;vm_flags &amp; VM_HUGETLB))
 macro_line|#ifndef VM_STACK_DEFAULT_FLAGS&t;&t;/* arch can override this */
 DECL|macro|VM_STACK_DEFAULT_FLAGS
 mdefine_line|#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
