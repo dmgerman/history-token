@@ -1674,14 +1674,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_MTRR)&t;/* Do this after SMP initialization */
-multiline_comment|/*&n; * We should probably create some architecture-dependent &quot;fixup after&n; * everything is up&quot; style function where this would belong better&n; * than in init/main.c..&n; */
-id|mtrr_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 id|sysctl_init
 c_func
@@ -1795,6 +1787,14 @@ id|child_reaper
 op_assign
 id|current
 suffix:semicolon
+macro_line|#if defined(CONFIG_MTRR)&t;/* Do this after SMP initialization */
+multiline_comment|/*&n; * We should probably create some architecture-dependent &quot;fixup after&n; * everything is up&quot; style function where this would belong better&n; * than in init/main.c..&n; */
+id|mtrr_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Sets up cpus_possible() */
 id|smp_prepare_cpus
 c_func
