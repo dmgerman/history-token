@@ -96,12 +96,14 @@ id|inode_operations
 id|autofs_symlink_inode_operations
 op_assign
 (brace
+dot
 id|readlink
-suffix:colon
+op_assign
 id|autofs_readlink
 comma
+dot
 id|follow_link
-suffix:colon
+op_assign
 id|autofs_follow_link
 )brace
 suffix:semicolon
