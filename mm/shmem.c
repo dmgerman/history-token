@@ -3241,7 +3241,7 @@ id|count
 id|remove_suid
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry
 )paren
 suffix:semicolon
 id|inode-&gt;i_ctime

@@ -1523,7 +1523,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|kmem_cache_shrink_nr
+id|kmem_cache_shrink
 c_func
 (paren
 id|dquot_cachep
