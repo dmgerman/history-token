@@ -1,13 +1,14 @@
-multiline_comment|/*&n; * arch/ppc/syslib/ibm44x_common.c&n; *&n; * PPC44x system library&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; * Copyright 2002-2003 MontaVista Software Inc.&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003, 2004 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/ibm44x_common.c&n; *&n; * PPC44x system library&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003, 2004 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/ibm44x.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
+macro_line|#include &lt;syslib/gen550.h&gt;
 DECL|function|fixup_bigphys_addr
 id|phys_addr_t
 id|fixup_bigphys_addr
@@ -476,205 +477,6 @@ op_assign
 id|ppc4xx_pic
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
-macro_line|#include &lt;linux/serialP.h&gt;
-macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/serial.h&gt;
-DECL|variable|rs_table
-r_static
-r_struct
-id|serial_state
-id|rs_table
-(braket
-id|RS_TABLE_SIZE
-)braket
-op_assign
-(brace
-id|SERIAL_PORT_DFNS
-multiline_comment|/* Defined in &lt;asm/serial.h&gt; */
-)brace
-suffix:semicolon
-DECL|function|ibm44x_progress
-r_static
-r_void
-id|ibm44x_progress
-c_func
-(paren
-r_char
-op_star
-id|s
-comma
-r_int
-r_int
-id|hex
-)paren
-(brace
-r_volatile
-r_char
-id|c
-suffix:semicolon
-r_volatile
-r_int
-r_int
-id|com_port
-suffix:semicolon
-id|u16
-id|shift
-suffix:semicolon
-id|com_port
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|rs_table
-(braket
-l_int|0
-)braket
-dot
-id|iomem_base
-suffix:semicolon
-id|shift
-op_assign
-id|rs_table
-(braket
-l_int|0
-)braket
-dot
-id|iomem_reg_shift
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|c
-op_assign
-op_star
-id|s
-op_increment
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-r_while
-c_loop
-(paren
-(paren
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_plus
-(paren
-id|UART_LSR
-op_lshift
-id|shift
-)paren
-)paren
-op_amp
-id|UART_LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_assign
-id|c
-suffix:semicolon
-)brace
-multiline_comment|/* Send LF/CR to pretty up output */
-r_while
-c_loop
-(paren
-(paren
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_plus
-(paren
-id|UART_LSR
-op_lshift
-id|shift
-)paren
-)paren
-op_amp
-id|UART_LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_assign
-l_char|&squot;&bslash;r&squot;
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_plus
-(paren
-id|UART_LSR
-op_lshift
-id|shift
-)paren
-)paren
-op_amp
-id|UART_LSR_THRE
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-op_star
-(paren
-r_volatile
-r_int
-r_char
-op_star
-)paren
-id|com_port
-op_assign
-l_char|&squot;&bslash;n&squot;
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_SERIAL_TEXT_DEBUG */
 DECL|function|ibm44x_platform_init
 r_void
 id|__init
@@ -707,8 +509,14 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
 id|ppc_md.progress
 op_assign
-id|ibm44x_progress
+id|gen550_progress
 suffix:semicolon
 macro_line|#endif /* CONFIG_SERIAL_TEXT_DEBUG */
+macro_line|#ifdef CONFIG_KGDB
+id|ppc_md.kgdb_map_scc
+op_assign
+id|gen550_kgdb_map_scc
+suffix:semicolon
+macro_line|#endif
 )brace
 eof
