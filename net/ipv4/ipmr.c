@@ -8273,6 +8273,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mrt_cachep
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;cannot allocate ip_mrt_cache&quot;
+)paren
+suffix:semicolon
 id|init_timer
 c_func
 (paren
