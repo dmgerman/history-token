@@ -238,6 +238,23 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_STRNCHR
+r_extern
+r_char
+op_star
+id|strnchr
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRRCHR
 r_extern
 r_char
