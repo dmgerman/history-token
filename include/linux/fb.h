@@ -917,12 +917,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|member|lock_flags
-r_int
-r_int
-id|lock_flags
-suffix:semicolon
-multiline_comment|/* flags for locking             */
 DECL|member|lock
 id|spinlock_t
 id|lock
