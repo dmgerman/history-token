@@ -220,17 +220,13 @@ id|end
 comma
 id|vpte_base
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* Nobody should call us with start below VM hole and end above.&n;&t;&t;   See if it is really true.  */
+id|BUG_ON
+c_func
 (paren
 id|s
 OG
 id|e
-)paren
-multiline_comment|/* Nobody should call us with start below VM hole and end above.&n;&t;&t;   See if it is really true.  */
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if 0

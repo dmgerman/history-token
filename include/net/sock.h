@@ -1458,20 +1458,12 @@ id|owner
 )paren
 (brace
 multiline_comment|/*&n;&t; * One should use sk_set_owner just once, after struct sock creation,&n;&t; * be it shortly after sk_alloc or after a function that returns a new&n;&t; * struct sock (and that down the call chain called sk_alloc), e.g. the&n;&t; * IPv4 and IPv6 modules share tcp_create_openreq_child, so if&n;&t; * tcp_create_openreq_child called sk_set_owner IPv6 would have to&n;&t; * change the ownership of this struct sock, with one not needed&n;&t; * transient sk_set_owner call.&n;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
+id|BUG_ON
 c_func
 (paren
 id|sk-&gt;sk_owner
 op_ne
 l_int|NULL
-)paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|sk-&gt;sk_owner
