@@ -2,11 +2,15 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn2/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
+macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 multiline_comment|/* #define DEBUG&t;&t;1 */
 multiline_comment|/* #define XBOW_DEBUG&t;1 */
 DECL|macro|kdebug

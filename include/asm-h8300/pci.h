@@ -4,6 +4,8 @@ mdefine_line|#define _ASM_H8300_PCI_H
 multiline_comment|/*&n; * asm-h8300/pci.h - H8/300 specific PCI declarations.&n; *&n; * Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;0
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 DECL|function|pcibios_set_master
 r_extern
 r_inline

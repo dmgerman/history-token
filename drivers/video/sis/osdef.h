@@ -1,12 +1,12 @@
-multiline_comment|/* #define WINCE_HEADER */
-multiline_comment|/* #define WIN2000 */
-multiline_comment|/* #define TC */
+multiline_comment|/* $XFree86$ */
+multiline_comment|/*&n; * OS depending defines&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) All advertising materials mentioning features or use of this software&n; * *    must display the following acknowledgement: &quot;This product includes&n; * *    software developed by Thomas Winischhofer, Vienna, Austria.&quot;&n; * * 4) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&t;&t;Silicon Integrated Systems, Inc. (used by permission)&n; *&n; */
+multiline_comment|/* The choices are: */
 DECL|macro|LINUX_KERNEL
 mdefine_line|#define LINUX_KERNEL&t;   /* Kernel framebuffer */
 multiline_comment|/* #define LINUX_XF86 */
 multiline_comment|/* XFree86 */
 multiline_comment|/**********************************************************************/
-macro_line|#ifdef LINUX_KERNEL
+macro_line|#ifdef LINUX_KERNEL  /* -------------------------- */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef CONFIG_FB_SIS_300
@@ -21,72 +21,23 @@ macro_line|#if 1
 DECL|macro|SISFBACCEL
 mdefine_line|#define SISFBACCEL&t;/* Include 2D acceleration */
 macro_line|#endif
-macro_line|#if 1
-DECL|macro|SISFB_PAN
-mdefine_line|#define SISFB_PAN&t;/* Include Y-Panning code */
 macro_line|#endif
-macro_line|#else
-multiline_comment|/*&t;#define SIS300*/
+macro_line|#ifdef LINUX_XF86 /* ----------------------------- */
+DECL|macro|SIS300
+mdefine_line|#define SIS300
 DECL|macro|SIS315H
 mdefine_line|#define SIS315H
 macro_line|#endif
-macro_line|#ifdef LINUX_XF86
-DECL|macro|SIS300
-mdefine_line|#define SIS300
-multiline_comment|/* #define SIS315H */
-multiline_comment|/* TW: done above */
-macro_line|#endif
 multiline_comment|/**********************************************************************/
-macro_line|#ifdef TC
-macro_line|#endif
-macro_line|#ifdef WIN2000
-macro_line|#endif
-macro_line|#ifdef WINCE_HEADER
-macro_line|#endif
-macro_line|#ifdef LINUX_XF86
-macro_line|#endif
-macro_line|#ifdef LINUX_KERNEL
-macro_line|#endif
-multiline_comment|/**********************************************************************/
-macro_line|#ifdef TC
-DECL|macro|SiS_SetMemory
-mdefine_line|#define SiS_SetMemory(MemoryAddress,MemorySize,value) memset(MemoryAddress, value, MemorySize);
-macro_line|#endif
-macro_line|#ifdef WIN2000
-DECL|macro|SiS_SetMemory
-mdefine_line|#define SiS_SetMemory(MemoryAddress,MemorySize,value) MemFill((PVOID) MemoryAddress,(ULONG) MemorySize,(UCHAR) value);
-macro_line|#endif
-macro_line|#ifdef WINCE_HEADER
-DECL|macro|SiS_SetMemory
-mdefine_line|#define SiS_SetMemory(MemoryAddress,MemorySize,value) memset(MemoryAddress, value, MemorySize);
-macro_line|#endif
 macro_line|#ifdef LINUX_XF86
 DECL|macro|SiS_SetMemory
 mdefine_line|#define SiS_SetMemory(MemoryAddress,MemorySize,value) memset(MemoryAddress, value, MemorySize)
-macro_line|#endif
-macro_line|#ifdef LINUX_KERNEL
-DECL|macro|SiS_SetMemory
-mdefine_line|#define SiS_SetMemory(MemoryAddress,MemorySize,value) memset(MemoryAddress, value, MemorySize)
-macro_line|#endif
-multiline_comment|/**********************************************************************/
-multiline_comment|/**********************************************************************/
-macro_line|#ifdef TC
-DECL|macro|SiS_MemoryCopy
-mdefine_line|#define SiS_MemoryCopy(Destination,Soruce,Length) memmove(Destination, Soruce, Length);
-macro_line|#endif
-macro_line|#ifdef WIN2000
-DECL|macro|SiS_MemoryCopy
-mdefine_line|#define SiS_MemoryCopy(Destination,Soruce,Length)  /*VideoPortMoveMemory((PUCHAR)Destination , Soruce,length);*/
-macro_line|#endif
-macro_line|#ifdef WINCE_HEADER
-DECL|macro|SiS_MemoryCopy
-mdefine_line|#define SiS_MemoryCopy(Destination,Soruce,Length) memmove(Destination, Soruce, Length);
-macro_line|#endif
-macro_line|#ifdef LINUX_XF86
 DECL|macro|SiS_MemoryCopy
 mdefine_line|#define SiS_MemoryCopy(Destination,Soruce,Length) memcpy(Destination,Soruce,Length)
 macro_line|#endif
 macro_line|#ifdef LINUX_KERNEL
+DECL|macro|SiS_SetMemory
+mdefine_line|#define SiS_SetMemory(MemoryAddress,MemorySize,value) memset(MemoryAddress, value, MemorySize)
 DECL|macro|SiS_MemoryCopy
 mdefine_line|#define SiS_MemoryCopy(Destination,Soruce,Length) memcpy(Destination,Soruce,Length)
 macro_line|#endif
@@ -115,23 +66,6 @@ macro_line|#ifdef InPortLong
 DECL|macro|InPortLong
 macro_line|#undef InPortLong
 macro_line|#endif /* InPortLong */
-multiline_comment|/**********************************************************************/
-multiline_comment|/*  TC                                                                */
-multiline_comment|/**********************************************************************/
-macro_line|#ifdef TC
-DECL|macro|OutPortByte
-mdefine_line|#define OutPortByte(p,v) outp((unsigned short)(p),(unsigned char)(v))
-DECL|macro|OutPortWord
-mdefine_line|#define OutPortWord(p,v) outp((unsigned short)(p),(unsigned short)(v))
-DECL|macro|OutPortLong
-mdefine_line|#define OutPortLong(p,v) outp((unsigned short)(p),(unsigned long)(v))
-DECL|macro|InPortByte
-mdefine_line|#define InPortByte(p)    inp((unsigned short)(p))
-DECL|macro|InPortWord
-mdefine_line|#define InPortWord(p)    inp((unsigned short)(p))
-DECL|macro|InPortLong
-mdefine_line|#define InPortLong(p)    ((inp((unsigned short)(p+2))&lt;&lt;16) | inp((unsigned short)(p)))
-macro_line|#endif
 multiline_comment|/**********************************************************************/
 multiline_comment|/*  LINUX XF86                                                        */
 multiline_comment|/**********************************************************************/
@@ -165,39 +99,5 @@ DECL|macro|InPortWord
 mdefine_line|#define InPortWord(p)    inw((u16)(p))
 DECL|macro|InPortLong
 mdefine_line|#define InPortLong(p)    inl((u16)(p))
-macro_line|#endif
-multiline_comment|/**********************************************************************/
-multiline_comment|/*  WIN 2000                                                          */
-multiline_comment|/**********************************************************************/
-macro_line|#ifdef WIN2000
-DECL|macro|OutPortByte
-mdefine_line|#define OutPortByte(p,v) VideoPortWritePortUchar ((PUCHAR) (p), (UCHAR) (v))
-DECL|macro|OutPortWord
-mdefine_line|#define OutPortWord(p,v) VideoPortWritePortUshort((PUSHORT) (p), (USHORT) (v))
-DECL|macro|OutPortLong
-mdefine_line|#define OutPortLong(p,v) VideoPortWritePortUlong ((PULONG) (p), (ULONG) (v))
-DECL|macro|InPortByte
-mdefine_line|#define InPortByte(p)    VideoPortReadPortUchar  ((PUCHAR) (p))
-DECL|macro|InPortWord
-mdefine_line|#define InPortWord(p)    VideoPortReadPortUshort ((PUSHORT) (p))
-DECL|macro|InPortLong
-mdefine_line|#define InPortLong(p)    VideoPortReadPortUlong  ((PULONG) (p))
-macro_line|#endif
-multiline_comment|/**********************************************************************/
-multiline_comment|/*  WIN CE                                                            */
-multiline_comment|/**********************************************************************/
-macro_line|#ifdef WINCE_HEADER
-DECL|macro|OutPortByte
-mdefine_line|#define OutPortByte(p,v) WRITE_PORT_UCHAR ((PUCHAR) (p), (UCHAR) (v))
-DECL|macro|OutPortWord
-mdefine_line|#define OutPortWord(p,v) WRITE_PORT_USHORT((PUSHORT) (p), (USHORT) (v))
-DECL|macro|OutPortLong
-mdefine_line|#define OutPortLong(p,v) WRITE_PORT_ULONG ((PULONG) (p), (ULONG) (v))
-DECL|macro|InPortByte
-mdefine_line|#define InPortByte(p)    READ_PORT_UCHAR  ((PUCHAR) (p))
-DECL|macro|InPortWord
-mdefine_line|#define InPortWord(p)    READ_PORT_USHORT ((PUSHORT) (p))
-DECL|macro|InPortLong
-mdefine_line|#define InPortLong(p)    READ_PORT_ULONG  ((PULONG) (p))
 macro_line|#endif
 eof

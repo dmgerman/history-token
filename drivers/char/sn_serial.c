@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;

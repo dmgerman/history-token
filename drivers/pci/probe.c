@@ -1112,8 +1112,6 @@ r_if
 c_cond
 (paren
 id|base
-op_logical_and
-id|base
 op_le
 id|limit
 )paren
@@ -1191,8 +1189,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|base
-op_logical_and
 id|base
 op_le
 id|limit
@@ -1356,8 +1352,6 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|base
-op_logical_and
 id|base
 op_le
 id|limit
@@ -2826,6 +2820,19 @@ id|nr
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|scan_all_fns
+suffix:semicolon
+id|scan_all_fns
+op_assign
+id|pcibios_scan_all_fns
+c_func
+(paren
+id|bus
+comma
+id|devfn
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2904,6 +2911,9 @@ c_cond
 id|func
 op_eq
 l_int|0
+op_logical_and
+op_logical_neg
+id|scan_all_fns
 )paren
 r_break
 suffix:semicolon

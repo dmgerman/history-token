@@ -1357,10 +1357,6 @@ id|c
 op_assign
 id|client-&gt;number
 suffix:semicolon
-(paren
-id|user_client_t
-op_star
-)paren
 id|file-&gt;private_data
 op_assign
 id|client

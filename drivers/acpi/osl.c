@@ -730,7 +730,7 @@ id|irq
 op_assign
 id|acpi_fadt.sci_int
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64
+macro_line|#if defined(CONFIG_IA64) || defined(CONFIG_PCI_USE_VECTOR)
 id|irq
 op_assign
 id|acpi_irq_to_vector
@@ -828,7 +828,7 @@ c_cond
 id|irq
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64
+macro_line|#if defined(CONFIG_IA64) || defined(CONFIG_PCI_USE_VECTOR)
 id|irq
 op_assign
 id|acpi_irq_to_vector

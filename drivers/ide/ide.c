@@ -6950,7 +6950,7 @@ r_return
 id|scsi_cmd_ioctl
 c_func
 (paren
-id|bdev
+id|bdev-&gt;bd_disk
 comma
 id|cmd
 comma

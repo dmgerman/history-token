@@ -4230,6 +4230,13 @@ id|dentry
 )paren
 (brace
 multiline_comment|/* Global root? */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4237,9 +4244,18 @@ id|vfsmnt-&gt;mnt_parent
 op_eq
 id|vfsmnt
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
+suffix:semicolon
 r_goto
 id|global_root
 suffix:semicolon
+)brace
 id|dentry
 op_assign
 id|vfsmnt-&gt;mnt_mountpoint
@@ -4247,6 +4263,13 @@ suffix:semicolon
 id|vfsmnt
 op_assign
 id|vfsmnt-&gt;mnt_parent
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -4762,7 +4785,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Test whether new_dentry is a subdirectory of old_dentry.&n; *&n; * Trivially implemented using the dcache structure&n; */
-multiline_comment|/**&n; * is_subdir - is new dentry a subdirectory of old_dentry&n; * @new_dentry: new dentry&n; * @old_dentry: old dentry&n; *&n; * Returns 1 if new_dentry is a subdirectory of the parent (at any depth).&n; * Returns 0 otherwise.&n; */
+multiline_comment|/**&n; * is_subdir - is new dentry a subdirectory of old_dentry&n; * @new_dentry: new dentry&n; * @old_dentry: old dentry&n; *&n; * Returns 1 if new_dentry is a subdirectory of the parent (at any depth).&n; * Returns 0 otherwise.&n; * Caller must ensure that &quot;new_dentry&quot; is pinned before calling is_subdir()&n; */
 DECL|function|is_subdir
 r_int
 id|is_subdir
@@ -4782,6 +4805,13 @@ id|old_dentry
 r_int
 id|result
 suffix:semicolon
+r_struct
+id|dentry
+op_star
+id|saved
+op_assign
+id|new_dentry
+suffix:semicolon
 r_int
 r_int
 id|seq
@@ -4790,8 +4820,19 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* need rcu_readlock to protect against the d_parent trashing due to&n;&t; * d_move&n;&t; */
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_do
 (brace
+multiline_comment|/* for restarting inner loop in case of seq retry */
+id|new_dentry
+op_assign
+id|saved
+suffix:semicolon
 id|seq
 op_assign
 id|read_seqbegin
@@ -4858,6 +4899,11 @@ id|rename_lock
 comma
 id|seq
 )paren
+)paren
+suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

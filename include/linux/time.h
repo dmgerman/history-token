@@ -98,11 +98,11 @@ mdefine_line|#define NSEC_JIFFIE_SC (SEC_JIFFIE_SC + 29)
 DECL|macro|USEC_JIFFIE_SC
 mdefine_line|#define USEC_JIFFIE_SC (SEC_JIFFIE_SC + 19)
 DECL|macro|SEC_CONVERSION
-mdefine_line|#define SEC_CONVERSION ((unsigned long)((((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC))&bslash;&n;                                         / (u64)TICK_NSEC))
+mdefine_line|#define SEC_CONVERSION ((unsigned long)((((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC) +&bslash;&n;                                TICK_NSEC -1) / (u64)TICK_NSEC))
 DECL|macro|NSEC_CONVERSION
-mdefine_line|#define NSEC_CONVERSION ((unsigned long)((((u64)1 &lt;&lt; NSEC_JIFFIE_SC))&bslash;&n;                                         / (u64)TICK_NSEC))
+mdefine_line|#define NSEC_CONVERSION ((unsigned long)((((u64)1 &lt;&lt; NSEC_JIFFIE_SC) +&bslash;&n;                                        TICK_NSEC -1) / (u64)TICK_NSEC))
 DECL|macro|USEC_CONVERSION
-mdefine_line|#define USEC_CONVERSION  &bslash;&n;                    ((unsigned long)((((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC)) &bslash;&n;                                         / (u64)TICK_NSEC))
+mdefine_line|#define USEC_CONVERSION  &bslash;&n;                    ((unsigned long)((((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC) +&bslash;&n;                                        TICK_NSEC -1) / (u64)TICK_NSEC))
 multiline_comment|/*&n; * USEC_ROUND is used in the timeval to jiffie conversion.  See there&n; * for more details.  It is the scaled resolution rounding value.  Note&n; * that it is a 64-bit value.  Since, when it is applied, we are already&n; * in jiffies (albit scaled), it is nothing but the bits we will shift&n; * off.&n; */
 DECL|macro|USEC_ROUND
 mdefine_line|#define USEC_ROUND (u64)(((u64)1 &lt;&lt; USEC_JIFFIE_SC) - 1)

@@ -1,15 +1,14 @@
+multiline_comment|/* $XFree86$ */
+multiline_comment|/*&n; * General type definitions for universal mode switching modules&n; *&n; * Copyright (C) 2001-2004 by Thomas Winischhofer, Vienna, Austria&n; *&n; * If distributed as part of the Linux kernel, the following license terms&n; * apply:&n; *&n; * * This program is free software; you can redistribute it and/or modify&n; * * it under the terms of the GNU General Public License as published by&n; * * the Free Software Foundation; either version 2 of the named License,&n; * * or any later version.&n; * *&n; * * This program is distributed in the hope that it will be useful,&n; * * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * * GNU General Public License for more details.&n; * *&n; * * You should have received a copy of the GNU General Public License&n; * * along with this program; if not, write to the Free Software&n; * * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * Otherwise, the following license terms apply:&n; *&n; * * Redistribution and use in source and binary forms, with or without&n; * * modification, are permitted provided that the following conditions&n; * * are met:&n; * * 1) Redistributions of source code must retain the above copyright&n; * *    notice, this list of conditions and the following disclaimer.&n; * * 2) Redistributions in binary form must reproduce the above copyright&n; * *    notice, this list of conditions and the following disclaimer in the&n; * *    documentation and/or other materials provided with the distribution.&n; * * 3) All advertising materials mentioning features or use of this software&n; * *    must display the following acknowledgement: &quot;This product includes&n; * *    software developed by Thomas Winischhofer, Vienna, Austria.&quot;&n; * * 4) The name of the author may not be used to endorse or promote products&n; * *    derived from this software without specific prior written permission.&n; * *&n; * * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n; * * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; * * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; * * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,&n; * * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY&n; * * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT&n; * * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * Author: &t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&n; *&n; */
 macro_line|#ifndef _VGATYPES_
 DECL|macro|_VGATYPES_
 mdefine_line|#define _VGATYPES_
 macro_line|#ifdef LINUX_XF86
+macro_line|#include &quot;xf86Version.h&quot;
 macro_line|#include &quot;xf86Pci.h&quot;
 macro_line|#endif
-macro_line|#ifdef LINUX_KERNEL  /* TW: We don&squot;t want the X driver to depend on kernel source */
+macro_line|#ifdef LINUX_KERNEL  /* We don&squot;t want the X driver to depend on kernel source */
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#endif
-macro_line|#ifndef TC
-DECL|macro|far
-mdefine_line|#define far
 macro_line|#endif
 macro_line|#ifndef FALSE
 DECL|macro|FALSE
@@ -68,49 +67,6 @@ r_int
 id|ULONG
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef PUCHAR
-DECL|typedef|PUCHAR
-r_typedef
-id|UCHAR
-id|far
-op_star
-id|PUCHAR
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef PUSHORT
-DECL|typedef|PUSHORT
-r_typedef
-id|USHORT
-id|far
-op_star
-id|PUSHORT
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef PULONG
-DECL|typedef|PULONG
-r_typedef
-id|ULONG
-id|far
-op_star
-id|PULONG
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef PVOID
-DECL|typedef|PVOID
-r_typedef
-r_void
-id|far
-op_star
-id|PVOID
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef VOID
-DECL|typedef|VOID
-r_typedef
-r_void
-id|VOID
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifndef BOOLEAN
 DECL|typedef|BOOLEAN
 r_typedef
@@ -118,7 +74,6 @@ id|UCHAR
 id|BOOLEAN
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef WINCE_HEADER
 macro_line|#ifndef bool
 DECL|typedef|bool
 r_typedef
@@ -126,13 +81,37 @@ id|UCHAR
 r_bool
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /*WINCE_HEADER*/
-macro_line|#ifndef VBIOS_VER_MAX_LENGTH
-DECL|macro|VBIOS_VER_MAX_LENGTH
-mdefine_line|#define VBIOS_VER_MAX_LENGTH         4
+macro_line|#ifdef LINUX_KERNEL
+DECL|typedef|SISIOADDRESS
+r_typedef
+r_int
+r_int
+id|SISIOADDRESS
+suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef LINUX_KERNEL   /* For kernel, this is defined in sisfb.h */
-macro_line|#ifndef WIN2000
+macro_line|#ifdef LINUX_XF86
+macro_line|#if XF86_VERSION_CURRENT &lt; XF86_VERSION_NUMERIC(4,2,0,0,0)
+DECL|typedef|IOADDRESS
+r_typedef
+r_int
+r_int
+id|IOADDRESS
+suffix:semicolon
+DECL|typedef|SISIOADDRESS
+r_typedef
+r_int
+r_int
+id|SISIOADDRESS
+suffix:semicolon
+macro_line|#else
+DECL|typedef|SISIOADDRESS
+r_typedef
+id|IOADDRESS
+id|SISIOADDRESS
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+macro_line|#ifndef LINUX_KERNEL   /* For the linux kernel, this is defined in sisfb.h */
 macro_line|#ifndef SIS_CHIP_TYPE
 DECL|enum|_SIS_CHIP_TYPE
 r_typedef
@@ -148,11 +127,9 @@ macro_line|#ifdef LINUX_XF86
 DECL|enumerator|SIS_530
 id|SIS_530
 comma
-multiline_comment|/* TW */
 DECL|enumerator|SIS_OLD
 id|SIS_OLD
 comma
-multiline_comment|/* TW */
 macro_line|#endif
 DECL|enumerator|SIS_300
 id|SIS_300
@@ -189,6 +166,18 @@ comma
 DECL|enumerator|SIS_330
 id|SIS_330
 comma
+DECL|enumerator|SIS_661
+id|SIS_661
+comma
+DECL|enumerator|SIS_741
+id|SIS_741
+comma
+DECL|enumerator|SIS_660
+id|SIS_660
+comma
+DECL|enumerator|SIS_760
+id|SIS_760
+comma
 DECL|enumerator|MAX_SIS_CHIP
 id|MAX_SIS_CHIP
 DECL|typedef|SIS_CHIP_TYPE
@@ -197,8 +186,6 @@ id|SIS_CHIP_TYPE
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef WIN2000
 macro_line|#ifndef SIS_VB_CHIP_TYPE
 DECL|enum|_SIS_VB_CHIP_TYPE
 r_typedef
@@ -228,6 +215,12 @@ comma
 DECL|enumerator|VB_CHIP_302LV
 id|VB_CHIP_302LV
 comma
+DECL|enumerator|VB_CHIP_301C
+id|VB_CHIP_301C
+comma
+DECL|enumerator|VB_CHIP_302ELV
+id|VB_CHIP_302ELV
+comma
 DECL|enumerator|VB_CHIP_UNKNOWN
 id|VB_CHIP_UNKNOWN
 comma
@@ -239,8 +232,6 @@ DECL|typedef|SIS_VB_CHIP_TYPE
 id|SIS_VB_CHIP_TYPE
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef WIN2000
 macro_line|#ifndef SIS_LCD_TYPE
 DECL|enum|_SIS_LCD_TYPE
 r_typedef
@@ -279,7 +270,7 @@ comma
 DECL|enumerator|LCD_320x480
 id|LCD_320x480
 comma
-multiline_comment|/* TW: FSTN */
+multiline_comment|/* FSTN, DSTN */
 DECL|enumerator|LCD_1400x1050
 id|LCD_1400x1050
 comma
@@ -295,6 +286,26 @@ comma
 DECL|enumerator|LCD_1024x600
 id|LCD_1024x600
 comma
+DECL|enumerator|LCD_640x480_2
+id|LCD_640x480_2
+comma
+multiline_comment|/* FSTN, DSTN */
+DECL|enumerator|LCD_640x480_3
+id|LCD_640x480_3
+comma
+multiline_comment|/* FSTN, DSTN */
+DECL|enumerator|LCD_848x480
+id|LCD_848x480
+comma
+DECL|enumerator|LCD_1280x800
+id|LCD_1280x800
+comma
+DECL|enumerator|LCD_1680x1050
+id|LCD_1680x1050
+comma
+DECL|enumerator|LCD_CUSTOM
+id|LCD_CUSTOM
+comma
 DECL|enumerator|LCD_UNKNOWN
 id|LCD_UNKNOWN
 DECL|typedef|SIS_LCD_TYPE
@@ -302,8 +313,6 @@ DECL|typedef|SIS_LCD_TYPE
 id|SIS_LCD_TYPE
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef WIN2000 /* mark by Paul, Move definition to sisv.h*/
 macro_line|#ifndef PSIS_DSReg
 DECL|struct|_SIS_DSReg
 r_typedef
@@ -327,16 +336,16 @@ op_star
 id|PSIS_DSReg
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef SIS_HW_DEVICE_INFO
-DECL|typedef|SIS_HW_DEVICE_INFO
-DECL|typedef|PSIS_HW_DEVICE_INFO
+macro_line|#ifndef SIS_HW_INFO
+DECL|typedef|SIS_HW_INFO
+DECL|typedef|PSIS_HW_INFO
 r_typedef
 r_struct
-id|_SIS_HW_DEVICE_INFO
-id|SIS_HW_DEVICE_INFO
+id|_SIS_HW_INFO
+id|SIS_HW_INFO
 comma
 op_star
-id|PSIS_HW_DEVICE_INFO
+id|PSIS_HW_INFO
 suffix:semicolon
 DECL|typedef|PSIS_QUERYSPACE
 r_typedef
@@ -346,7 +355,7 @@ op_star
 id|PSIS_QUERYSPACE
 )paren
 (paren
-id|PSIS_HW_DEVICE_INFO
+id|PSIS_HW_INFO
 comma
 id|ULONG
 comma
@@ -356,40 +365,28 @@ id|ULONG
 op_star
 )paren
 suffix:semicolon
-DECL|struct|_SIS_HW_DEVICE_INFO
+DECL|struct|_SIS_HW_INFO
 r_struct
-id|_SIS_HW_DEVICE_INFO
+id|_SIS_HW_INFO
 (brace
-DECL|member|pDevice
-id|PVOID
-id|pDevice
+macro_line|#ifdef LINUX_XF86
+DECL|member|PciTag
+id|PCITAG
+id|PciTag
 suffix:semicolon
-multiline_comment|/* The pointer to the physical device data structure&n;                                    in each OS or NULL for unused. */
+multiline_comment|/* PCI Tag */
+macro_line|#endif
 DECL|member|pjVirtualRomBase
 id|UCHAR
 op_star
 id|pjVirtualRomBase
 suffix:semicolon
-multiline_comment|/* base virtual address of VBIOS ROM Space */
-multiline_comment|/* or base virtual address of ROM image file. */
-multiline_comment|/* if NULL, then read from pjROMImage; */
-multiline_comment|/* Note:ROM image file is the file of VBIOS ROM */
+multiline_comment|/* ROM image */
 DECL|member|UseROM
 id|BOOLEAN
 id|UseROM
 suffix:semicolon
-multiline_comment|/* TW: Use the ROM image if provided */
-DECL|member|pjCustomizedROMImage
-id|UCHAR
-op_star
-id|pjCustomizedROMImage
-suffix:semicolon
-multiline_comment|/* base virtual address of ROM image file. */
-multiline_comment|/* wincE:ROM image file is the file for OEM */
-multiline_comment|/*       customized table */
-multiline_comment|/* Linux: not used */
-multiline_comment|/* NT   : not used  */
-multiline_comment|/* Note : pjCustomizedROMImage=NULL if no ROM image file */
+multiline_comment|/* Use the ROM image if provided */
 DECL|member|pjVideoMemoryAddress
 id|UCHAR
 op_star
@@ -403,7 +400,7 @@ id|ulVideoMemorySize
 suffix:semicolon
 multiline_comment|/* size, in bytes, of the memory on the board */
 DECL|member|ulIOAddress
-id|ULONG
+id|SISIOADDRESS
 id|ulIOAddress
 suffix:semicolon
 multiline_comment|/* base I/O address of VGA ports (0x3B0) */
@@ -426,23 +423,18 @@ suffix:semicolon
 multiline_comment|/* the ID of video bridge */
 multiline_comment|/* defined in the data structure type */
 multiline_comment|/* &quot;SIS_VB_CHIP_TYPE&quot; */
+macro_line|#ifdef LINUX_KERNEL
+DECL|member|Is301BDH
+id|BOOLEAN
+id|Is301BDH
+suffix:semicolon
+macro_line|#endif
 DECL|member|usExternalChip
 id|USHORT
 id|usExternalChip
 suffix:semicolon
-multiline_comment|/* NO VB or other video bridge(not  */
+multiline_comment|/* NO VB or other video bridge (other than  */
 multiline_comment|/* SiS video bridge) */
-multiline_comment|/* if ujVBChipID = VB_CHIP_UNKNOWN, */
-multiline_comment|/* then bit0=1 : LVDS,bit1=1 : trumpion, */
-multiline_comment|/* bit2=1 : CH7005 &amp; no video bridge if */
-multiline_comment|/* usExternalChip = 0. */
-multiline_comment|/* Note: CR37[3:1]: */
-multiline_comment|/*             001:SiS 301 */
-multiline_comment|/*             010:LVDS */
-multiline_comment|/*             011:Trumpion LVDS Scaling Chip */
-multiline_comment|/*             100:LVDS(LCD-out)+Chrontel 7005 */
-multiline_comment|/*             101:Single Chrontel 7005 */
-multiline_comment|/* TW: This has changed on 310/325 series! */
 DECL|member|ulCRT2LCDType
 id|ULONG
 id|ulCRT2LCDType
@@ -459,6 +451,7 @@ id|BOOLEAN
 id|bSkipDramSizing
 suffix:semicolon
 multiline_comment|/* True: Skip video memory sizing. */
+macro_line|#ifdef LINUX_KERNEL
 DECL|member|pSR
 id|PSIS_DSReg
 id|pSR
@@ -475,6 +468,7 @@ multiline_comment|/* restore CR registers in initial function. */
 multiline_comment|/* end data :(idx, val) =  (FF, FF) */
 multiline_comment|/* Note : restore cR registers if  */
 multiline_comment|/* bSkipDramSizing = TRUE */
+macro_line|#endif
 DECL|member|pQueryVGAConfigSpace
 id|PSIS_QUERYSPACE
 id|pQueryVGAConfigSpace
@@ -487,42 +481,16 @@ id|pQueryNorthBridgeSpace
 suffix:semicolon
 multiline_comment|/* Get/Set North Bridge  */
 multiline_comment|/* space  */
-DECL|member|szVBIOSVer
-id|UCHAR
-id|szVBIOSVer
-(braket
-id|VBIOS_VER_MAX_LENGTH
-)braket
-suffix:semicolon
-DECL|member|pdc
-id|UCHAR
-id|pdc
-suffix:semicolon
-multiline_comment|/* TW: PanelDelayCompensation */
-macro_line|#ifdef LINUX_KERNEL
-DECL|member|Is301BDH
-id|BOOLEAN
-id|Is301BDH
-suffix:semicolon
-macro_line|#endif        
-macro_line|#ifdef LINUX_XF86
-DECL|member|PciTag
-id|PCITAG
-id|PciTag
-suffix:semicolon
-multiline_comment|/* PCI Tag for Linux XF86 */
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif 
-multiline_comment|/* TW: Addtional IOCTL for communication sisfb &lt;&gt; X driver        */
-multiline_comment|/*     If changing this, sisfb.h must also be changed (for sisfb) */
+multiline_comment|/* Addtional IOCTL for communication sisfb &lt;&gt; X driver        */
+multiline_comment|/* If changing this, sisfb.h must also be changed (for sisfb) */
 macro_line|#ifdef LINUX_XF86  /* We don&squot;t want the X driver to depend on the kernel source */
-multiline_comment|/* TW: ioctl for identifying and giving some info (esp. memory heap start) */
+multiline_comment|/* ioctl for identifying and giving some info (esp. memory heap start) */
 DECL|macro|SISFB_GET_INFO
 mdefine_line|#define SISFB_GET_INFO    0x80046ef8  /* Wow, what a terrible hack... */
-multiline_comment|/* TW: Structure argument for SISFB_GET_INFO ioctl  */
+multiline_comment|/* Structure argument for SISFB_GET_INFO ioctl  */
 DECL|typedef|sisfb_info
 DECL|typedef|psisfb_info
 r_typedef
@@ -620,239 +588,59 @@ r_int
 r_char
 id|sisfb_lcda
 suffix:semicolon
+DECL|member|sisfb_vbflags
+r_int
+r_int
+id|sisfb_vbflags
+suffix:semicolon
+DECL|member|sisfb_currentvbflags
+r_int
+r_int
+id|sisfb_currentvbflags
+suffix:semicolon
+DECL|member|sisfb_scalelcd
+r_int
+id|sisfb_scalelcd
+suffix:semicolon
+DECL|member|sisfb_specialtiming
+r_int
+r_int
+id|sisfb_specialtiming
+suffix:semicolon
+DECL|member|sisfb_haveemi
+r_int
+r_char
+id|sisfb_haveemi
+suffix:semicolon
+DECL|member|sisfb_emi30
+DECL|member|sisfb_emi31
+DECL|member|sisfb_emi32
+DECL|member|sisfb_emi33
+r_int
+r_char
+id|sisfb_emi30
+comma
+id|sisfb_emi31
+comma
+id|sisfb_emi32
+comma
+id|sisfb_emi33
+suffix:semicolon
+DECL|member|sisfb_haveemilcd
+r_int
+r_char
+id|sisfb_haveemilcd
+suffix:semicolon
 DECL|member|reserved
 r_char
 id|reserved
 (braket
-l_int|235
+l_int|213
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
 )brace
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifndef WIN2000
-macro_line|#ifndef WINCE_HEADER
-macro_line|#ifndef BUS_DATA_TYPE
-DECL|enum|_BUS_DATA_TYPE
-r_typedef
-r_enum
-id|_BUS_DATA_TYPE
-(brace
-DECL|enumerator|ConfigurationSpaceUndefined
-id|ConfigurationSpaceUndefined
-op_assign
-op_minus
-l_int|1
-comma
-DECL|enumerator|Cmos
-id|Cmos
-comma
-DECL|enumerator|EisaConfiguration
-id|EisaConfiguration
-comma
-DECL|enumerator|Pos
-id|Pos
-comma
-DECL|enumerator|CbusConfiguration
-id|CbusConfiguration
-comma
-DECL|enumerator|PCIConfiguration
-id|PCIConfiguration
-comma
-DECL|enumerator|VMEConfiguration
-id|VMEConfiguration
-comma
-DECL|enumerator|NuBusConfiguration
-id|NuBusConfiguration
-comma
-DECL|enumerator|PCMCIAConfiguration
-id|PCMCIAConfiguration
-comma
-DECL|enumerator|MPIConfiguration
-id|MPIConfiguration
-comma
-DECL|enumerator|MPSAConfiguration
-id|MPSAConfiguration
-comma
-DECL|enumerator|PNPISAConfiguration
-id|PNPISAConfiguration
-comma
-DECL|enumerator|MaximumBusDataType
-id|MaximumBusDataType
-DECL|typedef|BUS_DATA_TYPE
-DECL|typedef|PBUS_DATA_TYPE
-)brace
-id|BUS_DATA_TYPE
-comma
-op_star
-id|PBUS_DATA_TYPE
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* WINCE_HEADER */
-macro_line|#ifndef PCI_TYPE0_ADDRESSES
-DECL|macro|PCI_TYPE0_ADDRESSES
-mdefine_line|#define PCI_TYPE0_ADDRESSES             6
-macro_line|#endif
-macro_line|#ifndef PCI_TYPE1_ADDRESSES
-DECL|macro|PCI_TYPE1_ADDRESSES
-mdefine_line|#define PCI_TYPE1_ADDRESSES             2
-macro_line|#endif
-macro_line|#ifndef WINCE_HEADER
-macro_line|#ifndef PCI_COMMON_CONFIG
-DECL|struct|_PCI_COMMON_CONFIG
-r_typedef
-r_struct
-id|_PCI_COMMON_CONFIG
-(brace
-DECL|member|VendorID
-id|USHORT
-id|VendorID
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|DeviceID
-id|USHORT
-id|DeviceID
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|Command
-id|USHORT
-id|Command
-suffix:semicolon
-multiline_comment|/* Device control       */
-DECL|member|Status
-id|USHORT
-id|Status
-suffix:semicolon
-DECL|member|RevisionID
-id|UCHAR
-id|RevisionID
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|ProgIf
-id|UCHAR
-id|ProgIf
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|SubClass
-id|UCHAR
-id|SubClass
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|BaseClass
-id|UCHAR
-id|BaseClass
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|CacheLineSize
-id|UCHAR
-id|CacheLineSize
-suffix:semicolon
-multiline_comment|/* (ro+)                */
-DECL|member|LatencyTimer
-id|UCHAR
-id|LatencyTimer
-suffix:semicolon
-multiline_comment|/* (ro+)                */
-DECL|member|HeaderType
-id|UCHAR
-id|HeaderType
-suffix:semicolon
-multiline_comment|/* (ro)                 */
-DECL|member|BIST
-id|UCHAR
-id|BIST
-suffix:semicolon
-multiline_comment|/* Built in self test   */
-r_union
-(brace
-DECL|struct|_PCI_HEADER_TYPE_0
-r_struct
-id|_PCI_HEADER_TYPE_0
-(brace
-DECL|member|BaseAddresses
-id|ULONG
-id|BaseAddresses
-(braket
-id|PCI_TYPE0_ADDRESSES
-)braket
-suffix:semicolon
-DECL|member|CIS
-id|ULONG
-id|CIS
-suffix:semicolon
-DECL|member|SubVendorID
-id|USHORT
-id|SubVendorID
-suffix:semicolon
-DECL|member|SubSystemID
-id|USHORT
-id|SubSystemID
-suffix:semicolon
-DECL|member|ROMBaseAddress
-id|ULONG
-id|ROMBaseAddress
-suffix:semicolon
-DECL|member|Reserved2
-id|ULONG
-id|Reserved2
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|InterruptLine
-id|UCHAR
-id|InterruptLine
-suffix:semicolon
-multiline_comment|/*                    */
-DECL|member|InterruptPin
-id|UCHAR
-id|InterruptPin
-suffix:semicolon
-multiline_comment|/* (ro)               */
-DECL|member|MinimumGrant
-id|UCHAR
-id|MinimumGrant
-suffix:semicolon
-multiline_comment|/* (ro)               */
-DECL|member|MaximumLatency
-id|UCHAR
-id|MaximumLatency
-suffix:semicolon
-multiline_comment|/* (ro)               */
-DECL|member|type0
-)brace
-id|type0
-suffix:semicolon
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
-DECL|member|DeviceSpecific
-id|UCHAR
-id|DeviceSpecific
-(braket
-l_int|192
-)braket
-suffix:semicolon
-DECL|typedef|PCI_COMMON_CONFIG
-DECL|typedef|PPCI_COMMON_CONFIG
-)brace
-id|PCI_COMMON_CONFIG
-comma
-op_star
-id|PPCI_COMMON_CONFIG
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* WINCE_HEADER */
-macro_line|#ifndef FIELD_OFFSET
-DECL|macro|FIELD_OFFSET
-mdefine_line|#define FIELD_OFFSET(type, field)    ((LONG)&amp;(((type *)0)-&gt;field))
-macro_line|#endif
-macro_line|#ifndef PCI_COMMON_HDR_LENGTH
-DECL|macro|PCI_COMMON_HDR_LENGTH
-mdefine_line|#define PCI_COMMON_HDR_LENGTH (FIELD_OFFSET (PCI_COMMON_CONFIG, DeviceSpecific))
-macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

@@ -1816,12 +1816,6 @@ id|mrk_entry_t
 op_star
 id|pkt
 suffix:semicolon
-id|ENTER
-c_func
-(paren
-id|__func__
-)paren
-suffix:semicolon
 id|pkt
 op_assign
 (paren
@@ -1900,12 +1894,6 @@ id|qla2x00_isp_cmd
 c_func
 (paren
 id|ha
-)paren
-suffix:semicolon
-id|LEAVE
-c_func
-(paren
-id|__func__
 )paren
 suffix:semicolon
 r_return
@@ -2018,12 +2006,6 @@ r_uint16
 id|req_cnt
 op_assign
 l_int|1
-suffix:semicolon
-id|ENTER
-c_func
-(paren
-id|__func__
-)paren
 suffix:semicolon
 multiline_comment|/* Wait 1 second for slot. */
 r_for
@@ -2215,12 +2197,6 @@ id|__func__
 )paren
 suffix:semicolon
 )brace
-id|LEAVE
-c_func
-(paren
-id|__func__
-)paren
-suffix:semicolon
 r_return
 (paren
 id|pkt
@@ -2278,12 +2254,6 @@ r_uint16
 id|req_cnt
 op_assign
 l_int|1
-suffix:semicolon
-id|ENTER
-c_func
-(paren
-id|__func__
-)paren
 suffix:semicolon
 multiline_comment|/* Wait 1 second for slot. */
 r_for
@@ -2585,12 +2555,6 @@ id|__func__
 )paren
 suffix:semicolon
 )brace
-id|LEAVE
-c_func
-(paren
-id|__func__
-)paren
-suffix:semicolon
 r_return
 (paren
 id|pkt

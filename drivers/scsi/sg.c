@@ -27,9 +27,6 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/cdev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -45,7 +42,7 @@ r_char
 op_star
 id|sg_version_str
 op_assign
-l_string|&quot;3.5.30 [20031010]&quot;
+l_string|&quot;3.5.30 [20040124]&quot;
 suffix:semicolon
 r_static
 r_int
@@ -7226,6 +7223,20 @@ id|sg_fasync
 comma
 )brace
 suffix:semicolon
+DECL|variable|sg_sysfs_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|sg_sysfs_class
+suffix:semicolon
+DECL|variable|sg_sysfs_valid
+r_static
+r_int
+id|sg_sysfs_valid
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_int
 DECL|function|sg_add
@@ -7381,7 +7392,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sg_attach: device array cannot be resized&bslash;n&quot;
+l_string|&quot;sg_add: device array cannot be resized&bslash;n&quot;
 )paren
 suffix:semicolon
 id|error
@@ -7634,7 +7645,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sg_attach: Sg_device cannot be allocated&bslash;n&quot;
+l_string|&quot;sg_add: Sg_device cannot be allocated&bslash;n&quot;
 )paren
 suffix:semicolon
 id|error
@@ -7654,7 +7665,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_attach: dev=%d &bslash;n&quot;
+l_string|&quot;sg_add: dev=%d &bslash;n&quot;
 comma
 id|k
 )paren
@@ -7818,33 +7829,60 @@ id|sdp-&gt;cdev
 op_assign
 id|cdev
 suffix:semicolon
-id|error
+r_if
+c_cond
+(paren
+id|sg_sysfs_valid
+)paren
+(brace
+r_struct
+id|class_device
+op_star
+id|sg_class_member
+suffix:semicolon
+id|sg_class_member
 op_assign
-id|sysfs_create_link
+id|class_simple_device_add
 c_func
 (paren
-op_amp
-id|cdev-&gt;kobj
+id|sg_sysfs_class
 comma
-op_amp
-id|scsidp-&gt;sdev_gendev.kobj
+id|MKDEV
+c_func
+(paren
+id|SCSI_GENERIC_MAJOR
 comma
-l_string|&quot;device&quot;
+id|k
+)paren
+comma
+id|cl_dev-&gt;dev
+comma
+l_string|&quot;%s&quot;
+comma
+id|disk-&gt;disk_name
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+l_int|NULL
+op_eq
+id|sg_class_member
 )paren
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;sg_attach: unable to make symlink &squot;device&squot;&quot;
-l_string|&quot; for sg%d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;sg_add: &quot;
+l_string|&quot;class_simple_device_add failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|class_set_devdata
+c_func
+(paren
+id|sg_class_member
 comma
-id|k
+id|sdp
 )paren
 suffix:semicolon
 id|error
@@ -7856,7 +7894,7 @@ op_amp
 id|scsidp-&gt;sdev_gendev.kobj
 comma
 op_amp
-id|cdev-&gt;kobj
+id|sg_class_member-&gt;kobj
 comma
 l_string|&quot;generic&quot;
 )paren
@@ -7870,10 +7908,19 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sg_attach: unable to make symlink &squot;generic&squot;&quot;
-l_string|&quot; back to sg%d&bslash;n&quot;
+l_string|&quot;sg_add: unable to make symlink &quot;
+l_string|&quot;&squot;generic&squot; back to sg%d&bslash;n&quot;
 comma
 id|k
+)paren
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sg_add: sg_sys INvalid&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -8236,13 +8283,30 @@ comma
 l_string|&quot;generic&quot;
 )paren
 suffix:semicolon
-id|sysfs_remove_link
+id|class_simple_device_remove
 c_func
 (paren
-op_amp
-id|sdp-&gt;cdev-&gt;kobj
+id|MKDEV
+c_func
+(paren
+id|SCSI_GENERIC_MAJOR
 comma
-l_string|&quot;device&quot;
+id|k
+)paren
+)paren
+suffix:semicolon
+id|cdev_unmap
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|SCSI_GENERIC_MAJOR
+comma
+id|k
+)paren
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|cdev_del
@@ -8355,6 +8419,14 @@ comma
 l_string|&quot;size of buffer reserved for each fd&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|allow_dio
+comma
+l_string|&quot;allow direct I/O (default: 0 (disallow))&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|__init
@@ -8405,6 +8477,42 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+id|sg_sysfs_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;scsi_generic&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|sg_sysfs_class
+)paren
+)paren
+(brace
+id|rc
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|sg_sysfs_class
+)paren
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+id|sg_sysfs_valid
+op_assign
+l_int|1
+suffix:semicolon
 id|rc
 op_assign
 id|scsi_register_interface
@@ -8417,9 +8525,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+l_int|0
+op_eq
 id|rc
 )paren
 (brace
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
+id|sg_proc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|class_simple_destroy
+c_func
+(paren
+id|sg_sysfs_class
+)paren
+suffix:semicolon
+id|err_out
+suffix:colon
 id|unregister_chrdev_region
 c_func
 (paren
@@ -8436,17 +8565,6 @@ id|SG_MAX_DEVS
 suffix:semicolon
 r_return
 id|rc
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_SCSI_PROC_FS
-id|sg_proc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -8472,6 +8590,16 @@ c_func
 op_amp
 id|sg_interface
 )paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|sg_sysfs_class
+)paren
+suffix:semicolon
+id|sg_sysfs_valid
+op_assign
+l_int|0
 suffix:semicolon
 id|unregister_chrdev_region
 c_func
@@ -9446,6 +9574,35 @@ r_int
 id|mx_sc_elems
 comma
 id|res
+suffix:semicolon
+r_struct
+id|scsi_device
+op_star
+id|sdev
+op_assign
+id|sfp-&gt;parentdp-&gt;device
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|hp-&gt;dxferp
+op_amp
+id|queue_dma_alignment
+c_func
+(paren
+id|sdev-&gt;request_queue
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+l_int|1
 suffix:semicolon
 id|mx_sc_elems
 op_assign

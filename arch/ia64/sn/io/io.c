@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
@@ -1704,7 +1704,8 @@ c_cond
 (paren
 (paren
 (paren
-id|__psunsigned_t
+r_int
+r_int
 )paren
 id|addr
 op_ge
@@ -1719,7 +1720,8 @@ l_int|0
 op_logical_and
 (paren
 (paren
-id|__psunsigned_t
+r_int
+r_int
 )paren
 id|addr
 OL
@@ -1780,7 +1782,8 @@ id|WIDGETID_GET
 c_func
 (paren
 (paren
-id|__psunsigned_t
+r_int
+r_int
 )paren
 id|addra
 )paren
@@ -1789,7 +1792,8 @@ id|WIDGETID_GET
 c_func
 (paren
 (paren
-id|__psunsigned_t
+r_int
+r_int
 )paren
 id|addrb
 )paren

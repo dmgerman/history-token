@@ -13,10 +13,6 @@ macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
 multiline_comment|/*&n; * Implement io channel provider operations.  The xtalk* layer provides a&n; * platform-independent interface for io channel devices.  This layer&n; * switches among the possible implementations of a io channel adapter.&n; *&n; * On platforms with only one possible xtalk provider, macros can be&n; * set up at the top that cause the table lookups and indirections to&n; * completely disappear.&n; */
-DECL|macro|NEW
-mdefine_line|#define&t;NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
-DECL|macro|DEL
-mdefine_line|#define&t;DEL(ptr)&t;(kfree(ptr))
 DECL|variable|widget_info_fingerprint
 r_char
 id|widget_info_fingerprint
@@ -2526,11 +2522,29 @@ id|MAXDEVNAME
 )braket
 suffix:semicolon
 multiline_comment|/* Allocate widget_info and associate it with widget vertex */
-id|NEW
+id|widget_info
+op_assign
+id|kmalloc
 c_func
 (paren
+r_sizeof
+(paren
+op_star
 id|widget_info
 )paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|widget_info
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/* Initialize widget_info */
 id|widget_info-&gt;w_vertex
@@ -2672,34 +2686,13 @@ op_amp
 id|widget_info-&gt;w_hwid
 )paren
 suffix:semicolon
-multiline_comment|/* Clean out the xwidget information */
-(paren
-r_void
-)paren
 id|kfree
 c_func
 (paren
 id|widget_info-&gt;w_name
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|widget_info
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|widget_info
-)paren
-)paren
-suffix:semicolon
-id|DEL
+id|kfree
 c_func
 (paren
 id|widget_info

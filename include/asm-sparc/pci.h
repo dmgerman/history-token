@@ -5,6 +5,8 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n; * already-configured bus numbers - to be used for buggy BIOSes&n; * or architectures with incomplete PCI setup by the loader.&n; */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;0
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0UL
 DECL|macro|PCIBIOS_MIN_MEM

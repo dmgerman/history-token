@@ -270,7 +270,7 @@ id|where
 suffix:semicolon
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const
@@ -571,10 +571,10 @@ op_assign
 l_char|&squot; &squot;
 suffix:semicolon
 )brace
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const
@@ -1191,19 +1191,19 @@ op_star
 id|x
 )paren
 (brace
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 id|x
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;&bslash;n&bslash;n -- System halted&quot;
@@ -1650,7 +1650,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;Uncompressing Linux... &quot;
@@ -1661,7 +1661,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|puts
+id|putstr
 c_func
 (paren
 l_string|&quot;Ok, booting the kernel.&bslash;n&quot;

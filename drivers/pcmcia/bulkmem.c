@@ -1172,10 +1172,6 @@ op_amp
 id|w
 )paren
 suffix:semicolon
-(paren
-id|window_handle_t
-op_star
-)paren
 id|a1
 op_assign
 id|w

@@ -547,6 +547,14 @@ mdefine_line|#define writel(b,addr) __raw_writel(cpu_to_le32(b),addr)
 DECL|macro|writeq
 mdefine_line|#define writeq(b,addr) __raw_writeq(cpu_to_le64(b),addr)
 macro_line|#endif /* !USE_HPPA_IOREMAP */
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
+DECL|macro|readq_relaxed
+mdefine_line|#define readq_relaxed(addr) readq(addr)
 r_extern
 r_void
 id|__memcpy_fromio

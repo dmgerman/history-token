@@ -662,9 +662,6 @@ comma
 r_int
 r_int
 id|vsid
-comma
-id|mm_context_t
-id|context
 )paren
 (brace
 r_int
@@ -855,8 +852,6 @@ c_func
 id|esid
 comma
 id|vsid
-comma
-id|context
 )paren
 suffix:semicolon
 multiline_comment|/* Order update */
@@ -1009,8 +1004,6 @@ c_func
 id|pc_esid
 comma
 id|vsid
-comma
-id|mm-&gt;context
 )paren
 suffix:semicolon
 r_if
@@ -1060,8 +1053,6 @@ c_func
 id|stack_esid
 comma
 id|vsid
-comma
-id|mm-&gt;context
 )paren
 suffix:semicolon
 r_if
@@ -1115,8 +1106,6 @@ c_func
 id|unmapped_base_esid
 comma
 id|vsid
-comma
-id|mm-&gt;context
 )paren
 suffix:semicolon
 multiline_comment|/* Order update */

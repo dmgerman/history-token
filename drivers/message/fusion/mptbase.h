@@ -27,9 +27,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2003 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.05.00.06&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.00.02&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.05.00.06&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.00.02&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -169,6 +169,88 @@ id|MPTUNKNOWN_DRIVER
 DECL|typedef|MPT_DRIVER_CLASS
 )brace
 id|MPT_DRIVER_CLASS
+suffix:semicolon
+DECL|struct|mpt_pci_driver
+r_struct
+id|mpt_pci_driver
+(brace
+DECL|member|probe
+r_int
+(paren
+op_star
+id|probe
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|id
+)paren
+suffix:semicolon
+DECL|member|remove
+r_void
+(paren
+op_star
+id|remove
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+DECL|member|shutdown
+r_void
+(paren
+op_star
+id|shutdown
+)paren
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+DECL|member|suspend
+r_int
+(paren
+op_star
+id|suspend
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+suffix:semicolon
+DECL|member|resume
+r_int
+(paren
+op_star
+id|resume
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 suffix:semicolon
 multiline_comment|/*&n; *  MPT adapter / port / bus / device info structures...&n; */
 DECL|union|_MPT_FRAME_TRACKER
@@ -1591,6 +1673,16 @@ DECL|member|lan_cnfg_page1
 id|LANPage1_t
 id|lan_cnfg_page1
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+DECL|member|PciState
+id|u32
+id|PciState
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* save PCI state to this area */
+macro_line|#endif
 DECL|member|FirstWhoInit
 id|u8
 id|FirstWhoInit
@@ -2447,6 +2539,29 @@ suffix:semicolon
 r_extern
 r_void
 id|mpt_reset_deregister
+c_func
+(paren
+r_int
+id|cb_idx
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mpt_device_driver_register
+c_func
+(paren
+r_struct
+id|mpt_pci_driver
+op_star
+id|dd_cbfunc
+comma
+r_int
+id|cb_idx
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mpt_device_driver_deregister
 c_func
 (paren
 r_int

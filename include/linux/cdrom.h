@@ -768,6 +768,8 @@ multiline_comment|/*&n; * From MS Media Status Notification Support Specificatio
 DECL|macro|GPCMD_GET_MEDIA_STATUS
 mdefine_line|#define GPCMD_GET_MEDIA_STATUS&t;&t;    0xda
 multiline_comment|/* Mode page codes for mode sense/set */
+DECL|macro|GPMODE_VENDOR_PAGE
+mdefine_line|#define GPMODE_VENDOR_PAGE&t;&t;0x00
 DECL|macro|GPMODE_R_W_ERROR_PAGE
 mdefine_line|#define GPMODE_R_W_ERROR_PAGE&t;&t;0x01
 DECL|macro|GPMODE_WRITE_PARMS_PAGE

@@ -8,6 +8,8 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 multiline_comment|/*&n; * A board can define one or more PCI channels that represent built-in (or&n; * external) PCI controllers.&n; */
 DECL|struct|pci_channel
 r_struct

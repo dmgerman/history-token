@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
 multiline_comment|/* This is the only thing that needs to be changed to adjust the&n; * maximum number of ports that the driver can manage.&n; */
 DECL|macro|E1000_MAX_NIC
@@ -15,7 +15,7 @@ mdefine_line|#define E1000_PARAM_INIT { [0 ... E1000_MAX_NIC] = OPTION_UNSET }
 multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|E1000_PARAM
 mdefine_line|#define E1000_PARAM(X, S) &bslash;&n;static const int __devinitdata X[E1000_MAX_NIC + 1] = E1000_PARAM_INIT; &bslash;&n;MODULE_PARM(X, &quot;1-&quot; __MODULE_STRING(E1000_MAX_NIC) &quot;i&quot;); &bslash;&n;MODULE_PARM_DESC(X, S);
-multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544&n; *&n; * Default Value: 256&n; */
+multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544 and newer&n; *&n; * Default Value: 256&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -24,7 +24,7 @@ comma
 l_string|&quot;Number of transmit descriptors&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Receive Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544&n; *&n; * Default Value: 256&n; */
+multiline_comment|/* Receive Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544 and newer&n; *&n; * Default Value: 256&n; */
 id|E1000_PARAM
 c_func
 (paren
@@ -129,22 +129,6 @@ DECL|macro|AUTONEG_ADV_MASK
 mdefine_line|#define AUTONEG_ADV_MASK     0x2F
 DECL|macro|FLOW_CONTROL_DEFAULT
 mdefine_line|#define FLOW_CONTROL_DEFAULT FLOW_CONTROL_FULL
-DECL|macro|DEFAULT_TXD
-mdefine_line|#define DEFAULT_TXD                  256
-DECL|macro|MAX_TXD
-mdefine_line|#define MAX_TXD                      256
-DECL|macro|MIN_TXD
-mdefine_line|#define MIN_TXD                       80
-DECL|macro|MAX_82544_TXD
-mdefine_line|#define MAX_82544_TXD               4096
-DECL|macro|DEFAULT_RXD
-mdefine_line|#define DEFAULT_RXD                  256
-DECL|macro|MAX_RXD
-mdefine_line|#define MAX_RXD                      256
-DECL|macro|MIN_RXD
-mdefine_line|#define MIN_RXD                       80
-DECL|macro|MAX_82544_RXD
-mdefine_line|#define MAX_82544_RXD               4096
 DECL|macro|DEFAULT_RDTR
 mdefine_line|#define DEFAULT_RDTR                   0
 DECL|macro|MAX_RXDELAY
@@ -505,7 +489,7 @@ op_star
 id|adapter
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * e1000_check_options - Range Checking for Command Line Parameters&n; * @adapter: board private structure&n; *&n; * This routine checks all command line paramters for valid user&n; * input.  If an invalid value is given, or if no user specified&n; * value exists, a default value is used.  The final value is stored&n; * in a variable in the adapter structure.&n; **/
+multiline_comment|/**&n; * e1000_check_options - Range Checking for Command Line Parameters&n; * @adapter: board private structure&n; *&n; * This routine checks all command line parameters for valid user&n; * input.  If an invalid value is given, or if no user specified&n; * value exists, a default value is used.  The final value is stored&n; * in a variable in the adapter structure.&n; **/
 r_void
 id|__devinit
 DECL|function|e1000_check_options
@@ -576,13 +560,13 @@ l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_TXD
+id|E1000_DEFAULT_TXD
 )paren
 comma
 dot
 id|def
 op_assign
-id|DEFAULT_TXD
+id|E1000_DEFAULT_TXD
 comma
 dot
 id|arg
@@ -595,7 +579,7 @@ op_assign
 dot
 id|min
 op_assign
-id|MIN_TXD
+id|E1000_MIN_TXD
 )brace
 )brace
 )brace
@@ -620,9 +604,9 @@ OL
 id|e1000_82544
 ques
 c_cond
-id|MAX_TXD
+id|E1000_MAX_TXD
 suffix:colon
-id|MAX_82544_TXD
+id|E1000_MAX_82544_TXD
 suffix:semicolon
 id|tx_ring-&gt;count
 op_assign
@@ -674,13 +658,13 @@ l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_RXD
+id|E1000_DEFAULT_RXD
 )paren
 comma
 dot
 id|def
 op_assign
-id|DEFAULT_RXD
+id|E1000_DEFAULT_RXD
 comma
 dot
 id|arg
@@ -693,7 +677,7 @@ op_assign
 dot
 id|min
 op_assign
-id|MIN_RXD
+id|E1000_MIN_RXD
 )brace
 )brace
 )brace
@@ -718,9 +702,9 @@ OL
 id|e1000_82544
 ques
 c_cond
-id|MAX_RXD
+id|E1000_MAX_RXD
 suffix:colon
-id|MAX_82544_RXD
+id|E1000_MAX_82544_RXD
 suffix:semicolon
 id|rx_ring-&gt;count
 op_assign
@@ -1258,14 +1242,25 @@ id|InterruptThrottleRate
 id|bd
 )braket
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|adapter-&gt;itr
-op_eq
-l_int|0
 )paren
 (brace
+r_case
+op_minus
+l_int|1
+suffix:colon
+id|adapter-&gt;itr
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
 id|printk
 c_func
 (paren
@@ -1275,29 +1270,24 @@ comma
 id|opt.name
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|adapter-&gt;itr
-op_eq
-l_int|1
-op_logical_or
-id|adapter-&gt;itr
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* Dynamic mode */
-id|adapter-&gt;itr
-op_assign
-l_int|1
+r_break
 suffix:semicolon
-)brace
-r_else
-(brace
+r_case
+l_int|1
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s set to dynamic mode&bslash;n&quot;
+comma
+id|opt.name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|e1000_validate_option
 c_func
 (paren
@@ -1307,6 +1297,8 @@ comma
 op_amp
 id|opt
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -1435,14 +1427,23 @@ id|bd
 op_ne
 id|OPTION_UNSET
 )paren
+op_logical_and
+(paren
+id|AutoNeg
+(braket
+id|bd
+)braket
+op_ne
+l_int|0x20
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;AutoNeg not valid for fiber adapters, &quot;
-l_string|&quot;parameter ignored&bslash;n&quot;
+l_string|&quot;AutoNeg other than Full/1000 is &quot;
+l_string|&quot;not valid for fiber adapters, parameter ignored&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

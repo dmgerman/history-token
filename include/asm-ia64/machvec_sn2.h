@@ -79,6 +79,22 @@ id|ia64_mv_readq_t
 id|__sn_readq
 suffix:semicolon
 r_extern
+id|ia64_mv_readb_t
+id|__sn_readb_relaxed
+suffix:semicolon
+r_extern
+id|ia64_mv_readw_t
+id|__sn_readw_relaxed
+suffix:semicolon
+r_extern
+id|ia64_mv_readl_t
+id|__sn_readl_relaxed
+suffix:semicolon
+r_extern
+id|ia64_mv_readq_t
+id|__sn_readq_relaxed
+suffix:semicolon
+r_extern
 id|ia64_mv_dma_alloc_coherent
 id|sn_dma_alloc_coherent
 suffix:semicolon
@@ -151,6 +167,14 @@ DECL|macro|platform_readl
 mdefine_line|#define platform_readl&t;&t;&t;__sn_readl
 DECL|macro|platform_readq
 mdefine_line|#define platform_readq&t;&t;&t;__sn_readq
+DECL|macro|platform_readb_relaxed
+mdefine_line|#define platform_readb_relaxed&t;&t;__sn_readb_relaxed
+DECL|macro|platform_readw_relaxed
+mdefine_line|#define platform_readw_relaxed&t;&t;__sn_readw_relaxed
+DECL|macro|platform_readl_relaxed
+mdefine_line|#define platform_readl_relaxed&t;&t;__sn_readl_relaxed
+DECL|macro|platform_readq_relaxed
+mdefine_line|#define platform_readq_relaxed&t;&t;__sn_readq_relaxed
 DECL|macro|platform_irq_desc
 mdefine_line|#define platform_irq_desc&t;&t;sn_irq_desc
 DECL|macro|platform_irq_to_vector

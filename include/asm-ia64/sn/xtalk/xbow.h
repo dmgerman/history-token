@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_IA64_SN_XTALK_XBOW_H
 DECL|macro|_ASM_IA64_SN_XTALK_XBOW_H
 mdefine_line|#define _ASM_IA64_SN_XTALK_XBOW_H
 multiline_comment|/*&n; * xbow.h - header file for crossbow chip and xbow section of xbridge&n; */
-macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
@@ -55,11 +55,6 @@ r_typedef
 r_uint32
 id|xbowreg_t
 suffix:semicolon
-DECL|macro|XBOWCONST
-mdefine_line|#define XBOWCONST&t;(xbowreg_t)
-multiline_comment|/* Generic xbow register, given base and offset */
-DECL|macro|XBOW_REG_PTR
-mdefine_line|#define XBOW_REG_PTR(base, offset) ((volatile xbowreg_t*) &bslash;&n;&t;((__psunsigned_t)(base) + (__psunsigned_t)(offset)))
 multiline_comment|/* Register set for each xbow link */
 DECL|struct|xb_linkregs_s
 r_typedef
@@ -484,12 +479,6 @@ multiline_comment|/* used only in ide, but defined here within the reserved port
 multiline_comment|/*              of the widget0 address space (before 0xf4) */
 DECL|macro|XBOW_WID_UNDEF
 mdefine_line|#define&t;XBOW_WID_UNDEF&t;&t;0xe4
-multiline_comment|/* pointer to link arbitration register, given xbow base, dst and src widget id */
-DECL|macro|XBOW_PRIO_ARBREG_PTR
-mdefine_line|#define XBOW_PRIO_ARBREG_PTR(base, dst_wid, src_wid) &bslash;&n;&t;XBOW_REG_PTR(XBOW_PRIO_LINKREGS_PTR(base, dst_wid), XBOW_ARB_OFF(src_wid))
-multiline_comment|/* pointer to link registers base, given xbow base and destination widget id */
-DECL|macro|XBOW_PRIO_LINKREGS_PTR
-mdefine_line|#define XBOW_PRIO_LINKREGS_PTR(base, dst_wid) (xb_linkregs_t*) &bslash;&n;&t;XBOW_REG_PTR(base, XB_LINK_REG_BASE(dst_wid))
 multiline_comment|/* xbow link register set base, legal value for x is 0x8..0xf */
 DECL|macro|XB_LINK_BASE
 mdefine_line|#define&t;XB_LINK_BASE&t;&t;0x100
@@ -675,10 +664,6 @@ DECL|macro|IS_PIC_XBOW
 mdefine_line|#define IS_PIC_XBOW(wid) &bslash;&n;        (XWIDGET_PART_NUM(wid) == PXBOW_WIDGET_PART_NUM &amp;&amp; &bslash;&n;                        XWIDGET_MFG_NUM(wid) == XXBOW_WIDGET_MFGR_NUM)
 DECL|macro|XBOW_WAR_ENABLED
 mdefine_line|#define XBOW_WAR_ENABLED(pv, widid) ((1 &lt;&lt; XWIDGET_REV_NUM(widid)) &amp; pv)
-DECL|macro|PV854827
-mdefine_line|#define PV854827 (~0)     /* PIC: fake widget 0xf presence bit. permanent */
-DECL|macro|PV863579
-mdefine_line|#define PV863579 (1 &lt;&lt; 1) /* PIC: PIO to PIC register */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * XBOW Widget 0 Register formats.&n; * Format for many of these registers are similar to the standard&n; * widget register format described as part of xtalk specification&n; * Standard widget register field format description is available in&n; * xwidget.h&n; * Following structures define the format for xbow widget 0 registers&n; */
 multiline_comment|/*&n; * Xbow Widget 0 Command error word&n; */

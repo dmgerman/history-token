@@ -2131,7 +2131,7 @@ id|ec-&gt;lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -2140,12 +2140,10 @@ c_func
 id|device
 )paren
 comma
-l_string|&quot;%s&quot;
-comma
 id|ACPI_EC_DEVICE_NAME
 )paren
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_class
@@ -2153,8 +2151,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_EC_CLASS
 )paren

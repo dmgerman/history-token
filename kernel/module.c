@@ -2535,11 +2535,9 @@ op_assign
 id|STOPREF_WAIT
 suffix:semicolon
 multiline_comment|/* No CPUs can come up or down during this. */
-id|down
+id|lock_cpu_hotplug
 c_func
 (paren
-op_amp
-id|cpucontrol
 )paren
 suffix:semicolon
 r_for
@@ -2640,11 +2638,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|up
+id|unlock_cpu_hotplug
 c_func
 (paren
-op_amp
-id|cpucontrol
 )paren
 suffix:semicolon
 r_return
@@ -2712,11 +2708,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|up
+id|unlock_cpu_hotplug
 c_func
 (paren
-op_amp
-id|cpucontrol
 )paren
 suffix:semicolon
 )brace

@@ -8,6 +8,8 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x100
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x00010000
+DECL|macro|pcibios_scan_all_fns
+mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
 multiline_comment|/*&n; * Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 DECL|function|pci_dma_supported
 r_static

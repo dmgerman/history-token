@@ -502,6 +502,21 @@ id|sreq-&gt;sr_request-&gt;waiting
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sreq-&gt;sr_request-&gt;rq_status
+op_ne
+id|RQ_SCSI_DONE
+)paren
+id|sreq-&gt;sr_result
+op_or_assign
+(paren
+id|DRIVER_ERROR
+op_lshift
+l_int|24
+)paren
+suffix:semicolon
 id|__scsi_release_request
 c_func
 (paren
@@ -790,13 +805,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|current_sdev-&gt;sdev_target-&gt;starget_sdev_user
-)paren
-suffix:semicolon
 id|current_sdev-&gt;sdev_target-&gt;starget_sdev_user
 op_assign
 l_int|NULL
@@ -816,7 +824,6 @@ c_func
 id|current_sdev-&gt;request_queue
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * After unlock, this races with anyone clearing starget_sdev_user,&n;&t; * but we always enter this function again, avoiding any problems.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3596,6 +3603,19 @@ c_func
 id|q
 comma
 id|shost-&gt;dma_boundary
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set the queue&squot;s mask to require a mere 8-byte alignment for&n;&t; * DMA buffers, rather than the default 512.  This shouldn&squot;t&n;&t; * inconvenience any user programs and should be okay for most&n;&t; * host adapters.  A host driver can alter this mask in its&n;&t; * slave_alloc() or slave_configure() callback if necessary.&n;&t; */
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|q
+comma
+(paren
+l_int|8
+op_minus
+l_int|1
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -140,12 +140,7 @@ c_func
 (paren
 r_void
 )paren
-id|__attribute__
-(paren
-(paren
-id|__const__
-)paren
-)paren
+id|__attribute_const__
 suffix:semicolon
 DECL|function|current_thread_info
 r_static

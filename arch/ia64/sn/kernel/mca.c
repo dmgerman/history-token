@@ -2,6 +2,7 @@ multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;SN specific MCA code.&n;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;

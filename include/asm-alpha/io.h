@@ -1085,6 +1085,14 @@ macro_line|#ifndef readq
 DECL|macro|readq
 macro_line|# define readq(a)&t;_readq((unsigned long)(a))
 macro_line|#endif
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
+DECL|macro|readq_relaxed
+mdefine_line|#define readq_relaxed(addr) readq(addr)
 macro_line|#ifndef writeb
 DECL|macro|writeb
 macro_line|# define writeb(v,a)&t;_writeb((v),(unsigned long)(a))

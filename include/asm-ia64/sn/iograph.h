@@ -228,6 +228,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* For get MAX_PORT_NUM */
 r_int
 id|io_brick_map_widget

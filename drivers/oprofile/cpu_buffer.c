@@ -250,9 +250,13 @@ OG
 id|head
 )paren
 r_return
+(paren
 id|tail
 op_minus
 id|head
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 r_return
 id|tail
@@ -262,6 +266,8 @@ id|b-&gt;buffer_size
 op_minus
 id|head
 )paren
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|increment_head

@@ -375,7 +375,6 @@ r_struct
 id|request_queue
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|bio_phys_segments
 c_func
@@ -390,7 +389,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_int
 id|bio_hw_segments
 c_func
@@ -405,7 +403,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|__bio_clone
 c_func
@@ -434,7 +431,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|bio_init
 c_func
@@ -481,6 +477,10 @@ op_star
 id|bio_map_user
 c_func
 (paren
+r_struct
+id|request_queue
+op_star
+comma
 r_struct
 id|block_device
 op_star

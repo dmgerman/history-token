@@ -58,6 +58,15 @@ r_extern
 r_int
 id|skip_ioapic_setup
 suffix:semicolon
+r_extern
+r_int
+id|acpi_irq_to_vector
+c_func
+(paren
+id|u32
+id|irq
+)paren
+suffix:semicolon
 DECL|function|disable_ioapic_setup
 r_static
 r_inline

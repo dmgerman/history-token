@@ -35,31 +35,8 @@ macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &quot;sandpoint.h&quot;
-r_extern
-r_void
-id|gen550_progress
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|gen550_init
-c_func
-(paren
-r_int
-comma
-r_struct
-id|uart_port
-op_star
-)paren
-suffix:semicolon
 DECL|variable|__res
 r_int
 r_char
@@ -2037,6 +2014,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KGDB
+id|ppc_md.kgdb_map_scc
+op_assign
+id|gen550_kgdb_map_scc
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
 id|ppc_md.progress
 op_assign

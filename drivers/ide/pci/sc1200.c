@@ -1931,12 +1931,12 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-(paren
-id|sc1200_saved_state_t
-op_star
-)paren
 id|hwif-&gt;config_data
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ss
 suffix:semicolon
 )brace

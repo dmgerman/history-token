@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_CPUMASK_H
 DECL|macro|__LINUX_CPUMASK_H
 mdefine_line|#define __LINUX_CPUMASK_H
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/bitmap.h&gt;
 macro_line|#include &lt;asm/cpumask.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#ifdef CONFIG_SMP
@@ -39,58 +40,9 @@ mdefine_line|#define for_each_cpu(cpu) for (cpu = 0; cpu &lt; 1; cpu++)
 DECL|macro|for_each_online_cpu
 mdefine_line|#define for_each_online_cpu(cpu) for (cpu = 0; cpu &lt; 1; cpu++)
 macro_line|#endif
-r_extern
-r_int
-id|__mask_snprintf_len
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_int
-r_int
-id|buflen
-comma
-r_const
-r_int
-r_int
-op_star
-id|maskp
-comma
-r_int
-r_int
-id|maskbytes
-)paren
-suffix:semicolon
 DECL|macro|cpumask_snprintf
-mdefine_line|#define cpumask_snprintf(buf, buflen, map)&t;&t;&t;&t;&bslash;&n;&t;__mask_snprintf_len(buf, buflen, cpus_addr(map), sizeof(map))
-r_extern
-r_int
-id|__mask_parse_len
-c_func
-(paren
-r_const
-r_char
-id|__user
-op_star
-id|ubuf
-comma
-r_int
-r_int
-id|ubuflen
-comma
-r_int
-r_int
-op_star
-id|maskp
-comma
-r_int
-r_int
-id|maskbytes
-)paren
-suffix:semicolon
+mdefine_line|#define cpumask_snprintf(buf, buflen, map)&t;&t;&t;&t;&bslash;&n;&t;bitmap_snprintf(buf, buflen, cpus_addr(map), NR_CPUS)
 DECL|macro|cpumask_parse
-mdefine_line|#define cpumask_parse(buf, buflen, map)&t;&t;&t;&t;&t;&bslash;&n;&t;__mask_parse_len(buf, buflen, cpus_addr(map), sizeof(map))
+mdefine_line|#define cpumask_parse(buf, buflen, map)&t;&t;&t;&t;&t;&bslash;&n;&t;bitmap_parse(buf, buflen, cpus_addr(map), NR_CPUS)
 macro_line|#endif /* __LINUX_CPUMASK_H */
 eof

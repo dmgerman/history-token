@@ -2258,7 +2258,7 @@ id|link-&gt;handle
 op_assign
 id|device-&gt;handle
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_name
@@ -2267,12 +2267,10 @@ c_func
 id|device
 )paren
 comma
-l_string|&quot;%s&quot;
-comma
 id|ACPI_PCI_LINK_DEVICE_NAME
 )paren
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|acpi_device_class
@@ -2280,8 +2278,6 @@ c_func
 (paren
 id|device
 )paren
-comma
-l_string|&quot;%s&quot;
 comma
 id|ACPI_PCI_LINK_CLASS
 )paren

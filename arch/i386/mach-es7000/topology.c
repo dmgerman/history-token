@@ -13,21 +13,12 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/node.h&gt;
-macro_line|#include &lt;asm/memblk.h&gt;
 DECL|variable|node_devices
 r_struct
 id|i386_node
 id|node_devices
 (braket
 id|MAX_NUMNODES
-)braket
-suffix:semicolon
-DECL|variable|memblk_devices
-r_struct
-id|i386_memblk
-id|memblk_devices
-(braket
-id|MAX_NR_MEMBLKS
 )braket
 suffix:semicolon
 DECL|function|topology_init
@@ -90,29 +81,6 @@ id|i
 )paren
 )paren
 id|arch_register_cpu
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|num_online_memblks
-c_func
-(paren
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|arch_register_memblk
 c_func
 (paren
 id|i

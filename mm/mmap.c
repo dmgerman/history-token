@@ -3109,11 +3109,14 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-id|start_addr
-op_assign
+r_else
 id|addr
 op_assign
 id|mm-&gt;free_area_cache
+suffix:semicolon
+id|start_addr
+op_assign
+id|addr
 suffix:semicolon
 id|full_search
 suffix:colon

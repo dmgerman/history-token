@@ -89,6 +89,12 @@ mdefine_line|#define writew(b,addr) out_le16((volatile u16 *)(addr),(b))
 DECL|macro|writel
 mdefine_line|#define writel(b,addr) out_le32((volatile u32 *)(addr),(b))
 macro_line|#endif /* CONFIG_APUS */
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(addr) readb(addr)
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(addr) readw(addr)
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(addr) readl(addr)
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(addr)&t;(*(volatile unsigned char *)(addr))
 DECL|macro|__raw_readw
@@ -475,12 +481,7 @@ r_int
 r_int
 id|addr
 )paren
-id|__attribute__
-(paren
-(paren
-r_const
-)paren
-)paren
+id|__attribute_const__
 suffix:semicolon
 r_extern
 r_void

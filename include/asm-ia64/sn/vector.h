@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_VECTOR_H
 DECL|macro|_ASM_IA64_SN_VECTOR_H
 mdefine_line|#define _ASM_IA64_SN_VECTOR_H
-macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NET_VEC_NULL
 mdefine_line|#define NET_VEC_NULL            ((net_vec_t)  0)
 DECL|macro|NET_VEC_BAD

@@ -37,9 +37,6 @@ id|cpu
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* Returns the number of the node containing MemBlk &squot;memblk&squot; */
-DECL|macro|memblk_to_node
-mdefine_line|#define memblk_to_node(memblk) (memblk)
 multiline_comment|/* Returns the number of the node containing Node &squot;node&squot;.  This architecture is flat, &n;   so it is a pretty simple function! */
 DECL|macro|parent_node
 mdefine_line|#define parent_node(node) (node)
@@ -91,9 +88,6 @@ id|mask
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Returns the number of the first MemBlk on Node &squot;node&squot; */
-DECL|macro|node_to_memblk
-mdefine_line|#define node_to_memblk(node) (node)
 multiline_comment|/* Returns the number of the node containing PCI bus &squot;bus&squot; */
 DECL|function|pcibus_to_cpumask
 r_static

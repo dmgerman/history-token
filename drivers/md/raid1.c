@@ -1922,6 +1922,66 @@ op_amp
 id|conf-&gt;resync_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio_data_dir
+c_func
+(paren
+id|bio
+)paren
+op_eq
+id|WRITE
+)paren
+(brace
+id|disk_stat_inc
+c_func
+(paren
+id|mddev-&gt;gendisk
+comma
+id|writes
+)paren
+suffix:semicolon
+id|disk_stat_add
+c_func
+(paren
+id|mddev-&gt;gendisk
+comma
+id|write_sectors
+comma
+id|bio_sectors
+c_func
+(paren
+id|bio
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|disk_stat_inc
+c_func
+(paren
+id|mddev-&gt;gendisk
+comma
+id|reads
+)paren
+suffix:semicolon
+id|disk_stat_add
+c_func
+(paren
+id|mddev-&gt;gendisk
+comma
+id|read_sectors
+comma
+id|bio_sectors
+c_func
+(paren
+id|bio
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * make_request() can abort the operation when READA is being&n;&t; * used and no empty request is available.&n;&t; *&n;&t; */
 id|r1_bio
 op_assign
@@ -4401,9 +4461,9 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;raid1: md%d: raid level not set to mirroring (%d)&bslash;n&quot;
+l_string|&quot;raid1: %s: raid level not set to mirroring (%d)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4447,9 +4507,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+l_string|&quot;raid1: couldn&squot;t allocate memory for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4501,9 +4561,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+l_string|&quot;raid1: couldn&squot;t allocate memory for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4555,9 +4615,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid1: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+l_string|&quot;raid1: couldn&squot;t allocate memory for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4703,9 +4763,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid1: no operational mirrors for md%d&bslash;n&quot;
+l_string|&quot;raid1: no operational mirrors for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4806,7 +4866,7 @@ id|raid1d
 comma
 id|mddev
 comma
-l_string|&quot;md%d_raid1&quot;
+l_string|&quot;%s_raid1&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4820,9 +4880,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid1: couldn&squot;t allocate thread for md%d&bslash;n&quot;
+l_string|&quot;raid1: couldn&squot;t allocate thread for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -4838,9 +4898,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;raid1: raid set md%d active with %d out of %d mirrors&bslash;n&quot;
+l_string|&quot;raid1: raid set %s active with %d out of %d mirrors&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev

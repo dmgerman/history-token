@@ -78,6 +78,12 @@ id|console
 op_star
 id|console_drivers
 suffix:semicolon
+multiline_comment|/*&n; * This is used for debugging the mess that is the VT code by&n; * keeping track if we have the console semaphore held. It&squot;s&n; * definitely not the perfect debug tool (we don&squot;t know if _WE_&n; * hold it are racing, but it helps tracking those weird code&n; * path in the console code where we end up in places I want&n; * locked without the console sempahore held&n; */
+DECL|variable|console_locked
+r_static
+r_int
+id|console_locked
+suffix:semicolon
 multiline_comment|/*&n; * logbuf_lock protects log_buf, log_start, log_end, con_start and logged_chars&n; * It is also used in interesting ways to provide interlocking in&n; * release_console_sem().&n; */
 DECL|variable|logbuf_lock
 r_static
@@ -2092,6 +2098,10 @@ id|console_sem
 )paren
 )paren
 (brace
+id|console_locked
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We own the drivers.  We can drop the spinlock and let&n;&t;&t; * release_console_sem() print the text&n;&t;&t; */
 id|spin_unlock_irqrestore
 c_func
@@ -2167,6 +2177,10 @@ op_amp
 id|console_sem
 )paren
 suffix:semicolon
+id|console_locked
+op_assign
+l_int|1
+suffix:semicolon
 id|console_may_schedule
 op_assign
 l_int|1
@@ -2177,6 +2191,25 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|acquire_console_sem
+)paren
+suffix:semicolon
+DECL|function|is_console_locked
+r_int
+id|is_console_locked
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|console_locked
+suffix:semicolon
+)brace
+DECL|variable|is_console_locked
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|is_console_locked
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * release_console_sem - unlock the console system&n; *&n; * Releases the semaphore which the caller holds on the console system&n; * and the console driver list.&n; *&n; * While the semaphore was held, console output may have been buffered&n; * by printk().  If this is the case, release_console_sem() emits&n; * the output prior to releasing the semaphore.&n; *&n; * If there is output waiting for klogd, we wake it up.&n; *&n; * release_console_sem() may be called from any context.&n; */
@@ -2267,6 +2300,10 @@ id|_log_end
 )paren
 suffix:semicolon
 )brace
+id|console_locked
+op_assign
+l_int|0
+suffix:semicolon
 id|console_may_schedule
 op_assign
 l_int|0
@@ -2310,6 +2347,13 @@ id|log_wait
 )paren
 suffix:semicolon
 )brace
+DECL|variable|release_console_sem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|release_console_sem
+)paren
+suffix:semicolon
 multiline_comment|/** console_conditional_schedule - yield the CPU if required&n; *&n; * If the console code is currently allowed to sleep, and&n; * if this CPU should yield the CPU to another task, do&n; * so here.&n; *&n; * Must be called within acquire_console_sem().&n; */
 DECL|function|console_conditional_schedule
 r_void
@@ -2405,6 +2449,10 @@ op_ne
 l_int|0
 )paren
 r_return
+suffix:semicolon
+id|console_locked
+op_assign
+l_int|1
 suffix:semicolon
 id|console_may_schedule
 op_assign

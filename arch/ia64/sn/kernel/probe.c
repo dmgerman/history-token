@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Platform dependent support for IO probing.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 multiline_comment|/**&n; * ia64_sn_probe_io_slot - test a memory location for readability&n; * @paddr: physical address to probe&n; * @size: number bytes to read (1,2,4,8)&n; * @data_ptr: address to store value read by probe (-1 returned if probe fails)&n; *&n; * This function will probe a physical address to determine if&n; * the address can be read. If reading the address causes a BUS&n; * error, an error is returned. If the probe succeeds, the contents &n; * of the memory location is returned.&n; *&n; * Return values:&n; *  0 - probe successful&n; *  1 - probe failed (generated MCA)&n; *  2 - Bad arg&n; * &lt;0 - PAL error&n; */
 id|u64

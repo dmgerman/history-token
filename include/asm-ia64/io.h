@@ -245,6 +245,14 @@ DECL|macro|__ia64_readl
 mdefine_line|#define __ia64_readl&t;___ia64_readl
 DECL|macro|__ia64_readq
 mdefine_line|#define __ia64_readq&t;___ia64_readq
+DECL|macro|__ia64_readb_relaxed
+mdefine_line|#define __ia64_readb_relaxed&t;___ia64_readb
+DECL|macro|__ia64_readw_relaxed
+mdefine_line|#define __ia64_readw_relaxed&t;___ia64_readw
+DECL|macro|__ia64_readl_relaxed
+mdefine_line|#define __ia64_readl_relaxed&t;___ia64_readl
+DECL|macro|__ia64_readq_relaxed
+mdefine_line|#define __ia64_readq_relaxed&t;___ia64_readq
 DECL|macro|__ia64_writeb
 mdefine_line|#define __ia64_writeb&t;___ia64_writeb
 DECL|macro|__ia64_writew
@@ -1003,6 +1011,14 @@ DECL|macro|__readl
 mdefine_line|#define __readl&t;&t;platform_readl
 DECL|macro|__readq
 mdefine_line|#define __readq&t;&t;platform_readq
+DECL|macro|__readb_relaxed
+mdefine_line|#define __readb_relaxed&t;platform_readb_relaxed
+DECL|macro|__readw_relaxed
+mdefine_line|#define __readw_relaxed&t;platform_readw_relaxed
+DECL|macro|__readl_relaxed
+mdefine_line|#define __readl_relaxed&t;platform_readl_relaxed
+DECL|macro|__readq_relaxed
+mdefine_line|#define __readq_relaxed&t;platform_readq_relaxed
 DECL|macro|readb
 mdefine_line|#define readb(a)&t;__readb((void *)(a))
 DECL|macro|readw
@@ -1011,6 +1027,14 @@ DECL|macro|readl
 mdefine_line|#define readl(a)&t;__readl((void *)(a))
 DECL|macro|readq
 mdefine_line|#define readq(a)&t;__readq((void *)(a))
+DECL|macro|readb_relaxed
+mdefine_line|#define readb_relaxed(a)&t;__readb_relaxed((void *)(a))
+DECL|macro|readw_relaxed
+mdefine_line|#define readw_relaxed(a)&t;__readw_relaxed((void *)(a))
+DECL|macro|readl_relaxed
+mdefine_line|#define readl_relaxed(a)&t;__readl_relaxed((void *)(a))
+DECL|macro|readq_relaxed
+mdefine_line|#define readq_relaxed(a)&t;__readq_relaxed((void *)(a))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb&t;readb
 DECL|macro|__raw_readw
@@ -1019,6 +1043,14 @@ DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl&t;readl
 DECL|macro|__raw_readq
 mdefine_line|#define __raw_readq&t;readq
+DECL|macro|__raw_readb_relaxed
+mdefine_line|#define __raw_readb_relaxed&t;readb_relaxed
+DECL|macro|__raw_readw_relaxed
+mdefine_line|#define __raw_readw_relaxed&t;readw_relaxed
+DECL|macro|__raw_readl_relaxed
+mdefine_line|#define __raw_readl_relaxed&t;readl_relaxed
+DECL|macro|__raw_readq_relaxed
+mdefine_line|#define __raw_readq_relaxed&t;readq_relaxed
 DECL|macro|writeb
 mdefine_line|#define writeb(v,a)&t;__writeb((v), (void *) (a))
 DECL|macro|writew

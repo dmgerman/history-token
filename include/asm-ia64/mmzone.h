@@ -11,15 +11,15 @@ DECL|macro|MAX_PHYSNODE_ID
 macro_line|# define MAX_PHYSNODE_ID&t;8
 DECL|macro|NR_NODES
 macro_line|# define NR_NODES&t;&t;8
-DECL|macro|NR_MEMBLKS
-macro_line|# define NR_MEMBLKS&t;&t;(NR_NODES * 32)
+DECL|macro|NR_NODE_MEMBLKS
+macro_line|# define NR_NODE_MEMBLKS&t;(NR_NODES * 8)
 macro_line|#else /* sn2 is the biggest case, so we use that if !DIG */
 DECL|macro|MAX_PHYSNODE_ID
 macro_line|# define MAX_PHYSNODE_ID&t;2048
 DECL|macro|NR_NODES
 macro_line|# define NR_NODES&t;&t;256
-DECL|macro|NR_MEMBLKS
-macro_line|# define NR_MEMBLKS&t;&t;(NR_NODES)
+DECL|macro|NR_NODE_MEMBLKS
+macro_line|# define NR_NODE_MEMBLKS&t;(NR_NODES * 4)
 macro_line|#endif
 r_extern
 r_int
@@ -33,8 +33,8 @@ mdefine_line|#define page_to_pfn(page)&t;((unsigned long) (page - vmem_map))
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(vmem_map + (pfn))
 macro_line|#else /* CONFIG_DISCONTIGMEM */
-DECL|macro|NR_MEMBLKS
-macro_line|# define NR_MEMBLKS&t;&t;1
+DECL|macro|NR_NODE_MEMBLKS
+macro_line|# define NR_NODE_MEMBLKS&t;4
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_IA64_MMZONE_H */
 eof

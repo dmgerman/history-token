@@ -3137,13 +3137,7 @@ multiline_comment|/* Unwind decoder routines */
 r_static
 r_enum
 id|unw_register_index
-id|__attribute__
-c_func
-(paren
-(paren
-r_const
-)paren
-)paren
+id|__attribute_const__
 DECL|function|decode_abreg
 id|decode_abreg
 (paren

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_INODE_H_
 DECL|macro|_VXFS_INODE_H_
 mdefine_line|#define _VXFS_INODE_H_
-macro_line|#ident &quot;$Id: vxfs_inode.h,v 1.15 2001/05/26 22:41:23 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - inode structure.&n; *&n; * This file contains the definition of the disk and core&n; * inodes of the Veritas Filesystem.&n; */
 DECL|macro|VXFS_ISIZE
 mdefine_line|#define VXFS_ISIZE&t;&t;0x100&t;&t;/* Inode size */

@@ -2,12 +2,9 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_PDA_H
 DECL|macro|_ASM_IA64_SN_PDA_H
 mdefine_line|#define _ASM_IA64_SN_PDA_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
 multiline_comment|/*&n; * CPU-specific data structure.&n; *&n; * One of these structures is allocated for each cpu of a NUMA system.&n; *&n; * This structure provides a convenient way of keeping together &n; * all SN per-cpu data structures. &n; */
 DECL|struct|pda_s

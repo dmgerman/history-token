@@ -20,9 +20,9 @@ mdefine_line|#define SGI_ACPI_SCI_INT&t;&t;(0x34)
 DECL|macro|SGI_XPC_NOTIFY
 mdefine_line|#define SGI_XPC_NOTIFY&t;&t;&t;(0xe7)
 DECL|macro|IA64_SN2_FIRST_DEVICE_VECTOR
-mdefine_line|#define IA64_SN2_FIRST_DEVICE_VECTOR&t;(0x34)
+mdefine_line|#define IA64_SN2_FIRST_DEVICE_VECTOR&t;(0x37)
 DECL|macro|IA64_SN2_LAST_DEVICE_VECTOR
-mdefine_line|#define IA64_SN2_LAST_DEVICE_VECTOR&t;(0xe7)
+mdefine_line|#define IA64_SN2_LAST_DEVICE_VECTOR&t;(0xe6)
 DECL|macro|SN2_IRQ_RESERVED
 mdefine_line|#define SN2_IRQ_RESERVED        (0x1)
 DECL|macro|SN2_IRQ_CONNECTED

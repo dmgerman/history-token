@@ -431,11 +431,6 @@ l_string|&quot;dpc_v4l2.o: dpc_probe succeeded for this device.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* we store the pointer in our private data field */
-(paren
-r_struct
-id|dpc
-op_star
-)paren
 id|dev-&gt;ext_priv
 op_assign
 id|dpc

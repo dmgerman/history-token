@@ -648,6 +648,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|is_console_locked
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Some debug stub to catch some of the obvious races in the VT code */
+macro_line|#if 1
+DECL|macro|WARN_CONSOLE_UNLOCKED
+mdefine_line|#define WARN_CONSOLE_UNLOCKED()&t;WARN_ON(!is_console_locked() &amp;&amp; !oops_in_progress)
+macro_line|#else
+DECL|macro|WARN_CONSOLE_UNLOCKED
+mdefine_line|#define WARN_CONSOLE_UNLOCKED()
+macro_line|#endif
 multiline_comment|/* VESA Blanking Levels */
 DECL|macro|VESA_NO_BLANKING
 mdefine_line|#define VESA_NO_BLANKING        0

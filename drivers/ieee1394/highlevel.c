@@ -2313,10 +2313,6 @@ op_assign
 id|RCODE_TYPE_ERROR
 suffix:semicolon
 )brace
-(paren
-id|u8
-op_star
-)paren
 id|data
 op_add_assign
 id|partlength
@@ -2533,10 +2529,6 @@ op_assign
 id|RCODE_TYPE_ERROR
 suffix:semicolon
 )brace
-(paren
-id|u8
-op_star
-)paren
 id|data
 op_add_assign
 id|partlength

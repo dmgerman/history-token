@@ -3067,6 +3067,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|do_exit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_exit
+)paren
+suffix:semicolon
 DECL|function|complete_and_exit
 id|NORET_TYPE
 r_void

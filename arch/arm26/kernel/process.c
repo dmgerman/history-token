@@ -902,7 +902,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSRQ
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 multiline_comment|/*&n;&t; * The stack must be cleared if you want SYSRQ-T to&n;&t; * give sensible stack usage information&n;&t; */
 r_if
 c_cond

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;flask.h&quot;
 macro_line|#include &quot;avc.h&quot;
