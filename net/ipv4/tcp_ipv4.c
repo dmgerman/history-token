@@ -3738,7 +3738,7 @@ id|rnd
 (brace
 r_return
 (paren
-id|jenkins_hash_2words
+id|jhash_2words
 c_func
 (paren
 id|raddr

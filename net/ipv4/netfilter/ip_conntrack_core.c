@@ -324,7 +324,7 @@ suffix:semicolon
 macro_line|#endif
 r_return
 (paren
-id|jenkins_hash_3words
+id|jhash_3words
 c_func
 (paren
 id|tuple-&gt;src.ip

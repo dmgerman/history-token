@@ -1854,7 +1854,7 @@ id|rnd
 (brace
 r_return
 (paren
-id|jenkins_hash_3words
+id|jhash_3words
 c_func
 (paren
 id|raddr-&gt;s6_addr32

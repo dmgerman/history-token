@@ -506,7 +506,7 @@ id|tos
 (brace
 r_return
 (paren
-id|jenkins_hash_3words
+id|jhash_3words
 c_func
 (paren
 id|daddr
