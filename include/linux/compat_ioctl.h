@@ -2630,6 +2630,26 @@ c_func
 (paren
 id|AUTOFS_IOC_EXPIRE_MULTI
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|AUTOFS_IOC_PROTOSUBVER
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|AUTOFS_IOC_ASKREGHOST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|AUTOFS_IOC_TOGGLEREGHOST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|AUTOFS_IOC_ASKUMOUNT
+)paren
 multiline_comment|/* DEVFS */
 id|COMPATIBLE_IOCTL
 c_func
