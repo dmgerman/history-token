@@ -1886,10 +1886,6 @@ DECL|member|adhoc_times
 id|u8
 id|adhoc_times
 suffix:semicolon
-DECL|member|driver_state
-id|u8
-id|driver_state
-suffix:semicolon
 DECL|member|freq_domain
 id|u8
 id|freq_domain
