@@ -1669,6 +1669,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|NTFS_SB
 c_func
 (paren
@@ -1677,8 +1679,8 @@ id|sb
 op_member_access_from_pointer
 id|on_errors
 op_amp
-op_complement
 id|ON_ERRORS_RECOVER
+)paren
 )paren
 (brace
 r_if
