@@ -2866,6 +2866,40 @@ comma
 l_int|0x0000
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5703
+op_logical_or
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_eq
+id|ASIC_REV_5704
+)paren
+(brace
+multiline_comment|/* Set Extended packet length bit for jumbo frames */
+id|tg3_writephy
+c_func
+(paren
+id|tp
+comma
+id|MII_TG3_AUX_CTRL
+comma
+l_int|0x4400
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|tg3_writephy
 c_func
 (paren
@@ -2876,6 +2910,7 @@ comma
 l_int|0x0400
 )paren
 suffix:semicolon
+)brace
 id|tg3_writephy
 c_func
 (paren
@@ -3157,6 +3192,63 @@ comma
 l_int|0x1c
 comma
 l_int|0x8d68
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Set Extended packet length bit (bit 14) on all chips that */
+multiline_comment|/* support jumbo frames */
+r_if
+c_cond
+(paren
+(paren
+id|tp-&gt;phy_id
+op_amp
+id|PHY_ID_MASK
+)paren
+op_eq
+id|PHY_ID_BCM5401
+op_logical_or
+(paren
+id|tp-&gt;phy_id
+op_amp
+id|PHY_ID_MASK
+)paren
+op_eq
+id|PHY_ID_BCM5411
+)paren
+(brace
+id|tg3_writephy
+c_func
+(paren
+id|tp
+comma
+id|MII_TG3_AUX_CTRL
+comma
+l_int|0x4c20
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|GET_ASIC_REV
+c_func
+(paren
+id|tp-&gt;pci_chip_rev_id
+)paren
+op_ne
+id|ASIC_REV_5705
+)paren
+(brace
+id|tg3_writephy
+c_func
+(paren
+id|tp
+comma
+id|MII_TG3_AUX_CTRL
+comma
+l_int|0x4400
 )paren
 suffix:semicolon
 )brace
@@ -5200,6 +5292,7 @@ r_int
 id|err
 suffix:semicolon
 multiline_comment|/* Turn off tap power management. */
+multiline_comment|/* Set Extended packet length bit */
 id|err
 op_assign
 id|tg3_writephy
@@ -5209,7 +5302,7 @@ id|tp
 comma
 id|MII_TG3_AUX_CTRL
 comma
-l_int|0x0c20
+l_int|0x4c20
 )paren
 suffix:semicolon
 id|err
@@ -24599,6 +24692,8 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#if 0&t;/* Remove FTQ reset because it is redundant and can cause */
+multiline_comment|/* race condition with ASF */
 id|tw32
 c_func
 (paren
@@ -24673,6 +24768,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Clear statistics/status block in chip, and status block in ram. */
 r_if
 c_cond
@@ -33723,7 +33819,7 @@ id|tp
 comma
 id|MII_TG3_AUX_CTRL
 comma
-l_int|0x0c00
+l_int|0x4c00
 )paren
 suffix:semicolon
 id|tg3_writephy
