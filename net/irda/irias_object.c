@@ -166,8 +166,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|obj
@@ -202,8 +203,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unable to allocate object!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to allocate object!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -984,8 +986,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), changing value type not allowed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), changing value type not allowed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1903,8 +1906,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1979,8 +1983,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Unknown value type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown value type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

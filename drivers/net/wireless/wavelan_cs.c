@@ -2488,11 +2488,15 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|wavepoint-&gt;last_seen
-OL
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
+id|wavepoint-&gt;last_seen
+op_plus
 id|CELL_TIMEOUT
+)paren
 )paren
 (brace
 macro_line|#ifdef WAVELAN_ROAMING_DEBUG
@@ -7141,10 +7145,11 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* HISTOGRAM */
-DECL|function|netdev_ethtool_ioctl
 r_static
+r_inline
 r_int
-id|netdev_ethtool_ioctl
+DECL|function|wl_netdev_ethtool_ioctl
+id|wl_netdev_ethtool_ioctl
 c_func
 (paren
 r_struct
@@ -11102,6 +11107,7 @@ id|cmd
 )paren
 multiline_comment|/* Ioctl number */
 (brace
+macro_line|#if WIRELESS_EXT &lt;= 12
 r_struct
 id|iwreq
 op_star
@@ -11114,6 +11120,7 @@ op_star
 )paren
 id|rq
 suffix:semicolon
+macro_line|#endif
 r_int
 id|ret
 op_assign
@@ -11144,7 +11151,7 @@ id|SIOCETHTOOL
 suffix:colon
 id|ret
 op_assign
-id|netdev_ethtool_ioctl
+id|wl_netdev_ethtool_ioctl
 c_func
 (paren
 id|dev

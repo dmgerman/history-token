@@ -9,9 +9,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0)
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
@@ -21,43 +19,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
-macro_line|#ifdef MODULE
-r_extern
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* def MODULE */
 multiline_comment|/* struct file_operations changed too often in the 2.1 series for nice code */
-macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,9)
-r_static
-id|loff_t
-id|i2cdev_lseek
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 id|ssize_t
 id|i2cdev_read
@@ -195,27 +157,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-r_static
-macro_line|#else
-r_extern
-macro_line|#endif
-r_int
-id|__init
-id|i2c_dev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_int
-id|i2cdev_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|i2cdev_fops
 r_static
 r_struct
@@ -223,23 +164,14 @@ id|file_operations
 id|i2cdev_fops
 op_assign
 (brace
-macro_line|#if LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0)
 id|owner
 suffix:colon
 id|THIS_MODULE
 comma
-macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
-macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,9)
-id|llseek
-suffix:colon
-id|i2cdev_lseek
-comma
-macro_line|#else
 id|llseek
 suffix:colon
 id|no_llseek
 comma
-macro_line|#endif
 id|read
 suffix:colon
 id|i2cdev_read
@@ -363,59 +295,6 @@ r_static
 r_int
 id|i2cdev_initialized
 suffix:semicolon
-macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,9)
-multiline_comment|/* Note that the lseek function is called llseek in 2.1 kernels. But things&n;   are complicated enough as is. */
-DECL|function|i2cdev_lseek
-id|loff_t
-id|i2cdev_lseek
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-macro_line|#ifdef DEBUG
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-dev.o: i2c-%d lseek to %ld bytes relative to %d.&bslash;n&quot;
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-comma
-(paren
-r_int
-)paren
-id|offset
-comma
-id|origin
-)paren
-suffix:semicolon
-macro_line|#endif /* DEBUG */
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|i2cdev_read
 r_static
 id|ssize_t
@@ -1756,10 +1635,6 @@ id|minor
 )braket
 )paren
 suffix:semicolon
-macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0)
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif /* LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0) */
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -1822,16 +1697,11 @@ id|minor
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0)
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#else /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* LINUX_KERNEL_VERSION &lt; KERNEL_VERSION(2,4,0) */
 r_if
 c_cond
 (paren
@@ -1856,13 +1726,11 @@ id|minor
 )braket
 )paren
 suffix:semicolon
-macro_line|#if LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0)
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
 r_return
 l_int|0
 suffix:semicolon
@@ -2083,6 +1951,101 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|i2cdev_cleanup
+r_static
+r_void
+id|i2cdev_cleanup
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|res
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i2cdev_initialized
+op_ge
+l_int|2
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|res
+op_assign
+id|i2c_del_driver
+c_func
+(paren
+op_amp
+id|i2cdev_driver
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i2c-dev.o: Driver deregistration failed, &quot;
+l_string|&quot;module not removed.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|i2cdev_initialized
+op_decrement
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i2cdev_initialized
+op_ge
+l_int|1
+)paren
+(brace
+macro_line|#ifdef CONFIG_DEVFS_FS
+id|devfs_unregister
+c_func
+(paren
+id|devfs_handle
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+(paren
+id|res
+op_assign
+id|unregister_chrdev
+c_func
+(paren
+id|I2C_MAJOR
+comma
+l_string|&quot;i2c&quot;
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i2c-dev.o: unable to release major %d for i2c bus&bslash;n&quot;
+comma
+id|I2C_MAJOR
+)paren
+suffix:semicolon
+)brace
+id|i2cdev_initialized
+op_decrement
+suffix:semicolon
+)brace
+)brace
 DECL|function|i2c_dev_init
 r_int
 id|__init
@@ -2194,112 +2157,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|i2cdev_cleanup
-r_int
-id|i2cdev_cleanup
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i2cdev_initialized
-op_ge
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
-id|i2c_del_driver
-c_func
-(paren
-op_amp
-id|i2cdev_driver
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-dev.o: Driver deregistration failed, &quot;
-l_string|&quot;module not removed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-id|i2cdev_initialized
-op_decrement
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i2cdev_initialized
-op_ge
-l_int|1
-)paren
-(brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
-c_func
-(paren
-id|devfs_handle
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
-id|unregister_chrdev
-c_func
-(paren
-id|I2C_MAJOR
-comma
-l_string|&quot;i2c&quot;
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i2c-dev.o: unable to release major %d for i2c bus&bslash;n&quot;
-comma
-id|I2C_MAJOR
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
-id|i2cdev_initialized
-op_decrement
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2318,35 +2177,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|i2c_dev_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|i2c_dev_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_int
-id|cleanup_module
+DECL|variable|i2cdev_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|i2cdev_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* def MODULE */
 eof

@@ -531,6 +531,13 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
+DECL|variable|cpu_callout_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_callout_map
+)paren
+suffix:semicolon
 DECL|variable|__write_lock_failed
 id|EXPORT_SYMBOL_NOVERS
 c_func

@@ -561,8 +561,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -622,8 +623,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -688,8 +690,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -732,8 +735,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), already open so break out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), already open so break out!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -912,8 +916,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tty
@@ -1038,8 +1043,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), O_NONBLOCK requested!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), O_NONBLOCK requested!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1067,8 +1073,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), doing CLOCAL!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), doing CLOCAL!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|do_clocal
@@ -1092,8 +1099,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), doing CLOCAL!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), doing CLOCAL!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|do_clocal
@@ -1447,8 +1455,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
@@ -1693,8 +1702,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), %s%d, count = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s%d, count = %d&bslash;n&quot;
 comma
 id|tty-&gt;driver.name
 comma
@@ -1822,8 +1832,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrCOMM device&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrCOMM device&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1834,8 +1845,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), IrLPT device&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), IrLPT device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;service_type
@@ -1886,8 +1898,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), returning after block_til_ready with %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), returning after block_til_ready with %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -1947,8 +1960,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2016,8 +2030,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), returning 1&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), returning 1&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2045,9 +2060,10 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot;(), bad serial port count; &quot;
+l_string|&quot;%s(), bad serial port count; &quot;
 l_string|&quot;tty-&gt;count is 1, state-&gt;count is %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|self-&gt;open_count
 )paren
@@ -2105,8 +2121,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), open count &gt; 0&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), open count &gt; 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2349,8 +2366,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2571,8 +2589,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), count=%d, hw_stopped=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), count=%d, hw_stopped=%d&bslash;n&quot;
 comma
 id|count
 comma
@@ -2620,8 +2639,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() : not initialised&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() : not initialised&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2956,8 +2976,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ret=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ret=%d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -3005,8 +3026,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3132,8 +3154,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3248,8 +3271,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3330,8 +3354,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), FLOW_START&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), FLOW_START&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3478,8 +3503,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3618,8 +3644,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3724,8 +3751,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), not impl&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not impl&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3842,8 +3870,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3907,8 +3936,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), ircomm%d CD now %s...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), ircomm%d CD now %s...&bslash;n&quot;
 comma
 id|self-&gt;line
 comma
@@ -3965,8 +3995,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Doing serial hangup..&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Doing serial hangup..&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4012,8 +4043,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), CTS tx start...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), CTS tx start...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tty-&gt;hw_stopped
@@ -4066,8 +4098,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), CTS tx stop...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), CTS tx stop...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tty-&gt;hw_stopped
@@ -4116,8 +4149,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4171,8 +4205,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), no tty!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), no tty!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4203,8 +4238,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), polling for line settings!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), polling for line settings!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ircomm_param_request
@@ -4297,8 +4333,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4456,8 +4493,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), hw start!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), hw start!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tty-&gt;hw_stopped
@@ -4494,8 +4532,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), hw stopped!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), hw stopped!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tty-&gt;hw_stopped

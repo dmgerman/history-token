@@ -218,8 +218,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hashbin_delete
@@ -267,8 +268,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(%s)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%s)&bslash;n&quot;
 comma
 id|status
 ques
@@ -395,8 +397,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -477,8 +480,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -553,8 +557,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -630,8 +635,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), state = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), state = %s&bslash;n&quot;
 comma
 id|task_state
 (braket
@@ -732,8 +738,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -957,8 +964,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), not finished, and no timeout!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not finished, and no timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|finished
@@ -1011,8 +1019,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|task
@@ -1137,8 +1146,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|task
@@ -1592,8 +1602,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

@@ -412,8 +412,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -518,8 +519,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -600,8 +602,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -735,8 +738,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
 comma
 id|self-&gt;io.fir_base
 )paren
@@ -1049,8 +1053,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -1121,8 +1126,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Releasing Region %03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Releasing Region %03x&bslash;n&quot;
 comma
 id|self-&gt;io.fir_base
 )paren
@@ -1208,8 +1214,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_USE_W977_PNP
@@ -1618,8 +1625,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Wrong chip version&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Wrong chip version&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1805,8 +1813,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 576000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 576000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1823,8 +1832,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 1152000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 1152000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1841,8 +1851,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), handling baud of 4000000&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), handling baud of 4000000&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1858,8 +1869,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown baud rate of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown baud rate of %d&bslash;n&quot;
 comma
 id|speed
 )paren
@@ -2063,8 +2075,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(%ld), skb-&gt;len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%ld), skb-&gt;len=%d&bslash;n&quot;
 comma
 id|jiffies
 comma
@@ -2281,8 +2294,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(%ld), mtt=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%ld), mtt=%d&bslash;n&quot;
 comma
 id|jiffies
 comma
@@ -2423,8 +2437,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), len=%d&bslash;n&quot;
 comma
 id|self-&gt;tx_buff.len
 )paren
@@ -2673,8 +2688,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Save current bank */
@@ -2718,8 +2734,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), warning, FIFO not empty yet!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), warning, FIFO not empty yet!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|fifo_size
@@ -2731,8 +2748,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), %d bytes left in tx fifo&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;%d bytes left in tx fifo&bslash;n&quot;
 comma
 id|fifo_size
 )paren
@@ -2777,8 +2795,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), fifo_size %d ; %d sent of %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), fifo_size %d ; %d sent of %d&bslash;n&quot;
 comma
 id|fifo_size
 comma
@@ -2825,8 +2844,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(%ld)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(%ld)&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -2905,8 +2925,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Transmit underrun!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Transmit underrun!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self-&gt;stats.tx_errors
@@ -3015,8 +3036,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -3321,8 +3343,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|st_fifo
@@ -3802,8 +3825,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3900,8 +3924,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), isr=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), isr=%#x&bslash;n&quot;
 comma
 id|isr
 )paren
@@ -4037,8 +4062,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Changing speed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Changing speed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|w83977af_change_speed
@@ -4648,8 +4674,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Set up to be a normal IrDA network device driver */
@@ -4699,8 +4726,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -4928,8 +4956,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -5142,8 +5171,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

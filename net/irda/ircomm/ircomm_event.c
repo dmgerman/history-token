@@ -298,8 +298,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_event
 (braket
@@ -423,8 +424,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event: %s&bslash;n&quot;
 comma
 id|ircomm_event
 (braket
@@ -575,8 +577,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event = %s&bslash;n&quot;
 comma
 id|ircomm_event
 (braket
@@ -767,8 +770,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unknown event = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown event = %s&bslash;n&quot;
 comma
 id|ircomm_event
 (braket
@@ -827,8 +831,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s: state=%s, event=%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: state=%s, event=%s&bslash;n&quot;
 comma
 id|ircomm_state
 (braket
@@ -884,8 +889,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s: next state=%s, service type=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: next state=%s, service type=%d&bslash;n&quot;
 comma
 id|ircomm_state
 (braket

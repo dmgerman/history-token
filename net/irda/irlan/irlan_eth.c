@@ -34,8 +34,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -177,8 +178,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -290,8 +292,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Stop device */
@@ -932,8 +935,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -972,8 +976,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(), delaying!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), delaying!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1016,8 +1021,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Setting multicast filter&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Setting multicast filter&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* hardware_set_filter(NULL); */
@@ -1042,8 +1048,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Setting multicast filter&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Setting multicast filter&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Walk the address list, and load the filter */
@@ -1064,8 +1071,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Clearing multicast filter&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Clearing multicast filter&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irlan_set_multicast_filter
