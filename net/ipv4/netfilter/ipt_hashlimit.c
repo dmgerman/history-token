@@ -186,7 +186,7 @@ suffix:semicolon
 multiline_comment|/* hashtable itself */
 )brace
 suffix:semicolon
-DECL|variable|hashlimit_lock
+r_static
 id|DECLARE_RWLOCK
 c_func
 (paren

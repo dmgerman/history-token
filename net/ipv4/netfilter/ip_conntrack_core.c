@@ -154,7 +154,6 @@ comma
 id|ip_conntrack_stat
 )paren
 suffix:semicolon
-r_inline
 r_void
 DECL|function|ip_conntrack_put
 id|ip_conntrack_put
@@ -1728,6 +1727,7 @@ id|i-&gt;mask
 suffix:semicolon
 )brace
 DECL|function|ip_ct_find_helper
+r_static
 r_struct
 id|ip_conntrack_helper
 op_star

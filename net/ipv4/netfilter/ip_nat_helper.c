@@ -31,7 +31,7 @@ mdefine_line|#define DEBUGP(format, args...)
 DECL|macro|DUMP_OFFSET
 mdefine_line|#define DUMP_OFFSET(x)
 macro_line|#endif
-DECL|variable|ip_nat_seqofs_lock
+r_static
 id|DECLARE_LOCK
 c_func
 (paren

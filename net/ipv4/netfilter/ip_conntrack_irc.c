@@ -191,14 +191,6 @@ l_string|&quot;SCHAT &quot;
 suffix:semicolon
 DECL|macro|MINMATCHLEN
 mdefine_line|#define MINMATCHLEN&t;5
-DECL|variable|ip_conntrack_irc
-r_struct
-id|module
-op_star
-id|ip_conntrack_irc
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUGP(format, args...) printk(KERN_DEBUG &quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
@@ -1198,7 +1190,7 @@ id|dcc_timeout
 suffix:semicolon
 id|hlpr-&gt;me
 op_assign
-id|ip_conntrack_irc
+id|THIS_MODULE
 suffix:semicolon
 id|hlpr-&gt;help
 op_assign

@@ -45,14 +45,6 @@ c_func
 id|ip_ftp_lock
 )paren
 suffix:semicolon
-DECL|variable|ip_conntrack_ftp
-r_struct
-id|module
-op_star
-id|ip_conntrack_ftp
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 DECL|macro|MAX_PORTS
 mdefine_line|#define MAX_PORTS 8
 DECL|variable|ports
@@ -2575,7 +2567,7 @@ id|i
 dot
 id|me
 op_assign
-id|ip_conntrack_ftp
+id|THIS_MODULE
 suffix:semicolon
 id|ftp
 (braket

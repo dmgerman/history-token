@@ -99,20 +99,6 @@ id|ip_conntrack_helper
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|ip_conntrack_helper
-op_star
-id|ip_ct_find_helper
-c_func
-(paren
-r_const
-r_struct
-id|ip_conntrack_tuple
-op_star
-id|tuple
-)paren
-suffix:semicolon
 multiline_comment|/* Allocate space for an expectation: this is mandatory before calling &n;   ip_conntrack_expect_related. */
 r_extern
 r_struct
