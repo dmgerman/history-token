@@ -294,10 +294,15 @@ comma
 id|GFP_KERNEL
 )paren
 )paren
+(brace
+id|mouse-&gt;open
+op_decrement
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
