@@ -4206,13 +4206,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_SUMMIT
-id|setup_summit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|register_memory
 c_func
 (paren
