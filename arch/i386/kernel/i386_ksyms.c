@@ -688,15 +688,6 @@ id|atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
-DECL|variable|do_BUG
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|do_BUG
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|is_sony_vaio_laptop

@@ -152,27 +152,13 @@ multiline_comment|/*&n; * This much address space is reserved for vmalloc() and 
 DECL|macro|__VMALLOC_RESERVE
 mdefine_line|#define __VMALLOC_RESERVE&t;(128 &lt;&lt; 20)
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Tell the user there is some problem. Beep too, so we can&n; * see^H^H^Hhear bugs in early bootup as well!&n; */
-macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
-r_extern
-r_void
-id|do_BUG
-c_func
-(paren
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * Tell the user there is some problem. Beep too, so we can&n; * see^H^H^Hhear bugs in early bootup as well!&n; * The offending file and line are encoded after the &quot;officially&n; * undefined&quot; opcode for parsing in the trap handler.&n; */
+macro_line|#if 1&t;/* Set to zero for a slightly smaller kernel */
 DECL|macro|BUG
-mdefine_line|#define BUG() do {&t;&t;&t;&t;&t;&bslash;&n;&t;do_BUG(__FILE__, __LINE__);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&quot;ud2&quot;);&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BUG()&t;&t;&t;&t;&bslash;&n; __asm__ __volatile__(&t;&quot;ud2&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;&bslash;t.word %c0&bslash;n&quot;&t;&bslash;&n;&t;&t;&t;&quot;&bslash;t.long %c1&bslash;n&quot;&t;&bslash;&n;&t;&t;&t; : : &quot;i&quot; (__LINE__), &quot;i&quot; (__FILE__))
 macro_line|#else
 DECL|macro|BUG
-mdefine_line|#define BUG() __asm__ __volatile__(&quot;.byte 0x0f,0x0b&quot;)
+mdefine_line|#define BUG() __asm__ __volatile__(&quot;ud2&bslash;n&quot;)
 macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
