@@ -3445,9 +3445,6 @@ id|np-&gt;default_port
 suffix:semicolon
 id|np-&gt;mcastlock
 op_assign
-(paren
-id|spinlock_t
-)paren
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|set_rx_mode
