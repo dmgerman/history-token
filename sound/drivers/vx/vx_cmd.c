@@ -6,6 +6,7 @@ macro_line|#include &lt;sound/vx_core.h&gt;
 macro_line|#include &quot;vx_cmd.h&quot;
 multiline_comment|/*&n; * Array of DSP commands&n; */
 DECL|variable|vx_dsp_cmds
+r_static
 r_struct
 id|vx_cmd_info
 id|vx_dsp_cmds

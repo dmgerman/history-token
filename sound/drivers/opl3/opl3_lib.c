@@ -35,6 +35,7 @@ l_int|4
 )braket
 suffix:semicolon
 DECL|function|snd_opl2_command
+r_static
 r_void
 id|snd_opl2_command
 c_func
@@ -132,6 +133,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|snd_opl3_command
+r_static
 r_void
 id|snd_opl3_command
 c_func
