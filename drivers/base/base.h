@@ -1,21 +1,5 @@
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-macro_line|# define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-macro_line|# define DBG(x...)
-macro_line|#endif
-r_extern
-r_struct
-id|list_head
-id|global_device_list
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|device_lock
-suffix:semicolon
 r_extern
 r_struct
 id|semaphore
@@ -105,13 +89,9 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|interface_add
+id|interface_add_dev
 c_func
 (paren
-r_struct
-id|device_class
-op_star
-comma
 r_struct
 id|device
 op_star
@@ -119,13 +99,9 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|interface_remove
+id|interface_remove_dev
 c_func
 (paren
-r_struct
-id|device_class
-op_star
-comma
 r_struct
 id|device
 op_star

@@ -9,13 +9,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;base.h&quot;
-DECL|variable|global_device_list
-id|LIST_HEAD
-c_func
-(paren
-id|global_device_list
-)paren
-suffix:semicolon
 DECL|variable|platform_notify
 r_int
 (paren
@@ -52,12 +45,6 @@ c_func
 (paren
 id|device_sem
 )paren
-suffix:semicolon
-DECL|variable|device_lock
-id|spinlock_t
-id|device_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|macro|to_dev
 mdefine_line|#define to_dev(obj) container_of(obj,struct device,kobj)
@@ -461,13 +448,6 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|dev-&gt;g_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
 id|dev-&gt;driver_list
 )paren
 suffix:semicolon
@@ -482,10 +462,16 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|dev-&gt;class_list
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|dev-&gt;intf_list
 )paren
 suffix:semicolon
-singleline_comment|//&t;spin_lock_init(&amp;dev-&gt;lock);
 )brace
 multiline_comment|/**&n; *&t;device_add - add device to device hierarchy.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is part 2 of device_register(), though may be called &n; *&t;separately _iff_ device_initialize() has been called separately.&n; *&n; *&t;This adds it to the kobject hierarchy via kobject_add(), adds it&n; *&t;to the global and sibling lists for the device, then&n; *&t;adds it to the other relevant subsystems of the driver model.&n; */
 DECL|function|device_add
@@ -594,27 +580,17 @@ r_goto
 id|register_done
 suffix:semicolon
 multiline_comment|/* now take care of our own registration */
-id|down
-c_func
-(paren
-op_amp
-id|device_sem
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|parent
 )paren
 (brace
-id|list_add_tail
+id|down
 c_func
 (paren
 op_amp
-id|dev-&gt;g_list
-comma
-op_amp
-id|dev-&gt;parent-&gt;g_list
+id|device_sem
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -627,18 +603,6 @@ op_amp
 id|parent-&gt;children
 )paren
 suffix:semicolon
-)brace
-r_else
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|dev-&gt;g_list
-comma
-op_amp
-id|global_device_list
-)paren
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -646,6 +610,7 @@ op_amp
 id|device_sem
 )paren
 suffix:semicolon
+)brace
 id|bus_add_device
 c_func
 (paren
@@ -801,6 +766,12 @@ id|parent
 op_assign
 id|dev-&gt;parent
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|parent
+)paren
+(brace
 id|down
 c_func
 (paren
@@ -815,13 +786,6 @@ op_amp
 id|dev-&gt;node
 )paren
 suffix:semicolon
-id|list_del_init
-c_func
-(paren
-op_amp
-id|dev-&gt;g_list
-)paren
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -829,6 +793,7 @@ op_amp
 id|device_sem
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Notify the platform of the removal, in case they&n;&t; * need to do anything...&n;&t; */
 r_if
 c_cond
