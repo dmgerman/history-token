@@ -1706,12 +1706,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|paca
-(braket
+id|cpu_possible
+c_func
+(paren
 id|i
-)braket
-dot
-id|active
+)paren
 )paren
 r_continue
 suffix:semicolon

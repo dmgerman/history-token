@@ -517,18 +517,11 @@ id|status
 op_amp
 id|IRQ_INPROGRESS
 )paren
-(brace
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cpu_relax
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* XXX Make this into free_irq() - Anton */
@@ -1917,6 +1910,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 (paren
 id|status
@@ -1925,6 +1921,7 @@ op_amp
 id|IRQ_DISABLED
 op_or
 id|IRQ_INPROGRESS
+)paren
 )paren
 )paren
 )paren
@@ -2011,8 +2008,12 @@ multiline_comment|/*&n;&t; * If there is no IRQ handler or it was disabled, exit
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|action
+)paren
 )paren
 r_goto
 id|out
@@ -2052,11 +2053,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 op_logical_neg
 (paren
 id|desc-&gt;status
 op_amp
 id|IRQ_PENDING
+)paren
 )paren
 )paren
 r_break
@@ -2067,13 +2072,13 @@ op_complement
 id|IRQ_PENDING
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|desc-&gt;status
 op_and_assign
 op_complement
 id|IRQ_INPROGRESS
 suffix:semicolon
-id|out
-suffix:colon
 multiline_comment|/*&n;&t; * The -&gt;end() handler has to deal with interrupts which got&n;&t; * disabled while the handler was running.&n;&t; */
 r_if
 c_cond
@@ -2153,14 +2158,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 r_int
 id|irq
 comma
@@ -2310,20 +2307,6 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

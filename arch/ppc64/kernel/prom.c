@@ -170,6 +170,11 @@ macro_line|#ifndef FB_MAX&t;&t;&t;/* avoid pulling in all of the fb stuff */
 DECL|macro|FB_MAX
 mdefine_line|#define FB_MAX&t;8
 macro_line|#endif
+DECL|variable|ppc64_is_smp
+r_static
+r_int
+id|ppc64_is_smp
+suffix:semicolon
 DECL|variable|prom
 r_struct
 id|prom_t

@@ -35,15 +35,6 @@ id|wait
 suffix:semicolon
 r_extern
 r_void
-id|smp_store_cpu_info
-c_func
-(paren
-r_int
-id|id
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|smp_send_tlb_invalidate
 c_func
 (paren

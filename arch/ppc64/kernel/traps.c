@@ -472,10 +472,6 @@ c_cond
 id|fwnmi_active
 )paren
 (brace
-r_char
-op_star
-id|msg
-suffix:semicolon
 r_int
 r_int
 op_star
@@ -496,22 +492,10 @@ id|rtas_error_log
 op_star
 id|errlog
 suffix:semicolon
-id|msg
-op_assign
-l_string|&quot;FWNMI is active with save area at %016lx&bslash;n&quot;
-suffix:semicolon
 id|udbg_printf
 c_func
 (paren
-id|msg
-comma
-id|r3
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|msg
+l_string|&quot;FWNMI is active with save area at %016lx&bslash;n&quot;
 comma
 id|r3
 )paren
@@ -522,6 +506,11 @@ id|FWNMI_get_errinfo
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|FWNMI_release_errinfo
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
