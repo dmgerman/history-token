@@ -2285,13 +2285,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: utf8 is not a valid IO charset&quot;
-l_string|&quot; for FAT filesystems&bslash;n&quot;
+l_string|&quot;FAT: utf8 is not a recommended IO charset&quot;
+l_string|&quot; for FAT filesystems, filesystem will be case sensitive!&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 r_if
