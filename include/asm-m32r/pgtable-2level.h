@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_M32R_PGTABLE_2LEVEL_H
 DECL|macro|_ASM_M32R_PGTABLE_2LEVEL_H
 mdefine_line|#define _ASM_M32R_PGTABLE_2LEVEL_H
-multiline_comment|/* $Id$ */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * traditional M32R two-level paging structure:&n; */
 DECL|macro|PGDIR_SHIFT
@@ -24,7 +24,7 @@ mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08l
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
 r_static
-id|__inline__
+r_inline
 r_int
 id|pgd_none
 c_func
@@ -39,7 +39,7 @@ suffix:semicolon
 )brace
 DECL|function|pgd_bad
 r_static
-id|__inline__
+r_inline
 r_int
 id|pgd_bad
 c_func
@@ -54,7 +54,7 @@ suffix:semicolon
 )brace
 DECL|function|pgd_present
 r_static
-id|__inline__
+r_inline
 r_int
 id|pgd_present
 c_func
@@ -83,7 +83,7 @@ DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd) &bslash;&n;((unsigned long) __va(pgd_val(pgd) &amp; PAGE_MASK))
 DECL|function|pmd_offset
 r_static
-id|__inline__
+r_inline
 id|pmd_t
 op_star
 id|pmd_offset
@@ -126,5 +126,6 @@ DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(pte)&t;(((pte_val(pte) &gt;&gt; 2) &amp; 0xef) | (((pte_val(pte) &gt;&gt; 10)) &lt;&lt; 7))
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { (((off) &amp; 0xef) &lt;&lt; 2) | (((off) &gt;&gt; 7) &lt;&lt; 10) | _PAGE_FILE })
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_M32R_PGTABLE_2LEVEL_H */
 eof
