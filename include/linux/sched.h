@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -2145,6 +2146,22 @@ id|cpumask_t
 id|new_mask
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpus_intersects
+c_func
+(paren
+id|new_mask
+comma
+id|cpu_online_map
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
