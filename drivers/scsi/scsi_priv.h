@@ -524,6 +524,30 @@ id|device
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* scsi_sysctl.c */
+macro_line|#ifdef CONFIG_SYSCTL
+r_extern
+r_int
+id|scsi_init_sysctl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_exit_sysctl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|scsi_init_sysctl
+macro_line|# define scsi_init_sysctl()&t;&t;(0)
+DECL|macro|scsi_exit_sysctl
+macro_line|# define scsi_exit_sysctl()&t;&t;do { } while (0)
+macro_line|#endif /* CONFIG_SYSCTL */
 multiline_comment|/* scsi_sysfs.c */
 r_extern
 r_int
