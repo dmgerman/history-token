@@ -7460,17 +7460,6 @@ c_cond
 (paren
 id|command
 op_amp
-id|ETH_TX_LAST_DESC
-)paren
-id|command
-op_or_assign
-id|ETH_TX_ENABLE_INTERRUPT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|command
-op_amp
 id|ETH_TX_FIRST_DESC
 )paren
 (brace
