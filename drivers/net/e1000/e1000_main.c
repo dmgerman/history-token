@@ -7310,7 +7310,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|NETDEV_TX_OK
 suffix:semicolon
 )brace
 macro_line|#ifdef NETIF_F_TSO
@@ -7494,8 +7494,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|NETDEV_TX_LOCKED
 suffix:semicolon
 )brace
 multiline_comment|/* need: count + 2 desc gap to keep tail from touching&n;&t; * head, otherwise try next time */
@@ -7530,7 +7529,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|NETDEV_TX_BUSY
 suffix:semicolon
 )brace
 r_if
@@ -7586,7 +7585,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|NETDEV_TX_BUSY
 suffix:semicolon
 )brace
 )brace
@@ -7708,7 +7707,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|NETDEV_TX_OK
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_tx_timeout - Respond to a Tx Hang&n; * @netdev: network interface device structure&n; **/

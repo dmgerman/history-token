@@ -688,6 +688,10 @@ id|IFF_LOOPBACK
 r_if
 c_cond
 (paren
+id|sprt-&gt;rt6i_idev
+op_eq
+l_int|NULL
+op_logical_or
 id|sprt-&gt;rt6i_idev-&gt;dev-&gt;ifindex
 op_ne
 id|oif

@@ -58,6 +58,13 @@ mdefine_line|#define net_xmit_errno(e)&t;((e) != NET_XMIT_CN ? -ENOBUFS : 0)
 macro_line|#endif
 DECL|macro|MAX_ADDR_LEN
 mdefine_line|#define MAX_ADDR_LEN&t;32&t;&t;/* Largest hardware address length */
+multiline_comment|/* Driver transmit return codes */
+DECL|macro|NETDEV_TX_OK
+mdefine_line|#define NETDEV_TX_OK 0&t;&t;/* driver took care of packet */
+DECL|macro|NETDEV_TX_BUSY
+mdefine_line|#define NETDEV_TX_BUSY 1&t;/* driver tx path was busy*/
+DECL|macro|NETDEV_TX_LOCKED
+mdefine_line|#define NETDEV_TX_LOCKED -1&t;/* driver tx lock was already taken */
 multiline_comment|/*&n; *&t;Compute the worst case header length according to the protocols&n; *&t;used.&n; */
 macro_line|#if !defined(CONFIG_AX25) &amp;&amp; !defined(CONFIG_AX25_MODULE) &amp;&amp; !defined(CONFIG_TR)
 DECL|macro|LL_MAX_HEADER
@@ -1345,20 +1352,6 @@ DECL|member|class_dev
 r_struct
 id|class_device
 id|class_dev
-suffix:semicolon
-DECL|member|last_stats
-r_struct
-id|net_device_stats
-op_star
-(paren
-op_star
-id|last_stats
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-)paren
 suffix:semicolon
 multiline_comment|/* how much padding had been added by alloc_netdev() */
 DECL|member|padded

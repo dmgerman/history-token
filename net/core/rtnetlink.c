@@ -1303,6 +1303,10 @@ id|dev
 suffix:semicolon
 r_int
 id|err
+comma
+id|send_addr_notify
+op_assign
+l_int|0
 suffix:semicolon
 id|dev
 op_assign
@@ -1544,6 +1548,10 @@ id|err
 r_goto
 id|out
 suffix:semicolon
+id|send_addr_notify
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1595,6 +1603,10 @@ l_int|1
 comma
 id|dev-&gt;addr_len
 )paren
+suffix:semicolon
+id|send_addr_notify
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -1898,8 +1910,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|err
+id|send_addr_notify
 )paren
 id|call_netdevice_notifiers
 c_func

@@ -256,7 +256,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* hard_start_xmit returns: &n;&t;&t;&t;&t;   0  device not ready&n;&t;&t;&t;&t;   1  everything ok&n;&t;&t;&t;&t;   -1 didn&squot;t get device lock (for LLTX)&n;&t;&t;&t;&t;*/
 id|ret
 op_assign
 id|dev
@@ -274,7 +273,7 @@ c_cond
 (paren
 id|ret
 op_eq
-l_int|0
+id|NETDEV_TX_OK
 )paren
 (brace
 r_if
@@ -314,8 +313,7 @@ c_cond
 (paren
 id|ret
 op_eq
-op_minus
-l_int|1
+id|NETDEV_TX_LOCKED
 op_logical_and
 id|nolock
 )paren
@@ -323,6 +321,7 @@ r_goto
 id|collision
 suffix:semicolon
 )brace
+multiline_comment|/* NETDEV_TX_BUSY - we need to requeue */
 multiline_comment|/* Release the driver */
 r_if
 c_cond
