@@ -12,6 +12,7 @@ macro_line|#include &quot;asm/ptrace.h&quot;
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
+macro_line|#include &quot;skas_ptrace.h&quot;
 multiline_comment|/*&n; * Called by kernel/ptrace.c when detaching..&n; */
 DECL|function|ptrace_disable
 r_void

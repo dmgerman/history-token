@@ -78,6 +78,7 @@ r_extern
 r_int
 id|userspace_pid
 suffix:semicolon
+macro_line|#include &quot;skas_ptrace.h&quot;
 DECL|function|sys_modify_ldt_skas
 r_int
 id|sys_modify_ldt_skas

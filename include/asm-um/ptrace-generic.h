@@ -18,7 +18,6 @@ macro_line|#undef user_mode
 DECL|macro|instruction_pointer
 macro_line|#undef instruction_pointer
 macro_line|#include &quot;sysdep/ptrace.h&quot;
-macro_line|#include &quot;skas_ptrace.h&quot;
 DECL|struct|pt_regs
 r_struct
 id|pt_regs
