@@ -1460,7 +1460,7 @@ c_func
 (paren
 id|card-&gt;driver
 comma
-l_string|&quot;Aureal Vortex&quot;
+id|CARD_NAME_SHORT
 )paren
 suffix:semicolon
 id|strcpy
