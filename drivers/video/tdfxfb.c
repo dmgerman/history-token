@@ -509,6 +509,17 @@ op_star
 id|cursor
 )paren
 suffix:semicolon
+r_static
+r_int
+id|banshee_wait_idle
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
 DECL|variable|tdfxfb_ops
 r_static
 r_struct
@@ -1603,8 +1614,7 @@ suffix:semicolon
 )brace
 DECL|function|banshee_wait_idle
 r_static
-r_inline
-r_void
+r_int
 id|banshee_wait_idle
 c_func
 (paren
@@ -1688,6 +1698,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the color of a palette entry in 8bpp mode &n; */
 DECL|function|do_setpalentry
@@ -4330,7 +4343,7 @@ macro_line|#endif
 id|do_write_regs
 c_func
 (paren
-id|par
+id|info
 comma
 op_amp
 id|reg
@@ -6873,17 +6886,6 @@ op_rshift
 l_int|10
 )paren
 suffix:semicolon
-multiline_comment|/* clear framebuffer memory */
-id|memset_io
-c_func
-(paren
-id|info-&gt;screen_base
-comma
-l_int|0
-comma
-id|tdfx_fix.smem_len
-)paren
-suffix:semicolon
 id|tdfx_fix.ypanstep
 op_assign
 id|nopan
@@ -6935,6 +6937,7 @@ id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
+macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
@@ -6976,6 +6979,7 @@ id|err
 op_eq
 l_int|4
 )paren
+macro_line|#endif
 id|info-&gt;var
 op_assign
 id|tdfx_var

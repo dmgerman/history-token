@@ -136,12 +136,6 @@ id|sti_struct
 op_star
 id|default_sti
 suffix:semicolon
-r_extern
-r_struct
-id|display_switch
-id|fbcon_sti
-suffix:semicolon
-multiline_comment|/* fbcon-sti.c */
 r_int
 id|sti_init_graph
 c_func
@@ -1367,6 +1361,13 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* pci region mapper array == pci config space offset */
+multiline_comment|/* pointer to the fb_info where this STI device is used */
+DECL|member|info
+r_struct
+id|fb_info
+op_star
+id|info
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* helper functions */

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

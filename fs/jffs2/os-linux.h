@@ -160,6 +160,9 @@ DECL|macro|jffs2_flash_write_oob
 mdefine_line|#define jffs2_flash_write_oob(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;write_oob((c)-&gt;mtd, ofs, len, retlen, buf))
 DECL|macro|jffs2_flash_read_oob
 mdefine_line|#define jffs2_flash_read_oob(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;read_oob((c)-&gt;mtd, ofs, len, retlen, buf))
+r_struct
+id|statfs
+suffix:semicolon
 multiline_comment|/* wbuf.c */
 r_int
 id|jffs2_flash_writev

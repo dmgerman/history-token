@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;

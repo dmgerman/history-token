@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/sstfb.h -- voodoo graphics frame buffer&n; *&n; *     Copyright (c) 2000,2001 Ghozlane Toumi &lt;gtoumi@messel.emse.fr&gt;&n; *&n; *     Created 28 Aug 2001 by Ghozlane Toumi&n; *&n; * $Id: sstfb.h,v 1.8 2002/05/10 19:35:11 ghoz Exp $&n; */
+multiline_comment|/*&n; * linux/drivers/video/sstfb.h -- voodoo graphics frame buffer&n; *&n; *     Copyright (c) 2000,2001 Ghozlane Toumi &lt;gtoumi@messel.emse.fr&gt;&n; *&n; *     Created 28 Aug 2001 by Ghozlane Toumi&n; */
 macro_line|#ifndef _SSTFB_H_
 DECL|macro|_SSTFB_H_
 mdefine_line|#define _SSTFB_H_
@@ -15,8 +15,6 @@ DECL|macro|SST_DEBUG_FUNC
 macro_line|#  undef SST_DEBUG_FUNC
 DECL|macro|SST_DEBUG_VAR
 macro_line|#  undef SST_DEBUG_VAR
-DECL|macro|SST_DEBUG_IOCTL
-macro_line|#  undef SST_DEBUG_IOCTL
 macro_line|#endif
 macro_line|#if (SST_DEBUG_REG &gt; 0)
 DECL|macro|r_dprintk
@@ -72,10 +70,6 @@ DECL|macro|wprintk
 mdefine_line|#define wprintk(X...)&t;printk(KERN_WARNING &quot;sstfb: &quot; X)
 DECL|macro|BIT
 mdefine_line|#define BIT(x)&t;&t;(1ul&lt;&lt;(x))
-DECL|macro|PS2KHZ
-mdefine_line|#define PS2KHZ(a)&t;(1000000000UL/(a))&t;/* picoseconds to KHz */
-DECL|macro|KHZ2PS
-mdefine_line|#define KHZ2PS(a)&t;(1000000000UL/(a))
 DECL|macro|POW2
 mdefine_line|#define POW2(x)&t;&t;(1ul&lt;&lt;(x))
 macro_line|#ifndef ABS
@@ -130,8 +124,16 @@ DECL|macro|RD_BUFF_BACK
 macro_line|#  define RD_BUFF_BACK&t;&t;  (1 &lt;&lt; 6)&t;/* back */
 DECL|macro|EN_PXL_PIPELINE
 macro_line|#  define EN_PXL_PIPELINE&t;  BIT(8)&t;/* pixel pipeline (clip..)*/
+DECL|macro|LFB_WORD_SWIZZLE_WR
+macro_line|#  define LFB_WORD_SWIZZLE_WR&t;  BIT(11)&t;/* enable write-wordswap (big-endian) */
+DECL|macro|LFB_BYTE_SWIZZLE_WR
+macro_line|#  define LFB_BYTE_SWIZZLE_WR&t;  BIT(12)&t;/* enable write-byteswap (big-endian) */
 DECL|macro|LFB_INVERT_Y
 macro_line|#  define LFB_INVERT_Y&t;&t;  BIT(13)&t;/* invert Y origin (LFB) */
+DECL|macro|LFB_WORD_SWIZZLE_RD
+macro_line|#  define LFB_WORD_SWIZZLE_RD&t;  BIT(15)&t;/* enable read-wordswap (big-endian) */
+DECL|macro|LFB_BYTE_SWIZZLE_RD
+macro_line|#  define LFB_BYTE_SWIZZLE_RD&t;  BIT(16)&t;/* enable read-byteswap (big-endian) */
 DECL|macro|CLIP_LEFT_RIGHT
 mdefine_line|#define CLIP_LEFT_RIGHT&t;&t;0x0118
 DECL|macro|CLIP_LOWY_HIGHY
@@ -426,9 +428,9 @@ id|detect
 )paren
 (paren
 r_struct
-id|sstfb_info
+id|fb_info
 op_star
-id|sst_info
+id|info
 )paren
 suffix:semicolon
 DECL|member|set_pll
@@ -439,9 +441,9 @@ id|set_pll
 )paren
 (paren
 r_struct
-id|sstfb_info
+id|fb_info
 op_star
-id|sst_info
+id|info
 comma
 r_const
 r_struct
@@ -462,9 +464,9 @@ id|set_vidmod
 )paren
 (paren
 r_struct
-id|sstfb_info
+id|fb_info
 op_star
-id|sst_info
+id|info
 comma
 r_const
 r_int
@@ -498,17 +500,11 @@ DECL|struct|sstfb_par
 r_struct
 id|sstfb_par
 (brace
-DECL|member|bpp
+DECL|member|yDim
 r_int
 r_int
-id|bpp
+id|yDim
 suffix:semicolon
-DECL|member|xDim
-r_int
-r_int
-id|xDim
-suffix:semicolon
-multiline_comment|/* xres */
 DECL|member|hSyncOn
 r_int
 r_int
@@ -527,11 +523,6 @@ r_int
 id|hBackPorch
 suffix:semicolon
 multiline_comment|/* left_margin */
-DECL|member|yDim
-r_int
-r_int
-id|yDim
-suffix:semicolon
 DECL|member|vSyncOn
 r_int
 r_int
@@ -547,12 +538,6 @@ r_int
 r_int
 id|vBackPorch
 suffix:semicolon
-DECL|member|freq
-r_int
-r_int
-id|freq
-suffix:semicolon
-multiline_comment|/* freq in kHz */
 DECL|member|pll
 r_struct
 id|pll_timing
@@ -564,93 +549,23 @@ r_int
 id|tiles_in_X
 suffix:semicolon
 multiline_comment|/* num of tiles in X res */
-DECL|member|vmode
+DECL|member|mmio_vbase
 r_int
 r_int
-id|vmode
+id|mmio_vbase
 suffix:semicolon
-multiline_comment|/* doublescan/interlaced */
-DECL|member|sync
-r_int
-r_int
-id|sync
-suffix:semicolon
-multiline_comment|/* H/V sync polarity */
-DECL|member|valid
-r_int
-r_int
-id|valid
-suffix:semicolon
-multiline_comment|/* par is correct (fool proof) */
-)brace
-suffix:semicolon
-DECL|struct|sstfb_info
-r_struct
-id|sstfb_info
-(brace
-DECL|member|info
-r_struct
-id|fb_info
-id|info
-suffix:semicolon
-DECL|member|current_par
-r_struct
-id|sstfb_par
-id|current_par
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
-r_struct
-(brace
-DECL|member|base
-r_int
-r_int
-id|base
-suffix:semicolon
-multiline_comment|/* physical */
-DECL|member|vbase
-r_int
-r_int
-id|vbase
-suffix:semicolon
-multiline_comment|/* virtual (CPU view) */
-DECL|member|len
-r_int
-r_int
-id|len
-suffix:semicolon
-DECL|member|video
-)brace
-id|video
-suffix:semicolon
-multiline_comment|/* fb memory info */
-r_struct
-(brace
-DECL|member|base
-r_int
-r_int
-id|base
-suffix:semicolon
-DECL|member|vbase
-r_int
-r_int
-id|vbase
-suffix:semicolon
-DECL|member|mmio
-)brace
-id|mmio
-suffix:semicolon
-multiline_comment|/* registers memory info */
 DECL|member|dac_sw
 r_struct
 id|dac_switch
 id|dac_sw
 suffix:semicolon
 multiline_comment|/* dac specific functions */
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
 DECL|member|type
 r_int
 id|type
@@ -659,70 +574,11 @@ DECL|member|revision
 id|u8
 id|revision
 suffix:semicolon
-multiline_comment|/* status */
-multiline_comment|/*XXX&t;int&t;configured;&n;&t;int&t;indexed_mode;&n;&t;int&t;vgapass;&n;&t;int&t;clipping; */
 DECL|member|gfx_clock
 r_int
 id|gfx_clock
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
-DECL|member|disp
-r_struct
-id|display
-id|disp
-suffix:semicolon
-multiline_comment|/* current display */
-DECL|member|red
-DECL|member|green
-DECL|member|blue
-DECL|member|transp
-DECL|member|palette
-r_struct
-(brace
-id|u_int
-id|red
-comma
-id|green
-comma
-id|blue
-comma
-id|transp
-suffix:semicolon
-)brace
-id|palette
-(braket
-l_int|16
-)braket
-suffix:semicolon
-r_union
-(brace
-macro_line|#ifdef FBCON_HAS_CFB16
-DECL|member|cfb16
-id|u16
-id|cfb16
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef EN_24_32_BPP
-macro_line|#if defined (FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)
-DECL|member|cfb32
-id|u32
-id|cfb32
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-DECL|member|fbcon_cmap
-)brace
-id|fbcon_cmap
-suffix:semicolon
+multiline_comment|/* status */
 )brace
 suffix:semicolon
 macro_line|#endif /* _SSTFB_H_ */

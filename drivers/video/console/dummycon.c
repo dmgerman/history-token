@@ -12,10 +12,12 @@ mdefine_line|#define DUMMY_COLUMNS&t;ORIG_VIDEO_COLS
 DECL|macro|DUMMY_ROWS
 mdefine_line|#define DUMMY_ROWS&t;ORIG_VIDEO_LINES
 macro_line|#elif defined(__hppa__)
+multiline_comment|/* set by Kconfig. Use 80x25 for 640x480 and 160x64 for 1280x1024 */
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|DUMMY_COLUMNS
-mdefine_line|#define DUMMY_COLUMNS&t;80&t;/* fixme ! (mine uses 160x64 at 1280x1024) */
+mdefine_line|#define DUMMY_COLUMNS&t;CONFIG_DUMMY_CONSOLE_COLUMNS
 DECL|macro|DUMMY_ROWS
-mdefine_line|#define DUMMY_ROWS&t;25
+mdefine_line|#define DUMMY_ROWS&t;CONFIG_DUMMY_CONSOLE_ROWS
 macro_line|#else
 DECL|macro|DUMMY_COLUMNS
 mdefine_line|#define DUMMY_COLUMNS&t;80

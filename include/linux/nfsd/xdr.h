@@ -3,6 +3,7 @@ macro_line|#ifndef LINUX_NFSD_H
 DECL|macro|LINUX_NFSD_H
 mdefine_line|#define LINUX_NFSD_H
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 DECL|struct|nfsd_fhandle
 r_struct

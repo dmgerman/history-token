@@ -717,7 +717,7 @@ id|sechdrs
 id|relsec
 )braket
 dot
-id|sh_offset
+id|sh_addr
 suffix:semicolon
 id|DEBUGP
 (paren
@@ -779,7 +779,7 @@ dot
 id|sh_info
 )braket
 dot
-id|sh_offset
+id|sh_addr
 op_plus
 id|rela
 (braket
@@ -804,7 +804,7 @@ id|sechdrs
 id|symindex
 )braket
 dot
-id|sh_offset
+id|sh_addr
 op_plus
 id|ELF32_R_SYM
 (paren

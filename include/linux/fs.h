@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -27,6 +26,9 @@ id|pipe_inode_info
 suffix:semicolon
 r_struct
 id|poll_table_struct
+suffix:semicolon
+r_struct
+id|statfs
 suffix:semicolon
 r_struct
 id|vm_area_struct

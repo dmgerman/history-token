@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|special_file
 mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))

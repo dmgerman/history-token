@@ -87,6 +87,9 @@ r_return
 id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
+r_struct
+id|statfs
+suffix:semicolon
 r_extern
 r_struct
 id|inode_operations

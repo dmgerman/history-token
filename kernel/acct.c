@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * These constants control the amount of freespace that suspend and&n; * resume the process accounting system, and the time delay between&n; * each check.&n; * Turned into sysctl-controllable parameters. AV, 12/11/98&n; */
 DECL|variable|acct_parm

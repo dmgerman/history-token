@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 DECL|macro|REISERFS_OLD_BLOCKSIZE
 mdefine_line|#define REISERFS_OLD_BLOCKSIZE 4096
 DECL|macro|REISERFS_SUPER_MAGIC_STRING_OFFSET_NJ

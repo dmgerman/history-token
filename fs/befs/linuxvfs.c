@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/statfs.h&gt;
 macro_line|#include &quot;befs.h&quot;
 macro_line|#include &quot;btree.h&quot;
 macro_line|#include &quot;inode.h&quot;

@@ -8,7 +8,7 @@ multiline_comment|/*       font (from earlier versions of       */
 multiline_comment|/*       linux-m86k) by John Shifflett        */
 multiline_comment|/*                                            */
 multiline_comment|/**********************************************/
-macro_line|#include &quot;font.h&quot;
+macro_line|#include &lt;linux/font.h&gt;
 DECL|macro|FONTDATAMAX
 mdefine_line|#define FONTDATAMAX 2048
 DECL|variable|fontdata_pearl8x8

@@ -5,6 +5,9 @@ suffix:semicolon
 r_struct
 id|sock
 suffix:semicolon
+r_struct
+id|statfs
+suffix:semicolon
 multiline_comment|/* proc.c */
 r_extern
 r_int

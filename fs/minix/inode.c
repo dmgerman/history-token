@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 r_static
 r_void
 id|minix_read_inode
