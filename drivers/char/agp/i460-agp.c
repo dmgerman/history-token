@@ -2481,6 +2481,14 @@ id|bridge-&gt;capndx
 op_assign
 id|cap_ptr
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected Intel 460GX chipset&bslash;n&quot;
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
