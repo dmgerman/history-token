@@ -11,7 +11,6 @@ macro_line|#include  &lt;linux/config.h&gt;
 macro_line|#include  &lt;linux/stddef.h&gt;
 macro_line|#include  &lt;linux/module.h&gt;
 macro_line|#include  &lt;linux/kernel.h&gt;
-macro_line|#include  &lt;linux/tqueue.h&gt;
 macro_line|#include  &lt;linux/ioport.h&gt;
 macro_line|#include  &lt;linux/delay.h&gt;
 macro_line|#include  &lt;linux/proc_fs.h&gt;

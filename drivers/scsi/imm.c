@@ -34,6 +34,7 @@ suffix:semicolon
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 r_typedef
