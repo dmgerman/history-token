@@ -1,4 +1,3 @@
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 DECL|macro|find_first_zero_bit
 macro_line|#undef find_first_zero_bit
@@ -521,6 +520,7 @@ id|res
 )paren
 suffix:semicolon
 )brace
+macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|find_next_bit
 id|EXPORT_SYMBOL
 c_func
