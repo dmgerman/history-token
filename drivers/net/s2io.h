@@ -2160,6 +2160,16 @@ id|data
 )paren
 suffix:semicolon
 r_static
+r_int
+id|s2io_set_swapper
+c_func
+(paren
+id|nic_t
+op_star
+id|sp
+)paren
+suffix:semicolon
+r_static
 r_void
 id|s2io_card_down
 c_func
