@@ -2082,6 +2082,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SECURITY_NETWORK
+macro_line|#endif&t;/* CONFIG_SECURITY_NETWORK */
 DECL|function|dummy_register_security
 r_static
 r_int
@@ -2981,5 +2983,7 @@ comma
 id|unregister_security
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SECURITY_NETWORK
+macro_line|#endif&t;/* CONFIG_SECURITY_NETWORK */
 )brace
 eof
