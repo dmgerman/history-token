@@ -1545,7 +1545,6 @@ suffix:semicolon
 )brace
 DECL|function|zisofs_cleanup
 r_void
-id|__exit
 id|zisofs_cleanup
 c_func
 (paren

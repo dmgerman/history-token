@@ -17,7 +17,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__exit
 id|zisofs_cleanup
 c_func
 (paren
