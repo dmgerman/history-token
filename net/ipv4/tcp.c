@@ -7118,7 +7118,13 @@ id|sk
 op_member_access_from_pointer
 id|num
 op_logical_or
-id|sk-&gt;sk_prev
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|bind_hash
 )paren
 suffix:semicolon
 macro_line|#ifdef TCP_DEBUG
@@ -8095,7 +8101,7 @@ c_func
 op_logical_neg
 id|inet-&gt;num
 op_logical_or
-id|sk-&gt;sk_prev
+id|tp-&gt;bind_hash
 )paren
 suffix:semicolon
 id|sk

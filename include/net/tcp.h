@@ -5085,7 +5085,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_prev
+id|tcp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|bind_hash
 op_logical_and
 op_logical_neg
 (paren
