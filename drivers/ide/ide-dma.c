@@ -235,12 +235,6 @@ l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
-l_string|&quot;SAMSUNG CD-ROM SC-148F&quot;
-comma
-l_string|&quot;ALL&quot;
-)brace
-comma
-(brace
 l_string|&quot;SAMSUNG CD-ROM SC&quot;
 comma
 l_string|&quot;ALL&quot;
@@ -254,12 +248,6 @@ l_string|&quot;ALL&quot;
 comma
 (brace
 l_string|&quot;SAMSUNG CD-ROM SN-124&quot;
-comma
-l_string|&quot;ALL&quot;
-)brace
-comma
-(brace
-l_string|&quot;PLEXTOR CD-R PX-W8432T&quot;
 comma
 l_string|&quot;ALL&quot;
 )brace
