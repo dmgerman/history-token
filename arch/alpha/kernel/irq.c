@@ -701,7 +701,7 @@ id|irq_dir
 id|NR_IRQS
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP 
 DECL|variable|smp_affinity_entry
 r_static
 r_struct
@@ -1459,7 +1459,7 @@ comma
 id|root_irq_dir
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP 
 multiline_comment|/* create /proc/irq/1234/smp_affinity */
 id|entry
 op_assign
@@ -1544,7 +1544,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP 
 multiline_comment|/* create /proc/irq/prof_cpu_mask */
 id|entry
 op_assign

@@ -2,6 +2,7 @@ macro_line|#ifndef __ALPHA_TITAN__H__
 DECL|macro|__ALPHA_TITAN__H__
 mdefine_line|#define __ALPHA_TITAN__H__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/compiler.h&gt;
 multiline_comment|/*&n; * TITAN is the internal names for a core logic chipset which provides&n; * memory controller and PCI/AGP access for 21264 based systems.&n; *&n; * This file is based on:&n; *&n; * Titan Chipset Engineering Specification&n; * Revision 0.12&n; * 13 July 1999&n; *&n; */
 multiline_comment|/* XXX: Do we need to conditionalize on this?  */
@@ -1139,8 +1140,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Memory spaces:&n; * Hose numbers are assigned as follows:&n; *&t;&t;0 - pachip 0 / G Port&n; *&t;&t;1 - pachip 1 / G Port&n; * &t;&t;2 - pachip 0 / A Port&n; *      &t;3 - pachip 1 / A Port&n; */
+DECL|macro|TITAN_HOSE_SHIFT
+mdefine_line|#define TITAN_HOSE_SHIFT       (33) 
 DECL|macro|TITAN_HOSE
-mdefine_line|#define TITAN_HOSE(h)&t;&t;(((unsigned long)(h)) &lt;&lt; 33)
+mdefine_line|#define TITAN_HOSE(h)&t;&t;(((unsigned long)(h)) &lt;&lt; TITAN_HOSE_SHIFT)
 DECL|macro|TITAN_BASE
 mdefine_line|#define TITAN_BASE&t;&t;(IDENT_ADDR + TI_BIAS)
 DECL|macro|TITAN_MEM
@@ -1151,6 +1154,8 @@ DECL|macro|TITAN_IO
 mdefine_line|#define TITAN_IO(h)&t;     &t;(TITAN_BASE+TITAN_HOSE(h)+0x1FC000000UL)
 DECL|macro|TITAN_CONF
 mdefine_line|#define TITAN_CONF(h)&t;     &t;(TITAN_BASE+TITAN_HOSE(h)+0x1FE000000UL)
+DECL|macro|TITAN_HOSE_MASK
+mdefine_line|#define TITAN_HOSE_MASK&t;&t;TITAN_HOSE(3)
 DECL|macro|TITAN_IACK_SC
 mdefine_line|#define TITAN_IACK_SC&t;     &t;_TITAN_IACK_SC(0) /* hack! */
 multiline_comment|/* &n; * The canonical non-remaped I/O and MEM addresses have these values&n; * subtracted out.  This is arranged so that folks manipulating ISA&n; * devices can use their familiar numbers and have them map to bus 0.&n; */
@@ -1501,8 +1506,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Memory functions.  all accesses are done through linear space.&n; */
-DECL|function|titan_ioremap
-id|__EXTERN_INLINE
+r_extern
 r_int
 r_int
 id|titan_ioremap
@@ -1515,23 +1519,9 @@ comma
 r_int
 r_int
 id|size
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
 )paren
-)paren
-)paren
-(brace
-r_return
-id|addr
-op_plus
-id|TITAN_MEM_BIAS
 suffix:semicolon
-)brace
-DECL|function|titan_iounmap
-id|__EXTERN_INLINE
+r_extern
 r_void
 id|titan_iounmap
 c_func
@@ -1540,10 +1530,7 @@ r_int
 r_int
 id|addr
 )paren
-(brace
-r_return
 suffix:semicolon
-)brace
 DECL|function|titan_is_ioaddr
 id|__EXTERN_INLINE
 r_int
@@ -1787,9 +1774,9 @@ mdefine_line|#define __writel(x,a)&t;&t;titan_writel((x),(unsigned long)(a))
 DECL|macro|__writeq
 mdefine_line|#define __writeq(x,a)&t;&t;titan_writeq((x),(unsigned long)(a))
 DECL|macro|__ioremap
-mdefine_line|#define __ioremap(a,s)&t;&t;titan_ioremap((unsigned long)(a),(s))
+mdefine_line|#define __ioremap(a,s)&t;&t;alpha_mv.mv_ioremap((unsigned long)(a),(s))
 DECL|macro|__iounmap
-mdefine_line|#define __iounmap(a)&t;&t;titan_iounmap((unsigned long)(a))
+mdefine_line|#define __iounmap(a)&t;&t;alpha_mv.mv_iounmap((unsigned long)(a))
 DECL|macro|__is_ioaddr
 mdefine_line|#define __is_ioaddr(a)&t;&t;titan_is_ioaddr((unsigned long)(a))
 DECL|macro|inb

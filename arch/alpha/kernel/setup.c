@@ -473,6 +473,13 @@ c_func
 id|takara_mv
 )paren
 suffix:semicolon
+DECL|variable|titan_mv
+id|WEAK
+c_func
+(paren
+id|titan_mv
+)paren
+suffix:semicolon
 DECL|variable|webbrick_mv
 id|WEAK
 c_func
@@ -2922,9 +2929,13 @@ l_int|16
 )braket
 op_assign
 (brace
-l_string|&quot;0&quot;
+l_string|&quot;DEFAULT&quot;
 comma
 l_string|&quot;Privateer&quot;
+comma
+l_string|&quot;Falcon&quot;
+comma
+l_string|&quot;Granite&quot;
 )brace
 suffix:semicolon
 DECL|variable|titan_indices
@@ -2938,6 +2949,12 @@ op_assign
 l_int|0
 comma
 l_int|1
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|3
 )brace
 suffix:semicolon
 DECL|variable|tsunami_names
@@ -3297,12 +3314,22 @@ id|titan_vecs
 id|__initdata
 op_assign
 (brace
-l_int|NULL
+op_amp
+id|titan_mv
 comma
+multiline_comment|/* default   */
 op_amp
 id|privateer_mv
 comma
 multiline_comment|/* privateer */
+op_amp
+id|titan_mv
+comma
+multiline_comment|/* falcon    */
+op_amp
+id|privateer_mv
+comma
+multiline_comment|/* granite   */
 )brace
 suffix:semicolon
 r_static
@@ -3618,6 +3645,14 @@ suffix:semicolon
 r_case
 id|ST_DEC_TITAN
 suffix:colon
+id|vec
+op_assign
+id|titan_vecs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* default */
 r_if
 c_cond
 (paren
@@ -4289,6 +4324,15 @@ suffix:semicolon
 r_case
 id|ST_DEC_TITAN
 suffix:colon
+op_star
+id|variation_name
+op_assign
+id|titan_names
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* default */
 r_if
 c_cond
 (paren
