@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kthread.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* Since we effect priority and affinity (both of which are visible&n; * to, and settable by outside processes) we do indirection via a&n; * kthread. */
