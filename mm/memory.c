@@ -1785,6 +1785,11 @@ op_ge
 id|end
 )paren
 suffix:semicolon
+id|lru_add_drain
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dir
 op_assign
 id|pgd_offset
@@ -1929,6 +1934,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|lru_add_drain
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

@@ -852,6 +852,7 @@ id|pages_to_free
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The pages which we&squot;re about to release may be in the deferred lru-addition&n; * queues.  That would prevent them from really being freed right now.  That&squot;s&n; * OK from a correctness point of view but is inefficient - those pages may be&n; * cache-warm and we want to give them back to the page allocator ASAP.&n; *&n; * So __pagevec_release() will drain those queues here.  __pagevec_lru_add()&n; * and __pagevec_lru_add_active() call release_pages() directly to avoid&n; * mutual recursion.&n; */
 DECL|function|__pagevec_release
 r_void
 id|__pagevec_release
@@ -863,6 +864,11 @@ op_star
 id|pvec
 )paren
 (brace
+id|lru_add_drain
+c_func
+(paren
+)paren
+suffix:semicolon
 id|release_pages
 c_func
 (paren
@@ -1117,7 +1123,17 @@ op_amp
 id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
-id|pagevec_release
+id|release_pages
+c_func
+(paren
+id|pvec-&gt;pages
+comma
+id|pvec-&gt;nr
+comma
+id|pvec-&gt;cold
+)paren
+suffix:semicolon
+id|pagevec_reinit
 c_func
 (paren
 id|pvec
@@ -1266,7 +1282,17 @@ op_amp
 id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
-id|pagevec_release
+id|release_pages
+c_func
+(paren
+id|pvec-&gt;pages
+comma
+id|pvec-&gt;nr
+comma
+id|pvec-&gt;cold
+)paren
+suffix:semicolon
+id|pagevec_reinit
 c_func
 (paren
 id|pvec

@@ -1099,6 +1099,11 @@ id|pagep
 op_assign
 id|pages
 suffix:semicolon
+id|lru_add_drain
+c_func
+(paren
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
