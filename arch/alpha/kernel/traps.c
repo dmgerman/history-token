@@ -440,6 +440,12 @@ c_func
 (paren
 id|insn
 comma
+(paren
+r_int
+r_int
+id|__user
+op_star
+)paren
 id|pc
 op_plus
 id|i
