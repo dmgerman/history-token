@@ -25358,7 +25358,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

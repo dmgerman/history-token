@@ -1350,7 +1350,7 @@ id|ipm_list
 suffix:semicolon
 )brace
 macro_line|#endif
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|card-&gt;dev
@@ -7965,14 +7965,14 @@ id|lcs_cleanup_channel
 c_func
 (paren
 op_amp
-id|card-&gt;read
+id|card-&gt;write
 )paren
 suffix:semicolon
 id|lcs_cleanup_channel
 c_func
 (paren
 op_amp
-id|card-&gt;write
+id|card-&gt;read
 )paren
 suffix:semicolon
 id|lcs_free_card

@@ -4411,7 +4411,7 @@ id|kaweth-&gt;tx_urb
 suffix:semicolon
 id|err_no_urb
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|netdev

@@ -2157,7 +2157,7 @@ op_amp
 id|bnep_session_sem
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -2571,7 +2571,7 @@ op_amp
 id|bnep_session_sem
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

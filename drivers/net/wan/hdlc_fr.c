@@ -4784,7 +4784,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* the destructor will kfree(dev) */
+multiline_comment|/* the destructor will free_netdev(dev) */
 op_star
 id|get_dev_p
 c_func
@@ -4869,12 +4869,12 @@ id|next
 op_assign
 id|pvc-&gt;next
 suffix:semicolon
+multiline_comment|/* destructors will free_netdev() main and ether */
 r_if
 c_cond
 (paren
 id|pvc-&gt;main
 )paren
-multiline_comment|/* the destructor will kfree(main + ether) */
 id|unregister_netdevice
 c_func
 (paren
