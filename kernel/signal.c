@@ -576,7 +576,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|current-&gt;flags
@@ -736,7 +735,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1079,7 +1077,6 @@ multiline_comment|/* XXX: Once POSIX.1b timers are in, if si_code == SI_TIMER,&n
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 macro_line|#if DEBUG_SIG
@@ -2207,7 +2204,7 @@ comma
 id|sig
 )paren
 suffix:semicolon
-id|recalc_sigpending
+id|recalc_sigpending_tsk
 c_func
 (paren
 id|t
@@ -3230,13 +3227,6 @@ c_func
 id|notify_parent
 )paren
 suffix:semicolon
-DECL|variable|recalc_sigpending
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|recalc_sigpending
-)paren
-suffix:semicolon
 DECL|variable|send_sig
 id|EXPORT_SYMBOL
 c_func
@@ -3443,7 +3433,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -3886,7 +3875,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -3934,7 +3922,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 )brace
@@ -4392,7 +4379,6 @@ id|current
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -4843,7 +4829,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -5138,7 +5123,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|spin_unlock_irq
