@@ -54,16 +54,6 @@ op_star
 id|task
 )paren
 suffix:semicolon
-r_static
-r_void
-id|nlmsvc_notify_blocked
-c_func
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * The list of blocked locks to retry&n; */
 DECL|variable|nlm_blocked
 r_static
@@ -729,10 +719,6 @@ r_goto
 id|failed_free
 suffix:semicolon
 multiline_comment|/* Set notifier function for VFS, and init args */
-id|block-&gt;b_call.a_args.lock.fl.fl_notify
-op_assign
-id|nlmsvc_notify_blocked
-suffix:semicolon
 id|block-&gt;b_call.a_args.lock.fl.fl_lmops
 op_assign
 op_amp
@@ -1811,6 +1797,11 @@ dot
 id|fl_compare_owner
 op_assign
 id|nlmsvc_same_owner
+comma
+dot
+id|fl_notify
+op_assign
+id|nlmsvc_notify_blocked
 comma
 )brace
 suffix:semicolon

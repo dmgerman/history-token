@@ -1739,6 +1739,32 @@ DECL|struct|file_lock_operations
 r_struct
 id|file_lock_operations
 (brace
+DECL|member|fl_insert
+r_void
+(paren
+op_star
+id|fl_insert
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* lock insertion callback */
+DECL|member|fl_remove
+r_void
+(paren
+op_star
+id|fl_remove
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* lock removal callback */
 DECL|member|fl_copy_lock
 r_void
 (paren
@@ -1789,6 +1815,19 @@ id|file_lock
 op_star
 )paren
 suffix:semicolon
+DECL|member|fl_notify
+r_void
+(paren
+op_star
+id|fl_notify
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* unblock callback */
 )brace
 suffix:semicolon
 multiline_comment|/* that will die - we need it for nfs_lock_info */
@@ -1853,45 +1892,6 @@ DECL|member|fl_end
 id|loff_t
 id|fl_end
 suffix:semicolon
-DECL|member|fl_notify
-r_void
-(paren
-op_star
-id|fl_notify
-)paren
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* unblock callback */
-DECL|member|fl_insert
-r_void
-(paren
-op_star
-id|fl_insert
-)paren
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* lock insertion callback */
-DECL|member|fl_remove
-r_void
-(paren
-op_star
-id|fl_remove
-)paren
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* lock removal callback */
 DECL|member|fl_fasync
 r_struct
 id|fasync_struct
