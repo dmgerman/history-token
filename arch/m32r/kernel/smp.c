@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/smp.c&n; *    orig : i386 2.4.10&n; *&n; *  MITSUBISHI M32R SMP support routines.&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto&n; *&n; *  Taken from i386 version.&n; *    (c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *    (c) 1998-99, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *  This code is released under the GNU General Public License version 2 or&n; *  later.&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/smp.c&n; *&n; *  M32R SMP support routines.&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto&n; *&n; *  Taken from i386 version.&n; *    (c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *    (c) 1998-99, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *  This code is released under the GNU General Public License version 2 or&n; *  later.&n; */
 DECL|macro|DEBUG_SMP
 macro_line|#undef DEBUG_SMP
 macro_line|#include &lt;linux/irq.h&gt;
@@ -7,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -372,7 +372,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
-multiline_comment|/* Rescheduling request Routins                                              */
+multiline_comment|/* Rescheduling request Routines                                             */
 multiline_comment|/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
 multiline_comment|/*==========================================================================*&n; * Name:         smp_send_reschedule&n; *&n; * Description:  This routine requests other CPU to execute rescheduling.&n; *               1.Send &squot;RESCHEDULE_IPI&squot; to other CPU.&n; *                 Request other CPU to execute &squot;smp_reschedule_interrupt()&squot;.&n; *&n; * Born on Date: 2002.02.05&n; *&n; * Arguments:    cpu_id - Target CPU ID&n; *&n; * Returns:      void (cannot fail)&n; *&n; * Modification log:&n; * Date       Who Description&n; * ---------- --- --------------------------------------------------------&n; *&n; *==========================================================================*/
 DECL|function|smp_send_reschedule
@@ -1650,9 +1650,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The profiling function is SMP safe. (nothing can mess&n;&t; * around with &quot;current&quot;, and the profiling counters are&n;&t; * updated with atomic operations). This is especially&n;&t; * useful with a profiling multiplier != 1&n;&t; */
-id|m32r_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon

@@ -1,8 +1,7 @@
-macro_line|#ifndef _M32R_PTRACE_H
-DECL|macro|_M32R_PTRACE_H
-mdefine_line|#define _M32R_PTRACE_H
-multiline_comment|/* $Id$ */
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001, 2002, 2004  Hirokazu Takata&n; */
+macro_line|#ifndef _ASM_M32R_PTRACE_H
+DECL|macro|_ASM_M32R_PTRACE_H
+mdefine_line|#define _ASM_M32R_PTRACE_H
+multiline_comment|/*&n; * linux/include/asm-m32r/ptrace.h&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * M32R version:&n; *   Copyright (C) 2001-2002, 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;&t;&t;/* M32R_PSW_BSM, M32R_PSW_BPM */
 multiline_comment|/* 0 - 13 are integer registers (general purpose registers).  */
@@ -330,6 +329,8 @@ macro_line|#error unknown isa configuration
 macro_line|#endif
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;bpc)
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 r_extern
 r_void
 id|show_regs
@@ -352,5 +353,5 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL */
-macro_line|#endif /* _M32R_PTRACE_H */
+macro_line|#endif /* _ASM_M32R_PTRACE_H */
 eof

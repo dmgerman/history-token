@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/m32r/kernel/time.c&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; *  Taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *    Copyright (C) 1996, 1997, 1998  Ralf Baechle&n; *&n; *  This file contains the time handling details for PC-style clocks as&n; *  found in some MIPS systems.&n; *&n; *  Some code taken from sh version.&n; *    Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *    Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; */
-multiline_comment|/* $Id$ */
 DECL|macro|DEBUG_TIMER
 macro_line|#undef  DEBUG_TIMER
 macro_line|#include &lt;linux/config.h&gt;
@@ -12,6 +11,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/m32r.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
@@ -721,9 +721,11 @@ id|xtime_lock
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-id|m32r_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon
