@@ -1547,6 +1547,13 @@ op_star
 id|dentry
 )paren
 (brace
+id|read_lock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1574,6 +1581,13 @@ op_assign
 id|dentry-&gt;d_parent
 suffix:semicolon
 )brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
+suffix:semicolon
 )brace
 r_static
 r_struct

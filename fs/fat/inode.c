@@ -2674,6 +2674,13 @@ id|inode
 op_member_access_from_pointer
 id|i_logstart
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
+suffix:semicolon
 id|fh
 (braket
 l_int|4
@@ -2686,6 +2693,13 @@ id|de-&gt;d_parent-&gt;d_inode
 )paren
 op_member_access_from_pointer
 id|i_logstart
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|dparent_lock
+)paren
 suffix:semicolon
 r_return
 l_int|3
