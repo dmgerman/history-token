@@ -1547,6 +1547,16 @@ id|BLIST_SELECT_NO_ATN
 )brace
 comma
 (brace
+l_string|&quot;WDC WD25&quot;
+comma
+l_string|&quot;00JB-00FUA0&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_NOREPORTLUN
+)brace
+comma
+(brace
 l_string|&quot;XYRATEX&quot;
 comma
 l_string|&quot;RS&quot;
