@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
@@ -2296,10 +2297,8 @@ multiline_comment|/* name by bh, ih and entry_num */
 DECL|macro|B_I_E_NAME
 mdefine_line|#define B_I_E_NAME(bh,ih,entry_num) ((char *)(bh-&gt;b_data + ih_location(ih) + deh_location(B_I_DEH(bh,ih)+(entry_num))))
 singleline_comment|// two entries per block (at least)
-singleline_comment|//#define REISERFS_MAX_NAME_LEN(block_size) 
-singleline_comment|//((block_size - BLKH_SIZE - IH_SIZE - DEH_SIZE * 2) / 2)
-DECL|macro|REISERFS_MAX_NAME_LEN
-mdefine_line|#define REISERFS_MAX_NAME_LEN(block_size) 255
+DECL|macro|REISERFS_MAX_NAME
+mdefine_line|#define REISERFS_MAX_NAME(block_size) 255
 multiline_comment|/* this structure is used for operations on directory entries. It is&n;   not a disk structure. */
 multiline_comment|/* When reiserfs_find_entry or search_by_entry_key find directory&n;   entry, they return filled reiserfs_dir_entry structure */
 DECL|struct|reiserfs_dir_entry
@@ -3519,6 +3518,13 @@ mdefine_line|#define journal_hash(t,sb,block) ((t)[_jhashfn((kdev_t_to_nr(sb-&gt
 multiline_comment|/* finds n&squot;th buffer with 0 being the start of this commit.  Needs to go away, j_ap_blocks has changed&n;** since I created this.  One chunk of code in journal.c needs changing before deleting it&n;*/
 DECL|macro|JOURNAL_BUFFER
 mdefine_line|#define JOURNAL_BUFFER(j,n) ((j)-&gt;j_ap_blocks[((j)-&gt;j_start + (n)) % JOURNAL_BLOCK_COUNT])
+singleline_comment|// We need these to make journal.c code more readable
+DECL|macro|journal_get_hash_table
+mdefine_line|#define journal_get_hash_table(s, block) __get_hash_table(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
+DECL|macro|journal_getblk
+mdefine_line|#define journal_getblk(s, block) __getblk(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
+DECL|macro|journal_bread
+mdefine_line|#define journal_bread(s, block) __bread(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
 r_void
 id|reiserfs_commit_for_inode
 c_func
@@ -6438,5 +6444,11 @@ suffix:semicolon
 multiline_comment|/* ioctl&squot;s command */
 DECL|macro|REISERFS_IOC_UNPACK
 mdefine_line|#define REISERFS_IOC_UNPACK&t;&t;_IOW(0xCD,1,long)
+multiline_comment|/* Locking primitives */
+multiline_comment|/* Right now we are still falling back to (un)lock_kernel, but eventually that&n;   would evolve into real per-fs locks */
+DECL|macro|reiserfs_write_lock
+mdefine_line|#define reiserfs_write_lock( sb ) lock_kernel()
+DECL|macro|reiserfs_write_unlock
+mdefine_line|#define reiserfs_write_unlock( sb ) unlock_kernel()
 macro_line|#endif /* _LINUX_REISER_FS_H */
 eof

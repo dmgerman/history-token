@@ -1407,12 +1407,10 @@ id|panic
 (paren
 l_string|&quot;REISERFS: panic (device %s): %s&bslash;n&quot;
 comma
+id|reiserfs_bdevname
+(paren
 id|sb
-ques
-c_cond
-id|sb-&gt;s_id
-suffix:colon
-l_string|&quot;sb == 0&quot;
+)paren
 comma
 id|error_buf
 )paren
@@ -2272,7 +2270,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;%s&bslash;&squot;s super block in block %ld&bslash;n======================&bslash;n&quot;
+l_string|&quot;%s&bslash;&squot;s super block is in block %ld&bslash;n&quot;
 comma
 id|bdevname
 (paren
