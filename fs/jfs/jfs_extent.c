@@ -1009,6 +1009,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;&t;&t;/* _NOTYET */
 multiline_comment|/*&n; * NAME:        extHint()&n; *&n; * FUNCTION:    produce an extent allocation hint for a file offset.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- the inode of the file.&n; *&t;offset  - file offset for which the hint is needed.&n; *&t;xp&t;- pointer to the xad that is to be filled in with&n; *&t;&t;  the hint.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; */
 DECL|function|extHint
 r_int
@@ -1219,7 +1220,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;/* _NOTYET */
 multiline_comment|/*&n; * NAME:        extRecord()&n; *&n; * FUNCTION:    change a page with a file from not recorded to recorded.&n; *&n; * PARAMETERS:&n; *&t;ip&t;- inode of the file.&n; *&t;cp&t;- cbuf of the file page.&n; *&n; * RETURN VALUES:&n; *      0       - success&n; *      EIO&t;- i/o error.&n; *      ENOSPC&t;- insufficient disk resources.&n; */
 DECL|function|extRecord
 r_int
