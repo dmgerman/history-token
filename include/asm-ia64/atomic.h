@@ -395,13 +395,13 @@ mdefine_line|#define atomic_sub_and_test(i,v)&t;(atomic_sub_return((i), (v)) == 
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v)&t;&t;(atomic_sub_return(1, (v)) == 0)
 DECL|macro|atomic_inc_and_test
-mdefine_line|#define atomic_inc_and_test(v)&t;&t;(atomic_add_return(1, (v)) != 0)
+mdefine_line|#define atomic_inc_and_test(v)&t;&t;(atomic_add_return(1, (v)) == 0)
 DECL|macro|atomic64_sub_and_test
 mdefine_line|#define atomic64_sub_and_test(i,v)&t;(atomic64_sub_return((i), (v)) == 0)
 DECL|macro|atomic64_dec_and_test
 mdefine_line|#define atomic64_dec_and_test(v)&t;(atomic64_sub_return(1, (v)) == 0)
 DECL|macro|atomic64_inc_and_test
-mdefine_line|#define atomic64_inc_and_test(v)&t;(atomic64_add_return(1, (v)) != 0)
+mdefine_line|#define atomic64_inc_and_test(v)&t;(atomic64_add_return(1, (v)) == 0)
 DECL|macro|atomic_add
 mdefine_line|#define atomic_add(i,v)&t;&t;&t;atomic_add_return((i), (v))
 DECL|macro|atomic_sub
