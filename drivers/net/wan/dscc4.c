@@ -1656,10 +1656,6 @@ c_cond
 id|skb
 )paren
 (brace
-id|skb-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
 id|skb-&gt;protocol
 op_assign
 id|hdlc_type_trans
