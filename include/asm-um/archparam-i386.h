@@ -63,6 +63,11 @@ DECL|macro|VSYSCALL_BASE
 mdefine_line|#define VSYSCALL_BASE vsyscall_ehdr
 DECL|macro|VSYSCALL_END
 mdefine_line|#define VSYSCALL_END vsyscall_end
+multiline_comment|/*&n; * This is the range that is readable by user mode, and things&n; * acting like user mode such as get_user_pages.&n; */
+DECL|macro|FIXADDR_USER_START
+mdefine_line|#define FIXADDR_USER_START      VSYSCALL_BASE
+DECL|macro|FIXADDR_USER_END
+mdefine_line|#define FIXADDR_USER_END        VSYSCALL_END
 multiline_comment|/*&n; * Architecture-neutral AT_ values in 0-17, leave some room&n; * for more of them, start the x86-specific ones at 32.&n; */
 DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO&t;&t;32
