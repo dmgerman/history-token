@@ -548,6 +548,14 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_0
 DECL|macro|PCI_DEVICE_ID_INTEL_810_0
 mdefine_line|#define PCI_DEVICE_ID_INTEL_810_0       0x7120
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_845_G_0
+DECL|macro|PCI_DEVICE_ID_INTEL_845_G_0
+mdefine_line|#define PCI_DEVICE_ID_INTEL_845_G_0&t;0x2560
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_845_G_1
+DECL|macro|PCI_DEVICE_ID_INTEL_845_G_1
+mdefine_line|#define PCI_DEVICE_ID_INTEL_845_G_1     0x2562
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_830_M_0
 DECL|macro|PCI_DEVICE_ID_INTEL_830_M_0
 mdefine_line|#define PCI_DEVICE_ID_INTEL_830_M_0&t;0x3575

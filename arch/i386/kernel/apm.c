@@ -5398,14 +5398,14 @@ op_eq
 l_int|0
 )paren
 )paren
-id|idle_threshold
+id|idle_period
 op_assign
 id|simple_strtol
 c_func
 (paren
 id|str
 op_plus
-l_int|15
+l_int|12
 comma
 l_int|NULL
 comma
