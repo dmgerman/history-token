@@ -1129,7 +1129,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;This is called from user mode and the timers. Thus it protects itself against&n; *&t;interrupt users but doesn&squot;t worry about being called during work.&n; *&t;Once it is removed from the queue no interrupt or bottom half will&n; *&t;touch it and we are (fairly 8-) ) safe.&n; */
+multiline_comment|/*&n; *&t;This is called from user mode and the timers. Thus it protects itself&n; *&t;against interrupt users but doesn&squot;t worry about being called during&n; *&t;work. Once it is removed from the queue no interrupt or bottom half&n; *&t;will touch it and we are (fairly 8-) ) safe.&n; */
 DECL|function|ax25_destroy_socket
 r_void
 id|ax25_destroy_socket
@@ -1139,7 +1139,6 @@ id|ax25_cb
 op_star
 id|ax25
 )paren
-multiline_comment|/* Not static as it&squot;s used by the timer */
 (brace
 r_struct
 id|sk_buff
