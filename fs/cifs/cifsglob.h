@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *   fs/cifs/cifsglob.h&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; * &n; */
 macro_line|#include &lt;linux/in.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
 multiline_comment|/*&n; * The sizes of various internal tables and strings&n; */
 DECL|macro|MAX_UID_INFO
@@ -140,10 +141,21 @@ id|socket
 op_star
 id|ssocket
 suffix:semicolon
+r_union
+(brace
 DECL|member|sockAddr
 r_struct
 id|sockaddr_in
 id|sockAddr
+suffix:semicolon
+DECL|member|sockAddr6
+r_struct
+id|sockaddr_in6
+id|sockAddr6
+suffix:semicolon
+DECL|member|addr
+)brace
+id|addr
 suffix:semicolon
 DECL|member|response_q
 id|wait_queue_head_t

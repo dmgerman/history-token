@@ -959,7 +959,7 @@ op_star
 )paren
 op_amp
 (paren
-id|ses-&gt;server-&gt;sockAddr
+id|ses-&gt;server-&gt;addr.sockAddr
 )paren
 )paren
 suffix:semicolon
