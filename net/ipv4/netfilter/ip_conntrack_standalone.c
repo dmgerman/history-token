@@ -2605,6 +2605,13 @@ c_func
 id|ip_ct_find_helper
 )paren
 suffix:semicolon
+DECL|variable|ip_conntrack_expect_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_expect_alloc
+)paren
+suffix:semicolon
 DECL|variable|ip_conntrack_expect_related
 id|EXPORT_SYMBOL
 c_func

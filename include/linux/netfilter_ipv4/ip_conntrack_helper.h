@@ -121,6 +121,17 @@ op_star
 id|tuple
 )paren
 suffix:semicolon
+multiline_comment|/* Allocate space for an expectation: this is mandatory before calling &n;   ip_conntrack_expect_related. */
+r_extern
+r_struct
+id|ip_conntrack_expect
+op_star
+id|ip_conntrack_expect_alloc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Add an expected connection: can have more than one per connection */
 r_extern
 r_int
@@ -128,14 +139,14 @@ id|ip_conntrack_expect_related
 c_func
 (paren
 r_struct
-id|ip_conntrack
-op_star
-id|related_to
-comma
-r_struct
 id|ip_conntrack_expect
 op_star
 id|exp
+comma
+r_struct
+id|ip_conntrack
+op_star
+id|related_to
 )paren
 suffix:semicolon
 r_extern
