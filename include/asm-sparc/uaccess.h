@@ -513,7 +513,6 @@ comma
 id|n
 )paren
 )paren
-(brace
 r_return
 id|__clear_user
 c_func
@@ -547,6 +546,7 @@ r_int
 id|count
 )paren
 suffix:semicolon
+DECL|function|strncpy_from_user
 r_static
 r_inline
 r_int
@@ -624,6 +624,7 @@ r_int
 id|len
 )paren
 suffix:semicolon
+DECL|function|strlen_user
 r_static
 r_inline
 r_int
@@ -663,6 +664,7 @@ id|str
 )paren
 suffix:semicolon
 )brace
+DECL|function|strnlen_user
 r_static
 r_inline
 r_int
