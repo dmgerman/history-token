@@ -164,10 +164,6 @@ DECL|member|active
 r_int
 id|active
 suffix:semicolon
-DECL|member|io_active
-r_int
-id|io_active
-suffix:semicolon
 DECL|member|pb_delwrite_lock
 id|spinlock_t
 id|pb_delwrite_lock
@@ -176,10 +172,6 @@ DECL|member|pb_delwrite_l
 r_struct
 id|list_head
 id|pb_delwrite_l
-suffix:semicolon
-DECL|member|pb_delwri_cnt
-r_int
-id|pb_delwri_cnt
 suffix:semicolon
 DECL|typedef|pagebuf_daemon_t
 )brace
