@@ -1665,10 +1665,17 @@ multiline_comment|/*&n;&t;&t; * Nasty deadlock avoidance.  We may hold various F
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|gfp_mask
 op_amp
 id|__GFP_FS
 )paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|prune_icache
 c_func
 (paren
