@@ -3942,10 +3942,15 @@ comma
 id|GFP_KERNEL
 )paren
 )paren
+(brace
+id|wacom-&gt;open
+op_decrement
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4089,7 +4094,7 @@ id|dev
 comma
 l_int|10
 comma
-id|SLAB_ATOMIC
+id|GFP_KERNEL
 comma
 op_amp
 id|wacom-&gt;data_dma
