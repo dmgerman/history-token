@@ -3913,7 +3913,7 @@ suffix:semicolon
 id|READ_BUF
 c_func
 (paren
-l_int|4
+l_int|12
 op_plus
 r_sizeof
 (paren
