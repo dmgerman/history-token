@@ -7645,9 +7645,12 @@ op_amp
 id|pdev-&gt;modlock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|pdev-&gt;ptrlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|pdev-&gt;udev
 op_assign

@@ -8524,9 +8524,12 @@ id|port
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|the_port-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* membase, iobase and mapbase just need to be non-0 */
 id|the_port-&gt;membase
