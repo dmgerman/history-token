@@ -744,6 +744,10 @@ macro_line|#ifdef CONFIG_SUN3
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
@@ -906,6 +910,10 @@ macro_line|#ifdef CONFIG_SUN3
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|ioaddr
 )paren
 suffix:semicolon
@@ -4037,6 +4045,10 @@ macro_line|#ifdef CONFIG_SUN3
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|sun3lance_dev-&gt;base_addr
 )paren
 suffix:semicolon

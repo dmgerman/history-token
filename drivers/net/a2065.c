@@ -3026,8 +3026,6 @@ op_assign
 id|alloc_etherdev
 c_func
 (paren
-l_int|0
-comma
 r_sizeof
 (paren
 r_struct

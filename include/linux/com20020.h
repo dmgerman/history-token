@@ -25,16 +25,6 @@ r_int
 id|shared
 )paren
 suffix:semicolon
-r_void
-id|com20020_remove
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* The number of low I/O ports used by the card. */
 DECL|macro|ARCNET_TOTAL_SIZE
 mdefine_line|#define ARCNET_TOTAL_SIZE 8

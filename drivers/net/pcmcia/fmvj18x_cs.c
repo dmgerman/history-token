@@ -968,23 +968,12 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-(brace
 id|fmvj18x_release
 c_func
 (paren
 id|link
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Break the link with Card Services */
 r_if
 c_cond
@@ -3028,31 +3017,6 @@ comma
 id|link
 )paren
 suffix:semicolon
-multiline_comment|/*&n;       If the device is currently in use, we won&squot;t release until it&n;       is actually closed.&n;    */
-r_if
-c_cond
-(paren
-id|link-&gt;open
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;fmvj18x_cs: release postponed, &squot;%s&squot; &quot;
-l_string|&quot;still open&bslash;n&quot;
-comma
-id|link-&gt;dev-&gt;dev_name
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_STALE_CONFIG
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Don&squot;t bother checking to see if these succeed or not */
 id|pcmcia_release_window
 c_func
@@ -3088,19 +3052,6 @@ id|link-&gt;state
 op_and_assign
 op_complement
 id|DEV_CONFIG
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|fmvj18x_detach
-c_func
-(paren
-id|link
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*====================================================================*/
@@ -5435,19 +5386,6 @@ id|LAN_CTRL
 suffix:semicolon
 id|link-&gt;open
 op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_STALE_CONFIG
-)paren
-id|fmvj18x_release
-c_func
-(paren
-id|link
-)paren
 suffix:semicolon
 r_return
 l_int|0
