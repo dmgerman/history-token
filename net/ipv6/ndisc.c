@@ -7261,6 +7261,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|ndisc_ifinfo_sysctl_strategy
+r_static
 r_int
 id|ndisc_ifinfo_sysctl_strategy
 c_func
