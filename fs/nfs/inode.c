@@ -8254,6 +8254,13 @@ op_amp
 id|nfsi-&gt;vfs_inode
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|nfsi-&gt;req_lock
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

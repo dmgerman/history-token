@@ -94,9 +94,10 @@ comma
 multiline_comment|/* Start of page data */
 DECL|member|wb_bytes
 id|wb_bytes
-comma
+suffix:semicolon
 multiline_comment|/* Length of request */
 DECL|member|wb_count
+id|atomic_t
 id|wb_count
 suffix:semicolon
 multiline_comment|/* reference count */
@@ -228,10 +229,6 @@ id|nfs_page
 op_star
 )paren
 suffix:semicolon
-r_extern
-id|spinlock_t
-id|nfs_wreq_lock
-suffix:semicolon
 multiline_comment|/*&n; * Lock the page of an asynchronous request without incrementing the wb_count&n; */
 r_static
 r_inline
@@ -294,8 +291,12 @@ id|req-&gt;wb_flags
 r_return
 l_int|0
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|req-&gt;wb_count
-op_increment
+)paren
 suffix:semicolon
 r_return
 l_int|1

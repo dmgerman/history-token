@@ -154,6 +154,10 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is the list of dirty unwritten pages.&n;&t; */
+DECL|member|req_lock
+id|spinlock_t
+id|req_lock
+suffix:semicolon
 DECL|member|dirty
 r_struct
 id|list_head
