@@ -101,8 +101,8 @@ macro_line|#ifndef RELOC_HIDE
 DECL|macro|RELOC_HIDE
 macro_line|# define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;     __ptr = (unsigned long) (ptr);&t;&t;&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
 macro_line|#endif
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * Allow us to mark functions as &squot;deprecated&squot; and have gcc emit a nice&n; * warning for each use, in hopes of speeding the functions removal.&n; * Usage is:&n; * &t;&t;int __deprecated foo(void)&n; */
 macro_line|#ifndef __deprecated
 DECL|macro|__deprecated
