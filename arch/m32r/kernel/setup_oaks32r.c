@@ -289,7 +289,7 @@ r_else
 id|once
 op_increment
 suffix:semicolon
-macro_line|#ifdef CONFIG_M32R_NE2000
+macro_line|#ifdef CONFIG_NE2000
 multiline_comment|/* INT3 : LAN controller (RTL8019AS) */
 id|irq_desc
 (braket
