@@ -21,6 +21,11 @@ r_char
 id|dma
 suffix:semicolon
 multiline_comment|/* DMA-able buffer */
+DECL|member|do_dio
+r_int
+r_char
+id|do_dio
+suffix:semicolon
 DECL|member|buffer_size
 r_int
 id|buffer_size
@@ -65,7 +70,7 @@ r_int
 r_int
 id|use_sg
 suffix:semicolon
-multiline_comment|/* zero or maximum number of s/g segments for this adapter */
+multiline_comment|/* zero or max number of s/g segments for this adapter */
 DECL|member|sg_segs
 r_int
 r_int
@@ -340,6 +345,12 @@ r_char
 id|use_pf
 suffix:semicolon
 multiline_comment|/* Set Page Format bit in all mode selects? */
+DECL|member|try_dio
+r_int
+r_char
+id|try_dio
+suffix:semicolon
+multiline_comment|/* try direct i/o? */
 DECL|member|c_algo
 r_int
 r_char
@@ -364,6 +375,12 @@ r_int
 id|long_timeout
 suffix:semicolon
 multiline_comment|/* timeout for commands known to take long time */
+DECL|member|max_pfn
+r_int
+r_int
+id|max_pfn
+suffix:semicolon
+multiline_comment|/* the maximum page number reachable by the HBA */
 multiline_comment|/* Mode characteristics */
 DECL|member|modes
 id|ST_mode
@@ -542,6 +559,22 @@ suffix:semicolon
 DECL|member|nbr_waits
 r_int
 id|nbr_waits
+suffix:semicolon
+DECL|member|nbr_requests
+r_int
+id|nbr_requests
+suffix:semicolon
+DECL|member|nbr_dio
+r_int
+id|nbr_dio
+suffix:semicolon
+DECL|member|nbr_pages
+r_int
+id|nbr_pages
+suffix:semicolon
+DECL|member|nbr_combinable
+r_int
+id|nbr_combinable
 suffix:semicolon
 DECL|member|last_cmnd
 r_int
