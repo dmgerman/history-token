@@ -560,7 +560,7 @@ id|ni
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|ntfs_read_inode_mount
 c_func
 (paren
