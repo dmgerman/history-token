@@ -344,14 +344,9 @@ id|policy-&gt;policy
 op_eq
 id|CPUFREQ_POLICY_GOVERNOR
 )paren
-id|policy-&gt;policy
-op_assign
-id|longrun_driver.policy
-(braket
-l_int|0
-)braket
-dot
-id|policy
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_return
 l_int|0
