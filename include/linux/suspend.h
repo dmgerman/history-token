@@ -63,6 +63,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|mark_free_pages
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|zone
+)paren
+suffix:semicolon
 multiline_comment|/* kernel/power/swsusp.c */
 r_extern
 r_int
