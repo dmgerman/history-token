@@ -326,7 +326,7 @@ id|skel_probe
 r_struct
 id|usb_interface
 op_star
-id|intf
+id|interface
 comma
 r_const
 r_struct
@@ -342,7 +342,7 @@ id|skel_disconnect
 r_struct
 id|usb_interface
 op_star
-id|intf
+id|interface
 )paren
 suffix:semicolon
 r_static
@@ -402,11 +402,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * usb class driver info in order to get a minor number from the usb core,&n; * and to have the device registered with devfs and the driver core&n; */
-DECL|variable|skell_class
+DECL|variable|skel_class
 r_static
 r_struct
 id|usb_class_driver
-id|skell_class
+id|skel_class
 op_assign
 (brace
 dot
@@ -1578,7 +1578,7 @@ id|retval
 op_assign
 id|usb_register_dev
 (paren
-id|intf
+id|interface
 comma
 op_amp
 id|skel_class
@@ -1660,7 +1660,7 @@ id|interface
 suffix:semicolon
 id|dev-&gt;minor
 op_assign
-id|intf-&gt;minor
+id|interface-&gt;minor
 suffix:semicolon
 multiline_comment|/* set up the endpoint information */
 multiline_comment|/* check out the endpoints */
@@ -1939,7 +1939,7 @@ id|exit_minor
 suffix:colon
 id|usb_deregister_dev
 (paren
-id|intf
+id|interface
 comma
 op_amp
 id|skel_class
@@ -2038,7 +2038,7 @@ suffix:semicolon
 multiline_comment|/* give back our minor */
 id|usb_deregister_dev
 (paren
-id|intf
+id|interface
 comma
 op_amp
 id|skel_class

@@ -5457,6 +5457,36 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+DECL|variable|um_info
+r_static
+r_struct
+id|usbtest_info
+id|um_info
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;user mode test driver&quot;
+comma
+dot
+id|ep_in
+op_assign
+l_int|7
+comma
+dot
+id|ep_out
+op_assign
+l_int|3
+comma
+dot
+id|alt
+op_assign
+op_minus
+l_int|1
+comma
+)brace
+suffix:semicolon
 macro_line|#ifdef IBOT2
 multiline_comment|/* this is a nice source of high speed bulk data;&n; * uses an FX2, with firmware provided in the device&n; */
 DECL|variable|ibot2_info
@@ -5668,6 +5698,27 @@ r_int
 )paren
 op_amp
 id|fw_info
+comma
+)brace
+comma
+multiline_comment|/* so does a user-mode variant */
+(brace
+id|USB_DEVICE
+(paren
+l_int|0x0525
+comma
+l_int|0xa4a4
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|um_info
 comma
 )brace
 comma
