@@ -25,6 +25,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+multiline_comment|/*&n; * LOCKING:&n; * There are three level of locking required by epoll :&n; *&n; * 1) epsem (semaphore)&n; * 2) ep-&gt;sem (rw_semaphore)&n; * 3) ep-&gt;lock (rw_lock)&n; *&n; * The acquire order is the one listed above, from 1 to 3.&n; * We need a spinlock (ep-&gt;lock) because we manipulate objects&n; * from inside the poll callback, that might be triggered from&n; * a wake_up() that in turn might be called from IRQ context.&n; * So we can&squot;t sleep inside the poll callback and hence we need&n; * a spinlock. During the event transfer loop (from kernel to&n; * user space) we could end up sleeping due a copy_to_user(), so&n; * we need a lock that will allow us to sleep. This lock is a&n; * read-write semaphore (ep-&gt;sem). It is acquired on read during&n; * the event transfer loop and in write during epoll_ctl(EPOLL_CTL_DEL)&n; * and during eventpoll_release(). Then we also need a global&n; * semaphore to serialize eventpoll_release() and ep_free().&n; * This semaphore is acquired by ep_free() during the epoll file&n; * cleanup path and it is also acquired by eventpoll_release()&n; * if a file has been pushed inside an epoll set and it is then&n; * close()d without a previous call toepoll_ctl(EPOLL_CTL_DEL).&n; * It is possible to drop the &quot;ep-&gt;sem&quot; and to use the global&n; * semaphore &quot;epsem&quot; (together with &quot;ep-&gt;lock&quot;) to have it working,&n; * but having &quot;ep-&gt;sem&quot; will make the interface more scalable.&n; * Events that require holding &quot;epsem&quot; are very rare, while for&n; * normal operations the epoll private &quot;ep-&gt;sem&quot; will guarantee&n; * a greater scalability.&n; */
 DECL|macro|EVENTPOLLFS_MAGIC
 mdefine_line|#define EVENTPOLLFS_MAGIC 0x03111965 /* My birthday should work for this :) */
 DECL|macro|DEBUG_EPOLL
@@ -806,6 +808,12 @@ op_star
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This semaphore is used to serialize ep_free() and eventpoll_release().&n; */
+DECL|variable|epsem
+r_struct
+id|semaphore
+id|epsem
+suffix:semicolon
 multiline_comment|/* Safe wake up implementation */
 DECL|variable|psw
 r_static
@@ -1204,6 +1212,11 @@ op_amp
 id|file-&gt;f_ep_links
 suffix:semicolon
 r_struct
+id|eventpoll
+op_star
+id|ep
+suffix:semicolon
+r_struct
 id|epitem
 op_star
 id|epi
@@ -1220,7 +1233,14 @@ id|lsthead
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;&t; * We don&squot;t want to get &quot;file-&gt;f_ep_lock&quot; because it is not&n;&t; * necessary. It is not necessary because we&squot;re in the &quot;struct file&quot;&n;&t; * cleanup path, and this means that noone is using this file anymore.&n;&t; * The only hit might come from ep_free() but by holding the semaphore&n;&t; * will correctly serialize the operation.&n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t want to get &quot;file-&gt;f_ep_lock&quot; because it is not&n;&t; * necessary. It is not necessary because we&squot;re in the &quot;struct file&quot;&n;&t; * cleanup path, and this means that noone is using this file anymore.&n;&t; * The only hit might come from ep_free() but by holding the semaphore&n;&t; * will correctly serialize the operation. We do need to acquire&n;&t; * &quot;ep-&gt;sem&quot; after &quot;epsem&quot; because ep_remove() requires it when called&n;&t; * from anywhere but ep_free().&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+id|epsem
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1245,6 +1265,10 @@ comma
 id|fllink
 )paren
 suffix:semicolon
+id|ep
+op_assign
+id|epi-&gt;ep
+suffix:semicolon
 id|EP_LIST_DEL
 c_func
 (paren
@@ -1256,13 +1280,13 @@ id|down_write
 c_func
 (paren
 op_amp
-id|epi-&gt;ep-&gt;sem
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 id|ep_remove
 c_func
 (paren
-id|epi-&gt;ep
+id|ep
 comma
 id|epi
 )paren
@@ -1271,10 +1295,17 @@ id|up_write
 c_func
 (paren
 op_amp
-id|epi-&gt;ep-&gt;sem
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|epsem
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * It opens an eventpoll file descriptor by suggesting a storage of &quot;size&quot;&n; * file descriptors. The size parameter is just an hint about how to size&n; * data structures. It won&squot;t prevent the user to store more than &quot;size&quot;&n; * file descriptors inside the epoll interface. It is the kernel part of&n; * the userspace epoll_create(2).&n; */
 DECL|function|sys_epoll_create
@@ -1609,7 +1640,14 @@ id|ep
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
-multiline_comment|/*&n;&t; * Try to lookup the file inside our hash table. When an item is found&n;&t; * ep_find() increases the usage count of the item so that it won&squot;t&n;&t; * desappear underneath us. The only thing that might happen, if someone&n;&t; * tries very hard, is a double insertion of the same file descriptor.&n;&t; * This does not rapresent a problem though and we don&squot;t really want&n;&t; * to put an extra syncronization object to deal with this harmless condition.&n;&t; */
+id|down_write
+c_func
+(paren
+op_amp
+id|ep-&gt;sem
+)paren
+suffix:semicolon
+multiline_comment|/* Try to lookup the file inside our hash table */
 id|epi
 op_assign
 id|ep_find
@@ -1677,15 +1715,6 @@ c_cond
 (paren
 id|epi
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * We need to protect the remove operation because another&n;&t;&t;&t; * thread might be doing an epoll_wait() and using the&n;&t;&t;&t; * target file.&n;&t;&t;&t; */
-id|down_write
-c_func
-(paren
-op_amp
-id|ep-&gt;sem
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|ep_remove
@@ -1696,14 +1725,6 @@ comma
 id|epi
 )paren
 suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|ep-&gt;sem
-)paren
-suffix:semicolon
-)brace
 r_else
 id|error
 op_assign
@@ -1760,6 +1781,13 @@ id|ep_release_epitem
 c_func
 (paren
 id|epi
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|ep-&gt;sem
 )paren
 suffix:semicolon
 id|eexit_3
@@ -2854,12 +2882,12 @@ op_amp
 id|ep-&gt;poll_wait
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re freeing the &quot;struct eventpoll&quot;.&n;&t; */
-id|down_write
+multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re freeing the &quot;struct eventpoll&quot;.&n;&t; * We do not need to hold &quot;ep-&gt;sem&quot; here because the epoll file&n;&t; * is on the way to be removed and no one has references to it&n;&t; * anymore. The only hit might come from eventpoll_release() but&n;&t; * holding &quot;epsem&quot; is sufficent here.&n;&t; */
+id|down
 c_func
 (paren
 op_amp
-id|ep-&gt;sem
+id|epsem
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Walks through the whole hash by unregistering poll callbacks.&n;&t; */
@@ -2991,11 +3019,11 @@ id|epi
 suffix:semicolon
 )brace
 )brace
-id|up_write
+id|up
 c_func
 (paren
 op_amp
-id|ep-&gt;sem
+id|epsem
 )paren
 suffix:semicolon
 multiline_comment|/* Free hash pages */
@@ -4110,6 +4138,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|file
+op_star
+id|file
+op_assign
+id|epi-&gt;file
+suffix:semicolon
 multiline_comment|/*&n;&t; * Removes poll wait queue hooks. We _have_ to do this without holding&n;&t; * the &quot;ep-&gt;lock&quot; otherwise a deadlock might occur. This because of the&n;&t; * sequence of the lock acquisition. Here we do &quot;ep-&gt;lock&quot; then the wait&n;&t; * queue head lock when unregistering the wait queue. The wakeup callback&n;&t; * will run by holding the wait queue head lock and will call our callback&n;&t; * that will try to get &quot;ep-&gt;lock&quot;.&n;&t; */
 id|ep_unregister_pollwait
 c_func
@@ -4124,7 +4159,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|epi-&gt;file-&gt;f_ep_lock
+id|file-&gt;f_ep_lock
 )paren
 suffix:semicolon
 r_if
@@ -4148,7 +4183,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|epi-&gt;file-&gt;f_ep_lock
+id|file-&gt;f_ep_lock
 )paren
 suffix:semicolon
 multiline_comment|/* We need to acquire the write IRQ lock before calling ep_unlink() */
@@ -4215,7 +4250,7 @@ id|current
 comma
 id|ep
 comma
-id|epi-&gt;file
+id|file
 comma
 id|error
 )paren
@@ -5587,6 +5622,13 @@ r_void
 (brace
 r_int
 id|error
+suffix:semicolon
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|epsem
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize the structure used to perform safe poll wait head wake ups */
 id|ep_poll_safewake_init
