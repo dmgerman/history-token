@@ -2868,6 +2868,14 @@ id|proc
 suffix:colon
 l_int|NULL
 comma
+id|drives
+suffix:colon
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|idescsi_driver.drives
+)paren
+comma
 )brace
 suffix:semicolon
 r_int

@@ -8766,6 +8766,14 @@ id|atapi_prebuilder
 suffix:colon
 l_int|NULL
 comma
+id|drives
+suffix:colon
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|idefloppy_driver.drives
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|variable|idefloppy_module

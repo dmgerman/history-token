@@ -1261,6 +1261,11 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -3086,6 +3091,11 @@ id|atapi_prebuilder
 id|ide_drive_t
 op_star
 )paren
+suffix:semicolon
+DECL|member|drives
+r_struct
+id|list_head
+id|drives
 suffix:semicolon
 DECL|typedef|ide_driver_t
 )brace

@@ -9343,6 +9343,14 @@ id|atapi_prebuilder
 suffix:colon
 l_int|NULL
 comma
+id|drives
+suffix:colon
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|idedisk_driver.drives
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|variable|idedisk_module
