@@ -260,7 +260,7 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef CONFIG_USB_BANDWIDTH
+macro_line|#if 1&t;/* CONFIG_USB_BANDWIDTH */
 r_int
 id|j
 suffix:semicolon
@@ -1014,6 +1014,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|ed-&gt;ed_next
+)paren
 (brace
 id|ed-&gt;ed_next-&gt;ed_prev
 op_assign
@@ -1101,6 +1106,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|ed-&gt;ed_next
+)paren
 (brace
 id|ed-&gt;ed_next-&gt;ed_prev
 op_assign
