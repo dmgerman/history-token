@@ -2492,15 +2492,7 @@ c_func
 (paren
 id|uhci_up_cachep
 comma
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
 id|SLAB_ATOMIC
-suffix:colon
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
