@@ -304,10 +304,17 @@ id|O_ACCMODE
 op_eq
 id|O_RDWR
 )paren
+(brace
+multiline_comment|/* GENERIC_ALL is too much permission to request */
+multiline_comment|/* can cause unnecessary access denied on create */
+multiline_comment|/* desiredAccess = GENERIC_ALL; */
 id|desiredAccess
 op_assign
-id|GENERIC_ALL
+id|GENERIC_READ
+op_or
+id|GENERIC_WRITE
 suffix:semicolon
+)brace
 multiline_comment|/*********************************************************************&n; *  open flag mapping table:&n; *  &n; *&t;POSIX Flag            CIFS Disposition&n; *&t;----------            ---------------- &n; *&t;O_CREAT               FILE_OPEN_IF&n; *&t;O_CREAT | O_EXCL      FILE_CREATE&n; *&t;O_CREAT | O_TRUNC     FILE_OVERWRITE_IF&n; *&t;O_TRUNC               FILE_OVERWRITE&n; *&t;none of the above     FILE_OPEN&n; *&n; *&t;Note that there is not a direct match between disposition&n; *&t;FILE_SUPERSEDE (ie create whether or not file exists although &n; *&t;O_CREAT | O_TRUNC is similar but truncates the existing&n; *&t;file rather than creating a new file as FILE_SUPERSEDE does&n; *&t;(which uses the attributes / metadata passed in on open call)&n; *?&n; *?  O_SYNC is a reasonable match to CIFS writethrough flag  &n; *?  and the read write flags match reasonably.  O_LARGEFILE&n; *?  is irrelevant because largefile support is always used&n; *?  by this client. Flags O_APPEND, O_DIRECT, O_DIRECTORY,&n; *&t; O_FASYNC, O_NOFOLLOW, O_NONBLOCK need further investigation&n; *********************************************************************/
 r_if
 c_cond
@@ -1072,10 +1079,17 @@ id|O_ACCMODE
 op_eq
 id|O_RDWR
 )paren
+(brace
+multiline_comment|/* GENERIC_ALL is too much permission to request */
+multiline_comment|/* can cause unnecessary access denied on create */
+multiline_comment|/* desiredAccess = GENERIC_ALL; */
 id|desiredAccess
 op_assign
-id|GENERIC_ALL
+id|GENERIC_READ
+op_or
+id|GENERIC_WRITE
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

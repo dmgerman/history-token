@@ -454,7 +454,9 @@ suffix:semicolon
 r_int
 id|desiredAccess
 op_assign
-id|GENERIC_ALL
+id|GENERIC_READ
+op_or
+id|GENERIC_WRITE
 suffix:semicolon
 id|__u16
 id|fileHandle
@@ -599,10 +601,17 @@ id|O_ACCMODE
 op_eq
 id|O_RDWR
 )paren
+(brace
+multiline_comment|/* GENERIC_ALL is too much permission to request */
+multiline_comment|/* can cause unnecessary access denied on create */
+multiline_comment|/* desiredAccess = GENERIC_ALL; */
 id|desiredAccess
 op_assign
-id|GENERIC_ALL
+id|GENERIC_READ
+op_or
+id|GENERIC_WRITE
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
