@@ -1776,6 +1776,13 @@ id|saved_dll
 comma
 id|saved_dlm
 suffix:semicolon
+multiline_comment|/*&n;&t; * Everything with an EFR has SLEEP&n;&t; */
+id|up-&gt;capabilities
+op_or_assign
+id|UART_CAP_EFR
+op_or
+id|UART_CAP_SLEEP
+suffix:semicolon
 multiline_comment|/*&n;&t; * First we check to see if it&squot;s an Oxford Semiconductor UART.&n;&t; *&n;&t; * If we have to do this here because some non-National&n;&t; * Semiconductor clone chips lock up if you try writing to the&n;&t; * LSR register (which serial_icr_read does)&n;&t; */
 multiline_comment|/*&n;&t; * Check for Oxford Semiconductor 16C950.&n;&t; *&n;&t; * EFR [4] must be set else this test fails.&n;&t; *&n;&t; * This shouldn&squot;t be necessary, but Mike Hudson (Exoray@isys.ca)&n;&t; * claims that it&squot;s needed for 952 dual UART&squot;s (which are not&n;&t; * recommended for new designs).&n;&t; */
 id|up-&gt;acr
@@ -2190,6 +2197,10 @@ id|up-&gt;port.type
 op_assign
 id|PORT_16550A
 suffix:semicolon
+id|up-&gt;capabilities
+op_or_assign
+id|UART_CAP_FIFO
+suffix:semicolon
 multiline_comment|/*&n;&t; * Check for presence of the EFR when DLAB is set.&n;&t; * Only ST16C650V1 UARTs pass this test.&n;&t; */
 id|serial_outp
 c_func
@@ -2248,6 +2259,12 @@ suffix:semicolon
 id|up-&gt;port.type
 op_assign
 id|PORT_16650
+suffix:semicolon
+id|up-&gt;capabilities
+op_or_assign
+id|UART_CAP_EFR
+op_or
+id|UART_CAP_SLEEP
 suffix:semicolon
 )brace
 r_else
@@ -2508,6 +2525,10 @@ id|up-&gt;port.type
 op_assign
 id|PORT_NS16550A
 suffix:semicolon
+id|up-&gt;capabilities
+op_or_assign
+id|UART_NATSEMI
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2627,6 +2648,12 @@ id|up-&gt;port.type
 op_assign
 id|PORT_16750
 suffix:semicolon
+id|up-&gt;capabilities
+op_or_assign
+id|UART_CAP_AFE
+op_or
+id|UART_CAP_SLEEP
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2705,6 +2732,10 @@ id|flags
 )paren
 suffix:semicolon
 singleline_comment|//&t;save_flags(flags); cli();
+id|up-&gt;capabilities
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3089,6 +3120,38 @@ comma
 id|save_lcr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|up-&gt;capabilities
+op_ne
+id|uart_config
+(braket
+id|up-&gt;port.type
+)braket
+dot
+id|flags
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ttyS%d: detected caps %08x should be %08x&bslash;n&quot;
+comma
+id|up-&gt;port.line
+comma
+id|up-&gt;capabilities
+comma
+id|uart_config
+(braket
+id|up-&gt;port.type
+)braket
+dot
+id|flags
+)paren
+suffix:semicolon
+)brace
 id|up-&gt;port.fifosize
 op_assign
 id|uart_config
