@@ -81,6 +81,10 @@ id|cad_pid
 op_assign
 l_int|1
 suffix:semicolon
+r_extern
+r_int
+id|system_running
+suffix:semicolon
 multiline_comment|/*&n; *&t;Notifier list for kernel code which wants to be called&n; *&t;at shutdown. This is used to stop any idling DMA operations&n; *&t;and the like. &n; */
 DECL|variable|reboot_notifier_list
 r_static
