@@ -6196,24 +6196,12 @@ id|de-&gt;name
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_get_name  */
-multiline_comment|/**&n; *&t;devfs_register_chrdev - Optionally register a conventional character driver.&n; *&t;@major: The major number for the driver.&n; *&t;@name: The name of the driver (as seen in /proc/devices).&n; *&t;@fops: The &amp;file_operations structure pointer.&n; *&n; *&t;This function will register a character driver provided the &quot;devfs=only&quot;&n; *&t;option was not provided at boot time.&n; *&t;Returns 0 on success, else a negative error code on failure.&n; */
-DECL|function|devfs_register_chrdev
+multiline_comment|/**&n; *&t;devfs_should_register_chrdev - should we register a conventional character driver.&n; *&n; *&t;If &quot;devfs=only&quot; this function will return -1, otherwise 0 is returned.&n; */
+DECL|function|devfs_should_register_chrdev
 r_int
-id|devfs_register_chrdev
+id|devfs_should_register_chrdev
 (paren
-r_int
-r_int
-id|major
-comma
-r_const
-r_char
-op_star
-id|name
-comma
-r_struct
-id|file_operations
-op_star
-id|fops
+r_void
 )paren
 (brace
 r_if
@@ -6224,20 +6212,13 @@ op_amp
 id|OPTION_ONLY
 )paren
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_return
-id|register_chrdev
-(paren
-id|major
-comma
-id|name
-comma
-id|fops
-)paren
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*  End Function devfs_register_chrdev  */
 multiline_comment|/**&n; *&t;devfs_register_blkdev - Optionally register a conventional block driver.&n; *&t;@major: The major number for the driver.&n; *&t;@name: The name of the driver (as seen in /proc/devices).&n; *&t;@bdops: The &amp;block_device_operations structure pointer.&n; *&n; *&t;This function will register a block driver provided the &quot;devfs=only&quot;&n; *&t;option was not provided at boot time.&n; *&t;Returns 0 on success, else a negative error code on failure.&n; */
 DECL|function|devfs_register_blkdev
 r_int
@@ -6280,19 +6261,12 @@ id|bdops
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_register_blkdev  */
-multiline_comment|/**&n; *&t;devfs_unregister_chrdev - Optionally unregister a conventional character driver.&n; *&t;@major: The major number for the driver.&n; *&t;@name: The name of the driver (as seen in /proc/devices).&n; *&n; *&t;This function will unregister a character driver provided the &quot;devfs=only&quot;&n; *&t;option was not provided at boot time.&n; *&t;Returns 0 on success, else a negative error code on failure.&n; */
-DECL|function|devfs_unregister_chrdev
+multiline_comment|/**&n; *&t;devfs_should_unregister_chrdev - should we unregister a conventional character driver.&n; *&n; *&t;If &quot;devfs=only&quot; this function will return -1, otherwise 0 is returned&n; */
+DECL|function|devfs_should_unregister_chrdev
 r_int
-id|devfs_unregister_chrdev
+id|devfs_should_unregister_chrdev
 (paren
-r_int
-r_int
-id|major
-comma
-r_const
-r_char
-op_star
-id|name
+r_void
 )paren
 (brace
 r_if
@@ -6303,18 +6277,13 @@ op_amp
 id|OPTION_ONLY
 )paren
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_return
-id|unregister_chrdev
-(paren
-id|major
-comma
-id|name
-)paren
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*  End Function devfs_unregister_chrdev  */
 multiline_comment|/**&n; *&t;devfs_unregister_blkdev - Optionally unregister a conventional block driver.&n; *&t;@major: The major number for the driver.&n; *&t;@name: The name of the driver (as seen in /proc/devices).&n; *&n; *&t;This function will unregister a block driver provided the &quot;devfs=only&quot;&n; *&t;option was not provided at boot time.&n; *&t;Returns 0 on success, else a negative error code on failure.&n; */
 DECL|function|devfs_unregister_blkdev
 r_int
@@ -6863,25 +6832,11 @@ c_func
 id|devfs_get_name
 )paren
 suffix:semicolon
-DECL|variable|devfs_register_chrdev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_register_chrdev
-)paren
-suffix:semicolon
 DECL|variable|devfs_register_blkdev
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_register_blkdev
-)paren
-suffix:semicolon
-DECL|variable|devfs_unregister_chrdev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_unregister_chrdev
 )paren
 suffix:semicolon
 DECL|variable|devfs_unregister_blkdev

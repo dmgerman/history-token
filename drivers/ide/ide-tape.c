@@ -24588,7 +24588,7 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -24836,7 +24836,7 @@ c_cond
 op_logical_neg
 id|idetape_chrdev_present
 op_logical_and
-id|devfs_register_chrdev
+id|register_chrdev
 (paren
 id|IDETAPE_MAJOR
 comma
@@ -25096,7 +25096,7 @@ op_logical_neg
 id|supported
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 (paren
 id|IDETAPE_MAJOR
 comma

@@ -844,7 +844,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|LVM_CHAR_MAJOR
@@ -862,7 +862,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s -- devfs_register_chrdev failed&bslash;n&quot;
+l_string|&quot;%s -- register_chrdev failed&bslash;n&quot;
 comma
 id|lvm_name
 )paren
@@ -900,7 +900,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|LVM_CHAR_MAJOR
@@ -914,7 +914,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s -- devfs_unregister_chrdev failed&bslash;n&quot;
+l_string|&quot;%s -- unregister_chrdev failed&bslash;n&quot;
 comma
 id|lvm_name
 )paren
@@ -1013,7 +1013,7 @@ r_void
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|LVM_CHAR_MAJOR
@@ -1027,7 +1027,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s -- devfs_unregister_chrdev failed&bslash;n&quot;
+l_string|&quot;%s -- unregister_chrdev failed&bslash;n&quot;
 comma
 id|lvm_name
 )paren

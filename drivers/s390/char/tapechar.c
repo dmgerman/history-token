@@ -281,20 +281,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Register the tape major number to the kernel */
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|result
-op_assign
-id|devfs_register_chrdev
-(paren
-id|tapechar_major
-comma
-l_string|&quot;tape&quot;
-comma
-op_amp
-id|tape_fops
-)paren
-suffix:semicolon
-macro_line|#else
 id|result
 op_assign
 id|register_chrdev
@@ -307,7 +293,6 @@ op_amp
 id|tape_fops
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -497,15 +482,6 @@ id|tapechar_uninit
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister_chrdev
-(paren
-id|tapechar_major
-comma
-l_string|&quot;tape&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|unregister_chrdev
 (paren
 id|tapechar_major
@@ -513,7 +489,6 @@ comma
 l_string|&quot;tape&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*******************************************************************&n; * TAPECHAR Util functions&n; *******************************************************************/
 multiline_comment|/*&n; * Terminate write command (we write two TMs and skip backward over last)&n; * This ensures that the tape is always correctly terminated.&n; * When the user writes afterwards a new file, he will overwrite the&n; * second TM and therefore one TM will remain to seperate the &n; * two files on the tape...&n; */

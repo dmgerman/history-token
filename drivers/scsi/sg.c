@@ -7531,7 +7531,7 @@ id|sg_registered
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|SCSI_GENERIC_MAJOR
@@ -8921,7 +8921,7 @@ op_amp
 id|sg_template
 )paren
 suffix:semicolon
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|SCSI_GENERIC_MAJOR

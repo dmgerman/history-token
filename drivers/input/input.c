@@ -3300,7 +3300,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|INPUT_MAJOR
@@ -3387,7 +3387,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|INPUT_MAJOR
