@@ -565,5 +565,10 @@ id|standard_io_desc
 )paren
 )paren
 suffix:semicolon
+id|pxa_display_clocks
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof
