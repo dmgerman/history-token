@@ -4199,17 +4199,9 @@ DECL|macro|ISDN_CTYPE_ENTERNOW
 mdefine_line|#define  ISDN_CTYPE_ENTERNOW&t;41
 DECL|macro|ISDN_CTYPE_COUNT
 mdefine_line|#define  ISDN_CTYPE_COUNT&t;41
-macro_line|#ifdef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-macro_line|#undef ISDN_CHIP_ISAC
-macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_16_0
 DECL|macro|CARD_TELES0
 mdefine_line|#define  CARD_TELES0 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_TELES0
 mdefine_line|#define  CARD_TELES0  0
@@ -4217,10 +4209,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_16_3
 DECL|macro|CARD_TELES3
 mdefine_line|#define  CARD_TELES3 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_TELES3
 mdefine_line|#define  CARD_TELES3  0
@@ -4228,10 +4216,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_TELESPCI
 DECL|macro|CARD_TELESPCI
 mdefine_line|#define  CARD_TELESPCI 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_TELESPCI
 mdefine_line|#define  CARD_TELESPCI  0
@@ -4239,10 +4223,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_AVM_A1
 DECL|macro|CARD_AVM_A1
 mdefine_line|#define  CARD_AVM_A1 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_AVM_A1
 mdefine_line|#define  CARD_AVM_A1  0
@@ -4250,10 +4230,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_AVM_A1_PCMCIA
 DECL|macro|CARD_AVM_A1_PCMCIA
 mdefine_line|#define  CARD_AVM_A1_PCMCIA 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_AVM_A1_PCMCIA
 mdefine_line|#define  CARD_AVM_A1_PCMCIA  0
@@ -4261,10 +4237,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_FRITZPCI
 DECL|macro|CARD_FRITZPCI
 mdefine_line|#define  CARD_FRITZPCI 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_FRITZPCI
 mdefine_line|#define  CARD_FRITZPCI  0
@@ -4272,10 +4244,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_ELSA
 DECL|macro|CARD_ELSA
 mdefine_line|#define  CARD_ELSA 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_ELSA
 mdefine_line|#define  CARD_ELSA  0
@@ -4283,10 +4251,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_IX1MICROR2
 DECL|macro|CARD_IX1MICROR2
 mdefine_line|#define&t;CARD_IX1MICROR2 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_IX1MICROR2
 mdefine_line|#define CARD_IX1MICROR2 0
@@ -4294,10 +4258,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_DIEHLDIVA
 DECL|macro|CARD_DIEHLDIVA
 mdefine_line|#define CARD_DIEHLDIVA 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_DIEHLDIVA
 mdefine_line|#define CARD_DIEHLDIVA 0
@@ -4305,10 +4265,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_ASUSCOM
 DECL|macro|CARD_ASUSCOM
 mdefine_line|#define CARD_ASUSCOM 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_ASUSCOM
 mdefine_line|#define CARD_ASUSCOM 0
@@ -4316,10 +4272,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_TELEINT
 DECL|macro|CARD_TELEINT
 mdefine_line|#define CARD_TELEINT 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_TELEINT
 mdefine_line|#define CARD_TELEINT 0
@@ -4327,10 +4279,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_SEDLBAUER
 DECL|macro|CARD_SEDLBAUER
 mdefine_line|#define CARD_SEDLBAUER 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_SEDLBAUER
 mdefine_line|#define CARD_SEDLBAUER 0
@@ -4338,10 +4286,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_SPORTSTER
 DECL|macro|CARD_SPORTSTER
 mdefine_line|#define CARD_SPORTSTER 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_SPORTSTER
 mdefine_line|#define CARD_SPORTSTER 0
@@ -4349,10 +4293,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_MIC
 DECL|macro|CARD_MIC
 mdefine_line|#define CARD_MIC 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_MIC
 mdefine_line|#define CARD_MIC 0
@@ -4360,10 +4300,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_NETJET
 DECL|macro|CARD_NETJET_S
 mdefine_line|#define CARD_NETJET_S 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_NETJET_S
 mdefine_line|#define CARD_NETJET_S 0
@@ -4399,10 +4335,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_NICCY
 DECL|macro|CARD_NICCY
 mdefine_line|#define&t;CARD_NICCY 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_NICCY
 mdefine_line|#define CARD_NICCY 0
@@ -4410,10 +4342,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_ISURF
 DECL|macro|CARD_ISURF
 mdefine_line|#define&t;CARD_ISURF 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_ISURF
 mdefine_line|#define CARD_ISURF 0
@@ -4421,10 +4349,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_S0BOX
 DECL|macro|CARD_S0BOX
 mdefine_line|#define&t;CARD_S0BOX 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_S0BOX
 mdefine_line|#define CARD_S0BOX 0
@@ -4432,10 +4356,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_HSTSAPHIR
 DECL|macro|CARD_HSTSAPHIR
 mdefine_line|#define&t;CARD_HSTSAPHIR 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_HSTSAPHIR
 mdefine_line|#define CARD_HSTSAPHIR 0
@@ -4456,10 +4376,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_BKM_A4T
 DECL|macro|CARD_BKM_A4T
 mdefine_line|#define&t;CARD_BKM_A4T 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_BKM_A4T
 mdefine_line|#define CARD_BKM_A4T 0
@@ -4467,10 +4383,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_SCT_QUADRO
 DECL|macro|CARD_SCT_QUADRO
 mdefine_line|#define&t;CARD_SCT_QUADRO 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_SCT_QUADRO
 mdefine_line|#define CARD_SCT_QUADRO 0
@@ -4478,10 +4390,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_GAZEL
 DECL|macro|CARD_GAZEL
 mdefine_line|#define  CARD_GAZEL 1
-macro_line|#ifndef ISDN_CHIP_ISAC
-DECL|macro|ISDN_CHIP_ISAC
-mdefine_line|#define ISDN_CHIP_ISAC 1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_GAZEL
 mdefine_line|#define  CARD_GAZEL  0
@@ -4489,10 +4397,6 @@ macro_line|#endif
 macro_line|#ifdef&t;CONFIG_HISAX_W6692
 DECL|macro|CARD_W6692
 mdefine_line|#define&t;CARD_W6692&t;1
-macro_line|#ifndef&t;ISDN_CHIP_W6692
-DECL|macro|ISDN_CHIP_W6692
-mdefine_line|#define&t;ISDN_CHIP_W6692&t;1
-macro_line|#endif
 macro_line|#else
 DECL|macro|CARD_W6692
 mdefine_line|#define&t;CARD_W6692&t;0
@@ -4500,10 +4404,6 @@ macro_line|#endif
 macro_line|#ifdef  CONFIG_HISAX_NETJET_U
 DECL|macro|CARD_NETJET_U
 mdefine_line|#define CARD_NETJET_U 1
-macro_line|#ifndef ISDN_CHIP_ICC
-DECL|macro|ISDN_CHIP_ICC
-mdefine_line|#define ISDN_CHIP_ICC 1
-macro_line|#endif
 macro_line|#ifndef HISAX_UINTERFACE
 DECL|macro|HISAX_UINTERFACE
 mdefine_line|#define HISAX_UINTERFACE 1
