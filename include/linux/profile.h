@@ -6,6 +6,42 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+multiline_comment|/* parse command line */
+r_int
+id|__init
+id|profile_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+multiline_comment|/* init basic kernel profiler */
+r_void
+id|__init
+id|profile_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+op_star
+id|prof_buffer
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|prof_len
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|prof_shift
+suffix:semicolon
 DECL|enum|profile_type
 r_enum
 id|profile_type

@@ -637,6 +637,20 @@ c_func
 id|rtc_lock
 )paren
 suffix:semicolon
+DECL|variable|register_profile_notifier
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|register_profile_notifier
+)paren
+suffix:semicolon
+DECL|variable|unregister_profile_notifier
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|unregister_profile_notifier
+)paren
+suffix:semicolon
 DECL|macro|memcpy
 macro_line|#undef memcpy
 DECL|macro|memset

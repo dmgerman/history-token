@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
@@ -32,12 +33,6 @@ multiline_comment|/*&n; * Versions of gcc older than that listed below may actua
 macro_line|#if __GNUC__ &lt; 2 || (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 91)
 macro_line|#error Sorry, your GCC is too old. It builds incorrect kernels.
 macro_line|#endif
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-suffix:semicolon
 r_extern
 r_char
 op_star
@@ -326,42 +321,6 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-DECL|function|profile_setup
-r_static
-r_int
-id|__init
-id|profile_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|par
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|par
-)paren
-)paren
-id|prof_shift
-op_assign
-id|par
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 id|__setup
 c_func
 (paren
@@ -1401,65 +1360,11 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|prof_shift
-)paren
-(brace
-r_int
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/* only text is profiled */
-id|prof_len
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_etext
-op_minus
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_stext
-suffix:semicolon
-id|prof_len
-op_rshift_assign
-id|prof_shift
-suffix:semicolon
-id|size
-op_assign
-id|prof_len
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-op_plus
-id|PAGE_SIZE
-op_minus
-l_int|1
-suffix:semicolon
-id|prof_buffer
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|alloc_bootmem
+id|profile_init
 c_func
 (paren
-id|size
 )paren
 suffix:semicolon
-)brace
 id|kmem_cache_init
 c_func
 (paren
