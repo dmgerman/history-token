@@ -973,20 +973,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
 multiline_comment|/* special: we want to release the ramdisk memory,&n;&t;   it&squot;s not like with the other blockdevices where&n;&t;   this ioctl only flushes away the buffer cache. */
 id|error
 op_assign
