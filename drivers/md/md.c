@@ -5454,21 +5454,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|chunk_size
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;md: RAID level %d does not need chunksize! Continuing anyway.&bslash;n&quot;
-comma
-id|mddev-&gt;level
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
