@@ -1095,14 +1095,12 @@ id|inode
 suffix:semicolon
 r_int
 id|error
+op_assign
+l_int|0
 comma
 id|flags
 op_assign
 id|FLUSH_INODE
-suffix:semicolon
-id|error
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1145,6 +1143,7 @@ id|error
 suffix:semicolon
 )brace
 r_return
+op_minus
 id|error
 suffix:semicolon
 )brace
