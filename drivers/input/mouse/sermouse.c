@@ -1194,7 +1194,6 @@ c_func
 (paren
 id|BTN_MIDDLE
 comma
-op_amp
 id|sermouse-&gt;dev.keybit
 )paren
 suffix:semicolon
@@ -1210,7 +1209,6 @@ c_func
 (paren
 id|BTN_SIDE
 comma
-op_amp
 id|sermouse-&gt;dev.keybit
 )paren
 suffix:semicolon
@@ -1226,7 +1224,6 @@ c_func
 (paren
 id|BTN_EXTRA
 comma
-op_amp
 id|sermouse-&gt;dev.keybit
 )paren
 suffix:semicolon
@@ -1242,7 +1239,6 @@ c_func
 (paren
 id|REL_WHEEL
 comma
-op_amp
 id|sermouse-&gt;dev.relbit
 )paren
 suffix:semicolon
@@ -1258,7 +1254,6 @@ c_func
 (paren
 id|REL_HWHEEL
 comma
-op_amp
 id|sermouse-&gt;dev.relbit
 )paren
 suffix:semicolon
