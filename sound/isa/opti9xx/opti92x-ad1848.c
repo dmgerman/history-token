@@ -2003,7 +2003,7 @@ c_cond
 id|chip-&gt;irq
 )paren
 (brace
-macro_line|#ifdef OPTi93X
+singleline_comment|//#ifdef OPTi93X
 r_case
 l_int|5
 suffix:colon
@@ -2013,7 +2013,7 @@ l_int|0x05
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif&t;/* OPTi93X */
+singleline_comment|//#endif&t;/* OPTi93X */
 r_case
 l_int|7
 suffix:colon
@@ -8406,10 +8406,24 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#else
+macro_line|#ifdef snd_opti9xx_fixup_dma2
+id|snd_opti9xx_fixup_dma2
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif&t;/* CS4231 || OPTi93X */
+macro_line|#ifdef OPTi93X
 r_if
 c_cond
 (paren
+id|fm_port
+OG
+l_int|0
+op_logical_and
 id|fm_port
 op_ne
 id|SNDRV_AUTO_PORT
@@ -8428,6 +8442,33 @@ comma
 l_int|4
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|fm_port
+OG
+l_int|0
+op_logical_and
+id|fm_port
+op_ne
+id|SNDRV_AUTO_PORT
+)paren
+id|pnp_resource_change
+c_func
+(paren
+op_amp
+id|cfg-&gt;port_resource
+(braket
+l_int|2
+)braket
+comma
+id|fm_port
+comma
+l_int|4
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8470,7 +8511,9 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;AUDIO pnp configure failure&bslash;n&quot;
+l_string|&quot;AUDIO pnp configure failure: %d&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 id|kfree
@@ -8575,6 +8618,10 @@ r_if
 c_cond
 (paren
 id|pdev
+op_logical_and
+id|mpu_port
+OG
+l_int|0
 )paren
 (brace
 id|pnp_init_resource_table
@@ -9761,15 +9808,6 @@ op_assign
 id|dma2
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PNP
-r_if
-c_cond
-(paren
-op_logical_neg
-id|isapnp
-)paren
-(brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9814,6 +9852,15 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PNP
+r_if
+c_cond
+(paren
+op_logical_neg
+id|isapnp
+)paren
+(brace
+macro_line|#endif
 r_if
 c_cond
 (paren
