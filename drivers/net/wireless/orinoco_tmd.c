@@ -746,14 +746,10 @@ op_amp
 id|orinoco_tmd_driver
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
-id|HZ
+l_int|1
 )paren
 suffix:semicolon
 )brace
