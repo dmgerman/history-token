@@ -1885,24 +1885,6 @@ op_assign
 id|vm1.pal_vm_info_1_s.phys_add_size
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU %d: %lu virtual and %lu physical address bits&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|impl_va_msb
-op_plus
-l_int|1
-comma
-id|phys_addr_size
-)paren
-suffix:semicolon
 id|c-&gt;unimpl_va_mask
 op_assign
 op_complement

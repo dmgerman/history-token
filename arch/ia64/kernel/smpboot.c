@@ -1267,6 +1267,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_isset
 c_func
 (paren
@@ -1275,19 +1276,6 @@ comma
 id|cpu_callin_map
 )paren
 )paren
-(brace
-multiline_comment|/* number CPUs logically, starting from 1 (BSP is 0) */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU%d: CPU has booted.&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 id|printk
 c_func
@@ -1964,17 +1952,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Processor %d/%d is spinning up...&bslash;n&quot;
-comma
-id|sapicid
-comma
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/* Processor goes to start_secondary(), sets online flag */
 id|ret
 op_assign
@@ -1995,15 +1972,6 @@ l_int|0
 )paren
 r_return
 id|ret
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Processor %d has spun up...&bslash;n&quot;
-comma
-id|cpu
-)paren
 suffix:semicolon
 r_return
 l_int|0
