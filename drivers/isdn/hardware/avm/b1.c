@@ -140,7 +140,7 @@ op_logical_neg
 id|card
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -186,7 +186,7 @@ id|card
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset
@@ -4261,7 +4261,7 @@ suffix:semicolon
 id|err
 suffix:colon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|avmcard_dma_free
