@@ -1275,7 +1275,7 @@ suffix:semicolon
 id|Dprintk
 c_func
 (paren
-l_string|&quot;Sending wakeup vector %u to AP 0x%x/0x%x.&bslash;n&quot;
+l_string|&quot;Sending wakeup vector %lu to AP 0x%x/0x%x.&bslash;n&quot;
 comma
 id|ap_wakeup_vector
 comma
@@ -1724,8 +1724,8 @@ id|cpucount
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;Error: only one processor found.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Warning: only one processor found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

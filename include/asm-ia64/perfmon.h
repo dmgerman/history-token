@@ -469,13 +469,10 @@ suffix:semicolon
 r_extern
 r_void
 id|pfm_ovfl_block_reset
+c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|pfm_syst_wide
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_PERFMON_H */
