@@ -1290,13 +1290,6 @@ id|device
 op_star
 id|parent
 suffix:semicolon
-DECL|member|complete
-r_struct
-id|completion
-op_star
-id|complete
-suffix:semicolon
-multiline_comment|/* Notification for freeing device. */
 DECL|member|kobj
 r_struct
 id|kobject
@@ -1460,17 +1453,6 @@ suffix:semicolon
 r_extern
 r_void
 id|device_unregister
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|device_unregister_wait
 c_func
 (paren
 r_struct
