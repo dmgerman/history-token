@@ -215,6 +215,7 @@ mdefine_line|#define PM_IS_ACTIVE() (pm_active != 0)
 multiline_comment|/*&n; * Register a device with power management&n; */
 r_struct
 id|pm_dev
+id|__deprecated
 op_star
 id|pm_register
 c_func
@@ -232,6 +233,7 @@ id|callback
 suffix:semicolon
 multiline_comment|/*&n; * Unregister a device with power management&n; */
 r_void
+id|__deprecated
 id|pm_unregister
 c_func
 (paren
@@ -243,6 +245,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/*&n; * Unregister all devices with matching callback&n; */
 r_void
+id|__deprecated
 id|pm_unregister_all
 c_func
 (paren
@@ -252,6 +255,7 @@ id|callback
 suffix:semicolon
 multiline_comment|/*&n; * Send a request to a single device&n; */
 r_int
+id|__deprecated
 id|pm_send
 c_func
 (paren
@@ -270,6 +274,7 @@ id|data
 suffix:semicolon
 multiline_comment|/*&n; * Send a request to all devices&n; */
 r_int
+id|__deprecated
 id|pm_send_all
 c_func
 (paren
