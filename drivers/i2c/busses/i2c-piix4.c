@@ -905,7 +905,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|dev_err
+id|dev_dbg
 c_func
 (paren
 op_amp
@@ -1911,7 +1911,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;piix4 smbus&quot;
+l_string|&quot;piix4-smbus&quot;
 comma
 dot
 id|id_table
