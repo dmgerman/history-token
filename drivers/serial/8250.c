@@ -8374,19 +8374,16 @@ id|driver_name
 op_assign
 l_string|&quot;serial&quot;
 comma
-macro_line|#ifdef CONFIG_DEVFS_FS
 dot
-id|dev_name
+id|devfs_name
 op_assign
 l_string|&quot;tts/&quot;
 comma
-macro_line|#else
 dot
 id|dev_name
 op_assign
 l_string|&quot;ttyS&quot;
 comma
-macro_line|#endif
 dot
 id|major
 op_assign

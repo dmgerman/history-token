@@ -469,17 +469,14 @@ id|scc_driver.driver_name
 op_assign
 l_string|&quot;scc&quot;
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|scc_driver.name
-op_assign
-l_string|&quot;tts/&quot;
-suffix:semicolon
-macro_line|#else
 id|scc_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
-macro_line|#endif
+id|scc_driver.devfs_name
+op_assign
+l_string|&quot;tts/&quot;
+suffix:semicolon
 id|scc_driver.major
 op_assign
 id|TTY_MAJOR

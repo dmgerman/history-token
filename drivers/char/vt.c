@@ -11980,9 +11980,13 @@ id|console_driver.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|console_driver.name
+id|console_driver.devfs_name
 op_assign
 l_string|&quot;vc/&quot;
+suffix:semicolon
+id|console_driver.name
+op_assign
+l_string|&quot;tty&quot;
 suffix:semicolon
 id|console_driver.name_base
 op_assign
