@@ -146,6 +146,14 @@ id|page
 op_star
 )paren
 suffix:semicolon
+r_int
+id|hugetlb_report_meminfo
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|htlbpage_max
@@ -180,6 +188,8 @@ DECL|macro|unmap_hugepage_range
 mdefine_line|#define unmap_hugepage_range(vma, start, end)&t;BUG()
 DECL|macro|huge_page_release
 mdefine_line|#define huge_page_release(page)&t;&t;&t;BUG()
+DECL|macro|hugetlb_report_meminfo
+mdefine_line|#define hugetlb_report_meminfo(buf)&t;&t;0
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS
 r_extern

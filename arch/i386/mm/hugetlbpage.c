@@ -3253,6 +3253,36 @@ c_func
 id|hugetlb_init
 )paren
 suffix:semicolon
+DECL|function|hugetlb_report_meminfo
+r_int
+id|hugetlb_report_meminfo
+c_func
+(paren
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;HugePages_Total: %5lu&bslash;n&quot;
+l_string|&quot;HugePages_Free:  %5lu&bslash;n&quot;
+l_string|&quot;Hugepagesize:    %5lu kB&bslash;n&quot;
+comma
+id|htlbzone_pages
+comma
+id|htlbpagemem
+comma
+id|HPAGE_SIZE
+op_div
+l_int|1024
+)paren
+suffix:semicolon
+)brace
 DECL|function|hugetlb_nopage
 r_static
 r_struct

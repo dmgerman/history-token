@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -755,39 +756,16 @@ comma
 id|ps.nr_reverse_maps
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-(brace
-r_extern
-r_int
-r_int
-id|htlbpagemem
-comma
-id|htlbzone_pages
-suffix:semicolon
 id|len
 op_add_assign
-id|sprintf
+id|hugetlb_report_meminfo
 c_func
 (paren
 id|page
 op_plus
 id|len
-comma
-l_string|&quot;HugePages_Total: %5lu&bslash;n&quot;
-l_string|&quot;HugePages_Free:  %5lu&bslash;n&quot;
-l_string|&quot;Hugepagesize:    %5lu kB&bslash;n&quot;
-comma
-id|htlbzone_pages
-comma
-id|htlbpagemem
-comma
-id|HPAGE_SIZE
-op_div
-l_int|1024
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|proc_calc_metrics
 c_func
