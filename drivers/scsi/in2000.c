@@ -55,7 +55,6 @@ id|setup_strings
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -64,7 +63,6 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|read_3393
 r_static
 r_inline

@@ -1189,6 +1189,7 @@ suffix:semicolon
 multiline_comment|/* misnamed field:  should be stencil */
 DECL|member|depth_boxes
 id|drm_radeon_clear_rect_t
+id|__user
 op_star
 id|depth_boxes
 suffix:semicolon
@@ -1276,6 +1277,7 @@ id|nr_states
 suffix:semicolon
 DECL|member|state
 id|drm_radeon_state_t
+id|__user
 op_star
 id|state
 suffix:semicolon
@@ -1285,6 +1287,7 @@ id|nr_prims
 suffix:semicolon
 DECL|member|prim
 id|drm_radeon_prim_t
+id|__user
 op_star
 id|prim
 suffix:semicolon
@@ -1304,6 +1307,7 @@ id|bufsz
 suffix:semicolon
 DECL|member|buf
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -1313,6 +1317,7 @@ id|nbox
 suffix:semicolon
 DECL|member|boxes
 id|drm_clip_rect_t
+id|__user
 op_star
 id|boxes
 suffix:semicolon
@@ -1345,6 +1350,7 @@ suffix:semicolon
 DECL|member|data
 r_const
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -1381,6 +1387,7 @@ id|height
 suffix:semicolon
 DECL|member|image
 id|drm_radeon_tex_image_t
+id|__user
 op_star
 id|image
 suffix:semicolon
@@ -1396,6 +1403,7 @@ id|drm_radeon_stipple
 DECL|member|mask
 r_int
 r_int
+id|__user
 op_star
 id|mask
 suffix:semicolon
@@ -1464,6 +1472,7 @@ id|param
 suffix:semicolon
 DECL|member|value
 r_void
+id|__user
 op_star
 id|value
 suffix:semicolon
@@ -1495,6 +1504,7 @@ id|size
 suffix:semicolon
 DECL|member|region_offset
 r_int
+id|__user
 op_star
 id|region_offset
 suffix:semicolon
@@ -1549,6 +1559,7 @@ id|drm_radeon_irq_emit
 (brace
 DECL|member|irq_seq
 r_int
+id|__user
 op_star
 id|irq_seq
 suffix:semicolon

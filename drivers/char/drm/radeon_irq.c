@@ -519,6 +519,7 @@ id|emit
 comma
 (paren
 id|drm_radeon_irq_emit_t
+id|__user
 op_star
 )paren
 id|data
@@ -623,6 +624,7 @@ id|irqwait
 comma
 (paren
 id|drm_radeon_irq_wait_t
+id|__user
 op_star
 )paren
 id|data

@@ -54,6 +54,18 @@ op_assign
 id|priv-&gt;dev
 suffix:semicolon
 id|drm_irq_busid_t
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|drm_irq_busid_t
 id|p
 suffix:semicolon
 r_if
@@ -65,11 +77,7 @@ c_func
 op_amp
 id|p
 comma
-(paren
-id|drm_irq_busid_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -136,11 +144,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|drm_irq_busid_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|p
@@ -268,7 +272,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_IRQ_BH
+macro_line|#ifdef __HAVE_IRQ_BH
 id|INIT_WORK
 c_func
 (paren
@@ -285,7 +289,7 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_VBL_IRQ
+macro_line|#ifdef __HAVE_VBL_IRQ
 id|init_waitqueue_head
 c_func
 (paren
@@ -521,6 +525,7 @@ id|ctl
 comma
 (paren
 id|drm_control_t
+id|__user
 op_star
 )paren
 id|arg
@@ -596,7 +601,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-macro_line|#if __HAVE_VBL_IRQ
+macro_line|#ifdef __HAVE_VBL_IRQ
 multiline_comment|/**&n; * Wait for VBLANK.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param data user argument, pointing to a drm_wait_vblank structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the IRQ is installed. &n; *&n; * If a signal is requested checks if this task has already scheduled the same signal&n; * for the same vblank sequence number - nothing to be done in&n; * that case. If the number of tasks waiting for the interrupt exceeds 100 the&n; * function fails. Otherwise adds a new entry to drm_device::vbl_sigs for this&n; * task.&n; *&n; * If a signal is not requested, then calls vblank_wait().&n; */
 DECL|function|wait_vblank
 r_int
@@ -620,6 +625,18 @@ op_star
 id|dev
 op_assign
 id|priv-&gt;dev
+suffix:semicolon
+id|drm_wait_vblank_t
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|data
 suffix:semicolon
 id|drm_wait_vblank_t
 id|vblwait
@@ -652,11 +669,7 @@ c_func
 (paren
 id|vblwait
 comma
-(paren
-id|drm_wait_vblank_t
-op_star
-)paren
-id|data
+id|argp
 comma
 r_sizeof
 (paren
@@ -941,11 +954,7 @@ suffix:colon
 id|DRM_COPY_TO_USER_IOCTL
 c_func
 (paren
-(paren
-id|drm_wait_vblank_t
-op_star
-)paren
-id|data
+id|argp
 comma
 id|vblwait
 comma

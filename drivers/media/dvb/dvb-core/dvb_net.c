@@ -20,7 +20,7 @@ id|__u32
 id|c
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 comma
@@ -1940,7 +1940,7 @@ id|priv-&gt;ule_sndu_type
 )paren
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|iov
 (braket
 l_int|4

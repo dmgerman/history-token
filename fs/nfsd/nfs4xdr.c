@@ -11624,7 +11624,7 @@ id|resp
 (brace
 multiline_comment|/*&n;&t; * All that remains is to write the tag and operation count...&n;&t; */
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 suffix:semicolon

@@ -3103,6 +3103,19 @@ id|VM_MAYWRITE
 op_or
 id|VM_MAYEXEC
 suffix:semicolon
+multiline_comment|/*&n;&t; * mm-&gt;def_flags might have VM_EXEC set, which PROT_NONE does NOT want.&n;&t; */
+r_if
+c_cond
+(paren
+id|prot
+op_eq
+id|PROT_NONE
+)paren
+id|vm_flags
+op_and_assign
+op_complement
+id|VM_EXEC
+suffix:semicolon
 r_if
 c_cond
 (paren
