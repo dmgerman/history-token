@@ -691,13 +691,13 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_ATOMIC
-comma
 r_sizeof
 (paren
-r_struct
-id|pnp_resource_table
+op_star
+id|cfg
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_int
