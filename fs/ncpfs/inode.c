@@ -3207,6 +3207,10 @@ id|get_sb
 suffix:colon
 id|ncp_get_sb
 comma
+id|kill_sb
+suffix:colon
+id|kill_anon_super
+comma
 )brace
 suffix:semicolon
 DECL|function|init_ncp_fs
