@@ -6098,7 +6098,7 @@ id|scsi_qla_host_t
 op_star
 id|ha
 comma
-r_uint8
+r_uint16
 id|loop_id
 comma
 id|link_stat_t

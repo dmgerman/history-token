@@ -905,7 +905,7 @@ c_func
 id|scsi_qla_host_t
 op_star
 comma
-r_uint8
+r_uint16
 comma
 id|link_stat_t
 op_star
