@@ -6,6 +6,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)&t;&t;do { } while (0)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -27,7 +28,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME &quot;ns83820&quot;
-multiline_comment|/* Global parameters.  See MODULE_PARM near the bottom. */
+multiline_comment|/* Global parameters.  See module_param near the bottom. */
 DECL|variable|ihr
 r_static
 r_int
@@ -9215,12 +9216,14 @@ comma
 id|ns83820_pci_tbl
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lnksts
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9231,12 +9234,14 @@ comma
 l_string|&quot;Polarity of LNKSTS bit&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ihr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9247,12 +9252,14 @@ comma
 l_string|&quot;Time in 100 us increments to delay interrupts (range 0-127)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|reset_phy
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
