@@ -867,6 +867,9 @@ r_struct
 id|ip_conntrack
 op_star
 id|ct
+comma
+r_int
+id|drop_refcount
 )paren
 (brace
 r_struct
@@ -931,11 +934,24 @@ comma
 id|ct
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drop_refcount
+)paren
+(brace
 multiline_comment|/* Indicate that this expectations parent is dead */
+id|ip_conntrack_put
+c_func
+(paren
+id|exp-&gt;expectant
+)paren
+suffix:semicolon
 id|exp-&gt;expectant
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 r_continue
 suffix:semicolon
 )brace
@@ -1053,6 +1069,8 @@ id|remove_expectations
 c_func
 (paren
 id|ct
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -4955,6 +4973,8 @@ id|remove_expectations
 c_func
 (paren
 id|i-&gt;ctrack
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* And *then* set helper to NULL */
