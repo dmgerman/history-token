@@ -120,17 +120,10 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
-DECL|macro|_PIDXR
-mdefine_line|#define _PIDXR&t;&t;0x259
-DECL|macro|_PNPWRP
-mdefine_line|#define _PNPWRP&t;&t;0xa59
-macro_line|#else
 DECL|macro|_PIDXR
 mdefine_line|#define _PIDXR&t;&t;0x279
 DECL|macro|_PNPWRP
 mdefine_line|#define _PNPWRP&t;&t;0xa79
-macro_line|#endif
 multiline_comment|/* short tags */
 DECL|macro|_STAG_PNPVERNO
 mdefine_line|#define _STAG_PNPVERNO&t;&t;0x01

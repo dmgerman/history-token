@@ -118,17 +118,6 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* MPU-401 IRQ */
-macro_line|#ifdef CONFIG_X86_PC9800
-DECL|variable|pc98ii
-r_static
-r_int
-id|pc98ii
-(braket
-id|SNDRV_CARDS
-)braket
-suffix:semicolon
-multiline_comment|/* PC98-II dauther board */
-macro_line|#endif
 DECL|variable|boot_devs
 r_static
 r_int
@@ -306,36 +295,6 @@ comma
 id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PC9800
-id|module_param_array
-c_func
-(paren
-id|pc98ii
-comma
-r_bool
-comma
-id|boot_devs
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|pc98ii
-comma
-l_string|&quot;Roland MPU-PC98II support.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pc98ii
-comma
-id|SNDRV_BOOLEAN_FALSE_DESC
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifndef CONFIG_ACPI_BUS
 r_struct
 id|acpi_device
@@ -838,16 +797,6 @@ id|card
 comma
 l_int|0
 comma
-macro_line|#ifdef CONFIG_X86_PC9800
-id|pc98ii
-(braket
-id|dev
-)braket
-ques
-c_cond
-id|MPU401_HW_PC98II
-suffix:colon
-macro_line|#endif
 id|MPU401_HW_MPU401
 comma
 id|port

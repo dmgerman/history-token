@@ -485,8 +485,6 @@ DECL|macro|SERIO_RS232
 mdefine_line|#define SERIO_RS232&t;0x02000000UL
 DECL|macro|SERIO_HIL_MLC
 mdefine_line|#define SERIO_HIL_MLC&t;0x03000000UL
-DECL|macro|SERIO_PC9800
-mdefine_line|#define SERIO_PC9800&t;0x04000000UL
 DECL|macro|SERIO_PS_PSTHRU
 mdefine_line|#define SERIO_PS_PSTHRU&t;0x05000000UL
 DECL|macro|SERIO_8042_XL

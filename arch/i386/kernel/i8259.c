@@ -999,7 +999,6 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note that on a 486, we don&squot;t want to do a SIGFPE on an irq13&n; * as the irq is unreliable, and exception 16 works correctly&n; * (ie as explained in the intel literature). On a 386, you&n; * can&squot;t use exception 16 due to bad IBM design, so we have to&n; * rely on the less exact irq13.&n; *&n; * Careful.. Not only is IRQ13 unreliable, but it is also&n; * leads to races. IBM designers who came up with it should&n; * be shot.&n; */
-multiline_comment|/*&n; * =PC9800NOTE= In NEC PC-9800, we use irq8 instead of irq13!&n; */
 DECL|function|math_error_irq
 r_static
 id|irqreturn_t
@@ -1028,7 +1027,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_PC9800
 id|outb
 c_func
 (paren
@@ -1037,7 +1035,6 @@ comma
 l_int|0xF0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

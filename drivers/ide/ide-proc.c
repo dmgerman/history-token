@@ -1377,15 +1377,6 @@ l_string|&quot;mac-io&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|ide_pc9800
-suffix:colon
-id|name
-op_assign
-l_string|&quot;pc9800&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|name
