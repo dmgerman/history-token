@@ -5,9 +5,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-DECL|macro|MB1
-mdefine_line|#define MB1 1048576&t;/* one megabyte == size of an MMU section */
 r_extern
 r_void
 id|clps711x_map_io
@@ -34,7 +33,7 @@ id|EP7211_VIRT_EXTKBD
 comma
 id|EP7211_PHYS_EXTKBD
 comma
-id|MB1
+id|SZ_1M
 comma
 id|DOMAIN_IO
 comma
@@ -52,7 +51,7 @@ id|EP7211_VIRT_CS8900A
 comma
 id|EP7211_PHYS_CS8900A
 comma
-id|MB1
+id|SZ_1M
 comma
 id|DOMAIN_IO
 comma
@@ -71,9 +70,7 @@ id|EP7211_VIRT_FLASH1
 comma
 id|EP7211_PHYS_FLASH1
 comma
-id|MB1
-op_star
-l_int|8
+id|SZ_8M
 comma
 id|DOMAIN_KERNEL
 comma
@@ -91,9 +88,7 @@ id|EP7211_VIRT_FLASH2
 comma
 id|EP7211_PHYS_FLASH2
 comma
-id|MB1
-op_star
-l_int|8
+id|SZ_8M
 comma
 id|DOMAIN_KERNEL
 comma
