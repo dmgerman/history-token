@@ -41,8 +41,6 @@ DECL|macro|set_ata2
 mdefine_line|#define set_ata2(a, b)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0e,(a));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0f,(b));&t;&t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|set_pio
 mdefine_line|#define set_pio(a, b, c)&t;&t;&t;&t;&bslash;&n;&t;do { &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0c,(a));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0d,(b));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x13,(c));&t;&t;&t;&bslash;&n;&t;} while(0)
-DECL|macro|DISPLAY_PDC202XX_TIMINGS
-mdefine_line|#define DISPLAY_PDC202XX_TIMINGS
 r_static
 r_void
 id|init_setup_pdcnew

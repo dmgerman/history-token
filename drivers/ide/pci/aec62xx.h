@@ -4,8 +4,6 @@ mdefine_line|#define AEC62XX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-DECL|macro|DISPLAY_AEC62XX_TIMINGS
-mdefine_line|#define DISPLAY_AEC62XX_TIMINGS
 DECL|struct|chipset_bus_clock_list_entry
 r_struct
 id|chipset_bus_clock_list_entry

@@ -4,8 +4,6 @@ mdefine_line|#define HPT366_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-DECL|macro|DISPLAY_HPT366_TIMINGS
-mdefine_line|#define DISPLAY_HPT366_TIMINGS
 multiline_comment|/* various tuning parameters */
 DECL|macro|HPT_RESET_STATE_ENGINE
 mdefine_line|#define HPT_RESET_STATE_ENGINE
