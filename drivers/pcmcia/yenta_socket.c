@@ -4363,18 +4363,10 @@ comma
 id|CB_FCARDSTS
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* disable interrupts */
