@@ -1,5 +1,6 @@
 multiline_comment|/* Copyright (C) 1999,2001 &n; *&n; * Author: J.E.J.Bottomley@HansenPartnership.com&n; *&n; * linux/arch/i386/kernel/voyager.c&n; *&n; * This file contains all the voyager specific routines for getting&n; * initialisation of the architecture to function.  For additional&n; * features see:&n; *&n; *&t;voyager_cat.c - Voyager CAT bus interface&n; *&t;voyager_smp.c - Voyager SMP hal (emulates linux smp.c)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -976,6 +977,13 @@ l_string|&quot;hlt&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 r_void
 DECL|function|mca_nmi_hook
 id|mca_nmi_hook
@@ -1126,6 +1134,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -1145,4 +1160,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 eof

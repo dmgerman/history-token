@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This is where we statically allocate and initialize the initial&n; * task.&n; *&n; * Copyright (C) 1999, 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -51,6 +52,13 @@ id|mm_struct
 id|init_mm
 op_assign
 id|INIT_MM
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_mm
@@ -130,5 +138,12 @@ id|init_task_mem.s.task
 )paren
 )brace
 )brace
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_task
+)paren
 suffix:semicolon
 eof

@@ -1,4 +1,5 @@
 multiline_comment|/* Various gunk just to reboot the machine. */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -568,6 +569,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -577,6 +585,13 @@ r_void
 )paren
 (brace
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -596,4 +611,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 eof

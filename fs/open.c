@@ -119,6 +119,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|vfs_statfs
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_statfs
+)paren
+suffix:semicolon
 DECL|function|vfs_statfs_native
 r_static
 r_int
@@ -3385,6 +3392,13 @@ id|error
 )paren
 suffix:semicolon
 )brace
+DECL|variable|filp_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filp_open
+)paren
+suffix:semicolon
 DECL|function|dentry_open
 r_struct
 id|file
@@ -3670,6 +3684,13 @@ id|error
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dentry_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dentry_open
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Find an empty file descriptor entry, and mark it busy.&n; */
 DECL|function|get_unused_fd
 r_int
@@ -3881,6 +3902,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|get_unused_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_unused_fd
+)paren
+suffix:semicolon
 DECL|function|__put_unused_fd
 r_static
 r_inline
@@ -3958,6 +3986,13 @@ id|files-&gt;file_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|put_unused_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|put_unused_fd
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Install a file pointer in the fd array.  &n; *&n; * The VFS is full of places where we drop the files lock between&n; * setting the open_fds bitmap and installing the file in the file&n; * array.  At any such point, we are vulnerable to a dup2() race&n; * installing a file in the array before us.  We need to detect this and&n; * fput() the struct file we are about to overwrite in this case.&n; *&n; * It should never happen - if we allow dup2() do it, _really_ bad things&n; * will follow.&n; */
 DECL|function|fd_install
 r_void
@@ -4022,6 +4057,13 @@ id|files-&gt;file_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|fd_install
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fd_install
+)paren
+suffix:semicolon
 DECL|function|sys_open
 id|asmlinkage
 r_int
@@ -4315,6 +4357,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|filp_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filp_close
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Careful here! We test whether the file pointer is NULL before&n; * releasing the fd. This ensures that one clone task can&squot;t release&n; * an fd while another clone is opening it.&n; */
 DECL|function|sys_close
 id|asmlinkage
@@ -4425,6 +4474,13 @@ op_minus
 id|EBADF
 suffix:semicolon
 )brace
+DECL|variable|sys_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_close
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This routine simulates a hangup on the tty, to arrange that users&n; * are given clean terminals at login time.&n; */
 DECL|function|sys_vhangup
 id|asmlinkage

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/h8300/kernel/process.c&n; *&n; * Yoshinori
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -157,6 +158,13 @@ l_string|&quot;jmp @@0&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -184,6 +192,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -211,6 +226,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 DECL|function|show_regs
 r_void
 id|show_regs

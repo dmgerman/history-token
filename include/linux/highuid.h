@@ -44,17 +44,21 @@ DECL|macro|low2highuid
 mdefine_line|#define low2highuid(uid) ((uid) == (old_uid_t)-1 ? (uid_t)-1 : (uid_t)(uid))
 DECL|macro|low2highgid
 mdefine_line|#define low2highgid(gid) ((gid) == (old_gid_t)-1 ? (gid_t)-1 : (gid_t)(gid))
+DECL|macro|__convert_uid
+mdefine_line|#define __convert_uid(size, uid) &bslash;&n;&t;(size &gt;= sizeof(uid) ? (uid) : high2lowuid(uid))
+DECL|macro|__convert_gid
+mdefine_line|#define __convert_gid(size, gid) &bslash;&n;&t;(size &gt;= sizeof(gid) ? (gid) : high2lowgid(gid))
+macro_line|#else
+DECL|macro|__convert_uid
+mdefine_line|#define __convert_uid(size, uid) (uid)
+DECL|macro|__convert_gid
+mdefine_line|#define __convert_gid(size, gid) (gid)
+macro_line|#endif /* !CONFIG_UID16 */
 multiline_comment|/* uid/gid input should be always 32bit uid_t */
 DECL|macro|SET_UID
-mdefine_line|#define SET_UID(var, uid)&t;&bslash;&n;&t;do {&t;&t;&t;&bslash;&n;&t;if (sizeof(var) == sizeof(old_uid_t)) (var) = high2lowuid(uid); &bslash;&n;&t;else if (sizeof(var) &gt;= sizeof(uid)) (var) = (uid); &bslash;&n;&t;else __bad_uid(); &bslash;&n;&t;} while(0)
+mdefine_line|#define SET_UID(var, uid) do { (var) = __convert_uid(sizeof(var), (uid)); } while (0)
 DECL|macro|SET_GID
-mdefine_line|#define SET_GID(var, gid)&t;&bslash;&n;&t;do {&t;&t;&t;&bslash;&n;&t;if (sizeof(var) == sizeof(old_gid_t)) (var) = high2lowgid(gid); &bslash;&n;&t;else if (sizeof(var) &gt;= sizeof(gid)) (var) = (gid); &bslash;&n;&t;else __bad_gid(); &bslash;&n;&t;} while(0)
-macro_line|#else
-DECL|macro|SET_UID
-mdefine_line|#define SET_UID(var,uid) &bslash;&n;&t;do { &bslash;&n;&t;if (sizeof(var) &lt; sizeof(uid)) __bad_uid(); &bslash;&n;&t;(var) = (uid); &bslash;&n;&t;} while (0)
-DECL|macro|SET_GID
-mdefine_line|#define SET_GID(var,gid) &bslash;&n;&t;do { &bslash;&n;&t;if (sizeof(var) &lt; sizeof(gid)) __bad_gid(); &bslash;&n;&t;(var) = (gid); &bslash;&n;&t;} while (0);
-macro_line|#endif /* !CONFIG_UID16 */
+mdefine_line|#define SET_GID(var, gid) do { (var) = __convert_gid(sizeof(var), (gid)); } while (0)
 multiline_comment|/*&n; * Everything below this line is needed on all architectures, to deal with&n; * filesystems that only store 16 bits of the UID/GID, etc.&n; */
 multiline_comment|/*&n; * This is the UID and GID that will get written to disk if a filesystem&n; * only supports 16-bit UIDs and the kernel has a high UID/GID to write&n; */
 r_extern

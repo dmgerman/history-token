@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *  PPC44x/36-bit changes by Matt Porter (mporter@mvista.com)&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -137,6 +138,20 @@ suffix:semicolon
 DECL|variable|kmap_prot
 id|pgprot_t
 id|kmap_prot
+suffix:semicolon
+DECL|variable|kmap_prot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_prot
+)paren
+suffix:semicolon
+DECL|variable|kmap_pte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_pte
+)paren
 suffix:semicolon
 macro_line|#endif
 r_void

@@ -846,6 +846,13 @@ DECL|macro|CACHE
 macro_line|#undef CACHE
 )brace
 suffix:semicolon
+DECL|variable|malloc_sizes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|malloc_sizes
+)paren
+suffix:semicolon
 multiline_comment|/* Must match cache_sizes above. Out of line to keep cache footprint low. */
 DECL|struct|cache_names
 r_static
@@ -4323,6 +4330,13 @@ r_return
 id|cachep
 suffix:semicolon
 )brace
+DECL|variable|kmem_cache_create
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_create
+)paren
+suffix:semicolon
 DECL|function|check_irq_off
 r_static
 r_inline
@@ -4826,6 +4840,13 @@ id|cachep
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kmem_cache_shrink
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_shrink
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * kmem_cache_destroy - delete a cache&n; * @cachep: the cache to destroy&n; *&n; * Remove a kmem_cache_t object from the slab cache.&n; * Returns 0 on success.&n; *&n; * It is expected this function will be called by a module when it is&n; * unloaded.  This will remove the cache completely, and avoid a duplicate&n; * cache being allocated each time a module is loaded and unloaded, if the&n; * module doesn&squot;t have persistent in-kernel storage across loads and unloads.&n; *&n; * The cache must be empty before calling this function.&n; *&n; * The caller must guarantee that noone will allocate memory from the cache&n; * during the kmem_cache_destroy().&n; */
 DECL|function|kmem_cache_destroy
 r_int
@@ -4971,6 +4992,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|kmem_cache_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_destroy
+)paren
+suffix:semicolon
 multiline_comment|/* Get the memory for a slab management obj. */
 DECL|function|alloc_slabmgmt
 r_static
@@ -8054,6 +8082,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kmem_cache_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_alloc
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * kmalloc - allocate memory&n; * @size: how many bytes of memory are required.&n; * @flags: the type of memory to allocate.&n; *&n; * kmalloc is the normal method of allocating memory&n; * in the kernel.&n; *&n; * The @flags argument may be one of:&n; *&n; * %GFP_USER - Allocate memory on behalf of user.  May sleep.&n; *&n; * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.&n; *&n; * %GFP_ATOMIC - Allocation will not sleep.  Use inside interrupt handlers.&n; *&n; * Additionally, the %GFP_DMA flag may be set to indicate the memory&n; * must be suitable for DMA.  This can mean different things on different&n; * platforms.  For example, on i386, it means that the memory must come&n; * from the first 16MB.&n; */
 DECL|function|__kmalloc
 r_void
@@ -8125,6 +8160,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|__kmalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__kmalloc
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/**&n; * __alloc_percpu - allocate one copy of the object for every present&n; * cpu in the system, zeroing them.&n; * Objects should be dereferenced using per_cpu_ptr/get_cpu_ptr&n; * macros only.&n; *&n; * @size: how many bytes of memory are required.&n; * @align: the alignment, which can&squot;t be greater than SMP_CACHE_BYTES.&n; */
 DECL|function|__alloc_percpu
@@ -8293,6 +8335,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|__alloc_percpu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__alloc_percpu
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/**&n; * kmem_cache_free - Deallocate an object&n; * @cachep: The cache the allocation was from.&n; * @objp: The previously allocated object.&n; *&n; * Free an object which was previously allocated from this&n; * cache.&n; */
 DECL|function|kmem_cache_free
@@ -8333,6 +8382,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kmem_cache_free
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_free
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * kfree - free previously allocated memory&n; * @objp: pointer returned by kmalloc.&n; *&n; * Don&squot;t free memory not originally allocated by kmalloc()&n; * or you will run into trouble.&n; */
 DECL|function|kfree
 r_void
@@ -8403,6 +8459,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kfree
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kfree
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/**&n; * free_percpu - free previously allocated percpu memory&n; * @objp: pointer returned by alloc_percpu.&n; *&n; * Don&squot;t free memory not originally allocated by alloc_percpu()&n; * The complemented objp is to check for that.&n; */
 r_void
@@ -8476,6 +8539,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_percpu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_percpu
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|function|kmem_cache_size
 r_int
@@ -8496,6 +8566,13 @@ id|cachep
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kmem_cache_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_cache_size
+)paren
+suffix:semicolon
 DECL|function|kmem_find_general_cachep
 id|kmem_cache_t
 op_star
@@ -8551,6 +8628,13 @@ suffix:colon
 id|csizep-&gt;cs_cachep
 suffix:semicolon
 )brace
+DECL|variable|kmem_find_general_cachep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmem_find_general_cachep
+)paren
+suffix:semicolon
 DECL|struct|ccupdate_struct
 r_struct
 id|ccupdate_struct

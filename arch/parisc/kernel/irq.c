@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -2555,6 +2556,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -2752,6 +2760,13 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|function|synchronize_irq
 r_void
@@ -3050,6 +3065,13 @@ r_return
 id|val
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return the one interrupt that triggered (this can&n; * handle any interrupt source).&n; */
 multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldnt happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
 DECL|function|probe_irq_off
@@ -3220,6 +3242,13 @@ r_return
 id|irq_found
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|probe_irq_mask
 r_int
 r_int

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/attr.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  changes by Thomas Schoebel-Theuer&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -215,6 +216,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|inode_change_ok
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_change_ok
+)paren
+suffix:semicolon
 DECL|function|inode_setattr
 r_int
 id|inode_setattr
@@ -405,6 +413,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|inode_setattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_setattr
+)paren
+suffix:semicolon
 DECL|function|setattr_mask
 r_int
 id|setattr_mask
@@ -888,4 +903,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|notify_change
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|notify_change
+)paren
+suffix:semicolon
 eof

@@ -31,6 +31,13 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SEQLOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|dcache_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_lock
+)paren
+suffix:semicolon
 DECL|variable|dentry_cache
 r_static
 id|kmem_cache_t

@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/types.h&quot;
 macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;linux/fs.h&quot;
@@ -464,6 +465,20 @@ suffix:semicolon
 DECL|variable|kmap_prot
 id|pgprot_t
 id|kmap_prot
+suffix:semicolon
+DECL|variable|kmap_prot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_prot
+)paren
+suffix:semicolon
+DECL|variable|kmap_pte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_pte
+)paren
 suffix:semicolon
 DECL|macro|kmap_get_fixmap_pte
 mdefine_line|#define kmap_get_fixmap_pte(vaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;pte_offset_kernel(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))

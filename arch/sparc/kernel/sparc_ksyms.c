@@ -906,7 +906,6 @@ c_func
 id|_sigpause_common
 )paren
 suffix:semicolon
-multiline_comment|/* Should really be in linux/kernel/ksyms.c */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
 c_func

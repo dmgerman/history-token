@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
@@ -52,6 +53,13 @@ multiline_comment|/* this is initialized in init/main.c */
 DECL|variable|ROOT_DEV
 id|dev_t
 id|ROOT_DEV
+suffix:semicolon
+DECL|variable|ROOT_DEV
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ROOT_DEV
+)paren
 suffix:semicolon
 DECL|function|load_ramdisk
 r_static

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Smp support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -114,6 +115,13 @@ r_struct
 id|thread_info
 op_star
 id|secondary_ti
+suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
 suffix:semicolon
 multiline_comment|/* SMP operations for this machine */
 DECL|variable|smp_ops

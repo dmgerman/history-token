@@ -9438,6 +9438,13 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|kernel_flag
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_flag
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|function|kstat_init_cpu
 r_static

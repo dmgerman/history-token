@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * &n; * Common time routines among all ppc machines.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) to merge&n; * Paul Mackerras&squot; version and mine for PReP and Pmac.&n; * MPC8xx/MBX changes by Dan Malek (dmalek@jlc.net).&n; * Converted for 64-bit by Mike Corrigan (mikejc@us.ibm.com)&n; *&n; * First round of bugfixes by Gabriel Paubert (paubert@iram.es)&n; * to make clock more stable (2.4.0-test5). The only thing&n; * that this code assumes is that the timebases have been synchronized&n; * by firmware on SMP and are never stopped (never do sleep&n; * on SMP then, nap and doze are OK).&n; * &n; * Speeded up do_gettimeofday by getting rid of references to&n; * xtime (which required locks for consistency). (mikejc@us.ibm.com)&n; *&n; * TODO (not necessarily in this file):&n; * - improve precision and reproducibility of timebase frequency&n; * measurement at boot time. (for iSeries, we calibrate the timebase&n; * against the Titan chip&squot;s clock.)&n; * - for astronomical applications: add a new function to get&n; * non ambiguous timestamps even around leap seconds. This needs&n; * a new timestamp format and a good name.&n; *&n; * 1997-09-10  Updated NTP code according to technical memorandum Jan &squot;96&n; *             &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -41,6 +42,13 @@ id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
+suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
 suffix:semicolon
 multiline_comment|/* keep track of when we need to update the rtc */
 DECL|variable|last_rtc_update
@@ -992,6 +1000,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday
@@ -1238,6 +1253,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function is a copy of the architecture independent function&n; * but which calls do_settimeofday rather than setting the xtime&n; * fields itself.  This way, the fields which are used for &n; * do_settimeofday get updated too.&n; */
 DECL|function|ppc64_sys32_stime
 r_int

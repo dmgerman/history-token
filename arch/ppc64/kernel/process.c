@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/ppc64/kernel/process.c&n; *&n; *  Derived from &quot;arch/i386/kernel/process.c&quot;&n; *    Copyright (C) 1995  Linus Torvalds&n; *&n; *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and&n; *  Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1885,6 +1886,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 DECL|function|show_trace_task
 r_void
 id|show_trace_task
