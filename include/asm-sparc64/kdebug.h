@@ -53,6 +53,18 @@ id|notifier_block
 op_star
 id|sparc64die_chain
 suffix:semicolon
+r_extern
+r_void
+id|bad_trap
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Grossly misnamed. */
 DECL|enum|die_val
 r_enum
@@ -66,20 +78,19 @@ comma
 DECL|enumerator|DIE_DEBUG
 id|DIE_DEBUG
 comma
-DECL|enumerator|DIE_PANIC
-id|DIE_PANIC
+multiline_comment|/* ta 0x70 */
+DECL|enumerator|DIE_DEBUG_2
+id|DIE_DEBUG_2
 comma
-DECL|enumerator|DIE_NMI
-id|DIE_NMI
-comma
+multiline_comment|/* ta 0x71 */
 DECL|enumerator|DIE_DIE
 id|DIE_DIE
 comma
-DECL|enumerator|DIE_KERNELDEBUG
-id|DIE_KERNELDEBUG
-comma
 DECL|enumerator|DIE_TRAP
 id|DIE_TRAP
+comma
+DECL|enumerator|DIE_TRAP_TL1
+id|DIE_TRAP_TL1
 comma
 DECL|enumerator|DIE_GPF
 id|DIE_GPF
