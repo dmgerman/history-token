@@ -2569,6 +2569,13 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2596,6 +2603,13 @@ id|inode
 )paren
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 id|d_rehash
 c_func
 (paren
@@ -2606,6 +2620,13 @@ r_goto
 id|ret
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 multiline_comment|/*printk(&quot;HPFS: truncating file before delete.&bslash;n&quot;);*/
 id|newattrs.ia_size
 op_assign
