@@ -72,9 +72,9 @@ mdefine_line|#define&t;BIT30&t;0x40000000
 DECL|macro|BIT31
 mdefine_line|#define&t;BIT31&t;0x80000000
 multiline_comment|/*&n; *  The first part is the high level driver of the gigE ethernet ports.&n; */
-multiline_comment|/* Checksum offload for Tx works */
+multiline_comment|/* Checksum offload for Tx works for most packets, but&n; * fails if previous packet sent did not use hw csum&n; */
 DECL|macro|MV643XX_CHECKSUM_OFFLOAD_TX
-mdefine_line|#define&t;MV643XX_CHECKSUM_OFFLOAD_TX
+macro_line|#undef&t;MV643XX_CHECKSUM_OFFLOAD_TX
 DECL|macro|MV643XX_NAPI
 mdefine_line|#define&t;MV643XX_NAPI
 DECL|macro|MV643XX_TX_FAST_REFILL
