@@ -64,13 +64,6 @@ r_void
 op_star
 id|service_handle
 suffix:semicolon
-r_extern
-r_char
-op_star
-id|lmp_reasons
-(braket
-)braket
-suffix:semicolon
 r_static
 r_void
 id|__iriap_close
@@ -1009,7 +1002,7 @@ l_string|&quot;%s(), reason=%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lmp_reasons
+id|irlmp_reasons
 (braket
 id|reason
 )braket
