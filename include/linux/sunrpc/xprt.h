@@ -149,6 +149,10 @@ r_int
 id|rq_xtime
 suffix:semicolon
 multiline_comment|/* when transmitted */
+DECL|member|rq_ntimeo
+r_int
+id|rq_ntimeo
+suffix:semicolon
 DECL|member|rq_nresend
 r_int
 id|rq_nresend
