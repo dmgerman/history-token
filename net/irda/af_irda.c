@@ -4569,6 +4569,11 @@ id|irda_recvmsg_stream
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -5080,6 +5085,11 @@ id|irda_sendmsg_dgram
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -5345,6 +5355,11 @@ r_int
 id|irda_sendmsg_ultra
 c_func
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star
