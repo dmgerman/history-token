@@ -2788,7 +2788,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_disabled
+id|acpi_pci_disabled
 )paren
 id|return_VALUE
 c_func

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 multiline_comment|/**&n; * pre_intr_init_hook - initialisation prior to setting up interrupt vectors&n; *&n; * Description:&n; *&t;Perform any necessary interrupt initialisation prior to setting up&n; *&t;the &quot;ordinary&quot; interrupt call gates.  For legacy reasons, the ISA&n; *&t;interrupts should be initialised here if the machine emulates a PC&n; *&t;in any way.&n; **/
 DECL|function|pre_intr_init_hook
@@ -59,6 +60,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
 id|setup_irq
 c_func
 (paren

@@ -353,6 +353,11 @@ id|root
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|acpi_pci_root
+op_star
+id|tmp
+suffix:semicolon
 id|acpi_status
 id|status
 op_assign
@@ -618,6 +623,44 @@ r_goto
 id|end
 suffix:semicolon
 )brace
+multiline_comment|/* Some systems have wrong _BBN */
+id|list_for_each_entry
+c_func
+(paren
+id|tmp
+comma
+op_amp
+id|acpi_pci_roots
+comma
+id|node
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|tmp-&gt;id.segment
+op_eq
+id|root-&gt;id.segment
+)paren
+op_logical_and
+(paren
+id|tmp-&gt;id.bus
+op_eq
+id|root-&gt;id.bus
+)paren
+)paren
+id|ACPI_DEBUG_PRINT
+c_func
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Wrong _BBN value, please reboot and using option &squot;pci=noacpi&squot;&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Device &amp; Function&n;&t; * -----------------&n;&t; * Obtained from _ADR (which has already been evaluated for us).&n;&t; */
 id|root-&gt;id.device
 op_assign
@@ -878,7 +921,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_disabled
+id|acpi_pci_disabled
 )paren
 id|return_VALUE
 c_func

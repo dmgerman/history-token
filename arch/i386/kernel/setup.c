@@ -2308,7 +2308,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &quot;pci=noacpi&quot; disables ACPI interrupt routing */
+multiline_comment|/* &quot;pci=noacpi&quot; disable ACPI IRQ routing and PCI scan */
 r_else
 r_if
 c_cond
@@ -2320,6 +2320,29 @@ c_func
 id|from
 comma
 l_string|&quot;pci=noacpi&quot;
+comma
+l_int|10
+)paren
+)paren
+(brace
+id|acpi_disable_pci
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* &quot;acpi=noirq&quot; disables ACPI interrupt routing */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=noirq&quot;
 comma
 l_int|10
 )paren
@@ -2406,6 +2429,25 @@ l_int|12
 id|acpi_sci_flags.polarity
 op_assign
 l_int|3
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi_skip_timer_override&quot;
+comma
+l_int|24
+)paren
+)paren
+id|acpi_skip_timer_override
+op_assign
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* disable IO-APIC */
