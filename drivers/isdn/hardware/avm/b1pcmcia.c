@@ -350,6 +350,10 @@ c_func
 id|card
 )paren
 suffix:semicolon
+id|cinfo-&gt;capi_ctrl.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|cinfo-&gt;capi_ctrl.driver_name
 op_assign
 l_string|&quot;b1pcmcia&quot;
@@ -392,13 +396,6 @@ c_func
 id|cinfo-&gt;capi_ctrl.name
 comma
 id|card-&gt;name
-)paren
-suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|cinfo-&gt;capi_ctrl
 )paren
 suffix:semicolon
 id|retval
