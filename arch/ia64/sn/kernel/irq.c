@@ -558,6 +558,11 @@ id|sn_irq
 id|irq
 )braket
 suffix:semicolon
+r_struct
+id|sn_irq_info
+op_star
+id|tmp_sn_irq_info
+suffix:semicolon
 r_int
 id|cpuid
 comma
@@ -571,8 +576,28 @@ r_int
 id|t_slice
 suffix:semicolon
 multiline_comment|/* slice to target */
-r_int
-id|status
+multiline_comment|/* allocate a temp sn_irq_info struct to get new target info */
+id|tmp_sn_irq_info
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|tmp_sn_irq_info
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tmp_sn_irq_info
+)paren
+r_return
 suffix:semicolon
 id|cpuid
 op_assign
@@ -613,12 +638,10 @@ id|sn_irq_info
 )paren
 (brace
 r_int
-id|local_widget
+id|status
 suffix:semicolon
-r_struct
-id|sn_irq_info
-op_star
-id|new_sn_irq_info
+r_int
+id|local_widget
 suffix:semicolon
 r_uint64
 id|bridge
@@ -645,29 +668,7 @@ id|bridge
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* irq is not a bridge interrupt */
-id|new_sn_irq_info
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|new_sn_irq_info
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|new_sn_irq_info
-)paren
-r_break
-suffix:semicolon
+multiline_comment|/* irq is not a device interrupt */
 r_if
 c_cond
 (paren
@@ -716,7 +717,7 @@ comma
 id|__pa
 c_func
 (paren
-id|new_sn_irq_info
+id|tmp_sn_irq_info
 )paren
 comma
 id|irq
@@ -755,11 +756,11 @@ id|t_slice
 suffix:semicolon
 id|sn_irq_info-&gt;irq_xtalkaddr
 op_assign
-id|new_sn_irq_info-&gt;irq_xtalkaddr
+id|tmp_sn_irq_info-&gt;irq_xtalkaddr
 suffix:semicolon
 id|sn_irq_info-&gt;irq_cookie
 op_assign
-id|new_sn_irq_info-&gt;irq_cookie
+id|tmp_sn_irq_info-&gt;irq_cookie
 suffix:semicolon
 id|register_intr_pda
 c_func
@@ -807,15 +808,15 @@ r_else
 (brace
 r_break
 suffix:semicolon
-multiline_comment|/* snp_affiity failed the intr_alloc */
+multiline_comment|/* snp_affinity failed the intr_alloc */
+)brace
 )brace
 id|kfree
 c_func
 (paren
-id|new_sn_irq_info
+id|tmp_sn_irq_info
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|irq_type_sn
 r_struct
