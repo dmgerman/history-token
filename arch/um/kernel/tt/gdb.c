@@ -121,7 +121,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PT_PROXY
+macro_line|#ifdef UML_CONFIG_PT_PROXY
 DECL|function|debugger_signal
 r_int
 id|debugger_signal

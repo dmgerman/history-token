@@ -342,6 +342,9 @@ c_func
 )paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|start_userspace
 r_void
@@ -1660,10 +1663,6 @@ c_func
 (paren
 id|fd
 comma
-(paren
-r_char
-op_star
-)paren
 op_amp
 id|copy
 comma

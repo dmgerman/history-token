@@ -469,7 +469,7 @@ c_func
 (paren
 id|pid
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1229,7 +1229,7 @@ c_func
 (paren
 id|dev-&gt;telnetd_pid
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 )brace

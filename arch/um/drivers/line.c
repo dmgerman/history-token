@@ -2911,7 +2911,7 @@ c_func
 (paren
 id|winch-&gt;pid
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 )brace

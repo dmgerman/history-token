@@ -76,8 +76,7 @@ op_star
 id|name
 comma
 r_int
-op_star
-id|add
+id|is_random
 )paren
 (brace
 r_if
@@ -144,7 +143,7 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|umid_is_random
 op_assign
-l_int|0
+id|is_random
 suffix:semicolon
 id|umid_inited
 op_assign
@@ -154,12 +153,38 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|set_umid_arg
+r_static
+r_int
+id|__init
+id|set_umid_arg
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+r_int
+op_star
+id|add
+)paren
+(brace
+r_return
+id|set_umid
+c_func
+(paren
+id|name
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|__uml_setup
 c_func
 (paren
 l_string|&quot;umid=&quot;
 comma
-id|set_umid
+id|set_umid_arg
 comma
 l_string|&quot;umid=&lt;name&gt;&bslash;n&quot;
 l_string|&quot;    This is used to assign a unique identity to this UML machine and&bslash;n&quot;
@@ -1432,7 +1457,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;set_umid - mkstemp failed, errno = %d&bslash;n&quot;
+l_string|&quot;make_umid - mkstemp failed, errno = %d&bslash;n&quot;
 comma
 id|errno
 )paren
@@ -1454,11 +1479,9 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
-id|strcpy
+id|set_umid
 c_func
 (paren
-id|umid
-comma
 op_amp
 id|tmp
 (braket
@@ -1468,6 +1491,8 @@ c_func
 id|uml_dir
 )paren
 )braket
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
