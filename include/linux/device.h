@@ -837,6 +837,19 @@ id|BUS_ID_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* unique to this class */
+DECL|member|release
+r_void
+(paren
+op_star
+id|release
+)paren
+(paren
+r_struct
+id|class_device
+op_star
+id|class_dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
