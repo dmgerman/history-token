@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/pbm.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 DECL|variable|mostek_lock
 id|spinlock_t
 id|mostek_lock
