@@ -87,19 +87,6 @@ r_int
 r_int
 id|mem_base
 suffix:semicolon
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * static void disable_dev(struct pci_dev *dev)&n; *&n; * Disable PCI device DEV so that it does not respond to I/O or memory&n; * accesses.&n; *&n; * Parameters:&n; *&n; * dev&t;- device to disable.&n; */
 DECL|function|disable_dev
 r_static

@@ -81,17 +81,4 @@ l_string|&quot;Whooops in pcibios_map_irq&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 eof

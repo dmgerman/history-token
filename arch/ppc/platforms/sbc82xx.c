@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -914,6 +915,100 @@ r_return
 id|PCI_IRQ_TABLE_LOOKUP
 suffix:semicolon
 )brace
+DECL|function|quirk_sbc8260_cardbus
+r_static
+r_void
+id|__devinit
+id|quirk_sbc8260_cardbus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+r_uint32
+id|ctrl
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;bus-&gt;number
+op_ne
+l_int|0
+op_logical_or
+id|pdev-&gt;devfn
+op_ne
+id|PCI_DEVFN
+c_func
+(paren
+l_int|17
+comma
+l_int|0
+)paren
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Setting up CardBus controller&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Set P2CCLK bit in System Control Register */
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+l_int|0x80
+comma
+op_amp
+id|ctrl
+)paren
+suffix:semicolon
+id|ctrl
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|27
+)paren
+suffix:semicolon
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+l_int|0x80
+comma
+id|ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* Set MFUNC up for PCI IRQ routing via INTA and INTB, and LEDs. */
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+l_int|0x8c
+comma
+l_int|0x00c01d22
+)paren
+suffix:semicolon
+)brace
+id|DECLARE_PCI_FIXUP_FINAL
+c_func
+(paren
+id|PCI_VENDOR_ID_TI
+comma
+id|PCI_DEVICE_ID_TI_1420
+comma
+id|quirk_sbc8260_cardbus
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|platform_init
