@@ -665,6 +665,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|set_mb
+mdefine_line|#define set_mb(var, value) do { xchg(&amp;var, value); } while (0)
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;barrier()
@@ -672,9 +674,9 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;barrier()
-macro_line|#endif
 DECL|macro|set_mb
-mdefine_line|#define set_mb(var, value) do { xchg(&amp;var, value); } while (0)
+mdefine_line|#define set_mb(var, value) do { var = value; barrier(); } while (0)
+macro_line|#endif
 DECL|macro|set_wmb
 mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 multiline_comment|/* interrupt control.. */
