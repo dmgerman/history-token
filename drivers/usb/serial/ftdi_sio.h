@@ -187,7 +187,40 @@ mdefine_line|#define PROTEGO_R2X0&t;&t;0xFC71&t;/* R200-USB TRNG unit (R210, R22
 DECL|macro|PROTEGO_SPECIAL_3
 mdefine_line|#define PROTEGO_SPECIAL_3&t;0xFC72&t;/* special/unknown device */
 DECL|macro|PROTEGO_SPECIAL_4
-mdefine_line|#define PROTEGO_SPECIAL_4&t;0xFC73&t;/* special/unknown device */ 
+mdefine_line|#define PROTEGO_SPECIAL_4&t;0xFC73&t;/* special/unknown device */
+multiline_comment|/*&n; * Gude Analog- und Digitalsysteme GmbH&n; */
+DECL|macro|FTDI_GUDEADS_E808_PID
+mdefine_line|#define FTDI_GUDEADS_E808_PID    0xE808
+DECL|macro|FTDI_GUDEADS_E809_PID
+mdefine_line|#define FTDI_GUDEADS_E809_PID    0xE809
+DECL|macro|FTDI_GUDEADS_E80A_PID
+mdefine_line|#define FTDI_GUDEADS_E80A_PID    0xE80A
+DECL|macro|FTDI_GUDEADS_E80B_PID
+mdefine_line|#define FTDI_GUDEADS_E80B_PID    0xE80B
+DECL|macro|FTDI_GUDEADS_E80C_PID
+mdefine_line|#define FTDI_GUDEADS_E80C_PID    0xE80C
+DECL|macro|FTDI_GUDEADS_E80D_PID
+mdefine_line|#define FTDI_GUDEADS_E80D_PID    0xE80D
+DECL|macro|FTDI_GUDEADS_E80E_PID
+mdefine_line|#define FTDI_GUDEADS_E80E_PID    0xE80E
+DECL|macro|FTDI_GUDEADS_E80F_PID
+mdefine_line|#define FTDI_GUDEADS_E80F_PID    0xE80F
+DECL|macro|FTDI_GUDEADS_E888_PID
+mdefine_line|#define FTDI_GUDEADS_E888_PID    0xE888  /* Expert ISDN Control USB */
+DECL|macro|FTDI_GUDEADS_E889_PID
+mdefine_line|#define FTDI_GUDEADS_E889_PID    0xE889  /* USB RS-232 OptoBridge */
+DECL|macro|FTDI_GUDEADS_E88A_PID
+mdefine_line|#define FTDI_GUDEADS_E88A_PID    0xE88A
+DECL|macro|FTDI_GUDEADS_E88B_PID
+mdefine_line|#define FTDI_GUDEADS_E88B_PID    0xE88B
+DECL|macro|FTDI_GUDEADS_E88C_PID
+mdefine_line|#define FTDI_GUDEADS_E88C_PID    0xE88C
+DECL|macro|FTDI_GUDEADS_E88D_PID
+mdefine_line|#define FTDI_GUDEADS_E88D_PID    0xE88D
+DECL|macro|FTDI_GUDEADS_E88E_PID
+mdefine_line|#define FTDI_GUDEADS_E88E_PID    0xE88E
+DECL|macro|FTDI_GUDEADS_E88F_PID
+mdefine_line|#define FTDI_GUDEADS_E88F_PID    0xE88F
 multiline_comment|/* &n; * Gude Analog- und Digitalsysteme GmbH&n; */
 DECL|macro|FTDI_GUDEADS_889_PID
 mdefine_line|#define FTDI_GUDEADS_889_PID    0xe889  /* USB RS323 OptoBridge */ 
