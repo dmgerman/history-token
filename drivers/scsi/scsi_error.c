@@ -3995,6 +3995,9 @@ suffix:colon
 r_case
 id|COMMAND_TERMINATED
 suffix:colon
+r_case
+id|TASK_ABORTED
+suffix:colon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -4031,6 +4034,9 @@ id|INTERMEDIATE_GOOD
 suffix:colon
 r_case
 id|INTERMEDIATE_C_GOOD
+suffix:colon
+r_case
+id|ACA_ACTIVE
 suffix:colon
 multiline_comment|/*&n;&t;&t; * who knows?  FIXME(eric)&n;&t;&t; */
 r_return
