@@ -21,15 +21,16 @@ mdefine_line|#define DRIVER_NAME&t;&t;&quot;i830&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel 830M&quot;
 DECL|macro|DRIVER_DATE
-mdefine_line|#define DRIVER_DATE&t;&t;&quot;20020828&quot;
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20021108&quot;
+multiline_comment|/* Interface history:&n; *&n; * 1.1: Original.&n; * 1.2: ?&n; * 1.3: New irq emit/wait ioctls.&n; *      New pageflip ioctl.&n; *      New getparam ioctl.&n; *      State for texunits 3&amp;4 in sarea.&n; *      New (alternative) layout for texture state.&n; */
 DECL|macro|DRIVER_MAJOR
 mdefine_line|#define DRIVER_MAJOR&t;&t;1
 DECL|macro|DRIVER_MINOR
-mdefine_line|#define DRIVER_MINOR&t;&t;2
+mdefine_line|#define DRIVER_MINOR&t;&t;3
 DECL|macro|DRIVER_PATCHLEVEL
-mdefine_line|#define DRIVER_PATCHLEVEL&t;1
+mdefine_line|#define DRIVER_PATCHLEVEL&t;2
 DECL|macro|DRIVER_IOCTLS
-mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_INIT)]   = { i830_dma_init,    1, 1 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_VERTEX)] = { i830_dma_vertex,  1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_CLEAR)]  = { i830_clear_bufs,  1, 0 }, &bslash;&n;      &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_FLUSH)]  = { i830_flush_ioctl, 1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETAGE)] = { i830_getage,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETBUF)] = { i830_getbuf,      1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_SWAP)]   = { i830_swap_bufs,   1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_COPY)]   = { i830_copybuf,     1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_DOCOPY)] = { i830_docopy,      1, 0 },
+mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_INIT)]   = { i830_dma_init,    1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_VERTEX)] = { i830_dma_vertex,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_CLEAR)]  = { i830_clear_bufs,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_FLUSH)]  = { i830_flush_ioctl, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETAGE)] = { i830_getage,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETBUF)] = { i830_getbuf,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_SWAP)]   = { i830_swap_bufs,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_COPY)]   = { i830_copybuf,     1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_DOCOPY)] = { i830_docopy,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_FLIP)]   = { i830_flip_bufs,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_IRQ_EMIT)] = { i830_irq_emit,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_IRQ_WAIT)] = { i830_irq_wait,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETPARAM)] = { i830_getparam,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_SETPARAM)] = { i830_setparam,  1, 0 } 
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS         4
 DECL|macro|__HAVE_COUNTER6
@@ -44,7 +45,7 @@ multiline_comment|/* Driver customization:&n; */
 DECL|macro|__HAVE_RELEASE
 mdefine_line|#define __HAVE_RELEASE&t;&t;1
 DECL|macro|DRIVER_RELEASE
-mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i830_reclaim_buffers( dev, priv-&gt;pid );&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i830_reclaim_buffers( filp );&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;1
@@ -58,9 +59,25 @@ DECL|macro|__HAVE_DMA_QUIESCENT
 mdefine_line|#define __HAVE_DMA_QUIESCENT&t;1
 DECL|macro|DRIVER_DMA_QUIESCENT
 mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i830_dma_quiescent( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-multiline_comment|/* Don&squot;t need an irq any more.  The template code will make sure that&n; * a noop stub is generated for compatibility.&n; */
+multiline_comment|/* Driver will work either way: IRQ&squot;s save cpu time when waiting for&n; * the card, but are subject to subtle interactions between bios,&n; * hardware and the driver.&n; */
+DECL|macro|USE_IRQS
+mdefine_line|#define USE_IRQS 0
+macro_line|#if USE_IRQS
 DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;0
+mdefine_line|#define __HAVE_DMA_IRQ&t;&t;1
+DECL|macro|__HAVE_SHARED_IRQ
+mdefine_line|#define __HAVE_SHARED_IRQ&t;1
+DECL|macro|DRIVER_PREINSTALL
+mdefine_line|#define DRIVER_PREINSTALL() do {&t;&t;&t;&bslash;&n;&t;drm_i830_private_t *dev_priv =&t;&t;&t;&bslash;&n;&t;&t;(drm_i830_private_t *)dev-&gt;dev_private;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   &t;I830_WRITE16( I830REG_HWSTAM, 0xffff );&t;&bslash;&n;        I830_WRITE16( I830REG_INT_MASK_R, 0x0 );&t;&bslash;&n;      &t;I830_WRITE16( I830REG_INT_ENABLE_R, 0x0 );&t;&bslash;&n;} while (0)
+DECL|macro|DRIVER_POSTINSTALL
+mdefine_line|#define DRIVER_POSTINSTALL() do {&t;&t;&t;&t;&bslash;&n;&t;drm_i830_private_t *dev_priv =&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_i830_private_t *)dev-&gt;dev_private;&t;&t;&bslash;&n;   &t;I830_WRITE16( I830REG_INT_ENABLE_R, 0x2 );&t;&t;&bslash;&n;   &t;atomic_set(&amp;dev_priv-&gt;irq_received, 0);&t;&t;&t;&bslash;&n;   &t;atomic_set(&amp;dev_priv-&gt;irq_emitted, 0);&t;&t;&t;&bslash;&n;&t;init_waitqueue_head(&amp;dev_priv-&gt;irq_queue);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* This gets called too late to be useful: dev_priv has already been&n; * freed.&n; */
+DECL|macro|DRIVER_UNINSTALL
+mdefine_line|#define DRIVER_UNINSTALL() do {&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|__HAVE_DMA_IRQ
+mdefine_line|#define __HAVE_DMA_IRQ          0
+macro_line|#endif
 multiline_comment|/* Buffer customization:&n; */
 DECL|macro|DRIVER_BUF_PRIV_T
 mdefine_line|#define DRIVER_BUF_PRIV_T&t;drm_i830_buf_priv_t

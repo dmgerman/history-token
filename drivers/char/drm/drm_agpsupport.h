@@ -1425,10 +1425,10 @@ op_assign
 id|head-&gt;agp_info.page_mask
 suffix:semicolon
 macro_line|#endif
-id|DRM_DEBUG
+id|DRM_INFO
 c_func
 (paren
-l_string|&quot;AGP %d.%d, aperture @ 0x%08lx %ZuMB&bslash;n&quot;
+l_string|&quot;AGP %d.%d aperture @ 0x%08lx %ZuMB&bslash;n&quot;
 comma
 id|head-&gt;agp_info.version.major
 comma

@@ -2524,6 +2524,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -2684,6 +2686,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 r_return
@@ -2701,6 +2705,9 @@ r_int
 id|mga_dma_get_buffers
 c_func
 (paren
+id|DRMFILE
+id|filp
+comma
 id|drm_device_t
 op_star
 id|dev
@@ -2753,9 +2760,9 @@ c_func
 id|EAGAIN
 )paren
 suffix:semicolon
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
-id|DRM_CURRENTPID
+id|filp
 suffix:semicolon
 r_if
 c_cond
@@ -2859,6 +2866,8 @@ id|LOCK_TEST_WITH_RETURN
 c_func
 (paren
 id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM_COPY_FROM_USER_IOCTL
@@ -2955,6 +2964,8 @@ op_assign
 id|mga_dma_get_buffers
 c_func
 (paren
+id|filp
+comma
 id|dev
 comma
 op_amp
