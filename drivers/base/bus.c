@@ -1045,7 +1045,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair, so we call devclass_add_device() to add the &n; *&t;device to the class. &n; */
+multiline_comment|/**&n; *&t;driver_attach - try to bind driver to devices.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Walk the list of devices that the bus has on it and try to match&n; *&t;the driver with each one.&n; *&t;If bus_match() returns 0 and the @dev-&gt;driver is set, we&squot;ve found&n; *&t;a compatible pair, so we call devclass_add_device() to add the &n; *&t;device to the class. &n; *&n; *&t;Note that we ignore the error from bus_match(), since it&squot;s perfectly&n; *&t;valid for a driver not to bind to any devices.&n; */
 DECL|function|driver_attach
 r_static
 r_int
@@ -1069,11 +1069,6 @@ r_struct
 id|list_head
 op_star
 id|entry
-suffix:semicolon
-r_int
-id|error
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1116,8 +1111,10 @@ op_logical_neg
 id|dev-&gt;driver
 )paren
 (brace
-id|error
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|bus_match
 c_func
 (paren
@@ -1125,17 +1122,9 @@ id|dev
 comma
 id|drv
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|error
 op_logical_and
 id|dev-&gt;driver
 )paren
-id|error
-op_assign
 id|devclass_add_device
 c_func
 (paren
@@ -1145,7 +1134,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-id|error
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;device_release_driver - manually detach device from driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;Manually detach device from driver.&n; *&t;Note that this is called without incrementing the bus&n; *&t;reference count nor taking the bus&squot;s rwsem. Be sure that&n; *&t;those are accounted for before calling this function.&n; */
@@ -1520,9 +1509,17 @@ id|drv-&gt;kobj
 )paren
 )paren
 )paren
-r_goto
-id|Done
+(brace
+id|put_bus
+c_func
+(paren
+id|bus
+)paren
 suffix:semicolon
+r_return
+id|error
+suffix:semicolon
+)brace
 id|down_write
 c_func
 (paren
@@ -1574,8 +1571,6 @@ op_amp
 id|bus-&gt;subsys.rwsem
 )paren
 suffix:semicolon
-id|Done
-suffix:colon
 r_if
 c_cond
 (paren
