@@ -11560,6 +11560,20 @@ c_func
 id|dev_set_promiscuity
 )paren
 suffix:semicolon
+DECL|variable|dev_change_flags
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_change_flags
+)paren
+suffix:semicolon
+DECL|variable|dev_set_mtu
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_set_mtu
+)paren
+suffix:semicolon
 DECL|variable|free_netdev
 id|EXPORT_SYMBOL
 c_func
@@ -11657,16 +11671,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|br_handle_frame_hook
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* for 801q VLAN support */
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
-DECL|variable|dev_change_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dev_change_flags
 )paren
 suffix:semicolon
 macro_line|#endif
