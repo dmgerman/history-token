@@ -1,6 +1,4 @@
 multiline_comment|/*&n; **********************************************************************&n; *     mixer.c - /dev/mixer interface for emu10k1 driver&n; *     Copyright 1999, 2000 Creative Labs, Inc.&n; *&n; **********************************************************************&n; *&n; *     Date                 Author          Summary of changes&n; *     ----                 ------          ------------------&n; *     October 20, 1999     Bertrand Lee    base code release&n; *     November 2, 1999     Alan Cox        cleaned up stuff&n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; **********************************************************************&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__&t;&t;/* Kernel version only defined once */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1755,7 +1753,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|card-&gt;isaps
+id|card-&gt;is_aps
 )paren
 (brace
 id|ret
@@ -2986,6 +2984,7 @@ id|ctl-&gt;val
 l_int|0
 )braket
 suffix:semicolon
+multiline_comment|/* 0 == left, 1 == right */
 id|ch
 op_assign
 id|ctl-&gt;val
@@ -3033,7 +3032,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|card-&gt;isaps
+id|card-&gt;is_aps
 )paren
 r_break
 suffix:semicolon
@@ -3058,6 +3057,8 @@ r_if
 c_cond
 (paren
 id|ch
+op_eq
+l_int|1
 )paren
 (brace
 id|state
@@ -3073,8 +3074,6 @@ id|id
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|card-&gt;ac97.supported_mixers
 op_or_assign
 (paren
@@ -3083,7 +3082,6 @@ op_lshift
 id|id
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3172,12 +3170,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|ch
-)paren
-(brace
 id|card-&gt;ac97.stereo_mixers
 op_and_assign
 op_complement
@@ -3191,8 +3183,13 @@ id|card-&gt;ac97.stereo_mixers
 op_or_assign
 id|card-&gt;ac97_stereo_mixers
 suffix:semicolon
-)brace
-r_else
+r_if
+c_cond
+(paren
+id|ch
+op_eq
+l_int|0
+)paren
 (brace
 id|card-&gt;ac97.supported_mixers
 op_and_assign
@@ -3281,6 +3278,44 @@ id|ret
 op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CMD_AC97_BOOST
+suffix:colon
+r_if
+c_cond
+(paren
+id|ctl-&gt;val
+(braket
+l_int|0
+)braket
+)paren
+(brace
+id|emu10k1_ac97_write
+c_func
+(paren
+op_amp
+id|card-&gt;ac97
+comma
+l_int|0x18
+comma
+l_int|0x0
+)paren
+suffix:semicolon
+)brace
+r_else
+id|emu10k1_ac97_write
+c_func
+(paren
+op_amp
+id|card-&gt;ac97
+comma
+l_int|0x18
+comma
+l_int|0x0808
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3515,6 +3550,9 @@ l_int|0
 comma
 id|TCB
 comma
+(paren
+id|u32
+)paren
 id|card-&gt;tankmem.dma_handle
 comma
 id|TCBS
@@ -3582,6 +3620,9 @@ id|val
 suffix:semicolon
 r_int
 id|scale
+suffix:semicolon
+id|card-&gt;ac97.modcnt
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -3843,7 +3884,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|card-&gt;isaps
+id|card-&gt;is_aps
 )paren
 (brace
 r_if
@@ -3920,16 +3961,16 @@ r_if
 c_cond
 (paren
 (paren
-id|_IOC_DIR
+id|_SIOC_DIR
 c_func
 (paren
 id|cmd
 )paren
 op_eq
 (paren
-id|_IOC_WRITE
+id|_SIOC_WRITE
 op_or
-id|_IOC_READ
+id|_SIOC_READ
 )paren
 )paren
 op_logical_and

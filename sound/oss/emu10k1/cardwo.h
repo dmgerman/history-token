@@ -9,42 +9,16 @@ macro_line|#include &quot;timer.h&quot;
 multiline_comment|/* setting this to other than a power of two may break some applications */
 DECL|macro|WAVEOUT_MAXBUFSIZE
 mdefine_line|#define WAVEOUT_MAXBUFSIZE&t;MAXBUFSIZE
-DECL|macro|WAVEOUT_MINBUFSIZE
-mdefine_line|#define WAVEOUT_MINBUFSIZE&t;64
 DECL|macro|WAVEOUT_DEFAULTFRAGLEN
 mdefine_line|#define WAVEOUT_DEFAULTFRAGLEN&t;20 /* Time to play a fragment in ms (latency) */
 DECL|macro|WAVEOUT_DEFAULTBUFLEN
 mdefine_line|#define WAVEOUT_DEFAULTBUFLEN&t;500 /* Time to play the entire buffer in ms */
 DECL|macro|WAVEOUT_MINFRAGSHIFT
-mdefine_line|#define WAVEOUT_MINFRAGSHIFT&t;6
+mdefine_line|#define WAVEOUT_MINFRAGSHIFT&t;6 /* Minimum fragment size in bytes is 2^6 */
+DECL|macro|WAVEOUT_MINFRAGS
+mdefine_line|#define WAVEOUT_MINFRAGS&t;3 /* _don&squot;t_ go bellow 3, it would break silence filling */
 DECL|macro|WAVEOUT_MAXVOICES
-mdefine_line|#define WAVEOUT_MAXVOICES 6
-multiline_comment|/* waveout_mem is cardwo internal */
-DECL|struct|waveout_mem
-r_struct
-id|waveout_mem
-(brace
-DECL|member|emupageindex
-r_int
-id|emupageindex
-suffix:semicolon
-DECL|member|addr
-r_void
-op_star
-id|addr
-(braket
-id|BUFMAXPAGES
-)braket
-suffix:semicolon
-DECL|member|dma_handle
-id|dma_addr_t
-id|dma_handle
-(braket
-id|BUFMAXPAGES
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
+mdefine_line|#define WAVEOUT_MAXVOICES&t;6
 DECL|struct|waveout_buffer
 r_struct
 id|waveout_buffer
@@ -72,14 +46,6 @@ id|u32
 id|pages
 suffix:semicolon
 multiline_comment|/* buffer size in page units*/
-DECL|member|mem
-r_struct
-id|waveout_mem
-id|mem
-(braket
-id|WAVEOUT_MAXVOICES
-)braket
-suffix:semicolon
 DECL|member|silence_pos
 id|u32
 id|silence_pos

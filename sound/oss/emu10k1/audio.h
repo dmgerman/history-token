@@ -2,8 +2,6 @@ multiline_comment|/*&n; ********************************************************
 macro_line|#ifndef _AUDIO_H
 DECL|macro|_AUDIO_H
 mdefine_line|#define _AUDIO_H
-DECL|macro|MINFRAGS
-mdefine_line|#define MINFRAGS&t;2&t;/* _don&squot;t_ got bellow 2 */
 DECL|struct|emu10k1_wavedevice
 r_struct
 id|emu10k1_wavedevice

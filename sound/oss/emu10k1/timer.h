@@ -24,17 +24,17 @@ id|u8
 id|state
 suffix:semicolon
 DECL|member|count
-id|u32
+id|u16
 id|count
 suffix:semicolon
 multiline_comment|/* current number of interrupts */
 DECL|member|count_max
-id|u32
+id|u16
 id|count_max
 suffix:semicolon
 multiline_comment|/* number of interrupts needed to schedule the bh */
 DECL|member|delay
-id|u32
+id|u16
 id|delay
 suffix:semicolon
 multiline_comment|/* timer delay */
@@ -52,7 +52,7 @@ r_struct
 id|emu_timer
 op_star
 comma
-id|u32
+id|u16
 )paren
 suffix:semicolon
 r_void
@@ -95,7 +95,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|TIMER_STOPPED
-mdefine_line|#define TIMER_STOPPED &t;&t;&t;0xffffffff 
+mdefine_line|#define TIMER_STOPPED &t;&t;&t;0xffff 
 DECL|macro|TIMER_STATE_INSTALLED
 mdefine_line|#define TIMER_STATE_INSTALLED &t;&t;0x01
 DECL|macro|TIMER_STATE_ACTIVE

@@ -200,6 +200,8 @@ DECL|macro|CMD_SETPASSTHROUGH
 mdefine_line|#define CMD_SETPASSTHROUGH&t;_IOW(&squot;D&squot;, 18, struct mixer_private_ioctl)
 DECL|macro|CMD_PRIVATE3_VERSION
 mdefine_line|#define CMD_PRIVATE3_VERSION&t;_IOW(&squot;D&squot;, 19, struct mixer_private_ioctl)
+DECL|macro|CMD_AC97_BOOST
+mdefine_line|#define CMD_AC97_BOOST&t;&t;_IOW(&squot;D&squot;, 20, struct mixer_private_ioctl)
 singleline_comment|//up this number when breaking compatibility
 DECL|macro|PRIVATE3_VERSION
 mdefine_line|#define PRIVATE3_VERSION 1
@@ -251,7 +253,7 @@ id|list_head
 id|timers
 suffix:semicolon
 DECL|member|timer_delay
-r_int
+id|u16
 id|timer_delay
 suffix:semicolon
 DECL|member|timer_lock
@@ -376,9 +378,9 @@ id|u8
 id|chiprev
 suffix:semicolon
 multiline_comment|/* Chip revision                */
-DECL|member|isaps
-r_int
-id|isaps
+DECL|member|is_aps
+id|u8
+id|is_aps
 suffix:semicolon
 DECL|member|mgr
 r_struct
@@ -514,6 +516,17 @@ id|u32
 )paren
 suffix:semicolon
 r_void
+id|emu10k1_timer_set
+c_func
+(paren
+r_struct
+id|emu10k1_card
+op_star
+comma
+id|u16
+)paren
+suffix:semicolon
+r_void
 id|sblive_writeptr
 c_func
 (paren
@@ -535,10 +548,8 @@ c_func
 r_struct
 id|emu10k1_card
 op_star
-id|card
 comma
 id|u32
-id|channel
 comma
 dot
 dot
@@ -546,7 +557,7 @@ dot
 )paren
 suffix:semicolon
 DECL|macro|TAGLIST_END
-mdefine_line|#define TAGLIST_END 0
+mdefine_line|#define TAGLIST_END&t;0
 id|u32
 id|sblive_readptr
 c_func
