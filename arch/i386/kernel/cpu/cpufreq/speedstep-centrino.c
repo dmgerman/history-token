@@ -13,6 +13,7 @@ macro_line|#endif
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/cpufeature.h&gt;
+macro_line|#include &quot;speedstep-est-common.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&quot;speedstep-centrino: &quot;
 DECL|macro|MAINTAINER
@@ -188,6 +189,12 @@ id|centrino_cpu
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|centrino_driver
+r_static
+r_struct
+id|cpufreq_driver
+id|centrino_driver
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_SPEEDSTEP_CENTRINO_TABLE
 multiline_comment|/* Computes the correct form for IA32_PERF_CTL MSR for a particular&n;   frequency/voltage operating point; frequency in MHz, volts in mV.&n;   This is stored as &quot;index&quot; in the structure. */
@@ -2360,6 +2367,21 @@ id|cpu_ids
 id|i
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_const_loops_cpu
+c_func
+(paren
+id|policy-&gt;cpu
+)paren
+)paren
+(brace
+id|centrino_driver.flags
+op_or_assign
+id|CPUFREQ_CONST_LOOPS
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

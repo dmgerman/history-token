@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
+macro_line|#include &quot;speedstep-est-common.h&quot;
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;acpi-cpufreq&quot;, msg)
 id|MODULE_AUTHOR
@@ -62,6 +63,12 @@ id|acpi_io_data
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|acpi_cpufreq_driver
+r_static
+r_struct
+id|cpufreq_driver
+id|acpi_cpufreq_driver
 suffix:semicolon
 r_static
 r_int
@@ -1332,6 +1339,21 @@ id|result
 r_goto
 id|err_free
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_const_loops_cpu
+c_func
+(paren
+id|cpu
+)paren
+)paren
+(brace
+id|acpi_cpufreq_driver.flags
+op_or_assign
+id|CPUFREQ_CONST_LOOPS
+suffix:semicolon
+)brace
 multiline_comment|/* capability check */
 r_if
 c_cond
