@@ -5016,6 +5016,17 @@ id|cacheflush_time
 op_div
 id|timer_tick_offset
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cache_decay_ticks
+OL
+l_int|1
+)paren
+id|cache_decay_ticks
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
