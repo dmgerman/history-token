@@ -204,7 +204,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -266,7 +266,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -681,7 +681,7 @@ id|page
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -694,7 +694,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1060,7 +1060,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1097,7 +1097,7 @@ id|find_success
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1142,7 +1142,7 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t; * First check the swap cache.  Since this is normally&n;&t;&t; * called after lookup_swap_cache() failed, re-calling&n;&t;&t; * that would confuse statistics.&n;&t;&t; */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1171,7 +1171,7 @@ c_func
 id|found_page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp

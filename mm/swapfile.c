@@ -1097,7 +1097,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the swapcache lock held.. */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1119,7 +1119,7 @@ id|retval
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1372,7 +1372,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the swapcache lock held.. */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1417,7 +1417,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -1508,7 +1508,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -1541,7 +1541,7 @@ id|page
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
