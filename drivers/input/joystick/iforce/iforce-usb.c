@@ -743,10 +743,10 @@ id|iforce
 r_goto
 id|fail
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|iforce
 )paren
@@ -874,10 +874,10 @@ id|iforce
 op_star
 id|iforce
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_int
@@ -886,10 +886,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME! iforce-&gt;dev.handle-&gt;open; */
-id|dev_set_drvdata
+id|usb_set_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

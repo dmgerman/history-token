@@ -1131,7 +1131,7 @@ op_amp
 id|ehci-&gt;regs-&gt;async_next
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  layered drivers can&squot;t yet tell when we enable that,&n;&t; * so they can&squot;t pass this info along (like NETIF_F_HIGHDMA)&n;&t; * (or like Scsi_Host.highmem_io) ... usb_bus.flags?&n;&t; */
+multiline_comment|/*&n;&t; * hcc_params controls whether ehci-&gt;regs-&gt;segment must (!!!)&n;&t; * be used; it constrains QH/ITD/SITD and QTD locations.&n;&t; * pci_pool consistent memory always uses segment zero.&n;&t; * streaming mappings for I/O buffers, like pci_map_single(),&n;&t; * can return segments above 4GB, if the device allows.&n;&t; *&n;&t; * NOTE:  the dma mask is visible through dma_supported(), so&n;&t; * drivers can pass this info along ... like NETIF_F_HIGHDMA,&n;&t; * Scsi_Host.highmem_io, and so forth.  It&squot;s readonly to all&n;&t; * host side drivers though.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1407,7 +1407,7 @@ id|bus-&gt;root_hub
 op_assign
 l_int|0
 suffix:semicolon
-id|usb_free_dev
+id|usb_put_dev
 (paren
 id|udev
 )paren

@@ -72,7 +72,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;serial&quot;
+l_string|&quot;usbserial&quot;
 comma
 dot
 id|probe
@@ -2276,9 +2276,12 @@ op_logical_neg
 id|serial
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;%s - out of memory&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2550,9 +2553,12 @@ op_logical_neg
 id|serial
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;%s - out of memory&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2580,9 +2586,12 @@ id|type-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2929,10 +2938,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;PL-2303 hack: descriptors matched but endpoints did not&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;PL-2303 hack: descriptors matched but endpoints did not&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2949,10 +2960,12 @@ suffix:semicolon
 multiline_comment|/* END HORRIBLE HACK FOR PL2303 */
 macro_line|#endif
 multiline_comment|/* found all that we need */
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s converter detected&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;%s converter detected&bslash;n&quot;
 comma
 id|type-&gt;name
 )paren
@@ -2979,10 +2992,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;Generic device with no bulk out, not allowed.&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;Generic device with no bulk out, not allowed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -3022,9 +3037,12 @@ id|type-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -3078,10 +3096,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;No more free serial devices&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;No more free serial devices&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -3161,10 +3181,12 @@ op_logical_neg
 id|port-&gt;read_urb
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;No free urbs available&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;No free urbs available&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3195,10 +3217,12 @@ op_logical_neg
 id|port-&gt;bulk_in_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;Couldn&squot;t allocate bulk_in_buffer&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;Couldn&squot;t allocate bulk_in_buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3284,10 +3308,12 @@ op_logical_neg
 id|port-&gt;write_urb
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;No free urbs available&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;No free urbs available&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3322,10 +3348,12 @@ op_logical_neg
 id|port-&gt;bulk_out_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;Couldn&squot;t allocate bulk_out_buffer&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;Couldn&squot;t allocate bulk_out_buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3411,10 +3439,12 @@ op_logical_neg
 id|port-&gt;interrupt_in_urb
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;No free urbs available&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;No free urbs available&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3445,10 +3475,12 @@ op_logical_neg
 id|port-&gt;interrupt_in_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;Couldn&squot;t allocate interrupt_in_buffer&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;Couldn&squot;t allocate interrupt_in_buffer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3598,9 +3630,12 @@ id|type-&gt;owner
 )paren
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;module get failed, exiting&quot;
+id|interface-&gt;dev
+comma
+l_string|&quot;module get failed, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3639,16 +3674,8 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* quietly accept this device, but don&squot;t bind to a serial port&n;&t;&t;&t; * as it&squot;s about to disappear */
-id|dev_set_drvdata
-(paren
-op_amp
-id|interface-&gt;dev
-comma
-id|serial
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+m_exit
 suffix:semicolon
 )brace
 )brace
@@ -3749,11 +3776,12 @@ comma
 id|minor
 )paren
 suffix:semicolon
+m_exit
+suffix:colon
 multiline_comment|/* success */
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|interface-&gt;dev
+id|interface
 comma
 id|serial
 )paren
@@ -3928,11 +3956,18 @@ id|usb_serial
 op_star
 id|serial
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
+id|interface
+)paren
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|dev
+op_assign
 op_amp
 id|interface-&gt;dev
-)paren
 suffix:semicolon
 r_struct
 id|usb_serial_port
@@ -3949,10 +3984,9 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|interface-&gt;dev
+id|interface
 comma
 l_int|NULL
 )paren
@@ -4254,10 +4288,13 @@ id|serial
 )paren
 suffix:semicolon
 )brace
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;device disconnected&quot;
+op_star
+id|dev
+comma
+l_string|&quot;device disconnected&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4275,7 +4312,7 @@ comma
 dot
 id|driver_name
 op_assign
-l_string|&quot;usb-serial&quot;
+l_string|&quot;usbserial&quot;
 comma
 macro_line|#ifndef CONFIG_DEVFS_FS
 dot

@@ -7650,10 +7650,9 @@ id|pfail
 suffix:semicolon
 )brace
 multiline_comment|/* all OK */
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|cp
 )paren
@@ -7691,20 +7690,18 @@ id|intf
 id|pauerswald_t
 id|cp
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 r_int
 r_int
 id|u
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

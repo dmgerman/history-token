@@ -11294,11 +11294,10 @@ c_cond
 id|chip
 )paren
 (brace
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|chip
 )paren
@@ -11334,11 +11333,10 @@ c_func
 id|intf
 )paren
 comma
-id|dev_get_drvdata
+id|usb_get_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 )paren
 suffix:semicolon
