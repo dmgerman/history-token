@@ -1115,6 +1115,8 @@ DECL|macro|AGPCMD
 mdefine_line|#define AGPCMD&t;&t;&t;0x8
 DECL|macro|AGPNISTAT
 mdefine_line|#define AGPNISTAT&t;&t;0xc
+DECL|macro|AGPCTRL
+mdefine_line|#define AGPCTRL                 0x10
 DECL|macro|AGPNEPG
 mdefine_line|#define AGPNEPG&t;&t;&t;0x16
 DECL|macro|AGPNICMD

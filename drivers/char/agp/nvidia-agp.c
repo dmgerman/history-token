@@ -26,14 +26,6 @@ DECL|macro|NVIDIA_3_APBASE
 mdefine_line|#define NVIDIA_3_APBASE&t;&t;0x50
 DECL|macro|NVIDIA_3_APLIMIT
 mdefine_line|#define NVIDIA_3_APLIMIT&t;0x54
-DECL|variable|__initdata
-r_static
-r_int
-id|agp_try_unsupported
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
 DECL|struct|_nvidia_private
 r_static
 r_struct
@@ -1394,22 +1386,12 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|agp_try_unsupported
-)paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;Unsupported NVIDIA chipset (device id: %04x),&quot;
-l_string|&quot; you might want to try agp_try_unsupported=1.&bslash;n&quot;
+l_string|&quot;Unsupported NVIDIA chipset (device id: %04x)&bslash;n&quot;
 comma
 id|pdev-&gt;device
 )paren
@@ -1417,19 +1399,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|PFX
-l_string|&quot;Trying generic NVIDIA routines for device id: %04x&bslash;n&quot;
-comma
-id|pdev-&gt;device
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 id|bridge
@@ -1671,14 +1640,6 @@ id|module_exit
 c_func
 (paren
 id|agp_nvidia_cleanup
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|agp_try_unsupported
-comma
-l_string|&quot;1i&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
