@@ -74,12 +74,9 @@ id|err
 OL
 l_int|0
 )paren
-(brace
-r_goto
-id|out
+r_return
+id|err
 suffix:semicolon
-)brace
-)brace
 id|m-&gt;msg_name
 op_assign
 id|address
@@ -90,11 +87,7 @@ id|m-&gt;msg_name
 op_assign
 l_int|NULL
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
+)brace
 id|size
 op_assign
 id|m-&gt;msg_iovlen
@@ -118,20 +111,21 @@ comma
 id|size
 )paren
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|m-&gt;msg_iov
 op_assign
 id|iov
 suffix:semicolon
-r_for
-c_loop
-(paren
 id|err
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_for
+c_loop
+(paren
 id|ct
 op_assign
 l_int|0
@@ -153,7 +147,7 @@ id|ct
 dot
 id|iov_len
 suffix:semicolon
-multiline_comment|/* Goal is not to verify user data, but to prevent returning&n;&t;&t;   negative value, which is interpreted as errno.&n;&t;&t;   Overflow is still possible, but it is harmless.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Goal is not to verify user data, but to prevent returning&n;&t;&t; * negative value, which is interpreted as errno.&n;&t;&t; * Overflow is still possible, but it is harmless.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -166,8 +160,6 @@ op_minus
 id|EMSGSIZE
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 r_return
 id|err
 suffix:semicolon
@@ -192,12 +184,6 @@ r_int
 id|len
 )paren
 (brace
-r_int
-id|err
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -239,8 +225,9 @@ comma
 id|copy
 )paren
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|kdata
 op_add_assign
@@ -263,14 +250,8 @@ id|iov
 op_increment
 suffix:semicolon
 )brace
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;In kernel copy to iovec. Returns -EFAULT on error.&n; *&n; *&t;Note: this modifies the original iovec.&n; */
@@ -373,12 +354,6 @@ r_int
 id|len
 )paren
 (brace
-r_int
-id|err
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -420,8 +395,9 @@ comma
 id|copy
 )paren
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|len
 op_sub_assign
@@ -444,14 +420,8 @@ id|iov
 op_increment
 suffix:semicolon
 )brace
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;For use with ip_build_xmit&n; */
@@ -477,12 +447,6 @@ r_int
 id|len
 )paren
 (brace
-r_int
-id|err
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
 multiline_comment|/* Skip over the finished iovecs */
 r_while
 c_loop
@@ -549,8 +513,9 @@ comma
 id|copy
 )paren
 )paren
-r_goto
-id|out
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|len
 op_sub_assign
@@ -564,14 +529,8 @@ id|iov
 op_increment
 suffix:semicolon
 )brace
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;And now for the all-in-one: copy and checksum from a user iovec&n; *&t;directly to a datagram&n; *&t;Calls to csum_partial but the last must be in 32 bit chunks&n; *&n; *&t;ip_build_xmit must ensure that when fragmenting only the last&n; *&t;call to this function will be unaligned also.&n; */

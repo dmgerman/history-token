@@ -5,6 +5,7 @@ mdefine_line|#define _SNMP_H
 macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/*&n; *&t;We use all unsigned longs. Linux will soon be so reliable that even these&n; *&t;will rapidly get too small 8-). Seriously consider the IpInReceives count&n; *&t;on the 20Gb/s + networks people expect in a few years time!&n; */
 multiline_comment|/* &n; * The rule for padding: &n; * Best is power of two because then the right structure can be found by a simple&n; * shift. The structure should be always cache line aligned.&n; * gcc needs n=alignto(cachelinesize, popcnt(sizeof(bla_mib))) shift/add instructions&n; * to emulate multiply in case it is not power-of-two. Currently n is always &lt;=3 for&n; * all sizes so simple cache line alignment is enough. &n; * &n; * The best solution would be a global CPU local area , especially on 64 and 128byte &n; * cacheline machine it makes a *lot* of sense -AK&n; */
+multiline_comment|/*&n; * RFC 1213:  MIB-II&n; * RFC 2011 (updates 1213):  SNMPv2-MIB-IP&n; * RFC 2863:  Interfaces Group MIB&n; */
 DECL|struct|ip_mib
 r_struct
 id|ip_mib
@@ -104,6 +105,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * RFC 2465:  IPv6 MIB: General Group&n; */
 DECL|struct|ipv6_mib
 r_struct
 id|ipv6_mib
@@ -228,6 +230,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * RFC 1213:  MIB-II ICMP Group&n; * RFC 2011 (updates 1213):  SNMPv2 MIB for IP: ICMP group&n; */
 DECL|struct|icmp_mib
 r_struct
 id|icmp_mib
@@ -377,6 +380,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * RFC 2466:  ICMPv6-MIB&n; */
 DECL|struct|icmpv6_mib
 r_struct
 id|icmpv6_mib
@@ -531,6 +535,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * RFC 1213:  MIB-II TCP group&n; * RFC 2012 (updates 1213):  SNMPv2-MIB-TCP&n; */
 DECL|struct|tcp_mib
 r_struct
 id|tcp_mib
@@ -615,6 +620,7 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * RFC 1213:  MIB-II UDP group&n; * RFC 2013 (updates 1213):  SNMPv2-MIB-UDP&n; */
 DECL|struct|udp_mib
 r_struct
 id|udp_mib

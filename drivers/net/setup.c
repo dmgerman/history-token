@@ -6,14 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 r_extern
 r_int
-id|dmascc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|scc_enet_init
 c_func
 (paren
@@ -61,14 +53,6 @@ id|__initdata
 op_assign
 (brace
 multiline_comment|/*&n;&t; *&t;Early setup devices&n;&t; */
-macro_line|#if defined(CONFIG_DMASCC)
-(brace
-id|dmascc_init
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif&t;
 macro_line|#if defined(CONFIG_SCC_ENET)
 (brace
 id|scc_enet_init
