@@ -3759,6 +3759,20 @@ op_assign
 op_amp
 id|pnpbios_protocol
 suffix:semicolon
+multiline_comment|/* clear out the damaged flags */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;active
+)paren
+id|pnp_init_resources
+c_func
+(paren
+op_amp
+id|dev-&gt;res
+)paren
+suffix:semicolon
 id|pnp_add_device
 c_func
 (paren

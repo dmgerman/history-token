@@ -47,13 +47,13 @@ id|dev
 )paren
 suffix:semicolon
 r_void
-id|pnp_free_resources
+id|pnp_free_option
 c_func
 (paren
 r_struct
-id|pnp_resources
+id|pnp_option
 op_star
-id|resources
+id|option
 )paren
 suffix:semicolon
 r_int
@@ -76,46 +76,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* resource conflict types */
-DECL|macro|CONFLICT_TYPE_NONE
-mdefine_line|#define CONFLICT_TYPE_NONE&t;0x0000&t;/* there are no conflicts, other than those in the link */
-DECL|macro|CONFLICT_TYPE_RESERVED
-mdefine_line|#define CONFLICT_TYPE_RESERVED&t;0x0001&t;/* the resource requested was reserved */
-DECL|macro|CONFLICT_TYPE_IN_USE
-mdefine_line|#define CONFLICT_TYPE_IN_USE&t;0x0002&t;/* there is a conflict because the resource is in use */
-DECL|macro|CONFLICT_TYPE_PCI
-mdefine_line|#define CONFLICT_TYPE_PCI&t;0x0004&t;/* there is a conflict with a pci device */
-DECL|macro|CONFLICT_TYPE_INVALID
-mdefine_line|#define CONFLICT_TYPE_INVALID&t;0x0008&t;/* the resource requested is invalid */
-DECL|macro|CONFLICT_TYPE_INTERNAL
-mdefine_line|#define CONFLICT_TYPE_INTERNAL&t;0x0010&t;/* resources within the device conflict with each ohter */
-DECL|macro|CONFLICT_TYPE_PNP_WARM
-mdefine_line|#define CONFLICT_TYPE_PNP_WARM&t;0x0020&t;/* there is a conflict with a pnp device that is active */
-DECL|macro|CONFLICT_TYPE_PNP_COLD
-mdefine_line|#define CONFLICT_TYPE_PNP_COLD&t;0x0040&t;/* there is a conflict with a pnp device that is disabled */
-multiline_comment|/* conflict search modes */
-DECL|macro|SEARCH_WARM
-mdefine_line|#define SEARCH_WARM 1&t;/* check for conflicts with active devices */
-DECL|macro|SEARCH_COLD
-mdefine_line|#define SEARCH_COLD 0&t;/* check for conflicts with disabled devices */
-r_struct
-id|pnp_dev
-op_star
-id|pnp_check_port_conflicts
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|dev
-comma
-r_int
-id|idx
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
 r_int
 id|pnp_check_port
 c_func
@@ -127,24 +87,6 @@ id|dev
 comma
 r_int
 id|idx
-)paren
-suffix:semicolon
-r_struct
-id|pnp_dev
-op_star
-id|pnp_check_mem_conflicts
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|dev
-comma
-r_int
-id|idx
-comma
-r_int
-id|mode
 )paren
 suffix:semicolon
 r_int
@@ -160,24 +102,6 @@ r_int
 id|idx
 )paren
 suffix:semicolon
-r_struct
-id|pnp_dev
-op_star
-id|pnp_check_irq_conflicts
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|dev
-comma
-r_int
-id|idx
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
 r_int
 id|pnp_check_irq
 c_func
@@ -189,24 +113,6 @@ id|dev
 comma
 r_int
 id|idx
-)paren
-suffix:semicolon
-r_struct
-id|pnp_dev
-op_star
-id|pnp_check_dma_conflicts
-c_func
-(paren
-r_struct
-id|pnp_dev
-op_star
-id|dev
-comma
-r_int
-id|idx
-comma
-r_int
-id|mode
 )paren
 suffix:semicolon
 r_int

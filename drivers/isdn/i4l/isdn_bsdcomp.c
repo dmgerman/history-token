@@ -619,8 +619,6 @@ id|kfree
 id|db
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Allocate space for a (de) compressor.&n; */
@@ -886,8 +884,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n;&t; * If this is the compression buffer then there is no length data.&n;&t; * For decompression, the length information is needed as well.&n;&t; */
 r_if
 c_cond
@@ -3097,6 +3093,11 @@ id|isdn_ppp_compressor
 id|ippp_bsd_compress
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|num
 op_assign
