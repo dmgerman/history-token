@@ -1938,12 +1938,12 @@ id|urb-&gt;pipe
 )paren
 )paren
 (brace
-r_case
-id|PIPE_CONTROL
+singleline_comment|// case PIPE_CONTROL:
+singleline_comment|// case PIPE_BULK:
+r_default
 suffix:colon
-r_case
-id|PIPE_BULK
-suffix:colon
+(brace
+)brace
 r_if
 c_cond
 (paren
@@ -2056,13 +2056,6 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 macro_line|#endif /* have_split_iso */
-r_default
-suffix:colon
-multiline_comment|/* can&squot;t happen */
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* remove from hardware lists&n; * completions normally happen asynchronously&n; */
@@ -2110,11 +2103,13 @@ id|flags
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;%s urb_dequeue %p qh state %d&quot;
+l_string|&quot;%s urb_dequeue %p qh %p state %d&quot;
 comma
 id|hcd-&gt;self.bus_name
 comma
 id|urb
+comma
+id|qh
 comma
 id|qh-&gt;qh_state
 )paren
@@ -2128,11 +2123,9 @@ id|urb-&gt;pipe
 )paren
 )paren
 (brace
-r_case
-id|PIPE_CONTROL
-suffix:colon
-r_case
-id|PIPE_BULK
+singleline_comment|// case PIPE_CONTROL:
+singleline_comment|// case PIPE_BULK:
+r_default
 suffix:colon
 id|spin_lock_irqsave
 (paren
@@ -2198,21 +2191,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-singleline_comment|// yeech ... this could spin for up to two frames!
-id|dbg
+multiline_comment|/* let pending unlinks complete */
+id|wait_ms
 (paren
-l_string|&quot;wait for dequeue: state %d, reclaim %p, hcd state %d&quot;
-comma
-id|qh-&gt;qh_state
-comma
-id|ehci-&gt;reclaim
-comma
-id|ehci-&gt;hcd.state
-)paren
-suffix:semicolon
-id|udelay
-(paren
-l_int|100
+l_int|1
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2311,13 +2293,11 @@ id|urb-&gt;transfer_flags
 op_or_assign
 id|EHCI_STATE_UNLINK
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -2367,6 +2347,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* ASSERT:  no requests/urbs are still linked (so no TDs) */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
 id|dbg
 (paren
@@ -2414,6 +2395,10 @@ id|ehci_qh
 op_star
 id|qh
 suffix:semicolon
+r_char
+op_star
+id|why
+suffix:semicolon
 multiline_comment|/* dev-&gt;ep never has ITDs or SITDs */
 id|qh
 op_assign
@@ -2427,33 +2412,76 @@ id|dev-&gt;ep
 id|i
 )braket
 suffix:semicolon
-id|vdbg
+multiline_comment|/* detect/report non-recoverable errors */
+r_if
+c_cond
 (paren
-l_string|&quot;free_config, ep 0x%02x qh %p&quot;
-comma
-id|i
-comma
-id|qh
+id|in_interrupt
+(paren
 )paren
+)paren
+id|why
+op_assign
+l_string|&quot;disconnect() didn&squot;t&quot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|qh-&gt;hw_info2
+op_amp
+id|cpu_to_le32
+(paren
+l_int|0xffff
+)paren
+)paren
+op_ne
+l_int|0
+op_logical_and
+id|qh-&gt;qh_state
+op_ne
+id|QH_STATE_IDLE
+)paren
+id|why
+op_assign
+l_string|&quot;(active periodic)&quot;
+suffix:semicolon
+r_else
+id|why
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|list_empty
-(paren
-op_amp
-id|qh-&gt;qtd_list
-)paren
+id|why
 )paren
 (brace
-id|dbg
+id|err
 (paren
-l_string|&quot;ep 0x%02x qh %p not empty!&quot;
+l_string|&quot;dev %s-%s ep %d-%s error: %s&quot;
+comma
+id|hcd-&gt;self.bus_name
+comma
+id|udev-&gt;devpath
 comma
 id|i
+op_amp
+l_int|0xf
 comma
-id|qh
+(paren
+id|i
+op_amp
+l_int|0x10
+)paren
+ques
+c_cond
+l_string|&quot;IN&quot;
+suffix:colon
+l_string|&quot;OUT&quot;
+comma
+id|why
 )paren
 suffix:semicolon
 id|BUG
@@ -2468,7 +2496,26 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* wait_ms() won&squot;t spin here -- we&squot;re a thread */
+r_if
+c_cond
+(paren
+id|qh-&gt;qh_state
+op_eq
+id|QH_STATE_IDLE
+)paren
+r_goto
+id|idle
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;free_config, async ep 0x%02x qh %p&quot;
+comma
+id|i
+comma
+id|qh
+)paren
+suffix:semicolon
+multiline_comment|/* scan_async() empties the ring as it does its work,&n;&t;&t;&t; * using IAA, but doesn&squot;t (yet?) turn it off.  if it&n;&t;&t;&t; * doesn&squot;t empty this qh, likely it&squot;s the last entry.&n;&t;&t;&t; */
 r_while
 c_loop
 (paren
@@ -2477,6 +2524,55 @@ op_eq
 id|QH_STATE_LINKED
 op_logical_and
 id|ehci-&gt;reclaim
+op_logical_and
+id|ehci-&gt;hcd.state
+op_ne
+id|USB_STATE_HALT
+)paren
+(brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* wait_ms() won&squot;t spin, we&squot;re a thread;&n;&t;&t;&t;&t; * and we know IRQ+tasklet can progress&n;&t;&t;&t;&t; */
+id|wait_ms
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|qh-&gt;qh_state
+op_eq
+id|QH_STATE_LINKED
+)paren
+id|start_unlink_async
+(paren
+id|ehci
+comma
+id|qh
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|qh-&gt;qh_state
+op_ne
+id|QH_STATE_IDLE
 op_logical_and
 id|ehci-&gt;hcd.state
 op_ne
@@ -2505,52 +2601,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|qh-&gt;qh_state
-op_eq
-id|QH_STATE_LINKED
-)paren
-(brace
-id|start_unlink_async
-(paren
-id|ehci
-comma
-id|qh
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|qh-&gt;qh_state
-op_ne
-id|QH_STATE_IDLE
-)paren
-(brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|wait_ms
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-)brace
+id|idle
+suffix:colon
 id|qh_put
 (paren
 id|ehci
