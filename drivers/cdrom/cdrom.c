@@ -12324,6 +12324,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cdrom_root_table-&gt;ctl_name
+op_logical_and
+id|cdrom_root_table-&gt;child-&gt;de
+)paren
 id|cdrom_root_table-&gt;child-&gt;de-&gt;owner
 op_assign
 id|THIS_MODULE
