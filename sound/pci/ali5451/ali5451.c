@@ -9880,11 +9880,6 @@ id|codec-&gt;pci
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|codec-&gt;image
-)paren
 id|kfree
 c_func
 (paren

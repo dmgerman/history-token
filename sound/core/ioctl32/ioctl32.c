@@ -1764,11 +1764,6 @@ l_int|0
 suffix:semicolon
 id|__end
 suffix:colon
-r_if
-c_cond
-(paren
-id|data
-)paren
 id|kfree
 c_func
 (paren

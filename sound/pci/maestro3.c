@@ -10430,11 +10430,6 @@ suffix:semicolon
 multiline_comment|/* disable ints */
 )brace
 macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|chip-&gt;suspend_mem
-)paren
 id|vfree
 c_func
 (paren

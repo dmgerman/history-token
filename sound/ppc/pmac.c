@@ -214,8 +214,6 @@ r_if
 c_cond
 (paren
 id|rec
-op_logical_and
-id|rec-&gt;space
 )paren
 id|kfree
 c_func

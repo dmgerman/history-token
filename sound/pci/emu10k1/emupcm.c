@@ -4263,11 +4263,6 @@ id|epcm
 op_assign
 id|runtime-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|epcm
-)paren
 id|kfree
 c_func
 (paren

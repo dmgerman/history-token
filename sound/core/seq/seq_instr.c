@@ -153,15 +153,6 @@ r_int
 id|atomic
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cluster
-op_eq
-l_int|NULL
-)paren
-r_return
-suffix:semicolon
 id|kfree
 c_func
 (paren

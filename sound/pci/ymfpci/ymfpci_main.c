@@ -4216,11 +4216,6 @@ id|ypcm
 op_assign
 id|runtime-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ypcm
-)paren
 id|kfree
 c_func
 (paren
@@ -10962,11 +10957,6 @@ l_int|3
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|chip-&gt;saved_regs
-)paren
 id|vfree
 c_func
 (paren

@@ -164,11 +164,6 @@ c_cond
 id|q
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|q-&gt;q
-)paren
 id|kfree
 c_func
 (paren

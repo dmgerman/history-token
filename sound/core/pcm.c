@@ -4290,11 +4290,6 @@ id|snd_pcm_mmap_control_t
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|runtime-&gt;hw_constraints.rules
-)paren
 id|kfree
 c_func
 (paren

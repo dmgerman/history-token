@@ -2957,13 +2957,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chset-&gt;channels
-op_ne
-l_int|NULL
-)paren
 id|kfree
 c_func
 (paren

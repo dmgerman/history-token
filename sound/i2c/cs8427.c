@@ -767,11 +767,6 @@ op_star
 id|device
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|device-&gt;private_data
-)paren
 id|kfree
 c_func
 (paren

@@ -16435,11 +16435,6 @@ op_amp
 id|trident-&gt;tlb.silent_page
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|trident-&gt;tlb.shadow_entries
-)paren
 id|vfree
 c_func
 (paren

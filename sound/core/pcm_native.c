@@ -6703,8 +6703,6 @@ r_if
 c_cond
 (paren
 id|drec
-op_logical_and
-id|drec
 op_ne
 op_amp
 id|drec_tmp

@@ -1790,11 +1790,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ptr
-)paren
 id|vfree
 c_func
 (paren

@@ -6484,11 +6484,6 @@ c_func
 id|bus
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bus-&gt;pcms
-)paren
 id|kfree
 c_func
 (paren

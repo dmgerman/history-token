@@ -612,14 +612,6 @@ id|ice-&gt;akm
 id|akidx
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ak-&gt;private_value
-(braket
-l_int|0
-)braket
-)paren
 id|kfree
 c_func
 (paren
