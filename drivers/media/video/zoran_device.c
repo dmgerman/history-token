@@ -5891,9 +5891,7 @@ l_int|0
 multiline_comment|/* it is finished, notify the user */
 id|zr-&gt;v4l_buffers.buffer
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_grab_frame
+id|zr-&gt;v4l_grab_frame
 )braket
 dot
 id|state
@@ -5902,9 +5900,7 @@ id|BUZ_STATE_DONE
 suffix:semicolon
 id|zr-&gt;v4l_buffers.buffer
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_grab_frame
+id|zr-&gt;v4l_grab_frame
 )braket
 dot
 id|bs.seq
@@ -5915,20 +5911,12 @@ id|do_gettimeofday
 c_func
 (paren
 op_amp
-id|zr
-op_member_access_from_pointer
-id|v4l_buffers
-dot
-id|buffer
+id|zr-&gt;v4l_buffers.buffer
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_grab_frame
+id|zr-&gt;v4l_grab_frame
 )braket
 dot
-id|bs
-dot
-id|timestamp
+id|bs.timestamp
 )paren
 suffix:semicolon
 id|zr-&gt;v4l_grab_frame
@@ -5951,9 +5939,7 @@ id|wake_up_interruptible
 c_func
 (paren
 op_amp
-id|zr
-op_member_access_from_pointer
-id|v4l_capq
+id|zr-&gt;v4l_capq
 )paren
 suffix:semicolon
 multiline_comment|/* Check if there is another grab queued */
@@ -5974,9 +5960,7 @@ id|frame
 op_assign
 id|zr-&gt;v4l_pend
 (braket
-id|zr
-op_member_access_from_pointer
-id|v4l_pend_tail
+id|zr-&gt;v4l_pend_tail
 op_amp
 id|V4L_MASK_FRAME
 )braket
@@ -6235,9 +6219,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|zr
-op_member_access_from_pointer
-id|stat_com
+id|zr-&gt;stat_com
 (braket
 id|i
 )braket
