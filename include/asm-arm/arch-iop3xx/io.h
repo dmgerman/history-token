@@ -5,10 +5,10 @@ mdefine_line|#define __ASM_ARM_ARCH_IO_H
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 DECL|macro|__io
-mdefine_line|#define __io(p)&t;&t;&t;((p))
+mdefine_line|#define __io(p)&t;&t;&t;((void __iomem *)(p))
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(a)&t;&t;((unsigned long)(a))
+mdefine_line|#define __mem_pci(a)&t;&t;(a)
 DECL|macro|__mem_isa
-mdefine_line|#define __mem_isa(a)&t;&t;((unsigned long)(a))
+mdefine_line|#define __mem_isa(a)&t;&t;(a)
 macro_line|#endif
 eof
