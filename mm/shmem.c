@@ -36,6 +36,9 @@ DECL|macro|SHMEM_MAX_BYTES
 mdefine_line|#define SHMEM_MAX_BYTES  ((unsigned long long)SHMEM_MAX_INDEX &lt;&lt; PAGE_CACHE_SHIFT)
 DECL|macro|VM_ACCT
 mdefine_line|#define VM_ACCT(size)    (PAGE_CACHE_ALIGN(size) &gt;&gt; PAGE_SHIFT)
+multiline_comment|/* info-&gt;flags needs a VM_flag to handle swapoff/truncate races efficiently */
+DECL|macro|SHMEM_PAGEIN
+mdefine_line|#define SHMEM_PAGEIN&t; VM_READ
 multiline_comment|/* Pretend that each entry is of this size in directory&squot;s i_size */
 DECL|macro|BOGO_DIRENT_SIZE
 mdefine_line|#define BOGO_DIRENT_SIZE 20
@@ -1872,6 +1875,42 @@ OG
 id|info-&gt;next_index
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_mapping-&gt;nrpages
+op_logical_and
+(paren
+id|info-&gt;flags
+op_amp
+id|SHMEM_PAGEIN
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Call truncate_inode_pages again: racing shmem_unuse_inode&n;&t;&t; * may have swizzled a page in from swap since vmtruncate or&n;&t;&t; * generic_delete_inode did it, before we lowered next_index.&n;&t;&t; */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
+id|truncate_inode_pages
+c_func
+(paren
+id|inode-&gt;i_mapping
+comma
+id|inode-&gt;i_size
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
+)brace
 id|shmem_recalc_inode
 c_func
 (paren
@@ -2023,6 +2062,44 @@ op_amp
 id|page
 comma
 id|SGP_READ
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * Reset SHMEM_PAGEIN flag so that shmem_truncate can&n;&t;&t;&t; * detect if any pages might have been added to cache&n;&t;&t;&t; * after truncate_inode_pages.  But we needn&squot;t bother&n;&t;&t;&t; * if it&squot;s being fully truncated to zero-length: the&n;&t;&t;&t; * nrpages check is efficient enough in that case.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|attr-&gt;ia_size
+)paren
+(brace
+r_struct
+id|shmem_inode_info
+op_star
+id|info
+op_assign
+id|SHMEM_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
+id|info-&gt;flags
+op_and_assign
+op_complement
+id|SHMEM_PAGEIN
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -2628,39 +2705,9 @@ op_assign
 op_amp
 id|info-&gt;vfs_inode
 suffix:semicolon
-multiline_comment|/* Racing against delete or truncate? Must leave out of page cache */
-id|limit
-op_assign
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_FREEING
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-(paren
-id|i_size_read
-c_func
-(paren
-id|inode
-)paren
-op_plus
-id|PAGE_CACHE_SIZE
-op_minus
-l_int|1
-)paren
-op_rshift
-id|PAGE_CACHE_SHIFT
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|idx
-op_ge
-id|limit
-op_logical_or
 id|move_from_swap_cache
 c_func
 (paren
@@ -2673,6 +2720,11 @@ id|inode-&gt;i_mapping
 op_eq
 l_int|0
 )paren
+(brace
+id|info-&gt;flags
+op_or_assign
+id|SHMEM_PAGEIN
+suffix:semicolon
 id|shmem_swp_set
 c_func
 (paren
@@ -2685,6 +2737,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|shmem_swp_unmap
 c_func
 (paren
@@ -2706,9 +2759,7 @@ id|entry
 )paren
 suffix:semicolon
 r_return
-id|idx
-OL
-id|limit
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * shmem_unuse() search for an eventually swapped out shmem page.&n; */
