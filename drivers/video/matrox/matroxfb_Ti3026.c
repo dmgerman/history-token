@@ -2236,6 +2236,15 @@ id|PMINFO2
 )paren
 suffix:semicolon
 id|CRITBEGIN
+id|ACCESS_FBINFO
+c_func
+(paren
+id|crtc1.panpos
+)paren
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren

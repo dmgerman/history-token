@@ -1569,6 +1569,10 @@ DECL|member|mnp
 r_int
 id|mnp
 suffix:semicolon
+DECL|member|panpos
+r_int
+id|panpos
+suffix:semicolon
 DECL|member|crtc1
 )brace
 id|crtc1

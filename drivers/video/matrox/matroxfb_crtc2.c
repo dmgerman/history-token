@@ -748,7 +748,9 @@ id|tmp
 suffix:semicolon
 id|tmp
 op_assign
-l_int|0x0FFF0000
+id|mt-&gt;VDisplay
+op_lshift
+l_int|16
 suffix:semicolon
 multiline_comment|/* line compare */
 r_if
