@@ -21,10 +21,11 @@ id|to_real
 suffix:semicolon
 r_extern
 r_void
-id|user_time_init
+id|set_interval
 c_func
 (paren
-r_void
+r_int
+id|timer_type
 )paren
 suffix:semicolon
 r_extern

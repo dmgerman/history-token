@@ -1,46 +1,26 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
-macro_line|#ifndef __SYSCALL_USER_H__
-DECL|macro|__SYSCALL_USER_H__
-mdefine_line|#define __SYSCALL_USER_H__
-macro_line|#include &lt;asm/sigcontext.h&gt;
+multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#ifndef __SYSCALL_USER_H
+DECL|macro|__SYSCALL_USER_H
+mdefine_line|#define __SYSCALL_USER_H
 r_extern
-r_void
-id|syscall_handler
+r_int
+id|record_syscall_start
 c_func
 (paren
 r_int
-id|sig
-comma
-r_struct
-id|uml_pt_regs
-op_star
-id|regs
+id|syscall
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|exit_kernel
+id|record_syscall_end
 c_func
 (paren
 r_int
-id|pid
-comma
-r_void
-op_star
-id|task
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|do_syscall
-c_func
-(paren
-r_void
-op_star
-id|task
+id|index
 comma
 r_int
-id|pid
+id|result
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -60,6 +60,11 @@ DECL|struct|chan_ops
 r_struct
 id|chan_ops
 (brace
+DECL|member|type
+r_char
+op_star
+id|type
+suffix:semicolon
 DECL|member|init
 r_void
 op_star
@@ -92,6 +97,10 @@ comma
 r_int
 comma
 r_void
+op_star
+comma
+r_char
+op_star
 op_star
 )paren
 suffix:semicolon
@@ -352,14 +361,6 @@ comma
 r_void
 op_star
 id|line
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|setup_tracer_winch
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|macro|__channel_help
