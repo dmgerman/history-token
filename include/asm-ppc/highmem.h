@@ -83,15 +83,7 @@ op_star
 id|page
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|BUG
+id|might_sleep
 c_func
 (paren
 )paren
