@@ -949,7 +949,13 @@ c_func
 (paren
 id|mpnt
 comma
+id|mpnt-&gt;vm_start
+op_plus
+(paren
 id|off
+op_lshift
+id|PAGE_SHIFT
+)paren
 )paren
 suffix:semicolon
 )brace
