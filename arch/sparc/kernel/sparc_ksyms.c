@@ -291,12 +291,6 @@ id|user
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_extern
-id|spinlock_t
-id|kernel_flag
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* One thing to note is that the way the symbols of the mul/div&n; * support routines are named is a mess, they all start with&n; * a &squot;.&squot; which makes it a bitch to export, here is the trick:&n; */
 DECL|macro|EXPORT_SYMBOL_DOT
 mdefine_line|#define EXPORT_SYMBOL_DOT(sym)&t;&t;&t;&t;&t;&bslash;&n;extern int __sparc_dot_ ## sym (int) __asm__(&quot;.&quot; #sym);&t;&t;&bslash;&n;__EXPORT_SYMBOL(__sparc_dot_ ## sym, &quot;.&quot; #sym)
@@ -464,14 +458,6 @@ id|_change_bit
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Kernel wide locking */
-DECL|variable|kernel_flag
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kernel_flag
-)paren
-suffix:semicolon
 multiline_comment|/* IRQ implementation. */
 DECL|variable|global_irq_holder
 id|EXPORT_SYMBOL

@@ -515,12 +515,12 @@ multiline_comment|/* 1==UDP/IP, 2==TCP/IP, 3==IP */
 DECL|enumerator|RxProtoTCP
 id|RxProtoTCP
 op_assign
-l_int|2
+l_int|1
 comma
 DECL|enumerator|RxProtoUDP
 id|RxProtoUDP
 op_assign
-l_int|1
+l_int|2
 comma
 DECL|enumerator|RxProtoIP
 id|RxProtoIP

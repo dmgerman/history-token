@@ -10,14 +10,6 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/* The &squot;big kernel lock&squot; */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * the following functions deal with sending IPIs between CPUs.&n; *&n; * We use &squot;broadcast&squot;, CPU-&gt;CPU IPIs and self-IPIs too.&n; */
 DECL|function|__prepare_ICR
 r_static

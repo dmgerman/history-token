@@ -57,14 +57,6 @@ r_int
 r_char
 id|boot_cpu_id
 suffix:semicolon
-multiline_comment|/* Kernel spinlock */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|sparc64_num_cpus_online
 id|atomic_t
 id|sparc64_num_cpus_online

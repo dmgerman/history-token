@@ -68,13 +68,6 @@ DECL|variable|ipi_sent
 id|atomic_t
 id|ipi_sent
 suffix:semicolon
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|prof_multiplier
 r_int
 r_int

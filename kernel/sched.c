@@ -7037,6 +7037,16 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
+multiline_comment|/*&n; * The &squot;big kernel lock&squot;&n; *&n; * This spinlock is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Don&squot;t use in new code.&n; */
+DECL|variable|__cacheline_aligned_in_smp
+id|spinlock_t
+id|kernel_flag
+id|__cacheline_aligned_in_smp
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|init_timervecs

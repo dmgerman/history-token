@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 DECL|variable|dmi_broken
@@ -1280,17 +1279,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Some Bioses enable the PS/2 mouse (touchpad) at resume, even if it&n; * was disabled before the suspend. Linux gets terribly confused by that.&n; */
-DECL|typedef|pm_kbd_func
-r_typedef
-r_void
-(paren
-id|pm_kbd_func
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * Some Bioses enable the PS/2 mouse (touchpad) at resume, even if it was&n; * disabled before the suspend. Linux used to get terribly confused by that.&n; */
 DECL|function|broken_ps2_resume
 r_static
 id|__init
@@ -1304,30 +1293,15 @@ op_star
 id|d
 )paren
 (brace
-macro_line|#ifdef CONFIG_VT
-r_if
-c_cond
-(paren
-id|pm_kbd_request_override
-op_eq
-l_int|NULL
-)paren
-(brace
-id|pm_kbd_request_override
-op_assign
-id|pckbd_pm_resume
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s machine detected. Mousepad Resume Bug workaround enabled.&bslash;n&quot;
+l_string|&quot;%s machine detected. Mousepad Resume Bug workaround hopefully not needed.&bslash;n&quot;
 comma
 id|d-&gt;ident
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

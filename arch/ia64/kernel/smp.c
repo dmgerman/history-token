@@ -30,14 +30,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
-multiline_comment|/*&n; * The Big Kernel Lock.  It&squot;s not supposed to be used for performance critical stuff&n; * anymore.  But we still need to align it because certain workloads are still affected by&n; * it.  For example, llseek() and various other filesystem related routines still use the&n; * BKL.&n; */
-DECL|variable|__cacheline_aligned
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise static memory&n; * requirements. It also looks cleaner.&n; */
 DECL|variable|__cacheline_aligned
 r_static

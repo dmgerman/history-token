@@ -800,7 +800,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;jfs_extendfs: mapSize (0x%llx) &gt; t64 (0x%llx)&bslash;n&quot;
+l_string|&quot;jfs_extendfs: mapSize (0x%Lx) &gt; t64 (0x%Lx)&bslash;n&quot;
 comma
 (paren
 r_int

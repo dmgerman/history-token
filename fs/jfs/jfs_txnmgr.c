@@ -8950,6 +8950,8 @@ id|jfs_lazycommit
 c_func
 (paren
 r_void
+op_star
+id|arg
 )paren
 (brace
 r_int
@@ -9609,6 +9611,8 @@ id|jfs_sync
 c_func
 (paren
 r_void
+op_star
+id|arg
 )paren
 (brace
 r_struct

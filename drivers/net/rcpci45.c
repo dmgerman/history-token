@@ -69,15 +69,6 @@ r_int
 suffix:semicolon
 r_static
 r_int
-id|RCinit
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|RCopen
 (paren
 r_struct
@@ -664,11 +655,8 @@ l_int|0xff
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;pDpa-&gt;PLanApiPA = 0x%x&bslash;n&quot;
+l_string|&quot;pDpa-&gt;PLanApiPA = %p&bslash;n&quot;
 comma
-(paren
-id|uint
-)paren
 id|pDpa-&gt;PLanApiPA
 )paren
 suffix:semicolon

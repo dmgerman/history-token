@@ -53,10 +53,8 @@ id|MAX_NR_CONSOLES
 suffix:semicolon
 r_extern
 r_void
-(paren
-op_star
 id|kd_mksound
-)paren
+c_func
 (paren
 r_int
 r_int
@@ -69,10 +67,8 @@ id|ticks
 suffix:semicolon
 r_extern
 r_int
-(paren
-op_star
 id|kbd_rate
-)paren
+c_func
 (paren
 r_struct
 id|kbd_repeat

@@ -1,7 +1,10 @@
-multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995-2000 Kai Makisara.&n;&n;   Last modified: Sun May  5 15:09:56 2002 by makisara&n;*/
+multiline_comment|/*&n;   The compile-time configurable defaults for the Linux SCSI tape driver.&n;&n;   Copyright 1995-2002 Kai Makisara.&n;&n;   Last modified: Fri Jul 26 15:54:31 2002 by makisara&n;*/
 macro_line|#ifndef _ST_OPTIONS_H
 DECL|macro|_ST_OPTIONS_H
 mdefine_line|#define _ST_OPTIONS_H
+multiline_comment|/* If TRY_DIRECT_IO is non-zero, the driver tries to transfer data directly&n;   between the user buffer and tape drive. If this is not possible, driver&n;   buffer is used. If TRY_DIRECT_IO is zero, driver buffer is always used. */
+DECL|macro|TRY_DIRECT_IO
+mdefine_line|#define TRY_DIRECT_IO 1
 multiline_comment|/* The driver does not wait for some operations to finish before returning&n;   to the user program if ST_NOWAIT is non-zero. This helps if the SCSI&n;   adapter does not support multiple outstanding commands. However, the user&n;   should not give a new tape command before the previous one has finished. */
 DECL|macro|ST_NOWAIT
 mdefine_line|#define ST_NOWAIT 0
@@ -22,7 +25,7 @@ DECL|macro|ST_WRITE_THRESHOLD_BLOCKS
 mdefine_line|#define ST_WRITE_THRESHOLD_BLOCKS 30
 multiline_comment|/* Maximum number of scatter/gather segments */
 DECL|macro|ST_MAX_SG
-mdefine_line|#define ST_MAX_SG      64
+mdefine_line|#define ST_MAX_SG      256
 multiline_comment|/* The number of scatter/gather segments to allocate at first try (must be&n;   smaller or equal to the maximum). */
 DECL|macro|ST_FIRST_SG
 mdefine_line|#define ST_FIRST_SG    8
