@@ -2953,8 +2953,8 @@ id|retval
 OL
 l_int|0
 )paren
-r_return
-id|retval
+r_goto
+id|out
 suffix:semicolon
 id|end
 op_assign
