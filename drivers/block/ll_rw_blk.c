@@ -2824,7 +2824,7 @@ c_func
 id|q
 )paren
 suffix:semicolon
-id|add_wait_queue
+id|add_wait_queue_exclusive
 c_func
 (paren
 op_amp
@@ -2845,9 +2845,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rl-&gt;count
-OL
-id|batch_requests
 )paren
 id|schedule
 c_func
