@@ -1060,36 +1060,6 @@ id|cuda_poll
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
-macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
-DECL|variable|get_backlight_level
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_backlight_level
-)paren
-suffix:semicolon
-DECL|variable|set_backlight_level
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_backlight_level
-)paren
-suffix:semicolon
-DECL|variable|set_backlight_enable
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_backlight_enable
-)paren
-suffix:semicolon
-DECL|variable|register_backlight_controller
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_backlight_controller
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
 macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|variable|_machine
 id|EXPORT_SYMBOL
