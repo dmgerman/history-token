@@ -692,6 +692,12 @@ op_amp
 id|bus-&gt;subsys.rwsem
 )paren
 suffix:semicolon
+id|put_bus
+c_func
+(paren
+id|bus
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -836,6 +842,12 @@ c_func
 (paren
 op_amp
 id|bus-&gt;subsys.rwsem
+)paren
+suffix:semicolon
+id|put_bus
+c_func
+(paren
+id|bus
 )paren
 suffix:semicolon
 r_return
