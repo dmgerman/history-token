@@ -581,14 +581,18 @@ DECL|macro|S3C2410_DMA_DCDST
 mdefine_line|#define S3C2410_DMA_DCDST       (0x1C)
 DECL|macro|S3C2410_DMA_DMASKTRIG
 mdefine_line|#define S3C2410_DMA_DMASKTRIG   (0x20)
+DECL|macro|S3C2410_DISRCC_INC
+mdefine_line|#define S3C2410_DISRCC_INC&t;(1&lt;&lt;0)
+DECL|macro|S3C2410_DISRCC_APB
+mdefine_line|#define S3C2410_DISRCC_APB&t;(1&lt;&lt;1)
 DECL|macro|S3C2410_DMASKTRIG_STOP
 mdefine_line|#define S3C2410_DMASKTRIG_STOP   (1&lt;&lt;2)
 DECL|macro|S3C2410_DMASKTRIG_ON
 mdefine_line|#define S3C2410_DMASKTRIG_ON     (1&lt;&lt;1)
 DECL|macro|S3C2410_DMASKTRIG_SWTRIG
 mdefine_line|#define S3C2410_DMASKTRIG_SWTRIG (1&lt;&lt;0)
-DECL|macro|S3C2410_DCOM_DEMAND
-mdefine_line|#define S3C2410_DCOM_DEMAND     (0&lt;&lt;31)
+DECL|macro|S3C2410_DCON_DEMAND
+mdefine_line|#define S3C2410_DCON_DEMAND     (0&lt;&lt;31)
 DECL|macro|S3C2410_DCON_HANDSHAKE
 mdefine_line|#define S3C2410_DCON_HANDSHAKE  (1&lt;&lt;31)
 DECL|macro|S3C2410_DCON_SYNC_PCLK
@@ -597,8 +601,50 @@ DECL|macro|S3C2410_DCON_SYNC_HCLK
 mdefine_line|#define S3C2410_DCON_SYNC_HCLK  (1&lt;&lt;30)
 DECL|macro|S3C2410_DCON_INTREQ
 mdefine_line|#define S3C2410_DCON_INTREQ     (1&lt;&lt;29)
+DECL|macro|S3C2410_DCON_CH0_XDREQ0
+mdefine_line|#define S3C2410_DCON_CH0_XDREQ0&t;(0&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH0_UART0
+mdefine_line|#define S3C2410_DCON_CH0_UART0&t;(1&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH0_SDI
+mdefine_line|#define S3C2410_DCON_CH0_SDI&t;(2&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH0_TIMER
+mdefine_line|#define S3C2410_DCON_CH0_TIMER&t;(3&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH0_USBEP1
+mdefine_line|#define S3C2410_DCON_CH0_USBEP1&t;(4&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH1_XDREQ1
+mdefine_line|#define S3C2410_DCON_CH1_XDREQ1&t;(0&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH1_UART1
+mdefine_line|#define S3C2410_DCON_CH1_UART1&t;(1&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH1_I2SSDI
+mdefine_line|#define S3C2410_DCON_CH1_I2SSDI&t;(2&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH1_SPI
+mdefine_line|#define S3C2410_DCON_CH1_SPI&t;(3&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH1_USBEP2
+mdefine_line|#define S3C2410_DCON_CH1_USBEP2&t;(4&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH2_I2SSDO
+mdefine_line|#define S3C2410_DCON_CH2_I2SSDO&t;(0&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH2_I2SSDI
+mdefine_line|#define S3C2410_DCON_CH2_I2SSDI&t;(1&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH2_SDI
+mdefine_line|#define S3C2410_DCON_CH2_SDI&t;(2&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH2_TIMER
+mdefine_line|#define S3C2410_DCON_CH2_TIMER&t;(3&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH2_USBEP3
+mdefine_line|#define S3C2410_DCON_CH2_USBEP3&t;(4&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH3_UART2
+mdefine_line|#define S3C2410_DCON_CH3_UART2&t;(0&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH3_SDI
+mdefine_line|#define S3C2410_DCON_CH3_SDI&t;(1&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH3_SPI
+mdefine_line|#define S3C2410_DCON_CH3_SPI&t;(2&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH3_TIMER
+mdefine_line|#define S3C2410_DCON_CH3_TIMER&t;(3&lt;&lt;24)
+DECL|macro|S3C2410_DCON_CH3_USBEP4
+mdefine_line|#define S3C2410_DCON_CH3_USBEP4&t;(4&lt;&lt;24)
 DECL|macro|S3C2410_DCON_SRCSHIFT
 mdefine_line|#define S3C2410_DCON_SRCSHIFT   (24)
+DECL|macro|S3C2410_DCON_SRCMASK
+mdefine_line|#define S3C2410_DCON_SRCMASK&t;(7&lt;&lt;24)
 DECL|macro|S3C2410_DCON_BYTE
 mdefine_line|#define S3C2410_DCON_BYTE       (0&lt;&lt;20)
 DECL|macro|S3C2410_DCON_HALFWORD
@@ -611,5 +657,25 @@ DECL|macro|S3C2410_DCON_NORELOAD
 mdefine_line|#define S3C2410_DCON_NORELOAD   (1&lt;&lt;22)
 DECL|macro|S3C2410_DCON_HWTRIG
 mdefine_line|#define S3C2410_DCON_HWTRIG     (1&lt;&lt;23)
+macro_line|#ifdef CONFIG_CPU_S3C2440
+DECL|macro|S3C2440_DIDSTC_CHKINT
+mdefine_line|#define S3C2440_DIDSTC_CHKINT&t;(1&lt;&lt;2)
+DECL|macro|S3C2440_DCON_CH0_I2SSDO
+mdefine_line|#define S3C2440_DCON_CH0_I2SSDO&t;(5&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH0_PCMIN
+mdefine_line|#define S3C2440_DCON_CH0_PCMIN&t;(6&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH1_PCMOUT
+mdefine_line|#define S3C2440_DCON_CH1_PCMOUT&t;(5&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH1_SDI
+mdefine_line|#define S3C2440_DCON_CH1_SDI&t;(6&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH2_PCMIN
+mdefine_line|#define S3C2440_DCON_CH2_PCMIN&t;(5&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH2_MICIN
+mdefine_line|#define S3C2440_DCON_CH2_MICIN&t;(6&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH3_MICIN
+mdefine_line|#define S3C2440_DCON_CH3_MICIN&t;(5&lt;&lt;24)
+DECL|macro|S3C2440_DCON_CH3_PCMOUT
+mdefine_line|#define S3C2440_DCON_CH3_PCMOUT&t;(6&lt;&lt;24)
+macro_line|#endif
 macro_line|#endif /* __ASM_ARCH_DMA_H */
 eof
