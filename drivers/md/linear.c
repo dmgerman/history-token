@@ -51,10 +51,10 @@ id|sector
 op_rshift
 l_int|1
 suffix:semicolon
-id|hash
-op_assign
-id|conf-&gt;hash_table
-op_plus
+multiline_comment|/*&n;&t; * sector_div(a,b) returns the remainer and sets a to a/b&n;&t; */
+(paren
+r_void
+)paren
 id|sector_div
 c_func
 (paren
@@ -62,6 +62,12 @@ id|block
 comma
 id|conf-&gt;smallest-&gt;size
 )paren
+suffix:semicolon
+id|hash
+op_assign
+id|conf-&gt;hash_table
+op_plus
+id|block
 suffix:semicolon
 r_if
 c_cond
