@@ -1350,7 +1350,9 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Userspace tried to set rate=x0. Setting to x1 mode.&bslash;n&quot;
+l_string|&quot;%s tried to set rate=x0. Setting to x1 mode.&bslash;n&quot;
+comma
+id|current-&gt;comm
 )paren
 suffix:semicolon
 op_star
@@ -1371,7 +1373,9 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Userspace tried to set rate=x3. Setting to x2 mode.&bslash;n&quot;
+l_string|&quot;%s tried to set rate=x3. Setting to x2 mode.&bslash;n&quot;
+comma
+id|current-&gt;comm
 )paren
 suffix:semicolon
 op_star
@@ -1392,7 +1396,9 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Userspace tried to set rate=x%d. Setting to x4 mode.&bslash;n&quot;
+l_string|&quot;%s tried to set rate=x%d. Setting to x4 mode.&bslash;n&quot;
+comma
+id|current-&gt;comm
 comma
 id|tmp
 )paren
@@ -1676,7 +1682,9 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Userspace tried to set rate=x0. Setting to AGP3 x4 mode.&bslash;n&quot;
+l_string|&quot;%s tried to set rate=x0. Setting to AGP3 x4 mode.&bslash;n&quot;
+comma
+id|current-&gt;comm
 )paren
 suffix:semicolon
 op_star
@@ -1697,7 +1705,9 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Userspace tried to set rate=x3. Setting to AGP3 x4 mode.&bslash;n&quot;
+l_string|&quot;%s tried to set rate=x3. Setting to AGP3 x4 mode.&bslash;n&quot;
+comma
+id|current-&gt;comm
 )paren
 suffix:semicolon
 op_star
@@ -1718,7 +1728,9 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Userspace tried to set rate=x%d. Setting to AGP3 x8 mode.&bslash;n&quot;
+l_string|&quot;%s tried to set rate=x%d. Setting to AGP3 x8 mode.&bslash;n&quot;
+comma
+id|current-&gt;comm
 comma
 id|tmp
 )paren
