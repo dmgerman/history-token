@@ -37,6 +37,12 @@ id|loglevel
 op_assign
 id|ZFCP_LOG_LEVEL_DEFAULTS
 suffix:semicolon
+DECL|variable|device
+r_static
+r_char
+op_star
+id|device
+suffix:semicolon
 multiline_comment|/*********************** FUNCTION PROTOTYPES *********************************/
 multiline_comment|/* written against the module interface */
 r_static
@@ -151,7 +157,6 @@ l_string|&quot;Aron Zeh &lt;arzeh@de.ibm.com&gt;, &quot;
 l_string|&quot;IBM Deutschland Entwicklung GmbH&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* what this driver module is about */
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;FCP (SCSI over Fibre Channel) HBA driver for IBM eServer zSeries&quot;
@@ -163,7 +168,24 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* log level may be provided as a module parameter */
+id|module_param
+c_func
+(paren
+id|device
+comma
+id|charp
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|device
+comma
+l_string|&quot;specify initial device&quot;
+)paren
+suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -174,7 +196,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* short explaination of the previous module parameter */
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -1236,8 +1257,7 @@ id|i
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifndef MODULE
-multiline_comment|/**&n; * zfcp_device_setup - setup function&n; * @str: pointer to parameter string&n; *&n; * Parse the kernel parameter string &quot;zfcp_device=...&quot;&n; */
+multiline_comment|/**&n; * zfcp_device_setup - setup function&n; * @str: pointer to parameter string&n; *&n; * Parse &quot;device=...&quot; parameter string.&n; */
 r_static
 r_int
 id|__init
@@ -1253,6 +1273,15 @@ id|str
 r_char
 op_star
 id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|str
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|tmp
 op_assign
@@ -1358,37 +1387,23 @@ l_char|&squot;&bslash;0&squot;
 r_goto
 id|err_out
 suffix:semicolon
-id|zfcp_data.init_is_valid
-op_assign
+r_return
 l_int|1
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 id|err_out
 suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Parse error for parameter string %s&bslash;n&quot;
+l_string|&quot;Parse error for device parameter string %s&bslash;n&quot;
 comma
 id|str
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;zfcp_device=&quot;
-comma
-id|zfcp_device_setup
-)paren
-suffix:semicolon
 r_static
 r_void
 id|__init
@@ -1607,7 +1622,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif  /* #ifndef MODULE */
 r_static
 r_int
 id|__init
@@ -1732,18 +1746,20 @@ r_goto
 id|out_ccw_register
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
-id|zfcp_data.init_is_valid
+id|zfcp_device_setup
+c_func
+(paren
+id|device
+)paren
 )paren
 id|zfcp_init_device_configure
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -1845,54 +1861,6 @@ DECL|macro|ZFCP_LOG_AREA
 mdefine_line|#define ZFCP_LOG_AREA&t;&t;&t;ZFCP_LOG_AREA_CONFIG
 DECL|macro|ZFCP_LOG_AREA_PREFIX
 mdefine_line|#define ZFCP_LOG_AREA_PREFIX&t;&t;ZFCP_LOG_AREA_PREFIX_CONFIG
-macro_line|#ifndef MODULE
-multiline_comment|/* zfcp_loglevel boot_parameter */
-r_static
-r_int
-id|__init
-DECL|function|zfcp_loglevel_setup
-id|zfcp_loglevel_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|loglevel
-op_assign
-id|simple_strtoul
-c_func
-(paren
-id|str
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|ZFCP_LOG_TRACE
-c_func
-(paren
-l_string|&quot;loglevel is 0x%x&bslash;n&quot;
-comma
-id|loglevel
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* why just 1? */
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;zfcp_loglevel=&quot;
-comma
-id|zfcp_loglevel_setup
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* not MODULE */
 multiline_comment|/**&n; * zfcp_get_unit_by_lun - find unit in unit list of port by fcp lun&n; * @port: pointer to port to search for unit&n; * @fcp_lun: lun to search for&n; * Traverses list of all units of a port and returns pointer to a unit&n; * if lun of a unit matches.&n; */
 r_struct
 id|zfcp_unit

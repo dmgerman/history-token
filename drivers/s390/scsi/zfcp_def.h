@@ -1955,7 +1955,6 @@ id|atomic_t
 id|loglevel
 suffix:semicolon
 multiline_comment|/* current loglevel */
-macro_line|#ifndef MODULE                                       /* initial parameters&n;&t;&t;&t;&t;&t;&t;&t;needed if ipl from a&n;&t;&t;&t;&t;&t;&t;&t;scsi device is wanted */
 DECL|member|init_busid
 r_char
 id|init_busid
@@ -1971,11 +1970,6 @@ DECL|member|init_fcp_lun
 id|fcp_lun_t
 id|init_fcp_lun
 suffix:semicolon
-DECL|member|init_is_valid
-r_int
-id|init_is_valid
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef ZFCP_STAT_REQSIZES                            /* Statistical accounting&n;&t;&t;&t;&t;&t;&t;&t;of processed data */
 DECL|member|read_req_head
 r_struct
