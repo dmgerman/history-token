@@ -5130,8 +5130,7 @@ r_struct
 id|fealist
 (brace
 DECL|member|list_len
-r_int
-r_int
+id|__u32
 id|list_len
 suffix:semicolon
 DECL|member|list

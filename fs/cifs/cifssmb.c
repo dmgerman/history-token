@@ -15281,11 +15281,54 @@ suffix:semicolon
 multiline_comment|/* bad smb */
 multiline_comment|/* else if (pFindData){&n;&t;&t;&t;memcpy((char *) pFindData,&n;&t;&t;&t;       (char *) &amp;pSMBr-&gt;hdr.Protocol +&n;&t;&t;&t;       pSMBr-&gt;DataOffset, kl);&n;&t;&t;}*/
 r_else
+(brace
+multiline_comment|/* check that length of list is not more than bcc */
+multiline_comment|/* check that each entry does not go beyond length&n;&t;&t;&t;   of list */
+multiline_comment|/* check that each element of each entry does not&n;&t;&t;&t;   go beyond end of list */
+r_struct
+id|fealist
+op_star
+id|ea_response_data
+suffix:semicolon
 id|rc
 op_assign
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
+multiline_comment|/* validate_trans2_offsets() */
+multiline_comment|/* BB to check if(start of smb + pSMBr-&gt;DataOffset &gt; &amp;bcc+ bcc)*/
+id|ea_response_data
+op_assign
+(paren
+r_struct
+id|fealist
+op_star
+)paren
+(paren
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|pSMBr-&gt;hdr.Protocol
+)paren
+op_plus
+id|pSMBr-&gt;DataOffset
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;ea length %d&quot;
+comma
+id|ea_response_data-&gt;list_len
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
