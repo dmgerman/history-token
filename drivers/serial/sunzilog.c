@@ -3859,6 +3859,12 @@ c_func
 id|port
 comma
 id|termios
+comma
+id|old
+comma
+l_int|1200
+comma
+l_int|76800
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

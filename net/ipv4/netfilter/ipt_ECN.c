@@ -390,14 +390,10 @@ id|diffs
 l_int|0
 )braket
 op_assign
-id|htons
-c_func
-(paren
 id|diffs
 (braket
 l_int|0
 )braket
-)paren
 op_xor
 l_int|0xFFFF
 suffix:semicolon
@@ -406,12 +402,8 @@ id|diffs
 l_int|1
 )braket
 op_assign
-id|htons
-c_func
-(paren
 op_star
 id|tcpflags
-)paren
 suffix:semicolon
 id|tcph-&gt;check
 op_assign

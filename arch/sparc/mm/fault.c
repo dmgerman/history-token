@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -578,7 +579,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|search_exception_table
+id|search_extables_range
 c_func
 (paren
 id|ret_pc
@@ -1129,7 +1130,8 @@ op_logical_and
 (paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_extables_range
+c_func
 (paren
 id|regs-&gt;pc
 comma

@@ -2,6 +2,7 @@ multiline_comment|/* $Id: unaligned.c,v 1.23 2001/12/21 00:54:31 davem Exp $&n; 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -913,7 +914,8 @@ r_int
 r_int
 id|fixup
 op_assign
-id|search_exception_table
+id|search_extables_range
+c_func
 (paren
 id|regs-&gt;pc
 comma

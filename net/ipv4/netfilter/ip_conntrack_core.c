@@ -4260,6 +4260,24 @@ multiline_comment|/* old == NULL */
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|related_to-&gt;helper-&gt;flags
+op_amp
+id|IP_CT_HELPER_F_REUSE_EXPECT
+)paren
+)paren
+(brace
+id|WRITE_UNLOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|net_ratelimit
 c_func
 (paren
@@ -4271,7 +4289,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ip_conntrack: max number of expected &quot;
 l_string|&quot;connections %i of %s reached for &quot;
-l_string|&quot;%u.%u.%u.%u-&gt;%u.%u.%u.%u%s&bslash;n&quot;
+l_string|&quot;%u.%u.%u.%u-&gt;%u.%u.%u.%u&bslash;n&quot;
 comma
 id|related_to-&gt;helper-&gt;max_expected
 comma
@@ -4298,33 +4316,6 @@ id|IP_CT_DIR_ORIGINAL
 dot
 id|tuple.dst.ip
 )paren
-comma
-id|related_to-&gt;helper-&gt;flags
-op_amp
-id|IP_CT_HELPER_F_REUSE_EXPECT
-ques
-c_cond
-l_string|&quot;, reusing&quot;
-suffix:colon
-l_string|&quot;&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|related_to-&gt;helper-&gt;flags
-op_amp
-id|IP_CT_HELPER_F_REUSE_EXPECT
-)paren
-)paren
-(brace
-id|WRITE_UNLOCK
-c_func
-(paren
-op_amp
-id|ip_conntrack_lock
 )paren
 suffix:semicolon
 r_return
@@ -4332,6 +4323,40 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;ip_conntrack: max number of expected &quot;
+l_string|&quot;connections %i of %s reached for &quot;
+l_string|&quot;%u.%u.%u.%u-&gt;%u.%u.%u.%u, reusing&bslash;n&quot;
+comma
+id|related_to-&gt;helper-&gt;max_expected
+comma
+id|related_to-&gt;helper-&gt;name
+comma
+id|NIPQUAD
+c_func
+(paren
+id|related_to-&gt;tuplehash
+(braket
+id|IP_CT_DIR_ORIGINAL
+)braket
+dot
+id|tuple.src.ip
+)paren
+comma
+id|NIPQUAD
+c_func
+(paren
+id|related_to-&gt;tuplehash
+(braket
+id|IP_CT_DIR_ORIGINAL
+)braket
+dot
+id|tuple.dst.ip
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* choose the the oldest expectation to evict */
 id|list_for_each
 c_func
