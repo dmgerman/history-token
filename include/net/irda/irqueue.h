@@ -20,9 +20,9 @@ DECL|macro|HASHBIN_SIZE
 mdefine_line|#define HASHBIN_SIZE   8
 DECL|macro|HASHBIN_MASK
 mdefine_line|#define HASHBIN_MASK   0x7
-macro_line|#ifndef ALIGN 
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN __attribute__((aligned))
+macro_line|#ifndef IRDA_ALIGN 
+DECL|macro|IRDA_ALIGN
+mdefine_line|#define IRDA_ALIGN __attribute__((aligned))
 macro_line|#endif
 DECL|macro|Q_NULL
 mdefine_line|#define Q_NULL { NULL, NULL, &quot;&quot;, 0 }
@@ -94,22 +94,22 @@ DECL|member|hb_size
 r_int
 id|hb_size
 suffix:semicolon
-DECL|member|ALIGN
+DECL|member|IRDA_ALIGN
 id|spinlock_t
 id|hb_mutex
 (braket
 id|HASHBIN_SIZE
 )braket
-id|ALIGN
+id|IRDA_ALIGN
 suffix:semicolon
-DECL|member|ALIGN
+DECL|member|IRDA_ALIGN
 id|irda_queue_t
 op_star
 id|hb_queue
 (braket
 id|HASHBIN_SIZE
 )braket
-id|ALIGN
+id|IRDA_ALIGN
 suffix:semicolon
 DECL|member|hb_current
 id|irda_queue_t
