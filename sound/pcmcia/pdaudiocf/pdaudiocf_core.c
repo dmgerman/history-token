@@ -7,6 +7,7 @@ macro_line|#include &quot;pdaudiocf.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
 multiline_comment|/*&n; *&n; */
 DECL|function|pdacf_ak4117_read
+r_static
 r_int
 r_char
 id|pdacf_ak4117_read
@@ -199,6 +200,7 @@ id|res
 suffix:semicolon
 )brace
 DECL|function|pdacf_ak4117_write
+r_static
 r_void
 id|pdacf_ak4117_write
 c_func
