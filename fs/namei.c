@@ -7334,6 +7334,9 @@ r_const
 r_char
 op_star
 id|oldname
+comma
+r_int
+id|mode
 )paren
 (brace
 r_int
@@ -7595,6 +7598,8 @@ comma
 id|dentry
 comma
 id|from
+comma
+id|S_IALLUGO
 )paren
 suffix:semicolon
 id|dput

@@ -2667,6 +2667,8 @@ comma
 r_const
 r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
