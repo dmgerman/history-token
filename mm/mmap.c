@@ -310,7 +310,6 @@ suffix:semicolon
 multiline_comment|/* Remove one vm structure from the inode&squot;s i_mapping address space. */
 DECL|function|remove_shared_vm_struct
 r_static
-r_inline
 r_void
 id|remove_shared_vm_struct
 c_func
@@ -1074,7 +1073,6 @@ suffix:semicolon
 )brace
 DECL|function|__vma_link_rb
 r_static
-r_inline
 r_void
 id|__vma_link_rb
 c_func
@@ -1275,7 +1273,6 @@ suffix:semicolon
 )brace
 DECL|function|vma_link
 r_static
-r_inline
 r_void
 id|vma_link
 c_func

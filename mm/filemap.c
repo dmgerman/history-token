@@ -755,7 +755,6 @@ suffix:semicolon
 multiline_comment|/*&n; * In order to wait for pages to become available there must be&n; * waitqueues associated with pages. By using a hash table of&n; * waitqueues where the bucket discipline is to maintain all&n; * waiters on the same queue and wake all when any of the pages&n; * become available, and for the woken contexts to check to be&n; * sure the appropriate page became available, this saves space&n; * at a cost of &quot;thundering herd&quot; phenomena during rare hash&n; * collisions.&n; */
 DECL|function|page_waitqueue
 r_static
-r_inline
 id|wait_queue_head_t
 op_star
 id|page_waitqueue
@@ -2415,7 +2414,6 @@ suffix:semicolon
 )brace
 DECL|function|fault_in_pages_readable
 r_static
-r_inline
 r_void
 id|fault_in_pages_readable
 c_func
@@ -4763,7 +4761,6 @@ id|page
 suffix:semicolon
 )brace
 DECL|function|remove_suid
-r_inline
 r_void
 id|remove_suid
 c_func
@@ -4951,7 +4948,6 @@ id|left
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 DECL|function|__filemap_copy_from_user_iovec
 id|__filemap_copy_from_user_iovec

@@ -2679,7 +2679,6 @@ suffix:semicolon
 )brace
 DECL|function|zeromap_pte_range
 r_static
-r_inline
 r_void
 id|zeromap_pte_range
 c_func

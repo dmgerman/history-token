@@ -22,7 +22,6 @@ id|vmlist
 suffix:semicolon
 DECL|function|unmap_area_pte
 r_static
-r_inline
 r_void
 id|unmap_area_pte
 c_func
@@ -180,7 +179,6 @@ suffix:semicolon
 )brace
 DECL|function|unmap_area_pmd
 r_static
-r_inline
 r_void
 id|unmap_area_pmd
 c_func
@@ -316,7 +314,6 @@ suffix:semicolon
 )brace
 DECL|function|map_area_pte
 r_static
-r_inline
 r_int
 id|map_area_pte
 c_func
@@ -451,7 +448,6 @@ suffix:semicolon
 )brace
 DECL|function|map_area_pmd
 r_static
-r_inline
 r_int
 id|map_area_pmd
 c_func

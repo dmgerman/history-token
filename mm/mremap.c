@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|get_one_pte_map_nested
 r_static
-r_inline
 id|pte_t
 op_star
 id|get_one_pte_map_nested
@@ -324,7 +323,6 @@ suffix:semicolon
 )brace
 DECL|function|copy_one_pte
 r_static
-r_inline
 r_int
 id|copy_one_pte
 c_func
@@ -744,7 +742,6 @@ suffix:semicolon
 )brace
 DECL|function|move_vma
 r_static
-r_inline
 r_int
 r_int
 id|move_vma

@@ -1601,7 +1601,6 @@ suffix:semicolon
 multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pmd
 r_static
-r_inline
 r_void
 id|unuse_pmd
 c_func
@@ -1773,7 +1772,6 @@ suffix:semicolon
 multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pgd
 r_static
-r_inline
 r_void
 id|unuse_pgd
 c_func
