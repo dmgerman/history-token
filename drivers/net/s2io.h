@@ -1642,10 +1642,6 @@ DECL|member|tx_lock
 id|spinlock_t
 id|tx_lock
 suffix:semicolon
-DECL|member|isr_lock
-id|spinlock_t
-id|isr_lock
-suffix:semicolon
 DECL|macro|PROMISC
 mdefine_line|#define PROMISC     1
 DECL|macro|ALL_MULTI
