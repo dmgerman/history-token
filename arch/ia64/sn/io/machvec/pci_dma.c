@@ -717,11 +717,6 @@ op_assign
 id|__pa
 c_func
 (paren
-id|sg-&gt;dma_address
-ques
-c_cond
-id|sg-&gt;dma_address
-suffix:colon
 (paren
 r_int
 r_int
