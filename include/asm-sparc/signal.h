@@ -193,13 +193,13 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Sigvec flags */
 DECL|macro|SV_SSTACK
-mdefine_line|#define SV_SSTACK    1     /* This signal handler should use sig-stack */
+mdefine_line|#define SV_SSTACK    1u    /* This signal handler should use sig-stack */
 DECL|macro|SV_INTR
-mdefine_line|#define SV_INTR      2     /* Sig return should not restart system call */
+mdefine_line|#define SV_INTR      2u    /* Sig return should not restart system call */
 DECL|macro|SV_RESET
-mdefine_line|#define SV_RESET     4     /* Set handler to SIG_DFL upon taken signal */
+mdefine_line|#define SV_RESET     4u    /* Set handler to SIG_DFL upon taken signal */
 DECL|macro|SV_IGNCHILD
-mdefine_line|#define SV_IGNCHILD  8     /* Do not send SIGCHLD */
+mdefine_line|#define SV_IGNCHILD  8u    /* Do not send SIGCHLD */
 multiline_comment|/*&n; * sa_flags values: SA_STACK is not currently supported, but will allow the&n; * usage of signal stacks by using the (now obsolete) sa_restorer field in&n; * the sigaction structure as a stack pointer. This is now possible due to&n; * the changes in signal handling. LBT 010493.&n; * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_SHIRQ flag is for shared interrupt support on PCI and EISA.&n; */
 DECL|macro|SA_NOCLDSTOP
 mdefine_line|#define SA_NOCLDSTOP&t;SV_IGNCHILD
@@ -212,15 +212,15 @@ mdefine_line|#define SA_RESTART&t;SV_INTR
 DECL|macro|SA_ONESHOT
 mdefine_line|#define SA_ONESHOT&t;SV_RESET
 DECL|macro|SA_INTERRUPT
-mdefine_line|#define SA_INTERRUPT&t;0x10
+mdefine_line|#define SA_INTERRUPT&t;0x10u
 DECL|macro|SA_NOMASK
-mdefine_line|#define SA_NOMASK&t;0x20
+mdefine_line|#define SA_NOMASK&t;0x20u
 DECL|macro|SA_SHIRQ
-mdefine_line|#define SA_SHIRQ&t;0x40
+mdefine_line|#define SA_SHIRQ&t;0x40u
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x100
+mdefine_line|#define SA_NOCLDWAIT&t;0x100u
 DECL|macro|SA_SIGINFO
-mdefine_line|#define SA_SIGINFO&t;0x200
+mdefine_line|#define SA_SIGINFO&t;0x200u
 DECL|macro|SIG_BLOCK
 mdefine_line|#define SIG_BLOCK          0x01&t;/* for blocking signals */
 DECL|macro|SIG_UNBLOCK
