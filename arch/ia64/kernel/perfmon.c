@@ -3360,16 +3360,6 @@ id|ovfl_val
 op_assign
 id|pmu_conf.ovfl_val
 suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;mask=0x%lx&bslash;n&quot;
-comma
-id|mask
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3427,18 +3417,6 @@ c_func
 id|i
 comma
 id|val
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;pmd[%d]=0x%lx&bslash;n&quot;
-comma
-id|i
-comma
-id|val
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3704,16 +3682,6 @@ id|mask
 r_int
 id|i
 suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;mask=0x%lx&bslash;n&quot;
-comma
-id|mask
-)paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3753,21 +3721,6 @@ id|pmcs
 (braket
 id|i
 )braket
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;pmc[%d]=0x%lx&bslash;n&quot;
-comma
-id|i
-comma
-id|pmcs
-(braket
-id|i
-)braket
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -20070,8 +20023,7 @@ id|ctx
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|save_error
+r_return
 suffix:semicolon
 id|t
 op_assign
@@ -20109,16 +20061,6 @@ suffix:semicolon
 id|pfm_clear_psr_up
 c_func
 (paren
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;ctx zombie, forcing cleanup for [%d]&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
 )paren
 suffix:semicolon
 id|pfm_force_cleanup
@@ -20164,21 +20106,6 @@ c_func
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;ctx_activation=%lu activation=%lu state=%d: no save&bslash;n&quot;
-comma
-id|ctx-&gt;ctx_last_activation
-comma
-id|GET_ACTIVATION
-c_func
-(paren
-)paren
-comma
-id|ctx-&gt;ctx_state
-)paren
-suffix:semicolon
 id|pfm_unprotect_ctx_ctxsw
 c_func
 (paren
@@ -20285,28 +20212,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-id|save_error
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;perfmon: pfm_save_regs CPU%d [%d] NULL context PM_VALID=%ld&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|task-&gt;pid
-comma
-id|task-&gt;thread.flags
-op_amp
-id|IA64_THREAD_PM_VALID
-)paren
-suffix:semicolon
 )brace
 macro_line|#else /* !CONFIG_SMP */
 r_void
@@ -20342,8 +20247,7 @@ id|ctx
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|save_error
+r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * save current PSR: needed because we modify it&n;&t; */
 id|psr
@@ -20375,28 +20279,6 @@ op_assign
 id|psr
 op_amp
 id|IA64_PSR_UP
-suffix:semicolon
-r_return
-suffix:semicolon
-id|save_error
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;perfmon: pfm_save_regs CPU%d [%d] NULL context PM_VALID=%ld&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|task-&gt;pid
-comma
-id|task-&gt;thread.flags
-op_amp
-id|IA64_THREAD_PM_VALID
-)paren
 suffix:semicolon
 )brace
 r_static
@@ -20453,21 +20335,6 @@ id|t
 op_assign
 op_amp
 id|task-&gt;thread
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;on [%d] used_pmds=0x%lx&bslash;n&quot;
-comma
-id|task-&gt;pid
-comma
-id|ctx-&gt;ctx_used_pmds
-(braket
-l_int|0
-)braket
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we need to mask PMU overflow here to&n;&t; * make sure that we maintain pmc0 until&n;&t; * we save it. overflow interrupts are&n;&t; * treated as spurious if there is no&n;&t; * owner.&n;&t; *&n;&t; * XXX: I don&squot;t think this is necessary&n;&t; */
 id|PROTECT_CTX
@@ -20598,17 +20465,8 @@ op_eq
 l_int|NULL
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;perfmon: pfm_load_regs() null context&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren
@@ -20639,18 +20497,8 @@ op_eq
 l_int|0
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;[%d] PM_VALID=0, nothing to do&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/*&n; &t; * we always come here with interrupts ALREADY disabled by&n; &t; * the scheduler. So we simply need to protect against concurrent&n;&t; * access, not CPU concurrency.&n;&t; */
 id|flags
 op_assign
@@ -20714,16 +20562,6 @@ id|BUG_ON
 c_func
 (paren
 id|ctx-&gt;ctx_smpl_hdr
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;ctx zombie, forcing cleanup for [%d]&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
 )paren
 suffix:semicolon
 id|pfm_force_cleanup
@@ -20819,27 +20657,6 @@ id|ctx-&gt;ctx_reload_pmds
 l_int|0
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pmc_mask
-op_logical_or
-id|pmd_mask
-)paren
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;partial reload [%d] pmd_mask=0x%lx pmc_mask=0x%lx&bslash;n&quot;
-comma
-id|task-&gt;pid
-comma
-id|pmd_mask
-comma
-id|pmc_mask
-)paren
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -20866,33 +20683,6 @@ id|ctx-&gt;ctx_all_pmcs
 (braket
 l_int|0
 )braket
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;full reload for [%d] activation=%lu last_activation=%lu last_cpu=%d pmd_mask=0x%lx pmc_mask=0x%lx&bslash;n&quot;
-comma
-id|task-&gt;pid
-comma
-id|GET_ACTIVATION
-c_func
-(paren
-)paren
-comma
-id|ctx-&gt;ctx_last_activation
-comma
-id|GET_LAST_CPU
-c_func
-(paren
-id|ctx
-)paren
-comma
-id|pmd_mask
-comma
-id|pmc_mask
-)paren
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * when context is MASKED, we will restore PMC with plm=0&n;&t; * and PMD with stale information, but that&squot;s ok, nothing&n;&t; * will be captured.&n;&t; *&n;&t; * XXX: optimize here&n;&t; */
@@ -20966,16 +20756,6 @@ l_int|0UL
 suffix:semicolon
 macro_line|#ifndef CONFIG_MCKINLEY
 multiline_comment|/*&n;&t;&t; * will replay the PMU interrupt&n;&t;&t; */
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;perfmon: resend irq for [%d]&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
-)paren
-suffix:semicolon
 id|hw_resend_irq
 c_func
 (paren
@@ -21213,24 +20993,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;reload for [%d] owner=%d&bslash;n&quot;
-comma
-id|task-&gt;pid
-comma
-id|owner
-ques
-c_cond
-id|owner-&gt;pid
-suffix:colon
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * someone else is still using the PMU, first push it out and&n;&t; * then we&squot;ll be able to install our stuff !&n;&t; *&n;&t; * Upon return, there will be no owner for the current PMU&n;&t; */
 r_if
 c_cond
@@ -21327,16 +21089,6 @@ l_int|0UL
 suffix:semicolon
 macro_line|#ifndef CONFIG_MCKINLEY
 multiline_comment|/*&n;&t;&t; * will replay the PMU interrupt&n;&t;&t; */
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;perfmon: resend irq for [%d]&bslash;n&quot;
-comma
-id|task-&gt;pid
-)paren
-)paren
-suffix:semicolon
 id|hw_resend_irq
 c_func
 (paren
