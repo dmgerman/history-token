@@ -5731,24 +5731,6 @@ op_increment
 suffix:semicolon
 multiline_comment|/* skip to allow a match */
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|USG_NONE
-c_func
-(paren
-id|isdn_slot_usage
-c_func
-(paren
-id|slot
-)paren
-)paren
-)paren
-singleline_comment|// FIXME?
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* check called number */
 r_switch
 c_cond

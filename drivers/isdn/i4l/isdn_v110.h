@@ -61,6 +61,9 @@ r_int
 id|isdn_v110_stat_callback
 c_func
 (paren
+r_int
+id|sl
+comma
 r_struct
 id|isdn_v110
 op_star
