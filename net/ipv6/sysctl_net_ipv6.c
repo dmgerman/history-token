@@ -73,7 +73,7 @@ comma
 dot
 id|mode
 op_assign
-l_int|0500
+l_int|0555
 comma
 dot
 id|child
