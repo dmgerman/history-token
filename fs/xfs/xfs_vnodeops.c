@@ -28,6 +28,7 @@ macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
 macro_line|#include &quot;xfs_attr.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_refcache.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_rtalloc.h&quot;
@@ -40,31 +41,6 @@ macro_line|#include &quot;xfs_log_priv.h&quot;
 multiline_comment|/*&n; * The maximum pathlen is 1024 bytes. Since the minimum file system&n; * blocksize is 512 bytes, we can get a max of 2 extents back from&n; * bmapi.&n; */
 DECL|macro|SYMLINK_MAPS
 mdefine_line|#define SYMLINK_MAPS 2
-r_extern
-r_int
-id|xfs_ioctl
-c_func
-(paren
-id|bhv_desc_t
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * For xfs, we check that the file isn&squot;t too big to be opened by this kernel.&n; * No other open action is required for regular files.  Devices are handled&n; * through the specfs file system, pipes through fifofs.  Device and&n; * fifo vnodes are &quot;wrapped&quot; by specfs and fifofs vnodes, respectively,&n; * when a new vnode is first looked up or created.&n; */
 id|STATIC
 r_int
@@ -1350,7 +1326,11 @@ multiline_comment|/* boolean: are we the file owner? */
 id|file_owner
 op_assign
 (paren
-id|current-&gt;fsuid
+id|current_fsuid
+c_func
+(paren
+id|credp
+)paren
 op_eq
 id|ip-&gt;i_d.di_uid
 )paren
@@ -5915,6 +5895,17 @@ id|VFS_RDONLY
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef HAVE_REFCACHE
+multiline_comment|/* If we are in the NFS reference cache then don&squot;t do this now */
+r_if
+c_cond
+(paren
+id|ip-&gt;i_refcache
+)paren
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 id|mp
 op_assign
 id|ip-&gt;i_mount
@@ -7355,9 +7346,17 @@ id|mp
 comma
 id|dp
 comma
-id|current-&gt;fsuid
+id|current_fsuid
+c_func
+(paren
+id|credp
+)paren
 comma
-id|current-&gt;fsgid
+id|current_fsgid
+c_func
+(paren
+id|credp
+)paren
 comma
 id|XFS_QMOPT_QUOTALL
 op_or
@@ -9456,6 +9455,13 @@ r_goto
 id|std_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Before we drop our extra reference to the inode, purge it&n;&t; * from the refcache if it is there.  By waiting until afterwards&n;&t; * to do the IRELE, we ensure that we won&squot;t go inactive in the&n;&t; * xfs_refcache_purge_ip routine (although that would be OK).&n;&t; */
+id|xfs_refcache_purge_ip
+c_func
+(paren
+id|ip
+)paren
+suffix:semicolon
 id|vn_trace_exit
 c_func
 (paren
@@ -9591,6 +9597,13 @@ c_func
 id|tp
 comma
 id|cancel_flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Before we drop our extra reference to the inode, purge it&n;&t; * from the refcache if it is there.  By waiting until afterwards&n;&t; * to do the IRELE, we ensure that we won&squot;t go inactive in the&n;&t; * xfs_refcache_purge_ip routine (although that would be OK).&n;&t; */
+id|xfs_refcache_purge_ip
+c_func
+(paren
+id|ip
 )paren
 suffix:semicolon
 id|IRELE
@@ -10653,9 +10666,17 @@ id|mp
 comma
 id|dp
 comma
-id|current-&gt;fsuid
+id|current_fsuid
+c_func
+(paren
+id|credp
+)paren
 comma
-id|current-&gt;fsgid
+id|current_fsgid
+c_func
+(paren
+id|credp
+)paren
 comma
 id|XFS_QMOPT_QUOTALL
 op_or
@@ -12807,9 +12828,17 @@ id|mp
 comma
 id|dp
 comma
-id|current-&gt;fsuid
+id|current_fsuid
+c_func
+(paren
+id|credp
+)paren
 comma
-id|current-&gt;fsgid
+id|current_fsgid
+c_func
+(paren
+id|credp
+)paren
 comma
 id|XFS_QMOPT_QUOTALL
 op_or
@@ -14037,7 +14066,9 @@ op_eq
 id|VRWLOCK_WRITE
 )paren
 (brace
-id|xfs_iunlock
+multiline_comment|/*&n;&t;&t; * In the write case, we may have added a new entry to&n;&t;&t; * the reference cache.  This might store a pointer to&n;&t;&t; * an inode to be released in this inode.  If it is there,&n;&t;&t; * clear the pointer and release the inode after unlocking&n;&t;&t; * this one.&n;&t;&t; */
+id|xfs_refcache_iunlock
+c_func
 (paren
 id|ip
 comma
@@ -18094,11 +18125,13 @@ id|vop_read
 op_assign
 id|xfs_read
 comma
+macro_line|#ifdef HAVE_SENDFILE
 dot
 id|vop_sendfile
 op_assign
 id|xfs_sendfile
 comma
+macro_line|#endif
 dot
 id|vop_write
 op_assign
