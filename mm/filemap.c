@@ -4279,6 +4279,11 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
+id|grab_swap_token
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The page we want has now been added to the page cache.&n;&t; * In the unlikely event that someone removed it in the&n;&t; * meantime, we&squot;ll just come back here and read it again.&n;&t; */
 r_if
 c_cond

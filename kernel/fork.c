@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
@@ -1717,6 +1718,12 @@ id|mm
 )paren
 suffix:semicolon
 id|exit_mmap
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|put_swap_token
 c_func
 (paren
 id|mm

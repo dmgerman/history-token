@@ -527,6 +527,16 @@ DECL|member|context
 id|mm_context_t
 id|context
 suffix:semicolon
+multiline_comment|/* Token based thrashing protection. */
+DECL|member|swap_token_time
+r_int
+r_int
+id|swap_token_time
+suffix:semicolon
+DECL|member|recent_pagein
+r_char
+id|recent_pagein
+suffix:semicolon
 multiline_comment|/* coredumping support */
 DECL|member|core_waiters
 r_int

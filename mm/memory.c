@@ -6079,6 +6079,11 @@ c_func
 id|pgmajfault
 )paren
 suffix:semicolon
+id|grab_swap_token
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|mark_page_accessed
 c_func
