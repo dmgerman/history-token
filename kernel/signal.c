@@ -3102,13 +3102,13 @@ comma
 op_amp
 id|info
 comma
-id|tsk-&gt;p_pptr
+id|tsk-&gt;parent
 )paren
 suffix:semicolon
 id|wake_up_parent
 c_func
 (paren
-id|tsk-&gt;p_pptr
+id|tsk-&gt;parent
 )paren
 suffix:semicolon
 )brace

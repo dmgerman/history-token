@@ -4807,7 +4807,7 @@ id|psinfo.pr_ppid
 op_assign
 id|prstatus.pr_ppid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|psinfo.pr_pgrp
 op_assign
