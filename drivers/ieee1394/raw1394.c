@@ -14297,8 +14297,6 @@ r_goto
 id|out_unreg
 suffix:semicolon
 )brace
-id|ret
-op_assign
 id|devfs_mk_cdev
 c_func
 (paren
@@ -14320,14 +14318,6 @@ id|S_IWUSR
 comma
 id|RAW1394_DEVICE_NAME
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_goto
-id|out_class
 suffix:semicolon
 id|cdev_init
 c_func
@@ -14432,8 +14422,6 @@ c_func
 id|RAW1394_DEVICE_NAME
 )paren
 suffix:semicolon
-id|out_class
-suffix:colon
 id|class_simple_device_remove
 c_func
 (paren
