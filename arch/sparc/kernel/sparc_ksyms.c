@@ -554,11 +554,18 @@ id|mstk48t02_regs
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_SUN_AUXIO
-DECL|variable|auxio_register
+DECL|variable|set_auxio
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|auxio_register
+id|set_auxio
+)paren
+suffix:semicolon
+DECL|variable|get_auxio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_auxio
 )paren
 suffix:semicolon
 macro_line|#endif

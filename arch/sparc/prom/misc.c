@@ -261,7 +261,13 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
-id|TURN_ON_LED
+id|set_auxio
+c_func
+(paren
+id|AUXIO_LED
+comma
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#endif
 r_if

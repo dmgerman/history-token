@@ -272,8 +272,10 @@ suffix:colon
 multiline_comment|/* FD_DIR */
 r_return
 (paren
-op_star
-id|AUXREG
+id|get_auxio
+c_func
+(paren
+)paren
 op_amp
 id|AUXIO_FLPY_DCHG
 )paren
@@ -1205,7 +1207,7 @@ op_assign
 op_amp
 id|sun_fdc-&gt;status_82072
 suffix:semicolon
-multiline_comment|/* printk(&quot;AUXIO @0x%p&bslash;n&quot;, auxio_register); */
+multiline_comment|/* printk(&quot;AUXIO @0x%lx&bslash;n&quot;, auxio_register); */
 multiline_comment|/* P3 */
 )brace
 r_else
