@@ -270,38 +270,6 @@ r_extern
 r_int
 id|sysctl_hugetlb_shm_group
 suffix:semicolon
-r_static
-r_inline
-r_void
-DECL|function|mark_mm_hugetlb
-id|mark_mm_hugetlb
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|is_vm_hugetlb_page
-c_func
-(paren
-id|vma
-)paren
-)paren
-id|mm-&gt;used_hugetlb
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#ifndef ARCH_HAS_HUGEPAGE_ONLY_RANGE
 DECL|macro|is_hugepage_only_range
 mdefine_line|#define is_hugepage_only_range(addr, len)&t;0
@@ -377,8 +345,6 @@ DECL|macro|hugetlb_report_meminfo
 mdefine_line|#define hugetlb_report_meminfo(buf)&t;&t;0
 DECL|macro|hugetlb_report_node_meminfo
 mdefine_line|#define hugetlb_report_node_meminfo(n, buf)&t;0
-DECL|macro|mark_mm_hugetlb
-mdefine_line|#define mark_mm_hugetlb(mm, vma)&t;&t;do { } while (0)
 DECL|macro|follow_huge_pmd
 mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;NULL
 DECL|macro|is_aligned_hugepage_range
