@@ -6744,11 +6744,11 @@ c_cond
 (paren
 id|queue_nr_requests
 OG
-l_int|512
+l_int|256
 )paren
 id|queue_nr_requests
 op_assign
-l_int|512
+l_int|256
 suffix:semicolon
 multiline_comment|/*&n;&t; * Batch frees according to queue length&n;&t; */
 r_if
