@@ -2476,13 +2476,6 @@ r_int
 id|flag
 )paren
 suffix:semicolon
-r_int
-id|verify_load_parm
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef SET_ETHTOOL_OPS
 DECL|variable|netdev_ethtool_ops
 r_static
