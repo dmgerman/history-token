@@ -1657,8 +1657,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
-op_logical_and
 id|test_and_clear_bit
 c_func
 (paren
