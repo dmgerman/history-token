@@ -180,6 +180,11 @@ c_func
 op_amp
 id|skb-&gt;nh.ipv6h-&gt;saddr
 comma
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
 op_amp
 id|x-&gt;props.saddr
 )paren
@@ -190,6 +195,11 @@ c_func
 op_amp
 id|skb-&gt;nh.ipv6h-&gt;daddr
 comma
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
 op_amp
 id|x-&gt;id.daddr
 )paren
