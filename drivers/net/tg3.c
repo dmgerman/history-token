@@ -2079,7 +2079,7 @@ suffix:semicolon
 op_star
 id|val
 op_assign
-l_int|0xffffffff
+l_int|0x0
 suffix:semicolon
 id|frame_val
 op_assign
