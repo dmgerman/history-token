@@ -3387,6 +3387,12 @@ suffix:semicolon
 id|proc_net_remove
 c_func
 (paren
+l_string|&quot;dev_snmp6&quot;
+)paren
+suffix:semicolon
+id|proc_net_remove
+c_func
+(paren
 l_string|&quot;sockstat6&quot;
 )paren
 suffix:semicolon
@@ -3503,6 +3509,12 @@ id|proc_net_remove
 c_func
 (paren
 l_string|&quot;sockstat6&quot;
+)paren
+suffix:semicolon
+id|proc_net_remove
+c_func
+(paren
+l_string|&quot;dev_snmp6&quot;
 )paren
 suffix:semicolon
 id|proc_net_remove
