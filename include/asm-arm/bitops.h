@@ -970,6 +970,7 @@ r_int
 id|_find_first_zero_bit_be
 c_func
 (paren
+r_const
 r_void
 op_star
 id|p
@@ -983,6 +984,7 @@ r_int
 id|_find_next_zero_bit_be
 c_func
 (paren
+r_const
 r_void
 op_star
 id|p
