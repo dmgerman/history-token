@@ -1810,6 +1810,12 @@ c_func
 (paren
 id|DVD_AUTH
 )paren
+multiline_comment|/* pktcdvd */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|PACKET_CTRL_CMD
+)paren
 multiline_comment|/* Big L */
 id|ULONG_IOCTL
 c_func

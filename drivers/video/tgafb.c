@@ -7703,6 +7703,11 @@ op_amp
 id|all-&gt;info
 )paren
 suffix:semicolon
+id|all-&gt;info.device
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -278,14 +278,8 @@ DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_to_kaddr
 mdefine_line|#define pfn_to_kaddr(pfn)      __va((pfn) &lt;&lt; PAGE_SHIFT)
-DECL|macro|__VM_DATA_DEFAULT_FLAGS
-mdefine_line|#define __VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-DECL|macro|__VM_STACK_FLAGS
-mdefine_line|#define __VM_STACK_FLAGS &t;(VM_GROWSDOWN | VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;                                VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
-mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_data_default_flags32 : &bslash;&n;&t;  vm_data_default_flags) 
-DECL|macro|VM_STACK_DEFAULT_FLAGS
-mdefine_line|#define VM_STACK_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_stack_flags32 : vm_stack_flags) 
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(((current-&gt;personality &amp; READ_IMPLIES_EXEC) ? VM_EXEC : 0 ) | &bslash;&n;&t; VM_READ | VM_WRITE | VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 DECL|macro|CONFIG_ARCH_GATE_AREA
 mdefine_line|#define CONFIG_ARCH_GATE_AREA 1&t;
 macro_line|#ifndef __ASSEMBLY__

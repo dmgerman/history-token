@@ -2034,6 +2034,12 @@ id|SEND_FLAG_COMPLETE
 )paren
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -2064,7 +2070,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ati_remote-&gt;out_urb
@@ -3169,7 +3175,7 @@ c_cond
 (paren
 id|ati_remote-&gt;irq_urb
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ati_remote-&gt;irq_urb
@@ -3180,7 +3186,7 @@ c_cond
 (paren
 id|ati_remote-&gt;out_urb
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|ati_remote-&gt;out_urb

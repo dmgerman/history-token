@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hvconsole.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
@@ -22,7 +23,7 @@ mdefine_line|#define HVC_MAJOR&t;229
 DECL|macro|HVC_MINOR
 mdefine_line|#define HVC_MINOR&t;0
 DECL|macro|TIMEOUT
-mdefine_line|#define TIMEOUT&t;&t;((HZ + 99) / 100)
+mdefine_line|#define TIMEOUT&t;&t;(10)
 multiline_comment|/*&n; * Wait this long per iteration while trying to push buffered data to the&n; * hypervisor before allowing the tty to complete a close operation.&n; */
 DECL|macro|HVC_CLOSE_WAIT
 mdefine_line|#define HVC_CLOSE_WAIT (HZ/100) /* 1/10 of a second */
@@ -2052,7 +2053,7 @@ c_func
 )paren
 suffix:semicolon
 r_else
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|TIMEOUT

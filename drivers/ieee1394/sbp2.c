@@ -862,21 +862,13 @@ op_div
 l_int|10
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 )paren
 multiline_comment|/* 100ms */

@@ -2477,6 +2477,7 @@ suffix:semicolon
 multiline_comment|/** console_conditional_schedule - yield the CPU if required&n; *&n; * If the console code is currently allowed to sleep, and&n; * if this CPU should yield the CPU to another task, do&n; * so here.&n; *&n; * Must be called within acquire_console_sem().&n; */
 DECL|function|console_conditional_schedule
 r_void
+id|__sched
 id|console_conditional_schedule
 c_func
 (paren
@@ -2487,25 +2488,12 @@ r_if
 c_cond
 (paren
 id|console_may_schedule
-op_logical_and
-id|need_resched
-c_func
-(paren
 )paren
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|console_conditional_schedule
 id|EXPORT_SYMBOL

@@ -2221,7 +2221,7 @@ id|i
 )braket
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|se401-&gt;urb
@@ -4287,7 +4287,7 @@ id|i
 )braket
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|se401-&gt;urb
@@ -4367,7 +4367,7 @@ c_cond
 id|se401-&gt;inturb
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|se401-&gt;inturb

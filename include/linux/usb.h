@@ -77,7 +77,27 @@ id|extralen
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct usb_interface - what usb device drivers talk to&n; * @altsetting: array of interface structures, one for each alternate&n; * &t;setting that may be selected.  Each one includes a set of&n; * &t;endpoint configurations.  They will be in no particular order.&n; * @num_altsetting: number of altsettings defined.&n; * @cur_altsetting: the current altsetting.&n; * @driver: the USB driver that is bound to this interface.&n; * @minor: the minor number assigned to this interface, if this&n; *&t;interface is bound to a driver that uses the USB major number.&n; *&t;If this interface does not use the USB major, this field should&n; *&t;be unused.  The driver should set this value in the probe()&n; *&t;function of the driver, after it has been assigned a minor&n; *&t;number from the USB core by calling usb_register_dev().&n; * @dev: driver model&squot;s view of this device&n; * @class_dev: driver model&squot;s class view of this device.&n; *&n; * USB device drivers attach to interfaces on a physical device.  Each&n; * interface encapsulates a single high level function, such as feeding&n; * an audio stream to a speaker or reporting a change in a volume control.&n; * Many USB devices only have one interface.  The protocol used to talk to&n; * an interface&squot;s endpoints can be defined in a usb &quot;class&quot; specification,&n; * or by a product&squot;s vendor.  The (default) control endpoint is part of&n; * every interface, but is never listed among the interface&squot;s descriptors.&n; *&n; * The driver that is bound to the interface can use standard driver model&n; * calls such as dev_get_drvdata() on the dev member of this structure.&n; *&n; * Each interface may have alternate settings.  The initial configuration&n; * of a device sets altsetting 0, but the device driver can change&n; * that setting using usb_set_interface().  Alternate settings are often&n; * used to control the the use of periodic endpoints, such as by having&n; * different endpoints use different amounts of reserved USB bandwidth.&n; * All standards-conformant USB devices that use isochronous endpoints&n; * will use them in non-default settings.&n; *&n; * The USB specification says that alternate setting numbers must run from&n; * 0 to one less than the total number of alternate settings.  But some&n; * devices manage to mess this up, and the structures aren&squot;t necessarily&n; * stored in numerical order anyhow.  Use usb_altnum_to_altsetting() to&n; * look up an alternate setting in the altsetting array based on its number.&n; */
+DECL|enum|usb_interface_condition
+r_enum
+id|usb_interface_condition
+(brace
+DECL|enumerator|USB_INTERFACE_UNBOUND
+id|USB_INTERFACE_UNBOUND
+op_assign
+l_int|0
+comma
+DECL|enumerator|USB_INTERFACE_BINDING
+id|USB_INTERFACE_BINDING
+comma
+DECL|enumerator|USB_INTERFACE_BOUND
+id|USB_INTERFACE_BOUND
+comma
+DECL|enumerator|USB_INTERFACE_UNBINDING
+id|USB_INTERFACE_UNBINDING
+comma
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * struct usb_interface - what usb device drivers talk to&n; * @altsetting: array of interface structures, one for each alternate&n; * &t;setting that may be selected.  Each one includes a set of&n; * &t;endpoint configurations.  They will be in no particular order.&n; * @num_altsetting: number of altsettings defined.&n; * @cur_altsetting: the current altsetting.&n; * @driver: the USB driver that is bound to this interface.&n; * @minor: the minor number assigned to this interface, if this&n; *&t;interface is bound to a driver that uses the USB major number.&n; *&t;If this interface does not use the USB major, this field should&n; *&t;be unused.  The driver should set this value in the probe()&n; *&t;function of the driver, after it has been assigned a minor&n; *&t;number from the USB core by calling usb_register_dev().&n; * @condition: binding state of the interface: not bound, binding&n; *&t;(in probe()), bound to a driver, or unbinding (in disconnect())&n; * @dev: driver model&squot;s view of this device&n; * @class_dev: driver model&squot;s class view of this device.&n; *&n; * USB device drivers attach to interfaces on a physical device.  Each&n; * interface encapsulates a single high level function, such as feeding&n; * an audio stream to a speaker or reporting a change in a volume control.&n; * Many USB devices only have one interface.  The protocol used to talk to&n; * an interface&squot;s endpoints can be defined in a usb &quot;class&quot; specification,&n; * or by a product&squot;s vendor.  The (default) control endpoint is part of&n; * every interface, but is never listed among the interface&squot;s descriptors.&n; *&n; * The driver that is bound to the interface can use standard driver model&n; * calls such as dev_get_drvdata() on the dev member of this structure.&n; *&n; * Each interface may have alternate settings.  The initial configuration&n; * of a device sets altsetting 0, but the device driver can change&n; * that setting using usb_set_interface().  Alternate settings are often&n; * used to control the the use of periodic endpoints, such as by having&n; * different endpoints use different amounts of reserved USB bandwidth.&n; * All standards-conformant USB devices that use isochronous endpoints&n; * will use them in non-default settings.&n; *&n; * The USB specification says that alternate setting numbers must run from&n; * 0 to one less than the total number of alternate settings.  But some&n; * devices manage to mess this up, and the structures aren&squot;t necessarily&n; * stored in numerical order anyhow.  Use usb_altnum_to_altsetting() to&n; * look up an alternate setting in the altsetting array based on its number.&n; */
 DECL|struct|usb_interface
 r_struct
 id|usb_interface
@@ -106,6 +126,12 @@ r_int
 id|minor
 suffix:semicolon
 multiline_comment|/* minor number this interface is bound to */
+DECL|member|condition
+r_enum
+id|usb_interface_condition
+id|condition
+suffix:semicolon
+multiline_comment|/* state of binding */
 DECL|member|dev
 r_struct
 id|device
@@ -441,13 +467,6 @@ op_star
 id|usbfs_dentry
 suffix:semicolon
 multiline_comment|/* usbfs dentry entry for the bus */
-DECL|member|usbdevfs_dentry
-r_struct
-id|dentry
-op_star
-id|usbdevfs_dentry
-suffix:semicolon
-multiline_comment|/* usbdevfs dentry entry for the bus */
 DECL|member|class_dev
 r_struct
 id|class_device
@@ -479,6 +498,7 @@ mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
 r_struct
 id|usb_tt
 suffix:semicolon
+multiline_comment|/*&n; * struct usb_device - kernel&squot;s representation of a USB device&n; *&n; * FIXME: Write the kerneldoc!&n; *&n; * Usbcore drivers should not set usbdev-&gt;state directly.  Instead use&n; * usb_set_device_state().&n; */
 DECL|struct|usb_device
 r_struct
 id|usb_device
@@ -625,13 +645,6 @@ op_star
 id|usbfs_dentry
 suffix:semicolon
 multiline_comment|/* usbfs dentry entry for the device */
-DECL|member|usbdevfs_dentry
-r_struct
-id|dentry
-op_star
-id|usbdevfs_dentry
-suffix:semicolon
-multiline_comment|/* usbdevfs dentry entry for the device */
 multiline_comment|/*&n;&t; * Child devices - these can be either new devices&n;&t; * (if this is a hub device), or different instances&n;&t; * of this same device.&n;&t; *&n;&t; * Each instance needs its own set of data structures.&n;&t; */
 DECL|member|maxchild
 r_int
@@ -675,21 +688,59 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* mostly for devices emulating SCSI over USB */
 r_extern
-r_int
-id|usb_reset_device
+r_void
+id|usb_lock_device
 c_func
 (paren
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|__usb_reset_device
+id|usb_trylock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_lock_device_for_reset
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+comma
+r_struct
+id|usb_interface
+op_star
+id|iface
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_unlock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+suffix:semicolon
+multiline_comment|/* USB port reset for device reinitialization */
+r_extern
+r_int
+id|usb_reset_device
 c_func
 (paren
 r_struct

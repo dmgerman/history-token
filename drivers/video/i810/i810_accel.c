@@ -40,6 +40,7 @@ id|i810_report_error
 c_func
 (paren
 id|u8
+id|__iomem
 op_star
 id|mmio
 )paren
@@ -134,6 +135,7 @@ comma
 id|tail
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -260,6 +262,7 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -421,6 +424,7 @@ id|par
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1126,6 +1130,7 @@ id|u32
 id|tmp
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1836,6 +1841,7 @@ op_star
 id|info-&gt;par
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
@@ -1903,6 +1909,7 @@ comma
 id|tmp2
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign

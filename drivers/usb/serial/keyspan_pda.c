@@ -687,7 +687,7 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;interrupt_in_urb
@@ -2441,12 +2441,14 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk reads and writes */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;interrupt_in_urb
 )paren

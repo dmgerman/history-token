@@ -42,7 +42,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|p
 op_assign
@@ -50,17 +49,6 @@ id|idp-&gt;id_free
 )paren
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|idp-&gt;lock
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|idp-&gt;id_free
 op_assign
 id|p-&gt;ary
@@ -78,6 +66,7 @@ l_int|0
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren

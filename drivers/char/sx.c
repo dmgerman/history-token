@@ -5141,9 +5141,11 @@ id|HS_IDLE_CLOSED
 )paren
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 (paren

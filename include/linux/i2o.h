@@ -383,12 +383,14 @@ suffix:semicolon
 multiline_comment|/* PCI device */
 DECL|member|short_req
 r_int
+r_int
 id|short_req
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* use small block sizes */
 DECL|member|no_quiesce
+r_int
 r_int
 id|no_quiesce
 suffix:colon
@@ -397,12 +399,14 @@ suffix:semicolon
 multiline_comment|/* dont quiesce before reset */
 DECL|member|raptor
 r_int
+r_int
 id|raptor
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* split bar */
 DECL|member|promise
+r_int
 r_int
 id|promise
 suffix:colon
@@ -517,6 +521,7 @@ suffix:semicolon
 multiline_comment|/* outbound message queue IOP-&gt;Host */
 DECL|member|battery
 r_int
+r_int
 id|battery
 suffix:colon
 l_int|1
@@ -524,12 +529,14 @@ suffix:semicolon
 multiline_comment|/* Has a battery backup */
 DECL|member|io_alloc
 r_int
+r_int
 id|io_alloc
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* An I/O resource was allocated */
 DECL|member|mem_alloc
+r_int
 r_int
 id|mem_alloc
 suffix:colon

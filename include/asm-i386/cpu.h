@@ -4,6 +4,7 @@ mdefine_line|#define _ASM_I386_CPU_H_
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/node.h&gt;
 DECL|struct|i386_cpu
 r_struct

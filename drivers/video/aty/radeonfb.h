@@ -1156,8 +1156,6 @@ DECL|macro|OUTPLLP
 mdefine_line|#define OUTPLLP(addr,val,mask)  &t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;                                    &bslash;&n;&t;&t;unsigned int _tmp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqsave(&amp;rinfo-&gt;reg_lock, flags); &t;&t;&bslash;&n;&t;&t;_tmp  = __INPLL(rinfo,addr);&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp &amp;= (mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp |= (val);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__OUTPLL(addr, _tmp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;rinfo-&gt;reg_lock, flags); &t;&bslash;&n;&t;} while (0)
 DECL|macro|OUTREGP
 mdefine_line|#define OUTREGP(addr,val,mask)  &t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;                                    &bslash;&n;&t;&t;unsigned int _tmp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqsave(&amp;rinfo-&gt;reg_lock, flags); &t;&t;&bslash;&n;&t;&t;_tmp = INREG(addr);&t;&t;&t;&t;       &t;&bslash;&n;&t;&t;_tmp &amp;= (mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_tmp |= (val);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;OUTREG(addr, _tmp);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_unlock_irqrestore(&amp;rinfo-&gt;reg_lock, flags); &t;&bslash;&n;&t;} while (0)
-DECL|macro|MS_TO_HZ
-mdefine_line|#define MS_TO_HZ(ms)       ((ms * HZ + 999) / 1000)
 DECL|macro|BIOS_IN8
 mdefine_line|#define BIOS_IN8(v)  &t;(readb(rinfo-&gt;bios_seg + (v)))
 DECL|macro|BIOS_IN16

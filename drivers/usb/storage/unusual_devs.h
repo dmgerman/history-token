@@ -1,7 +1,7 @@
 multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.32 2002/02/25 02:41:24 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; *&n; * If you want to add an entry for this file, please send the following&n; * to greg@kroah.com:&n; *&t;- patch that adds the entry for your device which includes your&n; *&t;  email address right above the entry.&n; *&t;- a copy of /proc/bus/usb/devices with your device plugged in&n; *&t;  running with this patch.&n; *&n; */
+multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; *&n; * If you want to add an entry for this file, be sure to include the&n; * following information:&n; *&t;- a patch that adds the entry for your device, including your&n; *&t;  email address right above the entry (plus maybe a brief&n; *&t;  explanation of the reason for the entry),&n; *&t;- a copy of /proc/bus/usb/devices with your device plugged in&n; *&t;  running with this patch.&n; * Send your submission to either Phil Dibowitz &lt;phil@ipom.com&gt; or&n; * Alan Stern &lt;stern@rowland.harvard.edu&gt;, and don&squot;t forget to CC: the&n; * USB development list &lt;linux-usb-devel@lists.sourceforge.net&gt;.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -100,31 +100,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* &lt;torsten.scherer@uni-bielefeld.de&gt;: I don&squot;t know the name of the bridge&n; * manufacturer, but I&squot;ve got an external USB drive by the Revoltec company&n; * that needs this. otherwise the drive is recognized as /dev/sda, but any&n; * access to it blocks indefinitely.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0402
-comma
-l_int|0x5621
-comma
-l_int|0x0103
-comma
-l_int|0x0103
-comma
-l_string|&quot;Revoltec&quot;
-comma
-l_string|&quot;USB/IDE Bridge (ATA/ATAPI)&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Deduced by Jonathan Woithe &lt;jwoithe@physics.adelaide.edu.au&gt;&n; * Entry needed for flags: US_FL_FIX_INQUIRY because initial inquiry message&n; * always fails and confuses drive.&n; */
 id|UNUSUAL_DEV
 c_func
@@ -176,31 +151,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Patch submitted by Alessandro Fracchetti &lt;al.fracchetti@tin.it&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0482
-comma
-l_int|0x0105
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;Kyocera&quot;
-comma
-l_string|&quot;Finecam L3&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -276,7 +226,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Patch for Kyocera Finecam L3&n; * Submitted by Michael Krauth &lt;michael.krauth@web.de&gt;&n; */
+multiline_comment|/* Patch for Kyocera Finecam L3&n; * Submitted by Michael Krauth &lt;michael.krauth@web.de&gt;&n; * and Alessandro Fracchetti &lt;al.fracchetti@tin.it&gt;&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -376,6 +326,7 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Not sure who reported this originally but&n; * Pavel Machek &lt;pavel@ucw.cz&gt; reported that the extra US_FL_SINGLE_LUN&n; * flag be added */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -398,6 +349,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_SINGLE_LUN
 )paren
 comma
 multiline_comment|/* Reported by Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt;&n; * The device needs the flags only.&n; */
@@ -473,6 +426,31 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
+comma
+multiline_comment|/* Reported by Adriaan Penning &lt;a.penning@luon.net&gt;&n; * Note that these cameras report &quot;Medium not present&quot; after&n; * ALLOW_MEDIUM_REMOVAL, so they also need to be marked&n; * NOT_LOCKABLE in the SCSI blacklist (and the vendor is MATSHITA). */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04da
+comma
+l_int|0x2372
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Panasonic&quot;
+comma
+l_string|&quot;DMC-LCx Camera&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
 )paren
 comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */
@@ -791,6 +769,56 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Iacopo Spalletti &lt;avvisi@spalletti.it&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x052b
+comma
+l_int|0x1807
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;300_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
+multiline_comment|/* Yakumo Mega Image 37&n; * Submitted by Stephan Fuhrmann &lt;atomenergie@t-online.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x052b
+comma
+l_int|0x1801
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;300_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -1222,6 +1250,7 @@ comma
 l_int|0
 )paren
 comma
+multiline_comment|/* The entry was here before I took over, and had US_SC_RBC. It turns&n; * out that isn&squot;t needed. Additionally, Torsten Eriksson&n; * &lt;Torsten.Eriksson@bergianska.se&gt; is able to use his device fine&n; * without this entry at all - but I don&squot;t suspect that will be true&n; * for all users (the protocol is likely needed), so is staying at&n; * this time. - Phil Dibowitz &lt;phil@ipom.com&gt;&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1237,7 +1266,7 @@ l_string|&quot;LaCie&quot;
 comma
 l_string|&quot;USB Hard Disk&quot;
 comma
-id|US_SC_RBC
+id|US_SC_DEVICE
 comma
 id|US_PR_CB
 comma
@@ -1412,81 +1441,6 @@ comma
 l_string|&quot;Lexar&quot;
 comma
 l_string|&quot;USB CF Reader&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Reported by Carlos Villegas &lt;cav@uniscope.co.jp&gt;&n; * This device needs an INQUIRY of exactly 36-bytes to function.&n; * That is the only reason this entry is needed.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x05e3
-comma
-l_int|0x0700
-comma
-l_int|0x0000
-comma
-l_int|0xffff
-comma
-l_string|&quot;Genesys Logic&quot;
-comma
-l_string|&quot;USB to IDE Card Reader&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
-multiline_comment|/* Submitted Alexander Oltu &lt;alexander@all-2.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x05e3
-comma
-l_int|0x0701
-comma
-l_int|0x0000
-comma
-l_int|0xffff
-comma
-l_string|&quot;Genesys Logic&quot;
-comma
-l_string|&quot;USB to IDE Optical&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-)paren
-comma
-multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; *&n; * ST818 slim drives (rev 0.02) don&squot;t need special care.&n;*/
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x05e3
-comma
-l_int|0x0702
-comma
-l_int|0x0000
-comma
-l_int|0xffff
-comma
-l_string|&quot;Genesys Logic&quot;
-comma
-l_string|&quot;USB to IDE Disk&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -1823,6 +1777,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Eero Volotinen &lt;eero@ping-viini.org&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07ab
+comma
+l_int|0xfccd
+comma
+l_int|0x0406
+comma
+l_int|0x0406
+comma
+l_string|&quot;Freecom Technologies&quot;
+comma
+l_string|&quot;FHD-Classic&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2328,30 +2307,6 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a16
-comma
-l_int|0x8888
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;IBM&quot;
-comma
-l_string|&quot;IBM USB Memory Key&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
 id|UNUSUAL_DEV
 c_func
@@ -2555,6 +2510,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Patch by Stephan Walter &lt;stephan.walter@epfl.ch&gt;&n; * I don&squot;t know why, but it works... */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0dda
+comma
+l_int|0x0001
+comma
+l_int|0x0012
+comma
+l_int|0x0012
+comma
+l_string|&quot;WINWARD&quot;
+comma
+l_string|&quot;Music Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Submitted by Antoine Mairesse &lt;antoine.mairesse@free.fr&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -2578,6 +2558,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Rastislav Stanik &lt;rs_kernel@yahoo.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0ea0
+comma
+l_int|0x6828
+comma
+l_int|0x0110
+comma
+l_int|0x0110
+comma
+l_string|&quot;USB&quot;
+comma
+l_string|&quot;Flash Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
 )paren
 comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
@@ -2628,6 +2633,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
+)paren
+comma
+multiline_comment|/* Reported by Kotrla Vitezslav &lt;kotrla@ceb.cz&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x1370
+comma
+l_int|0x6828
+comma
+l_int|0x0110
+comma
+l_int|0x0110
+comma
+l_string|&quot;SWISSBIT&quot;
+comma
+l_string|&quot;Black Silver&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55

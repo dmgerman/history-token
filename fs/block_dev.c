@@ -3008,6 +3008,7 @@ id|blkdev_get
 )paren
 suffix:semicolon
 DECL|function|blkdev_open
+r_static
 r_int
 id|blkdev_open
 c_func
@@ -3104,13 +3105,6 @@ r_return
 id|res
 suffix:semicolon
 )brace
-DECL|variable|blkdev_open
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|blkdev_open
-)paren
-suffix:semicolon
 DECL|function|blkdev_put
 r_int
 id|blkdev_put
@@ -3648,13 +3642,6 @@ op_assign
 id|generic_file_sendfile
 comma
 )brace
-suffix:semicolon
-DECL|variable|def_blk_fops
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|def_blk_fops
-)paren
 suffix:semicolon
 DECL|function|ioctl_by_bdev
 r_int

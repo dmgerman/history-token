@@ -390,7 +390,7 @@ op_logical_neg
 op_decrement
 id|mtouch-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 (paren
 id|mtouch-&gt;irq
 )paren
@@ -1228,7 +1228,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|mtouch-&gt;irq

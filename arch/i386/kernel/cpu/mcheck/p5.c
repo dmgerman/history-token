@@ -94,6 +94,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|add_taint
+c_func
+(paren
+id|TAINT_MACHINE_CHECK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Set up machine check reporting for processors with Intel style MCE */
 DECL|function|intel_p5_mcheck_init

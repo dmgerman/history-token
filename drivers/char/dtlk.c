@@ -244,15 +244,6 @@ comma
 suffix:semicolon
 multiline_comment|/* local prototypes */
 r_static
-r_void
-id|dtlk_delay
-c_func
-(paren
-r_int
-id|ms
-)paren
-suffix:semicolon
-r_static
 r_int
 id|dtlk_dev_probe
 c_func
@@ -473,7 +464,7 @@ id|O_NONBLOCK
 )paren
 r_break
 suffix:semicolon
-id|dtlk_delay
+id|msleep_interruptible
 c_func
 (paren
 l_int|100
@@ -696,7 +687,7 @@ op_eq
 l_int|0
 )paren
 multiline_comment|/* We yield our time until scheduled&n;&t;&t;&t;&t;   again.  This reduces the transfer&n;&t;&t;&t;&t;   rate to 500 bytes/sec, but that&squot;s&n;&t;&t;&t;&t;   still enough to keep up with the&n;&t;&t;&t;&t;   speech synthesizer. */
-id|dtlk_delay
+id|msleep_interruptible
 c_func
 (paren
 l_int|1
@@ -763,7 +754,7 @@ id|O_NONBLOCK
 )paren
 r_break
 suffix:semicolon
-id|dtlk_delay
+id|msleep_interruptible
 c_func
 (paren
 l_int|1
@@ -1327,18 +1318,10 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_int|5
-op_star
-id|HZ
-op_div
-l_int|10
+l_int|500
 )paren
 suffix:semicolon
 multiline_comment|/* nap 0.50 sec but&n;&t;&t;&t;&t;&t;&t;   could be awakened&n;&t;&t;&t;&t;&t;&t;   earlier by&n;&t;&t;&t;&t;&t;&t;   signals... */
@@ -1386,38 +1369,6 @@ id|dtlk_cleanup
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------ */
-multiline_comment|/* sleep for ms milliseconds */
-DECL|function|dtlk_delay
-r_static
-r_void
-id|dtlk_delay
-c_func
-(paren
-r_int
-id|ms
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|ms
-op_star
-id|HZ
-op_plus
-l_int|1000
-op_minus
-id|HZ
-)paren
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-)brace
 DECL|function|dtlk_readable
 r_static
 r_int
@@ -1680,7 +1631,7 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* posting an index takes 18 msec.  Here, we&n;&t;&t;&t;   wait up to 100 msec to see whether it&n;&t;&t;&t;   appears. */
-id|dtlk_delay
+id|msleep_interruptible
 c_func
 (paren
 l_int|100

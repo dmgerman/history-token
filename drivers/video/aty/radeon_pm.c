@@ -2117,6 +2117,30 @@ comma
 id|pixclks_cntl
 )paren
 suffix:semicolon
+multiline_comment|/* Switch off LVDS interface */
+id|OUTREG
+c_func
+(paren
+id|LVDS_GEN_CNTL
+comma
+id|INREG
+c_func
+(paren
+id|LVDS_GEN_CNTL
+)paren
+op_amp
+op_complement
+(paren
+id|LVDS_BLON
+op_or
+id|LVDS_EN
+op_or
+id|LVDS_ON
+op_or
+id|LVDS_DIGON
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Enable System power management */
 id|pll_pwrmgt_cntl
 op_assign

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;hysdn_defs.h&quot;
 multiline_comment|/*****************************************************************************/
@@ -624,22 +625,10 @@ comma
 l_string|&quot;async tx-cfg delayed&quot;
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep_interruptible
 c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 l_int|20
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 20ms */
@@ -762,22 +751,10 @@ comma
 l_string|&quot;async tx-cfg waiting for tx-ready&quot;
 )paren
 suffix:semicolon
-id|set_current_state
+id|msleep_interruptible
 c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
 (paren
 l_int|20
-op_star
-id|HZ
-)paren
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 20ms */

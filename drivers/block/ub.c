@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * The low performance USB storage driver (ub).&n; *&n; * Copyright (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; * Copyright (C) 2004 Pete Zaitcev (zaitcev@yahoo.com)&n; *&n; * This work is a part of Linux kernel, is derived from it,&n; * and is not licensed separately. See file COPYING for details.&n; *&n; * TODO (sorted by decreasing priority)&n; *  -- ZIP does &quot;ub: resid 18 len 0 act 0&quot; and whole transport quits (toggles?)&n; *  -- set readonly flag for CDs, set removable flag for CF readers&n; *  -- do inquiry and verify we got a disk and not a tape (for LUN mismatch)&n; *  -- support pphaneuf&squot;s SDDR-75 with two LUNs (also broken capacity...)&n; *  -- special case some senses, e.g. 3a/0 -&gt; no media present, reduce retries&n; *  -- do something about spin-down devices, they are extremely dangerous&n; *     (ZIP is one. Needs spin-up command as well.)&n; *  -- verify the 13 conditions and do bulk resets&n; *  -- normal pool of commands instead of cmdv[]?&n; *  -- kill last_pipe and simply do two-state clearing on both pipes&n; *  -- verify protocol (bulk) from USB descriptors (maybe...)&n; *  -- highmem and sg&n; *  -- move top_sense and work_bcs into separate allocations (if they survive)&n; *     for cache purists and esoteric architectures.&n; *  -- prune comments, they are too volumnous&n; *  -- Exterminate P3 printks&n; *  -- Resove XXX&squot;s&n; */
+multiline_comment|/*&n; * The low performance USB storage driver (ub).&n; *&n; * Copyright (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; * Copyright (C) 2004 Pete Zaitcev (zaitcev@yahoo.com)&n; *&n; * This work is a part of Linux kernel, is derived from it,&n; * and is not licensed separately. See file COPYING for details.&n; *&n; * TODO (sorted by decreasing priority)&n; *  -- ZIP does &quot;ub: resid 18 len 0 act 0&quot; and whole transport quits (toggles?)&n; *  -- set readonly flag for CDs, set removable flag for CF readers&n; *  -- do inquiry and verify we got a disk and not a tape (for LUN mismatch)&n; *  -- support pphaneuf&squot;s SDDR-75 with two LUNs (also broken capacity...)&n; *  -- special case some senses, e.g. 3a/0 -&gt; no media present, reduce retries&n; *  -- do something about spin-down devices, they are extremely dangerous&n; *     (ZIP is one. Needs spin-up command as well.)&n; *  -- verify the 13 conditions and do bulk resets&n; *  -- normal pool of commands instead of cmdv[]?&n; *  -- kill last_pipe and simply do two-state clearing on both pipes&n; *  -- verify protocol (bulk) from USB descriptors (maybe...)&n; *  -- highmem and sg&n; *  -- move top_sense and work_bcs into separate allocations (if they survive)&n; *     for cache purists and esoteric architectures.&n; *  -- prune comments, they are too volumnous&n; *  -- Exterminate P3 printks&n; *  -- Resove XXX&squot;s&n; *  -- Redo &quot;benh&squot;s retries&quot;, perhaps have spin-up code to handle them. V:D=?&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -33,7 +33,7 @@ r_struct
 id|bulk_cb_wrap
 (brace
 DECL|member|Signature
-id|u32
+id|__le32
 id|Signature
 suffix:semicolon
 multiline_comment|/* contains &squot;USBC&squot; */
@@ -43,7 +43,7 @@ id|Tag
 suffix:semicolon
 multiline_comment|/* unique per command id */
 DECL|member|DataTransferLength
-id|u32
+id|__le32
 id|DataTransferLength
 suffix:semicolon
 multiline_comment|/* size of data */
@@ -86,7 +86,7 @@ r_struct
 id|bulk_cs_wrap
 (brace
 DECL|member|Signature
-id|u32
+id|__le32
 id|Signature
 suffix:semicolon
 multiline_comment|/* should = &squot;USBS&squot; */
@@ -96,7 +96,7 @@ id|Tag
 suffix:semicolon
 multiline_comment|/* same as original command */
 DECL|member|Residue
-id|u32
+id|__le32
 id|Residue
 suffix:semicolon
 multiline_comment|/* amount not transferred */
@@ -263,9 +263,22 @@ suffix:semicolon
 multiline_comment|/* Return code - valid upon done */
 DECL|member|act_len
 r_int
+r_int
 id|act_len
 suffix:semicolon
 multiline_comment|/* Return size */
+DECL|member|key
+DECL|member|asc
+DECL|member|ascq
+r_int
+r_char
+id|key
+comma
+id|asc
+comma
+id|ascq
+suffix:semicolon
+multiline_comment|/* May be valid if error==-EIO */
 DECL|member|stat_count
 r_int
 id|stat_count
@@ -1797,6 +1810,18 @@ op_star
 id|sc
 )paren
 (brace
+multiline_comment|/*&n;&t; * If we zero disk-&gt;private_data BEFORE put_disk, we have to check&n;&t; * for NULL all over the place in open, release, check_media and&n;&t; * revalidate, because the block level semaphore is well inside the&n;&t; * put_disk. But we cannot zero after the call, because *disk is gone.&n;&t; * The sd.c is blatantly racy in this area.&n;&t; */
+multiline_comment|/* disk-&gt;private_data = NULL; */
+id|put_disk
+c_func
+(paren
+id|sc-&gt;disk
+)paren
+suffix:semicolon
+id|sc-&gt;disk
+op_assign
+l_int|NULL
+suffix:semicolon
 id|ub_id_put
 c_func
 (paren
@@ -2472,14 +2497,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * build the command&n;&t; */
+multiline_comment|/*&n;&t; * build the command&n;&t; *&n;&t; * The call to blk_queue_hardsect_size() guarantees that request&n;&t; * is aligned, but it is given in terms of 512 byte units, always.&n;&t; */
 id|block
 op_assign
 id|rq-&gt;sector
+op_rshift
+id|sc-&gt;capacity.bshift
 suffix:semicolon
 id|nblks
 op_assign
 id|rq-&gt;nr_sectors
+op_rshift
+id|sc-&gt;capacity.bshift
 suffix:semicolon
 id|memset
 c_func
@@ -2580,7 +2609,7 @@ id|rq-&gt;buffer
 suffix:semicolon
 id|cmd-&gt;len
 op_assign
-id|nblks
+id|rq-&gt;nr_sectors
 op_star
 l_int|512
 suffix:semicolon
@@ -2982,19 +3011,6 @@ id|sc-&gt;work_urb.status
 op_assign
 l_int|0
 suffix:semicolon
-id|sc-&gt;work_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|UB_URB_TIMEOUT
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3026,13 +3042,6 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* P3 */
-id|del_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|ub_complete
 c_func
 (paren
@@ -3044,6 +3053,19 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+id|sc-&gt;work_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|UB_URB_TIMEOUT
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
+)paren
+suffix:semicolon
 id|cmd-&gt;state
 op_assign
 id|UB_CMDST_CMD
@@ -3188,6 +3210,13 @@ op_amp
 id|sc-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
 )paren
 suffix:semicolon
 id|ub_scsi_dispatch
@@ -3706,19 +3735,6 @@ id|sc-&gt;work_urb.status
 op_assign
 l_int|0
 suffix:semicolon
-id|sc-&gt;work_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|UB_URB_TIMEOUT
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3750,13 +3766,6 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* P3 */
-id|del_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|ub_complete
 c_func
 (paren
@@ -3777,6 +3786,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|sc-&gt;work_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|UB_URB_TIMEOUT
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
+)paren
+suffix:semicolon
 id|cmd-&gt;state
 op_assign
 id|UB_CMDST_DATA
@@ -4076,19 +4098,6 @@ id|sc-&gt;work_urb.status
 op_assign
 l_int|0
 suffix:semicolon
-id|sc-&gt;work_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|UB_URB_TIMEOUT
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|usb_submit_urb
@@ -4122,13 +4131,6 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* P3 */
-id|del_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|ub_complete
 c_func
 (paren
@@ -4149,6 +4151,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|sc-&gt;work_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|UB_URB_TIMEOUT
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4349,8 +4364,6 @@ op_eq
 id|UB_CMDST_SENSE
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * We do not look at sense, because even if there was no sense,&n;&t;&t; * we get into UB_CMDST_SENSE from a STALL or CSW FAIL only.&n;&t;&t; * We request sense because we want to clear CHECK CONDITION&n;&t;&t; * on devices with delusions of SCSI, and not because we&n;&t;&t; * are curious in any way about the sense itself.&n;&t;&t; */
-multiline_comment|/* if ((cmd-&gt;top_sense[2] &amp; 0x0F) == NO_SENSE) { foo } */
 id|ub_state_done
 c_func
 (paren
@@ -4521,19 +4534,6 @@ id|sc-&gt;work_urb.status
 op_assign
 l_int|0
 suffix:semicolon
-id|sc-&gt;work_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|UB_URB_TIMEOUT
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4565,13 +4565,6 @@ id|rc
 )paren
 suffix:semicolon
 multiline_comment|/* P3 */
-id|del_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|ub_complete
 c_func
 (paren
@@ -4592,6 +4585,19 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|sc-&gt;work_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|UB_URB_TIMEOUT
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
+)paren
+suffix:semicolon
 id|cmd-&gt;stat_count
 op_assign
 l_int|0
@@ -4655,6 +4661,7 @@ r_goto
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * ``If the allocation length is eighteen or greater, and a device&n;&t; * server returns less than eithteen bytes of data, the application&n;&t; * client should assume that the bytes not transferred would have been&n;&t; * zeroes had the device server returned those bytes.&squot;&squot;&n;&t; */
 id|memset
 c_func
 (paren
@@ -4677,6 +4684,13 @@ l_int|0
 )braket
 op_assign
 id|REQUEST_SENSE
+suffix:semicolon
+id|scmd-&gt;cdb
+(braket
+l_int|4
+)braket
+op_assign
+id|UB_SENSE_SIZE
 suffix:semicolon
 id|scmd-&gt;cdb_len
 op_assign
@@ -4883,19 +4897,6 @@ id|sc-&gt;work_urb.status
 op_assign
 l_int|0
 suffix:semicolon
-id|sc-&gt;work_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|UB_CTRL_TIMEOUT
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4915,13 +4916,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|sc-&gt;work_timer
-)paren
-suffix:semicolon
 id|ub_complete
 c_func
 (paren
@@ -4933,6 +4927,19 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+id|sc-&gt;work_timer.expires
+op_assign
+id|jiffies
+op_plus
+id|UB_CTRL_TIMEOUT
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4967,6 +4974,7 @@ id|ub_scsi_cmd
 op_star
 id|cmd
 suffix:semicolon
+multiline_comment|/*&n;&t; * Ignoring scmd-&gt;act_len, because the buffer was pre-zeroed.&n;&t; */
 id|ub_cmdtr_sense
 c_func
 (paren
@@ -4977,6 +4985,7 @@ comma
 id|sense
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Find the command which triggered the unit attention or a check,&n;&t; * save the sense into it, and advance its state machine.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5055,6 +5064,29 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|cmd-&gt;key
+op_assign
+id|sense
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x0F
+suffix:semicolon
+id|cmd-&gt;asc
+op_assign
+id|sense
+(braket
+l_int|12
+)braket
+suffix:semicolon
+id|cmd-&gt;ascq
+op_assign
+id|sense
+(braket
+l_int|13
+)braket
+suffix:semicolon
 id|ub_scsi_urb_compl
 c_func
 (paren
@@ -5373,7 +5405,31 @@ c_func
 id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
-multiline_comment|/* XXX sd.c and floppy.c bail on open if media is not present. */
+multiline_comment|/*&n;&t; * The sd.c considers -&gt;media_present and -&gt;changed not equivalent,&n;&t; * under some pretty murky conditions (a failure of READ CAPACITY).&n;&t; * We may need it one day.&n;&t; */
+r_if
+c_cond
+(paren
+id|sc-&gt;removable
+op_logical_and
+id|sc-&gt;changed
+op_logical_and
+op_logical_neg
+(paren
+id|filp-&gt;f_flags
+op_amp
+id|O_NDELAY
+)paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|ENOMEDIUM
+suffix:semicolon
+r_goto
+id|err_open
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5675,6 +5731,15 @@ comma
 id|sc-&gt;dev-&gt;devnum
 comma
 id|sc-&gt;capacity.nsec
+comma
+id|sc-&gt;capacity.bsize
+)paren
+suffix:semicolon
+multiline_comment|/* XXX Support sector size switching like in sr.c */
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|disk-&gt;queue
 comma
 id|sc-&gt;capacity.bsize
 )paren
@@ -6018,6 +6083,23 @@ id|rc
 op_assign
 id|cmd-&gt;error
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EIO
+op_logical_and
+id|cmd-&gt;key
+op_ne
+l_int|0
+)paren
+multiline_comment|/* Retries for benh&squot;s key */
+id|rc
+op_assign
+id|cmd-&gt;key
+suffix:semicolon
 id|err_submit
 suffix:colon
 id|kfree
@@ -6306,7 +6388,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|p
@@ -6321,7 +6403,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 (paren
@@ -6633,6 +6715,40 @@ id|sc-&gt;work_urb.status
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
+id|usb_submit_urb
+c_func
+(paren
+op_amp
+id|sc-&gt;work_urb
+comma
+id|GFP_KERNEL
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Unable to submit a probe clear (%d)&bslash;n&quot;
+comma
+id|sc-&gt;name
+comma
+id|rc
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 id|init_timer
 c_func
 (paren
@@ -6666,47 +6782,6 @@ op_amp
 id|timer
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|rc
-op_assign
-id|usb_submit_urb
-c_func
-(paren
-op_amp
-id|sc-&gt;work_urb
-comma
-id|GFP_KERNEL
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Unable to submit a probe clear (%d)&bslash;n&quot;
-comma
-id|sc-&gt;name
-comma
-id|rc
-)paren
-suffix:semicolon
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|timer
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 id|wait_for_completion
 c_func
 (paren
@@ -6721,8 +6796,7 @@ op_amp
 id|timer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Most of the time, URB was done and dev set to NULL, and so&n;&t; * the unlink bounces out with ENODEV. We do not call usb_kill_urb&n;&t; * because we still think about a backport to 2.4.&n;&t; */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 op_amp
@@ -6973,6 +7047,9 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|rc
 op_assign
 op_minus
@@ -7199,12 +7276,55 @@ id|sc-&gt;send_bulk_pipe
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The way this is used by the startup code is a little specific.&n;&t; * A SCSI check causes a USB stall. Our common case code sees it&n;&t; * and clears the check, after which the device is ready for use.&n;&t; * But if a check was not present, any command other than&n;&t; * TEST_UNIT_READY ends with a lockup (including REQUEST_SENSE).&n;&t; *&n;&t; * If we neglect to clear the SCSI check, the first real command fails&n;&t; * (which is the capacity readout). We clear that and retry, but why&n;&t; * causing spurious retries for no reason.&n;&t; *&n;&t; * Revalidation may start with its own TEST_UNIT_READY, but that one&n;&t; * has to succeed, so we clear checks with an additional one here.&n;&t; * In any case it&squot;s not our business how revaliadation is implemented.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* Retries for benh&squot;s key */
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
 id|ub_sync_tur
 c_func
 (paren
 id|sc
 )paren
+)paren
+op_le
+l_int|0
+)paren
+r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+l_int|0x6
+)paren
+r_break
+suffix:semicolon
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+)brace
 id|sc-&gt;removable
 op_assign
 l_int|1
@@ -7366,7 +7486,14 @@ comma
 id|UB_MAX_SECTORS
 )paren
 suffix:semicolon
-singleline_comment|// blk_queue_hardsect_size(q, xxxxx);
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|q
+comma
+id|sc-&gt;capacity.bsize
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * This is a serious infraction, caused by a deficiency in the&n;&t; * USB sg interface (usb_sg_wait()). We plan to remove this once&n;&t; * we get mileage on the driver and can justify a change to USB API.&n;&t; * See blk_queue_bounce_limit() to understand this part.&n;&t; *&n;&t; * XXX And I still need to be aware of the DMA mask in the HC.&n;&t; */
 id|q-&gt;bounce_pfn
 op_assign
@@ -7657,18 +7784,6 @@ c_func
 id|q
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we zero disk-&gt;private_data BEFORE put_disk, we have to check&n;&t; * for NULL all over the place in open, release, check_media and&n;&t; * revalidate, because the block level semaphore is well inside the&n;&t; * put_disk. But we cannot zero after the call, because *disk is gone.&n;&t; * The sd.c is blatantly racy in this area.&n;&t; */
-multiline_comment|/* disk-&gt;private_data = NULL; */
-id|put_disk
-c_func
-(paren
-id|disk
-)paren
-suffix:semicolon
-id|sc-&gt;disk
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; * We really expect blk_cleanup_queue() to wait, so no amount&n;&t; * of paranoya is too much.&n;&t; *&n;&t; * Taking a lock on a structure which is about to be freed&n;&t; * is very nonsensual. Here it is largely a way to do a debug freeze,&n;&t; * and a bracket which shows where the nonsensual code segment ends.&n;&t; *&n;&t; * Testing for -EINPROGRESS is always a bug, so we are bending&n;&t; * the rules a little.&n;&t; */
 id|spin_lock_irqsave
 c_func
@@ -7707,6 +7822,14 @@ op_amp
 id|sc-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * There is virtually no chance that other CPU runs times so long&n;&t; * after ub_urb_complete should have called del_timer, but only if HCD&n;&t; * didn&squot;t forget to deliver a callback on unlink.&n;&t; */
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|sc-&gt;work_timer
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * At this point there must be no commands coming from anyone&n;&t; * and no URBs left in transit.&n;&t; */

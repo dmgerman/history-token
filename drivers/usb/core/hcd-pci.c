@@ -672,7 +672,7 @@ id|dev_info
 (paren
 id|hcd-&gt;self.controller
 comma
-l_string|&quot;irq %s, %s %p&bslash;n&quot;
+l_string|&quot;irq %s, %s 0x%lx&bslash;n&quot;
 comma
 id|bufp
 comma
@@ -687,7 +687,7 @@ l_string|&quot;pci mem&quot;
 suffix:colon
 l_string|&quot;io base&quot;
 comma
-id|base
+id|resource
 )paren
 suffix:semicolon
 id|usb_bus_init
@@ -935,6 +935,12 @@ id|usb_deregister_bus
 (paren
 op_amp
 id|hcd-&gt;self
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace

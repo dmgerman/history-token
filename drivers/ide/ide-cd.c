@@ -6620,6 +6620,10 @@ id|info-&gt;cmd
 op_assign
 id|WRITE
 suffix:semicolon
+id|info-&gt;devinfo.media_written
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Start sending the write request to the drive. */
 r_return
 id|cdrom_start_packet_command
@@ -6918,6 +6922,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
+op_eq
+id|READ
+)paren
+op_logical_and
 id|IDE_LARGE_SEEK
 c_func
 (paren
@@ -11234,6 +11248,7 @@ c_cond
 (paren
 id|cap.cd_rw_write
 )paren
+(brace
 id|CDROM_CONFIG_FLAGS
 c_func
 (paren
@@ -11244,6 +11259,17 @@ id|cd_rw
 op_assign
 l_int|1
 suffix:semicolon
+id|CDROM_CONFIG_FLAGS
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|ram
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -62,6 +62,13 @@ macro_line|#else
 DECL|macro|gadget_is_omap
 mdefine_line|#define&t;gadget_is_omap(g)&t;0
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_N9604
+DECL|macro|gadget_is_n9604
+mdefine_line|#define&t;gadget_is_n9604(g)&t;!strcmp(&quot;n9604_udc&quot;, (g)-&gt;name)
+macro_line|#else
+DECL|macro|gadget_is_n9604
+mdefine_line|#define&t;gadget_is_n9604(g)&t;0
+macro_line|#endif
 singleline_comment|// CONFIG_USB_GADGET_AT91RM9200
 singleline_comment|// CONFIG_USB_GADGET_SX2
 singleline_comment|// CONFIG_USB_GADGET_AU1X00

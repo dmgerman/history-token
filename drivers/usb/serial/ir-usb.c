@@ -1274,7 +1274,8 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown our bulk read */
-id|usb_unlink_urb
+id|usb_kill_urb
+c_func
 (paren
 id|port-&gt;read_urb
 )paren

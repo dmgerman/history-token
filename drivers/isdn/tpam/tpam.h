@@ -2,6 +2,8 @@ multiline_comment|/* $Id: tpam.h,v 1.1.2.3 2001/11/06 20:58:30 kai Exp $&n; *&n;
 macro_line|#ifndef _TPAM_PRIV_H_
 DECL|macro|_TPAM_PRIV_H_
 mdefine_line|#define _TPAM_PRIV_H_
+singleline_comment|//#define DEBUG /* uncomment if you want debugging output */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/isdnif.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -1051,15 +1053,5 @@ comma
 id|u32
 )paren
 suffix:semicolon
-multiline_comment|/* Define this to enable debug tracing prints */
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk printk
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk while(0) printk
-macro_line|#endif
 macro_line|#endif /* _TPAM_H_ */
 eof

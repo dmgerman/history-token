@@ -3501,6 +3501,7 @@ id|THIS_MODULE
 suffix:semicolon
 multiline_comment|/*************************************************************&n; * Module support routines&n; *************************************************************/
 DECL|function|bsdcomp_init
+r_static
 r_int
 id|__init
 id|bsdcomp_init
@@ -3538,6 +3539,7 @@ id|answer
 suffix:semicolon
 )brace
 DECL|function|bsdcomp_cleanup
+r_static
 r_void
 id|__exit
 id|bsdcomp_cleanup

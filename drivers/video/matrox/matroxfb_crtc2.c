@@ -3161,6 +3161,12 @@ id|m2info-&gt;fbcon.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
+id|m2info-&gt;fbcon.flags
+op_or_assign
+id|FBINFO_HWACCEL_XPAN
+op_or
+id|FBINFO_HWACCEL_YPAN
+suffix:semicolon
 id|m2info-&gt;fbcon.currcon
 op_assign
 op_minus

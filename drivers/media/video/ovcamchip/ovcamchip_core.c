@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;ovcamchip_priv.h&quot;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v2.27 for Linux 2.6&quot;
@@ -404,22 +405,10 @@ l_int|0x80
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for it to initialize */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-op_plus
 l_int|150
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 r_for
@@ -511,22 +500,10 @@ l_int|0x80
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for it to initialize */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-op_plus
 l_int|150
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy read to sync I2C */

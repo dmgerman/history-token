@@ -57,6 +57,10 @@ r_char
 op_star
 id|bulk_in_buffer
 suffix:semicolon
+DECL|member|bulk_in_size
+r_int
+id|bulk_in_size
+suffix:semicolon
 DECL|member|read_urb
 r_struct
 id|urb
