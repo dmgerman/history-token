@@ -42,8 +42,8 @@ DECL|macro|CLONE_FILES
 mdefine_line|#define CLONE_FILES&t;0x00000400&t;/* set if open files shared between processes */
 DECL|macro|CLONE_SIGHAND
 mdefine_line|#define CLONE_SIGHAND&t;0x00000800&t;/* set if signal handlers and blocked signals shared */
-DECL|macro|CLONE_PID
-mdefine_line|#define CLONE_PID&t;0x00001000&t;/* set if pid shared */
+DECL|macro|CLONE_IDLETASK
+mdefine_line|#define CLONE_IDLETASK&t;0x00001000&t;/* set if new pid should be 0 (kernel only)*/
 DECL|macro|CLONE_PTRACE
 mdefine_line|#define CLONE_PTRACE&t;0x00002000&t;/* set if we want to let tracing continue on the child too */
 DECL|macro|CLONE_VFORK
@@ -2639,7 +2639,9 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_struct
+id|task_struct
+op_star
 id|do_fork
 c_func
 (paren
