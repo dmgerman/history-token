@@ -279,11 +279,6 @@ r_static
 r_int
 id|acpi_force
 suffix:semicolon
-DECL|variable|debug
-r_static
-r_int
-id|debug
-suffix:semicolon
 DECL|variable|powernow_table
 r_static
 r_struct
@@ -341,71 +336,8 @@ r_static
 r_char
 id|have_a0
 suffix:semicolon
-DECL|function|dprintk
-r_static
-r_void
-id|dprintk
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-(brace
-r_char
-id|s
-(braket
-l_int|256
-)braket
-suffix:semicolon
-id|va_list
-id|args
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|debug
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
-id|va_start
-c_func
-(paren
-id|args
-comma
-id|fmt
-)paren
-suffix:semicolon
-id|vsprintf
-c_func
-(paren
-id|s
-comma
-id|fmt
-comma
-id|args
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
-id|va_end
-c_func
-(paren
-id|args
-)paren
-suffix:semicolon
-)brace
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;powernow-k7&quot;, msg)
 DECL|function|check_fsb
 r_static
 r_int
@@ -858,33 +790,6 @@ id|CPUFREQ_ENTRY_INVALID
 suffix:semicolon
 macro_line|#endif
 )brace
-id|dprintk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
-comma
-id|fid
-comma
-id|fid_codes
-(braket
-id|fid
-)braket
-op_div
-l_int|10
-comma
-id|fid_codes
-(braket
-id|fid
-)braket
-op_mod
-l_int|10
-comma
-id|speed
-op_div
-l_int|1000
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -929,7 +834,28 @@ suffix:semicolon
 multiline_comment|/* upper 8 bits */
 id|dprintk
 (paren
+l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
 l_string|&quot;VID: 0x%x (%d.%03dV)&bslash;n&quot;
+comma
+id|fid
+comma
+id|fid_codes
+(braket
+id|fid
+)braket
+op_div
+l_int|10
+comma
+id|fid_codes
+(braket
+id|fid
+)braket
+op_mod
+l_int|10
+comma
+id|speed
+op_div
+l_int|1000
 comma
 id|vid
 comma
@@ -1536,8 +1462,6 @@ id|control
 suffix:semicolon
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;acpi:  P%d: %d MHz %d mW %d uS control %08x SGTC %d&bslash;n&quot;
 comma
 id|i
@@ -1676,9 +1600,8 @@ suffix:semicolon
 )brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;   FID: 0x%x (%d.%dx [%dMHz])  &quot;
+l_string|&quot;VID: 0x%x (%d.%03dV)&bslash;n&quot;
 comma
 id|fid
 comma
@@ -1699,11 +1622,6 @@ comma
 id|speed
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;VID: 0x%x (%d.%03dV)&bslash;n&quot;
 comma
 id|vid
 comma
@@ -1929,8 +1847,6 @@ l_int|0
 (brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;Found PSB header at %p&bslash;n&quot;
 comma
 id|p
@@ -1947,8 +1863,6 @@ id|p
 suffix:semicolon
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;Table version: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;tableversion
@@ -1976,9 +1890,7 @@ suffix:semicolon
 )brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Flags: 0x%x (&quot;
+l_string|&quot;Flags: 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;flags
 )paren
@@ -1997,7 +1909,7 @@ l_int|0
 (brace
 id|dprintk
 (paren
-l_string|&quot;Mobile&quot;
+l_string|&quot;Mobile voltage regulator&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2005,15 +1917,10 @@ r_else
 (brace
 id|dprintk
 (paren
-l_string|&quot;Desktop&quot;
+l_string|&quot;Desktop voltage regulator&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|dprintk
-(paren
-l_string|&quot; voltage regulator)&bslash;n&quot;
-)paren
-suffix:semicolon
 id|latency
 op_assign
 id|psb-&gt;settlingtime
@@ -2043,8 +1950,6 @@ suffix:semicolon
 )brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;Settling Time: %d microseconds.&bslash;n&quot;
 comma
 id|psb-&gt;settlingtime
@@ -2052,8 +1957,6 @@ id|psb-&gt;settlingtime
 suffix:semicolon
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;Has %d PST tables. (Only dumping ones relevant to this CPU).&bslash;n&quot;
 comma
 id|psb-&gt;numpst
@@ -2134,8 +2037,6 @@ id|pst-&gt;startvid
 (brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;PST:%d (@%p)&bslash;n&quot;
 comma
 id|i
@@ -2145,30 +2046,13 @@ id|pst
 suffix:semicolon
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot; cpuid: 0x%x  &quot;
+l_string|&quot; cpuid: 0x%x  fsb: %d  maxFID: 0x%x  startvid: 0x%x&bslash;n&quot;
 comma
 id|pst-&gt;cpuid
-)paren
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;fsb: %d  &quot;
 comma
 id|pst-&gt;fsbspeed
-)paren
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;maxFID: 0x%x  &quot;
 comma
 id|pst-&gt;maxfid
-)paren
-suffix:semicolon
-id|dprintk
-(paren
-l_string|&quot;startvid: 0x%x&bslash;n&quot;
 comma
 id|pst-&gt;startvid
 )paren
@@ -2637,8 +2521,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;FSB: %3d.%03d MHz&bslash;n&quot;
 comma
 id|fsb
@@ -3001,24 +2883,6 @@ id|powernow_table
 )paren
 suffix:semicolon
 )brace
-id|module_param
-c_func
-(paren
-id|debug
-comma
-r_int
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;enable debug output.&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
