@@ -3649,6 +3649,10 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|rt
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
