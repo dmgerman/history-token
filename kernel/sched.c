@@ -46,18 +46,16 @@ DECL|macro|TASK_USER_PRIO
 mdefine_line|#define TASK_USER_PRIO(p)&t;USER_PRIO((p)-&gt;static_prio)
 DECL|macro|MAX_USER_PRIO
 mdefine_line|#define MAX_USER_PRIO&t;&t;(USER_PRIO(MAX_PRIO))
-DECL|macro|AVG_TIMESLICE
-mdefine_line|#define AVG_TIMESLICE&t;(MIN_TIMESLICE + ((MAX_TIMESLICE - MIN_TIMESLICE) *&bslash;&n;&t;&t;&t;(MAX_PRIO-1-NICE_TO_PRIO(0))/(MAX_USER_PRIO - 1)))
 multiline_comment|/*&n; * Some helpers for converting nanosecond timing to jiffy resolution&n; */
 DECL|macro|NS_TO_JIFFIES
 mdefine_line|#define NS_TO_JIFFIES(TIME)&t;((TIME) / (1000000000 / HZ))
 DECL|macro|JIFFIES_TO_NS
 mdefine_line|#define JIFFIES_TO_NS(TIME)&t;((TIME) * (1000000000 / HZ))
-multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 5 msecs (or 1 jiffy, whichever is larger),&n; * default timeslice is 100 msecs, maximum timeslice is 200 msecs.&n; * Timeslices get refilled after they expire.&n; */
+multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 5 msecs (or 1 jiffy, whichever is larger),&n; * default timeslice is 100 msecs, maximum timeslice is 800 msecs.&n; * Timeslices get refilled after they expire.&n; */
 DECL|macro|MIN_TIMESLICE
 mdefine_line|#define MIN_TIMESLICE&t;&t;max(5 * HZ / 1000, 1)
-DECL|macro|MAX_TIMESLICE
-mdefine_line|#define MAX_TIMESLICE&t;&t;(200 * HZ / 1000)
+DECL|macro|DEF_TIMESLICE
+mdefine_line|#define DEF_TIMESLICE&t;&t;(100 * HZ / 1000)
 DECL|macro|ON_RUNQUEUE_WEIGHT
 mdefine_line|#define ON_RUNQUEUE_WEIGHT&t; 30
 DECL|macro|CHILD_PENALTY
@@ -73,7 +71,7 @@ mdefine_line|#define MAX_BONUS&t;&t;(MAX_USER_PRIO * PRIO_BONUS_RATIO / 100)
 DECL|macro|INTERACTIVE_DELTA
 mdefine_line|#define INTERACTIVE_DELTA&t;  2
 DECL|macro|MAX_SLEEP_AVG
-mdefine_line|#define MAX_SLEEP_AVG&t;&t;(AVG_TIMESLICE * MAX_BONUS)
+mdefine_line|#define MAX_SLEEP_AVG&t;&t;(DEF_TIMESLICE * MAX_BONUS)
 DECL|macro|STARVATION_LIMIT
 mdefine_line|#define STARVATION_LIMIT&t;(MAX_SLEEP_AVG)
 DECL|macro|NS_MAX_SLEEP_AVG
@@ -104,9 +102,9 @@ DECL|macro|LOW_CREDIT
 mdefine_line|#define LOW_CREDIT(p) &bslash;&n;&t;((p)-&gt;interactive_credit &lt; -CREDIT_LIMIT)
 DECL|macro|TASK_PREEMPTS_CURR
 mdefine_line|#define TASK_PREEMPTS_CURR(p, rq) &bslash;&n;&t;((p)-&gt;prio &lt; (rq)-&gt;curr-&gt;prio)
-multiline_comment|/*&n; * BASE_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; *&n; * task_timeslice() is the interface that is used by the scheduler.&n; */
-DECL|macro|BASE_TIMESLICE
-mdefine_line|#define BASE_TIMESLICE(p) &bslash;&n;&t;max(MAX_TIMESLICE * (MAX_PRIO - (p)-&gt;static_prio) / (MAX_USER_PRIO), &bslash;&n;&t;&t;MIN_TIMESLICE)
+multiline_comment|/*&n; * task_timeslice() scales user-nice values [ -20 ... 0 ... 19 ]&n; * to time slice values: [800ms ... 100ms ... 5ms]&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; */
+DECL|macro|SCALE_PRIO
+mdefine_line|#define SCALE_PRIO(x, prio) &bslash;&n;&t;max(x * (MAX_PRIO - prio) / (MAX_USER_PRIO/2), MIN_TIMESLICE)
 DECL|function|task_timeslice
 r_static
 r_int
@@ -119,11 +117,36 @@ op_star
 id|p
 )paren
 (brace
-r_return
-id|BASE_TIMESLICE
+r_if
+c_cond
+(paren
+id|p-&gt;static_prio
+OL
+id|NICE_TO_PRIO
 c_func
 (paren
-id|p
+l_int|0
+)paren
+)paren
+r_return
+id|SCALE_PRIO
+c_func
+(paren
+id|DEF_TIMESLICE
+op_star
+l_int|4
+comma
+id|p-&gt;static_prio
+)paren
+suffix:semicolon
+r_else
+r_return
+id|SCALE_PRIO
+c_func
+(paren
+id|DEF_TIMESLICE
+comma
+id|p-&gt;static_prio
 )paren
 suffix:semicolon
 )brace
@@ -1852,7 +1875,7 @@ c_func
 (paren
 id|MAX_SLEEP_AVG
 op_minus
-id|AVG_TIMESLICE
+id|DEF_TIMESLICE
 )paren
 suffix:semicolon
 r_if
@@ -3969,12 +3992,20 @@ c_func
 (paren
 id|p-&gt;parent-&gt;time_slice
 OG
-id|MAX_TIMESLICE
+id|task_timeslice
+c_func
+(paren
+id|p
+)paren
 )paren
 )paren
 id|p-&gt;parent-&gt;time_slice
 op_assign
-id|MAX_TIMESLICE
+id|task_timeslice
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 )brace
 r_if
