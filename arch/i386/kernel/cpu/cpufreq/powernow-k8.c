@@ -91,17 +91,17 @@ op_assign
 dot
 id|verify
 op_assign
-id|drv_verify
+id|powernowk8_verify
 comma
 dot
 id|target
 op_assign
-id|drv_target
+id|powernowk8_target
 comma
 dot
 id|init
 op_assign
-id|drv_cpu_init
+id|powernowk8_cpu_init
 comma
 dot
 id|name
@@ -140,6 +140,7 @@ l_int|100
 suffix:semicolon
 )brace
 multiline_comment|/* Return a fid matching an input frequency in MHz */
+r_static
 id|u32
 DECL|function|find_fid_from_freq
 id|find_fid_from_freq
@@ -3666,8 +3667,8 @@ suffix:semicolon
 multiline_comment|/* Driver entry point to switch to the target frequency */
 r_static
 r_int
-DECL|function|drv_target
-id|drv_target
+DECL|function|powernowk8_target
+id|powernowk8_target
 c_func
 (paren
 r_struct
@@ -3884,8 +3885,8 @@ suffix:semicolon
 multiline_comment|/* Driver entry point to verify the policy and range of frequencies */
 r_static
 r_int
-DECL|function|drv_verify
-id|drv_verify
+DECL|function|powernowk8_verify
+id|powernowk8_verify
 c_func
 (paren
 r_struct
@@ -4055,8 +4056,8 @@ multiline_comment|/* per CPU init entry point to the driver */
 r_static
 r_int
 id|__init
-DECL|function|drv_cpu_init
-id|drv_cpu_init
+DECL|function|powernowk8_cpu_init
+id|powernowk8_cpu_init
 c_func
 (paren
 r_struct
@@ -4234,8 +4235,8 @@ multiline_comment|/* driver entry point for init */
 r_static
 r_int
 id|__init
-DECL|function|drv_init
-id|drv_init
+DECL|function|powernowk8_init
+id|powernowk8_init
 c_func
 (paren
 r_void
@@ -4296,7 +4297,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;drv_init fail, change pending bit set&bslash;n&quot;
+l_string|&quot;powernowk8_init fail, change pending bit set&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -4323,8 +4324,8 @@ multiline_comment|/* driver entry point for term */
 r_static
 r_void
 id|__exit
-DECL|function|drv_exit
-id|drv_exit
+DECL|function|powernowk8_exit
+id|powernowk8_exit
 c_func
 (paren
 r_void
@@ -4335,7 +4336,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;drv_exit&bslash;n&quot;
+l_string|&quot;powernowk8_exit&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cpufreq_unregister_driver
@@ -4370,18 +4371,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|drv_init
+DECL|variable|powernowk8_init
 id|module_init
 c_func
 (paren
-id|drv_init
+id|powernowk8_init
 )paren
 suffix:semicolon
-DECL|variable|drv_exit
+DECL|variable|powernowk8_exit
 id|module_exit
 c_func
 (paren
-id|drv_exit
+id|powernowk8_exit
 )paren
 suffix:semicolon
 eof
