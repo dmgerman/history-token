@@ -276,8 +276,6 @@ DECL|variable|ds1621_id
 r_static
 r_int
 id|ds1621_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* All registers are word-sized, except for the configuration register.&n;   DS1621 uses a high-byte first convention, which is exactly opposite to&n;   the usual practice. */
 DECL|function|ds1621_read_value

@@ -324,8 +324,6 @@ DECL|variable|lm83_id
 r_static
 r_int
 id|lm83_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
@@ -427,7 +425,7 @@ id|temp_crit
 )paren
 suffix:semicolon
 DECL|macro|set_temp
-mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp
 c_func
 (paren

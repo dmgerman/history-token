@@ -31,6 +31,10 @@ r_int
 id|w1_max_slave_count
 suffix:semicolon
 r_extern
+r_int
+id|w1_max_slave_ttl
+suffix:semicolon
+r_extern
 r_struct
 id|list_head
 id|w1_masters
@@ -60,6 +64,9 @@ id|id
 comma
 r_int
 id|slave_count
+comma
+r_int
+id|slave_ttl
 comma
 r_struct
 id|device_driver
@@ -186,6 +193,10 @@ suffix:semicolon
 id|dev-&gt;id
 op_assign
 id|id
+suffix:semicolon
+id|dev-&gt;slave_ttl
+op_assign
+id|slave_ttl
 suffix:semicolon
 id|atomic_set
 c_func
@@ -493,6 +504,8 @@ id|w1_ids
 op_increment
 comma
 id|w1_max_slave_count
+comma
+id|w1_max_slave_ttl
 comma
 op_amp
 id|w1_driver

@@ -738,6 +738,13 @@ comma
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|i810_ids
+)paren
+suffix:semicolon
 DECL|function|i810_probe
 r_static
 r_int

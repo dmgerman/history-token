@@ -11,6 +11,10 @@ op_star
 id|w1_alloc_dev
 c_func
 (paren
+id|u32
+comma
+r_int
+comma
 r_int
 comma
 r_struct

@@ -440,6 +440,13 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+(paren
+id|pci
+comma
+id|savage4_ids
+)paren
+suffix:semicolon
 DECL|function|savage4_probe
 r_static
 r_int
