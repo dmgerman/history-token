@@ -11644,11 +11644,11 @@ l_int|0x01000001
 )paren
 (brace
 id|NV_WR32
+c_func
 (paren
 id|chip-&gt;PMC
 comma
 l_int|0x00000004
-)braket
 comma
 l_int|0x01000001
 )paren
