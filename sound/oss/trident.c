@@ -41,7 +41,7 @@ mdefine_line|#define TRIDENT_STATE_MAGIC&t;0x63657373 /* &quot;cess&quot; */
 DECL|macro|TRIDENT_DMA_MASK
 mdefine_line|#define TRIDENT_DMA_MASK&t;0x3fffffff /* DMA buffer mask for pci_alloc_consist */
 DECL|macro|ALI_DMA_MASK
-mdefine_line|#define ALI_DMA_MASK&t;&t;0xffffffff /* ALI Tridents lack the 30-bit limitation */
+mdefine_line|#define ALI_DMA_MASK&t;&t;0x7fffffff /* ALI Tridents have 31-bit DMA. Wow. */
 DECL|macro|NR_HW_CH
 mdefine_line|#define NR_HW_CH&t;&t;32
 multiline_comment|/* maximum number of AC97 codecs connected, AC97 2.0 defined 4, but 7018 and 4D-NX only&n;   have 2 SDATA_IN lines (currently) */
