@@ -134,7 +134,7 @@ r_int
 id|status
 suffix:semicolon
 DECL|member|wait_ctr
-r_int
+id|atomic_t
 id|wait_ctr
 suffix:semicolon
 )brace

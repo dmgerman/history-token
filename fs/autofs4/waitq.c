@@ -4,6 +4,13 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &quot;autofs_i.h&quot;
+DECL|variable|waitq_lock
+r_static
+id|spinlock_t
+id|waitq_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* We make this a static variable rather than a part of the superblock; it&n;   is better if we don&squot;t reassign numbers easily even across filesystems */
 DECL|variable|autofs4_next_wait_queue
 r_static
@@ -81,7 +88,7 @@ id|wq-&gt;name
 op_assign
 l_int|NULL
 suffix:semicolon
-id|wake_up
+id|wake_up_interruptible
 c_func
 (paren
 op_amp
@@ -535,6 +542,13 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -576,6 +590,13 @@ id|name-&gt;len
 r_break
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -636,6 +657,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
+suffix:semicolon
 id|wq-&gt;wait_queue_token
 op_assign
 id|autofs4_next_wait_queue
@@ -651,6 +679,21 @@ l_int|0
 id|autofs4_next_wait_queue
 op_assign
 l_int|1
+suffix:semicolon
+id|wq-&gt;next
+op_assign
+id|sbi-&gt;queues
+suffix:semicolon
+id|sbi-&gt;queues
+op_assign
+id|wq
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
 suffix:semicolon
 id|init_waitqueue_head
 c_func
@@ -683,14 +726,6 @@ comma
 id|name-&gt;len
 )paren
 suffix:semicolon
-id|wq-&gt;next
-op_assign
-id|sbi-&gt;queues
-suffix:semicolon
-id|sbi-&gt;queues
-op_assign
-id|wq
-suffix:semicolon
 id|DPRINTK
 c_func
 (paren
@@ -712,9 +747,14 @@ id|notify
 )paren
 suffix:semicolon
 multiline_comment|/* autofs4_notify_daemon() may block */
+id|atomic_set
+c_func
+(paren
+op_amp
 id|wq-&gt;wait_ctr
-op_assign
+comma
 l_int|2
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -745,8 +785,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|wq-&gt;wait_ctr
-op_increment
+)paren
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -856,11 +900,14 @@ comma
 id|irqflags
 )paren
 suffix:semicolon
-id|interruptible_sleep_on
+id|wait_event_interruptible
 c_func
 (paren
-op_amp
 id|wq-&gt;queue
+comma
+id|wq-&gt;name
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -909,10 +956,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_decrement
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
 id|wq-&gt;wait_ctr
-op_eq
-l_int|0
+)paren
 )paren
 multiline_comment|/* Are we the last process to need status? */
 id|kfree
@@ -951,6 +1000,13 @@ op_star
 op_star
 id|wql
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -988,16 +1044,32 @@ c_cond
 op_logical_neg
 id|wq
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 op_star
 id|wql
 op_assign
 id|wq-&gt;next
 suffix:semicolon
 multiline_comment|/* Unlink from chain */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|waitq_lock
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1016,10 +1088,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_decrement
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
 id|wq-&gt;wait_ctr
-op_eq
-l_int|0
+)paren
 )paren
 multiline_comment|/* Is anyone still waiting for this guy? */
 id|kfree
@@ -1029,7 +1103,7 @@ id|wq
 )paren
 suffix:semicolon
 r_else
-id|wake_up
+id|wake_up_interruptible
 c_func
 (paren
 op_amp
