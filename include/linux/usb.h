@@ -1593,6 +1593,14 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|usb_disabled
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * URB support, for asynchronous request completions&n; */
 multiline_comment|/*&n; * urb-&gt;transfer_flags:&n; *&n; * FIXME should _all_ be URB_* flags&n; */
