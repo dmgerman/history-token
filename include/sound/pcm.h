@@ -3696,7 +3696,10 @@ id|format
 )paren
 suffix:semicolon
 multiline_comment|/* in bits */
-id|u_int64_t
+r_const
+r_int
+r_char
+op_star
 id|snd_pcm_format_silence_64
 c_func
 (paren
