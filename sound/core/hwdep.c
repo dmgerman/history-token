@@ -1061,9 +1061,6 @@ c_cond
 (paren
 op_logical_neg
 id|hw-&gt;ops.dsp_load
-op_logical_or
-op_logical_neg
-id|hw-&gt;ops.dsp_status
 )paren
 r_return
 op_minus
