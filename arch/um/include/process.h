@@ -2,7 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karay
 macro_line|#ifndef __PROCESS_H__
 DECL|macro|__PROCESS_H__
 mdefine_line|#define __PROCESS_H__
-macro_line|#include &lt;asm/sigcontext.h&gt;
+macro_line|#include &lt;signal.h&gt;
 r_extern
 r_void
 id|sig_handler

@@ -287,11 +287,9 @@ c_func
 id|status
 )paren
 op_ne
-(paren
 id|SIGTRAP
 op_plus
 l_int|0x80
-)paren
 )paren
 )paren
 (brace

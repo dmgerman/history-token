@@ -13,6 +13,7 @@ macro_line|#include &quot;linux/utsname.h&quot;
 macro_line|#include &quot;linux/sysrq.h&quot;
 macro_line|#include &quot;linux/seq_file.h&quot;
 macro_line|#include &quot;linux/delay.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
@@ -603,6 +604,9 @@ m_exit
 l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|__uml_setup
 c_func
@@ -894,6 +898,9 @@ m_exit
 (paren
 l_int|0
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|__uml_setup

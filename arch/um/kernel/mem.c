@@ -742,6 +742,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if FIXADDR_USER_START != 0
 r_int
 id|size
 op_assign
@@ -890,6 +891,7 @@ id|PAGE_READONLY
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|function|paging_init
 r_void
