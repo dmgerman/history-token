@@ -3,8 +3,9 @@ multiline_comment|/* Revision history:&n; *&n; *   2001-04-18  Robert Siemer &lt
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;
 DECL|variable|text_buffer
 r_static
@@ -330,11 +331,11 @@ l_int|9
 suffix:semicolon
 )brace
 )brace
-DECL|variable|rds_f_ops
+DECL|variable|rds_fops
 r_static
 r_struct
 id|file_operations
-id|rds_f_ops
+id|rds_fops
 op_assign
 (brace
 dot
@@ -358,6 +359,30 @@ op_assign
 id|rds_f_release
 )brace
 suffix:semicolon
+DECL|variable|rds_miscdev
+r_static
+r_struct
+id|miscdevice
+id|rds_miscdev
+op_assign
+(brace
+dot
+id|minor
+op_assign
+id|MISC_DYNAMIC_MINOR
+comma
+dot
+id|name
+op_assign
+l_string|&quot;radiotext&quot;
+dot
+id|fops
+op_assign
+op_amp
+id|rds_fops
+comma
+)brace
+suffix:semicolon
 DECL|function|miropcm20_rds_init
 r_static
 r_int
@@ -368,47 +393,57 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
+id|error
+op_assign
+id|misc_register
+c_func
+(paren
+op_amp
+id|rds_miscdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|devfs_register
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
+id|error
+op_assign
+id|devfs_mk_symlink
 c_func
 (paren
 l_int|NULL
 comma
 l_string|&quot;v4l/rds/radiotext&quot;
 comma
-id|DEVFS_FL_DEFAULT
-op_or
-id|DEVFS_FL_AUTO_DEVNUM
-comma
 l_int|0
 comma
-l_int|0
+l_string|&quot;../misc/radiotext&quot;
 comma
-id|S_IRUGO
-op_or
-id|S_IFCHR
-comma
-op_amp
-id|rds_f_ops
+l_int|NULL
 comma
 l_int|NULL
 )paren
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
-id|printk
+r_if
+c_cond
+(paren
+id|error
+)paren
+id|misc_deregister
 c_func
 (paren
-l_string|&quot;miropcm20-rds: userinterface driver loaded.&bslash;n&quot;
+op_amp
+id|rds_miscdev
 )paren
-suffix:semicolon
 r_return
-l_int|0
+id|error
 suffix:semicolon
 )brace
 DECL|function|miropcm20_rds_cleanup
@@ -427,6 +462,12 @@ c_func
 l_string|&quot;v4l/rds/radiotext&quot;
 )paren
 suffix:semicolon
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|rds_miscdev
+)paren
 )brace
 DECL|variable|miropcm20_rds_init
 id|module_init
