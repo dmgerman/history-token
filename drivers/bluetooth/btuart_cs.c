@@ -909,7 +909,8 @@ id|UART_LSR_DR
 suffix:semicolon
 )brace
 DECL|function|btuart_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|btuart_interrupt
 c_func
 (paren
@@ -963,6 +964,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|iobase
@@ -1104,6 +1106,9 @@ op_amp
 id|info-&gt;lock
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|btuart_change_speed

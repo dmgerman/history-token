@@ -352,13 +352,13 @@ r_int
 id|initiator
 suffix:semicolon
 multiline_comment|/* Default DLC parameters */
+DECL|member|cfc
+r_int
+id|cfc
+suffix:semicolon
 DECL|member|mtu
 id|uint
 id|mtu
-suffix:semicolon
-DECL|member|credits
-id|uint
-id|credits
 suffix:semicolon
 DECL|member|dlcs
 r_struct
@@ -434,9 +434,9 @@ DECL|member|mtu
 id|uint
 id|mtu
 suffix:semicolon
-DECL|member|credits
+DECL|member|cfc
 id|uint
-id|credits
+id|cfc
 suffix:semicolon
 DECL|member|rx_credits
 id|uint
@@ -530,6 +530,13 @@ DECL|macro|RFCOMM_MSCEX_RX
 mdefine_line|#define RFCOMM_MSCEX_RX     2
 DECL|macro|RFCOMM_MSCEX_OK
 mdefine_line|#define RFCOMM_MSCEX_OK     (RFCOMM_MSCEX_TX + RFCOMM_MSCEX_RX)
+multiline_comment|/* CFC states */
+DECL|macro|RFCOMM_CFC_UNKNOWN
+mdefine_line|#define RFCOMM_CFC_UNKNOWN  -1
+DECL|macro|RFCOMM_CFC_DISABLED
+mdefine_line|#define RFCOMM_CFC_DISABLED 0
+DECL|macro|RFCOMM_CFC_ENABLED
+mdefine_line|#define RFCOMM_CFC_ENABLED  RFCOMM_MAX_CREDITS
 r_extern
 r_struct
 id|task_struct
