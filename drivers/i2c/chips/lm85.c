@@ -39,7 +39,7 @@ id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/* Insmod parameters */
-id|SENSORS_INSMOD_5
+id|SENSORS_INSMOD_6
 c_func
 (paren
 id|lm85b
@@ -51,6 +51,8 @@ comma
 id|adt7463
 comma
 id|emc6d100
+comma
+id|emc6d102
 )paren
 suffix:semicolon
 multiline_comment|/* The LM85 registers */
@@ -112,6 +114,8 @@ DECL|macro|LM85_VERSTEP_EMC6D100_A0
 mdefine_line|#define&t;LM85_VERSTEP_EMC6D100_A0        0x60
 DECL|macro|LM85_VERSTEP_EMC6D100_A1
 mdefine_line|#define&t;LM85_VERSTEP_EMC6D100_A1        0x61
+DECL|macro|LM85_VERSTEP_EMC6D102
+mdefine_line|#define&t;LM85_VERSTEP_EMC6D102&t;&t;0x65
 DECL|macro|LM85_REG_CONFIG
 mdefine_line|#define&t;LM85_REG_CONFIG&t;&t;&t;0x40
 DECL|macro|LM85_REG_ALARM1
@@ -167,11 +171,19 @@ DECL|macro|EMC6D100_REG_ALARM3
 mdefine_line|#define EMC6D100_REG_ALARM3             0x7d
 multiline_comment|/* IN5, IN6 and IN7 */
 DECL|macro|EMC6D100_REG_IN
-mdefine_line|#define EMC6D100_REG_IN(nr)             (0x70 + ((nr)-5))
+mdefine_line|#define&t;EMC6D100_REG_IN(nr)             (0x70 + ((nr)-5))
 DECL|macro|EMC6D100_REG_IN_MIN
-mdefine_line|#define EMC6D100_REG_IN_MIN(nr)         (0x73 + ((nr)-5) * 2)
+mdefine_line|#define&t;EMC6D100_REG_IN_MIN(nr)         (0x73 + ((nr)-5) * 2)
 DECL|macro|EMC6D100_REG_IN_MAX
-mdefine_line|#define EMC6D100_REG_IN_MAX(nr)         (0x74 + ((nr)-5) * 2)
+mdefine_line|#define&t;EMC6D100_REG_IN_MAX(nr)         (0x74 + ((nr)-5) * 2)
+DECL|macro|EMC6D102_REG_EXTEND_ADC1
+mdefine_line|#define&t;EMC6D102_REG_EXTEND_ADC1&t;0x85
+DECL|macro|EMC6D102_REG_EXTEND_ADC2
+mdefine_line|#define&t;EMC6D102_REG_EXTEND_ADC2&t;0x86
+DECL|macro|EMC6D102_REG_EXTEND_ADC3
+mdefine_line|#define&t;EMC6D102_REG_EXTEND_ADC3&t;0x87
+DECL|macro|EMC6D102_REG_EXTEND_ADC4
+mdefine_line|#define&t;EMC6D102_REG_EXTEND_ADC4&t;0x88
 DECL|macro|LM85_ALARM_IN0
 mdefine_line|#define&t;LM85_ALARM_IN0&t;&t;&t;0x0001
 DECL|macro|LM85_ALARM_IN1
@@ -205,13 +217,6 @@ mdefine_line|#define&t;LM85_ALARM_TEMP1_FAULT&t;&t;0x4000
 DECL|macro|LM85_ALARM_TEMP3_FAULT
 mdefine_line|#define&t;LM85_ALARM_TEMP3_FAULT&t;&t;0x8000
 multiline_comment|/* Conversions. Rounding and limit checking is only done on the TO_REG &n;   variants. Note that you should be a bit careful with which arguments&n;   these macros are called: arguments may be evaluated more than once.&n; */
-multiline_comment|/* IN are scaled 1.000 == 0xc0, mag = 3 */
-DECL|macro|IN_TO_REG
-mdefine_line|#define IN_TO_REG(val)&t;&t;(SENSORS_LIMIT((((val)*0xc0+500)/1000),0,255))
-DECL|macro|INEXT_FROM_REG
-mdefine_line|#define INEXT_FROM_REG(val,ext) (((val)*1000 + (ext)*250 + 96)/0xc0)
-DECL|macro|IN_FROM_REG
-mdefine_line|#define IN_FROM_REG(val)&t;(INEXT_FROM_REG(val,0))
 multiline_comment|/* IN are scaled acording to built-in resistors */
 DECL|variable|lm85_scaling
 r_static
@@ -243,11 +248,11 @@ suffix:semicolon
 DECL|macro|SCALE
 mdefine_line|#define SCALE(val,from,to)&t;&t;(((val)*(to) + ((from)/2))/(from))
 DECL|macro|INS_TO_REG
-mdefine_line|#define INS_TO_REG(n,val)&t;&t;(SENSORS_LIMIT(SCALE(val,lm85_scaling[n],192),0,255))
+mdefine_line|#define INS_TO_REG(n,val)&t;&bslash;&n;&t;&t;SENSORS_LIMIT(SCALE(val,lm85_scaling[n],192),0,255)
 DECL|macro|INSEXT_FROM_REG
-mdefine_line|#define INSEXT_FROM_REG(n,val,ext)&t;(SCALE((val)*4 + (ext),192*4,lm85_scaling[n]))
+mdefine_line|#define INSEXT_FROM_REG(n,val,ext,scale)&t;&bslash;&n;&t;&t;SCALE((val)*(scale) + (ext),192*(scale),lm85_scaling[n])
 DECL|macro|INS_FROM_REG
-mdefine_line|#define INS_FROM_REG(n,val)&t;&t;(INSEXT_FROM_REG(n,val,0))
+mdefine_line|#define INS_FROM_REG(n,val)   INSEXT_FROM_REG(n,val,0,1)
 multiline_comment|/* FAN speed is measured using 90kHz clock */
 DECL|macro|FAN_TO_REG
 mdefine_line|#define FAN_TO_REG(val)&t;&t;(SENSORS_LIMIT( (val)&lt;=0?0: 5400000/(val),0,65534))
@@ -255,19 +260,15 @@ DECL|macro|FAN_FROM_REG
 mdefine_line|#define FAN_FROM_REG(val)&t;((val)==0?-1:(val)==0xffff?0:5400000/(val))
 multiline_comment|/* Temperature is reported in .001 degC increments */
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT(((val)+500)/1000,-127,127))
+mdefine_line|#define TEMP_TO_REG(val)&t;&bslash;&n;&t;&t;SENSORS_LIMIT(SCALE(val,1000,1),-127,127)
 DECL|macro|TEMPEXT_FROM_REG
-mdefine_line|#define TEMPEXT_FROM_REG(val,ext)&t;((val)*1000 + (ext)*250)
+mdefine_line|#define TEMPEXT_FROM_REG(val,ext,scale)&t;&bslash;&n;&t;&t;SCALE((val)*scale + (ext),scale,1000)
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;&t;(TEMPEXT_FROM_REG(val,0))
-DECL|macro|EXTTEMP_TO_REG
-mdefine_line|#define EXTTEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT((val)/250,-127,127))
+mdefine_line|#define TEMP_FROM_REG(val)&t;&bslash;&n;&t;&t;TEMPEXT_FROM_REG(val,0,1)
 DECL|macro|PWM_TO_REG
 mdefine_line|#define PWM_TO_REG(val)&t;&t;&t;(SENSORS_LIMIT(val,0,255))
 DECL|macro|PWM_FROM_REG
 mdefine_line|#define PWM_FROM_REG(val)&t;&t;(val)
-DECL|macro|EXT_FROM_REG
-mdefine_line|#define EXT_FROM_REG(val,sensor)&t;(((val)&gt;&gt;(sensor * 2))&amp;0x03)
 multiline_comment|/* ZONEs have the following parameters:&n; *    Limit (low) temp,           1. degC&n; *    Hysteresis (below limit),   1. degC (0-15)&n; *    Range of speed control,     .1 degC (2-80)&n; *    Critical (high) temp,       1. degC&n; *&n; * FAN PWMs have the following parameters:&n; *    Reference Zone,                 1, 2, 3, etc.&n; *    Spinup time,                    .05 sec&n; *    PWM value at limit/low temp,    1 count&n; *    PWM Frequency,                  1. Hz&n; *    PWM is Min or OFF below limit,  flag&n; *    Invert PWM output,              flag&n; *&n; * Some chips filter the temp, others the fan.&n; *    Filter constant (or disabled)   .1 seconds&n; */
 multiline_comment|/* These are the zone temperature range encodings in .001 degree C */
 DECL|variable|lm85_range_map
@@ -836,11 +837,27 @@ id|u8
 id|tach_mode
 suffix:semicolon
 multiline_comment|/* Register encoding, combined */
-DECL|member|extend_adc
-id|u16
-id|extend_adc
+DECL|member|temp_ext
+id|u8
+id|temp_ext
+(braket
+l_int|3
+)braket
 suffix:semicolon
-multiline_comment|/* Register value */
+multiline_comment|/* Decoded values */
+DECL|member|in_ext
+id|u8
+id|in_ext
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Decoded values */
+DECL|member|adc_scale
+id|u8
+id|adc_scale
+suffix:semicolon
+multiline_comment|/* ADC Extended bits scaling factor */
 DECL|member|fan_ppr
 id|u8
 id|fan_ppr
@@ -1805,7 +1822,7 @@ id|buf
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|INS_FROM_REG
+id|INSEXT_FROM_REG
 c_func
 (paren
 id|nr
@@ -1814,6 +1831,13 @@ id|data-&gt;in
 (braket
 id|nr
 )braket
+comma
+id|data-&gt;in_ext
+(braket
+id|nr
+)braket
+comma
+id|data-&gt;adc_scale
 )paren
 )paren
 suffix:semicolon
@@ -2207,13 +2231,20 @@ id|buf
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|TEMP_FROM_REG
+id|TEMPEXT_FROM_REG
 c_func
 (paren
 id|data-&gt;temp
 (braket
 id|nr
 )braket
+comma
+id|data-&gt;temp_ext
+(braket
+id|nr
+)braket
+comma
+id|data-&gt;adc_scale
 )paren
 )paren
 suffix:semicolon
@@ -4685,6 +4716,24 @@ id|company
 op_eq
 id|LM85_COMPANY_SMSC
 op_logical_and
+id|verstep
+op_eq
+id|LM85_VERSTEP_EMC6D102
+)paren
+(brace
+id|kind
+op_assign
+id|emc6d102
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|company
+op_eq
+id|LM85_COMPANY_SMSC
+op_logical_and
 (paren
 id|verstep
 op_amp
@@ -4879,6 +4928,20 @@ id|emc6d100
 id|type_name
 op_assign
 l_string|&quot;emc6d100&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|emc6d102
+)paren
+(brace
+id|type_name
+op_assign
+l_string|&quot;emc6d102&quot;
 suffix:semicolon
 )brace
 id|strlcpy
@@ -5724,10 +5787,6 @@ r_case
 id|LM85_REG_ALARM1
 suffix:colon
 multiline_comment|/* Read both bytes at once */
-r_case
-id|ADM1027_REG_EXTEND_ADC1
-suffix:colon
-multiline_comment|/* Read two bytes at once */
 id|res
 op_assign
 id|i2c_smbus_read_byte_data
@@ -6277,7 +6336,8 @@ id|adt7463
 )paren
 )paren
 (brace
-id|data-&gt;extend_adc
+r_int
+id|ext1
 op_assign
 id|lm85_read_value
 c_func
@@ -6287,7 +6347,113 @@ comma
 id|ADM1027_REG_EXTEND_ADC1
 )paren
 suffix:semicolon
+r_int
+id|ext2
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|ADM1027_REG_EXTEND_ADC2
+)paren
+suffix:semicolon
+r_int
+id|val
+op_assign
+(paren
+id|ext1
+op_lshift
+l_int|8
+)paren
+op_plus
+id|ext2
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_le
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|data-&gt;in_ext
+(braket
+id|i
+)braket
+op_assign
+(paren
+id|val
+op_rshift
+(paren
+id|i
+op_star
+l_int|2
+)paren
+)paren
+op_amp
+l_int|0x03
+suffix:semicolon
 )brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_le
+l_int|2
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|data-&gt;temp_ext
+(braket
+id|i
+)braket
+op_assign
+(paren
+id|val
+op_rshift
+(paren
+(paren
+id|i
+op_plus
+l_int|5
+)paren
+op_star
+l_int|2
+)paren
+)paren
+op_amp
+l_int|0x03
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* adc_scale is 2^(number of LSBs). There are 4 extra bits in&n;&t;&t;   the emc6d102 and 2 in the adt7463 and adm1027. In all&n;&t;&t;   other chips ext is always 0 and the value of scale is&n;&t;&t;   irrelevant. So it is left in 4*/
+id|data-&gt;adc_scale
+op_assign
+(paren
+id|data-&gt;type
+op_eq
+id|emc6d102
+)paren
+ques
+c_cond
+l_int|16
+suffix:colon
+l_int|4
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6515,6 +6681,149 @@ id|EMC6D100_REG_ALARM3
 )paren
 op_lshift
 l_int|16
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|data-&gt;type
+op_eq
+id|emc6d102
+)paren
+(brace
+multiline_comment|/* Have to read LSB bits after the MSB ones because&n;&t;&t;&t;   the reading of the MSB bits has frozen the&n;&t;&t;&t;   LSBs (backward from the ADM1027).&n;&t;&t;&t; */
+r_int
+id|ext1
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D102_REG_EXTEND_ADC1
+)paren
+suffix:semicolon
+r_int
+id|ext2
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D102_REG_EXTEND_ADC2
+)paren
+suffix:semicolon
+r_int
+id|ext3
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D102_REG_EXTEND_ADC3
+)paren
+suffix:semicolon
+r_int
+id|ext4
+op_assign
+id|lm85_read_value
+c_func
+(paren
+id|client
+comma
+id|EMC6D102_REG_EXTEND_ADC4
+)paren
+suffix:semicolon
+id|data-&gt;in_ext
+(braket
+l_int|0
+)braket
+op_assign
+id|ext3
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;in_ext
+(braket
+l_int|1
+)braket
+op_assign
+id|ext4
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;in_ext
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+id|ext4
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;in_ext
+(braket
+l_int|3
+)braket
+op_assign
+(paren
+id|ext3
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;in_ext
+(braket
+l_int|4
+)braket
+op_assign
+(paren
+id|ext2
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;temp_ext
+(braket
+l_int|0
+)braket
+op_assign
+id|ext1
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;temp_ext
+(braket
+l_int|1
+)braket
+op_assign
+id|ext2
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|data-&gt;temp_ext
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+id|ext1
+op_rshift
+l_int|4
+)paren
+op_amp
+l_int|0x0f
 suffix:semicolon
 )brace
 id|data-&gt;last_reading
