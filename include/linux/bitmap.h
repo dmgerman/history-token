@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * bitmaps provide bit arrays that consume one or more unsigned&n; * longs.  The bitmap interface and available operations are listed&n; * here, in bitmap.h&n; *&n; * Function implementations generic to all architectures are in&n; * lib/bitmap.c.  Functions implementations that are architecture&n; * specific are in various include/asm-&lt;arch&gt;/bitops.h headers&n; * and other arch/&lt;arch&gt; specific files.&n; *&n; * See lib/bitmap.c for more details.&n; */
-multiline_comment|/*&n; * The available bitmap operations and their rough meaning in the&n; * case that the bitmap is a single unsigned long are thus:&n; *&n; * bitmap_zero(dst, nbits)&t;&t;&t;*dst = 0UL&n; * bitmap_fill(dst, nbits)&t;&t;&t;*dst = ~0UL&n; * bitmap_copy(dst, src, nbits)&t;&t;&t;*dst = *src&n; * bitmap_and(dst, src1, src2, nbits)&t;&t;*dst = *src1 &amp; *src2&n; * bitmap_or(dst, src1, src2, nbits)&t;&t;*dst = *src1 | *src2&n; * bitmap_xor(dst, src1, src2, nbits)&t;&t;*dst = *src1 ^ *src2&n; * bitmap_andnot(dst, src1, src2, nbits)&t;*dst = *src1 &amp; ~(*src2)&n; * bitmap_complement(dst, src, nbits)&t;&t;*dst = ~(*src)&n; * bitmap_equal(src1, src2, nbits)&t;&t;Are *src1 and *src2 equal?&n; * bitmap_intersects(src1, src2, nbits) &t;Do *src1 and *src2 overlap?&n; * bitmap_subset(src1, src2, nbits)&t;&t;Is *src1 a subset of *src2?&n; * bitmap_empty(src, nbits)&t;&t;&t;Are all bits zero in *src?&n; * bitmap_full(src, nbits)&t;&t;&t;Are all bits set in *src?&n; * bitmap_weight(src, nbits)&t;&t;&t;Hamming Weight: number set bits&n; * bitmap_shift_right(dst, src, n, nbits)&t;*dst = *src &gt;&gt; n&n; * bitmap_shift_left(dst, src, n, nbits)&t;*dst = *src &lt;&lt; n&n; * bitmap_scnprintf(buf, len, src, nbits)&t;Print bitmap src to buf&n; * bitmap_parse(ubuf, ulen, dst, nbits)&t;&t;Parse bitmap dst from buf&n; */
+multiline_comment|/*&n; * The available bitmap operations and their rough meaning in the&n; * case that the bitmap is a single unsigned long are thus:&n; *&n; * bitmap_zero(dst, nbits)&t;&t;&t;*dst = 0UL&n; * bitmap_fill(dst, nbits)&t;&t;&t;*dst = ~0UL&n; * bitmap_copy(dst, src, nbits)&t;&t;&t;*dst = *src&n; * bitmap_and(dst, src1, src2, nbits)&t;&t;*dst = *src1 &amp; *src2&n; * bitmap_or(dst, src1, src2, nbits)&t;&t;*dst = *src1 | *src2&n; * bitmap_xor(dst, src1, src2, nbits)&t;&t;*dst = *src1 ^ *src2&n; * bitmap_andnot(dst, src1, src2, nbits)&t;*dst = *src1 &amp; ~(*src2)&n; * bitmap_complement(dst, src, nbits)&t;&t;*dst = ~(*src)&n; * bitmap_equal(src1, src2, nbits)&t;&t;Are *src1 and *src2 equal?&n; * bitmap_intersects(src1, src2, nbits) &t;Do *src1 and *src2 overlap?&n; * bitmap_subset(src1, src2, nbits)&t;&t;Is *src1 a subset of *src2?&n; * bitmap_empty(src, nbits)&t;&t;&t;Are all bits zero in *src?&n; * bitmap_full(src, nbits)&t;&t;&t;Are all bits set in *src?&n; * bitmap_weight(src, nbits)&t;&t;&t;Hamming Weight: number set bits&n; * bitmap_shift_right(dst, src, n, nbits)&t;*dst = *src &gt;&gt; n&n; * bitmap_shift_left(dst, src, n, nbits)&t;*dst = *src &lt;&lt; n&n; * bitmap_scnprintf(buf, len, src, nbits)&t;Print bitmap src to buf&n; * bitmap_parse(ubuf, ulen, dst, nbits)&t;&t;Parse bitmap dst from user buf&n; * bitmap_scnlistprintf(buf, len, src, nbits)&t;Print bitmap src as list to buf&n; * bitmap_parselist(buf, dst, nbits)&t;&t;Parse bitmap dst from list&n; */
 multiline_comment|/*&n; * Also the following operations in asm/bitops.h apply to bitmaps.&n; *&n; * set_bit(bit, addr)&t;&t;&t;*addr |= bit&n; * clear_bit(bit, addr)&t;&t;&t;*addr &amp;= ~bit&n; * change_bit(bit, addr)&t;&t;*addr ^= bit&n; * test_bit(bit, addr)&t;&t;&t;Is bit set in *addr?&n; * test_and_set_bit(bit, addr)&t;&t;Set bit and return old value&n; * test_and_clear_bit(bit, addr)&t;Clear bit and return old value&n; * test_and_change_bit(bit, addr)&t;Change bit and return old value&n; * find_first_zero_bit(addr, nbits)&t;Position first zero bit in *addr&n; * find_first_bit(addr, nbits)&t;&t;Position first set bit in *addr&n; * find_next_zero_bit(addr, nbits, bit)&t;Position next zero bit in *addr &gt;= bit&n; * find_next_bit(addr, nbits, bit)&t;Position next set bit in *addr &gt;= bit&n; */
 multiline_comment|/*&n; * The DECLARE_BITMAP(name,bits) macro, in linux/types.h, can be used&n; * to declare an array named &squot;name&squot; of just enough unsigned longs to&n; * contain all bit positions from 0 to &squot;bits&squot; - 1.&n; */
 multiline_comment|/*&n; * lib/bitmap.c provides these functions:&n; */
@@ -333,6 +333,48 @@ id|dst
 comma
 r_int
 id|nbits
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|bitmap_scnlistprintf
+c_func
+(paren
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|len
+comma
+r_const
+r_int
+r_int
+op_star
+id|src
+comma
+r_int
+id|nbits
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|bitmap_parselist
+c_func
+(paren
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+op_star
+id|maskp
+comma
+r_int
+id|nmaskbits
 )paren
 suffix:semicolon
 r_extern
