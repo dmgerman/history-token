@@ -213,7 +213,7 @@ id|smdk2410_iodesc
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_init_uarts
+id|s3c24xx_init_uarts
 c_func
 (paren
 id|smdk2410_uartcfgs

@@ -241,7 +241,7 @@ id|rx3715_iodesc
 )paren
 )paren
 suffix:semicolon
-id|s3c2440_init_uarts
+id|s3c24xx_init_uarts
 c_func
 (paren
 id|rx3715_uartcfgs
