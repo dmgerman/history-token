@@ -2431,7 +2431,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * int journal_dirty_data() -  mark a buffer as containing dirty data which needs to be flushed before we can commit the current transaction.  &n; * @handle: transaction&n; * @bh: bufferhead to mark&n; * &n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * Returns error number or 0 on success.  &n; */
+multiline_comment|/** &n; * int journal_dirty_data() -  mark a buffer as containing dirty data which&n; *                             needs to be flushed before we can commit the&n; *                             current transaction.  &n; * @handle: transaction&n; * @bh: bufferhead to mark&n; * &n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * Returns error number or 0 on success.&n; *&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; */
 DECL|function|journal_dirty_data
 r_int
 id|journal_dirty_data
@@ -2446,7 +2446,6 @@ op_star
 id|bh
 )paren
 (brace
-multiline_comment|/*&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; */
 id|journal_t
 op_star
 id|journal
@@ -2780,7 +2779,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/** &n; * int journal_dirty_metadata() -  mark a buffer as containing dirty metadata&n; * @handle: transaction to add buffer to.&n; * @bh: buffer to mark &n; * &n; * mark dirty metadata which needs to be journaled as part of the current transaction.&n; *&n; * The buffer is placed on the transaction&squot;s metadata list and is marked&n; * as belonging to the transaction.  &n; *&n; * Returns error number or 0 on success.  &n; */
+multiline_comment|/** &n; * int journal_dirty_metadata() -  mark a buffer as containing dirty metadata&n; * @handle: transaction to add buffer to.&n; * @bh: buffer to mark &n; * &n; * mark dirty metadata which needs to be journaled as part of the current&n; * transaction.&n; *&n; * The buffer is placed on the transaction&squot;s metadata list and is marked&n; * as belonging to the transaction.  &n; *&n; * Returns error number or 0 on success.  &n; *&n; * Special care needs to be taken if the buffer already belongs to the&n; * current committing transaction (in which case we should have frozen&n; * data present for that commit).  In that case, we don&squot;t relink the&n; * buffer: that only gets done when the old transaction finally&n; * completes its commit.&n; */
 DECL|function|journal_dirty_metadata
 r_int
 id|journal_dirty_metadata
@@ -2795,7 +2794,6 @@ op_star
 id|bh
 )paren
 (brace
-multiline_comment|/*&n; * Special care needs to be taken if the buffer already belongs to the&n; * current committing transaction (in which case we should have frozen&n; * data present for that commit).  In that case, we don&squot;t relink the&n; * buffer: that only gets done when the old transaction finally&n; * completes its commit.&n; * &n; */
 id|transaction_t
 op_star
 id|transaction
