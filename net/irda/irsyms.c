@@ -327,13 +327,6 @@ c_func
 id|irda_task_delete
 )paren
 suffix:semicolon
-DECL|variable|irda_start_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_start_timer
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|irda_debug
 id|__u32
