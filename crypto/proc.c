@@ -218,16 +218,6 @@ id|alg-&gt;cra_module
 )paren
 )paren
 suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;blocksize    : %u&bslash;n&quot;
-comma
-id|alg-&gt;cra_blocksize
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -239,6 +229,16 @@ id|CRYPTO_ALG_TYPE_MASK
 r_case
 id|CRYPTO_ALG_TYPE_CIPHER
 suffix:colon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;blocksize    : %u&bslash;n&quot;
+comma
+id|alg-&gt;cra_blocksize
+)paren
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -274,6 +274,16 @@ suffix:semicolon
 r_case
 id|CRYPTO_ALG_TYPE_DIGEST
 suffix:colon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;blocksize    : %u&bslash;n&quot;
+comma
+id|alg-&gt;cra_blocksize
+)paren
+suffix:semicolon
 id|seq_printf
 c_func
 (paren
