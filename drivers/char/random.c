@@ -556,7 +556,23 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if 0
-mdefine_line|#define DEBUG_ENT(fmt, arg...) printk(KERN_DEBUG &quot;random %04d %04d %04d: &quot; &bslash;&n;&t;fmt,&bslash;&n;&t;random_state-&gt;entropy_count,&bslash;&n;&t;sec_random_state-&gt;entropy_count,&bslash;&n;&t;urandom_state-&gt;entropy_count,&bslash;&n;&t;## arg)
+r_static
+r_int
+id|debug
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
+mdefine_line|#define DEBUG_ENT(fmt, arg...) do { if (debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;random %04d %04d %04d: &quot; &bslash;&n;&t;fmt,&bslash;&n;&t;random_state-&gt;entropy_count,&bslash;&n;&t;sec_random_state-&gt;entropy_count,&bslash;&n;&t;urandom_state-&gt;entropy_count,&bslash;&n;&t;## arg); } while (0)
 macro_line|#else
 DECL|macro|DEBUG_ENT
 mdefine_line|#define DEBUG_ENT(fmt, arg...) do {} while (0)
