@@ -1626,7 +1626,7 @@ id|PCI_VENDOR_ID_HP
 suffix:semicolon
 id|fake_bridge_dev.device
 op_assign
-id|PCI_DEVICE_ID_HP_ZX1_LBA
+id|PCI_DEVICE_ID_HP_PCIX_LBA
 suffix:semicolon
 id|bridge-&gt;dev
 op_assign

@@ -347,15 +347,9 @@ op_amp
 id|bit_velle_data
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;Velleman K8000&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

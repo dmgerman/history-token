@@ -344,7 +344,7 @@ multiline_comment|/* fill client structure */
 id|sprintf
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 l_string|&quot;tea6420 (0x%02x)&quot;
 comma
@@ -468,7 +468,7 @@ op_star
 id|address
 comma
 op_amp
-id|client-&gt;adapter-&gt;dev.name
+id|client-&gt;adapter-&gt;name
 (braket
 l_int|0
 )braket
@@ -504,7 +504,7 @@ c_func
 (paren
 l_string|&quot;tea6420.o: refusing to probe on unknown adapter [name=&squot;%s&squot;,id=0x%x]&bslash;n&quot;
 comma
-id|adapter-&gt;dev.name
+id|adapter-&gt;name
 comma
 id|adapter-&gt;id
 )paren

@@ -2856,7 +2856,11 @@ suffix:semicolon
 r_else
 id|product
 op_assign
-id|pdev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|printk
 c_func

@@ -534,15 +534,9 @@ op_assign
 id|I2C_HW_B_LP
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;Philips Parallel port adapter&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

@@ -58,6 +58,10 @@ id|ehci_hcd
 )paren
 )paren
 suffix:semicolon
+id|ehci-&gt;hcd.product_desc
+op_assign
+l_string|&quot;EHCI Host Controller&quot;
+suffix:semicolon
 r_return
 op_amp
 id|ehci-&gt;hcd

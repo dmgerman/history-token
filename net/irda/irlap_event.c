@@ -3871,14 +3871,7 @@ id|NR_EXPECTED
 )paren
 )paren
 (brace
-multiline_comment|/*  poll bit cleared?  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|info-&gt;pf
-)paren
-(brace
+multiline_comment|/* Update Vr (next frame for us to receive) */
 id|self-&gt;vr
 op_assign
 (paren
@@ -3889,7 +3882,7 @@ l_int|1
 op_mod
 l_int|8
 suffix:semicolon
-multiline_comment|/* Update Nr received */
+multiline_comment|/* Update Nr received, cleanup our retry queue */
 id|irlap_update_nr_received
 c_func
 (paren
@@ -3898,10 +3891,23 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; *  Got expected NR, so reset the&n;&t;&t;&t; *  retry_count. This is not done by IrLAP spec,&n;&t;&t;&t; *  which is strange!&n;&t;&t;&t; */
+id|self-&gt;retry_count
+op_assign
+l_int|0
+suffix:semicolon
 id|self-&gt;ack_required
 op_assign
 id|TRUE
 suffix:semicolon
+multiline_comment|/*  poll bit cleared?  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;pf
+)paren
+(brace
 multiline_comment|/* Keep state, do not move this line */
 id|irlap_next_state
 c_func
@@ -3924,40 +3930,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* No longer waiting for pf */
 id|del_timer
 c_func
 (paren
 op_amp
 id|self-&gt;final_timer
 )paren
-suffix:semicolon
-id|self-&gt;vr
-op_assign
-(paren
-id|self-&gt;vr
-op_plus
-l_int|1
-)paren
-op_mod
-l_int|8
-suffix:semicolon
-multiline_comment|/* Update Nr received */
-id|irlap_update_nr_received
-c_func
-(paren
-id|self
-comma
-id|info-&gt;nr
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; *  Got expected NR, so reset the&n;&t;&t;&t;&t; *  retry_count. This is not done by IrLAP,&n;&t;&t;&t;&t; *  which is strange!&n;&t;&t;&t;&t; */
-id|self-&gt;retry_count
-op_assign
-l_int|0
-suffix:semicolon
-id|self-&gt;ack_required
-op_assign
-id|TRUE
 suffix:semicolon
 id|irlap_wait_min_turn_around
 c_func
@@ -6234,14 +6213,7 @@ id|NR_EXPECTED
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  poll bit cleared?&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|info-&gt;pf
-)paren
-(brace
+multiline_comment|/* Update Vr (next frame for us to receive) */
 id|self-&gt;vr
 op_assign
 (paren
@@ -6261,6 +6233,14 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; *  poll bit cleared?&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;pf
+)paren
+(brace
 id|self-&gt;ack_required
 op_assign
 id|TRUE
@@ -6300,25 +6280,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|self-&gt;vr
-op_assign
-(paren
-id|self-&gt;vr
-op_plus
-l_int|1
-)paren
-op_mod
-l_int|8
-suffix:semicolon
-multiline_comment|/* Update Nr received */
-id|irlap_update_nr_received
-c_func
-(paren
-id|self
-comma
-id|info-&gt;nr
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *  We should wait before sending RR, and&n;&t;&t;&t;&t; *  also before changing to XMIT_S&n;&t;&t;&t;&t; *  state. (note 1, IrLAP p. 82)&n;&t;&t;&t;&t; */
 id|irlap_wait_min_turn_around
 c_func

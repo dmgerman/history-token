@@ -830,10 +830,6 @@ r_int
 id|addr
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 (brace
@@ -1083,7 +1079,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|IF_NAME
 comma
@@ -1162,7 +1158,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s_attach: init status %d&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|rv
 )paren
@@ -2102,15 +2098,9 @@ op_amp
 id|i2c_driver_saa7110
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;saa7110_client&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

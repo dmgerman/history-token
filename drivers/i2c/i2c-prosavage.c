@@ -12,14 +12,8 @@ DECL|macro|DRIVER_ID
 mdefine_line|#define&t;DRIVER_ID&t;&quot;i2c-prosavage&quot;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define&t;DRIVER_VERSION&t;&quot;20030621&quot;
-multiline_comment|/* lm_sensors2 / kernel 2.5.xx compatibility */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|macro|ADAPTER_NAME
 mdefine_line|#define ADAPTER_NAME(x) (x).name
-macro_line|#else
-DECL|macro|ADAPTER_NAME
-mdefine_line|#define ADAPTER_NAME(x) (x).dev.name
-macro_line|#endif /* LINUX_VERSION_CODE */
 DECL|macro|MAX_BUSSES
 mdefine_line|#define MAX_BUSSES&t;2
 DECL|struct|s_i2c_bus
