@@ -1044,7 +1044,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|struct_cpy
-mdefine_line|#define struct_cpy(x,y) &t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(*(x)) != sizeof(*(y))) &t;&bslash;&n;&t;&t;__struct_cpy_bug;&t;&t;&bslash;&n;&t;memcpy(x, y, sizeof(*(x)));&t;&t;&bslash;&n;})
+mdefine_line|#define struct_cpy(x,y) &t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(*(x)) != sizeof(*(y))) &t;&bslash;&n;&t;&t;__struct_cpy_bug();&t;&t;&bslash;&n;&t;memcpy(x, y, sizeof(*(x)));&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_MEMMOVE
 mdefine_line|#define __HAVE_ARCH_MEMMOVE
 DECL|function|memmove
