@@ -259,6 +259,12 @@ r_int
 id|mode
 )paren
 (brace
+id|cia_kill_arch
+c_func
+(paren
+id|mode
+)paren
+suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* This only causes re-entry to ARCSBIOS */
 multiline_comment|/* Perhaps this works for other PYXIS as well?  */

@@ -97,6 +97,12 @@ r_int
 id|code
 suffix:semicolon
 multiline_comment|/* machine check code */
+DECL|member|frame_rev
+r_int
+r_int
+id|frame_rev
+suffix:semicolon
+multiline_comment|/* frame revision */
 )brace
 suffix:semicolon
 multiline_comment|/* Machine Check Frame for uncorrectable errors (Large format)&n; *      --- This is used to log uncorrectable errors such as&n; *          double bit ECC errors.&n; *      --- These errors are detected by both processor and systems.&n; */
@@ -301,10 +307,10 @@ r_int
 r_int
 id|C_STS
 suffix:semicolon
-DECL|member|RESERVED0
+DECL|member|MM_STAT
 r_int
 r_int
-id|RESERVED0
+id|MM_STAT
 suffix:semicolon
 DECL|member|EXC_ADDR
 r_int
@@ -321,10 +327,10 @@ r_int
 r_int
 id|ISUM
 suffix:semicolon
-DECL|member|MM_STAT
+DECL|member|RESERVED0
 r_int
 r_int
-id|MM_STAT
+id|RESERVED0
 suffix:semicolon
 DECL|member|PAL_BASE
 r_int
