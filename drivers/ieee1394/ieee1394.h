@@ -65,7 +65,7 @@ mdefine_line|#define ACK_CONFLICT_ERROR       0xc
 DECL|macro|ACK_DATA_ERROR
 mdefine_line|#define ACK_DATA_ERROR           0xd
 DECL|macro|ACK_TYPE_ERROR
-mdefine_line|#define ACK_TYPE_ERROR           0xe 
+mdefine_line|#define ACK_TYPE_ERROR           0xe
 DECL|macro|ACK_ADDRESS_ERROR
 mdefine_line|#define ACK_ADDRESS_ERROR        0xf
 multiline_comment|/* Non-standard &quot;ACK codes&quot; for internal use */
@@ -124,7 +124,7 @@ mdefine_line|#define SELFID_PORT_PARENT       0x2
 DECL|macro|SELFID_PORT_NCONN
 mdefine_line|#define SELFID_PORT_NCONN        0x1
 DECL|macro|SELFID_PORT_NONE
-mdefine_line|#define SELFID_PORT_NONE         0x0   
+mdefine_line|#define SELFID_PORT_NONE         0x0
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __BIG_ENDIAN_BITFIELD
 DECL|struct|selfid

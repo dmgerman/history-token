@@ -168,7 +168,7 @@ id|wait_queue_head_t
 id|mem_dma_intr_wait
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;         * use local RAM of LOCALRAM_SIZE bytes for PCLs, which allows for &n;         * LOCALRAM_SIZE * 8 PCLs (each sized 128 bytes);&n;         * the following is an allocation bitmap &n;         */
+multiline_comment|/*&n;         * use local RAM of LOCALRAM_SIZE bytes for PCLs, which allows for&n;         * LOCALRAM_SIZE * 8 PCLs (each sized 128 bytes);&n;         * the following is an allocation bitmap&n;         */
 DECL|member|pcl_bmap
 id|u8
 id|pcl_bmap
@@ -553,7 +553,7 @@ mdefine_line|#define SERIAL_EEPROM_CONTROL             0x44
 DECL|macro|PCI_INT_STATUS
 mdefine_line|#define PCI_INT_STATUS                    0x48
 DECL|macro|PCI_INT_ENABLE
-mdefine_line|#define PCI_INT_ENABLE                    0x4c               
+mdefine_line|#define PCI_INT_ENABLE                    0x4c
 multiline_comment|/* status and enable have identical bit numbers */
 DECL|macro|PCI_INT_INT_PEND
 mdefine_line|#define PCI_INT_INT_PEND                  (1&lt;&lt;31)
@@ -611,7 +611,7 @@ mdefine_line|#define LBUS_ADDR_SEL_ROM                 (0x1&lt;&lt;16)
 DECL|macro|LBUS_ADDR_SEL_AUX
 mdefine_line|#define LBUS_ADDR_SEL_AUX                 (0x2&lt;&lt;16)
 DECL|macro|LBUS_ADDR_SEL_ZV
-mdefine_line|#define LBUS_ADDR_SEL_ZV                  (0x3&lt;&lt;16)       
+mdefine_line|#define LBUS_ADDR_SEL_ZV                  (0x3&lt;&lt;16)
 DECL|macro|GPIO_CTRL_A
 mdefine_line|#define GPIO_CTRL_A                       0xb8
 DECL|macro|GPIO_CTRL_B
@@ -623,7 +623,7 @@ mdefine_line|#define DMA_BREG(base, chan)              (base + chan * 0x20)
 DECL|macro|DMA_SREG
 mdefine_line|#define DMA_SREG(base, chan)              (base + chan * 0x10)
 DECL|macro|DMA0_PREV_PCL
-mdefine_line|#define DMA0_PREV_PCL                     0x100               
+mdefine_line|#define DMA0_PREV_PCL                     0x100
 DECL|macro|DMA1_PREV_PCL
 mdefine_line|#define DMA1_PREV_PCL                     0x120
 DECL|macro|DMA2_PREV_PCL
@@ -635,7 +635,7 @@ mdefine_line|#define DMA4_PREV_PCL                     0x180
 DECL|macro|DMA_PREV_PCL
 mdefine_line|#define DMA_PREV_PCL(chan)                (DMA_BREG(DMA0_PREV_PCL, chan))
 DECL|macro|DMA0_CURRENT_PCL
-mdefine_line|#define DMA0_CURRENT_PCL                  0x104            
+mdefine_line|#define DMA0_CURRENT_PCL                  0x104
 DECL|macro|DMA1_CURRENT_PCL
 mdefine_line|#define DMA1_CURRENT_PCL                  0x124
 DECL|macro|DMA2_CURRENT_PCL
@@ -672,7 +672,7 @@ mdefine_line|#define DMA_CHAN_STAT_PKTCMPL             (1&lt;&lt;27)
 DECL|macro|DMA_CHAN_STAT_SPECIALACK
 mdefine_line|#define DMA_CHAN_STAT_SPECIALACK          (1&lt;&lt;14)
 DECL|macro|DMA0_CHAN_CTRL
-mdefine_line|#define DMA0_CHAN_CTRL                    0x110              
+mdefine_line|#define DMA0_CHAN_CTRL                    0x110
 DECL|macro|DMA1_CHAN_CTRL
 mdefine_line|#define DMA1_CHAN_CTRL                    0x130
 DECL|macro|DMA2_CHAN_CTRL
@@ -685,7 +685,7 @@ DECL|macro|DMA_CHAN_CTRL
 mdefine_line|#define DMA_CHAN_CTRL(chan)               (DMA_BREG(DMA0_CHAN_CTRL, chan))
 multiline_comment|/* CHAN_CTRL registers share bits */
 DECL|macro|DMA_CHAN_CTRL_ENABLE
-mdefine_line|#define DMA_CHAN_CTRL_ENABLE              (1&lt;&lt;31)      
+mdefine_line|#define DMA_CHAN_CTRL_ENABLE              (1&lt;&lt;31)
 DECL|macro|DMA_CHAN_CTRL_BUSY
 mdefine_line|#define DMA_CHAN_CTRL_BUSY                (1&lt;&lt;30)
 DECL|macro|DMA_CHAN_CTRL_LINK
@@ -871,7 +871,7 @@ mdefine_line|#define LINK_INT_ITF_UNDERFLOW            (1&lt;&lt;4)
 DECL|macro|LINK_INT_ATF_UNDERFLOW
 mdefine_line|#define LINK_INT_ATF_UNDERFLOW            (1&lt;&lt;3)
 DECL|macro|LINK_INT_ISOARB_FAILED
-mdefine_line|#define LINK_INT_ISOARB_FAILED            (1&lt;&lt;0) 
+mdefine_line|#define LINK_INT_ISOARB_FAILED            (1&lt;&lt;0)
 multiline_comment|/* PHY specifics */
 DECL|macro|PHY_VENDORID_TI
 mdefine_line|#define PHY_VENDORID_TI                 0x800028

@@ -1233,7 +1233,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Now that we know the list is non-empty, we can get the head&n;&t; * of the list without locking, because the process context&n;&t; * only adds to the tail.  &n;&t; */
+multiline_comment|/* Now that we know the list is non-empty, we can get the head&n;&t; * of the list without locking, because the process context&n;&t; * only adds to the tail.&n;&t; */
 id|pl
 op_assign
 id|list_entry
@@ -4809,6 +4809,15 @@ suffix:semicolon
 id|amdtp_cdev.owner
 op_assign
 id|THIS_MODULE
+suffix:semicolon
+id|kobject_set_name
+c_func
+(paren
+op_amp
+id|amdtp_cdev.kobj
+comma
+l_string|&quot;amdtp&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond

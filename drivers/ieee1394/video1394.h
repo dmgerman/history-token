@@ -56,7 +56,7 @@ r_int
 r_int
 id|packet_size
 suffix:semicolon
-multiline_comment|/* For VARIABLE_PACKET_SIZE: &n;&t;&t;&t;&t;     Maximum packet size */
+multiline_comment|/* For VARIABLE_PACKET_SIZE:&n;&t;&t;&t;&t;     Maximum packet size */
 DECL|member|fps
 r_int
 r_int
@@ -95,7 +95,7 @@ r_int
 op_star
 id|packet_sizes
 suffix:semicolon
-multiline_comment|/* Buffer of size:  &n;&t;&t;&t;&t;       buf_size / packet_size  */
+multiline_comment|/* Buffer of size:&n;&t;&t;&t;&t;       buf_size / packet_size  */
 )brace
 suffix:semicolon
 DECL|struct|video1394_wait

@@ -689,7 +689,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* 2 KiloBytes of register space */
 DECL|macro|OHCI1394_REGISTER_SIZE
-mdefine_line|#define OHCI1394_REGISTER_SIZE                0x800       
+mdefine_line|#define OHCI1394_REGISTER_SIZE                0x800
 multiline_comment|/* Offsets relative to context bases defined below */
 DECL|macro|OHCI1394_ContextControlSet
 mdefine_line|#define OHCI1394_ContextControlSet            0x000

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;csr.h&quot;
@@ -32,14 +33,10 @@ DECL|member|generation
 id|atomic_t
 id|generation
 suffix:semicolon
-DECL|member|pending_packets
+DECL|member|pending_packet_queue
 r_struct
-id|list_head
-id|pending_packets
-suffix:semicolon
-DECL|member|pending_pkt_lock
-id|spinlock_t
-id|pending_pkt_lock
+id|sk_buff_head
+id|pending_packet_queue
 suffix:semicolon
 DECL|member|timeout
 r_struct
