@@ -1,21 +1,7 @@
-multiline_comment|/* &n;   Unix SMB/Netbios implementation.&n;   Version 1.9.&n;   a implementation of MD4 designed for use in the SMB authentication protocol&n;   Copyright (C) Andrew Tridgell 1997-1998.&n;   Modified by Steve French (sfrench@us.ibm.com) 2002&n;   &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;   &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;   &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/* &n;   Unix SMB/Netbios implementation.&n;   Version 1.9.&n;   a implementation of MD4 designed for use in the SMB authentication protocol&n;   Copyright (C) Andrew Tridgell 1997-1998.&n;   Modified by Steve French (sfrench@us.ibm.com) 2002-2003&n;   &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;   &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;   &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-multiline_comment|/* NOTE: This code makes no attempt to be fast! &n;&n;   It assumes that a int is at least 32 bits long&n;*/
-DECL|variable|A
-DECL|variable|B
-DECL|variable|C
-DECL|variable|D
-r_static
-id|__u32
-id|A
-comma
-id|B
-comma
-id|C
-comma
-id|D
-suffix:semicolon
+multiline_comment|/* NOTE: This code makes no attempt to be fast! */
 r_static
 id|__u32
 DECL|function|F
@@ -149,11 +135,11 @@ id|s
 suffix:semicolon
 )brace
 DECL|macro|ROUND1
-mdefine_line|#define ROUND1(a,b,c,d,k,s) a = lshift(a + F(b,c,d) + X[k], s)
+mdefine_line|#define ROUND1(a,b,c,d,k,s) (*a) = lshift((*a) + F(*b,*c,*d) + X[k], s)
 DECL|macro|ROUND2
-mdefine_line|#define ROUND2(a,b,c,d,k,s) a = lshift(a + G(b,c,d) + X[k] + (__u32)0x5A827999,s)
+mdefine_line|#define ROUND2(a,b,c,d,k,s) (*a) = lshift((*a) + G(*b,*c,*d) + X[k] + (__u32)0x5A827999,s)
 DECL|macro|ROUND3
-mdefine_line|#define ROUND3(a,b,c,d,k,s) a = lshift(a + H(b,c,d) + X[k] + (__u32)0x6ED9EBA1,s)
+mdefine_line|#define ROUND3(a,b,c,d,k,s) (*a) = lshift((*a) + H(*b,*c,*d) + X[k] + (__u32)0x6ED9EBA1,s)
 multiline_comment|/* this applies md4 to 64 byte chunks */
 r_static
 r_void
@@ -164,6 +150,22 @@ c_func
 id|__u32
 op_star
 id|M
+comma
+id|__u32
+op_star
+id|A
+comma
+id|__u32
+op_star
+id|B
+comma
+id|__u32
+op_star
+id|C
+comma
+id|__u32
+op_star
+id|D
 )paren
 (brace
 r_int
@@ -210,18 +212,22 @@ id|j
 suffix:semicolon
 id|AA
 op_assign
+op_star
 id|A
 suffix:semicolon
 id|BB
 op_assign
+op_star
 id|B
 suffix:semicolon
 id|CC
 op_assign
+op_star
 id|C
 suffix:semicolon
 id|DD
 op_assign
+op_star
 id|D
 suffix:semicolon
 id|ROUND1
@@ -992,34 +998,42 @@ comma
 l_int|15
 )paren
 suffix:semicolon
+op_star
 id|A
 op_add_assign
 id|AA
 suffix:semicolon
+op_star
 id|B
 op_add_assign
 id|BB
 suffix:semicolon
+op_star
 id|C
 op_add_assign
 id|CC
 suffix:semicolon
+op_star
 id|D
 op_add_assign
 id|DD
 suffix:semicolon
+op_star
 id|A
 op_and_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
+op_star
 id|B
 op_and_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
+op_star
 id|C
 op_and_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
+op_star
 id|D
 op_and_assign
 l_int|0xFFFFFFFF
@@ -1244,18 +1258,22 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|__u32
 id|A
 op_assign
 l_int|0x67452301
 suffix:semicolon
+id|__u32
 id|B
 op_assign
 l_int|0xefcdab89
 suffix:semicolon
+id|__u32
 id|C
 op_assign
 l_int|0x98badcfe
 suffix:semicolon
+id|__u32
 id|D
 op_assign
 l_int|0x10325476
@@ -1280,6 +1298,18 @@ id|mdfour64
 c_func
 (paren
 id|M
+comma
+op_amp
+id|A
+comma
+op_amp
+id|B
+comma
+op_amp
+id|C
+comma
+op_amp
+id|D
 )paren
 suffix:semicolon
 id|in
@@ -1359,6 +1389,18 @@ id|mdfour64
 c_func
 (paren
 id|M
+comma
+op_amp
+id|A
+comma
+op_amp
+id|B
+comma
+op_amp
+id|C
+comma
+op_amp
+id|D
 )paren
 suffix:semicolon
 )brace
@@ -1386,6 +1428,18 @@ id|mdfour64
 c_func
 (paren
 id|M
+comma
+op_amp
+id|A
+comma
+op_amp
+id|B
+comma
+op_amp
+id|C
+comma
+op_amp
+id|D
 )paren
 suffix:semicolon
 id|copy64
@@ -1402,6 +1456,18 @@ id|mdfour64
 c_func
 (paren
 id|M
+comma
+op_amp
+id|A
+comma
+op_amp
+id|B
+comma
+op_amp
+id|C
+comma
+op_amp
+id|D
 )paren
 suffix:semicolon
 )brace

@@ -466,7 +466,7 @@ DECL|member|tid
 id|__u16
 id|tid
 suffix:semicolon
-multiline_comment|/* The 2 byte transaction id */
+multiline_comment|/* The 2 byte tree id */
 DECL|member|Flags
 id|__u16
 id|Flags
@@ -481,7 +481,7 @@ DECL|member|useCount
 id|atomic_t
 id|useCount
 suffix:semicolon
-multiline_comment|/* how many mounts (explicit or implicit refer to this share */
+multiline_comment|/* how many mounts (explicit or implicit) to this share */
 DECL|member|fsDevInfo
 id|FILE_SYSTEM_DEVICE_INFO
 id|fsDevInfo
@@ -490,7 +490,7 @@ DECL|member|fsAttrInfo
 id|FILE_SYSTEM_ATTRIBUTE_INFO
 id|fsAttrInfo
 suffix:semicolon
-multiline_comment|/* note file system name may be truncated - but very unlikely */
+multiline_comment|/* ok if file system name truncated */
 DECL|member|fsUnixInfo
 id|FILE_SYSTEM_UNIX_INFO
 id|fsUnixInfo
