@@ -2248,7 +2248,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_HIGHMEM)
 r_return
 l_string|&quot;(Unknown)&quot;
 suffix:semicolon
