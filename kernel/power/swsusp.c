@@ -4816,7 +4816,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 DECL|macro|PREPARENEXT
-mdefine_line|#define PREPARENEXT &bslash;&n;&t;{&t;next = cur-&gt;link.next; &bslash;&n;&t;&t;next.val = swp_offset(next) * PAGE_SIZE; &bslash;&n;        }
+mdefine_line|#define PREPARENEXT &bslash;&n;&t;{&t;next = cur-&gt;link.next; &bslash;&n;&t;&t;next.val = swp_offset(next); &bslash;&n;        }
 r_if
 c_cond
 (paren
