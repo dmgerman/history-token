@@ -438,7 +438,7 @@ id|pci_bus_lock
 suffix:semicolon
 r_extern
 r_int
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 suffix:semicolon
 r_extern
 r_struct

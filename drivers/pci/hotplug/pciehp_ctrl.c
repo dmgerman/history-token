@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &quot;../pci.h&quot;
 macro_line|#include &quot;pciehp.h&quot;
 macro_line|#include &quot;pciehprm.h&quot;
 r_static
@@ -4595,6 +4596,20 @@ r_while
 c_loop
 (paren
 id|new_func
+)paren
+suffix:semicolon
+multiline_comment|/* &n; &t;&t; * Some PCI Express root ports require fixup after hot-plug operation.&n; &t;&t; */
+r_if
+c_cond
+(paren
+id|pcie_mch_quirk
+)paren
+id|pci_fixup_device
+c_func
+(paren
+id|pci_fixup_final
+comma
+id|ctrl-&gt;pci_dev
 )paren
 suffix:semicolon
 r_if

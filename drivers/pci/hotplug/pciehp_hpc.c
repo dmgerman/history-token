@@ -2663,6 +2663,18 @@ id|php_ctlr-&gt;irq
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcie_mch_quirk
+)paren
+id|pci_disable_msi
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+)paren
+suffix:semicolon
 )brace
 )brace
 r_if
@@ -5567,18 +5579,18 @@ multiline_comment|/* Installs the interrupt handler */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: pciehp_msi_quirk = %x&bslash;n&quot;
+l_string|&quot;%s: pcie_mch_quirk = %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|pciehp_msi_quirk
+id|pcie_mch_quirk
 )paren
 (brace
 id|rc

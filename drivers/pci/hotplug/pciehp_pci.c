@@ -204,6 +204,11 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
+r_struct
+id|pci_bus
+op_star
+id|pbus
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -217,6 +222,10 @@ id|func-&gt;device
 comma
 id|func-&gt;function
 )paren
+suffix:semicolon
+id|pbus
+op_assign
+id|func-&gt;pci_dev-&gt;bus
 suffix:semicolon
 r_for
 c_loop
@@ -266,6 +275,20 @@ id|temp
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* &n;&t; * Some PCI Express root ports require fixup after hot-plug operation.&n;&t; */
+r_if
+c_cond
+(paren
+id|pcie_mch_quirk
+)paren
+id|pci_fixup_device
+c_func
+(paren
+id|pci_fixup_final
+comma
+id|pbus-&gt;self
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
