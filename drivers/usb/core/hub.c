@@ -2734,7 +2734,7 @@ op_star
 id|portsts
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
