@@ -77,6 +77,8 @@ mdefine_line|#define WRT_REG_WORD(addr, data)&t;writew(data, addr)
 macro_line|#else&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
 DECL|macro|RD_REG_WORD
 mdefine_line|#define RD_REG_WORD(addr)&t;&t;inw((unsigned long)addr)
+DECL|macro|RD_REG_WORD_dmasync
+mdefine_line|#define RD_REG_WORD_dmasync(addr)&t;RD_REG_WORD(addr)
 DECL|macro|WRT_REG_WORD
 mdefine_line|#define WRT_REG_WORD(addr, data)&t;outw(data, (unsigned long)addr)
 macro_line|#endif&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
