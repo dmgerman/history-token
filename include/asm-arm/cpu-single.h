@@ -20,8 +20,8 @@ DECL|macro|cpu_do_idle
 mdefine_line|#define cpu_do_idle&t;&t;&t;__cpu_fn(CPU_NAME,_do_idle)
 DECL|macro|cpu_dcache_clean_area
 mdefine_line|#define cpu_dcache_clean_area&t;&t;__cpu_fn(CPU_NAME,_dcache_clean_area)
-DECL|macro|cpu_set_pgd
-mdefine_line|#define cpu_set_pgd&t;&t;&t;__cpu_fn(CPU_NAME,_set_pgd)
+DECL|macro|cpu__switch_mm
+mdefine_line|#define cpu__switch_mm&t;&t;&t;__cpu_fn(CPU_NAME,_switch_mm)
 DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte&t;&t;&t;__cpu_fn(CPU_NAME,_set_pte)
 macro_line|#ifndef __ASSEMBLY__
@@ -68,7 +68,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|cpu_set_pgd
+id|cpu__switch_mm
 c_func
 (paren
 r_int
@@ -106,7 +106,7 @@ id|addr
 )paren
 suffix:semicolon
 DECL|macro|cpu_switch_mm
-mdefine_line|#define cpu_switch_mm(pgd,mm) cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)),mm)
+mdefine_line|#define cpu_switch_mm(pgd,mm) cpu__switch_mm(__virt_to_phys((unsigned long)(pgd)),mm)
 DECL|macro|cpu_get_pgd
 mdefine_line|#define cpu_get_pgd()&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long pg;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;mrc&t;p15, 0, %0, c2, c0, 0&quot;&t;&bslash;&n;&t;&t;&t; : &quot;=r&quot; (pg) : : &quot;cc&quot;);&t;&t;&bslash;&n;&t;&t;pg &amp;= ~0x3fff;&t;&t;&t;&t;&bslash;&n;&t;&t;(pgd_t *)phys_to_virt(pg);&t;&t;&bslash;&n;&t;})
 macro_line|#endif
