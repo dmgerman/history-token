@@ -673,6 +673,7 @@ r_int
 id|setno
 )paren
 (brace
+r_const
 r_struct
 id|usb_interface_descriptor
 op_star
@@ -800,6 +801,7 @@ r_int
 id|setno
 )paren
 (brace
+r_const
 r_struct
 id|usb_host_interface
 op_star
