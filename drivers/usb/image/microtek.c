@@ -2568,6 +2568,12 @@ id|ep_in_current
 op_assign
 id|ep_in_set
 suffix:semicolon
+r_int
+id|err_retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_struct
 id|mts_desc
 op_star
@@ -3017,6 +3023,9 @@ r_int
 )paren
 id|new_desc
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|scsi_add_host
 c_func
 (paren
@@ -3024,8 +3033,17 @@ id|new_desc-&gt;host
 comma
 l_int|NULL
 )paren
+)paren
+(brace
+id|err_retval
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
-multiline_comment|/* XXX handle failure */
+r_goto
+id|out_free_urb
+suffix:semicolon
+)brace
 id|scsi_scan_host
 c_func
 (paren
@@ -3062,8 +3080,7 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
-op_minus
-id|ENOMEM
+id|err_retval
 suffix:semicolon
 )brace
 DECL|function|mts_usb_disconnect
