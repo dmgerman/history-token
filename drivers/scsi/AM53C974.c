@@ -1862,7 +1862,7 @@ id|MAX_OFFSET
 id|printk
 c_func
 (paren
-l_string|&quot;AM53C974_setup: illegal parameter&bslash;n&quot;
+l_string|&quot;AM53C974_setup: invalid parameter&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else

@@ -11118,7 +11118,7 @@ suffix:colon
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;DC390: Ignore cmnd to illegal Dev(Idx) %i. Valid range: 0 - %i.&bslash;n&quot;
+l_string|&quot;DC390: Ignore cmnd to invalid Dev(Idx) %i. Valid range: 0 - %i.&bslash;n&quot;
 comma
 id|dev
 comma

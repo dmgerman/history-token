@@ -8758,6 +8758,14 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+)brace
+r_else
+(brace
+id|ret
+op_assign
+id|CS_UNSUPPORTED_MODE
+suffix:semicolon
 macro_line|#endif
 )brace
 r_if

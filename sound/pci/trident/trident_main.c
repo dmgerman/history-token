@@ -13444,7 +13444,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * gameport interface&n; */
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|struct|snd_trident_gameport
 r_typedef
 r_struct
@@ -13976,31 +13976,6 @@ op_star
 id|chip
 )paren
 (brace
-macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|chip-&gt;in_suspend
-)paren
-(brace
-id|mdelay
-c_func
-(paren
-(paren
-l_int|1000
-op_plus
-id|HZ
-op_minus
-l_int|1
-)paren
-op_div
-id|HZ
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 id|set_current_state
 c_func
 (paren
@@ -14551,7 +14526,7 @@ id|trident-&gt;tlb.memhdr
 suffix:semicolon
 )brace
 )brace
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 id|snd_iprintf
 c_func
 (paren
@@ -16313,7 +16288,7 @@ op_star
 id|trident
 )paren
 (brace
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
 (paren
@@ -17150,7 +17125,7 @@ op_star
 id|trident
 )paren
 (brace
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 r_if
 c_cond
 (paren
@@ -17214,7 +17189,7 @@ op_star
 id|trident
 )paren
 (brace
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 r_if
 c_cond
 (paren

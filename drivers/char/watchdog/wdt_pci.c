@@ -1477,7 +1477,7 @@ id|wdtpci_fops
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_WDT_501
+macro_line|#ifdef CONFIG_WDT_501_PCI
 DECL|variable|temp_miscdev
 r_static
 r_struct
@@ -1737,7 +1737,7 @@ r_goto
 id|out_misc
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_WDT_501
+macro_line|#ifdef CONFIG_WDT_501_PCI
 id|ret
 op_assign
 id|misc_register
@@ -1775,7 +1775,7 @@ suffix:colon
 r_return
 id|ret
 suffix:semicolon
-macro_line|#ifdef CONFIG_WDT_501
+macro_line|#ifdef CONFIG_WDT_501_PCI
 id|out_rbt
 suffix:colon
 id|unregister_reboot_notifier

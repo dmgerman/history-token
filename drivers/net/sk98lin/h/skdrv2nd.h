@@ -1,7 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv2nd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.12.2.1 $&n; * Date:&t;$Date: 2001/03/12 16:50:59 $&n; * Purpose:&t;Second header file for driver and all other modules&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv2nd.h,v $&n; *&t;Revision 1.12.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.12  2001/03/01 12:52:15  mlindner&n; *&t;Fixed ring size&n; *&n; *&t;Revision 1.11  2001/02/19 13:28:02  mlindner&n; *&t;Changed PNMI parameter values&n; *&n; *&t;Revision 1.10  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&n; *&t;Revision 1.1  2000/10/05 19:46:50  phargrov&n; *&t;Add directory src/vipk_devs_nonlbl/vipk_sk98lin/&n; *&t;This is the SysKonnect SK-98xx Gigabit Ethernet driver,&n; *&t;contributed by SysKonnect.&n; *&n; *&t;Revision 1.9  2000/02/21 10:39:55  cgoos&n; *&t;Added flag for jumbo support usage.&n; *&n; *&t;Revision 1.8  1999/11/22 13:50:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Fixed two comments.&n; *&n; *&t;Revision 1.7  1999/09/28 12:38:21  cgoos&n; *&t;Added CheckQueue to SK_AC.&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:04:05  cgoos&n; *&t;Added checksumming variables to SK_AC.&n; *&t;&n; *&t;Revision 1.5  1999/03/29 12:33:26  cgoos&n; *&t;Rreversed to fine lock granularity.&n; *&t;&n; *&t;Revision 1.4  1999/03/15 12:14:02  cgoos&n; *&t;Added DriverLock to SK_AC.&n; *&t;Removed other locks.&n; *&t;&n; *&t;Revision 1.3  1999/03/01 08:52:27  cgoos&n; *&t;Changed pAC-&gt;PciDev declaration.&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:57:14  cgoos&n; *&t;Removed SkDrvTimeStamp prototype.&n; *&t;Fixed SkGeOsGetTime prototype.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:41:01  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the second include file of the driver, which includes all other&n; * necessary files and defines all structures and constants used by the&n; * driver and the common modules.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;see skge.c&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv2nd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.19 $&n; * Date:&t;$Date: 2003/07/07 09:53:10 $&n; * Purpose:&t;Second header file for driver and all other modules&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv2nd.h,v $&n; *&t;Revision 1.19  2003/07/07 09:53:10  rroesler&n; *&t;Fix: Removed proprietary RxTx defines and used the ones from skgehw.h instead&n; *&t;&n; *&t;Revision 1.18  2003/06/12 07:54:14  mlindner&n; *&t;Fix: Changed Descriptor Alignment to 64 Byte&n; *&t;&n; *&t;Revision 1.17  2003/05/26 12:56:39  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: New SkOsGetTimeCurrent function&n; *&t;Add: SK_PNMI_HUNDREDS_SEC definition&n; *&t;Fix: SK_TICKS_PER_SEC on Intel Itanium2&n; *&t;&n; *&t;Revision 1.16  2003/03/21 14:56:18  rroesler&n; *&t;Added code regarding interrupt moderation&n; *&t;&n; *&t;Revision 1.15  2003/02/25 14:16:40  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.14  2003/02/25 13:26:26  mlindner&n; *&t;Add: Support for various vendors&n; *&t;&n; *&t;Revision 1.13  2002/10/02 12:46:02  mlindner&n; *&t;Add: Support for Yukon&n; *&t;&n; *&t;Revision 1.12.2.2  2001/09/05 12:14:50  mlindner&n; *&t;add: New hardware revision int&n; *&t;&n; *&t;Revision 1.12.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.12  2001/03/01 12:52:15  mlindner&n; *&t;Fixed ring size&n; *&n; *&t;Revision 1.11  2001/02/19 13:28:02  mlindner&n; *&t;Changed PNMI parameter values&n; *&n; *&t;Revision 1.10  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&n; *&t;Revision 1.1  2000/10/05 19:46:50  phargrov&n; *&t;Add directory src/vipk_devs_nonlbl/vipk_sk98lin/&n; *&t;This is the SysKonnect SK-98xx Gigabit Ethernet driver,&n; *&t;contributed by SysKonnect.&n; *&n; *&t;Revision 1.9  2000/02/21 10:39:55  cgoos&n; *&t;Added flag for jumbo support usage.&n; *&n; *&t;Revision 1.8  1999/11/22 13:50:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Fixed two comments.&n; *&n; *&t;Revision 1.7  1999/09/28 12:38:21  cgoos&n; *&t;Added CheckQueue to SK_AC.&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:04:05  cgoos&n; *&t;Added checksumming variables to SK_AC.&n; *&t;&n; *&t;Revision 1.5  1999/03/29 12:33:26  cgoos&n; *&t;Rreversed to fine lock granularity.&n; *&t;&n; *&t;Revision 1.4  1999/03/15 12:14:02  cgoos&n; *&t;Added DriverLock to SK_AC.&n; *&t;Removed other locks.&n; *&t;&n; *&t;Revision 1.3  1999/03/01 08:52:27  cgoos&n; *&t;Changed pAC-&gt;PciDev declaration.&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:57:14  cgoos&n; *&t;Removed SkDrvTimeStamp prototype.&n; *&t;Fixed SkGeOsGetTime prototype.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:41:01  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the second include file of the driver, which includes all other&n; * neccessary files and defines all structures and constants used by the&n; * driver and the common modules.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;see skge.c&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKDRV2ND_H
 DECL|macro|__INC_SKDRV2ND_H
 mdefine_line|#define __INC_SKDRV2ND_H
@@ -18,7 +18,8 @@ macro_line|#include &quot;h/skgesirq.h&quot;
 macro_line|#include &quot;h/skcsum.h&quot;
 macro_line|#include &quot;h/skrlmt.h&quot;
 macro_line|#include &quot;h/skgedrv.h&quot;
-multiline_comment|/* global function prototypes ******************************************/
+DECL|macro|SK_PCI_ISCOMPLIANT
+mdefine_line|#define SK_PCI_ISCOMPLIANT(result, pdev) {     &bslash;&n;    result = SK_FALSE; /* default */     &bslash;&n;    /* 3Com (0x10b7) */     &bslash;&n;    if (pdev-&gt;vendor == 0x10b7) {     &bslash;&n;        /* Gigabit Ethernet Adapter (0x1700) */     &bslash;&n;        if ((pdev-&gt;device == 0x1700)) { &bslash;&n;            result = SK_TRUE;     &bslash;&n;        }     &bslash;&n;    /* SysKonnect (0x1148) */     &bslash;&n;    } else if (pdev-&gt;vendor == 0x1148) {     &bslash;&n;        /* SK-98xx Gigabit Ethernet Server Adapter (0x4300) */     &bslash;&n;        /* SK-98xx V2.0 Gigabit Ethernet Adapter (0x4320) */     &bslash;&n;        if ((pdev-&gt;device == 0x4300) || &bslash;&n;            (pdev-&gt;device == 0x4320)) { &bslash;&n;            result = SK_TRUE;     &bslash;&n;        }     &bslash;&n;    /* D-Link (0x1186) */     &bslash;&n;    } else if (pdev-&gt;vendor == 0x1186) {     &bslash;&n;        /* Gigabit Ethernet Adapter (0x4c00) */     &bslash;&n;        if ((pdev-&gt;device == 0x4c00)) { &bslash;&n;            result = SK_TRUE;     &bslash;&n;        }     &bslash;&n;    /* Marvell (0x11ab) */     &bslash;&n;    } else if (pdev-&gt;vendor == 0x11ab) {     &bslash;&n;        /* Gigabit Ethernet Adapter (0x4320) */     &bslash;&n;        if ((pdev-&gt;device == 0x4320)) { &bslash;&n;            result = SK_TRUE;     &bslash;&n;        }     &bslash;&n;    /* CNet (0x1371) */     &bslash;&n;    } else if (pdev-&gt;vendor == 0x1371) {     &bslash;&n;        /* GigaCard Network Adapter (0x434e) */     &bslash;&n;        if ((pdev-&gt;device == 0x434e)) { &bslash;&n;            result = SK_TRUE;     &bslash;&n;        }     &bslash;&n;    /* Linksys (0x1737) */     &bslash;&n;    } else if (pdev-&gt;vendor == 0x1737) {     &bslash;&n;        /* Gigabit Network Adapter (0x1032) */     &bslash;&n;        /* Gigabit Network Adapter (0x1064) */     &bslash;&n;        if ((pdev-&gt;device == 0x1032) || &bslash;&n;            (pdev-&gt;device == 0x1064)) { &bslash;&n;            result = SK_TRUE;     &bslash;&n;        }     &bslash;&n;    } else {     &bslash;&n;        result = SK_FALSE;     &bslash;&n;    }     &bslash;&n;}
 r_extern
 id|SK_MBUF
 op_star
@@ -200,6 +201,17 @@ suffix:semicolon
 multiline_comment|/* Pointer to message block */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Time macros&n; */
+macro_line|#if SK_TICKS_PER_SEC == 100
+DECL|macro|SK_PNMI_HUNDREDS_SEC
+mdefine_line|#define SK_PNMI_HUNDREDS_SEC(t)&t;(t)
+macro_line|#else
+DECL|macro|SK_PNMI_HUNDREDS_SEC
+mdefine_line|#define SK_PNMI_HUNDREDS_SEC(t)&t;((((unsigned long)t) * 100) / &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;(SK_TICKS_PER_SEC))
+macro_line|#endif
+multiline_comment|/*&n; * New SkOsGetTime&n; */
+DECL|macro|SkOsGetTimeCurrent
+mdefine_line|#define SkOsGetTimeCurrent(pAC, pUsec) {&bslash;&n;&t;struct timeval t;&bslash;&n;&t;do_gettimeofday(&amp;t);&bslash;&n;&t;*pUsec = ((((t.tv_sec) * 1000000L)+t.tv_usec)/10000);&bslash;&n;}
 multiline_comment|/*&n; * ioctl definitions&n; */
 DECL|macro|SK_IOCTL_BASE
 mdefine_line|#define&t;&t;SK_IOCTL_BASE&t;&t;(SIOCDEVPRIVATE)
@@ -209,6 +221,8 @@ DECL|macro|SK_IOCTL_SETMIB
 mdefine_line|#define&t;&t;SK_IOCTL_SETMIB&t;&t;(SK_IOCTL_BASE + 1)
 DECL|macro|SK_IOCTL_PRESETMIB
 mdefine_line|#define&t;&t;SK_IOCTL_PRESETMIB&t;(SK_IOCTL_BASE + 2)
+DECL|macro|SK_IOCTL_GEN
+mdefine_line|#define&t;&t;SK_IOCTL_GEN&t;&t;(SK_IOCTL_BASE + 3)
 DECL|typedef|SK_GE_IOCTL
 r_typedef
 r_struct
@@ -254,7 +268,7 @@ DECL|macro|TX_PRIO_HIGH
 mdefine_line|#define TX_PRIO_HIGH&t;1
 multiline_comment|/*&n; * alignment of rx/tx descriptors&n; */
 DECL|macro|DESCR_ALIGN
-mdefine_line|#define DESCR_ALIGN&t;8
+mdefine_line|#define DESCR_ALIGN&t;64
 multiline_comment|/*&n; * definitions for pnmi. TODO&n; */
 DECL|macro|SK_DRIVER_RESET
 mdefine_line|#define SK_DRIVER_RESET(pAC, IoC)&t;0
@@ -269,6 +283,46 @@ DECL|macro|SK_DRIVER_SET_MTU
 mdefine_line|#define SK_DRIVER_SET_MTU(pAc,IoC,i,v)&t;0
 DECL|macro|SK_DRIVER_PRESET_MTU
 mdefine_line|#define SK_DRIVER_PRESET_MTU(pAc,IoC,i,v)&t;0
+multiline_comment|/*&n;** Interim definition of SK_DRV_TIMER placed in this file until &n;** common modules have boon finallized&n;*/
+DECL|macro|SK_DRV_TIMER
+mdefine_line|#define SK_DRV_TIMER&t;&t;&t;11 
+DECL|macro|SK_DRV_MODERATION_TIMER
+mdefine_line|#define&t;SK_DRV_MODERATION_TIMER&t;&t;1
+DECL|macro|SK_DRV_MODERATION_TIMER_LENGTH
+mdefine_line|#define SK_DRV_MODERATION_TIMER_LENGTH  1000000  /* 1 second */
+DECL|macro|SK_DRV_RX_CLEANUP_TIMER
+mdefine_line|#define SK_DRV_RX_CLEANUP_TIMER&t;&t;2
+DECL|macro|SK_DRV_RX_CLEANUP_TIMER_LENGTH
+mdefine_line|#define SK_DRV_RX_CLEANUP_TIMER_LENGTH&t;1000000&t; /* 100 millisecs */
+multiline_comment|/*&n;** Definitions regarding transmitting frames &n;** any calculating any checksum.&n;*/
+DECL|macro|C_LEN_ETHERMAC_HEADER_DEST_ADDR
+mdefine_line|#define C_LEN_ETHERMAC_HEADER_DEST_ADDR 6
+DECL|macro|C_LEN_ETHERMAC_HEADER_SRC_ADDR
+mdefine_line|#define C_LEN_ETHERMAC_HEADER_SRC_ADDR  6
+DECL|macro|C_LEN_ETHERMAC_HEADER_LENTYPE
+mdefine_line|#define C_LEN_ETHERMAC_HEADER_LENTYPE   2
+DECL|macro|C_LEN_ETHERMAC_HEADER
+mdefine_line|#define C_LEN_ETHERMAC_HEADER           ( (C_LEN_ETHERMAC_HEADER_DEST_ADDR) + &bslash;&n;                                          (C_LEN_ETHERMAC_HEADER_SRC_ADDR)  + &bslash;&n;                                          (C_LEN_ETHERMAC_HEADER_LENTYPE) )
+DECL|macro|C_LEN_ETHERMTU_MINSIZE
+mdefine_line|#define C_LEN_ETHERMTU_MINSIZE          46
+DECL|macro|C_LEN_ETHERMTU_MAXSIZE_STD
+mdefine_line|#define C_LEN_ETHERMTU_MAXSIZE_STD      1500
+DECL|macro|C_LEN_ETHERMTU_MAXSIZE_JUMBO
+mdefine_line|#define C_LEN_ETHERMTU_MAXSIZE_JUMBO    9000
+DECL|macro|C_LEN_ETHERNET_MINSIZE
+mdefine_line|#define C_LEN_ETHERNET_MINSIZE          ( (C_LEN_ETHERMAC_HEADER) + &bslash;&n;                                          (C_LEN_ETHERMTU_MINSIZE) )
+DECL|macro|C_OFFSET_IPHEADER
+mdefine_line|#define C_OFFSET_IPHEADER               C_LEN_ETHERMAC_HEADER
+DECL|macro|C_OFFSET_IPHEADER_IPPROTO
+mdefine_line|#define C_OFFSET_IPHEADER_IPPROTO       9
+DECL|macro|C_OFFSET_TCPHEADER_TCPCS
+mdefine_line|#define C_OFFSET_TCPHEADER_TCPCS        16
+DECL|macro|C_OFFSET_IPPROTO
+mdefine_line|#define C_OFFSET_IPPROTO                ( (C_LEN_ETHERMAC_HEADER) + &bslash;&n;                                          (C_OFFSET_IPHEADER_IPPROTO) )
+DECL|macro|C_PROTO_ID_UDP
+mdefine_line|#define C_PROTO_ID_UDP                  6       /* refer to RFC 790 or Stevens&squot;   */
+DECL|macro|C_PROTO_ID_TCP
+mdefine_line|#define C_PROTO_ID_TCP                  17      /* TCP/IP illustrated for details */
 multiline_comment|/* TX and RX descriptors *****************************************************/
 DECL|typedef|RXD
 r_typedef
@@ -311,7 +365,7 @@ DECL|member|TimeStamp
 id|SK_U32
 id|TimeStamp
 suffix:semicolon
-multiline_comment|/* Time stamp from XMAX */
+multiline_comment|/* Time stamp from XMAC */
 DECL|member|TcpSums
 id|SK_U32
 id|TcpSums
@@ -379,11 +433,16 @@ id|SK_U32
 id|TcpSumOfs
 suffix:semicolon
 multiline_comment|/* Reserved / TCP Sum Offset */
-DECL|member|TcpSumStWr
-id|SK_U32
-id|TcpSumStWr
+DECL|member|TcpSumSt
+id|SK_U16
+id|TcpSumSt
 suffix:semicolon
-multiline_comment|/* TCP Sum Start / TCP Sum Write */
+multiline_comment|/* TCP Sum Start */
+DECL|member|TcpSumWr
+id|SK_U16
+id|TcpSumWr
+suffix:semicolon
+multiline_comment|/* TCP Sum Write */
 DECL|member|TcpReserved
 id|SK_U32
 id|TcpReserved
@@ -404,228 +463,15 @@ suffix:semicolon
 multiline_comment|/* Pointer to Linux&squot; socket buffer */
 )brace
 suffix:semicolon
-multiline_comment|/* definition of flags in descriptor control field */
-DECL|macro|RX_CTRL_OWN_BMU
-mdefine_line|#define&t;RX_CTRL_OWN_BMU &t;UINT32_C(0x80000000)
-DECL|macro|RX_CTRL_STF
-mdefine_line|#define&t;RX_CTRL_STF&t;&t;UINT32_C(0x40000000)
-DECL|macro|RX_CTRL_EOF
-mdefine_line|#define&t;RX_CTRL_EOF&t;&t;UINT32_C(0x20000000)
-DECL|macro|RX_CTRL_EOB_IRQ
-mdefine_line|#define&t;RX_CTRL_EOB_IRQ&t;&t;UINT32_C(0x10000000)
-DECL|macro|RX_CTRL_EOF_IRQ
-mdefine_line|#define&t;RX_CTRL_EOF_IRQ&t;&t;UINT32_C(0x08000000)
-DECL|macro|RX_CTRL_DEV_NULL
-mdefine_line|#define RX_CTRL_DEV_NULL&t;UINT32_C(0x04000000)
-DECL|macro|RX_CTRL_STAT_VALID
-mdefine_line|#define RX_CTRL_STAT_VALID&t;UINT32_C(0x02000000)
-DECL|macro|RX_CTRL_TIME_VALID
-mdefine_line|#define RX_CTRL_TIME_VALID&t;UINT32_C(0x01000000)
-DECL|macro|RX_CTRL_CHECK_DEFAULT
-mdefine_line|#define RX_CTRL_CHECK_DEFAULT&t;UINT32_C(0x00550000)
-DECL|macro|RX_CTRL_CHECK_CSUM
-mdefine_line|#define RX_CTRL_CHECK_CSUM&t;UINT32_C(0x00560000)
-DECL|macro|RX_CTRL_LEN_MASK
-mdefine_line|#define&t;RX_CTRL_LEN_MASK&t;UINT32_C(0x0000FFFF)
-DECL|macro|TX_CTRL_OWN_BMU
-mdefine_line|#define&t;TX_CTRL_OWN_BMU &t;UINT32_C(0x80000000)
-DECL|macro|TX_CTRL_STF
-mdefine_line|#define&t;TX_CTRL_STF&t;&t;UINT32_C(0x40000000)
-DECL|macro|TX_CTRL_EOF
-mdefine_line|#define&t;TX_CTRL_EOF&t;&t;UINT32_C(0x20000000)
-DECL|macro|TX_CTRL_EOB_IRQ
-mdefine_line|#define&t;TX_CTRL_EOB_IRQ&t;&t;UINT32_C(0x10000000)
-DECL|macro|TX_CTRL_EOF_IRQ
-mdefine_line|#define&t;TX_CTRL_EOF_IRQ&t;&t;UINT32_C(0x08000000)
-DECL|macro|TX_CTRL_ST_FWD
-mdefine_line|#define TX_CTRL_ST_FWD&t;&t;UINT32_C(0x04000000)
-DECL|macro|TX_CTRL_DISAB_CRC
-mdefine_line|#define TX_CTRL_DISAB_CRC&t;UINT32_C(0x02000000)
-DECL|macro|TX_CTRL_SOFTWARE
-mdefine_line|#define TX_CTRL_SOFTWARE&t;UINT32_C(0x01000000)
-DECL|macro|TX_CTRL_CHECK_DEFAULT
-mdefine_line|#define TX_CTRL_CHECK_DEFAULT&t;UINT32_C(0x00550000)
-DECL|macro|TX_CTRL_CHECK_CSUM
-mdefine_line|#define TX_CTRL_CHECK_CSUM&t;UINT32_C(0x00560000)
-DECL|macro|TX_CTRL_LEN_MASK
-mdefine_line|#define&t;TX_CTRL_LEN_MASK&t;UINT32_C(0x0000FFFF)
-multiline_comment|/* The offsets of registers in the TX and RX queue control io area ***********/
-DECL|macro|RX_Q_BUF_CTRL_CNT
-mdefine_line|#define RX_Q_BUF_CTRL_CNT&t;0x00
-DECL|macro|RX_Q_NEXT_DESCR_LOW
-mdefine_line|#define RX_Q_NEXT_DESCR_LOW&t;0x04
-DECL|macro|RX_Q_BUF_ADDR_LOW
-mdefine_line|#define RX_Q_BUF_ADDR_LOW&t;0x08
-DECL|macro|RX_Q_BUF_ADDR_HIGH
-mdefine_line|#define RX_Q_BUF_ADDR_HIGH&t;0x0c
-DECL|macro|RX_Q_FRAME_STAT
-mdefine_line|#define RX_Q_FRAME_STAT&t;&t;0x10
-DECL|macro|RX_Q_TIME_STAMP
-mdefine_line|#define RX_Q_TIME_STAMP&t;&t;0x14
-DECL|macro|RX_Q_CSUM_1_2
-mdefine_line|#define RX_Q_CSUM_1_2&t;&t;0x18
-DECL|macro|RX_Q_CSUM_START_1_2
-mdefine_line|#define RX_Q_CSUM_START_1_2&t;0x1c
-DECL|macro|RX_Q_CUR_DESCR_LOW
-mdefine_line|#define RX_Q_CUR_DESCR_LOW&t;0x20
-DECL|macro|RX_Q_DESCR_HIGH
-mdefine_line|#define RX_Q_DESCR_HIGH&t;&t;0x24
-DECL|macro|RX_Q_CUR_ADDR_LOW
-mdefine_line|#define RX_Q_CUR_ADDR_LOW&t;0x28
-DECL|macro|RX_Q_CUR_ADDR_HIGH
-mdefine_line|#define RX_Q_CUR_ADDR_HIGH&t;0x2c
-DECL|macro|RX_Q_CUR_BYTE_CNT
-mdefine_line|#define RX_Q_CUR_BYTE_CNT&t;0x30
-DECL|macro|RX_Q_CTRL
-mdefine_line|#define RX_Q_CTRL&t;&t;0x34
-DECL|macro|RX_Q_FLAG
-mdefine_line|#define RX_Q_FLAG&t;&t;0x38
-DECL|macro|RX_Q_TEST1
-mdefine_line|#define RX_Q_TEST1&t;&t;0x3c
-DECL|macro|RX_Q_TEST2
-mdefine_line|#define RX_Q_TEST2&t;&t;0x40
-DECL|macro|RX_Q_TEST3
-mdefine_line|#define RX_Q_TEST3&t;&t;0x44
-DECL|macro|TX_Q_BUF_CTRL_CNT
-mdefine_line|#define TX_Q_BUF_CTRL_CNT&t;0x00
-DECL|macro|TX_Q_NEXT_DESCR_LOW
-mdefine_line|#define TX_Q_NEXT_DESCR_LOW&t;0x04
-DECL|macro|TX_Q_BUF_ADDR_LOW
-mdefine_line|#define TX_Q_BUF_ADDR_LOW&t;0x08
-DECL|macro|TX_Q_BUF_ADDR_HIGH
-mdefine_line|#define TX_Q_BUF_ADDR_HIGH&t;0x0c
-DECL|macro|TX_Q_FRAME_STAT
-mdefine_line|#define TX_Q_FRAME_STAT&t;&t;0x10
-DECL|macro|TX_Q_CSUM_START
-mdefine_line|#define TX_Q_CSUM_START&t;&t;0x14
-DECL|macro|TX_Q_CSUM_START_POS
-mdefine_line|#define TX_Q_CSUM_START_POS&t;0x18
-DECL|macro|TX_Q_RESERVED
-mdefine_line|#define TX_Q_RESERVED&t;&t;0x1c
-DECL|macro|TX_Q_CUR_DESCR_LOW
-mdefine_line|#define TX_Q_CUR_DESCR_LOW&t;0x20
-DECL|macro|TX_Q_DESCR_HIGH
-mdefine_line|#define TX_Q_DESCR_HIGH&t;&t;0x24
-DECL|macro|TX_Q_CUR_ADDR_LOW
-mdefine_line|#define TX_Q_CUR_ADDR_LOW&t;0x28
-DECL|macro|TX_Q_CUR_ADDR_HIGH
-mdefine_line|#define TX_Q_CUR_ADDR_HIGH&t;0x2c
-DECL|macro|TX_Q_CUR_BYTE_CNT
-mdefine_line|#define TX_Q_CUR_BYTE_CNT&t;0x30
-DECL|macro|TX_Q_CTRL
-mdefine_line|#define TX_Q_CTRL&t;&t;0x34
-DECL|macro|TX_Q_FLAG
-mdefine_line|#define TX_Q_FLAG&t;&t;0x38
-DECL|macro|TX_Q_TEST1
-mdefine_line|#define TX_Q_TEST1&t;&t;0x3c
-DECL|macro|TX_Q_TEST2
-mdefine_line|#define TX_Q_TEST2&t;&t;0x40
-DECL|macro|TX_Q_TEST3
-mdefine_line|#define TX_Q_TEST3&t;&t;0x44
-multiline_comment|/* definition of flags in the queue control field */
-DECL|macro|RX_Q_CTRL_POLL_ON
-mdefine_line|#define RX_Q_CTRL_POLL_ON&t;0x00000080
-DECL|macro|RX_Q_CTRL_POLL_OFF
-mdefine_line|#define RX_Q_CTRL_POLL_OFF&t;0x00000040
-DECL|macro|RX_Q_CTRL_STOP
-mdefine_line|#define RX_Q_CTRL_STOP&t;&t;0x00000020
-DECL|macro|RX_Q_CTRL_START
-mdefine_line|#define RX_Q_CTRL_START&t;&t;0x00000010
-DECL|macro|RX_Q_CTRL_CLR_I_PAR
-mdefine_line|#define RX_Q_CTRL_CLR_I_PAR&t;0x00000008
-DECL|macro|RX_Q_CTRL_CLR_I_EOB
-mdefine_line|#define RX_Q_CTRL_CLR_I_EOB&t;0x00000004
-DECL|macro|RX_Q_CTRL_CLR_I_EOF
-mdefine_line|#define RX_Q_CTRL_CLR_I_EOF&t;0x00000002
-DECL|macro|RX_Q_CTRL_CLR_I_ERR
-mdefine_line|#define RX_Q_CTRL_CLR_I_ERR&t;0x00000001
-DECL|macro|TX_Q_CTRL_POLL_ON
-mdefine_line|#define TX_Q_CTRL_POLL_ON&t;0x00000080
-DECL|macro|TX_Q_CTRL_POLL_OFF
-mdefine_line|#define TX_Q_CTRL_POLL_OFF&t;0x00000040
-DECL|macro|TX_Q_CTRL_STOP
-mdefine_line|#define TX_Q_CTRL_STOP&t;&t;0x00000020
-DECL|macro|TX_Q_CTRL_START
-mdefine_line|#define TX_Q_CTRL_START&t;&t;0x00000010
-DECL|macro|TX_Q_CTRL_CLR_I_EOB
-mdefine_line|#define TX_Q_CTRL_CLR_I_EOB&t;0x00000004
-DECL|macro|TX_Q_CTRL_CLR_I_EOF
-mdefine_line|#define TX_Q_CTRL_CLR_I_EOF&t;0x00000002
-DECL|macro|TX_Q_CTRL_CLR_I_ERR
-mdefine_line|#define TX_Q_CTRL_CLR_I_ERR&t;0x00000001
-multiline_comment|/* Interrupt bits in the interrupts source register **************************/
-DECL|macro|IRQ_HW_ERROR
-mdefine_line|#define IRQ_HW_ERROR&t;&t;0x80000000
-DECL|macro|IRQ_RESERVED
-mdefine_line|#define IRQ_RESERVED&t;&t;0x40000000
-DECL|macro|IRQ_PKT_TOUT_RX1
-mdefine_line|#define IRQ_PKT_TOUT_RX1&t;0x20000000
-DECL|macro|IRQ_PKT_TOUT_RX2
-mdefine_line|#define IRQ_PKT_TOUT_RX2&t;0x10000000
-DECL|macro|IRQ_PKT_TOUT_TX1
-mdefine_line|#define IRQ_PKT_TOUT_TX1&t;0x08000000
-DECL|macro|IRQ_PKT_TOUT_TX2
-mdefine_line|#define IRQ_PKT_TOUT_TX2&t;0x04000000
-DECL|macro|IRQ_I2C_READY
-mdefine_line|#define IRQ_I2C_READY&t;&t;0x02000000
-DECL|macro|IRQ_SW
-mdefine_line|#define IRQ_SW&t;&t;&t;0x01000000
-DECL|macro|IRQ_EXTERNAL_REG
-mdefine_line|#define IRQ_EXTERNAL_REG&t;0x00800000
-DECL|macro|IRQ_TIMER
-mdefine_line|#define IRQ_TIMER&t;&t;0x00400000
-DECL|macro|IRQ_MAC1
-mdefine_line|#define IRQ_MAC1&t;&t;0x00200000
-DECL|macro|IRQ_LINK_SYNC_C_M1
-mdefine_line|#define IRQ_LINK_SYNC_C_M1&t;0x00100000
-DECL|macro|IRQ_MAC2
-mdefine_line|#define IRQ_MAC2&t;&t;0x00080000
-DECL|macro|IRQ_LINK_SYNC_C_M2
-mdefine_line|#define IRQ_LINK_SYNC_C_M2&t;0x00040000
-DECL|macro|IRQ_EOB_RX1
-mdefine_line|#define IRQ_EOB_RX1&t;&t;0x00020000
-DECL|macro|IRQ_EOF_RX1
-mdefine_line|#define IRQ_EOF_RX1&t;&t;0x00010000
-DECL|macro|IRQ_CHK_RX1
-mdefine_line|#define IRQ_CHK_RX1&t;&t;0x00008000
-DECL|macro|IRQ_EOB_RX2
-mdefine_line|#define IRQ_EOB_RX2&t;&t;0x00004000
-DECL|macro|IRQ_EOF_RX2
-mdefine_line|#define IRQ_EOF_RX2&t;&t;0x00002000
-DECL|macro|IRQ_CHK_RX2
-mdefine_line|#define IRQ_CHK_RX2&t;&t;0x00001000
-DECL|macro|IRQ_EOB_SY_TX1
-mdefine_line|#define IRQ_EOB_SY_TX1&t;&t;0x00000800
-DECL|macro|IRQ_EOF_SY_TX1
-mdefine_line|#define IRQ_EOF_SY_TX1&t;&t;0x00000400
-DECL|macro|IRQ_CHK_SY_TX1
-mdefine_line|#define IRQ_CHK_SY_TX1&t;&t;0x00000200
-DECL|macro|IRQ_EOB_AS_TX1
-mdefine_line|#define IRQ_EOB_AS_TX1&t;&t;0x00000100
-DECL|macro|IRQ_EOF_AS_TX1
-mdefine_line|#define IRQ_EOF_AS_TX1&t;&t;0x00000080
-DECL|macro|IRQ_CHK_AS_TX1
-mdefine_line|#define IRQ_CHK_AS_TX1&t;&t;0x00000040
-DECL|macro|IRQ_EOB_SY_TX2
-mdefine_line|#define IRQ_EOB_SY_TX2&t;&t;0x00000020
-DECL|macro|IRQ_EOF_SY_TX2
-mdefine_line|#define IRQ_EOF_SY_TX2&t;&t;0x00000010
-DECL|macro|IRQ_CHK_SY_TX2
-mdefine_line|#define IRQ_CHK_SY_TX2&t;&t;0x00000008
-DECL|macro|IRQ_EOB_AS_TX2
-mdefine_line|#define IRQ_EOB_AS_TX2&t;&t;0x00000004
-DECL|macro|IRQ_EOF_AS_TX2
-mdefine_line|#define IRQ_EOF_AS_TX2&t;&t;0x00000002
-DECL|macro|IRQ_CHK_AS_TX2
-mdefine_line|#define IRQ_CHK_AS_TX2&t;&t;0x00000001
+multiline_comment|/* Used interrupt bits in the interrupts source register *********************/
 DECL|macro|DRIVER_IRQS
-mdefine_line|#define DRIVER_IRQS&t;(IRQ_SW | IRQ_EOF_RX1 | IRQ_EOF_RX2 | &bslash;&n;&t;&t;&t;IRQ_EOF_SY_TX1 | IRQ_EOF_AS_TX1 | &bslash;&n;&t;&t;&t;IRQ_EOF_SY_TX2 | IRQ_EOF_AS_TX2)
+mdefine_line|#define DRIVER_IRQS&t;((IS_IRQ_SW)   | &bslash;&n;&t;&t;&t;(IS_R1_F)      |(IS_R2_F)  | &bslash;&n;&t;&t;&t;(IS_XS1_F)     |(IS_XA1_F) | &bslash;&n;&t;&t;&t;(IS_XS2_F)     |(IS_XA2_F))
 DECL|macro|SPECIAL_IRQS
-mdefine_line|#define SPECIAL_IRQS&t;(IRQ_HW_ERROR | IRQ_PKT_TOUT_RX1 | IRQ_PKT_TOUT_RX2 | &bslash;&n;&t;&t;&t;IRQ_PKT_TOUT_TX1 | IRQ_PKT_TOUT_TX2 | &bslash;&n;&t;&t;&t;IRQ_I2C_READY | IRQ_EXTERNAL_REG | IRQ_TIMER | &bslash;&n;&t;&t;&t;IRQ_MAC1 | IRQ_LINK_SYNC_C_M1 | &bslash;&n;&t;&t;&t;IRQ_MAC2 | IRQ_LINK_SYNC_C_M2 | &bslash;&n;&t;&t;&t;IRQ_CHK_RX1 | IRQ_CHK_RX2 | &bslash;&n;&t;&t;&t;IRQ_CHK_SY_TX1 | IRQ_CHK_AS_TX1 | &bslash;&n;&t;&t;&t;IRQ_CHK_SY_TX2 | IRQ_CHK_AS_TX2)
+mdefine_line|#define SPECIAL_IRQS&t;((IS_HW_ERR)   |(IS_I2C_READY)  | &bslash;&n;&t;&t;&t;(IS_EXT_REG)   |(IS_TIMINT)     | &bslash;&n;&t;&t;&t;(IS_PA_TO_RX1) |(IS_PA_TO_RX2)  | &bslash;&n;&t;&t;&t;(IS_PA_TO_TX1) |(IS_PA_TO_TX2)  | &bslash;&n;&t;&t;&t;(IS_MAC1)      |(IS_LNK_SYNC_M1)| &bslash;&n;&t;&t;&t;(IS_MAC2)      |(IS_LNK_SYNC_M2)| &bslash;&n;&t;&t;&t;(IS_R1_C)      |(IS_R2_C)       | &bslash;&n;&t;&t;&t;(IS_XS1_C)     |(IS_XA1_C)      | &bslash;&n;&t;&t;&t;(IS_XS2_C)     |(IS_XA2_C))
 DECL|macro|IRQ_MASK
-mdefine_line|#define IRQ_MASK&t;(IRQ_SW | IRQ_EOB_RX1 | IRQ_EOF_RX1 | &bslash;&n;&t;&t;&t;IRQ_EOB_RX2 | IRQ_EOF_RX2 | &bslash;&n;&t;&t;&t;IRQ_EOB_SY_TX1 | IRQ_EOF_SY_TX1 | &bslash;&n;&t;&t;&t;IRQ_EOB_AS_TX1 | IRQ_EOF_AS_TX1 | &bslash;&n;&t;&t;&t;IRQ_EOB_SY_TX2 | IRQ_EOF_SY_TX2 | &bslash;&n;&t;&t;&t;IRQ_EOB_AS_TX2 | IRQ_EOF_AS_TX2 | &bslash;&n;&t;&t;&t;IRQ_HW_ERROR | IRQ_PKT_TOUT_RX1 | IRQ_PKT_TOUT_RX2 | &bslash;&n;&t;&t;&t;IRQ_PKT_TOUT_TX1 | IRQ_PKT_TOUT_TX2 | &bslash;&n;&t;&t;&t;IRQ_I2C_READY | IRQ_EXTERNAL_REG | IRQ_TIMER | &bslash;&n;&t;&t;&t;IRQ_MAC1 | &bslash;&n;&t;&t;&t;IRQ_MAC2 | &bslash;&n;&t;&t;&t;IRQ_CHK_RX1 | IRQ_CHK_RX2 | &bslash;&n;&t;&t;&t;IRQ_CHK_SY_TX1 | IRQ_CHK_AS_TX1 | &bslash;&n;&t;&t;&t;IRQ_CHK_SY_TX2 | IRQ_CHK_AS_TX2)
+mdefine_line|#define IRQ_MASK&t;((IS_IRQ_SW)   | &bslash;&n;&t;&t;&t;(IS_R1_B)      |(IS_R1_F)     |(IS_R2_B) |(IS_R2_F) | &bslash;&n;&t;&t;&t;(IS_XS1_B)     |(IS_XS1_F)    |(IS_XA1_B)|(IS_XA1_F)| &bslash;&n;&t;&t;&t;(IS_XS2_B)     |(IS_XS2_F)    |(IS_XA2_B)|(IS_XA2_F)| &bslash;&n;&t;&t;&t;(IS_HW_ERR)    |(IS_I2C_READY)| &bslash;&n;&t;&t;&t;(IS_EXT_REG)   |(IS_TIMINT)   | &bslash;&n;&t;&t;&t;(IS_PA_TO_RX1) |(IS_PA_TO_RX2)| &bslash;&n;&t;&t;&t;(IS_PA_TO_TX1) |(IS_PA_TO_TX2)| &bslash;&n;&t;&t;&t;(IS_MAC1)      |(IS_MAC2)     | &bslash;&n;&t;&t;&t;(IS_R1_C)      |(IS_R2_C)     | &bslash;&n;&t;&t;&t;(IS_XS1_C)     |(IS_XA1_C)    | &bslash;&n;&t;&t;&t;(IS_XS2_C)     |(IS_XA2_C))
 DECL|macro|IRQ_HWE_MASK
-mdefine_line|#define IRQ_HWE_MASK&t;0x00000FFF /* enable all HW irqs */
+mdefine_line|#define IRQ_HWE_MASK&t;(IS_ERR_MSK) /* enable all HW irqs */
 DECL|typedef|DEV_NET
 r_typedef
 r_struct
@@ -656,12 +502,6 @@ DECL|member|pAC
 id|SK_AC
 op_star
 id|pAC
-suffix:semicolon
-DECL|member|proc
-r_struct
-id|proc_dir_entry
-op_star
-id|proc
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -792,6 +632,142 @@ suffix:semicolon
 multiline_comment|/* index number of port (0 or 1) */
 )brace
 suffix:semicolon
+multiline_comment|/* Definitions needed for interrupt moderation *******************************/
+DECL|macro|IRQ_EOF_AS_TX
+mdefine_line|#define IRQ_EOF_AS_TX     ((IS_XA1_F)     | (IS_XA2_F))
+DECL|macro|IRQ_EOF_SY_TX
+mdefine_line|#define IRQ_EOF_SY_TX     ((IS_XS1_F)     | (IS_XS2_F))
+DECL|macro|IRQ_MASK_TX_ONLY
+mdefine_line|#define IRQ_MASK_TX_ONLY  ((IRQ_EOF_AS_TX)| (IRQ_EOF_SY_TX))
+DECL|macro|IRQ_MASK_RX_ONLY
+mdefine_line|#define IRQ_MASK_RX_ONLY  ((IS_R1_F)      | (IS_R2_F))
+DECL|macro|IRQ_MASK_SP_ONLY
+mdefine_line|#define IRQ_MASK_SP_ONLY  (SPECIAL_IRQS)
+DECL|macro|IRQ_MASK_TX_RX
+mdefine_line|#define IRQ_MASK_TX_RX    ((IRQ_MASK_TX_ONLY)| (IRQ_MASK_RX_ONLY))
+DECL|macro|IRQ_MASK_SP_RX
+mdefine_line|#define IRQ_MASK_SP_RX    ((SPECIAL_IRQS)    | (IRQ_MASK_RX_ONLY))
+DECL|macro|IRQ_MASK_SP_TX
+mdefine_line|#define IRQ_MASK_SP_TX    ((SPECIAL_IRQS)    | (IRQ_MASK_TX_ONLY))
+DECL|macro|IRQ_MASK_RX_TX_SP
+mdefine_line|#define IRQ_MASK_RX_TX_SP ((SPECIAL_IRQS)    | (IRQ_MASK_TX_RX))
+DECL|macro|C_INT_MOD_NONE
+mdefine_line|#define C_INT_MOD_NONE                 1
+DECL|macro|C_INT_MOD_STATIC
+mdefine_line|#define C_INT_MOD_STATIC               2
+DECL|macro|C_INT_MOD_DYNAMIC
+mdefine_line|#define C_INT_MOD_DYNAMIC              4
+DECL|macro|C_CLK_FREQ_GENESIS
+mdefine_line|#define C_CLK_FREQ_GENESIS      53215000 /* shorter: 53.125 MHz  */
+DECL|macro|C_CLK_FREQ_YUKON
+mdefine_line|#define C_CLK_FREQ_YUKON        78215000 /* shorter: 78.125 MHz  */
+DECL|macro|C_INTS_PER_SEC_DEFAULT
+mdefine_line|#define C_INTS_PER_SEC_DEFAULT      2000 
+DECL|macro|C_INT_MOD_ENABLE_PERCENTAGE
+mdefine_line|#define C_INT_MOD_ENABLE_PERCENTAGE   50 /* if higher 50% enable */
+DECL|macro|C_INT_MOD_DISABLE_PERCENTAGE
+mdefine_line|#define C_INT_MOD_DISABLE_PERCENTAGE  50 /* if lower 50% disable */
+DECL|typedef|DIM_INFO
+r_typedef
+r_struct
+id|s_DynIrqModInfo
+id|DIM_INFO
+suffix:semicolon
+DECL|struct|s_DynIrqModInfo
+r_struct
+id|s_DynIrqModInfo
+(brace
+DECL|member|PrevTimeVal
+r_int
+r_int
+id|PrevTimeVal
+suffix:semicolon
+DECL|member|PrevSysLoad
+r_int
+r_int
+id|PrevSysLoad
+suffix:semicolon
+DECL|member|PrevUsedTime
+r_int
+r_int
+id|PrevUsedTime
+suffix:semicolon
+DECL|member|PrevTotalTime
+r_int
+r_int
+id|PrevTotalTime
+suffix:semicolon
+DECL|member|PrevUsedDescrRatio
+r_int
+id|PrevUsedDescrRatio
+suffix:semicolon
+DECL|member|NbrProcessedDescr
+r_int
+id|NbrProcessedDescr
+suffix:semicolon
+DECL|member|PrevPort0RxIntrCts
+id|SK_U64
+id|PrevPort0RxIntrCts
+suffix:semicolon
+DECL|member|PrevPort1RxIntrCts
+id|SK_U64
+id|PrevPort1RxIntrCts
+suffix:semicolon
+DECL|member|PrevPort0TxIntrCts
+id|SK_U64
+id|PrevPort0TxIntrCts
+suffix:semicolon
+DECL|member|PrevPort1TxIntrCts
+id|SK_U64
+id|PrevPort1TxIntrCts
+suffix:semicolon
+DECL|member|ModJustEnabled
+id|SK_BOOL
+id|ModJustEnabled
+suffix:semicolon
+multiline_comment|/* Moderation just enabled yes/no */
+DECL|member|MaxModIntsPerSec
+r_int
+id|MaxModIntsPerSec
+suffix:semicolon
+multiline_comment|/* Moderation Threshold */
+DECL|member|MaxModIntsPerSecUpperLimit
+r_int
+id|MaxModIntsPerSecUpperLimit
+suffix:semicolon
+multiline_comment|/* Upper limit for DIM  */
+DECL|member|MaxModIntsPerSecLowerLimit
+r_int
+id|MaxModIntsPerSecLowerLimit
+suffix:semicolon
+multiline_comment|/* Lower limit for DIM  */
+DECL|member|MaskIrqModeration
+r_int
+id|MaskIrqModeration
+suffix:semicolon
+multiline_comment|/* ModIrqType (eg. &squot;TxRx&squot;)      */
+DECL|member|DisplayStats
+id|SK_BOOL
+id|DisplayStats
+suffix:semicolon
+multiline_comment|/* Stats yes/no                 */
+DECL|member|AutoSizing
+id|SK_BOOL
+id|AutoSizing
+suffix:semicolon
+multiline_comment|/* Resize DIM-timer on/off      */
+DECL|member|IntModTypeSelect
+r_int
+id|IntModTypeSelect
+suffix:semicolon
+multiline_comment|/* EnableIntMod (eg. &squot;dynamic&squot;) */
+DECL|member|ModTimer
+id|SK_TIMER
+id|ModTimer
+suffix:semicolon
+multiline_comment|/* just some timer */
+)brace
+suffix:semicolon
 DECL|typedef|PER_STRM
 r_typedef
 r_struct
@@ -901,6 +877,7 @@ multiline_comment|/* flag allocation of resources */
 DECL|member|PciDev
 r_struct
 id|pci_dev
+op_star
 id|PciDev
 suffix:semicolon
 multiline_comment|/* for access to pci config space */
@@ -911,7 +888,7 @@ suffix:semicolon
 multiline_comment|/* pci device id */
 DECL|member|dev
 r_struct
-id|net_device
+id|SK_NET_DEVICE
 op_star
 id|dev
 (braket
@@ -929,7 +906,7 @@ suffix:semicolon
 multiline_comment|/* driver name */
 DECL|member|Next
 r_struct
-id|net_device
+id|SK_NET_DEVICE
 op_star
 id|Next
 suffix:semicolon
@@ -983,6 +960,11 @@ suffix:semicolon
 multiline_comment|/* number of different MC    */
 multiline_comment|/*  addresses for this board */
 multiline_comment|/*  (may be more than HW can)*/
+DECL|member|HWRevision
+r_int
+id|HWRevision
+suffix:semicolon
+multiline_comment|/* Hardware revision */
 DECL|member|ActivePort
 r_int
 id|ActivePort
@@ -1053,6 +1035,25 @@ id|SK_BOOL
 id|CheckQueue
 suffix:semicolon
 multiline_comment|/* check event queue soon */
+DECL|member|DrvCleanupTimer
+id|SK_TIMER
+id|DrvCleanupTimer
+suffix:semicolon
+multiline_comment|/* to check for pending descriptors */
+DECL|member|DynIrqModInfo
+id|DIM_INFO
+id|DynIrqModInfo
+suffix:semicolon
+multiline_comment|/* all data related to DIM */
+multiline_comment|/* Only for tests */
+DECL|member|PortUp
+r_int
+id|PortUp
+suffix:semicolon
+DECL|member|PortDown
+r_int
+id|PortDown
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __INC_SKDRV2ND_H */

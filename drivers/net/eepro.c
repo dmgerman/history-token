@@ -2431,7 +2431,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot; Duh! illegal interrupt vector stored in EEPROM.&bslash;n&quot;
+l_string|&quot; Duh! invalid interrupt vector stored in EEPROM.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval

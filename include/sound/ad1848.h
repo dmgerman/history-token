@@ -136,6 +136,15 @@ DECL|macro|AD1848_HW_CS4248
 mdefine_line|#define AD1848_HW_CS4248&t;0x0003&t;/* CS4248 chip */
 DECL|macro|AD1848_HW_CMI8330
 mdefine_line|#define AD1848_HW_CMI8330&t;0x0004&t;/* CMI8330 chip */
+DECL|macro|AD1848_HW_THINKPAD
+mdefine_line|#define AD1848_HW_THINKPAD&t;0x0005&t;/* Thinkpad 360/750/755 */
+multiline_comment|/* IBM Thinkpad specific stuff */
+DECL|macro|AD1848_THINKPAD_CTL_PORT1
+mdefine_line|#define AD1848_THINKPAD_CTL_PORT1&t;&t;0x15e8
+DECL|macro|AD1848_THINKPAD_CTL_PORT2
+mdefine_line|#define AD1848_THINKPAD_CTL_PORT2&t;&t;0x15e9
+DECL|macro|AD1848_THINKPAD_CS4248_ENABLE_BIT
+mdefine_line|#define AD1848_THINKPAD_CS4248_ENABLE_BIT&t;0x02
 DECL|struct|_snd_ad1848
 r_struct
 id|_snd_ad1848
@@ -229,6 +238,19 @@ DECL|member|dma_size
 r_int
 id|dma_size
 suffix:semicolon
+DECL|member|thinkpad_flag
+r_int
+id|thinkpad_flag
+suffix:semicolon
+multiline_comment|/* Thinkpad CS4248 needs some extra help */
+macro_line|#ifdef CONFIG_PM
+DECL|member|thinkpad_pmstate
+r_struct
+id|pm_dev
+op_star
+id|thinkpad_pmstate
+suffix:semicolon
+macro_line|#endif
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock

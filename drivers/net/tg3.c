@@ -914,6 +914,11 @@ op_amp
 id|dev-&gt;poll_list
 )paren
 suffix:semicolon
+id|smp_mb__before_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
 id|clear_bit
 c_func
 (paren

@@ -83,7 +83,7 @@ macro_line|#endif
 macro_line|#if 0
 mdefine_line|#define SNDRV_DEBUG_IRQ
 macro_line|#endif
-macro_line|#if defined(SNDRV_SBAWE) &amp;&amp; (defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE))
+macro_line|#if defined(SNDRV_SBAWE) &amp;&amp; (defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE)))
 DECL|macro|SNDRV_SBAWE_EMU8000
 mdefine_line|#define SNDRV_SBAWE_EMU8000
 macro_line|#endif
@@ -2342,6 +2342,58 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PNP */
+DECL|function|snd_sb16_free
+r_static
+r_void
+id|snd_sb16_free
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+)paren
+(brace
+r_struct
+id|snd_card_sb16
+op_star
+id|acard
+op_assign
+(paren
+r_struct
+id|snd_card_sb16
+op_star
+)paren
+id|card-&gt;private_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acard
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acard-&gt;fm_res
+)paren
+(brace
+id|release_resource
+c_func
+(paren
+id|acard-&gt;fm_res
+)paren
+suffix:semicolon
+id|kfree_nocheck
+c_func
+(paren
+id|acard-&gt;fm_res
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|snd_sb16_probe
 r_static
 r_int
@@ -2505,6 +2557,10 @@ id|snd_card_sb16
 op_star
 )paren
 id|card-&gt;private_data
+suffix:semicolon
+id|card-&gt;private_free
+op_assign
+id|snd_sb16_free
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
 r_if
@@ -3014,6 +3070,13 @@ id|port
 (braket
 id|dev
 )braket
+op_logical_or
+id|fm_port
+(braket
+id|dev
+)braket
+op_eq
+l_int|0x388
 comma
 op_amp
 id|opl3

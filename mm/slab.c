@@ -9704,7 +9704,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot; : cpustat &lt;allochit&gt; &lt;allocmiss&gt; &lt;freehit &lt;freemiss&gt;&quot;
+l_string|&quot; : cpustat &lt;allochit&gt; &lt;allocmiss&gt; &lt;freehit&gt; &lt;freemiss&gt;&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

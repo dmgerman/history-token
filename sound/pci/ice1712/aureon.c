@@ -1904,7 +1904,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Aureon board don&squot;t provide the EEPROM data except for the vendor IDs.&n; * hence the driver needs to sets up it properly.&n; */
+multiline_comment|/*&n; * Aureon boards don&squot;t provide the EEPROM data except for the vendor IDs.&n; * hence the driver needs to sets up it properly.&n; */
 DECL|variable|__devinitdata
 r_static
 r_int

@@ -8,7 +8,7 @@ macro_line|#endif
 macro_line|#include &lt;sound/asound.h&gt;
 multiline_comment|/** version of the sequencer */
 DECL|macro|SNDRV_SEQ_VERSION
-mdefine_line|#define SNDRV_SEQ_VERSION SNDRV_PROTOCOL_VERSION (1, 0, 0)
+mdefine_line|#define SNDRV_SEQ_VERSION SNDRV_PROTOCOL_VERSION (1, 0, 1)
 multiline_comment|/**&n; * definition of sequencer event types&n; */
 multiline_comment|/** system messages&n; * event data type = #sndrv_seq_result_t&n; */
 DECL|macro|SNDRV_SEQ_EVENT_SYSTEM
@@ -36,9 +36,9 @@ mdefine_line|#define SNDRV_SEQ_EVENT_PITCHBEND&t;13&t;/**&lt; from -8192 to 8191
 DECL|macro|SNDRV_SEQ_EVENT_CONTROL14
 mdefine_line|#define SNDRV_SEQ_EVENT_CONTROL14&t;14&t;/**&lt; 14 bit controller value */
 DECL|macro|SNDRV_SEQ_EVENT_NONREGPARAM
-mdefine_line|#define SNDRV_SEQ_EVENT_NONREGPARAM&t;15&t;/**&lt; 14 bit NRPN */
+mdefine_line|#define SNDRV_SEQ_EVENT_NONREGPARAM&t;15&t;/**&lt; 14 bit NRPN address + 14 bit unsigned value */
 DECL|macro|SNDRV_SEQ_EVENT_REGPARAM
-mdefine_line|#define SNDRV_SEQ_EVENT_REGPARAM&t;16&t;/**&lt; 14 bit RPN */
+mdefine_line|#define SNDRV_SEQ_EVENT_REGPARAM&t;16&t;/**&lt; 14 bit RPN address + 14 bit unsigned value */
 multiline_comment|/** synchronisation messages&n; * event data type = #sndrv_seq_ev_ctrl&n; */
 DECL|macro|SNDRV_SEQ_EVENT_SONGPOS
 mdefine_line|#define SNDRV_SEQ_EVENT_SONGPOS&t;&t;20&t;/* Song Position Pointer with LSB and MSB values */
@@ -1377,6 +1377,10 @@ mdefine_line|#define SNDRV_SEQ_PORT_TYPE_APPLICATION&t;(1&lt;&lt;20)&t;/* applic
 multiline_comment|/* misc. conditioning flags */
 DECL|macro|SNDRV_SEQ_PORT_FLG_GIVEN_PORT
 mdefine_line|#define SNDRV_SEQ_PORT_FLG_GIVEN_PORT&t;(1&lt;&lt;0)
+DECL|macro|SNDRV_SEQ_PORT_FLG_TIMESTAMP
+mdefine_line|#define SNDRV_SEQ_PORT_FLG_TIMESTAMP&t;(1&lt;&lt;1)
+DECL|macro|SNDRV_SEQ_PORT_FLG_TIME_REAL
+mdefine_line|#define SNDRV_SEQ_PORT_FLG_TIME_REAL&t;(1&lt;&lt;1)
 DECL|struct|sndrv_seq_port_info
 r_struct
 id|sndrv_seq_port_info
@@ -1444,11 +1448,17 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* misc. conditioning */
+DECL|member|time_queue
+r_int
+r_char
+id|time_queue
+suffix:semicolon
+multiline_comment|/* queue # for timestamping */
 DECL|member|reserved
 r_char
 id|reserved
 (braket
-l_int|60
+l_int|59
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */

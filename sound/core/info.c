@@ -277,6 +277,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&n; */
 DECL|variable|snd_proc_root
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -1106,10 +1107,6 @@ id|entry-&gt;c.ops-&gt;read
 op_eq
 l_int|NULL
 )paren
-op_logical_or
-id|entry-&gt;content
-op_eq
-id|SNDRV_INFO_CONTENT_DEVICE
 )paren
 (brace
 id|err
@@ -1155,10 +1152,6 @@ id|entry-&gt;c.ops-&gt;write
 op_eq
 l_int|NULL
 )paren
-op_logical_or
-id|entry-&gt;content
-op_eq
-id|SNDRV_INFO_CONTENT_DEVICE
 )paren
 (brace
 id|err

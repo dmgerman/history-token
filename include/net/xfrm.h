@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -100,6 +99,10 @@ comma
 id|ealgo
 comma
 id|calgo
+suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
 suffix:semicolon
 DECL|member|family
 id|u16
@@ -2182,11 +2185,6 @@ DECL|struct|sec_path
 r_struct
 id|sec_path
 (brace
-DECL|member|pool
-id|kmem_cache_t
-op_star
-id|pool
-suffix:semicolon
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -2279,6 +2277,19 @@ id|sp
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|sec_path
+op_star
+id|secpath_dup
+c_func
+(paren
+r_struct
+id|sec_path
+op_star
+id|src
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_int
@@ -4054,15 +4065,7 @@ id|hard
 suffix:semicolon
 r_extern
 r_void
-id|xfrm4_input_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfrm6_input_init
+id|xfrm_input_init
 c_func
 (paren
 r_void

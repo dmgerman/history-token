@@ -1862,11 +1862,11 @@ c_func
 (paren
 r_sizeof
 (paren
-op_star
-id|cfg
+r_struct
+id|pnp_resource_table
 )paren
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_int

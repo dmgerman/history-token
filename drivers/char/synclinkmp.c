@@ -2906,7 +2906,7 @@ id|synclinkmp_device_count
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%d): open with illegal line #%d.&bslash;n&quot;
+l_string|&quot;%s(%d): open with invalid line #%d.&bslash;n&quot;
 comma
 id|__FILE__
 comma

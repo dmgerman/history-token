@@ -120,7 +120,7 @@ id|cpu_data-&gt;dcache.flags
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * SH-2 doesn&squot;t have seperate caches&n;&t; */
+multiline_comment|/*&n;&t; * SH-2 doesn&squot;t have separate caches&n;&t; */
 id|cpu_data-&gt;dcache.flags
 op_or_assign
 id|SH_CACHE_COMBINED

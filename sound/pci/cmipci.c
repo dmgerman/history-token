@@ -4274,7 +4274,7 @@ macro_line|#else
 r_char
 id|buf
 (braket
-l_int|1920
+l_int|480
 )braket
 suffix:semicolon
 multiline_comment|/* bits can be divided by 20, 24, 16 */
@@ -4583,7 +4583,7 @@ macro_line|# ifdef USE_AES_IEC958
 r_char
 id|buf
 (braket
-l_int|1920
+l_int|480
 )braket
 suffix:semicolon
 multiline_comment|/* bits can be divided by 20, 24, 16 */

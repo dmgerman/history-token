@@ -497,6 +497,7 @@ op_star
 id|tlck
 )paren
 suffix:semicolon
+r_static
 r_void
 id|txAbortCommit
 c_func
@@ -505,9 +506,6 @@ r_struct
 id|commit
 op_star
 id|cd
-comma
-r_int
-id|exval
 )paren
 suffix:semicolon
 r_static
@@ -3395,6 +3393,7 @@ l_int|0
 (brace
 id|rc
 op_assign
+op_minus
 id|EROFS
 suffix:semicolon
 r_goto
@@ -3919,8 +3918,6 @@ c_func
 (paren
 op_amp
 id|cd
-comma
-id|rc
 )paren
 suffix:semicolon
 id|TheEnd
@@ -8577,6 +8574,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      txAbortCommit()&n; *&n; * function: abort commit.&n; *&n; * frees tlocks of transaction; line-locks and segment locks for all&n; * segments in comdata structure. frees malloc storage&n; * sets state of file-system to FM_MDIRTY in super-block.&n; * log age of page-frames in memory for which caller has&n; * are reset to 0 (to avoid logwarap).&n; */
 DECL|function|txAbortCommit
+r_static
 r_void
 id|txAbortCommit
 c_func
@@ -8585,9 +8583,6 @@ r_struct
 id|commit
 op_star
 id|cd
-comma
-r_int
-id|exval
 )paren
 (brace
 r_struct
@@ -8607,17 +8602,6 @@ r_struct
 id|metapage
 op_star
 id|mp
-suffix:semicolon
-m_assert
-(paren
-id|exval
-op_eq
-id|EIO
-op_logical_or
-id|exval
-op_eq
-id|ENOMEM
-)paren
 suffix:semicolon
 id|jfs_warn
 c_func

@@ -885,7 +885,7 @@ id|dma_addr_t
 id|bugbuf_addr
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|member|gameport
 r_struct
 id|gameport
@@ -7746,7 +7746,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CHIP1371 */
 multiline_comment|/* generic control callbacks for ens1370 and for joystick */
-macro_line|#if defined(CHIP1370) || defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CHIP1370) || defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|macro|ENSONIQ_CONTROL
 mdefine_line|#define ENSONIQ_CONTROL(xname, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_CARD, .name = xname, .info = snd_ensoniq_control_info, &bslash;&n;  .get = snd_ensoniq_control_get, .put = snd_ensoniq_control_put, &bslash;&n;  .private_value = mask }
 DECL|function|snd_ensoniq_control_info
@@ -8223,7 +8223,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CHIP1370 */
 multiline_comment|/*&n; *  General Switches...&n; */
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 multiline_comment|/* MQ: gameport driver connectivity */
 DECL|macro|ENSONIQ_JOY_CONTROL
 mdefine_line|#define ENSONIQ_JOY_CONTROL(xname, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_CARD, .name = xname, .info = snd_ensoniq_control_info, &bslash;&n;  .get = snd_ensoniq_control_get, .put = snd_ensoniq_joy_control_put, &bslash;&n;  .private_value = mask }
@@ -8997,7 +8997,7 @@ op_star
 id|ensoniq
 )paren
 (brace
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
 (paren
@@ -10436,7 +10436,7 @@ id|STATUS
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 id|init_MUTEX
 c_func
 (paren
