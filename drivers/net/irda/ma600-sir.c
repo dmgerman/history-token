@@ -441,7 +441,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|15
@@ -537,7 +537,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -596,7 +596,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -623,7 +623,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10

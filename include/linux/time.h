@@ -227,10 +227,6 @@ l_int|1000
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|macro|JIFFIES_TO_MSECS
-mdefine_line|#define JIFFIES_TO_MSECS(j)&t;jiffies_to_msecs(j)
-DECL|macro|MSECS_TO_JIFFIES
-mdefine_line|#define MSECS_TO_JIFFIES(m)&t;msecs_to_jiffies(m)
 multiline_comment|/*&n; * The TICK_NSEC - 1 rounds up the value to the next resolution.  Note&n; * that a remainder subtract here would not do the right thing as the&n; * resolution values don&squot;t fall on second boundries.  I.e. the line:&n; * nsec -= nsec % TICK_NSEC; is NOT a correct resolution rounding.&n; *&n; * Rather, we just shift the bits off the right.&n; *&n; * The &gt;&gt; (NSEC_JIFFIE_SC - SEC_JIFFIE_SC) converts the scaled nsec&n; * value to a scaled second value.&n; */
 r_static
 id|__inline__

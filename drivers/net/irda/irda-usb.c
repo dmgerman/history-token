@@ -772,7 +772,7 @@ id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|urb-&gt;timeout
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -1251,7 +1251,7 @@ suffix:semicolon
 multiline_comment|/* Timeout need to be shorter than NET watchdog timer */
 id|urb-&gt;timeout
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|200
@@ -4054,7 +4054,7 @@ op_star
 id|desc
 )paren
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|500

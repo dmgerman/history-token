@@ -5874,7 +5874,7 @@ suffix:semicolon
 multiline_comment|/* scale ms to jiffies */
 id|interval
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|interval

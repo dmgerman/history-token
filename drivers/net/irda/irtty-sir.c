@@ -162,7 +162,7 @@ c_func
 (paren
 id|tty
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -188,7 +188,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|USBSERIAL_TX_DONE_DELAY

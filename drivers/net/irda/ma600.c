@@ -458,7 +458,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -519,7 +519,7 @@ suffix:semicolon
 multiline_comment|/* give 1 second to finish */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|1000
@@ -575,7 +575,7 @@ id|FALSE
 suffix:semicolon
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|1
@@ -638,7 +638,7 @@ suffix:semicolon
 multiline_comment|/* Wait at least 10 ms */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|15
@@ -774,7 +774,7 @@ suffix:semicolon
 multiline_comment|/* Wait at least 10 ms */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -906,7 +906,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -950,7 +950,7 @@ id|IRDA_TASK_WAIT1
 suffix:semicolon
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -985,7 +985,7 @@ id|IRDA_TASK_WAIT2
 suffix:semicolon
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10

@@ -600,7 +600,7 @@ suffix:semicolon
 multiline_comment|/* Sleep 50 ms to make sure capacitor is charged */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|50

@@ -291,7 +291,7 @@ suffix:semicolon
 multiline_comment|/* Give reset 1 sec to finish */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|1000
@@ -444,7 +444,7 @@ id|IRDA_TASK_WAIT
 suffix:semicolon
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|100
@@ -585,7 +585,7 @@ id|IRDA_TASK_WAIT1
 suffix:semicolon
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|50
@@ -620,7 +620,7 @@ id|IRDA_TASK_WAIT2
 suffix:semicolon
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|50

@@ -296,7 +296,7 @@ id|sp-&gt;assocparams.sasoc_asocmaxrxt
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sp-&gt;rtoinfo.srto_initial
@@ -304,7 +304,7 @@ id|sp-&gt;rtoinfo.srto_initial
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sp-&gt;rtoinfo.srto_max
@@ -312,7 +312,7 @@ id|sp-&gt;rtoinfo.srto_max
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sp-&gt;rtoinfo.srto_min
@@ -404,7 +404,7 @@ id|sp-&gt;initmsg.sinit_max_attempts
 suffix:semicolon
 id|asoc-&gt;max_init_timeo
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sp-&gt;initmsg.sinit_max_init_timeo
@@ -1302,7 +1302,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
 id|peer-&gt;hb_interval
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sp-&gt;paddrparam.spp_hbinterval

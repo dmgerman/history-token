@@ -330,7 +330,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -451,7 +451,7 @@ suffix:semicolon
 multiline_comment|/* Give reset 1 sec to finish */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|1000
@@ -535,7 +535,7 @@ suffix:semicolon
 multiline_comment|/* Wait at least 100 ms */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|150
@@ -680,7 +680,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -726,7 +726,7 @@ suffix:semicolon
 multiline_comment|/* Sleep 50 ms */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|50
@@ -761,7 +761,7 @@ suffix:semicolon
 multiline_comment|/* Should sleep 1 ms */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|1

@@ -633,7 +633,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|CTRL_TIMEOUT
@@ -702,7 +702,7 @@ id|data
 comma
 id|count
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|CTRL_TIMEOUT
@@ -2808,7 +2808,7 @@ id|wraplen
 comma
 l_int|NULL
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|TRANSMIT_TIMEOUT
