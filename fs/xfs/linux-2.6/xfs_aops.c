@@ -22,6 +22,7 @@ macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_iomap.h&quot;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 id|STATIC
 r_void
 id|xfs_count_page_state
@@ -56,6 +57,11 @@ op_star
 comma
 id|xfs_iomap_t
 op_star
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 comma
 r_void
 op_star
@@ -933,8 +939,12 @@ c_cond
 (paren
 id|iomapp-&gt;iomap_offset
 op_plus
+(paren
 id|iomapp-&gt;iomap_bsize
-OG
+op_minus
+l_int|1
+)paren
+op_ge
 id|full_offset
 )paren
 r_return
@@ -1871,6 +1881,11 @@ id|xfs_iomap_t
 op_star
 id|iomapp
 comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+comma
 r_int
 id|startio
 comma
@@ -2203,6 +2218,8 @@ id|page
 comma
 id|iomapp
 comma
+id|wbc
+comma
 id|pb
 comma
 id|startio
@@ -2304,6 +2321,8 @@ comma
 id|page
 comma
 id|iomapp
+comma
+id|wbc
 comma
 id|pb
 comma
@@ -2604,6 +2623,11 @@ id|xfs_iomap_t
 op_star
 id|iomapp
 comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
+comma
 r_void
 op_star
 r_private
@@ -2876,6 +2900,8 @@ id|bbits
 comma
 id|tmp
 comma
+id|wbc
+comma
 id|startio
 comma
 id|all_bh
@@ -3008,6 +3034,9 @@ c_cond
 id|startio
 )paren
 (brace
+id|wbc-&gt;nr_to_write
+op_decrement
+suffix:semicolon
 id|xfs_submit_page
 c_func
 (paren
@@ -3047,6 +3076,11 @@ comma
 id|xfs_iomap_t
 op_star
 id|iomapp
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 comma
 r_int
 id|startio
@@ -3112,6 +3146,8 @@ id|page
 comma
 id|iomapp
 comma
+id|wbc
+comma
 l_int|NULL
 comma
 id|startio
@@ -3137,6 +3173,11 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 comma
 r_int
 id|startio
@@ -3478,6 +3519,8 @@ comma
 id|inode-&gt;i_blkbits
 comma
 id|iomp
+comma
+id|wbc
 comma
 id|startio
 comma
@@ -3899,6 +3942,7 @@ c_cond
 (paren
 id|iomp
 )paren
+(brace
 id|xfs_cluster_write
 c_func
 (paren
@@ -3910,11 +3954,14 @@ l_int|1
 comma
 id|iomp
 comma
+id|wbc
+comma
 id|startio
 comma
 id|unmapped
 )paren
 suffix:semicolon
+)brace
 r_return
 id|page_dirty
 suffix:semicolon
@@ -4049,7 +4096,6 @@ id|iblock
 op_lshift
 id|inode-&gt;i_blkbits
 suffix:semicolon
-multiline_comment|/* If we are doing writes at the end of the file,&n;&t; * allocate in chunks&n;&t; */
 r_if
 c_cond
 (paren
@@ -4060,28 +4106,6 @@ op_assign
 id|blocks
 op_lshift
 id|inode-&gt;i_blkbits
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|create
-op_logical_and
-(paren
-id|offset
-op_ge
-id|i_size_read
-c_func
-(paren
-id|inode
-)paren
-)paren
-)paren
-id|size
-op_assign
-l_int|1
-op_lshift
-id|XFS_WRITE_IO_LOG
 suffix:semicolon
 r_else
 id|size
@@ -5110,6 +5134,8 @@ id|inode
 comma
 id|page
 comma
+id|wbc
+comma
 l_int|1
 comma
 id|unmapped
@@ -5204,6 +5230,23 @@ id|unmapped
 comma
 id|unwritten
 suffix:semicolon
+r_struct
+id|writeback_control
+id|wbc
+op_assign
+(brace
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_ALL
+comma
+dot
+id|nr_to_write
+op_assign
+l_int|1
+comma
+)brace
+suffix:semicolon
 id|xfs_page_trace
 c_func
 (paren
@@ -5277,6 +5320,9 @@ c_func
 id|inode
 comma
 id|page
+comma
+op_amp
+id|wbc
 comma
 l_int|0
 comma

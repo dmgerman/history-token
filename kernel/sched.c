@@ -12182,6 +12182,10 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|rq-&gt;idle-&gt;static_prio
+op_assign
+id|MAX_PRIO
+suffix:semicolon
 id|__setscheduler
 c_func
 (paren
@@ -12189,7 +12193,7 @@ id|rq-&gt;idle
 comma
 id|SCHED_NORMAL
 comma
-id|MAX_PRIO
+l_int|0
 )paren
 suffix:semicolon
 id|task_rq_unlock

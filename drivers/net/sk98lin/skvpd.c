@@ -1559,6 +1559,66 @@ id|pAC-&gt;vpd.vpd_size
 op_assign
 id|vpd_size
 suffix:semicolon
+multiline_comment|/* Asus K8V Se Deluxe bugfix. Correct VPD content */
+multiline_comment|/* MBo April 2004 */
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+r_char
+)paren
+id|pAC-&gt;vpd.vpd_buf
+(braket
+l_int|0x3f
+)braket
+op_eq
+l_int|0x38
+)paren
+op_logical_and
+(paren
+(paren
+r_int
+r_char
+)paren
+id|pAC-&gt;vpd.vpd_buf
+(braket
+l_int|0x40
+)braket
+op_eq
+l_int|0x3c
+)paren
+op_logical_and
+(paren
+(paren
+r_int
+r_char
+)paren
+id|pAC-&gt;vpd.vpd_buf
+(braket
+l_int|0x41
+)braket
+op_eq
+l_int|0x45
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;sk98lin: Asus mainboard with buggy VPD? &quot;
+l_string|&quot;Correcting data.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pAC-&gt;vpd.vpd_buf
+(braket
+l_int|0x40
+)braket
+op_assign
+l_int|0x38
+suffix:semicolon
+)brace
 multiline_comment|/* find the end tag of the RO area */
 r_if
 c_cond

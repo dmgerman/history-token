@@ -863,6 +863,17 @@ c_cond
 (paren
 id|ap-&gt;flags
 op_amp
+id|XFSMNT_SWALLOC
+)paren
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_SWALLOC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
 id|XFSMNT_OSYNCISOSYNC
 )paren
 id|mp-&gt;m_flags
@@ -1887,12 +1898,12 @@ id|VFS_DMI
 (brace
 id|error
 op_assign
-id|XFS_SEND_NAMESP
+id|XFS_SEND_PREUNMOUNT
 c_func
 (paren
 id|mp
 comma
-id|DM_EVENT_PREUNMOUNT
+id|vfsp
 comma
 id|rvp
 comma
@@ -5190,6 +5201,8 @@ DECL|macro|MNTOPT_INO64
 mdefine_line|#define MNTOPT_INO64&t;&quot;ino64&quot;&t;&t;/* force inodes into 64-bit range */
 DECL|macro|MNTOPT_NOALIGN
 mdefine_line|#define MNTOPT_NOALIGN&t;&quot;noalign&quot;&t;/* turn off stripe alignment */
+DECL|macro|MNTOPT_SWALLOC
+mdefine_line|#define MNTOPT_SWALLOC&t;&quot;swalloc&quot;&t;/* turn on stripe width allocation */
 DECL|macro|MNTOPT_SUNIT
 mdefine_line|#define MNTOPT_SUNIT&t;&quot;sunit&quot;&t;&t;/* data volume stripe unit */
 DECL|macro|MNTOPT_SWIDTH
@@ -5826,6 +5839,25 @@ c_func
 (paren
 id|this_char
 comma
+id|MNTOPT_SWALLOC
+)paren
+)paren
+(brace
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_SWALLOC
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
 id|MNTOPT_SUNIT
 )paren
 )paren
@@ -6315,6 +6347,13 @@ id|XFS_MOUNT_NOALIGN
 comma
 l_string|&quot;,&quot;
 id|MNTOPT_NOALIGN
+)brace
+comma
+(brace
+id|XFS_MOUNT_SWALLOC
+comma
+l_string|&quot;,&quot;
+id|MNTOPT_SWALLOC
 )brace
 comma
 (brace

@@ -1304,7 +1304,7 @@ op_star
 id|acl
 suffix:semicolon
 r_int
-id|error
+id|rval
 suffix:semicolon
 r_if
 c_cond
@@ -1323,6 +1323,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* If the file has no ACL return -1. */
+id|rval
+op_assign
+r_sizeof
+(paren
+id|xfs_acl_t
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1333,16 +1340,22 @@ id|ip
 comma
 id|SGI_ACL_FILE
 comma
+id|SGI_ACL_FILE_SIZE
+comma
 (paren
 r_char
 op_star
 )paren
 id|acl
 comma
-r_sizeof
-(paren
-id|xfs_acl_t
-)paren
+op_amp
+id|rval
+comma
+id|ATTR_ROOT
+op_or
+id|ATTR_KERNACCESS
+comma
+id|cr
 )paren
 )paren
 (brace
@@ -1392,7 +1405,7 @@ comma
 id|acl
 )paren
 suffix:semicolon
-id|error
+id|rval
 op_assign
 id|xfs_acl_access
 c_func
@@ -1415,7 +1428,7 @@ id|acl
 )paren
 suffix:semicolon
 r_return
-id|error
+id|rval
 suffix:semicolon
 )brace
 id|STATIC

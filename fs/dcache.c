@@ -2687,15 +2687,14 @@ id|res-&gt;d_inode
 op_assign
 id|inode
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Set d_bucket to an &quot;impossible&quot; bucket address so&n;&t;&t;&t; * that d_move() doesn&squot;t get a false positive&n;&t;&t;&t; */
 id|res-&gt;d_bucket
 op_assign
-id|d_hash
-c_func
-(paren
-id|res
-comma
-id|res-&gt;d_name.hash
-)paren
+id|dentry_hashtable
+op_plus
+id|D_HASHMASK
+op_plus
+l_int|1
 suffix:semicolon
 id|res-&gt;d_flags
 op_or_assign
