@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 DECL|function|pre_intr_init_hook
 r_void
@@ -56,6 +57,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ioapic
+)paren
 id|setup_irq
 c_func
 (paren

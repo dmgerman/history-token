@@ -4562,6 +4562,16 @@ op_minus
 id|ENODEV
 )paren
 suffix:semicolon
+id|acpi_device_dir
+c_func
+(paren
+id|device
+)paren
+op_member_access_from_pointer
+id|owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;state&squot; [R] */
 id|entry
@@ -4613,6 +4623,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;temperature&squot; [R] */
 id|entry
@@ -4663,6 +4677,10 @@ c_func
 (paren
 id|device
 )paren
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 multiline_comment|/* &squot;trip_points&squot; [R/W] */
@@ -4719,6 +4737,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;cooling_mode&squot; [R/W] */
 id|entry
@@ -4774,6 +4796,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;polling_frequency&squot; [R/W] */
 id|entry
@@ -4828,6 +4854,10 @@ c_func
 (paren
 id|device
 )paren
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 id|return_VALUE
@@ -5688,6 +5718,10 @@ c_func
 op_minus
 id|ENODEV
 )paren
+suffix:semicolon
+id|acpi_thermal_dir-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|result
 op_assign

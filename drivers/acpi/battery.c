@@ -1983,6 +1983,7 @@ op_amp
 l_int|0x02
 )paren
 )paren
+(brace
 id|p
 op_add_assign
 id|sprintf
@@ -1993,6 +1994,16 @@ comma
 l_string|&quot;charging state:          charging/discharging&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Battery Charging and Discharging?&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2030,6 +2041,7 @@ l_string|&quot;charging state:          charging&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
+(brace
 id|p
 op_add_assign
 id|sprintf
@@ -2037,9 +2049,10 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;charging state:          unknown&bslash;n&quot;
+l_string|&quot;charging state:          charged&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2659,6 +2672,16 @@ op_minus
 id|ENODEV
 )paren
 suffix:semicolon
+id|acpi_device_dir
+c_func
+(paren
+id|device
+)paren
+op_member_access_from_pointer
+id|owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;info&squot; [R] */
 id|entry
@@ -2709,6 +2732,10 @@ c_func
 id|device
 )paren
 suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 )brace
 multiline_comment|/* &squot;status&squot; [R] */
 id|entry
@@ -2758,6 +2785,10 @@ c_func
 (paren
 id|device
 )paren
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 multiline_comment|/* &squot;alarm&squot; [R/W] */
@@ -2816,6 +2847,10 @@ c_func
 (paren
 id|device
 )paren
+suffix:semicolon
+id|entry-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 id|return_VALUE
@@ -3401,6 +3436,10 @@ c_func
 op_minus
 id|ENODEV
 )paren
+suffix:semicolon
+id|acpi_battery_dir-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|result
 op_assign

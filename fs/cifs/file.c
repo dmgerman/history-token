@@ -8256,7 +8256,7 @@ comma
 (paren
 l_string|&quot;fnext last file: %s with name %d bytes long&quot;
 comma
-id|lastFindData-&gt;FileName
+id|pfindDataUnix-&gt;FileName
 comma
 id|cifsFile-&gt;resume_name_length
 )paren
@@ -8267,7 +8267,7 @@ c_func
 (paren
 id|cifsFile-&gt;search_resume_name
 comma
-id|lastFindData-&gt;FileName
+id|pfindDataUnix-&gt;FileName
 comma
 id|cifsFile-&gt;resume_name_length
 )paren

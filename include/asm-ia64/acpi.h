@@ -190,6 +190,8 @@ DECL|macro|ACPI_RELEASE_GLOBAL_LOCK
 mdefine_line|#define ACPI_RELEASE_GLOBAL_LOCK(GLptr, Acq)&t;&t;&t;&t;&bslash;&n;&t;((Acq) = ia64_acpi_release_global_lock((unsigned int *) GLptr))
 DECL|macro|acpi_disabled
 mdefine_line|#define acpi_disabled 0&t;/* ACPI always enabled on IA64 */
+DECL|macro|acpi_pci_disabled
+mdefine_line|#define acpi_pci_disabled 0 /* ACPI PCI always enabled on IA64 */
 DECL|macro|acpi_strict
 mdefine_line|#define acpi_strict 1&t;/* no ACPI spec workarounds on IA64 */
 DECL|function|disable_acpi

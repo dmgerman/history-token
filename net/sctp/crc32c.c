@@ -26,6 +26,8 @@ multiline_comment|/* with 24 and 32 Parity Bits&quot;,                          
 multiline_comment|/* IEEE Transactions on Communications, Vol.41, No.6, June 1993  */
 multiline_comment|/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 DECL|variable|crc_c
+r_static
+r_const
 id|__u32
 id|crc_c
 (braket

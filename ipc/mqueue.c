@@ -854,6 +854,12 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;messages
+)paren
+(brace
 id|spin_lock
 c_func
 (paren
@@ -871,6 +877,7 @@ op_amp
 id|mq_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|mqueue_create
 r_static
@@ -3548,6 +3555,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3561,7 +3569,6 @@ c_func
 id|msg_ptr
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
