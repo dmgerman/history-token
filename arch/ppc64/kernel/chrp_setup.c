@@ -725,10 +725,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 macro_line|#endif
-id|ppc_md.ppc_machine
-op_assign
-id|systemcfg-&gt;platform
-suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
