@@ -1199,8 +1199,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* BB remove (from server) list of shares - but with smp safety  BB */
-multiline_comment|/* BB is ses active - do we need to check here - but how? BB */
 r_if
 c_cond
 (paren

@@ -2755,15 +2755,6 @@ r_return
 id|total_written
 suffix:semicolon
 )brace
-id|open_file
-op_assign
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
-id|file-&gt;private_data
-suffix:semicolon
 r_if
 c_cond
 (paren
