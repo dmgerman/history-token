@@ -30,6 +30,7 @@ mdefine_line|#define DEFAULT_MODEDB_INDEX&t;0
 DECL|variable|modedb
 r_static
 r_const
+id|__init
 r_struct
 id|fb_videomode
 id|modedb
@@ -1567,6 +1568,7 @@ id|FB_VMODE_DOUBLE
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_MODE_HELPERS
 DECL|variable|vesa_modes
 r_const
 r_struct
@@ -2670,6 +2672,14 @@ id|FB_MODE_IS_VESA
 comma
 )brace
 suffix:semicolon
+DECL|variable|vesa_modes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vesa_modes
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_FB_MODE_HELPERS */
 DECL|function|my_atoi
 r_static
 r_int
@@ -4520,13 +4530,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|fb_videomode_to_modelist
-)paren
-suffix:semicolon
-DECL|variable|vesa_modes
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vesa_modes
 )paren
 suffix:semicolon
 DECL|variable|fb_find_mode
