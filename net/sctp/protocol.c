@@ -2817,15 +2817,8 @@ id|sctp_proto.local_addr_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* Register notifiers for inet and inet6 address events. */
+multiline_comment|/* Register notifier for inet address additions/deletions. */
 id|register_inetaddr_notifier
-c_func
-(paren
-op_amp
-id|sctp_inetaddr_notifier
-)paren
-suffix:semicolon
-id|register_inet6addr_notifier
 c_func
 (paren
 op_amp
@@ -2927,15 +2920,8 @@ r_void
 )paren
 (brace
 multiline_comment|/* BUG.  This should probably do something useful like clean&n;&t; * up all the remaining associations and all that memory.&n;&t; */
-multiline_comment|/* Unregister notifiers for inet and inet6 address events. */
+multiline_comment|/* Unregister notifier for inet address additions/deletions. */
 id|unregister_inetaddr_notifier
-c_func
-(paren
-op_amp
-id|sctp_inetaddr_notifier
-)paren
-suffix:semicolon
-id|unregister_inet6addr_notifier
 c_func
 (paren
 op_amp

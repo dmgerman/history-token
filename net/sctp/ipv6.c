@@ -27,6 +27,11 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+r_extern
+r_struct
+id|notifier_block
+id|sctp_inetaddr_notifier
+suffix:semicolon
 multiline_comment|/* FIXME: This macro needs to be moved to a common header file. */
 DECL|macro|NIP6
 mdefine_line|#define NIP6(addr) &bslash;&n;        ntohs((addr)-&gt;s6_addr16[0]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[1]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[2]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[3]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[4]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[5]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[6]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[7])
@@ -1958,6 +1963,14 @@ op_amp
 id|sctp_ipv6_specific
 )paren
 suffix:semicolon
+multiline_comment|/* Register notifier for inet6 address additions/deletions. */
+id|register_inet6addr_notifier
+c_func
+(paren
+op_amp
+id|sctp_inetaddr_notifier
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1992,6 +2005,13 @@ c_func
 (paren
 op_amp
 id|sctpv6_protosw
+)paren
+suffix:semicolon
+id|unregister_inet6addr_notifier
+c_func
+(paren
+op_amp
+id|sctp_inetaddr_notifier
 )paren
 suffix:semicolon
 )brace
