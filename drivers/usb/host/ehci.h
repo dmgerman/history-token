@@ -42,7 +42,7 @@ id|unlink
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* ehci_hcd-&gt;lock guards shared data against other CPUs:&n; *   ehci_hcd:&t;async, reclaim, periodic (and shadow), ...&n; *   hcd_dev:&t;ep[]&n; *   ehci_qh:&t;qh_next, qtd_list&n; *   ehci_qtd:&t;qtd_list&n; *&n; * Also, hold this lock when talking to HC registers or&n; * when updating hw_* fields in shared qh/qtd/... structures.&n; */
+multiline_comment|/* ehci_hcd-&gt;lock guards shared data against other CPUs:&n; *   ehci_hcd:&t;async, reclaim, periodic (and shadow), ...&n; *   usb_host_endpoint: hcpriv&n; *   ehci_qh:&t;qh_next, qtd_list&n; *   ehci_qtd:&t;qtd_list&n; *&n; * Also, hold this lock when talking to HC registers or&n; * when updating hw_* fields in shared qh/qtd/... structures.&n; */
 DECL|macro|EHCI_MAX_ROOT_PORTS
 mdefine_line|#define&t;EHCI_MAX_ROOT_PORTS&t;15&t;&t;/* see HCS_N_PORTS */
 DECL|struct|ehci_hcd
@@ -1052,6 +1052,12 @@ r_struct
 id|usb_device
 op_star
 id|udev
+suffix:semicolon
+DECL|member|ep
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep
 suffix:semicolon
 multiline_comment|/* output of (re)scheduling */
 DECL|member|start

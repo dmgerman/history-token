@@ -3010,6 +3010,11 @@ op_star
 id|hcd
 comma
 r_struct
+id|usb_host_endpoint
+op_star
+id|ep
+comma
+r_struct
 id|urb
 op_star
 id|urb
@@ -3078,6 +3083,8 @@ id|submit_async
 (paren
 id|ehci
 comma
+id|ep
+comma
 id|urb
 comma
 op_amp
@@ -3113,6 +3120,8 @@ r_return
 id|intr_submit
 (paren
 id|ehci
+comma
+id|ep
 comma
 id|urb
 comma
@@ -3481,11 +3490,8 @@ op_star
 id|hcd
 comma
 r_struct
-id|hcd_dev
+id|usb_host_endpoint
 op_star
-id|dev
-comma
-r_int
 id|ep
 )paren
 (brace
@@ -3498,9 +3504,6 @@ id|hcd_to_ehci
 (paren
 id|hcd
 )paren
-suffix:semicolon
-r_int
-id|epnum
 suffix:semicolon
 r_int
 r_int
@@ -3516,29 +3519,6 @@ id|tmp
 suffix:semicolon
 multiline_comment|/* ASSERT:  any requests/urbs are being unlinked */
 multiline_comment|/* ASSERT:  nobody can be submitting urbs for this any more */
-id|epnum
-op_assign
-id|ep
-op_amp
-id|USB_ENDPOINT_NUMBER_MASK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|epnum
-op_ne
-l_int|0
-op_logical_and
-(paren
-id|ep
-op_amp
-id|USB_DIR_IN
-)paren
-)paren
-id|epnum
-op_or_assign
-l_int|0x10
-suffix:semicolon
 id|rescan
 suffix:colon
 id|spin_lock_irqsave
@@ -3551,15 +3531,7 @@ id|flags
 suffix:semicolon
 id|qh
 op_assign
-(paren
-r_struct
-id|ehci_qh
-op_star
-)paren
-id|dev-&gt;ep
-(braket
-id|epnum
-)braket
+id|ep-&gt;hcpriv
 suffix:semicolon
 r_if
 c_cond
@@ -3708,11 +3680,11 @@ id|ehci_err
 (paren
 id|ehci
 comma
-l_string|&quot;qh %p (#%d) state %d%s&bslash;n&quot;
+l_string|&quot;qh %p (#%02x) state %d%s&bslash;n&quot;
 comma
 id|qh
 comma
-id|epnum
+id|ep-&gt;desc.bEndpointAddress
 comma
 id|qh-&gt;qh_state
 comma
@@ -3731,10 +3703,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dev-&gt;ep
-(braket
-id|epnum
-)braket
+id|ep-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
