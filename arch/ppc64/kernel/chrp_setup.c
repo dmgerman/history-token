@@ -230,6 +230,8 @@ id|model
 )paren
 suffix:semicolon
 )brace
+DECL|macro|I8042_DATA_REG
+mdefine_line|#define I8042_DATA_REG 0x60
 DECL|function|chrp_request_regions
 r_void
 id|__init
@@ -297,6 +299,27 @@ comma
 l_int|0x20
 comma
 l_string|&quot;dma2&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Some machines have an unterminated i8042 so check the device&n;&t; * tree and reserve the region if it does not appear. Later on&n;&t; * the i8042 code will try and reserve this region and fail.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|find_type_devices
+c_func
+(paren
+l_string|&quot;8042&quot;
+)paren
+)paren
+id|request_region
+c_func
+(paren
+id|I8042_DATA_REG
+comma
+l_int|16
+comma
+l_string|&quot;reserved (no i8042)&quot;
 )paren
 suffix:semicolon
 )brace
