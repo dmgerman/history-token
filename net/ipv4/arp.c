@@ -5270,6 +5270,14 @@ c_cond
 (paren
 op_logical_neg
 id|state-&gt;is_pneigh
+op_logical_and
+id|v
+op_ne
+(paren
+r_void
+op_star
+)paren
+l_int|1
 )paren
 id|read_unlock_bh
 c_func
