@@ -48,10 +48,6 @@ r_char
 id|data
 )paren
 suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|typedef|vmidi_devc
 )brace
 id|vmidi_devc
