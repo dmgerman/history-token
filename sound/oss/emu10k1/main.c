@@ -1871,9 +1871,12 @@ id|card-&gt;timer_delay
 op_assign
 id|TIMER_STOPPED
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|card-&gt;timer_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 DECL|function|addxmgr_init
@@ -4108,9 +4111,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|mgr-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 singleline_comment|// Set up Volume controls, try to keep this the same for both Audigy and Live
 singleline_comment|//Master volume

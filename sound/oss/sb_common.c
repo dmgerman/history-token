@@ -1853,9 +1853,12 @@ id|hw_config-&gt;io_base
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|devc-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|devc-&gt;type
 op_assign
