@@ -391,15 +391,15 @@ DECL|macro|ACPI_MODULE_NAME
 mdefine_line|#define ACPI_MODULE_NAME(name)               static char ACPI_UNUSED_VAR *_THIS_MODULE = name;
 multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|ACPI_FUNCTION_NAME
-mdefine_line|#define ACPI_FUNCTION_NAME(a)               struct acpi_debug_print_info _dbg; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
+mdefine_line|#define ACPI_FUNCTION_NAME(a)               struct acpi_debug_print_info _debug_info; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_debug_info.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_debug_info.proc_name  = a; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_debug_info.module_name = _THIS_MODULE;
 DECL|macro|ACPI_FUNCTION_TRACE
-mdefine_line|#define ACPI_FUNCTION_TRACE(a)              ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace(__LINE__,&amp;_dbg)
+mdefine_line|#define ACPI_FUNCTION_TRACE(a)              ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace(__LINE__,&amp;_debug_info)
 DECL|macro|ACPI_FUNCTION_TRACE_PTR
-mdefine_line|#define ACPI_FUNCTION_TRACE_PTR(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_ptr(__LINE__,&amp;_dbg,(void *)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_PTR(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_ptr(__LINE__,&amp;_debug_info,(void *)b)
 DECL|macro|ACPI_FUNCTION_TRACE_U32
-mdefine_line|#define ACPI_FUNCTION_TRACE_U32(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_u32(__LINE__,&amp;_dbg,(u32)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_U32(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_u32(__LINE__,&amp;_debug_info,(u32)b)
 DECL|macro|ACPI_FUNCTION_TRACE_STR
-mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(char *)b)
+mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)        ACPI_FUNCTION_NAME(a) &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_debug_info,(char *)b)
 DECL|macro|ACPI_FUNCTION_ENTRY
 mdefine_line|#define ACPI_FUNCTION_ENTRY()               acpi_ut_track_stack_ptr()
 multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_proc_name&quot; is defined.&n; */
@@ -411,13 +411,13 @@ DECL|macro|ACPI_DO_WHILE0
 mdefine_line|#define ACPI_DO_WHILE0(a)               a
 macro_line|#endif
 DECL|macro|return_VOID
-mdefine_line|#define return_VOID                     ACPI_DO_WHILE0 ({acpi_ut_exit(__LINE__,&amp;_dbg);return;})
+mdefine_line|#define return_VOID                     ACPI_DO_WHILE0 ({acpi_ut_exit(__LINE__,&amp;_debug_info);return;})
 DECL|macro|return_ACPI_STATUS
-mdefine_line|#define return_ACPI_STATUS(s)           ACPI_DO_WHILE0 ({acpi_ut_status_exit(__LINE__,&amp;_dbg,(s));return((s));})
+mdefine_line|#define return_ACPI_STATUS(s)           ACPI_DO_WHILE0 ({acpi_ut_status_exit(__LINE__,&amp;_debug_info,(s));return((s));})
 DECL|macro|return_VALUE
-mdefine_line|#define return_VALUE(s)                 ACPI_DO_WHILE0 ({acpi_ut_value_exit(__LINE__,&amp;_dbg,(acpi_integer)(s));return((s));})
+mdefine_line|#define return_VALUE(s)                 ACPI_DO_WHILE0 ({acpi_ut_value_exit(__LINE__,&amp;_debug_info,(acpi_integer)(s));return((s));})
 DECL|macro|return_PTR
-mdefine_line|#define return_PTR(s)                   ACPI_DO_WHILE0 ({acpi_ut_ptr_exit(__LINE__,&amp;_dbg,(u8 *)(s));return((s));})
+mdefine_line|#define return_PTR(s)                   ACPI_DO_WHILE0 ({acpi_ut_ptr_exit(__LINE__,&amp;_debug_info,(u8 *)(s));return((s));})
 multiline_comment|/* Conditional execution */
 DECL|macro|ACPI_DEBUG_EXEC
 mdefine_line|#define ACPI_DEBUG_EXEC(a)              a

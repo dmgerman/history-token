@@ -110,20 +110,6 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Transfer no more than an integer&squot;s worth of data */
-r_if
-c_cond
-(paren
-id|count
-OG
-id|acpi_gbl_integer_byte_width
-)paren
-(brace
-id|count
-op_assign
-id|acpi_gbl_integer_byte_width
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * String conversion is different than Buffer conversion&n;&t; */
 r_switch
 c_cond
@@ -174,6 +160,20 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+multiline_comment|/* Transfer no more than an integer&squot;s worth of data */
+r_if
+c_cond
+(paren
+id|count
+OG
+id|acpi_gbl_integer_byte_width
+)paren
+(brace
+id|count
+op_assign
+id|acpi_gbl_integer_byte_width
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Convert buffer to an integer - we simply grab enough raw data&n;&t;&t; * from the buffer to fill an integer&n;&t;&t; */
 r_for
 c_loop
@@ -245,6 +245,11 @@ multiline_comment|/* Save the Result */
 id|return_desc-&gt;integer.value
 op_assign
 id|result
+suffix:semicolon
+id|acpi_ex_truncate_for32bit_table
+(paren
+id|return_desc
+)paren
 suffix:semicolon
 op_star
 id|result_desc
@@ -1057,6 +1062,9 @@ suffix:semicolon
 multiline_comment|/* Recalculate length */
 id|return_desc-&gt;string.length
 op_assign
+(paren
+id|u32
+)paren
 id|ACPI_STRLEN
 (paren
 id|return_desc-&gt;string.pointer
