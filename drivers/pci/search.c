@@ -962,6 +962,15 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
