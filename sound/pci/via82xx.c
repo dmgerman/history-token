@@ -8316,9 +8316,6 @@ op_star
 id|chip
 )paren
 (brace
-id|ac97_t
-id|ac97
-suffix:semicolon
 r_int
 r_int
 id|val
@@ -8329,24 +8326,6 @@ suffix:semicolon
 r_int
 r_char
 id|pval
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|ac97
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|ac97
-)paren
-)paren
-suffix:semicolon
-id|ac97.private_data
-op_assign
-id|chip
 suffix:semicolon
 macro_line|#if 0 /* broken on K7M? */
 r_if
@@ -8593,35 +8572,6 @@ c_func
 l_string|&quot;AC&squot;97 codec is not ready [0x%x]&bslash;n&quot;
 comma
 id|val
-)paren
-suffix:semicolon
-multiline_comment|/* and then reset codec.. */
-id|snd_via82xx_codec_ready
-c_func
-(paren
-id|chip
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|snd_via82xx_codec_write
-c_func
-(paren
-op_amp
-id|ac97
-comma
-id|AC97_RESET
-comma
-l_int|0x0000
-)paren
-suffix:semicolon
-id|snd_via82xx_codec_read
-c_func
-(paren
-op_amp
-id|ac97
-comma
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#if 0 /* FIXME: we don&squot;t support the second codec yet so skip the detection now.. */
