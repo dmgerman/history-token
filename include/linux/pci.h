@@ -1146,28 +1146,15 @@ DECL|macro|to_pci_driver
 mdefine_line|#define&t;to_pci_driver(drv) container_of(drv,struct pci_driver, driver)
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
-DECL|function|pci_present
-r_static
-r_inline
+DECL|macro|pci_for_each_bus
+mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_int
 id|pci_present
 c_func
 (paren
 r_void
 )paren
-(brace
-r_return
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|pci_devices
-)paren
 suffix:semicolon
-)brace
-DECL|macro|pci_for_each_bus
-mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_void
 id|pcibios_fixup_bus
 c_func
