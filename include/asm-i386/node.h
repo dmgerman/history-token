@@ -4,7 +4,7 @@ mdefine_line|#define _ASM_I386_NODE_H_
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
-macro_line|#include &lt;asm/topology.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 DECL|struct|i386_node
 r_struct
 id|i386_node

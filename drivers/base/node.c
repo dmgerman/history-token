@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
-macro_line|#include &lt;asm/topology.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 DECL|variable|node_class
 r_static
 r_struct

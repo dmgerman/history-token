@@ -492,7 +492,7 @@ macro_line|#else /* !CONFIG_NUMA */
 DECL|macro|MAX_NR_MEMBLKS
 mdefine_line|#define MAX_NR_MEMBLKS&t;1
 macro_line|#endif /* CONFIG_NUMA */
-macro_line|#include &lt;asm/topology.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
 mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(smp_processor_id()))

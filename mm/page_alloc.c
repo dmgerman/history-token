@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;asm/topology.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 id|DECLARE_BITMAP
 c_func
 (paren
