@@ -566,11 +566,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren
