@@ -957,6 +957,10 @@ id|dma-&gt;buf.__address
 suffix:semicolon
 id|regs.ARM_fp
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|FLOPPYDMA_BASE
 suffix:semicolon
 r_if
