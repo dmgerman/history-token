@@ -866,6 +866,26 @@ l_string|&quot;ADV0010&quot;
 )brace
 )brace
 comma
+multiline_comment|/* InterWave STB without TEA6330T */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;ADV550a&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;ADV0010&quot;
+)brace
+)brace
+)brace
+comma
 macro_line|#else
 multiline_comment|/* InterWave STB with TEA6330T */
 (brace
