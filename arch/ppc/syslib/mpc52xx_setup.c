@@ -4,7 +4,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;asm/mpc52xx_psc.h&gt;
-macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
 r_extern
@@ -848,44 +847,5 @@ comma
 l_int|1000000
 )paren
 suffix:semicolon
-)brace
-r_void
-id|__init
-DECL|function|mpc52xx_add_board_devices
-id|mpc52xx_add_board_devices
-c_func
-(paren
-r_struct
-id|ocp_def
-id|board_ocp
-(braket
-)braket
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|board_ocp-&gt;vendor
-op_ne
-id|OCP_VENDOR_INVALID
-)paren
-r_if
-c_cond
-(paren
-id|ocp_add_one_device
-c_func
-(paren
-id|board_ocp
-op_increment
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;mpc5200-ocp: Failed to add board device !&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 eof

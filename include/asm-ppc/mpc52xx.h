@@ -8,9 +8,6 @@ macro_line|#include &lt;asm/types.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
-r_struct
-id|ocp_def
-suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Main registers/struct addresses                                          */
@@ -1263,18 +1260,6 @@ id|mpc52xx_calibrate_decr
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|mpc52xx_add_board_devices
-c_func
-(paren
-r_struct
-id|ocp_def
-id|board_ocp
-(braket
-)braket
 )paren
 suffix:semicolon
 r_extern

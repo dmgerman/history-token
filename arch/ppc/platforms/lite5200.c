@@ -1,13 +1,13 @@
-multiline_comment|/*&n; * arch/ppc/platforms/lite5200.c&n; *&n; * Platform support file for the Freescale LITE5200 based on MPC52xx.&n; * A maximum of this file should be moved to syslib/mpc52xx_?????&n; * so that new platform based on MPC52xx need a minimal platform file&n; * ( avoid code duplication )&n; *&n; * &n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Based on the 2.4 code written by Kent Borg,&n; * Dale Farnsworth &lt;dale.farnsworth@mvista.com&gt; and&n; * Wolfgang Denk &lt;wd@denx.de&gt;&n; * &n; * Copyright 2004 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright 2003 Motorola Inc.&n; * Copyright 2003 MontaVista Software Inc.&n; * Copyright 2003 DENX Software Engineering (wd@denx.de)&n; *&n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/lite5200.c&n; *&n; * Platform support file for the Freescale LITE5200 based on MPC52xx.&n; * A maximum of this file should be moved to syslib/mpc52xx_?????&n; * so that new platform based on MPC52xx need a minimal platform file&n; * ( avoid code duplication )&n; *&n; * &n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Based on the 2.4 code written by Kent Borg,&n; * Dale Farnsworth &lt;dale.farnsworth@mvista.com&gt; and&n; * Wolfgang Denk &lt;wd@denx.de&gt;&n; * &n; * Copyright 2004-2005 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright 2003 Motorola Inc.&n; * Copyright 2003 MontaVista Software Inc.&n; * Copyright 2003 DENX Software Engineering (wd@denx.de)&n; *&n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;syslib/mpc52xx_pci.h&gt;
 r_extern
@@ -27,62 +27,6 @@ id|__res
 )paren
 suffix:semicolon
 multiline_comment|/* For modules */
-multiline_comment|/* ======================================================================== */
-multiline_comment|/* OCP device definition                                                    */
-multiline_comment|/* For board/shared resources like PSCs                                     */
-multiline_comment|/* ======================================================================== */
-multiline_comment|/* Be sure not to load conficting devices : e.g. loading the UART drivers for&n; * PSC1 and then also loading a AC97 for this same PSC.&n; * For details about how to create an entry, look in the doc of the concerned&n; * driver ( eg drivers/serial/mpc52xx_uart.c for the PSC in uart mode )&n; */
-DECL|variable|board_ocp
-r_static
-r_struct
-id|ocp_def
-id|board_ocp
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|vendor
-op_assign
-id|OCP_VENDOR_FREESCALE
-comma
-dot
-id|function
-op_assign
-id|OCP_FUNC_PSC_UART
-comma
-dot
-id|index
-op_assign
-l_int|0
-comma
-dot
-id|paddr
-op_assign
-id|MPC52xx_PSC1
-comma
-dot
-id|irq
-op_assign
-id|MPC52xx_PSC1_IRQ
-comma
-dot
-id|pm
-op_assign
-id|OCP_CPM_NA
-comma
-)brace
-comma
-(brace
-multiline_comment|/* Terminating entry */
-dot
-id|vendor
-op_assign
-id|OCP_VENDOR_INVALID
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Platform specific code                                                   */
 multiline_comment|/* ======================================================================== */
@@ -339,13 +283,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Add board OCP definitions */
-id|mpc52xx_add_board_devices
-c_func
-(paren
-id|board_ocp
-)paren
-suffix:semicolon
 multiline_comment|/* CPU &amp; Port mux setup */
 id|lite5200_setup_cpu
 c_func
