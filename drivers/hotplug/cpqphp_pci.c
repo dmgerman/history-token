@@ -5334,6 +5334,8 @@ comma
 id|func-&gt;config_space
 (braket
 id|cloop
+op_rshift
+l_int|2
 )braket
 )paren
 suffix:semicolon
