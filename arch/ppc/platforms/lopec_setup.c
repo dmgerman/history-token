@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/lopec_setup.c&n; * &n; * Setup routines for the Motorola LoPEC.&n; *&n; * Author: Dan Cox&n; *         danc@mvista.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/lopec_setup.c&n; * &n; * Setup routines for the Motorola LoPEC.&n; *&n; * Author: Dan Cox&n; *         danc@mvista.com&n; *&n; * Copyright 2001-2002 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -27,10 +27,6 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mpc10x.h&gt;
-DECL|macro|LOPEC_SIO_IRQ
-mdefine_line|#define LOPEC_SIO_IRQ  16
-DECL|macro|LOPEC_SYSSTAT1
-mdefine_line|#define LOPEC_SYSSTAT1 0xffe00000
 r_extern
 r_void
 id|lopec_find_bridges
@@ -39,79 +35,128 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Define all of the IRQ senses and polarities.  Taken from the&n; * LoPEC Programmer&squot;s Reference Guide.&n; */
 DECL|variable|__initdata
 r_static
 id|u_char
 id|lopec_openpic_initsenses
 (braket
-l_int|32
+l_int|16
 )braket
 id|__initdata
 op_assign
 (brace
-l_int|0
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 0 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 1 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 2 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 3 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 4 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 5 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 6 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 7 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 8 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 9 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 10 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 11 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 12 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
-l_int|0
+multiline_comment|/* IRQ 13 */
+(paren
+id|IRQ_SENSE_EDGE
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|1
+multiline_comment|/* IRQ 14 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
+multiline_comment|/* IRQ 15 */
 )brace
 suffix:semicolon
 r_static
@@ -131,7 +176,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;machine&bslash;t&bslash;t: Motorola LoPec&bslash;n&quot;
+l_string|&quot;machine&bslash;t&bslash;t: Motorola LoPEC&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -174,6 +219,8 @@ op_star
 id|cmd
 )paren
 (brace
+DECL|macro|LOPEC_SYSSTAT1
+mdefine_line|#define LOPEC_SYSSTAT1 0xffe00000
 multiline_comment|/* force a hard reset, if possible */
 r_int
 r_char
@@ -218,6 +265,8 @@ l_int|1
 (brace
 suffix:semicolon
 )brace
+DECL|macro|LOPEC_SYSSTAT1
+macro_line|#undef LOPEC_SYSSTAT1
 )brace
 r_static
 r_void
@@ -255,82 +304,6 @@ id|lopec_halt
 c_func
 (paren
 )paren
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|lopec_get_irq
-id|lopec_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_int
-id|irq
-comma
-id|cascade_irq
-suffix:semicolon
-id|irq
-op_assign
-id|openpic_irq
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-id|LOPEC_SIO_IRQ
-)paren
-(brace
-id|cascade_irq
-op_assign
-id|i8259_poll
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cascade_irq
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-id|irq
-op_assign
-id|cascade_irq
-suffix:semicolon
-id|openpic_eoi
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-id|OPENPIC_VEC_SPURIOUS
-)paren
-id|irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-id|irq
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
@@ -703,6 +676,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/*&n;&t; * Provide the open_pic code with the correct table of interrupts.&n;&t; */
 id|OpenPIC_InitSenses
 op_assign
 id|lopec_openpic_initsenses
@@ -714,12 +688,52 @@ r_sizeof
 id|lopec_openpic_initsenses
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We need to tell openpic_set_sources where things actually are.&n;&t; * mpc10x_common will setup OpenPIC_Addr at ioremap(EUMB phys base +&n;&t; * EPIC offset (0x40000));  The EPIC IRQ Register Address Map -&n;&t; * Interrupt Source Configuration Registers gives these numbers&n;&t; * as offsets starting at 0x50200, we need to adjust occordinly.&n;&t; */
+multiline_comment|/* Map serial interrupts 0-15 */
+id|openpic_set_sources
+c_func
+(paren
+l_int|0
+comma
+l_int|16
+comma
+id|OpenPIC_Addr
+op_plus
+l_int|0x10200
+)paren
+suffix:semicolon
+multiline_comment|/* Skip reserved space and map i2c and DMA Ch[01] */
+id|openpic_set_sources
+c_func
+(paren
+l_int|16
+comma
+l_int|3
+comma
+id|OpenPIC_Addr
+op_plus
+l_int|0x11020
+)paren
+suffix:semicolon
+multiline_comment|/* Skip reserved space and map Message Unit Interrupt (I2O) */
+id|openpic_set_sources
+c_func
+(paren
+l_int|19
+comma
+l_int|1
+comma
+id|OpenPIC_Addr
+op_plus
+l_int|0x110C0
+)paren
+suffix:semicolon
 id|openpic_init
 c_func
 (paren
 l_int|1
 comma
-l_int|0
+id|NUM_8259_INTERRUPTS
 comma
 l_int|NULL
 comma
@@ -727,6 +741,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* Map i8259 interrupts */
 r_for
 c_loop
 (paren
@@ -753,45 +768,17 @@ op_amp
 id|i8259_pic
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|LOPEC_SIO_IRQ
-comma
-id|no_action
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;8259 cascade to EPIC&quot;
-comma
-l_int|NULL
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get EPIC %d for cascade.&bslash;n&quot;
-comma
-id|LOPEC_SIO_IRQ
-)paren
-suffix:semicolon
-)brace
 id|i8259_init
 c_func
 (paren
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 )brace
-r_static
 r_void
 id|__init
-DECL|function|lopec_init2
-id|lopec_init2
+DECL|function|lopec_request_io
+id|lopec_request_io
 c_func
 (paren
 r_void
@@ -874,6 +861,13 @@ l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|lopec_request_io
+id|arch_initcall
+c_func
+(paren
+id|lopec_request_io
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__init
@@ -943,6 +937,141 @@ id|batl
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef  CONFIG_SERIAL_TEXT_DEBUG
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serialP.h&gt;
+macro_line|#include &lt;linux/serial_reg.h&gt;
+macro_line|#include &lt;asm/serial.h&gt;
+DECL|variable|rs_table
+r_static
+r_struct
+id|serial_state
+id|rs_table
+(braket
+id|RS_TABLE_SIZE
+)braket
+op_assign
+(brace
+id|SERIAL_PORT_DFNS
+multiline_comment|/* Defined in &lt;asm/serial.h&gt; */
+)brace
+suffix:semicolon
+DECL|variable|com_port
+r_volatile
+r_int
+r_char
+op_star
+id|com_port
+suffix:semicolon
+DECL|variable|com_port_lsr
+r_volatile
+r_int
+r_char
+op_star
+id|com_port_lsr
+suffix:semicolon
+r_static
+r_void
+DECL|function|serial_writechar
+id|serial_writechar
+c_func
+(paren
+r_char
+id|c
+)paren
+(brace
+r_while
+c_loop
+(paren
+(paren
+op_star
+id|com_port_lsr
+op_amp
+id|UART_LSR_THRE
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+op_star
+id|com_port
+op_assign
+id|c
+suffix:semicolon
+)brace
+r_void
+DECL|function|lopec_progress
+id|lopec_progress
+c_func
+(paren
+r_char
+op_star
+id|s
+comma
+r_int
+r_int
+id|hex
+)paren
+(brace
+r_volatile
+r_char
+id|c
+suffix:semicolon
+id|com_port
+op_assign
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|rs_table
+(braket
+l_int|0
+)braket
+dot
+id|port
+suffix:semicolon
+id|com_port_lsr
+op_assign
+id|com_port
+op_plus
+id|UART_LSR
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|c
+op_assign
+op_star
+id|s
+op_increment
+)paren
+op_ne
+l_int|0
+)paren
+id|serial_writechar
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
+multiline_comment|/* Most messages don&squot;t have a newline in them */
+id|serial_writechar
+c_func
+(paren
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+id|serial_writechar
+c_func
+(paren
+l_char|&squot;&bslash;r&squot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;/* CONFIG_SERIAL_TEXT_DEBUG */
 r_static
 r_int
 r_int
@@ -954,11 +1083,6 @@ c_func
 r_void
 )paren
 (brace
-id|lopec_set_bat
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|mpc10x_get_mem_size
 c_func
@@ -1039,7 +1163,7 @@ c_func
 l_int|0x00ff
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_ID_MODULE)
+macro_line|#elif defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ROOT_DEV
 op_assign
 id|to_kdev_t
@@ -1102,6 +1226,11 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|lopec_set_bat
+c_func
+(paren
+)paren
+suffix:semicolon
 id|isa_io_base
 op_assign
 id|MPC10X_MAPB_ISA_IO_BASE
@@ -1144,11 +1273,7 @@ id|lopec_init_IRQ
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
-id|lopec_get_irq
-suffix:semicolon
-id|ppc_md.init
-op_assign
-id|lopec_init2
+id|openpic_get_irq
 suffix:semicolon
 id|ppc_md.restart
 op_assign
@@ -1206,6 +1331,12 @@ suffix:semicolon
 id|ppc_ide_md.ide_init_hwif
 op_assign
 id|lopec_ide_init_hwif_ports
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
+id|ppc_md.progress
+op_assign
+id|lopec_progress
 suffix:semicolon
 macro_line|#endif
 )brace
