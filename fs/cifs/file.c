@@ -1804,9 +1804,9 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_static
 r_int
-DECL|function|cifs_writepages
 id|cifs_writepages
 c_func
 (paren
@@ -1848,6 +1848,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|cifs_writepage
@@ -2746,10 +2747,12 @@ id|page
 suffix:semicolon
 id|target
 op_assign
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 r_if
@@ -2822,10 +2825,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|unlock_page

@@ -38,6 +38,13 @@ id|mid_q_entry
 op_star
 id|temp
 suffix:semicolon
+r_int
+id|timeout
+op_assign
+l_int|10
+op_star
+id|HZ
+suffix:semicolon
 multiline_comment|/* BB add spinlock to protect midq for each session BB */
 r_if
 c_cond
@@ -143,6 +150,53 @@ op_assign
 id|current
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+(paren
+id|ses-&gt;server-&gt;tcpStatus
+op_ne
+id|CifsGood
+)paren
+op_logical_and
+(paren
+id|timeout
+OG
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* Give the tcp thread up to 10 seconds to reconnect */
+multiline_comment|/* Should we wake up tcp thread first? BB  */
+id|timeout
+op_assign
+id|wait_event_interruptible_timeout
+c_func
+(paren
+id|ses-&gt;server-&gt;response_q
+comma
+(paren
+id|ses-&gt;server-&gt;tcpStatus
+op_eq
+id|CifsGood
+)paren
+comma
+id|timeout
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;timeout (after reconnection wait) %d&quot;
+comma
+id|timeout
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -189,7 +243,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* could add more reconnect code here BB */
 id|cERROR
 c_func
 (paren
@@ -382,8 +435,8 @@ id|MSG_DONTWAIT
 op_plus
 id|MSG_NOSIGNAL
 suffix:semicolon
-multiline_comment|/* BB add more flags? */
-multiline_comment|/* smb header is converted in header_assemble. bcc and rest of SMB word area, &n;&t;   and byte area if necessary, is converted to littleendian in cifssmb.c and RFC1001 &n;&t;   len is converted to bigendian in smb_send */
+multiline_comment|/* BB add more flags?*/
+multiline_comment|/* smb header is converted in header_assemble. bcc and rest of SMB word&n;&t;   area, and byte area if necessary, is converted to littleendian in &n;&t;   cifssmb.c and RFC1001 len is converted to bigendian in smb_send */
 r_if
 c_cond
 (paren
@@ -399,7 +452,7 @@ c_func
 id|smb_buffer-&gt;Flags2
 )paren
 suffix:semicolon
-multiline_comment|/* if(smb_buffer-&gt;Flags2 &amp; SMBFLG2_SECURITY_SIGNATURE)&n;        sign_smb(smb_buffer); */
+multiline_comment|/* if(smb_buffer-&gt;Flags2 &amp; SMBFLG2_SECURITY_SIGNATURE)&n;&t;&t;sign_smb(smb_buffer); */
 multiline_comment|/* BB enable when signing tested more */
 id|smb_buffer-&gt;smb_buf_length
 op_assign
@@ -570,7 +623,6 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-multiline_comment|/* reconnect should be done, if possible, in AllocMidQEntry */
 r_if
 c_cond
 (paren
@@ -903,7 +955,6 @@ c_func
 id|out_buf
 )paren
 suffix:semicolon
-multiline_comment|/* BB watch endianness here BB */
 multiline_comment|/* convert ByteCount if necessary */
 r_if
 c_cond
