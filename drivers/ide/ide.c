@@ -131,13 +131,6 @@ c_func
 id|noautodma
 )paren
 suffix:semicolon
-DECL|variable|ide_bus_type
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_bus_type
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * This is declared extern in ide.h, for access by other IDE modules:&n; */
 DECL|variable|ide_hwifs
 id|ide_hwif_t
@@ -1966,13 +1959,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-DECL|variable|ide_hwif_request_regions
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_hwif_request_regions
-)paren
-suffix:semicolon
 multiline_comment|/**&n; *&t;ide_hwif_release_regions - free IDE resources&n; *&n; *&t;Note that we only release the standard ports,&n; *&t;and do not even try to handle any extra ports&n; *&t;allocated for weird IDE interface chipsets.&n; *&n; *&t;Note also that we don&squot;t yet handle mmio resources here. More&n; *&t;importantly our caller should be doing this so we need to &n; *&t;restructure this as a helper function for drivers.&n; */
 DECL|function|ide_hwif_release_regions
 r_void
@@ -2071,13 +2057,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ide_hwif_release_regions
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_hwif_release_regions
-)paren
-suffix:semicolon
 multiline_comment|/* restore hwif to a sane state */
 DECL|function|ide_hwif_restore
 r_static
@@ -3306,13 +3285,6 @@ id|ack_intr
 suffix:semicolon
 multiline_comment|/*&n; *&t;hw-&gt;iops = iops;&n; */
 )brace
-DECL|variable|ide_setup_ports
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_setup_ports
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Register an IDE interface, specifying exactly the registers etc&n; * Set init=1 iff calling before probes have taken place.&n; */
 DECL|function|ide_register_hw
 r_int
@@ -3611,13 +3583,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Locks for IDE setting functionality&n; */
 DECL|variable|ide_setting_sem
 id|DECLARE_MUTEX
-c_func
-(paren
-id|ide_setting_sem
-)paren
-suffix:semicolon
-DECL|variable|ide_setting_sem
-id|EXPORT_SYMBOL
 c_func
 (paren
 id|ide_setting_sem
@@ -4587,13 +4552,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|ide_write_setting
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_write_setting
-)paren
-suffix:semicolon
 DECL|function|set_io_32bit
 r_static
 r_int
@@ -5496,13 +5454,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|ide_replace_subdriver
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_replace_subdriver
-)paren
-suffix:semicolon
 DECL|function|ata_attach
 r_int
 id|ata_attach
@@ -5647,13 +5598,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|ata_attach
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ata_attach
-)paren
-suffix:semicolon
 DECL|function|generic_ide_suspend
 r_static
 r_int
