@@ -9162,6 +9162,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|offset
+op_eq
+l_int|0
+)paren
+id|tp-&gt;tinfo.goal.options
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|tp-&gt;tinfo.curr.options
 op_amp
 id|PPR_OPT_DT
