@@ -13547,7 +13547,7 @@ id|scb-&gt;cmd-&gt;device
 comma
 id|MSG_SIMPLE_TAG
 comma
-id|scb-&gt;cmd-&gt;device-&gt;new_queue_depth
+id|scb-&gt;cmd-&gt;device-&gt;queue_depth
 )paren
 suffix:semicolon
 id|scb-&gt;tag_action

@@ -495,14 +495,7 @@ l_string|&quot;%d&bslash;n&quot;
 suffix:semicolon
 id|sdev_rd_attr
 (paren
-id|current_queue_depth
-comma
-l_string|&quot;%d&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sdev_rd_attr
-(paren
-id|new_queue_depth
+id|queue_depth
 comma
 l_string|&quot;%d&bslash;n&quot;
 )paren
@@ -570,10 +563,7 @@ op_amp
 id|dev_attr_device_blocked
 comma
 op_amp
-id|dev_attr_current_queue_depth
-comma
-op_amp
-id|dev_attr_new_queue_depth
+id|dev_attr_queue_depth
 comma
 op_amp
 id|dev_attr_type
