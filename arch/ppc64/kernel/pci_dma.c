@@ -442,6 +442,7 @@ r_return
 id|lz
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|tce_build_iSeries
 r_static
 r_void
@@ -594,6 +595,8 @@ id|setTceRc
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|function|tce_build_pSeries
 r_static
 r_void
@@ -704,6 +707,7 @@ id|Tce
 id|tce.wholeTce
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* &n; * Build a TceTable structure.  This contains a multi-level bit map which&n; * is used to manage allocation of the tce space.&n; */
 DECL|function|build_tce_table
 r_static
@@ -2298,6 +2302,7 @@ r_return
 id|retTce
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|tce_free_one_iSeries
 r_static
 r_void
@@ -2356,6 +2361,8 @@ id|set_tce_rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|function|tce_free_one_pSeries
 r_static
 r_void
@@ -2407,6 +2414,7 @@ id|Tce
 id|tce.wholeTce
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|tce_free
 r_static
 r_void
@@ -2599,6 +2607,7 @@ id|order
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|create_virtual_bus_tce_table
 r_void
 id|__init
@@ -2856,6 +2865,7 @@ l_string|&quot;Virtual Bus VIO TCE table failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|create_tce_tables_for_buses
 r_void
 id|create_tce_tables_for_buses
@@ -3569,6 +3579,7 @@ op_star
 id|newTceTable
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_ISERIES
 r_struct
 id|TceTableManagerCB
 op_star
@@ -3716,6 +3727,7 @@ c_func
 id|pciBusTceTableParms
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|getTceTableParmsPSeries
 r_static
@@ -6264,6 +6276,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* These are called very early. */
 DECL|function|tce_init_pSeries
 r_void
@@ -6282,6 +6295,8 @@ op_assign
 id|tce_free_one_pSeries
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|tce_init_iSeries
 r_void
 id|tce_init_iSeries
@@ -6299,4 +6314,5 @@ op_assign
 id|tce_free_one_iSeries
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

@@ -66,7 +66,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;  &t;mtctr  &t;%1&bslash;n&bslash;&n;1:      dcbz  &t;0,%0&bslash;n&bslash;&n;&t;add&t;%0,%0,%3&bslash;n&bslash;&n;&t;bdnz+&t;1b&quot;
+l_string|&quot;mtctr  &t;%1&t;# clear_page&bslash;n&bslash;&n;1:      dcbz  &t;0,%0&bslash;n&bslash;&n;&t;add&t;%0,%0,%3&bslash;n&bslash;&n;&t;bdnz+&t;1b&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

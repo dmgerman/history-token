@@ -486,28 +486,6 @@ suffix:semicolon
 multiline_comment|/* Pointer to return values in args[16]. */
 )brace
 suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|printf
-id|u32
-id|printf
-suffix:semicolon
-multiline_comment|/* void (*printf)(char *, ...); */
-DECL|member|memdump
-id|u32
-id|memdump
-suffix:semicolon
-multiline_comment|/* void (*memdump)(unsigned char *, unsigned long); */
-DECL|member|dummy
-id|u32
-id|dummy
-suffix:semicolon
-multiline_comment|/* void (*dummy)(void); */
-DECL|typedef|yaboot_debug_t
-)brace
-id|yaboot_debug_t
-suffix:semicolon
 DECL|struct|prom_t
 r_struct
 id|prom_t
@@ -554,13 +532,6 @@ id|bi_record
 op_star
 id|bi_recs
 suffix:semicolon
-macro_line|#ifdef DEBUG_YABOOT
-DECL|member|yaboot
-id|yaboot_debug_t
-op_star
-id|yaboot
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 r_extern
@@ -600,9 +571,6 @@ r_int
 comma
 r_int
 r_int
-comma
-id|yaboot_debug_t
-op_star
 )paren
 suffix:semicolon
 r_extern
