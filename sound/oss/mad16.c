@@ -117,7 +117,7 @@ DECL|macro|DDB
 macro_line|#undef DDB
 macro_line|#endif
 DECL|macro|DDB
-mdefine_line|#define DDB(x) {if (debug) x;}
+mdefine_line|#define DDB(x) do {if (debug) x;} while (0)
 DECL|function|mad_read
 r_static
 r_int
@@ -914,6 +914,7 @@ id|i
 )paren
 )paren
 )paren
+suffix:semicolon
 r_else
 id|DDB
 c_func
