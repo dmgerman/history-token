@@ -100,7 +100,7 @@ r_int
 id|l
 )paren
 suffix:semicolon
-multiline_comment|/* int DMAbuf_ioctl(int dev, unsigned int cmd, caddr_t arg, int local); */
+multiline_comment|/* int DMAbuf_ioctl(int dev, unsigned int cmd, void __user *arg, int local); */
 r_void
 id|DMAbuf_init
 c_func
@@ -277,6 +277,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -297,6 +298,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -343,7 +345,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -378,7 +382,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -395,6 +401,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -415,6 +422,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -461,7 +469,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -569,6 +579,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -589,6 +600,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -635,7 +647,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon

@@ -372,6 +372,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -422,10 +423,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -3429,7 +3432,7 @@ r_if
 c_cond
 (paren
 id|p-&gt;type
-OG
+op_ge
 id|SOCK_MAX
 )paren
 r_goto

@@ -361,7 +361,9 @@ id|u_abs_timeout
 r_struct
 id|timespec
 id|ts
-comma
+suffix:semicolon
+r_struct
+id|timespec
 id|__user
 op_star
 id|u_ts
@@ -532,6 +534,7 @@ id|u_abs_timeout
 (brace
 r_struct
 id|timespec
+id|__user
 op_star
 id|u_ts
 suffix:semicolon

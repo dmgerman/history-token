@@ -63,6 +63,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -954,6 +955,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -1170,6 +1172,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 op_amp

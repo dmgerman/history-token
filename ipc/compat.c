@@ -364,6 +364,7 @@ id|p64
 comma
 r_struct
 id|compat_ipc64_perm
+id|__user
 op_star
 id|up64
 )paren
@@ -422,6 +423,7 @@ id|p
 comma
 r_struct
 id|compat_ipc_perm
+id|__user
 op_star
 id|up
 )paren
@@ -480,6 +482,7 @@ id|p64
 comma
 r_struct
 id|compat_ipc64_perm
+id|__user
 op_star
 id|up64
 )paren
@@ -582,6 +585,7 @@ id|p
 comma
 r_struct
 id|compat_ipc_perm
+id|__user
 op_star
 id|up
 )paren
@@ -722,6 +726,7 @@ id|s64
 comma
 r_struct
 id|compat_semid64_ds
+id|__user
 op_star
 id|up64
 )paren
@@ -773,6 +778,7 @@ id|s
 comma
 r_struct
 id|compat_semid_ds
+id|__user
 op_star
 id|up
 )paren
@@ -824,6 +830,7 @@ id|s64
 comma
 r_struct
 id|compat_semid64_ds
+id|__user
 op_star
 id|up64
 )paren
@@ -915,6 +922,7 @@ id|s
 comma
 r_struct
 id|compat_semid_ds
+id|__user
 op_star
 id|up
 )paren
@@ -1997,7 +2005,6 @@ comma
 r_struct
 id|compat_msqid64_ds
 id|__user
-id|__user
 op_star
 id|up64
 )paren
@@ -2293,7 +2300,6 @@ r_int
 id|second
 comma
 r_void
-id|__user
 op_star
 id|buf
 )paren
@@ -3773,7 +3779,9 @@ id|timeout
 r_struct
 id|timespec
 id|ts
-comma
+suffix:semicolon
+r_struct
+id|timespec
 id|__user
 op_star
 id|ts64

@@ -195,7 +195,7 @@ id|cdrom_device_info
 op_star
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 )paren
 suffix:semicolon
@@ -1809,6 +1809,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -3677,7 +3678,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 )paren

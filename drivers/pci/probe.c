@@ -1863,6 +1863,15 @@ comma
 id|busnr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|child
+)paren
+r_return
+id|max
+suffix:semicolon
 id|child-&gt;primary
 op_assign
 id|buses

@@ -329,6 +329,7 @@ op_star
 id|load_msg
 c_func
 (paren
+r_const
 r_void
 id|__user
 op_star

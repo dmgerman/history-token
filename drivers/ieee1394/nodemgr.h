@@ -491,7 +491,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_void
+r_int
 id|init_ieee1394_nodemgr
 c_func
 (paren

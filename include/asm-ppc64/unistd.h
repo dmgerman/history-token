@@ -832,6 +832,7 @@ id|sys_pipe
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|fildes
 )paren

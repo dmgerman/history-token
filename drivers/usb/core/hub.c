@@ -155,12 +155,12 @@ id|hubdev
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 )paren
 (brace
 r_return
 op_amp
-id|dev-&gt;actconfig-&gt;interface
+id|hdev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
@@ -178,7 +178,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_void
 op_star
@@ -192,12 +192,12 @@ r_return
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|usb_rcvctrlpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 )paren
@@ -234,7 +234,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_int
 id|feature
@@ -244,12 +244,12 @@ r_return
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|usb_sndctrlpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 )paren
@@ -280,7 +280,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_int
 id|port
@@ -293,12 +293,12 @@ r_return
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|usb_sndctrlpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 )paren
@@ -329,7 +329,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_int
 id|port
@@ -342,12 +342,12 @@ r_return
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|usb_sndctrlpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 )paren
@@ -378,12 +378,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
-comma
-r_struct
-id|usb_hub
-op_star
-id|hub
+id|hdev
 comma
 r_int
 id|port
@@ -398,7 +393,7 @@ op_assign
 id|set_port_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 (paren
 id|selector
@@ -420,8 +415,10 @@ l_int|0
 )paren
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hubdev
+(paren
+id|hdev
+)paren
 comma
 l_string|&quot;port %d indicator %s status %d&bslash;n&quot;
 comma
@@ -515,7 +512,7 @@ suffix:semicolon
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 (paren
@@ -539,7 +536,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;state
+id|hdev-&gt;state
 op_ne
 id|USB_STATE_CONFIGURED
 )paren
@@ -693,9 +690,7 @@ suffix:semicolon
 id|set_port_led
 c_func
 (paren
-id|dev
-comma
-id|hub
+id|hdev
 comma
 id|i
 op_plus
@@ -731,9 +726,7 @@ suffix:semicolon
 id|set_port_led
 c_func
 (paren
-id|dev
-comma
-id|hub
+id|hdev
 comma
 id|cursor
 op_plus
@@ -778,7 +771,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_struct
 id|usb_hub_status
@@ -790,12 +783,12 @@ r_return
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|usb_rcvctrlpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 )paren
@@ -834,7 +827,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_int
 id|port
@@ -849,12 +842,12 @@ r_return
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|usb_rcvctrlpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 )paren
@@ -1109,7 +1102,7 @@ id|hub_clear_tt_buffer
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 comma
 id|u16
 id|devinfo
@@ -1121,11 +1114,11 @@ id|tt
 r_return
 id|usb_control_msg
 (paren
-id|hub
+id|hdev
 comma
 id|usb_rcvctrlpipe
 (paren
-id|hub
+id|hdev
 comma
 l_int|0
 )paren
@@ -1200,7 +1193,7 @@ suffix:semicolon
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 suffix:semicolon
 r_int
 id|status
@@ -1236,7 +1229,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 (paren
@@ -1247,7 +1240,7 @@ id|status
 op_assign
 id|hub_clear_tt_buffer
 (paren
-id|dev
+id|hdev
 comma
 id|clear-&gt;devinfo
 comma
@@ -1270,7 +1263,7 @@ id|status
 id|dev_err
 (paren
 op_amp
-id|dev-&gt;dev
+id|hdev-&gt;dev
 comma
 l_string|&quot;clear tt %d (%04x) error %d&bslash;n&quot;
 comma
@@ -1304,7 +1297,7 @@ id|usb_hub_tt_clear_buffer
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 comma
 r_int
 id|pipe
@@ -1315,7 +1308,7 @@ id|usb_tt
 op_star
 id|tt
 op_assign
-id|dev-&gt;tt
+id|udev-&gt;tt
 suffix:semicolon
 r_int
 r_int
@@ -1349,7 +1342,7 @@ l_int|0
 id|dev_err
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;can&squot;t save CLEAR_TT_BUFFER state&bslash;n&quot;
 )paren
@@ -1364,7 +1357,7 @@ op_assign
 id|tt-&gt;multi
 ques
 c_cond
-id|dev-&gt;ttport
+id|udev-&gt;ttport
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -1377,7 +1370,7 @@ id|pipe
 suffix:semicolon
 id|clear-&gt;devinfo
 op_or_assign
-id|dev-&gt;devnum
+id|udev-&gt;devnum
 op_lshift
 l_int|4
 suffix:semicolon
@@ -1463,7 +1456,7 @@ id|hub
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 suffix:semicolon
 r_int
 id|i
@@ -1490,7 +1483,7 @@ comma
 l_string|&quot;enabling power on all ports&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 c_func
@@ -1515,7 +1508,7 @@ op_increment
 id|set_port_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|i
 op_plus
@@ -1558,7 +1551,7 @@ id|change
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 (paren
@@ -1573,7 +1566,7 @@ op_assign
 id|get_hub_status
 c_func
 (paren
-id|dev
+id|hdev
 comma
 op_amp
 id|hub-&gt;status-&gt;hub
@@ -1588,10 +1581,8 @@ l_int|0
 )paren
 id|dev_err
 (paren
-id|hubdev
-(paren
-id|dev
-)paren
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
 l_string|&quot;%s failed (err = %d)&bslash;n&quot;
 comma
@@ -1649,7 +1640,7 @@ id|endpoint
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 (paren
@@ -1660,6 +1651,9 @@ r_struct
 id|device
 op_star
 id|hub_dev
+op_assign
+op_amp
+id|hub-&gt;intf-&gt;dev
 suffix:semicolon
 id|u16
 id|hubstatus
@@ -1684,7 +1678,7 @@ op_assign
 id|usb_buffer_alloc
 c_func
 (paren
-id|dev
+id|hdev
 comma
 r_sizeof
 (paren
@@ -1792,7 +1786,7 @@ op_assign
 id|get_hub_descriptor
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|hub-&gt;descriptor
 comma
@@ -1841,15 +1835,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|hub_dev
-op_assign
-id|hubdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|dev-&gt;maxchild
+id|hdev-&gt;maxchild
 op_assign
 id|hub-&gt;descriptor-&gt;bNbrPorts
 suffix:semicolon
@@ -1859,10 +1845,10 @@ id|hub_dev
 comma
 l_string|&quot;%d port%s detected&bslash;n&quot;
 comma
-id|dev-&gt;maxchild
+id|hdev-&gt;maxchild
 comma
 (paren
-id|dev-&gt;maxchild
+id|hdev-&gt;maxchild
 op_eq
 l_int|1
 )paren
@@ -1908,7 +1894,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;maxchild
+id|hdev-&gt;maxchild
 suffix:semicolon
 id|i
 op_increment
@@ -1952,7 +1938,7 @@ l_char|&squot;R&squot;
 suffix:semicolon
 id|portstr
 (braket
-id|dev-&gt;maxchild
+id|hdev-&gt;maxchild
 )braket
 op_assign
 l_int|0
@@ -2104,7 +2090,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dev-&gt;descriptor.bDeviceProtocol
+id|hdev-&gt;descriptor.bDeviceProtocol
 )paren
 (brace
 r_case
@@ -2125,7 +2111,7 @@ l_string|&quot;Single TT&bslash;n&quot;
 suffix:semicolon
 id|hub-&gt;tt.hub
 op_assign
-id|dev
+id|hdev
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2137,7 +2123,7 @@ op_assign
 id|usb_set_interface
 c_func
 (paren
-id|dev
+id|hdev
 comma
 l_int|0
 comma
@@ -2178,7 +2164,7 @@ id|ret
 suffix:semicolon
 id|hub-&gt;tt.hub
 op_assign
-id|dev
+id|hdev
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2191,7 +2177,7 @@ id|hub_dev
 comma
 l_string|&quot;Unrecognized hub protocol %d&bslash;n&quot;
 comma
-id|dev-&gt;descriptor.bDeviceProtocol
+id|hdev-&gt;descriptor.bDeviceProtocol
 )paren
 suffix:semicolon
 r_break
@@ -2211,7 +2197,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.bDeviceProtocol
+id|hdev-&gt;descriptor.bDeviceProtocol
 op_ne
 l_int|0
 )paren
@@ -2305,7 +2291,7 @@ op_assign
 id|usb_get_status
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|USB_RECIP_DEVICE
 comma
@@ -2325,7 +2311,7 @@ l_int|0
 (brace
 id|message
 op_assign
-l_string|&quot;can&squot;t get hubdev status&quot;
+l_string|&quot;can&squot;t get hub status&quot;
 suffix:semicolon
 r_goto
 id|fail
@@ -2421,7 +2407,7 @@ multiline_comment|/* local power status reports aren&squot;t always correct */
 r_if
 c_cond
 (paren
-id|dev-&gt;actconfig-&gt;desc.bmAttributes
+id|hdev-&gt;actconfig-&gt;desc.bmAttributes
 op_amp
 id|USB_CONFIG_ATT_SELFPOWER
 )paren
@@ -2480,7 +2466,7 @@ op_assign
 id|usb_rcvintpipe
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|endpoint-&gt;bEndpointAddress
 )paren
@@ -2490,7 +2476,7 @@ op_assign
 id|usb_maxpacket
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|pipe
 comma
@@ -2555,7 +2541,7 @@ c_func
 (paren
 id|hub-&gt;urb
 comma
-id|dev
+id|hdev
 comma
 id|pipe
 comma
@@ -2627,9 +2613,7 @@ id|blinkenlights
 id|set_port_led
 c_func
 (paren
-id|dev
-comma
-id|hub
+id|hdev
 comma
 l_int|1
 comma
@@ -2666,8 +2650,7 @@ id|fail
 suffix:colon
 id|dev_err
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;config failed, %s (err %d)&bslash;n&quot;
 comma
@@ -2964,12 +2947,17 @@ suffix:semicolon
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 suffix:semicolon
 r_struct
 id|usb_hub
 op_star
 id|hub
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|hub_dev
 suffix:semicolon
 r_int
 r_int
@@ -2979,13 +2967,18 @@ id|desc
 op_assign
 id|intf-&gt;cur_altsetting
 suffix:semicolon
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 c_func
 (paren
 id|intf
 )paren
+suffix:semicolon
+id|hub_dev
+op_assign
+op_amp
+id|intf-&gt;dev
 suffix:semicolon
 multiline_comment|/* Some hubs have a subclass of 1, which AFAICT according to the */
 multiline_comment|/*  specs is not defined, but it works */
@@ -3009,8 +3002,7 @@ id|descriptor_error
 suffix:colon
 id|dev_err
 (paren
-op_amp
-id|intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;bad descriptor, ignoring hub&bslash;n&quot;
 )paren
@@ -3083,10 +3075,7 @@ suffix:semicolon
 multiline_comment|/* We found a hub */
 id|dev_info
 (paren
-id|hubdev
-(paren
-id|dev
-)paren
+id|hub_dev
 comma
 l_string|&quot;USB hub found&bslash;n&quot;
 )paren
@@ -3114,11 +3103,7 @@ id|hub
 (brace
 id|dev_dbg
 (paren
-id|hubdev
-c_func
-(paren
-id|dev
-)paren
+id|hub_dev
 comma
 l_string|&quot;couldn&squot;t kmalloc hub struct&bslash;n&quot;
 )paren
@@ -3217,7 +3202,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;speed
+id|hdev-&gt;speed
 op_eq
 id|USB_SPEED_HIGH
 )paren
@@ -3273,7 +3258,7 @@ id|user_data
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 op_assign
 id|interface_to_usbdev
 (paren
@@ -3317,7 +3302,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hub-&gt;devnum
+id|hdev-&gt;devnum
 op_le
 l_int|0
 )paren
@@ -3329,7 +3314,7 @@ r_else
 (brace
 id|info-&gt;nports
 op_assign
-id|hub-&gt;maxchild
+id|hdev-&gt;maxchild
 suffix:semicolon
 r_for
 c_loop
@@ -3349,7 +3334,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|i
 )braket
@@ -3369,7 +3354,7 @@ id|info-&gt;port
 id|i
 )braket
 op_assign
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|i
 )braket
@@ -3416,7 +3401,7 @@ id|hub
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 c_func
@@ -3446,7 +3431,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|dev-&gt;children
+id|hdev-&gt;children
 (braket
 id|i
 )braket
@@ -3455,7 +3440,7 @@ id|usb_disconnect
 c_func
 (paren
 op_amp
-id|dev-&gt;children
+id|hdev-&gt;children
 (braket
 id|i
 )braket
@@ -3485,7 +3470,7 @@ c_cond
 id|usb_reset_device
 c_func
 (paren
-id|dev
+id|hdev
 )paren
 )paren
 r_return
@@ -3494,7 +3479,7 @@ l_int|1
 suffix:semicolon
 id|hub-&gt;urb-&gt;dev
 op_assign
-id|dev
+id|hdev
 suffix:semicolon
 r_if
 c_cond
@@ -3530,7 +3515,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 )paren
 (brace
 r_struct
@@ -3538,7 +3523,7 @@ id|usb_device
 op_star
 id|parent
 op_assign
-id|dev-&gt;parent
+id|hdev-&gt;parent
 suffix:semicolon
 r_int
 id|i
@@ -3573,7 +3558,7 @@ id|parent-&gt;children
 id|i
 )braket
 op_eq
-id|dev
+id|hdev
 )paren
 (brace
 id|usb_disconnect
@@ -3595,7 +3580,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|hdev-&gt;dev
 comma
 l_string|&quot;cannot disconnect hub!&bslash;n&quot;
 )paren
@@ -3610,7 +3595,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 comma
 r_int
 id|port
@@ -3632,7 +3617,7 @@ op_assign
 id|usb_get_intfdata
 c_func
 (paren
-id|dev-&gt;actconfig-&gt;interface
+id|hdev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
@@ -3656,7 +3641,7 @@ op_assign
 id|get_port_status
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|port
 op_plus
@@ -3675,10 +3660,8 @@ l_int|0
 )paren
 id|dev_err
 (paren
-id|hubdev
-(paren
-id|dev
-)paren
+op_amp
+id|hub-&gt;intf-&gt;dev
 comma
 l_string|&quot;%s failed (err = %d)&bslash;n&quot;
 comma
@@ -3732,7 +3715,6 @@ DECL|macro|HUB_LONG_RESET_TIME
 mdefine_line|#define HUB_LONG_RESET_TIME&t;200
 DECL|macro|HUB_RESET_TIMEOUT
 mdefine_line|#define HUB_RESET_TIMEOUT&t;500
-multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|hub_port_wait_reset
 r_static
 r_int
@@ -3742,7 +3724,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 comma
 r_int
 id|port
@@ -3750,7 +3732,7 @@ comma
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 comma
 r_int
 r_int
@@ -3797,7 +3779,7 @@ op_assign
 id|hub_port_status
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 comma
@@ -3815,12 +3797,9 @@ id|ret
 OL
 l_int|0
 )paren
-(brace
 r_return
-op_minus
-l_int|1
+id|ret
 suffix:semicolon
-)brace
 multiline_comment|/* Device went away? */
 r_if
 c_cond
@@ -3833,7 +3812,8 @@ id|USB_PORT_STAT_CONNECTION
 )paren
 )paren
 r_return
-l_int|1
+op_minus
+id|ENOTCONN
 suffix:semicolon
 multiline_comment|/* bomb out completely if something weird happened */
 r_if
@@ -3847,7 +3827,7 @@ id|USB_PORT_STAT_C_CONNECTION
 )paren
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* if we`ve finished resetting, then break out of the loop */
 r_if
@@ -3874,7 +3854,7 @@ id|portstatus
 op_amp
 id|USB_PORT_STAT_HIGH_SPEED
 )paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_assign
 id|USB_SPEED_HIGH
 suffix:semicolon
@@ -3886,12 +3866,12 @@ id|portstatus
 op_amp
 id|USB_PORT_STAT_LOW_SPEED
 )paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_assign
 id|USB_SPEED_LOW
 suffix:semicolon
 r_else
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_assign
 id|USB_SPEED_FULL
 suffix:semicolon
@@ -3917,7 +3897,7 @@ id|dev_dbg
 (paren
 id|hubdev
 (paren
-id|hub
+id|hdev
 )paren
 comma
 l_string|&quot;port %d not reset yet, waiting %dms&bslash;n&quot;
@@ -3932,10 +3912,9 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-l_int|1
+id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|hub_port_reset
 r_static
 r_int
@@ -3945,7 +3924,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 comma
 r_int
 id|port
@@ -3953,7 +3932,7 @@ comma
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 comma
 r_int
 r_int
@@ -3964,6 +3943,16 @@ r_int
 id|i
 comma
 id|status
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|hub_dev
+op_assign
+id|hubdev
+(paren
+id|hdev
+)paren
 suffix:semicolon
 multiline_comment|/* Reset the port */
 r_for
@@ -3984,7 +3973,7 @@ op_increment
 id|set_port_feature
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 op_plus
@@ -3999,11 +3988,11 @@ op_assign
 id|hub_port_wait_reset
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 comma
-id|dev
+id|udev
 comma
 id|delay
 )paren
@@ -4012,15 +4001,19 @@ r_if
 c_cond
 (paren
 id|status
-op_ne
+op_eq
 op_minus
-l_int|1
+id|ENOTCONN
+op_logical_or
+id|status
+op_eq
+l_int|0
 )paren
 (brace
 id|clear_port_feature
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 op_plus
@@ -4029,7 +4022,7 @@ comma
 id|USB_PORT_FEAT_C_RESET
 )paren
 suffix:semicolon
-id|dev-&gt;state
+id|udev-&gt;state
 op_assign
 id|status
 ques
@@ -4044,10 +4037,7 @@ suffix:semicolon
 )brace
 id|dev_dbg
 (paren
-id|hubdev
-(paren
-id|hub
-)paren
+id|hub_dev
 comma
 l_string|&quot;port %d not enabled, trying reset again...&bslash;n&quot;
 comma
@@ -4063,10 +4053,7 @@ suffix:semicolon
 )brace
 id|dev_err
 (paren
-id|hubdev
-(paren
-id|hub
-)paren
+id|hub_dev
 comma
 l_string|&quot;Cannot enable port %i.  Maybe the USB cable is bad?&bslash;n&quot;
 comma
@@ -4076,8 +4063,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|status
 suffix:semicolon
 )brace
 DECL|function|hub_port_disable
@@ -4089,7 +4075,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 comma
 r_int
 id|port
@@ -4103,7 +4089,7 @@ op_assign
 id|clear_port_feature
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 op_plus
@@ -4123,7 +4109,7 @@ c_func
 id|hubdev
 c_func
 (paren
-id|hub
+id|hdev
 )paren
 comma
 l_string|&quot;cannot disable port %d (err = %d)&bslash;n&quot;
@@ -4146,7 +4132,6 @@ DECL|macro|HUB_DEBOUNCE_STEP
 mdefine_line|#define HUB_DEBOUNCE_STEP&t; 25
 DECL|macro|HUB_DEBOUNCE_STABLE
 mdefine_line|#define HUB_DEBOUNCE_STABLE&t;  4
-multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|hub_port_debounce
 r_static
 r_int
@@ -4156,7 +4141,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 comma
 r_int
 id|port
@@ -4213,7 +4198,7 @@ op_assign
 id|hub_port_status
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 comma
@@ -4232,8 +4217,7 @@ OL
 l_int|0
 )paren
 r_return
-op_minus
-l_int|1
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -4291,7 +4275,7 @@ id|USB_PORT_STAT_C_CONNECTION
 id|clear_port_feature
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 op_plus
@@ -4306,7 +4290,7 @@ id|dev_dbg
 (paren
 id|hubdev
 (paren
-id|hub
+id|hdev
 )paren
 comma
 l_string|&quot;debounce: port %d: delay %dms stable %d status 0x%x&bslash;n&quot;
@@ -4324,17 +4308,102 @@ id|portstatus
 suffix:semicolon
 r_return
 (paren
-(paren
 id|portstatus
 op_amp
 id|USB_PORT_STAT_CONNECTION
-)paren
 )paren
 ques
 c_cond
 l_int|0
 suffix:colon
-l_int|1
+op_minus
+id|ENOTCONN
+suffix:semicolon
+)brace
+DECL|function|hub_set_address
+r_static
+r_int
+id|hub_set_address
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+(brace
+r_int
+id|retval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udev-&gt;devnum
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|udev-&gt;state
+op_ne
+id|USB_STATE_DEFAULT
+op_logical_and
+id|udev-&gt;state
+op_ne
+id|USB_STATE_ADDRESS
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|retval
+op_assign
+id|usb_control_msg
+c_func
+(paren
+id|udev
+comma
+id|usb_snddefctrl
+c_func
+(paren
+id|udev
+)paren
+comma
+id|USB_REQ_SET_ADDRESS
+comma
+l_int|0
+comma
+id|udev-&gt;devnum
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|HZ
+op_star
+id|USB_CTRL_SET_TIMEOUT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+l_int|0
+)paren
+id|udev-&gt;state
+op_assign
+id|USB_STATE_ADDRESS
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* reset device, (re)assign address, get device descriptor.&n; * device connection is stable, no more debouncing needed.&n; * returns device in USB_STATE_ADDRESS, except on error.&n; * on error return, device is no longer usable (ref dropped).&n; *&n; * caller owns dev-&gt;serialize for the device, guarding against&n; * config changes and disconnect processing.&n; */
@@ -4346,12 +4415,12 @@ id|hub_port_init
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 comma
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 comma
 r_int
 id|port
@@ -4370,9 +4439,6 @@ comma
 id|j
 comma
 id|retval
-op_assign
-op_minus
-id|ENODEV
 suffix:semicolon
 r_int
 id|delay
@@ -4383,14 +4449,14 @@ r_enum
 id|usb_device_speed
 id|oldspeed
 op_assign
-id|dev-&gt;speed
+id|udev-&gt;speed
 suffix:semicolon
 multiline_comment|/* root hub ports have a slightly longer reset period&n;&t; * (from USB 2.0 spec, section 7.1.7.5)&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|hub-&gt;parent
+id|hdev-&gt;parent
 )paren
 id|delay
 op_assign
@@ -4417,45 +4483,37 @@ id|usb_address0_sem
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the device; full speed may morph to high speed */
-r_switch
-c_cond
-(paren
+id|retval
+op_assign
 id|hub_port_reset
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 comma
-id|dev
+id|udev
 comma
 id|delay
 )paren
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* success, speed is known */
-r_break
 suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-multiline_comment|/* disconnect, give to companion */
+r_if
+c_cond
+(paren
 id|retval
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-multiline_comment|/* FALL THROUGH */
-r_default
-suffix:colon
-multiline_comment|/* error */
+OL
+l_int|0
+)paren
+multiline_comment|/* error or disconnect */
 r_goto
 id|fail
 suffix:semicolon
-)brace
+multiline_comment|/* success, speed is known */
+id|retval
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4465,14 +4523,14 @@ id|USB_SPEED_UNKNOWN
 op_logical_and
 id|oldspeed
 op_ne
-id|dev-&gt;speed
+id|udev-&gt;speed
 )paren
 (brace
 id|dev_dbg
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;device reset changed speed!&bslash;n&quot;
 )paren
@@ -4485,7 +4543,7 @@ multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; *
 r_switch
 c_cond
 (paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 )paren
 (brace
 r_case
@@ -4520,14 +4578,14 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|dev-&gt;epmaxpacketin
+id|udev-&gt;epmaxpacketin
 (braket
 l_int|0
 )braket
 op_assign
 id|i
 suffix:semicolon
-id|dev-&gt;epmaxpacketout
+id|udev-&gt;epmaxpacketout
 (braket
 l_int|0
 )braket
@@ -4538,7 +4596,7 @@ multiline_comment|/* set the address */
 r_if
 c_cond
 (paren
-id|dev-&gt;devnum
+id|udev-&gt;devnum
 op_le
 l_int|0
 )paren
@@ -4546,13 +4604,13 @@ l_int|0
 id|usb_choose_address
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;devnum
+id|udev-&gt;devnum
 op_le
 l_int|0
 )paren
@@ -4563,27 +4621,27 @@ multiline_comment|/* Set up TT records, if needed  */
 r_if
 c_cond
 (paren
-id|hub-&gt;tt
+id|hdev-&gt;tt
 )paren
 (brace
-id|dev-&gt;tt
+id|udev-&gt;tt
 op_assign
-id|hub-&gt;tt
+id|hdev-&gt;tt
 suffix:semicolon
-id|dev-&gt;ttport
+id|udev-&gt;ttport
 op_assign
-id|hub-&gt;ttport
+id|hdev-&gt;ttport
 suffix:semicolon
 )brace
 r_else
 r_if
 c_cond
 (paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_ne
 id|USB_SPEED_HIGH
 op_logical_and
-id|hub-&gt;speed
+id|hdev-&gt;speed
 op_eq
 id|USB_SPEED_HIGH
 )paren
@@ -4591,13 +4649,13 @@ id|USB_SPEED_HIGH
 r_struct
 id|usb_hub
 op_star
-id|hubstate
+id|hub
 suffix:semicolon
-id|hubstate
+id|hub
 op_assign
 id|usb_get_intfdata
 (paren
-id|hub-&gt;actconfig
+id|hdev-&gt;actconfig
 op_member_access_from_pointer
 id|interface
 (braket
@@ -4605,12 +4663,12 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|dev-&gt;tt
+id|udev-&gt;tt
 op_assign
 op_amp
-id|hubstate-&gt;tt
+id|hub-&gt;tt
 suffix:semicolon
-id|dev-&gt;ttport
+id|udev-&gt;ttport
 op_assign
 id|port
 op_plus
@@ -4626,7 +4684,7 @@ suffix:semicolon
 id|dev_info
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;%s %s speed USB device using address %d&bslash;n&quot;
 comma
@@ -4649,7 +4707,7 @@ id|speed
 suffix:semicolon
 r_switch
 (paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 )paren
 (brace
 r_case
@@ -4694,7 +4752,7 @@ suffix:semicolon
 )brace
 )paren
 comma
-id|dev-&gt;devnum
+id|udev-&gt;devnum
 )paren
 suffix:semicolon
 multiline_comment|/* Why interleave GET_DESCRIPTOR and SET_ADDRESS this way?&n;&t; * Because device hardware and firmware is sometimes buggy in&n;&t; * this area, and this is how Linux has done it for ages.&n;&t; * Change it cautiously.&n;&t; *&n;&t; * NOTE:  Windows gets the descriptor first, seemingly to help&n;&t; * work around device bugs like &quot;can&squot;t use addresses with bit 3&n;&t; * set in certain configurations&quot;.  Yes, really.&n;&t; */
@@ -4730,10 +4788,10 @@ id|j
 (brace
 id|retval
 op_assign
-id|usb_set_address
+id|hub_set_address
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 r_if
@@ -4764,11 +4822,11 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;device not accepting address %d, error %d&bslash;n&quot;
 comma
-id|dev-&gt;devnum
+id|udev-&gt;devnum
 comma
 id|retval
 )paren
@@ -4778,28 +4836,21 @@ suffix:colon
 id|hub_port_disable
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 )paren
 suffix:semicolon
-id|clear_bit
+id|usb_release_address
 c_func
 (paren
-id|dev-&gt;devnum
-comma
-id|dev-&gt;bus-&gt;devmap.devicemap
+id|udev
 )paren
-suffix:semicolon
-id|dev-&gt;devnum
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|usb_put_dev
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 id|up
@@ -4825,7 +4876,7 @@ op_assign
 id|usb_get_device_descriptor
 c_func
 (paren
-id|dev
+id|udev
 comma
 l_int|8
 )paren
@@ -4858,7 +4909,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;device descriptor read/%s, error %d&bslash;n&quot;
 comma
@@ -4886,24 +4937,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_eq
 id|USB_SPEED_FULL
 op_logical_and
 (paren
-id|dev-&gt;epmaxpacketin
+id|udev-&gt;epmaxpacketin
 (braket
 l_int|0
 )braket
 op_ne
-id|dev-&gt;descriptor.bMaxPacketSize0
+id|udev-&gt;descriptor.bMaxPacketSize0
 )paren
 )paren
 (brace
 id|usb_disable_endpoint
 c_func
 (paren
-id|dev
+id|udev
 comma
 l_int|0
 )paren
@@ -4911,7 +4962,7 @@ suffix:semicolon
 id|usb_endpoint_running
 c_func
 (paren
-id|dev
+id|udev
 comma
 l_int|0
 comma
@@ -4921,26 +4972,26 @@ suffix:semicolon
 id|usb_endpoint_running
 c_func
 (paren
-id|dev
+id|udev
 comma
 l_int|0
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|dev-&gt;epmaxpacketin
+id|udev-&gt;epmaxpacketin
 (braket
 l_int|0
 )braket
 op_assign
-id|dev-&gt;descriptor.bMaxPacketSize0
+id|udev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
-id|dev-&gt;epmaxpacketout
+id|udev-&gt;epmaxpacketout
 (braket
 l_int|0
 )braket
 op_assign
-id|dev-&gt;descriptor.bMaxPacketSize0
+id|udev-&gt;descriptor.bMaxPacketSize0
 suffix:semicolon
 )brace
 id|retval
@@ -4948,7 +4999,7 @@ op_assign
 id|usb_get_device_descriptor
 c_func
 (paren
-id|dev
+id|udev
 comma
 id|USB_DT_DEVICE_SIZE
 )paren
@@ -4963,7 +5014,7 @@ r_int
 )paren
 r_sizeof
 (paren
-id|dev-&gt;descriptor
+id|udev-&gt;descriptor
 )paren
 )paren
 (brace
@@ -4971,7 +5022,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;device descriptor read/%s, error %d&bslash;n&quot;
 comma
@@ -4997,12 +5048,12 @@ id|fail
 suffix:semicolon
 )brace
 multiline_comment|/* now dev is visible to other tasks */
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|port
 )braket
 op_assign
-id|dev
+id|udev
 suffix:semicolon
 id|up
 c_func
@@ -5028,7 +5079,7 @@ comma
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 comma
 r_int
 id|port
@@ -5066,7 +5117,7 @@ id|status
 op_assign
 id|usb_get_descriptor
 (paren
-id|dev
+id|udev
 comma
 id|USB_DT_DEVICE_QUALIFIER
 comma
@@ -5093,7 +5144,7 @@ id|dev_info
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;not running at top speed; &quot;
 l_string|&quot;connect to a high speed hub&bslash;n&quot;
@@ -5135,12 +5186,12 @@ id|hub_power_remaining
 r_struct
 id|usb_hub
 op_star
-id|hubstate
+id|hub
 comma
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 )paren
 (brace
 r_int
@@ -5151,7 +5202,7 @@ id|i
 suffix:semicolon
 id|remaining
 op_assign
-id|hubstate-&gt;power_budget
+id|hub-&gt;power_budget
 suffix:semicolon
 r_if
 c_cond
@@ -5172,7 +5223,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|hub-&gt;maxchild
+id|hdev-&gt;maxchild
 suffix:semicolon
 id|i
 op_increment
@@ -5181,9 +5232,9 @@ op_increment
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 op_assign
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|i
 )braket
@@ -5195,25 +5246,25 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev
+id|udev
 )paren
 r_continue
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;actconfig
+id|udev-&gt;actconfig
 )paren
 id|delta
 op_assign
-id|dev-&gt;actconfig-&gt;desc.bMaxPower
+id|udev-&gt;actconfig-&gt;desc.bMaxPower
 suffix:semicolon
 r_else
 id|delta
 op_assign
 l_int|50
 suffix:semicolon
-singleline_comment|// dev_dbg(&amp;dev-&gt;dev, &quot;budgeted %dmA&bslash;n&quot;, 2 * delta);
+singleline_comment|// dev_dbg(&amp;udev-&gt;dev, &quot;budgeted %dmA&bslash;n&quot;, 2 * delta);
 id|remaining
 op_sub_assign
 id|delta
@@ -5231,7 +5282,7 @@ id|dev_warn
 c_func
 (paren
 op_amp
-id|hubstate-&gt;intf-&gt;dev
+id|hub-&gt;intf-&gt;dev
 comma
 l_string|&quot;%dmA over power budget!&bslash;n&quot;
 comma
@@ -5259,7 +5310,7 @@ c_func
 r_struct
 id|usb_hub
 op_star
-id|hubstate
+id|hub
 comma
 r_int
 id|port
@@ -5274,13 +5325,21 @@ id|portchange
 r_struct
 id|usb_device
 op_star
-id|hub
+id|hdev
 op_assign
 id|interface_to_usbdev
 c_func
 (paren
-id|hubstate-&gt;intf
+id|hub-&gt;intf
 )paren
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|hub_dev
+op_assign
+op_amp
+id|hub-&gt;intf-&gt;dev
 suffix:semicolon
 r_int
 id|status
@@ -5289,8 +5348,7 @@ id|i
 suffix:semicolon
 id|dev_dbg
 (paren
-op_amp
-id|hubstate-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;port %d, status %04x, change %04x, %s&bslash;n&quot;
 comma
@@ -5312,7 +5370,7 @@ multiline_comment|/* Clear the connection change status */
 id|clear_port_feature
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 op_plus
@@ -5324,15 +5382,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hubstate-&gt;has_indicators
+id|hub-&gt;has_indicators
 )paren
 (brace
 id|set_port_led
 c_func
 (paren
-id|hub
-comma
-id|hubstate
+id|hdev
 comma
 id|port
 op_plus
@@ -5341,7 +5397,7 @@ comma
 id|HUB_LED_AUTO
 )paren
 suffix:semicolon
-id|hubstate-&gt;indicator
+id|hub-&gt;indicator
 (braket
 id|port
 )braket
@@ -5353,7 +5409,7 @@ multiline_comment|/* Disconnect any existing devices under this port */
 r_if
 c_cond
 (paren
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|port
 )braket
@@ -5362,7 +5418,7 @@ id|usb_disconnect
 c_func
 (paren
 op_amp
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|port
 )braket
@@ -5385,7 +5441,7 @@ r_if
 c_cond
 (paren
 (paren
-id|hubstate-&gt;descriptor-&gt;wHubCharacteristics
+id|hub-&gt;descriptor-&gt;wHubCharacteristics
 op_amp
 id|HUB_CHAR_LPSM
 )paren
@@ -5406,7 +5462,7 @@ id|USB_PORT_FEAT_POWER
 id|set_port_feature
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 op_plus
@@ -5434,7 +5490,7 @@ c_cond
 id|hub_port_debounce
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 )paren
@@ -5442,8 +5498,7 @@ id|port
 (brace
 id|dev_err
 (paren
-op_amp
-id|hubstate-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;connect-debounce failed, port %d disabled&bslash;n&quot;
 comma
@@ -5474,17 +5529,17 @@ op_increment
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 suffix:semicolon
 multiline_comment|/* reallocate for each attempt, since references&n;&t;&t; * to the previous one can escape in various ways&n;&t;&t; */
-id|dev
+id|udev
 op_assign
 id|usb_alloc_dev
 c_func
 (paren
-id|hub
+id|hdev
 comma
-id|hub-&gt;bus
+id|hdev-&gt;bus
 comma
 id|port
 )paren
@@ -5493,13 +5548,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev
+id|udev
 )paren
 (brace
 id|dev_err
 (paren
-op_amp
-id|hubstate-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;couldn&squot;t allocate port %d usb_device&bslash;n&quot;
 comma
@@ -5512,7 +5566,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-id|dev-&gt;state
+id|udev-&gt;state
 op_assign
 id|USB_STATE_POWERED
 suffix:semicolon
@@ -5524,12 +5578,12 @@ id|portstatus
 op_amp
 id|USB_PORT_STAT_LOW_SPEED
 )paren
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_assign
 id|USB_SPEED_LOW
 suffix:semicolon
 r_else
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_assign
 id|USB_SPEED_UNKNOWN
 suffix:semicolon
@@ -5537,7 +5591,7 @@ multiline_comment|/* reset, set address, get descriptor, add to hub&squot;s chil
 id|down
 (paren
 op_amp
-id|dev-&gt;serialize
+id|udev-&gt;serialize
 )paren
 suffix:semicolon
 id|status
@@ -5545,9 +5599,9 @@ op_assign
 id|hub_port_init
 c_func
 (paren
-id|hub
+id|hdev
 comma
-id|dev
+id|udev
 comma
 id|port
 )paren
@@ -5558,7 +5612,7 @@ c_cond
 id|status
 op_eq
 op_minus
-id|EBUSY
+id|ENOTCONN
 )paren
 r_break
 suffix:semicolon
@@ -5575,11 +5629,11 @@ multiline_comment|/* consecutive bus-powered hubs aren&squot;t reliable; they ca
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.bDeviceClass
+id|udev-&gt;descriptor.bDeviceClass
 op_eq
 id|USB_CLASS_HUB
 op_logical_and
-id|hubstate-&gt;power_budget
+id|hub-&gt;power_budget
 )paren
 (brace
 id|u16
@@ -5590,7 +5644,7 @@ op_assign
 id|usb_get_status
 c_func
 (paren
-id|dev
+id|udev
 comma
 id|USB_RECIP_DEVICE
 comma
@@ -5612,7 +5666,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;get status %d ?&bslash;n&quot;
 comma
@@ -5649,7 +5703,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;can&squot;t connect bus-powered hub &quot;
 l_string|&quot;to this port&bslash;n&quot;
@@ -5658,10 +5712,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hubstate-&gt;has_indicators
+id|hub-&gt;has_indicators
 )paren
 (brace
-id|hubstate-&gt;indicator
+id|hub-&gt;indicator
 (braket
 id|port
 )braket
@@ -5671,11 +5725,11 @@ suffix:semicolon
 id|schedule_work
 (paren
 op_amp
-id|hubstate-&gt;leds
+id|hub-&gt;leds
 )paren
 suffix:semicolon
 )brace
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|port
 )braket
@@ -5685,13 +5739,13 @@ suffix:semicolon
 id|usb_put_dev
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 id|hub_port_disable
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 )paren
@@ -5704,11 +5758,11 @@ multiline_comment|/* check for devices running slower than they could */
 r_if
 c_cond
 (paren
-id|dev-&gt;descriptor.bcdUSB
+id|udev-&gt;descriptor.bcdUSB
 op_ge
 l_int|0x0200
 op_logical_and
-id|dev-&gt;speed
+id|udev-&gt;speed
 op_eq
 id|USB_SPEED_FULL
 op_logical_and
@@ -5718,9 +5772,9 @@ l_int|0
 )paren
 id|check_highspeed
 (paren
-id|hubstate
+id|hub
 comma
-id|dev
+id|udev
 comma
 id|port
 )paren
@@ -5731,7 +5785,7 @@ op_assign
 id|usb_new_device
 c_func
 (paren
-id|dev
+id|udev
 )paren
 suffix:semicolon
 r_if
@@ -5742,7 +5796,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|hub-&gt;children
+id|hdev-&gt;children
 (braket
 id|port
 )braket
@@ -5755,7 +5809,7 @@ suffix:semicolon
 id|up
 (paren
 op_amp
-id|dev-&gt;serialize
+id|udev-&gt;serialize
 )paren
 suffix:semicolon
 id|status
@@ -5763,9 +5817,9 @@ op_assign
 id|hub_power_remaining
 c_func
 (paren
-id|hubstate
-comma
 id|hub
+comma
+id|hdev
 )paren
 suffix:semicolon
 r_if
@@ -5776,8 +5830,7 @@ id|status
 id|dev_dbg
 c_func
 (paren
-op_amp
-id|hubstate-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;%dmA power budget left&bslash;n&quot;
 comma
@@ -5794,7 +5847,7 @@ suffix:colon
 id|hub_port_disable
 c_func
 (paren
-id|hub
+id|hdev
 comma
 id|port
 )paren
@@ -5821,12 +5874,17 @@ suffix:semicolon
 r_struct
 id|usb_device
 op_star
-id|dev
+id|hdev
 suffix:semicolon
 r_struct
 id|usb_hub
 op_star
 id|hub
+suffix:semicolon
+r_struct
+id|device
+op_star
+id|hub_dev
 suffix:semicolon
 id|u16
 id|hubstatus
@@ -5891,13 +5949,18 @@ comma
 id|event_list
 )paren
 suffix:semicolon
-id|dev
+id|hdev
 op_assign
 id|interface_to_usbdev
 c_func
 (paren
 id|hub-&gt;intf
 )paren
+suffix:semicolon
+id|hub_dev
+op_assign
+op_amp
+id|hub-&gt;intf-&gt;dev
 suffix:semicolon
 id|list_del_init
 c_func
@@ -5942,8 +6005,7 @@ id|hub-&gt;error
 (brace
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;resetting for error %d&bslash;n&quot;
 comma
@@ -5962,8 +6024,7 @@ id|hub
 (brace
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;can&squot;t reset; disconnecting&bslash;n&quot;
 )paren
@@ -5978,7 +6039,7 @@ suffix:semicolon
 id|hub_start_disconnect
 c_func
 (paren
-id|dev
+id|hdev
 )paren
 suffix:semicolon
 r_continue
@@ -6013,7 +6074,7 @@ op_assign
 id|hub_port_status
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|i
 comma
@@ -6067,10 +6128,7 @@ id|USB_PORT_STAT_C_ENABLE
 (brace
 id|dev_dbg
 (paren
-id|hubdev
-(paren
-id|dev
-)paren
+id|hub_dev
 comma
 l_string|&quot;port %d enable change, status %08x&bslash;n&quot;
 comma
@@ -6084,7 +6142,7 @@ suffix:semicolon
 id|clear_port_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|i
 op_plus
@@ -6111,7 +6169,7 @@ id|USB_PORT_STAT_CONNECTION
 )paren
 op_logical_and
 (paren
-id|dev-&gt;children
+id|hdev-&gt;children
 (braket
 id|i
 )braket
@@ -6120,8 +6178,7 @@ id|i
 (brace
 id|dev_err
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;port %i &quot;
 l_string|&quot;disabled by hub (EMI?), &quot;
@@ -6156,8 +6213,7 @@ id|USB_PORT_STAT_C_SUSPEND
 (brace
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;suspend change on port %d&bslash;n&quot;
 comma
@@ -6169,7 +6225,7 @@ suffix:semicolon
 id|clear_port_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|i
 op_plus
@@ -6189,8 +6245,7 @@ id|USB_PORT_STAT_C_OVERCURRENT
 (brace
 id|dev_err
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;over-current change on port %d&bslash;n&quot;
 comma
@@ -6202,7 +6257,7 @@ suffix:semicolon
 id|clear_port_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|i
 op_plus
@@ -6228,8 +6283,7 @@ id|USB_PORT_STAT_C_RESET
 (brace
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;reset change on port %d&bslash;n&quot;
 comma
@@ -6241,7 +6295,7 @@ suffix:semicolon
 id|clear_port_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|i
 op_plus
@@ -6273,8 +6327,7 @@ l_int|0
 )paren
 id|dev_err
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;get_hub_status failed&bslash;n&quot;
 )paren
@@ -6291,8 +6344,7 @@ id|HUB_CHANGE_LOCAL_POWER
 (brace
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;power change&bslash;n&quot;
 )paren
@@ -6300,7 +6352,7 @@ suffix:semicolon
 id|clear_hub_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|C_HUB_LOCAL_POWER
 )paren
@@ -6316,8 +6368,7 @@ id|HUB_CHANGE_OVERCURRENT
 (brace
 id|dev_dbg
 (paren
-op_amp
-id|hub-&gt;intf-&gt;dev
+id|hub_dev
 comma
 l_string|&quot;overcurrent change&bslash;n&quot;
 )paren
@@ -6332,7 +6383,7 @@ multiline_comment|/* Cool down */
 id|clear_hub_feature
 c_func
 (paren
-id|dev
+id|hdev
 comma
 id|C_HUB_OVER_CURRENT
 )paren
@@ -6372,7 +6423,7 @@ c_func
 (paren
 r_void
 op_star
-id|__hub
+id|__unused
 )paren
 (brace
 multiline_comment|/*&n;&t; * This thread doesn&squot;t need any user-level access,&n;&t; * so get rid of all our resources&n;&t; */
@@ -6675,7 +6726,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 )paren
 (brace
 r_int
@@ -6700,7 +6751,7 @@ l_int|0
 suffix:semicolon
 id|index
 OL
-id|dev-&gt;descriptor.bNumConfigurations
+id|udev-&gt;descriptor.bNumConfigurations
 suffix:semicolon
 id|index
 op_increment
@@ -6711,7 +6762,7 @@ c_cond
 (paren
 id|len
 OL
-id|dev-&gt;config
+id|udev-&gt;config
 (braket
 id|index
 )braket
@@ -6720,7 +6771,7 @@ id|desc.wTotalLength
 )paren
 id|len
 op_assign
-id|dev-&gt;config
+id|udev-&gt;config
 (braket
 id|index
 )braket
@@ -6749,7 +6800,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;no mem to re-read configs after reset&bslash;n&quot;
 )paren
@@ -6768,7 +6819,7 @@ l_int|0
 suffix:semicolon
 id|index
 OL
-id|dev-&gt;descriptor.bNumConfigurations
+id|udev-&gt;descriptor.bNumConfigurations
 suffix:semicolon
 id|index
 op_increment
@@ -6780,7 +6831,7 @@ suffix:semicolon
 r_int
 id|old_length
 op_assign
-id|dev-&gt;config
+id|udev-&gt;config
 (braket
 id|index
 )braket
@@ -6792,7 +6843,7 @@ op_assign
 id|usb_get_descriptor
 c_func
 (paren
-id|dev
+id|udev
 comma
 id|USB_DT_CONFIG
 comma
@@ -6815,7 +6866,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;config index %d, error %d&bslash;n&quot;
 comma
@@ -6834,7 +6885,7 @@ id|memcmp
 (paren
 id|buf
 comma
-id|dev-&gt;rawdescriptors
+id|udev-&gt;rawdescriptors
 (braket
 id|index
 )braket
@@ -6849,7 +6900,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;config index %d changed (#%d)&bslash;n&quot;
 comma
@@ -6871,7 +6922,7 @@ suffix:semicolon
 r_return
 id|index
 op_ne
-id|dev-&gt;descriptor.bNumConfigurations
+id|udev-&gt;descriptor.bNumConfigurations
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * WARNING - don&squot;t reset any device unless drivers for all of its&n; * interfaces are expecting that reset!  Maybe some driver-&gt;reset()&n; * method should eventually help ensure sufficient cooperation.&n; *&n; * This is the same as usb_reset_device() except that the caller&n; * already holds dev-&gt;serialize.  For example, it&squot;s safe to use&n; * this from a driver probe() routine after downloading new firmware.&n; */
@@ -6883,7 +6934,7 @@ c_func
 r_struct
 id|usb_device
 op_star
-id|dev
+id|udev
 )paren
 (brace
 r_struct
@@ -6891,13 +6942,13 @@ id|usb_device
 op_star
 id|parent
 op_assign
-id|dev-&gt;parent
+id|udev-&gt;parent
 suffix:semicolon
 r_struct
 id|usb_device_descriptor
 id|descriptor
 op_assign
-id|dev-&gt;descriptor
+id|udev-&gt;descriptor
 suffix:semicolon
 r_int
 id|i
@@ -6912,7 +6963,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;maxchild
+id|udev-&gt;maxchild
 )paren
 (brace
 multiline_comment|/* this requires hub- or hcd-specific logic;&n;&t;&t; * see hub_reset() and OHCI hc_restart()&n;&t;&t; */
@@ -6920,7 +6971,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;%s for hub!&bslash;n&quot;
 comma
@@ -6954,7 +7005,7 @@ id|parent-&gt;children
 id|i
 )braket
 op_eq
-id|dev
+id|udev
 )paren
 (brace
 id|port
@@ -6982,7 +7033,7 @@ c_func
 (paren
 id|parent
 comma
-id|dev
+id|udev
 comma
 id|port
 )paren
@@ -7005,7 +7056,7 @@ id|memcmp
 c_func
 (paren
 op_amp
-id|dev-&gt;descriptor
+id|udev-&gt;descriptor
 comma
 op_amp
 id|descriptor
@@ -7016,7 +7067,7 @@ id|descriptor
 op_logical_or
 id|config_descriptors_changed
 (paren
-id|dev
+id|udev
 )paren
 )paren
 (brace
@@ -7024,12 +7075,12 @@ id|dev_info
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;device firmware changed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev-&gt;descriptor
+id|udev-&gt;descriptor
 op_assign
 id|descriptor
 suffix:semicolon
@@ -7042,7 +7093,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;actconfig
+id|udev-&gt;actconfig
 )paren
 r_return
 l_int|0
@@ -7052,12 +7103,12 @@ op_assign
 id|usb_control_msg
 c_func
 (paren
-id|dev
+id|udev
 comma
 id|usb_sndctrlpipe
 c_func
 (paren
-id|dev
+id|udev
 comma
 l_int|0
 )paren
@@ -7066,7 +7117,7 @@ id|USB_REQ_SET_CONFIGURATION
 comma
 l_int|0
 comma
-id|dev-&gt;actconfig-&gt;desc.bConfigurationValue
+id|udev-&gt;actconfig-&gt;desc.bConfigurationValue
 comma
 l_int|0
 comma
@@ -7091,11 +7142,11 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;can&squot;t restore configuration #%d (error=%d)&bslash;n&quot;
 comma
-id|dev-&gt;actconfig-&gt;desc.bConfigurationValue
+id|udev-&gt;actconfig-&gt;desc.bConfigurationValue
 comma
 id|ret
 )paren
@@ -7104,7 +7155,7 @@ r_goto
 id|re_enumerate
 suffix:semicolon
 )brace
-id|dev-&gt;state
+id|udev-&gt;state
 op_assign
 id|USB_STATE_CONFIGURED
 suffix:semicolon
@@ -7117,7 +7168,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
+id|udev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -7128,7 +7179,7 @@ id|usb_interface
 op_star
 id|intf
 op_assign
-id|dev-&gt;actconfig-&gt;interface
+id|udev-&gt;actconfig-&gt;interface
 (braket
 id|i
 )braket
@@ -7149,7 +7200,7 @@ op_assign
 id|usb_set_interface
 c_func
 (paren
-id|dev
+id|udev
 comma
 id|desc-&gt;bInterfaceNumber
 comma
@@ -7168,7 +7219,7 @@ id|dev_err
 c_func
 (paren
 op_amp
-id|dev-&gt;dev
+id|udev-&gt;dev
 comma
 l_string|&quot;failed to restore interface %d &quot;
 l_string|&quot;altsetting %d (error=%d)&bslash;n&quot;
@@ -7191,7 +7242,7 @@ suffix:semicolon
 id|re_enumerate
 suffix:colon
 multiline_comment|/* FIXME make some task re-enumerate; don&squot;t just mark unusable */
-id|dev-&gt;state
+id|udev-&gt;state
 op_assign
 id|USB_STATE_NOTATTACHED
 suffix:semicolon

@@ -475,6 +475,7 @@ id|rq
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -775,6 +776,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -830,6 +832,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -850,7 +853,8 @@ dot
 id|iov_base
 op_assign
 (paren
-r_void
+r_char
+id|__user
 op_star
 )paren
 id|buf
@@ -889,6 +893,7 @@ id|iocb
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -908,7 +913,8 @@ dot
 id|iov_base
 op_assign
 (paren
-r_void
+r_char
+id|__user
 op_star
 )paren
 id|buf

@@ -95,6 +95,10 @@ id|walk_in-&gt;page
 op_eq
 id|walk_out-&gt;page
 op_logical_and
+id|walk_in-&gt;offset
+op_eq
+id|walk_out-&gt;offset
+op_logical_and
 id|walk_in-&gt;data
 op_eq
 id|src_p

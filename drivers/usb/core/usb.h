@@ -1,7 +1,7 @@
 multiline_comment|/* Functions local to drivers/usb/core/ */
 r_extern
 r_void
-id|usb_create_driverfs_dev_files
+id|usb_create_sysfs_dev_files
 (paren
 r_struct
 id|usb_device
@@ -11,7 +11,7 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
-id|usb_create_driverfs_intf_files
+id|usb_create_sysfs_intf_files
 (paren
 r_struct
 id|usb_interface

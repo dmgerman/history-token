@@ -106,6 +106,7 @@ comma
 r_int
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -135,6 +136,7 @@ op_star
 comma
 r_struct
 id|scsi_ioctl_command
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -468,6 +468,7 @@ id|u64
 id|cookie64
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

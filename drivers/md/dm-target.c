@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited&n; *&n; * This file is released under the GPL.&n; */
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -735,6 +736,7 @@ comma
 suffix:semicolon
 DECL|function|dm_target_init
 r_int
+id|__init
 id|dm_target_init
 c_func
 (paren

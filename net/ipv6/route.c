@@ -2044,6 +2044,17 @@ id|rt6-&gt;rt6i_flags
 op_or_assign
 id|RTF_MODIFIED
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mtu
+OL
+id|IPV6_MIN_MTU
+)paren
+id|mtu
+op_assign
+id|IPV6_MIN_MTU
+suffix:semicolon
 id|dst-&gt;metrics
 (braket
 id|RTAX_MTU

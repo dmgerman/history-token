@@ -872,7 +872,7 @@ op_eq
 l_int|0
 )paren
 r_goto
-id|error
+id|error_free_iph
 suffix:semicolon
 id|skb-&gt;nh.raw
 (braket
@@ -1146,6 +1146,14 @@ suffix:semicolon
 )brace
 r_return
 id|NET_XMIT_BYPASS
+suffix:semicolon
+id|error_free_iph
+suffix:colon
+id|kfree
+c_func
+(paren
+id|iph
+)paren
 suffix:semicolon
 id|error
 suffix:colon

@@ -341,6 +341,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -352,14 +353,11 @@ op_star
 id|ppos
 )paren
 (brace
-id|u32
+r_char
+id|__user
 op_star
 id|tmp
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|buf
 suffix:semicolon
 id|u32
@@ -442,7 +440,7 @@ id|EFAULT
 suffix:semicolon
 id|tmp
 op_add_assign
-l_int|4
+l_int|16
 suffix:semicolon
 op_star
 id|ppos
@@ -452,13 +450,7 @@ op_increment
 suffix:semicolon
 )brace
 r_return
-(paren
-(paren
-r_char
-op_star
-)paren
 id|tmp
-)paren
 op_minus
 id|buf
 suffix:semicolon

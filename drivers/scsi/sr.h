@@ -106,7 +106,7 @@ id|Scsi_CD
 op_star
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 )paren
 suffix:semicolon

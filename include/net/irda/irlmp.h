@@ -904,7 +904,6 @@ r_return
 (paren
 id|self
 op_logical_and
-op_logical_neg
 id|self-&gt;lap
 )paren
 ques

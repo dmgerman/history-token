@@ -964,9 +964,13 @@ id|dsisr
 suffix:semicolon
 r_int
 r_char
+id|__user
 op_star
 id|addr
-comma
+suffix:semicolon
+r_int
+r_char
+id|__user
 op_star
 id|p
 suffix:semicolon
@@ -1135,6 +1139,7 @@ op_assign
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|regs-&gt;dar
@@ -1173,6 +1178,7 @@ op_assign
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 (paren

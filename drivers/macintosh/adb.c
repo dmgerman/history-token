@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#ifdef CONFIG_PPC
@@ -3939,6 +3940,26 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|devfs_mk_cdev
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|ADB_MAJOR
+comma
+l_int|0
+)paren
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+comma
+l_string|&quot;adb&quot;
+)paren
+suffix:semicolon
 id|adb_dev_class
 op_assign
 id|class_simple_create

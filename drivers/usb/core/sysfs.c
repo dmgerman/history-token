@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/usb/core/driverfs.c&n; *&n; * (C) Copyright 2002 David Brownell&n; * (C) Copyright 2002 Greg Kroah-Hartman&n; * (C) Copyright 2002 IBM Corp.&n; *&n; * All of the driverfs file attributes for usb devices and interfaces.&n; *&n; */
+multiline_comment|/*&n; * drivers/usb/core/sysfs.c&n; *&n; * (C) Copyright 2002 David Brownell&n; * (C) Copyright 2002 Greg Kroah-Hartman&n; * (C) Copyright 2002 IBM Corp.&n; *&n; * All of the sysfs file attributes for usb devices and interfaces.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
@@ -489,9 +489,9 @@ id|bNumConfigurations
 comma
 l_string|&quot;%d&bslash;n&quot;
 )paren
-DECL|function|usb_create_driverfs_dev_files
+DECL|function|usb_create_sysfs_dev_files
 r_void
-id|usb_create_driverfs_dev_files
+id|usb_create_sysfs_dev_files
 (paren
 r_struct
 id|usb_device
@@ -716,9 +716,9 @@ id|iInterface
 comma
 l_string|&quot;%02x&bslash;n&quot;
 )paren
-DECL|function|usb_create_driverfs_intf_files
+DECL|function|usb_create_sysfs_intf_files
 r_void
-id|usb_create_driverfs_intf_files
+id|usb_create_sysfs_intf_files
 (paren
 r_struct
 id|usb_interface

@@ -3924,7 +3924,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|usb_create_driverfs_intf_files
+id|usb_create_sysfs_intf_files
 (paren
 id|intf
 )paren

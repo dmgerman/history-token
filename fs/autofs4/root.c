@@ -2931,6 +2931,7 @@ id|sbi
 comma
 r_int
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -3012,6 +3013,7 @@ op_star
 id|sbi
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -3040,6 +3042,7 @@ op_star
 id|sbi
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -3068,6 +3071,7 @@ op_star
 id|sbi
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -3123,6 +3127,7 @@ op_star
 id|sbi
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -3182,6 +3187,7 @@ op_star
 id|mnt
 comma
 r_int
+id|__user
 op_star
 id|p
 )paren
@@ -3298,6 +3304,18 @@ c_func
 (paren
 id|inode-&gt;i_sb
 )paren
+suffix:semicolon
+r_void
+id|__user
+op_star
+id|p
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -3437,11 +3455,7 @@ c_func
 (paren
 id|sbi
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -3454,11 +3468,7 @@ c_func
 (paren
 id|sbi
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -3470,12 +3480,7 @@ c_func
 (paren
 id|sbi
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -3487,11 +3492,7 @@ c_func
 (paren
 id|sbi
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -3503,11 +3504,7 @@ c_func
 (paren
 id|sbi
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -3519,11 +3516,7 @@ c_func
 (paren
 id|filp-&gt;f_vfsmnt
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 multiline_comment|/* return a single thing to expire */
@@ -3540,12 +3533,7 @@ id|filp-&gt;f_vfsmnt
 comma
 id|sbi
 comma
-(paren
-r_struct
-id|autofs_packet_expire
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 multiline_comment|/* same as above, but can send multiple expires through pipe */
@@ -3562,11 +3550,7 @@ id|filp-&gt;f_vfsmnt
 comma
 id|sbi
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_default
