@@ -240,6 +240,9 @@ id|file_operations
 id|hcl_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
 (paren
 r_struct
 id|module
@@ -247,51 +250,21 @@ op_star
 )paren
 l_int|0
 comma
-l_int|NULL
-comma
-multiline_comment|/* lseek - default */
-l_int|NULL
-comma
-multiline_comment|/* read - general block-dev read */
-l_int|NULL
-comma
-multiline_comment|/* write - general block-dev write */
-l_int|NULL
-comma
-multiline_comment|/* readdir - bad */
-l_int|NULL
-comma
-multiline_comment|/* poll */
+dot
+id|ioctl
+op_assign
 id|hcl_ioctl
 comma
-multiline_comment|/* ioctl */
-l_int|NULL
-comma
-multiline_comment|/* mmap */
+dot
+id|open
+op_assign
 id|hcl_open
 comma
-multiline_comment|/* open */
-l_int|NULL
-comma
-multiline_comment|/* flush */
+dot
+id|release
+op_assign
 id|hcl_close
 comma
-multiline_comment|/* release */
-l_int|NULL
-comma
-multiline_comment|/* fsync */
-l_int|NULL
-comma
-multiline_comment|/* fasync */
-l_int|NULL
-comma
-multiline_comment|/* lock */
-l_int|NULL
-comma
-multiline_comment|/* readv */
-l_int|NULL
-comma
-multiline_comment|/* writev */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * init_hcl() - Boot time initialization.&n; *&n; */
@@ -660,6 +633,11 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;HCL: hwgraph_fastinfo_get handle given is NULL.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
