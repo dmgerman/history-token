@@ -81,7 +81,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: PIIX3: Enabling Passive Release on %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 id|dlc
@@ -1342,7 +1346,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;PCI: Via IRQ fixup for %s, from %d to %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|irq
 comma
@@ -1933,7 +1941,11 @@ id|first_bar
 comma
 id|last_bar
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3296,7 +3308,11 @@ l_string|&quot;PCI: Calling quirk %p for %s&bslash;n&quot;
 comma
 id|f-&gt;hook
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

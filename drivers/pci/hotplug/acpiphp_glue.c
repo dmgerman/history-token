@@ -2595,7 +2595,11 @@ c_func
 (paren
 l_string|&quot;found PCI-to-PCI bridge at PCI %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|add_p2p_bridge
@@ -2965,7 +2969,11 @@ l_string|&quot;%s: executing _PS0 on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|func-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|func-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|status

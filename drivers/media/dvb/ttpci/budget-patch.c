@@ -715,6 +715,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1127,11 +1132,6 @@ dot
 id|flags
 op_assign
 l_int|0
-comma
-dot
-id|ext_vv_data
-op_assign
-l_int|NULL
 comma
 dot
 id|module

@@ -3,7 +3,7 @@ macro_line|#ifndef __QETH_MPC_H__
 DECL|macro|__QETH_MPC_H__
 mdefine_line|#define __QETH_MPC_H__
 DECL|macro|VERSION_QETH_MPC_H
-mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.15 $&quot;
+mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.16 $&quot;
 DECL|macro|QETH_IPA_TIMEOUT
 mdefine_line|#define QETH_IPA_TIMEOUT (card-&gt;ipa_timeout)
 DECL|macro|QETH_MPC_TIMEOUT
@@ -305,8 +305,8 @@ DECL|macro|IPA_CMD_ASS_ARP_QUERY_INFO
 mdefine_line|#define IPA_CMD_ASS_ARP_QUERY_INFO 0x0104
 DECL|macro|IPA_CMD_ASS_ARP_QUERY_STATS
 mdefine_line|#define IPA_CMD_ASS_ARP_QUERY_STATS 0x0204
-DECL|macro|IPA_CHECKSUM_ENABLE_MASK
-mdefine_line|#define IPA_CHECKSUM_ENABLE_MASK 0x001a
+DECL|macro|IPA_CHECKSUM_DEFAULT_ENABLE_MASK
+mdefine_line|#define IPA_CHECKSUM_DEFAULT_ENABLE_MASK 0x001a
 DECL|macro|IPA_CMD_ASS_FILTER_SET_TYPES
 mdefine_line|#define IPA_CMD_ASS_FILTER_SET_TYPES 0x0003
 DECL|macro|IPA_CMD_ASS_IPv6_SET_FUNCTIONS

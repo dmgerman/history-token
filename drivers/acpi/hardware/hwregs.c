@@ -808,7 +808,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Decode the Register ID&n;&t; * Register id = Register block id | bit id&n;&t; *&n;&t; * Check bit id to fine locate Register offset.&n;&t; * Check Mask to determine Register offset, and then read-write.&n;&t; */
+multiline_comment|/*&n;&t; * Decode the Register ID&n;&t; * Register ID = [Register block ID] | [bit ID]&n;&t; *&n;&t; * Check bit ID to fine locate Register offset.&n;&t; * Check Mask to determine Register offset, and then read-write.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -818,7 +818,7 @@ id|bit_reg_info-&gt;parent_register
 r_case
 id|ACPI_REGISTER_PM1_STATUS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Status Registers are different from the rest.  Clear by&n;&t;&t; * writing 1, writing 0 has no effect.  So, the only relevant&n;&t;&t; * information is the single bit we&squot;re interested in, all others should&n;&t;&t; * be written as 0 so they will be left unchanged&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Status Registers are different from the rest.  Clear by&n;&t;&t; * writing 1, and writing 0 has no effect.  So, the only relevant&n;&t;&t; * information is the single bit we&squot;re interested in, all others should&n;&t;&t; * be written as 0 so they will be left unchanged.&n;&t;&t; */
 id|value
 op_assign
 id|ACPI_REGISTER_PREPARE_BITS
@@ -890,7 +890,7 @@ suffix:semicolon
 r_case
 id|ACPI_REGISTER_PM1_CONTROL
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Read the PM1 Control register.&n;&t;&t; * Note that at this level, the fact that there are actually TWO&n;&t;&t; * registers (A and B - and that B may not exist) is abstracted.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Write the PM1 Control register.&n;&t;&t; * Note that at this level, the fact that there are actually TWO&n;&t;&t; * registers (A and B - and B may not exist) is abstracted.&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -919,7 +919,7 @@ id|acpi_hw_register_write
 (paren
 id|ACPI_MTX_DO_NOT_LOCK
 comma
-id|register_id
+id|ACPI_REGISTER_PM1_CONTROL
 comma
 (paren
 id|u16
@@ -1799,7 +1799,7 @@ id|value
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Three address spaces supported:&n;&t; * Memory, Io, or PCI config.&n;&t; */
+multiline_comment|/*&n;&t; * Three address spaces supported:&n;&t; * Memory, IO, or PCI_Config.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -2002,7 +2002,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Three address spaces supported:&n;&t; * Memory, Io, or PCI config.&n;&t; */
+multiline_comment|/*&n;&t; * Three address spaces supported:&n;&t; * Memory, IO, or PCI_Config.&n;&t; */
 r_switch
 c_cond
 (paren

@@ -91,7 +91,7 @@ r_static
 id|DEFINE_PER_CPU
 c_func
 (paren
-id|__u64
+id|u64
 comma
 id|ipi_operation
 )paren
@@ -172,7 +172,7 @@ op_star
 id|pending_ipis
 op_assign
 op_amp
-id|__get_cpu_var
+id|__ia64_per_cpu_var
 c_func
 (paren
 id|ipi_operation

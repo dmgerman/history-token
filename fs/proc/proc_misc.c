@@ -1855,7 +1855,6 @@ id|i
 dot
 id|cpustat.iowait
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390)
 r_for
 c_loop
 (paren
@@ -1883,7 +1882,6 @@ id|irqs
 id|j
 )braket
 suffix:semicolon
-macro_line|#endif
 )brace
 id|len
 op_assign
@@ -2041,7 +2039,7 @@ comma
 id|sum
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(CONFIG_PPC64) &amp;&amp; !defined(CONFIG_ALPHA)
+macro_line|#if !defined(CONFIG_PPC64) &amp;&amp; !defined(CONFIG_ALPHA)
 r_for
 c_loop
 (paren
@@ -2199,7 +2197,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_ARCH_S390)
 r_extern
 r_int
 id|show_interrupts
@@ -2350,7 +2347,6 @@ id|single_release
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|function|filesystems_read_proc
 r_static
 r_int
@@ -2816,6 +2812,9 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2829,6 +2828,10 @@ id|pnt
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|read
 op_add_assign
@@ -3326,7 +3329,6 @@ op_amp
 id|proc_partitions_operations
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_S390)
 id|create_seq_entry
 c_func
 (paren
@@ -3338,7 +3340,6 @@ op_amp
 id|proc_interrupts_operations
 )paren
 suffix:semicolon
-macro_line|#endif
 id|create_seq_entry
 c_func
 (paren

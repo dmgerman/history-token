@@ -4264,7 +4264,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_processor_write_throttling
 id|acpi_processor_write_throttling
 (paren
@@ -4556,7 +4556,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_processor_write_limit
 id|acpi_processor_write_limit
 (paren

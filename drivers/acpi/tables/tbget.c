@@ -191,7 +191,6 @@ comma
 (paren
 r_void
 op_star
-op_star
 )paren
 op_amp
 id|header
@@ -646,7 +645,6 @@ id|header-&gt;length
 comma
 (paren
 r_void
-op_star
 op_star
 )paren
 op_amp

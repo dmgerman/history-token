@@ -11,7 +11,10 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
+macro_line|#include &lt;linux/atm.h&gt;
+macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/atmbr2684.h&gt;
+macro_line|#include &quot;common.h&quot;
 macro_line|#include &quot;ipcommon.h&quot;
 multiline_comment|/*&n; * Define this to use a version of the code which interacts with the higher&n; * layers in a more intellegent way, by always reserving enough space for&n; * our header at the begining of the packet.  However, there may still be&n; * some problems with programs like tcpdump.  In 2.5 we&squot;ll sort out what&n; * we need to do to get this perfect.  For now we just will copy the packet&n; * if we need space for the header&n; */
 multiline_comment|/* #define FASTER_VERSION */
@@ -3554,24 +3557,6 @@ op_star
 id|atm_proc_root
 suffix:semicolon
 multiline_comment|/* from proc.c */
-r_extern
-r_int
-(paren
-op_star
-id|br2684_ioctl_hook
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* the following avoids some spurious warnings from the compiler */
 DECL|macro|UNUSED
 mdefine_line|#define UNUSED __attribute__((unused))
@@ -3619,9 +3604,11 @@ op_assign
 op_amp
 id|br2684_proc_operations
 suffix:semicolon
-id|br2684_ioctl_hook
-op_assign
+id|br2684_ioctl_set
+c_func
+(paren
 id|br2684_ioctl
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3643,9 +3630,11 @@ id|br2684_dev
 op_star
 id|brdev
 suffix:semicolon
-id|br2684_ioctl_hook
-op_assign
+id|br2684_ioctl_set
+c_func
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 id|remove_proc_entry
 c_func

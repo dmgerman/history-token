@@ -2,7 +2,7 @@ multiline_comment|/* Copyright 2000, Compaq Computer Corporation &n; * Fibre Cha
 multiline_comment|/* These functions control the host bus adapter (HBA) hardware.  The main chip&n;   control takes place in the interrupt handler where we process the IMQ &n;   (Inbound Message Queue).  The IMQ is Tachyon&squot;s way of communicating FC link&n;   events and state information to the driver.  The Single Frame Queue (SFQ)&n;   buffers incoming FC frames for processing by the driver.  References to &n;   &quot;TL/TS UG&quot; are for:&n;   &quot;HP HPFC-5100/5166 Tachyon TL/TS ICs User Guide&quot;, August 16, 1999, 1st Ed.&n;   Hewlitt Packard Manual Part Number 5968-1083E.&n;*/
 DECL|macro|LinuxVersionCode
 mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;  

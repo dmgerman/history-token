@@ -196,7 +196,11 @@ l_string|&quot;PCI: Bus %d, cardbus bridge: %s&bslash;n&quot;
 comma
 id|bus-&gt;number
 comma
-id|bridge-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|bridge
+)paren
 )paren
 suffix:semicolon
 id|pcibios_resource_to_bus
@@ -1500,7 +1504,11 @@ id|KERN_WARNING
 l_string|&quot;PCI: region %s/%d &quot;
 l_string|&quot;too large: %lx-%lx&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|i
 comma
@@ -2269,7 +2277,11 @@ id|KERN_INFO
 l_string|&quot;PCI: not setting up bridge %s &quot;
 l_string|&quot;for bus %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|b-&gt;number
 )paren

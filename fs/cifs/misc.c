@@ -678,6 +678,16 @@ suffix:semicolon
 id|__u32
 id|tmp
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|temp_item
+suffix:semicolon
+r_struct
+id|cifsSesInfo
+op_star
+id|ses
+suffix:semicolon
 r_char
 op_star
 id|temp
@@ -864,6 +874,142 @@ op_assign
 id|treeCon-&gt;ses-&gt;Suid
 suffix:semicolon
 multiline_comment|/* always in LE format */
+r_if
+c_cond
+(paren
+id|multiuser_mount
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* For the multiuser case, there are few obvious technically  */
+multiline_comment|/* possible mechanisms to match the local linux user (uid)    */
+multiline_comment|/* to a valid remote smb user (smb_uid):&t;&t;      */
+multiline_comment|/* &t;1) Query Winbind (or other local pam/nss daemon       */
+multiline_comment|/* &t;  for userid/password/logon_domain or credential      */
+multiline_comment|/*      2) Query Winbind for uid to sid to username mapping   */
+multiline_comment|/* &t;   and see if we have a matching password for existing*/
+multiline_comment|/*         session for that user perhas getting password by   */
+multiline_comment|/*         adding a new pam_cifs module that stores passwords */
+multiline_comment|/*         so that the cifs vfs can get at that for all logged*/
+multiline_comment|/*&t;   on users&t;&t;&t;&t;&t;      */
+multiline_comment|/*&t;3) (Which is the mechanism we have chosen)&t;      */
+multiline_comment|/*&t;   Search through sessions to the same server for a   */
+multiline_comment|/*&t;   a match on the uid that was passed in on mount     */
+multiline_comment|/*         with the current processes uid (or euid?) and use  */
+multiline_comment|/* &t;   that smb uid.   If no existing smb session for     */
+multiline_comment|/* &t;   that uid found, use the default smb session ie     */
+multiline_comment|/*         the smb session for the volume mounted which is    */
+multiline_comment|/* &t;   the same as would be used if the multiuser mount   */
+multiline_comment|/* &t;   flag were disabled.  */
+multiline_comment|/*  BB Add support for establishing new tCon and SMB Session  */
+multiline_comment|/*      with userid/password pairs found on the smb session   */
+multiline_comment|/*&t;for other target tcp/ip addresses &t;&t;BB    */
+r_if
+c_cond
+(paren
+id|current-&gt;uid
+op_ne
+id|treeCon-&gt;ses-&gt;linux_uid
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Multiuser mode and UID did not match tcon uid &quot;
+)paren
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|temp_item
+comma
+op_amp
+id|GlobalSMBSessionList
+)paren
+(brace
+id|ses
+op_assign
+id|list_entry
+c_func
+(paren
+id|temp_item
+comma
+r_struct
+id|cifsSesInfo
+comma
+id|cifsSessionList
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ses-&gt;linux_uid
+op_eq
+id|current-&gt;uid
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ses-&gt;server
+op_eq
+id|treeCon-&gt;ses-&gt;server
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;found matching uid substitute right smb_uid&quot;
+)paren
+)paren
+suffix:semicolon
+id|buffer-&gt;Uid
+op_assign
+id|ses-&gt;Suid
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BB eventually call setup_session here */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;local UID found but smb sess with this server does not exist&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+)brace
+)brace
 )brace
 r_if
 c_cond

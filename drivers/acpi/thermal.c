@@ -170,7 +170,7 @@ id|file
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|acpi_thermal_write_trip_points
 (paren
 r_struct
@@ -204,7 +204,7 @@ id|file
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|acpi_thermal_write_cooling_mode
 (paren
 r_struct
@@ -238,7 +238,7 @@ id|file
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|acpi_thermal_write_polling
 c_func
 (paren
@@ -3648,7 +3648,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_thermal_write_trip_points
 id|acpi_thermal_write_trip_points
 (paren
@@ -4023,7 +4023,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_thermal_write_cooling_mode
 id|acpi_thermal_write_cooling_mode
 (paren
@@ -4312,7 +4312,7 @@ id|data
 suffix:semicolon
 )brace
 r_static
-r_int
+id|ssize_t
 DECL|function|acpi_thermal_write_polling
 id|acpi_thermal_write_polling
 (paren

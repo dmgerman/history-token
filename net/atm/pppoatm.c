@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
 macro_line|#include &lt;linux/ppp_channel.h&gt;
 macro_line|#include &lt;linux/atmppp.h&gt;
+macro_line|#include &quot;common.h&quot;
 macro_line|#if 0
 mdefine_line|#define DPRINTK(format, args...) &bslash;&n;&t;printk(KERN_DEBUG &quot;pppoatm: &quot; format, ##args)
 macro_line|#else
@@ -1516,24 +1517,6 @@ suffix:semicolon
 multiline_comment|/* the following avoids some spurious warnings from the compiler */
 DECL|macro|UNUSED
 mdefine_line|#define UNUSED __attribute__((unused))
-r_extern
-r_int
-(paren
-op_star
-id|pppoatm_ioctl_hook
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|pppoatm_init
 r_static
 r_int
@@ -1545,9 +1528,11 @@ c_func
 r_void
 )paren
 (brace
-id|pppoatm_ioctl_hook
-op_assign
+id|pppoatm_ioctl_set
+c_func
+(paren
 id|pppoatm_ioctl
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1564,9 +1549,11 @@ c_func
 r_void
 )paren
 (brace
-id|pppoatm_ioctl_hook
-op_assign
+id|pppoatm_ioctl_set
+c_func
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 DECL|variable|pppoatm_init

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.73 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.74 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -743,6 +743,10 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -803,8 +807,8 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_return
-id|err
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|clear_page
@@ -818,6 +822,8 @@ id|cio_chsc_desc_avail
 op_assign
 l_int|1
 suffix:semicolon
+id|out
+suffix:colon
 id|free_page
 c_func
 (paren
@@ -829,7 +835,7 @@ id|page
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|variable|chsc_get_sch_descriptions
@@ -1643,7 +1649,7 @@ op_minus
 id|ENXIO
 )paren
 multiline_comment|/* We&squot;re through */
-r_return
+r_break
 suffix:semicolon
 r_continue
 suffix:semicolon

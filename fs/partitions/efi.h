@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 DECL|macro|MSDOS_MBR_SIGNATURE
 mdefine_line|#define MSDOS_MBR_SIGNATURE 0xaa55

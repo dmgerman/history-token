@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * QLogic ISP1020 Intelligent SCSI Processor Driver (PCI)&n; * Written by Erik H. Moe, ehm@cris.com&n; * Copyright 1995, Erik H. Moe&n; * Copyright 1996, 1997  Michael A. Griffith &lt;grif@acm.org&gt;&n; * Copyright 2000, Jayson C. Vantuyl &lt;vantuyl@csc.smsu.edu&gt;&n; *             and Bryon W. Roche    &lt;bryon@csc.smsu.edu&gt;&n; *&n; * 64-bit addressing added by Kanoj Sarcar &lt;kanoj@sgi.com&gt;&n; * &t;&t;&t;   and Leo Dagum    &lt;dagum@sgi.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

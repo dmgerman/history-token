@@ -10,10 +10,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
-multiline_comment|/*&n; * &lt;linux/blk.h&gt; is controlled from the outside with these definitions.&n; */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;JSFD_MAJOR
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

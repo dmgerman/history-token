@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mtd/blktrans.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;

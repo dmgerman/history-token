@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth.c ($Revision: 1.118 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Utz Bacher &lt;utz.bacher@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt; (2.5 integration,&n; *                                               numerous bugfixes)&n; *            Frank Pavlic &lt;pavlic@de.ibm.com&gt;  (query/purge ARP, SNMP, fixes)&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt; (bugfixes)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth.c ($Revision: 1.126 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Utz Bacher &lt;utz.bacher@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt; (2.5 integration,&n; *                                               numerous bugfixes)&n; *            Frank Pavlic &lt;pavlic@de.ibm.com&gt;  (query/purge ARP, SNMP, fixes)&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt; (bugfixes)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * The driver supports in general all QDIO driven network devices on the&n; * Hydra card.&n; *&n; * For all devices, three channels must be available to the driver. One&n; * channel is the read channel, one is the write channel and the third&n; * one is the channel used to control QDIO.&n; *&n; * There are several stages from the channel recognition to the running&n; * network device:&n; * - The channels are scanned and ordered due to the parameters (see&n; *   MODULE_PARM_DESC)&n; * - The card is hardsetup: this means, that the communication channels&n; *   are prepared&n; * - The card is softsetup: this means, that commands are issued&n; *   to activate the network parameters&n; * - After that, data can flow through the card (transported by QDIO)&n; *&n; *IPA Takeover:&n; * /proc/qeth_ipa_takeover provides the possibility to add and remove&n; * certain ranges of IP addresses to the driver. As soon as these&n; * addresses have to be set by the driver, the driver uses the OSA&n; * Address Takeover mechanism.&n; * reading out of the proc-file displays the registered addresses;&n; * writing into it changes the information. Only one command at one&n; * time must be written into the file. Subsequent commands are ignored.&n; * The following commands are available:&n; * inv4&n; * inv6&n; * add4 &lt;ADDR&gt;/&lt;mask bits&gt;[:&lt;interface&gt;]&n; * add6 &lt;ADDR&gt;/&lt;mask bits&gt;[:&lt;interface&gt;]&n; * del4 &lt;ADDR&gt;/&lt;mask bits&gt;[:&lt;interface&gt;]&n; * del6 &lt;ADDR&gt;/&lt;mask bits&gt;[:&lt;interface&gt;]&n; * inv4 and inv6 toggle the IPA takeover behaviour for all interfaces:&n; * when inv4 was input once, all addresses specified with add4 are not&n; * set using the takeover mechanism, but all other IPv4 addresses are set so.&n; *&n; * add# adds an address range, del# deletes an address range. # corresponds&n; * to the IP version (4 or 6).&n; * &lt;ADDR&gt; is a 8 or 32byte hexadecimal view of the IP address.&n; * &lt;mask bits&gt; specifies the number of bits which are set in the network mask.&n; * &lt;interface&gt; is optional and specifies the interface name to which the&n; * address range is bound.&n; * E. g.&n; *   add4 C0a80100/24&n; * activates all addresses in the 192.168.10 subnet for address takeover.&n; * Note, that the address is not taken over before an according ifconfig&n; * is executed.&n; *&n; *VIPA:&n; * add_vipa4 &lt;ADDR&gt;:&lt;interface&gt;&n; * add_vipa6 &lt;ADDR&gt;:&lt;interface&gt;&n; * del_vipa4 &lt;ADDR&gt;:&lt;interface&gt;&n; * del_vipa6 &lt;ADDR&gt;:&lt;interface&gt;&n; *&n; * the specified address is set/unset as VIPA on the specified interface.&n; * use the src_vipa package to exploit this out of arbitrary applications.&n; *&n; *Proxy ARP:&n; *&n; * add_rxip4 &lt;ADDR&gt;:&lt;interface&gt;&n; * add_rxip6 &lt;ADDR&gt;:&lt;interface&gt;&n; * del_rxip4 &lt;ADDR&gt;:&lt;interface&gt;&n; * del_rxip6 &lt;ADDR&gt;:&lt;interface&gt;&n; *&n; * the specified address is set/unset as &quot;do not fail a gratuitous ARP&quot;&n; * on the specified interface. this can be used to act as a proxy ARP.&n; */
 r_static
 r_void
@@ -89,7 +89,7 @@ l_string|&quot;reserved for low memory situations&quot;
 suffix:semicolon
 multiline_comment|/****************** MODULE STUFF **********************************/
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.118 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.126 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -5153,6 +5153,7 @@ id|skb
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_struct
 id|sk_buff
 op_star
@@ -6781,8 +6782,10 @@ id|HW_CHECKSUMMING
 )paren
 (brace
 multiline_comment|/* do we have a checksummed packet? */
+multiline_comment|/* &n;&t;&t; * we only check for TCP/UDP checksums when the pseudo&n;&t;&t; * header was also checked successfully -- for the&n;&t;&t; * rest of the packets, it&squot;s not clear, whether the&n;&t;&t; * upper layer csum is alright. And they shouldn&squot;t&n;&t;&t; * occur too often anyway in real life &n;&t;&t; */
 r_if
 c_cond
+(paren
 (paren
 op_star
 (paren
@@ -6795,10 +6798,22 @@ op_plus
 l_int|11
 )paren
 op_amp
+(paren
+id|QETH_EXT_HEADER_CSUM_HDR_REQ
+op_or
 id|QETH_EXT_HEADER_CSUM_TRANSP_REQ
 )paren
+)paren
+op_eq
+(paren
+id|QETH_EXT_HEADER_CSUM_HDR_REQ
+op_or
+id|QETH_EXT_HEADER_CSUM_TRANSP_REQ
+)paren
+)paren
 (brace
-multiline_comment|/* skb-&gt;ip_summed is set already */
+macro_line|#if 0
+multiline_comment|/* csum does not need to be set inbound anyway */
 multiline_comment|/* &n;&t;&t;&t; * vlan is not an issue here, it&squot;s still in&n;&t;&t;&t; * the QDIO header, not pushed in the skb yet&n;&t;&t;&t; */
 r_int
 id|ip_len
@@ -6871,6 +6886,11 @@ id|QETH_TCP_CSUM_OFFSET
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* 0 */
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_UNNECESSARY
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -6881,6 +6901,11 @@ id|SW_CHECKSUMMING
 suffix:semicolon
 )brace
 )brace
+r_else
+id|skb-&gt;ip_summed
+op_assign
+id|card-&gt;options.checksum_type
+suffix:semicolon
 id|__qeth_rebuild_skb_vlan
 c_func
 (paren
@@ -7377,6 +7402,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_static
+r_inline
 id|__u8
 DECL|function|__qeth_get_flags_v4
 id|__qeth_get_flags_v4
@@ -7411,6 +7437,7 @@ id|QETH_CAST_UNICAST
 suffix:semicolon
 )brace
 r_static
+r_inline
 id|__u8
 DECL|function|__qeth_get_flags_v6
 id|__qeth_get_flags_v6
@@ -7473,6 +7500,7 @@ id|QETH_HEADER_IPV6
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_void
 DECL|function|qeth_fill_header
 id|qeth_fill_header
@@ -7861,8 +7889,8 @@ id|QETH_DBF_DATA_LEN
 suffix:semicolon
 )brace
 r_static
-r_int
 r_inline
+r_int
 DECL|function|qeth_fill_buffer
 id|qeth_fill_buffer
 c_func
@@ -8147,6 +8175,7 @@ id|element
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_void
 DECL|function|qeth_flush_packed_packets
 id|qeth_flush_packed_packets
@@ -8885,6 +8914,7 @@ suffix:semicolon
 multiline_comment|/* should never happen */
 )brace
 r_static
+r_inline
 r_void
 DECL|function|qeth_free_buffer
 id|qeth_free_buffer
@@ -9586,6 +9616,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_void
 DECL|function|qeth_free_all_skbs
 id|qeth_free_all_skbs
@@ -9778,6 +9809,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef QETH_VLAN
+r_static
+r_inline
 r_void
 DECL|function|qeth_insert_ipv6_vlan_tag
 id|qeth_insert_ipv6_vlan_tag
@@ -9977,6 +10010,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_static
+r_inline
 r_void
 DECL|function|qeth_send_packet_fast
 id|qeth_send_packet_fast
@@ -10560,6 +10594,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* no checks, if all elements are used, as then we would not be here (at most&n;   127 buffers are enqueued) */
 r_static
+r_inline
 r_void
 DECL|function|qeth_send_packet_packed
 id|qeth_send_packet_packed
@@ -11783,6 +11818,7 @@ macro_line|#endif /* QETH_PERFORMANCE_STATS */
 )brace
 )brace
 r_static
+r_inline
 r_int
 DECL|function|qeth_do_send_packet
 id|qeth_do_send_packet
@@ -14053,19 +14089,15 @@ op_amp
 id|card-&gt;escape_softsetup
 )paren
 )paren
-id|result
-op_assign
+r_return
 l_int|0
 suffix:semicolon
 r_else
-id|result
-op_assign
+r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_else
-(brace
 id|reply
 op_assign
 (paren
@@ -14129,6 +14161,25 @@ id|result
 op_assign
 id|reply-&gt;data.setassparms.return_code
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|reply-&gt;data.setassparms.assist_no
+op_eq
+id|IPA_INBOUND_CHECKSUM
+)paren
+op_logical_and
+(paren
+id|reply-&gt;data.setassparms.command_code
+op_eq
+id|IPA_CMD_ASS_START
+)paren
+)paren
+id|card-&gt;csum_enable_mask
+op_assign
+id|reply-&gt;data.setassparms.data.flags_32bit
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -14150,7 +14201,6 @@ id|result
 op_assign
 id|reply-&gt;data.setadapterparms.return_code
 suffix:semicolon
-)brace
 )brace
 r_return
 id|result
@@ -28153,7 +28203,7 @@ id|IPA_INBOUND_CHECKSUM
 comma
 id|IPA_CMD_ASS_ENABLE
 comma
-id|IPA_CHECKSUM_ENABLE_MASK
+id|card-&gt;csum_enable_mask
 )paren
 suffix:semicolon
 r_if
@@ -34745,6 +34795,47 @@ id|level
 suffix:semicolon
 multiline_comment|/* hmmm... don&squot;t know what to do with that level. */
 )brace
+multiline_comment|/* returns last four digits of bus_id */
+r_static
+r_inline
+id|__u16
+DECL|function|__raw_devno_from_bus_id
+id|__raw_devno_from_bus_id
+c_func
+(paren
+r_char
+op_star
+id|id
+)paren
+(brace
+id|id
+op_add_assign
+(paren
+id|strlen
+c_func
+(paren
+id|id
+)paren
+op_minus
+l_int|4
+)paren
+suffix:semicolon
+r_return
+(paren
+id|__u16
+)paren
+id|simple_strtoul
+c_func
+(paren
+id|id
+comma
+op_amp
+id|id
+comma
+l_int|16
+)paren
+suffix:semicolon
+)brace
 r_static
 r_int
 DECL|function|qeth_idx_activate_read
@@ -34865,10 +34956,10 @@ l_int|2
 suffix:semicolon
 id|temp
 op_assign
-id|_ccw_device_get_device_number
+id|__raw_devno_from_bus_id
 c_func
 (paren
-id|card-&gt;ddev
+id|card-&gt;ddev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 id|memcpy
@@ -38113,21 +38204,17 @@ id|tmp-&gt;shutdown_phase
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
+id|result
+op_assign
 (paren
 id|dev
 op_eq
 id|tmp-&gt;dev
 )paren
-(brace
-id|result
-op_assign
+ques
+c_cond
 id|QETH_VERIFY_IS_REAL_DEV
-suffix:semicolon
-)brace
-id|result
-op_assign
+suffix:colon
 id|__qeth_verify_dev_vlan
 c_func
 (paren
@@ -42828,6 +42915,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif /* QETH_IPV6 */
+id|card-&gt;csum_enable_mask
+op_assign
+id|IPA_CHECKSUM_DEFAULT_ENABLE_MASK
+suffix:semicolon
 multiline_comment|/* setup net_device stuff */
 id|card-&gt;dev-&gt;priv
 op_assign
@@ -45534,32 +45625,6 @@ c_func
 op_amp
 id|card-&gt;rt4fld
 )paren
-op_logical_and
-id|atomic_read
-c_func
-(paren
-op_amp
-id|card-&gt;rt6fld
-)paren
-)paren
-id|strcpy
-c_func
-(paren
-id|router_str
-comma
-l_string|&quot;no&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|card-&gt;rt4fld
-)paren
 op_logical_or
 id|atomic_read
 c_func
@@ -45573,7 +45638,7 @@ c_func
 (paren
 id|router_str
 comma
-l_string|&quot;mix&quot;
+l_string|&quot;FLD&quot;
 )paren
 suffix:semicolon
 macro_line|#else/* QETH_IPV6 */
@@ -45592,7 +45657,7 @@ c_func
 (paren
 id|router_str
 comma
-l_string|&quot;no&quot;
+l_string|&quot;FLD&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* QETH_IPV6 */
@@ -45613,12 +45678,23 @@ macro_line|#ifdef QETH_IPV6
 op_logical_and
 (paren
 (paren
+(paren
 id|card-&gt;options.routing_type6
 op_amp
 id|ROUTER_MASK
 )paren
 op_eq
 id|PRIMARY_ROUTER
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
 )paren
 macro_line|#endif /* QETH_IPV6 */
 )paren
@@ -45649,12 +45725,23 @@ macro_line|#ifdef QETH_IPV6
 op_logical_and
 (paren
 (paren
+(paren
 id|card-&gt;options.routing_type6
 op_amp
 id|ROUTER_MASK
 )paren
 op_eq
 id|SECONDARY_ROUTER
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
 )paren
 macro_line|#endif /* QETH_IPV6 */
 )paren
@@ -45685,12 +45772,23 @@ macro_line|#ifdef QETH_IPV6
 op_logical_and
 (paren
 (paren
+(paren
 id|card-&gt;options.routing_type6
 op_amp
 id|ROUTER_MASK
 )paren
 op_eq
 id|MULTICAST_ROUTER
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
 )paren
 macro_line|#endif /* QETH_IPV6 */
 )paren
@@ -45721,12 +45819,23 @@ macro_line|#ifdef QETH_IPV6
 op_logical_and
 (paren
 (paren
+(paren
 id|card-&gt;options.routing_type6
 op_amp
 id|ROUTER_MASK
 )paren
 op_eq
 id|PRIMARY_CONNECTOR
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
 )paren
 macro_line|#endif /* QETH_IPV6 */
 )paren
@@ -45757,12 +45866,23 @@ macro_line|#ifdef QETH_IPV6
 op_logical_and
 (paren
 (paren
+(paren
 id|card-&gt;options.routing_type6
 op_amp
 id|ROUTER_MASK
 )paren
 op_eq
 id|SECONDARY_CONNECTOR
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
 )paren
 macro_line|#endif /* QETH_IPV6 */
 )paren
@@ -45793,12 +45913,23 @@ macro_line|#ifdef QETH_IPV6
 op_logical_and
 (paren
 (paren
+(paren
 id|card-&gt;options.routing_type6
 op_amp
 id|ROUTER_MASK
 )paren
 op_eq
 id|NO_ROUTER
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
 )paren
 macro_line|#endif /* QETH_IPV6 */
 )paren
@@ -50507,7 +50638,7 @@ id|buf
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-l_string|&quot;no&quot;
+l_string|&quot;FLD&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -51041,7 +51172,28 @@ id|buf
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-l_string|&quot;no&quot;
+l_string|&quot;FLD&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|qeth_is_supported
+c_func
+(paren
+id|IPA_IPv6
+)paren
+)paren
+r_return
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+l_string|&quot;n/a&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -55190,6 +55342,34 @@ comma
 id|trace
 comma
 l_string|&quot;freecard&quot;
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|card-&gt;dev
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+)paren
+suffix:semicolon
+id|card-&gt;dev-&gt;priv
+op_assign
+id|card
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|card-&gt;dev-&gt;name
+comma
+id|card-&gt;dev_name
+comma
+id|IFNAMSIZ
 )paren
 suffix:semicolon
 id|ccw_device_set_offline

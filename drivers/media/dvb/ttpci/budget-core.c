@@ -1,4 +1,5 @@
 macro_line|#include &quot;budget.h&quot;
+macro_line|#include &quot;ttpci-eeprom.h&quot;
 DECL|variable|budget_debug
 r_int
 id|budget_debug
@@ -800,10 +801,6 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|budget-&gt;dvb_net.card_num
-op_assign
-id|budget-&gt;dvb_adapter-&gt;num
-suffix:semicolon
 id|dvb_net_init
 c_func
 (paren
@@ -1091,7 +1088,7 @@ id|dev
 comma
 l_int|NULL
 comma
-id|SAA7146_I2C_BUS_BIT_RATE_3200
+id|SAA7146_I2C_BUS_BIT_RATE_120
 )paren
 suffix:semicolon
 id|budget-&gt;i2c_bus
@@ -1124,6 +1121,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|ttpci_eeprom_parse_mac
+c_func
+(paren
+id|budget-&gt;i2c_bus
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

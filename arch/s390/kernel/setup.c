@@ -20,12 +20,14 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|console_mode
 r_int
@@ -2559,4 +2561,190 @@ id|show_cpuinfo
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * show_interrupts is needed by /proc/interrupts.&n; */
+DECL|variable|intrclass_names
+r_static
+r_const
+r_char
+op_star
+id|intrclass_names
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;EXT&quot;
+comma
+l_string|&quot;I/O&quot;
+comma
+)brace
+suffix:semicolon
+DECL|function|show_interrupts
+r_int
+id|show_interrupts
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|p
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+r_int
+id|i
+comma
+id|j
+suffix:semicolon
+id|seq_puts
+c_func
+(paren
+id|p
+comma
+l_string|&quot;           &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|NR_CPUS
+suffix:semicolon
+id|j
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|j
+)paren
+)paren
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;CPU%d       &quot;
+comma
+id|j
+)paren
+suffix:semicolon
+id|seq_putc
+c_func
+(paren
+id|p
+comma
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_IRQS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;%s: &quot;
+comma
+id|intrclass_names
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;%10u &quot;
+comma
+id|kstat_irqs
+c_func
+(paren
+id|i
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+id|j
+OL
+id|NR_CPUS
+suffix:semicolon
+id|j
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|j
+)paren
+)paren
+id|seq_printf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;%10u &quot;
+comma
+id|kstat_cpu
+c_func
+(paren
+id|j
+)paren
+dot
+id|irqs
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif
+id|seq_putc
+c_func
+(paren
+id|p
+comma
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 eof

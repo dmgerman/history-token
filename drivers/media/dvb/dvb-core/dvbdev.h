@@ -5,8 +5,9 @@ mdefine_line|#define _DVBDEV_H_
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DVB_MAJOR
 mdefine_line|#define DVB_MAJOR 250
 DECL|macro|DVB_DEVICE_VIDEO
@@ -50,6 +51,13 @@ r_const
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|proposed_mac
+id|u8
+id|proposed_mac
+(braket
+l_int|6
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

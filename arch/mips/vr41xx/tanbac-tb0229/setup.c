@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/tanbac-tb0229/setup.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Setup for the TANBAC TB0229 (VR4131DIMM)&n; *&n; * Copyright 2002,2003 Yoichi Yuasa&n; *                yuasa@hh.iij4u.or.jp&n; *&n; * Modified for TANBAC TB0229:&n; * Copyright 2003 Megasolution Inc.&n; *                matsu@megasolution.jp&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

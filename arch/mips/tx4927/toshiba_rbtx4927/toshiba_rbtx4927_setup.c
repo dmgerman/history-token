@@ -22,7 +22,7 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#ifdef CONFIG_RTC_DS1742
 macro_line|#include &lt;asm/rtc_ds1742.h&gt;

@@ -2699,7 +2699,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_madt-&gt;flags.pcat_compat
+id|has_8259
 op_logical_and
 (paren
 id|gsi

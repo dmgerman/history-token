@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-s390/dma.h&n; *&n; *  S390 version&n; *&n; *  This file exists so that an #include &lt;dma.h&gt; doesn&squot;t break anything.&n; */
+multiline_comment|/*&n; *  include/asm-s390/dma.h&n; *&n; *  S390 version&n; */
 macro_line|#ifndef _ASM_DMA_H
 DECL|macro|_ASM_DMA_H
 mdefine_line|#define _ASM_DMA_H

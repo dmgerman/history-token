@@ -299,15 +299,10 @@ op_star
 id|tlb
 op_assign
 op_amp
-id|per_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|mmu_gathers
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|tlb-&gt;mm

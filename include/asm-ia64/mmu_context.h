@@ -148,7 +148,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|__get_cpu_var
+id|__ia64_per_cpu_var
 c_func
 (paren
 id|ia64_need_tlb_flush
@@ -161,7 +161,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__get_cpu_var
+id|__ia64_per_cpu_var
 c_func
 (paren
 id|ia64_need_tlb_flush

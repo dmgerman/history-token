@@ -204,6 +204,14 @@ op_star
 id|cdev
 )paren
 suffix:semicolon
+r_void
+id|ccw_device_unregister
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
 r_int
 id|ccw_device_recognition
 c_func

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -1802,17 +1803,16 @@ id|net_device
 id|backlog_dev
 suffix:semicolon
 multiline_comment|/* Sorry. 8) */
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|softnet_data
+comma
 id|softnet_data
-(braket
-id|NR_CPUS
-)braket
+)paren
 suffix:semicolon
 DECL|macro|HAVE_NETIF_QUEUE
 mdefine_line|#define HAVE_NETIF_QUEUE
@@ -1847,8 +1847,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|cpu
+r_struct
+id|softnet_data
+op_star
+id|sd
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -1856,28 +1858,20 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cpu
+id|sd
 op_assign
-id|smp_processor_id
+op_amp
+id|__get_cpu_var
 c_func
 (paren
+id|softnet_data
 )paren
 suffix:semicolon
 id|dev-&gt;next_sched
 op_assign
-id|softnet_data
-(braket
-id|cpu
-)braket
-dot
-id|output_queue
+id|sd-&gt;output_queue
 suffix:semicolon
-id|softnet_data
-(braket
-id|cpu
-)braket
-dot
-id|output_queue
+id|sd-&gt;output_queue
 op_assign
 id|dev
 suffix:semicolon
@@ -2081,8 +2075,10 @@ id|skb-&gt;users
 )paren
 )paren
 (brace
-r_int
-id|cpu
+r_struct
+id|softnet_data
+op_star
+id|sd
 suffix:semicolon
 r_int
 r_int
@@ -2094,28 +2090,20 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cpu
+id|sd
 op_assign
-id|smp_processor_id
+op_amp
+id|__get_cpu_var
 c_func
 (paren
+id|softnet_data
 )paren
 suffix:semicolon
 id|skb-&gt;next
 op_assign
-id|softnet_data
-(braket
-id|cpu
-)braket
-dot
-id|completion_queue
+id|sd-&gt;completion_queue
 suffix:semicolon
-id|softnet_data
-(braket
-id|cpu
-)braket
-dot
-id|completion_queue
+id|sd-&gt;completion_queue
 op_assign
 id|skb
 suffix:semicolon
@@ -2752,20 +2740,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|cpu
-suffix:semicolon
 id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dev_hold
@@ -2781,10 +2759,11 @@ op_amp
 id|dev-&gt;poll_list
 comma
 op_amp
+id|__get_cpu_var
+c_func
+(paren
 id|softnet_data
-(braket
-id|cpu
-)braket
+)paren
 dot
 id|poll_list
 )paren
@@ -2879,9 +2858,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-id|cpu
-suffix:semicolon
 id|dev-&gt;quota
 op_add_assign
 id|undo
@@ -2892,13 +2868,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -2906,10 +2875,11 @@ op_amp
 id|dev-&gt;poll_list
 comma
 op_amp
+id|__get_cpu_var
+c_func
+(paren
 id|softnet_data
-(braket
-id|cpu
-)braket
+)paren
 dot
 id|poll_list
 )paren

@@ -1,7 +1,7 @@
 multiline_comment|/****************************************************************************&n; * Perceptive Solutions, Inc. PCI-2000 device driver for Linux.&n; *&n; * pci2000.c - Linux Host Driver for PCI-2000 IntelliCache SCSI Adapters&n; *&n; * Copyright (c) 1997-1999 Perceptive Solutions, Inc.&n; * All Rights Reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that redistributions of source&n; * code retain the above copyright notice and this comment without&n; * modification.&n; *&n; * Technical updates and product information at:&n; *  http://www.psidisk.com&n; *&n; * Please send questions, comments, bug reports to:&n; *  tech@psidisk.com Technical Support&n; *&n; *&n; *&t;Revisions&t;1.10&t;Jan-21-1999&n; *&t;&t;- Fixed sign on message to reflect proper controller name.&n; *&t;&t;- Added support for RAID status monitoring and control.&n; *&n; *  Revisions&t;1.11&t;Mar-22-1999&n; *&t;&t;- Fixed control timeout to not lock up the entire system if&n; *&t;&t;  controller goes offline completely.&n; *&n; *&t;Revisions 1.12&t;&t;Mar-26-1999&n; *&t;&t;- Fixed spinlock and PCI configuration.&n; *&n; *&t;Revisions 1.20&t;&t;Mar-27-2000&n; *&t;&t;- Added support for dynamic DMA&n; *&n; ****************************************************************************/
 DECL|macro|PCI2000_VERSION
 mdefine_line|#define PCI2000_VERSION&t;&t;&quot;1.20&quot;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

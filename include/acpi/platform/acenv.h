@@ -60,6 +60,8 @@ macro_line|#elif defined(MSDOS)        /* Must appear after WIN32 and WIN64 chec
 macro_line|#include &quot;acdos16.h&quot;
 macro_line|#elif defined(__FreeBSD__)
 macro_line|#include &quot;acfreebsd.h&quot;
+macro_line|#elif defined(__NetBSD__)
+macro_line|#include &quot;acnetbsd.h&quot;
 macro_line|#elif defined(MODESTO)
 macro_line|#include &quot;acmodesto.h&quot;
 macro_line|#elif defined(NETWARE)
@@ -92,6 +94,7 @@ DECL|macro|DEBUGGER_SINGLE_THREADED
 mdefine_line|#define DEBUGGER_SINGLE_THREADED    0
 DECL|macro|DEBUGGER_MULTI_THREADED
 mdefine_line|#define DEBUGGER_MULTI_THREADED     1
+macro_line|#ifndef DEBUGGER_THREADING
 macro_line|#ifdef ACPI_APPLICATION
 DECL|macro|DEBUGGER_THREADING
 mdefine_line|#define DEBUGGER_THREADING          DEBUGGER_SINGLE_THREADED
@@ -99,6 +102,7 @@ macro_line|#else
 DECL|macro|DEBUGGER_THREADING
 mdefine_line|#define DEBUGGER_THREADING          DEBUGGER_MULTI_THREADED
 macro_line|#endif
+macro_line|#endif /* !DEBUGGER_THREADING */
 multiline_comment|/******************************************************************************&n; *&n; * C library configuration&n; *&n; *****************************************************************************/
 macro_line|#ifdef ACPI_USE_SYSTEM_CLIBRARY
 multiline_comment|/*&n; * Use the standard C library headers.&n; * We want to keep these to a minimum.&n; */

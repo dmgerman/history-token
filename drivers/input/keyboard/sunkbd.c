@@ -364,10 +364,12 @@ r_char
 id|type
 suffix:semicolon
 DECL|member|reset
+r_volatile
 r_char
 id|reset
 suffix:semicolon
 DECL|member|layout
+r_volatile
 r_char
 id|layout
 suffix:semicolon

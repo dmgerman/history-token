@@ -366,6 +366,9 @@ id|SetWTrans
 comma
 DECL|enumerator|SetWNoTrans
 id|SetWNoTrans
+comma
+DECL|enumerator|Set_Palette
+id|Set_Palette
 )brace
 suffix:semicolon
 DECL|enum|av7110_pid_command
@@ -954,6 +957,19 @@ r_char
 op_star
 id|card_name
 suffix:semicolon
+multiline_comment|/* support for analog module of dvb-c */
+DECL|member|has_analog_tuner
+r_int
+id|has_analog_tuner
+suffix:semicolon
+DECL|member|current_input
+r_int
+id|current_input
+suffix:semicolon
+DECL|member|current_freq
+id|u32
+id|current_freq
+suffix:semicolon
 DECL|member|debi_tasklet
 r_struct
 id|tasklet_struct
@@ -1392,6 +1408,10 @@ DECL|macro|DATA_BUFF2_BASE
 mdefine_line|#define DATA_BUFF2_BASE&t;(DATA_BUFF1_BASE+DATA_BUFF1_SIZE)
 DECL|macro|DATA_BUFF2_SIZE
 mdefine_line|#define DATA_BUFF2_SIZE&t;0x0800
+DECL|macro|DATA_BUFF3_BASE
+mdefine_line|#define DATA_BUFF3_BASE (DATA_BUFF2_BASE+DATA_BUFF2_SIZE)
+DECL|macro|DATA_BUFF3_SIZE
+mdefine_line|#define DATA_BUFF3_SIZE 0x0400
 DECL|macro|Reserved
 mdefine_line|#define Reserved&t;(DPRAM_BASE + 0x1E00)
 DECL|macro|Reserved_SIZE

@@ -4,6 +4,10 @@ DECL|macro|_S390_SIGINFO_H
 mdefine_line|#define _S390_SIGINFO_H
 DECL|macro|HAVE_ARCH_SI_CODES
 mdefine_line|#define HAVE_ARCH_SI_CODES
+macro_line|#ifdef __s390x__
+DECL|macro|__ARCH_SI_PREAMBLE_SIZE
+mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE (4 * sizeof(int))
+macro_line|#endif
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 multiline_comment|/*&n; * SIGILL si_codes&n; */
 DECL|macro|ILL_ILLOPC

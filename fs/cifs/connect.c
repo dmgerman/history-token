@@ -1845,9 +1845,11 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_KERNEL
-comma
 id|temp_len
+op_plus
+l_int|1
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|strcpy
@@ -2442,9 +2444,11 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_KERNEL
-comma
 id|temp_len
+op_plus
+l_int|1
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|strcpy
@@ -4289,7 +4293,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* BB add support to use the multiuser_mount flag BB */
 id|existingCifsSes
 op_assign
 id|find_tcp_session
@@ -4671,6 +4674,10 @@ id|volume_info.domainname
 comma
 id|MAX_USERNAME_SIZE
 )paren
+suffix:semicolon
+id|pSesInfo-&gt;linux_uid
+op_assign
+id|volume_info.linux_uid
 suffix:semicolon
 id|rc
 op_assign

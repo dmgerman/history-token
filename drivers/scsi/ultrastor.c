@@ -10,7 +10,7 @@ multiline_comment|/* Changes from version 1.5 to version 1.6:&n; *&n; * Read MSC
 multiline_comment|/* Changes from version 1.4 to version 1.5:&n; *&n; * Abort now calls done when multiple commands are enabled.&n; *&n; * Clear busy when aborted command finishes, not when abort is called.&n; *&n; * More debugging messages for aborts.&n; */
 multiline_comment|/* Changes from version 1.3 to version 1.4:&n; *&n; * Enable automatic request of sense data on error (requires newer version&n; * of scsi.c to be useful).&n; *&n; * Fix PORT_OVERRIDE for 14F.&n; *&n; * Fix abort and reset to work properly (config.aborted wasn&squot;t cleared&n; * after it was tested, so after a command abort no further commands would&n; * work).&n; *&n; * Boot time test to enable SCSI bus reset (defaults to not allowing reset).&n; *&n; * Fix test for OGM busy -- the busy bit is in different places on the 24F.&n; *&n; * Release ICM slot by clearing first byte on 24F.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/ctype.h&gt;  /* isdigit, isxdigit */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;  /* HDIO_GETGEO */
 macro_line|#include &lt;linux/sysdev.h&gt;

@@ -20,14 +20,6 @@ id|dvb_device
 op_star
 id|dvbdev
 suffix:semicolon
-DECL|member|card_num
-r_int
-id|card_num
-suffix:semicolon
-DECL|member|dev_num
-r_int
-id|dev_num
-suffix:semicolon
 DECL|member|device
 r_struct
 id|net_device

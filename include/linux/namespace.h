@@ -2,7 +2,7 @@ macro_line|#ifndef _NAMESPACE_H_
 DECL|macro|_NAMESPACE_H_
 mdefine_line|#define _NAMESPACE_H_
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 DECL|struct|namespace
 r_struct
@@ -91,7 +91,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|umount_tree
@@ -106,7 +106,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|dcache_lock
+id|vfsmount_lock
 )paren
 suffix:semicolon
 id|up_write

@@ -31,7 +31,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#endif

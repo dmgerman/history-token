@@ -231,6 +231,8 @@ DECL|macro|NFS_INO_REVALIDATING
 mdefine_line|#define NFS_INO_REVALIDATING&t;0x0004&t;&t;/* revalidating attrs */
 DECL|macro|NFS_INO_FLUSH
 mdefine_line|#define NFS_INO_FLUSH&t;&t;0x0008&t;&t;/* inode is due for flushing */
+DECL|macro|NFS_INO_FAKE_ROOT
+mdefine_line|#define NFS_INO_FAKE_ROOT&t;0x0080&t;&t;/* root inode placeholder */
 DECL|function|NFS_I
 r_static
 r_inline
@@ -301,6 +303,8 @@ DECL|macro|NFS_REVALIDATING
 mdefine_line|#define NFS_REVALIDATING(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_REVALIDATING)
 DECL|macro|NFS_STALE
 mdefine_line|#define NFS_STALE(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_STALE)
+DECL|macro|NFS_FAKE_ROOT
+mdefine_line|#define NFS_FAKE_ROOT(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_FAKE_ROOT)
 DECL|macro|NFS_FILEID
 mdefine_line|#define NFS_FILEID(inode)&t;&t;(NFS_I(inode)-&gt;fileid)
 DECL|function|nfs_server_capable

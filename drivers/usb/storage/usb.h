@@ -3,7 +3,7 @@ macro_line|#ifndef _USB_H_
 DECL|macro|_USB_H_
 mdefine_line|#define _USB_H_
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/version.h&gt;

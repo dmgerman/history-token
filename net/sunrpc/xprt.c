@@ -1509,6 +1509,12 @@ comma
 id|sock
 )paren
 suffix:semicolon
+id|xprt_sock_setbufsize
+c_func
+(paren
+id|xprt
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -139,12 +139,6 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-DECL|member|ext_vv_data
-r_struct
-id|saa7146_ext_vv
-op_star
-id|ext_vv_data
-suffix:semicolon
 multiline_comment|/* pairs of subvendor and subdevice ids for&n;&t;   supported devices, last entry 0xffff, 0xfff */
 DECL|member|module
 r_struct
@@ -315,6 +309,12 @@ op_star
 id|ext_priv
 suffix:semicolon
 multiline_comment|/* pointer for extension private use (most likely some private data) */
+DECL|member|ext_vv_data
+r_struct
+id|saa7146_ext_vv
+op_star
+id|ext_vv_data
+suffix:semicolon
 multiline_comment|/* per device video/vbi informations (if available) */
 DECL|member|vv_data
 r_struct

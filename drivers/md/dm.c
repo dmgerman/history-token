@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;

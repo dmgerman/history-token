@@ -20,7 +20,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.51 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.55 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -7056,6 +7056,14 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|ccw_device_set_timeout
+c_func
+(paren
+id|cdev
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -8125,7 +8133,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/* 4: request block&n;&t; * 2: general char&n;&t; * 512: chsc char */
+multiline_comment|/* Check for bit 41. */
 r_if
 c_cond
 (paren
@@ -8135,10 +8143,10 @@ id|scsc_area-&gt;general_char
 l_int|1
 )braket
 op_amp
-l_int|0x00800000
+l_int|0x00400000
 )paren
 op_ne
-l_int|0x00800000
+l_int|0x00400000
 )paren
 (brace
 id|QDIO_PRINT_WARN
@@ -8158,13 +8166,14 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
+multiline_comment|/* Check for bits 107 and 108. */
 r_if
 c_cond
 (paren
 (paren
 id|scsc_area-&gt;chsc_char
 (braket
-l_int|2
+l_int|3
 )braket
 op_amp
 l_int|0x00180000
@@ -8190,7 +8199,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-multiline_comment|/* Check for hydra thin interrupts. */
+multiline_comment|/* Check for hydra thin interrupts (bit 67). */
 id|hydra_thinints
 op_assign
 (paren
@@ -8211,7 +8220,7 @@ c_func
 (paren
 id|dbf_text
 comma
-l_string|&quot;hydra_ti%1x&quot;
+l_string|&quot;hydrati%1x&quot;
 comma
 id|hydra_thinints
 )paren
@@ -10971,8 +10980,18 @@ comma
 id|dstat
 )paren
 )paren
+(brace
+id|ccw_device_set_timeout
+c_func
+(paren
+id|cdev
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|irq_ptr
 op_assign
 id|cdev
@@ -11071,6 +11090,14 @@ c_func
 id|irq_ptr
 comma
 id|QDIO_IRQ_STATE_ESTABLISHED
+)paren
+suffix:semicolon
+id|ccw_device_set_timeout
+c_func
+(paren
+id|cdev
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -12289,6 +12316,19 @@ suffix:semicolon
 id|result
 op_assign
 id|result2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+id|ccw_device_set_timeout
+c_func
+(paren
+id|cdev
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -13610,9 +13650,6 @@ id|c
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|irq
-suffix:semicolon
 multiline_comment|/* we are always called with buffer_length=4k, so we all&n;           deliver on the first read */
 r_if
 c_cond
@@ -13697,7 +13734,7 @@ suffix:semicolon
 id|_OUTP_IT
 c_func
 (paren
-l_string|&quot;Number of PCIs caught                          : %u&bslash;n&quot;
+l_string|&quot;Number of PCIs caught                           : %u&bslash;n&quot;
 comma
 id|perf_stats.pcis
 )paren
@@ -13762,94 +13799,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * FIXME: Rather use driver_for_each_dev, if we had it. &n;&t; * I know this loop destroys our layering, but at least gets the &n;&t; * performance stats out...&n;&t; */
-r_for
-c_loop
-(paren
-id|irq
-op_assign
-l_int|0
-suffix:semicolon
-id|irq
-op_le
-id|highest_subchannel
-suffix:semicolon
-id|irq
-op_increment
-)paren
-(brace
-r_struct
-id|qdio_irq
-op_star
-id|irq_ptr
-suffix:semicolon
-r_struct
-id|ccw_device
-op_star
-id|cdev
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ioinfo
-(braket
-id|irq
-)braket
-)paren
-r_continue
-suffix:semicolon
-id|cdev
-op_assign
-id|ioinfo
-(braket
-id|irq
-)braket
-op_member_access_from_pointer
-id|dev.driver_data
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cdev
-)paren
-r_continue
-suffix:semicolon
-id|irq_ptr
-op_assign
-id|cdev
-op_member_access_from_pointer
-r_private
-op_member_access_from_pointer
-id|qdio_data
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|irq_ptr
-)paren
-r_continue
-suffix:semicolon
-id|_OUTP_IT
-c_func
-(paren
-l_string|&quot;Polling time on irq %4x                        &quot;
-"&bslash;"
-l_string|&quot;: %u&bslash;n&quot;
-comma
-id|irq_ptr-&gt;irq
-comma
-id|irq_ptr-&gt;input_qs
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|timing.threshold
-)paren
-suffix:semicolon
-)brace
 r_return
 id|c
 suffix:semicolon

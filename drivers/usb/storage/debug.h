@@ -4,7 +4,6 @@ DECL|macro|_DEBUG_H_
 mdefine_line|#define _DEBUG_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;usb.h&quot;
 DECL|macro|USB_STORAGE
