@@ -26,24 +26,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/act_api.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
-DECL|struct|tc_u32_mark
-r_struct
-id|tc_u32_mark
-(brace
-DECL|member|val
-id|u32
-id|val
-suffix:semicolon
-DECL|member|mask
-id|u32
-id|mask
-suffix:semicolon
-DECL|member|success
-id|u32
-id|success
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|tc_u_knode
 r_struct
 id|tc_u_knode

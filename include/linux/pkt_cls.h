@@ -406,7 +406,24 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_CLS_U32_PERF
+DECL|struct|tc_u32_mark
+r_struct
+id|tc_u32_mark
+(brace
+DECL|member|val
+id|__u32
+id|val
+suffix:semicolon
+DECL|member|mask
+id|__u32
+id|mask
+suffix:semicolon
+DECL|member|success
+id|__u32
+id|success
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|tc_u32_pcnt
 r_struct
 id|tc_u32_pcnt
@@ -428,7 +445,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Flags */
 DECL|macro|TC_U32_TERMINAL
 mdefine_line|#define TC_U32_TERMINAL&t;&t;1
