@@ -1404,11 +1404,11 @@ mdefine_line|#define ENTER_INTR(x)&t;&t;dprintk(3, &quot;qla1280 : Entering %s()
 DECL|macro|LEAVE_INTR
 mdefine_line|#define LEAVE_INTR(x)&t;&t;dprintk(3, &quot;qla1280 : Leaving %s()&bslash;n&quot;, x);
 DECL|macro|SCSI_BUS_32
-mdefine_line|#define SCSI_BUS_32(scp)&t;scp-&gt;channel
+mdefine_line|#define SCSI_BUS_32(scp)&t;scp-&gt;device-&gt;channel
 DECL|macro|SCSI_TCN_32
-mdefine_line|#define SCSI_TCN_32(scp)&t;scp-&gt;target
+mdefine_line|#define SCSI_TCN_32(scp)&t;scp-&gt;device-&gt;id
 DECL|macro|SCSI_LUN_32
-mdefine_line|#define SCSI_LUN_32(scp)&t;scp-&gt;lun
+mdefine_line|#define SCSI_LUN_32(scp)&t;scp-&gt;device-&gt;lun
 multiline_comment|/****************************************************************************/
 multiline_comment|/*  LINUX -  Loadable Module Functions.                                     */
 multiline_comment|/****************************************************************************/
@@ -3399,7 +3399,7 @@ suffix:semicolon
 multiline_comment|/*ENTER(&quot;qla1280_queuecommand&quot;);&n;&t; */
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|ha
 op_assign
@@ -3751,11 +3751,11 @@ r_struct
 id|scsi_qla_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* Get the SCSI request ptr */
 id|sp
@@ -4270,7 +4270,7 @@ l_string|&quot;qla1280_abort&quot;
 suffix:semicolon
 id|host
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 id|ha
 op_assign
@@ -4838,7 +4838,7 @@ r_struct
 id|scsi_qla_host
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|sp
 op_assign

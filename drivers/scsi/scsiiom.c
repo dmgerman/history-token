@@ -7485,7 +7485,7 @@ r_if
 c_cond
 (paren
 (paren
-id|pcmd-&gt;target
+id|pcmd-&gt;device-&gt;id
 op_eq
 id|pACB-&gt;pScsiHost-&gt;max_id
 op_minus
@@ -7494,13 +7494,13 @@ l_int|1
 op_logical_and
 (paren
 (paren
-id|pcmd-&gt;lun
+id|pcmd-&gt;device-&gt;lun
 op_eq
 l_int|0
 )paren
 op_logical_or
 (paren
-id|pcmd-&gt;lun
+id|pcmd-&gt;device-&gt;lun
 op_eq
 id|pACB-&gt;pScsiHost-&gt;max_lun
 op_minus
@@ -7522,7 +7522,7 @@ r_if
 c_cond
 (paren
 (paren
-id|pcmd-&gt;target
+id|pcmd-&gt;device-&gt;id
 op_eq
 id|pACB-&gt;pScsiHost-&gt;max_id
 op_minus
@@ -7530,7 +7530,7 @@ l_int|1
 )paren
 op_logical_and
 (paren
-id|pcmd-&gt;lun
+id|pcmd-&gt;device-&gt;lun
 op_eq
 id|pACB-&gt;pScsiHost-&gt;max_lun
 op_minus
@@ -7634,7 +7634,7 @@ r_if
 c_cond
 (paren
 (paren
-id|pcmd-&gt;target
+id|pcmd-&gt;device-&gt;id
 op_eq
 id|pACB-&gt;pScsiHost-&gt;max_id
 op_minus
@@ -7642,7 +7642,7 @@ l_int|1
 )paren
 op_logical_and
 (paren
-id|pcmd-&gt;lun
+id|pcmd-&gt;device-&gt;lun
 op_eq
 id|pACB-&gt;pScsiHost-&gt;max_lun
 op_minus

@@ -2109,7 +2109,7 @@ id|US_STATE_ABORTING
 suffix:semicolon
 id|host
 op_assign
-id|us-&gt;srb-&gt;host
+id|us-&gt;srb-&gt;device-&gt;host
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -2768,7 +2768,7 @@ id|US_FL_SCM_MULT_TARG
 )paren
 id|bcb.Lun
 op_or_assign
-id|srb-&gt;target
+id|srb-&gt;device-&gt;id
 op_lshift
 l_int|4
 suffix:semicolon

@@ -14855,7 +14855,7 @@ id|cmd
 suffix:semicolon
 id|hscb-&gt;lun
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|mask
 op_assign
@@ -20056,7 +20056,7 @@ c_func
 id|ahc
 )paren
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
 id|cmd-&gt;device-&gt;id
 comma

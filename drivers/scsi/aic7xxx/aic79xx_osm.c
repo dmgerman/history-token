@@ -5908,7 +5908,7 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 op_plus
 l_char|&squot;A&squot;
 comma
@@ -16309,7 +16309,7 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 op_plus
 l_char|&squot;A&squot;
 comma
@@ -17434,10 +17434,6 @@ id|ahd
 comma
 id|cmd
 )paren
-suffix:semicolon
-id|hscb-&gt;lun
-op_assign
-id|cmd-&gt;lun
 suffix:semicolon
 id|scb-&gt;hscb-&gt;task_management
 op_assign
@@ -20289,7 +20285,7 @@ c_func
 (paren
 id|ahd
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
 id|cmd-&gt;device-&gt;id
 comma

@@ -245,12 +245,12 @@ id|vh
 suffix:semicolon
 id|scp
 op_assign
-id|scsi_allocate_device
+id|scsi_getset_command
 c_func
 (paren
 id|sdev
 comma
-l_int|1
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -440,7 +440,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|scp
@@ -2700,11 +2700,11 @@ l_int|12
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_assign
 id|piowr-&gt;iu.scsi.target
 suffix:semicolon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 op_assign
 id|virt_ctr
 ques
@@ -2823,7 +2823,7 @@ id|gdth_iord_str
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 op_assign
 id|virt_ctr
 ques
@@ -4244,12 +4244,12 @@ id|vh
 suffix:semicolon
 id|scp
 op_assign
-id|scsi_allocate_device
+id|scsi_getset_command
 c_func
 (paren
 id|sdev
 comma
-l_int|1
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7461,7 +7461,7 @@ suffix:semicolon
 id|stop_output
 suffix:colon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scsi_release_command
+id|scsi_put_command
 c_func
 (paren
 id|scp
@@ -8178,12 +8178,12 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
@@ -8195,7 +8195,7 @@ c_func
 id|scp
 )paren
 op_logical_and
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_eq
 (paren
 id|unchar
@@ -8347,17 +8347,17 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_eq
 (paren
 id|unchar
@@ -8478,17 +8478,17 @@ c_cond
 id|NUMDATA
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_eq
 (paren
 id|unchar

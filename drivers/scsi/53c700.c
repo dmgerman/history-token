@@ -2998,11 +2998,11 @@ l_int|NULL
 (brace
 id|pun
 op_assign
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 suffix:semicolon
 )brace
 r_switch
@@ -3399,11 +3399,11 @@ l_int|NULL
 (brace
 id|pun
 op_assign
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 suffix:semicolon
 )brace
 macro_line|#ifdef NCR_700_DEBUG
@@ -3563,7 +3563,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|SCp-&gt;device-&gt;tagged_supported
@@ -3820,11 +3820,11 @@ l_int|NULL
 (brace
 id|pun
 op_assign
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 suffix:semicolon
 )brace
 r_if
@@ -3982,7 +3982,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 op_amp
 l_int|0x7
 )paren
@@ -4204,11 +4204,11 @@ singleline_comment|//&t;&t;&t;    SCp-&gt;request_bufflen,
 singleline_comment|//&t;&t;&t;    DMA_FROM_DEVICE);
 singleline_comment|//&t;if(((char *)SCp-&gt;request_buffer)[7] &amp; 0x02) {
 singleline_comment|//&t;&t;printk(KERN_INFO &quot;scsi%d: (%d:%d) Enabling Tag Command Queuing&bslash;n&quot;, host-&gt;host_no, pun, lun);
-singleline_comment|//&t;&t;hostdata-&gt;tag_negotiated |= (1&lt;&lt;SCp-&gt;target);
+singleline_comment|//&t;&t;hostdata-&gt;tag_negotiated |= (1&lt;&lt;SCp-&gt;device-&gt;id);
 singleline_comment|//&t;&t;NCR_700_set_flag(SCp-&gt;device, NCR_700_DEV_BEGIN_TAG_QUEUEING);
 singleline_comment|//&t;} else {
 singleline_comment|//&t;&t;NCR_700_clear_flag(SCp-&gt;device, NCR_700_DEV_BEGIN_TAG_QUEUEING);
-singleline_comment|//&t;&t;hostdata-&gt;tag_negotiated &amp;= ~(1&lt;&lt;SCp-&gt;target);
+singleline_comment|//&t;&t;hostdata-&gt;tag_negotiated &amp;= ~(1&lt;&lt;SCp-&gt;device-&gt;id);
 singleline_comment|//&t;}
 singleline_comment|//}
 id|NCR_700_scsi_done
@@ -6030,7 +6030,7 @@ r_struct
 id|NCR_700_Host_Parameters
 op_star
 )paren
-id|SCp-&gt;host-&gt;hostdata
+id|SCp-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -6060,7 +6060,7 @@ c_func
 (paren
 l_string|&quot;scsi%d: host busy, queueing command %p, slot %p&bslash;n&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
 id|slot-&gt;cmnd
 comma
@@ -6100,7 +6100,7 @@ l_int|0
 op_ne
 id|REQUEST_SENSE
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* for INQUIRY or REQUEST_SENSE commands, we cannot be sure&n;&t; * if the negotiated transfer parameters still hold, so&n;&t; * always renegotiate them */
@@ -6141,7 +6141,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 )paren
 op_logical_and
@@ -6240,7 +6240,7 @@ id|Device_ID
 comma
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|script_patch_32_abs
@@ -6287,7 +6287,7 @@ suffix:semicolon
 id|NCR_700_clear_fifo
 c_func
 (paren
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -6354,7 +6354,7 @@ c_func
 id|SCp-&gt;device
 )paren
 comma
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 comma
 id|SXFER_REG
 )paren
@@ -6364,7 +6364,7 @@ c_func
 (paren
 id|slot-&gt;temp
 comma
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 comma
 id|TEMP_REG
 )paren
@@ -6374,7 +6374,7 @@ c_func
 (paren
 id|slot-&gt;resume_offset
 comma
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 comma
 id|DSP_REG
 )paren
@@ -6626,11 +6626,11 @@ l_int|NULL
 (brace
 id|pun
 op_assign
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 suffix:semicolon
 )brace
 r_if
@@ -8023,7 +8023,7 @@ r_struct
 id|NCR_700_Host_Parameters
 op_star
 )paren
-id|SCp-&gt;host-&gt;hostdata
+id|SCp-&gt;device-&gt;host-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -8055,7 +8055,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;scsi%d: Command depth has gone over queue depth&bslash;n&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 r_return
@@ -8082,7 +8082,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 )paren
 op_logical_or
@@ -8102,11 +8102,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;scsi%d (%d:%d) has non zero depth %d&bslash;n&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 comma
 id|NCR_700_get_depth
 c_func
@@ -8139,11 +8139,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;scsi%d (%d:%d) has max tag depth %d&bslash;n&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 comma
 id|NCR_700_get_depth
 c_func
@@ -8212,7 +8212,7 @@ c_func
 (paren
 l_string|&quot;53c700: scsi%d, command &quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 id|print_command
@@ -8236,7 +8236,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 )paren
 op_eq
@@ -8276,7 +8276,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 )paren
 op_eq
@@ -8291,9 +8291,9 @@ l_string|&quot;scsi%d: (%d:%d) Enabling Tag Command Queuing&bslash;n&quot;
 comma
 id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|hostdata-&gt;tag_negotiated
@@ -8301,7 +8301,7 @@ op_or_assign
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|NCR_700_set_flag
@@ -8330,7 +8330,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 )paren
 )paren
@@ -8343,9 +8343,9 @@ l_string|&quot;scsi%d: (%d:%d) Disabling Tag Command Queuing&bslash;n&quot;
 comma
 id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|hostdata-&gt;tag_negotiated
@@ -8354,7 +8354,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -8367,7 +8367,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 )paren
 )paren
 )paren
@@ -8382,11 +8382,11 @@ c_func
 (paren
 l_string|&quot;53c700 %d:%d:%d, sending out tag %d, slot %p&bslash;n&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 comma
 id|slot-&gt;tag
 comma
@@ -8842,11 +8842,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;scsi%d (%d:%d) New error handler wants to abort command&bslash;n&bslash;t&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -8892,7 +8892,7 @@ multiline_comment|/* FIXME: This is because of a problem in the new&n;&t;&t; * e
 id|NCR_700_internal_bus_reset
 c_func
 (paren
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 )paren
 suffix:semicolon
 multiline_comment|/* still drop through and return failed */
@@ -8918,11 +8918,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;scsi%d (%d:%d) New error handler wants BUS reset, cmd %p&bslash;n&bslash;t&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 comma
 id|SCp
 )paren
@@ -8936,7 +8936,7 @@ suffix:semicolon
 id|NCR_700_internal_bus_reset
 c_func
 (paren
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return
@@ -8960,11 +8960,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;scsi%d (%d:%d) New error handler wants device reset&bslash;n&bslash;t&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -8994,11 +8994,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;scsi%d (%d:%d) New error handler wants HOST reset&bslash;n&bslash;t&quot;
 comma
-id|SCp-&gt;host-&gt;host_no
+id|SCp-&gt;device-&gt;host-&gt;host_no
 comma
-id|SCp-&gt;target
+id|SCp-&gt;device-&gt;id
 comma
-id|SCp-&gt;lun
+id|SCp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|print_command
@@ -9010,13 +9010,13 @@ suffix:semicolon
 id|NCR_700_internal_bus_reset
 c_func
 (paren
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|NCR_700_chip_reset
 c_func
 (paren
-id|SCp-&gt;host
+id|SCp-&gt;device-&gt;host
 )paren
 suffix:semicolon
 r_return
