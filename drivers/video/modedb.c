@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|name_matches
@@ -1600,6 +1599,8 @@ id|bpp
 (brace
 r_int
 id|err
+op_assign
+l_int|1
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -1690,20 +1691,19 @@ id|var-&gt;vmode
 op_assign
 id|mode-&gt;vmode
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;fbops-&gt;fb_check_var
+)paren
 id|err
 op_assign
 id|info-&gt;fbops
 op_member_access_from_pointer
-id|fb_set_var
+id|fb_check_var
 c_func
 (paren
 id|var
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren
