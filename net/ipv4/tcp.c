@@ -324,7 +324,7 @@ op_logical_neg
 id|kind
 )paren
 (brace
-id|tcp_moderate_sndbuf
+id|sk_stream_moderate_sndbuf
 c_func
 (paren
 id|sk
