@@ -3384,12 +3384,6 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The information for processor bringup must be written out&n;&t; * to main store before we release the processor. */
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* The information for processor bringup must&n;&t; * be written out to main store before we release&n;&t; * the processor.&n;&t; */
 id|mb
 c_func
