@@ -199,7 +199,8 @@ suffix:semicolon
 r_struct
 id|dcookie_struct
 suffix:semicolon
-multiline_comment|/*&n; * On x86, dentries are a multiple of 16 bytes, with 16-byte alignment.&n; */
+DECL|macro|DNAME_INLINE_LEN_MIN
+mdefine_line|#define DNAME_INLINE_LEN_MIN 36
 DECL|struct|dentry
 r_struct
 id|dentry
@@ -322,7 +323,7 @@ r_int
 r_char
 id|d_iname
 (braket
-l_int|0
+id|DNAME_INLINE_LEN_MIN
 )braket
 suffix:semicolon
 multiline_comment|/* small names */

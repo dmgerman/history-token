@@ -46,11 +46,8 @@ id|kmem_cache_t
 op_star
 id|dentry_cache
 suffix:semicolon
-multiline_comment|/*&n; * The allocation size for each dentry.  It is a multiple of 16 bytes.  We&n; * leave the final 32-47 bytes for the inline name.&n; */
-DECL|macro|DENTRY_STORAGE
-mdefine_line|#define DENTRY_STORAGE&t;(((sizeof(struct dentry)+32) + 15) &amp; ~15)
 DECL|macro|DNAME_INLINE_LEN
-mdefine_line|#define DNAME_INLINE_LEN (DENTRY_STORAGE - sizeof(struct dentry))
+mdefine_line|#define DNAME_INLINE_LEN (sizeof(struct dentry)-offsetof(struct dentry,d_iname))
 multiline_comment|/*&n; * This is the single most critical data structure when it comes&n; * to the dcache: the hashtable for lookups. Somebody should try&n; * to make this good - I&squot;ve just made it work.&n; *&n; * This hash-function tries to avoid losing too many bits of hash&n; * information, yet avoid using a prime hash-size or similar.&n; */
 DECL|macro|D_HASHBITS
 mdefine_line|#define D_HASHBITS     d_hash_shift
@@ -5153,7 +5150,11 @@ c_func
 (paren
 l_string|&quot;dentry_cache&quot;
 comma
-id|DENTRY_STORAGE
+r_sizeof
+(paren
+r_struct
+id|dentry
+)paren
 comma
 l_int|0
 comma
