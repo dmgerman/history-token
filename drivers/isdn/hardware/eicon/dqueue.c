@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dqueue.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: dqueue.c,v 1.1.2.2 2001/02/11 14:40:41 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * User Mode IDI Interface&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;dqueue.h&quot;
 r_int
@@ -94,6 +94,7 @@ id|i
 )braket
 op_assign
 id|diva_os_malloc
+c_func
 (paren
 l_int|0
 comma
@@ -103,6 +104,7 @@ id|q-&gt;max_length
 )paren
 (brace
 id|diva_data_q_finit
+c_func
 (paren
 id|q
 )paren
@@ -121,8 +123,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|diva_data_q_finit
+r_int
 id|diva_data_q_finit
 c_func
 (paren
@@ -159,6 +161,7 @@ id|i
 )paren
 (brace
 id|diva_os_free
+c_func
 (paren
 l_int|0
 comma
@@ -200,8 +203,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|diva_data_q_get_max_length
+r_int
 id|diva_data_q_get_max_length
 c_func
 (paren
@@ -217,9 +220,9 @@ id|q-&gt;max_length
 )paren
 suffix:semicolon
 )brace
+DECL|function|diva_data_q_get_segment4write
 r_void
 op_star
-DECL|function|diva_data_q_get_segment4write
 id|diva_data_q_get_segment4write
 c_func
 (paren
@@ -313,10 +316,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|function|diva_data_q_get_segment4read
 r_const
 r_void
 op_star
-DECL|function|diva_data_q_get_segment4read
 id|diva_data_q_get_segment4read
 c_func
 (paren
@@ -347,8 +350,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_int
 DECL|function|diva_data_q_get_segment_length
+r_int
 id|diva_data_q_get_segment_length
 c_func
 (paren
@@ -367,8 +370,8 @@ id|q-&gt;read
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|diva_data_q_ack_segment4read
+r_void
 id|diva_data_q_ack_segment4read
 c_func
 (paren

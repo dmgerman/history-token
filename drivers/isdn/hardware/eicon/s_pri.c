@@ -1191,7 +1191,7 @@ id|PISDN_ADAPTER
 id|IoAdapter
 )paren
 (brace
-singleline_comment|//  byte* base = a-&gt;resources.pci.addr[2];
+multiline_comment|/* byte* base = a-&gt;resources.pci.addr[2]; */
 id|byte
 op_star
 id|base
@@ -1255,7 +1255,7 @@ id|IoAdapter-&gt;InitialDspInfo
 op_and_assign
 l_int|0xffff
 suffix:semicolon
-singleline_comment|//  if (!base || !a-&gt;xdi_adapter.reset)
+multiline_comment|/* if (!base || !a-&gt;xdi_adapter.reset) */
 r_if
 c_cond
 (paren
@@ -1272,7 +1272,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//  *(volatile byte*)(a-&gt;xdi_adapter.reset) = _MP_RISC_RESET | _MP_DSP_RESET;
+multiline_comment|/* *(volatile byte*)(a-&gt;xdi_adapter.reset) = _MP_RISC_RESET | _MP_DSP_RESET; */
 op_star
 (paren
 r_volatile
@@ -1390,7 +1390,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-singleline_comment|//  *(volatile byte*)(a-&gt;xdi_adapter.reset) = _MP_RISC_RESET | _MP_LED1 | _MP_LED2;
+multiline_comment|/* *(volatile byte*)(a-&gt;xdi_adapter.reset) = _MP_RISC_RESET | _MP_LED1 | _MP_LED2; */
 op_star
 (paren
 r_volatile

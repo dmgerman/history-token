@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 173 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 174 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -85,7 +85,7 @@ op_eq
 id|ACPI_DESC_TYPE_NAMED
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Dest is a namespace node,&n;&t;&t; * Storing an object into a Name &quot;container&quot;&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Dest is a namespace node,&n;&t;&t; * Storing an object into a Named node.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store_object_to_node
@@ -834,6 +834,9 @@ id|acpi_ex_write_data_to_field
 id|source_desc
 comma
 id|target_desc
+comma
+op_amp
+id|walk_state-&gt;result_obj
 )paren
 suffix:semicolon
 r_break

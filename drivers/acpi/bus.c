@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_X86
 macro_line|#include &lt;asm/mpspec.h&gt;

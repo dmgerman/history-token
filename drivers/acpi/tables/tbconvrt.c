@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbconvrt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_count&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Calculate the number of tables&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_count&n; *&n; * PARAMETERS:  RSDP            - Pointer to the RSDP&n; *              RSDT            - Pointer to the RSDT/XSDT&n; *&n; * RETURN:      The number of tables pointed to by the RSDT or XSDT.&n; *&n; * DESCRIPTION: Calculate the number of tables.  Automatically handles either&n; *              an RSDT or XSDT.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_tb_get_table_count
 id|acpi_tb_get_table_count
@@ -73,7 +73,7 @@ id|pointer_size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Convert an RSDT to an XSDT (internal common format)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:  Table_info      - Info about the RSDT&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an RSDT to an XSDT (internal common format)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_convert_to_xsdt
 id|acpi_tb_convert_to_xsdt
@@ -641,7 +641,7 @@ id|local_fadt-&gt;V1_gpe1_blk
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_table_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *    Converts a BIOS supplied ACPI 1.0 FADT to an intermediate&n; *    ACPI 2.0 FADT. If the BIOS supplied a 2.0 FADT then it is simply&n; *    copied to the intermediate FADT.  The ACPI CA software uses this&n; *    intermediate FADT. Thus a significant amount of special #ifdef&n; *    type codeing is saved. This intermediate FADT will need to be&n; *    freed at some point.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_table_fadt&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Converts a BIOS supplied ACPI 1.0 FADT to a local&n; *              ACPI 2.0 FADT. If the BIOS supplied a 2.0 FADT then it is simply&n; *              copied to the local FADT.  The ACPI CA software uses this&n; *              local FADT. Thus a significant amount of special #ifdef&n; *              type codeing is saved.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_convert_table_fadt
 id|acpi_tb_convert_table_fadt

@@ -8125,7 +8125,6 @@ op_assign
 op_amp
 id|vicam_fops
 comma
-singleline_comment|//&t;.initialize &t;= vicam_video_init,
 dot
 id|minor
 op_assign

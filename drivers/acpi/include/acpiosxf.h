@@ -142,7 +142,7 @@ comma
 id|u32
 id|units
 comma
-id|u32
+id|u16
 id|timeout
 )paren
 suffix:semicolon

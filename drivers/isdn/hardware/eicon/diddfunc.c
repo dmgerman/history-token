@@ -12,6 +12,7 @@ mdefine_line|#define DBG_DEFAULT  (DBG_MINIMUM + DL_XLOG + DL_REG)
 r_extern
 r_void
 id|DIVA_DIDD_Read
+c_func
 (paren
 r_void
 op_star
@@ -35,10 +36,10 @@ id|DESCRIPTOR
 id|_DAdapter
 suffix:semicolon
 multiline_comment|/*&n; * didd callback function&n; */
+DECL|function|didd_callback
 r_static
 r_void
 op_star
-DECL|function|didd_callback
 id|didd_callback
 c_func
 (paren
@@ -70,7 +71,9 @@ l_string|&quot;Notification about IDI_DADAPTER change ! Oops.&quot;
 )paren
 )paren
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -109,14 +112,16 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * connect to didd&n; */
+DECL|function|connect_didd
 r_static
 r_int
 id|DIVA_INIT_FUNCTION
-DECL|function|connect_didd
 id|connect_didd
 c_func
 (paren
@@ -241,7 +246,9 @@ op_ne
 l_int|0xff
 )paren
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|notify_handle
 op_assign
@@ -276,14 +283,16 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 id|dadapter
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * disconnect from didd&n; */
+DECL|function|disconnect_didd
 r_static
 r_void
 id|DIVA_EXIT_FUNCTION
-DECL|function|disconnect_didd
 id|disconnect_didd
 c_func
 (paren
@@ -357,11 +366,15 @@ c_func
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * finit&n; */

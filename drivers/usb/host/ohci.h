@@ -758,13 +758,6 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-multiline_comment|/*&n;&t; * parent device&n;&t; */
-DECL|member|parent_dev
-r_struct
-id|device
-op_star
-id|parent_dev
-suffix:semicolon
 multiline_comment|/*&n;&t; * I/O memory used to communicate with the HC (dma-consistent)&n;&t; */
 DECL|member|regs
 r_struct

@@ -23,7 +23,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.1.2.2 $&quot;
+l_string|&quot;$Revision: 1.1.2.11 $&quot;
 suffix:semicolon
 DECL|variable|DRIVERNAME
 r_static
@@ -66,10 +66,10 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * get revision number from revision string&n; */
+DECL|function|getrev
 r_static
 r_char
 op_star
-DECL|function|getrev
 id|getrev
 c_func
 (paren
@@ -136,9 +136,10 @@ id|rev
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sleep for some milliseconds&n; */
-r_void
 DECL|function|diva_os_sleep
+r_void
 id|diva_os_sleep
+c_func
 (paren
 id|dword
 id|mSec
@@ -170,15 +171,17 @@ id|timeout
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * wait for some milliseconds&n; */
-r_void
 DECL|function|diva_os_wait
+r_void
 id|diva_os_wait
+c_func
 (paren
 id|dword
 id|mSec
 )paren
 (brace
 id|mdelay
+c_func
 (paren
 id|mSec
 )paren
@@ -189,6 +192,7 @@ DECL|function|diva_os_malloc
 r_void
 op_star
 id|diva_os_malloc
+c_func
 (paren
 r_int
 r_int
@@ -229,7 +233,9 @@ id|size
 suffix:semicolon
 )brace
 r_return
+(paren
 id|ret
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * free memory&n; */
@@ -262,9 +268,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * alloc a message buffer&n; */
+DECL|function|diva_os_alloc_message_buffer
 id|diva_os_message_buffer_s
 op_star
-DECL|function|diva_os_alloc_message_buffer
 id|diva_os_alloc_message_buffer
 c_func
 (paren
@@ -309,7 +315,9 @@ id|size
 suffix:semicolon
 )brace
 r_return
+(paren
 id|dmb
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * free a message buffer&n; */
@@ -466,6 +474,7 @@ id|off
 suffix:semicolon
 r_return
 (paren
+(paren
 id|count
 OL
 id|len
@@ -479,6 +488,7 @@ suffix:colon
 id|len
 op_minus
 id|off
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * set additional os settings in capi_ctr struct&n; */
@@ -517,10 +527,10 @@ id|ctrl
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * module init&n; */
+DECL|function|divacapi_init
 r_static
 r_int
 id|DIVA_INIT_FUNCTION
-DECL|function|divacapi_init
 id|divacapi_init
 c_func
 (paren
@@ -632,10 +642,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * module exit&n; */
+DECL|function|divacapi_exit
 r_static
 r_void
 id|DIVA_EXIT_FUNCTION
-DECL|function|divacapi_exit
 id|divacapi_exit
 c_func
 (paren

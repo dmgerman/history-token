@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exsystem - Interface to OS services&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exsystem - Interface to OS services&n; *              $Revision: 74 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -17,7 +17,7 @@ id|acpi_ex_system_wait_semaphore
 id|acpi_handle
 id|semaphore
 comma
-id|u32
+id|u16
 id|timeout
 )paren
 (brace
@@ -307,7 +307,7 @@ op_assign
 id|acpi_ev_acquire_global_lock
 (paren
 (paren
-id|u32
+id|u16
 )paren
 id|time_desc-&gt;integer.value
 )paren
@@ -325,7 +325,7 @@ id|acpi_ex_system_wait_semaphore
 id|obj_desc-&gt;mutex.semaphore
 comma
 (paren
-id|u32
+id|u16
 )paren
 id|time_desc-&gt;integer.value
 )paren
@@ -484,7 +484,7 @@ id|acpi_ex_system_wait_semaphore
 id|obj_desc-&gt;event.semaphore
 comma
 (paren
-id|u32
+id|u16
 )paren
 id|time_desc-&gt;integer.value
 )paren
