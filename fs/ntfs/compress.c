@@ -1321,7 +1321,11 @@ c_func
 id|ni-&gt;type
 op_ne
 id|AT_DATA
-op_logical_or
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
 id|ni-&gt;name_len
 )paren
 suffix:semicolon

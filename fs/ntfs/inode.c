@@ -759,7 +759,11 @@ id|BUG_ON
 c_func
 (paren
 id|ni-&gt;page
-op_logical_or
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|atomic_dec_and_test
 c_func
@@ -767,6 +771,10 @@ c_func
 op_amp
 id|ni-&gt;count
 )paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 id|kmem_cache_free
@@ -869,7 +877,11 @@ id|BUG_ON
 c_func
 (paren
 id|ni-&gt;page
-op_logical_or
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|atomic_dec_and_test
 c_func
@@ -877,6 +889,10 @@ c_func
 op_amp
 id|ni-&gt;count
 )paren
+)paren
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 id|kmem_cache_free
