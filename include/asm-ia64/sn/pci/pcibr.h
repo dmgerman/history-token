@@ -710,6 +710,10 @@ r_typedef
 r_int
 id|pcibr_device_flags_t
 suffix:semicolon
+DECL|macro|MINIMAL_ATES_REQUIRED
+mdefine_line|#define MINIMAL_ATES_REQUIRED(addr, size) &bslash;&n;&t;(IOPG(IOPGOFF(addr) + (size) - 1) == IOPG((size) - 1))
+DECL|macro|MINIMAL_ATE_FLAG
+mdefine_line|#define MINIMAL_ATE_FLAG(addr, size) &bslash;&n;&t;(MINIMAL_ATES_REQUIRED((u_long)addr, size) ? PCIBR_NO_ATE_ROUNDUP : 0)
 multiline_comment|/*&n; * Set bits in the Bridge Device(x) register for this device.&n; * &quot;flags&quot; are defined above. NOTE: this includes turning&n; * things *OFF* as well as turning them *ON* ...&n; */
 r_extern
 r_int

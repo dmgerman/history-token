@@ -336,6 +336,16 @@ id|size
 r_return
 l_int|NULL
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|cpuaddr
+comma
+l_int|0x0
+comma
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/* physical addr. of the memory we just got */
 id|phys_addr
 op_assign
@@ -387,6 +397,14 @@ comma
 id|size
 comma
 id|PCIIO_DMA_CMD
+op_or
+id|MINIMAL_ATE_FLAG
+c_func
+(paren
+id|phys_addr
+comma
+id|size
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1079,6 +1097,14 @@ comma
 id|size
 comma
 id|PCIIO_DMA_DATA
+op_or
+id|MINIMAL_ATE_FLAG
+c_func
+(paren
+id|phys_addr
+comma
+id|size
+)paren
 )paren
 suffix:semicolon
 r_if
