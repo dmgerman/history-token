@@ -1895,15 +1895,19 @@ id|pnp_bios_install
 )paren
 suffix:semicolon
 multiline_comment|/* read the node info */
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|pnp_bios_dev_node_info
 c_func
 (paren
 op_amp
 id|node_info
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|printk
@@ -1914,20 +1918,23 @@ l_string|&quot;PnPBIOS: Unable to get node info.  Aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* register with the pnp layer */
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|pnp_register_protocol
 c_func
 (paren
 op_amp
 id|pnpbios_protocol
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|printk
@@ -1938,8 +1945,7 @@ l_string|&quot;PnPBIOS: Unable to register driver.  Aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EIO
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* start the proc interface */
