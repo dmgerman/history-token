@@ -1525,14 +1525,6 @@ r_int
 id|flags
 suffix:semicolon
 r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
-r_int
 id|port
 op_assign
 id|hwif-&gt;index
@@ -1599,7 +1591,7 @@ op_assign
 (paren
 id|s_time
 op_star
-id|bus_speed
+id|system_bus_speed
 op_plus
 l_int|999
 )paren
@@ -1622,7 +1614,7 @@ op_assign
 (paren
 id|a_time
 op_star
-id|bus_speed
+id|system_bus_speed
 op_plus
 l_int|999
 )paren
@@ -1661,7 +1653,7 @@ op_minus
 id|a_time
 )paren
 op_star
-id|bus_speed
+id|system_bus_speed
 op_plus
 l_int|999
 )paren
@@ -1686,7 +1678,7 @@ op_assign
 (paren
 id|c_time
 op_star
-id|bus_speed
+id|system_bus_speed
 op_plus
 l_int|999
 )paren

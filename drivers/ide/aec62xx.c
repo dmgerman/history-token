@@ -1777,14 +1777,6 @@ op_star
 id|chipset_table
 )paren
 (brace
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1809,7 +1801,7 @@ id|byte
 )paren
 (paren
 (paren
-id|bus_speed
+id|system_bus_speed
 op_le
 l_int|33
 )paren
@@ -1840,14 +1832,6 @@ op_star
 id|chipset_table
 )paren
 (brace
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1872,7 +1856,7 @@ id|byte
 )paren
 (paren
 (paren
-id|bus_speed
+id|system_bus_speed
 op_le
 l_int|33
 )paren

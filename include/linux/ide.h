@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/hdsmart.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14, 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda) minor=0; (hdb) minor=64&n; * Secondary i/f:  ide1: major=22; (hdc) minor=0; (hdd) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde) minor=0; (hdf) minor=64&n; * Quaternary i/f: ide3: major=34; (hdg) minor=0; (hdh) minor=64&n; */
@@ -874,7 +875,7 @@ id|hwif_s
 op_star
 id|hwif
 suffix:semicolon
-multiline_comment|/* actually (ide_hwif_t *) */
+multiline_comment|/* parent pointer to the interface we are attached to  */
 DECL|member|wqueue
 id|wait_queue_head_t
 id|wqueue
@@ -1009,6 +1010,12 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
+DECL|member|device
+r_struct
+id|device
+id|device
+suffix:semicolon
+multiline_comment|/* global device tree handle */
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -1559,6 +1566,12 @@ id|byte
 id|bus_state
 suffix:semicolon
 multiline_comment|/* power state of the IDE bus */
+DECL|member|device
+r_struct
+id|device
+id|device
+suffix:semicolon
+multiline_comment|/* global device tree handle */
 DECL|typedef|ide_hwif_t
 )brace
 id|ide_hwif_t
@@ -2257,7 +2270,6 @@ suffix:semicolon
 DECL|macro|DRIVER
 mdefine_line|#define DRIVER(drive)&t;&t;((drive)-&gt;driver)
 multiline_comment|/*&n; * ide_hwifs[] is the master data structure used to keep track&n; * of just about everything in ide.c.  Whenever possible, routines&n; * should be using pointers to a drive (ide_drive_t *) or&n; * pointers to a hwif (ide_hwif_t *), rather than indexing this&n; * structure directly (the allocation/layout may change!).&n; *&n; */
-macro_line|#ifndef _IDE_C
 r_extern
 r_struct
 id|hwif_s
@@ -2266,7 +2278,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-macro_line|#endif
 r_extern
 r_int
 id|noautodma
@@ -2473,6 +2484,7 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Revalidate (read partition tables)&n; */
+r_extern
 r_void
 id|ide_revalidate_drive
 (paren
@@ -2952,7 +2964,6 @@ id|handler
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
-singleline_comment|// ide_startstop_t flagged_taskfile (ide_drive_t *drive, ide_task_t *task);
 id|ide_startstop_t
 id|set_multmode_intr
 (paren
@@ -3228,13 +3239,6 @@ id|ide_delay_50ms
 r_void
 )paren
 suffix:semicolon
-r_int
-id|system_bus_clock
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|byte
 id|ide_auto_reduce_xfer
 (paren
@@ -3294,12 +3298,9 @@ op_star
 id|args
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; */
+r_extern
 r_int
-id|ide_system_bus_speed
-(paren
-r_void
-)paren
+id|system_bus_speed
 suffix:semicolon
 multiline_comment|/*&n; * idedisk_input_data() is a wrapper around ide_input_data() which copes&n; * with byte-swapping the input data if required.&n; */
 r_inline
@@ -3396,7 +3397,6 @@ id|ide_init_subdrivers
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef _IDE_C
 r_extern
 r_struct
 id|block_device_operations
@@ -3410,7 +3410,7 @@ id|generic_subdriver_entries
 (braket
 )braket
 suffix:semicolon
-macro_line|#endif
+r_extern
 r_int
 id|ide_reinit_drive
 (paren
@@ -3419,8 +3419,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-macro_line|#ifdef _IDE_C
-macro_line|# ifdef CONFIG_BLK_DEV_IDE
+macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/* Probe for devices attached to the systems host controllers.&n; */
 r_extern
 r_int
@@ -3429,8 +3428,9 @@ id|ideprobe_init
 r_void
 )paren
 suffix:semicolon
-macro_line|# endif
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
+r_extern
 r_int
 id|idedisk_reinit
 (paren
@@ -3439,6 +3439,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|idedisk_init
 (paren
@@ -3447,6 +3448,7 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
 macro_line|#ifdef CONFIG_BLK_DEV_IDECD
+r_extern
 r_int
 id|ide_cdrom_reinit
 (paren
@@ -3455,6 +3457,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_cdrom_init
 (paren
@@ -3463,6 +3466,7 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
 macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
+r_extern
 r_int
 id|idetape_reinit
 (paren
@@ -3471,6 +3475,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|idetape_init
 (paren
@@ -3479,6 +3484,7 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
+r_extern
 r_int
 id|idefloppy_reinit
 (paren
@@ -3487,6 +3493,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|idefloppy_init
 (paren
@@ -3495,6 +3502,7 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
 macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
+r_extern
 r_int
 id|idescsi_reinit
 (paren
@@ -3503,6 +3511,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|idescsi_init
 (paren
@@ -3510,7 +3519,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
-macro_line|#endif /* _IDE_C */
 id|ide_drive_t
 op_star
 id|ide_scan_devices

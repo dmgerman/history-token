@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2094,6 +2095,55 @@ op_star
 id|hwif
 )paren
 (brace
+multiline_comment|/* Register this hardware interface within the global device tree.&n;&t; */
+id|sprintf
+c_func
+(paren
+id|hwif-&gt;device.bus_id
+comma
+l_string|&quot;%04x&quot;
+comma
+id|hwif-&gt;io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|hwif-&gt;device.name
+comma
+l_string|&quot;ide&quot;
+)paren
+suffix:semicolon
+id|hwif-&gt;device.driver_data
+op_assign
+id|hwif
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hwif-&gt;pci_dev
+)paren
+id|hwif-&gt;device.parent
+op_assign
+op_amp
+id|hwif-&gt;pci_dev-&gt;dev
+suffix:semicolon
+r_else
+id|hwif-&gt;device.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Would like to do = &amp;device_legacy */
+id|device_register
+c_func
+(paren
+op_amp
+id|hwif-&gt;device
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

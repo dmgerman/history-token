@@ -1857,23 +1857,6 @@ id|drive-&gt;removable
 suffix:semicolon
 multiline_comment|/* if removable, always assume it was changed */
 )brace
-DECL|function|idedisk_revalidate
-r_static
-r_void
-id|idedisk_revalidate
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-id|ide_revalidate_drive
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Queries for true maximum capacity of the drive.&n; * Returns maximum LBA address (&gt; 0) of the drive, 0 if failed.&n; */
 DECL|function|idedisk_read_native_max_address
 r_static
@@ -5261,10 +5244,21 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This is just a hook for the overall driver tree.&n; *&n; * FIXME: This is soon goig to replace the custom linked list games played up&n; * to great extend between the different components of the IDE drivers.&n; */
+DECL|variable|idedisk_devdrv
+r_static
+r_struct
+id|device_driver
+id|idedisk_devdrv
+op_assign
+(brace
+)brace
+suffix:semicolon
 DECL|function|idedisk_setup
 r_static
 r_void
 id|idedisk_setup
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -5284,6 +5278,12 @@ suffix:semicolon
 r_int
 r_int
 id|capacity
+suffix:semicolon
+r_int
+id|drvid
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|idedisk_add_settings
 c_func
@@ -5314,7 +5314,7 @@ id|drive
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Removable disks (eg. SYQUEST); ignore &squot;WD&squot; drives &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Removable disks (eg. SYQUEST); ignore &squot;WD&squot; drives.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5377,6 +5377,10 @@ id|i
 )paren
 r_continue
 suffix:semicolon
+id|drvid
+op_assign
+id|i
+suffix:semicolon
 id|hwif-&gt;gd-&gt;de_arr
 (braket
 id|i
@@ -5397,6 +5401,58 @@ op_or_assign
 id|GENHD_FL_REMOVABLE
 suffix:semicolon
 r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Register us within the device tree.&n;&t; */
+r_if
+c_cond
+(paren
+id|drvid
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|drive-&gt;device.bus_id
+comma
+l_string|&quot;%d&quot;
+comma
+id|drvid
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|drive-&gt;device.name
+comma
+l_string|&quot;ide-disk&quot;
+)paren
+suffix:semicolon
+id|drive-&gt;device.driver
+op_assign
+op_amp
+id|idedisk_devdrv
+suffix:semicolon
+id|drive-&gt;device.parent
+op_assign
+op_amp
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|device
+suffix:semicolon
+id|device_register
+c_func
+(paren
+op_amp
+id|drive-&gt;device
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Extract geometry if we did not already have one for the drive */
@@ -5772,6 +5828,14 @@ op_star
 id|drive
 )paren
 (brace
+multiline_comment|/* FIXME: we will have to think twice whatever this is the proper place&n;&t; * to do it.&n;&t; */
+id|put_device
+c_func
+(paren
+op_amp
+id|drive-&gt;device
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5882,7 +5946,7 @@ id|idedisk_media_change
 comma
 id|revalidate
 suffix:colon
-id|idedisk_revalidate
+id|ide_revalidate_drive
 comma
 id|pre_reset
 suffix:colon

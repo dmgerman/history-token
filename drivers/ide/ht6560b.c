@@ -411,14 +411,6 @@ suffix:semicolon
 id|ide_pio_data_t
 id|d
 suffix:semicolon
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -469,7 +461,7 @@ op_assign
 (paren
 id|active_time
 op_star
-id|bus_speed
+id|system_bus_speed
 op_plus
 l_int|999
 )paren
@@ -481,7 +473,7 @@ op_assign
 (paren
 id|recovery_time
 op_star
-id|bus_speed
+id|system_bus_speed
 op_plus
 l_int|999
 )paren

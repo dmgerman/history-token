@@ -2048,15 +2048,6 @@ id|active_count
 comma
 id|recovery_count
 suffix:semicolon
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*byte b;*/
 id|ide_pio_data_t
 id|d
 suffix:semicolon
@@ -2163,7 +2154,7 @@ id|clock_time
 op_assign
 l_int|1000
 op_div
-id|bus_speed
+id|system_bus_speed
 suffix:semicolon
 id|cycle_count
 op_assign

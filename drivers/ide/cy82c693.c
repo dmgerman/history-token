@@ -164,15 +164,6 @@ id|clk1
 comma
 id|clk2
 suffix:semicolon
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* get speed of PCI bus */
 multiline_comment|/* we don&squot;t check against CY82C693&squot;s min and max speed,&n;&t; * so you can play with the idebus=xx parameter&n;&t; */
 r_if
 c_cond
@@ -201,7 +192,7 @@ id|pio
 dot
 id|setup_time
 comma
-id|bus_speed
+id|system_bus_speed
 )paren
 suffix:semicolon
 multiline_comment|/* let&squot;s calc the active and recovery time clocks */
@@ -217,7 +208,7 @@ id|pio
 dot
 id|active_time
 comma
-id|bus_speed
+id|system_bus_speed
 )paren
 suffix:semicolon
 multiline_comment|/* calc recovery timing */
@@ -251,7 +242,7 @@ c_func
 (paren
 id|clk2
 comma
-id|bus_speed
+id|system_bus_speed
 )paren
 suffix:semicolon
 id|clk1

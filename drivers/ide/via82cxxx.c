@@ -3080,10 +3080,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Determine system bus clock.&n; */
 id|via_clock
 op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
+id|system_bus_speed
 op_star
 l_int|1000
 suffix:semicolon
