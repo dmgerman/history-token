@@ -276,6 +276,11 @@ DECL|macro|BANDB_USTL4_PID
 mdefine_line|#define BANDB_USTL4_PID&t;&t;0xAC02&t;/* USTL4 RS-485 Converter */
 DECL|macro|BANDB_USO9ML2_PID
 mdefine_line|#define BANDB_USO9ML2_PID&t;0xAC03&t;/* USO9ML2 Isolated RS-232 Converter */
+multiline_comment|/*&n; * RM Michaelides CANview USB (http://www.rmcan.com)&n; * CAN filedbus interface adapter, addad by port GmbH www.port.de)&n; */
+DECL|macro|FTDI_RM_VID
+mdefine_line|#define FTDI_RM_VID&t;&t;0x0403&t;/* Vendor  Id */
+DECL|macro|FTDI_RMCANVIEW_PID
+mdefine_line|#define FTDI_RMCANVIEW_PID&t;0xfd60&t;/* Product Id */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
