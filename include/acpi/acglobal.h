@@ -87,6 +87,11 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_integer_byte_width
 suffix:semicolon
+DECL|variable|acpi_gbl_integer_nybble_width
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_integer_nybble_width
+suffix:semicolon
 DECL|variable|acpi_gbl_xpm1a_enable
 id|ACPI_EXTERN
 r_struct
